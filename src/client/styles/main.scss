@@ -2,7 +2,13 @@
 Import style rules from NYPL React module components
 */
 @import "~dgx-header-component/dist/styles/main";
-@import '~dgx-react-footer/dist/styles/styles';
+@import "~dgx-react-footer/dist/styles/styles";
+
+@import "utils/utils.scss";
+@import "utils/mixins.scss";
+@import "utils/fonts.scss";
+
+@import "components/Search";
 
 #app {
   margin: 0;

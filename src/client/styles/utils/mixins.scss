@@ -1,0 +1,106 @@
+@mixin visuallyHidden {
+  position: absolute;
+  left: -10000px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+@mixin displayVisuallyHidden {
+  position: relative;
+  left: 0;
+  height: auto;
+  width: 100%;
+}
+
+/* CLEARFIX EXTEND MIXIN
+ * ---------------------
+ * Usage: @extend %clearfix;
+ * Desc: Provides IE6 and up support
+ * to clear floated elements.
+*/
+%clearfix {
+  *zoom: 1;
+  &:before, &:after {
+    content: " ";
+    display: table;
+  }
+  &:after {
+    clear: both;
+  }
+}
+
+/* min-and-max-screen($min, $max, $orientation) 
+ * $min - required
+ * $max - required
+ * $orientation - optional
+ * Ex: @include min-and-max-screen(768px, 1024px, landscape) { ... }
+ */
+@mixin min-and-max-screen($min, $max, $orientation: false) {
+  @include generate-mq($min-width: $min, $max-width: $max, $orientation: $orientation) {
+    @content;
+  }
+}
+
+/* max-screen($max, $orientation) 
+ * $max - required
+ * $orientation - optional
+ * Ex #1: @include max-screen(768px, landscape) { ... }
+ * Ex #2: @include max-screen(768px) { ... }
+ */
+@mixin max-screen($max, $orientation: false) {
+  @include generate-mq($max-width: $max, $orientation: $orientation) {
+    @content;
+  }
+}
+
+/* min-screen($min, $orientation) 
+ * $min - required
+ * $orientation - optional
+ * Ex #1: @include min-screen(768px, landscape) { ... }
+ * Ex #2: @include min-screen(768px) { ... }
+ */
+@mixin min-screen($min, $orientation: false) {
+  @include generate-mq($min-width: $min, $orientation: $orientation) {
+    @content;
+  }
+}
+
+/* FONT FACE MIXIN
+ * ---------------
+ * Usage: @include font-face('Kievit-Regular', 'http://...');
+ * Desc: Do not include the font file extension, this mixin
+ * will generate the proper extensions.
+*/ 
+@mixin font-face($font-family, $file-path) {
+  @font-face {
+    font-family: $font-family;
+    src: url('#{$file-path}.eot');
+    src: url('#{$file-path}.eot?#iefix') format('embedded-opentype'),
+         url('#{$file-path}.woff') format('woff'),
+         url('#{$file-path}.ttf') format('truetype');
+  }
+}
+
+/* BORDER RADIUS MIXIN
+ * -------------------
+ * Usage: @include border-radius(5px);
+ * Desc: Creates a border radius
+*/ 
+@mixin border-radius($radius) {
+  -webkit-border-radius: $radius;
+  border-radius: $radius;
+}
+
+/* OPACITY MIXIN
+ * ---------------
+ * Usage: @include opacity(0.8);
+ * Desc: Supports cross-browser Opacity rules
+*/
+@mixin opacity($opacity) {
+  opacity: $opacity;
+  $opacity-ie: $opacity * 100;
+  filter: alpha(opacity=$opacity-ie); //IE8
+}
+
