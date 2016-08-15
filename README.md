@@ -1,4 +1,6 @@
-# Discovery
+# Discovery Sandbox
+
+Will contain experimental UIs for the Discovery project.
 
 Starting up from a [Node/React boilerplate](https://bitbucket.org/NYPL/dgx-nypl-react-boilerplate).
 
