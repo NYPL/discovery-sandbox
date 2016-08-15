@@ -1,7 +1,9 @@
 import React from 'react';
 
-import Header from 'dgx-header-component';
+import { Header } from 'dgx-header-component';
 import Footer from 'dgx-react-footer';
+
+import Search from '../Search/Search.jsx';
 
 import Store from '../../stores/Store.js';
 
@@ -16,6 +18,8 @@ class App extends React.Component {
     return (
       <div className="app-wrapper">
         <Header />
+
+        <Search />
 
         <Footer />
       </div>
