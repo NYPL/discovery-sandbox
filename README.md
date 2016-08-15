@@ -1,2 +1,3 @@
-# discovery-sandbox
-Discovery R&amp;D
+# Discovery Sandbox
+
+Will contain experimental UIs for the Discovery project.
