@@ -139,32 +139,132 @@ class Search extends React.Component {
     let results = null;
     let hits = null;
     let ebscodata = this.state.ebscodata;
-
+console.log(ebscodata);
     if (!_isEmpty(ebscodata)) {
       hits = (
         <div>
-          {ebscodata.SearchResult &&
-           ebscodata.SearchResult.Statistics &&
-           ebscodata.SearchResult.Statistics.TotalHits ?
-            `Results ${ebscodata.SearchResult.Statistics.TotalHits}` : ''}
+          <p>
+            {ebscodata.SearchResult &&
+             ebscodata.SearchResult.Statistics &&
+             ebscodata.SearchResult.Statistics.TotalHits ?
+              `Found ${ebscodata.SearchResult.Statistics.TotalHits} results` +
+              `with keywords \"${this.state.searchKeywords}\".` : ''}
+          </p>
+          <div>
+            Found results in the following databases
+            <ul>
+              {
+                ebscodata.SearchResult.Statistics.Databases ?
+                ebscodata.SearchResult.Statistics.Databases.map((d, i) => {
+                  return <li key={i}>{d.Label}</li>;
+                })
+                : null
+              }
+            </ul>
+          </div>
         </div>
       );
       results = ebscodata.SearchResult.Data.Records.map((d, i) => {
+        const bibEntity = d.RecordInfo.BibRecord.BibEntity;
+        const bibRelationShips = d.RecordInfo.BibRecord.BibRelationships;
         return (
-          <div>
+          <li key={i}>
             <hr />
-            <p>PubType: {d.Header.PubType}</p>
+            <h3>{d.RecordInfo.BibRecord.BibEntity.Titles[0].TitleFull}</h3>
+            <p>PubType: {d.Header.PubType}, Relevancy Score: {d.Header.RelevancyScore}</p>
             <p><a href={d.PLink}>PLink</a></p>
-            <h3>Record Info</h3>
-            <p>Title: {d.RecordInfo.BibRecord.BibEntity.Titles[0].TitleFull}</p>
-            <div>Subjects:
+            <p>Availability: {d.FullText.Text.Availability}</p>
+            <h4>Record Info</h4>
+            <div>Identifiers
               <ul>
-                {d.RecordInfo.BibRecord.BibEntity.Subjects.map((subject, i) => {
-                  return <li key={i}>{subject.SubjectFull}</li>
-                })}
+                {bibEntity.Identifiers ? bibEntity.Identifiers.map((identifier, j) => {
+                  return <li key={j}>Type: {identifier.Type}, Value: {identifier.Value}</li>
+                }) : null}
               </ul>
             </div>
-          </div>
+            <div>Languages
+              <ul>
+                {bibEntity.Languages ? bibEntity.Languages.map((languages, j) => {
+                  return <li key={j}>Code: {languages.Code}, Text: {languages.Text}</li>
+                }) : null}
+              </ul>
+            </div>
+            {
+              bibEntity.PhysicalDescription ? (
+                <div>Physical Description - 
+                    Page Count: {bibEntity.PhysicalDescription.Pagination.PageCount}, 
+                    Page Count: {bibEntity.PhysicalDescription.Pagination.StartPage}
+                </div>
+              ) : null
+            }
+            <div>Subjects:
+              <ul>
+                {bibEntity.Subjects ? bibEntity.Subjects.map((subject, j) => {
+                  return <li key={j}>{subject.SubjectFull}</li>
+                }) : null}
+              </ul>
+            </div>
+
+            <h4>Contributor Relationships</h4>
+            <ul>
+              {
+                bibRelationShips.HasContributorRelationships ?
+                bibRelationShips.HasContributorRelationships.map((contributor, j) => {
+                  return contributor.PersonEntity ?
+                    <li key={j}>Contributor: {contributor.PersonEntity.Name.NameFull}</li>
+                    :null;
+                }) : null
+              }
+            </ul>
+
+            <h4>Is Part of Relationships</h4>
+            <ul>
+              {
+                bibRelationShips.IsPartOfRelationships ?
+                bibRelationShips.IsPartOfRelationships.map((relationship, j) => {
+                  if (relationship.BibEntity) {
+                    const dates = relationship.BibEntity.Dates;
+                    const identifiers = relationship.BibEntity.Identifiers;
+                    const numbering = relationship.BibEntity.Numbering;
+                    const titles = relationship.BibEntity.Titles;
+                    return (
+                      <li key={j}>
+                        Titles:
+                        {
+                          titles ? titles.map((d, k) => {
+                            return <span key={k}> {d.Type}, {d.TitleFull}</span>;
+                          }) : null
+                        }
+                        <br />
+                        Numbering: 
+                        {
+                          numbering ? numbering.map((d, k) => {
+                            return <span key={k}> {d.Type}, {d.Value}</span>;
+                          }) : null
+                        }
+                        <br />
+                        Dates:
+                        {
+                          dates ? dates.map((d, k) => {
+                            return <span key={k}> {d.Text} {d.Type}</span>;
+                          }) : null
+                        }
+                        <br />
+                        Identifiers: 
+                        {
+                          identifiers ? identifiers.map((d, k) => {
+                            return <span key={k}> {d.Type}, {d.Value}</span>;
+                          }) : null
+                        }
+                      </li>
+                    );
+                  }
+
+                  return null;
+                }) : null
+              }
+            </ul>
+          </li>
         )
       });
     }
@@ -188,7 +288,9 @@ class Search extends React.Component {
         </div>
         <div>
           {hits}
-          {results}
+          <ul className="results">
+            {results}
+          </ul>
         </div>
       </div>
     );
