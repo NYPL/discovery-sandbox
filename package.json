@@ -50,8 +50,6 @@
     "clean-webpack-plugin": "^0.1.3",
     "colors": "^1.1.2",
     "compression": "^1.5.2",
-    "dgx-header-component": "git+ssh://bitbucket.org/NYPL/dgx-header-component.git#master",
-    "dgx-model-data": "git+ssh://bitbucket.org/NYPL/dgx-model-data.git#master",
     "dgx-react-footer": "git+ssh://bitbucket.org/NYPL/dgx-react-footer.git#master",
     "ejs": "^2.3.3",
     "esdoc": "^0.4.5",

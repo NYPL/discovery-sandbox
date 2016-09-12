@@ -10,40 +10,43 @@ const appEnvironment = process.env.APP_ENV || 'production';
 let sessionToken = '';
 let authenticationToken = '';
 
-axios
-  .post('https://eds-api.ebscohost.com/authservice/rest/uidauth', {
-    UserId: ebsco.UserId,
-    Password: ebsco.Password,
-    profile: ebsco.profile,
-  })
-  .then(response => {
-    const instance = axios.create({
-      // timeout: response.data.AuthTimeout,
-      headers: { 'x-authenticationToken': response.data.AuthToken },
-    });
-
-    authenticationToken = response.data.AuthToken;
-
-    instance
-      .post('http://eds-api.ebscohost.com/edsapi/rest/createsession', {
-        Profile: ebsco.profile,
-        Guest: ebsco.Guest,
-        Org: ebsco.Org,
-      })
-      .then(r => {
-        console.log(r.data);
-        console.log(authenticationToken);
-
-        sessionToken = r.data.SessionToken;
-      })
-      .catch(e => {
-        console.log(e);
+function getCredentials() {
+  axios
+    .post('https://eds-api.ebscohost.com/authservice/rest/uidauth', {
+      UserId: ebsco.UserId,
+      Password: ebsco.Password,
+      profile: ebsco.profile,
+    })
+    .then(response => {
+      const instance = axios.create({
+        // timeout: response.data.AuthTimeout,
+        headers: { 'x-authenticationToken': response.data.AuthToken },
       });
-  })
-  .catch(error => {
-    console.log('test')
-    console.log(error);
-  });
+
+      authenticationToken = response.data.AuthToken;
+
+      instance
+        .post('http://eds-api.ebscohost.com/edsapi/rest/createsession', {
+          Profile: ebsco.profile,w
+          Guest: ebsco.Guest,
+          Org: ebsco.Org,
+        })
+        .then(r => {
+          console.log(r.data);
+
+          sessionToken = r.data.SessionToken;
+        })
+        .catch(e => {
+          console.log(e);
+          getCredentials();
+        });
+    })
+    .catch(error => {
+      console.log(error);
+    });
+}
+
+getCredentials();
 
 function MainApp(req, res, next) {
   next();

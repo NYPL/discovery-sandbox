@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Header, navConfig } from 'dgx-header-component';
+// import { Header, navConfig } from 'dgx-header-component';
 import Footer from 'dgx-react-footer';
 
 import Search from '../Search/Search.jsx';
@@ -17,7 +17,6 @@ class App extends React.Component {
   render() {
     return (
       <div className="app-wrapper">
-        <Header navData={navConfig.current} />
 
         <Search />
 
