@@ -2,19 +2,17 @@ import express from 'express';
 import axios from 'axios';
 
 import appConfig from '../../../appConfig.js';
-import ebscoFn from '../../../ebscoConfig.js';
+// import ebscoFn from '../../../ebscoConfig.js';
 
 const router = express.Router();
 const appEnvironment = process.env.APP_ENV || 'production';
-const ebsco = ebscoFn ? ebscoFn(process.env) : (env) => {
-    return {
-      UserId: env.USER ? env.USER : '',
-      Password: env.PASSWORD ? env.PASSWORD : '',
-      profile: env.PROFILE ? env.PROFILE : '',
-      Guest: env.GUEST ? env.GUEST : '',
-      Org: env.ORG ? env.ORG : '',
-    };
-  };
+const ebsco = {
+  UserId: process.env.USER ? process.env.USER : '',
+  Password: process.env.PASSWORD ? process.env.PASSWORD : '',
+  profile: process.env.PROFILE ? process.env.PROFILE : '',
+  Guest: process.env.GUEST ? process.env.GUEST : '',
+  Org: process.env.ORG ? process.env.ORG : '',
+};
 
 
 let sessionToken = '';
