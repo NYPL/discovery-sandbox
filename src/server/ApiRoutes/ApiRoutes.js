@@ -6,7 +6,16 @@ import ebscoFn from '../../../ebscoConfig.js';
 
 const router = express.Router();
 const appEnvironment = process.env.APP_ENV || 'production';
-const ebsco = ebscoFn(process.env);
+const ebsco = ebscoFn ? ebscoFn(process.env) : (env) => {
+    return {
+      UserId: env.USER ? env.USER : '',
+      Password: env.PASSWORD ? env.PASSWORD : '',
+      profile: env.PROFILE ? env.PROFILE : '',
+      Guest: env.GUEST ? env.GUEST : '',
+      Org: env.ORG ? env.ORG : '',
+    };
+  };
+
 
 let sessionToken = '';
 let authenticationToken = '';
