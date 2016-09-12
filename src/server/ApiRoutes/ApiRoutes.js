@@ -2,10 +2,11 @@ import express from 'express';
 import axios from 'axios';
 
 import appConfig from '../../../appConfig.js';
-import ebsco from '../../../ebscoConfig.js';
+import ebscoFn from '../../../ebscoConfig.js';
 
 const router = express.Router();
 const appEnvironment = process.env.APP_ENV || 'production';
+const ebsco = ebscoFn(process.env);
 
 let sessionToken = '';
 let authenticationToken = '';
@@ -27,7 +28,7 @@ function getCredentials() {
 
       instance
         .post('http://eds-api.ebscohost.com/edsapi/rest/createsession', {
-          Profile: ebsco.profile,w
+          Profile: ebsco.profile,
           Guest: ebsco.Guest,
           Org: ebsco.Org,
         })
