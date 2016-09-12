@@ -7,9 +7,6 @@ class Store {
       updateEbscoData: Actions.updateEbscoData,
     });
 
-    // this.on('init', () => {
-    //   this.ebscodata = {};
-    // });
     this.state = {
       ebscodata: {}
     };
