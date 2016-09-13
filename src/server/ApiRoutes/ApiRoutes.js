@@ -26,31 +26,35 @@ function getCredentials() {
       profile: ebsco.profile,
     })
     .then(response => {
-      const instance = axios.create({
-        // timeout: response.data.AuthTimeout,
-        headers: { 'x-authenticationToken': response.data.AuthToken },
-      });
-
-      authenticationToken = response.data.AuthToken;
-
-      instance
-        .post('http://eds-api.ebscohost.com/edsapi/rest/createsession', {
-          Profile: ebsco.profile,
-          Guest: ebsco.Guest,
-          Org: ebsco.Org,
-        })
-        .then(r => {
-          console.log(r.data);
-
-          sessionToken = r.data.SessionToken;
-        })
-        .catch(e => {
-          console.log(e);
-          getCredentials();
-        });
+      getSessionToken(response.data.AuthToken);
     })
     .catch(error => {
       console.log(error);
+    });
+}
+
+function getSessionToken(authToken) {
+  const instance = axios.create({
+    // timeout: response.data.AuthTimeout,
+    headers: { 'x-authenticationToken': authToken },
+  });
+
+  authenticationToken = authToken;
+
+  instance
+    .post('http://eds-api.ebscohost.com/edsapi/rest/createsession', {
+      Profile: ebsco.profile,
+      Guest: ebsco.Guest,
+      Org: ebsco.Org,
+    })
+    .then(r => {
+      console.log(r.data);
+
+      sessionToken = r.data.SessionToken;
+    })
+    .catch(e => {
+      console.log(e);
+      getCredentials();
     });
 }
 
@@ -90,6 +94,8 @@ function Search(req, res, next) {
       console.log(error);
       console.log(`error calling API : ${error}`);
       console.log(`Attempted to call : ${apiUrl}`);
+
+      getSessionToken(authenticationToken);
 
       res.json({
         error,

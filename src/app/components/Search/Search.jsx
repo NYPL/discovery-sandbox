@@ -139,7 +139,9 @@ class Search extends React.Component {
     let results = null;
     let hits = null;
     let ebscodata = this.state.ebscodata;
-console.log(ebscodata);
+  
+    // console.log(ebscodata);
+
     if (!_isEmpty(ebscodata)) {
       hits = (
         <div>
