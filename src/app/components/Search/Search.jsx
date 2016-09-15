@@ -8,6 +8,7 @@ import Store from '../../stores/Store.js';
 import {
   isEmpty as _isEmpty,
   extend as _extend,
+  keys as _keys,
 } from 'underscore';
 
 /**
@@ -30,6 +31,7 @@ class Search extends React.Component {
     this.triggerSubmit = this.triggerSubmit.bind(this);
     this.animationTimer = this.animationTimer.bind(this);
     this.onChange = this.onChange.bind(this);
+    this.getRecord = this.getRecord.bind(this);
   }
 
 
@@ -130,6 +132,15 @@ class Search extends React.Component {
     this.setState({ searchKeywords: event.target.value });
   }
 
+  getRecord(dbid, an) {
+    console.log(dbid, an);
+    axios
+      .get(`/api/retrieve?dbid=${dbid}&an=${an}`)
+      .then(response => {
+        console.log(response.data);
+      });
+  }
+
   render() {
     const pulseAnimation = cx({
       'keywords-pulse-fade-in': this.state.placeholderAnimation === 'initial',
@@ -138,6 +149,8 @@ class Search extends React.Component {
 
     let results = null;
     let hits = null;
+    let criteria = null;
+    let facets = null;
     let ebscodata = this.state.ebscodata;
   
     // console.log(ebscodata);
@@ -150,7 +163,7 @@ class Search extends React.Component {
              ebscodata.SearchResult.Statistics &&
              ebscodata.SearchResult.Statistics.TotalHits ?
               `Found ${ebscodata.SearchResult.Statistics.TotalHits} results` +
-              `with keywords \"${this.state.searchKeywords}\".` : ''}
+              ` with keywords \"${this.state.searchKeywords}\".` : ''}
           </p>
           <div>
             Found results in the following databases
@@ -166,13 +179,59 @@ class Search extends React.Component {
           </div>
         </div>
       );
+      criteria = ebscodata.SearchResult.AvailableCriteria ?
+        _keys(ebscodata.SearchResult.AvailableCriteria).map((d, i) => {
+          const criteriaObj = ebscodata.SearchResult.AvailableCriteria[d];
+          return (
+            <li key={i}>
+              {d}
+              <ul>
+                {
+                  _keys(criteriaObj).map((k, j) => {
+                    return (
+                      <li key={j}>{k}: {criteriaObj[k]}</li>
+                    );
+                  })
+                }
+              </ul>
+            </li>
+          );
+        })
+        : null;
+      facets = ebscodata.SearchResult.AvailableFacets ?
+        ebscodata.SearchResult.AvailableFacets.map((facet, i) => {
+          return (
+            <li key={i}>
+              {facet.Label}
+              <select name={facet.Label}>
+                {
+                  facet.AvailableFacetValues.map((f, j) => {
+                    return (
+                      <option key={j} value={f.Value}>
+                        {f.Value} ({f.Count})
+                      </option>
+                    );
+                  })
+                }
+              </select>
+            </li>
+          );
+        })
+        : null;
       results = ebscodata.SearchResult.Data.Records.map((d, i) => {
         const bibEntity = d.RecordInfo.BibRecord.BibEntity;
         const bibRelationShips = d.RecordInfo.BibRecord.BibRelationships;
+        const an = d.Header['An'];
+        const dbid = d.Header['DbId'];
+
         return (
           <li key={i}>
             <hr />
-            <h3>{d.RecordInfo.BibRecord.BibEntity.Titles[0].TitleFull}</h3>
+            <h3>
+              <a href="#" onClick={() => this.getRecord(dbid, an)}>
+                {d.RecordInfo.BibRecord.BibEntity.Titles[0].TitleFull}
+              </a>
+            </h3>
             <p>PubType: {d.Header.PubType}, Relevancy Score: {d.Header.RelevancyScore}</p>
             <p><a href={d.PLink}>PLink</a></p>
             <p>Availability: {d.FullText.Text.Availability}</p>
@@ -284,15 +343,36 @@ class Search extends React.Component {
             className="search-button"
             onClick={() => this.submitSearchRequest()}
           >
-            <span className="nypl-icon-magnifier-fat"></span>
             Search
           </button>
         </div>
         <div>
           {hits}
-          <ul className="results">
-            {results}
-          </ul>
+        </div>
+        <div>
+          <div className="sidebar">
+            {
+              criteria || facets ?
+              (
+                <div>
+                  criteria:
+                  <ul>
+                    {criteria}
+                  </ul>
+                  facets:
+                  <ul>
+                    {facets}
+                  </ul>
+                </div>
+              )
+              : null
+            }
+          </div>
+          <div className="results-container">
+            <ul className="results">
+              {results}
+            </ul>
+          </div>
         </div>
       </div>
     );

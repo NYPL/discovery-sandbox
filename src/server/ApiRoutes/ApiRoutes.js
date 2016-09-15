@@ -78,16 +78,47 @@ function Search(req, res, next) {
       "SearchCriteria": {
         "Queries": [ {"Term": query} ],
         "SearchMode": "smart",
-        "IncludeFacets": "n",
-        "Sort":"relevance"
+        "IncludeFacets": "y",
+        "Sort": "relevance",
+        "AutoSuggest": "y",
       },
       "RetrievalCriteria": {
         "View": "brief",
         "ResultsPerPage": 10,
         "PageNumber": 1,
-        "Highlight": "n"
+        "Highlight": "y"
       },
       "Actions":null
+    })
+    .then(response => res.json(response.data))
+    .catch(error => {
+      console.log(error);
+      console.log(`error calling API : ${error}`);
+      console.log(`Attempted to call : ${apiUrl}`);
+
+      getSessionToken(authenticationToken);
+
+      res.json({
+        error,
+      });
+    }); /* end axios call */
+}
+
+function Retrieve(req, res, next) {
+  const dbid = req.query.dbid || '';
+  const an = req.query.an || '';
+
+  const instance = axios.create({
+    headers: {
+      'x-sessionToken': sessionToken,
+      'x-authenticationToken': authenticationToken,
+    },
+  });
+
+  instance
+    .post(`http://eds-api.ebscohost.com/edsapi/rest/retrieve`, {
+      DbId: dbid,
+      An: an,
     })
     .then(response => res.json(response.data))
     .catch(error => {
@@ -110,5 +141,9 @@ router
 router
   .route('/api')
   .get(Search);
+
+router
+  .route('/api/retrieve')
+  .get(Retrieve);
 
 export default router;
