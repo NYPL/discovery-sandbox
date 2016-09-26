@@ -1,7 +1,7 @@
 /*
 Import style rules from NYPL React module components
 */
-// @import "~dgx-header-component/dist/styles/main";
+@import "~@nypl/dgx-header-component/dist/styles/main";
 @import "~@nypl/dgx-react-footer/dist/styles/styles";
 
 @import "utils/mixins.scss";

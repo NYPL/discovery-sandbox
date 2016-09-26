@@ -27,6 +27,7 @@
   },
   "devDependencies": {},
   "dependencies": {
+    "@nypl/dgx-header-component": "^1.4.0",
     "@nypl/dgx-react-footer": "^0.3.0",
     "alt": "^0.18.2",
     "axios": "^0.9.1",
