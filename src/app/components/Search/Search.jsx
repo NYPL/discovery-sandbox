@@ -5,6 +5,12 @@ import axios from 'axios';
 import Actions from '../../actions/Actions.js';
 import Store from '../../stores/Store.js';
 
+import SearchButton from '../Buttons/SearchButton.jsx';
+import Breadcrumbs from '../Breadcrumbs/Breadcrumbs.jsx';
+import Hits from '../Hits/Hits.jsx';
+import FacetSidebar from '../FacetSidebar/FacetSidebar.jsx';
+import Results from '../Results/Results.jsx';
+
 import {
   isEmpty as _isEmpty,
   extend as _extend,
@@ -146,189 +152,9 @@ class Search extends React.Component {
       'keywords-pulse-fade-in': this.state.placeholderAnimation === 'initial',
       'keywords-pulse': this.state.placeholderAnimation === 'sequential',
     });
-
-    let results = null;
-    let hits = null;
-    let criteria = null;
-    let facets = null;
     let ebscodata = this.state.ebscodata;
   
     // console.log(ebscodata);
-
-    if (!_isEmpty(ebscodata)) {
-      hits = (
-        <div>
-          <p>
-            {ebscodata.SearchResult &&
-             ebscodata.SearchResult.Statistics &&
-             ebscodata.SearchResult.Statistics.TotalHits ?
-              `Found ${ebscodata.SearchResult.Statistics.TotalHits} results` +
-              ` with keywords \"${this.state.searchKeywords}\".` : ''}
-          </p>
-          <div>
-            Found results in the following databases
-            <ul>
-              {
-                ebscodata.SearchResult.Statistics.Databases ?
-                ebscodata.SearchResult.Statistics.Databases.map((d, i) => {
-                  return <li key={i}>{d.Label}</li>;
-                })
-                : null
-              }
-            </ul>
-          </div>
-        </div>
-      );
-      criteria = ebscodata.SearchResult.AvailableCriteria ?
-        _keys(ebscodata.SearchResult.AvailableCriteria).map((d, i) => {
-          const criteriaObj = ebscodata.SearchResult.AvailableCriteria[d];
-          return (
-            <li key={i}>
-              {d}
-              <ul>
-                {
-                  _keys(criteriaObj).map((k, j) => {
-                    return (
-                      <li key={j}>{k}: {criteriaObj[k]}</li>
-                    );
-                  })
-                }
-              </ul>
-            </li>
-          );
-        })
-        : null;
-      facets = ebscodata.SearchResult.AvailableFacets ?
-        ebscodata.SearchResult.AvailableFacets.map((facet, i) => {
-          return (
-            <li key={i}>
-              {facet.Label}
-              <select name={facet.Label}>
-                {
-                  facet.AvailableFacetValues.map((f, j) => {
-                    return (
-                      <option key={j} value={f.Value}>
-                        {f.Value} ({f.Count})
-                      </option>
-                    );
-                  })
-                }
-              </select>
-            </li>
-          );
-        })
-        : null;
-      results = ebscodata.SearchResult.Data.Records.map((d, i) => {
-        const bibEntity = d.RecordInfo.BibRecord.BibEntity;
-        const bibRelationShips = d.RecordInfo.BibRecord.BibRelationships;
-        const an = d.Header['An'];
-        const dbid = d.Header['DbId'];
-
-        return (
-          <li key={i}>
-            <hr />
-            <h3>
-              <a href="#" onClick={() => this.getRecord(dbid, an)}>
-                {d.RecordInfo.BibRecord.BibEntity.Titles[0].TitleFull}
-              </a>
-            </h3>
-            <p>PubType: {d.Header.PubType}, Relevancy Score: {d.Header.RelevancyScore}</p>
-            <p><a href={d.PLink}>PLink</a></p>
-            <p>Availability: {d.FullText.Text.Availability}</p>
-            <h4>Record Info</h4>
-            <div>Identifiers
-              <ul>
-                {bibEntity.Identifiers ? bibEntity.Identifiers.map((identifier, j) => {
-                  return <li key={j}>Type: {identifier.Type}, Value: {identifier.Value}</li>
-                }) : null}
-              </ul>
-            </div>
-            <div>Languages
-              <ul>
-                {bibEntity.Languages ? bibEntity.Languages.map((languages, j) => {
-                  return <li key={j}>Code: {languages.Code}, Text: {languages.Text}</li>
-                }) : null}
-              </ul>
-            </div>
-            {
-              bibEntity.PhysicalDescription ? (
-                <div>Physical Description - 
-                    Page Count: {bibEntity.PhysicalDescription.Pagination.PageCount}, 
-                    Page Count: {bibEntity.PhysicalDescription.Pagination.StartPage}
-                </div>
-              ) : null
-            }
-            <div>Subjects:
-              <ul>
-                {bibEntity.Subjects ? bibEntity.Subjects.map((subject, j) => {
-                  return <li key={j}>{subject.SubjectFull}</li>
-                }) : null}
-              </ul>
-            </div>
-
-            <h4>Contributor Relationships</h4>
-            <ul>
-              {
-                bibRelationShips.HasContributorRelationships ?
-                bibRelationShips.HasContributorRelationships.map((contributor, j) => {
-                  return contributor.PersonEntity ?
-                    <li key={j}>Contributor: {contributor.PersonEntity.Name.NameFull}</li>
-                    :null;
-                }) : null
-              }
-            </ul>
-
-            <h4>Is Part of Relationships</h4>
-            <ul>
-              {
-                bibRelationShips.IsPartOfRelationships ?
-                bibRelationShips.IsPartOfRelationships.map((relationship, j) => {
-                  if (relationship.BibEntity) {
-                    const dates = relationship.BibEntity.Dates;
-                    const identifiers = relationship.BibEntity.Identifiers;
-                    const numbering = relationship.BibEntity.Numbering;
-                    const titles = relationship.BibEntity.Titles;
-                    return (
-                      <li key={j}>
-                        Titles:
-                        {
-                          titles ? titles.map((d, k) => {
-                            return <span key={k}> {d.Type}, {d.TitleFull}</span>;
-                          }) : null
-                        }
-                        <br />
-                        Numbering: 
-                        {
-                          numbering ? numbering.map((d, k) => {
-                            return <span key={k}> {d.Type}, {d.Value}</span>;
-                          }) : null
-                        }
-                        <br />
-                        Dates:
-                        {
-                          dates ? dates.map((d, k) => {
-                            return <span key={k}> {d.Text} {d.Type}</span>;
-                          }) : null
-                        }
-                        <br />
-                        Identifiers: 
-                        {
-                          identifiers ? identifiers.map((d, k) => {
-                            return <span key={k}> {d.Type}, {d.Value}</span>;
-                          }) : null
-                        }
-                      </li>
-                    );
-                  }
-
-                  return null;
-                }) : null
-              }
-            </ul>
-          </li>
-        )
-      });
-    }
 
     return (
       <div className="search-container">
@@ -339,39 +165,25 @@ class Search extends React.Component {
             onChange={this.inputChange}
             ref="keywords"
           />
-          <button
+          <SearchButton
+            id="search-button"
             className="search-button"
-            onClick={() => this.submitSearchRequest()}
+            label="Search"
+            onClick={this.submitSearchRequest}
           >
             Search
-          </button>
+          </SearchButton>
         </div>
+
+        <Breadcrumbs query={this.state.searchKeywords} />
+
         <div>
-          {hits}
-        </div>
-        <div>
-          <div className="sidebar">
-            {
-              criteria || facets ?
-              (
-                <div>
-                  criteria:
-                  <ul>
-                    {criteria}
-                  </ul>
-                  facets:
-                  <ul>
-                    {facets}
-                  </ul>
-                </div>
-              )
-              : null
-            }
-          </div>
+          <FacetSidebar ebscodata={ebscodata} />
+
           <div className="results-container">
-            <ul className="results">
-              {results}
-            </ul>
+            <Hits ebscodata={ebscodata} query={this.state.searchKeywords} />
+
+            <Results ebscodata={ebscodata} />
           </div>
         </div>
       </div>
