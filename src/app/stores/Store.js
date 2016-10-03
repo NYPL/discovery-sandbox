@@ -5,15 +5,21 @@ class Store {
   constructor() {
     this.bindListeners({
       updateEbscoData: Actions.updateEbscoData,
+      updateSearchKeywords: Actions.updateSearchKeywords,
     });
 
     this.state = {
-      ebscodata: {}
+      ebscodata: {},
+      searchKeywords: '',
     };
   }
 
   updateEbscoData(data) {
     this.setState({ ebscodata: data });
+  }
+
+  updateSearchKeywords(data) {
+    this.setState({ searchKeywords: data });
   }
 }
 

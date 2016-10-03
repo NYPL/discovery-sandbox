@@ -18,7 +18,7 @@ import {
 } from 'underscore';
 
 /**
- * The main container for the top Search section of the New Arrivals app.
+ * The main container for the top Search section.
  */
 class Search extends React.Component {
   constructor(props) {
@@ -26,7 +26,6 @@ class Search extends React.Component {
 
     this.state = _extend({
         searchKeywords: '',
-        searchOption: 'catalog',
         placeholder: 'Search the catalog',
         placeholderAnimation: null,
         noAnimationBefore: true,
@@ -106,6 +105,7 @@ class Search extends React.Component {
         .then(response => {
           // console.log(response.data);
           Actions.updateEbscoData(response.data);
+          Actions.updateSearchKeywords(keyword);
         })
         .catch(error => {
           console.log(error);
@@ -127,7 +127,7 @@ class Search extends React.Component {
   }
 
   /**
-   *  inputChange(field, event)
+   * inputChange(field, event)
    * Listen to the changes on keywords input field and option input fields.
    * Grab the event value, and change the state.
    *
@@ -152,40 +152,21 @@ class Search extends React.Component {
       'keywords-pulse-fade-in': this.state.placeholderAnimation === 'initial',
       'keywords-pulse': this.state.placeholderAnimation === 'sequential',
     });
-    let ebscodata = this.state.ebscodata;
-  
-    // console.log(ebscodata);
 
     return (
-      <div className="search-container">
-        <div className="search-form" onKeyPress={this.triggerSubmit}>
-          <input
-            placeholder={this.state.placeholder}
-            className={`search-field ${pulseAnimation}`}
-            onChange={this.inputChange}
-            ref="keywords"
-          />
-          <SearchButton
-            id="search-button"
-            className="search-button"
-            label="Search"
-            onClick={this.submitSearchRequest}
-          >
-            Search
-          </SearchButton>
-        </div>
-
-        <Breadcrumbs query={this.state.searchKeywords} />
-
-        <div>
-          <FacetSidebar ebscodata={ebscodata} />
-
-          <div className="results-container">
-            <Hits ebscodata={ebscodata} query={this.state.searchKeywords} />
-
-            <Results ebscodata={ebscodata} />
-          </div>
-        </div>
+      <div className="search-form" onKeyPress={this.triggerSubmit}>
+        <input
+          placeholder={this.state.placeholder}
+          className={`search-field ${pulseAnimation}`}
+          onChange={this.inputChange}
+          ref="keywords"
+        />
+        <SearchButton
+          id="search-button"
+          className="search-button"
+          label="Search"
+          onClick={this.submitSearchRequest}
+        />
       </div>
     );
   }

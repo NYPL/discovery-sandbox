@@ -3,7 +3,7 @@ import React from 'react';
 import { Header, navConfig } from '@nypl/dgx-header-component';
 import Footer from '@nypl/dgx-react-footer';
 
-import Search from '../Search/Search.jsx';
+import SearchResultsPage from '../SearchResultsPage/SearchResultsPage.jsx';
 
 import Store from '../../stores/Store.js';
 
@@ -19,7 +19,7 @@ class App extends React.Component {
       <div className="app-wrapper">
         <Header navData={navConfig.current} />
 
-        <Search />
+        <SearchResultsPage />
 
         <Footer />
       </div>
