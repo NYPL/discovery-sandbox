@@ -66,15 +66,25 @@ class FacetSidebar extends React.Component {
         {
           criteria || facets ?
           (
-            <div>
-              Filter results by:
+            <form>
+              <h2>Filter results by</h2>
+              <fieldset>
+                <label htmlFor="select-keywords">Keywords</label>
+                <button
+                  id="select-keywords"
+                  className="button-selected"
+                  title={`Remove keyword filter: ${this.props.keywords}`}
+                >
+                  "{this.props.keywords}"
+                </button>
+              </fieldset>
               <ul>
                 {facets}
               </ul>
               <ul>
                 {criteria}
               </ul>
-            </div>
+            </form>
           )
           : null
         }
