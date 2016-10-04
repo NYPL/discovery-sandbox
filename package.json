@@ -42,7 +42,7 @@
     "colors": "^1.1.2",
     "compression": "^1.5.2",
     "css-loader": "^0.23.1",
-    "dgx-svg-icons": "git+ssh://git@bitbucket.org/NYPL/dgx-svg-icons.git#master",
+    "dgx-svg-icons": "git+https://git@bitbucket.org/NYPL/dgx-svg-icons.git#master",
     "ejs": "^2.3.3",
     "enzyme": "^2.2.0",
     "esdoc": "^0.4.5",
