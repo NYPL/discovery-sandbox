@@ -64,6 +64,10 @@ function MainApp(req, res, next) {
   next();
 }
 
+function Item(req, res, next) {
+  next();
+}
+
 function Search(req, res, next) {
   const query = req.query.q || 'harry potter';
   const instance = axios.create({
@@ -137,6 +141,14 @@ function Retrieve(req, res, next) {
 router
   .route('/')
   .get(MainApp);
+
+router
+  .route('/search/:keyword')
+  get(MainApp);
+
+router
+  .route('/item')
+  .get(Item);
 
 router
   .route('/api')

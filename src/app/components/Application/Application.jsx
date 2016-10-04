@@ -4,6 +4,7 @@ import { Header, navConfig } from '@nypl/dgx-header-component';
 import Footer from '@nypl/dgx-react-footer';
 
 import SearchResultsPage from '../SearchResultsPage/SearchResultsPage.jsx';
+import Search from '../Search/Search.jsx';
 
 import Store from '../../stores/Store.js';
 
@@ -19,7 +20,11 @@ class App extends React.Component {
       <div className="app-wrapper">
         <Header navData={navConfig.current} />
 
-        <SearchResultsPage />
+        <div className="search-container">
+          <Search />
+        </div>
+
+        {this.props.children}
 
         <Footer />
       </div>

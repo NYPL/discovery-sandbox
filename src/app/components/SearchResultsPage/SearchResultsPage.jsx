@@ -52,7 +52,6 @@ class SearchResultsPage extends React.Component {
 
     return (
       <div className="search-container">
-        <Search />
 
         <Breadcrumbs query={this.state.searchKeywords} />
 

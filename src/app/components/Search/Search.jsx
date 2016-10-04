@@ -37,6 +37,7 @@ class Search extends React.Component {
     this.animationTimer = this.animationTimer.bind(this);
     this.onChange = this.onChange.bind(this);
     this.getRecord = this.getRecord.bind(this);
+    this.routeHandler = this.routeHandler.bind(this);
   }
 
 
@@ -106,11 +107,16 @@ class Search extends React.Component {
           // console.log(response.data);
           Actions.updateEbscoData(response.data);
           Actions.updateSearchKeywords(keyword);
+          this.routeHandler(`/search/${keyword}`);
         })
         .catch(error => {
           console.log(error);
         });
     }
+  }
+
+  routeHandler(keyword) {
+    this.context.router.push(keyword);
   }
 
   /**
@@ -171,5 +177,11 @@ class Search extends React.Component {
     );
   }
 }
+
+Search.contextTypes = {
+  router: function contextType() {
+    return React.PropTypes.func.isRequired;
+  },
+};
 
 export default Search;
