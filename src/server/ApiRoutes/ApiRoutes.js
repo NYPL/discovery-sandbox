@@ -139,12 +139,8 @@ function Retrieve(req, res, next) {
 }
 
 router
-  .route('/')
-  .get(MainApp);
-
-router
   .route('/search/:keyword')
-  get(MainApp);
+  .get(MainApp);
 
 router
   .route('/item')
@@ -157,5 +153,9 @@ router
 router
   .route('/api/retrieve')
   .get(Retrieve);
+
+router
+  .route('/')
+  .get(MainApp);
 
 export default router;

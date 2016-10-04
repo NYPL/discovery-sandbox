@@ -45,7 +45,7 @@ app.use('*/src/client', express.static(INDEX_PATH));
 
 app.use('/', apiRoutes);
 
-app.get('/', (req, res) => {
+app.get('/*', (req, res) => {
   alt.bootstrap(JSON.stringify(res.locals.data || {}));
 
   match({ routes, location: req.url }, (error, redirectLocation, renderProps) => {
