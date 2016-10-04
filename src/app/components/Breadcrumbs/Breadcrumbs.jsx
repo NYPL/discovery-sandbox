@@ -1,7 +1,7 @@
 import React from 'react';
 
 const Breadcrumbs = ({ query }) => (
-  <div className={`breadcrumbs-wrapper`}>
+  <div className={`breadcrumbs`}>
     <a href="/">Home</a> &gt;&gt; Search Results for "{query}"
   </div>
 );

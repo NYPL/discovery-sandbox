@@ -62,7 +62,7 @@ class FacetSidebar extends React.Component {
     }
 
     return (
-      <div className="sidebar">
+      <div className="facets">
         {
           criteria || facets ?
           (

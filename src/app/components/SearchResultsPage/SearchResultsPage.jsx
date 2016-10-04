@@ -7,7 +7,6 @@ import Store from '../../stores/Store.js';
 
 import Search from '../Search/Search.jsx';
 import SearchButton from '../Buttons/SearchButton.jsx';
-import Breadcrumbs from '../Breadcrumbs/Breadcrumbs.jsx';
 import Hits from '../Hits/Hits.jsx';
 import FacetSidebar from '../FacetSidebar/FacetSidebar.jsx';
 import Results from '../Results/Results.jsx';
@@ -51,18 +50,13 @@ class SearchResultsPage extends React.Component {
     // console.log(ebscodata);
 
     return (
-      <div className="search-container">
+      <div className="container search-results-container">
+        <FacetSidebar ebscodata={ebscodata} />
 
-        <Breadcrumbs query={this.state.searchKeywords} />
+        <div className="results-container">
+          <Hits ebscodata={ebscodata} query={this.state.searchKeywords} />
 
-        <div>
-          <FacetSidebar ebscodata={ebscodata} />
-
-          <div className="results-container">
-            <Hits ebscodata={ebscodata} query={this.state.searchKeywords} />
-
-            <Results ebscodata={ebscodata} />
-          </div>
+          <Results ebscodata={ebscodata} />
         </div>
       </div>
     );

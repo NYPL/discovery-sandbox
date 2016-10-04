@@ -1,8 +1,12 @@
 .search {
   &-container {
-    margin: 50px;
+    // margin: 50px;
+    max-width: $containerWidth;
+    padding: 0.5rem 1rem;
+    margin: 0 auto;
+    @include box-sizing();
 
-    @include Kievit-Medium;
+    @include Kievit-Book;
 
     h3 {
       @include Milo-Regular;
@@ -95,7 +99,7 @@
   }
 }
 
-.sidebar {
+.facets {
   float: left;
   width: 20%;
 

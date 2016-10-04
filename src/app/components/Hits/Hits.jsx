@@ -3,11 +3,16 @@ import React from 'react';
 const Hits = ({ ebscodata, query }) => (
   <div>
     <p>
-      {ebscodata.SearchResult &&
-       ebscodata.SearchResult.Statistics &&
-       ebscodata.SearchResult.Statistics.TotalHits ?
-        `Found ${ebscodata.SearchResult.Statistics.TotalHits} results` +
-        ` with keywords \"${query}\".` : ''}
+      {
+        ebscodata.SearchResult &&
+        ebscodata.SearchResult.Statistics &&
+        ebscodata.SearchResult.Statistics.TotalHits ?
+        (
+          <span>Found <strong>{ebscodata.SearchResult.Statistics.TotalHits}</strong> results
+          with keywords <strong>"{query}"</strong>.</span>
+        )
+        : ''
+      }
     </p>
   </div>
 );

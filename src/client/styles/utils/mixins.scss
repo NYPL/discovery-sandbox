@@ -130,3 +130,23 @@
   filter: alpha(opacity=$opacity-ie); //IE8
 }
 
+@mixin box-sizing($type: border-box) {
+  -webkit-box-sizing:   $type;
+  -moz-box-sizing:      $type;
+  box-sizing:           $type;
+}
+
+@mixin clearfix {
+  &:before,
+  &:after {
+    content: " ";
+    display: block;
+  }
+  &:after {
+    clear: both;
+    visibility: hidden;
+    line-height: 0;
+    height: 0;
+    font-size: 0;
+  }
+}

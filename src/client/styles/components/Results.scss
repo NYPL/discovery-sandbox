@@ -1,0 +1,62 @@
+.results-nav {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  margin-top: 1rem;
+
+  .pagination {
+    *:first-child {
+      padding-left: 0;
+    }
+  }
+
+  .pagination-total,
+  .paginate {
+    display: inline-block;
+    padding: 0 0.35rem;
+  }
+
+  .pagination-total {
+    font-weight: bold;
+  }
+
+  .paginate {
+    text-decoration: none;
+
+    &.prev:before {
+      content: '‹';
+      display: inline-block;
+      margin-right: 0.2rem;
+      font-size: 1.2rem;
+      line-height: 1rem;
+    }
+
+    &.next:after {
+      content: '›';
+      display: inline-block;
+      margin-left: 0.2rem;
+      font-size: 1.2rem;
+      line-height: 1rem;
+    }
+  }
+
+  .sort {
+    flex-grow: 1;
+
+    form {
+      white-space: nowrap;
+      // padding-right: 0.9rem;
+      text-align: right;
+    }
+
+    label,
+    select {
+      display: inline-block;
+    }
+
+    label {
+      margin-right: 0.35rem;
+    }
+
+  }
+}
