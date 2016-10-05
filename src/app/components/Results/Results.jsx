@@ -3,13 +3,8 @@ import { Link } from 'react-router';
 
 import {
   isEmpty as _isEmpty,
-  extend as _extend,
-  keys as _keys,
 } from 'underscore';
 
-/**
- * The main container for the top Search section of the New Arrivals app.
- */
 class Results extends React.Component {
   constructor(props) {
     super(props);
@@ -17,7 +12,7 @@ class Results extends React.Component {
 
   render() {
     const ebscodata = this.props.ebscodata;
-    const itemTotalResults = ebscodata.SearchResult.Statistics.TotalHits;
+    const itemTotalResults = ebscodata.SearchResult ? ebscodata.SearchResult.Statistics.TotalHits : '';
     let results = null;
 
     if (!_isEmpty(ebscodata)) {
@@ -61,7 +56,7 @@ class Results extends React.Component {
                       const numbering = relationship.BibEntity.Numbering;
 
                       return (
-                        <div>
+                        <div key={j}>
                           {
                             numbering ? numbering.map((number, k) => {
                               return <span key={k}> {number.Type}: {number.Value}</span>;

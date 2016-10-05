@@ -2,13 +2,9 @@ import React from 'react';
 
 import {
   isEmpty as _isEmpty,
-  extend as _extend,
   keys as _keys,
 } from 'underscore';
 
-/**
- * The main container for the top Search section of the New Arrivals app.
- */
 class FacetSidebar extends React.Component {
   constructor(props) {
     super(props);
@@ -20,24 +16,6 @@ class FacetSidebar extends React.Component {
     let facets = null;
 
     if (!_isEmpty(ebscodata)) {
-      dateRange = ebscodata.SearchResult.AvailableCriteria ?
-        _keys(ebscodata.SearchResult.AvailableCriteria).map((d, i) => {
-          const criteriaObj = ebscodata.SearchResult.AvailableCriteria[d];
-
-          return (
-            <fieldset key={i}>
-              <label htmlFor="select-date-range">Date</label>
-              <div id="select-date-range" classN="date-range">
-                <input id="input-date-start" name="date-start"
-                  type="text" value={criteriaObj.MinDate} size="9" />
-                <div classN="divider">to</div>
-                <input id="input-date-end" name="date-end"
-                  type="text" value={criteriaObj.MaxDate} size="9" />
-              </div>
-            </fieldset>
-          );
-        })
-        : null;
       facets = ebscodata.SearchResult.AvailableFacets ?
         ebscodata.SearchResult.AvailableFacets.map((facet, i) => {
           const label = facet.Label.replace(/ /, '').toLowerCase();
@@ -56,6 +34,24 @@ class FacetSidebar extends React.Component {
                   })
                 }
               </select>
+            </fieldset>
+          );
+        })
+        : null;
+      dateRange = ebscodata.SearchResult.AvailableCriteria ?
+        _keys(ebscodata.SearchResult.AvailableCriteria).map((d, i) => {
+          const criteriaObj = ebscodata.SearchResult.AvailableCriteria[d];
+
+          return (
+            <fieldset key={i}>
+              <label htmlFor="select-date-range">Date</label>
+              <div id="select-date-range" className="date-range">
+                <input id="input-date-start" name="date-start"
+                  type="text" defaultValue={criteriaObj.MinDate} size="9" />
+                <div className="divider">to</div>
+                <input id="input-date-end" name="date-end"
+                  type="text" defaultValue={criteriaObj.MaxDate} size="9" />
+              </div>
             </fieldset>
           );
         })

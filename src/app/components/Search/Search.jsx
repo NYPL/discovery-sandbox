@@ -6,15 +6,9 @@ import Actions from '../../actions/Actions.js';
 import Store from '../../stores/Store.js';
 
 import SearchButton from '../Buttons/SearchButton.jsx';
-import Breadcrumbs from '../Breadcrumbs/Breadcrumbs.jsx';
-import Hits from '../Hits/Hits.jsx';
-import FacetSidebar from '../FacetSidebar/FacetSidebar.jsx';
-import Results from '../Results/Results.jsx';
 
 import {
-  isEmpty as _isEmpty,
   extend as _extend,
-  keys as _keys,
 } from 'underscore';
 
 /**
@@ -25,7 +19,7 @@ class Search extends React.Component {
     super(props);
 
     this.state = _extend({
-        searchKeywords: '',
+        // searchKeywords: '',
         placeholder: 'Search the catalog',
         placeholderAnimation: null,
         noAnimationBefore: true,
@@ -165,6 +159,7 @@ class Search extends React.Component {
           placeholder={this.state.placeholder}
           className={`search-field ${pulseAnimation}`}
           onChange={this.inputChange}
+          defaultValue={this.state.searchKeywords}
           ref="keywords"
         />
         <SearchButton

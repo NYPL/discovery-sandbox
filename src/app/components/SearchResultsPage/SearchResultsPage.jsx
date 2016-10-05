@@ -42,7 +42,7 @@ class SearchResultsPage extends React.Component {
       ebscodata,
       searchKeywords
     } = this.state;
-  
+
     // console.log(ebscodata);
 
     return (

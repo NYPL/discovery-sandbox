@@ -68,8 +68,7 @@ function Item(req, res, next) {
   next();
 }
 
-function Search(req, res, next) {
-  const query = req.query.q || 'harry potter';
+function Search(query, cb, errorcb) {
   const instance = axios.create({
     headers: {
       'x-sessionToken': sessionToken,
@@ -94,18 +93,100 @@ function Search(req, res, next) {
       },
       "Actions":null
     })
-    .then(response => res.json(response.data))
+    .then(response => cb(response.data))
     .catch(error => {
       console.log(error);
       console.log(`error calling API : ${error}`);
-      console.log(`Attempted to call : ${apiUrl}`);
 
       getSessionToken(authenticationToken);
 
-      res.json({
-        error,
-      });
+      errorcb(error);
     }); /* end axios call */
+}
+
+
+function AjaxSearch(req, res, next) {
+  const query = req.query.q || 'harry potter';
+
+  Search(
+    query,
+    (data) => res.json(data),
+    (error) => res.json(error)
+  );
+}
+
+function ServerSearch(req, res, next) {
+  const query = req.params.keyword || 'harry potter';
+
+  Search(
+    query,
+    (data) => {
+      res.locals.data = {
+        Store: {
+          ebscodata: data,
+          searchKeywords: query,
+        },
+      };
+      next();
+    },
+    (error) => {
+      res.locals.data = {
+        Store: {
+          ebscodata: {},
+          searchKeywords: '',
+        },
+      };
+      next();
+    }
+  );
+
+  // const instance = axios.create({
+  //   headers: {
+  //     'x-sessionToken': sessionToken,
+  //     'x-authenticationToken': authenticationToken,
+  //   },
+  // });
+
+  // instance
+  //   .post(`http://eds-api.ebscohost.com/edsapi/rest/Search`, {
+  //     "SearchCriteria": {
+  //       "Queries": [ {"Term": query} ],
+  //       "SearchMode": "smart",
+  //       "IncludeFacets": "y",
+  //       "Sort": "relevance",
+  //       "AutoSuggest": "y",
+  //     },
+  //     "RetrievalCriteria": {
+  //       "View": "brief",
+  //       "ResultsPerPage": 10,
+  //       "PageNumber": 1,
+  //       "Highlight": "y"
+  //     },
+  //     "Actions":null
+  //   })
+  //   .then(response => {
+  //     res.locals.data = {
+  //       Store: {
+  //         ebscodata: response.data,
+  //         searchKeywords: query,
+  //       },
+  //     };
+  //     next();
+  //   })
+  //   .catch(error => {
+  //     console.log(error);
+  //     console.log(`error calling API : ${error}`);
+
+  //     getSessionToken(authenticationToken);
+
+  //     res.locals.data = {
+  //       Store: {
+  //         ebscodata: {},
+  //         searchKeywords: '',
+  //       },
+  //     };
+  //     next();
+  //   }); /* end axios call */
 }
 
 function Retrieve(req, res, next) {
@@ -128,7 +209,6 @@ function Retrieve(req, res, next) {
     .catch(error => {
       console.log(error);
       console.log(`error calling API : ${error}`);
-      console.log(`Attempted to call : ${apiUrl}`);
 
       getSessionToken(authenticationToken);
 
@@ -140,7 +220,7 @@ function Retrieve(req, res, next) {
 
 router
   .route('/search/:keyword')
-  .get(MainApp);
+  .get(ServerSearch);
 
 router
   .route('/item')
@@ -148,7 +228,7 @@ router
 
 router
   .route('/api')
-  .get(Search);
+  .get(AjaxSearch);
 
 router
   .route('/api/retrieve')

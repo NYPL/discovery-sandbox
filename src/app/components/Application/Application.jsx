@@ -3,7 +3,6 @@ import React from 'react';
 import { Header, navConfig } from '@nypl/dgx-header-component';
 import Footer from '@nypl/dgx-react-footer';
 
-import SearchResultsPage from '../SearchResultsPage/SearchResultsPage.jsx';
 import Breadcrumbs from '../Breadcrumbs/Breadcrumbs.jsx';
 import Search from '../Search/Search.jsx';
 
