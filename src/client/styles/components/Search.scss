@@ -1,8 +1,12 @@
 .search {
   &-container {
-    margin: 50px;
+    // margin: 50px;
+    max-width: $containerWidth;
+    padding: 0.5rem 1rem;
+    margin: 0 auto;
+    @include box-sizing();
 
-    @include Kievit-Medium;
+    @include Kievit-Book;
 
     h3 {
       @include Milo-Regular;
@@ -81,5 +85,16 @@
       border-bottom-left-radius: 0;
       height: 54px;
     }
+  }
+}
+
+.results {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+
+  &-container {
+    float: left;
+    width: 80%;
   }
 }

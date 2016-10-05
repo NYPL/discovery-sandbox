@@ -1,19 +1,25 @@
-import BookActions from '../actions/Actions.js';
+import Actions from '../actions/Actions.js';
 import alt from '../alt.js';
 
 class Store {
   constructor() {
     this.bindListeners({
-      updateAngularApps: BookActions.UPDATE_ANGULAR_APPS,
+      updateEbscoData: Actions.updateEbscoData,
+      updateSearchKeywords: Actions.updateSearchKeywords,
     });
 
-    this.on('init', () => {
-      this._angularApps = [];
-    });
+    this.state = {
+      ebscodata: {},
+      searchKeywords: '',
+    };
   }
 
-  updateAngularApps(data) {
-    this._angularApps = data;
+  updateEbscoData(data) {
+    this.setState({ ebscodata: data });
+  }
+
+  updateSearchKeywords(data) {
+    this.setState({ searchKeywords: data });
   }
 }
 

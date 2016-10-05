@@ -1,0 +1,37 @@
+// Grays
+$white: #fff;
+$gray: #7B756F;
+$lightergray: lighten($gray, 45%);
+$lightgray: lighten($gray, 40%);
+$darkgray: darken($gray, 10%);
+$darkergray: darken($gray, 15%);
+$black: darken($gray, 40%);
+
+// Colors
+$yellow: #FEE24A;
+$orange: #ffb81d;
+$red: #ed1c24;
+$darkgreen: #437529;
+$lightgreen: lighten($darkgreen, 20%);
+$lightergreen: lighten($lightgreen, 42%);
+$blue: #1DA1D4;
+$darkblue: #1980a9;
+$lightblue: lighten($blue, 40%);
+$darkorange: darken($orange, 20%);
+
+// Components
+$textcolor: $black;
+$linkcolor: $red;
+$linkhovercolor: lighten($linkcolor, 10%);
+$linkvisitedcolor: darken($linkcolor, 20%);
+$searchcolor: $blue;
+$searchcolordark: $darkblue;
+$searchcolorlight: lighten($searchcolor, 20%);
+$focuswidth: 3px;
+$focuscolor: $orange;
+
+// Layout
+$containerWidth: 1200px;
+$headerHeight: 60px;
+$headerComponentHeight: 40px;
+$headerComponentMargin: ($headerHeight - $headerComponentHeight)/2;
