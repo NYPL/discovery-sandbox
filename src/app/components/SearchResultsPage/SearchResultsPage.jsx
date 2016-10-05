@@ -53,7 +53,7 @@ class SearchResultsPage extends React.Component {
       <div className="container search-results-container">
         <FacetSidebar ebscodata={ebscodata} keywords={this.state.searchKeywords} />
 
-        <div className="results-container">
+        <div className="results">
           <Hits ebscodata={ebscodata} query={this.state.searchKeywords} />
 
           <Results ebscodata={ebscodata} />

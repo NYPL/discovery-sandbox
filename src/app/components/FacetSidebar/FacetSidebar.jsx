@@ -16,35 +16,36 @@ class FacetSidebar extends React.Component {
 
   render() {
     const ebscodata = this.props.ebscodata;
-    let criteria = null;
+    let dateRange = null;
     let facets = null;
 
     if (!_isEmpty(ebscodata)) {
-      criteria = ebscodata.SearchResult.AvailableCriteria ?
+      dateRange = ebscodata.SearchResult.AvailableCriteria ?
         _keys(ebscodata.SearchResult.AvailableCriteria).map((d, i) => {
           const criteriaObj = ebscodata.SearchResult.AvailableCriteria[d];
+
           return (
-            <li key={i}>
-              {d}
-              <ul>
-                {
-                  _keys(criteriaObj).map((k, j) => {
-                    return (
-                      <li key={j}>{k}: {criteriaObj[k]}</li>
-                    );
-                  })
-                }
-              </ul>
-            </li>
+            <fieldset key={i}>
+              <label htmlFor="select-date-range">Date</label>
+              <div id="select-date-range" classN="date-range">
+                <input id="input-date-start" name="date-start"
+                  type="text" value={criteriaObj.MinDate} size="9" />
+                <div classN="divider">to</div>
+                <input id="input-date-end" name="date-end"
+                  type="text" value={criteriaObj.MaxDate} size="9" />
+              </div>
+            </fieldset>
           );
         })
         : null;
       facets = ebscodata.SearchResult.AvailableFacets ?
         ebscodata.SearchResult.AvailableFacets.map((facet, i) => {
+          const label = facet.Label.replace(/ /, '').toLowerCase();
+
           return (
-            <li key={i}>
-              {facet.Label}
-              <select name={facet.Label}>
+            <fieldset key={i}>
+              <label htmlFor={`select-${label}`}>{facet.Label}</label>
+              <select name={`select-${label}`}>
                 {
                   facet.AvailableFacetValues.map((f, j) => {
                     return (
@@ -55,7 +56,7 @@ class FacetSidebar extends React.Component {
                   })
                 }
               </select>
-            </li>
+            </fieldset>
           );
         })
         : null;
@@ -64,9 +65,9 @@ class FacetSidebar extends React.Component {
     return (
       <div className="facets">
         {
-          criteria || facets ?
+          facets ?
           (
-            <form>
+            <form className="facets-form">
               <h2>Filter results by</h2>
               <fieldset>
                 <label htmlFor="select-keywords">Keywords</label>
@@ -78,12 +79,11 @@ class FacetSidebar extends React.Component {
                   "{this.props.keywords}"
                 </button>
               </fieldset>
-              <ul>
-                {facets}
-              </ul>
-              <ul>
-                {criteria}
-              </ul>
+              
+              {facets}
+
+              {dateRange}
+
             </form>
           )
           : null

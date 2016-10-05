@@ -1,7 +1,7 @@
 import React from 'react';
 
 const Hits = ({ ebscodata, query }) => (
-  <div>
+  <div className="results-message">
     <p>
       {
         ebscodata.SearchResult &&

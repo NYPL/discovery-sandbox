@@ -27,14 +27,12 @@ class Results extends React.Component {
 
         return (
           <li key={i}>
-            <h3>
-              <a href="#" onClick={() => this.getRecord(dbid, an)}>
-                {d.RecordInfo.BibRecord.BibEntity.Titles[0].TitleFull}
-              </a>
-            </h3>
-            <p>PubType: {d.Header.PubType}, Relevancy Score: {d.Header.RelevancyScore}</p>
-            <p><a href={d.PLink}>PLink</a></p>
-            <p>Availability: {d.FullText.Text.Availability}</p>
+            <a href="#" onClick={() => this.getRecord(dbid, an)}>
+              {d.RecordInfo.BibRecord.BibEntity.Titles[0].TitleFull}
+            </a>
+            <div>PubType: {d.Header.PubType}, Relevancy Score: {d.Header.RelevancyScore}</div>
+            <div><a href={d.PLink}>PLink</a></div>
+            <div>Availability: {d.FullText.Text.Availability}</div>
             <h4>Record Info</h4>
             <div>Identifiers
               <ul>
@@ -133,10 +131,12 @@ class Results extends React.Component {
     return (
       <div>
         <div className="results-nav">
+
           <div className="pagination">
             <span className="pagination-total">1-100 of {ebscodata.SearchResult.Statistics.TotalHits}</span>
             <a href="#" className="paginate next">Next Page</a>
           </div>
+
           <div className="sort">
             <form className="sort-form">
               <label htmlFor="sort-by">Sort by</label>
@@ -152,7 +152,7 @@ class Results extends React.Component {
             </form>
           </div>
         </div>
-        <ul className="results">
+        <ul className="results-list">
           {results}
         </ul>
       </div>
