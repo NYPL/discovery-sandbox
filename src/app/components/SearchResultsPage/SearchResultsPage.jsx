@@ -1,12 +1,8 @@
 import React from 'react';
-import cx from 'classnames';
 import axios from 'axios';
 
-import Actions from '../../actions/Actions.js';
 import Store from '../../stores/Store.js';
 
-import Search from '../Search/Search.jsx';
-import SearchButton from '../Buttons/SearchButton.jsx';
 import Hits from '../Hits/Hits.jsx';
 import FacetSidebar from '../FacetSidebar/FacetSidebar.jsx';
 import Results from '../Results/Results.jsx';
