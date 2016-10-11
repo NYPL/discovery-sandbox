@@ -1,10 +1,15 @@
 import React from 'react';
 
-const ItemPage = (props) => (
-  <div>
-    <p>Page for a specific item.</p>
-  </div>
-);
+class ItemPage extends React.Component {
+  render() {
+    console.log(this.props);
+    return (
+      <div>
+        <p>Page for a specific item.</p>
+      </div>
+    );
+  }
+}
 
 ItemPage.propTypes = {};
 

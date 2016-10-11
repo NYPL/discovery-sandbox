@@ -1,8 +1,6 @@
 import React from 'react';
 import axios from 'axios';
 
-import Store from '../../stores/Store.js';
-
 import Hits from '../Hits/Hits.jsx';
 import Breadcrumbs from '../Breadcrumbs/Breadcrumbs.jsx';
 import FacetSidebar from '../FacetSidebar/FacetSidebar.jsx';
@@ -20,29 +18,13 @@ import {
 class SearchResultsPage extends React.Component {
   constructor(props) {
     super(props);
-
-    this.state = Store.getState();
-    this.onChange = this.onChange.bind(this);
-  }
-
-
-  componentDidMount() {
-    Store.listen(this.onChange);
-  }
-
-  componentDidUnMount() {
-    Store.unlisten(this.onChange);
-  }
-
-  onChange() {
-    this.setState(Store.getState());
   }
 
   render() {
     const {
       ebscodata,
       searchKeywords,
-    } = this.state;
+    } = this.props;
     let breadcrumbs = null;
     
     // console.log(ebscodata);
@@ -61,10 +43,10 @@ class SearchResultsPage extends React.Component {
       <div className="container search-results-container">
         {breadcrumbs}
 
-        <FacetSidebar ebscodata={ebscodata} keywords={this.state.searchKeywords} />
+        <FacetSidebar ebscodata={ebscodata} keywords={searchKeywords} />
 
         <div className="results">
-          <Hits ebscodata={ebscodata} query={this.state.searchKeywords} />
+          <Hits ebscodata={ebscodata} query={searchKeywords} />
 
           <Results ebscodata={ebscodata} />
         </div>

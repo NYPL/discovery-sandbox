@@ -5,9 +5,26 @@ import Footer from '@nypl/dgx-react-footer';
 
 import Search from '../Search/Search.jsx';
 
+import Store from '../../stores/Store.js';
+
 class App extends React.Component {
   constructor(props) {
     super(props);
+
+    this.state = Store.getState();
+    this.onChange = this.onChange.bind(this);
+  }
+
+  componentDidMount() {
+    Store.listen(this.onChange);
+  }
+
+  componentDidUnMount() {
+    Store.unlisten(this.onChange);
+  }
+
+  onChange() {
+    this.setState(Store.getState());
   }
 
   render() {
@@ -19,7 +36,7 @@ class App extends React.Component {
           <Search />
         </div>
 
-        {this.props.children}
+        {React.cloneElement(this.props.children, this.state)}
 
         <Footer />
       </div>
