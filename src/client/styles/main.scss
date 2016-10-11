@@ -10,7 +10,8 @@ Import style rules from NYPL React module components
 @import "~@nypl/dgx-header-component/dist/styles/main";
 @import "~@nypl/dgx-react-footer/dist/styles/styles";
 
-@import "components/Search";
+@import "components/Home.scss";
+@import "components/Search.scss";
 @import "components/Breadcrumbs.scss";
 @import "components/Results.scss";
 @import "components/FacetSidebar.scss";

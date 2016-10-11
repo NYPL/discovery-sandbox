@@ -5,9 +5,18 @@ import {
   keys as _keys,
 } from 'underscore';
 
+import Actions from '../../actions/Actions.js';
+
 class FacetSidebar extends React.Component {
   constructor(props) {
     super(props);
+
+    this.routeHandler = this.routeHandler.bind(this);
+  }
+
+  routeHandler(e) {
+    e.preventDefault();
+    this.context.router.push('/');
   }
 
   render() {
@@ -70,6 +79,7 @@ class FacetSidebar extends React.Component {
                 <button
                   id="select-keywords"
                   className="button-selected"
+                  onClick={this.routeHandler}
                   title={`Remove keyword filter: ${this.props.keywords}`}
                 >
                   "{this.props.keywords}"
@@ -91,6 +101,12 @@ class FacetSidebar extends React.Component {
 
 FacetSidebar.propTypes = {
   ebscodata: React.PropTypes.object,
+};
+
+FacetSidebar.contextTypes = {
+  router: function contextType() {
+    return React.PropTypes.func.isRequired;
+  },
 };
 
 export default FacetSidebar;

@@ -4,6 +4,7 @@ import axios from 'axios';
 import Store from '../../stores/Store.js';
 
 import Hits from '../Hits/Hits.jsx';
+import Breadcrumbs from '../Breadcrumbs/Breadcrumbs.jsx';
 import FacetSidebar from '../FacetSidebar/FacetSidebar.jsx';
 import Results from '../Results/Results.jsx';
 
@@ -40,13 +41,26 @@ class SearchResultsPage extends React.Component {
   render() {
     const {
       ebscodata,
-      searchKeywords
+      searchKeywords,
     } = this.state;
-
+    let breadcrumbs = null;
+    
     // console.log(ebscodata);
+
+    if (searchKeywords) {
+       breadcrumbs = (
+        <div className="page-header">
+          <div className="container">
+            <Breadcrumbs query={searchKeywords} />
+          </div>
+        </div>
+      );
+    }
 
     return (
       <div className="container search-results-container">
+        {breadcrumbs}
+
         <FacetSidebar ebscodata={ebscodata} keywords={this.state.searchKeywords} />
 
         <div className="results">
