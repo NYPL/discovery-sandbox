@@ -1,0 +1,87 @@
+
+.item-header {
+  padding: 1rem;
+  @include clearfix();
+
+  > div {
+    float: left;
+    @include box-sizing();
+  }
+
+  img {
+    width: 100%;
+    height: auto;
+  }
+
+  h1 {
+    margin-bottom: 0;
+    line-height: 1.1;
+  }
+
+  .item-image {
+    width: 8.25%;
+  }
+
+  .item-info {
+    width: 91.75%;
+    padding-left: 1rem;
+  }
+
+  .description {
+    margin-bottom: 0.35rem;
+  }
+
+  .author {
+    font-size: 1.3rem;
+    margin-bottom: 0.5rem;
+  }
+}
+
+.item-holdings,
+.item-details {
+  border-top: 1px solid darken($lightgray, 10%);
+  padding-top: 0.5rem;
+  margin-top: 2rem;
+
+  h2,
+  h3 {
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+  }
+
+  h3 {
+    font-size: 1.2rem;
+    margin-top: 2rem;
+  }
+}
+
+.hiearchy {
+  a {
+    display: block;
+
+    &:before {
+      display: inline-block;
+      color: $darkgray;
+      content: " ";
+      height: 0.5rem;
+      width: 0.5rem;
+      border-left: 2px solid $darkgray;
+      border-bottom: 2px solid $darkgray;
+      margin-right: 0.2rem;
+    }
+
+    &:first-child:before {
+      display: none;
+    }
+
+    &:nth-child(2) {
+      margin-left: 1.5rem;
+    }
+    &:nth-child(3) {
+      margin-left: 3rem;
+    }
+    &:nth-child(4) {
+      margin-left: 4.5rem;
+    }
+  }
+}

@@ -9,6 +9,10 @@ class Actions {
   updateSearchKeywords(data) {
     return data;
   }
+
+  updateItem(data) {
+    return data;
+  }
 }
 
 export default alt.createActions(Actions);

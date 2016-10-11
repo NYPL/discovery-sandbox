@@ -40,15 +40,18 @@ class SearchResultsPage extends React.Component {
     }
 
     return (
-      <div className="container search-results-container">
+      <div>
         {breadcrumbs}
 
-        <FacetSidebar ebscodata={ebscodata} keywords={searchKeywords} />
+        <div className="container search-results-container">
 
-        <div className="results">
-          <Hits ebscodata={ebscodata} query={searchKeywords} />
+          <FacetSidebar ebscodata={ebscodata} keywords={searchKeywords} />
 
-          <Results ebscodata={ebscodata} />
+          <div className="results">
+            <Hits ebscodata={ebscodata} query={searchKeywords} />
+
+            <Results ebscodata={ebscodata} />
+          </div>
         </div>
       </div>
     );

@@ -6,16 +6,22 @@ class Store {
     this.bindListeners({
       updateEbscoData: Actions.updateEbscoData,
       updateSearchKeywords: Actions.updateSearchKeywords,
+      updateItem: Actions.updateItem,
     });
 
     this.state = {
       ebscodata: {},
+      item: {},
       searchKeywords: '',
     };
   }
 
   updateEbscoData(data) {
     this.setState({ ebscodata: data });
+  }
+
+  updateItem(data) {
+    this.setState({ item: data });
   }
 
   updateSearchKeywords(data) {

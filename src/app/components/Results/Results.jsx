@@ -1,5 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router';
+import axios from 'axios';
+
+import Actions from '../../actions/Actions.js';
 
 import {
   isEmpty as _isEmpty,
@@ -8,6 +11,28 @@ import {
 class Results extends React.Component {
   constructor(props) {
     super(props);
+
+    this.routeHandler = this.routeHandler.bind(this);
+    this.getRecord = this.getRecord.bind(this);
+  }
+
+  getRecord(e, dbid, an) {
+    e.preventDefault();
+
+    axios
+      .get(`/api/retrieve?dbid=${dbid}&an=${an}`)
+      .then(response => {
+        console.log(response.data);
+        Actions.updateItem(response.data);
+        this.routeHandler(`/item/${an}`);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }
+
+  routeHandler(route) {
+    this.context.router.push(route);
   }
 
   render() {
@@ -30,7 +55,11 @@ class Results extends React.Component {
             {itemImage}
             <div className="result-text">
               <div className="type">{d.Header.PubType}</div>
-              <Link to={`/item/${an}`} className="title">{itemTitle}</Link>
+              <Link
+                onClick={(e) => this.getRecord(e, dbid, an)} 
+                href={`/item/${an}`} className="title">
+                {itemTitle}
+              </Link>
               <div className="description">
                   {
                     bibRelationShips.HasContributorRelationships ?
@@ -127,6 +156,12 @@ class Results extends React.Component {
 
 Results.propTypes = {
   ebscodata: React.PropTypes.object,
+};
+
+Results.contextTypes = {
+  router: function contextType() {
+    return React.PropTypes.func.isRequired;
+  },
 };
 
 export default Results;
