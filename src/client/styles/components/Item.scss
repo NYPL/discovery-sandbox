@@ -85,3 +85,12 @@
     }
   }
 }
+
+.status {
+  font-weight: bold;
+  color: $darkorange;
+
+  &.available {
+    color: $darkgreen;
+  }
+}
