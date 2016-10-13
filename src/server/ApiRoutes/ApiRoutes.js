@@ -2,6 +2,7 @@ import express from 'express';
 import axios from 'axios';
 
 import appConfig from '../../../appConfig.js';
+import modelEbsco from '../../app/utils/model.js';
 // import ebscoFn from '../../../ebscoConfig.js';
 
 const router = express.Router();
@@ -121,9 +122,10 @@ function ServerSearch(req, res, next) {
   Search(
     query,
     (data) => {
+      console.log(modelEbsco.build(data));
       res.locals.data = {
         Store: {
-          ebscodata: data,
+          ebscodata: modelEbsco.build(data),
           searchKeywords: query,
         },
       };
@@ -139,54 +141,6 @@ function ServerSearch(req, res, next) {
       next();
     }
   );
-
-  // const instance = axios.create({
-  //   headers: {
-  //     'x-sessionToken': sessionToken,
-  //     'x-authenticationToken': authenticationToken,
-  //   },
-  // });
-
-  // instance
-  //   .post(`http://eds-api.ebscohost.com/edsapi/rest/Search`, {
-  //     "SearchCriteria": {
-  //       "Queries": [ {"Term": query} ],
-  //       "SearchMode": "smart",
-  //       "IncludeFacets": "y",
-  //       "Sort": "relevance",
-  //       "AutoSuggest": "y",
-  //     },
-  //     "RetrievalCriteria": {
-  //       "View": "brief",
-  //       "ResultsPerPage": 10,
-  //       "PageNumber": 1,
-  //       "Highlight": "y"
-  //     },
-  //     "Actions":null
-  //   })
-  //   .then(response => {
-  //     res.locals.data = {
-  //       Store: {
-  //         ebscodata: response.data,
-  //         searchKeywords: query,
-  //       },
-  //     };
-  //     next();
-  //   })
-  //   .catch(error => {
-  //     console.log(error);
-  //     console.log(`error calling API : ${error}`);
-
-  //     getSessionToken(authenticationToken);
-
-  //     res.locals.data = {
-  //       Store: {
-  //         ebscodata: {},
-  //         searchKeywords: '',
-  //       },
-  //     };
-  //     next();
-  //   }); /* end axios call */
 }
 
 function Retrieve(req, res, next) {

@@ -2,7 +2,6 @@ import React from 'react';
 
 import {
   isEmpty as _isEmpty,
-  keys as _keys,
 } from 'underscore';
 
 class FacetSidebar extends React.Component {
@@ -18,65 +17,60 @@ class FacetSidebar extends React.Component {
   }
 
   render() {
-    const ebscodata = this.props.ebscodata;
-    let dateRange = null;
-    let facets = null;
+    const {
+      facets,
+      dateRange,
+    } = this.props;
+    let dateRangeElm = null;
+    let facetsElm = null;
 
-    if (!_isEmpty(ebscodata)) {
-      facets = ebscodata.SearchResult.AvailableFacets ?
-        ebscodata.SearchResult.AvailableFacets.map((facet, i) => {
-          const label = facet.Label.replace(/ /, '').toLowerCase();
+    if (facets.length) {
+      facetsElm = facets.map((facet, i) => {
+        const label = facet.label.replace(/ /, '').toLowerCase();
 
-          return (
-            <fieldset key={i}>
-              <label htmlFor={`select-${label}`}>{facet.Label}</label>
-              <select name={`select-${label}`}>
-                {
-                  facet.AvailableFacetValues.map((f, j) => (
-                    <option key={j} value={f.Value}>
-                      {f.Value} ({f.Count})
-                    </option>
-                  ))
-                }
-              </select>
-            </fieldset>
-          );
-        })
-        : null;
-      dateRange = ebscodata.SearchResult.AvailableCriteria ?
-        _keys(ebscodata.SearchResult.AvailableCriteria).map((d, i) => {
-          const criteriaObj = ebscodata.SearchResult.AvailableCriteria[d];
-
-          return (
-            <fieldset key={i}>
-              <label htmlFor="select-date-range">Date</label>
-              <div id="select-date-range" className="date-range">
-                <input
-                  id="input-date-start"
-                  name="date-start"
-                  type="text"
-                  defaultValue={criteriaObj.MinDate}
-                  size="9"
-                />
-                <div className="divider">to</div>
-                <input
-                  id="input-date-end"
-                  name="date-end"
-                  type="text"
-                  defaultValue={criteriaObj.MaxDate}
-                  size="9"
-                />
-              </div>
-            </fieldset>
-          );
-        })
+        return (
+          <fieldset key={i}>
+            <label htmlFor={`select-${label}`}>{facet.label}</label>
+            <select name={`select-${label}`}>
+              {
+                facet.values.map((f, j) => (
+                  <option key={j} value={f.Value}>
+                    {f.Value} ({f.Count})
+                  </option>
+                ))
+              }
+            </select>
+          </fieldset>
+        );
+      });
+      dateRangeElm = !_isEmpty(dateRange) ?
+        (<fieldset>
+          <label htmlFor="select-date-range">Date</label>
+          <div id="select-date-range" className="date-range">
+            <input
+              id="input-date-start"
+              name="date-start"
+              type="text"
+              defaultValue={dateRange.min}
+              size="9"
+            />
+            <div className="divider">to</div>
+            <input
+              id="input-date-end"
+              name="date-end"
+              type="text"
+              defaultValue={dateRange.max}
+              size="9"
+            />
+          </div>
+        </fieldset>)
         : null;
     }
 
     return (
       <div className="facets">
         {
-          facets ?
+          facets.length ?
           (
             <form className="facets-form">
               <h2>Filter results by</h2>
@@ -92,9 +86,9 @@ class FacetSidebar extends React.Component {
                 </button>
               </fieldset>
 
-              {facets}
+              {facetsElm}
 
-              {dateRange}
+              {dateRangeElm}
 
             </form>
           )
@@ -106,8 +100,9 @@ class FacetSidebar extends React.Component {
 }
 
 FacetSidebar.propTypes = {
-  ebscodata: React.PropTypes.object,
+  facets: React.PropTypes.array,
   keywords: React.PropTypes.string,
+  dateRange: React.PropTypes.object,
 };
 
 FacetSidebar.contextTypes = {

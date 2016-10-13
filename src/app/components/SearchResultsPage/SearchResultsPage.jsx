@@ -13,7 +13,7 @@ class SearchResultsPage extends React.Component {
     } = this.props;
     let breadcrumbs = null;
 
-    // console.log(ebscodata);
+    console.log(ebscodata);
 
     if (searchKeywords) {
       breadcrumbs = (
@@ -31,12 +31,16 @@ class SearchResultsPage extends React.Component {
 
         <div className="container search-results-container">
 
-          <FacetSidebar ebscodata={ebscodata} keywords={searchKeywords} />
+          <FacetSidebar
+            facets={ebscodata.facets}
+            keywords={searchKeywords}
+            dateRange={ebscodata.dateRange}
+          />
 
           <div className="results">
-            <Hits ebscodata={ebscodata} query={searchKeywords} />
+            <Hits hits={ebscodata.totalHits} query={searchKeywords} />
 
-            <Results ebscodata={ebscodata} />
+            <Results hits={ebscodata.totalHits} results={ebscodata.results} />
           </div>
         </div>
       </div>

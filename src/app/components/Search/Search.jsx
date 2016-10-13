@@ -19,18 +19,16 @@ class Search extends React.Component {
     super(props);
 
     this.state = _extend({
-        // searchKeywords: '',
-        placeholder: 'Search the catalog',
-        placeholderAnimation: null,
-        noAnimationBefore: true,
-      }, Store.getState());
+      placeholder: 'Search the catalog',
+      placeholderAnimation: null,
+      noAnimationBefore: true,
+    }, Store.getState());
 
     this.inputChange = this.inputChange.bind(this);
     this.submitSearchRequest = this.submitSearchRequest.bind(this);
     this.triggerSubmit = this.triggerSubmit.bind(this);
     this.animationTimer = this.animationTimer.bind(this);
     this.onChange = this.onChange.bind(this);
-    this.getRecord = this.getRecord.bind(this);
     this.routeHandler = this.routeHandler.bind(this);
   }
 
@@ -39,12 +37,12 @@ class Search extends React.Component {
     Store.listen(this.onChange);
   }
 
-  componentDidUnMount() {
-    Store.unlisten(this.onChange);
-  }
-
   onChange() {
     this.setState(_extend(this.state, Store.getState()));
+  }
+
+  componentDidUnMount() {
+    Store.unlisten(this.onChange);
   }
 
   /**
@@ -136,15 +134,6 @@ class Search extends React.Component {
    */
   inputChange(event) {
     this.setState({ searchKeywords: event.target.value });
-  }
-
-  getRecord(dbid, an) {
-    console.log(dbid, an);
-    axios
-      .get(`/api/retrieve?dbid=${dbid}&an=${an}`)
-      .then(response => {
-        console.log(response.data);
-      });
   }
 
   render() {

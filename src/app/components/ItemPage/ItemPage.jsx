@@ -10,7 +10,7 @@ class Editions extends React.Component {
       <div className="result-list">
         <div className="result-item">
           <div className="result-image">
-            <img src="../img/federalist_papers_macmillan.jpg" alt="The Federalist papers"/>
+            <img src="../img/federalist_papers_macmillan.jpg" alt="The Federalist papers" />
           </div>
           <div className="result-text">
             <a href="#federalist-papers1" className="title">The Federalist papers: edited by and with an introduction by Michael A. Genovese</a>

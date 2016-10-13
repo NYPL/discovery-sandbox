@@ -1,133 +1,19 @@
 import React from 'react';
-import { Link } from 'react-router';
-import axios from 'axios';
 
-import Actions from '../../actions/Actions.js';
-
-import {
-  isEmpty as _isEmpty,
-} from 'underscore';
+import EResourceResults from './EResourceResults.jsx';
 
 class Results extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.routeHandler = this.routeHandler.bind(this);
-    this.getRecord = this.getRecord.bind(this);
-  }
-
-  getRecord(e, dbid, an) {
-    e.preventDefault();
-
-    axios
-      .get(`/api/retrieve?dbid=${dbid}&an=${an}`)
-      .then(response => {
-        console.log(response.data);
-        Actions.updateItem(response.data);
-        this.routeHandler(`/item/${an}`);
-      })
-      .catch(error => {
-        console.log(error);
-      });
-  }
-
-  routeHandler(route) {
-    this.context.router.push(route);
-  }
-
   render() {
-    const ebscodata = this.props.ebscodata;
-    const itemTotalResults = ebscodata.SearchResult ? ebscodata.SearchResult.Statistics.TotalHits : '';
-    let results = null;
-
-    if (!_isEmpty(ebscodata)) {
-      results = ebscodata.SearchResult.Data.Records.map((d, i) => {
-        const bibEntity = d.RecordInfo.BibRecord.BibEntity;
-        const bibRelationShips = d.RecordInfo.BibRecord.BibRelationships;
-        const an = d.Header['An'];
-        const dbid = d.Header['DbId'];
-
-        const itemImage = null;
-        const itemTitle = bibEntity.Titles[0].TitleFull;
-
-        return (
-          <li key={i} className="result-item">
-            {itemImage}
-            <div className="result-text">
-              <div className="type">{d.Header.PubType}</div>
-              <Link
-                onClick={(e) => this.getRecord(e, dbid, an)}
-                href={`/item/${an}`} className="title"
-              >
-                {itemTitle}
-              </Link>
-              <div className="description">
-                  {
-                    bibRelationShips.HasContributorRelationships ?
-                    bibRelationShips.HasContributorRelationships.map((contributor) => {
-                      return contributor.PersonEntity ?
-                        `${contributor.PersonEntity.Name.NameFull}; `
-                        : null;
-                    }) : null
-                  }
-                  {
-                    bibRelationShips.IsPartOfRelationships[0].BibEntity ?
-                    bibRelationShips.IsPartOfRelationships[0].BibEntity.Dates[0].Text
-                    : null
-                  }
-              </div>
-              <div className="description">
-                {
-                  bibRelationShips.IsPartOfRelationships ?
-                  bibRelationShips.IsPartOfRelationships.map((relationship, j) => {
-                    if (relationship.BibEntity) {
-                      const dates = relationship.BibEntity.Dates;
-                      const identifiers = relationship.BibEntity.Identifiers;
-                      const numbering = relationship.BibEntity.Numbering;
-
-                      return (
-                        <div key={j}>
-                          {
-                            numbering ? numbering.map((number, k) => {
-                              return <span key={k}> {number.Type}: {number.Value}</span>;
-                            }) : null
-                          }
-                          <br />
-                          {
-                            identifiers ? identifiers.map((identifier, k) => {
-                              return <span key={k}> {identifier.Type}: {identifier.Value}</span>;
-                            }) : null
-                          }
-                        </div>
-                      );
-                    }
-
-                    return null;
-                  })
-                  : null
-                }
-              </div>
-              <div className="sub-items">
-                <div className="sub-item">
-                  <a href={d.PLink} className="view-online">View online</a>
-                </div>
-              </div>
-            </div>
-            <div className="result-actions">
-              <div>
-                <Link className="button" to={`/hold/${an}`}>Place hold</Link>
-              </div>
-            </div>
-          </li>
-        );
-      });
-    }
+    const {
+      results,
+      hits,
+    } = this.props;
 
     return (
       <div>
         <div className="results-nav">
           <div className="pagination">
-            <span className="pagination-total">1-10 of {itemTotalResults}</span>
+            <span className="pagination-total">1-10 of {hits}</span>
             <a href="#" className="paginate next">Next Page</a>
           </div>
 
@@ -147,16 +33,15 @@ class Results extends React.Component {
           </div>
         </div>
 
-        <ul className="results-list">
-          {results}
-        </ul>
+        <EResourceResults results={results} />
       </div>
     );
   }
 }
 
 Results.propTypes = {
-  ebscodata: React.PropTypes.object,
+  results: React.PropTypes.array,
+  hits: React.PropTypes.number,
 };
 
 Results.contextTypes = {
