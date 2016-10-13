@@ -19,12 +19,12 @@ class App extends React.Component {
     Store.listen(this.onChange);
   }
 
-  componentDidUnMount() {
-    Store.unlisten(this.onChange);
-  }
-
   onChange() {
     this.setState(Store.getState());
+  }
+
+  componentDidUnMount() {
+    Store.unlisten(this.onChange);
   }
 
   render() {
@@ -43,5 +43,9 @@ class App extends React.Component {
     );
   }
 }
+
+App.propTypes = {
+  children: React.PropTypes.object,
+};
 
 export default App;

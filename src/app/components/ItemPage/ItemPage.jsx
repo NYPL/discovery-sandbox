@@ -174,6 +174,9 @@ class ItemPage extends React.Component {
   }
 }
 
-ItemPage.propTypes = {};
+ItemPage.propTypes = {
+  item: React.PropTypes.object,
+  searchKeywords: React.PropTypes.string,
+};
 
 export default ItemPage;

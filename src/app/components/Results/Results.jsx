@@ -48,7 +48,7 @@ class Results extends React.Component {
         const dbid = d.Header['DbId'];
 
         const itemImage = null;
-        const itemTitle = d.RecordInfo.BibRecord.BibEntity.Titles[0].TitleFull
+        const itemTitle = bibEntity.Titles[0].TitleFull;
 
         return (
           <li key={i} className="result-item">
@@ -56,21 +56,22 @@ class Results extends React.Component {
             <div className="result-text">
               <div className="type">{d.Header.PubType}</div>
               <Link
-                onClick={(e) => this.getRecord(e, dbid, an)} 
-                href={`/item/${an}`} className="title">
+                onClick={(e) => this.getRecord(e, dbid, an)}
+                href={`/item/${an}`} className="title"
+              >
                 {itemTitle}
               </Link>
               <div className="description">
                   {
                     bibRelationShips.HasContributorRelationships ?
-                    bibRelationShips.HasContributorRelationships.map((contributor, j) => {
+                    bibRelationShips.HasContributorRelationships.map((contributor) => {
                       return contributor.PersonEntity ?
                         `${contributor.PersonEntity.Name.NameFull}; `
-                        :null;
+                        : null;
                     }) : null
                   }
                   {
-                    bibRelationShips.IsPartOfRelationships[0].BibEntity ? 
+                    bibRelationShips.IsPartOfRelationships[0].BibEntity ?
                     bibRelationShips.IsPartOfRelationships[0].BibEntity.Dates[0].Text
                     : null
                   }
@@ -118,7 +119,7 @@ class Results extends React.Component {
               </div>
             </div>
           </li>
-        )
+        );
       });
     }
 

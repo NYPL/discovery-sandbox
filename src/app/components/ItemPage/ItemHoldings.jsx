@@ -1,12 +1,6 @@
 import React from 'react';
 
 class ItemHoldings extends React.Component {
-  createMarkup(html) {
-    return {
-      __html: html,
-    };
-  }
-
   getHeading(headings) {
     return (
       <thead>
@@ -74,6 +68,12 @@ class ItemHoldings extends React.Component {
         </tr>
       </tbody>
     );
+  }
+
+  createMarkup(html) {
+    return {
+      __html: html,
+    };
   }
 
   render() {

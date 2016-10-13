@@ -4,9 +4,6 @@ import {
   map as _map,
 } from 'underscore';
 
-/**
- * The main container for the top Search section.
- */
 class Home extends React.Component {
   constructor(props) {
     super(props);
@@ -14,24 +11,32 @@ class Home extends React.Component {
     this.createList = this.createList.bind(this);
   }
 
-  createList(title, i) {
+  createList(item, i) {
     return (
       <div className="browse-box" key={i}>
-        <h3>{title}</h3>
+        <h3>{item.title}</h3>
 
         <ul className="mock-list">
-          <li> </li>
-          <li> </li>
-          <li> </li>
-          <li> </li>
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
         </ul>
       </div>
     );
   }
 
   render() {
-    const titles = ['Newest items', 'Rare items', 'Popular items', 'Popular subjects',
-      'Most prolific authors', 'Historical figures', 'Access', 'Material type'];
+    const homepageItems = [
+      { title: 'Newest items', items: [] },
+      { title: 'Rare items', items: [] },
+      { title: 'Popular items', items: [] },
+      { title: 'Popular subjects', items: [] },
+      { title: 'Most prolific authors', items: [] },
+      { title: 'Historical figures', items: [] },
+      { title: 'Access', items: [] },
+      { title: 'Material type', items: [] },
+    ];
 
     return (
       <div className="container">
@@ -45,13 +50,13 @@ class Home extends React.Component {
             Research tools &amp; Resources
             <li>Tutorials</li>
             <li>Other research/discovery tools (e.g. Digital Collections,
-              Archives &amp; Manuscripts, Prints/Photographs)</li>
+            Archives &amp; Manuscripts, Prints/Photographs)</li>
             <li>List of databases</li>
             <li>List of collections</li>
             <li>List locations/divisions</li>
           </ul>
 
-          {_map(titles, (t, i) => this.createList(t, i))}
+          {_map(homepageItems, (t, i) => this.createList(t, i))}
         </div>
       </div>
     );

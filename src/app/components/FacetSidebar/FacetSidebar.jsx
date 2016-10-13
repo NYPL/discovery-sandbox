@@ -5,8 +5,6 @@ import {
   keys as _keys,
 } from 'underscore';
 
-import Actions from '../../actions/Actions.js';
-
 class FacetSidebar extends React.Component {
   constructor(props) {
     super(props);
@@ -34,13 +32,11 @@ class FacetSidebar extends React.Component {
               <label htmlFor={`select-${label}`}>{facet.Label}</label>
               <select name={`select-${label}`}>
                 {
-                  facet.AvailableFacetValues.map((f, j) => {
-                    return (
-                      <option key={j} value={f.Value}>
-                        {f.Value} ({f.Count})
-                      </option>
-                    );
-                  })
+                  facet.AvailableFacetValues.map((f, j) => (
+                    <option key={j} value={f.Value}>
+                      {f.Value} ({f.Count})
+                    </option>
+                  ))
                 }
               </select>
             </fieldset>
@@ -55,11 +51,21 @@ class FacetSidebar extends React.Component {
             <fieldset key={i}>
               <label htmlFor="select-date-range">Date</label>
               <div id="select-date-range" className="date-range">
-                <input id="input-date-start" name="date-start"
-                  type="text" defaultValue={criteriaObj.MinDate} size="9" />
+                <input
+                  id="input-date-start"
+                  name="date-start"
+                  type="text"
+                  defaultValue={criteriaObj.MinDate}
+                  size="9"
+                />
                 <div className="divider">to</div>
-                <input id="input-date-end" name="date-end"
-                  type="text" defaultValue={criteriaObj.MaxDate} size="9" />
+                <input
+                  id="input-date-end"
+                  name="date-end"
+                  type="text"
+                  defaultValue={criteriaObj.MaxDate}
+                  size="9"
+                />
               </div>
             </fieldset>
           );
@@ -85,7 +91,7 @@ class FacetSidebar extends React.Component {
                   "{this.props.keywords}"
                 </button>
               </fieldset>
-              
+
               {facets}
 
               {dateRange}
@@ -101,6 +107,7 @@ class FacetSidebar extends React.Component {
 
 FacetSidebar.propTypes = {
   ebscodata: React.PropTypes.object,
+  keywords: React.PropTypes.string,
 };
 
 FacetSidebar.contextTypes = {

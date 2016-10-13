@@ -8,8 +8,10 @@ const Hits = ({ ebscodata, query }) => (
         ebscodata.SearchResult.Statistics &&
         ebscodata.SearchResult.Statistics.TotalHits ?
         (
-          <span>Found <strong>{ebscodata.SearchResult.Statistics.TotalHits}</strong> results
-          with keywords <strong>"{query}"</strong>.</span>
+          <span>
+            Found <strong>{ebscodata.SearchResult.Statistics.TotalHits}</strong> results
+            with keywords <strong>"{query}"</strong>.
+          </span>
         )
         : ''
       }
