@@ -20,7 +20,7 @@ class EResourceResults extends React.Component {
       .then(response => {
         console.log(response.data);
         Actions.updateItem(response.data);
-        this.routeHandler(`/item/${an}`);
+        this.routeHandler(`/item?an=${an}&dbid=${dbid}&q=${this.props.query}`);
       })
       .catch(error => {
         console.log(error);
@@ -52,7 +52,8 @@ class EResourceResults extends React.Component {
               <div className="type">{d.Header.PubType}</div>
               <Link
                 onClick={(e) => this.getRecord(e, dbid, an)}
-                href={`/item/${an}`} className="title"
+                href={`/item?an=${an}&dbid=${dbid}&q=${this.props.query}`}
+                className="title"
               >
                 {itemTitle}
               </Link>
@@ -104,13 +105,19 @@ class EResourceResults extends React.Component {
               </div>
               <div className="sub-items">
                 <div className="sub-item">
-                  <a href={d.PLink} className="view-online">View online</a>
+                  <Link
+                    className="view-online"
+                    to={`/item?an=${an}&dbid=${dbid}&q=${this.props.query}`}
+                    onClick={(e) => this.getRecord(e, dbid, an)}
+                  >
+                    View online
+                  </Link>
                 </div>
               </div>
             </div>
             <div className="result-actions">
               <div>
-                <Link className="button" to={`/hold/${an}`}>Place hold</Link>
+                <a href={d.PLink} className="button">View on EBSCO</a>
               </div>
             </div>
           </li>
@@ -128,7 +135,6 @@ class EResourceResults extends React.Component {
 
 EResourceResults.propTypes = {
   results: React.PropTypes.array,
-  hits: React.PropTypes.string,
 };
 
 EResourceResults.contextTypes = {

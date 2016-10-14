@@ -15,7 +15,7 @@ const routes = (
   <Route path="/" component={Application}>
     <IndexRoute component={Home} />
     <Route path="/search/:query" component={SearchResultsPage} />
-    <Route path="/item/:id" component={ItemPage} />
+    <Route path="/item" component={ItemPage} />
     <Route path="/hold/:id" component={HoldPage} />
   </Route>
 );

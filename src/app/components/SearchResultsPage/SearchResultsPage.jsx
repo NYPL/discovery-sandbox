@@ -40,7 +40,11 @@ class SearchResultsPage extends React.Component {
           <div className="results">
             <Hits hits={ebscodata.totalHits} query={searchKeywords} />
 
-            <Results hits={ebscodata.totalHits} results={ebscodata.results} />
+            <Results
+              hits={ebscodata.totalHits}
+              results={ebscodata.results}
+              query={searchKeywords}
+            />
           </div>
         </div>
       </div>

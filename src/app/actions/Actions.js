@@ -1,10 +1,9 @@
 // ACTIONS
 import alt from '../alt.js';
-import modelEbsco from '../utils/model.js';
 
 class Actions {
   updateEbscoData(data) {
-    return modelEbsco.build(data);
+    return data;
   }
 
   updateSearchKeywords(data) {

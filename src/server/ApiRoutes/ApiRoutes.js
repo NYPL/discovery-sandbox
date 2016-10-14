@@ -65,10 +65,6 @@ function MainApp(req, res, next) {
   next();
 }
 
-function Item(req, res, next) {
-  next();
-}
-
 function Search(query, cb, errorcb) {
   const instance = axios.create({
     headers: {
@@ -94,7 +90,7 @@ function Search(query, cb, errorcb) {
       },
       "Actions":null
     })
-    .then(response => cb(response.data))
+    .then(response => cb(modelEbsco.build(response.data)))
     .catch(error => {
       console.log(error);
       console.log(`error calling API : ${error}`);
@@ -122,10 +118,9 @@ function ServerSearch(req, res, next) {
   Search(
     query,
     (data) => {
-      console.log(modelEbsco.build(data));
       res.locals.data = {
         Store: {
-          ebscodata: modelEbsco.build(data),
+          ebscodata: data,
           searchKeywords: query,
         },
       };
@@ -143,10 +138,7 @@ function ServerSearch(req, res, next) {
   );
 }
 
-function Retrieve(req, res, next) {
-  const dbid = req.query.dbid || '';
-  const an = req.query.an || '';
-
+function RetrieveItem(dbid, an, cb, errorcb) {
   const instance = axios.create({
     headers: {
       'x-sessionToken': sessionToken,
@@ -159,17 +151,56 @@ function Retrieve(req, res, next) {
       DbId: dbid,
       An: an,
     })
-    .then(response => res.json(response.data))
+    .then(response => cb(modelEbsco.buildItem(response.data)))
     .catch(error => {
       console.log(error);
       console.log(`error calling API : ${error}`);
 
       getSessionToken(authenticationToken);
 
-      res.json({
-        error,
-      });
+      errorcb(error);
     }); /* end axios call */
+}
+
+function ServerItemSearch(req, res, next) {
+  const dbid = req.query.dbid || '';
+  const an = req.query.an || '';
+  const query = req.query.q || 'harry potter';
+
+  RetrieveItem(
+    dbid,
+    an,
+    (data) => {
+      res.locals.data = {
+        Store: {
+          item: data,
+          searchKeywords: query,
+        },
+      };
+      next();
+    },
+    (error) => {
+      res.locals.data = {
+        Store: {
+          item: {},
+          searchKeywords: '',
+        },
+      };
+      next();
+    }
+  );
+}
+
+function AjaxItemSearch(req, res, next) {
+  const dbid = req.query.dbid || '';
+  const an = req.query.an || '';
+
+  RetrieveItem(
+    dbid,
+    an,
+    (data) => res.json(data),
+    (error) => res.json(error)
+  );
 }
 
 router
@@ -178,7 +209,7 @@ router
 
 router
   .route('/item')
-  .get(Item);
+  .get(ServerItemSearch);
 
 router
   .route('/api')
@@ -186,7 +217,7 @@ router
 
 router
   .route('/api/retrieve')
-  .get(Retrieve);
+  .get(AjaxItemSearch);
 
 router
   .route('/')

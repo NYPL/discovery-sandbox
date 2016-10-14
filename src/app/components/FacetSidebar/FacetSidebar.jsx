@@ -4,6 +4,8 @@ import {
   isEmpty as _isEmpty,
 } from 'underscore';
 
+import DateRange from './DateRange.jsx';
+
 class FacetSidebar extends React.Component {
   constructor(props) {
     super(props);
@@ -21,7 +23,6 @@ class FacetSidebar extends React.Component {
       facets,
       dateRange,
     } = this.props;
-    let dateRangeElm = null;
     let facetsElm = null;
 
     if (facets.length) {
@@ -43,57 +44,28 @@ class FacetSidebar extends React.Component {
           </fieldset>
         );
       });
-      dateRangeElm = !_isEmpty(dateRange) ?
-        (<fieldset>
-          <label htmlFor="select-date-range">Date</label>
-          <div id="select-date-range" className="date-range">
-            <input
-              id="input-date-start"
-              name="date-start"
-              type="text"
-              defaultValue={dateRange.min}
-              size="9"
-            />
-            <div className="divider">to</div>
-            <input
-              id="input-date-end"
-              name="date-end"
-              type="text"
-              defaultValue={dateRange.max}
-              size="9"
-            />
-          </div>
-        </fieldset>)
-        : null;
     }
 
     return (
       <div className="facets">
-        {
-          facets.length ?
-          (
-            <form className="facets-form">
-              <h2>Filter results by</h2>
-              <fieldset>
-                <label htmlFor="select-keywords">Keywords</label>
-                <button
-                  id="select-keywords"
-                  className="button-selected"
-                  onClick={this.routeHandler}
-                  title={`Remove keyword filter: ${this.props.keywords}`}
-                >
-                  "{this.props.keywords}"
-                </button>
-              </fieldset>
+        <form className="facets-form">
+          <h2>Filter results by</h2>
+          <fieldset>
+            <label htmlFor="select-keywords">Keywords</label>
+            <button
+              id="select-keywords"
+              className="button-selected"
+              onClick={this.routeHandler}
+              title={`Remove keyword filter: ${this.props.keywords}`}
+            >
+              "{this.props.keywords}"
+            </button>
+          </fieldset>
 
-              {facetsElm}
+          {facetsElm}
 
-              {dateRangeElm}
-
-            </form>
-          )
-          : null
-        }
+          <DateRange dateRange={dateRange} />
+        </form>
       </div>
     );
   }

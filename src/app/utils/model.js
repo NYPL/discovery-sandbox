@@ -1,7 +1,5 @@
 import {
-  isArray as _isArray,
   map as _map,
-  contains as _contains,
   isEmpty as _isEmpty,
 } from 'underscore';
 
@@ -29,6 +27,15 @@ function ModelEbsco() {
   };
 
   /**
+   * build(data)
+   * @param (Array) data
+   */
+  this.buildItem = data => {
+    // Nothing going on now but it could be modeled later.
+    return data;
+  };
+
+  /**
    * getRequestData(data)
    *
    * @param (object) data
@@ -48,9 +55,7 @@ function ModelEbsco() {
     let results = [];
 
     if (!_isEmpty(data.Data) && data.Data.Records.length) {
-      results = _map(data.Data.Records, record => {
-        return record;
-      });
+      results = _map(data.Data.Records, record => record);
     }
 
     return results;
@@ -83,8 +88,8 @@ function ModelEbsco() {
    *
    * @param (object) data
    */
-  this.getTotalHits = data => {
-    return data.Statistics.TotalHits;
+  this.getTotalHits = (data) => {
+    return data.Statistics ? data.Statistics.TotalHits : 0;
   };
 
   /**

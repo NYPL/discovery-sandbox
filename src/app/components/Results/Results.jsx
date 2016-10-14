@@ -33,7 +33,7 @@ class Results extends React.Component {
           </div>
         </div>
 
-        <EResourceResults results={results} />
+        <EResourceResults results={results} query={this.props.query} />
       </div>
     );
   }
@@ -42,6 +42,7 @@ class Results extends React.Component {
 Results.propTypes = {
   results: React.PropTypes.array,
   hits: React.PropTypes.number,
+  query: React.PropTypes.string,
 };
 
 Results.contextTypes = {
