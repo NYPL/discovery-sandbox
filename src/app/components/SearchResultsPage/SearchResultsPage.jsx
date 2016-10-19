@@ -4,6 +4,7 @@ import Hits from '../Hits/Hits.jsx';
 import Breadcrumbs from '../Breadcrumbs/Breadcrumbs.jsx';
 import FacetSidebar from '../FacetSidebar/FacetSidebar.jsx';
 import Results from '../Results/Results.jsx';
+import Search from '../Search/Search.jsx';
 
 class SearchResultsPage extends React.Component {
   render() {
@@ -27,6 +28,10 @@ class SearchResultsPage extends React.Component {
 
     return (
       <div>
+        <div className="search-container">
+          <Search />
+        </div>
+
         {breadcrumbs}
 
         <div className="container search-results-container">

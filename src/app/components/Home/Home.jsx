@@ -1,8 +1,9 @@
 import React from 'react';
-
 import {
   map as _map,
 } from 'underscore';
+
+import Search from '../Search/Search.jsx';
 
 class Home extends React.Component {
   constructor(props) {
@@ -40,7 +41,12 @@ class Home extends React.Component {
 
     return (
       <div className="container">
+        <div className="search-container">
+          <Search />
+        </div>
+
         <hr />
+
         <div>
           <p>
             The New York Public Library has 8,742,283 items and 678,495 collections

@@ -126,7 +126,11 @@ class ItemPage extends React.Component {
       <div>
         <div className="page-header">
           <div className="container">
-            <Breadcrumbs query={this.props.searchKeywords} type="item" />
+            <Breadcrumbs
+              query={this.props.searchKeywords}
+              type="item"
+              title={title}
+            />
           </div>
         </div>
 
@@ -149,7 +153,7 @@ class ItemPage extends React.Component {
             </div>
           </div>
 
-          <ItemHoldings />
+          <ItemHoldings path={this.props.location.search} />
 
           <div className="item-details">
             <h2>Item details</h2>

@@ -3,8 +3,6 @@ import React from 'react';
 import { Header, navConfig } from '@nypl/dgx-header-component';
 import Footer from '@nypl/dgx-react-footer';
 
-import Search from '../Search/Search.jsx';
-
 import Store from '../../stores/Store.js';
 
 class App extends React.Component {
@@ -31,10 +29,6 @@ class App extends React.Component {
     return (
       <div className="app-wrapper">
         <Header navData={navConfig.current} />
-
-        <div className="search-container">
-          <Search />
-        </div>
 
         {React.cloneElement(this.props.children, this.state)}
 

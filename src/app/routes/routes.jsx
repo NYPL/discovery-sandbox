@@ -20,8 +20,8 @@ const routes = (
     <Route path="/search/:query" component={SearchResultsPage} />
     <Route path="/advanced" component={AdvancedSearch} />
     <Route path="/item" component={ItemPage} />
-    <Route path="/hold/:id" component={HoldPage} />
-    <Route path="/hold/confirmation/:id" component={HoldPage} />
+    <Route path="/hold" component={HoldPage} />
+    <Route path="/hold/confirmation/:id?" component={HoldPage} />
     <Route path="/account" component={Account} />
     <Route path="/account/holds" component={AccountHolds} />
     <Route path="/account/holds/:id" component={AccountHolds} />

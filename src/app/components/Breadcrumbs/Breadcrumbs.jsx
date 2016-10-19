@@ -1,14 +1,53 @@
 import React from 'react';
 import { Link } from 'react-router';
 
-const Breadcrumbs = ({ query, type }) => {
-  let str = `Search Results for "${query}"`;
-  let crumbs = (<span><Link to="/">Home</Link> &gt;&gt; {str}</span>);
+const Breadcrumbs = ({ query, type, title, url }) => {
+  let str = 'Research Catalog';
+  let crumbs = (
+    <span>
+      <Link to="https://nypl.org">Home</Link> &gt;&gt;
+      <Link to="https://nypl.org/research">Research</Link> &gt;&gt;
+      {str}
+    </span>
+  );
+
+  if (type === 'search') {
+    str = `Search Results for "${query}"`;
+    let crumbs = (
+      <span>
+        <Link to="https://nypl.org">Home</Link> &gt;&gt;
+        <Link to="https://nypl.org/research">Research</Link> &gt;&gt;
+        <Link to="/">Research catalog</Link> &gt;&gt;
+        {str}
+      </span>
+    );
+  }
 
   if (type === 'item') {
-    str = `Item page for "${query}"`;
-    crumbs = (<span><Link to="/">Home</Link> &gt;&gt;&nbsp;
-      <Link to="/item">Item</Link> &gt;&gt; {str}</span>);
+    str = title;
+    crumbs = (
+      <span>
+        <Link to="https://nypl.org">Home</Link> &gt;&gt;
+        <Link to="https://nypl.org/research">Research</Link> &gt;&gt;
+        <Link to="/">Research catalog</Link> &gt;&gt;
+        <Link to={`/search/${query}`}>Items</Link> &gt;&gt;
+        {str}
+      </span>
+    );
+  }
+
+  if (type === 'hold') {
+    str = title;
+    crumbs = (
+      <span>
+        <Link to="https://nypl.org">Home</Link> &gt;&gt;
+        <Link to="https://nypl.org/research">Research</Link> &gt;&gt;
+        <Link to="/">Research catalog</Link> &gt;&gt;
+        <Link to={`/search/${query}`}>Items</Link> &gt;&gt;
+        <Link to={`/item${url}`}>{str}</Link> &gt;&gt;
+        Place a hold
+      </span>
+    );
   }
 
   return (
