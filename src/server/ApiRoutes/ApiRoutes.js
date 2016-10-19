@@ -203,9 +203,29 @@ function AjaxItemSearch(req, res, next) {
   );
 }
 
+function Account(req, res, next) {
+  next();
+}
+
+function Hold(req, res, next) {
+  next();
+}
+
 router
   .route('/search/:keyword')
   .get(ServerSearch);
+
+router
+  .route('/advanced')
+  .get(ServerSearch);
+
+router
+  .route('/hold')
+  .get(Hold);
+
+router
+  .route('/account')
+  .get(Account);
 
 router
   .route('/item')
