@@ -221,7 +221,11 @@ router
 
 router
   .route('/hold')
-  .get(Hold);
+  .get(ServerItemSearch);
+
+router
+  .route('/hold/confirmation')
+  .get(ServerItemSearch);
 
 router
   .route('/account')

@@ -29,6 +29,7 @@ $searchcolordark: $darkblue;
 $searchcolorlight: lighten($searchcolor, 20%);
 $focuswidth: 3px;
 $focuscolor: $orange;
+$highlightcolor: lighten($yellow, 10%);
 
 // Layout
 $containerWidth: 1200px;

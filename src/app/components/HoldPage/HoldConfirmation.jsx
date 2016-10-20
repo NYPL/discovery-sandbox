@@ -24,7 +24,7 @@ class HoldPage extends React.Component {
         </div>
 
         <div className="container holds-container">
-          <div className="item-header">
+          <div class="item-header">
             <h1>Research item hold</h1>
           </div>
 
@@ -44,7 +44,7 @@ class HoldPage extends React.Component {
           <form className="place-hold-form form" action="/hold/confirmation">
             <h2>Confirm account</h2>
 
-            <p>You are currently logged in as <strong>Jane Doe</strong>. If this is not you, please <a href="#">Log out</a> and sign in using your library card.</p>
+            <p>You are currently logged in as <strong>Jane Doe</strong>. If this is not you, please <a href="v1a-nouser.html">Log out</a> and sign in using your library card.</p>
 
             <h2>Select a location</h2>
 
@@ -52,9 +52,9 @@ class HoldPage extends React.Component {
 
             <fieldset className="select-location-fieldset">
 
-              <label className="group selected" htmlFor="location1">
+              <label className="group selected" for="location1">
                 <span className="col">
-                  <input id="location1" type="radio" name="location" value="IB 09-5067" defaultChecked="checked" />
+                  <input id="location1" type="radio" name="location" value="IB 09-5067" checked="checked" />
                 </span>
                 <span className="col location">
                   <a href="https://www.nypl.org/locations/schwarzman">SASB</a>, 476 Fifth Avenue at 42nd, New York, NY<br />
@@ -63,7 +63,7 @@ class HoldPage extends React.Component {
                 <span className="col"><small>Call number:</small><br />IB 09-5067</span>
                 <span className="col"><small>Ready by approximately:</small><br />Fri, Sept 2nd, 9am.</span>
               </label>
-              <label className="group" htmlFor="location2">
+              <label className="group" for="location2">
                 <span className="col">
                   <input id="location2" type="radio" name="location" value="IBC+ (Federalist) v. 1 c.2" />
                 </span>
