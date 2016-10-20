@@ -2,21 +2,20 @@ import React from 'react';
 
 import Breadcrumbs from '../Breadcrumbs/Breadcrumbs.jsx';
 
-class HoldPage extends React.Component {
+class HoldConfirmation extends React.Component {
   render() {
     const {
       item,
       searchKeywords,
     } = this.props;
 
-    console.log(item);
     return (
       <div>
         <div className="page-header">
           <div className="container">
             <Breadcrumbs
               query={this.props.searchKeywords}
-              type="hold"
+              type="holdConfirmation"
               title={item.Record.RecordInfo.BibRecord.BibEntity.Titles[0].TitleFull}
               url={this.props.location.search}
             />
@@ -24,66 +23,47 @@ class HoldPage extends React.Component {
         </div>
 
         <div className="container holds-container">
-          <div class="item-header">
-            <h1>Research item hold</h1>
+          <div className="item-header">
+            <h1>Research item hold confirmation</h1>
           </div>
 
           <div className="item-summary">
-            <div className="item-image">
-              <img src="../img/federalist_papers.jpg" alt="The Federalist papers" />
-            </div>
-
-            <div className="item-details">
-              <h2>You are about to place a hold on the following research item:</h2>
-              <p><a href="../item/v1a_monograph.html">The Federalist papers : Alexander Hamilton, James Madison, John Jay / edited and with an introduction by Ian Shapiro ; with essays by John Dunn, Donald L. Horowitz, Eileen Hunt Botting.</a></p>
-
-              <p>This is a <strong>book</strong> written in <strong>English</strong> published by <strong>New Haven: Yale University Press</strong> in <strong>2009</strong>.</p>
-            </div>
+            <ul className="generic-list">
+              <li>You have placed a hold on <a href="../item/v1a_monograph.html">The Federalist papers</a> with call number <a href="#">IB 09-5067</a></li>
+              <li>Ready for use by <strong>approximately Thursday, September 2nd, 9:00am</strong> at the location below</li>
+              <li><strong>You will receive an email notification</strong> when the item is ready for use</li>
+              <li>Book will be held until Wednesday, September 8th, 5:00pm</li>
+              <li>Visit your <a href="../holds/v1a.html">patron account page</a> to view the status of this item hold</li>
+              <li>You may <a href="#cancel">cancel</a> this item hold at any time</li>
+            </ul>
           </div>
 
-          <form className="place-hold-form form" action="/hold/confirmation">
-            <h2>Confirm account</h2>
-
-            <p>You are currently logged in as <strong>Jane Doe</strong>. If this is not you, please <a href="v1a-nouser.html">Log out</a> and sign in using your library card.</p>
-
-            <h2>Select a location</h2>
-
-            <p>There are <strong>2 copies</strong> of this item available for use in <strong>2 locations</strong>. Please choose where you'd like to use this item:</p>
-
-            <fieldset className="select-location-fieldset">
-
-              <label className="group selected" for="location1">
-                <span className="col">
-                  <input id="location1" type="radio" name="location" value="IB 09-5067" checked="checked" />
-                </span>
-                <span className="col location">
-                  <a href="https://www.nypl.org/locations/schwarzman">SASB</a>, 476 Fifth Avenue at 42nd, New York, NY<br />
-                  <a href="https://www.nypl.org/locations/divisions/milstein">Milstein Division</a>, First Floor, Room 121
-                </span>
-                <span className="col"><small>Call number:</small><br />IB 09-5067</span>
-                <span className="col"><small>Ready by approximately:</small><br />Fri, Sept 2nd, 9am.</span>
-              </label>
-              <label className="group" for="location2">
-                <span className="col">
-                  <input id="location2" type="radio" name="location" value="IBC+ (Federalist) v. 1 c.2" />
-                </span>
-                <span className="col location">
-                  Request from Princeton <a href="#help">(?)</a> for use in
-                  <a href="https://www.nypl.org/locations/schwarzman">SASB</a>, 476 Fifth Avenue at 42nd, New York, NY<br />
-                  <a href="https://www.nypl.org/locations/divisions/general-research-division">General Research Division</a>, Third Floor, Room 315<br />
-                  Delivery to <a href="#">2 other rooms</a> allowed
-                </span>
-                <span className="col"><small>Call number:</small><br />IBC+ (Federalist) v. 1 c.2</span>
-                <span className="col"><small>Ready by approximately:</small><br />Mon, Sept 5th, 9am.</span>
-              </label>
-            </fieldset>
-
-            <button type="submit" className="large">Submit your item hold request</button>
-          </form>
+          <div className="row map-container">
+            <div className="col span-3-5">
+              <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d3022.3899875663374!2d-73.98487169126284!3d40.7534464793701!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x3b51df6e509a734c!2sNew+York+Public+Library+-+Stephen+A.+Schwarzman+Building!5e0!3m2!1sen!2sus!4v1476394300850" height="450" frameBorder="0" style={{border:0}} allowFullScreen></iframe>
+            </div>
+            <div className="col span-2-5">
+              <p><a href="https://www.nypl.org/locations/schwarzman">Stephen A. Schwarzman Building</a><br />
+              <a href="https://www.google.com/maps/place/New+York+Public+Library+-+Stephen+A.+Schwarzman+Building/@40.7536903,-73.9858051,17z/data=!3m1!5s0x89c259006f811e69:0xdf9c5a032104b840!4m13!1m7!3m6!1s0x89c259aa982c98b1:0x82f102a365e99b51!2s476+5th+Ave,+New+York,+NY+10018!3b1!8m2!3d40.7536863!4d-73.9836111!3m4!1s0x0:0x3b51df6e509a734c!8m2!3d40.7531821!4d-73.9822534">476 Fifth Avenue</a> (42nd St and Fifth Ave)<br />New York, NY 10018<br />
+              <a href="https://www.nypl.org/locations/divisions/milstein">Milstein Division</a>, First Floor, Room 121</p>
+              <p>Regular hours:</p>
+              <table className="generic-table">
+                <tbody>
+                  <tr><td>Sunday</td><td>1 PM–5 PM</td></tr>
+                  <tr><td>Monday</td><td>10 AM–6 PM</td></tr>
+                  <tr><td>Tuesday</td><td>10 AM–8 PM</td></tr>
+                  <tr><td>Wednesday</td><td>10 AM–8 PM</td></tr>
+                  <tr><td>Thursday</td><td>10 AM–6 PM</td></tr>
+                  <tr><td>Friday</td><td>10 AM–6 PM</td></tr>
+                  <tr><td>Saturday</td><td>10 AM–6 PM</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
       </div>
     );
   }
 }
 
-export default HoldPage;
+export default HoldConfirmation;

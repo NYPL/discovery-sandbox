@@ -20,7 +20,7 @@ class SearchResultsPage extends React.Component {
       breadcrumbs = (
         <div className="page-header">
           <div className="container">
-            <Breadcrumbs query={searchKeywords} />
+            <Breadcrumbs query={searchKeywords} type="search" />
           </div>
         </div>
       );

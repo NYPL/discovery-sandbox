@@ -3,6 +3,17 @@ import React from 'react';
 import Breadcrumbs from '../Breadcrumbs/Breadcrumbs.jsx';
 
 class HoldPage extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.routeHandler = this.routeHandler.bind(this);
+  }
+
+  routeHandler(e) {
+    e.preventDefault();
+    this.context.router.push(`/hold/confirmation${this.props.location.search}`);
+  }
+
   render() {
     const {
       item,
@@ -41,10 +52,10 @@ class HoldPage extends React.Component {
             </div>
           </div>
 
-          <form className="place-hold-form form" action="/hold/confirmation">
+          <form className="place-hold-form form" >
             <h2>Confirm account</h2>
 
-            <p>You are currently logged in as <strong>Jane Doe</strong>. If this is not you, please <a href="#">Log out</a> and sign in using your library card.</p>
+            <p>You are currently logged in as <strong>Jane Doe</strong>. If this is not you, please <a href="v1a-nouser.html">Log out</a> and sign in using your library card.</p>
 
             <h2>Select a location</h2>
 
@@ -78,12 +89,18 @@ class HoldPage extends React.Component {
               </label>
             </fieldset>
 
-            <button type="submit" className="large">Submit your item hold request</button>
+            <button type="submit" className="large" onClick={this.routeHandler}>Submit your item hold request</button>
           </form>
         </div>
       </div>
     );
   }
 }
+
+HoldPage.contextTypes = {
+  router: function contextType() {
+    return React.PropTypes.func.isRequired;
+  },
+};
 
 export default HoldPage;

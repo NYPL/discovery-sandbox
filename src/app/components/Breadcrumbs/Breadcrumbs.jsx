@@ -13,7 +13,7 @@ const Breadcrumbs = ({ query, type, title, url }) => {
 
   if (type === 'search') {
     str = `Search Results for "${query}"`;
-    let crumbs = (
+    crumbs = (
       <span>
         <Link to="https://nypl.org">Home</Link> &gt;&gt;
         <Link to="https://nypl.org/research">Research</Link> &gt;&gt;
@@ -46,6 +46,20 @@ const Breadcrumbs = ({ query, type, title, url }) => {
         <Link to={`/search/${query}`}>Items</Link> &gt;&gt;
         <Link to={`/item${url}`}>{str}</Link> &gt;&gt;
         Place a hold
+      </span>
+    );
+  }
+
+  if (type === 'holdConfirmation') {
+    str = title;
+    crumbs = (
+      <span>
+        <Link to="https://nypl.org">Home</Link> &gt;&gt;
+        <Link to="https://nypl.org/research">Research</Link> &gt;&gt;
+        <Link to="/">Research catalog</Link> &gt;&gt;
+        <Link to={`/search/${query}`}>Items</Link> &gt;&gt;
+        <Link to={`/item${url}`}>{str}</Link> &gt;&gt;
+        Hold confirmation
       </span>
     );
   }

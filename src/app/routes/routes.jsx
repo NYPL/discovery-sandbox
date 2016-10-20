@@ -22,7 +22,7 @@ const routes = (
     <Route path="/advanced" component={AdvancedSearch} />
     <Route path="/item" component={ItemPage} />
     <Route path="/hold" component={HoldPage} />
-    <Route path="/hold/confirmation/:id?" component={HoldConfirmation} />
+    <Route path="/hold/confirmation" component={HoldConfirmation} />
     <Route path="/account" component={Account} />
     <Route path="/account/holds" component={AccountHolds} />
     <Route path="/account/holds/:id" component={AccountHolds} />
