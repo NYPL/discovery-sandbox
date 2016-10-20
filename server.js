@@ -70,7 +70,7 @@ app.get('/*', (req, res) => {
           isProduction,
         });
     } else {
-      res.status(404).send('Not found');
+      res.status(404).redirect('/');
     }
   });
 });
