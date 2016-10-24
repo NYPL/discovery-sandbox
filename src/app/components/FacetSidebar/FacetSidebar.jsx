@@ -5,6 +5,7 @@ import {
 } from 'underscore';
 
 import DateRange from './DateRange.jsx';
+import Actions from '../../actions/Actions.js';
 
 class FacetSidebar extends React.Component {
   constructor(props) {
@@ -15,6 +16,7 @@ class FacetSidebar extends React.Component {
 
   routeHandler(e) {
     e.preventDefault();
+    Actions.updateSearchKeywords('');
     this.context.router.push('/');
   }
 
