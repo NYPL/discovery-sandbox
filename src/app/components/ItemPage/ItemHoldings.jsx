@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router';
 
 class ItemHoldings extends React.Component {
   getHeading(headings) {
@@ -12,44 +11,7 @@ class ItemHoldings extends React.Component {
     );
   }
 
-  getRow() {
-    const holdings = [
-      {
-        className: '',
-        available: '<span class="status available">Available</span> to use at the library',
-        location: '<a href="https://www.nypl.org/locations/schwarzman">Stephen A. Schwarzman Building</a>, Milstein Division Rm 121',
-        callNumber: '<a href="#IB 09-5067" class="call-no">IB 09-5067</a>',
-        hold: (<Link to={`/hold${this.props.path}`} className="button">Place a hold</Link>),
-      },
-      {
-        className: '',
-        available: '<span class="status available">Available</span> online',
-        location: '<a href="https://www.hathitrust.org/">Hathi Trust</a>',
-        callNumber: '&nbsp;',
-        hold: (<a href="https://catalog.hathitrust.org/Record/006171799" className="button" target="_blank">View online</a>),
-      },
-      {
-        className: '',
-        available: '<span class="status available">Available</span> to borrow',
-        location: '<a href="https://www.nypl.org/locations/58th-street">58th Street Non-Fiction</a>',
-        callNumber: '<a href="#342.73 F" class="call-no">342.73 F</a>',
-        hold: (<a href="#" className="button">Place a request in our circulating catalog</a>),
-      },
-      {
-        className: 'hidden',
-        available: '<span class="status">Hold placed, in transit</span>',
-        location: '<a href="https://www.nypl.org/locations/schwarzman">125th Street Non-Fiction</a>',
-        callNumber: '<a href="#342.7302 F " class="call-no">342.7302 F</a>',
-        hold: '&nbsp;',
-      },
-      {
-        className: 'hidden',
-        available: '<span class="status">Due 10/14/2016</span>',
-        location: '<a href="https://www.nypl.org/locations/58th-street">58th Street Non-Fiction</a>',
-        callNumber: '<a href="#342.73 F " class="call-no">342.73 F</a>',
-        hold: '&nbsp;',
-      },
-    ];
+  getRow(holdings) {
     return (
       <tbody>
         {
@@ -81,7 +43,7 @@ class ItemHoldings extends React.Component {
     const headings = ['Status', 'Location', 'Call Number', ''];
 
     const heading = this.getHeading(headings);
-    const body = this.getRow();
+    const body = this.getRow(this.props.holdings);
 
     return (
       <div className="item-holdings">
@@ -93,6 +55,10 @@ class ItemHoldings extends React.Component {
       </div>
     );
   }
+}
+
+ItemHoldings.propTypes = {
+  holdings: React.PropTypes.array,
 }
 
 export default ItemHoldings;

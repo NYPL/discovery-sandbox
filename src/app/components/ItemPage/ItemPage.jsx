@@ -3,121 +3,119 @@ import React from 'react';
 import Breadcrumbs from '../Breadcrumbs/Breadcrumbs.jsx';
 import ItemHoldings from './ItemHoldings.jsx';
 import ItemDetails from './ItemDetails.jsx';
+import ItemEditions from './ItemEditions.jsx';
 
-class Editions extends React.Component {
-  render() {
-    return (
-      <div className="result-list">
-        <div className="result-item">
-          <div className="result-image">
-            <img src="../img/federalist_papers_macmillan.jpg" alt="The Federalist papers" />
-          </div>
-          <div className="result-text">
-            <a href="#federalist-papers1" className="title">The Federalist papers: edited by and with an introduction by Michael A. Genovese</a>
-            <div className="description">Palgrave Macmillan <span className="divider"></span> 2009 <span className="divider"></span> 1st ed.</div>
-          </div>
-        </div>
-        <div className="result-item">
-          <div className="result-image">
-            <img src="../img/federalist_papers_oxford.jpg" alt="The Federalist papers" />
-          </div>
-          <div className="result-text">
-            <a href="#federalist-papers2" className="title">The Federalist papers: edited with an introduction and notes by Lawrance Goldman</a>
-            <div className="description"> Oxford University Press <span className="divider"></span> 2008</div>
-          </div>
-        </div>
-        <div className="result-item">
-          <div className="result-image">
-            <img src="../img/federalist_papers_penguin.jpg" alt="The Federalist papers" />
-          </div>
-          <div className="result-text">
-            <a href="#federalist-papers3" className="title">The Federalist papers: with an introduction, table of contents, and index of ideas by Clinton Rossiter</a>
-            <div className="description">Penguin <span className="divider"></span> 1961</div>
-          </div>
-        </div>
-        <div className="result-item more">
-          <div className="result-image">
-
-          </div>
-          <div className="result-text">
-            <a href="#more">See all of the Library's 24 editions of "The Federalist papers"</a>
-          </div>
-
-        </div>
-      </div>
-    );
-  }
-}
-
-class ExternalData extends React.Component {
-  render() {
-    return (
-      <dl>
-        <dt>Publisher's summary</dt>
-        <dd>
-          <ul>
-            <li>This authoritative edition of the complete texts of the "Federalist Papers", the Articles of Confederation, the U.S. Constitution, and the Amendments to the U.S. Constitution features supporting essays in which leading scholars provide historical context and analysis. An introduction by Ian Shapiro offers an overview of the publication of the "Federalist Papers" and their importance. In three additional essays, John Dunn explores the composition of the "Federalist Papers" and the conflicting agendas of its authors; Eileen Hunt Botting explains how early advocates of women's rights, most prominently Mercy Otis Warren, Judith Sargent Murray, and Charles Brockden Brown, responded to the Federalist-Antifederalist debates; and Donald Horowitz discusses the "Federalist Papers" from the perspective of recent experiments with democracy and constitution-making around the world. These essays both illuminate the original texts and encourage active engagement with them.</li>
-            <li>Source: <a href="#">Nielsen Book Data</a></li>
-          </ul>
-        </dd>
-
-        <dt>Wikipedia summary</dt>
-        <dd>
-          <ul>
-            <li>The Federalist is a collection of 85 articles and essays written by Alexander Hamilton, James Madison, and John Jay promoting the ratification of the United States Constitution.</li>
-            <li>Source: <a href="https://en.wikipedia.org/wiki/The_Federalist_Papers">Wikipedia</a></li>
-          </ul>
-        </dd>
-      </dl>
-    );
-  }
-}
-
-class ExternalLinks extends React.Component {
-  render() {
-    return (
-      <dl>
-        <dt><a href="http://billi.nypl.org/">NYPL B.I.L.L.I.</a></dt>
-        <dd><a href="http://billi.nypl.org/classmark/KF4501-4515">KF4501-4515</a></dd>
-
-        <dt><a href="http://worldcat.org/">Worldcat</a></dt>
-        <dd><a href="http://worldcat.org/oclc/262432319">262432319</a></dd>
-
-        <dt><a href="http://worldcat.org/">Worldcat</a></dt>
-        <dd><a href="http://worldcat.org/oclc/305151457">305151457</a></dd>
-
-        <dt><a href="http://classify.oclc.org/">OCLC Classification</a></dt>
-        <dd><a href="http://classify.oclc.org/classify2/ClassifyDemo?owi=1090692939">1090692939</a></dd>
-      </dl>
-    );
-  }
-}
-
-class Cite extends React.Component {
-  render() {
-    return (
-      <dl>
-        <dt>APA</dt>
-        <dd>Hamilton, A., Madison, J., Jay, J., &amp; Shapiro, I. (2009). The Federalist papers: Alexander Hamilton, James Madison, John Jay. New Haven: Yale University Press.</dd>
-
-        <dt>MLA</dt>
-        <dd>Hamilton, Alexander, James Madison, John Jay, and Ian Shapiro. The Federalist Papers: Alexander Hamilton, James Madison, John Jay. New Haven: Yale University Press, 2009. Print.</dd>
-
-        <dt>CHICAGO</dt>
-        <dd>Hamilton, Alexander, James Madison, John Jay, and Ian Shapiro. 2009. The Federalist papers: Alexander Hamilton, James Madison, John Jay. New Haven: Yale University Press.</dd>
-
-        <dt>HARVARD</dt>
-        <dd>HAMILTON, A., MADISON, J., JAY, J., &amp; SHAPIRO, I. (2009). The Federalist papers: Alexander Hamilton, James Madison, John Jay. New Haven, Yale University Press.</dd>
-
-        <dt>TURABIAN</dt>
-        <dd>Hamilton, Alexander, James Madison, John Jay, and Ian Shapiro. The Federalist Papers: Alexander Hamilton, James Madison, John Jay. New Haven: Yale University Press, 2009.</dd>
-      </dl>
-    );
-  }
-}
+import { Link } from 'react-router';
 
 class ItemPage extends React.Component {
   render() {
+    const holdings = [
+      {
+        className: '',
+        available: '<span class="status available">Available</span> to use at the library',
+        location: '<a href="https://www.nypl.org/locations/schwarzman">Stephen A. Schwarzman Building</a>, Milstein Division Rm 121',
+        callNumber: '<a href="#IB 09-5067" class="call-no">IB 09-5067</a>',
+        hold: (<Link to={`/hold${this.props.location.search}`} className="button">Place a hold</Link>),
+      },
+      {
+        className: '',
+        available: '<span class="status available">Available</span> online',
+        location: '<a href="https://www.hathitrust.org/">Hathi Trust</a>',
+        callNumber: '&nbsp;',
+        hold: (<a href="https://catalog.hathitrust.org/Record/006171799" className="button" target="_blank">View online</a>),
+      },
+      {
+        className: '',
+        available: '<span class="status available">Available</span> to borrow',
+        location: '<a href="https://www.nypl.org/locations/58th-street">58th Street Non-Fiction</a>',
+        callNumber: '<a href="#342.73 F" class="call-no">342.73 F</a>',
+        hold: (<a href="#" className="button">Place a request in our circulating catalog</a>),
+      },
+      {
+        className: 'hidden',
+        available: '<span class="status">Hold placed, in transit</span>',
+        location: '<a href="https://www.nypl.org/locations/schwarzman">125th Street Non-Fiction</a>',
+        callNumber: '<a href="#342.7302 F " class="call-no">342.7302 F</a>',
+        hold: '&nbsp;',
+      },
+      {
+        className: 'hidden',
+        available: '<span class="status">Due 10/14/2016</span>',
+        location: '<a href="https://www.nypl.org/locations/58th-street">58th Street Non-Fiction</a>',
+        callNumber: '<a href="#342.73 F " class="call-no">342.73 F</a>',
+        hold: '&nbsp;',
+      },
+    ];
+    const externalData = [
+      { term: 'Publisher\'s summary', definition: `<ul>
+          <li>This authoritative edition of the complete texts of the "Federalist Papers", the Articles of Confederation, the U.S. Constitution, and the Amendments to the U.S. Constitution features supporting essays in which leading scholars provide historical context and analysis. An introduction by Ian Shapiro offers an overview of the publication of the "Federalist Papers" and their importance. In three additional essays, John Dunn explores the composition of the "Federalist Papers" and the conflicting agendas of its authors; Eileen Hunt Botting explains how early advocates of women's rights, most prominently Mercy Otis Warren, Judith Sargent Murray, and Charles Brockden Brown, responded to the Federalist-Antifederalist debates; and Donald Horowitz discusses the "Federalist Papers" from the perspective of recent experiments with democracy and constitution-making around the world. These essays both illuminate the original texts and encourage active engagement with them.</li>
+          <li>Source: <a href="#">Nielsen Book Data</a></li>
+        </ul>`
+      },
+      { term: 'Wikipedia summary', definition: `<ul>
+          <li>The Federalist is a collection of 85 articles and essays written by Alexander Hamilton, James Madison, and John Jay promoting the ratification of the United States Constitution.</li>
+          <li>Source: <a href="https://en.wikipedia.org/wiki/The_Federalist_Papers">Wikipedia</a></li>
+        </ul>`
+      },
+    ];
+    const externalLinks = [
+      { term: '<a href="http://billi.nypl.org/">NYPL B.I.L.L.I.</a>', definition: '<a href="http://billi.nypl.org/classmark/KF4501-4515">KF4501-4515</a>' },
+      { term: '<a href="http://worldcat.org/">Worldcat</a>', definition: '<a href="http://worldcat.org/oclc/262432319">262432319</a>' },
+      { term: '<a href="http://worldcat.org/">Worldcat</a>', definition: '<a href="http://worldcat.org/oclc/305151457">305151457</a>' },
+      { term: '<a href="http://classify.oclc.org/">OCLC Classification</a>', definition: '<a href="http://classify.oclc.org/classify2/ClassifyDemo?owi=1090692939">1090692939</a>' },
+    ];
+    const itemDetails = [
+      { term: 'Title', definition: 'The Federalist papers : Alexander Hamilton, James Madison, John Jay / edited and with an introduction by Ian Shapiro ; with essays by John Dunn, Donald L. Horowitz, Eileen Hunt Botting.' },
+      { term: 'Uniform title', definition: 'Federalist.' },
+      { term: 'Format', definition: 'Book' },
+      { term: 'Language', definition: 'English' },
+      { term: 'Published', definition: '<a href="#yale">New Haven: Yale University Press</a>, <a href="#2009">2009</a>.' },
+      { term: 'Description', definition: 'xxii, 579 p. ; 21 cm.' },
+      { term: 'Series', definition: '<a href="#series">Rethinking the Western tradition.</a>' },
+      { term: 'Subjects', definition: `<div class="hiearchy">
+          <a href="#contitutional-history">Constitutional history</a>
+          <a href="#contitutional-history-us">United States</a>
+          <a href="#contitutional-history-us-sources">Sources</a>
+        </div>
+        <div class="hiearchy">
+          <a href="#contitutional-law">Constitutional law</a>
+          <a href="#contitutional-law-us">United States</a>
+        </div>`
+      },
+      { term: 'Contributors', definition: `<ul>
+          <li><a href="agent.html">Hamilton, Alexander, 1757-1804</a></li>
+          <li><a href="#james-madison">Madison, James, 1751-1836</a></li>
+          <li><a href="#john-jay">Jay, John, 1745-1829</a></li>
+          <li><a href="#ian-shapiro">Shapiro, Ian</a></li>
+        </ul>`
+      },
+      { term: 'Bibliography', definition: 'Includes bibliographical references and index.' },
+      { term: 'Contents', definition: `<ul>
+          <li>Introduction: The Federalist then and now / Ian Shapiro</li>
+          <li>The Federalist papers</li>
+          <li>The Articles of Confederation</li>
+          <li>The Constitution of the United States of America</li>
+          <li>Amendments to the Constitution of the United States</li>
+          <li>Unmanifest destiny / John Dunn</li>
+          <li>The Federalist abroad in the world / Donal L. Horowitz</li>
+          <li>Protofeminist responses to the Federalist-Antifederalist debate / Eileen Hunt Botting.</li>
+        </ul>`
+      },
+      { term: 'ISBN', definition: `<ul>
+          <li>9780300118902 (pbk.)</li>
+          <li>0300118902 (pbk.)</li>
+        </ul>`
+      },
+      { term: 'Research call number', definition: 'IB 09-5067' },
+    ];
+    const citeData = [
+      { term: 'APA', definition: 'Hamilton, A., Madison, J., Jay, J., &amp; Shapiro, I. (2009). The Federalist papers: Alexander Hamilton, James Madison, John Jay. New Haven: Yale University Press.' },
+      { term: 'MLA', definition: 'Hamilton, Alexander, James Madison, John Jay, and Ian Shapiro. The Federalist Papers: Alexander Hamilton, James Madison, John Jay. New Haven: Yale University Press, 2009. Print.' },
+      { term: 'CHICAGO', definition: 'Hamilton, Alexander, James Madison, John Jay, and Ian Shapiro. 2009. The Federalist papers: Alexander Hamilton, James Madison, John Jay. New Haven: Yale University Press.' },
+      { term: 'HARVARD', definition: 'HAMILTON, A., MADISON, J., JAY, J., &amp; SHAPIRO, I. (2009). The Federalist papers: Alexander Hamilton, James Madison, John Jay. New Haven, Yale University Press.' },
+      { term: 'TURABIAN', definition: 'Hamilton, Alexander, James Madison, John Jay, and Ian Shapiro. The Federalist Papers: Alexander Hamilton, James Madison, John Jay. New Haven: Yale University Press, 2009.' },
+    ];
+
     const record = this.props.item.Record;
     const title = record.RecordInfo.BibRecord.BibEntity.Titles[0].TitleFull;
     const author = record.RecordInfo.BibRecord.BibRelationships.HasContributorRelationships[0].PersonEntity.Name.NameFull;
@@ -153,23 +151,18 @@ class ItemPage extends React.Component {
             </div>
           </div>
 
-          <ItemHoldings path={this.props.location.search} />
+          <ItemHoldings path={this.props.location.search} holdings={holdings} />
 
           <div className="item-details">
-            <h2>Item details</h2>
-            <ItemDetails />
+            <ItemDetails data={itemDetails} title="Item details" />
 
-            <h3><a name="editions"></a>Other editions of "The Federalist papers"</h3>
-            <Editions />
+            <ItemEditions />
 
-            <h3>External data</h3>
-            <ExternalData />
+            <ItemDetails data={externalData} title="External data" />
 
-            <h3>External links</h3>
-            <ExternalLinks />
+            <ItemDetails data={externalLinks} title="External links" />
 
-            <h3>Cite this book</h3>
-            <Cite />
+            <ItemDetails data={citeData} title="Cite this book" />
           </div>
 
         </div>
