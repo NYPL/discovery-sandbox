@@ -1,0 +1,66 @@
+.advanced-container {
+  padding-right: 0;
+}
+
+.advanced-form {
+  h3,
+  h4 {
+    margin: 1.5rem 0 0.5rem;
+  }
+  h4 {
+    font-size: 1rem;
+    margin-top: 0.5rem;
+  }
+  p {
+    margin: 1rem 0;
+    border-top: 1px solid $lightgray;
+  }
+  fieldset {
+    border: 0;
+    padding: 0;
+  }
+  input {
+    padding: 0.25rem 0.4rem;
+    border: 1px solid darken($lightgray, 10%);
+    vertical-align: middle;
+  }
+  button[type="submit"] {
+    margin-top: 1.5rem;
+    color: $white;
+  }
+}
+
+.advanced-fieldset {
+  select {
+    max-width: 22.5%;
+    padding-right: 1rem;
+    margin-right: 0.35rem;
+    font-size: 1em;
+  }
+}
+
+.advanced-filters {
+  fieldset {
+    display: inline-block;
+    width: 30%;
+    min-width: 200px;
+    margin-right: 1rem;
+  }
+  label {
+    display: block;
+  }
+  select {
+    display: block;
+    width: 100%;
+    font-size: 1em;
+  }
+}
+
+.guide {
+  border: 1px solid $lightgray;
+  padding: 0.35rem 0.75rem;
+}
+
+.guide-list {
+  margin-left: -1rem;
+}
