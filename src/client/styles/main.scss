@@ -37,3 +37,13 @@ Import style rules from NYPL React module components
 .search-results-container {
   @include clearfix();
 }
+
+.status {
+  font-weight: bold;
+  color: $darkorange;
+
+  &.available {
+    color: $darkgreen;
+  }
+}
+

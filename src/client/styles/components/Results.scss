@@ -143,11 +143,17 @@
     }
 
     .sub-items {
-      padding: 0.35rem 0 0.35rem 0.35rem;
+      display: table;
+      width: 100%;
+      max-width: 800px;
+      // border: 1px solid $lightgray;
+      padding: 0;
+      margin-top: 0.35rem;
+      background: lighten($lightergray, 4%);
     }
 
     .sub-item {
-
+      display: table-row;
       line-height: 1.2;
       padding: 0.2rem 0;
 
@@ -181,6 +187,33 @@
         font-weight: normal;
         color: $gray;
       }
+
+      span.call-no {
+        font-weight: normal;
+        font-style: italic;
+        color: $gray;
+      }
+
+      .button {
+        padding: 0.2rem 0.65rem;
+        min-width: 110px;
+        display: inline-block;
+        text-align: center;
+      }
+
+      > div {
+        display: table-cell;
+        vertical-align: middle;
+        padding: 0.5rem 0.5rem;
+        border-top: 1px solid $lightgray;
+        &:last-child {
+          text-align: right;
+        }
+      }
+    }
+
+    .sub-item:first-child > div {
+      border-top: 0;
     }
 
     .divider {

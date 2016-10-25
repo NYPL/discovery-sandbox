@@ -53,7 +53,7 @@ class ItemEditions extends React.Component {
         description: '<span>Penguin <span class="divider"></span> 1961</span>',
       },
     ];
-    const title = "The Federalist papers";
+    const title = this.props.title;
 
     return (
       <div>

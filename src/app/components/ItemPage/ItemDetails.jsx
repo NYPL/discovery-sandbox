@@ -19,6 +19,9 @@ class ItemDetails extends React.Component {
   }
 
   render() {
+    if (!this.props.data.length || !this.props.title) {
+      return null;
+    }
 
     return (
       <div>

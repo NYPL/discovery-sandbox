@@ -24,11 +24,13 @@ class ItemHoldings extends React.Component {
             </tr>
           ))
         }
+        {/*
         <tr className="more">
           <td colSpan="4">
             <a href="#see-more" className="more-link">See 2 more copies</a>
           </td>
         </tr>
+        */}
       </tbody>
     );
   }

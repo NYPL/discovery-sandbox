@@ -105,20 +105,24 @@ class EResourceResults extends React.Component {
               </div>
               <div className="sub-items">
                 <div className="sub-item">
-                  <Link
-                    className="view-online"
-                    to={`/item?an=${an}&dbid=${dbid}&q=${this.props.query}`}
-                    onClick={(e) => this.getRecord(e, dbid, an)}
-                  >
-                    View online
-                  </Link>
+                  <div><span className="status available">Available</span> to view online</div>
+                  <div>
+                    {/*<Link
+                      className="view-online button"
+                      to={`/item?an=${an}&dbid=${dbid}&q=${this.props.query}`}
+                      onClick={(e) => this.getRecord(e, dbid, an)}
+                    >
+                      View online
+                    </Link>*/}
+                    <a href={d.PLink} className="button">View on EBSCO</a>
+                  </div>
                 </div>
               </div>
             </div>
             <div className="result-actions">
-              <div>
+              {/*<div>
                 <a href={d.PLink} className="button">View on EBSCO</a>
-              </div>
+              </div>*/}
             </div>
           </li>
         );

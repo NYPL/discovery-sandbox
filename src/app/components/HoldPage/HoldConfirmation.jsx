@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router';
 
 import Breadcrumbs from '../Breadcrumbs/Breadcrumbs.jsx';
 
@@ -8,6 +9,17 @@ class HoldConfirmation extends React.Component {
       item,
       searchKeywords,
     } = this.props;
+    const title = item.Record.RecordInfo.BibRecord.BibEntity.Titles[0].TitleFull;
+
+    const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July',
+      'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
+    let date = new Date();
+    date.setDate(date.getDate() + 7);
+    const day = date.getDate();
+    const monthIndex = date.getMonth();
+    const dateDisplay = `${monthNames[monthIndex]} ${day}`;
+    date.setDate(date.getDate() + 5);
+    const dateDisplayEnd = `${monthNames[date.getMonth()]} ${date.getDate()}`;
 
     return (
       <div>
@@ -16,7 +28,7 @@ class HoldConfirmation extends React.Component {
             <Breadcrumbs
               query={this.props.searchKeywords}
               type="holdConfirmation"
-              title={item.Record.RecordInfo.BibRecord.BibEntity.Titles[0].TitleFull}
+              title={title}
               url={this.props.location.search}
             />
           </div>
@@ -29,12 +41,11 @@ class HoldConfirmation extends React.Component {
 
           <div className="item-summary">
             <ul className="generic-list">
-              <li>You have placed a hold on <a href="../item/v1a_monograph.html">The Federalist papers</a> with call number <a href="#">IB 09-5067</a></li>
-              <li>Ready for use by <strong>approximately Thursday, September 2nd, 9:00am</strong> at the location below</li>
+              <li>You have placed a hold on <Link to={`/item${this.props.location.search}`}>{title}</Link> with call number <a href="#">IB 09-5067</a></li>
+              <li>Ready for use by <strong>approximately {dateDisplay}, 9:00am</strong> at the location below</li>
               <li><strong>You will receive an email notification</strong> when the item is ready for use</li>
-              <li>Book will be held until Wednesday, September 8th, 5:00pm</li>
+              <li>Book will be held until {dateDisplayEnd}, 5:00pm</li>
               <li>Visit your <a href="../holds/v1a.html">patron account page</a> to view the status of this item hold</li>
-              <li>You may <a href="#cancel">cancel</a> this item hold at any time</li>
             </ul>
           </div>
 
