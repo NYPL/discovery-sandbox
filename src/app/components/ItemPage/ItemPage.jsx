@@ -9,7 +9,23 @@ import { Link } from 'react-router';
 
 class ItemPage extends React.Component {
   render() {
+    const record = this.props.item.Record;
+    const ebscoLink = record.PLink;
+    const title = record.RecordInfo.BibRecord.BibEntity.Titles[0].TitleFull;
+    const author = record.RecordInfo.BibRecord.BibRelationships.HasContributorRelationships ?
+      record.RecordInfo.BibRecord.BibRelationships.HasContributorRelationships[0].PersonEntity.Name.NameFull
+      : '';
+    const language = record.RecordInfo.BibRecord.BibEntity.Languages[0].Text;
+    const subjects = record.RecordInfo.BibRecord.BibEntity.Subjects;
+    const subjectElm = subjects.map(subject => (`<a href="#">${subject.SubjectFull}</a>`)).join('');
     const holdings = [
+      {
+        className: '',
+        available: '<span class="status available">Available</span> online',
+        location: '<a href="https://www.ebsco.com/">EBSCO</a>',
+        callNumber: '&nbsp;',
+        hold: (<a href={ebscoLink} className="button" target="_blank">View on EBSCO</a>),
+      },
       {
         className: '',
         available: '<span class="status available">Available</span> to use at the library',
@@ -17,20 +33,13 @@ class ItemPage extends React.Component {
         callNumber: '<a href="#IB 09-5067" class="call-no">IB 09-5067</a>',
         hold: (<Link to={`/hold${this.props.location.search}`} className="button">Place a hold</Link>),
       },
-      {
-        className: '',
-        available: '<span class="status available">Available</span> online',
-        location: '<a href="https://www.hathitrust.org/">Hathi Trust</a>',
-        callNumber: '&nbsp;',
-        hold: (<a href="https://catalog.hathitrust.org/Record/006171799" className="button" target="_blank">View online</a>),
-      },
-      {
-        className: '',
-        available: '<span class="status available">Available</span> to borrow',
-        location: '<a href="https://www.nypl.org/locations/58th-street">58th Street Non-Fiction</a>',
-        callNumber: '<a href="#342.73 F" class="call-no">342.73 F</a>',
-        hold: (<a href="#" className="button">Place a request in our circulating catalog</a>),
-      },
+      // {
+      //   className: '',
+      //   available: '<span class="status available">Available</span> to borrow',
+      //   location: '<a href="https://www.nypl.org/locations/58th-street">58th Street Non-Fiction</a>',
+      //   callNumber: '<a href="#342.73 F" class="call-no">342.73 F</a>',
+      //   hold: (<a href="#" className="button">Place a request in our circulating catalog</a>),
+      // },
       {
         className: 'hidden',
         available: '<span class="status">Hold placed, in transit</span>',
@@ -65,17 +74,15 @@ class ItemPage extends React.Component {
       { term: '<a href="http://classify.oclc.org/">OCLC Classification</a>', definition: '<a href="http://classify.oclc.org/classify2/ClassifyDemo?owi=1090692939">1090692939</a>' },
     ];
     const itemDetails = [
-      { term: 'Title', definition: 'The Federalist papers : Alexander Hamilton, James Madison, John Jay / edited and with an introduction by Ian Shapiro ; with essays by John Dunn, Donald L. Horowitz, Eileen Hunt Botting.' },
+      { term: 'Title', definition: title },
       { term: 'Uniform title', definition: 'Federalist.' },
       { term: 'Format', definition: 'Book' },
-      { term: 'Language', definition: 'English' },
+      { term: 'Language', definition: language },
       { term: 'Published', definition: '<a href="#yale">New Haven: Yale University Press</a>, <a href="#2009">2009</a>.' },
       { term: 'Description', definition: 'xxii, 579 p. ; 21 cm.' },
       { term: 'Series', definition: '<a href="#series">Rethinking the Western tradition.</a>' },
       { term: 'Subjects', definition: `<div class="hiearchy">
-          <a href="#contitutional-history">Constitutional history</a>
-          <a href="#contitutional-history-us">United States</a>
-          <a href="#contitutional-history-us-sources">Sources</a>
+          ${subjectElm}
         </div>
         <div class="hiearchy">
           <a href="#contitutional-law">Constitutional law</a>
@@ -83,10 +90,7 @@ class ItemPage extends React.Component {
         </div>`
       },
       { term: 'Contributors', definition: `<ul>
-          <li><a href="agent.html">Hamilton, Alexander, 1757-1804</a></li>
-          <li><a href="#james-madison">Madison, James, 1751-1836</a></li>
-          <li><a href="#john-jay">Jay, John, 1745-1829</a></li>
-          <li><a href="#ian-shapiro">Shapiro, Ian</a></li>
+          <li><a href="agent.html">${author}</a></li>
         </ul>`
       },
       { term: 'Bibliography', definition: 'Includes bibliographical references and index.' },
@@ -115,10 +119,6 @@ class ItemPage extends React.Component {
       { term: 'HARVARD', definition: 'HAMILTON, A., MADISON, J., JAY, J., &amp; SHAPIRO, I. (2009). The Federalist papers: Alexander Hamilton, James Madison, John Jay. New Haven, Yale University Press.' },
       { term: 'TURABIAN', definition: 'Hamilton, Alexander, James Madison, John Jay, and Ian Shapiro. The Federalist Papers: Alexander Hamilton, James Madison, John Jay. New Haven: Yale University Press, 2009.' },
     ];
-
-    const record = this.props.item.Record;
-    const title = record.RecordInfo.BibRecord.BibEntity.Titles[0].TitleFull;
-    const author = record.RecordInfo.BibRecord.BibRelationships.HasContributorRelationships[0].PersonEntity.Name.NameFull;
 
     return (
       <div>

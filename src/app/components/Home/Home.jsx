@@ -1,4 +1,6 @@
 import React from 'react';
+import { Link } from 'react-router';
+
 import {
   map as _map,
 } from 'underscore';
@@ -51,7 +53,7 @@ class Home extends React.Component {
 
               <Search />
 
-              <p><a href="../advanced/v1a.html">Use advanced search</a></p>
+              <p><Link to="/advanced">Use advanced search</Link></p>
             </div>
           </div>
         </div>
