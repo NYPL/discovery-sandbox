@@ -39,6 +39,7 @@ $facetsWidth: 200px;
   }
   select {
     height: 2rem;
+    font-size: 0.8rem;
 
     &.selected {
       background-color: $darkgray;
@@ -92,5 +93,6 @@ $facetsWidth: 200px;
     background: $lightgray;
     border: 0;
     text-indent: 0.2rem;
+    font-size: 0.8rem;
   }
 }
