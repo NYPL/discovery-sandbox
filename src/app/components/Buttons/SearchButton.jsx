@@ -14,11 +14,6 @@ const SearchButton = ({
       className={className}
       onClick={onClick}
     >
-      <SearchIcon
-        ariaHidden
-        className={`${className}-searchIcon`}
-        fill="#FFF"
-      />
       {label}
     </button>
   </div>

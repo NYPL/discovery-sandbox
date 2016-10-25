@@ -19,7 +19,7 @@ class Search extends React.Component {
     super(props);
 
     this.state = _extend({
-      placeholder: 'Search the catalog',
+      placeholder: 'Keyword, title, name, or id',
       placeholderAnimation: null,
       noAnimationBefore: true,
     }, Store.getState());
@@ -79,7 +79,8 @@ class Search extends React.Component {
   /**
    * submitSearchRequest()
    */
-  submitSearchRequest() {
+  submitSearchRequest(e) {
+    e.preventDefault();
     // Store the data that the user entered
     const keyword = this.state.searchKeywords.trim();
     let inputKeywords;
@@ -120,7 +121,7 @@ class Search extends React.Component {
    */
   triggerSubmit(event) {
     if (event && event.charCode === 13) {
-      this.submitSearchRequest(null);
+      this.submitSearchRequest(event);
     }
   }
 
@@ -143,8 +144,19 @@ class Search extends React.Component {
     });
 
     return (
-      <div className="search-form" onKeyPress={this.triggerSubmit}>
+      <form className="search-form" onKeyPress={this.triggerSubmit}>
+        <label htmlFor="search-by-field" className="visuallyhidden">Search by field</label>
+        <select id="search-by-field" className="search-select">
+          <option value="all">All fields</option>
+          <option value="title">Title</option>
+          <option value="contributor">Author/Contributor</option>
+          <option value="subject">Subject</option>
+          <option value="series">Series</option>
+          <option value="call_number">Call number</option>
+        </select>
+        <label htmlFor="search-query" className="visuallyhidden">Search keyword</label>
         <input
+          id="search-query"
           placeholder={this.state.placeholder}
           className={`search-field ${pulseAnimation}`}
           onChange={this.inputChange}
@@ -157,7 +169,7 @@ class Search extends React.Component {
           label="Search"
           onClick={this.submitSearchRequest}
         />
-      </div>
+      </form>
     );
   }
 }
