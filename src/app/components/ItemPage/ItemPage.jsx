@@ -78,7 +78,7 @@ class ItemPage extends React.Component {
     ];
     const itemDetails = [
       { term: 'Title', definition: title },
-      { term: 'Uniform title', definition: 'Federalist.' },
+      // { term: 'Uniform title', definition: 'Federalist.' },
       { term: 'Format', definition: 'Book' },
       { term: 'Language', definition: language },
       { term: 'Published', definition: `${dates.M}/${dates.D}/${dates.Y}` },
