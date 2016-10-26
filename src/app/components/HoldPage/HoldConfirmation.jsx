@@ -39,19 +39,40 @@ class HoldConfirmation extends React.Component {
             <h1>Research item hold confirmation</h1>
           </div>
 
-          <div className="item-summary">
-            <ul className="generic-list">
-              <li>You have placed a hold on <Link to={`/item${this.props.location.search}`}>{title}</Link> with call number <a href="#">IB 09-5067</a></li>
-              <li>Ready for use by <strong>approximately {dateDisplay}, 9:00am</strong> at the location below</li>
-              <li><strong>You will receive an email notification</strong> when the item is ready for use</li>
-              <li>Book will be held until {dateDisplayEnd}, 5:00pm</li>
-              <li>Visit your <a href="../holds/v1a.html">patron account page</a> to view the status of this item hold</li>
-            </ul>
+          <div className="item-summary row">
+            <div className="details col span-2-3">
+              <h2>Item hold details</h2>
+              <ul className="generic-list">
+                <li>You have placed a hold on <Link to={`/item${this.props.location.search}`}>{title}</Link> with call number <a href="#">IB 09-5067</a></li>
+                <li>Ready for use by <strong>approximately {dateDisplay}, 9:00am</strong> at the location below</li>
+                <li><strong>You will receive an email notification</strong> when the item is ready for use</li>
+                <li>Book will be held until {dateDisplayEnd}, 5:00pm</li>
+                <li>Visit your <a href="../holds/v1a.html">patron account page</a> to view the status of this item hold</li>
+              </ul>
+            </div>
+            <div className="actions col span-1-3">
+              <h2>Available actions</h2>
+              <ul className="generic-list">
+                <li>Visit your <Link to="/account/holds">patron account page</Link> to view the status of this item hold</li>
+                <li>You may <a href="#cancel">cancel</a> this item hold at any time</li>
+              </ul>
+            </div>
           </div>
 
           <div className="row map-container">
             <div className="col span-3-5">
-              <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d3022.3899875663374!2d-73.98487169126284!3d40.7534464793701!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x3b51df6e509a734c!2sNew+York+Public+Library+-+Stephen+A.+Schwarzman+Building!5e0!3m2!1sen!2sus!4v1476394300850" height="450" frameBorder="0" style={{border:0}} allowFullScreen></iframe>
+              <div className="tabs">
+                <a href="#building" className="tab" aria-selected="true">Directions to building</a>
+                <a href="#room" className="tab" aria-selected="false">Directions to room</a>
+              </div>
+              <div className="tabpanels">
+                <div id="building" className="tabpanel active">
+                  <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d3022.3899875663374!2d-73.98487169126284!3d40.7534464793701!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x3b51df6e509a734c!2sNew+York+Public+Library+-+Stephen+A.+Schwarzman+Building!5e0!3m2!1sen!2sus!4v1476394300850" height="450" frameBorder="0" style={{border:0}} allowFullScreen></iframe>
+                </div>
+                <div id="room" className="tabpanel">
+                  <img src="../img/floor_plan.png" alt="Floor plan of first floor of Stephen A. Schwarzman Building" />
+                </div>
+              </div>
             </div>
             <div className="col span-2-5">
               <p><a href="https://www.nypl.org/locations/schwarzman">Stephen A. Schwarzman Building</a><br />

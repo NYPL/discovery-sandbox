@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router';
 
-const Breadcrumbs = ({ query, type, title, url }) => {
+const Breadcrumbs = ({ query, type, title = '', url }) => {
   let str = 'Research Catalog';
   let crumbs = (
     <span>
@@ -23,8 +23,9 @@ const Breadcrumbs = ({ query, type, title, url }) => {
     );
   }
 
+  str = `${title.substring(0, 50)}...`;
+
   if (type === 'item') {
-    str = title;
     crumbs = (
       <span>
         <Link to="https://nypl.org">Home</Link> &gt;&gt;
@@ -37,7 +38,6 @@ const Breadcrumbs = ({ query, type, title, url }) => {
   }
 
   if (type === 'hold') {
-    str = title;
     crumbs = (
       <span>
         <Link to="https://nypl.org">Home</Link> &gt;&gt;
@@ -51,7 +51,6 @@ const Breadcrumbs = ({ query, type, title, url }) => {
   }
 
   if (type === 'holdConfirmation') {
-    str = title;
     crumbs = (
       <span>
         <Link to="https://nypl.org">Home</Link> &gt;&gt;

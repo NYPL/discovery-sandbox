@@ -1,6 +1,4 @@
-
 .item-header {
-  padding: 1rem;
   @include clearfix();
 
   > div {
@@ -24,7 +22,6 @@
 
   .item-info {
     width: 91.75%;
-    padding-left: 1rem;
   }
 
   .description {

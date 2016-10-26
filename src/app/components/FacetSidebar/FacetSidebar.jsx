@@ -64,6 +64,38 @@ class FacetSidebar extends React.Component {
             </button>
           </fieldset>
 
+          <fieldset>
+            <label htmlFor="select-access">Access method</label>
+            <div className="radio-group">
+              <label htmlFor="select-access-1" className="radio-label">
+                <input id="select-access-1" type="radio" value="All" name="access" defaulChecked /> All
+              </label>
+              <label htmlFor="select-access-2" className="radio-label">
+                <input id="select-access-2" type="radio" value="At the library" name="access" /> At the library (11)
+              </label>
+              <label htmlFor="select-access-3" className="radio-label">
+                <input id="select-access-3" type="radio" value="Online" name="access" /> Online (3)
+              </label>
+            </div>
+          </fieldset>
+          <fieldset>
+            <label htmlFor="select-resource">Format</label>
+            <div className="radio-group">
+              <label htmlFor="select-resource-1" className="radio-label">
+                <input id="select-resource-1" type="radio" value="All" name="resource" defaulChecked /> All
+              </label>
+              <label htmlFor="select-resource-2" className="radio-label">
+                <input id="select-resource-2" type="radio" value="Book/text" name="resource" /> Book/text (11)
+              </label>
+              <label htmlFor="select-resource-3" className="radio-label">
+                <input id="select-resource-3" type="radio" value="Web resource" name="resource" /> Web resource (3)
+              </label>
+              <label htmlFor="select-resource-4" className="radio-label">
+                <input id="select-resource-4" type="radio" value="Microform" name="resource" /> Microform (1)
+              </label>
+            </div>
+          </fieldset>
+
           {facetsElm}
 
           <DateRange dateRange={dateRange} />

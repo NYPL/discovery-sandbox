@@ -138,7 +138,7 @@ class ItemPage extends React.Component {
         <div className="container item-container">
           <div className="item-header">
             <div className="item-info">
-              <h2>{title}</h2>
+              <h1>{title}</h1>
               <div className="description author">
                 By <a href="#">{author}</a>
               </div>

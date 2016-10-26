@@ -109,6 +109,17 @@ select {
   padding-right: 7%;
   padding-left: 0.35rem;
 }
+.radio-group {
+  background: $lightgray;
+  padding: 0.35rem 0.5rem;
+  label,
+  input {
+    display: inline-block;
+  }
+  input {
+    margin-right: 0.1rem;
+  }
+}
 
 dl {
   @include clearfix();
