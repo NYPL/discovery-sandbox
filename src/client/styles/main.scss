@@ -33,6 +33,7 @@ Import style rules from NYPL React module components
   max-width: $containerWidth;
   padding: 0.5rem 1rem;
   margin: 0 auto;
+  min-height: 450px;
   @include box-sizing();
 }
 

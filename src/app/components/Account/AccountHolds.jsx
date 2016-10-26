@@ -3,7 +3,7 @@ import React from 'react';
 class AccountHolds extends React.Component {
   render() {
     return (
-      <div className="container placehold-container">
+      <div className="container">
         <div className="item-header">
           <h1>Your research item holds</h1>
         </div>
