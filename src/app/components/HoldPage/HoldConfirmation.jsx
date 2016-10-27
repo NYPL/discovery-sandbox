@@ -2,6 +2,8 @@ import React from 'react';
 import { Link } from 'react-router';
 
 import Breadcrumbs from '../Breadcrumbs/Breadcrumbs.jsx';
+import Tabs from '../Tabs/Tabs.jsx';
+import TabPanel from '../Tabs/TabPanel.jsx';
 
 class HoldConfirmation extends React.Component {
   render() {
@@ -61,18 +63,19 @@ class HoldConfirmation extends React.Component {
 
           <div className="row map-container">
             <div className="col span-3-5">
-              <div className="tabs">
-                <a href="#building" className="tab" aria-selected="true">Directions to building</a>
-                <a href="#room" className="tab" aria-selected="false">Directions to room</a>
-              </div>
-              <div className="tabpanels">
-                <div id="building" className="tabpanel active">
-                  <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d3022.3899875663374!2d-73.98487169126284!3d40.7534464793701!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x3b51df6e509a734c!2sNew+York+Public+Library+-+Stephen+A.+Schwarzman+Building!5e0!3m2!1sen!2sus!4v1476394300850" height="450" frameBorder="0" style={{ border: 0 }} allowFullScreen></iframe>
-                </div>
-                <div id="room" className="tabpanel">
-                  <img src="../img/floor_plan.png" alt="Floor plan of first floor of Stephen A. Schwarzman Building" />
-                </div>
-              </div>
+              <Tabs
+                tabs={[
+                  {title: 'Directions to building', id: 'building'},
+                  {title: 'Directions to room', id: 'room'},
+                ]}
+              >
+                <TabPanel id="building">
+                  <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d3022.3899875663374!2d-73.98487169126284!3d40.7534464793701!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x3b51df6e509a734c!2sNew+York+Public+Library+-+Stephen+A.+Schwarzman+Building!5e0!3m2!1sen!2sus!4v1476394300850" height="450" frameBorder="0" style={{border: 0}} allowFullScreen></iframe>
+                </TabPanel>
+                <TabPanel id="room">
+                  <img src="/src/client/images/floor_plan.png" alt="Floor plan of first floor of Stephen A. Schwarzman Building" />
+                </TabPanel>
+              </Tabs>
             </div>
             <div className="col span-2-5">
               <p><a href="https://www.nypl.org/locations/schwarzman">Stephen A. Schwarzman Building</a><br />

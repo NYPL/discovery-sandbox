@@ -1,6 +1,9 @@
 .tabs {
   display: flex;
   flex-direction: row;
+  margin: 0;
+  padding: 0;
+  list-style: none;
 
   .tab {
     flex-grow: 1;
@@ -15,6 +18,7 @@
     border-top-left-radius: 0.35rem;
     border-top-right-radius: 0.35rem;
     margin-right: 0.35rem;
+    margin-bottom: 0;
 
     &:hover {
       background: $linkcolor;
