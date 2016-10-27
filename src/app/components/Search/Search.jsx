@@ -32,7 +32,6 @@ class Search extends React.Component {
     this.routeHandler = this.routeHandler.bind(this);
   }
 
-
   componentDidMount() {
     Store.listen(this.onChange);
   }
@@ -41,7 +40,7 @@ class Search extends React.Component {
     this.setState(_extend(this.state, Store.getState()));
   }
 
-  componentDidUnMount() {
+  componentWillUnmount() {
     Store.unlisten(this.onChange);
   }
 

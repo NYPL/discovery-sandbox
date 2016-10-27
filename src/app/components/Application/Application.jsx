@@ -21,7 +21,7 @@ class App extends React.Component {
     this.setState(Store.getState());
   }
 
-  componentDidUnMount() {
+  componentWillUnmount() {
     Store.unlisten(this.onChange);
   }
 

@@ -11,6 +11,7 @@ import Search from '../Search/Search.jsx';
 
 class SearchResultsPage extends React.Component {
   componentWillMount() {
+    console.log(this.props.ebscodata);
     if (!this.props.ebscodata) {
       axios
         .get(`/api?q=${this.props.searchKeywords}`)
@@ -35,7 +36,7 @@ class SearchResultsPage extends React.Component {
     const totalHits = ebscodata ? ebscodata.totalHits : 0;
     const results = ebscodata ? ebscodata.results : [];
 
-    console.log(ebscodata);
+    // console.log(ebscodata);
 
     if (searchKeywords) {
       breadcrumbs = (
