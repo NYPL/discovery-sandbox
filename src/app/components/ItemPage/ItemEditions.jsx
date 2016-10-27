@@ -1,10 +1,6 @@
 import React from 'react';
 
 class ItemEditions extends React.Component {
-  createMarkup(markup) {
-    return { __html: markup };
-  }
-
   getImage(url) {
     if (!url) {
       return null;
@@ -33,6 +29,10 @@ class ItemEditions extends React.Component {
         </div>
       );
     });
+  }
+
+  createMarkup(markup) {
+    return { __html: markup };
   }
 
   render() {
@@ -77,5 +77,9 @@ class ItemEditions extends React.Component {
     );
   }
 }
+
+ItemEditions.propTypes = {
+  title: React.PropTypes.string,
+};
 
 export default ItemEditions;

@@ -13,7 +13,7 @@ class HoldConfirmation extends React.Component {
 
     const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July',
       'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
-    let date = new Date();
+    const date = new Date();
     date.setDate(date.getDate() + 7);
     const day = date.getDate();
     const monthIndex = date.getMonth();
@@ -26,7 +26,7 @@ class HoldConfirmation extends React.Component {
         <div className="page-header">
           <div className="container">
             <Breadcrumbs
-              query={this.props.searchKeywords}
+              query={searchKeywords}
               type="holdConfirmation"
               title={title}
               url={this.props.location.search}
@@ -67,7 +67,7 @@ class HoldConfirmation extends React.Component {
               </div>
               <div className="tabpanels">
                 <div id="building" className="tabpanel active">
-                  <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d3022.3899875663374!2d-73.98487169126284!3d40.7534464793701!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x3b51df6e509a734c!2sNew+York+Public+Library+-+Stephen+A.+Schwarzman+Building!5e0!3m2!1sen!2sus!4v1476394300850" height="450" frameBorder="0" style={{border:0}} allowFullScreen></iframe>
+                  <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d3022.3899875663374!2d-73.98487169126284!3d40.7534464793701!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x3b51df6e509a734c!2sNew+York+Public+Library+-+Stephen+A.+Schwarzman+Building!5e0!3m2!1sen!2sus!4v1476394300850" height="450" frameBorder="0" style={{ border: 0 }} allowFullScreen></iframe>
                 </div>
                 <div id="room" className="tabpanel">
                   <img src="../img/floor_plan.png" alt="Floor plan of first floor of Stephen A. Schwarzman Building" />
@@ -97,5 +97,11 @@ class HoldConfirmation extends React.Component {
     );
   }
 }
+
+HoldConfirmation.propTypes = {
+  item: React.PropTypes.object,
+  location: React.PropTypes.object,
+  searchKeywords: React.PropTypes.string,
+};
 
 export default HoldConfirmation;

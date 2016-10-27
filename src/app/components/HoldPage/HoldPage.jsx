@@ -37,7 +37,7 @@ class HoldPage extends React.Component {
         <div className="page-header">
           <div className="container">
             <Breadcrumbs
-              query={this.props.searchKeywords}
+              query={searchKeywords}
               type="hold"
               title={item.Record.RecordInfo.BibRecord.BibEntity.Titles[0].TitleFull}
               url={this.props.location.search}
@@ -89,6 +89,12 @@ HoldPage.contextTypes = {
   router: function contextType() {
     return React.PropTypes.func.isRequired;
   },
+};
+
+HoldPage.propTypes = {
+  location: React.PropTypes.object,
+  item: React.PropTypes.object,
+  searchKeywords: React.PropTypes.string,
 };
 
 export default HoldPage;

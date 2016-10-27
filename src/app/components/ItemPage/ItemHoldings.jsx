@@ -61,6 +61,6 @@ class ItemHoldings extends React.Component {
 
 ItemHoldings.propTypes = {
   holdings: React.PropTypes.array,
-}
+};
 
 export default ItemHoldings;

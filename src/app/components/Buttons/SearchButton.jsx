@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { SearchIcon } from 'dgx-svg-icons';
+// import { SearchIcon } from 'dgx-svg-icons';
 
 const SearchButton = ({
   id,

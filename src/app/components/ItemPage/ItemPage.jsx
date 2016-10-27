@@ -85,16 +85,16 @@ class ItemPage extends React.Component {
       // { term: 'Series', definition: '<a href="#series">Rethinking the Western tradition.</a>' },
       { term: 'Subjects', definition: `<div class="hiearchy">
           ${subjectElm}
-        </div>`
+        </div>`,
       },
       { term: 'Contributors', definition: `<ul>
           <li><a href="agent.html">${author}</a></li>
-        </ul>`
+        </ul>`,
       },
-      { term: 'Numbering', definition: 
-        numbering ? numbering.map((number, k) => {
-          return `<span key={k}> ${number.Type}: ${number.Value}</span>`;
-        }) : null
+      { term: 'Numbering', definition:
+        numbering ? numbering.map((number) => {
+          return `<span> ${number.Type}: ${number.Value}</span>`;
+        }) : null,
       },
       // { term: 'Bibliography', definition: 'Includes bibliographical references and index.' },
       // { term: 'Contents', definition: `<ul>
@@ -173,6 +173,7 @@ class ItemPage extends React.Component {
 ItemPage.propTypes = {
   item: React.PropTypes.object,
   searchKeywords: React.PropTypes.string,
+  location: React.PropTypes.object,
 };
 
 export default ItemPage;

@@ -1,21 +1,21 @@
 import React from 'react';
 
 class ItemDetails extends React.Component {
-  createMarkup(markup) {
-    return { __html: markup };
-  }
-
   getItem(data) {
     if (!data.length) {
       return null;
     }
 
-    return data.map((item, i) => {
+    return data.map((item) => {
       return [
         (<dt dangerouslySetInnerHTML={this.createMarkup(item.term)}></dt>),
         (<dd dangerouslySetInnerHTML={this.createMarkup(item.definition)}></dd>),
       ];
     });
+  }
+
+  createMarkup(markup) {
+    return { __html: markup };
   }
 
   render() {

@@ -1,9 +1,5 @@
 import React from 'react';
 
-import {
-  isEmpty as _isEmpty,
-} from 'underscore';
-
 import DateRange from './DateRange.jsx';
 import Actions from '../../actions/Actions.js';
 

@@ -1,10 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router';
 
-import {
-  map as _map,
-} from 'underscore';
-
 import Breadcrumbs from '../Breadcrumbs/Breadcrumbs.jsx';
 import Search from '../Search/Search.jsx';
 

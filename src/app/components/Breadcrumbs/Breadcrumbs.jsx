@@ -68,11 +68,13 @@ const Breadcrumbs = ({ query, type, title = '', url }) => {
       {crumbs}
     </div>
   );
-}
+};
 
 Breadcrumbs.propTypes = {
   query: React.PropTypes.string,
   type: React.PropTypes.string,
+  title: React.PropTypes.string,
+  url: React.PropTypes.string,
 };
 
 export default Breadcrumbs;
