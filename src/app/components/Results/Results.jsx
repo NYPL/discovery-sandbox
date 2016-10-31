@@ -1,6 +1,7 @@
 import React from 'react';
 
 import EResourceResults from './EResourceResults.jsx';
+import RegularResults from './RegularResults.jsx';
 
 class Results extends React.Component {
   render() {
@@ -33,7 +34,8 @@ class Results extends React.Component {
           </div>
         </div>
 
-        <EResourceResults results={results} query={this.props.query} />
+        {/*<EResourceResults results={results} query={this.props.query} />*/}
+        <RegularResults results={results} query={this.props.query} />
       </div>
     );
   }

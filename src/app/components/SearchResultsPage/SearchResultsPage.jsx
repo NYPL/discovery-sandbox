@@ -11,7 +11,7 @@ import Search from '../Search/Search.jsx';
 
 class SearchResultsPage extends React.Component {
   componentWillMount() {
-    console.log(this.props.ebscodata);
+    // console.log(this.props.ebscodata);
     if (!this.props.ebscodata) {
       axios
         .get(`/api?q=${this.props.searchKeywords}`)
@@ -33,8 +33,9 @@ class SearchResultsPage extends React.Component {
     let breadcrumbs = null;
     const facets = ebscodata ? ebscodata.facets : [];
     const dateRange = ebscodata ? ebscodata.dateRange : null;
-    const totalHits = ebscodata ? ebscodata.totalHits : 0;
-    const results = ebscodata ? ebscodata.results : [];
+    const totalHits = ebscodata ? ebscodata.totalResults : 0;
+    // const results = ebscodata ? ebscodata.results : [];
+    const results = ebscodata ? ebscodata.itemListElement : [];
 
     // console.log(ebscodata);
 
@@ -58,11 +59,11 @@ class SearchResultsPage extends React.Component {
 
         <div className="container search-results-container">
 
-          <FacetSidebar
+          {/*<FacetSidebar
             facets={facets}
             keywords={searchKeywords}
             dateRange={dateRange}
-          />
+          />*/}
 
           <div className="results">
             <Hits hits={totalHits} query={searchKeywords} />

@@ -66,31 +66,34 @@ function MainApp(req, res, next) {
 }
 
 function Search(query, cb, errorcb) {
-  const instance = axios.create({
-    headers: {
-      'x-sessionToken': sessionToken,
-      'x-authenticationToken': authenticationToken,
-    },
-  });
+  // const instance = axios.create({
+  //   headers: {
+  //     'x-sessionToken': sessionToken,
+  //     'x-authenticationToken': authenticationToken,
+  //   },
+  // });
 
-  instance
-    .post(`http://eds-api.ebscohost.com/edsapi/rest/Search`, {
-      "SearchCriteria": {
-        "Queries": [ {"Term": query} ],
-        "SearchMode": "smart",
-        "IncludeFacets": "y",
-        "Sort": "relevance",
-        "AutoSuggest": "y",
-      },
-      "RetrievalCriteria": {
-        "View": "brief",
-        "ResultsPerPage": 10,
-        "PageNumber": 1,
-        "Highlight": "y"
-      },
-      "Actions":null
-    })
-    .then(response => cb(modelEbsco.build(response.data)))
+  // instance
+  //   .post(`http://eds-api.ebscohost.com/edsapi/rest/Search`, {
+  //     "SearchCriteria": {
+  //       "Queries": [ {"Term": query} ],
+  //       "SearchMode": "smart",
+  //       "IncludeFacets": "y",
+  //       "Sort": "relevance",
+  //       "AutoSuggest": "y",
+  //     },
+  //     "RetrievalCriteria": {
+  //       "View": "brief",
+  //       "ResultsPerPage": 10,
+  //       "PageNumber": 1,
+  //       "Highlight": "y"
+  //     },
+  //     "Actions":null
+  //   })
+    // .then(response => cb(modelEbsco.build(response.data)))
+  axios
+    .get(`http://45.55.210.240/api/v1/resources?action=search&value=${query}`)
+    .then(response => cb(response.data))
     .catch(error => {
       console.log(error);
       console.log(`error calling API : ${error}`);
@@ -138,20 +141,24 @@ function ServerSearch(req, res, next) {
   );
 }
 
-function RetrieveItem(dbid, an, cb, errorcb) {
-  const instance = axios.create({
-    headers: {
-      'x-sessionToken': sessionToken,
-      'x-authenticationToken': authenticationToken,
-    },
-  });
+function RetrieveItem(q, cb, errorcb) {
+  // const instance = axios.create({
+  //   headers: {
+  //     'x-sessionToken': sessionToken,
+  //     'x-authenticationToken': authenticationToken,
+  //   },
+  // });
 
-  instance
-    .post(`http://eds-api.ebscohost.com/edsapi/rest/retrieve`, {
-      DbId: dbid,
-      An: an,
-    })
-    .then(response => cb(modelEbsco.buildItem(response.data)))
+  // instance
+  //   .post(`http://eds-api.ebscohost.com/edsapi/rest/retrieve`, {
+  //     DbId: dbid,
+  //     An: an,
+  //   })
+  //   .then(response => cb(modelEbsco.buildItem(response.data)))
+
+  axios
+    .get(`http://45.55.210.240/api/v1/resources/${q}`)
+    .then(response => cb(response.data))
     .catch(error => {
       console.log(error);
       console.log(`error calling API : ${error}`);
@@ -192,12 +199,10 @@ function ServerItemSearch(req, res, next) {
 }
 
 function AjaxItemSearch(req, res, next) {
-  const dbid = req.query.dbid || '';
-  const an = req.query.an || '';
+  const q = req.query.q || '';
 
   RetrieveItem(
-    dbid,
-    an,
+    q,
     (data) => res.json(data),
     (error) => res.json(error)
   );
