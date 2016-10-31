@@ -10,6 +10,7 @@ class RegularResults extends React.Component {
 
     this.routeHandler = this.routeHandler.bind(this);
     this.getRecord = this.getRecord.bind(this);
+    this.getItems = this.getItems.bind(this);
   }
 
   getRecord(e, id) {
@@ -31,29 +32,62 @@ class RegularResults extends React.Component {
     this.context.router.push(route);
   }
 
+  getItems(items, result) {
+    return items.map((item, i) => {
+      const available = item.availability[0].substring(7);
+      return (
+        <div className="sub-item" key={i}>
+          <div>
+            <span className="status available">{available} </span> 
+            <a href="#"> {item.location.length ? item.location[0][0].prefLabel : null}</a>
+            {
+              result.idCallNum ? 
+              (<span className="call-no"> with call no. {result.idCallNum[0]}</span>)
+              : null
+            }
+          </div>
+          <div>
+            {
+              available === "AVAILABLE" ?
+                (<Link
+                  className="button"
+                  to={`/item/${item['@id'].substring(4)}`}
+                  onClick={(e) => this.getRecord(e, id)}
+                >
+                  Place a hold
+                </Link>)
+                : null
+            }
+          </div>
+        </div>
+      );
+    });
+  }
+
   render() {
     const results = this.props.results;
     let resultsElm = null;
-
+console.log(results)
     if (results.length) {
       resultsElm = results.map((item, i) => {
         const result = item.result;
         const itemTitle = result.title[0];
-        const itemImage = result.depiction ? (
+        const itemImage = result.btCover ? (
           <div className="result-image">
-            <img src={result.depiction} />
+            <img src={result.btCover} />
           </div>
           ) : null;
         const authors = result.contributor && result.contributor.length ? 
-          result.contributor.map((author) => `${author.prefLabel}; ` )
+          result.contributor.map((author) => `${author}; ` )
           : null;
-        const id = result['@id'].substring(4);
+        const id = result.idBnum;
+        const items = result.items;
 
         return (
           <li key={i} className="result-item">
             {itemImage}
             <div className="result-text">
-              <div className="type">{result.type[0].prefLabel}</div>
+              <div className="type">{result.type ? result.type[0].prefLabel : null}</div>
               <Link
                 onClick={(e) => this.getRecord(e, id)}
                 href={`/item/${id}`}
@@ -67,26 +101,7 @@ class RegularResults extends React.Component {
               <div className="description">
               </div>
               <div className="sub-items">
-                <div className="sub-item">
-                  <div>
-                    <span className="status available">Available </span> to use in
-                    <a href="#"> {result.owner.prefLabel}</a>
-                    {
-                      result.idCallNum ? 
-                      (<span className="call-no"> with call no. {result.idCallNum[0]}</span>)
-                      : null
-                    }
-                  </div>
-                  <div>
-                    <Link
-                      className="button"
-                      to={`/item/${id}}`}
-                      onClick={(e) => this.getRecord(e, id)}
-                    >
-                      Place a hold
-                    </Link>
-                  </div>
-                </div>
+                {this.getItems(items, result)}
               </div>
             </div>
           </li>

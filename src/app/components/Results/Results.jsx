@@ -9,12 +9,13 @@ class Results extends React.Component {
       results,
       hits,
     } = this.props;
+    let pageTotal = (hits <= 10) ? hits : '1-10';
 
     return (
       <div>
         <div className="results-nav">
           <div className="pagination">
-            <span className="pagination-total">1-10 of {hits}</span>
+            <span className="pagination-total">{pageTotal} of {hits}</span>
             <a href="#" className="paginate next">Next Page</a>
           </div>
 

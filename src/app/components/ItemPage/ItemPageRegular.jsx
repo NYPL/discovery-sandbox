@@ -14,25 +14,28 @@ class ItemPageRegular extends React.Component {
     // const bibRecord = record.RecordInfo.BibRecord;
     const title = record.title[0];
     const authors = record.contributor && record.contributor.length ? 
-      record.contributor.map((author, i) => (<a href="#" key={i}>{author.prefLabel}; </a>))
+      record.contributor.map((author, i) => (<a href="#" key={i}>{author}; </a>))
       : null;
     const authorsString = record.contributor && record.contributor.length ? 
-      record.contributor.map((author, i) => (`<a href="#" key={i}>${author.prefLabel}; </a>`))
+      record.contributor.map((author, i) => (`<a href="#" key={i}>${author}; </a>`))
       : null;
     const language = record.language[0].prefLabel;
-    const subjects = record.subject;
-    const subjectElm = subjects.map((subject, i) => (`<a href="#" key={i}>${subject.prefLabel}</a>`)).join('');
+    const subjects = record.subject ? record.subject : [];
+    const subjectElm = subjects.length ?
+      subjects.map((subject, i) => (`<a href="#" key={i}>${subject.prefLabel}</a>`)).join('')
+      : '';
     // const numbering = bibRecord.BibRelationships.IsPartOfRelationships[0].BibEntity.Numbering;
     // const dates = bibRecord.BibRelationships.IsPartOfRelationships[0].BibEntity.Dates[0];
-    const holdings = [
-      {
+    const holdings = record.items.map((item, i) => {
+      const available = item.availability[0].substring(7);
+      return {
         className: '',
-        available: '<span class="status available">Available</span> online',
-        location: `<a href="#">${record.owner.prefLabel}</a>`,
-        callNumber: record.idCallNum ? record.idCallNum[0] : '',
-        hold: (<Link to={`/hold/${record['@id'].substring(4)}`} className="button">Place a hold</Link>),
-      },
-    ];
+        available: `<span class="status available">${available}</span> `,
+        location: `<a href="#"> ${item.location.length ? item.location[0][0].prefLabel : null}</a>`,
+        callNumber: item.idCallNum ? item.idCallNum[0] : '',
+        hold: available === 'AVAILABLE' ? (<Link to={`/hold/${item['@id'].substring(4)}`} className="button">Place a hold</Link>) : null,
+      }
+    });
     // const externalData = [
     //   // { term: 'Publisher\'s summary', definition: `<ul>
     //   //     <li>This authoritative edition of the complete texts of the "Federalist Papers", the Articles of Confederation, the U.S. Constitution, and the Amendments to the U.S. Constitution features supporting essays in which leading scholars provide historical context and analysis. An introduction by Ian Shapiro offers an overview of the publication of the "Federalist Papers" and their importance. In three additional essays, John Dunn explores the composition of the "Federalist Papers" and the conflicting agendas of its authors; Eileen Hunt Botting explains how early advocates of women's rights, most prominently Mercy Otis Warren, Judith Sargent Murray, and Charles Brockden Brown, responded to the Federalist-Antifederalist debates; and Donald Horowitz discusses the "Federalist Papers" from the perspective of recent experiments with democracy and constitution-making around the world. These essays both illuminate the original texts and encourage active engagement with them.</li>
@@ -117,10 +120,17 @@ class ItemPageRegular extends React.Component {
             </div>
           </div>
 
-          <ItemHoldings path={this.props.location.search} holdings={holdings} />
+          <ItemHoldings
+            path={this.props.location.search}
+            holdings={holdings}
+            title={`${record.numAvailable} copies of this item are available at the following locations:`}
+          />
 
           <div className="item-details">
-            <ItemDetails data={itemDetails} title="Item details" />
+            <ItemDetails
+              data={itemDetails}
+              title="Item details"
+            />
 
             {/*<ItemEditions title={title} />
 

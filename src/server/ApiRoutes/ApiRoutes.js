@@ -92,7 +92,7 @@ function Search(query, cb, errorcb) {
   //   })
     // .then(response => cb(modelEbsco.build(response.data)))
   axios
-    .get(`http://45.55.210.240/api/v1/resources?action=search&value=${query}`)
+    .get(`http://discovery-api.nypltech.org/api/v1/resources?q=${query}`)
     .then(response => cb(response.data))
     .catch(error => {
       console.log(error);
@@ -157,7 +157,7 @@ function RetrieveItem(q, cb, errorcb) {
   //   .then(response => cb(modelEbsco.buildItem(response.data)))
 
   axios
-    .get(`http://45.55.210.240/api/v1/resources/${q}`)
+    .get(`http://discovery-api.nypltech.org/api/v1/resources/${q}`)
     .then(response => cb(response.data))
     .catch(error => {
       console.log(error);

@@ -49,7 +49,7 @@ class ItemHoldings extends React.Component {
 
     return (
       <div className="item-holdings">
-        <h2>Copies of this item are available at the following locations:</h2>
+        <h2>{this.props.title}</h2>
         <table className="generic-table holdings-table">
           {heading}
           {body}
