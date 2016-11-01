@@ -52,7 +52,7 @@ const Breadcrumbs = ({ query, type, title = '', url }) => {
           (<span><Link to={`/search/${query}`}>Items</Link> &gt;&gt;</span>)
           : null
         }
-        <Link to={`/item${url}`}>{str}</Link> &gt;&gt;
+        <Link to={`/item/${url}`}>{str}</Link> &gt;&gt;
         Place a hold
       </span>
     );
@@ -69,7 +69,7 @@ const Breadcrumbs = ({ query, type, title = '', url }) => {
           (<span><Link to={`/search/${query}`}>Items</Link> &gt;&gt;</span>)
           : null
         }
-        <Link to={`/item${url}`}>{str}</Link> &gt;&gt;
+        <Link to={`/item/${url}`}>{str}</Link> &gt;&gt;
         Hold confirmation
       </span>
     );

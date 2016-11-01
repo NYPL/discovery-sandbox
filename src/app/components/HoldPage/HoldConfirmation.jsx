@@ -11,7 +11,8 @@ class HoldConfirmation extends React.Component {
       item,
       searchKeywords,
     } = this.props;
-    const title = item.Record.RecordInfo.BibRecord.BibEntity.Titles[0].TitleFull;
+    const title = item.title[0];
+    const id = item['@id'].substring(4);
 
     const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July',
       'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
@@ -31,7 +32,7 @@ class HoldConfirmation extends React.Component {
               query={searchKeywords}
               type="holdConfirmation"
               title={title}
-              url={this.props.location.search}
+              url={id}
             />
           </div>
         </div>
@@ -45,11 +46,11 @@ class HoldConfirmation extends React.Component {
             <div className="details col span-2-3">
               <h2>Item hold details</h2>
               <ul className="generic-list">
-                <li>You have placed a hold on <Link to={`/item${this.props.location.search}`}>{title}</Link> with call number <a href="#">IB 09-5067</a></li>
+                <li>You have placed a hold on <Link to={`/item/${id}`}>{title}</Link></li>
                 <li>Ready for use by <strong>approximately {dateDisplay}, 9:00am</strong> at the location below</li>
                 <li><strong>You will receive an email notification</strong> when the item is ready for use</li>
                 <li>Book will be held until {dateDisplayEnd}, 5:00pm</li>
-                <li>Visit your <a href="../holds/v1a.html">patron account page</a> to view the status of this item hold</li>
+                <li>Visit your <a href="#">patron account page</a> to view the status of this item hold</li>
               </ul>
             </div>
             <div className="actions col span-1-3">

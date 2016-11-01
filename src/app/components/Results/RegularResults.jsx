@@ -21,7 +21,7 @@ class RegularResults extends React.Component {
       .then(response => {
         console.log(response.data);
         Actions.updateItem(response.data);
-        this.routeHandler(`/item/${id}`);
+        this.routeHandler(`/hold/${id}`);
       })
       .catch(error => {
         console.log(error);
@@ -36,6 +36,7 @@ class RegularResults extends React.Component {
     return items.map((item, i) => {
       const availability = item.availability[0].substring(7);
       const available = availability === 'AVAILABLE';
+      const id = item['@id'].substring(4)
 
       return (
         <div className="sub-item" key={i}>
@@ -56,7 +57,7 @@ class RegularResults extends React.Component {
               available ?
                 (<Link
                   className="button"
-                  to={`/item/${item['@id'].substring(4)}`}
+                  to={`/hold/${id}`}
                   onClick={(e) => this.getRecord(e, id)}
                 >
                   Place a hold
