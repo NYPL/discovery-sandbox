@@ -9,7 +9,9 @@ class Results extends React.Component {
       results,
       hits,
     } = this.props;
-    let pageTotal = (hits <= 10) ? hits : '1-10';
+
+    // let pageTotal = (parseInt(hits, 10) <= 10) ? hits : '1-10';
+    let pageTotal = hits;
 
     return (
       <div>

@@ -59,7 +59,7 @@ function getSessionToken(authToken) {
     });
 }
 
-getCredentials();
+// getCredentials();
 
 function MainApp(req, res, next) {
   next();
@@ -155,7 +155,7 @@ function RetrieveItem(q, cb, errorcb) {
   //     An: an,
   //   })
   //   .then(response => cb(modelEbsco.buildItem(response.data)))
-
+console.log(q);
   axios
     .get(`http://discovery-api.nypltech.org/api/v1/resources/${q}`)
     .then(response => cb(response.data))
@@ -170,18 +170,18 @@ function RetrieveItem(q, cb, errorcb) {
 }
 
 function ServerItemSearch(req, res, next) {
-  const dbid = req.query.dbid || '';
-  const an = req.query.an || '';
-  const query = req.query.q || 'harry potter';
+  // const dbid = req.query.dbid || '';
+  // const an = req.query.an || '';
+  // const query = req.query.q || 'harry potter';
+  const q = req.params.id || 'harry potter';
 
   RetrieveItem(
-    dbid,
-    an,
+    q,
     (data) => {
       res.locals.data = {
         Store: {
           item: data,
-          searchKeywords: query,
+          searchKeywords: '',
         },
       };
       next();
@@ -225,11 +225,11 @@ router
   .get(ServerSearch);
 
 router
-  .route('/hold')
+  .route('/hold/:id')
   .get(ServerItemSearch);
 
 router
-  .route('/hold/confirmation')
+  .route('/hold/confirmation/:id')
   .get(ServerItemSearch);
 
 router
@@ -237,7 +237,7 @@ router
   .get(Account);
 
 router
-  .route('/item')
+  .route('/item/:id')
   .get(ServerItemSearch);
 
 router

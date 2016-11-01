@@ -34,11 +34,16 @@ class RegularResults extends React.Component {
 
   getItems(items, result) {
     return items.map((item, i) => {
-      const available = item.availability[0].substring(7);
+      const availability = item.availability[0].substring(7);
+      const available = availability === 'AVAILABLE';
+
       return (
         <div className="sub-item" key={i}>
           <div>
-            <span className="status available">{available} </span> 
+            <span className="status available">{availability}</span>
+            {
+              available ? ' to use in ' : ''
+            }
             <a href="#"> {item.location.length ? item.location[0][0].prefLabel : null}</a>
             {
               result.idCallNum ? 
@@ -48,7 +53,7 @@ class RegularResults extends React.Component {
           </div>
           <div>
             {
-              available === "AVAILABLE" ?
+              available ?
                 (<Link
                   className="button"
                   to={`/item/${item['@id'].substring(4)}`}
@@ -85,7 +90,6 @@ console.log(results)
 
         return (
           <li key={i} className="result-item">
-            {itemImage}
             <div className="result-text">
               <div className="type">{result.type ? result.type[0].prefLabel : null}</div>
               <Link

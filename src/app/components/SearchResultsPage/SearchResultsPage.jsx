@@ -31,7 +31,7 @@ class SearchResultsPage extends React.Component {
       searchKeywords,
     } = this.props;
     let breadcrumbs = null;
-    const facets = ebscodata ? ebscodata.facets : [];
+    const facets = ebscodata && ebscodata.facets ? ebscodata.facets : [];
     const dateRange = ebscodata ? ebscodata.dateRange : null;
     const totalHits = ebscodata ? ebscodata.totalResults : 0;
     // const results = ebscodata ? ebscodata.results : [];
@@ -59,11 +59,11 @@ class SearchResultsPage extends React.Component {
 
         <div className="container search-results-container">
 
-          {/*<FacetSidebar
+          <FacetSidebar
             facets={facets}
             keywords={searchKeywords}
             dateRange={dateRange}
-          />*/}
+          />
 
           <div className="results">
             <Hits hits={totalHits} query={searchKeywords} />

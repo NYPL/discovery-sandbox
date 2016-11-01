@@ -31,7 +31,11 @@ const Breadcrumbs = ({ query, type, title = '', url }) => {
         <Link to="https://nypl.org">Home</Link> &gt;&gt;
         <Link to="https://nypl.org/research">Research</Link> &gt;&gt;
         <Link to="/">Research catalog</Link> &gt;&gt;
-        <Link to={`/search/${query}`}>Items</Link> &gt;&gt;
+        {
+          query ?
+          (<span><Link to={`/search/${query}`}>Items</Link> &gt;&gt;</span>)
+          : null
+        }
         {str}
       </span>
     );
@@ -43,7 +47,11 @@ const Breadcrumbs = ({ query, type, title = '', url }) => {
         <Link to="https://nypl.org">Home</Link> &gt;&gt;
         <Link to="https://nypl.org/research">Research</Link> &gt;&gt;
         <Link to="/">Research catalog</Link> &gt;&gt;
-        <Link to={`/search/${query}`}>Items</Link> &gt;&gt;
+        {
+          query ?
+          (<span><Link to={`/search/${query}`}>Items</Link> &gt;&gt;</span>)
+          : null
+        }
         <Link to={`/item${url}`}>{str}</Link> &gt;&gt;
         Place a hold
       </span>
@@ -56,7 +64,11 @@ const Breadcrumbs = ({ query, type, title = '', url }) => {
         <Link to="https://nypl.org">Home</Link> &gt;&gt;
         <Link to="https://nypl.org/research">Research</Link> &gt;&gt;
         <Link to="/">Research catalog</Link> &gt;&gt;
-        <Link to={`/search/${query}`}>Items</Link> &gt;&gt;
+        {
+          query ?
+          (<span><Link to={`/search/${query}`}>Items</Link> &gt;&gt;</span>)
+          : null
+        }
         <Link to={`/item${url}`}>{str}</Link> &gt;&gt;
         Hold confirmation
       </span>
