@@ -1,7 +1,7 @@
 import React from 'react';
 
 import EResourceResults from './EResourceResults.jsx';
-import ResultList from './ResultList.jsx';
+import ResultList from './ResultsList.jsx';
 
 class Results extends React.Component {
   render() {

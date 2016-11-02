@@ -4,7 +4,7 @@ import axios from 'axios';
 
 import Actions from '../../actions/Actions.js';
 
-class RegularResults extends React.Component {
+class ResultsList extends React.Component {
   constructor(props) {
     super(props);
 
@@ -124,14 +124,14 @@ class RegularResults extends React.Component {
   }
 }
 
-RegularResults.propTypes = {
+ResultsList.propTypes = {
   results: React.PropTypes.array,
 };
 
-RegularResults.contextTypes = {
+ResultsList.contextTypes = {
   router: function contextType() {
     return React.PropTypes.func.isRequired;
   },
 };
 
-export default RegularResults;
+export default ResultsList;
