@@ -9,9 +9,9 @@ class HoldPage extends React.Component {
     this.routeHandler = this.routeHandler.bind(this);
   }
 
-  routeHandler(e, id) {
+  routeHandler(e) {
     e.preventDefault();
-    this.context.router.push(`/hold/confirmation/${id}`);
+    this.context.router.push(`/hold/confirmation${this.props.location.search}`);
   }
 
   render() {
@@ -19,9 +19,10 @@ class HoldPage extends React.Component {
       item,
       searchKeywords,
     } = this.props;
-    const record = this.props.item;
-    const title = record.title[0];
-    const id = record['@id'].substring(4);
+    const record = this.props.item.Record;
+    const ebscoLink = record.PLink;
+    const bibRecord = record.RecordInfo.BibRecord;
+    const title = bibRecord.BibEntity.Titles[0].TitleFull;
 
     const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July',
       'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
@@ -38,8 +39,8 @@ class HoldPage extends React.Component {
             <Breadcrumbs
               query={searchKeywords}
               type="hold"
-              title={title}
-              url={id}
+              title={item.Record.RecordInfo.BibRecord.BibEntity.Titles[0].TitleFull}
+              url={this.props.location.search}
             />
           </div>
         </div>
@@ -52,7 +53,7 @@ class HoldPage extends React.Component {
           <div className="item-summary">
             <div className="item">
               <h2>You are about to place a hold on the following research item:</h2>
-              <p><a href="#">{title}</a></p>
+              <p><a href={ebscoLink}>{title}</a></p>
             </div>
           </div>
 
@@ -76,9 +77,7 @@ class HoldPage extends React.Component {
               </label>
             </fieldset>
 
-            <button type="submit" className="large" onClick={(e) => this.routeHandler(e, id)}>
-              Submit your item hold request
-            </button>
+            <button type="submit" className="large" onClick={this.routeHandler}>Submit your item hold request</button>
           </form>
         </div>
       </div>

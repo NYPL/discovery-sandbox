@@ -97,7 +97,7 @@ class Search extends React.Component {
         .get(`/api?q=${keyword}`)
         .then(response => {
           // console.log(response.data);
-          Actions.updateEbscoData(response.data);
+          Actions.updateSearchResults(response.data);
           Actions.updateSearchKeywords(keyword);
           this.routeHandler(`/search/${keyword}`);
         })

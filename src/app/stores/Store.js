@@ -5,12 +5,14 @@ class Store {
   constructor() {
     this.bindListeners({
       updateEbscoData: Actions.updateEbscoData,
+      updateSearchResults: Actions.updateSearchResults,
       updateSearchKeywords: Actions.updateSearchKeywords,
       updateItem: Actions.updateItem,
     });
 
     this.state = {
       ebscodata: {},
+      searchResults: {},
       item: {},
       searchKeywords: '',
     };
@@ -20,12 +22,16 @@ class Store {
     this.setState({ ebscodata: data });
   }
 
-  updateItem(data) {
-    this.setState({ item: data });
+  updateSearchResults(data) {
+    this.setState({ searchResults: data });
   }
 
   updateSearchKeywords(data) {
     this.setState({ searchKeywords: data });
+  }
+
+  updateItem(data) {
+    this.setState({ item: data });
   }
 }
 

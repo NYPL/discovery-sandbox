@@ -1,6 +1,7 @@
 import React from 'react';
 
 import EResourceResults from './EResourceResults.jsx';
+import RegularResults from './RegularResults.jsx';
 
 class Results extends React.Component {
   render() {
@@ -9,11 +10,14 @@ class Results extends React.Component {
       hits,
     } = this.props;
 
+    // let pageTotal = (parseInt(hits, 10) <= 10) ? hits : '1-10';
+    let pageTotal = hits;
+
     return (
       <div>
         <div className="results-nav">
           <div className="pagination">
-            <span className="pagination-total">1-10 of {hits}</span>
+            <span className="pagination-total">{pageTotal} of {hits}</span>
             <a href="#" className="paginate next">Next Page</a>
           </div>
 
@@ -33,7 +37,8 @@ class Results extends React.Component {
           </div>
         </div>
 
-        <EResourceResults results={results} query={this.props.query} />
+        {/*<EResourceResults results={results} query={this.props.query} />*/}
+        <RegularResults results={results} query={this.props.query} />
       </div>
     );
   }

@@ -59,13 +59,13 @@ function getSessionToken(authToken) {
     });
 }
 
-getCredentials();
+// getCredentials();
 
 function MainApp(req, res, next) {
   next();
 }
 
-function Search(query, cb, errorcb) {
+function EbscoSearch(query, cb, errorcb) {
   const instance = axios.create({
     headers: {
       'x-sessionToken': sessionToken,
@@ -101,6 +101,17 @@ function Search(query, cb, errorcb) {
     }); /* end axios call */
 }
 
+function Search(query, cb, errorcb) {
+  axios
+    .get(`http://discovery-api.nypltech.org/api/v1/resources?q=${query}`)
+    .then(response => cb(response.data))
+    .catch(error => {
+      console.log(error);
+      console.log(`error calling API : ${error}`);
+
+      errorcb(error);
+    }); /* end axios call */
+}
 
 function AjaxSearch(req, res, next) {
   const query = req.query.q || 'harry potter';
@@ -138,7 +149,7 @@ function ServerSearch(req, res, next) {
   );
 }
 
-function RetrieveItem(dbid, an, cb, errorcb) {
+function RetrieveEbscoItem(dbid, an, cb, errorcb) {
   const instance = axios.create({
     headers: {
       'x-sessionToken': sessionToken,
@@ -162,19 +173,61 @@ function RetrieveItem(dbid, an, cb, errorcb) {
     }); /* end axios call */
 }
 
+function RetrieveItem(q, cb, errorcb) {
+  axios
+    .get(`http://discovery-api.nypltech.org/api/v1/resources/${q}`)
+    .then(response => cb(response.data))
+    .catch(error => {
+      console.log(error);
+      console.log(`error calling API : ${error}`);
+
+      errorcb(error);
+    }); /* end axios call */
+}
+
 function ServerItemSearch(req, res, next) {
-  const dbid = req.query.dbid || '';
-  const an = req.query.an || '';
-  const query = req.query.q || 'harry potter';
+  // const dbid = req.query.dbid || '';
+  // const an = req.query.an || '';
+  // const query = req.query.q || 'harry potter';
+  const q = req.params.id || 'harry potter';
 
   RetrieveItem(
-    dbid,
-    an,
+    q,
     (data) => {
       res.locals.data = {
         Store: {
           item: data,
-          searchKeywords: query,
+          searchKeywords: '',
+        },
+      };
+      next();
+    },
+    (error) => {
+      res.locals.data = {
+        Store: {
+          item: {},
+          searchKeywords: '',
+        },
+      };
+      next();
+    }
+  );
+}
+
+function ServerItemSearch(req, res, next) {
+  // const dbid = req.query.dbid || '';
+  // const an = req.query.an || '';
+  // const query = req.query.q || 'harry potter';
+  // RetrieveEbscoItem(dbid, an, ...);
+  const q = req.params.id || 'harry potter';
+
+  RetrieveItem(
+    q,
+    (data) => {
+      res.locals.data = {
+        Store: {
+          item: data,
+          searchKeywords: '',
         },
       };
       next();
@@ -192,12 +245,10 @@ function ServerItemSearch(req, res, next) {
 }
 
 function AjaxItemSearch(req, res, next) {
-  const dbid = req.query.dbid || '';
-  const an = req.query.an || '';
+  const q = req.query.q || '';
 
   RetrieveItem(
-    dbid,
-    an,
+    q,
     (data) => res.json(data),
     (error) => res.json(error)
   );
@@ -220,11 +271,11 @@ router
   .get(ServerSearch);
 
 router
-  .route('/hold')
+  .route('/hold/:id')
   .get(ServerItemSearch);
 
 router
-  .route('/hold/confirmation')
+  .route('/hold/confirmation/:id')
   .get(ServerItemSearch);
 
 router
@@ -232,7 +283,7 @@ router
   .get(Account);
 
 router
-  .route('/item')
+  .route('/item/:id')
   .get(ServerItemSearch);
 
 router
