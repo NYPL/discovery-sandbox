@@ -11,12 +11,11 @@ import Search from '../Search/Search.jsx';
 
 class SearchResultsPage extends React.Component {
   componentWillMount() {
-    // console.log(this.props.ebscodata);
-    if (!this.props.ebscodata) {
+    if (!this.props.searchResults) {
       axios
         .get(`/api?q=${this.props.searchKeywords}`)
         .then(response => {
-          Actions.updateEbscoData(response.data);
+          Actions.updateSearchResults(response.data);
           Actions.updateSearchKeywords(this.props.searchKeywords);
         })
         .catch(error => {
@@ -27,17 +26,17 @@ class SearchResultsPage extends React.Component {
 
   render() {
     const {
-      ebscodata,
+      searchResults,
       searchKeywords,
     } = this.props;
     let breadcrumbs = null;
-    const facets = ebscodata && ebscodata.facets ? ebscodata.facets : [];
-    const dateRange = ebscodata ? ebscodata.dateRange : null;
-    const totalHits = ebscodata ? ebscodata.totalResults : 0;
-    // const results = ebscodata ? ebscodata.results : [];
-    const results = ebscodata ? ebscodata.itemListElement : [];
+    const facets = searchResults && searchResults.facets ? searchResults.facets : [];
+    const dateRange = searchResults ? searchResults.dateRange : null;
+    const totalHits = searchResults ? searchResults.totalResults : 0;
+    // const results = searchResults ? searchResults.results : [];
+    const results = searchResults ? searchResults.itemListElement : [];
 
-    // console.log(ebscodata);
+    console.log(results);
 
     if (searchKeywords) {
       breadcrumbs = (
@@ -81,7 +80,7 @@ class SearchResultsPage extends React.Component {
 }
 
 SearchResultsPage.propTypes = {
-  ebscodata: React.PropTypes.object,
+  searchResults: React.PropTypes.object,
   searchKeywords: React.PropTypes.string,
 };
 

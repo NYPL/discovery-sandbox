@@ -65,35 +65,32 @@ function MainApp(req, res, next) {
   next();
 }
 
-function Search(query, cb, errorcb) {
-  // const instance = axios.create({
-  //   headers: {
-  //     'x-sessionToken': sessionToken,
-  //     'x-authenticationToken': authenticationToken,
-  //   },
-  // });
+function EbscoSearch(query, cb, errorcb) {
+  const instance = axios.create({
+    headers: {
+      'x-sessionToken': sessionToken,
+      'x-authenticationToken': authenticationToken,
+    },
+  });
 
-  // instance
-  //   .post(`http://eds-api.ebscohost.com/edsapi/rest/Search`, {
-  //     "SearchCriteria": {
-  //       "Queries": [ {"Term": query} ],
-  //       "SearchMode": "smart",
-  //       "IncludeFacets": "y",
-  //       "Sort": "relevance",
-  //       "AutoSuggest": "y",
-  //     },
-  //     "RetrievalCriteria": {
-  //       "View": "brief",
-  //       "ResultsPerPage": 10,
-  //       "PageNumber": 1,
-  //       "Highlight": "y"
-  //     },
-  //     "Actions":null
-  //   })
-    // .then(response => cb(modelEbsco.build(response.data)))
-  axios
-    .get(`http://discovery-api.nypltech.org/api/v1/resources?q=${query}`)
-    .then(response => cb(response.data))
+  instance
+    .post(`http://eds-api.ebscohost.com/edsapi/rest/Search`, {
+      "SearchCriteria": {
+        "Queries": [ {"Term": query} ],
+        "SearchMode": "smart",
+        "IncludeFacets": "y",
+        "Sort": "relevance",
+        "AutoSuggest": "y",
+      },
+      "RetrievalCriteria": {
+        "View": "brief",
+        "ResultsPerPage": 10,
+        "PageNumber": 1,
+        "Highlight": "y"
+      },
+      "Actions":null
+    })
+    .then(response => cb(modelEbsco.build(response.data)))
     .catch(error => {
       console.log(error);
       console.log(`error calling API : ${error}`);
@@ -104,6 +101,17 @@ function Search(query, cb, errorcb) {
     }); /* end axios call */
 }
 
+function Search(query, cb, errorcb) {
+  axios
+    .get(`http://discovery-api.nypltech.org/api/v1/resources?q=${query}`)
+    .then(response => cb(response.data))
+    .catch(error => {
+      console.log(error);
+      console.log(`error calling API : ${error}`);
+
+      errorcb(error);
+    }); /* end axios call */
+}
 
 function AjaxSearch(req, res, next) {
   const query = req.query.q || 'harry potter';
@@ -141,24 +149,20 @@ function ServerSearch(req, res, next) {
   );
 }
 
-function RetrieveItem(q, cb, errorcb) {
-  // const instance = axios.create({
-  //   headers: {
-  //     'x-sessionToken': sessionToken,
-  //     'x-authenticationToken': authenticationToken,
-  //   },
-  // });
+function RetrieveEbscoItem(dbid, an, cb, errorcb) {
+  const instance = axios.create({
+    headers: {
+      'x-sessionToken': sessionToken,
+      'x-authenticationToken': authenticationToken,
+    },
+  });
 
-  // instance
-  //   .post(`http://eds-api.ebscohost.com/edsapi/rest/retrieve`, {
-  //     DbId: dbid,
-  //     An: an,
-  //   })
-  //   .then(response => cb(modelEbsco.buildItem(response.data)))
-console.log(q);
-  axios
-    .get(`http://discovery-api.nypltech.org/api/v1/resources/${q}`)
-    .then(response => cb(response.data))
+  instance
+    .post(`http://eds-api.ebscohost.com/edsapi/rest/retrieve`, {
+      DbId: dbid,
+      An: an,
+    })
+    .then(response => cb(modelEbsco.buildItem(response.data)))
     .catch(error => {
       console.log(error);
       console.log(`error calling API : ${error}`);
@@ -169,10 +173,52 @@ console.log(q);
     }); /* end axios call */
 }
 
+function RetrieveItem(q, cb, errorcb) {
+  axios
+    .get(`http://discovery-api.nypltech.org/api/v1/resources/${q}`)
+    .then(response => cb(response.data))
+    .catch(error => {
+      console.log(error);
+      console.log(`error calling API : ${error}`);
+
+      errorcb(error);
+    }); /* end axios call */
+}
+
 function ServerItemSearch(req, res, next) {
   // const dbid = req.query.dbid || '';
   // const an = req.query.an || '';
   // const query = req.query.q || 'harry potter';
+  const q = req.params.id || 'harry potter';
+
+  RetrieveItem(
+    q,
+    (data) => {
+      res.locals.data = {
+        Store: {
+          item: data,
+          searchKeywords: '',
+        },
+      };
+      next();
+    },
+    (error) => {
+      res.locals.data = {
+        Store: {
+          item: {},
+          searchKeywords: '',
+        },
+      };
+      next();
+    }
+  );
+}
+
+function ServerItemSearch(req, res, next) {
+  // const dbid = req.query.dbid || '';
+  // const an = req.query.an || '';
+  // const query = req.query.q || 'harry potter';
+  // RetrieveEbscoItem(dbid, an, ...);
   const q = req.params.id || 'harry potter';
 
   RetrieveItem(

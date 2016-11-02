@@ -13,7 +13,7 @@ class RegularResults extends React.Component {
     this.getItems = this.getItems.bind(this);
   }
 
-  getRecord(e, id) {
+  getRecord(e, id, path) {
     e.preventDefault();
 
     axios
@@ -21,7 +21,7 @@ class RegularResults extends React.Component {
       .then(response => {
         console.log(response.data);
         Actions.updateItem(response.data);
-        this.routeHandler(`/hold/${id}`);
+        this.routeHandler(`/${path}/${id}`);
       })
       .catch(error => {
         console.log(error);
@@ -58,7 +58,7 @@ class RegularResults extends React.Component {
                 (<Link
                   className="button"
                   to={`/hold/${id}`}
-                  onClick={(e) => this.getRecord(e, id)}
+                  onClick={(e) => this.getRecord(e, id, 'hold')}
                 >
                   Place a hold
                 </Link>)
@@ -73,7 +73,7 @@ class RegularResults extends React.Component {
   render() {
     const results = this.props.results;
     let resultsElm = null;
-console.log(results)
+
     if (results.length) {
       resultsElm = results.map((item, i) => {
         const result = item.result;
@@ -94,7 +94,7 @@ console.log(results)
             <div className="result-text">
               <div className="type">{result.type ? result.type[0].prefLabel : null}</div>
               <Link
-                onClick={(e) => this.getRecord(e, id)}
+                onClick={(e) => this.getRecord(e, id, 'item')}
                 href={`/item/${id}`}
                 className="title"
               >

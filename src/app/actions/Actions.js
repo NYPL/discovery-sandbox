@@ -6,6 +6,10 @@ class Actions {
     return data;
   }
 
+  updateSearchResults(data) {
+    return data;
+  }
+
   updateSearchKeywords(data) {
     return data;
   }
