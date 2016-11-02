@@ -33,7 +33,6 @@ class SearchResultsPage extends React.Component {
     const facets = searchResults && searchResults.facets ? searchResults.facets : [];
     const dateRange = searchResults ? searchResults.dateRange : null;
     const totalHits = searchResults ? searchResults.totalResults : 0;
-    // const results = searchResults ? searchResults.results : [];
     const results = searchResults ? searchResults.itemListElement : [];
 
     console.log(results);

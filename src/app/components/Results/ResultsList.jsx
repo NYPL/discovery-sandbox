@@ -19,7 +19,7 @@ class RegularResults extends React.Component {
     axios
       .get(`/api/retrieve?q=${id}`)
       .then(response => {
-        console.log(response.data);
+        // console.log(response.data);
         Actions.updateItem(response.data);
         this.routeHandler(`/${path}/${id}`);
       })
@@ -36,7 +36,7 @@ class RegularResults extends React.Component {
     return items.map((item, i) => {
       const availability = item.availability[0].substring(7);
       const available = availability === 'AVAILABLE';
-      const id = item['@id'].substring(4)
+      const id = item['@id'].substring(4);
 
       return (
         <div className="sub-item" key={i}>
@@ -45,7 +45,7 @@ class RegularResults extends React.Component {
             {
               available ? ' to use in ' : ''
             }
-            <a href="#"> {item.location.length ? item.location[0][0].prefLabel : null}</a>
+            <a href="#">{item.location.length ? item.location[0][0].prefLabel : null}</a>
             {
               result.idCallNum ? 
               (<span className="call-no"> with call no. {result.idCallNum[0]}</span>)
@@ -55,13 +55,15 @@ class RegularResults extends React.Component {
           <div>
             {
               available ?
-                (<Link
-                  className="button"
-                  to={`/hold/${id}`}
-                  onClick={(e) => this.getRecord(e, id, 'hold')}
-                >
-                  Place a hold
-                </Link>)
+                (
+                  <Link
+                    className="button"
+                    to={`/hold/${id}`}
+                    onClick={(e) => this.getRecord(e, id, 'hold')}
+                  >
+                    Place a hold
+                  </Link>
+                )
                 : null
             }
           </div>

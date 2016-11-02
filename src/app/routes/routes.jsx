@@ -8,7 +8,7 @@ import { IndexRoute, Route } from 'react-router';
 import Application from '../components/Application/Application.jsx';
 import Home from '../components/Home/Home.jsx';
 import SearchResultsPage from '../components/SearchResultsPage/SearchResultsPage.jsx';
-import ItemPageRegular from '../components/ItemPage/ItemPageRegular.jsx';
+import ItemPage from '../components/ItemPage/ItemPageRegular.jsx';
 import HoldPage from '../components/HoldPage/HoldPage.jsx';
 import HoldConfirmation from '../components/HoldPage/HoldConfirmation.jsx';
 import AdvancedSearch from '../components/AdvancedSearch/AdvancedSearch.jsx';
