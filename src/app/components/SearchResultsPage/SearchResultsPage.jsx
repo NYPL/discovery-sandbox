@@ -59,7 +59,6 @@ class SearchResultsPage extends React.Component {
           <FacetSidebar
             facets={facetList}
             keywords={searchKeywords}
-            dateRange={dateRange}
           />
 
           <div className="results">

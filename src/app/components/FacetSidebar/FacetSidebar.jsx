@@ -17,9 +17,7 @@ class FacetSidebar extends React.Component {
   }
 
   render() {
-    const {
-      facets,
-    } = this.props;
+    const facets = this.props.facets;
     let facetsElm = null;
     let dateRange = null;
 
@@ -116,7 +114,6 @@ class FacetSidebar extends React.Component {
 FacetSidebar.propTypes = {
   facets: React.PropTypes.array,
   keywords: React.PropTypes.string,
-  dateRange: React.PropTypes.object,
 };
 
 FacetSidebar.contextTypes = {
