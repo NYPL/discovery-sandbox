@@ -125,25 +125,25 @@ function Search(query, cb, errorcb) {
 }
 
 function AjaxSearch(req, res, next) {
-  const query = req.query.q || 'harry potter';
+  const q = req.query.q || 'harry potter';
 
   Search(
-    query,
+    q,
     (facets, searchResults) => res.json({ facets, searchResults }),
     (error) => res.json(error)
   );
 }
 
 function ServerSearch(req, res, next) {
-  const query = req.params.keyword || 'harry potter';
+  const q = req.query.q || 'harry potter';
 
   Search(
-    query,
+    q,
     (facets, data) => {
       res.locals.data = {
         Store: {
           searchResults: data,
-          searchKeywords: query,
+          searchKeywords: q,
           facets,
         },
       };
@@ -276,7 +276,7 @@ function Hold(req, res, next) {
 }
 
 router
-  .route('/search/:keyword')
+  .route('/search')
   .get(ServerSearch);
 
 router

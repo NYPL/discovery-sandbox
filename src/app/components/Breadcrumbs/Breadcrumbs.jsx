@@ -33,7 +33,7 @@ const Breadcrumbs = ({ query, type, title = '', url }) => {
         <Link to="/">Research catalog</Link> &gt;&gt;
         {
           query ?
-          (<span><Link to={`/search/${query}`}>Items</Link> &gt;&gt;</span>)
+          (<span><Link to={`/search?q=${query}`}>Items</Link> &gt;&gt;</span>)
           : null
         }
         {str}
@@ -49,7 +49,7 @@ const Breadcrumbs = ({ query, type, title = '', url }) => {
         <Link to="/">Research catalog</Link> &gt;&gt;
         {
           query ?
-          (<span><Link to={`/search/${query}`}>Items</Link> &gt;&gt;</span>)
+          (<span><Link to={`/search?q=${query}`}>Items</Link> &gt;&gt;</span>)
           : null
         }
         <Link to={`/item/${url}`}>{str}</Link> &gt;&gt;
@@ -66,7 +66,7 @@ const Breadcrumbs = ({ query, type, title = '', url }) => {
         <Link to="/">Research catalog</Link> &gt;&gt;
         {
           query ?
-          (<span><Link to={`/search/${query}`}>Items</Link> &gt;&gt;</span>)
+          (<span><Link to={`/search?q=${query}`}>Items</Link> &gt;&gt;</span>)
           : null
         }
         <Link to={`/item/${url}`}>{str}</Link> &gt;&gt;
