@@ -136,6 +136,8 @@ function AjaxSearch(req, res, next) {
 
 function ServerSearch(req, res, next) {
   const q = req.query.q || 'harry potter';
+  const spaceIndex = q.indexOf(' ') === -1 ? q.length : q.indexOf(' ');
+  const query = q.substring(0, spaceIndex);
 
   Search(
     q,
@@ -143,7 +145,7 @@ function ServerSearch(req, res, next) {
       res.locals.data = {
         Store: {
           searchResults: data,
-          searchKeywords: q,
+          searchKeywords: query,
           facets,
         },
       };
