@@ -19,24 +19,36 @@ class FacetSidebar extends React.Component {
   render() {
     const {
       facets,
-      dateRange,
     } = this.props;
     let facetsElm = null;
+    let dateRange = null;
 
     if (facets.length) {
       facetsElm = facets.map((facet, i) => {
-        const label = facet.label.replace(/ /, '').toLowerCase();
+        const label = facet.field;
+
+        if (label === 'dates') {
+          dateRange = facet;
+          return null;
+        }
 
         return (
           <fieldset key={i}>
-            <label htmlFor={`select-${label}`}>{facet.label}</label>
+            <label htmlFor={`select-${label}`}>{facet.field}</label>
             <select name={`select-${label}`}>
               {
-                facet.values.map((f, j) => (
-                  <option key={j} value={f.Value}>
-                    {f.Value} ({f.Count})
-                  </option>
-                ))
+                facet.values.map((f, j) => {
+                  let selectLabel = f.value;
+                  if (f.label) {
+                    selectLabel = f.label;
+                  }
+
+                  return (
+                    <option key={j} value={selectLabel}>
+                      {selectLabel} ({f.count})
+                    </option>
+                  );
+                })
               }
             </select>
           </fieldset>

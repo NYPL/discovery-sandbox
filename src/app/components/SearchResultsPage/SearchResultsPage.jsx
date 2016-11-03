@@ -28,14 +28,13 @@ class SearchResultsPage extends React.Component {
     const {
       searchResults,
       searchKeywords,
+      facets,
     } = this.props;
     let breadcrumbs = null;
-    const facets = searchResults && searchResults.facets ? searchResults.facets : [];
+    const facetList = facets && facets.itemListElement ? facets.itemListElement : [];
     const dateRange = searchResults ? searchResults.dateRange : null;
     const totalHits = searchResults ? searchResults.totalResults : 0;
     const results = searchResults ? searchResults.itemListElement : [];
-
-    console.log(results);
 
     if (searchKeywords) {
       breadcrumbs = (
@@ -58,7 +57,7 @@ class SearchResultsPage extends React.Component {
         <div className="container search-results-container">
 
           <FacetSidebar
-            facets={facets}
+            facets={facetList}
             keywords={searchKeywords}
             dateRange={dateRange}
           />

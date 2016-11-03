@@ -101,10 +101,21 @@ function EbscoSearch(query, cb, errorcb) {
     }); /* end axios call */
 }
 
+function getFacets() {
+  return axios.get('http://discovery-api.nypltech.org/api/v1/resources/aggregations');
+}
+
+
 function Search(query, cb, errorcb) {
+  const apiCall = axios.get(`http://discovery-api.nypltech.org/api/v1/resources?q=${query}`);
+
   axios
-    .get(`http://discovery-api.nypltech.org/api/v1/resources?q=${query}`)
-    .then(response => cb(response.data))
+    .all([getFacets(), apiCall])
+    .then(axios.spread((facets, response) => {
+      // console.log(facets);
+      // console.log(response);
+      cb(facets.data, response.data)
+    }))
     .catch(error => {
       console.log(error);
       console.log(`error calling API : ${error}`);
@@ -118,7 +129,7 @@ function AjaxSearch(req, res, next) {
 
   Search(
     query,
-    (data) => res.json(data),
+    (facets, data) => res.json({ facets, data }),
     (error) => res.json(error)
   );
 }
@@ -128,11 +139,12 @@ function ServerSearch(req, res, next) {
 
   Search(
     query,
-    (data) => {
+    (facets, data) => {
       res.locals.data = {
         Store: {
-          ebscodata: data,
+          searchResults: data,
           searchKeywords: query,
+          facets,
         },
       };
       next();
@@ -140,8 +152,9 @@ function ServerSearch(req, res, next) {
     (error) => {
       res.locals.data = {
         Store: {
-          ebscodata: {},
+          searchResults: {},
           searchKeywords: '',
+          facets: {},
         },
       };
       next();
