@@ -22,7 +22,7 @@ class ItemPageRegular extends React.Component {
     const language = record.language[0].prefLabel;
     const subjects = record.subject ? record.subject : [];
     const subjectElm = subjects.length ?
-      subjects.map((subject, i) => (<Link to={{ pathname: '/search', query: { q: `subject:"${subject.prefLabel}"` } }} key={i}>{subject.prefLabel}</Link>)).join('')
+      subjects.map((subject, i) => (`<a href="/search?q=${encodeURIComponent('subject:"'+subject.prefLabel+'"')}" key=${i}>${subject.prefLabel}</a>`)).join('')
       : '';
     // const numbering = bibRecord.BibRelationships.IsPartOfRelationships[0].BibEntity.Numbering;
     // const dates = bibRecord.BibRelationships.IsPartOfRelationships[0].BibEntity.Dates[0];
