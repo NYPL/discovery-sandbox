@@ -45,7 +45,9 @@ class ResultsList extends React.Component {
             {
               available ? ' to use in ' : ''
             }
-            <a href="#">{item.location.length ? item.location[0][0].prefLabel : null}</a>
+            <a href="#">
+              {item.location && item.location.length ? item.location[0][0].prefLabel : null}
+            </a>
             {
               result.idCallNum ? 
               (<span className="call-no"> with call no. {result.idCallNum[0]}</span>)
@@ -76,7 +78,7 @@ class ResultsList extends React.Component {
     const results = this.props.results;
     let resultsElm = null;
 
-    if (results.length) {
+    if (results && results.length) {
       resultsElm = results.map((item, i) => {
         const result = item.result;
         const itemTitle = result.title[0];

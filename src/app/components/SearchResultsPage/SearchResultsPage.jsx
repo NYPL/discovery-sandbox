@@ -15,7 +15,7 @@ class SearchResultsPage extends React.Component {
       axios
         .get(`/api?q=${this.props.searchKeywords}`)
         .then(response => {
-          Actions.updateSearchResults(response.data);
+          Actions.updateSearchResults(response.data.searchResults);
           Actions.updateSearchKeywords(this.props.searchKeywords);
         })
         .catch(error => {

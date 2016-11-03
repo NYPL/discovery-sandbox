@@ -96,8 +96,8 @@ class Search extends React.Component {
       axios
         .get(`/api?q=${keyword}`)
         .then(response => {
-          // console.log(response.data);
-          Actions.updateSearchResults(response.data);
+          console.log(response.data);
+          Actions.updateSearchResults(response.data.searchResults);
           Actions.updateSearchKeywords(keyword);
           this.routeHandler(`/search/${keyword}`);
         })

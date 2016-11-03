@@ -129,7 +129,7 @@ function AjaxSearch(req, res, next) {
 
   Search(
     query,
-    (facets, data) => res.json({ facets, data }),
+    (facets, searchResults) => res.json({ facets, searchResults }),
     (error) => res.json(error)
   );
 }
