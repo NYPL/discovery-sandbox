@@ -39,6 +39,7 @@ class ResultsList extends React.Component {
   showMoreItems(e, id){
     e.preventDefault();
 
+    // This is a makeshift way of doing it; we should probably have the sub-items as another component that tracks its own expanded/collapsed state
     const expandedItems = this.state.expandedItems;
     expandedItems.push(id);
     this.setState({ expandedItems: expandedItems });
