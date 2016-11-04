@@ -17,12 +17,12 @@ class ItemPageRegular extends React.Component {
       record.contributor.map((author, i) => (<Link to={{ pathname: '/search', query: { q: `contributor:"${author}"` } }} key={i}>{author}</Link>))
       : null;
     const authorsString = record.contributor && record.contributor.length ?
-      record.contributor.map((author, i) => (`<a href="/search?q=${encodeURIComponent('contributor:"'+author+'"')}" key=${i}>${author}</a>`))
+      record.contributor.map((author, i) => (`<a href="/search?q=${encodeURIComponent(`contributor:"${author}"`)}" key=${i}>${author}</a>`))
       : null;
     const language = record.language[0].prefLabel;
     const subjects = record.subject ? record.subject : [];
     const subjectElm = subjects.length ?
-      subjects.map((subject, i) => (`<a href="/search?q=${encodeURIComponent('subject:"'+subject.prefLabel+'"')}" key=${i}>${subject.prefLabel}</a>`)).join('')
+      subjects.map((subject, i) => (`<a href="/search?q=${encodeURIComponent(`subject:"${subject.prefLabel}"`)}" key=${i}>${subject.prefLabel}</a>`)).join('')
       : '';
     // const numbering = bibRecord.BibRelationships.IsPartOfRelationships[0].BibEntity.Numbering;
     // const dates = bibRecord.BibRelationships.IsPartOfRelationships[0].BibEntity.Dates[0];
@@ -57,9 +57,9 @@ class ItemPageRegular extends React.Component {
     const itemDetails = [
       { term: 'Title', definition: title },
       // { term: 'Uniform title', definition: 'Federalist.' },
-      { term: 'Format', definition: `<a href="/search?q=${encodeURIComponent('materialType:"'+record.type[0]['@id']+'"')}">${record.type[0].prefLabel}</a>` },
-      { term: 'Language', definition: `<a href="/search?q=${encodeURIComponent('language:"'+record.language[0]['@id']+'"')}">${language}</a>` },
-      { term: 'Published', definition: `<a href="/search?q=${encodeURIComponent('date:'+record.startYear)}">${record.startYear}</a>` },
+      { term: 'Format', definition: `<a href="/search?q=${encodeURIComponent(`materialType:"${record.type[0]['@id']}"`)}">${record.type[0].prefLabel}</a>` },
+      { term: 'Language', definition: `<a href="/search?q=${encodeURIComponent(`language:"${record.language[0]['@id']}"`)}">${language}</a>` },
+      { term: 'Published', definition: `<a href="/search?q=${encodeURIComponent(`date:${record.startYear}`)}">${record.startYear}</a>` },
       { term: 'Subjects', definition: `<div class="hiearchy">
           ${subjectElm || 'Unknown'}
         </div>`,
