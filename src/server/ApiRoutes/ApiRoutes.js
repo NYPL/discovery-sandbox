@@ -135,9 +135,18 @@ function AjaxSearch(req, res, next) {
 }
 
 function ServerSearch(req, res, next) {
-  const q = req.query.q || 'harry potter';
-  const spaceIndex = q.indexOf(' ') === -1 ? q.length : q.indexOf(' ');
-  const query = q.substring(0, spaceIndex);
+  let q = req.query.q || 'harry potter';
+  let spaceIndex = '';
+  
+  // Slightly hacky right now but need to get all keywords in case
+  // it's more than one word.
+  if (q.indexOf(':') !== -1) {
+    spaceIndex = (q.substring(0, q.indexOf(':'))).lastIndexOf(' ')
+  } else {
+    spaceIndex = q.indexOf(' ') === -1 ? q.length : q.indexOf(' ');
+  }
+
+  const searchKeywords = q.substring(0, spaceIndex);
 
   Search(
     q,
@@ -145,7 +154,7 @@ function ServerSearch(req, res, next) {
       res.locals.data = {
         Store: {
           searchResults: data,
-          searchKeywords: query,
+          searchKeywords,
           facets,
         },
       };

@@ -13,7 +13,10 @@ class FacetSidebar extends React.Component {
     this.state = {};
 
     this.props.facets.map(facet => {
-      this.state[facet.field] = '';
+      this.state[facet.field] = {
+        id: '',
+        value: '',
+      };
     });
 
     this.routeHandler = this.routeHandler.bind(this);
@@ -21,14 +24,20 @@ class FacetSidebar extends React.Component {
   }
 
   onChange(e, field, location) {
-    this.setState({ [field]: e.target.value });
+    const filter = e.target.value.split('_');
+    this.setState({
+      [field]: {
+        id: filter[0],
+        value: filter[1],
+      },
+    });
 
     let strSearch = '';
     _mapObject(this.state, (val, key) => {
-      if (val !== '' && field !== key) {
-        strSearch += ` ${key}:"${val}"`;
+      if (val.value !== '' && field !== key) {
+        strSearch += ` ${key}:"${val.value}"`;
       } else if (field === key) {
-        strSearch += `${field}:"${e.target.value}"`;
+        strSearch += `${field}:"${filter[0]}"`;
       }
     })
 
@@ -37,6 +46,7 @@ class FacetSidebar extends React.Component {
       .then(response => {
         Actions.updateSearchResults(response.data.searchResults);
         Actions.updateFacets(response.data.facets);
+        Actions.updateSelectedFacets(this.state);
         this.routeHandler(`/search?q=${this.props.keywords} ${strSearch}`);
       })
       .catch(error => {
@@ -77,7 +87,7 @@ class FacetSidebar extends React.Component {
                   }
 
                   return (
-                    <option key={j} value={f.value}>
+                    <option key={j} value={`${f.value}_${selectLabel}`}>
                       {selectLabel} ({f.count})
                     </option>
                   );
