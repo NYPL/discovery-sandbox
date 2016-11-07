@@ -27,7 +27,7 @@
   },
   "devDependencies": {},
   "dependencies": {
-    "@nypl/dgx-header-component": "1.4.1",
+    "@nypl/dgx-header-component": "git+ssh://git@bitbucket.org/NYPL/dgx-header-component#add-feature-flag-oauth-login",
     "@nypl/dgx-react-footer": "0.3.0",
     "alt": "^0.18.2",
     "axios": "^0.9.1",
