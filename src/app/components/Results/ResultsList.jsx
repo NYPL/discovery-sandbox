@@ -34,7 +34,7 @@ class ResultsList extends React.Component {
 
   getItems(items, result) {
     return items.map((item, i) => {
-      const availability = item.availability[0].substring(7);
+      const availability = item.availability ? item.availability[0].substring(7) : '';
       const available = availability === 'AVAILABLE';
       const id = item['@id'].substring(4);
 
