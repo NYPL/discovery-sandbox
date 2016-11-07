@@ -118,7 +118,7 @@ class ResultsList extends React.Component {
     const results = this.props.results;
     let resultsElm = null;
 
-    if (results.length) {
+    if (results && results.length) {
       resultsElm = results.map((item, i) => {
         const result = item.result;
         const itemTitle = result.title[0];

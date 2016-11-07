@@ -18,7 +18,7 @@ import AccountHolds from '../components/Account/AccountHolds.jsx';
 const routes = (
   <Route path="/" component={Application}>
     <IndexRoute component={Home} />
-    <Route path="/search/:query" component={SearchResultsPage} />
+    <Route path="/search" component={SearchResultsPage} />
     <Route path="/advanced" component={AdvancedSearch} />
     <Route path="/item/:id" component={ItemPage} />
     <Route path="/hold/:id" component={HoldPage} />
