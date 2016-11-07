@@ -13,16 +13,16 @@ class ItemPageRegular extends React.Component {
     // const ebscoLink = record.PLink;
     // const bibRecord = record.RecordInfo.BibRecord;
     const title = record.title[0];
-    const authors = record.contributor && record.contributor.length ? 
-      record.contributor.map((author, i) => (<a href="#" key={i}>{author}; </a>))
+    const authors = record.contributor && record.contributor.length ?
+      record.contributor.map((author, i) => (<Link to={{ pathname: '/search', query: { q: `contributor:"${author}"` } }} key={i}>{author}</Link>))
       : null;
-    const authorsString = record.contributor && record.contributor.length ? 
-      record.contributor.map((author, i) => (`<a href="#" key={i}>${author}; </a>`))
+    const authorsString = record.contributor && record.contributor.length ?
+      record.contributor.map((author, i) => (`<a href="/search?q=${encodeURIComponent(`contributor:"${author}"`)}" key=${i}>${author}</a>`))
       : null;
     const language = record.language[0].prefLabel;
     const subjects = record.subject ? record.subject : [];
     const subjectElm = subjects.length ?
-      subjects.map((subject, i) => (`<a href="#" key={i}>${subject.prefLabel}</a>`)).join('')
+      subjects.map((subject, i) => (`<a href="/search?q=${encodeURIComponent(`subject:"${subject.prefLabel}"`)}" key=${i}>${subject.prefLabel}</a>`)).join('')
       : '';
     // const numbering = bibRecord.BibRelationships.IsPartOfRelationships[0].BibEntity.Numbering;
     // const dates = bibRecord.BibRelationships.IsPartOfRelationships[0].BibEntity.Dates[0];
@@ -57,15 +57,15 @@ class ItemPageRegular extends React.Component {
     const itemDetails = [
       { term: 'Title', definition: title },
       // { term: 'Uniform title', definition: 'Federalist.' },
-      { term: 'Format', definition: record.type[0].prefLabel },
-      { term: 'Language', definition: language },
-      { term: 'Published', definition: record.startYear },
+      { term: 'Format', definition: `<a href="/search?q=${encodeURIComponent(`materialType:"${record.type[0]['@id']}"`)}">${record.type[0].prefLabel}</a>` },
+      { term: 'Language', definition: `<a href="/search?q=${encodeURIComponent(`language:"${record.language[0]['@id']}"`)}">${language}</a>` },
+      { term: 'Published', definition: `<a href="/search?q=${encodeURIComponent(`date:${record.startYear}`)}">${record.startYear}</a>` },
       { term: 'Subjects', definition: `<div class="hiearchy">
-          ${subjectElm}
+          ${subjectElm || 'Unknown'}
         </div>`,
       },
       { term: 'Contributors', definition: `<ul>
-          <li>${authorsString}</li>
+          <li>${authorsString || 'Unknown'}</li>
         </ul>`,
       },
       // { term: 'Bibliography', definition: 'Includes bibliographical references and index.' },
@@ -111,11 +111,12 @@ class ItemPageRegular extends React.Component {
           <div className="item-header">
             <div className="item-info">
               <h1>{title}</h1>
-              <div className="description author">
-                By {authors}
-              </div>
+                {authors &&
+                  <div className="description author">
+                  By {authors}
+                </div>}
               <div className="description">
-                {record.startYear}
+                <Link to={{ pathname: '/search', query: {q: `date:${record.startYear}`}}}>{record.startYear}</Link>
               </div>
             </div>
           </div>
