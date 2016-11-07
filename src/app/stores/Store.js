@@ -8,6 +8,8 @@ class Store {
       updateSearchResults: Actions.updateSearchResults,
       updateSearchKeywords: Actions.updateSearchKeywords,
       updateItem: Actions.updateItem,
+      updateFacets: Actions.updateFacets,
+      updateSelectedFacets: Actions.updateSelectedFacets,
     });
 
     this.state = {
@@ -15,6 +17,8 @@ class Store {
       searchResults: {},
       item: {},
       searchKeywords: '',
+      facets: {},
+      selectedFacets: {},
     };
   }
 
@@ -32,6 +36,14 @@ class Store {
 
   updateItem(data) {
     this.setState({ item: data });
+  }
+
+  updateFacets(data) {
+    this.setState({ facets: data });
+  }
+
+  updateSelectedFacets(data) {
+    this.setState({ selectedFacets: data });
   }
 }
 

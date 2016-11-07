@@ -17,6 +17,14 @@ class Actions {
   updateItem(data) {
     return data;
   }
+
+  updateFacets(data) {
+    return data;
+  }
+
+  updateSelectedFacets(data) {
+    return data;
+  }
 }
 
 export default alt.createActions(Actions);

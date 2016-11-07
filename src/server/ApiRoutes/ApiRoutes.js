@@ -101,10 +101,21 @@ function EbscoSearch(query, cb, errorcb) {
     }); /* end axios call */
 }
 
+function getFacets() {
+  return axios.get('http://discovery-api.nypltech.org/api/v1/resources/aggregations');
+}
+
+
 function Search(query, cb, errorcb) {
+  const apiCall = axios.get(`http://discovery-api.nypltech.org/api/v1/resources?q=${query}`);
+
   axios
-    .get(`http://discovery-api.nypltech.org/api/v1/resources?q=${query}`)
-    .then(response => cb(response.data))
+    .all([getFacets(), apiCall])
+    .then(axios.spread((facets, response) => {
+      // console.log(facets);
+      // console.log(response);
+      cb(facets.data, response.data)
+    }))
     .catch(error => {
       console.log(error);
       console.log(`error calling API : ${error}`);
@@ -114,25 +125,37 @@ function Search(query, cb, errorcb) {
 }
 
 function AjaxSearch(req, res, next) {
-  const query = req.query.q || 'harry potter';
+  const q = req.query.q || 'harry potter';
 
   Search(
-    query,
-    (data) => res.json(data),
+    q,
+    (facets, searchResults) => res.json({ facets, searchResults }),
     (error) => res.json(error)
   );
 }
 
 function ServerSearch(req, res, next) {
-  const query = req.params.keyword || 'harry potter';
+  let q = req.query.q || 'harry potter';
+  let spaceIndex = '';
+  
+  // Slightly hacky right now but need to get all keywords in case
+  // it's more than one word.
+  if (q.indexOf(':') !== -1) {
+    spaceIndex = (q.substring(0, q.indexOf(':'))).lastIndexOf(' ')
+  } else {
+    spaceIndex = q.indexOf(' ') === -1 ? q.length : q.indexOf(' ');
+  }
+
+  const searchKeywords = q.substring(0, spaceIndex);
 
   Search(
-    query,
-    (data) => {
+    q,
+    (facets, data) => {
       res.locals.data = {
         Store: {
-          ebscodata: data,
-          searchKeywords: query,
+          searchResults: data,
+          searchKeywords,
+          facets,
         },
       };
       next();
@@ -140,8 +163,9 @@ function ServerSearch(req, res, next) {
     (error) => {
       res.locals.data = {
         Store: {
-          ebscodata: {},
+          searchResults: {},
           searchKeywords: '',
+          facets: {},
         },
       };
       next();
@@ -263,7 +287,7 @@ function Hold(req, res, next) {
 }
 
 router
-  .route('/search/:keyword')
+  .route('/search')
   .get(ServerSearch);
 
 router
