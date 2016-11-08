@@ -54,13 +54,13 @@ class ResultsList extends React.Component {
 
     // available items first
     items.sort((a, b) => {
-      const aAvailability = a.availability[0].substring(7) === 'AVAILABLE' ? -1 : 1;
-      const bAvailability = b.availability[0].substring(7) === 'AVAILABLE' ? -1 : 1;
+      const aAvailability = a.status && a.status[0].prefLabel === 'AVAILABLE' ? -1 : 1;
+      const bAvailability = b.status && b.status[0].prefLabel === 'AVAILABLE' ? -1 : 1;
       return aAvailability - bAvailability;
     });
 
     return items.map((item, i) => {
-      const availability = item.availability ? item.availability[0].substring(7) : '';
+      const availability = item.status && item.status[0].prefLabel ? item.status[0].prefLabel : '';
       const available = availability === 'AVAILABLE';
       const id = item['@id'].substring(4);
       const availabilityClassname = availability.replace(/\W/g, '').toLowerCase();
@@ -74,10 +74,10 @@ class ResultsList extends React.Component {
               {
                 available ? ' to use in ' : ' '
               }
-              <a href="#">{item.location.length ? item.location[0][0].prefLabel : null}</a>
+              <a href="#">{item.location && item.location.length ? item.location[0][0].prefLabel : null}</a>
               {
-                result.idCallNum ?
-                (<span className="call-no"> with call no. {result.idCallNum[0]}</span>)
+                item.shelfMark && item.shelfMark.length ?
+                (<span className="call-no"> with call no. {item.shelfMark[0]}</span>)
                 : null
               }
             </div>
@@ -136,7 +136,7 @@ class ResultsList extends React.Component {
         return (
           <li key={i} className="result-item">
             <div className="result-text">
-              <div className="type">{result.type ? result.type[0].prefLabel : null}</div>
+              {/*<div className="type">{result.type ? result.type[0].prefLabel : null}</div>*/}
               <Link
                 onClick={(e) => this.getRecord(e, id, 'item')}
                 href={`/item/${id}`}
