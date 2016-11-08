@@ -28,9 +28,11 @@ class ItemPageRegular extends React.Component {
     // const dates = bibRecord.BibRelationships.IsPartOfRelationships[0].BibEntity.Dates[0];
     const holdings = record.items.map((item, i) => {
       const available = item.availability[0].substring(7);
+      const availabilityClassname = available.replace(/\W/g, '').toLowerCase();
       return {
+        availability: availabilityClassname,
         className: '',
-        available: `<span class="status available">${available}</span> `,
+        available: `<span class="status ${availabilityClassname}">${available}</span> `,
         location: `<a href="#"> ${item.location.length ? item.location[0][0].prefLabel : null}</a>`,
         callNumber: item.idCallNum ? item.idCallNum[0] : '',
         hold: available === 'AVAILABLE' ? (<Link to={`/hold/${item['@id'].substring(4)}`} className="button">Place a hold</Link>) : null,

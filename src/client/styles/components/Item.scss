@@ -52,6 +52,12 @@
   }
 }
 
+.holdings-table {
+  .collapsed {
+      display: none;
+  }
+}
+
 .hiearchy {
   a {
     display: block;
