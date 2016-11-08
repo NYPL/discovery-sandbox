@@ -33,9 +33,9 @@ export function initializeTokenAuth(req, res, next) {
       isTokenValid: false,
       errorCode: 'token undefined',
     };
-    next();
+    // next();
 
     // Continue next function call
-    // res.redirect(`${config.loginUrl}?redirect_uri=http://local.nypl.org:3001/my-account/holds`);
+    res.redirect(`${config.loginUrl}?redirect_uri=http://local.nypl.org:3001/my-account/holds`);
   }
 }

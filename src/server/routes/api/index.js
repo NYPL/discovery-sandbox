@@ -9,9 +9,9 @@ export function getUserHolds(req, res, next) {
   ) {
     const userId = req.tokenResponse.decodedPatron.sub;
     const userToken = req.tokenResponse.accessToken;
-    const patronHoldsApi = `${config.api.development}/patrons/${userId}/holds`;
+    const patronHoldsApi = `${config.api.development}/patrons/${userId}`;
 
-    console.log(req.tokenResponse);
+    console.log(userId);
 
     axios
       .get(patronHoldsApi, {
@@ -25,14 +25,23 @@ export function getUserHolds(req, res, next) {
           // Data is empty for the Patron
           if (response.data.statusCode === 404) {
             console.log(response.data.statusCode, response.data.message);
-            res.locals.patronData = {
-              holdsCollection: [],
+            res.locals.data = {
+              patronData: {
+                id: '',
+                names: [],
+                barcodes: [],
+              },
             };
           }
           // Data exists for the Patron
-          if (response.data.statusCode === 200 && response.data.data) {
-            res.locals.patronData = {
-              holdsCollection: response.data.data,
+          // console.log(response.data.data);
+          if (response.data.statusCode === 200 && response.data.data) { 
+            res.locals.data = {
+              patronData: {
+                id: response.data.data.id,
+                names: response.data.data.names,
+                barcodes: response.data.data.barCodes,
+              },
             };
           }
         }
@@ -43,11 +52,17 @@ export function getUserHolds(req, res, next) {
         // Debugging
         console.log(error);
 
-        res.locals.patronData = {
-          holdsCollection: [],
+        res.locals.data = {
+          patronData: {
+            id: '',
+            names: [],
+            barcodes: [],
+          },
         };
         // Continue next function call
         next();
       });
+  } else {
+    next();
   }
 }
