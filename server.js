@@ -51,7 +51,7 @@ app.use(express.static(DIST_PATH));
 // For images
 app.use('*/src/client', express.static(INDEX_PATH));
 
-app.use('/', initializeTokenAuth, getUserHolds);
+app.use('/*', initializeTokenAuth, getUserHolds);
 app.use('/', apiRoutes);
 
 app.get('/*', (req, res) => {

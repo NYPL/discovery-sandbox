@@ -1,9 +1,10 @@
+import Actions from '../actions/Actions.js';
 import alt from '../alt.js';
 
 class PatronData {
   constructor() {
     this.bindListeners({
-      // updateEbscoData: Actions.updateEbscoData,
+      updatePatronData: Actions.updatePatronData,
     });
 
     this.state = {
@@ -11,6 +12,10 @@ class PatronData {
     };
   }
 
+  updatePatronData(data) {
+    this.setState({ patronData: data });
+  }
+
 }
 
-export default alt.createStore(PatronData, 'patronData');
+export default alt.createStore(PatronData, 'PatronData');

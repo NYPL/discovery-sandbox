@@ -26,7 +26,7 @@ export function getUserHolds(req, res, next) {
           if (response.data.statusCode === 404) {
             console.log(response.data.statusCode, response.data.message);
             res.locals.data = {
-              patronData: {
+              PatronData: {
                 id: '',
                 names: [],
                 barcodes: [],
@@ -37,7 +37,7 @@ export function getUserHolds(req, res, next) {
           // console.log(response.data.data);
           if (response.data.statusCode === 200 && response.data.data) { 
             res.locals.data = {
-              patronData: {
+              PatronData: {
                 id: response.data.data.id,
                 names: response.data.data.names,
                 barcodes: response.data.data.barCodes,
@@ -49,11 +49,10 @@ export function getUserHolds(req, res, next) {
         next();
       })
       .catch((error) => {
-        // Debugging
         console.log(error);
 
         res.locals.data = {
-          patronData: {
+          PatronData: {
             id: '',
             names: [],
             barcodes: [],
@@ -63,6 +62,13 @@ export function getUserHolds(req, res, next) {
         next();
       });
   } else {
-    next();
+    res.locals.data = {
+      PatronData: {
+        id: '',
+        names: [],
+        barcodes: [],
+      },
+    };
+    return next();
   }
 }

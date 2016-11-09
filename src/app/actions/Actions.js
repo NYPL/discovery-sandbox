@@ -25,6 +25,10 @@ class Actions {
   updateSelectedFacets(data) {
     return data;
   }
+
+  updatePatronData(data) {
+    return data;
+  }
 }
 
 export default alt.createActions(Actions);
