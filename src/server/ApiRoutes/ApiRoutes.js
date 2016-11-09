@@ -101,8 +101,8 @@ function EbscoSearch(query, cb, errorcb) {
     }); /* end axios call */
 }
 
-function getFacets() {
-  return axios.get('http://discovery-api.nypltech.org/api/v1/resources/aggregations');
+function getFacets(query) {
+  return axios.get(`http://discovery-api.nypltech.org/api/v1/resources/aggregations?q=${query}`);
 }
 
 
@@ -110,7 +110,7 @@ function Search(query, cb, errorcb) {
   const apiCall = axios.get(`http://discovery-api.nypltech.org/api/v1/resources?q=${query}`);
 
   axios
-    .all([getFacets(), apiCall])
+    .all([getFacets(query), apiCall])
     .then(axios.spread((facets, response) => {
       // console.log(facets);
       // console.log(response);

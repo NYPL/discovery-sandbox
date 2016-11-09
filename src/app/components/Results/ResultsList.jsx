@@ -84,21 +84,21 @@ class ResultsList extends React.Component {
                   : null
                 }
               </div>
+              <div>
                 {
                   available ?
                     (
-                      <div>
-                        <Link
-                          className="button"
-                          to={`/hold/${id}`}
-                          onClick={(e) => this.getRecord(e, id, 'hold')}
-                        >
-                          Place a hold
-                        </Link>
-                      </div>
+                      <Link
+                        className="button"
+                        to={`/hold/${id}`}
+                        onClick={(e) => this.getRecord(e, id, 'hold')}
+                      >
+                        Place a hold
+                      </Link>
                     )
                     : null
                 }
+              </div>
             </div>
             : null
           }
