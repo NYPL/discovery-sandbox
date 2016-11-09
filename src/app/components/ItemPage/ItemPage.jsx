@@ -10,8 +10,6 @@ import { Link } from 'react-router';
 class ItemPageRegular extends React.Component {
   render() {
     const record = this.props.item;
-    // const ebscoLink = record.PLink;
-    // const bibRecord = record.RecordInfo.BibRecord;
     const title = record.title[0];
     const authors = record.contributor && record.contributor.length ?
       record.contributor.map((author, i) => (<Link to={{ pathname: '/search', query: { q: `contributor:"${author}"` } }} key={i}>{author}</Link>))
@@ -21,19 +19,19 @@ class ItemPageRegular extends React.Component {
       : null;
     const language = record.language[0].prefLabel;
     const subjects = record.subject ? record.subject : [];
-    const subjectElm = subjects.length ?
+    const subjectElm = subjects && subjects.length ?
       subjects.map((subject, i) => (`<a href="/search?q=${encodeURIComponent(`subject:"${subject.prefLabel}"`)}" key=${i}>${subject.prefLabel}</a>`)).join('')
       : '';
-    // const numbering = bibRecord.BibRelationships.IsPartOfRelationships[0].BibEntity.Numbering;
-    // const dates = bibRecord.BibRelationships.IsPartOfRelationships[0].BibEntity.Dates[0];
     const holdings = record.items.map((item, i) => {
-      const available = item.availability[0].substring(7);
+      const available = item.status && item.status[0].prefLabel ? item.status[0].prefLabel.trim().toLowerCase() : '';
+      const availabilityClassname = available.replace(/\W/g, '').toLowerCase();
       return {
+        availability: availabilityClassname,
         className: '',
-        available: `<span class="status available">${available}</span> `,
-        location: `<a href="#"> ${item.location.length ? item.location[0][0].prefLabel : null}</a>`,
+        available: `<span class="status ${availabilityClassname}">${available}</span> `,
+        location: `<a href="#"> ${item.location && item.location.length ? item.location[0][0].prefLabel : ''}</a>`,
         callNumber: item.idCallNum ? item.idCallNum[0] : '',
-        hold: available === 'AVAILABLE' ? (<Link to={`/hold/${item['@id'].substring(4)}`} className="button">Place a hold</Link>) : null,
+        hold: available === 'available' ? (<Link to={`/hold/${item['@id'].substring(4)}`} className="button">Place a hold</Link>) : null,
       }
     });
     // const externalData = [
