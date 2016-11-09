@@ -46,7 +46,8 @@ class ResultsList extends React.Component {
   }
 
   getItems(items, result) {
-    const itemCount = items.length;
+    // Filter items that have a status, for now.
+    const itemCount = items.filter(i => i.status).length;
     const maxDisplay = 5;
     const moreCount = itemCount - maxDisplay;
     const expandedItems = this.state.expandedItems;
@@ -54,49 +55,53 @@ class ResultsList extends React.Component {
 
     // available items first
     items.sort((a, b) => {
-      const aAvailability = a.availability[0].substring(7) === 'AVAILABLE' ? -1 : 1;
-      const bAvailability = b.availability[0].substring(7) === 'AVAILABLE' ? -1 : 1;
+      const aAvailability = a.status && a.status[0].prefLabel.trim().toLowerCase() === 'available' ? -1 : 1;
+      const bAvailability = b.status && b.status[0].prefLabel.trim().toLowerCase() === 'available' ? -1 : 1;
       return aAvailability - bAvailability;
     });
 
     return items.map((item, i) => {
-      const availability = item.availability ? item.availability[0].substring(7) : '';
-      const available = availability === 'AVAILABLE';
+      const availability = item.status && item.status[0].prefLabel ? item.status[0].prefLabel : '';
+      const available = availability.trim().toLowerCase() === 'available';
       const id = item['@id'].substring(4);
       const availabilityClassname = availability.replace(/\W/g, '').toLowerCase();
       const collapsed = expandedItems.indexOf(resultId) < 0
 
       return (
         <div key={i}>
-          <div className={`sub-item ${i>=maxDisplay && collapsed ? 'more' : ''}`}>
-            <div>
-              <span className={`status ${availabilityClassname}`}>{availability}</span>
-              {
-                available ? ' to use in ' : ' '
-              }
-              <a href="#">{item.location.length ? item.location[0][0].prefLabel : null}</a>
-              {
-                result.idCallNum ?
-                (<span className="call-no"> with call no. {result.idCallNum[0]}</span>)
-                : null
-              }
-            </div>
-            <div>
-              {
-                available ?
-                  (
-                    <Link
-                      className="button"
-                      to={`/hold/${id}`}
-                      onClick={(e) => this.getRecord(e, id, 'hold')}
-                    >
-                      Place a hold
-                    </Link>
-                  )
+          {
+            item.status ? 
+            <div className={`sub-item ${i>=maxDisplay && collapsed ? 'more' : ''}`}>
+              <div>
+                <span className={`status ${availabilityClassname}`}>{availability}</span>
+                {
+                  available ? ' to use in ' : ' '
+                }
+                <a href="#">{item.location && item.location.length ? item.location[0][0].prefLabel : null}</a>
+                {
+                  item.shelfMark && item.shelfMark.length ?
+                  (<span className="call-no"> with call no. {item.shelfMark[0]}</span>)
                   : null
-              }
+                }
+              </div>
+                {
+                  available ?
+                    (
+                      <div>
+                        <Link
+                          className="button"
+                          to={`/hold/${id}`}
+                          onClick={(e) => this.getRecord(e, id, 'hold')}
+                        >
+                          Place a hold
+                        </Link>
+                      </div>
+                    )
+                    : null
+                }
             </div>
-          </div>
+            : null
+          }
           {
             i >= itemCount - 1 && moreCount > 0 && collapsed ?
               (
@@ -130,13 +135,13 @@ class ResultsList extends React.Component {
         const authors = result.contributor && result.contributor.length ?
           result.contributor.map((author) => `${author}; ` )
           : null;
-        const id = result.idBnum;
+        const id = result['@id'].substring(4);
         const items = result.items;
 
         return (
           <li key={i} className="result-item">
             <div className="result-text">
-              <div className="type">{result.type ? result.type[0].prefLabel : null}</div>
+              {/*<div className="type">{result.type ? result.type[0].prefLabel : null}</div>*/}
               <Link
                 onClick={(e) => this.getRecord(e, id, 'item')}
                 href={`/item/${id}`}
