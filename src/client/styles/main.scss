@@ -25,6 +25,10 @@ Import style rules from NYPL React module components
   margin: 0;
 }
 
+button {
+  color: $buttontextcolor;
+}
+
 .page-header {
   background: #e9e8e7;
 }
@@ -43,9 +47,9 @@ Import style rules from NYPL React module components
 .status {
   font-weight: bold;
   color: $darkorange;
+  text-transform: capitalize;
 
   &.available {
     color: $darkgreen;
   }
 }
-
