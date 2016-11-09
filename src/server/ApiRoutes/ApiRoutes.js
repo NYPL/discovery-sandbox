@@ -137,7 +137,7 @@ function AjaxSearch(req, res, next) {
 function ServerSearch(req, res, next) {
   let q = req.query.q || 'harry potter';
   let spaceIndex = '';
-  
+
   // Slightly hacky right now but need to get all keywords in case
   // it's more than one word.
   if (q.indexOf(':') !== -1) {
@@ -286,6 +286,44 @@ function Hold(req, res, next) {
   next();
 }
 
+function CreateHoldRequest(req, res) {
+  const patronId = "10004854"; // TODO: get this from cookie
+  let itemId = req.params.id;
+  if (itemId.length > 8) {
+    itemId = itemId.substring(itemId.length - 8);
+  }
+  const pickupLocation = req.query.pickupLocation;
+  axios
+    .post('https://api.nypltech.org/api/v0.1/hold-requests/', {
+      patron: patronId,
+      recordType: "i",
+      record: itemId,
+      nyplSource: "nypl-sierra",
+      pickupLocation: pickupLocation,
+      // neededBy: "2013-03-20",
+      numberOfCopies: 1
+    })
+    .then(response => {
+      console.log(response)
+      res.locals.data = {
+        Store: {
+          holdRequest: response,
+          item: {}
+        },
+      };
+    })
+    .catch(error => {
+      // console.log(error);
+      console.log(`error calling API : ${error.data.message}`);
+      res.locals.data = {
+        Store: {
+          holdRequest: {},
+          item: {}
+        },
+      };
+    }); /* end axios call */
+}
+
 router
   .route('/search')
   .get(ServerSearch);
@@ -297,6 +335,11 @@ router
 router
   .route('/hold/:id')
   .get(ServerItemSearch);
+
+router
+  .route('/hold/request/:id')
+  .get(ServerItemSearch)
+  .post(CreateHoldRequest);
 
 router
   .route('/hold/confirmation/:id')

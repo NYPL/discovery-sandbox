@@ -49,7 +49,7 @@ class ResultsList extends React.Component {
               {item.location && item.location.length ? item.location[0][0].prefLabel : null}
             </a>
             {
-              result.idCallNum ? 
+              result.idCallNum ?
               (<span className="call-no"> with call no. {result.idCallNum[0]}</span>)
               : null
             }
@@ -60,8 +60,8 @@ class ResultsList extends React.Component {
                 (
                   <Link
                     className="button"
-                    to={`/hold/${id}`}
-                    onClick={(e) => this.getRecord(e, id, 'hold')}
+                    to={`/hold/request/${id}`}
+                    onClick={(e) => this.getRecord(e, id, 'hold/request')}
                   >
                     Place a hold
                   </Link>
@@ -87,7 +87,7 @@ class ResultsList extends React.Component {
             <img src={result.btCover} />
           </div>
           ) : null;
-        const authors = result.contributor && result.contributor.length ? 
+        const authors = result.contributor && result.contributor.length ?
           result.contributor.map((author) => `${author}; ` )
           : null;
         const id = result.idBnum;
