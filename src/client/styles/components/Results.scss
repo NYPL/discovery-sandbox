@@ -142,12 +142,22 @@
     }
 
     .sub-items {
+      margin-top: 0.35rem;
+      max-width: 800px;
+
+      .see-more-link {
+        display: block;
+        padding: 0.2rem 0.5rem;
+        border-top: 1px solid $lightgray;
+        background: $lightgray;
+      }
+    }
+
+    .sub-items > div {
       display: table;
       width: 100%;
-      max-width: 800px;
       // border: 1px solid $lightgray;
       padding: 0;
-      margin-top: 0.35rem;
       background: lighten($lightergray, 4%);
     }
 
