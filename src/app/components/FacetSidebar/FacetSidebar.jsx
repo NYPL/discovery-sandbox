@@ -14,8 +14,8 @@ class FacetSidebar extends React.Component {
 
     this.props.facets.map(facet => {
       this.state[facet.field] = {
-        id: '',
-        value: '',
+        id: this.props.selectedFacets[facet.field].id,
+        value: this.props.selectedFacets[facet.field].value,
       };
     });
 
@@ -25,7 +25,6 @@ class FacetSidebar extends React.Component {
 
   onChange(e, field, location) {
     const filter = e.target.value.split('_');
-    console.log(filter);
     this.setState({
       [field]: {
         id: filter[0],
@@ -34,36 +33,40 @@ class FacetSidebar extends React.Component {
     });
 
     let strSearch = '';
+
     _mapObject(this.state, (val, key) => {
       if (val.value !== '' && field !== key) {
-        strSearch += ` ${key}:"${val.value}"`;
+        strSearch += ` ${key}:"${val.id}"`;
       } else if (field === key) {
-        strSearch += `${field}:"${filter[0]}"`;
+        strSearch += ` ${field}:"${filter[0]}"`;
       }
-    })
+    });
 
     axios
-      .get(`/api?q=${this.props.keywords} ${strSearch}`)
+      .get(`/api?q=${this.props.keywords}${strSearch}`)
       .then(response => {
         Actions.updateSearchResults(response.data.searchResults);
         Actions.updateFacets(response.data.facets);
         Actions.updateSelectedFacets(this.state);
-        this.routeHandler(`/search?q=${this.props.keywords} ${strSearch}`);
+        this.routeHandler(null, `/search?q=${this.props.keywords}${strSearch}`);
       })
       .catch(error => {
         console.log(error);
       });
   }
 
-  routeHandler(path) {
-    // e.preventDefault();
+  routeHandler(e, path) {
+    if (e) e.preventDefault();
     // Actions.updateSearchKeywords('');
     this.context.router.push(path);
   }
 
   render() {
-    const facets = this.props.facets;
-    const location = this.props.location;
+    const {
+      facets,
+      location,
+      selectedFacets,
+    } = this.props;
     let facetsElm = null;
     let dateRange = null;
 
@@ -77,10 +80,15 @@ class FacetSidebar extends React.Component {
         //   return null;
         // }
 
+        const selectedValue = selectedFacets[field].value;
         return (
           <fieldset key={i}>
             <label htmlFor={`select-${field}`}>{facet.field}</label>
-            <select name={`select-${field}`} onChange={(e) => this.onChange(e, field, location)}>
+            <select
+              name={`select-${field}`}
+              onChange={(e) => this.onChange(e, field, location)}
+              value={`${selectedValue}_${selectedValue}` || `${field}_any`}
+            >
               <option value={`${field}_any`}>Any</option>
               {
                 facet.values.map((f, j) => {
@@ -106,16 +114,21 @@ class FacetSidebar extends React.Component {
       <div className="facets">
         <form className="facets-form">
           <h2>Filter results by</h2>
-          <fieldset>
-            <label htmlFor="select-keywords">Keywords</label>
-            <button
-              id="select-keywords"
-              className="button-selected"
-              title={`Remove keyword filter: ${this.props.keywords}`}
-            >
-              "{this.props.keywords}"
-            </button>
-          </fieldset>
+          {
+            this.props.keywords ?
+            <fieldset>
+              <label htmlFor="select-keywords">Keywords</label>
+              <button
+                id="select-keywords"
+                className="button-selected"
+                title={`Remove keyword filter: ${this.props.keywords}`}
+                onClick={e => this.routeHandler(e, '/')}
+              >
+                "{this.props.keywords}"
+              </button>
+            </fieldset>
+            : null
+          }
 
           {facetsElm}
           
