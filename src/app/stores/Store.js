@@ -10,6 +10,7 @@ class Store {
       updateItem: Actions.updateItem,
       updateFacets: Actions.updateFacets,
       updateSelectedFacets: Actions.updateSelectedFacets,
+      removeFacet: Actions.removeFacet,
     });
 
     this.state = {
@@ -44,6 +45,11 @@ class Store {
 
   updateSelectedFacets(data) {
     this.setState({ selectedFacets: data });
+  }
+
+  removeFacet(field) {
+    this.state.selectedFacets[field] = { id: '', value: '' };
+    this.setState({ selectedFacets: this.state.selectedFacets });
   }
 }
 
