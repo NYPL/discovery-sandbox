@@ -150,7 +150,7 @@ function ServerSearch(req, res, next) {
 
   Search(
     q,
-    (facets, data) => { 
+    (facets, data) => {
       res.locals.data.Store = {
         searchResults: data,
         searchKeywords,
@@ -252,40 +252,51 @@ function Hold(req, res, next) {
 }
 
 function CreateHoldRequest(req, res) {
-  const patronId = "10004854"; // TODO: get this from cookie
+  console.log('hold request', req.tokenResponse);
+
+  if (!req.tokenResponse || !req.tokenResponse.isTokenValid || !req.tokenResponse.accessToken || !req.tokenResponse.decodedPatron || !req.tokenResponse.decodedPatron.sub) {
+    // redirect to login
+    // res.redirect(`${config.loginUrl}?redirect_uri=http://local.nypl.org:3001/`);
+    return false;
+  }
+
+  const accessToken = req.tokenResponse.accessToken;
+  const patronId = req.tokenResponse.decodedPatron.sub;
+  const patronHoldsApi = `${appConfig.api.development}/hold-requests/`;
   let itemId = req.params.id;
   if (itemId.length > 8) {
     itemId = itemId.substring(itemId.length - 8);
   }
   const pickupLocation = req.query.pickupLocation;
+
+  const data = {
+    patron: patronId,
+    recordType: "i",
+    record: itemId,
+    nyplSource: "nypl-sierra",
+    pickupLocation: pickupLocation,
+    // neededBy: "2013-03-20",
+    numberOfCopies: 1
+  }
+  // console.log('Making hold request', data, accessToken);
+
   axios
-    .post('https://api.nypltech.org/api/v0.1/hold-requests/', {
-      patron: patronId,
-      recordType: "i",
-      record: itemId,
-      nyplSource: "nypl-sierra",
-      pickupLocation: pickupLocation,
-      // neededBy: "2013-03-20",
-      numberOfCopies: 1
+    .post(patronHoldsApi, data, {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`
+      }
     })
     .then(response => {
-      console.log(response)
-      res.locals.data = {
-        Store: {
-          holdRequest: response,
-          item: {}
-        },
-      };
+      // console.log('Holds API response:', response);
+      console.log('Hold Request Id:', response.data.data.id);
+      console.log('Job Id:', response.data.data.jobId);
+      res.redirect(`/hold/confirmation/${req.params.id}?requestId=${response.data.data.id}`);
     })
     .catch(error => {
       // console.log(error);
-      console.log(`error calling API : ${error.data.message}`);
-      res.locals.data = {
-        Store: {
-          holdRequest: {},
-          item: {}
-        },
-      };
+      console.log(`Error calling Holds API : ${error.data.message}`);
+      res.redirect(`/hold/request/${req.params.id}?errorMessage=${error.data.message}`);
     }); /* end axios call */
 }
 

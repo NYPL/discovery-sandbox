@@ -2,10 +2,22 @@ import React from 'react';
 import { Link } from 'react-router';
 
 import Breadcrumbs from '../Breadcrumbs/Breadcrumbs.jsx';
+import Store from '../../stores/Store.js';
+import PatronData from '../../stores/PatronData.js';
 
 class HoldRequest extends React.Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      data: Store.getState(),
+      patron: PatronData.getState(),
+    };
+    this.onChange = this.onChange.bind(this);
+  }
+
+  onChange() {
+    this.setState({ data: Store.getState() });
   }
 
   render() {
@@ -73,9 +85,9 @@ class HoldRequest extends React.Component {
           <form className="place-hold-form form" action={`/hold/request/${itemId}`} method="POST">
             <h2>Confirm account</h2>
 
-            <p>You are currently logged in as <strong>Jane Doe</strong>. If this is not you, please <a href="v1a-nouser.html">Log out</a> and sign in using your library card.</p>
+            <p>You are currently logged in as <strong>{this.state.patron.names[0]}</strong>. If this is not you, please <a href="https://isso.nypl.org/auth/logout">Log out</a> and sign in using your library card.</p>
 
-            <h2>Select a location</h2>
+            <h2>Confirm delivery location</h2>
 
             <p>When this item is ready, you will use it in the following location:</p>
 
