@@ -13,10 +13,15 @@ class FacetSidebar extends React.Component {
     this.state = {};
 
     this.props.facets.map(facet => {
-      this.state[facet.field] = {
-        id: this.props.selectedFacets[facet.field].id,
-        value: this.props.selectedFacets[facet.field].value,
-      };
+      let id = '';
+      let value = '';
+
+      if (this.props.selectedFacets && this.props.selectedFacets[facet.field]) {
+        id = this.props.selectedFacets[facet.field].id;
+        value = this.props.selectedFacets[facet.field].value;
+      }
+
+      this.state[facet.field] = { id, value };
     });
 
     this.routeHandler = this.routeHandler.bind(this);
@@ -80,14 +85,16 @@ class FacetSidebar extends React.Component {
         //   return null;
         // }
 
-        const selectedValue = selectedFacets[field].value;
+        const selectedValue = selectedFacets && selectedFacets[field] ?
+          selectedFacets[field].value : '';
+
         return (
           <fieldset key={i}>
             <label htmlFor={`select-${field}`}>{facet.field}</label>
             <select
               name={`select-${field}`}
               onChange={(e) => this.onChange(e, field, location)}
-              value={`${selectedValue}_${selectedValue}` || `${field}_any`}
+              value={selectedValue ? `${selectedValue}_${selectedValue}` : `${field}_any`}
             >
               <option value={`${field}_any`}>Any</option>
               {
