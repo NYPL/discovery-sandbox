@@ -25,6 +25,7 @@ class FacetSidebar extends React.Component {
 
   onChange(e, field, location) {
     const filter = e.target.value.split('_');
+    console.log(filter);
     this.setState({
       [field]: {
         id: filter[0],

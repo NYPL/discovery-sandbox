@@ -68,36 +68,52 @@ class ResultsList extends React.Component {
       const collapsed = expandedItems.indexOf(resultId) < 0
 
       return (
-        <div className="sub-item" key={i}>
-          <div>
-            <span className="status available">{availability}</span>
-            {
-              available ? ' to use in ' : ''
-            }
-            <a href="#">
-              {item.location && item.location.length ? item.location[0][0].prefLabel : null}
-            </a>
-            {
-              result.idCallNum ?
-              (<span className="call-no"> with call no. {result.idCallNum[0]}</span>)
+        <div key={i}>
+          {
+            item.status ? 
+            <div className={`sub-item ${i>=maxDisplay && collapsed ? 'more' : ''}`}>
+              <div>
+                <span className={`status ${availabilityClassname}`}>{availability}</span>
+                {
+                  available ? ' to use in ' : ' '
+                }
+                <a href="#">{item.location && item.location.length ? item.location[0][0].prefLabel : null}</a>
+                {
+                  item.shelfMark && item.shelfMark.length ?
+                  (<span className="call-no"> with call no. {item.shelfMark[0]}</span>)
+                  : null
+                }
+              </div>
+              <div>
+                {
+                  available ?
+                    (
+                      <Link
+                        className="button"
+                        to={`/hold/${id}`}
+                        onClick={(e) => this.getRecord(e, id, 'hold')}
+                      >
+                        Place a hold
+                      </Link>
+                    )
+                    : null
+                }
+              </div>
+            </div>
+            : null
+          }
+          {
+            i >= itemCount - 1 && moreCount > 0 && collapsed ?
+              (
+                <Link
+                  onClick={(e) => this.showMoreItems(e, resultId)}
+                  href="#see-more"
+                  className="see-more-link">
+                  See {moreCount} more item{moreCount > 1 ? 's' : ''}
+                </Link>
+              )
               : null
-            }
-          </div>
-          <div>
-            {
-              available ?
-                (
-                  <Link
-                    className="button"
-                    to={`/hold/request/${id}`}
-                    onClick={(e) => this.getRecord(e, id, 'hold/request')}
-                  >
-                    Place a hold
-                  </Link>
-                )
-                : null
-            }
-          </div>
+          }
         </div>
       );
     });
