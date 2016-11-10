@@ -4,12 +4,16 @@ import { Header, navConfig } from '@nypl/dgx-header-component';
 import Footer from '@nypl/dgx-react-footer';
 
 import Store from '../../stores/Store.js';
+import PatronData from '../../stores/PatronData.js';
 
 class App extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = Store.getState();
+    this.state = {
+      data: Store.getState(),
+      patron: PatronData.getState(),
+    };
     this.onChange = this.onChange.bind(this);
   }
 
@@ -18,7 +22,7 @@ class App extends React.Component {
   }
 
   onChange() {
-    this.setState(Store.getState());
+    this.setState({ data: Store.getState() });
   }
 
   componentWillUnmount() {
@@ -26,11 +30,14 @@ class App extends React.Component {
   }
 
   render() {
+    // console.log(this.state.patron);
     return (
       <div className="app-wrapper">
         <Header navData={navConfig.current} />
 
-        {React.cloneElement(this.props.children, this.state)}
+        <div className="container">{this.state.patron.names[0]}</div>
+
+        {React.cloneElement(this.props.children, this.state.data)}
 
         <Footer />
       </div>
