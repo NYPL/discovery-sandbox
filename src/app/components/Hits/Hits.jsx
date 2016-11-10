@@ -10,11 +10,12 @@ const Hits = ({ hits, query, facets }) => {
     }
   });
 
+  let keyword = query ? (<span>with keywords <strong>"{query}"</strong></span>) : null;
+
   return (
     <div className="results-message">
       <p>
-        Found <strong>{hits}</strong> results with keywords <strong>"{query}"</strong>
-        {filterString}.
+        Found <strong>{hits}</strong> results {keyword} {filterString}.
       </p>
     </div>
   );
@@ -23,6 +24,7 @@ const Hits = ({ hits, query, facets }) => {
 Hits.propTypes = {
   hits: React.PropTypes.number,
   query: React.PropTypes.string,
+  facets: React.PropTypes.object,
 };
 
 export default Hits;

@@ -1,6 +1,11 @@
 import express from 'express';
 import axios from 'axios';
 
+import {
+  isEmpty as _isEmpty,
+  findWhere as _findWhere,
+} from 'underscore';
+
 import appConfig from '../../../appConfig.js';
 import modelEbsco from '../../app/utils/model.js';
 // import ebscoFn from '../../../ebscoConfig.js';
@@ -125,7 +130,7 @@ function Search(query, cb, errorcb) {
 }
 
 function AjaxSearch(req, res, next) {
-  const q = req.query.q || 'harry potter';
+  const q = req.query.q || '';
 
   Search(
     q,
@@ -135,7 +140,7 @@ function AjaxSearch(req, res, next) {
 }
 
 function ServerSearch(req, res, next) {
-  let q = req.query.q || 'harry potter';
+  let q = req.query.q || '';
   let spaceIndex = '';
   
   // Slightly hacky right now but need to get all keywords in case
@@ -150,9 +155,46 @@ function ServerSearch(req, res, next) {
 
   Search(
     q,
-    (facets, data) => { 
+    (facets, data) => {
+      let selectedFacets = {};
+
+      // Populate the object with empty facet values
+      if (!_isEmpty(facets) && facets.itemListElement.length) {
+        facets.itemListElement.map(facet => {
+          selectedFacets[facet.field] = {
+            id: '',
+            value: '',
+          };
+        });
+      }
+
+      // Easier to break if facet values have a # instead of an empty space. There might
+      // be a better solution for this...
+      let urlFacets = q.substring(spaceIndex + 1);
+
+      if (urlFacets) {
+        let facetStrArray = q.substring(spaceIndex + 1).replace(/\" /, '"#').split('#');
+
+        facetStrArray.forEach(str => {
+          // Each string appears like so: 'contributor:"United States. War Department."'
+          // Can't simply split by ':' because some strings are: 'owner:"orgs:1000"'
+          const field = str.split(':"')[0];
+          const value = str.split(':"')[1].replace('"', '');
+
+          // Now find the facet from the URL from the returned facets in the API.
+          const facetObj = _findWhere(facets.itemListElement, { field });
+          const facet = _findWhere(facetObj.values, { value });
+
+          selectedFacets[field] = {
+            id: facet.value,
+            value: facet.label || facet.value,
+          };
+        });
+      }
+
       res.locals.data.Store = {
         searchResults: data,
+        selectedFacets,
         searchKeywords,
         facets,
       };
@@ -162,6 +204,7 @@ function ServerSearch(req, res, next) {
     (error) => {
       res.locals.data.Store = {
         searchResults: {},
+        selectedFacets: {},
         searchKeywords: '',
         facets: {},
       };

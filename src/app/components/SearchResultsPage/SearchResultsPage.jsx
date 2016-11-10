@@ -59,6 +59,7 @@ class SearchResultsPage extends React.Component {
 
           <FacetSidebar
             facets={facetList}
+            selectedFacets={selectedFacets}
             keywords={searchKeywords}
             location={this.props.location.search}
           />
