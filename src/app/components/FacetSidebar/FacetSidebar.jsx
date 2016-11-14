@@ -4,7 +4,10 @@ import axios from 'axios';
 import DateRange from './DateRange.jsx';
 import Actions from '../../actions/Actions.js';
 
-import { mapObject as _mapObject } from 'underscore';
+import {
+  mapObject as _mapObject,
+  findWhere as _findWhere,
+} from 'underscore';
 
 class FacetSidebar extends React.Component {
   constructor(props) {
@@ -13,57 +16,80 @@ class FacetSidebar extends React.Component {
     this.state = {};
 
     this.props.facets.map(facet => {
-      this.state[facet.field] = {
-        id: '',
-        value: '',
-      };
+      let id = '';
+      let value = '';
+
+      if (this.props.selectedFacets && this.props.selectedFacets[facet.field]) {
+        id = this.props.selectedFacets[facet.field].id;
+        value = this.props.selectedFacets[facet.field].value;
+      }
+
+      this.state[facet.field] = { id, value };
     });
 
     this.routeHandler = this.routeHandler.bind(this);
     this.onChange = this.onChange.bind(this);
   }
 
-  onChange(e, field, location) {
-    const filter = e.target.value.split('_');
-    console.log(filter);
-    this.setState({
-      [field]: {
-        id: filter[0],
-        value: filter[1],
-      },
-    });
-
+  onChange(e, field) {
+    const value = e.target.value;
     let strSearch = '';
+
+    if (value === `${field}_any`) {
+      this.setState({
+        [field]: {
+          id: '',
+          value: '',
+        },
+      });
+    } else {
+      let facetObj = _findWhere(this.props.facets, { field });
+      const facet = _findWhere(facetObj.values, { value });
+
+      this.setState({
+        [field]: {
+          id: facet.value,
+          value: facet.label || facet.value,
+        },
+      });
+    }
+
     _mapObject(this.state, (val, key) => {
       if (val.value !== '' && field !== key) {
-        strSearch += ` ${key}:"${val.value}"`;
-      } else if (field === key) {
-        strSearch += `${field}:"${filter[0]}"`;
+        strSearch += ` ${key}:"${val.id}"`;
+      } else if (field === key && value !== `${field}_any`) {
+        strSearch += ` ${field}:"${value}"`;
       }
-    })
+    });
 
     axios
-      .get(`/api?q=${this.props.keywords} ${strSearch}`)
+      .get(`/api?q=${this.props.keywords}${strSearch}`)
       .then(response => {
         Actions.updateSearchResults(response.data.searchResults);
         Actions.updateFacets(response.data.facets);
         Actions.updateSelectedFacets(this.state);
-        this.routeHandler(`/search?q=${this.props.keywords} ${strSearch}`);
+        this.routeHandler(null, `/search?q=${this.props.keywords}${strSearch}`);
       })
       .catch(error => {
         console.log(error);
       });
   }
 
-  routeHandler(path) {
-    // e.preventDefault();
-    // Actions.updateSearchKeywords('');
+  routeHandler(e, path) {
+    if (e) e.preventDefault();
+
+    if (path === '/') {
+      Actions.updateSelectedFacets({});
+    }
+
     this.context.router.push(path);
   }
 
   render() {
-    const facets = this.props.facets;
-    const location = this.props.location;
+    const {
+      facets,
+      selectedFacets,
+    } = this.props;
     let facetsElm = null;
     let dateRange = null;
 
@@ -71,16 +97,24 @@ class FacetSidebar extends React.Component {
       facetsElm = facets.map((facet, i) => {
         const field = facet.field;
 
-        if (facet.values.length <= 1) { return null; }
+        if (facet.values.length < 1 || field === 'carrierType' || field === 'mediaType') {
+          return null;
+        }
         // if (field === 'dates') {
         //   dateRange = facet;
         //   return null;
         // }
 
+        const selectedValue = this.state[field] ? this.state[field].id : '';
+
         return (
           <fieldset key={i}>
             <label htmlFor={`select-${field}`}>{facet.field}</label>
-            <select name={`select-${field}`} onChange={(e) => this.onChange(e, field, location)}>
+            <select
+              name={`select-${field}`}
+              onChange={(e) => this.onChange(e, field)}
+              value={selectedValue ? selectedValue : `${field}_any`}
+            >
               <option value={`${field}_any`}>Any</option>
               {
                 facet.values.map((f, j) => {
@@ -90,7 +124,7 @@ class FacetSidebar extends React.Component {
                   }
 
                   return (
-                    <option key={j} value={`${f.value}_${selectLabel}`}>
+                    <option key={j} value={f.value}>
                       {selectLabel} ({f.count})
                     </option>
                   );
@@ -106,16 +140,21 @@ class FacetSidebar extends React.Component {
       <div className="facets">
         <form className="facets-form">
           <h2>Filter results by</h2>
-          <fieldset>
-            <label htmlFor="select-keywords">Keywords</label>
-            <button
-              id="select-keywords"
-              className="button-selected"
-              title={`Remove keyword filter: ${this.props.keywords}`}
-            >
-              "{this.props.keywords}"
-            </button>
-          </fieldset>
+          {
+            this.props.keywords ?
+            <fieldset>
+              <label htmlFor="select-keywords">Keywords</label>
+              <button
+                id="select-keywords"
+                className="button-selected"
+                title={`Remove keyword filter: ${this.props.keywords}`}
+                onClick={e => this.routeHandler(e, '/')}
+              >
+                "{this.props.keywords}"
+              </button>
+            </fieldset>
+            : null
+          }
 
           {facetsElm}
           

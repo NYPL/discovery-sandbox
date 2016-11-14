@@ -1,6 +1,11 @@
 import express from 'express';
 import axios from 'axios';
 
+import {
+  isEmpty as _isEmpty,
+  findWhere as _findWhere,
+} from 'underscore';
+
 import appConfig from '../../../appConfig.js';
 import modelEbsco from '../../app/utils/model.js';
 // import ebscoFn from '../../../ebscoConfig.js';
@@ -14,7 +19,6 @@ const ebsco = {
   Guest: process.env.GUEST ? process.env.GUEST : '',
   Org: process.env.ORG ? process.env.ORG : '',
 };
-
 
 let sessionToken = '';
 let authenticationToken = '';
@@ -125,7 +129,7 @@ function Search(query, cb, errorcb) {
 }
 
 function AjaxSearch(req, res, next) {
-  const q = req.query.q || 'harry potter';
+  const q = req.query.q || '';
 
   Search(
     q,
@@ -135,9 +139,9 @@ function AjaxSearch(req, res, next) {
 }
 
 function ServerSearch(req, res, next) {
-  let q = req.query.q || 'harry potter';
+  let q = req.query.q || '';
   let spaceIndex = '';
-
+  
   // Slightly hacky right now but need to get all keywords in case
   // it's more than one word.
   if (q.indexOf(':') !== -1) {
@@ -151,8 +155,45 @@ function ServerSearch(req, res, next) {
   Search(
     q,
     (facets, data) => {
+      let selectedFacets = {};
+
+      // Populate the object with empty facet values
+      if (!_isEmpty(facets) && facets.itemListElement.length) {
+        facets.itemListElement.map(facet => {
+          selectedFacets[facet.field] = {
+            id: '',
+            value: '',
+          };
+        });
+      }
+
+      // Easier to break if facet values have a # instead of an empty space. There might
+      // be a better solution for this...
+      let urlFacets = q.substring(spaceIndex + 1);
+
+      if (urlFacets) {
+        let facetStrArray = q.substring(spaceIndex + 1).replace(/\" /, '"#').split('#');
+
+        facetStrArray.forEach(str => {
+          // Each string appears like so: 'contributor:"United States. War Department."'
+          // Can't simply split by ':' because some strings are: 'owner:"orgs:1000"'
+          const field = str.split(':"')[0];
+          const value = str.split(':"')[1].replace('"', '');
+
+          // Now find the facet from the URL from the returned facets in the API.
+          const facetObj = _findWhere(facets.itemListElement, { field });
+          const facet = _findWhere(facetObj.values, { value });
+
+          selectedFacets[field] = {
+            id: facet.value,
+            value: facet.label || facet.value,
+          };
+        });
+      }
+
       res.locals.data.Store = {
         searchResults: data,
+        selectedFacets,
         searchKeywords,
         facets,
       };
@@ -162,6 +203,7 @@ function ServerSearch(req, res, next) {
     (error) => {
       res.locals.data.Store = {
         searchResults: {},
+        selectedFacets: {},
         searchKeywords: '',
         facets: {},
       };
@@ -251,87 +293,6 @@ function Hold(req, res, next) {
   next();
 }
 
-function RequireUser(req, res){
-  if (!req.tokenResponse || !req.tokenResponse.isTokenValid || !req.tokenResponse.accessToken || !req.tokenResponse.decodedPatron || !req.tokenResponse.decodedPatron.sub) {
-    // redirect to login
-    const fullUrl = encodeURIComponent(req.protocol + '://' + req.get('host') + req.originalUrl);
-    res.redirect(`${appConfig.loginUrl}?redirect_uri=${fullUrl}`);
-    return false;
-  }
-  return true;
-}
-
-function NewHoldRequest(req, res, next){
-  const loggedIn = RequireUser(req, res);
-  if (!loggedIn) return false;
-
-  // Retrieve item
-  RetrieveItem(
-    req.params.id ,
-    (data) => {
-      console.log('Item data', data)
-      res.locals.data.Store = {
-        item: data,
-        searchKeywords: '',
-      };
-      next();
-    },
-    (error) => {
-      res.locals.data.Store = {
-        item: {},
-        searchKeywords: '',
-      };
-      next();
-    }
-  );
-}
-
-function CreateHoldRequest(req, res) {
-  console.log('Hold request', req.tokenResponse);
-
-  const loggedIn = RequireUser(req);
-  if (!loggedIn) return false;
-
-  const accessToken = req.tokenResponse.accessToken;
-  const patronId = req.tokenResponse.decodedPatron.sub;
-  const patronHoldsApi = `${appConfig.api.development}/hold-requests/`;
-  let itemId = req.params.id;
-  if (itemId.length > 8) {
-    itemId = itemId.substring(itemId.length - 8);
-  }
-  const pickupLocation = req.query.pickupLocation;
-
-  const data = {
-    patron: patronId,
-    recordType: "i",
-    record: itemId,
-    nyplSource: "nypl-sierra",
-    pickupLocation: pickupLocation,
-    // neededBy: "2013-03-20",
-    numberOfCopies: 1
-  }
-  // console.log('Making hold request', data, accessToken);
-
-  axios
-    .post(patronHoldsApi, data, {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${accessToken}`
-      }
-    })
-    .then(response => {
-      // console.log('Holds API response:', response);
-      console.log('Hold Request Id:', response.data.data.id);
-      console.log('Job Id:', response.data.data.jobId);
-      res.redirect(`/hold/confirmation/${req.params.id}?requestId=${response.data.data.id}`);
-    })
-    .catch(error => {
-      // console.log(error);
-      console.log(`Error calling Holds API : ${error.data.message}`);
-      res.redirect(`/hold/request/${req.params.id}?errorMessage=${error.data.message}`);
-    }); /* end axios call */
-}
-
 router
   .route('/search')
   .get(ServerSearch);
@@ -343,11 +304,6 @@ router
 router
   .route('/hold/:id')
   .get(ServerItemSearch);
-
-router
-  .route('/hold/request/:id')
-  .get(NewHoldRequest)
-  .post(CreateHoldRequest);
 
 router
   .route('/hold/confirmation/:id')

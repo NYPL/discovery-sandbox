@@ -29,6 +29,10 @@ class Actions {
   updatePatronData(data) {
     return data;
   }
+
+  removeFacet(field) {
+    return field;
+  }
 }
 
 export default alt.createActions(Actions);
