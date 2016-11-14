@@ -30,22 +30,20 @@ class SearchResultsPage extends React.Component {
       searchKeywords,
       facets,
       selectedFacets,
+      page,
+      location,
     } = this.props;
     const facetList = facets && facets.itemListElement ? facets.itemListElement : [];
     const dateRange = searchResults ? searchResults.dateRange : null;
     const totalHits = searchResults ? searchResults.totalResults : 0;
     const results = searchResults ? searchResults.itemListElement : [];
-    let breadcrumbs = null;
-
-    if (searchKeywords) {
-      breadcrumbs = (
-        <div className="page-header">
-          <div className="container">
-            <Breadcrumbs query={searchKeywords} type="search" />
-          </div>
+    const breadcrumbs = (
+      <div className="page-header">
+        <div className="container">
+          <Breadcrumbs query={searchKeywords} type="search" />
         </div>
-      );
-    }
+      </div>
+    );
 
     return (
       <div>
@@ -64,12 +62,18 @@ class SearchResultsPage extends React.Component {
           />
 
           <div className="results">
-            <Hits hits={totalHits} query={searchKeywords} facets={selectedFacets} />
+            <Hits
+              hits={totalHits}
+              query={searchKeywords}
+              facets={selectedFacets}
+            />
 
             <Results
               hits={totalHits}
               results={results}
               query={searchKeywords}
+              location={location}
+              page={page}
             />
           </div>
         </div>

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router';
 
-const Breadcrumbs = ({ query, type, title = '', url }) => {
+const Breadcrumbs = ({ query = '', type, title = '', url }) => {
   let str = 'Research Catalog';
   let crumbs = (
     <span>
@@ -12,7 +12,7 @@ const Breadcrumbs = ({ query, type, title = '', url }) => {
   );
 
   if (type === 'search') {
-    str = `Search Results for "${query}"`;
+    str = query ? `Search Results for "${query}"` : '';
     crumbs = (
       <span>
         <Link to="https://nypl.org">Home</Link> &gt;&gt;

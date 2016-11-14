@@ -30,6 +30,7 @@ class Hits extends React.Component {
       .then(response => {
         Actions.updateSearchResults(response.data.searchResults);
         Actions.updateFacets(response.data.facets);
+        Actions.updatePage('1');
         this.context.router.push(`/search?q=${this.props.query}${strSearch}`);
       })
       .catch(error => {
@@ -37,7 +38,7 @@ class Hits extends React.Component {
       });
   }
 
-  removeKeyword(keyword) {
+  removeKeyword() {
     Actions.updateSearchKeywords('');
 
     let strSearch = '';
@@ -52,12 +53,12 @@ class Hits extends React.Component {
       .then(response => {
         Actions.updateSearchResults(response.data.searchResults);
         Actions.updateFacets(response.data.facets);
+        Actions.updatePage('1');
         this.context.router.push(`/search?q=${strSearch}`);
       })
       .catch(error => {
         console.log(error);
       });
-
   }
 
   getKeyword(keyword) {

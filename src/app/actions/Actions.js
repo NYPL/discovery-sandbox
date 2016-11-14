@@ -33,6 +33,10 @@ class Actions {
   removeFacet(field) {
     return field;
   }
+
+  updatePage(page) {
+    return page;
+  }
 }
 
 export default alt.createActions(Actions);

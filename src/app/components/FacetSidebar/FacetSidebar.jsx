@@ -68,7 +68,31 @@ class FacetSidebar extends React.Component {
         Actions.updateSearchResults(response.data.searchResults);
         Actions.updateFacets(response.data.facets);
         Actions.updateSelectedFacets(this.state);
+        Actions.updatePage('1');
         this.routeHandler(null, `/search?q=${this.props.keywords}${strSearch}`);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }
+
+  removeKeyword() {
+    Actions.updateSearchKeywords('');
+
+    let strSearch = '';
+    _mapObject(this.props.selectedFacets, (val, key) => {
+      if (val.value !== '') {
+        strSearch += `${key}:"${val.id}" `;
+      }
+    });
+
+    axios
+      .get(`/api?q=${strSearch}`)
+      .then(response => {
+        Actions.updateSearchResults(response.data.searchResults);
+        Actions.updateFacets(response.data.facets);
+        Actions.updatePage('1');
+        this.context.router.push(`/search?q=${strSearch}`);
       })
       .catch(error => {
         console.log(error);
@@ -148,7 +172,7 @@ class FacetSidebar extends React.Component {
                 id="select-keywords"
                 className="button-selected"
                 title={`Remove keyword filter: ${this.props.keywords}`}
-                onClick={e => this.routeHandler(e, '/')}
+                onClick={(e) => this.removeKeyword()}
               >
                 "{this.props.keywords}"
               </button>
