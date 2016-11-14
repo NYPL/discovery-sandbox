@@ -4,6 +4,7 @@ import { Link } from 'react-router';
 import Breadcrumbs from '../Breadcrumbs/Breadcrumbs.jsx';
 import Store from '../../stores/Store.js';
 import PatronData from '../../stores/PatronData.js';
+import config from '../../../../appConfig.js';
 
 class HoldRequest extends React.Component {
   constructor(props) {
@@ -13,6 +14,7 @@ class HoldRequest extends React.Component {
       data: Store.getState(),
       patron: PatronData.getState(),
     };
+    this.requireUser();
     this.onChange = this.onChange.bind(this);
   }
 
@@ -20,11 +22,18 @@ class HoldRequest extends React.Component {
     this.setState({ data: Store.getState() });
   }
 
+  requireUser() {
+    if (!this.state.patron || !this.state.patron.id.length) {
+      const fullUrl = encodeURIComponent(window.location.href);
+      window.location.replace(`${config.loginUrl}?redirect_uri=${fullUrl}`);
+      return false;
+    }
+    return true;
+  }
+
   render() {
-    const {
-      item,
-      searchKeywords,
-    } = this.props;
+    const item = this.props.item;
+    const searchKeywords = this.props.searchKeywords;
     const record = this.props.item;
     const title = record.title[0];
     const bibId = record['@id'].substring(4);

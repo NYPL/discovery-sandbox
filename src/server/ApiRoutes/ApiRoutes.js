@@ -287,7 +287,7 @@ function NewHoldRequest(req, res, next){
 }
 
 function CreateHoldRequest(req, res) {
-  console.log('hold request', req.tokenResponse);
+  console.log('Hold request', req.tokenResponse);
 
   const loggedIn = RequireUser(req);
   if (!loggedIn) return false;
