@@ -11,6 +11,7 @@ class Store {
       updateFacets: Actions.updateFacets,
       updateSelectedFacets: Actions.updateSelectedFacets,
       removeFacet: Actions.removeFacet,
+      updatePage: Actions.updatePage,
     });
 
     this.state = {
@@ -20,6 +21,7 @@ class Store {
       searchKeywords: '',
       facets: {},
       selectedFacets: {},
+      page: '1',
     };
   }
 
@@ -50,6 +52,10 @@ class Store {
   removeFacet(field) {
     this.state.selectedFacets[field] = { id: '', value: '' };
     this.setState({ selectedFacets: this.state.selectedFacets });
+  }
+
+  updatePage(page) {
+    this.setState({ page });
   }
 }
 

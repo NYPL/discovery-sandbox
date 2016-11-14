@@ -1,24 +1,64 @@
 import React from 'react';
+import axios from 'axios';
+
+import Actions from '../../actions/Actions.js';
 
 import EResourceResults from './EResourceResults.jsx';
 import ResultList from './ResultsList.jsx';
 
 class Results extends React.Component {
+  fetchResults(page) {
+    const query = this.props.location.query.q;
+    const pageParam = page !== 1 ? `&page=${page}` : '';
+
+    axios
+      .get(`/api?q=${query}&page=${page}`)
+      .then(response => {
+        Actions.updateSearchResults(response.data.searchResults);
+        Actions.updatePage(page);
+        this.context.router.push(`/search?q=${query}${pageParam}`);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }
+
+  getPage(page, type = 'next') {
+    if (!page) return null;
+    const pageNum = type === 'next' ?  parseInt(page, 10) + 1 : parseInt(page, 10) - 1;
+
+    return (
+      <a className={`paginate ${type}`} onClick={(e) => this.fetchResults(pageNum)}>
+        {type[0].toUpperCase()}{type.substring(1)} Page
+      </a>
+    );
+  }
+
   render() {
     const {
       results,
       hits,
+      page,
     } = this.props;
+    const perPage = 50;
 
-    // let pageTotal = (parseInt(hits, 10) <= 10) ? hits : '1-10';
-    let pageTotal = hits;
+    const pageFactor = parseInt(page, 10) * 50;
+    let displayItems = `${pageFactor - (perPage - 1)} - ${pageFactor > hits ? hits : pageFactor}`;
+    let nextPage = (hits < perPage || pageFactor > hits) 
+      ? null : this.getPage(page, 'next');
+    let prevPage = page > 1 ? this.getPage(page, 'previous') : null;
+
+    if (hits < perPage) {
+      displayItems = `1 - ${hits}`;
+    }
 
     return (
       <div>
         <div className="results-nav">
           <div className="pagination">
-            <span className="pagination-total">{pageTotal} of {hits}</span>
-            <a href="#" className="paginate next">Next Page</a>
+            {prevPage}
+            <span className="paginate pagination-total">{displayItems} of {hits}</span>
+            {nextPage}
           </div>
 
           <div className="sort">

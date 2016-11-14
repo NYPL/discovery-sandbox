@@ -12,7 +12,6 @@
 
   .pagination-total,
   .paginate {
-    display: inline-block;
     padding: 0 0.35rem;
   }
 
@@ -22,8 +21,9 @@
 
   .paginate {
     text-decoration: none;
+    cursor: pointer;
 
-    &.prev:before {
+    &.previous:before {
       content: '‹';
       display: inline-block;
       margin-right: 0.2rem;

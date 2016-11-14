@@ -110,15 +110,16 @@ function getFacets(query) {
 }
 
 
-function Search(query, cb, errorcb) {
-  const apiCall = axios.get(`http://discovery-api.nypltech.org/api/v1/resources?q=${query}`);
+function Search(query, page, cb, errorcb) {
+  let queryString = `http://discovery-api.nypltech.org/api/v1/resources?q=${query}&per_page=50&page=${page}`;
+  const apiCall = axios.get(queryString);
 
   axios
     .all([getFacets(query), apiCall])
     .then(axios.spread((facets, response) => {
       // console.log(facets);
       // console.log(response);
-      cb(facets.data, response.data)
+      cb(facets.data, response.data, page)
     }))
     .catch(error => {
       console.log(error);
@@ -130,15 +131,18 @@ function Search(query, cb, errorcb) {
 
 function AjaxSearch(req, res, next) {
   const q = req.query.q || '';
+  const page = req.query.page || '1';
 
   Search(
     q,
-    (facets, searchResults) => res.json({ facets, searchResults }),
+    page,
+    (facets, searchResults, page) => res.json({ facets, searchResults, page }),
     (error) => res.json(error)
   );
 }
 
 function ServerSearch(req, res, next) {
+  const page = req.query.page || '1';
   let q = req.query.q || '';
   let spaceIndex = '';
   
@@ -154,7 +158,8 @@ function ServerSearch(req, res, next) {
 
   Search(
     q,
-    (facets, data) => {
+    page,
+    (facets, data, page) => {
       let selectedFacets = {};
 
       // Populate the object with empty facet values
@@ -196,6 +201,7 @@ function ServerSearch(req, res, next) {
         selectedFacets,
         searchKeywords,
         facets,
+        page,
       };
 
       next();
@@ -206,6 +212,7 @@ function ServerSearch(req, res, next) {
         selectedFacets: {},
         searchKeywords: '',
         facets: {},
+        page: '1',
       };
 
       next();
