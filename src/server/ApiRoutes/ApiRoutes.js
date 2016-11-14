@@ -20,7 +20,6 @@ const ebsco = {
   Org: process.env.ORG ? process.env.ORG : '',
 };
 
-
 let sessionToken = '';
 let authenticationToken = '';
 
