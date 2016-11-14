@@ -329,19 +329,25 @@ function NewHoldRequest(req, res, next){
 }
 
 function CreateHoldRequest(req, res) {
-  console.log('Hold request', req.tokenResponse);
+  // console.log('Hold request', req);
 
+  // Ensure user is logged in
   const loggedIn = RequireUser(req);
   if (!loggedIn) return false;
 
+  // retrieve access token and patron info
   const accessToken = req.tokenResponse.accessToken;
   const patronId = req.tokenResponse.decodedPatron.sub;
-  const patronHoldsApi = `${appConfig.api.development}/hold-requests/`;
+  const patronHoldsApi = `${appConfig.api.development}/hold-requests`;
+
+  // get item id and pickup location
   let itemId = req.params.id;
-  if (itemId.length > 8) {
-    itemId = itemId.substring(itemId.length - 8);
+  if (itemId.indexOf("-") >= 0) {
+    const parts = itemId.split("-");
+    itemId = parts[parts.length-1];
   }
-  const pickupLocation = req.query.pickupLocation;
+  itemId = itemId.replace(/\D/g,'');
+  const pickupLocation = req.body.pickupLocation;
 
   const data = {
     patron: patronId,
@@ -352,7 +358,7 @@ function CreateHoldRequest(req, res) {
     // neededBy: "2013-03-20",
     numberOfCopies: 1
   }
-  // console.log('Making hold request', data, accessToken);
+  console.log('Making hold request', data, accessToken);
 
   axios
     .post(patronHoldsApi, data, {
