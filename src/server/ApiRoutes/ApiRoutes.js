@@ -111,7 +111,7 @@ function getFacets(query) {
 
 
 function Search(query, page, cb, errorcb) {
-  let queryString = `http://discovery-api.nypltech.org/api/v1/resources?q=${query}&per_page=10&page=${page}`;
+  let queryString = `http://discovery-api.nypltech.org/api/v1/resources?q=${query}&per_page=50&page=${page}`;
   const apiCall = axios.get(queryString);
 
   axios

@@ -40,14 +40,15 @@ class Results extends React.Component {
       hits,
       page,
     } = this.props;
+    const perPage = 50;
 
-    const factor = parseInt(page, 10) * 10;
-    let displayItems = `${factor - 9} - ${factor > hits ? hits : factor}`;
-    let nextPage = (hits < 10 || factor > hits) 
+    const pageFactor = parseInt(page, 10) * 50;
+    let displayItems = `${pageFactor - (perPage - 1)} - ${pageFactor > hits ? hits : pageFactor}`;
+    let nextPage = (hits < perPage || pageFactor > hits) 
       ? null : this.getPage(page, 'next');
     let prevPage = page > 1 ? this.getPage(page, 'previous') : null;
 
-    if (hits < 10) {
+    if (hits < perPage) {
       displayItems = `1 - ${hits}`;
     }
 
