@@ -37,8 +37,37 @@ class Hits extends React.Component {
       });
   }
 
+  removeKeyword(keyword) {
+    Actions.updateSearchKeywords('');
+
+    let strSearch = '';
+    _mapObject(this.props.facets, (val, key) => {
+      if (val.value !== '') {
+        strSearch += `${key}:"${val.id}" `;
+      }
+    });
+
+    axios
+      .get(`/api?q=${strSearch}`)
+      .then(response => {
+        Actions.updateSearchResults(response.data.searchResults);
+        Actions.updateFacets(response.data.facets);
+        this.context.router.push(`/search?q=${strSearch}`);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+
+  }
+
   getKeyword(keyword) {
-    if (keyword) return (<span>with keywords <strong>"{keyword}"</strong></span>);
+    if (keyword) {
+      return (
+        <span>with keywords <strong>"{keyword}"</strong>
+          <a href="#" onClick={() => this.removeKeyword(keyword)}>[x]</a>
+        </span>
+      );
+    };
     return null;
   }
 

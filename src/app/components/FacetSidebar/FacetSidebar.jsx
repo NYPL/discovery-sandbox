@@ -113,7 +113,7 @@ class FacetSidebar extends React.Component {
             <select
               name={`select-${field}`}
               onChange={(e) => this.onChange(e, field)}
-              defaultValue={selectedValue ? selectedValue : `${field}_any`}
+              value={selectedValue ? selectedValue : `${field}_any`}
             >
               <option value={`${field}_any`}>Any</option>
               {

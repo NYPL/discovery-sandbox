@@ -159,7 +159,7 @@ class Search extends React.Component {
           placeholder={this.state.placeholder}
           className={`search-field ${pulseAnimation}`}
           onChange={this.inputChange}
-          defaultValue={this.state.searchKeywords}
+          value={this.state.searchKeywords}
           ref="keywords"
         />
         <SearchButton
