@@ -22,6 +22,7 @@ import routes from './src/app/routes/routes.jsx';
 import cookieParser from 'cookie-parser';
 import { initializeTokenAuth } from './src/server/routes/auth';
 import { getUserHolds } from './src/server/routes/api';
+import bodyParser from 'body-parser';
 
 const ROOT_PATH = __dirname;
 const INDEX_PATH = path.resolve(ROOT_PATH, 'src/client');
@@ -44,6 +45,11 @@ app.set('views', VIEWS_PATH);
 app.set('port', process.env.PORT || 3001);
 
 app.use(cookieParser());
+app.use( bodyParser.json() );       // to support JSON-encoded bodies
+app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
+  extended: true
+}));
+
 // Set Global publicKey
 app.set('nyplPublicKey', appConfig.publicKey);
 

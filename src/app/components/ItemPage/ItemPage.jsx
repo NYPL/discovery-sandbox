@@ -31,7 +31,7 @@ class ItemPageRegular extends React.Component {
         available: `<span class="status ${availabilityClassname}">${available}</span> `,
         location: `<a href="#"> ${item.location && item.location.length ? item.location[0][0].prefLabel : ''}</a>`,
         callNumber: item.idCallNum ? item.idCallNum[0] : '',
-        hold: available === 'available' ? (<Link to={`/hold/${item['@id'].substring(4)}`} className="button">Place a hold</Link>) : null,
+        hold: available === 'available' ? (<Link to={`/hold/request/${item['@id'].substring(4)}`} className="button">Request a hold</Link>) : null,
       }
     });
     // const externalData = [

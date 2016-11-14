@@ -39,17 +39,17 @@ class HoldConfirmation extends React.Component {
 
         <div className="container holds-container">
           <div className="item-header">
-            <h1>Research item hold confirmation</h1>
+            <h1>Research item request confirmation</h1>
           </div>
 
           <div className="item-summary row">
             <div className="details col span-2-3">
-              <h2>Item hold details</h2>
+              <h2>Item request details</h2>
               <ul className="generic-list">
-                <li>You have placed a hold on <Link to={`/item/${id}`}>{title}</Link></li>
-                <li>Ready for use by <strong>approximately {dateDisplay}, 9:00am</strong> at the location below</li>
+                <li>You have requested a hold on <Link to={`/item/${id}`}>{title}</Link></li>
+                { /* <li>Ready for use by <strong>approximately {dateDisplay}, 9:00am</strong> at the location below</li> */ }
                 <li><strong>You will receive an email notification</strong> when the item is ready for use</li>
-                <li>Book will be held until {dateDisplayEnd}, 5:00pm</li>
+                { /* <li>Book will be held until {dateDisplayEnd}, 5:00pm</li> */ }
                 <li>Visit your <a href="#">patron account page</a> to view the status of this item hold</li>
               </ul>
             </div>

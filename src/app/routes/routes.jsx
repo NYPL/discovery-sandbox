@@ -11,6 +11,7 @@ import SearchResultsPage from '../components/SearchResultsPage/SearchResultsPage
 import ItemPage from '../components/ItemPage/ItemPage.jsx';
 import HoldPage from '../components/HoldPage/HoldPage.jsx';
 import HoldConfirmation from '../components/HoldPage/HoldConfirmation.jsx';
+import HoldRequest from '../components/HoldRequest/HoldRequest.jsx';
 import AdvancedSearch from '../components/AdvancedSearch/AdvancedSearch.jsx';
 import Account from '../components/Account/Account.jsx';
 import AccountHolds from '../components/Account/AccountHolds.jsx';
@@ -21,6 +22,7 @@ const routes = (
     <Route path="/search" component={SearchResultsPage} />
     <Route path="/advanced" component={AdvancedSearch} />
     <Route path="/item/:id" component={ItemPage} />
+    <Route path="/hold/request/:id" component={HoldRequest} />
     <Route path="/hold/:id" component={HoldPage} />
     <Route path="/hold/confirmation/:id" component={HoldConfirmation} />
     <Route path="/account" component={Account} />

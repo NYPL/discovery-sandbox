@@ -70,7 +70,7 @@ class ResultsList extends React.Component {
       return (
         <div key={i}>
           {
-            item.status ? 
+            item.status ?
             <div className={`sub-item ${i>=maxDisplay && collapsed ? 'more' : ''}`}>
               <div>
                 <span className={`status ${availabilityClassname}`}>{availability}</span>
@@ -90,8 +90,8 @@ class ResultsList extends React.Component {
                     (
                       <Link
                         className="button"
-                        to={`/hold/${id}`}
-                        onClick={(e) => this.getRecord(e, id, 'hold')}
+                        to={`/hold/request/${id}`}
+                        onClick={(e) => this.getRecord(e, id, 'hold/request')}
                       >
                         Place a hold
                       </Link>
