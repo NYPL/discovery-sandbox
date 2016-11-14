@@ -141,7 +141,7 @@ function AjaxSearch(req, res, next) {
 function ServerSearch(req, res, next) {
   let q = req.query.q || '';
   let spaceIndex = '';
-  
+
   // Slightly hacky right now but need to get all keywords in case
   // it's more than one word.
   if (q.indexOf(':') !== -1) {
@@ -293,6 +293,87 @@ function Hold(req, res, next) {
   next();
 }
 
+function RequireUser(req, res){
+  if (!req.tokenResponse || !req.tokenResponse.isTokenValid || !req.tokenResponse.accessToken || !req.tokenResponse.decodedPatron || !req.tokenResponse.decodedPatron.sub) {
+    // redirect to login
+    const fullUrl = encodeURIComponent(req.protocol + '://' + req.get('host') + req.originalUrl);
+    res.redirect(`${appConfig.loginUrl}?redirect_uri=${fullUrl}`);
+    return false;
+  }
+  return true;
+}
+
+function NewHoldRequest(req, res, next){
+  const loggedIn = RequireUser(req, res);
+  if (!loggedIn) return false;
+
+  // Retrieve item
+  RetrieveItem(
+    req.params.id ,
+    (data) => {
+      console.log('Item data', data)
+      res.locals.data.Store = {
+        item: data,
+        searchKeywords: '',
+      };
+      next();
+    },
+    (error) => {
+      res.locals.data.Store = {
+        item: {},
+        searchKeywords: '',
+      };
+      next();
+    }
+  );
+}
+
+function CreateHoldRequest(req, res) {
+  console.log('Hold request', req.tokenResponse);
+
+  const loggedIn = RequireUser(req);
+  if (!loggedIn) return false;
+
+  const accessToken = req.tokenResponse.accessToken;
+  const patronId = req.tokenResponse.decodedPatron.sub;
+  const patronHoldsApi = `${appConfig.api.development}/hold-requests/`;
+  let itemId = req.params.id;
+  if (itemId.length > 8) {
+    itemId = itemId.substring(itemId.length - 8);
+  }
+  const pickupLocation = req.query.pickupLocation;
+
+  const data = {
+    patron: patronId,
+    recordType: "i",
+    record: itemId,
+    nyplSource: "nypl-sierra",
+    pickupLocation: pickupLocation,
+    // neededBy: "2013-03-20",
+    numberOfCopies: 1
+  }
+  // console.log('Making hold request', data, accessToken);
+
+  axios
+    .post(patronHoldsApi, data, {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`
+      }
+    })
+    .then(response => {
+      // console.log('Holds API response:', response);
+      console.log('Hold Request Id:', response.data.data.id);
+      console.log('Job Id:', response.data.data.jobId);
+      res.redirect(`/hold/confirmation/${req.params.id}?requestId=${response.data.data.id}`);
+    })
+    .catch(error => {
+      // console.log(error);
+      console.log(`Error calling Holds API : ${error.data.message}`);
+      res.redirect(`/hold/request/${req.params.id}?errorMessage=${error.data.message}`);
+    }); /* end axios call */
+}
+
 router
   .route('/search')
   .get(ServerSearch);
@@ -304,6 +385,11 @@ router
 router
   .route('/hold/:id')
   .get(ServerItemSearch);
+
+router
+  .route('/hold/request/:id')
+  .get(NewHoldRequest)
+  .post(CreateHoldRequest);
 
 router
   .route('/hold/confirmation/:id')
