@@ -251,14 +251,46 @@ function Hold(req, res, next) {
   next();
 }
 
+function RequireUser(req, res){
+  if (!req.tokenResponse || !req.tokenResponse.isTokenValid || !req.tokenResponse.accessToken || !req.tokenResponse.decodedPatron || !req.tokenResponse.decodedPatron.sub) {
+    // redirect to login
+    const fullUrl = encodeURIComponent(req.protocol + '://' + req.get('host') + req.originalUrl);
+    res.redirect(`${appConfig.loginUrl}?redirect_uri=${fullUrl}`);
+    return false;
+  }
+  return true;
+}
+
+function NewHoldRequest(req, res, next){
+  const loggedIn = RequireUser(req, res);
+  if (!loggedIn) return false;
+
+  // Retrieve item
+  RetrieveItem(
+    req.params.id ,
+    (data) => {
+      console.log('Item data', data)
+      res.locals.data.Store = {
+        item: data,
+        searchKeywords: '',
+      };
+      next();
+    },
+    (error) => {
+      res.locals.data.Store = {
+        item: {},
+        searchKeywords: '',
+      };
+      next();
+    }
+  );
+}
+
 function CreateHoldRequest(req, res) {
   console.log('hold request', req.tokenResponse);
 
-  if (!req.tokenResponse || !req.tokenResponse.isTokenValid || !req.tokenResponse.accessToken || !req.tokenResponse.decodedPatron || !req.tokenResponse.decodedPatron.sub) {
-    // redirect to login
-    // res.redirect(`${config.loginUrl}?redirect_uri=http://local.nypl.org:3001/`);
-    return false;
-  }
+  const loggedIn = RequireUser(req);
+  if (!loggedIn) return false;
 
   const accessToken = req.tokenResponse.accessToken;
   const patronId = req.tokenResponse.decodedPatron.sub;
@@ -314,7 +346,7 @@ router
 
 router
   .route('/hold/request/:id')
-  .get(ServerItemSearch)
+  .get(NewHoldRequest)
   .post(CreateHoldRequest);
 
 router
