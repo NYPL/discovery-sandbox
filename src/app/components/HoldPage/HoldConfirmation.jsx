@@ -58,13 +58,12 @@ class HoldConfirmation extends React.Component {
                 { /* <li>Ready for use by <strong>approximately {dateDisplay}, 9:00am</strong> at the location below</li> */ }
                 <li><strong>You will receive an email notification</strong> when the item is ready for use at the location below</li>
                 { /* <li>Book will be held until {dateDisplayEnd}, 5:00pm</li> */ }
-                <li>Visit your <a href="#">patron account page</a> to view the status of this item hold</li>
               </ul>
             </div>
             <div className="actions col span-1-3">
               <h2>Available actions</h2>
               <ul className="generic-list">
-                <li>Visit your <Link to="/account/holds">patron account page</Link> to view the status of this item hold</li>
+                <li>Visit your <a href="http://myaccount-beta.nypl.org/my-account/holds">patron account page</a> to view the status of this item hold</li>
                 { /* <li>You may <a href="#cancel">cancel</a> this item hold at any time</li> */ }
               </ul>
             </div>
