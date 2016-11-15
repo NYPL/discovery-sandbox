@@ -110,6 +110,10 @@
     color: $gray;
   }
 
+  & > ul {
+    padding-left: 0;
+  }
+
   .sub-items {
     margin: 1rem 0;
   }
@@ -117,6 +121,7 @@
   .result-item {
     padding: 0;
     border: none;
+    margin: 5px 0;
   }
 
   .related-item:last-child .sub-items {
