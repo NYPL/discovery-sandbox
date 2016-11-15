@@ -8,6 +8,7 @@ import Breadcrumbs from '../Breadcrumbs/Breadcrumbs.jsx';
 import FacetSidebar from '../FacetSidebar/FacetSidebar.jsx';
 import Results from '../Results/Results.jsx';
 import Search from '../Search/Search.jsx';
+import { collapse } from '../../utils/utils.js';
 
 class SearchResultsPage extends React.Component {
   componentWillMount() {
@@ -36,7 +37,7 @@ class SearchResultsPage extends React.Component {
     const facetList = facets && facets.itemListElement ? facets.itemListElement : [];
     const dateRange = searchResults ? searchResults.dateRange : null;
     const totalHits = searchResults ? searchResults.totalResults : 0;
-    const results = searchResults ? searchResults.itemListElement : [];
+    const results = searchResults ? collapse({ searchResults }).searchResults.itemListElement : [];
     const breadcrumbs = (
       <div className="page-header">
         <div className="container">

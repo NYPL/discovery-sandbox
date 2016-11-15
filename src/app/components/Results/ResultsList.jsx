@@ -119,6 +119,48 @@ class ResultsList extends React.Component {
     });
   }
 
+  getCollapsedBibs(collapsedBibs) {
+    if (!collapsedBibs.length) return null;
+
+    let bibs = collapsedBibs.map((bib, i) => {
+      const result = bib.result;
+        const itemTitle = result.title[0];
+        const authors = result.contributor && result.contributor.length ?
+          result.contributor.map((author) => `${author}; ` )
+          : null;
+        const id = result['@id'].substring(4);
+        const items = result.items;
+
+      return (
+        <div className="result-item" key={i}>
+          <div className="result-text">
+            {/*<div className="type">{result.type ? result.type[0].prefLabel : null}</div>*/}
+            <Link
+              onClick={(e) => this.getRecord(e, id, 'item')}
+              href={`/item/${id}`}
+              className="title"
+            >
+              {itemTitle}
+            </Link>
+            {/*<div className="description author">
+              {authors} {result.created}
+            </div>*/}
+            <div className="sub-items">
+              {this.getItems(items, result)}
+            </div>
+          </div>
+        </div>
+      );
+    });
+
+    return (
+      <div className="related-items">
+        <h4>Related formats and editions</h4>
+        {bibs}
+      </div>
+    );
+  }
+
   render() {
     const results = this.props.results;
     let resultsElm = null;
@@ -126,6 +168,10 @@ class ResultsList extends React.Component {
     if (results && results.length) {
       resultsElm = results.map((item, i) => {
         const result = item.result;
+        const collapsedBibs = item.collapsedBibs && item.collapsedBibs.length ?
+          item.collapsedBibs : [];
+        const collapsedBibsElements = this.getCollapsedBibs(collapsedBibs);
+
         const itemTitle = result.title[0];
         const itemImage = result.btCover ? (
           <div className="result-image">
@@ -157,6 +203,7 @@ class ResultsList extends React.Component {
               <div className="sub-items">
                 {this.getItems(items, result)}
               </div>
+              {collapsedBibsElements}
             </div>
           </li>
         );

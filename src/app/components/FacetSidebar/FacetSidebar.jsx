@@ -69,7 +69,7 @@ class FacetSidebar extends React.Component {
         Actions.updateFacets(response.data.facets);
         Actions.updateSelectedFacets(this.state);
         Actions.updatePage('1');
-        this.routeHandler(null, `/search?q=${this.props.keywords}${strSearch}`);
+        this.routeHandler(null, `/search?q=${encodeURIComponent(this.props.keywords)}${strSearch}`);
       })
       .catch(error => {
         console.log(error);
