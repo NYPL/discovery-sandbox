@@ -51,6 +51,14 @@
     font-size: 1.2rem;
     margin-top: 2rem;
   }
+
+  .results-list {
+    margin-top: 2rem;
+    
+    li:first-child {
+      border-top: 0;
+    }
+  }
 }
 
 .holdings-table {

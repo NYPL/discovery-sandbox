@@ -151,7 +151,7 @@ class ItemPageRegular extends React.Component {
               title="Item details"
             />
 
-            {/*<ItemEditions title={title} />
+            {/*
 
             <ItemDetails data={externalData} title="External data" />
 
@@ -160,6 +160,8 @@ class ItemPageRegular extends React.Component {
             <ItemDetails data={citeData} title="Cite this book" />
           */}
           </div>
+
+          <ItemEditions title={title} item={record} />
 
         </div>
       </div>
