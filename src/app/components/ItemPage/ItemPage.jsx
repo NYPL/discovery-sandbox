@@ -14,15 +14,11 @@ class ItemPageRegular extends React.Component {
     const authors = record.contributor && record.contributor.length ?
       record.contributor.map((author, i) => (<Link to={{ pathname: '/search', query: { q: `contributor:"${author}"` } }} key={i}>{author}</Link>))
       : null;
-    const authorsString = record.contributor && record.contributor.length ?
-      record.contributor.map((author, i) => (`<a href="/search?q=${encodeURIComponent(`contributor:"${author}"`)}" key=${i}>${author}</a>`))
+    const publisher = record.publisher && record.publisher.length ? <Link to={{ pathname: '/search', query: { q: `publisher:"${record.publisher[0]}"` } }}>{record.publisher[0]}</Link>
       : null;
-    const language = record.language[0].prefLabel;
-    const subjects = record.subject ? record.subject : [];
-    const subjectElm = subjects && subjects.length ?
-      subjects.map((subject, i) => (`<a href="/search?q=${encodeURIComponent(`subject:"${subject.prefLabel}"`)}" key=${i}>${subject.prefLabel}</a>`)).join('')
-      : '';
-    const holdings = record.items.map((item, i) => {
+    const holdings = record.items.filter((item, i) => {
+      return item.location && item.status;
+    }).map((item, i) => {
       const available = item.status && item.status[0].prefLabel ? item.status[0].prefLabel.trim().toLowerCase() : '';
       const availabilityClassname = available.replace(/\W/g, '').toLowerCase();
       return {
@@ -30,7 +26,7 @@ class ItemPageRegular extends React.Component {
         className: '',
         available: `<span class="status ${availabilityClassname}">${available}</span> `,
         location: `${item.location && item.location.length ? item.location[0][0].prefLabel : ''}`,
-        callNumber: item.idCallNum ? item.idCallNum[0] : '',
+        callNumber: item.shelfMark ? item.shelfMark[0] : '',
         hold: available === 'available' ? (<Link to={`/hold/request/${item['@id'].substring(4)}`} className="button">Request a hold</Link>) : null,
       }
     });
@@ -52,39 +48,48 @@ class ItemPageRegular extends React.Component {
     //   // { term: '<a href="http://worldcat.org/">Worldcat</a>', definition: '<a href="http://worldcat.org/oclc/305151457">305151457</a>' },
     //   // { term: '<a href="http://classify.oclc.org/">OCLC Classification</a>', definition: '<a href="http://classify.oclc.org/classify2/ClassifyDemo?owi=1090692939">1090692939</a>' },
     // ];
-    const itemDetails = [
-      { term: 'Title', definition: title },
-      // { term: 'Uniform title', definition: 'Federalist.' },
-      { term: 'Format', definition: `<a href="/search?q=${encodeURIComponent(`materialType:"${record.type[0]['@id']}"`)}">${record.type[0].prefLabel}</a>` },
-      { term: 'Language', definition: `<a href="/search?q=${encodeURIComponent(`language:"${record.language[0]['@id']}"`)}">${language}</a>` },
-      { term: 'Published', definition: `<a href="/search?q=${encodeURIComponent(`date:${record.startYear}`)}">${record.startYear}</a>` },
-      { term: 'Subjects', definition: `<div class="hiearchy">
-          ${subjectElm || 'Unknown'}
-        </div>`,
-      },
-      { term: 'Contributors', definition: `<ul>
-          <li>${authorsString || 'Unknown'}</li>
-        </ul>`,
-      },
-      // { term: 'Bibliography', definition: 'Includes bibliographical references and index.' },
-      // { term: 'Contents', definition: `<ul>
-      //     <li>Introduction: The Federalist then and now / Ian Shapiro</li>
-      //     <li>The Federalist papers</li>
-      //     <li>The Articles of Confederation</li>
-      //     <li>The Constitution of the United States of America</li>
-      //     <li>Amendments to the Constitution of the United States</li>
-      //     <li>Unmanifest destiny / John Dunn</li>
-      //     <li>The Federalist abroad in the world / Donal L. Horowitz</li>
-      //     <li>Protofeminist responses to the Federalist-Antifederalist debate / Eileen Hunt Botting.</li>
-      //   </ul>`
-      // },
-      // { term: 'ISBN', definition: `<ul>
-      //     <li>9780300118902 (pbk.)</li>
-      //     <li>0300118902 (pbk.)</li>
-      //   </ul>`
-      // },
-      // { term: 'Research call number', definition: 'IB 09-5067' },
-    ];
+
+    const displayFields = [
+      {label: 'Title', field: 'title'},
+      {label: 'Type', field: 'type'},
+      {label: 'Language', field: 'language'},
+      {label: 'Date Created', field: 'createdYear'},
+      {label: 'Date Published', field: 'startYear'},
+      {label: 'Contributors', field: 'contributor', linkable: true},
+      {label: 'Publisher', field: 'publisher', linkable: true},
+      {label: 'Place of publication', field: 'placeOfPublication'},
+      {label: 'Subjects', field: 'subject'},
+      {label: 'Dimensions', field: 'dimensions'},
+      {label: 'Issuance', field: 'issuance'},
+      {label: 'Owner', field: 'owner'},
+      {label: 'Location', field: 'location'},
+      {label: 'Notes', field: 'note'},
+      {label: 'Bnumber', field: 'idBnum'},
+      {label: 'LCCN', field: 'idLcc'},
+      {label: 'OCLC Number', field: 'idOclc', url: 'http://worldcat.org/oclc/{id}'},
+      {label: 'OCLC Workid', field: 'idOwi', url: 'http://classify.oclc.org/classify2/ClassifyDemo?owi={id}'}
+    ]
+
+    let itemDetails = [];
+    displayFields.forEach((f) => {
+      // skip absent fields
+      if (!record[f.field] || !record[f.field].length) return false;
+      let fieldValue = record[f.field][0];
+
+      // list of links
+      if (fieldValue['@id']) {
+        itemDetails.push({ term: f.label, definition: `<ul>${record[f.field].map((obj, i) => (`<li key=${i}><a href="/search?q=${encodeURIComponent(`${f.field}:"${obj['@id']}"`)}">${obj.prefLabel}</a></li>`)).join('')}</ul>` });
+
+      // list of links
+      } else if (f.linkable) {
+        itemDetails.push({ term: f.label, definition: `<ul>${record[f.field].map((value, i) => (`<li key=${i}><a href="/search?q=${encodeURIComponent(`${f.field}:"${value}"`)}">${value}</a></li>`)).join('')}</ul>` });
+
+      // list of plain text
+      } else {
+        itemDetails.push({ term: f.label, definition: `<ul>${record[f.field].map((value, i) => (`<li key=${i}>${value}</li>`)).join('')}</ul>` });
+      }
+    });
+
     // const citeData = [
     //   // { term: 'APA', definition: 'Hamilton, A., Madison, J., Jay, J., &amp; Shapiro, I. (2009). The Federalist papers: Alexander Hamilton, James Madison, John Jay. New Haven: Yale University Press.' },
     //   // { term: 'MLA', definition: 'Hamilton, Alexander, James Madison, John Jay, and Ian Shapiro. The Federalist Papers: Alexander Hamilton, James Madison, John Jay. New Haven: Yale University Press, 2009. Print.' },
@@ -113,8 +118,12 @@ class ItemPageRegular extends React.Component {
                   <div className="description author">
                   By {authors}
                 </div>}
+                {publisher &&
+                  <div className="description">
+                  Publisher: {publisher}
+                </div>}
               <div className="description">
-                <Link to={{ pathname: '/search', query: {q: `date:${record.startYear}`}}}>{record.startYear}</Link>
+                Year published: <Link to={{ pathname: '/search', query: {q: `date:${record.startYear}`}}}>{record.startYear}</Link>
               </div>
             </div>
           </div>
