@@ -77,7 +77,7 @@ class ResultsList extends React.Component {
                 {
                   available ? ' to use in ' : ' '
                 }
-                <a href="#">{item.location && item.location.length ? item.location[0][0].prefLabel : null}</a>
+                <span>{item.location && item.location.length ? item.location[0][0].prefLabel : null}</span>
                 {
                   item.shelfMark && item.shelfMark.length ?
                   (<span className="call-no"> with call no. {item.shelfMark[0]}</span>)
