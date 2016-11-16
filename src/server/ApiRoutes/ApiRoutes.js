@@ -149,9 +149,10 @@ function ServerSearch(req, res, next) {
   // Slightly hacky right now but need to get all keywords in case
   // it's more than one word.
   if (q.indexOf(':') !== -1) {
-    spaceIndex = (q.substring(0, q.indexOf(':'))).lastIndexOf(' ')
+    spaceIndex = (q.substring(0, q.indexOf(':'))).lastIndexOf(' ');
   } else {
-    spaceIndex = q.indexOf(' ') === -1 ? q.length : q.indexOf(' ');
+    // spaceIndex = q.indexOf(' ') !== -1 ? q.length : q.indexOf(' ');
+    spaceIndex = q.length;
   }
 
   const searchKeywords = q.substring(0, spaceIndex);
@@ -180,6 +181,8 @@ function ServerSearch(req, res, next) {
         let facetStrArray = q.substring(spaceIndex + 1).replace(/\" /, '"#').split('#');
 
         facetStrArray.forEach(str => {
+          if (!str) return;
+
           // Each string appears like so: 'contributor:"United States. War Department."'
           // Can't simply split by ':' because some strings are: 'owner:"orgs:1000"'
           const field = str.split(':"')[0];
