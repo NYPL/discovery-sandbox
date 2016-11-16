@@ -3,7 +3,6 @@ import axios from 'axios';
 
 import Actions from '../../actions/Actions.js';
 
-import EResourceResults from './EResourceResults.jsx';
 import ResultList from './ResultsList.jsx';
 
 class Results extends React.Component {
@@ -54,30 +53,31 @@ class Results extends React.Component {
 
     return (
       <div>
-        <div className="results-nav">
-          <div className="pagination">
-            {prevPage}
-            <span className="paginate pagination-total">{displayItems} of {hits}</span>
-            {nextPage}
-          </div>
+        {
+          hits !== 0 &&
+          (<div className="results-nav">
+            <div className="pagination">
+              {prevPage}
+              <span className="paginate pagination-total">{displayItems} of {hits}</span>
+              {nextPage}
+            </div>
+            <div className="sort">
+              <form className="sort-form">
+                <label htmlFor="sort-by">Sort by</label>
+                <select id="sort-by" name="sort">
+                  <option value="relevance">Relevance</option>
+                  <option value="title_asc">Title (a - z)</option>
+                  <option value="title_desc">Title (z - a)</option>
+                  <option value="author_asc">Author (a - z)</option>
+                  <option value="author_desc">Author (z - a)</option>
+                  <option value="date_asc">Date (old to new)</option>
+                  <option value="date_desc">Date (new to old)</option>
+                </select>
+              </form>
+            </div>
+          </div>)
+        }
 
-          <div className="sort">
-            <form className="sort-form">
-              <label htmlFor="sort-by">Sort by</label>
-              <select id="sort-by" name="sort">
-                <option value="relevance">Relevance</option>
-                <option value="title_asc">Title (a - z)</option>
-                <option value="title_desc">Title (z - a)</option>
-                <option value="author_asc">Author (a - z)</option>
-                <option value="author_desc">Author (z - a)</option>
-                <option value="date_asc">Date (old to new)</option>
-                <option value="date_desc">Date (new to old)</option>
-              </select>
-            </form>
-          </div>
-        </div>
-
-        {/*<EResourceResults results={results} query={this.props.query} />*/}
         <ResultList results={results} query={this.props.query} />
       </div>
     );
