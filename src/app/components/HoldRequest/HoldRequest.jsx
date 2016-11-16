@@ -5,6 +5,7 @@ import Breadcrumbs from '../Breadcrumbs/Breadcrumbs.jsx';
 import Store from '../../stores/Store.js';
 import PatronData from '../../stores/PatronData.js';
 import config from '../../../../appConfig.js';
+import LibraryItem from '../../utils/item.js';
 
 class HoldRequest extends React.Component {
   constructor(props) {
@@ -38,25 +39,8 @@ class HoldRequest extends React.Component {
     const title = record.title[0];
     const bibId = record['@id'].substring(4);
     const itemId = this.props.params.id;
-
-    // determine item and location
-    const items = record.items;
-    const selectedItem = items.find((i) => {
-      return i['@id'].substring(4) == itemId;
-    });
-    // default to SASB - RMRR
-    const defaultLocation = {
-      '@id': 'loc:mal',
-      'prefLabel': 'SASB - Rose Main Rdg Rm 315'
-    };
-    let location = defaultLocation;
-    if (selectedItem && selectedItem.location && selectedItem.location.length > 0) {
-      location = selectedItem.location[0][0];
-    }
-    const isOffsite = location.prefLabel.substring(0,7) === "OFFSITE"
-    if (isOffsite) {
-      location = defaultLocation;
-    }
+    const selectedItem = LibraryItem.getItem(record, itemId);
+    const location = LibraryItem.getLocation(record, itemId);
 
     const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July',
       'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
@@ -103,23 +87,25 @@ class HoldRequest extends React.Component {
             <fieldset className="select-location-fieldset">
               <label className="group selected" htmlFor="location1">
                 <span className="col location">
-                  {isOffsite &&
+                  <a href={`${location.uri}`}>{location["full-name"]}</a><br />{location.address.address1}<br />
+                  {location.prefLabel}
+                  {location.offsite &&
                     <span>
-                      {location.prefLabel}
-                      <br /><small>(requested from offsite storage)</small>
+                      <br /><small>(requested from offsite storage)</small><br />
                     </span>
                   }
-                  {!isOffsite && location.prefLabel}
-                  {/*<a href="https://www.nypl.org/locations/schwarzman">Schwarzman Building</a>, 476 Fifth Avenue at 42nd, New York, NY,
-                  <a href="https://www.nypl.org/locations/divisions/milstein">Milstein Division</a>, First Floor, Room 120
-                  */}
+                  {/*<a href="https://www.nypl.org/locations/divisions/milstein">Milstein Division</a>, First Floor, Room 120*/}
                 </span>
-                <span className="col"><small>Call number:</small><br />{selectedItem.shelfMark[0]}</span>
+                {selectedItem.shelfMark &&
+                  <span className="col">
+                    <small>Call number:</small><br />{selectedItem.shelfMark[0]}
+                  </span>
+                }
                 {/*<span className="col"><small>Ready by approximately:</small><br />{dateDisplay}, 9am.</span>*/}
               </label>
             </fieldset>
 
-            <input type="hidden" name="pickupLocation" value={location['@id'].substring(4)} />
+            <input type="hidden" name="pickupLocation" value={location.code} />
 
             <button type="submit" className="large">
               Submit your item hold request

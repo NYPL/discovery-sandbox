@@ -318,7 +318,7 @@ function NewHoldRequest(req, res, next){
   RetrieveItem(
     req.params.id ,
     (data) => {
-      console.log('Item data', data)
+      // console.log('Item data', data)
       res.locals.data.Store = {
         item: data,
         searchKeywords: '',
