@@ -4,6 +4,7 @@ import Breadcrumbs from '../Breadcrumbs/Breadcrumbs.jsx';
 import ItemHoldings from './ItemHoldings.jsx';
 import ItemDetails from './ItemDetails.jsx';
 import ItemEditions from './ItemEditions.jsx';
+import LibraryItem from '../../utils/item.js';
 
 import { Link } from 'react-router';
 
@@ -29,7 +30,7 @@ class ItemPageRegular extends React.Component {
         availability: availabilityClassname,
         className: '',
         available: `<span class="status ${availabilityClassname}">${available}</span> `,
-        location: `${item.location && item.location.length ? item.location[0][0].prefLabel : ''}`,
+        location: LibraryItem.getLocationLabel(item.location),
         callNumber: item.idCallNum ? item.idCallNum[0] : '',
         hold: available === 'available' ? (<Link to={`/hold/request/${item['@id'].substring(4)}`} className="button">Request a hold</Link>) : null,
       }
