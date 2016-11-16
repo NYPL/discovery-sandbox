@@ -14,9 +14,10 @@ export function initializeTokenAuth(req, res, next) {
           isTokenValid: false,
           errorCode: error.message,
         };
-        next();
+        return next();
         // res.redirect(`${config.loginUrl}?redirect_uri=http://local.nypl.org:3001/my-account/holds`);
       }
+
       // Token has been verified, initialize user session
       req.tokenResponse = {
         isTokenValid: true,
@@ -25,7 +26,7 @@ export function initializeTokenAuth(req, res, next) {
         errorCode: null,
       };
       // Continue next function call
-      next();
+      return next();
     });
   } else {
     // Token is undefined from the cookie
