@@ -100,7 +100,7 @@ class Search extends React.Component {
           Actions.updateFacets(response.data.facets);
           Actions.updateSearchKeywords(keyword);
           Actions.updatePage('1');
-          this.routeHandler(`/search?q=${keyword}`);
+          this.routeHandler(`/search?q=${encodeURIComponent(keyword)}`);
         })
         .catch(error => {
           console.log(error);

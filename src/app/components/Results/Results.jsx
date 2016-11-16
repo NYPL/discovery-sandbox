@@ -16,7 +16,7 @@ class Results extends React.Component {
       .then(response => {
         Actions.updateSearchResults(response.data.searchResults);
         Actions.updatePage(page);
-        this.context.router.push(`/search?q=${query}${pageParam}`);
+        this.context.router.push(`/search?q=${encodeURIComponent(query)}${pageParam}`);
       })
       .catch(error => {
         console.log(error);
