@@ -154,6 +154,7 @@ class ResultsList extends React.Component {
       : null;
     const id = result['@id'].substring(4);
     const items = result.items;
+    const hathiAvailable = result.hathiVols && result.hathiVols.length;
 
     return (
       <li key={i} className="result-item">
@@ -170,6 +171,12 @@ class ResultsList extends React.Component {
             author &&
             (<div className="description author">
               {authors} {result.created}
+            </div>)
+          }
+          {
+            hathiAvailable &&
+            (<div className="description">
+              <em>Available to view on this website</em>
             </div>)
           }
           <div className="sub-items">
