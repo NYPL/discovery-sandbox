@@ -5,6 +5,7 @@ import ItemHoldings from './ItemHoldings.jsx';
 import ItemDetails from './ItemDetails.jsx';
 import ItemEditions from './ItemEditions.jsx';
 import LibraryItem from '../../utils/item.js';
+import EmbeddedDocument from './EmbeddedDocument.jsx';
 
 import { Link } from 'react-router';
 
@@ -31,6 +32,9 @@ class ItemPageRegular extends React.Component {
         hold: available === 'available' ? (<Link to={`/hold/request/${item['@id'].substring(4)}`} className="button">Request a hold</Link>) : null,
       }
     });
+    const hathiEmbedURL = record.hathiVols && record.hathiVols.length ? `//hdl.handle.net/2027/${record.hathiVols[0].volumeId}?urlappend=%3Bui=embed` : '';
+    const hathiURL = record.hathiVols && record.hathiVols.length ? `https://hdl.handle.net/2027/${record.hathiVols[0].volumeId}` : '';
+
     // const externalData = [
     //   // { term: 'Publisher\'s summary', definition: `<ul>
     //   //     <li>This authoritative edition of the complete texts of the "Federalist Papers", the Articles of Confederation, the U.S. Constitution, and the Amendments to the U.S. Constitution features supporting essays in which leading scholars provide historical context and analysis. An introduction by Ian Shapiro offers an overview of the publication of the "Federalist Papers" and their importance. In three additional essays, John Dunn explores the composition of the "Federalist Papers" and the conflicting agendas of its authors; Eileen Hunt Botting explains how early advocates of women's rights, most prominently Mercy Otis Warren, Judith Sargent Murray, and Charles Brockden Brown, responded to the Federalist-Antifederalist debates; and Donald Horowitz discusses the "Federalist Papers" from the perspective of recent experiments with democracy and constitution-making around the world. These essays both illuminate the original texts and encourage active engagement with them.</li>
@@ -133,6 +137,13 @@ class ItemPageRegular extends React.Component {
             path={this.props.location.search}
             holdings={holdings}
             title={`${record.numAvailable} copies of this item are available at the following locations:`}
+          />
+
+          <EmbeddedDocument
+            externalURL={hathiEmbedURL}
+            embedURL={hathiURL}
+            owner="Hathi Trust"
+            title="View this item on this website"
           />
 
           <div className="item-details">
