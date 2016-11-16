@@ -3,6 +3,7 @@ import { Link } from 'react-router';
 import axios from 'axios';
 
 import Actions from '../../actions/Actions.js';
+import LibraryItem from '../../utils/item.js';
 
 class ResultsList extends React.Component {
   constructor(props) {
@@ -65,7 +66,7 @@ class ResultsList extends React.Component {
       const available = availability.trim().toLowerCase() === 'available';
       const id = item['@id'].substring(4);
       const availabilityClassname = availability.replace(/\W/g, '').toLowerCase();
-      const collapsed = expandedItems.indexOf(resultId) < 0
+      const collapsed = expandedItems.indexOf(resultId) < 0;
 
       return (
         <div key={i}>
@@ -75,9 +76,9 @@ class ResultsList extends React.Component {
               <div>
                 <span className={`status ${availabilityClassname}`}>{availability}</span>
                 {
-                  available ? ' to use in ' : ' '
+                  available ? ' to use in ' : ' at location '
                 }
-                <span>{item.location && item.location.length ? item.location[0][0].prefLabel : null}</span>
+                <span>{LibraryItem.getLocationLabel(item.location)}</span>
                 {
                   item.shelfMark && item.shelfMark.length ?
                   (<span className="call-no"> with call no. {item.shelfMark[0]}</span>)
@@ -93,7 +94,7 @@ class ResultsList extends React.Component {
                         to={`/hold/request/${id}`}
                         onClick={(e) => this.getRecord(e, id, 'hold/request')}
                       >
-                        Place a hold
+                        Request a hold
                       </Link>
                     )
                     : null

@@ -3,6 +3,13 @@ import LocationCodes from '../../../locationCodes.js';
 
 function LibraryItem() {
 
+  this.getDefaultLocation = () => {
+    return {
+      '@id': 'loc:mal',
+      'prefLabel': 'SASB - Rose Main Rdg Rm 315'
+    };
+  };
+
   /**
    * getItem(record, 'b18207658-i24609501')
    * @param (Object) record
@@ -29,10 +36,7 @@ function LibraryItem() {
     const thisItem = this.getItem(record, itemId);
 
     // default to SASB - RMRR
-    const defaultLocation = {
-      '@id': 'loc:mal',
-      'prefLabel': 'SASB - Rose Main Rdg Rm 315'
-    };
+    const defaultLocation = this.getDefaultLocation();
 
     // get location and location code
     let location = defaultLocation;
@@ -41,7 +45,7 @@ function LibraryItem() {
     }
     const locationCode = location['@id'].substring(4);
     const prefLabel = location.prefLabel;
-    const isOffsite = prefLabel.substring(0,7).toLowerCase() === "offsite"
+    const isOffsite = this.isOffsite(location);
 
     // retrieve location data
     if (locationCode in LocationCodes) {
@@ -66,6 +70,18 @@ function LibraryItem() {
     }
 
     return location;
+  };
+
+  this.getLocationLabel = (location) => {
+    const defaultLocation = this.getDefaultLocation();
+
+    if (!location || !location.length) return defaultLocation.prefLabel;
+    else if (this.isOffsite(location[0][0])) return `${defaultLocation.prefLabel} (requested from offsite storage)`;
+    else return location[0][0].prefLabel;
+  };
+
+  this.isOffsite = (location) => {
+    return location && location.prefLabel && location.prefLabel.substring(0,7).toLowerCase() === "offsite";
   };
 
 }
