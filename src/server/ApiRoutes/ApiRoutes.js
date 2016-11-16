@@ -354,9 +354,17 @@ function CreateHoldRequest(req, res) {
 
   // get item id and pickup location
   let itemId = req.params.id;
+  let nyplSource = 'nypl-sierra';
+
   if (itemId.indexOf("-") >= 0) {
     const parts = itemId.split("-");
     itemId = parts[parts.length-1];
+
+    if (itemId.substring(0, 2) === 'pi') {
+      nyplSource = 'recap-PUL';
+    } else if (itemId.substring(0, 2) === 'ci') {
+      nyplSource = 'recap-CUL';
+    }
   }
   itemId = itemId.replace(/\D/g,'');
   const pickupLocation = req.body.pickupLocation;
@@ -365,7 +373,7 @@ function CreateHoldRequest(req, res) {
     patron: patronId,
     recordType: "i",
     record: itemId,
-    nyplSource: "nypl-sierra",
+    nyplSource,
     pickupLocation: pickupLocation,
     // neededBy: "2013-03-20",
     numberOfCopies: 1
