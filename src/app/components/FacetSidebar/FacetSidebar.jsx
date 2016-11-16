@@ -43,8 +43,9 @@ class FacetSidebar extends React.Component {
         },
       });
     } else {
+      const searchValue = field === 'dates' ? parseInt(value, 10) : value;
       let facetObj = _findWhere(this.props.facets, { field });
-      const facet = _findWhere(facetObj.values, { value });
+      const facet = _findWhere(facetObj.values, { value: searchValue });
 
       this.setState({
         [field]: {
@@ -58,7 +59,11 @@ class FacetSidebar extends React.Component {
       if (val.value !== '' && field !== key) {
         strSearch += ` ${key}:"${val.id}"`;
       } else if (field === key && value !== `${field}_any`) {
-        strSearch += ` ${field}:"${value}"`;
+        if (field === 'dates') {
+          strSearch += ` date:"${value}"`;
+        } else {
+          strSearch += ` ${field}:"${value}"`;
+        }
       }
     });
 

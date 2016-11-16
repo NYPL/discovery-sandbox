@@ -185,12 +185,14 @@ function ServerSearch(req, res, next) {
 
           // Each string appears like so: 'contributor:"United States. War Department."'
           // Can't simply split by ':' because some strings are: 'owner:"orgs:1000"'
-          const field = str.split(':"')[0];
+          let field = str.split(':"')[0];
           const value = str.split(':"')[1].replace('"', '');
+          const searchValue = field === 'date' ? parseInt(value, 10) : value;
+          field = field === 'date' ? 'dates' : field;
 
           // Now find the facet from the URL from the returned facets in the API.
           const facetObj = _findWhere(facets.itemListElement, { field });
-          const facet = _findWhere(facetObj.values, { value });
+          const facet = _findWhere(facetObj.values, { value: searchValue });
 
           selectedFacets[field] = {
             id: facet.value,

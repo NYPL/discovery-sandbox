@@ -85,21 +85,30 @@ class Hits extends React.Component {
   }
 
   render() {
+    const {
+      facets,
+      hits,
+      query,
+    } = this.props;
     let activeFacetsArray = [];
-    _mapObject(this.props.facets, (val, key) => {
+    _mapObject(facets, (val, key) => {
       if (val.value) {
         activeFacetsArray.push({val, key});
       }
     });
 
-    let keyword = this.getKeyword(this.props.query);
+    let keyword = this.getKeyword(query);
     let activeFacetsElm = this.getFacetElements(activeFacetsArray);
 
     return (
       <div className="results-message">
-        <p>
-          Found <strong>{this.props.hits}</strong> results {keyword} {activeFacetsElm}.
-        </p>
+        {
+          hits !== 0 ?
+          (<p>
+            Found <strong>{hits}</strong> results {keyword} {activeFacetsElm}.
+          </p>)
+          : (<p>No results found {keyword} {activeFacetsElm}.</p>)
+        }
       </div>
     );
   }
