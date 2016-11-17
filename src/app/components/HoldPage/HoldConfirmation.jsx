@@ -28,7 +28,7 @@ class HoldConfirmation extends React.Component {
     const dateDisplayEnd = `${monthNames[date.getMonth()]} ${date.getDate()}`;
 
     return (
-      <div>
+      <div id="mainContent">
         <div className="page-header">
           <div className="container">
             <Breadcrumbs

@@ -12,7 +12,9 @@ const SearchButton = ({
     <button
       id={id}
       className={className}
+      onSubmit={onClick}
       onClick={onClick}
+      type="submit"
     >
       {label}
     </button>

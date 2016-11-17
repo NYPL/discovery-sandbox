@@ -19,6 +19,7 @@
 
 a.site-title {
   color: $white;
+  background-color: inherit;
   // background: url("../img/nypl.svg") no-repeat scroll 0px 0px/5rem auto white;
   overflow: hidden;
   white-space: nowrap;
@@ -74,6 +75,7 @@ a.site-title {
 .browse-box {
   h3 {
     color: $darkgray;
+    background-color: inherit;
   }
 }
 
@@ -108,6 +110,7 @@ a.site-title {
 
   .count {
     color: $gray;
+    background-color: inherit;
   }
 
   &.item-list  {

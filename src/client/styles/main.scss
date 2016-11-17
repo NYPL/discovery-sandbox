@@ -27,6 +27,7 @@ Import style rules from NYPL React module components
 
 button {
   color: $buttontextcolor;
+  background-color: inherit;
 }
 
 .page-header {
@@ -47,9 +48,16 @@ button {
 .status {
   font-weight: bold;
   color: $darkorange;
+  background-color: inherit;
   text-transform: capitalize;
 
   &.available {
     color: $darkgreen;
+  }
+}
+
+.footer {
+  a {
+    background-color: #54514A;
   }
 }

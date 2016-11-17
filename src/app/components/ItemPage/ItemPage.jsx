@@ -104,7 +104,7 @@ class ItemPageRegular extends React.Component {
     // ];
 
     return (
-      <div>
+      <div id="mainContent">
         <div className="page-header">
           <div className="container">
             <Breadcrumbs

@@ -47,7 +47,7 @@ class SearchResultsPage extends React.Component {
     );
 
     return (
-      <div>
+      <div id="mainContent">
         <div className="search-container">
           <Search />
         </div>

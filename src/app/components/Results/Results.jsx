@@ -73,6 +73,8 @@ class Results extends React.Component {
                   <option value="date_asc">Date (old to new)</option>
                   <option value="date_desc">Date (new to old)</option>
                 </select>
+
+                <button className="visuallyHidden" type="submit">Search</button>
               </form>
             </div>
           </div>)

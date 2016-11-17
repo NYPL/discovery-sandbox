@@ -32,7 +32,7 @@ class HoldPage extends React.Component {
     const dateDisplay = `${monthNames[monthIndex]} ${day}`;
 
     return (
-      <div>
+      <div id="mainContent">
         <div className="page-header">
           <div className="container">
             <Breadcrumbs

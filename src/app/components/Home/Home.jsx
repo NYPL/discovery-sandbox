@@ -7,7 +7,7 @@ import Search from '../Search/Search.jsx';
 class Home extends React.Component {
   render() {
     return (
-      <div className="home">
+      <div className="home" id="mainContent">
         <div className="page-header">
           <div className="container">
             <Breadcrumbs />

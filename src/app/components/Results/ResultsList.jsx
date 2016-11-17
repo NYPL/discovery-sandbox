@@ -108,7 +108,7 @@ class ResultsList extends React.Component {
               (
                 <Link
                   onClick={(e) => this.showMoreItems(e, resultId)}
-                  href="#see-more"
+                  href="#"
                   className="see-more-link">
                   See {moreCount} more item{moreCount > 1 ? 's' : ''}
                 </Link>
