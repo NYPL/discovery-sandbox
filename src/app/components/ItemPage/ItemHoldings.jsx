@@ -35,11 +35,17 @@ class ItemHoldings extends React.Component {
       <tbody>
         {
           holdings.map((h, i) => (
-            <tr className={`${h.className} ${i>=maxDisplay && collapsed ? 'collapsed' : ''}`} key={i}>
-              <td dangerouslySetInnerHTML={this.createMarkup(h.available)}></td>
+            <tr className={`${h.availability} ${i>=maxDisplay && collapsed ? 'collapsed' : ''}`} key={i}>
+              <td dangerouslySetInnerHTML={this.createMarkup(`<span class="status ${h.availability}">${h.status}</span>`)}></td>
               <td dangerouslySetInnerHTML={this.createMarkup(h.location)}></td>
               <td dangerouslySetInnerHTML={this.createMarkup(h.callNumber)}></td>
-              <td className="align-right">{h.hold}</td>
+              <td className="align-right">{h.url.length ?
+                <Link
+                  to={h.url}
+                  className="button">
+                  {h.actionLabel}
+                </Link>
+              : null}</td>
             </tr>
           ))
         }
@@ -73,13 +79,6 @@ class ItemHoldings extends React.Component {
     const headings = ['Status', 'Location', 'Call Number', 'Hold/View'];
 
     const holdings = this.props.holdings;
-    // available items first
-    holdings.sort((a, b) => {
-      const aAvailability = a.availability === 'available' ? -1 : 1;
-      const bAvailability = b.availability === 'available' ? -1 : 1;
-      return aAvailability - bAvailability;
-    });
-
     const heading = this.getHeading(headings);
     const body = this.getRow(holdings);
 

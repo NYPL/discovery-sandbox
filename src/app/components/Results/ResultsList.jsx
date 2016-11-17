@@ -47,62 +47,44 @@ class ResultsList extends React.Component {
   }
 
   getItems(items, result) {
-    // Filter items that have a status, for now.
-    const itemCount = items.filter(i => i.status).length;
+    const itemCount = items.length;
     const maxDisplay = 5;
     const moreCount = itemCount - maxDisplay;
     const expandedItems = this.state.expandedItems;
     const resultId = result.idBnum;
 
-    // available items first
-    items.sort((a, b) => {
-      const aAvailability = a.status && a.status[0].prefLabel.trim().toLowerCase() === 'available' ? -1 : 1;
-      const bAvailability = b.status && b.status[0].prefLabel.trim().toLowerCase() === 'available' ? -1 : 1;
-      return aAvailability - bAvailability;
-    });
-
     return items.map((item, i) => {
-      const availability = item.status && item.status[0].prefLabel ? item.status[0].prefLabel : '';
-      const available = availability.trim().toLowerCase() === 'available';
-      const id = item['@id'].substring(4);
-      const availabilityClassname = availability.replace(/\W/g, '').toLowerCase();
+      const status = item.status;
+      const availability = item.availability;
+      const available = item.available;
+      const id = item.id;
       const collapsed = expandedItems.indexOf(resultId) < 0;
 
       return (
         <div key={i}>
-          {
-            item.status ?
-            <div className={`sub-item ${i>=maxDisplay && collapsed ? 'more' : ''}`}>
-              <div>
-                <span className={`status ${availabilityClassname}`}>{availability}</span>
-                {
-                  available ? ' to use in ' : ' at location '
-                }
-                <span>{LibraryItem.getLocationLabel(item.location)}</span>
-                {
-                  item.shelfMark && item.shelfMark.length ?
-                  (<span className="call-no"> with call no. {item.shelfMark[0]}</span>)
-                  : null
-                }
-              </div>
-              <div>
-                {
-                  available ?
-                    (
-                      <Link
-                        className="button"
-                        to={`/hold/request/${id}`}
-                        onClick={(e) => this.getRecord(e, id, 'hold/request')}
-                      >
-                        Request a hold
-                      </Link>
-                    )
-                    : null
-                }
-              </div>
+          <div className={`sub-item ${i>=maxDisplay && collapsed ? 'more' : ''}`}>
+            <div>
+              <span className={`status ${availability}`}>{status}</span>
+              {
+                available ? ' to use in ' : ' at location '
+              }
+              <span>{item.location}</span>
+              {
+                item.callNumber.length ?
+                (<span className="call-no"> with call no. {item.callNumber}</span>)
+                : null
+              }
             </div>
-            : null
-          }
+            <div>
+              {item.url.length ?
+                <Link
+                  to={item.url}
+                  className="button">
+                  {item.actionLabel}
+                </Link>
+              : null}
+            </div>
+          </div>
           {
             i >= itemCount - 1 && moreCount > 0 && collapsed ?
               (
@@ -154,7 +136,7 @@ class ResultsList extends React.Component {
       result.contributor.map((author) => `${author}; ` )
       : null;
     const id = result['@id'].substring(4);
-    const items = result.items;
+    const items = LibraryItem.getItems(result);
     const hathiAvailable = result.hathiVols && result.hathiVols.length;
 
     return (
