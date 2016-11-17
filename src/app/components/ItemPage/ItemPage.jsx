@@ -123,7 +123,7 @@ class ItemPageRegular extends React.Component {
           <ItemHoldings
             path={this.props.location.search}
             holdings={holdings}
-            title={`${record.numAvailable} cop${record.numAvailable === 1 ? 'y' : 'ies'} of this item are available at the following locations:`}
+            title={`${record.numAvailable} cop${record.numAvailable === 1 ? 'y' : 'ies'} of this item ${record.numAvailable === 1 ? 'is' : 'are'} available at the following locations:`}
           />
 
           <EmbeddedDocument
