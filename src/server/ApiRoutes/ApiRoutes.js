@@ -110,8 +110,15 @@ function getFacets(query) {
 }
 
 
-function Search(query, page, cb, errorcb) {
-  let queryString = `http://discovery-api.nypltech.org/api/v1/resources?q=${query}&per_page=50&page=${page}`;
+function Search(query, page, sortBy, order, cb, errorcb) {
+  let sortQuery = '';
+
+  if (sortBy !== '') {
+    sortQuery = `&sort=${sortBy}&sort_direction=${order}`;
+  }
+
+  const apiQuery = `?q=${query}&per_page=50&page=${page}${sortQuery}`;  
+  const queryString = `http://discovery-api.nypltech.org/api/v1/resources${apiQuery}`;
   const apiCall = axios.get(queryString);
 
   axios
@@ -132,10 +139,14 @@ function Search(query, page, cb, errorcb) {
 function AjaxSearch(req, res, next) {
   const q = req.query.q || '';
   const page = req.query.page || '1';
+  const sortBy = req.query.sort || '';
+  const order = req.query.sort_direction || '';
 
   Search(
     q,
     page,
+    sortBy,
+    order,
     (facets, searchResults, page) => res.json({ facets, searchResults, page }),
     (error) => res.json(error)
   );
@@ -144,6 +155,8 @@ function AjaxSearch(req, res, next) {
 function ServerSearch(req, res, next) {
   const page = req.query.page || '1';
   let q = req.query.q || '';
+  const sortBy = req.query.sort || '';
+  const order = req.query.sort_direction || '';
   let spaceIndex = '';
 
   // Slightly hacky right now but need to get all keywords in case
@@ -160,6 +173,8 @@ function ServerSearch(req, res, next) {
   Search(
     q,
     page,
+    sortBy,
+    order,
     (facets, data, page) => {
       let selectedFacets = {};
 
@@ -206,6 +221,7 @@ function ServerSearch(req, res, next) {
         searchKeywords,
         facets,
         page,
+        sortBy: sortBy ? `${sortBy}_${order}` : 'relevance',
       };
 
       next();
@@ -217,6 +233,7 @@ function ServerSearch(req, res, next) {
         searchKeywords: '',
         facets: {},
         page: '1',
+        sortBy: 'relevance',
       };
 
       next();

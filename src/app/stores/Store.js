@@ -12,6 +12,7 @@ class Store {
       updateSelectedFacets: Actions.updateSelectedFacets,
       removeFacet: Actions.removeFacet,
       updatePage: Actions.updatePage,
+      updateSortBy: Actions.updateSortBy,
     });
 
     this.state = {
@@ -22,6 +23,7 @@ class Store {
       facets: {},
       selectedFacets: {},
       page: '1',
+      sortBy: 'relevance',
     };
   }
 
@@ -56,6 +58,10 @@ class Store {
 
   updatePage(page) {
     this.setState({ page });
+  }
+
+  updateSortBy(sortBy) {
+    this.setState({ sortBy });
   }
 }
 
