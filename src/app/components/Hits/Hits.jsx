@@ -91,6 +91,7 @@ class Hits extends React.Component {
       query,
     } = this.props;
     let activeFacetsArray = [];
+    const hitsF = hits.toLocaleString();
     _mapObject(facets, (val, key) => {
       if (val.value) {
         activeFacetsArray.push({val, key});
@@ -105,7 +106,7 @@ class Hits extends React.Component {
         {
           hits !== 0 ?
           (<p>
-            Found <strong>{hits}</strong> results {keyword} {activeFacetsElm}.
+            Found <strong>{hitsF}</strong> results {keyword} {activeFacetsElm}.
           </p>)
           : (<p>No results found {keyword} {activeFacetsElm}.</p>)
         }

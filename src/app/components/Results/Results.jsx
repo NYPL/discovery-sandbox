@@ -40,21 +40,24 @@ class Results extends React.Component {
       page,
     } = this.props;
     const perPage = 50;
-
     const pageFactor = parseInt(page, 10) * 50;
-    let displayItems = `${pageFactor - (perPage - 1)} - ${pageFactor > hits ? hits : pageFactor}`;
-    let nextPage = (hits < perPage || pageFactor > hits) 
+
+    const hitsF = hits.toLocaleString();
+    const pageFactorF = pageFactor.toLocaleString();
+
+    let displayItems = `${pageFactor - (perPage - 1)} - ${pageFactor > hits ? hitsF : pageFactorF}`;
+    let nextPage = (hits < perPage || pageFactor > hits)
       ? null : this.getPage(page, 'next');
     let prevPage = page > 1 ? this.getPage(page, 'previous') : null;
 
     if (hits < perPage) {
-      displayItems = `1 - ${hits}`;
+      displayItems = `1 - ${hitsF}`;
     }
 
     const paginationButtons = (
       <div className="pagination">
         {prevPage}
-        <span className="paginate pagination-total">{displayItems} of {hits}</span>
+        <span className="paginate pagination-total">{displayItems} of {hitsF}</span>
         {nextPage}
       </div>
     );
