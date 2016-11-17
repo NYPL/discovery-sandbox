@@ -4,42 +4,6 @@
   align-items: flex-start;
   margin-top: 1rem;
 
-  .pagination {
-    *:first-child {
-      padding-left: 0;
-    }
-  }
-
-  .pagination-total,
-  .paginate {
-    padding: 0 0.35rem;
-  }
-
-  .pagination-total {
-    font-weight: bold;
-  }
-
-  .paginate {
-    text-decoration: none;
-    cursor: pointer;
-
-    &.previous:before {
-      content: '‹';
-      display: inline-block;
-      margin-right: 0.2rem;
-      font-size: 1.2rem;
-      line-height: 1rem;
-    }
-
-    &.next:after {
-      content: '›';
-      display: inline-block;
-      margin-left: 0.2rem;
-      font-size: 1.2rem;
-      line-height: 1rem;
-    }
-  }
-
   .sort {
     flex-grow: 1;
 
@@ -60,6 +24,42 @@
       margin-right: 0.35rem;
     }
 
+  }
+}
+
+.pagination {
+  *:first-child {
+    padding-left: 0;
+  }
+}
+
+.pagination-total,
+.paginate {
+  padding: 0 0.35rem;
+}
+
+.pagination-total {
+  font-weight: bold;
+}
+
+.paginate {
+  text-decoration: none;
+  cursor: pointer;
+
+  &.previous:before {
+    content: '‹';
+    display: inline-block;
+    margin-right: 0.2rem;
+    font-size: 1.2rem;
+    line-height: 1rem;
+  }
+
+  &.next:after {
+    content: '›';
+    display: inline-block;
+    margin-left: 0.2rem;
+    font-size: 1.2rem;
+    line-height: 1rem;
   }
 }
 

@@ -51,16 +51,20 @@ class Results extends React.Component {
       displayItems = `1 - ${hits}`;
     }
 
+    const paginationButtons = (
+      <div className="pagination">
+        {prevPage}
+        <span className="paginate pagination-total">{displayItems} of {hits}</span>
+        {nextPage}
+      </div>
+    );
+
     return (
       <div>
         {
           hits !== 0 &&
           (<div className="results-nav">
-            <div className="pagination">
-              {prevPage}
-              <span className="paginate pagination-total">{displayItems} of {hits}</span>
-              {nextPage}
-            </div>
+            {paginationButtons}
             <div className="sort">
               <form className="sort-form">
                 <label htmlFor="sort-by">Sort by</label>
@@ -81,6 +85,8 @@ class Results extends React.Component {
         }
 
         <ResultList results={results} query={this.props.query} />
+
+        { hits !== 0 && paginationButtons }
       </div>
     );
   }

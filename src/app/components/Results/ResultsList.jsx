@@ -76,7 +76,7 @@ class ResultsList extends React.Component {
               }
             </div>
             <div>
-              {item.url.length ?
+              {item.url && item.url.length ?
                 <Link
                   to={item.url}
                   className="button">
