@@ -85,7 +85,8 @@ class HoldRequest extends React.Component {
             <p>When this item is ready, you will use it in the following location:</p>
 
             <fieldset className="select-location-fieldset">
-              <label className="group selected" htmlFor="location1">
+              <legend className="visuallyHidden">Select a pickup location</legend>
+              <div className="group selected">
                 <span className="col location">
                   <a href={`${location.uri}`}>{location["full-name"]}</a><br />{location.address.address1}<br />
                   {location.prefLabel}
@@ -94,7 +95,6 @@ class HoldRequest extends React.Component {
                       <br /><small>(requested from offsite storage)</small><br />
                     </span>
                   }
-                  {/*<a href="https://www.nypl.org/locations/divisions/milstein">Milstein Division</a>, First Floor, Room 120*/}
                 </span>
                 {selectedItem.shelfMark &&
                   <span className="col">
@@ -102,7 +102,7 @@ class HoldRequest extends React.Component {
                   </span>
                 }
                 {/*<span className="col"><small>Ready by approximately:</small><br />{dateDisplay}, 9am.</span>*/}
-              </label>
+              </div>
             </fieldset>
 
             <input type="hidden" name="pickupLocation" value={location.code} />

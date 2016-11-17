@@ -14,7 +14,7 @@ class ItemHoldings extends React.Component {
     return (
       <thead>
         <tr>
-          {headings.map((h, i) => (<th key={i}>{h}</th>))}
+          {headings.map((h, i) => (<th scope="col" key={i}>{h}</th>))}
         </tr>
       </thead>
     );
@@ -70,7 +70,7 @@ class ItemHoldings extends React.Component {
   }
 
   render() {
-    const headings = ['Status', 'Location', 'Call Number', ''];
+    const headings = ['Status', 'Location', 'Call Number', 'Hold/View'];
 
     const holdings = this.props.holdings;
     // available items first
@@ -87,6 +87,7 @@ class ItemHoldings extends React.Component {
       <div className="item-holdings">
         <h2>{this.props.title}</h2>
         <table className="generic-table holdings-table">
+          <caption className="visuallyHidden">Item availability, location, call number, and request a hold.</caption>
           {heading}
           {body}
         </table>

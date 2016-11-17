@@ -64,9 +64,14 @@
   margin-bottom: 1.5rem;
 }
 
+div.group,
 label.group {
   display: table-row;
   cursor: pointer;
+
+  a {
+    background-color: inherit;
+  }
 
   &.selected {
     background: $highlightcolor;
