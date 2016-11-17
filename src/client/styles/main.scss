@@ -47,9 +47,16 @@ button {
 .status {
   font-weight: bold;
   color: $darkorange;
+  background-color: inherit;
   text-transform: capitalize;
 
   &.available {
     color: $darkgreen;
+  }
+}
+
+.footer {
+  a {
+    background-color: #54514A;
   }
 }

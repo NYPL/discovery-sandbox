@@ -134,9 +134,11 @@ class FacetSidebar extends React.Component {
 
         return (
           <fieldset key={i}>
+            <legend className="facet-legend visuallyHidden">Filter by {facet.field}</legend>
             <label htmlFor={`select-${field}`}>{facet.field}</label>
             <select
               name={`select-${field}`}
+              id={`select-${field}`}
               onChange={(e) => this.onChange(e, field)}
               value={selectedValue ? selectedValue : `${field}_any`}
             >
@@ -168,12 +170,15 @@ class FacetSidebar extends React.Component {
           {
             this.props.keywords ?
             <fieldset>
+              <legend className="facet-legend">Remove {this.props.keyword} keyword</legend>
               <label htmlFor="select-keywords">Keywords</label>
               <button
                 id="select-keywords"
+                name="select-keywords"
                 className="button-selected"
                 title={`Remove keyword filter: ${this.props.keywords}`}
                 onClick={(e) => this.removeKeyword()}
+                type="submit"
               >
                 "{this.props.keywords}"
               </button>
@@ -182,6 +187,8 @@ class FacetSidebar extends React.Component {
           }
 
           {facetsElm}
+
+          <button className="visuallyHidden" type="submit">Search</button>
           
         </form>
       </div>

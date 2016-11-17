@@ -1,18 +1,21 @@
 html {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
   font-size: 16px;
+  font-size: 1em;
   line-height: 1.65;
   -webkit-font-smoothing: antialiased;
 }
 
 body {
   color: $textcolor;
+  background-color: #fff;
   padding-bottom: 100px;
 }
 
 a {
   &, &:link {
     color: $linkcolor;
+    background-color: inherit;
   }
 
   &:visited {
@@ -194,6 +197,9 @@ iframe {
 }
 
 table.generic-table {
+  caption {
+    position: relative;
+  }
   width: 100%;
   th {
     text-align: left;

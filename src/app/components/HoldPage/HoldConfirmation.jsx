@@ -28,7 +28,7 @@ class HoldConfirmation extends React.Component {
     const dateDisplayEnd = `${monthNames[date.getMonth()]} ${date.getDate()}`;
 
     return (
-      <div>
+      <div id="mainContent">
         <div className="page-header">
           <div className="container">
             <Breadcrumbs
@@ -78,7 +78,7 @@ class HoldConfirmation extends React.Component {
                 ]}
               >
                 <TabPanel id="building">
-                  <iframe src={`${location.address["map-embed-uri"]}`} height="450" frameBorder="0" style={{border: 0}} allowFullScreen></iframe>
+                  <iframe src={`${location.address["map-embed-uri"]}`} height="450" frameBorder="0" style={{border: 0}} allowFullScreen title="Google Map" tabIndex="-1"></iframe>
                 </TabPanel>
                 <TabPanel id="room">
                   <img src="/src/client/images/floor_plan.png" alt="Floor plan of first floor of Stephen A. Schwarzman Building" />
@@ -93,18 +93,23 @@ class HoldConfirmation extends React.Component {
               </p>
               <p>Regular hours:</p>
               <table className="generic-table">
+                <caption className="visuallyHidden">Location hours</caption>
                 <tbody>
+                  <tr>
+                    <th scope="col">Day</th>
+                    <th scope="col">Hours</th>
+                  </tr>
                   {
                     location.hours.map((h, i) => (
                       <tr key={i}>
-                        <td>{h.day}</td>
+                        <td scope="col">{h.day}</td>
                           {!h.closed &&
-                            <td>
+                            <td scope="col">
                               {h.open} - {h.close}
                             </td>
                           }
                           {h.closed &&
-                            <td>
+                            <td scope="col">
                             <em>Closed</em>
                             </td>
                           }
