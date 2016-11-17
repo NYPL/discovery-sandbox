@@ -18,20 +18,7 @@ class ItemPageRegular extends React.Component {
       : null;
     const publisher = record.publisher && record.publisher.length ? <Link to={{ pathname: '/search', query: { q: `publisher:"${record.publisher[0]}"` } }}>{record.publisher[0]}</Link>
       : null;
-    const holdings = record.items.filter((item, i) => {
-      return item.location && item.status;
-    }).map((item, i) => {
-      const available = item.status && item.status[0].prefLabel ? item.status[0].prefLabel.trim().toLowerCase() : '';
-      const availabilityClassname = available.replace(/\W/g, '').toLowerCase();
-      return {
-        availability: availabilityClassname,
-        className: '',
-        available: `<span class="status ${availabilityClassname}">${available}</span> `,
-        location: LibraryItem.getLocationLabel(item.location),
-        callNumber: item.shelfMark ? item.shelfMark[0] : '',
-        hold: available === 'available' ? (<Link to={`/hold/request/${item['@id'].substring(4)}`} className="button">Request a hold</Link>) : null,
-      }
-    });
+    const holdings = LibraryItem.getItems(record);
     const hathiEmbedURL = record.hathiVols && record.hathiVols.length ? `//hdl.handle.net/2027/${record.hathiVols[0].volumeId}?urlappend=%3Bui=embed` : '';
     const hathiURL = record.hathiVols && record.hathiVols.length ? `https://hdl.handle.net/2027/${record.hathiVols[0].volumeId}` : '';
 
