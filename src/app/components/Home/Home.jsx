@@ -26,7 +26,7 @@ class Home extends React.Component {
             </div>
             <div className="col span-1-2">
               <div className="search home">
-                <Search />
+                <Search sortBy={this.props.sortBy} />
                 <p><Link to="/advanced">Use advanced search</Link></p>
               </div>
             </div>

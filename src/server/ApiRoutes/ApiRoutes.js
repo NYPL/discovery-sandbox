@@ -66,6 +66,15 @@ function getSessionToken(authToken) {
 // getCredentials();
 
 function MainApp(req, res, next) {
+  res.locals.data.Store = {
+    searchResults: {},
+    selectedFacets: {},
+    searchKeywords: '',
+    facets: {},
+    page: '1',
+    sortBy: 'relevance',
+  };
+  
   next();
 }
 
