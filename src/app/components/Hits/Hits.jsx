@@ -25,13 +25,21 @@ class Hits extends React.Component {
       }
     });
 
+    const reset = this.props.sortBy === 'relevance';
+    let sortQuery = '';
+
+    if (!reset) {
+      const [sortBy, order] = this.props.sortBy.split('_');
+      sortQuery = `&sort=${sortBy}&sort_direction=${order}`;
+    }
+
     axios
-      .get(`/api?q=${this.props.query}${strSearch}`)
+      .get(`/api?q=${this.props.query}${strSearch}${sortQuery}`)
       .then(response => {
         Actions.updateSearchResults(response.data.searchResults);
         Actions.updateFacets(response.data.facets);
         Actions.updatePage('1');
-        this.context.router.push(`/search?q=${this.props.query}${strSearch}`);
+        this.context.router.push(`/search?q=${this.props.query}${strSearch}${sortQuery}`);
       })
       .catch(error => {
         console.log(error);

@@ -50,15 +50,22 @@ class Search extends React.Component {
     e.preventDefault();
     // Store the data that the user entered
     const keyword = this.state.searchKeywords.trim();
+    const reset = this.props.sortBy === 'relevance';
+    let sortQuery = '';
+
+    if (!reset) {
+      const [sortBy, order] = this.props.sortBy.split('_');
+      sortQuery = `&sort=${sortBy}&sort_direction=${order}`;
+    }
 
     axios
-      .get(`/api?q=${keyword}`)
+      .get(`/api?q=${keyword}${sortQuery}`)
       .then(response => {
         Actions.updateSearchResults(response.data.searchResults);
         Actions.updateFacets(response.data.facets);
         Actions.updateSearchKeywords(keyword);
         Actions.updatePage('1');
-        this.routeHandler(`/search?q=${keyword}`);
+        this.routeHandler(`/search?q=${keyword}${sortQuery}`);
       })
       .catch(error => {
         console.log(error);

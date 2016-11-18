@@ -63,14 +63,22 @@ class FacetSidebar extends React.Component {
       }
     });
 
+    const reset = this.props.sortBy === 'relevance';
+    let sortQuery = '';
+
+    if (!reset) {
+      const [sortBy, order] = this.props.sortBy.split('_');
+      sortQuery = `&sort=${sortBy}&sort_direction=${order}`;
+    }
+
     axios
-      .get(`/api?q=${this.props.keywords}${strSearch}`)
+      .get(`/api?q=${this.props.keywords}${strSearch}${sortQuery}`)
       .then(response => {
         Actions.updateSearchResults(response.data.searchResults);
         Actions.updateFacets(response.data.facets);
         Actions.updateSelectedFacets(this.state);
         Actions.updatePage('1');
-        this.routeHandler(null, `/search?q=${encodeURIComponent(this.props.keywords)}${strSearch}`);
+        this.routeHandler(null, `/search?q=${encodeURIComponent(this.props.keywords)}${strSearch}${sortQuery}`);
       })
       .catch(error => {
         console.log(error);
@@ -83,17 +91,24 @@ class FacetSidebar extends React.Component {
     let strSearch = '';
     _mapObject(this.props.selectedFacets, (val, key) => {
       if (val.value !== '') {
-        strSearch += `${key}:"${val.id}" `;
+        strSearch += ` ${key}:"${val.id}"`;
       }
     });
+    const reset = this.props.sortBy === 'relevance';
+    let sortQuery = '';
+
+    if (!reset) {
+      const [sortBy, order] = this.props.sortBy.split('_');
+      sortQuery = `&sort=${sortBy}&sort_direction=${order}`;
+    }
 
     axios
-      .get(`/api?q=${strSearch}`)
+      .get(`/api?q=${this.props.keywords}${strSearch}${sortQuery}`)
       .then(response => {
         Actions.updateSearchResults(response.data.searchResults);
         Actions.updateFacets(response.data.facets);
         Actions.updatePage('1');
-        this.context.router.push(`/search?q=${strSearch}`);
+        this.context.router.push(`/search?q=${this.props.keywords}${strSearch}${sortQuery}`);
       })
       .catch(error => {
         console.log(error);

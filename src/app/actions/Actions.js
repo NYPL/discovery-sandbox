@@ -37,6 +37,10 @@ class Actions {
   updatePage(page) {
     return page;
   }
+
+  updateSortBy(sort) {
+    return sort;
+  }
 }
 
 export default alt.createActions(Actions);

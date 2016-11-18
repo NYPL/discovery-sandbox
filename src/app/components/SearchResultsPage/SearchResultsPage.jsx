@@ -33,6 +33,7 @@ class SearchResultsPage extends React.Component {
       selectedFacets,
       page,
       location,
+      sortBy,
     } = this.props;
     const facetList = facets && facets.itemListElement ? facets.itemListElement : [];
     const dateRange = searchResults ? searchResults.dateRange : null;
@@ -49,7 +50,7 @@ class SearchResultsPage extends React.Component {
     return (
       <div id="mainContent">
         <div className="search-container">
-          <Search />
+          <Search sortBy={sortBy} />
         </div>
 
         {breadcrumbs}
@@ -60,6 +61,7 @@ class SearchResultsPage extends React.Component {
             facets={facetList}
             selectedFacets={selectedFacets}
             keywords={searchKeywords}
+            sortBy={sortBy}
           />
 
           <div className="results">
@@ -67,6 +69,7 @@ class SearchResultsPage extends React.Component {
               hits={totalHits}
               query={searchKeywords}
               facets={selectedFacets}
+              sortBy={sortBy}
             />
 
             <Results
@@ -75,6 +78,8 @@ class SearchResultsPage extends React.Component {
               query={searchKeywords}
               location={location}
               page={page}
+              selectedFacets={selectedFacets}
+              sortBy={sortBy}
             />
           </div>
         </div>
