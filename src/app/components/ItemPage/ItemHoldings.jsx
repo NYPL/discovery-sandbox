@@ -39,7 +39,7 @@ class ItemHoldings extends React.Component {
               <td dangerouslySetInnerHTML={this.createMarkup(`<span class="status ${h.availability}">${h.status}</span>`)}></td>
               <td dangerouslySetInnerHTML={this.createMarkup(h.location)}></td>
               <td dangerouslySetInnerHTML={this.createMarkup(h.callNumber)}></td>
-              <td className="align-right">{h.url.length ?
+              <td className="align-right">{h.url && h.url.length ?
                 <a
                   href={h.url}
                   className="button">
