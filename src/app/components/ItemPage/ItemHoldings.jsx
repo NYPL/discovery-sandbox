@@ -40,11 +40,11 @@ class ItemHoldings extends React.Component {
               <td dangerouslySetInnerHTML={this.createMarkup(h.location)}></td>
               <td dangerouslySetInnerHTML={this.createMarkup(h.callNumber)}></td>
               <td className="align-right">{h.url.length ?
-                <Link
-                  to={h.url}
+                <a
+                  href={h.url}
                   className="button">
                   {h.actionLabel}
-                </Link>
+                </a>
               : null}</td>
             </tr>
           ))
