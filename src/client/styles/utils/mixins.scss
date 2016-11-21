@@ -31,6 +31,32 @@
   }
 }
 
+/* --- Media Query Generator ---
+ * Reusable mixin used to generate
+ * variations of media query properties.
+ */
+@mixin generate-mq($args...) {
+  $media-type: 'only screen';
+  $media-type-key: 'media-type';
+  $args: keywords($args);
+  $expr: '';
+
+  @if map-has-key($args, $media-type-key) {
+    $media-type: map-get($args, $media-type-key);
+    $args: map-remove($args, $media-type-key);
+  }
+
+  @each $key, $value in $args {
+    @if $value {
+      $expr: "#{$expr} and (#{$key}: #{$value})";
+    }
+  }
+
+  @media #{$media-type} #{$expr} {
+    @content;
+  }
+}
+
 /* min-and-max-screen($min, $max, $orientation) 
  * $min - required
  * $max - required
@@ -104,3 +130,61 @@
   filter: alpha(opacity=$opacity-ie); //IE8
 }
 
+@mixin box-shadow($params) {
+  -webkit-box-shadow: $params;
+  -moz-box-shadow:    $params;
+  box-shadow:         $params;
+}
+
+@mixin box-sizing($type: border-box) {
+  -webkit-box-sizing:   $type;
+  -moz-box-sizing:      $type;
+  box-sizing:           $type;
+}
+
+@mixin clearfix {
+  &:before,
+  &:after {
+    content: " ";
+    display: block;
+  }
+  &:after {
+    clear: both;
+    visibility: hidden;
+    line-height: 0;
+    height: 0;
+    font-size: 0;
+  }
+}
+
+@mixin transform($params) {
+  -webkit-transform: $params;
+  -moz-transform:    $params;
+  transform:         $params;
+}
+@mixin transform-origin($params) {
+  -webkit-transform-origin: $params;
+  -moz-transform-origin:    $params;
+  transform-origin:         $params;
+}
+
+@mixin transition($params) {
+  -moz-transition:    $params;
+  -o-transition:      $params;
+  -webkit-transition: $params;
+  -ms-transition:     $params;
+  transition:         $params;
+}
+@mixin transition-list($values...){
+  -moz-transition:    $values;
+  -o-transition:      $values;
+  -webkit-transition: $values;
+  -ms-transition:     $values;
+  transition:         $values;
+}
+@mixin transition-transform($values...) {
+  -webkit-transition: -webkit-transform $values;
+     -moz-transition: -moz-transform $values;
+       -o-transition: -o-transform $values;
+          transition: transform $values;
+}

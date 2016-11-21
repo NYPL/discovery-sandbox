@@ -1,15 +1,62 @@
+@import "utils/mixins.scss";
+@import "utils/utils.scss";
+@import "utils/fonts.scss";
+@import "utils/variables.scss";
+@import "utils/base.scss";
+
 /*
 Import style rules from NYPL React module components
 */
-@import "~dgx-header-component/dist/styles/main";
-@import "~dgx-react-footer/dist/styles/styles";
+@import "~@nypl/dgx-header-component/dist/styles/main";
+@import "~@nypl/dgx-react-footer/dist/styles/styles";
 
-@import "utils/utils.scss";
-@import "utils/mixins.scss";
-@import "utils/fonts.scss";
-
-@import "components/Search";
+@import "components/Home.scss";
+@import "components/Search.scss";
+@import "components/Breadcrumbs.scss";
+@import "components/Results.scss";
+@import "components/Item.scss";
+@import "components/FacetSidebar.scss";
+@import "components/HoldPage.scss";
+@import "components/Advanced.scss";
+@import "components/Tabs.scss";
+@import "components/Account.scss";
 
 #app {
   margin: 0;
+}
+
+button {
+  color: $buttontextcolor;
+}
+
+.page-header {
+  background: #e9e8e7;
+}
+
+.container {
+  max-width: $containerWidth;
+  padding: 0.5rem 1rem;
+  margin: 0 auto;
+  @include box-sizing();
+}
+
+.search-results-container {
+  @include clearfix();
+}
+
+.status {
+  font-weight: bold;
+  color: $darkorange;
+  background-color: inherit;
+  text-transform: capitalize;
+
+  &.available {
+    color: $darkgreen;
+  }
+}
+
+.footer {
+  a {
+    background-color: #54514A;
+  }
 }

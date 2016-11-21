@@ -1,8 +1,12 @@
 .search {
   &-container {
-    margin: 50px;
+    // margin: 50px;
+    max-width: $containerWidth;
+    padding: 0.5rem 1rem;
+    margin: 0 auto;
+    @include box-sizing();
 
-    @include Kievit-Medium;
+    @include Kievit-Book;
 
     h3 {
       @include Milo-Regular;
@@ -17,6 +21,7 @@
 
       a {
         color: #837e77;
+        background-color: #000;
       }
 
       @include min-screen($tablet-portrait) {
@@ -30,13 +35,13 @@
     float: left;
     border: 2px solid #837e77;
     border-right: none;
-    border-radius: 5px;
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
-    height: 50px;
+    height: 54px;
+    font-size: 1rem;
 
     @include min-screen($tablet-portrait) {
-      width: 15%;
+      width: 20%;
     }
   }
 
@@ -47,6 +52,7 @@
     padding: 0;
     height: 100%;
     font-size: 16px;
+    font-size: 1em;
     font-style: italic;
     text-indent: 10px;
     border: 2px solid #837e77;
@@ -70,16 +76,58 @@
     margin-top: 10px;
     background-color: #1da1d4;
     border: none;
-    height: 50px;
+    height: 54px;
     border-radius: 4px;
     color: white;
+    font-size: 1rem;
 
     @include min-screen($tablet-portrait) {
       width: 24%;
       margin-top: 0;
       border-top-left-radius: 0;
       border-bottom-left-radius: 0;
-      height: 54px;
+      height: 57px;
     }
+  }
+}
+
+.results {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+
+  &-container {
+    float: left;
+    width: 80%;
+  }
+}
+
+.related-items {
+  border-left: 4px solid $lightergray;
+  padding-left: 1rem;
+  margin: 1rem 2rem 0 0.5rem;
+
+  h4 {
+    margin-top: 0;
+    color: $gray;
+    background-color: #fff;
+  }
+
+  & > ul {
+    padding-left: 0;
+  }
+
+  .sub-items {
+    margin: 1rem 0;
+  }
+
+  .result-item {
+    padding: 0;
+    border: none;
+    margin: 5px 0;
+  }
+
+  .related-item:last-child .sub-items {
+    margin-bottom: 0;
   }
 }

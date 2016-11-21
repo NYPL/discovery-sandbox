@@ -1,0 +1,140 @@
+.home {
+  min-height: 450px;
+}
+
+.main-nav-container {
+  line-height: 30px;
+}
+
+.main-nav {
+  > ul {
+    margin-top: 30px;
+  }
+  > ul > li {
+    padding: 0 0.35rem;
+    margin: 0 0.35rem;
+  }
+  margin-left: auto;
+}
+
+a.site-title {
+  color: $white;
+  background-color: inherit;
+  // background: url("../img/nypl.svg") no-repeat scroll 0px 0px/5rem auto white;
+  overflow: hidden;
+  white-space: nowrap;
+  text-indent: 10rem;
+  height: 50px;
+  width: 5rem;
+  &:hover {
+    color: $white;
+  }
+}
+
+.search {
+  position: relative;
+  font-size: 1.3rem;
+  margin-top: 2rem;
+  max-width: 960px;
+}
+
+.search-form {
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+  position: relative;
+
+  .search-input,
+  .search-button {
+    height: 54px;
+    line-height: 50px;
+  }
+
+  .search-select {
+    // width: 240px;
+    border-color: darken($lightgray, 25%);
+  }
+  .search-button {
+    width: 84px;
+  }
+  .search-input {
+    padding-right: (84px + 4px);
+    border-color: darken($lightgray, 25%);
+  }
+}
+
+.home-secondary {
+  margin-top: 3rem;
+  border-top: 1px solid $lightgray;
+  padding-top: 1rem;
+}
+
+.resource-list {
+  margin-left: -1rem;
+}
+
+.browse-box {
+  h3 {
+    color: $darkgray;
+    background-color: inherit;
+  }
+}
+
+.browse-list {
+  list-style: none;
+  margin: 0 0 2rem;
+  padding: 0;
+
+  li {
+    margin: 0 0 0.2rem;
+
+    &.more {
+      display: none;
+    }
+  }
+
+  a, .count {
+    display: inline-block;
+    vertical-align: middle;
+  }
+
+  a {
+    width: 60%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .more-link {
+    padding-top: 0.5rem;
+  }
+
+  .count {
+    color: $gray;
+    background-color: inherit;
+  }
+
+  &.item-list  {
+    li {
+      margin-bottom: 0.75rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid $lightgray;
+      @include clearfix();
+      &:last-child {
+        border-bottom: 0;
+      }
+    }
+    a {
+      width: auto;
+      white-space: normal;
+      overflow: auto;
+      display: inline;
+    }
+    img {
+      width: 40px;
+      height: auto;
+      margin-right: 0.5rem;
+      margin-top: 0.5rem;
+      float: left;
+    }
+  }
+}

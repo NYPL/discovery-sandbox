@@ -5,6 +5,7 @@ import colors from 'colors';
 
 import React from 'react';
 import ReactDOMServer from 'react-dom/server';
+import { match, RouterContext } from 'react-router';
 
 import Iso from 'iso';
 import alt from './src/app/alt.js';
@@ -16,6 +17,12 @@ import webpackConfig from './webpack.config.js';
 
 import Application from './src/app/components/Application/Application.jsx';
 import apiRoutes from './src/server/ApiRoutes/ApiRoutes.js';
+import routes from './src/app/routes/routes.jsx';
+
+import cookieParser from 'cookie-parser';
+import { initializeTokenAuth } from './src/server/routes/auth';
+import { getUserHolds } from './src/server/routes/api';
+import bodyParser from 'body-parser';
 
 const ROOT_PATH = __dirname;
 const INDEX_PATH = path.resolve(ROOT_PATH, 'src/client');
@@ -37,29 +44,49 @@ app.set('views', VIEWS_PATH);
 
 app.set('port', process.env.PORT || 3001);
 
+app.use(cookieParser());
+app.use( bodyParser.json() );       // to support JSON-encoded bodies
+app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
+  extended: true
+}));
+
+// Set Global publicKey
+app.set('nyplPublicKey', appConfig.publicKey);
+
 app.use(express.static(DIST_PATH));
 // For images
 app.use('*/src/client', express.static(INDEX_PATH));
 
-
+app.use('/*', initializeTokenAuth, getUserHolds);
 app.use('/', apiRoutes);
 
-app.get('/', (req, res) => {
+app.get('/*', (req, res) => {
   alt.bootstrap(JSON.stringify(res.locals.data || {}));
 
-  const iso = new Iso();
-  const application = ReactDOMServer.renderToString(<Application />);
+  match({ routes, location: req.url }, (error, redirectLocation, renderProps) => {
+    if (error) {
+      res.status(500).send(error.message);
+    } else if (redirectLocation) {
+      res.redirect(302, redirectLocation.pathname + redirectLocation.search);
+    } else if (renderProps) {
+      const application = ReactDOMServer.renderToString(<RouterContext {...renderProps} />);
+      const iso = new Iso();
 
-  iso.add(application, alt.flush());
-
-  // First parameter references the ejs filename
-  res.render('index', {
-    application: iso.render(),
-    appTitle: appConfig.appTitle,
-    favicon: appConfig.favIconPath,
-    webpackPort: WEBPACK_DEV_PORT,
-    appEnv: process.env.APP_ENV,
-    isProduction,
+      iso.add(application, alt.flush());
+      res
+        .status(200)
+        .render('index', {
+          application: iso.render(),
+          appTitle: appConfig.appTitle,
+          favicon: appConfig.favIconPath,
+          webpackPort: WEBPACK_DEV_PORT,
+          appEnv: process.env.APP_ENV,
+          path: req.url,
+          isProduction,
+        });
+    } else {
+      res.status(404).redirect('/');
+    }
   });
 });
 

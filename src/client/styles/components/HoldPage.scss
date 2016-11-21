@@ -1,0 +1,105 @@
+
+.item-header {
+  h1 {
+    font-size: 1.6rem;
+    line-height: 1.3;
+    margin-bottom: 0.75rem;
+  }
+}
+
+.item-summary {
+  background: $lightergray;
+  padding: 0.6rem 0.75rem;
+  margin-bottom: 1.2rem;
+  @include clearfix();
+
+  .item-image {
+    width: 7.5%;
+    float: left;
+    @include box-sizing();
+    img {
+      width: 100%;
+      height: auto;
+    }
+  }
+  .item-details {
+    @include box-sizing();
+    width: 92.5%;
+    float: right;
+    padding-left: 0.75rem;
+  }
+  h2 {
+    font-size: 1.2rem;
+    line-height: 1.3;
+    margin-bottom: 0.75rem;
+  }
+  p {
+    margin-bottom: 0.75rem;
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  ul {
+    margin: 0 0 0 -0.75rem;
+    li {
+      margin: 0 0 0.35rem;
+    }
+  }
+}
+
+.place-hold-form {
+  h2 {
+    font-size: 1.2rem;
+    line-height: 1.3;
+    margin-bottom: 0.75rem;
+  }
+}
+
+.select-location-fieldset {
+  border: 0;
+  padding: 0;
+  display: table;
+  width: 100%;
+  margin-bottom: 1.5rem;
+}
+
+div.group,
+label.group {
+  display: table-row;
+  cursor: pointer;
+
+  a {
+    background-color: inherit;
+  }
+
+  &.selected {
+    background: $highlightcolor;
+  }
+
+  &:first-child .col {
+    border-top: 1px solid $lightgray;
+  }
+
+  .col {
+    display: table-cell;
+    vertical-align: middle;
+    padding: 0.35rem 1rem;
+    border-bottom: 1px solid $lightgray;
+  }
+
+  small {
+    white-space: nowrap;
+  }
+
+}
+
+.map-container {
+  font-size: 1.3rem;
+  .col:first-child {
+    padding-left: 0;
+  }
+  table {
+    font-size: 1rem;
+  }
+}

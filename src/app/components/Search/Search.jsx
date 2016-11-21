@@ -1,163 +1,79 @@
 import React from 'react';
 import cx from 'classnames';
+import axios from 'axios';
+
+import Actions from '../../actions/Actions.js';
+import Store from '../../stores/Store.js';
+
+import SearchButton from '../Buttons/SearchButton.jsx';
+
+import {
+  extend as _extend,
+} from 'underscore';
 
 /**
- * The main container for the top Search section of the New Arrivals app.
+ * The main container for the top Search section.
  */
 class Search extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      searchKeywords: '',
-      searchOption: 'catalog',
-      placeholder: 'Search the catalog',
+    this.state = _extend({
+      placeholder: 'Keyword, title, name, or id',
       placeholderAnimation: null,
       noAnimationBefore: true,
-    };
+    }, Store.getState());
 
     this.inputChange = this.inputChange.bind(this);
     this.submitSearchRequest = this.submitSearchRequest.bind(this);
     this.triggerSubmit = this.triggerSubmit.bind(this);
-    this.animationTimer = this.animationTimer.bind(this);
-    this.setCatalogUrl = this.setCatalogUrl.bind(this);
-    this.setEncoreUrl = this.setEncoreUrl.bind(this);
-    this.encoreEncodeSearchString = this.encoreEncodeSearchString.bind(this);
-    this.encoreAddScope = this.encoreAddScope.bind(this);
+    this.onChange = this.onChange.bind(this);
+    this.routeHandler = this.routeHandler.bind(this);
+  }
+
+  componentDidMount() {
+    Store.listen(this.onChange);
+  }
+
+  onChange() {
+    this.setState(_extend(this.state, Store.getState()));
+  }
+
+  componentWillUnmount() {
+    Store.unlisten(this.onChange);
   }
 
   /**
-   * animationTimer(element)
-   * Add the CSS animation to the placeholder of the keywords Input.
-   * It adds the proper class to the html element to trigger the animation,
-   * and then removes the class to stop it.
-   *
-   * @param {DOM Element} element
+   * submitSearchRequest()
    */
-  animationTimer(element) {
-    let frame = 0;
-    const animation = setInterval(() => {
-      frame ++;
-      // Remove the class to stop the animation after 0.1s
-      if (frame > 1) {
-        clearInterval(animation);
-        this.setState({ placeholderAnimation: null });
-        // Set animation to be sequential
-        this.setState({ noAnimationBefore: false });
-      }
-    }, 100);
-
-    // Decide which CSS animation is going to perform
-    // by adding different classes to the element.
-    // It is based on if it is the first time the validation to be triggered.
-    if (this.state.noAnimationBefore) {
-      this.setState({ placeholderAnimation: 'initial' });
-    } else {
-      this.setState({ placeholderAnimation: 'sequential' });
-    }
-  }
-
-  /**
-   * setCatalogUrl(searchString, catalogBaseUrl)
-   * Returns the final URL for the catalog search.
-   * @param {string} SearchString - The value that was search including search facets.
-   * @param {string} catalogBaseUrl - The URL of the catalog.
-   */
-  setCatalogUrl(searchString, catalogBaseUrl) {
-    const catalogUrl = catalogBaseUrl || 'http://www.nypl.org/search/apachesolr_search/';
-
-    if (searchString) {
-      return catalogUrl + encodeURIComponent(searchString);
-    }
-  }
-
-  /**
-   * encoreEncodeSearchString(string)
-   * base64_encoding_map includes special characters that need to be
-   * encoded using base64 - these chars are "=","/", "\", "?"
-   * character : base64 encoded
-   * @param {string} string - The string that needs to be encoded.
-   */
-  encoreEncodeSearchString(string) {
-    const base64EncMap = {
-      '=': 'PQ==',
-      '/': 'Lw==',
-      '\\': 'XA==',
-      '?': 'Pw==',
-    };
-
-    let encodedString = string;
-    let charRegExString;
-    let base64Regex;
-
-    Object.keys(base64EncMap).forEach((specialChar) => {
-      charRegExString = specialChar.replace(/([\.\*\+\?\^\=\!\:\$\{\}\(\)\|\[\]\/\\])/g, '\\$1');
-      base64Regex = new RegExp(charRegExString, 'g');
-      encodedString = encodedString.replace(base64Regex, base64EncMap[specialChar]);
-    });
-
-    return encodedString;
-  }
-
-  /**
-   * submitSearchRequest(value)
-   *
-   * @param {String} value - The value from the input field.
-   */
-  submitSearchRequest(value) {
+  submitSearchRequest(e) {
+    e.preventDefault();
     // Store the data that the user entered
-    const requestParameters = {
-      keywords: this.state.searchKeywords.trim(),
-      // If the value is null, it indicates the function is triggered on desktop version.
-      // Then it should get the value for option from state.
-      option: value || this.state.searchOption,
-    };
-    const encoreBaseUrl = 'http://browse.nypl.org/iii/encore/search/';
-    const catalogBaseUrl = 'http://www.nypl.org/search/apachesolr_search/';
-    let inputKeywords;
-    let requestUrl;
+    const keyword = this.state.searchKeywords.trim();
+    const reset = this.props.sortBy === 'relevance';
+    let sortQuery = '';
 
-    // Decide the search option based on which button the user clicked on mobile version search box
-    if (requestParameters.option === 'catalog') {
-      requestUrl = this.setEncoreUrl(requestParameters.keywords, encoreBaseUrl, 'eng');
-    } else if (requestParameters.option === 'website') {
-      requestUrl = this.setCatalogUrl(requestParameters.keywords, catalogBaseUrl);
+    if (!reset) {
+      const [sortBy, order] = this.props.sortBy.split('_');
+      sortQuery = `&sort=${sortBy}&sort_direction=${order}`;
     }
 
-    // This portion is for the interactions if the user doesn't enter any input
-    if (!requestParameters.keywords) {
-      // The selector for inputKeywords DOM element
-      inputKeywords = this.refs.keywords;
-      // The new placeholder that tells users there's no keywords input
-      this.setState({ placeholder: 'Please enter a search term.' });
-      // Trigger the validation animation
-      this.animationTimer(inputKeywords);
-    } else {
-      // Go to the search page
-      window.location.assign(requestUrl);
-    }
+    axios
+      .get(`/api?q=${keyword}${sortQuery}`)
+      .then(response => {
+        Actions.updateSearchResults(response.data.searchResults);
+        Actions.updateFacets(response.data.facets);
+        Actions.updateSearchKeywords(keyword);
+        Actions.updatePage('1');
+        this.routeHandler(`/search?q=${keyword}${sortQuery}`);
+      })
+      .catch(error => {
+        console.log(error);
+      });
   }
 
-  /**
-   * setEncoreUrl(searchInput, baseUrl, language)
-   * Returns the final URL for encore search which, is first encoded, then concatenated by the
-   * base encore root url. An optional scope and language may be concatenated as well.
-   * @param {string} searchInput - The value of what will be searched.
-   * @param {string} baseUrl - The root URL of Encore.
-   * @param {string} language - What language should be used.
-   * @param {string} scopeString
-   */
-  setEncoreUrl(searchInput, baseUrl, language, scopeString) {
-    const searchTerm = this.encoreEncodeSearchString(searchInput);
-    const rootUrl = baseUrl || 'http://browse.nypl.org/iii/encore/search/';
-    const defaultLang = (language) ? `?lang=${language}` : '';
-    let finalEncoreUrl;
-
-    if (searchTerm) {
-      finalEncoreUrl = this.encoreAddScope(rootUrl, searchTerm, scopeString) + defaultLang;
-    }
-
-    return finalEncoreUrl;
+  routeHandler(keyword) {
+    this.context.router.push(keyword);
   }
 
   /**
@@ -169,68 +85,58 @@ class Search extends React.Component {
    */
   triggerSubmit(event) {
     if (event && event.charCode === 13) {
-      this.submitSearchRequest(null);
+      this.submitSearchRequest(event);
     }
   }
 
   /**
-   *  inputChange(field, event)
+   * inputChange(field, event)
    * Listen to the changes on keywords input field and option input fields.
    * Grab the event value, and change the state.
    *
-   * @param {String} field - Input field context.
    * @param {Event Object} event - Passing event as the argument here
    * as FireFox doesn't accept event as a global variable.
    */
-  inputChange(field, event) {
+  inputChange(event) {
     this.setState({ searchKeywords: event.target.value });
   }
 
-  /**
-   * encoreAddScope(baseUrl, searchString, scopeString)
-   * Enchances the encore url with a possible scope.
-   * If no scope is set, adds the required string to be returned as the final url.
-   * @param {string} baseUrl - The root URL of Encore.
-   * @param {string} searchInput - The value of what will be searched.
-   * @param {string} scopeString
-   */
-  encoreAddScope(baseUrl, searchString, scopeString) {
-    return scopeString ?
-      `${baseUrl}C__S${searchString}${scopeString}__Orightresult__U` :
-      `${baseUrl}C__S${searchString}__Orightresult__U`;
-  }
-
   render() {
-    const pulseAnimation = cx({
-      'keywords-pulse-fade-in': this.state.placeholderAnimation === 'initial',
-      'keywords-pulse': this.state.placeholderAnimation === 'sequential',
-    });
-
-    // Need to update when the state updates:
-    const advanceKeywords = this.state.keywords ? `&searchString=${this.state.keywords}` : '';
-    const advanceURL = `http://browse.nypl.org/iii/encore/home?` +
-      `lang=eng&suite=def&advancedSearch=true${advanceKeywords}`;
-
     return (
-      <div className="search-container">
-        <div className="search-form" onKeyPress={this.triggerSubmit}>
-          <input
-            placeholder={this.state.placeholder}
-            className={`search-field ${pulseAnimation}`}
-            onChange={() => this.inputChange}
-            ref="keywords"
-          />
-          <button
-            className="search-button"
-            onClick={() => this.submitSearchRequest('catalog')}
-          >
-            <span className="nypl-icon-magnifier-fat"></span>
-            Search
-          </button>
-        </div>
-      </div>
+      <form className="search-form" onKeyPress={this.triggerSubmit}>
+        <label htmlFor="search-by-field" className="visuallyhidden">Search by field</label>
+        <select id="search-by-field" className="search-select">
+          <option value="all">All fields</option>
+          <option value="title">Title</option>
+          <option value="contributor">Author/Contributor</option>
+          <option value="subject">Subject</option>
+          <option value="series">Series</option>
+          <option value="call_number">Call number</option>
+        </select>
+        <label htmlFor="search-query" className="visuallyhidden">Search keyword</label>
+        <input
+          id="search-query"
+          placeholder={this.state.placeholder}
+          className="search-field"
+          onChange={this.inputChange}
+          value={this.state.searchKeywords}
+          ref="keywords"
+        />
+        <SearchButton
+          id="search-button"
+          className="search-button"
+          label="Search"
+          onClick={this.submitSearchRequest}
+        />
+      </form>
     );
   }
 }
+
+Search.contextTypes = {
+  router: function contextType() {
+    return React.PropTypes.func.isRequired;
+  },
+};
 
 export default Search;
