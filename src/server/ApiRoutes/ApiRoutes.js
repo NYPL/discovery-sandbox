@@ -7,63 +7,9 @@ import {
 } from 'underscore';
 
 import appConfig from '../../../appConfig.js';
-import modelEbsco from '../../app/utils/model.js';
-// import ebscoFn from '../../../ebscoConfig.js';
 
 const router = express.Router();
 const appEnvironment = process.env.APP_ENV || 'production';
-const ebsco = {
-  UserId: process.env.USER ? process.env.USER : '',
-  Password: process.env.PASSWORD ? process.env.PASSWORD : '',
-  profile: process.env.PROFILE ? process.env.PROFILE : '',
-  Guest: process.env.GUEST ? process.env.GUEST : '',
-  Org: process.env.ORG ? process.env.ORG : '',
-};
-
-let sessionToken = '';
-let authenticationToken = '';
-
-function getCredentials() {
-  axios
-    .post('https://eds-api.ebscohost.com/authservice/rest/uidauth', {
-      UserId: ebsco.UserId,
-      Password: ebsco.Password,
-      profile: ebsco.profile,
-    })
-    .then(response => {
-      getSessionToken(response.data.AuthToken);
-    })
-    .catch(error => {
-      console.log(error);
-    });
-}
-
-function getSessionToken(authToken) {
-  const instance = axios.create({
-    // timeout: response.data.AuthTimeout,
-    headers: { 'x-authenticationToken': authToken },
-  });
-
-  authenticationToken = authToken;
-
-  instance
-    .post('http://eds-api.ebscohost.com/edsapi/rest/createsession', {
-      Profile: ebsco.profile,
-      Guest: ebsco.Guest,
-      Org: ebsco.Org,
-    })
-    .then(r => {
-      console.log(r.data);
-
-      sessionToken = r.data.SessionToken;
-    })
-    .catch(e => {
-      console.log(e);
-      getCredentials();
-    });
-}
-
-// getCredentials();
 
 function MainApp(req, res, next) {
   res.locals.data.Store = {
@@ -78,46 +24,9 @@ function MainApp(req, res, next) {
   next();
 }
 
-function EbscoSearch(query, cb, errorcb) {
-  const instance = axios.create({
-    headers: {
-      'x-sessionToken': sessionToken,
-      'x-authenticationToken': authenticationToken,
-    },
-  });
-
-  instance
-    .post(`http://eds-api.ebscohost.com/edsapi/rest/Search`, {
-      "SearchCriteria": {
-        "Queries": [ {"Term": query} ],
-        "SearchMode": "smart",
-        "IncludeFacets": "y",
-        "Sort": "relevance",
-        "AutoSuggest": "y",
-      },
-      "RetrievalCriteria": {
-        "View": "brief",
-        "ResultsPerPage": 10,
-        "PageNumber": 1,
-        "Highlight": "y"
-      },
-      "Actions":null
-    })
-    .then(response => cb(modelEbsco.build(response.data)))
-    .catch(error => {
-      console.log(error);
-      console.log(`error calling API : ${error}`);
-
-      getSessionToken(authenticationToken);
-
-      errorcb(error);
-    }); /* end axios call */
-}
-
 function getFacets(query) {
   return axios.get(`http://discovery-api.nypltech.org/api/v1/resources/aggregations?q=${query}`);
 }
-
 
 function Search(query, page, sortBy, order, cb, errorcb) {
   let sortQuery = '';
@@ -250,30 +159,6 @@ function ServerSearch(req, res, next) {
   );
 }
 
-function RetrieveEbscoItem(dbid, an, cb, errorcb) {
-  const instance = axios.create({
-    headers: {
-      'x-sessionToken': sessionToken,
-      'x-authenticationToken': authenticationToken,
-    },
-  });
-
-  instance
-    .post(`http://eds-api.ebscohost.com/edsapi/rest/retrieve`, {
-      DbId: dbid,
-      An: an,
-    })
-    .then(response => cb(modelEbsco.buildItem(response.data)))
-    .catch(error => {
-      console.log(error);
-      console.log(`error calling API : ${error}`);
-
-      getSessionToken(authenticationToken);
-
-      errorcb(error);
-    }); /* end axios call */
-}
-
 function RetrieveItem(q, cb, errorcb) {
   axios
     .get(`http://discovery-api.nypltech.org/api/v1/resources/${q}`)
@@ -287,10 +172,6 @@ function RetrieveItem(q, cb, errorcb) {
 }
 
 function ServerItemSearch(req, res, next) {
-  // const dbid = req.query.dbid || '';
-  // const an = req.query.an || '';
-  // const query = req.query.q || 'harry potter';
-  // RetrieveEbscoItem(dbid, an, ...);
   const q = req.params.id || 'harry potter';
 
   RetrieveItem(

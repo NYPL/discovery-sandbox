@@ -2,10 +2,6 @@
 import alt from '../alt.js';
 
 class Actions {
-  updateEbscoData(data) {
-    return data;
-  }
-
   updateSearchResults(data) {
     return data;
   }

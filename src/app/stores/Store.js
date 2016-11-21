@@ -4,7 +4,6 @@ import alt from '../alt.js';
 class Store {
   constructor() {
     this.bindListeners({
-      updateEbscoData: Actions.updateEbscoData,
       updateSearchResults: Actions.updateSearchResults,
       updateSearchKeywords: Actions.updateSearchKeywords,
       updateItem: Actions.updateItem,
@@ -16,7 +15,6 @@ class Store {
     });
 
     this.state = {
-      ebscodata: {},
       searchResults: {},
       item: {},
       searchKeywords: '',
@@ -25,10 +23,6 @@ class Store {
       page: '1',
       sortBy: 'relevance',
     };
-  }
-
-  updateEbscoData(data) {
-    this.setState({ ebscodata: data });
   }
 
   updateSearchResults(data) {
