@@ -4,42 +4,6 @@
   align-items: flex-start;
   margin-top: 1rem;
 
-  .pagination {
-    *:first-child {
-      padding-left: 0;
-    }
-  }
-
-  .pagination-total,
-  .paginate {
-    display: inline-block;
-    padding: 0 0.35rem;
-  }
-
-  .pagination-total {
-    font-weight: bold;
-  }
-
-  .paginate {
-    text-decoration: none;
-
-    &.prev:before {
-      content: '‹';
-      display: inline-block;
-      margin-right: 0.2rem;
-      font-size: 1.2rem;
-      line-height: 1rem;
-    }
-
-    &.next:after {
-      content: '›';
-      display: inline-block;
-      margin-left: 0.2rem;
-      font-size: 1.2rem;
-      line-height: 1rem;
-    }
-  }
-
   .sort {
     flex-grow: 1;
 
@@ -53,12 +17,54 @@
     select {
       display: inline-block;
       height: 30px;
+      font-size: 0.8rem;
     }
 
     label {
       margin-right: 0.35rem;
     }
 
+    fieldset {
+      border: none;
+      margin: 0;
+      padding: 0;
+    }
+  }
+}
+
+.pagination {
+  *:first-child {
+    padding-left: 0;
+  }
+}
+
+.pagination-total,
+.paginate {
+  padding: 0 0.35rem;
+}
+
+.pagination-total {
+  font-weight: bold;
+}
+
+.paginate {
+  text-decoration: none;
+  cursor: pointer;
+
+  &.previous:before {
+    content: '‹';
+    display: inline-block;
+    margin-right: 0.2rem;
+    font-size: 1.2rem;
+    line-height: 1rem;
+  }
+
+  &.next:after {
+    content: '›';
+    display: inline-block;
+    margin-left: 0.2rem;
+    font-size: 1.2rem;
+    line-height: 1rem;
   }
 }
 
@@ -107,7 +113,6 @@
   .result-text {
     text-decoration: none;
     flex-grow: 1;
-    padding: 0 1rem;
     position: relative;
 
     .type,
@@ -142,11 +147,27 @@
     }
 
     .sub-items {
-      padding: 0.35rem 0 0.35rem 0.35rem;
+      margin-top: 0.35rem;
+      max-width: 800px;
+
+      .see-more-link {
+        display: block;
+        padding: 0.2rem 0.5rem;
+        border-top: 1px solid $lightgray;
+        background: $lightgray;
+      }
+    }
+
+    .sub-items > div {
+      display: table;
+      width: 100%;
+      // border: 1px solid $lightgray;
+      padding: 0;
+      background: lighten($lightergray, 4%);
     }
 
     .sub-item {
-
+      display: table-row;
       line-height: 1.2;
       padding: 0.2rem 0;
 
@@ -180,6 +201,33 @@
         font-weight: normal;
         color: $gray;
       }
+
+      span.call-no {
+        font-weight: normal;
+        font-style: italic;
+        color: $gray;
+      }
+
+      .button {
+        padding: 0.2rem 0.65rem;
+        min-width: 110px;
+        display: inline-block;
+        text-align: center;
+      }
+
+      > div {
+        display: table-cell;
+        vertical-align: middle;
+        padding: 0.5rem 0.5rem;
+        border-top: 1px solid $lightgray;
+        &:last-child {
+          text-align: right;
+        }
+      }
+    }
+
+    .sub-item:first-child > div {
+      border-top: 0;
     }
 
     .divider {

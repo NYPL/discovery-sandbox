@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { SearchIcon } from 'dgx-svg-icons';
+// import { SearchIcon } from 'dgx-svg-icons';
 
 const SearchButton = ({
   id,
@@ -12,13 +12,10 @@ const SearchButton = ({
     <button
       id={id}
       className={className}
+      onSubmit={onClick}
       onClick={onClick}
+      type="submit"
     >
-      <SearchIcon
-        ariaHidden
-        className={`${className}-searchIcon`}
-        fill="#FFF"
-      />
       {label}
     </button>
   </div>

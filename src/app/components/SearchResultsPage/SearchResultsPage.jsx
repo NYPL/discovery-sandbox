@@ -8,14 +8,15 @@ import Breadcrumbs from '../Breadcrumbs/Breadcrumbs.jsx';
 import FacetSidebar from '../FacetSidebar/FacetSidebar.jsx';
 import Results from '../Results/Results.jsx';
 import Search from '../Search/Search.jsx';
+import { collapse } from '../../utils/utils.js';
 
 class SearchResultsPage extends React.Component {
   componentWillMount() {
-    if (!this.props.ebscodata) {
+    if (!this.props.searchResults) {
       axios
         .get(`/api?q=${this.props.searchKeywords}`)
         .then(response => {
-          Actions.updateEbscoData(response.data);
+          Actions.updateSearchResults(response.data.searchResults);
           Actions.updateSearchKeywords(this.props.searchKeywords);
         })
         .catch(error => {
@@ -26,31 +27,30 @@ class SearchResultsPage extends React.Component {
 
   render() {
     const {
-      ebscodata,
+      searchResults,
       searchKeywords,
+      facets,
+      selectedFacets,
+      page,
+      location,
+      sortBy,
     } = this.props;
-    let breadcrumbs = null;
-    const facets = ebscodata ? ebscodata.facets : [];
-    const dateRange = ebscodata ? ebscodata.dateRange : null;
-    const totalHits = ebscodata ? ebscodata.totalHits : 0;
-    const results = ebscodata ? ebscodata.results : [];
-
-    console.log(ebscodata);
-
-    if (searchKeywords) {
-      breadcrumbs = (
-        <div className="page-header">
-          <div className="container">
-            <Breadcrumbs query={searchKeywords} type="search" />
-          </div>
+    const facetList = facets && facets.itemListElement ? facets.itemListElement : [];
+    const dateRange = searchResults ? searchResults.dateRange : null;
+    const totalHits = searchResults ? searchResults.totalResults : 0;
+    const results = searchResults ? collapse({ searchResults }).searchResults.itemListElement : [];
+    const breadcrumbs = (
+      <div className="page-header">
+        <div className="container">
+          <Breadcrumbs query={searchKeywords} type="search" />
         </div>
-      );
-    }
+      </div>
+    );
 
     return (
-      <div>
+      <div id="mainContent">
         <div className="search-container">
-          <Search />
+          <Search sortBy={sortBy} />
         </div>
 
         {breadcrumbs}
@@ -58,18 +58,28 @@ class SearchResultsPage extends React.Component {
         <div className="container search-results-container">
 
           <FacetSidebar
-            facets={facets}
+            facets={facetList}
+            selectedFacets={selectedFacets}
             keywords={searchKeywords}
-            dateRange={dateRange}
+            sortBy={sortBy}
           />
 
           <div className="results">
-            <Hits hits={totalHits} query={searchKeywords} />
+            <Hits
+              hits={totalHits}
+              query={searchKeywords}
+              facets={selectedFacets}
+              sortBy={sortBy}
+            />
 
             <Results
               hits={totalHits}
               results={results}
               query={searchKeywords}
+              location={location}
+              page={page}
+              selectedFacets={selectedFacets}
+              sortBy={sortBy}
             />
           </div>
         </div>
@@ -79,7 +89,7 @@ class SearchResultsPage extends React.Component {
 }
 
 SearchResultsPage.propTypes = {
-  ebscodata: React.PropTypes.object,
+  searchResults: React.PropTypes.object,
   searchKeywords: React.PropTypes.string,
 };
 

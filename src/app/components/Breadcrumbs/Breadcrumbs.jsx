@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router';
 
-const Breadcrumbs = ({ query, type, title, url }) => {
+const Breadcrumbs = ({ query = '', type, title = '', url }) => {
   let str = 'Research Catalog';
   let crumbs = (
     <span>
@@ -12,7 +12,7 @@ const Breadcrumbs = ({ query, type, title, url }) => {
   );
 
   if (type === 'search') {
-    str = `Search Results for "${query}"`;
+    str = query ? `Search Results for "${query}"` : '';
     crumbs = (
       <span>
         <Link to="https://nypl.org">Home</Link> &gt;&gt;
@@ -23,42 +23,53 @@ const Breadcrumbs = ({ query, type, title, url }) => {
     );
   }
 
+  str = `${title.substring(0, 50)}...`;
+
   if (type === 'item') {
-    str = title;
     crumbs = (
       <span>
         <Link to="https://nypl.org">Home</Link> &gt;&gt;
         <Link to="https://nypl.org/research">Research</Link> &gt;&gt;
         <Link to="/">Research catalog</Link> &gt;&gt;
-        <Link to={`/search/${query}`}>Items</Link> &gt;&gt;
+        {
+          query ?
+          (<span><Link to={`/search?q=${query}`}>Items</Link> &gt;&gt;</span>)
+          : null
+        }
         {str}
       </span>
     );
   }
 
   if (type === 'hold') {
-    str = title;
     crumbs = (
       <span>
         <Link to="https://nypl.org">Home</Link> &gt;&gt;
         <Link to="https://nypl.org/research">Research</Link> &gt;&gt;
         <Link to="/">Research catalog</Link> &gt;&gt;
-        <Link to={`/search/${query}`}>Items</Link> &gt;&gt;
-        <Link to={`/item${url}`}>{str}</Link> &gt;&gt;
+        {
+          query ?
+          (<span><Link to={`/search?q=${query}`}>Items</Link> &gt;&gt;</span>)
+          : null
+        }
+        <Link to={`/item/${url}`}>{str}</Link> &gt;&gt;
         Place a hold
       </span>
     );
   }
 
   if (type === 'holdConfirmation') {
-    str = title;
     crumbs = (
       <span>
         <Link to="https://nypl.org">Home</Link> &gt;&gt;
         <Link to="https://nypl.org/research">Research</Link> &gt;&gt;
         <Link to="/">Research catalog</Link> &gt;&gt;
-        <Link to={`/search/${query}`}>Items</Link> &gt;&gt;
-        <Link to={`/item${url}`}>{str}</Link> &gt;&gt;
+        {
+          query ?
+          (<span><Link to={`/search?q=${query}`}>Items</Link> &gt;&gt;</span>)
+          : null
+        }
+        <Link to={`/item/${url}`}>{str}</Link> &gt;&gt;
         Hold confirmation
       </span>
     );
@@ -69,11 +80,13 @@ const Breadcrumbs = ({ query, type, title, url }) => {
       {crumbs}
     </div>
   );
-}
+};
 
 Breadcrumbs.propTypes = {
   query: React.PropTypes.string,
   type: React.PropTypes.string,
+  title: React.PropTypes.string,
+  url: React.PropTypes.string,
 };
 
 export default Breadcrumbs;

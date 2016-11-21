@@ -48,6 +48,14 @@
   }
 }
 
+.place-hold-form {
+  h2 {
+    font-size: 1.2rem;
+    line-height: 1.3;
+    margin-bottom: 0.75rem;
+  }
+}
+
 .select-location-fieldset {
   border: 0;
   padding: 0;
@@ -56,9 +64,14 @@
   margin-bottom: 1.5rem;
 }
 
+div.group,
 label.group {
   display: table-row;
   cursor: pointer;
+
+  a {
+    background-color: inherit;
+  }
 
   &.selected {
     background: $highlightcolor;

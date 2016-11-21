@@ -1,18 +1,21 @@
 html {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
   font-size: 16px;
+  font-size: 1em;
   line-height: 1.65;
   -webkit-font-smoothing: antialiased;
 }
 
 body {
   color: $textcolor;
+  background-color: #fff;
   padding-bottom: 100px;
 }
 
 a {
   &, &:link {
     color: $linkcolor;
+    background-color: inherit;
   }
 
   &:visited {
@@ -24,28 +27,28 @@ a {
   }
 
   &.button {
-    color: $white;
-    background: $linkcolor;
+    color: $buttontextcolor;
+    background: $buttoncolor;
     padding: 0.35rem 0.65rem;
     text-decoration: none;
     white-space: nowrap;
 
     &:hover {
-      color: $white;
-      background: $linkhovercolor;
+      color: $buttontextcolor;
+      background: $buttonhovercolor;
     }
   }
 }
 
 button {
-  color: $white;
-  background: $linkcolor;
-  border: 1px solid $linkcolor;
+  color: $buttontextcolor;
+  background: $buttoncolor;
+  border: 1px solid $buttoncolor;
 
-  // &:hover {
-  //   background: $linkhovercolor;
-  //   border-color: $linkhovercolor;
-  // }
+  &:hover {
+    background: $buttonhovercolor;
+    border-color: $buttonhovercolor;
+  }
 
   &.large {
     font-size: 1.3rem;
@@ -107,6 +110,17 @@ select {
   vertical-align: middle;
   padding-right: 7%;
   padding-left: 0.35rem;
+}
+.radio-group {
+  background: $lightgray;
+  padding: 0.35rem 0.5rem;
+  label,
+  input {
+    display: inline-block;
+  }
+  input {
+    margin-right: 0.1rem;
+  }
 }
 
 dl {
@@ -183,6 +197,9 @@ iframe {
 }
 
 table.generic-table {
+  caption {
+    position: relative;
+  }
   width: 100%;
   th {
     text-align: left;

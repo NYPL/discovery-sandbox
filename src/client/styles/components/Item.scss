@@ -1,6 +1,4 @@
-
 .item-header {
-  padding: 1rem;
   @include clearfix();
 
   > div {
@@ -24,7 +22,6 @@
 
   .item-info {
     width: 91.75%;
-    padding-left: 1rem;
   }
 
   .description {
@@ -38,7 +35,8 @@
 }
 
 .item-holdings,
-.item-details {
+.item-details,
+.item-document-viewer {
   border-top: 1px solid darken($lightgray, 10%);
   padding-top: 0.5rem;
   margin-top: 2rem;
@@ -52,6 +50,20 @@
   h3 {
     font-size: 1.2rem;
     margin-top: 2rem;
+  }
+
+  .results-list {
+    margin-top: 2rem;
+    
+    li:first-child {
+      border-top: 0;
+    }
+  }
+}
+
+.holdings-table {
+  .collapsed {
+      display: none;
   }
 }
 

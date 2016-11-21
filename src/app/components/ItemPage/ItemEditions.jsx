@@ -1,81 +1,63 @@
 import React from 'react';
+import axios from 'axios';
+
+import ResultList from '../Results/ResultsList.jsx';
 
 class ItemEditions extends React.Component {
+
+  constructor(props) {
+    super(props);
+
+    this.state ={
+      results: []
+    };
+  }
+
+  componentWillMount() {
+    const record = this.props.item;
+    const idOwi = record.idOwi && record.idOwi.length ? record.idOwi[0] : null;
+
+    if (idOwi) {
+      axios
+        .get(`http://discovery-api.nypltech.org/api/v1/resources?q=${encodeURIComponent(`idOwi:"${idOwi}"`)}`)
+        .then(response => {
+          if (response.data && response.data.itemListElement && response.data.itemListElement.length) {
+            const results = response.data.itemListElement.filter((item, i) => { return item.result['@id'] != record['@id']; });
+            if (results.length) {
+              this.setState({ results: results });
+            }
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    }
+  }
+
   createMarkup(markup) {
     return { __html: markup };
   }
 
-  getImage(url) {
-    if (!url) {
-      return null;
-    }
-
-    return (
-      <div className="result-image">
-        <img src={url} alt="" />
-      </div>
-    );
-  }
-
-  getItem(data) {
-    if (!data.length) {
-      return null;
-    }
-
-    return data.map((item, i) => {
-      return (
-        <div className="result-item" key={i}>
-          {this.getImage(item.imgUrl)}
-          <div className="result-text">
-            <a href="#" className="title">{item.title}</a>
-            <div className="description" dangerouslySetInnerHTML={this.createMarkup(item.description)}></div>
-          </div>
-        </div>
-      );
-    });
-  }
-
   render() {
-    const data = [
-      {
-        imgUrl: '../img/federalist_papers_macmillan.jpg',
-        title: 'The Federalist papers: edited by and with an introduction by Michael A. Genovese',
-        description: '<span>Palgrave Macmillan <span class="divider"></span> 2009 <span class="divider"></span> 1st ed.</span>',
-      },
-      {
-        imgUrl: '../img/federalist_papers_oxford.jpg',
-        title: 'The Federalist papers: edited with an introduction and notes by Lawrance Goldman',
-        description: '<span>Oxford University Press <span class="divider"></span> 2008</span>',
-      },
-      {
-        imgUrl: '../img/federalist_papers_penguin.jpg',
-        title: 'The Federalist papers: with an introduction, table of contents, and index of ideas by Clinton Rossiter',
-        description: '<span>Penguin <span class="divider"></span> 1961</span>',
-      },
-    ];
-    const title = "The Federalist papers";
+    if (!this.state.results.length) return null;
+
+    const title = this.props.title;
 
     return (
-      <div>
-        <h3>
-          <a name="editions"></a>Other editions of "{title}"
-        </h3>
+      <div className="item-details">
+        <h2>
+          <a name="editions"></a>Formats and editions related to "{title}"
+        </h2>
 
-        <div className="result-list">
-          {this.getItem(data)}
-
-          <div className="result-item more">
-            <div className="result-image">
-
-            </div>
-            <div className="result-text">
-              <a href="#more">See all of the Library's 24 editions of "{title}"</a>
-            </div>
-          </div>
-        </div>
+        <ResultList results={this.state.results} />
       </div>
     );
   }
 }
+
+ItemEditions.propTypes = {
+  title: React.PropTypes.string,
+  item: React.PropTypes.object
+};
 
 export default ItemEditions;

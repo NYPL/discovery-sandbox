@@ -1,16 +1,25 @@
 .breadcrumbs {
+  a {
+    background-color: #e9e8e7;
+  }
 
   .breadcrumb {
     display: inline-block;
+
     &:after {
       content: "»";
       display: inline-block;
       margin: 0 0.5rem;
       color: $darkgray;
     }
+
     &:last-child:after {
       content: none;
     }
+  }
+
+  span span {
+    margin: 0 5px;
   }
 }
 
