@@ -146,7 +146,7 @@ class ItemPage extends React.Component {
       { label: 'Location', field: 'location' },
       { label: 'Notes', field: 'note' },
       { label: 'Bnumber', field: 'idBnum' },
-      { label: 'LCC', field: 'idLcc', linkable: true },
+      { label: 'LCC', field: 'idLcc' },
     ];
 
     let externalLinks = this.getDisplayFields(record, externalFields);
