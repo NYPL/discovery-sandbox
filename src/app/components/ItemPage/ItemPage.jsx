@@ -22,8 +22,10 @@ class ItemPage extends React.Component {
     axios
       .get(`/api?q=${query}`)
       .then(response => {
-        const field = query.split(':"')[0];
-        const value = query.split(':"')[1].replace('"', '');
+        console.log(query);
+        const q = query.indexOf(':"') !== -1 ? query.split(':"') : query.split(':');
+        const field = q[0];
+        const value = q[1].replace('"', '');
 
         // Find the index where the field exists in the list of facets from the API
         let index = _findIndex(response.data.facets.itemListElement, { field });
@@ -65,9 +67,24 @@ class ItemPage extends React.Component {
     const record = this.props.item;
     const title = record.title[0];
     const authors = record.contributor && record.contributor.length ?
-      record.contributor.map((author, i) => (<span key={i}><Link to={{ pathname: '/search', query: { q: `contributor:"${author}"` } }}>{author}</Link>, </span>))
+      record.contributor.map((author, i) => (
+        <span key={i}>
+          <Link
+            to={{ pathname: '/search', query: { q: `contributor:"${author}"` } }}
+            onClick={(e) => this.onClick(e, `contributor:"${author}"`)}
+          >
+            {author}
+          </Link>,&nbsp;
+        </span>
+      ))
       : null;
-    const publisher = record.publisher && record.publisher.length ? <Link to={{ pathname: '/search', query: { q: `publisher:"${record.publisher[0]}"` } }}>{record.publisher[0]}</Link>
+    const publisher = record.publisher && record.publisher.length ?
+      <Link
+        to={{ pathname: '/search', query: { q: `publisher:"${record.publisher[0]}"` } }}
+        onClick={(e) => this.onClick(e, `publisher:"${record.publisher[0]}"`)}
+      >
+        {record.publisher[0]}
+      </Link>
       : null;
     const holdings = LibraryItem.getItems(record);
     const hathiEmbedURL = record.hathiVols && record.hathiVols.length ? `//hdl.handle.net/2027/${record.hathiVols[0].volumeId}?urlappend=%3Bui=embed` : '';
@@ -166,7 +183,13 @@ class ItemPage extends React.Component {
                   Publisher: {publisher}
                 </div>}
               <div className="description">
-                Year published: <Link to={{ pathname: '/search', query: {q: `date:${record.startYear}`}}}>{record.startYear}</Link>
+                Year published:
+                  <Link
+                    to={{ pathname: '/search', query: {q: `date:${record.startYear}`}}}
+                    onClick={(e) => this.onClick(e, `date:${record.startYear}`)}
+                  >
+                    {record.startYear}
+                  </Link>
               </div>
             </div>
           </div>
