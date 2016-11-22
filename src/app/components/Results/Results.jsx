@@ -83,7 +83,7 @@ class Results extends React.Component {
     const perPage = 50;
     const pageFactor = parseInt(page, 10) * 50;
 
-    const hitsF = hits.toLocaleString();
+    const hitsF = hits ? hits.toLocaleString() : '';
     const pageFactorF = pageFactor.toLocaleString();
 
     let displayItems = `${pageFactor - (perPage - 1)} - ${pageFactor > hits ? hitsF : pageFactorF}`;
