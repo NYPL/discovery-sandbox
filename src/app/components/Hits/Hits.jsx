@@ -28,7 +28,7 @@ class Hits extends React.Component {
     const reset = this.props.sortBy === 'relevance';
     let sortQuery = '';
 
-    if (!reset) {
+    if (this.props.sortBy && !reset) {
       const [sortBy, order] = this.props.sortBy.split('_');
       sortQuery = `&sort=${sortBy}&sort_direction=${order}`;
     }
@@ -99,7 +99,7 @@ class Hits extends React.Component {
       query,
     } = this.props;
     let activeFacetsArray = [];
-    const hitsF = hits.toLocaleString();
+    const hitsF = hits ? hits.toLocaleString() : '';
     _mapObject(facets, (val, key) => {
       if (val.value) {
         activeFacetsArray.push({val, key});

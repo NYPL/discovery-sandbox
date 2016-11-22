@@ -10,6 +10,9 @@ import Results from '../Results/Results.jsx';
 import Search from '../Search/Search.jsx';
 import { collapse } from '../../utils/utils.js';
 
+import { findWhere as _findWhere,
+findIndex as _findIndex } from 'underscore';
+
 class SearchResultsPage extends React.Component {
   componentWillMount() {
     if (!this.props.searchResults) {

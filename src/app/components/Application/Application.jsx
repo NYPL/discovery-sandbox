@@ -30,7 +30,6 @@ class App extends React.Component {
   }
 
   render() {
-    // console.log(this.state.patron);
     return (
       <div className="app-wrapper">
         <Header navData={navConfig.current} skipNav={{ target: 'mainContent' }} />
