@@ -66,7 +66,7 @@ class FacetSidebar extends React.Component {
     const reset = this.props.sortBy === 'relevance';
     let sortQuery = '';
 
-    if (!reset) {
+    if (this.props.sortBy && !reset) {
       const [sortBy, order] = this.props.sortBy.split('_');
       sortQuery = `&sort=${sortBy}&sort_direction=${order}`;
     }
