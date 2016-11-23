@@ -4,7 +4,7 @@ import { Header, navConfig } from '@nypl/dgx-header-component';
 import Footer from '@nypl/dgx-react-footer';
 
 import Store from '../../stores/Store.js';
-import PatronData from '../../stores/PatronData.js';
+import PatronStore from '../../stores/PatronStore.js';
 
 class App extends React.Component {
   constructor(props) {
@@ -12,7 +12,7 @@ class App extends React.Component {
 
     this.state = {
       data: Store.getState(),
-      patron: PatronData.getState(),
+      patron: PatronStore.getState(),
     };
     this.onChange = this.onChange.bind(this);
   }
