@@ -31,5 +31,34 @@ To run locally in production mode run
 
 and visit `localhost:3001`.
 
+## Testing
+
+### Unit Tests
+Unit tests are currently written in the [Mocha](https://mochajs.org/) testing framework. [Chai](http://chaijs.com/) is used as the assertion library and [Enzyme](http://airbnb.io/enzyme/) is used as the React testing utility.
+
+The tests can be found in the `test` folder.
+
+To run all the tests once, run
+
+    $ npm run test
+
+To run the tests continuously for active development, run
+
+    $ npm run test-dev
+
+### Code Coverage
+[Istanbul](https://istanbul.js.org/) is used for checking code coverage.
+
+To run the code coverage tool and view a quick report, run
+
+    $ npm run coverage
+
+To run the code coverage tool and view a better report, run
+
+    $ npm run coverage-report
+
+This last command will create a folder called `coverage` in the root directory. You can open up `coverage/lcov-report/index.html` in a browser to see more details about what lines of codes have not been tested.
+
+## Misc
 
 Starting up from a [Node/React boilerplate](https://bitbucket.org/NYPL/dgx-nypl-react-boilerplate).
