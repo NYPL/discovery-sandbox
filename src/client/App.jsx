@@ -4,6 +4,7 @@ import { Router, useRouterHistory } from 'react-router';
 import createBrowserHistory from 'history/lib/createBrowserHistory';
 import useScroll from 'scroll-behavior/lib/useStandardScroll';
 import FeatureFlags from 'dgx-feature-flags';
+import { ga } from 'dgx-react-ga';
 
 import alt from '../app/alt.js';
 import Iso from 'iso';
@@ -17,6 +18,9 @@ window.onload = () => {
   if (!window.dgxFeatureFlags) {
     window.dgxFeatureFlags = FeatureFlags.utils;
   }
+
+  // Used for debugging
+  // ga.initialize('UA-1420324-144', { debug: true });
 
   // Render Isomorphically
   Iso.bootstrap((state, container) => {

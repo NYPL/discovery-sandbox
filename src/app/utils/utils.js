@@ -1,3 +1,5 @@
+import { gaUtils } from 'dgx-react-ga';
+
 function collapse(results) {
   const owiLookup = {};
   if (!results || !results.searchResults || !results.searchResults.itemListElement) return results
@@ -85,4 +87,16 @@ function collapse(results) {
   return results
 }
 
-export { collapse };
+/**
+ * Tracks Google Analytics (GA) events. `.trackEvent` returns a function with
+ * 'Discovery' set as the GA Category. `trackDiscovery` will then log the defined
+ * actions and labels under the 'Discovery' category.
+ * @param {string} action The GA action.
+ * @param {string} label The GA label.
+ */
+const trackDiscovery = gaUtils.trackEvent('Discovery');
+
+export {
+  collapse,
+  trackDiscovery,
+};

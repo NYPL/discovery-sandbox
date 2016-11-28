@@ -65,6 +65,7 @@
     "compression": "^1.5.2",
     "cookie-parser": "^1.4.3",
     "css-loader": "^0.23.1",
+    "dgx-react-ga": "git+https://git@bitbucket.org/NYPL/dgx-react-ga.git#master",
     "dgx-svg-icons": "git+https://git@bitbucket.org/NYPL/dgx-svg-icons.git#master",
     "ejs": "^2.3.3",
     "enzyme": "^2.2.0",
