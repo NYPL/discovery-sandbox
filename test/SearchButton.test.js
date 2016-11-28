@@ -13,10 +13,14 @@ describe('SearchButton', () => {
   });
 
   it('should be wrapped in a .svgIcon', () => {
-    expect(component.find('.svgIcon')).to.be.defined;
+    // console.log(component.props().hasClass('undefined-wrapper'))
+    expect(component.hasClass('undefined-wrapper')).to.equal(true);
+    // expect(component.find(<button id></button>)).to.equal(true);
+    // expect(component.props().id).to.equal('test');
   });
 
-  it('should have a button element', () => {
-    expect(component.find(<button />)).to.be.defined;
-  });
+  // it('should have a button element', () => {
+  //   console.log(component.find(<button />));
+  //   expect(component.find(<button />)).to.have.length(1);
+  // });
 });
