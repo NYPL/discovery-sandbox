@@ -1,7 +1,7 @@
 /* eslint-env mocha */
 import React from 'react';
 import { expect } from 'chai';
-import { mount } from 'enzyme';
+import { shallow, mount } from 'enzyme';
 
 import Home from '../src/app/components/Home/Home.jsx';
 import Search from '../src/app/components/Search/Search.jsx';
@@ -10,7 +10,7 @@ describe('Home', () => {
   let component;
 
   before(() => {
-    component = mount(<Home sortBy="relevance" />);
+    component = shallow(<Home sortBy="relevance" />);
   });
 
   it('should be wrapped in a .home class', () => {
@@ -38,6 +38,14 @@ describe('Home', () => {
   it('should contains a Search component', () => {
     expect(component.find('Search')).to.have.length(1);
     expect(component.contains(<Search sortBy="relevance" />)).to.equal(true);
+  });
+});
+
+describe('Home - mount', () => {
+  let component;
+
+  before(() => {
+    component = mount(<Home sortBy="relevance" />);
   });
 
   it('should have a sortBy prop set to "relevance"', () => {

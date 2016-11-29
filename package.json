@@ -7,9 +7,9 @@
     "start": "node index",
     "dist": "NODE_ENV=production webpack --config webpack.config.js",
     "postinstall": "npm run dist",
-    "test": "node_modules/.bin/mocha --compilers js:babel-core/register",
+    "test": "node_modules/.bin/mocha test/helpers/browser.js test/*.test.js",
     "test-dev": "node_modules/.bin/mocha -w test/helpers/browser.js test/*.test.js",
-    "coverage": "BABEL_ENV=test node_modules/.bin/nyc npm test",
+    "coverage": "BABEL_ENV=test node_modules/.bin/nyc --require mocha npm test",
     "coverage-report": "BABEL_ENV=test node_modules/.bin/nyc report --reporter=lcov"
   },
   "repository": {
