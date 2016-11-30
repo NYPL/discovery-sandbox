@@ -41,7 +41,7 @@ class App extends React.Component {
 
         <Footer />
 
-        <Feedback />
+        <Feedback location={this.props.location} />
       </div>
     );
   }

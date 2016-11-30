@@ -23,7 +23,7 @@ class Feedback extends React.Component {
 
   render() {
     const showForm = this.state.showForm;
-    const currentURL = location.pathname; // window.location.href
+    const currentURL = this.props.location.pathname + this.props.location.search;
 
     return (
       <div className="feedback">
