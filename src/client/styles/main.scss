@@ -56,8 +56,15 @@ button {
   }
 }
 
+// Overrides for other components
 .footer {
   a {
     background-color: #54514A;
+  }
+}
+
+.MyNypl-Login-List {
+  li {
+    margin-bottom: 0;
   }
 }
