@@ -6,6 +6,7 @@ import Actions from '../../actions/Actions.js';
 import Store from '../../stores/Store.js';
 
 import SearchButton from '../Buttons/SearchButton.jsx';
+import { trackDiscovery } from '../../utils/utils.js';
 
 import {
   extend as _extend,
@@ -48,6 +49,7 @@ class Search extends React.Component {
    */
   submitSearchRequest(e) {
     e.preventDefault();
+
     // Store the data that the user entered
     const keyword = this.state.searchKeywords.trim();
     const reset = this.props.sortBy === 'relevance';
@@ -57,6 +59,9 @@ class Search extends React.Component {
       const [sortBy, order] = this.props.sortBy.split('_');
       sortQuery = `&sort=${sortBy}&sort_direction=${order}`;
     }
+
+    // Track the submitted keyword search.
+    trackDiscovery('Search', keyword);
 
     axios
       .get(`/api?q=${keyword}${sortQuery}`)

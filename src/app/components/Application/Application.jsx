@@ -3,6 +3,7 @@ import React from 'react';
 import { Header, navConfig } from '@nypl/dgx-header-component';
 import Footer from '@nypl/dgx-react-footer';
 
+import Feedback from '../Feedback/Feedback.jsx';
 import Store from '../../stores/Store.js';
 import PatronStore from '../../stores/PatronStore.js';
 
@@ -37,6 +38,8 @@ class App extends React.Component {
         {React.cloneElement(this.props.children, this.state.data)}
 
         <Footer />
+
+        <Feedback location={this.props.location} />
       </div>
     );
   }

@@ -4,6 +4,7 @@ import { Link } from 'react-router';
 import {
   findWhere as _findWhere,
   findIndex as _findIndex,
+  mapObject as _mapObject,
 } from 'underscore';
 
 import Breadcrumbs from '../Breadcrumbs/Breadcrumbs.jsx';
@@ -151,13 +152,20 @@ class ItemPage extends React.Component {
 
     let externalLinks = this.getDisplayFields(record, externalFields);
     let itemDetails = this.getDisplayFields(record, displayFields);
+    let searchURL = this.props.searchKeywords;
+    
+    _mapObject(this.props.selectedFacets, (val, key) => {
+      if (val.value !== '') {
+        searchURL += ` ${key}:"${val.id}"`;
+      }
+    });
 
     return (
       <div id="mainContent">
         <div className="page-header">
           <div className="container">
             <Breadcrumbs
-              query={this.props.searchKeywords}
+              query={searchURL}
               type="item"
               title={title}
             />
