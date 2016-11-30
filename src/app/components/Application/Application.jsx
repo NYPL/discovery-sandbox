@@ -21,20 +21,18 @@ class App extends React.Component {
     Store.listen(this.onChange);
   }
 
-  onChange() {
-    this.setState({ data: Store.getState() });
-  }
-
   componentWillUnmount() {
     Store.unlisten(this.onChange);
+  }
+
+  onChange() {
+    this.setState({ data: Store.getState() });
   }
 
   render() {
     return (
       <div className="app-wrapper">
         <Header navData={navConfig.current} skipNav={{ target: 'mainContent' }} />
-
-        <div className="container">{this.state.patron.names[0]}</div>
 
         {React.cloneElement(this.props.children, this.state.data)}
 
