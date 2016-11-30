@@ -10,9 +10,6 @@ import Results from '../Results/Results.jsx';
 import Search from '../Search/Search.jsx';
 import { collapse } from '../../utils/utils.js';
 
-import { findWhere as _findWhere,
-findIndex as _findIndex } from 'underscore';
-
 class SearchResultsPage extends React.Component {
   componentWillMount() {
     if (!this.props.searchResults) {
@@ -39,7 +36,6 @@ class SearchResultsPage extends React.Component {
       sortBy,
     } = this.props;
     const facetList = facets && facets.itemListElement ? facets.itemListElement : [];
-    const dateRange = searchResults ? searchResults.dateRange : null;
     const totalHits = searchResults ? searchResults.totalResults : 0;
     const results = searchResults ? collapse({ searchResults }).searchResults.itemListElement : [];
     const breadcrumbs = (
@@ -94,6 +90,11 @@ class SearchResultsPage extends React.Component {
 SearchResultsPage.propTypes = {
   searchResults: React.PropTypes.object,
   searchKeywords: React.PropTypes.string,
+  facets: React.PropTypes.object,
+  selectedFacets: React.PropTypes.object,
+  page: React.PropTypes.number,
+  location: React.PropTypes.object,
+  sortBy: React.PropTypes.string,
 };
 
 export default SearchResultsPage;
