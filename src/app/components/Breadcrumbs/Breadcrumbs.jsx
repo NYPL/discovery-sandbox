@@ -1,13 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router';
 
-const Breadcrumbs = ({ query = '', type, title = '', url }) => {
+const Breadcrumbs = ({ query, type, title, url }) => {
   let str = 'Research Catalog';
   let crumbs = (
     <span>
       <Link to="https://nypl.org">Home</Link> &gt;&gt;
       <Link to="https://nypl.org/research">Research</Link> &gt;&gt;
-      {str}
+      <span className="currentPage">{str}</span>
     </span>
   );
 
@@ -17,13 +17,13 @@ const Breadcrumbs = ({ query = '', type, title = '', url }) => {
       <span>
         <Link to="https://nypl.org">Home</Link> &gt;&gt;
         <Link to="https://nypl.org/research">Research</Link> &gt;&gt;
-        <Link to="/">Research catalog</Link> &gt;&gt;
-        {str}
+        <Link to="/">Research Catalog</Link> &gt;&gt;
+        <span className="currentPage">{str}</span>
       </span>
     );
   }
 
-  str = `${title.substring(0, 50)}...`;
+  str = title.length > 50 ? `${title.substring(0, 50)}...` : title;
 
   if (type === 'item') {
     crumbs = (
@@ -36,7 +36,7 @@ const Breadcrumbs = ({ query = '', type, title = '', url }) => {
           (<span><Link to={`/search?q=${query}`}>Items</Link> &gt;&gt;</span>)
           : null
         }
-        {str}
+        <span className="currentPage">{str}</span>
       </span>
     );
   }
@@ -53,7 +53,7 @@ const Breadcrumbs = ({ query = '', type, title = '', url }) => {
           : null
         }
         <Link to={`/item/${url}`}>{str}</Link> &gt;&gt;
-        Place a hold
+        <span className="currentPage">Place a hold</span>
       </span>
     );
   }
@@ -70,7 +70,7 @@ const Breadcrumbs = ({ query = '', type, title = '', url }) => {
           : null
         }
         <Link to={`/item/${url}`}>{str}</Link> &gt;&gt;
-        Hold confirmation
+        <span className="currentPage">Hold confirmation</span>
       </span>
     );
   }
@@ -87,6 +87,13 @@ Breadcrumbs.propTypes = {
   type: React.PropTypes.string,
   title: React.PropTypes.string,
   url: React.PropTypes.string,
+};
+
+Breadcrumbs.defaultProps = {
+  query: '',
+  type: '',
+  title: '',
+  url: '',
 };
 
 export default Breadcrumbs;

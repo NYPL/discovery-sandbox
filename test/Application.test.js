@@ -1,7 +1,7 @@
 /* eslint-env mocha */
 import React from 'react';
 import { expect } from 'chai';
-import { mount, shallow } from 'enzyme';
+import { shallow } from 'enzyme';
 
 import Application from './../src/app/components/Application/Application.jsx';
 import { Header, navConfig } from '@nypl/dgx-header-component';
