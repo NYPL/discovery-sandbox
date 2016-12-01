@@ -39,11 +39,14 @@
   "babel": {
     "env": {
       "test": {
-        "plugins": ["instanbul"]
+        "plugins": [
+          "instanbul"
+        ]
       }
     }
   },
   "devDependencies": {
+    "axios-mock-adapter": "^1.7.1",
     "nyc": "^9.0.1"
   },
   "dependencies": {
