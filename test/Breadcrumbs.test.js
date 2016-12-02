@@ -1,7 +1,7 @@
 /* eslint-env mocha */
 import React from 'react';
 import { expect } from 'chai';
-import { mount, shallow } from 'enzyme';
+import { shallow } from 'enzyme';
 
 import Breadcrumbs from './../src/app/components/Breadcrumbs/Breadcrumbs.jsx';
 
@@ -134,8 +134,8 @@ describe('Breadcrumbs', () => {
 
     // Home >> Research >> Research Catalog >> Items >> [title]
     describe('With a long item title', () => {
-      const title = "Prospect before us, or Locofoco impositions exposed. " +
-        "To the people of the United States.";
+      const title = 'Prospect before us, or Locofoco impositions exposed. ' +
+        'To the people of the United States.';
       let component;
 
       before(() => {
@@ -221,8 +221,8 @@ describe('Breadcrumbs', () => {
 
     // // Home >> Research >> Research Catalog >> Items >> [title] >> Place a hold
     describe('With a long item title', () => {
-      const title = "Prospect before us, or Locofoco impositions exposed. " +
-        "To the people of the United States.";
+      const title = 'Prospect before us, or Locofoco impositions exposed. ' +
+        'To the people of the United States.';
       const bNum = 'b20862164';
       let component;
 
@@ -301,8 +301,8 @@ describe('Breadcrumbs', () => {
 
     // // Home >> Research >> Research Catalog >> Items >> [title] >> Hold confirmation
     describe('With a long item title', () => {
-      const title = "Prospect before us, or Locofoco impositions exposed. " +
-        "To the people of the United States.";
+      const title = 'Prospect before us, or Locofoco impositions exposed. ' +
+        'To the people of the United States.';
       const bNum = 'b20862164';
       let component;
 
@@ -324,5 +324,4 @@ describe('Breadcrumbs', () => {
       });
     });
   });
-
 }); /* End of Breadcrumbs component */
