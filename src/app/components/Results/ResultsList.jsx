@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router';
 import axios from 'axios';
+import { isEmpty as _isEmpty } from 'underscore';
 
 import Actions from '../../actions/Actions.js';
 import LibraryItem from '../../utils/item.js';
@@ -120,7 +121,7 @@ class ResultsList extends React.Component {
   }
 
   getBib(bib, author, i) {
-    if (!bib.result) return null;
+    if (!bib.result || _isEmpty(bib.result)) return null;
 
     const result = bib.result;
     const collapsedBibs = bib.collapsedBibs && bib.collapsedBibs.length ?

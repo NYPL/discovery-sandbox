@@ -7,9 +7,9 @@
     "start": "node index",
     "dist": "NODE_ENV=production webpack --config webpack.config.js",
     "postinstall": "npm run dist",
-    "test": "node_modules/.bin/mocha --compilers js:babel-core/register",
+    "test": "node_modules/.bin/mocha test/helpers/browser.js test/*.test.js",
     "test-dev": "node_modules/.bin/mocha -w test/helpers/browser.js test/*.test.js",
-    "coverage": "BABEL_ENV=test node_modules/.bin/nyc npm test",
+    "coverage": "BABEL_ENV=test node_modules/.bin/nyc --require mocha npm test",
     "coverage-report": "BABEL_ENV=test node_modules/.bin/nyc report --reporter=lcov"
   },
   "repository": {
@@ -39,11 +39,14 @@
   "babel": {
     "env": {
       "test": {
-        "plugins": ["instanbul"]
+        "plugins": [
+          "instanbul"
+        ]
       }
     }
   },
   "devDependencies": {
+    "axios-mock-adapter": "^1.7.1",
     "nyc": "^9.0.1"
   },
   "dependencies": {
@@ -58,7 +61,7 @@
     "babel-preset-react": "^6.5.0",
     "body-parser": "^1.15.2",
     "brace-expansion": "^1.1.6",
-    "chai": "^3.5.0",
+    "chai": "3.5.0",
     "classnames": "^2.1.3",
     "clean-webpack-plugin": "^0.1.3",
     "colors": "^1.1.2",
@@ -68,7 +71,7 @@
     "dgx-react-ga": "git+https://git@bitbucket.org/NYPL/dgx-react-ga.git#master",
     "dgx-svg-icons": "git+https://git@bitbucket.org/NYPL/dgx-svg-icons.git#master",
     "ejs": "^2.3.3",
-    "enzyme": "^2.2.0",
+    "enzyme": "2.4.1",
     "esdoc": "^0.4.5",
     "eslint": "^2.2.0",
     "eslint-loader": "^1.3.0",
@@ -78,10 +81,10 @@
     "history": "^1.15.0",
     "iso": "^5.1.0",
     "jsonwebtoken": "^7.1.9",
-    "mocha": "^2.4.5",
+    "mocha": "3.0.2",
     "node-sass": "3.4.2",
     "react": "^0.14.7",
-    "react-addons-test-utils": "^0.14.7",
+    "react-addons-test-utils": "15.3.1",
     "react-doc-meta": "^0.2.0",
     "react-dom": "^0.14.7",
     "react-ga": "^1.2.0",
@@ -91,6 +94,7 @@
     "rootpath": "^0.1.2",
     "sass-loader": "^3.2.0",
     "scroll-behavior": "^0.4.0",
+    "sinon": "1.17.5",
     "style-loader": "^0.13.0",
     "underscore": "^1.8.3",
     "webpack": "^1.12.14",
