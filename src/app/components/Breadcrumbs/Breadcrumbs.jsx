@@ -2,28 +2,29 @@ import React from 'react';
 import { Link } from 'react-router';
 
 const Breadcrumbs = ({ query, type, title, url }) => {
-  let str = 'Research Catalog';
+  let currentPageText = 'Research Catalog';
   let crumbs = (
     <span>
       <Link to="https://nypl.org">Home</Link> &gt;&gt;
       <Link to="https://nypl.org/research">Research</Link> &gt;&gt;
-      <span className="currentPage">{str}</span>
+      <span className="currentPage">{currentPageText}</span>
     </span>
   );
 
   if (type === 'search') {
-    str = query ? `Search Results for "${query}"` : '';
+    currentPageText = query ? `Search Results for "${query}"` : 'Search Results';
     crumbs = (
       <span>
         <Link to="https://nypl.org">Home</Link> &gt;&gt;
         <Link to="https://nypl.org/research">Research</Link> &gt;&gt;
         <Link to="/">Research Catalog</Link> &gt;&gt;
-        <span className="currentPage">{str}</span>
+        <span className="currentPage">{currentPageText}</span>
       </span>
     );
   }
 
-  str = title.length > 50 ? `${title.substring(0, 50)}...` : title;
+  // Arbitary value for now.
+  currentPageText = title.length > 50 ? `${title.substring(0, 50)}...` : title;
 
   if (type === 'item') {
     crumbs = (
@@ -36,7 +37,7 @@ const Breadcrumbs = ({ query, type, title, url }) => {
           (<span><Link to={`/search?q=${query}`}>Items</Link> &gt;&gt;</span>)
           : null
         }
-        <span className="currentPage">{str}</span>
+        <span className="currentPage">{currentPageText}</span>
       </span>
     );
   }
@@ -52,7 +53,7 @@ const Breadcrumbs = ({ query, type, title, url }) => {
           (<span><Link to={`/search?q=${query}`}>Items</Link> &gt;&gt;</span>)
           : null
         }
-        <Link to={`/item/${url}`}>{str}</Link> &gt;&gt;
+        <Link to={`/item/${url}`}>{currentPageText}</Link> &gt;&gt;
         <span className="currentPage">Place a hold</span>
       </span>
     );
@@ -69,7 +70,7 @@ const Breadcrumbs = ({ query, type, title, url }) => {
           (<span><Link to={`/search?q=${query}`}>Items</Link> &gt;&gt;</span>)
           : null
         }
-        <Link to={`/item/${url}`}>{str}</Link> &gt;&gt;
+        <Link to={`/item/${url}`}>{currentPageText}</Link> &gt;&gt;
         <span className="currentPage">Hold confirmation</span>
       </span>
     );
