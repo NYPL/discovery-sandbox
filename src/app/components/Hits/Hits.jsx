@@ -17,7 +17,7 @@ class Hits extends React.Component {
     if (keyword) {
       return (
         <span>with keywords <strong>"{keyword}"</strong>
-          <a href="#" onClick={() => this.removeKeyword(keyword)}>[x]</a>
+          <a href="#" onClick={() => this.removeKeyword(keyword)} className="removeKeyword">[x]</a>
         </span>
       );
     }
@@ -30,7 +30,7 @@ class Hits extends React.Component {
 
     return facets.map((facet, i) => (
       <span key={i}> with {facet.key} [{facet.val.value}]
-        <a href="#" onClick={() => this.removeFacet(facet.key)}>[x]</a>
+        <a href="#" onClick={() => this.removeFacet(facet.key)} className="removeFacet">[x]</a>
       </span>
     ));
   }
@@ -99,6 +99,7 @@ class Hits extends React.Component {
     } = this.props;
     const activeFacetsArray = [];
     const hitsF = hits ? hits.toLocaleString() : '';
+
     _mapObject(facets, (val, key) => {
       if (val.value) {
         activeFacetsArray.push({ val, key });
@@ -128,6 +129,10 @@ Hits.propTypes = {
   facets: React.PropTypes.object,
   sortBy: React.PropTypes.string,
 };
+
+Hits.defaultProps = {
+  hits: 0,
+}
 
 Hits.contextTypes = {
   router: function contextType() {
