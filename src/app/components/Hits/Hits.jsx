@@ -16,7 +16,7 @@ class Hits extends React.Component {
   getKeyword(keyword) {
     if (keyword) {
       return (
-        <span>with keywords <strong>"{keyword}"</strong>
+        <span>&nbsp;with keywords <strong>"{keyword}"</strong>
           <a href="#" onClick={() => this.removeKeyword(keyword)} className="removeKeyword">[x]</a>
         </span>
       );
@@ -29,7 +29,7 @@ class Hits extends React.Component {
     if (!facets.length) return null;
 
     return facets.map((facet, i) => (
-      <span key={i}> with {facet.key} [{facet.val.value}]
+      <span key={i}>&nbsp;with {facet.key} [{facet.val.value}]
         <a href="#" onClick={() => this.removeFacet(facet.key)} className="removeFacet">[x]</a>
       </span>
     ));
@@ -41,7 +41,7 @@ class Hits extends React.Component {
     let strSearch = '';
     _mapObject(this.props.facets, (val, key) => {
       if (val.value !== '') {
-        strSearch += `${key}:"${val.id}" `;
+        strSearch += ` ${key}:"${val.id}"`;
       }
     });
 
@@ -114,9 +114,9 @@ class Hits extends React.Component {
         {
           hits !== 0 ?
           (<p>
-            Found <strong>{hitsF}</strong> results {keyword} {activeFacetsElm}.
+            Found <strong>{hitsF}</strong> results{keyword}{activeFacetsElm}.
           </p>)
-          : (<p>No results found {keyword} {activeFacetsElm}.</p>)
+          : (<p>No results found{keyword}{activeFacetsElm}.</p>)
         }
       </div>
     );
