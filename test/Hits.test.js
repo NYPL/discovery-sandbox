@@ -6,8 +6,6 @@ import sinon from 'sinon';
 import MockAdapter from 'axios-mock-adapter';
 import axios from 'axios';
 
-const mock = new MockAdapter(axios);
-
 import Hits from '../src/app/components/Hits/Hits.jsx';
 import Actions from '../src/app/actions/Actions.js';
 
@@ -163,9 +161,13 @@ describe('Hits', () => {
   });
 
   describe('Remove the selected keyword', () => {
-    describe('Click on it', () => {
+    describe('Click on it and return 200 with data', () => {
+      const mock = new MockAdapter(axios);
       let component;
       let spyUpdateSearchKeywords;
+      let spyUpdateFacets;
+      let spyUpdatePage;
+      let spyUpdateSearchResults;
 
       before(() => {
         mock
@@ -183,12 +185,85 @@ describe('Hits', () => {
       });
 
       it('should be clicked and Action called', () => {
-        const spy = sinon.spy();
-
         spyUpdateSearchKeywords = sinon.spy(Actions, 'updateSearchKeywords');
+        spyUpdateFacets = sinon.spy(Actions, 'updateFacets');
+        spyUpdatePage = sinon.spy(Actions, 'updatePage');
+        spyUpdateSearchResults = sinon.spy(Actions, 'updateSearchResults');
+
         component.find('.removeKeyword').simulate('click');
+
         expect(spyUpdateSearchKeywords.calledOnce).to.be.true;
         expect(spyUpdateSearchKeywords.calledWith('')).to.be.true;
+
+        // Need to figure out how to spy on functions called in the `then` promise function.
+        // expect(spyUpdateFacets.calledOnce).to.be.true;
+        // expect(spyUpdatePage.calledOnce).to.be.true;
+        // expect(spyUpdatePage.calledWith('1')).to.be.true;
+        // expect(spyUpdatePage.calledOnce).to.be.true;
+      });
+    });
+
+    // describe('Returning a 404', () => {
+    //   const mock = new MockAdapter(axios);
+    //   let component;
+
+    //   before(() => {
+    //     mock
+    //       .onGet('/api?q=owner:"orgs:1000" ')
+    //       .reply(404, {});
+
+    //     component = mount(<Hits query="fire" facets={facets.single} hits={2} />, {
+    //       context: { router: [] },
+    //     });
+    //   });
+
+    //   after(() => {
+    //     mock.restore();
+    //   });
+
+    //   it('should be clicked and Action called', () => {
+    //     const spy = sinon.spy();
+    //     const consoleSpy = sinon.spy(console, 'log');
+
+    //     component.find('.removeKeyword').simulate('click');
+    //     expect(consoleSpy.calledOnce).to.be.true;
+    //   });
+    // });
+  });
+
+  describe('Remove the selected facet', () => {
+    describe('Click on it and return 200 with data', () => {
+      const mock = new MockAdapter(axios);
+      let component;
+      let spyRemoveFacet;
+
+      before(() => {
+        mock
+          .onGet('/api?q=fire ')
+          .reply(200, { searchResults });
+
+        component = mount(<Hits query="fire" facets={facets.single} hits={2} />, {
+          context: { router: [] },
+        });
+
+        spyRemoveFacet = sinon.spy(Actions, 'removeFacet');
+      });
+
+      after(() => {
+        mock.restore();
+        spyRemoveFacet.restore();
+      });
+
+      it('should output the search keyword and the selected facet', () => {
+        expect(component.find('p').text()).to.equal('Found 2 results with keywords "fire"[x]  ' +
+          'with owner [Stephen A. Schwarzman Building][x].');
+      });
+
+      it('should be clicked and Action called', () => {
+        component.find('.removeFacet').first().simulate('click');
+
+        expect(spyRemoveFacet.calledOnce).to.be.true;
+        expect(spyRemoveFacet.calledWith('owner')).to.be.true;
       });
     });
   });
