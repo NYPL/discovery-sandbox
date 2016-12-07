@@ -13,6 +13,51 @@ class Hits extends React.Component {
     this.getFacetElements = this.getFacetElements.bind(this);
   }
 
+  getKeyword(keyword) {
+    if (keyword) {
+      return (
+        <span>&nbsp;with keywords <strong>"{keyword}"</strong>
+          <a href="#" onClick={() => this.removeKeyword(keyword)} className="removeKeyword">[x]</a>
+        </span>
+      );
+    }
+
+    return null;
+  }
+
+  getFacetElements(facets) {
+    if (!facets.length) return null;
+
+    return facets.map((facet, i) => (
+      <span key={i}>&nbsp;with {facet.key} [{facet.val.value}]
+        <a href="#" onClick={() => this.removeFacet(facet.key)} className="removeFacet">[x]</a>
+      </span>
+    ));
+  }
+
+  removeKeyword() {
+    Actions.updateSearchKeywords('');
+
+    let strSearch = '';
+    _mapObject(this.props.facets, (val, key) => {
+      if (val.value !== '') {
+        strSearch += ` ${key}:"${val.id}"`;
+      }
+    });
+
+    axios
+      .get(`/api?q=${strSearch}`)
+      .then(response => {
+        Actions.updateSearchResults(response.data.searchResults);
+        Actions.updateFacets(response.data.facets);
+        Actions.updatePage('1');
+        this.context.router.push(`/search?q=${strSearch}`);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }
+
   removeFacet(field) {
     Actions.removeFacet(field);
     let strSearch = '';
@@ -46,63 +91,18 @@ class Hits extends React.Component {
       });
   }
 
-  removeKeyword() {
-    Actions.updateSearchKeywords('');
-
-    let strSearch = '';
-    _mapObject(this.props.facets, (val, key) => {
-      if (val.value !== '') {
-        strSearch += `${key}:"${val.id}" `;
-      }
-    });
-
-    axios
-      .get(`/api?q=${strSearch}`)
-      .then(response => {
-        Actions.updateSearchResults(response.data.searchResults);
-        Actions.updateFacets(response.data.facets);
-        Actions.updatePage('1');
-        this.context.router.push(`/search?q=${strSearch}`);
-      })
-      .catch(error => {
-        console.log(error);
-      });
-  }
-
-  getKeyword(keyword) {
-    if (keyword) {
-      return (
-        <span>with keywords <strong>"{keyword}"</strong>
-          <a href="#" onClick={() => this.removeKeyword(keyword)}>[x]</a>
-        </span>
-      );
-    };
-    return null;
-  }
-
-  getFacetElements(facets) {
-    if (!facets.length) return null;
-
-    return facets.map((facet, i) => {
-      return (
-        <span key={i}> with {facet.key} [{facet.val.value}]
-          <a href="#" onClick={(e) => this.removeFacet(facet.key)}>[x]</a>
-        </span>
-      );
-    });
-  }
-
   render() {
     const {
       facets,
       hits,
       query,
     } = this.props;
-    let activeFacetsArray = [];
+    const activeFacetsArray = [];
     const hitsF = hits ? hits.toLocaleString() : '';
+
     _mapObject(facets, (val, key) => {
       if (val.value) {
-        activeFacetsArray.push({val, key});
+        activeFacetsArray.push({ val, key });
       }
     });
 
@@ -114,9 +114,9 @@ class Hits extends React.Component {
         {
           hits !== 0 ?
           (<p>
-            Found <strong>{hitsF}</strong> results {keyword} {activeFacetsElm}.
+            Found <strong>{hitsF}</strong> results{keyword}{activeFacetsElm}.
           </p>)
-          : (<p>No results found {keyword} {activeFacetsElm}.</p>)
+          : (<p>No results found{keyword}{activeFacetsElm}.</p>)
         }
       </div>
     );
@@ -127,7 +127,12 @@ Hits.propTypes = {
   hits: React.PropTypes.number,
   query: React.PropTypes.string,
   facets: React.PropTypes.object,
+  sortBy: React.PropTypes.string,
 };
+
+Hits.defaultProps = {
+  hits: 0,
+}
 
 Hits.contextTypes = {
   router: function contextType() {
