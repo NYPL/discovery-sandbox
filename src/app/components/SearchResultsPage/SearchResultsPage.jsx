@@ -64,7 +64,7 @@ class SearchResultsPage extends React.Component {
             sortBy={sortBy}
           />
 
-          <div className="results">
+          <div className="results" role="region" id="results-region" aria-live="polite" aria-atomic="true" aria-relevant="additions removals" aria-describedby="results-description">
             <Hits
               hits={totalHits}
               query={searchKeywords}

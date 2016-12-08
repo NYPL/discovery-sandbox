@@ -152,6 +152,7 @@ class FacetSidebar extends React.Component {
               id={`select-${field}`}
               onChange={(e) => this.onChange(e, field)}
               value={selectedValue ? selectedValue : `${field}_any`}
+              aria-controls="results-region"
             >
               <option value={`${field}_any`}>Any</option>
               {
@@ -189,6 +190,7 @@ class FacetSidebar extends React.Component {
                 className="button-selected"
                 title={`Remove keyword filter: ${this.props.keywords}`}
                 onClick={(e) => this.removeKeyword()}
+                aria-controls="results-region"
                 type="submit"
               >
                 "{this.props.keywords}"

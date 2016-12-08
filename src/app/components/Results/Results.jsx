@@ -42,7 +42,7 @@ class Results extends React.Component {
     const pageNum = type === 'next' ?  parseInt(page, 10) + 1 : parseInt(page, 10) - 1;
 
     return (
-      <a className={`paginate ${type}`} onClick={(e) => this.fetchResults(pageNum)}>
+      <a className={`paginate ${type}`} onClick={(e) => this.fetchResults(pageNum)} aria-controls="results-region">
         {type[0].toUpperCase()}{type.substring(1)} Page
       </a>
     );
