@@ -53,6 +53,7 @@ class ResultsList extends React.Component {
     const moreCount = itemCount - maxDisplay;
     const expandedItems = this.state.expandedItems;
     const resultId = result.idBnum;
+    const resultTitle = result.title[0];
 
     return items.map((item, i) => {
       const status = item.status;
@@ -82,6 +83,7 @@ class ResultsList extends React.Component {
                   href={item.url}
                   className="button">
                   {item.actionLabel}
+                  <span className="visuallyHidden"> {item.actionLabelHelper}</span>
                 </a>
               : null}
             </div>
@@ -94,6 +96,7 @@ class ResultsList extends React.Component {
                   href="#"
                   className="see-more-link">
                   See {moreCount} more item{moreCount > 1 ? 's' : ''}
+                  <span className="visuallyHidden"> in collapsed menu for {resultTitle}</span>
                 </Link>
               )
               : null
