@@ -17,7 +17,10 @@ class Hits extends React.Component {
     if (keyword) {
       return (
         <span>&nbsp;with keywords <strong>"{keyword}"</strong>
-          <a href="#" onClick={() => this.removeKeyword(keyword)} className="removeKeyword">[x]</a>
+          <button onClick={() => this.removeKeyword(keyword)} className="removeKeyword">
+            remove
+            <span className="visuallyHidden"> keyword filter&nbsp;{keyword}</span>
+          </button>
         </span>
       );
     }
@@ -29,8 +32,11 @@ class Hits extends React.Component {
     if (!facets.length) return null;
 
     return facets.map((facet, i) => (
-      <span key={i}>&nbsp;with {facet.key} [{facet.val.value}]
-        <a href="#" onClick={() => this.removeFacet(facet.key)} className="removeFacet">[x]</a>
+      <span key={i}>&nbsp;with {facet.key} <strong>"{facet.val.value}"</strong>
+        <button onClick={() => this.removeFacet(facet.key)} className="removeFacet">
+          remove
+          <span className="visuallyHidden"> filter&nbsp;{facet.val.value}</span>
+        </button>
       </span>
     ));
   }

@@ -288,3 +288,14 @@
     }
   }
 }
+
+.results-message {
+  .removeFacet,
+  .removeKeyword {
+    padding: 0.05rem 0.25rem;
+    line-height: 1;
+    font-size: 0.9rem;
+    display: inline-block;
+    margin-left: 0.1rem;
+  }
+}
