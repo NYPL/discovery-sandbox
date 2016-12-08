@@ -140,15 +140,11 @@ class FacetSidebar extends React.Component {
         if (facet.values.length < 1 || field === 'carrierType' || field === 'mediaType') {
           return null;
         }
-        // if (field === 'dates') {
-        //   dateRange = facet;
-        //   return null;
-        // }
 
         const selectedValue = this.state[field] ? this.state[field].id : '';
 
         return (
-          <fieldset key={i}>
+          <fieldset key={i} tabIndex="0">
             <legend className="facet-legend visuallyHidden">Filter by {facet.field}</legend>
             <label htmlFor={`select-${field}`}>{facet.field}</label>
             <select
@@ -184,8 +180,8 @@ class FacetSidebar extends React.Component {
           <h2>Filter results by</h2>
           {
             this.props.keywords ?
-            <fieldset>
-              <legend className="facet-legend visuallyHidden">Remove {this.props.keyword} keyword</legend>
+            <fieldset tabIndex="0">
+              <legend className="facet-legend visuallyHidden">Current Keyword {this.props.keyword}</legend>
               <label htmlFor="select-keywords">Keywords</label>
               <button
                 id="select-keywords"
