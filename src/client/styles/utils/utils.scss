@@ -6,11 +6,6 @@
   @include displayVisuallyHidden;
 }
 
-// For FireFox
-:focus {
-  overflow: hidden;
-}
-
 $app-max-width: 1313px !default;
 $tablet-portrait: 768px !default;
 $tablet-landscape: 1024px !default;

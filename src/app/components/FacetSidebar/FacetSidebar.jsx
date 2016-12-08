@@ -185,7 +185,7 @@ class FacetSidebar extends React.Component {
           {
             this.props.keywords ?
             <fieldset>
-              <legend className="facet-legend">Remove {this.props.keyword} keyword</legend>
+              <legend className="facet-legend visuallyHidden">Remove {this.props.keyword} keyword</legend>
               <label htmlFor="select-keywords">Keywords</label>
               <button
                 id="select-keywords"
@@ -203,8 +203,6 @@ class FacetSidebar extends React.Component {
 
           {facetsElm}
 
-          <button className="visuallyHidden" type="submit">Search</button>
-          
         </form>
       </div>
     );
