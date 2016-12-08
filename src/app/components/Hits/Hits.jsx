@@ -17,7 +17,7 @@ class Hits extends React.Component {
     if (keyword) {
       return (
         <span>&nbsp;with keywords <strong>"{keyword}"</strong>
-          <button onClick={() => this.removeKeyword(keyword)} className="removeKeyword" title="Remove keyword filter">
+          <button onClick={() => this.removeKeyword(keyword)} className="removeKeyword">
             remove
             <span className="visuallyHidden"> keyword filter&nbsp;{keyword}</span>
           </button>
@@ -33,7 +33,7 @@ class Hits extends React.Component {
 
     return facets.map((facet, i) => (
       <span key={i}>&nbsp;with {facet.key} <strong>"{facet.val.value}"</strong>
-        <button onClick={() => this.removeFacet(facet.key)} className="removeFacet" title="Remove filter">
+        <button onClick={() => this.removeFacet(facet.key)} className="removeFacet">
           remove
           <span className="visuallyHidden"> filter&nbsp;{facet.val.value}</span>
         </button>
