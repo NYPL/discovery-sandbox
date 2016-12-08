@@ -48,11 +48,12 @@ class SearchResultsPage extends React.Component {
 
     return (
       <div id="mainContent">
+
+        {breadcrumbs}
+
         <div className="search-container">
           <Search sortBy={sortBy} />
         </div>
-
-        {breadcrumbs}
 
         <div className="container search-results-container">
 
