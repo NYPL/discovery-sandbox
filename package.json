@@ -48,7 +48,10 @@
   },
   "devDependencies": {
     "axios-mock-adapter": "^1.7.1",
-    "nyc": "^9.0.1"
+    "eslint-config-airbnb": "^13.0.0",
+    "eslint-plugin-jsx-a11y": "^3.0.1",
+    "nyc": "^9.0.1",
+    "react-a11y": "^0.3.3"
   },
   "dependencies": {
     "@nypl/dgx-header-component": "git+https://git@bitbucket.org/NYPL/dgx-header-component#updated-urls-for-user-test",

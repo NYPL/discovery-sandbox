@@ -59,6 +59,30 @@ To run the code coverage tool and view a better report, run
 
 This last command will create a folder called `coverage` in the root directory. You can open up `coverage/lcov-report/index.html` in a browser to see more details about what lines of codes have not been tested.
 
+## React Accessibility
+
+### eslint-plugin-jsx-a11y
+Adding accessibility rule checker through ESLint and the [eslint-plugin-jsx-a11y](https://github.com/evcohen/eslint-plugin-jsx-a11y) plugin. This checks accessibility issues when ESLint is ran in the command line.
+
+Note: At the moment, use ESLint as the global package by install the packages:
+
+    $ sudo npm install -g eslint eslint-plugin-jsx-a11y eslint-config-airbnb
+
+And to check files run:
+
+    $ eslint src/app/components/.../path/to/file.jsx
+
+Or all components at once:
+
+    $ eslint src/app/components/**/*
+
+### react-a11y
+[react-a11y](https://github.com/reactjs/react-a11y) is an npm package that can be run in development mode when the `loadA11y` environment variable is set to true.
+
+    $ loadA11y=true npm start
+
+This will output warnings in the browser's console for elements that do not meet accessibility standards. Some rules may be too strict and should be verified against other accessibility rules.
+
 ## Misc
 
 Starting up from a [Node/React boilerplate](https://bitbucket.org/NYPL/dgx-nypl-react-boilerplate).
