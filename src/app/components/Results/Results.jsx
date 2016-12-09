@@ -47,6 +47,7 @@ class Results extends React.Component {
         className={`paginate ${type}`}
         onClick={(e) => this.fetchResults(pageNum)}
         rel={type}
+        aria-controls="results-region"
       >
         {`${type[0].toUpperCase()}${type.substring(1)}`} Page
       </a>
