@@ -42,8 +42,14 @@ class Results extends React.Component {
     const pageNum = type === 'next' ?  parseInt(page, 10) + 1 : parseInt(page, 10) - 1;
 
     return (
-      <a className={`paginate ${type}`} onClick={(e) => this.fetchResults(pageNum)} aria-controls="results-region">
-        {type[0].toUpperCase()}{type.substring(1)} Page
+      <a
+        href="#"
+        className={`paginate ${type}`}
+        onClick={(e) => this.fetchResults(pageNum)}
+        rel={type}
+        aria-controls="results-region"
+      >
+        {`${type[0].toUpperCase()}${type.substring(1)}`} Page
       </a>
     );
   }
@@ -98,7 +104,13 @@ class Results extends React.Component {
     const paginationButtons = (
       <div className="pagination">
         {prevPage}
-        <span className="paginate pagination-total">{displayItems} of {hitsF}</span>
+        <span
+          className="paginate pagination-total"
+          aria-label={`Displaying ${displayItems} out of ${hitsF} total items.`}
+          tabIndex="0"
+        >
+          {displayItems} of {hitsF}
+        </span>
         {nextPage}
       </div>
     );
