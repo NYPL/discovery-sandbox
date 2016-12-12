@@ -46,6 +46,10 @@ To run the tests continuously for active development, run
 
     $ npm run test-dev
 
+To run a specific test file, run
+
+    $ npm run test-file test/SearchResultsPage.test.js
+
 ### Code Coverage
 [Istanbul](https://istanbul.js.org/) is used for checking code coverage.
 
@@ -58,6 +62,31 @@ To run the code coverage tool and view a better report, run
     $ npm run coverage-report
 
 This last command will create a folder called `coverage` in the root directory. You can open up `coverage/lcov-report/index.html` in a browser to see more details about what lines of codes have not been tested.
+
+### End-to-end Tests
+Currently testing out [Nightwatch.js](http://nightwatchjs.org/) as the testing framework. WebDriver and its API is used by Nightwatch to run end-to-end tests against a browser. WebDriver is a W3C specification aiming to standardize browser automation and that project started off as a part of the Selenium project.
+
+In order to run the tests, the command will be:
+
+    $ npm run nightwatch
+
+but what first needs to be configured are the browser drivers and the Selenium Server.
+* Create a folder `bin` at the root level.
+* Download the [Selenium Server](http://selenium-release.storage.googleapis.com/index.html) picking the 3.x.x version. Add the `selenium-server-standalone-3.x.x.jar` file inside the `bin` folder.
+* Download the latest [Chrome Driver](https://sites.google.com/a/chromium.org/chromedriver/downloads) and add it to the `bin` folder.
+* Download the latest [Gecko Driver](https://github.com/mozilla/geckodriver/releases) (for FireFox) and add it to the `bin` folder.
+
+Running `npm run nightwatch` should run the tests now which are located at `test/nightwatch/*`. Currently, starting the Selenium Server, selecting a browser, and running the tests are all encapsulated within the `npm run nightwatch` command.
+
+The command
+
+    $ npm run nightwatch
+
+runs with Chrome as the default browser. If the Firefox browser wants to be tested, run
+
+    $ npm run nightwatch -- --env firefox.
+
+The `default`, `firefox`, and other nightwatch settings can be found in `./nightwatch.json`.
 
 ## React Accessibility
 

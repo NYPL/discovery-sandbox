@@ -11,7 +11,8 @@
     "test-dev": "node_modules/.bin/mocha -w test/helpers/browser.js test/*.test.js",
     "test-file": "node_modules/.bin/mocha -w test/helpers/browser.js",
     "coverage": "BABEL_ENV=test node_modules/.bin/nyc --require mocha npm test",
-    "coverage-report": "BABEL_ENV=test node_modules/.bin/nyc report --reporter=lcov"
+    "coverage-report": "BABEL_ENV=test node_modules/.bin/nyc report --reporter=lcov",
+    "nightwatch": "./node_modules/.bin/nightwatch"
   },
   "repository": {
     "type": "git",
@@ -50,6 +51,7 @@
     "axios-mock-adapter": "^1.7.1",
     "eslint-config-airbnb": "^13.0.0",
     "eslint-plugin-jsx-a11y": "^3.0.1",
+    "nightwatch": "^0.9.9",
     "nyc": "^9.0.1",
     "react-a11y": "^0.3.3"
   },
