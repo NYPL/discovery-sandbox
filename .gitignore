@@ -5,3 +5,6 @@ npm-debug.log
 ebscoConfig.js
 coverage
 .nyc_output
+bin/*
+selenium-debug.log
+nightwatch_reports
