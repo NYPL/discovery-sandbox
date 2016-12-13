@@ -88,6 +88,10 @@ runs with Chrome as the default browser. If the Firefox browser wants to be test
 
 The `default`, `firefox`, and other nightwatch settings can be found in `./nightwatch.json`.
 
+If you run into a Java version issue such as `java.lang.UnsupportedClassVersionError` when running the Selenium server, make sure that your current Java installation is being pointed to in `~/.bash_profile`:
+
+    export JAVA_HOME="/Library/Java/.../Contents/Home/";
+
 ## React Accessibility
 
 ### eslint-plugin-jsx-a11y
