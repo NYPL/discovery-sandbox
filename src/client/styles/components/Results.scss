@@ -149,6 +149,7 @@
     .sub-items {
       margin-top: 0.35rem;
       max-width: 800px;
+      padding: 0;
 
       .see-more-link {
         display: block;
@@ -158,12 +159,14 @@
       }
     }
 
-    .sub-items > div {
+    .sub-items > div,
+    .sub-items > li {
       display: table;
       width: 100%;
       // border: 1px solid $lightgray;
       padding: 0;
       background: lighten($lightergray, 4%);
+      margin-bottom: 0;
     }
 
     .sub-item {

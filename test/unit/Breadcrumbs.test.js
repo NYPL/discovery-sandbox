@@ -3,7 +3,7 @@ import React from 'react';
 import { expect } from 'chai';
 import { shallow } from 'enzyme';
 
-import Breadcrumbs from './../src/app/components/Breadcrumbs/Breadcrumbs.jsx';
+import Breadcrumbs from './../../src/app/components/Breadcrumbs/Breadcrumbs.jsx';
 
 // The current page is the last item in the breadcrumb and it is not linked.
 describe('Breadcrumbs', () => {

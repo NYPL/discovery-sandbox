@@ -6,8 +6,8 @@ import sinon from 'sinon';
 import MockAdapter from 'axios-mock-adapter';
 import axios from 'axios';
 
-import Hits from '../src/app/components/Hits/Hits.jsx';
-import Actions from '../src/app/actions/Actions.js';
+import Hits from '../../src/app/components/Hits/Hits.jsx';
+import Actions from '../../src/app/actions/Actions.js';
 
 const mock = new MockAdapter(axios);
 
