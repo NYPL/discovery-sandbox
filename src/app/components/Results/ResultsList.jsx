@@ -5,18 +5,14 @@ import { isEmpty as _isEmpty } from 'underscore';
 
 import Actions from '../../actions/Actions.js';
 import LibraryItem from '../../utils/item.js';
+import ResultItems from './ResultItems.jsx';
 
 class ResultsList extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state ={
-      expandedItems: []
-    };
-
     this.routeHandler = this.routeHandler.bind(this);
     this.getRecord = this.getRecord.bind(this);
-    this.getItems = this.getItems.bind(this);
   }
 
   getRecord(e, id, path) {
@@ -32,78 +28,6 @@ class ResultsList extends React.Component {
       .catch(error => {
         console.log(error);
       });
-  }
-
-  routeHandler(route) {
-    this.context.router.push(route);
-  }
-
-  showMoreItems(e, id){
-    e.preventDefault();
-
-    // This is a makeshift way of doing it; we should probably have the sub-items as another component that tracks its own expanded/collapsed state
-    const expandedItems = this.state.expandedItems;
-    expandedItems.push(id);
-    this.setState({ expandedItems: expandedItems });
-  }
-
-  getItems(items, result) {
-    const itemCount = items.length;
-    const maxDisplay = 5;
-    const moreCount = itemCount - maxDisplay;
-    const expandedItems = this.state.expandedItems;
-    const resultId = result.idBnum;
-    const resultTitle = result.title[0];
-
-    return items.map((item, i) => {
-      const status = item.status;
-      const availability = item.availability;
-      const available = item.available;
-      const id = item.id;
-      const collapsed = expandedItems.indexOf(resultId) < 0;
-
-      return (
-        <div key={i}>
-          <div className={`sub-item ${i>=maxDisplay && collapsed ? 'more' : ''}`}>
-            <div>
-              <span className={`status ${availability}`}>{status}</span>
-              {
-                available ? ' to use in ' : ' at location '
-              }
-              <span>{item.location}</span>
-              {
-                item.callNumber.length ?
-                (<span className="call-no"> with call no. {item.callNumber}</span>)
-                : null
-              }
-            </div>
-            <div>
-              {item.url && item.url.length ?
-                <a
-                  href={item.url}
-                  className="button">
-                  {item.actionLabel}
-                  <span className="visuallyHidden"> {item.actionLabelHelper}</span>
-                </a>
-              : null}
-            </div>
-          </div>
-          {
-            i >= itemCount - 1 && moreCount > 0 && collapsed ?
-              (
-                <Link
-                  onClick={(e) => this.showMoreItems(e, resultId)}
-                  href="#"
-                  className="see-more-link">
-                  See {moreCount} more item{moreCount > 1 ? 's' : ''}
-                  <span className="visuallyHidden"> in collapsed menu for {resultTitle}</span>
-                </Link>
-              )
-              : null
-          }
-        </div>
-      );
-    });
   }
 
   getCollapsedBibs(collapsedBibs) {
@@ -133,11 +57,11 @@ class ResultsList extends React.Component {
     const itemTitle = result.title[0];
     const itemImage = result.btCover ? (
       <div className="result-image">
-        <img src={result.btCover} />
+        <img src={result.btCover} alt={itemTitle} />
       </div>
       ) : null;
     const authors = author && result.contributor && result.contributor.length ?
-      result.contributor.map((author) => `${author}; ` )
+      result.contributor.map((contributor) => `${contributor}; `)
       : null;
     const id = result['@id'].substring(4);
     const items = LibraryItem.getItems(result);
@@ -166,13 +90,17 @@ class ResultsList extends React.Component {
               <em>Available to view on this website</em>
             </div>)
           }
-          <div className="sub-items">
-            {this.getItems(items, result)}
-          </div>
+          {
+            items.length ? <ResultItems items={items} itemTitle={itemTitle} /> : null
+          }
           {collapsedBibsElements}
         </div>
       </li>
     );
+  }
+
+  routeHandler(route) {
+    this.context.router.push(route);
   }
 
   render() {
