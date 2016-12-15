@@ -37,7 +37,7 @@
 .item-holdings,
 .item-details,
 .item-document-viewer {
-  border-top: 1px solid darken($lightgray, 10%);
+  border-top: 1px solid $bordercolor;
   padding-top: 0.5rem;
   margin-top: 2rem;
 
@@ -54,7 +54,7 @@
 
   .results-list {
     margin-top: 2rem;
-    
+
     li:first-child {
       border-top: 0;
     }
@@ -73,12 +73,12 @@
 
     &:before {
       display: inline-block;
-      color: $darkgray;
+      color: $pagetextcolor;
       content: " ";
       height: 0.5rem;
       width: 0.5rem;
-      border-left: 2px solid $darkgray;
-      border-bottom: 2px solid $darkgray;
+      border-left: 2px solid $pagetextcolor;
+      border-bottom: 2px solid $pagetextcolor;
       margin-right: 0.2rem;
     }
 
@@ -100,9 +100,9 @@
 
 .status {
   font-weight: bold;
-  color: $darkorange;
+  color: $statusdefaultcolor;
 
   &.available {
-    color: $darkgreen;
+    color: $statusavailablecolor;
   }
 }

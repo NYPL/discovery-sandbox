@@ -31,7 +31,7 @@ button {
 }
 
 .page-header {
-  background: #e9e8e7;
+  background: $pagecolorlight;
 }
 
 .container {
@@ -47,19 +47,19 @@ button {
 
 .status {
   font-weight: bold;
-  color: $darkorange;
+  color: $statusdefaultcolor;
   background-color: inherit;
   text-transform: capitalize;
 
   &.available {
-    color: $darkgreen;
+    color: $statusavailablecolor;
   }
 }
 
 // Overrides for other components
 .footer {
   a {
-    background-color: #54514A;
+    background-color: transparent;
   }
 }
 

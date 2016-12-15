@@ -8,7 +8,7 @@
   .tab {
     flex-grow: 1;
     text-align: center;
-    color: $darkgray;
+    color: $pagetextcolor;
     text-decoration: none;
     height: auto;
     line-height: normal;
@@ -21,16 +21,16 @@
     margin-bottom: 0;
 
     &:hover {
-      background: $linkcolor;
-      color: $white;
+      background: $buttonhovercolor;
+      color: $buttontextcolor;
     }
 
     &[aria-selected="true"] {
-      background: $white;
-      color: $textcolor;
+      background: $backgroundcolor;
+      color: $pagetextcolor;
       cursor: default;
-      border-color: $gray;
-      border-bottom: 2px solid $white;
+      border-color: $bordercolor;
+      border-bottom: 2px solid $backgroundcolor;
       margin-bottom: -2px;
     }
   }
@@ -39,7 +39,7 @@
 .tabpanel {
   display: none;
   min-height: 60px;
-  border: 1px solid $gray;
+  border: 1px solid $bordercolor;
 
   img {
     width: 100%;
@@ -53,7 +53,7 @@
 .tabpanel-item {
   line-height: normal;
   padding: 0.35rem;
-  border-top: 1px solid $lightgray;
+  border-top: 1px solid $bordercolor;
   display: flex;
   flex-direction: row;
 
@@ -87,7 +87,7 @@
 
     .type,
     .description {
-      color: $gray;
+      color: $pagetextcolor;
       font-size: 0.7rem;
     }
 
@@ -100,7 +100,7 @@
     }
 
     .description {
-      color: $textcolor;
+      color: $pagetextcolor;
     }
 
     .divider {
@@ -109,7 +109,7 @@
       font-size: 2rem;
       line-height: 0.8rem;
       vertical-align: middle;
-      color: $gray;
+      color: $pagetextcolor;
 
       &:before {
         content: "·";
@@ -120,13 +120,13 @@
 
 a.tabpanel-link-full {
   display: block;
-  background: $linkcolor;
-  color: $white;
+  background: $buttoncolor;
+  color: $buttontextcolor;
   text-align: center;
   text-decoration: none;
   line-height: 2rem;
   &:hover {
-    background: $linkhovercolor;
-    color: $white;
+    background: $buttonhovercolor;
+    color: $buttontextcolor;
   }
 }
