@@ -1,7 +1,6 @@
 import React from 'react';
 import axios from 'axios';
 
-import DateRange from './DateRange.jsx';
 import Actions from '../../actions/Actions.js';
 
 import {
@@ -44,7 +43,7 @@ class FacetSidebar extends React.Component {
       });
     } else {
       const searchValue = field === 'date' ? parseInt(value, 10) : value;
-      let facetObj = _findWhere(this.props.facets, { field });
+      const facetObj = _findWhere(this.props.facets, { field });
       const facet = _findWhere(facetObj.values, { value: searchValue });
 
       this.setState({
@@ -78,7 +77,10 @@ class FacetSidebar extends React.Component {
         Actions.updateFacets(response.data.facets);
         Actions.updateSelectedFacets(this.state);
         Actions.updatePage('1');
-        this.routeHandler(null, `/search?q=${encodeURIComponent(this.props.keywords)}${strSearch}${sortQuery}`);
+        this.routeHandler(
+          null,
+          `/search?q=${encodeURIComponent(this.props.keywords)}${strSearch}${sortQuery}`
+        );
       })
       .catch(error => {
         console.log(error);
@@ -126,12 +128,8 @@ class FacetSidebar extends React.Component {
   }
 
   render() {
-    const {
-      facets,
-      selectedFacets,
-    } = this.props;
+    const { facets } = this.props;
     let facetsElm = null;
-    let dateRange = null;
 
     if (facets.length) {
       facetsElm = facets.map((facet, i) => {
@@ -144,14 +142,14 @@ class FacetSidebar extends React.Component {
         const selectedValue = this.state[field] ? this.state[field].id : '';
 
         return (
-          <fieldset key={i} tabIndex="0">
+          <fieldset key={i} tabIndex="0" className="select-fieldset">
             <legend className="facet-legend visuallyHidden">Filter by {facet.field}</legend>
             <label htmlFor={`select-${field}`}>{facet.field}</label>
             <select
               name={`select-${field}`}
               id={`select-${field}`}
               onChange={(e) => this.onChange(e, field)}
-              value={selectedValue ? selectedValue : `${field}_any`}
+              value={selectedValue || `${field}_any`}
               aria-controls="results-region"
             >
               <option value={`${field}_any`}>Any</option>
@@ -181,22 +179,24 @@ class FacetSidebar extends React.Component {
           <h2>Filter results by</h2>
           {
             this.props.keywords ?
-            <fieldset tabIndex="0">
-              <legend className="facet-legend visuallyHidden">Current Keyword {this.props.keyword}</legend>
-              <label htmlFor="select-keywords">Keywords</label>
-              <button
-                id="select-keywords"
-                name="select-keywords"
-                className="button-selected"
-                title={`Remove keyword filter: ${this.props.keywords}`}
-                onClick={(e) => this.removeKeyword()}
-                aria-controls="results-region"
-                type="submit"
-              >
-                "{this.props.keywords}"
-              </button>
-            </fieldset>
-            : null
+              <fieldset tabIndex="0" className="fieldset">
+                <legend className="facet-legend visuallyHidden">
+                  Current Keyword {this.props.keywords}
+                </legend>
+                <label htmlFor="select-keywords">Keywords</label>
+                <button
+                  id="select-keywords"
+                  name="select-keywords"
+                  className="button-selected"
+                  title={`Remove keyword filter: ${this.props.keywords}`}
+                  onClick={() => this.removeKeyword()}
+                  aria-controls="results-region"
+                  type="submit"
+                >
+                  {`"${this.props.keywords}"`}
+                </button>
+              </fieldset>
+              : null
           }
 
           {facetsElm}
@@ -210,6 +210,8 @@ class FacetSidebar extends React.Component {
 FacetSidebar.propTypes = {
   facets: React.PropTypes.array,
   keywords: React.PropTypes.string,
+  selectedFacets: React.PropTypes.object,
+  sortBy: React.PropTypes.string,
 };
 
 FacetSidebar.contextTypes = {

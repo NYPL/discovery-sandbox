@@ -3,11 +3,13 @@ $facetsWidth: 200px;
 .search-results-container {
   @include clearfix();
 }
+
 .facets {
   width: $facetsWidth;
   float: left;
   margin-top: 1rem;
 }
+
 .results {
   margin-left: ($facetsWidth + 20px);
   margin-top: 1rem;
@@ -15,42 +17,17 @@ $facetsWidth: 200px;
 
 .facets-form {
   h2 {
-    // text-transform: uppercase;
     font-size: 1rem;
     color: $gray;
     font-weight: normal;
     margin: 0;
   }
-  fieldset {
-    margin: 0;
-    padding: 0.35rem 0;
-    border: 0;
-  }
-  label {
-    font-weight: bold;
-    display: block;
-    font-size: 0.9rem;
 
-    &.radio-label {
-      font-weight: normal;
-      font-size: 1rem;
-    }
+  .fieldset {
+    @include fieldset;
   }
-  input[type="text"],
-  select {
-    width: 100%;
-    display: block;
-    @include box-sizing();
-  }
-  select {
-    height: 2rem;
-    font-size: 0.8rem;
 
-    &.selected {
-      background-color: $darkgray;
-      color: $white;
-    }
-  }
+  // For the Keywords fieldset
   .button-selected {
     font-size: 1em;
     width: 100%;
@@ -82,22 +59,12 @@ $facetsWidth: 200px;
       @include transform(rotate(45deg));
     }
   }
-}
 
-.date-range {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-
-  .divider {
-    padding: 0 0.35rem;
+  .select-fieldset {
+    @include select-fieldset;
   }
 
-  input {
-    height: 2rem;
-    background: $lightgray;
-    border: 0;
-    text-indent: 0.2rem;
-    font-size: 0.8rem;
+  input[type="text"] {
+    @include textfield;
   }
 }
