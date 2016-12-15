@@ -54,11 +54,15 @@ class Feedback extends React.Component {
 
             <button type="submit">Submit</button>
           </form>
-          <iframe name="hidden_feedback_iframe" />
+          <iframe name="hidden_feedback_iframe" title="NYPL Discovery Feedback Form" />
         </div>
       </div>
     );
   }
 }
+
+Feedback.propTypes = {
+  location: React.PropTypes.object,
+};
 
 export default Feedback;
