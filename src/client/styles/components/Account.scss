@@ -1,5 +1,5 @@
 table.generic-table {
-  border-top: 2px solid $lightgray;
+  border-top: 2px solid $bordercolor;
   margin-top: 1rem;
   th {
     white-space: nowrap;
@@ -15,13 +15,13 @@ table.generic-table {
 
 .status {
   &.ready {
-    color: $darkgreen;
+    color: $statusavailablecolor;
   }
   &.requested {
-    color: $darkblue;
+    color: $statusdefaultcolor;
   }
   &.cancelled,
   &.completed {
-    color: $gray;
+    color: $statusunavailablecolor;
   }
 }

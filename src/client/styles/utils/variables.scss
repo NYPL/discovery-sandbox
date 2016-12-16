@@ -1,38 +1,25 @@
-// Grays
-$white: #fff;
-$gray: #7B756F;
-$lightergray: lighten($gray, 45%);
-$lightgray: lighten($gray, 40%);
-$darkgray: darken($gray, 10%);
-$darkergray: darken($gray, 15%);
-$black: darken($gray, 40%);
+@import "../toolkit/colors";
 
-// Colors
-$yellow: #FEE24A;
-$orange: #ffb81d;
-$red: #ed1c24;
-$darkgreen: #437529;
-$lightgreen: lighten($darkgreen, 20%);
-$lightergreen: lighten($lightgreen, 42%);
-$blue: #1DA1D4;
-$darkblue: #1980a9;
-$lightblue: lighten($blue, 40%);
-$darkorange: darken($orange, 20%);
+// red is too overwhelming to have for all links
+$linkcolor: $pagetextcolor;
+$linkvisitedcolor: $pagetextcolor;
+$linkhovercolor: $nyplred;
 
-// Components
-$textcolor: $black;
-$linkcolor: $black;
-$linkhovercolor: $red;
-$linkvisitedcolor: $black;
-$searchcolor: $blue;
-$searchcolordark: $darkblue;
-$searchcolorlight: lighten($searchcolor, 20%);
-$focuswidth: 3px;
-$focuscolor: $orange;
-$highlightcolor: lighten($yellow, 10%);
-$buttoncolor: $blue;
+// make buttons blue
+$buttoncolor: darken($nyplbluedark, 2%);
 $buttonhovercolor: lighten($buttoncolor, 5%);
-$buttontextcolor: $white;
+$buttontextcolor: $invertedlinkcolor;
+
+// status
+$statusavailablecolor: darken($nypldarkgreen, 5%);
+$statusdefaultcolor: darken($nyplorange, 30%);
+$statusunavailablecolor: $nyplgray;
+
+// misc
+$pagecolorlight: lighten($nypllightgray, 7%);
+$invertedbackgroundcolor: $nypldarkgray;
+$bordercolor: $nypllightgray;
+$focuswidth: 3px;
 
 // Layout
 $containerWidth: 1200px;
