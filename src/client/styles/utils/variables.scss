@@ -6,7 +6,7 @@ $linkvisitedcolor: $pagetextcolor;
 $linkhovercolor: $nyplred;
 
 // make buttons blue
-$buttoncolor: $nyplbluedark;
+$buttoncolor: darken($nyplbluedark, 2%);
 $buttonhovercolor: lighten($buttoncolor, 5%);
 $buttontextcolor: $invertedlinkcolor;
 
