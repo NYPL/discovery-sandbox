@@ -2,6 +2,7 @@
 @import "utils/utils.scss";
 @import "utils/fonts.scss";
 @import "utils/variables.scss";
+@import "toolkit/measurements.scss";
 @import "utils/base.scss";
 
 /*
@@ -9,6 +10,8 @@ Import style rules from NYPL React module components
 */
 @import "~@nypl/dgx-header-component/dist/styles/main";
 @import "~@nypl/dgx-react-footer/dist/styles/styles";
+
+@import "components/Forms.scss";
 
 @import "components/Home.scss";
 @import "components/Search.scss";

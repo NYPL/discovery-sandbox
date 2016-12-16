@@ -1,8 +1,5 @@
 import React from 'react';
 import axios from 'axios';
-import {
-  mapObject as _mapObject,
-} from 'underscore';
 
 import Actions from '../../actions/Actions.js';
 
@@ -39,7 +36,7 @@ class Results extends React.Component {
 
   getPage(page, type = 'next') {
     if (!page) return null;
-    const pageNum = type === 'next' ?  parseInt(page, 10) + 1 : parseInt(page, 10) - 1;
+    const pageNum = type === 'next' ? parseInt(page, 10) + 1 : parseInt(page, 10) - 1;
 
     return (
       <a
@@ -92,10 +89,10 @@ class Results extends React.Component {
     const hitsF = hits ? hits.toLocaleString() : '';
     const pageFactorF = pageFactor.toLocaleString();
 
-    let displayItems = `${pageFactor - (perPage - 1)} - ${pageFactor > hits ? hitsF : pageFactorF}`;
-    let nextPage = (hits < perPage || pageFactor > hits)
+    const nextPage = (hits < perPage || pageFactor > hits)
       ? null : this.getPage(page, 'next');
-    let prevPage = page > 1 ? this.getPage(page, 'previous') : null;
+    const prevPage = page > 1 ? this.getPage(page, 'previous') : null;
+    let displayItems = `${pageFactor - (perPage - 1)} - ${pageFactor > hits ? hitsF : pageFactorF}`;
 
     if (hits < perPage) {
       displayItems = `1 - ${hitsF}`;
@@ -150,7 +147,7 @@ class Results extends React.Component {
 
         <ResultList results={results} query={this.props.query} />
 
-        { hits !== 0 && paginationButtons }
+        {hits !== 0 && paginationButtons}
       </div>
     );
   }
@@ -160,6 +157,9 @@ Results.propTypes = {
   results: React.PropTypes.array,
   hits: React.PropTypes.number,
   query: React.PropTypes.string,
+  sortBy: React.PropTypes.string,
+  location: React.PropTypes.object,
+  page: React.PropTypes.string,
 };
 
 Results.contextTypes = {

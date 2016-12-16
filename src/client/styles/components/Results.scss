@@ -4,30 +4,15 @@
   align-items: flex-start;
   margin-top: 1rem;
 
+  .pagination {
+    flex: 4 0 0;
+  }
+
   .sort {
-    flex-grow: 1;
-
-    form {
-      white-space: nowrap;
-      // padding-right: 0.9rem;
-      text-align: right;
-    }
-
-    label,
-    select {
-      display: inline-block;
-      height: 30px;
-      font-size: 0.8rem;
-    }
-
-    label {
-      margin-right: 0.35rem;
-    }
+    flex: 1 0 0;
 
     fieldset {
-      border: none;
-      margin: 0;
-      padding: 0;
+      @include select-fieldset;
     }
   }
 }

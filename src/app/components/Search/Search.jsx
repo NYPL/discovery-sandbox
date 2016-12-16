@@ -1,5 +1,4 @@
 import React from 'react';
-import cx from 'classnames';
 import axios from 'axios';
 
 import Actions from '../../actions/Actions.js';
@@ -36,12 +35,12 @@ class Search extends React.Component {
     Store.listen(this.onChange);
   }
 
-  onChange() {
-    this.setState(_extend(this.state, Store.getState()));
-  }
-
   componentWillUnmount() {
     Store.unlisten(this.onChange);
+  }
+
+  onChange() {
+    this.setState(_extend(this.state, Store.getState()));
   }
 
   /**
@@ -109,34 +108,40 @@ class Search extends React.Component {
   render() {
     return (
       <form className="search-form" onKeyPress={this.triggerSubmit}>
-        <label htmlFor="search-by-field" className="visuallyhidden">Search by field</label>
-        <select id="search-by-field" className="search-select">
-          <option value="all">All fields</option>
-          <option value="title">Title</option>
-          <option value="contributor">Author/Contributor</option>
-          <option value="subject">Subject</option>
-          <option value="series">Series</option>
-          <option value="call_number">Call number</option>
-        </select>
-        <label htmlFor="search-query" className="visuallyhidden">Search keyword</label>
-        <input
-          id="search-query"
-          placeholder={this.state.placeholder}
-          className="search-field"
-          onChange={this.inputChange}
-          value={this.state.searchKeywords}
-          ref="keywords"
-        />
-        <SearchButton
-          id="search-button"
-          className="search-button"
-          label="Search"
-          onClick={this.submitSearchRequest}
-        />
+        <fieldset>
+          <label htmlFor="search-by-field" className="visuallyhidden">Search by field</label>
+          <select id="search-by-field" className="search-select">
+            <option value="all">All fields</option>
+            <option value="title">Title</option>
+            <option value="contributor">Author/Contributor</option>
+            <option value="subject">Subject</option>
+            <option value="series">Series</option>
+            <option value="call_number">Call number</option>
+          </select>
+          <label htmlFor="search-query" className="visuallyhidden">Search keyword</label>
+          <input
+            id="search-query"
+            placeholder={this.state.placeholder}
+            className="search-field"
+            onChange={this.inputChange}
+            value={this.state.searchKeywords}
+            ref="keywords"
+          />
+          <SearchButton
+            id="search-button"
+            className="search-button"
+            label="Search"
+            onClick={this.submitSearchRequest}
+          />
+        </fieldset>
       </form>
     );
   }
 }
+
+Search.propTypes = {
+  sortBy: React.PropTypes.string,
+};
 
 Search.contextTypes = {
   router: function contextType() {
