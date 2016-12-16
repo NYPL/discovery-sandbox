@@ -1,6 +1,6 @@
 .breadcrumbs {
   a {
-    background-color: #e9e8e7;
+    background-color: $pagecolorlight;
   }
 
   .breadcrumb {
@@ -10,7 +10,7 @@
       content: "»";
       display: inline-block;
       margin: 0 0.5rem;
-      color: $darkgray;
+      color: $pagetextcolor;
     }
 
     &:last-child:after {
@@ -22,4 +22,3 @@
     margin: 0 5px;
   }
 }
-

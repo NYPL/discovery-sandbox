@@ -18,7 +18,7 @@ $facetsWidth: 200px;
 .facets-form {
   h2 {
     font-size: 1rem;
-    color: $gray;
+    color: $nyplsearchcolor;
     font-weight: normal;
     margin: 0;
   }
@@ -31,10 +31,10 @@ $facetsWidth: 200px;
   .button-selected {
     font-size: 1em;
     width: 100%;
-    background: $darkgray;
-    color: $white;
+    background: $invertedbackgroundcolor;
+    color: $invertedlinkcolor;
     display: block;
-    border-color: $darkgray;
+    border-color: $invertedbackgroundcolor;
     text-align: left;
     padding-right: 2rem;
     position: relative;
@@ -43,8 +43,8 @@ $facetsWidth: 200px;
     @include box-sizing();
 
     &:hover {
-      background: lighten($darkgray, 10%);
-      border-color: lighten($darkgray, 10%);
+      background: lighten($invertedbackgroundcolor, 10%);
+      border-color: lighten($invertedbackgroundcolor, 10%);
     }
 
     &:after {

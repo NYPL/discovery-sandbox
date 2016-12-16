@@ -13,7 +13,7 @@
   }
   p {
     margin: 1rem 0;
-    border-top: 1px solid $lightgray;
+    border-top: 1px solid $bordercolor;
   }
   fieldset {
     border: 0;
@@ -21,12 +21,12 @@
   }
   input {
     padding: 0.25rem 0.4rem;
-    border: 1px solid darken($lightgray, 10%);
+    border: 1px solid $bordercolor;
     vertical-align: middle;
   }
   button[type="submit"] {
     margin-top: 1.5rem;
-    color: $white;
+    color: $buttontextcolor;
   }
 }
 
@@ -57,7 +57,7 @@
 }
 
 .guide {
-  border: 1px solid $lightgray;
+  border: 1px solid $bordercolor;
   padding: 0.35rem 0.75rem;
 }
 
