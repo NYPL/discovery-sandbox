@@ -12,6 +12,9 @@ import Actions from '../../src/app/actions/Actions.js';
 const mock = new MockAdapter(axios);
 const response = { searchResults: {} };
 
+// The Pagination component displays the items currently being displayed. If there are more
+// than 50 items then the "next" button gets rendered. If the page prop is greater than 1,
+// the "previous" button gets renderd.
 describe('Pagination', () => {
   describe('Default component', () => {
     let component;
@@ -145,7 +148,7 @@ describe('Pagination', () => {
       expect(component.find('.next').text()).to.equal('Next Page');
     });
 
-    it('should be clicked ', () => {
+    it('should fetch data for the second page when the "next" button is clicked', () => {
       const nextButton = component.find('.next');
       expect(nextButton.text()).to.equal('Next Page');
 
@@ -163,7 +166,6 @@ describe('Pagination', () => {
     before(() => {
       mock
         .onGet('/api?q=war')
-        // Doesn't matter what data gets returned from the API for this component.
         .reply(200, response);
 
       spyAxios = sinon.spy(axios, 'get');
@@ -184,13 +186,14 @@ describe('Pagination', () => {
       expect(component.find('.next').text()).to.equal('Next Page');
     });
 
-    it('should be clicked ', () => {
+    it('should fetch data for the first page when the "previous" button is clicked', () => {
       const previousButton = component.find('.previous');
       expect(previousButton.text()).to.equal('Previous Page');
 
       previousButton.simulate('click');
 
       expect(spyAxios.calledOnce).to.be.true;
+      // No `&page` param to get initial data for page 1.
       expect(spyAxios.calledWith('/api?q=war')).to.be.true;
     });
   });
