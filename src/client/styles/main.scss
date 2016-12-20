@@ -5,6 +5,7 @@
 @import "toolkit/measurements.scss";
 @import "utils/base.scss";
 @import "toolkit/forms.scss";
+@import "toolkit/grid.scss";
 
 /*
 Import style rules from NYPL React module components
@@ -33,7 +34,7 @@ button {
 }
 
 .page-header {
-  background: $pagecolorlight;
+  @include page-header;
 }
 
 .container {
@@ -56,6 +57,46 @@ button {
   &.available {
     color: $statusavailablecolor;
   }
+}
+
+.content-wrapper {
+  @include full-width-wrapper;
+}
+
+.page-header {
+  @include page-header;
+}
+
+#filter-search {
+  @include search-form;
+}
+
+.full {
+  @include column-full;
+}
+
+.quarter {
+  @include column-one-quarter;
+}
+
+.third {
+  @include column-one-third;
+}
+
+.half {
+  @include column-half;
+}
+
+.two-third {
+  @include column-two-thirds;
+}
+
+.three-quarter {
+  @include column-three-quarters;
+}
+
+.inner {
+  @include inner-block;
 }
 
 // Overrides for other components

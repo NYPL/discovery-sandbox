@@ -4,16 +4,16 @@ $facetsWidth: 200px;
   @include clearfix();
 }
 
-.facets {
-  width: $facetsWidth;
-  float: left;
-  margin-top: 1rem;
-}
-
-.results {
-  margin-left: ($facetsWidth + 20px);
-  margin-top: 1rem;
-}
+// .facets {
+//   width: $facetsWidth;
+//   float: left;
+//   margin-top: 1rem;
+// }
+//
+// .results {
+//   margin-left: ($facetsWidth + 20px);
+//   margin-top: 1rem;
+// }
 
 .facets-form {
   h2 {

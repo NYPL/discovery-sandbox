@@ -34,7 +34,7 @@ class HoldPage extends React.Component {
     return (
       <div id="mainContent">
         <div className="page-header">
-          <div className="container">
+          <div className="content-wrapper">
             <Breadcrumbs
               query={searchKeywords}
               type="hold"
@@ -44,7 +44,7 @@ class HoldPage extends React.Component {
           </div>
         </div>
 
-        <div className="container holds-container">
+        <div className="content-wrapper">
           <div className="item-header">
             <h1>Research item hold</h1>
           </div>

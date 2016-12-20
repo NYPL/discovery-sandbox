@@ -67,7 +67,7 @@ class ItemPage extends React.Component {
   getDisplayFields(record, data) {
     if (!data.length) return [];
 
-    let displayFields = [];
+    const displayFields = [];
     data.forEach((f) => {
       // skip absent fields
       if (!record[f.field] || !record[f.field].length) return false;
@@ -77,10 +77,14 @@ class ItemPage extends React.Component {
       if (f.url) {
         displayFields.push({
           term: f.label,
-          definition: <ul>{record[f.field].map((value, i) => {
-            const v = f.field === 'idOwi' ? value.substring(8) : value;
-            return <li key={i}><a target="_blank" href={f.url(v)}>{v}</a></li>
-          })}</ul>,
+          definition: (
+            <ul>
+              {record[f.field].map((value, i) => {
+                const v = f.field === 'idOwi' ? value.substring(8) : value;
+                return <li key={i}><a target="_blank" href={f.url(v)}>{v}</a></li>;
+              })}
+            </ul>
+          ),
         });
 
       // list of links
@@ -150,10 +154,10 @@ class ItemPage extends React.Component {
       { label: 'LCC', field: 'idLcc' },
     ];
 
-    let externalLinks = this.getDisplayFields(record, externalFields);
-    let itemDetails = this.getDisplayFields(record, displayFields);
+    const externalLinks = this.getDisplayFields(record, externalFields);
+    const itemDetails = this.getDisplayFields(record, displayFields);
     let searchURL = this.props.searchKeywords;
-    
+
     _mapObject(this.props.selectedFacets, (val, key) => {
       if (val.value !== '') {
         searchURL += ` ${key}:"${val.id}"`;
@@ -163,7 +167,7 @@ class ItemPage extends React.Component {
     return (
       <div id="mainContent">
         <div className="page-header">
-          <div className="container">
+          <div className="content-wrapper">
             <Breadcrumbs
               query={searchURL}
               type="item"
@@ -172,26 +176,30 @@ class ItemPage extends React.Component {
           </div>
         </div>
 
-        <div className="container item-container">
+        <div className="content-wrapper">
           <div className="item-header">
             <div className="item-info">
               <h1>{title}</h1>
-                {authors &&
-                  <div className="description author">
-                  By {authors}
-                </div>}
-                {publisher &&
-                  <div className="description">
-                  Publisher: {publisher}
-                </div>}
+                {
+                  authors &&
+                    <div className="description author">
+                      By {authors}
+                    </div>
+                }
+                {
+                  publisher &&
+                    <div className="description">
+                      Publisher: {publisher}
+                    </div>
+                }
               <div className="description">
                 Year published:
-                  <Link
-                    to={{ pathname: '/search', query: {q: `date:${record.startYear}`}}}
-                    onClick={(e) => this.onClick(e, `date:${record.startYear}`)}
-                  >
-                    {record.startYear}
-                  </Link>
+                <Link
+                  to={{ pathname: '/search', query: { q: `date:${record.startYear}` } }}
+                  onClick={(e) => this.onClick(e, `date:${record.startYear}`)}
+                >
+                  {record.startYear}
+                </Link>
               </div>
             </div>
           </div>
@@ -239,6 +247,7 @@ ItemPage.propTypes = {
   item: React.PropTypes.object,
   searchKeywords: React.PropTypes.string,
   location: React.PropTypes.object,
+  selectedFacets: React.PropTypes.object,
 };
 
 ItemPage.contextTypes = {
