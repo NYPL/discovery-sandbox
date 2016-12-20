@@ -58,18 +58,14 @@ class Pagination extends React.Component {
     if (!hits) return null;
 
     const perPage = 50;
-    const pageFactor = parseInt(page, 10) * 50;
+    const pageFactor = parseInt(page, 10) * perPage;
     const totalHits = hits.toLocaleString();
     const pageFactorF = pageFactor.toLocaleString();
     const nextPage = (hits < perPage || pageFactor > hits) ? null : this.getPage(page, 'Next');
     const prevPage = page > 1 ? this.getPage(page, 'Previous') : null;
     const from = pageFactor - (perPage - 1);
     const to = pageFactor > hits ? totalHits : pageFactorF;
-    let displayItems = `${from} - ${to}`;
-
-    if (hits < perPage) {
-      displayItems = `1 - ${totalHits}`;
-    }
+    const displayItems = hits < perPage ? `1 - ${totalHits}` : `${from} - ${to}`;
 
     return (
       <div className="pagination">
