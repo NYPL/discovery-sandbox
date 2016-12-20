@@ -56,7 +56,7 @@
     "react-a11y": "^0.3.3"
   },
   "dependencies": {
-    "@nypl/dgx-header-component": "git+https://git@bitbucket.org/NYPL/dgx-header-component#updated-urls-for-user-test",
+    "@nypl/dgx-header-component": "git+https://git@bitbucket.org/NYPL/dgx-header-component#beta-oauth-login",
     "@nypl/dgx-react-footer": "0.3.0",
     "alt": "^0.18.2",
     "axios": "^0.9.1",
