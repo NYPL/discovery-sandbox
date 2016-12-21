@@ -32,7 +32,7 @@ function LibraryItem() {
    * @param (Object) record
    */
   this.getItems = (record) => {
-    const recordTitle = record.title[0];
+    const recordTitle = record.title ? record.title[0] : '';
     // filter out anything without a status or location
     let items = record.items.filter((item, i) => {
       return (item.location && item.status) || item.electronicLocator;

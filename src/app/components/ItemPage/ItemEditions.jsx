@@ -1,5 +1,5 @@
 import React from 'react';
-import axios from 'axios';
+import { ajaxCall } from '../../utils/utils.js';
 
 import ResultList from '../Results/ResultsList.jsx';
 
@@ -8,7 +8,7 @@ class ItemEditions extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state ={
+    this.state = {
       results: []
     };
   }
@@ -16,21 +16,20 @@ class ItemEditions extends React.Component {
   componentWillMount() {
     const record = this.props.item;
     const idOwi = record.idOwi && record.idOwi.length ? record.idOwi[0] : null;
+    const endpoint = `http://discovery-api.nypltech.org/api/v1/resources?q=${encodeURIComponent(`idOwi:"${idOwi}"`)}`;
 
     if (idOwi) {
-      axios
-        .get(`http://discovery-api.nypltech.org/api/v1/resources?q=${encodeURIComponent(`idOwi:"${idOwi}"`)}`)
-        .then(response => {
-          if (response.data && response.data.itemListElement && response.data.itemListElement.length) {
-            const results = response.data.itemListElement.filter((item, i) => { return item.result['@id'] != record['@id']; });
-            if (results.length) {
-              this.setState({ results: results });
-            }
+      ajaxCall(endpoint, (response) => {
+        if (response.data && response.data.itemListElement && response.data.itemListElement.length) {
+          const results = response.data.itemListElement.filter((item, i) => {
+            return item.result['@id'] != record['@id'];
+          });
+
+          if (results.length) {
+            this.setState({ results: results });
           }
-        })
-        .catch(error => {
-          console.log(error);
-        });
+        }
+      });
     }
   }
 

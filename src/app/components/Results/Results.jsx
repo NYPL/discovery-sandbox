@@ -1,9 +1,8 @@
 import React from 'react';
-import axios from 'axios';
 
 import Actions from '../../actions/Actions.js';
-
 import ResultList from './ResultsList.jsx';
+import { ajaxCall } from '../../utils/utils.js';
 
 class Results extends React.Component {
   constructor(props) {
@@ -11,6 +10,7 @@ class Results extends React.Component {
 
     this.state = { sortValue: this.props.sortBy };
   }
+
   fetchResults(page) {
     const query = this.props.location.query.q;
     const pageParam = page !== 1 ? `&page=${page}` : '';
@@ -22,16 +22,11 @@ class Results extends React.Component {
       sortQuery = `&sort=${sortBy}&sort_direction=${order}`;
     }
 
-    axios
-      .get(`/api?q=${query}${pageParam}${sortQuery}`)
-      .then(response => {
-        Actions.updateSearchResults(response.data.searchResults);
-        Actions.updatePage(page);
-        this.context.router.push(`/search?q=${encodeURIComponent(query)}${pageParam}${sortQuery}`);
-      })
-      .catch(error => {
-        console.log(error);
-      });
+    ajaxCall(`/api?q=${query}${pageParam}${sortQuery}`, (response) => {
+      Actions.updateSearchResults(response.data.searchResults);
+      Actions.updatePage(page);
+      this.context.router.push(`/search?q=${encodeURIComponent(query)}${pageParam}${sortQuery}`);
+    });
   }
 
   getPage(page, type = 'next') {
@@ -63,18 +58,13 @@ class Results extends React.Component {
       sortQuery = `&sort=${sortBy}&sort_direction=${order}`;
     }
 
-    axios
-      .get(`/api?q=${query}${page}${sortQuery}`)
-      .then(response => {
-        Actions.updateSearchResults(response.data.searchResults);
-        Actions.updateSortBy(sortValue);
+    ajaxCall(`/api?q=${query}${page}${sortQuery}`, (response) => {
+      Actions.updateSearchResults(response.data.searchResults);
+      Actions.updateSortBy(sortValue);
 
-        this.setState({ sortValue });
-        this.context.router.push(`/search?q=${encodeURIComponent(query)}${page}${sortQuery}`);
-      })
-      .catch(error => {
-        console.log(error);
-      });
+      this.setState({ sortValue });
+      this.context.router.push(`/search?q=${encodeURIComponent(query)}${page}${sortQuery}`);
+    });
   }
 
   render() {

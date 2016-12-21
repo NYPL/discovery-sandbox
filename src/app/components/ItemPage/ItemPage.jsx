@@ -1,5 +1,4 @@
 import React from 'react';
-import axios from 'axios';
 import { Link } from 'react-router';
 import {
   findWhere as _findWhere,
@@ -13,55 +12,49 @@ import ItemDetails from './ItemDetails.jsx';
 import ItemEditions from './ItemEditions.jsx';
 import LibraryItem from '../../utils/item.js';
 import EmbeddedDocument from './EmbeddedDocument.jsx';
-
 import Actions from '../../actions/Actions.js';
+import { ajaxCall } from '../../utils/utils.js';
 
 class ItemPage extends React.Component {
   onClick(e, query) {
     e.preventDefault();
 
-    axios
-      .get(`/api?q=${query}`)
-      .then(response => {
-        console.log(query);
-        const q = query.indexOf(':"') !== -1 ? query.split(':"') : query.split(':');
-        const field = q[0];
-        const value = q[1].replace('"', '');
+    ajaxCall(`/api?q=${query}`, (response) => {
+      const q = query.indexOf(':"') !== -1 ? query.split(':"') : query.split(':');
+      const field = q[0];
+      const value = q[1].replace('"', '');
 
-        // Find the index where the field exists in the list of facets from the API
-        const index = _findIndex(response.data.facets.itemListElement, { field });
+      // Find the index where the field exists in the list of facets from the API
+      const index = _findIndex(response.data.facets.itemListElement, { field });
 
-        // If the index exists, try to find the facet value from the API
-        if (response.data.facets.itemListElement[index]) {
-          const facet = _findWhere(response.data.facets.itemListElement[index].values, { value });
+      // If the index exists, try to find the facet value from the API
+      if (response.data.facets.itemListElement[index]) {
+        const facet = _findWhere(response.data.facets.itemListElement[index].values, { value });
 
-          // The API may return a list of facets in the selected field, but the wanted
-          // facet may still not appear. If that's the case, return the clicked facet value.
-          Actions.updateSelectedFacets({
-            [field]: {
-              id: facet ? facet.value : value,
-              value: facet ? (facet.label || facet.value) : value,
-            },
-          });
-        } else {
-          // Otherwise, the field wasn't found in the API. Returning this highlights the
-          // facet in the selected facet region, but now in the facet sidebar.
-          Actions.updateSelectedFacets({
-            [field]: {
-              id: value,
-              value,
-            },
-          });
-        }
-        Actions.updateSearchResults(response.data.searchResults);
-        Actions.updateFacets(response.data.facets);
-        Actions.updateSearchKeywords('');
-        Actions.updatePage('1');
-        this.context.router.push(`/search?q=${query}`);
-      })
-      .catch(error => {
-        console.log(error);
-      });
+        // The API may return a list of facets in the selected field, but the wanted
+        // facet may still not appear. If that's the case, return the clicked facet value.
+        Actions.updateSelectedFacets({
+          [field]: {
+            id: facet ? facet.value : value,
+            value: facet ? (facet.label || facet.value) : value,
+          },
+        });
+      } else {
+        // Otherwise, the field wasn't found in the API. Returning this highlights the
+        // facet in the selected facet region, but now in the facet sidebar.
+        Actions.updateSelectedFacets({
+          [field]: {
+            id: value,
+            value,
+          },
+        });
+      }
+      Actions.updateSearchResults(response.data.searchResults);
+      Actions.updateFacets(response.data.facets);
+      Actions.updateSearchKeywords('');
+      Actions.updatePage('1');
+      this.context.router.push(`/search?q=${query}`);
+    });
   }
 
   getDisplayFields(record, data) {
@@ -153,7 +146,7 @@ class ItemPage extends React.Component {
     let externalLinks = this.getDisplayFields(record, externalFields);
     let itemDetails = this.getDisplayFields(record, displayFields);
     let searchURL = this.props.searchKeywords;
-    
+
     _mapObject(this.props.selectedFacets, (val, key) => {
       if (val.value !== '') {
         searchURL += ` ${key}:"${val.id}"`;

@@ -1,4 +1,19 @@
 import { gaUtils } from 'dgx-react-ga';
+import axios from 'axios';
+
+/**
+ * ajaxCall
+ * Utility function to make ajax requests.
+ * @param {string} endpoint The endpoint to call.
+ * @param {function} cb The callback function.
+ * @param {function} errorcb The error callback function.
+ */
+const ajaxCall = (endpoint, cb, errorcb = (error) => console.log(error)) => (
+  axios
+    .get(endpoint)
+    .then(cb)
+    .catch(errorcb)
+);
 
 function collapse(results) {
   const owiLookup = {};
@@ -99,4 +114,5 @@ const trackDiscovery = gaUtils.trackEvent('Discovery');
 export {
   collapse,
   trackDiscovery,
+  ajaxCall,
 };
