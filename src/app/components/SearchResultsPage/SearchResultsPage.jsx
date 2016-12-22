@@ -49,7 +49,10 @@ class SearchResultsPage extends React.Component {
         {breadcrumbs}
 
         <div className="search-container">
-          <Search sortBy={sortBy} />
+          <Search
+            sortBy={sortBy}
+            selectedFacets={selectedFacets}
+          />
         </div>
 
         <div className="container search-results-container">

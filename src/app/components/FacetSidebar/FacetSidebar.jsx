@@ -1,7 +1,11 @@
 import React from 'react';
 
 import Actions from '../../actions/Actions.js';
-import { ajaxCall } from '../../utils/utils.js';
+import {
+  ajaxCall,
+  getSortQuery,
+  getFacetParams,
+} from '../../utils/utils.js';
 
 import {
   mapObject as _mapObject,
@@ -54,21 +58,9 @@ class FacetSidebar extends React.Component {
       });
     }
 
-    _mapObject(this.state, (val, key) => {
-      if (val.value !== '' && field !== key) {
-        strSearch += ` ${key}:"${val.id}"`;
-      } else if (field === key && value !== `${field}_any`) {
-        strSearch += ` ${field}:"${value}"`;
-      }
-    });
+    strSearch = getFacetParams(this.state, field, value);
 
-    const reset = this.props.sortBy === 'relevance';
-    let sortQuery = '';
-
-    if (this.props.sortBy && !reset) {
-      const [sortBy, order] = this.props.sortBy.split('_');
-      sortQuery = `&sort=${sortBy}&sort_direction=${order}`;
-    }
+    const sortQuery = getSortQuery(this.props.sortBy);
 
     ajaxCall(`/api?q=${this.props.keywords}${strSearch}${sortQuery}`, (response) => {
       Actions.updateSearchResults(response.data.searchResults);
@@ -85,19 +77,8 @@ class FacetSidebar extends React.Component {
   removeKeyword() {
     Actions.updateSearchKeywords('');
 
-    let strSearch = '';
-    _mapObject(this.props.selectedFacets, (val, key) => {
-      if (val.value !== '') {
-        strSearch += ` ${key}:"${val.id}"`;
-      }
-    });
-    const reset = this.props.sortBy === 'relevance';
-    let sortQuery = '';
-
-    if (!reset) {
-      const [sortBy, order] = this.props.sortBy.split('_');
-      sortQuery = `&sort=${sortBy}&sort_direction=${order}`;
-    }
+    const strSearch = getFacetParams(this.props.selectedFacets);
+    const sortQuery = getSortQuery(this.props.sortBy);
 
     ajaxCall(`/api?q=${this.props.keywords}${strSearch}${sortQuery}`, (response) => {
       Actions.updateSearchResults(response.data.searchResults);

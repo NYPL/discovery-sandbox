@@ -1,5 +1,6 @@
 import { gaUtils } from 'dgx-react-ga';
 import axios from 'axios';
+import { mapObject as _mapObject } from 'underscore';
 
 /**
  * ajaxCall
@@ -19,6 +20,59 @@ const ajaxCall = (
     .get(endpoint)
     .then(cb)
     .catch(errorcb);
+};
+
+/**
+ * getSortQuery
+ * Get the sort type and order and pass it in URL query form.
+ * @param {string} sortBy URL parameter with sort type and order.
+ */
+const getSortQuery = (sortBy) => {
+  const reset = sortBy === 'relevance';
+  let sortQuery = '';
+
+  if (sortBy && !reset) {
+    const [sort, order] = sortBy.split('_');
+    sortQuery = `&sort=${sort}&sort_direction=${order}`;
+  }
+
+  return sortQuery;
+};
+
+/**
+ * getFacetParams
+ * Get the search params from the facet values.
+ * @param {object} facets Key/value pair of facet and the selected value.
+ */
+const getFacetParams = (facets, field, value) => {
+  let strSearch = '';
+
+  if (facets) {
+    _mapObject(facets, (val, key) => {
+      if (field) {
+        // Specific to the FacetSidebar component.
+        // You can select and unselect a facet.
+        if (value) {
+          if (val.value !== '' && field !== key) {
+            strSearch += ` ${key}:"${val.id}"`;
+          } else if (field === key && value !== `${field}_any`) {
+            strSearch += ` ${field}:"${value}"`;
+          }
+
+        // Specific logic for the Hits component.
+        // If a field is selected selected then it is skipped over.
+        } else if (val.value !== '' && field !== key) {
+          strSearch += ` ${key}:"${val.id}"`;
+        }
+
+      // For all other use cases.
+      } else if (val.value !== '') {
+        strSearch += ` ${key}:"${val.id}"`;
+      }
+    });
+  }
+
+  return strSearch;
 };
 
 function collapse(results) {
@@ -121,4 +175,6 @@ export {
   collapse,
   trackDiscovery,
   ajaxCall,
+  getSortQuery,
+  getFacetParams,
 };

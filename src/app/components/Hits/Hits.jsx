@@ -2,7 +2,11 @@ import React from 'react';
 import { mapObject as _mapObject } from 'underscore';
 
 import Actions from '../../actions/Actions.js';
-import { ajaxCall } from '../../utils/utils.js';
+import {
+  ajaxCall,
+  getSortQuery,
+  getFacetParams,
+} from '../../utils/utils.js';
 
 class Hits extends React.Component {
   constructor(props) {
@@ -44,40 +48,22 @@ class Hits extends React.Component {
   removeKeyword() {
     Actions.updateSearchKeywords('');
 
-    let strSearch = '';
-    _mapObject(this.props.facets, (val, key) => {
-      if (val.value !== '') {
-        strSearch += ` ${key}:"${val.id}"`;
-      }
-    });
+    const sortQuery = getSortQuery(this.props.sortBy);
+    const strSearch = getFacetParams(this.props.facets);
 
-    ajaxCall(`/api?q=${strSearch}`, (response) => {
+    ajaxCall(`/api?q=${strSearch}${sortQuery}`, (response) => {
       Actions.updateSearchResults(response.data.searchResults);
       Actions.updateFacets(response.data.facets);
       Actions.updatePage('1');
-      this.context.router.push(`/search?q=${strSearch}`);
+      this.context.router.push(`/search?q=${strSearch}${sortQuery}`);
     });
   }
 
   removeFacet(field) {
     Actions.removeFacet(field);
-    let strSearch = '';
 
-    // If the selected field that wants to be removed is found, then it is skipped over.
-    // Otherwise, construct the query and hit the API again.
-    _mapObject(this.props.facets, (val, key) => {
-      if (field !== key && val.value !== '') {
-        strSearch += ` ${key}:"${val.id}"`;
-      }
-    });
-
-    const reset = this.props.sortBy === 'relevance';
-    let sortQuery = '';
-
-    if (this.props.sortBy && !reset) {
-      const [sortBy, order] = this.props.sortBy.split('_');
-      sortQuery = `&sort=${sortBy}&sort_direction=${order}`;
-    }
+    const sortQuery = getSortQuery(this.props.sortBy);
+    const strSearch = getFacetParams(this.props.facets, field);
 
     ajaxCall(`/api?q=${this.props.query}${strSearch}${sortQuery}`, (response) => {
       Actions.updateSearchResults(response.data.searchResults);
@@ -102,8 +88,8 @@ class Hits extends React.Component {
       }
     });
 
-    let keyword = this.getKeyword(query);
-    let activeFacetsElm = this.getFacetElements(activeFacetsArray);
+    const keyword = this.getKeyword(query);
+    const activeFacetsElm = this.getFacetElements(activeFacetsArray);
 
     return (
       <div id="results-description" className="results-message">
