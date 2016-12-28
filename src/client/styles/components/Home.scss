@@ -18,7 +18,7 @@
 }
 
 a.site-title {
-  color: $invertedlinkcolor;
+  color: $inverted-link-color;
   background-color: inherit;
   // background: url("../img/nypl.svg") no-repeat scroll 0px 0px/5rem auto white;
   overflow: hidden;
@@ -27,7 +27,7 @@ a.site-title {
   height: 50px;
   width: 5rem;
   &:hover {
-    color: $invertedlinkcolor;
+    color: $inverted-link-color;
   }
 }
 
@@ -51,20 +51,20 @@ a.site-title {
 
   .search-select {
     // width: 240px;
-    border-color: $nyplsearchcolor;
+    border-color: $nypl-search-color;
   }
   .search-button {
     width: 84px;
   }
   .search-input {
     padding-right: (84px + 4px);
-    border-color: $nyplsearchcolor;
+    border-color: $nypl-search-color;
   }
 }
 
 .home-secondary {
   margin-top: 3rem;
-  border-top: 1px solid $bordercolor;
+  border-top: 1px solid $nypl-search-color;
   padding-top: 1rem;
 }
 
@@ -74,7 +74,7 @@ a.site-title {
 
 .browse-box {
   h3 {
-    color: $nyplsearchcolor;
+    color: $nypl-search-color;
     background-color: inherit;
   }
 }
@@ -109,7 +109,7 @@ a.site-title {
   }
 
   .count {
-    color: $nyplsearchcolor;
+    color: $nypl-search-color;
     background-color: inherit;
   }
 
@@ -117,7 +117,7 @@ a.site-title {
     li {
       margin-bottom: 0.75rem;
       padding-bottom: 0.75rem;
-      border-bottom: 1px solid $bordercolor;
+      border-bottom: 1px solid $border-color;
       @include clearfix();
       &:last-child {
         border-bottom: 0;

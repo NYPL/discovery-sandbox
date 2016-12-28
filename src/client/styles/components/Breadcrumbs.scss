@@ -1,6 +1,7 @@
 .breadcrumbs {
-  a {
-    background-color: $pagecolorlight;
+  a,
+  a:hover {
+    color: $page-color;
   }
 
   .breadcrumb {
@@ -10,7 +11,7 @@
       content: "»";
       display: inline-block;
       margin: 0 0.5rem;
-      color: $pagetextcolor;
+      color: $page-text-color;
     }
 
     &:last-child:after {
