@@ -15,8 +15,11 @@ class HoldRequest extends React.Component {
       data: Store.getState(),
       patron: PatronStore.getState(),
     };
-    this.requireUser();
     this.onChange = this.onChange.bind(this);
+  }
+
+  componentDidMount() {
+    this.requireUser();
   }
 
   onChange() {
@@ -53,7 +56,7 @@ class HoldRequest extends React.Component {
     return (
       <div id="mainContent">
         <div className="page-header">
-          <div className="container">
+          <div className="content-wrapper">
             <Breadcrumbs
               query={searchKeywords}
               type="hold"
@@ -63,7 +66,7 @@ class HoldRequest extends React.Component {
           </div>
         </div>
 
-        <div className="container holds-container">
+        <div className="content-wrapper">
           <div className="item-header">
             <h1>Research item hold request</h1>
           </div>
