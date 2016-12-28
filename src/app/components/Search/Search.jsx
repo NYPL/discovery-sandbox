@@ -7,6 +7,8 @@ import SearchButton from '../Buttons/SearchButton.jsx';
 import {
   trackDiscovery,
   ajaxCall,
+  getSortQuery,
+  getFacetParams,
 } from '../../utils/utils.js';
 
 import {
@@ -53,23 +55,19 @@ class Search extends React.Component {
 
     // Store the data that the user entered
     const keyword = this.state.searchKeywords.trim();
-    const reset = this.props.sortBy === 'relevance';
-    let sortQuery = '';
-
-    if (this.props.sortBy && !reset) {
-      const [sortBy, order] = this.props.sortBy.split('_');
-      sortQuery = `&sort=${sortBy}&sort_direction=${order}`;
-    }
+    const sortQuery = getSortQuery(this.props.sortBy);
+    const facetQuery = getFacetParams(this.props.selectedFacets);
+    console.log(facetQuery);
 
     // Track the submitted keyword search.
     trackDiscovery('Search', keyword);
 
-    ajaxCall(`/api?q=${keyword}${sortQuery}`, (response) => {
+    ajaxCall(`/api?q=${keyword}${facetQuery}${sortQuery}`, (response) => {
       Actions.updateSearchResults(response.data.searchResults);
       Actions.updateFacets(response.data.facets);
       Actions.updateSearchKeywords(keyword);
       Actions.updatePage('1');
-      this.routeHandler(`/search?q=${keyword}${sortQuery}`);
+      this.routeHandler(`/search?q=${keyword}${facetQuery}${sortQuery}`);
     });
   }
 
@@ -138,6 +136,7 @@ class Search extends React.Component {
 
 Search.propTypes = {
   sortBy: React.PropTypes.string,
+  selectedFacets: React.PropTypes.object,
 };
 
 Search.contextTypes = {

@@ -2,7 +2,10 @@ import React from 'react';
 
 import Actions from '../../actions/Actions.js';
 import ResultList from './ResultsList.jsx';
-import { ajaxCall } from '../../utils/utils.js';
+import {
+  ajaxCall,
+  getSortQuery,
+} from '../../utils/utils.js';
 import Pagination from '../Pagination/Pagination.jsx';
 
 class Results extends React.Component {
@@ -15,13 +18,7 @@ class Results extends React.Component {
   fetchResults(page) {
     const query = this.props.location.query.q;
     const pageParam = page !== 1 ? `&page=${page}` : '';
-    const reset = this.state.sortValue === 'relevance';
-    let sortQuery = '';
-
-    if (!reset) {
-      const [sortBy, order] = this.state.sortValue.split('_');
-      sortQuery = `&sort=${sortBy}&sort_direction=${order}`;
-    }
+    const sortQuery = getSortQuery(this.state.sortValue);
 
     ajaxCall(`/api?q=${query}${pageParam}${sortQuery}`, (response) => {
       Actions.updateSearchResults(response.data.searchResults);
@@ -51,13 +48,7 @@ class Results extends React.Component {
     const sortValue = e.target.value;
     const query = this.props.location.query.q;
     const page = this.props.page !== '1' ? `&page=${this.props.page}` : '';
-    const reset = sortValue === 'relevance';
-    let sortQuery = '';
-
-    if (!reset) {
-      const [sortBy, order] = sortValue.split('_');
-      sortQuery = `&sort=${sortBy}&sort_direction=${order}`;
-    }
+    const sortQuery = getSortQuery(sortValue);
 
     ajaxCall(`/api?q=${query}${page}${sortQuery}`, (response) => {
       Actions.updateSearchResults(response.data.searchResults);

@@ -49,7 +49,10 @@ class SearchResultsPage extends React.Component {
         {breadcrumbs}
 
         <div className="content-wrapper">
-          <Search sortBy={sortBy} />
+          <Search
+            sortBy={sortBy}
+            selectedFacets={selectedFacets}
+          />
         </div>
 
         <div className="content-wrapper">
