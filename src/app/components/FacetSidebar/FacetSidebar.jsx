@@ -174,7 +174,7 @@ class FacetSidebar extends React.Component {
     }
 
     return (
-      <div className="facets">
+      <div className={`facets ${this.props.className}`}>
         <form className="facets-form">
           <h2>Filter results by</h2>
           {
@@ -212,6 +212,11 @@ FacetSidebar.propTypes = {
   keywords: React.PropTypes.string,
   selectedFacets: React.PropTypes.object,
   sortBy: React.PropTypes.string,
+  className: React.PropTypes.string,
+};
+
+FacetSidebar.defaultProps = {
+  className: '',
 };
 
 FacetSidebar.contextTypes = {
