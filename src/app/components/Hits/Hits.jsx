@@ -1,8 +1,8 @@
 import React from 'react';
 import { mapObject as _mapObject } from 'underscore';
-import axios from 'axios';
 
 import Actions from '../../actions/Actions.js';
+import { ajaxCall } from '../../utils/utils.js';
 
 class Hits extends React.Component {
   constructor(props) {
@@ -51,17 +51,12 @@ class Hits extends React.Component {
       }
     });
 
-    axios
-      .get(`/api?q=${strSearch}`)
-      .then(response => {
-        Actions.updateSearchResults(response.data.searchResults);
-        Actions.updateFacets(response.data.facets);
-        Actions.updatePage('1');
-        this.context.router.push(`/search?q=${strSearch}`);
-      })
-      .catch(error => {
-        console.log(error);
-      });
+    ajaxCall(`/api?q=${strSearch}`, (response) => {
+      Actions.updateSearchResults(response.data.searchResults);
+      Actions.updateFacets(response.data.facets);
+      Actions.updatePage('1');
+      this.context.router.push(`/search?q=${strSearch}`);
+    });
   }
 
   removeFacet(field) {
@@ -84,17 +79,12 @@ class Hits extends React.Component {
       sortQuery = `&sort=${sortBy}&sort_direction=${order}`;
     }
 
-    axios
-      .get(`/api?q=${this.props.query}${strSearch}${sortQuery}`)
-      .then(response => {
-        Actions.updateSearchResults(response.data.searchResults);
-        Actions.updateFacets(response.data.facets);
-        Actions.updatePage('1');
-        this.context.router.push(`/search?q=${this.props.query}${strSearch}${sortQuery}`);
-      })
-      .catch(error => {
-        console.log(error);
-      });
+    ajaxCall(`/api?q=${this.props.query}${strSearch}${sortQuery}`, (response) => {
+      Actions.updateSearchResults(response.data.searchResults);
+      Actions.updateFacets(response.data.facets);
+      Actions.updatePage('1');
+      this.context.router.push(`/search?q=${this.props.query}${strSearch}${sortQuery}`);
+    });
   }
 
   render() {
@@ -138,7 +128,7 @@ Hits.propTypes = {
 
 Hits.defaultProps = {
   hits: 0,
-}
+};
 
 Hits.contextTypes = {
   router: function contextType() {

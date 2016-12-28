@@ -1,11 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router';
-import axios from 'axios';
 import { isEmpty as _isEmpty } from 'underscore';
 
 import Actions from '../../actions/Actions.js';
 import LibraryItem from '../../utils/item.js';
 import ResultItems from './ResultItems.jsx';
+import { ajaxCall } from '../../utils/utils.js';
 
 class ResultsList extends React.Component {
   constructor(props) {
@@ -18,16 +18,11 @@ class ResultsList extends React.Component {
   getRecord(e, id, path) {
     e.preventDefault();
 
-    axios
-      .get(`/api/retrieve?q=${id}`)
-      .then(response => {
-        // console.log(response.data);
-        Actions.updateItem(response.data);
-        this.routeHandler(`/${path}/${id}`);
-      })
-      .catch(error => {
-        console.log(error);
-      });
+    ajaxCall(`/api/retrieve?q=${id}`, (response) => {
+      // console.log(response.data);
+      Actions.updateItem(response.data);
+      this.routeHandler(`/${path}/${id}`);
+    });
   }
 
   getCollapsedBibs(collapsedBibs) {
@@ -54,7 +49,7 @@ class ResultsList extends React.Component {
     const collapsedBibs = bib.collapsedBibs && bib.collapsedBibs.length ?
       bib.collapsedBibs : [];
     const collapsedBibsElements = this.getCollapsedBibs(collapsedBibs);
-    const itemTitle = result.title[0];
+    const itemTitle = result.title ? result.title[0] : '';
     const itemImage = result.btCover ? (
       <div className="result-image">
         <img src={result.btCover} alt={itemTitle} />

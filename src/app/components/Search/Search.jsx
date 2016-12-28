@@ -1,11 +1,13 @@
 import React from 'react';
-import axios from 'axios';
 
 import Actions from '../../actions/Actions.js';
 import Store from '../../stores/Store.js';
 
 import SearchButton from '../Buttons/SearchButton.jsx';
-import { trackDiscovery } from '../../utils/utils.js';
+import {
+  trackDiscovery,
+  ajaxCall,
+} from '../../utils/utils.js';
 
 import {
   extend as _extend,
@@ -62,18 +64,13 @@ class Search extends React.Component {
     // Track the submitted keyword search.
     trackDiscovery('Search', keyword);
 
-    axios
-      .get(`/api?q=${keyword}${sortQuery}`)
-      .then(response => {
-        Actions.updateSearchResults(response.data.searchResults);
-        Actions.updateFacets(response.data.facets);
-        Actions.updateSearchKeywords(keyword);
-        Actions.updatePage('1');
-        this.routeHandler(`/search?q=${keyword}${sortQuery}`);
-      })
-      .catch(error => {
-        console.log(error);
-      });
+    ajaxCall(`/api?q=${keyword}${sortQuery}`, (response) => {
+      Actions.updateSearchResults(response.data.searchResults);
+      Actions.updateFacets(response.data.facets);
+      Actions.updateSearchKeywords(keyword);
+      Actions.updatePage('1');
+      this.routeHandler(`/search?q=${keyword}${sortQuery}`);
+    });
   }
 
   routeHandler(keyword) {

@@ -1,5 +1,4 @@
 import React from 'react';
-import axios from 'axios';
 
 import Actions from '../../actions/Actions.js';
 
@@ -8,20 +7,18 @@ import Breadcrumbs from '../Breadcrumbs/Breadcrumbs.jsx';
 import FacetSidebar from '../FacetSidebar/FacetSidebar.jsx';
 import Results from '../Results/Results.jsx';
 import Search from '../Search/Search.jsx';
-import { collapse } from '../../utils/utils.js';
+import {
+  collapse,
+  ajaxCall,
+} from '../../utils/utils.js';
 
 class SearchResultsPage extends React.Component {
   componentWillMount() {
     if (!this.props.searchResults) {
-      axios
-        .get(`/api?q=${this.props.searchKeywords}`)
-        .then(response => {
-          Actions.updateSearchResults(response.data.searchResults);
-          Actions.updateSearchKeywords(this.props.searchKeywords);
-        })
-        .catch(error => {
-          console.log(error);
-        });
+      ajaxCall(`/api?q=${this.props.searchKeywords}`, (response) => {
+        Actions.updateSearchResults(response.data.searchResults);
+        Actions.updateSearchKeywords(this.props.searchKeywords);
+      });
     }
   }
 

@@ -1,7 +1,7 @@
 import React from 'react';
-import axios from 'axios';
 
 import Actions from '../../actions/Actions.js';
+import { ajaxCall } from '../../utils/utils.js';
 
 import {
   mapObject as _mapObject,
@@ -70,21 +70,16 @@ class FacetSidebar extends React.Component {
       sortQuery = `&sort=${sortBy}&sort_direction=${order}`;
     }
 
-    axios
-      .get(`/api?q=${this.props.keywords}${strSearch}${sortQuery}`)
-      .then(response => {
-        Actions.updateSearchResults(response.data.searchResults);
-        Actions.updateFacets(response.data.facets);
-        Actions.updateSelectedFacets(this.state);
-        Actions.updatePage('1');
-        this.routeHandler(
-          null,
-          `/search?q=${encodeURIComponent(this.props.keywords)}${strSearch}${sortQuery}`
-        );
-      })
-      .catch(error => {
-        console.log(error);
-      });
+    ajaxCall(`/api?q=${this.props.keywords}${strSearch}${sortQuery}`, (response) => {
+      Actions.updateSearchResults(response.data.searchResults);
+      Actions.updateFacets(response.data.facets);
+      Actions.updateSelectedFacets(this.state);
+      Actions.updatePage('1');
+      this.routeHandler(
+        null,
+        `/search?q=${encodeURIComponent(this.props.keywords)}${strSearch}${sortQuery}`
+      );
+    });
   }
 
   removeKeyword() {
@@ -104,17 +99,12 @@ class FacetSidebar extends React.Component {
       sortQuery = `&sort=${sortBy}&sort_direction=${order}`;
     }
 
-    axios
-      .get(`/api?q=${this.props.keywords}${strSearch}${sortQuery}`)
-      .then(response => {
-        Actions.updateSearchResults(response.data.searchResults);
-        Actions.updateFacets(response.data.facets);
-        Actions.updatePage('1');
-        this.context.router.push(`/search?q=${this.props.keywords}${strSearch}${sortQuery}`);
-      })
-      .catch(error => {
-        console.log(error);
-      });
+    ajaxCall(`/api?q=${this.props.keywords}${strSearch}${sortQuery}`, (response) => {
+      Actions.updateSearchResults(response.data.searchResults);
+      Actions.updateFacets(response.data.facets);
+      Actions.updatePage('1');
+      this.context.router.push(`/search?q=${this.props.keywords}${strSearch}${sortQuery}`);
+    });
   }
 
   routeHandler(e, path) {
