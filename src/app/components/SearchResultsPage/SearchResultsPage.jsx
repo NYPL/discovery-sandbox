@@ -37,7 +37,7 @@ class SearchResultsPage extends React.Component {
     const results = searchResults ? collapse({ searchResults }).searchResults.itemListElement : [];
     const breadcrumbs = (
       <div className="page-header">
-        <div className="container">
+        <div className="content-wrapper">
           <Breadcrumbs query={searchKeywords} type="search" />
         </div>
       </div>
@@ -48,20 +48,29 @@ class SearchResultsPage extends React.Component {
 
         {breadcrumbs}
 
-        <div className="search-container">
+        <div className="content-wrapper">
           <Search sortBy={sortBy} />
         </div>
 
-        <div className="container search-results-container">
+        <div className="content-wrapper">
 
           <FacetSidebar
             facets={facetList}
             selectedFacets={selectedFacets}
             keywords={searchKeywords}
             sortBy={sortBy}
+            className="quarter"
           />
 
-          <div className="results" role="region" id="results-region" aria-live="polite" aria-atomic="true" aria-relevant="additions removals" aria-describedby="results-description">
+          <div
+            className="results three-quarter"
+            role="region"
+            id="results-region"
+            aria-live="polite"
+            aria-atomic="true"
+            aria-relevant="additions removals"
+            aria-describedby="results-description"
+          >
             <Hits
               hits={totalHits}
               query={searchKeywords}

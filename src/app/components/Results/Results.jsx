@@ -3,6 +3,7 @@ import React from 'react';
 import Actions from '../../actions/Actions.js';
 import ResultList from './ResultsList.jsx';
 import { ajaxCall } from '../../utils/utils.js';
+import Pagination from '../Pagination/Pagination.jsx';
 
 class Results extends React.Component {
   constructor(props) {
@@ -73,34 +74,15 @@ class Results extends React.Component {
       hits,
       page,
     } = this.props;
-    const perPage = 50;
-    const pageFactor = parseInt(page, 10) * 50;
 
-    const hitsF = hits ? hits.toLocaleString() : '';
-    const pageFactorF = pageFactor.toLocaleString();
-
-    const nextPage = (hits < perPage || pageFactor > hits)
-      ? null : this.getPage(page, 'next');
-    const prevPage = page > 1 ? this.getPage(page, 'previous') : null;
-    let displayItems = `${pageFactor - (perPage - 1)} - ${pageFactor > hits ? hitsF : pageFactorF}`;
-
-    if (hits < perPage) {
-      displayItems = `1 - ${hitsF}`;
-    }
-
-    const paginationButtons = (
-      <div className="pagination">
-        {prevPage}
-        <span
-          className="paginate pagination-total"
-          aria-label={`Displaying ${displayItems} out of ${hitsF} total items.`}
-          tabIndex="0"
-        >
-          {displayItems} of {hitsF}
-        </span>
-        {nextPage}
-      </div>
-    );
+    const paginationButtons = hits !== 0 ?
+      <Pagination
+        hits={hits}
+        page={page}
+        location={this.props.location}
+        sortBy={this.props.sortBy}
+      />
+      : null;
 
     return (
       <div>
@@ -137,7 +119,7 @@ class Results extends React.Component {
 
         <ResultList results={results} query={this.props.query} />
 
-        {hits !== 0 && paginationButtons}
+        {paginationButtons}
       </div>
     );
   }
@@ -149,7 +131,7 @@ Results.propTypes = {
   query: React.PropTypes.string,
   sortBy: React.PropTypes.string,
   location: React.PropTypes.object,
-  page: React.PropTypes.string,
+  page: React.PropTypes.number,
 };
 
 Results.contextTypes = {
