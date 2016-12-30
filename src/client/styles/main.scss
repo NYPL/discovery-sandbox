@@ -1,12 +1,15 @@
-@import "toolkit/css3.scss";
-@import "toolkit/colors.scss";
-@import "toolkit/measurements.scss";
-@import "toolkit/forms.scss";
-@import "toolkit/grid.scss";
+/*
+Import style rules from NYPL Design Toolkit
+*/
+@import "toolkit/nypl-normalize.scss";
+@import "toolkit/grid";
 
+/*
+App-specific utilities and defaults
+*/
 @import "utils/mixins.scss";
 @import "utils/utils.scss";
-@import "utils/fonts.scss";
+// @import "utils/fonts.scss";
 @import "utils/variables.scss";
 @import "utils/base.scss";
 
