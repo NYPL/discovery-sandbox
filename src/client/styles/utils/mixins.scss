@@ -20,16 +20,16 @@
  * Desc: Provides IE6 and up support
  * to clear floated elements.
 */
-%clearfix {
-  *zoom: 1;
-  &:before, &:after {
-    content: " ";
-    display: table;
-  }
-  &:after {
-    clear: both;
-  }
-}
+// %clearfix {
+//   *zoom: 1;
+//   &:before, &:after {
+//     content: " ";
+//     display: table;
+//   }
+//   &:after {
+//     clear: both;
+//   }
+// }
 
 /* --- Media Query Generator ---
  * Reusable mixin used to generate
@@ -142,20 +142,20 @@
 //   box-sizing:           $type;
 // }
 
-@mixin clearfix {
-  &:before,
-  &:after {
-    content: " ";
-    display: block;
-  }
-  &:after {
-    clear: both;
-    visibility: hidden;
-    line-height: 0;
-    height: 0;
-    font-size: 0;
-  }
-}
+// @mixin clearfix {
+//   &:before,
+//   &:after {
+//     content: " ";
+//     display: block;
+//   }
+//   &:after {
+//     clear: both;
+//     visibility: hidden;
+//     line-height: 0;
+//     height: 0;
+//     font-size: 0;
+//   }
+// }
 
 @mixin transform($params) {
   -webkit-transform: $params;
