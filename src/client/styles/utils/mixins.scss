@@ -57,7 +57,7 @@
   }
 }
 
-/* min-and-max-screen($min, $max, $orientation) 
+/* min-and-max-screen($min, $max, $orientation)
  * $min - required
  * $max - required
  * $orientation - optional
@@ -69,7 +69,7 @@
   }
 }
 
-/* max-screen($max, $orientation) 
+/* max-screen($max, $orientation)
  * $max - required
  * $orientation - optional
  * Ex #1: @include max-screen(768px, landscape) { ... }
@@ -81,7 +81,7 @@
   }
 }
 
-/* min-screen($min, $orientation) 
+/* min-screen($min, $orientation)
  * $min - required
  * $orientation - optional
  * Ex #1: @include min-screen(768px, landscape) { ... }
@@ -98,7 +98,7 @@
  * Usage: @include font-face('Kievit-Regular', 'http://...');
  * Desc: Do not include the font file extension, this mixin
  * will generate the proper extensions.
-*/ 
+*/
 @mixin font-face($font-family, $file-path) {
   @font-face {
     font-family: $font-family;
@@ -113,34 +113,34 @@
  * -------------------
  * Usage: @include border-radius(5px);
  * Desc: Creates a border radius
-*/ 
-@mixin border-radius($radius) {
-  -webkit-border-radius: $radius;
-  border-radius: $radius;
-}
+*/
+// @mixin border-radius($radius) {
+//   -webkit-border-radius: $radius;
+//   border-radius: $radius;
+// }
 
 /* OPACITY MIXIN
  * ---------------
  * Usage: @include opacity(0.8);
  * Desc: Supports cross-browser Opacity rules
 */
-@mixin opacity($opacity) {
-  opacity: $opacity;
-  $opacity-ie: $opacity * 100;
-  filter: alpha(opacity=$opacity-ie); //IE8
-}
+// @mixin opacity($opacity) {
+//   opacity: $opacity;
+//   $opacity-ie: $opacity * 100;
+//   filter: alpha(opacity=$opacity-ie); //IE8
+// }
 
-@mixin box-shadow($params) {
-  -webkit-box-shadow: $params;
-  -moz-box-shadow:    $params;
-  box-shadow:         $params;
-}
+// @mixin box-shadow($params) {
+//   -webkit-box-shadow: $params;
+//   -moz-box-shadow:    $params;
+//   box-shadow:         $params;
+// }
 
-@mixin box-sizing($type: border-box) {
-  -webkit-box-sizing:   $type;
-  -moz-box-sizing:      $type;
-  box-sizing:           $type;
-}
+// @mixin box-sizing($type: border-box) {
+//   -webkit-box-sizing:   $type;
+//   -moz-box-sizing:      $type;
+//   box-sizing:           $type;
+// }
 
 @mixin clearfix {
   &:before,
@@ -168,13 +168,13 @@
   transform-origin:         $params;
 }
 
-@mixin transition($params) {
-  -moz-transition:    $params;
-  -o-transition:      $params;
-  -webkit-transition: $params;
-  -ms-transition:     $params;
-  transition:         $params;
-}
+// @mixin transition($params) {
+//   -moz-transition:    $params;
+//   -o-transition:      $params;
+//   -webkit-transition: $params;
+//   -ms-transition:     $params;
+//   transition:         $params;
+// }
 @mixin transition-list($values...){
   -moz-transition:    $values;
   -o-transition:      $values;

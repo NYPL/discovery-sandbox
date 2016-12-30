@@ -133,7 +133,7 @@ dd {
   padding: 0.2rem 0;
   float: left;
   margin: 0;
-  @include box-sizing();
+  @include box-sizing(border-box);
 }
 dt {
   width: 25%;
@@ -227,7 +227,7 @@ table.generic-table {
     float: left;
     padding-right: 1rem;
     padding-left: 1rem;
-    @include box-sizing();
+    @include box-sizing(border-box);
     &:first-child {
       padding-left: 0;
     }
@@ -273,5 +273,5 @@ table.generic-table {
   max-width: $container-width;
   padding: 0.5rem 1rem;
   margin: 0 auto;
-  @include box-sizing();
+  @include box-sizing(border-box);
 }

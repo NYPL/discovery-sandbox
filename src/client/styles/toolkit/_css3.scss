@@ -65,13 +65,13 @@
           transition: ($property $duration $function $delay);
 }
 
-// @mixin box-sizing($type) {
-//   // http://www.w3.org/TR/css3-ui/#box-sizing
-//   // $type can be one of: content-box | padding-box | border-box | inherit
-//   -webkit-box-sizing: $type; // Chrome 4.0 to 9.0, Safari 3.1 to 5.0, Mobile Safari 3.2 to 4.3, Android Browser 2.1 to 3.0
-//      -moz-box-sizing: $type; // Firefox 2.0 to 28.0, Firefox for Android 26.0 onwards
-//           box-sizing: $type;
-// }
+@mixin box-sizing($type) {
+  // http://www.w3.org/TR/css3-ui/#box-sizing
+  // $type can be one of: content-box | padding-box | border-box | inherit
+  -webkit-box-sizing: $type; // Chrome 4.0 to 9.0, Safari 3.1 to 5.0, Mobile Safari 3.2 to 4.3, Android Browser 2.1 to 3.0
+     -moz-box-sizing: $type; // Firefox 2.0 to 28.0, Firefox for Android 26.0 onwards
+          box-sizing: $type;
+}
 
 @mixin appearance($appearance) {
   -webkit-appearance: $appearance;
