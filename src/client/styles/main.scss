@@ -1,11 +1,17 @@
+/*
+Import style rules from NYPL Design Toolkit
+*/
+@import "toolkit/nypl-normalize.scss";
+@import "toolkit/grid";
+
+/*
+App-specific utilities and defaults
+*/
 @import "utils/mixins.scss";
 @import "utils/utils.scss";
-@import "utils/fonts.scss";
+// @import "utils/fonts.scss";
 @import "utils/variables.scss";
-@import "toolkit/measurements.scss";
 @import "utils/base.scss";
-@import "toolkit/forms.scss";
-@import "toolkit/grid.scss";
 
 /*
 Import style rules from NYPL React module components
@@ -41,7 +47,7 @@ button {
   max-width: $container-width;
   padding: 0.5rem 1rem;
   margin: 0 auto;
-  @include box-sizing();
+  @include box-sizing(border-box);
 }
 
 .search-results-container {

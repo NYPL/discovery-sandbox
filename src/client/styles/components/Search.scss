@@ -4,7 +4,7 @@
     max-width: $container-width;
     padding: 0.5rem 1rem;
     margin: 0 auto;
-    @include box-sizing();
+    @include box-sizing(border-box);
 
     @include Kievit-Book;
 
@@ -132,7 +132,7 @@
   h4 {
     margin-top: 0;
     color: $nypl-search-color;
-    background-color: $background-color;
+    background-color: $page-background-color;
   }
 
   & > ul {

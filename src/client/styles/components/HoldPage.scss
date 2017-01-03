@@ -16,14 +16,14 @@
   .item-image {
     width: 7.5%;
     float: left;
-    @include box-sizing();
+    @include box-sizing(border-box);
     img {
       width: 100%;
       height: auto;
     }
   }
   .item-details {
-    @include box-sizing();
+    @include box-sizing(border-box);
     width: 92.5%;
     float: right;
     padding-left: 0.75rem;

@@ -37,7 +37,7 @@ $facets-width: 200px;
     position: relative;
     white-space: nowrap;
     overflow: hidden;
-    @include box-sizing();
+    @include box-sizing(border-box);
 
     &:after {
       display: block;

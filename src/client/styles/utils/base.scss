@@ -1,31 +1,8 @@
-html {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-  font-size: 16px;
-  font-size: 1em;
-  line-height: 1.65;
-  -webkit-font-smoothing: antialiased;
-}
-
 body {
-  color: $page-text-color;
-  background-color: $background-color;
   padding-bottom: 100px;
 }
 
 a {
-  &, &:link {
-    color: $link-color;
-    background-color: inherit;
-  }
-
-  &:visited {
-    color: $link-visited-color;
-  }
-
-  &:hover, &:visited:hover {
-    color: $link-hover-color;
-  }
-
   &.button {
     color: $button-text-color;
     background: $button-background-color;
@@ -61,25 +38,10 @@ button {
   }
 }
 
-h1, h2, h3, h4, h5, h6, p, ol, ul {
-  margin-bottom: 1.5rem;
-  margin-top: 0;
-}
-h1 {
-  font-size: 2.6rem;
-}
-h2 {
-  font-size: 2rem;
-}
-h3 {
-  font-size: 1.6rem;
-}
-h4 {
-  font-size: 1.2rem;
-}
 li {
   margin-bottom: 1rem;
   margin-top: 0;
+  margin-left: 0;
 }
 p {
   &.lead {
@@ -133,7 +95,7 @@ dd {
   padding: 0.2rem 0;
   float: left;
   margin: 0;
-  @include box-sizing();
+  @include box-sizing(border-box);
 }
 dt {
   width: 25%;
@@ -227,7 +189,7 @@ table.generic-table {
     float: left;
     padding-right: 1rem;
     padding-left: 1rem;
-    @include box-sizing();
+    @include box-sizing(border-box);
     &:first-child {
       padding-left: 0;
     }
@@ -273,5 +235,5 @@ table.generic-table {
   max-width: $container-width;
   padding: 0.5rem 1rem;
   margin: 0 auto;
-  @include box-sizing();
+  @include box-sizing(border-box);
 }
