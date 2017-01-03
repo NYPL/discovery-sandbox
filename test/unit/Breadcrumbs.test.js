@@ -7,8 +7,8 @@ import Breadcrumbs from './../../src/app/components/Breadcrumbs/Breadcrumbs.jsx'
 
 // The current page is the last item in the breadcrumb and it is not linked.
 describe('Breadcrumbs', () => {
-  // Home >> Research >> Research Catalog
-  describe('Default on home page:\n\tHome >> Research >> Research Catalog', () => {
+  // Home > Research > Research Catalog
+  describe('Default on home page:\n\tHome > Research > Research Catalog', () => {
     let component;
 
     before(() => {
@@ -41,9 +41,9 @@ describe('Breadcrumbs', () => {
     });
   });
 
-  // Home >> Research >> Research Catalog >> Search Results for [search keyword]
+  // Home > Research > Research Catalog > Search Results for [search keyword]
   describe('On the Search Results page', () => {
-    describe('No search keyword:\n\tHome >> Research >> Research Catalog >> Search Results', () => {
+    describe('No search keyword:\n\tHome > Research > Research Catalog > Search Results', () => {
       let component;
 
       before(() => {
@@ -66,7 +66,7 @@ describe('Breadcrumbs', () => {
     });
 
     describe('With a search keyword:' +
-      '\n\tHome >> Research >> Research Catalog >> Search Results for [search keyword]', () => {
+      '\n\tHome > Research > Research Catalog > Search Results for [search keyword]', () => {
       let component;
 
       before(() => {
@@ -82,8 +82,8 @@ describe('Breadcrumbs', () => {
   describe('On the Item page', () => {
     // The item was access directly without a search.
     // There is, therefore, no 'Items' link to go to.
-    // Home >> Research >> Research Catalog >> [title]
-    describe('No search keyword:\n\tHome >> Research >> Research Catalog >> [title]', () => {
+    // Home > Research > Research Catalog > [title]
+    describe('No search keyword:\n\tHome > Research > Research Catalog > [title]', () => {
       const title = 'Locofoco Platform [electronic resource].';
       let component;
 
@@ -102,9 +102,9 @@ describe('Breadcrumbs', () => {
       });
     });
 
-    // Home >> Research >> Research Catalog >> Items >> [title]
+    // Home > Research > Research Catalog > Items > [title]
     describe('With a search keyword:' +
-      '\n\tHome >> Research >> Research Catalog >> Items >> [title]', () => {
+      '\n\tHome > Research > Research Catalog > Items > [title]', () => {
       const title = 'Locofoco Platform [electronic resource].';
       let component;
 
@@ -113,7 +113,8 @@ describe('Breadcrumbs', () => {
           <Breadcrumbs
             type="item"
             query="locofocos"
-            title={title} />
+            title={title}
+          />
         );
       });
 
@@ -132,7 +133,7 @@ describe('Breadcrumbs', () => {
       });
     });
 
-    // Home >> Research >> Research Catalog >> Items >> [title]
+    // Home > Research > Research Catalog > Items > [title]
     describe('With a long item title', () => {
       const title = 'Prospect before us, or Locofoco impositions exposed. ' +
         'To the people of the United States.';
@@ -143,7 +144,8 @@ describe('Breadcrumbs', () => {
           <Breadcrumbs
             type="item"
             query="locofocos"
-            title={title} />
+            title={title}
+          />
         );
       });
 
@@ -156,9 +158,9 @@ describe('Breadcrumbs', () => {
   });
 
   describe('On the Hold page', () => {
-    // Home >> Research >> Research Catalog >> [title] >> Place a hold
+    // Home > Research > Research Catalog > [title] > Place a hold
     describe('No search keyword:' +
-      '\n\tHome >> Research >> Research Catalog >> [title] >> Place a hold', () => {
+      '\n\tHome > Research > Research Catalog > [title] > Place a hold', () => {
       const title = 'Locofoco Platform [electronic resource].';
       const bNum = 'b20862164';
       let component;
@@ -168,7 +170,8 @@ describe('Breadcrumbs', () => {
           <Breadcrumbs
             type="hold"
             title={title}
-            url={bNum} />
+            url={bNum}
+          />
         );
       });
 
@@ -187,9 +190,9 @@ describe('Breadcrumbs', () => {
       });
     });
 
-    // Home >> Research >> Research Catalog >> Items >> [title] >> Place a hold
+    // Home > Research > Research Catalog > Items > [title] > Place a hold
     describe('With a search keyword' +
-      '\n\tHome >> Research >> Research Catalog >> Items >> [title] >> Place a hold', () => {
+      '\n\tHome > Research > Research Catalog > Items > [title] > Place a hold', () => {
       const title = 'Locofoco Platform [electronic resource].';
       const bNum = 'b20862164';
       let component;
@@ -200,7 +203,8 @@ describe('Breadcrumbs', () => {
             type="hold"
             query="locofocos"
             title={title}
-            url={bNum} />
+            url={bNum}
+          />
         );
       });
 
@@ -219,7 +223,7 @@ describe('Breadcrumbs', () => {
       });
     });
 
-    // // Home >> Research >> Research Catalog >> Items >> [title] >> Place a hold
+    // // Home > Research > Research Catalog > Items > [title] > Place a hold
     describe('With a long item title', () => {
       const title = 'Prospect before us, or Locofoco impositions exposed. ' +
         'To the people of the United States.';
@@ -232,7 +236,8 @@ describe('Breadcrumbs', () => {
             type="hold"
             query="locofocos"
             title={title}
-            url={bNum} />
+            url={bNum}
+          />
         );
       });
 
@@ -246,9 +251,9 @@ describe('Breadcrumbs', () => {
   });
 
   describe('On the Hold Confirmation page', () => {
-    // Home >> Research >> Research Catalog >> [title] >> Hold confirmation
+    // Home > Research > Research Catalog > [title] > Hold confirmation
     describe('No search keyword:' +
-      '\n\tHome >> Research >> Research Catalog >> [title] >> Hold confirmation', () => {
+      '\n\tHome > Research > Research Catalog > [title] > Hold confirmation', () => {
       const title = 'Locofoco Platform [electronic resource].';
       const bNum = 'b20862164';
       let component;
@@ -258,7 +263,8 @@ describe('Breadcrumbs', () => {
           <Breadcrumbs
             type="holdConfirmation"
             title={title}
-            url={bNum} />
+            url={bNum}
+          />
         );
       });
 
@@ -271,9 +277,9 @@ describe('Breadcrumbs', () => {
       });
     });
 
-    // Home >> Research >> Research Catalog >> Items >> [title] >> Hold confirmation
+    // Home > Research > Research Catalog > Items > [title] > Hold confirmation
     describe('With a search keyword' +
-      '\n\tHome >> Research >> Research Catalog >> Items >> [title] >> Hold confirmation', () => {
+      '\n\tHome > Research > Research Catalog > Items > [title] > Hold confirmation', () => {
       const title = 'Locofoco Platform [electronic resource].';
       const bNum = 'b20862164';
       let component;
@@ -284,7 +290,8 @@ describe('Breadcrumbs', () => {
             type="holdConfirmation"
             query="locofocos"
             title={title}
-            url={bNum} />
+            url={bNum}
+          />
         );
       });
 
@@ -299,7 +306,7 @@ describe('Breadcrumbs', () => {
       });
     });
 
-    // // Home >> Research >> Research Catalog >> Items >> [title] >> Hold confirmation
+    // // Home > Research > Research Catalog > Items > [title] > Hold confirmation
     describe('With a long item title', () => {
       const title = 'Prospect before us, or Locofoco impositions exposed. ' +
         'To the people of the United States.';
@@ -312,7 +319,8 @@ describe('Breadcrumbs', () => {
             type="holdConfirmation"
             query="locofocos"
             title={title}
-            url={bNum} />
+            url={bNum}
+          />
         );
       });
 
