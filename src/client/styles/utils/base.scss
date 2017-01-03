@@ -7,47 +7,48 @@ html {
 }
 
 body {
-  color: $pagetextcolor;
-  background-color: $backgroundcolor;
+  color: $page-text-color;
+  background-color: $background-color;
   padding-bottom: 100px;
 }
 
 a {
   &, &:link {
-    color: $linkcolor;
+    color: $link-color;
     background-color: inherit;
   }
 
   &:visited {
-    color: $linkvisitedcolor;
+    color: $link-visited-color;
   }
 
   &:hover, &:visited:hover {
-    color: $linkhovercolor;
+    color: $link-hover-color;
   }
 
   &.button {
-    color: $buttontextcolor;
-    background: $buttoncolor;
+    color: $button-text-color;
+    background: $button-background-color;
     padding: 0.35rem 0.65rem;
     text-decoration: none;
     white-space: nowrap;
 
     &:hover {
-      color: $buttontextcolor;
-      background: $buttonhovercolor;
+      color: $button-background-color;
+      background: $button-text-color;
     }
   }
 }
 
 button {
-  color: $buttontextcolor;
-  background: $buttoncolor;
-  border: 1px solid $buttoncolor;
+  color: $button-text-color;
+  background: $button-background-color;
+  border: 1px solid $button-background-color;
 
   &:hover {
-    background: $buttonhovercolor;
-    border-color: $buttonhovercolor;
+    color: $button-background-color;
+    background: $button-text-color;
+    border-color: $button-text-color;
   }
 
   &.large {
@@ -91,9 +92,9 @@ a, input, select, button {
   border-radius: 0;
 
   &:focus {
-    outline-color: $focuscolor;
+    outline-color: $focus-color;
     outline-style: solid;
-    outline-width: $focuswidth;
+    outline-width: $focus-width;
   }
 }
 
@@ -113,7 +114,7 @@ a, input, select, button {
 // }
 
 .radio-group {
-  background: $pagecolorlight;
+  background: $page-colorlight;
   padding: 0.35rem 0.5rem;
   label,
   input {
@@ -188,7 +189,7 @@ iframe {
 
 .inline-form {
   input {
-    border: 1px solid $bordercolor;
+    border: 1px solid $border-color;
     padding: 0.2rem 0;
     text-indent: 0.2rem;
     width: 12rem;
@@ -204,7 +205,7 @@ table.generic-table {
     text-align: left;
   }
   tr {
-    border-bottom: 1px solid $bordercolor;
+    border-bottom: 1px solid $border-color;
     &.more {
       border-bottom: 0;
     }
@@ -269,7 +270,7 @@ table.generic-table {
 }
 
 .container {
-  max-width: $containerWidth;
+  max-width: $container-width;
   padding: 0.5rem 1rem;
   margin: 0 auto;
   @include box-sizing();

@@ -6,7 +6,7 @@
 @warn "remove magic numbers";
 
 @mixin banner-alert() {
-  background-color: $alertcolor;
+  background-color: $alert-color;
   padding: 0.8rem 0;
   -webkit-animation: alert 2s linear;
   animation: alert 2s linear;

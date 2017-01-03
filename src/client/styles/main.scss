@@ -30,7 +30,7 @@ Import style rules from NYPL React module components
 }
 
 button {
-  color: $buttontextcolor;
+  color: $button-text-color;
 }
 
 .page-header {
@@ -38,7 +38,7 @@ button {
 }
 
 .container {
-  max-width: $containerWidth;
+  max-width: $container-width;
   padding: 0.5rem 1rem;
   margin: 0 auto;
   @include box-sizing();
@@ -50,12 +50,12 @@ button {
 
 .status {
   font-weight: bold;
-  color: $statusdefaultcolor;
+  color: $status-default-color;
   background-color: inherit;
   text-transform: capitalize;
 
   &.available {
-    color: $statusavailablecolor;
+    color: $status-available-color;
   }
 }
 

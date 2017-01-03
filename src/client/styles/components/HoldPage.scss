@@ -8,7 +8,7 @@
 }
 
 .item-summary {
-  background: $pagecolorlight;
+  background: $page-colorlight;
   padding: 0.6rem 0.75rem;
   margin-bottom: 1.2rem;
   @include clearfix();
@@ -74,18 +74,18 @@ label.group {
   }
 
   &.selected {
-    background: $alertcolor;
+    background: $alert-color;
   }
 
   &:first-child .col {
-    border-top: 1px solid $bordercolor;
+    border-top: 1px solid $border-color;
   }
 
   .col {
     display: table-cell;
     vertical-align: middle;
     padding: 0.35rem 1rem;
-    border-bottom: 1px solid $bordercolor;
+    border-bottom: 1px solid $border-color;
   }
 
   small {

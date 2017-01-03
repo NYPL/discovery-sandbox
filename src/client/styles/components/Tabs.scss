@@ -8,7 +8,7 @@
   .tab {
     flex-grow: 1;
     text-align: center;
-    color: $pagetextcolor;
+    color: $page-text-color;
     text-decoration: none;
     height: auto;
     line-height: normal;
@@ -21,16 +21,16 @@
     margin-bottom: 0;
 
     &:hover {
-      background: $buttonhovercolor;
-      color: $buttontextcolor;
+      background: $button-text-color;
+      color: $button-background-color;
     }
 
     &[aria-selected="true"] {
-      background: $backgroundcolor;
-      color: $pagetextcolor;
+      background: $button-text-color;
+      color: $button-background-color;
       cursor: default;
-      border-color: $bordercolor;
-      border-bottom: 2px solid $backgroundcolor;
+      border-color: $border-color;
+      border-bottom: 2px solid $button-text-color;
       margin-bottom: -2px;
     }
   }
@@ -39,7 +39,7 @@
 .tabpanel {
   display: none;
   min-height: 60px;
-  border: 1px solid $bordercolor;
+  border: 1px solid $border-color;
 
   img {
     width: 100%;
@@ -53,7 +53,7 @@
 .tabpanel-item {
   line-height: normal;
   padding: 0.35rem;
-  border-top: 1px solid $bordercolor;
+  border-top: 1px solid $border-color;
   display: flex;
   flex-direction: row;
 
@@ -87,7 +87,7 @@
 
     .type,
     .description {
-      color: $pagetextcolor;
+      color: $page-text-color;
       font-size: 0.7rem;
     }
 
@@ -100,7 +100,7 @@
     }
 
     .description {
-      color: $pagetextcolor;
+      color: $page-text-color;
     }
 
     .divider {
@@ -109,7 +109,7 @@
       font-size: 2rem;
       line-height: 0.8rem;
       vertical-align: middle;
-      color: $pagetextcolor;
+      color: $page-text-color;
 
       &:before {
         content: "·";
@@ -120,13 +120,13 @@
 
 a.tabpanel-link-full {
   display: block;
-  background: $buttoncolor;
-  color: $buttontextcolor;
+  background: $button-background-color;
+  color: $button-text-color;
   text-align: center;
   text-decoration: none;
   line-height: 2rem;
   &:hover {
-    background: $buttonhovercolor;
-    color: $buttontextcolor;
+    background: $button-text-color;
+    color: $button-background-color;
   }
 }
