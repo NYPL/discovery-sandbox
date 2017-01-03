@@ -62,8 +62,10 @@
 }
 
 .holdings-table {
+  @include basic-table;
+
   .collapsed {
-      display: none;
+    display: none;
   }
 }
 

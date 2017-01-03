@@ -96,10 +96,13 @@ label.group {
 
 .map-container {
   font-size: 1.3rem;
+
   .col:first-child {
     padding-left: 0;
   }
+
   table {
+    @include basic-table;
     font-size: 1rem;
   }
 }
