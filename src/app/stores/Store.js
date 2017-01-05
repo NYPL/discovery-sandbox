@@ -6,7 +6,7 @@ class Store {
     this.bindListeners({
       updateSearchResults: Actions.updateSearchResults,
       updateSearchKeywords: Actions.updateSearchKeywords,
-      updateItem: Actions.updateItem,
+      updateBib: Actions.updateBib,
       updateFacets: Actions.updateFacets,
       updateSelectedFacets: Actions.updateSelectedFacets,
       removeFacet: Actions.removeFacet,
@@ -16,7 +16,7 @@ class Store {
 
     this.state = {
       searchResults: {},
-      item: {},
+      bib: {},
       searchKeywords: '',
       facets: {},
       selectedFacets: {},
@@ -33,8 +33,8 @@ class Store {
     this.setState({ searchKeywords: data });
   }
 
-  updateItem(data) {
-    this.setState({ item: data });
+  updateBib(data) {
+    this.setState({ bib: data });
   }
 
   updateFacets(data) {
