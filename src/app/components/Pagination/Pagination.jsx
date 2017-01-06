@@ -13,6 +13,12 @@ class Pagination extends React.Component {
     this.state = { sortValue: this.props.sortBy };
   }
 
+  /*
+   * getPage()
+   * Get a button based on current page.
+   * @param {string} page The current page number.
+   * @param {string} type Either 'Next' or 'Previous' to indication button label.
+   */
   getPage(page, type = 'Next') {
     if (!page) return null;
     const intPage = parseInt(page, 10);
@@ -30,6 +36,11 @@ class Pagination extends React.Component {
     );
   }
 
+  /*
+   * fetchResults()
+   * Make ajax call with updated page selected.
+   * @param {string} page The next page to get results from.
+   */
   fetchResults(page) {
     const query = this.props.location.query.q;
     const pageParam = page !== 1 ? `&page=${page}` : '';
