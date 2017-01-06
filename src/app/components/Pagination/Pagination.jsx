@@ -1,7 +1,10 @@
 import React from 'react';
-import axios from 'axios';
 
 import Actions from '../../actions/Actions.js';
+import {
+  ajaxCall,
+  getSortQuery,
+} from '../../utils/utils.js';
 
 class Pagination extends React.Component {
   constructor(props) {
@@ -19,7 +22,7 @@ class Pagination extends React.Component {
       <button
         className={`paginate ${type.toLowerCase()}`}
         onClick={() => this.fetchResults(pageNum)}
-        rel={type}
+        rel={type.toLowerCase()}
         aria-controls="results-region"
       >
         {type} Page
@@ -30,24 +33,13 @@ class Pagination extends React.Component {
   fetchResults(page) {
     const query = this.props.location.query.q;
     const pageParam = page !== 1 ? `&page=${page}` : '';
-    const reset = this.state.sortValue === 'relevance';
-    let sortQuery = '';
+    const sortQuery = getSortQuery(this.state.sortValue);
 
-    if (!reset) {
-      const [sortBy, order] = this.state.sortValue.split('_');
-      sortQuery = `&sort=${sortBy}&sort_direction=${order}`;
-    }
-
-    axios
-      .get(`/api?q=${query}${pageParam}${sortQuery}`)
-      .then(response => {
-        Actions.updateSearchResults(response.data.searchResults);
-        Actions.updatePage(page);
-        this.context.router.push(`/search?q=${encodeURIComponent(query)}${pageParam}${sortQuery}`);
-      })
-      .catch(error => {
-        console.log(error);
-      });
+    ajaxCall(`/api?q=${query}${pageParam}${sortQuery}`, response => {
+      Actions.updateSearchResults(response.data.searchResults);
+      Actions.updatePage(page);
+      this.context.router.push(`/search?q=${encodeURIComponent(query)}${pageParam}${sortQuery}`);
+    });
   }
 
   render() {
