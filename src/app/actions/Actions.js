@@ -10,7 +10,7 @@ class Actions {
     return data;
   }
 
-  updateItem(data) {
+  updateBib(data) {
     return data;
   }
 
