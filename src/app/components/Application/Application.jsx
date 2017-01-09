@@ -6,6 +6,50 @@ import Footer from '@nypl/dgx-react-footer';
 import Feedback from '../Feedback/Feedback.jsx';
 import Store from '../../stores/Store.js';
 import PatronStore from '../../stores/PatronStore.js';
+import {
+  collapse,
+  ajaxCall,
+  createAppHistory,
+} from '../../utils/utils.js';
+import Actions from '../../actions/Actions.js';
+
+const history = createAppHistory();
+
+history.listen(location => {
+  const {
+    action,
+    search,
+    query,
+    state,
+  } = location;
+  console.log(action, search, query, state);
+
+  if (state === null) {
+    history.push({
+      state: { start: true },
+      search,
+    });
+  }
+
+  if (action === 'POP' && state !== null) {
+    console.log('test');
+    ajaxCall(`/api${search}`, (response) => {
+      Actions.updateSearchResults(response.data.searchResults);
+      // Actions.updateSearchKeywords(this.state.data.searchKeywords);
+    });
+    // ajaxCall(search, response => {
+    //   const availabilityType = availability || 'New Arrival';
+    //   const publicationType = publishYear || 'recentlyReleased';
+    //
+    //   if (response.data && response.data.bibItems) {
+    //     Actions.updateFiltered(filters);
+    //     Actions.updateNewArrivalsData(response.data);
+    //     Actions.updatePublicationType(publicationType);
+    //     Actions.updateAvailabilityType(availabilityType);
+    //   }
+    // });
+  }
+});
 
 class App extends React.Component {
   constructor(props) {
@@ -20,6 +64,26 @@ class App extends React.Component {
 
   componentDidMount() {
     Store.listen(this.onChange);
+  }
+
+  componentWillMount() {
+    if (!this.state.data.searchResults) {
+      ajaxCall(`/api?q=${this.state.data.searchKeywords}`, (response) => {
+        Actions.updateSearchResults(response.data.searchResults);
+        Actions.updateSearchKeywords(this.state.data.searchKeywords);
+      });
+    }
+  }
+
+  componentDidUpdate(t,w) {
+    // console.log(w);
+    // if (this.state.data.searchKeywords !== w.data.searchKeywords) {
+    //   console.log('TEST');
+    //   ajaxCall(`/api?q=${w.data.searchKeywords}`, (response) => {
+    //     Actions.updateSearchResults(response.data.searchResults);
+    //     Actions.updateSearchKeywords(this.state.data.searchKeywords);
+    //   });
+    // }
   }
 
   componentWillUnmount() {

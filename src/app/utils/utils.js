@@ -2,6 +2,12 @@ import { gaUtils } from 'dgx-react-ga';
 import axios from 'axios';
 import { mapObject as _mapObject } from 'underscore';
 
+import {
+  createHistory,
+  useQueries,
+  createMemoryHistory,
+} from 'history';
+
 /**
  * ajaxCall
  * Utility function to make ajax requests.
@@ -20,6 +26,14 @@ const ajaxCall = (
     .get(endpoint)
     .then(cb)
     .catch(errorcb);
+};
+
+const createAppHistory = () => {
+  if (typeof(window) !== 'undefined') {
+    return useQueries(createHistory)();
+  }
+
+  return useQueries(createMemoryHistory)();
 };
 
 /**
@@ -177,4 +191,5 @@ export {
   ajaxCall,
   getSortQuery,
   getFacetParams,
+  createAppHistory,
 };
