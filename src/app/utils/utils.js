@@ -1,12 +1,16 @@
 import { gaUtils } from 'dgx-react-ga';
 import axios from 'axios';
-import { mapObject as _mapObject } from 'underscore';
-
 import {
   createHistory,
   useQueries,
   createMemoryHistory,
 } from 'history';
+import {
+  mapObject as _mapObject,
+  findWhere as _findWhere,
+  findIndex as _findIndex,
+  forEach as _forEach,
+} from 'underscore';
 
 /**
  * ajaxCall
@@ -28,12 +32,73 @@ const ajaxCall = (
     .catch(errorcb);
 };
 
+/**
+ * createAppHistory
+ * Create a history in the browser or server that coincides with react-router.
+ */
 const createAppHistory = () => {
   if (typeof(window) !== 'undefined') {
     return useQueries(createHistory)();
   }
 
   return useQueries(createMemoryHistory)();
+};
+
+/**
+ * createAppHistory
+ * Destructure the search keywords from the facet string. The function then returns the full
+ * search keywords along with an object of the selected facets with their API values. In the
+ * following example, the owner id of "orgs:1000" returns the human readable label of
+ * "Stephen A. Schwarzman Building" from the API.
+ * Queries can be in the following format:
+ *   'alexander hamilton owner:"orgs:1000"'
+ *   'locofocos'
+ *   'war subject:"World War, 1914-1918." date:"2000"'
+ * @param {string} query The full search query.
+ * @param {object} apiFacets The facets from the API.
+ */
+const destructureQuery = (query, apiFacets) => {
+  const colonIndex = query.indexOf(':') !== -1 ? query.indexOf(':') : '';
+  const facetStartingIndex = colonIndex ? query.lastIndexOf(' ', colonIndex) : '';
+  let q = query;
+  let facetsString = '';
+
+  if (facetStartingIndex) {
+    q = query.substring(0, facetStartingIndex);
+    facetsString = query.substring(facetStartingIndex);
+  }
+
+  // console.log(q, facetsString);
+  const selectedFacets = {};
+  const facetArray = facetsString ? facetsString.split('" ') : [];
+  _forEach(facetArray, str => {
+    if (str.charAt(str.length - 1) !== '"') str += '"';
+
+    const facet = str.indexOf(':"') !== -1 ? str.trim().split(':"') : str.trim().split(':');
+    const field = facet[0];
+    const value = facet[1].substring(0, facet[1].length - 1);
+    // Find the index where the field exists in the list of facets from the API
+    const index = _findIndex(apiFacets.itemListElement, { field });
+    // If the index exists, try to find the facet value from the API
+    if (apiFacets.itemListElement[index]) {
+      const findFacet = _findWhere(apiFacets.itemListElement[index].values, { value });
+
+      selectedFacets[field] = {
+        id: findFacet ? findFacet.value : value,
+        value: findFacet ? (findFacet.label || findFacet.value) : value,
+      };
+    } else {
+      selectedFacets[field] = {
+        id: value,
+        value,
+      };
+    }
+  });
+
+  return {
+    q,
+    selectedFacets,
+  };
 };
 
 /**
@@ -192,4 +257,5 @@ export {
   getSortQuery,
   getFacetParams,
   createAppHistory,
+  destructureQuery,
 };

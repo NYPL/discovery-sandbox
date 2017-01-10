@@ -7,46 +7,36 @@ import Feedback from '../Feedback/Feedback.jsx';
 import Store from '../../stores/Store.js';
 import PatronStore from '../../stores/PatronStore.js';
 import {
-  collapse,
   ajaxCall,
   createAppHistory,
+  destructureQuery,
 } from '../../utils/utils.js';
 import Actions from '../../actions/Actions.js';
 
 const history = createAppHistory();
 
+// Listen to the browser's navigation buttons.
 history.listen(location => {
   const {
     action,
     search,
     query,
-    state,
   } = location;
-  console.log(action, search, query, state);
 
-  // if (state === null) {
-  //   history.push({
-  //     state: { start: true },
-  //     search,
-  //   });
-  // }
-  //
+  const qParameter = query.q;
+
   if (action === 'POP' && search) {
     ajaxCall(`/api${search}`, (response) => {
+      const {
+        q,
+        selectedFacets,
+      } = destructureQuery(qParameter, response.data.facets);
+
+      Actions.updateSelectedFacets(selectedFacets);
+      Actions.updateFacets(response.data.facets);
       Actions.updateSearchResults(response.data.searchResults);
-      Actions.updateSearchKeywords(query.q);
+      Actions.updateSearchKeywords(q);
     });
-    // ajaxCall(search, response => {
-    //   const availabilityType = availability || 'New Arrival';
-    //   const publicationType = publishYear || 'recentlyReleased';
-    //
-    //   if (response.data && response.data.bibItems) {
-    //     Actions.updateFiltered(filters);
-    //     Actions.updateNewArrivalsData(response.data);
-    //     Actions.updatePublicationType(publicationType);
-    //     Actions.updateAvailabilityType(availabilityType);
-    //   }
-    // });
   }
 });
 
@@ -61,10 +51,6 @@ class App extends React.Component {
     this.onChange = this.onChange.bind(this);
   }
 
-  componentDidMount() {
-    Store.listen(this.onChange);
-  }
-
   componentWillMount() {
     if (!this.state.data.searchResults) {
       ajaxCall(`/api?q=${this.state.data.searchKeywords}`, (response) => {
@@ -74,16 +60,8 @@ class App extends React.Component {
     }
   }
 
-  componentWillReceiveProps(t,w) {
-    // console.log(this.state.data, w);
-    // console.log(w);
-    // if (this.state.data.searchKeywords !== w.data.searchKeywords) {
-    //   console.log('TEST');
-    //   ajaxCall(`/api?q=${w.data.searchKeywords}`, (response) => {
-    //     Actions.updateSearchResults(response.data.searchResults);
-    //     Actions.updateSearchKeywords(this.state.data.searchKeywords);
-    //   });
-    // }
+  componentDidMount() {
+    Store.listen(this.onChange);
   }
 
   componentWillUnmount() {
@@ -111,6 +89,7 @@ class App extends React.Component {
 
 App.propTypes = {
   children: React.PropTypes.object,
+  location: React.PropTypes.object,
 };
 
 App.contextTypes = {
