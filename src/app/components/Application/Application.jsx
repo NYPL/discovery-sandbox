@@ -24,18 +24,17 @@ history.listen(location => {
   } = location;
   console.log(action, search, query, state);
 
-  if (state === null) {
-    history.push({
-      state: { start: true },
-      search,
-    });
-  }
-
-  if (action === 'POP' && state !== null) {
-    console.log('test');
+  // if (state === null) {
+  //   history.push({
+  //     state: { start: true },
+  //     search,
+  //   });
+  // }
+  //
+  if (action === 'POP' && search) {
     ajaxCall(`/api${search}`, (response) => {
       Actions.updateSearchResults(response.data.searchResults);
-      // Actions.updateSearchKeywords(this.state.data.searchKeywords);
+      Actions.updateSearchKeywords(query.q);
     });
     // ajaxCall(search, response => {
     //   const availabilityType = availability || 'New Arrival';
@@ -75,7 +74,8 @@ class App extends React.Component {
     }
   }
 
-  componentDidUpdate(t,w) {
+  componentWillReceiveProps(t,w) {
+    // console.log(this.state.data, w);
     // console.log(w);
     // if (this.state.data.searchKeywords !== w.data.searchKeywords) {
     //   console.log('TEST');
@@ -112,5 +112,12 @@ class App extends React.Component {
 App.propTypes = {
   children: React.PropTypes.object,
 };
+
+App.contextTypes = {
+  router: function contextType() {
+    return React.PropTypes.func.isRequired;
+  },
+};
+
 
 export default App;
