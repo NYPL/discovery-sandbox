@@ -1,9 +1,9 @@
 /*
 Import style rules from NYPL Design Toolkit
 */
-@import "toolkit/nypl-normalize.scss";
-@import "toolkit/grid";
-@import "toolkit/table-results";
+@import "~@nypl/design-toolkit/sass/nypl-normalize";
+@import "~@nypl/design-toolkit/sass/grid";
+@import "~@nypl/design-toolkit/sass/tables-results";
 
 /*
 App-specific utilities and defaults
