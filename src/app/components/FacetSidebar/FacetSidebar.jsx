@@ -8,7 +8,6 @@ import {
 } from '../../utils/utils.js';
 
 import {
-  mapObject as _mapObject,
   findWhere as _findWhere,
 } from 'underscore';
 

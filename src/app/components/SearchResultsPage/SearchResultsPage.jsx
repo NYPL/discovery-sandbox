@@ -13,15 +13,6 @@ import {
 } from '../../utils/utils.js';
 
 class SearchResultsPage extends React.Component {
-  componentWillMount() {
-    if (!this.props.searchResults) {
-      ajaxCall(`/api?q=${this.props.searchKeywords}`, (response) => {
-        Actions.updateSearchResults(response.data.searchResults);
-        Actions.updateSearchKeywords(this.props.searchKeywords);
-      });
-    }
-  }
-
   render() {
     const {
       searchResults,
