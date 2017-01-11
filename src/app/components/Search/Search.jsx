@@ -57,7 +57,6 @@ class Search extends React.Component {
     const keyword = this.state.searchKeywords.trim();
     const sortQuery = getSortQuery(this.props.sortBy);
     const facetQuery = getFacetParams(this.props.selectedFacets);
-    console.log(facetQuery);
 
     // Track the submitted keyword search.
     trackDiscovery('Search', keyword);
@@ -67,12 +66,15 @@ class Search extends React.Component {
       Actions.updateFacets(response.data.facets);
       Actions.updateSearchKeywords(keyword);
       Actions.updatePage('1');
-      this.routeHandler(`/search?q=${keyword}${facetQuery}${sortQuery}`);
+      this.routeHandler({
+        pathname: '/search',
+        query: { q: `${keyword}${facetQuery}${sortQuery}` },
+      });
     });
   }
 
-  routeHandler(keyword) {
-    this.context.router.push(keyword);
+  routeHandler(obj) {
+    this.context.router.push(obj);
   }
 
   /**

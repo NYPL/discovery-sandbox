@@ -7,7 +7,6 @@ import MockAdapter from 'axios-mock-adapter';
 import axios from 'axios';
 
 import Pagination from '../../src/app/components/Pagination/Pagination.jsx';
-import Actions from '../../src/app/actions/Actions.js';
 
 const mock = new MockAdapter(axios);
 const response = { searchResults: {} };
@@ -118,6 +117,38 @@ describe('Pagination', () => {
     it('should have a description aria-label', () => {
       expect(component.find('span').prop('aria-label'))
         .to.equal('Displaying 101 - 150 out of 4,000 total items.');
+    });
+  });
+
+  describe('getPage() method', () => {
+    let component;
+
+    before(() => {
+      component = shallow(<Pagination hits={4000} page="3" />);
+    });
+
+    it('should have the method "getPage()"', () => {
+      expect(component.instance().getPage).to.be.defined;
+    });
+
+    it('should return null if no arguments are passed', () => {
+      expect(component.instance().getPage()).to.be.null;
+    });
+
+    it('should return a button with "Next Page" as the default text', () => {
+      const nextPage = component.instance().getPage(2);
+
+      expect(nextPage.type).to.equal('button');
+      expect(nextPage.props.rel).to.equal('next');
+      expect(nextPage.props.children[0] + nextPage.props.children[1]).to.equal('Next Page');
+    });
+
+    it('should return a button with "Previous Page"', () => {
+      const nextPage = component.instance().getPage(2, 'Previous');
+
+      expect(nextPage.type).to.equal('button');
+      expect(nextPage.props.rel).to.equal('previous');
+      expect(nextPage.props.children[0] + nextPage.props.children[1]).to.equal('Previous Page');
     });
   });
 

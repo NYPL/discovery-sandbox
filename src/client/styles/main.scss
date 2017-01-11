@@ -3,6 +3,7 @@ Import style rules from NYPL Design Toolkit
 */
 @import "toolkit/nypl-normalize.scss";
 @import "toolkit/grid";
+@import "toolkit/table-results";
 
 /*
 App-specific utilities and defaults
@@ -103,6 +104,10 @@ button {
 
 .inner {
   @include inner-block;
+}
+
+table {
+  @include views-table;
 }
 
 // Overrides for other components

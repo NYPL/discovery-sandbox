@@ -73,12 +73,12 @@ class HoldConfirmation extends React.Component {
             <div className="two-third">
               <Tabs
                 tabs={[
-                  {title: 'Directions to building', id: 'building'},
-                  {title: 'Directions to room', id: 'room'},
+                  { title: 'Directions to building', id: 'building' },
+                  { title: 'Directions to room', id: 'room' },
                 ]}
               >
                 <TabPanel id="building">
-                  <iframe src={`${location.address["map-embed-uri"]}`} height="450" frameBorder="0" style={{border: 0}} allowFullScreen title="Google Map" tabIndex="-1"></iframe>
+                  <iframe src={`${location.address['map-embed-uri']}`} height="450" frameBorder="0" style={{ border: 0 }} allowFullScreen title="Google Map" tabIndex="-1"></iframe>
                 </TabPanel>
                 <TabPanel id="room">
                   <img src="/src/client/images/floor_plan.png" alt="Floor plan of first floor of Stephen A. Schwarzman Building" />
@@ -87,32 +87,34 @@ class HoldConfirmation extends React.Component {
             </div>
             <div className="third">
               <p>
-                <a href={`${location.uri}`}>{location["full-name"]}</a><br />
+                <a href={`${location.uri}`}>{location['full-name']}</a><br />
                 {location.address.address1}<br />
                 {location.prefLabel}
               </p>
               <p>Regular hours:</p>
-              <table className="generic-table">
+              <table>
                 <caption className="visuallyHidden">Location hours</caption>
-                <tbody>
+                <thead>
                   <tr>
                     <th scope="col">Day</th>
                     <th scope="col">Hours</th>
                   </tr>
+                </thead>
+                <tbody>
                   {
                     location.hours.map((h, i) => (
                       <tr key={i}>
                         <td scope="col">{h.day}</td>
-                          {!h.closed &&
-                            <td scope="col">
-                              {h.open} - {h.close}
-                            </td>
-                          }
-                          {h.closed &&
-                            <td scope="col">
+                        {!h.closed &&
+                          <td scope="col">
+                            {h.open} - {h.close}
+                          </td>
+                        }
+                        {h.closed &&
+                          <td scope="col">
                             <em>Closed</em>
-                            </td>
-                          }
+                          </td>
+                        }
                       </tr>
                     ))
                   }
@@ -130,6 +132,7 @@ HoldConfirmation.propTypes = {
   item: React.PropTypes.object,
   location: React.PropTypes.object,
   searchKeywords: React.PropTypes.string,
+  params: React.PropTypes.object,
 };
 
 export default HoldConfirmation;

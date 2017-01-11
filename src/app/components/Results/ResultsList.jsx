@@ -20,7 +20,7 @@ class ResultsList extends React.Component {
 
     ajaxCall(`/api/retrieve?q=${id}`, (response) => {
       // console.log(response.data);
-      Actions.updateItem(response.data);
+      Actions.updateBib(response.data);
       this.routeHandler(`/${path}/${id}`);
     });
   }

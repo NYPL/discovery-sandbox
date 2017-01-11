@@ -42,12 +42,15 @@ describe('ajaxCall()', () => {
       ajaxCallGetSpy.restore();
     });
 
-    // Todo: This doesn't test correctly.
     it('should invoke the callback function', () => {
       const cbSpy = sinon.spy();
       ajaxCall('/api?q=locofocos', cbSpy);
 
-      // expect(cbSpy.callCount).to.equal(1);
+      setTimeout(() => {
+        expect(cbSpy.callCount).to.equal(1);
+      }, 0);
+
+      cbSpy.reset();
     });
   });
 
@@ -65,10 +68,15 @@ describe('ajaxCall()', () => {
     it('should invoke the error callback function', () => {
       const cbSpy = sinon.spy();
       const cbErrorSpy = sinon.spy();
-      ajaxCall('/api?q=locofocos', (response) => cbSpy, (error) => cbErrorSpy);
+      ajaxCall('/api?q=locofocos', cbSpy, cbErrorSpy);
 
-      expect(cbSpy.callCount).to.equal(0);
-      expect(cbErrorSpy.callCount).to.equal(1);
+      setTimeout(() => {
+        expect(cbSpy.callCount).to.equal(0);
+        expect(cbErrorSpy.callCount).to.equal(1);
+      }, 0);
+
+      cbSpy.reset();
+      cbErrorSpy.reset();
     });
   });
 });
