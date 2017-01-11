@@ -1,7 +1,10 @@
 import React from 'react';
-import axios from 'axios';
 
 import Actions from '../../actions/Actions.js';
+import {
+  ajaxCall,
+  getSortQuery,
+} from '../../utils/utils.js';
 
 class Pagination extends React.Component {
   constructor(props) {
@@ -10,6 +13,12 @@ class Pagination extends React.Component {
     this.state = { sortValue: this.props.sortBy };
   }
 
+  /*
+   * getPage()
+   * Get a button based on current page.
+   * @param {string} page The current page number.
+   * @param {string} type Either 'Next' or 'Previous' to indication button label.
+   */
   getPage(page, type = 'Next') {
     if (!page) return null;
     const intPage = parseInt(page, 10);
@@ -19,7 +28,7 @@ class Pagination extends React.Component {
       <button
         className={`paginate ${type.toLowerCase()}`}
         onClick={() => this.fetchResults(pageNum)}
-        rel={type}
+        rel={type.toLowerCase()}
         aria-controls="results-region"
       >
         {type} Page
@@ -27,27 +36,21 @@ class Pagination extends React.Component {
     );
   }
 
+  /*
+   * fetchResults()
+   * Make ajax call with updated page selected.
+   * @param {string} page The next page to get results from.
+   */
   fetchResults(page) {
     const query = this.props.location.query.q;
     const pageParam = page !== 1 ? `&page=${page}` : '';
-    const reset = this.state.sortValue === 'relevance';
-    let sortQuery = '';
+    const sortQuery = getSortQuery(this.state.sortValue);
 
-    if (!reset) {
-      const [sortBy, order] = this.state.sortValue.split('_');
-      sortQuery = `&sort=${sortBy}&sort_direction=${order}`;
-    }
-
-    axios
-      .get(`/api?q=${query}${pageParam}${sortQuery}`)
-      .then(response => {
-        Actions.updateSearchResults(response.data.searchResults);
-        Actions.updatePage(page);
-        this.context.router.push(`/search?q=${encodeURIComponent(query)}${pageParam}${sortQuery}`);
-      })
-      .catch(error => {
-        console.log(error);
-      });
+    ajaxCall(`/api?q=${query}${pageParam}${sortQuery}`, response => {
+      Actions.updateSearchResults(response.data.searchResults);
+      Actions.updatePage(page);
+      this.context.router.push(`/search?q=${encodeURIComponent(query)}${pageParam}${sortQuery}`);
+    });
   }
 
   render() {
