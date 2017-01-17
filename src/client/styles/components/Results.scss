@@ -1,18 +1,30 @@
 .results-nav {
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  margin-top: 1rem;
+  @include results-sorting-controls();
+  padding-bottom: 0.2rem;
 
   .pagination {
-    flex: 4 0 0;
+    float: left;
+    height: 2rem;
+    line-height: 2rem;
   }
 
   .sort {
-    flex: 1 0 0;
+    float: right;
 
     fieldset {
       @include select-fieldset;
+      white-space: nowrap;
+      background-color: $page-background-color;
+      margin: 0;
+
+      label,
+      select {
+        display: inline-block;
+        background-color: $page-background-color;
+      }
+      select {
+        width: auto;
+      }
     }
   }
 }
@@ -22,16 +34,13 @@
     padding-left: 0;
   }
 }
-
 .pagination-total,
 .paginate {
   padding: 0 0.35rem;
 }
-
 .pagination-total {
   font-weight: bold;
 }
-
 .paginate {
   text-decoration: none;
   cursor: pointer;
