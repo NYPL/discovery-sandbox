@@ -82,9 +82,16 @@
 }
 .result-item {
   @include results-item;
+  h4 {
+    margin-bottom: 0.3rem;
+  }
+  p {
+    margin: 0;
+  }
 }
 .result-item-formats {
   @include results-item-formats;
+  margin-top: 0.5rem;
 
   th:first-child,
   td:first-child,
