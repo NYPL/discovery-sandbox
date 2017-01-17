@@ -81,216 +81,33 @@
   padding: 0;
 }
 .result-item {
-  padding: 0.5rem 0 1rem;
-  border-top: 1px solid $border-color;
-  display: flex;
-  flex-direction: row;
+  @include results-item;
+}
+.result-item-formats {
+  @include results-item-formats;
 
-  .result-image {
-    flex: 0 0 60px;
-    max-height: 100px;
-    overflow: hidden;
-
-    img {
-      width: 100%;
-      margin: 0 auto;
-      display: block;
-    }
+  th:first-child,
+  td:first-child,
+  th:last-child,
+  td:last-child {
+    width: auto;
   }
 
-  &.person {
-    padding: 0.65rem;
-    margin: 0.65rem 0;
-    border: 1px solid $border-color;
-    @include box-shadow(0px 1px 2px rgba(0,0,0,0.2));
-
-    & + .result-item {
-      border-top: 0;
-    }
-
-    .result-image {
-      flex: 0 0 80px;
-      max-height: 120px;
-    }
+  th:last-child,
+  td:last-child {
+    white-space: nowrap;
   }
 
-  .result-text {
-    text-decoration: none;
-    flex-grow: 1;
-    position: relative;
-
-    .type,
-    .title,
-    .description {
-      display: block;
-    }
-
-    .type,
-    .description,
-    .sub-item {
-      font-size: 0.95rem;
-    }
-
-    .type {
-      text-transform: uppercase;
-    }
-
-    .title {
-      font-size: 1rem;
-      line-height: 1.35;
-      font-weight: bold;
-    }
-
-    .description {
-      color: $page-text-color;
-    }
-
-    .label {
-      color: $status-unavailable-color;
-    }
-
-    .sub-items {
-      margin-top: 0.35rem;
-      max-width: 800px;
-      padding: 0;
-
-      .see-more-link {
-        display: block;
-        padding: 0.2rem 0.5rem;
-        background: $page-color-light;
-        color: $page-text-color;
-      }
-    }
-
-    .sub-items > div,
-    .sub-items > li {
-      display: table;
-      width: 100%;
-      padding: 0;
-      background: $page-color-light;
-      margin-bottom: 0;
-    }
-
-    .sub-item {
-      display: table-row;
-      line-height: 1.2;
-      padding: 0.2rem 0;
-
-      &.more {
-        display: none;
-      }
-
-      span {
-        font-weight: bold;
-      }
-
-      .call-no {
-        white-space: nowrap;
-      }
-
-      .view-online {
-        background: $button-background-color;
-        color: $button-text-color;
-        text-decoration: none;
-        padding: 0.1rem 0.35rem;
-        margin-right: 0.35rem;
-
-        &:hover {
-          background: $button-text-color;
-          color: $button-background-color;
-        }
-      }
-
-      .message {
-        white-space: nowrap;
-        font-weight: normal;
-        color: $page-text-color;
-      }
-
-      span.call-no {
-        font-weight: normal;
-        font-style: italic;
-        color: $page-text-color;
-      }
-
-      .button {
-        padding: 0.2rem 0.65rem;
-        min-width: 110px;
-        display: inline-block;
-        text-align: center;
-      }
-
-      > div {
-        display: table-cell;
-        vertical-align: middle;
-        padding: 0.5rem 0.5rem;
-        border-top: 1px solid $border-color;
-        &:last-child {
-          text-align: right;
-        }
-      }
-    }
-
-    .sub-item:first-child > div {
-      border-top: 0;
-    }
-
-    .divider {
-      display: inline-block;
-      margin: 0 0.35rem;
-      font-size: 2rem;
-      line-height: 0.8rem;
-      vertical-align: middle;
-      color: $page-text-color;
-
-      &:before {
-        content: "·";
-      }
-    }
-
-    .select-label {
-      position: absolute;
-      top: 0;
-      right: 0;
-      font-size: 0.8rem;
-      display: block;
-
-      input,
-      span {
-        display: inline-block;
-        vertical-align: middle;
-      }
-      span {
-        padding-left: 0.35rem;
-        color: $page-text-color;
-      }
-    }
+  .more {
+    display: none;
   }
+}
+.result-item-formats-table {
+  @include basic-table;
 
-  .result-actions {
-    flex: 0 0 110px;
-
-    display: flex;
-    align-items: center;
-    // justify-content: right;
-    // text-align: right;
-
-    .select-label {
-      white-space: nowrap;
-      display: block;
-      margin-top: 1rem;
-      padding-left: 0.35rem;
-
-      input,
-      span {
-        display: inline-block;
-        vertical-align: middle;
-      }
-      span {
-        padding-left: 0.35rem;
-        color: $page-text-color;
-      }
-    }
+  tr.see-more-row,
+  tr.see-more-row td {
+    border: none;
   }
 }
 

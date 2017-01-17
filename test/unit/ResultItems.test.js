@@ -15,7 +15,7 @@ const items = {
       location: 'SASB - Rose Main Rdg Rm 315 (requested from offsite storage)',
       callNumber: '|hMAB (Shaw, T. L. War on critics)',
       url: '/hold/request/b19707253-i29470386',
-      actionLabel: 'Request a hold',
+      actionLabel: 'Request for in-library use',
       actionLabelHelper: 'for War on critics. for use in library',
     },
   ],
@@ -28,7 +28,7 @@ const items = {
       location: 'SASB - Rose Main Rdg Rm 315 (requested from offsite storage)',
       callNumber: '|hVWZW (War Department technical manual)',
       url: '/hold/request/b18207658-i24609507',
-      actionLabel: 'Request a hold',
+      actionLabel: 'Request for in-library use',
       actionLabelHelper: 'for War Department technical manual. for use in library',
     },
     {
@@ -39,7 +39,7 @@ const items = {
       location: 'SASB - Rose Main Rdg Rm 315 (requested from offsite storage)',
       callNumber: '|hVWZW (War Department technical manual)',
       url: '/hold/request/b18207658-i24609507',
-      actionLabel: 'Request a hold',
+      actionLabel: 'Request for in-library use',
       actionLabelHelper: 'for War Department technical manual. for use in library',
     },
     {
@@ -50,7 +50,7 @@ const items = {
       location: 'SASB - Rose Main Rdg Rm 315 (requested from offsite storage)',
       callNumber: '|hVWZW (War Department technical manual)',
       url: '/hold/request/b18207658-i24609507',
-      actionLabel: 'Request a hold',
+      actionLabel: 'Request for in-library use',
       actionLabelHelper: 'for War Department technical manual. for use in library',
     },
     {
@@ -61,7 +61,7 @@ const items = {
       location: 'SASB - Rose Main Rdg Rm 315 (requested from offsite storage)',
       callNumber: '|hVWZW (War Department technical manual)',
       url: '/hold/request/b18207658-i24609507',
-      actionLabel: 'Request a hold',
+      actionLabel: 'Request for in-library use',
       actionLabelHelper: 'for War Department technical manual. for use in library',
     },
     {
@@ -72,7 +72,7 @@ const items = {
       location: 'SASB - Rose Main Rdg Rm 315 (requested from offsite storage)',
       callNumber: '|hVWZW (War Department technical manual)',
       url: '/hold/request/b18207658-i24609507',
-      actionLabel: 'Request a hold',
+      actionLabel: 'Request for in-library use',
       actionLabelHelper: 'for War Department technical manual. for use in library',
     },
     {
@@ -83,7 +83,7 @@ const items = {
       location: 'SASB - Rose Main Rdg Rm 315 (requested from offsite storage)',
       callNumber: '|hVWZW (War Department technical manual)',
       url: '/hold/request/b18207658-i24609507',
-      actionLabel: 'Request a hold',
+      actionLabel: 'Request for in-library use',
       actionLabelHelper: 'for War Department technical manual. for use in library',
     },
   ],
@@ -121,13 +121,13 @@ describe('ResultItems', () => {
       component = shallow(<ResultItems items={items.single} itemTitle="War on critics" />);
     });
 
-    it('should render an unordered list with wrapper class "sub-items"', () => {
-      expect(component.type()).to.equal('ul');
-      expect(component.hasClass('sub-items')).to.be.true;
+    it('should render a div with wrapper class "result-item-formats"', () => {
+      expect(component.type()).to.equal('div');
+      expect(component.hasClass('result-item-formats')).to.be.true;
     });
 
     it('should have a single list item', () => {
-      expect(component.find('li')).to.have.length(1);
+      expect(component.find('.sub-item')).to.have.length(1);
     });
   });
 
@@ -140,18 +140,17 @@ describe('ResultItems', () => {
 
     it('should display that the item is available at SASB and call number', () => {
       expect(component.find('.sub-item').children().first().text()).to.equal(
-        'Available to use in SASB - Rose Main Rdg Rm 315 (requested from offsite storage) with ' +
-        'call no. |hMAB (Shaw, T. L. War on critics)'
+        'SASB - Rose Main Rdg Rm 315 (requested from offsite storage)'
       );
     });
 
-    it('should have a button with label "Request a hold"', () => {
-      expect(component.find('.button').text())
-        .to.equal('Request a hold for War on critics. for use in library');
+    it('should have a link with label "Request for in-library use"', () => {
+      expect(component.find('.request-hold-link').text())
+        .to.equal('Request for in-library use');
     });
 
     it('should have a descriptive aria label', () => {
-      expect(component.props()['aria-label']).to.equal('This bibliographical record has 1 item.');
+      expect(component.find('.sub-items').props()['aria-label']).to.equal('This bibliographical record has 1 item.');
     });
   });
 
@@ -162,21 +161,21 @@ describe('ResultItems', () => {
     before(() => {
       component =
         shallow(<ResultItems items={items.six} itemTitle="War Department technical manual." />);
-      moreLink = component.find('li').last().children();
+      moreLink = component.find('.see-more-link')
     });
 
     it('should seven list items, six bib items and one "more" list item', () => {
-      expect(component.find('li')).to.have.length(7);
+      expect(component.find('.sub-item')).to.have.length(7);
     });
 
     it('should have a descriptive aria label', () => {
-      expect(component.props()['aria-label']).to.equal('This bibliographical record has 6 items.');
+      expect(component.find('.sub-items').props()['aria-label']).to.equal('This bibliographical record has 6 items.');
     });
 
     it('should have the last bib item with a class of "more"', () => {
       expect(
         // The second to last li element has a div with the "more" class.
-        component.childAt(5).find('div').first().hasClass('sub-item more')
+        component.find('.sub-items tbody').childAt(5).hasClass('sub-item more')
       ).to.be.true;
     });
 
@@ -198,14 +197,14 @@ describe('ResultItems', () => {
     before(() => {
       component =
         shallow(<ResultItems items={items.six} itemTitle="War Department technical manual." />);
-      moreLink = component.find('li').last().children();
+      moreLink = component.find('.see-more-link')
     });
 
     // This is the hidden item.
     it('should have the last bib item with a class of "more"', () => {
       // The last bib item li element has a div with the "more" class which hides it
       expect(
-        component.childAt(5).find('div').first().hasClass('sub-item more')
+        component.find('.sub-items tbody').childAt(5).hasClass('sub-item more')
       ).to.be.true;
     });
 
@@ -214,7 +213,7 @@ describe('ResultItems', () => {
 
       // Clicking on the "more" link unhides elements, in this case only one more bib item
       expect(
-        component.childAt(5).find('div').first().hasClass('sub-item')
+        component.find('.sub-items tbody').childAt(5).hasClass('sub-item')
       ).to.be.true;
     });
   });

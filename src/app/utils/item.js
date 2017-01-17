@@ -58,7 +58,7 @@ function LibraryItem() {
 
       } else if (availability === 'available') {
         url = `/hold/request/${id}`;
-        actionLabel = 'Request a hold';
+        actionLabel = 'Request for in-library use';
         actionLabelHelper = `for ${recordTitle} for use in library`;
       }
 
