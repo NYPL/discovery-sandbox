@@ -20,14 +20,13 @@ class Hits extends React.Component {
   getKeyword(keyword) {
     if (keyword) {
       return (
-        <span>&nbsp;with keywords <strong>"{keyword}"</strong>
+        <span>&nbsp;with keywords <strong>{keyword}</strong>
           <button
             onClick={() => this.removeKeyword(keyword)}
-            className="removeKeyword"
+            className="remove-keyword"
             aria-controls="results-region"
           >
-            remove
-            <span className="visuallyHidden"> keyword filter&nbsp;{keyword}</span>
+            <span className="visuallyHidden">remove keyword filter&nbsp;{keyword}</span>
           </button>
         </span>
       );
@@ -40,14 +39,13 @@ class Hits extends React.Component {
     if (!facets.length) return null;
 
     return facets.map((facet, i) => (
-      <span key={i}>&nbsp;with {facet.key} <strong>"{facet.val.value}"</strong>
+      <span key={i}>&nbsp;with {facet.key} <strong>{facet.val.value}</strong>
         <button
           onClick={() => this.removeFacet(facet.key)}
-          className="removeFacet"
+          className="remove-facet"
           aria-controls="results-region"
         >
-          remove
-          <span className="visuallyHidden"> filter&nbsp;{facet.val.value}</span>
+          <span className="visuallyHidden">remove filter&nbsp;{facet.val.value}</span>
         </button>
       </span>
     ));
@@ -100,10 +98,10 @@ class Hits extends React.Component {
     const activeFacetsElm = this.getFacetElements(activeFacetsArray);
 
     return (
-      <div id="results-description" className="results-message">
+      <div id="results-description" className="results-summary">
         {
           hits !== 0 ?
-          (<p>Found <strong>{hitsF}</strong> results{keyword}{activeFacetsElm}.</p>)
+          (<p><strong className="results-count">{hitsF}</strong> results found{keyword}{activeFacetsElm}.</p>)
           : (<p>No results found{keyword}{activeFacetsElm}.</p>)
         }
       </div>

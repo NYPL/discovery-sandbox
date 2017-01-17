@@ -64,9 +64,9 @@ describe('Hits', () => {
         component = shallow(<Hits />);
       });
 
-      it('should be wrapped in a .results-message class', () => {
-        expect(component.find('.results-message')).to.exist;
-        expect(component.find('div').first().hasClass('results-message')).to.equal(true);
+      it('should be wrapped in a .results-summary class', () => {
+        expect(component.find('.results-summary')).to.exist;
+        expect(component.find('div').first().hasClass('results-summary')).to.equal(true);
       });
 
       it('should output that no results were found', () => {
@@ -99,7 +99,7 @@ describe('Hits', () => {
       it('should output that no results were found', () => {
         expect(component.find('p')).to.exist;
         expect(component.find('p').text())
-          .to.equal('No results found with owner "Stephen A. Schwarzman Building"remove filter' +
+          .to.equal('No results found with owner Stephen A. Schwarzman Buildingremove filter' +
             ' Stephen A. Schwarzman Building.');
       });
     });
@@ -110,17 +110,17 @@ describe('Hits', () => {
 
     it('should output that 40 results were found', () => {
       component = shallow(<Hits hits={40} />);
-      expect(component.find('p').text()).to.equal('Found 40 results.');
+      expect(component.find('p').text()).to.equal('40 results found.');
     });
 
     it('should output that 4,000 results were found from input 4000', () => {
       component = shallow(<Hits hits={4000} />);
-      expect(component.find('p').text()).to.equal('Found 4,000 results.');
+      expect(component.find('p').text()).to.equal('4,000 results found.');
     });
 
     it('should output that 4,000,000 results were found from input 4000000', () => {
       component = shallow(<Hits hits={4000000} />);
-      expect(component.find('p').text()).to.equal('Found 4,000,000 results.');
+      expect(component.find('p').text()).to.equal('4,000,000 results found.');
     });
   });
 
@@ -133,8 +133,8 @@ describe('Hits', () => {
       });
 
       it('should output the search keyword and the selected facet with two results', () => {
-        expect(component.find('p').text()).to.equal('Found 2 results with keywords "fire"' +
-          'remove keyword filter fire with owner "Stephen A. Schwarzman Building"remove filter' +
+        expect(component.find('p').text()).to.equal('2 results found with keywords fire' +
+          'remove keyword filter fire with owner Stephen A. Schwarzman Buildingremove filter' +
           ' Stephen A. Schwarzman Building.');
       });
     });
@@ -147,9 +147,9 @@ describe('Hits', () => {
       });
 
       it('should output the search keyword and the two selected facets', () => {
-        expect(component.find('p').text()).to.equal('Found 2 results with keywords "fire"remove' +
-          ' keyword filter fire with owner "Stephen A. Schwarzman Building"remove filter ' +
-          'Stephen A. Schwarzman Building with subject "Children\'s art El Salvador."remove ' +
+        expect(component.find('p').text()).to.equal('2 results found with keywords fireremove' +
+          ' keyword filter fire with owner Stephen A. Schwarzman Buildingremove filter ' +
+          'Stephen A. Schwarzman Building with subject Children\'s art El Salvador.remove ' +
           'filter Children\'s art El Salvador..');
       });
     });
@@ -162,9 +162,9 @@ describe('Hits', () => {
       });
 
       it('should output the search keyword and the two selected facets', () => {
-        expect(component.find('p').text()).to.equal('Found 2 results with owner "Stephen A. ' +
-          'Schwarzman Building"remove filter Stephen A. Schwarzman Building with subject ' +
-          '"Children\'s art El Salvador."remove filter Children\'s art El Salvador..');
+        expect(component.find('p').text()).to.equal('2 results found with owner Stephen A. ' +
+          'Schwarzman Buildingremove filter Stephen A. Schwarzman Building with subject ' +
+          'Children\'s art El Salvador.remove filter Children\'s art El Salvador..');
       });
     });
   });
@@ -204,7 +204,7 @@ describe('Hits', () => {
       });
 
       it('should be clicked and Action called', () => {
-        component.find('.removeKeyword').simulate('click');
+        component.find('.remove-keyword').simulate('click');
 
         expect(spyAxios.callCount).to.equal(1);
         expect(spyAxios.calledWithExactly('/api?q= owner:"orgs:1000"')).to.be.true;
@@ -253,7 +253,7 @@ describe('Hits', () => {
       });
 
       it('should be clicked and Action called', () => {
-        component.find('.removeKeyword').simulate('click');
+        component.find('.remove-keyword').simulate('click');
 
         expect(spyAxios.calledOnce).to.be.true;
         expect(spyAxios.calledWith('/api?q= owner:"orgs:1000"')).to.be.true;
@@ -304,13 +304,13 @@ describe('Hits', () => {
       });
 
       it('should output the search keyword and the selected facet', () => {
-        expect(component.find('p').text()).to.equal('Found 2 results with keywords "fire"remove' +
-          ' keyword filter fire with owner "Stephen A. Schwarzman Building"remove filter Stephen' +
+        expect(component.find('p').text()).to.equal('2 results found with keywords fireremove' +
+          ' keyword filter fire with owner Stephen A. Schwarzman Buildingremove filter Stephen' +
           ' A. Schwarzman Building.');
       });
 
       it('should be clicked and Actions to remove the facet and update called', () => {
-        component.find('.removeFacet').simulate('click');
+        component.find('.remove-facet').simulate('click');
 
         expect(spyAxios.calledOnce).to.be.true;
         expect(spyAxios.calledWith('/api?q=fire')).to.be.true;
@@ -359,13 +359,13 @@ describe('Hits', () => {
       });
 
       it('should output the search keyword and the selected facet', () => {
-        expect(component.find('p').text()).to.equal('Found 2 results with keywords "fire"remove' +
-          ' keyword filter fire with owner "Stephen A. Schwarzman Building"remove filter Stephen' +
+        expect(component.find('p').text()).to.equal('2 results found with keywords fireremove' +
+          ' keyword filter fire with owner Stephen A. Schwarzman Buildingremove filter Stephen' +
           ' A. Schwarzman Building.');
       });
 
       it('should be clicked and Actions to remove the facet and update called', () => {
-        component.find('.removeFacet').simulate('click');
+        component.find('.remove-facet').simulate('click');
 
         expect(spyAxios.calledOnce).to.be.true;
         expect(spyAxios.calledWith('/api?q=fire')).to.be.true;

@@ -285,14 +285,17 @@
   }
 }
 
-.results-message {
-  .removeFacet,
-  .removeKeyword {
-    padding: 0.05rem 0.25rem;
+.results-summary {
+  @include results-summary();
+  p {
+    margin: 0;
+    padding: 0;
     line-height: 1;
-    font-size: 0.9rem;
-    display: inline-block;
-    margin-left: 0.1rem;
-    font-weight: bold;
+  }
+  .remove-facet,
+  .remove-keyword {
+    &:before {
+      content: 'x';
+    }
   }
 }
