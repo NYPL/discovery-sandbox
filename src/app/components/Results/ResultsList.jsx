@@ -66,24 +66,38 @@ class ResultsList extends React.Component {
       <li key={i} className="result-item">
         <div className="result-text">
           {/*<div className="type">{result.type ? result.type[0].prefLabel : null}</div>*/}
-          <Link
-            onClick={(e) => this.getRecord(e, id, 'item')}
-            href={`/item/${id}`}
-            className="title"
-          >
-            {itemTitle}
-          </Link>
+          <h4>
+            <Link
+              onClick={(e) => this.getRecord(e, id, 'item')}
+              href={`/item/${id}`}
+              className="title"
+            >
+              {itemTitle}
+            </Link>
+          </h4>
           {
-            author &&
-            (<div className="description author">
-              {authors} {result.created}
-            </div>)
+            authors &&
+            (<p className="description">
+              <strong>By:</strong> {authors}
+            </p>)
+          }
+          {
+            result.publisher &&
+            (<p className="description">
+              <strong>Publisher:</strong> {result.publisher}
+            </p>)
+          }
+          {
+            result.created &&
+            (<p className="description">
+              <strong>Year published:</strong> {result.created}
+            </p>)
           }
           {
             hathiAvailable &&
-            (<div className="description">
+            (<p className="description">
               <em>Available to view on this website</em>
-            </div>)
+            </p>)
           }
           {
             items.length ? <ResultItems items={items} itemTitle={itemTitle} /> : null

@@ -21,37 +21,30 @@ class ResultsItems extends React.Component {
       const collapsed = this.state.collapsed;
 
       return (
-        <li key={i}>
-          <div className={`sub-item ${i >= MAXDISPLAY && collapsed ? 'more' : ''}`}>
-            <div>
-              <span className={`status ${availability}`}>{status}</span>
-              {
-                available ? ' to use in ' : ' at location '
-              }
-              <span>{item.location}</span>
-              {
-                item.callNumber.length ?
-                (<span className="call-no"> with call no. {item.callNumber}</span>)
-                : null
-              }
-            </div>
-            <div>
-              {
-                item.url && item.url.length ?
-                (
-                  <a
-                    href={item.url}
-                    className="button"
-                  >
-                    {item.actionLabel}
-                    <span className="visuallyHidden"> {item.actionLabelHelper}</span>
-                  </a>
-                )
-                : null
-              }
-            </div>
-          </div>
-        </li>
+        <tr key={i} className={`sub-item ${i >= MAXDISPLAY && collapsed ? 'more' : ''}`}>
+          <td>
+            {item.location}
+          </td>
+          <td>
+            {
+              item.callNumber.length ? item.callNumber : null
+            }
+          </td>
+          <td>
+            {
+              item.url && item.url.length ?
+              (
+                <a
+                  href={item.url}
+                  className="request-hold-link"
+                >
+                  {item.actionLabel}
+                </a>
+              )
+              : null
+            }
+          </td>
+        </tr>
       );
     });
   }
@@ -65,16 +58,18 @@ class ResultsItems extends React.Component {
     return (
       moreCount > 0 && collapsed ?
       (
-        <li>
-          <a
-            href="#"
-            className="see-more-link"
-            onClick={(e) => this.showMoreItems(e)}
-          >
-            See {moreCount} more item{moreCount > 1 ? 's' : ''}
-            <span className="visuallyHidden"> in collapsed menu for {resultTitle}</span>
-          </a>
-        </li>
+        <tr className="see-more-row">
+          <td colSpan="3">
+            <a
+              href="#"
+              className="see-more-link"
+              onClick={(e) => this.showMoreItems(e)}
+            >
+              See {moreCount} more item{moreCount > 1 ? 's' : ''}
+              <span className="visuallyHidden"> in collapsed menu for {resultTitle}</span>
+            </a>
+          </td>
+        </tr>
       )
       : null
     );
@@ -93,15 +88,29 @@ class ResultsItems extends React.Component {
     }
 
     return (
-      <ul
-        tabIndex="0"
-        className="sub-items"
-        aria-label={`This bibliographical record has ${items.length}` +
-          ` item${items.length > 1 ? 's' : ''}.`}
-      >
-        {this.getItems(items)}
-        {this.getMoreLink(items)}
-      </ul>
+      <div className="result-item-formats">
+        <p>
+          <strong>Items available:</strong>
+        </p>
+        <table
+          tabIndex="0"
+          className="sub-items result-item-formats-table"
+          aria-label={`This bibliographical record has ${items.length}` +
+            ` item${items.length > 1 ? 's' : ''}.`}
+        >
+          <thead className="visuallyHidden">
+            <tr>
+              <th>Item</th>
+              <th>Call Number</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {this.getItems(items)}
+            {this.getMoreLink(items)}
+          </tbody>
+        </table>
+      </div>
     );
   }
 }

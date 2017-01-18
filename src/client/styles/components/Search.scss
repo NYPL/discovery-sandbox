@@ -125,13 +125,12 @@
 }
 
 .related-items {
-  border-left: 4px solid $page-color-light;
+  border-left: 0.5rem solid $page-color-light;
   padding-left: 1rem;
-  margin: 1rem 2rem 0 0.5rem;
+  margin: 1rem 2rem 0 0;
 
   h4 {
     margin-top: 0;
-    color: $nypl-search-color;
     background-color: $page-background-color;
   }
 
