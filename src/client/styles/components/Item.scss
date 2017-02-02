@@ -3,7 +3,7 @@
 
   > div {
     float: left;
-    @include box-sizing();
+    @include box-sizing(border-box);
   }
 
   img {
@@ -37,7 +37,7 @@
 .item-holdings,
 .item-details,
 .item-document-viewer {
-  border-top: 1px solid darken($lightgray, 10%);
+  border-top: 1px solid $border-color;
   padding-top: 0.5rem;
   margin-top: 2rem;
 
@@ -54,7 +54,7 @@
 
   .results-list {
     margin-top: 2rem;
-    
+
     li:first-child {
       border-top: 0;
     }
@@ -62,8 +62,10 @@
 }
 
 .holdings-table {
+  @include basic-table;
+
   .collapsed {
-      display: none;
+    display: none;
   }
 }
 
@@ -73,12 +75,12 @@
 
     &:before {
       display: inline-block;
-      color: $darkgray;
+      color: $page-text-color;
       content: " ";
       height: 0.5rem;
       width: 0.5rem;
-      border-left: 2px solid $darkgray;
-      border-bottom: 2px solid $darkgray;
+      border-left: 2px solid $page-text-color;
+      border-bottom: 2px solid $page-text-color;
       margin-right: 0.2rem;
     }
 
@@ -100,9 +102,9 @@
 
 .status {
   font-weight: bold;
-  color: $darkorange;
+  color: $status-default-color;
 
   &.available {
-    color: $darkgreen;
+    color: $status-available-color;
   }
 }

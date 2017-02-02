@@ -1,104 +1,27 @@
 import React from 'react';
 import { Link } from 'react-router';
-import axios from 'axios';
+import { isEmpty as _isEmpty } from 'underscore';
 
 import Actions from '../../actions/Actions.js';
 import LibraryItem from '../../utils/item.js';
+import ResultItems from './ResultItems.jsx';
+import { ajaxCall } from '../../utils/utils.js';
 
 class ResultsList extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state ={
-      expandedItems: []
-    };
-
     this.routeHandler = this.routeHandler.bind(this);
     this.getRecord = this.getRecord.bind(this);
-    this.getItems = this.getItems.bind(this);
   }
 
   getRecord(e, id, path) {
     e.preventDefault();
 
-    axios
-      .get(`/api/retrieve?q=${id}`)
-      .then(response => {
-        // console.log(response.data);
-        Actions.updateItem(response.data);
-        this.routeHandler(`/${path}/${id}`);
-      })
-      .catch(error => {
-        console.log(error);
-      });
-  }
-
-  routeHandler(route) {
-    this.context.router.push(route);
-  }
-
-  showMoreItems(e, id){
-    e.preventDefault();
-
-    // This is a makeshift way of doing it; we should probably have the sub-items as another component that tracks its own expanded/collapsed state
-    const expandedItems = this.state.expandedItems;
-    expandedItems.push(id);
-    this.setState({ expandedItems: expandedItems });
-  }
-
-  getItems(items, result) {
-    const itemCount = items.length;
-    const maxDisplay = 5;
-    const moreCount = itemCount - maxDisplay;
-    const expandedItems = this.state.expandedItems;
-    const resultId = result.idBnum;
-
-    return items.map((item, i) => {
-      const status = item.status;
-      const availability = item.availability;
-      const available = item.available;
-      const id = item.id;
-      const collapsed = expandedItems.indexOf(resultId) < 0;
-
-      return (
-        <div key={i}>
-          <div className={`sub-item ${i>=maxDisplay && collapsed ? 'more' : ''}`}>
-            <div>
-              <span className={`status ${availability}`}>{status}</span>
-              {
-                available ? ' to use in ' : ' at location '
-              }
-              <span>{item.location}</span>
-              {
-                item.callNumber.length ?
-                (<span className="call-no"> with call no. {item.callNumber}</span>)
-                : null
-              }
-            </div>
-            <div>
-              {item.url && item.url.length ?
-                <a
-                  href={item.url}
-                  className="button">
-                  {item.actionLabel}
-                </a>
-              : null}
-            </div>
-          </div>
-          {
-            i >= itemCount - 1 && moreCount > 0 && collapsed ?
-              (
-                <Link
-                  onClick={(e) => this.showMoreItems(e, resultId)}
-                  href="#"
-                  className="see-more-link">
-                  See {moreCount} more item{moreCount > 1 ? 's' : ''}
-                </Link>
-              )
-              : null
-          }
-        </div>
-      );
+    ajaxCall(`/api/retrieve?q=${id}`, (response) => {
+      // console.log(response.data);
+      Actions.updateBib(response.data);
+      this.routeHandler(`/${path}/${id}`);
     });
   }
 
@@ -120,20 +43,20 @@ class ResultsList extends React.Component {
   }
 
   getBib(bib, author, i) {
-    if (!bib.result) return null;
+    if (!bib.result || _isEmpty(bib.result)) return null;
 
     const result = bib.result;
     const collapsedBibs = bib.collapsedBibs && bib.collapsedBibs.length ?
       bib.collapsedBibs : [];
     const collapsedBibsElements = this.getCollapsedBibs(collapsedBibs);
-    const itemTitle = result.title[0];
+    const itemTitle = result.title ? result.title[0] : '';
     const itemImage = result.btCover ? (
       <div className="result-image">
-        <img src={result.btCover} />
+        <img src={result.btCover} alt={itemTitle} />
       </div>
       ) : null;
     const authors = author && result.contributor && result.contributor.length ?
-      result.contributor.map((author) => `${author}; ` )
+      result.contributor.map((contributor) => `${contributor}; `)
       : null;
     const id = result['@id'].substring(4);
     const items = LibraryItem.getItems(result);
@@ -143,32 +66,50 @@ class ResultsList extends React.Component {
       <li key={i} className="result-item">
         <div className="result-text">
           {/*<div className="type">{result.type ? result.type[0].prefLabel : null}</div>*/}
-          <Link
-            onClick={(e) => this.getRecord(e, id, 'item')}
-            href={`/item/${id}`}
-            className="title"
-          >
-            {itemTitle}
-          </Link>
+          <h4>
+            <Link
+              onClick={(e) => this.getRecord(e, id, 'item')}
+              href={`/item/${id}`}
+              className="title"
+            >
+              {itemTitle}
+            </Link>
+          </h4>
           {
-            author &&
-            (<div className="description author">
-              {authors} {result.created}
-            </div>)
+            authors &&
+            (<p className="description">
+              <strong>By:</strong> {authors}
+            </p>)
+          }
+          {
+            result.publisher &&
+            (<p className="description">
+              <strong>Publisher:</strong> {result.publisher}
+            </p>)
+          }
+          {
+            result.created &&
+            (<p className="description">
+              <strong>Year published:</strong> {result.created}
+            </p>)
           }
           {
             hathiAvailable &&
-            (<div className="description">
+            (<p className="description">
               <em>Available to view on this website</em>
-            </div>)
+            </p>)
           }
-          <div className="sub-items">
-            {this.getItems(items, result)}
-          </div>
+          {
+            items.length ? <ResultItems items={items} itemTitle={itemTitle} /> : null
+          }
           {collapsedBibsElements}
         </div>
       </li>
     );
+  }
+
+  routeHandler(route) {
+    this.context.router.push(route);
   }
 
   render() {

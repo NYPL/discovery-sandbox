@@ -1,12 +1,12 @@
 import React from 'react';
-import axios from 'axios';
-import {
-  mapObject as _mapObject,
-} from 'underscore';
 
 import Actions from '../../actions/Actions.js';
-
 import ResultList from './ResultsList.jsx';
+import {
+  ajaxCall,
+  getSortQuery,
+} from '../../utils/utils.js';
+import Pagination from '../Pagination/Pagination.jsx';
 
 class Results extends React.Component {
   constructor(props) {
@@ -14,36 +14,32 @@ class Results extends React.Component {
 
     this.state = { sortValue: this.props.sortBy };
   }
+
   fetchResults(page) {
     const query = this.props.location.query.q;
     const pageParam = page !== 1 ? `&page=${page}` : '';
-    const reset = this.state.sortValue === 'relevance';
-    let sortQuery = '';
+    const sortQuery = getSortQuery(this.state.sortValue);
 
-    if (!reset) {
-      const [sortBy, order] = this.state.sortValue.split('_');
-      sortQuery = `&sort=${sortBy}&sort_direction=${order}`;
-    }
-
-    axios
-      .get(`/api?q=${query}${pageParam}${sortQuery}`)
-      .then(response => {
-        Actions.updateSearchResults(response.data.searchResults);
-        Actions.updatePage(page);
-        this.context.router.push(`/search?q=${encodeURIComponent(query)}${pageParam}${sortQuery}`);
-      })
-      .catch(error => {
-        console.log(error);
-      });
+    ajaxCall(`/api?q=${query}${pageParam}${sortQuery}`, (response) => {
+      Actions.updateSearchResults(response.data.searchResults);
+      Actions.updatePage(page);
+      this.context.router.push(`/search?q=${encodeURIComponent(query)}${pageParam}${sortQuery}`);
+    });
   }
 
   getPage(page, type = 'next') {
     if (!page) return null;
-    const pageNum = type === 'next' ?  parseInt(page, 10) + 1 : parseInt(page, 10) - 1;
+    const pageNum = type === 'next' ? parseInt(page, 10) + 1 : parseInt(page, 10) - 1;
 
     return (
-      <a className={`paginate ${type}`} onClick={(e) => this.fetchResults(pageNum)}>
-        {type[0].toUpperCase()}{type.substring(1)} Page
+      <a
+        href="#"
+        className={`paginate ${type}`}
+        onClick={(e) => this.fetchResults(pageNum)}
+        rel={type}
+        aria-controls="results-region"
+      >
+        {`${type[0].toUpperCase()}${type.substring(1)}`} Page
       </a>
     );
   }
@@ -52,26 +48,15 @@ class Results extends React.Component {
     const sortValue = e.target.value;
     const query = this.props.location.query.q;
     const page = this.props.page !== '1' ? `&page=${this.props.page}` : '';
-    const reset = sortValue === 'relevance';
-    let sortQuery = '';
+    const sortQuery = getSortQuery(sortValue);
 
-    if (!reset) {
-      const [sortBy, order] = sortValue.split('_');
-      sortQuery = `&sort=${sortBy}&sort_direction=${order}`;
-    }
+    ajaxCall(`/api?q=${query}${page}${sortQuery}`, (response) => {
+      Actions.updateSearchResults(response.data.searchResults);
+      Actions.updateSortBy(sortValue);
 
-    axios
-      .get(`/api?q=${query}${page}${sortQuery}`)
-      .then(response => {
-        Actions.updateSearchResults(response.data.searchResults);
-        Actions.updateSortBy(sortValue);
-
-        this.setState({ sortValue });
-        this.context.router.push(`/search?q=${encodeURIComponent(query)}${page}${sortQuery}`);
-      })
-      .catch(error => {
-        console.log(error);
-      });
+      this.setState({ sortValue });
+      this.context.router.push(`/search?q=${encodeURIComponent(query)}${page}${sortQuery}`);
+    });
   }
 
   render() {
@@ -80,28 +65,15 @@ class Results extends React.Component {
       hits,
       page,
     } = this.props;
-    const perPage = 50;
-    const pageFactor = parseInt(page, 10) * 50;
 
-    const hitsF = hits.toLocaleString();
-    const pageFactorF = pageFactor.toLocaleString();
-
-    let displayItems = `${pageFactor - (perPage - 1)} - ${pageFactor > hits ? hitsF : pageFactorF}`;
-    let nextPage = (hits < perPage || pageFactor > hits)
-      ? null : this.getPage(page, 'next');
-    let prevPage = page > 1 ? this.getPage(page, 'previous') : null;
-
-    if (hits < perPage) {
-      displayItems = `1 - ${hitsF}`;
-    }
-
-    const paginationButtons = (
-      <div className="pagination">
-        {prevPage}
-        <span className="paginate pagination-total">{displayItems} of {hitsF}</span>
-        {nextPage}
-      </div>
-    );
+    const paginationButtons = hits !== 0 ?
+      <Pagination
+        hits={hits}
+        page={page}
+        location={this.props.location}
+        sortBy={this.props.sortBy}
+      />
+      : null;
 
     return (
       <div>
@@ -138,7 +110,7 @@ class Results extends React.Component {
 
         <ResultList results={results} query={this.props.query} />
 
-        { hits !== 0 && paginationButtons }
+        {paginationButtons}
       </div>
     );
   }
@@ -148,6 +120,9 @@ Results.propTypes = {
   results: React.PropTypes.array,
   hits: React.PropTypes.number,
   query: React.PropTypes.string,
+  sortBy: React.PropTypes.string,
+  location: React.PropTypes.object,
+  page: React.PropTypes.number,
 };
 
 Results.contextTypes = {

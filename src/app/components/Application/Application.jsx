@@ -3,8 +3,42 @@ import React from 'react';
 import { Header, navConfig } from '@nypl/dgx-header-component';
 import Footer from '@nypl/dgx-react-footer';
 
+import Feedback from '../Feedback/Feedback.jsx';
 import Store from '../../stores/Store.js';
-import PatronData from '../../stores/PatronData.js';
+import PatronStore from '../../stores/PatronStore.js';
+import {
+  ajaxCall,
+  createAppHistory,
+  destructureQuery,
+} from '../../utils/utils.js';
+import Actions from '../../actions/Actions.js';
+
+const history = createAppHistory();
+
+// Listen to the browser's navigation buttons.
+history.listen(location => {
+  const {
+    action,
+    search,
+    query,
+  } = location;
+
+  const qParameter = query.q;
+
+  if (action === 'POP' && search) {
+    ajaxCall(`/api${search}`, (response) => {
+      const {
+        q,
+        selectedFacets,
+      } = destructureQuery(qParameter, response.data.facets);
+
+      Actions.updateSelectedFacets(selectedFacets);
+      Actions.updateFacets(response.data.facets);
+      Actions.updateSearchResults(response.data.searchResults);
+      Actions.updateSearchKeywords(q);
+    });
+  }
+});
 
 class App extends React.Component {
   constructor(props) {
@@ -12,34 +46,42 @@ class App extends React.Component {
 
     this.state = {
       data: Store.getState(),
-      patron: PatronData.getState(),
+      patron: PatronStore.getState(),
     };
     this.onChange = this.onChange.bind(this);
+  }
+
+  componentWillMount() {
+    if (!this.state.data.searchResults) {
+      ajaxCall(`/api?q=${this.state.data.searchKeywords}`, (response) => {
+        Actions.updateSearchResults(response.data.searchResults);
+        Actions.updateSearchKeywords(this.state.data.searchKeywords);
+      });
+    }
   }
 
   componentDidMount() {
     Store.listen(this.onChange);
   }
 
-  onChange() {
-    this.setState({ data: Store.getState() });
-  }
-
   componentWillUnmount() {
     Store.unlisten(this.onChange);
   }
 
+  onChange() {
+    this.setState({ data: Store.getState() });
+  }
+
   render() {
-    // console.log(this.state.patron);
     return (
       <div className="app-wrapper">
         <Header navData={navConfig.current} skipNav={{ target: 'mainContent' }} />
 
-        <div className="container">{this.state.patron.names[0]}</div>
-
         {React.cloneElement(this.props.children, this.state.data)}
 
         <Footer />
+
+        <Feedback location={this.props.location} />
       </div>
     );
   }
@@ -47,6 +89,14 @@ class App extends React.Component {
 
 App.propTypes = {
   children: React.PropTypes.object,
+  location: React.PropTypes.object,
 };
+
+App.contextTypes = {
+  router: function contextType() {
+    return React.PropTypes.func.isRequired;
+  },
+};
+
 
 export default App;

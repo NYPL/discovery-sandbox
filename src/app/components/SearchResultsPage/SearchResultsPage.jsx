@@ -1,5 +1,4 @@
 import React from 'react';
-import axios from 'axios';
 
 import Actions from '../../actions/Actions.js';
 
@@ -8,23 +7,12 @@ import Breadcrumbs from '../Breadcrumbs/Breadcrumbs.jsx';
 import FacetSidebar from '../FacetSidebar/FacetSidebar.jsx';
 import Results from '../Results/Results.jsx';
 import Search from '../Search/Search.jsx';
-import { collapse } from '../../utils/utils.js';
+import {
+  collapse,
+  ajaxCall,
+} from '../../utils/utils.js';
 
 class SearchResultsPage extends React.Component {
-  componentWillMount() {
-    if (!this.props.searchResults) {
-      axios
-        .get(`/api?q=${this.props.searchKeywords}`)
-        .then(response => {
-          Actions.updateSearchResults(response.data.searchResults);
-          Actions.updateSearchKeywords(this.props.searchKeywords);
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    }
-  }
-
   render() {
     const {
       searchResults,
@@ -36,12 +24,11 @@ class SearchResultsPage extends React.Component {
       sortBy,
     } = this.props;
     const facetList = facets && facets.itemListElement ? facets.itemListElement : [];
-    const dateRange = searchResults ? searchResults.dateRange : null;
     const totalHits = searchResults ? searchResults.totalResults : 0;
     const results = searchResults ? collapse({ searchResults }).searchResults.itemListElement : [];
     const breadcrumbs = (
       <div className="page-header">
-        <div className="container">
+        <div className="content-wrapper">
           <Breadcrumbs query={searchKeywords} type="search" />
         </div>
       </div>
@@ -49,22 +36,35 @@ class SearchResultsPage extends React.Component {
 
     return (
       <div id="mainContent">
-        <div className="search-container">
-          <Search sortBy={sortBy} />
-        </div>
 
         {breadcrumbs}
 
-        <div className="container search-results-container">
+        <div className="content-wrapper">
+          <Search
+            sortBy={sortBy}
+            selectedFacets={selectedFacets}
+          />
+        </div>
+
+        <div className="content-wrapper">
 
           <FacetSidebar
             facets={facetList}
             selectedFacets={selectedFacets}
             keywords={searchKeywords}
             sortBy={sortBy}
+            className="quarter"
           />
 
-          <div className="results">
+          <div
+            className="results three-quarter"
+            role="region"
+            id="results-region"
+            aria-live="polite"
+            aria-atomic="true"
+            aria-relevant="additions removals"
+            aria-describedby="results-description"
+          >
             <Hits
               hits={totalHits}
               query={searchKeywords}
@@ -91,6 +91,11 @@ class SearchResultsPage extends React.Component {
 SearchResultsPage.propTypes = {
   searchResults: React.PropTypes.object,
   searchKeywords: React.PropTypes.string,
+  facets: React.PropTypes.object,
+  selectedFacets: React.PropTypes.object,
+  page: React.PropTypes.number,
+  location: React.PropTypes.object,
+  sortBy: React.PropTypes.string,
 };
 
 export default SearchResultsPage;

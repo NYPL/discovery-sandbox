@@ -1,27 +1,27 @@
 table.generic-table {
-  border-top: 2px solid $lightgray;
+  border-top: 2px solid $border-color;
   margin-top: 1rem;
   th {
     white-space: nowrap;
     padding-right: 1rem;
-    color: $linkcolor;
+    color: $link-color;
     text-decoration: underline;
     cursor: pointer;
     &:hover, &:visited:hover {
-      color: $linkhovercolor;
+      color: $link-hover-color;
     }
   }
 }
 
 .status {
   &.ready {
-    color: $darkgreen;
+    color: $status-available-color;
   }
   &.requested {
-    color: $darkblue;
+    color: $status-default-color;
   }
   &.cancelled,
   &.completed {
-    color: $gray;
+    color: $status-unavailable-color;
   }
 }

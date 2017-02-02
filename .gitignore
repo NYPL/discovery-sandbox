@@ -3,3 +3,8 @@ node_modules
 npm-debug.log
 .DS_STORE
 ebscoConfig.js
+coverage
+.nyc_output
+bin/*
+selenium-debug.log
+nightwatch_reports

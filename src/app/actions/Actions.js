@@ -2,10 +2,6 @@
 import alt from '../alt.js';
 
 class Actions {
-  updateEbscoData(data) {
-    return data;
-  }
-
   updateSearchResults(data) {
     return data;
   }
@@ -14,7 +10,7 @@ class Actions {
     return data;
   }
 
-  updateItem(data) {
+  updateBib(data) {
     return data;
   }
 

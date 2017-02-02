@@ -1,42 +1,43 @@
 import React from 'react';
 import { Link } from 'react-router';
 
-const Breadcrumbs = ({ query = '', type, title = '', url }) => {
-  let str = 'Research Catalog';
+const Breadcrumbs = ({ query, type, title, url }) => {
+  let currentPageText = 'Research Catalog';
   let crumbs = (
     <span>
-      <Link to="https://nypl.org">Home</Link> &gt;&gt;
-      <Link to="https://nypl.org/research">Research</Link> &gt;&gt;
-      {str}
+      <Link to="https://nypl.org">Home</Link> &gt;
+      <Link to="https://nypl.org/research">Research</Link> &gt;
+      <span className="currentPage">{currentPageText}</span>
     </span>
   );
 
   if (type === 'search') {
-    str = query ? `Search Results for "${query}"` : '';
+    currentPageText = query ? `Search Results for "${query}"` : 'Search Results';
     crumbs = (
       <span>
-        <Link to="https://nypl.org">Home</Link> &gt;&gt;
-        <Link to="https://nypl.org/research">Research</Link> &gt;&gt;
-        <Link to="/">Research catalog</Link> &gt;&gt;
-        {str}
+        <Link to="https://nypl.org">Home</Link> &gt;
+        <Link to="https://nypl.org/research">Research</Link> &gt;
+        <Link to="/">Research Catalog</Link> &gt;
+        <span className="currentPage">{currentPageText}</span>
       </span>
     );
   }
 
-  str = `${title.substring(0, 50)}...`;
+  // Arbitary value for now.
+  currentPageText = title.length > 50 ? `${title.substring(0, 50)}...` : title;
 
   if (type === 'item') {
     crumbs = (
       <span>
-        <Link to="https://nypl.org">Home</Link> &gt;&gt;
-        <Link to="https://nypl.org/research">Research</Link> &gt;&gt;
-        <Link to="/">Research catalog</Link> &gt;&gt;
+        <Link to="https://nypl.org">Home</Link> &gt;
+        <Link to="https://nypl.org/research">Research</Link> &gt;
+        <Link to="/">Research Catalog</Link> &gt;
         {
           query ?
-          (<span><Link to={`/search?q=${query}`}>Items</Link> &gt;&gt;</span>)
+          (<span><Link to={`/search?q=${query}`}>Items</Link> &gt;</span>)
           : null
         }
-        {str}
+        <span className="currentPage">{currentPageText}</span>
       </span>
     );
   }
@@ -44,16 +45,16 @@ const Breadcrumbs = ({ query = '', type, title = '', url }) => {
   if (type === 'hold') {
     crumbs = (
       <span>
-        <Link to="https://nypl.org">Home</Link> &gt;&gt;
-        <Link to="https://nypl.org/research">Research</Link> &gt;&gt;
-        <Link to="/">Research catalog</Link> &gt;&gt;
+        <Link to="https://nypl.org">Home</Link> &gt;
+        <Link to="https://nypl.org/research">Research</Link> &gt;
+        <Link to="/">Research Catalog</Link> &gt;
         {
           query ?
-          (<span><Link to={`/search?q=${query}`}>Items</Link> &gt;&gt;</span>)
+          (<span><Link to={`/search?q=${query}`}>Items</Link> &gt;</span>)
           : null
         }
-        <Link to={`/item/${url}`}>{str}</Link> &gt;&gt;
-        Place a hold
+        <Link to={`/item/${url}`}>{currentPageText}</Link> &gt;
+        <span className="currentPage">Place a hold</span>
       </span>
     );
   }
@@ -61,16 +62,16 @@ const Breadcrumbs = ({ query = '', type, title = '', url }) => {
   if (type === 'holdConfirmation') {
     crumbs = (
       <span>
-        <Link to="https://nypl.org">Home</Link> &gt;&gt;
-        <Link to="https://nypl.org/research">Research</Link> &gt;&gt;
-        <Link to="/">Research catalog</Link> &gt;&gt;
+        <Link to="https://nypl.org">Home</Link> &gt;
+        <Link to="https://nypl.org/research">Research</Link> &gt;
+        <Link to="/">Research Catalog</Link> &gt;
         {
           query ?
-          (<span><Link to={`/search?q=${query}`}>Items</Link> &gt;&gt;</span>)
+          (<span><Link to={`/search?q=${query}`}>Items</Link> &gt;</span>)
           : null
         }
-        <Link to={`/item/${url}`}>{str}</Link> &gt;&gt;
-        Hold confirmation
+        <Link to={`/item/${url}`}>{currentPageText}</Link> &gt;
+        <span className="currentPage">Hold confirmation</span>
       </span>
     );
   }
@@ -87,6 +88,13 @@ Breadcrumbs.propTypes = {
   type: React.PropTypes.string,
   title: React.PropTypes.string,
   url: React.PropTypes.string,
+};
+
+Breadcrumbs.defaultProps = {
+  query: '',
+  type: '',
+  title: '',
+  url: '',
 };
 
 export default Breadcrumbs;

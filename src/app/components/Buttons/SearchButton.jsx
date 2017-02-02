@@ -10,7 +10,6 @@ const SearchButton = ({
 }) => (
   <div id={`${id}-wrapper`} className={`${className}-wrapper`}>
     <button
-      id={id}
       className={className}
       onSubmit={onClick}
       onClick={onClick}
@@ -26,6 +25,12 @@ SearchButton.propTypes = {
   label: React.PropTypes.string,
   id: React.PropTypes.string,
   className: React.PropTypes.string,
+};
+
+SearchButton.defaultProps = {
+  id: 'searchButton',
+  className: 'searchButton',
+  label: 'Search',
 };
 
 export default SearchButton;

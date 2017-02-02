@@ -32,6 +32,7 @@ function LibraryItem() {
    * @param (Object) record
    */
   this.getItems = (record) => {
+    const recordTitle = record.title ? record.title[0] : '';
     // filter out anything without a status or location
     let items = record.items.filter((item, i) => {
       return (item.location && item.status) || item.electronicLocator;
@@ -45,6 +46,7 @@ function LibraryItem() {
       const location = this.getLocationLabel(item);
       let url = null;
       let actionLabel = null;
+      let actionLabelHelper = null;
       const isElectronicResource = this.isElectronicResource(item);
 
       if (isElectronicResource && item.electronicLocator[0].url) {
@@ -52,10 +54,12 @@ function LibraryItem() {
         availability = 'available';
         url = item.electronicLocator[0].url;
         actionLabel = 'View online';
+        actionLabelHelper = `resource for ${recordTitle}`;
 
       } else if (availability === 'available') {
         url = `/hold/request/${id}`;
-        actionLabel = 'Request a hold';
+        actionLabel = 'Request for in-library use';
+        actionLabelHelper = `for ${recordTitle} for use in library`;
       }
 
       return {
@@ -67,7 +71,8 @@ function LibraryItem() {
         location: location,
         callNumber: callNumber,
         url: url,
-        actionLabel: actionLabel
+        actionLabel: actionLabel,
+        actionLabelHelper: actionLabelHelper
       }
     });
 

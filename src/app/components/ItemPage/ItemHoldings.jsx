@@ -5,8 +5,8 @@ class ItemHoldings extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state ={
-      expanded: false
+    this.state = {
+      expanded: false,
     };
   }
 
@@ -20,11 +20,6 @@ class ItemHoldings extends React.Component {
     );
   }
 
-  showMoreItems(e){
-    e.preventDefault();
-    this.setState({ expanded: true });
-  }
-
   getRow(holdings) {
     const holdingCount = holdings.length;
     const maxDisplay = 7;
@@ -35,38 +30,54 @@ class ItemHoldings extends React.Component {
       <tbody>
         {
           holdings.map((h, i) => (
-            <tr className={`${h.availability} ${i>=maxDisplay && collapsed ? 'collapsed' : ''}`} key={i}>
-              <td dangerouslySetInnerHTML={this.createMarkup(`<span class="status ${h.availability}">${h.status}</span>`)}></td>
+            <tr
+              key={i}
+              className={`${h.availability} ${i >= maxDisplay && collapsed ? 'collapsed' : ''}`}
+            >
+              <td dangerouslySetInnerHTML={this.createMarkup(this.getAvailability(h))}></td>
               <td dangerouslySetInnerHTML={this.createMarkup(h.location)}></td>
               <td dangerouslySetInnerHTML={this.createMarkup(h.callNumber)}></td>
-              <td className="align-right">{h.url && h.url.length ?
-                <a
-                  href={h.url}
-                  className="button">
-                  {h.actionLabel}
-                </a>
-              : null}</td>
+              <td>
+                {
+                  h.url && h.url.length ?
+                    <a
+                      href={h.url}
+                      className="button"
+                    >
+                      {h.actionLabel}
+                    </a>
+                  : null
+                }
+              </td>
             </tr>
           ))
         }
         {
           moreCount > 0 && collapsed ?
-            (
-              <tr className="more">
-                <td colSpan="4">
-                  <Link
-                    onClick={(e) => this.showMoreItems(e)}
-                    href="#see-more"
-                    className="more-link">
-                    See {moreCount} more {moreCount > 1 ? 'copies' : 'copy'}
-                  </Link>
-                </td>
-              </tr>
-            )
+            (<tr className="more">
+              <td colSpan="4">
+                <Link
+                  onClick={(e) => this.showMoreItems(e)}
+                  href="#see-more"
+                  className="more-link"
+                >
+                  See {moreCount} more {moreCount > 1 ? 'copies' : 'copy'}
+                </Link>
+              </td>
+            </tr>)
             : null
         }
       </tbody>
     );
+  }
+
+  getAvailability(hold) {
+    return `<span class="status ${hold.availability}">${hold.status}</span>`;
+  }
+
+  showMoreItems(e) {
+    e.preventDefault();
+    this.setState({ expanded: true });
   }
 
   createMarkup(html) {
@@ -85,8 +96,10 @@ class ItemHoldings extends React.Component {
     return (
       <div className="item-holdings">
         <h2>{this.props.title}</h2>
-        <table className="generic-table holdings-table">
-          <caption className="visuallyHidden">Item availability, location, call number, and request a hold.</caption>
+        <table className="holdings-table">
+          <caption className="visuallyHidden">
+            Item availability, location, call number, and request a hold.
+          </caption>
           {heading}
           {body}
         </table>
@@ -97,6 +110,7 @@ class ItemHoldings extends React.Component {
 
 ItemHoldings.propTypes = {
   holdings: React.PropTypes.array,
+  title: React.PropTypes.string,
 };
 
 export default ItemHoldings;
