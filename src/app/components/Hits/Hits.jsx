@@ -1,8 +1,12 @@
 import React from 'react';
 import { mapObject as _mapObject } from 'underscore';
-import axios from 'axios';
 
 import Actions from '../../actions/Actions.js';
+import {
+  ajaxCall,
+  getSortQuery,
+  getFacetParams,
+} from '../../utils/utils.js';
 
 class Hits extends React.Component {
   constructor(props) {
@@ -13,82 +17,65 @@ class Hits extends React.Component {
     this.getFacetElements = this.getFacetElements.bind(this);
   }
 
-  removeFacet(field) {
-    Actions.removeFacet(field);
-    let strSearch = '';
-
-    // If the selected field that wants to be removed is found, then it is skipped over.
-    // Otherwise, construct the query and hit the API again.
-    _mapObject(this.props.facets, (val, key) => {
-      if (field !== key && val.value !== '') {
-        strSearch += ` ${key}:"${val.id}"`;
-      }
-    });
-
-    const reset = this.props.sortBy === 'relevance';
-    let sortQuery = '';
-
-    if (!reset) {
-      const [sortBy, order] = this.props.sortBy.split('_');
-      sortQuery = `&sort=${sortBy}&sort_direction=${order}`;
-    }
-
-    axios
-      .get(`/api?q=${this.props.query}${strSearch}${sortQuery}`)
-      .then(response => {
-        Actions.updateSearchResults(response.data.searchResults);
-        Actions.updateFacets(response.data.facets);
-        Actions.updatePage('1');
-        this.context.router.push(`/search?q=${this.props.query}${strSearch}${sortQuery}`);
-      })
-      .catch(error => {
-        console.log(error);
-      });
-  }
-
-  removeKeyword() {
-    Actions.updateSearchKeywords('');
-
-    let strSearch = '';
-    _mapObject(this.props.facets, (val, key) => {
-      if (val.value !== '') {
-        strSearch += `${key}:"${val.id}" `;
-      }
-    });
-
-    axios
-      .get(`/api?q=${strSearch}`)
-      .then(response => {
-        Actions.updateSearchResults(response.data.searchResults);
-        Actions.updateFacets(response.data.facets);
-        Actions.updatePage('1');
-        this.context.router.push(`/search?q=${strSearch}`);
-      })
-      .catch(error => {
-        console.log(error);
-      });
-  }
-
   getKeyword(keyword) {
     if (keyword) {
       return (
-        <span>with keywords <strong>"{keyword}"</strong>
-          <a href="#" onClick={() => this.removeKeyword(keyword)}>[x]</a>
+        <span>&nbsp;with keywords <strong>{keyword}</strong>
+          <button
+            onClick={() => this.removeKeyword(keyword)}
+            className="remove-keyword"
+            aria-controls="results-region"
+          >
+            <span className="visuallyHidden">remove keyword filter&nbsp;{keyword}</span>
+          </button>
         </span>
       );
-    };
+    }
+
     return null;
   }
 
   getFacetElements(facets) {
     if (!facets.length) return null;
 
-    return facets.map((facet, i) => {
-      return (
-        <span key={i}> with {facet.key} [{facet.val.value}]
-          <a href="#" onClick={(e) => this.removeFacet(facet.key)}>[x]</a>
-        </span>
-      );
+    return facets.map((facet, i) => (
+      <span key={i}>&nbsp;with {facet.key} <strong>{facet.val.value}</strong>
+        <button
+          onClick={() => this.removeFacet(facet.key)}
+          className="remove-facet"
+          aria-controls="results-region"
+        >
+          <span className="visuallyHidden">remove filter&nbsp;{facet.val.value}</span>
+        </button>
+      </span>
+    ));
+  }
+
+  removeKeyword() {
+    Actions.updateSearchKeywords('');
+
+    const sortQuery = getSortQuery(this.props.sortBy);
+    const strSearch = getFacetParams(this.props.facets);
+
+    ajaxCall(`/api?q=${strSearch}${sortQuery}`, (response) => {
+      Actions.updateSearchResults(response.data.searchResults);
+      Actions.updateFacets(response.data.facets);
+      Actions.updatePage('1');
+      this.context.router.push(`/search?q=${strSearch}${sortQuery}`);
+    });
+  }
+
+  removeFacet(field) {
+    Actions.removeFacet(field);
+
+    const sortQuery = getSortQuery(this.props.sortBy);
+    const strSearch = getFacetParams(this.props.facets, field);
+
+    ajaxCall(`/api?q=${this.props.query}${strSearch}${sortQuery}`, (response) => {
+      Actions.updateSearchResults(response.data.searchResults);
+      Actions.updateFacets(response.data.facets);
+      Actions.updatePage('1');
+      this.context.router.push(`/search?q=${this.props.query}${strSearch}${sortQuery}`);
     });
   }
 
@@ -98,25 +85,24 @@ class Hits extends React.Component {
       hits,
       query,
     } = this.props;
-    let activeFacetsArray = [];
-    const hitsF = hits.toLocaleString();
+    const activeFacetsArray = [];
+    const hitsF = hits ? hits.toLocaleString() : '';
+
     _mapObject(facets, (val, key) => {
       if (val.value) {
-        activeFacetsArray.push({val, key});
+        activeFacetsArray.push({ val, key });
       }
     });
 
-    let keyword = this.getKeyword(query);
-    let activeFacetsElm = this.getFacetElements(activeFacetsArray);
+    const keyword = this.getKeyword(query);
+    const activeFacetsElm = this.getFacetElements(activeFacetsArray);
 
     return (
-      <div className="results-message">
+      <div id="results-description" className="results-summary">
         {
           hits !== 0 ?
-          (<p>
-            Found <strong>{hitsF}</strong> results {keyword} {activeFacetsElm}.
-          </p>)
-          : (<p>No results found {keyword} {activeFacetsElm}.</p>)
+          (<p><strong className="results-count">{hitsF}</strong> results found{keyword}{activeFacetsElm}.</p>)
+          : (<p>No results found{keyword}{activeFacetsElm}.</p>)
         }
       </div>
     );
@@ -127,6 +113,11 @@ Hits.propTypes = {
   hits: React.PropTypes.number,
   query: React.PropTypes.string,
   facets: React.PropTypes.object,
+  sortBy: React.PropTypes.string,
+};
+
+Hits.defaultProps = {
+  hits: 0,
 };
 
 Hits.contextTypes = {

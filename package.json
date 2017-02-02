@@ -7,7 +7,12 @@
     "start": "node index",
     "dist": "NODE_ENV=production webpack --config webpack.config.js",
     "postinstall": "npm run dist",
-    "test": "node_modules/.bin/mocha --compilers js:babel-core/register"
+    "test": "node_modules/.bin/mocha test/helpers/browser.js test/unit/*.test.js",
+    "test-dev": "node_modules/.bin/mocha -w test/helpers/browser.js test/unit/*.test.js",
+    "test-file": "node_modules/.bin/mocha -w test/helpers/browser.js",
+    "coverage": "BABEL_ENV=test node_modules/.bin/nyc --require mocha npm test",
+    "coverage-report": "BABEL_ENV=test node_modules/.bin/nyc report --reporter=lcov",
+    "nightwatch": "./node_modules/.bin/nightwatch"
   },
   "repository": {
     "type": "git",
@@ -25,28 +30,55 @@
   "bugs": {
     "url": "https://github.com//issues"
   },
-  "devDependencies": {},
+  "nyc": {
+    "extension": [
+      ".jsx"
+    ],
+    "require": [
+      "babel-register"
+    ]
+  },
+  "babel": {
+    "env": {
+      "test": {
+        "plugins": [
+          "instanbul"
+        ]
+      }
+    }
+  },
+  "devDependencies": {
+    "axios-mock-adapter": "^1.7.1",
+    "eslint-config-airbnb": "^13.0.0",
+    "eslint-plugin-jsx-a11y": "^3.0.1",
+    "nightwatch": "^0.9.9",
+    "nyc": "^9.0.1",
+    "react-a11y": "^0.3.3"
+  },
   "dependencies": {
-    "@nypl/dgx-header-component": "git+https://git@bitbucket.org/NYPL/dgx-header-component#update-log-out-link",
+    "@nypl/design-toolkit": "0.1.0",
+    "@nypl/dgx-header-component": "1.5.0",
     "@nypl/dgx-react-footer": "0.3.0",
     "alt": "^0.18.2",
     "axios": "^0.9.1",
     "babel-core": "^6.5.2",
     "babel-loader": "^6.2.3",
+    "babel-plugin-istanbul": "^3.0.0",
     "babel-preset-es2015": "^6.5.0",
     "babel-preset-react": "^6.5.0",
-    "brace-expansion": "^1.1.6",
     "body-parser": "^1.15.2",
-    "chai": "^3.5.0",
+    "brace-expansion": "^1.1.6",
+    "chai": "3.5.0",
     "classnames": "^2.1.3",
     "clean-webpack-plugin": "^0.1.3",
     "colors": "^1.1.2",
     "compression": "^1.5.2",
     "cookie-parser": "^1.4.3",
     "css-loader": "^0.23.1",
+    "dgx-react-ga": "git+https://git@bitbucket.org/NYPL/dgx-react-ga.git#master",
     "dgx-svg-icons": "git+https://git@bitbucket.org/NYPL/dgx-svg-icons.git#master",
     "ejs": "^2.3.3",
-    "enzyme": "^2.2.0",
+    "enzyme": "2.4.1",
     "esdoc": "^0.4.5",
     "eslint": "^2.2.0",
     "eslint-loader": "^1.3.0",
@@ -56,10 +88,10 @@
     "history": "^1.15.0",
     "iso": "^5.1.0",
     "jsonwebtoken": "^7.1.9",
-    "mocha": "^2.4.5",
+    "mocha": "3.0.2",
     "node-sass": "3.4.2",
     "react": "^0.14.7",
-    "react-addons-test-utils": "^0.14.7",
+    "react-addons-test-utils": "15.3.1",
     "react-doc-meta": "^0.2.0",
     "react-dom": "^0.14.7",
     "react-ga": "^1.2.0",
@@ -69,6 +101,7 @@
     "rootpath": "^0.1.2",
     "sass-loader": "^3.2.0",
     "scroll-behavior": "^0.4.0",
+    "sinon": "1.17.5",
     "style-loader": "^0.13.0",
     "underscore": "^1.8.3",
     "webpack": "^1.12.14",

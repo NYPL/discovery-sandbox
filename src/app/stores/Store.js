@@ -4,10 +4,9 @@ import alt from '../alt.js';
 class Store {
   constructor() {
     this.bindListeners({
-      updateEbscoData: Actions.updateEbscoData,
       updateSearchResults: Actions.updateSearchResults,
       updateSearchKeywords: Actions.updateSearchKeywords,
-      updateItem: Actions.updateItem,
+      updateBib: Actions.updateBib,
       updateFacets: Actions.updateFacets,
       updateSelectedFacets: Actions.updateSelectedFacets,
       removeFacet: Actions.removeFacet,
@@ -16,19 +15,14 @@ class Store {
     });
 
     this.state = {
-      ebscodata: {},
       searchResults: {},
-      item: {},
+      bib: {},
       searchKeywords: '',
       facets: {},
       selectedFacets: {},
       page: '1',
       sortBy: 'relevance',
     };
-  }
-
-  updateEbscoData(data) {
-    this.setState({ ebscodata: data });
   }
 
   updateSearchResults(data) {
@@ -39,8 +33,8 @@ class Store {
     this.setState({ searchKeywords: data });
   }
 
-  updateItem(data) {
-    this.setState({ item: data });
+  updateBib(data) {
+    this.setState({ bib: data });
   }
 
   updateFacets(data) {

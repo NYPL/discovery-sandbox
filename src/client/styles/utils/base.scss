@@ -1,53 +1,31 @@
-html {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-  font-size: 16px;
-  font-size: 1em;
-  line-height: 1.65;
-  -webkit-font-smoothing: antialiased;
-}
-
 body {
-  color: $textcolor;
-  background-color: #fff;
   padding-bottom: 100px;
 }
 
 a {
-  &, &:link {
-    color: $linkcolor;
-    background-color: inherit;
-  }
-
-  &:visited {
-    color: $linkvisitedcolor;
-  }
-
-  &:hover, &:visited:hover {
-    color: $linkhovercolor;
-  }
-
   &.button {
-    color: $buttontextcolor;
-    background: $buttoncolor;
+    color: $button-text-color;
+    background: $button-background-color;
     padding: 0.35rem 0.65rem;
     text-decoration: none;
     white-space: nowrap;
 
     &:hover {
-      color: $buttontextcolor;
-      background: $buttonhovercolor;
+      color: $button-background-color;
+      background: $button-text-color;
     }
   }
 }
 
 button {
-  color: $buttontextcolor;
-  background: $buttoncolor;
-  border: 1px solid $buttoncolor;
+  color: $button-text-color;
+  background: $button-background-color;
+  border: 1px solid $button-background-color;
 
   &:hover {
-    background: $buttonhovercolor;
-    border-color: $buttonhovercolor;
+    color: $button-background-color;
+    background: $button-text-color;
+    border-color: $button-text-color;
   }
 
   &.large {
@@ -60,25 +38,10 @@ button {
   }
 }
 
-h1, h2, h3, h4, h5, h6, p, ol, ul {
-  margin-bottom: 1.5rem;
-  margin-top: 0;
-}
-h1 {
-  font-size: 2.6rem;
-}
-h2 {
-  font-size: 2rem;
-}
-h3 {
-  font-size: 1.6rem;
-}
-h4 {
-  font-size: 1.2rem;
-}
 li {
   margin-bottom: 1rem;
   margin-top: 0;
+  margin-left: 0;
 }
 p {
   &.lead {
@@ -91,28 +54,29 @@ a, input, select, button {
   border-radius: 0;
 
   &:focus {
-    outline-color: $focuscolor;
+    outline-color: $focus-color;
     outline-style: solid;
-    outline-width: $focuswidth;
+    outline-width: $focus-width;
   }
 }
 
-select {
-  -moz-appearance: none;
-  -webkit-appearance: none;
-  appearance: none;
-  background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPCEtLSBHZW5lcmF0b3I6IEFkb2JlIElsbHVzdHJhdG9yIDIwLjAuMCwgU1ZHIEV4cG9ydCBQbHVnLUluIC4gU1ZHIFZlcnNpb246IDYuMDAgQnVpbGQgMCkgIC0tPgo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IgoJIHZpZXdCb3g9IjAgMCA0LjkgMTAiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDQuOSAxMDsiIHhtbDpzcGFjZT0icHJlc2VydmUiPgo8c3R5bGUgdHlwZT0idGV4dC9jc3MiPgoJLnN0MHtmaWxsOiM0NDQ0NDQ7fQo8L3N0eWxlPgo8dGl0bGU+YXJyb3dzPC90aXRsZT4KPHBvbHlnb24gY2xhc3M9InN0MCIgcG9pbnRzPSIxLjQsNC43IDIuNSwzLjIgMy41LDQuNyAiLz4KPHBvbHlnb24gY2xhc3M9InN0MCIgcG9pbnRzPSIzLjUsNS4zIDIuNSw2LjggMS40LDUuMyAiLz4KPC9zdmc+Cg==) no-repeat 98% 50% $lightgray;
-  border: 0;
-  border-radius: 0;
-  padding: 0.3rem 0.4rem;
-  line-height: 1;
-  display: inline-block;
-  vertical-align: middle;
-  padding-right: 7%;
-  padding-left: 0.35rem;
-}
+// select {
+//   -moz-appearance: none;
+//   -webkit-appearance: none;
+//   appearance: none;
+//   background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz48c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IiB2aWV3Qm94PSIwIDAgNC45IDEwIiBzdHlsZT0iZW5hYmxlLWJhY2tncm91bmQ6bmV3IDAgMCA0LjkgMTA7IiB4bWw6c3BhY2U9InByZXNlcnZlIj48c3R5bGUgdHlwZT0idGV4dC9jc3MiPi5zdDB7ZmlsbDojMDAwMDAwO308L3N0eWxlPjx0aXRsZT5hcnJvd3M8L3RpdGxlPjxwb2x5Z29uIGNsYXNzPSJzdDAiIHBvaW50cz0iMS40LDQuNyAyLjUsMy4yIDMuNSw0LjcgIi8+PHBvbHlnb24gY2xhc3M9InN0MCIgcG9pbnRzPSIzLjUsNS4zIDIuNSw2LjggMS40LDUuMyAiLz48L3N2Zz4=) no-repeat 98% 50% $pagecolorlight;
+//   border: 0;
+//   border-radius: 0;
+//   padding: 0.3rem 0.4rem;
+//   line-height: 1;
+//   display: inline-block;
+//   vertical-align: middle;
+//   padding-right: 7%;
+//   padding-left: 0.35rem;
+// }
+
 .radio-group {
-  background: $lightgray;
+  background: $page-color-light;
   padding: 0.35rem 0.5rem;
   label,
   input {
@@ -125,15 +89,13 @@ select {
 
 dl {
   @include clearfix();
-  // padding: 0.2rem 0.4rem;
-  // border: 4px solid $black;
 }
 dt,
 dd {
   padding: 0.2rem 0;
   float: left;
   margin: 0;
-  @include box-sizing();
+  @include box-sizing(border-box);
 }
 dt {
   width: 25%;
@@ -189,7 +151,7 @@ iframe {
 
 .inline-form {
   input {
-    border: 1px solid $gray;
+    border: 1px solid $border-color;
     padding: 0.2rem 0;
     text-indent: 0.2rem;
     width: 12rem;
@@ -205,7 +167,7 @@ table.generic-table {
     text-align: left;
   }
   tr {
-    border-bottom: 1px solid $lightgray;
+    border-bottom: 1px solid $border-color;
     &.more {
       border-bottom: 0;
     }
@@ -227,7 +189,7 @@ table.generic-table {
     float: left;
     padding-right: 1rem;
     padding-left: 1rem;
-    @include box-sizing();
+    @include box-sizing(border-box);
     &:first-child {
       padding-left: 0;
     }
@@ -270,20 +232,8 @@ table.generic-table {
 }
 
 .container {
-  max-width: $containerWidth;
+  max-width: $container-width;
   padding: 0.5rem 1rem;
   margin: 0 auto;
-  @include box-sizing();
-}
-
-.feedback {
-  background: $yellow;
-  width: 100%;
-  padding: 0.5rem 1rem;
-  text-align: center;
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  font-size: 0.8rem;
-  @include box-sizing();
+  @include box-sizing(border-box);
 }

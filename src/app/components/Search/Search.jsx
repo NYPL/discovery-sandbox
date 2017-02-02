@@ -1,11 +1,15 @@
 import React from 'react';
-import cx from 'classnames';
-import axios from 'axios';
 
 import Actions from '../../actions/Actions.js';
 import Store from '../../stores/Store.js';
 
 import SearchButton from '../Buttons/SearchButton.jsx';
+import {
+  trackDiscovery,
+  ajaxCall,
+  getSortQuery,
+  getFacetParams,
+} from '../../utils/utils.js';
 
 import {
   extend as _extend,
@@ -35,12 +39,12 @@ class Search extends React.Component {
     Store.listen(this.onChange);
   }
 
-  onChange() {
-    this.setState(_extend(this.state, Store.getState()));
-  }
-
   componentWillUnmount() {
     Store.unlisten(this.onChange);
+  }
+
+  onChange() {
+    this.setState(_extend(this.state, Store.getState()));
   }
 
   /**
@@ -48,32 +52,29 @@ class Search extends React.Component {
    */
   submitSearchRequest(e) {
     e.preventDefault();
+
     // Store the data that the user entered
     const keyword = this.state.searchKeywords.trim();
-    const reset = this.props.sortBy === 'relevance';
-    let sortQuery = '';
+    const sortQuery = getSortQuery(this.props.sortBy);
+    const facetQuery = getFacetParams(this.props.selectedFacets);
 
-    if (!reset) {
-      const [sortBy, order] = this.props.sortBy.split('_');
-      sortQuery = `&sort=${sortBy}&sort_direction=${order}`;
-    }
+    // Track the submitted keyword search.
+    trackDiscovery('Search', keyword);
 
-    axios
-      .get(`/api?q=${keyword}${sortQuery}`)
-      .then(response => {
-        Actions.updateSearchResults(response.data.searchResults);
-        Actions.updateFacets(response.data.facets);
-        Actions.updateSearchKeywords(keyword);
-        Actions.updatePage('1');
-        this.routeHandler(`/search?q=${keyword}${sortQuery}`);
-      })
-      .catch(error => {
-        console.log(error);
+    ajaxCall(`/api?q=${keyword}${facetQuery}${sortQuery}`, (response) => {
+      Actions.updateSearchResults(response.data.searchResults);
+      Actions.updateFacets(response.data.facets);
+      Actions.updateSearchKeywords(keyword);
+      Actions.updatePage('1');
+      this.routeHandler({
+        pathname: '/search',
+        query: { q: `${keyword}${facetQuery}${sortQuery}` },
       });
+    });
   }
 
-  routeHandler(keyword) {
-    this.context.router.push(keyword);
+  routeHandler(obj) {
+    this.context.router.push(obj);
   }
 
   /**
@@ -104,34 +105,41 @@ class Search extends React.Component {
   render() {
     return (
       <form className="search-form" onKeyPress={this.triggerSubmit}>
-        <label htmlFor="search-by-field" className="visuallyhidden">Search by field</label>
-        <select id="search-by-field" className="search-select">
-          <option value="all">All fields</option>
-          <option value="title">Title</option>
-          <option value="contributor">Author/Contributor</option>
-          <option value="subject">Subject</option>
-          <option value="series">Series</option>
-          <option value="call_number">Call number</option>
-        </select>
-        <label htmlFor="search-query" className="visuallyhidden">Search keyword</label>
-        <input
-          id="search-query"
-          placeholder={this.state.placeholder}
-          className="search-field"
-          onChange={this.inputChange}
-          value={this.state.searchKeywords}
-          ref="keywords"
-        />
-        <SearchButton
-          id="search-button"
-          className="search-button"
-          label="Search"
-          onClick={this.submitSearchRequest}
-        />
+        <fieldset>
+          <label htmlFor="search-by-field" className="visuallyhidden">Search by field</label>
+          <select id="search-by-field" className="search-select">
+            <option value="all">All fields</option>
+            <option value="title">Title</option>
+            <option value="contributor">Author/Contributor</option>
+            <option value="subject">Subject</option>
+            <option value="series">Series</option>
+            <option value="call_number">Call number</option>
+          </select>
+          <label htmlFor="search-query" className="visuallyhidden">Search keyword</label>
+          <input
+            id="search-query"
+            placeholder={this.state.placeholder}
+            className="search-field"
+            onChange={this.inputChange}
+            value={this.state.searchKeywords}
+            ref="keywords"
+          />
+          <SearchButton
+            id="search-button"
+            className="search-button"
+            label="Search"
+            onClick={this.submitSearchRequest}
+          />
+        </fieldset>
       </form>
     );
   }
 }
+
+Search.propTypes = {
+  sortBy: React.PropTypes.string,
+  selectedFacets: React.PropTypes.object,
+};
 
 Search.contextTypes = {
   router: function contextType() {

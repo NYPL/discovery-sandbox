@@ -1,33 +1,30 @@
 .results-nav {
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  margin-top: 1rem;
+  @include results-sorting-controls();
+  padding-bottom: 0.2rem;
+
+  .pagination {
+    float: left;
+    height: 2rem;
+    line-height: 2rem;
+  }
 
   .sort {
-    flex-grow: 1;
-
-    form {
-      white-space: nowrap;
-      // padding-right: 0.9rem;
-      text-align: right;
-    }
-
-    label,
-    select {
-      display: inline-block;
-      height: 30px;
-      font-size: 0.8rem;
-    }
-
-    label {
-      margin-right: 0.35rem;
-    }
+    float: right;
 
     fieldset {
-      border: none;
+      @include select-fieldset;
+      white-space: nowrap;
+      background-color: $page-background-color;
       margin: 0;
-      padding: 0;
+
+      label,
+      select {
+        display: inline-block;
+        background-color: $page-background-color;
+      }
+      select {
+        width: auto;
+      }
     }
   }
 }
@@ -37,25 +34,33 @@
     padding-left: 0;
   }
 }
-
 .pagination-total,
 .paginate {
   padding: 0 0.35rem;
 }
-
 .pagination-total {
   font-weight: bold;
 }
-
 .paginate {
   text-decoration: none;
   cursor: pointer;
+  font-size: 1rem;
+  line-height: 1rem;
+  font-weight: bold;
+
+  &.previous,
+  &.next {
+    background: $page-background-color;
+    color: $page-text-color;
+    border: none;
+    text-decoration: underline;
+  }
 
   &.previous:before {
     content: '‹';
     display: inline-block;
     margin-right: 0.2rem;
-    font-size: 1.2rem;
+    font-size: 1rem;
     line-height: 1rem;
   }
 
@@ -63,7 +68,7 @@
     content: '›';
     display: inline-block;
     margin-left: 0.2rem;
-    font-size: 1.2rem;
+    font-size: 1rem;
     line-height: 1rem;
   }
 }
@@ -76,215 +81,54 @@
   padding: 0;
 }
 .result-item {
-  padding: 0.5rem 0 1rem;
-  border-top: 1px solid darken($lightgray, 10%);
-  display: flex;
-  flex-direction: row;
+  @include results-item;
+  h4 {
+    margin-bottom: 0.3rem;
+  }
+  p {
+    margin: 0;
+  }
+}
+.result-item-formats {
+  @include results-item-formats;
+  margin-top: 0.5rem;
 
-  .result-image {
-    flex: 0 0 60px;
-    max-height: 100px;
-    overflow: hidden;
-
-    img {
-      width: 100%;
-      margin: 0 auto;
-      display: block;
-    }
+  th:first-child,
+  td:first-child,
+  th:last-child,
+  td:last-child {
+    width: auto;
   }
 
-  &.person {
-    padding: 0.65rem;
-    margin: 0.65rem 0;
-    // background: $lightergreen;
-    border: 1px solid darken($lightgray, 10%);
-    @include box-shadow(0px 1px 2px rgba($black, 0.2));
-
-    & + .result-item {
-      border-top: 0;
-    }
-
-    .result-image {
-      flex: 0 0 80px;
-      max-height: 120px;
-    }
+  th:last-child,
+  td:last-child {
+    white-space: nowrap;
   }
 
-  .result-text {
-    text-decoration: none;
-    flex-grow: 1;
-    position: relative;
-
-    .type,
-    .title,
-    .description {
-      display: block;
-    }
-
-    .type,
-    .description,
-    .sub-item {
-      // color: $gray;
-      font-size: 0.95rem;
-    }
-
-    .type {
-      text-transform: uppercase;
-    }
-
-    .title {
-      font-size: 1rem;
-      line-height: 1.35;
-      font-weight: bold;
-    }
-
-    .description {
-      color: $textcolor;
-    }
-
-    .label {
-      color: $gray;
-    }
-
-    .sub-items {
-      margin-top: 0.35rem;
-      max-width: 800px;
-
-      .see-more-link {
-        display: block;
-        padding: 0.2rem 0.5rem;
-        border-top: 1px solid $lightgray;
-        background: $lightgray;
-      }
-    }
-
-    .sub-items > div {
-      display: table;
-      width: 100%;
-      // border: 1px solid $lightgray;
-      padding: 0;
-      background: lighten($lightergray, 4%);
-    }
-
-    .sub-item {
-      display: table-row;
-      line-height: 1.2;
-      padding: 0.2rem 0;
-
-      &.more {
-        display: none;
-      }
-
-      span {
-        font-weight: bold;
-      }
-
-      .call-no {
-        white-space: nowrap;
-      }
-
-      .view-online {
-        background: $linkcolor;
-        color: $white;
-        text-decoration: none;
-        padding: 0.1rem 0.35rem;
-        margin-right: 0.35rem;
-
-        &:hover {
-          background: $linkhovercolor;
-          color: $white;
-        }
-      }
-
-      .message {
-        white-space: nowrap;
-        font-weight: normal;
-        color: $gray;
-      }
-
-      span.call-no {
-        font-weight: normal;
-        font-style: italic;
-        color: $gray;
-      }
-
-      .button {
-        padding: 0.2rem 0.65rem;
-        min-width: 110px;
-        display: inline-block;
-        text-align: center;
-      }
-
-      > div {
-        display: table-cell;
-        vertical-align: middle;
-        padding: 0.5rem 0.5rem;
-        border-top: 1px solid $lightgray;
-        &:last-child {
-          text-align: right;
-        }
-      }
-    }
-
-    .sub-item:first-child > div {
-      border-top: 0;
-    }
-
-    .divider {
-      display: inline-block;
-      margin: 0 0.35rem;
-      font-size: 2rem;
-      line-height: 0.8rem;
-      vertical-align: middle;
-      color: $gray;
-
-      &:before {
-        content: "·";
-      }
-    }
-
-    .select-label {
-      position: absolute;
-      top: 0;
-      right: 0;
-      font-size: 0.8rem;
-      display: block;
-
-      input,
-      span {
-        display: inline-block;
-        vertical-align: middle;
-      }
-      span {
-        padding-left: 0.35rem;
-        color: $gray;
-      }
-    }
+  .more {
+    display: none;
   }
+}
+.result-item-formats-table {
+  @include basic-table;
 
-  .result-actions {
-    flex: 0 0 110px;
+  tr.see-more-row,
+  tr.see-more-row td {
+    border: none;
+  }
+}
 
-    display: flex;
-    align-items: center;
-    // justify-content: right;
-    // text-align: right;
-
-    .select-label {
-      white-space: nowrap;
-      display: block;
-      margin-top: 1rem;
-      padding-left: 0.35rem;
-
-      input,
-      span {
-        display: inline-block;
-        vertical-align: middle;
-      }
-      span {
-        padding-left: 0.35rem;
-        color: $gray;
-      }
+.results-summary {
+  @include results-summary();
+  p {
+    margin: 0;
+    padding: 0;
+    line-height: 1;
+  }
+  .remove-facet,
+  .remove-keyword {
+    &:before {
+      content: 'x';
     }
   }
 }

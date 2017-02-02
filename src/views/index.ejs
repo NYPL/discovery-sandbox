@@ -22,7 +22,7 @@
     <meta name="twitter:creator" content="@nypl">
     <meta name="twitter:image" content="">
 
-    
+
 <% if (isProduction) { %>
     <!-- Minified Styles -->
     <link rel="stylesheet" type="text/css" href="/styles.css">
@@ -34,7 +34,7 @@
       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
       })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-      ga('create', '', 'auto');
+      ga('create', 'UA-1420324-144', 'auto');
       ga('send', 'pageview');
     </script>
 
@@ -48,5 +48,9 @@
 <% } else { %>
   <script src="http://localhost:3000/bundle.js"></script>
 <% } %>
+
+  <!-- Optimizely -->
+  <script src="https://cdn.optimizely.com/js/284748925.js"></script>
+  <!-- Optimizely -->
 
 </html>

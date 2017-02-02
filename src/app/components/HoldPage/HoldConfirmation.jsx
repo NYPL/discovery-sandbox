@@ -30,7 +30,7 @@ class HoldConfirmation extends React.Component {
     return (
       <div id="mainContent">
         <div className="page-header">
-          <div className="container">
+          <div className="content-wrapper">
             <Breadcrumbs
               query={searchKeywords}
               type="holdConfirmation"
@@ -40,13 +40,13 @@ class HoldConfirmation extends React.Component {
           </div>
         </div>
 
-        <div className="container holds-container">
+        <div className="content-wrapper">
           <div className="item-header">
             <h1>Research item request confirmation</h1>
           </div>
 
           <div className="item-summary row">
-            <div className="details col span-2-3">
+            <div className="details two-third">
               <h2>Item request details</h2>
               <ul className="generic-list">
                 <li>Item: <Link to={`/item/${id}`}>{title}</Link></li>
@@ -60,7 +60,7 @@ class HoldConfirmation extends React.Component {
                 { /* <li>Book will be held until {dateDisplayEnd}, 5:00pm</li> */ }
               </ul>
             </div>
-            <div className="actions col span-1-3">
+            <div className="actions third">
               <h2>Available actions</h2>
               <ul className="generic-list">
                 <li>Visit your <a href="http://myaccount-beta.nypl.org/my-account/holds">patron account page</a> to view the status of this item hold</li>
@@ -69,50 +69,52 @@ class HoldConfirmation extends React.Component {
             </div>
           </div>
 
-          <div className="row map-container">
-            <div className="col span-3-5">
+          <div className="map-container">
+            <div className="two-third">
               <Tabs
                 tabs={[
-                  {title: 'Directions to building', id: 'building'},
-                  {title: 'Directions to room', id: 'room'},
+                  { title: 'Directions to building', id: 'building' },
+                  { title: 'Directions to room', id: 'room' },
                 ]}
               >
                 <TabPanel id="building">
-                  <iframe src={`${location.address["map-embed-uri"]}`} height="450" frameBorder="0" style={{border: 0}} allowFullScreen title="Google Map" tabIndex="-1"></iframe>
+                  <iframe src={`${location.address['map-embed-uri']}`} height="450" frameBorder="0" style={{ border: 0 }} allowFullScreen title="Google Map" tabIndex="-1"></iframe>
                 </TabPanel>
                 <TabPanel id="room">
                   <img src="/src/client/images/floor_plan.png" alt="Floor plan of first floor of Stephen A. Schwarzman Building" />
                 </TabPanel>
               </Tabs>
             </div>
-            <div className="col span-2-5">
+            <div className="third">
               <p>
-                <a href={`${location.uri}`}>{location["full-name"]}</a><br />
+                <a href={`${location.uri}`}>{location['full-name']}</a><br />
                 {location.address.address1}<br />
                 {location.prefLabel}
               </p>
               <p>Regular hours:</p>
-              <table className="generic-table">
+              <table>
                 <caption className="visuallyHidden">Location hours</caption>
-                <tbody>
+                <thead>
                   <tr>
                     <th scope="col">Day</th>
                     <th scope="col">Hours</th>
                   </tr>
+                </thead>
+                <tbody>
                   {
                     location.hours.map((h, i) => (
                       <tr key={i}>
                         <td scope="col">{h.day}</td>
-                          {!h.closed &&
-                            <td scope="col">
-                              {h.open} - {h.close}
-                            </td>
-                          }
-                          {h.closed &&
-                            <td scope="col">
+                        {!h.closed &&
+                          <td scope="col">
+                            {h.open} - {h.close}
+                          </td>
+                        }
+                        {h.closed &&
+                          <td scope="col">
                             <em>Closed</em>
-                            </td>
-                          }
+                          </td>
+                        }
                       </tr>
                     ))
                   }
@@ -130,6 +132,7 @@ HoldConfirmation.propTypes = {
   item: React.PropTypes.object,
   location: React.PropTypes.object,
   searchKeywords: React.PropTypes.string,
+  params: React.PropTypes.object,
 };
 
 export default HoldConfirmation;

@@ -1,6 +1,7 @@
 .breadcrumbs {
-  a {
-    background-color: #e9e8e7;
+  a,
+  a:hover {
+    color: $page-color;
   }
 
   .breadcrumb {
@@ -10,7 +11,7 @@
       content: "»";
       display: inline-block;
       margin: 0 0.5rem;
-      color: $darkgray;
+      color: $page-text-color;
     }
 
     &:last-child:after {
@@ -21,5 +22,8 @@
   span span {
     margin: 0 5px;
   }
-}
 
+  .currentPage {
+    margin: 0;
+  }
+}

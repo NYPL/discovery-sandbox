@@ -15,7 +15,6 @@ export function initializeTokenAuth(req, res, next) {
           errorCode: error.message,
         };
         return next();
-        // res.redirect(`${config.loginUrl}?redirect_uri=http://local.nypl.org:3001/my-account/holds`);
       }
 
       // Token has been verified, initialize user session
@@ -35,8 +34,5 @@ export function initializeTokenAuth(req, res, next) {
       errorCode: 'token undefined',
     };
     return next();
-
-    // Continue next function call
-    // res.redirect(`${config.loginUrl}?redirect_uri=http://local.nypl.org:3001/my-account/holds`);
   }
 }

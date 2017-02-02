@@ -1,6 +1,16 @@
+/*
+Import style rules from NYPL Design Toolkit
+*/
+@import "~@nypl/design-toolkit/sass/nypl-normalize";
+@import "~@nypl/design-toolkit/sass/grid";
+@import "~@nypl/design-toolkit/sass/tables-results";
+
+/*
+App-specific utilities and defaults
+*/
 @import "utils/mixins.scss";
 @import "utils/utils.scss";
-@import "utils/fonts.scss";
+// @import "utils/fonts.scss";
 @import "utils/variables.scss";
 @import "utils/base.scss";
 
@@ -20,24 +30,25 @@ Import style rules from NYPL React module components
 @import "components/Advanced.scss";
 @import "components/Tabs.scss";
 @import "components/Account.scss";
+@import "components/Feedback.scss";
 
 #app {
   margin: 0;
 }
 
 button {
-  color: $buttontextcolor;
+  color: $button-text-color;
 }
 
 .page-header {
-  background: #e9e8e7;
+  @include page-header;
 }
 
 .container {
-  max-width: $containerWidth;
+  max-width: $container-width;
   padding: 0.5rem 1rem;
   margin: 0 auto;
-  @include box-sizing();
+  @include box-sizing(border-box);
 }
 
 .search-results-container {
@@ -46,17 +57,68 @@ button {
 
 .status {
   font-weight: bold;
-  color: $darkorange;
+  color: $status-default-color;
   background-color: inherit;
   text-transform: capitalize;
 
   &.available {
-    color: $darkgreen;
+    color: $status-available-color;
   }
 }
 
+.content-wrapper {
+  @include full-width-wrapper;
+}
+
+.page-header {
+  @include page-header;
+}
+
+#filter-search {
+  @include search-form;
+}
+
+.full {
+  @include column-full;
+}
+
+.quarter {
+  @include column-one-quarter;
+}
+
+.third {
+  @include column-one-third;
+}
+
+.half {
+  @include column-half;
+}
+
+.two-third {
+  @include column-two-thirds;
+}
+
+.three-quarter {
+  @include column-three-quarters;
+}
+
+.inner {
+  @include inner-block;
+}
+
+table {
+  @include views-table;
+}
+
+// Overrides for other components
 .footer {
   a {
-    background-color: #54514A;
+    background-color: transparent;
+  }
+}
+
+.MyNypl-Login-List {
+  li {
+    margin-bottom: 0;
   }
 }

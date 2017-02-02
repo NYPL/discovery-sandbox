@@ -1,0 +1,83 @@
+.feedback {
+  position: fixed;
+  max-width: 400px;
+  bottom: 0;
+  right: 0;
+  z-index: 100;
+  text-align: right;
+}
+
+.feedback-button {
+  background: $alert-color;
+  display: inline-block;
+  color: $page-text-color;
+  cursor: pointer;
+  box-sizing: border-box;
+  padding: 0.5rem 1rem;
+  border: 0;
+  text-align: center;
+  font-size: 1rem;
+
+  &:hover {
+    background: lighten($alert-color, 10%);
+  }
+}
+
+.feedback-form-container {
+  display: none;
+  background: $page-color-light;
+  border: 1px solid $border-color;
+  box-shadow: -1px 0 1px 0 rgba(0,0,0,0.3);
+  padding: 0.35rem 0.5rem;
+  text-align: left;
+
+  &.active {
+    display: block;
+  }
+
+  p {
+    border-bottom: 1px solid $border-color;
+    margin-bottom: 0.35rem;
+    padding-bottom: 0.35rem;
+  }
+
+  form {
+    margin: 0;
+    padding: 0;
+  }
+
+  label {
+    display: block;
+    margin: 0.8rem 0 0.2rem;
+    font-size: 0.9rem;
+
+    small {
+      line-height: 1;
+    }
+  }
+
+  input,
+  select,
+  textarea {
+    display: block;
+    width: 100%;
+    background-color: $page-background-color;
+    border: 0;
+    font-size: 1rem;
+    line-height: 1.2;
+    box-sizing: border-box;
+  }
+
+  input {
+    padding: 0.3rem 0.4rem;
+  }
+
+  button {
+    font-size: 1rem;
+    margin-top: 1rem;
+  }
+
+  iframe {
+    display: none;
+  }
+}
