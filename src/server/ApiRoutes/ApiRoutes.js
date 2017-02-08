@@ -20,12 +20,12 @@ function MainApp(req, res, next) {
     page: '1',
     sortBy: 'relevance',
   };
-  
+
   next();
 }
 
 function getFacets(query) {
-  return axios.get(`http://discovery-api.nypltech.org/api/v1/resources/aggregations?q=${query}`);
+  return axios.get(`https://api.nypltech.org/api/v0.1/discovery/resources/aggregations?q=${query}`);
 }
 
 function Search(query, page, sortBy, order, cb, errorcb) {
@@ -35,8 +35,8 @@ function Search(query, page, sortBy, order, cb, errorcb) {
     sortQuery = `&sort=${sortBy}&sort_direction=${order}`;
   }
 
-  const apiQuery = `?q=${query}&per_page=50&page=${page}${sortQuery}`;  
-  const queryString = `http://discovery-api.nypltech.org/api/v1/resources${apiQuery}`;
+  const apiQuery = `?q=${query}&per_page=50&page=${page}${sortQuery}`;
+  const queryString = `https://api.nypltech.org/api/v0.1/discovery/resources${apiQuery}`;
   const apiCall = axios.get(queryString);
 
   axios
@@ -161,7 +161,7 @@ function ServerSearch(req, res, next) {
 
 function RetrieveItem(q, cb, errorcb) {
   axios
-    .get(`http://discovery-api.nypltech.org/api/v1/resources/${q}`)
+    .get(`https://api.nypltech.org/api/v0.1/discovery/resources/${q}`)
     .then(response => cb(response.data))
     .catch(error => {
       console.log(error);

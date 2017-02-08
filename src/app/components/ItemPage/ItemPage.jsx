@@ -132,12 +132,12 @@ class ItemPage extends React.Component {
       { label: 'Title', field: 'title' },
       { label: 'Type', field: 'type' },
       { label: 'Language', field: 'language' },
-      { label: 'Date Created', field: 'createdYear' },
-      { label: 'Date Published', field: 'startYear' },
+      { label: 'Date Created', field: 'createdString' },
+      { label: 'Date Published', field: 'dateString' },
       { label: 'Contributors', field: 'contributor', linkable: true },
       { label: 'Publisher', field: 'publisher', linkable: true },
       { label: 'Place of publication', field: 'placeOfPublication' },
-      { label: 'Subjects', field: 'subject' },
+      { label: 'Subjects', field: 'subjectLiteral', linkable: true },
       { label: 'Dimensions', field: 'dimensions' },
       { label: 'Issuance', field: 'issuance' },
       { label: 'Owner', field: 'owner' },
@@ -188,10 +188,10 @@ class ItemPage extends React.Component {
               <div className="description">
                 Year published:
                 <Link
-                  to={{ pathname: '/search', query: { q: `date:${record.startYear}` } }}
-                  onClick={(e) => this.onClick(e, `date:${record.startYear}`)}
+                  to={{ pathname: '/search', query: { q: `date:${record.dateStartYear}` } }}
+                  onClick={(e) => this.onClick(e, `date:${record.dateStartYear}`)}
                 >
-                  {record.startYear}
+                  {record.dateStartYear}
                 </Link>
               </div>
             </div>
