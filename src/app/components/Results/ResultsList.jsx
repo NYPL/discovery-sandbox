@@ -56,7 +56,7 @@ class ResultsList extends React.Component {
       </div>
       ) : null;
     const authors = author && result.contributor && result.contributor.length ?
-      result.contributor.map((contributor) => `${contributor}; `)
+      result.contributor
       : null;
     const id = result['@id'].substring(4);
     const items = LibraryItem.getItems(result);
@@ -88,9 +88,9 @@ class ResultsList extends React.Component {
             </p>)
           }
           {
-            result.created &&
+            result.createdYear &&
             (<p className="description">
-              <strong>Year published:</strong> {result.created}
+              <strong>Year published:</strong> {result.createdYear}
             </p>)
           }
           {

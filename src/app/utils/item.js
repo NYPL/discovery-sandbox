@@ -35,7 +35,7 @@ function LibraryItem() {
     const recordTitle = record.title ? record.title[0] : '';
     // filter out anything without a status or location
     let items = record.items.filter((item, i) => {
-      return (item.location && item.status) || item.electronicLocator;
+      return item.status || item.electronicLocator;
 
     // map items
     }).map((item, i) => {
@@ -144,6 +144,9 @@ function LibraryItem() {
     // this is an electronic resource
     } else if (item.electronicLocator && item.electronicLocator.length) {
       location = item.electronicLocator[0];
+      if (!location.prefLabel && location.label) {
+        location.prefLabel = location.label;
+      }
     }
 
     if (this.isOffsite(location)) return `${defaultLocation.prefLabel} (requested from offsite storage)`;
