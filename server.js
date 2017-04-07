@@ -41,7 +41,7 @@ app.disable('x-powered-by');
 app.set('view engine', 'ejs');
 app.set('views', VIEWS_PATH);
 
-app.set('port', process.env.PORT || 8081);
+app.set('port', process.env.PORT || 3001);
 
 app.use(cookieParser());
 app.use(bodyParser.json());       // to support JSON-encoded bodies

@@ -2,7 +2,7 @@ export default {
   appTitle: 'NYPL | Discovery',
   appName: 'discovery',
   favIconPath: '//d2znry4lg8s0tq.cloudfront.net/images/favicon.ico',
-  port: 8081,
+  port: 3001,
   webpackDevServerPort: 3000,
   api: {
     development: 'https://api.nypltech.org/api/v0.1',
