@@ -8,3 +8,8 @@ coverage
 bin/*
 selenium-debug.log
 nightwatch_reports
+
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml
