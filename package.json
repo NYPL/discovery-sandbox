@@ -4,7 +4,8 @@
   "description": "Isomorphic React boilerplate",
   "main": "index.js",
   "scripts": {
-    "start": "npm run dist && node index",
+    "start": "node index",
+    "eb-start": "npm run dist && node index",
     "dist": "NODE_ENV=production webpack --config webpack.config.js",
     "postinstall": "npm run dist",
     "test": "node_modules/.bin/mocha test/helpers/browser.js test/unit/*.test.js",
