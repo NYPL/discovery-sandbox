@@ -11,7 +11,7 @@ import ItemHoldings from './ItemHoldings.jsx';
 import ItemDetails from './ItemDetails.jsx';
 import ItemEditions from './ItemEditions.jsx';
 import LibraryItem from '../../utils/item.js';
-import EmbeddedDocument from './EmbeddedDocument.jsx';
+// import EmbeddedDocument from './EmbeddedDocument.jsx';
 import Actions from '../../actions/Actions.js';
 import { ajaxCall } from '../../utils/utils.js';
 
@@ -121,8 +121,8 @@ class ItemPage extends React.Component {
       </Link>
       : null;
     const holdings = LibraryItem.getItems(record);
-    const hathiEmbedURL = record.hathiVols && record.hathiVols.length ? `//hdl.handle.net/2027/${record.hathiVols[0].volumeId}?urlappend=%3Bui=embed` : '';
-    const hathiURL = record.hathiVols && record.hathiVols.length ? `https://hdl.handle.net/2027/${record.hathiVols[0].volumeId}` : '';
+    // const hathiEmbedURL = record.hathiVols && record.hathiVols.length ? `//hdl.handle.net/2027/${record.hathiVols[0].volumeId}?urlappend=%3Bui=embed` : '';
+    // const hathiURL = record.hathiVols && record.hathiVols.length ? `https://hdl.handle.net/2027/${record.hathiVols[0].volumeId}` : '';
 
     const externalFields = [
       { label: 'OCLC Number', field: 'idOclc', url: (id) => `http://worldcat.org/oclc/${id}` },
