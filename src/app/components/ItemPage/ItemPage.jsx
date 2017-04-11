@@ -98,7 +98,7 @@ class ItemPage extends React.Component {
   }
 
   render() {
-    const record = this.props.item;
+    const record = this.props.bib;
     const title = record.title[0];
     const authors = record.contributor && record.contributor.length ?
       record.contributor.map((author, i) => (
@@ -201,13 +201,6 @@ class ItemPage extends React.Component {
             path={this.props.location.search}
             holdings={holdings}
             title={`${record.numAvailable} cop${record.numAvailable === 1 ? 'y' : 'ies'} of this item ${record.numAvailable === 1 ? 'is' : 'are'} available at the following locations:`}
-          />
-
-          <EmbeddedDocument
-            externalURL={hathiEmbedURL}
-            embedURL={hathiURL}
-            owner="Hathi Trust"
-            title="View this item on this website"
           />
 
           <div className="item-details">
