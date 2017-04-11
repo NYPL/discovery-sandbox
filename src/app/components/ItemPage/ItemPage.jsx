@@ -98,7 +98,7 @@ class ItemPage extends React.Component {
   }
 
   render() {
-    const record = this.props.bib;
+    const record = this.props.bib ? this.props.bib : this.props.item;
     const title = record.title[0];
     const authors = record.contributor && record.contributor.length ?
       record.contributor.map((author, i) => (
