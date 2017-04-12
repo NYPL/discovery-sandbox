@@ -89,7 +89,7 @@ SearchResultsPage.propTypes = {
   searchKeywords: React.PropTypes.string,
   facets: React.PropTypes.object,
   selectedFacets: React.PropTypes.object,
-  page: React.PropTypes.number,
+  page: React.PropTypes.string,
   location: React.PropTypes.object,
   sortBy: React.PropTypes.string,
 };

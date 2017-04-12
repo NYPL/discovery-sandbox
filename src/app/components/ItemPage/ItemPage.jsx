@@ -11,7 +11,7 @@ import ItemHoldings from './ItemHoldings.jsx';
 import ItemDetails from './ItemDetails.jsx';
 import ItemEditions from './ItemEditions.jsx';
 import LibraryItem from '../../utils/item.js';
-import EmbeddedDocument from './EmbeddedDocument.jsx';
+// import EmbeddedDocument from './EmbeddedDocument.jsx';
 import Actions from '../../actions/Actions.js';
 import { ajaxCall } from '../../utils/utils.js';
 
@@ -98,7 +98,7 @@ class ItemPage extends React.Component {
   }
 
   render() {
-    const record = this.props.item;
+    const record = this.props.bib ? this.props.bib : this.props.item;
     const title = record.title[0];
     const authors = record.contributor && record.contributor.length ?
       record.contributor.map((author, i) => (
@@ -121,8 +121,8 @@ class ItemPage extends React.Component {
       </Link>
       : null;
     const holdings = LibraryItem.getItems(record);
-    const hathiEmbedURL = record.hathiVols && record.hathiVols.length ? `//hdl.handle.net/2027/${record.hathiVols[0].volumeId}?urlappend=%3Bui=embed` : '';
-    const hathiURL = record.hathiVols && record.hathiVols.length ? `https://hdl.handle.net/2027/${record.hathiVols[0].volumeId}` : '';
+    // const hathiEmbedURL = record.hathiVols && record.hathiVols.length ? `//hdl.handle.net/2027/${record.hathiVols[0].volumeId}?urlappend=%3Bui=embed` : '';
+    // const hathiURL = record.hathiVols && record.hathiVols.length ? `https://hdl.handle.net/2027/${record.hathiVols[0].volumeId}` : '';
 
     const externalFields = [
       { label: 'OCLC Number', field: 'idOclc', url: (id) => `http://worldcat.org/oclc/${id}` },
@@ -201,13 +201,6 @@ class ItemPage extends React.Component {
             path={this.props.location.search}
             holdings={holdings}
             title={`${record.numAvailable} cop${record.numAvailable === 1 ? 'y' : 'ies'} of this item ${record.numAvailable === 1 ? 'is' : 'are'} available at the following locations:`}
-          />
-
-          <EmbeddedDocument
-            externalURL={hathiEmbedURL}
-            embedURL={hathiURL}
-            owner="Hathi Trust"
-            title="View this item on this website"
           />
 
           <div className="item-details">
