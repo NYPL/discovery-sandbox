@@ -48,7 +48,7 @@ class Pagination extends React.Component {
 
     ajaxCall(`/api?q=${query}${pageParam}${sortQuery}`, response => {
       Actions.updateSearchResults(response.data.searchResults);
-      Actions.updatePage(page);
+      Actions.updatePage(page.toString());
       this.context.router.push(`/search?q=${encodeURIComponent(query)}${pageParam}${sortQuery}`);
     });
   }
