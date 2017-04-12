@@ -7,10 +7,6 @@ import Breadcrumbs from '../Breadcrumbs/Breadcrumbs.jsx';
 import FacetSidebar from '../FacetSidebar/FacetSidebar.jsx';
 import Results from '../Results/Results.jsx';
 import Search from '../Search/Search.jsx';
-import {
-  collapse,
-  ajaxCall,
-} from '../../utils/utils.js';
 
 class SearchResultsPage extends React.Component {
   render() {
@@ -25,7 +21,7 @@ class SearchResultsPage extends React.Component {
     } = this.props;
     const facetList = facets && facets.itemListElement ? facets.itemListElement : [];
     const totalHits = searchResults ? searchResults.totalResults : 0;
-    const results = searchResults ? collapse({ searchResults }).searchResults.itemListElement : [];
+    const results = searchResults ? searchResults.itemListElement : [];
     const breadcrumbs = (
       <div className="page-header">
         <div className="content-wrapper">
@@ -93,7 +89,7 @@ SearchResultsPage.propTypes = {
   searchKeywords: React.PropTypes.string,
   facets: React.PropTypes.object,
   selectedFacets: React.PropTypes.object,
-  page: React.PropTypes.number,
+  page: React.PropTypes.string,
   location: React.PropTypes.object,
   sortBy: React.PropTypes.string,
 };
