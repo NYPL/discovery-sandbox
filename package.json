@@ -56,7 +56,7 @@
     "react-a11y": "^0.3.3"
   },
   "dependencies": {
-    "@nypl/design-toolkit": "0.1.0",
+    "@nypl/design-toolkit": "0.1.5",
     "@nypl/dgx-header-component": "1.5.0",
     "@nypl/dgx-react-footer": "0.3.0",
     "alt": "^0.18.2",
