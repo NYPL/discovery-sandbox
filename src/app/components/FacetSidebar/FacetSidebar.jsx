@@ -112,67 +112,39 @@ class FacetSidebar extends React.Component {
         const selectedValue = this.state[field] ? this.state[field].id : '';
 
         return (
-          <fieldset key={i} tabIndex="0" className="select-fieldset">
-            <legend className="facet-legend visuallyHidden">Filter by {facet.field}</legend>
-            <label htmlFor={`select-${field}`}>{facet.field}</label>
-            <select
-              name={`select-${field}`}
-              id={`select-${field}`}
-              onChange={(e) => this.onChange(e, field)}
-              value={selectedValue || `${field}_any`}
-              aria-controls="results-region"
-            >
-              <option value={`${field}_any`}>Any</option>
-              {
-                facet.values.map((f, j) => {
-                  let selectLabel = f.value;
-                  if (f.label) {
-                    selectLabel = f.label;
-                  }
-
-                  return (
-                    <option key={j} value={f.value}>
-                      {selectLabel} ({f.count})
-                    </option>
-                  );
-                })
-              }
-            </select>
-          </fieldset>
+          <div className="nypl-searchable-field">
+            <div className="nypl-facet-search">
+              <label htmlFor="{`${facet.field}-${f.value}`}">{facet.field}</label>
+              <input id="{`${facet.field}-${f.value}`}" type="text" placeholder={`Search ${facet.field} Types`} />
+            </div>
+            <div className="nypl-facet-list">
+            {
+              facet.values.map((f, j) => {
+                return (
+                  <label htmlFor={`${facet.field}-${f.value}`} className={`nypl-bar_${f.count}`}>
+                    <input id={`${facet.field}-${f.value}`} type="checkbox" name="subject" value={`${f.value}`} />
+                    <span>
+                      {f.value}
+                    </span>
+                    <span className="nypl-facet-count">{f.count}</span>
+                  </label>
+                );
+              })
+            }
+            </div>
+          </div>
         );
       });
     }
 
     return (
-      <div className={`facets ${this.props.className}`}>
-        <form className="facets-form">
-          <h2>Filter results by</h2>
-          {
-            this.props.keywords ?
-              <fieldset tabIndex="0" className="fieldset">
-                <legend className="facet-legend visuallyHidden">
-                  Current Keyword {this.props.keywords}
-                </legend>
-                <label htmlFor="select-keywords">Keywords</label>
-                <button
-                  id="select-keywords"
-                  name="select-keywords"
-                  className="button-selected"
-                  title={`Remove keyword filter: ${this.props.keywords}`}
-                  onClick={() => this.removeKeyword()}
-                  aria-controls="results-region"
-                  type="submit"
-                >
-                  {`"${this.props.keywords}"`}
-                </button>
-              </fieldset>
-              : null
-          }
-
+      <form className="nypl-search-form">
+        <div className={`facets ${this.props.className} `}>
+          <div className="nypl-facet-search">
           {facetsElm}
-
-        </form>
-      </div>
+          </div>
+        </div>
+      </form>
     );
   }
 }
