@@ -120,12 +120,15 @@ class FacetSidebar extends React.Component {
             <div className="nypl-facet-list">
             {
               facet.values.map((f, j) => {
+                let selectLabel = f.value;
+                if (f.label) {
+                  selectLabel = f.label;
+                }
+
                 return (
                   <label htmlFor={`${facet.field}-${f.value}`} className={`nypl-bar_${f.count}`}>
-                    <input id={`${facet.field}-${f.value}`} type="checkbox" name="subject" value={`${f.value}`} />
-                    <span>
-                      {f.value}
-                    </span>
+                    <input id={`${facet.field}-${f.value}`} type="checkbox" name="subject" value={f.value} />
+                    <span>{selectLabel}</span>
                     <span className="nypl-facet-count">{f.count}</span>
                   </label>
                 );
