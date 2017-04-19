@@ -131,7 +131,7 @@ Results.propTypes = {
   query: React.PropTypes.string,
   sortBy: React.PropTypes.string,
   location: React.PropTypes.object,
-  page: React.PropTypes.number,
+  page: React.PropTypes.string,
 };
 
 Results.contextTypes = {
