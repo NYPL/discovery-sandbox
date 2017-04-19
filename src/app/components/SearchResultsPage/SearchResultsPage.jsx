@@ -23,39 +23,38 @@ class SearchResultsPage extends React.Component {
     const totalHits = searchResults ? searchResults.totalResults : 0;
     const results = searchResults ? searchResults.itemListElement : [];
     const breadcrumbs = (
-      <div className="page-header">
-        <div className="content-wrapper">
-          <Breadcrumbs query={searchKeywords} type="search" />
-        </div>
-      </div>
+      <Breadcrumbs query={searchKeywords} type="search" />
     );
 
     return (
-      <div id="mainContent">
-
-        {breadcrumbs}
-
-        <div className="content-wrapper">
+      <main className="main-page">
+      <div className="nypl-page-header">
+        <div className="nypl-full-width-wrapper">
+          {breadcrumbs}
+        </div>
+      </div>
+      <div className="nypl-full-width-wrapper">
+        <div className="nypl-row">
           <Search
             sortBy={sortBy}
             selectedFacets={selectedFacets}
           />
         </div>
 
-        <div className="content-wrapper">
+        <div className="nypl-row">
 
           <FacetSidebar
             facets={facetList}
             selectedFacets={selectedFacets}
             keywords={searchKeywords}
             sortBy={sortBy}
-            className="quarter"
+            className="nypl-column-one-quarter"
           />
 
           <div
-            className="results three-quarter"
+            className="nypl-column-three-quarters"
             role="region"
-            id="results-region"
+            id="mainContent"
             aria-live="polite"
             aria-atomic="true"
             aria-relevant="additions removals"
@@ -80,6 +79,7 @@ class SearchResultsPage extends React.Component {
           </div>
         </div>
       </div>
+      </main>
     );
   }
 }
