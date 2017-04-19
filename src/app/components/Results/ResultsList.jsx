@@ -36,7 +36,7 @@ class ResultsList extends React.Component {
     return (
       <div className="related-items">
         <h4>Related formats and editions</h4>
-        <ul className="nypl-results-list">
+        <ul>
           {bibs}
         </ul>
       </div>
@@ -82,10 +82,8 @@ class ResultsList extends React.Component {
     ];
 
     return (
-
-      <li key={i} className="nypl-results-item">
-        <div className="nypl-results-text">
-          {/*<div className="type">{result.type ? result.type[0].prefLabel : null}</div>*/}
+      <li key={i} className="result-item">
+        <div className="result-text">
           <h2>
             <Link
               onClick={(e) => this.getRecord(e, id, 'item')}
@@ -97,33 +95,13 @@ class ResultsList extends React.Component {
           </h2>
           <dl>
             {
-              result.materialType[0].prefLabel &&
-              (<span>
-                <dt>Material Type</dt>
-               <dd>{result.materialType[0].prefLabel}</dd>
-               </span>
-              )
-            }
-            {
-              authors &&
-              (<span>
-                <dt>Author</dt>
-               <dd>{authors}</dd>
-             </span>)
-            }
-            {
-              result.createdYear &&
-              (<span>
-                <dt>Published</dt>
-               <dd>{result.createdYear}</dd>
-             </span>)
-            }
-            {
-              result.publisher &&
-              (<span>
-                <dt>Publisher</dt>
-               <dd>{result.publisher}</dd>
-             </span>)
+              bibInfo.map((info) => {
+                if (!info.data) return null;
+                return [
+                  (<dt>{info.label}:</dt>),
+                  (<dd>{info.data}</dd>),
+                ];
+              })
             }
           </dl>
         </div>
@@ -144,7 +122,7 @@ class ResultsList extends React.Component {
     }
 
     return (
-      <ul className="nypl-results-list">
+      <ul className="results-list">
         {resultsElm}
       </ul>
     );
