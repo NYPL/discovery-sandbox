@@ -44,24 +44,17 @@ class Results extends React.Component {
     );
   }
 
-  onChange(e) {
-    const sortValue = e.target.value;
+  sortResultsBy(e) {
+    const sortValue = e.target.data;
     const query = this.props.location.query.q;
     const page = this.props.page !== '1' ? `&page=${this.props.page}` : '';
     const sortQuery = getSortQuery(sortValue);
-
     ajaxCall(`/api?q=${query}${page}${sortQuery}`, (response) => {
       Actions.updateSearchResults(response.data.searchResults);
       Actions.updateSortBy(sortValue);
-
       this.setState({ sortValue });
       this.context.router.push(`/search?q=${encodeURIComponent(query)}${page}${sortQuery}`);
     });
-  }
-
-  sortResultsBy(e) {
-    e.preventDefault();
-    this.setState({ "aria-expanded": true });
   }
 
   render() {
@@ -86,33 +79,20 @@ class Results extends React.Component {
           hits !== 0 &&
           (<div className="nypl-results-sorting-controls">
              <div className="nypl-results-sorter">
-             <button aria-expanded="false" onClick={(e) => this.sortResultsBy(e)}>
-               Sort by <strong>{this.state.sortValue}</strong>
-               <svg aria-hidden="true" className="nypl-icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 68 24">
-                 <title>wedge down icon</title>
-                 <polygon points="67.938 0 34 24 0 0 10 0 34.1 16.4 58.144 0 67.938 0"></polygon>
-               </svg>
-             </button>
-             <div id="sort-menu" className="hidden">
-             <form className="sort-form">
-               <fieldset>
-                 <label htmlFor="sort-by" className="sort-legend visuallyHidden">Sort by</label>
-                    <select
-                      id="sort-by"
-                      className="sort-legend"
-                      name="sort"
-                      onChange={(e) => this.onChange(e)}
-                      value={this.state.sortValue}
-                      >
-                        <option value="relevance">relevance</option>
-                        <option value="title_asc">title (a - z)</option>
-                        <option value="title_desc">title (z - a)</option>
-                        <option value="date_asc">date (old to new)</option>
-                        <option value="date_desc">date (new to old)</option>
-                      </select>
-                    </fieldset>
-                  </form>
-                </div>
+               <button className="active" aria-expanded="false">
+                 <span>Sort by <strong>{this.state.sortValue}</strong></span>
+                 <svg aria-hidden="true" className="nypl-icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 68 24">
+                   <title>wedge down icon</title>
+                   <polygon points="67.938 0 34 24 0 0 10 0 34.1 16.4 58.144 0 67.938 0"></polygon>
+                 </svg>
+               </button>
+               <ul className="">
+                  <li onClick={(e) => this.sortResultsBy(e)} data="relevance">relevance</li>
+                  <li onClick={(e) => this.sortResultsBy(e)} data="title_asc">title (a - z)</li>
+                  <li onClick={(e) => this.sortResultsBy(e)} data="title_desc">title (z - a)</li>
+                  <li onClick={(e) => this.sortResultsBy(e)} data="date_asc">date (old to new)</li>
+                  <li onClick={(e) => this.sortResultsBy(e)} data="date_desc">date (new to old)</li>
+                </ul>
               </div>
             </div>)
         }
