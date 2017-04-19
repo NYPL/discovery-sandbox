@@ -12,7 +12,7 @@
     float: right;
 
     fieldset {
-      @include select-fieldset;
+      // @include select-fieldset;
       white-space: nowrap;
       background-color: $page-background-color;
       margin: 0;
@@ -131,4 +131,12 @@
       content: 'x';
     }
   }
+}
+
+dt {
+  font-weight: normal;
+}
+
+.nypl-results-sorter fieldset {
+  border-width: 0;
 }

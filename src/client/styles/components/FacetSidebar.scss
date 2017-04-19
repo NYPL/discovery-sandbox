@@ -53,10 +53,10 @@ $facets-width: 200px;
   }
 
   .select-fieldset {
-    @include select-fieldset;
+    // @include select-fieldset;
   }
 
   input[type="text"] {
-    @include textfield;
+    // @include textfield;
   }
 }
