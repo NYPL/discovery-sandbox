@@ -112,7 +112,7 @@ class FacetSidebar extends React.Component {
         const selectedValue = this.state[field] ? this.state[field].id : '';
 
         return (
-          <div className="nypl-searchable-field">
+          <div key={`${facet.field}-${facet.value}`} className="nypl-searchable-field">
             <div className="nypl-facet-search">
               <label htmlFor="{`${facet.field}-${f.value}`}">{facet.field}</label>
               <input id="{`${facet.field}-${f.value}`}" type="text" placeholder={`Search ${facet.field} Types`} />
@@ -126,7 +126,7 @@ class FacetSidebar extends React.Component {
                 }
 
                 return (
-                  <label htmlFor={`${facet.field}-${f.value}`} className={`nypl-bar_${f.count}`}>
+                  <label key={j} htmlFor={`${facet.field}-${f.value}`} className={`nypl-bar_${f.count}`}>
                     <input id={`${facet.field}-${f.value}`} type="checkbox" name="subject" value={f.value} />
                     <span>{selectLabel}</span>
                     <span className="nypl-facet-count">{f.count}</span>
