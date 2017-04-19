@@ -126,9 +126,6 @@ class ResultsList extends React.Component {
              </span>)
             }
           </dl>
-          {
-          //  items.length ? <ResultItems items={items} itemTitle={itemTitle} /> : null
-          }
         </div>
       </li>
     );
