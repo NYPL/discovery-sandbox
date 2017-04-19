@@ -59,6 +59,11 @@ class Results extends React.Component {
     });
   }
 
+  sortResultsBy(e) {
+    e.preventDefault();
+    this.setState({ "aria-expanded": true });
+  }
+
   render() {
     const {
       results,
@@ -79,33 +84,37 @@ class Results extends React.Component {
       <div>
         {
           hits !== 0 &&
-          (<div className="results-nav">
-            {paginationButtons}
-            <div className="sort">
-              <form className="sort-form">
-                <fieldset>
-                  <legend className="sort-legend visuallyHidden">Sort by</legend>
-                  <label htmlFor="sort-by">Sort by</label>
-                  <select
-                    id="sort-by"
-                    name="sort"
-                    onChange={(e) => this.onChange(e)}
-                    value={this.state.sortValue}
-                  >
-                    <option value="relevance">Relevance</option>
-                    <option value="title_asc">Title (a - z)</option>
-                    <option value="title_desc">Title (z - a)</option>
-                    {/*<option value="author_asc">Author (a - z)</option>*/}
-                    {/*<option value="author_desc">Author (z - a)</option>*/}
-                    <option value="date_asc">Date (old to new)</option>
-                    <option value="date_desc">Date (new to old)</option>
-                  </select>
-
-                  <button className="visuallyHidden" type="submit">Search</button>
-                </fieldset>
-              </form>
-            </div>
-          </div>)
+          (<div className="nypl-results-sorting-controls">
+             <div className="nypl-results-sorter">
+             <button aria-expanded="false" onClick={(e) => this.sortResultsBy(e)}>
+               Sort by <strong>{this.state.sortValue}</strong>
+               <svg aria-hidden="true" className="nypl-icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 68 24">
+                 <title>wedge down icon</title>
+                 <polygon points="67.938 0 34 24 0 0 10 0 34.1 16.4 58.144 0 67.938 0"></polygon>
+               </svg>
+             </button>
+             <div id="sort-menu" className="hidden">
+             <form className="sort-form">
+               <fieldset>
+                 <label htmlFor="sort-by" className="sort-legend visuallyHidden">Sort by</label>
+                    <select
+                      id="sort-by"
+                      className="sort-legend"
+                      name="sort"
+                      onChange={(e) => this.onChange(e)}
+                      value={this.state.sortValue}
+                      >
+                        <option value="relevance">relevance</option>
+                        <option value="title_asc">title (a - z)</option>
+                        <option value="title_desc">title (z - a)</option>
+                        <option value="date_asc">date (old to new)</option>
+                        <option value="date_desc">date (new to old)</option>
+                      </select>
+                    </fieldset>
+                  </form>
+                </div>
+              </div>
+            </div>)
         }
 
         <ResultList results={results} query={this.props.query} />

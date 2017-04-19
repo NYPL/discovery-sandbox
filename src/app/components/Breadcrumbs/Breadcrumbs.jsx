@@ -77,9 +77,9 @@ const Breadcrumbs = ({ query, type, title, url }) => {
   }
 
   return (
-    <div className="breadcrumbs">
+    <ol className="nypl-breadcrumbs">
       {crumbs}
-    </div>
+    </ol>
   );
 };
 

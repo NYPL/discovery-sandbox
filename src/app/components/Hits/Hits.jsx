@@ -20,7 +20,7 @@ class Hits extends React.Component {
   getKeyword(keyword) {
     if (keyword) {
       return (
-        <span>&nbsp;with keywords <strong>{keyword}</strong>
+        <span className="nypl-facet">&nbsp;with keywords <strong>{keyword}</strong>
           <button
             onClick={() => this.removeKeyword(keyword)}
             className="remove-keyword"
@@ -98,10 +98,10 @@ class Hits extends React.Component {
     const activeFacetsElm = this.getFacetElements(activeFacetsArray);
 
     return (
-      <div id="results-description" className="results-summary">
+      <div id="results-description" className="nypl-results-summary">
         {
           hits !== 0 ?
-          (<p><strong className="results-count">{hitsF}</strong> results found{keyword}{activeFacetsElm}.</p>)
+          (<p><strong className="nypl-results-count">{hitsF}</strong> results found{keyword}{activeFacetsElm}</p>)
           : (<p>No results found{keyword}{activeFacetsElm}.</p>)
         }
       </div>

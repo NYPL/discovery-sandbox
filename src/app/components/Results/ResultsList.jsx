@@ -35,7 +35,7 @@ class ResultsList extends React.Component {
     return (
       <div className="related-items">
         <h4>Related formats and editions</h4>
-        <ul>
+        <ul className="nypl-results-list">
           {bibs}
         </ul>
       </div>
@@ -63,10 +63,10 @@ class ResultsList extends React.Component {
     const hathiAvailable = result.hathiVols && result.hathiVols.length;
 
     return (
-      <li key={i} className="result-item">
-        <div className="result-text">
+      <li key={i} className="nypl-results-item">
+        <div className="nypl-results-text">
           {/*<div className="type">{result.type ? result.type[0].prefLabel : null}</div>*/}
-          <h4>
+          <h2>
             <Link
               onClick={(e) => this.getRecord(e, id, 'item')}
               href={`/item/${id}`}
@@ -74,33 +74,40 @@ class ResultsList extends React.Component {
             >
               {itemTitle}
             </Link>
-          </h4>
+          </h2>
+          <dl>
+            {
+              result.materialType[0].prefLabel &&
+              (<span>
+                <dt>Material Type</dt>
+               <dd>{result.materialType[0].prefLabel}</dd>
+               </span>
+              )
+            }
+            {
+              authors &&
+              (<span>
+                <dt>Author</dt>
+               <dd>{authors}</dd>
+             </span>)
+            }
+            {
+              result.createdYear &&
+              (<span>
+                <dt>Published</dt>
+               <dd>{result.createdYear}</dd>
+             </span>)
+            }
+            {
+              result.publisher &&
+              (<span>
+                <dt>Publisher</dt>
+               <dd>{result.publisher}</dd>
+             </span>)
+            }
+          </dl>
           {
-            authors &&
-            (<p className="description">
-              <strong>By:</strong> {authors}
-            </p>)
-          }
-          {
-            result.publisher &&
-            (<p className="description">
-              <strong>Publisher:</strong> {result.publisher}
-            </p>)
-          }
-          {
-            result.createdYear &&
-            (<p className="description">
-              <strong>Year published:</strong> {result.createdYear}
-            </p>)
-          }
-          {
-            hathiAvailable &&
-            (<p className="description">
-              <em>Available to view on this website</em>
-            </p>)
-          }
-          {
-            items.length ? <ResultItems items={items} itemTitle={itemTitle} /> : null
+          //  items.length ? <ResultItems items={items} itemTitle={itemTitle} /> : null
           }
           {collapsedBibsElements}
         </div>
@@ -123,7 +130,7 @@ class ResultsList extends React.Component {
     }
 
     return (
-      <ul className="results-list">
+      <ul className="nypl-results-list">
         {resultsElm}
       </ul>
     );

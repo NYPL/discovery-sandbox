@@ -141,13 +141,15 @@ class FacetSidebar extends React.Component {
     }
 
     return (
+      <div className="nypl-column-one-quarter">
       <form className="nypl-search-form">
-        <div className={`facets ${this.props.className} `}>
+        <div className={`facets`}>
           <div className="nypl-facet-search">
           {facetsElm}
           </div>
         </div>
       </form>
+      </div>
     );
   }
 }
