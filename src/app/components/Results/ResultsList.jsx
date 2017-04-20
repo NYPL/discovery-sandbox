@@ -64,7 +64,7 @@ class ResultsList extends React.Component {
     // is displays a HathiTrust viewer, in that case display the second item.
     const firstItem = items.length && items[0].actionLabel !== 'View online' ?
       items[0] : (items[1] ? items[1] : null);
-    const materialType = result && result.materialType[0] ?
+    const materialType = result && result.materialType && result.materialType[0] ?
       result.materialType[0].prefLabel : null;
     const yearPublished = result && result.dateStartYear ? result.dateStartYear : null;
     const usageType = firstItem ? firstItem.actionLabel : null;
