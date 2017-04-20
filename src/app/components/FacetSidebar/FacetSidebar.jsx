@@ -30,14 +30,15 @@ class FacetSidebar extends React.Component {
     });
 
     this.routeHandler = this.routeHandler.bind(this);
-    this.onChange = this.onChange.bind(this);
+    this.onFacetUpdate = this.onFacetUpdate.bind(this);
   }
 
-  onChange(e, field) {
+  onFacetUpdate(e, field) {
     const value = e.target.value;
+    const checked = e.target.checked;
     let strSearch = '';
 
-    if (value === `${field}_any`) {
+    if (!checked || value === `${field}_any`) {
       this.setState({
         [field]: {
           id: '',
@@ -58,7 +59,6 @@ class FacetSidebar extends React.Component {
     }
 
     strSearch = getFacetParams(this.state, field, value);
-
     const sortQuery = getSortQuery(this.props.sortBy);
 
     ajaxCall(`/api?q=${this.props.keywords}${strSearch}${sortQuery}`, (response) => {
@@ -102,7 +102,7 @@ class FacetSidebar extends React.Component {
     let facetsElm = null;
 
     if (facets.length) {
-      facetsElm = facets.map((facet, i) => {
+      facetsElm = facets.map(facet => {
         const field = facet.field;
 
         if (facet.values.length < 1 || field === 'carrierType' || field === 'mediaType') {
@@ -114,8 +114,12 @@ class FacetSidebar extends React.Component {
         return (
           <div key={`${facet.field}-${facet.value}`} className="nypl-searchable-field">
             <div className="nypl-facet-search">
-              <label htmlFor="{`${facet.field}-${f.value}`}">{facet.field}</label>
-              <input id="{`${facet.field}-${f.value}`}" type="text" placeholder={`Search ${facet.field} Types`} />
+              <label htmlFor={`facet-${facet.field}`}>{facet.field}</label>
+              <input
+                id={`facet-${facet.field}`}
+                type="text"
+                placeholder={`Search ${facet.field} Types`}
+              />
             </div>
             <div className="nypl-facet-list">
             {
@@ -126,8 +130,19 @@ class FacetSidebar extends React.Component {
                 }
 
                 return (
-                  <label key={j} htmlFor={`${facet.field}-${f.value}`} className={`nypl-bar_${f.count}`}>
-                    <input id={`${facet.field}-${f.value}`} type="checkbox" name="subject" value={f.value} />
+                  <label
+                    key={j}
+                    htmlFor={`${facet.field}-${f.value}`}
+                    className={`nypl-bar_${f.count}`}
+                  >
+                    <input
+                      id={`${facet.field}-${f.value}`}
+                      type="checkbox"
+                      name="subject"
+                      checked={selectedValue === selectLabel}
+                      value={f.value}
+                      onClick={(e) => this.onFacetUpdate(e, facet.field)}
+                    />
                     <span>{selectLabel}</span>
                     <span className="nypl-facet-count">{f.count}</span>
                   </label>
@@ -142,13 +157,13 @@ class FacetSidebar extends React.Component {
 
     return (
       <div className="nypl-column-one-quarter">
-      <form className="nypl-search-form">
-        <div className={`facets`}>
-          <div className="nypl-facet-search">
-          {facetsElm}
+        <form className="nypl-search-form">
+          <div className="facets">
+            <div className="nypl-facet-search">
+            {facetsElm}
+            </div>
           </div>
-        </div>
-      </form>
+        </form>
       </div>
     );
   }
