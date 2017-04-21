@@ -25,14 +25,14 @@ class Pagination extends React.Component {
     const pageNum = type === 'Next' ? intPage + 1 : intPage - 1;
 
     return (
-      <button
-        className={`paginate ${type.toLowerCase()}`}
-        onClick={() => this.fetchResults(pageNum)}
+      <a
+        href="#"
+        onClick={(e) => this.fetchResults(e, pageNum)}
         rel={type.toLowerCase()}
         aria-controls="results-region"
       >
         {type} Page
-      </button>
+      </a>
     );
   }
 
@@ -41,7 +41,8 @@ class Pagination extends React.Component {
    * Make ajax call with updated page selected.
    * @param {string} page The next page to get results from.
    */
-  fetchResults(page) {
+  fetchResults(e, page) {
+    e.preventDefault();
     const query = this.props.location.query.q;
     const pageParam = page !== 1 ? `&page=${page}` : '';
     const sortQuery = getSortQuery(this.state.sortValue);
@@ -62,23 +63,19 @@ class Pagination extends React.Component {
 
     const perPage = 50;
     const pageFactor = parseInt(page, 10) * perPage;
-    const totalHits = hits.toLocaleString();
-    const pageFactorF = pageFactor.toLocaleString();
     const nextPage = (hits < perPage || pageFactor > hits) ? null : this.getPage(page, 'Next');
     const prevPage = page > 1 ? this.getPage(page, 'Previous') : null;
-    const from = pageFactor - (perPage - 1);
-    const to = pageFactor > hits ? totalHits : pageFactorF;
-    const displayItems = hits < perPage ? `1 - ${totalHits}` : `${from} - ${to}`;
+    const totalPages = Math.floor(hits / 50) + 1;
 
     return (
-      <div className="pagination">
+      <div className="nypl-results-pagination">
         {prevPage}
         <span
-          className="paginate pagination-total"
-          aria-label={`Displaying ${displayItems} out of ${totalHits} total items.`}
+          className="page-count"
+          aria-label={`Displaying page ${page} out of ${totalPages} total pages.`}
           tabIndex="0"
         >
-          {displayItems} of {totalHits}
+          Page {page} of {totalPages}
         </span>
         {nextPage}
       </div>
