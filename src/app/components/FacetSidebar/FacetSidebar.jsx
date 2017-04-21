@@ -125,6 +125,7 @@ class FacetSidebar extends React.Component {
             <div className="nypl-facet-list">
             {
               facet.values.map((f, j) => {
+                const percentage = Math.floor(f.count / totalCountFacet * 100);
                 let selectLabel = f.value;
                 if (f.label) {
                   selectLabel = f.label;
@@ -134,11 +135,11 @@ class FacetSidebar extends React.Component {
                   <label
                     key={j}
                     htmlFor={`${facet.field}-${f.value}`}
-                    className={`nypl-bar_${Math.floor(f.count / totalCountFacet * 100)}`}
+                    className={`nypl-bar_${percentage}`}
                   >
                     <input id={`${facet.field}-${f.value}`} type="checkbox" name="subject" value={f.value} />
                     <span>{selectLabel}</span>
-                    <span className="nypl-facet-count">{f.count}</span>
+                    <span className="nypl-facet-count">{f.count.toLocaleString()}</span>
                   </label>
                 );
               })
