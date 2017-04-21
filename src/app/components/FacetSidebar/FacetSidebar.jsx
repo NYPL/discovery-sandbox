@@ -9,6 +9,7 @@ import {
 
 import {
   findWhere as _findWhere,
+  chain as _chain,
 } from 'underscore';
 
 class FacetSidebar extends React.Component {
@@ -110,6 +111,10 @@ class FacetSidebar extends React.Component {
         }
 
         const selectedValue = this.state[field] ? this.state[field].id : '';
+        const totalCountFacet = _chain(facet.values)
+          .pluck('count')
+          .reduce((x, y) => x + y, 0)
+          .value();
 
         return (
           <div key={`${facet.field}-${facet.value}`} className="nypl-searchable-field">
@@ -120,16 +125,21 @@ class FacetSidebar extends React.Component {
             <div className="nypl-facet-list">
             {
               facet.values.map((f, j) => {
+                const percentage = Math.floor(f.count / totalCountFacet * 100);
                 let selectLabel = f.value;
                 if (f.label) {
                   selectLabel = f.label;
                 }
 
                 return (
-                  <label key={j} htmlFor={`${facet.field}-${f.value}`} className={`nypl-bar_${f.count}`}>
+                  <label
+                    key={j}
+                    htmlFor={`${facet.field}-${f.value}`}
+                    className={`nypl-bar_${percentage}`}
+                  >
                     <input id={`${facet.field}-${f.value}`} type="checkbox" name="subject" value={f.value} />
                     <span>{selectLabel}</span>
-                    <span className="nypl-facet-count">{f.count}</span>
+                    <span className="nypl-facet-count">{f.count.toLocaleString()}</span>
                   </label>
                 );
               })
