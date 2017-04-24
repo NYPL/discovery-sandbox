@@ -39,7 +39,7 @@ class FacetSidebar extends React.Component {
     const checked = e.target.checked;
     let strSearch = '';
 
-    if (!checked || value === `${field}_any`) {
+    if (!checked) {
       this.setState({
         [field]: {
           id: '',
@@ -57,9 +57,10 @@ class FacetSidebar extends React.Component {
           value: facet.label || facet.value,
         },
       });
+
+      strSearch = getFacetParams(this.state, field, value);
     }
 
-    strSearch = getFacetParams(this.state, field, value);
     const sortQuery = getSortQuery(this.props.sortBy);
 
     ajaxCall(`/api?q=${this.props.keywords}${strSearch}${sortQuery}`, (response) => {
@@ -119,9 +120,9 @@ class FacetSidebar extends React.Component {
         return (
           <div key={`${facet.field}-${facet.value}`} className="nypl-searchable-field">
             <div className="nypl-facet-search">
-              <label htmlFor={`facet-${facet.field}`}>{facet.field}</label>
+              <label htmlFor={`facet-${facet.field}-search`}>{facet.field}</label>
               <input
-                id={`facet-${facet.field}`}
+                id={`facet-${facet.field}-search`}
                 type="text"
                 placeholder={`Search ${facet.field} Types`}
               />
@@ -130,6 +131,7 @@ class FacetSidebar extends React.Component {
             {
               facet.values.map((f, j) => {
                 const percentage = Math.floor(f.count / totalCountFacet * 100);
+                const valueLabel = (f.value).toString().replace(/:/, '_');
                 let selectLabel = f.value;
                 if (f.label) {
                   selectLabel = f.label;
@@ -138,14 +140,14 @@ class FacetSidebar extends React.Component {
                 return (
                   <label
                     key={j}
-                    htmlFor={`${facet.field}-${f.value}`}
+                    htmlFor={`${facet.field}-${valueLabel}`}
                     className={`nypl-bar_${percentage}`}
                   >
                     <input
-                      id={`${facet.field}-${f.value}`}
+                      id={`${facet.field}-${valueLabel}`}
                       type="checkbox"
                       name="subject"
-                      checked={selectedValue === selectLabel}
+                      checked={selectedValue === f.value}
                       value={f.value}
                       onClick={(e) => this.onFacetUpdate(e, facet.field)}
                     />
