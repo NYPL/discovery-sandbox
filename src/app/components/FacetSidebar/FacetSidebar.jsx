@@ -100,7 +100,10 @@ class FacetSidebar extends React.Component {
   }
 
   render() {
-    const { facets } = this.props;
+    const {
+      facets,
+      totalHits,
+    } = this.props;
     let facetsElm = null;
 
     if (facets.length) {
@@ -130,7 +133,7 @@ class FacetSidebar extends React.Component {
             <div className="nypl-facet-list">
             {
               facet.values.map((f, j) => {
-                const percentage = Math.floor(f.count / totalCountFacet * 100);
+                const percentage = Math.floor(f.count / totalHits * 100);
                 const valueLabel = (f.value).toString().replace(/:/, '_');
                 let selectLabel = f.value;
                 if (f.label) {
@@ -183,6 +186,7 @@ FacetSidebar.propTypes = {
   selectedFacets: React.PropTypes.object,
   sortBy: React.PropTypes.string,
   className: React.PropTypes.string,
+  totalHits: React.PropTypes.number,
 };
 
 FacetSidebar.defaultProps = {
