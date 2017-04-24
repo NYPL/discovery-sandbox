@@ -12,7 +12,7 @@ class Results extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = { sortValue: this.props.sortBy };
+    this.state = { sortValue: this.props.sortBy, sortLabel: "relevance", active: false };
   }
 
   fetchResults(page) {
@@ -44,8 +44,9 @@ class Results extends React.Component {
     );
   }
 
-  sortResultsBy(e) {
-    const sortValue = e.target.data;
+  sortResultsBy(e, sortData, label) {
+    const sortValue = sortData;
+    this.setState({sortLabel: label})
     const query = this.props.location.query.q;
     const page = this.props.page !== '1' ? `&page=${this.props.page}` : '';
     const sortQuery = getSortQuery(sortValue);
@@ -55,6 +56,15 @@ class Results extends React.Component {
       this.setState({ sortValue });
       this.context.router.push(`/search?q=${encodeURIComponent(query)}${page}${sortQuery}`);
     });
+    this.setState({active: false})
+  }
+
+  getResultsWindow(e) {
+    if (this.state.active === false){
+      this.setState({active: true});
+    } else {
+      this.setState({active: false});
+    }
   }
 
   render() {
@@ -79,19 +89,19 @@ class Results extends React.Component {
           hits !== 0 &&
           (<div className="nypl-results-sorting-controls">
              <div className="nypl-results-sorter">
-               <button className="active" aria-expanded="false">
-                 <span>Sort by <strong>{this.state.sortValue}</strong></span>
+               <button aria-expanded={this.state.active} onClick={(e) => this.getResultsWindow(e)}>
+                 <span>Sort by <strong>{this.state.sortLabel}</strong></span>
                  <svg aria-hidden="true" className="nypl-icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 68 24">
                    <title>wedge down icon</title>
                    <polygon points="67.938 0 34 24 0 0 10 0 34.1 16.4 58.144 0 67.938 0"></polygon>
                  </svg>
                </button>
-               <ul className="">
-                  <li onClick={(e) => this.sortResultsBy(e)} data="relevance">relevance</li>
-                  <li onClick={(e) => this.sortResultsBy(e)} data="title_asc">title (a - z)</li>
-                  <li onClick={(e) => this.sortResultsBy(e)} data="title_desc">title (z - a)</li>
-                  <li onClick={(e) => this.sortResultsBy(e)} data="date_asc">date (old to new)</li>
-                  <li onClick={(e) => this.sortResultsBy(e)} data="date_desc">date (new to old)</li>
+               <ul className={this.state.active || "hidden"}>
+                  <li onClick={(e) => this.sortResultsBy(e, "relevance", "relevance")}>relevance</li>
+                  <li onClick={(e) => this.sortResultsBy(e, "title_asc", "title (a - z)")}>title (a - z)</li>
+                  <li onClick={(e) => this.sortResultsBy(e, "title_desc", "title (z - a)")}>title (z - a)</li>
+                  <li onClick={(e) => this.sortResultsBy(e, "date_asc", "date (old to new)")}>date (old to new)</li>
+                  <li onClick={(e) => this.sortResultsBy(e, "date_desc", "date (new to old)")}>date (new to old)</li>
                 </ul>
               </div>
             </div>)
