@@ -11,8 +11,11 @@ import Pagination from '../Pagination/Pagination.jsx';
 class Results extends React.Component {
   constructor(props) {
     super(props);
-
-    this.state = { sortValue: this.props.sortBy, sortLabel: "relevance", active: false };
+    this.state = {
+      sortValue: this.props.sortBy,
+      sortLabel: this.props.sortBy,
+      active: false
+    };
   }
 
   fetchResults(page) {
@@ -44,7 +47,21 @@ class Results extends React.Component {
     );
   }
 
+  getResultsSort() {
+    const sortingOpts = [
+          { val: 'relevance', label: 'relevance'},
+          { val: 'title_asc', label: 'title (a - z)'},
+          { val: 'title_desc', label: 'title (z - a)'},
+          { val: 'date_asc', label: 'date (old to new)'},
+          { val: 'date_desc', label: 'date (new to old)'}
+        ];
+    return sortingOpts.map((d, i) => {
+      return (<li key={i} onClick={(e) => this.sortResultsBy(e, d.val, d.label)}>{d.label}</li>);
+    })
+  }
+
   sortResultsBy(e, sortData, label) {
+
     const sortValue = sortData;
     this.setState({sortLabel: label})
     const query = this.props.location.query.q;
@@ -97,12 +114,10 @@ class Results extends React.Component {
                  </svg>
                </button>
                <ul className={this.state.active || "hidden"}>
-                  <li onClick={(e) => this.sortResultsBy(e, "relevance", "relevance")}>relevance</li>
-                  <li onClick={(e) => this.sortResultsBy(e, "title_asc", "title (a - z)")}>title (a - z)</li>
-                  <li onClick={(e) => this.sortResultsBy(e, "title_desc", "title (z - a)")}>title (z - a)</li>
-                  <li onClick={(e) => this.sortResultsBy(e, "date_asc", "date (old to new)")}>date (old to new)</li>
-                  <li onClick={(e) => this.sortResultsBy(e, "date_desc", "date (new to old)")}>date (new to old)</li>
-                </ul>
+                 {
+                   this.getResultsSort()
+                 }
+              </ul>
               </div>
             </div>)
         }
