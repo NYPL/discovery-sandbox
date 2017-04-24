@@ -7,13 +7,23 @@ import {
   getSortQuery,
 } from '../../utils/utils.js';
 import Pagination from '../Pagination/Pagination.jsx';
+import {findWhere as _findWhere} from 'underscore';
+
+const sortingOpts = [
+      { val: 'relevance', label: 'relevance'},
+      { val: 'title_asc', label: 'title (a - z)'},
+      { val: 'title_desc', label: 'title (z - a)'},
+      { val: 'date_asc', label: 'date (old to new)'},
+      { val: 'date_desc', label: 'date (new to old)'}
+    ];
 
 class Results extends React.Component {
   constructor(props) {
     super(props);
+    const defaultLabel = this.props.sortBy ? _findWhere(sortingOpts, {val: this.props.sortBy}).label : 'relevance';
     this.state = {
       sortValue: this.props.sortBy,
-      sortLabel: this.props.sortBy,
+      sortLabel: defaultLabel,
       active: false
     };
   }
@@ -48,20 +58,12 @@ class Results extends React.Component {
   }
 
   getResultsSort() {
-    const sortingOpts = [
-          { val: 'relevance', label: 'relevance'},
-          { val: 'title_asc', label: 'title (a - z)'},
-          { val: 'title_desc', label: 'title (z - a)'},
-          { val: 'date_asc', label: 'date (old to new)'},
-          { val: 'date_desc', label: 'date (new to old)'}
-        ];
     return sortingOpts.map((d, i) => {
       return (<li key={i} onClick={(e) => this.sortResultsBy(e, d.val, d.label)}>{d.label}</li>);
     })
   }
 
   sortResultsBy(e, sortData, label) {
-
     const sortValue = sortData;
     this.setState({sortLabel: label})
     const query = this.props.location.query.q;
