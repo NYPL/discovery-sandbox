@@ -7,12 +7,25 @@ import {
   getSortQuery,
 } from '../../utils/utils.js';
 import Pagination from '../Pagination/Pagination.jsx';
+import {findWhere as _findWhere} from 'underscore';
+
+const sortingOpts = [
+      { val: 'relevance', label: 'relevance'},
+      { val: 'title_asc', label: 'title (a - z)'},
+      { val: 'title_desc', label: 'title (z - a)'},
+      { val: 'date_asc', label: 'date (old to new)'},
+      { val: 'date_desc', label: 'date (new to old)'}
+    ];
 
 class Results extends React.Component {
   constructor(props) {
     super(props);
-
-    this.state = { sortValue: this.props.sortBy };
+    const defaultLabel = this.props.sortBy ? _findWhere(sortingOpts, {val: this.props.sortBy}).label : 'relevance';
+    this.state = {
+      sortValue: this.props.sortBy,
+      sortLabel: defaultLabel,
+      active: false
+    };
   }
 
   fetchResults(page) {
@@ -44,24 +57,33 @@ class Results extends React.Component {
     );
   }
 
-  onChange(e) {
-    const sortValue = e.target.value;
+  getResultsSort() {
+    return sortingOpts.map((d, i) => {
+      return (<li key={i} onClick={(e) => this.sortResultsBy(e, d.val, d.label)}>{d.label}</li>);
+    })
+  }
+
+  sortResultsBy(e, sortData, label) {
+    const sortValue = sortData;
+    this.setState({sortLabel: label})
     const query = this.props.location.query.q;
     const page = this.props.page !== '1' ? `&page=${this.props.page}` : '';
     const sortQuery = getSortQuery(sortValue);
-
     ajaxCall(`/api?q=${query}${page}${sortQuery}`, (response) => {
       Actions.updateSearchResults(response.data.searchResults);
       Actions.updateSortBy(sortValue);
-
       this.setState({ sortValue });
       this.context.router.push(`/search?q=${encodeURIComponent(query)}${page}${sortQuery}`);
     });
+    this.setState({active: false})
   }
 
-  sortResultsBy(e) {
-    e.preventDefault();
-    this.setState({ "aria-expanded": true });
+  getResultsWindow(e) {
+    if (this.state.active === false){
+      this.setState({active: true});
+    } else {
+      this.setState({active: false});
+    }
   }
 
   render() {
@@ -86,33 +108,18 @@ class Results extends React.Component {
           hits !== 0 &&
           (<div className="nypl-results-sorting-controls">
              <div className="nypl-results-sorter">
-             <button aria-expanded="false" onClick={(e) => this.sortResultsBy(e)}>
-               Sort by <strong>{this.state.sortValue}</strong>
-               <svg aria-hidden="true" className="nypl-icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 68 24">
-                 <title>wedge down icon</title>
-                 <polygon points="67.938 0 34 24 0 0 10 0 34.1 16.4 58.144 0 67.938 0"></polygon>
-               </svg>
-             </button>
-             <div id="sort-menu" className="hidden">
-             <form className="sort-form">
-               <fieldset>
-                 <label htmlFor="sort-by" className="sort-legend visuallyHidden">Sort by</label>
-                    <select
-                      id="sort-by"
-                      className="sort-legend"
-                      name="sort"
-                      onChange={(e) => this.onChange(e)}
-                      value={this.state.sortValue}
-                      >
-                        <option value="relevance">relevance</option>
-                        <option value="title_asc">title (a - z)</option>
-                        <option value="title_desc">title (z - a)</option>
-                        <option value="date_asc">date (old to new)</option>
-                        <option value="date_desc">date (new to old)</option>
-                      </select>
-                    </fieldset>
-                  </form>
-                </div>
+               <button aria-expanded={this.state.active} onClick={(e) => this.getResultsWindow(e)}>
+                 <span>Sort by <strong>{this.state.sortLabel}</strong></span>
+                 <svg aria-hidden="true" className="nypl-icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 68 24">
+                   <title>wedge down icon</title>
+                   <polygon points="67.938 0 34 24 0 0 10 0 34.1 16.4 58.144 0 67.938 0"></polygon>
+                 </svg>
+               </button>
+               <ul className={this.state.active || "hidden"}>
+                 {
+                   this.getResultsSort()
+                 }
+              </ul>
               </div>
             </div>)
         }
