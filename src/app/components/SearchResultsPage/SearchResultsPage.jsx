@@ -49,6 +49,7 @@ class SearchResultsPage extends React.Component {
             keywords={searchKeywords}
             sortBy={sortBy}
             className="nypl-column-one-quarter"
+            totalHits={totalHits}
           />
 
           <div

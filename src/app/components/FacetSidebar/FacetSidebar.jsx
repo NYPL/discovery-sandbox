@@ -31,14 +31,15 @@ class FacetSidebar extends React.Component {
     });
 
     this.routeHandler = this.routeHandler.bind(this);
-    this.onChange = this.onChange.bind(this);
+    this.onFacetUpdate = this.onFacetUpdate.bind(this);
   }
 
-  onChange(e, field) {
+  onFacetUpdate(e, field) {
     const value = e.target.value;
+    const checked = e.target.checked;
     let strSearch = '';
 
-    if (value === `${field}_any`) {
+    if (!checked) {
       this.setState({
         [field]: {
           id: '',
@@ -56,9 +57,9 @@ class FacetSidebar extends React.Component {
           value: facet.label || facet.value,
         },
       });
-    }
 
-    strSearch = getFacetParams(this.state, field, value);
+      strSearch = getFacetParams(this.state, field, value);
+    }
 
     const sortQuery = getSortQuery(this.props.sortBy);
 
@@ -99,11 +100,14 @@ class FacetSidebar extends React.Component {
   }
 
   render() {
-    const { facets } = this.props;
+    const {
+      facets,
+      totalHits,
+    } = this.props;
     let facetsElm = null;
 
     if (facets.length) {
-      facetsElm = facets.map((facet, i) => {
+      facetsElm = facets.map(facet => {
         const field = facet.field;
 
         if (facet.values.length < 1 || field === 'carrierType' || field === 'mediaType') {
@@ -119,13 +123,18 @@ class FacetSidebar extends React.Component {
         return (
           <div key={`${facet.field}-${facet.value}`} className="nypl-searchable-field">
             <div className="nypl-facet-search">
-              <label htmlFor="{`${facet.field}-${f.value}`}">{facet.field}</label>
-              <input id="{`${facet.field}-${f.value}`}" type="text" placeholder={`Search ${facet.field} Types`} />
+              <label htmlFor={`facet-${facet.field}-search`}>{facet.field}</label>
+              <input
+                id={`facet-${facet.field}-search`}
+                type="text"
+                placeholder={`Search ${facet.field} Types`}
+              />
             </div>
             <div className="nypl-facet-list">
             {
               facet.values.map((f, j) => {
-                const percentage = Math.floor(f.count / totalCountFacet * 100);
+                const percentage = Math.floor(f.count / totalHits * 100);
+                const valueLabel = (f.value).toString().replace(/:/, '_');
                 let selectLabel = f.value;
                 if (f.label) {
                   selectLabel = f.label;
@@ -134,10 +143,17 @@ class FacetSidebar extends React.Component {
                 return (
                   <label
                     key={j}
-                    htmlFor={`${facet.field}-${f.value}`}
+                    htmlFor={`${facet.field}-${valueLabel}`}
                     className={`nypl-bar_${percentage}`}
                   >
-                    <input id={`${facet.field}-${f.value}`} type="checkbox" name="subject" value={f.value} />
+                    <input
+                      id={`${facet.field}-${valueLabel}`}
+                      type="checkbox"
+                      name="subject"
+                      checked={selectedValue === f.value}
+                      value={f.value}
+                      onClick={(e) => this.onFacetUpdate(e, facet.field)}
+                    />
                     <span>{selectLabel}</span>
                     <span className="nypl-facet-count">{f.count.toLocaleString()}</span>
                   </label>
@@ -152,13 +168,13 @@ class FacetSidebar extends React.Component {
 
     return (
       <div className="nypl-column-one-quarter">
-      <form className="nypl-search-form">
-        <div className={`facets`}>
-          <div className="nypl-facet-search">
-          {facetsElm}
+        <form className="nypl-search-form">
+          <div className="facets">
+            <div className="nypl-facet-search">
+            {facetsElm}
+            </div>
           </div>
-        </div>
-      </form>
+        </form>
       </div>
     );
   }
@@ -170,6 +186,7 @@ FacetSidebar.propTypes = {
   selectedFacets: React.PropTypes.object,
   sortBy: React.PropTypes.string,
   className: React.PropTypes.string,
+  totalHits: React.PropTypes.number,
 };
 
 FacetSidebar.defaultProps = {

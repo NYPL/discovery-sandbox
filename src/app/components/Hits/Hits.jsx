@@ -39,7 +39,7 @@ class Hits extends React.Component {
     if (!facets.length) return null;
 
     return facets.map((facet, i) => (
-      <span key={i}>&nbsp;with {facet.key} <strong>{facet.val.value}</strong>
+      <span key={i} className="nypl-facet">&nbsp;with {facet.key} <strong>{facet.val.value}</strong>
         <button
           onClick={() => this.removeFacet(facet.key)}
           className="remove-facet"
