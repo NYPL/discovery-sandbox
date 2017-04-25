@@ -61,6 +61,7 @@ class FacetSidebar extends React.Component {
       strSearch = getFacetParams(this.state, field, value);
     }
 
+
     const sortQuery = getSortQuery(this.props.sortBy);
 
     ajaxCall(`/api?q=${this.props.keywords}${strSearch}${sortQuery}`, (response) => {
@@ -73,6 +74,13 @@ class FacetSidebar extends React.Component {
         `/search?q=${encodeURIComponent(this.props.keywords)}${strSearch}${sortQuery}`,
       );
     });
+  }
+
+  getFacetLabel(field) {
+    if (field === 'materialType') {
+      return 'Material Type';
+    }
+    return field.charAt(0).toUpperCase() + field.slice(1);
   }
 
   removeKeyword() {
@@ -123,11 +131,11 @@ class FacetSidebar extends React.Component {
         return (
           <div key={`${facet.field}-${facet.value}`} className="nypl-searchable-field">
             <div className="nypl-facet-search">
-              <label htmlFor={`facet-${facet.field}-search`}>{facet.field}</label>
+              <label htmlFor={`facet-${facet.field}-search`}>{`${this.getFacetLabel(facet.field)}`}</label>
               <input
                 id={`facet-${facet.field}-search`}
                 type="text"
-                placeholder={`Search ${facet.field} Types`}
+                placeholder={`Search ${this.getFacetLabel(facet.field)}`}
               />
             </div>
             <div className="nypl-facet-list">
