@@ -30,6 +30,10 @@ Import style rules from NYPL React module components
 @import "components/Account.scss";
 @import "components/Feedback.scss";
 
+html {
+  @include font-settings;
+}
+
 #app {
   margin: 0;
 }
