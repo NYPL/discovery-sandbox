@@ -179,11 +179,13 @@ class FacetSidebar extends React.Component {
                 return (
                   <label
                     key={j}
+                    id={`${facet.field}-${valueLabel}`}
                     htmlFor={`${facet.field}-${valueLabel}`}
                     className={`nypl-bar_${percentage}`}
                   >
                     <input
                       id={`${facet.field}-${valueLabel}`}
+                      aria-labelledby={`${facet.field} ${valueLabel}`}
                       type="checkbox"
                       name="subject"
                       checked={selectedValue === f.value}
