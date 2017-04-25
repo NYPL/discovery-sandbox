@@ -128,6 +128,20 @@ class FacetSidebar extends React.Component {
           .reduce((x, y) => x + y, 0)
           .value();
 
+        if (facet.field === 'date') {
+          return (
+            <div className="nypl-facet-search">
+              <div className="nypl-date-field">
+                <label key="date-from" htmlFor="date-from">On or After Year</label>
+                <input id="date-from" type="text" className="form-text" placeholder="" />
+              </div>
+              <div className="nypl-date-field">
+                <label key="date-to" htmlFor="date-to">On or Before Year</label>
+                <input id="date-to" type="text" className="form-text" placeholder="" />
+              </div>
+            </div>
+          );
+        }
         return (
           <div key={`${facet.field}-${facet.value}`} className="nypl-searchable-field">
             <div className="nypl-facet-search">
@@ -141,13 +155,12 @@ class FacetSidebar extends React.Component {
             <div className="nypl-facet-list">
               {
               facet.values.map((f, j) => {
-                const percentage = Math.floor(f.count / (totalHits * 100));
+                const percentage = Math.floor(f.count / totalHits * 100);
                 const valueLabel = (f.value).toString().replace(/:/, '_');
                 let selectLabel = f.value;
                 if (f.label) {
                   selectLabel = f.label;
                 }
-
                 return (
                   <label
                     key={j}
@@ -162,12 +175,12 @@ class FacetSidebar extends React.Component {
                       value={f.value}
                       onClick={e => this.onFacetUpdate(e, facet.field)}
                     />
-                    <span>{selectLabel}</span>
+                    <span className="facet-label">{selectLabel}</span>
                     <span className="nypl-facet-count">{f.count.toLocaleString()}</span>
                   </label>
                 );
               })
-              }
+            }
             </div>
           </div>
         );

@@ -51,12 +51,10 @@ $facets-width: 200px;
       @include transform(rotate(45deg));
     }
   }
+}
 
-  .select-fieldset {
-    // @include select-fieldset;
-  }
-
-  input[type="text"] {
-    // @include textfield;
-  }
+.facet-label {
+  color: #080807 !important;
+  float: none !important;
+  margin: 0 !important;
 }
