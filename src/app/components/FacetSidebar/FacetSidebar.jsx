@@ -50,7 +50,6 @@ class FacetSidebar extends React.Component {
       const searchValue = field === 'date' ? parseInt(value, 10) : value;
       const facetObj = _findWhere(this.props.facets, { field });
       const facet = _findWhere(facetObj.values, { value: searchValue });
-
       this.setState({
         [field]: {
           id: facet.value,
@@ -137,7 +136,7 @@ class FacetSidebar extends React.Component {
                   htmlFor="date-from"
                 >On or After Year</label>
                 <input
-                  id="date-from"
+                  id={`facet-${facet.field}-from-search`}
                   type="text"
                   className="form-text"
                   placeholder=""
@@ -149,7 +148,7 @@ class FacetSidebar extends React.Component {
                   htmlFor="date-to"
                 >On or Before Year</label>
                 <input
-                  id="date-to"
+                  id={`facet-${facet.field}-to-search`}
                   type="text"
                   className="form-text"
                   placeholder=""
@@ -198,6 +197,7 @@ class FacetSidebar extends React.Component {
               })
             }
             </div>
+            <button className="nypl-link-button">Show 10 more</button>
           </div>
         );
       });
@@ -206,11 +206,7 @@ class FacetSidebar extends React.Component {
     return (
       <div className="nypl-column-one-quarter">
         <form className="nypl-search-form">
-          <div className="facets">
-            <div className="nypl-facet-search">
-              {facetsElm}
-            </div>
-          </div>
+          {facetsElm}
         </form>
       </div>
     );

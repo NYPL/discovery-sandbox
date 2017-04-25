@@ -4,55 +4,6 @@ $facets-width: 200px;
   @include clearfix();
 }
 
-// .facets {
-//   width: $facets-width;
-//   float: left;
-//   margin-top: 1rem;
-// }
-//
-// .results {
-//   margin-left: ($facets-width + 20px);
-//   margin-top: 1rem;
-// }
-
-.facets-form {
-  h2 {
-    font-size: 1rem;
-    color: $nypl-search-color;
-    font-weight: normal;
-    margin: 0;
-  }
-
-  .fieldset {
-    @include fieldset;
-  }
-
-  // For the Keywords fieldset
-  .button-selected {
-    font-size: 1em;
-    width: 100%;
-    display: block;
-    text-align: left;
-    padding-right: 2rem;
-    position: relative;
-    white-space: nowrap;
-    overflow: hidden;
-    @include box-sizing(border-box);
-
-    &:after {
-      display: block;
-      content: "+";
-      position: absolute;
-      top: 0px;
-      right: 6px;
-      font-weight: bold;
-      font-size: 1rem;
-
-      @include transform(rotate(45deg));
-    }
-  }
-}
-
 .facet-label {
   color: #080807 !important;
   float: none !important;
