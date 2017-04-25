@@ -1,16 +1,16 @@
 import React from 'react';
 
-import Actions from '../../actions/Actions.js';
-import {
-  ajaxCall,
-  getSortQuery,
-  getFacetParams,
-} from '../../utils/utils.js';
-
 import {
   findWhere as _findWhere,
   chain as _chain,
 } from 'underscore';
+
+import Actions from '../../actions/Actions';
+import {
+  ajaxCall,
+  getSortQuery,
+  getFacetParams,
+} from '../../utils/utils';
 
 class FacetSidebar extends React.Component {
   constructor(props) {
@@ -18,7 +18,7 @@ class FacetSidebar extends React.Component {
 
     this.state = {};
 
-    this.props.facets.map(facet => {
+    this.props.facets.map((facet) => {
       let id = '';
       let value = '';
 
@@ -70,7 +70,7 @@ class FacetSidebar extends React.Component {
       Actions.updatePage('1');
       this.routeHandler(
         null,
-        `/search?q=${encodeURIComponent(this.props.keywords)}${strSearch}${sortQuery}`
+        `/search?q=${encodeURIComponent(this.props.keywords)}${strSearch}${sortQuery}`,
       );
     });
   }
@@ -107,7 +107,7 @@ class FacetSidebar extends React.Component {
     let facetsElm = null;
 
     if (facets.length) {
-      facetsElm = facets.map(facet => {
+      facetsElm = facets.map((facet) => {
         const field = facet.field;
 
         if (facet.values.length < 1 || field === 'carrierType' || field === 'mediaType') {
@@ -131,9 +131,9 @@ class FacetSidebar extends React.Component {
               />
             </div>
             <div className="nypl-facet-list">
-            {
+              {
               facet.values.map((f, j) => {
-                const percentage = Math.floor(f.count / totalHits * 100);
+                const percentage = Math.floor(f.count / (totalHits * 100));
                 const valueLabel = (f.value).toString().replace(/:/, '_');
                 let selectLabel = f.value;
                 if (f.label) {
@@ -152,14 +152,14 @@ class FacetSidebar extends React.Component {
                       name="subject"
                       checked={selectedValue === f.value}
                       value={f.value}
-                      onClick={(e) => this.onFacetUpdate(e, facet.field)}
+                      onClick={e => this.onFacetUpdate(e, facet.field)}
                     />
                     <span>{selectLabel}</span>
                     <span className="nypl-facet-count">{f.count.toLocaleString()}</span>
                   </label>
                 );
               })
-            }
+              }
             </div>
           </div>
         );
@@ -171,7 +171,7 @@ class FacetSidebar extends React.Component {
         <form className="nypl-search-form">
           <div className="facets">
             <div className="nypl-facet-search">
-            {facetsElm}
+              {facetsElm}
             </div>
           </div>
         </form>
