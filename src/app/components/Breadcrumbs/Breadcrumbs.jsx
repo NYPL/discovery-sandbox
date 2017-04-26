@@ -5,8 +5,8 @@ const Breadcrumbs = ({ query, type, title, url }) => {
   let currentPageText = 'Research Catalog';
   let crumbs = (
     <span>
-      <Link to="https://nypl.org">Home</Link> &gt;
-      <Link to="https://nypl.org/research">Research</Link> &gt;
+      <Link to="https://nypl.org">Home</Link> &gt;&nbsp;
+      <Link to="https://nypl.org/research">Research</Link> &gt;&nbsp;
       <span className="currentPage">{currentPageText}</span>
     </span>
   );
@@ -15,9 +15,9 @@ const Breadcrumbs = ({ query, type, title, url }) => {
     currentPageText = query ? `Search Results for "${query}"` : 'Search Results';
     crumbs = (
       <span>
-        <Link to="https://nypl.org">Home</Link> &gt;
-        <Link to="https://nypl.org/research">Research</Link> &gt;
-        <Link to="/">Research Catalog</Link> &gt;
+        <Link to="https://nypl.org">Home</Link> &gt;&nbsp;
+        <Link to="https://nypl.org/research">Research</Link> &gt;&nbsp;
+        <Link to="/">Research Catalog</Link> &gt;&nbsp;
         <span className="currentPage">{currentPageText}</span>
       </span>
     );
@@ -29,12 +29,12 @@ const Breadcrumbs = ({ query, type, title, url }) => {
   if (type === 'item') {
     crumbs = (
       <span>
-        <Link to="https://nypl.org">Home</Link> &gt;
-        <Link to="https://nypl.org/research">Research</Link> &gt;
-        <Link to="/">Research Catalog</Link> &gt;
+        <Link to="https://nypl.org">Home</Link> &gt;&nbsp;
+        <Link to="https://nypl.org/research">Research</Link> &gt;&nbsp;
+        <Link to="/">Research Catalog</Link> &gt;&nbsp;
         {
           query ?
-          (<span><Link to={`/search?q=${query}`}>Items</Link> &gt;</span>)
+          (<span><Link to={`/search?q=${query}`}>Items</Link> &gt;&nbsp;</span>)
           : null
         }
         <span className="currentPage">{currentPageText}</span>
@@ -45,15 +45,15 @@ const Breadcrumbs = ({ query, type, title, url }) => {
   if (type === 'hold') {
     crumbs = (
       <span>
-        <Link to="https://nypl.org">Home</Link> &gt;
-        <Link to="https://nypl.org/research">Research</Link> &gt;
-        <Link to="/">Research Catalog</Link> &gt;
+        <Link to="https://nypl.org">Home</Link> &gt;&nbsp;
+        <Link to="https://nypl.org/research">Research</Link> &gt;&nbsp;
+        <Link to="/">Research Catalog</Link> &gt;&nbsp;
         {
           query ?
-          (<span><Link to={`/search?q=${query}`}>Items</Link> &gt;</span>)
+          (<span><Link to={`/search?q=${query}`}>Items</Link> &gt;&nbsp;</span>)
           : null
         }
-        <Link to={`/item/${url}`}>{currentPageText}</Link> &gt;
+        <Link to={`/item/${url}`}>{currentPageText}</Link> &gt;&nbsp;
         <span className="currentPage">Place a hold</span>
       </span>
     );
@@ -62,15 +62,15 @@ const Breadcrumbs = ({ query, type, title, url }) => {
   if (type === 'holdConfirmation') {
     crumbs = (
       <span>
-        <Link to="https://nypl.org">Home</Link> &gt;
-        <Link to="https://nypl.org/research">Research</Link> &gt;
-        <Link to="/">Research Catalog</Link> &gt;
+        <Link to="https://nypl.org">Home</Link> &gt;&nbsp;
+        <Link to="https://nypl.org/research">Research</Link> &gt;&nbsp;
+        <Link to="/">Research Catalog</Link> &gt;&nbsp;
         {
           query ?
-          (<span><Link to={`/search?q=${query}`}>Items</Link> &gt;</span>)
+          (<span><Link to={`/search?q=${query}`}>Items</Link> &gt;&nbsp;</span>)
           : null
         }
-        <Link to={`/item/${url}`}>{currentPageText}</Link> &gt;
+        <Link to={`/item/${url}`}>{currentPageText}</Link> &gt;&nbsp;
         <span className="currentPage">Hold confirmation</span>
       </span>
     );
