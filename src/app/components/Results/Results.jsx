@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { findWhere as _findWhere } from 'underscore';
+
 import Actions from '../../actions/Actions';
 import ResultList from './ResultsList';
 import {
@@ -7,8 +9,6 @@ import {
   getSortQuery,
 } from '../../utils/utils';
 import Pagination from '../Pagination/Pagination';
-
-import { findWhere as _findWhere } from 'underscore';
 
 const sortingOpts = [
   { val: 'relevance', label: 'relevance' },

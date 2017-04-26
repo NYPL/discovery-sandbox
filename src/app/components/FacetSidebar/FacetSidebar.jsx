@@ -1,16 +1,16 @@
 import React from 'react';
 
-import Actions from '../../actions/Actions.js';
-import {
-  ajaxCall,
-  getSortQuery,
-  getFacetParams,
-} from '../../utils/utils.js';
-
 import {
   findWhere as _findWhere,
   chain as _chain,
 } from 'underscore';
+
+import Actions from '../../actions/Actions';
+import {
+  ajaxCall,
+  getSortQuery,
+  getFacetParams,
+} from '../../utils/utils';
 
 class FacetSidebar extends React.Component {
   constructor(props) {
@@ -18,7 +18,7 @@ class FacetSidebar extends React.Component {
 
     this.state = {};
 
-    this.props.facets.map(facet => {
+    this.props.facets.map((facet) => {
       let id = '';
       let value = '';
 
@@ -50,7 +50,6 @@ class FacetSidebar extends React.Component {
       const searchValue = field === 'date' ? parseInt(value, 10) : value;
       const facetObj = _findWhere(this.props.facets, { field });
       const facet = _findWhere(facetObj.values, { value: searchValue });
-
       this.setState({
         [field]: {
           id: facet.value,
@@ -61,6 +60,7 @@ class FacetSidebar extends React.Component {
       strSearch = getFacetParams(this.state, field, value);
     }
 
+
     const sortQuery = getSortQuery(this.props.sortBy);
 
     ajaxCall(`/api?q=${this.props.keywords}${strSearch}${sortQuery}`, (response) => {
@@ -70,9 +70,16 @@ class FacetSidebar extends React.Component {
       Actions.updatePage('1');
       this.routeHandler(
         null,
-        `/search?q=${encodeURIComponent(this.props.keywords)}${strSearch}${sortQuery}`
+        `/search?q=${encodeURIComponent(this.props.keywords)}${strSearch}${sortQuery}`,
       );
     });
+  }
+
+  getFacetLabel(field) {
+    if (field === 'materialType') {
+      return 'Material Type';
+    }
+    return field.charAt(0).toUpperCase() + field.slice(1);
   }
 
   removeKeyword() {
@@ -107,7 +114,7 @@ class FacetSidebar extends React.Component {
     let facetsElm = null;
 
     if (facets.length) {
-      facetsElm = facets.map(facet => {
+      facetsElm = facets.map((facet) => {
         const field = facet.field;
 
         if (facet.values.length < 1 || field === 'carrierType' || field === 'mediaType') {
@@ -120,18 +127,48 @@ class FacetSidebar extends React.Component {
           .reduce((x, y) => x + y, 0)
           .value();
 
+        if (facet.field === 'date') {
+          return (
+            <div className="nypl-facet-search">
+              <div className="nypl-text-field">
+                <label
+                  key="date-from"
+                  htmlFor="date-from"
+                >On or After Year</label>
+                <input
+                  id={`facet-${facet.field}-from-search`}
+                  type="text"
+                  className="form-text"
+                  placeholder=""
+                />
+              </div>
+              <div className="nypl-text-field">
+                <label
+                  key="date-to"
+                  htmlFor="date-to"
+                >On or Before Year</label>
+                <input
+                  id={`facet-${facet.field}-to-search`}
+                  type="text"
+                  className="form-text"
+                  placeholder=""
+                />
+              </div>
+            </div>
+          );
+        }
         return (
           <div key={`${facet.field}-${facet.value}`} className="nypl-searchable-field">
             <div className="nypl-facet-search">
-              <label htmlFor={`facet-${facet.field}-search`}>{facet.field}</label>
+              <label htmlFor={`facet-${facet.field}-search`}>{`${this.getFacetLabel(facet.field)}`}</label>
               <input
                 id={`facet-${facet.field}-search`}
                 type="text"
-                placeholder={`Search ${facet.field} Types`}
+                placeholder={`Search ${this.getFacetLabel(facet.field)}`}
               />
             </div>
             <div className="nypl-facet-list">
-            {
+              {
               facet.values.map((f, j) => {
                 const percentage = Math.floor(f.count / totalHits * 100);
                 const valueLabel = (f.value).toString().replace(/:/, '_');
@@ -139,28 +176,30 @@ class FacetSidebar extends React.Component {
                 if (f.label) {
                   selectLabel = f.label;
                 }
-
                 return (
                   <label
                     key={j}
+                    id={`${facet.field}-${valueLabel}`}
                     htmlFor={`${facet.field}-${valueLabel}`}
                     className={`nypl-bar_${percentage}`}
                   >
                     <input
                       id={`${facet.field}-${valueLabel}`}
+                      aria-labelledby={`${facet.field} ${valueLabel}`}
                       type="checkbox"
                       name="subject"
                       checked={selectedValue === f.value}
                       value={f.value}
-                      onClick={(e) => this.onFacetUpdate(e, facet.field)}
+                      onClick={e => this.onFacetUpdate(e, facet.field)}
                     />
-                    <span>{selectLabel}</span>
+                    <span className="facet-label">{selectLabel}</span>
                     <span className="nypl-facet-count">{f.count.toLocaleString()}</span>
                   </label>
                 );
               })
             }
             </div>
+            <button className="nypl-link-button">Show 10 more</button>
           </div>
         );
       });
@@ -169,11 +208,7 @@ class FacetSidebar extends React.Component {
     return (
       <div className="nypl-column-one-quarter">
         <form className="nypl-search-form">
-          <div className="facets">
-            <div className="nypl-facet-search">
-            {facetsElm}
-            </div>
-          </div>
+          {facetsElm}
         </form>
       </div>
     );
