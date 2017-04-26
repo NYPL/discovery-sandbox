@@ -75,6 +75,7 @@ class Results extends React.Component {
   }
 
   sortResultsBy(e, sortData, label) {
+    e.preventDefault();
     const sortValue = sortData;
     this.setState({ sortLabel: label });
     const query = this.props.location.query.q;
