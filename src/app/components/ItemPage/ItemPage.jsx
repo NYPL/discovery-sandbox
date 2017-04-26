@@ -74,7 +74,7 @@ class ItemPage extends React.Component {
             <ul>
               {record[f.field].map((value, i) => {
                 const v = f.field === 'idOwi' ? value.substring(8) : value;
-                return <li key={i}><a target="_blank" href={f.url(v)}>{v}</a></li>;
+                return <li key={i}><a target="_blank" title={v} href={f.url(v)}>{v}</a></li>;
               })}
             </ul>
           ),
@@ -82,15 +82,42 @@ class ItemPage extends React.Component {
 
       // list of links
       } else if (fieldValue['@id']) {
-        displayFields.push({ term: f.label, definition: <ul>{record[f.field].map((obj, i) => (<li key={i}><a onClick={(e) => this.onClick(e, `${f.field}:"${obj['@id']}"`)} href={`/search?q=${encodeURIComponent(`${f.field}:"${obj['@id']}"`)}`}>{obj.prefLabel}</a></li>))}</ul> });
+        displayFields.push(
+          { term: f.label,
+            definition: <ul>{record[f.field].map((obj, i) => (
+              <li key={i}>
+                <a
+                  onClick={e => this.onClick(e, `${f.field}:"${obj['@id']}"`)}
+                  title={`${f.field}:${obj['@id']}`}
+                  href={`/search?q=${encodeURIComponent(`${f.field}:"${obj['@id']}"`)}`}
+                >{obj.prefLabel}</a>
+              </li>))}
+            </ul>,
+          },
+        );
 
       // list of links
       } else if (f.linkable) {
-        displayFields.push({ term: f.label, definition: <ul>{record[f.field].map((value, i) => (<li key={i}><a onClick={(e) => this.onClick(e, `${f.field}:"${value}"`)} href={`/search?q=${encodeURIComponent(`${f.field}:"${value}"`)}`}>{value}</a></li>))}</ul> });
+        displayFields.push(
+          { term: f.label,
+            definition: <ul>{record[f.field].map((value, i) => (
+              <li key={i}>
+                <a
+                  onClick={e => this.onClick(e, `${f.field}:"${value}"`)}
+                  title={`${f.field}:"${value}"`}
+                  href={`/search?q=${encodeURIComponent(`${f.field}:"${value}"`)}`}
+                >{value}</a>
+              </li>))}
+            </ul>,
+          },
+        );
 
       // list of plain text
       } else {
-        displayFields.push({ term: f.label, definition: <ul>{record[f.field].map((value, i) => (<li key={i}>{value}</li>))}</ul> });
+        displayFields.push(
+          { term: f.label,
+            definition: <ul>{record[f.field].map((value, i) => (
+              <li key={i}>{value}</li>))}</ul> });
       }
     });
 
@@ -105,6 +132,7 @@ class ItemPage extends React.Component {
         <span key={i}>
           <Link
             to={{ pathname: '/search', query: { q: `contributor:"${author}"` } }}
+            title={`contributor:"${author}"`}
             onClick={(e) => this.onClick(e, `contributor:"${author}"`)}
           >
             {author}
@@ -115,6 +143,7 @@ class ItemPage extends React.Component {
     const publisher = record.publisher && record.publisher.length ?
       <Link
         to={{ pathname: '/search', query: { q: `publisher:"${record.publisher[0]}"` } }}
+        title={`publisher:"${record.publisher[0]}"`}
         onClick={(e) => this.onClick(e, `publisher:"${record.publisher[0]}"`)}
       >
         {record.publisher[0]}
@@ -192,7 +221,8 @@ class ItemPage extends React.Component {
                 Year published:
                 <Link
                   to={{ pathname: '/search', query: { q: `date:${record.dateStartYear}` } }}
-                  onClick={(e) => this.onClick(e, `date:${record.dateStartYear}`)}
+                  title={`date:${record.dateStartYear}`}
+                  onClick={e => this.onClick(e, `date:${record.dateStartYear}`)}
                 >
                   {record.dateStartYear}
                 </Link>
