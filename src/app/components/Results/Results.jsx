@@ -48,17 +48,17 @@ class Results extends React.Component {
 
   getResultsSort() {
     return sortingOpts.map((d, i) => {
-      return (<li role="region" key={i} onClick={e => this.sortResultsBy(e, d.val, d.label)}>
-        {d.label}
+      return (<li role="region" key={i}>
+        <a href="#" onClick={e => this.sortResultsBy(e, d.val, d.label)}>{d.label}</a>
       </li>);
     });
   }
 
   getResultsWindow() {
     if (this.state.active === false) {
-      this.setState({ active: true });
+      this.setState({ active: true, className: 'active' });
     } else {
-      this.setState({ active: false });
+      this.setState({ active: false, className: '' });
     }
   }
 
@@ -89,6 +89,7 @@ class Results extends React.Component {
     });
     this.setState({ active: false });
   }
+
   render() {
     const {
       results,
@@ -111,7 +112,7 @@ class Results extends React.Component {
           hits !== 0 &&
           (<div className="nypl-results-sorting-controls">
             <div className="nypl-results-sorter">
-              <button aria-expanded={this.state.active} onClick={e => this.getResultsWindow(e)}>
+              <button aria-expanded={this.state.active} className={this.state.active ? 'active' : ''} onClick={e => this.getResultsWindow(e)}>
                 <span>Sort by <strong>{this.state.sortLabel}</strong></span>
                 <svg
                   aria-hidden="true"
@@ -123,7 +124,7 @@ class Results extends React.Component {
                   <polygon points="67.938 0 34 24 0 0 10 0 34.1 16.4 58.144 0 67.938 0" />
                 </svg>
               </button>
-              <ul className={this.state.active || 'hidden'}>
+              <ul className={this.state.active ? '' : 'hidden'}>
                 {
                   this.getResultsSort()
                 }
