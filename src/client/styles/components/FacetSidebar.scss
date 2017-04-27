@@ -3,9 +3,3 @@ $facets-width: 200px;
 .search-results-container {
   @include clearfix();
 }
-
-.facet-label {
-  color: #080807 !important;
-  float: none !important;
-  margin: 0 !important;
-}

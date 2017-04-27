@@ -192,8 +192,8 @@ class FacetSidebar extends React.Component {
                       value={f.value}
                       onClick={e => this.onFacetUpdate(e, facet.field)}
                     />
-                    <span className="facet-label">{selectLabel}</span>
                     <span className="nypl-facet-count">{f.count.toLocaleString()}</span>
+                    {selectLabel}
                   </label>
                 );
               })
