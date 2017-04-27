@@ -82,6 +82,12 @@ class FacetSidebar extends React.Component {
     return field.charAt(0).toUpperCase() + field.slice(1);
   }
 
+  showGetTenMore(facet, valueCount){
+    if (valueCount > 9) {
+      return (<button className="nypl-link-button">Show 10 more</button>);
+    }
+  }
+
   removeKeyword() {
     Actions.updateSearchKeywords('');
 
@@ -199,7 +205,7 @@ class FacetSidebar extends React.Component {
               })
             }
             </div>
-            <button className="nypl-link-button">Show 10 more</button>
+            {this.showGetTenMore(facet, facet.values.length)}
           </div>
         );
       });
