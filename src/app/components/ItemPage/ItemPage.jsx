@@ -6,14 +6,14 @@ import {
   mapObject as _mapObject,
 } from 'underscore';
 
-import Breadcrumbs from '../Breadcrumbs/Breadcrumbs.jsx';
-import ItemHoldings from './ItemHoldings.jsx';
-import ItemDetails from './ItemDetails.jsx';
-import ItemEditions from './ItemEditions.jsx';
-import LibraryItem from '../../utils/item.js';
-// import EmbeddedDocument from './EmbeddedDocument.jsx';
-import Actions from '../../actions/Actions.js';
-import { ajaxCall } from '../../utils/utils.js';
+import Breadcrumbs from '../Breadcrumbs/Breadcrumbs';
+import ItemHoldings from './ItemHoldings';
+import ItemDetails from './ItemDetails';
+import ItemEditions from './ItemEditions';
+import LibraryItem from '../../utils/item';
+// import EmbeddedDocument from './EmbeddedDocument';
+import Actions from '../../actions/Actions';
+import { ajaxCall } from '../../utils/utils';
 
 class ItemPage extends React.Component {
   onClick(e, query) {
@@ -88,7 +88,7 @@ class ItemPage extends React.Component {
               <li key={i}>
                 <a
                   onClick={e => this.onClick(e, `${f.field}:"${obj['@id']}"`)}
-                  title={`${f.field}:${obj['@id']}`}
+                  title={`Make a new search for ${f.field}:${obj['@id']}`}
                   href={`/search?q=${encodeURIComponent(`${f.field}:"${obj['@id']}"`)}`}
                 >{obj.prefLabel}</a>
               </li>))}
@@ -104,7 +104,7 @@ class ItemPage extends React.Component {
               <li key={i}>
                 <a
                   onClick={e => this.onClick(e, `${f.field}:"${value}"`)}
-                  title={`${f.field}:"${value}"`}
+                  title={`Make a new search for ${f.field}:"${value}"`}
                   href={`/search?q=${encodeURIComponent(`${f.field}:"${value}"`)}`}
                 >{value}</a>
               </li>))}
@@ -132,7 +132,7 @@ class ItemPage extends React.Component {
         <span key={i}>
           <Link
             to={{ pathname: '/search', query: { q: `contributor:"${author}"` } }}
-            title={`contributor:"${author}"`}
+            title={`Make a new search for contributor:"${author}"`}
             onClick={(e) => this.onClick(e, `contributor:"${author}"`)}
           >
             {author}
@@ -143,7 +143,7 @@ class ItemPage extends React.Component {
     const publisher = record.publisher && record.publisher.length ?
       <Link
         to={{ pathname: '/search', query: { q: `publisher:"${record.publisher[0]}"` } }}
-        title={`publisher:"${record.publisher[0]}"`}
+        title={`Make a new search for publisher:"${record.publisher[0]}"`}
         onClick={(e) => this.onClick(e, `publisher:"${record.publisher[0]}"`)}
       >
         {record.publisher[0]}
@@ -221,7 +221,7 @@ class ItemPage extends React.Component {
                 Year published:
                 <Link
                   to={{ pathname: '/search', query: { q: `date:${record.dateStartYear}` } }}
-                  title={`date:${record.dateStartYear}`}
+                  title={`Make a new search for date:${record.dateStartYear}`}
                   onClick={e => this.onClick(e, `date:${record.dateStartYear}`)}
                 >
                   {record.dateStartYear}
