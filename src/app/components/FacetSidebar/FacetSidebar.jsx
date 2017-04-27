@@ -12,6 +12,8 @@ import {
   getFacetParams,
 } from '../../utils/utils';
 
+const facetShowLimit = 9;
+
 class FacetSidebar extends React.Component {
   constructor(props) {
     super(props);
@@ -83,9 +85,13 @@ class FacetSidebar extends React.Component {
   }
 
   showGetTenMore(facet, valueCount){
-    if (valueCount > 9) {
+    if (valueCount > facetShowLimit) {
       return (<button className="nypl-link-button">Show 10 more</button>);
     }
+  }
+
+  checkNoSearch(valueCount){
+    return valueCount > facetShowLimit ? '' : 'nosearch'
   }
 
   removeKeyword() {
@@ -164,7 +170,10 @@ class FacetSidebar extends React.Component {
           );
         }
         return (
-          <div key={`${facet.field}-${facet.value}`} className="nypl-searchable-field">
+          <div
+            key={`${facet.field}-${facet.value}`}
+            className={`nypl-searchable-field ${this.checkNoSearch(facet.values.length)}`}
+          >
             <div className="nypl-facet-search">
               <label htmlFor={`facet-${facet.field}-search`}>{`${this.getFacetLabel(facet.field)}`}</label>
               <input
