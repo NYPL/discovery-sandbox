@@ -88,7 +88,7 @@ class ItemPage extends React.Component {
               <li key={i}>
                 <a
                   onClick={e => this.onClick(e, `${f.field}:"${obj['@id']}"`)}
-                  title={`Make a new search for ${f.field}:${obj['@id']}`}
+                  title={`Make a new search for ${f.label}: ${obj.prefLabel}`}
                   href={`/search?q=${encodeURIComponent(`${f.field}:"${obj['@id']}"`)}`}
                 >{obj.prefLabel}</a>
               </li>))}
@@ -104,7 +104,7 @@ class ItemPage extends React.Component {
               <li key={i}>
                 <a
                   onClick={e => this.onClick(e, `${f.field}:"${value}"`)}
-                  title={`Make a new search for ${f.field}:"${value}"`}
+                  title={`Make a new search for ${f.label}: "${value}"`}
                   href={`/search?q=${encodeURIComponent(`${f.field}:"${value}"`)}`}
                 >{value}</a>
               </li>))}
@@ -132,7 +132,7 @@ class ItemPage extends React.Component {
         <span key={i}>
           <Link
             to={{ pathname: '/search', query: { q: `contributor:"${author}"` } }}
-            title={`Make a new search for contributor:"${author}"`}
+            title={`Make a new search for contributor: "${author}"`}
             onClick={(e) => this.onClick(e, `contributor:"${author}"`)}
           >
             {author}
@@ -143,7 +143,7 @@ class ItemPage extends React.Component {
     const publisher = record.publisher && record.publisher.length ?
       <Link
         to={{ pathname: '/search', query: { q: `publisher:"${record.publisher[0]}"` } }}
-        title={`Make a new search for publisher:"${record.publisher[0]}"`}
+        title={`Make a new search for publisher: "${record.publisher[0]}"`}
         onClick={(e) => this.onClick(e, `publisher:"${record.publisher[0]}"`)}
       >
         {record.publisher[0]}
@@ -221,7 +221,7 @@ class ItemPage extends React.Component {
                 Year published:
                 <Link
                   to={{ pathname: '/search', query: { q: `date:${record.dateStartYear}` } }}
-                  title={`Make a new search for date:${record.dateStartYear}`}
+                  title={`Make a new search for date: ${record.dateStartYear}`}
                   onClick={e => this.onClick(e, `date:${record.dateStartYear}`)}
                 >
                   {record.dateStartYear}
