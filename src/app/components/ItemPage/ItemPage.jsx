@@ -9,6 +9,7 @@ import {
 import Breadcrumbs from '../Breadcrumbs/Breadcrumbs';
 import ItemHoldings from './ItemHoldings';
 import ItemDetails from './ItemDetails';
+import ItemOverview from './ItemOverview';
 import ItemEditions from './ItemEditions';
 import LibraryItem from '../../utils/item';
 // import EmbeddedDocument from './EmbeddedDocument';
@@ -178,9 +179,19 @@ class ItemPage extends React.Component {
       { label: 'Bnumber', field: 'idBnum' },
       { label: 'LCC', field: 'idLcc' },
     ];
+    const overviewFields = [
+      { label: 'Material Type', field: 'materialType' },
+      { label: 'Author', field: 'contributor' },
+      { label: 'Published', field: 'createdString' },
+      { label: 'Publisher', field: 'publisher' },
+      { label: 'At Location', field: 'location' },
+      { label: 'Usage Type', field: 'actionLabel' },
+    ];
 
     const externalLinks = this.getDisplayFields(record, externalFields);
     const itemDetails = this.getDisplayFields(record, displayFields);
+    const itemOverview = this.getDisplayFields(record, overviewFields);
+
     let searchURL = this.props.searchKeywords;
 
     _mapObject(this.props.selectedFacets, (val, key) => {
@@ -225,6 +236,12 @@ class ItemPage extends React.Component {
                   <li><a href="#item-details">Item details</a></li>
                   <li><a href="#item-external-links">External links</a></li>
                 </ul>
+
+                <div id="nypl-results-text">
+                  <ItemOverview
+                    data={itemOverview}
+                  />
+                </div>
 
                 <ItemHoldings
                   path={this.props.location.search}
