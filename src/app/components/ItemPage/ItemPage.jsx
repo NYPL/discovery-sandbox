@@ -190,9 +190,9 @@ class ItemPage extends React.Component {
     });
 
     return (
-      <div id="mainContent">
-        <div className="page-header">
-          <div className="content-wrapper">
+      <main className="main-page">
+        <div className="nypl-page-header">
+          <div className="nypl-full-width-wrapper">
             <Breadcrumbs
               query={searchURL}
               type="item"
@@ -201,57 +201,59 @@ class ItemPage extends React.Component {
           </div>
         </div>
 
-        <div className="content-wrapper">
-          <div className="item-header">
-            <div className="item-info">
-              <h1>{title}</h1>
-                {
-                  authors &&
-                    <div className="description author">
-                      By {authors}
-                    </div>
-                }
-                {
-                  publisher &&
-                    <div className="description">
-                      Publisher: {publisher}
-                    </div>
-                }
-              <div className="description">
-                Year published:
-                <Link
-                  to={{ pathname: '/search', query: { q: `date:${record.dateStartYear}` } }}
-                  title={`Make a new search for date: ${record.dateStartYear}`}
-                  onClick={e => this.onClick(e, `date:${record.dateStartYear}`)}
-                >
-                  {record.dateStartYear}
-                </Link>
-              </div>
+        <div className="nypl-full-width-wrapper">
+          <div className="nypl-row">
+            <div className="nypl-column-three-quarters nypl-column-offset-one">
             </div>
           </div>
 
-          <ItemHoldings
-            path={this.props.location.search}
-            holdings={holdings}
-            title={`${record.numAvailable} cop${record.numAvailable === 1 ? 'y' : 'ies'} of this item ${record.numAvailable === 1 ? 'is' : 'are'} available at the following locations:`}
-          />
+          <div className="nypl-row">
+            <div
+              className="nypl-column-three-quarters nypl-column-offset-one"
+              role="region"
+              id="mainContent"
+              aria-live="polite"
+              aria-atomic="true"
+              aria-relevant="additions removals"
+              aria-describedby="results-description"
+            >
+              <div className="nypl-results-item">
+                <h1>{title}</h1>
 
-          <div className="item-details">
-            <ItemDetails
-              data={itemDetails}
-              title="Item details"
-            />
+                <ul className="nypl-item-toc">
+                  <li><a href="#item-holdings">Item holdings</a></li>
+                  <li><a href="#item-details">Item details</a></li>
+                  <li><a href="#item-external-links">External links</a></li>
+                </ul>
 
-            <ItemDetails
-              data={externalLinks}
-              title="External links"
-            />
+                <ItemHoldings
+                  path={this.props.location.search}
+                  holdings={holdings}
+                  title={`${record.numAvailable} item${record.numAvailable === 1 ? '' : 's'} associated with this record:`}
+                />
+
+                <div className="item-details">
+                  <div id="item-details">
+                    <ItemDetails
+                      data={itemDetails}
+                      title="Item details"
+                    />
+                  </div>
+
+                  <div id="item-external-links">
+                    <ItemDetails
+                      data={externalLinks}
+                      title="External links"
+                    />
+                  </div>
+                </div>
+
+              <ItemEditions title={title} item={record} />
+              </div>
+            </div>
           </div>
-
-          <ItemEditions title={title} item={record} />
-
         </div>
-      </div>
+      </main>
     );
   }
 }
