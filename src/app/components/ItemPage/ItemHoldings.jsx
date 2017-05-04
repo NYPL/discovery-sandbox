@@ -10,16 +10,6 @@ class ItemHoldings extends React.Component {
     };
   }
 
-  getHeading(headings) {
-    return (
-      <thead>
-        <tr>
-          {headings.map((h, i) => (<th scope="col" key={i}>{h}</th>))}
-        </tr>
-      </thead>
-    );
-  }
-
   getRow(holdings) {
     const holdingCount = holdings.length;
     const maxDisplay = 7;
@@ -27,47 +17,29 @@ class ItemHoldings extends React.Component {
     const collapsed = !this.state.expanded;
 
     return (
-      <tbody>
+      <ul>
         {
           holdings.map((h, i) => (
-            <tr
+            <li
               key={i}
               className={`${h.availability} ${i >= maxDisplay && collapsed ? 'collapsed' : ''}`}
             >
-              <td dangerouslySetInnerHTML={this.createMarkup(this.getAvailability(h))}></td>
-              <td dangerouslySetInnerHTML={this.createMarkup(h.location)}></td>
-              <td dangerouslySetInnerHTML={this.createMarkup(h.callNumber)}></td>
-              <td>
+              <span>
                 {
                   h.url && h.url.length ?
                     <a
                       href={h.url}
-                      className="button"
                     >
-                      {h.actionLabel}
+                      Request
                     </a>
-                  : null
+                  : <span>Unavailable</span>
                 }
-              </td>
-            </tr>
+              </span>
+              <span dangerouslySetInnerHTML={this.createMarkup(h.callNumber)}></span>
+            </li>
           ))
         }
-        {
-          moreCount > 0 && collapsed ?
-            (<tr className="more">
-              <td colSpan="4">
-                <Link
-                  onClick={(e) => this.showMoreItems(e)}
-                  href="#see-more"
-                  className="more-link"
-                >
-                  See {moreCount} more {moreCount > 1 ? 'copies' : 'copy'}
-                </Link>
-              </td>
-            </tr>)
-            : null
-        }
-      </tbody>
+      </ul>
     );
   }
 
@@ -87,22 +59,13 @@ class ItemHoldings extends React.Component {
   }
 
   render() {
-    const headings = ['Status', 'Location', 'Call Number', 'Hold/View'];
-
     const holdings = this.props.holdings;
-    const heading = this.getHeading(headings);
     const body = this.getRow(holdings);
 
     return (
-      <div className="item-holdings">
+      <div id="item-holdings" className="nypl-item-holdings">
         <h2>{this.props.title}</h2>
-        <table className="holdings-table">
-          <caption className="visuallyHidden">
-            Item availability, location, call number, and request a hold.
-          </caption>
-          {heading}
-          {body}
-        </table>
+        {body}
       </div>
     );
   }

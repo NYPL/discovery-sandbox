@@ -82,8 +82,8 @@ class ResultsList extends React.Component {
     ];
 
     return (
-      <li key={i} className="result-item">
-        <div className="result-text">
+      <li key={i} className="nypl-results-item">
+        <div className="nypl-results-text">
           <h2>
             <Link
               onClick={(e) => this.getRecord(e, id, 'item')}
@@ -98,7 +98,7 @@ class ResultsList extends React.Component {
               bibInfo.map((info) => {
                 if (!info.data) return null;
                 return [
-                  (<dt>{info.label}:</dt>),
+                  (<dt>{info.label}</dt>),
                   (<dd>{info.data}</dd>),
                 ];
               })
