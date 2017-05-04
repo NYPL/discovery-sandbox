@@ -18,7 +18,9 @@ class FacetSidebar extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {};
+    this.state = {
+      spinning: false,
+    };
 
     this.props.facets.map((facet) => {
       let id = '';
@@ -37,6 +39,7 @@ class FacetSidebar extends React.Component {
   }
 
   onFacetUpdate(e, field) {
+    this.setState({ spinning: true });
     const value = e.target.value;
     const checked = e.target.checked;
     let strSearch = '';
@@ -58,7 +61,7 @@ class FacetSidebar extends React.Component {
           value: facet.label || facet.value,
         },
       });
-
+      console.log(this)
       strSearch = getFacetParams(this.state, field, value);
     }
 
@@ -74,6 +77,7 @@ class FacetSidebar extends React.Component {
         null,
         `/search?q=${encodeURIComponent(this.props.keywords)}${strSearch}${sortQuery}`,
       );
+      this.setState({ spinning: false });
     });
   }
 
@@ -172,7 +176,7 @@ class FacetSidebar extends React.Component {
         return (
           <div
             key={`${facet.field}-${facet.value}`}
-            className={`nypl-searchable-field ${this.checkNoSearch(facet.values.length)}`}
+            className={`nypl-searchable-field nypl-spinner-field ${this.checkNoSearch(facet.values.length)} ${this.state.spinning ? 'spinning' : ''}`}
           >
             <div className="nypl-facet-search">
               <label htmlFor={`facet-${facet.field}-search`}>{`${this.getFacetLabel(facet.field)}`}</label>
