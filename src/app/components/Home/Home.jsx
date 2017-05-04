@@ -23,7 +23,6 @@ const Home = ({ sortBy }) => (
       <div className="half">
         <div className="search home">
           <Search sortBy={sortBy} />
-          <p><Link to="/advanced">Use advanced search</Link></p>
         </div>
       </div>
     </div>
