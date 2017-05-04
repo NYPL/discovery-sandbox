@@ -192,7 +192,7 @@ class ItemPage extends React.Component {
     const externalLinks = this.getDisplayFields(record, externalFields);
     const itemDetails = this.getDisplayFields(record, displayFields);
     const itemOverview = this.getDisplayFields(record, overviewFields);
-    const sortBy = '';
+    const sortBy = this.props.sortBy;
 
     let searchURL = this.props.searchKeywords;
 
