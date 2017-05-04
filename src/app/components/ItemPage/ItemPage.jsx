@@ -7,6 +7,7 @@ import {
 } from 'underscore';
 
 import Breadcrumbs from '../Breadcrumbs/Breadcrumbs';
+import Search from '../Search/Search';
 import ItemHoldings from './ItemHoldings';
 import ItemDetails from './ItemDetails';
 import ItemOverview from './ItemOverview';
@@ -191,6 +192,7 @@ class ItemPage extends React.Component {
     const externalLinks = this.getDisplayFields(record, externalFields);
     const itemDetails = this.getDisplayFields(record, displayFields);
     const itemOverview = this.getDisplayFields(record, overviewFields);
+    const sortBy = this.props.sortBy;
 
     let searchURL = this.props.searchKeywords;
 
@@ -214,8 +216,7 @@ class ItemPage extends React.Component {
 
         <div className="nypl-full-width-wrapper">
           <div className="nypl-row">
-            <div className="nypl-column-three-quarters nypl-column-offset-one">
-            </div>
+            <Search sortBy={sortBy} />
           </div>
 
           <div className="nypl-row">
@@ -280,6 +281,7 @@ ItemPage.propTypes = {
   searchKeywords: React.PropTypes.string,
   location: React.PropTypes.object,
   selectedFacets: React.PropTypes.object,
+  sortBy: React.PropTypes.string,
 };
 
 ItemPage.contextTypes = {
