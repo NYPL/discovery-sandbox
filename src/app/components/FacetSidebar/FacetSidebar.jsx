@@ -3,6 +3,7 @@ import React from 'react';
 import {
   findWhere as _findWhere,
   chain as _chain,
+  pick as _pick,
 } from 'underscore';
 
 import Actions from '../../actions/Actions';
@@ -18,7 +19,9 @@ class FacetSidebar extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {};
+    this.state = {
+      spinning: false,
+    };
 
     this.props.facets.map((facet) => {
       let id = '';
@@ -37,8 +40,11 @@ class FacetSidebar extends React.Component {
   }
 
   onFacetUpdate(e, field) {
+    this.setState({ spinning: true });
     const value = e.target.value;
     const checked = e.target.checked;
+    const pickedFacet = _pick(this.state, field)
+
     let strSearch = '';
 
     if (!checked) {
@@ -52,28 +58,28 @@ class FacetSidebar extends React.Component {
       const searchValue = field === 'date' ? parseInt(value, 10) : value;
       const facetObj = _findWhere(this.props.facets, { field });
       const facet = _findWhere(facetObj.values, { value: searchValue });
+
       this.setState({
         [field]: {
           id: facet.value,
           value: facet.label || facet.value,
         },
       });
-
-      strSearch = getFacetParams(this.state, field, value);
+      strSearch = getFacetParams(pickedFacet, field, value);
     }
-
 
     const sortQuery = getSortQuery(this.props.sortBy);
 
     ajaxCall(`/api?q=${this.props.keywords}${strSearch}${sortQuery}`, (response) => {
       Actions.updateSearchResults(response.data.searchResults);
       Actions.updateFacets(response.data.facets);
-      Actions.updateSelectedFacets(this.state);
+      Actions.updateSelectedFacets(pickedFacet);
       Actions.updatePage('1');
       this.routeHandler(
         null,
         `/search?q=${encodeURIComponent(this.props.keywords)}${strSearch}${sortQuery}`,
       );
+      this.setState({ spinning: false });
     });
   }
 
@@ -141,7 +147,7 @@ class FacetSidebar extends React.Component {
 
         if (facet.field === 'date') {
           return (
-            <div className="nypl-facet-search">
+            <div className={`nypl-facet-search nypl-spinner-field ${this.state.spinning ? 'spinning' : ''}`}>
               <div className="nypl-text-field">
                 <label
                   key="date-from"
@@ -172,9 +178,9 @@ class FacetSidebar extends React.Component {
         return (
           <div
             key={`${facet.field}-${facet.value}`}
-            className={`nypl-searchable-field ${this.checkNoSearch(facet.values.length)}`}
+            className={`nypl-searchable-field nypl-spinner-field ${this.checkNoSearch(facet.values.length)} ${this.state.spinning ? 'spinning' : ''}`}
           >
-            <div className="nypl-facet-search">
+            <div className={`nypl-facet-search nypl-spinner-field ${this.state.spinning ? 'spinning' : ''}`}>
               <label htmlFor={`facet-${facet.field}-search`}>{`${this.getFacetLabel(facet.field)}`}</label>
               <input
                 id={`facet-${facet.field}-search`}
