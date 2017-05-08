@@ -96,8 +96,20 @@ class FacetSidebar extends React.Component {
     }
   }
 
+  showFacet(e){
+    if (this.state.openFacet === false) {
+      this.setState({openFacet: true})
+      e.target.parentElement.classList.remove('collapsed');
+      e.target.nextSibling.classList.remove('collapsed');
+    } else {
+      this.setState({ openFacet: false });
+      e.target.parentElement.className += ' collapsed';
+      e.target.nextSibling.className += ' collapsed';
+    }
+  }
+
   checkNoSearch(valueCount){
-    return valueCount > facetShowLimit ? '' : 'nosearch'
+    return valueCount > facetShowLimit ? '' : ' nosearch'
   }
 
   removeKeyword() {
@@ -180,47 +192,71 @@ class FacetSidebar extends React.Component {
             key={`${facet.field}-${facet.value}`}
             className={`nypl-searchable-field nypl-spinner-field ${this.checkNoSearch(facet.values.length)} ${this.state.spinning ? 'spinning' : ''}`}
           >
-            <div className={`nypl-facet-search nypl-spinner-field ${this.state.spinning ? 'spinning' : ''}`}>
-              <label htmlFor={`facet-${facet.field}-search`}>{`${this.getFacetLabel(facet.field)}`}</label>
-              <input
-                id={`facet-${facet.field}-search`}
-                type="text"
-                placeholder={`Search ${this.getFacetLabel(facet.field)}`}
-              />
-            </div>
-            <div className="nypl-facet-list">
-              {
-              facet.values.map((f, j) => {
-                const percentage = Math.floor(f.count / totalHits * 100);
-                const valueLabel = (f.value).toString().replace(/:/, '_');
-                let selectLabel = f.value;
-                if (f.label) {
-                  selectLabel = f.label;
-                }
-                return (
-                  <label
-                    key={j}
-                    id={`${facet.field}-${valueLabel}`}
-                    htmlFor={`${facet.field}-${valueLabel}`}
-                    className={`nypl-bar_${percentage}`}
-                  >
-                    <input
+            <button
+              type="button"
+              className={`nypl-facet-toggle ${this.state.facetOpen ? '' : 'collapsed'}`}
+              aria-controls={`nypl-searchable-field_${facet.field}`}
+              aria-expanded={this.state.facetOpen}
+              onClick={e => this.showFacet(e)}
+            >
+              {`${this.getFacetLabel(facet.field)}`}
+              <svg
+                aria-hidden="true"
+                className="nypl-icon"
+                preserveAspectRatio="xMidYMid meet"
+                viewBox="0 0 68 24"
+              >
+                <title>wedge down icon</title>
+                <polygon points="67.938 0 34 24 0 0 10 0 34.1 16.4 58.144 0 67.938 0"></polygon>
+              </svg>
+            </button>
+            <div
+              className={`nypl-collapsible ${this.state.facetOpen ? '' : 'collapsed'}`}
+              id={`nypl-searchable-field_${facet.field}`}
+              aria-expanded={this.state.facetOpen}
+            >
+              <div className={`nypl-facet-search nypl-spinner-field ${this.state.spinning ? 'spinning' : ''}`}>
+                <label htmlFor={`facet-${facet.field}-search`}>{`${this.getFacetLabel(facet.field)}`}</label>
+                <input
+                  id={`facet-${facet.field}-search`}
+                  type="text"
+                  placeholder={`Search ${this.getFacetLabel(facet.field)}`}
+                />
+              </div>
+              <div className="nypl-facet-list">
+                {
+                facet.values.map((f, j) => {
+                  const percentage = Math.floor(f.count / totalHits * 100);
+                  const valueLabel = (f.value).toString().replace(/:/, '_');
+                  let selectLabel = f.value;
+                  if (f.label) {
+                    selectLabel = f.label;
+                  }
+                  return (
+                    <label
+                      key={j}
                       id={`${facet.field}-${valueLabel}`}
-                      aria-labelledby={`${facet.field} ${valueLabel}`}
-                      type="checkbox"
-                      name="subject"
-                      checked={selectedValue === f.value}
-                      value={f.value}
-                      onClick={e => this.onFacetUpdate(e, facet.field)}
-                    />
-                    <span className="nypl-facet-count">{f.count.toLocaleString()}</span>
-                    {selectLabel}
-                  </label>
-                );
-              })
-            }
+                      htmlFor={`${facet.field}-${valueLabel}`}
+                      className={`nypl-bar_${percentage}`}
+                    >
+                      <input
+                        id={`${facet.field}-${valueLabel}`}
+                        aria-labelledby={`${facet.field} ${valueLabel}`}
+                        type="checkbox"
+                        name="subject"
+                        checked={selectedValue === f.value}
+                        value={f.value}
+                        onClick={e => this.onFacetUpdate(e, facet.field)}
+                      />
+                      <span className="nypl-facet-count">{f.count.toLocaleString()}</span>
+                      {selectLabel}
+                    </label>
+                  );
+                })
+              }
+              </div>
+              {this.showGetTenMore(facet, facet.values.length)}
             </div>
-            {this.showGetTenMore(facet, facet.values.length)}
           </div>
         );
       });
