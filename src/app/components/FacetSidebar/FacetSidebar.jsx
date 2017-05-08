@@ -99,12 +99,16 @@ class FacetSidebar extends React.Component {
   showFacet(e){
     if (this.state.openFacet === false) {
       this.setState({openFacet: true})
-      e.target.parentElement.classList.remove('collapsed');
-      e.target.nextSibling.classList.remove('collapsed');
+      if (e.target.parentElement && e.target.nextSibling) {
+        e.target.parentElement.classList.remove('collapsed');
+        e.target.nextSibling.classList.remove('collapsed');
+      }
     } else {
       this.setState({ openFacet: false });
-      e.target.parentElement.className += ' collapsed';
-      e.target.nextSibling.className += ' collapsed';
+      if (e.target.parentElement && e.target.nextSibling) {
+        e.target.parentElement.className += ' collapsed';
+        e.target.nextSibling.className += ' collapsed';
+      }
     }
   }
 
