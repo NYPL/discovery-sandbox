@@ -26,7 +26,7 @@ class Hits extends React.Component {
             className="remove-keyword"
             aria-controls="results-region"
           >
-            <span className="visuallyHidden">remove keyword filter&nbsp;{keyword}</span>
+            <span className="hidden">remove keyword filter&nbsp;{keyword}</span>
           </button>
         </span>
       );
@@ -45,7 +45,7 @@ class Hits extends React.Component {
           className="remove-facet"
           aria-controls="results-region"
         >
-          <span className="visuallyHidden">remove filter&nbsp;{facet.val.value}</span>
+          <span className="hidden">remove filter&nbsp;{facet.val.value}</span>
         </button>
       </span>
     ));
