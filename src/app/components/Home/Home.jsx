@@ -15,9 +15,11 @@ const Home = ({ sortBy }) => (
 
     <div className="content-wrapper">
       <div className="nypl-column-three-quarters nypl-column-offset-one">
-        <p className="lead">Search the New York Public Library Research Catalog
-          for materials available to use in one of four research libraries located
-          in New York City.
+        <p className="lead">Search The New York Public Library's world-renowned collections for
+          items available for use at our
+          <a href="https://www.nypl.org/locations/map?libraries=research"> research centers</a>.
+          Be sure to <a href="https://www.nypl.org/help/request-research-materials">request
+          materials</a> in advance to make the most of your time on site.
         </p>
         <div className="search home">
           <Search sortBy={sortBy} />
