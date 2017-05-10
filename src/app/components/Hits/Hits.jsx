@@ -1,7 +1,13 @@
 import React from 'react';
-import { mapObject as _mapObject } from 'underscore';
+
+import {
+  mapObject as _mapObject,
+  extend as _extend,
+} from 'underscore';
 
 import Actions from '../../actions/Actions.js';
+import Store from '../../stores/Store.js';
+
 import {
   ajaxCall,
   getSortQuery,
@@ -12,9 +18,26 @@ class Hits extends React.Component {
   constructor(props) {
     super(props);
 
+    this.state = _extend({
+      spinning: false,
+    }, Store.getState());
+
     this.removeFacet = this.removeFacet.bind(this);
     this.getKeyword = this.getKeyword.bind(this);
+    this.onChange = this.onChange.bind(this);
     this.getFacetElements = this.getFacetElements.bind(this);
+  }
+
+  componentDidMount() {
+    Store.listen(this.onChange);
+  }
+
+  componentWillUnmount() {
+    Store.unlisten(this.onChange);
+  }
+
+  onChange() {
+    this.setState(_extend(this.state, Store.getState()));
   }
 
   getKeyword(keyword) {
@@ -100,7 +123,10 @@ class Hits extends React.Component {
     return (
       <div id="results-description" className="nypl-results-summary">
         {
-          hits !== 0 ?
+          this.state.spinning ?
+            (<p><strong className="nypl-results-count">Loading…</strong></p>)
+          :
+            hits !== 0 ?
           (<p><strong className="nypl-results-count">{hitsF}</strong> results found{keyword}{activeFacetsElm}</p>)
           : (<p>No results found{keyword}{activeFacetsElm}.</p>)
         }
