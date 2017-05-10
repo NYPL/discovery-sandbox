@@ -22,6 +22,7 @@ class FacetSidebar extends React.Component {
     this.state = {
       spinning: false,
       mobileView: false,
+      mobileViewText: 'Refine search',
     };
 
     this.props.facets.map((facet) => {
@@ -119,9 +120,15 @@ class FacetSidebar extends React.Component {
 
   toggleFacetsMobile() {
     if (this.state.mobileView) {
-      this.setState({ mobileView: false });
+      this.setState({
+        mobileView: false,
+        mobileViewText: 'Refine search',
+      });
     } else {
-      this.setState({ mobileView: true });
+      this.setState({
+        mobileView: true,
+        mobileViewText: 'Hide facets',
+      });
     }
   }
 
@@ -281,10 +288,10 @@ class FacetSidebar extends React.Component {
           <button
             className="nypl-primary-button"
             aria-controls="filter-search"
-            aria-expanded="false"
+            aria-expanded={this.state.mobileView}
             onClick={() => this.toggleFacetsMobile()}
           >
-            Refine search
+            {this.state.mobileViewText}
           </button>
         </div>
         <form className={`nypl-search-form ${this.state.mobileView ? 'active' : '' }`}>
