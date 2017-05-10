@@ -14,13 +14,11 @@ const Home = ({ sortBy }) => (
     </div>
 
     <div className="content-wrapper">
-      <div className="half">
+      <div className="nypl-column-three-quarters nypl-column-offset-one">
         <p className="lead">Search the New York Public Library Research Catalog
           for materials available to use in one of four research libraries located
           in New York City.
         </p>
-      </div>
-      <div className="half">
         <div className="search home">
           <Search sortBy={sortBy} />
         </div>
