@@ -112,31 +112,29 @@ class Search extends React.Component {
 
   render() {
     return (
-      <div className="nypl-column-three-quarters nypl-column-offset-one">
-        <form onKeyPress={this.triggerSubmit}>
-          <fieldset className={`nypl-omnisearch nypl-spinner-field ${this.state.spinning ? 'spinning' : ''}`}>
-            <SearchButton
-              id="nypl-omni-button"
-              type="submit"
-              value="Search"
-              onClick={this.submitSearchRequest}
-            />
-            <span className="nypl-omni-fields">
-              <label forHtml="search-by-field">Search in</label>
-              <select id="search-by-field"><option value="all">All fields</option><option value="title">Title</option><option value="contributor">Author/Contributor</option><option value="subject">Subject</option><option value="series">Series</option><option value="call_number">Call number</option></select>
-            </span>
-            <input
-              type="text"
-              id="search-query"
-              aria-labelledby="nypl-omni-button"
-              placeholder={this.state.placeholder}
-              onChange={this.inputChange}
-              value={this.state.searchKeywords}
-              ref="keywords"
-            />
-          </fieldset>
-        </form>
-      </div>
+      <form onKeyPress={this.triggerSubmit}>
+        <fieldset className={`nypl-omnisearch nypl-spinner-field ${this.state.spinning ? 'spinning' : ''}`}>
+          <SearchButton
+            id="nypl-omni-button"
+            type="submit"
+            value="Search"
+            onClick={this.submitSearchRequest}
+          />
+          <span className="nypl-omni-fields">
+            <label forHtml="search-by-field">Search in</label>
+            <select id="search-by-field"><option value="all">All fields</option><option value="title">Title</option><option value="contributor">Author/Contributor</option><option value="subject">Subject</option><option value="series">Series</option><option value="call_number">Call number</option></select>
+          </span>
+          <input
+            type="text"
+            id="search-query"
+            aria-labelledby="nypl-omni-button"
+            placeholder={this.state.placeholder}
+            onChange={this.inputChange}
+            value={this.state.searchKeywords}
+            ref="keywords"
+          />
+        </fieldset>
+      </form>
     );
   }
 }
