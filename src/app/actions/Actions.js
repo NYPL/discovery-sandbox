@@ -37,6 +37,10 @@ class Actions {
   updateSortBy(sort) {
     return sort;
   }
+
+  updateSpinner(data) {
+    return data;
+  }
 }
 
 export default alt.createActions(Actions);
