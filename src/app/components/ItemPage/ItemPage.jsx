@@ -216,7 +216,9 @@ class ItemPage extends React.Component {
 
         <div className="nypl-full-width-wrapper">
           <div className="nypl-row">
-            <Search sortBy={sortBy} />
+            <div className="nypl-column-three-quarters nypl-column-offset-one">
+              <Search sortBy={sortBy} />
+            </div>
           </div>
 
           <div className="nypl-row">

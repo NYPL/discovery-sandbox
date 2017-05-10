@@ -35,10 +35,12 @@ class SearchResultsPage extends React.Component {
       </div>
       <div className="nypl-full-width-wrapper">
         <div className="nypl-row">
-          <Search
-            sortBy={sortBy}
-            selectedFacets={selectedFacets}
-          />
+          <div className="nypl-column-three-quarters nypl-column-offset-one">
+            <Search
+              sortBy={sortBy}
+              selectedFacets={selectedFacets}
+            />
+          </div>
         </div>
 
         <div className="nypl-row">
