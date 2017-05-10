@@ -13,6 +13,7 @@ import {
 
 import {
   extend as _extend,
+  forEach as _forEach,
 } from 'underscore';
 
 /**
@@ -62,14 +63,19 @@ class Search extends React.Component {
     // Track the submitted keyword search.
     trackDiscovery('Search', keyword);
 
-    ajaxCall(`/api?q=${keyword}${facetQuery}${sortQuery}`, (response) => {
+    ajaxCall(`/api?q=${keyword}${sortQuery}`, (response) => {
       Actions.updateSearchResults(response.data.searchResults);
       Actions.updateFacets(response.data.facets);
+      const newFacets = {};
+      _forEach(response.data.facets.itemListElement, (facet) => {
+        newFacets[facet.id] = { id: '', value: '' };
+      });
+      Actions.updateSelectedFacets(newFacets);
       Actions.updateSearchKeywords(keyword);
       Actions.updatePage('1');
       this.routeHandler({
         pathname: '/search',
-        query: { q: `${keyword}${facetQuery}${sortQuery}` },
+        query: { q: `${keyword}${sortQuery}` },
       });
       this.setState({ spinning: false });
     });
