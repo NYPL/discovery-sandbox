@@ -1,5 +1,5 @@
 import React from 'react';
-
+import ClickOutHandler from 'react-onclickout';
 import { findWhere as _findWhere } from 'underscore';
 
 import Actions from '../../actions/Actions';
@@ -21,7 +21,8 @@ const sortingOpts = [
 class Results extends React.Component {
   constructor(props) {
     super(props);
-    const defaultLabel = this.props.sortBy ? _findWhere(sortingOpts, { val: this.props.sortBy }).label : 'relevance';
+    const defaultLabel = this.props.sortBy ?
+      _findWhere(sortingOpts, { val: this.props.sortBy }).label : 'relevance';
     this.state = {
       sortValue: this.props.sortBy,
       sortLabel: defaultLabel,
@@ -90,6 +91,12 @@ class Results extends React.Component {
     this.setState({ active: false });
   }
 
+  handleOnClickOut() {
+    if (this.state.active) {
+      this.setState({ active: false });
+    }
+  }
+
   render() {
     const {
       results,
@@ -112,23 +119,29 @@ class Results extends React.Component {
           hits !== 0 &&
           (<div className="nypl-results-sorting-controls">
             <div className="nypl-results-sorter">
-              <button aria-expanded={this.state.active} className={this.state.active ? 'active' : ''} onClick={e => this.getResultsWindow(e)}>
-                <span>Sort by <strong>{this.state.sortLabel}</strong></span>
-                <svg
-                  aria-hidden="true"
-                  className="nypl-icon"
-                  preserveAspectRatio="xMidYMid meet"
-                  viewBox="0 0 68 24"
+              <ClickOutHandler onClickOut={() => this.handleOnClickOut()}>
+                <button
+                  aria-expanded={this.state.active}
+                  className={this.state.active ? 'active' : ''}
+                  onClick={e => this.getResultsWindow(e)}
                 >
-                  <title>wedge down icon</title>
-                  <polygon points="67.938 0 34 24 0 0 10 0 34.1 16.4 58.144 0 67.938 0" />
-                </svg>
-              </button>
-              <ul className={this.state.active ? '' : 'hidden'}>
-                {
-                  this.getResultsSort()
-                }
-              </ul>
+                  <span>Sort by <strong>{this.state.sortLabel}</strong></span>
+                  <svg
+                    aria-hidden="true"
+                    className="nypl-icon"
+                    preserveAspectRatio="xMidYMid meet"
+                    viewBox="0 0 68 24"
+                  >
+                    <title>wedge down icon</title>
+                    <polygon points="67.938 0 34 24 0 0 10 0 34.1 16.4 58.144 0 67.938 0" />
+                  </svg>
+                </button>
+                <ul className={this.state.active ? '' : 'hidden'}>
+                  {
+                    this.getResultsSort()
+                  }
+                </ul>
+              </ClickOutHandler>
             </div>
           </div>)
         }
