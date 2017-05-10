@@ -21,6 +21,7 @@ class FacetSidebar extends React.Component {
 
     this.state = {
       spinning: false,
+      mobileView: false,
     };
 
     this.props.facets.map((facet) => {
@@ -114,6 +115,14 @@ class FacetSidebar extends React.Component {
 
   checkNoSearch(valueCount){
     return valueCount > facetShowLimit ? '' : ' nosearch'
+  }
+
+  toggleFacetsMobile() {
+    if (this.state.mobileView) {
+      this.setState({ mobileView: false });
+    } else {
+      this.setState({ mobileView: true });
+    }
   }
 
   removeKeyword() {
@@ -268,7 +277,17 @@ class FacetSidebar extends React.Component {
 
     return (
       <div className="nypl-column-one-quarter">
-        <form className="nypl-search-form">
+        <div className="nypl-mobile-refine">
+          <button
+            className="nypl-primary-button"
+            aria-controls="filter-search"
+            aria-expanded="false"
+            onClick={() => this.toggleFacetsMobile()}
+          >
+            Refine search
+          </button>
+        </div>
+        <form className={`nypl-search-form ${this.state.mobileView ? 'active' : '' }`}>
           {facetsElm}
         </form>
       </div>
