@@ -294,7 +294,10 @@ class FacetSidebar extends React.Component {
             {this.state.mobileViewText}
           </button>
         </div>
-        <form className={`nypl-search-form ${this.state.mobileView ? 'active' : '' }`}>
+        <form
+          id="filter-search"
+          className={`nypl-search-form ${this.state.mobileView ? 'active' : '' }`}
+        >
           {facetsElm}
         </form>
       </div>
