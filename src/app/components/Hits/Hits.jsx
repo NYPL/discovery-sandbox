@@ -91,6 +91,7 @@ class Hits extends React.Component {
   }
 
   removeFacet(field) {
+    Actions.updateSpinner(true);
     Actions.removeFacet(field);
 
     const sortQuery = getSortQuery(this.props.sortBy);
@@ -101,6 +102,7 @@ class Hits extends React.Component {
       Actions.updateFacets(response.data.facets);
       Actions.updatePage('1');
       this.context.router.push(`/search?q=${this.props.query}${strSearch}${sortQuery}`);
+      Actions.updateSpinner(false);
     });
   }
 
