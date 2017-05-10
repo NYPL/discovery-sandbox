@@ -75,6 +75,7 @@ class Hits extends React.Component {
   }
 
   removeKeyword() {
+    Actions.updateSpinner(true);
     Actions.updateSearchKeywords('');
 
     const sortQuery = getSortQuery(this.props.sortBy);
@@ -85,6 +86,7 @@ class Hits extends React.Component {
       Actions.updateFacets(response.data.facets);
       Actions.updatePage('1');
       this.context.router.push(`/search?q=${strSearch}${sortQuery}`);
+      Actions.updateSpinner(false);
     });
   }
 
