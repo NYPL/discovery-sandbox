@@ -22,9 +22,8 @@ const Home = ({ sortBy }) => (
             Be sure to <a href="https://www.nypl.org/help/request-research-materials">request
             materials</a> in advance to make the most of your time on site.
           </p>
-          <div className="search home">
-            <Search sortBy={sortBy} />
-          </div>
+
+          <Search sortBy={sortBy} />
         </div>
       </div>
     </div>
