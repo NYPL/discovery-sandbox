@@ -111,38 +111,26 @@ class FacetSidebar extends React.Component {
     }
   }
 
-  showFacet(e){
+  showFacet(facet) {
+    let ref = this.refs[`nypl-${facet}-facet-button`];
+
     if (this.state.openFacet === false) {
-      this.setState({openFacet: true})
-      if (e.target.parentElement && e.target.nextSibling) {
-        e.target.parentElement.classList.remove('collapsed');
-        e.target.nextSibling.classList.remove('collapsed');
+      this.setState({ openFacet: true })
+      if (ref.parentElement && ref.nextSibling) {
+        ref.parentElement.classList.remove('collapsed');
+        ref.nextSibling.classList.remove('collapsed');
       }
     } else {
       this.setState({ openFacet: false });
-      if (e.target.parentElement && e.target.nextSibling) {
-        e.target.parentElement.className += ' collapsed';
-        e.target.nextSibling.className += ' collapsed';
+      if (ref.parentElement && ref.nextSibling) {
+        ref.parentElement.className += ' collapsed';
+        ref.nextSibling.className += ' collapsed';
       }
     }
   }
 
   checkNoSearch(valueCount){
     return valueCount > facetShowLimit ? '' : ' nosearch'
-  }
-
-  removeKeyword() {
-    Actions.updateSearchKeywords('');
-
-    const strSearch = getFacetParams(this.props.selectedFacets);
-    const sortQuery = getSortQuery(this.props.sortBy);
-
-    ajaxCall(`/api?q=${this.props.keywords}${strSearch}${sortQuery}`, (response) => {
-      Actions.updateSearchResults(response.data.searchResults);
-      Actions.updateFacets(response.data.facets);
-      Actions.updatePage('1');
-      this.context.router.push(`/search?q=${this.props.keywords}${strSearch}${sortQuery}`);
-    });
   }
 
   routeHandler(e, path) {
@@ -216,7 +204,8 @@ class FacetSidebar extends React.Component {
               className={`nypl-facet-toggle ${this.state.facetOpen ? '' : 'collapsed'}`}
               aria-controls={`nypl-searchable-field_${facet.field}`}
               aria-expanded={this.state.facetOpen}
-              onClick={e => this.showFacet(e)}
+              ref={`nypl-${facet.field}-facet-button`}
+              onClick={() => this.showFacet(facet.field)}
             >
               {`${this.getFacetLabel(facet.field)}`}
               <svg
