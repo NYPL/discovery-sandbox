@@ -166,11 +166,19 @@ class FacetSidebar extends React.Component {
     } = this.props;
     let facetsElm = null;
 
+    const orderedFacets = [
+      _findWhere(this.props.facets, { id: 'materialType' }),
+      _findWhere(this.props.facets, { id: 'subject' }),
+      _findWhere(this.props.facets, { id: 'issuance' }),
+      _findWhere(this.props.facets, { id: 'publisher' }),
+      _findWhere(this.props.facets, { id: 'language' }),
+    ];
+
     if (facets.length) {
-      facetsElm = facets.map((facet) => {
+      facetsElm = orderedFacets.map((facet) => {
         const field = facet.field;
 
-        if (facet.values.length < 1 || field === 'carrierType' || field === 'mediaType') {
+        if (facet.values.length < 1) {
           return null;
         }
 
@@ -180,36 +188,6 @@ class FacetSidebar extends React.Component {
           .reduce((x, y) => x + y, 0)
           .value();
 
-        if (field === 'date') {
-          return (
-            <div key={`${field}-${facet.value}`} className={`nypl-facet-search nypl-spinner-field ${this.state.spinning ? 'spinning' : ''}`}>
-              <div className="nypl-text-field">
-                <label
-                  key="date-from"
-                  htmlFor="date-from"
-                >On or After Year</label>
-                <input
-                  id={`facet-${field}-from-search`}
-                  type="text"
-                  className="form-text"
-                  placeholder=""
-                />
-              </div>
-              <div className="nypl-text-field">
-                <label
-                  key="date-to"
-                  htmlFor="date-to"
-                >On or Before Year</label>
-                <input
-                  id={`facet-${field}-to-search`}
-                  type="text"
-                  className="form-text"
-                  placeholder=""
-                />
-              </div>
-            </div>
-          );
-        }
         return (
           <div
             key={`${field}-${facet.value}`}
