@@ -22,7 +22,7 @@ function MainApp(req, res, next) {
     page: '1',
     sortBy: 'relevance',
   };
-  
+
   next();
 }
 

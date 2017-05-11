@@ -12,7 +12,7 @@
     float: right;
 
     fieldset {
-      @include select-fieldset;
+      // @include select-fieldset;
       white-space: nowrap;
       background-color: $page-background-color;
       margin: 0;
@@ -73,62 +73,10 @@
   }
 }
 
-
-.results-list {
-  margin-top: 0.35rem;
-  margin-bottom: 4rem;
-  list-style: none;
-  padding: 0;
-}
-.result-item {
-  @include results-item;
-  h4 {
-    margin-bottom: 0.3rem;
-  }
-  p {
-    margin: 0;
-  }
-}
-.result-item-formats {
-  @include results-item-formats;
-  margin-top: 0.5rem;
-
-  th:first-child,
-  td:first-child,
-  th:last-child,
-  td:last-child {
-    width: auto;
-  }
-
-  th:last-child,
-  td:last-child {
-    white-space: nowrap;
-  }
-
-  .more {
-    display: none;
-  }
-}
-.result-item-formats-table {
-  @include basic-table;
-
-  tr.see-more-row,
-  tr.see-more-row td {
-    border: none;
-  }
+dt {
+  font-weight: normal;
 }
 
-.results-summary {
-  @include results-summary();
-  p {
-    margin: 0;
-    padding: 0;
-    line-height: 1;
-  }
-  .remove-facet,
-  .remove-keyword {
-    &:before {
-      content: 'x';
-    }
-  }
+.nypl-results-sorter li {
+    margin-bottom: 0;
 }

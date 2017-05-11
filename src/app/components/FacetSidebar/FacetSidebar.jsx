@@ -1,23 +1,31 @@
 import React from 'react';
 
-import Actions from '../../actions/Actions.js';
+import {
+  extend as _extend,
+  findWhere as _findWhere,
+  chain as _chain,
+  pick as _pick,
+} from 'underscore';
+
+import Actions from '../../actions/Actions';
+import Store from '../../stores/Store';
 import {
   ajaxCall,
   getSortQuery,
   getFacetParams,
-} from '../../utils/utils.js';
+} from '../../utils/utils';
 
-import {
-  findWhere as _findWhere,
-} from 'underscore';
+const facetShowLimit = 9;
 
 class FacetSidebar extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {};
+    this.state = _extend({
+      spinning: false,
+    }, Store.getState());
 
-    this.props.facets.map(facet => {
+    this.props.facets.map((facet) => {
       let id = '';
       let value = '';
 
@@ -29,15 +37,32 @@ class FacetSidebar extends React.Component {
       this.state[facet.field] = { id, value };
     });
 
-    this.routeHandler = this.routeHandler.bind(this);
     this.onChange = this.onChange.bind(this);
+    this.routeHandler = this.routeHandler.bind(this);
+    this.onFacetUpdate = this.onFacetUpdate.bind(this);
   }
 
-  onChange(e, field) {
+  componentDidMount() {
+    Store.listen(this.onChange);
+  }
+
+  componentWillUnmount() {
+    Store.unlisten(this.onChange);
+  }
+
+  onChange() {
+    this.setState(_extend(this.state, Store.getState()));
+  }
+
+  onFacetUpdate(e, field) {
+    Actions.updateSpinner(true);
     const value = e.target.value;
+    const checked = e.target.checked;
+    const pickedFacet = _pick(this.state, field)
+
     let strSearch = '';
 
-    if (value === `${field}_any`) {
+    if (!checked) {
       this.setState({
         [field]: {
           id: '',
@@ -55,36 +80,57 @@ class FacetSidebar extends React.Component {
           value: facet.label || facet.value,
         },
       });
+      strSearch = getFacetParams(pickedFacet, field, value);
     }
-
-    strSearch = getFacetParams(this.state, field, value);
 
     const sortQuery = getSortQuery(this.props.sortBy);
 
     ajaxCall(`/api?q=${this.props.keywords}${strSearch}${sortQuery}`, (response) => {
       Actions.updateSearchResults(response.data.searchResults);
       Actions.updateFacets(response.data.facets);
-      Actions.updateSelectedFacets(this.state);
+      Actions.updateSelectedFacets(pickedFacet);
       Actions.updatePage('1');
       this.routeHandler(
         null,
-        `/search?q=${encodeURIComponent(this.props.keywords)}${strSearch}${sortQuery}`
+        `/search?q=${encodeURIComponent(this.props.keywords)}${strSearch}${sortQuery}`,
       );
+      Actions.updateSpinner(false);
     });
   }
 
-  removeKeyword() {
-    Actions.updateSearchKeywords('');
+  getFacetLabel(field) {
+    if (field === 'materialType') {
+      return 'Material Type';
+    }
+    return field.charAt(0).toUpperCase() + field.slice(1);
+  }
 
-    const strSearch = getFacetParams(this.props.selectedFacets);
-    const sortQuery = getSortQuery(this.props.sortBy);
+  showGetTenMore(facet, valueCount){
+    if (valueCount > facetShowLimit) {
+      return (<button className="nypl-link-button">Show 10 more</button>);
+    }
+  }
 
-    ajaxCall(`/api?q=${this.props.keywords}${strSearch}${sortQuery}`, (response) => {
-      Actions.updateSearchResults(response.data.searchResults);
-      Actions.updateFacets(response.data.facets);
-      Actions.updatePage('1');
-      this.context.router.push(`/search?q=${this.props.keywords}${strSearch}${sortQuery}`);
-    });
+  showFacet(facet) {
+    let ref = this.refs[`nypl-${facet}-facet-button`];
+
+    if (this.state.openFacet === false) {
+      this.setState({ openFacet: true })
+      if (ref.parentElement && ref.nextSibling) {
+        ref.parentElement.classList.remove('collapsed');
+        ref.nextSibling.classList.remove('collapsed');
+      }
+    } else {
+      this.setState({ openFacet: false });
+      if (ref.parentElement && ref.nextSibling) {
+        ref.parentElement.className += ' collapsed';
+        ref.nextSibling.className += ' collapsed';
+      }
+    }
+  }
+
+  checkNoSearch(valueCount){
+    return valueCount > facetShowLimit ? '' : ' nosearch'
   }
 
   routeHandler(e, path) {
@@ -98,11 +144,14 @@ class FacetSidebar extends React.Component {
   }
 
   render() {
-    const { facets } = this.props;
+    const {
+      facets,
+      totalHits,
+    } = this.props;
     let facetsElm = null;
 
     if (facets.length) {
-      facetsElm = facets.map((facet, i) => {
+      facetsElm = facets.map((facet) => {
         const field = facet.field;
 
         if (facet.values.length < 1 || field === 'carrierType' || field === 'mediaType') {
@@ -110,67 +159,121 @@ class FacetSidebar extends React.Component {
         }
 
         const selectedValue = this.state[field] ? this.state[field].id : '';
+        const totalCountFacet = _chain(facet.values)
+          .pluck('count')
+          .reduce((x, y) => x + y, 0)
+          .value();
 
+        if (facet.field === 'date') {
+          return (
+            <div className={`nypl-facet-search nypl-spinner-field ${this.state.spinning ? 'spinning' : ''}`}>
+              <div className="nypl-text-field">
+                <label
+                  key="date-from"
+                  htmlFor="date-from"
+                >On or After Year</label>
+                <input
+                  id={`facet-${facet.field}-from-search`}
+                  type="text"
+                  className="form-text"
+                  placeholder=""
+                />
+              </div>
+              <div className="nypl-text-field">
+                <label
+                  key="date-to"
+                  htmlFor="date-to"
+                >On or Before Year</label>
+                <input
+                  id={`facet-${facet.field}-to-search`}
+                  type="text"
+                  className="form-text"
+                  placeholder=""
+                />
+              </div>
+            </div>
+          );
+        }
         return (
-          <fieldset key={i} tabIndex="0" className="select-fieldset">
-            <legend className="facet-legend visuallyHidden">Filter by {facet.field}</legend>
-            <label htmlFor={`select-${field}`}>{facet.field}</label>
-            <select
-              name={`select-${field}`}
-              id={`select-${field}`}
-              onChange={(e) => this.onChange(e, field)}
-              value={selectedValue || `${field}_any`}
-              aria-controls="results-region"
+          <div
+            key={`${facet.field}-${facet.value}`}
+            className={`nypl-searchable-field nypl-spinner-field ${this.checkNoSearch(facet.values.length)} ${this.state.spinning ? 'spinning' : ''}`}
+          >
+            <button
+              type="button"
+              className={`nypl-facet-toggle ${this.state.facetOpen ? '' : 'collapsed'}`}
+              aria-controls={`nypl-searchable-field_${facet.field}`}
+              aria-expanded={this.state.facetOpen}
+              ref={`nypl-${facet.field}-facet-button`}
+              onClick={() => this.showFacet(facet.field)}
             >
-              <option value={`${field}_any`}>Any</option>
-              {
+              {`${this.getFacetLabel(facet.field)}`}
+              <svg
+                aria-hidden="true"
+                className="nypl-icon"
+                preserveAspectRatio="xMidYMid meet"
+                viewBox="0 0 68 24"
+              >
+                <title>wedge down icon</title>
+                <polygon points="67.938 0 34 24 0 0 10 0 34.1 16.4 58.144 0 67.938 0"></polygon>
+              </svg>
+            </button>
+            <div
+              className={`nypl-collapsible ${this.state.facetOpen ? '' : 'collapsed'}`}
+              id={`nypl-searchable-field_${facet.field}`}
+              aria-expanded={this.state.facetOpen}
+            >
+              <div className={`nypl-facet-search nypl-spinner-field ${this.state.spinning ? 'spinning' : ''}`}>
+                <label htmlFor={`facet-${facet.field}-search`}>{`${this.getFacetLabel(facet.field)}`}</label>
+                <input
+                  id={`facet-${facet.field}-search`}
+                  type="text"
+                  placeholder={`Search ${this.getFacetLabel(facet.field)}`}
+                />
+              </div>
+              <div className="nypl-facet-list">
+                {
                 facet.values.map((f, j) => {
+                  const percentage = Math.floor(f.count / totalHits * 100);
+                  const valueLabel = (f.value).toString().replace(/:/, '_');
                   let selectLabel = f.value;
                   if (f.label) {
                     selectLabel = f.label;
                   }
-
                   return (
-                    <option key={j} value={f.value}>
-                      {selectLabel} ({f.count})
-                    </option>
+                    <label
+                      key={j}
+                      id={`${facet.field}-${valueLabel}`}
+                      htmlFor={`${facet.field}-${valueLabel}`}
+                      className={`nypl-bar_${percentage}`}
+                    >
+                      <input
+                        id={`${facet.field}-${valueLabel}`}
+                        aria-labelledby={`${facet.field} ${valueLabel}`}
+                        type="checkbox"
+                        name="subject"
+                        checked={selectedValue === f.value}
+                        value={f.value}
+                        onClick={e => this.onFacetUpdate(e, facet.field)}
+                      />
+                      <span className="nypl-facet-count">{f.count.toLocaleString()}</span>
+                      {selectLabel}
+                    </label>
                   );
                 })
               }
-            </select>
-          </fieldset>
+              </div>
+              {this.showGetTenMore(facet, facet.values.length)}
+            </div>
+          </div>
         );
       });
     }
 
     return (
-      <div className={`facets ${this.props.className}`}>
-        <form className="facets-form">
-          <h2>Filter results by</h2>
-          {
-            this.props.keywords ?
-              <fieldset tabIndex="0" className="fieldset">
-                <legend className="facet-legend visuallyHidden">
-                  Current Keyword {this.props.keywords}
-                </legend>
-                <label htmlFor="select-keywords">Keywords</label>
-                <button
-                  id="select-keywords"
-                  name="select-keywords"
-                  className="button-selected"
-                  title={`Remove keyword filter: ${this.props.keywords}`}
-                  onClick={() => this.removeKeyword()}
-                  aria-controls="results-region"
-                  type="submit"
-                >
-                  {`"${this.props.keywords}"`}
-                </button>
-              </fieldset>
-              : null
-          }
-
+      <div className="nypl-column-one-quarter">
+        <form className="nypl-search-form">
           {facetsElm}
-
         </form>
       </div>
     );
@@ -183,6 +286,7 @@ FacetSidebar.propTypes = {
   selectedFacets: React.PropTypes.object,
   sortBy: React.PropTypes.string,
   className: React.PropTypes.string,
+  totalHits: React.PropTypes.number,
 };
 
 FacetSidebar.defaultProps = {

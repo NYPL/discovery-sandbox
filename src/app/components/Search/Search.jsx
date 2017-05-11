@@ -13,6 +13,7 @@ import {
 
 import {
   extend as _extend,
+  forEach as _forEach,
 } from 'underscore';
 
 /**
@@ -26,6 +27,7 @@ class Search extends React.Component {
       placeholder: 'Keyword, title, name, or id',
       placeholderAnimation: null,
       noAnimationBefore: true,
+      spinning: false,
     }, Store.getState());
 
     this.inputChange = this.inputChange.bind(this);
@@ -52,24 +54,29 @@ class Search extends React.Component {
    */
   submitSearchRequest(e) {
     e.preventDefault();
-
     // Store the data that the user entered
     const keyword = this.state.searchKeywords.trim();
     const sortQuery = getSortQuery(this.props.sortBy);
     const facetQuery = getFacetParams(this.props.selectedFacets);
-
     // Track the submitted keyword search.
     trackDiscovery('Search', keyword);
 
+    Actions.updateSearchKeywords(keyword);
+    Actions.updateSpinner(true);
     ajaxCall(`/api?q=${keyword}${facetQuery}${sortQuery}`, (response) => {
       Actions.updateSearchResults(response.data.searchResults);
       Actions.updateFacets(response.data.facets);
-      Actions.updateSearchKeywords(keyword);
+      const newFacets = {};
+      _forEach(response.data.facets.itemListElement, (facet) => {
+        newFacets[facet.id] = { id: '', value: '' };
+      });
+      Actions.updateSelectedFacets(newFacets);
       Actions.updatePage('1');
       this.routeHandler({
         pathname: '/search',
-        query: { q: `${keyword}${facetQuery}${sortQuery}` },
+        query: { q: `${keyword}${sortQuery}` },
       });
+      Actions.updateSpinner(false);
     });
   }
 
@@ -104,31 +111,26 @@ class Search extends React.Component {
 
   render() {
     return (
-      <form className="search-form" onKeyPress={this.triggerSubmit}>
-        <fieldset>
-          <label htmlFor="search-by-field" className="visuallyhidden">Search by field</label>
-          <select id="search-by-field" className="search-select">
-            <option value="all">All fields</option>
-            <option value="title">Title</option>
-            <option value="contributor">Author/Contributor</option>
-            <option value="subject">Subject</option>
-            <option value="series">Series</option>
-            <option value="call_number">Call number</option>
-          </select>
-          <label htmlFor="search-query" className="visuallyhidden">Search keyword</label>
+      <form onKeyPress={this.triggerSubmit}>
+        <fieldset className={`nypl-omnisearch nypl-spinner-field ${this.state.spinning ? 'spinning' : ''}`}>
+          <SearchButton
+            id="nypl-omni-button"
+            type="submit"
+            value="Search"
+            onClick={this.submitSearchRequest}
+          />
+          <span className="nypl-omni-fields">
+            <label forHtml="search-by-field">Search in</label>
+            <select id="search-by-field"><option value="all">All fields</option><option value="title">Title</option><option value="contributor">Author/Contributor</option><option value="subject">Subject</option><option value="series">Series</option><option value="call_number">Call number</option></select>
+          </span>
           <input
+            type="text"
             id="search-query"
+            aria-labelledby="nypl-omni-button"
             placeholder={this.state.placeholder}
-            className="search-field"
             onChange={this.inputChange}
             value={this.state.searchKeywords}
             ref="keywords"
-          />
-          <SearchButton
-            id="search-button"
-            className="search-button"
-            label="Search"
-            onClick={this.submitSearchRequest}
           />
         </fieldset>
       </form>
