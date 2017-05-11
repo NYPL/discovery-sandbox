@@ -151,7 +151,7 @@ class FacetSidebar extends React.Component {
 
         if (facet.field === 'date') {
           return (
-            <div className={`nypl-facet-search nypl-spinner-field ${this.state.spinning ? 'spinning' : ''}`}>
+            <div key={`${facet.field}-${facet.value}`} className={`nypl-facet-search nypl-spinner-field ${this.state.spinning ? 'spinning' : ''}`}>
               <div className="nypl-text-field">
                 <label
                   key="date-from"
