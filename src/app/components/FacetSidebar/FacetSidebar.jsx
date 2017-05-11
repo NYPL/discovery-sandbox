@@ -23,6 +23,8 @@ class FacetSidebar extends React.Component {
 
     this.state = _extend({
       spinning: false,
+      mobileView: false,
+      mobileViewText: 'Refine search',
     }, Store.getState());
 
     this.props.facets.map((facet) => {
@@ -131,6 +133,20 @@ class FacetSidebar extends React.Component {
 
   checkNoSearch(valueCount){
     return valueCount > facetShowLimit ? '' : ' nosearch'
+  }
+
+  toggleFacetsMobile() {
+    if (this.state.mobileView) {
+      this.setState({
+        mobileView: false,
+        mobileViewText: 'Refine search',
+      });
+    } else {
+      this.setState({
+        mobileView: true,
+        mobileViewText: 'Hide facets',
+      });
+    }
   }
 
   routeHandler(e, path) {
@@ -272,7 +288,20 @@ class FacetSidebar extends React.Component {
 
     return (
       <div className="nypl-column-one-quarter">
-        <form className="nypl-search-form">
+        <div className="nypl-mobile-refine">
+          <button
+            className="nypl-primary-button"
+            aria-controls="filter-search"
+            aria-expanded={this.state.mobileView}
+            onClick={() => this.toggleFacetsMobile()}
+          >
+            {this.state.mobileViewText}
+          </button>
+        </div>
+        <form
+          id="filter-search"
+          className={`nypl-search-form ${this.state.mobileView ? 'active' : '' }`}
+        >
           {facetsElm}
         </form>
       </div>
