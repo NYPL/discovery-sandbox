@@ -150,8 +150,16 @@ class FacetSidebar extends React.Component {
     } = this.props;
     let facetsElm = null;
 
+    const orderedFacets = [
+      _findWhere(this.props.facets, { id: 'materialType' }),
+      _findWhere(this.props.facets, { id: 'subject' }),
+      _findWhere(this.props.facets, { id: 'issuance' }),
+      _findWhere(this.props.facets, { id: 'publisher' }),
+      _findWhere(this.props.facets, { id: 'language' }),
+    ];
+
     if (facets.length) {
-      facetsElm = facets.map((facet) => {
+      facetsElm = orderedFacets.map((facet) => {
         const field = facet.field;
 
         if (facet.values.length < 1 || field === 'carrierType' || field === 'mediaType') {
