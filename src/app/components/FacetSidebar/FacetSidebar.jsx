@@ -164,16 +164,16 @@ class FacetSidebar extends React.Component {
           .reduce((x, y) => x + y, 0)
           .value();
 
-        if (facet.field === 'date') {
+        if (field === 'date') {
           return (
-            <div className={`nypl-facet-search nypl-spinner-field ${this.state.spinning ? 'spinning' : ''}`}>
+            <div key={`${field}-${facet.value}`} className={`nypl-facet-search nypl-spinner-field ${this.state.spinning ? 'spinning' : ''}`}>
               <div className="nypl-text-field">
                 <label
                   key="date-from"
                   htmlFor="date-from"
                 >On or After Year</label>
                 <input
-                  id={`facet-${facet.field}-from-search`}
+                  id={`facet-${field}-from-search`}
                   type="text"
                   className="form-text"
                   placeholder=""
@@ -185,7 +185,7 @@ class FacetSidebar extends React.Component {
                   htmlFor="date-to"
                 >On or Before Year</label>
                 <input
-                  id={`facet-${facet.field}-to-search`}
+                  id={`facet-${field}-to-search`}
                   type="text"
                   className="form-text"
                   placeholder=""
@@ -196,7 +196,7 @@ class FacetSidebar extends React.Component {
         }
         return (
           <div
-            key={`${facet.field}-${facet.value}`}
+            key={`${field}-${facet.value}`}
             className={`nypl-searchable-field nypl-spinner-field ${this.checkNoSearch(facet.values.length)} ${this.state.spinning ? 'spinning' : ''}`}
           >
             <button
@@ -204,10 +204,10 @@ class FacetSidebar extends React.Component {
               className={`nypl-facet-toggle ${this.state.facetOpen ? '' : 'collapsed'}`}
               aria-controls={`nypl-searchable-field_${facet.field}`}
               aria-expanded={this.state.facetOpen}
-              ref={`nypl-${facet.field}-facet-button`}
-              onClick={() => this.showFacet(facet.field)}
+              ref={`nypl-${field}-facet-button`}
+              onClick={() => this.showFacet(field)}
             >
-              {`${this.getFacetLabel(facet.field)}`}
+              {`${this.getFacetLabel(field)}`}
               <svg
                 aria-hidden="true"
                 className="nypl-icon"
@@ -220,15 +220,15 @@ class FacetSidebar extends React.Component {
             </button>
             <div
               className={`nypl-collapsible ${this.state.facetOpen ? '' : 'collapsed'}`}
-              id={`nypl-searchable-field_${facet.field}`}
+              id={`nypl-searchable-field_${field}`}
               aria-expanded={this.state.facetOpen}
             >
               <div className={`nypl-facet-search nypl-spinner-field ${this.state.spinning ? 'spinning' : ''}`}>
-                <label htmlFor={`facet-${facet.field}-search`}>{`${this.getFacetLabel(facet.field)}`}</label>
+                <label htmlFor={`facet-${field}-search`}>{`${this.getFacetLabel(field)}`}</label>
                 <input
-                  id={`facet-${facet.field}-search`}
+                  id={`facet-${field}-search`}
                   type="text"
-                  placeholder={`Search ${this.getFacetLabel(facet.field)}`}
+                  placeholder={`Search ${this.getFacetLabel(field)}`}
                 />
               </div>
               <div className="nypl-facet-list">
@@ -243,13 +243,13 @@ class FacetSidebar extends React.Component {
                   return (
                     <label
                       key={j}
-                      id={`${facet.field}-${valueLabel}`}
-                      htmlFor={`${facet.field}-${valueLabel}`}
+                      id={`${field}-${valueLabel}`}
+                      htmlFor={`${field}-${valueLabel}`}
                       className={`nypl-bar_${percentage}`}
                     >
                       <input
-                        id={`${facet.field}-${valueLabel}`}
-                        aria-labelledby={`${facet.field} ${valueLabel}`}
+                        id={`${field}-${valueLabel}`}
+                        aria-labelledby={`${field} ${valueLabel}`}
                         type="checkbox"
                         name="subject"
                         checked={selectedValue === f.value}
