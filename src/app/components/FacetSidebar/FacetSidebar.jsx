@@ -23,6 +23,8 @@ class FacetSidebar extends React.Component {
 
     this.state = _extend({
       spinning: false,
+      mobileView: false,
+      mobileViewText: 'Refine search',
     }, Store.getState());
 
     this.props.facets.map((facet) => {
@@ -133,6 +135,20 @@ class FacetSidebar extends React.Component {
     return valueCount > facetShowLimit ? '' : ' nosearch'
   }
 
+  toggleFacetsMobile() {
+    if (this.state.mobileView) {
+      this.setState({
+        mobileView: false,
+        mobileViewText: 'Refine search',
+      });
+    } else {
+      this.setState({
+        mobileView: true,
+        mobileViewText: 'Hide facets',
+      });
+    }
+  }
+
   routeHandler(e, path) {
     if (e) e.preventDefault();
 
@@ -171,9 +187,10 @@ class FacetSidebar extends React.Component {
           .pluck('count')
           .reduce((x, y) => x + y, 0)
           .value();
+
         return (
           <div
-            key={`${facet.field}-${facet.value}`}
+            key={`${field}-${facet.value}`}
             className={`nypl-searchable-field nypl-spinner-field ${this.checkNoSearch(facet.values.length)} ${this.state.spinning ? 'spinning' : ''}`}
           >
             <button
@@ -181,10 +198,10 @@ class FacetSidebar extends React.Component {
               className={`nypl-facet-toggle ${this.state.facetOpen ? '' : 'collapsed'}`}
               aria-controls={`nypl-searchable-field_${facet.field}`}
               aria-expanded={this.state.facetOpen}
-              ref={`nypl-${facet.field}-facet-button`}
-              onClick={() => this.showFacet(facet.field)}
+              ref={`nypl-${field}-facet-button`}
+              onClick={() => this.showFacet(field)}
             >
-              {`${this.getFacetLabel(facet.field)}`}
+              {`${this.getFacetLabel(field)}`}
               <svg
                 aria-hidden="true"
                 className="nypl-icon"
@@ -197,15 +214,15 @@ class FacetSidebar extends React.Component {
             </button>
             <div
               className={`nypl-collapsible ${this.state.facetOpen ? '' : 'collapsed'}`}
-              id={`nypl-searchable-field_${facet.field}`}
+              id={`nypl-searchable-field_${field}`}
               aria-expanded={this.state.facetOpen}
             >
               <div className={`nypl-facet-search nypl-spinner-field ${this.state.spinning ? 'spinning' : ''}`}>
-                <label htmlFor={`facet-${facet.field}-search`}>{`${this.getFacetLabel(facet.field)}`}</label>
+                <label htmlFor={`facet-${field}-search`}>{`${this.getFacetLabel(field)}`}</label>
                 <input
-                  id={`facet-${facet.field}-search`}
+                  id={`facet-${field}-search`}
                   type="text"
-                  placeholder={`Search ${this.getFacetLabel(facet.field)}`}
+                  placeholder={`Search ${this.getFacetLabel(field)}`}
                 />
               </div>
               <div className="nypl-facet-list">
@@ -220,13 +237,13 @@ class FacetSidebar extends React.Component {
                   return (
                     <label
                       key={j}
-                      id={`${facet.field}-${valueLabel}`}
-                      htmlFor={`${facet.field}-${valueLabel}`}
+                      id={`${field}-${valueLabel}`}
+                      htmlFor={`${field}-${valueLabel}`}
                       className={`nypl-bar_${percentage}`}
                     >
                       <input
-                        id={`${facet.field}-${valueLabel}`}
-                        aria-labelledby={`${facet.field} ${valueLabel}`}
+                        id={`${field}-${valueLabel}`}
+                        aria-labelledby={`${field} ${valueLabel}`}
                         type="checkbox"
                         name="subject"
                         checked={selectedValue === f.value}
@@ -249,7 +266,20 @@ class FacetSidebar extends React.Component {
 
     return (
       <div className="nypl-column-one-quarter">
-        <form className="nypl-search-form">
+        <div className="nypl-mobile-refine">
+          <button
+            className="nypl-primary-button"
+            aria-controls="filter-search"
+            aria-expanded={this.state.mobileView}
+            onClick={() => this.toggleFacetsMobile()}
+          >
+            {this.state.mobileViewText}
+          </button>
+        </div>
+        <form
+          id="filter-search"
+          className={`nypl-search-form ${this.state.mobileView ? 'active' : '' }`}
+        >
           {facetsElm}
         </form>
       </div>

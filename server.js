@@ -41,7 +41,7 @@ app.disable('x-powered-by');
 app.set('view engine', 'ejs');
 app.set('views', VIEWS_PATH);
 
-app.set('port', process.env.PORT || 3001);
+app.set('port', process.env.PORT || appConfig.port || 3001);
 
 app.use(cookieParser());
 app.use(bodyParser.json());       // to support JSON-encoded bodies
@@ -135,10 +135,10 @@ if (!isProduction) {
       'Access-Control-Allow-Origin': 'http://localhost:3001',
       'Access-Control-Allow-Headers': 'X-Requested-With',
     },
-  }).listen(3000, 'localhost', (error) => {
+  }).listen(WEBPACK_DEV_PORT, 'localhost', (error) => {
     if (error) {
       console.log(colors.red(error));
     }
-    console.log(colors.magenta('Webpack Dev Server listening at'), colors.cyan('localhost: 3000'));
+    console.log(colors.magenta('Webpack Dev Server listening at'), colors.cyan(`localhost: ${WEBPACK_DEV_PORT}`));
   });
 }
