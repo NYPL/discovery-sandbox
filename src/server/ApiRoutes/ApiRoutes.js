@@ -11,6 +11,8 @@ import appConfig from '../../../appConfig.js';
 const router = express.Router();
 const appEnvironment = process.env.APP_ENV || 'production';
 
+const apiBase = appConfig.api[appEnvironment];
+
 function MainApp(req, res, next) {
   res.locals.data.Store = {
     searchResults: {},
@@ -25,7 +27,7 @@ function MainApp(req, res, next) {
 }
 
 function getFacets(query) {
-  return axios.get(`https://api.nypltech.org/api/v0.1/discovery/resources/aggregations?q=${query}`);
+  return axios.get(`${apiBase}/discovery/resources/aggregations?q=${query}`);
 }
 
 function Search(query, page, sortBy, order, cb, errorcb) {
@@ -35,8 +37,8 @@ function Search(query, page, sortBy, order, cb, errorcb) {
     sortQuery = `&sort=${sortBy}&sort_direction=${order}`;
   }
 
-  const apiQuery = `?q=${query}&per_page=50&page=${page}${sortQuery}`;
-  const queryString = `https://api.nypltech.org/api/v0.1/discovery/resources${apiQuery}`;
+  const apiQuery = `?q=${query}&per_page=50&page=${page}${sortQuery}`;  
+  const queryString = `${apiBase}/discovery/resources${apiQuery}`;
   const apiCall = axios.get(queryString);
 
   axios
@@ -47,8 +49,7 @@ function Search(query, page, sortBy, order, cb, errorcb) {
       cb(facets.data, response.data, page)
     }))
     .catch(error => {
-      console.log(error);
-      console.log(`error calling API : ${error}`);
+      console.error('Search error: ' + JSON.stringify(error, null, 2));
 
       errorcb(error);
     }); /* end axios call */
@@ -161,11 +162,10 @@ function ServerSearch(req, res, next) {
 
 function RetrieveItem(q, cb, errorcb) {
   axios
-    .get(`https://api.nypltech.org/api/v0.1/discovery/resources/${q}`)
+    .get(`${apiBase}/discovery/resources/${q}`)
     .then(response => cb(response.data))
     .catch(error => {
-      console.log(error);
-      console.log(`error calling API : ${error}`);
+      console.error('RetrieveItem error: ' + JSON.stringify(error, null, 2));
 
       errorcb(error);
     }); /* end axios call */

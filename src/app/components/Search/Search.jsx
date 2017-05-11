@@ -54,16 +54,16 @@ class Search extends React.Component {
    */
   submitSearchRequest(e) {
     e.preventDefault();
-    this.setState({ spinning: true });
     // Store the data that the user entered
     const keyword = this.state.searchKeywords.trim();
     const sortQuery = getSortQuery(this.props.sortBy);
     const facetQuery = getFacetParams(this.props.selectedFacets);
-
     // Track the submitted keyword search.
     trackDiscovery('Search', keyword);
 
-    ajaxCall(`/api?q=${keyword}${sortQuery}`, (response) => {
+    Actions.updateSearchKeywords(keyword);
+    Actions.updateSpinner(true);
+    ajaxCall(`/api?q=${keyword}${facetQuery}${sortQuery}`, (response) => {
       Actions.updateSearchResults(response.data.searchResults);
       Actions.updateFacets(response.data.facets);
       const newFacets = {};
@@ -71,13 +71,12 @@ class Search extends React.Component {
         newFacets[facet.id] = { id: '', value: '' };
       });
       Actions.updateSelectedFacets(newFacets);
-      Actions.updateSearchKeywords(keyword);
       Actions.updatePage('1');
       this.routeHandler({
         pathname: '/search',
         query: { q: `${keyword}${sortQuery}` },
       });
-      this.setState({ spinning: false });
+      Actions.updateSpinner(false);
     });
   }
 
@@ -112,31 +111,29 @@ class Search extends React.Component {
 
   render() {
     return (
-      <div className="nypl-column-three-quarters nypl-column-offset-one">
-        <form onKeyPress={this.triggerSubmit}>
-          <fieldset className={`nypl-omnisearch nypl-spinner-field ${this.state.spinning ? 'spinning' : ''}`}>
-            <SearchButton
-              id="nypl-omni-button"
-              type="submit"
-              value="Search"
-              onClick={this.submitSearchRequest}
-            />
-            <span className="nypl-omni-fields">
-              <label forHtml="search-by-field">Search in</label>
-              <select id="search-by-field"><option value="all">All fields</option><option value="title">Title</option><option value="contributor">Author/Contributor</option><option value="subject">Subject</option><option value="series">Series</option><option value="call_number">Call number</option></select>
-            </span>
-            <input
-              type="text"
-              id="search-query"
-              aria-labelledby="nypl-omni-button"
-              placeholder={this.state.placeholder}
-              onChange={this.inputChange}
-              value={this.state.searchKeywords}
-              ref="keywords"
-            />
-          </fieldset>
-        </form>
-      </div>
+      <form onKeyPress={this.triggerSubmit}>
+        <fieldset className={`nypl-omnisearch nypl-spinner-field ${this.state.spinning ? 'spinning' : ''}`}>
+          <SearchButton
+            id="nypl-omni-button"
+            type="submit"
+            value="Search"
+            onClick={this.submitSearchRequest}
+          />
+          <span className="nypl-omni-fields">
+            <label forHtml="search-by-field">Search in</label>
+            <select id="search-by-field"><option value="all">All fields</option><option value="title">Title</option><option value="contributor">Author/Contributor</option><option value="subject">Subject</option><option value="series">Series</option><option value="call_number">Call number</option></select>
+          </span>
+          <input
+            type="text"
+            id="search-query"
+            aria-labelledby="nypl-omni-button"
+            placeholder={this.state.placeholder}
+            onChange={this.inputChange}
+            value={this.state.searchKeywords}
+            ref="keywords"
+          />
+        </fieldset>
+      </form>
     );
   }
 }

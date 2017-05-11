@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node index",
-    "eb-start": "npm run dist && node index",
+    "eb-start": "npm run dist && APP_ENV=development node index",
     "dist": "NODE_ENV=production webpack --config webpack.config.js",
     "postinstall": "npm run dist",
     "test": "node_modules/.bin/mocha test/helpers/browser.js test/unit/*.test.js",
@@ -54,7 +54,7 @@
     "nyc": "9.0.1"
   },
   "dependencies": {
-    "@nypl/design-toolkit": "0.1.12",
+    "@nypl/design-toolkit": "0.1.13",
     "@nypl/dgx-header-component": "1.5.0",
     "@nypl/dgx-react-footer": "0.3.0",
     "alt": "0.18.2",

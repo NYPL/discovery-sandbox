@@ -20,7 +20,7 @@ To install packages run
 
 To run locally in development mode run
 
-    $ npm start
+    $ APP_ENV=development npm start
 
 and visit `localhost:3001`.
 
