@@ -162,7 +162,7 @@ class FacetSidebar extends React.Component {
       facetsElm = orderedFacets.map((facet) => {
         const field = facet.field;
 
-        if (facet.values.length < 1 || field === 'carrierType' || field === 'mediaType') {
+        if (facet.values.length < 1) {
           return null;
         }
 
@@ -171,37 +171,6 @@ class FacetSidebar extends React.Component {
           .pluck('count')
           .reduce((x, y) => x + y, 0)
           .value();
-
-        if (facet.field === 'date') {
-          return (
-            <div className={`nypl-facet-search nypl-spinner-field ${this.state.spinning ? 'spinning' : ''}`}>
-              <div className="nypl-text-field">
-                <label
-                  key="date-from"
-                  htmlFor="date-from"
-                >On or After Year</label>
-                <input
-                  id={`facet-${facet.field}-from-search`}
-                  type="text"
-                  className="form-text"
-                  placeholder=""
-                />
-              </div>
-              <div className="nypl-text-field">
-                <label
-                  key="date-to"
-                  htmlFor="date-to"
-                >On or Before Year</label>
-                <input
-                  id={`facet-${facet.field}-to-search`}
-                  type="text"
-                  className="form-text"
-                  placeholder=""
-                />
-              </div>
-            </div>
-          );
-        }
         return (
           <div
             key={`${facet.field}-${facet.value}`}
