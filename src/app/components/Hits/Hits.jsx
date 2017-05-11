@@ -106,7 +106,7 @@ class Hits extends React.Component {
     });
   }
 
-  render() {
+  displayResultsCount() {
     const {
       facets,
       hits,
@@ -120,20 +120,26 @@ class Hits extends React.Component {
         activeFacetsArray.push({ val, key });
       }
     });
-
     const keyword = this.getKeyword(query);
     const activeFacetsElm = this.getFacetElements(activeFacetsArray);
+    if (this.state.spinning) {
+      return (<p><strong className="nypl-results-count">Loading…</strong></p>);
+    }
+    if (hits !== 0) {
+      return (
+        <p>
+          <strong className="nypl-results-count">{hitsF}</strong>
+           results found{keyword}{activeFacetsElm}
+        </p>);
+    }
+    return (<p>No results found{keyword}{activeFacetsElm}.</p>);
+  }
 
+  render() {
+    const activeResultsCount = this.displayResultsCount();
     return (
       <div id="results-description" className="nypl-results-summary">
-        {
-          this.state.spinning ?
-            (<p><strong className="nypl-results-count">Loading…</strong></p>)
-          :
-            hits !== 0 ?
-          (<p><strong className="nypl-results-count">{hitsF}</strong> results found{keyword}{activeFacetsElm}</p>)
-          : (<p>No results found{keyword}{activeFacetsElm}.</p>)
-        }
+        { activeResultsCount }
       </div>
     );
   }
