@@ -54,16 +54,16 @@ class Search extends React.Component {
    */
   submitSearchRequest(e) {
     e.preventDefault();
-    this.setState({ spinning: true });
     // Store the data that the user entered
     const keyword = this.state.searchKeywords.trim();
     const sortQuery = getSortQuery(this.props.sortBy);
     const facetQuery = getFacetParams(this.props.selectedFacets);
-
     // Track the submitted keyword search.
     trackDiscovery('Search', keyword);
 
-    ajaxCall(`/api?q=${keyword}${sortQuery}`, (response) => {
+    Actions.updateSearchKeywords(keyword);
+    Actions.updateSpinner(true);
+    ajaxCall(`/api?q=${keyword}${facetQuery}${sortQuery}`, (response) => {
       Actions.updateSearchResults(response.data.searchResults);
       Actions.updateFacets(response.data.facets);
       const newFacets = {};
@@ -71,13 +71,12 @@ class Search extends React.Component {
         newFacets[facet.id] = { id: '', value: '' };
       });
       Actions.updateSelectedFacets(newFacets);
-      Actions.updateSearchKeywords(keyword);
       Actions.updatePage('1');
       this.routeHandler({
         pathname: '/search',
         query: { q: `${keyword}${sortQuery}` },
       });
-      this.setState({ spinning: false });
+      Actions.updateSpinner(false);
     });
   }
 

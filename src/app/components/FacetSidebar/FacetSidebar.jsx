@@ -1,12 +1,14 @@
 import React from 'react';
 
 import {
+  extend as _extend,
   findWhere as _findWhere,
   chain as _chain,
   pick as _pick,
 } from 'underscore';
 
 import Actions from '../../actions/Actions';
+import Store from '../../stores/Store';
 import {
   ajaxCall,
   getSortQuery,
@@ -19,9 +21,9 @@ class FacetSidebar extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {
+    this.state = _extend({
       spinning: false,
-    };
+    }, Store.getState());
 
     this.props.facets.map((facet) => {
       let id = '';
@@ -35,12 +37,25 @@ class FacetSidebar extends React.Component {
       this.state[facet.field] = { id, value };
     });
 
+    this.onChange = this.onChange.bind(this);
     this.routeHandler = this.routeHandler.bind(this);
     this.onFacetUpdate = this.onFacetUpdate.bind(this);
   }
 
+  componentDidMount() {
+    Store.listen(this.onChange);
+  }
+
+  componentWillUnmount() {
+    Store.unlisten(this.onChange);
+  }
+
+  onChange() {
+    this.setState(_extend(this.state, Store.getState()));
+  }
+
   onFacetUpdate(e, field) {
-    this.setState({ spinning: true });
+    Actions.updateSpinner(true);
     const value = e.target.value;
     const checked = e.target.checked;
     const pickedFacet = _pick(this.state, field)
@@ -79,7 +94,7 @@ class FacetSidebar extends React.Component {
         null,
         `/search?q=${encodeURIComponent(this.props.keywords)}${strSearch}${sortQuery}`,
       );
-      this.setState({ spinning: false });
+      Actions.updateSpinner(false);
     });
   }
 
