@@ -1,33 +1,30 @@
 import React from 'react';
 
-import Actions from '../../actions/Actions.js';
-
 import Hits from '../Hits/Hits.jsx';
 import Breadcrumbs from '../Breadcrumbs/Breadcrumbs.jsx';
 import FacetSidebar from '../FacetSidebar/FacetSidebar.jsx';
 import Results from '../Results/Results.jsx';
 import Search from '../Search/Search.jsx';
 
-class SearchResultsPage extends React.Component {
-  render() {
-    const {
-      searchResults,
-      searchKeywords,
-      facets,
-      selectedFacets,
-      page,
-      location,
-      sortBy,
-    } = this.props;
-    const facetList = facets && facets.itemListElement ? facets.itemListElement : [];
-    const totalHits = searchResults ? searchResults.totalResults : 0;
-    const results = searchResults ? searchResults.itemListElement : [];
-    const breadcrumbs = (
-      <Breadcrumbs query={searchKeywords} type="search" />
-    );
+const SearchResultsPage = () => {
+  const {
+    searchResults,
+    searchKeywords,
+    facets,
+    selectedFacets,
+    page,
+    location,
+    sortBy,
+  } = this.props;
+  const facetList = facets && facets.itemListElement ? facets.itemListElement : [];
+  const totalHits = searchResults ? searchResults.totalResults : 0;
+  const results = searchResults ? searchResults.itemListElement : [];
+  const breadcrumbs = (
+    <Breadcrumbs query={searchKeywords} type="search" />
+  );
 
-    return (
-      <main className="main-page">
+  return (
+    <main className="main-page">
       <div className="nypl-page-header">
         <div className="nypl-full-width-wrapper">
           {breadcrumbs}
@@ -36,10 +33,7 @@ class SearchResultsPage extends React.Component {
       <div className="nypl-full-width-wrapper">
         <div className="nypl-row">
           <div className="nypl-column-three-quarters nypl-column-offset-one">
-            <Search
-              sortBy={sortBy}
-              selectedFacets={selectedFacets}
-            />
+            <Search sortBy={sortBy} selectedFacets={selectedFacets} />
           </div>
         </div>
 
@@ -82,9 +76,8 @@ class SearchResultsPage extends React.Component {
           </div>
         </div>
       </div>
-      </main>
-    );
-  }
+    </main>
+  );
 }
 
 SearchResultsPage.propTypes = {
