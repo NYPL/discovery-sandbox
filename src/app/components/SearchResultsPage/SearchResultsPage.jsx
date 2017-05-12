@@ -3,10 +3,12 @@ import React from 'react';
 import Hits from '../Hits/Hits.jsx';
 import Breadcrumbs from '../Breadcrumbs/Breadcrumbs.jsx';
 import FacetSidebar from '../FacetSidebar/FacetSidebar.jsx';
-import Results from '../Results/Results.jsx';
+import ResultList from '../Results/ResultsList';
 import Search from '../Search/Search.jsx';
+import Sorter from '../Sorter/Sorter';
+import Pagination from '../Pagination/Pagination';
 
-const SearchResultsPage = () => {
+const SearchResultsPage = (props) => {
   const {
     searchResults,
     searchKeywords,
@@ -15,7 +17,7 @@ const SearchResultsPage = () => {
     page,
     location,
     sortBy,
-  } = this.props;
+  } = props;
   const facetList = facets && facets.itemListElement ? facets.itemListElement : [];
   const totalHits = searchResults ? searchResults.totalResults : 0;
   const results = searchResults ? searchResults.itemListElement : [];
@@ -64,21 +66,25 @@ const SearchResultsPage = () => {
               sortBy={sortBy}
             />
 
-            <Results
-              hits={totalHits}
-              results={results}
-              query={searchKeywords}
-              location={location}
-              page={page}
-              selectedFacets={selectedFacets}
-              sortBy={sortBy}
-            />
+            {totalHits !== 0 && (<Sorter sortBy={sortBy} location={location} page={page} />)}
+
+            <ResultList results={results} query={searchKeywords} />
+
+            {
+              totalHits !== 0 &&
+                (<Pagination
+                  hits={totalHits}
+                  page={page}
+                  location={location}
+                  sortBy={sortBy}
+                />)
+            }
           </div>
         </div>
       </div>
     </main>
   );
-}
+};
 
 SearchResultsPage.propTypes = {
   searchResults: React.PropTypes.object,
