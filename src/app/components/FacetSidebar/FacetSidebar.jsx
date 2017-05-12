@@ -22,9 +22,10 @@ class FacetSidebar extends React.Component {
     super(props);
 
     this.state = _extend({
-      spinning: false,
       mobileView: false,
       mobileViewText: 'Refine search',
+      openFacet: false,
+      spinning: false,
     }, Store.getState());
 
     this.props.facets.map((facet) => {
@@ -57,6 +58,7 @@ class FacetSidebar extends React.Component {
   }
 
   onFacetUpdate(e, field) {
+    e.preventDefault();
     Actions.updateSpinner(true);
     const value = e.target.value;
     const checked = e.target.checked;
@@ -113,7 +115,8 @@ class FacetSidebar extends React.Component {
     }
   }
 
-  showFacet(facet) {
+  showFacet(e, facet) {
+    e.preventDefault();
     let ref = this.refs[`nypl-${facet}-facet-button`];
 
     if (this.state.openFacet === false) {
@@ -199,7 +202,7 @@ class FacetSidebar extends React.Component {
               aria-controls={`nypl-searchable-field_${facet.field}`}
               aria-expanded={this.state.facetOpen}
               ref={`nypl-${field}-facet-button`}
-              onClick={() => this.showFacet(field)}
+              onClick={e => this.showFacet(e, field)}
             >
               {`${this.getFacetLabel(field)}`}
               <svg
@@ -240,6 +243,7 @@ class FacetSidebar extends React.Component {
                       id={`${field}-${valueLabel}`}
                       htmlFor={`${field}-${valueLabel}`}
                       className={`nypl-bar_${percentage}`}
+                      onClick={e => this.onFacetUpdate(e, facet.field)}
                     >
                       <input
                         id={`${field}-${valueLabel}`}
@@ -248,7 +252,6 @@ class FacetSidebar extends React.Component {
                         name="subject"
                         checked={selectedValue === f.value}
                         value={f.value}
-                        onClick={e => this.onFacetUpdate(e, facet.field)}
                       />
                       <span className="nypl-facet-count">{f.count.toLocaleString()}</span>
                       {selectLabel}
