@@ -246,11 +246,10 @@ class FacetSidebar extends React.Component {
                     >
                       <input
                         id={`${field}-${valueLabel}`}
-                        aria-labelledby={`${field} ${valueLabel}`}
+                        aria-labelledby={`${field}-${valueLabel}`}
                         type="checkbox"
                         name="subject"
                         checked={selectedValue === f.value}
-                        htmlFor={`${field}-${valueLabel}`}
                         onClick={e => this.onFacetUpdate(e, facet.field)}
                         value={f.value}
                       />
