@@ -138,7 +138,13 @@ class Hits extends React.Component {
   render() {
     const activeResultsCount = this.displayResultsCount();
     return (
-      <div id="results-description" className="nypl-results-summary">
+      <div
+        id="results-description"
+        className="nypl-results-summary"
+        aria-live="assertive"
+        aria-atomic="true"
+        role="presentation"
+      >
         { activeResultsCount }
       </div>
     );
