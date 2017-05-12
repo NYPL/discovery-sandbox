@@ -2,7 +2,7 @@ import React from 'react';
 import {
   extend as _extend,
   findWhere as _findWhere,
-  chain as _chain,
+  forEach as _forEach,
 } from 'underscore';
 
 import Store from '../../stores/Store';
@@ -17,7 +17,7 @@ class FacetSidebar extends React.Component {
       mobileViewText: 'Refine search',
     }, Store.getState());
 
-    this.props.facets.map((facet) => {
+    _forEach(this.props.facets, (facet) => {
       let id = '';
       let value = '';
 
@@ -62,22 +62,17 @@ class FacetSidebar extends React.Component {
     ];
 
     if (facets.length) {
-      facetsElm = orderedFacets.map((facet) => {
-        const field = facet.field;
-
+      facetsElm = orderedFacets.map((facet, i) => {
         if (facet.values.length < 1) {
           return null;
         }
 
+        const field = facet.field;
         const selectedValue = this.state[field] ? this.state[field].id : '';
-        const totalCountFacet = _chain(facet.values)
-          .pluck('count')
-          .reduce((x, y) => x + y, 0)
-          .value();
 
         return (
           <Facet
-            field={field}
+            key={i}
             facet={facet}
             totalHits={totalHits}
             selectedValue={selectedValue}

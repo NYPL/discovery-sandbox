@@ -46,7 +46,7 @@ class Facet extends React.Component {
     Actions.updateSpinner(true);
     const value = e.target.value;
     const checked = e.target.checked;
-    const pickedFacet = _pick(this.state, field)
+    const pickedFacet = _pick(this.state, field);
 
     let strSearch = '';
 
@@ -79,21 +79,10 @@ class Facet extends React.Component {
       Actions.updateSelectedFacets(pickedFacet);
       Actions.updatePage('1');
       this.routeHandler(
-        null,
-        `/search?q=${encodeURIComponent(this.props.keywords)}${strSearch}${sortQuery}`,
+        `/search?q=${encodeURIComponent(this.props.keywords)}${strSearch}${sortQuery}`
       );
       Actions.updateSpinner(false);
     });
-  }
-
-  routeHandler(e, path) {
-    if (e) e.preventDefault();
-
-    if (path === '/') {
-      Actions.updateSelectedFacets({});
-    }
-
-    this.context.router.push(path);
   }
 
   getFacetLabel(field) {
@@ -103,17 +92,26 @@ class Facet extends React.Component {
     return field.charAt(0).toUpperCase() + field.slice(1);
   }
 
-  showGetTenMore(facet, valueCount){
+  routeHandler(path) {
+    if (path === '/') {
+      Actions.updateSelectedFacets({});
+    }
+
+    this.context.router.push(path);
+  }
+
+  showGetTenMore(facet, valueCount) {
     if (valueCount > facetShowLimit) {
       return (<button className="nypl-link-button">Show 10 more</button>);
     }
+    return null;
   }
 
   showFacet(facet) {
-    let ref = this.refs[`nypl-${facet}-facet-button`];
+    const ref = this.refs[`nypl-${facet}-facet-button`];
 
     if (this.state.openFacet === false) {
-      this.setState({ openFacet: true })
+      this.setState({ openFacet: true });
       if (ref.parentElement && ref.nextSibling) {
         ref.parentElement.classList.remove('collapsed');
         ref.nextSibling.classList.remove('collapsed');
@@ -127,8 +125,8 @@ class Facet extends React.Component {
     }
   }
 
-  checkNoSearch(valueCount){
-    return valueCount > facetShowLimit ? '' : ' nosearch'
+  checkNoSearch(valueCount) {
+    return valueCount > facetShowLimit ? '' : ' nosearch';
   }
 
   toggleFacetsMobile() {
@@ -146,17 +144,20 @@ class Facet extends React.Component {
   }
 
   render() {
-    const field = this.props.field;
     const facet = this.props.facet;
+    const field = facet.field;
+
     return (
       <div
         key={`${field}-${facet.value}`}
-        className={`nypl-searchable-field nypl-spinner-field ${this.checkNoSearch(facet.values.length)} ${this.state.spinning ? 'spinning' : ''}`}
+        className={`nypl-searchable-field nypl-spinner-field
+          ${this.checkNoSearch(facet.values.length)} ${this.state.spinning ? 'spinning' : ''}`
+        }
       >
         <button
           type="button"
           className={`nypl-facet-toggle ${this.state.facetOpen ? '' : 'collapsed'}`}
-          aria-controls={`nypl-searchable-field_${facet.field}`}
+          aria-controls={`nypl-searchable-field_${field}`}
           aria-expanded={this.state.facetOpen}
           ref={`nypl-${field}-facet-button`}
           onClick={() => this.showFacet(field)}
@@ -208,7 +209,7 @@ class Facet extends React.Component {
                     name="subject"
                     checked={this.props.selectedValue === f.value}
                     value={f.value}
-                    onClick={e => this.onFacetUpdate(e, facet.field)}
+                    onClick={e => this.onFacetUpdate(e, field)}
                   />
                   <span className="nypl-facet-count">{f.count.toLocaleString()}</span>
                   {selectLabel}
