@@ -243,7 +243,6 @@ class FacetSidebar extends React.Component {
                       id={`${field}-${valueLabel}`}
                       htmlFor={`${field}-${valueLabel}`}
                       className={`nypl-bar_${percentage}`}
-                      onClick={e => this.onFacetUpdate(e, facet.field)}
                     >
                       <input
                         id={`${field}-${valueLabel}`}
@@ -251,6 +250,8 @@ class FacetSidebar extends React.Component {
                         type="checkbox"
                         name="subject"
                         checked={selectedValue === f.value}
+                        htmlFor={`${field}-${valueLabel}`}
+                        onClick={e => this.onFacetUpdate(e, facet.field)}
                         value={f.value}
                       />
                       <span className="nypl-facet-count">{f.count.toLocaleString()}</span>
