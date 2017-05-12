@@ -5,10 +5,10 @@ import {
   chain as _chain,
 } from 'underscore';
 
-import Actions from '../../actions/Actions.js';
-import LibraryItem from '../../utils/item.js';
-import ResultItems from './ResultItems.jsx';
-import { ajaxCall } from '../../utils/utils.js';
+import Actions from '../../actions/Actions';
+import LibraryItem from '../../utils/item';
+import ResultItems from './ResultItems';
+import { ajaxCall } from '../../utils/utils';
 
 class ResultsList extends React.Component {
   constructor(props) {
@@ -73,37 +73,22 @@ class ResultsList extends React.Component {
       .uniq()
       .value()
       .join(', ');
-    const bibInfo = [
-      { label: 'Material Type', data: materialType },
-      { label: 'By', data: authors },
-      { label: 'Year Published', data: yearPublished },
-      { label: 'At Location', data: location },
-      { label: 'Usage Type', data: usageType },
-    ];
 
     return (
       <li key={i} className="nypl-results-item">
-        <div className="nypl-results-text">
-          <h2>
-            <Link
-              onClick={(e) => this.getRecord(e, id, 'item')}
-              href={`/item/${id}`}
-              className="title"
-            >
-              {itemTitle}
-            </Link>
-          </h2>
-          <dl>
-            {
-              bibInfo.map((info) => {
-                if (!info.data) return null;
-                return [
-                  (<dt>{info.label}</dt>),
-                  (<dd>{info.data}</dd>),
-                ];
-              })
-            }
-          </dl>
+        <h2>
+          <Link
+            onClick={(e) => this.getRecord(e, id, 'item')}
+            href={`/item/${id}`}
+            className="title"
+          >
+            {itemTitle}
+          </Link>
+        </h2>
+        <div className="nypl-results-item-description">
+        <span className="nypl-results-media">{ materialType }</span>
+        <span className="nypl-results-room">{ location }</span>
+        <span className="nypl-results-use">{ usageType }</span>
         </div>
       </li>
     );
