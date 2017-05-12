@@ -240,7 +240,7 @@ class FacetSidebar extends React.Component {
                   return (
                     <label
                       key={j}
-                      id={`${field}-${valueLabel}`}
+                      id={`${field}-${valueLabel}-label`}
                       htmlFor={`${field}-${valueLabel}`}
                       className={`nypl-bar_${percentage}`}
                     >
