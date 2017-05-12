@@ -78,7 +78,6 @@ class FacetSidebar extends React.Component {
             selectedValue={selectedValue}
             sortBy={sortBy}
             keywords={keywords}
-            facets={facets}
           />
         );
       });

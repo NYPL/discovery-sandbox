@@ -3,7 +3,6 @@ import React from 'react';
 import {
   extend as _extend,
   findWhere as _findWhere,
-  chain as _chain,
   pick as _pick,
 } from 'underscore';
 
@@ -23,6 +22,8 @@ class Facet extends React.Component {
 
     this.state = _extend({
       spinning: false,
+      openFacet: true,
+      [this.props.facet.field]: { id: '', value: '' },
     }, Store.getState());
 
     this.onChange = this.onChange.bind(this);
@@ -32,6 +33,10 @@ class Facet extends React.Component {
 
   componentDidMount() {
     Store.listen(this.onChange);
+
+    setTimeout(() => {
+      this.setState({ openFacet: false });
+    }, 500);
   }
 
   componentWillUnmount() {
@@ -58,16 +63,16 @@ class Facet extends React.Component {
         },
       });
     } else {
-      const searchValue = field === 'date' ? parseInt(value, 10) : value;
-      const facetObj = _findWhere(this.props.facets, { field });
-      const facet = _findWhere(facetObj.values, { value: searchValue });
+      const facetObj = this.props.facet;
+      const facet = _findWhere(facetObj.values, { value });
 
-      this.setState({
-        [field]: {
-          id: facet.value,
-          value: facet.label || facet.value,
-        },
-      });
+      const selectedFacetObj = {
+        id: facet.value,
+        value: facet.label || facet.value,
+      };
+
+      this.setState({ [field]: selectedFacetObj });
+      pickedFacet[field] = selectedFacetObj;
       strSearch = getFacetParams(pickedFacet, field, value);
     }
 
@@ -107,21 +112,11 @@ class Facet extends React.Component {
     return null;
   }
 
-  showFacet(facet) {
-    const ref = this.refs[`nypl-${facet}-facet-button`];
-
+  showFacet() {
     if (this.state.openFacet === false) {
       this.setState({ openFacet: true });
-      if (ref.parentElement && ref.nextSibling) {
-        ref.parentElement.classList.remove('collapsed');
-        ref.nextSibling.classList.remove('collapsed');
-      }
     } else {
       this.setState({ openFacet: false });
-      if (ref.parentElement && ref.nextSibling) {
-        ref.parentElement.className += ' collapsed';
-        ref.nextSibling.className += ' collapsed';
-      }
     }
   }
 
@@ -129,40 +124,27 @@ class Facet extends React.Component {
     return valueCount > facetShowLimit ? '' : ' nosearch';
   }
 
-  toggleFacetsMobile() {
-    if (this.state.mobileView) {
-      this.setState({
-        mobileView: false,
-        mobileViewText: 'Refine search',
-      });
-    } else {
-      this.setState({
-        mobileView: true,
-        mobileViewText: 'Hide facets',
-      });
-    }
-  }
-
   render() {
     const facet = this.props.facet;
     const field = facet.field;
+    const facetLabel = this.getFacetLabel(field);
+    const noSearchClass = this.checkNoSearch(facet.values.length);
+    const spinningClass = this.state.spinning ? 'spinning' : '';
+    const collapsedClass = this.state.openFacet ? '' : 'collapsed';
 
     return (
       <div
         key={`${field}-${facet.value}`}
-        className={`nypl-searchable-field nypl-spinner-field
-          ${this.checkNoSearch(facet.values.length)} ${this.state.spinning ? 'spinning' : ''}`
-        }
+        className={`nypl-searchable-field nypl-spinner-field ${noSearchClass} ${spinningClass} ${collapsedClass}`}
       >
         <button
           type="button"
-          className={`nypl-facet-toggle ${this.state.facetOpen ? '' : 'collapsed'}`}
+          className={`nypl-facet-toggle ${collapsedClass}`}
           aria-controls={`nypl-searchable-field_${field}`}
-          aria-expanded={this.state.facetOpen}
-          ref={`nypl-${field}-facet-button`}
-          onClick={() => this.showFacet(field)}
+          aria-expanded={this.state.openFacet}
+          onClick={() => this.showFacet()}
         >
-          {`${this.getFacetLabel(field)}`}
+          {facetLabel}
           <svg
             aria-hidden="true"
             className="nypl-icon"
@@ -174,49 +156,49 @@ class Facet extends React.Component {
           </svg>
         </button>
         <div
-          className={`nypl-collapsible ${this.state.facetOpen ? '' : 'collapsed'}`}
+          className={`nypl-collapsible ${collapsedClass}`}
           id={`nypl-searchable-field_${field}`}
-          aria-expanded={this.state.facetOpen}
+          aria-expanded={this.state.openFacet}
         >
-          <div className={`nypl-facet-search nypl-spinner-field ${this.state.spinning ? 'spinning' : ''}`}>
-            <label htmlFor={`facet-${field}-search`}>{`${this.getFacetLabel(field)}`}</label>
+          <div className={`nypl-facet-search nypl-spinner-field ${spinningClass}`}>
+            <label htmlFor={`facet-${field}-search`}>{facetLabel}</label>
             <input
               id={`facet-${field}-search`}
               type="text"
-              placeholder={`Search ${this.getFacetLabel(field)}`}
+              placeholder={`Search ${facetLabel}`}
             />
           </div>
           <div className="nypl-facet-list">
             {
-            facet.values.map((f, j) => {
-              const percentage = Math.floor(f.count / this.props.totalHits * 100);
-              const valueLabel = (f.value).toString().replace(/:/, '_');
-              let selectLabel = f.value;
-              if (f.label) {
-                selectLabel = f.label;
-              }
-              return (
-                <label
-                  key={j}
-                  id={`${field}-${valueLabel}`}
-                  htmlFor={`${field}-${valueLabel}`}
-                  className={`nypl-bar_${percentage}`}
-                >
-                  <input
+              facet.values.map((f, j) => {
+                const percentage = Math.floor(f.count / this.props.totalHits * 100);
+                const valueLabel = (f.value).toString().replace(/:/, '_');
+                let selectLabel = f.value;
+                if (f.label) {
+                  selectLabel = f.label;
+                }
+                return (
+                  <label
+                    key={j}
                     id={`${field}-${valueLabel}`}
-                    aria-labelledby={`${field} ${valueLabel}`}
-                    type="checkbox"
-                    name="subject"
-                    checked={this.props.selectedValue === f.value}
-                    value={f.value}
-                    onClick={e => this.onFacetUpdate(e, field)}
-                  />
-                  <span className="nypl-facet-count">{f.count.toLocaleString()}</span>
-                  {selectLabel}
-                </label>
-              );
-            })
-          }
+                    htmlFor={`${field}-${valueLabel}`}
+                    className={`nypl-bar_${percentage}`}
+                  >
+                    <input
+                      id={`${field}-${valueLabel}`}
+                      aria-labelledby={`${field} ${valueLabel}`}
+                      type="checkbox"
+                      name="subject"
+                      checked={this.props.selectedValue === f.value}
+                      value={f.value}
+                      onClick={e => this.onFacetUpdate(e, field)}
+                    />
+                    <span className="nypl-facet-count">{f.count.toLocaleString()}</span>
+                    {selectLabel}
+                  </label>
+                );
+              })
+            }
           </div>
           {this.showGetTenMore(facet, facet.values.length)}
         </div>
@@ -224,6 +206,14 @@ class Facet extends React.Component {
     );
   }
 }
+
+Facet.propTypes = {
+  facet: React.PropTypes.object,
+  keywords: React.PropTypes.string,
+  sortBy: React.PropTypes.string,
+  totalHits: React.PropTypes.number,
+  selectedValue: React.PropTypes.string,
+};
 
 Facet.contextTypes = {
   router: function contextType() {
