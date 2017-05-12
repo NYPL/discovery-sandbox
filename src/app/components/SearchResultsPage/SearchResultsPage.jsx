@@ -1,33 +1,32 @@
 import React from 'react';
 
-import Actions from '../../actions/Actions.js';
-
 import Hits from '../Hits/Hits.jsx';
 import Breadcrumbs from '../Breadcrumbs/Breadcrumbs.jsx';
 import FacetSidebar from '../FacetSidebar/FacetSidebar.jsx';
-import Results from '../Results/Results.jsx';
+import ResultList from '../Results/ResultsList';
 import Search from '../Search/Search.jsx';
+import Sorter from '../Sorter/Sorter';
+import Pagination from '../Pagination/Pagination';
 
-class SearchResultsPage extends React.Component {
-  render() {
-    const {
-      searchResults,
-      searchKeywords,
-      facets,
-      selectedFacets,
-      page,
-      location,
-      sortBy,
-    } = this.props;
-    const facetList = facets && facets.itemListElement ? facets.itemListElement : [];
-    const totalHits = searchResults ? searchResults.totalResults : 0;
-    const results = searchResults ? searchResults.itemListElement : [];
-    const breadcrumbs = (
-      <Breadcrumbs query={searchKeywords} type="search" />
-    );
+const SearchResultsPage = (props) => {
+  const {
+    searchResults,
+    searchKeywords,
+    facets,
+    selectedFacets,
+    page,
+    location,
+    sortBy,
+  } = props;
+  const facetList = facets && facets.itemListElement ? facets.itemListElement : [];
+  const totalHits = searchResults ? searchResults.totalResults : 0;
+  const results = searchResults ? searchResults.itemListElement : [];
+  const breadcrumbs = (
+    <Breadcrumbs query={searchKeywords} type="search" />
+  );
 
-    return (
-      <main className="main-page">
+  return (
+    <main className="main-page">
       <div className="nypl-page-header">
         <div className="nypl-full-width-wrapper">
           {breadcrumbs}
@@ -36,10 +35,7 @@ class SearchResultsPage extends React.Component {
       <div className="nypl-full-width-wrapper">
         <div className="nypl-row">
           <div className="nypl-column-three-quarters nypl-column-offset-one">
-            <Search
-              sortBy={sortBy}
-              selectedFacets={selectedFacets}
-            />
+            <Search sortBy={sortBy} selectedFacets={selectedFacets} />
           </div>
         </div>
 
@@ -70,22 +66,25 @@ class SearchResultsPage extends React.Component {
               sortBy={sortBy}
             />
 
-            <Results
-              hits={totalHits}
-              results={results}
-              query={searchKeywords}
-              location={location}
-              page={page}
-              selectedFacets={selectedFacets}
-              sortBy={sortBy}
-            />
+            {totalHits !== 0 && (<Sorter sortBy={sortBy} location={location} page={page} />)}
+
+            <ResultList results={results} query={searchKeywords} />
+
+            {
+              totalHits !== 0 &&
+                (<Pagination
+                  hits={totalHits}
+                  page={page}
+                  location={location}
+                  sortBy={sortBy}
+                />)
+            }
           </div>
         </div>
       </div>
-      </main>
-    );
-  }
-}
+    </main>
+  );
+};
 
 SearchResultsPage.propTypes = {
   searchResults: React.PropTypes.object,
