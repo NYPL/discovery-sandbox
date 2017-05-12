@@ -180,13 +180,13 @@ class Facet extends React.Component {
                 return (
                   <label
                     key={j}
-                    id={`${field}-${valueLabel}`}
+                    id={`${field}-${valueLabel}-label`}
                     htmlFor={`${field}-${valueLabel}`}
                     className={`nypl-bar_${percentage}`}
                   >
                     <input
                       id={`${field}-${valueLabel}`}
-                      aria-labelledby={`${field} ${valueLabel}`}
+                      aria-labelledby={`${field}-${valueLabel}`}
                       type="checkbox"
                       name="subject"
                       checked={this.props.selectedValue === f.value}
