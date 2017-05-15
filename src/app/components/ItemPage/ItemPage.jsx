@@ -151,10 +151,7 @@ class ItemPage extends React.Component {
       </Link>
       : null;
     const holdings = LibraryItem.getItems(record);
-    // const hathiEmbedURL = record.hathiVols && record.hathiVols.length ?
-    //   `//hdl.handle.net/2027/${record.hathiVols[0].volumeId}?urlappend=%3Bui=embed` : '';
-    // const hathiURL = record.hathiVols && record.hathiVols.length ?
-    //   `https://hdl.handle.net/2027/${record.hathiVols[0].volumeId}` : '';
+
     const materialType = record && record.materialType && record.materialType[0] ?
       record.materialType[0].prefLabel : null;
     const language = record && record.language && record.language[0] ?
@@ -168,8 +165,8 @@ class ItemPage extends React.Component {
       record.actionType[0].prefLabel : null;
 
     const detailFields = [
-      { label: 'Author/Creator', field: 'author', linkable: true },
-      { label: 'Contributors', field: 'contributor', linkable: true },
+      { label: 'Author/Creator', field: 'authors', linkable: true },
+      { label: 'Contributors', field: 'contributorLiteral', linkable: true },
       { label: 'Notes', field: 'note' },
       { label: 'View in Worldcat', field: 'idOclc', url: (id) => `http://worldcat.org/oclc/${id}` },
     ];
@@ -224,20 +221,19 @@ class ItemPage extends React.Component {
                   <p>{record.extent} {record.dimensions}</p>
                   <p>
                     {record.placeOfPublication}
-                    {record.publisher}
-                    {yearPublished}
+                    {record.publisher} {yearPublished}
                   </p>
-                  <p>{location} (how to get there?)</p>
+                  <p>{`${location ? '${location} (how to get there?)' : ''}`}</p>
                   <p className="nypl-item-use">{usageType}</p>
                 </div>
               </div>
             </div>
             <div className="nypl-column-one-quarter nypl-item-holdings">
-                <ItemHoldings
-                  path={this.props.location.search}
-                  holdings={holdings}
-                  title={`${record.numAvailable} item${record.numAvailable === 1 ? '' : 's'} associated with this record:`}
-                />
+              <ItemHoldings
+                path={this.props.location.search}
+                holdings={holdings}
+                title={`${record.numAvailable} item${record.numAvailable === 1 ? '' : 's'} associated with this record:`}
+              />
             </div>
 
             <div className="nypl-column-three-quarters">
