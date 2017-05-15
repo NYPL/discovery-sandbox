@@ -4,6 +4,7 @@ import axios from 'axios';
 import {
   isEmpty as _isEmpty,
   findWhere as _findWhere,
+  forEach as _forEach,
 } from 'underscore';
 
 import appConfig from '../../../appConfig.js';
@@ -37,7 +38,7 @@ function Search(query, page, sortBy, order, cb, errorcb) {
     sortQuery = `&sort=${sortBy}&sort_direction=${order}`;
   }
 
-  const apiQuery = `?q=${query}&per_page=50&page=${page}${sortQuery}`;  
+  const apiQuery = `?q=${query}&per_page=50&page=${page}${sortQuery}`;
   const queryString = `${apiBase}/discovery/resources${apiQuery}`;
   const apiCall = axios.get(queryString);
 
@@ -49,21 +50,21 @@ function Search(query, page, sortBy, order, cb, errorcb) {
       cb(facets.data, response.data, page)
     }))
     .catch(error => {
-      console.error('Search error: ' + JSON.stringify(error, null, 2));
+      console.error(`Search error: ${JSON.stringify(error, null, 2)}`);
 
       errorcb(error);
     }); /* end axios call */
 }
 
-function AjaxSearch(req, res, next) {
+function AjaxSearch(req, res) {
   const q = req.query.q || '';
-  const page = req.query.page || '1';
+  const pageQuery = req.query.page || '1';
   const sortBy = req.query.sort || '';
   const order = req.query.sort_direction || '';
 
   Search(
     q,
-    page,
+    pageQuery,
     sortBy,
     order,
     (facets, searchResults, page) => res.json({ facets, searchResults, page }),
@@ -72,8 +73,8 @@ function AjaxSearch(req, res, next) {
 }
 
 function ServerSearch(req, res, next) {
-  const page = req.query.page || '1';
-  let q = req.query.q || '';
+  const pageQuery = req.query.page || '1';
+  const q = req.query.q || '';
   const sortBy = req.query.sort || '';
   const order = req.query.sort_direction || '';
   let spaceIndex = '';
@@ -91,15 +92,15 @@ function ServerSearch(req, res, next) {
 
   Search(
     q,
-    page,
+    pageQuery,
     sortBy,
     order,
     (facets, data, page) => {
-      let selectedFacets = {};
+      const selectedFacets = {};
 
       // Populate the object with empty facet values
       if (!_isEmpty(facets) && facets.itemListElement.length) {
-        facets.itemListElement.map(facet => {
+        _forEach(facets.itemListElement, (facet) => {
           selectedFacets[facet.field] = {
             id: '',
             value: '',
@@ -109,10 +110,10 @@ function ServerSearch(req, res, next) {
 
       // Easier to break if facet values have a # instead of an empty space. There might
       // be a better solution for this...
-      let urlFacets = q.substring(spaceIndex + 1);
+      const urlFacets = q.substring(spaceIndex + 1);
 
       if (urlFacets) {
-        let facetStrArray = q.substring(spaceIndex + 1).replace(/\" /, '"#').split('#');
+        const facetStrArray = q.substring(spaceIndex + 1).replace(/\" /, '"#').split('#');
 
         facetStrArray.forEach(str => {
           if (!str) return;
@@ -146,6 +147,7 @@ function ServerSearch(req, res, next) {
       next();
     },
     (error) => {
+      console.log(error);
       res.locals.data.Store = {
         searchResults: {},
         selectedFacets: {},
@@ -165,7 +167,7 @@ function RetrieveItem(q, cb, errorcb) {
     .get(`${apiBase}/discovery/resources/${q}`)
     .then(response => cb(response.data))
     .catch(error => {
-      console.error('RetrieveItem error: ' + JSON.stringify(error, null, 2));
+      console.error(`RetrieveItem error: ${JSON.stringify(error, null, 2)}`);
 
       errorcb(error);
     }); /* end axios call */
@@ -184,6 +186,7 @@ function ServerItemSearch(req, res, next) {
       next();
     },
     (error) => {
+      console.log(error);
       res.locals.data.Store = {
         item: {},
         searchKeywords: '',
@@ -193,7 +196,7 @@ function ServerItemSearch(req, res, next) {
   );
 }
 
-function AjaxItemSearch(req, res, next) {
+function AjaxItemSearch(req, res) {
   const q = req.query.q || '';
 
   RetrieveItem(
@@ -211,23 +214,25 @@ function Hold(req, res, next) {
   next();
 }
 
-function RequireUser(req, res){
-  if (!req.tokenResponse || !req.tokenResponse.isTokenValid || !req.tokenResponse.accessToken || !req.tokenResponse.decodedPatron || !req.tokenResponse.decodedPatron.sub) {
+function RequireUser(req, res) {
+  if (!req.tokenResponse || !req.tokenResponse.isTokenValid ||
+    !req.tokenResponse.accessToken || !req.tokenResponse.decodedPatron ||
+    !req.tokenResponse.decodedPatron.sub) {
     // redirect to login
-    const fullUrl = encodeURIComponent(req.protocol + '://' + req.get('host') + req.originalUrl);
+    const fullUrl = encodeURIComponent(`${req.protocol}://${req.get('host')}${req.originalUrl}`);
     res.redirect(`${appConfig.loginUrl}?redirect_uri=${fullUrl}`);
     return false;
   }
   return true;
 }
 
-function NewHoldRequest(req, res, next){
+function NewHoldRequest(req, res, next) {
   const loggedIn = RequireUser(req, res);
   if (!loggedIn) return false;
 
   // Retrieve item
   RetrieveItem(
-    req.params.id ,
+    req.params.id,
     (data) => {
       // console.log('Item data', data)
       res.locals.data.Store = {
@@ -262,9 +267,9 @@ function CreateHoldRequest(req, res) {
   let itemId = req.params.id;
   let nyplSource = 'nypl-sierra';
 
-  if (itemId.indexOf("-") >= 0) {
-    const parts = itemId.split("-");
-    itemId = parts[parts.length-1];
+  if (itemId.indexOf('-') >= 0) {
+    const parts = itemId.split('-');
+    itemId = parts[parts.length - 1];
 
     if (itemId.substring(0, 2) === 'pi') {
       nyplSource = 'recap-PUL';
@@ -272,26 +277,26 @@ function CreateHoldRequest(req, res) {
       nyplSource = 'recap-CUL';
     }
   }
-  itemId = itemId.replace(/\D/g,'');
+  itemId = itemId.replace(/\D/g, '');
   const pickupLocation = req.body.pickupLocation;
 
   const data = {
     patron: patronId,
-    recordType: "i",
+    recordType: 'i',
     record: itemId,
     nyplSource,
-    pickupLocation: pickupLocation,
+    pickupLocation,
     // neededBy: "2013-03-20",
-    numberOfCopies: 1
-  }
+    numberOfCopies: 1,
+  };
   console.log('Making hold request', data, accessToken);
 
   axios
     .post(patronHoldsApi, data, {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${accessToken}`
-      }
+        Authorization: `Bearer ${accessToken}`,
+      },
     })
     .then(response => {
       // console.log('Holds API response:', response);
