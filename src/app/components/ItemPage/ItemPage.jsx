@@ -168,9 +168,6 @@ class ItemPage extends React.Component {
     const usageType = record && record.actionType && record.actionType[0] ?
       record.actionType[0].prefLabel : null;
 
-    const externalFields = [
-      { label: 'OCLC Number', field: 'idOclc', url: (id) => `http://worldcat.org/oclc/${id}` },
-    ];
     const displayFields = [
       { label: 'Title', field: 'title' },
       { label: 'Type', field: 'type' },
@@ -189,6 +186,7 @@ class ItemPage extends React.Component {
       { label: 'Notes', field: 'note' },
       { label: 'Bnumber', field: 'idBnum' },
       { label: 'LCC', field: 'idLcc' },
+      { label: 'OCLC Number', field: 'idOclc', url: (id) => `http://worldcat.org/oclc/${id}` },
     ];
     const overviewFields = [
       { label: 'Material Type', field: 'materialType' },
@@ -199,7 +197,6 @@ class ItemPage extends React.Component {
       { label: 'Usage Type', field: 'actionLabel' },
     ];
 
-    const externalLinks = this.getDisplayFields(record, externalFields);
     const itemDetails = this.getDisplayFields(record, displayFields);
     const itemOverview = this.getDisplayFields(record, overviewFields);
     const sortBy = this.props.sortBy;
@@ -258,32 +255,24 @@ class ItemPage extends React.Component {
                   <p>{location} (how to get there?)</p>
                   <p className="nypl-item-use">{usageType}</p>
                 </div>
-
+              </div>
+            </div>
+            <div className="nypl-column-one-quarter nypl-item-holdings">
                 <ItemHoldings
                   path={this.props.location.search}
                   holdings={holdings}
                   title={`${record.numAvailable} item${record.numAvailable === 1 ? '' : 's'} associated with this record:`}
                 />
+            </div>
 
-                <div className="item-details">
-                  <div id="item-details">
-                    <ItemDetails
-                      data={itemDetails}
-                      title="Item details"
-                    />
-                  </div>
-
-                  <div id="item-external-links">
-                    <ItemDetails
-                      data={externalLinks}
-                      title="External links"
-                    />
-                  </div>
-                </div>
-
-              <ItemEditions title={title} item={record} />
+            <div className="nypl-column-three-quarters">
+              <div className="nypl-item-details">
+                  <ItemDetails
+                    data={itemDetails}
+                  />
               </div>
             </div>
+            <ItemEditions title={title} item={record} />
           </div>
         </div>
       </main>
