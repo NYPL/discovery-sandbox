@@ -14,7 +14,7 @@ import {
   getFacetParams,
 } from '../../utils/utils';
 
-const facetShowLimit = 9;
+const facetShowLimit = 4;
 
 class Facet extends React.Component {
   constructor(props) {
