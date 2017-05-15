@@ -156,6 +156,17 @@ class ItemPage extends React.Component {
     //   `//hdl.handle.net/2027/${record.hathiVols[0].volumeId}?urlappend=%3Bui=embed` : '';
     // const hathiURL = record.hathiVols && record.hathiVols.length ?
     //   `https://hdl.handle.net/2027/${record.hathiVols[0].volumeId}` : '';
+    const materialType = record && record.materialType && record.materialType[0] ?
+      record.materialType[0].prefLabel : null;
+    const language = record && record.language && record.language[0] ?
+      record.language[0].prefLabel : null;
+      const location = record && record.location && record.location[0] ?
+        record.location[0].prefLabel : null;
+    const placeOfPublication = record && record.placeOfPublication && record.placeOfPublication[0] ?
+      record.placeOfPublication[0].prefLabel : null;
+    const yearPublished = record && record.dateStartYear ? record.dateStartYear : null;
+    const usageType = record && record.actionType && record.actionType[0] ?
+      record.actionType[0].prefLabel : null;
 
     const externalFields = [
       { label: 'OCLC Number', field: 'idOclc', url: (id) => `http://worldcat.org/oclc/${id}` },
@@ -221,7 +232,7 @@ class ItemPage extends React.Component {
             </div>
           </div>
 
-          <div className="nypl-row">
+          <div className="nypl-row" id="mainContent">
             <div
               className="nypl-column-three-quarters nypl-column-offset-one"
               role="region"
@@ -231,19 +242,21 @@ class ItemPage extends React.Component {
               aria-relevant="additions removals"
               aria-describedby="results-description"
             >
-              <div className="nypl-results-item">
+              <div className="nypl-item-details">
                 <h1>{title}</h1>
-
-                <ul className="nypl-item-toc">
-                  <li><a href="#item-holdings">Item holdings</a></li>
-                  <li><a href="#item-details">Item details</a></li>
-                  <li><a href="#item-external-links">External links</a></li>
-                </ul>
-
-                <div id="nypl-results-text">
-                  <ItemOverview
-                    data={itemOverview}
-                  />
+                <div className="nypl-item-info">
+                  <p>
+                    <span className="nypl-item-media">{materialType}</span>
+                    {`${language ? ' in ${language}' : ''}`}
+                  </p>
+                  <p>{record.extent} {record.dimensions}</p>
+                  <p>
+                    {record.placeOfPublication}
+                    {record.publisher}
+                    {yearPublished}
+                  </p>
+                  <p>{location} (how to get there?)</p>
+                  <p className="nypl-item-use">{usageType}</p>
                 </div>
 
                 <ItemHoldings
