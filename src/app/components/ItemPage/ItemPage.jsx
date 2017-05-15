@@ -248,7 +248,6 @@ class ItemPage extends React.Component {
                   />
               </div>
             </div>
-            <ItemEditions title={title} item={record} />
           </div>
         </div>
       </main>
