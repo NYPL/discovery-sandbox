@@ -211,6 +211,7 @@ class ItemPage extends React.Component {
               type="item"
               title={title}
             />
+            <h1>Research Catalog</h1>
           </div>
         </div>
 
