@@ -159,7 +159,6 @@ class ItemPage extends React.Component {
 
     const externalFields = [
       { label: 'OCLC Number', field: 'idOclc', url: (id) => `http://worldcat.org/oclc/${id}` },
-      { label: 'OCLC Workid', field: 'idOwi', url: (id) => `http://classify.oclc.org/classify2/ClassifyDemo?owi=${id}` },
     ];
     const displayFields = [
       { label: 'Title', field: 'title' },
