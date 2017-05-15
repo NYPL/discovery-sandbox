@@ -11,7 +11,6 @@ import Search from '../Search/Search';
 import ItemHoldings from './ItemHoldings';
 import ItemDetails from './ItemDetails';
 import ItemOverview from './ItemOverview';
-import ItemEditions from './ItemEditions';
 import LibraryItem from '../../utils/item';
 // import EmbeddedDocument from './EmbeddedDocument';
 import Actions from '../../actions/Actions';
