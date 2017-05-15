@@ -8,7 +8,7 @@ export default {
     development: 'https://api.nypltech.org/api/v0.1',
     production: '',
   },
-  loginUrl: 'https://isso.nypl.org/auth/login',
+  loginUrl: 'https://login.nypl.org/auth/login',
   publicKey:
     '-----BEGIN PUBLIC KEY-----\n' +
     'MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA44ilHg/PxcJYsISHMRyo\n' +
