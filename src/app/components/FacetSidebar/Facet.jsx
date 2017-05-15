@@ -14,7 +14,7 @@ import {
   getFacetParams,
 } from '../../utils/utils';
 
-const facetShowLimit = 9;
+const facetShowLimit = 4;
 
 class Facet extends React.Component {
   constructor(props) {
@@ -24,6 +24,7 @@ class Facet extends React.Component {
       spinning: false,
       openFacet: true,
       [this.props.facet.field]: { id: '', value: '' },
+      showMoreFacets: false,
     }, Store.getState());
 
     this.onChange = this.onChange.bind(this);
@@ -105,9 +106,19 @@ class Facet extends React.Component {
     this.context.router.push(path);
   }
 
-  showGetTenMore(facet, valueCount) {
-    if (valueCount > facetShowLimit) {
-      return (<button className="nypl-link-button">Show 10 more</button>);
+  showMoreFacets(e) {
+    e.preventDefault();
+    this.setState({ showMoreFacets: true });
+  }
+
+  showGetTenMore(valueCount) {
+    const moreFacetsToShow = valueCount - facetShowLimit;
+    if (valueCount > facetShowLimit && !this.state.showMoreFacets) {
+      return (
+        <button className="nypl-link-button" onClick={(e) => this.showMoreFacets(e)}>
+          Show {moreFacetsToShow} more
+        </button>
+      );
     }
     return null;
   }
@@ -173,6 +184,8 @@ class Facet extends React.Component {
               facet.values.map((f, j) => {
                 const percentage = Math.floor(f.count / this.props.totalHits * 100);
                 const valueLabel = (f.value).toString().replace(/:/, '_');
+                const hiddenFacet = (j > facetShowLimit && !this.state.showMoreFacets) ?
+                  'hiddenFacet' : '';
                 let selectLabel = f.value;
                 if (f.label) {
                   selectLabel = f.label;
@@ -182,7 +195,7 @@ class Facet extends React.Component {
                     key={j}
                     id={`${field}-${valueLabel}-label`}
                     htmlFor={`${field}-${valueLabel}`}
-                    className={`nypl-bar_${percentage}`}
+                    className={`nypl-bar_${percentage} ${hiddenFacet}`}
                   >
                     <input
                       id={`${field}-${valueLabel}`}
@@ -200,7 +213,7 @@ class Facet extends React.Component {
               })
             }
           </div>
-          {this.showGetTenMore(facet, facet.values.length)}
+          {this.showGetTenMore(facet.values.length)}
         </div>
       </div>
     );
