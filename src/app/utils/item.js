@@ -6,7 +6,7 @@ function LibraryItem() {
   this.getDefaultLocation = () => {
     return {
       '@id': 'loc:mal',
-      'prefLabel': 'SASB - Rose Main Rdg Rm 315'
+      'prefLabel': 'SASB - Rose Main Reading Room 315'
     };
   };
 
