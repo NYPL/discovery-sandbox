@@ -52,7 +52,7 @@ class Facet extends React.Component {
     Actions.updateSpinner(true);
     const value = e.target.value;
     const checked = e.target.checked;
-    const pickedFacet = _pick(this.state, field);
+    let pickedFacet = _pick(this.state, field);
 
     let strSearch = '';
 
@@ -63,6 +63,12 @@ class Facet extends React.Component {
           value: '',
         },
       });
+      pickedFacet = {
+        [field]: {
+          id: '',
+          value: '',
+        },
+      };
     } else {
       const facetObj = this.props.facet;
       const facet = _findWhere(facetObj.values, { value });
@@ -80,6 +86,7 @@ class Facet extends React.Component {
     const sortQuery = getSortQuery(this.props.sortBy);
 
     ajaxCall(`/api?q=${this.props.keywords}${strSearch}${sortQuery}`, (response) => {
+      console.log('pickedFacet', pickedFacet);
       Actions.updateSearchResults(response.data.searchResults);
       Actions.updateFacets(response.data.facets);
       Actions.updateSelectedFacets(pickedFacet);
@@ -187,9 +194,16 @@ class Facet extends React.Component {
                 const hiddenFacet = (j > facetShowLimit && !this.state.showMoreFacets) ?
                   'hiddenFacet' : '';
                 let selectLabel = f.value;
+                let selectedValue = '';
+
                 if (f.label) {
                   selectLabel = f.label;
                 }
+                if (this.state.selectedFacets[field] &&
+                  this.state.selectedFacets[field].value) {
+                  selectedValue = this.state.selectedFacets[field].value;
+                }
+
                 return (
                   <label
                     key={j}
@@ -202,7 +216,7 @@ class Facet extends React.Component {
                       aria-labelledby={`${field}-${valueLabel}`}
                       type="checkbox"
                       name="subject"
-                      checked={this.props.selectedValue === f.value}
+                      checked={selectedValue === f.value}
                       value={f.value}
                       onClick={e => this.onFacetUpdate(e, field)}
                     />
