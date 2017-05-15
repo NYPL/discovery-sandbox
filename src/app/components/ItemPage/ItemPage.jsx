@@ -62,7 +62,7 @@ class ItemPage extends React.Component {
   getDisplayFields(record, data) {
     if (!data.length) return [];
 
-    const displayFields = [];
+    const detailFields = [];
     data.forEach((f) => {
       // skip absent fields
       if (!record[f.field] || !record[f.field].length) return false;
@@ -70,7 +70,7 @@ class ItemPage extends React.Component {
 
       // external links
       if (f.url) {
-        displayFields.push({
+        detailFields.push({
           term: f.label,
           definition: (
             <ul>
@@ -84,7 +84,7 @@ class ItemPage extends React.Component {
 
       // list of links
       } else if (fieldValue['@id']) {
-        displayFields.push(
+        detailFields.push(
           { term: f.label,
             definition: <ul>{record[f.field].map((obj, i) => (
               <li key={i}>
@@ -100,7 +100,7 @@ class ItemPage extends React.Component {
 
       // list of links
       } else if (f.linkable) {
-        displayFields.push(
+        detailFields.push(
           { term: f.label,
             definition: <ul>{record[f.field].map((value, i) => (
               <li key={i}>
@@ -116,14 +116,14 @@ class ItemPage extends React.Component {
 
       // list of plain text
       } else {
-        displayFields.push(
+        detailFields.push(
           { term: f.label,
             definition: <ul>{record[f.field].map((value, i) => (
               <li key={i}>{value}</li>))}</ul> });
       }
     });
 
-    return displayFields;
+    return detailFields;
   }
 
   render() {
@@ -168,39 +168,15 @@ class ItemPage extends React.Component {
     const usageType = record && record.actionType && record.actionType[0] ?
       record.actionType[0].prefLabel : null;
 
-    const displayFields = [
-      { label: 'Title', field: 'title' },
-      { label: 'Type', field: 'type' },
-      { label: 'Material Type', field: 'materialType' },
-      { label: 'Language', field: 'language' },
-      { label: 'Date Created', field: 'createdString' },
-      { label: 'Date Published', field: 'dateString' },
+    const detailFields = [
+      { label: 'Author/Creator', field: 'author', linkable: true },
       { label: 'Contributors', field: 'contributor', linkable: true },
-      { label: 'Publisher', field: 'publisher', linkable: true },
-      { label: 'Place of publication', field: 'placeOfPublication' },
-      { label: 'Subjects', field: 'subjectLiteral', linkable: true },
-      { label: 'Dimensions', field: 'dimensions' },
-      { label: 'Issuance', field: 'issuance' },
-      { label: 'Owner', field: 'owner' },
-      { label: 'Location', field: 'location' },
       { label: 'Notes', field: 'note' },
-      { label: 'Bnumber', field: 'idBnum' },
-      { label: 'LCC', field: 'idLcc' },
-      { label: 'OCLC Number', field: 'idOclc', url: (id) => `http://worldcat.org/oclc/${id}` },
-    ];
-    const overviewFields = [
-      { label: 'Material Type', field: 'materialType' },
-      { label: 'Author', field: 'contributor' },
-      { label: 'Published', field: 'createdString' },
-      { label: 'Publisher', field: 'publisher' },
-      { label: 'At Location', field: 'location' },
-      { label: 'Usage Type', field: 'actionLabel' },
+      { label: 'View in Worldcat', field: 'idOclc', url: (id) => `http://worldcat.org/oclc/${id}` },
     ];
 
-    const itemDetails = this.getDisplayFields(record, displayFields);
-    const itemOverview = this.getDisplayFields(record, overviewFields);
+    const itemDetails = this.getDisplayFields(record, detailFields);
     const sortBy = this.props.sortBy;
-
     let searchURL = this.props.searchKeywords;
 
     _mapObject(this.props.selectedFacets, (val, key) => {
