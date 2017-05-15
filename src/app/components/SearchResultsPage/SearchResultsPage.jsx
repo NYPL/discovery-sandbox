@@ -20,6 +20,7 @@ const SearchResultsPage = (props) => {
   } = props;
   const facetList = facets && facets.itemListElement ? facets.itemListElement : [];
   const totalHits = searchResults ? searchResults.totalResults : 0;
+  const totalPages = Math.floor(totalHits / 50) + 1;
   const results = searchResults ? searchResults.itemListElement : [];
   const breadcrumbs = (
     <Breadcrumbs query={searchKeywords} type="search" />
@@ -30,6 +31,9 @@ const SearchResultsPage = (props) => {
       <div className="nypl-page-header">
         <div className="nypl-full-width-wrapper">
           {breadcrumbs}
+          <h1 aria-label={`Search results for ${searchKeywords} page ${page} of ${totalPages}`}>
+            Search results
+          </h1>
         </div>
       </div>
       <div className="nypl-full-width-wrapper">
