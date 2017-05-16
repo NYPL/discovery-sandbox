@@ -73,7 +73,7 @@ class ItemPage extends React.Component {
           definition: (
             <ul>
               {record[f.field].map((value, i) => {
-                const v = f.field === 'idOwi' ? value.substring(8) : value;
+                const v = f.field === 'idOclc' ? 'View in Worldcat' : value;
                 return <li key={i}><a target="_blank" title={v} href={f.url(v)}>{v}</a></li>;
               })}
             </ul>
