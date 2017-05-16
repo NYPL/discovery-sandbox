@@ -168,7 +168,7 @@ class ItemPage extends React.Component {
       { label: 'Author/Creator', field: 'authors', linkable: true },
       { label: 'Contributors', field: 'contributorLiteral', linkable: true },
       { label: 'Notes', field: 'note' },
-      { label: 'View in Worldcat', field: 'idOclc', url: (id) => `http://worldcat.org/oclc/${id}` },
+      { label: 'External links', field: 'idOclc', actionLabel: 'View in Worldcat', url: (id) => `http://worldcat.org/oclc/${id}` },
     ];
 
     const itemDetails = this.getDisplayFields(record, detailFields);
@@ -201,7 +201,7 @@ class ItemPage extends React.Component {
             </div>
           </div>
 
-          <div className="nypl-row" id="mainContent">
+          <div className="nypl-row">
             <div
               className="nypl-column-three-quarters nypl-column-offset-one"
               role="region"
