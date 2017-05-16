@@ -216,14 +216,14 @@ class ItemPage extends React.Component {
                 <div className="nypl-item-info">
                   <p>
                     <span className="nypl-item-media">{materialType}</span>
-                    {`${language ? ' in ${language}' : ''}`}
+                    {language && ' in ${language}'}
                   </p>
                   <p>{record.extent} {record.dimensions}</p>
                   <p>
                     {record.placeOfPublication}
                     {record.publisher} {yearPublished}
                   </p>
-                  <p>{`${location ? '${location} (how to get there?)' : ''}`}</p>
+                  <p>{language && ' in ${language} (how to get there?)'}</p>
                   <p className="nypl-item-use">{usageType}</p>
                 </div>
               </div>
@@ -238,9 +238,7 @@ class ItemPage extends React.Component {
 
             <div className="nypl-column-three-quarters">
               <div className="nypl-item-details">
-                  <ItemDetails
-                    data={itemDetails}
-                  />
+                  <ItemDetails data={itemDetails}/>
               </div>
             </div>
           </div>
