@@ -10,8 +10,6 @@ import Breadcrumbs from '../Breadcrumbs/Breadcrumbs';
 import Search from '../Search/Search';
 import ItemHoldings from './ItemHoldings';
 import ItemDetails from './ItemDetails';
-import ItemOverview from './ItemOverview';
-import ItemEditions from './ItemEditions';
 import LibraryItem from '../../utils/item';
 // import EmbeddedDocument from './EmbeddedDocument';
 import Actions from '../../actions/Actions';
@@ -62,7 +60,7 @@ class ItemPage extends React.Component {
   getDisplayFields(record, data) {
     if (!data.length) return [];
 
-    const displayFields = [];
+    const detailFields = [];
     data.forEach((f) => {
       // skip absent fields
       if (!record[f.field] || !record[f.field].length) return false;
@@ -70,12 +68,12 @@ class ItemPage extends React.Component {
 
       // external links
       if (f.url) {
-        displayFields.push({
+        detailFields.push({
           term: f.label,
           definition: (
             <ul>
               {record[f.field].map((value, i) => {
-                const v = f.field === 'idOwi' ? value.substring(8) : value;
+                const v = f.field === 'idOclc' ? 'View in Worldcat' : value;
                 return <li key={i}><a target="_blank" title={v} href={f.url(v)}>{v}</a></li>;
               })}
             </ul>
@@ -84,7 +82,7 @@ class ItemPage extends React.Component {
 
       // list of links
       } else if (fieldValue['@id']) {
-        displayFields.push(
+        detailFields.push(
           { term: f.label,
             definition: <ul>{record[f.field].map((obj, i) => (
               <li key={i}>
@@ -100,7 +98,7 @@ class ItemPage extends React.Component {
 
       // list of links
       } else if (f.linkable) {
-        displayFields.push(
+        detailFields.push(
           { term: f.label,
             definition: <ul>{record[f.field].map((value, i) => (
               <li key={i}>
@@ -116,14 +114,14 @@ class ItemPage extends React.Component {
 
       // list of plain text
       } else {
-        displayFields.push(
+        detailFields.push(
           { term: f.label,
             definition: <ul>{record[f.field].map((value, i) => (
               <li key={i}>{value}</li>))}</ul> });
       }
     });
 
-    return displayFields;
+    return detailFields;
   }
 
   render() {
@@ -152,47 +150,28 @@ class ItemPage extends React.Component {
       </Link>
       : null;
     const holdings = LibraryItem.getItems(record);
-    // const hathiEmbedURL = record.hathiVols && record.hathiVols.length ?
-    //   `//hdl.handle.net/2027/${record.hathiVols[0].volumeId}?urlappend=%3Bui=embed` : '';
-    // const hathiURL = record.hathiVols && record.hathiVols.length ?
-    //   `https://hdl.handle.net/2027/${record.hathiVols[0].volumeId}` : '';
 
-    const externalFields = [
-      { label: 'OCLC Number', field: 'idOclc', url: (id) => `http://worldcat.org/oclc/${id}` },
-    ];
-    const displayFields = [
-      { label: 'Title', field: 'title' },
-      { label: 'Type', field: 'type' },
-      { label: 'Material Type', field: 'materialType' },
-      { label: 'Language', field: 'language' },
-      { label: 'Date Created', field: 'createdString' },
-      { label: 'Date Published', field: 'dateString' },
-      { label: 'Contributors', field: 'contributor', linkable: true },
-      { label: 'Publisher', field: 'publisher', linkable: true },
-      { label: 'Place of publication', field: 'placeOfPublication' },
-      { label: 'Subjects', field: 'subjectLiteral', linkable: true },
-      { label: 'Dimensions', field: 'dimensions' },
-      { label: 'Issuance', field: 'issuance' },
-      { label: 'Owner', field: 'owner' },
-      { label: 'Location', field: 'location' },
+    const materialType = record && record.materialType && record.materialType[0] ?
+      record.materialType[0].prefLabel : null;
+    const language = record && record.language && record.language[0] ?
+      record.language[0].prefLabel : null;
+      const location = record && record.location && record.location[0] ?
+        record.location[0].prefLabel : null;
+    const placeOfPublication = record && record.placeOfPublication && record.placeOfPublication[0] ?
+      record.placeOfPublication[0].prefLabel : null;
+    const yearPublished = record && record.dateStartYear ? record.dateStartYear : null;
+    const usageType = record && record.actionType && record.actionType[0] ?
+      record.actionType[0].prefLabel : null;
+
+    const detailFields = [
+      { label: 'Author/Creator', field: 'authors', linkable: true },
+      { label: 'Contributors', field: 'contributorLiteral', linkable: true },
       { label: 'Notes', field: 'note' },
-      { label: 'Bnumber', field: 'idBnum' },
-      { label: 'LCC', field: 'idLcc' },
-    ];
-    const overviewFields = [
-      { label: 'Material Type', field: 'materialType' },
-      { label: 'Author', field: 'contributor' },
-      { label: 'Published', field: 'createdString' },
-      { label: 'Publisher', field: 'publisher' },
-      { label: 'At Location', field: 'location' },
-      { label: 'Usage Type', field: 'actionLabel' },
+      { label: 'External links', field: 'idOclc', url: (id) => `http://worldcat.org/oclc/${id}` },
     ];
 
-    const externalLinks = this.getDisplayFields(record, externalFields);
-    const itemDetails = this.getDisplayFields(record, displayFields);
-    const itemOverview = this.getDisplayFields(record, overviewFields);
+    const itemDetails = this.getDisplayFields(record, detailFields);
     const sortBy = this.props.sortBy;
-
     let searchURL = this.props.searchKeywords;
 
     _mapObject(this.props.selectedFacets, (val, key) => {
@@ -231,44 +210,34 @@ class ItemPage extends React.Component {
               aria-relevant="additions removals"
               aria-describedby="results-description"
             >
-              <div className="nypl-results-item">
+              <div className="nypl-item-details">
                 <h1>{title}</h1>
-
-                <ul className="nypl-item-toc">
-                  <li><a href="#item-holdings">Item holdings</a></li>
-                  <li><a href="#item-details">Item details</a></li>
-                  <li><a href="#item-external-links">External links</a></li>
-                </ul>
-
-                <div id="nypl-results-text">
-                  <ItemOverview
-                    data={itemOverview}
-                  />
+                <div className="nypl-item-info">
+                  <p>
+                    <span className="nypl-item-media">{materialType}</span>
+                    {language && ' in ${language}'}
+                  </p>
+                  <p>{record.extent} {record.dimensions}</p>
+                  <p>
+                    {record.placeOfPublication}
+                    {record.publisher} {yearPublished}
+                  </p>
+                  {language && '<p> in ${language}</p>'}
+                  <p className="nypl-item-use">{usageType}</p>
                 </div>
+              </div>
+            </div>
+            <div className="nypl-column-one-quarter nypl-item-holdings">
+              <ItemHoldings
+                path={this.props.location.search}
+                holdings={holdings}
+                title={`${record.numAvailable} item${record.numAvailable === 1 ? '' : 's'} associated with this record:`}
+              />
+            </div>
 
-                <ItemHoldings
-                  path={this.props.location.search}
-                  holdings={holdings}
-                  title={`${record.numAvailable} item${record.numAvailable === 1 ? '' : 's'} associated with this record:`}
-                />
-
-                <div className="item-details">
-                  <div id="item-details">
-                    <ItemDetails
-                      data={itemDetails}
-                      title="Item details"
-                    />
-                  </div>
-
-                  <div id="item-external-links">
-                    <ItemDetails
-                      data={externalLinks}
-                      title="External links"
-                    />
-                  </div>
-                </div>
-
-              <ItemEditions title={title} item={record} />
+            <div className="nypl-column-three-quarters">
+              <div className="nypl-item-details">
+                  <ItemDetails data={itemDetails}/>
               </div>
             </div>
           </div>
