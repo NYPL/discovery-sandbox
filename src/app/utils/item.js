@@ -6,7 +6,7 @@ function LibraryItem() {
   this.getDefaultLocation = () => {
     return {
       '@id': 'loc:mal',
-      'prefLabel': 'SASB - Rose Main Reading Room 315'
+      'prefLabel': 'Stephen A. Schwarzman Building - Rose Main Reading Room 315'
     };
   };
 
