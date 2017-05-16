@@ -4,6 +4,7 @@ import Actions from '../../actions/Actions.js';
 import {
   ajaxCall,
   getSortQuery,
+  getFieldParam,
 } from '../../utils/utils.js';
 
 class Pagination extends React.Component {
@@ -59,11 +60,13 @@ class Pagination extends React.Component {
     const query = this.props.location.query.q;
     const pageParam = page !== 1 ? `&page=${page}` : '';
     const sortQuery = getSortQuery(this.state.sortValue);
+    const fieldQuery = getFieldParam(this.props.field);
 
-    ajaxCall(`/api?q=${query}${pageParam}${sortQuery}`, response => {
+    ajaxCall(`/api?q=${query}${pageParam}${sortQuery}${fieldQuery}`, response => {
       Actions.updateSearchResults(response.data.searchResults);
       Actions.updatePage(page.toString());
-      this.context.router.push(`/search?q=${encodeURIComponent(query)}${pageParam}${sortQuery}`);
+      this.context.router
+        .push(`/search?q=${encodeURIComponent(query)}${pageParam}${sortQuery}${fieldQuery}`);
     });
   }
 
@@ -101,6 +104,7 @@ Pagination.propTypes = {
   sortBy: React.PropTypes.string,
   location: React.PropTypes.object,
   page: React.PropTypes.string,
+  field: React.PropTypes.string,
 };
 
 Pagination.defaultProps = {

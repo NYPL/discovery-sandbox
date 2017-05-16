@@ -7,8 +7,7 @@ import SearchButton from '../Buttons/SearchButton.jsx';
 import {
   trackDiscovery,
   ajaxCall,
-  getSortQuery,
-  getFacetParams,
+  getFieldParam,
 } from '../../utils/utils.js';
 
 import {
@@ -49,35 +48,8 @@ class Search extends React.Component {
     this.setState(_extend(this.state, Store.getState()));
   }
 
-  /**
-   * submitSearchRequest()
-   */
-  submitSearchRequest(e) {
-    e.preventDefault();
-    // Store the data that the user entered
-    const keyword = this.state.searchKeywords.trim();
-    const sortQuery = getSortQuery(this.props.sortBy);
-    const facetQuery = getFacetParams(this.props.selectedFacets);
-    // Track the submitted keyword search.
-    trackDiscovery('Search', keyword);
-
-    Actions.updateSearchKeywords(keyword);
-    Actions.updateSpinner(true);
-    ajaxCall(`/api?q=${keyword}${facetQuery}${sortQuery}`, (response) => {
-      Actions.updateSearchResults(response.data.searchResults);
-      Actions.updateFacets(response.data.facets);
-      const newFacets = {};
-      _forEach(response.data.facets.itemListElement, (facet) => {
-        newFacets[facet.id] = { id: '', value: '' };
-      });
-      Actions.updateSelectedFacets(newFacets);
-      Actions.updatePage('1');
-      this.routeHandler({
-        pathname: '/search',
-        query: { q: `${keyword}${sortQuery}` },
-      });
-      Actions.updateSpinner(false);
-    });
+  onFieldChange(e) {
+    Actions.updateField(e.target.value);
   }
 
   routeHandler(obj) {
@@ -109,10 +81,46 @@ class Search extends React.Component {
     this.setState({ searchKeywords: event.target.value });
   }
 
+  /**
+   * submitSearchRequest()
+   */
+  submitSearchRequest(e) {
+    e.preventDefault();
+    // Store the data that the user entered
+    const keyword = this.state.searchKeywords.trim();
+    const fieldQuery = getFieldParam(this.state.field);
+    // Track the submitted keyword search.
+    trackDiscovery('Search', keyword);
+
+    Actions.updateSearchKeywords(keyword);
+    Actions.updateSpinner(true);
+    ajaxCall(`/api?q=${keyword}${fieldQuery}`, (response) => {
+      Actions.updateSearchResults(response.data.searchResults);
+      Actions.updateFacets(response.data.facets);
+      const newFacets = {};
+      _forEach(response.data.facets.itemListElement, (facet) => {
+        newFacets[facet.id] = { id: '', value: '' };
+      });
+      Actions.updateSelectedFacets(newFacets);
+      Actions.updatePage('1');
+
+      this.routeHandler({
+        pathname: '/search',
+        query: {
+          q: keyword,
+          search_scope: this.state.field,
+        },
+      });
+      Actions.updateSpinner(false);
+    });
+  }
+
   render() {
     return (
       <form onKeyPress={this.triggerSubmit}>
-        <fieldset className={`nypl-omnisearch nypl-spinner-field ${this.state.spinning ? 'spinning' : ''}`}>
+        <fieldset
+          className={`nypl-omnisearch nypl-spinner-field ${this.state.spinning ? 'spinning' : ''}`}
+        >
           <SearchButton
             id="nypl-omni-button"
             type="submit"
@@ -120,8 +128,20 @@ class Search extends React.Component {
             onClick={this.submitSearchRequest}
           />
           <span className="nypl-omni-fields">
-            <label forHtml="search-by-field">Search in</label>
-            <select id="search-by-field"><option value="all">All fields</option><option value="title">Title</option><option value="contributor">Author/Contributor</option><option value="subject">Subject</option><option value="series">Series</option><option value="call_number">Call number</option></select>
+            <label htmlFor="search-by-field">Search in</label>
+            <select
+              id="search-by-field"
+              name="search-field-value"
+              onChange={this.onFieldChange}
+              value={this.state.field}
+            >
+              <option value="all">All fields</option>
+              <option value="title">Title</option>
+              <option value="contributor">Author/Contributor</option>
+              <option value="subject">Subject</option>
+              <option value="series">Series</option>
+              <option value="call_number">Call number</option>
+            </select>
           </span>
           <input
             type="text"

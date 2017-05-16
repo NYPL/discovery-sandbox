@@ -13,6 +13,7 @@ class Store {
       updatePage: Actions.updatePage,
       updateSortBy: Actions.updateSortBy,
       updateSpinner: Actions.updateSpinner,
+      updateField: Actions.updateField,
     });
 
     this.state = {
@@ -24,6 +25,7 @@ class Store {
       page: '1',
       sortBy: 'relevance',
       spinning: false,
+      field: 'all',
     };
   }
 
@@ -62,6 +64,10 @@ class Store {
 
   updateSpinner(data) {
     this.setState({ spinning: data });
+  }
+
+  updateField(data) {
+    this.setState({ field: data });
   }
 }
 
