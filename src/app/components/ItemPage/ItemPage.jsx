@@ -223,7 +223,7 @@ class ItemPage extends React.Component {
                     {record.placeOfPublication}
                     {record.publisher} {yearPublished}
                   </p>
-                  <p>{language && ' in ${language} (how to get there?)'}</p>
+                  {language && '<p> in ${language}</p>'}
                   <p className="nypl-item-use">{usageType}</p>
                 </div>
               </div>
