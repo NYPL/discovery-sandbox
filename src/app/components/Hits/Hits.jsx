@@ -49,6 +49,10 @@ class Hits extends React.Component {
             className="remove-keyword"
             aria-controls="results-region"
           >
+          <svg className="nypl-icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 10 10" aria-hidden="true">
+            <title>times.icon</title>
+            <polygon points="2.3,6.8 3.2,7.7 5,5.9 6.8,7.7 7.7,6.8 5.9,5 7.7,3.2 6.8,2.3 5,4.1 3.2,2.3 2.3,3.2 4.1,5 "></polygon>
+          </svg>
             <span className="hidden">remove keyword filter&nbsp;{keyword}</span>
           </button>
         </span>
