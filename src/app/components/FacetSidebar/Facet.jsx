@@ -86,7 +86,6 @@ class Facet extends React.Component {
     const sortQuery = getSortQuery(this.props.sortBy);
 
     ajaxCall(`/api?q=${this.props.keywords}${strSearch}${sortQuery}`, (response) => {
-      console.log('pickedFacet', pickedFacet);
       Actions.updateSearchResults(response.data.searchResults);
       Actions.updateFacets(response.data.facets);
       Actions.updateSelectedFacets(pickedFacet);
