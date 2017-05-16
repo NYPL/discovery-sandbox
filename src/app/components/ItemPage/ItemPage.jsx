@@ -10,7 +10,6 @@ import Breadcrumbs from '../Breadcrumbs/Breadcrumbs';
 import Search from '../Search/Search';
 import ItemHoldings from './ItemHoldings';
 import ItemDetails from './ItemDetails';
-import ItemOverview from './ItemOverview';
 import LibraryItem from '../../utils/item';
 // import EmbeddedDocument from './EmbeddedDocument';
 import Actions from '../../actions/Actions';
@@ -168,7 +167,7 @@ class ItemPage extends React.Component {
       { label: 'Author/Creator', field: 'authors', linkable: true },
       { label: 'Contributors', field: 'contributorLiteral', linkable: true },
       { label: 'Notes', field: 'note' },
-      { label: 'External links', field: 'idOclc', actionLabel: 'View in Worldcat', url: (id) => `http://worldcat.org/oclc/${id}` },
+      { label: 'External links', field: 'idOclc', url: (id) => `http://worldcat.org/oclc/${id}` },
     ];
 
     const itemDetails = this.getDisplayFields(record, detailFields);
