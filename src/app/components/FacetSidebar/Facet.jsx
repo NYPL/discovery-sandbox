@@ -12,6 +12,7 @@ import {
   ajaxCall,
   getSortQuery,
   getFacetParams,
+  getFieldParam,
 } from '../../utils/utils';
 
 const facetShowLimit = 4;
@@ -84,14 +85,15 @@ class Facet extends React.Component {
     }
 
     const sortQuery = getSortQuery(this.props.sortBy);
+    const fieldQuery = getFieldParam(this.state.field);
 
-    ajaxCall(`/api?q=${this.props.keywords}${strSearch}${sortQuery}`, (response) => {
+    ajaxCall(`/api?q=${this.props.keywords}${strSearch}${sortQuery}${fieldQuery}`, (response) => {
       Actions.updateSearchResults(response.data.searchResults);
       Actions.updateFacets(response.data.facets);
       Actions.updateSelectedFacets(pickedFacet);
       Actions.updatePage('1');
       this.routeHandler(
-        `/search?q=${encodeURIComponent(this.props.keywords)}${strSearch}${sortQuery}`
+        `/search?q=${encodeURIComponent(this.props.keywords)}${strSearch}${sortQuery}${fieldQuery}`
       );
       Actions.updateSpinner(false);
     });

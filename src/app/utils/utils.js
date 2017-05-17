@@ -154,6 +154,18 @@ const getFacetParams = (facets, field, value) => {
   return strSearch;
 };
 
+/**
+ * getFieldParam
+ * Get the search param from the field selected.
+ * @param {string} field Value of field to query against.
+ */
+const getFieldParam = (field) => {
+  if (field === 'all') {
+    return '';
+  }
+  return `&search_scope=${field}`;
+};
+
 function collapse(results) {
   const owiLookup = {};
   if (!results || !results.searchResults || !results.searchResults.itemListElement) return results
@@ -258,4 +270,5 @@ export {
   getFacetParams,
   createAppHistory,
   destructureQuery,
+  getFieldParam,
 };

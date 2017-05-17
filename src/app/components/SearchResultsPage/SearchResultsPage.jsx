@@ -17,6 +17,7 @@ const SearchResultsPage = (props) => {
     page,
     location,
     sortBy,
+    field,
   } = props;
   const facetList = facets && facets.itemListElement ? facets.itemListElement : [];
   const totalHits = searchResults ? searchResults.totalResults : 0;
@@ -81,6 +82,7 @@ const SearchResultsPage = (props) => {
                   page={page}
                   location={location}
                   sortBy={sortBy}
+                  field={field}
                 />)
             }
           </div>
