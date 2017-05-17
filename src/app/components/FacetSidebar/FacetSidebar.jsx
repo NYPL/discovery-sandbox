@@ -7,6 +7,7 @@ import {
 
 import Store from '../../stores/Store';
 import Facet from './Facet';
+import DateFacet from './DateFacet';
 
 class FacetSidebar extends React.Component {
   constructor(props) {
@@ -100,6 +101,11 @@ class FacetSidebar extends React.Component {
           id="filter-search"
           className={`nypl-search-form ${this.state.mobileView ? 'active' : ''}`}
         >
+        <DateFacet
+          totalHits={totalHits}
+          sortBy={sortBy}
+          keywords={keywords}
+        />
           {facetsElm}
         </form>
       </div>
