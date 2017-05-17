@@ -63,7 +63,8 @@ class FacetSidebar extends React.Component {
 
     if (facets.length) {
       facetsElm = orderedFacets.map((facet, i) => {
-        if (facet.values.length < 1) {
+        if (!facet) return null;
+        if (facet && facet.values && facet.values.length < 1) {
           return null;
         }
 
