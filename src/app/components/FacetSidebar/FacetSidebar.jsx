@@ -55,7 +55,7 @@ class FacetSidebar extends React.Component {
 
     const orderedFacets = [
       _findWhere(facets, { id: 'materialType' }),
-      _findWhere(facets, { id: 'subject' }),
+      _findWhere(facets, { id: 'subjectLiteral' }),
       _findWhere(facets, { id: 'issuance' }),
       _findWhere(facets, { id: 'publisher' }),
       _findWhere(facets, { id: 'language' }),
