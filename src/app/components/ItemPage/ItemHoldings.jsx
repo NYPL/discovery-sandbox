@@ -32,7 +32,7 @@ class ItemHoldings extends React.Component {
                     >
                       Request
                     </a>
-                  : <span>Unavailable</span>
+                  : <span className="nypl-item-unavailable">Unavailable</span>
                 }
               </span>
               <span dangerouslySetInnerHTML={this.createMarkup(h.callNumber)}></span>
