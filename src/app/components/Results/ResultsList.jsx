@@ -44,7 +44,9 @@ class ResultsList extends React.Component {
 
   getBibTitle(bib) {
     if (!bib.titleDisplay) {
-      return bib.title ? bib.title[0] : '';
+      const author = bib.creatorLiteral && bib.creatorLiteral.length ?
+        ` / ${bib.creatorLiteral[0]}` : '';
+      return bib.title && bib.title.length ? `${bib.title[0]}${author}` : '';
     }
     return bib.titleDisplay;
   }
