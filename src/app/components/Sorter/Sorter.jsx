@@ -6,6 +6,7 @@ import Actions from '../../actions/Actions';
 import {
   ajaxCall,
   getSortQuery,
+  getFacetFilterParam,
 } from '../../utils/utils';
 
 const sortingOpts = [
@@ -51,11 +52,13 @@ class Sorter extends React.Component {
     const query = this.props.location.query.q;
     const page = this.props.page !== '1' ? `&page=${this.props.page}` : '';
     const sortQuery = getSortQuery(sortValue);
-    ajaxCall(`/api?q=${query}${page}${sortQuery}`, (response) => {
+    const filterQuery = getFacetFilterParam(this.props.selectedFacets);
+    ajaxCall(`/api?q=${query}${page}${sortQuery}${filterQuery}`, (response) => {
       Actions.updateSearchResults(response.data.searchResults);
       Actions.updateSortBy(sortValue);
       this.setState({ sortValue });
-      this.context.router.push(`/search?q=${encodeURIComponent(query)}${page}${sortQuery}`);
+      this.context.router
+        .push(`/search?q=${encodeURIComponent(query)}${filterQuery}${page}${sortQuery}`);
     });
     this.setState({ active: false });
   }
@@ -103,6 +106,7 @@ Sorter.propTypes = {
   sortBy: React.PropTypes.string,
   location: React.PropTypes.object,
   page: React.PropTypes.string,
+  selectedFacets: React.PropTypes.object,
 };
 
 Sorter.contextTypes = {

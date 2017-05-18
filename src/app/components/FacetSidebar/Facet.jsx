@@ -13,6 +13,7 @@ import {
   getSortQuery,
   getFacetParams,
   getFieldParam,
+  getFacetFilterParam,
 } from '../../utils/utils';
 
 const facetShowLimit = 4;
@@ -81,19 +82,18 @@ class Facet extends React.Component {
 
       this.setState({ [field]: selectedFacetObj });
       pickedFacet[field] = selectedFacetObj;
-      strSearch = getFacetParams(pickedFacet, field, value);
+      strSearch = getFacetFilterParam(pickedFacet, field, value);
     }
 
-    const sortQuery = getSortQuery(this.props.sortBy);
     const fieldQuery = getFieldParam(this.state.field);
 
-    ajaxCall(`/api?q=${this.props.keywords}${strSearch}${sortQuery}${fieldQuery}`, (response) => {
+    ajaxCall(`/api?q=${this.props.keywords}${strSearch}${fieldQuery}`, (response) => {
       Actions.updateSearchResults(response.data.searchResults);
       Actions.updateFacets(response.data.facets);
       Actions.updateSelectedFacets(pickedFacet);
       Actions.updatePage('1');
       this.routeHandler(
-        `/search?q=${encodeURIComponent(this.props.keywords)}${strSearch}${sortQuery}${fieldQuery}`
+        `/search?q=${encodeURIComponent(this.props.keywords)}${strSearch}${fieldQuery}`
       );
       Actions.updateSpinner(false);
     });
@@ -240,7 +240,6 @@ class Facet extends React.Component {
 Facet.propTypes = {
   facet: React.PropTypes.object,
   keywords: React.PropTypes.string,
-  sortBy: React.PropTypes.string,
   totalHits: React.PropTypes.number,
   selectedValue: React.PropTypes.string,
 };

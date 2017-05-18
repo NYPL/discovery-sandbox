@@ -48,7 +48,6 @@ class FacetSidebar extends React.Component {
     const {
       facets,
       totalHits,
-      sortBy,
       keywords,
     } = this.props;
     let facetsElm = null;
@@ -77,7 +76,6 @@ class FacetSidebar extends React.Component {
             facet={facet}
             totalHits={totalHits}
             selectedValue={selectedValue}
-            sortBy={sortBy}
             keywords={keywords}
           />
         );
@@ -111,7 +109,6 @@ FacetSidebar.propTypes = {
   facets: React.PropTypes.array,
   keywords: React.PropTypes.string,
   selectedFacets: React.PropTypes.object,
-  sortBy: React.PropTypes.string,
   className: React.PropTypes.string,
   totalHits: React.PropTypes.number,
 };

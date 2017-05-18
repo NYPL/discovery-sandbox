@@ -9,9 +9,12 @@ import PatronStore from '../../stores/PatronStore.js';
 import {
   ajaxCall,
   createAppHistory,
-  destructureQuery,
+  destructureFilters,
 } from '../../utils/utils.js';
 import Actions from '../../actions/Actions.js';
+import {
+  pick as _pick,
+} from 'underscore';
 
 const history = createAppHistory();
 
@@ -25,17 +28,20 @@ history.listen(location => {
 
   const qParameter = query.q;
 
+  const urlFilters = _pick(query, (value, key) => {
+    if (key.indexOf('filter') !== -1) {
+      return value;
+    }
+    return null;
+  });
+
   if (action === 'POP' && search) {
     ajaxCall(`/api${search}`, (response) => {
-      const {
-        q,
-        selectedFacets,
-      } = destructureQuery(qParameter, response.data.facets);
-
+      const selectedFacets = destructureFilters(urlFilters, response.data.facets);
       Actions.updateSelectedFacets(selectedFacets);
       Actions.updateFacets(response.data.facets);
       Actions.updateSearchResults(response.data.searchResults);
-      Actions.updateSearchKeywords(q);
+      Actions.updateSearchKeywords(qParameter);
     });
   }
 });

@@ -48,13 +48,9 @@ function Search(query, page, sortBy, order, field, cb, errorcb) {
   const queryString = `${apiBase}/discovery/resources${apiQuery}`;
   const apiCall = axios.get(queryString);
 
-  console.log(queryString);
-
   axios
     .all([getFacets(query), apiCall])
     .then(axios.spread((facets, response) => {
-      // console.log(facets);
-      // console.log(response);
       cb(facets.data, response.data, page)
     }))
     .catch(error => {
