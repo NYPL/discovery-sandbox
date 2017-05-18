@@ -19,25 +19,36 @@ class ItemHoldings extends React.Component {
     return (
       <ul>
         {
-          holdings.map((h, i) => (
-            <li
-              key={i}
-              className={`${h.availability} ${i >= maxDisplay && collapsed ? 'collapsed' : ''}`}
-            >
-              <span>
-                {
-                  h.url && h.url.length ?
-                    <a
-                      href={h.url}
-                    >
-                      Request
-                    </a>
-                  : <span>Unavailable</span>
-                }
-              </span>
-              <span dangerouslySetInnerHTML={this.createMarkup(h.callNumber)}></span>
-            </li>
-          ))
+          holdings.map((h, i) => {
+            let itemLink;
+            let itemDisplay = null;
+
+            if (h.isElectronicResource) {
+              itemLink = <a href={h.url}>View Online</a>;
+            } else {
+              itemLink = h.url && h.url.length ?
+                <a href={h.url}>Request</a> :
+                <span>Unavailable</span>;
+            }
+
+            if (h.callNumber) {
+              itemDisplay = <span dangerouslySetInnerHTML={this.createMarkup(h.callNumber)}></span>;
+            } else if (h.isElectronicResource) {
+              itemDisplay = <span>{h.location}</span>;
+            }
+
+            return (
+              <li
+                key={i}
+                className={`${h.availability} ${i >= maxDisplay && collapsed ? 'collapsed' : ''}`}
+              >
+                <span>
+                  {itemLink}
+                </span>
+                {itemDisplay}
+              </li>
+            )
+          })
         }
       </ul>
     );

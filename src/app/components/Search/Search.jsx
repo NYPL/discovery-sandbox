@@ -101,6 +101,7 @@ class Search extends React.Component {
       _forEach(response.data.facets.itemListElement, (facet) => {
         newFacets[facet.id] = { id: '', value: '' };
       });
+      Actions.updateSortBy('relevance');
       Actions.updateSelectedFacets(newFacets);
       Actions.updatePage('1');
 

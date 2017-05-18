@@ -11,7 +11,6 @@ import Search from '../Search/Search';
 import ItemHoldings from './ItemHoldings';
 import ItemDetails from './ItemDetails';
 import LibraryItem from '../../utils/item';
-// import EmbeddedDocument from './EmbeddedDocument';
 import Actions from '../../actions/Actions';
 import { ajaxCall } from '../../utils/utils';
 
@@ -229,7 +228,6 @@ class ItemPage extends React.Component {
             </div>
             <div className="nypl-column-one-quarter nypl-item-holdings">
               <ItemHoldings
-                path={this.props.location.search}
                 holdings={holdings}
                 title={`${record.numAvailable} item${record.numAvailable === 1 ? '' : 's'} associated with this record:`}
               />

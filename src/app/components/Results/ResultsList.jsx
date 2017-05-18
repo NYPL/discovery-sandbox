@@ -86,9 +86,9 @@ class ResultsList extends React.Component {
           </Link>
         </h2>
         <div className="nypl-results-item-description">
-        <span className="nypl-results-media">{ materialType }</span>
-        <span className="nypl-results-room">{ location }</span>
-        <span className="nypl-results-use">{ usageType }</span>
+          <span className="nypl-results-media">{materialType}</span>
+          <span className="nypl-results-room">{location}</span>
+          <span className="nypl-results-use">{usageType}</span>
         </div>
       </li>
     );
