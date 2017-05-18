@@ -119,6 +119,21 @@ const getSortQuery = (sortBy) => {
 };
 
 /**
+ * getFacetFilterParam
+ * Get the search params from the facet values.
+ * @param {object} facets Key/value pair of facet and the selected value.
+ */
+const getFacetFilterParam = (facets, field, value) => {
+  let strSearch = '';
+
+  if (field && value) {
+    strSearch = `&filter[${field}]=${value}`;
+  }
+
+  return strSearch;
+};
+
+/**
  * getFacetParams
  * Get the search params from the facet values.
  * @param {object} facets Key/value pair of facet and the selected value.
@@ -160,7 +175,7 @@ const getFacetParams = (facets, field, value) => {
  * @param {string} field Value of field to query against.
  */
 const getFieldParam = (field) => {
-  if (field === 'all') {
+  if (!field || field === 'all') {
     return '';
   }
   return `&search_scope=${field}`;
@@ -271,4 +286,5 @@ export {
   createAppHistory,
   destructureQuery,
   getFieldParam,
+  getFacetFilterParam,
 };

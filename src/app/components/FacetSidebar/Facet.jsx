@@ -13,6 +13,7 @@ import {
   getSortQuery,
   getFacetParams,
   getFieldParam,
+  getFacetFilterParam,
 } from '../../utils/utils';
 
 const facetShowLimit = 4;
@@ -81,9 +82,10 @@ class Facet extends React.Component {
 
       this.setState({ [field]: selectedFacetObj });
       pickedFacet[field] = selectedFacetObj;
-      strSearch = getFacetParams(pickedFacet, field, value);
+      // strSearch = getFacetParams(pickedFacet, field, value);
+      strSearch = getFacetFilterParam(pickedFacet, field, value);
     }
-
+// console.log(this.state.field)
     const sortQuery = getSortQuery(this.props.sortBy);
     const fieldQuery = getFieldParam(this.state.field);
 
