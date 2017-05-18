@@ -8,7 +8,6 @@ import {
 import {
   mapObject as _mapObject,
   findWhere as _findWhere,
-  findIndex as _findIndex,
   forEach as _forEach,
 } from 'underscore';
 
@@ -44,62 +43,26 @@ const createAppHistory = () => {
   return useQueries(createMemoryHistory)();
 };
 
-/**
- * createAppHistory
- * Destructure the search keywords from the facet string. The function then returns the full
- * search keywords along with an object of the selected facets with their API values. In the
- * following example, the owner id of "orgs:1000" returns the human readable label of
- * "Stephen A. Schwarzman Building" from the API.
- * Queries can be in the following format:
- *   'alexander hamilton owner:"orgs:1000"'
- *   'locofocos'
- *   'war subject:"World War, 1914-1918." date:"2000"'
- * @param {string} query The full search query.
- * @param {object} apiFacets The facets from the API.
- */
-const destructureQuery = (query, apiFacets) => {
-  const colonIndex = query.indexOf(':') !== -1 ? query.indexOf(':') : '';
-  const facetStartingIndex = colonIndex ? query.lastIndexOf(' ', colonIndex) : '';
-  let q = query;
-  let facetsString = '';
-
-  if (facetStartingIndex) {
-    q = query.substring(0, facetStartingIndex);
-    facetsString = query.substring(facetStartingIndex);
-  }
-
-  // console.log(q, facetsString);
+function destructureFilters(filters, apiFacet) {
   const selectedFacets = {};
-  const facetArray = facetsString ? facetsString.split('" ') : [];
-  _forEach(facetArray, str => {
-    if (str.charAt(str.length - 1) !== '"') str += '"';
+  const facetArray = apiFacet.itemListElement;
+  _forEach(filters, (value, key) => {
+    const id = key.substring(7, key.length - 1);
 
-    const facet = str.indexOf(':"') !== -1 ? str.trim().split(':"') : str.trim().split(':');
-    const field = facet[0];
-    const value = facet[1].substring(0, facet[1].length - 1);
-    // Find the index where the field exists in the list of facets from the API
-    const index = _findIndex(apiFacets.itemListElement, { field });
-    // If the index exists, try to find the facet value from the API
-    if (apiFacets.itemListElement[index]) {
-      const findFacet = _findWhere(apiFacets.itemListElement[index].values, { value });
+    const facetObjFromAPI = _findWhere(facetArray, { id });
 
-      selectedFacets[field] = {
-        id: findFacet ? findFacet.value : value,
-        value: findFacet ? (findFacet.label || findFacet.value) : value,
-      };
-    } else {
-      selectedFacets[field] = {
-        id: value,
-        value,
+    if (facetObjFromAPI.values && facetObjFromAPI.values.length) {
+      const facet = _findWhere(facetObjFromAPI.values, { value });
+
+      selectedFacets[id] = {
+        id: facet.value,
+        value: facet.label || facet.value,
       };
     }
   });
 
-  return {
-    q,
-    selectedFacets,
-  };
-};
+  return selectedFacets;
+}
 
 /**
  * getSortQuery
@@ -126,8 +89,14 @@ const getSortQuery = (sortBy) => {
 const getFacetFilterParam = (facets, field, value) => {
   let strSearch = '';
 
-  if (field && value) {
-    strSearch = `&filter[${field}]=${value}`;
+  // console.log(facets);
+  if (facets) {
+    _mapObject(facets, (val, key) => {
+      // console.log(val, key);
+      if (val.value !== '') {
+        strSearch = `&filter[${key}]=${val.id}`;
+      }
+    });
   }
 
   return strSearch;
@@ -284,7 +253,7 @@ export {
   getSortQuery,
   getFacetParams,
   createAppHistory,
-  destructureQuery,
   getFieldParam,
   getFacetFilterParam,
+  destructureFilters,
 };
