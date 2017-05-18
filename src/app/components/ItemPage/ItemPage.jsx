@@ -125,7 +125,7 @@ class ItemPage extends React.Component {
 
   render() {
     const record = this.props.bib ? this.props.bib : this.props.item;
-    const title = record.title[0];
+    const title = record.title && record.title.length ? record.title[0] : '';
     const authors = record.contributor && record.contributor.length ?
       record.contributor.map((author, i) => (
         <span key={i}>
@@ -229,7 +229,7 @@ class ItemPage extends React.Component {
             <div className="nypl-column-one-quarter nypl-item-holdings">
               <ItemHoldings
                 holdings={holdings}
-                title={`${record.numAvailable} item${record.numAvailable === 1 ? '' : 's'} associated with this record:`}
+                title={`${record.numItems} item${record.numItems === 1 ? '' : 's'} associated with this record:`}
               />
             </div>
 
