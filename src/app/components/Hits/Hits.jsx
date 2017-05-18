@@ -11,7 +11,7 @@ import Store from '../../stores/Store.js';
 import {
   ajaxCall,
   getSortQuery,
-  getFacetParams,
+  getFacetFilterParam,
 } from '../../utils/utils.js';
 
 class Hits extends React.Component {
@@ -26,6 +26,7 @@ class Hits extends React.Component {
     this.getKeyword = this.getKeyword.bind(this);
     this.onChange = this.onChange.bind(this);
     this.getFacetElements = this.getFacetElements.bind(this);
+    this.getFacetLabel = this.getFacetLabel.bind(this);
   }
 
   componentDidMount() {
@@ -62,11 +63,20 @@ class Hits extends React.Component {
     return null;
   }
 
+  getFacetLabel(field) {
+    if (field === 'materialType') {
+      return 'Material Type';
+    } else if (field === 'subjectLiteral') {
+      return 'Subject';
+    }
+    return field.charAt(0).toUpperCase() + field.slice(1);
+  }
+
   getFacetElements(facets) {
     if (!facets.length) return null;
 
     return facets.map((facet, i) => (
-      <span key={i} className="nypl-facet">&nbsp;with {facet.key} <strong>{facet.val.value}</strong>
+      <span key={i} className="nypl-facet">&nbsp;with {this.getFacetLabel(facet.key)} <strong>{facet.val.value}</strong>
         <button
           onClick={() => this.removeFacet(facet.key)}
           className="remove-facet"
@@ -86,14 +96,13 @@ class Hits extends React.Component {
     Actions.updateSpinner(true);
     Actions.updateSearchKeywords('');
 
-    const sortQuery = getSortQuery(this.props.sortBy);
-    const strSearch = getFacetParams(this.props.facets);
+    const strSearch = getFacetFilterParam(this.props.facets);
 
-    ajaxCall(`/api?q=${strSearch}${sortQuery}`, (response) => {
+    ajaxCall(`/api?q=${strSearch}`, (response) => {
       Actions.updateSearchResults(response.data.searchResults);
       Actions.updateFacets(response.data.facets);
       Actions.updatePage('1');
-      this.context.router.push(`/search?q=${strSearch}${sortQuery}`);
+      this.context.router.push(`/search?q=${strSearch}`);
       Actions.updateSpinner(false);
     });
   }
@@ -102,14 +111,13 @@ class Hits extends React.Component {
     Actions.updateSpinner(true);
     Actions.removeFacet(field);
 
-    const sortQuery = getSortQuery(this.props.sortBy);
-    const strSearch = getFacetParams(this.props.facets, field);
+    const strSearch = getFacetFilterParam(this.props.facets);
 
-    ajaxCall(`/api?q=${this.props.query}${strSearch}${sortQuery}`, (response) => {
+    ajaxCall(`/api?q=${this.props.query}${strSearch}`, (response) => {
       Actions.updateSearchResults(response.data.searchResults);
       Actions.updateFacets(response.data.facets);
       Actions.updatePage('1');
-      this.context.router.push(`/search?q=${this.props.query}${strSearch}${sortQuery}`);
+      this.context.router.push(`/search?q=${this.props.query}${strSearch}`);
       Actions.updateSpinner(false);
     });
   }
@@ -153,7 +161,7 @@ class Hits extends React.Component {
         aria-atomic="true"
         role="presentation"
       >
-        { activeResultsCount }
+        {activeResultsCount}
       </div>
     );
   }
@@ -163,7 +171,6 @@ Hits.propTypes = {
   hits: React.PropTypes.number,
   query: React.PropTypes.string,
   facets: React.PropTypes.object,
-  sortBy: React.PropTypes.string,
 };
 
 Hits.defaultProps = {

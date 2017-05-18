@@ -50,7 +50,6 @@ const SearchResultsPage = (props) => {
             facets={facetList}
             selectedFacets={selectedFacets}
             keywords={searchKeywords}
-            sortBy={sortBy}
             className="nypl-column-one-quarter"
             totalHits={totalHits}
           />
@@ -71,7 +70,16 @@ const SearchResultsPage = (props) => {
               sortBy={sortBy}
             />
 
-            {totalHits !== 0 && (<Sorter sortBy={sortBy} location={location} page={page} />)}
+            {
+              totalHits !== 0 && (
+                <Sorter
+                  sortBy={sortBy}
+                  location={location}
+                  page={page}
+                  selectedFacets={selectedFacets}
+                />
+              )
+            }
 
             <ResultList results={results} query={searchKeywords} />
 
@@ -83,6 +91,7 @@ const SearchResultsPage = (props) => {
                   location={location}
                   sortBy={sortBy}
                   field={field}
+                  selectedFacets={selectedFacets}
                 />)
             }
           </div>
@@ -100,6 +109,7 @@ SearchResultsPage.propTypes = {
   page: React.PropTypes.string,
   location: React.PropTypes.object,
   sortBy: React.PropTypes.string,
+  field: React.PropTypes.string,
 };
 
 export default SearchResultsPage;
