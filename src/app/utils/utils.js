@@ -51,7 +51,7 @@ function destructureFilters(filters, apiFacet) {
 
     const facetObjFromAPI = _findWhere(facetArray, { id });
 
-    if (facetObjFromAPI.values && facetObjFromAPI.values.length) {
+    if (facetObjFromAPI && facetObjFromAPI.values && facetObjFromAPI.values.length) {
       const facet = _findWhere(facetObjFromAPI.values, { value });
 
       selectedFacets[id] = {
@@ -94,7 +94,7 @@ const getFacetFilterParam = (facets, field, value) => {
     _mapObject(facets, (val, key) => {
       // console.log(val, key);
       if (val.value !== '') {
-        strSearch = `&filter[${key}]=${val.id}`;
+        strSearch = `&filters[${key}]=${val.id}`;
       }
     });
   }
@@ -144,7 +144,7 @@ const getFacetParams = (facets, field, value) => {
  * @param {string} field Value of field to query against.
  */
 const getFieldParam = (field) => {
-  if (!field || field === 'all') {
+  if (!field || field.trim() === 'all') {
     return '';
   }
   return `&search_scope=${field}`;

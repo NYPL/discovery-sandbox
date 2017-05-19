@@ -32,7 +32,7 @@ function getFacets(query) {
   return axios.get(`${apiBase}/discovery/resources/aggregations?q=${query}`);
 }
 
-function Search(query, page, sortBy, order, field, cb, errorcb) {
+function Search(query, page, sortBy, order, field, filters = '', cb, errorcb) {
   let sortQuery = '';
   let fieldQuery = '';
 
@@ -44,7 +44,7 @@ function Search(query, page, sortBy, order, field, cb, errorcb) {
     fieldQuery = `&search_scope=${field}`
   }
 
-  const apiQuery = `?q=${query}&per_page=50&page=${page}${sortQuery}${fieldQuery}`;
+  const apiQuery = `?q=${query}&per_page=50&page=${page}${sortQuery}${fieldQuery}${filters}`;
   const queryString = `${apiBase}/discovery/resources${apiQuery}`;
   const apiCall = axios.get(queryString);
 
@@ -66,6 +66,12 @@ function AjaxSearch(req, res) {
   const sortBy = req.query.sort || '';
   const order = req.query.sort_direction || '';
   const field = req.query.search_scope || '';
+  const filters = req.query.filters || '';
+
+  let filterString = '';
+  _forEach(filters, (value, key) => {
+    filterString += `&filters[${key}]=${value}`;
+  });
 
   Search(
     q,
@@ -73,6 +79,7 @@ function AjaxSearch(req, res) {
     sortBy,
     order,
     field,
+    filterString,
     (facets, searchResults, page) => res.json({ facets, searchResults, page }),
     (error) => res.json(error)
   );
@@ -103,6 +110,7 @@ function ServerSearch(req, res, next) {
     sortBy,
     order,
     fieldQuery,
+    '',
     (facets, data, page) => {
       const selectedFacets = {};
 

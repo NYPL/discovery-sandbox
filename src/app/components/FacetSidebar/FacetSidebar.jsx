@@ -71,6 +71,25 @@ class FacetSidebar extends React.Component {
         const field = facet.field;
         const selectedValue = this.state[field] ? this.state[field].id : '';
 
+        if (i === 2) {
+          return (
+            <span>
+              <DateFacet
+                totalHits={totalHits}
+                keywords={keywords}
+                selectedFacets={this.props.selectedFacets}
+              />
+              <Facet
+                key={i}
+                facet={facet}
+                totalHits={totalHits}
+                selectedValue={selectedValue}
+                keywords={keywords}
+              />
+            </span>
+          )
+        }
+
         return (
           <Facet
             key={i}
@@ -99,11 +118,6 @@ class FacetSidebar extends React.Component {
           id="filter-search"
           className={`nypl-search-form ${this.state.mobileView ? 'active' : ''}`}
         >
-        <DateFacet
-          totalHits={totalHits}
-          sortBy={sortBy}
-          keywords={keywords}
-        />
           {facetsElm}
         </form>
       </div>
