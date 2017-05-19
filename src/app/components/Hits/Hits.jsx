@@ -1,16 +1,12 @@
 import React from 'react';
 
-import {
-  mapObject as _mapObject,
-  extend as _extend,
-} from 'underscore';
+import { mapObject as _mapObject } from 'underscore';
 
 import Actions from '../../actions/Actions.js';
 import Store from '../../stores/Store.js';
 
 import {
   ajaxCall,
-  getSortQuery,
   getFacetFilterParam,
 } from '../../utils/utils.js';
 
@@ -18,9 +14,7 @@ class Hits extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = _extend({
-      spinning: false,
-    }, Store.getState());
+    this.state = Store.getState();
 
     this.removeFacet = this.removeFacet.bind(this);
     this.getKeyword = this.getKeyword.bind(this);
@@ -38,7 +32,7 @@ class Hits extends React.Component {
   }
 
   onChange() {
-    this.setState(_extend(this.state, Store.getState()));
+    this.setState(Store.getState());
   }
 
   getKeyword(keyword) {

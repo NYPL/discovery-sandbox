@@ -142,7 +142,7 @@ class ItemPage extends React.Component {
 
   render() {
     const record = this.props.bib ? this.props.bib : this.props.item;
-    const title = record.title[0];
+    const title = record.title && record.title.length ? record.title[0] : '';
     const authors = record.contributor && record.contributor.length ?
       record.contributor.map((author, i) => (
         <span key={i}>
@@ -230,23 +230,22 @@ class ItemPage extends React.Component {
                 <div className="nypl-item-info">
                   <p>
                     <span className="nypl-item-media">{materialType}</span>
-                    {language && ' in ${language}'}
+                    {language && ` in ${language}`}
                   </p>
                   <p>{record.extent} {record.dimensions}</p>
                   <p>
                     {record.placeOfPublication}
                     {record.publisher} {yearPublished}
                   </p>
-                  {language && '<p> in ${language}</p>'}
                   <p className="nypl-item-use">{usageType}</p>
                 </div>
               </div>
             </div>
             <div className="nypl-column-one-quarter nypl-item-holdings">
               <ItemHoldings
-                path={this.props.location.search}
                 holdings={holdings}
-                title={`${record.numAvailable} item${record.numAvailable === 1 ? '' : 's'} associated with this record:`}
+                title={`${record.numItems} item${record.numItems === 1 ? '' : 's'}
+                  associated with this record:`}
               />
             </div>
 

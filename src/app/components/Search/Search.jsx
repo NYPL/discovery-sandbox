@@ -109,6 +109,7 @@ class Search extends React.Component {
       Actions.updateSearchResults(response.data.searchResults);
       Actions.updateFacets(response.data.facets);
       Actions.updateSelectedFacets(getDefaultFacets());
+      Actions.updateSortBy('relevance');
       Actions.updatePage('1');
 
       const routeObj = {
