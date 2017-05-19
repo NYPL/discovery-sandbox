@@ -68,6 +68,8 @@ class Hits extends React.Component {
       return 'Material Type';
     } else if (field === 'subjectLiteral') {
       return 'Subject';
+    } else if (field.indexOf('date') !== -1) {
+      return 'Date';
     }
     return field.charAt(0).toUpperCase() + field.slice(1);
   }

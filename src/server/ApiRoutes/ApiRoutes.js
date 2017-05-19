@@ -47,7 +47,7 @@ function Search(query, page, sortBy, order, field, filters = '', cb, errorcb) {
   const apiQuery = `?q=${query}&per_page=50&page=${page}${sortQuery}${fieldQuery}${filters}`;
   const queryString = `${apiBase}/discovery/resources${apiQuery}`;
   const apiCall = axios.get(queryString);
-console.log(apiQuery)
+
   axios
     .all([getFacets(query), apiCall])
     .then(axios.spread((facets, response) => {

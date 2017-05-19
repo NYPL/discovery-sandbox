@@ -8,7 +8,7 @@ import Actions from '../../actions/Actions';
 import Store from '../../stores/Store';
 import {
   ajaxCall,
-  getFacetParams,
+  getFacetFilterParam,
   getFieldParam,
 } from '../../utils/utils';
 
@@ -45,33 +45,45 @@ class DateFacet extends React.Component {
   }
 
   inputChange(e) {
+    const value = (e.target.value).replace(/[a-zA-Z]/g, '');
+
     this.setState({
-      [e.target.name]: e.target.value,
+      [e.target.name]: value > 4 ? value.slice(0, 4) : value,
     });
   }
+
   triggerSubmit(event) {
     if (event && event.charCode === 13) {
       Actions.updateSpinner(true);
-      let dateFilters = '';
+      const updatedFacets = _extend({}, this.props.selectedFacets);
 
       if (this.state.dateAfter) {
-        dateFilters = `&filters[dateAfter]=${this.state.dateAfter}`;
+        updatedFacets.dateAfter = {
+          id: this.state.dateAfter,
+          value: `after ${this.state.dateAfter}`,
+        };
       }
       if (this.state.dateBefore) {
-        dateFilters += `&filters[dateBefore]=${this.state.dateBefore}`;
+        updatedFacets.dateBefore = {
+          id: this.state.dateBefore,
+          value: `before ${this.state.dateBefore}`,
+        };
       }
 
+      const facetQuery = getFacetFilterParam(updatedFacets);
       const fieldQuery = getFieldParam(this.state.field);
 
-      ajaxCall(`/api?q=${this.props.keywords}${dateFilters}${fieldQuery}`, (response) => {
-        Actions.updateSearchResults(response.data.searchResults);
-        Actions.updateFacets(response.data.facets);
-        Actions.updatePage('1');
-        this.routeHandler(
-          `/search?q=${encodeURIComponent(this.props.keywords)}${dateFilters}${fieldQuery}`
-        );
-        Actions.updateSpinner(false);
-      });
+      ajaxCall(`/api?q=${this.props.keywords}${facetQuery}${fieldQuery}`,
+        (response) => {
+          Actions.updateSearchResults(response.data.searchResults);
+          Actions.updateSelectedFacets(updatedFacets);
+          Actions.updateFacets(response.data.facets);
+          Actions.updatePage('1');
+          this.routeHandler(
+            `/search?q=${encodeURIComponent(this.props.keywords)}${facetQuery}${fieldQuery}`
+          );
+          Actions.updateSpinner(false);
+        });
     }
   }
 
@@ -91,6 +103,7 @@ class DateFacet extends React.Component {
             onChange={this.inputChange}
             value={this.state.dateAfter}
             onKeyPress={this.triggerSubmit}
+            maxLength="4"
           />
         </div>
         <div className="nypl-text-field">
@@ -104,6 +117,7 @@ class DateFacet extends React.Component {
             onChange={this.inputChange}
             value={this.state.dateBefore}
             onKeyPress={this.triggerSubmit}
+            maxLength="4"
           />
         </div>
       </div>

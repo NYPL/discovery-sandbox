@@ -144,7 +144,7 @@ const getFacetParams = (facets, field, value) => {
  * @param {string} field Value of field to query against.
  */
 const getFieldParam = (field) => {
-  if (!field || field === 'all') {
+  if (!field || field.trim() === 'all') {
     return '';
   }
   return `&search_scope=${field}`;
