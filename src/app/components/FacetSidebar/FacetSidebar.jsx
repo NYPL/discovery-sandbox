@@ -7,6 +7,7 @@ import {
 
 import Store from '../../stores/Store';
 import Facet from './Facet';
+import DateFacet from './DateFacet';
 
 class FacetSidebar extends React.Component {
   constructor(props) {
@@ -69,6 +70,25 @@ class FacetSidebar extends React.Component {
 
         const field = facet.field;
         const selectedValue = this.state[field] ? this.state[field].id : '';
+
+        if (i === 2) {
+          return (
+            <span>
+              <DateFacet
+                totalHits={totalHits}
+                keywords={keywords}
+                selectedFacets={this.props.selectedFacets}
+              />
+              <Facet
+                key={i}
+                facet={facet}
+                totalHits={totalHits}
+                selectedValue={selectedValue}
+                keywords={keywords}
+              />
+            </span>
+          )
+        }
 
         return (
           <Facet

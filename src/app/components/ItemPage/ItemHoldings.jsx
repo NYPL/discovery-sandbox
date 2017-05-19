@@ -28,7 +28,7 @@ class ItemHoldings extends React.Component {
             } else {
               itemLink = h.url && h.url.length ?
                 <a href={h.url}>Request</a> :
-                <span>Unavailable</span>;
+                <span className="nypl-item-unavailable">Unavailable</span>;
             }
 
             if (h.callNumber) {
@@ -47,7 +47,7 @@ class ItemHoldings extends React.Component {
                 </span>
                 {itemDisplay}
               </li>
-            )
+            );
           })
         }
       </ul>

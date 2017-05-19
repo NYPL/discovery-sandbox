@@ -7,7 +7,6 @@ import {
 
 import Actions from '../../actions/Actions';
 import LibraryItem from '../../utils/item';
-import ResultItems from './ResultItems';
 import { ajaxCall } from '../../utils/utils';
 
 class ResultsList extends React.Component {
@@ -43,14 +42,23 @@ class ResultsList extends React.Component {
     );
   }
 
+  getBibTitle(bib) {
+    if (!bib.titleDisplay) {
+      const author = bib.creatorLiteral && bib.creatorLiteral.length ?
+        ` / ${bib.creatorLiteral[0]}` : '';
+      return bib.title && bib.title.length ? `${bib.title[0]}${author}` : '';
+    }
+    return bib.titleDisplay;
+  }
+
   getBib(bib, author, i) {
-    if (!bib.result || _isEmpty(bib.result)) return null;
+    if (!bib.result || _isEmpty(bib.result) || !bib.result.title) return null;
 
     const result = bib.result;
     // const collapsedBibs = bib.collapsedBibs && bib.collapsedBibs.length ?
     //   bib.collapsedBibs : [];
     // const collapsedBibsElements = this.getCollapsedBibs(collapsedBibs);
-    const itemTitle = result.title ? result.title[0] : '';
+    const itemTitle = this.getBibTitle(result);
     const itemImage = result.btCover ? (
       <div className="result-image">
         <img src={result.btCover} alt={itemTitle} />

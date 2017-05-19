@@ -81,9 +81,10 @@ class ItemPage extends React.Component {
 
       // list of links
       } else if (fieldValue['@id']) {
-        detailFields.push(
-          { term: f.label,
-            definition: <ul>{record[f.field].map((obj, i) => (
+        detailFields.push({
+          term: f.label,
+          definition: (
+            <ul>{record[f.field].map((obj, i) => (
               <li key={i}>
                 <a
                   onClick={e => this.onClick(e, `${f.field}:"${obj['@id']}"`)}
@@ -91,32 +92,43 @@ class ItemPage extends React.Component {
                   href={`/search?q=${encodeURIComponent(`${f.field}:"${obj['@id']}"`)}`}
                 >{obj.prefLabel}</a>
               </li>))}
-            </ul>,
-          },
-        );
-
+            </ul>),
+        });
       // list of links
       } else if (f.linkable) {
-        detailFields.push(
-          { term: f.label,
-            definition: <ul>{record[f.field].map((value, i) => (
-              <li key={i}>
-                <a
-                  onClick={e => this.onClick(e, `${f.field}:"${value}"`)}
-                  title={`Make a new search for ${f.label}: "${value}"`}
-                  href={`/search?q=${encodeURIComponent(`${f.field}:"${value}"`)}`}
-                >{value}</a>
-              </li>))}
-            </ul>,
-          },
-        );
+        if (f.field === 'contributorLiteral') {
+          detailFields.push({
+            term: f.label,
+            definition: record[f.field].map((value, i) => (
+              <span><a
+                key={i}
+                onClick={e => this.onClick(e, `${f.field}:"${value}"`)}
+                title={`Make a new search for ${f.label}: "${value}"`}
+                href={`/search?q=${encodeURIComponent(`${f.field}:"${value}"`)}`}
+              >{value}</a>, </span>)),
+          });
+        } else {
+          detailFields.push({
+            term: f.label,
+            definition: (
+              <ul>{record[f.field].map((value, i) => (
+                <li key={i}>
+                  <a
+                    onClick={e => this.onClick(e, `${f.field}:"${value}"`)}
+                    title={`Make a new search for ${f.label}: "${value}"`}
+                    href={`/search?q=${encodeURIComponent(`${f.field}:"${value}"`)}`}
+                  >{value}</a>
+                </li>))}
+              </ul>),
+          });
+        }
 
       // list of plain text
       } else {
-        detailFields.push(
-          { term: f.label,
-            definition: <ul>{record[f.field].map((value, i) => (
-              <li key={i}>{value}</li>))}</ul> });
+        detailFields.push({
+          term: f.label,
+          definition: <ul>{record[f.field].map((value, i) => <li key={i}>{value}</li>)}</ul>,
+        });
       }
     });
 
@@ -154,7 +166,7 @@ class ItemPage extends React.Component {
       record.materialType[0].prefLabel : null;
     const language = record && record.language && record.language[0] ?
       record.language[0].prefLabel : null;
-      const location = record && record.location && record.location[0] ?
+    const location = record && record.location && record.location[0] ?
         record.location[0].prefLabel : null;
     const placeOfPublication = record && record.placeOfPublication && record.placeOfPublication[0] ?
       record.placeOfPublication[0].prefLabel : null;
@@ -235,7 +247,7 @@ class ItemPage extends React.Component {
 
             <div className="nypl-column-three-quarters">
               <div className="nypl-item-details">
-                  <ItemDetails data={itemDetails}/>
+                <ItemDetails data={itemDetails} />
               </div>
             </div>
           </div>
@@ -251,6 +263,7 @@ ItemPage.propTypes = {
   location: React.PropTypes.object,
   selectedFacets: React.PropTypes.object,
   sortBy: React.PropTypes.string,
+  bib: React.PropTypes.object,
 };
 
 ItemPage.contextTypes = {
