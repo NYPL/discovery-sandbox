@@ -19,4 +19,42 @@ export default {
     'Q9RrzMLTqxKnVVn2+hVpk4F/8tMsGCdd4s/AJqEQBy5lsq7ji1B63XYqi5fc1SnJ\n' +
     'EQIDAQAB\n' +
     '-----END PUBLIC KEY-----',
+  defaultFacets: {
+    'owner': {
+      'id': '',
+      'value': '',
+    },
+    'contributorLiteral': {
+      'id': '',
+      'value': '',
+    },
+    'materialType': {
+      'id': '',
+      'value': '',
+    },
+    'issuance': {
+      'id': '',
+      'value': '',
+    },
+    'publisher': {
+      'id': '',
+      'value': '',
+    },
+    'language': {
+      'id': '',
+      'value': '',
+    },
+    'mediaType': {
+      'id': '',
+      'value': '',
+    },
+    'subjectLiteral': {
+      'id': '',
+      'value': '',
+    },
+    'creatorLiteral': {
+      'id': '',
+      'value': '',
+    },
+  },
 };

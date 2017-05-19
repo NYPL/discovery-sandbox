@@ -56,6 +56,7 @@ class FacetSidebar extends React.Component {
     const orderedFacets = [
       _findWhere(facets, { id: 'materialType' }),
       _findWhere(facets, { id: 'subjectLiteral' }),
+      { id: 'date' },
       _findWhere(facets, { id: 'issuance' }),
       _findWhere(facets, { id: 'publisher' }),
       _findWhere(facets, { id: 'language' }),
@@ -71,23 +72,15 @@ class FacetSidebar extends React.Component {
         const field = facet.field;
         const selectedValue = this.state[field] ? this.state[field].id : '';
 
-        if (i === 2) {
+        if (facet.id === 'date') {
           return (
-            <span>
-              <DateFacet
-                totalHits={totalHits}
-                keywords={keywords}
-                selectedFacets={this.props.selectedFacets}
-              />
-              <Facet
-                key={i}
-                facet={facet}
-                totalHits={totalHits}
-                selectedValue={selectedValue}
-                keywords={keywords}
-              />
-            </span>
-          )
+            <DateFacet
+              key={i}
+              totalHits={totalHits}
+              keywords={keywords}
+              selectedFacets={this.props.selectedFacets}
+            />
+          );
         }
 
         return (

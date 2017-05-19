@@ -8,10 +8,10 @@ import {
 } from 'underscore';
 
 import appConfig from '../../../appConfig.js';
+import itemSearch from './itemSearch.js';
 
 const router = express.Router();
 const appEnvironment = process.env.APP_ENV || 'production';
-
 const apiBase = appConfig.api[appEnvironment];
 
 function MainApp(req, res, next) {
@@ -28,11 +28,11 @@ function MainApp(req, res, next) {
   next();
 }
 
-function getFacets(query) {
+function getAggregations(query) {
   return axios.get(`${apiBase}/discovery/resources/aggregations?q=${query}`);
 }
 
-function Search(query, page, sortBy, order, field, filters = '', cb, errorcb) {
+function search(query, page, sortBy, order, field, filters = '', cb, errorcb) {
   let sortQuery = '';
   let fieldQuery = '';
 
@@ -49,7 +49,7 @@ function Search(query, page, sortBy, order, field, filters = '', cb, errorcb) {
   const apiCall = axios.get(queryString);
 
   axios
-    .all([getFacets(query), apiCall])
+    .all([getAggregations(query), apiCall])
     .then(axios.spread((facets, response) => {
       cb(facets.data, response.data, page)
     }))
@@ -61,19 +61,21 @@ function Search(query, page, sortBy, order, field, filters = '', cb, errorcb) {
 }
 
 function AjaxSearch(req, res) {
-  const q = req.query.q || '';
-  const pageQuery = req.query.page || '1';
-  const sortBy = req.query.sort || '';
-  const order = req.query.sort_direction || '';
-  const field = req.query.search_scope || '';
-  const filters = req.query.filters || '';
+  const {
+    q = '',
+    pageQuery = '1',
+    sortBy = '',
+    order = '',
+    field = '',
+    filters = '',
+  } = req.query;
 
   let filterString = '';
   _forEach(filters, (value, key) => {
     filterString += `&filters[${key}]=${value}`;
   });
 
-  Search(
+  search(
     q,
     pageQuery,
     sortBy,
@@ -104,7 +106,7 @@ function ServerSearch(req, res, next) {
 
   const searchKeywords = q.substring(0, spaceIndex);
 
-  Search(
+  search(
     q,
     pageQuery,
     sortBy,
@@ -180,155 +182,6 @@ function ServerSearch(req, res, next) {
   );
 }
 
-function RetrieveItem(q, cb, errorcb) {
-  axios
-    .get(`${apiBase}/discovery/resources/${q}`)
-    .then(response => cb(response.data))
-    .catch(error => {
-      console.error(`RetrieveItem error: ${JSON.stringify(error, null, 2)}`);
-
-      errorcb(error);
-    }); /* end axios call */
-}
-
-function ServerItemSearch(req, res, next) {
-  const q = req.params.id || 'harry potter';
-
-  RetrieveItem(
-    q,
-    (data) => {
-      res.locals.data.Store = {
-        item: data,
-        searchKeywords: '',
-      };
-      next();
-    },
-    (error) => {
-      console.log(error);
-      res.locals.data.Store = {
-        item: {},
-        searchKeywords: '',
-      };
-      next();
-    }
-  );
-}
-
-function AjaxItemSearch(req, res) {
-  const q = req.query.q || '';
-
-  RetrieveItem(
-    q,
-    (data) => res.json(data),
-    (error) => res.json(error)
-  );
-}
-
-function Account(req, res, next) {
-  next();
-}
-
-function Hold(req, res, next) {
-  next();
-}
-
-function RequireUser(req, res) {
-  if (!req.tokenResponse || !req.tokenResponse.isTokenValid ||
-    !req.tokenResponse.accessToken || !req.tokenResponse.decodedPatron ||
-    !req.tokenResponse.decodedPatron.sub) {
-    // redirect to login
-    const fullUrl = encodeURIComponent(`${req.protocol}://${req.get('host')}${req.originalUrl}`);
-    res.redirect(`${appConfig.loginUrl}?redirect_uri=${fullUrl}`);
-    return false;
-  }
-  return true;
-}
-
-function NewHoldRequest(req, res, next) {
-  const loggedIn = RequireUser(req, res);
-  if (!loggedIn) return false;
-
-  // Retrieve item
-  RetrieveItem(
-    req.params.id,
-    (data) => {
-      // console.log('Item data', data)
-      res.locals.data.Store = {
-        item: data,
-        searchKeywords: '',
-      };
-      next();
-    },
-    (error) => {
-      res.locals.data.Store = {
-        item: {},
-        searchKeywords: '',
-      };
-      next();
-    }
-  );
-}
-
-function CreateHoldRequest(req, res) {
-  // console.log('Hold request', req);
-
-  // Ensure user is logged in
-  const loggedIn = RequireUser(req);
-  if (!loggedIn) return false;
-
-  // retrieve access token and patron info
-  const accessToken = req.tokenResponse.accessToken;
-  const patronId = req.tokenResponse.decodedPatron.sub;
-  const patronHoldsApi = `${appConfig.api.development}/hold-requests`;
-
-  // get item id and pickup location
-  let itemId = req.params.id;
-  let nyplSource = 'nypl-sierra';
-
-  if (itemId.indexOf('-') >= 0) {
-    const parts = itemId.split('-');
-    itemId = parts[parts.length - 1];
-
-    if (itemId.substring(0, 2) === 'pi') {
-      nyplSource = 'recap-PUL';
-    } else if (itemId.substring(0, 2) === 'ci') {
-      nyplSource = 'recap-CUL';
-    }
-  }
-  itemId = itemId.replace(/\D/g, '');
-  const pickupLocation = req.body.pickupLocation;
-
-  const data = {
-    patron: patronId,
-    recordType: 'i',
-    record: itemId,
-    nyplSource,
-    pickupLocation,
-    // neededBy: "2013-03-20",
-    numberOfCopies: 1,
-  };
-  console.log('Making hold request', data, accessToken);
-
-  axios
-    .post(patronHoldsApi, data, {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${accessToken}`,
-      },
-    })
-    .then(response => {
-      // console.log('Holds API response:', response);
-      console.log('Hold Request Id:', response.data.data.id);
-      console.log('Job Id:', response.data.data.jobId);
-      res.redirect(`/hold/confirmation/${req.params.id}?requestId=${response.data.data.id}`);
-    })
-    .catch(error => {
-      // console.log(error);
-      console.log(`Error calling Holds API : ${error.data.message}`);
-      res.redirect(`/hold/request/${req.params.id}?errorMessage=${error.data.message}`);
-    }); /* end axios call */
-}
-
 router
   .route('/search')
   .get(ServerSearch);
@@ -339,24 +192,24 @@ router
 
 router
   .route('/hold/:id')
-  .get(ServerItemSearch);
+  .get(itemSearch.serverItemSearch);
 
 router
   .route('/hold/request/:id')
-  .get(NewHoldRequest)
-  .post(CreateHoldRequest);
+  .get(itemSearch.newHoldRequest)
+  .post(itemSearch.createHoldRequest);
 
 router
   .route('/hold/confirmation/:id')
-  .get(ServerItemSearch);
+  .get(itemSearch.serverItemSearch);
 
 router
   .route('/account')
-  .get(Account);
+  .get(itemSearch.account);
 
 router
   .route('/item/:id')
-  .get(ServerItemSearch);
+  .get(itemSearch.serverItemSearch);
 
 router
   .route('/api')
@@ -364,7 +217,7 @@ router
 
 router
   .route('/api/retrieve')
-  .get(AjaxItemSearch);
+  .get(itemSearch.ajaxItemSearch);
 
 router
   .route('/')

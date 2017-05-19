@@ -6,12 +6,10 @@ class ItemDetails extends React.Component {
       return null;
     }
 
-    return data.map((item) => {
-      return [
-        (<dt dangerouslySetInnerHTML={this.createMarkup(item.term)}></dt>),
-        (<dd>{item.definition}</dd>),
-      ];
-    });
+    return data.map((item) => ([
+      (<dt dangerouslySetInnerHTML={this.createMarkup(item.term)}></dt>),
+      (<dd>{item.definition}</dd>),
+    ]));
   }
 
   createMarkup(markup) {

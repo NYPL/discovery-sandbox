@@ -40,7 +40,7 @@ const SearchResultsPage = (props) => {
       <div className="nypl-full-width-wrapper">
         <div className="nypl-row">
           <div className="nypl-column-three-quarters nypl-column-offset-one">
-            <Search sortBy={sortBy} selectedFacets={selectedFacets} />
+            <Search sortBy={sortBy} selectedFacets={selectedFacets} field={field} />
           </div>
         </div>
 

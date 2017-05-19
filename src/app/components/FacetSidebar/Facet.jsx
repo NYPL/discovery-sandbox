@@ -10,7 +10,6 @@ import Actions from '../../actions/Actions';
 import Store from '../../stores/Store';
 import {
   ajaxCall,
-  getSortQuery,
   getFacetParams,
   getFieldParam,
   getFacetFilterParam,

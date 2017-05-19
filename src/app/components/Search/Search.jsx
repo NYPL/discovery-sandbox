@@ -8,12 +8,10 @@ import {
   trackDiscovery,
   ajaxCall,
   getFieldParam,
+  getDefaultFacets,
 } from '../../utils/utils.js';
 
-import {
-  extend as _extend,
-  forEach as _forEach,
-} from 'underscore';
+import { extend as _extend } from 'underscore';
 
 /**
  * The main container for the top Search section.
@@ -23,10 +21,8 @@ class Search extends React.Component {
     super(props);
 
     this.state = _extend({
-      placeholder: 'Keyword, title, name, or id',
-      placeholderAnimation: null,
-      noAnimationBefore: true,
       spinning: false,
+      field: this.props.field,
     }, Store.getState());
 
     this.inputChange = this.inputChange.bind(this);
@@ -34,6 +30,7 @@ class Search extends React.Component {
     this.triggerSubmit = this.triggerSubmit.bind(this);
     this.onChange = this.onChange.bind(this);
     this.routeHandler = this.routeHandler.bind(this);
+    this.onFieldChange = this.onFieldChange.bind(this);
   }
 
   componentDidMount() {
@@ -44,14 +41,26 @@ class Search extends React.Component {
     Store.unlisten(this.onChange);
   }
 
+  /**
+   * onChange()
+   * Listen to the Store.
+   */
   onChange() {
     this.setState(_extend(this.state, Store.getState()));
   }
 
+  /**
+   * onFieldChange(e)
+   * Listen to the select dropdown for field searching.
+   */
   onFieldChange(e) {
-    Actions.updateField(e.target.value);
+    this.setState({ field: e.target.value });
   }
 
+  /**
+   * routeHandler(obj)
+   * Updating the route.
+   */
   routeHandler(obj) {
     this.context.router.push(obj);
   }
@@ -88,30 +97,33 @@ class Search extends React.Component {
     e.preventDefault();
     // Store the data that the user entered
     const keyword = this.state.searchKeywords.trim();
+    // Only need field query because everything else is cleared on a new search.
     const fieldQuery = getFieldParam(this.state.field);
     // Track the submitted keyword search.
     trackDiscovery('Search', keyword);
 
-    Actions.updateSearchKeywords(keyword);
+    Actions.updateField(this.state.field);
     Actions.updateSpinner(true);
     ajaxCall(`/api?q=${keyword}${fieldQuery}`, (response) => {
+      Actions.updateSearchKeywords(keyword);
       Actions.updateSearchResults(response.data.searchResults);
       Actions.updateFacets(response.data.facets);
-      const newFacets = {};
-      _forEach(response.data.facets.itemListElement, (facet) => {
-        newFacets[facet.id] = { id: '', value: '' };
-      });
+      Actions.updateSelectedFacets(getDefaultFacets());
       Actions.updateSortBy('relevance');
-      Actions.updateSelectedFacets(newFacets);
       Actions.updatePage('1');
 
-      this.routeHandler({
+      const routeObj = {
         pathname: '/search',
         query: {
           q: keyword,
-          search_scope: this.state.field,
         },
-      });
+      };
+
+      if (this.state.field && this.state.field !== 'all') {
+        routeObj.query.search_scope = this.state.field;
+      }
+
+      this.routeHandler(routeObj);
       Actions.updateSpinner(false);
     });
   }
@@ -148,7 +160,7 @@ class Search extends React.Component {
             type="text"
             id="search-query"
             aria-labelledby="nypl-omni-button"
-            placeholder={this.state.placeholder}
+            placeholder="Keyword, title, name, or id"
             onChange={this.inputChange}
             value={this.state.searchKeywords}
             ref="keywords"
@@ -162,6 +174,11 @@ class Search extends React.Component {
 Search.propTypes = {
   sortBy: React.PropTypes.string,
   selectedFacets: React.PropTypes.object,
+  field: React.PropTypes.string,
+};
+
+Search.defaultProps = {
+  field: '',
 };
 
 Search.contextTypes = {

@@ -17,13 +17,12 @@ class ResultsList extends React.Component {
     this.getRecord = this.getRecord.bind(this);
   }
 
-  getRecord(e, id, path) {
+  getRecord(e, id) {
     e.preventDefault();
 
     ajaxCall(`/api/retrieve?q=${id}`, (response) => {
-      // console.log(response.data);
       Actions.updateBib(response.data);
-      this.routeHandler(`/${path}/${id}`);
+      this.routeHandler(`/item/${id}`);
     });
   }
 
@@ -55,17 +54,7 @@ class ResultsList extends React.Component {
     if (!bib.result || _isEmpty(bib.result) || !bib.result.title) return null;
 
     const result = bib.result;
-    // const collapsedBibs = bib.collapsedBibs && bib.collapsedBibs.length ?
-    //   bib.collapsedBibs : [];
-    // const collapsedBibsElements = this.getCollapsedBibs(collapsedBibs);
     const itemTitle = this.getBibTitle(result);
-    const itemImage = result.btCover ? (
-      <div className="result-image">
-        <img src={result.btCover} alt={itemTitle} />
-      </div>
-      ) : null;
-    const authors = author && result.contributor && result.contributor.length ?
-      result.contributor : null;
     const id = result['@id'].substring(4);
     const items = LibraryItem.getItems(result);
     // Just displaying information for the first item for now, unless if the first item
@@ -86,7 +75,7 @@ class ResultsList extends React.Component {
       <li key={i} className="nypl-results-item">
         <h2>
           <Link
-            onClick={(e) => this.getRecord(e, id, 'item')}
+            onClick={(e) => this.getRecord(e, id)}
             href={`/item/${id}`}
             className="title"
           >
@@ -95,6 +84,7 @@ class ResultsList extends React.Component {
         </h2>
         <div className="nypl-results-item-description">
           <span className="nypl-results-media">{materialType}</span>
+          <span className="nypl-results-date">{yearPublished}</span>
           <span className="nypl-results-room">{location}</span>
           <span className="nypl-results-use">{usageType}</span>
         </div>

@@ -18,6 +18,7 @@ class ItemPage extends React.Component {
   onClick(e, query) {
     e.preventDefault();
 
+    Actions.updateSpinner(true);
     ajaxCall(`/api?q=${query}`, (response) => {
       const q = query.indexOf(':"') !== -1 ? query.split(':"') : query.split(':');
       const field = q[0];
@@ -53,6 +54,7 @@ class ItemPage extends React.Component {
       Actions.updateSearchKeywords('');
       Actions.updatePage('1');
       this.context.router.push(`/search?q=${query}`);
+      Actions.updateSpinner(false);
     });
   }
 
@@ -100,12 +102,15 @@ class ItemPage extends React.Component {
           detailFields.push({
             term: f.label,
             definition: record[f.field].map((value, i) => (
-              <span><a
-                key={i}
-                onClick={e => this.onClick(e, `${f.field}:"${value}"`)}
-                title={`Make a new search for ${f.label}: "${value}"`}
-                href={`/search?q=${encodeURIComponent(`${f.field}:"${value}"`)}`}
-              >{value}</a>, </span>)),
+              <span key={i}>
+                <a
+                  onClick={e => this.onClick(e, `${f.field}:"${value}"`)}
+                  title={`Make a new search for ${f.label}: "${value}"`}
+                  href={`/search?q=${encodeURIComponent(`${f.field}:"${value}"`)}`}
+                >
+                  {value}
+                </a>, </span>
+              )),
           });
         } else {
           detailFields.push({
@@ -175,14 +180,13 @@ class ItemPage extends React.Component {
       record.actionType[0].prefLabel : null;
 
     const detailFields = [
-      { label: 'Author/Creator', field: 'authors', linkable: true },
+      { label: 'Author/Creator', field: 'creatorLiteral', linkable: true },
       { label: 'Contributors', field: 'contributorLiteral', linkable: true },
       { label: 'Notes', field: 'note' },
       { label: 'External links', field: 'idOclc', url: (id) => `http://worldcat.org/oclc/${id}` },
     ];
 
     const itemDetails = this.getDisplayFields(record, detailFields);
-    const sortBy = this.props.sortBy;
     let searchURL = this.props.searchKeywords;
 
     _mapObject(this.props.selectedFacets, (val, key) => {
@@ -207,7 +211,7 @@ class ItemPage extends React.Component {
         <div className="nypl-full-width-wrapper">
           <div className="nypl-row">
             <div className="nypl-column-three-quarters nypl-column-offset-one">
-              <Search sortBy={sortBy} />
+              <Search />
             </div>
           </div>
 
@@ -226,14 +230,13 @@ class ItemPage extends React.Component {
                 <div className="nypl-item-info">
                   <p>
                     <span className="nypl-item-media">{materialType}</span>
-                    {language && ' in ${language}'}
+                    {language && ` in ${language}`}
                   </p>
                   <p>{record.extent} {record.dimensions}</p>
                   <p>
                     {record.placeOfPublication}
                     {record.publisher} {yearPublished}
                   </p>
-                  {language && '<p> in ${language}</p>'}
                   <p className="nypl-item-use">{usageType}</p>
                 </div>
               </div>
@@ -241,7 +244,8 @@ class ItemPage extends React.Component {
             <div className="nypl-column-one-quarter nypl-item-holdings">
               <ItemHoldings
                 holdings={holdings}
-                title={`${record.numItems} item${record.numItems === 1 ? '' : 's'} associated with this record:`}
+                title={`${record.numItems} item${record.numItems === 1 ? '' : 's'}
+                  associated with this record:`}
               />
             </div>
 
@@ -262,7 +266,6 @@ ItemPage.propTypes = {
   searchKeywords: React.PropTypes.string,
   location: React.PropTypes.object,
   selectedFacets: React.PropTypes.object,
-  sortBy: React.PropTypes.string,
   bib: React.PropTypes.object,
 };
 

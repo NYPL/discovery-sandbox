@@ -27,7 +27,6 @@ history.listen(location => {
   } = location;
 
   const qParameter = query.q;
-
   const urlFilters = _pick(query, (value, key) => {
     if (key.indexOf('filter') !== -1) {
       return value;
@@ -36,12 +35,14 @@ history.listen(location => {
   });
 
   if (action === 'POP' && search) {
+    Actions.updateSpinner(true);
     ajaxCall(`/api${search}`, (response) => {
       const selectedFacets = destructureFilters(urlFilters, response.data.facets);
       Actions.updateSelectedFacets(selectedFacets);
       Actions.updateFacets(response.data.facets);
       Actions.updateSearchResults(response.data.searchResults);
       Actions.updateSearchKeywords(qParameter);
+      Actions.updateSpinner(false);
     });
   }
 });
