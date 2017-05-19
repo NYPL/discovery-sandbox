@@ -23,10 +23,8 @@ class Search extends React.Component {
     super(props);
 
     this.state = _extend({
-      placeholder: 'Keyword, title, name, or id',
-      placeholderAnimation: null,
-      noAnimationBefore: true,
       spinning: false,
+      field: this.props.field,
     }, Store.getState());
 
     this.inputChange = this.inputChange.bind(this);
@@ -34,6 +32,7 @@ class Search extends React.Component {
     this.triggerSubmit = this.triggerSubmit.bind(this);
     this.onChange = this.onChange.bind(this);
     this.routeHandler = this.routeHandler.bind(this);
+    this.onFieldChange = this.onFieldChange.bind(this);
   }
 
   componentDidMount() {
@@ -49,7 +48,7 @@ class Search extends React.Component {
   }
 
   onFieldChange(e) {
-    Actions.updateField(e.target.value);
+    this.setState({ field: e.target.value });
   }
 
   routeHandler(obj) {
@@ -92,25 +91,32 @@ class Search extends React.Component {
     // Track the submitted keyword search.
     trackDiscovery('Search', keyword);
 
-    Actions.updateSearchKeywords(keyword);
+    Actions.updateField(this.state.field);
     Actions.updateSpinner(true);
     ajaxCall(`/api?q=${keyword}${fieldQuery}`, (response) => {
+      Actions.updateSearchKeywords(keyword);
       Actions.updateSearchResults(response.data.searchResults);
       Actions.updateFacets(response.data.facets);
       const newFacets = {};
+      // Need to clear out the facets
       _forEach(response.data.facets.itemListElement, (facet) => {
         newFacets[facet.id] = { id: '', value: '' };
       });
       Actions.updateSelectedFacets(newFacets);
       Actions.updatePage('1');
 
-      this.routeHandler({
+      const routeObj = {
         pathname: '/search',
         query: {
           q: keyword,
-          search_scope: this.state.field,
         },
-      });
+      };
+
+      if (this.state.field !== 'all') {
+        routeObj.query.search_scope = this.state.field;
+      }
+
+      this.routeHandler(routeObj);
       Actions.updateSpinner(false);
     });
   }
@@ -147,7 +153,7 @@ class Search extends React.Component {
             type="text"
             id="search-query"
             aria-labelledby="nypl-omni-button"
-            placeholder={this.state.placeholder}
+            placeholder="Keyword, title, name, or id"
             onChange={this.inputChange}
             value={this.state.searchKeywords}
             ref="keywords"
@@ -161,6 +167,7 @@ class Search extends React.Component {
 Search.propTypes = {
   sortBy: React.PropTypes.string,
   selectedFacets: React.PropTypes.object,
+  field: React.PropTypes.string,
 };
 
 Search.contextTypes = {

@@ -27,7 +27,6 @@ history.listen(location => {
   } = location;
 
   const qParameter = query.q;
-
   const urlFilters = _pick(query, (value, key) => {
     if (key.indexOf('filter') !== -1) {
       return value;
