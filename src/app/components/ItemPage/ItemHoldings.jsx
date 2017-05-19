@@ -43,10 +43,6 @@ class ItemHoldings extends React.Component {
     );
   }
 
-  getAvailability(hold) {
-    return `<span className="status ${hold.availability}">${hold.status}</span>`;
-  }
-
   showMoreItems(e) {
     e.preventDefault();
     this.setState({ expanded: true });

@@ -4,8 +4,8 @@ import appConfig from '../../../appConfig.js';
 const appEnvironment = process.env.APP_ENV || 'production';
 const apiBase = appConfig.api[appEnvironment];
 
-function RetrieveItem(q, cb, errorcb) {
-  axios
+function retrieveItem(q, cb, errorcb) {
+  return axios
     .get(`${apiBase}/discovery/resources/${q}`)
     .then(response => cb(response.data))
     .catch(error => {
@@ -15,10 +15,10 @@ function RetrieveItem(q, cb, errorcb) {
     }); /* end axios call */
 }
 
-function ServerItemSearch(req, res, next) {
+function serverItemSearch(req, res, next) {
   const q = req.params.id || 'harry potter';
 
-  RetrieveItem(
+  retrieveItem(
     q,
     (data) => {
       res.locals.data.Store = {
@@ -38,25 +38,21 @@ function ServerItemSearch(req, res, next) {
   );
 }
 
-function AjaxItemSearch(req, res) {
+function ajaxItemSearch(req, res) {
   const q = req.query.q || '';
 
-  RetrieveItem(
+  retrieveItem(
     q,
     (data) => res.json(data),
     (error) => res.json(error)
   );
 }
 
-function Account(req, res, next) {
+function account(req, res, next) {
   next();
 }
 
-function Hold(req, res, next) {
-  next();
-}
-
-function RequireUser(req, res) {
+function requireUser(req, res) {
   if (!req.tokenResponse || !req.tokenResponse.isTokenValid ||
     !req.tokenResponse.accessToken || !req.tokenResponse.decodedPatron ||
     !req.tokenResponse.decodedPatron.sub) {
@@ -68,12 +64,12 @@ function RequireUser(req, res) {
   return true;
 }
 
-function NewHoldRequest(req, res, next) {
-  const loggedIn = RequireUser(req, res);
+function newHoldRequest(req, res, next) {
+  const loggedIn = requireUser(req, res);
   if (!loggedIn) return false;
 
   // Retrieve item
-  RetrieveItem(
+  return retrieveItem(
     req.params.id,
     (data) => {
       // console.log('Item data', data)
@@ -84,6 +80,7 @@ function NewHoldRequest(req, res, next) {
       next();
     },
     (error) => {
+      console.log(error);
       res.locals.data.Store = {
         item: {},
         searchKeywords: '',
@@ -93,11 +90,11 @@ function NewHoldRequest(req, res, next) {
   );
 }
 
-function CreateHoldRequest(req, res) {
+function createHoldRequest(req, res) {
   // console.log('Hold request', req);
 
   // Ensure user is logged in
-  const loggedIn = RequireUser(req);
+  const loggedIn = requireUser(req);
   if (!loggedIn) return false;
 
   // retrieve access token and patron info
@@ -133,7 +130,7 @@ function CreateHoldRequest(req, res) {
   };
   console.log('Making hold request', data, accessToken);
 
-  axios
+  return axios
     .post(patronHoldsApi, data, {
       headers: {
         'Content-Type': 'application/json',
@@ -154,9 +151,9 @@ function CreateHoldRequest(req, res) {
 }
 
 export default {
-  ServerItemSearch,
-  NewHoldRequest,
-  CreateHoldRequest,
-  Account,
-  AjaxItemSearch,
+  serverItemSearch,
+  newHoldRequest,
+  createHoldRequest,
+  account,
+  ajaxItemSearch,
 };

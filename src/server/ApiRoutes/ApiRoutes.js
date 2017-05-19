@@ -192,24 +192,24 @@ router
 
 router
   .route('/hold/:id')
-  .get(itemSearch.ServerItemSearch);
+  .get(itemSearch.serverItemSearch);
 
 router
   .route('/hold/request/:id')
-  .get(itemSearch.NewHoldRequest)
-  .post(itemSearch.CreateHoldRequest);
+  .get(itemSearch.newHoldRequest)
+  .post(itemSearch.createHoldRequest);
 
 router
   .route('/hold/confirmation/:id')
-  .get(itemSearch.ServerItemSearch);
+  .get(itemSearch.serverItemSearch);
 
 router
   .route('/account')
-  .get(itemSearch.Account);
+  .get(itemSearch.account);
 
 router
   .route('/item/:id')
-  .get(itemSearch.ServerItemSearch);
+  .get(itemSearch.serverItemSearch);
 
 router
   .route('/api')
@@ -217,7 +217,7 @@ router
 
 router
   .route('/api/retrieve')
-  .get(itemSearch.AjaxItemSearch);
+  .get(itemSearch.ajaxItemSearch);
 
 router
   .route('/')

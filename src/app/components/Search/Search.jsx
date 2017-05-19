@@ -8,12 +8,10 @@ import {
   trackDiscovery,
   ajaxCall,
   getFieldParam,
+  getDefaultFacets,
 } from '../../utils/utils.js';
 
-import {
-  extend as _extend,
-  forEach as _forEach,
-} from 'underscore';
+import { extend as _extend } from 'underscore';
 
 /**
  * The main container for the top Search section.
@@ -43,14 +41,26 @@ class Search extends React.Component {
     Store.unlisten(this.onChange);
   }
 
+  /**
+   * onChange()
+   * Listen to the Store.
+   */
   onChange() {
     this.setState(_extend(this.state, Store.getState()));
   }
 
+  /**
+   * onFieldChange(e)
+   * Listen to the select dropdown for field searching.
+   */
   onFieldChange(e) {
     this.setState({ field: e.target.value });
   }
 
+  /**
+   * routeHandler(obj)
+   * Updating the route.
+   */
   routeHandler(obj) {
     this.context.router.push(obj);
   }
@@ -87,6 +97,7 @@ class Search extends React.Component {
     e.preventDefault();
     // Store the data that the user entered
     const keyword = this.state.searchKeywords.trim();
+    // Only need field query because everything else is cleared on a new search.
     const fieldQuery = getFieldParam(this.state.field);
     // Track the submitted keyword search.
     trackDiscovery('Search', keyword);
@@ -97,12 +108,7 @@ class Search extends React.Component {
       Actions.updateSearchKeywords(keyword);
       Actions.updateSearchResults(response.data.searchResults);
       Actions.updateFacets(response.data.facets);
-      const newFacets = {};
-      // Need to clear out the facets
-      _forEach(response.data.facets.itemListElement, (facet) => {
-        newFacets[facet.id] = { id: '', value: '' };
-      });
-      Actions.updateSelectedFacets(newFacets);
+      Actions.updateSelectedFacets(getDefaultFacets());
       Actions.updatePage('1');
 
       const routeObj = {
@@ -112,7 +118,7 @@ class Search extends React.Component {
         },
       };
 
-      if (this.state.field !== 'all') {
+      if (this.state.field && this.state.field !== 'all') {
         routeObj.query.search_scope = this.state.field;
       }
 
@@ -168,6 +174,10 @@ Search.propTypes = {
   sortBy: React.PropTypes.string,
   selectedFacets: React.PropTypes.object,
   field: React.PropTypes.string,
+};
+
+Search.defaultProps = {
+  field: '',
 };
 
 Search.contextTypes = {

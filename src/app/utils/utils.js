@@ -11,6 +11,8 @@ import {
   forEach as _forEach,
 } from 'underscore';
 
+import appConfig from '../../../appConfig.js';
+
 /**
  * ajaxCall
  * Utility function to make ajax requests.
@@ -30,6 +32,8 @@ const ajaxCall = (
     .then(cb)
     .catch(errorcb);
 };
+
+const getDefaultFacets = () => appConfig.defaultFacets;
 
 /**
  * createAppHistory
@@ -256,4 +260,5 @@ export {
   getFieldParam,
   getFacetFilterParam,
   destructureFilters,
+  getDefaultFacets,
 };
