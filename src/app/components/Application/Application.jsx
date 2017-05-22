@@ -36,6 +36,7 @@ history.listen(location => {
 
   if (action === 'POP' && search) {
     Actions.updateSpinner(true);
+
     ajaxCall(`/api${decodeURI(search)}`, (response) => {
       if (response.data.facets && response.data.searchResults) {
         const selectedFacets = destructureFilters(urlFilters, response.data.facets);
