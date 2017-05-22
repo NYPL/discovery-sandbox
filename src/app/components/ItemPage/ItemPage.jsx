@@ -182,6 +182,10 @@ class ItemPage extends React.Component {
     const detailFields = [
       { label: 'Author/Creator', field: 'creatorLiteral', linkable: true },
       { label: 'Contributors', field: 'contributorLiteral', linkable: true },
+      { label: 'Subjects', field: 'subjectLiteral', linkable: true },
+      { label: 'Owner', field: 'owner', linkable: true },
+      { label: 'Alternative Titles', field: 'titleAlt', linkable: true },
+      { label: 'Description', field: 'description', linkable: true },
       { label: 'Notes', field: 'note' },
       { label: 'External links', field: 'idOclc', url: (id) => `http://worldcat.org/oclc/${id}` },
     ];
