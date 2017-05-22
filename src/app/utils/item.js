@@ -31,7 +31,8 @@ function LibraryItem() {
   this.getItems = (record) => {
     const recordTitle = record.title ? record.title[0] : '';
     // filter out anything without a status or location
-    const items = record.items
+    const rItems = record && record.items && record.items.length ? record.items : [];
+    const items = rItems
       .filter((item) => item.status || item.electronicLocator)
       // map items
       .map((item) => {

@@ -49,7 +49,8 @@ const createAppHistory = () => {
 
 function destructureFilters(filters, apiFacet) {
   const selectedFacets = {};
-  const facetArray = apiFacet.itemListElement;
+  const facetArray = apiFacet && apiFacet.itemListElement && apiFacet.itemListElement.length ?
+    apiFacet.itemListElement : [];
   _forEach(filters, (value, key) => {
     const id = key.substring(7, key.length - 1);
 
@@ -93,12 +94,10 @@ const getSortQuery = (sortBy) => {
 const getFacetFilterParam = (facets, field, value) => {
   let strSearch = '';
 
-  // console.log(facets);
   if (facets) {
     _mapObject(facets, (val, key) => {
-      // console.log(val, key);
       if (val.value !== '') {
-        strSearch = `&filters[${key}]=${val.id}`;
+        strSearch += `&filters[${key}]=${val.id}`;
       }
     });
   }

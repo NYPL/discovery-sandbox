@@ -26,7 +26,7 @@ const SearchResultsPage = (props) => {
   const breadcrumbs = (
     <Breadcrumbs query={searchKeywords} type="search" />
   );
-
+// console.log(results);
   return (
     <main className="main-page">
       <div className="nypl-page-header">
