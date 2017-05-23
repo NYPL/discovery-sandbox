@@ -43,7 +43,7 @@ history.listen(location => {
         Actions.updateSelectedFacets(selectedFacets);
         Actions.updateFacets(response.data.facets);
         Actions.updateSearchResults(response.data.searchResults);
-        Actions.updateSearchKeywords(qParameter);
+        if (qParameter) Actions.updateSearchKeywords(qParameter);
       }
       Actions.updateSpinner(false);
     });

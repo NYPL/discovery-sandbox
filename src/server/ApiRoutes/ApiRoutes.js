@@ -31,29 +31,35 @@ function MainApp(req, res, next) {
 }
 
 function getAggregations(query) {
-  return axios.get(`${apiBase}/discovery/resources/aggregations?q=${query}`);
+  return axios.get(`${apiBase}/discovery/resources/aggregations${query}`);
 }
 
 function search(query, page, sortBy, order, field, filters = '', cb, errorcb) {
   let sortQuery = '';
   let fieldQuery = '';
+  let searchQuery = '';
+
+  if (query !== '') {
+    searchQuery = `q=${query}`;
+  }
 
   if (sortBy !== '') {
     sortQuery = `&sort=${sortBy}&sort_direction=${order}`;
   }
 
   if (field !== '' && field !== 'all') {
-    fieldQuery = `&search_scope=${field}`
+    fieldQuery = `&search_scope=${field}`;
   }
 
-  const apiQuery = `?q=${query}&per_page=50&page=${page}${sortQuery}${fieldQuery}${filters}`;
+  const apiQuery = `?${searchQuery}&per_page=50&page=${page}${sortQuery}${fieldQuery}${filters}`;
+  const aggregationQuery = `?${searchQuery}${fieldQuery}${filters}`;
   const queryString = `${apiBase}/discovery/resources${apiQuery}`;
   const apiCall = axios.get(queryString);
 
   axios
-    .all([getAggregations(query), apiCall])
+    .all([getAggregations(aggregationQuery), apiCall])
     .then(axios.spread((facets, response) => {
-      cb(facets.data, response.data, page)
+      cb(facets.data, response.data, page);
     }))
     .catch(error => {
       console.error(`Search error: ${JSON.stringify(error, null, 2)}`);
