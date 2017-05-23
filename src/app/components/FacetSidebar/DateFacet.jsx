@@ -70,6 +70,11 @@ class DateFacet extends React.Component {
         };
       }
 
+      this.setState({
+        dateAfter: updatedFacets.dateAfter ? updatedFacets.dateAfter.id : '',
+        dateBefore: updatedFacets.dateBefore ? updatedFacets.dateBefore.id : '',
+      });
+
       const facetQuery = getFacetFilterParam(updatedFacets);
       const fieldQuery = getFieldParam(this.state.field);
 

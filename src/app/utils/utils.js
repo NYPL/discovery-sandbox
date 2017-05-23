@@ -9,6 +9,7 @@ import {
   mapObject as _mapObject,
   findWhere as _findWhere,
   forEach as _forEach,
+  isEmpty as _isEmpty,
 } from 'underscore';
 
 import appConfig from '../../../appConfig.js';
@@ -49,19 +50,28 @@ const createAppHistory = () => {
 
 function destructureFilters(filters, apiFacet) {
   const selectedFacets = {};
-  const facetArray = apiFacet.itemListElement;
+  const facetArray = apiFacet && apiFacet.itemListElement && apiFacet.itemListElement.length ?
+    apiFacet.itemListElement : [];
+
+
   _forEach(filters, (value, key) => {
-    const id = key.substring(7, key.length - 1);
+    const id = key.substring(8, key.length - 1);
 
-    const facetObjFromAPI = _findWhere(facetArray, { id });
-
-    if (facetObjFromAPI && facetObjFromAPI.values && facetObjFromAPI.values.length) {
-      const facet = _findWhere(facetObjFromAPI.values, { value });
-
+    if (id === 'dateAfter' || id === 'dateBefore') {
       selectedFacets[id] = {
-        id: facet.value,
-        value: facet.label || facet.value,
+        id: value,
+        value: id === 'dateAfter' ? `after ${value}` : `before ${value}`,
       };
+    } else {
+      const facetObjFromAPI = _findWhere(facetArray, { id });
+      if (facetObjFromAPI && facetObjFromAPI.values && facetObjFromAPI.values.length) {
+        const facet = _findWhere(facetObjFromAPI.values, { value });
+
+        selectedFacets[id] = {
+          id: facet.value,
+          value: facet.label || facet.value,
+        };
+      }
     }
   });
 
@@ -90,15 +100,15 @@ const getSortQuery = (sortBy) => {
  * Get the search params from the facet values.
  * @param {object} facets Key/value pair of facet and the selected value.
  */
-const getFacetFilterParam = (facets, field, value) => {
+const getFacetFilterParam = (facets, field) => {
   let strSearch = '';
 
-  // console.log(facets);
-  if (facets) {
+  if (!_isEmpty(facets)) {
     _mapObject(facets, (val, key) => {
-      // console.log(val, key);
-      if (val.value !== '') {
-        strSearch = `&filters[${key}]=${val.id}`;
+      if (val.value && val.value !== '') {
+        strSearch += `&filters[${key}]=${val.id}`;
+      } else if (val === typeof String) {
+        strSearch += `&filters[${key}]=${val}`;
       }
     });
   }

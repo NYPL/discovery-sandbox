@@ -53,7 +53,8 @@ class Facet extends React.Component {
     Actions.updateSpinner(true);
     const value = e.target.value;
     const checked = e.target.checked;
-    let pickedFacet = _pick(this.state, field);
+
+    let pickedFacet = _pick(this.state.selectedFacets, field);
 
     let strSearch = '';
 
@@ -81,6 +82,8 @@ class Facet extends React.Component {
 
       this.setState({ [field]: selectedFacetObj });
       pickedFacet[field] = selectedFacetObj;
+
+      pickedFacet = _extend(this.state.selectedFacets, pickedFacet);
       strSearch = getFacetFilterParam(pickedFacet, field, value);
     }
 

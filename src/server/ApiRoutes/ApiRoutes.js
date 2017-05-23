@@ -5,10 +5,12 @@ import {
   isEmpty as _isEmpty,
   findWhere as _findWhere,
   forEach as _forEach,
+  mapObject as _mapObject,
 } from 'underscore';
 
 import appConfig from '../../../appConfig.js';
 import itemSearch from './itemSearch.js';
+import { getFacetFilterParam } from '../../app/utils/utils.js';
 
 const router = express.Router();
 const appEnvironment = process.env.APP_ENV || 'production';
@@ -89,30 +91,20 @@ function AjaxSearch(req, res) {
 
 function ServerSearch(req, res, next) {
   const pageQuery = req.query.page || '1';
-  const q = req.query.q || '';
+  const searchKeywords = req.query.q || '';
   const sortBy = req.query.sort || '';
   const order = req.query.sort_direction || '';
   const fieldQuery = req.query.search_scope || '';
-  let spaceIndex = '';
-
-  // Slightly hacky right now but need to get all keywords in case
-  // it's more than one word.
-  if (q.indexOf(':') !== -1) {
-    spaceIndex = (q.substring(0, q.indexOf(':'))).lastIndexOf(' ');
-  } else {
-    // spaceIndex = q.indexOf(' ') !== -1 ? q.length : q.indexOf(' ');
-    spaceIndex = q.length;
-  }
-
-  const searchKeywords = q.substring(0, spaceIndex);
+  const filters = req.query.filters || {};
+  const filterString = getFacetFilterParam(filters);
 
   search(
-    q,
+    searchKeywords,
     pageQuery,
     sortBy,
     order,
     fieldQuery,
-    '',
+    filterString,
     (facets, data, page) => {
       const selectedFacets = {};
 
@@ -126,32 +118,25 @@ function ServerSearch(req, res, next) {
         });
       }
 
-      // Easier to break if facet values have a # instead of an empty space. There might
-      // be a better solution for this...
-      const urlFacets = q.substring(spaceIndex + 1);
+      _mapObject(filters, (value, key) => {
+        let facetObj;
+        let facet;
 
-      if (urlFacets) {
-        const facetStrArray = q.substring(spaceIndex + 1).replace(/\" /, '"#').split('#');
-
-        facetStrArray.forEach(str => {
-          if (!str) return;
-
-          // Each string appears like so: 'contributor:"United States. War Department."'
-          // Can't simply split by ':' because some strings are: 'owner:"orgs:1000"'
-          const field = str.split(':"')[0];
-          const value = str.split(':"')[1].replace('"', '');
-          const searchValue = field === 'date' ? parseInt(value, 10) : value;
-
-          // Now find the facet from the URL from the returned facets in the API.
-          const facetObj = _findWhere(facets.itemListElement, { field });
-          const facet = _findWhere(facetObj.values, { value: searchValue });
-
-          selectedFacets[field] = {
-            id: facet.value,
-            value: facet.label || facet.value,
+        if (key === 'dateAfter' || key === 'dateBefore') {
+          facet = {
+            id: value,
+            value: key === 'dateAfter' ? `after ${value}` : `before ${value}`,
           };
-        });
-      }
+        } else {
+          facetObj = _findWhere(facets.itemListElement, { field: key });
+          facet = _isEmpty(facetObj) ? {} : _findWhere(facetObj.values, { value });
+        }
+
+        selectedFacets[key] = {
+          id: facet.value,
+          value: facet.label || facet.value,
+        };
+      });
 
       res.locals.data.Store = {
         searchResults: data,
