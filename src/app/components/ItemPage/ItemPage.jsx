@@ -101,16 +101,20 @@ class ItemPage extends React.Component {
         if (f.field === 'contributorLiteral') {
           detailFields.push({
             term: f.label,
-            definition: record[f.field].map((value, i) => (
-              <span key={i}>
-                <a
-                  onClick={e => this.onClick(e, `${f.field}:"${value}"`)}
-                  title={`Make a new search for ${f.label}: "${value}"`}
-                  href={`/search?q=${encodeURIComponent(`${f.field}:"${value}"`)}`}
-                >
-                  {value}
-                </a>, </span>
-              )),
+            definition: record[f.field].map((value, i) => {
+              const comma = record[f.field].length > 1 ? ', ' : ' ';
+              return (
+                <span key={i}>
+                  <a
+                    onClick={e => this.onClick(e, `${f.field}:"${value}"`)}
+                    title={`Make a new search for ${f.label}: "${value}"`}
+                    href={`/search?q=${encodeURIComponent(`${f.field}:"${value}"`)}`}
+                  >
+                    {value}
+                  </a>{comma}
+                </span>
+              );
+            }),
           });
         } else {
           detailFields.push({
@@ -234,8 +238,7 @@ class ItemPage extends React.Component {
                   </p>
                   <p>{record.extent} {record.dimensions}</p>
                   <p>
-                    {record.placeOfPublication}
-                    {record.publisher} {yearPublished}
+                    {record.placeOfPublication} {record.publisher} {yearPublished}
                   </p>
                   <p className="nypl-item-use">{usageType}</p>
                 </div>
