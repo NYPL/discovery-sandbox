@@ -38,6 +38,7 @@ function LibraryItem() {
         const id = item['@id'].substring(4);
         let status = item.status && item.status[0].prefLabel ? item.status[0].prefLabel : '';
         let availability = status.replace(/\W/g, '').toLowerCase();
+        let accessMessage = item.accessMessage && item.accessMessage.length ? item.accessMessage[0].prefLabel.toLowerCase() : '';
         const callNumber = item.shelfMark ? item.shelfMark[0] : '';
         const location = this.getLocationLabel(item);
         let url = null;
@@ -62,6 +63,7 @@ function LibraryItem() {
           status,
           availability,
           available: (availability === 'available'),
+          accessMessage,
           isElectronicResource,
           location,
           callNumber,

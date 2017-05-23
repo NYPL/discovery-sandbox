@@ -23,7 +23,9 @@ class ItemHoldings extends React.Component {
             let itemLink;
             let itemDisplay = null;
 
-            if (h.isElectronicResource) {
+            if (!h.available) {
+              itemLink = <span className="nypl-item-unavailable">{h.accessMessage}</span>;
+            } else if (h.isElectronicResource) {
               itemLink = <a href={h.url}>View Online</a>;
             } else {
               itemLink = h.url && h.url.length ?
