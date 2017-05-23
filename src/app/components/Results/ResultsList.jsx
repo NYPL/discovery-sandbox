@@ -54,7 +54,7 @@ class ResultsList extends React.Component {
     let dateStartYear = bib.dateStartYear;
     let dateEndYear = bib.dateEndYear;
 
-    dateStartYear = dateStartYear === 999 ? '999' : dateStartYear;
+    dateStartYear = dateStartYear === 999 ? 'unknown' : dateStartYear;
     dateEndYear = dateEndYear === 9999 ? 'present' : dateEndYear;
 
     if (dateStartYear && dateEndYear) {
