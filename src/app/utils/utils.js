@@ -66,11 +66,12 @@ function destructureFilters(filters, apiFacet) {
       const facetObjFromAPI = _findWhere(facetArray, { id });
       if (facetObjFromAPI && facetObjFromAPI.values && facetObjFromAPI.values.length) {
         const facet = _findWhere(facetObjFromAPI.values, { value });
-
-        selectedFacets[id] = {
-          id: facet.value,
-          value: facet.label || facet.value,
-        };
+        if (facet) {
+          selectedFacets[id] = {
+            id: facet.value,
+            value: facet.label || facet.value,
+          };
+        }
       }
     }
   });
@@ -107,7 +108,7 @@ const getFacetFilterParam = (facets, field) => {
     _mapObject(facets, (val, key) => {
       if (val.value && val.value !== '') {
         strSearch += `&filters[${key}]=${val.id}`;
-      } else if (val === typeof String) {
+      } else if (typeof val === 'string') {
         strSearch += `&filters[${key}]=${val}`;
       }
     });
