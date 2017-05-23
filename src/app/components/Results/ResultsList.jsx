@@ -50,6 +50,21 @@ class ResultsList extends React.Component {
     return bib.titleDisplay;
   }
 
+  getYearDisplay(bib) {
+    let dateStartYear = bib.dateStartYear;
+    let dateEndYear = bib.dateEndYear;
+
+    dateStartYear = dateStartYear === 999 ? '999' : dateStartYear;
+    dateEndYear = dateEndYear === 9999 ? 'present' : dateEndYear;
+
+    if (dateStartYear && dateEndYear) {
+      return (<span className="nypl-results-date">{dateStartYear}-{dateEndYear}</span>);
+    } else if (dateStartYear) {
+      return (<span className="nypl-results-date">{dateStartYear}</span>);
+    }
+    return null;
+  }
+
   getBib(bib, author, i) {
     if (!bib.result || _isEmpty(bib.result) || !bib.result.title) return null;
 
@@ -63,7 +78,7 @@ class ResultsList extends React.Component {
       items[0] : (items[1] ? items[1] : null);
     const materialType = result && result.materialType && result.materialType[0] ?
       result.materialType[0].prefLabel : null;
-    const yearPublished = result && result.dateStartYear ? result.dateStartYear : null;
+    const yearPublished = this.getYearDisplay(result);
     const usageType = firstItem ? firstItem.actionLabel : null;
     const location = _chain(items)
       .pluck('location')
@@ -84,7 +99,7 @@ class ResultsList extends React.Component {
         </h2>
         <div className="nypl-results-item-description">
           <span className="nypl-results-media">{materialType}</span>
-          <span className="nypl-results-date">{yearPublished}</span>
+          {yearPublished}
           <span className="nypl-results-room">{location}</span>
           <span className="nypl-results-use">{usageType}</span>
         </div>
