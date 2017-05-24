@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router';
 
 import Actions from '../../actions/Actions.js';
 import {
@@ -9,10 +10,6 @@ import {
 } from '../../utils/utils.js';
 
 class Pagination extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   /*
    * getPage()
    * Get a button based on current page.
@@ -37,15 +34,24 @@ class Pagination extends React.Component {
     );
     const svg = type === 'Next' ? nextSVG : prevSVG;
 
+    const searchStr = this.props.location.search;
+    const index = searchStr.indexOf('&page=');
+    let newSearch = '';
+    if (index !== -1) {
+      const pageIndex = index + 6;
+      newSearch = `${searchStr.substring(0, pageIndex - 1)}` +
+        `${pageNum}${searchStr.substring(pageIndex + 1)}`;
+    }
+
     return (
-      <a
-        href="#"
+      <Link
+        to={{ pathname: newSearch }}
         onClick={(e) => this.fetchResults(e, pageNum)}
         rel={type.toLowerCase()}
         aria-controls="results-region"
       >
         {svg} {type} Page
-      </a>
+      </Link>
     );
   }
 
@@ -66,7 +72,8 @@ class Pagination extends React.Component {
       Actions.updateSearchResults(response.data.searchResults);
       Actions.updatePage(page.toString());
       this.context.router
-        .push(`/search?q=${encodeURIComponent(query)}${pageParam}${filterQuery}${sortQuery}${fieldQuery}`);
+        .push(`/search?q=${encodeURIComponent(query)}${pageParam}${filterQuery}` +
+          `${sortQuery}${fieldQuery}`);
     });
   }
 

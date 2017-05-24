@@ -18,6 +18,7 @@ const SearchResultsPage = (props) => {
     location,
     sortBy,
     field,
+    spinning,
   } = props;
   const facetList = facets && facets.itemListElement ? facets.itemListElement : [];
   const totalHits = searchResults ? searchResults.totalResults : 0;
@@ -40,7 +41,11 @@ const SearchResultsPage = (props) => {
       <div className="nypl-full-width-wrapper">
         <div className="nypl-row">
           <div className="nypl-column-three-quarters nypl-column-offset-one">
-            <Search sortBy={sortBy} selectedFacets={selectedFacets} field={field} />
+            <Search
+              searchKeywords={searchKeywords}
+              field={field}
+              spinning={spinning}
+            />
           </div>
         </div>
 
@@ -110,6 +115,7 @@ SearchResultsPage.propTypes = {
   location: React.PropTypes.object,
   sortBy: React.PropTypes.string,
   field: React.PropTypes.string,
+  spinning: React.PropTypes.bool,
 };
 
 export default SearchResultsPage;

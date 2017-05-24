@@ -1,8 +1,6 @@
 import React from 'react';
 
 import Actions from '../../actions/Actions.js';
-import Store from '../../stores/Store.js';
-
 import SearchButton from '../Buttons/SearchButton.jsx';
 import {
   trackDiscovery,
@@ -11,8 +9,6 @@ import {
   getDefaultFacets,
 } from '../../utils/utils.js';
 
-import { extend as _extend } from 'underscore';
-
 /**
  * The main container for the top Search section.
  */
@@ -20,33 +16,21 @@ class Search extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = _extend({
-      spinning: false,
+    this.state = {
+      spinning: this.props.spinning,
       field: this.props.field,
-    }, Store.getState());
+      searchKeywords: this.props.searchKeywords,
+    };
 
     this.inputChange = this.inputChange.bind(this);
     this.submitSearchRequest = this.submitSearchRequest.bind(this);
     this.triggerSubmit = this.triggerSubmit.bind(this);
-    this.onChange = this.onChange.bind(this);
     this.routeHandler = this.routeHandler.bind(this);
     this.onFieldChange = this.onFieldChange.bind(this);
   }
 
-  componentDidMount() {
-    Store.listen(this.onChange);
-  }
-
-  componentWillUnmount() {
-    Store.unlisten(this.onChange);
-  }
-
-  /**
-   * onChange()
-   * Listen to the Store.
-   */
-  onChange() {
-    this.setState(_extend(this.state, Store.getState()));
+  componentWillReceiveProps(nextProps) {
+    this.setState(nextProps);
   }
 
   /**
@@ -104,8 +88,8 @@ class Search extends React.Component {
 
     Actions.updateField(this.state.field);
     Actions.updateSpinner(true);
+    Actions.updateSearchKeywords(keyword);
     ajaxCall(`/api?q=${keyword}${fieldQuery}`, (response) => {
-      Actions.updateSearchKeywords(keyword);
       if (response.data.searchResults && response.data.facets) {
         Actions.updateSearchResults(response.data.searchResults);
         Actions.updateFacets(response.data.facets);
@@ -177,13 +161,15 @@ class Search extends React.Component {
 }
 
 Search.propTypes = {
-  sortBy: React.PropTypes.string,
-  selectedFacets: React.PropTypes.object,
   field: React.PropTypes.string,
+  searchKeywords: React.PropTypes.string,
+  spinning: React.PropTypes.bool,
 };
 
 Search.defaultProps = {
   field: '',
+  searchKeywords: '',
+  spinning: false,
 };
 
 Search.contextTypes = {

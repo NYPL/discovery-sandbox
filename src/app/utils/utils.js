@@ -101,7 +101,7 @@ const getSortQuery = (sortBy) => {
  * Get the search params from the facet values.
  * @param {object} facets Key/value pair of facet and the selected value.
  */
-const getFacetFilterParam = (facets, field) => {
+const getFacetFilterParam = (facets) => {
   let strSearch = '';
 
   if (!_isEmpty(facets)) {

@@ -71,7 +71,7 @@ function search(query, page, sortBy, order, field, filters = '', cb, errorcb) {
 function AjaxSearch(req, res) {
   const {
     q = '',
-    pageQuery = '1',
+    page = '1',
     sortBy = '',
     order = '',
     field = '',
@@ -85,12 +85,12 @@ function AjaxSearch(req, res) {
 
   search(
     q,
-    pageQuery,
+    page,
     sortBy,
     order,
     field,
     filterString,
-    (facets, searchResults, page) => res.json({ facets, searchResults, page }),
+    (facets, searchResults, pageQuery) => res.json({ facets, searchResults, pageQuery }),
     (error) => res.json(error)
   );
 }
