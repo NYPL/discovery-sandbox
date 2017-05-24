@@ -20,6 +20,7 @@ const commonSettings = {
   // This is the path and file of our top level
   // React App that is to be rendered.
   entry: [
+    'babel-polyfill',
     path.resolve(ROOT_PATH, 'src/client/App.jsx'),
   ],
   resolve: {
