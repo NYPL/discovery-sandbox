@@ -5,8 +5,8 @@ const Breadcrumbs = ({ query, type, title, url }) => {
   let currentPageText = 'Research Catalog';
   let crumbs = (
     <ol className="nypl-breadcrumbs">
-      <li><Link to="https://nypl.org">Home</Link></li>
-      <li><Link to="https://nypl.org/research">Research</Link></li>
+      <li><a href="https://nypl.org">Home</a></li>
+      <li><a href="https://nypl.org/research">Research</a></li>
       <li>{currentPageText}</li>
     </ol>
   );
@@ -15,8 +15,8 @@ const Breadcrumbs = ({ query, type, title, url }) => {
     currentPageText = query ? `Search Results for "${query}"` : 'Search Results';
     crumbs = (
       <ol className="nypl-breadcrumbs">
-        <li><Link to="https://nypl.org">Home</Link></li>
-        <li><Link to="https://nypl.org/research">Research</Link></li>
+        <li><a href="https://nypl.org">Home</a></li>
+        <li><a href="https://nypl.org/research">Research</a></li>
         <li><Link to="/">Research Catalog</Link></li>
         <li>{currentPageText}</li>
       </ol>
@@ -29,8 +29,8 @@ const Breadcrumbs = ({ query, type, title, url }) => {
   if (type === 'item') {
     crumbs = (
       <ol className="nypl-breadcrumbs">
-        <li><Link to="https://nypl.org">Home</Link></li>
-        <li><Link to="https://nypl.org/research">Research</Link></li>
+        <li><a href="https://nypl.org">Home</a></li>
+        <li><a href="https://nypl.org/research">Research</a></li>
         <li><Link to="/">Research Catalog</Link></li>
         {
           query ?
@@ -42,48 +42,6 @@ const Breadcrumbs = ({ query, type, title, url }) => {
           : null
         }
         <li>{currentPageText}</li>
-      </ol>
-    );
-  }
-
-  if (type === 'hold') {
-    crumbs = (
-      <ol className="nypl-breadcrumbs">
-        <li><Link to="https://nypl.org">Home</Link></li>
-        <li><Link to="https://nypl.org/research">Research</Link></li>
-        <li><Link to="/">Research Catalog</Link></li>
-        {
-          query ?
-          (<li>
-            <Link
-              title={`Make a new search for ${query}`}
-              to={`/search?q=${query}`}
-            >Items</Link></li>)
-          : null
-        }
-        <li><Link to={`/item/${url}`}>{currentPageText}</Link></li>
-        <li>Place a hold</li>
-      </ol>
-    );
-  }
-
-  if (type === 'holdConfirmation') {
-    crumbs = (
-      <ol className="nypl-breadcrumbs">
-        <li><Link to="https://nypl.org">Home</Link></li>
-        <li><Link to="https://nypl.org/research">Research</Link></li>
-        <li><Link to="/">Research Catalog</Link></li>
-        {
-          query ?
-          (<li>
-            <Link
-              title={`Make a new search for ${query}`}
-              to={`/search?q=${query}`}
-            >Items</Link></li>)
-          : null
-        }
-        <li><Link to={`/item/${url}`}>{currentPageText}</Link></li>
-        <li>Hold confirmation</li>
       </ol>
     );
   }
