@@ -2,7 +2,7 @@ import path from 'path';
 import express from 'express';
 import compress from 'compression';
 import colors from 'colors';
-
+import DocumentTitle from 'react-document-title';
 import React from 'react';
 import ReactDOMServer from 'react-dom/server';
 import { match, RouterContext } from 'react-router';
@@ -69,6 +69,7 @@ app.get('/*', (req, res) => {
       res.redirect(302, redirectLocation.pathname + redirectLocation.search);
     } else if (renderProps) {
       const application = ReactDOMServer.renderToString(<RouterContext {...renderProps} />);
+      const title = DocumentTitle.rewind();
       const iso = new Iso();
 
       iso.add(application, alt.flush());
@@ -76,7 +77,7 @@ app.get('/*', (req, res) => {
         .status(200)
         .render('index', {
           application: iso.render(),
-          appTitle: appConfig.appTitle,
+          appTitle: title,
           favicon: appConfig.favIconPath,
           webpackPort: WEBPACK_DEV_PORT,
           appEnv: process.env.APP_ENV,
