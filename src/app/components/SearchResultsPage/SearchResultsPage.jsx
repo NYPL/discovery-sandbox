@@ -8,6 +8,8 @@ import Search from '../Search/Search.jsx';
 import Sorter from '../Sorter/Sorter';
 import Pagination from '../Pagination/Pagination';
 
+import { basicQuery } from '../../utils/utils.js';
+
 const SearchResultsPage = (props) => {
   const {
     searchResults,
@@ -27,6 +29,8 @@ const SearchResultsPage = (props) => {
   const breadcrumbs = (
     <Breadcrumbs query={searchKeywords} type="search" />
   );
+
+  const createAPIQuery = basicQuery(props);
 
   return (
     <main className="main-page">
@@ -82,6 +86,7 @@ const SearchResultsPage = (props) => {
                   location={location}
                   page={page}
                   selectedFacets={selectedFacets}
+                  createAPIQuery={createAPIQuery}
                 />
               )
             }
@@ -94,9 +99,7 @@ const SearchResultsPage = (props) => {
                   hits={totalHits}
                   page={page}
                   location={location}
-                  sortBy={sortBy}
-                  field={field}
-                  selectedFacets={selectedFacets}
+                  createAPIQuery={createAPIQuery}
                 />)
             }
           </div>

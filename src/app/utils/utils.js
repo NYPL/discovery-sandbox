@@ -261,6 +261,38 @@ function collapse(results) {
  */
 const trackDiscovery = gaUtils.trackEvent('Discovery');
 
+/**
+ * basicQuery
+ * A curry function that will take in the application's props and return a function that will
+ * overwrite whatever values it needs to overwrite to create the needed API query.
+ * @example
+ * const apiQueryFunc = basicQuery(this.props);
+ * const apiQuery = apiQueryFunc();
+ * // apiQuery == 'q='
+ * const apiQuery2 = apiQueryFunc({ page: 3 });
+ * // apiQuery2 == 'q=&page=3'
+ * const apiQuery3 = apiQueryFunc({ page: 3, q: 'hamlet' });
+ * // apiQuery3 == 'q=hamlet&page=3'
+ * @param {object} props The application props.
+ */
+const basicQuery = (props) => {
+  return ({
+    sortBy,
+    field,
+    selectedFacets,
+    searchKeywords,
+    page,
+  }) => {
+    const sortQuery = getSortQuery(sortBy || props.sortBy);
+    const fieldQuery = field || getFieldParam(props.field);
+    const filterQuery = selectedFacets || getFacetFilterParam(props.selectedFacets);
+    const query = searchKeywords || props.searchKeywords;
+    const pageQuery = page && page !== '1' ? `&page=${page}` : '';
+
+    return `q=${query}${filterQuery}${sortQuery}${fieldQuery}${pageQuery}`;
+  };
+};
+
 export {
   collapse,
   trackDiscovery,
@@ -272,4 +304,5 @@ export {
   getFacetFilterParam,
   destructureFilters,
   getDefaultFacets,
+  basicQuery,
 };
