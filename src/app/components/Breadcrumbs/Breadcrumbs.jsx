@@ -46,9 +46,7 @@ const Breadcrumbs = ({ query, type, title, url }) => {
     );
   }
 
-  return (
-    <span>{crumbs}</span>
-  );
+  return (crumbs);
 };
 
 Breadcrumbs.propTypes = {
