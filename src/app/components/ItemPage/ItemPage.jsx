@@ -14,7 +14,10 @@ import ItemDetails from './ItemDetails';
 import LibraryItem from '../../utils/item';
 import Actions from '../../actions/Actions';
 
-import { ajaxCall } from '../../utils/utils';
+import {
+  ajaxCall,
+  basicQuery,
+} from '../../utils/utils';
 
 class ItemPage extends React.Component {
 
@@ -148,6 +151,7 @@ class ItemPage extends React.Component {
   }
 
   render() {
+    const createAPIQuery = basicQuery(this.props);
     const record = this.props.bib ? this.props.bib : this.props.item;
     const title = record.title && record.title.length ? record.title[0] : '';
     const authors = record.contributor && record.contributor.length ?
@@ -208,66 +212,71 @@ class ItemPage extends React.Component {
 
     return (
       <DocumentTitle title={`${title} | Research Catalog`}>
-      <main className="main-page">
-        <div className="nypl-page-header">
-          <div className="nypl-full-width-wrapper">
-            <Breadcrumbs
-              query={searchURL}
-              type="item"
-              title={title}
-            />
-            <h1>Research Catalog</h1>
-          </div>
-        </div>
-
-        <div className="nypl-full-width-wrapper">
-          <div className="nypl-row">
-            <div className="nypl-column-three-quarters nypl-column-offset-one">
-              <Search />
+        <main className="main-page">
+          <div className="nypl-page-header">
+            <div className="nypl-full-width-wrapper">
+              <Breadcrumbs
+                query={searchURL}
+                type="item"
+                title={title}
+              />
+              <h1>Research Catalog</h1>
             </div>
           </div>
 
-          <div className="nypl-row">
-            <div
-              className="nypl-column-three-quarters nypl-column-offset-one"
-              role="region"
-              id="mainContent"
-              aria-live="polite"
-              aria-atomic="true"
-              aria-relevant="additions removals"
-              aria-describedby="results-description"
-            >
-              <div className="nypl-item-details">
-                <h1>{title}</h1>
-                <div className="nypl-item-info">
-                  <p>
-                    <span className="nypl-item-media">{materialType}</span>
-                    {language && ` in ${language}`}
-                  </p>
-                  <p>{record.extent} {record.dimensions}</p>
-                  <p>
-                    {record.placeOfPublication} {record.publisher} {yearPublished}
-                  </p>
-                  <p className="nypl-item-use">{usageType}</p>
+          <div className="nypl-full-width-wrapper">
+            <div className="nypl-row">
+              <div className="nypl-column-three-quarters nypl-column-offset-one">
+                <Search
+                  searchKeywords={this.props.searchKeywords}
+                  field={this.props.field}
+                  spinning={this.props.spinning}
+                  createAPIQuery={createAPIQuery}
+                />
+              </div>
+            </div>
+
+            <div className="nypl-row">
+              <div
+                className="nypl-column-three-quarters nypl-column-offset-one"
+                role="region"
+                id="mainContent"
+                aria-live="polite"
+                aria-atomic="true"
+                aria-relevant="additions removals"
+                aria-describedby="results-description"
+              >
+                <div className="nypl-item-details">
+                  <h1>{title}</h1>
+                  <div className="nypl-item-info">
+                    <p>
+                      <span className="nypl-item-media">{materialType}</span>
+                      {language && ` in ${language}`}
+                    </p>
+                    <p>{record.extent} {record.dimensions}</p>
+                    <p>
+                      {record.placeOfPublication} {record.publisher} {yearPublished}
+                    </p>
+                    <p className="nypl-item-use">{usageType}</p>
+                  </div>
+                </div>
+              </div>
+              <div className="nypl-column-one-quarter nypl-item-holdings">
+                <ItemHoldings
+                  holdings={holdings}
+                  title={`${record.numItems} item${record.numItems === 1 ? '' : 's'}
+                    associated with this record:`}
+                />
+              </div>
+
+              <div className="nypl-column-three-quarters">
+                <div className="nypl-item-details">
+                  <ItemDetails data={itemDetails} />
                 </div>
               </div>
             </div>
-            <div className="nypl-column-one-quarter nypl-item-holdings">
-              <ItemHoldings
-                holdings={holdings}
-                title={`${record.numItems} item${record.numItems === 1 ? '' : 's'}
-                  associated with this record:`}
-              />
-            </div>
-
-            <div className="nypl-column-three-quarters">
-              <div className="nypl-item-details">
-                <ItemDetails data={itemDetails} />
-              </div>
-            </div>
           </div>
-        </div>
-      </main>
+        </main>
       </DocumentTitle>
     );
   }
@@ -279,6 +288,8 @@ ItemPage.propTypes = {
   location: React.PropTypes.object,
   selectedFacets: React.PropTypes.object,
   bib: React.PropTypes.object,
+  field: React.PropTypes.string,
+  spinning: React.PropTypes.bool,
 };
 
 ItemPage.contextTypes = {
