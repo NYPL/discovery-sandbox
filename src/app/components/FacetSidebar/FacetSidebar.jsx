@@ -27,6 +27,20 @@ class FacetSidebar extends React.Component {
 
       this.state[facet.field] = { id, value };
     });
+
+    if (this.props.selectedFacets.dateAfter && this.props.selectedFacets.dateAfter.id) {
+      this.state.dateAfter = {
+        id: this.props.selectedFacets.dateAfter.id,
+        value: this.props.selectedFacets.dateAfter.value,
+      };
+    }
+
+    if (this.props.selectedFacets.dateBefore && this.props.selectedFacets.dateBefore.id) {
+      this.state.dateBefore = {
+        id: this.props.selectedFacets.dateBefore.id,
+        value: this.props.selectedFacets.dateBefore.value,
+      };
+    }
   }
 
   toggleFacetsMobile() {
@@ -71,6 +85,7 @@ class FacetSidebar extends React.Component {
         const selectedValue = this.state[field] ? this.state[field].id : '';
 
         if (facet.id === 'date') {
+          console.log(this.state.dateAfter, this.state.dateBefore);
           return (
             <DateFacet
               key={i}
