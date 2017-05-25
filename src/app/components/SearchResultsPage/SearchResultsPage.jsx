@@ -8,7 +8,22 @@ import Search from '../Search/Search.jsx';
 import Sorter from '../Sorter/Sorter';
 import Pagination from '../Pagination/Pagination';
 
+import {
+  getSortQuery,
+  getFieldParam,
+  getFacetFilterParam,
+} from '../../utils/utils.js';
+
 const SearchResultsPage = (props) => {
+  const createAPIQuery = () => {
+    const sortQuery = getSortQuery(props.sortBy);
+    const fieldQuery = getFieldParam(props.field);
+    const filterQuery = getFacetFilterParam(props.selectedFacets);
+    const query = props.searchKeywords;
+
+    return `q=${query}${filterQuery}${sortQuery}${fieldQuery}`;
+  };
+
   const {
     searchResults,
     searchKeywords,
@@ -27,6 +42,8 @@ const SearchResultsPage = (props) => {
   const breadcrumbs = (
     <Breadcrumbs query={searchKeywords} type="search" />
   );
+
+  const apiQuery = createAPIQuery();
 
   return (
     <main className="main-page">
@@ -94,9 +111,7 @@ const SearchResultsPage = (props) => {
                   hits={totalHits}
                   page={page}
                   location={location}
-                  sortBy={sortBy}
-                  field={field}
-                  selectedFacets={selectedFacets}
+                  apiQuery={apiQuery}
                 />)
             }
           </div>
