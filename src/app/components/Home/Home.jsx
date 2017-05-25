@@ -4,10 +4,12 @@ import DocumentTitle from 'react-document-title';
 
 import Breadcrumbs from '../Breadcrumbs/Breadcrumbs.jsx';
 import Search from '../Search/Search.jsx';
+import { basicQuery } from '../../utils/utils.js';
 
-const Home = () => (
+const Home = (props) => (
   <DocumentTitle title="Research Catalog | NYPL">
     <div className="home" id="mainContent">
+
       <div className="page-header">
         <div className="content-wrapper">
           <Breadcrumbs />
@@ -25,12 +27,20 @@ const Home = () => (
               materials</a> in advance to make the most of your time on site.
             </p>
 
-            <Search />
+            <Search
+              spinning={props.spinning}
+              createAPIQuery={basicQuery(props)}
+            />
           </div>
         </div>
       </div>
+
     </div>
   </DocumentTitle>
 );
+
+Home.propTypes = {
+  spinning: React.PropTypes.bool,
+};
 
 export default Home;

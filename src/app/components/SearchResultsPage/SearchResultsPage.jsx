@@ -53,6 +53,7 @@ const SearchResultsPage = (props) => {
                 searchKeywords={searchKeywords}
                 field={field}
                 spinning={spinning}
+                createAPIQuery={createAPIQuery}
               />
             </div>
           </div>
@@ -78,18 +79,17 @@ const SearchResultsPage = (props) => {
             >
               <Hits
                 hits={totalHits}
-                query={searchKeywords}
-                facets={selectedFacets}
-                sortBy={sortBy}
+                spinning={spinning}
+                searchKeywords={searchKeywords}
+                selectedFacets={selectedFacets}
+                createAPIQuery={createAPIQuery}
               />
 
               {
                 totalHits !== 0 && (
                   <Sorter
                     sortBy={sortBy}
-                    location={location}
                     page={page}
-                    selectedFacets={selectedFacets}
                     createAPIQuery={createAPIQuery}
                   />
                 )
@@ -102,7 +102,7 @@ const SearchResultsPage = (props) => {
                   (<Pagination
                     hits={totalHits}
                     page={page}
-                    location={location}
+                    urlSearchString={location.search}
                     createAPIQuery={createAPIQuery}
                   />)
               }

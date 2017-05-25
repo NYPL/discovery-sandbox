@@ -284,9 +284,10 @@ const basicQuery = (props) => {
     page,
   }) => {
     const sortQuery = getSortQuery(sortBy || props.sortBy);
-    const fieldQuery = field || getFieldParam(props.field);
-    const filterQuery = selectedFacets || getFacetFilterParam(props.selectedFacets);
-    const query = searchKeywords || props.searchKeywords;
+    const fieldQuery = getFieldParam(field || props.field);
+    const filterQuery = getFacetFilterParam(selectedFacets || props.selectedFacets);
+    // `searchKeywords` can be an empty string, so check if it's undefined instead.
+    const query = searchKeywords !== undefined ? searchKeywords : props.searchKeywords;
     const pageQuery = page && page !== '1' ? `&page=${page}` : '';
 
     return `q=${query}${filterQuery}${sortQuery}${fieldQuery}${pageQuery}`;

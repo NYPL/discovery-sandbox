@@ -5,7 +5,6 @@ import SearchButton from '../Buttons/SearchButton.jsx';
 import {
   trackDiscovery,
   ajaxCall,
-  getFieldParam,
   getDefaultFacets,
 } from '../../utils/utils.js';
 
@@ -25,7 +24,6 @@ class Search extends React.Component {
     this.inputChange = this.inputChange.bind(this);
     this.submitSearchRequest = this.submitSearchRequest.bind(this);
     this.triggerSubmit = this.triggerSubmit.bind(this);
-    this.routeHandler = this.routeHandler.bind(this);
     this.onFieldChange = this.onFieldChange.bind(this);
   }
 
@@ -39,14 +37,6 @@ class Search extends React.Component {
    */
   onFieldChange(e) {
     this.setState({ field: e.target.value });
-  }
-
-  /**
-   * routeHandler(obj)
-   * Updating the route.
-   */
-  routeHandler(obj) {
-    this.context.router.push(obj);
   }
 
   /**
@@ -81,15 +71,21 @@ class Search extends React.Component {
     e.preventDefault();
     // Store the data that the user entered
     const keyword = this.state.searchKeywords.trim();
-    // Only need field query because everything else is cleared on a new search.
-    const fieldQuery = getFieldParam(this.state.field);
     // Track the submitted keyword search.
     trackDiscovery('Search', keyword);
+
+    const apiQuery = this.props.createAPIQuery({
+      field: this.state.field,
+      searchKeywords: keyword,
+      selectedFacets: {},
+    });
 
     Actions.updateField(this.state.field);
     Actions.updateSpinner(true);
     Actions.updateSearchKeywords(keyword);
-    ajaxCall(`/api?q=${keyword}${fieldQuery}`, (response) => {
+    Actions.updateSelectedFacets(getDefaultFacets());
+
+    ajaxCall(`/api?${apiQuery}`, (response) => {
       if (response.data.searchResults && response.data.facets) {
         Actions.updateSearchResults(response.data.searchResults);
         Actions.updateFacets(response.data.facets);
@@ -97,22 +93,10 @@ class Search extends React.Component {
         Actions.updateSearchResults({});
         Actions.updateFacets({});
       }
-      Actions.updateSelectedFacets(getDefaultFacets());
       Actions.updateSortBy('relevance');
       Actions.updatePage('1');
 
-      const routeObj = {
-        pathname: '/search',
-        query: {
-          q: keyword,
-        },
-      };
-
-      if (this.state.field && this.state.field !== 'all') {
-        routeObj.query.search_scope = this.state.field;
-      }
-
-      this.routeHandler(routeObj);
+      this.context.router.push(`/search?${apiQuery}`);
       Actions.updateSpinner(false);
     });
   }
@@ -164,6 +148,7 @@ Search.propTypes = {
   field: React.PropTypes.string,
   searchKeywords: React.PropTypes.string,
   spinning: React.PropTypes.bool,
+  createAPIQuery: React.PropTypes.func,
 };
 
 Search.defaultProps = {
