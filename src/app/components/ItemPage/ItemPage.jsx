@@ -5,6 +5,7 @@ import {
   findIndex as _findIndex,
   mapObject as _mapObject,
 } from 'underscore';
+import DocumentTitle from 'react-document-title';
 
 import Breadcrumbs from '../Breadcrumbs/Breadcrumbs';
 import Search from '../Search/Search';
@@ -12,6 +13,7 @@ import ItemHoldings from './ItemHoldings';
 import ItemDetails from './ItemDetails';
 import LibraryItem from '../../utils/item';
 import Actions from '../../actions/Actions';
+
 import { ajaxCall } from '../../utils/utils';
 
 class ItemPage extends React.Component {
@@ -148,7 +150,6 @@ class ItemPage extends React.Component {
   render() {
     const record = this.props.bib ? this.props.bib : this.props.item;
     const title = record.title && record.title.length ? record.title[0] : '';
-    document.title = `${title} | Research Catalog`;
     const authors = record.contributor && record.contributor.length ?
       record.contributor.map((author, i) => (
         <span key={i}>
@@ -206,6 +207,7 @@ class ItemPage extends React.Component {
     });
 
     return (
+      <DocumentTitle title={`${title} | Research Catalog`}>
       <main className="main-page">
         <div className="nypl-page-header">
           <div className="nypl-full-width-wrapper">
@@ -266,6 +268,7 @@ class ItemPage extends React.Component {
           </div>
         </div>
       </main>
+      </DocumentTitle>
     );
   }
 }
