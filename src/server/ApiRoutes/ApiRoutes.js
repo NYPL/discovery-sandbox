@@ -4,13 +4,15 @@ import axios from 'axios';
 import {
   isEmpty as _isEmpty,
   findWhere as _findWhere,
-  forEach as _forEach,
   mapObject as _mapObject,
 } from 'underscore';
 
 import appConfig from '../../../appConfig.js';
 import itemSearch from './itemSearch.js';
-import { getFacetFilterParam } from '../../app/utils/utils.js';
+import {
+  getFacetFilterParam,
+  getDefaultFacets,
+} from '../../app/utils/utils.js';
 
 const router = express.Router();
 const appEnvironment = process.env.APP_ENV || 'production';
@@ -71,33 +73,29 @@ function search(query, page, sortBy, order, field, filters = '', cb, errorcb) {
 function AjaxSearch(req, res) {
   const {
     q = '',
-    pageQuery = '1',
-    sortBy = '',
-    order = '',
-    field = '',
+    page = '1',
+    sort = '',
+    sort_direction = '',
+    search_scope = '',
     filters = '',
   } = req.query;
-
-  let filterString = '';
-  _forEach(filters, (value, key) => {
-    filterString += `&filters[${key}]=${value}`;
-  });
+  const filterString = getFacetFilterParam(filters);
 
   search(
     q,
-    pageQuery,
-    sortBy,
-    order,
-    field,
+    page,
+    sort,
+    sort_direction,
+    search_scope,
     filterString,
-    (facets, searchResults, page) => res.json({ facets, searchResults, page }),
+    (facets, searchResults, pageQuery) => res.json({ facets, searchResults, pageQuery }),
     (error) => res.json(error)
   );
 }
 
 function ServerSearch(req, res, next) {
-  const pageQuery = req.query.page || '1';
-  const searchKeywords = req.query.q || '';
+  const page = req.query.page || '1';
+  const q = req.query.q || '';
   const sortBy = req.query.sort || '';
   const order = req.query.sort_direction || '';
   const fieldQuery = req.query.search_scope || '';
@@ -105,24 +103,14 @@ function ServerSearch(req, res, next) {
   const filterString = getFacetFilterParam(filters);
 
   search(
-    searchKeywords,
-    pageQuery,
+    q,
+    page,
     sortBy,
     order,
     fieldQuery,
     filterString,
-    (facets, data, page) => {
-      const selectedFacets = {};
-
-      // Populate the object with empty facet values
-      if (!_isEmpty(facets) && facets.itemListElement.length) {
-        _forEach(facets.itemListElement, (facet) => {
-          selectedFacets[facet.field] = {
-            id: '',
-            value: '',
-          };
-        });
-      }
+    (facets, data, pageQuery) => {
+      const selectedFacets = getDefaultFacets();
 
       _mapObject(filters, (value, key) => {
         let facetObj;
@@ -130,26 +118,27 @@ function ServerSearch(req, res, next) {
 
         if (key === 'dateAfter' || key === 'dateBefore') {
           facet = {
-            id: value,
+            id: key,
             value: key === 'dateAfter' ? `after ${value}` : `before ${value}`,
           };
         } else {
           facetObj = _findWhere(facets.itemListElement, { field: key });
-          facet = _isEmpty(facetObj) ? {} : _findWhere(facetObj.values, { value });
+          const foundFacet = _isEmpty(facetObj) ? {} : _findWhere(facetObj.values, { value });
+          facet = {
+            id: foundFacet.value,
+            value: foundFacet.label || foundFacet.value,
+          };
         }
 
-        selectedFacets[key] = {
-          id: facet.value,
-          value: facet.label || facet.value,
-        };
+        selectedFacets[key] = facet;
       });
 
       res.locals.data.Store = {
         searchResults: data,
         selectedFacets,
-        searchKeywords,
+        searchKeywords: q,
         facets,
-        page,
+        page: pageQuery,
         sortBy: sortBy ? `${sortBy}_${order}` : 'relevance',
         field: fieldQuery,
       };

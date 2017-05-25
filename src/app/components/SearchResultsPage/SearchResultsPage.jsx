@@ -10,6 +10,8 @@ import Search from '../Search/Search.jsx';
 import Sorter from '../Sorter/Sorter';
 import Pagination from '../Pagination/Pagination';
 
+import { basicQuery } from '../../utils/utils.js';
+
 const SearchResultsPage = (props) => {
   const {
     searchResults,
@@ -20,6 +22,7 @@ const SearchResultsPage = (props) => {
     location,
     sortBy,
     field,
+    spinning,
   } = props;
 
   const facetList = facets && facets.itemListElement ? facets.itemListElement : [];
@@ -30,8 +33,10 @@ const SearchResultsPage = (props) => {
     <Breadcrumbs query={searchKeywords} type="search" />
   );
 
+  const createAPIQuery = basicQuery(props);
+
   return (
-    <DocumentTitle title={`${searchKeywords ? searchKeywords + ' | ' : ''} | Search Results | Research Catalog | NYPL`}>
+    <DocumentTitle title={`${searchKeywords ? searchKeywords + ' | ' : ''} Search Results | Research Catalog | NYPL`}>
       <main className="main-page">
         <div className="nypl-page-header">
           <div className="nypl-full-width-wrapper">
@@ -44,7 +49,11 @@ const SearchResultsPage = (props) => {
         <div className="nypl-full-width-wrapper">
           <div className="nypl-row">
             <div className="nypl-column-three-quarters nypl-column-offset-one">
-              <Search sortBy={sortBy} selectedFacets={selectedFacets} field={field} />
+              <Search
+                searchKeywords={searchKeywords}
+                field={field}
+                spinning={spinning}
+              />
             </div>
           </div>
 
@@ -81,6 +90,7 @@ const SearchResultsPage = (props) => {
                     location={location}
                     page={page}
                     selectedFacets={selectedFacets}
+                    createAPIQuery={createAPIQuery}
                   />
                 )
               }
@@ -93,9 +103,7 @@ const SearchResultsPage = (props) => {
                     hits={totalHits}
                     page={page}
                     location={location}
-                    sortBy={sortBy}
-                    field={field}
-                    selectedFacets={selectedFacets}
+                    createAPIQuery={createAPIQuery}
                   />)
               }
             </div>
@@ -115,6 +123,7 @@ SearchResultsPage.propTypes = {
   location: React.PropTypes.object,
   sortBy: React.PropTypes.string,
   field: React.PropTypes.string,
+  spinning: React.PropTypes.bool,
 };
 
 export default SearchResultsPage;

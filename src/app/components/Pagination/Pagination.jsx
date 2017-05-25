@@ -1,18 +1,10 @@
 import React from 'react';
+import { Link } from 'react-router';
 
 import Actions from '../../actions/Actions.js';
-import {
-  ajaxCall,
-  getSortQuery,
-  getFieldParam,
-  getFacetFilterParam,
-} from '../../utils/utils.js';
+import { ajaxCall } from '../../utils/utils.js';
 
 class Pagination extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   /*
    * getPage()
    * Get a button based on current page.
@@ -37,15 +29,24 @@ class Pagination extends React.Component {
     );
     const svg = type === 'Next' ? nextSVG : prevSVG;
 
+    const searchStr = this.props.location.search;
+    const index = searchStr.indexOf('&page=');
+    let newSearch = '';
+    if (index !== -1) {
+      const pageIndex = index + 6;
+      newSearch = `${searchStr.substring(0, pageIndex)}` +
+        `${pageNum}${searchStr.substring(pageIndex + 1)}`;
+    }
+
     return (
-      <a
-        href="#"
+      <Link
+        to={{ pathname: newSearch }}
         onClick={(e) => this.fetchResults(e, pageNum)}
         rel={type.toLowerCase()}
         aria-controls="results-region"
       >
         {svg} {type} Page
-      </a>
+      </Link>
     );
   }
 
@@ -56,17 +57,12 @@ class Pagination extends React.Component {
    */
   fetchResults(e, page) {
     e.preventDefault();
-    const query = this.props.location.query.q;
-    const pageParam = page !== 1 ? `&page=${page}` : '';
-    const sortQuery = getSortQuery(this.props.sortBy);
-    const fieldQuery = getFieldParam(this.props.field);
-    const filterQuery = getFacetFilterParam(this.props.selectedFacets);
+    const apiQuery = this.props.createAPIQuery({ page });
 
-    ajaxCall(`/api?q=${query}${pageParam}${filterQuery}${sortQuery}${fieldQuery}`, response => {
+    ajaxCall(`/api?${apiQuery}`, response => {
       Actions.updateSearchResults(response.data.searchResults);
       Actions.updatePage(page.toString());
-      this.context.router
-        .push(`/search?q=${encodeURIComponent(query)}${pageParam}${filterQuery}${sortQuery}${fieldQuery}`);
+      this.context.router.push(`/search?${apiQuery}`);
     });
   }
 
@@ -101,11 +97,9 @@ class Pagination extends React.Component {
 
 Pagination.propTypes = {
   hits: React.PropTypes.number,
-  sortBy: React.PropTypes.string,
   location: React.PropTypes.object,
   page: React.PropTypes.string,
-  field: React.PropTypes.string,
-  selectedFacets: React.PropTypes.object,
+  createAPIQuery: React.PropTypes.func,
 };
 
 Pagination.defaultProps = {
