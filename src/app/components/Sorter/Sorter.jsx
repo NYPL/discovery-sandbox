@@ -3,11 +3,7 @@ import ClickOutHandler from 'react-onclickout';
 import { findWhere as _findWhere } from 'underscore';
 
 import Actions from '../../actions/Actions';
-import {
-  ajaxCall,
-  getSortQuery,
-  getFacetFilterParam,
-} from '../../utils/utils';
+import { ajaxCall } from '../../utils/utils';
 
 const sortingOpts = [
   { val: 'relevance', label: 'relevance' },
@@ -45,20 +41,18 @@ class Sorter extends React.Component {
     }
   }
 
-  sortResultsBy(e, sortData, label) {
+  sortResultsBy(e, sortBy, sortLabel) {
     e.preventDefault();
-    const sortValue = sortData;
-    this.setState({ sortLabel: label });
-    const query = this.props.location.query.q;
-    const page = this.props.page !== '1' ? `&page=${this.props.page}` : '';
-    const sortQuery = getSortQuery(sortValue);
-    const filterQuery = getFacetFilterParam(this.props.selectedFacets);
-    ajaxCall(`/api?q=${query}${page}${sortQuery}${filterQuery}`, (response) => {
+    this.setState({ sortLabel });
+
+    const apiQuery = this.props.createAPIQuery({ sortBy, page: this.props.page });
+
+    ajaxCall(`/api?${apiQuery}`, (response) => {
       Actions.updateSearchResults(response.data.searchResults);
-      Actions.updateSortBy(sortValue);
-      this.setState({ sortValue });
+      Actions.updateSortBy(sortBy);
+      this.setState({ sortBy });
       this.context.router
-        .push(`/search?q=${encodeURIComponent(query)}${filterQuery}${page}${sortQuery}`);
+        .push(`/search?${apiQuery}`);
     });
     this.setState({ active: false });
   }
@@ -106,7 +100,7 @@ Sorter.propTypes = {
   sortBy: React.PropTypes.string,
   location: React.PropTypes.object,
   page: React.PropTypes.string,
-  selectedFacets: React.PropTypes.object,
+  createAPIQuery: React.PropTypes.func,
 };
 
 Sorter.contextTypes = {

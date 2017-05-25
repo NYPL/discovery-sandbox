@@ -261,6 +261,24 @@ function collapse(results) {
  */
 const trackDiscovery = gaUtils.trackEvent('Discovery');
 
+const basicQuery = (props) => {
+  return ({
+    sortBy,
+    field,
+    selectedFacets,
+    searchKeywords,
+    page,
+  }) => {
+    const sortQuery = getSortQuery(sortBy || props.sortBy);
+    const fieldQuery = field || getFieldParam(props.field);
+    const filterQuery = selectedFacets || getFacetFilterParam(props.selectedFacets);
+    const query = searchKeywords || props.searchKeywords;
+    const pageQuery = page && page !== '1' ? `&page=${page}` : '';
+
+    return `q=${query}${filterQuery}${sortQuery}${fieldQuery}${pageQuery}`;
+  };
+};
+
 export {
   collapse,
   trackDiscovery,
@@ -272,4 +290,5 @@ export {
   getFacetFilterParam,
   destructureFilters,
   getDefaultFacets,
+  basicQuery,
 };

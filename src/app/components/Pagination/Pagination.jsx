@@ -34,7 +34,7 @@ class Pagination extends React.Component {
     let newSearch = '';
     if (index !== -1) {
       const pageIndex = index + 6;
-      newSearch = `${searchStr.substring(0, pageIndex - 1)}` +
+      newSearch = `${searchStr.substring(0, pageIndex)}` +
         `${pageNum}${searchStr.substring(pageIndex + 1)}`;
     }
 
@@ -57,13 +57,12 @@ class Pagination extends React.Component {
    */
   fetchResults(e, page) {
     e.preventDefault();
-    const pageParam = page !== 1 ? `&page=${page}` : '';
-    const apiQuery = this.props.apiQuery;
+    const apiQuery = this.props.createAPIQuery({ page });
 
-    ajaxCall(`/api?${apiQuery}${pageParam}`, response => {
+    ajaxCall(`/api?${apiQuery}`, response => {
       Actions.updateSearchResults(response.data.searchResults);
       Actions.updatePage(page.toString());
-      this.context.router.push(`/search?${apiQuery}${pageParam}`);
+      this.context.router.push(`/search?${apiQuery}`);
     });
   }
 
@@ -100,13 +99,12 @@ Pagination.propTypes = {
   hits: React.PropTypes.number,
   location: React.PropTypes.object,
   page: React.PropTypes.string,
-  apiQuery: React.PropTypes.string,
+  createAPIQuery: React.PropTypes.func,
 };
 
 Pagination.defaultProps = {
   page: '1',
   sortBy: 'relevance',
-  apiQuery: '',
 };
 
 Pagination.contextTypes = {
