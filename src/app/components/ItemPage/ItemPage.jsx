@@ -15,6 +15,7 @@ import Actions from '../../actions/Actions';
 import { ajaxCall } from '../../utils/utils';
 
 class ItemPage extends React.Component {
+
   onClick(e, query) {
     e.preventDefault();
 
@@ -147,6 +148,7 @@ class ItemPage extends React.Component {
   render() {
     const record = this.props.bib ? this.props.bib : this.props.item;
     const title = record.title && record.title.length ? record.title[0] : '';
+    document.title = `${title} | Research Catalog`;
     const authors = record.contributor && record.contributor.length ?
       record.contributor.map((author, i) => (
         <span key={i}>

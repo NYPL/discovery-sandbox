@@ -19,6 +19,8 @@ const SearchResultsPage = (props) => {
     sortBy,
     field,
   } = props;
+
+  document.title = `${props.searchKeywords} | Research Catalog`;
   const facetList = facets && facets.itemListElement ? facets.itemListElement : [];
   const totalHits = searchResults ? searchResults.totalResults : 0;
   const totalPages = Math.floor(totalHits / 50) + 1;

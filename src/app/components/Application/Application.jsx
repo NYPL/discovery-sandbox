@@ -53,7 +53,6 @@ history.listen(location => {
 class App extends React.Component {
   constructor(props) {
     super(props);
-
     this.state = {
       data: Store.getState(),
       patron: PatronStore.getState(),
@@ -72,6 +71,7 @@ class App extends React.Component {
 
   componentDidMount() {
     Store.listen(this.onChange);
+    document.title = "Research Catalog | NYPL"
   }
 
   componentWillUnmount() {
