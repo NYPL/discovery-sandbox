@@ -29,7 +29,7 @@ class Pagination extends React.Component {
     );
     const svg = type === 'Next' ? nextSVG : prevSVG;
 
-    const searchStr = this.props.location.search;
+    const searchStr = this.props.urlSearchString;
     const index = searchStr.indexOf('&page=');
     let newSearch = '';
     if (index !== -1) {
@@ -97,7 +97,7 @@ class Pagination extends React.Component {
 
 Pagination.propTypes = {
   hits: React.PropTypes.number,
-  location: React.PropTypes.object,
+  urlSearchString: React.PropTypes.string,
   page: React.PropTypes.string,
   createAPIQuery: React.PropTypes.func,
 };

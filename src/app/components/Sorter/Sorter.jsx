@@ -100,7 +100,6 @@ class Sorter extends React.Component {
 
 Sorter.propTypes = {
   sortBy: React.PropTypes.string,
-  location: React.PropTypes.object,
   page: React.PropTypes.string,
   createAPIQuery: React.PropTypes.func,
 };
