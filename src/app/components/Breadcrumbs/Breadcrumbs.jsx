@@ -4,22 +4,22 @@ import { Link } from 'react-router';
 const Breadcrumbs = ({ query, type, title, url }) => {
   let currentPageText = 'Research Catalog';
   let crumbs = (
-    <span>
-      <Link to="https://nypl.org">Home</Link> &gt;&nbsp;
-      <Link to="https://nypl.org/research">Research</Link> &gt;&nbsp;
-      <span className="currentPage">{currentPageText}</span>
-    </span>
+    <ol className="nypl-breadcrumbs">
+      <li><Link to="https://nypl.org">Home</Link></li>
+      <li><Link to="https://nypl.org/research">Research</Link></li>
+      <li>{currentPageText}</li>
+    </ol>
   );
 
   if (type === 'search') {
     currentPageText = query ? `Search Results for "${query}"` : 'Search Results';
     crumbs = (
-      <span>
-        <Link to="https://nypl.org">Home</Link> &gt;&nbsp;
-        <Link to="https://nypl.org/research">Research</Link> &gt;&nbsp;
-        <Link to="/">Research Catalog</Link> &gt;&nbsp;
-        <span className="currentPage">{currentPageText}</span>
-      </span>
+      <ol className="nypl-breadcrumbs">
+        <li><Link to="https://nypl.org">Home</Link></li>
+        <li><Link to="https://nypl.org/research">Research</Link></li>
+        <li><Link to="/">Research Catalog</Link></li>
+        <li>{currentPageText}</li>
+      </ol>
     );
   }
 
@@ -28,70 +28,68 @@ const Breadcrumbs = ({ query, type, title, url }) => {
 
   if (type === 'item') {
     crumbs = (
-      <span>
-        <Link to="https://nypl.org">Home</Link> &gt;&nbsp;
-        <Link to="https://nypl.org/research">Research</Link> &gt;&nbsp;
-        <Link to="/">Research Catalog</Link> &gt;&nbsp;
+      <ol className="nypl-breadcrumbs">
+        <li><Link to="https://nypl.org">Home</Link></li>
+        <li><Link to="https://nypl.org/research">Research</Link></li>
+        <li><Link to="/">Research Catalog</Link></li>
         {
           query ?
-          (<span>
+          (<li>
             <Link
               title={`Make a new search for ${query}`}
               to={`/search?q=${query}`}
-            >Items</Link> &gt;&nbsp;</span>)
+            >Items</Link></li>)
           : null
         }
-        <span className="currentPage">{currentPageText}</span>
-      </span>
+        <li>{currentPageText}</li>
+      </ol>
     );
   }
 
   if (type === 'hold') {
     crumbs = (
-      <span>
-        <Link to="https://nypl.org">Home</Link> &gt;&nbsp;
-        <Link to="https://nypl.org/research">Research</Link> &gt;&nbsp;
-        <Link to="/">Research Catalog</Link> &gt;&nbsp;
+      <ol className="nypl-breadcrumbs">
+        <li><Link to="https://nypl.org">Home</Link></li>
+        <li><Link to="https://nypl.org/research">Research</Link></li>
+        <li><Link to="/">Research Catalog</Link></li>
         {
           query ?
-          (<span>
+          (<li>
             <Link
               title={`Make a new search for ${query}`}
               to={`/search?q=${query}`}
-            >Items</Link> &gt;&nbsp;</span>)
+            >Items</Link></li>)
           : null
         }
-        <Link to={`/item/${url}`}>{currentPageText}</Link> &gt;&nbsp;
-        <span className="currentPage">Place a hold</span>
-      </span>
+        <li><Link to={`/item/${url}`}>{currentPageText}</Link></li>
+        <li>Place a hold</li>
+      </ol>
     );
   }
 
   if (type === 'holdConfirmation') {
     crumbs = (
-      <span>
-        <Link to="https://nypl.org">Home</Link> &gt;&nbsp;
-        <Link to="https://nypl.org/research">Research</Link> &gt;&nbsp;
-        <Link to="/">Research Catalog</Link> &gt;&nbsp;
+      <ol className="nypl-breadcrumbs">
+        <li><Link to="https://nypl.org">Home</Link></li>
+        <li><Link to="https://nypl.org/research">Research</Link></li>
+        <li><Link to="/">Research Catalog</Link></li>
         {
           query ?
-          (<span>
+          (<li>
             <Link
               title={`Make a new search for ${query}`}
               to={`/search?q=${query}`}
-            >Items</Link> &gt;&nbsp;</span>)
+            >Items</Link></li>)
           : null
         }
-        <Link to={`/item/${url}`}>{currentPageText}</Link> &gt;&nbsp;
-        <span className="currentPage">Hold confirmation</span>
-      </span>
+        <li><Link to={`/item/${url}`}>{currentPageText}</Link></li>
+        <li>Hold confirmation</li>
+      </ol>
     );
   }
 
   return (
-    <ol className="nypl-breadcrumbs">
-      {crumbs}
-    </ol>
+    <span>{crumbs}</span>
   );
 };
 
