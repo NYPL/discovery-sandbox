@@ -1,5 +1,7 @@
 import React from 'react';
 
+import DocumentTitle from 'react-document-title';
+
 import { Header, navConfig } from '@nypl/dgx-header-component';
 import Footer from '@nypl/dgx-react-footer';
 
@@ -53,7 +55,6 @@ history.listen(location => {
 class App extends React.Component {
   constructor(props) {
     super(props);
-
     this.state = {
       data: Store.getState(),
       patron: PatronStore.getState(),
@@ -84,15 +85,17 @@ class App extends React.Component {
 
   render() {
     return (
-      <div className="app-wrapper">
-        <Header navData={navConfig.current} skipNav={{ target: 'mainContent' }} />
+      <DocumentTitle title="Research Catalog | NYPL">
+        <div className="app-wrapper">
+          <Header navData={navConfig.current} skipNav={{ target: 'mainContent' }} />
 
-        {React.cloneElement(this.props.children, this.state.data)}
+          {React.cloneElement(this.props.children, this.state.data)}
 
-        <Footer />
+          <Footer />
 
-        <Feedback location={this.props.location} />
-      </div>
+          <Feedback location={this.props.location} />
+        </div>
+      </DocumentTitle>
     );
   }
 }
