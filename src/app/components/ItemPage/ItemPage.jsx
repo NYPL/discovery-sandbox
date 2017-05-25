@@ -94,7 +94,7 @@ class ItemPage extends React.Component {
                 <Link
                   onClick={e => this.onClick(e, `${f.field}:"${obj['@id']}"`)}
                   title={`Make a new search for ${f.label}: ${obj.prefLabel}`}
-                  to={`/search?q=${encodeURIComponent(`${f.field}:"${obj['@id']}"`)}`}
+                  to={`/search?q=${encodeURIComponent(`filters[${f.field}]=${obj['@id']}`)}`}
                 >{obj.prefLabel}</Link>
               </li>))}
             </ul>),
@@ -111,7 +111,7 @@ class ItemPage extends React.Component {
                   <Link
                     onClick={e => this.onClick(e, `${f.field}:"${value}"`)}
                     title={`Make a new search for ${f.label}: "${value}"`}
-                    to={`/search?q=${encodeURIComponent(`${f.field}:"${value}"`)}`}
+                    to={`/search?q=${encodeURIComponent(`filters[${f.field}]=${value}`)}`}
                   >
                     {value}
                   </Link>{comma}
@@ -128,7 +128,7 @@ class ItemPage extends React.Component {
                   <Link
                     onClick={e => this.onClick(e, `${f.field}:"${value}"`)}
                     title={`Make a new search for ${f.label}: "${value}"`}
-                    to={`/search?q=${encodeURIComponent(`${f.field}:"${value}"`)}`}
+                    to={`/search?q=${encodeURIComponent(`filters[${f.field}]=${value}`)}`}
                   >{value}</Link>
                 </li>))}
               </ul>),
@@ -154,7 +154,7 @@ class ItemPage extends React.Component {
       record.contributor.map((author, i) => (
         <span key={i}>
           <Link
-            to={{ pathname: '/search', query: { q: `contributor:"${author}"` } }}
+            to={{ pathname: '/search', query: { q: `filter[contributor]=${author}` } }}
             title={`Make a new search for contributor: "${author}"`}
             onClick={(e) => this.onClick(e, `contributor:"${author}"`)}
           >
@@ -165,7 +165,7 @@ class ItemPage extends React.Component {
       : null;
     const publisher = record.publisher && record.publisher.length ?
       <Link
-        to={{ pathname: '/search', query: { q: `publisher:"${record.publisher[0]}"` } }}
+        to={{ pathname: '/search', query: { q: `filter[publisher]=${record.publisher[0]}` } }}
         title={`Make a new search for publisher: "${record.publisher[0]}"`}
         onClick={(e) => this.onClick(e, `publisher:"${record.publisher[0]}"`)}
       >
