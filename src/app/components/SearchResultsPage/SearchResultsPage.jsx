@@ -63,9 +63,10 @@ const SearchResultsPage = (props) => {
             <FacetSidebar
               facets={facetList}
               selectedFacets={selectedFacets}
-              keywords={searchKeywords}
+              searchKeywords={searchKeywords}
               className="nypl-column-one-quarter"
               totalHits={totalHits}
+              createAPIQuery={createAPIQuery}
             />
 
             <div
@@ -95,7 +96,7 @@ const SearchResultsPage = (props) => {
                 )
               }
 
-              <ResultList results={results} query={searchKeywords} />
+              {results.length !== 0 && (<ResultList results={results} />)}
 
               {
                 totalHits !== 0 &&

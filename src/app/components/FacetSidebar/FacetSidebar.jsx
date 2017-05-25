@@ -1,11 +1,9 @@
 import React from 'react';
 import {
-  extend as _extend,
   findWhere as _findWhere,
   forEach as _forEach,
 } from 'underscore';
 
-import Store from '../../stores/Store';
 import Facet from './Facet';
 import DateFacet from './DateFacet';
 
@@ -13,10 +11,10 @@ class FacetSidebar extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = _extend({
+    this.state = {
       mobileView: false,
       mobileViewText: 'Refine search',
-    }, Store.getState());
+    };
 
     _forEach(this.props.facets, (facet) => {
       let id = '';
@@ -49,7 +47,7 @@ class FacetSidebar extends React.Component {
     const {
       facets,
       totalHits,
-      keywords,
+      searchKeywords,
     } = this.props;
     let facetsElm = null;
 
@@ -77,7 +75,7 @@ class FacetSidebar extends React.Component {
             <DateFacet
               key={i}
               totalHits={totalHits}
-              keywords={keywords}
+              keywords={searchKeywords}
               selectedFacets={this.props.selectedFacets}
             />
           );
@@ -89,7 +87,7 @@ class FacetSidebar extends React.Component {
             facet={facet}
             totalHits={totalHits}
             selectedValue={selectedValue}
-            keywords={keywords}
+            keywords={searchKeywords}
           />
         );
       });
@@ -120,10 +118,11 @@ class FacetSidebar extends React.Component {
 
 FacetSidebar.propTypes = {
   facets: React.PropTypes.array,
-  keywords: React.PropTypes.string,
+  searchKeywords: React.PropTypes.string,
   selectedFacets: React.PropTypes.object,
   className: React.PropTypes.string,
   totalHits: React.PropTypes.number,
+  createAPIQuery: React.PropTypes.func,
 };
 
 FacetSidebar.defaultProps = {
