@@ -91,11 +91,11 @@ class ItemPage extends React.Component {
           definition: (
             <ul>{record[f.field].map((obj, i) => (
               <li key={i}>
-                <a
+                <Link
                   onClick={e => this.onClick(e, `${f.field}:"${obj['@id']}"`)}
                   title={`Make a new search for ${f.label}: ${obj.prefLabel}`}
-                  href={`/search?q=${encodeURIComponent(`${f.field}:"${obj['@id']}"`)}`}
-                >{obj.prefLabel}</a>
+                  to={`/search?q=${encodeURIComponent(`${f.field}:"${obj['@id']}"`)}`}
+                >{obj.prefLabel}</Link>
               </li>))}
             </ul>),
         });
@@ -108,13 +108,13 @@ class ItemPage extends React.Component {
               const comma = record[f.field].length > 1 ? ', ' : ' ';
               return (
                 <span key={i}>
-                  <a
+                  <Link
                     onClick={e => this.onClick(e, `${f.field}:"${value}"`)}
                     title={`Make a new search for ${f.label}: "${value}"`}
-                    href={`/search?q=${encodeURIComponent(`${f.field}:"${value}"`)}`}
+                    to={`/search?q=${encodeURIComponent(`${f.field}:"${value}"`)}`}
                   >
                     {value}
-                  </a>{comma}
+                  </Link>{comma}
                 </span>
               );
             }),
@@ -125,11 +125,11 @@ class ItemPage extends React.Component {
             definition: (
               <ul>{record[f.field].map((value, i) => (
                 <li key={i}>
-                  <a
+                  <Link
                     onClick={e => this.onClick(e, `${f.field}:"${value}"`)}
                     title={`Make a new search for ${f.label}: "${value}"`}
-                    href={`/search?q=${encodeURIComponent(`${f.field}:"${value}"`)}`}
-                  >{value}</a>
+                    to={`/search?q=${encodeURIComponent(`${f.field}:"${value}"`)}`}
+                  >{value}</Link>
                 </li>))}
               </ul>),
           });
