@@ -64,6 +64,7 @@ class FacetSidebar extends React.Component {
               keywords={searchKeywords}
               selectedFacets={selectedFacets}
               createAPIQuery={this.props.createAPIQuery}
+              spinning={this.props.spinning}
             />
           );
         }
@@ -76,6 +77,7 @@ class FacetSidebar extends React.Component {
             totalHits={totalHits}
             selectedValue={selectedValue}
             createAPIQuery={this.props.createAPIQuery}
+            spinning={this.props.spinning}
           />
         );
       });
@@ -111,6 +113,7 @@ FacetSidebar.propTypes = {
   className: React.PropTypes.string,
   totalHits: React.PropTypes.number,
   createAPIQuery: React.PropTypes.func,
+  spinning: React.PropTypes.bool,
 };
 
 FacetSidebar.defaultProps = {

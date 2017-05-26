@@ -11,7 +11,6 @@ class Facet extends React.Component {
     super(props);
 
     this.state = {
-      spinning: false,
       openFacet: true,
       facet: { id: '', value: '' },
       showMoreFacets: false,
@@ -116,7 +115,7 @@ class Facet extends React.Component {
     const field = facet.field;
     const facetLabel = this.getFacetLabel(field);
     const noSearchClass = this.checkNoSearch(facet.values.length);
-    const spinningClass = this.state.spinning ? 'spinning' : '';
+    const spinningClass = this.props.spinning ? 'spinning' : '';
     const collapsedClass = this.state.openFacet ? '' : 'collapsed';
 
     return (
@@ -205,6 +204,7 @@ Facet.propTypes = {
   totalHits: React.PropTypes.number,
   selectedValue: React.PropTypes.string,
   createAPIQuery: React.PropTypes.func,
+  spinning: React.PropTypes.bool,
 };
 
 Facet.contextTypes = {

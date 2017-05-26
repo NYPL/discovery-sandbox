@@ -13,7 +13,6 @@ class DateFacet extends React.Component {
     // Storing the values for the date input fields in local state so that the input
     // element can override it.
     this.state = {
-      spinning: false,
       dateAfter: this.props.selectedFacets.dateAfter || DATEDEFAULT,
       dateBefore: this.props.selectedFacets.dateBefore || DATEDEFAULT,
     };
@@ -90,7 +89,7 @@ class DateFacet extends React.Component {
   }
 
   render() {
-    const spinningClass = this.state.spinning ? 'spinning' : '';
+    const spinningClass = this.props.spinning ? 'spinning' : '';
 
     return (
       <div className={`nypl-facet-search nypl-spinner-field ${spinningClass}`}>
@@ -131,6 +130,7 @@ DateFacet.propTypes = {
   keywords: React.PropTypes.string,
   selectedFacets: React.PropTypes.object,
   createAPIQuery: React.PropTypes.func,
+  spinning: React.PropTypes.bool,
 };
 
 DateFacet.contextTypes = {
