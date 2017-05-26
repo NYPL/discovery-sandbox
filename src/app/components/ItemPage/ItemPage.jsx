@@ -94,11 +94,11 @@ class ItemPage extends React.Component {
           definition: (
             <ul>{record[f.field].map((obj, i) => (
               <li key={i}>
-                <a
-                  onClick={e => this.onClick(e, `${f.field}:"${obj['@id']}"`)}
+                <Link
+                  onClick={e => this.onClick(e, `filters[${f.field}]=${obj['@id']}`)}
                   title={`Make a new search for ${f.label}: ${obj.prefLabel}`}
-                  href={`/search?q=${encodeURIComponent(`${f.field}:"${obj['@id']}"`)}`}
-                >{obj.prefLabel}</a>
+                  to={`/search?q=${encodeURIComponent(`filters[${f.field}]=${obj['@id']}`)}`}
+                >{obj.prefLabel}</Link>
               </li>))}
             </ul>),
         });
@@ -111,13 +111,13 @@ class ItemPage extends React.Component {
               const comma = record[f.field].length > 1 ? ', ' : ' ';
               return (
                 <span key={i}>
-                  <a
-                    onClick={e => this.onClick(e, `${f.field}:"${value}"`)}
+                  <Link
+                    onClick={e => this.onClick(e, `filters[${f.field}]=${value}`)}
                     title={`Make a new search for ${f.label}: "${value}"`}
-                    href={`/search?q=${encodeURIComponent(`${f.field}:"${value}"`)}`}
+                    to={`/search?q=${encodeURIComponent(`filters[${f.field}]=${value}`)}`}
                   >
                     {value}
-                  </a>{comma}
+                  </Link>{comma}
                 </span>
               );
             }),
@@ -128,11 +128,11 @@ class ItemPage extends React.Component {
             definition: (
               <ul>{record[f.field].map((value, i) => (
                 <li key={i}>
-                  <a
-                    onClick={e => this.onClick(e, `${f.field}:"${value}"`)}
+                  <Link
+                    onClick={e => this.onClick(e, `filters[${f.field}]=${value}`)}
                     title={`Make a new search for ${f.label}: "${value}"`}
-                    href={`/search?q=${encodeURIComponent(`${f.field}:"${value}"`)}`}
-                  >{value}</a>
+                    to={`/search?q=${encodeURIComponent(`filters[${f.field}]=${value}`)}`}
+                  >{value}</Link>
                 </li>))}
               </ul>),
           });
@@ -158,9 +158,9 @@ class ItemPage extends React.Component {
       record.contributor.map((author, i) => (
         <span key={i}>
           <Link
-            to={{ pathname: '/search', query: { q: `contributor:"${author}"` } }}
+            to={{ pathname: '/search', query: { q: `filter[contributorLiteral]=${author}` } }}
             title={`Make a new search for contributor: "${author}"`}
-            onClick={(e) => this.onClick(e, `contributor:"${author}"`)}
+            onClick={(e) => this.onClick(e, `filter[contributorLiteral]=${author}`)}
           >
             {author}
           </Link>,&nbsp;
@@ -169,9 +169,9 @@ class ItemPage extends React.Component {
       : null;
     const publisher = record.publisher && record.publisher.length ?
       <Link
-        to={{ pathname: '/search', query: { q: `publisher:"${record.publisher[0]}"` } }}
+        to={{ pathname: '/search', query: { q: `filter[publisher]=${record.publisher[0]}` } }}
         title={`Make a new search for publisher: "${record.publisher[0]}"`}
-        onClick={(e) => this.onClick(e, `publisher:"${record.publisher[0]}"`)}
+        onClick={(e) => this.onClick(e, `filter[publisher]=${record.publisher[0]}`)}
       >
         {record.publisher[0]}
       </Link>
