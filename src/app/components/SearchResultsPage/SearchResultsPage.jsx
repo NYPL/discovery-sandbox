@@ -62,6 +62,7 @@ const SearchResultsPage = (props) => {
 
             <FacetSidebar
               facets={facetList}
+              spinning={spinning}
               selectedFacets={selectedFacets}
               searchKeywords={searchKeywords}
               className="nypl-column-one-quarter"
