@@ -206,7 +206,7 @@ class ItemPage extends React.Component {
 
     _mapObject(this.props.selectedFacets, (val, key) => {
       if (val.value !== '') {
-        searchURL += ` ${key}:"${val.id}"`;
+        searchURL += `&filters[${key}]=${val.id}`;
       }
     });
 

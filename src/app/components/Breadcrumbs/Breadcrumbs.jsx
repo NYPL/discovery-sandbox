@@ -37,7 +37,7 @@ const Breadcrumbs = ({ query, type, title, url }) => {
           (<li>
             <Link
               title={`Make a new search for ${query}`}
-              to={`/search?q=${query}`}
+              to={`/search?${query}`}
             >Items</Link></li>)
           : null
         }
