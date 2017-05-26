@@ -167,7 +167,7 @@ class ItemPage extends React.Component {
       <Link
         to={{ pathname: '/search', query: { q: `filter[publisher]=${record.publisher[0]}` } }}
         title={`Make a new search for publisher: "${record.publisher[0]}"`}
-        onClick={(e) => this.onClick(e, `publisher:"${record.publisher[0]}"`)}
+        onClick={(e) => this.onClick(e, `filter[publisher]=${record.publisher[0]}`)}
       >
         {record.publisher[0]}
       </Link>
