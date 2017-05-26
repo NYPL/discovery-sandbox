@@ -156,7 +156,7 @@ class ItemPage extends React.Component {
           <Link
             to={{ pathname: '/search', query: { q: `filter[contributorLiteral]=${author}` } }}
             title={`Make a new search for contributor: "${author}"`}
-            onClick={(e) => this.onClick(e, `contributorLiteral:"${author}"`)}
+            onClick={(e) => this.onClick(e, `filter[contributorLiteral]=${author}`)}
           >
             {author}
           </Link>,&nbsp;
