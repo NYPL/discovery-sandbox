@@ -109,7 +109,7 @@ class ItemPage extends React.Component {
               return (
                 <span key={i}>
                   <Link
-                    onClick={e => this.onClick(e, `${f.field}:"${value}"`)}
+                    onClick={e => this.onClick(e, `filters[${f.field}]=${value}`)}
                     title={`Make a new search for ${f.label}: "${value}"`}
                     to={`/search?q=${encodeURIComponent(`filters[${f.field}]=${value}`)}`}
                   >
@@ -126,7 +126,7 @@ class ItemPage extends React.Component {
               <ul>{record[f.field].map((value, i) => (
                 <li key={i}>
                   <Link
-                    onClick={e => this.onClick(e, `${f.field}:"${value}"`)}
+                    onClick={e => this.onClick(e, `filters[${f.field}]=${value}`)}
                     title={`Make a new search for ${f.label}: "${value}"`}
                     to={`/search?q=${encodeURIComponent(`filters[${f.field}]=${value}`)}`}
                   >{value}</Link>
@@ -156,7 +156,7 @@ class ItemPage extends React.Component {
           <Link
             to={{ pathname: '/search', query: { q: `filter[contributorLiteral]=${author}` } }}
             title={`Make a new search for contributor: "${author}"`}
-            onClick={(e) => this.onClick(e, `contributor:"${author}"`)}
+            onClick={(e) => this.onClick(e, `contributorLiteral:"${author}"`)}
           >
             {author}
           </Link>,&nbsp;
