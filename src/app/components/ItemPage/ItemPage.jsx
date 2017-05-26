@@ -92,7 +92,7 @@ class ItemPage extends React.Component {
             <ul>{record[f.field].map((obj, i) => (
               <li key={i}>
                 <Link
-                  onClick={e => this.onClick(e, `${f.field}:"${obj['@id']}"`)}
+                  onClick={e => this.onClick(e, `filters[${f.field}]=${obj['@id']}`)}
                   title={`Make a new search for ${f.label}: ${obj.prefLabel}`}
                   to={`/search?q=${encodeURIComponent(`filters[${f.field}]=${obj['@id']}`)}`}
                 >{obj.prefLabel}</Link>
