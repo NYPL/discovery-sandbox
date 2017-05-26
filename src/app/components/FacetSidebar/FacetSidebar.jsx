@@ -72,9 +72,10 @@ class FacetSidebar extends React.Component {
           <Facet
             key={i}
             facet={facet}
+            selectedFacets={selectedFacets}
             totalHits={totalHits}
             selectedValue={selectedValue}
-            keywords={searchKeywords}
+            createAPIQuery={this.props.createAPIQuery}
           />
         );
       });

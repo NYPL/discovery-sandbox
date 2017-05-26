@@ -1,102 +1,70 @@
 import React from 'react';
-
-import {
-  extend as _extend,
-  findWhere as _findWhere,
-  pick as _pick,
-} from 'underscore';
+import { extend as _extend } from 'underscore';
 
 import Actions from '../../actions/Actions';
-import Store from '../../stores/Store';
-import {
-  ajaxCall,
-  getFacetParams,
-  getFieldParam,
-  getFacetFilterParam,
-} from '../../utils/utils';
+import { ajaxCall } from '../../utils/utils';
 
-const facetShowLimit = 4;
+const FACETSHOWLIMIT = 4;
 
 class Facet extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = _extend({
+    this.state = {
       spinning: false,
       openFacet: true,
-      [this.props.facet.field]: { id: '', value: '' },
+      facet: { id: '', value: '' },
       showMoreFacets: false,
-    }, Store.getState());
+    };
 
-    this.onChange = this.onChange.bind(this);
     this.routeHandler = this.routeHandler.bind(this);
     this.onFacetUpdate = this.onFacetUpdate.bind(this);
   }
 
   componentDidMount() {
-    Store.listen(this.onChange);
-
     setTimeout(() => {
       this.setState({ openFacet: false });
     }, 500);
   }
 
-  componentWillUnmount() {
-    Store.unlisten(this.onChange);
-  }
-
-  onChange() {
-    this.setState(_extend(this.state, Store.getState()));
-  }
-
-  onFacetUpdate(e, field) {
+  onFacetUpdate(e) {
     Actions.updateSpinner(true);
-    const value = e.target.value;
+    // In order for this to work, the facet object is passed as a stringified JSON string.
+    // That way we get the whole clicked facet and then there's no need to search for it.
+    const clickedFacet = JSON.parse(e.target.value);
     const checked = e.target.checked;
+    const pickedFacet = {};
+    let selectedFacets = {};
+    let selectedFacetObj = {};
 
-    let pickedFacet = _pick(this.state.selectedFacets, field);
-
-    let strSearch = '';
-
+    // If the clicked facet is unchecked, make its selection empty.
     if (!checked) {
-      this.setState({
-        [field]: {
-          id: '',
-          value: '',
-        },
-      });
-      pickedFacet = {
-        [field]: {
-          id: '',
-          value: '',
-        },
-      };
+      selectedFacetObj = { id: '', value: '' };
     } else {
-      const facetObj = this.props.facet;
-      const facet = _findWhere(facetObj.values, { value });
-
-      const selectedFacetObj = {
-        id: facet.value,
-        value: facet.label || facet.value,
+      // Else the clicked facet was checked, so generate the object we want to use
+      // to query the API.
+      selectedFacetObj = {
+        id: clickedFacet.value,
+        value: clickedFacet.label || clickedFacet.value,
       };
-
-      this.setState({ [field]: selectedFacetObj });
-      pickedFacet[field] = selectedFacetObj;
-
-      pickedFacet = _extend(this.state.selectedFacets, pickedFacet);
-      strSearch = getFacetFilterParam(pickedFacet, field, value);
     }
 
-    const fieldQuery = getFieldParam(this.state.field);
+    // Update the state.
+    this.setState({ facet: selectedFacetObj });
+    // Need to create an object for this selection.
+    pickedFacet[this.props.facet.field] = selectedFacetObj;
+    // Merge the app's selected facets with this one, whether it was selected or not.
+    // The unchecked empty selection will remove it.
+    selectedFacets = _extend(this.props.selectedFacets, pickedFacet);
 
-    ajaxCall(`/api?q=${this.props.keywords}${strSearch}${fieldQuery}`, (response) => {
+    const query = this.props.createAPIQuery({ selectedFacets });
+
+    ajaxCall(`/api?${query}`, (response) => {
       Actions.updateSearchResults(response.data.searchResults);
       Actions.updateFacets(response.data.facets);
-      Actions.updateSelectedFacets(pickedFacet);
+      Actions.updateSelectedFacets(selectedFacets);
       Actions.updatePage('1');
-      this.routeHandler(
-        `/search?q=${encodeURIComponent(this.props.keywords)}${strSearch}${fieldQuery}`
-      );
+      this.routeHandler(`/search?${query}`);
       Actions.updateSpinner(false);
     });
   }
@@ -111,10 +79,6 @@ class Facet extends React.Component {
   }
 
   routeHandler(path) {
-    if (path === '/') {
-      Actions.updateSelectedFacets({});
-    }
-
     this.context.router.push(path);
   }
 
@@ -124,8 +88,8 @@ class Facet extends React.Component {
   }
 
   showGetTenMore(valueCount) {
-    const moreFacetsToShow = valueCount - facetShowLimit;
-    if (valueCount > facetShowLimit && !this.state.showMoreFacets) {
+    const moreFacetsToShow = valueCount - FACETSHOWLIMIT;
+    if (valueCount > FACETSHOWLIMIT && !this.state.showMoreFacets) {
       return (
         <button className="nypl-link-button" onClick={(e) => this.showMoreFacets(e)}>
           Show {moreFacetsToShow} more
@@ -144,7 +108,7 @@ class Facet extends React.Component {
   }
 
   checkNoSearch(valueCount) {
-    return valueCount > facetShowLimit ? '' : ' nosearch';
+    return valueCount > FACETSHOWLIMIT ? '' : ' nosearch';
   }
 
   render() {
@@ -158,7 +122,8 @@ class Facet extends React.Component {
     return (
       <div
         key={`${field}-${facet.value}`}
-        className={`nypl-searchable-field nypl-spinner-field ${noSearchClass} ${spinningClass} ${collapsedClass}`}
+        className={`nypl-searchable-field nypl-spinner-field ${noSearchClass} ` +
+          `${spinningClass} ${collapsedClass}`}
       >
         <button
           type="button"
@@ -196,17 +161,12 @@ class Facet extends React.Component {
               facet.values.map((f, j) => {
                 const percentage = Math.floor(f.count / this.props.totalHits * 100);
                 const valueLabel = (f.value).toString().replace(/:/, '_');
-                const hiddenFacet = (j > facetShowLimit && !this.state.showMoreFacets) ?
+                const hiddenFacet = (j > FACETSHOWLIMIT && !this.state.showMoreFacets) ?
                   'hiddenFacet' : '';
                 let selectLabel = f.value;
-                let selectedValue = '';
 
                 if (f.label) {
                   selectLabel = f.label;
-                }
-                if (this.state.selectedFacets[field] &&
-                  this.state.selectedFacets[field].value) {
-                  selectedValue = this.state.selectedFacets[field].value;
                 }
 
                 return (
@@ -220,10 +180,10 @@ class Facet extends React.Component {
                       id={`${field}-${valueLabel}`}
                       aria-labelledby={`${field}-${valueLabel}`}
                       type="checkbox"
-                      name="subject"
-                      checked={selectedValue === f.value}
-                      value={f.value}
-                      onClick={e => this.onFacetUpdate(e, field)}
+                      name={`${field}-${valueLabel}-name`}
+                      checked={this.props.selectedValue === f.value}
+                      value={JSON.stringify(f)}
+                      onClick={(e) => this.onFacetUpdate(e)}
                     />
                     <span className="nypl-facet-count">{f.count.toLocaleString()}</span>
                     {selectLabel}
@@ -241,9 +201,10 @@ class Facet extends React.Component {
 
 Facet.propTypes = {
   facet: React.PropTypes.object,
-  keywords: React.PropTypes.string,
+  selectedFacets: React.PropTypes.object,
   totalHits: React.PropTypes.number,
   selectedValue: React.PropTypes.string,
+  createAPIQuery: React.PropTypes.func,
 };
 
 Facet.contextTypes = {
