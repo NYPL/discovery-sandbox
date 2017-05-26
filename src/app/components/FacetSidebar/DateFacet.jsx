@@ -1,92 +1,89 @@
 import React from 'react';
 
-import {
-  extend as _extend,
-} from 'underscore';
-
 import Actions from '../../actions/Actions';
-import Store from '../../stores/Store';
-import {
-  ajaxCall,
-  getFacetFilterParam,
-  getFieldParam,
-} from '../../utils/utils';
+import { ajaxCall } from '../../utils/utils';
+import { extend as _extend } from 'underscore';
+
+const DATEDEFAULT = { id: '', value: '' };
 
 class DateFacet extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = _extend({
+    // Storing the values for the date input fields in local state so that the input
+    // element can override it.
+    this.state = {
       spinning: false,
-      dateAfter: '',
-      dateBefore: '',
-    }, Store.getState());
+      dateAfter: this.props.selectedFacets.dateAfter || DATEDEFAULT,
+      dateBefore: this.props.selectedFacets.dateBefore || DATEDEFAULT,
+    };
 
-    this.onChange = this.onChange.bind(this);
     this.routeHandler = this.routeHandler.bind(this);
     this.inputChange = this.inputChange.bind(this);
     this.triggerSubmit = this.triggerSubmit.bind(this);
   }
 
-  componentDidMount() {
-    Store.listen(this.onChange);
-  }
-
-  componentWillUnmount() {
-    Store.unlisten(this.onChange);
-  }
-
-  onChange() {
-    this.setState(_extend(this.state, Store.getState()));
+  /*
+   * componentWillReceiveProps
+   * Override the state from the props based on any ajax call.
+   */
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      dateAfter: nextProps.selectedFacets.dateAfter || DATEDEFAULT,
+      dateBefore: nextProps.selectedFacets.dateBefore || DATEDEFAULT,
+    });
   }
 
   routeHandler(path) {
     this.context.router.push(path);
   }
 
+  /*
+   * inputChange
+   * The value from the input field needs to be restricted to 4 numerical characters.
+   * The state is also updated based on the value that was input and how we want it to display
+   * to users, the `value` property.
+   */
   inputChange(e) {
     const value = (e.target.value).replace(/[a-zA-Z]/g, '');
+    // The name can be either `dateBefore` or `dateAfter`. We need just `before` or `after`
+    // in the user display value.
+    const displayValue = e.target.name.substring(4).toLowerCase();
 
     this.setState({
-      [e.target.name]: value > 4 ? value.slice(0, 4) : value,
+      [e.target.name]: {
+        id: value > 4 ? value.slice(0, 4) : value,
+        value: `${displayValue} ${value}`,
+      },
     });
   }
 
+  /*
+   * triggerSubmit
+   * First we need to merge the current state values from the input field with the app's
+   * selected facets. Then generate the api query and call it.
+   */
   triggerSubmit(event) {
     if (event && event.charCode === 13) {
       Actions.updateSpinner(true);
       const updatedFacets = _extend({}, this.props.selectedFacets);
 
       if (this.state.dateAfter) {
-        updatedFacets.dateAfter = {
-          id: this.state.dateAfter,
-          value: `after ${this.state.dateAfter}`,
-        };
+        updatedFacets.dateAfter = this.state.dateAfter;
       }
       if (this.state.dateBefore) {
-        updatedFacets.dateBefore = {
-          id: this.state.dateBefore,
-          value: `before ${this.state.dateBefore}`,
-        };
+        updatedFacets.dateBefore = this.state.dateBefore;
       }
 
-      this.setState({
-        dateAfter: updatedFacets.dateAfter ? updatedFacets.dateAfter.id : '',
-        dateBefore: updatedFacets.dateBefore ? updatedFacets.dateBefore.id : '',
-      });
+      const query = this.props.createAPIQuery({ selectedFacets: updatedFacets });
 
-      const facetQuery = getFacetFilterParam(updatedFacets);
-      const fieldQuery = getFieldParam(this.state.field);
-
-      ajaxCall(`/api?q=${this.props.keywords}${facetQuery}${fieldQuery}`,
+      Actions.updateSelectedFacets(updatedFacets);
+      ajaxCall(`/api?${query}`,
         (response) => {
           Actions.updateSearchResults(response.data.searchResults);
-          Actions.updateSelectedFacets(updatedFacets);
           Actions.updateFacets(response.data.facets);
           Actions.updatePage('1');
-          this.routeHandler(
-            `/search?q=${encodeURIComponent(this.props.keywords)}${facetQuery}${fieldQuery}`
-          );
+          this.routeHandler(`/search?${query}`);
           Actions.updateSpinner(false);
         });
     }
@@ -108,7 +105,7 @@ class DateFacet extends React.Component {
         <button
           type="button"
           className={`nypl-facet-toggle ${collapsedClass}`}
-          aria-controls={`nypl-searchable-field_date`}
+          aria-controls="nypl-searchable-field_date"
           aria-expanded={this.state.openFacet}
           onClick={() => this.showFacet()}
         >
@@ -137,7 +134,7 @@ class DateFacet extends React.Component {
               placeholder=""
               name="dateAfter"
               onChange={this.inputChange}
-              value={this.state.dateAfter}
+              value={this.state.dateAfter.id}
               onKeyPress={this.triggerSubmit}
               maxLength="4"
             />
@@ -151,7 +148,7 @@ class DateFacet extends React.Component {
               placeholder=""
               name="dateBefore"
               onChange={this.inputChange}
-              value={this.state.dateBefore}
+              value={this.state.dateBefore.id}
               onKeyPress={this.triggerSubmit}
               maxLength="4"
             />
@@ -165,6 +162,7 @@ class DateFacet extends React.Component {
 DateFacet.propTypes = {
   keywords: React.PropTypes.string,
   selectedFacets: React.PropTypes.object,
+  createAPIQuery: React.PropTypes.func,
 };
 
 DateFacet.contextTypes = {

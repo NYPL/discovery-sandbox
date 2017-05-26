@@ -1,8 +1,5 @@
 import React from 'react';
-import {
-  findWhere as _findWhere,
-  forEach as _forEach,
-} from 'underscore';
+import { findWhere as _findWhere } from 'underscore';
 
 import Facet from './Facet';
 import DateFacet from './DateFacet';
@@ -15,18 +12,6 @@ class FacetSidebar extends React.Component {
       mobileView: false,
       mobileViewText: 'Refine search',
     };
-
-    _forEach(this.props.facets, (facet) => {
-      let id = '';
-      let value = '';
-
-      if (this.props.selectedFacets && this.props.selectedFacets[facet.field]) {
-        id = this.props.selectedFacets[facet.field].id;
-        value = this.props.selectedFacets[facet.field].value;
-      }
-
-      this.state[facet.field] = { id, value };
-    });
   }
 
   toggleFacetsMobile() {
@@ -48,6 +33,7 @@ class FacetSidebar extends React.Component {
       facets,
       totalHits,
       searchKeywords,
+      selectedFacets,
     } = this.props;
     let facetsElm = null;
 
@@ -68,7 +54,7 @@ class FacetSidebar extends React.Component {
         }
 
         const field = facet.field;
-        const selectedValue = this.state[field] ? this.state[field].id : '';
+        const selectedValue = selectedFacets[field] ? selectedFacets[field].id : '';
 
         if (facet.id === 'date') {
           return (
@@ -76,7 +62,8 @@ class FacetSidebar extends React.Component {
               key={i}
               totalHits={totalHits}
               keywords={searchKeywords}
-              selectedFacets={this.props.selectedFacets}
+              selectedFacets={selectedFacets}
+              createAPIQuery={this.props.createAPIQuery}
             />
           );
         }

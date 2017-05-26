@@ -118,7 +118,7 @@ function ServerSearch(req, res, next) {
 
         if (key === 'dateAfter' || key === 'dateBefore') {
           facet = {
-            id: key,
+            id: value,
             value: key === 'dateAfter' ? `after ${value}` : `before ${value}`,
           };
         } else {
