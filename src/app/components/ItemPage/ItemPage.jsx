@@ -154,7 +154,7 @@ class ItemPage extends React.Component {
       record.contributor.map((author, i) => (
         <span key={i}>
           <Link
-            to={{ pathname: '/search', query: { q: `filter[contributor]=${author}` } }}
+            to={{ pathname: '/search', query: { q: `filter[contributorLiteral]=${author}` } }}
             title={`Make a new search for contributor: "${author}"`}
             onClick={(e) => this.onClick(e, `contributor:"${author}"`)}
           >
