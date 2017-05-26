@@ -96,7 +96,7 @@ const SearchResultsPage = (props) => {
                 )
               }
 
-              {results.length !== 0 && (<ResultList results={results} />)}
+              {results && results.length !== 0 && (<ResultList results={results} />)}
 
               {
                 totalHits !== 0 &&
