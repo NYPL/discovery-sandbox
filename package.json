@@ -54,7 +54,7 @@
     "nyc": "9.0.1"
   },
   "dependencies": {
-    "@nypl/design-toolkit": "0.1.14",
+    "@nypl/design-toolkit": "0.1.16",
     "@nypl/dgx-header-component": "1.5.0",
     "@nypl/dgx-react-footer": "0.3.0",
     "alt": "0.18.2",

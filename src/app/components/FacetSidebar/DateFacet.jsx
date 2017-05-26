@@ -13,6 +13,7 @@ class DateFacet extends React.Component {
     // Storing the values for the date input fields in local state so that the input
     // element can override it.
     this.state = {
+      openFacet: true,
       dateAfter: this.props.selectedFacets.dateAfter || DATEDEFAULT,
       dateBefore: this.props.selectedFacets.dateBefore || DATEDEFAULT,
     };
@@ -31,6 +32,12 @@ class DateFacet extends React.Component {
       dateAfter: nextProps.selectedFacets.dateAfter || DATEDEFAULT,
       dateBefore: nextProps.selectedFacets.dateBefore || DATEDEFAULT,
     });
+  }
+
+  componentDidMount() {
+    setTimeout(() => {
+      this.setState({ openFacet: false });
+    }, 500);
   }
 
   routeHandler(path) {
@@ -88,38 +95,70 @@ class DateFacet extends React.Component {
     }
   }
 
+  showFacet() {
+    if (this.state.openFacet === false) {
+      this.setState({ openFacet: true });
+    } else {
+      this.setState({ openFacet: false });
+    }
+  }
+
   render() {
     const spinningClass = this.props.spinning ? 'spinning' : '';
-
+    const collapsedClass = this.state.openFacet ? '' : 'collapsed';
     return (
-      <div className={`nypl-facet-search nypl-spinner-field ${spinningClass}`}>
-        <div className="nypl-text-field">
-          <label key="date-from" htmlFor="facet-date-from-search">On or After Year</label>
-          <input
-            id="facet-date-from-search"
-            type="text"
-            className="form-text"
-            placeholder=""
-            name="dateAfter"
-            onChange={this.inputChange}
-            value={this.state.dateAfter.id}
-            onKeyPress={this.triggerSubmit}
-            maxLength="4"
-          />
-        </div>
-        <div className="nypl-text-field">
-          <label key="date-to" htmlFor="facet-date-to-search">On or Before Year</label>
-          <input
-            id="facet-date-to-search"
-            type="text"
-            className="form-text"
-            placeholder=""
-            name="dateBefore"
-            onChange={this.inputChange}
-            value={this.state.dateBefore.id}
-            onKeyPress={this.triggerSubmit}
-            maxLength="4"
-          />
+      <div className={`nypl-collapsible-field nypl-spinner-field ${collapsedClass} ${spinningClass}`}>
+        <button
+          type="button"
+          className={`nypl-facet-toggle ${collapsedClass}`}
+          aria-controls="nypl-searchable-field_date"
+          aria-expanded={this.state.openFacet}
+          onClick={() => this.showFacet()}
+        >
+          Date
+          <svg
+            aria-hidden="true"
+            className="nypl-icon"
+            preserveAspectRatio="xMidYMid meet"
+            viewBox="0 0 68 24"
+          >
+            <title>wedge down icon</title>
+            <polygon points="67.938 0 34 24 0 0 10 0 34.1 16.4 58.144 0 67.938 0"></polygon>
+          </svg>
+        </button>
+        <div
+          className={`nypl-collapsible ${collapsedClass}`}
+          id={`nypl-searchable-field_date`}
+          aria-expanded={this.state.openFacet}
+        >
+          <div className="nypl-year-field">
+            <label key="date-from" htmlFor="facet-date-from-search">On or After Year</label>
+            <input
+              id="facet-date-from-search"
+              type="text"
+              className="form-text"
+              placeholder=""
+              name="dateAfter"
+              onChange={this.inputChange}
+              value={this.state.dateAfter.id}
+              onKeyPress={this.triggerSubmit}
+              maxLength="4"
+            />
+          </div>
+          <div className="nypl-year-field">
+            <label key="date-to" htmlFor="facet-date-to-search">On or Before Year</label>
+            <input
+              id="facet-date-to-search"
+              type="text"
+              className="form-text"
+              placeholder=""
+              name="dateBefore"
+              onChange={this.inputChange}
+              value={this.state.dateBefore.id}
+              onKeyPress={this.triggerSubmit}
+              maxLength="4"
+            />
+          </div>
         </div>
       </div>
     );

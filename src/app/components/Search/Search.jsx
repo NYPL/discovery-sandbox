@@ -107,12 +107,6 @@ class Search extends React.Component {
         <fieldset
           className={`nypl-omnisearch nypl-spinner-field ${this.state.spinning ? 'spinning' : ''}`}
         >
-          <SearchButton
-            id="nypl-omni-button"
-            type="submit"
-            value="Search"
-            onClick={this.submitSearchRequest}
-          />
           <span className="nypl-omni-fields">
             <label htmlFor="search-by-field">Search in</label>
             <select
@@ -137,6 +131,12 @@ class Search extends React.Component {
             onChange={this.inputChange}
             value={this.state.searchKeywords}
             ref="keywords"
+          />
+          <SearchButton
+            id="nypl-omni-button"
+            type="submit"
+            value="Search"
+            onClick={this.submitSearchRequest}
           />
         </fieldset>
       </form>
