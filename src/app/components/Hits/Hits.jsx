@@ -71,7 +71,7 @@ class Hits extends React.Component {
   clearResults() {
     Actions.updateSpinner(true);
     Actions.updateSearchKeywords('');
-    Action.updateSelectedFacets('');
+    Actions.updateSelectedFacets({});
     ajaxCall(`/api`, (response) => {
       Actions.updateSearchResults(response.data.searchResults);
       Actions.updateFacets('');
