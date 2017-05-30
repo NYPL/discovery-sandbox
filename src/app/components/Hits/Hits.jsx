@@ -1,8 +1,9 @@
 import React from 'react';
 import {
   mapObject as _mapObject,
-  forEach as _forEach,
+  each as _each,
   isEmpty as _isEmpty,
+  isArray as _isArray,
 } from 'underscore';
 
 import Actions from '../../actions/Actions.js';
@@ -57,9 +58,9 @@ class Hits extends React.Component {
     if (_isEmpty(facets)) return null;
     const renderedElms = [];
     _mapObject(facets, (value, key) => {
-      _forEach(value, (facet, i) => {
+      _each(value, (facet, i) => {
         renderedElms.push(
-          <span key={i} className="nypl-facet">
+          <span key={`${key}-${i}`} className="nypl-facet">
             &nbsp;with {this.getFacetLabel(key)} <strong>{facet.value}</strong>
             <button
               onClick={() => this.removeFacet(key, facet.id)}
@@ -120,15 +121,23 @@ class Hits extends React.Component {
     const hitsF = hits ? hits.toLocaleString() : '';
 
     _mapObject(selectedFacets, (val, key) => {
-      if (val.length) {
+      if (key === 'dateAfter' || key === 'dateBefore') {
         activeFacets[key] = [];
-        _forEach(val, facet => {
+        // Converting the date object value into an array of one object
+        // just for rendering purposes.
+        if (!_isEmpty(val) && val.id) {
+          activeFacets[key].push(val);
+        }
+      } else if (val.length && _isArray(val)) {
+        activeFacets[key] = [];
+        _each(val, facet => {
           if (facet.value) {
             activeFacets[key].push({ id: facet.id, value: facet.value });
           }
         });
       }
     });
+
     const keyword = this.getKeyword(searchKeywords);
     const activeFacetsElm = this.getFacetElements(activeFacets);
     if (this.props.spinning) {

@@ -23,6 +23,12 @@ class DateFacet extends React.Component {
     this.triggerSubmit = this.triggerSubmit.bind(this);
   }
 
+  componentDidMount() {
+    setTimeout(() => {
+      this.setState({ openFacet: false });
+    }, 500);
+  }
+
   /*
    * componentWillReceiveProps
    * Override the state from the props based on any ajax call.
@@ -32,12 +38,6 @@ class DateFacet extends React.Component {
       dateAfter: nextProps.selectedFacets.dateAfter || DATEDEFAULT,
       dateBefore: nextProps.selectedFacets.dateBefore || DATEDEFAULT,
     });
-  }
-
-  componentDidMount() {
-    setTimeout(() => {
-      this.setState({ openFacet: false });
-    }, 500);
   }
 
   routeHandler(path) {
@@ -82,7 +82,6 @@ class DateFacet extends React.Component {
       }
 
       const query = this.props.createAPIQuery({ selectedFacets: updatedFacets });
-
       Actions.updateSelectedFacets(updatedFacets);
       ajaxCall(`/api?${query}`,
         (response) => {

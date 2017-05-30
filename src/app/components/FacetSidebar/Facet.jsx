@@ -3,7 +3,6 @@ import {
   extend as _extend,
   reject as _reject,
   findWhere as _findWhere,
-  contains as _contains,
 } from 'underscore';
 
 import Actions from '../../actions/Actions';
@@ -180,14 +179,12 @@ class Facet extends React.Component {
                 const valueLabel = (f.value).toString().replace(/:/, '_');
                 const hiddenFacet = (j > FACETSHOWLIMIT && !this.state.showMoreFacets) ?
                   'hiddenFacet' : '';
+                const selected = !!_findWhere(this.props.selectedValues, { id: f.value });
                 let selectLabel = f.value;
 
                 if (f.label) {
                   selectLabel = f.label;
                 }
-
-                console.log(this.props.selectedValues, _contains(this.props.selectedValues, { id: f.id }));
-                // this.props.selectedValues === f.value;
 
                 return (
                   <label
@@ -201,7 +198,7 @@ class Facet extends React.Component {
                       aria-labelledby={`${field}-${valueLabel}`}
                       type="checkbox"
                       name={`${field}-${valueLabel}-name`}
-                      checked={false}
+                      checked={selected}
                       value={JSON.stringify(f)}
                       onClick={(e) => this.onFacetUpdate(e)}
                     />

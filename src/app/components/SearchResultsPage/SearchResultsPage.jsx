@@ -32,7 +32,6 @@ const SearchResultsPage = (props) => {
   const breadcrumbs = (
     <Breadcrumbs query={searchKeywords} type="search" />
   );
-
   const createAPIQuery = basicQuery(props);
 
   return (

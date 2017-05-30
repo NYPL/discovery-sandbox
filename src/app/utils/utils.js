@@ -11,6 +11,7 @@ import {
   forEach as _forEach,
   isEmpty as _isEmpty,
   isArray as _isArray,
+  extend as _extend,
 } from 'underscore';
 
 import appConfig from '../../../appConfig.js';
@@ -35,7 +36,7 @@ const ajaxCall = (
     .catch(errorcb);
 };
 
-const getDefaultFacets = () => appConfig.defaultFacets;
+const getDefaultFacets = () => _extend({}, appConfig.defaultFacets);
 
 /**
  * createAppHistory
@@ -50,10 +51,9 @@ const createAppHistory = () => {
 };
 
 function destructureFilters(filters, apiFacet) {
-  const selectedFacets = {};
+  const selectedFacets = getDefaultFacets();
   const facetArray = apiFacet && apiFacet.itemListElement && apiFacet.itemListElement.length ?
     apiFacet.itemListElement : [];
-
 
   _forEach(filters, (value, key) => {
     const id = key.substring(8, key.length - 1);
@@ -63,15 +63,28 @@ function destructureFilters(filters, apiFacet) {
         id: value,
         value: id === 'dateAfter' ? `after ${value}` : `before ${value}`,
       };
-    } else {
+    } else if (_isArray(value) && value.length) {
+      _forEach(value, facetValue => {
+        const facetObjFromAPI = _findWhere(facetArray, { id });
+        if (facetObjFromAPI && facetObjFromAPI.values && facetObjFromAPI.values.length) {
+          const facet = _findWhere(facetObjFromAPI.values, { value: facetValue });
+          if (facet) {
+            selectedFacets[id].push({
+              id: facet.value,
+              value: facet.label || facet.value,
+            });
+          }
+        }
+      });
+    } else if (typeof value === 'string') {
       const facetObjFromAPI = _findWhere(facetArray, { id });
       if (facetObjFromAPI && facetObjFromAPI.values && facetObjFromAPI.values.length) {
         const facet = _findWhere(facetObjFromAPI.values, { value });
         if (facet) {
-          selectedFacets[id] = {
+          selectedFacets[id].push({
             id: facet.value,
             value: facet.label || facet.value,
-          };
+          });
         }
       }
     }
@@ -116,6 +129,8 @@ const getFacetFilterParam = (facets) => {
             strSearch += `&filters[${key}]=${facet}`;
           }
         });
+      } else if (val.value && val.value !== '') {
+        strSearch += `&filters[${key}]=${val.id}`;
       } else if (typeof val === 'string') {
         strSearch += `&filters[${key}]=${val}`;
       }
