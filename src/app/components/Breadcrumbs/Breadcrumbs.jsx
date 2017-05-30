@@ -23,8 +23,7 @@ const Breadcrumbs = ({ query, type, title, url }) => {
     );
   }
 
-  // Arbitary value for now.
-  currentPageText = title.length > 50 ? `${title.substring(0, 50)}...` : title;
+  currentPageText = title;
 
   if (type === 'item') {
     crumbs = (
