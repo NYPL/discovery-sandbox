@@ -51,7 +51,7 @@ function search(searchKeywords, page, sortBy, order, field, filters, cb, errorcb
 
   const aggregationQuery = `/aggregations?${apiQuery}`;
   const queryString = `?${apiQuery}&per_page=50`;
-
+console.log(apiQuery)
   axios
     .all([axiosApiCall(aggregationQuery), axiosApiCall(queryString)])
     .then(axios.spread((facets, response) => {

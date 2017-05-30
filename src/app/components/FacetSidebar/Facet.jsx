@@ -1,5 +1,10 @@
 import React from 'react';
-import { extend as _extend } from 'underscore';
+import {
+  extend as _extend,
+  reject as _reject,
+  findWhere as _findWhere,
+  contains as _contains,
+} from 'underscore';
 
 import Actions from '../../actions/Actions';
 import { ajaxCall } from '../../utils/utils';
@@ -12,7 +17,7 @@ class Facet extends React.Component {
 
     this.state = {
       openFacet: true,
-      facet: { id: '', value: '' },
+      selectedValues: [],
       showMoreFacets: false,
     };
 
@@ -33,12 +38,18 @@ class Facet extends React.Component {
     const clickedFacet = JSON.parse(e.target.value);
     const checked = e.target.checked;
     const pickedFacet = {};
+    // Get any existing selected value from the facet:
+    let selectedValues = this.state.selectedValues;
     let selectedFacets = {};
     let selectedFacetObj = {};
 
     // If the clicked facet is unchecked, make its selection empty.
+    // Remove it from existing selected facet array.
     if (!checked) {
       selectedFacetObj = { id: '', value: '' };
+
+      // This is not rejecting unchecked value:
+      selectedValues = _reject(selectedValues, { id: clickedFacet.value });
     } else {
       // Else the clicked facet was checked, so generate the object we want to use
       // to query the API.
@@ -46,12 +57,19 @@ class Facet extends React.Component {
         id: clickedFacet.value,
         value: clickedFacet.label || clickedFacet.value,
       };
+
+      // Only add the clicked facet if it wasn't already selected.
+      const alreadySelected = _findWhere(selectedValues, { id: clickedFacet.value });
+      if (!alreadySelected) {
+        // Add new selected value only if it's checked.
+        selectedValues.push(selectedFacetObj);
+      }
     }
 
     // Update the state.
-    this.setState({ facet: selectedFacetObj });
+    this.setState({ selectedValues });
     // Need to create an object for this selection.
-    pickedFacet[this.props.facet.field] = selectedFacetObj;
+    pickedFacet[this.props.facet.field] = selectedValues;
     // Merge the app's selected facets with this one, whether it was selected or not.
     // The unchecked empty selection will remove it.
     selectedFacets = _extend(this.props.selectedFacets, pickedFacet);
@@ -168,6 +186,9 @@ class Facet extends React.Component {
                   selectLabel = f.label;
                 }
 
+                console.log(this.props.selectedValues, _contains(this.props.selectedValues, { id: f.id }));
+                // this.props.selectedValues === f.value;
+
                 return (
                   <label
                     key={j}
@@ -180,7 +201,7 @@ class Facet extends React.Component {
                       aria-labelledby={`${field}-${valueLabel}`}
                       type="checkbox"
                       name={`${field}-${valueLabel}-name`}
-                      checked={this.props.selectedValue === f.value}
+                      checked={false}
                       value={JSON.stringify(f)}
                       onClick={(e) => this.onFacetUpdate(e)}
                     />
@@ -202,7 +223,7 @@ Facet.propTypes = {
   facet: React.PropTypes.object,
   selectedFacets: React.PropTypes.object,
   totalHits: React.PropTypes.number,
-  selectedValue: React.PropTypes.string,
+  selectedValues: React.PropTypes.array,
   createAPIQuery: React.PropTypes.func,
   spinning: React.PropTypes.bool,
 };

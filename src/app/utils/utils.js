@@ -10,6 +10,7 @@ import {
   findWhere as _findWhere,
   forEach as _forEach,
   isEmpty as _isEmpty,
+  isArray as _isArray,
 } from 'underscore';
 
 import appConfig from '../../../appConfig.js';
@@ -106,8 +107,15 @@ const getFacetFilterParam = (facets) => {
 
   if (!_isEmpty(facets)) {
     _mapObject(facets, (val, key) => {
-      if (val.value && val.value !== '') {
-        strSearch += `&filters[${key}]=${val.id}`;
+      // Property contains an array of its selected facet values:
+      if (val.length && _isArray(val)) {
+        _forEach(val, (facet) => {
+          if (facet.value && facet.value !== '') {
+            strSearch += `&filters[${key}]=${facet.id}`;
+          } else if (typeof facet === 'string') {
+            strSearch += `&filters[${key}]=${facet}`;
+          }
+        });
       } else if (typeof val === 'string') {
         strSearch += `&filters[${key}]=${val}`;
       }

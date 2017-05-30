@@ -1,5 +1,9 @@
 import React from 'react';
-import { mapObject as _mapObject } from 'underscore';
+import {
+  mapObject as _mapObject,
+  forEach as _forEach,
+  isEmpty as _isEmpty,
+} from 'underscore';
 
 import Actions from '../../actions/Actions.js';
 import { ajaxCall } from '../../utils/utils.js';
@@ -50,24 +54,30 @@ class Hits extends React.Component {
   }
 
   getFacetElements(facets) {
-    if (!facets.length) return null;
+    if (_isEmpty(facets)) return null;
+    const renderedElms = [];
+    _mapObject(facets, (value, key) => {
+      _forEach(value, (facet, i) => {
+        renderedElms.push(
+          <span key={i} className="nypl-facet">
+            &nbsp;with {this.getFacetLabel(key)} <strong>{facet.value}</strong>
+            <button
+              onClick={() => this.removeFacet(key, facet.id)}
+              className="remove-facet"
+              aria-controls="results-region"
+            >
+              <svg className="nypl-icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 10 10" aria-hidden="true">
+                <title>times.icon</title>
+                <polygon points="2.3,6.8 3.2,7.7 5,5.9 6.8,7.7 7.7,6.8 5.9,5 7.7,3.2 6.8,2.3 5,4.1 3.2,2.3 2.3,3.2 4.1,5 "></polygon>
+              </svg>
+              <span className="hidden">remove filter&nbsp;{facet.value}</span>
+            </button>
+          </span>
+        );
+      });
+    });
 
-    return facets.map((facet, i) => (
-      <span key={i} className="nypl-facet">
-        &nbsp;with {this.getFacetLabel(facet.key)} <strong>{facet.val.value}</strong>
-        <button
-          onClick={() => this.removeFacet(facet.key)}
-          className="remove-facet"
-          aria-controls="results-region"
-        >
-          <svg className="nypl-icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 10 10" aria-hidden="true">
-            <title>times.icon</title>
-            <polygon points="2.3,6.8 3.2,7.7 5,5.9 6.8,7.7 7.7,6.8 5.9,5 7.7,3.2 6.8,2.3 5,4.1 3.2,2.3 2.3,3.2 4.1,5 "></polygon>
-          </svg>
-          <span className="hidden">remove filter&nbsp;{facet.val.value}</span>
-        </button>
-      </span>
-    ));
+    return renderedElms;
   }
 
   removeKeyword() {
@@ -85,9 +95,9 @@ class Hits extends React.Component {
     });
   }
 
-  removeFacet(field) {
+  removeFacet(facetKey, valueId) {
     Actions.updateSpinner(true);
-    Actions.removeFacet(field);
+    Actions.removeFacet(facetKey, valueId);
 
     const apiQuery = this.props.createAPIQuery({ selectedFacets: this.props.selectedFacets });
 
@@ -106,16 +116,21 @@ class Hits extends React.Component {
       hits,
       searchKeywords,
     } = this.props;
-    const activeFacetsArray = [];
+    const activeFacets = {};
     const hitsF = hits ? hits.toLocaleString() : '';
 
     _mapObject(selectedFacets, (val, key) => {
-      if (val.value) {
-        activeFacetsArray.push({ val, key });
+      if (val.length) {
+        activeFacets[key] = [];
+        _forEach(val, facet => {
+          if (facet.value) {
+            activeFacets[key].push({ id: facet.id, value: facet.value });
+          }
+        });
       }
     });
     const keyword = this.getKeyword(searchKeywords);
-    const activeFacetsElm = this.getFacetElements(activeFacetsArray);
+    const activeFacetsElm = this.getFacetElements(activeFacets);
     if (this.props.spinning) {
       return (<p><strong className="nypl-results-count">Loading…</strong></p>);
     }
