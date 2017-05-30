@@ -68,6 +68,19 @@ class Hits extends React.Component {
     ));
   }
 
+  clearResults() {
+    Actions.updateSpinner(true);
+    Actions.updateSearchKeywords('');
+
+    ajaxCall(`/api`, (response) => {
+      Actions.updateSearchResults(response.data.searchResults);
+      Actions.updateFacets('');
+      Actions.updatePage('1');
+      this.context.router.push(`/search`);
+      Actions.updateSpinner(false);
+    });
+  }
+
   removeKeyword() {
     Actions.updateSpinner(true);
     Actions.updateSearchKeywords('');
@@ -138,7 +151,14 @@ class Hits extends React.Component {
         role="presentation"
       >
         {activeResultsCount}
+        <div className="nypl-clear-results">
+          <button
+          className="nypl-link-button"
+          onClick={() => this.clearResults()}
+        >Clear current search query, filters, and sorts</button>
+        </div>
       </div>
+
     );
   }
 }
