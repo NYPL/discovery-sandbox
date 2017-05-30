@@ -1,8 +1,9 @@
 import React from 'react';
 import { mapObject as _mapObject } from 'underscore';
 
-import Actions from '../../actions/Actions.js';
-import { ajaxCall } from '../../utils/utils.js';
+import Actions from '../../actions/Actions';
+import ClearHits from './ClearHits';
+import { ajaxCall } from '../../utils/utils';
 
 class Hits extends React.Component {
   constructor(props) {
@@ -68,19 +69,6 @@ class Hits extends React.Component {
     ));
   }
 
-  clearResults() {
-    Actions.updateSpinner(true);
-    Actions.updateSearchKeywords('');
-    Actions.updateSelectedFacets({});
-    ajaxCall(`/api`, (response) => {
-      Actions.updateSearchResults(response.data.searchResults);
-      Actions.updateFacets('');
-      Actions.updatePage('1');
-      this.context.router.push(`/search`);
-      Actions.updateSpinner(false);
-    });
-  }
-
   removeKeyword() {
     Actions.updateSpinner(true);
     Actions.updateSearchKeywords('');
@@ -109,6 +97,17 @@ class Hits extends React.Component {
       this.context.router.push(`/search?${apiQuery}`);
       Actions.updateSpinner(false);
     });
+  }
+
+  displayClear() {
+    const {
+      selectedFacets,
+      searchKeywords,
+    } = this.props;
+
+    if (selectedFacets.length || searchKeywords.length) {
+      return (<ClearHits />)
+    }
   }
 
   displayResultsCount() {
@@ -142,6 +141,7 @@ class Hits extends React.Component {
 
   render() {
     const activeResultsCount = this.displayResultsCount();
+    const clearHits = this.displayClear();
     return (
       <div
         id="results-description"
@@ -151,14 +151,8 @@ class Hits extends React.Component {
         role="presentation"
       >
         {activeResultsCount}
-        <div className="nypl-clear-results">
-          <button
-          className="nypl-link-button"
-          onClick={() => this.clearResults()}
-        >Clear current search query, filters, and sorts</button>
-        </div>
+        {clearHits}
       </div>
-
     );
   }
 }
