@@ -128,7 +128,7 @@ function ServerSearch(req, res, next) {
           }
         }
       });
-console.log(selectedFacets)
+
       res.locals.data.Store = {
         searchResults: data,
         selectedFacets,
