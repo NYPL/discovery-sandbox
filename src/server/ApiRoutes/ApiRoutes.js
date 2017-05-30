@@ -12,7 +12,6 @@ import {
 import appConfig from '../../../appConfig.js';
 import itemSearch from './itemSearch.js';
 import {
-  getDefaultFacets,
   getReqParams,
   basicQuery,
 } from '../../app/utils/utils.js';
@@ -92,42 +91,47 @@ function ServerSearch(req, res, next) {
     fieldQuery,
     filters,
     (facets, data, pageQuery) => {
-      const selectedFacets = getDefaultFacets();
+      const selectedFacets = {};
 
-      _mapObject(filters, (value, key) => {
-        let facetObj;
-        if (key === 'dateAfter' || key === 'dateBefore') {
-          // Since only one date can be selected per date facet.
-          selectedFacets[key] = {
-            id: value,
-            value: key === 'dateAfter' ? `after ${value}` : `before ${value}`,
-          };
-        } else if (_isArray(value) && value.length) {
-          _forEach(value, facetValue => {
+      if (!_isEmpty(filters)) {
+        _mapObject(filters, (value, key) => {
+          let facetObj;
+          if (key === 'dateAfter' || key === 'dateBefore') {
+            // Since only one date can be selected per date facet.
+            selectedFacets[key] = {
+              id: value,
+              value: key === 'dateAfter' ? `after ${value}` : `before ${value}`,
+            };
+          } else if (_isArray(value) && value.length) {
+            if (!selectedFacets[key]) {
+              selectedFacets[key] = [];
+            }
+            _forEach(value, facetValue => {
+              facetObj = _findWhere(facets.itemListElement, { field: key });
+              const foundFacet =
+                _isEmpty(facetObj) ? {} : _findWhere(facetObj.values, { value: facetValue });
+
+              if (foundFacet && !_findWhere(selectedFacets[key], { id: foundFacet.value })) {
+                selectedFacets[key].push({
+                  id: foundFacet.value,
+                  value: foundFacet.label || foundFacet.value,
+                });
+              }
+            });
+          } else if (typeof value === 'string') {
             facetObj = _findWhere(facets.itemListElement, { field: key });
             const foundFacet =
-              _isEmpty(facetObj) ? {} : _findWhere(facetObj.values, { value: facetValue });
+              _isEmpty(facetObj) ? {} : _findWhere(facetObj.values, { value });
 
             if (foundFacet && !_findWhere(selectedFacets[key], { id: foundFacet.value })) {
-              selectedFacets[key].push({
+              selectedFacets[key] = [{
                 id: foundFacet.value,
                 value: foundFacet.label || foundFacet.value,
-              });
+              }];
             }
-          });
-        } else if (typeof value === 'string') {
-          facetObj = _findWhere(facets.itemListElement, { field: key });
-          const foundFacet =
-            _isEmpty(facetObj) ? {} : _findWhere(facetObj.values, { value });
-
-          if (foundFacet && !_findWhere(selectedFacets[key], { id: foundFacet.value })) {
-            selectedFacets[key].push({
-              id: foundFacet.value,
-              value: foundFacet.label || foundFacet.value,
-            });
           }
-        }
-      });
+        });
+      }
 
       res.locals.data.Store = {
         searchResults: data,

@@ -51,7 +51,7 @@ const createAppHistory = () => {
 };
 
 function destructureFilters(filters, apiFacet) {
-  const selectedFacets = getDefaultFacets();
+  const selectedFacets = {};
   const facetArray = apiFacet && apiFacet.itemListElement && apiFacet.itemListElement.length ?
     apiFacet.itemListElement : [];
 
@@ -64,6 +64,9 @@ function destructureFilters(filters, apiFacet) {
         value: id === 'dateAfter' ? `after ${value}` : `before ${value}`,
       };
     } else if (_isArray(value) && value.length) {
+      if (!selectedFacets[id]) {
+        selectedFacets[id] = [];
+      }
       _forEach(value, facetValue => {
         const facetObjFromAPI = _findWhere(facetArray, { id });
         if (facetObjFromAPI && facetObjFromAPI.values && facetObjFromAPI.values.length) {
@@ -81,10 +84,10 @@ function destructureFilters(filters, apiFacet) {
       if (facetObjFromAPI && facetObjFromAPI.values && facetObjFromAPI.values.length) {
         const facet = _findWhere(facetObjFromAPI.values, { value });
         if (facet) {
-          selectedFacets[id].push({
+          selectedFacets[id] = [{
             id: facet.value,
             value: facet.label || facet.value,
-          });
+          }];
         }
       }
     }
