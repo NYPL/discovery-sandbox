@@ -294,6 +294,24 @@ const basicQuery = (props) => {
   };
 };
 
+/**
+ * getReqParams
+ * Read the query param from the request object from Express and returns its value or
+ * default values for each. It also returns a string representation of all the selected
+ * facets in the url from the `filter` query.
+ * @param {object} query The request query object from Express.
+ */
+function getReqParams(query = {}) {
+  const page = query.page || '1';
+  const q = query.q || '';
+  const sort = query.sort || '';
+  const order = query.sort_direction || '';
+  const fieldQuery = query.search_scope || '';
+  const filters = query.filters || {};
+
+  return { page, q, sort, order, fieldQuery, filters };
+}
+
 export {
   collapse,
   trackDiscovery,
@@ -306,4 +324,5 @@ export {
   destructureFilters,
   getDefaultFacets,
   basicQuery,
+  getReqParams,
 };

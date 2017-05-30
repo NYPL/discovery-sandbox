@@ -25,10 +25,12 @@ class ItemPage extends React.Component {
     e.preventDefault();
 
     Actions.updateSpinner(true);
-    ajaxCall(`/api?q=${query}`, (response) => {
-      const q = query.indexOf(':"') !== -1 ? query.split(':"') : query.split(':');
-      const field = q[0];
-      const value = q[1].replace('"', '');
+    ajaxCall(`/api?${query}`, (response) => {
+      const closingBracketIndex = query.indexOf(']');
+      const equalIndex = query.indexOf('=') + 1;
+
+      const field = query.substring(8, closingBracketIndex);
+      const value = query.substring(equalIndex);
 
       // Find the index where the field exists in the list of facets from the API
       const index = _findIndex(response.data.facets.itemListElement, { field });
@@ -47,7 +49,7 @@ class ItemPage extends React.Component {
         });
       } else {
         // Otherwise, the field wasn't found in the API. Returning this highlights the
-        // facet in the selected facet region, but now in the facet sidebar.
+        // facet in the selected facet region, but not in the facet sidebar.
         Actions.updateSelectedFacets({
           [field]: {
             id: value,
@@ -59,7 +61,7 @@ class ItemPage extends React.Component {
       Actions.updateFacets(response.data.facets);
       Actions.updateSearchKeywords('');
       Actions.updatePage('1');
-      this.context.router.push(`/search?q=${query}`);
+      this.context.router.push(`/search?${query}`);
       Actions.updateSpinner(false);
     });
   }

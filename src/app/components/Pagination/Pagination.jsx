@@ -83,7 +83,7 @@ class Pagination extends React.Component {
       <div className="nypl-results-pagination">
         {prevPage}
         <span
-          className="page-count"
+          className={`page-count ${page === '1' ? 'first' : ''}`}
           aria-label={`Displaying page ${page} out of ${totalPages} total pages.`}
           tabIndex="0"
         >

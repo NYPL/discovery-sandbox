@@ -10,13 +10,21 @@ import {
 import appConfig from '../../../appConfig.js';
 import itemSearch from './itemSearch.js';
 import {
-  getFacetFilterParam,
   getDefaultFacets,
+  getReqParams,
+  basicQuery,
 } from '../../app/utils/utils.js';
 
 const router = express.Router();
 const appEnvironment = process.env.APP_ENV || 'production';
 const apiBase = appConfig.api[appEnvironment];
+const createAPIQuery = basicQuery({
+  searchKeywords: '',
+  sortBy: '',
+  field: '',
+  selectedFacets: {},
+});
+const axiosApiCall = (query) => axios.get(`${apiBase}/discovery/resources${query}`);
 
 function MainApp(req, res, next) {
   res.locals.data.Store = {
@@ -32,34 +40,20 @@ function MainApp(req, res, next) {
   next();
 }
 
-function getAggregations(query) {
-  return axios.get(`${apiBase}/discovery/resources/aggregations${query}`);
-}
+function search(searchKeywords, page, sortBy, order, field, filters, cb, errorcb) {
+  const apiQuery = createAPIQuery({
+    searchKeywords,
+    sortBy: sortBy ? `${sortBy}_${order}` : '',
+    selectedFacets: filters,
+    field,
+    page,
+  });
 
-function search(query, page, sortBy, order, field, filters = '', cb, errorcb) {
-  let sortQuery = '';
-  let fieldQuery = '';
-  let searchQuery = '';
-
-  if (query !== '') {
-    searchQuery = `q=${query}`;
-  }
-
-  if (sortBy !== '') {
-    sortQuery = `&sort=${sortBy}&sort_direction=${order}`;
-  }
-
-  if (field !== '' && field !== 'all') {
-    fieldQuery = `&search_scope=${field}`;
-  }
-
-  const apiQuery = `?${searchQuery}&per_page=50&page=${page}${sortQuery}${fieldQuery}${filters}`;
-  const aggregationQuery = `?${searchQuery}${fieldQuery}${filters}`;
-  const queryString = `${apiBase}/discovery/resources${apiQuery}`;
-  const apiCall = axios.get(queryString);
+  const aggregationQuery = `/aggregations?${apiQuery}`;
+  const queryString = `?${apiQuery}&per_page=50`;
 
   axios
-    .all([getAggregations(aggregationQuery), apiCall])
+    .all([axiosApiCall(aggregationQuery), axiosApiCall(queryString)])
     .then(axios.spread((facets, response) => {
       cb(facets.data, response.data, page);
     }))
@@ -71,44 +65,30 @@ function search(query, page, sortBy, order, field, filters = '', cb, errorcb) {
 }
 
 function AjaxSearch(req, res) {
-  const {
-    q = '',
-    page = '1',
-    sort = '',
-    sort_direction = '',
-    search_scope = '',
-    filters = '',
-  } = req.query;
-  const filterString = getFacetFilterParam(filters);
+  const { page, q, sort, order, fieldQuery, filters } = getReqParams(req.query);
 
   search(
     q,
     page,
     sort,
-    sort_direction,
-    search_scope,
-    filterString,
+    order,
+    fieldQuery,
+    filters,
     (facets, searchResults, pageQuery) => res.json({ facets, searchResults, pageQuery }),
     (error) => res.json(error)
   );
 }
 
 function ServerSearch(req, res, next) {
-  const page = req.query.page || '1';
-  const q = req.query.q || '';
-  const sortBy = req.query.sort || '';
-  const order = req.query.sort_direction || '';
-  const fieldQuery = req.query.search_scope || '';
-  const filters = req.query.filters || {};
-  const filterString = getFacetFilterParam(filters);
+  const { page, q, sort, order, fieldQuery, filters } = getReqParams(req.query);
 
   search(
     q,
     page,
-    sortBy,
+    sort,
     order,
     fieldQuery,
-    filterString,
+    filters,
     (facets, data, pageQuery) => {
       const selectedFacets = getDefaultFacets();
 
@@ -139,7 +119,7 @@ function ServerSearch(req, res, next) {
         searchKeywords: q,
         facets,
         page: pageQuery,
-        sortBy: sortBy ? `${sortBy}_${order}` : 'relevance',
+        sortBy: sort ? `${sort}_${order}` : 'relevance',
         field: fieldQuery,
       };
 
