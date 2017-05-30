@@ -1,8 +1,9 @@
 import React from 'react';
 import { mapObject as _mapObject } from 'underscore';
 
-import Actions from '../../actions/Actions.js';
-import { ajaxCall } from '../../utils/utils.js';
+import Actions from '../../actions/Actions';
+import ClearHits from './ClearHits';
+import { ajaxCall } from '../../utils/utils';
 
 class Hits extends React.Component {
   constructor(props) {
@@ -98,6 +99,17 @@ class Hits extends React.Component {
     });
   }
 
+  displayClear() {
+    const {
+      selectedFacets,
+      searchKeywords,
+    } = this.props;
+
+    if (selectedFacets.length || searchKeywords.length) {
+      return (<ClearHits />)
+    }
+  }
+
   displayResultsCount() {
     const {
       selectedFacets,
@@ -129,6 +141,7 @@ class Hits extends React.Component {
 
   render() {
     const activeResultsCount = this.displayResultsCount();
+    const clearHits = this.displayClear();
     return (
       <div
         id="results-description"
@@ -138,6 +151,7 @@ class Hits extends React.Component {
         role="presentation"
       >
         {activeResultsCount}
+        {clearHits}
       </div>
     );
   }
