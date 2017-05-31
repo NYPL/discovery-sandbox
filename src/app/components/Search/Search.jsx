@@ -83,7 +83,7 @@ class Search extends React.Component {
     Actions.updateField(this.state.field);
     Actions.updateSpinner(true);
     Actions.updateSearchKeywords(keyword);
-    Actions.updateSelectedFacets(getDefaultFacets());
+    Actions.updateSelectedFacets({});
 
     ajaxCall(`/api?${apiQuery}`, (response) => {
       if (response.data.searchResults && response.data.facets) {

@@ -4,6 +4,7 @@ import {
   findWhere as _findWhere,
   findIndex as _findIndex,
   mapObject as _mapObject,
+  each as _each,
 } from 'underscore';
 import DocumentTitle from 'react-document-title';
 
@@ -42,19 +43,19 @@ class ItemPage extends React.Component {
         // The API may return a list of facets in the selected field, but the wanted
         // facet may still not appear. If that's the case, return the clicked facet value.
         Actions.updateSelectedFacets({
-          [field]: {
+          [field]: [{
             id: facet ? facet.value : value,
             value: facet ? (facet.label || facet.value) : value,
-          },
+          }],
         });
       } else {
         // Otherwise, the field wasn't found in the API. Returning this highlights the
         // facet in the selected facet region, but not in the facet sidebar.
         Actions.updateSelectedFacets({
-          [field]: {
+          [field]: [{
             id: value,
             value,
-          },
+          }],
         });
       }
       Actions.updateSearchResults(response.data.searchResults);
@@ -207,8 +208,12 @@ class ItemPage extends React.Component {
     let searchURL = this.props.searchKeywords;
 
     _mapObject(this.props.selectedFacets, (val, key) => {
-      if (val.value !== '') {
-        searchURL += `&filters[${key}]=${val.id}`;
+      if (val.length) {
+        _each(val, facet => {
+          if (facet && facet.value !== '') {
+            searchURL += `&filters[${key}]=${facet.value}`;
+          }
+        });
       }
     });
 

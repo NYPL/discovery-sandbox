@@ -54,7 +54,8 @@ class FacetSidebar extends React.Component {
         }
 
         const field = facet.field;
-        const selectedValue = selectedFacets[field] ? selectedFacets[field].id : '';
+        const selectedValues = selectedFacets[field] && selectedFacets[field].length ?
+          selectedFacets[field] : [];
 
         if (facet.id === 'date') {
           return (
@@ -75,7 +76,7 @@ class FacetSidebar extends React.Component {
             facet={facet}
             selectedFacets={selectedFacets}
             totalHits={totalHits}
-            selectedValue={selectedValue}
+            selectedValues={selectedValues}
             createAPIQuery={this.props.createAPIQuery}
             spinning={this.props.spinning}
           />

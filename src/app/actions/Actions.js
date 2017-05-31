@@ -26,8 +26,8 @@ class Actions {
     return data;
   }
 
-  removeFacet(field) {
-    return field;
+  removeFacet(facetKey, valueId) {
+    return { facetKey, valueId };
   }
 
   updatePage(page) {

@@ -1,5 +1,10 @@
 import React from 'react';
-import { extend as _extend } from 'underscore';
+import {
+  extend as _extend,
+  reject as _reject,
+  findWhere as _findWhere,
+  isEmpty as _isEmpty,
+} from 'underscore';
 
 import Actions from '../../actions/Actions';
 import { ajaxCall } from '../../utils/utils';
@@ -12,7 +17,7 @@ class Facet extends React.Component {
 
     this.state = {
       openFacet: true,
-      facet: { id: '', value: '' },
+      selectedValues: [],
       showMoreFacets: false,
     };
 
@@ -26,6 +31,14 @@ class Facet extends React.Component {
     }, 500);
   }
 
+  componentWillReceiveProps(nextProps) {
+    // If the selected facets are empty, e.g if there's a new sort, then we can empty out
+    // the current array of selected values for a facet so they don't carry over.
+    if (_isEmpty(nextProps.selectedFacets)) {
+      this.setState({ selectedValues: [] });
+    }
+  }
+
   onFacetUpdate(e) {
     Actions.updateSpinner(true);
     // In order for this to work, the facet object is passed as a stringified JSON string.
@@ -33,12 +46,16 @@ class Facet extends React.Component {
     const clickedFacet = JSON.parse(e.target.value);
     const checked = e.target.checked;
     const pickedFacet = {};
+    // Get any existing selected value from the facet:
+    let selectedValues = this.state.selectedValues;
     let selectedFacets = {};
     let selectedFacetObj = {};
 
     // If the clicked facet is unchecked, make its selection empty.
+    // Remove it from existing selected facet array.
     if (!checked) {
       selectedFacetObj = { id: '', value: '' };
+      selectedValues = _reject(selectedValues, { id: clickedFacet.value });
     } else {
       // Else the clicked facet was checked, so generate the object we want to use
       // to query the API.
@@ -46,12 +63,19 @@ class Facet extends React.Component {
         id: clickedFacet.value,
         value: clickedFacet.label || clickedFacet.value,
       };
+
+      // Only add the clicked facet if it wasn't already selected.
+      const alreadySelected = _findWhere(selectedValues, { id: clickedFacet.value });
+      if (!alreadySelected) {
+        // Add new selected value only if it's checked.
+        selectedValues.push(selectedFacetObj);
+      }
     }
 
     // Update the state.
-    this.setState({ facet: selectedFacetObj });
+    this.setState({ selectedValues });
     // Need to create an object for this selection.
-    pickedFacet[this.props.facet.field] = selectedFacetObj;
+    pickedFacet[this.props.facet.field] = selectedValues;
     // Merge the app's selected facets with this one, whether it was selected or not.
     // The unchecked empty selection will remove it.
     selectedFacets = _extend(this.props.selectedFacets, pickedFacet);
@@ -162,6 +186,7 @@ class Facet extends React.Component {
                 const valueLabel = (f.value).toString().replace(/:/, '_');
                 const hiddenFacet = (j > FACETSHOWLIMIT && !this.state.showMoreFacets) ?
                   'hiddenFacet' : '';
+                const selected = !!_findWhere(this.props.selectedValues, { id: f.value });
                 let selectLabel = f.value;
 
                 if (f.label) {
@@ -180,7 +205,7 @@ class Facet extends React.Component {
                       aria-labelledby={`${field}-${valueLabel}`}
                       type="checkbox"
                       name={`${field}-${valueLabel}-name`}
-                      checked={this.props.selectedValue === f.value}
+                      checked={selected}
                       value={JSON.stringify(f)}
                       onClick={(e) => this.onFacetUpdate(e)}
                     />
@@ -202,7 +227,7 @@ Facet.propTypes = {
   facet: React.PropTypes.object,
   selectedFacets: React.PropTypes.object,
   totalHits: React.PropTypes.number,
-  selectedValue: React.PropTypes.string,
+  selectedValues: React.PropTypes.array,
   createAPIQuery: React.PropTypes.func,
   spinning: React.PropTypes.bool,
 };
