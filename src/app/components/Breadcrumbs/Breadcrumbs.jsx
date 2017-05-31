@@ -48,8 +48,8 @@ const Breadcrumbs = ({ query, type, title, url }) => {
 
   return (
     <span>
-    <span className="nypl-screenreader-only">You are here:</span>
-    {crumbs}
+      <span className="nypl-screenreader-only">You are here:</span>
+      {crumbs}
     </span>
   );
 };
