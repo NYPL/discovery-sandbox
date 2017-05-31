@@ -205,17 +205,7 @@ class ItemPage extends React.Component {
     ];
 
     const itemDetails = this.getDisplayFields(record, detailFields);
-    let searchURL = this.props.searchKeywords;
-
-    _mapObject(this.props.selectedFacets, (val, key) => {
-      if (val.length) {
-        _each(val, facet => {
-          if (facet && facet.value !== '') {
-            searchURL += `&filters[${key}]=${facet.value}`;
-          }
-        });
-      }
-    });
+    const searchURL = createAPIQuery({});
 
     return (
       <DocumentTitle title={`${title} | Research Catalog`}>
