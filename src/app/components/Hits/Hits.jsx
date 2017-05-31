@@ -4,6 +4,7 @@ import {
   each as _each,
   isEmpty as _isEmpty,
   isArray as _isArray,
+  keys as _keys,
 } from 'underscore';
 
 import Actions from '../../actions/Actions';
@@ -23,7 +24,7 @@ class Hits extends React.Component {
   getKeyword(keyword) {
     if (keyword) {
       return (
-        <span className="nypl-facet">&nbsp;with keywords <strong>{keyword}</strong>
+        <span className="nypl-facet">&nbsp;keywords <strong>{keyword}</strong>
           <button
             onClick={() => this.removeKeyword(keyword)}
             className="remove-keyword"
@@ -58,11 +59,13 @@ class Hits extends React.Component {
   getFacetElements(facets) {
     if (_isEmpty(facets)) return null;
     const renderedElms = [];
+    const filterLen = _keys(facets).length - 1;
+    let j = 0;
     _mapObject(facets, (value, key) => {
       _each(value, (facet, i) => {
         renderedElms.push(
           <span key={`${key}-${i}`} className="nypl-facet">
-            &nbsp;with {this.getFacetLabel(key)} <strong>{facet.value}</strong>
+            {this.getFacetLabel(key)} <strong>{facet.value}</strong>
             <button
               onClick={() => this.removeFacet(key, facet.id)}
               className="remove-facet"
@@ -76,7 +79,15 @@ class Hits extends React.Component {
             </button>
           </span>
         );
+        if (i < value.length - 1) {
+          renderedElms.push(<span key={`value-comma-${i}`}>, </span>);
+        }
       });
+
+      if (j < filterLen) {
+        renderedElms.push(<span key={`filter-comma-${j}`}>, </span>);
+      }
+      j++;
     });
 
     return renderedElms;
@@ -119,8 +130,9 @@ class Hits extends React.Component {
     } = this.props;
 
     if (selectedFacets.length || searchKeywords.length) {
-      return (<ClearHits />)
+      return (<ClearHits />);
     }
+    return null;
   }
 
   displayResultsCount() {
@@ -134,10 +146,10 @@ class Hits extends React.Component {
 
     _mapObject(selectedFacets, (val, key) => {
       if (key === 'dateAfter' || key === 'dateBefore') {
-        activeFacets[key] = [];
         // Converting the date object value into an array of one object
         // just for rendering purposes.
         if (!_isEmpty(val) && val.id) {
+          activeFacets[key] = [];
           activeFacets[key].push(val);
         }
       } else if (val.length && _isArray(val)) {
@@ -153,16 +165,16 @@ class Hits extends React.Component {
     const keyword = this.getKeyword(searchKeywords);
     const activeFacetsElm = this.getFacetElements(activeFacets);
     if (this.props.spinning) {
-      return (<p><strong className="nypl-results-count">Loading…</strong></p>);
+      return (<h2><strong className="nypl-results-count">Loading…</strong></h2>);
     }
     if (hits !== 0) {
       return (
-        <p>
+        <h2>
           <strong className="nypl-results-count">{hitsF}</strong>
-           results found{keyword}{activeFacetsElm}
-        </p>);
+           results found for {keyword}{keyword && activeFacetsElm && ', '}{activeFacetsElm}.
+        </h2>);
     }
-    return (<p>No results found{keyword}{activeFacetsElm}.</p>);
+    return (<h2>No results found for {keyword}{activeFacetsElm}.</h2>);
   }
 
   render() {

@@ -120,7 +120,7 @@ class ResultsList extends React.Component {
     }
 
     return (
-      <ul className="results-list">
+      <ul className={`results-list ${this.props.spinning ? 'hide-results-list ' : ''}`}>
         {resultsElm}
       </ul>
     );
@@ -129,6 +129,7 @@ class ResultsList extends React.Component {
 
 ResultsList.propTypes = {
   results: React.PropTypes.array,
+  spinning: React.PropTypes.bool,
 };
 
 ResultsList.contextTypes = {

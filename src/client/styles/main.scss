@@ -92,3 +92,17 @@ button {
     margin-bottom: 0;
   }
 }
+
+.results-list {
+  -webkit-transition: 0.5s;
+  -moz-transition: 0.5s;
+  -o-transition: 0.5s;
+  transition: 0.5s;
+  opacity: 1;
+  visibility: visible;
+}
+
+.hide-results-list {
+  opacity: 0;
+  visibility: hidden;
+}

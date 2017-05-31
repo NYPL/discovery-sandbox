@@ -183,7 +183,7 @@ class Facet extends React.Component {
             {
               facet.values.map((f, j) => {
                 const percentage = Math.floor(f.count / this.props.totalHits * 100);
-                const valueLabel = (f.value).toString().replace(/:/, '_');
+                const valueLabel = (f.value).toString().replace(/\s+/g, '_').replace(/:/g, '_');
                 const hiddenFacet = (j > FACETSHOWLIMIT && !this.state.showMoreFacets) ?
                   'hiddenFacet' : '';
                 const selected = !!_findWhere(this.props.selectedValues, { id: f.value });
@@ -202,7 +202,7 @@ class Facet extends React.Component {
                   >
                     <input
                       id={`${field}-${valueLabel}`}
-                      aria-labelledby={`${field}-${valueLabel}`}
+                      aria-labelledby={`${field}-${valueLabel}-label`}
                       type="checkbox"
                       name={`${field}-${valueLabel}-name`}
                       checked={selected}
