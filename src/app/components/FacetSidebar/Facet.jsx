@@ -3,6 +3,7 @@ import {
   extend as _extend,
   reject as _reject,
   findWhere as _findWhere,
+  isEmpty as _isEmpty,
 } from 'underscore';
 
 import Actions from '../../actions/Actions';
@@ -30,6 +31,14 @@ class Facet extends React.Component {
     }, 500);
   }
 
+  componentWillReceiveProps(nextProps) {
+    // If the selected facets are empty, e.g if there's a new sort, then we can empty out
+    // the current array of selected values for a facet so they don't carry over.
+    if (_isEmpty(nextProps.selectedFacets)) {
+      this.setState({ selectedValues: [] });
+    }
+  }
+
   onFacetUpdate(e) {
     Actions.updateSpinner(true);
     // In order for this to work, the facet object is passed as a stringified JSON string.
@@ -46,8 +55,6 @@ class Facet extends React.Component {
     // Remove it from existing selected facet array.
     if (!checked) {
       selectedFacetObj = { id: '', value: '' };
-
-      // This is not rejecting unchecked value:
       selectedValues = _reject(selectedValues, { id: clickedFacet.value });
     } else {
       // Else the clicked facet was checked, so generate the object we want to use

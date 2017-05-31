@@ -52,8 +52,12 @@ class Store {
   }
 
   removeFacet({ facetKey, valueId }) {
-    this.state.selectedFacets[facetKey] =
-      _reject(this.state.selectedFacets[facetKey], { id: valueId });
+    if (facetKey === 'dateBefore' || facetKey === 'dateAfter') {
+      this.state.selectedFacets[facetKey] = {};
+    } else {
+      this.state.selectedFacets[facetKey] =
+        _reject(this.state.selectedFacets[facetKey], { id: valueId });
+    }
     this.setState({ selectedFacets: this.state.selectedFacets });
   }
 
