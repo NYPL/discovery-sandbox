@@ -4,7 +4,7 @@ import { Link } from 'react-router';
 const Breadcrumbs = ({ query, type, title, url }) => {
   let currentPageText = 'Research Catalog';
   let crumbs = (
-    <ol className="nypl-breadcrumbs">
+    <ol role="navigation" aria-label="breadcrumbs" className="nypl-breadcrumbs">
       <li><a href="https://nypl.org">Home</a></li>
       <li><a href="https://nypl.org/research">Research</a></li>
       <li>{currentPageText}</li>
@@ -14,7 +14,7 @@ const Breadcrumbs = ({ query, type, title, url }) => {
   if (type === 'search') {
     currentPageText = query ? `Search Results for "${query}"` : 'Search Results';
     crumbs = (
-      <ol className="nypl-breadcrumbs">
+      <ol role="navigation" aria-label="breadcrumbs" className="nypl-breadcrumbs">
         <li><a href="https://nypl.org">Home</a></li>
         <li><a href="https://nypl.org/research">Research</a></li>
         <li><Link to="/">Research Catalog</Link></li>
@@ -28,7 +28,7 @@ const Breadcrumbs = ({ query, type, title, url }) => {
 
   if (type === 'item') {
     crumbs = (
-      <ol className="nypl-breadcrumbs">
+      <ol role="navigation" aria-label="breadcrumbs" className="nypl-breadcrumbs">
         <li><a href="https://nypl.org">Home</a></li>
         <li><a href="https://nypl.org/research">Research</a></li>
         <li><Link to="/">Research Catalog</Link></li>
@@ -46,7 +46,12 @@ const Breadcrumbs = ({ query, type, title, url }) => {
     );
   }
 
-  return (crumbs);
+  return (
+    <span>
+    <span className="nypl-screenreader-only">You are here:</span>
+    {crumbs}
+    </span>
+  );
 };
 
 Breadcrumbs.propTypes = {
