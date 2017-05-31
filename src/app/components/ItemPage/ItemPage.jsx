@@ -213,7 +213,7 @@ class ItemPage extends React.Component {
           <div className="nypl-page-header">
             <div className="nypl-full-width-wrapper">
               <Breadcrumbs
-                query={searchURL}
+                url={searchURL}
                 type="item"
                 title={title}
               />

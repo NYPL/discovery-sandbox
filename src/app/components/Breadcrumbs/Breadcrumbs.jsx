@@ -17,7 +17,7 @@ const Breadcrumbs = ({ query, type, title, url }) => {
       <ol role="navigation" aria-label="breadcrumbs" className="nypl-breadcrumbs">
         <li><a href="https://nypl.org">Home</a></li>
         <li><a href="https://nypl.org/research">Research</a></li>
-        <li><Link to="/">Research Catalog</Link></li>
+        <li><Link to="/" title="Research Catalog">Research Catalog</Link></li>
         <li>{currentPageText}</li>
       </ol>
     );
@@ -30,16 +30,8 @@ const Breadcrumbs = ({ query, type, title, url }) => {
       <ol role="navigation" aria-label="breadcrumbs" className="nypl-breadcrumbs">
         <li><a href="https://nypl.org">Home</a></li>
         <li><a href="https://nypl.org/research">Research</a></li>
-        <li><Link to="/">Research Catalog</Link></li>
-        {
-          query ?
-          (<li>
-            <Link
-              title={`Make a new search for ${query}`}
-              to={`/search?q=${query}`}
-            >Items</Link></li>)
-          : null
-        }
+        <li><Link to="/" title="Research Catalog">Research Catalog</Link></li>
+        <li><Link title="Search Results" to={`/search?${url}`}>Search Results</Link></li>
         <li>{currentPageText}</li>
       </ol>
     );
