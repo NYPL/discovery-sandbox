@@ -1,5 +1,7 @@
 import React from 'react';
 
+import DocumentTitle from 'react-document-title';
+
 import { Header, navConfig } from '@nypl/dgx-header-component';
 import Footer from '@nypl/dgx-react-footer';
 
@@ -9,9 +11,12 @@ import PatronStore from '../../stores/PatronStore.js';
 import {
   ajaxCall,
   createAppHistory,
-  destructureQuery,
+  destructureFilters,
 } from '../../utils/utils.js';
 import Actions from '../../actions/Actions.js';
+import {
+  pick as _pick,
+} from 'underscore';
 
 const history = createAppHistory();
 
@@ -24,18 +29,25 @@ history.listen(location => {
   } = location;
 
   const qParameter = query.q;
+  const urlFilters = _pick(query, (value, key) => {
+    if (key.indexOf('filter') !== -1) {
+      return value;
+    }
+    return null;
+  });
 
   if (action === 'POP' && search) {
-    ajaxCall(`/api${search}`, (response) => {
-      const {
-        q,
-        selectedFacets,
-      } = destructureQuery(qParameter, response.data.facets);
+    Actions.updateSpinner(true);
 
-      Actions.updateSelectedFacets(selectedFacets);
-      Actions.updateFacets(response.data.facets);
-      Actions.updateSearchResults(response.data.searchResults);
-      Actions.updateSearchKeywords(q);
+    ajaxCall(`/api${decodeURI(search)}`, (response) => {
+      if (response.data.facets && response.data.searchResults) {
+        const selectedFacets = destructureFilters(urlFilters, response.data.facets);
+        Actions.updateSelectedFacets(selectedFacets);
+        Actions.updateFacets(response.data.facets);
+        Actions.updateSearchResults(response.data.searchResults);
+        if (qParameter) Actions.updateSearchKeywords(qParameter);
+      }
+      Actions.updateSpinner(false);
     });
   }
 });
@@ -43,7 +55,6 @@ history.listen(location => {
 class App extends React.Component {
   constructor(props) {
     super(props);
-
     this.state = {
       data: Store.getState(),
       patron: PatronStore.getState(),
@@ -74,15 +85,17 @@ class App extends React.Component {
 
   render() {
     return (
-      <div className="app-wrapper">
-        <Header navData={navConfig.current} skipNav={{ target: 'mainContent' }} />
+      <DocumentTitle title="Research Catalog | NYPL">
+        <div className="app-wrapper">
+          <Header navData={navConfig.current} skipNav={{ target: 'mainContent' }} />
 
-        {React.cloneElement(this.props.children, this.state.data)}
+          {React.cloneElement(this.props.children, this.state.data)}
 
-        <Footer />
+          <Footer />
 
-        <Feedback location={this.props.location} />
-      </div>
+          <Feedback location={this.props.location} />
+        </div>
+      </DocumentTitle>
     );
   }
 }

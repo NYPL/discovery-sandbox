@@ -26,8 +26,8 @@ class Actions {
     return data;
   }
 
-  removeFacet(field) {
-    return field;
+  removeFacet(facetKey, valueId) {
+    return { facetKey, valueId };
   }
 
   updatePage(page) {
@@ -36,6 +36,14 @@ class Actions {
 
   updateSortBy(sort) {
     return sort;
+  }
+
+  updateSpinner(data) {
+    return data;
+  }
+
+  updateField(data) {
+    return data;
   }
 }
 

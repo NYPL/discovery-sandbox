@@ -1,5 +1,5 @@
 /* global loadA11y */
-
+import 'babel-polyfill';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Router, useRouterHistory } from 'react-router';

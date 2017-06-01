@@ -8,9 +8,13 @@ import {
 import {
   mapObject as _mapObject,
   findWhere as _findWhere,
-  findIndex as _findIndex,
   forEach as _forEach,
+  isEmpty as _isEmpty,
+  isArray as _isArray,
+  extend as _extend,
 } from 'underscore';
+
+import appConfig from '../../../appConfig.js';
 
 /**
  * ajaxCall
@@ -32,6 +36,8 @@ const ajaxCall = (
     .catch(errorcb);
 };
 
+const getDefaultFacets = () => _extend({}, appConfig.defaultFacets);
+
 /**
  * createAppHistory
  * Create a history in the browser or server that coincides with react-router.
@@ -44,62 +50,51 @@ const createAppHistory = () => {
   return useQueries(createMemoryHistory)();
 };
 
-/**
- * createAppHistory
- * Destructure the search keywords from the facet string. The function then returns the full
- * search keywords along with an object of the selected facets with their API values. In the
- * following example, the owner id of "orgs:1000" returns the human readable label of
- * "Stephen A. Schwarzman Building" from the API.
- * Queries can be in the following format:
- *   'alexander hamilton owner:"orgs:1000"'
- *   'locofocos'
- *   'war subject:"World War, 1914-1918." date:"2000"'
- * @param {string} query The full search query.
- * @param {object} apiFacets The facets from the API.
- */
-const destructureQuery = (query, apiFacets) => {
-  const colonIndex = query.indexOf(':') !== -1 ? query.indexOf(':') : '';
-  const facetStartingIndex = colonIndex ? query.lastIndexOf(' ', colonIndex) : '';
-  let q = query;
-  let facetsString = '';
-
-  if (facetStartingIndex) {
-    q = query.substring(0, facetStartingIndex);
-    facetsString = query.substring(facetStartingIndex);
-  }
-
-  // console.log(q, facetsString);
+function destructureFilters(filters, apiFacet) {
   const selectedFacets = {};
-  const facetArray = facetsString ? facetsString.split('" ') : [];
-  _forEach(facetArray, str => {
-    if (str.charAt(str.length - 1) !== '"') str += '"';
+  const facetArray = apiFacet && apiFacet.itemListElement && apiFacet.itemListElement.length ?
+    apiFacet.itemListElement : [];
 
-    const facet = str.indexOf(':"') !== -1 ? str.trim().split(':"') : str.trim().split(':');
-    const field = facet[0];
-    const value = facet[1].substring(0, facet[1].length - 1);
-    // Find the index where the field exists in the list of facets from the API
-    const index = _findIndex(apiFacets.itemListElement, { field });
-    // If the index exists, try to find the facet value from the API
-    if (apiFacets.itemListElement[index]) {
-      const findFacet = _findWhere(apiFacets.itemListElement[index].values, { value });
+  _forEach(filters, (value, key) => {
+    const id = key.substring(8, key.length - 1);
 
-      selectedFacets[field] = {
-        id: findFacet ? findFacet.value : value,
-        value: findFacet ? (findFacet.label || findFacet.value) : value,
-      };
-    } else {
-      selectedFacets[field] = {
+    if (id === 'dateAfter' || id === 'dateBefore') {
+      selectedFacets[id] = {
         id: value,
-        value,
+        value: id === 'dateAfter' ? `after ${value}` : `before ${value}`,
       };
+    } else if (_isArray(value) && value.length) {
+      if (!selectedFacets[id]) {
+        selectedFacets[id] = [];
+      }
+      _forEach(value, facetValue => {
+        const facetObjFromAPI = _findWhere(facetArray, { id });
+        if (facetObjFromAPI && facetObjFromAPI.values && facetObjFromAPI.values.length) {
+          const facet = _findWhere(facetObjFromAPI.values, { value: facetValue });
+          if (facet) {
+            selectedFacets[id].push({
+              id: facet.value,
+              value: facet.label || facet.value,
+            });
+          }
+        }
+      });
+    } else if (typeof value === 'string') {
+      const facetObjFromAPI = _findWhere(facetArray, { id });
+      if (facetObjFromAPI && facetObjFromAPI.values && facetObjFromAPI.values.length) {
+        const facet = _findWhere(facetObjFromAPI.values, { value });
+        if (facet) {
+          selectedFacets[id] = [{
+            id: facet.value,
+            value: facet.label || facet.value,
+          }];
+        }
+      }
     }
   });
 
-  return {
-    q,
-    selectedFacets,
-  };
-};
+  return selectedFacets;
+}
 
 /**
  * getSortQuery
@@ -116,6 +111,36 @@ const getSortQuery = (sortBy) => {
   }
 
   return sortQuery;
+};
+
+/**
+ * getFacetFilterParam
+ * Get the search params from the facet values.
+ * @param {object} facets Key/value pair of facet and the selected value.
+ */
+const getFacetFilterParam = (facets) => {
+  let strSearch = '';
+
+  if (!_isEmpty(facets)) {
+    _mapObject(facets, (val, key) => {
+      // Property contains an array of its selected facet values:
+      if (val.length && _isArray(val)) {
+        _forEach(val, (facet) => {
+          if (facet.value && facet.value !== '') {
+            strSearch += `&filters[${key}]=${facet.id}`;
+          } else if (typeof facet === 'string') {
+            strSearch += `&filters[${key}]=${facet}`;
+          }
+        });
+      } else if (val.value && val.value !== '') {
+        strSearch += `&filters[${key}]=${val.id}`;
+      } else if (typeof val === 'string') {
+        strSearch += `&filters[${key}]=${val}`;
+      }
+    });
+  }
+
+  return strSearch;
 };
 
 /**
@@ -152,6 +177,18 @@ const getFacetParams = (facets, field, value) => {
   }
 
   return strSearch;
+};
+
+/**
+ * getFieldParam
+ * Get the search param from the field selected.
+ * @param {string} field Value of field to query against.
+ */
+const getFieldParam = (field) => {
+  if (!field || field.trim() === 'all') {
+    return '';
+  }
+  return `&search_scope=${field}`;
 };
 
 function collapse(results) {
@@ -250,6 +287,57 @@ function collapse(results) {
  */
 const trackDiscovery = gaUtils.trackEvent('Discovery');
 
+/**
+ * basicQuery
+ * A curry function that will take in the application's props and return a function that will
+ * overwrite whatever values it needs to overwrite to create the needed API query.
+ * @example
+ * const apiQueryFunc = basicQuery(this.props);
+ * const apiQuery = apiQueryFunc();
+ * // apiQuery == 'q='
+ * const apiQuery2 = apiQueryFunc({ page: 3 });
+ * // apiQuery2 == 'q=&page=3'
+ * const apiQuery3 = apiQueryFunc({ page: 3, q: 'hamlet' });
+ * // apiQuery3 == 'q=hamlet&page=3'
+ * @param {object} props The application props.
+ */
+const basicQuery = (props) => {
+  return ({
+    sortBy,
+    field,
+    selectedFacets,
+    searchKeywords,
+    page,
+  }) => {
+    const sortQuery = getSortQuery(sortBy || props.sortBy);
+    const fieldQuery = getFieldParam(field || props.field);
+    const filterQuery = getFacetFilterParam(selectedFacets || props.selectedFacets);
+    // `searchKeywords` can be an empty string, so check if it's undefined instead.
+    const query = searchKeywords !== undefined ? searchKeywords : props.searchKeywords;
+    const pageQuery = page && page !== '1' ? `&page=${page}` : '';
+
+    return `q=${query}${filterQuery}${sortQuery}${fieldQuery}${pageQuery}`;
+  };
+};
+
+/**
+ * getReqParams
+ * Read the query param from the request object from Express and returns its value or
+ * default values for each. It also returns a string representation of all the selected
+ * facets in the url from the `filter` query.
+ * @param {object} query The request query object from Express.
+ */
+function getReqParams(query = {}) {
+  const page = query.page || '1';
+  const q = query.q || '';
+  const sort = query.sort || '';
+  const order = query.sort_direction || '';
+  const fieldQuery = query.search_scope || '';
+  const filters = query.filters || {};
+
+  return { page, q, sort, order, fieldQuery, filters };
+}
+
 export {
   collapse,
   trackDiscovery,
@@ -257,5 +345,10 @@ export {
   getSortQuery,
   getFacetParams,
   createAppHistory,
-  destructureQuery,
+  getFieldParam,
+  getFacetFilterParam,
+  destructureFilters,
+  getDefaultFacets,
+  basicQuery,
+  getReqParams,
 };

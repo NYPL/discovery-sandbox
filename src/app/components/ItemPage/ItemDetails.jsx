@@ -6,12 +6,10 @@ class ItemDetails extends React.Component {
       return null;
     }
 
-    return data.map((item) => {
-      return [
-        (<dt dangerouslySetInnerHTML={this.createMarkup(item.term)}></dt>),
-        (<dd>{item.definition}</dd>),
-      ];
-    });
+    return data.map((item) => ([
+      (<dt dangerouslySetInnerHTML={this.createMarkup(item.term)}></dt>),
+      (<dd>{item.definition}</dd>),
+    ]));
   }
 
   createMarkup(markup) {
@@ -19,13 +17,12 @@ class ItemDetails extends React.Component {
   }
 
   render() {
-    if (!this.props.data.length || !this.props.title) {
+    if (!this.props.data.length) {
       return null;
     }
 
     return (
       <div>
-        <h2>{this.props.title}</h2>
         <dl>
           {this.getItem(this.props.data)}
         </dl>
@@ -35,7 +32,6 @@ class ItemDetails extends React.Component {
 }
 
 ItemDetails.propTypes = {
-  title: React.PropTypes.string,
   data: React.PropTypes.array,
 };
 
