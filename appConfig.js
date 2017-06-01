@@ -8,7 +8,7 @@ export default {
     development: 'https://api.nypltech.org/api/v0.1',
     production: '',
   },
-  loginUrl: 'https://isso.nypl.org/auth/login',
+  loginUrl: 'https://login.nypl.org/auth/login',
   publicKey:
     '-----BEGIN PUBLIC KEY-----\n' +
     'MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA44ilHg/PxcJYsISHMRyo\n' +
@@ -19,4 +19,17 @@ export default {
     'Q9RrzMLTqxKnVVn2+hVpk4F/8tMsGCdd4s/AJqEQBy5lsq7ji1B63XYqi5fc1SnJ\n' +
     'EQIDAQAB\n' +
     '-----END PUBLIC KEY-----',
+  defaultFacets: {
+    owner: [],
+    contributorLiteral: [],
+    materialType: [],
+    issuance: [],
+    publisher: [],
+    language: [],
+    mediaType: [],
+    subjectLiteral: [],
+    creatorLiteral: [],
+    dateAfter: {},
+    dateBefore: {},
+  },
 };

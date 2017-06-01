@@ -4,82 +4,52 @@ import { Link } from 'react-router';
 const Breadcrumbs = ({ query, type, title, url }) => {
   let currentPageText = 'Research Catalog';
   let crumbs = (
-    <span>
-      <Link to="https://nypl.org">Home</Link> &gt;
-      <Link to="https://nypl.org/research">Research</Link> &gt;
-      <span className="currentPage">{currentPageText}</span>
-    </span>
+    <ol role="navigation" aria-label="breadcrumbs" className="nypl-breadcrumbs">
+      <li><a href="https://nypl.org">Home</a></li>
+      <li><a href="https://nypl.org/research">Research</a></li>
+      <li>{currentPageText}</li>
+    </ol>
   );
 
   if (type === 'search') {
     currentPageText = query ? `Search Results for "${query}"` : 'Search Results';
     crumbs = (
-      <span>
-        <Link to="https://nypl.org">Home</Link> &gt;
-        <Link to="https://nypl.org/research">Research</Link> &gt;
-        <Link to="/">Research Catalog</Link> &gt;
-        <span className="currentPage">{currentPageText}</span>
-      </span>
+      <ol role="navigation" aria-label="breadcrumbs" className="nypl-breadcrumbs">
+        <li><a href="https://nypl.org">Home</a></li>
+        <li><a href="https://nypl.org/research">Research</a></li>
+        <li><Link to="/">Research Catalog</Link></li>
+        <li>{currentPageText}</li>
+      </ol>
     );
   }
 
-  // Arbitary value for now.
-  currentPageText = title.length > 50 ? `${title.substring(0, 50)}...` : title;
+  currentPageText = title;
 
   if (type === 'item') {
     crumbs = (
-      <span>
-        <Link to="https://nypl.org">Home</Link> &gt;
-        <Link to="https://nypl.org/research">Research</Link> &gt;
-        <Link to="/">Research Catalog</Link> &gt;
+      <ol role="navigation" aria-label="breadcrumbs" className="nypl-breadcrumbs">
+        <li><a href="https://nypl.org">Home</a></li>
+        <li><a href="https://nypl.org/research">Research</a></li>
+        <li><Link to="/">Research Catalog</Link></li>
         {
           query ?
-          (<span><Link to={`/search?q=${query}`}>Items</Link> &gt;</span>)
+          (<li>
+            <Link
+              title={`Make a new search for ${query}`}
+              to={`/search?q=${query}`}
+            >Items</Link></li>)
           : null
         }
-        <span className="currentPage">{currentPageText}</span>
-      </span>
-    );
-  }
-
-  if (type === 'hold') {
-    crumbs = (
-      <span>
-        <Link to="https://nypl.org">Home</Link> &gt;
-        <Link to="https://nypl.org/research">Research</Link> &gt;
-        <Link to="/">Research Catalog</Link> &gt;
-        {
-          query ?
-          (<span><Link to={`/search?q=${query}`}>Items</Link> &gt;</span>)
-          : null
-        }
-        <Link to={`/item/${url}`}>{currentPageText}</Link> &gt;
-        <span className="currentPage">Place a hold</span>
-      </span>
-    );
-  }
-
-  if (type === 'holdConfirmation') {
-    crumbs = (
-      <span>
-        <Link to="https://nypl.org">Home</Link> &gt;
-        <Link to="https://nypl.org/research">Research</Link> &gt;
-        <Link to="/">Research Catalog</Link> &gt;
-        {
-          query ?
-          (<span><Link to={`/search?q=${query}`}>Items</Link> &gt;</span>)
-          : null
-        }
-        <Link to={`/item/${url}`}>{currentPageText}</Link> &gt;
-        <span className="currentPage">Hold confirmation</span>
-      </span>
+        <li>{currentPageText}</li>
+      </ol>
     );
   }
 
   return (
-    <div className="breadcrumbs">
+    <span>
+      <span className="nypl-screenreader-only">You are here:</span>
       {crumbs}
-    </div>
+    </span>
   );
 };
 

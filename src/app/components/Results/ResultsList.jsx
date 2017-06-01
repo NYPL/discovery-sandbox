@@ -1,11 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router';
-import { isEmpty as _isEmpty } from 'underscore';
+import {
+  isEmpty as _isEmpty,
+  chain as _chain,
+} from 'underscore';
 
-import Actions from '../../actions/Actions.js';
-import LibraryItem from '../../utils/item.js';
-import ResultItems from './ResultItems.jsx';
-import { ajaxCall } from '../../utils/utils.js';
+import Actions from '../../actions/Actions';
+import LibraryItem from '../../utils/item';
+import { ajaxCall } from '../../utils/utils';
 
 class ResultsList extends React.Component {
   constructor(props) {
@@ -15,22 +17,19 @@ class ResultsList extends React.Component {
     this.getRecord = this.getRecord.bind(this);
   }
 
-  getRecord(e, id, path) {
+  getRecord(e, id) {
     e.preventDefault();
 
     ajaxCall(`/api/retrieve?q=${id}`, (response) => {
-      // console.log(response.data);
       Actions.updateBib(response.data);
-      this.routeHandler(`/${path}/${id}`);
+      this.routeHandler(`/item/${id}`);
     });
   }
 
   getCollapsedBibs(collapsedBibs) {
     if (!collapsedBibs.length) return null;
 
-    const bibs = collapsedBibs.map((bib, i) => {
-      return this.getBib(bib, false, i);
-    });
+    const bibs = collapsedBibs.map((bib, i) => this.getBib(bib, false, i));
 
     return (
       <div className="related-items">
@@ -42,67 +41,67 @@ class ResultsList extends React.Component {
     );
   }
 
+  getBibTitle(bib) {
+    if (!bib.titleDisplay) {
+      const author = bib.creatorLiteral && bib.creatorLiteral.length ?
+        ` / ${bib.creatorLiteral[0]}` : '';
+      return bib.title && bib.title.length ? `${bib.title[0]}${author}` : '';
+    }
+    return bib.titleDisplay;
+  }
+
+  getYearDisplay(bib) {
+    let dateStartYear = bib.dateStartYear;
+    let dateEndYear = bib.dateEndYear;
+
+    dateStartYear = dateStartYear === 999 ? 'unknown' : dateStartYear;
+    dateEndYear = dateEndYear === 9999 ? 'present' : dateEndYear;
+
+    if (dateStartYear && dateEndYear) {
+      return (<span className="nypl-results-date">{dateStartYear}-{dateEndYear}</span>);
+    } else if (dateStartYear) {
+      return (<span className="nypl-results-date">{dateStartYear}</span>);
+    }
+    return null;
+  }
+
   getBib(bib, author, i) {
-    if (!bib.result || _isEmpty(bib.result)) return null;
+    if (!bib.result || _isEmpty(bib.result) || !bib.result.title) return null;
 
     const result = bib.result;
-    const collapsedBibs = bib.collapsedBibs && bib.collapsedBibs.length ?
-      bib.collapsedBibs : [];
-    const collapsedBibsElements = this.getCollapsedBibs(collapsedBibs);
-    const itemTitle = result.title ? result.title[0] : '';
-    const itemImage = result.btCover ? (
-      <div className="result-image">
-        <img src={result.btCover} alt={itemTitle} />
-      </div>
-      ) : null;
-    const authors = author && result.contributor && result.contributor.length ?
-      result.contributor.map((contributor) => `${contributor}; `)
-      : null;
+    const itemTitle = this.getBibTitle(result);
     const id = result['@id'].substring(4);
     const items = LibraryItem.getItems(result);
-    const hathiAvailable = result.hathiVols && result.hathiVols.length;
+    // Just displaying information for the first item for now, unless if the first item
+    // is displays a HathiTrust viewer, in that case display the second item.
+    const firstItem = items.length && items[0].actionLabel !== 'View online' ?
+      items[0] : (items[1] ? items[1] : null);
+    const materialType = result && result.materialType && result.materialType[0] ?
+      result.materialType[0].prefLabel : null;
+    const yearPublished = this.getYearDisplay(result);
+    const usageType = firstItem ? firstItem.actionLabel : null;
+    const location = _chain(items)
+      .pluck('location')
+      .uniq()
+      .value()
+      .join(', ');
 
     return (
-      <li key={i} className="result-item">
-        <div className="result-text">
-          {/*<div className="type">{result.type ? result.type[0].prefLabel : null}</div>*/}
-          <h4>
-            <Link
-              onClick={(e) => this.getRecord(e, id, 'item')}
-              href={`/item/${id}`}
-              className="title"
-            >
-              {itemTitle}
-            </Link>
-          </h4>
-          {
-            authors &&
-            (<p className="description">
-              <strong>By:</strong> {authors}
-            </p>)
-          }
-          {
-            result.publisher &&
-            (<p className="description">
-              <strong>Publisher:</strong> {result.publisher}
-            </p>)
-          }
-          {
-            result.created &&
-            (<p className="description">
-              <strong>Year published:</strong> {result.created}
-            </p>)
-          }
-          {
-            hathiAvailable &&
-            (<p className="description">
-              <em>Available to view on this website</em>
-            </p>)
-          }
-          {
-            items.length ? <ResultItems items={items} itemTitle={itemTitle} /> : null
-          }
-          {collapsedBibsElements}
+      <li key={i} className="nypl-results-item">
+        <h2>
+          <Link
+            onClick={(e) => this.getRecord(e, id)}
+            href={`/item/${id}`}
+            className="title"
+          >
+            {itemTitle}
+          </Link>
+        </h2>
+        <div className="nypl-results-item-description">
+          <span className="nypl-results-media">{materialType}</span>
+          {yearPublished}
+          <span className="nypl-results-room">{location}</span>
+          <span className="nypl-results-use">{usageType}</span>
         </div>
       </li>
     );
@@ -117,9 +116,7 @@ class ResultsList extends React.Component {
     let resultsElm = null;
 
     if (results && results.length) {
-      resultsElm = results.map((bib, i) => {
-        return this.getBib(bib, true, i);
-      });
+      resultsElm = results.map((bib, i) => this.getBib(bib, true, i));
     }
 
     return (

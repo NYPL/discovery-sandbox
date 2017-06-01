@@ -1,18 +1,10 @@
 import React from 'react';
+import { Link } from 'react-router';
 
 import Actions from '../../actions/Actions.js';
-import {
-  ajaxCall,
-  getSortQuery,
-} from '../../utils/utils.js';
+import { ajaxCall } from '../../utils/utils.js';
 
 class Pagination extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = { sortValue: this.props.sortBy };
-  }
-
   /*
    * getPage()
    * Get a button based on current page.
@@ -23,16 +15,38 @@ class Pagination extends React.Component {
     if (!page) return null;
     const intPage = parseInt(page, 10);
     const pageNum = type === 'Next' ? intPage + 1 : intPage - 1;
+    const prevSVG = (
+      <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" viewBox="0 0 32 32">
+        <title>Left arrow</title>
+        <polygon points="16.959 24.065 9.905 16.963 27.298 16.963 27.298 14.548 9.905 14.548 16.959 7.397 15.026 5.417 4.688 15.707 15.026 25.998 16.959 24.065" />
+      </svg>
+    );
+    const nextSVG = (
+      <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" viewBox="0 0 32 32">
+        <title>Right arrow</title>
+        <polygon points="16.959 25.998 27.298 15.707 16.959 5.417 15.026 7.397 22.08 14.548 4.688 14.548 4.687 16.963 22.08 16.963 15.026 24.065 16.959 25.998" />
+      </svg>
+    );
+    const svg = type === 'Next' ? nextSVG : prevSVG;
+
+    const searchStr = this.props.urlSearchString;
+    const index = searchStr.indexOf('&page=');
+    let newSearch = '';
+    if (index !== -1) {
+      const pageIndex = index + 6;
+      newSearch = `${searchStr.substring(0, pageIndex)}` +
+        `${pageNum}${searchStr.substring(pageIndex + 1)}`;
+    }
 
     return (
-      <button
-        className={`paginate ${type.toLowerCase()}`}
-        onClick={() => this.fetchResults(pageNum)}
+      <Link
+        to={{ pathname: newSearch }}
+        onClick={(e) => this.fetchResults(e, pageNum)}
         rel={type.toLowerCase()}
         aria-controls="results-region"
       >
-        {type} Page
-      </button>
+        {svg} {type} Page
+      </Link>
     );
   }
 
@@ -41,15 +55,14 @@ class Pagination extends React.Component {
    * Make ajax call with updated page selected.
    * @param {string} page The next page to get results from.
    */
-  fetchResults(page) {
-    const query = this.props.location.query.q;
-    const pageParam = page !== 1 ? `&page=${page}` : '';
-    const sortQuery = getSortQuery(this.state.sortValue);
+  fetchResults(e, page) {
+    e.preventDefault();
+    const apiQuery = this.props.createAPIQuery({ page });
 
-    ajaxCall(`/api?q=${query}${pageParam}${sortQuery}`, response => {
+    ajaxCall(`/api?${apiQuery}`, response => {
       Actions.updateSearchResults(response.data.searchResults);
-      Actions.updatePage(page);
-      this.context.router.push(`/search?q=${encodeURIComponent(query)}${pageParam}${sortQuery}`);
+      Actions.updatePage(page.toString());
+      this.context.router.push(`/search?${apiQuery}`);
     });
   }
 
@@ -62,23 +75,19 @@ class Pagination extends React.Component {
 
     const perPage = 50;
     const pageFactor = parseInt(page, 10) * perPage;
-    const totalHits = hits.toLocaleString();
-    const pageFactorF = pageFactor.toLocaleString();
     const nextPage = (hits < perPage || pageFactor > hits) ? null : this.getPage(page, 'Next');
     const prevPage = page > 1 ? this.getPage(page, 'Previous') : null;
-    const from = pageFactor - (perPage - 1);
-    const to = pageFactor > hits ? totalHits : pageFactorF;
-    const displayItems = hits < perPage ? `1 - ${totalHits}` : `${from} - ${to}`;
+    const totalPages = Math.floor(hits / 50) + 1;
 
     return (
-      <div className="pagination">
+      <div className="nypl-results-pagination">
         {prevPage}
         <span
-          className="paginate pagination-total"
-          aria-label={`Displaying ${displayItems} out of ${totalHits} total items.`}
+          className={`page-count ${page === '1' ? 'first' : ''}`}
+          aria-label={`Displaying page ${page} out of ${totalPages} total pages.`}
           tabIndex="0"
         >
-          {displayItems} of {totalHits}
+          Page {page} of {totalPages}
         </span>
         {nextPage}
       </div>
@@ -88,9 +97,9 @@ class Pagination extends React.Component {
 
 Pagination.propTypes = {
   hits: React.PropTypes.number,
-  sortBy: React.PropTypes.string,
-  location: React.PropTypes.object,
+  urlSearchString: React.PropTypes.string,
   page: React.PropTypes.string,
+  createAPIQuery: React.PropTypes.func,
 };
 
 Pagination.defaultProps = {

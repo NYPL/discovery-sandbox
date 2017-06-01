@@ -1,176 +1,106 @@
 import React from 'react';
+import { findWhere as _findWhere } from 'underscore';
 
-import Actions from '../../actions/Actions.js';
-import {
-  ajaxCall,
-  getSortQuery,
-  getFacetParams,
-} from '../../utils/utils.js';
-
-import {
-  findWhere as _findWhere,
-} from 'underscore';
+import Facet from './Facet';
+import DateFacet from './DateFacet';
 
 class FacetSidebar extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {};
-
-    this.props.facets.map(facet => {
-      let id = '';
-      let value = '';
-
-      if (this.props.selectedFacets && this.props.selectedFacets[facet.field]) {
-        id = this.props.selectedFacets[facet.field].id;
-        value = this.props.selectedFacets[facet.field].value;
-      }
-
-      this.state[facet.field] = { id, value };
-    });
-
-    this.routeHandler = this.routeHandler.bind(this);
-    this.onChange = this.onChange.bind(this);
+    this.state = {
+      mobileView: false,
+      mobileViewText: 'Refine search',
+    };
   }
 
-  onChange(e, field) {
-    const value = e.target.value;
-    let strSearch = '';
-
-    if (value === `${field}_any`) {
+  toggleFacetsMobile() {
+    if (this.state.mobileView) {
       this.setState({
-        [field]: {
-          id: '',
-          value: '',
-        },
+        mobileView: false,
+        mobileViewText: 'Refine search',
       });
     } else {
-      const searchValue = field === 'date' ? parseInt(value, 10) : value;
-      const facetObj = _findWhere(this.props.facets, { field });
-      const facet = _findWhere(facetObj.values, { value: searchValue });
-
       this.setState({
-        [field]: {
-          id: facet.value,
-          value: facet.label || facet.value,
-        },
+        mobileView: true,
+        mobileViewText: 'Hide facets',
       });
     }
-
-    strSearch = getFacetParams(this.state, field, value);
-
-    const sortQuery = getSortQuery(this.props.sortBy);
-
-    ajaxCall(`/api?q=${this.props.keywords}${strSearch}${sortQuery}`, (response) => {
-      Actions.updateSearchResults(response.data.searchResults);
-      Actions.updateFacets(response.data.facets);
-      Actions.updateSelectedFacets(this.state);
-      Actions.updatePage('1');
-      this.routeHandler(
-        null,
-        `/search?q=${encodeURIComponent(this.props.keywords)}${strSearch}${sortQuery}`
-      );
-    });
-  }
-
-  removeKeyword() {
-    Actions.updateSearchKeywords('');
-
-    const strSearch = getFacetParams(this.props.selectedFacets);
-    const sortQuery = getSortQuery(this.props.sortBy);
-
-    ajaxCall(`/api?q=${this.props.keywords}${strSearch}${sortQuery}`, (response) => {
-      Actions.updateSearchResults(response.data.searchResults);
-      Actions.updateFacets(response.data.facets);
-      Actions.updatePage('1');
-      this.context.router.push(`/search?q=${this.props.keywords}${strSearch}${sortQuery}`);
-    });
-  }
-
-  routeHandler(e, path) {
-    if (e) e.preventDefault();
-
-    if (path === '/') {
-      Actions.updateSelectedFacets({});
-    }
-
-    this.context.router.push(path);
   }
 
   render() {
-    const { facets } = this.props;
+    const {
+      facets,
+      totalHits,
+      searchKeywords,
+      selectedFacets,
+    } = this.props;
     let facetsElm = null;
 
-    if (facets.length) {
-      facetsElm = facets.map((facet, i) => {
-        const field = facet.field;
+    const orderedFacets = [
+      _findWhere(facets, { id: 'materialType' }),
+      _findWhere(facets, { id: 'subjectLiteral' }),
+      { id: 'date' },
+      _findWhere(facets, { id: 'issuance' }),
+      _findWhere(facets, { id: 'publisher' }),
+      _findWhere(facets, { id: 'language' }),
+    ];
 
-        if (facet.values.length < 1 || field === 'carrierType' || field === 'mediaType') {
+    if (facets.length) {
+      facetsElm = orderedFacets.map((facet, i) => {
+        if (!facet) return null;
+        if (facet && facet.values && facet.values.length < 1) {
           return null;
         }
 
-        const selectedValue = this.state[field] ? this.state[field].id : '';
+        const field = facet.field;
+        const selectedValues = selectedFacets[field] && selectedFacets[field].length ?
+          selectedFacets[field] : [];
+
+        if (facet.id === 'date') {
+          return (
+            <DateFacet
+              key={i}
+              totalHits={totalHits}
+              keywords={searchKeywords}
+              selectedFacets={selectedFacets}
+              createAPIQuery={this.props.createAPIQuery}
+              spinning={this.props.spinning}
+            />
+          );
+        }
 
         return (
-          <fieldset key={i} tabIndex="0" className="select-fieldset">
-            <legend className="facet-legend visuallyHidden">Filter by {facet.field}</legend>
-            <label htmlFor={`select-${field}`}>{facet.field}</label>
-            <select
-              name={`select-${field}`}
-              id={`select-${field}`}
-              onChange={(e) => this.onChange(e, field)}
-              value={selectedValue || `${field}_any`}
-              aria-controls="results-region"
-            >
-              <option value={`${field}_any`}>Any</option>
-              {
-                facet.values.map((f, j) => {
-                  let selectLabel = f.value;
-                  if (f.label) {
-                    selectLabel = f.label;
-                  }
-
-                  return (
-                    <option key={j} value={f.value}>
-                      {selectLabel} ({f.count})
-                    </option>
-                  );
-                })
-              }
-            </select>
-          </fieldset>
+          <Facet
+            key={i}
+            facet={facet}
+            selectedFacets={selectedFacets}
+            totalHits={totalHits}
+            selectedValues={selectedValues}
+            createAPIQuery={this.props.createAPIQuery}
+            spinning={this.props.spinning}
+          />
         );
       });
     }
 
     return (
-      <div className={`facets ${this.props.className}`}>
-        <form className="facets-form">
-          <h2>Filter results by</h2>
-          {
-            this.props.keywords ?
-              <fieldset tabIndex="0" className="fieldset">
-                <legend className="facet-legend visuallyHidden">
-                  Current Keyword {this.props.keywords}
-                </legend>
-                <label htmlFor="select-keywords">Keywords</label>
-                <button
-                  id="select-keywords"
-                  name="select-keywords"
-                  className="button-selected"
-                  title={`Remove keyword filter: ${this.props.keywords}`}
-                  onClick={() => this.removeKeyword()}
-                  aria-controls="results-region"
-                  type="submit"
-                >
-                  {`"${this.props.keywords}"`}
-                </button>
-              </fieldset>
-              : null
-          }
-
+      <div className="nypl-column-one-quarter">
+        <div className="nypl-mobile-refine">
+          <button
+            className="nypl-primary-button"
+            aria-controls="filter-search"
+            aria-expanded={this.state.mobileView}
+            onClick={() => this.toggleFacetsMobile()}
+          >
+            {this.state.mobileViewText}
+          </button>
+        </div>
+        <form
+          id="filter-search"
+          className={`nypl-search-form ${this.state.mobileView ? 'active' : ''}`}
+        >
           {facetsElm}
-
         </form>
       </div>
     );
@@ -179,10 +109,12 @@ class FacetSidebar extends React.Component {
 
 FacetSidebar.propTypes = {
   facets: React.PropTypes.array,
-  keywords: React.PropTypes.string,
+  searchKeywords: React.PropTypes.string,
   selectedFacets: React.PropTypes.object,
-  sortBy: React.PropTypes.string,
   className: React.PropTypes.string,
+  totalHits: React.PropTypes.number,
+  createAPIQuery: React.PropTypes.func,
+  spinning: React.PropTypes.bool,
 };
 
 FacetSidebar.defaultProps = {

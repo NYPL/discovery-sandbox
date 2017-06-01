@@ -20,7 +20,7 @@ export function getPatronData(req, res, next) {
     const userToken = req.tokenResponse.accessToken;
     const patronHoldsApi = `${config.api.development}/patrons/${userId}`;
 
-    axios
+    return axios
       .get(patronHoldsApi, constructApiHeaders(userToken))
       .then((response) => {
         if (response.data) {
@@ -50,7 +50,6 @@ export function getPatronData(req, res, next) {
       })
       .catch((error) => {
         console.log(error);
-
         res.locals.data = {
           PatronStore: {
             id: '',
@@ -61,14 +60,13 @@ export function getPatronData(req, res, next) {
         // Continue next function call
         next();
       });
-  } else {
-    res.locals.data = {
-      PatronStore: {
-        id: '',
-        names: [],
-        barcodes: [],
-      },
-    };
-    return next();
   }
+  res.locals.data = {
+    PatronStore: {
+      id: '',
+      names: [],
+      barcodes: [],
+    },
+  };
+  return next();
 }

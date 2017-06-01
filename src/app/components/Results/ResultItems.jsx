@@ -16,6 +16,7 @@ class ResultsItems extends React.Component {
     return items.map((item, i) => {
       const status = item.status;
       const availability = item.availability;
+      const accessMessage = item.accessMessage.prefLabel;
       const available = item.available;
       const id = item.id;
       const collapsed = this.state.collapsed;

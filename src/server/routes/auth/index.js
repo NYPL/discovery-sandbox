@@ -7,7 +7,7 @@ export function initializeTokenAuth(req, res, next) {
     JSON.parse(nyplIdentityCookieString) : {};
 
   if (nyplIdentityCookieObject && nyplIdentityCookieObject.access_token) {
-    jwt.verify(nyplIdentityCookieObject.access_token, config.publicKey, (error, decoded) => {
+    return jwt.verify(nyplIdentityCookieObject.access_token, config.publicKey, (error, decoded) => {
       if (error) {
         // Token has expired, need to refresh token
         req.tokenResponse = {
@@ -27,12 +27,11 @@ export function initializeTokenAuth(req, res, next) {
       // Continue next function call
       return next();
     });
-  } else {
-    // Token is undefined from the cookie
-    req.tokenResponse = {
-      isTokenValid: false,
-      errorCode: 'token undefined',
-    };
-    return next();
   }
+  // Token is undefined from the cookie
+  req.tokenResponse = {
+    isTokenValid: false,
+    errorCode: 'token undefined',
+  };
+  return next();
 }
