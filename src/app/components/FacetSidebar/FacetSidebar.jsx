@@ -123,9 +123,7 @@ FacetSidebar.defaultProps = {
 };
 
 FacetSidebar.contextTypes = {
-  router: function contextType() {
-    return PropTypes.func.isRequired;
-  },
+  router: PropTypes.object,
 };
 
 export default FacetSidebar;
