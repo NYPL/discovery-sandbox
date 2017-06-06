@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 
 import Breadcrumbs from '../Breadcrumbs/Breadcrumbs.jsx';
@@ -121,15 +122,13 @@ class HoldRequest extends React.Component {
 }
 
 HoldRequest.contextTypes = {
-  router: function contextType() {
-    return React.PropTypes.func.isRequired;
-  },
+  router: PropTypes.object,
 };
 
 HoldRequest.propTypes = {
-  location: React.PropTypes.object,
-  item: React.PropTypes.object,
-  searchKeywords: React.PropTypes.string,
+  location: PropTypes.object,
+  item: PropTypes.object,
+  searchKeywords: PropTypes.string,
 };
 
 export default HoldRequest;

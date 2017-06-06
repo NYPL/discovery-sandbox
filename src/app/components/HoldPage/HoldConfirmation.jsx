@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 
 import Breadcrumbs from '../Breadcrumbs/Breadcrumbs.jsx';
@@ -129,10 +130,10 @@ class HoldConfirmation extends React.Component {
 }
 
 HoldConfirmation.propTypes = {
-  item: React.PropTypes.object,
-  location: React.PropTypes.object,
-  searchKeywords: React.PropTypes.string,
-  params: React.PropTypes.object,
+  item: PropTypes.object,
+  location: PropTypes.object,
+  searchKeywords: PropTypes.string,
+  params: PropTypes.object,
 };
 
 export default HoldConfirmation;

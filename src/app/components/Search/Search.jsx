@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import Actions from '../../actions/Actions.js';
 import SearchButton from '../Buttons/SearchButton.jsx';
@@ -145,10 +146,10 @@ class Search extends React.Component {
 }
 
 Search.propTypes = {
-  field: React.PropTypes.string,
-  searchKeywords: React.PropTypes.string,
-  spinning: React.PropTypes.bool,
-  createAPIQuery: React.PropTypes.func,
+  field: PropTypes.string,
+  searchKeywords: PropTypes.string,
+  spinning: PropTypes.bool,
+  createAPIQuery: PropTypes.func,
 };
 
 Search.defaultProps = {
@@ -158,9 +159,7 @@ Search.defaultProps = {
 };
 
 Search.contextTypes = {
-  router: function contextType() {
-    return React.PropTypes.func.isRequired;
-  },
+  router: PropTypes.object,
 };
 
 export default Search;

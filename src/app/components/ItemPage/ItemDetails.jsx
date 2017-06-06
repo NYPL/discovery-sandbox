@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 class ItemDetails extends React.Component {
   getItem(data) {
@@ -32,7 +33,7 @@ class ItemDetails extends React.Component {
 }
 
 ItemDetails.propTypes = {
-  data: React.PropTypes.array,
+  data: PropTypes.array,
 };
 
 export default ItemDetails;

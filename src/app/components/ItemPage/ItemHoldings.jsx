@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 
 class ItemHoldings extends React.Component {
@@ -81,8 +82,8 @@ class ItemHoldings extends React.Component {
 }
 
 ItemHoldings.propTypes = {
-  holdings: React.PropTypes.array,
-  title: React.PropTypes.string,
+  holdings: PropTypes.array,
+  title: PropTypes.string,
 };
 
 export default ItemHoldings;

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 import {
   isEmpty as _isEmpty,
@@ -128,13 +129,11 @@ class ResultsList extends React.Component {
 }
 
 ResultsList.propTypes = {
-  results: React.PropTypes.array,
+  results: PropTypes.array,
 };
 
 ResultsList.contextTypes = {
-  router: function contextType() {
-    return React.PropTypes.func.isRequired;
-  },
+  router: PropTypes.object,
 };
 
 export default ResultsList;

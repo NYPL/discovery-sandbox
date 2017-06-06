@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { findWhere as _findWhere } from 'underscore';
 
 import Facet from './Facet';
@@ -108,13 +109,13 @@ class FacetSidebar extends React.Component {
 }
 
 FacetSidebar.propTypes = {
-  facets: React.PropTypes.array,
-  searchKeywords: React.PropTypes.string,
-  selectedFacets: React.PropTypes.object,
-  className: React.PropTypes.string,
-  totalHits: React.PropTypes.number,
-  createAPIQuery: React.PropTypes.func,
-  spinning: React.PropTypes.bool,
+  facets: PropTypes.array,
+  searchKeywords: PropTypes.string,
+  selectedFacets: PropTypes.object,
+  className: PropTypes.string,
+  totalHits: PropTypes.number,
+  createAPIQuery: PropTypes.func,
+  spinning: PropTypes.bool,
 };
 
 FacetSidebar.defaultProps = {
@@ -123,7 +124,7 @@ FacetSidebar.defaultProps = {
 
 FacetSidebar.contextTypes = {
   router: function contextType() {
-    return React.PropTypes.func.isRequired;
+    return PropTypes.func.isRequired;
   },
 };
 
