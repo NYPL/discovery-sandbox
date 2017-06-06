@@ -5,6 +5,21 @@ Install:
 * AWS CLI
 * EB CLI
 
+### Repo Branches
+We will deploy two branches: `dev-eb-deploy` and `master`.
+
+- `master` will always be deployed to production discovery.nypl.org
+- `dev-eb-deploy` will be deployed to development dev-discovery.nypl.org
+
+If we have a new feature to add, the suggested workflow is:
+- Create branch for new feature `git checkout -b new-feature` off the `development` branch.
+- Create Pull Request pointing to the `development` branch.
+- To test the branch on the development server, merge your feature branch to `dev-eb-deploy`
+-- `git merge --no-ff new-feature` when on the `dev-eb-deploy` branch
+- Once the Pull Request is accepted and merged into `development`, the `development` branch can be merged to the `master` branch which will be deployed to production.
+
+The following documentation is for after your code has been merged into `dev-eb-deploy` or `master`.
+
 ### Elastic Beanstalk
 There are two existing AWS accounts that we are deploying to for development and for production.
 
