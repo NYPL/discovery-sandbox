@@ -75,6 +75,7 @@ class ItemPage extends React.Component {
 
     const displayFields = [
       { label: 'Title', field: 'title' },
+      { label: 'Title (alternative)', field: 'titleAlt' },
       { label: 'Title (display)', field: 'titleDisplay' },
       { label: 'Type', field: 'type' },
       { label: 'Carrier Type', field: 'carrierType' },
