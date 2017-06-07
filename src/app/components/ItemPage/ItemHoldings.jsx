@@ -49,13 +49,19 @@ class ItemHoldings extends React.Component {
             } else {
               // NOTE: This is using `this.props.bibId` but it is wrong. It should be the item ID.
               // Currently, hitting the API with items is not working.
-              itemLink = h.url && h.url.length ?
-                <Link
-                  className="button"
-                  to={`/hold/request/${this.props.bibId}`}
-                  onClick={(e) => this.getRecord(e, this.props.bibId, 'hold/request')}
-                >Request</Link> :
-                <span className="nypl-item-unavailable">Unavailable</span>;
+              if (h.requestHold) {
+                itemLink = h.availability === 'available' ?
+                  <Link
+                    className="button"
+                    to={`/hold/request/${this.props.bibId}`}
+                    onClick={(e) => this.getRecord(e, this.props.bibId, 'hold/request')}
+                  >Request</Link> :
+                  <span className="nypl-item-unavailable">Unavailable</span>;
+              } else {
+                itemLink = h.url && h.url.length && h.availability === 'available' ?
+                  <a href={h.url}>Request</a> :
+                  <span className="nypl-item-unavailable">Unavailable</span>;
+              }
             }
 
             if (h.callNumber) {

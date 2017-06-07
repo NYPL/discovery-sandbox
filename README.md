@@ -119,3 +119,8 @@ This will output warnings in the browser's console for elements that do not meet
 ## Misc
 
 Starting up from a [Node/React boilerplate](https://bitbucket.org/NYPL/dgx-nypl-react-boilerplate).
+
+## Deployment
+
+### Elastic Beanstalk
+We are using AWS EB to deploy our app. Check the [deployment file](DEPLOYMENT.md) for more information.
