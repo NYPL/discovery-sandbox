@@ -41,10 +41,11 @@ function LibraryItem() {
         let availability = status.replace(/\W/g, '').toLowerCase();
         let accessMessage = item.accessMessage && item.accessMessage.length ? item.accessMessage[0].prefLabel.toLowerCase() : '';
         const callNumber = item.shelfMark && item.shelfMark.length ? item.shelfMark[0] : '';
-        const locationDetails = this.getLocationLabel(item);
+        const locationDetails = this.getLocationDetails(item);
         let url = null;
         let actionLabel = null;
         let actionLabelHelper = null;
+        let requestHold = false;
         const isElectronicResource = this.isElectronicResource(item);
 
         if (isElectronicResource && item.electronicLocator[0].url) {
@@ -53,6 +54,10 @@ function LibraryItem() {
           url = item.electronicLocator[0].url;
           actionLabel = 'View online';
           actionLabelHelper = `resource for ${recordTitle}`;
+        } else if (accessMessage === 'adv request' && !item.holdingLocation) {
+          requestHold = true;
+          actionLabel = accessMessage;
+          actionLabelHelper = 'request hold on ${recordTitle}';
         } else if (availability === 'available') {
           url = this.getLocationHoldUrl(locationDetails);
           actionLabel = 'Request for in-library use';
@@ -71,6 +76,7 @@ function LibraryItem() {
           url,
           actionLabel,
           actionLabelHelper,
+          requestHold,
         };
       });
 
@@ -160,7 +166,7 @@ function LibraryItem() {
     return location;
   };
 
-  this.getLocationLabel = (item) => {
+  this.getLocationDetails = (item) => {
     const defaultLocation = this.getDefaultLocation();
     let location = this.getDefaultLocation();
 
