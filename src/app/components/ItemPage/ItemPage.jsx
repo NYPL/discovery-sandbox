@@ -71,65 +71,47 @@ class ItemPage extends React.Component {
     const createAPIQuery = basicQuery(this.props);
     const record = this.props.bib ? this.props.bib : this.props.item;
     const title = record.title && record.title.length ? record.title[0] : '';
-    const authors = record.contributor && record.contributor.length ?
-      record.contributor.map((author, i) => (
-        <span key={i}>
-          <Link
-            to={{ pathname: '/search', query: { q: `filter[contributorLiteral]=${author}` } }}
-            title={`Make a new search for contributor: "${author}"`}
-            onClick={(e) => this.onClick(e, `filter[contributorLiteral]=${author}`)}
-          >
-            {author}
-          </Link>,&nbsp;
-        </span>
-      ))
-      : null;
-    const publisher = record.publisher && record.publisher.length ?
-      <Link
-        to={{ pathname: '/search', query: { q: `filter[publisher]=${record.publisher[0]}` } }}
-        title={`Make a new search for publisher: "${record.publisher[0]}"`}
-        onClick={(e) => this.onClick(e, `filter[publisher]=${record.publisher[0]}`)}
-      >
-        {record.publisher[0]}
-      </Link>
-      : null;
     const holdings = LibraryItem.getItems(record);
 
-    const materialType = record && record.materialType && record.materialType[0] ?
-      record.materialType[0].prefLabel : null;
-    const language = record && record.language && record.language[0] ?
-      record.language[0].prefLabel : null;
-    const location = record && record.location && record.location[0] ?
-        record.location[0].prefLabel : null;
-    const placeOfPublication = record && record.placeOfPublication && record.placeOfPublication[0] ?
-      record.placeOfPublication[0].prefLabel : null;
-    const yearPublished = record && record.dateStartYear ? record.dateStartYear : null;
-    const usageType = record && record.actionType && record.actionType[0] ?
-      record.actionType[0].prefLabel : null;
-
     const displayFields = [
-      {label: 'Title', field: 'title'},
-      {label: 'Type', field: 'type'},
-      {label: 'Language', field: 'language'},
-      {label: 'Date Created', field: 'createdYear'},
-      {label: 'Date Published', field: 'startYear'},
-      {label: 'Contributors', field: 'contributor', linkable: true},
-      {label: 'Publisher', field: 'publisher', linkable: true},
-      {label: 'Place of publication', field: 'placeOfPublication'},
-      {label: 'Subjects', field: 'subject'},
-      {label: 'Dimensions', field: 'dimensions'},
-      {label: 'Issuance', field: 'issuance'},
-      {label: 'Owner', field: 'owner'},
-      {label: 'Location', field: 'location'},
-      {label: 'Notes', field: 'note'},
-      {label: 'Bnumber', field: 'idBnum'},
+      { label: 'Title', field: 'title' },
+      { label: 'Title (display)', field: 'titleDisplay' },
+      { label: 'Type', field: 'type' },
+      { label: 'Carrier Type', field: 'carrierType' },
+      { label: 'Material Type', field: 'materialType' },
+      { label: 'Media Type', field: 'mediaType' },
+      { label: 'Language', field: 'language' },
+      { label: 'Created String', field: 'createdString' },
+      { label: 'Creator', field: 'creatorLiteral' },
+      { label: 'Date String', field: 'dateString' },
+      { label: 'Date Created', field: 'createdYear' },
+      { label: 'Date Published', field: 'startYear' },
+      { label: 'Contributors', field: 'contributor' },
+      { label: 'Publisher', field: 'publisher' },
+      { label: 'Place of publication', field: 'placeOfPublication' },
+      { label: 'Subjects', field: 'subjectLiteral' },
+      { label: 'Dimensions', field: 'dimensions' },
+      { label: 'Extent', field: 'extent' },
+      { label: 'Issuance', field: 'issuance' },
+      { label: 'Owner', field: 'owner' },
+      { label: 'Location', field: 'location' },
+      { label: 'Notes', field: 'note' },
+      { label: 'Bnumber', field: 'idBnum' },
+      { label: 'LCC', field: 'idLcc' },
+      { label: 'OCLC', field: 'idOclc' },
+      { label: 'Owi', field: 'idOwi' },
+      { label: 'URI', field: 'uris' },
+      { label: 'Identifier', field: 'identifier' },
+      { label: 'Number available', field: 'numAvailable' },
+      { label: 'Number of items', field: 'numItems' },
+      { label: 'Shelf Mark', field: 'shelfMark' },
     ]
 
     let itemDetails = [];
     displayFields.forEach((f) => {
       // skip absent fields
       if (!record[f.field] || !record[f.field].length) return false;
-      let fieldValue = record[f.field][0];
+      const fieldValue = record[f.field][0];
 
       // list of links
       if (fieldValue['@id']) {
@@ -173,7 +155,7 @@ class ItemPage extends React.Component {
 
           <div className="nypl-full-width-wrapper">
             <div className="nypl-row">
-              <div className="nypl-column-three-quarters nypl-column-offset-one">
+              <div className="nypl-column-three-quarters">
                 <Search
                   searchKeywords={this.props.searchKeywords}
                   field={this.props.field}
@@ -185,7 +167,7 @@ class ItemPage extends React.Component {
 
             <div className="nypl-row">
               <div
-                className="nypl-column-three-quarters nypl-column-offset-one"
+                className="nypl-column-three-quarters"
                 role="region"
                 id="mainContent"
                 aria-live="polite"
