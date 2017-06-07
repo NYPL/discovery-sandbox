@@ -36,9 +36,8 @@ class HoldRequest extends React.Component {
   }
 
   render() {
-    const item = this.props.item;
     const searchKeywords = this.props.searchKeywords;
-    const record = this.props.item;
+    const record = this.props.bib;
     const title = record.title[0];
     const bibId = record['@id'].substring(4);
     const itemId = this.props.params.id;
@@ -128,7 +127,7 @@ HoldRequest.contextTypes = {
 
 HoldRequest.propTypes = {
   location: React.PropTypes.object,
-  item: React.PropTypes.object,
+  bib: React.PropTypes.object,
   searchKeywords: React.PropTypes.string,
 };
 

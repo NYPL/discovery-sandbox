@@ -189,12 +189,6 @@ class ItemPage extends React.Component {
                     title={`${record.numItems} item${record.numItems === 1 ? '' : 's'}
                       associated with this record:`}
                   />
-                              {/*
-                  <ItemDetails data={externalData} title="External data" />
-                  <ItemDetails data={externalLinks} title="External links" />
-                  <ItemDetails data={citeData} title="Cite this book" />
-                  <ItemEditions title={title} item={record} />
-                  */}
                 </div>
 
               </div>
