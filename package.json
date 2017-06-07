@@ -8,9 +8,8 @@
     "eb-start": "npm run dist && APP_ENV=development node index",
     "dist": "NODE_ENV=production webpack --config webpack.config.js",
     "postinstall": "npm run dist",
-    "test": "node_modules/.bin/mocha test/helpers/browser.js test/unit/*.test.js",
+    "test": "node_modules/.bin/mocha test/helpers/browser.js test/unit/$TEST_FILE",
     "test-dev": "node_modules/.bin/mocha -w test/helpers/browser.js test/unit/*.test.js",
-    "test-file": "node_modules/.bin/mocha -w test/helpers/browser.js",
     "coverage": "BABEL_ENV=test node_modules/.bin/nyc --require mocha npm test",
     "coverage-report": "BABEL_ENV=test node_modules/.bin/nyc report --reporter=lcov",
     "nightwatch": "./node_modules/.bin/nightwatch"
