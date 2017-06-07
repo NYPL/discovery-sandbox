@@ -20,7 +20,13 @@ To install packages run
 
 To run locally in development mode run
 
-    $ APP_ENV=development npm start
+    $ npm start
+
+    or
+
+    $ APP_ENV=[environment] npm start
+
+The App will call different APIs based on the environment variables. Default is development.
 
 and visit `localhost:3001`.
 
