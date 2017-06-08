@@ -38,14 +38,10 @@ class HoldRequest extends React.Component {
   }
 
   render() {
-    const searchKeywords = this.props.searchKeywords || '';
-    const record = this.props.bib || null;
-    // const record = { title: ['this is a test title'], '@id': 'ThisIsATestId', };
-    const title = 'this is a test title';
-    const bibId = 'ThisIsATestId';
-    // const title = (_isArray(record.title) && record.title.length > 0 && record.title[0]) ? record.title[0] : '';
-    // const bibId = (record['@id'] && typeof record['@id'] === 'string') ? record['@id'].substring(4) : '';
-console.log(record);
+    const searchKeywords = this.state.data.searchKeywords || '';
+    const record = this.state.data.item || null;
+    const title = (_isArray(record.title) && record.title.length && record.title[0]) ? record.title[0] : '';
+    const bibId = (record['@id'] && typeof record['@id'] === 'string') ? record['@id'].substring(4) : '';
     if (!record) {
       return (
         <div id="mainContent">

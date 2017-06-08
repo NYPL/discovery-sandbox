@@ -36,7 +36,21 @@ describe('HoldRequest', () => {
     });
   });
 
-  describe('If the patron is logged in, <HoldRequest>', () => {
+  describe('If the patron is logged in but the App doesn\'t get valid data, <HoldRequest>', () => {
+    it('should display the layout of error page.', () => {
+
+    });
+
+    it('should deliver the patron\'s name on the page', () => {
+
+    });
+
+    it('should not deliver request button with the respective URL on the page', () => {
+
+    });
+  });
+
+  describe('If the patron is logged in and the App receives valid data, <HoldRequest>', () => {
     it('should display the layout of hold request.', () => {
 
     });

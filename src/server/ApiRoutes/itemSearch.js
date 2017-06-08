@@ -9,6 +9,7 @@ function retrieveItem(q, cb, errorcb) {
     .get(`${apiBase}/discovery/resources/${q}`)
     .then(response => cb(response.data))
     .catch(error => {
+      console.log('Ia m url', `${apiBase}/discovery/resources/${q}`);
       console.error(`RetrieveItem error: ${JSON.stringify(error, null, 2)}`);
 
       errorcb(error);
@@ -66,13 +67,13 @@ function requireUser(req, res) {
 
 function newHoldRequest(req, res, next) {
   const loggedIn = requireUser(req, res);
+
   if (!loggedIn) return false;
 
   // Retrieve item
   return retrieveItem(
     req.params.id,
     (data) => {
-      // console.log('Item data', data)
       res.locals.data.Store = {
         item: data,
         searchKeywords: '',
@@ -80,7 +81,6 @@ function newHoldRequest(req, res, next) {
       next();
     },
     (error) => {
-      console.log(error);
       res.locals.data.Store = {
         item: {},
         searchKeywords: '',
