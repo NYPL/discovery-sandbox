@@ -13,14 +13,18 @@ function LibraryItem() {
    * @param (String) itemId
    */
   this.getItem = (record, itemId) => {
-    // look for item id in record's items
-    const items = record.items;
     let thisItem = {};
-    items.forEach((i) => {
-      if (i['@id'].substring(4) === itemId) {
-        thisItem = i;
-      }
-    });
+    // look for item id in record's items
+    const items = (record && record.items) ? record.items : null;
+
+    if (items && itemId) {
+      items.forEach((i) => {
+        if (i['@id'] && i['@id'].substring(4) === itemId) {
+          thisItem = i;
+        }
+      });
+    }
+
     return thisItem;
   };
 
@@ -126,12 +130,12 @@ function LibraryItem() {
     if (thisItem && thisItem.location && thisItem.location.length > 0) {
       location = thisItem.location[0][0];
     }
-    const locationCode = location['@id'].substring(4);
-    const prefLabel = location.prefLabel;
-    const isOffsite = this.isOffsite(location);
+    const locationCode = (location['@id'] && typeof location['@id'] === 'string') ? location['@id'].substring(4) : '';
+    const prefLabel = (location) ? location.prefLabel : '';
+    const isOffsite = (location) ? this.isOffsite(location) : false;
 
     // retrieve location data
-    if (locationCode in LocationCodes) {
+    if (locationCode && locationCode in LocationCodes) {
       location = Locations[LocationCodes[locationCode].location];
     } else {
       location = Locations[LocationCodes[defaultLocation['@id'].substring(4)].location];
@@ -139,8 +143,8 @@ function LibraryItem() {
 
     // retrieve delivery location
     let deliveryLocationCode = defaultLocation['@id'].substring(4);
-    if (locationCode in LocationCodes) {
-      deliveryLocationCode = LocationCodes[locationCode].delivery_location;
+    if (locationCode && locationCode in LocationCodes) {
+      deliveryLocationCode = LocationCodes[locationCode].delivery_location || '';
     }
 
     location.offsite = isOffsite;
