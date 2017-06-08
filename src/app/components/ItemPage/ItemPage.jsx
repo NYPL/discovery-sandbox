@@ -157,6 +157,7 @@ class ItemPage extends React.Component {
   render() {
     const createAPIQuery = basicQuery(this.props);
     const record = this.props.bib ? this.props.bib : this.props.item;
+    const bibId = record['@id'].substring(4);
     const title = record.title && record.title.length ? record.title[0] : '';
     const authors = record.contributor && record.contributor.length ?
       record.contributor.map((author, i) => (
@@ -272,6 +273,7 @@ class ItemPage extends React.Component {
               <div className="nypl-column-one-quarter nypl-item-holdings">
                 <ItemHoldings
                   holdings={holdings}
+                  bibId={bibId}
                   title={`${record.numItems} item${record.numItems === 1 ? '' : 's'}
                     associated with this record:`}
                 />

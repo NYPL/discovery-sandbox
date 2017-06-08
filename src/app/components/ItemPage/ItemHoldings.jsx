@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
+import axios from 'axios';
+import Actions from '../../actions/Actions';
 
 class ItemHoldings extends React.Component {
   constructor(props) {
@@ -9,6 +11,23 @@ class ItemHoldings extends React.Component {
     this.state = {
       expanded: false,
     };
+
+    this.getRecord = this.getRecord.bind(this);
+  }
+
+  getRecord(e, id, path) {
+    e.preventDefault();
+
+    axios
+      .get(`/api/retrieve?q=${id}`)
+      .then(response => {
+        console.log(response.data);
+        Actions.updateBib(response.data);
+        this.context.router.push(`/${path}/${id}`);
+      })
+      .catch(error => {
+        console.log(error);
+      });
   }
 
   getRow(holdings) {
@@ -29,8 +48,14 @@ class ItemHoldings extends React.Component {
             } else if (h.isElectronicResource) {
               itemLink = <a href={h.url}>View Online</a>;
             } else {
+              // NOTE: This is using `this.props.bibId` but it is wrong. It should be the item ID.
+              // Currently, hitting the API with items is not working.
               itemLink = h.url && h.url.length ?
-                <a href={h.url}>Request</a> :
+                <Link
+                  className="button"
+                  to={`/hold/request/${this.props.bibId}`}
+                  onClick={(e) => this.getRecord(e, this.props.bibId, 'hold/request')}
+                >Request</Link> :
                 <span className="nypl-item-unavailable">Unavailable</span>;
             }
 
@@ -84,6 +109,11 @@ class ItemHoldings extends React.Component {
 ItemHoldings.propTypes = {
   holdings: PropTypes.array,
   title: PropTypes.string,
+  bibId: PropTypes.string,
+};
+
+ItemHoldings.contextTypes = {
+  router: PropTypes.object,
 };
 
 export default ItemHoldings;
