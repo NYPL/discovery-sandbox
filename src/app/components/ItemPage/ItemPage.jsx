@@ -116,15 +116,39 @@ class ItemPage extends React.Component {
 
       // list of links
       if (fieldValue['@id']) {
-        itemDetails.push({ term: f.label, definition: <ul>{record[f.field].map((obj, i) => (<li key={i}><a onClick={(e) => this.onClick(e, `${f.field}:"${obj['@id']}"`)} href={`/search?q=${encodeURIComponent(`${f.field}:"${obj['@id']}"`)}`}>{obj.prefLabel}</a></li>))}</ul> });
+        itemDetails.push({
+          term: f.label,
+          definition: <ul>
+            {record[f.field].map(
+              (obj, i) =>
+              (<li key={i}>
+                <a
+                  onClick={(e) => this.onClick(e, `${f.field}:"${obj['@id']}"`)}
+                  href={`/search?q=${encodeURIComponent(`${f.field}:"${obj['@id']}"`)}`}
+                >{obj.prefLabel}</a></li>))
+              }</ul>
+            });
 
       // list of links
       } else if (f.linkable) {
-        itemDetails.push({ term: f.label, definition: <ul>{record[f.field].map((value, i) => (<li key={i}><a onClick={(e) => this.onClick(e, `${f.field}:"${value}"`)} href={`/search?q=${encodeURIComponent(`${f.field}:"${value}"`)}`}>{value}</a></li>))}</ul> });
+        itemDetails.push({
+          term: f.label,
+          definition: <ul>
+            {record[f.field].map(
+              (value, i) =>
+              (<li key={i}>
+                <a
+                  onClick={(e) => this.onClick(e, `${f.field}:"${value}"`)}
+                  href={`/search?q=${encodeURIComponent(`${f.field}:"${value}"`)}`}
+                >{value}</a></li>))
+            }</ul>,
+        });
 
       // list of plain text
       } else {
-        itemDetails.push({ term: f.label, definition: <ul>{record[f.field].map((value, i) => (<li key={i}>{value}</li>))}</ul> });
+        itemDetails.push({
+          term: f.label,
+          definition: <ul>{record[f.field].map((value, i) => (<li key={i}>{value}</li>))}</ul> });
       }
     });
 
