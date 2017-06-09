@@ -49,7 +49,7 @@ describe('HoldRequest', () => {
 
     it('should display log in error message.', () => {
       expect(component.find('.loggedInInstruction').text()).to.equal(
-        'Something wrong with your attempt to log in.'
+        'Something wrong during retrieving your patron data.'
       );
     });
   });
