@@ -56,9 +56,9 @@ To run the tests continuously for active development, run
 
     $ npm run test-dev
 
-To run a specific test file in the `test/unit` folder, run
+To run a specific test file, run
 
-    $ TEST_FILE=[file name] npm run test
+    $ npm run test-file test/SearchResultsPage.test.js
 
 ### Code Coverage
 [Istanbul](https://istanbul.js.org/) is used for checking code coverage.
