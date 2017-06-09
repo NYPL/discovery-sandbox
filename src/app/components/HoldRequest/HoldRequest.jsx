@@ -30,7 +30,7 @@ class HoldRequest extends React.Component {
   }
 
   requireUser() {
-    if (this.state.patron && this.state.patron.id.length) {
+    if (this.state.patron && this.state.patron.id) {
       return true;
     }
 
