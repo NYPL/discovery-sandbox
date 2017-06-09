@@ -9,7 +9,6 @@ function retrieveItem(q, cb, errorcb) {
     .get(`${apiBase}/discovery/resources/${q}`)
     .then(response => cb(response.data))
     .catch(error => {
-      console.log('Ia m url', `${apiBase}/discovery/resources/${q}`);
       console.error(`RetrieveItem error: ${JSON.stringify(error, null, 2)}`);
 
       errorcb(error);
@@ -59,6 +58,7 @@ function requireUser(req, res) {
     !req.tokenResponse.decodedPatron.sub) {
     // redirect to login
     const fullUrl = encodeURIComponent(`${req.protocol}://${req.get('host')}${req.originalUrl}`);
+
     res.redirect(`${appConfig.loginUrl}?redirect_uri=${fullUrl}`);
     return false;
   }
