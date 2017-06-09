@@ -7,7 +7,7 @@ import PatronStore from '../../stores/PatronStore.js';
 import config from '../../../../appConfig.js';
 import LibraryItem from '../../utils/item.js';
 
-import { isArray as _isArray } from 'underscore';
+import { isArray as _isArray, isEmpty as _isEmpty } from 'underscore';
 
 class HoldRequest extends React.Component {
   constructor(props) {
@@ -29,19 +29,29 @@ class HoldRequest extends React.Component {
   }
 
   requireUser() {
-    if (!this.state.patron || !this.state.patron.id.length) {
-      const fullUrl = encodeURIComponent(window.location.href);
-      window.location.replace(`${config.loginUrl}?redirect_uri=${fullUrl}`);
-      return false;
+    if (this.state.patron && _isArray(this.state.patron.id) && this.state.patron.id.length) {
+      return true;
     }
-    return true;
+
+    const fullUrl = encodeURIComponent(window.location.href);
+
+    window.location.replace(`${config.loginUrl}?redirect_uri=${fullUrl}`);
+
+    return false;
   }
 
   render() {
     const searchKeywords = this.state.data.searchKeywords || '';
-    const record = this.state.data.item || null;
-    const title = (_isArray(record.title) && record.title.length && record.title[0]) ? record.title[0] : '';
-    const bibId = (record['@id'] && typeof record['@id'] === 'string') ? record['@id'].substring(4) : '';
+    const record = (this.state.data.item && !_isEmpty(this.state.data.item)) ? this.state.data.item : null;
+    const title = (record && _isArray(record.title) && record.title.length) ? record.title[0] : '';
+    const bibId = (record && record['@id'] && typeof record['@id'] === 'string') ? record['@id'].substring(4) : '';
+    const patronName = (
+      this.state.patron.names && _isArray(this.state.patron.names) && this.state.patron.names.length
+    ) ? this.state.patron.names[0] : '';
+    const loggedInInstruction = (patronName) ?
+      <p>You are currently logged in as <strong>{patronName}</strong>. If this is not you, please <a href="https://isso.nypl.org/auth/logout">Log out</a> and sign in using your library card.</p>
+      : <p>Something wrong with your attempt to log in.</p>;
+
     if (!record) {
       return (
         <div id="mainContent">
@@ -68,7 +78,7 @@ class HoldRequest extends React.Component {
               </div>
             </div>
             <h2>Confirm account</h2>
-            <p>You are currently logged in as <strong>{this.state.patron.names[0]}</strong>. If this is not you, please <a href="https://isso.nypl.org/auth/logout">Log out</a> and sign in using your library card.</p>
+            {loggedInInstruction}
           </div>
         </div>
       );

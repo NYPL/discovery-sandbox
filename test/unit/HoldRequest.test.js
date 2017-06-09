@@ -8,6 +8,9 @@ import { mount } from 'enzyme';
 // Import the component that is going to be tested
 import HoldRequest from './../../src/app/components/HoldRequest/HoldRequest.jsx';
 
+import PatronStore from './../../src/app/stores/PatronStore.js';
+import Actions from './../../src/app/actions/Actions.js';
+
 describe('HoldRequest', () => {
   describe('After being rendered, <HoldRequest>', () => {
     let component;
@@ -21,22 +24,54 @@ describe('HoldRequest', () => {
 
     after(() => {
       requireUser.restore();
+      component.unmount();
     });
 
     it('should check if the patron is logged in.', () => {
-      // expect(component.find('.nypl-library-card-app').find('Header')).to.have.length(1);
-      // expect(component.find('.nypl-library-card-app').find('Footer')).to.have.length(1);
-      // expect(component.find('.nypl-library-card-app').find('section')).to.have.length(1);
+      expect(requireUser.calledOnce).to.equal(true);
     });
   });
 
   describe('If the patron is not logged in, <HoldRequest>', () => {
-    it('should redirect the patron to OAuth log in page.', () => {
+    let component;
+    let requireUser;
 
+    before(() => {
+      requireUser = sinon.spy(HoldRequest.prototype, 'requireUser');
+
+      component = mount(<HoldRequest />);
+    });
+
+    after(() => {
+      requireUser.restore();
+      component.unmount();
+    });
+
+    it('should redirect the patron to OAuth log in page.', () => {
+      expect(requireUser.returnValues[0]).to.equal(false);
     });
   });
 
   describe('If the patron is logged in but the App doesn\'t get valid data, <HoldRequest>', () => {
+    let component;
+    let requireUser;
+
+    before(() => {
+      Actions.updatePatronData({ id: '6677200', names: ['Leonard, Mike'], barcodes: ['162402680435300'] });
+      requireUser = sinon.spy(HoldRequest.prototype, 'requireUser');
+
+      component = mount(<HoldRequest />);
+    });
+
+    after(() => {
+      requireUser.restore();
+      component.unmount();
+    });
+
+    it('should pass the patron data check in requireUser().', () => {
+      expect(requireUser.returnValues[0]).to.equal(true);
+    });
+
     it('should display the layout of error page.', () => {
 
     });
