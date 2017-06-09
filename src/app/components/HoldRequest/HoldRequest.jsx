@@ -29,7 +29,7 @@ class HoldRequest extends React.Component {
   }
 
   requireUser() {
-    if (this.state.patron && _isArray(this.state.patron.id) && this.state.patron.id.length) {
+    if (this.state.patron && this.state.patron.id.length) {
       return true;
     }
 
@@ -49,8 +49,8 @@ class HoldRequest extends React.Component {
       this.state.patron.names && _isArray(this.state.patron.names) && this.state.patron.names.length
     ) ? this.state.patron.names[0] : '';
     const loggedInInstruction = (patronName) ?
-      <p>You are currently logged in as <strong>{patronName}</strong>. If this is not you, please <a href="https://isso.nypl.org/auth/logout">Log out</a> and sign in using your library card.</p>
-      : <p>Something wrong with your attempt to log in.</p>;
+      <p className='loggedInInstruction'>You are currently logged in as <strong>{patronName}</strong>. If this is not you, please <a href="https://isso.nypl.org/auth/logout">Log out</a> and sign in using your library card.</p>
+      : <p className='loggedInInstruction'>Something wrong with your attempt to log in.</p>;
 
     if (!record) {
       return (
@@ -123,7 +123,7 @@ class HoldRequest extends React.Component {
             <form className="place-hold-form form" action={`/hold/request/${itemId}`} method="POST">
               <h2>Confirm account</h2>
 
-              <p>You are currently logged in as <strong>{this.state.patron.names[0]}</strong>. If this is not you, please <a href="https://isso.nypl.org/auth/logout">Log out</a> and sign in using your library card.</p>
+              {loggedInInstruction}
 
               <h2>Confirm delivery location</h2>
 

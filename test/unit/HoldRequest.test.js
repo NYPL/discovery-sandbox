@@ -50,6 +50,10 @@ describe('HoldRequest', () => {
     it('should redirect the patron to OAuth log in page.', () => {
       expect(requireUser.returnValues[0]).to.equal(false);
     });
+
+    it('should display log in error message.', () => {
+      expect(component.find('.loggedInInstruction').text()).to.equal('Something wrong with your attempt to log in.');
+    });
   });
 
   describe('If the patron is logged in but the App doesn\'t get valid data, <HoldRequest>', () => {
@@ -69,6 +73,7 @@ describe('HoldRequest', () => {
     });
 
     it('should pass the patron data check in requireUser().', () => {
+      console.log(component.state().patron);
       expect(requireUser.returnValues[0]).to.equal(true);
     });
 
