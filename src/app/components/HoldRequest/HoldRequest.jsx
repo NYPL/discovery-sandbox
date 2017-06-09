@@ -1,13 +1,14 @@
 import React from 'react';
 import { Link } from 'react-router';
-
 import Breadcrumbs from '../Breadcrumbs/Breadcrumbs.jsx';
 import Store from '../../stores/Store.js';
 import PatronStore from '../../stores/PatronStore.js';
 import config from '../../../../appConfig.js';
 import LibraryItem from '../../utils/item.js';
-
-import { isArray as _isArray, isEmpty as _isEmpty } from 'underscore';
+import {
+  isArray as _isArray,
+  isEmpty as _isEmpty,
+} from 'underscore';
 
 class HoldRequest extends React.Component {
   constructor(props) {
@@ -42,124 +43,108 @@ class HoldRequest extends React.Component {
 
   render() {
     const searchKeywords = this.state.data.searchKeywords || '';
-    const record = (this.state.data.item && !_isEmpty(this.state.data.item)) ? this.state.data.item : null;
-    const title = (record && _isArray(record.title) && record.title.length) ? record.title[0] : '';
-    const bibId = (record && record['@id'] && typeof record['@id'] === 'string') ? record['@id'].substring(4) : '';
+    const record = (this.state.data.item && !_isEmpty(this.state.data.item)) ?
+      this.state.data.item : null;
+    const title = (record && _isArray(record.title) && record.title.length) ?
+      record.title[0] : '';
+    const bibId = (record && record['@id'] && typeof record['@id'] === 'string') ?
+      record['@id'].substring(4) : '';
     const patronName = (
       this.state.patron.names && _isArray(this.state.patron.names) && this.state.patron.names.length
     ) ? this.state.patron.names[0] : '';
     const loggedInInstruction = (patronName) ?
-      <p className='loggedInInstruction'>You are currently logged in as <strong>{patronName}</strong>. If this is not you, please <a href="https://isso.nypl.org/auth/logout">Log out</a> and sign in using your library card.</p>
-      : <p className='loggedInInstruction'>Something wrong with your attempt to log in.</p>;
+      <p className="loggedInInstruction">You are currently logged in as <strong>{patronName}</strong>. If this is not you, please <a href="https://isso.nypl.org/auth/logout">Log out</a> and sign in using your library card.</p>
+      : <p className="loggedInInstruction">Something wrong with your attempt to log in.</p>;
+    const itemId = (this.props.params && this.props.params.id) ? this.props.params.id : '';
+    const selectedItem = (record && itemId) ? LibraryItem.getItem(record, itemId) : null;
+    const location = (record && itemId) ? LibraryItem.getLocation(record, itemId) : null;
+    const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July',
+      'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
+    const date = new Date();
+    date.setDate(date.getDate() + 7);
+    const day = date.getDate();
+    const monthIndex = date.getMonth();
+    const dateDisplay = `${monthNames[monthIndex]} ${day}`;
+    const content = (record) ? (
+      <div className="content-wrapper">
+        <div className="item-header">
+          <h1>Research item hold request</h1>
+        </div>
 
-    if (!record) {
-      return (
-        <div id="mainContent">
-          <div className="page-header">
-            <div className="content-wrapper">
-              <Breadcrumbs
-                query={searchKeywords}
-                type="hold"
-                title={title}
-                url={bibId}
-              />
-            </div>
-          </div>
-
-          <div className="content-wrapper">
-            <div className="item-header">
-              <h1>Research item hold request</h1>
-            </div>
-
-            <div className="item-summary">
-              <div className="item">
-                <h2>Something wrong with your request</h2>
-                <Link href={`/item/${bibId}`}>{title}</Link>
-              </div>
-            </div>
-            <h2>Confirm account</h2>
-            {loggedInInstruction}
+        <div className="item-summary">
+          <div className="item">
+            <h2>You are about to request a hold on the following research item:</h2>
+            <Link href={`/item/${bibId}`}>{title}</Link>
           </div>
         </div>
-      );
-    } else {
-      const itemId = (this.props.params && this.props.params.id) ? this.props.params.id : '';
-      const selectedItem = (record && itemId) ? LibraryItem.getItem(record, itemId) : null;
-      const location = (record && itemId) ? LibraryItem.getLocation(record, itemId) : null;
 
-      const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July',
-        'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
-      let date = new Date();
-      date.setDate(date.getDate() + 7);
-      const day = date.getDate();
-      const monthIndex = date.getMonth();
-      const dateDisplay = `${monthNames[monthIndex]} ${day}`;
+        <form className="place-hold-form form" action={`/hold/request/${itemId}`} method="POST">
+          <h2>Confirm account</h2>
 
-      return (
-        <div id="mainContent">
-          <div className="page-header">
-            <div className="content-wrapper">
-              <Breadcrumbs
-                query={searchKeywords}
-                type="hold"
-                title={title}
-                url={bibId}
-              />
-            </div>
-          </div>
+          {loggedInInstruction}
 
-          <div className="content-wrapper">
-            <div className="item-header">
-              <h1>Research item hold request</h1>
-            </div>
+          <h2>Confirm delivery location</h2>
 
-            <div className="item-summary">
-              <div className="item">
-                <h2>You are about to request a hold on the following research item:</h2>
-                <Link href={`/item/${bibId}`}>{title}</Link>
-              </div>
-            </div>
+          <p>When this item is ready, you will use it in the following location:</p>
 
-            <form className="place-hold-form form" action={`/hold/request/${itemId}`} method="POST">
-              <h2>Confirm account</h2>
-
-              {loggedInInstruction}
-
-              <h2>Confirm delivery location</h2>
-
-              <p>When this item is ready, you will use it in the following location:</p>
-
-              <fieldset className="select-location-fieldset">
-                <legend className="visuallyHidden">Select a pickup location</legend>
-                <div className="group selected">
-                  <span className="col location">
-                    <a href={`${location.uri}`}>{location["full-name"]}</a><br />{location.address.address1}<br />
-                    {location.prefLabel}
-                    {location.offsite &&
-                      <span>
-                        <br /><small>(requested from offsite storage)</small><br />
-                      </span>
-                    }
+          <fieldset className="select-location-fieldset">
+            <legend className="visuallyHidden">Select a pickup location</legend>
+            <div className="group selected">
+              <span className="col location">
+                <a href={`${location.uri}`}>{location['full-name']}</a><br />{location.address.address1}<br />
+                {location.prefLabel}
+                {location.offsite &&
+                  <span>
+                    <br /><small>(requested from offsite storage)</small><br />
                   </span>
-                  {selectedItem.shelfMark &&
-                    <span className="col">
-                      <small>Call number:</small><br />{selectedItem.shelfMark[0]}
-                    </span>
-                  }
-                  {/*<span className="col"><small>Ready by approximately:</small><br />{dateDisplay}, 9am.</span>*/}
-                </div>
-              </fieldset>
+                }
+              </span>
+              {selectedItem.shelfMark &&
+                <span className="col">
+                  <small>Call number:</small><br />{selectedItem.shelfMark[0]}
+                </span>
+              }
+              {/* <span className="col"><small>Ready by approximately:</small><br />{dateDisplay}, 9am.</span> */}
+            </div>
+          </fieldset>
 
-              <input type="hidden" name="pickupLocation" value={location.code} />
+          <input type="hidden" name="pickupLocation" value={location.code} />
 
-              <button type="submit" className="large">
-                Submit your item hold request
-              </button>
-            </form>
+          <button type="submit" className="large">
+            Submit your item hold request
+          </button>
+        </form>
+      </div>
+    ) : (
+      <div className="content-wrapper">
+        <div className="item-header">
+          <h1>Research item hold request</h1>
+        </div>
+        <div className="item-summary">
+          <div className="item">
+            <h2>Something wrong with your request</h2>
+            <Link href={`/item/${bibId}`}>{title}</Link>
           </div>
         </div>
-      );
-    }
+        <h2>Confirm account</h2>
+        {loggedInInstruction}
+      </div>);
+
+    return (
+      <div id="mainContent">
+        <div className="page-header">
+          <div className="content-wrapper">
+            <Breadcrumbs
+              query={searchKeywords}
+              type="hold"
+              title={title}
+              url={bibId}
+            />
+          </div>
+        </div>
+        {content}
+      </div>
+    );
   }
 }
 
@@ -173,6 +158,7 @@ HoldRequest.propTypes = {
   location: React.PropTypes.object,
   bib: React.PropTypes.object,
   searchKeywords: React.PropTypes.string,
+  params: React.PropTypes.object,
 };
 
 export default HoldRequest;
