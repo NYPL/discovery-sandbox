@@ -29,6 +29,12 @@ class HoldRequest extends React.Component {
     this.setState({ data: Store.getState() });
   }
 
+  /**
+   * requireUser()
+   * Redirectes the patron to OAuth log in page if he/she hasn't been logged in yet.
+   *
+   * @return {boolean}
+   */
   requireUser() {
     if (this.state.patron && this.state.patron.id) {
       return true;
@@ -41,6 +47,19 @@ class HoldRequest extends React.Component {
     return false;
   }
 
+  /**
+   * renderLoggedInInstruction(patronName)
+   * Renders the HTML elements and contents based on the patron data
+   *
+   * @param {string} patronName
+   * @return {HTML Element}
+   */
+  renderLoggedInInstruction(patronName) {
+    return (patronName) ?
+      <p className="loggedInInstruction">You are currently logged in as <strong>{patronName}</strong>. If this is not you, please <a href="https://isso.nypl.org/auth/logout">Log out</a> and sign in using your library card.</p>
+      : <p className="loggedInInstruction">Something wrong during retrieving your patron data.</p>;
+  }
+
   render() {
     const searchKeywords = this.state.data.searchKeywords || '';
     const record = (this.state.data.item && !_isEmpty(this.state.data.item)) ?
@@ -51,10 +70,7 @@ class HoldRequest extends React.Component {
       record['@id'].substring(4) : '';
     const patronName = (
       this.state.patron.names && _isArray(this.state.patron.names) && this.state.patron.names.length
-    ) ? this.state.patron.names[0] : '';
-    const loggedInInstruction = (patronName) ?
-      <p className="loggedInInstruction">You are currently logged in as <strong>{patronName}</strong>. If this is not you, please <a href="https://isso.nypl.org/auth/logout">Log out</a> and sign in using your library card.</p>
-      : <p className="loggedInInstruction">Something wrong with your attempt to log in.</p>;
+      ) ? this.state.patron.names[0] : '';
     const itemId = (this.props.params && this.props.params.id) ? this.props.params.id : '';
     const selectedItem = (record && itemId) ? LibraryItem.getItem(record, itemId) : null;
     const location = (record && itemId) ? LibraryItem.getLocation(record, itemId) : null;
@@ -80,13 +96,9 @@ class HoldRequest extends React.Component {
 
         <form className="place-hold-form form" action={`/hold/request/${itemId}`} method="POST">
           <h2>Confirm account</h2>
-
-          {loggedInInstruction}
-
+          {this.renderLoggedInInstruction(patronName)}
           <h2>Confirm delivery location</h2>
-
           <p>When this item is ready, you will use it in the following location:</p>
-
           <fieldset className="select-location-fieldset">
             <legend className="visuallyHidden">Select a pickup location</legend>
             <div className="group selected">
@@ -127,8 +139,9 @@ class HoldRequest extends React.Component {
           </div>
         </div>
         <h2>Confirm account</h2>
-        {loggedInInstruction}
-      </div>);
+        {this.renderLoggedInInstruction(patronName)}
+      </div>
+    );
 
     return (
       <div id="mainContent">
