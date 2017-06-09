@@ -37,6 +37,10 @@ To run locally in production mode run
 
 and visit `localhost:3001`.
 
+## Contributing
+
+Cut branches off of the `development` branch, and open pull requests against `development`.  
+
 ## Testing
 
 ### Unit Tests
