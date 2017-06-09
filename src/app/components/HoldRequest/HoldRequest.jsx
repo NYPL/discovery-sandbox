@@ -57,7 +57,7 @@ class HoldRequest extends React.Component {
   renderLoggedInInstruction(patronName) {
     return (patronName) ?
       <p className="loggedInInstruction">You are currently logged in as <strong>{patronName}</strong>. If this is not you, please <a href="https://isso.nypl.org/auth/logout">Log out</a> and sign in using your library card.</p>
-      : <p className="loggedInInstruction">Something wrong during retrieving your patron data.</p>;
+      : <p className="loggedInInstruction">Something went wrong during retrieving your patron data.</p>;
   }
 
   render() {
