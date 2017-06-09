@@ -9,30 +9,32 @@ import axios from 'axios';
 import Hits from '../../src/app/components/Hits/Hits.jsx';
 import Actions from '../../src/app/actions/Actions.js';
 
+import { basicQuery } from '../../src/app/utils/utils.js';
+
 const mock = new MockAdapter(axios);
 
 const facets = {
   single: {
-    owner: { id: 'orgs:1000', value: 'Stephen A. Schwarzman Building' },
-    date: { id: '', value: '' },
-    subject: { id: '', value: '' },
-    materialType: { id: '', value: '' },
-    issuance: { id: '', value: '' },
-    publisher: { id: '', value: '' },
-    location: { id: '', value: '' },
-    language: { id: '', value: '' },
-    mediaType: { id: '', value: '' },
+    owner: [{ id: 'orgs:1000', value: 'Stephen A. Schwarzman Building' }],
+    date: [],
+    subject: [],
+    materialType: [],
+    issuance: [],
+    publisher: [],
+    location: [],
+    language: [],
+    mediaType: [],
   },
   two: {
-    owner: { id: 'orgs:1000', value: 'Stephen A. Schwarzman Building' },
-    date: { id: '', value: '' },
-    subject: { id: 'Children\'s art El Salvador.', value: 'Children\'s art El Salvador.' },
-    materialType: { id: '', value: '' },
-    issuance: { id: '', value: '' },
-    publisher: { id: '', value: '' },
-    location: { id: '', value: '' },
-    language: { id: '', value: '' },
-    mediaType: { id: '', value: '' },
+    owner: [{ id: 'orgs:1000', value: 'Stephen A. Schwarzman Building' }],
+    date: [{ id: '', value: '' }],
+    subject: [{ id: 'Children\'s art El Salvador.', value: 'Children\'s art El Salvador.' }],
+    materialType: [],
+    issuance: [],
+    publisher: [],
+    location: [],
+    language: [],
+    mediaType: [],
   },
 };
 
@@ -65,8 +67,8 @@ describe('Hits', () => {
       });
 
       it('should be wrapped in a .results-summary class', () => {
-        expect(component.find('.results-summary')).to.exist;
-        expect(component.find('div').first().hasClass('results-summary')).to.equal(true);
+        expect(component.find('.nypl-results-summary')).to.exist;
+        expect(component.find('div').first().hasClass('nypl-results-summary')).to.equal(true);
       });
 
       it('should output that no results were found', () => {
@@ -79,13 +81,13 @@ describe('Hits', () => {
       let component;
 
       before(() => {
-        component = shallow(<Hits query="locofocos" />);
+        component = shallow(<Hits searchKeywords="locofocos" />);
       });
 
       it('should output that no results were found', () => {
         expect(component.find('p')).to.exist;
         expect(component.find('p').text())
-          .to.equal('No results found with keywords "locofocos"remove keyword filter locofocos.');
+          .to.equal('No results found with keywords locofocostimes iconremove keyword filter locofocos.');
       });
     });
 
@@ -93,14 +95,14 @@ describe('Hits', () => {
       let component;
 
       before(() => {
-        component = shallow(<Hits facets={facets.single} />);
+        component = shallow(<Hits selectedFacets={facets.single} />);
       });
 
       it('should output that no results were found', () => {
         expect(component.find('p')).to.exist;
         expect(component.find('p').text())
-          .to.equal('No results found with owner Stephen A. Schwarzman Buildingremove filter' +
-            ' Stephen A. Schwarzman Building.');
+          .to.equal('No results found with Owner Stephen A. Schwarzman Buildingtimes iconremove ' +
+            'filter Stephen A. Schwarzman Building.');
       });
     });
   });
@@ -110,17 +112,17 @@ describe('Hits', () => {
 
     it('should output that 40 results were found', () => {
       component = shallow(<Hits hits={40} />);
-      expect(component.find('p').text()).to.equal('40 results found.');
+      expect(component.find('p').text()).to.equal('40results found');
     });
 
     it('should output that 4,000 results were found from input 4000', () => {
       component = shallow(<Hits hits={4000} />);
-      expect(component.find('p').text()).to.equal('4,000 results found.');
+      expect(component.find('p').text()).to.equal('4,000results found');
     });
 
     it('should output that 4,000,000 results were found from input 4000000', () => {
       component = shallow(<Hits hits={4000000} />);
-      expect(component.find('p').text()).to.equal('4,000,000 results found.');
+      expect(component.find('p').text()).to.equal('4,000,000results found');
     });
   });
 
@@ -129,13 +131,13 @@ describe('Hits', () => {
       let component;
 
       before(() => {
-        component = shallow(<Hits query="fire" facets={facets.single} hits={2} />);
+        component = shallow(<Hits searchKeywords="fire" selectedFacets={facets.single} hits={2} />);
       });
 
       it('should output the search keyword and the selected facet with two results', () => {
-        expect(component.find('p').text()).to.equal('2 results found with keywords fire' +
-          'remove keyword filter fire with owner Stephen A. Schwarzman Buildingremove filter' +
-          ' Stephen A. Schwarzman Building.');
+        expect(component.find('p').text()).to.equal('2results found with keywords firetimes ' +
+          'iconremove keyword filter fire with Owner Stephen A. Schwarzman Buildingtimes icon' +
+            'remove filter Stephen A. Schwarzman Building');
       });
     });
 
@@ -143,14 +145,14 @@ describe('Hits', () => {
       let component;
 
       before(() => {
-        component = shallow(<Hits query="fire" facets={facets.two} hits={2} />);
+        component = shallow(<Hits searchKeywords="fire" selectedFacets={facets.two} hits={2} />);
       });
 
       it('should output the search keyword and the two selected facets', () => {
-        expect(component.find('p').text()).to.equal('2 results found with keywords fireremove' +
-          ' keyword filter fire with owner Stephen A. Schwarzman Buildingremove filter ' +
-          'Stephen A. Schwarzman Building with subject Children\'s art El Salvador.remove ' +
-          'filter Children\'s art El Salvador..');
+        expect(component.find('p').text()).to.equal('2results found with keywords firetimes icon' +
+          'remove keyword filter fire with Owner Stephen A. Schwarzman Buildingtimes iconremove ' +
+          'filter Stephen A. Schwarzman Building with Subject Children\'s art El Salvador.times ' +
+          'iconremove filter Children\'s art El Salvador.');
       });
     });
 
@@ -158,13 +160,13 @@ describe('Hits', () => {
       let component;
 
       before(() => {
-        component = shallow(<Hits facets={facets.two} hits={2} />);
+        component = shallow(<Hits selectedFacets={facets.two} hits={2} />);
       });
 
       it('should output the search keyword and the two selected facets', () => {
-        expect(component.find('p').text()).to.equal('2 results found with owner Stephen A. ' +
-          'Schwarzman Buildingremove filter Stephen A. Schwarzman Building with subject ' +
-          'Children\'s art El Salvador.remove filter Children\'s art El Salvador..');
+        expect(component.find('p').text()).to.equal('2results found with Owner Stephen A. ' +
+          'Schwarzman Buildingtimes iconremove filter Stephen A. Schwarzman Building with Subject' +
+          ' Children\'s art El Salvador.times iconremove filter Children\'s art El Salvador.');
       });
     });
   });
@@ -177,6 +179,7 @@ describe('Hits', () => {
       let spyUpdateFacets;
       let spyUpdatePage;
       let spyAxios;
+      let createAPIQuery;
 
       before(() => {
         spyAxios = sinon.spy(axios, 'get');
@@ -189,9 +192,21 @@ describe('Hits', () => {
         spyUpdateFacets = sinon.spy(Actions, 'updateFacets');
         spyUpdatePage = sinon.spy(Actions, 'updatePage');
 
-        component = mount(<Hits query="fire" facets={facets.single} hits={2} />, {
-          context: { router: [] },
+        createAPIQuery = basicQuery({
+          searchKeywords: 'fire',
+          sortBy: '',
+          field: '',
+          selectedFacets: facets.single,
         });
+        component = mount(
+          <Hits
+            searchKeywords="fire"
+            selectedFacets={facets.single}
+            hits={2}
+            createAPIQuery={createAPIQuery}
+          />, {
+            context: { router: [] },
+          });
       });
 
       after(() => {
@@ -207,11 +222,10 @@ describe('Hits', () => {
         component.find('.remove-keyword').simulate('click');
 
         expect(spyAxios.callCount).to.equal(1);
-        expect(spyAxios.calledWithExactly('/api?q= owner:"orgs:1000"')).to.be.true;
+        expect(spyAxios.calledWithExactly('/api?q=&filters[owner]=orgs:1000')).to.be.true;
 
         setTimeout(() => {
           expect(spyUpdateSearchKeywords.callCount).to.equal(1);
-
           expect(spyUpdateSearchResults.callCount).to.equal(1);
           expect(spyUpdateFacets.callCount).to.equal(1);
           expect(spyUpdatePage.callCount).to.equal(1);
@@ -226,6 +240,7 @@ describe('Hits', () => {
       let spyUpdateSearchResults;
       let spyUpdateFacets;
       let spyUpdatePage;
+      let createAPIQuery;
 
       before(() => {
         mock
@@ -238,9 +253,21 @@ describe('Hits', () => {
         spyUpdateFacets = sinon.spy(Actions, 'updateFacets');
         spyUpdatePage = sinon.spy(Actions, 'updatePage');
 
-        component = mount(<Hits query="fire" facets={facets.single} hits={2} />, {
-          context: { router: [] },
+        createAPIQuery = basicQuery({
+          searchKeywords: 'fire',
+          sortBy: '',
+          field: '',
+          selectedFacets: facets.single,
         });
+        component = mount(
+          <Hits
+            searchKeywords="fire"
+            selectedFacets={facets.single}
+            hits={2}
+            createAPIQuery={createAPIQuery}
+          />, {
+            context: { router: [] },
+          });
       });
 
       after(() => {
@@ -256,7 +283,7 @@ describe('Hits', () => {
         component.find('.remove-keyword').simulate('click');
 
         expect(spyAxios.calledOnce).to.be.true;
-        expect(spyAxios.calledWith('/api?q= owner:"orgs:1000"')).to.be.true;
+        expect(spyAxios.calledWith('/api?q=&filters[owner]=orgs:1000')).to.be.true;
 
         setTimeout(() => {
           expect(spyUpdateSearchKeywords.callCount).to.equal(1);
@@ -277,6 +304,7 @@ describe('Hits', () => {
       let spyUpdateSearchResults;
       let spyUpdateFacets;
       let spyUpdatePage;
+      let createAPIQuery;
 
       before(() => {
         mock
@@ -289,9 +317,21 @@ describe('Hits', () => {
         spyUpdateFacets = sinon.spy(Actions, 'updateFacets');
         spyUpdatePage = sinon.spy(Actions, 'updatePage');
 
-        component = mount(<Hits query="fire" facets={facets.single} hits={2} />, {
-          context: { router: [] },
+        createAPIQuery = basicQuery({
+          searchKeywords: 'fire',
+          sortBy: '',
+          field: '',
+          selectedFacets: facets.single,
         });
+        component = mount(
+          <Hits
+            searchKeywords="fire"
+            selectedFacets={facets.single}
+            hits={2}
+            createAPIQuery={createAPIQuery}
+          />, {
+            context: { router: [] },
+          });
       });
 
       after(() => {
@@ -304,16 +344,17 @@ describe('Hits', () => {
       });
 
       it('should output the search keyword and the selected facet', () => {
-        expect(component.find('p').text()).to.equal('2 results found with keywords fireremove' +
-          ' keyword filter fire with owner Stephen A. Schwarzman Buildingremove filter Stephen' +
-          ' A. Schwarzman Building.');
+        expect(component.find('p').text()).to.equal('2results found with keywords firetimes ' +
+        'iconremove keyword filter fire with Owner Stephen A. Schwarzman Buildingtimes iconremove' +
+        ' filter Stephen A. Schwarzman Building');
       });
 
       it('should be clicked and Actions to remove the facet and update called', () => {
         component.find('.remove-facet').simulate('click');
 
         expect(spyAxios.calledOnce).to.be.true;
-        expect(spyAxios.calledWith('/api?q=fire')).to.be.true;
+        // Should be updated:
+        expect(spyAxios.calledWith('/api?q=fire&filters[owner]=orgs:1000')).to.be.true;
 
         setTimeout(() => {
           expect(spyRemoveFacet.callCount).to.equal(1);
@@ -344,7 +385,7 @@ describe('Hits', () => {
         spyUpdateFacets = sinon.spy(Actions, 'updateFacets');
         spyUpdatePage = sinon.spy(Actions, 'updatePage');
 
-        component = mount(<Hits query="fire" facets={facets.single} hits={2} />, {
+        component = mount(<Hits searchKeywords="fire" selectedFacets={facets.single} hits={2} />, {
           context: { router: [] },
         });
       });
@@ -359,9 +400,9 @@ describe('Hits', () => {
       });
 
       it('should output the search keyword and the selected facet', () => {
-        expect(component.find('p').text()).to.equal('2 results found with keywords fireremove' +
-          ' keyword filter fire with owner Stephen A. Schwarzman Buildingremove filter Stephen' +
-          ' A. Schwarzman Building.');
+        expect(component.find('p').text()).to.equal('2results found with keywords firetimes ' +
+        ' iconremove keyword filter fire with Owner Stephen A. Schwarzman Buildingtimes icon' +
+        'remove filter Stephen A. Schwarzman Building');
       });
 
       it('should be clicked and Actions to remove the facet and update called', () => {

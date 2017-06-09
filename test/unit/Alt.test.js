@@ -30,26 +30,26 @@ const bib = {
   // ...
 };
 const updatedFacets = {
-  owner: { id: 'orgs:1000', value: 'Stephen A. Schwarzman Building' },
-  date: { id: '', value: '' },
-  subject: { id: 'Children\'s art El Salvador.', value: 'Children\'s art El Salvador.' },
-  materialType: { id: '', value: '' },
-  issuance: { id: '', value: '' },
-  publisher: { id: '', value: '' },
-  location: { id: '', value: '' },
-  language: { id: '', value: '' },
-  mediaType: { id: '', value: '' },
+  owner: [{ id: 'orgs:1000', value: 'Stephen A. Schwarzman Building' }],
+  date: [{ id: '', value: '' }],
+  subject: [{ id: 'Children\'s art El Salvador.', value: 'Children\'s art El Salvador.' }],
+  materialType: [],
+  issuance: [],
+  publisher: [],
+  location: [],
+  language: [],
+  mediaType: [],
 };
 const selectedFacet = {
-  owner: { id: 'orgs:1000', value: 'Stephen A. Schwarzman Building' },
-  date: { id: '', value: '' },
-  subject: { id: '', value: '' },
-  materialType: { id: '', value: '' },
-  issuance: { id: '', value: '' },
-  publisher: { id: '', value: '' },
-  location: { id: '', value: '' },
-  language: { id: '', value: '' },
-  mediaType: { id: '', value: '' },
+  owner: [{ id: 'orgs:1000', value: 'Stephen A. Schwarzman Building' }],
+  date: [],
+  subject: [],
+  materialType: [],
+  issuance: [],
+  publisher: [],
+  location: [],
+  language: [],
+  mediaType: [],
 };
 
 describe('Alt', () => {
@@ -137,12 +137,12 @@ describe('Alt', () => {
     it('should pass data to removeFacet Action', () => {
       const action = actions.REMOVE_FACET;
 
-      actions.removeFacet('owner');
+      actions.removeFacet('owner', 'SASB');
 
       const dispatcherArgs = getDispatcherArguments(dispatcherSpy, 6);
 
       expect(dispatcherArgs.action).to.equal(action);
-      expect(dispatcherArgs.data).to.eql('owner');
+      expect(dispatcherArgs.data).to.eql({ facetKey: 'owner', valueId: 'SASB' });
     });
 
     it('should pass data to updatePage Action', () => {
@@ -243,14 +243,14 @@ describe('Alt', () => {
     it('should pass data to removeFacet Action', () => {
       const oldSelectedFacets = store.getState().selectedFacets;
       const action = actions.REMOVE_FACET;
-      const data = 'owner';
+      const data = { facetKey: 'owner', valueId: 'SASB' };
 
       // Dispatching new data.
       alt.dispatcher.dispatch({ action, data });
       const newSelectedFacets = store.getState().selectedFacets;
 
-      expect(oldSelectedFacets).to.eql({ owner: { id: '', value: '' } });
-      expect(newSelectedFacets).to.eql({ owner: { id: '', value: '' } });
+      expect(oldSelectedFacets).to.eql({ owner: [] });
+      expect(newSelectedFacets).to.eql({ owner: [] });
     });
 
     it('should pass data to updatePage Action', () => {
