@@ -14,7 +14,6 @@ describe('HoldRequest', () => {
 
     before(() => {
       requireUser = sinon.spy(HoldRequest.prototype, 'requireUser');
-
       component = mount(<HoldRequest />);
     });
 
@@ -34,7 +33,6 @@ describe('HoldRequest', () => {
 
     before(() => {
       requireUser = sinon.spy(HoldRequest.prototype, 'requireUser');
-
       component = mount(<HoldRequest />);
     });
 
@@ -65,7 +63,6 @@ describe('HoldRequest', () => {
         barcodes: ['162402680435300'],
       });
       requireUser = sinon.spy(HoldRequest.prototype, 'requireUser');
-
       component = mount(<HoldRequest />);
     });
 
