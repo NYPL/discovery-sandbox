@@ -24,9 +24,11 @@ To run locally in development mode run
 
 The default environment for APIs is development. If you would like to update the environmenrt, run
 
-    $ APP_ENV=[environment] npm start
+    $ APP_ENV=[environment variable] npm start
 
-and visit `localhost:3001`.
+`environment variable` is the names of different environments, such as `development`.
+
+At last, visit `localhost:3001`.
 
 To run locally in production mode run
 
