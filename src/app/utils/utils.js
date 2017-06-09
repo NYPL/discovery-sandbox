@@ -127,7 +127,7 @@ const getFacetFilterParam = (facets) => {
       if (val.length && _isArray(val)) {
         _forEach(val, (facet) => {
           if (facet.value && facet.value !== '') {
-            strSearch += (key == 'materialType' ? `&filters[${key}_packed]=${facet.id}` : `&filters[${key}]=${facet.id}`);
+            strSearch += (key === 'materialType' ? `&filters[${key}_packed]=${facet.id}` : `&filters[${key}]=${facet.id}`);
           } else if (typeof facet === 'string') {
             strSearch += `&filters[${key}]=${facet}`;
           }
