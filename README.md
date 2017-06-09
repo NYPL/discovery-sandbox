@@ -22,11 +22,9 @@ To run locally in development mode run
 
     $ npm start
 
-    or
+The default environment for APIs is development. If you would like to update the environmenrt, run
 
     $ APP_ENV=[environment] npm start
-
-The App will call different APIs based on the environment variables. Default is development.
 
 and visit `localhost:3001`.
 
