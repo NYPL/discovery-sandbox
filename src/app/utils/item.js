@@ -8,9 +8,11 @@ function LibraryItem() {
   });
 
   /**
-   * getItem(record, 'b18207658-i24609501')
-   * @param (Object) record
-   * @param (String) itemId
+   * getItem(record, itemId)
+   *
+   * @param {Object} record
+   * @param {String} itemId
+   * @return {Object}
    */
   this.getItem = (record, itemId) => {
     let thisItem = {};
@@ -30,7 +32,9 @@ function LibraryItem() {
 
   /**
    * getItems(record)
-   * @param (Object) record
+   *
+   * @param {Object} record
+   * @return {Object}
    */
   this.getItems = (record) => {
     const recordTitle = record.title ? record.title[0] : '';
@@ -115,9 +119,11 @@ function LibraryItem() {
   };
 
   /**
-   * getLocation(record, 'b18207658-i24609501')
-   * @param (Object) record
-   * @param (String) itemId
+   * getLocation(record, itemId)
+   *
+   * @param {Object} record
+   * @param {String} itemId
+   * @return {Object}
    */
   this.getLocation = (record, itemId) => {
     const thisItem = this.getItem(record, itemId);

@@ -33,7 +33,7 @@ class HoldRequest extends React.Component {
    * requireUser()
    * Redirectes the patron to OAuth log in page if he/she hasn't been logged in yet.
    *
-   * @return {boolean}
+   * @return {Boolean}
    */
   requireUser() {
     if (this.state.patron && this.state.patron.id) {
@@ -51,7 +51,7 @@ class HoldRequest extends React.Component {
    * renderLoggedInInstruction(patronName)
    * Renders the HTML elements and contents based on the patron data
    *
-   * @param {string} patronName
+   * @param {String} patronName
    * @return {HTML Element}
    */
   renderLoggedInInstruction(patronName) {
