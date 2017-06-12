@@ -42,11 +42,11 @@ class ItemHoldings extends React.Component {
             let itemLink;
             let itemDisplay = null;
 
-            if (!h.available) {
-              itemLink = <span className="nypl-item-unavailable">{h.accessMessage}</span>;
-            } else if (h.isElectronicResource) {
-              itemLink = <a href={h.url}>View Online</a>;
-            } else {
+            // if (!h.available) {
+            //   itemLink = <span className="nypl-item-unavailable">{h.accessMessage}</span>;
+            // } else if (h.isElectronicResource) {
+            //   itemLink = <a href={h.url}>View Online</a>;
+            // } else {
               // NOTE: This is using `this.props.bibId` but it is wrong. It should be the item ID.
               // Currently, hitting the API with items is not working.
               if (h.requestHold) {
@@ -57,12 +57,13 @@ class ItemHoldings extends React.Component {
                     onClick={(e) => this.getRecord(e, this.props.bibId, 'hold/request')}
                   >Request</Link> :
                   <span className="nypl-item-unavailable">Unavailable</span>;
-              } else {
-                itemLink = h.url && h.url.length && h.availability === 'available' ?
-                  <a href={h.url}>Request</a> :
-                  <span className="nypl-item-unavailable">Unavailable</span>;
               }
-            }
+            //   } else {
+            //     itemLink = h.url && h.url.length && h.availability === 'available' ?
+            //       <a href={h.url}>Request</a> :
+            //       <span className="nypl-item-unavailable">Unavailable</span>;
+            //   }
+            // }
 
             if (h.callNumber) {
               itemDisplay = <span dangerouslySetInnerHTML={this.createMarkup(h.callNumber)}></span>;
