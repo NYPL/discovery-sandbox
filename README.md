@@ -20,9 +20,15 @@ To install packages run
 
 To run locally in development mode run
 
-    $ APP_ENV=development npm start
+    $ npm run dev-start
 
-and visit `localhost:3001`.
+If you would like to run in different the environments, run
+
+    $ APP_ENV=[environment variable] npm start
+
+`environment variable` is the name of the particular environment, such as `qa`.
+
+At last, visit `localhost:3001`.
 
 To run locally in production mode run
 
