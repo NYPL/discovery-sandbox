@@ -1,4 +1,5 @@
 import React from 'react';
+// import Store from '../../stores/Store.js';
 import { Link } from 'react-router';
 import {
   isArray as _isArray,
@@ -7,16 +8,21 @@ import {
 import Breadcrumbs from '../Breadcrumbs/Breadcrumbs.jsx';
 import LibraryItem from '../../utils/item.js';
 
-const HoldConfirmation = (
+const HoldConfirmation = ({
   item,
-  searchKeywords
-) => {
-  const title = (item && _isArray(item.title) && item.title.lenghth > 0) ?
+  searchKeywords,
+  params,
+}) => {
+  const title = (item && _isArray(item.title) && item.title.length > 0) ?
     item.title[0] : '';
   const id = (item && item['@id'] && typeof item['@id'] === 'string') ?
     item['@id'].substring(4) : '';
-  const selectedItem = LibraryItem.getItem(item, this.props.params.id);
-  const location = LibraryItem.getLocation(item, this.props.params.id);
+  const itemId = (params && params.id) ? params.id : '';
+  const selectedItem = LibraryItem.getItem(item, itemId);
+  const location = LibraryItem.getLocation(item, itemId);
+  const shelfMarkInfo =
+    (selectedItem && _isArray(selectedItem.shelfMark) && selectedItem.shelfMark.length > 0) ?
+      <li>Call number: {selectedItem.shelfMark[0]}</li> : null;
 
   return (
     <div id="mainContent">
@@ -41,11 +47,7 @@ const HoldConfirmation = (
             <h2>Item request details</h2>
             <ul className="generic-list">
               <li>Item: <Link to={`/item/${id}`}>{title}</Link></li>
-              {selectedItem.shelfMark &&
-                <li>
-                  Call number: {selectedItem.shelfMark[0]}
-                </li>
-              }
+              {shelfMarkInfo}
               { /* <li>Ready for use by <strong>approximately {dateDisplay}, 9:00am</strong> at the location below</li> */ }
               <li><strong>You will receive an email notification</strong> when the item is ready for use at the location below</li>
               { /* <li>Book will be held until {dateDisplayEnd}, 5:00pm</li> */ }
@@ -79,6 +81,12 @@ HoldConfirmation.propTypes = {
   location: React.PropTypes.object,
   searchKeywords: React.PropTypes.string,
   params: React.PropTypes.object,
+};
+
+HoldConfirmation.defaultProps = {
+  item: {},
+  searchKeywords: '',
+  params: {},
 };
 
 export default HoldConfirmation;
