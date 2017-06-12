@@ -48,11 +48,12 @@ function LibraryItem() {
         let status = item.status && item.status[0].prefLabel ? item.status[0].prefLabel : '';
         let availability = status.replace(/\W/g, '').toLowerCase();
         let accessMessage = item.accessMessage && item.accessMessage.length ? item.accessMessage[0].prefLabel.toLowerCase() : '';
-        const callNumber = item.shelfMark ? item.shelfMark[0] : '';
-        const location = this.getLocationLabel(item);
+        const callNumber = item.shelfMark && item.shelfMark.length ? item.shelfMark[0] : '';
+        const locationDetails = this.getLocationDetails(item);
         let url = null;
         let actionLabel = null;
         let actionLabelHelper = null;
+        let requestHold = false;
         const isElectronicResource = this.isElectronicResource(item);
 
         if (isElectronicResource && item.electronicLocator[0].url) {
@@ -61,8 +62,12 @@ function LibraryItem() {
           url = item.electronicLocator[0].url;
           actionLabel = 'View online';
           actionLabelHelper = `resource for ${recordTitle}`;
+        } else if (accessMessage === 'adv request' && !item.holdingLocation) {
+          requestHold = true;
+          actionLabel = accessMessage;
+          actionLabelHelper = 'request hold on ${recordTitle}';
         } else if (availability === 'available') {
-          url = this.getLocationHoldUrl(location);
+          url = this.getLocationHoldUrl(locationDetails);
           actionLabel = 'Request for in-library use';
           actionLabelHelper = `for ${recordTitle} for use in library`;
         }
@@ -74,11 +79,12 @@ function LibraryItem() {
           available: (availability === 'available'),
           accessMessage,
           isElectronicResource,
-          location,
+          location: locationDetails.prefLabel,
           callNumber,
           url,
           actionLabel,
           actionLabelHelper,
+          requestHold,
         };
       });
 
@@ -95,19 +101,25 @@ function LibraryItem() {
   };
 
   this.getLocationHoldUrl = (location) => {
+    const holdingLocationId = location['@id'].substring(4);
     let url = '';
+    let shortLocation = 'schwarzman';
 
-    switch (location) {
-      case 'Stephen A. Schwarzman Building - Rose Main Reading Room 315':
+    if (holdingLocationId in LocationCodes) {
+      shortLocation = LocationCodes[holdingLocationId].location;
+    }
+
+    switch (shortLocation) {
+      case 'schwarzman':
         url = 'http://www.questionpoint.org/crs/servlet/org.oclc.admin.BuildForm?&institution=13777&type=1&language=1';
         break;
-      case 'Library for the Performing Arts':
+      case 'lpa':
         url = 'http://www.questionpoint.org/crs/servlet/org.oclc.admin.BuildForm?&institution=13252&type=1&language=1';
         break;
-      case 'Schomburg Center':
+      case 'schomburg':
         url = 'http://www.questionpoint.org/crs/servlet/org.oclc.admin.BuildForm?&institution=13810&type=1&language=1';
         break;
-      case 'Science, Industry and Business Library':
+      case 'sibl':
         url = 'http://www.questionpoint.org/crs/servlet/org.oclc.admin.BuildForm?&institution=13809&type=1&language=1';
         break;
       default:
@@ -164,14 +176,13 @@ function LibraryItem() {
     return location;
   };
 
-  this.getLocationLabel = (item) => {
+  this.getLocationDetails = (item) => {
     const defaultLocation = this.getDefaultLocation();
     let location = this.getDefaultLocation();
 
     // this is a physical resource
-    if (item.location && item.location.length) {
-      location = item.location[0][0];
-
+    if (item.holdingLocation && item.holdingLocation.length) {
+      location = item.holdingLocation[0];
     // this is an electronic resource
     } else if (item.electronicLocator && item.electronicLocator.length) {
       location = item.electronicLocator[0];
@@ -181,9 +192,9 @@ function LibraryItem() {
     }
 
     if (this.isOffsite(location)) {
-      return `${defaultLocation.prefLabel} (requested from offsite storage)`;
+      location.prefLabel = `${defaultLocation.prefLabel} (requested from offsite storage)`;
     }
-    return location.prefLabel;
+    return location;
   };
 
   this.isElectronicResource = (item) => item.electronicLocator && item.electronicLocator.length;
