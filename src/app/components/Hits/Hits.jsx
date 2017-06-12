@@ -138,7 +138,7 @@ class Hits extends React.Component {
 
     if (error.code === 'ENOTFOUND' || error.status > 400) {
       return (
-        <p>Error fetching results. Please try again.</p>
+        <p>There was an error gathering results. Please try again.</p>
       );
     }
 
