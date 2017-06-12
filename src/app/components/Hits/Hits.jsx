@@ -116,11 +116,14 @@ class Hits extends React.Component {
     const {
       selectedFacets,
       searchKeywords,
+      error,
     } = this.props;
 
-    if (selectedFacets.length || searchKeywords.length) {
-      return (<ClearHits />)
+    if (selectedFacets.length || searchKeywords.length && _isEmpty(error)) {
+      return (<ClearHits />);
     }
+
+    return null;
   }
 
   displayResultsCount() {
@@ -128,9 +131,16 @@ class Hits extends React.Component {
       selectedFacets,
       hits,
       searchKeywords,
+      error,
     } = this.props;
     const activeFacets = {};
     const hitsF = hits ? hits.toLocaleString() : '';
+
+    if (error.code === 'ENOTFOUND' || error.status > 400) {
+      return (
+        <p>Error fetching results. Please try again.</p>
+      );
+    }
 
     _mapObject(selectedFacets, (val, key) => {
       if (key === 'dateAfter' || key === 'dateBefore') {
@@ -168,6 +178,7 @@ class Hits extends React.Component {
   render() {
     const activeResultsCount = this.displayResultsCount();
     const clearHits = this.displayClear();
+
     return (
       <div
         id="results-description"
@@ -189,6 +200,7 @@ Hits.propTypes = {
   spinning: React.PropTypes.bool,
   selectedFacets: React.PropTypes.object,
   createAPIQuery: React.PropTypes.func,
+  error: React.PropTypes.object,
 };
 
 Hits.defaultProps = {
