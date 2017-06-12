@@ -1,5 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router';
+import {
+  isArray as _isArray,
+} from 'underscore';
 
 import Breadcrumbs from '../Breadcrumbs/Breadcrumbs.jsx';
 import LibraryItem from '../../utils/item.js';
@@ -8,8 +11,10 @@ const HoldConfirmation = (
   item,
   searchKeywords
 ) => {
-  const title = item.title[0];
-  const id = item['@id'].substring(4);
+  const title = (item && _isArray(item.title) && item.title.lenghth > 0) ?
+    item.title[0] : '';
+  const id = (item && item['@id'] && typeof item['@id'] === 'string') ?
+    item['@id'].substring(4) : '';
   const selectedItem = LibraryItem.getItem(item, this.props.params.id);
   const location = LibraryItem.getLocation(item, this.props.params.id);
 

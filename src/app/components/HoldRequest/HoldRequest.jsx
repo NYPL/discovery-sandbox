@@ -73,6 +73,13 @@ class HoldRequest extends React.Component {
       ) ? this.state.patron.names[0] : '';
     const itemId = (this.props.params && this.props.params.id) ? this.props.params.id : '';
     const selectedItem = (record && itemId) ? LibraryItem.getItem(record, itemId) : null;
+    const shelfMarkInfo =
+      (selectedItem && _isArray(selectedItem.shelfMark) && selectedItem.shelfMark.length > 0) ?
+      (
+        <span className="col">
+          <small>Call number:</small><br />{selectedItem.shelfMark[0]}
+        </span>
+      ) : null;
     const location = (record && itemId) ? LibraryItem.getLocation(record, itemId) : null;
     const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July',
       'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
@@ -114,11 +121,7 @@ class HoldRequest extends React.Component {
                     </span>
                   }
                 </span>
-                {selectedItem.shelfMark &&
-                  <span className="col">
-                    <small>Call number:</small><br />{selectedItem.shelfMark[0]}
-                  </span>
-                }
+                {shelfMarkInfo}
                 {/* <span className="col"><small>Ready by approximately:</small><br />{dateDisplay}, 9am.</span> */}
               </div>
             </fieldset>
