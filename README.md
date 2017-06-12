@@ -26,7 +26,7 @@ If you would like to run in different the environments, run
 
     $ APP_ENV=[environment variable] npm start
 
-`environment variable` is the names of different environments, such as `qa`.
+`environment variable` is the name of the particular environment, such as `qa`.
 
 At last, visit `localhost:3001`.
 
