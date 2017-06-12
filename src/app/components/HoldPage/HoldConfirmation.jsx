@@ -2,8 +2,6 @@ import React from 'react';
 import { Link } from 'react-router';
 
 import Breadcrumbs from '../Breadcrumbs/Breadcrumbs.jsx';
-import Tabs from '../Tabs/Tabs.jsx';
-import TabPanel from '../Tabs/TabPanel.jsx';
 import LibraryItem from '../../utils/item.js';
 
 class HoldConfirmation extends React.Component {
@@ -16,16 +14,6 @@ class HoldConfirmation extends React.Component {
     const id = item['@id'].substring(4);
     const selectedItem = LibraryItem.getItem(item, this.props.params.id);
     const location = LibraryItem.getLocation(item, this.props.params.id);
-
-    const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July',
-      'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
-    const date = new Date();
-    date.setDate(date.getDate() + 7);
-    const day = date.getDate();
-    const monthIndex = date.getMonth();
-    const dateDisplay = `${monthNames[monthIndex]} ${day}`;
-    date.setDate(date.getDate() + 5);
-    const dateDisplayEnd = `${monthNames[date.getMonth()]} ${date.getDate()}`;
 
     return (
       <div id="mainContent">
