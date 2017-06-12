@@ -58,6 +58,7 @@ function requireUser(req, res) {
     !req.tokenResponse.decodedPatron.sub) {
     // redirect to login
     const fullUrl = encodeURIComponent(`${req.protocol}://${req.get('host')}${req.originalUrl}`);
+
     res.redirect(`${appConfig.loginUrl}?redirect_uri=${fullUrl}`);
     return false;
   }
@@ -66,13 +67,13 @@ function requireUser(req, res) {
 
 function newHoldRequest(req, res, next) {
   const loggedIn = requireUser(req, res);
+
   if (!loggedIn) return false;
 
   // Retrieve item
   return retrieveItem(
     req.params.id,
     (data) => {
-      // console.log('Item data', data)
       res.locals.data.Store = {
         item: data,
         searchKeywords: '',
@@ -80,7 +81,6 @@ function newHoldRequest(req, res, next) {
       next();
     },
     (error) => {
-      console.log(error);
       res.locals.data.Store = {
         item: {},
         searchKeywords: '',

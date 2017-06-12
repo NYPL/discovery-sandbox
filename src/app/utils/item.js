@@ -8,25 +8,33 @@ function LibraryItem() {
   });
 
   /**
-   * getItem(record, 'b18207658-i24609501')
-   * @param (Object) record
-   * @param (String) itemId
+   * getItem(record, itemId)
+   *
+   * @param {Object} record
+   * @param {String} itemId
+   * @return {Object}
    */
   this.getItem = (record, itemId) => {
-    // look for item id in record's items
-    const items = record.items;
     let thisItem = {};
-    items.forEach((i) => {
-      if (i['@id'].substring(4) === itemId) {
-        thisItem = i;
-      }
-    });
+    // look for item id in record's items
+    const items = (record && record.items) ? record.items : null;
+
+    if (items && itemId) {
+      items.forEach((i) => {
+        if (i['@id'] && i['@id'].substring(4) === itemId) {
+          thisItem = i;
+        }
+      });
+    }
+
     return thisItem;
   };
 
   /**
    * getItems(record)
-   * @param (Object) record
+   *
+   * @param {Object} record
+   * @return {Object}
    */
   this.getItems = (record) => {
     const recordTitle = record.title ? record.title[0] : '';
@@ -123,9 +131,11 @@ function LibraryItem() {
   };
 
   /**
-   * getLocation(record, 'b18207658-i24609501')
-   * @param (Object) record
-   * @param (String) itemId
+   * getLocation(record, itemId)
+   *
+   * @param {Object} record
+   * @param {String} itemId
+   * @return {Object}
    */
   this.getLocation = (record, itemId) => {
     const thisItem = this.getItem(record, itemId);
@@ -138,12 +148,12 @@ function LibraryItem() {
     if (thisItem && thisItem.location && thisItem.location.length > 0) {
       location = thisItem.location[0][0];
     }
-    const locationCode = location['@id'].substring(4);
-    const prefLabel = location.prefLabel;
-    const isOffsite = this.isOffsite(location);
+    const locationCode = (location['@id'] && typeof location['@id'] === 'string') ? location['@id'].substring(4) : '';
+    const prefLabel = (location) ? location.prefLabel : '';
+    const isOffsite = (location) ? this.isOffsite(location) : false;
 
     // retrieve location data
-    if (locationCode in LocationCodes) {
+    if (locationCode && locationCode in LocationCodes) {
       location = Locations[LocationCodes[locationCode].location];
     } else {
       location = Locations[LocationCodes[defaultLocation['@id'].substring(4)].location];
@@ -151,8 +161,8 @@ function LibraryItem() {
 
     // retrieve delivery location
     let deliveryLocationCode = defaultLocation['@id'].substring(4);
-    if (locationCode in LocationCodes) {
-      deliveryLocationCode = LocationCodes[locationCode].delivery_location;
+    if (locationCode && locationCode in LocationCodes) {
+      deliveryLocationCode = LocationCodes[locationCode].delivery_location || '';
     }
 
     location.offsite = isOffsite;
