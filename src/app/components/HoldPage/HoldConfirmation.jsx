@@ -1,5 +1,6 @@
 import React from 'react';
-// import Store from '../../stores/Store.js';
+import PatronStore from '../../stores/PatronStore.js';
+import config from '../../../../appConfig.js';
 import { Link } from 'react-router';
 import {
   isArray as _isArray,
@@ -9,8 +10,34 @@ import Breadcrumbs from '../Breadcrumbs/Breadcrumbs.jsx';
 import LibraryItem from '../../utils/item.js';
 
 class HoldConfirmation extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      patron: PatronStore.getState(),
+    };
+  }
+
   componentDidMount() {
-    // this.requireUser();
+    this.requireUser();
+  }
+
+  /**
+   * requireUser()
+   * Redirectes the patron to OAuth log in page if he/she hasn't been logged in yet.
+   *
+   * @return {Boolean}
+   */
+  requireUser() {
+    if (this.state.patron && this.state.patron.id) {
+      return true;
+    }
+
+    const fullUrl = encodeURIComponent(window.location.href);
+
+    window.location.replace(`${config.loginUrl}?redirect_uri=${fullUrl}`);
+
+    return false;
   }
 
   render() {
@@ -58,7 +85,7 @@ class HoldConfirmation extends React.Component {
             <div className="actions third">
               <h2>Available actions</h2>
               <ul className="generic-list">
-                <li>Visit your <a href="http://myaccount-beta.nypl.org/my-account/holds">patron account page</a> to view the status of this item hold</li>
+                <li>Visit your patron account page to view the status of this item hold</li>
                 { /* <li>You may <a href="#cancel">cancel</a> this item hold at any time</li> */ }
               </ul>
             </div>
