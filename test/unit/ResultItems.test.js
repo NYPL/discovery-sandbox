@@ -17,6 +17,7 @@ const items = {
       url: '/hold/request/b19707253-i29470386',
       actionLabel: 'Request for in-library use',
       actionLabelHelper: 'for War on critics. for use in library',
+      accessMessage: 'Use in Library',
     },
   ],
   six: [
@@ -30,6 +31,7 @@ const items = {
       url: '/hold/request/b18207658-i24609507',
       actionLabel: 'Request for in-library use',
       actionLabelHelper: 'for War Department technical manual. for use in library',
+      accessMessage: '',
     },
     {
       id: 'b18207658-i24609507',
@@ -41,6 +43,7 @@ const items = {
       url: '/hold/request/b18207658-i24609507',
       actionLabel: 'Request for in-library use',
       actionLabelHelper: 'for War Department technical manual. for use in library',
+      accessMessage: 'Use in Library',
     },
     {
       id: 'b18207658-i24609507',
@@ -52,6 +55,7 @@ const items = {
       url: '/hold/request/b18207658-i24609507',
       actionLabel: 'Request for in-library use',
       actionLabelHelper: 'for War Department technical manual. for use in library',
+      accessMessage: 'Use in Library',
     },
     {
       id: 'b18207658-i24609507',
@@ -63,6 +67,7 @@ const items = {
       url: '/hold/request/b18207658-i24609507',
       actionLabel: 'Request for in-library use',
       actionLabelHelper: 'for War Department technical manual. for use in library',
+      accessMessage: 'Use in Library',
     },
     {
       id: 'b18207658-i24609507',
@@ -74,6 +79,7 @@ const items = {
       url: '/hold/request/b18207658-i24609507',
       actionLabel: 'Request for in-library use',
       actionLabelHelper: 'for War Department technical manual. for use in library',
+      accessMessage: 'Use in Library',
     },
     {
       id: 'b18207658-i24609507',
@@ -85,6 +91,7 @@ const items = {
       url: '/hold/request/b18207658-i24609507',
       actionLabel: 'Request for in-library use',
       actionLabelHelper: 'for War Department technical manual. for use in library',
+      accessMessage: 'Use in Library',
     },
   ],
 };
@@ -164,8 +171,8 @@ describe('ResultItems', () => {
       moreLink = component.find('.see-more-link')
     });
 
-    it('should seven list items, six bib items and one "more" list item', () => {
-      expect(component.find('.sub-item')).to.have.length(7);
+    it('should list six items', () => {
+      expect(component.find('.sub-item')).to.have.length(6);
     });
 
     it('should have a descriptive aria label', () => {

@@ -15,29 +15,33 @@ describe('Breadcrumbs', () => {
       component = shallow(<Breadcrumbs />);
     });
 
+    it('should contain an accessible and hidden message', () => {
+      expect(component.find('.nypl-screenreader-only')).to.exist;
+    });
+
     it('should be wrapped in a .breadcrumbs class', () => {
-      expect(component.find('.breadcrumbs')).to.exist;
-      expect(component.find('div').first().hasClass('breadcrumbs')).to.equal(true);
+      expect(component.find('.nypl-breadcrumbs')).to.exist;
+      expect(component.find('ol').hasClass('nypl-breadcrumbs')).to.equal(true);
     });
 
     it('should contain two Link elements', () => {
-      expect(component.find('Link')).to.have.length(2);
+      expect(component.find('Link')).to.have.length(0);
     });
 
     it('should have the first link go to the nypl.org homepage', () => {
-      const firstLink = component.find('Link').first();
-      expect(firstLink.prop('to')).to.equal('https://nypl.org');
+      const firstLink = component.find('a').first();
+      expect(firstLink.prop('href')).to.equal('https://nypl.org');
       expect(firstLink.children().text()).to.equal('Home');
     });
 
     it('should have the second link go to the nypl.org/research page', () => {
-      const secondLink = component.find('Link').last();
-      expect(secondLink.prop('to')).to.equal('https://nypl.org/research');
+      const secondLink = component.find('a').last();
+      expect(secondLink.prop('href')).to.equal('https://nypl.org/research');
       expect(secondLink.children().text()).to.equal('Research');
     });
 
     it('should display the current page as "Research Catalog"', () => {
-      expect(component.find('.currentPage').text()).to.equal('Research Catalog');
+      expect(component.find('li').at(2).text()).to.equal('Research Catalog');
     });
   });
 
@@ -51,17 +55,17 @@ describe('Breadcrumbs', () => {
       });
 
       it('should contain three Link elements', () => {
-        expect(component.find('Link')).to.have.length(3);
+        expect(component.find('Link')).to.have.length(1);
       });
 
       it('should have a link to the Discovery homepage', () => {
-        const thirdLink = component.find('Link').at(2);
+        const thirdLink = component.find('Link');
         expect(thirdLink.prop('to')).to.equal('/');
         expect(thirdLink.children().text()).to.equal('Research Catalog');
       });
 
       it('should display the current page as "Search Results"', () => {
-        expect(component.find('.currentPage').text()).to.equal('Search Results');
+        expect(component.find('li').at(3).text()).to.equal('Search Results');
       });
     });
 
@@ -74,7 +78,7 @@ describe('Breadcrumbs', () => {
       });
 
       it('should display the current page with the search keyword', () => {
-        expect(component.find('.currentPage').text()).to.equal('Search Results for "locofocos"');
+        expect(component.find('li').at(3).text()).to.equal('Search Results for "locofocos"');
       });
     });
   });
@@ -94,11 +98,11 @@ describe('Breadcrumbs', () => {
       });
 
       it('should contain three Link elements', () => {
-        expect(component.find('Link')).to.have.length(3);
+        expect(component.find('Link')).to.have.length(1);
       });
 
       it('should display the current page with the item title', () => {
-        expect(component.find('.currentPage').text()).to.equal(title);
+        expect(component.find('li').at(3).text()).to.equal(title);
       });
     });
 
@@ -119,44 +123,22 @@ describe('Breadcrumbs', () => {
       });
 
       it('should contain four Link elements', () => {
-        expect(component.find('Link')).to.have.length(4);
+        expect(component.find('Link')).to.have.length(2);
       });
 
       it('should link back to the search results page as the fourth link', () => {
-        const searchLink = component.find('Link').at(3);
+        const searchLink = component.find('Link').at(1);
         expect(searchLink.prop('to')).to.equal('/search?q=locofocos');
         expect(searchLink.children().text()).to.equal('Items');
       });
 
       it('should display the current page with the item title', () => {
-        expect(component.find('.currentPage').text()).to.equal(title);
-      });
-    });
-
-    // Home > Research > Research Catalog > Items > [title]
-    describe('With a long item title', () => {
-      const title = 'Prospect before us, or Locofoco impositions exposed. ' +
-        'To the people of the United States.';
-      let component;
-
-      before(() => {
-        component = shallow(
-          <Breadcrumbs
-            type="item"
-            query="locofocos"
-            title={title}
-          />
-        );
-      });
-
-      it('should shorten the item title to 50 characters', () => {
-        const shortenTitle = `${title.substring(0, 50)}...`;
-
-        expect(component.find('.currentPage').text()).to.equal(shortenTitle);
+        expect(component.find('li').at(4).text()).to.equal(title);
       });
     });
   });
 
+  // Do not have this implemented yet.
   describe('On the Hold page', () => {
     // Home > Research > Research Catalog > [title] > Place a hold
     describe('No search keyword:' +
