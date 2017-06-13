@@ -68,7 +68,6 @@ class BibPage extends React.Component {
   }
 
   render() {
-    // console.log(this.props);
     const createAPIQuery = basicQuery(this.props);
     const record = this.props.bib ? this.props.bib : this.props.item;
     const bibId = record['@id'].substring(4);
