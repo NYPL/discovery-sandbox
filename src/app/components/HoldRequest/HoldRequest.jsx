@@ -31,7 +31,7 @@ class HoldRequest extends React.Component {
 
   /**
    * requireUser()
-   * Redirectes the patron to OAuth log in page if he/she hasn't been logged in yet.
+   * Redirects the patron to OAuth log in page if he/she hasn't been logged in yet.
    *
    * @return {Boolean}
    */

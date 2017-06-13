@@ -24,7 +24,7 @@ class HoldConfirmation extends React.Component {
 
   /**
    * requireUser()
-   * Redirectes the patron to OAuth log in page if he/she hasn't been logged in yet.
+   * Redirects the patron to OAuth log in page if he/she hasn't been logged in yet.
    *
    * @return {Boolean}
    */
@@ -43,7 +43,7 @@ class HoldConfirmation extends React.Component {
   render() {
     const item = this.props.item;
     const title = (item && _isArray(item.title) && item.title.length > 0) ?
-    item.title[0] : '';
+      item.title[0] : '';
     const id = (item && item['@id'] && typeof item['@id'] === 'string') ?
       item['@id'].substring(4) : '';
     const itemId = (this.props.params && this.props.params.id) ? this.props.params.id : '';
