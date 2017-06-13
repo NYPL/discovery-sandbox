@@ -23,6 +23,8 @@ class Facet extends React.Component {
 
     this.routeHandler = this.routeHandler.bind(this);
     this.onFacetUpdate = this.onFacetUpdate.bind(this);
+    // this.showMoreFacets = this.showMoreFacets.bind(this);
+    // this.showFacet = this.showFacet.bind(this);
   }
 
   componentDidMount() {
