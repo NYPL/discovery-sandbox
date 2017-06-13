@@ -3,6 +3,7 @@ import { Link } from 'react-router';
 import {
   findWhere as _findWhere,
   findIndex as _findIndex,
+  isArray as _isArray,
   mapObject as _mapObject,
   each as _each,
 } from 'underscore';
@@ -73,7 +74,7 @@ class ItemPage extends React.Component {
     const detailFields = [];
     data.forEach((f) => {
       // skip absent fields
-      if (!record[f.field] || !record[f.field].length) return false;
+      if (!record[f.field] || !record[f.field].length || !_isArray(record[f.field])) return false;
       const fieldValue = record[f.field][0];
 
       // external links
