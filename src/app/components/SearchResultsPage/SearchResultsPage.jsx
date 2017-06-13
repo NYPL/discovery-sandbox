@@ -34,8 +34,6 @@ const SearchResultsPage = (props) => {
   );
   const createAPIQuery = basicQuery(props);
 
-  console.log(facetList);
-
   return (
     <DocumentTitle title={`${searchKeywords ? searchKeywords + ' | ' : ''} Search Results | Research Catalog | NYPL`}>
       <main className="main-page">
