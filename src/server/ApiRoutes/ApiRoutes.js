@@ -146,7 +146,7 @@ function ServerSearch(req, res, next) {
       next();
     },
     (error) => {
-      console.log(error);
+      console.log('search error', error);
       res.locals.data.Store = {
         searchResults: {},
         selectedFacets: {},
@@ -155,6 +155,7 @@ function ServerSearch(req, res, next) {
         page: '1',
         sortBy: 'relevance',
         field: 'all',
+        error,
       };
 
       next();
