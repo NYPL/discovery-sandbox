@@ -30,15 +30,14 @@ class ItemHoldings extends React.Component {
   }
 
   getRow(holdings) {
-    const holdingCount = holdings.length;
-    const maxDisplay = 7;
-    const moreCount = holdingCount - maxDisplay;
-    const collapsed = !this.state.expanded;
+    const shortenItems = !this.props.shortenItems;
+    const itemsToDisplay = shortenItems ? holdings.slice(0, 20) : holdings;
+    const itemLength = itemsToDisplay.length;
 
     return (
       <ul>
         {
-          holdings.map((h, i) => {
+          itemsToDisplay.map((h, i) => {
             let itemLink;
             let itemDisplay = null;
 
@@ -72,10 +71,7 @@ class ItemHoldings extends React.Component {
             }
 
             return (
-              <li
-                key={i}
-                className={`${h.availability} ${i >= maxDisplay && collapsed ? 'collapsed' : ''}`}
-              >
+              <li key={i} className={h.availability}>
                 <span>
                   {itemLink}
                 </span>
@@ -83,6 +79,11 @@ class ItemHoldings extends React.Component {
               </li>
             );
           })
+        }
+
+        {
+          shortenItems && itemLength >= 20 &&
+            (<li><Link to={`/bib/${this.props.bibId}/all`}>View All Items</Link></li>)
         }
       </ul>
     );
@@ -116,6 +117,11 @@ ItemHoldings.propTypes = {
   holdings: React.PropTypes.array,
   title: React.PropTypes.string,
   bibId: React.PropTypes.string,
+  shortenItems: React.PropTypes.bool,
+};
+
+ItemHoldings.defaultProps = {
+  shortenItems: false,
 };
 
 ItemHoldings.contextTypes = {

@@ -49,7 +49,7 @@ class HoldConfirmation extends React.Component {
             <div className="details two-third">
               <h2>Item request details</h2>
               <ul className="generic-list">
-                <li>Item: <Link to={`/item/${id}`}>{title}</Link></li>
+                <li>Item: <Link to={`/bib/${id}`}>{title}</Link></li>
                 {selectedItem.shelfMark &&
                   <li>
                     Call number: {selectedItem.shelfMark[0]}

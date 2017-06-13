@@ -10,8 +10,8 @@ import DocumentTitle from 'react-document-title';
 
 import Breadcrumbs from '../Breadcrumbs/Breadcrumbs';
 import Search from '../Search/Search';
-import ItemHoldings from './ItemHoldings';
-import ItemDetails from './ItemDetails';
+import ItemHoldings from '../Item/ItemHoldings';
+import BibDetails from './BibDetails';
 import LibraryItem from '../../utils/item';
 import Actions from '../../actions/Actions';
 
@@ -20,7 +20,7 @@ import {
   basicQuery,
 } from '../../utils/utils';
 
-class ItemPage extends React.Component {
+class BibPage extends React.Component {
 
   onClick(e, query) {
     e.preventDefault();
@@ -68,12 +68,12 @@ class ItemPage extends React.Component {
   }
 
   render() {
+    // console.log(this.props);
     const createAPIQuery = basicQuery(this.props);
     const record = this.props.bib ? this.props.bib : this.props.item;
     const bibId = record['@id'].substring(4);
     const title = record.title && record.title.length ? record.title[0] : '';
     const holdings = LibraryItem.getItems(record);
-
     const displayFields = [
       { label: 'Title', field: 'title' },
       { label: 'Title (alternative)', field: 'titleAlt' },
@@ -107,9 +107,13 @@ class ItemPage extends React.Component {
       { label: 'Number available', field: 'numAvailable' },
       { label: 'Number of items', field: 'numItems' },
       { label: 'Shelf Mark', field: 'shelfMark' },
-    ]
+    ];
+    let shortenItems = true;
+    if (this.props.location.pathname.indexOf('all') === -1) {
+      shortenItems = false;
+    }
 
-    let itemDetails = [];
+    let bibDetails = [];
     displayFields.forEach((f) => {
       // skip absent fields
       if (!record[f.field] || !record[f.field].length) return false;
@@ -117,7 +121,7 @@ class ItemPage extends React.Component {
 
       // list of links
       if (fieldValue['@id']) {
-        itemDetails.push({
+        bibDetails.push({
           term: f.label,
           definition: <ul>
             {record[f.field].map(
@@ -132,7 +136,7 @@ class ItemPage extends React.Component {
 
       // list of links
       } else if (f.linkable) {
-        itemDetails.push({
+        bibDetails.push({
           term: f.label,
           definition: <ul>
             {record[f.field].map(
@@ -147,7 +151,7 @@ class ItemPage extends React.Component {
 
       // list of plain text
       } else {
-        itemDetails.push({
+        bibDetails.push({
           term: f.label,
           definition: <ul>{record[f.field].map((value, i) => (<li key={i}>{value}</li>))}</ul> });
       }
@@ -172,7 +176,7 @@ class ItemPage extends React.Component {
             <div className="nypl-full-width-wrapper">
               <Breadcrumbs
                 query={searchURL}
-                type="item"
+                type="bib"
                 title={title}
               />
               <h1>Research Catalog</h1>
@@ -206,11 +210,12 @@ class ItemPage extends React.Component {
                 </div>
 
                 <div className="">
-                  <ItemDetails
-                    data={itemDetails}
+                  <BibDetails
+                    data={bibDetails}
                     title="Item details"
                   />
                   <ItemHoldings
+                    shortenItems={shortenItems}
                     holdings={holdings}
                     bibId={bibId}
                     title={`${record.numItems} item${record.numItems === 1 ? '' : 's'}
@@ -227,7 +232,7 @@ class ItemPage extends React.Component {
   }
 }
 
-ItemPage.propTypes = {
+BibPage.propTypes = {
   item: React.PropTypes.object,
   searchKeywords: React.PropTypes.string,
   location: React.PropTypes.object,
@@ -237,10 +242,10 @@ ItemPage.propTypes = {
   spinning: React.PropTypes.bool,
 };
 
-ItemPage.contextTypes = {
+BibPage.contextTypes = {
   router: function contextType() {
     return React.PropTypes.func.isRequired;
   },
 };
 
-export default ItemPage;
+export default BibPage;
