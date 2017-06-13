@@ -36,6 +36,7 @@ function MainApp(req, res, next) {
     page: '1',
     sortBy: 'relevance',
     field: 'all',
+    error: {},
   };
 
   next();
@@ -141,6 +142,7 @@ function ServerSearch(req, res, next) {
         page: pageQuery,
         sortBy: sort ? `${sort}_${order}` : 'relevance',
         field: fieldQuery,
+        error: {},
       };
 
       next();

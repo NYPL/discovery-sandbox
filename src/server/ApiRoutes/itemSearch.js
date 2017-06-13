@@ -24,6 +24,7 @@ function serverItemSearch(req, res, next) {
       res.locals.data.Store = {
         item: data,
         searchKeywords: '',
+        error: {},
       };
       next();
     },
@@ -78,6 +79,7 @@ function newHoldRequest(req, res, next) {
       res.locals.data.Store = {
         item: data,
         searchKeywords: '',
+        error: {},
       };
       next();
     },
