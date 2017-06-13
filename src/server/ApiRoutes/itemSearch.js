@@ -16,7 +16,7 @@ function retrieveItem(q, cb, errorcb) {
 }
 
 function serverItemSearch(req, res, next) {
-  const q = req.params.id || 'harry potter';
+  const q = req.params.id || '';
 
   retrieveItem(
     q,
