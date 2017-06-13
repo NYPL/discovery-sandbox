@@ -31,7 +31,7 @@ class Hits extends React.Component {
             aria-controls="results-region"
           >
             <svg className="nypl-icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 10 10" aria-hidden="true">
-              <title>times.icon</title>
+              <title>times icon</title>
               <polygon points="2.3,6.8 3.2,7.7 5,5.9 6.8,7.7 7.7,6.8 5.9,5 7.7,3.2 6.8,2.3 5,4.1 3.2,2.3 2.3,3.2 4.1,5 "></polygon>
             </svg>
             <span className="hidden">remove keyword filter&nbsp;{keyword}</span>
@@ -70,7 +70,7 @@ class Hits extends React.Component {
               aria-controls="results-region"
             >
               <svg className="nypl-icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 10 10" aria-hidden="true">
-                <title>times.icon</title>
+                <title>times icon</title>
                 <polygon points="2.3,6.8 3.2,7.7 5,5.9 6.8,7.7 7.7,6.8 5.9,5 7.7,3.2 6.8,2.3 5,4.1 3.2,2.3 2.3,3.2 4.1,5 "></polygon>
               </svg>
               <span className="hidden">remove filter&nbsp;{facet.value}</span>
@@ -117,11 +117,14 @@ class Hits extends React.Component {
     const {
       selectedFacets,
       searchKeywords,
+      error,
     } = this.props;
 
-    if (selectedFacets.length || searchKeywords.length) {
-      return (<ClearHits />)
+    if (selectedFacets.length || searchKeywords.length && _isEmpty(error)) {
+      return (<ClearHits />);
     }
+
+    return null;
   }
 
   displayResultsCount() {
@@ -129,9 +132,16 @@ class Hits extends React.Component {
       selectedFacets,
       hits,
       searchKeywords,
+      error,
     } = this.props;
     const activeFacets = {};
     const hitsF = hits ? hits.toLocaleString() : '';
+
+    if (error.code === 'ENOTFOUND' || error.status > 400) {
+      return (
+        <p>There was an error gathering results. Please try again.</p>
+      );
+    }
 
     _mapObject(selectedFacets, (val, key) => {
       if (key === 'dateAfter' || key === 'dateBefore') {
@@ -169,6 +179,7 @@ class Hits extends React.Component {
   render() {
     const activeResultsCount = this.displayResultsCount();
     const clearHits = this.displayClear();
+
     return (
       <div
         id="results-description"
@@ -190,11 +201,14 @@ Hits.propTypes = {
   spinning: PropTypes.bool,
   selectedFacets: PropTypes.object,
   createAPIQuery: PropTypes.func,
+  error: PropTypes.object,
 };
 
 Hits.defaultProps = {
   hits: 0,
   spinning: false,
+  selectedFacets: [],
+  searchKeywords: '',
 };
 
 Hits.contextTypes = {

@@ -8,12 +8,18 @@ class PatronStore {
     });
 
     this.state = {
-      patronData: {},
+      id: '',
+      names: [],
+      barcodes: [],
     };
   }
 
   updatePatronData(data) {
-    this.setState({ patronData: data });
+    this.setState({
+      id: data.id,
+      names: data.names,
+      barcodes: data.barcodes,
+    });
   }
 }
 
