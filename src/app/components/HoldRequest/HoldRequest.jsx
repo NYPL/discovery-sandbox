@@ -17,9 +17,6 @@ class HoldRequest extends React.Component {
 
     this.state = { patron: PatronStore.getState() };
 
-    console.log(this.props);
-    // get data from both stores
-
     // change all the components :(
     this.onChange = this.onChange.bind(this);
     this.submitRequest = this.submitRequest.bind(this);
