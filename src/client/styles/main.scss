@@ -19,13 +19,14 @@ Import style rules from NYPL React module components
 @import "~@nypl/dgx-header-component/dist/styles/main";
 @import "~@nypl/dgx-react-footer/dist/styles/styles";
 
-@import "components/Home.scss";
-@import "components/HoldPage.scss";
+@import "components/Account.scss";
 @import "components/Advanced.scss";
 @import "components/BibPage.scss";
-@import "components/Tabs.scss";
-@import "components/Account.scss";
+@import "components/Facets.scss";
 @import "components/Feedback.scss";
+@import "components/HoldPage.scss";
+@import "components/Home.scss";
+@import "components/Tabs.scss";
 
 html {
   @include font-settings;
