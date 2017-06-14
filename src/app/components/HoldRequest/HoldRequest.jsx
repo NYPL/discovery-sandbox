@@ -141,7 +141,7 @@ class HoldRequest extends React.Component {
           </div>
           <div className="item-summary">
             <div className="item">
-              <h2>Something wrong with your request</h2>
+              <h2>Something went wrong with your request</h2>
               <Link href={`/bib/${bibId}`}>{title}</Link>
             </div>
           </div>
