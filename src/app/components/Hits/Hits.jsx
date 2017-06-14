@@ -135,8 +135,8 @@ class Hits extends React.Component {
     } = this.props;
     const activeFacets = {};
     const hitsF = hits ? hits.toLocaleString() : '';
-console.log(error);
-    if (error.code === 'ENOTFOUND' || error.status > 400) {
+
+    if (error && error.code === 'ENOTFOUND' || error.status > 400) {
       return (
         <p>There was an error gathering results. Please try again.</p>
       );
