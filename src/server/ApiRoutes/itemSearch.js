@@ -16,7 +16,7 @@ function retrieveItem(q, cb, errorcb) {
 }
 
 function serverItemSearch(req, res, next) {
-  const q = req.params.id || 'harry potter';
+  const q = req.params.id || '';
 
   retrieveItem(
     q,
@@ -24,6 +24,7 @@ function serverItemSearch(req, res, next) {
       res.locals.data.Store = {
         item: data,
         searchKeywords: '',
+        error: {},
       };
       next();
     },
@@ -78,6 +79,7 @@ function newHoldRequest(req, res, next) {
       res.locals.data.Store = {
         item: data,
         searchKeywords: '',
+        error: {},
       };
       next();
     },
