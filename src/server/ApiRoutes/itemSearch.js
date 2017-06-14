@@ -4,6 +4,19 @@ import appConfig from '../../../appConfig.js';
 const appEnvironment = process.env.APP_ENV || 'production';
 const apiBase = appConfig.api[appEnvironment];
 
+function requireUser(req, res) {
+  if (!req.tokenResponse || !req.tokenResponse.isTokenValid ||
+    !req.tokenResponse.accessToken || !req.tokenResponse.decodedPatron ||
+    !req.tokenResponse.decodedPatron.sub) {
+    // redirect to login
+    const fullUrl = encodeURIComponent(`${req.protocol}://${req.get('host')}${req.originalUrl}`);
+
+    res.redirect(`${appConfig.loginUrl}?redirect_uri=${fullUrl}`);
+    return false;
+  }
+  return true;
+}
+
 function retrieveItem(q, cb, errorcb) {
   return axios
     .get(`${apiBase}/discovery/resources/${q}`)
@@ -13,6 +26,34 @@ function retrieveItem(q, cb, errorcb) {
 
       errorcb(error);
     }); /* end axios call */
+}
+
+function serverConfirmRequest(req, res, next) {
+  const q = req.params.id || '';
+  const loggedIn = requireUser(req, res);
+
+  if (!loggedIn) return false;
+
+  return retrieveItem(
+    q,
+    (data) => {
+      res.locals.data.Store = {
+        bib: data,
+        searchKeywords: '',
+        error: {},
+      };
+      next();
+    },
+    (error) => {
+      console.log(error);
+      res.locals.data.Store = {
+        bib: {},
+        searchKeywords: '',
+        error,
+      };
+      next();
+    }
+  );
 }
 
 function serverItemSearch(req, res, next) {
@@ -52,19 +93,6 @@ function ajaxItemSearch(req, res) {
 
 function account(req, res, next) {
   next();
-}
-
-function requireUser(req, res) {
-  if (!req.tokenResponse || !req.tokenResponse.isTokenValid ||
-    !req.tokenResponse.accessToken || !req.tokenResponse.decodedPatron ||
-    !req.tokenResponse.decodedPatron.sub) {
-    // redirect to login
-    const fullUrl = encodeURIComponent(`${req.protocol}://${req.get('host')}${req.originalUrl}`);
-
-    res.redirect(`${appConfig.loginUrl}?redirect_uri=${fullUrl}`);
-    return false;
-  }
-  return true;
 }
 
 function newHoldRequest(req, res, next) {
@@ -196,7 +224,7 @@ function ajaxCreateHoldRequest(req, res) {
     .post(patronHoldsApi, data, {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer 3${accessToken}`,
+        Authorization: `Bearer ${accessToken}`,
       },
     })
     .then(response => {
@@ -223,4 +251,5 @@ export default {
   account,
   ajaxItemSearch,
   ajaxCreateHoldRequest,
+  serverConfirmRequest,
 };

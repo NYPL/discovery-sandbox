@@ -20,7 +20,6 @@ class ItemHoldings extends React.Component {
     axios
       .get(`/api/retrieve?q=${id}`)
       .then(response => {
-        console.log(response.data);
         Actions.updateBib(response.data);
         this.context.router.push(`/hold/request/${id}`);
       })

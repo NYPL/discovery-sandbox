@@ -180,7 +180,7 @@ router
 
 router
   .route('/hold/confirmation/:id')
-  .get(itemSearch.serverItemSearch);
+  .get(itemSearch.serverConfirmRequest);
 
 router
   .route('/account')

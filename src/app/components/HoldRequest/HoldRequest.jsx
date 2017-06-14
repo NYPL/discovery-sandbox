@@ -43,15 +43,16 @@ class HoldRequest extends React.Component {
     axios
       .get(`/api/newHold?id=${itemId}`)
       .then(response => {
-        if (response.error && response.error.status !== 200) {
-          console.log(response);
-          this.context.router.push(`/hold/confirmation/${itemId}?error=true`);
+        if (response.data.error && response.data.error.status !== 200) {
+          this.context.router.push(`/hold/confirmation/${itemId}?errorMessage=` +
+            `${response.data.error.statusText}`);
         } else {
-          this.context.router.push(`/hold/confirmation/${itemId}`);
+          this.context.router.push(`/hold/confirmation/${itemId}?requestId=${response.data.id}`);
         }
       })
       .catch(error => {
         console.log(error);
+        this.context.router.push(`/hold/confirmation/${itemId}?errorMessage=${error}`);
       });
   }
 
