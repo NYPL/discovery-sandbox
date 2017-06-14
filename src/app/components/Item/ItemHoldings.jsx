@@ -35,17 +35,14 @@ class ItemHoldings extends React.Component {
     const itemLength = itemsToDisplay.length;
 
     return (
-      <ul>
-        {
-          itemsToDisplay.map((h, i) => {
-            let itemLink;
-            let itemDisplay = null;
+      <table className="nypl-basic-table">
+        <caption className="hidden">item holdings</caption>
+        <tbody>
+          {
+            itemsToDisplay.map((h, i) => {
+              let itemLink;
+              let itemDisplay = null;
 
-            // if (!h.available) {
-            //   itemLink = <span className="nypl-item-unavailable">{h.accessMessage}</span>;
-            // } else if (h.isElectronicResource) {
-            //   itemLink = <a href={h.url}>View Online</a>;
-            // } else {
               // NOTE: This is using `this.props.bibId` but it is wrong. It should be the item ID.
               // Currently, hitting the API with items is not working.
               if (h.requestHold) {
@@ -57,35 +54,40 @@ class ItemHoldings extends React.Component {
                   >Request</Link> :
                   <span className="nypl-item-unavailable">Unavailable</span>;
               }
-            //   } else {
-            //     itemLink = h.url && h.url.length && h.availability === 'available' ?
-            //       <a href={h.url}>Request</a> :
-            //       <span className="nypl-item-unavailable">Unavailable</span>;
-            //   }
-            // }
 
-            if (h.callNumber) {
-              itemDisplay = <span dangerouslySetInnerHTML={this.createMarkup(h.callNumber)}></span>;
-            } else if (h.isElectronicResource) {
-              itemDisplay = <span>{h.location}</span>;
-            }
+              if (h.callNumber) {
+                itemDisplay =
+                  <span dangerouslySetInnerHTML={this.createMarkup(h.callNumber)}></span>;
+              } else if (h.isElectronicResource) {
+                itemDisplay = <span>{h.location}</span>;
+              }
 
-            return (
-              <li key={i} className={h.availability}>
-                <span>
-                  {itemLink}
-                </span>
-                {itemDisplay}
-              </li>
-            );
-          })
-        }
-
-        {
-          shortenItems && itemLength >= 20 &&
-            (<li><Link to={`/bib/${this.props.bibId}/all`}>View All Items</Link></li>)
-        }
-      </ul>
+              return (
+                <tr key={i} className={h.availability}>
+                  <td>{h.location}</td>
+                  <td>{itemDisplay}</td>
+                  <td>{h.status}</td>
+                  <td>{h.accessMessage}</td>
+                  <td>{itemLink}</td>
+                </tr>
+              );
+            })
+          }
+          {
+            shortenItems && itemLength >= 20 &&
+              (<tr>
+                <td colSpan="5">
+                  <Link
+                    to={`/bib/${this.props.bibId}/all`}
+                    className="view-all-items"
+                  >
+                    View All Items
+                  </Link>
+                </td>
+              </tr>)
+          }
+        </tbody>
+      </table>
     );
   }
 
