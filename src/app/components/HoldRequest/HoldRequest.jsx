@@ -81,7 +81,7 @@ class HoldRequest extends React.Component {
   renderLoggedInInstruction(patronName) {
     return (patronName) ?
       <p className="loggedInInstruction">You are currently logged in as <strong>{patronName}</strong>. If this is not you, please <a href="https://isso.nypl.org/auth/logout">Log out</a> and sign in using your library card.</p>
-      : <p className="loggedInInstruction">Something went wrong during retrieving your patron data.</p>;
+      : <p className="loggedInInstruction">Something went wrong retrieving your personal information.</p>;
   }
 
   render() {
@@ -165,7 +165,7 @@ class HoldRequest extends React.Component {
           </div>
           <div className="item-summary">
             <div className="item">
-              <h2>Something wrong with your request</h2>
+              <h2>Something went wrong with your request</h2>
               <Link href={`/bib/${bibId}`}>{title}</Link>
             </div>
           </div>
