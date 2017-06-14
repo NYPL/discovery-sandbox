@@ -23,7 +23,7 @@ class ResultsList extends React.Component {
 
     ajaxCall(`/api/retrieve?q=${id}`, (response) => {
       Actions.updateBib(response.data);
-      this.routeHandler(`/item/${id}`);
+      this.routeHandler(`/bib/${id}`);
     });
   }
 
@@ -92,7 +92,7 @@ class ResultsList extends React.Component {
         <h2>
           <Link
             onClick={(e) => this.getRecord(e, id)}
-            href={`/item/${id}`}
+            href={`/bib/${id}`}
             className="title"
           >
             {itemTitle}

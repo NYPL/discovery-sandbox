@@ -76,7 +76,7 @@ class HoldConfirmation extends React.Component {
             <div className="details two-third">
               <h2>Item request details</h2>
               <ul className="generic-list">
-                <li>Item: <Link to={`/item/${id}`}>{title}</Link></li>
+                <li>Item: <Link to={`/bib/${id}`}>{title}</Link></li>
                 {shelfMarkInfo}
                 { /* <li>Ready for use by <strong>approximately {dateDisplay}, 9:00am</strong> at the location below</li> */ }
                 <li><strong>You will receive an email notification</strong> when the item is ready for use at the location below</li>

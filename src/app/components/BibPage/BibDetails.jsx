@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-class ItemDetails extends React.Component {
+class BibDetails extends React.Component {
   getItem(data) {
     if (!data.length) {
       return null;
@@ -32,8 +32,8 @@ class ItemDetails extends React.Component {
   }
 }
 
-ItemDetails.propTypes = {
+BibDetails.propTypes = {
   data: PropTypes.array,
 };
 
-export default ItemDetails;
+export default BibDetails;

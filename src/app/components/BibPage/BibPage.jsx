@@ -12,8 +12,8 @@ import DocumentTitle from 'react-document-title';
 
 import Breadcrumbs from '../Breadcrumbs/Breadcrumbs';
 import Search from '../Search/Search';
-import ItemHoldings from './ItemHoldings';
-import ItemDetails from './ItemDetails';
+import ItemHoldings from '../Item/ItemHoldings';
+import BibDetails from './BibDetails';
 import LibraryItem from '../../utils/item';
 import Actions from '../../actions/Actions';
 
@@ -22,7 +22,7 @@ import {
   basicQuery,
 } from '../../utils/utils';
 
-class ItemPage extends React.Component {
+class BibPage extends React.Component {
 
   onClick(e, query) {
     e.preventDefault();
@@ -230,8 +230,12 @@ class ItemPage extends React.Component {
       { label: 'Number of items', field: 'numItems' },
       { label: 'Shelf Mark', field: 'shelfMark' },
     ];
+    let shortenItems = true;
+    if (this.props.location.pathname.indexOf('all') === -1) {
+      shortenItems = false;
+    }
 
-    const itemDetails = this.getDisplayFields(record, detailFields);
+    const bibDetails = this.getDisplayFields(record, detailFields);
     let searchURL = this.props.searchKeywords;
 
     _mapObject(this.props.selectedFacets, (val, key) => {
@@ -251,7 +255,7 @@ class ItemPage extends React.Component {
             <div className="nypl-full-width-wrapper">
               <Breadcrumbs
                 query={searchURL}
-                type="item"
+                type="bib"
                 title={title}
               />
               <h1>Research Catalog</h1>
@@ -298,10 +302,14 @@ class ItemPage extends React.Component {
 
               <div className="nypl-column-three-quarters nypl-column-offset-one">
                 <div className="nypl-item-details">
-                  <ItemDetails data={itemDetails} />
+                  <BibDetails
+                    data={bibDetails}
+                    title="Bib details"
+                  />
                 </div>
                 <div className="">
                   <ItemHoldings
+                    shortenItems={shortenItems}
                     holdings={holdings}
                     bibId={bibId}
                     title={`${record.numItems} item${record.numItems === 1 ? '' : 's'}
@@ -317,7 +325,7 @@ class ItemPage extends React.Component {
   }
 }
 
-ItemPage.propTypes = {
+BibPage.propTypes = {
   item: PropTypes.object,
   searchKeywords: PropTypes.string,
   location: PropTypes.object,
@@ -327,8 +335,8 @@ ItemPage.propTypes = {
   spinning: PropTypes.bool,
 };
 
-ItemPage.contextTypes = {
+BibPage.contextTypes = {
   router: PropTypes.object,
 };
 
-export default ItemPage;
+export default BibPage;

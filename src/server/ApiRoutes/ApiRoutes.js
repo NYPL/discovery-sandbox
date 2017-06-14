@@ -191,7 +191,11 @@ router
   .get(itemSearch.account);
 
 router
-  .route('/item/:id')
+  .route('/bib/:id')
+  .get(itemSearch.serverItemSearch);
+
+router
+  .route('/bib/:id/all')
   .get(itemSearch.serverItemSearch);
 
 router
