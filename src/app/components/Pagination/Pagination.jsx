@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 
 import Actions from '../../actions/Actions.js';
@@ -96,10 +97,10 @@ class Pagination extends React.Component {
 }
 
 Pagination.propTypes = {
-  hits: React.PropTypes.number,
-  urlSearchString: React.PropTypes.string,
-  page: React.PropTypes.string,
-  createAPIQuery: React.PropTypes.func,
+  hits: PropTypes.number,
+  urlSearchString: PropTypes.string,
+  page: PropTypes.string,
+  createAPIQuery: PropTypes.func,
 };
 
 Pagination.defaultProps = {
@@ -108,9 +109,7 @@ Pagination.defaultProps = {
 };
 
 Pagination.contextTypes = {
-  router: function contextType() {
-    return React.PropTypes.func.isRequired;
-  },
+  router: PropTypes.object,
 };
 
 export default Pagination;

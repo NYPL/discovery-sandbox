@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {
   mapObject as _mapObject,
   each as _each,
@@ -195,12 +196,12 @@ class Hits extends React.Component {
 }
 
 Hits.propTypes = {
-  hits: React.PropTypes.number,
-  searchKeywords: React.PropTypes.string,
-  spinning: React.PropTypes.bool,
-  selectedFacets: React.PropTypes.object,
-  createAPIQuery: React.PropTypes.func,
-  error: React.PropTypes.object,
+  hits: PropTypes.number,
+  searchKeywords: PropTypes.string,
+  spinning: PropTypes.bool,
+  selectedFacets: PropTypes.object,
+  createAPIQuery: PropTypes.func,
+  error: PropTypes.object,
 };
 
 Hits.defaultProps = {
@@ -211,9 +212,7 @@ Hits.defaultProps = {
 };
 
 Hits.contextTypes = {
-  router: function contextType() {
-    return React.PropTypes.func.isRequired;
-  },
+  router: PropTypes.object,
 };
 
 export default Hits;

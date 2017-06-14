@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import ClickOutHandler from 'react-onclickout';
 import { findWhere as _findWhere } from 'underscore';
 
@@ -99,15 +100,13 @@ class Sorter extends React.Component {
 }
 
 Sorter.propTypes = {
-  sortBy: React.PropTypes.string,
-  page: React.PropTypes.string,
-  createAPIQuery: React.PropTypes.func,
+  sortBy: PropTypes.string,
+  page: PropTypes.string,
+  createAPIQuery: PropTypes.func,
 };
 
 Sorter.contextTypes = {
-  router: function contextType() {
-    return React.PropTypes.func.isRequired;
-  },
+  router: PropTypes.object,
 };
 
 export default Sorter;

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import Actions from '../../actions/Actions';
 import { ajaxCall } from '../../utils/utils';
@@ -165,16 +166,14 @@ class DateFacet extends React.Component {
 }
 
 DateFacet.propTypes = {
-  keywords: React.PropTypes.string,
-  selectedFacets: React.PropTypes.object,
-  createAPIQuery: React.PropTypes.func,
-  spinning: React.PropTypes.bool,
+  keywords: PropTypes.string,
+  selectedFacets: PropTypes.object,
+  createAPIQuery: PropTypes.func,
+  spinning: PropTypes.bool,
 };
 
 DateFacet.contextTypes = {
-  router: function contextType() {
-    return React.PropTypes.func.isRequired;
-  },
+  router: PropTypes.object,
 };
 
 export default DateFacet;
