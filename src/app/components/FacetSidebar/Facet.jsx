@@ -26,7 +26,7 @@ class Facet extends React.Component {
   }
 
   componentDidMount() {
-    setTimeout(() => {
+    this.timeout = setTimeout(() => {
       this.setState({ openFacet: false });
     }, 500);
   }
@@ -37,6 +37,10 @@ class Facet extends React.Component {
     if (_isEmpty(nextProps.selectedFacets)) {
       this.setState({ selectedValues: [] });
     }
+  }
+
+  componentWillUnmount() {
+    clearTimeout(this.timeout);
   }
 
   onFacetUpdate(e) {
@@ -94,10 +98,13 @@ class Facet extends React.Component {
 
   getFacetLabel(field) {
     if (field === 'materialType') {
-      return 'Material Type';
+      return 'Format';
     } else if (field === 'subjectLiteral') {
       return 'Subject';
+    } else if (field === 'owner') {
+      return 'Owning Location/Division';
     }
+
     return field.charAt(0).toUpperCase() + field.slice(1);
   }
 
