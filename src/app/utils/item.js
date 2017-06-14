@@ -1,5 +1,8 @@
 import Locations from '../../../locations.js';
 import LocationCodes from '../../../locationCodes.js';
+import {
+  isEmpty as _isEmpty,
+} from 'underscore';
 
 function LibraryItem() {
   this.getDefaultLocation = () => ({
@@ -27,7 +30,7 @@ function LibraryItem() {
       });
     }
 
-    return thisItem;
+    return (!_isEmpty(thisItem)) ? thisItem : null;
   };
 
   /**
@@ -47,7 +50,8 @@ function LibraryItem() {
         const id = item['@id'].substring(4);
         let status = item.status && item.status[0].prefLabel ? item.status[0].prefLabel : '';
         let availability = status.replace(/\W/g, '').toLowerCase();
-        let accessMessage = item.accessMessage && item.accessMessage.length ? item.accessMessage[0].prefLabel.toLowerCase() : '';
+        let accessMessage = item.accessMessage && item.accessMessage.length ?
+          item.accessMessage[0].prefLabel.toLowerCase() : '';
         const callNumber = item.shelfMark && item.shelfMark.length ? item.shelfMark[0] : '';
         const locationDetails = this.getLocationDetails(item);
         let url = null;
@@ -148,7 +152,8 @@ function LibraryItem() {
     if (thisItem && thisItem.location && thisItem.location.length > 0) {
       location = thisItem.location[0][0];
     }
-    const locationCode = (location['@id'] && typeof location['@id'] === 'string') ? location['@id'].substring(4) : '';
+    const locationCode = (location['@id'] && typeof location['@id'] === 'string') ?
+      location['@id'].substring(4) : '';
     const prefLabel = (location) ? location.prefLabel : '';
     const isOffsite = (location) ? this.isOffsite(location) : false;
 

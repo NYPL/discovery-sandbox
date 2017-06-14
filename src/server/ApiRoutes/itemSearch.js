@@ -16,13 +16,13 @@ function retrieveItem(q, cb, errorcb) {
 }
 
 function serverItemSearch(req, res, next) {
-  const q = req.params.id || 'harry potter';
+  const q = req.params.id || '';
 
   retrieveItem(
     q,
     (data) => {
       res.locals.data.Store = {
-        item: data,
+        bib: data,
         searchKeywords: '',
         error: {},
       };
@@ -31,7 +31,7 @@ function serverItemSearch(req, res, next) {
     (error) => {
       console.log(error);
       res.locals.data.Store = {
-        item: {},
+        bib: {},
         searchKeywords: '',
         error,
       };
@@ -77,7 +77,7 @@ function newHoldRequest(req, res, next) {
     req.params.id,
     (data) => {
       res.locals.data.Store = {
-        item: data,
+        bib: data,
         searchKeywords: '',
         error: {},
       };
@@ -85,7 +85,7 @@ function newHoldRequest(req, res, next) {
     },
     (error) => {
       res.locals.data.Store = {
-        item: {},
+        bib: {},
         searchKeywords: '',
         error,
       };
