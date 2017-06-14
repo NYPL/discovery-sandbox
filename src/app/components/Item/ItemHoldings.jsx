@@ -30,41 +30,40 @@ class ItemHoldings extends React.Component {
   }
 
   getRow(holdings) {
-    const holdingCount = holdings.length;
-    const maxDisplay = 7;
-    const moreCount = holdingCount - maxDisplay;
-    const collapsed = !this.state.expanded;
+    const shortenItems = !this.props.shortenItems;
+    const itemsToDisplay = shortenItems ? holdings.slice(0, 20) : holdings;
+    const itemLength = itemsToDisplay.length;
 
     return (
       <table className="nypl-basic-table">
-      <caption className="hidden">item holdings</caption>
+        <caption className="hidden">item holdings</caption>
         <tbody>
           {
-            holdings.map((h, i) => {
+            itemsToDisplay.map((h, i) => {
               let itemLink;
               let itemDisplay = null;
 
+              // NOTE: This is using `this.props.bibId` but it is wrong. It should be the item ID.
+              // Currently, hitting the API with items is not working.
               if (h.requestHold) {
                 itemLink = h.availability === 'available' ?
                   <Link
                     className="button"
-                    to={`/hold/request/${this.props.itemId}`}
-                    onClick={(e) => this.getRecord(e, this.props.itemId, 'hold/request')}
+                    to={`/hold/request/${this.props.bibId}`}
+                    onClick={(e) => this.getRecord(e, this.props.bibId, 'hold/request')}
                   >Request</Link> :
                   <span className="nypl-item-unavailable">Unavailable</span>;
               }
 
               if (h.callNumber) {
-                itemDisplay = <span dangerouslySetInnerHTML={this.createMarkup(h.callNumber)}></span>;
+                itemDisplay =
+                  <span dangerouslySetInnerHTML={this.createMarkup(h.callNumber)}></span>;
               } else if (h.isElectronicResource) {
                 itemDisplay = <span>{h.location}</span>;
               }
 
               return (
-                <tr
-                  key={i}
-                  className={`${h.availability} ${i >= maxDisplay && collapsed ? 'collapsed' : ''}`}
-                >
+                <tr key={i} className={h.availability}>
                   <td>{h.location}</td>
                   <td>{itemDisplay}</td>
                   <td>{h.status}</td>
@@ -73,6 +72,19 @@ class ItemHoldings extends React.Component {
                 </tr>
               );
             })
+          }
+          {
+            shortenItems && itemLength >= 20 &&
+              (<tr>
+                <td colSpan="5">
+                  <Link
+                    to={`/bib/${this.props.bibId}/all`}
+                    className="view-all-items"
+                  >
+                    View All Items
+                  </Link>
+                </td>
+              </tr>)
           }
         </tbody>
       </table>
@@ -107,6 +119,11 @@ ItemHoldings.propTypes = {
   holdings: React.PropTypes.array,
   title: React.PropTypes.string,
   bibId: React.PropTypes.string,
+  shortenItems: React.PropTypes.bool,
+};
+
+ItemHoldings.defaultProps = {
+  shortenItems: false,
 };
 
 ItemHoldings.contextTypes = {

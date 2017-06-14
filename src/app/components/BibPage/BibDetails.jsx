@@ -1,6 +1,6 @@
 import React from 'react';
 
-class ItemDetails extends React.Component {
+class BibDetails extends React.Component {
   getItem(data) {
     if (!data.length) {
       return null;
@@ -31,8 +31,8 @@ class ItemDetails extends React.Component {
   }
 }
 
-ItemDetails.propTypes = {
+BibDetails.propTypes = {
   data: React.PropTypes.array,
 };
 
-export default ItemDetails;
+export default BibDetails;

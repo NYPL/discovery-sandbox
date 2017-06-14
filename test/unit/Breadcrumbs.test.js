@@ -83,9 +83,9 @@ describe('Breadcrumbs', () => {
     });
   });
 
-  describe('On the Item page', () => {
-    // The item was access directly without a search.
-    // There is, therefore, no 'Items' link to go to.
+  describe('On the Bib page', () => {
+    // The bib was access directly without a search.
+    // There is, therefore, no 'Bib' link to go to.
     // Home > Research > Research Catalog > [title]
     describe('No search keyword:\n\tHome > Research > Research Catalog > [title]', () => {
       const title = 'Locofoco Platform [electronic resource].';
@@ -93,7 +93,7 @@ describe('Breadcrumbs', () => {
 
       before(() => {
         component = shallow(
-          <Breadcrumbs type="item" title={title} />
+          <Breadcrumbs type="bib" title={title} />
         );
       });
 
@@ -101,7 +101,7 @@ describe('Breadcrumbs', () => {
         expect(component.find('Link')).to.have.length(1);
       });
 
-      it('should display the current page with the item title', () => {
+      it('should display the current page with the bib title', () => {
         expect(component.find('li').at(3).text()).to.equal(title);
       });
     });
@@ -115,7 +115,7 @@ describe('Breadcrumbs', () => {
       before(() => {
         component = shallow(
           <Breadcrumbs
-            type="item"
+            type="bib"
             query="locofocos"
             title={title}
           />

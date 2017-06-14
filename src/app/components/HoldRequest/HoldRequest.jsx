@@ -100,7 +100,7 @@ class HoldRequest extends React.Component {
           <div className="item-summary">
             <div className="item">
               <h2>You are about to request a hold on the following research item:</h2>
-              <Link href={`/item/${bibId}`}>{title}</Link>
+              <Link href={`/bib/${bibId}`}>{title}</Link>
             </div>
           </div>
 
@@ -142,7 +142,7 @@ class HoldRequest extends React.Component {
           <div className="item-summary">
             <div className="item">
               <h2>Something wrong with your request</h2>
-              <Link href={`/item/${bibId}`}>{title}</Link>
+              <Link href={`/bib/${bibId}`}>{title}</Link>
             </div>
           </div>
           <h2>Confirm account</h2>
