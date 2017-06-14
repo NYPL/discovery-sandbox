@@ -7,7 +7,7 @@ import { mount } from 'enzyme';
 import Facet from './../../src/app/components/FacetSidebar/Facet.jsx';
 
 describe('Facet', () => {
-  describe('redners facet labels based on facet fields.', () => {
+  describe('renders facet labels based on facet fields.', () => {
     let component;
     let getFacetLabel;
 
