@@ -15,15 +15,14 @@ class ItemHoldings extends React.Component {
     this.getRecord = this.getRecord.bind(this);
   }
 
-  getRecord(e, id, path) {
+  getRecord(e, id) {
     e.preventDefault();
 
     axios
       .get(`/api/retrieve?q=${id}`)
       .then(response => {
-        console.log(response.data);
         Actions.updateBib(response.data);
-        this.context.router.push(`/${path}/${id}`);
+        this.context.router.push(`/hold/request/${id}`);
       })
       .catch(error => {
         console.log(error);
@@ -51,7 +50,7 @@ class ItemHoldings extends React.Component {
                   <Link
                     className="button"
                     to={`/hold/request/${this.props.bibId}`}
-                    onClick={(e) => this.getRecord(e, this.props.bibId, 'hold/request')}
+                    onClick={(e) => this.getRecord(e, this.props.bibId)}
                   >Request</Link> :
                   <span className="nypl-item-unavailable">Unavailable</span>;
               }
