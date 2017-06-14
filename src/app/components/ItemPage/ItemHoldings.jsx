@@ -37,6 +37,7 @@ class ItemHoldings extends React.Component {
 
     return (
       <table className="nypl-basic-table">
+      <caption className="hidden">item holdings</caption>
         <tbody>
           {
             holdings.map((h, i) => {
