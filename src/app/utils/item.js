@@ -70,13 +70,15 @@ function LibraryItem() {
         } else if (accessMessage === 'adv request' && !item.holdingLocation) {
           requestHold = true;
           actionLabel = accessMessage;
-          actionLabelHelper = 'request hold on ${recordTitle}';
+          actionLabelHelper = `request hold on ${recordTitle}`;
           // Temporary for NYPL ReCAP items.
+          // Making sure that if there is a holding location, that the location code starts with
+          // rc. Ids are in the format of `loc:x` where x is the location code.
         } else if (item.holdingLocation && item.holdingLocation.length &&
-          item.holdingLocation[0].prefLabel.indexOf('offsite') !== -1) {
+          item.holdingLocation[0]['@id'].substring(4, 6) === 'rc') {
           requestHold = true;
           actionLabel = accessMessage;
-          actionLabelHelper = 'request hold on ${recordTitle}';
+          actionLabelHelper = `request hold on ${recordTitle}`;
         } else if (availability === 'available') {
           url = this.getLocationHoldUrl(locationDetails);
           actionLabel = 'Request for in-library use';
