@@ -18,7 +18,13 @@ class HoldRequest extends React.Component {
       data: Store.getState(),
       patron: PatronStore.getState(),
     };
+
+    console.log(this.props);
+    // get data from both stores
+
+    // change all the components :(
     this.onChange = this.onChange.bind(this);
+    this.submitRequest = this.submitRequest.bind(this);
   }
 
   componentDidMount() {
@@ -27,6 +33,14 @@ class HoldRequest extends React.Component {
 
   onChange() {
     this.setState({ data: Store.getState() });
+  }
+
+  /**
+   * submitRequest()
+   * Client-side submit call.
+   */
+  submitRequest(e) {
+
   }
 
   /**
@@ -125,7 +139,7 @@ class HoldRequest extends React.Component {
 
             <input type="hidden" name="pickupLocation" value={location.code} />
 
-            <button type="submit" className="large" onClick={}>
+            <button type="submit" className="large" onClick={(e) => this.submitRequest(e)}>
               Submit your item hold request
             </button>
           </form>
