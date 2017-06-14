@@ -154,10 +154,73 @@ function createHoldRequest(req, res) {
     }); /* end axios call */
 }
 
+function ajaxCreateHoldRequest(req, res) {
+  // Ensure user is logged in
+  const loggedIn = requireUser(req);
+  if (!loggedIn) return false;
+
+  // retrieve access token and patron info
+  const accessToken = req.tokenResponse.accessToken;
+  const patronId = req.tokenResponse.decodedPatron.sub;
+  const patronHoldsApi = `${appConfig.api.development}/hold-requests`;
+
+  // get item id and pickup location
+  let itemId = req.query.id;
+  let nyplSource = 'nypl-sierra';
+
+  if (itemId.indexOf('-') >= 0) {
+    const parts = itemId.split('-');
+    itemId = parts[parts.length - 1];
+
+    if (itemId.substring(0, 2) === 'pi') {
+      nyplSource = 'recap-PUL';
+    } else if (itemId.substring(0, 2) === 'ci') {
+      nyplSource = 'recap-CUL';
+    }
+  }
+  itemId = itemId.replace(/\D/g, '');
+  const pickupLocation = req.body.pickupLocation;
+
+  const data = {
+    patron: patronId,
+    recordType: 'i',
+    record: itemId,
+    nyplSource,
+    pickupLocation,
+    // neededBy: "2013-03-20",
+    numberOfCopies: 1,
+  };
+  // console.log('Making hold request', data, accessToken);
+
+  return axios
+    .post(patronHoldsApi, data, {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer 3${accessToken}`,
+      },
+    })
+    .then(response => {
+      res.json({
+        id: response.data.data.id,
+        jobId: response.data.data.jobId,
+        holdRequest: data,
+      });
+    })
+    .catch(error => {
+      console.log(`Error calling Holds API : ${error.data.message}`);
+      res.json({
+        status: error.status,
+        error,
+      });
+    }); /* end axios call */
+}
+
+
 export default {
   serverItemSearch,
   newHoldRequest,
   createHoldRequest,
   account,
   ajaxItemSearch,
+  ajaxCreateHoldRequest,
 };

@@ -1,7 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router';
+import axios from 'axios';
+
 import Breadcrumbs from '../Breadcrumbs/Breadcrumbs.jsx';
-import Store from '../../stores/Store.js';
 import PatronStore from '../../stores/PatronStore.js';
 import config from '../../../../appConfig.js';
 import LibraryItem from '../../utils/item.js';
@@ -14,10 +15,7 @@ class HoldRequest extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      data: Store.getState(),
-      patron: PatronStore.getState(),
-    };
+    this.state = { patron: PatronStore.getState() };
 
     console.log(this.props);
     // get data from both stores
@@ -32,15 +30,29 @@ class HoldRequest extends React.Component {
   }
 
   onChange() {
-    this.setState({ data: Store.getState() });
+    this.setState({ patron: PatronStore.getState() });
   }
 
   /**
    * submitRequest()
    * Client-side submit call.
    */
-  submitRequest(e) {
+  submitRequest(e, itemId) {
+    e.preventDefault();
 
+    axios
+      .get(`/api/newHold?id=${itemId}`)
+      .then(response => {
+        if (response.error && response.error.status !== 200) {
+          console.log(response);
+          this.context.router.push(`/hold/confirmation/${itemId}?error=true`);
+        } else {
+          this.context.router.push(`/hold/confirmation/${itemId}`);
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      });
   }
 
   /**
@@ -75,9 +87,9 @@ class HoldRequest extends React.Component {
   }
 
   render() {
-    const searchKeywords = this.state.data.searchKeywords || '';
-    const record = (this.state.data.item && !_isEmpty(this.state.data.item)) ?
-      this.state.data.item : null;
+    const searchKeywords = this.props.searchKeywords || '';
+    const record = (this.props.bib && !_isEmpty(this.props.bib)) ?
+      this.props.bib : null;
     const title = (record && _isArray(record.title) && record.title.length) ?
       record.title[0] : '';
     const bibId = (record && record['@id'] && typeof record['@id'] === 'string') ?
@@ -142,7 +154,7 @@ class HoldRequest extends React.Component {
 
             <input type="hidden" name="pickupLocation" value={location.code} />
 
-            <button type="submit" className="large" onClick={(e) => this.submitRequest(e)}>
+            <button type="submit" className="large" onClick={(e) => this.submitRequest(e, itemId)}>
               Submit your item hold request
             </button>
           </form>
