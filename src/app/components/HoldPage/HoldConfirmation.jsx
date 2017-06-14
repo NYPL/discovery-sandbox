@@ -42,7 +42,8 @@ class HoldConfirmation extends React.Component {
   }
 
   render() {
-    const item = this.props.item;
+    // Need to better clarify variable names later.
+    const item = this.props.bib;
     const title = (item && _isArray(item.title) && item.title.length > 0) ?
       item.title[0] : '';
     const id = (item && item['@id'] && typeof item['@id'] === 'string') ?
@@ -108,14 +109,14 @@ class HoldConfirmation extends React.Component {
 }
 
 HoldConfirmation.propTypes = {
-  item: PropTypes.object,
+  bib: PropTypes.object,
   location: PropTypes.object,
   searchKeywords: PropTypes.string,
   params: PropTypes.object,
 };
 
 HoldConfirmation.defaultProps = {
-  item: {},
+  bib: {},
   searchKeywords: '',
   params: {},
 };
