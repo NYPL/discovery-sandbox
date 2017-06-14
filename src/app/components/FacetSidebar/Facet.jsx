@@ -138,6 +138,42 @@ class Facet extends React.Component {
     return valueCount > FACETSHOWLIMIT ? '' : ' nosearch';
   }
 
+  rednerFacetList(facet, field) {
+    facet.values.map((f, j) => {
+      const percentage = Math.floor(f.count / this.props.totalHits * 100);
+      const valueLabel = (f.value).toString().replace(/:/, '_');
+      const hiddenFacet = (j > FACETSHOWLIMIT && !this.state.showMoreFacets) ?
+        'hiddenFacet' : '';
+      const selected = !!_findWhere(this.props.selectedValues, { id: f.value });
+      let selectLabel = f.value;
+
+      if (f.label) {
+        selectLabel = f.label;
+      }
+
+      return (
+        <label
+          key={j}
+          id={`${field}-${valueLabel}-label`}
+          htmlFor={`${field}-${valueLabel}`}
+          className={`nypl-bar_${percentage} ${hiddenFacet}`}
+        >
+          <input
+            id={`${field}-${valueLabel}`}
+            aria-labelledby={`${field}-${valueLabel}`}
+            type="checkbox"
+            name={`${field}-${valueLabel}-name`}
+            checked={selected}
+            value={JSON.stringify(f)}
+            onClick={(e) => this.onFacetUpdate(e)}
+          />
+          <span className="nypl-facet-count">{f.count.toLocaleString()}</span>
+          {selectLabel}
+        </label>
+      );
+    });
+  }
+
   render() {
     const facet = this.props.facet;
     const field = facet.field;
@@ -184,41 +220,7 @@ class Facet extends React.Component {
             />
           </div>
           <div className="nypl-facet-list">
-            {
-              facet.values.map((f, j) => {
-                const percentage = Math.floor(f.count / this.props.totalHits * 100);
-                const valueLabel = (f.value).toString().replace(/:/, '_');
-                const hiddenFacet = (j > FACETSHOWLIMIT && !this.state.showMoreFacets) ?
-                  'hiddenFacet' : '';
-                const selected = !!_findWhere(this.props.selectedValues, { id: f.value });
-                let selectLabel = f.value;
-
-                if (f.label) {
-                  selectLabel = f.label;
-                }
-
-                return (
-                  <label
-                    key={j}
-                    id={`${field}-${valueLabel}-label`}
-                    htmlFor={`${field}-${valueLabel}`}
-                    className={`nypl-bar_${percentage} ${hiddenFacet}`}
-                  >
-                    <input
-                      id={`${field}-${valueLabel}`}
-                      aria-labelledby={`${field}-${valueLabel}`}
-                      type="checkbox"
-                      name={`${field}-${valueLabel}-name`}
-                      checked={selected}
-                      value={JSON.stringify(f)}
-                      onClick={(e) => this.onFacetUpdate(e)}
-                    />
-                    <span className="nypl-facet-count">{f.count.toLocaleString()}</span>
-                    {selectLabel}
-                  </label>
-                );
-              })
-            }
+            {this.rednerFacetList(facet, field)}
           </div>
           {this.showGetTenMore(facet.values.length)}
         </div>
