@@ -57,13 +57,13 @@ class HoldRequest extends React.Component {
   renderLoggedInInstruction(patronName) {
     return (patronName) ?
       <p className="loggedInInstruction">You are currently logged in as <strong>{patronName}</strong>. If this is not you, please <a href="https://isso.nypl.org/auth/logout">Log out</a> and sign in using your library card.</p>
-      : <p className="loggedInInstruction">Something went wrong during retrieving your patron data.</p>;
+      : <p className="loggedInInstruction">Something went wrong retrieving your personal information.</p>;
   }
 
   render() {
     const searchKeywords = this.state.data.searchKeywords || '';
-    const record = (this.state.data.item && !_isEmpty(this.state.data.item)) ?
-      this.state.data.item : null;
+    const record = (this.state.data.bib && !_isEmpty(this.state.data.bib)) ?
+      this.state.data.bib : null;
     const title = (record && _isArray(record.title) && record.title.length) ?
       record.title[0] : '';
     const bibId = (record && record['@id'] && typeof record['@id'] === 'string') ?

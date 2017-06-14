@@ -66,7 +66,14 @@ function LibraryItem() {
           url = item.electronicLocator[0].url;
           actionLabel = 'View online';
           actionLabelHelper = `resource for ${recordTitle}`;
+          // Temporary for ReCAP items.
         } else if (accessMessage === 'adv request' && !item.holdingLocation) {
+          requestHold = true;
+          actionLabel = accessMessage;
+          actionLabelHelper = 'request hold on ${recordTitle}';
+          // Temporary for NYPL ReCAP items.
+        } else if (item.holdingLocation && item.holdingLocation.length &&
+          item.holdingLocation[0].prefLabel.indexOf('offsite') !== -1) {
           requestHold = true;
           actionLabel = accessMessage;
           actionLabelHelper = 'request hold on ${recordTitle}';
