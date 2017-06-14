@@ -3,6 +3,7 @@ import { Link } from 'react-router';
 import {
   findWhere as _findWhere,
   findIndex as _findIndex,
+  isArray as _isArray,
   mapObject as _mapObject,
   each as _each,
 } from 'underscore';
@@ -10,8 +11,8 @@ import DocumentTitle from 'react-document-title';
 
 import Breadcrumbs from '../Breadcrumbs/Breadcrumbs';
 import Search from '../Search/Search';
-import ItemHoldings from './ItemHoldings';
-import ItemDetails from './ItemDetails';
+import ItemHoldings from '../Item/ItemHoldings';
+import BibDetails from './BibDetails';
 import LibraryItem from '../../utils/item';
 import Actions from '../../actions/Actions';
 
@@ -20,7 +21,7 @@ import {
   basicQuery,
 } from '../../utils/utils';
 
-class ItemPage extends React.Component {
+class BibPage extends React.Component {
 
   onClick(e, query) {
     e.preventDefault();
@@ -67,14 +68,134 @@ class ItemPage extends React.Component {
     });
   }
 
+  getDisplayFields(record, data) {
+    if (!data.length) return [];
+
+    const detailFields = [];
+    data.forEach((f) => {
+      // skip absent fields
+      if (!record[f.field] || !record[f.field].length || !_isArray(record[f.field])) return false;
+      const fieldValue = record[f.field][0];
+
+      // external links
+      if (f.url) {
+        detailFields.push({
+          term: f.label,
+          definition: (
+            <ul>
+              {record[f.field].map((value, i) => {
+                const v = f.field === 'idOclc' ? 'View in Worldcat' : value;
+                return <li key={i}><a target="_blank" title={v} href={f.url(v)}>{v}</a></li>;
+              })}
+            </ul>
+          ),
+        });
+
+      // list of links
+      } else if (fieldValue['@id']) {
+        detailFields.push({
+          term: f.label,
+          definition: (
+            <ul>{record[f.field].map((obj, i) => (
+              <li key={i}>
+                <Link
+                  onClick={e => this.onClick(e, `filters[${f.field}]=${obj['@id']}`)}
+                  title={`Make a new search for ${f.label}: ${obj.prefLabel}`}
+                  to={`/search?q=${encodeURIComponent(`filters[${f.field}]=${obj['@id']}`)}`}
+                >{obj.prefLabel}</Link>
+              </li>))}
+            </ul>),
+        });
+      // list of links
+      } else if (f.linkable) {
+        if (f.field === 'contributorLiteral') {
+          detailFields.push({
+            term: f.label,
+            definition: record[f.field].map((value, i) => {
+              const comma = record[f.field].length > 1 ? ', ' : ' ';
+              return (
+                <span key={i}>
+                  <Link
+                    onClick={e => this.onClick(e, `filters[${f.field}]=${value}`)}
+                    title={`Make a new search for ${f.label}: "${value}"`}
+                    to={`/search?q=${encodeURIComponent(`filters[${f.field}]=${value}`)}`}
+                  >
+                    {value}
+                  </Link>{comma}
+                </span>
+              );
+            }),
+          });
+        } else {
+          detailFields.push({
+            term: f.label,
+            definition: (
+              <ul>{record[f.field].map((value, i) => (
+                <li key={i}>
+                  <Link
+                    onClick={e => this.onClick(e, `filters[${f.field}]=${value}`)}
+                    title={`Make a new search for ${f.label}: "${value}"`}
+                    to={`/search?q=${encodeURIComponent(`filters[${f.field}]=${value}`)}`}
+                  >{value}</Link>
+                </li>))}
+              </ul>),
+          });
+        }
+
+      // list of plain text
+      } else {
+        detailFields.push({
+          term: f.label,
+          definition: <ul>{record[f.field].map((value, i) => <li key={i}>{value}</li>)}</ul>,
+        });
+      }
+    });
+
+    return detailFields;
+  }
+
   render() {
     const createAPIQuery = basicQuery(this.props);
     const record = this.props.bib ? this.props.bib : this.props.item;
     const bibId = record['@id'].substring(4);
     const title = record.title && record.title.length ? record.title[0] : '';
+    const authors = record.contributor && record.contributor.length ?
+      record.contributor.map((author, i) => (
+        <span key={i}>
+          <Link
+            to={{ pathname: '/search', query: { q: `filter[contributorLiteral]=${author}` } }}
+            title={`Make a new search for contributor: "${author}"`}
+            onClick={(e) => this.onClick(e, `filter[contributorLiteral]=${author}`)}
+          >
+            {author}
+          </Link>,&nbsp;
+        </span>
+      ))
+      : null;
+    const publisher = record.publisher && record.publisher.length ?
+      <Link
+        to={{ pathname: '/search', query: { q: `filter[publisher]=${record.publisher[0]}` } }}
+        title={`Make a new search for publisher: "${record.publisher[0]}"`}
+        onClick={(e) => this.onClick(e, `filter[publisher]=${record.publisher[0]}`)}
+      >
+        {record.publisher[0]}
+      </Link>
+      : null;
     const holdings = LibraryItem.getItems(record);
 
-    const displayFields = [
+    const materialType = record && record.materialType && record.materialType[0] ?
+      record.materialType[0].prefLabel : null;
+    const language = record && record.language && record.language[0] ?
+      record.language[0].prefLabel : null;
+    const location = record && record.location && record.location[0] ?
+        record.location[0].prefLabel : null;
+    const placeOfPublication = record && record.placeOfPublication && record.placeOfPublication[0] ?
+      record.placeOfPublication[0].prefLabel : null;
+    const yearPublished = record && record.dateStartYear ? record.dateStartYear : null;
+    const usageType = record && record.actionType && record.actionType[0] ?
+      record.actionType[0].prefLabel : null;
+
+    const detailFields = [
       { label: 'Title', field: 'title' },
       { label: 'Title (alternative)', field: 'titleAlt' },
       { label: 'Title (display)', field: 'titleDisplay' },
@@ -107,52 +228,13 @@ class ItemPage extends React.Component {
       { label: 'Number available', field: 'numAvailable' },
       { label: 'Number of items', field: 'numItems' },
       { label: 'Shelf Mark', field: 'shelfMark' },
-    ]
+    ];
+    let shortenItems = true;
+    if (this.props.location.pathname.indexOf('all') === -1) {
+      shortenItems = false;
+    }
 
-    let itemDetails = [];
-    displayFields.forEach((f) => {
-      // skip absent fields
-      if (!record[f.field] || !record[f.field].length) return false;
-      const fieldValue = record[f.field][0];
-
-      // list of links
-      if (fieldValue['@id']) {
-        itemDetails.push({
-          term: f.label,
-          definition: <ul>
-            {record[f.field].map(
-              (obj, i) =>
-              (<li key={i}>
-                <a
-                  onClick={(e) => this.onClick(e, `${f.field}:"${obj['@id']}"`)}
-                  href={`/search?q=${encodeURIComponent(`${f.field}:"${obj['@id']}"`)}`}
-                >{obj.prefLabel}</a></li>))
-              }</ul>
-            });
-
-      // list of links
-      } else if (f.linkable) {
-        itemDetails.push({
-          term: f.label,
-          definition: <ul>
-            {record[f.field].map(
-              (value, i) =>
-              (<li key={i}>
-                <a
-                  onClick={(e) => this.onClick(e, `${f.field}:"${value}"`)}
-                  href={`/search?q=${encodeURIComponent(`${f.field}:"${value}"`)}`}
-                >{value}</a></li>))
-            }</ul>,
-        });
-
-      // list of plain text
-      } else {
-        itemDetails.push({
-          term: f.label,
-          definition: <ul>{record[f.field].map((value, i) => (<li key={i}>{value}</li>))}</ul> });
-      }
-    });
-
+    const bibDetails = this.getDisplayFields(record, detailFields);
     let searchURL = this.props.searchKeywords;
 
     _mapObject(this.props.selectedFacets, (val, key) => {
@@ -172,7 +254,7 @@ class ItemPage extends React.Component {
             <div className="nypl-full-width-wrapper">
               <Breadcrumbs
                 query={searchURL}
-                type="item"
+                type="bib"
                 title={title}
               />
               <h1>Research Catalog</h1>
@@ -181,7 +263,7 @@ class ItemPage extends React.Component {
 
           <div className="nypl-full-width-wrapper">
             <div className="nypl-row">
-              <div className="nypl-column-three-quarters">
+              <div className="nypl-column-three-quarters nypl-column-offset-one">
                 <Search
                   searchKeywords={this.props.searchKeywords}
                   field={this.props.field}
@@ -193,7 +275,7 @@ class ItemPage extends React.Component {
 
             <div className="nypl-row">
               <div
-                className="nypl-column-three-quarters"
+                className="nypl-column-three-quarters nypl-column-offset-one"
                 role="region"
                 id="mainContent"
                 aria-live="polite"
@@ -203,21 +285,36 @@ class ItemPage extends React.Component {
               >
                 <div className="nypl-item-details">
                   <h1>{title}</h1>
+                  <div className="nypl-item-info">
+                    <p>
+                      <span className="nypl-item-media">{materialType}</span>
+                      {language && ` in ${language}`}
+                    </p>
+                    <p>{record.extent} {record.dimensions}</p>
+                    <p>
+                      {record.placeOfPublication} {record.publisher} {yearPublished}
+                    </p>
+                    <p className="nypl-item-use">{usageType}</p>
+                  </div>
                 </div>
+              </div>
 
-                <div className="">
-                  <ItemDetails
-                    data={itemDetails}
-                    title="Item details"
+              <div className="nypl-column-three-quarters nypl-column-offset-one">
+                <div className="nypl-item-details">
+                  <BibDetails
+                    data={bibDetails}
+                    title="Bib details"
                   />
+                </div>
+                <div className="">
                   <ItemHoldings
+                    shortenItems={shortenItems}
                     holdings={holdings}
                     bibId={bibId}
                     title={`${record.numItems} item${record.numItems === 1 ? '' : 's'}
                       associated with this record:`}
                   />
                 </div>
-
               </div>
             </div>
           </div>
@@ -227,7 +324,7 @@ class ItemPage extends React.Component {
   }
 }
 
-ItemPage.propTypes = {
+BibPage.propTypes = {
   item: React.PropTypes.object,
   searchKeywords: React.PropTypes.string,
   location: React.PropTypes.object,
@@ -237,10 +334,10 @@ ItemPage.propTypes = {
   spinning: React.PropTypes.bool,
 };
 
-ItemPage.contextTypes = {
+BibPage.contextTypes = {
   router: function contextType() {
     return React.PropTypes.func.isRequired;
   },
 };
 
-export default ItemPage;
+export default BibPage;

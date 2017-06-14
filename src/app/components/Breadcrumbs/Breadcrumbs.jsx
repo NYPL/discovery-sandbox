@@ -25,7 +25,7 @@ const Breadcrumbs = ({ query, type, title, url }) => {
 
   currentPageText = title;
 
-  if (type === 'item') {
+  if (type === 'bib') {
     crumbs = (
       <ol role="navigation" aria-label="breadcrumbs" className="nypl-breadcrumbs">
         <li><a href="https://nypl.org">Home</a></li>

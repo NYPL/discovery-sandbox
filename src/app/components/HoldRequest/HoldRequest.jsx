@@ -31,7 +31,7 @@ class HoldRequest extends React.Component {
 
   /**
    * requireUser()
-   * Redirectes the patron to OAuth log in page if he/she hasn't been logged in yet.
+   * Redirects the patron to OAuth log in page if he/she hasn't been logged in yet.
    *
    * @return {Boolean}
    */
@@ -73,6 +73,13 @@ class HoldRequest extends React.Component {
       ) ? this.state.patron.names[0] : '';
     const itemId = (this.props.params && this.props.params.id) ? this.props.params.id : '';
     const selectedItem = (record && itemId) ? LibraryItem.getItem(record, itemId) : null;
+    const shelfMarkInfo =
+      (selectedItem && _isArray(selectedItem.shelfMark) && selectedItem.shelfMark.length > 0) ?
+      (
+        <span className="col">
+          <small>Call number:</small><br />{selectedItem.shelfMark[0]}
+        </span>
+      ) : null;
     const location = (record && itemId) ? LibraryItem.getLocation(record, itemId) : null;
     const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July',
       'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
@@ -93,7 +100,7 @@ class HoldRequest extends React.Component {
           <div className="item-summary">
             <div className="item">
               <h2>You are about to request a hold on the following research item:</h2>
-              <Link href={`/item/${bibId}`}>{title}</Link>
+              <Link href={`/bib/${bibId}`}>{title}</Link>
             </div>
           </div>
 
@@ -114,11 +121,7 @@ class HoldRequest extends React.Component {
                     </span>
                   }
                 </span>
-                {selectedItem.shelfMark &&
-                  <span className="col">
-                    <small>Call number:</small><br />{selectedItem.shelfMark[0]}
-                  </span>
-                }
+                {shelfMarkInfo}
                 {/* <span className="col"><small>Ready by approximately:</small><br />{dateDisplay}, 9am.</span> */}
               </div>
             </fieldset>
@@ -139,7 +142,7 @@ class HoldRequest extends React.Component {
           <div className="item-summary">
             <div className="item">
               <h2>Something wrong with your request</h2>
-              <Link href={`/item/${bibId}`}>{title}</Link>
+              <Link href={`/bib/${bibId}`}>{title}</Link>
             </div>
           </div>
           <h2>Confirm account</h2>

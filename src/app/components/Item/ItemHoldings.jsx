@@ -30,23 +30,19 @@ class ItemHoldings extends React.Component {
   }
 
   getRow(holdings) {
-    const holdingCount = holdings.length;
-    const maxDisplay = 7;
-    const moreCount = holdingCount - maxDisplay;
-    const collapsed = !this.state.expanded;
+    const shortenItems = !this.props.shortenItems;
+    const itemsToDisplay = shortenItems ? holdings.slice(0, 20) : holdings;
+    const itemLength = itemsToDisplay.length;
 
     return (
-      <ul>
-        {
-          holdings.map((h, i) => {
-            let itemLink;
-            let itemDisplay = null;
+      <table className="nypl-basic-table">
+        <caption className="hidden">item holdings</caption>
+        <tbody>
+          {
+            itemsToDisplay.map((h, i) => {
+              let itemLink;
+              let itemDisplay = null;
 
-            if (!h.available) {
-              itemLink = <span className="nypl-item-unavailable">{h.accessMessage}</span>;
-            } else if (h.isElectronicResource) {
-              itemLink = <a href={h.url}>View Online</a>;
-            } else {
               // NOTE: This is using `this.props.bibId` but it is wrong. It should be the item ID.
               // Currently, hitting the API with items is not working.
               if (h.requestHold) {
@@ -57,33 +53,41 @@ class ItemHoldings extends React.Component {
                     onClick={(e) => this.getRecord(e, this.props.bibId, 'hold/request')}
                   >Request</Link> :
                   <span className="nypl-item-unavailable">Unavailable</span>;
-              } else {
-                itemLink = h.url && h.url.length && h.availability === 'available' ?
-                  <a href={h.url}>Request</a> :
-                  <span className="nypl-item-unavailable">Unavailable</span>;
               }
-            }
 
-            if (h.callNumber) {
-              itemDisplay = <span dangerouslySetInnerHTML={this.createMarkup(h.callNumber)}></span>;
-            } else if (h.isElectronicResource) {
-              itemDisplay = <span>{h.location}</span>;
-            }
+              if (h.callNumber) {
+                itemDisplay =
+                  <span dangerouslySetInnerHTML={this.createMarkup(h.callNumber)}></span>;
+              } else if (h.isElectronicResource) {
+                itemDisplay = <span>{h.location}</span>;
+              }
 
-            return (
-              <li
-                key={i}
-                className={`${h.availability} ${i >= maxDisplay && collapsed ? 'collapsed' : ''}`}
-              >
-                <span>
-                  {itemLink}
-                </span>
-                {itemDisplay}
-              </li>
-            );
-          })
-        }
-      </ul>
+              return (
+                <tr key={i} className={h.availability}>
+                  <td>{h.location}</td>
+                  <td>{itemDisplay}</td>
+                  <td>{h.status}</td>
+                  <td>{h.accessMessage}</td>
+                  <td>{itemLink}</td>
+                </tr>
+              );
+            })
+          }
+          {
+            shortenItems && itemLength >= 20 &&
+              (<tr>
+                <td colSpan="5">
+                  <Link
+                    to={`/bib/${this.props.bibId}/all`}
+                    className="view-all-items"
+                  >
+                    View All Items
+                  </Link>
+                </td>
+              </tr>)
+          }
+        </tbody>
+      </table>
     );
   }
 
@@ -115,6 +119,11 @@ ItemHoldings.propTypes = {
   holdings: React.PropTypes.array,
   title: React.PropTypes.string,
   bibId: React.PropTypes.string,
+  shortenItems: React.PropTypes.bool,
+};
+
+ItemHoldings.defaultProps = {
+  shortenItems: false,
 };
 
 ItemHoldings.contextTypes = {
