@@ -98,10 +98,13 @@ class Facet extends React.Component {
 
   getFacetLabel(field) {
     if (field === 'materialType') {
-      return 'Material Type';
+      return 'Format';
     } else if (field === 'subjectLiteral') {
       return 'Subject';
+    } else if (field === 'owner') {
+      return 'Owning Location/Division';
     }
+
     return field.charAt(0).toUpperCase() + field.slice(1);
   }
 
