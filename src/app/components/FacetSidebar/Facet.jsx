@@ -23,12 +23,10 @@ class Facet extends React.Component {
 
     this.routeHandler = this.routeHandler.bind(this);
     this.onFacetUpdate = this.onFacetUpdate.bind(this);
-    // this.showMoreFacets = this.showMoreFacets.bind(this);
-    // this.showFacet = this.showFacet.bind(this);
   }
 
   componentDidMount() {
-    setTimeout(() => {
+    this.timeout = setTimeout(() => {
       this.setState({ openFacet: false });
     }, 500);
   }
@@ -39,6 +37,10 @@ class Facet extends React.Component {
     if (_isEmpty(nextProps.selectedFacets)) {
       this.setState({ selectedValues: [] });
     }
+  }
+
+  componentWillUnmount() {
+    clearTimeout(this.timeout);
   }
 
   onFacetUpdate(e) {
