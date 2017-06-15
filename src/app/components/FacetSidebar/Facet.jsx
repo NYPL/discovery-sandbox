@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {
   extend as _extend,
   reject as _reject,
@@ -231,18 +232,16 @@ class Facet extends React.Component {
 }
 
 Facet.propTypes = {
-  facet: React.PropTypes.object,
-  selectedFacets: React.PropTypes.object,
-  totalHits: React.PropTypes.number,
-  selectedValues: React.PropTypes.array,
-  createAPIQuery: React.PropTypes.func,
-  spinning: React.PropTypes.bool,
+  facet: PropTypes.object,
+  selectedFacets: PropTypes.object,
+  totalHits: PropTypes.number,
+  selectedValues: PropTypes.array,
+  createAPIQuery: PropTypes.func,
+  spinning: PropTypes.bool,
 };
 
 Facet.contextTypes = {
-  router: function contextType() {
-    return React.PropTypes.func.isRequired;
-  },
+  router: PropTypes.object,
 };
 
 export default Facet;

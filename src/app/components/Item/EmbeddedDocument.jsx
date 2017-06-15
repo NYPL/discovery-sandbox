@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 class EmbeddedDocument extends React.Component {
 
@@ -22,10 +23,10 @@ class EmbeddedDocument extends React.Component {
 }
 
 EmbeddedDocument.propTypes = {
-  title: React.PropTypes.string,
-  owner: React.PropTypes.string,
-  externalURL: React.PropTypes.string,
-  embedURL: React.PropTypes.string
+  title: PropTypes.string,
+  owner: PropTypes.string,
+  externalURL: PropTypes.string,
+  embedURL: PropTypes.string
 };
 
 export default EmbeddedDocument;

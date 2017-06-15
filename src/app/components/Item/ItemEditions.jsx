@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { ajaxCall } from '../../utils/utils.js';
 
 import ResultList from '../Results/ResultsList.jsx';
@@ -55,8 +56,8 @@ class ItemEditions extends React.Component {
 }
 
 ItemEditions.propTypes = {
-  title: React.PropTypes.string,
-  item: React.PropTypes.object
+  title: PropTypes.string,
+  item: PropTypes.object
 };
 
 export default ItemEditions;

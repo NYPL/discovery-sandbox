@@ -1,5 +1,5 @@
 import React from 'react';
-
+import PropTypes from 'prop-types';
 import DocumentTitle from 'react-document-title';
 
 import { Header, navConfig } from '@nypl/dgx-header-component';
@@ -101,14 +101,12 @@ class App extends React.Component {
 }
 
 App.propTypes = {
-  children: React.PropTypes.object,
-  location: React.PropTypes.object,
+  children: PropTypes.object,
+  location: PropTypes.object,
 };
 
 App.contextTypes = {
-  router: function contextType() {
-    return React.PropTypes.func.isRequired;
-  },
+  router: PropTypes.object,
 };
 
 

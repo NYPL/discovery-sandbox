@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import PatronStore from '../../stores/PatronStore.js';
 import config from '../../../../appConfig.js';
 import { Link } from 'react-router';
@@ -108,10 +109,10 @@ class HoldConfirmation extends React.Component {
 }
 
 HoldConfirmation.propTypes = {
-  bib: React.PropTypes.object,
-  location: React.PropTypes.object,
-  searchKeywords: React.PropTypes.string,
-  params: React.PropTypes.object,
+  bib: PropTypes.object,
+  location: PropTypes.object,
+  searchKeywords: PropTypes.string,
+  params: PropTypes.object,
 };
 
 HoldConfirmation.defaultProps = {

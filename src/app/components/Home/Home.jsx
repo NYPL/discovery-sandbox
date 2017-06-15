@@ -1,5 +1,5 @@
 import React from 'react';
-
+import PropTypes from 'prop-types';
 import DocumentTitle from 'react-document-title';
 
 import Breadcrumbs from '../Breadcrumbs/Breadcrumbs.jsx';
@@ -40,7 +40,7 @@ const Home = (props) => (
 );
 
 Home.propTypes = {
-  spinning: React.PropTypes.bool,
+  spinning: PropTypes.bool,
 };
 
 export default Home;

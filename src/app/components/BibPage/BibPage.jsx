@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 import {
   findWhere as _findWhere,
@@ -325,19 +326,17 @@ class BibPage extends React.Component {
 }
 
 BibPage.propTypes = {
-  item: React.PropTypes.object,
-  searchKeywords: React.PropTypes.string,
-  location: React.PropTypes.object,
-  selectedFacets: React.PropTypes.object,
-  bib: React.PropTypes.object,
-  field: React.PropTypes.string,
-  spinning: React.PropTypes.bool,
+  item: PropTypes.object,
+  searchKeywords: PropTypes.string,
+  location: PropTypes.object,
+  selectedFacets: PropTypes.object,
+  bib: PropTypes.object,
+  field: PropTypes.string,
+  spinning: PropTypes.bool,
 };
 
 BibPage.contextTypes = {
-  router: function contextType() {
-    return React.PropTypes.func.isRequired;
-  },
+  router: PropTypes.object,
 };
 
 export default BibPage;

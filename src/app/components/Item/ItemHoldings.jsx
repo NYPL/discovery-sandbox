@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 import axios from 'axios';
 import Actions from '../../actions/Actions';
@@ -115,10 +116,10 @@ class ItemHoldings extends React.Component {
 }
 
 ItemHoldings.propTypes = {
-  holdings: React.PropTypes.array,
-  title: React.PropTypes.string,
-  bibId: React.PropTypes.string,
-  shortenItems: React.PropTypes.bool,
+  holdings: PropTypes.array,
+  title: PropTypes.string,
+  bibId: PropTypes.string,
+  shortenItems: PropTypes.bool,
 };
 
 ItemHoldings.defaultProps = {
@@ -126,9 +127,7 @@ ItemHoldings.defaultProps = {
 };
 
 ItemHoldings.contextTypes = {
-  router: function contextType() {
-    return React.PropTypes.func.isRequired;
-  },
+  router: PropTypes.object,
 };
 
 export default ItemHoldings;
