@@ -5,6 +5,7 @@ import {
   each as _each,
   isEmpty as _isEmpty,
   isArray as _isArray,
+  keys as _keys,
 } from 'underscore';
 import { XIcon } from 'dgx-svg-icons';
 
@@ -61,11 +62,13 @@ class Hits extends React.Component {
   getFacetElements(facets) {
     if (_isEmpty(facets)) return null;
     const renderedElms = [];
+    const filterLen = _keys(facets).length - 1;
+    let j = 0;
     _mapObject(facets, (value, key) => {
       _each(value, (facet, i) => {
         renderedElms.push(
           <span key={`${key}-${i}`} className="nypl-facet">
-            &nbsp;with {this.getFacetLabel(key)} <strong>{facet.value}</strong>
+            {this.getFacetLabel(key)} <strong>{facet.value}</strong>
             <button
               onClick={() => this.removeFacet(key, facet.id)}
               className="remove-facet"
@@ -80,7 +83,15 @@ class Hits extends React.Component {
             </button>
           </span>
         );
+        if (i < value.length - 1) {
+          renderedElms.push(<span key={`value-comma-${i}`}>, </span>);
+        }
       });
+
+      if (j < filterLen) {
+        renderedElms.push(<span key={`filter-comma-${j}`}>, </span>);
+      }
+      j++;
     });
 
     return renderedElms;
@@ -148,10 +159,10 @@ class Hits extends React.Component {
 
     _mapObject(selectedFacets, (val, key) => {
       if (key === 'dateAfter' || key === 'dateBefore') {
-        activeFacets[key] = [];
         // Converting the date object value into an array of one object
         // just for rendering purposes.
         if (!_isEmpty(val) && val.id) {
+          activeFacets[key] = [];
           activeFacets[key].push(val);
         }
       } else if (val.length && _isArray(val)) {
@@ -173,10 +184,10 @@ class Hits extends React.Component {
       return (
         <p>
           <strong className="nypl-results-count">{hitsF}</strong>
-           results found{keyword}{activeFacetsElm}
+           results found for {keyword}{keyword && activeFacetsElm && ', '}{activeFacetsElm}.
         </p>);
     }
-    return (<p>No results found{keyword}{activeFacetsElm}.</p>);
+    return (<p>No results found for {keyword}{activeFacetsElm}.</p>);
   }
 
   render() {

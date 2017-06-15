@@ -52,11 +52,15 @@ class Pagination extends React.Component {
    */
   fetchResults(e, page) {
     e.preventDefault();
+    Actions.updateSpinner(true);
+    // Temporary. Need to check cross-browser and if it's needed at all.
+    window.scrollTo(0, 0);
     const apiQuery = this.props.createAPIQuery({ page });
 
     ajaxCall(`/api?${apiQuery}`, response => {
       Actions.updateSearchResults(response.data.searchResults);
       Actions.updatePage(page.toString());
+      Actions.updateSpinner(false);
       this.context.router.push(`/search?${apiQuery}`);
     });
   }
