@@ -121,9 +121,10 @@ class Hits extends React.Component {
       selectedFacets,
       searchKeywords,
       error,
+      hits,
     } = this.props;
 
-    if (selectedFacets.length || searchKeywords.length && _isEmpty(error)) {
+    if (!hits && (selectedFacets.length || searchKeywords.length && _isEmpty(error))) {
       return (<ClearHits />);
     }
 

@@ -107,6 +107,11 @@ class DateFacet extends React.Component {
   render() {
     const spinningClass = this.props.spinning ? 'spinning' : '';
     const collapsedClass = this.state.openFacet ? '' : 'collapsed';
+
+    if (!this.props.totalHits) {
+      return null;
+    }
+
     return (
       <div className={`nypl-collapsible-field nypl-spinner-field ${collapsedClass} ${spinningClass}`}>
         <button
@@ -160,6 +165,7 @@ class DateFacet extends React.Component {
 
 DateFacet.propTypes = {
   keywords: PropTypes.string,
+  totalHits: PropTypes.number,
   selectedFacets: PropTypes.object,
   createAPIQuery: PropTypes.func,
   spinning: PropTypes.bool,
