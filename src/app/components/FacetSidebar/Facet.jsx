@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {
   extend as _extend,
   reject as _reject,
@@ -26,7 +27,7 @@ class Facet extends React.Component {
   }
 
   componentDidMount() {
-    setTimeout(() => {
+    this.timeout = setTimeout(() => {
       this.setState({ openFacet: false });
     }, 500);
   }
@@ -37,6 +38,10 @@ class Facet extends React.Component {
     if (_isEmpty(nextProps.selectedFacets)) {
       this.setState({ selectedValues: [] });
     }
+  }
+
+  componentWillUnmount() {
+    clearTimeout(this.timeout);
   }
 
   onFacetUpdate(e) {
@@ -94,10 +99,13 @@ class Facet extends React.Component {
 
   getFacetLabel(field) {
     if (field === 'materialType') {
-      return 'Material Type';
+      return 'Format';
     } else if (field === 'subjectLiteral') {
       return 'Subject';
+    } else if (field === 'owner') {
+      return 'Owning Location/Division';
     }
+
     return field.charAt(0).toUpperCase() + field.slice(1);
   }
 
@@ -224,18 +232,16 @@ class Facet extends React.Component {
 }
 
 Facet.propTypes = {
-  facet: React.PropTypes.object,
-  selectedFacets: React.PropTypes.object,
-  totalHits: React.PropTypes.number,
-  selectedValues: React.PropTypes.array,
-  createAPIQuery: React.PropTypes.func,
-  spinning: React.PropTypes.bool,
+  facet: PropTypes.object,
+  selectedFacets: PropTypes.object,
+  totalHits: PropTypes.number,
+  selectedValues: PropTypes.array,
+  createAPIQuery: PropTypes.func,
+  spinning: PropTypes.bool,
 };
 
 Facet.contextTypes = {
-  router: function contextType() {
-    return React.PropTypes.func.isRequired;
-  },
+  router: PropTypes.object,
 };
 
 export default Facet;

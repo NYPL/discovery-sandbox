@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 const AdvancedSearch = () => {
   return (
@@ -180,7 +181,7 @@ const AdvancedSearch = () => {
 }
 
 AdvancedSearch.propTypes = {
-  children: React.PropTypes.object,
+  children: PropTypes.object,
 };
 
 export default AdvancedSearch;

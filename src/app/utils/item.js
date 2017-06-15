@@ -1,5 +1,8 @@
 import Locations from '../../../locations.js';
 import LocationCodes from '../../../locationCodes.js';
+import {
+  isEmpty as _isEmpty,
+} from 'underscore';
 
 function LibraryItem() {
   this.getDefaultLocation = () => ({
@@ -8,25 +11,33 @@ function LibraryItem() {
   });
 
   /**
-   * getItem(record, 'b18207658-i24609501')
-   * @param (Object) record
-   * @param (String) itemId
+   * getItem(record, itemId)
+   *
+   * @param {Object} record
+   * @param {String} itemId
+   * @return {Object}
    */
   this.getItem = (record, itemId) => {
-    // look for item id in record's items
-    const items = record.items;
     let thisItem = {};
-    items.forEach((i) => {
-      if (i['@id'].substring(4) === itemId) {
-        thisItem = i;
-      }
-    });
-    return thisItem;
+    // look for item id in record's items
+    const items = (record && record.items) ? record.items : null;
+
+    if (items && itemId) {
+      items.forEach((i) => {
+        if (i['@id'] && i['@id'].substring(4) === itemId) {
+          thisItem = i;
+        }
+      });
+    }
+
+    return (!_isEmpty(thisItem)) ? thisItem : null;
   };
 
   /**
    * getItems(record)
-   * @param (Object) record
+   *
+   * @param {Object} record
+   * @return {Object}
    */
   this.getItems = (record) => {
     const recordTitle = record.title ? record.title[0] : '';
@@ -39,12 +50,14 @@ function LibraryItem() {
         const id = item['@id'].substring(4);
         let status = item.status && item.status[0].prefLabel ? item.status[0].prefLabel : '';
         let availability = status.replace(/\W/g, '').toLowerCase();
-        let accessMessage = item.accessMessage && item.accessMessage.length ? item.accessMessage[0].prefLabel.toLowerCase() : '';
-        const callNumber = item.shelfMark ? item.shelfMark[0] : '';
-        const location = this.getLocationLabel(item);
+        let accessMessage = item.accessMessage && item.accessMessage.length ?
+          item.accessMessage[0].prefLabel.toLowerCase() : '';
+        const callNumber = item.shelfMark && item.shelfMark.length ? item.shelfMark[0] : '';
+        const locationDetails = this.getLocationDetails(item);
         let url = null;
         let actionLabel = null;
         let actionLabelHelper = null;
+        let requestHold = false;
         const isElectronicResource = this.isElectronicResource(item);
 
         if (isElectronicResource && item.electronicLocator[0].url) {
@@ -53,8 +66,21 @@ function LibraryItem() {
           url = item.electronicLocator[0].url;
           actionLabel = 'View online';
           actionLabelHelper = `resource for ${recordTitle}`;
+          // Temporary for ReCAP items.
+        } else if (accessMessage === 'adv request' && !item.holdingLocation) {
+          requestHold = true;
+          actionLabel = accessMessage;
+          actionLabelHelper = `request hold on ${recordTitle}`;
+          // Temporary for NYPL ReCAP items.
+          // Making sure that if there is a holding location, that the location code starts with
+          // rc. Ids are in the format of `loc:x` where x is the location code.
+        } else if (item.holdingLocation && item.holdingLocation.length &&
+          item.holdingLocation[0]['@id'].substring(4, 6) === 'rc') {
+          requestHold = true;
+          actionLabel = accessMessage;
+          actionLabelHelper = `request hold on ${recordTitle}`;
         } else if (availability === 'available') {
-          url = this.getLocationHoldUrl(location);
+          url = this.getLocationHoldUrl(locationDetails);
           actionLabel = 'Request for in-library use';
           actionLabelHelper = `for ${recordTitle} for use in library`;
         }
@@ -66,11 +92,12 @@ function LibraryItem() {
           available: (availability === 'available'),
           accessMessage,
           isElectronicResource,
-          location,
+          location: locationDetails.prefLabel,
           callNumber,
           url,
           actionLabel,
           actionLabelHelper,
+          requestHold,
         };
       });
 
@@ -87,19 +114,25 @@ function LibraryItem() {
   };
 
   this.getLocationHoldUrl = (location) => {
+    const holdingLocationId = location['@id'].substring(4);
     let url = '';
+    let shortLocation = 'schwarzman';
 
-    switch (location) {
-      case 'Stephen A. Schwarzman Building - Rose Main Reading Room 315':
+    if (holdingLocationId in LocationCodes) {
+      shortLocation = LocationCodes[holdingLocationId].location;
+    }
+
+    switch (shortLocation) {
+      case 'schwarzman':
         url = 'http://www.questionpoint.org/crs/servlet/org.oclc.admin.BuildForm?&institution=13777&type=1&language=1';
         break;
-      case 'Library for the Performing Arts':
+      case 'lpa':
         url = 'http://www.questionpoint.org/crs/servlet/org.oclc.admin.BuildForm?&institution=13252&type=1&language=1';
         break;
-      case 'Schomburg Center':
+      case 'schomburg':
         url = 'http://www.questionpoint.org/crs/servlet/org.oclc.admin.BuildForm?&institution=13810&type=1&language=1';
         break;
-      case 'Science, Industry and Business Library':
+      case 'sibl':
         url = 'http://www.questionpoint.org/crs/servlet/org.oclc.admin.BuildForm?&institution=13809&type=1&language=1';
         break;
       default:
@@ -111,9 +144,11 @@ function LibraryItem() {
   };
 
   /**
-   * getLocation(record, 'b18207658-i24609501')
-   * @param (Object) record
-   * @param (String) itemId
+   * getLocation(record, itemId)
+   *
+   * @param {Object} record
+   * @param {String} itemId
+   * @return {Object}
    */
   this.getLocation = (record, itemId) => {
     const thisItem = this.getItem(record, itemId);
@@ -126,12 +161,13 @@ function LibraryItem() {
     if (thisItem && thisItem.location && thisItem.location.length > 0) {
       location = thisItem.location[0][0];
     }
-    const locationCode = location['@id'].substring(4);
-    const prefLabel = location.prefLabel;
-    const isOffsite = this.isOffsite(location);
+    const locationCode = (location['@id'] && typeof location['@id'] === 'string') ?
+      location['@id'].substring(4) : '';
+    const prefLabel = (location) ? location.prefLabel : '';
+    const isOffsite = (location) ? this.isOffsite(location) : false;
 
     // retrieve location data
-    if (locationCode in LocationCodes) {
+    if (locationCode && locationCode in LocationCodes) {
       location = Locations[LocationCodes[locationCode].location];
     } else {
       location = Locations[LocationCodes[defaultLocation['@id'].substring(4)].location];
@@ -139,8 +175,8 @@ function LibraryItem() {
 
     // retrieve delivery location
     let deliveryLocationCode = defaultLocation['@id'].substring(4);
-    if (locationCode in LocationCodes) {
-      deliveryLocationCode = LocationCodes[locationCode].delivery_location;
+    if (locationCode && locationCode in LocationCodes) {
+      deliveryLocationCode = LocationCodes[locationCode].delivery_location || '';
     }
 
     location.offsite = isOffsite;
@@ -154,14 +190,13 @@ function LibraryItem() {
     return location;
   };
 
-  this.getLocationLabel = (item) => {
+  this.getLocationDetails = (item) => {
     const defaultLocation = this.getDefaultLocation();
     let location = this.getDefaultLocation();
 
     // this is a physical resource
-    if (item.location && item.location.length) {
-      location = item.location[0][0];
-
+    if (item.holdingLocation && item.holdingLocation.length) {
+      location = item.holdingLocation[0];
     // this is an electronic resource
     } else if (item.electronicLocator && item.electronicLocator.length) {
       location = item.electronicLocator[0];
@@ -171,9 +206,9 @@ function LibraryItem() {
     }
 
     if (this.isOffsite(location)) {
-      return `${defaultLocation.prefLabel} (requested from offsite storage)`;
+      location.prefLabel = `${defaultLocation.prefLabel} (requested from offsite storage)`;
     }
-    return location.prefLabel;
+    return location;
   };
 
   this.isElectronicResource = (item) => item.electronicLocator && item.electronicLocator.length;

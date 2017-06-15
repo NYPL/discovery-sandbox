@@ -1,5 +1,5 @@
 import React from 'react';
-
+import PropTypes from 'prop-types';
 import DocumentTitle from 'react-document-title';
 
 import Hits from '../Hits/Hits.jsx';
@@ -23,16 +23,20 @@ const SearchResultsPage = (props) => {
     sortBy,
     field,
     spinning,
+    error,
   } = props;
 
   const facetList = facets && facets.itemListElement ? facets.itemListElement : [];
-  const totalHits = searchResults ? searchResults.totalResults : 0;
-  const totalPages = Math.floor(totalHits / 50) + 1;
+  const totalHits = searchResults ? searchResults.totalResults : undefined;
+  const totalPages = totalHits ? Math.floor(totalHits / 50) + 1 : 0;
   const results = searchResults ? searchResults.itemListElement : [];
   const breadcrumbs = (
     <Breadcrumbs query={searchKeywords} type="search" />
   );
   const createAPIQuery = basicQuery(props);
+  const h1searchKeywordsLabel = searchKeywords ? `for ${searchKeywords}` : '';
+  const h1pageLabel = totalPages ? `page ${page} of ${totalPages}` : '';
+  const h1Label = `Search results ${h1searchKeywordsLabel} ${h1pageLabel}`;
 
   return (
     <DocumentTitle title={`${searchKeywords ? searchKeywords + ' | ' : ''} Search Results | Research Catalog | NYPL`}>
@@ -40,7 +44,7 @@ const SearchResultsPage = (props) => {
         <div className="nypl-page-header">
           <div className="nypl-full-width-wrapper">
             {breadcrumbs}
-            <h1 aria-label={`Search results for ${searchKeywords} page ${page} of ${totalPages}`}>
+            <h1 aria-label={h1Label}>
               Search results
             </h1>
           </div>
@@ -84,10 +88,11 @@ const SearchResultsPage = (props) => {
                 searchKeywords={searchKeywords}
                 selectedFacets={selectedFacets}
                 createAPIQuery={createAPIQuery}
+                error={error}
               />
 
               {
-                totalHits !== 0 && (
+                totalHits && totalHits !== 0 && (
                   <Sorter
                     sortBy={sortBy}
                     page={page}
@@ -99,7 +104,7 @@ const SearchResultsPage = (props) => {
               {results && results.length !== 0 && (<ResultList results={results} />)}
 
               {
-                totalHits !== 0 &&
+                totalHits && totalHits !== 0 &&
                   (<Pagination
                     hits={totalHits}
                     page={page}
@@ -116,15 +121,15 @@ const SearchResultsPage = (props) => {
 };
 
 SearchResultsPage.propTypes = {
-  searchResults: React.PropTypes.object,
-  searchKeywords: React.PropTypes.string,
-  facets: React.PropTypes.object,
-  selectedFacets: React.PropTypes.object,
-  page: React.PropTypes.string,
-  location: React.PropTypes.object,
-  sortBy: React.PropTypes.string,
-  field: React.PropTypes.string,
-  spinning: React.PropTypes.bool,
+  searchResults: PropTypes.object,
+  searchKeywords: PropTypes.string,
+  facets: PropTypes.object,
+  selectedFacets: PropTypes.object,
+  page: PropTypes.string,
+  location: PropTypes.object,
+  sortBy: PropTypes.string,
+  field: PropTypes.string,
+  spinning: PropTypes.bool,
 };
 
 export default SearchResultsPage;

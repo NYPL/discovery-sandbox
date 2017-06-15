@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 
 const Breadcrumbs = ({ query, type, title, url }) => {
@@ -25,7 +26,7 @@ const Breadcrumbs = ({ query, type, title, url }) => {
 
   currentPageText = title;
 
-  if (type === 'item') {
+  if (type === 'bib') {
     crumbs = (
       <ol role="navigation" aria-label="breadcrumbs" className="nypl-breadcrumbs">
         <li><a href="https://nypl.org">Home</a></li>
@@ -54,10 +55,10 @@ const Breadcrumbs = ({ query, type, title, url }) => {
 };
 
 Breadcrumbs.propTypes = {
-  query: React.PropTypes.string,
-  type: React.PropTypes.string,
-  title: React.PropTypes.string,
-  url: React.PropTypes.string,
+  query: PropTypes.string,
+  type: PropTypes.string,
+  title: PropTypes.string,
+  url: PropTypes.string,
 };
 
 Breadcrumbs.defaultProps = {

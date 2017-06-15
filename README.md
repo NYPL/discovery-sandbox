@@ -20,9 +20,15 @@ To install packages run
 
 To run locally in development mode run
 
-    $ APP_ENV=development npm start
+    $ npm run dev-start
 
-and visit `localhost:3001`.
+If you would like to run in different the environments, run
+
+    $ APP_ENV=[environment variable] npm start
+
+`environment variable` is the name of the particular environment, such as `qa`.
+
+At last, visit `localhost:3001`.
 
 To run locally in production mode run
 
@@ -123,3 +129,8 @@ This will output warnings in the browser's console for elements that do not meet
 ## Misc
 
 Starting up from a [Node/React boilerplate](https://bitbucket.org/NYPL/dgx-nypl-react-boilerplate).
+
+## Deployment
+
+### Elastic Beanstalk
+We are using AWS EB to deploy our app. Check the [deployment file](DEPLOYMENT.md) for more information.

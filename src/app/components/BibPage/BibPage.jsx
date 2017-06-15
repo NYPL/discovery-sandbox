@@ -1,8 +1,10 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 import {
   findWhere as _findWhere,
   findIndex as _findIndex,
+  isArray as _isArray,
   mapObject as _mapObject,
   each as _each,
 } from 'underscore';
@@ -10,8 +12,8 @@ import DocumentTitle from 'react-document-title';
 
 import Breadcrumbs from '../Breadcrumbs/Breadcrumbs';
 import Search from '../Search/Search';
-import ItemHoldings from './ItemHoldings';
-import ItemDetails from './ItemDetails';
+import ItemHoldings from '../Item/ItemHoldings';
+import BibDetails from './BibDetails';
 import LibraryItem from '../../utils/item';
 import Actions from '../../actions/Actions';
 
@@ -20,7 +22,7 @@ import {
   basicQuery,
 } from '../../utils/utils';
 
-class ItemPage extends React.Component {
+class BibPage extends React.Component {
 
   onClick(e, query) {
     e.preventDefault();
@@ -73,7 +75,7 @@ class ItemPage extends React.Component {
     const detailFields = [];
     data.forEach((f) => {
       // skip absent fields
-      if (!record[f.field] || !record[f.field].length) return false;
+      if (!record[f.field] || !record[f.field].length || !_isArray(record[f.field])) return false;
       const fieldValue = record[f.field][0];
 
       // external links
@@ -156,6 +158,7 @@ class ItemPage extends React.Component {
   render() {
     const createAPIQuery = basicQuery(this.props);
     const record = this.props.bib ? this.props.bib : this.props.item;
+    const bibId = record['@id'].substring(4);
     const title = record.title && record.title.length ? record.title[0] : '';
     const authors = record.contributor && record.contributor.length ?
       record.contributor.map((author, i) => (
@@ -194,17 +197,45 @@ class ItemPage extends React.Component {
       record.actionType[0].prefLabel : null;
 
     const detailFields = [
-      { label: 'Author/Creator', field: 'creatorLiteral', linkable: true },
-      { label: 'Contributors', field: 'contributorLiteral', linkable: true },
-      { label: 'Subjects', field: 'subjectLiteral', linkable: true },
-      { label: 'Owner', field: 'owner', linkable: true },
-      { label: 'Alternative Titles', field: 'titleAlt', linkable: false },
-      { label: 'Description', field: 'description', linkable: false },
+      { label: 'Title', field: 'title' },
+      { label: 'Title (alternative)', field: 'titleAlt' },
+      { label: 'Title (display)', field: 'titleDisplay' },
+      { label: 'Type', field: 'type' },
+      { label: 'Carrier Type', field: 'carrierType' },
+      { label: 'Material Type', field: 'materialType' },
+      { label: 'Media Type', field: 'mediaType' },
+      { label: 'Language', field: 'language' },
+      { label: 'Created String', field: 'createdString' },
+      { label: 'Creator', field: 'creatorLiteral' },
+      { label: 'Date String', field: 'dateString' },
+      { label: 'Date Created', field: 'createdYear' },
+      { label: 'Date Published', field: 'startYear' },
+      { label: 'Contributors', field: 'contributor' },
+      { label: 'Publisher', field: 'publisher' },
+      { label: 'Place of publication', field: 'placeOfPublication' },
+      { label: 'Subjects', field: 'subjectLiteral' },
+      { label: 'Dimensions', field: 'dimensions' },
+      { label: 'Extent', field: 'extent' },
+      { label: 'Issuance', field: 'issuance' },
+      { label: 'Owner', field: 'owner' },
+      { label: 'Location', field: 'location' },
       { label: 'Notes', field: 'note' },
-      { label: 'External links', field: 'idOclc', url: (id) => `http://worldcat.org/oclc/${id}` },
+      { label: 'Bnumber', field: 'idBnum' },
+      { label: 'LCC', field: 'idLcc' },
+      { label: 'OCLC', field: 'idOclc' },
+      { label: 'Owi', field: 'idOwi' },
+      { label: 'URI', field: 'uris' },
+      { label: 'Identifier', field: 'identifier' },
+      { label: 'Number available', field: 'numAvailable' },
+      { label: 'Number of items', field: 'numItems' },
+      { label: 'Shelf Mark', field: 'shelfMark' },
     ];
+    let shortenItems = true;
+    if (this.props.location.pathname.indexOf('all') === -1) {
+      shortenItems = false;
+    }
 
-    const itemDetails = this.getDisplayFields(record, detailFields);
+    const bibDetails = this.getDisplayFields(record, detailFields);
     let searchURL = this.props.searchKeywords;
 
     _mapObject(this.props.selectedFacets, (val, key) => {
@@ -224,7 +255,7 @@ class ItemPage extends React.Component {
             <div className="nypl-full-width-wrapper">
               <Breadcrumbs
                 query={searchURL}
-                type="item"
+                type="bib"
                 title={title}
               />
               <h1>Research Catalog</h1>
@@ -268,17 +299,22 @@ class ItemPage extends React.Component {
                   </div>
                 </div>
               </div>
-              <div className="nypl-column-one-quarter nypl-item-holdings">
-                <ItemHoldings
-                  holdings={holdings}
-                  title={`${record.numItems} item${record.numItems === 1 ? '' : 's'}
-                    associated with this record:`}
-                />
-              </div>
 
-              <div className="nypl-column-three-quarters">
+              <div className="nypl-column-three-quarters nypl-column-offset-one">
                 <div className="nypl-item-details">
-                  <ItemDetails data={itemDetails} />
+                  <BibDetails
+                    data={bibDetails}
+                    title="Bib details"
+                  />
+                </div>
+                <div className="">
+                  <ItemHoldings
+                    shortenItems={shortenItems}
+                    holdings={holdings}
+                    bibId={bibId}
+                    title={`${record.numItems} item${record.numItems === 1 ? '' : 's'}
+                      associated with this record:`}
+                  />
                 </div>
               </div>
             </div>
@@ -289,20 +325,18 @@ class ItemPage extends React.Component {
   }
 }
 
-ItemPage.propTypes = {
-  item: React.PropTypes.object,
-  searchKeywords: React.PropTypes.string,
-  location: React.PropTypes.object,
-  selectedFacets: React.PropTypes.object,
-  bib: React.PropTypes.object,
-  field: React.PropTypes.string,
-  spinning: React.PropTypes.bool,
+BibPage.propTypes = {
+  item: PropTypes.object,
+  searchKeywords: PropTypes.string,
+  location: PropTypes.object,
+  selectedFacets: PropTypes.object,
+  bib: PropTypes.object,
+  field: PropTypes.string,
+  spinning: PropTypes.bool,
 };
 
-ItemPage.contextTypes = {
-  router: function contextType() {
-    return React.PropTypes.func.isRequired;
-  },
+BibPage.contextTypes = {
+  router: PropTypes.object,
 };
 
-export default ItemPage;
+export default BibPage;

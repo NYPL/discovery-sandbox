@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 import {
   isEmpty as _isEmpty,
@@ -22,7 +23,7 @@ class ResultsList extends React.Component {
 
     ajaxCall(`/api/retrieve?q=${id}`, (response) => {
       Actions.updateBib(response.data);
-      this.routeHandler(`/item/${id}`);
+      this.routeHandler(`/bib/${id}`);
     });
   }
 
@@ -91,7 +92,7 @@ class ResultsList extends React.Component {
         <h2>
           <Link
             onClick={(e) => this.getRecord(e, id)}
-            href={`/item/${id}`}
+            href={`/bib/${id}`}
             className="title"
           >
             {itemTitle}
@@ -128,13 +129,11 @@ class ResultsList extends React.Component {
 }
 
 ResultsList.propTypes = {
-  results: React.PropTypes.array,
+  results: PropTypes.array,
 };
 
 ResultsList.contextTypes = {
-  router: function contextType() {
-    return React.PropTypes.func.isRequired;
-  },
+  router: PropTypes.object,
 };
 
 export default ResultsList;

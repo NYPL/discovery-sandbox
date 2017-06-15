@@ -28,6 +28,7 @@ class Store {
       sortBy: 'relevance',
       spinning: false,
       field: 'all',
+      error: {},
     };
   }
 

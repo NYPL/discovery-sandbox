@@ -36,6 +36,7 @@ function MainApp(req, res, next) {
     page: '1',
     sortBy: 'relevance',
     field: 'all',
+    error: {},
   };
 
   next();
@@ -141,12 +142,13 @@ function ServerSearch(req, res, next) {
         page: pageQuery,
         sortBy: sort ? `${sort}_${order}` : 'relevance',
         field: fieldQuery,
+        error: {},
       };
 
       next();
     },
     (error) => {
-      console.log(error);
+      console.log('search error', error);
       res.locals.data.Store = {
         searchResults: {},
         selectedFacets: {},
@@ -155,6 +157,7 @@ function ServerSearch(req, res, next) {
         page: '1',
         sortBy: 'relevance',
         field: 'all',
+        error,
       };
 
       next();
@@ -171,24 +174,24 @@ router
   .get(ServerSearch);
 
 router
-  .route('/hold/:id')
-  .get(itemSearch.serverItemSearch);
-
-router
   .route('/hold/request/:id')
   .get(itemSearch.newHoldRequest)
   .post(itemSearch.createHoldRequest);
 
 router
   .route('/hold/confirmation/:id')
-  .get(itemSearch.serverItemSearch);
+  .get(itemSearch.serverConfirmRequest);
 
 router
   .route('/account')
   .get(itemSearch.account);
 
 router
-  .route('/item/:id')
+  .route('/bib/:id')
+  .get(itemSearch.serverItemSearch);
+
+router
+  .route('/bib/:id/all')
   .get(itemSearch.serverItemSearch);
 
 router
@@ -198,6 +201,10 @@ router
 router
   .route('/api/retrieve')
   .get(itemSearch.ajaxItemSearch);
+
+router
+  .route('/api/newHold')
+  .get(itemSearch.ajaxCreateHoldRequest);
 
 router
   .route('/')

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Actions from '../../actions/Actions';
 import { ajaxCall } from '../../utils/utils';
 
@@ -34,9 +35,7 @@ class ClearHits extends React.Component {
 }
 
 ClearHits.contextTypes = {
-  router: function contextType() {
-    return React.PropTypes.func.isRequired;
-  },
+  router: PropTypes.object,
 };
 
 export default ClearHits;

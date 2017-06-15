@@ -10,7 +10,7 @@ describe('Home', () => {
   let component;
 
   before(() => {
-    component = shallow(<Home sortBy="relevance" />);
+    component = shallow(<Home />);
   });
 
   it('should be wrapped in a .home class', () => {
@@ -37,7 +37,11 @@ describe('Home', () => {
 
   it('should contains a Search component', () => {
     expect(component.find('Search')).to.have.length(1);
-    expect(component.contains(<Search sortBy="relevance" />)).to.equal(true);
+    // expect(component.contains(
+    //   <Search
+    //     spinning={props.spinning}
+    //     createAPIQuery={basicQuery(props)}
+    //   />)).to.equal(true);
   });
 });
 
@@ -45,29 +49,10 @@ describe('Home - mount', () => {
   let component;
 
   before(() => {
-    component = mount(<Home sortBy="relevance" />);
+    component = mount(<Home spinning={false} />);
   });
 
-  it('should have a sortBy prop set to "relevance"', () => {
-    expect(component.props().sortBy).to.equal('relevance');
-  });
-
-  it('should have a sortBy prop set to "title_asc" when changed', () => {
-    component.setProps({
-      sortBy: 'title_asc',
-    });
-
-    expect(component.props().sortBy).to.equal('title_asc');
-  });
-
-  it('should pass its prop to the Search component', () => {
-    // Still has the previous set prop for this test
-    expect(component.contains(<Search sortBy="title_asc" />)).to.equal(true);
-
-    component.setProps({
-      sortBy: 'relevance',
-    });
-
-    expect(component.contains(<Search sortBy="relevance" />)).to.equal(true);
+  it('should have a spinning prop set to false', () => {
+    expect(component.props().spinning).to.equal(false);
   });
 });

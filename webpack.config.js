@@ -78,7 +78,10 @@ if (ENV === 'development') {
         {
           test: /\.jsx?$/,
           exclude: /(node_modules|bower_components)/,
-          loaders: ['react-hot', 'babel'],
+          loader: 'babel',
+          query: {
+            presets: ['react', 'es2015'],
+          },
         },
         {
           test: /\.scss?$/,
@@ -106,12 +109,15 @@ if (ENV === 'production') {
         {
           test: /\.jsx?$/,
           exclude: /(node_modules|bower_components)/,
-          loaders: ['babel'],
+          loader: 'babel',
+          query: {
+            presets: ['react', 'es2015'],
+          },
         },
         {
           test: /\.scss$/,
           include: path.resolve(ROOT_PATH, 'src'),
-          loader: ExtractTextPlugin.extract(`css?sourceMap!sass?sourceMap&${sassPaths}`)
+          loader: ExtractTextPlugin.extract(`css?sourceMap!sass?sourceMap&${sassPaths}`),
         },
       ],
     },
@@ -120,6 +126,11 @@ if (ENV === 'production') {
       new webpack.optimize.UglifyJsPlugin({
         compress: {
           warnings: false,
+        },
+      }),
+      new webpack.DefinePlugin({
+        'process.env': {
+          NODE_ENV: JSON.stringify('production'),
         },
       }),
     ],
