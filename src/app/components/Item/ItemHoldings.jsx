@@ -18,8 +18,9 @@ class ItemHoldings extends React.Component {
   getRecord(e, id) {
     e.preventDefault();
 
+    // Search for the bib? Just pass the data.
     axios
-      .get(`/api/retrieve?q=${id}`)
+      .get(`/api/retrieve?q=${this.props.bibId}`)
       .then(response => {
         Actions.updateBib(response.data);
         this.context.router.push(`/hold/request/${id}`);
@@ -43,14 +44,12 @@ class ItemHoldings extends React.Component {
               let itemLink;
               let itemDisplay = null;
 
-              // NOTE: This is using `this.props.bibId` but it is wrong. It should be the item ID.
-              // Currently, hitting the API with items is not working.
               if (h.requestHold) {
                 itemLink = h.availability === 'available' ?
                   <Link
                     className="button"
-                    to={`/hold/request/${this.props.bibId}`}
-                    onClick={(e) => this.getRecord(e, this.props.bibId)}
+                    to={`/hold/request/${h.id}`}
+                    onClick={(e) => this.getRecord(e, h.id)}
                   >Request</Link> :
                   <span className="nypl-item-unavailable">Unavailable</span>;
               }
