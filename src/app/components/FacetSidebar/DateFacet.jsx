@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { DownWedgeIcon } from 'dgx-svg-icons';
 
 import Actions from '../../actions/Actions';
 import { ajaxCall } from '../../utils/utils';
@@ -116,15 +117,7 @@ class DateFacet extends React.Component {
           onClick={() => this.showFacet()}
         >
           Date
-          <svg
-            aria-hidden="true"
-            className="nypl-icon"
-            preserveAspectRatio="xMidYMid meet"
-            viewBox="0 0 68 24"
-          >
-            <title>wedge down icon</title>
-            <polygon points="67.938 0 34 24 0 0 10 0 34.1 16.4 58.144 0 67.938 0"></polygon>
-          </svg>
+          <DownWedgeIcon className="nypl-icon" viewBox="0 0 68 24" />
         </button>
         <div
           className={`nypl-collapsible ${collapsedClass}`}
