@@ -136,7 +136,7 @@ function createHoldRequest(req, res) {
 
   // get item id and pickup location
   let itemId = req.params.id;
-  let nyplSource = 'nypl-sierra';
+  let nyplSource = 'sierra-nypl';
 
   if (itemId.indexOf('-') >= 0) {
     const parts = itemId.split('-');
