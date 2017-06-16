@@ -5,8 +5,6 @@ import {
   findWhere as _findWhere,
   findIndex as _findIndex,
   isArray as _isArray,
-  mapObject as _mapObject,
-  each as _each,
 } from 'underscore';
 import DocumentTitle from 'react-document-title';
 import { LeftArrowIcon } from 'dgx-svg-icons';
@@ -155,22 +153,7 @@ class BibPage extends React.Component {
     return detailFields;
   }
 
-  getResultsLink() {
-    let searchURL = this.props.searchKeywords;
-    _mapObject(this.props.selectedFacets, (val, key) => {
-      if (key === 'dateAfter' || key === 'dateBefore') {
-        if (val && val.id !== '') {
-          searchURL += `&filters[${key}]=${val.id}`;
-        }
-      } else if (val.length) {
-        _each(val, facet => {
-          if (facet && facet.id !== '') {
-            searchURL += `&filters[${key}]=${facet.id}`;
-          }
-        });
-      }
-    });
-
+  getResultsLink(searchURL) {
     if (!searchURL) {
       return null;
     }
@@ -179,7 +162,7 @@ class BibPage extends React.Component {
       <Link
         title={`Go back to search results for ${this.props.searchKeywords}`}
         className="nypl-back-link"
-        to={`/search?q=${searchURL}`}
+        to={`/search?${searchURL}`}
       >
         <LeftArrowIcon />
         Back to Search Results
@@ -268,21 +251,7 @@ class BibPage extends React.Component {
     }
 
     const bibDetails = this.getDisplayFields(record, detailFields);
-    let searchURL = this.props.searchKeywords;
-
-    _mapObject(this.props.selectedFacets, (val, key) => {
-      if (key === 'dateAfter' || key === 'dateBefore') {
-        if (val && val.id !== '') {
-          searchURL += `&filters[${key}]=${val.id}`;
-        }
-      } else if (val.length) {
-        _each(val, facet => {
-          if (facet && facet.id !== '') {
-            searchURL += `&filters[${key}]=${facet.id}`;
-          }
-        });
-      }
-    });
+    const searchURL = createAPIQuery({});
 
     return (
       <DocumentTitle title={`${title} | Research Catalog`}>
@@ -290,12 +259,12 @@ class BibPage extends React.Component {
           <div className="nypl-page-header">
             <div className="nypl-full-width-wrapper">
               <Breadcrumbs
-                query={searchURL}
+                query={searchURL.substring(2)}
                 type="bib"
                 title={title}
               />
               <h1>Research Catalog</h1>
-              {this.getResultsLink()}
+              {this.getResultsLink(searchURL)}
             </div>
           </div>
 
@@ -370,6 +339,8 @@ BibPage.propTypes = {
   bib: PropTypes.object,
   field: PropTypes.string,
   spinning: PropTypes.bool,
+  sortBy: PropTypes.string,
+  page: PropTypes.string,
 };
 
 BibPage.contextTypes = {

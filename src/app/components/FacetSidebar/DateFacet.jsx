@@ -106,6 +106,7 @@ class DateFacet extends React.Component {
   render() {
     const spinningClass = this.props.spinning ? 'spinning' : '';
     const collapsedClass = this.state.openFacet ? '' : 'collapsed';
+
     return (
       <div className={`nypl-collapsible-field nypl-spinner-field ${collapsedClass} ${spinningClass}`}>
         <button

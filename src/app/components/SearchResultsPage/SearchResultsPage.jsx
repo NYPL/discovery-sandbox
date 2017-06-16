@@ -92,7 +92,7 @@ const SearchResultsPage = (props) => {
               />
 
               {
-                totalHits && totalHits !== 0 && (
+                !!(totalHits && totalHits !== 0) && (
                   <Sorter
                     sortBy={sortBy}
                     page={page}
@@ -101,10 +101,10 @@ const SearchResultsPage = (props) => {
                 )
               }
 
-              {results && results.length !== 0 && (<ResultList results={results} />)}
+              {!!(results && results.length !== 0) && (<ResultList results={results} />)}
 
               {
-                totalHits && totalHits !== 0 &&
+                !!(totalHits && totalHits !== 0) &&
                   (<Pagination
                     hits={totalHits}
                     page={page}
