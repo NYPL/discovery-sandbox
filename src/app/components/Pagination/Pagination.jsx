@@ -1,6 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
+import {
+  LeftArrowIcon,
+  RightArrowIcon,
+} from 'dgx-svg-icons';
 
 import Actions from '../../actions/Actions.js';
 import { ajaxCall } from '../../utils/utils.js';
@@ -16,18 +20,8 @@ class Pagination extends React.Component {
     if (!page) return null;
     const intPage = parseInt(page, 10);
     const pageNum = type === 'Next' ? intPage + 1 : intPage - 1;
-    const prevSVG = (
-      <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" viewBox="0 0 32 32">
-        <title>Left arrow</title>
-        <polygon points="16.959 24.065 9.905 16.963 27.298 16.963 27.298 14.548 9.905 14.548 16.959 7.397 15.026 5.417 4.688 15.707 15.026 25.998 16.959 24.065" />
-      </svg>
-    );
-    const nextSVG = (
-      <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" viewBox="0 0 32 32">
-        <title>Right arrow</title>
-        <polygon points="16.959 25.998 27.298 15.707 16.959 5.417 15.026 7.397 22.08 14.548 4.688 14.548 4.687 16.963 22.08 16.963 15.026 24.065 16.959 25.998" />
-      </svg>
-    );
+    const prevSVG = <LeftArrowIcon />;
+    const nextSVG = <RightArrowIcon />;
     const svg = type === 'Next' ? nextSVG : prevSVG;
 
     const searchStr = this.props.urlSearchString;
@@ -58,11 +52,15 @@ class Pagination extends React.Component {
    */
   fetchResults(e, page) {
     e.preventDefault();
+    Actions.updateSpinner(true);
+    // Temporary. Need to check cross-browser and if it's needed at all.
+    window.scrollTo(0, 0);
     const apiQuery = this.props.createAPIQuery({ page });
 
     ajaxCall(`/api?${apiQuery}`, response => {
       Actions.updateSearchResults(response.data.searchResults);
       Actions.updatePage(page.toString());
+      Actions.updateSpinner(false);
       this.context.router.push(`/search?${apiQuery}`);
     });
   }
