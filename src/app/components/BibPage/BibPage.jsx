@@ -9,6 +9,7 @@ import {
   each as _each,
 } from 'underscore';
 import DocumentTitle from 'react-document-title';
+import { LeftArrowIcon } from 'dgx-svg-icons';
 
 import Breadcrumbs from '../Breadcrumbs/Breadcrumbs';
 import Search from '../Search/Search';
@@ -23,7 +24,6 @@ import {
 } from '../../utils/utils';
 
 class BibPage extends React.Component {
-
   onClick(e, query) {
     e.preventDefault();
 
@@ -155,10 +155,42 @@ class BibPage extends React.Component {
     return detailFields;
   }
 
+  getResultsLink() {
+    let searchURL = this.props.searchKeywords;
+    _mapObject(this.props.selectedFacets, (val, key) => {
+      if (key === 'dateAfter' || key === 'dateBefore') {
+        if (val && val.id !== '') {
+          searchURL += `&filters[${key}]=${val.id}`;
+        }
+      } else if (val.length) {
+        _each(val, facet => {
+          if (facet && facet.id !== '') {
+            searchURL += `&filters[${key}]=${facet.id}`;
+          }
+        });
+      }
+    });
+
+    if (!searchURL) {
+      return null;
+    }
+
+    return (
+      <Link
+        title={`Go back to search results for ${this.props.searchKeywords}`}
+        className="nypl-back-link"
+        to={`/search?q=${searchURL}`}
+      >
+        <LeftArrowIcon />
+        Back to Search Results
+      </Link>
+    );
+  }
+
   render() {
     const createAPIQuery = basicQuery(this.props);
     const record = this.props.bib ? this.props.bib : this.props.item;
-    const bibId = record['@id'].substring(4);
+    const bibId = record && record['@id'] ? record['@id'].substring(4) : '';
     const title = record.title && record.title.length ? record.title[0] : '';
     const authors = record.contributor && record.contributor.length ?
       record.contributor.map((author, i) => (
@@ -239,10 +271,14 @@ class BibPage extends React.Component {
     let searchURL = this.props.searchKeywords;
 
     _mapObject(this.props.selectedFacets, (val, key) => {
-      if (val.length) {
+      if (key === 'dateAfter' || key === 'dateBefore') {
+        if (val && val.id !== '') {
+          searchURL += `&filters[${key}]=${val.id}`;
+        }
+      } else if (val.length) {
         _each(val, facet => {
-          if (facet && facet.value !== '') {
-            searchURL += `&filters[${key}]=${facet.value}`;
+          if (facet && facet.id !== '') {
+            searchURL += `&filters[${key}]=${facet.id}`;
           }
         });
       }
@@ -259,6 +295,7 @@ class BibPage extends React.Component {
                 title={title}
               />
               <h1>Research Catalog</h1>
+              {this.getResultsLink()}
             </div>
           </div>
 
