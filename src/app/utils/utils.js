@@ -315,7 +315,8 @@ const basicQuery = (props) => {
     const filterQuery = getFacetFilterParam(selectedFacets || props.selectedFacets);
     // `searchKeywords` can be an empty string, so check if it's undefined instead.
     const query = searchKeywords !== undefined ? searchKeywords : props.searchKeywords;
-    const pageQuery = page && page !== '1' ? `&page=${page}` : '';
+    let pageQuery = props.page && props.page !== '1' ? `&page=${props.page}` : '';
+    pageQuery = page && page !== '1' ? `&page=${page}` : pageQuery;
 
     return `q=${query}${filterQuery}${sortQuery}${fieldQuery}${pageQuery}`;
   };
