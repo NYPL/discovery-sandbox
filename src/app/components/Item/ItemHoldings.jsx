@@ -12,9 +12,11 @@ class ItemHoldings extends React.Component {
 
     this.state = {
       js: false,
+      page: 1,
     };
 
     this.getRecord = this.getRecord.bind(this);
+    this.updatePage = this.updatePage.bind(this);
   }
 
   componentDidMount() {
@@ -36,15 +38,12 @@ class ItemHoldings extends React.Component {
       });
   }
 
-  getTable(holdings) {
-    const shortenItems = !this.props.shortenItems;
-    const itemsToDisplay = shortenItems ? holdings.slice(0, 20) : holdings;
-    let itemPagination = null;
+  updatePage(page) {
+    this.setState({ page });
+  }
 
-    if (this.state.js && shortenItems && holdings.length >= 20) {
-      console.log('paginate away')
-      itemPagination = <ItemPagination hits={holdings.length} page='1' />;
-    }
+  getTable(holdings, shortenItems = false) {
+    const itemsToDisplay = shortenItems ? holdings.slice(0, 20) : holdings;
 
     return (
       <table className="nypl-basic-table">
@@ -83,20 +82,6 @@ class ItemHoldings extends React.Component {
               );
             })
           }
-          {
-            shortenItems && holdings.length >= 20 &&
-              (<tr>
-                <td colSpan="5">
-                  <Link
-                    to={`/bib/${this.props.bibId}/all`}
-                    className="view-all-items"
-                  >
-                    View All Items
-                  </Link>
-                </td>
-              </tr>)
-          }
-          {itemPagination}
         </tbody>
       </table>
     );
@@ -110,12 +95,37 @@ class ItemHoldings extends React.Component {
 
   render() {
     const holdings = this.props.holdings;
-    const body = this.getTable(holdings);
+    const shortenItems = !this.props.shortenItems;
+    const body = this.getTable(holdings, shortenItems);
+    let itemPagination = null;
+
+    if (this.state.js && holdings && holdings.length >= 20) {
+      console.log('paginate away');
+      itemPagination = (
+        <ItemPagination
+          hits={holdings.length}
+          page={this.state.page}
+          updatePage={this.updatePage}
+        />
+      );
+    }
 
     return (
-      <div id="item-holdings" className="nypl-item-holdings">
+      <div id="item-holdings" className="item-holdings">
         <h2>{this.props.title}</h2>
         {body}
+        {
+          shortenItems && holdings.length >= 20 &&
+            (<div className="view-all-items-container">
+              <Link
+                to={`/bib/${this.props.bibId}/all`}
+                className="view-all-items"
+              >
+                View All Items
+              </Link>
+            </div>)
+        }
+        {itemPagination}
       </div>
     );
   }

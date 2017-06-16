@@ -27,11 +27,13 @@ class ItemPagination extends React.Component {
     const svg = type === 'Next' ? nextSVG : prevSVG;
 
     return (
-      <button
+      <a
+        href="#"
+        rel={type.toLowerCase()}
         onClick={(e) => this.fetchResults(e, pageNum)}
       >
         {svg} {type} Page
-      </button>
+      </a>
     );
   }
 
@@ -42,8 +44,7 @@ class ItemPagination extends React.Component {
    */
   fetchResults(e, page) {
     e.preventDefault();
-
-    console.log(page);
+    this.props.updatePage(page);
   }
 
   render() {
@@ -53,11 +54,11 @@ class ItemPagination extends React.Component {
     } = this.props;
     if (!hits) return null;
 
-    const perPage = 50;
+    const perPage = 20;
     const pageFactor = parseInt(page, 10) * perPage;
     const nextPage = (hits < perPage || pageFactor > hits) ? null : this.getPage(page, 'Next');
     const prevPage = page > 1 ? this.getPage(page, 'Previous') : null;
-    const totalPages = Math.floor(hits / 50) + 1;
+    const totalPages = Math.floor(hits / 20) + 1;
 
     return (
       <div className="nypl-results-pagination">
@@ -77,14 +78,12 @@ class ItemPagination extends React.Component {
 
 ItemPagination.propTypes = {
   hits: PropTypes.number,
-  urlSearchString: PropTypes.string,
-  page: PropTypes.string,
-  createAPIQuery: PropTypes.func,
+  page: PropTypes.number,
+  updatePage: PropTypes.func,
 };
 
 ItemPagination.defaultProps = {
-  page: '1',
-  sortBy: 'relevance',
+  page: 1,
 };
 
 ItemPagination.contextTypes = {
