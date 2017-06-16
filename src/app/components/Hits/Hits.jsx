@@ -5,7 +5,9 @@ import {
   each as _each,
   isEmpty as _isEmpty,
   isArray as _isArray,
+  keys as _keys,
 } from 'underscore';
+import { XIcon } from 'dgx-svg-icons';
 
 import Actions from '../../actions/Actions';
 import ClearHits from './ClearHits';
@@ -30,10 +32,11 @@ class Hits extends React.Component {
             className="remove-keyword"
             aria-controls="results-region"
           >
-            <svg className="nypl-icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 10 10" aria-hidden="true">
-              <title>times icon</title>
-              <polygon points="2.3,6.8 3.2,7.7 5,5.9 6.8,7.7 7.7,6.8 5.9,5 7.7,3.2 6.8,2.3 5,4.1 3.2,2.3 2.3,3.2 4.1,5 "></polygon>
-            </svg>
+            <XIcon
+              className="nypl-icon"
+              preserveAspectRatio="xMidYMid meet"
+              aria-hidden="true"
+            />
             <span className="hidden">remove keyword filter&nbsp;{keyword}</span>
           </button>
         </span>
@@ -59,25 +62,36 @@ class Hits extends React.Component {
   getFacetElements(facets) {
     if (_isEmpty(facets)) return null;
     const renderedElms = [];
+    const filterLen = _keys(facets).length - 1;
+    let j = 0;
     _mapObject(facets, (value, key) => {
       _each(value, (facet, i) => {
         renderedElms.push(
           <span key={`${key}-${i}`} className="nypl-facet">
-            &nbsp;with {this.getFacetLabel(key)} <strong>{facet.value}</strong>
+            {this.getFacetLabel(key)} <strong>{facet.value}</strong>
             <button
               onClick={() => this.removeFacet(key, facet.id)}
               className="remove-facet"
               aria-controls="results-region"
             >
-              <svg className="nypl-icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 10 10" aria-hidden="true">
-                <title>times icon</title>
-                <polygon points="2.3,6.8 3.2,7.7 5,5.9 6.8,7.7 7.7,6.8 5.9,5 7.7,3.2 6.8,2.3 5,4.1 3.2,2.3 2.3,3.2 4.1,5 "></polygon>
-              </svg>
+              <XIcon
+                className="nypl-icon"
+                preserveAspectRatio="xMidYMid meet"
+                aria-hidden="true"
+              />
               <span className="hidden">remove filter&nbsp;{facet.value}</span>
             </button>
           </span>
         );
+        if (i < value.length - 1) {
+          renderedElms.push(<span key={`value-comma-${i}`}>, </span>);
+        }
       });
+
+      if (j < filterLen) {
+        renderedElms.push(<span key={`filter-comma-${j}`}>, </span>);
+      }
+      j++;
     });
 
     return renderedElms;
@@ -145,10 +159,10 @@ class Hits extends React.Component {
 
     _mapObject(selectedFacets, (val, key) => {
       if (key === 'dateAfter' || key === 'dateBefore') {
-        activeFacets[key] = [];
         // Converting the date object value into an array of one object
         // just for rendering purposes.
         if (!_isEmpty(val) && val.id) {
+          activeFacets[key] = [];
           activeFacets[key].push(val);
         }
       } else if (val.length && _isArray(val)) {
@@ -170,10 +184,10 @@ class Hits extends React.Component {
       return (
         <p>
           <strong className="nypl-results-count">{hitsF}</strong>
-           results found{keyword}{activeFacetsElm}
+           results found for {keyword}{keyword && activeFacetsElm && ', '}{activeFacetsElm}.
         </p>);
     }
-    return (<p>No results found{keyword}{activeFacetsElm}.</p>);
+    return (<p>No results found for {keyword}{activeFacetsElm}.</p>);
   }
 
   render() {
