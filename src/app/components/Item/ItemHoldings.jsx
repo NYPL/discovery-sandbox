@@ -2,7 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 import axios from 'axios';
+
 import Actions from '../../actions/Actions';
+import ItemPagination from './ItemPagination';
 
 class ItemHoldings extends React.Component {
   constructor(props) {
@@ -37,9 +39,11 @@ class ItemHoldings extends React.Component {
   getTable(holdings) {
     const shortenItems = !this.props.shortenItems;
     const itemsToDisplay = shortenItems ? holdings.slice(0, 20) : holdings;
+    let itemPagination = null;
 
     if (this.state.js && shortenItems && holdings.length >= 20) {
       console.log('paginate away')
+      itemPagination = <ItemPagination hits={holdings.length} page='1' />;
     }
 
     return (
@@ -92,6 +96,7 @@ class ItemHoldings extends React.Component {
                 </td>
               </tr>)
           }
+          {itemPagination}
         </tbody>
       </table>
     );
