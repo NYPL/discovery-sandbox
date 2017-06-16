@@ -2,17 +2,37 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 import axios from 'axios';
+
 import Actions from '../../actions/Actions';
+import ItemPagination from './ItemPagination';
 
 class ItemHoldings extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      expanded: false,
+      chunkedHoldings: [],
+      js: false,
+      page: 1,
     };
 
     this.getRecord = this.getRecord.bind(this);
+    this.updatePage = this.updatePage.bind(this);
+    this.chunk = this.chunk.bind(this);
+  }
+
+  componentDidMount() {
+    const holdings = this.props.holdings;
+    let chunkedHoldings = [];
+
+    if (holdings && holdings.length >= 20) {
+      chunkedHoldings = this.chunk(holdings, 20);
+    }
+
+    this.setState({
+      js: true,
+      chunkedHoldings,
+    });
   }
 
   getRecord(e, id) {
@@ -30,14 +50,12 @@ class ItemHoldings extends React.Component {
       });
   }
 
-  getRow(holdings) {
-    const shortenItems = !this.props.shortenItems;
+  getTable(holdings, shortenItems = false) {
     const itemsToDisplay = shortenItems ? holdings.slice(0, 20) : holdings;
-    const itemLength = itemsToDisplay.length;
 
     return (
       <table className="nypl-basic-table">
-        <caption className="hidden">item holdings</caption>
+        <caption className="hidden">Item details</caption>
         <tbody>
           {
             itemsToDisplay.map((h, i) => {
@@ -72,27 +90,20 @@ class ItemHoldings extends React.Component {
               );
             })
           }
-          {
-            shortenItems && itemLength >= 20 &&
-              (<tr>
-                <td colSpan="5">
-                  <Link
-                    to={`/bib/${this.props.bibId}/all`}
-                    className="view-all-items"
-                  >
-                    View All Items
-                  </Link>
-                </td>
-              </tr>)
-          }
         </tbody>
       </table>
     );
   }
 
-  showMoreItems(e) {
-    e.preventDefault();
-    this.setState({ expanded: true });
+  updatePage(page) {
+    this.setState({ page });
+  }
+
+  chunk(arr, n) {
+    if (!arr.length) {
+      return [];
+    }
+    return [arr.slice(0, n)].concat(this.chunk(arr.slice(n), n));
   }
 
   createMarkup(html) {
@@ -102,13 +113,40 @@ class ItemHoldings extends React.Component {
   }
 
   render() {
-    const holdings = this.props.holdings;
-    const body = this.getRow(holdings);
+    let holdings = this.props.holdings;
+    const shortenItems = !this.props.shortenItems;
+    let itemPagination = null;
+
+    if (this.state.js && holdings && holdings.length >= 20) {
+      itemPagination = (
+        <ItemPagination
+          total={holdings.length}
+          page={this.state.page}
+          updatePage={this.updatePage}
+        />
+      );
+
+      holdings = this.state.chunkedHoldings[this.state.page + 1];
+    }
+
+    const body = this.getTable(holdings, shortenItems);
 
     return (
-      <div id="item-holdings" className="nypl-item-holdings">
+      <div id="item-holdings" className="item-holdings">
         <h2>{this.props.title}</h2>
         {body}
+        {
+          shortenItems && holdings.length >= 20 &&
+            (<div className="view-all-items-container">
+              <Link
+                to={`/bib/${this.props.bibId}/all`}
+                className="view-all-items"
+              >
+                View All Items
+              </Link>
+            </div>)
+        }
+        {itemPagination}
       </div>
     );
   }
