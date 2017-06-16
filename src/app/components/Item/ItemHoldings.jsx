@@ -12,6 +12,7 @@ class ItemHoldings extends React.Component {
 
     this.state = {
       chunkedHoldings: [],
+      showAll: false,
       js: false,
       page: 1,
     };
@@ -19,6 +20,7 @@ class ItemHoldings extends React.Component {
     this.getRecord = this.getRecord.bind(this);
     this.updatePage = this.updatePage.bind(this);
     this.chunk = this.chunk.bind(this);
+    this.showAll = this.showAll.bind(this);
   }
 
   componentDidMount() {
@@ -50,8 +52,8 @@ class ItemHoldings extends React.Component {
       });
   }
 
-  getTable(holdings, shortenItems = false) {
-    const itemsToDisplay = shortenItems ? holdings.slice(0, 20) : holdings;
+  getTable(holdings, shortenItems = false, showAll) {
+    const itemsToDisplay = shortenItems && !showAll ? holdings.slice(0, 20) : holdings;
 
     return (
       <table className="nypl-basic-table">
@@ -112,12 +114,16 @@ class ItemHoldings extends React.Component {
     };
   }
 
+  showAll() {
+    this.setState({ showAll: true });
+  }
+
   render() {
     let holdings = this.props.holdings;
     const shortenItems = !this.props.shortenItems;
     let itemPagination = null;
 
-    if (this.state.js && holdings && holdings.length >= 20) {
+    if (this.state.js && holdings && holdings.length >= 20 && !this.state.showAll) {
       itemPagination = (
         <ItemPagination
           total={holdings.length}
@@ -129,21 +135,25 @@ class ItemHoldings extends React.Component {
       holdings = this.state.chunkedHoldings[this.state.page + 1];
     }
 
-    const body = this.getTable(holdings, shortenItems);
+    const body = this.getTable(holdings, shortenItems, this.state.showAll);
 
     return (
       <div id="item-holdings" className="item-holdings">
         <h2>{this.props.title}</h2>
         {body}
         {
-          shortenItems && holdings.length >= 20 &&
+          !!(shortenItems && holdings.length >= 20 && !this.state.showAll) &&
             (<div className="view-all-items-container">
-              <Link
-                to={`/bib/${this.props.bibId}/all`}
-                className="view-all-items"
-              >
-                View All Items
-              </Link>
+              {
+                this.state.js ?
+                  (<a href="#" onClick={this.showAll}>View All Items</a>) :
+                  (<Link
+                    to={`/bib/${this.props.bibId}/all`}
+                    className="view-all-items"
+                  >
+                    View All Items
+                  </Link>)
+              }
             </div>)
         }
         {itemPagination}
