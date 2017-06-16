@@ -11,16 +11,28 @@ class ItemHoldings extends React.Component {
     super(props);
 
     this.state = {
+      chunkedHoldings: [],
       js: false,
       page: 1,
     };
 
     this.getRecord = this.getRecord.bind(this);
     this.updatePage = this.updatePage.bind(this);
+    this.chunk = this.chunk.bind(this);
   }
 
   componentDidMount() {
-    this.setState({ js: true });
+    const holdings = this.props.holdings;
+    let chunkedHoldings = [];
+
+    if (holdings && holdings.length >= 20) {
+      chunkedHoldings = this.chunk(holdings, 20);
+    }
+
+    this.setState({
+      js: true,
+      chunkedHoldings,
+    });
   }
 
   getRecord(e, id) {
@@ -36,10 +48,6 @@ class ItemHoldings extends React.Component {
       .catch(error => {
         console.log(error);
       });
-  }
-
-  updatePage(page) {
-    this.setState({ page });
   }
 
   getTable(holdings, shortenItems = false) {
@@ -87,6 +95,17 @@ class ItemHoldings extends React.Component {
     );
   }
 
+  updatePage(page) {
+    this.setState({ page });
+  }
+
+  chunk(arr, n) {
+    if (!arr.length) {
+      return [];
+    }
+    return [arr.slice(0, n)].concat(this.chunk(arr.slice(n), n));
+  }
+
   createMarkup(html) {
     return {
       __html: html,
@@ -94,21 +113,23 @@ class ItemHoldings extends React.Component {
   }
 
   render() {
-    const holdings = this.props.holdings;
+    let holdings = this.props.holdings;
     const shortenItems = !this.props.shortenItems;
-    const body = this.getTable(holdings, shortenItems);
     let itemPagination = null;
 
     if (this.state.js && holdings && holdings.length >= 20) {
-      console.log('paginate away');
       itemPagination = (
         <ItemPagination
-          hits={holdings.length}
+          total={holdings.length}
           page={this.state.page}
           updatePage={this.updatePage}
         />
       );
+
+      holdings = this.state.chunkedHoldings[this.state.page + 1];
     }
+
+    const body = this.getTable(holdings, shortenItems);
 
     return (
       <div id="item-holdings" className="item-holdings">
