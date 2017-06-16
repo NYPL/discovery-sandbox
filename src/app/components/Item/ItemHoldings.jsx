@@ -9,10 +9,14 @@ class ItemHoldings extends React.Component {
     super(props);
 
     this.state = {
-      expanded: false,
+      js: false,
     };
 
     this.getRecord = this.getRecord.bind(this);
+  }
+
+  componentDidMount() {
+    this.setState({ js: true });
   }
 
   getRecord(e, id) {
@@ -30,14 +34,17 @@ class ItemHoldings extends React.Component {
       });
   }
 
-  getRow(holdings) {
+  getTable(holdings) {
     const shortenItems = !this.props.shortenItems;
     const itemsToDisplay = shortenItems ? holdings.slice(0, 20) : holdings;
-    const itemLength = itemsToDisplay.length;
+
+    if (this.state.js && shortenItems && holdings.length >= 20) {
+      console.log('paginate away')
+    }
 
     return (
       <table className="nypl-basic-table">
-        <caption className="hidden">item holdings</caption>
+        <caption className="hidden">Item details</caption>
         <tbody>
           {
             itemsToDisplay.map((h, i) => {
@@ -73,7 +80,7 @@ class ItemHoldings extends React.Component {
             })
           }
           {
-            shortenItems && itemLength >= 20 &&
+            shortenItems && holdings.length >= 20 &&
               (<tr>
                 <td colSpan="5">
                   <Link
@@ -90,11 +97,6 @@ class ItemHoldings extends React.Component {
     );
   }
 
-  showMoreItems(e) {
-    e.preventDefault();
-    this.setState({ expanded: true });
-  }
-
   createMarkup(html) {
     return {
       __html: html,
@@ -103,7 +105,7 @@ class ItemHoldings extends React.Component {
 
   render() {
     const holdings = this.props.holdings;
-    const body = this.getRow(holdings);
+    const body = this.getTable(holdings);
 
     return (
       <div id="item-holdings" className="nypl-item-holdings">
