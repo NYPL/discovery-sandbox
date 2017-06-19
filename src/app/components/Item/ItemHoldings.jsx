@@ -58,6 +58,15 @@ class ItemHoldings extends React.Component {
     return (
       <table className="nypl-basic-table">
         <caption className="hidden">Item details</caption>
+        <thead>
+          <tr>
+            <th>Location</th>
+            <th>Call No.</th>
+            <th>Status</th>
+            <th>Message</th>
+            <th></th>
+          </tr>
+        </thead>
         <tbody>
           {
             itemsToDisplay.map((h, i) => {
