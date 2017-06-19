@@ -37,6 +37,13 @@ class ItemHoldings extends React.Component {
     });
   }
 
+  /*
+   * getRecord(e, id)
+   * @description Get updated information for a bib, not exactly necessary but useful,
+   * and route to the correct page.
+   * @param {object} e Event object.
+   * @param {string} id The item's id.
+   */
   getRecord(e, id) {
     e.preventDefault();
 
@@ -52,7 +59,16 @@ class ItemHoldings extends React.Component {
       });
   }
 
+  /*
+   * getTable(holdings, shortenItems, showAll)
+   * @description Display an HTML table with item data.
+   * @param {array} holdings The array of items.
+   * @param {bool} shortenItems Whether the array needs to be cut off or not.
+   * @param {bool} showAll Whether all items should be shown on the client side.
+   */
   getTable(holdings, shortenItems = false, showAll) {
+    // If there are more than 20 items and we need to shorten it to 20 AND we are not
+    // showing all items.
     const itemsToDisplay = shortenItems && !showAll ? holdings.slice(0, 20) : holdings;
 
     return (
@@ -106,10 +122,21 @@ class ItemHoldings extends React.Component {
     );
   }
 
+  /*
+   * updatePage(page)
+   * @description Update the client-side state of the component's page value.
+   * @param {number} page The next number/index of what items should be displayed.
+   */
   updatePage(page) {
     this.setState({ page });
   }
 
+  /*
+   * chunk(arr, n)
+   * @description Break up all the items in the array into array of size n arrays.
+   * @param {array} arr The array of items.
+   * @param {n} number The number we want to break the array into.
+   */
   chunk(arr, n) {
     if (!arr.length) {
       return [];
@@ -117,12 +144,21 @@ class ItemHoldings extends React.Component {
     return [arr.slice(0, n)].concat(this.chunk(arr.slice(n), n));
   }
 
+  /*
+   * createMarkup(html)
+   * @description Needed to insert/render HTML into a component.
+   * @param {string} html The HTML to render.
+   */
   createMarkup(html) {
     return {
       __html: html,
     };
   }
 
+  /*
+   * showAll()
+   * @description Display all items on the page.
+   */
   showAll() {
     this.setState({ showAll: true });
   }
@@ -144,12 +180,12 @@ class ItemHoldings extends React.Component {
       holdings = this.state.chunkedHoldings[this.state.page + 1];
     }
 
-    const body = this.getTable(holdings, shortenItems, this.state.showAll);
+    const itemTable = this.getTable(holdings, shortenItems, this.state.showAll);
 
     return (
       <div id="item-holdings" className="item-holdings">
         <h2>{this.props.title}</h2>
-        {body}
+        {itemTable}
         {
           !!(shortenItems && holdings.length >= 20 && !this.state.showAll) &&
             (<div className="view-all-items-container">
