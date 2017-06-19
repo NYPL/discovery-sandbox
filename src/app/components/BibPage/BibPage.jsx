@@ -175,42 +175,14 @@ class BibPage extends React.Component {
     const record = this.props.bib ? this.props.bib : this.props.item;
     const bibId = record && record['@id'] ? record['@id'].substring(4) : '';
     const title = record.title && record.title.length ? record.title[0] : '';
-    const authors = record.contributor && record.contributor.length ?
-      record.contributor.map((author, i) => (
-        <span key={i}>
-          <Link
-            to={{ pathname: '/search', query: { q: `filter[contributorLiteral]=${author}` } }}
-            title={`Make a new search for contributor: "${author}"`}
-            onClick={(e) => this.onClick(e, `filter[contributorLiteral]=${author}`)}
-          >
-            {author}
-          </Link>,&nbsp;
-        </span>
-      ))
-      : null;
-    const publisher = record.publisher && record.publisher.length ?
-      <Link
-        to={{ pathname: '/search', query: { q: `filter[publisher]=${record.publisher[0]}` } }}
-        title={`Make a new search for publisher: "${record.publisher[0]}"`}
-        onClick={(e) => this.onClick(e, `filter[publisher]=${record.publisher[0]}`)}
-      >
-        {record.publisher[0]}
-      </Link>
-      : null;
     const holdings = LibraryItem.getItems(record);
-
     const materialType = record && record.materialType && record.materialType[0] ?
       record.materialType[0].prefLabel : null;
     const language = record && record.language && record.language[0] ?
       record.language[0].prefLabel : null;
-    const location = record && record.location && record.location[0] ?
-        record.location[0].prefLabel : null;
-    const placeOfPublication = record && record.placeOfPublication && record.placeOfPublication[0] ?
-      record.placeOfPublication[0].prefLabel : null;
     const yearPublished = record && record.dateStartYear ? record.dateStartYear : null;
     const usageType = record && record.actionType && record.actionType[0] ?
       record.actionType[0].prefLabel : null;
-
     const detailFields = [
       { label: 'Title', field: 'title' },
       { label: 'Title (alternative)', field: 'titleAlt' },
@@ -245,13 +217,16 @@ class BibPage extends React.Component {
       { label: 'Number of items', field: 'numItems' },
       { label: 'Shelf Mark', field: 'shelfMark' },
     ];
+    const bibDetails = this.getDisplayFields(record, detailFields);
+    const bNumber = record && record.idBnum ? record.idBnum : '';
+    const marcRecordLink = bNumber ? 'https://catalog.nypl.org/search~S1?' +
+      `/.b${bNumber}/.b${bNumber}/1%2C1%2C1%2CB/marc` : '';
+    const searchURL = createAPIQuery({});
     let shortenItems = true;
+
     if (this.props.location.pathname.indexOf('all') === -1) {
       shortenItems = false;
     }
-
-    const bibDetails = this.getDisplayFields(record, detailFields);
-    const searchURL = createAPIQuery({});
 
     return (
       <DocumentTitle title={`${title} | Research Catalog`}>
@@ -308,6 +283,12 @@ class BibPage extends React.Component {
 
               <div className="nypl-column-three-quarters nypl-column-offset-one">
                 <div className="nypl-item-details">
+                  {
+                    marcRecordLink && (<dl>
+                      <dt>MARC Record</dt>
+                      <dd><a href={marcRecordLink}>MARC Record</a></dd>
+                    </dl>)
+                  }
                   <BibDetails
                     data={bibDetails}
                     title="Bib details"

@@ -101,7 +101,10 @@ const SearchResultsPage = (props) => {
                 )
               }
 
-              {!!(results && results.length !== 0) && (<ResultList results={results} />)}
+              {
+                !!(results && results.length !== 0) &&
+                (<ResultList results={results}  spinning={spinning} />)
+              }
 
               {
                 !!(totalHits && totalHits !== 0) &&
