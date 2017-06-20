@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 import axios from 'axios';
+import { isArray as _isArray } from 'underscore';
 
 import Actions from '../../actions/Actions';
 import ItemPagination from './ItemPagination';
@@ -138,7 +139,7 @@ class ItemHoldings extends React.Component {
    * @param {n} number The number we want to break the array into.
    */
   chunk(arr, n) {
-    if (!arr.length) {
+    if (_isArray(arr) && !arr.length) {
       return [];
     }
     return [arr.slice(0, n)].concat(this.chunk(arr.slice(n), n));
