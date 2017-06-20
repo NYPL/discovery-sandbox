@@ -40,7 +40,7 @@ const ItemTable = ({ items }) => {
 
             if (h.callNumber) {
               itemDisplay =
-                <span dangerouslySetInnerHTML={this.createMarkup(h.callNumber)}></span>;
+                <span dangerouslySetInnerHTML={createMarkup(h.callNumber)}></span>;
             } else if (h.isElectronicResource) {
               itemDisplay = <span>{h.location}</span>;
             }

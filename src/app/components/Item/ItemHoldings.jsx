@@ -73,8 +73,6 @@ class ItemHoldings extends React.Component {
     // showing all items.
     const itemsToDisplay = shortenItems && !showAll ? holdings.slice(0, 20) : holdings;
 
-    console.log('itemsToDisplay', itemsToDisplay);
-
     return (
       (itemsToDisplay && _isArray(itemsToDisplay) && itemsToDisplay.length > 0) ?
         <ItemTable items={itemsToDisplay} /> : null
