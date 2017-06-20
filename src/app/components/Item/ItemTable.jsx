@@ -39,7 +39,7 @@ const ItemTable = ({ items }) => {
                 <Link
                   className="button"
                   to={`/hold/request/${h.id}`}
-                  onClick={(e) => this.getRecord(e, h.id)}
+                  onClick={(e) => this.props.getRecord(e, h.id)}
                 >Request</Link> :
                 <span className="nypl-item-unavailable">Unavailable</span>;
             }
