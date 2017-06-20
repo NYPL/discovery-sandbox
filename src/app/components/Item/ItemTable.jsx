@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
+import { isArray as _isArray } from 'underscore';
 
 const createMarkup = (html) => {
   return {
@@ -10,6 +11,11 @@ const createMarkup = (html) => {
 
 const ItemTable = ({ items }) => {
   console.log('items', items);
+
+  if (!_isArray(items) || !items.length) {
+    return null;
+  }
+
   return (
     <table className="nypl-basic-table">
       <caption className="hidden">Item details</caption>

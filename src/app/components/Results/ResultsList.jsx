@@ -10,6 +10,8 @@ import Actions from '../../actions/Actions';
 import LibraryItem from '../../utils/item';
 import { ajaxCall } from '../../utils/utils';
 
+import ItemTable from '../Item/Itemtable';
+
 class ResultsList extends React.Component {
   constructor(props) {
     super(props);
@@ -104,9 +106,7 @@ class ResultsList extends React.Component {
           <span className="nypl-results-room">{location}</span>
           <span className="nypl-results-use">{usageType}</span>
         </div>
-        <div>
-         <p>this is a spaceholder</p>
-        </div>
+        {!!(items.length === 1) && <ItemTable items={items} />}
       </li>
     );
   }
