@@ -33,6 +33,7 @@ class ItemPagination extends React.Component {
 
   /*
    * updateItemSelectionPage()
+   * @param {object} e Event object.
    * @param {string} page The next page to get results from.
    */
   updateItemSelectionPage(e, page) {
