@@ -104,6 +104,9 @@ class ResultsList extends React.Component {
           <span className="nypl-results-room">{location}</span>
           <span className="nypl-results-use">{usageType}</span>
         </div>
+        <div>
+         <p>this is a spaceholder</p>
+        </div>
       </li>
     );
   }
