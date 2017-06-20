@@ -15,15 +15,15 @@ class ItemHoldings extends React.Component {
     this.getRecord = this.getRecord.bind(this);
   }
 
-  getRecord(e, id) {
+  getRecord(e, bibId, itemId) {
     e.preventDefault();
 
     // Search for the bib? Just pass the data.
     axios
-      .get(`/api/retrieve?q=${this.props.bibId}`)
+      .get(`/api/bib?bibId=${bibId}`)
       .then(response => {
         Actions.updateBib(response.data);
-        this.context.router.push(`/hold/request/${id}`);
+        this.context.router.push(`/hold/request/${bibId}-${itemId}`);
       })
       .catch(error => {
         console.log(error);
@@ -34,6 +34,7 @@ class ItemHoldings extends React.Component {
     const shortenItems = !this.props.shortenItems;
     const itemsToDisplay = shortenItems ? holdings.slice(0, 20) : holdings;
     const itemLength = itemsToDisplay.length;
+    const bibId = this.props.bibId;
 
     return (
       <table className="nypl-basic-table">
@@ -48,8 +49,8 @@ class ItemHoldings extends React.Component {
                 itemLink = h.availability === 'available' ?
                   <Link
                     className="button"
-                    to={`/hold/request/${h.id}`}
-                    onClick={(e) => this.getRecord(e, h.id)}
+                    to={`/hold/request/${bibId}-${h.id}`}
+                    onClick={(e) => this.getRecord(e, bibId, h.id)}
                   >Request</Link> :
                   <span className="nypl-item-unavailable">Unavailable</span>;
               }
@@ -77,7 +78,7 @@ class ItemHoldings extends React.Component {
               (<tr>
                 <td colSpan="5">
                   <Link
-                    to={`/bib/${this.props.bibId}/all`}
+                    to={`/bib/${bibId}/all`}
                     className="view-all-items"
                   >
                     View All Items
