@@ -5,10 +5,9 @@ import {
   findWhere as _findWhere,
   findIndex as _findIndex,
   isArray as _isArray,
-  mapObject as _mapObject,
-  each as _each,
 } from 'underscore';
 import DocumentTitle from 'react-document-title';
+import { LeftArrowIcon } from 'dgx-svg-icons';
 
 import Breadcrumbs from '../Breadcrumbs/Breadcrumbs';
 import Search from '../Search/Search';
@@ -23,7 +22,6 @@ import {
 } from '../../utils/utils';
 
 class BibPage extends React.Component {
-
   onClick(e, query) {
     e.preventDefault();
 
@@ -155,10 +153,27 @@ class BibPage extends React.Component {
     return detailFields;
   }
 
+  getResultsLink(searchURL) {
+    if (!searchURL) {
+      return null;
+    }
+
+    return (
+      <Link
+        title={`Go back to search results for ${this.props.searchKeywords}`}
+        className="nypl-back-link"
+        to={`/search?${searchURL}`}
+      >
+        <LeftArrowIcon />
+        Back to Search Results
+      </Link>
+    );
+  }
+
   render() {
     const createAPIQuery = basicQuery(this.props);
     const record = this.props.bib ? this.props.bib : this.props.item;
-    const bibId = record['@id'].substring(4);
+    const bibId = record && record['@id'] ? record['@id'].substring(4) : '';
     const title = record.title && record.title.length ? record.title[0] : '';
     const holdings = LibraryItem.getItems(record);
     const materialType = record && record.materialType && record.materialType[0] ?
@@ -206,22 +221,12 @@ class BibPage extends React.Component {
     const bNumber = record && record.idBnum ? record.idBnum : '';
     const marcRecordLink = bNumber ? 'https://catalog.nypl.org/search~S1?' +
       `/.b${bNumber}/.b${bNumber}/1%2C1%2C1%2CB/marc` : '';
+    const searchURL = createAPIQuery({});
     let shortenItems = true;
-    let searchURL = this.props.searchKeywords;
 
     if (this.props.location.pathname.indexOf('all') === -1) {
       shortenItems = false;
     }
-
-    _mapObject(this.props.selectedFacets, (val, key) => {
-      if (val.length) {
-        _each(val, facet => {
-          if (facet && facet.value !== '') {
-            searchURL += `&filters[${key}]=${facet.value}`;
-          }
-        });
-      }
-    });
 
     return (
       <DocumentTitle title={`${title} | Research Catalog`}>
@@ -229,11 +234,12 @@ class BibPage extends React.Component {
           <div className="nypl-page-header">
             <div className="nypl-full-width-wrapper">
               <Breadcrumbs
-                query={searchURL}
+                query={searchURL.substring(2)}
                 type="bib"
                 title={title}
               />
               <h1>Research Catalog</h1>
+              {this.getResultsLink(searchURL)}
             </div>
           </div>
 
@@ -314,6 +320,8 @@ BibPage.propTypes = {
   bib: PropTypes.object,
   field: PropTypes.string,
   spinning: PropTypes.bool,
+  sortBy: PropTypes.string,
+  page: PropTypes.string,
 };
 
 BibPage.contextTypes = {

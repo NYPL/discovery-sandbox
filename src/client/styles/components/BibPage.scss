@@ -1,3 +1,12 @@
 .view-all-items-container {
   margin-top: 1.5rem;
 }
+
+.nypl-back-link {
+  display: inline-block;
+  margin-top: 20px;
+
+  svg {
+    vertical-align: middle;
+  }
+}
