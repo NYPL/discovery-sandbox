@@ -102,17 +102,6 @@ class ItemHoldings extends React.Component {
   }
 
   /*
-   * createMarkup(html)
-   * @description Needed to insert/render HTML into a component.
-   * @param {string} html The HTML to render.
-   */
-  // createMarkup(html) {
-  //   return {
-  //     __html: html,
-  //   };
-  // }
-
-  /*
    * showAll()
    * @description Display all items on the page.
    */
