@@ -132,7 +132,7 @@ class HoldRequest extends React.Component {
 
           <form
             className="place-hold-form form"
-            action={`/hold/request/${itemId}-${itemId}`}
+            action={`/hold/request/${bibId}-${itemId}`}
             method="POST"
           >
             <h2>Confirm account</h2>
