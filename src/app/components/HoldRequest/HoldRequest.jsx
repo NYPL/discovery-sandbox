@@ -1,7 +1,9 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router';
+import axios from 'axios';
+
 import Breadcrumbs from '../Breadcrumbs/Breadcrumbs.jsx';
-import Store from '../../stores/Store.js';
 import PatronStore from '../../stores/PatronStore.js';
 import config from '../../../../appConfig.js';
 import LibraryItem from '../../utils/item.js';
@@ -14,11 +16,11 @@ class HoldRequest extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      data: Store.getState(),
-      patron: PatronStore.getState(),
-    };
+    this.state = { patron: PatronStore.getState() };
+
+    // change all the components :(
     this.onChange = this.onChange.bind(this);
+    this.submitRequest = this.submitRequest.bind(this);
   }
 
   componentDidMount() {
@@ -26,7 +28,30 @@ class HoldRequest extends React.Component {
   }
 
   onChange() {
-    this.setState({ data: Store.getState() });
+    this.setState({ patron: PatronStore.getState() });
+  }
+
+  /**
+   * submitRequest()
+   * Client-side submit call.
+   */
+  submitRequest(e, itemId) {
+    e.preventDefault();
+
+    axios
+      .get(`/api/newHold?id=${itemId}`)
+      .then(response => {
+        if (response.data.error && response.data.error.status !== 200) {
+          this.context.router.push(`/hold/confirmation/${itemId}?errorMessage=` +
+            `${response.data.error.statusText}`);
+        } else {
+          this.context.router.push(`/hold/confirmation/${itemId}?requestId=${response.data.id}`);
+        }
+      })
+      .catch(error => {
+        console.log(error);
+        this.context.router.push(`/hold/confirmation/${itemId}?errorMessage=${error}`);
+      });
   }
 
   /**
@@ -57,13 +82,13 @@ class HoldRequest extends React.Component {
   renderLoggedInInstruction(patronName) {
     return (patronName) ?
       <p className="loggedInInstruction">You are currently logged in as <strong>{patronName}</strong>. If this is not you, please <a href="https://isso.nypl.org/auth/logout">Log out</a> and sign in using your library card.</p>
-      : <p className="loggedInInstruction">Something went wrong during retrieving your patron data.</p>;
+      : <p className="loggedInInstruction">Something went wrong retrieving your personal information.</p>;
   }
 
   render() {
-    const searchKeywords = this.state.data.searchKeywords || '';
-    const record = (this.state.data.item && !_isEmpty(this.state.data.item)) ?
-      this.state.data.item : null;
+    const searchKeywords = this.props.searchKeywords || '';
+    const record = (this.props.bib && !_isEmpty(this.props.bib)) ?
+      this.props.bib : null;
     const title = (record && _isArray(record.title) && record.title.length) ?
       record.title[0] : '';
     const bibId = (record && record['@id'] && typeof record['@id'] === 'string') ?
@@ -128,7 +153,7 @@ class HoldRequest extends React.Component {
 
             <input type="hidden" name="pickupLocation" value={location.code} />
 
-            <button type="submit" className="large">
+            <button type="submit" className="large" onClick={(e) => this.submitRequest(e, itemId)}>
               Submit your item hold request
             </button>
           </form>
@@ -141,7 +166,7 @@ class HoldRequest extends React.Component {
           </div>
           <div className="item-summary">
             <div className="item">
-              <h2>Something wrong with your request</h2>
+              <h2>Something went wrong with your request</h2>
               <Link href={`/bib/${bibId}`}>{title}</Link>
             </div>
           </div>
@@ -169,9 +194,7 @@ class HoldRequest extends React.Component {
 }
 
 HoldRequest.contextTypes = {
-  router: function contextType() {
-    return React.PropTypes.func.isRequired;
-  },
+  router: PropTypes.object,
 };
 
 HoldRequest.propTypes = {

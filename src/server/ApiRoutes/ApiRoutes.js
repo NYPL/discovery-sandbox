@@ -174,17 +174,13 @@ router
   .get(ServerSearch);
 
 router
-  .route('/hold/:id')
-  .get(itemSearch.serverItemSearch);
-
-router
   .route('/hold/request/:id')
   .get(itemSearch.newHoldRequest)
   .post(itemSearch.createHoldRequest);
 
 router
   .route('/hold/confirmation/:id')
-  .get(itemSearch.serverItemSearch);
+  .get(itemSearch.serverConfirmRequest);
 
 router
   .route('/account')
@@ -205,6 +201,10 @@ router
 router
   .route('/api/retrieve')
   .get(itemSearch.ajaxItemSearch);
+
+router
+  .route('/api/newHold')
+  .get(itemSearch.ajaxCreateHoldRequest);
 
 router
   .route('/')

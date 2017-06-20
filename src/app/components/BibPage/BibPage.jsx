@@ -1,13 +1,13 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 import {
   findWhere as _findWhere,
   findIndex as _findIndex,
   isArray as _isArray,
-  mapObject as _mapObject,
-  each as _each,
 } from 'underscore';
 import DocumentTitle from 'react-document-title';
+import { LeftArrowIcon } from 'dgx-svg-icons';
 
 import Breadcrumbs from '../Breadcrumbs/Breadcrumbs';
 import Search from '../Search/Search';
@@ -22,7 +22,6 @@ import {
 } from '../../utils/utils';
 
 class BibPage extends React.Component {
-
   onClick(e, query) {
     e.preventDefault();
 
@@ -154,47 +153,36 @@ class BibPage extends React.Component {
     return detailFields;
   }
 
+  getResultsLink(searchURL) {
+    if (!searchURL) {
+      return null;
+    }
+
+    return (
+      <Link
+        title={`Go back to search results for ${this.props.searchKeywords}`}
+        className="nypl-back-link"
+        to={`/search?${searchURL}`}
+      >
+        <LeftArrowIcon />
+        Back to Search Results
+      </Link>
+    );
+  }
+
   render() {
     const createAPIQuery = basicQuery(this.props);
     const record = this.props.bib ? this.props.bib : this.props.item;
-    const bibId = record['@id'].substring(4);
+    const bibId = record && record['@id'] ? record['@id'].substring(4) : '';
     const title = record.title && record.title.length ? record.title[0] : '';
-    const authors = record.contributor && record.contributor.length ?
-      record.contributor.map((author, i) => (
-        <span key={i}>
-          <Link
-            to={{ pathname: '/search', query: { q: `filter[contributorLiteral]=${author}` } }}
-            title={`Make a new search for contributor: "${author}"`}
-            onClick={(e) => this.onClick(e, `filter[contributorLiteral]=${author}`)}
-          >
-            {author}
-          </Link>,&nbsp;
-        </span>
-      ))
-      : null;
-    const publisher = record.publisher && record.publisher.length ?
-      <Link
-        to={{ pathname: '/search', query: { q: `filter[publisher]=${record.publisher[0]}` } }}
-        title={`Make a new search for publisher: "${record.publisher[0]}"`}
-        onClick={(e) => this.onClick(e, `filter[publisher]=${record.publisher[0]}`)}
-      >
-        {record.publisher[0]}
-      </Link>
-      : null;
     const holdings = LibraryItem.getItems(record);
-
     const materialType = record && record.materialType && record.materialType[0] ?
       record.materialType[0].prefLabel : null;
     const language = record && record.language && record.language[0] ?
       record.language[0].prefLabel : null;
-    const location = record && record.location && record.location[0] ?
-        record.location[0].prefLabel : null;
-    const placeOfPublication = record && record.placeOfPublication && record.placeOfPublication[0] ?
-      record.placeOfPublication[0].prefLabel : null;
     const yearPublished = record && record.dateStartYear ? record.dateStartYear : null;
     const usageType = record && record.actionType && record.actionType[0] ?
       record.actionType[0].prefLabel : null;
-
     const detailFields = [
       { label: 'Title', field: 'title' },
       { label: 'Title (alternative)', field: 'titleAlt' },
@@ -229,23 +217,16 @@ class BibPage extends React.Component {
       { label: 'Number of items', field: 'numItems' },
       { label: 'Shelf Mark', field: 'shelfMark' },
     ];
+    const bibDetails = this.getDisplayFields(record, detailFields);
+    const bNumber = record && record.idBnum ? record.idBnum : '';
+    const marcRecordLink = bNumber ? 'https://catalog.nypl.org/search~S1?' +
+      `/.b${bNumber}/.b${bNumber}/1%2C1%2C1%2CB/marc` : '';
+    const searchURL = createAPIQuery({});
     let shortenItems = true;
+
     if (this.props.location.pathname.indexOf('all') === -1) {
       shortenItems = false;
     }
-
-    const bibDetails = this.getDisplayFields(record, detailFields);
-    let searchURL = this.props.searchKeywords;
-
-    _mapObject(this.props.selectedFacets, (val, key) => {
-      if (val.length) {
-        _each(val, facet => {
-          if (facet && facet.value !== '') {
-            searchURL += `&filters[${key}]=${facet.value}`;
-          }
-        });
-      }
-    });
 
     return (
       <DocumentTitle title={`${title} | Research Catalog`}>
@@ -253,11 +234,12 @@ class BibPage extends React.Component {
           <div className="nypl-page-header">
             <div className="nypl-full-width-wrapper">
               <Breadcrumbs
-                query={searchURL}
+                query={searchURL.substring(2)}
                 type="bib"
                 title={title}
               />
               <h1>Research Catalog</h1>
+              {this.getResultsLink(searchURL)}
             </div>
           </div>
 
@@ -301,6 +283,12 @@ class BibPage extends React.Component {
 
               <div className="nypl-column-three-quarters nypl-column-offset-one">
                 <div className="nypl-item-details">
+                  {
+                    marcRecordLink && (<dl>
+                      <dt>MARC Record</dt>
+                      <dd><a href={marcRecordLink}>MARC Record</a></dd>
+                    </dl>)
+                  }
                   <BibDetails
                     data={bibDetails}
                     title="Bib details"
@@ -325,19 +313,19 @@ class BibPage extends React.Component {
 }
 
 BibPage.propTypes = {
-  item: React.PropTypes.object,
-  searchKeywords: React.PropTypes.string,
-  location: React.PropTypes.object,
-  selectedFacets: React.PropTypes.object,
-  bib: React.PropTypes.object,
-  field: React.PropTypes.string,
-  spinning: React.PropTypes.bool,
+  item: PropTypes.object,
+  searchKeywords: PropTypes.string,
+  location: PropTypes.object,
+  selectedFacets: PropTypes.object,
+  bib: PropTypes.object,
+  field: PropTypes.string,
+  spinning: PropTypes.bool,
+  sortBy: PropTypes.string,
+  page: PropTypes.string,
 };
 
 BibPage.contextTypes = {
-  router: function contextType() {
-    return React.PropTypes.func.isRequired;
-  },
+  router: PropTypes.object,
 };
 
 export default BibPage;

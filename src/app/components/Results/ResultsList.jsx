@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 import {
   isEmpty as _isEmpty,
@@ -120,7 +121,7 @@ class ResultsList extends React.Component {
     }
 
     return (
-      <ul className="results-list">
+      <ul className={`results-list ${this.props.spinning ? 'hide-results-list ' : ''}`}>
         {resultsElm}
       </ul>
     );
@@ -128,13 +129,12 @@ class ResultsList extends React.Component {
 }
 
 ResultsList.propTypes = {
-  results: React.PropTypes.array,
+  results: PropTypes.array,
+  spinning: PropTypes.bool,
 };
 
 ResultsList.contextTypes = {
-  router: function contextType() {
-    return React.PropTypes.func.isRequired;
-  },
+  router: PropTypes.object,
 };
 
 export default ResultsList;

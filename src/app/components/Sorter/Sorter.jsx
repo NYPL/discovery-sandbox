@@ -1,6 +1,8 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import ClickOutHandler from 'react-onclickout';
 import { findWhere as _findWhere } from 'underscore';
+import { DownWedgeIcon } from 'dgx-svg-icons';
 
 import Actions from '../../actions/Actions';
 import { ajaxCall } from '../../utils/utils';
@@ -76,15 +78,7 @@ class Sorter extends React.Component {
               onClick={e => this.getResultsWindow(e)}
             >
               <span>Sort by <strong>{this.state.sortLabel}</strong></span>
-              <svg
-                aria-hidden="true"
-                className="nypl-icon"
-                preserveAspectRatio="xMidYMid meet"
-                viewBox="0 0 68 24"
-              >
-                <title>wedge down icon</title>
-                <polygon points="67.938 0 34 24 0 0 10 0 34.1 16.4 58.144 0 67.938 0" />
-              </svg>
+              <DownWedgeIcon className="nypl-icon" viewBox="0 0 68 24" />
             </button>
             <ul className={this.state.active ? '' : 'hidden'}>
               {
@@ -99,15 +93,13 @@ class Sorter extends React.Component {
 }
 
 Sorter.propTypes = {
-  sortBy: React.PropTypes.string,
-  page: React.PropTypes.string,
-  createAPIQuery: React.PropTypes.func,
+  sortBy: PropTypes.string,
+  page: PropTypes.string,
+  createAPIQuery: PropTypes.func,
 };
 
 Sorter.contextTypes = {
-  router: function contextType() {
-    return React.PropTypes.func.isRequired;
-  },
+  router: PropTypes.object,
 };
 
 export default Sorter;

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import PatronStore from '../../stores/PatronStore.js';
 import config from '../../../../appConfig.js';
 import { Link } from 'react-router';
@@ -41,7 +42,8 @@ class HoldConfirmation extends React.Component {
   }
 
   render() {
-    const item = this.props.item;
+    // Need to better clarify variable names later.
+    const item = this.props.bib;
     const title = (item && _isArray(item.title) && item.title.length > 0) ?
       item.title[0] : '';
     const id = (item && item['@id'] && typeof item['@id'] === 'string') ?
@@ -107,14 +109,14 @@ class HoldConfirmation extends React.Component {
 }
 
 HoldConfirmation.propTypes = {
-  item: React.PropTypes.object,
-  location: React.PropTypes.object,
-  searchKeywords: React.PropTypes.string,
-  params: React.PropTypes.object,
+  bib: PropTypes.object,
+  location: PropTypes.object,
+  searchKeywords: PropTypes.string,
+  params: PropTypes.object,
 };
 
 HoldConfirmation.defaultProps = {
-  item: {},
+  bib: {},
   searchKeywords: '',
   params: {},
 };

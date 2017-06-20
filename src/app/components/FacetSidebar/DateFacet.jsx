@@ -1,4 +1,6 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import { DownWedgeIcon } from 'dgx-svg-icons';
 
 import Actions from '../../actions/Actions';
 import { ajaxCall } from '../../utils/utils';
@@ -105,6 +107,11 @@ class DateFacet extends React.Component {
   render() {
     const spinningClass = this.props.spinning ? 'spinning' : '';
     const collapsedClass = this.state.openFacet ? '' : 'collapsed';
+
+    if (!this.props.totalHits) {
+      return null;
+    }
+
     return (
       <div className={`nypl-collapsible-field nypl-spinner-field ${collapsedClass} ${spinningClass}`}>
         <button
@@ -115,15 +122,7 @@ class DateFacet extends React.Component {
           onClick={() => this.showFacet()}
         >
           Date
-          <svg
-            aria-hidden="true"
-            className="nypl-icon"
-            preserveAspectRatio="xMidYMid meet"
-            viewBox="0 0 68 24"
-          >
-            <title>wedge down icon</title>
-            <polygon points="67.938 0 34 24 0 0 10 0 34.1 16.4 58.144 0 67.938 0"></polygon>
-          </svg>
+          <DownWedgeIcon className="nypl-icon" viewBox="0 0 68 24" />
         </button>
         <div
           className={`nypl-collapsible ${collapsedClass}`}
@@ -165,16 +164,15 @@ class DateFacet extends React.Component {
 }
 
 DateFacet.propTypes = {
-  keywords: React.PropTypes.string,
-  selectedFacets: React.PropTypes.object,
-  createAPIQuery: React.PropTypes.func,
-  spinning: React.PropTypes.bool,
+  keywords: PropTypes.string,
+  totalHits: PropTypes.number,
+  selectedFacets: PropTypes.object,
+  createAPIQuery: PropTypes.func,
+  spinning: PropTypes.bool,
 };
 
 DateFacet.contextTypes = {
-  router: function contextType() {
-    return React.PropTypes.func.isRequired;
-  },
+  router: PropTypes.object,
 };
 
 export default DateFacet;

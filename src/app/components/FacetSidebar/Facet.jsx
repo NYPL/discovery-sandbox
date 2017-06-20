@@ -1,10 +1,12 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {
   extend as _extend,
   reject as _reject,
   findWhere as _findWhere,
   isEmpty as _isEmpty,
 } from 'underscore';
+import { DownWedgeIcon } from 'dgx-svg-icons';
 
 import Actions from '../../actions/Actions';
 import { ajaxCall } from '../../utils/utils';
@@ -26,7 +28,7 @@ class Facet extends React.Component {
   }
 
   componentDidMount() {
-    setTimeout(() => {
+    this.timeout = setTimeout(() => {
       this.setState({ openFacet: false });
     }, 500);
   }
@@ -37,6 +39,10 @@ class Facet extends React.Component {
     if (_isEmpty(nextProps.selectedFacets)) {
       this.setState({ selectedValues: [] });
     }
+  }
+
+  componentWillUnmount() {
+    clearTimeout(this.timeout);
   }
 
   onFacetUpdate(e) {
@@ -94,10 +100,13 @@ class Facet extends React.Component {
 
   getFacetLabel(field) {
     if (field === 'materialType') {
-      return 'Material Type';
+      return 'Format';
     } else if (field === 'subjectLiteral') {
       return 'Subject';
+    } else if (field === 'owner') {
+      return 'Owning Location/Division';
     }
+
     return field.charAt(0).toUpperCase() + field.slice(1);
   }
 
@@ -156,15 +165,7 @@ class Facet extends React.Component {
           onClick={() => this.showFacet()}
         >
           {facetLabel}
-          <svg
-            aria-hidden="true"
-            className="nypl-icon"
-            preserveAspectRatio="xMidYMid meet"
-            viewBox="0 0 68 24"
-          >
-            <title>wedge down icon</title>
-            <polygon points="67.938 0 34 24 0 0 10 0 34.1 16.4 58.144 0 67.938 0"></polygon>
-          </svg>
+          <DownWedgeIcon className="nypl-icon" viewBox="0 0 68 24" />
         </button>
         <div
           className={`nypl-collapsible ${collapsedClass}`}
@@ -183,7 +184,7 @@ class Facet extends React.Component {
             {
               facet.values.map((f, j) => {
                 const percentage = Math.floor(f.count / this.props.totalHits * 100);
-                const valueLabel = (f.value).toString().replace(/:/, '_');
+                const valueLabel = (f.value).toString().replace(/\s+/g, '_').replace(/:/g, '_');
                 const hiddenFacet = (j > FACETSHOWLIMIT && !this.state.showMoreFacets) ?
                   'hiddenFacet' : '';
                 const selected = !!_findWhere(this.props.selectedValues, { id: f.value });
@@ -202,7 +203,7 @@ class Facet extends React.Component {
                   >
                     <input
                       id={`${field}-${valueLabel}`}
-                      aria-labelledby={`${field}-${valueLabel}`}
+                      aria-labelledby={`${field}-${valueLabel}-label`}
                       type="checkbox"
                       name={`${field}-${valueLabel}-name`}
                       checked={selected}
@@ -224,18 +225,16 @@ class Facet extends React.Component {
 }
 
 Facet.propTypes = {
-  facet: React.PropTypes.object,
-  selectedFacets: React.PropTypes.object,
-  totalHits: React.PropTypes.number,
-  selectedValues: React.PropTypes.array,
-  createAPIQuery: React.PropTypes.func,
-  spinning: React.PropTypes.bool,
+  facet: PropTypes.object,
+  selectedFacets: PropTypes.object,
+  totalHits: PropTypes.number,
+  selectedValues: PropTypes.array,
+  createAPIQuery: PropTypes.func,
+  spinning: PropTypes.bool,
 };
 
 Facet.contextTypes = {
-  router: function contextType() {
-    return React.PropTypes.func.isRequired;
-  },
+  router: PropTypes.object,
 };
 
 export default Facet;

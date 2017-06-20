@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { isEmpty as _isEmpty } from 'underscore';
 
 const MAXDISPLAY = 5;
@@ -117,8 +118,8 @@ class ResultsItems extends React.Component {
 }
 
 ResultsItems.propTypes = {
-  itemTitle: React.PropTypes.string,
-  items: React.PropTypes.array,
+  itemTitle: PropTypes.string,
+  items: PropTypes.array,
 };
 
 ResultsItems.defaultProps = {

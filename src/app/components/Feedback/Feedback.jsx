@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 class Feedback extends React.Component {
   constructor(props) {
@@ -68,7 +69,7 @@ class Feedback extends React.Component {
 }
 
 Feedback.propTypes = {
-  location: React.PropTypes.object,
+  location: PropTypes.object,
 };
 
 export default Feedback;

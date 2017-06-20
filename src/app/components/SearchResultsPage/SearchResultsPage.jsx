@@ -1,5 +1,5 @@
 import React from 'react';
-
+import PropTypes from 'prop-types';
 import DocumentTitle from 'react-document-title';
 
 import Hits from '../Hits/Hits.jsx';
@@ -92,7 +92,7 @@ const SearchResultsPage = (props) => {
               />
 
               {
-                totalHits && totalHits !== 0 && (
+                !!(totalHits && totalHits !== 0) && (
                   <Sorter
                     sortBy={sortBy}
                     page={page}
@@ -101,10 +101,13 @@ const SearchResultsPage = (props) => {
                 )
               }
 
-              {results && results.length !== 0 && (<ResultList results={results} />)}
+              {
+                !!(results && results.length !== 0) &&
+                (<ResultList results={results}  spinning={spinning} />)
+              }
 
               {
-                totalHits && totalHits !== 0 &&
+                !!(totalHits && totalHits !== 0) &&
                   (<Pagination
                     hits={totalHits}
                     page={page}
@@ -121,15 +124,15 @@ const SearchResultsPage = (props) => {
 };
 
 SearchResultsPage.propTypes = {
-  searchResults: React.PropTypes.object,
-  searchKeywords: React.PropTypes.string,
-  facets: React.PropTypes.object,
-  selectedFacets: React.PropTypes.object,
-  page: React.PropTypes.string,
-  location: React.PropTypes.object,
-  sortBy: React.PropTypes.string,
-  field: React.PropTypes.string,
-  spinning: React.PropTypes.bool,
+  searchResults: PropTypes.object,
+  searchKeywords: PropTypes.string,
+  facets: PropTypes.object,
+  selectedFacets: PropTypes.object,
+  page: PropTypes.string,
+  location: PropTypes.object,
+  sortBy: PropTypes.string,
+  field: PropTypes.string,
+  spinning: PropTypes.bool,
 };
 
 export default SearchResultsPage;
