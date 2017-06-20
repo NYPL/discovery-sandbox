@@ -2,19 +2,50 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 import axios from 'axios';
+import { isArray as _isArray } from 'underscore';
+
 import Actions from '../../actions/Actions';
+import ItemPagination from './ItemPagination';
 
 class ItemHoldings extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      expanded: false,
+      chunkedHoldings: [],
+      showAll: false,
+      js: false,
+      page: 1,
     };
 
     this.getRecord = this.getRecord.bind(this);
+    this.updatePage = this.updatePage.bind(this);
+    this.chunk = this.chunk.bind(this);
+    this.showAll = this.showAll.bind(this);
   }
 
+  componentDidMount() {
+    const holdings = this.props.holdings;
+    let chunkedHoldings = [];
+
+    if (holdings && holdings.length >= 20) {
+      chunkedHoldings = this.chunk(holdings, 20);
+    }
+
+    this.setState({
+      js: true,
+      chunkedHoldings,
+    });
+  }
+
+  /*
+   * getRecord(e, bibId, itemId)
+   * @description Get updated information for a bib, not exactly necessary but useful,
+   * and route to the correct page.
+   * @param {object} e Event object.
+   * @param {string} bibId The bib's id.
+   * @param {string} itemId The item's id.
+   */
   getRecord(e, bibId, itemId) {
     e.preventDefault();
 
@@ -30,15 +61,31 @@ class ItemHoldings extends React.Component {
       });
   }
 
-  getRow(holdings) {
-    const shortenItems = !this.props.shortenItems;
-    const itemsToDisplay = shortenItems ? holdings.slice(0, 20) : holdings;
-    const itemLength = itemsToDisplay.length;
+  /*
+   * getTable(holdings, shortenItems, showAll)
+   * @description Display an HTML table with item data.
+   * @param {array} holdings The array of items.
+   * @param {bool} shortenItems Whether the array needs to be cut off or not.
+   * @param {bool} showAll Whether all items should be shown on the client side.
+   */
+  getTable(holdings, shortenItems = false, showAll) {
+    // If there are more than 20 items and we need to shorten it to 20 AND we are not
+    // showing all items.
+    const itemsToDisplay = shortenItems && !showAll ? holdings.slice(0, 20) : holdings;
     const bibId = this.props.bibId;
 
     return (
       <table className="nypl-basic-table">
-        <caption className="hidden">item holdings</caption>
+        <caption className="hidden">Item details</caption>
+        <thead>
+          <tr>
+            <th>Location</th>
+            <th>Call No.</th>
+            <th>Status</th>
+            <th>Message</th>
+            <th></th>
+          </tr>
+        </thead>
         <tbody>
           {
             itemsToDisplay.map((h, i) => {
@@ -73,43 +120,91 @@ class ItemHoldings extends React.Component {
               );
             })
           }
-          {
-            shortenItems && itemLength >= 20 &&
-              (<tr>
-                <td colSpan="5">
-                  <Link
-                    to={`/bib/${bibId}/all`}
-                    className="view-all-items"
-                  >
-                    View All Items
-                  </Link>
-                </td>
-              </tr>)
-          }
         </tbody>
       </table>
     );
   }
 
-  showMoreItems(e) {
-    e.preventDefault();
-    this.setState({ expanded: true });
+  /*
+   * updatePage(page)
+   * @description Update the client-side state of the component's page value.
+   * @param {number} page The next number/index of what items should be displayed.
+   */
+  updatePage(page) {
+    this.setState({ page });
   }
 
+  /*
+   * chunk(arr, n)
+   * @description Break up all the items in the array into array of size n arrays.
+   * @param {array} arr The array of items.
+   * @param {n} number The number we want to break the array into.
+   */
+  chunk(arr, n) {
+    if (_isArray(arr) && !arr.length) {
+      return [];
+    }
+    return [arr.slice(0, n)].concat(this.chunk(arr.slice(n), n));
+  }
+
+  /*
+   * createMarkup(html)
+   * @description Needed to insert/render HTML into a component.
+   * @param {string} html The HTML to render.
+   */
   createMarkup(html) {
     return {
       __html: html,
     };
   }
 
+  /*
+   * showAll()
+   * @description Display all items on the page.
+   */
+  showAll() {
+    this.setState({ showAll: true });
+  }
+
   render() {
-    const holdings = this.props.holdings;
-    const body = this.getRow(holdings);
+    let holdings = this.props.holdings;
+    const shortenItems = !this.props.shortenItems;
+    let itemPagination = null;
+
+    if (this.state.js && holdings && holdings.length >= 20 && !this.state.showAll) {
+      itemPagination = (
+        <ItemPagination
+          total={holdings.length}
+          page={this.state.page}
+          updatePage={this.updatePage}
+        />
+      );
+
+      holdings = this.state.chunkedHoldings[this.state.page + 1];
+    }
+
+    const itemTable = this.getTable(holdings, shortenItems, this.state.showAll);
 
     return (
-      <div id="item-holdings" className="nypl-item-holdings">
+      <div id="item-holdings" className="item-holdings">
         <h2>{this.props.title}</h2>
-        {body}
+        {itemTable}
+        {
+          !!(shortenItems && holdings.length >= 20 && !this.state.showAll) &&
+            (<div className="view-all-items-container">
+              {
+                this.state.js ?
+                  (<a href="#" onClick={this.showAll}>View All Items</a>) :
+                  (<Link
+                    to={`/bib/${this.props.bibId}/all`}
+                    className="view-all-items"
+                  >
+                    View All Items
+                  </Link>)
+              }
+            </div>)
+        }
+        {itemPagination}
       </div>
     );
   }
