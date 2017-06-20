@@ -136,6 +136,7 @@ SearchResultsPage.propTypes = {
   sortBy: PropTypes.string,
   field: PropTypes.string,
   spinning: PropTypes.bool,
+  error: PropTypes.object,
 };
 
 export default SearchResultsPage;

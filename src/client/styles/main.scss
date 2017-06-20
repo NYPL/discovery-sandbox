@@ -108,3 +108,8 @@ button {
   visibility: hidden;
   height: 500px;
 }
+
+// odd override for Header alert
+header #skip {
+  position: absolute;
+}

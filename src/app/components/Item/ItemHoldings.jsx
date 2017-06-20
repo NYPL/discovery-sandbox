@@ -39,21 +39,22 @@ class ItemHoldings extends React.Component {
   }
 
   /*
-   * getRecord(e, id)
+   * getRecord(e, bibId, itemId)
    * @description Get updated information for a bib, not exactly necessary but useful,
    * and route to the correct page.
    * @param {object} e Event object.
-   * @param {string} id The item's id.
+   * @param {string} bibId The bib's id.
+   * @param {string} itemId The item's id.
    */
-  getRecord(e, id) {
+  getRecord(e, bibId, itemId) {
     e.preventDefault();
 
     // Search for the bib? Just pass the data.
     axios
-      .get(`/api/retrieve?q=${this.props.bibId}`)
+      .get(`/api/bib?bibId=${bibId}`)
       .then(response => {
         Actions.updateBib(response.data);
-        this.context.router.push(`/hold/request/${id}`);
+        this.context.router.push(`/hold/request/${bibId}-${itemId}`);
       })
       .catch(error => {
         console.log(error);
@@ -71,6 +72,7 @@ class ItemHoldings extends React.Component {
     // If there are more than 20 items and we need to shorten it to 20 AND we are not
     // showing all items.
     const itemsToDisplay = shortenItems && !showAll ? holdings.slice(0, 20) : holdings;
+    const bibId = this.props.bibId;
 
     return (
       <table className="nypl-basic-table">
@@ -94,8 +96,8 @@ class ItemHoldings extends React.Component {
                 itemLink = h.availability === 'available' ?
                   <Link
                     className="button"
-                    to={`/hold/request/${h.id}`}
-                    onClick={(e) => this.getRecord(e, h.id)}
+                    to={`/hold/request/${bibId}-${h.id}`}
+                    onClick={(e) => this.getRecord(e, bibId, h.id)}
                   >Request</Link> :
                   <span className="nypl-item-unavailable">Unavailable</span>;
               }
