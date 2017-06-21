@@ -93,7 +93,7 @@ class ItemHoldings extends React.Component {
               let itemDisplay = null;
 
               if (h.requestHold) {
-                itemLink = h.availability === 'available' ?
+                itemLink = h.available ?
                   <Link
                     className="button"
                     to={`/hold/request/${bibId}-${h.id}`}
@@ -113,8 +113,8 @@ class ItemHoldings extends React.Component {
                 <tr key={i} className={h.availability}>
                   <td>{h.location}</td>
                   <td>{itemDisplay}</td>
-                  <td>{h.status}</td>
-                  <td>{h.accessMessage}</td>
+                  <td>{h.status.prefLabel}</td>
+                  <td>{h.accessMessage.prefLabel}</td>
                   <td>{itemLink}</td>
                 </tr>
               );

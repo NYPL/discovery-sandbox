@@ -86,19 +86,37 @@ class HoldRequest extends React.Component {
       : <p className="loggedInInstruction">Something went wrong retrieving your personal information.</p>;
   }
 
+  renderDeliveryLocation(deliveryLocations = [], callNo) {
+    return deliveryLocations.map((location, i) => (
+      <div key={i} className="group selected">
+        <span className="col location">
+          <a href={`${location.uri}`}>{location['full-name']}</a>
+          <br />{location.address.address1}<br />
+          {location.prefLabel}
+          {location.offsite &&
+            <span>
+              <br /><small>(requested from offsite storage)</small><br />
+            </span>
+          }
+        </span>
+        {callNo}
+      </div>
+    ));
+  }
+
   render() {
     const searchKeywords = this.props.searchKeywords || '';
-    const record = (this.props.bib && !_isEmpty(this.props.bib)) ?
+    const bib = (this.props.bib && !_isEmpty(this.props.bib)) ?
       this.props.bib : null;
-    const title = (record && _isArray(record.title) && record.title.length) ?
-      record.title[0] : '';
-    const bibId = (record && record['@id'] && typeof record['@id'] === 'string') ?
-      record['@id'].substring(4) : '';
+    const title = (bib && _isArray(bib.title) && bib.title.length) ?
+      bib.title[0] : '';
+    const bibId = (bib && bib['@id'] && typeof bib['@id'] === 'string') ?
+      bib['@id'].substring(4) : '';
     const patronName = (
       this.state.patron.names && _isArray(this.state.patron.names) && this.state.patron.names.length
       ) ? this.state.patron.names[0] : '';
     const itemId = (this.props.params && this.props.params.itemId) ? this.props.params.itemId : '';
-    const selectedItem = (record && itemId) ? LibraryItem.getItem(record, itemId) : null;
+    const selectedItem = (bib && itemId) ? LibraryItem.getItem(bib, itemId) : null;
     const shelfMarkInfo =
       (selectedItem && _isArray(selectedItem.shelfMark) && selectedItem.shelfMark.length > 0) ?
       (
@@ -106,17 +124,10 @@ class HoldRequest extends React.Component {
           <small>Call number:</small><br />{selectedItem.shelfMark[0]}
         </span>
       ) : null;
-    const location = (record && itemId) ? LibraryItem.getLocation(record, itemId) : null;
-    const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July',
-      'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
-    const date = new Date();
-    date.setDate(date.getDate() + 7);
-    const day = date.getDate();
-    const monthIndex = date.getMonth();
-    const dateDisplay = `${monthNames[monthIndex]} ${day}`;
+    const deliveryLocations = selectedItem.deliveryLocations;
     let content = null;
 
-    if (record) {
+    if (bib) {
       content =
         <div className="content-wrapper">
           <div className="item-header">
@@ -141,22 +152,10 @@ class HoldRequest extends React.Component {
             <p>When this item is ready, you will use it in the following location:</p>
             <fieldset className="select-location-fieldset">
               <legend className="visuallyHidden">Select a pickup location</legend>
-              <div className="group selected">
-                <span className="col location">
-                  <a href={`${location.uri}`}>{location['full-name']}</a><br />{location.address.address1}<br />
-                  {location.prefLabel}
-                  {location.offsite &&
-                    <span>
-                      <br /><small>(requested from offsite storage)</small><br />
-                    </span>
-                  }
-                </span>
-                {shelfMarkInfo}
-                {/* <span className="col"><small>Ready by approximately:</small><br />{dateDisplay}, 9am.</span> */}
-              </div>
+              {this.renderDeliveryLocation(deliveryLocations, shelfMarkInfo)}
             </fieldset>
 
-            <input type="hidden" name="pickupLocation" value={location.code} />
+            <input type="hidden" name="pickupLocation" value="test" />
 
             <button
               type="submit"
