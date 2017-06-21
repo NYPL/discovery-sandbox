@@ -92,7 +92,7 @@ const SearchResultsPage = (props) => {
               />
 
               {
-                totalHits && totalHits !== 0 && (
+                !!(totalHits && totalHits !== 0) && (
                   <Sorter
                     sortBy={sortBy}
                     page={page}
@@ -101,15 +101,13 @@ const SearchResultsPage = (props) => {
                 )
               }
 
-              {results && results.length !== 0 &&
-                (<ResultList
-                  results={results}
-                  spinning={spinning}
-                />)
+              {
+                !!(results && results.length !== 0) &&
+                (<ResultList results={results}  spinning={spinning} />)
               }
 
               {
-                totalHits && totalHits !== 0 &&
+                !!(totalHits && totalHits !== 0) &&
                   (<Pagination
                     hits={totalHits}
                     page={page}
@@ -135,6 +133,7 @@ SearchResultsPage.propTypes = {
   sortBy: PropTypes.string,
   field: PropTypes.string,
   spinning: PropTypes.bool,
+  error: PropTypes.object,
 };
 
 export default SearchResultsPage;
