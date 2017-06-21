@@ -6,7 +6,7 @@ import { isArray as _isArray } from 'underscore';
 
 import Actions from '../../actions/Actions';
 import ItemPagination from './ItemPagination';
-import ItemTable from './ItemTable'
+import ItemTable from './ItemTable';
 
 class ItemHoldings extends React.Component {
   constructor(props) {

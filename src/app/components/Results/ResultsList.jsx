@@ -10,7 +10,7 @@ import Actions from '../../actions/Actions';
 import LibraryItem from '../../utils/item';
 import { ajaxCall } from '../../utils/utils';
 
-import ItemTable from '../Item/Itemtable';
+import ItemTable from '../Item/ItemTable';
 
 class ResultsList extends React.Component {
   constructor(props) {
