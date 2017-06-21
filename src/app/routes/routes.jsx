@@ -16,10 +16,10 @@ const routes = (
   <Route path="/" component={Application}>
     <IndexRoute component={Home} />
     <Route path="/search" component={SearchResultsPage} />
-    <Route path="/bib/:id" component={BibPage} />
-    <Route path="/bib/:id/all" component={BibPage} />
-    <Route path="/hold/request/:id" component={HoldRequest} />
-    <Route path="/hold/confirmation/:id" component={HoldConfirmation} />
+    <Route path="/bib/:bibId" component={BibPage} />
+    <Route path="/bib/:bibId/all" component={BibPage} />
+    <Route path="/hold/request/:bibId-:itemId" component={HoldRequest} />
+    <Route path="/hold/confirmation/:bibId-:itemId" component={HoldConfirmation} />
   </Route>
 );
 
