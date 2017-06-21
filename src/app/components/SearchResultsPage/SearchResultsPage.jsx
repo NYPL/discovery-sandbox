@@ -103,10 +103,7 @@ const SearchResultsPage = (props) => {
 
               {
                 !!(results && results.length !== 0) &&
-                (<ResultList
-                  results={results}
-                  spinning={spinning}
-                />)
+                (<ResultList results={results} spinning={spinning} />)
               }
 
               {

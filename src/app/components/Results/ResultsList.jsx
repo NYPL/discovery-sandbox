@@ -72,7 +72,7 @@ class ResultsList extends React.Component {
 
     const result = bib.result;
     const itemTitle = this.getBibTitle(result);
-    const bibId = result['@id'].substring(4);
+    const bibId = result && result['@id'] ? result['@id'].substring(4) : '';
     const items = LibraryItem.getItems(result);
     // Just displaying information for the first item for now, unless if the first item
     // is displays a HathiTrust viewer, in that case display the second item.
