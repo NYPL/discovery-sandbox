@@ -117,11 +117,11 @@ class HoldRequest extends React.Component {
       ) ? this.state.patron.names[0] : '';
     const itemId = (this.props.params && this.props.params.itemId) ? this.props.params.itemId : '';
     const selectedItem = (bib && itemId) ? LibraryItem.getItem(bib, itemId) : null;
-    const shelfMarkInfo =
-      (selectedItem && _isArray(selectedItem.shelfMark) && selectedItem.shelfMark.length > 0) ?
+    const callNo =
+      (selectedItem && selectedItem.callNumber && selectedItem.callNumber.length) ?
       (
         <span className="col">
-          <small>Call number:</small><br />{selectedItem.shelfMark[0]}
+          <small>Call number:</small><br />{selectedItem.callNumber}
         </span>
       ) : null;
     const deliveryLocations = selectedItem.deliveryLocations;
@@ -152,7 +152,7 @@ class HoldRequest extends React.Component {
             <p>When this item is ready, you will use it in the following location:</p>
             <fieldset className="select-location-fieldset">
               <legend className="visuallyHidden">Select a pickup location</legend>
-              {this.renderDeliveryLocation(deliveryLocations, shelfMarkInfo)}
+              {this.renderDeliveryLocation(deliveryLocations, callNo)}
             </fieldset>
 
             <input type="hidden" name="pickupLocation" value="test" />
