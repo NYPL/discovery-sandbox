@@ -9,9 +9,7 @@ const createMarkup = (html) => {
   };
 };
 
-const ItemTable = ({ items }) => {
-  console.log('items', items);
-
+const ItemTable = ({ items, bibId, getRecord }) => {
   if (!_isArray(items) || !items.length) {
     return null;
   }
