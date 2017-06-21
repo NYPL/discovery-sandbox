@@ -20,12 +20,13 @@ class ResultsList extends React.Component {
     this.getRecord = this.getRecord.bind(this);
   }
 
-  getRecord(e, id) {
+  getRecord(e, bibId) {
     e.preventDefault();
 
-    ajaxCall(`/api/retrieve?q=${id}`, (response) => {
+    ajaxCall(`/api/bib?bibId=${bibId}`, (response) => {
+      console.log(response.data);
       Actions.updateBib(response.data);
-      this.routeHandler(`/bib/${id}`);
+      this.routeHandler(`/bib/${bibId}`);
     });
   }
 
@@ -73,7 +74,7 @@ class ResultsList extends React.Component {
 
     const result = bib.result;
     const itemTitle = this.getBibTitle(result);
-    const id = result['@id'].substring(4);
+    const bibId = result && result['@id'] ? result['@id'].substring(4) : '';
     const items = LibraryItem.getItems(result);
     // Just displaying information for the first item for now, unless if the first item
     // is displays a HathiTrust viewer, in that case display the second item.
@@ -93,8 +94,8 @@ class ResultsList extends React.Component {
       <li key={i} className="nypl-results-item">
         <h2>
           <Link
-            onClick={(e) => this.getRecord(e, id)}
-            href={`/bib/${id}`}
+            onClick={(e) => this.getRecord(e, bibId)}
+            href={`/bib/${bibId}`}
             className="title"
           >
             {itemTitle}

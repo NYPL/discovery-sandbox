@@ -38,8 +38,8 @@ const ItemTable = ({ items }) => {
               itemLink = h.availability === 'available' ?
                 <Link
                   className="button"
-                  to={`/hold/request/${h.id}`}
-                  onClick={(e) => this.props.getRecord(e, h.id)}
+                  to={`/hold/request/${bibId}-${h.id}`}
+                  onClick={(e) => this.props.getRecord(e, bibId, h.id)}
                 >Request</Link> :
                 <span className="nypl-item-unavailable">Unavailable</span>;
             }

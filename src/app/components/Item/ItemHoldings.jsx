@@ -40,21 +40,22 @@ class ItemHoldings extends React.Component {
   }
 
   /*
-   * getRecord(e, id)
+   * getRecord(e, bibId, itemId)
    * @description Get updated information for a bib, not exactly necessary but useful,
    * and route to the correct page.
    * @param {object} e Event object.
-   * @param {string} id The item's id.
+   * @param {string} bibId The bib's id.
+   * @param {string} itemId The item's id.
    */
-  getRecord(e, id) {
+  getRecord(e, bibId, itemId) {
     e.preventDefault();
 
     // Search for the bib? Just pass the data.
     axios
-      .get(`/api/retrieve?q=${this.props.bibId}`)
+      .get(`/api/bib?bibId=${bibId}`)
       .then(response => {
         Actions.updateBib(response.data);
-        this.context.router.push(`/hold/request/${id}`);
+        this.context.router.push(`/hold/request/${bibId}-${itemId}`);
       })
       .catch(error => {
         console.log(error);
@@ -72,10 +73,61 @@ class ItemHoldings extends React.Component {
     // If there are more than 20 items and we need to shorten it to 20 AND we are not
     // showing all items.
     const itemsToDisplay = shortenItems && !showAll ? holdings.slice(0, 20) : holdings;
+    const bibId = this.props.bibId;
 
     return (
+<<<<<<< HEAD
       (itemsToDisplay && _isArray(itemsToDisplay) && itemsToDisplay.length > 0) ?
         <ItemTable items={itemsToDisplay} getRecord={this.getRecord} /> : null
+=======
+      <table className="nypl-basic-table">
+        <caption className="hidden">Item details</caption>
+        <thead>
+          <tr>
+            <th>Location</th>
+            <th>Call No.</th>
+            <th>Status</th>
+            <th>Message</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {
+            itemsToDisplay.map((h, i) => {
+              let itemLink;
+              let itemDisplay = null;
+
+              if (h.requestHold) {
+                itemLink = h.availability === 'available' ?
+                  <Link
+                    className="button"
+                    to={`/hold/request/${bibId}-${h.id}`}
+                    onClick={(e) => this.getRecord(e, bibId, h.id)}
+                  >Request</Link> :
+                  <span className="nypl-item-unavailable">Unavailable</span>;
+              }
+
+              if (h.callNumber) {
+                itemDisplay =
+                  <span dangerouslySetInnerHTML={this.createMarkup(h.callNumber)}></span>;
+              } else if (h.isElectronicResource) {
+                itemDisplay = <span>{h.location}</span>;
+              }
+
+              return (
+                <tr key={i} className={h.availability}>
+                  <td>{h.location}</td>
+                  <td>{itemDisplay}</td>
+                  <td>{h.status}</td>
+                  <td>{h.accessMessage}</td>
+                  <td>{itemLink}</td>
+                </tr>
+              );
+            })
+          }
+        </tbody>
+      </table>
+>>>>>>> development
     );
   }
 

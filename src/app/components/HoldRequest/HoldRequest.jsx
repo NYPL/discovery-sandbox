@@ -35,22 +35,23 @@ class HoldRequest extends React.Component {
    * submitRequest()
    * Client-side submit call.
    */
-  submitRequest(e, itemId) {
+  submitRequest(e, bibId, itemId) {
     e.preventDefault();
 
     axios
-      .get(`/api/newHold?id=${itemId}`)
+      .get(`/api/newHold?itemId=${itemId}`)
       .then(response => {
         if (response.data.error && response.data.error.status !== 200) {
-          this.context.router.push(`/hold/confirmation/${itemId}?errorMessage=` +
+          this.context.router.push(`/hold/confirmation/${bibId}-${itemId}?errorMessage=` +
             `${response.data.error.statusText}`);
         } else {
-          this.context.router.push(`/hold/confirmation/${itemId}?requestId=${response.data.id}`);
+          this.context.router
+            .push(`/hold/confirmation/${bibId}-${itemId}?requestId=${response.data.id}`);
         }
       })
       .catch(error => {
         console.log(error);
-        this.context.router.push(`/hold/confirmation/${itemId}?errorMessage=${error}`);
+        this.context.router.push(`/hold/confirmation/${bibId}-${itemId}?errorMessage=${error}`);
       });
   }
 
@@ -96,7 +97,7 @@ class HoldRequest extends React.Component {
     const patronName = (
       this.state.patron.names && _isArray(this.state.patron.names) && this.state.patron.names.length
       ) ? this.state.patron.names[0] : '';
-    const itemId = (this.props.params && this.props.params.id) ? this.props.params.id : '';
+    const itemId = (this.props.params && this.props.params.itemId) ? this.props.params.itemId : '';
     const selectedItem = (record && itemId) ? LibraryItem.getItem(record, itemId) : null;
     const shelfMarkInfo =
       (selectedItem && _isArray(selectedItem.shelfMark) && selectedItem.shelfMark.length > 0) ?
@@ -129,7 +130,11 @@ class HoldRequest extends React.Component {
             </div>
           </div>
 
-          <form className="place-hold-form form" action={`/hold/request/${itemId}`} method="POST">
+          <form
+            className="place-hold-form form"
+            action={`/hold/request/${bibId}-${itemId}`}
+            method="POST"
+          >
             <h2>Confirm account</h2>
             {this.renderLoggedInInstruction(patronName)}
             <h2>Confirm delivery location</h2>
@@ -153,7 +158,11 @@ class HoldRequest extends React.Component {
 
             <input type="hidden" name="pickupLocation" value={location.code} />
 
-            <button type="submit" className="large" onClick={(e) => this.submitRequest(e, itemId)}>
+            <button
+              type="submit"
+              className="large"
+              onClick={(e) => this.submitRequest(e, bibId, itemId)}
+            >
               Submit your item hold request
             </button>
           </form>
