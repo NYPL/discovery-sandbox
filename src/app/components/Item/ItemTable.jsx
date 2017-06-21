@@ -67,6 +67,8 @@ const ItemTable = ({ items, bibId, getRecord }) => {
 
 ItemTable.propTypes = {
   items: PropTypes.array,
+  bibId: PropTypes.string,
+  getRecord: PropTypes.func,
 };
 
 export default ItemTable;
