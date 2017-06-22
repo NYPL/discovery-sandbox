@@ -26,7 +26,7 @@ const axiosApiCall = (query) => axios.get(`${apiBase}/discovery/resources${query
 
 function search(searchKeywords, page, sortBy, order, field, filters, cb, errorcb) {
   const apiQuery = createAPIQuery({
-    searchKeywords,
+    searchKeywords: encodeURIComponent(searchKeywords),
     sortBy: sortBy ? `${sortBy}_${order}` : '',
     selectedFacets: filters,
     field,
