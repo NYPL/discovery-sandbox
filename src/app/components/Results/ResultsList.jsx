@@ -117,8 +117,8 @@ class ResultsList extends React.Component {
           <span className="nypl-results-use">{usageType}</span>
         </div>
         {
-          !!(items.length === 1) &&
-            <ItemTable items={items} bibId={bibId} getRecord={this.getRecord} />
+          (items.length === 1) ?
+            <ItemTable items={items} bibId={bibId} getRecord={this.getRecord} /> : null
         }
       </li>
     );
