@@ -10,6 +10,8 @@ import Actions from '../../actions/Actions';
 import LibraryItem from '../../utils/item';
 import { ajaxCall } from '../../utils/utils';
 
+import ItemTable from '../Item/ItemTable';
+
 class ResultsList extends React.Component {
   constructor(props) {
     super(props);
@@ -18,13 +20,22 @@ class ResultsList extends React.Component {
     this.getRecord = this.getRecord.bind(this);
   }
 
-  getRecord(e, id) {
+  getRecord(e, bibId, itemId = '') {
     e.preventDefault();
 
-    ajaxCall(`/api/retrieve?q=${id}`, (response) => {
-      Actions.updateBib(response.data);
-      this.routeHandler(`/bib/${id}`);
-    });
+    ajaxCall(`/api/bib?bibId=${bibId}`,
+      (response) => {
+        Actions.updateBib(response.data);
+        if (itemId) {
+          this.routeHandler(`/hold/request/${bibId}-${itemId}`);
+        } else {
+          this.routeHandler(`/bib/${bibId}`);
+        }
+      },
+      error => {
+        console.log(error);
+      }
+    );
   }
 
   getCollapsedBibs(collapsedBibs) {
@@ -71,7 +82,7 @@ class ResultsList extends React.Component {
 
     const result = bib.result;
     const itemTitle = this.getBibTitle(result);
-    const id = result['@id'].substring(4);
+    const bibId = result && result['@id'] ? result['@id'].substring(4) : '';
     const items = LibraryItem.getItems(result);
     // Just displaying information for the first item for now, unless if the first item
     // is displays a HathiTrust viewer, in that case display the second item.
@@ -91,8 +102,8 @@ class ResultsList extends React.Component {
       <li key={i} className="nypl-results-item">
         <h2>
           <Link
-            onClick={(e) => this.getRecord(e, id)}
-            href={`/bib/${id}`}
+            onClick={(e) => this.getRecord(e, bibId)}
+            href={`/bib/${bibId}`}
             className="title"
           >
             {itemTitle}
@@ -104,6 +115,10 @@ class ResultsList extends React.Component {
           <span className="nypl-results-room">{location}</span>
           <span className="nypl-results-use">{usageType}</span>
         </div>
+        {
+          (items.length === 1) &&
+            <ItemTable items={items} bibId={bibId} getRecord={this.getRecord} />
+        }
       </li>
     );
   }

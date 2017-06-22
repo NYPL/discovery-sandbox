@@ -1,120 +1,186 @@
 import Locations from '../../../locations.js';
 import LocationCodes from '../../../locationCodes.js';
 import {
+  findWhere as _findWhere,
   isEmpty as _isEmpty,
+  extend as _extend,
 } from 'underscore';
 
 function LibraryItem() {
+  /**
+   * getDefaultLocation()
+   * Return the default delivery location for an item.
+   * @return {object}
+   */
   this.getDefaultLocation = () => ({
     '@id': 'loc:mal',
     prefLabel: 'Stephen A. Schwarzman Building - Rose Main Reading Room 315',
+    customerCode: 'NH',
   });
 
   /**
-   * getItem(record, itemId)
-   *
-   * @param {Object} record
-   * @param {String} itemId
-   * @return {Object}
+   * defaultDeliveryLocations()
+   * Temporarily return three hardcoded and default delivery locations.
+   * @return {array}
    */
-  this.getItem = (record, itemId) => {
-    let thisItem = {};
-    // look for item id in record's items
-    const items = (record && record.items) ? record.items : null;
+  this.defaultDeliveryLocations = () => [
+    {
+      '@id': 'loc:mal',
+      prefLabel: 'Stephen A. Schwarzman Building - Rose Main Reading Room 315',
+      customerCode: 'NH',
+    },
+    {
+      '@id': 'loc:mai',
+      prefLabel: 'Stephen A. Schwarzman Building - Milstein Microform Reading Room 119',
+      customerCode: 'NF',
+    },
+    {
+      '@id': 'loc:myr',
+      prefLabel: 'Library of Performing Arts - Print Delivery Desk 3rd Floor',
+      customerCode: 'NP',
+    },
+  ];
 
-    if (items && itemId) {
-      items.forEach((i) => {
-        if (i['@id'] && i['@id'].substring(4) === itemId) {
-          thisItem = i;
-        }
-      });
+  /**
+   * mapItem(item, title)
+   * Massage data and update an item's properties.
+   * @param {object} item The item to update the data for.
+   * @param {string} title The bib's title.
+   * @return {object}
+   */
+  this.mapItem = (item = {}, title) => {
+    const id = item && item['@id'] ? item['@id'].substring(4) : '';
+    // Taking the first object in the accessMessage array.
+    const accessMessage = item.accessMessage && item.accessMessage.length ?
+      item.accessMessage[0] : {};
+    // Taking first callNumber.
+    const callNumber = item.shelfMark && item.shelfMark.length ? item.shelfMark[0] : '';
+    const holdingLocation = this.getHoldingLocation(item);
+    // Taking the first value in the array.
+    const requestable = item.requestable && item.requestable.length ?
+      item.requestable[0] : false;
+    // Taking the first value in the array;
+    const suppressed = item.suppressed && item.suppressed.length ?
+      item.suppressed[0] : false;
+    const isElectronicResource = this.isElectronicResource(item);
+    // Taking the first status object in the array.
+    let status = item.status && item.status.length ? item.status[0] : {};
+    let availability = !_isEmpty(status) && status.prefLabel ?
+      status.prefLabel.replace(/\W/g, '').toLowerCase() : '';
+    const available = availability === 'available';
+    let url = null;
+    let actionLabel = null;
+    let actionLabelHelper = null;
+    // Currently using requestHold to display the Request button, only for ReCAP items.
+    let requestHold = false;
+    // non-NYPL ReCAP
+    const recap = accessMessage.prefLabel === 'ADV REQUEST' && !item.holdingLocation;
+    // nypl-owned ReCAP
+    const nyplRecap = !!(holdingLocation && !_isEmpty(holdingLocation) &&
+      holdingLocation['@id'].substring(4, 6) === 'rc');
+    let deliveryLocations = item.deliveryLocation && item.deliveryLocation.length ?
+      item.deliveryLocation : this.getDeliveryLocations(item, true);
+
+    if (isElectronicResource && item.electronicLocator[0].url) {
+      status = { '@id': '', prefLabel: 'Available' };
+      availability = 'available';
+      url = item.electronicLocator[0].url;
+      actionLabel = 'View online';
+      actionLabelHelper = `resource for ${title}`;
+      // The logic for this should be updated, but right now non-NYPL ReCAP items
+      // don't have a holdingLocation (but a default gets added here);
+    } else if (recap) {
+      requestHold = true;
+      actionLabel = accessMessage.prefLabel;
+      actionLabelHelper = `request hold on ${title}`;
+    } else if (nyplRecap) {
+      // Temporary for NYPL ReCAP items.
+      // Making sure that if there is a holding location, that the location code starts with
+      // rc. Ids are in the format of `loc:x` where x is the location code.
+      requestHold = true;
+      actionLabel = accessMessage.prefLabel;
+      actionLabelHelper = `request hold on ${title}`;
+      deliveryLocations = this.getDeliveryLocations(item, false);
+    } else if (availability === 'available') {
+      // For all items that we want to send to the Hold Request Form.
+      url = this.getLocationHoldUrl(holdingLocation);
+      actionLabel = 'Request for in-library use';
+      actionLabelHelper = `for ${title} for use in library`;
     }
 
-    return (!_isEmpty(thisItem)) ? thisItem : null;
+    return {
+      id,
+      status,
+      availability,
+      available,
+      accessMessage,
+      isElectronicResource,
+      location: holdingLocation.prefLabel,
+      callNumber,
+      url,
+      actionLabel,
+      actionLabelHelper,
+      requestHold,
+      requestable,
+      suppressed,
+      deliveryLocations,
+    };
   };
 
   /**
-   * getItems(record)
-   *
-   * @param {Object} record
-   * @return {Object}
+   * getItem(bib, itemId)
+   * Look for specific item in the bib's item array. Return it if found.
+   * @param {object} bib
+   * @param {string} itemId
+   * @return {array}
    */
-  this.getItems = (record) => {
-    const recordTitle = record.title ? record.title[0] : '';
-    // filter out anything without a status or location
-    const rItems = record && record.items && record.items.length ? record.items : [];
-    const items = rItems
-      .filter((item) => item.status || item.electronicLocator)
-      // map items
-      .map((item) => {
-        const id = item['@id'].substring(4);
-        let status = item.status && item.status[0].prefLabel ? item.status[0].prefLabel : '';
-        let availability = status.replace(/\W/g, '').toLowerCase();
-        let accessMessage = item.accessMessage && item.accessMessage.length ?
-          item.accessMessage[0].prefLabel.toLowerCase() : '';
-        const callNumber = item.shelfMark && item.shelfMark.length ? item.shelfMark[0] : '';
-        const locationDetails = this.getLocationDetails(item);
-        let url = null;
-        let actionLabel = null;
-        let actionLabelHelper = null;
-        let requestHold = false;
-        const isElectronicResource = this.isElectronicResource(item);
+  this.getItem = (bib, itemId) => {
+    const items = (bib && bib.items) ? bib.items : [];
 
-        if (isElectronicResource && item.electronicLocator[0].url) {
-          status = 'Available';
-          availability = 'available';
-          url = item.electronicLocator[0].url;
-          actionLabel = 'View online';
-          actionLabelHelper = `resource for ${recordTitle}`;
-          // Temporary for ReCAP items.
-        } else if (accessMessage === 'adv request' && !item.holdingLocation) {
-          requestHold = true;
-          actionLabel = accessMessage;
-          actionLabelHelper = `request hold on ${recordTitle}`;
-          // Temporary for NYPL ReCAP items.
-          // Making sure that if there is a holding location, that the location code starts with
-          // rc. Ids are in the format of `loc:x` where x is the location code.
-        } else if (item.holdingLocation && item.holdingLocation.length &&
-          item.holdingLocation[0]['@id'].substring(4, 6) === 'rc') {
-          requestHold = true;
-          actionLabel = accessMessage;
-          actionLabelHelper = `request hold on ${recordTitle}`;
-        } else if (availability === 'available') {
-          url = this.getLocationHoldUrl(locationDetails);
-          actionLabel = 'Request for in-library use';
-          actionLabelHelper = `for ${recordTitle} for use in library`;
-        }
+    if (itemId && items.length) {
+      // Will return undefined if not found.
+      const item = _findWhere(items, { '@id': `res:${itemId}` });
+      if (item) {
+        return this.mapItem(item, bib.title ? bib.title[0] : '');
+      }
+    }
 
-        return {
-          id,
-          status,
-          availability,
-          available: (availability === 'available'),
-          accessMessage,
-          isElectronicResource,
-          location: locationDetails.prefLabel,
-          callNumber,
-          url,
-          actionLabel,
-          actionLabelHelper,
-          requestHold,
-        };
-      });
-
-    // sort: physical available items, then electronic resources, then everything else
-    items.sort((a, b) => {
-      let aAvailability = a.status === 'available' ? -1 : 1;
-      let bAvailability = b.status === 'available' ? -1 : 1;
-      if (a.isElectronicResource) aAvailability = 0;
-      if (b.isElectronicResource) bAvailability = 0;
-      return aAvailability - bAvailability;
-    });
-
-    return items;
+    return undefined;
   };
 
+  /**
+   * getItems(bib)
+   * Return an array of items with updated data properties.
+   * @param {object} bib
+   * @return {array}
+   */
+  this.getItems = (bib) => {
+    const title = bib.title ? bib.title[0] : '';
+    // filter out anything without a status or location
+    const bibItems = bib && bib.items && bib.items.length ? bib.items : [];
+    const finalItems = bibItems.map((item) => this.mapItem(item, title));
+
+    // sort: physical available items, then electronic resources, then everything else
+    // Update: Remove sorting for now.
+    // finalItems.sort((a, b) => {
+    //   let aAvailability = a.status === 'available' ? -1 : 1;
+    //   let bAvailability = b.status === 'available' ? -1 : 1;
+    //   if (a.isElectronicResource) aAvailability = 0;
+    //   if (b.isElectronicResource) bAvailability = 0;
+    //   return aAvailability - bAvailability;
+    // });
+
+    return finalItems;
+  };
+
+  /**
+   * getLocationHoldUrl(location)
+   * Maps each item's location to the Hold Request Form link and returns it.
+   * @param {object} location
+   * @return {string}
+   */
   this.getLocationHoldUrl = (location) => {
-    const holdingLocationId = location['@id'].substring(4);
+    const holdingLocationId = location && location['@id'] ? location['@id'].substring(4) : '';
     let url = '';
     let shortLocation = 'schwarzman';
 
@@ -124,19 +190,24 @@ function LibraryItem() {
 
     switch (shortLocation) {
       case 'schwarzman':
-        url = 'http://www.questionpoint.org/crs/servlet/org.oclc.admin.BuildForm?&institution=13777&type=1&language=1';
+        url = 'http://www.questionpoint.org/crs/servlet/org.oclc.admin.BuildForm?&institution=' +
+          '13777&type=1&language=1';
         break;
       case 'lpa':
-        url = 'http://www.questionpoint.org/crs/servlet/org.oclc.admin.BuildForm?&institution=13252&type=1&language=1';
+        url = 'http://www.questionpoint.org/crs/servlet/org.oclc.admin.BuildForm?&institution=' +
+          '13252&type=1&language=1';
         break;
       case 'schomburg':
-        url = 'http://www.questionpoint.org/crs/servlet/org.oclc.admin.BuildForm?&institution=13810&type=1&language=1';
+        url = 'http://www.questionpoint.org/crs/servlet/org.oclc.admin.BuildForm?&institution=' +
+          '13810&type=1&language=1';
         break;
       case 'sibl':
-        url = 'http://www.questionpoint.org/crs/servlet/org.oclc.admin.BuildForm?&institution=13809&type=1&language=1';
+        url = 'http://www.questionpoint.org/crs/servlet/org.oclc.admin.BuildForm?&institution=' +
+          '13809&type=1&language=1';
         break;
       default:
-        url = 'http://www.questionpoint.org/crs/servlet/org.oclc.admin.BuildForm?&institution=13777&type=1&language=1';
+        url = 'http://www.questionpoint.org/crs/servlet/org.oclc.admin.BuildForm?&institution=' +
+          '13777&type=1&language=1';
         break;
     }
 
@@ -144,53 +215,78 @@ function LibraryItem() {
   };
 
   /**
-   * getLocation(record, itemId)
-   *
-   * @param {Object} record
-   * @param {String} itemId
-   * @return {Object}
+   * getDeliveryLocations(item, single, bib, itemId)
+   * Get delivery locations for an item.
+   * @param {object} item
+   * @param {boolean} single Whether or not to just display one delivery location - temporary.
+   * @param {string} bib
+   * @param {string} itemId
+   * @return {object}
    */
-  this.getLocation = (record, itemId) => {
-    const thisItem = this.getItem(record, itemId);
-
+  this.getDeliveryLocations = (item, single = true, bib = '', itemId = '') => {
+    const thisItem = !_isEmpty(item) ? item : this.getItem(bib, itemId);
     // default to SASB - RMRR
-    const defaultLocation = this.getDefaultLocation();
+    const defaultDeliveryLocations = this.defaultDeliveryLocations();
 
     // get location and location code
-    let location = defaultLocation;
-    if (thisItem && thisItem.location && thisItem.location.length > 0) {
-      location = thisItem.location[0][0];
+    let deliveryLocations = defaultDeliveryLocations;
+    let locations = [];
+
+    if (thisItem) {
+      if (thisItem.deliveryLocations && thisItem.deliveryLocations.length &&
+        !(thisItem.id.substring(4) === 'i16429984')) {
+        deliveryLocations = thisItem.deliveryLocations;
+      }
+
+      deliveryLocations.forEach((location) => {
+        const locationCode = (location['@id'] && typeof location['@id'] === 'string') ?
+          location['@id'].substring(4) : '';
+        // location is set to defaultDeliveryLocations so it the following will always be false:
+        const isOffsite = this.isOffsite(location.prefLabel);
+        // retrieve delivery location
+        let deliveryLocationCode = location['@id'].substring(4);
+        let returnLocation = {};
+
+        // retrieve location data
+        if (locationCode && locationCode in LocationCodes) {
+          returnLocation = Locations[LocationCodes[locationCode].location];
+          deliveryLocationCode = LocationCodes[locationCode].delivery_location || '';
+        } else {
+          returnLocation =
+            Locations[LocationCodes[defaultDeliveryLocations[0]['@id'].substring(4)].location];
+        }
+
+        if (isOffsite && deliveryLocationCode === defaultDeliveryLocations[0]['@id'].substring(4)) {
+          returnLocation.prefLabel = defaultDeliveryLocations[0].prefLabel;
+        }
+
+        returnLocation = _extend({
+          customerCode: location.customerCode,
+          prefLabel: location.prefLabel,
+          offsite: isOffsite,
+          code: deliveryLocationCode,
+        }, returnLocation);
+
+        locations.push(returnLocation);
+      });
     }
-    const locationCode = (location['@id'] && typeof location['@id'] === 'string') ?
-      location['@id'].substring(4) : '';
-    const prefLabel = (location) ? location.prefLabel : '';
-    const isOffsite = (location) ? this.isOffsite(location) : false;
 
-    // retrieve location data
-    if (locationCode && locationCode in LocationCodes) {
-      location = Locations[LocationCodes[locationCode].location];
-    } else {
-      location = Locations[LocationCodes[defaultLocation['@id'].substring(4)].location];
+    // Temporary for now
+    if (single) {
+      // just return the first element in the array.
+      locations = [locations[0]];
     }
 
-    // retrieve delivery location
-    let deliveryLocationCode = defaultLocation['@id'].substring(4);
-    if (locationCode && locationCode in LocationCodes) {
-      deliveryLocationCode = LocationCodes[locationCode].delivery_location || '';
-    }
-
-    location.offsite = isOffsite;
-    location.code = deliveryLocationCode;
-    location.prefLabel = prefLabel;
-
-    if (isOffsite && deliveryLocationCode === defaultLocation['@id'].substring(4)) {
-      location.prefLabel = defaultLocation.prefLabel;
-    }
-
-    return location;
+    return locations;
   };
 
-  this.getLocationDetails = (item) => {
+  /**
+   * getHoldingLocation(item)
+   * Returns updated location data.
+   * @param {object} item
+   * @return {object}
+   */
+  this.getHoldingLocation = (item) => {
     const defaultLocation = this.getDefaultLocation();
     let location = this.getDefaultLocation();
 
@@ -200,22 +296,31 @@ function LibraryItem() {
     // this is an electronic resource
     } else if (item.electronicLocator && item.electronicLocator.length) {
       location = item.electronicLocator[0];
-      if (!location.prefLabel && location.label) {
-        location.prefLabel = location.label;
-      }
+      location['@id'] = '';
     }
 
-    if (this.isOffsite(location)) {
+    if (this.isOffsite(location.prefLabel)) {
       location.prefLabel = `${defaultLocation.prefLabel} (requested from offsite storage)`;
     }
+
     return location;
   };
 
+  /**
+   * isElectronicResource(item)
+   * Return if an item has an electronic resource.
+   * @param {object} item
+   * @return {boolean}
+   */
   this.isElectronicResource = (item) => item.electronicLocator && item.electronicLocator.length;
 
-  this.isOffsite = (location) => (
-    location && location.prefLabel && location.prefLabel.substring(0, 7).toLowerCase() === 'offsite'
-  );
+  /**
+   * isOffsite(prefLabel)
+   * Return whether an item is offsite or not.
+   * @param {string} prefLabel
+   * @return {boolean}
+   */
+  this.isOffsite = (prefLabel = '') => prefLabel.substring(0, 7).toLowerCase() === 'offsite';
 }
 
 export default new LibraryItem;
