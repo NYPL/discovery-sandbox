@@ -6,6 +6,7 @@ import { isArray as _isArray } from 'underscore';
 
 import Actions from '../../actions/Actions';
 import ItemPagination from './ItemPagination';
+import ItemTable from './ItemTable';
 
 class ItemHoldings extends React.Component {
   constructor(props) {
@@ -75,53 +76,8 @@ class ItemHoldings extends React.Component {
     const bibId = this.props.bibId;
 
     return (
-      <table className="nypl-basic-table">
-        <caption className="hidden">Item details</caption>
-        <thead>
-          <tr>
-            <th>Location</th>
-            <th>Call No.</th>
-            <th>Status</th>
-            <th>Message</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          {
-            itemsToDisplay.map((h, i) => {
-              let itemLink;
-              let itemDisplay = null;
-
-              if (h.requestHold) {
-                itemLink = h.available ?
-                  <Link
-                    className="button"
-                    to={`/hold/request/${bibId}-${h.id}`}
-                    onClick={(e) => this.getRecord(e, bibId, h.id)}
-                  >Request</Link> :
-                  <span className="nypl-item-unavailable">Unavailable</span>;
-              }
-
-              if (h.callNumber) {
-                itemDisplay =
-                  <span dangerouslySetInnerHTML={this.createMarkup(h.callNumber)}></span>;
-              } else if (h.isElectronicResource) {
-                itemDisplay = <span>{h.location}</span>;
-              }
-
-              return (
-                <tr key={i} className={h.availability}>
-                  <td>{h.location}</td>
-                  <td>{itemDisplay}</td>
-                  <td>{h.status.prefLabel}</td>
-                  <td>{h.accessMessage.prefLabel}</td>
-                  <td>{itemLink}</td>
-                </tr>
-              );
-            })
-          }
-        </tbody>
-      </table>
+      (itemsToDisplay && _isArray(itemsToDisplay) && itemsToDisplay.length) ?
+        <ItemTable items={itemsToDisplay} bibId={bibId} getRecord={this.getRecord} /> : null
     );
   }
 
@@ -145,17 +101,6 @@ class ItemHoldings extends React.Component {
       return [];
     }
     return [arr.slice(0, n)].concat(this.chunk(arr.slice(n), n));
-  }
-
-  /*
-   * createMarkup(html)
-   * @description Needed to insert/render HTML into a component.
-   * @param {string} html The HTML to render.
-   */
-  createMarkup(html) {
-    return {
-      __html: html,
-    };
   }
 
   /*

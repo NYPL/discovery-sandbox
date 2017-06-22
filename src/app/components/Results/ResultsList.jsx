@@ -10,6 +10,8 @@ import Actions from '../../actions/Actions';
 import LibraryItem from '../../utils/item';
 import { ajaxCall } from '../../utils/utils';
 
+import ItemTable from '../Item/ItemTable';
+
 class ResultsList extends React.Component {
   constructor(props) {
     super(props);
@@ -18,14 +20,22 @@ class ResultsList extends React.Component {
     this.getRecord = this.getRecord.bind(this);
   }
 
-  getRecord(e, bibId) {
+  getRecord(e, bibId, itemId = '') {
     e.preventDefault();
 
-    ajaxCall(`/api/bib?bibId=${bibId}`, (response) => {
-      console.log(response.data);
-      Actions.updateBib(response.data);
-      this.routeHandler(`/bib/${bibId}`);
-    });
+    ajaxCall(`/api/bib?bibId=${bibId}`,
+      (response) => {
+        Actions.updateBib(response.data);
+        if (itemId) {
+          this.routeHandler(`/hold/request/${bibId}-${itemId}`);
+        } else {
+          this.routeHandler(`/bib/${bibId}`);
+        }
+      },
+      error => {
+        console.log(error);
+      }
+    );
   }
 
   getCollapsedBibs(collapsedBibs) {
@@ -105,6 +115,10 @@ class ResultsList extends React.Component {
           <span className="nypl-results-room">{location}</span>
           <span className="nypl-results-use">{usageType}</span>
         </div>
+        {
+          (items.length === 1) &&
+            <ItemTable items={items} bibId={bibId} getRecord={this.getRecord} />
+        }
       </li>
     );
   }

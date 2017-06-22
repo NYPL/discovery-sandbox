@@ -52,8 +52,11 @@
   "devDependencies": {
     "axios-mock-adapter": "1.7.1",
     "create-react-class": "15.5.3",
+    "jsdom": "9.0.0",
     "nightwatch": "0.9.9",
-    "nyc": "9.0.1"
+    "nyc": "9.0.1",
+    "react-addons-test-utils": "15.6.0",
+    "react-test-renderer": "15.6.1"
   },
   "dependencies": {
     "@nypl/design-toolkit": "0.1.16",
@@ -97,7 +100,6 @@
     "prop-types": "15.5.10",
     "react": "15.5.4",
     "react-a11y": "0.3.3",
-    "react-addons-test-utils": "15.3.1",
     "react-doc-meta": "0.2.0",
     "react-document-title": "2.0.3",
     "react-dom": "15.5.4",
