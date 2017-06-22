@@ -41,8 +41,20 @@ describe('If requireUser does not receive valid value from "req.tokenResponse.de
 });
 
 describe('If requireUser does not receive all valid values from "req"', () => {
-  it('should return true', () => {
+  let requireUser;
 
+  before(() => {
+    requireUser = sinon.spy(User, 'requireUser');
+  });
+
+  after(() => {
+    requireUser.restore();
+  });
+
+  it('should return true', () => {
+    requireUser({ tokenResponse: mockTokenResponse }, {});
+
+    expect(requireUser.returnValues[0]).to.equal(true);
   });
 });
 
