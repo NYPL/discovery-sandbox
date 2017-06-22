@@ -172,17 +172,17 @@ class BibPage extends React.Component {
 
   render() {
     const createAPIQuery = basicQuery(this.props);
-    const record = this.props.bib ? this.props.bib : this.props.item;
-    const bibId = record && record['@id'] ? record['@id'].substring(4) : '';
-    const title = record.title && record.title.length ? record.title[0] : '';
-    const holdings = LibraryItem.getItems(record);
-    const materialType = record && record.materialType && record.materialType[0] ?
-      record.materialType[0].prefLabel : null;
-    const language = record && record.language && record.language[0] ?
-      record.language[0].prefLabel : null;
-    const yearPublished = record && record.dateStartYear ? record.dateStartYear : null;
-    const usageType = record && record.actionType && record.actionType[0] ?
-      record.actionType[0].prefLabel : null;
+    const bib = this.props.bib ? this.props.bib : {};
+    const bibId = bib && bib['@id'] ? bib['@id'].substring(4) : '';
+    const title = bib.title && bib.title.length ? bib.title[0] : '';
+    const items = LibraryItem.getItems(bib);
+    const materialType = bib && bib.materialType && bib.materialType[0] ?
+      bib.materialType[0].prefLabel : null;
+    const language = bib && bib.language && bib.language[0] ?
+      bib.language[0].prefLabel : null;
+    const yearPublished = bib && bib.dateStartYear ? bib.dateStartYear : null;
+    const usageType = bib && bib.actionType && bib.actionType[0] ?
+      bib.actionType[0].prefLabel : null;
     const detailFields = [
       { label: 'Title', field: 'title' },
       { label: 'Title (alternative)', field: 'titleAlt' },
@@ -217,8 +217,8 @@ class BibPage extends React.Component {
       { label: 'Number of items', field: 'numItems' },
       { label: 'Shelf Mark', field: 'shelfMark' },
     ];
-    const bibDetails = this.getDisplayFields(record, detailFields);
-    const bNumber = record && record.idBnum ? record.idBnum : '';
+    const bibDetails = this.getDisplayFields(bib, detailFields);
+    const bNumber = bib && bib.idBnum ? bib.idBnum : '';
     const marcRecordLink = bNumber ? 'https://catalog.nypl.org/search~S1?' +
       `/.b${bNumber}/.b${bNumber}/1%2C1%2C1%2CB/marc` : '';
     const searchURL = createAPIQuery({});
@@ -272,9 +272,9 @@ class BibPage extends React.Component {
                       <span className="nypl-item-media">{materialType}</span>
                       {language && ` in ${language}`}
                     </p>
-                    <p>{record.extent} {record.dimensions}</p>
+                    <p>{bib.extent} {bib.dimensions}</p>
                     <p>
-                      {record.placeOfPublication} {record.publisher} {yearPublished}
+                      {bib.placeOfPublication} {bib.publisher} {yearPublished}
                     </p>
                     <p className="nypl-item-use">{usageType}</p>
                   </div>
@@ -297,9 +297,9 @@ class BibPage extends React.Component {
                 <div className="">
                   <ItemHoldings
                     shortenItems={shortenItems}
-                    holdings={holdings}
+                    holdings={items}
                     bibId={bibId}
-                    title={`${record.numItems} item${record.numItems === 1 ? '' : 's'}
+                    title={`${bib.numItems} item${bib.numItems === 1 ? '' : 's'}
                       associated with this record:`}
                   />
                 </div>
