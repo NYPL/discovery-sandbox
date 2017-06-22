@@ -76,7 +76,7 @@ class ItemHoldings extends React.Component {
     const bibId = this.props.bibId;
 
     return (
-      (itemsToDisplay && _isArray(itemsToDisplay) && itemsToDisplay.length > 0) ?
+      (itemsToDisplay && _isArray(itemsToDisplay) && itemsToDisplay.length) ?
         <ItemTable items={itemsToDisplay} bibId={bibId} getRecord={this.getRecord} /> : null
     );
   }
