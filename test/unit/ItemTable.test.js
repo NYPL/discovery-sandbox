@@ -73,12 +73,6 @@ describe('ItemTable', () => {
     });
   });
 
-  describe('If <ItemTable> receives an item with "callNumber" value', () => {
-    it('should render the item with the "callNumber" value', () => {
-
-    });
-  });
-
   describe('If <ItemTable> receives an item with "isElectronicResource" value', () => {
     it('should render the item with two "location" value', () => {
 
