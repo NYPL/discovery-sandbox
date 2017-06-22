@@ -43,14 +43,14 @@ class HoldConfirmation extends React.Component {
 
   render() {
     // Need to better clarify variable names later.
-    const item = this.props.bib;
-    const title = (item && _isArray(item.title) && item.title.length > 0) ?
-      item.title[0] : '';
-    const id = (item && item['@id'] && typeof item['@id'] === 'string') ?
-      item['@id'].substring(4) : '';
-    const itemId = (this.props.params && this.props.params.id) ? this.props.params.id : '';
-    const selectedItem = LibraryItem.getItem(item, itemId);
-    const location = LibraryItem.getLocation(item, itemId);
+    const bib = this.props.bib;
+    const title = (bib && _isArray(bib.title) && bib.title.length > 0) ?
+      bib.title[0] : '';
+    const id = (bib && bib['@id'] && typeof bib['@id'] === 'string') ?
+      bib['@id'].substring(4) : '';
+    const itemId = (this.props.params && this.props.params.itemId) ? this.props.params.itemId : '';
+    const selectedItem = LibraryItem.getItem(bib, itemId);
+    const deliveryLocations = selectedItem.deliveryLocations[0];
     const shelfMarkInfo =
       (selectedItem && _isArray(selectedItem.shelfMark) && selectedItem.shelfMark.length > 0) ?
         <li>Call number: {selectedItem.shelfMark[0]}</li> : null;
@@ -96,9 +96,9 @@ class HoldConfirmation extends React.Component {
           <div className="map-container">
             <div className="third">
               <p>
-                <a href={`${location.uri}`}>{location['full-name']}</a><br />
-                {location.address.address1}<br />
-                {location.prefLabel}
+                <a href={`${deliveryLocations.uri}`}>{deliveryLocations['full-name']}</a><br />
+                {deliveryLocations.address.address1}<br />
+                {deliveryLocations.prefLabel}
               </p>
             </div>
           </div>
