@@ -1,316 +1,96 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router';
-import {
-  findWhere as _findWhere,
-  findIndex as _findIndex,
-  isArray as _isArray,
-} from 'underscore';
 import DocumentTitle from 'react-document-title';
-import { LeftArrowIcon } from 'dgx-svg-icons';
 
 import Breadcrumbs from '../Breadcrumbs/Breadcrumbs';
 import Search from '../Search/Search';
 import ItemHoldings from '../Item/ItemHoldings';
 import BibDetails from './BibDetails';
 import LibraryItem from '../../utils/item';
-import Actions from '../../actions/Actions';
+import BackLink from './BackLink';
+import BibMainInfo from './BibMainInfo';
+import MarcRecord from './MarcRecord';
 
-import {
-  ajaxCall,
-  basicQuery,
-} from '../../utils/utils';
+import { basicQuery } from '../../utils/utils';
 
-class BibPage extends React.Component {
-  onClick(e, query) {
-    e.preventDefault();
+const BibPage = (props) => {
+  const createAPIQuery = basicQuery(props);
+  const bib = props.bib ? props.bib : {};
+  const bibId = bib && bib['@id'] ? bib['@id'].substring(4) : '';
+  const title = bib.title && bib.title.length ? bib.title[0] : '';
+  const items = LibraryItem.getItems(bib);
+  const bNumber = bib && bib.idBnum ? bib.idBnum : '';
+  const searchURL = createAPIQuery({});
+  let shortenItems = true;
 
-    Actions.updateSpinner(true);
-    ajaxCall(`/api?${query}`, (response) => {
-      const closingBracketIndex = query.indexOf(']');
-      const equalIndex = query.indexOf('=') + 1;
-
-      const field = query.substring(8, closingBracketIndex);
-      const value = query.substring(equalIndex);
-
-      // Find the index where the field exists in the list of facets from the API
-      const index = _findIndex(response.data.facets.itemListElement, { field });
-
-      // If the index exists, try to find the facet value from the API
-      if (response.data.facets.itemListElement[index]) {
-        const facet = _findWhere(response.data.facets.itemListElement[index].values, { value });
-
-        // The API may return a list of facets in the selected field, but the wanted
-        // facet may still not appear. If that's the case, return the clicked facet value.
-        Actions.updateSelectedFacets({
-          [field]: [{
-            id: facet ? facet.value : value,
-            value: facet ? (facet.label || facet.value) : value,
-          }],
-        });
-      } else {
-        // Otherwise, the field wasn't found in the API. Returning this highlights the
-        // facet in the selected facet region, but not in the facet sidebar.
-        Actions.updateSelectedFacets({
-          [field]: [{
-            id: value,
-            value,
-          }],
-        });
-      }
-      Actions.updateSearchResults(response.data.searchResults);
-      Actions.updateFacets(response.data.facets);
-      Actions.updateSearchKeywords('');
-      Actions.updatePage('1');
-      this.context.router.push(`/search?${query}`);
-      Actions.updateSpinner(false);
-    });
+  if (props.location.pathname.indexOf('all') === -1) {
+    shortenItems = false;
   }
 
-  getDisplayFields(record, data) {
-    if (!data.length) return [];
+  return (
+    <DocumentTitle title={`${title} | Research Catalog`}>
+      <main className="main-page">
+        <div className="nypl-page-header">
+          <div className="nypl-full-width-wrapper">
+            <Breadcrumbs
+              query={searchURL.substring(2)}
+              type="bib"
+              title={title}
+            />
+            <h1>Research Catalog</h1>
+            <BackLink searchURL={searchURL} searchKeywords={props.searchKeywords} />
+          </div>
+        </div>
 
-    const detailFields = [];
-    data.forEach((f) => {
-      // skip absent fields
-      if (!record[f.field] || !record[f.field].length || !_isArray(record[f.field])) return false;
-      const fieldValue = record[f.field][0];
-
-      // external links
-      if (f.url) {
-        detailFields.push({
-          term: f.label,
-          definition: (
-            <ul>
-              {record[f.field].map((value, i) => {
-                const v = f.field === 'idOclc' ? 'View in Worldcat' : value;
-                return <li key={i}><a target="_blank" title={v} href={f.url(v)}>{v}</a></li>;
-              })}
-            </ul>
-          ),
-        });
-
-      // list of links
-      } else if (fieldValue['@id']) {
-        detailFields.push({
-          term: f.label,
-          definition: (
-            <ul>{record[f.field].map((obj, i) => (
-              <li key={i}>
-                <Link
-                  onClick={e => this.onClick(e, `filters[${f.field}]=${obj['@id']}`)}
-                  title={`Make a new search for ${f.label}: ${obj.prefLabel}`}
-                  to={`/search?q=${encodeURIComponent(`filters[${f.field}]=${obj['@id']}`)}`}
-                >{obj.prefLabel}</Link>
-              </li>))}
-            </ul>),
-        });
-      // list of links
-      } else if (f.linkable) {
-        if (f.field === 'contributorLiteral') {
-          detailFields.push({
-            term: f.label,
-            definition: record[f.field].map((value, i) => {
-              const comma = record[f.field].length > 1 ? ', ' : ' ';
-              return (
-                <span key={i}>
-                  <Link
-                    onClick={e => this.onClick(e, `filters[${f.field}]=${value}`)}
-                    title={`Make a new search for ${f.label}: "${value}"`}
-                    to={`/search?q=${encodeURIComponent(`filters[${f.field}]=${value}`)}`}
-                  >
-                    {value}
-                  </Link>{comma}
-                </span>
-              );
-            }),
-          });
-        } else {
-          detailFields.push({
-            term: f.label,
-            definition: (
-              <ul>{record[f.field].map((value, i) => (
-                <li key={i}>
-                  <Link
-                    onClick={e => this.onClick(e, `filters[${f.field}]=${value}`)}
-                    title={`Make a new search for ${f.label}: "${value}"`}
-                    to={`/search?q=${encodeURIComponent(`filters[${f.field}]=${value}`)}`}
-                  >{value}</Link>
-                </li>))}
-              </ul>),
-          });
-        }
-
-      // list of plain text
-      } else {
-        detailFields.push({
-          term: f.label,
-          definition: <ul>{record[f.field].map((value, i) => <li key={i}>{value}</li>)}</ul>,
-        });
-      }
-    });
-
-    return detailFields;
-  }
-
-  getResultsLink(searchURL) {
-    if (!searchURL) {
-      return null;
-    }
-
-    return (
-      <Link
-        title={`Go back to search results for ${this.props.searchKeywords}`}
-        className="nypl-back-link"
-        to={`/search?${searchURL}`}
-      >
-        <LeftArrowIcon />
-        Back to Search Results
-      </Link>
-    );
-  }
-
-  render() {
-    const createAPIQuery = basicQuery(this.props);
-    const bib = this.props.bib ? this.props.bib : {};
-    const bibId = bib && bib['@id'] ? bib['@id'].substring(4) : '';
-    const title = bib.title && bib.title.length ? bib.title[0] : '';
-    const items = LibraryItem.getItems(bib);
-    const materialType = bib && bib.materialType && bib.materialType[0] ?
-      bib.materialType[0].prefLabel : null;
-    const language = bib && bib.language && bib.language[0] ?
-      bib.language[0].prefLabel : null;
-    const yearPublished = bib && bib.dateStartYear ? bib.dateStartYear : null;
-    const usageType = bib && bib.actionType && bib.actionType[0] ?
-      bib.actionType[0].prefLabel : null;
-    const detailFields = [
-      { label: 'Title', field: 'title' },
-      { label: 'Title (alternative)', field: 'titleAlt' },
-      { label: 'Title (display)', field: 'titleDisplay' },
-      { label: 'Type', field: 'type' },
-      { label: 'Carrier Type', field: 'carrierType' },
-      { label: 'Material Type', field: 'materialType' },
-      { label: 'Media Type', field: 'mediaType' },
-      { label: 'Language', field: 'language' },
-      { label: 'Created String', field: 'createdString' },
-      { label: 'Creator', field: 'creatorLiteral' },
-      { label: 'Date String', field: 'dateString' },
-      { label: 'Date Created', field: 'createdYear' },
-      { label: 'Date Published', field: 'startYear' },
-      { label: 'Contributors', field: 'contributor' },
-      { label: 'Publisher', field: 'publisher' },
-      { label: 'Place of publication', field: 'placeOfPublication' },
-      { label: 'Subjects', field: 'subjectLiteral' },
-      { label: 'Dimensions', field: 'dimensions' },
-      { label: 'Extent', field: 'extent' },
-      { label: 'Issuance', field: 'issuance' },
-      { label: 'Owner', field: 'owner' },
-      { label: 'Location', field: 'location' },
-      { label: 'Notes', field: 'note' },
-      { label: 'Bnumber', field: 'idBnum' },
-      { label: 'LCC', field: 'idLcc' },
-      { label: 'OCLC', field: 'idOclc' },
-      { label: 'Owi', field: 'idOwi' },
-      { label: 'URI', field: 'uris' },
-      { label: 'Identifier', field: 'identifier' },
-      { label: 'Number available', field: 'numAvailable' },
-      { label: 'Number of items', field: 'numItems' },
-      { label: 'Shelf Mark', field: 'shelfMark' },
-    ];
-    const bibDetails = this.getDisplayFields(bib, detailFields);
-    const bNumber = bib && bib.idBnum ? bib.idBnum : '';
-    const marcRecordLink = bNumber ? 'https://catalog.nypl.org/search~S1?' +
-      `/.b${bNumber}/.b${bNumber}/1%2C1%2C1%2CB/marc` : '';
-    const searchURL = createAPIQuery({});
-    let shortenItems = true;
-
-    if (this.props.location.pathname.indexOf('all') === -1) {
-      shortenItems = false;
-    }
-
-    return (
-      <DocumentTitle title={`${title} | Research Catalog`}>
-        <main className="main-page">
-          <div className="nypl-page-header">
-            <div className="nypl-full-width-wrapper">
-              <Breadcrumbs
-                query={searchURL.substring(2)}
-                type="bib"
-                title={title}
+        <div className="nypl-full-width-wrapper">
+          <div className="nypl-row">
+            <div className="nypl-column-three-quarters nypl-column-offset-one">
+              <Search
+                searchKeywords={props.searchKeywords}
+                field={props.field}
+                spinning={props.spinning}
+                createAPIQuery={createAPIQuery}
               />
-              <h1>Research Catalog</h1>
-              {this.getResultsLink(searchURL)}
             </div>
           </div>
 
-          <div className="nypl-full-width-wrapper">
-            <div className="nypl-row">
-              <div className="nypl-column-three-quarters nypl-column-offset-one">
-                <Search
-                  searchKeywords={this.props.searchKeywords}
-                  field={this.props.field}
-                  spinning={this.props.spinning}
-                  createAPIQuery={createAPIQuery}
+          <div className="nypl-row">
+            <div
+              className="nypl-column-three-quarters nypl-column-offset-one"
+              role="region"
+              id="mainContent"
+              aria-live="polite"
+              aria-atomic="true"
+              aria-relevant="additions removals"
+              aria-describedby="results-description"
+            >
+              <BibMainInfo bib={bib} />
+            </div>
+
+            <div className="nypl-column-three-quarters nypl-column-offset-one">
+              <div className="nypl-item-details">
+                <MarcRecord bNumber={bNumber[0]} />
+                <BibDetails
+                  bib={bib}
+                  title="Bib details"
+                />
+              </div>
+              <div className="">
+                <ItemHoldings
+                  shortenItems={shortenItems}
+                  items={items}
+                  bibId={bibId}
+                  title={`${bib.numItems} item${bib.numItems === 1 ? '' : 's'}
+                    associated with this record:`}
                 />
               </div>
             </div>
-
-            <div className="nypl-row">
-              <div
-                className="nypl-column-three-quarters nypl-column-offset-one"
-                role="region"
-                id="mainContent"
-                aria-live="polite"
-                aria-atomic="true"
-                aria-relevant="additions removals"
-                aria-describedby="results-description"
-              >
-                <div className="nypl-item-details">
-                  <h1>{title}</h1>
-                  <div className="nypl-item-info">
-                    <p>
-                      <span className="nypl-item-media">{materialType}</span>
-                      {language && ` in ${language}`}
-                    </p>
-                    <p>{bib.extent} {bib.dimensions}</p>
-                    <p>
-                      {bib.placeOfPublication} {bib.publisher} {yearPublished}
-                    </p>
-                    <p className="nypl-item-use">{usageType}</p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="nypl-column-three-quarters nypl-column-offset-one">
-                <div className="nypl-item-details">
-                  {
-                    marcRecordLink && (<dl>
-                      <dt>MARC Record</dt>
-                      <dd><a href={marcRecordLink}>MARC Record</a></dd>
-                    </dl>)
-                  }
-                  <BibDetails
-                    data={bibDetails}
-                    title="Bib details"
-                  />
-                </div>
-                <div className="">
-                  <ItemHoldings
-                    shortenItems={shortenItems}
-                    holdings={items}
-                    bibId={bibId}
-                    title={`${bib.numItems} item${bib.numItems === 1 ? '' : 's'}
-                      associated with this record:`}
-                  />
-                </div>
-              </div>
-            </div>
           </div>
-        </main>
-      </DocumentTitle>
-    );
-  }
-}
+        </div>
+      </main>
+    </DocumentTitle>
+  );
+};
 
 BibPage.propTypes = {
   item: PropTypes.object,
@@ -322,10 +102,6 @@ BibPage.propTypes = {
   spinning: PropTypes.bool,
   sortBy: PropTypes.string,
   page: PropTypes.string,
-};
-
-BibPage.contextTypes = {
-  router: PropTypes.object,
 };
 
 export default BibPage;
