@@ -10,9 +10,13 @@ import Search from '../Search/Search.jsx';
 import Sorter from '../Sorter/Sorter';
 import Pagination from '../Pagination/Pagination';
 
-import { basicQuery } from '../../utils/utils.js';
+import {
+  basicQuery,
+  ajaxCall,
+} from '../../utils/utils.js';
+import Actions from '../../actions/Actions.js';
 
-const SearchResultsPage = (props) => {
+const SearchResultsPage = (props, context) => {
   const {
     searchResults,
     searchKeywords,
@@ -38,8 +42,35 @@ const SearchResultsPage = (props) => {
   const h1pageLabel = totalPages ? `page ${page} of ${totalPages}` : '';
   const h1Label = `Search results ${h1searchKeywordsLabel} ${h1pageLabel}`;
 
+  const searchStr = location.search;
+  const index = searchStr.indexOf('&page=');
+  let urlSearchString = '';
+  if (index !== -1) {
+    const pageIndex = index + 6;
+    urlSearchString = `${searchStr.substring(0, pageIndex)}` +
+      `${page}${searchStr.substring(pageIndex + 1)}`;
+  }
+
+  const updatePage = (nextPage) => {
+    Actions.updateSpinner(true);
+    // Temporary. Need to check cross-browser and if it's needed at all.
+    window.scrollTo(0, 0);
+    const apiQuery = createAPIQuery({ page: nextPage });
+
+    ajaxCall(`/api?${apiQuery}`, response => {
+      Actions.updateSearchResults(response.data.searchResults);
+      Actions.updatePage(nextPage.toString());
+      Actions.updateSpinner(false);
+      context.router.push(`/search?${apiQuery}`);
+    });
+  };
+
+
   return (
-    <DocumentTitle title={`${searchKeywords ? searchKeywords + ' | ' : ''} Search Results | Research Catalog | NYPL`}>
+    <DocumentTitle
+      title={`${searchKeywords ? `${searchKeywords} | ` : ''} ` +
+        'Search Results | Research Catalog | NYPL'}
+    >
       <main className="main-page">
         <div className="nypl-page-header">
           <div className="nypl-full-width-wrapper">
@@ -109,10 +140,11 @@ const SearchResultsPage = (props) => {
               {
                 !!(totalHits && totalHits !== 0) &&
                   (<Pagination
-                    hits={totalHits}
-                    page={page}
-                    urlSearchString={location.search}
-                    createAPIQuery={createAPIQuery}
+                    total={totalHits}
+                    perPage={50}
+                    page={parseInt(page, 10)}
+                    to={{ pathname: urlSearchString }}
+                    updatePage={updatePage}
                   />)
               }
             </div>
@@ -134,6 +166,10 @@ SearchResultsPage.propTypes = {
   field: PropTypes.string,
   spinning: PropTypes.bool,
   error: PropTypes.object,
+};
+
+SearchResultsPage.contextTypes = {
+  router: PropTypes.object,
 };
 
 export default SearchResultsPage;
