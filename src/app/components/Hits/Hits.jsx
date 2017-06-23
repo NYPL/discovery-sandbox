@@ -7,59 +7,19 @@ import {
   isArray as _isArray,
   keys as _keys,
 } from 'underscore';
-import { XIcon } from 'dgx-svg-icons';
 
-import Actions from '../../actions/Actions';
 import ClearHits from './ClearHits';
-import { ajaxCall } from '../../utils/utils';
+import KeywordSelection from './KeywordSelection';
+import FilterSelection from './FilterSelection';
 
 class Hits extends React.Component {
   constructor(props) {
     super(props);
 
-    this.removeFacet = this.removeFacet.bind(this);
-    this.getKeyword = this.getKeyword.bind(this);
-    this.getFacetElements = this.getFacetElements.bind(this);
-    this.getFacetLabel = this.getFacetLabel.bind(this);
+    this.getSelectedFacets = this.getSelectedFacets.bind(this);
   }
 
-  getKeyword(keyword) {
-    if (keyword) {
-      return (
-        <span className="nypl-facet">&nbsp;with keywords <strong>{keyword}</strong>
-          <button
-            onClick={() => this.removeKeyword(keyword)}
-            className="remove-keyword"
-            aria-controls="results-region"
-          >
-            <XIcon
-              className="nypl-icon"
-              preserveAspectRatio="xMidYMid meet"
-              aria-hidden="true"
-            />
-            <span className="hidden">remove keyword filter&nbsp;{keyword}</span>
-          </button>
-        </span>
-      );
-    }
-
-    return null;
-  }
-
-  getFacetLabel(field) {
-    if (field === 'materialType') {
-      return 'Material Type';
-    } else if (field === 'subjectLiteral') {
-      return 'Subject';
-    } else if (field === 'creatorLiteral') {
-      return 'Author';
-    } else if (field.indexOf('date') !== -1) {
-      return 'Date';
-    }
-    return field.charAt(0).toUpperCase() + field.slice(1);
-  }
-
-  getFacetElements(facets) {
+  getSelectedFacets(facets) {
     if (_isEmpty(facets)) return null;
     const renderedElms = [];
     const filterLen = _keys(facets).length - 1;
@@ -67,21 +27,12 @@ class Hits extends React.Component {
     _mapObject(facets, (value, key) => {
       _each(value, (facet, i) => {
         renderedElms.push(
-          <span key={`${key}-${i}`} className="nypl-facet">
-            {this.getFacetLabel(key)} <strong>{facet.value}</strong>
-            <button
-              onClick={() => this.removeFacet(key, facet.id)}
-              className="remove-facet"
-              aria-controls="results-region"
-            >
-              <XIcon
-                className="nypl-icon"
-                preserveAspectRatio="xMidYMid meet"
-                aria-hidden="true"
-              />
-              <span className="hidden">remove filter&nbsp;{facet.value}</span>
-            </button>
-          </span>
+          <FilterSelection
+            key={`${key}-${i}`}
+            facetKey={key}
+            facet={facet}
+            apiQuery={this.props.createAPIQuery({ selectedFacets: this.props.selectedFacets })}
+          />
         );
         if (i < value.length - 1) {
           renderedElms.push(<span key={`value-comma-${i}`}>, </span>);
@@ -95,36 +46,6 @@ class Hits extends React.Component {
     });
 
     return renderedElms;
-  }
-
-  removeKeyword() {
-    Actions.updateSpinner(true);
-    Actions.updateSearchKeywords('');
-
-    const apiQuery = this.props.createAPIQuery({ searchKeywords: '' });
-
-    ajaxCall(`/api?${apiQuery}`, (response) => {
-      Actions.updateSearchResults(response.data.searchResults);
-      Actions.updateFacets(response.data.facets);
-      Actions.updatePage('1');
-      this.context.router.push(`/search?${apiQuery}`);
-      Actions.updateSpinner(false);
-    });
-  }
-
-  removeFacet(facetKey, valueId) {
-    Actions.updateSpinner(true);
-    Actions.removeFacet(facetKey, valueId);
-
-    const apiQuery = this.props.createAPIQuery({ selectedFacets: this.props.selectedFacets });
-
-    ajaxCall(`/api?${apiQuery}`, (response) => {
-      Actions.updateSearchResults(response.data.searchResults);
-      Actions.updateFacets(response.data.facets);
-      Actions.updatePage('1');
-      this.context.router.push(`/search?${apiQuery}`);
-      Actions.updateSpinner(false);
-    });
   }
 
   displayClear() {
@@ -175,19 +96,27 @@ class Hits extends React.Component {
       }
     });
 
-    const keyword = this.getKeyword(searchKeywords);
-    const activeFacetsElm = this.getFacetElements(activeFacets);
+    const keyword = searchKeywords &&
+      (<KeywordSelection
+        keyword={searchKeywords}
+        apiQuery={this.props.createAPIQuery({ searchKeywords: '' })}
+      />);
+    const selectedFacetElms = this.getSelectedFacets(activeFacets);
     if (this.props.spinning) {
       return (<p><strong className="nypl-results-count">Loading…</strong></p>);
     }
+
     if (hits !== 0) {
+      if (!keyword && !selectedFacetElms) {
+        return (<p><strong className="nypl-results-count">{hitsF}</strong>results found.</p>);
+      }
       return (
         <p>
           <strong className="nypl-results-count">{hitsF}</strong>
-           results found for {keyword}{keyword && activeFacetsElm && ', '}{activeFacetsElm}.
+           results found for {keyword}{keyword && selectedFacetElms && ', '}{selectedFacetElms}.
         </p>);
     }
-    return (<p>No results found for {keyword}{activeFacetsElm}.</p>);
+    return (<p>No results found for {keyword}{selectedFacetElms}.</p>);
   }
 
   render() {
