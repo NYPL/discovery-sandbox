@@ -26,6 +26,7 @@ class ItemHoldings extends React.Component {
   }
 
   componentDidMount() {
+    // Mostly things we want to do on the client-side only:
     const items = this.props.items;
     let chunkedItems = [];
 

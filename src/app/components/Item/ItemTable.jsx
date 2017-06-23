@@ -1,9 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router';
 import { isArray as _isArray } from 'underscore';
 
-const createMarkup = (html) => ({ __html: html });
+import ItemTableRow from './ItemTableRow';
 
 const ItemTable = ({ items, bibId, getRecord }) => {
   if (!_isArray(items) || !items.length) {
@@ -24,38 +23,9 @@ const ItemTable = ({ items, bibId, getRecord }) => {
       </thead>
       <tbody>
         {
-          items.map((h, i) => {
-            let itemLink;
-            let itemDisplay = null;
-
-            if (h.requestHold) {
-              itemLink = h.available ?
-                <Link
-                  className="button"
-                  to={`/hold/request/${bibId}-${h.id}`}
-                  onClick={(e) => getRecord(e, bibId, h.id)}
-                  tabIndex="0"
-                >Request</Link> :
-                <span className="nypl-item-unavailable">Unavailable</span>;
-            }
-
-            if (h.callNumber) {
-              itemDisplay =
-                <span dangerouslySetInnerHTML={createMarkup(h.callNumber)}></span>;
-            } else if (h.isElectronicResource) {
-              itemDisplay = <span>{h.location}</span>;
-            }
-
-            return (
-              <tr key={i} className={h.availability}>
-                <td>{h.location}</td>
-                <td>{itemDisplay}</td>
-                <td>{h.status.prefLabel}</td>
-                <td>{h.accessMessage.prefLabel}</td>
-                <td>{itemLink}</td>
-              </tr>
-            );
-          })
+          items.map((item, i) =>
+            <ItemTableRow key={i} item={item} bibId={bibId} getRecord={getRecord} />
+          )
         }
       </tbody>
     </table>
