@@ -64,11 +64,11 @@ function searchAjax(req, res) {
 }
 
 function searchServerPost(req, res) {
-  const { select, q } = getReqParams(req.body);
+  const { fieldQuery, q } = getReqParams(req.body);
 
   const apiQuery = createAPIQuery({
     searchKeywords: encodeURIComponent(q),
-    field: select,
+    field: fieldQuery,
   });
 
   res.redirect(`/search?${apiQuery}`);

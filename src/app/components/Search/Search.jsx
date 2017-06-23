@@ -119,7 +119,7 @@ class Search extends React.Component {
               name="search-field-value"
               onChange={this.onFieldChange}
               value={this.state.field}
-              name="select"
+              name="search_scope"
             >
               <option value="all">All fields</option>
               <option value="title">Title</option>

@@ -310,7 +310,6 @@ const basicQuery = (props) => {
     searchKeywords,
     page,
   }) => {
-    console.log(field)
     const sortQuery = getSortQuery(sortBy || props.sortBy);
     const fieldQuery = getFieldParam(field || props.field);
     const filterQuery = getFacetFilterParam(selectedFacets || props.selectedFacets);
