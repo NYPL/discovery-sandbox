@@ -7,6 +7,7 @@ import { expect } from 'chai';
 import User from './../../src/server/ApiRoutes/User.js';
 
 let mockTokenResponse = {};
+const mockRes = { redirect: () => {}, };
 
 describe('If requireUser does not receive valid value from "req.tokenResponse"', () => {
   let requireUser;
@@ -17,6 +18,9 @@ describe('If requireUser does not receive valid value from "req.tokenResponse"',
 
   after(() => {
     mockTokenResponse = {
+      protocol: 'http',
+      originalUrl: '/hold/request/b11995345-i14211097',
+      get: (name) => { return name; },
       isTokenValid: true,
       accessToken: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJodHRwczpcL1wvd3d3Lm55cGwub3JnIiwic3ViIjoiNjY3NzI3MyIsImF1ZCI6ImFwcF9teWFjY291bnQiLCJpYXQiOjE0OTgxNjI4MzMsImV4cCI6MTQ5ODE2NjQzMywiYXV0aF90aW1lIjoxNDk4MTYyODMzLCJzY29wZSI6Im9wZW5pZCBvZmZsaW5lX2FjY2VzcyBwYXRyb246cmVhZCJ9.ay8XM1ASsb346pOlBmZuZHTi5fewQe3-XRqIg9rxCw8T8iGftQJWYLzLImhIMVhAMlQ6YTu3pIb7Kv5Drkq_nnvSz85B2-bwuZh75PcLj7oT_7J4STHQYc1haDOcHTdoWhE8qMJs49CvcgCsBq_1_mqCD4e1mrkE9binHd3AfFbUogYK8GyqgCSxLjH_GkhwGZL_YewQQ32sJWlPJIpREKvCDxPMsHm16WzjD9YXXFZzrU-9NjOimewFuZFEKpk56j3T-94GBrz4bubr1o3wzPYEgAZJjQQf9aHIZm1zRpx3av1dm80kTJTgDCZv6HFZM2uZsntkSejDelmut_H1Jg',
       decodedPatron: {
@@ -34,8 +38,7 @@ describe('If requireUser does not receive valid value from "req.tokenResponse"',
   });
 
   it('should return false', () => {
-    mockTokenResponse.isTokenValid = false;
-    requireUser({ tokenResponse: mockTokenResponse }, {});
+    requireUser({ tokenResponse: mockTokenResponse }, mockRes);
 
     expect(requireUser.returnValues[0]).to.equal(false);
   })
@@ -55,7 +58,7 @@ describe('If requireUser does not receive valid value from "req.tokenResponse.is
 
   it('should return false', () => {
     mockTokenResponse.isTokenValid = false;
-    requireUser({ tokenResponse: mockTokenResponse }, {});
+    requireUser({ tokenResponse: mockTokenResponse }, mockRes);
 
     expect(requireUser.returnValues[0]).to.equal(false);
   })
@@ -75,7 +78,7 @@ describe('If requireUser does not receive valid value from "req.tokenResponse.ac
 
   it('should return false', () => {
     mockTokenResponse.accessToken = undefined;
-    requireUser({ tokenResponse: mockTokenResponse }, {});
+    requireUser({ tokenResponse: mockTokenResponse }, mockRes);
 
     expect(requireUser.returnValues[0]).to.equal(false);
   });
@@ -106,7 +109,7 @@ describe('If requireUser does not receive valid value from "req.tokenResponse.de
 
   it('should return false', () => {
     mockTokenResponse.decodedPatron = undefined;
-    requireUser({ tokenResponse: mockTokenResponse }, {});
+    requireUser({ tokenResponse: mockTokenResponse }, mockRes);
 
     expect(requireUser.returnValues[0]).to.equal(false);
   });
@@ -126,7 +129,7 @@ describe('If requireUser does not receive valid value from "req.tokenResponse.de
 
   it('should return false', () => {
     mockTokenResponse.decodedPatron.sub = undefined;
-    requireUser({ tokenResponse: mockTokenResponse }, {});
+    requireUser({ tokenResponse: mockTokenResponse }, mockRes);
 
     expect(requireUser.returnValues[0]).to.equal(false);
   });
@@ -144,7 +147,7 @@ describe('If requireUser receives all valid values from "req"', () => {
   });
 
   it('should return true', () => {
-    requireUser({ tokenResponse: mockTokenResponse }, {});
+    requireUser({ tokenResponse: mockTokenResponse }, mockRes);
 
     expect(requireUser.returnValues[0]).to.equal(true);
   });
