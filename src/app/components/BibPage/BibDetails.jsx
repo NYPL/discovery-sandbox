@@ -103,7 +103,7 @@ class BibDetails extends React.Component {
                       <Link
                         onClick={e => this.newSearch(e, url)}
                         title={`Make a new search for ${fieldLabel}: ${valueObj.prefLabel}`}
-                        to={`/search?q=${url}`}
+                        to={`/search?${url}`}
                       >
                         {valueObj.prefLabel}
                       </Link>
@@ -131,7 +131,7 @@ class BibDetails extends React.Component {
                   <Link
                     onClick={e => this.newSearch(e, url)}
                     title={`Make a new search for ${fieldLabel}: "${value}"`}
-                    to={`/search?q=${url}`}
+                    to={`/search?${url}`}
                   >
                     {value}
                   </Link>{comma}
@@ -154,7 +154,7 @@ class BibDetails extends React.Component {
                       <Link
                         onClick={e => this.newSearch(e, url)}
                         title={`Make a new search for ${fieldLabel}: "${value}"`}
-                        to={`/search?q=${url}`}
+                        to={`/search?${url}`}
                       >
                         {value}
                       </Link>
