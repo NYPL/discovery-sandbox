@@ -2,12 +2,20 @@
 import React from 'react';
 import sinon from 'sinon';
 import { expect } from 'chai';
-// import { mount } from 'enzyme';
 // Import the component that is going to be tested
 import User from './../../src/server/ApiRoutes/User.js';
 
 let mockTokenResponse = {};
 const mockRes = { redirect: () => {}, };
+
+const renderMockReq = (mockTokenResponse) => {
+  return {
+    get: (n) => { return n; },
+    protocol: 'http',
+    originalUrl: '/hold/request/b11995345-i14211097',
+    tokenResponse: mockTokenResponse,
+  };
+};
 
 describe('If requireUser does not receive valid value from "req.tokenResponse"', () => {
   let requireUser;
@@ -18,9 +26,6 @@ describe('If requireUser does not receive valid value from "req.tokenResponse"',
 
   after(() => {
     mockTokenResponse = {
-      protocol: 'http',
-      originalUrl: '/hold/request/b11995345-i14211097',
-      get: (name) => { return name; },
       isTokenValid: true,
       accessToken: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJodHRwczpcL1wvd3d3Lm55cGwub3JnIiwic3ViIjoiNjY3NzI3MyIsImF1ZCI6ImFwcF9teWFjY291bnQiLCJpYXQiOjE0OTgxNjI4MzMsImV4cCI6MTQ5ODE2NjQzMywiYXV0aF90aW1lIjoxNDk4MTYyODMzLCJzY29wZSI6Im9wZW5pZCBvZmZsaW5lX2FjY2VzcyBwYXRyb246cmVhZCJ9.ay8XM1ASsb346pOlBmZuZHTi5fewQe3-XRqIg9rxCw8T8iGftQJWYLzLImhIMVhAMlQ6YTu3pIb7Kv5Drkq_nnvSz85B2-bwuZh75PcLj7oT_7J4STHQYc1haDOcHTdoWhE8qMJs49CvcgCsBq_1_mqCD4e1mrkE9binHd3AfFbUogYK8GyqgCSxLjH_GkhwGZL_YewQQ32sJWlPJIpREKvCDxPMsHm16WzjD9YXXFZzrU-9NjOimewFuZFEKpk56j3T-94GBrz4bubr1o3wzPYEgAZJjQQf9aHIZm1zRpx3av1dm80kTJTgDCZv6HFZM2uZsntkSejDelmut_H1Jg',
       decodedPatron: {
@@ -38,37 +43,40 @@ describe('If requireUser does not receive valid value from "req.tokenResponse"',
   });
 
   it('should return false', () => {
-    requireUser({ tokenResponse: mockTokenResponse }, mockRes);
+    requireUser(renderMockReq(mockTokenResponse), mockRes);
 
     expect(requireUser.returnValues[0]).to.equal(false);
   })
 });
 
-describe('If requireUser does not receive valid value from "req.tokenResponse.isTokenValid"', () => {
-  let requireUser;
+describe('If requireUser does not receive valid value from "req.tokenResponse.isTokenValid"',
+  () => {
+    let requireUser;
 
-  before(() => {
-    requireUser = sinon.spy(User, 'requireUser');
-  });
+    before(() => {
+      requireUser = sinon.spy(User, 'requireUser');
+      mockTokenResponse.isTokenValid = false;
+    });
 
-  after(() => {
-    mockTokenResponse.isTokenValid = true;
-    requireUser.restore();
-  });
+    after(() => {
+      mockTokenResponse.isTokenValid = true;
+      requireUser.restore();
+    });
 
-  it('should return false', () => {
-    mockTokenResponse.isTokenValid = false;
-    requireUser({ tokenResponse: mockTokenResponse }, mockRes);
+    it('should return false', () => {
+      requireUser(renderMockReq(mockTokenResponse), mockRes);
 
-    expect(requireUser.returnValues[0]).to.equal(false);
-  })
-});
+      expect(requireUser.returnValues[0]).to.equal(false);
+    })
+  }
+);
 
 describe('If requireUser does not receive valid value from "req.tokenResponse.accessToken"', () => {
   let requireUser;
 
   before(() => {
     requireUser = sinon.spy(User, 'requireUser');
+    mockTokenResponse.accessToken = undefined;
   });
 
   after(() => {
@@ -77,63 +85,66 @@ describe('If requireUser does not receive valid value from "req.tokenResponse.ac
   });
 
   it('should return false', () => {
-    mockTokenResponse.accessToken = undefined;
-    requireUser({ tokenResponse: mockTokenResponse }, mockRes);
+    requireUser(renderMockReq(mockTokenResponse), mockRes);
 
     expect(requireUser.returnValues[0]).to.equal(false);
   });
 });
 
-describe('If requireUser does not receive valid value from "req.tokenResponse.decodedPatron"', () => {
-  let requireUser;
+describe('If requireUser does not receive valid value from "req.tokenResponse.decodedPatron"',
+  () => {
+    let requireUser;
 
-  before(() => {
-    requireUser = sinon.spy(User, 'requireUser');
-  });
+    before(() => {
+      requireUser = sinon.spy(User, 'requireUser');
+      mockTokenResponse.decodedPatron = undefined;
+    });
 
-  after(() => {
-    mockTokenResponse.decodedPatron = {
-      decodedPatron:
-      {
-        iss: 'https://www.nypl.org',
-        sub: '6677666',
-        aud: 'app_myaccount',
-        iat: 1498162833,
-        exp: 1498166433,
-        auth_time: 1498162833,
-        scope: 'openid offline_access patron:read'
-      },
-    };
-    requireUser.restore();
-  });
+    after(() => {
+      mockTokenResponse.decodedPatron = {
+        decodedPatron:
+        {
+          iss: 'https://www.nypl.org',
+          sub: '6677666',
+          aud: 'app_myaccount',
+          iat: 1498162833,
+          exp: 1498166433,
+          auth_time: 1498162833,
+          scope: 'openid offline_access patron:read'
+        },
+      };
+      requireUser.restore();
+    });
 
-  it('should return false', () => {
-    mockTokenResponse.decodedPatron = undefined;
-    requireUser({ tokenResponse: mockTokenResponse }, mockRes);
+    it('should return false', () => {
+      requireUser(renderMockReq(mockTokenResponse), mockRes);
 
-    expect(requireUser.returnValues[0]).to.equal(false);
-  });
-});
+      expect(requireUser.returnValues[0]).to.equal(false);
+    });
+  }
+);
 
-describe('If requireUser does not receive valid value from "req.tokenResponse.decodedPatron.sub"', () => {
-  let requireUser;
+describe('If requireUser does not receive valid value from "req.tokenResponse.decodedPatron.sub"',
+  () => {
+    let requireUser;
 
-  before(() => {
-    requireUser = sinon.spy(User, 'requireUser');
-  });
+    before(() => {
+      requireUser = sinon.spy(User, 'requireUser');
+      mockTokenResponse.decodedPatron.sub = undefined;
+    });
 
-  after(() => {
-    mockTokenResponse.decodedPatron.sub = '6677666';
-    requireUser.restore();
-  });
+    after(() => {
+      mockTokenResponse.decodedPatron.sub = '6677666';
+      requireUser.restore();
+    });
 
-  it('should return false', () => {
-    mockTokenResponse.decodedPatron.sub = undefined;
-    requireUser({ tokenResponse: mockTokenResponse }, mockRes);
+    it('should return false', () => {
+      requireUser(renderMockReq(mockTokenResponse), mockRes);
 
-    expect(requireUser.returnValues[0]).to.equal(false);
-  });
-});
+      expect(requireUser.returnValues[0]).to.equal(false);
+    });
+  }
+);
 
 describe('If requireUser receives all valid values from "req"', () => {
   let requireUser;
@@ -152,101 +163,3 @@ describe('If requireUser receives all valid values from "req"', () => {
     expect(requireUser.returnValues[0]).to.equal(true);
   });
 });
-
-// describe('HoldRequest', () => {
-//   describe('After being rendered, <HoldRequest>', () => {
-//     let component;
-//     let requireUser;
-
-//     before(() => {
-//       requireUser = sinon.spy(HoldRequest.prototype, 'requireUser');
-//       component = mount(<HoldRequest />);
-//     });
-
-//     after(() => {
-//       requireUser.restore();
-//       component.unmount();
-//     });
-
-//     it('should check if the patron is logged in.', () => {
-//       expect(requireUser.calledOnce).to.equal(true);
-//     });
-//   });
-
-//   describe('If the patron is not logged in, <HoldRequest>', () => {
-//     let component;
-//     let requireUser;
-
-//     before(() => {
-//       requireUser = sinon.spy(HoldRequest.prototype, 'requireUser');
-//       component = mount(<HoldRequest />);
-//     });
-
-//     after(() => {
-//       requireUser.restore();
-//       component.unmount();
-//     });
-
-//     it('should redirect the patron to OAuth log in page.', () => {
-//       expect(requireUser.returnValues[0]).to.equal(false);
-//     });
-
-//     it('should display log in error message.', () => {
-//       expect(component.find('.loggedInInstruction').text()).to.equal(
-//         'Something went wrong during retrieving your patron data.'
-//       );
-//     });
-//   });
-
-//   describe('If the patron is logged in but the App doesn\'t get valid data, <HoldRequest>', () => {
-//     let component;
-//     let requireUser;
-
-//     before(() => {
-//       Actions.updatePatronData({
-//         id: '6677200',
-//         names: ['Leonard, Mike'],
-//         barcodes: ['162402680435300'],
-//       });
-//       requireUser = sinon.spy(HoldRequest.prototype, 'requireUser');
-//       component = mount(<HoldRequest />);
-//     });
-
-//     after(() => {
-//       requireUser.restore();
-//       component.unmount();
-//     });
-
-//     it('should pass the patron data check in requireUser().', () => {
-//       expect(requireUser.returnValues[0]).to.equal(true);
-//     });
-
-//     it('should deliver the patron\'s name on the page', () => {
-//       expect(component.find('.loggedInInstruction').find('strong').text())
-//         .to.equal('Leonard, Mike');
-//     });
-
-//     it('should display the layout of error page.', () => {
-//       expect(component.find('.item').find('h2').text())
-//         .to.equal('Something wrong with your request');
-//     });
-
-//     it('should not deliver request button with the respective URL on the page', () => {
-//       expect(component.find('.place-hold-form').find('button')).to.have.length(0);
-//     });
-//   });
-
-//   describe('If the patron is logged in and the App receives valid data, <HoldRequest>', () => {
-//     it('should display the layout of hold request.', () => {
-
-//     });
-
-//     it('should deliver the patron\'s name on the page', () => {
-
-//     });
-
-//     it('should deliver request button with the respective URL on the page', () => {
-
-//     });
-//   });
-// });
