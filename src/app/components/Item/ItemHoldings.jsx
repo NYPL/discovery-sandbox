@@ -13,7 +13,7 @@ class ItemHoldings extends React.Component {
     super(props);
 
     this.state = {
-      chunkedHoldings: [],
+      chunkedItems: [],
       showAll: false,
       js: false,
       page: 1,
@@ -27,16 +27,16 @@ class ItemHoldings extends React.Component {
 
   componentDidMount() {
     // Mostly things we want to do on the client-side only:
-    const holdings = this.props.holdings;
-    let chunkedHoldings = [];
+    const items = this.props.items;
+    let chunkedItems = [];
 
-    if (holdings && holdings.length >= 20) {
-      chunkedHoldings = this.chunk(holdings, 20);
+    if (items && items.length >= 20) {
+      chunkedItems = this.chunk(items, 20);
     }
 
     this.setState({
       js: true,
-      chunkedHoldings,
+      chunkedItems,
     });
   }
 
@@ -64,16 +64,16 @@ class ItemHoldings extends React.Component {
   }
 
   /*
-   * getTable(holdings, shortenItems, showAll)
+   * getTable(items, shortenItems, showAll)
    * @description Display an HTML table with item data.
-   * @param {array} holdings The array of items.
+   * @param {array} items The array of items.
    * @param {bool} shortenItems Whether the array needs to be cut off or not.
    * @param {bool} showAll Whether all items should be shown on the client side.
    */
-  getTable(holdings, shortenItems = false, showAll) {
+  getTable(items, shortenItems = false, showAll) {
     // If there are more than 20 items and we need to shorten it to 20 AND we are not
     // showing all items.
-    const itemsToDisplay = shortenItems && !showAll ? holdings.slice(0, 20) : holdings;
+    const itemsToDisplay = shortenItems && !showAll ? items.slice(0, 20) : items;
     const bibId = this.props.bibId;
 
     return (
@@ -113,30 +113,30 @@ class ItemHoldings extends React.Component {
   }
 
   render() {
-    let holdings = this.props.holdings;
+    let items = this.props.items;
     const shortenItems = !this.props.shortenItems;
     let itemPagination = null;
 
-    if (this.state.js && holdings && holdings.length >= 20 && !this.state.showAll) {
+    if (this.state.js && items && items.length >= 20 && !this.state.showAll) {
       itemPagination = (
         <ItemPagination
-          total={holdings.length}
+          total={items.length}
           page={this.state.page}
           updatePage={this.updatePage}
         />
       );
 
-      holdings = this.state.chunkedHoldings[this.state.page + 1];
+      items = this.state.chunkedItems[this.state.page + 1];
     }
 
-    const itemTable = this.getTable(holdings, shortenItems, this.state.showAll);
+    const itemTable = this.getTable(items, shortenItems, this.state.showAll);
 
     return (
       <div id="item-holdings" className="item-holdings">
         <h2>{this.props.title}</h2>
         {itemTable}
         {
-          !!(shortenItems && holdings.length >= 20 && !this.state.showAll) &&
+          !!(shortenItems && items.length >= 20 && !this.state.showAll) &&
             (<div className="view-all-items-container">
               {
                 this.state.js ?
@@ -157,7 +157,7 @@ class ItemHoldings extends React.Component {
 }
 
 ItemHoldings.propTypes = {
-  holdings: PropTypes.array,
+  items: PropTypes.array,
   title: PropTypes.string,
   bibId: PropTypes.string,
   shortenItems: PropTypes.bool,
