@@ -11,9 +11,16 @@ class FacetSidebar extends React.Component {
     super(props);
 
     this.state = {
+      js: false,
       mobileView: false,
       mobileViewText: 'Refine search',
     };
+  }
+
+  componentDidMount() {
+    this.setState({
+      js: true,
+    });
   }
 
   toggleFacetsMobile() {
@@ -28,6 +35,10 @@ class FacetSidebar extends React.Component {
         mobileViewText: 'Hide facets',
       });
     }
+  }
+
+  submitSearch(e) {
+    e.preventDefault();
   }
 
   render() {
@@ -106,12 +117,15 @@ class FacetSidebar extends React.Component {
           className={`nypl-search-form ${this.state.mobileView ? 'active' : ''}`}
         >
           {facetsElm}
-          <SearchButton
-            id="nypl-omni-button"
-            type="submit"
-            value="Search"
-            onClick={this.submitSearchRequest}
-          />
+          {
+            !this.state.js &&
+              <SearchButton
+                id="nypl-omni-button"
+                type="submit"
+                value="Search"
+                onClick={(e) => this.submitSearch(e)}
+              />
+          }
         </form>
       </div>
     );
