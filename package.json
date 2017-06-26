@@ -59,7 +59,7 @@
     "react-test-renderer": "15.6.1"
   },
   "dependencies": {
-    "@nypl/design-toolkit": "0.1.16",
+    "@nypl/design-toolkit": "0.1.19",
     "@nypl/dgx-header-component": "2.0.0",
     "@nypl/dgx-react-footer": "0.4.0",
     "alt": "0.18.2",
