@@ -5,7 +5,7 @@ import axios from 'axios';
 import { isArray as _isArray } from 'underscore';
 
 import Actions from '../../actions/Actions';
-import ItemPagination from './ItemPagination';
+import Pagination from '../Pagination/Pagination';
 import ItemTable from './ItemTable';
 
 class ItemHoldings extends React.Component {
@@ -115,12 +115,13 @@ class ItemHoldings extends React.Component {
   render() {
     let items = this.props.items;
     const shortenItems = !this.props.shortenItems;
-    let itemPagination = null;
+    let pagination = null;
 
     if (this.state.js && items && items.length >= 20 && !this.state.showAll) {
-      itemPagination = (
-        <ItemPagination
+      pagination = (
+        <Pagination
           total={items.length}
+          perPage={20}
           page={this.state.page}
           updatePage={this.updatePage}
         />
@@ -150,7 +151,7 @@ class ItemHoldings extends React.Component {
               }
             </div>)
         }
-        {itemPagination}
+        {pagination}
       </div>
     );
   }
