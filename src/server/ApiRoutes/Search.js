@@ -12,6 +12,7 @@ import appConfig from '../../../appConfig.js';
 import {
   getReqParams,
   basicQuery,
+  parseServerSelectedFilters,
 } from '../../app/utils/utils.js';
 
 const appEnvironment = process.env.APP_ENV || 'production';
@@ -64,11 +65,18 @@ function searchAjax(req, res) {
 }
 
 function searchServerPost(req, res) {
-  const { fieldQuery, q } = getReqParams(req.body);
+  const { fieldQuery, q, filters } = getReqParams(req.body);
+  const { dateAfter, dateBefore } = req.body;
+  const selectedFacets = parseServerSelectedFilters(filters, dateAfter, dateBefore);
+  let searchKeywords = q;
+  if (req.query.q) {
+    searchKeywords = req.query.q;
+  }
 
   const apiQuery = createAPIQuery({
-    searchKeywords: encodeURIComponent(q),
+    searchKeywords: encodeURIComponent(searchKeywords),
     field: fieldQuery,
+    selectedFacets,
   });
 
   res.redirect(`/search?${apiQuery}`);

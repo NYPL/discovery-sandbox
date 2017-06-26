@@ -4,15 +4,23 @@ import { findWhere as _findWhere } from 'underscore';
 
 import Facet from './Facet';
 import DateFacet from './DateFacet';
+import SearchButton from '../Buttons/SearchButton';
 
 class FacetSidebar extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
+      js: false,
       mobileView: false,
       mobileViewText: 'Refine search',
     };
+  }
+
+  componentDidMount() {
+    this.setState({
+      js: true,
+    });
   }
 
   toggleFacetsMobile() {
@@ -27,6 +35,10 @@ class FacetSidebar extends React.Component {
         mobileViewText: 'Hide facets',
       });
     }
+  }
+
+  submitSearch(e) {
+    e.preventDefault();
   }
 
   render() {
@@ -100,9 +112,20 @@ class FacetSidebar extends React.Component {
         </div>
         <form
           id="filter-search"
+          action={`/search?q=${this.props.searchKeywords}`}
+          method="POST"
           className={`nypl-search-form ${this.state.mobileView ? 'active' : ''}`}
         >
           {facetsElm}
+          {
+            !this.state.js &&
+              <SearchButton
+                id="nypl-omni-button"
+                type="submit"
+                value="Search"
+                onClick={(e) => this.submitSearch(e)}
+              />
+          }
         </form>
       </div>
     );
