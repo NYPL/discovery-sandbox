@@ -115,7 +115,6 @@ class Search extends React.Component {
             <label htmlFor="search-by-field">Search in</label>
             <select
               id="search-by-field"
-              name="search-field-value"
               onChange={this.onFieldChange}
               value={this.state.field}
               name="search_scope"
