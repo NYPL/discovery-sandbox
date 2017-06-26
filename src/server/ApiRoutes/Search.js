@@ -63,6 +63,17 @@ function searchAjax(req, res) {
   );
 }
 
+function searchServerPost(req, res) {
+  const { fieldQuery, q } = getReqParams(req.body);
+
+  const apiQuery = createAPIQuery({
+    searchKeywords: encodeURIComponent(q),
+    field: fieldQuery,
+  });
+
+  res.redirect(`/search?${apiQuery}`);
+}
+
 function searchServer(req, res, next) {
   const { page, q, sort, order, fieldQuery, filters } = getReqParams(req.query);
 
@@ -148,6 +159,7 @@ function searchServer(req, res, next) {
 }
 
 export default {
+  searchServerPost,
   searchServer,
   searchAjax,
   search,
