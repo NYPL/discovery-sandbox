@@ -11,12 +11,15 @@ const DefinitionList = ({ data }) => {
       return null;
     }
 
-    return definitions.map((item) => (
-      [
+    return definitions.map((item) => {
+      if (!item.term && !item.definition) {
+        return null;
+      }
+      return ([
         (<dt>{item.term}</dt>),
         (<dd>{item.definition}</dd>),
-      ]
-    ));
+      ]);
+    });
   };
 
   if (!data && !data.length) {
