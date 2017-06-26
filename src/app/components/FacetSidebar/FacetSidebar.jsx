@@ -47,6 +47,7 @@ class FacetSidebar extends React.Component {
       totalHits,
       searchKeywords,
       selectedFacets,
+      field,
     } = this.props;
     let facetsElm = null;
 
@@ -67,9 +68,9 @@ class FacetSidebar extends React.Component {
           return null;
         }
 
-        const field = facet.field;
-        const selectedValues = selectedFacets[field] && selectedFacets[field].length ?
-          selectedFacets[field] : [];
+        const facetField = facet.field;
+        const selectedValues = selectedFacets[facetField] && selectedFacets[facetField].length ?
+          selectedFacets[facetField] : [];
 
         if (facet.id === 'date') {
           return (
@@ -112,7 +113,7 @@ class FacetSidebar extends React.Component {
         </div>
         <form
           id="filter-search"
-          action={`/search?q=${this.props.searchKeywords}`}
+          action={`/search?q=${searchKeywords}${field ? `&search_scope=${field}` : ''}`}
           method="POST"
           className={`nypl-search-form ${this.state.mobileView ? 'active' : ''}`}
         >
@@ -135,6 +136,7 @@ class FacetSidebar extends React.Component {
 FacetSidebar.propTypes = {
   facets: PropTypes.array,
   searchKeywords: PropTypes.string,
+  field: PropTypes.string,
   selectedFacets: PropTypes.object,
   className: PropTypes.string,
   totalHits: PropTypes.number,

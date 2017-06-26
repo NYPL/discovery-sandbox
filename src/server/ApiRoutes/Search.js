@@ -72,14 +72,19 @@ function searchServerPost(req, res) {
   const reqFilters = _isArray(filters) ? filters : [filters];
   const selectedFacets = parseServerSelectedFilters(reqFilters, dateAfter, dateBefore);
   let searchKeywords = q;
+  let field = fieldQuery;
+
   if (req.query.q) {
     searchKeywords = req.query.q;
+  }
+  if (req.query.search_scope) {
+    field = req.query.search_scope;
   }
 
   const apiQuery = createAPIQuery({
     searchKeywords: encodeURIComponent(searchKeywords),
-    field: fieldQuery,
     selectedFacets,
+    field,
   });
 
   res.redirect(`/search?${apiQuery}`);

@@ -65,7 +65,6 @@ const SearchResultsPage = (props, context) => {
     });
   };
 
-
   return (
     <DocumentTitle
       title={`${searchKeywords ? `${searchKeywords} | ` : ''} ` +
@@ -102,6 +101,7 @@ const SearchResultsPage = (props, context) => {
               className="nypl-column-one-quarter"
               totalHits={totalHits}
               createAPIQuery={createAPIQuery}
+              field={field}
             />
 
             <div
