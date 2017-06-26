@@ -367,8 +367,7 @@ function getReqParams(query = {}) {
  */
 function parseServerSelectedFilters(filters, dateAfter, dateBefore) {
   const selectedFacets = {};
-
-  if (_isArray(filters) && filters.length) {
+  if (_isArray(filters) && filters.length && !_isEmpty(filters[0])) {
     // Each incoming filter is in JSON string format.
     const parsedFilters = filters.map((filter) => JSON.parse(filter));
     // Group selected facets into arrays according to their field.
