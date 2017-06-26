@@ -1,12 +1,11 @@
 /* eslint-env mocha */
-import React from 'react';
 import sinon from 'sinon';
 import { expect } from 'chai';
 // Import the component that is going to be tested
 import User from './../../src/server/ApiRoutes/User.js';
 
 let mockTokenResponse = {};
-const mockRes = { redirect: () => {}, };
+const mockRes = { redirect: () => {} };
 
 const renderMockReq = (mockTokenResponse) => {
   return {
@@ -35,7 +34,7 @@ describe('If requireUser does not receive valid value from "req.tokenResponse"',
         iat: 1498162833,
         exp: 1498166433,
         auth_time: 1498162833,
-        scope: 'openid offline_access patron:read'
+        scope: 'openid offline_access patron:read',
       },
       errorCode: null,
     };
@@ -46,7 +45,7 @@ describe('If requireUser does not receive valid value from "req.tokenResponse"',
     requireUser(renderMockReq(mockTokenResponse), mockRes);
 
     expect(requireUser.returnValues[0]).to.equal(false);
-  })
+  });
 });
 
 describe('If requireUser does not receive valid value from "req.tokenResponse.isTokenValid"',
@@ -67,7 +66,7 @@ describe('If requireUser does not receive valid value from "req.tokenResponse.is
       requireUser(renderMockReq(mockTokenResponse), mockRes);
 
       expect(requireUser.returnValues[0]).to.equal(false);
-    })
+    });
   }
 );
 
@@ -110,7 +109,7 @@ describe('If requireUser does not receive valid value from "req.tokenResponse.de
           iat: 1498162833,
           exp: 1498166433,
           auth_time: 1498162833,
-          scope: 'openid offline_access patron:read'
+          scope: 'openid offline_access patron:read',
         },
       };
       requireUser.restore();
