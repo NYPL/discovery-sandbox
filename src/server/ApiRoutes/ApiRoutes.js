@@ -23,7 +23,8 @@ function MainApp(req, res, next) {
 
 router
   .route('/search')
-  .get(Search.searchServer);
+  .get(Search.searchServer)
+  .post(Search.searchServerPost);
 
 router
   .route('/advanced')

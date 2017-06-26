@@ -103,7 +103,11 @@ class Search extends React.Component {
 
   render() {
     return (
-      <form onKeyPress={this.triggerSubmit}>
+      <form
+        onKeyPress={this.triggerSubmit}
+        action="/search"
+        method="POST"
+      >
         <fieldset
           className={`nypl-omnisearch nypl-spinner-field ${this.state.spinning ? 'spinning' : ''}`}
         >
@@ -114,6 +118,7 @@ class Search extends React.Component {
               name="search-field-value"
               onChange={this.onFieldChange}
               value={this.state.field}
+              name="search_scope"
             >
               <option value="all">All fields</option>
               <option value="title">Title</option>
@@ -130,6 +135,7 @@ class Search extends React.Component {
             placeholder="Keyword, title, name, or id"
             onChange={this.inputChange}
             value={this.state.searchKeywords}
+            name="q"
             ref="keywords"
           />
           <SearchButton
