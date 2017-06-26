@@ -4,6 +4,7 @@ import { findWhere as _findWhere } from 'underscore';
 
 import Facet from './Facet';
 import DateFacet from './DateFacet';
+import SearchButton from '../Buttons/SearchButton';
 
 class FacetSidebar extends React.Component {
   constructor(props) {
@@ -100,9 +101,17 @@ class FacetSidebar extends React.Component {
         </div>
         <form
           id="filter-search"
+          action={`/search?q=${this.props.searchKeywords}`}
+          method="POST"
           className={`nypl-search-form ${this.state.mobileView ? 'active' : ''}`}
         >
           {facetsElm}
+          <SearchButton
+            id="nypl-omni-button"
+            type="submit"
+            value="Search"
+            onClick={this.submitSearchRequest}
+          />
         </form>
       </div>
     );

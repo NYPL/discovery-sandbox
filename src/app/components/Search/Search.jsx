@@ -6,7 +6,6 @@ import SearchButton from '../Buttons/SearchButton.jsx';
 import {
   trackDiscovery,
   ajaxCall,
-  getDefaultFacets,
 } from '../../utils/utils.js';
 
 /**
