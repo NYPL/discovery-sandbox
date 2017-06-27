@@ -63,7 +63,7 @@ describe('ItemTable', () => {
       });
 
       it('should have the <tr> with the class "available".', () => {
-      
+
       });
   });
 

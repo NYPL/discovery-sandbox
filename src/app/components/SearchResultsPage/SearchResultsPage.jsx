@@ -41,15 +41,7 @@ const SearchResultsPage = (props, context) => {
   const h1searchKeywordsLabel = searchKeywords ? `for ${searchKeywords}` : '';
   const h1pageLabel = totalPages ? `page ${page} of ${totalPages}` : '';
   const h1Label = `Search results ${h1searchKeywordsLabel} ${h1pageLabel}`;
-
   const searchStr = location.search;
-  const index = searchStr.indexOf('&page=');
-  let urlSearchString = '';
-  if (index !== -1) {
-    const pageIndex = index + 6;
-    urlSearchString = `${searchStr.substring(0, pageIndex)}` +
-      `${page}${searchStr.substring(pageIndex + 1)}`;
-  }
 
   const updatePage = (nextPage) => {
     Actions.updateSpinner(true);
@@ -143,7 +135,7 @@ const SearchResultsPage = (props, context) => {
                     total={totalHits}
                     perPage={50}
                     page={parseInt(page, 10)}
-                    to={{ pathname: urlSearchString }}
+                    createAPIQuery={createAPIQuery}
                     updatePage={updatePage}
                   />)
               }
