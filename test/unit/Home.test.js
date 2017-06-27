@@ -4,7 +4,6 @@ import { expect } from 'chai';
 import { shallow, mount } from 'enzyme';
 
 import Home from '../../src/app/components/Home/Home.jsx';
-import Search from '../../src/app/components/Search/Search.jsx';
 
 describe('Home', () => {
   let component;

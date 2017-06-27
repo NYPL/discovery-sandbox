@@ -55,8 +55,7 @@
     "jsdom": "9.0.0",
     "nightwatch": "0.9.9",
     "nyc": "9.0.1",
-    "react-addons-test-utils": "15.6.0",
-    "react-test-renderer": "15.6.1"
+    "react-addons-test-utils": "15.6.0"
   },
   "dependencies": {
     "@nypl/design-toolkit": "0.1.19",
@@ -83,7 +82,7 @@
     "dgx-react-ga": "git+https://git@bitbucket.org/NYPL/dgx-react-ga.git#master",
     "dgx-svg-icons": "git+https://git@bitbucket.org/NYPL/dgx-svg-icons.git#master",
     "ejs": "2.3.3",
-    "enzyme": "2.8.2",
+    "enzyme": "2.9.1",
     "esdoc": "0.4.5",
     "eslint": "2.2.0",
     "eslint-config-airbnb": "13.0.0",
