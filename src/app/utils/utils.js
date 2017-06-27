@@ -12,7 +12,7 @@ import {
   isEmpty as _isEmpty,
   isArray as _isArray,
   extend as _extend,
-  groupBy as _groupBy,
+  chain as _chain,
 } from 'underscore';
 
 import appConfig from '../../../appConfig.js';
@@ -368,17 +368,18 @@ function getReqParams(query = {}) {
 function parseServerSelectedFilters(filters, dateAfter, dateBefore) {
   const selectedFacets = {};
   if (_isArray(filters) && filters.length && !_isEmpty(filters[0])) {
-    // Each incoming filter is in JSON string format.
-    const parsedFilters = filters.map((filter) => JSON.parse(filter));
-    // Group selected facets into arrays according to their field.
-    const groupedFilters = _groupBy(parsedFilters, 'field');
-
-    // Created the needed data structure.
-    _mapObject(groupedFilters, (facetArray, key) => {
-      if (key) {
-        selectedFacets[key] = facetArray.map((facet) => ({ id: facet.value, value: facet.label }));
-      }
-    });
+    _chain(filters)
+      // Each incoming filter is in JSON string format so it needs to be parsed first.
+      .map(filter => JSON.parse(filter))
+      // Group selected facets into arrays according to their field.
+      .groupBy('field')
+      // Created the needed data structure.
+      .mapObject((facetArray, key) => {
+        if (key) {
+          selectedFacets[key] =
+            facetArray.map((facet) => ({ id: facet.value, value: facet.label }));
+        }
+      });
   }
 
   if (dateAfter) {
