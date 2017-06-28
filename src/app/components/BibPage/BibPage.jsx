@@ -53,7 +53,7 @@ const BibPage = (props) => {
 
           <div className="nypl-row">
             <div
-              className="nypl-column-three-quarters nypl-column-offset-one"
+              className="nypl-column-three-quarters"
               role="region"
               id="mainContent"
               aria-live="polite"
@@ -64,7 +64,7 @@ const BibPage = (props) => {
               <BibMainInfo bib={bib} />
             </div>
 
-            <div className="nypl-column-three-quarters nypl-column-offset-one">
+            <div className="nypl-column-three-quarters">
               <div className="nypl-item-details">
                 <MarcRecord bNumber={bNumber[0]} />
                 <BibDetails
@@ -77,8 +77,7 @@ const BibPage = (props) => {
                   shortenItems={shortenItems}
                   items={items}
                   bibId={bibId}
-                  title={`${bib.numItems} item${bib.numItems === 1 ? '' : 's'}
-                    associated with this record:`}
+                  title="AVAILABILITY"
                 />
               </div>
             </div>

@@ -346,7 +346,7 @@ dl dd.multi-item-list {
     }
   }
 
-    button {
+    .request-button {
       @include basic-button(
         $text-color: $nypl-white,
         $background-color: $nypl-green-bright,

@@ -16,7 +16,7 @@ const ItemTableRow = ({ item, bibId, getRecord }) => {
   if (item.requestHold) {
     itemLink = item.available ?
       <Link
-        className="button"
+        className="request-button"
         to={`/hold/request/${bibId}-${item.id}`}
         onClick={(e) => getRecord(e, bibId, item.id)}
         tabIndex="0"
@@ -34,9 +34,8 @@ const ItemTableRow = ({ item, bibId, getRecord }) => {
     <tr className={item.availability}>
       <td>{item.location}</td>
       <td>{itemDisplay}</td>
-      <td>{item.status.prefLabel}</td>
-      <td>{item.accessMessage.prefLabel}</td>
       <td>{itemLink}</td>
+      <td>{item.accessMessage.prefLabel}</td>
     </tr>
   );
 };
