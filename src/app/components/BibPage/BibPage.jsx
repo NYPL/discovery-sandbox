@@ -66,18 +66,16 @@ const BibPage = (props) => {
 
             <div className="nypl-column-three-quarters">
               <div className="nypl-item-details">
-                <MarcRecord bNumber={bNumber[0]} />
-                <BibDetails
-                  bib={bib}
-                  title="Bib details"
-                />
-              </div>
-              <div className="">
                 <ItemHoldings
                   shortenItems={shortenItems}
                   items={items}
                   bibId={bibId}
                   title="AVAILABILITY"
+                />
+                <MarcRecord bNumber={bNumber[0]} />
+                <BibDetails
+                  bib={bib}
+                  title="Bib details"
                 />
               </div>
             </div>
