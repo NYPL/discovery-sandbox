@@ -127,7 +127,7 @@ class ItemHoldings extends React.Component {
         />
       );
 
-      items = this.state.chunkedItems[this.state.page + 1];
+      items = this.state.chunkedItems[this.state.page - 1];
     }
 
     const itemTable = this.getTable(items, shortenItems, this.state.showAll);
