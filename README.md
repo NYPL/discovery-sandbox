@@ -11,6 +11,7 @@ Front-end app for searching, discovering, and placing a hold on research items a
 * ESLint with [Airbnb's config](https://github.com/airbnb/javascript/tree/master/packages/eslint-config-airbnb)
 * Unit Testing with [Mocha](https://mochajs.org/) and [Enzyme](http://airbnb.io/enzyme/)
 * Express Server
+* [Travis](https://travis-ci.org/)
 
 ## Installation
 
@@ -45,6 +46,8 @@ Cut branches off of the `development` branch, and open pull requests against `de
 
 ### Unit Tests
 Unit tests are currently written in the [Mocha](https://mochajs.org/) testing framework. [Chai](http://chaijs.com/) is used as the assertion library and [Enzyme](http://airbnb.io/enzyme/) is used as the React testing utility.
+
+We are also integrating [Travis](https://travis-ci.org/) for better test work flow. After evevry push to the github repo, Travis will help us build and test the code.
 
 The tests can be found in the `test` folder.
 
