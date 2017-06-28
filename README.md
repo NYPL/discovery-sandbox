@@ -49,6 +49,8 @@ Unit tests are currently written in the [Mocha](https://mochajs.org/) testing fr
 
 We are also integrating [Travis](https://travis-ci.org/) for better test work flow. After evevry push to the github repo, Travis will help us build and test the code.
 
+You can see the current build result at [here](https://travis-ci.org/NYPL-discovery/discovery-front-end).
+
 The tests can be found in the `test` folder.
 
 To run all the tests once, run
