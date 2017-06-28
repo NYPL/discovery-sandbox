@@ -47,7 +47,7 @@ Cut branches off of the `development` branch, and open pull requests against `de
 ### Unit Tests
 Unit tests are currently written in the [Mocha](https://mochajs.org/) testing framework. [Chai](http://chaijs.com/) is used as the assertion library and [Enzyme](http://airbnb.io/enzyme/) is used as the React testing utility.
 
-We are also integrating [Travis](https://travis-ci.org/) for better test work flow. After evevry push to the github repo, Travis will help us build and test the code.
+We are also integrating [Travis](https://travis-ci.org/) for better test work flow. After every push to the github repo, Travis will help us build and test the code.
 
 You can see the current build result at [here](https://travis-ci.org/NYPL-discovery/discovery-front-end).
 
