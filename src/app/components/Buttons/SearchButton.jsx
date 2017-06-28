@@ -8,16 +8,13 @@ const SearchButton = ({
   label,
   onClick,
 }) => (
-  <div id={`${id}-wrapper`} className={`${className}-wrapper`}>
-    <button
-      className={className}
+    <input
+      id="nypl-omni-button"
       onSubmit={onClick}
       onClick={onClick}
       type="submit"
     >
-      {label}
-    </button>
-  </div>
+    </input>
 );
 
 SearchButton.propTypes = {
@@ -29,7 +26,6 @@ SearchButton.propTypes = {
 
 SearchButton.defaultProps = {
   id: 'searchButton',
-  className: 'searchButton',
   label: 'Search',
 };
 

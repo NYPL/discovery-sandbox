@@ -75,22 +75,18 @@ const SearchResultsPage = (props, context) => {
         <div className="nypl-page-header">
           <div className="nypl-full-width-wrapper">
             {breadcrumbs}
-            <h1 aria-label={h1Label}>
+            <h2 aria-label={h1Label}>
               Search results
-            </h1>
+            </h2>
+            <Search
+              searchKeywords={searchKeywords}
+              field={field}
+              spinning={spinning}
+              createAPIQuery={createAPIQuery}
+            />
           </div>
         </div>
         <div className="nypl-full-width-wrapper">
-          <div className="nypl-row">
-            <div className="nypl-column-three-quarters nypl-column-offset-one">
-              <Search
-                searchKeywords={searchKeywords}
-                field={field}
-                spinning={spinning}
-                createAPIQuery={createAPIQuery}
-              />
-            </div>
-          </div>
 
           <div className="nypl-row">
 
