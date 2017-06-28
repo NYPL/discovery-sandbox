@@ -75,9 +75,9 @@ const SearchResultsPage = (props, context) => {
         <div className="nypl-page-header">
           <div className="nypl-full-width-wrapper">
             {breadcrumbs}
-            <h1 aria-label={h1Label}>
+            <h2 aria-label={h1Label}>
               Search results
-            </h1>
+            </h2>
             <Search
               searchKeywords={searchKeywords}
               field={field}
