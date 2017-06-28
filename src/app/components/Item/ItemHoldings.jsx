@@ -78,7 +78,11 @@ class ItemHoldings extends React.Component {
 
     return (
       (itemsToDisplay && _isArray(itemsToDisplay) && itemsToDisplay.length) ?
-        <ItemTable items={itemsToDisplay} bibId={bibId} getRecord={this.getRecord} /> : null
+      <dl>
+        <dd className="multi-item-list">
+          <ItemTable items={itemsToDisplay} bibId={bibId} getRecord={this.getRecord} />
+        </dd>
+      </dl> : null
     );
   }
 
