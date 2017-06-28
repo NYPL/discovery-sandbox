@@ -40,7 +40,7 @@ const SearchResultsPage = (props, context) => {
   const createAPIQuery = basicQuery(props);
   const h1searchKeywordsLabel = searchKeywords ? `for ${searchKeywords}` : '';
   const h1pageLabel = totalPages ? `page ${page} of ${totalPages}` : '';
-  const h1Label = `Search results ${h1searchKeywordsLabel} ${h1pageLabel}`;
+  const h2Label = `Search results ${h1searchKeywordsLabel} ${h1pageLabel}`;
 
   const searchStr = location.search;
   const index = searchStr.indexOf('&page=');
@@ -75,7 +75,7 @@ const SearchResultsPage = (props, context) => {
         <div className="nypl-page-header">
           <div className="nypl-full-width-wrapper">
             {breadcrumbs}
-            <h2 aria-label={h1Label}>
+            <h2 aria-label={h2Label}>
               Search results
             </h2>
             <Search
