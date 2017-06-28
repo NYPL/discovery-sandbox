@@ -188,6 +188,9 @@ class Facet extends React.Component {
                 const hiddenFacet = (j > FACETSHOWLIMIT && !this.state.showMoreFacets) ?
                   'hiddenFacet' : '';
                 const selected = !!_findWhere(this.props.selectedValues, { id: f.value });
+                // Adding the field as a property so that the server can read it for
+                // the no-js situation.
+                const inputValue = JSON.stringify(_extend({ field }, f));
                 let selectLabel = f.value;
 
                 if (f.label) {
@@ -205,9 +208,9 @@ class Facet extends React.Component {
                       id={`${field}-${valueLabel}`}
                       aria-labelledby={`${field}-${valueLabel}-label`}
                       type="checkbox"
-                      name={`${field}-${valueLabel}-name`}
+                      name="filters"
                       checked={selected}
-                      value={JSON.stringify(f)}
+                      value={inputValue}
                       onClick={(e) => this.onFacetUpdate(e)}
                     />
                     <span className="nypl-facet-count">{f.count.toLocaleString()}</span>
