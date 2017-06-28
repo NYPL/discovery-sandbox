@@ -21,7 +21,7 @@ const ItemTableRow = ({ item, bibId, getRecord }) => {
         onClick={(e) => getRecord(e, bibId, item.id)}
         tabIndex="0"
       >Request</Link> :
-      <span className="nypl-item-unavailable">Unavailable</span>;
+      <span>{item.status.prefLabel}</span>;
   }
 
   if (item.callNumber) {
