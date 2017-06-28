@@ -14,8 +14,7 @@ const BibPage = ({ searchURL, searchKeywords = '' }) => {
       className="nypl-back-link"
       to={`/search?${searchURL}`}
     >
-      <LeftArrowIcon />
-      Back to Search Results
+      Back to Results
     </Link>
   );
 };

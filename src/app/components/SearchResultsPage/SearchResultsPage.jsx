@@ -78,19 +78,15 @@ const SearchResultsPage = (props, context) => {
             <h1 aria-label={h1Label}>
               Search results
             </h1>
+            <Search
+              searchKeywords={searchKeywords}
+              field={field}
+              spinning={spinning}
+              createAPIQuery={createAPIQuery}
+            />
           </div>
         </div>
         <div className="nypl-full-width-wrapper">
-          <div className="nypl-row">
-            <div className="nypl-column-three-quarters nypl-column-offset-one">
-              <Search
-                searchKeywords={searchKeywords}
-                field={field}
-                spinning={spinning}
-                createAPIQuery={createAPIQuery}
-              />
-            </div>
-          </div>
 
           <div className="nypl-row">
 
