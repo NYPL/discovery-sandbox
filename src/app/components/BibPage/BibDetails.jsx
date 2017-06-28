@@ -18,8 +18,6 @@ class BibDetails extends React.Component {
       { label: 'Title', value: 'title' },
       { label: 'Title (alternative)', value: 'titleAlt' },
       { label: 'Title (display)', value: 'titleDisplay' },
-      { label: 'Type', value: 'type' },
-      { label: 'Carrier Type', value: 'carrierType' },
       { label: 'Material Type', value: 'materialType' },
       { label: 'Media Type', value: 'mediaType' },
       { label: 'Language', value: 'language' },
@@ -34,19 +32,12 @@ class BibDetails extends React.Component {
       { label: 'Subjects', value: 'subjectLiteral' },
       { label: 'Dimensions', value: 'dimensions' },
       { label: 'Extent', value: 'extent' },
-      { label: 'Issuance', value: 'issuance' },
       { label: 'Owner', value: 'owner' },
       { label: 'Location', value: 'location' },
       { label: 'Notes', value: 'note' },
-      { label: 'Bnumber', value: 'idBnum' },
       { label: 'LCC', value: 'idLcc' },
-      { label: 'OCLC', value: 'idOclc' },
-      { label: 'Owi', value: 'idOwi' },
-      { label: 'URI', value: 'uris' },
-      { label: 'Identifier', value: 'identifier' },
       { label: 'Number available', value: 'numAvailable' },
       { label: 'Number of items', value: 'numItems' },
-      { label: 'Shelf Mark', value: 'shelfMark' },
     ];
 
     return fields.map((field) => {

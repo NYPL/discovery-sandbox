@@ -106,3 +106,20 @@ label.group {
     font-size: 1rem;
   }
 }
+
+.group.selected {
+  input[type="radio"] {
+    float: left;
+    display: block;
+    margin: 40px 10px 0 20px;
+  }
+
+  label {
+    display: block;
+    border-bottom: 1px solid #080807;
+  }
+
+  .col {
+    border-bottom: none;
+  }
+}
