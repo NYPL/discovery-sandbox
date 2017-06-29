@@ -27,10 +27,11 @@ class Pagination extends React.Component {
     const intPage = parseInt(page, 10);
     const pageNum = type === 'Next' ? intPage + 1 : intPage - 1;
     const svg = type === 'Next' ? <RightArrowIcon /> : <LeftArrowIcon />;
+    const url = this.props.createAPIQuery({ page: pageNum });
 
     return (
       <Link
-        to={this.props.to}
+        to={url ? { pathname: `/search?${url}` } : this.props.to}
         rel={type.toLowerCase()}
         aria-controls={this.props.ariaControls}
         onClick={(e) => this.onClick(e, pageNum)}
@@ -76,12 +77,14 @@ Pagination.propTypes = {
   ariaControls: PropTypes.string,
   to: PropTypes.object,
   updatePage: PropTypes.func,
+  createAPIQuery: PropTypes.func,
 };
 
 Pagination.defaultProps = {
   page: 1,
   ariaControls: 'results-region',
   to: { pathname: '#' },
+  createAPIQuery: () => {},
 };
 
 export default Pagination;
