@@ -28,6 +28,8 @@ Import style rules from NYPL React module components
 @import "components/Home.scss";
 @import "components/Tabs.scss";
 
+@import "style-v2.scss";
+
 html {
   @include font-settings;
 }
