@@ -12,6 +12,7 @@ import {
   isEmpty as _isEmpty,
   isArray as _isArray,
   extend as _extend,
+  chain as _chain,
 } from 'underscore';
 
 import appConfig from '../../../appConfig.js';
@@ -340,6 +341,58 @@ function getReqParams(query = {}) {
   return { page, q, sort, order, fieldQuery, filters };
 }
 
+/*
+ * parseServerSelectedFilters(filters)
+ * For no-js situations, we need to parse and modify the data structure that is POSTed
+ * to the server for filters. The structure is modified to better fit the searching function.
+ * The dateAfter and dateBefore are strings which can be added after the data structure is set.
+ * Example of data coming in:
+ * [ '{"field":"materialType","value":"resourcetypes:txt","count":4298,"label":"Text"}',
+ *   '{"field":"owner","value":"orgs:1101","count":580,"label":"General Research Division"}',
+ *   '{"field":"language","value":"lang:eng","count":228,"label":"English"}',
+ *   '{"field":"language","value":"lang:spa","count":69,"label":"Spanish"}' ]
+ *
+ * Modified data:
+ * { materialType: [ { id: 'resourcetypes:txt', value: 'Text' } ],
+ *   owner: [ { id: 'orgs:1101', value: 'General Research Division' } ],
+ *   language: [
+ *     { id: 'lang:eng', value: 'English' },
+ *     { id: 'lang:spa', value: 'Spanish' }
+ *   ]
+ * }
+ * @param {array} filters The selected filters
+ * @param {string} dateAfter The filter date to search after.
+ * @param {string} dateBefore The filter date to search before.
+ * @return {object}
+ */
+function parseServerSelectedFilters(filters, dateAfter, dateBefore) {
+  const selectedFacets = {};
+  if (_isArray(filters) && filters.length && !_isEmpty(filters[0])) {
+    _chain(filters)
+      // Each incoming filter is in JSON string format so it needs to be parsed first.
+      .map(filter => JSON.parse(filter))
+      // Group selected facets into arrays according to their field.
+      .groupBy('field')
+      // Created the needed data structure.
+      .mapObject((facetArray, key) => {
+        if (key) {
+          selectedFacets[key] =
+            facetArray.map((facet) => ({ id: facet.value, value: facet.label }));
+        }
+      });
+  }
+
+  if (dateAfter) {
+    selectedFacets.dateAfter = { id: dateAfter, value: dateAfter };
+  }
+
+  if (dateBefore) {
+    selectedFacets.dateBefore = { id: dateBefore, value: dateBefore };
+  }
+
+  return selectedFacets;
+}
+
 export {
   collapse,
   trackDiscovery,
@@ -353,4 +406,5 @@ export {
   getDefaultFacets,
   basicQuery,
   getReqParams,
+  parseServerSelectedFilters,
 };

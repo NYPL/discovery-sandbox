@@ -89,17 +89,25 @@ class HoldRequest extends React.Component {
   renderDeliveryLocation(deliveryLocations = [], callNo) {
     return deliveryLocations.map((location, i) => (
       <div key={i} className="group selected">
-        <span className="col location">
-          <a href={`${location.uri}`}>{location['full-name']}</a>
-          <br />{location.address.address1}<br />
-          {location.prefLabel}
-          {location.offsite &&
-            <span>
-              <br /><small>(requested from offsite storage)</small><br />
-            </span>
-          }
-        </span>
-        {callNo}
+        <input
+          type="radio"
+          name="delivery-location"
+          id={`location${i}`}
+          value={location['full-name']}
+        />
+        <label htmlFor={`location${i}`}>
+          <span className="col location">
+            <a href={`${location.uri}`}>{location['full-name']}</a>
+            <br />{location.address.address1}<br />
+            {location.prefLabel}
+            {location.offsite &&
+              <span>
+                <br /><small>(requested from offsite storage)</small><br />
+              </span>
+            }
+          </span>
+          {callNo}
+        </label>
       </div>
     ));
   }

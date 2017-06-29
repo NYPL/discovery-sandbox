@@ -43,13 +43,6 @@ const SearchResultsPage = (props, context) => {
   const h2Label = `Search results ${h1searchKeywordsLabel} ${h1pageLabel}`;
 
   const searchStr = location.search;
-  const index = searchStr.indexOf('&page=');
-  let urlSearchString = '';
-  if (index !== -1) {
-    const pageIndex = index + 6;
-    urlSearchString = `${searchStr.substring(0, pageIndex)}` +
-      `${page}${searchStr.substring(pageIndex + 1)}`;
-  }
 
   const updatePage = (nextPage) => {
     Actions.updateSpinner(true);
@@ -64,7 +57,6 @@ const SearchResultsPage = (props, context) => {
       context.router.push(`/search?${apiQuery}`);
     });
   };
-
 
   return (
     <DocumentTitle
@@ -98,6 +90,7 @@ const SearchResultsPage = (props, context) => {
               className="nypl-column-one-quarter"
               totalHits={totalHits}
               createAPIQuery={createAPIQuery}
+              field={field}
             />
 
             <div
@@ -139,7 +132,7 @@ const SearchResultsPage = (props, context) => {
                     total={totalHits}
                     perPage={50}
                     page={parseInt(page, 10)}
-                    to={{ pathname: urlSearchString }}
+                    createAPIQuery={createAPIQuery}
                     updatePage={updatePage}
                   />)
               }
