@@ -1,6 +1,6 @@
 {
   "name": "nypl-discovery",
-  "version": "0.2.0",
+  "version": "0.5.0",
   "description": "Isomorphic React App for NYPL Research Catalog.",
   "main": "index.js",
   "scripts": {
@@ -52,11 +52,13 @@
   "devDependencies": {
     "axios-mock-adapter": "1.7.1",
     "create-react-class": "15.5.3",
+    "jsdom": "9.0.0",
     "nightwatch": "0.9.9",
-    "nyc": "9.0.1"
+    "nyc": "9.0.1",
+    "react-addons-test-utils": "15.6.0"
   },
   "dependencies": {
-    "@nypl/design-toolkit": "0.1.16",
+    "@nypl/design-toolkit": "0.1.19",
     "@nypl/dgx-header-component": "2.0.0",
     "@nypl/dgx-react-footer": "0.4.0",
     "alt": "0.18.2",
@@ -80,7 +82,7 @@
     "dgx-react-ga": "git+https://git@bitbucket.org/NYPL/dgx-react-ga.git#master",
     "dgx-svg-icons": "git+https://git@bitbucket.org/NYPL/dgx-svg-icons.git#master",
     "ejs": "2.3.3",
-    "enzyme": "2.8.2",
+    "enzyme": "2.9.1",
     "esdoc": "0.4.5",
     "eslint": "2.2.0",
     "eslint-config-airbnb": "13.0.0",
@@ -97,7 +99,6 @@
     "prop-types": "15.5.10",
     "react": "15.5.4",
     "react-a11y": "0.3.3",
-    "react-addons-test-utils": "15.3.1",
     "react-doc-meta": "0.2.0",
     "react-document-title": "2.0.3",
     "react-dom": "15.5.4",

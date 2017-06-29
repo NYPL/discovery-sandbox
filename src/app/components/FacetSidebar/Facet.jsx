@@ -6,6 +6,7 @@ import {
   findWhere as _findWhere,
   isEmpty as _isEmpty,
 } from 'underscore';
+import { DownWedgeIcon } from 'dgx-svg-icons';
 
 import Actions from '../../actions/Actions';
 import { ajaxCall } from '../../utils/utils';
@@ -164,15 +165,7 @@ class Facet extends React.Component {
           onClick={() => this.showFacet()}
         >
           {facetLabel}
-          <svg
-            aria-hidden="true"
-            className="nypl-icon"
-            preserveAspectRatio="xMidYMid meet"
-            viewBox="0 0 68 24"
-          >
-            <title>wedge down icon</title>
-            <polygon points="67.938 0 34 24 0 0 10 0 34.1 16.4 58.144 0 67.938 0"></polygon>
-          </svg>
+          <DownWedgeIcon className="nypl-icon" viewBox="0 0 68 24" />
         </button>
         <div
           className={`nypl-collapsible ${collapsedClass}`}
@@ -191,10 +184,13 @@ class Facet extends React.Component {
             {
               facet.values.map((f, j) => {
                 const percentage = Math.floor(f.count / this.props.totalHits * 100);
-                const valueLabel = (f.value).toString().replace(/:/, '_');
+                const valueLabel = (f.value).toString().replace(/\s+/g, '_').replace(/:/g, '_');
                 const hiddenFacet = (j > FACETSHOWLIMIT && !this.state.showMoreFacets) ?
                   'hiddenFacet' : '';
                 const selected = !!_findWhere(this.props.selectedValues, { id: f.value });
+                // Adding the field as a property so that the server can read it for
+                // the no-js situation.
+                const inputValue = JSON.stringify(_extend({ field }, f));
                 let selectLabel = f.value;
 
                 if (f.label) {
@@ -210,11 +206,11 @@ class Facet extends React.Component {
                   >
                     <input
                       id={`${field}-${valueLabel}`}
-                      aria-labelledby={`${field}-${valueLabel}`}
+                      aria-labelledby={`${field}-${valueLabel}-label`}
                       type="checkbox"
-                      name={`${field}-${valueLabel}-name`}
+                      name="filters"
                       checked={selected}
-                      value={JSON.stringify(f)}
+                      value={inputValue}
                       onClick={(e) => this.onFacetUpdate(e)}
                     />
                     <span className="nypl-facet-count">{f.count.toLocaleString()}</span>

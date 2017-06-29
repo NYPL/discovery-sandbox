@@ -1,41 +1,17 @@
 import axios from 'axios';
+
 import appConfig from '../../../appConfig.js';
+import User from './User.js';
+import Bib from './Bib.js';
 
-const appEnvironment = process.env.APP_ENV || 'production';
-const apiBase = appConfig.api[appEnvironment];
-
-function requireUser(req, res) {
-  if (!req.tokenResponse || !req.tokenResponse.isTokenValid ||
-    !req.tokenResponse.accessToken || !req.tokenResponse.decodedPatron ||
-    !req.tokenResponse.decodedPatron.sub) {
-    // redirect to login
-    const fullUrl = encodeURIComponent(`${req.protocol}://${req.get('host')}${req.originalUrl}`);
-
-    res.redirect(`${appConfig.loginUrl}?redirect_uri=${fullUrl}`);
-    return false;
-  }
-  return true;
-}
-
-function retrieveItem(q, cb, errorcb) {
-  return axios
-    .get(`${apiBase}/discovery/resources/${q}`)
-    .then(response => cb(response.data))
-    .catch(error => {
-      console.error(`RetrieveItem error: ${JSON.stringify(error, null, 2)}`);
-
-      errorcb(error);
-    }); /* end axios call */
-}
-
-function serverConfirmRequest(req, res, next) {
-  const q = req.params.id || '';
-  const loggedIn = requireUser(req, res);
+function confirmRequestServer(req, res, next) {
+  const bibId = req.params.bibId || '';
+  const loggedIn = User.requireUser(req, res);
 
   if (!loggedIn) return false;
 
-  return retrieveItem(
-    q,
+  return Bib.fetchBib(
+    bibId,
     (data) => {
       res.locals.data.Store = {
         bib: data,
@@ -56,53 +32,14 @@ function serverConfirmRequest(req, res, next) {
   );
 }
 
-function serverItemSearch(req, res, next) {
-  const q = req.params.id || '';
-
-  retrieveItem(
-    q,
-    (data) => {
-      res.locals.data.Store = {
-        bib: data,
-        searchKeywords: '',
-        error: {},
-      };
-      next();
-    },
-    (error) => {
-      console.log(error);
-      res.locals.data.Store = {
-        bib: {},
-        searchKeywords: '',
-        error,
-      };
-      next();
-    }
-  );
-}
-
-function ajaxItemSearch(req, res) {
-  const q = req.query.q || '';
-
-  retrieveItem(
-    q,
-    (data) => res.json(data),
-    (error) => res.json(error)
-  );
-}
-
-function account(req, res, next) {
-  next();
-}
-
-function newHoldRequest(req, res, next) {
-  const loggedIn = requireUser(req, res);
+function newHoldRequestServer(req, res, next) {
+  const loggedIn = User.requireUser(req, res);
 
   if (!loggedIn) return false;
 
   // Retrieve item
-  return retrieveItem(
-    req.params.id,
+  return Bib.fetchBib(
+    req.params.bibId,
     (data) => {
       res.locals.data.Store = {
         bib: data,
@@ -122,11 +59,9 @@ function newHoldRequest(req, res, next) {
   );
 }
 
-function createHoldRequest(req, res) {
-  // console.log('Hold request', req);
-
+function createHoldRequestServer(req, res) {
   // Ensure user is logged in
-  const loggedIn = requireUser(req);
+  const loggedIn = User.requireUser(req);
   if (!loggedIn) return false;
 
   // retrieve access token and patron info
@@ -135,7 +70,7 @@ function createHoldRequest(req, res) {
   const patronHoldsApi = `${appConfig.api.development}/hold-requests`;
 
   // get item id and pickup location
-  let itemId = req.params.id;
+  let itemId = req.params.itemId;
   let nyplSource = 'sierra-nypl';
 
   if (itemId.indexOf('-') >= 0) {
@@ -173,18 +108,20 @@ function createHoldRequest(req, res) {
       // console.log('Holds API response:', response);
       console.log('Hold Request Id:', response.data.data.id);
       console.log('Job Id:', response.data.data.jobId);
-      res.redirect(`/hold/confirmation/${req.params.id}?requestId=${response.data.data.id}`);
+      res.redirect(`/hold/confirmation/${req.params.bibId}-` +
+        `${req.params.itemId}?requestId=${response.data.data.id}`);
     })
     .catch(error => {
       // console.log(error);
       console.log(`Error calling Holds API : ${error.data.message}`);
-      res.redirect(`/hold/request/${req.params.id}?errorMessage=${error.data.message}`);
+      res.redirect(`/hold/request/${req.params.bibId}-` +
+        `${req.params.itemId}?errorMessage=${error.data.message}`);
     }); /* end axios call */
 }
 
-function ajaxCreateHoldRequest(req, res) {
+function createHoldRequestAjax(req, res) {
   // Ensure user is logged in
-  const loggedIn = requireUser(req);
+  const loggedIn = User.requireUser(req);
   if (!loggedIn) return false;
 
   // retrieve access token and patron info
@@ -193,7 +130,7 @@ function ajaxCreateHoldRequest(req, res) {
   const patronHoldsApi = `${appConfig.api.development}/hold-requests`;
 
   // get item id and pickup location
-  let itemId = req.query.id;
+  let itemId = req.query.itemId;
   let nyplSource = 'sierra-nypl';
 
   if (itemId.indexOf('-') >= 0) {
@@ -245,11 +182,8 @@ function ajaxCreateHoldRequest(req, res) {
 
 
 export default {
-  serverItemSearch,
-  newHoldRequest,
-  createHoldRequest,
-  account,
-  ajaxItemSearch,
-  ajaxCreateHoldRequest,
-  serverConfirmRequest,
+  newHoldRequestServer,
+  createHoldRequestServer,
+  createHoldRequestAjax,
+  confirmRequestServer,
 };

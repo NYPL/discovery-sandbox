@@ -10,9 +10,13 @@ import Search from '../Search/Search.jsx';
 import Sorter from '../Sorter/Sorter';
 import Pagination from '../Pagination/Pagination';
 
-import { basicQuery } from '../../utils/utils.js';
+import {
+  basicQuery,
+  ajaxCall,
+} from '../../utils/utils.js';
+import Actions from '../../actions/Actions.js';
 
-const SearchResultsPage = (props) => {
+const SearchResultsPage = (props, context) => {
   const {
     searchResults,
     searchKeywords,
@@ -36,30 +40,45 @@ const SearchResultsPage = (props) => {
   const createAPIQuery = basicQuery(props);
   const h1searchKeywordsLabel = searchKeywords ? `for ${searchKeywords}` : '';
   const h1pageLabel = totalPages ? `page ${page} of ${totalPages}` : '';
-  const h1Label = `Search results ${h1searchKeywordsLabel} ${h1pageLabel}`;
+  const h2Label = `Search results ${h1searchKeywordsLabel} ${h1pageLabel}`;
+
+  const searchStr = location.search;
+
+  const updatePage = (nextPage) => {
+    Actions.updateSpinner(true);
+    // Temporary. Need to check cross-browser and if it's needed at all.
+    window.scrollTo(0, 0);
+    const apiQuery = createAPIQuery({ page: nextPage });
+
+    ajaxCall(`/api?${apiQuery}`, response => {
+      Actions.updateSearchResults(response.data.searchResults);
+      Actions.updatePage(nextPage.toString());
+      Actions.updateSpinner(false);
+      context.router.push(`/search?${apiQuery}`);
+    });
+  };
 
   return (
-    <DocumentTitle title={`${searchKeywords ? searchKeywords + ' | ' : ''} Search Results | Research Catalog | NYPL`}>
+    <DocumentTitle
+      title={`${searchKeywords ? `${searchKeywords} | ` : ''} ` +
+        'Search Results | Research Catalog | NYPL'}
+    >
       <main className="main-page">
         <div className="nypl-page-header">
           <div className="nypl-full-width-wrapper">
             {breadcrumbs}
-            <h1 aria-label={h1Label}>
+            <h2 aria-label={h2Label}>
               Search results
-            </h1>
+            </h2>
+            <Search
+              searchKeywords={searchKeywords}
+              field={field}
+              spinning={spinning}
+              createAPIQuery={createAPIQuery}
+            />
           </div>
         </div>
         <div className="nypl-full-width-wrapper">
-          <div className="nypl-row">
-            <div className="nypl-column-three-quarters nypl-column-offset-one">
-              <Search
-                searchKeywords={searchKeywords}
-                field={field}
-                spinning={spinning}
-                createAPIQuery={createAPIQuery}
-              />
-            </div>
-          </div>
 
           <div className="nypl-row">
 
@@ -71,6 +90,7 @@ const SearchResultsPage = (props) => {
               className="nypl-column-one-quarter"
               totalHits={totalHits}
               createAPIQuery={createAPIQuery}
+              field={field}
             />
 
             <div
@@ -92,7 +112,7 @@ const SearchResultsPage = (props) => {
               />
 
               {
-                totalHits && totalHits !== 0 && (
+                !!(totalHits && totalHits !== 0) && (
                   <Sorter
                     sortBy={sortBy}
                     page={page}
@@ -101,15 +121,19 @@ const SearchResultsPage = (props) => {
                 )
               }
 
-              {results && results.length !== 0 && (<ResultList results={results} />)}
+              {
+                !!(results && results.length !== 0) &&
+                (<ResultList results={results} spinning={spinning} />)
+              }
 
               {
-                totalHits && totalHits !== 0 &&
+                !!(totalHits && totalHits !== 0) &&
                   (<Pagination
-                    hits={totalHits}
-                    page={page}
-                    urlSearchString={location.search}
+                    total={totalHits}
+                    perPage={50}
+                    page={parseInt(page, 10)}
                     createAPIQuery={createAPIQuery}
+                    updatePage={updatePage}
                   />)
               }
             </div>
@@ -130,6 +154,11 @@ SearchResultsPage.propTypes = {
   sortBy: PropTypes.string,
   field: PropTypes.string,
   spinning: PropTypes.bool,
+  error: PropTypes.object,
+};
+
+SearchResultsPage.contextTypes = {
+  router: PropTypes.object,
 };
 
 export default SearchResultsPage;

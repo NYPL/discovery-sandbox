@@ -35,22 +35,23 @@ class HoldRequest extends React.Component {
    * submitRequest()
    * Client-side submit call.
    */
-  submitRequest(e, itemId) {
+  submitRequest(e, bibId, itemId) {
     e.preventDefault();
 
     axios
-      .get(`/api/newHold?id=${itemId}`)
+      .get(`/api/newHold?itemId=${itemId}`)
       .then(response => {
         if (response.data.error && response.data.error.status !== 200) {
-          this.context.router.push(`/hold/confirmation/${itemId}?errorMessage=` +
+          this.context.router.push(`/hold/confirmation/${bibId}-${itemId}?errorMessage=` +
             `${response.data.error.statusText}`);
         } else {
-          this.context.router.push(`/hold/confirmation/${itemId}?requestId=${response.data.id}`);
+          this.context.router
+            .push(`/hold/confirmation/${bibId}-${itemId}?requestId=${response.data.id}`);
         }
       })
       .catch(error => {
         console.log(error);
-        this.context.router.push(`/hold/confirmation/${itemId}?errorMessage=${error}`);
+        this.context.router.push(`/hold/confirmation/${bibId}-${itemId}?errorMessage=${error}`);
       });
   }
 
@@ -85,37 +86,56 @@ class HoldRequest extends React.Component {
       : <p className="loggedInInstruction">Something went wrong retrieving your personal information.</p>;
   }
 
+  renderDeliveryLocation(deliveryLocations = [], callNo) {
+    return deliveryLocations.map((location, i) => (
+      <div key={i} className="group selected">
+        <input
+          type="radio"
+          name="delivery-location"
+          id={`location${i}`}
+          value={location['full-name']}
+        />
+        <label htmlFor={`location${i}`}>
+          <span className="col location">
+            <a href={`${location.uri}`}>{location['full-name']}</a>
+            <br />{location.address.address1}<br />
+            {location.prefLabel}
+            {location.offsite &&
+              <span>
+                <br /><small>(requested from offsite storage)</small><br />
+              </span>
+            }
+          </span>
+          {callNo}
+        </label>
+      </div>
+    ));
+  }
+
   render() {
     const searchKeywords = this.props.searchKeywords || '';
-    const record = (this.props.bib && !_isEmpty(this.props.bib)) ?
+    const bib = (this.props.bib && !_isEmpty(this.props.bib)) ?
       this.props.bib : null;
-    const title = (record && _isArray(record.title) && record.title.length) ?
-      record.title[0] : '';
-    const bibId = (record && record['@id'] && typeof record['@id'] === 'string') ?
-      record['@id'].substring(4) : '';
+    const title = (bib && _isArray(bib.title) && bib.title.length) ?
+      bib.title[0] : '';
+    const bibId = (bib && bib['@id'] && typeof bib['@id'] === 'string') ?
+      bib['@id'].substring(4) : '';
     const patronName = (
       this.state.patron.names && _isArray(this.state.patron.names) && this.state.patron.names.length
       ) ? this.state.patron.names[0] : '';
-    const itemId = (this.props.params && this.props.params.id) ? this.props.params.id : '';
-    const selectedItem = (record && itemId) ? LibraryItem.getItem(record, itemId) : null;
-    const shelfMarkInfo =
-      (selectedItem && _isArray(selectedItem.shelfMark) && selectedItem.shelfMark.length > 0) ?
+    const itemId = (this.props.params && this.props.params.itemId) ? this.props.params.itemId : '';
+    const selectedItem = (bib && itemId) ? LibraryItem.getItem(bib, itemId) : null;
+    const callNo =
+      (selectedItem && selectedItem.callNumber && selectedItem.callNumber.length) ?
       (
         <span className="col">
-          <small>Call number:</small><br />{selectedItem.shelfMark[0]}
+          <small>Call number:</small><br />{selectedItem.callNumber}
         </span>
       ) : null;
-    const location = (record && itemId) ? LibraryItem.getLocation(record, itemId) : null;
-    const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July',
-      'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
-    const date = new Date();
-    date.setDate(date.getDate() + 7);
-    const day = date.getDate();
-    const monthIndex = date.getMonth();
-    const dateDisplay = `${monthNames[monthIndex]} ${day}`;
+    const deliveryLocations = selectedItem.deliveryLocations;
     let content = null;
 
-    if (record) {
+    if (bib) {
       content =
         <div className="content-wrapper">
           <div className="item-header">
@@ -129,31 +149,27 @@ class HoldRequest extends React.Component {
             </div>
           </div>
 
-          <form className="place-hold-form form" action={`/hold/request/${itemId}`} method="POST">
+          <form
+            className="place-hold-form form"
+            action={`/hold/request/${bibId}-${itemId}`}
+            method="POST"
+          >
             <h2>Confirm account</h2>
             {this.renderLoggedInInstruction(patronName)}
             <h2>Confirm delivery location</h2>
             <p>When this item is ready, you will use it in the following location:</p>
             <fieldset className="select-location-fieldset">
               <legend className="visuallyHidden">Select a pickup location</legend>
-              <div className="group selected">
-                <span className="col location">
-                  <a href={`${location.uri}`}>{location['full-name']}</a><br />{location.address.address1}<br />
-                  {location.prefLabel}
-                  {location.offsite &&
-                    <span>
-                      <br /><small>(requested from offsite storage)</small><br />
-                    </span>
-                  }
-                </span>
-                {shelfMarkInfo}
-                {/* <span className="col"><small>Ready by approximately:</small><br />{dateDisplay}, 9am.</span> */}
-              </div>
+              {this.renderDeliveryLocation(deliveryLocations, callNo)}
             </fieldset>
 
-            <input type="hidden" name="pickupLocation" value={location.code} />
+            <input type="hidden" name="pickupLocation" value="test" />
 
-            <button type="submit" className="large" onClick={(e) => this.submitRequest(e, itemId)}>
+            <button
+              type="submit"
+              className="large"
+              onClick={(e) => this.submitRequest(e, bibId, itemId)}
+            >
               Submit your item hold request
             </button>
           </form>

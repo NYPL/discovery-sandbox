@@ -2,120 +2,167 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 import axios from 'axios';
+import { isArray as _isArray } from 'underscore';
+
 import Actions from '../../actions/Actions';
+import Pagination from '../Pagination/Pagination';
+import ItemTable from './ItemTable';
 
 class ItemHoldings extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      expanded: false,
+      chunkedItems: [],
+      showAll: false,
+      js: false,
+      page: 1,
     };
 
     this.getRecord = this.getRecord.bind(this);
+    this.updatePage = this.updatePage.bind(this);
+    this.chunk = this.chunk.bind(this);
+    this.showAll = this.showAll.bind(this);
   }
 
-  getRecord(e, id) {
+  componentDidMount() {
+    // Mostly things we want to do on the client-side only:
+    const items = this.props.items;
+    let chunkedItems = [];
+
+    if (items && items.length >= 20) {
+      chunkedItems = this.chunk(items, 20);
+    }
+
+    this.setState({
+      js: true,
+      chunkedItems,
+    });
+  }
+
+  /*
+   * getRecord(e, bibId, itemId)
+   * @description Get updated information for a bib, not exactly necessary but useful,
+   * and route to the correct page.
+   * @param {object} e Event object.
+   * @param {string} bibId The bib's id.
+   * @param {string} itemId The item's id.
+   */
+  getRecord(e, bibId, itemId) {
     e.preventDefault();
 
     // Search for the bib? Just pass the data.
     axios
-      .get(`/api/retrieve?q=${this.props.bibId}`)
+      .get(`/api/bib?bibId=${bibId}`)
       .then(response => {
         Actions.updateBib(response.data);
-        this.context.router.push(`/hold/request/${id}`);
+        this.context.router.push(`/hold/request/${bibId}-${itemId}`);
       })
       .catch(error => {
         console.log(error);
       });
   }
 
-  getRow(holdings) {
-    const shortenItems = !this.props.shortenItems;
-    const itemsToDisplay = shortenItems ? holdings.slice(0, 20) : holdings;
-    const itemLength = itemsToDisplay.length;
+  /*
+   * getTable(items, shortenItems, showAll)
+   * @description Display an HTML table with item data.
+   * @param {array} items The array of items.
+   * @param {bool} shortenItems Whether the array needs to be cut off or not.
+   * @param {bool} showAll Whether all items should be shown on the client side.
+   */
+  getTable(items, shortenItems = false, showAll) {
+    // If there are more than 20 items and we need to shorten it to 20 AND we are not
+    // showing all items.
+    const itemsToDisplay = shortenItems && !showAll ? items.slice(0, 20) : items;
+    const bibId = this.props.bibId;
 
     return (
-      <table className="nypl-basic-table">
-        <caption className="hidden">item holdings</caption>
-        <tbody>
-          {
-            itemsToDisplay.map((h, i) => {
-              let itemLink;
-              let itemDisplay = null;
+      (itemsToDisplay && _isArray(itemsToDisplay) && itemsToDisplay.length) ?
+      <dl>
+        <dd className="multi-item-list">
+          <ItemTable items={itemsToDisplay} bibId={bibId} getRecord={this.getRecord} />
+        </dd>
+      </dl> : null
+    );
+  }
 
-              if (h.requestHold) {
-                itemLink = h.availability === 'available' ?
-                  <Link
-                    className="button"
-                    to={`/hold/request/${h.id}`}
-                    onClick={(e) => this.getRecord(e, h.id)}
-                  >Request</Link> :
-                  <span className="nypl-item-unavailable">Unavailable</span>;
-              }
+  /*
+   * updatePage(page)
+   * @description Update the client-side state of the component's page value.
+   * @param {number} page The next number/index of what items should be displayed.
+   */
+  updatePage(page) {
+    this.setState({ page });
+  }
 
-              if (h.callNumber) {
-                itemDisplay =
-                  <span dangerouslySetInnerHTML={this.createMarkup(h.callNumber)}></span>;
-              } else if (h.isElectronicResource) {
-                itemDisplay = <span>{h.location}</span>;
-              }
+  /*
+   * chunk(arr, n)
+   * @description Break up all the items in the array into array of size n arrays.
+   * @param {array} arr The array of items.
+   * @param {n} number The number we want to break the array into.
+   */
+  chunk(arr, n) {
+    if (_isArray(arr) && !arr.length) {
+      return [];
+    }
+    return [arr.slice(0, n)].concat(this.chunk(arr.slice(n), n));
+  }
 
-              return (
-                <tr key={i} className={h.availability}>
-                  <td>{h.location}</td>
-                  <td>{itemDisplay}</td>
-                  <td>{h.status}</td>
-                  <td>{h.accessMessage}</td>
-                  <td>{itemLink}</td>
-                </tr>
-              );
-            })
-          }
-          {
-            shortenItems && itemLength >= 20 &&
-              (<tr>
-                <td colSpan="5">
-                  <Link
+  /*
+   * showAll()
+   * @description Display all items on the page.
+   */
+  showAll() {
+    this.setState({ showAll: true });
+  }
+
+  render() {
+    let items = this.props.items;
+    const shortenItems = !this.props.shortenItems;
+    let pagination = null;
+
+    if (this.state.js && items && items.length >= 20 && !this.state.showAll) {
+      pagination = (
+        <Pagination
+          total={items.length}
+          perPage={20}
+          page={this.state.page}
+          updatePage={this.updatePage}
+        />
+      );
+
+      items = this.state.chunkedItems[this.state.page - 1];
+    }
+
+    const itemTable = this.getTable(items, shortenItems, this.state.showAll);
+
+    return (
+      <div id="item-holdings" className="item-holdings">
+        <h2>{this.props.title}</h2>
+        {itemTable}
+        {
+          !!(shortenItems && items.length >= 20 && !this.state.showAll) &&
+            (<div className="view-all-items-container">
+              {
+                this.state.js ?
+                  (<a href="#" onClick={this.showAll}>View All Items</a>) :
+                  (<Link
                     to={`/bib/${this.props.bibId}/all`}
                     className="view-all-items"
                   >
                     View All Items
-                  </Link>
-                </td>
-              </tr>)
-          }
-        </tbody>
-      </table>
-    );
-  }
-
-  showMoreItems(e) {
-    e.preventDefault();
-    this.setState({ expanded: true });
-  }
-
-  createMarkup(html) {
-    return {
-      __html: html,
-    };
-  }
-
-  render() {
-    const holdings = this.props.holdings;
-    const body = this.getRow(holdings);
-
-    return (
-      <div id="item-holdings" className="nypl-item-holdings">
-        <h2>{this.props.title}</h2>
-        {body}
+                  </Link>)
+              }
+            </div>)
+        }
+        {pagination}
       </div>
     );
   }
 }
 
 ItemHoldings.propTypes = {
-  holdings: PropTypes.array,
+  items: PropTypes.array,
   title: PropTypes.string,
   bibId: PropTypes.string,
   shortenItems: PropTypes.bool,

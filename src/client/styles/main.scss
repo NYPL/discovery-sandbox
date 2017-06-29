@@ -28,6 +28,8 @@ Import style rules from NYPL React module components
 @import "components/Home.scss";
 @import "components/Tabs.scss";
 
+@import "style-v2.scss";
+
 html {
   @include font-settings;
 }
@@ -93,4 +95,23 @@ button {
   li {
     margin-bottom: 0;
   }
+}
+
+.results-list {
+  -webkit-transition: 0.6s;
+  -moz-transition: 0.6s;
+  -o-transition: 0.6s;
+  transition: 0.6s;
+  opacity: 1;
+  visibility: visible;
+}
+.hide-results-list {
+  opacity: 0;
+  visibility: hidden;
+  height: 500px;
+}
+
+// odd override for Header alert
+header #skip {
+  position: absolute;
 }

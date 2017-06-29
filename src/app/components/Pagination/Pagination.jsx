@@ -1,11 +1,21 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
-
-import Actions from '../../actions/Actions.js';
-import { ajaxCall } from '../../utils/utils.js';
+import {
+  LeftArrowIcon,
+  RightArrowIcon,
+} from 'dgx-svg-icons';
 
 class Pagination extends React.Component {
+  /*
+   * onClick()
+   * @param {string} page The next page to get results from.
+   */
+  onClick(e, page) {
+    e.preventDefault();
+    this.props.updatePage(page);
+  }
+
   /*
    * getPage()
    * Get a button based on current page.
@@ -16,75 +26,39 @@ class Pagination extends React.Component {
     if (!page) return null;
     const intPage = parseInt(page, 10);
     const pageNum = type === 'Next' ? intPage + 1 : intPage - 1;
-    const prevSVG = (
-      <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" viewBox="0 0 32 32">
-        <title>Left arrow</title>
-        <polygon points="16.959 24.065 9.905 16.963 27.298 16.963 27.298 14.548 9.905 14.548 16.959 7.397 15.026 5.417 4.688 15.707 15.026 25.998 16.959 24.065" />
-      </svg>
-    );
-    const nextSVG = (
-      <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" viewBox="0 0 32 32">
-        <title>Right arrow</title>
-        <polygon points="16.959 25.998 27.298 15.707 16.959 5.417 15.026 7.397 22.08 14.548 4.688 14.548 4.687 16.963 22.08 16.963 15.026 24.065 16.959 25.998" />
-      </svg>
-    );
-    const svg = type === 'Next' ? nextSVG : prevSVG;
-
-    const searchStr = this.props.urlSearchString;
-    const index = searchStr.indexOf('&page=');
-    let newSearch = '';
-    if (index !== -1) {
-      const pageIndex = index + 6;
-      newSearch = `${searchStr.substring(0, pageIndex)}` +
-        `${pageNum}${searchStr.substring(pageIndex + 1)}`;
-    }
+    const svg = type === 'Next' ? <RightArrowIcon /> : <LeftArrowIcon />;
+    const url = this.props.createAPIQuery({ page: pageNum });
 
     return (
       <Link
-        to={{ pathname: newSearch }}
-        onClick={(e) => this.fetchResults(e, pageNum)}
+        to={url ? { pathname: `/search?${url}` } : this.props.to}
         rel={type.toLowerCase()}
-        aria-controls="results-region"
+        aria-controls={this.props.ariaControls}
+        onClick={(e) => this.onClick(e, pageNum)}
       >
         {svg} {type} Page
       </Link>
     );
   }
 
-  /*
-   * fetchResults()
-   * Make ajax call with updated page selected.
-   * @param {string} page The next page to get results from.
-   */
-  fetchResults(e, page) {
-    e.preventDefault();
-    const apiQuery = this.props.createAPIQuery({ page });
-
-    ajaxCall(`/api?${apiQuery}`, response => {
-      Actions.updateSearchResults(response.data.searchResults);
-      Actions.updatePage(page.toString());
-      this.context.router.push(`/search?${apiQuery}`);
-    });
-  }
-
   render() {
     const {
-      hits,
+      total,
       page,
+      perPage,
     } = this.props;
-    if (!hits) return null;
+    if (!total) return null;
 
-    const perPage = 50;
     const pageFactor = parseInt(page, 10) * perPage;
-    const nextPage = (hits < perPage || pageFactor > hits) ? null : this.getPage(page, 'Next');
+    const nextPage = (total < perPage || pageFactor > total) ? null : this.getPage(page, 'Next');
     const prevPage = page > 1 ? this.getPage(page, 'Previous') : null;
-    const totalPages = Math.floor(hits / 50) + 1;
+    const totalPages = Math.floor(total / perPage) + 1;
 
     return (
       <div className="nypl-results-pagination">
         {prevPage}
         <span
-          className={`page-count ${page === '1' ? 'first' : ''}`}
+          className={`page-count ${page === 1 ? 'first' : ''}`}
           aria-label={`Displaying page ${page} out of ${totalPages} total pages.`}
           tabIndex="0"
         >
@@ -97,19 +71,20 @@ class Pagination extends React.Component {
 }
 
 Pagination.propTypes = {
-  hits: PropTypes.number,
-  urlSearchString: PropTypes.string,
-  page: PropTypes.string,
+  total: PropTypes.number,
+  page: PropTypes.number,
+  perPage: PropTypes.number,
+  ariaControls: PropTypes.string,
+  to: PropTypes.object,
+  updatePage: PropTypes.func,
   createAPIQuery: PropTypes.func,
 };
 
 Pagination.defaultProps = {
-  page: '1',
-  sortBy: 'relevance',
-};
-
-Pagination.contextTypes = {
-  router: PropTypes.object,
+  page: 1,
+  ariaControls: 'results-region',
+  to: { pathname: '#' },
+  createAPIQuery: () => {},
 };
 
 export default Pagination;

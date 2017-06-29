@@ -8,6 +8,7 @@ coverage
 bin/*
 selenium-debug.log
 nightwatch_reports
+package-lock.json
 
 # Elastic Beanstalk Files
 .elasticbeanstalk/*
