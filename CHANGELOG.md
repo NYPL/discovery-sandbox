@@ -5,7 +5,8 @@
 - A lot more no-js fallbacks.
 - Bigger refactor of components.
 - v1 of the second iteration from the Design Toolkit - new design - for the bib page.
-- Added more static mockups for the Hold Request page.
+- Added back item detail in search results but only if each bib has one item.
+- Added more static mockups for the Hold Request page - multiple delivery location.
 - Added Travis for better test workflow when we commit code.
 
 ### v0.4.0 - Hold Request
