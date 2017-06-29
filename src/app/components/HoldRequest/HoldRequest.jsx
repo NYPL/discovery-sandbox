@@ -132,7 +132,8 @@ class HoldRequest extends React.Component {
           <small>Call number:</small><br />{selectedItem.callNumber}
         </span>
       ) : null;
-    const deliveryLocations = selectedItem.deliveryLocations;
+    const deliveryLocations = selectedItem && selectedItem.deliveryLocations ?
+      selectedItem.deliveryLocations : [];
     let content = null;
 
     if (bib) {
