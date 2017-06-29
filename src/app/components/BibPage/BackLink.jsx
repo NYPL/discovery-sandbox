@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
-import { LeftArrowIcon } from 'dgx-svg-icons';
 
 const BibPage = ({ searchURL, searchKeywords = '' }) => {
   if (!searchURL) {
@@ -14,8 +13,7 @@ const BibPage = ({ searchURL, searchKeywords = '' }) => {
       className="nypl-back-link"
       to={`/search?${searchURL}`}
     >
-      <LeftArrowIcon />
-      Back to Search Results
+      Back to Results
     </Link>
   );
 };
