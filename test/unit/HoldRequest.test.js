@@ -47,7 +47,7 @@ describe('HoldRequest', () => {
 
     it('should display log in error message.', () => {
       expect(component.find('.loggedInInstruction').text()).to.equal(
-        'Something went wrong during retrieving your patron data.'
+        'Something went wrong retrieving your personal information.'
       );
     });
   });
@@ -82,7 +82,7 @@ describe('HoldRequest', () => {
 
     it('should display the layout of error page.', () => {
       expect(component.find('.item').find('h2').text())
-        .to.equal('Something wrong with your request');
+        .to.equal('Something went wrong with your request');
     });
 
     it('should not deliver request button with the respective URL on the page', () => {
