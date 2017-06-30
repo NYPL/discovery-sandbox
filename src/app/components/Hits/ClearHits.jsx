@@ -4,7 +4,9 @@ import Actions from '../../actions/Actions';
 import { ajaxCall } from '../../utils/utils';
 
 const ClearHits = (props, context) => {
-  const clearResults = () => {
+  const clearResults = (e) => {
+    e.preventDefault();
+
     Actions.updateSpinner(true);
     Actions.updateSearchKeywords('');
     Actions.updateSelectedFacets({});
@@ -19,9 +21,9 @@ const ClearHits = (props, context) => {
 
   return (
     <div className="nypl-clear-results">
-      <button className="nypl-link-button" onClick={() => clearResults()}>
+      <a href="/search" className="nypl-link-button" onClick={(e) => clearResults(e)}>
         Clear current search query, filters, and sorts
-      </button>
+      </a>
     </div>
   );
 };
