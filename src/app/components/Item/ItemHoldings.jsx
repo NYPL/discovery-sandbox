@@ -16,7 +16,7 @@ class ItemHoldings extends React.Component {
       chunkedItems: [],
       showAll: false,
       js: false,
-      page: 1,
+      page: parseInt(this.props.itemPage.substring(10), 10) || 1,
     };
 
     this.getRecord = this.getRecord.bind(this);
@@ -93,6 +93,7 @@ class ItemHoldings extends React.Component {
    */
   updatePage(page) {
     this.setState({ page });
+    this.context.router.push(`/bib/${this.props.bibId}?itemPage=${page}`);
   }
 
   /*
@@ -128,6 +129,7 @@ class ItemHoldings extends React.Component {
           perPage={20}
           page={this.state.page}
           updatePage={this.updatePage}
+          to={{ pathname: `/bib/${this.props.bibId}?itemPage=` }}
         />
       );
 
@@ -164,6 +166,7 @@ class ItemHoldings extends React.Component {
 ItemHoldings.propTypes = {
   items: PropTypes.array,
   title: PropTypes.string,
+  itemPage: PropTypes.string,
   bibId: PropTypes.string,
   shortenItems: PropTypes.bool,
 };
