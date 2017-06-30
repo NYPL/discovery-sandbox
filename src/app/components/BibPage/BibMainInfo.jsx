@@ -15,20 +15,12 @@ const BibMainInfo = ({ bib = {} }) => {
     bib.actionType[0].prefLabel : null;
 
   return (
-    <div className="nypl-item-details">
-      <h1>{title}</h1>
-      <div className="nypl-item-info">
-        <p>
-          <span className="nypl-item-media">{materialType}</span>
-          {language && ` in ${language}`}
-        </p>
-        <p>{bib.extent} {bib.dimensions}</p>
-        <p>
-          {bib.placeOfPublication} {bib.publisher} {yearPublished}
-        </p>
-        <p className="nypl-item-use">{usageType}</p>
-      </div>
-    </div>
+    <span>
+      <dt>FORMAT</dt>
+      <dd>{materialType}</dd>
+      <dt>BIBLIOGRAPHY</dt>
+      <dd>{bib.placeOfPublication} {bib.publisher} {yearPublished}</dd>
+    </span>
   );
 };
 

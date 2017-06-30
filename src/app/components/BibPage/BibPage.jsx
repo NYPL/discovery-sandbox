@@ -61,22 +61,22 @@ const BibPage = (props) => {
               aria-relevant="additions removals"
               aria-describedby="results-description"
             >
-              <BibMainInfo bib={bib} />
-            </div>
-
-            <div className="nypl-column-three-quarters">
               <div className="nypl-item-details">
-                <ItemHoldings
-                  shortenItems={shortenItems}
-                  items={items}
-                  bibId={bibId}
-                  title="AVAILABILITY"
-                />
-                <MarcRecord bNumber={bNumber[0]} />
-                <BibDetails
-                  bib={bib}
-                  title="Bib details"
-                />
+                <h1>{title}</h1>
+                <dl>
+                  <BibMainInfo bib={bib} />
+                  <ItemHoldings
+                    shortenItems={shortenItems}
+                    items={items}
+                    bibId={bibId}
+                    title="AVAILABILITY"
+                  />
+                  <MarcRecord bNumber={bNumber[0]} />
+                  <BibDetails
+                    bib={bib}
+                    title="Bib details"
+                  />
+                </dl>
               </div>
             </div>
           </div>
