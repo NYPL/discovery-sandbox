@@ -79,7 +79,7 @@ const SearchResultsPage = (props, context) => {
 
           <div className="nypl-row">
             <div
-              className="nypl-column-four-quarters"
+              className="nypl-column-full"
               role="region"
               id="mainContent"
               aria-live="polite"
