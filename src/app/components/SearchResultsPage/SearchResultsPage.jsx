@@ -4,7 +4,6 @@ import DocumentTitle from 'react-document-title';
 
 import Hits from '../Hits/Hits.jsx';
 import Breadcrumbs from '../Breadcrumbs/Breadcrumbs.jsx';
-import FacetSidebar from '../FacetSidebar/FacetSidebar.jsx';
 import ResultList from '../Results/ResultsList';
 import Search from '../Search/Search.jsx';
 import Sorter from '../Sorter/Sorter';
@@ -20,7 +19,6 @@ const SearchResultsPage = (props, context) => {
   const {
     searchResults,
     searchKeywords,
-    facets,
     selectedFacets,
     page,
     location,
@@ -81,7 +79,7 @@ const SearchResultsPage = (props, context) => {
 
           <div className="nypl-row">
             <div
-              className="nypl-column-three-quarters"
+              className="nypl-column-four-quarters"
               role="region"
               id="mainContent"
               aria-live="polite"
@@ -134,7 +132,6 @@ const SearchResultsPage = (props, context) => {
 SearchResultsPage.propTypes = {
   searchResults: PropTypes.object,
   searchKeywords: PropTypes.string,
-  facets: PropTypes.object,
   selectedFacets: PropTypes.object,
   page: PropTypes.string,
   location: PropTypes.object,
