@@ -10,7 +10,8 @@ import Home from '../components/Home/Home.jsx';
 import SearchResultsPage from '../components/SearchResultsPage/SearchResultsPage.jsx';
 import BibPage from '../components/BibPage/BibPage.jsx';
 import HoldRequest from '../components/HoldRequest/HoldRequest.jsx';
-import HoldConfirmation from '../components/HoldPage/HoldConfirmation.jsx';
+import HoldConfirmation from '../components/HoldConfirmation/HoldConfirmation.jsx';
+import ElectronicDelivery from '../components/ElectronicDelivery/ElectronicDelivery.jsx';
 
 const routes = (
   <Route path="/" component={Application}>
@@ -19,6 +20,7 @@ const routes = (
     <Route path="/bib/:bibId" component={BibPage} />
     <Route path="/bib/:bibId/all" component={BibPage} />
     <Route path="/hold/request/:bibId-:itemId" component={HoldRequest} />
+    <Route path="/hold/request/:bibId-:itemId/edd" component={ElectronicDelivery} />
     <Route path="/hold/confirmation/:bibId-:itemId" component={HoldConfirmation} />
   </Route>
 );
