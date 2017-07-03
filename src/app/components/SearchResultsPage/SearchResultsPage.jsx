@@ -81,18 +81,6 @@ const SearchResultsPage = (props, context) => {
         <div className="nypl-full-width-wrapper">
 
           <div className="nypl-row">
-
-            <FacetSidebar
-              facets={facetList}
-              spinning={spinning}
-              selectedFacets={selectedFacets}
-              searchKeywords={searchKeywords}
-              className="nypl-column-one-quarter"
-              totalHits={totalHits}
-              createAPIQuery={createAPIQuery}
-              field={field}
-            />
-
             <div
               className="nypl-column-three-quarters"
               role="region"
