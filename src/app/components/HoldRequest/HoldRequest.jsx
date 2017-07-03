@@ -124,7 +124,7 @@ class HoldRequest extends React.Component {
     );
   }
 
-  renderDeliveryLocation(deliveryLocations = [], callNo) {
+  renderDeliveryLocation(deliveryLocations = []) {
     return deliveryLocations.map((location, i) => (
       <div key={i} className="group selected">
         <input
@@ -145,7 +145,6 @@ class HoldRequest extends React.Component {
               </span>
             }
           </span>
-          {callNo}
         </label>
       </div>
     ));
@@ -167,9 +166,9 @@ class HoldRequest extends React.Component {
     const callNo =
       (selectedItem && selectedItem.callNumber && selectedItem.callNumber.length) ?
       (
-        <span className="col">
+        <div className="col">
           <small>Call number:</small><br />{selectedItem.callNumber}
-        </span>
+        </div>
       ) : null;
     const deliveryLocations = selectedItem && selectedItem.deliveryLocations ?
       selectedItem.deliveryLocations : [];
@@ -186,6 +185,7 @@ class HoldRequest extends React.Component {
             <div className="item">
               <h2>You are about to request a hold on the following research item:</h2>
               <Link href={`/bib/${bibId}`}>{title}</Link>
+              {callNo}
             </div>
           </div>
 
@@ -202,7 +202,7 @@ class HoldRequest extends React.Component {
             <fieldset className="select-location-fieldset">
               <legend className="visuallyHidden">Select a pickup location</legend>
               {this.renderEDD()}
-              {this.renderDeliveryLocation(deliveryLocations, callNo)}
+              {this.renderDeliveryLocation(deliveryLocations)}
             </fieldset>
 
             <input type="hidden" name="pickupLocation" value="test" />

@@ -52,6 +52,10 @@ router
   .get(Bib.bibSearchServer);
 
 router
+  .route('/edd')
+  .post(Hold.eddServer);
+
+router
   .route('/api')
   .get(Search.searchAjax);
 
