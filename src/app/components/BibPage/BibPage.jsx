@@ -50,7 +50,6 @@ const BibPage = (props) => {
         </div>
 
         <div className="nypl-full-width-wrapper">
-
           <div className="nypl-row">
             <div
               className="nypl-column-three-quarters"
@@ -69,7 +68,6 @@ const BibPage = (props) => {
                     shortenItems={shortenItems}
                     items={items}
                     bibId={bibId}
-                    title="AVAILABILITY"
                   />
                   <MarcRecord bNumber={bNumber[0]} />
                   <BibDetails
