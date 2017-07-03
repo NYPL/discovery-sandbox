@@ -30,7 +30,6 @@ const SearchResultsPage = (props, context) => {
     error,
   } = props;
 
-  const facetList = facets && facets.itemListElement ? facets.itemListElement : [];
   const totalHits = searchResults ? searchResults.totalResults : undefined;
   const totalPages = totalHits ? Math.floor(totalHits / 50) + 1 : 0;
   const results = searchResults ? searchResults.itemListElement : [];
