@@ -180,10 +180,35 @@ function createHoldRequestAjax(req, res) {
     }); /* end axios call */
 }
 
+function eddServer(req, res) {
+  // console.log(req.body)
+  // This will give you the form values in the form of:
+  // {
+  //   name: '',
+  //   email: '',
+  //   chapter: '',
+  //   author: '',
+  //   date: '',
+  //   volume: '',
+  //   issue: '',
+  //   'starting-page': '',
+  //   'ending-page': '',
+  //   bibId: '',
+  //   itemId: '',
+  // };
+  // This can then be modified and sent to the Request API endpoint once we get it.
+  // This is for the server side call in no-js scenarios. The form will post to the /edd
+  // endpoint and this function will be hit.
+  // Please delete this later.
+
+  // Just a dummy redirect but should work similar to `createHoldRequestServer` above.
+  res.redirect(`/hold/confirmation`);
+}
 
 export default {
   newHoldRequestServer,
   createHoldRequestServer,
   createHoldRequestAjax,
   confirmRequestServer,
+  eddServer,
 };
