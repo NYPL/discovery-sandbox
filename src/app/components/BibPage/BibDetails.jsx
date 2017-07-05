@@ -15,19 +15,10 @@ import DefinitionList from './DefinitionList';
 class BibDetails extends React.Component {
   getDisplayFields(bib) {
     const fields = [
-      { label: 'Title (display)', value: 'titleDisplay' },
-      { label: 'Language', value: 'language' },
-      { label: 'Created String', value: 'createdString' },
-      { label: 'Creator', value: 'creatorLiteral' },
-      { label: 'Date String', value: 'dateString' },
-      { label: 'Date Created', value: 'createdYear' },
-      { label: 'Subjects', value: 'subjectLiteral' },
-      { label: 'Owner', value: 'owner' },
+      { label: 'Contents', value: 'note' },
       { label: 'Location', value: 'location' },
-      { label: 'Notes', value: 'note' },
-      { label: 'LCC', value: 'idLcc' },
-      { label: 'Number available', value: 'numAvailable' },
-      { label: 'Number of items', value: 'numItems' },
+      { label: 'ISBN', value: 'idIsbn' },
+      { label: 'LCCL', value: 'idLcc' },
     ];
 
     return fields.map((field) => {
