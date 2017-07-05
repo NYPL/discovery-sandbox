@@ -18,11 +18,12 @@ const sortingOpts = [
 class Sorter extends React.Component {
   constructor(props) {
     super(props);
-    const defaultLabel = this.props.sortBy ?
-      _findWhere(sortingOpts, { val: this.props.sortBy }).label : 'relevance';
+    const defaultLabelObject = _findWhere(sortingOpts, { val: this.props.sortBy });
+    const defaultLabel = defaultLabelObject ? defaultLabelObject.label : undefined;
+
     this.state = {
-      sortValue: this.props.sortBy,
-      sortLabel: defaultLabel,
+      sortValue: this.props.sortBy || 'relevance',
+      sortLabel: defaultLabel || 'relevance',
       active: false,
     };
   }
