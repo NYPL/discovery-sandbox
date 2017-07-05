@@ -4,7 +4,6 @@ import DocumentTitle from 'react-document-title';
 
 import Hits from '../Hits/Hits.jsx';
 import Breadcrumbs from '../Breadcrumbs/Breadcrumbs.jsx';
-import FacetSidebar from '../FacetSidebar/FacetSidebar.jsx';
 import ResultList from '../Results/ResultsList';
 import Search from '../Search/Search.jsx';
 import Sorter from '../Sorter/Sorter';
@@ -20,7 +19,6 @@ const SearchResultsPage = (props, context) => {
   const {
     searchResults,
     searchKeywords,
-    facets,
     selectedFacets,
     page,
     location,
@@ -30,7 +28,6 @@ const SearchResultsPage = (props, context) => {
     error,
   } = props;
 
-  const facetList = facets && facets.itemListElement ? facets.itemListElement : [];
   const totalHits = searchResults ? searchResults.totalResults : undefined;
   const totalPages = totalHits ? Math.floor(totalHits / 50) + 1 : 0;
   const results = searchResults ? searchResults.itemListElement : [];
@@ -81,20 +78,8 @@ const SearchResultsPage = (props, context) => {
         <div className="nypl-full-width-wrapper">
 
           <div className="nypl-row">
-
-            <FacetSidebar
-              facets={facetList}
-              spinning={spinning}
-              selectedFacets={selectedFacets}
-              searchKeywords={searchKeywords}
-              className="nypl-column-one-quarter"
-              totalHits={totalHits}
-              createAPIQuery={createAPIQuery}
-              field={field}
-            />
-
             <div
-              className="nypl-column-three-quarters"
+              className="nypl-column-full"
               role="region"
               id="mainContent"
               aria-live="polite"
@@ -147,7 +132,6 @@ const SearchResultsPage = (props, context) => {
 SearchResultsPage.propTypes = {
   searchResults: PropTypes.object,
   searchKeywords: PropTypes.string,
-  facets: PropTypes.object,
   selectedFacets: PropTypes.object,
   page: PropTypes.string,
   location: PropTypes.object,
