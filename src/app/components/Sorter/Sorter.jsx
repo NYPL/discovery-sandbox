@@ -25,14 +25,17 @@ class Sorter extends React.Component {
       sortValue: this.props.sortBy || 'relevance',
       sortLabel: defaultLabel || 'relevance',
       active: false,
+      className: '',
     };
+
+    this.updateSortState = this.updateSortState.bind(this);
   }
 
-  getResultsSort() {
+  renderResultsSort() {
     return sortingOpts.map((d, i) => (
-      <li role="region" key={i}>
-        <a href="#" onClick={e => this.sortResultsBy(e, d.val, d.label)}>{d.label}</a>
-      </li>
+      <option value={d.val} key={i}>
+        {d.label}
+      </option>
     ));
   }
 
@@ -44,10 +47,17 @@ class Sorter extends React.Component {
     }
   }
 
-  sortResultsBy(e, sortBy, sortLabel) {
+  updateSortState(e) {
     e.preventDefault();
-    this.setState({ sortLabel });
+    const value = e.target.value;
 
+    this.setState(
+      { sortValue: value, sortLabel: e.target.value },
+      () => { this.sortResultsBy(value) }
+    );
+  }
+
+  sortResultsBy(sortBy) {
     const apiQuery = this.props.createAPIQuery({ sortBy, page: this.props.page });
 
     Actions.updateSpinner(true);
@@ -62,9 +72,16 @@ class Sorter extends React.Component {
     this.setState({ active: false });
   }
 
-  handleOnClickOut() {
-    if (this.state.active) {
-      this.setState({ active: false });
+  /**
+   * triggerSubmit(event)
+   * The fuction listens to the event of enter key.
+   * Submit search request if enter is pressed.
+   *
+   * @param {Event} event
+   */
+  triggerSubmit(event) {
+    if (event && event.charCode === 13) {
+      this.sortResultsBy(event, );
     }
   }
 
@@ -72,21 +89,25 @@ class Sorter extends React.Component {
     return (
       <div className="nypl-results-sorting-controls">
         <div className="nypl-results-sorter">
-          <ClickOutHandler onClickOut={() => this.handleOnClickOut()}>
-            <button
-              aria-expanded={this.state.active}
-              className={this.state.active ? 'active' : ''}
-              onClick={e => this.getResultsWindow(e)}
-            >
-              <span>Sort by <strong>{this.state.sortLabel}</strong></span>
-              <DownWedgeIcon className="nypl-icon" viewBox="0 0 68 24" />
-            </button>
-            <ul className={this.state.active ? '' : 'hidden'}>
-              {
-                this.getResultsSort()
-              }
-            </ul>
-          </ClickOutHandler>
+          <form
+            onKeyPress={this.updateSortState}
+            action="search"
+            method="POST"
+          >
+            <span className="nypl-omni-fields">
+              <label htmlFor="search-by-field">Sort by</label>
+              <strong>
+                <select
+                  id="sort-by-label"
+                  onChange={this.updateSortState}
+                  value={this.state.sortLabel}
+                  name="sort_scope"
+                >
+                  {this.renderResultsSort()}
+                </select>
+              </strong>
+            </span>
+          </form>
         </div>
       </div>
     );
