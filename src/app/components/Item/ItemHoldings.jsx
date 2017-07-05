@@ -29,15 +29,27 @@ class ItemHoldings extends React.Component {
     // Mostly things we want to do on the client-side only:
     const items = this.props.items;
     let chunkedItems = [];
+    let noItemPage = false;
 
     if (items && items.length >= 20) {
       chunkedItems = this.chunk(items, 20);
     }
 
+    // If the `itemPage` URL query is more than the number of pages, then
+    // go back to page 1 in the state and remove the query from the URL.
+    if (this.state.page > chunkedItems.length) {
+      noItemPage = true;
+    }
+
     this.setState({
       js: true,
       chunkedItems,
+      page: noItemPage ? 1 : this.state.page,
     });
+
+    if (noItemPage) {
+      this.context.router.push(`/bib/${this.props.bibId}`);
+    }
   }
 
   /*
@@ -78,11 +90,11 @@ class ItemHoldings extends React.Component {
 
     return (
       (itemsToDisplay && _isArray(itemsToDisplay) && itemsToDisplay.length) ?
-      <dl>
-        <dd className="multi-item-list">
-          <ItemTable items={itemsToDisplay} bibId={bibId} getRecord={this.getRecord} />
-        </dd>
-      </dl> : null
+        <dl>
+          <dd className="multi-item-list">
+            <ItemTable items={itemsToDisplay} bibId={bibId} getRecord={this.getRecord} />
+          </dd>
+        </dl> : null
     );
   }
 
