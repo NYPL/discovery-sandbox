@@ -62,7 +62,6 @@ const BibPage = (props) => {
             >
               <div className="nypl-item-details">
                 <h1>{title}</h1>
-                <dl>
                   <BibMainInfo bib={bib} />
                   <ItemHoldings
                     shortenItems={shortenItems}
@@ -74,7 +73,6 @@ const BibPage = (props) => {
                     bib={bib}
                     title="Bib details"
                   />
-                </dl>
               </div>
             </div>
           </div>
