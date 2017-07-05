@@ -27,11 +27,13 @@ class Pagination extends React.Component {
     const intPage = parseInt(page, 10);
     const pageNum = type === 'Next' ? intPage + 1 : intPage - 1;
     const svg = type === 'Next' ? <RightArrowIcon /> : <LeftArrowIcon />;
-    const url = this.props.createAPIQuery({ page: pageNum });
+    const apiUrl = this.props.createAPIQuery({ page: pageNum });
+    const localUrl = `${this.props.to.pathname}${pageNum}`;
+    const url = apiUrl ? { pathname: `/search?${apiUrl}` } : { pathname: localUrl };
 
     return (
       <Link
-        to={url ? { pathname: `/search?${url}` } : this.props.to}
+        to={url}
         rel={type.toLowerCase()}
         aria-controls={this.props.ariaControls}
         onClick={(e) => this.onClick(e, pageNum)}
