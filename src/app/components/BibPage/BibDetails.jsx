@@ -17,6 +17,7 @@ class BibDetails extends React.Component {
     const fields = [
       { label: 'Contents', value: 'note' },
       { label: 'Location', value: 'location' },
+      // This needs to exist in the API to work, currently it doesn't.
       { label: 'ISBN', value: 'idIsbn' },
       { label: 'LCCL', value: 'idLcc' },
     ];
