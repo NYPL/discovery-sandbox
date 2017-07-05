@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
+import { Link } from 'react-router';
 
 import Breadcrumbs from '../Breadcrumbs/Breadcrumbs.jsx';
 import PatronStore from '../../stores/PatronStore.js';
@@ -103,6 +104,8 @@ class ElectronicDelivery extends React.Component {
       itemId,
       title,
     } = this.state;
+    const bib = (this.props.bib && !_isEmpty(this.props.bib)) ? this.props.bib : null;
+    const callNo = bib && bib.shelfMark && bib.shelfMark.length ? bib.shelfMark[0] : null;
 
     return (
       <div id="mainContent">
@@ -121,8 +124,22 @@ class ElectronicDelivery extends React.Component {
             <div className="nypl-column-full">
               <h1>Electronic Delivery Request</h1>
 
-              <h3>Material request for Electronic Delivery:</h3>
-              <p>More content here that will be added later.</p>
+              <h3>
+                Material request for Electronic Delivery:
+                <br />
+                <Link to={`/bib/${bibId}`}>
+                  {title}
+                </Link>
+              </h3>
+
+              {
+                callNo && (
+                  <div>
+                    <p><strong>Call Number</strong></p>
+                    {callNo}
+                  </div>
+                )
+              }
 
               <ElectronicDeliveryForm
                 bibId={bibId}
