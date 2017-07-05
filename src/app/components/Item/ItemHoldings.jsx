@@ -152,7 +152,9 @@ class ItemHoldings extends React.Component {
 
     return (
       <div id="item-holdings" className="item-holdings">
-        <h2>{this.props.title}</h2>
+        <dt className="list-multi-control">
+            <h3>Availability</h3>
+        </dt>
         {itemTable}
         {
           !!(shortenItems && items.length >= 20 && !this.state.showAll) &&
@@ -177,7 +179,6 @@ class ItemHoldings extends React.Component {
 
 ItemHoldings.propTypes = {
   items: PropTypes.array,
-  title: PropTypes.string,
   itemPage: PropTypes.string,
   bibId: PropTypes.string,
   shortenItems: PropTypes.bool,
