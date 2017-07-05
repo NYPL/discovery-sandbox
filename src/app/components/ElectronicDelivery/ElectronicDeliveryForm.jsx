@@ -98,7 +98,7 @@ class ElectronicDeliveryForm extends React.Component {
           </div>
         </fieldset>
 
-        <fieldset className="nypl-fieldset">
+        <fieldset className="nypl-fieldset v2">
           <legend>Chapter or Article Information</legend>
           <h3>Chapter or Article Information</h3>
 
@@ -210,7 +210,7 @@ class ElectronicDeliveryForm extends React.Component {
           </div>
         </fieldset>
 
-        <fieldset className="nypl-fieldset">
+        <fieldset className="nypl-fieldset v2">
           <legend>Page Number Range (Max 50 pages)</legend>
           <h3>Page Number Range (Max 50 pages)</h3>
 
