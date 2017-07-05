@@ -140,7 +140,11 @@ class ElectronicDelivery extends React.Component {
                   </div>
                 )
               }
+            </div>
+          </div>
 
+          <div className="nypl-row">
+            <div className="nypl-column-half">
               <ElectronicDeliveryForm
                 bibId={bibId}
                 itemId={itemId}
