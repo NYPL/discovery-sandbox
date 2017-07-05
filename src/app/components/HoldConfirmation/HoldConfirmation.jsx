@@ -5,6 +5,7 @@ import config from '../../../../appConfig.js';
 import { Link } from 'react-router';
 import {
   isArray as _isArray,
+  isEmpty as _isEmpty,
 } from 'underscore';
 
 import Breadcrumbs from '../Breadcrumbs/Breadcrumbs.jsx';
@@ -41,6 +42,30 @@ class HoldConfirmation extends React.Component {
     return false;
   }
 
+  /**
+   * renderLocationInfo()
+   * Renders the location information.
+   *
+   * @param {Object} loc
+   * @return {HTML Element}
+   */
+  renderLocationInfo(loc) {
+    if (!loc || _isEmpty(loc)) { return null; }
+
+    const locName = loc['full-name'] ? loc['full-name'] : '';
+    const uri = loc.uri ? <a href={`${loc.uri}`}>{locName}</a> : null;
+    const address = (loc.address && loc.address.address1) ? loc.address.address1 : null;
+    const prefLabel = (loc.prefLabel) ? loc.prefLabel : null;
+
+    return(
+      <p>
+        {uri}<br />
+        {address}<br />
+        {prefLabel}
+      </p>
+    );
+  }
+
   render() {
     // Need to better clarify variable names later.
     const bib = this.props.bib;
@@ -50,7 +75,8 @@ class HoldConfirmation extends React.Component {
       bib['@id'].substring(4) : '';
     const itemId = (this.props.params && this.props.params.itemId) ? this.props.params.itemId : '';
     const selectedItem = LibraryItem.getItem(bib, itemId);
-    const deliveryLocations = selectedItem.deliveryLocations[0];
+    const deliveryLocation = (selectedItem && selectedItem.deliveryLocations.length) ?
+      selectedItem.deliveryLocations[0] : {};
     const shelfMarkInfo =
       (selectedItem && _isArray(selectedItem.shelfMark) && selectedItem.shelfMark.length > 0) ?
         <li>Call number: {selectedItem.shelfMark[0]}</li> : null;
@@ -95,11 +121,7 @@ class HoldConfirmation extends React.Component {
 
           <div className="map-container">
             <div className="third">
-              <p>
-                <a href={`${deliveryLocations.uri}`}>{deliveryLocations['full-name']}</a><br />
-                {deliveryLocations.address.address1}<br />
-                {deliveryLocations.prefLabel}
-              </p>
+              {this.renderLocationInfo(deliveryLocation)}
             </div>
           </div>
         </div>

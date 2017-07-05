@@ -10,16 +10,20 @@ import LibraryItem from '../../utils/item.js';
 import {
   isArray as _isArray,
   isEmpty as _isEmpty,
+  extend as _extend,
 } from 'underscore';
 
 class HoldRequest extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = { patron: PatronStore.getState() };
+    this.state = _extend({
+      delivery: false,
+    }, { patron: PatronStore.getState() });
 
     // change all the components :(
     this.onChange = this.onChange.bind(this);
+    this.onRadioSelect = this.onRadioSelect.bind(this);
     this.submitRequest = this.submitRequest.bind(this);
   }
 
@@ -31,6 +35,10 @@ class HoldRequest extends React.Component {
     this.setState({ patron: PatronStore.getState() });
   }
 
+  onRadioSelect(e) {
+    this.setState({ delivery: e.target.value });
+  }
+
   /**
    * submitRequest()
    * Client-side submit call.
@@ -38,20 +46,23 @@ class HoldRequest extends React.Component {
   submitRequest(e, bibId, itemId) {
     e.preventDefault();
 
+    let path = `/hold/confirmation/${bibId}-${itemId}`;
+
+    if (this.state.delivery === 'edd') {
+      path = `/hold/request/${bibId}-${itemId}/edd`;
+    }
     axios
       .get(`/api/newHold?itemId=${itemId}`)
       .then(response => {
         if (response.data.error && response.data.error.status !== 200) {
-          this.context.router.push(`/hold/confirmation/${bibId}-${itemId}?errorMessage=` +
-            `${response.data.error.statusText}`);
+          this.context.router.push(`${path}?errorMessage=${response.data.error.statusText}`);
         } else {
-          this.context.router
-            .push(`/hold/confirmation/${bibId}-${itemId}?requestId=${response.data.id}`);
+          this.context.router.push(`${path}?requestId=${response.data.id}`);
         }
       })
       .catch(error => {
         console.log(error);
-        this.context.router.push(`/hold/confirmation/${bibId}-${itemId}?errorMessage=${error}`);
+        this.context.router.push(`${path}?errorMessage=${error}`);
       });
   }
 
@@ -82,11 +93,38 @@ class HoldRequest extends React.Component {
    */
   renderLoggedInInstruction(patronName) {
     return (patronName) ?
-      <p className="loggedInInstruction">You are currently logged in as <strong>{patronName}</strong>. If this is not you, please <a href="https://isso.nypl.org/auth/logout">Log out</a> and sign in using your library card.</p>
-      : <p className="loggedInInstruction">Something went wrong retrieving your personal information.</p>;
+      <p className="loggedInInstruction">
+        You are currently logged in as <strong>{patronName}</strong>. If this is not you,
+        please <a href="https://isso.nypl.org/auth/logout">Log out</a> and sign in using
+        your library card.
+      </p>
+      :
+      <p className="loggedInInstruction">
+        Something went wrong retrieving your personal information.
+      </p>;
   }
 
-  renderDeliveryLocation(deliveryLocations = [], callNo) {
+  renderEDD() {
+    return (
+      <div className="group selected">
+        <input
+          type="radio"
+          name="delivery-location"
+          id="edd-option"
+          value="edd"
+          onChange={this.onRadioSelect}
+        />
+        <label htmlFor="edd-option">
+          <span className="col location">
+            Electronic Delivery<br />
+            Have up to 50 pages of this document scanned and sent to you via email
+          </span>
+        </label>
+      </div>
+    );
+  }
+
+  renderDeliveryLocation(deliveryLocations = []) {
     return deliveryLocations.map((location, i) => (
       <div key={i} className="group selected">
         <input
@@ -94,6 +132,7 @@ class HoldRequest extends React.Component {
           name="delivery-location"
           id={`location${i}`}
           value={location['full-name']}
+          onChange={this.onRadioSelect}
         />
         <label htmlFor={`location${i}`}>
           <span className="col location">
@@ -106,7 +145,6 @@ class HoldRequest extends React.Component {
               </span>
             }
           </span>
-          {callNo}
         </label>
       </div>
     ));
@@ -128,15 +166,16 @@ class HoldRequest extends React.Component {
     const callNo =
       (selectedItem && selectedItem.callNumber && selectedItem.callNumber.length) ?
       (
-        <span className="col">
+        <div className="col">
           <small>Call number:</small><br />{selectedItem.callNumber}
-        </span>
+        </div>
       ) : null;
-    const deliveryLocations = selectedItem.deliveryLocations;
+    const deliveryLocations = selectedItem && selectedItem.deliveryLocations ?
+      selectedItem.deliveryLocations : [];
     let content = null;
 
     if (bib) {
-      content =
+      content = (
         <div className="content-wrapper">
           <div className="item-header">
             <h1>Research item hold request</h1>
@@ -146,6 +185,7 @@ class HoldRequest extends React.Component {
             <div className="item">
               <h2>You are about to request a hold on the following research item:</h2>
               <Link href={`/bib/${bibId}`}>{title}</Link>
+              {callNo}
             </div>
           </div>
 
@@ -153,6 +193,7 @@ class HoldRequest extends React.Component {
             className="place-hold-form form"
             action={`/hold/request/${bibId}-${itemId}`}
             method="POST"
+            onSubmit={(e) => this.submitRequest(e, bibId, itemId)}
           >
             <h2>Confirm account</h2>
             {this.renderLoggedInInstruction(patronName)}
@@ -160,7 +201,8 @@ class HoldRequest extends React.Component {
             <p>When this item is ready, you will use it in the following location:</p>
             <fieldset className="select-location-fieldset">
               <legend className="visuallyHidden">Select a pickup location</legend>
-              {this.renderDeliveryLocation(deliveryLocations, callNo)}
+              {this.renderEDD()}
+              {this.renderDeliveryLocation(deliveryLocations)}
             </fieldset>
 
             <input type="hidden" name="pickupLocation" value="test" />
@@ -168,14 +210,13 @@ class HoldRequest extends React.Component {
             <button
               type="submit"
               className="large"
-              onClick={(e) => this.submitRequest(e, bibId, itemId)}
             >
               Submit your item hold request
             </button>
           </form>
-        </div>;
+        </div>);
     } else {
-      content =
+      content = (
         <div className="content-wrapper">
           <div className="item-header">
             <h1>Research item hold request</h1>
@@ -188,7 +229,7 @@ class HoldRequest extends React.Component {
           </div>
           <h2>Confirm account</h2>
           {this.renderLoggedInInstruction(patronName)}
-        </div>;
+        </div>);
     }
 
     return (

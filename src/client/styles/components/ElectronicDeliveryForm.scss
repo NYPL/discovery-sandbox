@@ -1,0 +1,19 @@
+.electronic-delivery-form {
+  ul {
+    list-style-type: none;
+  }
+
+  legend {
+    @include visuallyHidden;
+  }
+
+  input {
+    display: block;
+  }
+
+  label {
+    span {
+      color: red;
+    }
+  }
+}

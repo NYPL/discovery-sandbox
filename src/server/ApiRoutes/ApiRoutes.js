@@ -36,6 +36,10 @@ router
   .post(Hold.createHoldRequestServer);
 
 router
+  .route('/hold/request/:bibId-:itemId/edd')
+  .get(Hold.newHoldRequestServer);
+
+router
   .route('/hold/confirmation/:bibId-:itemId')
   .get(Hold.confirmRequestServer);
 
@@ -46,6 +50,10 @@ router
 router
   .route('/bib/:bibId/all')
   .get(Bib.bibSearchServer);
+
+router
+  .route('/edd')
+  .post(Hold.eddServer);
 
 router
   .route('/api')
