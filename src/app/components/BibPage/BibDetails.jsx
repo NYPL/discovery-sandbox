@@ -90,30 +90,7 @@ class BibDetails extends React.Component {
         // We added this because not all fields should be linkable. For example, maybe we
         // want `materialType` to be linkable in the UI but not `issuance`.
       } else if (field.linkable) {
-        // When we want all the links to be in sentence form separated by a comma:
-        // e.g. Benjamin Franklin, Thomas Jefferson, George Washington
-        if (fieldValue === 'contributorLiteral') {
-          return {
-            term: fieldLabel,
-            definition: bibValues.map((value, i) => {
-              const comma = bibValues.length > 1 ? ', ' : ' ';
-              const url = `filters[${fieldValue}]=${value}`;
-              return (
-                <span key={i}>
-                  <Link
-                    onClick={e => this.newSearch(e, url)}
-                    title={`Make a new search for ${fieldLabel}: "${value}"`}
-                    to={`/search?${url}`}
-                  >
-                    {value}
-                  </Link>{comma}
-                </span>
-              );
-            }),
-          };
-        }
 
-        // NOTE: because of the note above, this is never reached.
         return {
           term: fieldLabel,
           definition: (
