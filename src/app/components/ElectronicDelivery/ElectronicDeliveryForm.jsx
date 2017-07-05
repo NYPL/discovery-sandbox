@@ -38,6 +38,8 @@ class ElectronicDeliveryForm extends React.Component {
   }
 
   render() {
+    const errorClass = ''; //'nypl-field-error';
+
     return (
       <form
         className="place-hold-form form electronic-delivery-form"
@@ -49,7 +51,7 @@ class ElectronicDeliveryForm extends React.Component {
           <legend>Contact Information</legend>
           <h3>Contact Information</h3>
 
-          <div className="nypl-text-field nypl-field-error">
+          <div className={`nypl-text-field ${errorClass}`}>
             <label htmlFor="patron-name" id="patron-name-label">First and last name
               <span className="nypl-required-field">&nbsp;(Required)</span>
             </label>
@@ -210,7 +212,7 @@ class ElectronicDeliveryForm extends React.Component {
           </div>
         </fieldset>
 
-        <fieldset className="nypl-fieldset v2">
+        <fieldset className="nypl-fieldset v2 number-range">
           <legend>Page Number Range (Max 50 pages)</legend>
           <h3>Page Number Range (Max 50 pages)</h3>
 
@@ -230,6 +232,8 @@ class ElectronicDeliveryForm extends React.Component {
               onChange={(e) => this.handleUpdate(e, 'starting-page')}
             />
           </div>
+
+          <span>&mdash;</span>
 
           <div className="nypl-year-field">
             <label htmlFor="ending-page" id="ending-page-label">Ending Page
