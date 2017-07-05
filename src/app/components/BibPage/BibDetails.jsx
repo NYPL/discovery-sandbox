@@ -162,9 +162,9 @@ class BibDetails extends React.Component {
       return {
         term: fieldLabel,
         definition: (
-          <dt>
-            {bibValues.map((value, i) => <dd key={i}>{value}</dd>)}
-          </dt>
+          <ul>
+            {bibValues.map((value, i) => <li key={i}>{value}</li>)}
+          </ul>
         ),
       };
     });
