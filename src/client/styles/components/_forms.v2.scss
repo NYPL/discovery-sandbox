@@ -10,6 +10,20 @@
         padding-left: 0
       }
 
+      &.nypl-field-error {
+        input[type=number],
+        input[type=text] {
+          background-color: #f6d6d8;
+          border-bottom: 0.125rem #97272c solid;
+          box-shadow: none;
+        }
+
+        .nypl-field-status {
+          background: #fff;
+          color: #d0343a;
+        }
+      }
+
       label {
         position: relative;
         margin: 0;
