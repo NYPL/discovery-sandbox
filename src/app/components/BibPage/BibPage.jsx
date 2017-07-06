@@ -21,6 +21,7 @@ const BibPage = (props) => {
   const items = LibraryItem.getItems(bib);
   const bNumber = bib && bib.idBnum ? bib.idBnum : '';
   const searchURL = createAPIQuery({});
+  const itemPage = props.location.search;
   let shortenItems = true;
 
   if (props.location.pathname.indexOf('all') === -1) {
@@ -67,6 +68,7 @@ const BibPage = (props) => {
                     shortenItems={shortenItems}
                     items={items}
                     bibId={bibId}
+                    itemPage={itemPage}
                   />
                   <MarcRecord bNumber={bNumber[0]} />
                   <BibDetails
