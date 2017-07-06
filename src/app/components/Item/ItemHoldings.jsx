@@ -90,11 +90,14 @@ class ItemHoldings extends React.Component {
 
     return (
       (itemsToDisplay && _isArray(itemsToDisplay) && itemsToDisplay.length) ?
-        <dl>
-          <dd className="multi-item-list">
-            <ItemTable items={itemsToDisplay} bibId={bibId} getRecord={this.getRecord} />
-          </dd>
-        </dl> : null
+      <dl>
+        <dt className="list-multi-control">
+          <h3>Availability</h3>
+        </dt>
+        <dd className="multi-item-list">
+          <ItemTable items={itemsToDisplay} bibId={bibId} getRecord={this.getRecord} />
+        </dd>
+      </dl> : null
     );
   }
 
@@ -152,7 +155,6 @@ class ItemHoldings extends React.Component {
 
     return (
       <div id="item-holdings" className="item-holdings">
-        <h2>{this.props.title}</h2>
         {itemTable}
         {
           !!(shortenItems && items.length >= 20 && !this.state.showAll) &&
@@ -177,7 +179,6 @@ class ItemHoldings extends React.Component {
 
 ItemHoldings.propTypes = {
   items: PropTypes.array,
-  title: PropTypes.string,
   itemPage: PropTypes.string,
   bibId: PropTypes.string,
   shortenItems: PropTypes.bool,
