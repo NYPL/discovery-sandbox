@@ -19,7 +19,7 @@ const BibMainInfo = ({ bib = {} }) => {
     bib.language[0].prefLabel : null;
 
   return (
-    <span>
+    <dl>
       <dt>FORMAT</dt>
       <dd>
         {materialType}
@@ -69,7 +69,7 @@ const BibMainInfo = ({ bib = {} }) => {
           }) : null
         }
       </dd>
-    </span>
+    </dl>
   );
 };
 
