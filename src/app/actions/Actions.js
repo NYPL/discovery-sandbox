@@ -45,6 +45,10 @@ class Actions {
   updateField(data) {
     return data;
   }
+
+  updateForm(data) {
+    return data;
+  }
 }
 
 export default alt.createActions(Actions);
