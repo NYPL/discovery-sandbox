@@ -28,7 +28,7 @@ class Sorter extends React.Component {
       className: '',
     };
 
-    this.updateSortState = this.updateSortState.bind(this);
+    this.updateSortValue = this.updateSortValue.bind(this);
   }
 
   renderResultsSort() {
@@ -39,21 +39,14 @@ class Sorter extends React.Component {
     ));
   }
 
-  getResultsWindow() {
-    if (this.state.active === false) {
-      this.setState({ active: true, className: 'active' });
-    } else {
-      this.setState({ active: false, className: '' });
-    }
-  }
-
-  updateSortState(e) {
+  updateSortValue(e) {
     e.preventDefault();
     const value = e.target.value;
 
     this.setState(
       { sortValue: value, sortLabel: e.target.value },
-      () => { this.sortResultsBy(value) }
+      // () => { this.sortResultsBy(value) }
+      () => {this.form.submit()}
     );
   }
 
@@ -90,8 +83,7 @@ class Sorter extends React.Component {
       <div className="nypl-results-sorting-controls">
         <div className="nypl-results-sorter">
           <form
-            onKeyPress={this.updateSortState}
-            action="search"
+            action="/search"
             method="POST"
           >
             <span className="nypl-omni-fields">
@@ -99,7 +91,7 @@ class Sorter extends React.Component {
               <strong>
                 <select
                   id="sort-by-label"
-                  onChange={this.updateSortState}
+                  onChange={this.updateSortValue}
                   value={this.state.sortLabel}
                   name="sort_scope"
                 >
