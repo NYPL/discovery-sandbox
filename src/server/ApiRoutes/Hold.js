@@ -126,7 +126,7 @@ function createHoldRequestServer(req, res, pickedUpBibId = '', pickedUpItemId = 
     .catch(error => {
       // console.log(error);
       console.log(`Error calling Holds API : ${error.data.message}`);
-      res.redirect(`/hold/request/${bibId}-s${itemId}?errorMessage=${error.data.message}`);
+      res.redirect(`/hold/request/${bibId}-${itemId}?errorMessage=${error.data.message}`);
     }); /* end axios call */
 }
 
