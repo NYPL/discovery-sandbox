@@ -123,7 +123,7 @@ class BibDetails extends React.Component {
         term: fieldLabel,
         definition: (
           <span>
-            {bibValues.map((value, i) => <span key={i}>{value}</span>)}
+            {bibValues.map((value, i) => <p key={i}>{value}</p>)}
           </span>
         ),
       };
