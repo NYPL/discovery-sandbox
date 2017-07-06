@@ -6,19 +6,17 @@ import Bib from './Bib.js';
 import { validate } from '../../app/utils/formValidationUtils';
 import {
   omit as _omit,
-  keys as _keys,
 } from 'underscore';
 
-function postHoldAPI(req, cb, errorCb) {
+function postHoldAPI(req, pickedUpItemId, cb, errorCb) {
   // retrieve access token and patron info
   const accessToken = req.tokenResponse.accessToken;
   const patronId = req.tokenResponse.decodedPatron.sub;
   const patronHoldsApi = `${appConfig.api.development}/hold-requests`;
 
   // get item id and pickup location
-  // NOTE: The implementation for this needs to be redone, or
-  // we may get it directly from the API.
-  let itemId = req.params.itemId;
+  // NOTE: pickedUpItemId and pickedUpBibId are coming from the EDD form function below:
+  let itemId = req.params.itemId || pickedUpItemId;
   let nyplSource = 'sierra-nypl';
 
   if (itemId.indexOf('-') >= 0) {
@@ -119,45 +117,19 @@ function createHoldRequestServer(req, res, pickedUpBibId = '', pickedUpItemId = 
   // Ensure user is logged in
   const loggedIn = User.requireUser(req);
   if (!loggedIn) return false;
-  // retrieve access token and patron info
-  const accessToken = req.tokenResponse.accessToken;
-  const patronId = req.tokenResponse.decodedPatron.sub;
-  const patronHoldsApi = `${appConfig.api.development}/hold-requests`;
 
-  // get item id and pickup location
   // NOTE: pickedUpItemId and pickedUpBibId are coming from the EDD form function below:
   let itemId = req.params.itemId || pickedUpItemId;
   let bibId = req.params.bibId || pickedUpBibId;
-  let nyplSource = 'sierra-nypl';
 
-  if (itemId.indexOf('-') >= 0) {
-    const parts = itemId.split('-');
-    itemId = parts[parts.length - 1];
-
-    if (itemId.substring(0, 2) === 'pi') {
-      nyplSource = 'recap-PUL';
-    } else if (itemId.substring(0, 2) === 'ci') {
-      nyplSource = 'recap-CUL';
-    }
+  if (!bibId || !itemId) {
+    // Dummy redirect for now
+    return res.redirect('/someErrorPage');
   }
-  itemId = itemId.replace(/\D/g, '');
-  // NOTE: When this function is called from EDD, this needs to be updated to reflect that,
-  // since there's no physical location anymore.
-  const pickupLocation = req.body.pickupLocation;
-
-  const data = {
-    patron: patronId,
-    recordType: 'i',
-    record: itemId,
-    nyplSource,
-    pickupLocation,
-    // neededBy: "2013-03-20",
-    numberOfCopies: 1,
-  };
-  console.log('Making hold request', data, accessToken);
 
   return postHoldAPI(
     req,
+    itemId,
     (response) => {
       // console.log('Holds API response:', response);
       console.log('Hold Request Id:', response.data.data.id);
@@ -183,6 +155,7 @@ function createHoldRequestAjax(req, res) {
 
   return postHoldAPI(
     req,
+    req.params.itemId,
     (response) => {
       res.json({
         id: response.data.data.id,
