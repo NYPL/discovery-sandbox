@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import ClickOutHandler from 'react-onclickout';
 import { findWhere as _findWhere } from 'underscore';
 import { DownWedgeIcon } from 'dgx-svg-icons';
 
@@ -26,17 +25,16 @@ class Sorter extends React.Component {
       sortLabel: defaultLabel || 'relevance',
       active: false,
       className: '',
+      js: false,
     };
 
     this.updateSortValue = this.updateSortValue.bind(this);
   }
 
-  renderResultsSort() {
-    return sortingOpts.map((d, i) => (
-      <option value={d.val} key={i}>
-        {d.label}
-      </option>
-    ));
+  componentDidMount() {
+    this.setState({
+      js: true,
+    });
   }
 
   updateSortValue(e) {
@@ -45,8 +43,7 @@ class Sorter extends React.Component {
 
     this.setState(
       { sortValue: value, sortLabel: e.target.value },
-      // () => { this.sortResultsBy(value) }
-      () => {this.form.submit()}
+      () => { this.sortResultsBy(value); }
     );
   }
 
@@ -65,25 +62,25 @@ class Sorter extends React.Component {
     this.setState({ active: false });
   }
 
-  /**
-   * triggerSubmit(event)
-   * The fuction listens to the event of enter key.
-   * Submit search request if enter is pressed.
-   *
-   * @param {Event} event
-   */
-  triggerSubmit(event) {
-    if (event && event.charCode === 13) {
-      this.sortResultsBy(event, );
-    }
+  renderResultsSort() {
+    return sortingOpts.map((d, i) => (
+      <option value={d.val} key={i}>
+        {d.label}
+      </option>
+    ));
   }
 
   render() {
+    const keywords = this.props.keywords || '';
+    const field = this.props.field || '';
+
     return (
       <div className="nypl-results-sorting-controls">
         <div className="nypl-results-sorter">
           <form
-            action="/search"
+            action={
+              `/search${keywords ? `?q=${keywords}` : ''}${field ? `&search_scope=${field}` : ''}`
+            }
             method="POST"
           >
             <span className="nypl-omni-fields">
@@ -99,6 +96,13 @@ class Sorter extends React.Component {
                 </select>
               </strong>
             </span>
+            {
+              !this.state.js &&
+                <input
+                  type="submit"
+                >
+                </input>
+            }
           </form>
         </div>
       </div>
@@ -108,6 +112,8 @@ class Sorter extends React.Component {
 
 Sorter.propTypes = {
   sortBy: PropTypes.string,
+  keywords: PropTypes.string,
+  field: PropTypes.string,
   page: PropTypes.string,
   createAPIQuery: PropTypes.func,
 };

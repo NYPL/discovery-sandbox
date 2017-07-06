@@ -128,8 +128,10 @@ const getFacetFilterParam = (facets) => {
       if (val.length && _isArray(val)) {
         _forEach(val, (facet) => {
           if (facet.value && facet.value !== '') {
-            // At this time, materialType filter requires _packed for filtering (but not as data). Other filters do not.
-            strSearch += (key === 'materialType' ? `&filters[${key}_packed]=${facet.id}` : `&filters[${key}]=${facet.id}`);
+            // At this time, materialType filter requires _packed for filtering (but not as data).
+            // Other filters do not.
+            strSearch += (key === 'materialType' ? `&filters[${key}_packed]=${facet.id}` :
+              `&filters[${key}]=${facet.id}`);
           } else if (typeof facet === 'string') {
             strSearch += `&filters[${key}]=${facet}`;
           }
@@ -195,89 +197,92 @@ const getFieldParam = (field) => {
 
 function collapse(results) {
   const owiLookup = {};
-  if (!results || !results.searchResults || !results.searchResults.itemListElement) return results
+  if (!results || !results.searchResults || !results.searchResults.itemListElement) return results;
   // make the lookup by owi
   results.searchResults.itemListElement.forEach((r) => {
     if (r.result && r.result.idOwi && r.result.idOwi[0]) {
-      if (!owiLookup[r.result.idOwi[0]]) owiLookup[r.result.idOwi[0]] = []
-      owiLookup[r.result.idOwi[0]].push(r)
+      if (!owiLookup[r.result.idOwi[0]]) owiLookup[r.result.idOwi[0]] = [];
+      owiLookup[r.result.idOwi[0]].push(r);
     }
-  })
+  });
 
-  let newItemListElement = [];
-  let completedOwis = [];
+  const newItemListElement = [];
+  const completedOwis = [];
+
   results.searchResults.itemListElement.forEach((r) => {
-    if (r.result && r.result.idOwi && r.result.idOwi[0] && owiLookup[r.result.idOwi[0]].length > 1) {
+    if (r.result && r.result.idOwi && r.result.idOwi[0] &&
+      owiLookup[r.result.idOwi[0]].length > 1) {
       // if we did a result w/ one of the OWIs we did it for all of them
-      if (completedOwis.indexOf(r.result.idOwi[0]) > -1) return
-      completedOwis.push(r.result.idOwi[0])
+      if (completedOwis.indexOf(r.result.idOwi[0]) > -1) return;
+      completedOwis.push(r.result.idOwi[0]);
 
-      // there are more than one/none owi matching in this results set, pick the best one and collapse the rest
+      // there are more than one/none owi matching in this results set,
+      // pick the best one and collapse the rest
       // pick one that has a physcial local copy
       let parent = null;
       owiLookup[r.result.idOwi[0]].forEach((i) => {
-        if (parent) return
+        if (parent) return;
         if (i.result && i.result.items) {
           i.result.items.forEach((ii) => {
             if (ii.location && ii.location[0] && ii.location[0][0]) {
               if (ii.location[0][0]['@id'].search(/loc:ma/) > -1) {
-                parent = i
+                parent = i;
               }
             }
-          })
+          });
         }
-      })
+      });
       // pick the first physcial one at recap if no local ver
       if (!parent) {
         owiLookup[r.result.idOwi[0]].forEach((i) => {
-          if (parent) return
+          if (parent) return;
           if (i.result && i.result.items) {
             i.result.items.forEach((ii) => {
               if (ii.location && ii.location[0] && ii.location[0][0]) {
                 if (ii.location[0][0]['@id'].search(/loc:rc/) > -1) {
-                  parent = i
+                  parent = i;
                 }
               }
-            })
+            });
           }
-        })
+        });
       }
       // just select the first one
       if (!parent) {
         owiLookup[r.result.idOwi[0]].forEach((i) => {
-          if (parent) return
+          if (parent) return;
           if (i.result && i.result.items) {
             i.result.items.forEach((ii) => {
               if (ii.location && ii.location[0] && ii.location[0][0]) {
-                parent = i
+                parent = i;
               }
-            })
+            });
           }
-        })
+        });
       }
 
       if (parent) {
-        parent.collapsedBibs = []
+        parent.collapsedBibs = [];
 
         owiLookup[r.result.idOwi[0]].forEach((i) => {
           if (parent.result['@id'] !== i.result['@id']) {
-            parent.collapsedBibs.push(i)
+            parent.collapsedBibs.push(i);
           }
-        })
-        newItemListElement.push(parent)
+        });
+        newItemListElement.push(parent);
       } else {
         // something went wrong, just add them all in
         owiLookup[r.result.idOwi[0]].forEach((i) => {
-          newItemListElement.push(i)
-        })
+          newItemListElement.push(i);
+        });
       }
     } else {
-      newItemListElement.push(r)
+      newItemListElement.push(r);
     }
-  })
+  });
 
-  results.searchResults.itemListElement = newItemListElement
-  return results
+  results.searchResults.itemListElement = newItemListElement;
+  return results;
 }
 
 /**
@@ -335,10 +340,11 @@ function getReqParams(query = {}) {
   const q = query.q || '';
   const sort = query.sort || '';
   const order = query.sort_direction || '';
+  const sortQuery = query.sort_scope || '';
   const fieldQuery = query.search_scope || '';
   const filters = query.filters || {};
 
-  return { page, q, sort, order, fieldQuery, filters };
+  return { page, q, sort, order, sortQuery, fieldQuery, filters };
 }
 
 /*
