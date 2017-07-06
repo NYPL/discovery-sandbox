@@ -8,16 +8,15 @@ import {
   omit as _omit,
 } from 'underscore';
 
-function postHoldAPI(req, cb, errorCb) {
+function postHoldAPI(req, pickedUpItemId, cb, errorCb) {
   // retrieve access token and patron info
   const accessToken = req.tokenResponse.accessToken;
   const patronId = req.tokenResponse.decodedPatron.sub;
   const patronHoldsApi = `${appConfig.api.development}/hold-requests`;
 
   // get item id and pickup location
-  // NOTE: The implementation for this needs to be redone, or
-  // we may get it directly from the API.
-  let itemId = req.params.itemId;
+  // NOTE: pickedUpItemId and pickedUpBibId are coming from the EDD form function below:
+  let itemId = req.params.itemId || pickedUpItemId;
   let nyplSource = 'sierra-nypl';
 
   if (itemId.indexOf('-') >= 0) {
@@ -130,6 +129,7 @@ function createHoldRequestServer(req, res, pickedUpBibId = '', pickedUpItemId = 
 
   return postHoldAPI(
     req,
+    itemId,
     (response) => {
       // console.log('Holds API response:', response);
       console.log('Hold Request Id:', response.data.data.id);
@@ -155,6 +155,7 @@ function createHoldRequestAjax(req, res) {
 
   return postHoldAPI(
     req,
+    req.params.itemId,
     (response) => {
       res.json({
         id: response.data.data.id,
