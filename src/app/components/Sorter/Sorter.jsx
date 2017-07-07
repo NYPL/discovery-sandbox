@@ -90,7 +90,7 @@ class Sorter extends React.Component {
   }
 
   render() {
-    const keywords = this.props.keywords || '';
+    const searchKeywords = this.props.searchKeywords || '';
     const field = this.props.field || '';
 
     return (
@@ -98,7 +98,7 @@ class Sorter extends React.Component {
         <div className="nypl-results-sorter">
           <form
             action={
-              `/search${keywords ? `?q=${keywords}` : ''}${field ? `&search_scope=${field}` : ''}`
+              `/search${searchKeywords ? `?q=${searchKeywords}` : ''}${field ? `&search_scope=${field}` : ''}`
             }
             method="POST"
           >
