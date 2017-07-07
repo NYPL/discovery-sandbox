@@ -90,8 +90,8 @@ class Sorter extends React.Component {
   }
 
   render() {
-    const searchKeywords = this.props.searchKeywords || '';
-    const field = this.props.field || '';
+    const searchKeywords = this.props.searchKeywords;
+    const field = this.props.field;
 
     return (
       <div className="nypl-results-sorting-controls">
@@ -131,10 +131,15 @@ class Sorter extends React.Component {
 
 Sorter.propTypes = {
   sortBy: PropTypes.string,
-  keywords: PropTypes.string,
+  searchKeywords: PropTypes.string,
   field: PropTypes.string,
   page: PropTypes.string,
   createAPIQuery: PropTypes.func,
+};
+
+Sorter.defaultProps = {
+  searchKeywords: '',
+  field: '',
 };
 
 Sorter.contextTypes = {
