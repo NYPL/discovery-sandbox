@@ -1,77 +1,81 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
-import { isEmpty as _isEmpty } from 'underscore';
+import {
+  isArray as _isArray,
+  isEmpty as _isEmpty,
+} from 'underscore';
+import DefinitionList from './DefinitionList';
 
-const BibMainInfo = ({ bib = {} }) => {
-  if (_isEmpty(bib)) return null;
+class BibMainInfo extends React.Component {
 
-  const materialType = bib && bib.materialType && bib.materialType[0] ?
-    bib.materialType[0].prefLabel : null;
-  const author = bib.creatorLiteral && bib.creatorLiteral.length ?
-    `${bib.creatorLiteral[0]}` : '';
-  const contributor = bib.contributorLiteral && bib.contributorLiteral.length ?
-    bib.contributorLiteral : null;
-  const yearPublished = bib && bib.dateStartYear ? bib.dateStartYear : null;
-  const placeOfPublication = bib && bib.placeOfPublication ? bib.placeOfPublication : null;
-  const publisher = bib && bib.publisher ? bib.publisher : null;
-  const language = bib && bib.language && bib.language[0] ?
-    bib.language[0].prefLabel : null;
+  getMainInfo(bib) {
 
-  return (
-    <dl>
-      <dt>FORMAT</dt>
-      <dd>
-        {materialType}
-        {language && ` in ${language}`}
-      </dd>
-      <dt>AUTHOR</dt>
-      <dd>
-        <Link
-          onClick={e => this.newSearch(e, author)}
-          title={`Make a new search for: ${author}`}
-          to={`/search?${author}`}
-        >
-          {author}
-        </Link>
-      </dd>
-      <dt>CONTRIBUTORS</dt>
-      <dd>
-        {
-          contributor ? contributor.map((valueObj, i) => {
-            return (
-              <span key={i}>
-                <Link
-                  onClick={e => this.newSearch(e, valueObj)}
-                  title={`Make a new search for: ${valueObj}`}
-                  to={`/search?${valueObj}`}
-                >
-                  {valueObj}
-                </Link>,&nbsp;
-              </span>
-            );
-          }) : null
-        }
-      </dd>
-      <dt>DESCRIPTION</dt>
-      <dd>{bib.extent} {bib.dimensions}</dd>
-      <dt>BIBLIOGRAPHY</dt>
-      <dd>{placeOfPublication} {publisher} {yearPublished}</dd>
-      <dt>ALTERNATIVE TITLES</dt>
-      <dd>
-        {
-          bib.titleAlt ? bib.titleAlt.map((valueObj, i) => {
-            return (
-              <li key={i}>
-                {valueObj}
-              </li>
-            );
-          }) : null
-        }
-      </dd>
-    </dl>
-  );
-};
+    const fields = [
+      { label: 'Author', value: 'creatorLiteral' },
+    ];
+
+    return fields.map((field) => {
+      const fieldLabel = field.label;
+      const fieldValue = field.value;
+      const bibValues = bib[fieldValue];
+
+      if (!bibValues || !bibValues.length || !_isArray(bibValues)) {
+        return false;
+      }
+      const firstFieldValue = bibValues[0];
+
+      if (firstFieldValue['@id']) {
+        return {
+          term: fieldLabel,
+          definition: (
+            <ul>
+              {
+                bibValues.map((valueObj, i) => {
+                  const url = `filters[${fieldValue}]=${valueObj['@id']}`;
+                  return (
+                    <li key={i}>
+                      <Link
+                        onClick={e => this.newSearch(e, url)}
+                        title={`Make a new search for ${fieldLabel}: ${valueObj.prefLabel}`}
+                        to={`/search?${url}`}
+                      >
+                        {valueObj.prefLabel}
+                      </Link>
+                    </li>
+                  );
+                })
+              }
+            </ul>
+          ),
+        };
+      }
+
+      return {
+        term: fieldLabel,
+        definition: (
+          <span>
+            {bibValues.map((value, i) => <span key={i}>{value}</span>)}
+          </span>
+        ),
+      };
+    });
+  }
+
+  render() {
+    if (_isEmpty(this.props.bib)) {
+      return null;
+    }
+
+    const bibMainInfo = this.getMainInfo(this.props.bib);
+
+    return (
+      <DefinitionList
+        data={bibMainInfo}
+      />
+    );
+  }
+}
 
 BibMainInfo.propTypes = {
   bib: PropTypes.object,
