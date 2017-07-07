@@ -1,4 +1,14 @@
 import React from 'react';
+import {
+  isEmail,
+  isLength,
+  isNumeric,
+} from 'validator';
+// import { isDate } from '../../utils/formValidationUtils';
+import {
+  mapObject as _mapObject,
+  isEmpty as _isEmpty,
+} from 'underscore';
 
 function isDate(input, minYear = 1902, maxYear = new Date().getFullYear()) {
   // regular expression to match required date format
@@ -122,7 +132,75 @@ function renderServerValidationError(object) {
   return errorMessages;
 }
 
+/**
+ * validate(form, cb)
+ *
+ * @param {object} form
+ * @param {function} cb
+ * return {boolean}
+ */
+function validate(form, cb) {
+  const fieldsToCheck = {
+    name: {
+      validate: (val) => !!val,
+      errorMsg: 'Please enter your name',
+    },
+    email: {
+      validate: (val) => (val.trim().length && isEmail(val)),
+      errorMsg: 'Please enter a correct email',
+    },
+    chapter: {
+      validate: (val) => !!val && isNumeric(val),
+      errorMsg: 'Please enter the item chapter',
+    },
+    // optional
+    author: {
+      validate: () => true,
+      errorMsg: '',
+    },
+    date: {
+      validate: (val) => isNumeric(val) && isLength(val, { min: 1, max: 4 }),
+      errorMsg: 'Please enter the date published',
+    },
+    volume: {
+      validate: (val) => !!val && isNumeric(val),
+      errorMsg: 'Please enter the item volume',
+    },
+    // optional
+    issue: {
+      validate: () => true,
+      errorMsg: '',
+    },
+    'starting-page': {
+      validate: (val) => isNumeric(val),
+      errorMsg: 'Please enter the starting page',
+    },
+    'ending-page': {
+      validate: (val) => isNumeric(val),
+      errorMsg: 'Please enter the end page',
+    },
+  };
+
+  const error = {};
+  _mapObject(form, (val, key) => {
+    const isValid = fieldsToCheck[key].validate(val);
+
+    if (!isValid) {
+      error[key] = fieldsToCheck[key].errorMsg;
+    }
+  });
+
+  cb(error);
+
+  if (!_isEmpty(error)) {
+    return false;
+  }
+
+  return true;
+}
+
 export {
   isDate,
   renderServerValidationError,
+  validate,
 };

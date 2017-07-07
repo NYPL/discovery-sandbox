@@ -1,11 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-  isEmail,
-  isLength,
-  isNumeric,
-} from 'validator';
-// import { isDate } from '../../utils/formValidationUtils';
+import { validate } from '../../utils/formValidationUtils';
 import {
   mapObject as _mapObject,
   extend as _extend,
@@ -17,29 +12,35 @@ class ElectronicDeliveryForm extends React.Component {
   constructor(props) {
     super(props);
 
+    // NOTE
+    // this.props.form and this.props.error are coming from the server only in the
+    // no-js scenario. If they're not available, then we use this 'fallback', but the
+    // empty object structure is needed.
     this.state = {
-      form: {
-        name: '',
-        email: '',
-        chapter: '',
-        author: '',
-        date: '',
-        volume: '',
-        issue: '',
-        'starting-page': '',
-        'ending-page': '',
-      },
-      error: {
-        name: '',
-        email: '',
-        chapter: '',
-        author: '',
-        date: '',
-        volume: '',
-        issue: '',
-        'starting-page': '',
-        'ending-page': '',
-      },
+      form: !_isEmpty(this.props.form) ? this.props.form :
+        {
+          name: '',
+          email: '',
+          chapter: '',
+          author: '',
+          date: '',
+          volume: '',
+          issue: '',
+          'starting-page': '',
+          'ending-page': '',
+        },
+      error: !_isEmpty(this.props.error) ? this.props.error :
+        {
+          name: '',
+          email: '',
+          chapter: '',
+          author: '',
+          date: '',
+          volume: '',
+          issue: '',
+          'starting-page': '',
+          'ending-page': '',
+        },
     };
 
     this.submit = this.submit.bind(this);
@@ -49,74 +50,16 @@ class ElectronicDeliveryForm extends React.Component {
   submit(e) {
     e.preventDefault();
 
-    if (this.validate()) {
+    if (validate(this.state.form, (error) => this.setState({ error }))) {
       this.props.submitRequest(this.state);
     }
   }
 
   handleUpdate(e, input) {
+    // Kind of hard to read. Basically, the `form` property is being updated and all
+    // the values are being retained. If we don't `extend` the object value for `form`,
+    // then only the last value in the form gets updated and the rest are gone.
     this.setState({ form: _extend(this.state.form, { [input]: e.target.value }) });
-  }
-
-  validate() {
-    const validate = {
-      name: {
-        validate: (val) => !!val,
-        errorMsg: 'Please enter your name',
-      },
-      email: {
-        validate: (val) => (val.trim().length && isEmail(val)),
-        errorMsg: 'Please enter a correct email',
-      },
-      chapter: {
-        validate: (val) => !!val && isNumeric(val),
-        errorMsg: 'Please enter the item chapter',
-      },
-      // optional
-      author: {
-        validate: () => true,
-        errorMsg: '',
-      },
-      date: {
-        validate: (val) => isNumeric(val) && isLength(val, { min: 1, max: 4 }),
-        errorMsg: 'Please enter the date published',
-      },
-      volume: {
-        validate: (val) => !!val && isNumeric(val),
-        errorMsg: 'Please enter the item volume',
-      },
-      // optional
-      issue: {
-        validate: () => true,
-        errorMsg: '',
-      },
-      'starting-page': {
-        validate: (val) => isNumeric(val),
-        errorMsg: 'Please enter the starting page',
-      },
-      'ending-page': {
-        validate: (val) => isNumeric(val),
-        errorMsg: 'Please enter the end page',
-      },
-    };
-
-    const error = {};
-    _mapObject(this.state.form, (val, key) => {
-      const isValid = validate[key].validate(val);
-
-      if (!isValid) {
-        error[key] = validate[key].errorMsg;
-      }
-    });
-
-
-    this.setState({ error });
-
-    if (!_isEmpty(error)) {
-      return false;
-    }
-
-    return true;
   }
 
   render() {
@@ -136,6 +79,9 @@ class ElectronicDeliveryForm extends React.Component {
       errorClass[key] = this.state.error[key] ? 'nypl-field-error' : '';
     });
 
+    // A lot of this can be refactored to be in a loop but that's a later and next step.
+    // I was thinking each `nypl-text-field` or `nypl-year-field` div can be
+    // its own component in a loop with the required props and errors passed down.
     return (
       <form
         className="place-hold-form form electronic-delivery-form"
@@ -390,6 +336,8 @@ ElectronicDeliveryForm.propTypes = {
   submitRequest: PropTypes.func,
   bibId: PropTypes.string,
   itemId: PropTypes.string,
+  error: PropTypes.object,
+  form: PropTypes.object,
 };
 
 export default ElectronicDeliveryForm;
