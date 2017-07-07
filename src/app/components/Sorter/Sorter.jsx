@@ -37,6 +37,13 @@ class Sorter extends React.Component {
     });
   }
 
+  /**
+   * updateSortValue(e)
+   * The fuction listens to the event of changing the input of sort options.
+   * It then sets the state with the callback function of making a new search.
+   *
+   * @param {Event} e
+   */
   updateSortValue(e) {
     e.preventDefault();
     const value = e.target.value;
@@ -47,6 +54,12 @@ class Sorter extends React.Component {
     );
   }
 
+  /**
+   * sortResultsBy(sortBy)
+   * The fuction that makes a new search based on the passed sort option.
+   *
+   * @param {String} sortBy
+   */
   sortResultsBy(sortBy) {
     const apiQuery = this.props.createAPIQuery({ sortBy, page: this.props.page });
 
@@ -62,6 +75,12 @@ class Sorter extends React.Component {
     this.setState({ active: false });
   }
 
+  /**
+   * renderResultsSort()
+   * The fuction that makes renders the sort options.
+   *
+   * @return {HTML Element}
+   */
   renderResultsSort() {
     return sortingOpts.map((d, i) => (
       <option value={d.val} key={i}>
