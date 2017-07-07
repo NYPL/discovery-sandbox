@@ -231,7 +231,7 @@ function collapse(results) {
             }
           })
         }
-      });
+      })
       // pick the first physcial one at recap if no local ver
       if (!parent) {
         owiLookup[r.result.idOwi[0]].forEach((i) => {
@@ -256,7 +256,7 @@ function collapse(results) {
               if (ii.location && ii.location[0] && ii.location[0][0]) {
                 parent = i
               }
-            });
+            })
           }
         })
       }
