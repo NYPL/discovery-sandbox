@@ -83,7 +83,7 @@ class Sorter extends React.Component {
    */
   renderResultsSort() {
     return sortingOpts.map((d, i) => (
-      <option value={d.val} key={i}>
+      <option value={d.val} key={i} selected={ d.val === this.state.sortValue }>
         {d.label}
       </option>
     ));
@@ -108,7 +108,7 @@ class Sorter extends React.Component {
                 <select
                   id="sort-by-label"
                   onChange={this.updateSortValue}
-                  value={this.state.sortLabel}
+                  value={this.state.sortValue}
                   name="sort_scope"
                 >
                   {this.renderResultsSort()}
