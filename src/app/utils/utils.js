@@ -204,7 +204,7 @@ function collapse(results) {
       if (!owiLookup[r.result.idOwi[0]]) owiLookup[r.result.idOwi[0]] = []
       owiLookup[r.result.idOwi[0]].push(r)
     }
-  });
+  })
 
   let newItemListElement = [];
   let completedOwis = [];
@@ -229,7 +229,7 @@ function collapse(results) {
                 parent = i
               }
             }
-          });
+          })
         }
       });
       // pick the first physcial one at recap if no local ver
@@ -258,7 +258,7 @@ function collapse(results) {
               }
             });
           }
-        });
+        })
       }
 
       if (parent) {
@@ -274,15 +274,15 @@ function collapse(results) {
         // something went wrong, just add them all in
         owiLookup[r.result.idOwi[0]].forEach((i) => {
           newItemListElement.push(i)
-        });
+        })
       }
     } else {
       newItemListElement.push(r)
     }
-  });
+  })
 
   results.searchResults.itemListElement = newItemListElement
-  return results;
+  return results
 }
 
 /**
