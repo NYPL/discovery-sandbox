@@ -80,7 +80,7 @@ class SearchPagination extends React.Component {
     );
 
     const lastPage = ((totalPages - firstPageInGroup) > perPageInGroup) ?
-      linksArray[(linksArray.length)-1] : null;
+      linksArray[(linksArray.length) - 1] : null;
 
     if (linksArray.length > 8) {
       return this.renderPagerElement(
@@ -141,6 +141,7 @@ SearchPagination.propTypes = {
   total: PropTypes.number,
   page: PropTypes.number,
   perPage: PropTypes.number,
+  perPageInGroup: PropTypes.number,
   ariaControls: PropTypes.string,
   to: PropTypes.object,
   updatePage: PropTypes.func,
@@ -149,6 +150,7 @@ SearchPagination.propTypes = {
 
 SearchPagination.defaultProps = {
   page: 1,
+  perPageInGroup: 8,
   ariaControls: 'results-region',
   to: { pathname: '#' },
   createAPIQuery: () => {},
