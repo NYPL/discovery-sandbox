@@ -68,8 +68,6 @@ class ElectronicDeliveryForm extends React.Component {
       email: '',
       chapter: '',
       author: '',
-      date: '',
-      volume: '',
       issue: '',
       'starting-page': '',
       'ending-page': '',
@@ -192,57 +190,27 @@ class ElectronicDeliveryForm extends React.Component {
           </div>
 
           <div className={`nypl-text-field ${errorClass.date}`}>
-            <label htmlFor="date" id="date-label">Date published
-              <span className="nypl-required-field">&nbsp;(Required)</span>
-            </label>
+            <label htmlFor="date" id="date-label">Date published</label>
             <input
               id="date"
               type="text"
-              required
               aria-labelledby="date-label date-status"
-              aria-required="true"
               name="date"
               value={this.state.form.date}
               onChange={(e) => this.handleUpdate(e, 'date')}
             />
-            {
-              errorClass.date &&
-                (<span
-                  className="nypl-field-status"
-                  id="date-status"
-                  aria-live="assertive"
-                  aria-atomic="true"
-                >
-                  Please indicate the date published
-                </span>)
-            }
           </div>
 
           <div className={`nypl-text-field ${errorClass.volume}`}>
-            <label htmlFor="volume" id="volume-label">Volume
-              <span className="nypl-required-field">&nbsp;(Required)</span>
-            </label>
+            <label htmlFor="volume" id="volume-label">Volume</label>
             <input
               id="volume"
               type="text"
-              required
               aria-labelledby="volume-label volume-status"
-              aria-required="true"
               name="volume"
               value={this.state.form.volume}
               onChange={(e) => this.handleUpdate(e, 'volume')}
             />
-            {
-              errorClass.volume &&
-                (<span
-                  className="nypl-field-status"
-                  id="volume-status"
-                  aria-live="assertive"
-                  aria-atomic="true"
-                >
-                  Please indicate the volume
-                </span>)
-            }
           </div>
 
           <div className="nypl-text-field">
