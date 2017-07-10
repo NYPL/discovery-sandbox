@@ -58,7 +58,7 @@ class SearchPagination extends React.Component {
    * Renders the links to each page.
    *
    * @param {Number} total pages.
-   * @reruen {Array} an array contains all the links to each page.
+   * @return {Array} an array contains all the links to each page.
    */
   renderPageLinks(totalPages) {
     const linksArray = [];
@@ -72,11 +72,27 @@ class SearchPagination extends React.Component {
       }
     );
 
+    const lastPage = linksArray[(linksArray.length)-1];
+
     if (linksArray.length > 8) {
-      return linksArray.slice(0, 8);
+      return this.renderPagerElement(linksArray.slice(0, 8), lastPage);
     }
 
     return linksArray;
+  }
+
+  /*
+   * renderPagerElement(pageArray, lastPage)
+   * Renders the HTML element for the pagination UI.
+   *
+   * @param {Array} pageArray
+   * @param {Object} lastPage
+   * @return {HTML Element}
+   */
+  renderPagerElement(pageArray, lastPage) {
+    return (
+      <div>{pageArray}<span>...</span>{lastPage}</div>
+    );
   }
 
   render() {
