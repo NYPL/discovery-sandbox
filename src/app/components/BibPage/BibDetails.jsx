@@ -15,29 +15,12 @@ import DefinitionList from './DefinitionList';
 class BibDetails extends React.Component {
   getDisplayFields(bib) {
     const fields = [
-      { label: 'Title', value: 'title' },
-      { label: 'Title (alternative)', value: 'titleAlt' },
-      { label: 'Title (display)', value: 'titleDisplay' },
-      { label: 'Material Type', value: 'materialType' },
-      { label: 'Media Type', value: 'mediaType' },
-      { label: 'Language', value: 'language' },
-      { label: 'Created String', value: 'createdString' },
-      { label: 'Creator', value: 'creatorLiteral' },
-      { label: 'Date String', value: 'dateString' },
-      { label: 'Date Created', value: 'createdYear' },
-      { label: 'Date Published', value: 'startYear' },
-      { label: 'Contributors', value: 'contributor' },
-      { label: 'Publisher', value: 'publisher' },
-      { label: 'Place of publication', value: 'placeOfPublication' },
+      { label: 'Format', value: 'materialType' },
+      { label: 'Contents', value: 'note' },
       { label: 'Subjects', value: 'subjectLiteral' },
-      { label: 'Dimensions', value: 'dimensions' },
-      { label: 'Extent', value: 'extent' },
-      { label: 'Owner', value: 'owner' },
-      { label: 'Location', value: 'location' },
-      { label: 'Notes', value: 'note' },
-      { label: 'LCC', value: 'idLcc' },
-      { label: 'Number available', value: 'numAvailable' },
-      { label: 'Number of items', value: 'numItems' },
+      // This needs to exist in the API to work, currently it doesn't.
+      { label: 'ISBN', value: 'idIsbn' },
+      { label: 'LCCL', value: 'idLcc' },
     ];
 
     return fields.map((field) => {
@@ -63,18 +46,18 @@ class BibDetails extends React.Component {
         return {
           term: fieldLabel,
           definition: (
-            <ul>
+            <span>
               {
                 bibValues.map((value, i) => {
                   const linkLabel = fieldValue === 'idOclc' ? 'View in Worldcat' : value;
                   return (
-                    <li key={i}>
+                    <span key={i}>
                       <a href={fieldUrl} title={linkLabel} target="_blank">{linkLabel}</a>
-                    </li>
+                    </span>
                   );
                 })
               }
-            </ul>
+            </span>
           ),
         };
 
@@ -109,30 +92,7 @@ class BibDetails extends React.Component {
         // We added this because not all fields should be linkable. For example, maybe we
         // want `materialType` to be linkable in the UI but not `issuance`.
       } else if (field.linkable) {
-        // When we want all the links to be in sentence form separated by a comma:
-        // e.g. Benjamin Franklin, Thomas Jefferson, George Washington
-        if (fieldValue === 'contributorLiteral') {
-          return {
-            term: fieldLabel,
-            definition: bibValues.map((value, i) => {
-              const comma = bibValues.length > 1 ? ', ' : ' ';
-              const url = `filters[${fieldValue}]=${value}`;
-              return (
-                <span key={i}>
-                  <Link
-                    onClick={e => this.newSearch(e, url)}
-                    title={`Make a new search for ${fieldLabel}: "${value}"`}
-                    to={`/search?${url}`}
-                  >
-                    {value}
-                  </Link>{comma}
-                </span>
-              );
-            }),
-          };
-        }
 
-        // NOTE: because of the note above, this is never reached.
         return {
           term: fieldLabel,
           definition: (
@@ -162,9 +122,9 @@ class BibDetails extends React.Component {
       return {
         term: fieldLabel,
         definition: (
-          <ul>
-            {bibValues.map((value, i) => <li key={i}>{value}</li>)}
-          </ul>
+          <span>
+            {bibValues.map((value, i) => <p key={i}>{value}</p>)}
+          </span>
         ),
       };
     });

@@ -1,36 +1,104 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { isEmpty as _isEmpty } from 'underscore';
+import { Link } from 'react-router';
+import {
+  isArray as _isArray,
+  isEmpty as _isEmpty,
+} from 'underscore';
+import DefinitionList from './DefinitionList';
 
-const BibMainInfo = ({ bib = {} }) => {
-  if (_isEmpty(bib)) return null;
+class BibMainInfo extends React.Component {
 
-  const title = bib.title && bib.title.length ? bib.title[0] : '';
-  const materialType = bib && bib.materialType && bib.materialType[0] ?
-    bib.materialType[0].prefLabel : null;
-  const language = bib && bib.language && bib.language[0] ?
-    bib.language[0].prefLabel : null;
-  const yearPublished = bib && bib.dateStartYear ? bib.dateStartYear : null;
-  const usageType = bib && bib.actionType && bib.actionType[0] ?
-    bib.actionType[0].prefLabel : null;
+  getMainInfo(bib) {
 
-  return (
-    <div className="nypl-item-details">
-      <h1>{title}</h1>
-      <div className="nypl-item-info">
-        <p>
-          <span className="nypl-item-media">{materialType}</span>
-          {language && ` in ${language}`}
-        </p>
-        <p>{bib.extent} {bib.dimensions}</p>
-        <p>
-          {bib.placeOfPublication} {bib.publisher} {yearPublished}
-        </p>
-        <p className="nypl-item-use">{usageType}</p>
-      </div>
-    </div>
-  );
-};
+    const fields = [
+      { label: 'Author', value: 'creatorLiteral' },
+    ];
+
+    return fields.map((field) => {
+      const fieldLabel = field.label;
+      const fieldValue = field.value;
+      const bibValues = bib[fieldValue];
+
+      if (!bibValues || !bibValues.length || !_isArray(bibValues)) {
+        return false;
+      }
+      const firstFieldValue = bibValues[0];
+
+      if (firstFieldValue['@id']) {
+        return {
+          term: fieldLabel,
+          definition: (
+            <ul>
+              {
+                bibValues.map((valueObj, i) => {
+                  const url = `filters[${fieldValue}]=${valueObj['@id']}`;
+                  return (
+                    <li key={i}>
+                      <Link
+                        onClick={e => this.newSearch(e, url)}
+                        title={`Make a new search for ${fieldLabel}: ${valueObj.prefLabel}`}
+                        to={`/search?${url}`}
+                      >
+                        {valueObj.prefLabel}
+                      </Link>
+                    </li>
+                  );
+                })
+              }
+            </ul>
+          ),
+        };
+      } else if (fieldLabel == 'Author'){
+        return {
+          term: fieldLabel,
+          definition: (
+            <span>
+              {
+                bibValues.map((value, i) => {
+                  const url = `filters[${fieldValue}]=${value}`;
+                  return (
+                      <Link
+                        key={i}
+                        onClick={e => this.newSearch(e, url)}
+                        title={`Make a new search for ${fieldLabel}: "${value}"`}
+                        to={`/search?${url}`}
+                      >
+                        {value}
+                      </Link>
+                  );
+                })
+              }
+            </span>
+          ),
+        };
+      }
+
+      return {
+        term: fieldLabel,
+        definition: (
+          <span>
+            {bibValues.map((value, i) => <span key={i}>{value}</span>)}
+          </span>
+        ),
+      };
+    });
+  }
+
+  render() {
+    if (_isEmpty(this.props.bib)) {
+      return null;
+    }
+
+    const bibMainInfo = this.getMainInfo(this.props.bib);
+
+    return (
+      <DefinitionList
+        data={bibMainInfo}
+      />
+    );
+  }
+}
 
 BibMainInfo.propTypes = {
   bib: PropTypes.object,

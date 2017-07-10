@@ -65,7 +65,7 @@ function searchAjax(req, res) {
 }
 
 function searchServerPost(req, res) {
-  const { fieldQuery, q, filters } = getReqParams(req.body);
+  const { fieldQuery, q, filters, sortQuery } = getReqParams(req.body);
   const { dateAfter, dateBefore } = req.body;
   // The filters from req.body may be an array of selected filters, or just an object
   // with one selected filter.
@@ -73,6 +73,7 @@ function searchServerPost(req, res) {
   const selectedFacets = parseServerSelectedFilters(reqFilters, dateAfter, dateBefore);
   let searchKeywords = q;
   let field = fieldQuery;
+  let sortBy = sortQuery;
 
   if (req.query.q) {
     searchKeywords = req.query.q;
@@ -80,11 +81,15 @@ function searchServerPost(req, res) {
   if (req.query.search_scope) {
     field = req.query.search_scope;
   }
+  if (req.query.sort && req.query.sort_direction) {
+    sortBy = `${req.query.sort}_${req.query.sort_direction}`;
+  }
 
   const apiQuery = createAPIQuery({
     searchKeywords: encodeURIComponent(searchKeywords),
     selectedFacets,
     field,
+    sortBy,
   });
 
   res.redirect(`/search?${apiQuery}`);
