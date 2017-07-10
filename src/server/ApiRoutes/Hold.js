@@ -3,17 +3,20 @@ import axios from 'axios';
 import appConfig from '../../../appConfig.js';
 import User from './User.js';
 import Bib from './Bib.js';
+import { validate } from '../../app/utils/formValidationUtils';
+import {
+  omit as _omit,
+} from 'underscore';
 
-function postHoldAPI(req, cb, errorCb) {
+function postHoldAPI(req, pickedUpItemId, cb, errorCb) {
   // retrieve access token and patron info
   const accessToken = req.tokenResponse.accessToken;
   const patronId = req.tokenResponse.decodedPatron.sub;
   const patronHoldsApi = `${appConfig.api.development}/hold-requests`;
 
   // get item id and pickup location
-  // NOTE: The implementation for this needs to be redone, or
-  // we may get it directly from the API.
-  let itemId = req.params.itemId;
+  // NOTE: pickedUpItemId and pickedUpBibId are coming from the EDD form function below:
+  let itemId = req.params.itemId || pickedUpItemId;
   let nyplSource = 'sierra-nypl';
 
   if (itemId.indexOf('-') >= 0) {
@@ -81,6 +84,8 @@ function confirmRequestServer(req, res, next) {
 
 function newHoldRequestServer(req, res, next) {
   const loggedIn = User.requireUser(req, res);
+  const error = req.query.error ? JSON.parse(req.query.error) : {};
+  const form = req.query.form ? JSON.parse(req.query.form) : {};
 
   if (!loggedIn) return false;
 
@@ -91,7 +96,8 @@ function newHoldRequestServer(req, res, next) {
       res.locals.data.Store = {
         bib: data,
         searchKeywords: '',
-        error: {},
+        error,
+        form,
       };
       next();
     },
@@ -100,37 +106,41 @@ function newHoldRequestServer(req, res, next) {
         bib: {},
         searchKeywords: '',
         error,
+        form,
       };
       next();
     }
   );
 }
 
-function createHoldRequestServer(req, res) {
+function createHoldRequestServer(req, res, pickedUpBibId = '', pickedUpItemId = '') {
   // Ensure user is logged in
   const loggedIn = User.requireUser(req);
   if (!loggedIn) return false;
 
-  if (!req.params.bibId || !req.params.itemId) {
+  // NOTE: pickedUpItemId and pickedUpBibId are coming from the EDD form function below:
+  let itemId = req.params.itemId || pickedUpItemId;
+  let bibId = req.params.bibId || pickedUpBibId;
+
+  if (!bibId || !itemId) {
     // Dummy redirect for now
     return res.redirect('/someErrorPage');
   }
 
   return postHoldAPI(
     req,
+    itemId,
     (response) => {
       // console.log('Holds API response:', response);
       console.log('Hold Request Id:', response.data.data.id);
       console.log('Job Id:', response.data.data.jobId);
-      res.redirect(`/hold/confirmation/${req.params.bibId}-` +
-        `${req.params.itemId}?requestId=${response.data.data.id}`);
-    },
-    (error) => {
+      res.redirect(`/hold/confirmation/${bibId}-${itemId}?requestId=${response.data.data.id}`);
+    })
+    .catch(error => {
+      // console.log(error);
       console.log(`Error calling Holds API : ${error.data.message}`);
-      res.redirect(`/hold/request/${req.params.bibId}-` +
-        `${req.params.itemId}?errorMessage=${error.data.message}`);
-    }
-  );
+      res.redirect(`/hold/request/${bibId}-${itemId}?errorMessage=${error.data.message}`);
+    }); /* end axios call */
 }
 
 function createHoldRequestAjax(req, res) {
@@ -145,6 +155,7 @@ function createHoldRequestAjax(req, res) {
 
   return postHoldAPI(
     req,
+    req.params.itemId,
     (response) => {
       res.json({
         id: response.data.data.id,
@@ -162,6 +173,11 @@ function createHoldRequestAjax(req, res) {
 }
 
 function eddServer(req, res) {
+  const {
+    bibId,
+    itemId,
+  } = req.body;
+
   // console.log(req.body)
   // This will give you the form values in the form of:
   // {
@@ -182,8 +198,24 @@ function eddServer(req, res) {
   // endpoint and this function will be hit.
   // Please delete this later.
 
-  // Just a dummy redirect but should work similar to `createHoldRequestServer` above.
-  res.redirect(`/hold/confirmation`);
+  let serverErrors = {};
+
+  // NOTE: We want to skip over bibId and itemId in the validation. They are hidden fields but
+  // only useful for making the actual request and not for the form validation.
+  // If the form is not valid, then redirect to the same page but with errors AND the user data:
+  if (!validate(_omit(req.body, ['bibId', 'itemId']), (error) => { serverErrors = error; })) {
+    // Very ugly but passing all the error and patron data through the url param.
+    // TODO: think of a better way to pass data. For now, this works, but make sure that
+    // the data is being passed and picked up by the `ElectronicDelivery` component.
+    return res.redirect(`/hold/request/${bibId}-${itemId}/edd?` +
+      `error=${JSON.stringify(serverErrors)}` +
+      `&form=${JSON.stringify(req.body)}`);
+  }
+
+  // NOTE: Mocking that this workflow works correctly:
+  // Just a dummy redirect that doesn't actually do anything yet with the correct valid data
+  // that was submitted.
+  return createHoldRequestServer(req, res, bibId, itemId);
 }
 
 export default {

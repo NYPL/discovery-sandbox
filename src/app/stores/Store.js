@@ -16,6 +16,7 @@ class Store {
       updateSortBy: Actions.updateSortBy,
       updateSpinner: Actions.updateSpinner,
       updateField: Actions.updateField,
+      updateForm: Actions.updateForm,
     });
 
     this.state = {
@@ -29,6 +30,7 @@ class Store {
       spinning: false,
       field: 'all',
       error: {},
+      form: {},
     };
   }
 
@@ -76,6 +78,10 @@ class Store {
 
   updateField(data) {
     this.setState({ field: data });
+  }
+
+  updateForm(data) {
+    this.setState({ form: data });
   }
 }
 

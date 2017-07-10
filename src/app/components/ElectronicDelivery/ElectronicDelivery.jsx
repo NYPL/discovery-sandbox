@@ -106,6 +106,7 @@ class ElectronicDelivery extends React.Component {
     } = this.state;
     const bib = (this.props.bib && !_isEmpty(this.props.bib)) ? this.props.bib : null;
     const callNo = bib && bib.shelfMark && bib.shelfMark.length ? bib.shelfMark[0] : null;
+    const { error, form } = this.props;
 
     return (
       <div id="mainContent">
@@ -149,6 +150,8 @@ class ElectronicDelivery extends React.Component {
                 bibId={bibId}
                 itemId={itemId}
                 submitRequest={this.submitRequest}
+                error={error}
+                form={form}
               />
             </div>
           </div>
@@ -167,6 +170,8 @@ ElectronicDelivery.propTypes = {
   bib: PropTypes.object,
   searchKeywords: PropTypes.string,
   params: PropTypes.object,
+  error: PropTypes.object,
+  form: PropTypes.object,
 };
 
 export default ElectronicDelivery;
