@@ -49,6 +49,29 @@ class BibMainInfo extends React.Component {
             </ul>
           ),
         };
+      } else if (fieldLabel == 'Author'){
+        return {
+          term: fieldLabel,
+          definition: (
+            <span>
+              {
+                bibValues.map((value, i) => {
+                  const url = `filters[${fieldValue}]=${value}`;
+                  return (
+                      <Link
+                        key={i}
+                        onClick={e => this.newSearch(e, url)}
+                        title={`Make a new search for ${fieldLabel}: "${value}"`}
+                        to={`/search?${url}`}
+                      >
+                        {value}
+                      </Link>
+                  );
+                })
+              }
+            </span>
+          ),
+        };
       }
 
       return {

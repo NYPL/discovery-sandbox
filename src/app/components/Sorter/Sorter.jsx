@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import ClickOutHandler from 'react-onclickout';
 import { findWhere as _findWhere } from 'underscore';
 import { DownWedgeIcon } from 'dgx-svg-icons';
 
@@ -18,35 +17,50 @@ const sortingOpts = [
 class Sorter extends React.Component {
   constructor(props) {
     super(props);
-    const defaultLabel = this.props.sortBy ?
-      _findWhere(sortingOpts, { val: this.props.sortBy }).label : 'relevance';
+    const defaultLabelObject = _findWhere(sortingOpts, { val: this.props.sortBy });
+    const defaultLabel = defaultLabelObject ? defaultLabelObject.label : undefined;
+
     this.state = {
-      sortValue: this.props.sortBy,
-      sortLabel: defaultLabel,
+      sortValue: this.props.sortBy || 'relevance',
+      sortLabel: defaultLabel || 'relevance',
       active: false,
+      className: '',
+      js: false,
     };
+
+    this.updateSortValue = this.updateSortValue.bind(this);
   }
 
-  getResultsSort() {
-    return sortingOpts.map((d, i) => (
-      <li role="region" key={i}>
-        <a href="#" onClick={e => this.sortResultsBy(e, d.val, d.label)}>{d.label}</a>
-      </li>
-    ));
+  componentDidMount() {
+    this.setState({
+      js: true,
+    });
   }
 
-  getResultsWindow() {
-    if (this.state.active === false) {
-      this.setState({ active: true, className: 'active' });
-    } else {
-      this.setState({ active: false, className: '' });
-    }
-  }
-
-  sortResultsBy(e, sortBy, sortLabel) {
+  /**
+   * updateSortValue(e)
+   * The fuction listens to the event of changing the input of sort options.
+   * It then sets the state with the callback function of making a new search.
+   *
+   * @param {Event} e
+   */
+  updateSortValue(e) {
     e.preventDefault();
-    this.setState({ sortLabel });
+    const value = e.target.value;
 
+    this.setState(
+      { sortValue: value, sortLabel: e.target.value },
+      () => { this.sortResultsBy(value); }
+    );
+  }
+
+  /**
+   * sortResultsBy(sortBy)
+   * The fuction that makes a new search based on the passed sort option.
+   *
+   * @param {String} sortBy
+   */
+  sortResultsBy(sortBy) {
     const apiQuery = this.props.createAPIQuery({ sortBy, page: this.props.page });
 
     Actions.updateSpinner(true);
@@ -61,31 +75,54 @@ class Sorter extends React.Component {
     this.setState({ active: false });
   }
 
-  handleOnClickOut() {
-    if (this.state.active) {
-      this.setState({ active: false });
-    }
+  /**
+   * renderResultsSort()
+   * The fuction that makes renders the sort options.
+   *
+   * @return {HTML Element}
+   */
+  renderResultsSort() {
+    return sortingOpts.map((d, i) => (
+      <option value={d.val} key={i} selected={ d.val === this.state.sortValue }>
+        {d.label}
+      </option>
+    ));
   }
 
   render() {
+    const searchKeywords = this.props.searchKeywords;
+    const field = this.props.field;
+
     return (
       <div className="nypl-results-sorting-controls">
         <div className="nypl-results-sorter">
-          <ClickOutHandler onClickOut={() => this.handleOnClickOut()}>
-            <button
-              aria-expanded={this.state.active}
-              className={this.state.active ? 'active' : ''}
-              onClick={e => this.getResultsWindow(e)}
-            >
-              <span>Sort by <strong>{this.state.sortLabel}</strong></span>
-              <DownWedgeIcon className="nypl-icon" viewBox="0 0 68 24" />
-            </button>
-            <ul className={this.state.active ? '' : 'hidden'}>
-              {
-                this.getResultsSort()
-              }
-            </ul>
-          </ClickOutHandler>
+          <form
+            action={
+              `/search${searchKeywords ? `?q=${searchKeywords}` : ''}${field ? `&search_scope=${field}` : ''}`
+            }
+            method="POST"
+          >
+            <span className="nypl-omni-fields">
+              <label htmlFor="search-by-field">Sort by</label>
+              <strong>
+                <select
+                  id="sort-by-label"
+                  onChange={this.updateSortValue}
+                  value={this.state.sortValue}
+                  name="sort_scope"
+                >
+                  {this.renderResultsSort()}
+                </select>
+              </strong>
+            </span>
+            {
+              !this.state.js &&
+                <input
+                  type="submit"
+                >
+                </input>
+            }
+          </form>
         </div>
       </div>
     );
@@ -94,8 +131,15 @@ class Sorter extends React.Component {
 
 Sorter.propTypes = {
   sortBy: PropTypes.string,
+  searchKeywords: PropTypes.string,
+  field: PropTypes.string,
   page: PropTypes.string,
   createAPIQuery: PropTypes.func,
+};
+
+Sorter.defaultProps = {
+  searchKeywords: '',
+  field: '',
 };
 
 Sorter.contextTypes = {

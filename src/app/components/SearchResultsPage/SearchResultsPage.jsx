@@ -19,7 +19,6 @@ const SearchResultsPage = (props, context) => {
   const {
     searchResults,
     searchKeywords,
-    selectedFacets,
     page,
     location,
     sortBy,
@@ -87,20 +86,12 @@ const SearchResultsPage = (props, context) => {
               aria-relevant="additions removals"
               aria-describedby="results-description"
             >
-              <Hits
-                hits={totalHits}
-                spinning={spinning}
-                searchKeywords={searchKeywords}
-                selectedFacets={selectedFacets}
-                createAPIQuery={createAPIQuery}
-                error={error}
-              />
-
               {
                 !!(totalHits && totalHits !== 0) && (
                   <Sorter
                     sortBy={sortBy}
                     page={page}
+                    searchKeywords={searchKeywords}
                     createAPIQuery={createAPIQuery}
                   />
                 )
@@ -132,7 +123,6 @@ const SearchResultsPage = (props, context) => {
 SearchResultsPage.propTypes = {
   searchResults: PropTypes.object,
   searchKeywords: PropTypes.string,
-  selectedFacets: PropTypes.object,
   page: PropTypes.string,
   location: PropTypes.object,
   sortBy: PropTypes.string,
