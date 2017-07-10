@@ -107,6 +107,7 @@ const SearchResultsPage = (props, context) => {
                   (<SearchPagination
                     total={totalHits}
                     perPage={50}
+                    perPageInGroup={8}
                     page={parseInt(page, 10)}
                     createAPIQuery={createAPIQuery}
                     updatePage={updatePage}

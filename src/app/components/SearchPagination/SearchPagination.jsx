@@ -62,6 +62,9 @@ class SearchPagination extends React.Component {
    */
   renderPageLinks(totalPages) {
     const linksArray = [];
+    const perPageInGroup = this.props.perPageInGroup;
+    const firstPageInGroup = (Math.ceil(this.props.page / perPageInGroup) - 1) * perPageInGroup;
+    const lastPageInGroup = firstPageInGroup + perPageInGroup;
     let pageNum = 0;
 
     _times(
@@ -72,10 +75,14 @@ class SearchPagination extends React.Component {
       }
     );
 
-    const lastPage = linksArray[(linksArray.length)-1];
+    const lastPage = ((totalPages - firstPageInGroup) > perPageInGroup) ?
+      linksArray[(linksArray.length)-1] : null;
 
     if (linksArray.length > 8) {
-      return this.renderPagerElement(linksArray.slice(0, 8), lastPage);
+      return this.renderPagerElement(
+        linksArray.slice(firstPageInGroup, lastPageInGroup),
+        lastPage
+      );
     }
 
     return linksArray;
@@ -91,7 +98,9 @@ class SearchPagination extends React.Component {
    */
   renderPagerElement(pageArray, lastPage) {
     return (
-      <div>{pageArray}<span>...</span>{lastPage}</div>
+      <div>
+        {pageArray}{(lastPage) && <span>...</span>}{lastPage}
+      </div>
     );
   }
 
