@@ -101,6 +101,7 @@ const SearchResultsPage = (props, context) => {
                   <Sorter
                     sortBy={sortBy}
                     page={page}
+                    searchKeywords={searchKeywords}
                     createAPIQuery={createAPIQuery}
                   />
                 )
