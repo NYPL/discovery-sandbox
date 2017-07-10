@@ -33,9 +33,12 @@ class SearchPagination extends React.Component {
     const localUrl = `${this.props.to.pathname}${pageNum}`;
     const url = apiUrl ? { pathname: `/search?${apiUrl}` } : { pathname: localUrl };
     let label;
+    const pageClass = (type === 'Number') ? 'page-number' : '';
+    let currentPageClass = '';
 
     if (type === 'Number') {
       label = pageNum;
+      currentPageClass = (pageNum === this.props.page) ? 'current-page' : '';
     } else {
       label = <div>{svg} <span>{type} Page</span></div>;
     }
@@ -47,6 +50,7 @@ class SearchPagination extends React.Component {
         aria-controls={this.props.ariaControls}
         onClick={(e) => this.onClick(e, pageNum)}
         key={(type === 'Number') ? pageNum : type}
+        className={`${pageClass} ${currentPageClass}`}
       >
         {label}
       </Link>
@@ -125,9 +129,8 @@ class SearchPagination extends React.Component {
           aria-label={`Displaying page ${page} out of ${totalPages} total pages.`}
           tabIndex="0"
         >
-          Page {page} of {totalPages}
+          {this.renderPageLinks(totalPages)}
         </span>
-        {this.renderPageLinks(totalPages)}
         {nextPage}
       </div>
     );
