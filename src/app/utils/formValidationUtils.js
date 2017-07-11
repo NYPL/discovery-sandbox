@@ -4,7 +4,6 @@ import {
   isLength,
   isNumeric,
 } from 'validator';
-// import { isDate } from '../../utils/formValidationUtils';
 import {
   mapObject as _mapObject,
   isEmpty as _isEmpty,
@@ -168,6 +167,10 @@ function validate(form, cb) {
     },
     // optional
     issue: {
+      validate: () => true,
+      errorMsg: '',
+    },
+    notes: {
       validate: () => true,
       errorMsg: '',
     },
