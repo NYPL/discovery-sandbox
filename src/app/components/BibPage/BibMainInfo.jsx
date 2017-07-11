@@ -13,6 +13,7 @@ class BibMainInfo extends React.Component {
 
     const fields = [
       { label: 'Author', value: 'creatorLiteral' },
+      { label: 'Additional Authors', value: 'contributorLiteral' },
     ];
 
     return fields.map((field) => {
@@ -23,62 +24,26 @@ class BibMainInfo extends React.Component {
       if (!bibValues || !bibValues.length || !_isArray(bibValues)) {
         return false;
       }
-      const firstFieldValue = bibValues[0];
-
-      if (firstFieldValue['@id']) {
-        return {
-          term: fieldLabel,
-          definition: (
-            <ul>
-              {
-                bibValues.map((valueObj, i) => {
-                  const url = `filters[${fieldValue}]=${valueObj['@id']}`;
-                  return (
-                    <li key={i}>
-                      <Link
-                        onClick={e => this.newSearch(e, url)}
-                        title={`Make a new search for ${fieldLabel}: ${valueObj.prefLabel}`}
-                        to={`/search?${url}`}
-                      >
-                        {valueObj.prefLabel}
-                      </Link>
-                    </li>
-                  );
-                })
-              }
-            </ul>
-          ),
-        };
-      } else if (fieldLabel == 'Author'){
-        return {
-          term: fieldLabel,
-          definition: (
-            <span>
-              {
-                bibValues.map((value, i) => {
-                  const url = `filters[${fieldValue}]=${value}`;
-                  return (
-                      <Link
-                        key={i}
-                        onClick={e => this.newSearch(e, url)}
-                        title={`Make a new search for ${fieldLabel}: "${value}"`}
-                        to={`/search?${url}`}
-                      >
-                        {value}
-                      </Link>
-                  );
-                })
-              }
-            </span>
-          ),
-        };
-      }
 
       return {
         term: fieldLabel,
         definition: (
           <span>
-            {bibValues.map((value, i) => <span key={i}>{value}</span>)}
+            {
+              bibValues.map((value, i) => {
+                const url = `filters[${fieldValue}]=${value}`;
+                return (
+                    <Link
+                      key={i}
+                      onClick={e => this.newSearch(e, url)}
+                      title={`Make a new search for ${fieldLabel}: "${value}"`}
+                      to={`/search?${url}`}
+                    >
+                      {value}
+                    </Link>
+                );
+              })
+            }
           </span>
         ),
       };
