@@ -4,6 +4,8 @@ import { Link } from 'react-router';
 import {
   isArray as _isArray,
   isEmpty as _isEmpty,
+  findWhere as _findWhere,
+  findIndex as _findIndex,
 } from 'underscore';
 import DefinitionList from './DefinitionList';
 import { ajaxCall } from '../../utils/utils';
@@ -114,6 +116,10 @@ class BibMainInfo extends React.Component {
 
 BibMainInfo.propTypes = {
   bib: PropTypes.object,
+};
+
+BibMainInfo.contextTypes = {
+  router: PropTypes.object,
 };
 
 export default BibMainInfo;
