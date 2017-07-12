@@ -21,25 +21,11 @@ class ElectronicDeliveryForm extends React.Component {
         {
           name: '',
           email: '',
-          chapter: '',
-          author: '',
-          date: '',
-          volume: '',
-          issue: '',
-          'starting-page': '',
-          'ending-page': '',
         },
       error: !_isEmpty(this.props.error) ? this.props.error :
         {
           name: '',
           email: '',
-          chapter: '',
-          author: '',
-          date: '',
-          volume: '',
-          issue: '',
-          'starting-page': '',
-          'ending-page': '',
         },
     };
 
@@ -66,11 +52,6 @@ class ElectronicDeliveryForm extends React.Component {
     const errorClass = {
       name: '',
       email: '',
-      chapter: '',
-      author: '',
-      issue: '',
-      'starting-page': '',
-      'ending-page': '',
     };
 
     _mapObject(this.state.form, (val, key) => {
@@ -151,30 +132,15 @@ class ElectronicDeliveryForm extends React.Component {
           <h3>Chapter or Article Information</h3>
 
           <div className={`nypl-text-field ${errorClass.chapter}`}>
-            <label htmlFor="chapter" id="chapter-label">Chapter number or article title
-              <span className="nypl-required-field">&nbsp;(Required)</span>
-            </label>
+            <label htmlFor="chapter" id="chapter-label">Chapter number or article title</label>
             <input
               id="chapter"
               type="text"
-              required
               aria-labelledby="chapter-label chapter-status"
-              aria-required="true"
               name="chapter"
               value={this.state.form.chapter}
               onChange={(e) => this.handleUpdate(e, 'chapter')}
             />
-            {
-              errorClass.chapter &&
-                (<span
-                  className="nypl-field-status"
-                  id="chapter-status"
-                  aria-live="assertive"
-                  aria-atomic="true"
-                >
-                  Please indicate the chapter number or article title
-                </span>)
-            }
           </div>
 
           <div className="nypl-text-field">
@@ -224,6 +190,18 @@ class ElectronicDeliveryForm extends React.Component {
               onChange={(e) => this.handleUpdate(e, 'issue')}
             />
           </div>
+
+          <div className="nypl-text-field">
+            <label htmlFor="notes" id="notes-label">Notes</label>
+            <input
+              id="notes"
+              type="text"
+              aria-labelledby="notes-label notes-status"
+              name="notes"
+              value={this.state.form.notes}
+              onChange={(e) => this.handleUpdate(e, 'notes')}
+            />
+          </div>
         </fieldset>
 
         <fieldset className="nypl-fieldset v2 number-range">
@@ -232,60 +210,32 @@ class ElectronicDeliveryForm extends React.Component {
 
           <div className={`nypl-year-field ${errorClass['starting-page']}`}>
             <label htmlFor="starting-page" id="starting-page-label">Start Page
-              <span className="nypl-required-field">&nbsp;(Required)</span>
             </label>
             <input
               id="starting-page"
               type="number"
               className="form-text"
-              required
               aria-labelledby="starting-page-label"
-              aria-required="true"
               name="starting-page"
               value={this.state.form['starting-page']}
               onChange={(e) => this.handleUpdate(e, 'starting-page')}
             />
-            {
-              errorClass['starting-page'] &&
-                (<span
-                  className="nypl-field-status"
-                  id="volume-status"
-                  aria-live="assertive"
-                  aria-atomic="true"
-                >
-                  Values must be numeric only
-                </span>)
-            }
           </div>
 
           <span>&mdash;</span>
 
           <div className={`nypl-year-field ${errorClass['ending-page']}`}>
             <label htmlFor="ending-page" id="ending-page-label">Ending Page
-              <span className="nypl-required-field">&nbsp;(Required)</span>
             </label>
             <input
               id="ending-page"
               type="number"
               className="form-text"
-              required
               aria-labelledby="ending-page-label"
-              aria-required="true"
               name="ending-page"
               value={this.state.form['ending-page']}
               onChange={(e) => this.handleUpdate(e, 'ending-page')}
             />
-            {
-              errorClass['ending-page'] &&
-                (<span
-                  className="nypl-field-status"
-                  id="volume-status"
-                  aria-live="assertive"
-                  aria-atomic="true"
-                >
-                  Values must be numeric only
-                </span>)
-            }
           </div>
         </fieldset>
 
