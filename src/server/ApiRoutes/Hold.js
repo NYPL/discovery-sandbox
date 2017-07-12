@@ -65,7 +65,6 @@ function confirmRequestServer(req, res, next) {
   return Bib.fetchBib(
     bibId,
     (data) => {
-      console.log('data from server', data.items[0].deliveryLocation);
       res.locals.data.Store = {
         bib: data,
         searchKeywords: '',
