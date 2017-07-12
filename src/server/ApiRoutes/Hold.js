@@ -155,22 +155,15 @@ function createHoldRequestAjax(req, res) {
   const loggedIn = User.requireUser(req);
   if (!loggedIn) return false;
 
-  if (!req.params.bibId || !req.params.itemId) {
-    // Dummy redirect for now
-    return res.redirect('/someErrorPage');
-  }
-
-  console.log('reqparamssssss', req.params);
-
   return postHoldAPI(
     req,
-    req.params.itemId,
-    req.params.pickupLocation,
+    req.query.itemId,
+    req.query.pickupLocation,
     (response) => {
-      console.log(response);
       res.json({
         id: response.data.data.id,
         jobId: response.data.data.jobId,
+        pickupLocation: response.data.data.pickupLocation,
       });
     },
     (error) => {
@@ -236,21 +229,19 @@ function getDeliveryLocations(req, res) {
   if (!loggedIn) return false;
 
   axios
-    .get(
-      `${apiBase}/request/deliverylocationsbybarcode?barcodes[]=${req.query.barcode}`,
-      {
-        'headers': {
+    .get(`${apiBase}/request/deliverylocationsbybarcode?barcodes[]=${req.query.barcode}`,
+      { headers:
+        {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${accessToken}`,
         },
       }
     )
     .then(response => {
-        res.json({
-          data: response.data,
-        });
-      }
-    )
+      res.json({
+        data: response.data,
+      });
+    })
     .catch(error => {
       console.error(`deliverylocationsbybarcode API error: ${JSON.stringify(error, null, 2)}`);
 

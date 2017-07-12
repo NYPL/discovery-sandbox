@@ -41,31 +41,22 @@ class HoldRequest extends React.Component {
     this.setState({ delivery: e.target.value });
   }
 
-  /**
-   * submitRequest()
-   * Client-side submit call.
-   */
-  submitRequest(e, bibId, itemId, pickupLocation) {
-    e.preventDefault();
-
-    let path = `/hold/confirmation/${bibId}-${itemId}/${pickupLocation}`;
-
-    if (this.state.delivery === 'edd') {
-      path = `/hold/request/${bibId}-${itemId}/edd`;
+  getDeliveryLocations(item) {
+    if (item && item.barcode) {
+      axios
+        .get(`/api/delivery-locations?barcode=${item.barcode}`)
+        .then(response => {
+          console.log(response.data.data.itemListElement[0]);
+          this.setState({
+            deliveryLocations: response.data.data.itemListElement[0].deliveryLocation,
+          });
+        })
+        .catch(error => {
+          console.log(error);
+        });
     }
-    axios
-      .get(`/api/newHold?itemId=${itemId}`)
-      .then(response => {
-        if (response.data.error && response.data.error.status !== 200) {
-          this.context.router.push(`${path}?errorMessage=${response.data.error.statusText}`);
-        } else {
-          this.context.router.push(`${path}?requestId=${response.data.id}`);
-        }
-      })
-      .catch(error => {
-        console.log(error);
-        this.context.router.push(`${path}?errorMessage=${error}`);
-      });
+
+    return [];
   }
 
   /**
@@ -86,19 +77,33 @@ class HoldRequest extends React.Component {
     return false;
   }
 
-  getDeliveryLocations(item) {
-    if (item && item.barcode) {
-      axios
-        .get(`/api/delivery-locations?barcode=${item.barcode}`)
-        .then(response => {
-          console.log(response.data.data.itemListElement[0]);
-          this.setState({ deliveryLocations: response.data.data.itemListElement[0].deliveryLocation });
-        })
-        .catch(error => {
-          console.log(error);
-        });
+  /**
+   * submitRequest()
+   * Client-side submit call.
+   */
+  submitRequest(e, bibId, itemId) {
+    e.preventDefault();
+
+    let path = `/hold/confirmation/${bibId}-${itemId}`;
+
+    if (this.state.delivery === 'edd') {
+      path = `/hold/request/${bibId}-${itemId}/edd`;
     }
-     return [];
+
+    axios
+      .get(`/api/newHold?itemId=${itemId}&pickupLocation=${this.state.delivery}`)
+      .then(response => {
+        console.log(response.data);
+        if (response.data.error && response.data.error.status !== 200) {
+          this.context.router.push(`${path}?errorMessage=${response.data.error.statusText}`);
+        } else {
+          this.context.router.push(`${path}?pickupLocation=${response.data.pickupLocation}&requestId=${response.data.id}`);
+        }
+      })
+      .catch(error => {
+        console.log(error);
+        this.context.router.push(`${path}?errorMessage=${error}`);
+      });
   }
 
   /**
