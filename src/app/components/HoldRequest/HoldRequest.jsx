@@ -19,6 +19,7 @@ class HoldRequest extends React.Component {
 
     this.state = _extend({
       delivery: false,
+      deliveryLocations: [],
     }, { patron: PatronStore.getState() });
 
     // change all the components :(
@@ -29,6 +30,7 @@ class HoldRequest extends React.Component {
 
   componentDidMount() {
     this.requireUser();
+    this.getDeliveryLocations(LibraryItem.getItem(this.props.bib, this.props.params.itemId));
   }
 
   onChange() {
@@ -84,6 +86,18 @@ class HoldRequest extends React.Component {
     return false;
   }
 
+  getDeliveryLocations(item) {
+    axios
+      .get(`/api/delivery-locations?barcode=${item.barcode}`)
+      .then(response => {
+        this.setState({ deliveryLocations: response.data.data.itemListElement[0].deliveryLocation });
+      })
+      .catch(error => {
+        console.log(error);
+        // this.context.router.push(`${path}?errorMessage=${error}`);
+      });
+  }
+
   /**
    * renderLoggedInInstruction(patronName)
    * Renders the HTML elements and contents based on the patron data
@@ -131,14 +145,13 @@ class HoldRequest extends React.Component {
           type="radio"
           name="delivery-location"
           id={`location${i}`}
-          value={location['full-name']}
+          value={location.prefLabel}
           onChange={this.onRadioSelect}
         />
         <label htmlFor={`location${i}`}>
           <span className="col location">
-            <a href={`${location.uri}`}>{location['full-name']}</a>
-            <br />{location.address.address1}<br />
-            {location.prefLabel}
+            <a href={`${location.uri}`}>{location.prefLabel}</a>
+            <br />{location.address && location.address.address1}<br />
             {location.offsite &&
               <span>
                 <br /><small>(requested from offsite storage)</small><br />
@@ -170,8 +183,9 @@ class HoldRequest extends React.Component {
           <small>Call number:</small><br />{selectedItem.callNumber}
         </div>
       ) : null;
-    const deliveryLocations = selectedItem && selectedItem.deliveryLocations ?
-      selectedItem.deliveryLocations : [];
+    // const deliveryLocations = selectedItem && selectedItem.deliveryLocations ?
+    //   selectedItem.deliveryLocations : [];
+    const deliveryLocations = this.state.deliveryLocations;
     let content = null;
 
     if (bib) {
