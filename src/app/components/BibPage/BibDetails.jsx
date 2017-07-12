@@ -15,8 +15,9 @@ import DefinitionList from './DefinitionList';
 class BibDetails extends React.Component {
   getDisplayFields(bib) {
     const fields = [
+      { label: 'Format', value: 'materialType' },
       { label: 'Contents', value: 'note' },
-      { label: 'Location', value: 'location' },
+      { label: 'Subjects', value: 'subjectLiteral' },
       // This needs to exist in the API to work, currently it doesn't.
       { label: 'ISBN', value: 'idIsbn' },
       { label: 'LCCL', value: 'idLcc' },
@@ -45,18 +46,18 @@ class BibDetails extends React.Component {
         return {
           term: fieldLabel,
           definition: (
-            <ul>
+            <span>
               {
                 bibValues.map((value, i) => {
                   const linkLabel = fieldValue === 'idOclc' ? 'View in Worldcat' : value;
                   return (
-                    <li key={i}>
+                    <span key={i}>
                       <a href={fieldUrl} title={linkLabel} target="_blank">{linkLabel}</a>
-                    </li>
+                    </span>
                   );
                 })
               }
-            </ul>
+            </span>
           ),
         };
 
@@ -121,9 +122,9 @@ class BibDetails extends React.Component {
       return {
         term: fieldLabel,
         definition: (
-          <ul>
-            {bibValues.map((value, i) => <li key={i}>{value}</li>)}
-          </ul>
+          <span>
+            {bibValues.map((value, i) => <p key={i}>{value}</p>)}
+          </span>
         ),
       };
     });

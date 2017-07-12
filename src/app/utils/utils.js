@@ -128,8 +128,10 @@ const getFacetFilterParam = (facets) => {
       if (val.length && _isArray(val)) {
         _forEach(val, (facet) => {
           if (facet.value && facet.value !== '') {
-            // At this time, materialType filter requires _packed for filtering (but not as data). Other filters do not.
-            strSearch += (key === 'materialType' ? `&filters[${key}_packed]=${facet.id}` : `&filters[${key}]=${facet.id}`);
+            // At this time, materialType filter requires _packed for filtering (but not as data).
+            // Other filters do not.
+            strSearch += (key === 'materialType' ? `&filters[${key}_packed]=${facet.id}` :
+              `&filters[${key}]=${facet.id}`);
           } else if (typeof facet === 'string') {
             strSearch += `&filters[${key}]=${facet}`;
           }
@@ -206,13 +208,16 @@ function collapse(results) {
 
   let newItemListElement = [];
   let completedOwis = [];
+
   results.searchResults.itemListElement.forEach((r) => {
-    if (r.result && r.result.idOwi && r.result.idOwi[0] && owiLookup[r.result.idOwi[0]].length > 1) {
+    if (r.result && r.result.idOwi && r.result.idOwi[0] &&
+      owiLookup[r.result.idOwi[0]].length > 1) {
       // if we did a result w/ one of the OWIs we did it for all of them
       if (completedOwis.indexOf(r.result.idOwi[0]) > -1) return
       completedOwis.push(r.result.idOwi[0])
 
-      // there are more than one/none owi matching in this results set, pick the best one and collapse the rest
+      // there are more than one/none owi matching in this results set,
+      // pick the best one and collapse the rest
       // pick one that has a physcial local copy
       let parent = null;
       owiLookup[r.result.idOwi[0]].forEach((i) => {
@@ -335,10 +340,11 @@ function getReqParams(query = {}) {
   const q = query.q || '';
   const sort = query.sort || '';
   const order = query.sort_direction || '';
+  const sortQuery = query.sort_scope || '';
   const fieldQuery = query.search_scope || '';
   const filters = query.filters || {};
 
-  return { page, q, sort, order, fieldQuery, filters };
+  return { page, q, sort, order, sortQuery, fieldQuery, filters };
 }
 
 /*
