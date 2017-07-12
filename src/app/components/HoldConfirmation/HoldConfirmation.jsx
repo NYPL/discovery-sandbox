@@ -6,7 +6,10 @@ import { Link } from 'react-router';
 import {
   isArray as _isArray,
   isEmpty as _isEmpty,
+  findWhere as _findWhere,
 } from 'underscore';
+
+import axios from 'axios';
 
 import Breadcrumbs from '../Breadcrumbs/Breadcrumbs.jsx';
 import LibraryItem from '../../utils/item.js';
@@ -17,11 +20,31 @@ class HoldConfirmation extends React.Component {
 
     this.state = {
       patron: PatronStore.getState(),
+      deliveryLocations: [],
     };
   }
 
   componentDidMount() {
     this.requireUser();
+    this.getDeliveryLocations(LibraryItem.getItem(this.props.bib, this.props.params.itemId));
+  }
+
+  getDeliveryLocations(item) {
+    if (item && item.barcode) {
+      axios
+        .get(`/api/delivery-locations?barcode=${item.barcode}`)
+        .then(response => {
+          console.log(response.data.data.itemListElement[0]);
+          this.setState({
+            deliveryLocations: response.data.data.itemListElement[0].deliveryLocation,
+          });
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    }
+
+    return [];
   }
 
   /**
@@ -57,7 +80,7 @@ class HoldConfirmation extends React.Component {
     const address = (loc.address && loc.address.address1) ? loc.address.address1 : null;
     const prefLabel = (loc.prefLabel) ? loc.prefLabel : null;
 
-    return(
+    return (
       <p>
         {uri}<br />
         {address}<br />
@@ -75,8 +98,11 @@ class HoldConfirmation extends React.Component {
       bib['@id'].substring(4) : '';
     const itemId = (this.props.params && this.props.params.itemId) ? this.props.params.itemId : '';
     const selectedItem = LibraryItem.getItem(bib, itemId);
-    const deliveryLocation = (selectedItem && selectedItem.deliveryLocations.length) ?
-      selectedItem.deliveryLocations[0] : {};
+    const deliveryLocations = this.state.deliveryLocations;
+    const deliveryLocation = (deliveryLocations.length) ?
+      _findWhere(
+        deliveryLocations, { '@id': `loc:${this.props.location.query.pickupLocation}` }
+      ) : '';
     const shelfMarkInfo =
       (selectedItem && _isArray(selectedItem.shelfMark) && selectedItem.shelfMark.length > 0) ?
         <li>Call number: {selectedItem.shelfMark[0]}</li> : null;

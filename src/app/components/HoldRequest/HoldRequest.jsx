@@ -19,6 +19,7 @@ class HoldRequest extends React.Component {
 
     this.state = _extend({
       delivery: false,
+      deliveryLocations: [],
     }, { patron: PatronStore.getState() });
 
     // change all the components :(
@@ -29,6 +30,7 @@ class HoldRequest extends React.Component {
 
   componentDidMount() {
     this.requireUser();
+    this.getDeliveryLocations(LibraryItem.getItem(this.props.bib, this.props.params.itemId));
   }
 
   onChange() {
@@ -39,31 +41,22 @@ class HoldRequest extends React.Component {
     this.setState({ delivery: e.target.value });
   }
 
-  /**
-   * submitRequest()
-   * Client-side submit call.
-   */
-  submitRequest(e, bibId, itemId) {
-    e.preventDefault();
-
-    let path = `/hold/confirmation/${bibId}-${itemId}`;
-
-    if (this.state.delivery === 'edd') {
-      path = `/hold/request/${bibId}-${itemId}/edd`;
+  getDeliveryLocations(item) {
+    if (item && item.barcode) {
+      axios
+        .get(`/api/delivery-locations?barcode=${item.barcode}`)
+        .then(response => {
+          console.log(response.data.data.itemListElement[0]);
+          this.setState({
+            deliveryLocations: response.data.data.itemListElement[0].deliveryLocation,
+          });
+        })
+        .catch(error => {
+          console.log(error);
+        });
     }
-    axios
-      .get(`/api/newHold?itemId=${itemId}`)
-      .then(response => {
-        if (response.data.error && response.data.error.status !== 200) {
-          this.context.router.push(`${path}?errorMessage=${response.data.error.statusText}`);
-        } else {
-          this.context.router.push(`${path}?requestId=${response.data.id}`);
-        }
-      })
-      .catch(error => {
-        console.log(error);
-        this.context.router.push(`${path}?errorMessage=${error}`);
-      });
+
+    return [];
   }
 
   /**
@@ -82,6 +75,35 @@ class HoldRequest extends React.Component {
     window.location.replace(`${config.loginUrl}?redirect_uri=${fullUrl}`);
 
     return false;
+  }
+
+  /**
+   * submitRequest()
+   * Client-side submit call.
+   */
+  submitRequest(e, bibId, itemId) {
+    e.preventDefault();
+
+    let path = `/hold/confirmation/${bibId}-${itemId}`;
+
+    if (this.state.delivery === 'edd') {
+      path = `/hold/request/${bibId}-${itemId}/edd`;
+    }
+
+    axios
+      .get(`/api/newHold?itemId=${itemId}&pickupLocation=${this.state.delivery}`)
+      .then(response => {
+        console.log(response.data);
+        if (response.data.error && response.data.error.status !== 200) {
+          this.context.router.push(`${path}?errorMessage=${response.data.error.statusText}`);
+        } else {
+          this.context.router.push(`${path}?pickupLocation=${response.data.pickupLocation}&requestId=${response.data.id}`);
+        }
+      })
+      .catch(error => {
+        console.log(error);
+        this.context.router.push(`${path}?errorMessage=${error}`);
+      });
   }
 
   /**
@@ -131,14 +153,13 @@ class HoldRequest extends React.Component {
           type="radio"
           name="delivery-location"
           id={`location${i}`}
-          value={location['full-name']}
+          value={location['@id'].replace('loc:', '')}
           onChange={this.onRadioSelect}
         />
         <label htmlFor={`location${i}`}>
           <span className="col location">
-            <a href={`${location.uri}`}>{location['full-name']}</a>
-            <br />{location.address.address1}<br />
-            {location.prefLabel}
+            <a href={`${location.uri}`}>{location.prefLabel}</a>
+            <br />{location.address && location.address.address1}<br />
             {location.offsite &&
               <span>
                 <br /><small>(requested from offsite storage)</small><br />
@@ -170,8 +191,7 @@ class HoldRequest extends React.Component {
           <small>Call number:</small><br />{selectedItem.callNumber}
         </div>
       ) : null;
-    const deliveryLocations = selectedItem && selectedItem.deliveryLocations ?
-      selectedItem.deliveryLocations : [];
+    const deliveryLocations = this.state.deliveryLocations;
     let content = null;
 
     if (bib) {

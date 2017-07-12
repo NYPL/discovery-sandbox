@@ -42,6 +42,32 @@ function LibraryItem() {
   ];
 
   /**
+   * getIdentifiers(identifiers)
+   * Gets into the array of identifiers to target the item with "urn:barcode:" prefix and return it.
+   * In the future we might have more different identifiers.
+   *
+   * @param {array} identifiers.
+   * @return {object}
+   */
+  this.getIdentifiers = (identifiers) => {
+    const identifierObj = {};
+
+    identifiers.map(
+      (b) => {
+        if (typeof b === 'string') {
+          if (b.indexOf('urn:barcode:') !== -1) {
+          identifierObj.barcode = b.replace('urn:barcode:', '');
+          }
+          return;
+        }
+        return;
+      }
+    );
+
+    return identifierObj;
+  };
+
+  /**
    * mapItem(item, title)
    * Massage data and update an item's properties.
    * @param {object} item The item to update the data for.
@@ -78,8 +104,8 @@ function LibraryItem() {
     // nypl-owned ReCAP
     const nyplRecap = !!(holdingLocation && !_isEmpty(holdingLocation) &&
       holdingLocation['@id'].substring(4, 6) === 'rc');
-    let deliveryLocations = item.deliveryLocation && item.deliveryLocation.length ?
-      item.deliveryLocation : this.getDeliveryLocations(item, true);
+    const barcode = (item.identifier && item.identifier.length) ?
+      this.getIdentifiers(item.identifier).barcode : '';
 
     if (isElectronicResource && item.electronicLocator[0].url) {
       status = { '@id': '', prefLabel: 'Available' };
@@ -100,7 +126,6 @@ function LibraryItem() {
       requestHold = true;
       actionLabel = accessMessage.prefLabel;
       actionLabelHelper = `request hold on ${title}`;
-      deliveryLocations = this.getDeliveryLocations(item, false);
     } else if (availability === 'available') {
       // For all items that we want to send to the Hold Request Form.
       url = this.getLocationHoldUrl(holdingLocation);
@@ -123,7 +148,7 @@ function LibraryItem() {
       requestHold,
       requestable,
       suppressed,
-      deliveryLocations,
+      barcode,
     };
   };
 
@@ -223,62 +248,62 @@ function LibraryItem() {
    * @param {string} itemId
    * @return {object}
    */
-  this.getDeliveryLocations = (item, single = true, bib = '', itemId = '') => {
-    const thisItem = !_isEmpty(item) ? item : this.getItem(bib, itemId);
-    // default to SASB - RMRR
-    const defaultDeliveryLocations = this.defaultDeliveryLocations();
+  // this.getDeliveryLocations = (item, single = true, bib = '', itemId = '') => {
+  //   const thisItem = !_isEmpty(item) ? item : this.getItem(bib, itemId);
+  //   // default to SASB - RMRR
+  //   const defaultDeliveryLocations = this.defaultDeliveryLocations();
 
-    // get location and location code
-    let deliveryLocations = defaultDeliveryLocations;
-    let locations = [];
+  //   // get location and location code
+  //   let deliveryLocations = defaultDeliveryLocations;
+  //   let locations = [];
 
-    if (thisItem) {
-      if (thisItem.deliveryLocations && thisItem.deliveryLocations.length &&
-        !(thisItem.id.substring(4) === 'i16429984')) {
-        deliveryLocations = thisItem.deliveryLocations;
-      }
+  //   if (thisItem) {
+  //     if (thisItem.deliveryLocations && thisItem.deliveryLocations.length &&
+  //       !(thisItem.id.substring(4) === 'i16429984')) {
+  //       deliveryLocations = thisItem.deliveryLocations;
+  //     }
 
-      deliveryLocations.forEach((location) => {
-        const locationCode = (location['@id'] && typeof location['@id'] === 'string') ?
-          location['@id'].substring(4) : '';
-        // location is set to defaultDeliveryLocations so it the following will always be false:
-        const isOffsite = this.isOffsite(location.prefLabel);
-        // retrieve delivery location
-        let deliveryLocationCode = location['@id'].substring(4);
-        let returnLocation = {};
+  //     deliveryLocations.forEach((location) => {
+  //       const locationCode = (location['@id'] && typeof location['@id'] === 'string') ?
+  //         location['@id'].substring(4) : '';
+  //       // location is set to defaultDeliveryLocations so it the following will always be false:
+  //       const isOffsite = this.isOffsite(location.prefLabel);
+  //       // retrieve delivery location
+  //       let deliveryLocationCode = location['@id'].substring(4);
+  //       let returnLocation = {};
 
-        // retrieve location data
-        if (locationCode && locationCode in LocationCodes) {
-          returnLocation = Locations[LocationCodes[locationCode].location];
-          deliveryLocationCode = LocationCodes[locationCode].delivery_location || '';
-        } else {
-          returnLocation =
-            Locations[LocationCodes[defaultDeliveryLocations[0]['@id'].substring(4)].location];
-        }
+  //       // retrieve location data
+  //       if (locationCode && locationCode in LocationCodes) {
+  //         returnLocation = Locations[LocationCodes[locationCode].location];
+  //         deliveryLocationCode = LocationCodes[locationCode].delivery_location || '';
+  //       } else {
+  //         returnLocation =
+  //           Locations[LocationCodes[defaultDeliveryLocations[0]['@id'].substring(4)].location];
+  //       }
 
-        if (isOffsite && deliveryLocationCode === defaultDeliveryLocations[0]['@id'].substring(4)) {
-          returnLocation.prefLabel = defaultDeliveryLocations[0].prefLabel;
-        }
+  //       if (isOffsite && deliveryLocationCode === defaultDeliveryLocations[0]['@id'].substring(4)) {
+  //         returnLocation.prefLabel = defaultDeliveryLocations[0].prefLabel;
+  //       }
 
-        returnLocation = _extend({
-          customerCode: location.customerCode,
-          prefLabel: location.prefLabel,
-          offsite: isOffsite,
-          code: deliveryLocationCode,
-        }, returnLocation);
+  //       returnLocation = _extend({
+  //         customerCode: location.customerCode,
+  //         prefLabel: location.prefLabel,
+  //         offsite: isOffsite,
+  //         code: deliveryLocationCode,
+  //       }, returnLocation);
 
-        locations.push(returnLocation);
-      });
-    }
+  //       locations.push(returnLocation);
+  //     });
+  //   }
 
-    // Temporary for now
-    if (single) {
-      // just return the first element in the array.
-      locations = [locations[0]];
-    }
+  //   // Temporary for now
+  //   if (single) {
+  //     // just return the first element in the array.
+  //     locations = [locations[0]];
+  //   }
 
-    return locations;
-  };
+  //   return locations;
+  // };
 
   /**
    * getHoldingLocation(item)
