@@ -75,8 +75,9 @@ class HoldConfirmation extends React.Component {
       bib['@id'].substring(4) : '';
     const itemId = (this.props.params && this.props.params.itemId) ? this.props.params.itemId : '';
     const selectedItem = LibraryItem.getItem(bib, itemId);
-    const deliveryLocation = (selectedItem && selectedItem.deliveryLocations.length) ?
-      selectedItem.deliveryLocations[0] : {};
+    // const deliveryLocation = (selectedItem && selectedItem.deliveryLocations.length) ?
+    //   selectedItem.deliveryLocations[0] : {};
+    const deliveryLocation = { prefLabel: 'test location' };
     const shelfMarkInfo =
       (selectedItem && _isArray(selectedItem.shelfMark) && selectedItem.shelfMark.length > 0) ?
         <li>Call number: {selectedItem.shelfMark[0]}</li> : null;

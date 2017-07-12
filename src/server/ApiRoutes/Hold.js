@@ -8,7 +8,10 @@ import {
   omit as _omit,
 } from 'underscore';
 
-function postHoldAPI(req, pickedUpItemId, cb, errorCb) {
+const appEnvironment = process.env.APP_ENV || 'production';
+const apiBase = appConfig.api[appEnvironment];
+
+function postHoldAPI(req, pickedUpItemId, pickupLocation, cb, errorCb) {
   // retrieve access token and patron info
   const accessToken = req.tokenResponse.accessToken;
   const patronId = req.tokenResponse.decodedPatron.sub;
@@ -30,7 +33,6 @@ function postHoldAPI(req, pickedUpItemId, cb, errorCb) {
     }
   }
   itemId = itemId.replace(/\D/g, '');
-  const pickupLocation = req.body.pickupLocation;
 
   const data = {
     patron: patronId,
@@ -63,6 +65,7 @@ function confirmRequestServer(req, res, next) {
   return Bib.fetchBib(
     bibId,
     (data) => {
+      console.log('data from server', data.items[0].deliveryLocation);
       res.locals.data.Store = {
         bib: data,
         searchKeywords: '',
@@ -121,6 +124,7 @@ function createHoldRequestServer(req, res, pickedUpBibId = '', pickedUpItemId = 
   // NOTE: pickedUpItemId and pickedUpBibId are coming from the EDD form function below:
   let itemId = req.params.itemId || pickedUpItemId;
   let bibId = req.params.bibId || pickedUpBibId;
+  const pickupLocation = req.body['delivery-location'];
 
   if (!bibId || !itemId) {
     // Dummy redirect for now
@@ -130,11 +134,14 @@ function createHoldRequestServer(req, res, pickedUpBibId = '', pickedUpItemId = 
   return postHoldAPI(
     req,
     itemId,
+    pickupLocation,
     (response) => {
       // console.log('Holds API response:', response);
       console.log('Hold Request Id:', response.data.data.id);
       console.log('Job Id:', response.data.data.jobId);
-      res.redirect(`/hold/confirmation/${bibId}-${itemId}?requestId=${response.data.data.id}`);
+      res.redirect(
+        `/hold/confirmation/${bibId}-${itemId}?pickupLocation=${response.data.data.pickupLocation}&requestId=${response.data.data.id}`
+      );
     })
     .catch(error => {
       // console.log(error);
@@ -153,10 +160,14 @@ function createHoldRequestAjax(req, res) {
     return res.redirect('/someErrorPage');
   }
 
+  console.log('reqparamssssss', req.params);
+
   return postHoldAPI(
     req,
     req.params.itemId,
+    req.params.pickupLocation,
     (response) => {
+      console.log(response);
       res.json({
         id: response.data.data.id,
         jobId: response.data.data.jobId,
@@ -218,10 +229,43 @@ function eddServer(req, res) {
   return createHoldRequestServer(req, res, bibId, itemId);
 }
 
+function getDeliveryLocations(req, res) {
+  const loggedIn = User.requireUser(req, res);
+  const accessToken = req.tokenResponse.accessToken;
+
+  if (!loggedIn) return false;
+
+  axios
+    .get(
+      `${apiBase}/request/deliverylocationsbybarcode?barcodes[]=${req.query.barcode}`,
+      {
+        'headers': {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    )
+    .then(response => {
+        res.json({
+          data: response.data,
+        });
+      }
+    )
+    .catch(error => {
+      console.error(`deliverylocationsbybarcode API error: ${JSON.stringify(error, null, 2)}`);
+
+      res.json({
+        status: error.status,
+        error,
+      });
+    }); /* end axios call */
+}
+
 export default {
   newHoldRequestServer,
   createHoldRequestServer,
   createHoldRequestAjax,
   confirmRequestServer,
   eddServer,
+  getDeliveryLocations,
 };

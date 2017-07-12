@@ -45,10 +45,10 @@ class HoldRequest extends React.Component {
    * submitRequest()
    * Client-side submit call.
    */
-  submitRequest(e, bibId, itemId) {
+  submitRequest(e, bibId, itemId, pickupLocation) {
     e.preventDefault();
 
-    let path = `/hold/confirmation/${bibId}-${itemId}`;
+    let path = `/hold/confirmation/${bibId}-${itemId}/${pickupLocation}`;
 
     if (this.state.delivery === 'edd') {
       path = `/hold/request/${bibId}-${itemId}/edd`;
@@ -87,15 +87,18 @@ class HoldRequest extends React.Component {
   }
 
   getDeliveryLocations(item) {
-    axios
-      .get(`/api/delivery-locations?barcode=${item.barcode}`)
-      .then(response => {
-        this.setState({ deliveryLocations: response.data.data.itemListElement[0].deliveryLocation });
-      })
-      .catch(error => {
-        console.log(error);
-        // this.context.router.push(`${path}?errorMessage=${error}`);
-      });
+    if (item && item.barcode) {
+      axios
+        .get(`/api/delivery-locations?barcode=${item.barcode}`)
+        .then(response => {
+          console.log(response.data.data.itemListElement[0]);
+          this.setState({ deliveryLocations: response.data.data.itemListElement[0].deliveryLocation });
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    }
+     return [];
   }
 
   /**
@@ -145,7 +148,7 @@ class HoldRequest extends React.Component {
           type="radio"
           name="delivery-location"
           id={`location${i}`}
-          value={location.prefLabel}
+          value={location['@id'].replace('loc:', '')}
           onChange={this.onRadioSelect}
         />
         <label htmlFor={`location${i}`}>
@@ -183,8 +186,6 @@ class HoldRequest extends React.Component {
           <small>Call number:</small><br />{selectedItem.callNumber}
         </div>
       ) : null;
-    // const deliveryLocations = selectedItem && selectedItem.deliveryLocations ?
-    //   selectedItem.deliveryLocations : [];
     const deliveryLocations = this.state.deliveryLocations;
     let content = null;
 
