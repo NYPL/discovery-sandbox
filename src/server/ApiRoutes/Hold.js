@@ -221,14 +221,21 @@ function eddServer(req, res) {
   return createHoldRequestServer(req, res, bibId, itemId);
 }
 
+/**
+ * getDeliveryLocations(req, res)
+ * Gets the delivery locations and EDD requestable feild.
+ * @param {req}
+ * @param {res}
+ */
 function getDeliveryLocations(req, res) {
   const loggedIn = User.requireUser(req, res);
-  const accessToken = req.tokenResponse.accessToken;
+  const accessToken = req.tokenResponse.accessToken || '';
+  const patronId = req.tokenResponse.decodedPatron.sub || '';
 
   if (!loggedIn) return false;
 
   axios
-    .get(`${apiBase}/request/deliverylocationsbybarcode?barcodes[]=${req.query.barcode}`,
+    .get(`${apiBase}/request/deliverylocationsbybarcode?barcodes[]=${req.query.barcode}&patronId=${patronId}`,
       { headers:
         {
           'Content-Type': 'application/json',
@@ -248,7 +255,7 @@ function getDeliveryLocations(req, res) {
         status: error.status,
         error,
       });
-    }); /* end axios call */
+    });
 }
 
 export default {
