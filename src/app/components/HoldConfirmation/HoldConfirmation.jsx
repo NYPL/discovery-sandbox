@@ -20,31 +20,11 @@ class HoldConfirmation extends React.Component {
 
     this.state = {
       patron: PatronStore.getState(),
-      deliveryLocations: [],
     };
   }
 
   componentDidMount() {
     this.requireUser();
-    this.getDeliveryLocations(LibraryItem.getItem(this.props.bib, this.props.params.itemId));
-  }
-
-  getDeliveryLocations(item) {
-    if (item && item.barcode) {
-      axios
-        .get(`/api/delivery-locations?barcode=${item.barcode}`)
-        .then(response => {
-          console.log(response.data.data.itemListElement[0]);
-          this.setState({
-            deliveryLocations: response.data.data.itemListElement[0].deliveryLocation,
-          });
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    }
-
-    return [];
   }
 
   /**
@@ -98,10 +78,9 @@ class HoldConfirmation extends React.Component {
       bib['@id'].substring(4) : '';
     const itemId = (this.props.params && this.props.params.itemId) ? this.props.params.itemId : '';
     const selectedItem = LibraryItem.getItem(bib, itemId);
-    const deliveryLocations = this.state.deliveryLocations;
-    const deliveryLocation = (deliveryLocations.length) ?
+    const deliveryLocation = (this.props.deliveryLocations && this.props.deliveryLocations.length) ?
       _findWhere(
-        deliveryLocations, { '@id': `loc:${this.props.location.query.pickupLocation}` }
+        this.props.deliveryLocations, { '@id': `loc:${this.props.location.query.pickupLocation}` }
       ) : '';
     const shelfMarkInfo =
       (selectedItem && _isArray(selectedItem.shelfMark) && selectedItem.shelfMark.length > 0) ?
@@ -161,12 +140,15 @@ HoldConfirmation.propTypes = {
   location: PropTypes.object,
   searchKeywords: PropTypes.string,
   params: PropTypes.object,
+  deliveryLocations: PropTypes.array,
 };
 
 HoldConfirmation.defaultProps = {
   bib: {},
+  location: {},
   searchKeywords: '',
   params: {},
+  deliveryLocations: [],
 };
 
 export default HoldConfirmation;

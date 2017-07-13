@@ -255,6 +255,7 @@ HoldRequest.contextTypes = {
 };
 
 HoldRequest.propTypes = {
+  location: React.PropTypes.object,
   bib: React.PropTypes.object,
   searchKeywords: React.PropTypes.string,
   params: React.PropTypes.object,
@@ -263,6 +264,7 @@ HoldRequest.propTypes = {
 };
 
 HoldRequest.defaultProps = {
+  location: {},
   bib: {},
   searchKeywords: '',
   params: {},

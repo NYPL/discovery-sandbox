@@ -68,10 +68,6 @@ router
   .get(Hold.createHoldRequestAjax);
 
 router
-  .route('/api/delivery-locations')
-  .get(Hold.getDeliveryLocations);
-
-router
   .route('/')
   .get(MainApp);
 
