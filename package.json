@@ -58,10 +58,10 @@
     "react-addons-test-utils": "15.6.0"
   },
   "dependencies": {
-    "@nypl/design-toolkit": "0.1.19",
+    "@nypl/design-toolkit": "0.1.20",
     "@nypl/dgx-header-component": "2.0.0",
     "@nypl/dgx-react-footer": "0.4.0",
-    "alt": "0.18.2",
+    "dgx-alt-center": "git+https://bitbucket.org/NYPL/dgx-alt-center.git#master",
     "axios": "0.9.1",
     "babel-core": "6.5.2",
     "babel-loader": "6.2.3",
@@ -79,6 +79,7 @@
     "compression": "1.5.2",
     "cookie-parser": "1.4.3",
     "css-loader": "0.23.1",
+    "dgx-feature-flags": "git+ssh://bitbucket.org/NYPL/dgx-feature-flags.git#master",
     "dgx-react-ga": "git+https://git@bitbucket.org/NYPL/dgx-react-ga.git#master",
     "dgx-svg-icons": "git+https://git@bitbucket.org/NYPL/dgx-svg-icons.git#master",
     "ejs": "2.3.3",

@@ -70,11 +70,11 @@ const BibPage = (props) => {
                     bibId={bibId}
                     itemPage={itemPage}
                   />
-                  <MarcRecord bNumber={bNumber[0]} />
                   <BibDetails
                     bib={bib}
                     title="Bib details"
                   />
+                  <MarcRecord bNumber={bNumber[0]} />
               </div>
             </div>
           </div>

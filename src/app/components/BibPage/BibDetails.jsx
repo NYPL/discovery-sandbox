@@ -15,12 +15,16 @@ import DefinitionList from './DefinitionList';
 class BibDetails extends React.Component {
   getDisplayFields(bib) {
     const fields = [
-      { label: 'Format', value: 'materialType' },
+      { label: 'Publisher', value: 'publisher' },
+      { label: 'Description', value: 'description' },
+      { label: 'Subject', value: 'subjectLiteral' },
+      { label: 'Genre/Form', value: 'materialType' },
       { label: 'Contents', value: 'note' },
-      { label: 'Subjects', value: 'subjectLiteral' },
+      // "Notes" TBD
       // This needs to exist in the API to work, currently it doesn't.
       { label: 'ISBN', value: 'idIsbn' },
       { label: 'LCCL', value: 'idLcc' },
+      { label: 'NYPL Research call number', value: 'idBnum' },
     ];
 
     return fields.map((field) => {
