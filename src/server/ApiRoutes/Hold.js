@@ -3,6 +3,7 @@ import axios from 'axios';
 import appConfig from '../../../appConfig.js';
 import User from './User.js';
 import Bib from './Bib.js';
+import LibraryItem from './../../app/utils/item.js';
 import { validate } from '../../app/utils/formValidationUtils';
 import {
   omit as _omit,
@@ -91,28 +92,92 @@ function newHoldRequestServer(req, res, next) {
 
   if (!loggedIn) return false;
 
-  // Retrieve item
-  return Bib.fetchBib(
-    req.params.bibId,
-    (data) => {
-      res.locals.data.Store = {
-        bib: data,
-        searchKeywords: '',
-        error,
-        form,
-      };
-      next();
-    },
-    (error) => {
+  const accessToken = req.tokenResponse.accessToken || '';
+  const patronId = req.tokenResponse.decodedPatron.sub || '';
+  let barcode;
+
+  // Retrieve item and then the delivery locations
+  axios
+    .get(`${apiBase}/discovery/resources/${req.params.bibId}`)
+    .then(response => {
+      barcode = LibraryItem.getItem(response.data, req.params.itemId).barcode;
+
+      return axios.get(
+        `${apiBase}/request/deliverylocationsbybarcode?barcodes[]=${barcode}&patronId=${patronId}`,
+        { headers:
+          {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      )
+      .then(barcodeAPIresponse => {
+        res.locals.data.Store = {
+          bib: response.data,
+          searchKeywords: '',
+          error,
+          form,
+          deliveryLocations: barcodeAPIresponse.data.itemListElement[0].deliveryLocation,
+          isEddRequestable: barcodeAPIresponse.data.itemListElement[0].eddRequestable,
+        };
+        next();
+      })
+      .catch(barcodeAPIError => {
+        console.error(
+          `deliverylocationsbybarcode API error: ${JSON.stringify(barcodeAPIError, null, 2)}`
+        );
+
+        res.locals.data.Store = {
+          bib: {},
+          searchKeywords: '',
+          error,
+          form,
+          deliveryLocations: [],
+          isEddRequestable: false,
+        };
+
+        next();
+      });
+    })
+    .catch(bibAPIError => {
+      console.error(`fetchBib API error: ${JSON.stringify(bibAPIError, null, 2)}`);
+
       res.locals.data.Store = {
         bib: {},
         searchKeywords: '',
         error,
         form,
+        deliveryLocations: [],
+        isEddRequestable: false,
       };
+
       next();
-    }
-  );
+    }); /* end axios call */
+
+  return true;
+
+  // Retrieve item
+  // return Bib.fetchBib(
+  //   req.params.bibId,
+  //   (data) => {
+  //     res.locals.data.Store = {
+  //       bib: data,
+  //       searchKeywords: '',
+  //       error,
+  //       form,
+  //     };
+  //     next();
+  //   },
+  //   (error) => {
+  //     res.locals.data.Store = {
+  //       bib: {},
+  //       searchKeywords: '',
+  //       error,
+  //       form,
+  //     };
+  //     next();
+  //   }
+  // );
 }
 
 function createHoldRequestServer(req, res, pickedUpBibId = '', pickedUpItemId = '') {

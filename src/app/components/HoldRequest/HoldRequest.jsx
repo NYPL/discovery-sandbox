@@ -19,8 +19,6 @@ class HoldRequest extends React.Component {
 
     this.state = _extend({
       delivery: false,
-      deliveryLocations: [],
-      isEddRequestable: false,
     }, { patron: PatronStore.getState() });
 
     // change all the components :(
@@ -31,7 +29,6 @@ class HoldRequest extends React.Component {
 
   componentDidMount() {
     this.requireUser();
-    this.getDeliveryLocations(LibraryItem.getItem(this.props.bib, this.props.params.itemId));
   }
 
   onChange() {
@@ -40,26 +37,6 @@ class HoldRequest extends React.Component {
 
   onRadioSelect(e) {
     this.setState({ delivery: e.target.value });
-  }
-
-  getDeliveryLocations(item) {
-    if (item && item.barcode) {
-      axios
-        .get(`/api/delivery-locations?barcode=${item.barcode}`)
-        .then(response => {
-          const responseItem = response.data.data.itemListElement[0];
-
-          this.setState({
-            deliveryLocations: responseItem ? responseItem.deliveryLocation : [],
-            isEddRequestable: responseItem ? responseItem.eddRequestable : false,
-          });
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    }
-
-    return [];
   }
 
   /**
@@ -99,7 +76,9 @@ class HoldRequest extends React.Component {
         if (response.data.error && response.data.error.status !== 200) {
           this.context.router.push(`${path}?errorMessage=${response.data.error.statusText}`);
         } else {
-          this.context.router.push(`${path}?pickupLocation=${response.data.pickupLocation}&requestId=${response.data.id}`);
+          this.context.router.push(
+            `${path}?pickupLocation=${response.data.pickupLocation}&requestId=${response.data.id}`
+          );
         }
       })
       .catch(error => {
@@ -193,7 +172,6 @@ class HoldRequest extends React.Component {
           <small>Call number:</small><br />{selectedItem.callNumber}
         </div>
       ) : null;
-    const deliveryLocations = this.state.deliveryLocations;
     let content = null;
 
     if (bib) {
@@ -223,8 +201,8 @@ class HoldRequest extends React.Component {
             <p>When this item is ready, you will use it in the following location:</p>
             <fieldset className="select-location-fieldset">
               <legend className="visuallyHidden">Select a pickup location</legend>
-              {(this.state.isEddRequestable) && this.renderEDD()}
-              {this.renderDeliveryLocation(deliveryLocations)}
+              {(this.props.isEddRequestable) && this.renderEDD()}
+              {this.renderDeliveryLocation(this.props.deliveryLocations)}
             </fieldset>
 
             <input type="hidden" name="pickupLocation" value="test" />
@@ -277,10 +255,19 @@ HoldRequest.contextTypes = {
 };
 
 HoldRequest.propTypes = {
-  location: React.PropTypes.object,
   bib: React.PropTypes.object,
   searchKeywords: React.PropTypes.string,
   params: React.PropTypes.object,
+  deliveryLocations: React.PropTypes.array,
+  isEddRequestable: React.PropTypes.bool,
+};
+
+HoldRequest.defaultProps = {
+  bib: {},
+  searchKeywords: '',
+  params: {},
+  deliveryLocations: [],
+  isEddRequestable: false,
 };
 
 export default HoldRequest;
