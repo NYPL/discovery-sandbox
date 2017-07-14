@@ -36,9 +36,9 @@ class ElectronicDeliveryForm extends React.Component {
   submit(e) {
     e.preventDefault();
 
-    if (validate(this.state.form, (error) => this.setState({ error }))) {
+    // if (validate(this.state.form, (error) => this.setState({ error }))) {
       this.props.submitRequest(this.state);
-    }
+    // }
   }
 
   handleUpdate(e, input) {

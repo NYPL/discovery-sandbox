@@ -37,7 +37,7 @@ router
 
 router
   .route('/hold/request/:bibId-:itemId/edd')
-  .get(Hold.newHoldRequestServer);
+  .get(Hold.newHoldRequestServerEdd);
 
 router
   .route('/hold/confirmation/:bibId-:itemId')

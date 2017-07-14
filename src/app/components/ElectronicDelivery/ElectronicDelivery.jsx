@@ -65,7 +65,6 @@ class ElectronicDelivery extends React.Component {
     } = this.state;
     const path = `/hold/confirmation/${bibId}-${itemId}`;
 
-    // console.log(fields)
     // This will give you the form values in the form of:
     // {
     //   name: '',
@@ -83,12 +82,12 @@ class ElectronicDelivery extends React.Component {
     // Please delete this later.
 
     axios
-      .get(`/api/newHold?itemId=${itemId}`)
+      .get(`/api/newHold?itemId=${itemId}&pickupLocation=edd`)
       .then(response => {
         if (response.data.error && response.data.error.status !== 200) {
           this.context.router.push(`${path}?errorMessage=${response.data.error.statusText}`);
         } else {
-          this.context.router.push(`${path}?requestId=${response.data.id}`);
+          this.context.router.push(`${path}?pickupLocation=edd&requestId=${response.data.id}`);
         }
       })
       .catch(error => {

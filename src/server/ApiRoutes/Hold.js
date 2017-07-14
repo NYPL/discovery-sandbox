@@ -12,7 +12,7 @@ import {
 const appEnvironment = process.env.APP_ENV || 'production';
 const apiBase = appConfig.api[appEnvironment];
 
-function postHoldAPI(req, pickedUpItemId, pickupLocation, cb, errorCb) {
+function postHoldAPI(req, pickedUpItemId, pickupLocation, docDeliveryData, cb, errorCb) {
   // retrieve access token and patron info
   const accessToken = req.tokenResponse.accessToken;
   const patronId = req.tokenResponse.decodedPatron.sub;
@@ -37,12 +37,14 @@ function postHoldAPI(req, pickedUpItemId, pickupLocation, cb, errorCb) {
 
   const data = {
     patron: patronId,
-    recordType: 'i',
     record: itemId,
     nyplSource,
-    pickupLocation,
+    requestType: (pickupLocation === 'edd') ? 'edd' : 'hold',
+    recordType: 'i',
+    pickupLocation: (pickupLocation === 'edd') ? 'null' : pickupLocation,
     // neededBy: "2013-03-20",
     numberOfCopies: 1,
+    docDeliveryData: (pickupLocation === 'edd') ? docDeliveryData : null,
   };
   console.log('Making hold request', data, accessToken);
 
@@ -239,6 +241,37 @@ function newHoldRequestServer(req, res, next) {
   // );
 }
 
+function newHoldRequestServerEdd(req, res, next) {
+  const loggedIn = User.requireUser(req, res);
+  const error = req.query.error ? JSON.parse(req.query.error) : {};
+  const form = req.query.form ? JSON.parse(req.query.form) : {};
+
+  if (!loggedIn) return false;
+
+  // Retrieve item
+  return Bib.fetchBib(
+    req.params.bibId,
+    (data) => {
+      res.locals.data.Store = {
+        bib: data,
+        searchKeywords: '',
+        error,
+        form,
+      };
+      next();
+    },
+    (error) => {
+      res.locals.data.Store = {
+        bib: {},
+        searchKeywords: '',
+        error,
+        form,
+      };
+      next();
+    }
+  );
+}
+
 function createHoldRequestServer(req, res, pickedUpBibId = '', pickedUpItemId = '') {
   // Ensure user is logged in
   const loggedIn = User.requireUser(req);
@@ -248,6 +281,9 @@ function createHoldRequestServer(req, res, pickedUpBibId = '', pickedUpItemId = 
   let itemId = req.params.itemId || pickedUpItemId;
   let bibId = req.params.bibId || pickedUpBibId;
   const pickupLocation = req.body['delivery-location'];
+  const eddData = (req.body.form && pickupLocation === 'edd') ? req.body.form : null;
+
+  console.log('createHoldRequestServer');
 
   if (!bibId || !itemId) {
     // Dummy redirect for now
@@ -258,6 +294,7 @@ function createHoldRequestServer(req, res, pickedUpBibId = '', pickedUpItemId = 
     req,
     itemId,
     pickupLocation,
+    docDeliveryData,
     (response) => {
       // console.log('Holds API response:', response);
       console.log('Hold Request Id:', response.data.data.id);
@@ -278,10 +315,20 @@ function createHoldRequestAjax(req, res) {
   const loggedIn = User.requireUser(req);
   if (!loggedIn) return false;
 
+  console.log('createHoldRequestAjax');
+
+  const docDeliveryData = {
+    emailAddress: '1234',
+    chapterTitle: '1234',
+    startPage: '1234',
+    endPage: '1235',
+  };
+
   return postHoldAPI(
     req,
     req.query.itemId,
     req.query.pickupLocation,
+    docDeliveryData,
     (response) => {
       res.json({
         id: response.data.data.id,
@@ -291,6 +338,7 @@ function createHoldRequestAjax(req, res) {
     },
     (error) => {
       console.log(`Error calling Holds API : ${error.data.message}`);
+
       res.json({
         status: error.status,
         error,
@@ -351,4 +399,5 @@ export default {
   createHoldRequestAjax,
   confirmRequestServer,
   eddServer,
+  newHoldRequestServerEdd,
 };
