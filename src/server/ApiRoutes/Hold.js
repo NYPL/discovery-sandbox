@@ -144,6 +144,30 @@ function confirmRequestServer(req, res, next) {
   // );
 }
 
+function getDeliveryLocations(bibData, barcode, patronId, accessToken, cb) {
+  return axios.get(
+    `${apiBase}/request/deliverylocationsbybarcode?barcodes[]=${barcode}&patronId=${patronId}`,
+    { headers:
+      {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
+      },
+    }
+  )
+  .then(barcodeAPIresponse => {
+    cb(
+      bibData,
+      barcodeAPIresponse.data.itemListElement[0].deliveryLocation,
+      barcodeAPIresponse.data.itemListElement[0].eddRequestable,
+    );
+  })
+  .catch(barcodeAPIError => {
+    console.error(
+      `deliverylocationsbybarcode API error: ${JSON.stringify(barcodeAPIError, null, 2)}`
+    );
+  });
+}
+
 function newHoldRequestServer(req, res, next) {
   const loggedIn = User.requireUser(req, res);
   const error = req.query.error ? JSON.parse(req.query.error) : {};
@@ -155,88 +179,102 @@ function newHoldRequestServer(req, res, next) {
   const patronId = req.tokenResponse.decodedPatron.sub || '';
   let barcode;
 
-  // Retrieve item and then the delivery locations
-  axios
-    .get(`${apiBase}/discovery/resources/${req.params.bibId}`)
-    .then(response => {
-      barcode = LibraryItem.getItem(response.data, req.params.itemId).barcode;
+  // Retrieve item
+  return Bib.fetchBib(
+    req.params.bibId,
+    (bibResponseData) => {
+      barcode = LibraryItem.getItem(bibResponseData, req.params.itemId).barcode;
 
-      return axios.get(
-        `${apiBase}/request/deliverylocationsbybarcode?barcodes[]=${barcode}&patronId=${patronId}`,
-        { headers:
-          {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${accessToken}`,
-          },
+      getDeliveryLocations(
+        bibResponseData,
+        barcode,
+        patronId,
+        accessToken,
+        (bibData, deliveryLocations, isEddRequestable) => {
+                          console.log('then back to server', res.locals.data.Store);
+          res.locals.data.Store = {
+            bib: bibData,
+            searchKeywords: '',
+            error,
+            form,
+            deliveryLocations,
+            isEddRequestable,
+          };
         }
-      )
-      .then(barcodeAPIresponse => {
-        res.locals.data.Store = {
-          bib: response.data,
-          searchKeywords: '',
-          error,
-          form,
-          deliveryLocations: barcodeAPIresponse.data.itemListElement[0].deliveryLocation,
-          isEddRequestable: barcodeAPIresponse.data.itemListElement[0].eddRequestable,
-        };
-        next();
-      })
-      .catch(barcodeAPIError => {
-        console.error(
-          `deliverylocationsbybarcode API error: ${JSON.stringify(barcodeAPIError, null, 2)}`
-        );
+      );
 
-        res.locals.data.Store = {
-          bib: {},
-          searchKeywords: '',
-          error,
-          form,
-          deliveryLocations: [],
-          isEddRequestable: false,
-        };
-
-        next();
-      });
-    })
-    .catch(bibAPIError => {
-      console.error(`fetchBib API error: ${JSON.stringify(bibAPIError, null, 2)}`);
-
+      next();
+    },
+    (error) => {
       res.locals.data.Store = {
         bib: {},
         searchKeywords: '',
         error,
         form,
-        deliveryLocations: [],
-        isEddRequestable: false,
       };
-
       next();
-    }); /* end axios call */
+    }
+  );
 
-  return true;
+  // Retrieve item and then the delivery locations
+  // axios
+  //   .get(`${apiBase}/discovery/resources/${req.params.bibId}`)
+  //   .then(response => {
+  //     barcode = LibraryItem.getItem(response.data, req.params.itemId).barcode;
 
-  // Retrieve item
-  // return Bib.fetchBib(
-  //   req.params.bibId,
-  //   (data) => {
-  //     res.locals.data.Store = {
-  //       bib: data,
-  //       searchKeywords: '',
-  //       error,
-  //       form,
-  //     };
-  //     next();
-  //   },
-  //   (error) => {
+  //     return axios.get(
+  //       `${apiBase}/request/deliverylocationsbybarcode?barcodes[]=${barcode}&patronId=${patronId}`,
+  //       { headers:
+  //         {
+  //           'Content-Type': 'application/json',
+  //           Authorization: `Bearer ${accessToken}`,
+  //         },
+  //       }
+  //     )
+  //     .then(barcodeAPIresponse => {
+  //       res.locals.data.Store = {
+  //         bib: response.data,
+  //         searchKeywords: '',
+  //         error,
+  //         form,
+  //         deliveryLocations: barcodeAPIresponse.data.itemListElement[0].deliveryLocation,
+  //         isEddRequestable: barcodeAPIresponse.data.itemListElement[0].eddRequestable,
+  //       };
+  //       next();
+  //     })
+  //     .catch(barcodeAPIError => {
+  //       console.error(
+  //         `deliverylocationsbybarcode API error: ${JSON.stringify(barcodeAPIError, null, 2)}`
+  //       );
+
+  //       res.locals.data.Store = {
+  //         bib: {},
+  //         searchKeywords: '',
+  //         error,
+  //         form,
+  //         deliveryLocations: [],
+  //         isEddRequestable: false,
+  //       };
+
+  //       next();
+  //     });
+  //   })
+  //   .catch(bibAPIError => {
+  //     console.error(`fetchBib API error: ${JSON.stringify(bibAPIError, null, 2)}`);
+
   //     res.locals.data.Store = {
   //       bib: {},
   //       searchKeywords: '',
   //       error,
   //       form,
+  //       deliveryLocations: [],
+  //       isEddRequestable: false,
   //     };
+
   //     next();
-  //   }
-  // );
+  //   }); /* end axios call */
+
+  // return true;
 }
 
 function createHoldRequestServer(req, res, pickedUpBibId = '', pickedUpItemId = '') {
