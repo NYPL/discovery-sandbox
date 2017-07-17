@@ -20,12 +20,12 @@ class ElectronicDeliveryForm extends React.Component {
       form: !_isEmpty(this.props.form) ? this.props.form :
         {
           name: '',
-          email: '',
+          emailAddress: '',
         },
       error: !_isEmpty(this.props.error) ? this.props.error :
         {
           name: '',
-          email: '',
+          emailAddress: '',
         },
     };
 
@@ -51,7 +51,7 @@ class ElectronicDeliveryForm extends React.Component {
   render() {
     const errorClass = {
       name: '',
-      email: '',
+      emailAddress: '',
     };
 
     _mapObject(this.state.form, (val, key) => {
@@ -104,14 +104,14 @@ class ElectronicDeliveryForm extends React.Component {
               <span className="nypl-required-field">&nbsp;(Required)</span>
             </label>
             <input
-              id="email"
+              id="email-address"
               type="text"
               required
               aria-labelledby="email-label email-status"
               aria-required="true"
-              name="email"
-              value={this.state.form.email}
-              onChange={(e) => this.handleUpdate(e, 'email')}
+              name="emailAddress"
+              value={this.state.form.emailAddress}
+              onChange={(e) => this.handleUpdate(e, 'emailAddress')}
             />
             {
               errorClass.email &&
@@ -134,12 +134,12 @@ class ElectronicDeliveryForm extends React.Component {
           <div className={`nypl-text-field ${errorClass.chapter}`}>
             <label htmlFor="chapter" id="chapter-label">Chapter number or article title</label>
             <input
-              id="chapter"
+              id="chapter-title"
               type="text"
               aria-labelledby="chapter-label chapter-status"
-              name="chapter"
-              value={this.state.form.chapter}
-              onChange={(e) => this.handleUpdate(e, 'chapter')}
+              name="chapterTitle"
+              value={this.state.form.chapterTitle}
+              onChange={(e) => this.handleUpdate(e, 'chapterTitle')}
             />
           </div>
 
@@ -194,12 +194,12 @@ class ElectronicDeliveryForm extends React.Component {
           <div className="nypl-text-field">
             <label htmlFor="notes" id="notes-label">Notes</label>
             <input
-              id="notes"
+              id="request-notes"
               type="text"
               aria-labelledby="notes-label notes-status"
-              name="notes"
-              value={this.state.form.notes}
-              onChange={(e) => this.handleUpdate(e, 'notes')}
+              name="requestNotes"
+              value={this.state.form.requestNotes}
+              onChange={(e) => this.handleUpdate(e, 'requestNotes')}
             />
           </div>
         </fieldset>
@@ -212,13 +212,13 @@ class ElectronicDeliveryForm extends React.Component {
             <label htmlFor="starting-page" id="starting-page-label">Start Page
             </label>
             <input
-              id="starting-page"
+              id="start-page"
               type="number"
               className="form-text"
-              aria-labelledby="starting-page-label"
-              name="starting-page"
-              value={this.state.form['starting-page']}
-              onChange={(e) => this.handleUpdate(e, 'starting-page')}
+              aria-labelledby="start-page-label"
+              name="startPage"
+              value={this.state.form['start-page']}
+              onChange={(e) => this.handleUpdate(e, 'startPage')}
             />
           </div>
 
@@ -228,13 +228,13 @@ class ElectronicDeliveryForm extends React.Component {
             <label htmlFor="ending-page" id="ending-page-label">Ending Page
             </label>
             <input
-              id="ending-page"
+              id="end-page"
               type="number"
               className="form-text"
               aria-labelledby="ending-page-label"
-              name="ending-page"
-              value={this.state.form['ending-page']}
-              onChange={(e) => this.handleUpdate(e, 'ending-page')}
+              name="endPage"
+              value={this.state.form['end-page']}
+              onChange={(e) => this.handleUpdate(e, 'endPage')}
             />
           </div>
         </fieldset>

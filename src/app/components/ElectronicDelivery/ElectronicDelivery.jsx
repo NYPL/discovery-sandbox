@@ -80,9 +80,11 @@ class ElectronicDelivery extends React.Component {
     // This can then be serialized and sent to the Request API endpoint once we get it.
     // For now it's just functionally getting this data for a client side ajax EDD request.
     // Please delete this later.
+    const data = _extend({bibId, itemId}, fields);
 
     axios
-      .get(`/api/newHold?itemId=${itemId}&pickupLocation=edd`)
+      .post(`/edd?itemId=${itemId}&pickupLocation=edd`, data)
+      // .get(`/api/newHold?itemId=${itemId}&pickupLocation=edd`)
       .then(response => {
         if (response.data.error && response.data.error.status !== 200) {
           this.context.router.push(`${path}?errorMessage=${response.data.error.statusText}`);

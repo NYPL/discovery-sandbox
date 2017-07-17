@@ -62,12 +62,17 @@ function postHoldAPI(req, pickedUpItemId, pickupLocation, docDeliveryData, cb, e
 function confirmRequestServer(req, res, next) {
   const bibId = req.params.bibId || '';
   const loggedIn = User.requireUser(req, res);
+  let barcode;
 
   if (!loggedIn) return false;
 
+  const accessToken = req.tokenResponse.accessToken || '';
+  const patronId = req.tokenResponse.decodedPatron.sub || '';
+
   axios
-    .get(`${apiBase}/discovery/resources/${req.params.bibId}`)
+    .get(`${apiBase}/discovery/resources/${bibId}`)
     .then(response => {
+
       barcode = LibraryItem.getItem(response.data, req.params.itemId).barcode;
 
       return axios.get(
@@ -88,6 +93,7 @@ function confirmRequestServer(req, res, next) {
           deliveryLocations: barcodeAPIresponse.data.itemListElement[0].deliveryLocation,
           isEddRequestable: barcodeAPIresponse.data.itemListElement[0].eddRequestable,
         };
+
         next();
       })
       .catch(barcodeAPIError => {
@@ -280,10 +286,8 @@ function createHoldRequestServer(req, res, pickedUpBibId = '', pickedUpItemId = 
   // NOTE: pickedUpItemId and pickedUpBibId are coming from the EDD form function below:
   let itemId = req.params.itemId || pickedUpItemId;
   let bibId = req.params.bibId || pickedUpBibId;
-  const pickupLocation = req.body['delivery-location'];
-  const eddData = (req.body.form && pickupLocation === 'edd') ? req.body.form : null;
-
-  console.log('createHoldRequestServer');
+  const pickupLocation = req.body['delivery-location'] || 'edd';
+  const docDeliveryData = (req.body.form && pickupLocation === 'edd') ? req.body.form : null;
 
   if (!bibId || !itemId) {
     // Dummy redirect for now
@@ -299,23 +303,23 @@ function createHoldRequestServer(req, res, pickedUpBibId = '', pickedUpItemId = 
       // console.log('Holds API response:', response);
       console.log('Hold Request Id:', response.data.data.id);
       console.log('Job Id:', response.data.data.jobId);
+
       res.redirect(
         `/hold/confirmation/${bibId}-${itemId}?pickupLocation=${response.data.data.pickupLocation}&requestId=${response.data.data.id}`
       );
-    })
-    .catch(error => {
+    },
+    (error) => {
       // console.log(error);
       console.log(`Error calling Holds API : ${error.data.message}`);
       res.redirect(`/hold/request/${bibId}-${itemId}?errorMessage=${error.data.message}`);
-    }); /* end axios call */
+    }
+  );
 }
 
 function createHoldRequestAjax(req, res) {
   // Ensure user is logged in
   const loggedIn = User.requireUser(req);
   if (!loggedIn) return false;
-
-  console.log('createHoldRequestAjax');
 
   const docDeliveryData = {
     emailAddress: '1234',
@@ -351,6 +355,7 @@ function eddServer(req, res) {
   const {
     bibId,
     itemId,
+    form,
   } = req.body;
 
   // console.log(req.body)
@@ -375,17 +380,17 @@ function eddServer(req, res) {
 
   let serverErrors = {};
 
-  // NOTE: We want to skip over bibId and itemId in the validation. They are hidden fields but
-  // only useful for making the actual request and not for the form validation.
-  // If the form is not valid, then redirect to the same page but with errors AND the user data:
-  if (!validate(_omit(req.body, ['bibId', 'itemId']), (error) => { serverErrors = error; })) {
-    // Very ugly but passing all the error and patron data through the url param.
-    // TODO: think of a better way to pass data. For now, this works, but make sure that
-    // the data is being passed and picked up by the `ElectronicDelivery` component.
-    return res.redirect(`/hold/request/${bibId}-${itemId}/edd?` +
-      `error=${JSON.stringify(serverErrors)}` +
-      `&form=${JSON.stringify(req.body)}`);
-  }
+  // // NOTE: We want to skip over bibId and itemId in the validation. They are hidden fields but
+  // // only useful for making the actual request and not for the form validation.
+  // // If the form is not valid, then redirect to the same page but with errors AND the user data:
+  // if (!validate(_omit(req.body, ['bibId', 'itemId']), (error) => { serverErrors = error; })) {
+  //   // Very ugly but passing all the error and patron data through the url param.
+  //   // TODO: think of a better way to pass data. For now, this works, but make sure that
+  //   // the data is being passed and picked up by the `ElectronicDelivery` component.
+  //   return res.redirect(`/hold/request/${bibId}-${itemId}/edd?` +
+  //     `error=${JSON.stringify(serverErrors)}` +
+  //     `&form=${JSON.stringify(req.body)}`);
+  // }
 
   // NOTE: Mocking that this workflow works correctly:
   // Just a dummy redirect that doesn't actually do anything yet with the correct valid data
