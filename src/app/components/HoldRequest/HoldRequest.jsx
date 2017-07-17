@@ -70,6 +70,7 @@ class HoldRequest extends React.Component {
       path = `/hold/request/${bibId}-${itemId}/edd`;
 
       this.context.router.push(path);
+      return;
     }
 
     axios
