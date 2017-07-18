@@ -205,10 +205,9 @@ function newHoldRequestServer(req, res, next) {
             deliveryLocations,
             isEddRequestable,
           };
+        next();
         }
       );
-
-      next();
     },
     (error) => {
       res.locals.data.Store = {
