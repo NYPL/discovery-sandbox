@@ -12,6 +12,17 @@ import {
 const appEnvironment = process.env.APP_ENV || 'production';
 const apiBase = appConfig.api[appEnvironment];
 
+/**
+ * postHoldAPI(req, pickedUpItemId, pickupLocation, cb, errorCb)
+ * The function to make a POST request to the hold request API.
+ *
+ * @param {req} req
+ * @param {string} pickedUpItemId
+ * @param {string} pickupLocation
+ * @param {function} callback
+ * @param {function} callback when error
+ * @return {function}
+ */
 function postHoldAPI(req, pickedUpItemId, pickupLocation, cb, errorCb) {
   // retrieve access token and patron info
   const accessToken = req.tokenResponse.accessToken;
@@ -57,6 +68,17 @@ function postHoldAPI(req, pickedUpItemId, pickupLocation, cb, errorCb) {
     .catch(errorCb);
 }
 
+/**
+ * getDeliveryLocations(bibData, barcode, patronId, accessToken, cb)
+ * The function to make a request to get delivery locations of an item.
+ *
+ * @param {object} bibData
+ * @param {string} barcode
+ * @param {string} patronId
+ * @param {string} accessToken
+ * @param {function} callback
+ * @return {function}
+ */
 function getDeliveryLocations(bibData, barcode, patronId, accessToken, cb) {
   return axios.get(
     `${apiBase}/request/deliverylocationsbybarcode?barcodes[]=${barcode}&patronId=${patronId}`,
@@ -81,6 +103,15 @@ function getDeliveryLocations(bibData, barcode, patronId, accessToken, cb) {
   });
 }
 
+/**
+ * confirmRequestServer(req, res, next)
+ * The function to return the bib and item data with its delivery locations to confirmation page.
+ *
+ * @param {req}
+ * @param {res}
+ * @param {next}
+ * @return {function}
+ */
 function confirmRequestServer(req, res, next) {
   const bibId = req.params.bibId || '';
   const loggedIn = User.requireUser(req, res);
@@ -126,6 +157,15 @@ function confirmRequestServer(req, res, next) {
   );
 }
 
+/**
+ * newHoldRequestServer(req, res, next)
+ * The function to return the bib and item data with its delivery locations to hold request page.
+ *
+ * @param {req}
+ * @param {res}
+ * @param {next}
+ * @return {function}
+ */
 function newHoldRequestServer(req, res, next) {
   const bibId = req.params.bibId || '';
   const loggedIn = User.requireUser(req, res);
@@ -175,6 +215,16 @@ function newHoldRequestServer(req, res, next) {
   );
 }
 
+/**
+ * createHoldRequestServer(req, res, pickedUpBibId = '', pickedUpItemId = '')
+ * The function to make a server side hold request call.
+ *
+ * @param {req}
+ * @param {res}
+ * @param {string} pickedUpBibId
+ * @param {string} pickedUpItemId
+ * @return {function}
+ */
 function createHoldRequestServer(req, res, pickedUpBibId = '', pickedUpItemId = '') {
   // Ensure user is logged in
   const loggedIn = User.requireUser(req);
@@ -209,6 +259,14 @@ function createHoldRequestServer(req, res, pickedUpBibId = '', pickedUpItemId = 
   );
 }
 
+/**
+ * createHoldRequestAjax(req, res)
+ * The function to make a client side hold request call.
+ *
+ * @param {req}
+ * @param {res}
+ * @return {function}
+ */
 function createHoldRequestAjax(req, res) {
   // Ensure user is logged in
   const loggedIn = User.requireUser(req);
@@ -282,9 +340,9 @@ function eddServer(req, res) {
 }
 
 export default {
+  confirmRequestServer,
   newHoldRequestServer,
   createHoldRequestServer,
   createHoldRequestAjax,
-  confirmRequestServer,
   eddServer,
 };
