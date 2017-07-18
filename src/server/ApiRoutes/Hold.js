@@ -63,8 +63,12 @@ function confirmRequestServer(req, res, next) {
 
   if (!loggedIn) return false;
 
+  const accessToken = req.tokenResponse.accessToken || '';
+  const patronId = req.tokenResponse.decodedPatron.sub || '';
+  let barcode;
+
   axios
-    .get(`${apiBase}/discovery/resources/${req.params.bibId}`)
+    .get(`${apiBase}/discovery/resources/${bibId}`)
     .then(response => {
       barcode = LibraryItem.getItem(response.data, req.params.itemId).barcode;
 
@@ -78,6 +82,7 @@ function confirmRequestServer(req, res, next) {
         }
       )
       .then(barcodeAPIresponse => {
+        console.log(barcodeAPIresponse.data.itemListElement[0].deliveryLocation);
         res.locals.data.Store = {
           bib: response.data,
           searchKeywords: '',
@@ -303,12 +308,13 @@ function createHoldRequestServer(req, res, pickedUpBibId = '', pickedUpItemId = 
       res.redirect(
         `/hold/confirmation/${bibId}-${itemId}?pickupLocation=${response.data.data.pickupLocation}&requestId=${response.data.data.id}`
       );
-    })
-    .catch(error => {
+    },
+    (error) => {
       // console.log(error);
       console.log(`Error calling Holds API : ${error.data.message}`);
       res.redirect(`/hold/request/${bibId}-${itemId}?errorMessage=${error.data.message}`);
-    }); /* end axios call */
+    }
+  );
 }
 
 function createHoldRequestAjax(req, res) {
