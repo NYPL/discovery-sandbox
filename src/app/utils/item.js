@@ -56,7 +56,7 @@ function LibraryItem() {
     identifiersArray.map(
       (i) => {
         if (typeof i === 'string') {
-          tagsArray.map(
+          neededTagsArray.map(
             (t) => {
               if (i.indexOf(t.name) !== -1) {
                 identifierObj[t.name] = i.replace(t.value, '');

@@ -77,9 +77,10 @@ function postHoldAPI(req, pickedUpItemId, pickupLocation, cb, errorCb) {
  * @param {string} patronId
  * @param {string} accessToken
  * @param {function} cb - callback when we have valid response
+ * @param {function} errorCb - callback when error
  * @return {function}
  */
-function getDeliveryLocations(bibData, barcode, patronId, accessToken, cb) {
+function getDeliveryLocations(bibData, barcode, patronId, accessToken, cb, errorCb) {
   return axios.get(
     `${apiBase}/request/deliverylocationsbybarcode?barcodes[]=${barcode}&patronId=${patronId}`,
     {
@@ -97,9 +98,7 @@ function getDeliveryLocations(bibData, barcode, patronId, accessToken, cb) {
     );
   })
   .catch(barcodeAPIError => {
-    console.error(
-      `deliverylocationsbybarcode API error: ${JSON.stringify(barcodeAPIError, null, 2)}`
-    );
+    errorCb(barcodeAPIError);
   });
 }
 
@@ -143,6 +142,9 @@ function confirmRequestServer(req, res, next) {
             isEddRequestable,
           };
           next();
+        },
+        (e) => {
+          console.error(`deliverylocationsbybarcode API error: ${JSON.stringify(e, null, 2)}`);
         }
       );
     },
@@ -200,6 +202,9 @@ function newHoldRequestServer(req, res, next) {
           };
 
           next();
+        },
+        (e) => {
+          console.error(`deliverylocationsbybarcode API error: ${JSON.stringify(e, null, 2)}`);
         }
       );
     },
