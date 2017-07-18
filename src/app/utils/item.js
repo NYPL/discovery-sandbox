@@ -42,26 +42,28 @@ function LibraryItem() {
   ];
 
   /**
-   * getIdentifiers(identifiers)
+   * getIdentifiers(identifiersArray, neededTagsArray)
    * Gets into the array of identifiers to target the item with "urn:barcode:" prefix and return it.
    * In the future we might have more different identifiers.
    *
-   * @param {array} identifiers.
+   * @param {array} identifiersArray
+   * @param {tagsArray} neededTagsArray
    * @return {object}
    */
-  this.getIdentifiers = (identifiers) => {
+  this.getIdentifiers = (identifiersArray, neededTagsArray) => {
     const identifierObj = {};
 
-    identifiers.map(
-      (b) => {
-        if (typeof b === 'string') {
-          if (b.indexOf('urn:barcode:') !== -1) {
-            identifierObj.barcode = b.replace('urn:barcode:', '');
+    identifiersArray.map(
+      (i) => {
+        if (typeof i === 'string') {
+          tagsArray.map(
+            (t) => {
+              if (i.indexOf(t.name) !== -1) {
+                identifierObj[t.name] = i.replace(t.value, '');
+              }
+            });
           }
-          return;
         }
-        return;
-      }
     );
 
     return identifierObj;
@@ -105,7 +107,10 @@ function LibraryItem() {
     const nyplRecap = !!(holdingLocation && !_isEmpty(holdingLocation) &&
       holdingLocation['@id'].substring(4, 6) === 'rc');
     const barcode = (item.identifier && item.identifier.length) ?
-      this.getIdentifiers(item.identifier).barcode : '';
+      this.getIdentifiers(
+        item.identifier,
+        [{ name: 'barcode', value: 'urn:barcode:' }]
+      ).barcode : '';
 
     if (isElectronicResource && item.electronicLocator[0].url) {
       status = { '@id': '', prefLabel: 'Available' };
