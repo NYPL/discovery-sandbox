@@ -18,7 +18,7 @@ class Store {
       updateField: Actions.updateField,
       updateForm: Actions.updateForm,
       updateDeliveryLocations: Actions.updateDeliveryLocations,
-      updateIsEddRequestable: ctions.updateIsEddRequestable,
+      updateIsEddRequestable: Actions.updateIsEddRequestable,
     });
 
     this.state = {
