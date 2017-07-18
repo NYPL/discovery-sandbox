@@ -65,7 +65,8 @@ router
 
 router
   .route('/api/newHold')
-  .get(Hold.createHoldRequestAjax);
+  .get(Hold.createHoldRequestAjax)
+  .post(Hold.createHoldRequestAjaxPost);
 
 router
   .route('/')

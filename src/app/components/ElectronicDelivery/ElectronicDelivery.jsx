@@ -64,27 +64,10 @@ class ElectronicDelivery extends React.Component {
       itemId,
     } = this.state;
     const path = `/hold/confirmation/${bibId}-${itemId}`;
-
-    // This will give you the form values in the form of:
-    // {
-    //   name: '',
-    //   email: '',
-    //   chapter: '',
-    //   author: '',
-    //   date: '',
-    //   volume: '',
-    //   issue: '',
-    //   'starting-page': '',
-    //   'ending-page': '',
-    // };
-    // This can then be serialized and sent to the Request API endpoint once we get it.
-    // For now it's just functionally getting this data for a client side ajax EDD request.
-    // Please delete this later.
-    const data = _extend({bibId, itemId}, fields);
+    const data = _extend({ bibId, itemId }, fields);
 
     axios
-      .post(`/edd?itemId=${itemId}&pickupLocation=edd`, data)
-      // .get(`/api/newHold?itemId=${itemId}&pickupLocation=edd`)
+      .post(`/api/newHold?itemId=${itemId}&pickupLocation=edd`, data)
       .then(response => {
         if (response.data.error && response.data.error.status !== 200) {
           this.context.router.push(`${path}?errorMessage=${response.data.error.statusText}`);
