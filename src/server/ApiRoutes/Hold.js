@@ -210,6 +210,7 @@ function newHoldRequestServer(req, res, next) {
         error,
         form,
       };
+
       next();
     }
   );
