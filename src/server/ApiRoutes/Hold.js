@@ -80,7 +80,7 @@ function postHoldAPI(req, pickedUpItemId, pickupLocation, cb, errorCb) {
  * @param {function} errorCb - callback when error
  * @return {function}
  */
-function getDeliveryLocations(bibData, barcode, patronId, accessToken, cb, errorCb) {
+function getDeliveryLocations(barcode, patronId, accessToken, cb, errorCb) {
   return axios.get(
     `${apiBase}/request/deliverylocationsbybarcode?barcodes[]=${barcode}&patronId=${patronId}`,
     {
@@ -92,7 +92,6 @@ function getDeliveryLocations(bibData, barcode, patronId, accessToken, cb, error
   )
   .then(barcodeAPIresponse => {
     cb(
-      bibData,
       barcodeAPIresponse.data.itemListElement[0].deliveryLocation,
       barcodeAPIresponse.data.itemListElement[0].eddRequestable
     );
@@ -129,13 +128,12 @@ function confirmRequestServer(req, res, next) {
       barcode = LibraryItem.getItem(bibResponseData, req.params.itemId).barcode;
 
       getDeliveryLocations(
-        bibResponseData,
         barcode,
         patronId,
         accessToken,
-        (bibData, deliveryLocations, isEddRequestable) => {
+        (deliveryLocations, isEddRequestable) => {
           res.locals.data.Store = {
-            bib: bibData,
+            bib: bibResponseData,
             searchKeywords: '',
             error,
             deliveryLocations,
@@ -187,13 +185,12 @@ function newHoldRequestServer(req, res, next) {
       barcode = LibraryItem.getItem(bibResponseData, req.params.itemId).barcode;
 
       getDeliveryLocations(
-        bibResponseData,
         barcode,
         patronId,
         accessToken,
-        (bibData, deliveryLocations, isEddRequestable) => {
+        (deliveryLocations, isEddRequestable) => {
           res.locals.data.Store = {
-            bib: bibData,
+            bib: bibResponseData,
             searchKeywords: '',
             error,
             form,
