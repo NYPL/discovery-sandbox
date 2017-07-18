@@ -56,7 +56,7 @@ function LibraryItem() {
       (b) => {
         if (typeof b === 'string') {
           if (b.indexOf('urn:barcode:') !== -1) {
-          identifierObj.barcode = b.replace('urn:barcode:', '');
+            identifierObj.barcode = b.replace('urn:barcode:', '');
           }
           return;
         }
