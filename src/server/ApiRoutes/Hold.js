@@ -69,10 +69,9 @@ function postHoldAPI(req, pickedUpItemId, pickupLocation, cb, errorCb) {
 }
 
 /**
- * getDeliveryLocations(bibData, barcode, patronId, accessToken, cb)
+ * getDeliveryLocations(barcode, patronId, accessToken, cb, errorCb)
  * The function to make a request to get delivery locations of an item.
  *
- * @param {object} bibData
  * @param {string} barcode
  * @param {string} patronId
  * @param {string} accessToken
@@ -343,6 +342,7 @@ function eddServer(req, res) {
 }
 
 export default {
+  getDeliveryLocations,
   confirmRequestServer,
   newHoldRequestServer,
   createHoldRequestServer,

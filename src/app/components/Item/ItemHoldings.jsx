@@ -65,9 +65,12 @@ class ItemHoldings extends React.Component {
 
     // Search for the bib? Just pass the data.
     axios
-      .get(`/api/bib?bibId=${bibId}`)
+      .get(`/api/bib?bibId=${bibId}&itemId=${itemId}`)
       .then(response => {
-        Actions.updateBib(response.data);
+        Actions.updateBib(response.data.bib);
+        Actions.updateDeliveryLocations(response.data.deliveryLocations);
+        Actions.updateIsEddRequestable(response.data.isEddRequestable);
+
         this.context.router.push(`/hold/request/${bibId}-${itemId}`);
       })
       .catch(error => {
