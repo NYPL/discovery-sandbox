@@ -19,8 +19,8 @@ const apiBase = appConfig.api[appEnvironment];
  * @param {req} req
  * @param {string} pickedUpItemId
  * @param {string} pickupLocation
- * @param {function} callback
- * @param {function} callback when error
+ * @param {function} cb - callback when we have valid response
+ * @param {function} errorCb - callback when error
  * @return {function}
  */
 function postHoldAPI(req, pickedUpItemId, pickupLocation, cb, errorCb) {
@@ -76,14 +76,14 @@ function postHoldAPI(req, pickedUpItemId, pickupLocation, cb, errorCb) {
  * @param {string} barcode
  * @param {string} patronId
  * @param {string} accessToken
- * @param {function} callback
+ * @param {function} cb - callback when we have valid response
  * @return {function}
  */
 function getDeliveryLocations(bibData, barcode, patronId, accessToken, cb) {
   return axios.get(
     `${apiBase}/request/deliverylocationsbybarcode?barcodes[]=${barcode}&patronId=${patronId}`,
-    { headers:
-      {
+    {
+      headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${accessToken}`,
       },
@@ -142,7 +142,7 @@ function confirmRequestServer(req, res, next) {
             deliveryLocations,
             isEddRequestable,
           };
-        next();
+          next();
         }
       );
     },
