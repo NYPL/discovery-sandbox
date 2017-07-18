@@ -1,6 +1,8 @@
 import axios from 'axios';
 
 import appConfig from '../../../appConfig.js';
+import Hold from './Hold.js';
+import LibraryItem from './../../app/utils/item.js';
 
 const appEnvironment = process.env.APP_ENV || 'production';
 const apiBase = appConfig.api[appEnvironment];
@@ -41,12 +43,48 @@ function bibSearchServer(req, res, next) {
   );
 }
 
+/**
+ * bibSearchAjax(req, res)
+ * The function for getting the bib-item data along with its delivery locations.
+ *
+ * @param {req}
+ * @param {res}
+ */
 function bibSearchAjax(req, res) {
   const bibId = req.query.bibId || '';
+  const itemId = req.query.itemId || '';
+  const accessToken = req.tokenResponse.accessToken || '';
+  const patronId = req.tokenResponse.decodedPatron.sub || '';
 
   fetchBib(
     bibId,
-    (data) => res.json(data),
+    (bibData) => {
+      const barcode = LibraryItem.getItem(bibData, itemId).barcode;
+
+      Hold.getDeliveryLocations(
+        barcode,
+        patronId,
+        accessToken,
+        (deliveryLocations, isEddRequestable) => {
+          res.json({
+            bib: bibData,
+            deliveryLocations,
+            isEddRequestable,
+          });
+        },
+        (deliveryLocationsError) => {
+          console.error(
+            `deliverylocations API error: ${JSON.stringify(deliveryLocationsError, null, 2)}`
+          );
+
+          res.json({
+            bib: bibData,
+            deliveryLocations: [],
+            isEddRequestable: false,
+          });
+        }
+      );
+    },
     (error) => res.json(error)
   );
 }
