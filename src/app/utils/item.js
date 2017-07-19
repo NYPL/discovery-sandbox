@@ -329,7 +329,7 @@ function LibraryItem() {
    * @param {string} bibId
    * @return {boolean}
    */
-  this.isNYPLReCAP = (bibId = '') => (bibId.indexOf('pb') !== -1) && (bibId.indexOf('cb') !== -1);
+  this.isNYPLReCAP = (bibId = '') => (bibId.indexOf('pb') === -1) && (bibId.indexOf('cb') === -1);
 }
 
 export default new LibraryItem;
