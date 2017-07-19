@@ -64,6 +64,10 @@ router
   .get(Bib.bibSearchAjax);
 
 router
+  .route('/api/hold/request/:bibId-:itemId')
+  .get(Hold.newHoldRequestAjax);
+
+router
   .route('/api/newHold')
   .get(Hold.createHoldRequestAjax)
   .post(Hold.createHoldRequestAjaxPost);

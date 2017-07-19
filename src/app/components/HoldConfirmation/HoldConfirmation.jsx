@@ -9,8 +9,6 @@ import {
   findWhere as _findWhere,
 } from 'underscore';
 
-import axios from 'axios';
-
 import Breadcrumbs from '../Breadcrumbs/Breadcrumbs.jsx';
 import LibraryItem from '../../utils/item.js';
 

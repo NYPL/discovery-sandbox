@@ -37,7 +37,6 @@ const SearchResultsPage = (props, context) => {
   const h1searchKeywordsLabel = searchKeywords ? `for ${searchKeywords}` : '';
   const h1pageLabel = totalPages ? `page ${page} of ${totalPages}` : '';
   const h2Label = `Search results ${h1searchKeywordsLabel} ${h1pageLabel}`;
-
   const searchStr = location.search;
 
   const updatePage = (nextPage) => {
