@@ -19,6 +19,7 @@ const BibPage = (props) => {
   const bibId = bib && bib['@id'] ? bib['@id'].substring(4) : '';
   const title = bib.title && bib.title.length ? bib.title[0] : '';
   const items = LibraryItem.getItems(bib);
+  const isNYPLReCAP = LibraryItem.isNYPLReCAP(bib['@id']);
   const bNumber = bib && bib.idBnum ? bib.idBnum : '';
   const searchURL = createAPIQuery({});
   const itemPage = props.location.search;
@@ -76,7 +77,8 @@ const BibPage = (props) => {
                     bib={bib}
                     title="Bib details"
                   />
-                  <MarcRecord bNumber={bNumber[0]} />
+
+                  {isNYPLReCAP && <MarcRecord bNumber={bNumber[0]} />}
               </div>
             </div>
           </div>
