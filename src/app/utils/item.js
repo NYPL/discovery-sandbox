@@ -43,8 +43,8 @@ function LibraryItem() {
 
   /**
    * getIdentifiers(identifiersArray, neededTagsArray)
-   * Gets into the array of identifiers to target the item with "urn:barcode:" prefix and return it.
-   * In the future we might have more different identifiers.
+   * Gets into the array of the identifiers of an item. And then targets the identifiers we need
+   * by the prefixes in neededTagsArray. At last, extracts the identifiers and returns them.
    *
    * @param {array} identifiersArray
    * @param {tagsArray} neededTagsArray
@@ -106,11 +106,10 @@ function LibraryItem() {
     // nypl-owned ReCAP
     const nyplRecap = !!(holdingLocation && !_isEmpty(holdingLocation) &&
       holdingLocation['@id'].substring(4, 6) === 'rc');
-    const barcode = (item.identifier && item.identifier.length) ?
-      this.getIdentifiers(
-        item.identifier,
-        [{ name: 'barcode', value: 'urn:barcode:' }]
-      ).barcode : '';
+    // The identifier we need for an item now
+    const identifiersArray = [{ name: 'barcode', value: 'urn:barcode:' }];
+    const bibIdentifiers = this.getIdentifiers(item.identifier, identifiersArray);
+    const barcode = bibIdentifiers.barcode || '';
 
     if (isElectronicResource && item.electronicLocator[0].url) {
       status = { '@id': '', prefLabel: 'Available' };

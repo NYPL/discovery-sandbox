@@ -142,6 +142,16 @@ function confirmRequestServer(req, res, next) {
         },
         (e) => {
           console.error(`deliverylocationsbybarcode API error: ${JSON.stringify(e, null, 2)}`);
+
+          res.locals.data.Store = {
+            bib: bibResponseData,
+            searchKeywords: '',
+            error,
+            deliveryLocations: [],
+            isEddRequestable: false,
+          };
+
+          next();
         }
       );
     },
@@ -201,6 +211,17 @@ function newHoldRequestServer(req, res, next) {
         },
         (e) => {
           console.error(`deliverylocationsbybarcode API error: ${JSON.stringify(e, null, 2)}`);
+
+          res.locals.data.Store = {
+            bib: bibResponseData,
+            searchKeywords: '',
+            error,
+            form,
+            deliveryLocations: [],
+            isEddRequestable: false,
+          };
+
+          next();
         }
       );
     },
