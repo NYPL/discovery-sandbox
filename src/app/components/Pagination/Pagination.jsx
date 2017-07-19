@@ -1,10 +1,23 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
-import {
-  LeftArrowIcon,
-  RightArrowIcon,
-} from 'dgx-svg-icons';
+// import {
+//   LeftWedgeIcon,
+//   RightWedgeIcon,
+// } from 'dgx-svg-icons';
+
+const LeftWedgeIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet" aria-hidden="true" viewBox="0 0 8.97 15.125">
+    <title>Wedge Left Arrow</title>
+    <polygon points="7.563 15.125 0 7.562 7.563 0 8.97 1.407 2.815 7.562 8.97 13.717 7.563 15.125" />
+  </svg>
+);
+const RightWedgeIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet" aria-hidden="true" viewBox="0 0 8.97 15.126">
+    <title>Wedge Right Arrow</title>
+    <polygon points="1.407 0 8.97 7.563 1.407 15.126 0 13.718 6.155 7.563 0 1.408 1.407 0" />
+  </svg>
+);
 
 class Pagination extends React.Component {
   /*
@@ -26,7 +39,7 @@ class Pagination extends React.Component {
     if (!page) return null;
     const intPage = parseInt(page, 10);
     const pageNum = type === 'Next' ? intPage + 1 : intPage - 1;
-    const svg = type === 'Next' ? <RightArrowIcon /> : <LeftArrowIcon />;
+    const svg = type === 'Next' ? <RightWedgeIcon /> : <LeftWedgeIcon />;
     const apiUrl = this.props.createAPIQuery({ page: pageNum });
     const localUrl = `${this.props.to.pathname}${pageNum}`;
     const url = apiUrl ? { pathname: `/search?${apiUrl}` } : { pathname: localUrl };
@@ -38,7 +51,7 @@ class Pagination extends React.Component {
         aria-controls={this.props.ariaControls}
         onClick={(e) => this.onClick(e, pageNum)}
       >
-        {svg} {type} Page
+        {svg} {type}
       </Link>
     );
   }
