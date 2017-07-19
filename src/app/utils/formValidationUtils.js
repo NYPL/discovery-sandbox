@@ -125,12 +125,12 @@ function validate(form, cb) {
     },
     // optional
     date: {
-      validate: (val) => isNumeric(val) && isLength(val, { min: 1, max: 4 }),
+      validate: () => true,
       errorMsg: 'Please enter the date published',
     },
     // optional
     volume: {
-      validate: (val) => !!val && isNumeric(val),
+      validate: () => true,
       errorMsg: 'Please enter the item volume',
     },
     // optional
@@ -155,7 +155,7 @@ function validate(form, cb) {
 
   const error = {};
   _mapObject(form, (val, key) => {
-    const isValid = fieldsToCheck[key].validate(val);
+    const isValid = fieldsToCheck[key].validate('' + val);
 
     if (!isValid) {
       error[key] = fieldsToCheck[key].errorMsg;

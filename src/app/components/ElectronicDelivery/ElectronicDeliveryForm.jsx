@@ -79,7 +79,7 @@ class ElectronicDeliveryForm extends React.Component {
           <h3>Contact Information</h3>
 
           <div className={`nypl-text-field ${errorClass.email}`}>
-            <label htmlFor="email" id="email-label">Email address
+            <label htmlFor="email-address" id="email-label">Email address
               <span className="nypl-required-field">&nbsp;(Required)</span>
             </label>
             <input
@@ -111,7 +111,7 @@ class ElectronicDeliveryForm extends React.Component {
           <h3>Chapter or Article Information</h3>
 
           <div className={`nypl-text-field ${errorClass.chapter}`}>
-            <label htmlFor="chapter" id="chapter-label">Chapter number or article title
+            <label htmlFor="chapter-title" id="chapter-label">Chapter number or article title
               <span className="nypl-required-field">&nbsp;(Required)</span>
             </label>
             <input
@@ -161,7 +161,7 @@ class ElectronicDeliveryForm extends React.Component {
             />
           </div>
 
-          <div className="nypl-text-field">
+          <div className={`nypl-text-field ${errorClass.issue}`}>
             <label htmlFor="issue" id="issue-label">Issue</label>
             <input
               id="issue"
@@ -174,7 +174,7 @@ class ElectronicDeliveryForm extends React.Component {
           </div>
 
           <div className="nypl-text-field">
-            <label htmlFor="notes" id="notes-label">Notes</label>
+            <label htmlFor="request-notes" id="notes-label">Notes</label>
             <input
               id="request-notes"
               type="text"
@@ -190,8 +190,8 @@ class ElectronicDeliveryForm extends React.Component {
           <legend>Page Number Range (Max 50 pages)</legend>
           <h3>Page Number Range (Max 50 pages)</h3>
 
-          <div className={`nypl-year-field ${errorClass['starting-page']}`}>
-            <label htmlFor="starting-page" id="starting-page-label">Start Page
+          <div className={`nypl-year-field ${errorClass['start-page']}`}>
+            <label htmlFor="start-page" id="start-page-label">Start Page
               <span className="nypl-required-field">&nbsp;(Required)</span>
             </label>
             <input
@@ -201,15 +201,15 @@ class ElectronicDeliveryForm extends React.Component {
               className="form-text"
               aria-labelledby="start-page-label"
               name="startPage"
-              value={this.state.form['start-page']}
+              value={this.state.form['startPage']}
               onChange={(e) => this.handleUpdate(e, 'startPage')}
             />
           </div>
 
           <span>&mdash;</span>
 
-          <div className={`nypl-year-field ${errorClass['ending-page']}`}>
-            <label htmlFor="ending-page" id="ending-page-label">Ending Page
+          <div className={`nypl-year-field ${errorClass['end-page']}`}>
+            <label htmlFor="end-page" id="end-page-label">Ending Page
               <span className="nypl-required-field">&nbsp;(Required)</span>
             </label>
             <input
@@ -217,9 +217,9 @@ class ElectronicDeliveryForm extends React.Component {
               type="number"
               required
               className="form-text"
-              aria-labelledby="ending-page-label"
+              aria-labelledby="end-page-label"
               name="endPage"
-              value={this.state.form['end-page']}
+              value={this.state.form['endPage']}
               onChange={(e) => this.handleUpdate(e, 'endPage')}
             />
           </div>
