@@ -12,30 +12,20 @@ class ElectronicDeliveryForm extends React.Component {
   constructor(props) {
     super(props);
 
+    // NOTE
+    // this.props.form and this.props.error are coming from the server only in the
+    // no-js scenario. If they're not available, then we use this 'fallback', but the
+    // empty object structure is needed.
     this.state = {
       form: !_isEmpty(this.props.form) ? this.props.form :
         {
           name: '',
           email: '',
-          chapter: '',
-          author: '',
-          date: '',
-          volume: '',
-          issue: '',
-          'starting-page': '',
-          'ending-page': '',
         },
       error: !_isEmpty(this.props.error) ? this.props.error :
         {
           name: '',
           email: '',
-          chapter: '',
-          author: '',
-          date: '',
-          volume: '',
-          issue: '',
-          'starting-page': '',
-          'ending-page': '',
         },
     };
 
@@ -52,6 +42,9 @@ class ElectronicDeliveryForm extends React.Component {
   }
 
   handleUpdate(e, input) {
+    // Kind of hard to read. Basically, the `form` property is being updated and all
+    // the values are being retained. If we don't `extend` the object value for `form`,
+    // then only the last value in the form gets updated and the rest are gone.
     this.setState({ form: _extend(this.state.form, { [input]: e.target.value }) });
   }
 
@@ -59,19 +52,15 @@ class ElectronicDeliveryForm extends React.Component {
     const errorClass = {
       name: '',
       email: '',
-      chapter: '',
-      author: '',
-      date: '',
-      volume: '',
-      issue: '',
-      'starting-page': '',
-      'ending-page': '',
     };
 
     _mapObject(this.state.form, (val, key) => {
       errorClass[key] = this.state.error[key] ? 'nypl-field-error' : '';
     });
 
+    // A lot of this can be refactored to be in a loop but that's a later and next step.
+    // I was thinking each `nypl-text-field` or `nypl-year-field` div can be
+    // its own component in a loop with the required props and errors passed down.
     return (
       <form
         className="place-hold-form form electronic-delivery-form"
@@ -143,30 +132,15 @@ class ElectronicDeliveryForm extends React.Component {
           <h3>Chapter or Article Information</h3>
 
           <div className={`nypl-text-field ${errorClass.chapter}`}>
-            <label htmlFor="chapter" id="chapter-label">Chapter number or article title
-              <span className="nypl-required-field">&nbsp;(Required)</span>
-            </label>
+            <label htmlFor="chapter" id="chapter-label">Chapter number or article title</label>
             <input
               id="chapter"
               type="text"
-              required
               aria-labelledby="chapter-label chapter-status"
-              aria-required="true"
               name="chapter"
               value={this.state.form.chapter}
               onChange={(e) => this.handleUpdate(e, 'chapter')}
             />
-            {
-              errorClass.chapter &&
-                (<span
-                  className="nypl-field-status"
-                  id="chapter-status"
-                  aria-live="assertive"
-                  aria-atomic="true"
-                >
-                  Please indicate the chapter number or article title
-                </span>)
-            }
           </div>
 
           <div className="nypl-text-field">
@@ -182,57 +156,27 @@ class ElectronicDeliveryForm extends React.Component {
           </div>
 
           <div className={`nypl-text-field ${errorClass.date}`}>
-            <label htmlFor="date" id="date-label">Date published
-              <span className="nypl-required-field">&nbsp;(Required)</span>
-            </label>
+            <label htmlFor="date" id="date-label">Date published</label>
             <input
               id="date"
               type="text"
-              required
               aria-labelledby="date-label date-status"
-              aria-required="true"
               name="date"
               value={this.state.form.date}
               onChange={(e) => this.handleUpdate(e, 'date')}
             />
-            {
-              errorClass.date &&
-                (<span
-                  className="nypl-field-status"
-                  id="date-status"
-                  aria-live="assertive"
-                  aria-atomic="true"
-                >
-                  Please indicate the date published
-                </span>)
-            }
           </div>
 
           <div className={`nypl-text-field ${errorClass.volume}`}>
-            <label htmlFor="volume" id="volume-label">Volume
-              <span className="nypl-required-field">&nbsp;(Required)</span>
-            </label>
+            <label htmlFor="volume" id="volume-label">Volume</label>
             <input
               id="volume"
               type="text"
-              required
               aria-labelledby="volume-label volume-status"
-              aria-required="true"
               name="volume"
               value={this.state.form.volume}
               onChange={(e) => this.handleUpdate(e, 'volume')}
             />
-            {
-              errorClass.volume &&
-                (<span
-                  className="nypl-field-status"
-                  id="volume-status"
-                  aria-live="assertive"
-                  aria-atomic="true"
-                >
-                  Please indicate the volume
-                </span>)
-            }
           </div>
 
           <div className="nypl-text-field">
@@ -246,6 +190,18 @@ class ElectronicDeliveryForm extends React.Component {
               onChange={(e) => this.handleUpdate(e, 'issue')}
             />
           </div>
+
+          <div className="nypl-text-field">
+            <label htmlFor="notes" id="notes-label">Notes</label>
+            <input
+              id="notes"
+              type="text"
+              aria-labelledby="notes-label notes-status"
+              name="notes"
+              value={this.state.form.notes}
+              onChange={(e) => this.handleUpdate(e, 'notes')}
+            />
+          </div>
         </fieldset>
 
         <fieldset className="nypl-fieldset v2 number-range">
@@ -254,60 +210,32 @@ class ElectronicDeliveryForm extends React.Component {
 
           <div className={`nypl-year-field ${errorClass['starting-page']}`}>
             <label htmlFor="starting-page" id="starting-page-label">Start Page
-              <span className="nypl-required-field">&nbsp;(Required)</span>
             </label>
             <input
               id="starting-page"
               type="number"
               className="form-text"
-              required
               aria-labelledby="starting-page-label"
-              aria-required="true"
               name="starting-page"
               value={this.state.form['starting-page']}
               onChange={(e) => this.handleUpdate(e, 'starting-page')}
             />
-            {
-              errorClass['starting-page'] &&
-                (<span
-                  className="nypl-field-status"
-                  id="volume-status"
-                  aria-live="assertive"
-                  aria-atomic="true"
-                >
-                  Values must be numeric only
-                </span>)
-            }
           </div>
 
           <span>&mdash;</span>
 
           <div className={`nypl-year-field ${errorClass['ending-page']}`}>
             <label htmlFor="ending-page" id="ending-page-label">Ending Page
-              <span className="nypl-required-field">&nbsp;(Required)</span>
             </label>
             <input
               id="ending-page"
               type="number"
               className="form-text"
-              required
               aria-labelledby="ending-page-label"
-              aria-required="true"
               name="ending-page"
               value={this.state.form['ending-page']}
               onChange={(e) => this.handleUpdate(e, 'ending-page')}
             />
-            {
-              errorClass['ending-page'] &&
-                (<span
-                  className="nypl-field-status"
-                  id="volume-status"
-                  aria-live="assertive"
-                  aria-atomic="true"
-                >
-                  Values must be numeric only
-                </span>)
-            }
           </div>
         </fieldset>
 

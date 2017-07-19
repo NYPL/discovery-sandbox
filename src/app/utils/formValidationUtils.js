@@ -4,7 +4,6 @@ import {
   isLength,
   isNumeric,
 } from 'validator';
-// import { isDate } from '../../utils/formValidationUtils';
 import {
   mapObject as _mapObject,
   isEmpty as _isEmpty,
@@ -59,14 +58,6 @@ function createAnchorID(key) {
   let hashElement = (key && typeof key === 'string') ?
     `${key.charAt(0).toUpperCase()}${key.substr(1)}` : '';
 
-  if (hashElement === 'DateOfBirth') {
-    hashElement = 'Dob';
-  }
-
-  if (hashElement === 'Line1') {
-    hashElement = 'Street1';
-  }
-
   if (!hashElement) { return null; }
 
   return `#patron${hashElement}`;
@@ -94,13 +85,6 @@ function renderServerValidationError(object) {
         errorMessage = (!anchorText && !anchorText) ? <li>One of the fields is incorrect.</li> :
           <li key={index}><a href={createAnchorID(key)}>{anchorText}</a>{restText}</li>;
       } else {
-        if (key === 'zip') {
-          errorMessage = (
-            <li key={index}>
-              Please enter a 5-digit <a href={createAnchorID(key)}>postal code</a>.
-            </li>
-          );
-        }
 
         if (key === 'email') {
           errorMessage = (
@@ -119,10 +103,6 @@ function renderServerValidationError(object) {
           );
         }
 
-        if (key === 'pin') {
-          errorMessage =
-            <li key={index}>Please enter a 4-digit <a href={createAnchorID(key)}>PIN</a>.</li>;
-        }
       }
 
       errorMessages.push(errorMessage);
@@ -168,6 +148,11 @@ function validate(form, cb) {
     },
     // optional
     issue: {
+      validate: () => true,
+      errorMsg: '',
+    },
+    // optional
+    notes: {
       validate: () => true,
       errorMsg: '',
     },

@@ -7,7 +7,7 @@ import Breadcrumbs from '../Breadcrumbs/Breadcrumbs.jsx';
 import ResultList from '../Results/ResultsList';
 import Search from '../Search/Search.jsx';
 import Sorter from '../Sorter/Sorter';
-import Pagination from '../Pagination/Pagination';
+import SearchPagination from '../SearchPagination/SearchPagination';
 
 import {
   basicQuery,
@@ -19,7 +19,6 @@ const SearchResultsPage = (props, context) => {
   const {
     searchResults,
     searchKeywords,
-    selectedFacets,
     page,
     location,
     sortBy,
@@ -86,20 +85,12 @@ const SearchResultsPage = (props, context) => {
               aria-relevant="additions removals"
               aria-describedby="results-description"
             >
-              <Hits
-                hits={totalHits}
-                spinning={spinning}
-                searchKeywords={searchKeywords}
-                selectedFacets={selectedFacets}
-                createAPIQuery={createAPIQuery}
-                error={error}
-              />
-
               {
                 !!(totalHits && totalHits !== 0) && (
                   <Sorter
                     sortBy={sortBy}
                     page={page}
+                    searchKeywords={searchKeywords}
                     createAPIQuery={createAPIQuery}
                   />
                 )
@@ -112,9 +103,10 @@ const SearchResultsPage = (props, context) => {
 
               {
                 !!(totalHits && totalHits !== 0) &&
-                  (<Pagination
+                  (<SearchPagination
                     total={totalHits}
                     perPage={50}
+                    perPageInGroup={8}
                     page={parseInt(page, 10)}
                     createAPIQuery={createAPIQuery}
                     updatePage={updatePage}
@@ -131,7 +123,6 @@ const SearchResultsPage = (props, context) => {
 SearchResultsPage.propTypes = {
   searchResults: PropTypes.object,
   searchKeywords: PropTypes.string,
-  selectedFacets: PropTypes.object,
   page: PropTypes.string,
   location: PropTypes.object,
   sortBy: PropTypes.string,
