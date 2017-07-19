@@ -61,7 +61,7 @@ class HoldRequest extends React.Component {
    * submitRequest()
    * Client-side submit call.
    */
-  submitRequest(e, bibId, itemId) {
+  submitRequest(e, bibId, itemId, itemSource) {
     e.preventDefault();
 
     let path = `/hold/confirmation/${bibId}-${itemId}`;
@@ -71,7 +71,8 @@ class HoldRequest extends React.Component {
     }
 
     axios
-      .get(`/api/newHold?itemId=${itemId}&pickupLocation=${this.state.delivery}`)
+      .get(`/api/newHold?itemId=${itemId}&pickupLocation=${this.state.delivery}` +
+        `&itemSource=${itemSource}`)
       .then(response => {
         if (response.data.error && response.data.error.status !== 200) {
           this.context.router.push(`${path}?errorMessage=${response.data.error.statusText}`);
@@ -172,6 +173,7 @@ class HoldRequest extends React.Component {
           <small>Call number:</small><br />{selectedItem.callNumber}
         </div>
       ) : null;
+    const itemSource = selectedItem.itemSource;
     let content = null;
 
     if (bib) {
@@ -191,9 +193,9 @@ class HoldRequest extends React.Component {
 
           <form
             className="place-hold-form form"
-            action={`/hold/request/${bibId}-${itemId}`}
+            action={`/hold/request/${bibId}-${itemId}-${itemSource}`}
             method="POST"
-            onSubmit={(e) => this.submitRequest(e, bibId, itemId)}
+            onSubmit={(e) => this.submitRequest(e, bibId, itemId, itemSource)}
           >
             <h2>Confirm account</h2>
             {this.renderLoggedInInstruction(patronName)}
