@@ -3,8 +3,13 @@ import LocationCodes from '../../../locationCodes.js';
 import {
   findWhere as _findWhere,
   isEmpty as _isEmpty,
-  extend as _extend,
 } from 'underscore';
+
+const itemSourceMappings = {
+  SierraNypl: 'nypl-sierra',
+  RecapCul: 'recap-cul',
+  RecapPul: 'recap-pul',
+};
 
 function LibraryItem() {
   /**
@@ -113,6 +118,7 @@ function LibraryItem() {
     const bibIdentifiers = this.getIdentifiers(item.identifier, identifiersArray);
     const barcode = bibIdentifiers.barcode || '';
     const itemSource = item.idNyplSourceId ? item.idNyplSourceId['@type'] : undefined;
+    const mappedItemSource = itemSourceMappings[itemSource];
 
     if (isElectronicResource && item.electronicLocator[0].url) {
       status = { '@id': '', prefLabel: 'Available' };
@@ -156,7 +162,7 @@ function LibraryItem() {
       requestable,
       suppressed,
       barcode,
-      itemSource,
+      itemSource: mappedItemSource,
     };
   };
 
