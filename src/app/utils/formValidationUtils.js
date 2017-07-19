@@ -55,7 +55,7 @@ function createAnchorText(wholeText) {
  * return {string}
  */
 function createAnchorID(key) {
-  let hashElement = (key && typeof key === 'string') ?
+  const hashElement = (key && typeof key === 'string') ?
     `${key.charAt(0).toUpperCase()}${key.substr(1)}` : '';
 
   if (!hashElement) { return null; }
@@ -85,7 +85,6 @@ function renderServerValidationError(object) {
         errorMessage = (!anchorText && !anchorText) ? <li>One of the fields is incorrect.</li> :
           <li key={index}><a href={createAnchorID(key)}>{anchorText}</a>{restText}</li>;
       } else {
-
         if (key === 'email') {
           errorMessage = (
             <li key={index}>
@@ -93,16 +92,6 @@ function renderServerValidationError(object) {
             </li>
           );
         }
-
-        if (key === 'username') {
-          errorMessage = (
-            <li key={index}>
-              Please enter a <a href={createAnchorID(key)}>username</a> between 5-25
-              alphanumeric characters.
-            </li>
-          );
-        }
-
       }
 
       errorMessages.push(errorMessage);
@@ -121,15 +110,11 @@ function renderServerValidationError(object) {
  */
 function validate(form, cb) {
   const fieldsToCheck = {
-    name: {
-      validate: (val) => !!val,
-      errorMsg: 'Please enter your name',
-    },
-    email: {
+    emailAddress: {
       validate: (val) => (val.trim().length && isEmail(val)),
       errorMsg: 'Please enter a correct email',
     },
-    chapter: {
+    chapterTitle: {
       validate: (val) => !!val && isNumeric(val),
       errorMsg: 'Please enter the item chapter',
     },
@@ -138,10 +123,12 @@ function validate(form, cb) {
       validate: () => true,
       errorMsg: '',
     },
+    // optional
     date: {
       validate: (val) => isNumeric(val) && isLength(val, { min: 1, max: 4 }),
       errorMsg: 'Please enter the date published',
     },
+    // optional
     volume: {
       validate: (val) => !!val && isNumeric(val),
       errorMsg: 'Please enter the item volume',
@@ -156,11 +143,11 @@ function validate(form, cb) {
       validate: () => true,
       errorMsg: '',
     },
-    'starting-page': {
+    startPage: {
       validate: (val) => isNumeric(val),
       errorMsg: 'Please enter the starting page',
     },
-    'ending-page': {
+    endPage: {
       validate: (val) => isNumeric(val),
       errorMsg: 'Please enter the end page',
     },
