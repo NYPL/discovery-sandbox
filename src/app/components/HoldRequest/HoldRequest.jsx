@@ -40,33 +40,6 @@ class HoldRequest extends React.Component {
   }
 
   /**
-   * submitRequest()
-   * Client-side submit call.
-   */
-  submitRequest(e, bibId, itemId) {
-    e.preventDefault();
-
-    let path = `/hold/confirmation/${bibId}-${itemId}`;
-
-    if (this.state.delivery === 'edd') {
-      path = `/hold/request/${bibId}-${itemId}/edd`;
-    }
-    axios
-      .get(`/api/newHold?itemId=${itemId}`)
-      .then(response => {
-        if (response.data.error && response.data.error.status !== 200) {
-          this.context.router.push(`${path}?errorMessage=${response.data.error.statusText}`);
-        } else {
-          this.context.router.push(`${path}?requestId=${response.data.id}`);
-        }
-      })
-      .catch(error => {
-        console.log(error);
-        this.context.router.push(`${path}?errorMessage=${error}`);
-      });
-  }
-
-  /**
    * requireUser()
    * Redirects the patron to OAuth log in page if he/she hasn't been logged in yet.
    *
@@ -82,6 +55,36 @@ class HoldRequest extends React.Component {
     window.location.replace(`${config.loginUrl}?redirect_uri=${fullUrl}`);
 
     return false;
+  }
+
+  /**
+   * submitRequest()
+   * Client-side submit call.
+   */
+  submitRequest(e, bibId, itemId) {
+    e.preventDefault();
+
+    let path = `/hold/confirmation/${bibId}-${itemId}`;
+
+    if (this.state.delivery === 'edd') {
+      path = `/hold/request/${bibId}-${itemId}/edd`;
+    }
+
+    axios
+      .get(`/api/newHold?itemId=${itemId}&pickupLocation=${this.state.delivery}`)
+      .then(response => {
+        if (response.data.error && response.data.error.status !== 200) {
+          this.context.router.push(`${path}?errorMessage=${response.data.error.statusText}`);
+        } else {
+          this.context.router.push(
+            `${path}?pickupLocation=${response.data.pickupLocation}&requestId=${response.data.id}`
+          );
+        }
+      })
+      .catch(error => {
+        console.log(error);
+        this.context.router.push(`${path}?errorMessage=${error}`);
+      });
   }
 
   /**
@@ -131,14 +134,13 @@ class HoldRequest extends React.Component {
           type="radio"
           name="delivery-location"
           id={`location${i}`}
-          value={location['full-name']}
+          value={location['@id'].replace('loc:', '')}
           onChange={this.onRadioSelect}
         />
         <label htmlFor={`location${i}`}>
           <span className="col location">
-            <a href={`${location.uri}`}>{location['full-name']}</a>
-            <br />{location.address.address1}<br />
-            {location.prefLabel}
+            <a href={`${location.uri}`}>{location.prefLabel}</a>
+            <br />{location.address && location.address.address1}<br />
             {location.offsite &&
               <span>
                 <br /><small>(requested from offsite storage)</small><br />
@@ -170,8 +172,6 @@ class HoldRequest extends React.Component {
           <small>Call number:</small><br />{selectedItem.callNumber}
         </div>
       ) : null;
-    const deliveryLocations = selectedItem && selectedItem.deliveryLocations ?
-      selectedItem.deliveryLocations : [];
     let content = null;
 
     if (bib) {
@@ -201,8 +201,8 @@ class HoldRequest extends React.Component {
             <p>When this item is ready, you will use it in the following location:</p>
             <fieldset className="select-location-fieldset">
               <legend className="visuallyHidden">Select a pickup location</legend>
-              {this.renderEDD()}
-              {this.renderDeliveryLocation(deliveryLocations)}
+              {(this.props.isEddRequestable) && this.renderEDD()}
+              {this.renderDeliveryLocation(this.props.deliveryLocations)}
             </fieldset>
 
             <input type="hidden" name="pickupLocation" value="test" />
@@ -259,6 +259,17 @@ HoldRequest.propTypes = {
   bib: React.PropTypes.object,
   searchKeywords: React.PropTypes.string,
   params: React.PropTypes.object,
+  deliveryLocations: React.PropTypes.array,
+  isEddRequestable: React.PropTypes.bool,
+};
+
+HoldRequest.defaultProps = {
+  location: {},
+  bib: {},
+  searchKeywords: '',
+  params: {},
+  deliveryLocations: [],
+  isEddRequestable: false,
 };
 
 export default HoldRequest;
