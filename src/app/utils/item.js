@@ -106,11 +106,10 @@ function LibraryItem() {
     // nypl-owned ReCAP
     const nyplRecap = !!(holdingLocation && !_isEmpty(holdingLocation) &&
       holdingLocation['@id'].substring(4, 6) === 'rc');
-    const barcode = (item.identifier && item.identifier.length) ?
-      this.getIdentifiers(
-        item.identifier,
-        [{ name: 'barcode', value: 'urn:barcode:' }]
-      ).barcode : '';
+    // The identifier we need for an item now
+    const identifiersArray = [{ name: 'barcode', value: 'urn:barcode:' }];
+    const bibIdentifiers = this.getIdentifiers(item.identifier, identifiersArray);
+    const barcode = bibIdentifiers.barcode || '';
 
     if (isElectronicResource && item.electronicLocator[0].url) {
       status = { '@id': '', prefLabel: 'Available' };
