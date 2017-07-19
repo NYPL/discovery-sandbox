@@ -19,13 +19,17 @@ class ElectronicDeliveryForm extends React.Component {
     this.state = {
       form: !_isEmpty(this.props.form) ? this.props.form :
         {
-          name: '',
           emailAddress: '',
+          chapterTitle: '',
+          startPage: 0,
+          endPage: 0,
         },
       error: !_isEmpty(this.props.error) ? this.props.error :
         {
-          name: '',
           emailAddress: '',
+          chapterTitle: '',
+          startPage: 0,
+          endPage: 0,
         },
     };
 
@@ -36,9 +40,9 @@ class ElectronicDeliveryForm extends React.Component {
   submit(e) {
     e.preventDefault();
 
-    // if (validate(this.state.form, (error) => this.setState({ error }))) {
+    if (validate(this.state.form, (error) => this.setState({ error }))) {
       this.props.submitRequest(this.state);
-    // }
+    }
   }
 
   handleUpdate(e, input) {
@@ -50,8 +54,10 @@ class ElectronicDeliveryForm extends React.Component {
 
   render() {
     const errorClass = {
-      name: '',
       emailAddress: '',
+      chapterTitle: '',
+      startPage: 0,
+      endPage: 0,
     };
 
     _mapObject(this.state.form, (val, key) => {
@@ -71,33 +77,6 @@ class ElectronicDeliveryForm extends React.Component {
         <fieldset className="nypl-fieldset v2">
           <legend>Contact Information</legend>
           <h3>Contact Information</h3>
-
-          <div className={`nypl-text-field ${errorClass.name}`}>
-            <label htmlFor="patron-name" id="patron-name-label">First and last name
-              <span className="nypl-required-field">&nbsp;(Required)</span>
-            </label>
-            <input
-              id="patron-name"
-              type="text"
-              required
-              aria-labelledby="patron-name-label patron-name-status"
-              aria-required="true"
-              name="name"
-              value={this.state.form.name}
-              onChange={(e) => this.handleUpdate(e, 'name')}
-            />
-            {
-              errorClass.name &&
-                (<span
-                  className="nypl-field-status"
-                  id="patron-name-status"
-                  aria-live="assertive"
-                  aria-atomic="true"
-                >
-                  Please enter your first and last name
-                </span>)
-            }
-          </div>
 
           <div className={`nypl-text-field ${errorClass.email}`}>
             <label htmlFor="email" id="email-label">Email address
@@ -132,10 +111,13 @@ class ElectronicDeliveryForm extends React.Component {
           <h3>Chapter or Article Information</h3>
 
           <div className={`nypl-text-field ${errorClass.chapter}`}>
-            <label htmlFor="chapter" id="chapter-label">Chapter number or article title</label>
+            <label htmlFor="chapter" id="chapter-label">Chapter number or article title
+              <span className="nypl-required-field">&nbsp;(Required)</span>
+            </label>
             <input
               id="chapter-title"
               type="text"
+              required
               aria-labelledby="chapter-label chapter-status"
               name="chapterTitle"
               value={this.state.form.chapterTitle}
@@ -210,10 +192,12 @@ class ElectronicDeliveryForm extends React.Component {
 
           <div className={`nypl-year-field ${errorClass['starting-page']}`}>
             <label htmlFor="starting-page" id="starting-page-label">Start Page
+              <span className="nypl-required-field">&nbsp;(Required)</span>
             </label>
             <input
               id="start-page"
               type="number"
+              required
               className="form-text"
               aria-labelledby="start-page-label"
               name="startPage"
@@ -226,10 +210,12 @@ class ElectronicDeliveryForm extends React.Component {
 
           <div className={`nypl-year-field ${errorClass['ending-page']}`}>
             <label htmlFor="ending-page" id="ending-page-label">Ending Page
+              <span className="nypl-required-field">&nbsp;(Required)</span>
             </label>
             <input
               id="end-page"
               type="number"
+              required
               className="form-text"
               aria-labelledby="ending-page-label"
               name="endPage"
