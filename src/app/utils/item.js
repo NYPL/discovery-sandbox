@@ -43,8 +43,8 @@ function LibraryItem() {
 
   /**
    * getIdentifiers(identifiersArray, neededTagsArray)
-   * Gets into the array of identifiers to target the item with "urn:barcode:" prefix and return it.
-   * In the future we might have more different identifiers.
+   * Gets into the array of the identifiers of an item. And then targets the identifiers we need
+   * by the prefixes in neededTagsArray. At last, extracts the identifiers and returns them.
    *
    * @param {array} identifiersArray
    * @param {tagsArray} neededTagsArray
