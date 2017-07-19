@@ -125,12 +125,12 @@ function validate(form, cb) {
     },
     // optional
     date: {
-      validate: (val) => isNumeric(val) && isLength(val, { min: 1, max: 4 }),
+      validate: () => true,
       errorMsg: 'Please enter the date published',
     },
     // optional
     volume: {
-      validate: (val) => !!val && isNumeric(val),
+      validate: () => true,
       errorMsg: 'Please enter the item volume',
     },
     // optional
