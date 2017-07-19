@@ -64,10 +64,10 @@ class ElectronicDelivery extends React.Component {
       itemId,
     } = this.state;
     const path = `/hold/confirmation/${bibId}-${itemId}`;
-    const data = _extend({ bibId, itemId }, fields);
+    const data = _extend({ bibId, itemId, pickupLocation: 'edd' }, fields);
 
     axios
-      .post(`/api/newHold?itemId=${itemId}&pickupLocation=edd`, data)
+      .post('/api/newHold', data)
       .then(response => {
         if (response.data.error && response.data.error.status !== 200) {
           this.context.router.push(`${path}?errorMessage=${response.data.error.statusText}`);

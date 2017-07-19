@@ -409,18 +409,16 @@ function createHoldRequestAjax(req, res) {
   );
 }
 
-function createHoldRequestAjaxEdd(req, res) {
+function createHoldRequestEdd(req, res) {
   // Ensure user is logged in
   const loggedIn = User.requireUser(req);
   if (!loggedIn) return false;
 
-  const docDeliveryData = req.body.form;
-
   return postHoldAPI(
     req,
-    req.query.itemId,
-    req.query.pickupLocation,
-    docDeliveryData,
+    req.body.itemId,
+    req.body.pickupLocation,
+    req.body.form,
     (response) => {
       res.json({
         id: response.data.data.id,
@@ -473,6 +471,6 @@ export default {
   newHoldRequestServerEdd,
   createHoldRequestServer,
   createHoldRequestAjax,
-  createHoldRequestAjaxEdd,
+  createHoldRequestEdd,
   eddServer,
 };
