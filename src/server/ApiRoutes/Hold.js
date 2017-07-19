@@ -314,7 +314,7 @@ function newHoldRequestServerEdd(req, res, next) {
       };
       next();
     },
-    (error) => {
+    (bibResponseError) => {
       res.locals.data.Store = {
         bib: {},
         searchKeywords: '',
@@ -473,7 +473,6 @@ export default {
   newHoldRequestServerEdd,
   createHoldRequestServer,
   createHoldRequestAjax,
-  createHoldRequestAjaxPost,
-  confirmRequestServer,
+  createHoldRequestAjaxEdd,
   eddServer,
 };

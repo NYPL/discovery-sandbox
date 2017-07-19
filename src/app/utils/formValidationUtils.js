@@ -55,7 +55,7 @@ function createAnchorText(wholeText) {
  * return {string}
  */
 function createAnchorID(key) {
-  let hashElement = (key && typeof key === 'string') ?
+  const hashElement = (key && typeof key === 'string') ?
     `${key.charAt(0).toUpperCase()}${key.substr(1)}` : '';
 
   if (!hashElement) { return null; }
@@ -85,7 +85,6 @@ function renderServerValidationError(object) {
         errorMessage = (!anchorText && !anchorText) ? <li>One of the fields is incorrect.</li> :
           <li key={index}><a href={createAnchorID(key)}>{anchorText}</a>{restText}</li>;
       } else {
-
         if (key === 'email') {
           errorMessage = (
             <li key={index}>
@@ -93,7 +92,6 @@ function renderServerValidationError(object) {
             </li>
           );
         }
-
       }
 
       errorMessages.push(errorMessage);
@@ -145,11 +143,11 @@ function validate(form, cb) {
       validate: () => true,
       errorMsg: '',
     },
-    'startPage': {
+    startPage: {
       validate: (val) => isNumeric(val),
       errorMsg: 'Please enter the starting page',
     },
-    'endPage': {
+    endPage: {
       validate: (val) => isNumeric(val),
       errorMsg: 'Please enter the end page',
     },
