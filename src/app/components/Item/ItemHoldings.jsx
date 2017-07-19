@@ -54,7 +54,7 @@ class ItemHoldings extends React.Component {
 
   /*
    * getRecord(e, bibId, itemId)
-   * @description Get updated information for a bib, not exactly necessary but useful,
+   * @description Get updated information for an item along with its delivery locations,
    * and route to the correct page.
    * @param {object} e Event object.
    * @param {string} bibId The bib's id.
@@ -65,7 +65,7 @@ class ItemHoldings extends React.Component {
 
     // Search for the bib? Just pass the data.
     axios
-      .get(`/api/bib?bibId=${bibId}&itemId=${itemId}`)
+      .get(`/api/hold/request/${bibId}-${itemId}`)
       .then(response => {
         Actions.updateBib(response.data.bib);
         Actions.updateDeliveryLocations(response.data.deliveryLocations);
