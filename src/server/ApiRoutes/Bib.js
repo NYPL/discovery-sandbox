@@ -1,5 +1,4 @@
 import axios from 'axios';
-
 import appConfig from '../../../appConfig.js';
 
 const appEnvironment = process.env.APP_ENV || 'production';
