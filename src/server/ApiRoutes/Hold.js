@@ -344,7 +344,7 @@ function createHoldRequestServer(req, res, pickedUpBibId = '', pickedUpItemId = 
   // NOTE: pickedUpItemId and pickedUpBibId are coming from the EDD form function below:
   const itemId = req.params.itemId || pickedUpItemId;
   const bibId = req.params.bibId || pickedUpBibId;
-  const pickupLocation = req.body['delivery-location'] || 'edd';
+  const pickupLocation = req.body['delivery-location'];
   const docDeliveryData = (req.body.form && pickupLocation === 'edd') ? req.body.form : null;
 
   if (!bibId || !itemId) {
@@ -409,7 +409,7 @@ function createHoldRequestAjax(req, res) {
   );
 }
 
-function createHoldRequestAjaxPost(req, res) {
+function createHoldRequestAjaxEdd(req, res) {
   // Ensure user is logged in
   const loggedIn = User.requireUser(req);
   if (!loggedIn) return false;
