@@ -145,7 +145,7 @@ function confirmRequestServer(req, res, next) {
         }
       );
     },
-    (error) => {
+    (bibResponseError) => {
       res.locals.data.Store = {
         bib: {},
         searchKeywords: '',
@@ -214,6 +214,60 @@ function newHoldRequestServer(req, res, next) {
 
       next();
     }
+  );
+}
+
+/**
+ * newHoldRequestAjax(req, res, next)
+ * The function to return the bib and item data with its delivery locations to the
+ * hold request route.
+ *
+ * @param {req}
+ * @param {res}
+ * @return {function}
+ */
+function newHoldRequestAjax(req, res) {
+  const bibId = req.params.bibId || '';
+  const loggedIn = User.requireUser(req, res);
+
+  if (!loggedIn) return false;
+
+  const accessToken = req.tokenResponse.accessToken || '';
+  const patronId = req.tokenResponse.decodedPatron.sub || '';
+  let barcode;
+
+  // Retrieve item
+  return Bib.fetchBib(
+    bibId,
+    (bibResponseData) => {
+      barcode = LibraryItem.getItem(bibResponseData, req.params.itemId).barcode;
+
+      getDeliveryLocations(
+        barcode,
+        patronId,
+        accessToken,
+        (deliveryLocations, isEddRequestable) => {
+          res.json({
+            bib: bibResponseData,
+            deliveryLocations,
+            isEddRequestable,
+          });
+        },
+        (deliveryLocationsError) => {
+          console.error(
+            'deliverylocationsbybarcode API error: ' +
+            `${JSON.stringify(deliveryLocationsError, null, 2)}`
+          );
+
+          res.json({
+            bib: bibResponseData,
+            deliveryLocations: [],
+            isEddRequestable: false,
+          });
+        }
+      );
+    },
+    (bibResponseError) => res.json(bibResponseError)
   );
 }
 
@@ -345,6 +399,7 @@ export default {
   getDeliveryLocations,
   confirmRequestServer,
   newHoldRequestServer,
+  newHoldRequestAjax,
   createHoldRequestServer,
   createHoldRequestAjax,
   eddServer,
