@@ -32,7 +32,10 @@ router
 
 router
   .route('/hold/request/:bibId-:itemId')
-  .get(Hold.newHoldRequestServer)
+  .get(Hold.newHoldRequestServer);
+
+router
+  .route('/hold/request/:bibId-:itemId-:itemSource')
   .post(Hold.createHoldRequestServer);
 
 router
