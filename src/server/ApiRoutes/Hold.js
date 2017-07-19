@@ -409,7 +409,7 @@ function createHoldRequestEdd(req, res) {
     req,
     req.body.itemId,
     req.body.pickupLocation,
-    req.query.itemSource,
+    '',
     req.body.form,
     (response) => {
       res.json({
