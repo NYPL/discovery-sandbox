@@ -7,7 +7,7 @@ import Breadcrumbs from '../Breadcrumbs/Breadcrumbs.jsx';
 import ResultList from '../Results/ResultsList';
 import Search from '../Search/Search.jsx';
 import Sorter from '../Sorter/Sorter';
-import SearchPagination from '../SearchPagination/SearchPagination';
+import Pagination from '../Pagination/Pagination';
 
 import {
   basicQuery,
@@ -104,10 +104,10 @@ const SearchResultsPage = (props, context) => {
 
               {
                 !!(totalHits && totalHits !== 0) &&
-                  (<SearchPagination
+                  (<Pagination
+                    ariaControls=""
                     total={totalHits}
                     perPage={50}
-                    perPageInGroup={8}
                     page={parseInt(page, 10)}
                     createAPIQuery={createAPIQuery}
                     updatePage={updatePage}

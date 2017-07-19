@@ -57,7 +57,7 @@ class Pagination extends React.Component {
     const totalPages = Math.floor(total / perPage) + 1;
 
     return (
-      <div className="nypl-results-pagination">
+      <nav className="nypl-results-pagination" aria-label="More results">
         {prevPage}
         <span
           className={`page-count ${page === 1 ? 'first' : ''}`}
@@ -67,7 +67,7 @@ class Pagination extends React.Component {
           Page {page} of {totalPages}
         </span>
         {nextPage}
-      </div>
+      </nav>
     );
   }
 }
