@@ -148,7 +148,7 @@ class ElectronicDeliveryForm extends React.Component {
             />
           </div>
 
-          <div className={`nypl-text-field ${errorClass.date}`}>
+          <div className="nypl-text-field">
             <label htmlFor="date" id="date-label">Date published</label>
             <input
               id="date"
@@ -160,7 +160,7 @@ class ElectronicDeliveryForm extends React.Component {
             />
           </div>
 
-          <div className={`nypl-text-field ${errorClass.volume}`}>
+          <div className="nypl-text-field"}>
             <label htmlFor="volume" id="volume-label">Volume</label>
             <input
               id="volume"
@@ -172,7 +172,7 @@ class ElectronicDeliveryForm extends React.Component {
             />
           </div>
 
-          <div className={`nypl-text-field ${errorClass.issue}`}>
+           <div className="nypl-text-field">
             <label htmlFor="issue" id="issue-label">Issue</label>
             <input
               id="issue"
@@ -212,7 +212,7 @@ class ElectronicDeliveryForm extends React.Component {
               className="form-text"
               aria-labelledby="start-page-label"
               name="startPage"
-              value={this.state.form['startPage']}
+              value={this.state.form.startPage}
               onChange={(e) => this.handleUpdate(e, 'startPage')}
             />
             {
@@ -241,7 +241,7 @@ class ElectronicDeliveryForm extends React.Component {
               className="form-text"
               aria-labelledby="end-page-label"
               name="endPage"
-              value={this.state.form['endPage']}
+              value={this.state.form.endPage}
               onChange={(e) => this.handleUpdate(e, 'endPage')}
             />
             {
