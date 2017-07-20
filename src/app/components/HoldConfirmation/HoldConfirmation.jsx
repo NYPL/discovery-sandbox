@@ -6,6 +6,7 @@ import { Link } from 'react-router';
 import {
   isArray as _isArray,
   isEmpty as _isEmpty,
+  findWhere as _findWhere,
 } from 'underscore';
 
 import Breadcrumbs from '../Breadcrumbs/Breadcrumbs.jsx';
@@ -57,7 +58,7 @@ class HoldConfirmation extends React.Component {
     const address = (loc.address && loc.address.address1) ? loc.address.address1 : null;
     const prefLabel = (loc.prefLabel) ? loc.prefLabel : null;
 
-    return(
+    return (
       <p>
         {uri}<br />
         {address}<br />
@@ -75,8 +76,10 @@ class HoldConfirmation extends React.Component {
       bib['@id'].substring(4) : '';
     const itemId = (this.props.params && this.props.params.itemId) ? this.props.params.itemId : '';
     const selectedItem = LibraryItem.getItem(bib, itemId);
-    const deliveryLocation = (selectedItem && selectedItem.deliveryLocations.length) ?
-      selectedItem.deliveryLocations[0] : {};
+    const deliveryLocation = (this.props.deliveryLocations && this.props.deliveryLocations.length) ?
+      _findWhere(
+        this.props.deliveryLocations, { '@id': `loc:${this.props.location.query.pickupLocation}` }
+      ) : '';
     const shelfMarkInfo =
       (selectedItem && _isArray(selectedItem.shelfMark) && selectedItem.shelfMark.length > 0) ?
         <li>Call number: {selectedItem.shelfMark[0]}</li> : null;
@@ -135,12 +138,15 @@ HoldConfirmation.propTypes = {
   location: PropTypes.object,
   searchKeywords: PropTypes.string,
   params: PropTypes.object,
+  deliveryLocations: PropTypes.array,
 };
 
 HoldConfirmation.defaultProps = {
   bib: {},
+  location: {},
   searchKeywords: '',
   params: {},
+  deliveryLocations: [],
 };
 
 export default HoldConfirmation;
