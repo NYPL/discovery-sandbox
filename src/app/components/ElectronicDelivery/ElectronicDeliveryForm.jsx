@@ -56,9 +56,11 @@ class ElectronicDeliveryForm extends React.Component {
     const errorClass = {
       emailAddress: '',
       chapterTitle: '',
-      startPage: 0,
-      endPage: 0,
+      startPage: '',
+      endPage: '',
     };
+
+    console.log(errorClass);
 
     _mapObject(this.state.form, (val, key) => {
       errorClass[key] = this.state.error[key] ? 'nypl-field-error' : '';
@@ -78,29 +80,29 @@ class ElectronicDeliveryForm extends React.Component {
           <legend>Contact Information</legend>
           <h3>Contact Information</h3>
 
-          <div className={`nypl-text-field ${errorClass.email}`}>
-            <label htmlFor="email-address" id="email-label">Email address
+          <div className={`nypl-text-field ${errorClass.emailAddress}`}>
+            <label htmlFor="email-address" id="email-address-label">Email address
               <span className="nypl-required-field">&nbsp;(Required)</span>
             </label>
             <input
               id="email-address"
               type="text"
               required
-              aria-labelledby="email-label email-status"
+              aria-labelledby="email-address-label email-address-status"
               aria-required="true"
               name="emailAddress"
               value={this.state.form.emailAddress}
               onChange={(e) => this.handleUpdate(e, 'emailAddress')}
             />
             {
-              errorClass.email &&
+              errorClass.emailAddress &&
                 (<span
                   className="nypl-field-status"
-                  id="email-status"
+                  id="email-address-status"
                   aria-live="assertive"
                   aria-atomic="true"
                 >
-                  Please enter a valid email address
+                  {this.state.error.emailAddress}
                 </span>)
             }
           </div>
@@ -110,19 +112,30 @@ class ElectronicDeliveryForm extends React.Component {
           <legend>Chapter or Article Information</legend>
           <h3>Chapter or Article Information</h3>
 
-          <div className={`nypl-text-field ${errorClass.chapter}`}>
-            <label htmlFor="chapter-title" id="chapter-label">Chapter number or article title
+          <div className={`nypl-text-field ${errorClass.chapterTitle}`}>
+            <label htmlFor="chapter-title" id="chapter-title-label">Chapter number or article title
               <span className="nypl-required-field">&nbsp;(Required)</span>
             </label>
             <input
               id="chapter-title"
               type="text"
               required
-              aria-labelledby="chapter-label chapter-status"
+              aria-labelledby="chapter-title-label chapter-title-status"
               name="chapterTitle"
               value={this.state.form.chapterTitle}
               onChange={(e) => this.handleUpdate(e, 'chapterTitle')}
             />
+            {
+              errorClass.chapterTitle &&
+                (<span
+                  className="nypl-field-status"
+                  id="chapter-title-status"
+                  aria-live="assertive"
+                  aria-atomic="true"
+                >
+                  {this.state.error.chapterTitle}
+                </span>)
+            }
           </div>
 
           <div className="nypl-text-field">
@@ -174,11 +187,11 @@ class ElectronicDeliveryForm extends React.Component {
           </div>
 
           <div className="nypl-text-field">
-            <label htmlFor="request-notes" id="notes-label">Notes</label>
+            <label htmlFor="request-notes" id="request-notes-label">Notes</label>
             <input
               id="request-notes"
               type="text"
-              aria-labelledby="notes-label notes-status"
+              aria-labelledby="request-notes-label request-notes-status"
               name="requestNotes"
               value={this.state.form.requestNotes}
               onChange={(e) => this.handleUpdate(e, 'requestNotes')}
@@ -190,7 +203,7 @@ class ElectronicDeliveryForm extends React.Component {
           <legend>Page Number Range (Max 50 pages)</legend>
           <h3>Page Number Range (Max 50 pages)</h3>
 
-          <div className={`nypl-year-field ${errorClass['start-page']}`}>
+          <div className={`nypl-year-field ${errorClass.startPage}`}>
             <label htmlFor="start-page" id="start-page-label">Start Page
               <span className="nypl-required-field">&nbsp;(Required)</span>
             </label>
@@ -204,12 +217,23 @@ class ElectronicDeliveryForm extends React.Component {
               value={this.state.form['startPage']}
               onChange={(e) => this.handleUpdate(e, 'startPage')}
             />
+            {
+              errorClass.startPage &&
+                (<span
+                  className="nypl-field-status"
+                  id="start-page-status"
+                  aria-live="assertive"
+                  aria-atomic="true"
+                >
+                  {this.state.error.startPage}
+                </span>)
+            }
           </div>
 
           <span>&mdash;</span>
 
-          <div className={`nypl-year-field ${errorClass['end-page']}`}>
-            <label htmlFor="end-page" id="end-page-label">Ending Page
+          <div className={`nypl-year-field ${errorClass.endPage}`}>
+            <label htmlFor="end-page" id="end-page-label">End Page
               <span className="nypl-required-field">&nbsp;(Required)</span>
             </label>
             <input
@@ -222,6 +246,17 @@ class ElectronicDeliveryForm extends React.Component {
               value={this.state.form['endPage']}
               onChange={(e) => this.handleUpdate(e, 'endPage')}
             />
+            {
+              errorClass.endPage &&
+                (<span
+                  className="nypl-field-status"
+                  id="end-page-status"
+                  aria-live="assertive"
+                  aria-atomic="true"
+                >
+                  {this.state.error.endPage}
+                </span>)
+            }
           </div>
         </fieldset>
 
