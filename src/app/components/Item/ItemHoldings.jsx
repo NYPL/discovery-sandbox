@@ -55,7 +55,7 @@ class ItemHoldings extends React.Component {
   /*
    * getRecord(e, bibId, itemId)
    * @description Get updated information for an item along with its delivery locations,
-   * and route to the correct page.
+   * and the route to the correct page.
    * @param {object} e Event object.
    * @param {string} bibId The bib's id.
    * @param {string} itemId The item's id.
