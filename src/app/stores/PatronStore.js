@@ -11,6 +11,7 @@ class PatronStore {
       id: '',
       names: [],
       barcodes: [],
+      emails: [],
     };
   }
 
@@ -19,6 +20,7 @@ class PatronStore {
       id: data.id,
       names: data.names,
       barcodes: data.barcodes,
+      emails: data.emails,
     });
   }
 }
