@@ -23,7 +23,7 @@ class BibDetails extends React.Component {
       // "Notes" TBD
       // This needs to exist in the API to work, currently it doesn't.
       { label: 'ISBN', value: 'idIsbn' },
-      { label: 'LCCL', value: 'idLcc' },
+      { label: 'LCC', value: 'idLcc' },
       { label: 'NYPL Research call number', value: 'idBnum' },
     ];
 

@@ -1,7 +1,6 @@
 import React from 'react';
 import {
   isEmail,
-  isLength,
   isNumeric,
 } from 'validator';
 import {
@@ -111,11 +110,11 @@ function renderServerValidationError(object) {
 function validate(form, cb) {
   const fieldsToCheck = {
     emailAddress: {
-      validate: (val) => (val.trim().length && isEmail(val)),
+      validate: (val) => (val.trim().length && isEmail('' + val)),
       errorMsg: 'Please enter a correct email',
     },
     chapterTitle: {
-      validate: (val) => !!val && isNumeric(val),
+      validate: (val) => (isNumeric('' + val) && val > 0) ? true : false,
       errorMsg: 'Please enter the item chapter',
     },
     // optional
@@ -144,18 +143,18 @@ function validate(form, cb) {
       errorMsg: '',
     },
     startPage: {
-      validate: (val) => isNumeric(val),
-      errorMsg: 'Please enter the starting page',
+      validate: (val) => (isNumeric('' + val) && val > 0) ? true : false,
+      errorMsg: 'Please enter the start page',
     },
     endPage: {
-      validate: (val) => isNumeric(val),
+      validate: (val) => (isNumeric('' + val) && val > 0) ? true : false,
       errorMsg: 'Please enter the end page',
     },
   };
 
   const error = {};
   _mapObject(form, (val, key) => {
-    const isValid = fieldsToCheck[key].validate('' + val);
+    const isValid = fieldsToCheck[key].validate(val);
 
     if (!isValid) {
       error[key] = fieldsToCheck[key].errorMsg;
