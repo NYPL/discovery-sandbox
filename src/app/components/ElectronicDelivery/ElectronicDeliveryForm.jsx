@@ -60,8 +60,6 @@ class ElectronicDeliveryForm extends React.Component {
       endPage: '',
     };
 
-    console.log(errorClass);
-
     _mapObject(this.state.form, (val, key) => {
       errorClass[key] = this.state.error[key] ? 'nypl-field-error' : '';
     });
