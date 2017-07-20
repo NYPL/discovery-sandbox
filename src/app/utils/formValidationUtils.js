@@ -1,7 +1,6 @@
 import React from 'react';
 import {
   isEmail,
-  isLength,
   isNumeric,
 } from 'validator';
 import {
@@ -144,11 +143,11 @@ function validate(form, cb) {
       errorMsg: '',
     },
     startPage: {
-      validate: (val) => isNumeric(val),
-      errorMsg: 'Please enter the starting page',
+      validate: (val) => (isNumeric(val) && val > '0'),
+      errorMsg: 'Please enter the start page',
     },
     endPage: {
-      validate: (val) => isNumeric(val),
+      validate: (val) => (isNumeric(val) && val > '0'),
       errorMsg: 'Please enter the end page',
     },
   };
