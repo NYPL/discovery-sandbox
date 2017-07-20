@@ -160,7 +160,7 @@ class ElectronicDeliveryForm extends React.Component {
             />
           </div>
 
-          <div className="nypl-text-field"}>
+          <div className="nypl-text-field">
             <label htmlFor="volume" id="volume-label">Volume</label>
             <input
               id="volume"
