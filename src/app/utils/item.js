@@ -294,6 +294,15 @@ function LibraryItem() {
    * @return {boolean}
    */
   this.isOffsite = (prefLabel = '') => prefLabel.substring(0, 7).toLowerCase() === 'offsite';
+
+  /**
+   * isNYPLReCAP(bibId)
+   * Return whether an bib is an NYPL ReCAP bib. Checks to see that it is NOT a Princeton
+   * or a Columbia ReCAP bib based on the bib's ID.
+   * @param {string} bibId
+   * @return {boolean}
+   */
+  this.isNYPLReCAP = (bibId = '') => (bibId.indexOf('pb') === -1) && (bibId.indexOf('cb') === -1);
 }
 
 export default new LibraryItem;
