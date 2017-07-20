@@ -20,12 +20,23 @@ class ResultsList extends React.Component {
     this.getRecord = this.getRecord.bind(this);
   }
 
+  /*
+   * getRecord(e, bibId, itemId)
+   * @description Get updated information for an item along with its delivery locations,
+   * and the route to the correct page.
+   * @param {object} e Event object.
+   * @param {string} bibId The bib's id.
+   * @param {string} itemId The item's id.
+   */
   getRecord(e, bibId, itemId = '') {
     e.preventDefault();
 
-    ajaxCall(`/api/bib?bibId=${bibId}`,
+    ajaxCall(`/api/hold/request/${bibId}-${itemId}`,
       (response) => {
-        Actions.updateBib(response.data);
+        Actions.updateBib(response.data.bib);
+        Actions.updateDeliveryLocations(response.data.deliveryLocations);
+        Actions.updateIsEddRequestable(response.data.isEddRequestable);
+
         if (itemId) {
           this.routeHandler(`/hold/request/${bibId}-${itemId}`);
         } else {
