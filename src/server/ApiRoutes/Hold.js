@@ -1,11 +1,13 @@
 import axios from 'axios';
 
 import appConfig from '../../../appConfig.js';
+import locationCodes from '../../../locationCodes.js';
 import User from './User.js';
 import Bib from './Bib.js';
 import LibraryItem from './../../app/utils/item.js';
 import { validate } from '../../app/utils/formValidationUtils';
 import {
+  findWhere as _findWhere,
   omit as _omit,
 } from 'underscore';
 
@@ -71,6 +73,13 @@ function postHoldAPI(req, pickedUpItemId, pickupLocation, docDeliveryData, cb, e
     .catch(errorCb);
 }
 
+function mapLocationDetails(locations) {
+  locations.map(loc => {
+    // return loc['@id'].replace('loc:', '');
+    return _findWhere(locationCodes, { delivery_location: loc['@id'].replace('loc:', '') }).location;
+  });
+}
+
 /**
  * getDeliveryLocations(barcode, patronId, accessToken, cb, errorCb)
  * The function to make a request to get delivery locations of an item.
@@ -84,7 +93,7 @@ function postHoldAPI(req, pickedUpItemId, pickupLocation, docDeliveryData, cb, e
  */
 function getDeliveryLocations(barcode, patronId, accessToken, cb, errorCb) {
   return axios.get(
-    `${apiBase}/request/deliverylocationsbybarcode?barcodes[]=${barcode}&patronId=${patronId}`,
+    `${apiBase}/request/deliveryLocationsByBarcode?barcodes[]=${barcode}&patronId=${patronId}`,
     {
       headers: {
         'Content-Type': 'application/json',
@@ -93,6 +102,9 @@ function getDeliveryLocations(barcode, patronId, accessToken, cb, errorCb) {
     }
   )
   .then(barcodeAPIresponse => {
+    mapLocationDetails(barcodeAPIresponse.data.itemListElement[0].deliveryLocation);
+    console.log(mapLocationDetails(barcodeAPIresponse.data.itemListElement[0].deliveryLocation));
+
     cb(
       barcodeAPIresponse.data.itemListElement[0].deliveryLocation,
       barcodeAPIresponse.data.itemListElement[0].eddRequestable
@@ -201,6 +213,7 @@ function newHoldRequestServer(req, res, next) {
         patronId,
         accessToken,
         (deliveryLocations, isEddRequestable) => {
+          console.log(deliveryLocations);
           res.locals.data.Store = {
             bib: bibResponseData,
             searchKeywords: '',
