@@ -20,11 +20,20 @@ const apiBase = appConfig.api[appEnvironment];
  * @param {string} pickedUpItemId
  * @param {string} pickupLocation
  * @param {object} docDeliveryData
+ * @param {string} itemSource The source of the item, either nypl, cul, or pul.
  * @param {function} cb - callback when we have valid response
  * @param {function} errorCb - callback when error
  * @return {function}
  */
-function postHoldAPI(req, pickedUpItemId, pickupLocation, docDeliveryData, cb, errorCb) {
+function postHoldAPI(
+  req,
+  pickedUpItemId,
+  pickupLocation,
+  docDeliveryData,
+  itemSource,
+  cb,
+  errorCb
+) {
   // retrieve access token and patron info
   const accessToken = req.tokenResponse.accessToken;
   const patronId = req.tokenResponse.decodedPatron.sub;
@@ -33,24 +42,12 @@ function postHoldAPI(req, pickedUpItemId, pickupLocation, docDeliveryData, cb, e
   // get item id and pickup location
   // NOTE: pickedUpItemId and pickedUpBibId are coming from the EDD form function below:
   let itemId = req.params.itemId || pickedUpItemId;
-  let nyplSource = 'sierra-nypl';
-
-  if (itemId.indexOf('-') >= 0) {
-    const parts = itemId.split('-');
-    itemId = parts[parts.length - 1];
-
-    if (itemId.substring(0, 2) === 'pi') {
-      nyplSource = 'recap-PUL';
-    } else if (itemId.substring(0, 2) === 'ci') {
-      nyplSource = 'recap-CUL';
-    }
-  }
   itemId = itemId.replace(/\D/g, '');
 
   const data = {
     patron: patronId,
     record: itemId,
-    nyplSource,
+    nyplSource: itemSource,
     requestType: (pickupLocation === 'edd') ? 'edd' : 'hold',
     recordType: 'i',
     pickupLocation: (pickupLocation === 'edd') ? 'null' : pickupLocation,
@@ -344,6 +341,7 @@ function createHoldRequestServer(req, res, pickedUpBibId = '', pickedUpItemId = 
   // NOTE: pickedUpItemId and pickedUpBibId are coming from the EDD form function below:
   const itemId = req.params.itemId || pickedUpItemId;
   const bibId = req.params.bibId || pickedUpBibId;
+  const itemSource = req.params.itemSource || '';
   const pickupLocation = req.body['delivery-location'];
   const docDeliveryData = (req.body.form && pickupLocation === 'edd') ? req.body.form : null;
 
@@ -357,6 +355,7 @@ function createHoldRequestServer(req, res, pickedUpBibId = '', pickedUpItemId = 
     itemId,
     pickupLocation,
     docDeliveryData,
+    itemSource,
     (response) => {
       console.log('Hold Request Id:', response.data.data.id);
       console.log('Job Id:', response.data.data.jobId);
@@ -391,6 +390,7 @@ function createHoldRequestAjax(req, res) {
     req.query.itemId,
     req.query.pickupLocation,
     null,
+    req.query.itemSource,
     (response) => {
       res.json({
         id: response.data.data.id,
@@ -419,6 +419,7 @@ function createHoldRequestEdd(req, res) {
     req.body.itemId,
     req.body.pickupLocation,
     req.body.form,
+    req.body.itemSource,
     (response) => {
       res.json({
         id: response.data.data.id,

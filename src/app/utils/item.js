@@ -3,8 +3,13 @@ import LocationCodes from '../../../locationCodes.js';
 import {
   findWhere as _findWhere,
   isEmpty as _isEmpty,
-  extend as _extend,
 } from 'underscore';
+
+const itemSourceMappings = {
+  SierraNypl: 'nypl-sierra',
+  RecapCul: 'recap-cul',
+  RecapPul: 'recap-pul',
+};
 
 function LibraryItem() {
   /**
@@ -102,7 +107,9 @@ function LibraryItem() {
     // Currently using requestHold to display the Request button, only for ReCAP items.
     let requestHold = false;
     // non-NYPL ReCAP
-    const recap = accessMessage.prefLabel === 'ADV REQUEST' && !item.holdingLocation;
+    const recap =
+      (accessMessage.prefLabel === 'ADV REQUEST' || accessMessage.prefLabel === 'USE IN LIBRARY')
+      && !item.holdingLocation;
     // nypl-owned ReCAP
     const nyplRecap = !!(holdingLocation && !_isEmpty(holdingLocation) &&
       holdingLocation['@id'].substring(4, 6) === 'rc');
@@ -110,6 +117,8 @@ function LibraryItem() {
     const identifiersArray = [{ name: 'barcode', value: 'urn:barcode:' }];
     const bibIdentifiers = this.getIdentifiers(item.identifier, identifiersArray);
     const barcode = bibIdentifiers.barcode || '';
+    const itemSource = item.idNyplSourceId ? item.idNyplSourceId['@type'] : undefined;
+    const mappedItemSource = itemSourceMappings[itemSource];
 
     if (isElectronicResource && item.electronicLocator[0].url) {
       status = { '@id': '', prefLabel: 'Available' };
@@ -153,6 +162,7 @@ function LibraryItem() {
       requestable,
       suppressed,
       barcode,
+      itemSource: mappedItemSource,
     };
   };
 
