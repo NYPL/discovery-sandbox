@@ -13,7 +13,7 @@ const ItemTableRow = ({ item, bibId, getRecord }) => {
   let itemLink;
   let itemDisplay = null;
 
-  if (item.requestHold) {
+  if (item.requestable) {
     itemLink = item.available ?
       (<Link
         to={`/hold/request/${bibId}-${item.id}`}
