@@ -37,11 +37,11 @@ const BibPage = (props) => {
             <div className="nypl-column-three-quarters">
               <h2>New York Public Library Research Catalog</h2>
               <Search
-                  searchKeywords={props.searchKeywords}
-                  field={props.field}
-                  spinning={props.spinning}
-                  createAPIQuery={createAPIQuery}
-                />
+                searchKeywords={props.searchKeywords}
+                field={props.field}
+                spinning={props.spinning}
+                createAPIQuery={createAPIQuery}
+              />
               <div className="nypl-row search-control">
                 <svg xmlns="http://www.w3.org/2000/svg" width="25" height="42" viewBox="0 0 25 42" preserveAspectRatio="xMidYMid meet" aria-labelledby="left-arrow" aria-hidden="true">
                   <title id="left-arrow">Back to Results</title>
@@ -66,19 +66,20 @@ const BibPage = (props) => {
             >
               <div className="nypl-item-details">
                 <h1>{title}</h1>
+                <dl>
                   <BibMainInfo bib={bib} />
+
                   <ItemHoldings
                     shortenItems={shortenItems}
                     items={items}
                     bibId={bibId}
                     itemPage={itemPage}
                   />
-                  <BibDetails
-                    bib={bib}
-                    title="Bib details"
-                  />
+
+                  <BibDetails bib={bib} />
 
                   {isNYPLReCAP && <MarcRecord bNumber={bNumber[0]} />}
+                </dl>
               </div>
             </div>
           </div>
