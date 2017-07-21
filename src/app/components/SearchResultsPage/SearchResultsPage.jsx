@@ -57,34 +57,35 @@ const SearchResultsPage = (props, context) => {
       <main className="main-page">
         <div className="nypl-page-header">
           <div className="nypl-full-width-wrapper">
-            <div className="nypl-column-three-quarters">
-              {breadcrumbs}
-              <h2 aria-label={h2Label}>
-                New York Public Library Research Catalog
-              </h2>
-              <Search
-                searchKeywords={searchKeywords}
-                field={field}
-                spinning={spinning}
-                createAPIQuery={createAPIQuery}
-              />
+            <div className="nypl-row">
+              <div className="nypl-column-three-quarters">
+                {breadcrumbs}
+                <h2 aria-label={h2Label}>
+                  New York Public Library Research Catalog
+                </h2>
+                <Search
+                  searchKeywords={searchKeywords}
+                  field={field}
+                  spinning={spinning}
+                  createAPIQuery={createAPIQuery}
+                />
 
-              {
-                !!(totalResults && totalResults !== 0) && (
-                  <Sorter
-                    sortBy={sortBy}
-                    page={page}
-                    searchKeywords={searchKeywords}
-                    createAPIQuery={createAPIQuery}
-                  />
-                )
-              }
+                {
+                  !!(totalResults && totalResults !== 0) && (
+                    <Sorter
+                      sortBy={sortBy}
+                      page={page}
+                      searchKeywords={searchKeywords}
+                      createAPIQuery={createAPIQuery}
+                    />
+                  )
+                }
+              </div>
             </div>
           </div>
         </div>
 
         <div className="nypl-full-width-wrapper">
-
           <div className="nypl-row">
             <div
               className="nypl-column-three-quarters"
