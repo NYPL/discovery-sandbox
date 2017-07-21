@@ -61,17 +61,21 @@ class HoldRequest extends React.Component {
    * submitRequest()
    * Client-side submit call.
    */
-  submitRequest(e, bibId, itemId) {
+  submitRequest(e, bibId, itemId, itemSource) {
     e.preventDefault();
 
     let path = `/hold/confirmation/${bibId}-${itemId}`;
 
     if (this.state.delivery === 'edd') {
       path = `/hold/request/${bibId}-${itemId}/edd`;
+
+      this.context.router.push(path);
+      return;
     }
 
     axios
-      .get(`/api/newHold?itemId=${itemId}&pickupLocation=${this.state.delivery}`)
+      .get(`/api/newHold?itemId=${itemId}&pickupLocation=${this.state.delivery}` +
+        `&itemSource=${itemSource}`)
       .then(response => {
         if (response.data.error && response.data.error.status !== 200) {
           this.context.router.push(`${path}?errorMessage=${response.data.error.statusText}`);
@@ -164,7 +168,7 @@ class HoldRequest extends React.Component {
       this.state.patron.names && _isArray(this.state.patron.names) && this.state.patron.names.length
       ) ? this.state.patron.names[0] : '';
     const itemId = (this.props.params && this.props.params.itemId) ? this.props.params.itemId : '';
-    const selectedItem = (bib && itemId) ? LibraryItem.getItem(bib, itemId) : null;
+    const selectedItem = (bib && itemId) ? LibraryItem.getItem(bib, itemId) : {};
     const callNo =
       (selectedItem && selectedItem.callNumber && selectedItem.callNumber.length) ?
       (
@@ -172,6 +176,7 @@ class HoldRequest extends React.Component {
           <small>Call number:</small><br />{selectedItem.callNumber}
         </div>
       ) : null;
+    const itemSource = selectedItem.itemSource;
     let content = null;
 
     if (bib) {
@@ -191,9 +196,9 @@ class HoldRequest extends React.Component {
 
           <form
             className="place-hold-form form"
-            action={`/hold/request/${bibId}-${itemId}`}
+            action={`/hold/request/${bibId}-${itemId}-${itemSource}`}
             method="POST"
-            onSubmit={(e) => this.submitRequest(e, bibId, itemId)}
+            onSubmit={(e) => this.submitRequest(e, bibId, itemId, itemSource)}
           >
             <h2>Confirm account</h2>
             {this.renderLoggedInInstruction(patronName)}

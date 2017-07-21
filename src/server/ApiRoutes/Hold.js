@@ -19,11 +19,21 @@ const apiBase = appConfig.api[appEnvironment];
  * @param {req} req
  * @param {string} pickedUpItemId
  * @param {string} pickupLocation
+ * @param {object} docDeliveryData
+ * @param {string} itemSource The source of the item, either nypl, cul, or pul.
  * @param {function} cb - callback when we have valid response
  * @param {function} errorCb - callback when error
  * @return {function}
  */
-function postHoldAPI(req, pickedUpItemId, pickupLocation, cb, errorCb) {
+function postHoldAPI(
+  req,
+  pickedUpItemId,
+  pickupLocation,
+  docDeliveryData,
+  itemSource,
+  cb,
+  errorCb
+) {
   // retrieve access token and patron info
   const accessToken = req.tokenResponse.accessToken;
   const patronId = req.tokenResponse.decodedPatron.sub;
@@ -32,28 +42,18 @@ function postHoldAPI(req, pickedUpItemId, pickupLocation, cb, errorCb) {
   // get item id and pickup location
   // NOTE: pickedUpItemId and pickedUpBibId are coming from the EDD form function below:
   let itemId = req.params.itemId || pickedUpItemId;
-  let nyplSource = 'sierra-nypl';
-
-  if (itemId.indexOf('-') >= 0) {
-    const parts = itemId.split('-');
-    itemId = parts[parts.length - 1];
-
-    if (itemId.substring(0, 2) === 'pi') {
-      nyplSource = 'recap-PUL';
-    } else if (itemId.substring(0, 2) === 'ci') {
-      nyplSource = 'recap-CUL';
-    }
-  }
   itemId = itemId.replace(/\D/g, '');
 
   const data = {
     patron: patronId,
-    recordType: 'i',
     record: itemId,
-    nyplSource,
-    pickupLocation,
+    nyplSource: itemSource,
+    requestType: (pickupLocation === 'edd') ? 'edd' : 'hold',
+    recordType: 'i',
+    pickupLocation: (pickupLocation === 'edd') ? 'null' : pickupLocation,
     // neededBy: "2013-03-20",
     numberOfCopies: 1,
+    docDeliveryData: (pickupLocation === 'edd') ? docDeliveryData : null,
   };
   console.log('Making hold request', data, accessToken);
 
@@ -81,7 +81,7 @@ function postHoldAPI(req, pickedUpItemId, pickupLocation, cb, errorCb) {
  */
 function getDeliveryLocations(barcode, patronId, accessToken, cb, errorCb) {
   return axios.get(
-    `${apiBase}/request/deliverylocationsbybarcode?barcodes[]=${barcode}&patronId=${patronId}`,
+    `${apiBase}/request/deliveryLocationsByBarcode?barcodes[]=${barcode}&patronId=${patronId}`,
     {
       headers: {
         'Content-Type': 'application/json',
@@ -292,6 +292,37 @@ function newHoldRequestAjax(req, res) {
   );
 }
 
+function newHoldRequestServerEdd(req, res, next) {
+  const loggedIn = User.requireUser(req, res);
+  const error = req.query.error ? JSON.parse(req.query.error) : {};
+  const form = req.query.form ? JSON.parse(req.query.form) : {};
+
+  if (!loggedIn) return false;
+
+  // Retrieve item
+  return Bib.fetchBib(
+    req.params.bibId,
+    (data) => {
+      res.locals.data.Store = {
+        bib: data,
+        searchKeywords: '',
+        error,
+        form,
+      };
+      next();
+    },
+    (bibResponseError) => {
+      res.locals.data.Store = {
+        bib: {},
+        searchKeywords: '',
+        error,
+        form,
+      };
+      next();
+    }
+  );
+}
+
 /**
  * createHoldRequestServer(req, res, pickedUpBibId = '', pickedUpItemId = '')
  * The function to make a server side hold request call.
@@ -310,7 +341,9 @@ function createHoldRequestServer(req, res, pickedUpBibId = '', pickedUpItemId = 
   // NOTE: pickedUpItemId and pickedUpBibId are coming from the EDD form function below:
   const itemId = req.params.itemId || pickedUpItemId;
   const bibId = req.params.bibId || pickedUpBibId;
+  const itemSource = req.params.itemSource || '';
   const pickupLocation = req.body['delivery-location'];
+  const docDeliveryData = (req.body.form && pickupLocation === 'edd') ? req.body.form : null;
 
   if (!bibId || !itemId) {
     // Dummy redirect for now
@@ -321,9 +354,12 @@ function createHoldRequestServer(req, res, pickedUpBibId = '', pickedUpItemId = 
     req,
     itemId,
     pickupLocation,
+    docDeliveryData,
+    itemSource,
     (response) => {
       console.log('Hold Request Id:', response.data.data.id);
       console.log('Job Id:', response.data.data.jobId);
+
       res.redirect(
         `/hold/confirmation/${bibId}-${itemId}?pickupLocation=` +
         `${response.data.data.pickupLocation}&requestId=${response.data.data.id}`
@@ -353,6 +389,8 @@ function createHoldRequestAjax(req, res) {
     req,
     req.query.itemId,
     req.query.pickupLocation,
+    null,
+    req.query.itemSource,
     (response) => {
       res.json({
         id: response.data.data.id,
@@ -362,6 +400,36 @@ function createHoldRequestAjax(req, res) {
     },
     (error) => {
       console.log(`Error calling Holds API : ${error.data.message}`);
+
+      res.json({
+        status: error.status,
+        error,
+      });
+    }
+  );
+}
+
+function createHoldRequestEdd(req, res) {
+  // Ensure user is logged in
+  const loggedIn = User.requireUser(req);
+  if (!loggedIn) return false;
+
+  return postHoldAPI(
+    req,
+    req.body.itemId,
+    req.body.pickupLocation,
+    req.body.form,
+    req.body.itemSource,
+    (response) => {
+      res.json({
+        id: response.data.data.id,
+        jobId: response.data.data.jobId,
+        pickupLocation: response.data.data.pickupLocation,
+      });
+    },
+    (error) => {
+      console.log(`Error calling Holds API : ${error.data.message}`);
+
       res.json({
         status: error.status,
         error,
@@ -375,26 +443,6 @@ function eddServer(req, res) {
     bibId,
     itemId,
   } = req.body;
-
-  // console.log(req.body)
-  // This will give you the form values in the form of:
-  // {
-  //   name: '',
-  //   email: '',
-  //   chapter: '',
-  //   author: '',
-  //   date: '',
-  //   volume: '',
-  //   issue: '',
-  //   'starting-page': '',
-  //   'ending-page': '',
-  //   bibId: '',
-  //   itemId: '',
-  // };
-  // This can then be modified and sent to the Request API endpoint once we get it.
-  // This is for the server side call in no-js scenarios. The form will post to the /edd
-  // endpoint and this function will be hit.
-  // Please delete this later.
 
   let serverErrors = {};
 
@@ -421,7 +469,9 @@ export default {
   confirmRequestServer,
   newHoldRequestServer,
   newHoldRequestAjax,
+  newHoldRequestServerEdd,
   createHoldRequestServer,
   createHoldRequestAjax,
+  createHoldRequestEdd,
   eddServer,
 };
