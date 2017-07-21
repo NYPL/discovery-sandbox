@@ -37,7 +37,7 @@ router
 
 router
   .route('/hold/request/:bibId-:itemId/edd')
-  .get(Hold.newHoldRequestServer);
+  .get(Hold.newHoldRequestServerEdd);
 
 router
   .route('/hold/confirmation/:bibId-:itemId')
@@ -69,7 +69,8 @@ router
 
 router
   .route('/api/newHold')
-  .get(Hold.createHoldRequestAjax);
+  .get(Hold.createHoldRequestAjax)
+  .post(Hold.createHoldRequestEdd);
 
 router
   .route('/')

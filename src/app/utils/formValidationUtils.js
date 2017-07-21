@@ -1,7 +1,6 @@
 import React from 'react';
 import {
   isEmail,
-  isLength,
   isNumeric,
 } from 'validator';
 import {
@@ -55,7 +54,7 @@ function createAnchorText(wholeText) {
  * return {string}
  */
 function createAnchorID(key) {
-  let hashElement = (key && typeof key === 'string') ?
+  const hashElement = (key && typeof key === 'string') ?
     `${key.charAt(0).toUpperCase()}${key.substr(1)}` : '';
 
   if (!hashElement) { return null; }
@@ -85,7 +84,6 @@ function renderServerValidationError(object) {
         errorMessage = (!anchorText && !anchorText) ? <li>One of the fields is incorrect.</li> :
           <li key={index}><a href={createAnchorID(key)}>{anchorText}</a>{restText}</li>;
       } else {
-
         if (key === 'email') {
           errorMessage = (
             <li key={index}>
@@ -93,16 +91,6 @@ function renderServerValidationError(object) {
             </li>
           );
         }
-
-        if (key === 'username') {
-          errorMessage = (
-            <li key={index}>
-              Please enter a <a href={createAnchorID(key)}>username</a> between 5-25
-              alphanumeric characters.
-            </li>
-          );
-        }
-
       }
 
       errorMessages.push(errorMessage);
@@ -121,16 +109,12 @@ function renderServerValidationError(object) {
  */
 function validate(form, cb) {
   const fieldsToCheck = {
-    name: {
-      validate: (val) => !!val,
-      errorMsg: 'Please enter your name',
-    },
-    email: {
-      validate: (val) => (val.trim().length && isEmail(val)),
+    emailAddress: {
+      validate: (val) => (val.trim().length && isEmail('' + val)),
       errorMsg: 'Please enter a correct email',
     },
-    chapter: {
-      validate: (val) => !!val && isNumeric(val),
+    chapterTitle: {
+      validate: (val) => (isNumeric('' + val) && val > 0) ? true : false,
       errorMsg: 'Please enter the item chapter',
     },
     // optional
@@ -138,12 +122,14 @@ function validate(form, cb) {
       validate: () => true,
       errorMsg: '',
     },
+    // optional
     date: {
-      validate: (val) => isNumeric(val) && isLength(val, { min: 1, max: 4 }),
+      validate: () => true,
       errorMsg: 'Please enter the date published',
     },
+    // optional
     volume: {
-      validate: (val) => !!val && isNumeric(val),
+      validate: () => true,
       errorMsg: 'Please enter the item volume',
     },
     // optional
@@ -156,12 +142,12 @@ function validate(form, cb) {
       validate: () => true,
       errorMsg: '',
     },
-    'starting-page': {
-      validate: (val) => isNumeric(val),
-      errorMsg: 'Please enter the starting page',
+    startPage: {
+      validate: (val) => (isNumeric('' + val) && val > 0) ? true : false,
+      errorMsg: 'Please enter the start page',
     },
-    'ending-page': {
-      validate: (val) => isNumeric(val),
+    endPage: {
+      validate: (val) => (isNumeric('' + val) && val > 0) ? true : false,
       errorMsg: 'Please enter the end page',
     },
   };
