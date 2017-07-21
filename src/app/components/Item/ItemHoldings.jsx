@@ -93,14 +93,19 @@ class ItemHoldings extends React.Component {
 
     return (
       (itemsToDisplay && _isArray(itemsToDisplay) && itemsToDisplay.length) ?
-      <dl>
-        <dt className="list-multi-control">
-          <h3>Availability</h3>
-        </dt>
-        <dd className="multi-item-list">
-          <ItemTable items={itemsToDisplay} bibId={bibId} getRecord={this.getRecord} />
-        </dd>
-      </dl> : null
+        <dl>
+          <dt className="list-multi-control">
+            <h3>Availability</h3>
+          </dt>
+          <dd className="multi-item-list">
+            <ItemTable
+              items={itemsToDisplay}
+              bibId={bibId}
+              getRecord={this.getRecord}
+              id="bib-item-table"
+            />
+          </dd>
+        </dl> : null
     );
   }
 
@@ -148,6 +153,7 @@ class ItemHoldings extends React.Component {
           page={this.state.page}
           updatePage={this.updatePage}
           to={{ pathname: `/bib/${this.props.bibId}?itemPage=` }}
+          ariaControls="bib-item-table"
         />
       );
 
