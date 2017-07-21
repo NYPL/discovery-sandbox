@@ -19,7 +19,7 @@ class ElectronicDeliveryForm extends React.Component {
     this.state = {
       form: !_isEmpty(this.props.form) ? this.props.form :
         {
-          emailAddress: '',
+          emailAddress: this.props.defaultEmail,
           chapterTitle: '',
           startPage: 0,
           endPage: 0,
@@ -172,7 +172,7 @@ class ElectronicDeliveryForm extends React.Component {
             />
           </div>
 
-           <div className="nypl-text-field">
+          <div className="nypl-text-field">
             <label htmlFor="issue" id="issue-label">Issue</label>
             <input
               id="issue"
@@ -275,6 +275,13 @@ ElectronicDeliveryForm.propTypes = {
   itemId: PropTypes.string,
   error: PropTypes.object,
   form: PropTypes.object,
+  defaultEmail: PropTypes.string,
 };
+
+ElectronicDeliveryForm.defaultProps = {
+  defaultEmail: '',
+};
+
+
 
 export default ElectronicDeliveryForm;

@@ -91,6 +91,10 @@ class ElectronicDelivery extends React.Component {
     const bib = (this.props.bib && !_isEmpty(this.props.bib)) ? this.props.bib : null;
     const callNo = bib && bib.shelfMark && bib.shelfMark.length ? bib.shelfMark[0] : null;
     const { error, form } = this.props;
+    const patronEmail = (
+      this.state.patron.emails && _isArray(this.state.patron.emails)
+      && this.state.patron.emails.length
+      ) ? this.state.patron.emails[0] : '';
 
     return (
       <div id="mainContent">
@@ -136,6 +140,7 @@ class ElectronicDelivery extends React.Component {
                 submitRequest={this.submitRequest}
                 error={error}
                 form={form}
+                defaultEmail={patronEmail}
               />
             </div>
           </div>
@@ -157,5 +162,6 @@ ElectronicDelivery.propTypes = {
   error: PropTypes.object,
   form: PropTypes.object,
 };
+
 
 export default ElectronicDelivery;
