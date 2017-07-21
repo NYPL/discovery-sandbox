@@ -56,7 +56,7 @@ class BibDetails extends React.Component {
                   const linkLabel = fieldValue === 'idOclc' ? 'View in Worldcat' : value;
                   return (
                     <span key={i}>
-                      <a href={fieldUrl} title={linkLabel} target="_blank">{linkLabel}</a>
+                      <a href={fieldUrl} target="_blank">{linkLabel}</a>
                     </span>
                   );
                 })
@@ -80,7 +80,6 @@ class BibDetails extends React.Component {
                     <li key={i}>
                       <Link
                         onClick={e => this.newSearch(e, url)}
-                        title={`Make a new search for ${fieldLabel}: ${valueObj.prefLabel}`}
                         to={`/search?${url}`}
                       >
                         {valueObj.prefLabel}
@@ -108,7 +107,6 @@ class BibDetails extends React.Component {
                     <li key={i}>
                       <Link
                         onClick={e => this.newSearch(e, url)}
-                        title={`Make a new search for ${fieldLabel}: "${value}"`}
                         to={`/search?${url}`}
                       >
                         {value}
