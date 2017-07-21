@@ -93,7 +93,13 @@ class ItemHoldings extends React.Component {
 
     return (
       (itemsToDisplay && _isArray(itemsToDisplay) && itemsToDisplay.length) ?
-        (<ItemTable items={itemsToDisplay} bibId={bibId} getRecord={this.getRecord} />) : null
+        (<ItemTable
+          items={itemsToDisplay}
+          bibId={bibId}
+          getRecord={this.getRecord}
+          id="bib-item-table"
+        />)
+        : null
     );
   }
 
@@ -141,6 +147,7 @@ class ItemHoldings extends React.Component {
           page={this.state.page}
           updatePage={this.updatePage}
           to={{ pathname: `/bib/${this.props.bibId}?itemPage=` }}
+          ariaControls="bib-item-table"
         />
       );
 

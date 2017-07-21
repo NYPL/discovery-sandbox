@@ -159,7 +159,12 @@ class ResultsList extends React.Component {
         </div>
         {
           (items.length === 1) &&
-            <ItemTable items={items} bibId={bibId} getRecord={this.getItemRecord} />
+            <ItemTable
+              items={items}
+              bibId={bibId}
+              getRecord={this.getItemRecord}
+              id="search-result-item-table"
+            />
         }
       </li>
     );
@@ -178,7 +183,10 @@ class ResultsList extends React.Component {
     }
 
     return (
-      <ul className={`nypl-results-list ${this.props.spinning ? 'hide-results-list ' : ''}`}>
+      <ul
+        id="nypl-results-list"
+        className={`nypl-results-list ${this.props.spinning ? 'hide-results-list ' : ''}`}
+      >
         {resultsElm}
       </ul>
     );
