@@ -42,6 +42,7 @@ const BibPage = (props) => {
                 spinning={props.spinning}
                 createAPIQuery={createAPIQuery}
               />
+
               {
                 props.searchKeywords && (
                   <div className="nypl-row search-control">
@@ -72,19 +73,20 @@ const BibPage = (props) => {
             >
               <div className="nypl-item-details">
                 <h1>{title}</h1>
+                <dl>
                   <BibMainInfo bib={bib} />
+
                   <ItemHoldings
                     shortenItems={shortenItems}
                     items={items}
                     bibId={bibId}
                     itemPage={itemPage}
                   />
-                  <BibDetails
-                    bib={bib}
-                    title="Bib details"
-                  />
+
+                  <BibDetails bib={bib} />
 
                   {isNYPLReCAP && <MarcRecord bNumber={bNumber[0]} />}
+                </dl>
               </div>
             </div>
           </div>
