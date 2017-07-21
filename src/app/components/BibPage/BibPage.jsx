@@ -34,20 +34,22 @@ const BibPage = (props) => {
       <main className="main-page">
         <div className="nypl-page-header">
           <div className="nypl-full-width-wrapper">
-            <div className="nypl-column-three-quarters">
-              <h2>New York Public Library Research Catalog</h2>
-              <Search
-                  searchKeywords={props.searchKeywords}
-                  field={props.field}
-                  spinning={props.spinning}
-                  createAPIQuery={createAPIQuery}
-                />
-              <div className="nypl-row search-control">
-                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="42" viewBox="0 0 25 42" preserveAspectRatio="xMidYMid meet" aria-labelledby="left-arrow" aria-hidden="true">
-                  <title id="left-arrow">Back to Results</title>
-                  <polygon points="21.172 42.344 0 21.172 21.172 0 25.112 3.939 7.88 21.172 25.112 38.404 21.172 42.344"></polygon>
-                </svg>
-                <BackLink searchURL={searchURL} searchKeywords={props.searchKeywords} />
+            <div className="nypl-row">
+              <div className="nypl-column-three-quarters">
+                <h2>New York Public Library Research Catalog</h2>
+                <Search
+                    searchKeywords={props.searchKeywords}
+                    field={props.field}
+                    spinning={props.spinning}
+                    createAPIQuery={createAPIQuery}
+                  />
+                <div className="nypl-row search-control">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="25" height="42" viewBox="0 0 25 42" preserveAspectRatio="xMidYMid meet" aria-labelledby="left-arrow" aria-hidden="true">
+                    <title id="left-arrow">Back to Results</title>
+                    <polygon points="21.172 42.344 0 21.172 21.172 0 25.112 3.939 7.88 21.172 25.112 38.404 21.172 42.344"></polygon>
+                  </svg>
+                  <BackLink searchURL={searchURL} searchKeywords={props.searchKeywords} />
+                </div>
               </div>
             </div>
           </div>
