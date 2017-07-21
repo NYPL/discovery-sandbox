@@ -20,11 +20,20 @@ const apiBase = appConfig.api[appEnvironment];
  * @param {string} pickedUpItemId
  * @param {string} pickupLocation
  * @param {object} docDeliveryData
+ * @param {string} itemSource The source of the item, either nypl, cul, or pul.
  * @param {function} cb - callback when we have valid response
  * @param {function} errorCb - callback when error
  * @return {function}
  */
-function postHoldAPI(req, pickedUpItemId, pickupLocation, itemSource, docDeliveryData, cb, errorCb) {
+function postHoldAPI(
+  req,
+  pickedUpItemId,
+  pickupLocation,
+  docDeliveryData,
+  itemSource,
+  cb,
+  errorCb
+) {
   // retrieve access token and patron info
   const accessToken = req.tokenResponse.accessToken;
   const patronId = req.tokenResponse.decodedPatron.sub;
@@ -345,8 +354,8 @@ function createHoldRequestServer(req, res, pickedUpBibId = '', pickedUpItemId = 
     req,
     itemId,
     pickupLocation,
-    itemSource,
     docDeliveryData,
+    itemSource,
     (response) => {
       console.log('Hold Request Id:', response.data.data.id);
       console.log('Job Id:', response.data.data.jobId);
@@ -380,8 +389,8 @@ function createHoldRequestAjax(req, res) {
     req,
     req.query.itemId,
     req.query.pickupLocation,
-    req.query.itemSource,
     null,
+    req.query.itemSource,
     (response) => {
       res.json({
         id: response.data.data.id,
@@ -409,8 +418,8 @@ function createHoldRequestEdd(req, res) {
     req,
     req.body.itemId,
     req.body.pickupLocation,
-    '',
     req.body.form,
+    req.body.itemSource,
     (response) => {
       res.json({
         id: response.data.data.id,
