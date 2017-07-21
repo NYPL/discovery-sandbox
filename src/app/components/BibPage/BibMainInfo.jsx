@@ -40,7 +40,6 @@ class BibMainInfo extends React.Component {
                     <Link
                       key={i}
                       onClick={e => this.newSearch(e, url)}
-                      title={`Make a new search for ${fieldLabel}: "${value}"`}
                       to={`/search?${url}`}
                     >
                       {value}

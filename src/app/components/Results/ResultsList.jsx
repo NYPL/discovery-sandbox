@@ -17,20 +17,49 @@ class ResultsList extends React.Component {
     super(props);
 
     this.routeHandler = this.routeHandler.bind(this);
-    this.getRecord = this.getRecord.bind(this);
+    this.getBibRecord = this.getBibRecord.bind(this);
+    this.getItemRecord = this.getItemRecord.bind(this);
   }
 
-  getRecord(e, bibId, itemId = '') {
+  /*
+   * getBibRecord(e, bibId)
+   * @description Get updated information for a bib and route the patron to the bib page.
+   * @param {object} e Event object.
+   * @param {string} bibId The bib's id.
+   */
+  getBibRecord(e, bibId) {
     e.preventDefault();
 
     ajaxCall(`/api/bib?bibId=${bibId}`,
       (response) => {
         Actions.updateBib(response.data);
-        if (itemId) {
-          this.routeHandler(`/hold/request/${bibId}-${itemId}`);
-        } else {
-          this.routeHandler(`/bib/${bibId}`);
-        }
+
+        this.routeHandler(`/bib/${bibId}`);
+      },
+      error => {
+        console.log(error);
+      }
+    );
+  }
+
+  /*
+   * getItemRecord(e, bibId, itemId)
+   * @description Get updated information for an item along with its delivery locations.
+   * And then route the patron to the hold request page.
+   * @param {object} e Event object.
+   * @param {string} bibId The bib's id.
+   * @param {string} itemId The item's id.
+   */
+  getItemRecord(e, bibId, itemId) {
+    e.preventDefault();
+
+    ajaxCall(`/api/hold/request/${bibId}-${itemId}`,
+      (response) => {
+        Actions.updateBib(response.data.bib);
+        Actions.updateDeliveryLocations(response.data.deliveryLocations);
+        Actions.updateIsEddRequestable(response.data.isEddRequestable);
+
+        this.routeHandler(`/hold/request/${bibId}-${itemId}`);
       },
       error => {
         console.log(error);
@@ -81,43 +110,56 @@ class ResultsList extends React.Component {
     if (!bib.result || _isEmpty(bib.result) || !bib.result.title) return null;
 
     const result = bib.result;
-    const itemTitle = this.getBibTitle(result);
+    const bibTitle = this.getBibTitle(result);
     const bibId = result && result['@id'] ? result['@id'].substring(4) : '';
-    const items = LibraryItem.getItems(result);
-    // Just displaying information for the first item for now, unless if the first item
-    // is displays a HathiTrust viewer, in that case display the second item.
-    const firstItem = items.length && items[0].actionLabel !== 'View online' ?
-      items[0] : (items[1] ? items[1] : null);
     const materialType = result && result.materialType && result.materialType[0] ?
       result.materialType[0].prefLabel : null;
     const yearPublished = this.getYearDisplay(result);
-    const usageType = firstItem ? firstItem.actionLabel : null;
-    const location = _chain(items)
-      .pluck('location')
-      .uniq()
+    const publisher = result.publisher && result.publisher.length ? result.publisher[0] : '';
+    const placeOfPublication = result.placeOfPublication && result.placeOfPublication.length ?
+      result.placeOfPublication[0] : '';
+    const items = LibraryItem.getItems(result);
+    const totalItems = items.length;
+    const totalItemsAvailable = _chain(items)
+      .filter((item) => item.requestHold === true)
       .value()
-      .join(', ');
+      .length;
+
+    let itemsAvailableStr = '';
+
+    if (totalItems === totalItemsAvailable) {
+      itemsAvailableStr = 'all available';
+    } else if (!totalItemsAvailable) {
+      itemsAvailableStr = 'none available';
+    } else {
+      itemsAvailableStr = `${totalItemsAvailable} available`;
+    }
 
     return (
       <li key={i} className="nypl-results-item">
         <h2>
           <Link
-            onClick={(e) => this.getRecord(e, bibId)}
+            onClick={(e) => this.getBibRecord(e, bibId)}
             href={`/bib/${bibId}`}
             className="title"
           >
-            {itemTitle}
+            {bibTitle}
           </Link>
         </h2>
         <div className="nypl-results-item-description">
-          <span className="nypl-results-media">{materialType}</span>
-          {yearPublished}
-          <span className="nypl-results-room">{location}</span>
-          <span className="nypl-results-use">{usageType}</span>
+          <p>
+            <span className="nypl-results-media">{materialType}</span>
+            <span className="nypl-results-place">{placeOfPublication}</span>
+            <span className="nypl-results-publisher">{publisher}</span>
+            {yearPublished}
+            <span className="nypl-results-info">
+              {totalItems} item{totalItems !== 1 ? 's' : ''}, {itemsAvailableStr}
+            </span>
+          </p>
         </div>
         {
           (items.length === 1) &&
-            <ItemTable items={items} bibId={bibId} getRecord={this.getRecord} />
+            <ItemTable items={items} bibId={bibId} getRecord={this.getItemRecord} />
         }
       </li>
     );
@@ -136,7 +178,7 @@ class ResultsList extends React.Component {
     }
 
     return (
-      <ul className={`results-list ${this.props.spinning ? 'hide-results-list ' : ''}`}>
+      <ul className={`nypl-results-list ${this.props.spinning ? 'hide-results-list ' : ''}`}>
         {resultsElm}
       </ul>
     );
