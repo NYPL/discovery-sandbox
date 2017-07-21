@@ -84,7 +84,7 @@ function postHoldAPI(req, pickedUpItemId, pickupLocation, docDeliveryData, cb, e
  */
 function getDeliveryLocations(barcode, patronId, accessToken, cb, errorCb) {
   return axios.get(
-    `${apiBase}/request/deliverylocationsbybarcode?barcodes[]=${barcode}&patronId=${patronId}`,
+    `${apiBase}/request/deliveryLocationsByBarcode?barcodes[]=${barcode}&patronId=${patronId}`,
     {
       headers: {
         'Content-Type': 'application/json',
