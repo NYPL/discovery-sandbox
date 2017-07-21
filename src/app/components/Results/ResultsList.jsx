@@ -17,20 +17,49 @@ class ResultsList extends React.Component {
     super(props);
 
     this.routeHandler = this.routeHandler.bind(this);
-    this.getRecord = this.getRecord.bind(this);
+    this.getBibRecord = this.getBibRecord.bind(this);
+    this.getItemRecord = this.getItemRecord.bind(this);
   }
 
-  getRecord(e, bibId, itemId = '') {
+  /*
+   * getBibRecord(e, bibId)
+   * @description Get updated information for a bib and route the patron to the bib page.
+   * @param {object} e Event object.
+   * @param {string} bibId The bib's id.
+   */
+  getBibRecord(e, bibId) {
     e.preventDefault();
 
     ajaxCall(`/api/bib?bibId=${bibId}`,
       (response) => {
         Actions.updateBib(response.data);
-        if (itemId) {
-          this.routeHandler(`/hold/request/${bibId}-${itemId}`);
-        } else {
-          this.routeHandler(`/bib/${bibId}`);
-        }
+
+        this.routeHandler(`/bib/${bibId}`);
+      },
+      error => {
+        console.log(error);
+      }
+    );
+  }
+
+  /*
+   * getItemRecord(e, bibId, itemId)
+   * @description Get updated information for an item along with its delivery locations.
+   * And then route the patron to the hold request page.
+   * @param {object} e Event object.
+   * @param {string} bibId The bib's id.
+   * @param {string} itemId The item's id.
+   */
+  getItemRecord(e, bibId, itemId) {
+    e.preventDefault();
+
+    ajaxCall(`/api/hold/request/${bibId}-${itemId}`,
+      (response) => {
+        Actions.updateBib(response.data.bib);
+        Actions.updateDeliveryLocations(response.data.deliveryLocations);
+        Actions.updateIsEddRequestable(response.data.isEddRequestable);
+
+        this.routeHandler(`/hold/request/${bibId}-${itemId}`);
       },
       error => {
         console.log(error);
@@ -102,7 +131,7 @@ class ResultsList extends React.Component {
       <li key={i} className="nypl-results-item">
         <h2>
           <Link
-            onClick={(e) => this.getRecord(e, bibId)}
+            onClick={(e) => this.getBibRecord(e, bibId)}
             href={`/bib/${bibId}`}
             className="title"
           >
@@ -117,7 +146,7 @@ class ResultsList extends React.Component {
         </div>
         {
           (items.length === 1) &&
-            <ItemTable items={items} bibId={bibId} getRecord={this.getRecord} />
+            <ItemTable items={items} bibId={bibId} getRecord={this.getItemRecord} />
         }
       </li>
     );
