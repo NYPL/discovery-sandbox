@@ -15,11 +15,13 @@ const ItemTableRow = ({ item, bibId, getRecord }) => {
 
   if (item.requestHold) {
     itemLink = item.available ?
-      <button
+      (<Link
         to={`/hold/request/${bibId}-${item.id}`}
         onClick={(e) => getRecord(e, bibId, item.id)}
         tabIndex="0"
-      >Request</button> :
+      >
+        Request
+      </Link>) :
       <span>{item.status.prefLabel}</span>;
   }
 
