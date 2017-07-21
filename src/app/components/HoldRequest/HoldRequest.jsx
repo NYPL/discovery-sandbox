@@ -168,7 +168,7 @@ class HoldRequest extends React.Component {
       this.state.patron.names && _isArray(this.state.patron.names) && this.state.patron.names.length
       ) ? this.state.patron.names[0] : '';
     const itemId = (this.props.params && this.props.params.itemId) ? this.props.params.itemId : '';
-    const selectedItem = (bib && itemId) ? LibraryItem.getItem(bib, itemId) : null;
+    const selectedItem = (bib && itemId) ? LibraryItem.getItem(bib, itemId) : {};
     const callNo =
       (selectedItem && selectedItem.callNumber && selectedItem.callNumber.length) ?
       (

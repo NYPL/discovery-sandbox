@@ -20,6 +20,7 @@ const apiBase = appConfig.api[appEnvironment];
  * @param {string} pickedUpItemId
  * @param {string} pickupLocation
  * @param {object} docDeliveryData
+ * @param {string} itemSource The source of the item, either nypl, cul, or pul.
  * @param {function} cb - callback when we have valid response
  * @param {function} errorCb - callback when error
  * @return {function}
@@ -389,7 +390,7 @@ function createHoldRequestAjax(req, res) {
     req.query.itemId,
     req.query.pickupLocation,
     null,
-    null,
+    req.query.itemSource,
     (response) => {
       res.json({
         id: response.data.data.id,
@@ -418,7 +419,7 @@ function createHoldRequestEdd(req, res) {
     req.body.itemId,
     req.body.pickupLocation,
     req.body.form,
-    null,
+    req.body.itemSource,
     (response) => {
       res.json({
         id: response.data.data.id,
