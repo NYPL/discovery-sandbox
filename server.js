@@ -52,9 +52,16 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 // Set Global publicKey
 app.set('nyplPublicKey', appConfig.publicKey);
 
-app.use(express.static(DIST_PATH));
+app.use(`${appConfig.baseUrl}/`, express.static(DIST_PATH));
 // For images
 app.use('*/src/client', express.static(INDEX_PATH));
+
+app.use('/', (req, res, next) => {
+  if (req.path === appConfig.baseUrl || req.path === '/') {
+    return res.redirect(`${appConfig.baseUrl}/`);
+  }
+  return next();
+});
 
 app.use('/*', initializeTokenAuth, getPatronData);
 app.use('/', apiRoutes);
@@ -62,7 +69,7 @@ app.use('/', apiRoutes);
 app.get('/*', (req, res) => {
   alt.bootstrap(JSON.stringify(res.locals.data || {}));
 
-  match({ routes, location: req.url }, (error, redirectLocation, renderProps) => {
+  match({ routes: routes.server, location: req.url }, (error, redirectLocation, renderProps) => {
     if (error) {
       res.status(500).send(error.message);
     } else if (redirectLocation) {
@@ -83,6 +90,7 @@ app.get('/*', (req, res) => {
           appEnv: process.env.APP_ENV,
           path: req.url,
           isProduction,
+          baseUrl: appConfig.baseUrl,
         });
     } else {
       res.status(404).redirect('/');

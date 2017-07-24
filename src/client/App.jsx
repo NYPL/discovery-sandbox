@@ -33,10 +33,12 @@ window.onload = () => {
   Iso.bootstrap((state, container) => {
     alt.bootstrap(state);
 
-    const appHistory = useScroll(useRouterHistory(createBrowserHistory))();
+    const appHistory = useScroll(useRouterHistory(createBrowserHistory))({
+      basename: '/research/collections/discovery-beta',
+    });
 
     ReactDOM.render(
-      <Router history={appHistory}>{routes}</Router>,
+      <Router history={appHistory}>{routes.client}</Router>,
       container
     );
   });
