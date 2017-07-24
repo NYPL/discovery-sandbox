@@ -7,9 +7,11 @@ import {
   findWhere as _findWhere,
   findIndex as _findIndex,
 } from 'underscore';
+
 import Definition from './Definition';
 import { ajaxCall } from '../../utils/utils';
 import Actions from '../../actions/Actions';
+import appConfig from '../../../../appConfig.js';
 
 class BibMainInfo extends React.Component {
   getMainInfo(bib) {
@@ -36,7 +38,7 @@ class BibMainInfo extends React.Component {
                     <Link
                       key={i}
                       onClick={e => this.newSearch(e, url)}
-                      to={`/search?${url}`}
+                      to={`${appConfig.baseUrl}/search?${url}`}
                     >
                       {value}
                     </Link>

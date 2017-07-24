@@ -373,7 +373,7 @@ function createHoldRequestServer(req, res, pickedUpBibId = '', pickedUpItemId = 
 
   if (!bibId || !itemId) {
     // Dummy redirect for now
-    return res.redirect('/someErrorPage');
+    return res.redirect(`${appConfig.baseUrl}/someErrorPage`);
   }
 
   return postHoldAPI(
@@ -387,13 +387,15 @@ function createHoldRequestServer(req, res, pickedUpBibId = '', pickedUpItemId = 
       console.log('Job Id:', response.data.data.jobId);
 
       res.redirect(
-        `/hold/confirmation/${bibId}-${itemId}?pickupLocation=` +
+        `${appConfig.baseUrl}/hold/confirmation/${bibId}-${itemId}?pickupLocation=` +
         `${response.data.data.pickupLocation}&requestId=${response.data.data.id}`
       );
     },
     (error) => {
       console.log(`Error calling Holds API : ${error.data.message}`);
-      res.redirect(`/hold/request/${bibId}-${itemId}?errorMessage=${error.data.message}`);
+      res.redirect(
+        `${appConfig.baseUrl}/hold/request/${bibId}-${itemId}?errorMessage=${error.data.message}`
+      );
     }
   );
 }
@@ -479,7 +481,7 @@ function eddServer(req, res) {
     // Very ugly but passing all the error and patron data through the url param.
     // TODO: think of a better way to pass data. For now, this works, but make sure that
     // the data is being passed and picked up by the `ElectronicDelivery` component.
-    return res.redirect(`/hold/request/${bibId}-${itemId}/edd?` +
+    return res.redirect(`${appConfig.baseUrl}/hold/request/${bibId}-${itemId}/edd?` +
       `error=${JSON.stringify(serverErrors)}` +
       `&form=${JSON.stringify(req.body)}`);
   }

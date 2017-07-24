@@ -7,6 +7,7 @@ import { isArray as _isArray } from 'underscore';
 import Actions from '../../actions/Actions';
 import Pagination from '../Pagination/Pagination';
 import ItemTable from './ItemTable';
+import appConfig from '../../../../appConfig.js';
 
 class ItemHoldings extends React.Component {
   constructor(props) {
@@ -174,7 +175,7 @@ class ItemHoldings extends React.Component {
                   this.state.js ?
                     (<a href="#" onClick={this.showAll}>View All Items</a>) :
                     (<Link
-                      to={`/bib/${this.props.bibId}/all`}
+                      to={`${appConfig.baseUrl}/bib/${this.props.bibId}/all`}
                       className="view-all-items"
                     >
                       View All Items

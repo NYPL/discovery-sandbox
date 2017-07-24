@@ -92,7 +92,7 @@ function searchServerPost(req, res) {
     sortBy,
   });
 
-  res.redirect(`/search?${apiQuery}`);
+  res.redirect(`${appConfig.baseUrl}/search?${apiQuery}`);
 }
 
 function searchServer(req, res, next) {
