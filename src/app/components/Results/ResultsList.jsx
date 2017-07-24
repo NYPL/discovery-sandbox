@@ -120,10 +120,6 @@ class ResultsList extends React.Component {
       result.placeOfPublication[0] : '';
     const items = LibraryItem.getItems(result);
     const totalItems = items.length;
-    const totalItemsAvailable = _chain(items)
-      .filter((item) => item.requestable === true)
-      .value()
-      .length;
 
     return (
       <li key={i} className="nypl-results-item">
