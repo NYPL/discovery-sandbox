@@ -9,10 +9,10 @@ const MarcRecord = ({ bNumber }) => {
     `https://catalog.nypl.org/search~S1?/.b${bNumber}/.b${bNumber}/1%2C1%2C1%2CB/marc`;
 
   return (
-    <dl>
+    <span>
       <dt>MARC Record</dt>
       <dd><a href={marcRecordLink}>MARC Record</a></dd>
-    </dl>
+    </span>
   );
 };
 
