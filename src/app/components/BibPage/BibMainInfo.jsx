@@ -7,36 +7,32 @@ import {
   findWhere as _findWhere,
   findIndex as _findIndex,
 } from 'underscore';
-import DefinitionList from './DefinitionList';
+import Definition from './Definition';
 import { ajaxCall } from '../../utils/utils';
 import Actions from '../../actions/Actions';
 
 class BibMainInfo extends React.Component {
-
   getMainInfo(bib) {
-
     const fields = [
       { label: 'Author', value: 'creatorLiteral' },
       { label: 'Additional Authors', value: 'contributorLiteral' },
     ];
+    const fieldsToRender = [];
 
-    return fields.map((field) => {
+    fields.forEach((field) => {
       const fieldLabel = field.label;
       const fieldValue = field.value;
       const bibValues = bib[fieldValue];
 
-      if (!bibValues || !bibValues.length || !_isArray(bibValues)) {
-        return false;
-      }
-
-      return {
-        term: fieldLabel,
-        definition: (
-          <span>
-            {
-              bibValues.map((value, i) => {
-                const url = `filters[${fieldValue}]=${value}`;
-                return (
+      if (bibValues && bibValues.length && _isArray(bibValues)) {
+        fieldsToRender.push({
+          term: fieldLabel,
+          definition: (
+            <span>
+              {
+                bibValues.map((value, i) => {
+                  const url = `filters[${fieldValue}]=${value}`;
+                  return (
                     <Link
                       key={i}
                       onClick={e => this.newSearch(e, url)}
@@ -44,13 +40,18 @@ class BibMainInfo extends React.Component {
                     >
                       {value}
                     </Link>
-                );
-              })
-            }
-          </span>
-        ),
-      };
+                  );
+                })
+              }
+            </span>
+          ),
+        });
+      }
+
+      return null;
     });
+
+    return fieldsToRender;
   }
 
   newSearch(e, query) {
@@ -105,11 +106,7 @@ class BibMainInfo extends React.Component {
 
     const bibMainInfo = this.getMainInfo(this.props.bib);
 
-    return (
-      <DefinitionList
-        data={bibMainInfo}
-      />
-    );
+    return (<Definition definitions={bibMainInfo} />);
   }
 }
 

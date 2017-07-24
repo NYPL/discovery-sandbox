@@ -93,19 +93,12 @@ class ItemHoldings extends React.Component {
 
     return (
       (itemsToDisplay && _isArray(itemsToDisplay) && itemsToDisplay.length) ?
-        <dl>
-          <dt className="list-multi-control">
-            <h3>Availability</h3>
-          </dt>
-          <dd className="multi-item-list">
-            <ItemTable
-              items={itemsToDisplay}
-              bibId={bibId}
-              getRecord={this.getRecord}
-              id="bib-item-table"
-            />
-          </dd>
-        </dl> : null
+        <ItemTable
+          items={itemsToDisplay}
+          bibId={bibId}
+          getRecord={this.getRecord}
+          id="bib-item-table"
+        /> : null
     );
   }
 
@@ -162,26 +155,35 @@ class ItemHoldings extends React.Component {
 
     const itemTable = this.getTable(items, shortenItems, this.state.showAll);
 
+    if (!items || !items.length) {
+      return null;
+    }
+
     return (
-      <div id="item-holdings" className="item-holdings">
-        {itemTable}
-        {
-          !!(shortenItems && items.length >= 20 && !this.state.showAll) &&
-            (<div className="view-all-items-container">
-              {
-                this.state.js ?
-                  (<a href="#" onClick={this.showAll}>View All Items</a>) :
-                  (<Link
-                    to={`/bib/${this.props.bibId}/all`}
-                    className="view-all-items"
-                  >
-                    View All Items
-                  </Link>)
-              }
-            </div>)
-        }
-        {pagination}
-      </div>
+      <span id="item-holdings" className="item-holdings">
+        <dt className="list-multi-control">
+          <h3>Availability</h3>
+        </dt>
+        <dd className="multi-item-list">
+          {itemTable}
+          {
+            !!(shortenItems && items.length >= 20 && !this.state.showAll) &&
+              (<div className="view-all-items-container">
+                {
+                  this.state.js ?
+                    (<a href="#" onClick={this.showAll}>View All Items</a>) :
+                    (<Link
+                      to={`/bib/${this.props.bibId}/all`}
+                      className="view-all-items"
+                    >
+                      View All Items
+                    </Link>)
+                }
+              </div>)
+          }
+          {pagination}
+        </dd>
+      </span>
     );
   }
 }

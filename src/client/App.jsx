@@ -33,7 +33,7 @@ window.onload = () => {
   Iso.bootstrap((state, container) => {
     alt.bootstrap(state);
 
-    const appHistory = (useRouterHistory(createBrowserHistory))();
+    const appHistory = useScroll(useRouterHistory(createBrowserHistory))();
 
     ReactDOM.render(
       <Router history={appHistory}>{routes}</Router>,

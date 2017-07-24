@@ -121,7 +121,7 @@ class ResultsList extends React.Component {
     const items = LibraryItem.getItems(result);
     const totalItems = items.length;
     const totalItemsAvailable = _chain(items)
-      .filter((item) => item.requestHold === true)
+      .filter((item) => item.requestable === true)
       .value()
       .length;
 

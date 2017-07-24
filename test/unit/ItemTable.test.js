@@ -38,13 +38,13 @@ describe('ItemTable', () => {
     });
   });
 
-  describe('If <ItemTable> receives an item without valid "requestHold" value', () => {
+  describe('If <ItemTable> receives an item without valid "requestable" value', () => {
     it('should render the item with no request link.', () => {
 
     });
   });
 
-  describe('If <ItemTable> receives an item with "requestHold" value, but ' +
+  describe('If <ItemTable> receives an item with "requestable" value, but ' +
     '"availability" is not available""', () => {
     it('should render the item with no request link and the render the hint "Unavailable".', () => {
 
@@ -55,7 +55,7 @@ describe('ItemTable', () => {
     });
   });
 
-  describe('If <ItemTable> receives an item with valid "requestHold" value and ' +
+  describe('If <ItemTable> receives an item with valid "requestable" value and ' +
     '"availability" is available""', () => {
       it('should render the item with request link. The link\'s href should be ' +
         '"/hold/request/[bibId]-[itemId]". The link\'s text should be "Request".', () => {
