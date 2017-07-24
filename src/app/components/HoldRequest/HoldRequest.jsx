@@ -2,16 +2,16 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 import axios from 'axios';
-
-import Breadcrumbs from '../Breadcrumbs/Breadcrumbs.jsx';
-import PatronStore from '../../stores/PatronStore.js';
-import config from '../../../../appConfig.js';
-import LibraryItem from '../../utils/item.js';
 import {
   isArray as _isArray,
   isEmpty as _isEmpty,
   extend as _extend,
 } from 'underscore';
+
+import Breadcrumbs from '../Breadcrumbs/Breadcrumbs.jsx';
+import PatronStore from '../../stores/PatronStore.js';
+import appConfig from '../../../../appConfig.js';
+import LibraryItem from '../../utils/item.js';
 
 class HoldRequest extends React.Component {
   constructor(props) {
@@ -52,7 +52,7 @@ class HoldRequest extends React.Component {
 
     const fullUrl = encodeURIComponent(window.location.href);
 
-    window.location.replace(`${config.loginUrl}?redirect_uri=${fullUrl}`);
+    window.location.replace(`${appConfig.loginUrl}?redirect_uri=${fullUrl}`);
 
     return false;
   }
@@ -189,7 +189,7 @@ class HoldRequest extends React.Component {
           <div className="item-summary">
             <div className="item">
               <h2>You are about to request a hold on the following research item:</h2>
-              <Link href={`/bib/${bibId}`}>{title}</Link>
+              <Link to={`${appConfig.baseUrl}/bib/${bibId}`}>{title}</Link>
               {callNo}
             </div>
           </div>
@@ -229,7 +229,7 @@ class HoldRequest extends React.Component {
           <div className="item-summary">
             <div className="item">
               <h2>Something went wrong with your request</h2>
-              <Link href={`/bib/${bibId}`}>{title}</Link>
+              <Link to={`${appConfig.baseUrl}/bib/${bibId}`}>{title}</Link>
             </div>
           </div>
           <h2>Confirm account</h2>

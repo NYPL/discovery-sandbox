@@ -6,6 +6,8 @@ import { Link } from 'react-router';
 //   RightWedgeIcon,
 // } from 'dgx-svg-icons';
 
+import appConfig from '../../../../appConfig.js';
+
 const LeftWedgeIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet" aria-hidden="true" viewBox="0 0 8.97 15.125">
     <title>Wedge Left Arrow</title>
@@ -42,7 +44,8 @@ class Pagination extends React.Component {
     const svg = type === 'Next' ? <RightWedgeIcon /> : <LeftWedgeIcon />;
     const apiUrl = this.props.createAPIQuery({ page: pageNum });
     const localUrl = `${this.props.to.pathname}${pageNum}`;
-    const url = apiUrl ? { pathname: `/search?${apiUrl}` } : { pathname: localUrl };
+    const url = apiUrl ?
+      { pathname: `${appConfig.baseUrl}/search?${apiUrl}` } : { pathname: localUrl };
 
     return (
       <Link

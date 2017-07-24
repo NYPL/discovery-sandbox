@@ -2,15 +2,15 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import { Link } from 'react-router';
-
-import Breadcrumbs from '../Breadcrumbs/Breadcrumbs.jsx';
-import PatronStore from '../../stores/PatronStore.js';
-import config from '../../../../appConfig.js';
 import {
   isArray as _isArray,
   isEmpty as _isEmpty,
   extend as _extend,
 } from 'underscore';
+
+import Breadcrumbs from '../Breadcrumbs/Breadcrumbs.jsx';
+import PatronStore from '../../stores/PatronStore.js';
+import appConfig from '../../../../appConfig.js';
 import ElectronicDeliveryForm from './ElectronicDeliveryForm';
 import LibraryItem from '../../utils/item.js';
 
@@ -53,7 +53,7 @@ class ElectronicDelivery extends React.Component {
 
     const fullUrl = encodeURIComponent(window.location.href);
 
-    window.location.replace(`${config.loginUrl}?redirect_uri=${fullUrl}`);
+    window.location.replace(`${appConfig.loginUrl}?redirect_uri=${fullUrl}`);
 
     return false;
   }
@@ -68,7 +68,7 @@ class ElectronicDelivery extends React.Component {
       itemId,
       itemSource,
     } = this.state;
-    const path = `/hold/confirmation/${bibId}-${itemId}`;
+    const path = `${appConfig.baseUrl}/hold/confirmation/${bibId}-${itemId}`;
     const data = _extend({ bibId, itemId, pickupLocation: 'edd', itemSource }, fields);
 
     axios
@@ -121,7 +121,7 @@ class ElectronicDelivery extends React.Component {
               <h3>
                 Material request for Electronic Delivery:
                 <br />
-                <Link to={`/bib/${bibId}`}>
+                <Link to={`${appConfig.baseUrl}/bib/${bibId}`}>
                   {title}
                 </Link>
               </h3>

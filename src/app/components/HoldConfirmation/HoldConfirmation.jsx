@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import PatronStore from '../../stores/PatronStore.js';
-import config from '../../../../appConfig.js';
+import appConfig from '../../../../appConfig.js';
 import { Link } from 'react-router';
 import {
   isArray as _isArray,
@@ -38,7 +38,7 @@ class HoldConfirmation extends React.Component {
 
     const fullUrl = encodeURIComponent(window.location.href);
 
-    window.location.replace(`${config.loginUrl}?redirect_uri=${fullUrl}`);
+    window.location.replace(`${appConfig.loginUrl}?redirect_uri=${fullUrl}`);
 
     return false;
   }
@@ -106,7 +106,7 @@ class HoldConfirmation extends React.Component {
             <div className="details two-third">
               <h2>Item request details</h2>
               <ul className="generic-list">
-                <li>Item: <Link to={`/bib/${id}`}>{title}</Link></li>
+                <li>Item: <Link to={`${appConfig.baseUrl}/bib/${id}`}>{title}</Link></li>
                 {shelfMarkInfo}
                 { /* <li>Ready for use by <strong>approximately {dateDisplay}, 9:00am</strong> at the location below</li> */ }
                 <li><strong>You will receive an email notification</strong> when the item is ready for use at the location below</li>

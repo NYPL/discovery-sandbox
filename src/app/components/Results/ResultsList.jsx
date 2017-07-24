@@ -9,8 +9,9 @@ import {
 import Actions from '../../actions/Actions';
 import LibraryItem from '../../utils/item';
 import { ajaxCall } from '../../utils/utils';
-
 import ItemTable from '../Item/ItemTable';
+
+import appConfig from '../../../../appConfig.js';
 
 class ResultsList extends React.Component {
   constructor(props) {
@@ -140,7 +141,7 @@ class ResultsList extends React.Component {
         <h2>
           <Link
             onClick={(e) => this.getBibRecord(e, bibId)}
-            href={`/bib/${bibId}`}
+            to={`${appConfig.baseUrl}/bib/${bibId}`}
             className="title"
           >
             {bibTitle}
