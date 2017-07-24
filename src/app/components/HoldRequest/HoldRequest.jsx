@@ -143,13 +143,8 @@ class HoldRequest extends React.Component {
         />
         <label htmlFor={`location${i}`}>
           <span className="col location">
-            <a href={`${location.uri}`}>{location.prefLabel}</a>
-            <br />{location.address && location.address.address1}<br />
-            {location.offsite &&
-              <span>
-                <br /><small>(requested from offsite storage)</small><br />
-              </span>
-            }
+            <p>{location.prefLabel}</p>
+            <p>{location.address && location.address}</p>
           </span>
         </label>
       </div>

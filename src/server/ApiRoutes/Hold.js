@@ -1,11 +1,14 @@
 import axios from 'axios';
 
 import appConfig from '../../../appConfig.js';
+import locationCodes from '../../../locationCodes.js';
+import locationDetails from '../../../locations.js';
 import User from './User.js';
 import Bib from './Bib.js';
 import LibraryItem from './../../app/utils/item.js';
 import { validate } from '../../app/utils/formValidationUtils';
 import {
+  mapObject as _mapObject,
   omit as _omit,
 } from 'underscore';
 
@@ -69,6 +72,31 @@ function postHoldAPI(
 }
 
 /**
+ * mapLocationDetails(locations)
+ * The function extracts the details of the delivery locations from the location.js and
+ * locationCodes.js based on the locastion id we get from deliveryLocationsByBarcode API.
+ *
+ * @param {array} locations
+ * @return {array}
+ */
+function mapLocationDetails(locations) {
+  locations.map(loc => {
+    _mapObject(locationCodes, (c) => {
+      if (loc['@id'].replace('loc:', '') === c.delivery_location) {
+        loc.address = (locationDetails[c.location]) ?
+          locationDetails[c.location].address.address1 : null;
+
+        return true;
+      }
+
+      return false;
+    });
+  });
+
+  return locations;
+}
+
+/**
  * getDeliveryLocations(barcode, patronId, accessToken, cb, errorCb)
  * The function to make a request to get delivery locations of an item.
  *
@@ -90,6 +118,8 @@ function getDeliveryLocations(barcode, patronId, accessToken, cb, errorCb) {
     }
   )
   .then(barcodeAPIresponse => {
+    mapLocationDetails(barcodeAPIresponse.data.itemListElement[0].deliveryLocation);
+
     cb(
       barcodeAPIresponse.data.itemListElement[0].deliveryLocation,
       barcodeAPIresponse.data.itemListElement[0].eddRequestable
