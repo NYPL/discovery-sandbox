@@ -144,7 +144,7 @@ class HoldRequest extends React.Component {
         <label htmlFor={`location${i}`}>
           <span className="col location">
             <p>{location.prefLabel}</p>
-            {location.address && <p> location.address</p>}
+            {location.address && <p>{location.address}</p>}
           </span>
         </label>
       </div>
