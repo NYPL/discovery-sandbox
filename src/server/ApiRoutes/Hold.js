@@ -74,7 +74,7 @@ function postHoldAPI(
 /**
  * mapLocationDetails(locations)
  * The function extracts the details of the delivery locations from the location.js and
- * locationCodes.js based on the locastion id we get from deliveryLocationsByBarcode API.
+ * locationCodes.js based on the location ID we get from deliveryLocationsByBarcode API.
  *
  * @param {array} locations
  * @return {array}
