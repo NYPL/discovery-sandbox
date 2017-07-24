@@ -12,6 +12,7 @@ import {
   extend as _extend,
 } from 'underscore';
 import ElectronicDeliveryForm from './ElectronicDeliveryForm';
+import LibraryItem from '../../utils/item.js';
 
 class ElectronicDelivery extends React.Component {
   constructor(props) {
@@ -22,11 +23,14 @@ class ElectronicDelivery extends React.Component {
     const bibId = (bib && bib['@id'] && typeof bib['@id'] === 'string') ?
       bib['@id'].substring(4) : '';
     const itemId = (this.props.params && this.props.params.itemId) ? this.props.params.itemId : '';
+    const selectedItem = (bib && itemId) ? LibraryItem.getItem(bib, itemId) : {};
+    const itemSource = selectedItem.itemSource;
 
     this.state = _extend({
       title,
       bibId,
       itemId,
+      itemSource,
     }, { patron: PatronStore.getState() });
     this.requireUser = this.requireUser.bind(this);
     this.submitRequest = this.submitRequest.bind(this);
@@ -62,9 +66,10 @@ class ElectronicDelivery extends React.Component {
     const {
       bibId,
       itemId,
+      itemSource,
     } = this.state;
     const path = `/hold/confirmation/${bibId}-${itemId}`;
-    const data = _extend({ bibId, itemId, pickupLocation: 'edd' }, fields);
+    const data = _extend({ bibId, itemId, pickupLocation: 'edd', itemSource }, fields);
 
     axios
       .post('/api/newHold', data)
@@ -91,6 +96,10 @@ class ElectronicDelivery extends React.Component {
     const bib = (this.props.bib && !_isEmpty(this.props.bib)) ? this.props.bib : null;
     const callNo = bib && bib.shelfMark && bib.shelfMark.length ? bib.shelfMark[0] : null;
     const { error, form } = this.props;
+    const patronEmail = (
+      this.state.patron.emails && _isArray(this.state.patron.emails)
+      && this.state.patron.emails.length
+      ) ? this.state.patron.emails[0] : '';
 
     return (
       <div id="mainContent">
@@ -136,6 +145,7 @@ class ElectronicDelivery extends React.Component {
                 submitRequest={this.submitRequest}
                 error={error}
                 form={form}
+                defaultEmail={patronEmail}
               />
             </div>
           </div>
@@ -157,5 +167,6 @@ ElectronicDelivery.propTypes = {
   error: PropTypes.object,
   form: PropTypes.object,
 };
+
 
 export default ElectronicDelivery;

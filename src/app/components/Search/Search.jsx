@@ -109,7 +109,7 @@ class Search extends React.Component {
         method="POST"
       >
         <fieldset
-          className={`nypl-omnisearch nypl-spinner-field ${this.state.spinning ? 'spinning' : ''}`}
+          className={`nypl-omnisearch style-2 nypl-spinner-field ${this.state.spinning ? 'spinning' : ''}`}
         >
           <span className="nypl-omni-fields">
             <label htmlFor="search-by-field">Search in</label>
