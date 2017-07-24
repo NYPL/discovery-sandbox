@@ -111,11 +111,11 @@ function validate(form, cb) {
   const fieldsToCheck = {
     emailAddress: {
       validate: (val) => (val.trim().length && isEmail('' + val)),
-      errorMsg: 'Please enter a correct email',
+      errorMsg: 'Please enter the email address associated with your NYPL account.',
     },
     chapterTitle: {
       validate: (val) => (isNumeric('' + val) && val > 0) ? true : false,
-      errorMsg: 'Please enter the item chapter',
+      errorMsg: 'Please indicate the chapter or article.',
     },
     // optional
     author: {
@@ -144,11 +144,11 @@ function validate(form, cb) {
     },
     startPage: {
       validate: (val) => (isNumeric('' + val) && val > 0) ? true : false,
-      errorMsg: 'Please enter the start page',
+      errorMsg: 'Please enter a starting page number. Values must be numeric only (No special characters allowed).',
     },
     endPage: {
       validate: (val) => (isNumeric('' + val) && val > 0) ? true : false,
-      errorMsg: 'Please enter the end page',
+      errorMsg: 'Please enter an ending page number. Values must be numeric only (No special characters allowed).',
     },
   };
 
