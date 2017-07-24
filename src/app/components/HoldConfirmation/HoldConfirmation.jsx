@@ -44,6 +44,18 @@ class HoldConfirmation extends React.Component {
   }
 
   /**
+   * goRestart(e)
+   * @param {event}
+   * Renders the route back to home page for single page application implementation.
+   *
+   */
+  goRestart(e) {
+    e.preventDefault();
+
+    this.context.router.push('/');
+  }
+
+  /**
    * renderLocationInfo()
    * Renders the location information.
    *
@@ -64,6 +76,23 @@ class HoldConfirmation extends React.Component {
         {address}<br />
         {prefLabel}
       </p>
+    );
+  }
+
+  /**
+   * renderStartOverLink
+   * Renders the link back to homepage.
+   *
+   * @return {HTML Element}
+   */
+  renderStartOverLink() {
+    return (
+      <Link
+        to="/"
+        onClick={(e) => this.goRestart(e)}
+      >
+        Start Over
+      </Link>
     );
   }
 
@@ -127,6 +156,11 @@ class HoldConfirmation extends React.Component {
               {this.renderLocationInfo(deliveryLocation)}
             </div>
           </div>
+          <div className="start-over-container">
+            <div>
+              {this.renderStartOverLink()}
+            </div>
+          </div>
         </div>
       </div>
     );
@@ -147,6 +181,10 @@ HoldConfirmation.defaultProps = {
   searchKeywords: '',
   params: {},
   deliveryLocations: [],
+};
+
+HoldConfirmation.contextTypes = {
+  router: PropTypes.object,
 };
 
 export default HoldConfirmation;
