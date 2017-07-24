@@ -104,8 +104,6 @@ function LibraryItem() {
     let url = null;
     let actionLabel = null;
     let actionLabelHelper = null;
-    // Currently using requestHold to display the Request button, only for ReCAP items.
-    let requestHold = false;
     // non-NYPL ReCAP
     const recap =
       (accessMessage.prefLabel === 'ADV REQUEST' || accessMessage.prefLabel === 'USE IN LIBRARY')
@@ -129,14 +127,12 @@ function LibraryItem() {
       // The logic for this should be updated, but right now non-NYPL ReCAP items
       // don't have a holdingLocation (but a default gets added here);
     } else if (recap) {
-      requestHold = true;
       actionLabel = accessMessage.prefLabel;
       actionLabelHelper = `request hold on ${title}`;
     } else if (nyplRecap) {
       // Temporary for NYPL ReCAP items.
       // Making sure that if there is a holding location, that the location code starts with
       // rc. Ids are in the format of `loc:x` where x is the location code.
-      requestHold = true;
       actionLabel = accessMessage.prefLabel;
       actionLabelHelper = `request hold on ${title}`;
     } else if (availability === 'available') {
@@ -158,7 +154,6 @@ function LibraryItem() {
       url,
       actionLabel,
       actionLabelHelper,
-      requestHold,
       requestable,
       suppressed,
       barcode,
