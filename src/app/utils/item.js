@@ -250,26 +250,22 @@ function LibraryItem() {
 
   /**
    * getHoldingLocation(item)
-   * Returns updated location data.
+   * Returns updated location data from the holdingLocation property in the API for each item.
    * @param {object} item
    * @return {object}
    */
   this.getHoldingLocation = (item) => {
-    const defaultLocation = this.getDefaultLocation();
     let location = this.getDefaultLocation();
 
     // this is a physical resource
     if (item.holdingLocation && item.holdingLocation.length) {
       location = item.holdingLocation[0];
+    }
     // this is an electronic resource
-    } else if (item.electronicLocator && item.electronicLocator.length) {
-      location = item.electronicLocator[0];
-      location['@id'] = '';
-    }
-
-    if (this.isOffsite(location.prefLabel)) {
-      location.prefLabel = `${defaultLocation.prefLabel} (requested from offsite storage)`;
-    }
+    // else if (item.electronicLocator && item.electronicLocator.length) {
+    //   location = item.electronicLocator[0];
+    //   location['@id'] = '';
+    // }
 
     return location;
   };

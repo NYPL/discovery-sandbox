@@ -249,10 +249,6 @@ function newHoldRequestServer(req, res, next) {
  */
 function newHoldRequestAjax(req, res) {
   const bibId = req.params.bibId || '';
-  // const loggedIn = User.requireUser(req, res);
-
-  // if (!loggedIn) return false;
-
   const accessToken = req.tokenResponse.accessToken || '';
   const patronId = req.tokenResponse.decodedPatron ? req.tokenResponse.decodedPatron.sub : '';
   let barcode;
