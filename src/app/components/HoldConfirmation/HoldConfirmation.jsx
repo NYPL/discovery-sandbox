@@ -53,17 +53,13 @@ class HoldConfirmation extends React.Component {
   renderLocationInfo(loc) {
     if (!loc || _isEmpty(loc)) { return null; }
 
-    const locName = loc['full-name'] ? loc['full-name'] : '';
-    const uri = loc.uri ? <a href={`${loc.uri}`}>{locName}</a> : null;
-    const address = (loc.address && loc.address.address1) ? loc.address.address1 : null;
+    const address = (loc.address) ? loc.address.address : null;
     const prefLabel = (loc.prefLabel) ? loc.prefLabel : null;
 
     return (
-      <p>
-        {uri}<br />
-        {address}<br />
+      <span>
         {prefLabel}
-      </p>
+      </span>
     );
   }
 
@@ -99,32 +95,21 @@ class HoldConfirmation extends React.Component {
 
         <div className="content-wrapper">
           <div className="item-header">
-            <h1>Research item request confirmation</h1>
+            <h1>Request Confirmation</h1>
+            <h2>Submission Received</h2>
           </div>
 
           <div className="item-summary row">
             <div className="details two-third">
-              <h2>Item request details</h2>
-              <ul className="generic-list">
-                <li>Item: <Link to={`/bib/${id}`}>{title}</Link></li>
-                {shelfMarkInfo}
-                { /* <li>Ready for use by <strong>approximately {dateDisplay}, 9:00am</strong> at the location below</li> */ }
-                <li><strong>You will receive an email notification</strong> when the item is ready for use at the location below</li>
-                { /* <li>Book will be held until {dateDisplayEnd}, 5:00pm</li> */ }
-              </ul>
-            </div>
-            <div className="actions third">
-              <h2>Available actions</h2>
-              <ul className="generic-list">
-                <li>Visit your patron account page to view the status of this item hold</li>
-                { /* <li>You may <a href="#cancel">cancel</a> this item hold at any time</li> */ }
-              </ul>
-            </div>
-          </div>
+              <h2>Item Information</h2>
+                <p>We've received your request for <Link to={`/bib/${id}`}>{title}</Link></p>
+                <p>Please check your library account for updates. The item will be listed as Ready under your Holds tab when it is available. You will also reciev an email confirmation after your item has arrived.</p>
+                <p>Your item will be delivered to: {this.renderLocationInfo(deliveryLocation)}</p>
+                <p>For off-site materials, requests made before 2:30 PM will be delivered the following busniness day. Requests made after 2:30 PM on Fridays or over the weekends will be delivered the following Tuesday. We will hold books for up to seven days, so you can request materials up to a week in advance.</p>
 
-          <div className="map-container">
-            <div className="third">
-              {this.renderLocationInfo(deliveryLocation)}
+                <h2>Electronic Delivery</h2>
+                <p>If you selected Electronic delivery, you will be notified via email when the item is available.</p>
+                <p>If you would like to cancel your request, or if you have further questions, please contact 917-ASK-NYPL (917-275-6975).</p>
             </div>
           </div>
         </div>
