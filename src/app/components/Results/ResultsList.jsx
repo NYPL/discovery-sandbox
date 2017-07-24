@@ -125,16 +125,6 @@ class ResultsList extends React.Component {
       .value()
       .length;
 
-    let itemsAvailableStr = '';
-
-    if (totalItems === totalItemsAvailable) {
-      itemsAvailableStr = 'all available';
-    } else if (!totalItemsAvailable) {
-      itemsAvailableStr = 'none available';
-    } else {
-      itemsAvailableStr = `${totalItemsAvailable} available`;
-    }
-
     return (
       <li key={i} className="nypl-results-item">
         <h2>
@@ -153,7 +143,7 @@ class ResultsList extends React.Component {
             <span className="nypl-results-publisher">{publisher}</span>
             {yearPublished}
             <span className="nypl-results-info">
-              {totalItems} item{totalItems !== 1 ? 's' : ''}, {itemsAvailableStr}
+              {totalItems} item{totalItems !== 1 ? 's' : ''}
             </span>
           </p>
         </div>
