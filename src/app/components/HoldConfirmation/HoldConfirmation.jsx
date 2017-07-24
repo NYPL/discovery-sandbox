@@ -46,7 +46,7 @@ class HoldConfirmation extends React.Component {
   /**
    * goRestart(e)
    * @param {event}
-   * Renders the route back to home page for single page application implement.
+   * Renders the route back to home page for single page application implementation.
    *
    */
   goRestart(e) {
@@ -90,7 +90,6 @@ class HoldConfirmation extends React.Component {
       <Link
         to="/"
         onClick={(e) => this.goRestart(e)}
-        tabIndex="0"
       >
         Start Over
       </Link>
@@ -158,7 +157,7 @@ class HoldConfirmation extends React.Component {
             </div>
           </div>
           <div className="start-over-container">
-            <div className="third">
+            <div>
               {this.renderStartOverLink()}
             </div>
           </div>
