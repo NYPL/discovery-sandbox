@@ -6,7 +6,7 @@ import {
 } from 'underscore';
 
 const itemSourceMappings = {
-  SierraNypl: 'nypl-sierra',
+  SierraNypl: 'sierra-nypl',
   RecapCul: 'recap-cul',
   RecapPul: 'recap-pul',
 };
