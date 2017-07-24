@@ -2,12 +2,12 @@ import axios from 'axios';
 
 import appConfig from '../../../appConfig.js';
 import locationCodes from '../../../locationCodes.js';
+import locationDetails from '../../../locations.js';
 import User from './User.js';
 import Bib from './Bib.js';
 import LibraryItem from './../../app/utils/item.js';
 import { validate } from '../../app/utils/formValidationUtils';
 import {
-  filter as _filter,
   mapObject as _mapObject,
   omit as _omit,
 } from 'underscore';
@@ -74,20 +74,29 @@ function postHoldAPI(req, pickedUpItemId, pickupLocation, docDeliveryData, cb, e
     .catch(errorCb);
 }
 
+/**
+ * mapLocationDetails(locations)
+ * The function extracts the details of the delivery locations from the location.js and
+ * locationCodes.js based on the locastion id we get from deliveryLocationsByBarcode API.
+ *
+ * @param {array} locations
+ * @return {array}
+ */
 function mapLocationDetails(locations) {
-  const newLocations = locations;
-
   locations.map(loc => {
     _mapObject(locationCodes, (c) => {
       if (loc['@id'].replace('loc:', '') === c.delivery_location) {
-        newLocations[loc].fullName = c.location;
+        loc.address = (locationDetails[c.location]) ?
+          locationDetails[c.location].address.address1 : null;
+
+        return true;
       }
+
+      return false;
     });
   });
 
-  console.log(newLocations);
-
-  return newLocations;
+  return locations;
 }
 
 /**
