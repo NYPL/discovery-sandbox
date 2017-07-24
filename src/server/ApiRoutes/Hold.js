@@ -7,7 +7,8 @@ import Bib from './Bib.js';
 import LibraryItem from './../../app/utils/item.js';
 import { validate } from '../../app/utils/formValidationUtils';
 import {
-  findWhere as _findWhere,
+  filter as _filter,
+  mapObject as _mapObject,
   omit as _omit,
 } from 'underscore';
 
@@ -74,10 +75,19 @@ function postHoldAPI(req, pickedUpItemId, pickupLocation, docDeliveryData, cb, e
 }
 
 function mapLocationDetails(locations) {
+  const newLocations = locations;
+
   locations.map(loc => {
-    // return loc['@id'].replace('loc:', '');
-    return _findWhere(locationCodes, { delivery_location: loc['@id'].replace('loc:', '') }).location;
+    _mapObject(locationCodes, (c) => {
+      if (loc['@id'].replace('loc:', '') === c.delivery_location) {
+        newLocations[loc].fullName = c.location;
+      }
+    });
   });
+
+  console.log(newLocations);
+
+  return newLocations;
 }
 
 /**
@@ -103,7 +113,6 @@ function getDeliveryLocations(barcode, patronId, accessToken, cb, errorCb) {
   )
   .then(barcodeAPIresponse => {
     mapLocationDetails(barcodeAPIresponse.data.itemListElement[0].deliveryLocation);
-    console.log(mapLocationDetails(barcodeAPIresponse.data.itemListElement[0].deliveryLocation));
 
     cb(
       barcodeAPIresponse.data.itemListElement[0].deliveryLocation,
@@ -213,7 +222,6 @@ function newHoldRequestServer(req, res, next) {
         patronId,
         accessToken,
         (deliveryLocations, isEddRequestable) => {
-          console.log(deliveryLocations);
           res.locals.data.Store = {
             bib: bibResponseData,
             searchKeywords: '',
