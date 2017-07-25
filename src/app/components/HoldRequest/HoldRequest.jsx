@@ -64,10 +64,10 @@ class HoldRequest extends React.Component {
   submitRequest(e, bibId, itemId, itemSource) {
     e.preventDefault();
 
-    let path = `/hold/confirmation/${bibId}-${itemId}`;
+    let path = `${appConfig.baseUrl}/hold/confirmation/${bibId}-${itemId}`;
 
     if (this.state.delivery === 'edd') {
-      path = `/hold/request/${bibId}-${itemId}/edd`;
+      path = `${appConfig.baseUrl}/hold/request/${bibId}-${itemId}/edd`;
 
       this.context.router.push(path);
       return;

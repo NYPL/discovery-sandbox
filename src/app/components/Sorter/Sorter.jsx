@@ -69,8 +69,7 @@ class Sorter extends React.Component {
       Actions.updateSearchResults(response.data.searchResults);
       Actions.updateSortBy(sortBy);
       this.setState({ sortBy });
-      this.context.router
-        .push(`/search?${apiQuery}`);
+      this.context.router.push(`${appConfig.baseUrl}/search?${apiQuery}`);
       Actions.updateSpinner(false);
     });
     this.setState({ active: false });

@@ -51,7 +51,7 @@ class HoldConfirmation extends React.Component {
   goRestart(e) {
     e.preventDefault();
 
-    this.context.router.push('/');
+    this.context.router.push(`${appConfig.baseUrl}/`);
   }
 
   /**
@@ -136,29 +136,29 @@ class HoldConfirmation extends React.Component {
           <div className="item-summary row">
             <div className="details two-third">
               <h2>Item Information</h2>
-              <p>We've received your request for <Link to={`/bib/${id}`}>{title}</Link></p>
+              <p>We've received your request for <Link to={`${appConfig.baseUrl}/bib/${id}`}>{title}</Link></p>
               <p>
-                Please check your library account for updates. The item will be listed as 
-                Ready under your Holds tab when it is available. You will also recieve an email 
+                Please check your library account for updates. The item will be listed as
+                Ready under your Holds tab when it is available. You will also recieve an email
                 confirmation after your item has arrived.
               </p>
               <p>
                 Your item will be delivered to: {this.renderLocationInfo(deliveryLocation)}
               </p>
               <p>
-                For off-site materials, requests made before 2:30 PM will be delivered the 
-                following business day. Requests made after 2:30 PM on Fridays or over the 
-                weekend will be delivered the following Tuesday. We will hold books for up 
+                For off-site materials, requests made before 2:30 PM will be delivered the
+                following business day. Requests made after 2:30 PM on Fridays or over the
+                weekend will be delivered the following Tuesday. We will hold books for up
                 to seven days, so you can request materials up to a week in advance.
               </p>
 
               <h2>Electronic Delivery</h2>
               <p>
-                If you selected Electronic delivery, you will be notified via email when the item 
+                If you selected Electronic delivery, you will be notified via email when the item
                 is available.
               </p>
               <p>
-                If you would like to cancel your request, or if you have further questions, please 
+                If you would like to cancel your request, or if you have further questions, please
                 contact 917-ASK-NYPL (917-275-6975).
               </p>
             </div>
