@@ -46,7 +46,7 @@ const SearchResultsPage = (props, context) => {
       Actions.updateSearchResults(response.data.searchResults);
       Actions.updatePage(nextPage.toString());
       Actions.updateSpinner(false);
-      context.router.push(`/search?${apiQuery}`);
+      context.router.push(`${appConfig.baseUrl}/search?${apiQuery}`);
     });
   };
 

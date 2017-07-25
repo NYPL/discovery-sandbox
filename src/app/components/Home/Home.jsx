@@ -10,14 +10,14 @@ const Home = (props) => (
   <DocumentTitle title="Research Catalog | NYPL">
     <div className="home" id="mainContent">
 
-    <div className="nypl-page-header">
-      <div className="nypl-full-width-wrapper">
-        <Breadcrumbs />
-        <h2>New York Public Library Research Catalog</h2>
-        <Search
-          spinning={props.spinning}
-          createAPIQuery={basicQuery(props)}
-        />
+      <div className="nypl-page-header">
+        <div className="nypl-full-width-wrapper">
+          <Breadcrumbs />
+          <h2>New York Public Library Research Catalog</h2>
+          <Search
+            spinning={props.spinning}
+            createAPIQuery={basicQuery(props)}
+          />
         </div>
       </div>
 
