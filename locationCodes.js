@@ -528,7 +528,7 @@ export default {
     "location": "schwarzman"
   },
   "mar": {
-    "delivery_location": "",
+    "delivery_location": "mar",
     "location": "schwarzman"
   },
   "qcmf2": {
@@ -596,7 +596,7 @@ export default {
     "location": "schwarzman"
   },
   "mao": {
-    "delivery_location": "",
+    "delivery_location": "mao",
     "location": "schwarzman"
   },
   "myt42": {
