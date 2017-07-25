@@ -69,7 +69,9 @@ app.use('/', apiRoutes);
 app.get('/*', (req, res) => {
   alt.bootstrap(JSON.stringify(res.locals.data || {}));
 
-  match({ routes: routes.server, location: req.url }, (error, redirectLocation, renderProps) => {
+  const appRoutes = (req.url).indexOf(appConfig.baseUrl) !== -1 ? routes.client : routes.server;
+
+  match({ routes: appRoutes, location: req.url }, (error, redirectLocation, renderProps) => {
     if (error) {
       res.status(500).send(error.message);
     } else if (redirectLocation) {

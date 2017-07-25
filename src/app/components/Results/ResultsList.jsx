@@ -31,7 +31,7 @@ class ResultsList extends React.Component {
   getBibRecord(e, bibId) {
     e.preventDefault();
 
-    ajaxCall(`/api/bib?bibId=${bibId}`,
+    ajaxCall(`${appConfig.baseUrl}/api/bib?bibId=${bibId}`,
       (response) => {
         Actions.updateBib(response.data);
 
@@ -54,7 +54,7 @@ class ResultsList extends React.Component {
   getItemRecord(e, bibId, itemId) {
     e.preventDefault();
 
-    ajaxCall(`/api/hold/request/${bibId}-${itemId}`,
+    ajaxCall(`${appConfig.baseUrl}/api/hold/request/${bibId}-${itemId}`,
       (response) => {
         Actions.updateBib(response.data.bib);
         Actions.updateDeliveryLocations(response.data.deliveryLocations);

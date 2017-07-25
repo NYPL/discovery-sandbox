@@ -16,7 +16,7 @@ import appConfig from '../../../appConfig.js';
 
 const baseUrl = appConfig.baseUrl;
 const routes = {
-  client: (
+  server: (
     <Route path={'/'} component={Application}>
       <IndexRoute component={Home} />
       <Route path={'/search'} component={SearchResultsPage} />
@@ -27,7 +27,7 @@ const routes = {
       <Route path={'/hold/confirmation/:bibId-:itemId'} component={HoldConfirmation} />
     </Route>
   ),
-  server: (
+  client: (
     <Route path={`${baseUrl}/`} component={Application}>
       <IndexRoute component={Home} />
       <Route path={`${baseUrl}/search`} component={SearchResultsPage} />

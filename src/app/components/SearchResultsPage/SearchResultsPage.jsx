@@ -14,6 +14,7 @@ import {
   ajaxCall,
 } from '../../utils/utils.js';
 import Actions from '../../actions/Actions.js';
+import appConfig from '../../../../appConfig.js';
 
 const SearchResultsPage = (props, context) => {
   const {
@@ -41,7 +42,7 @@ const SearchResultsPage = (props, context) => {
     window.scrollTo(0, 0);
     const apiQuery = createAPIQuery({ page: nextPage });
 
-    ajaxCall(`/api?${apiQuery}`, response => {
+    ajaxCall(`${appConfig.baseUrl}/api?${apiQuery}`, response => {
       Actions.updateSearchResults(response.data.searchResults);
       Actions.updatePage(nextPage.toString());
       Actions.updateSpinner(false);

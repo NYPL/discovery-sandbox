@@ -5,6 +5,7 @@ import { DownWedgeIcon } from 'dgx-svg-icons';
 
 import Actions from '../../actions/Actions';
 import { ajaxCall } from '../../utils/utils';
+import appConfig from '../../../../appConfig.js';
 
 const sortingOpts = [
   { val: 'relevance', label: 'relevance' },
@@ -64,7 +65,7 @@ class Sorter extends React.Component {
     const apiQuery = this.props.createAPIQuery({ sortBy, page: this.props.page });
 
     Actions.updateSpinner(true);
-    ajaxCall(`/api?${apiQuery}`, (response) => {
+    ajaxCall(`${appConfig.baseUrl}/api?${apiQuery}`, (response) => {
       Actions.updateSearchResults(response.data.searchResults);
       Actions.updateSortBy(sortBy);
       this.setState({ sortBy });
