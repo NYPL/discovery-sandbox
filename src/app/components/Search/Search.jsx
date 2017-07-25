@@ -97,7 +97,7 @@ class Search extends React.Component {
       Actions.updateSortBy('relevance');
       Actions.updatePage('1');
 
-      this.context.router.push(`/search?${apiQuery}`);
+      this.context.router.push(`${appConfig.baseUrl}/search?${apiQuery}`);
       Actions.updateSpinner(false);
     });
   }

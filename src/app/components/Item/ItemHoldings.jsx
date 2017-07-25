@@ -49,7 +49,7 @@ class ItemHoldings extends React.Component {
     });
 
     if (noItemPage) {
-      this.context.router.push(`/bib/${this.props.bibId}`);
+      this.context.router.push(`${appConfig.baseUrl}/bib/${this.props.bibId}`);
     }
   }
 
@@ -72,7 +72,7 @@ class ItemHoldings extends React.Component {
         Actions.updateDeliveryLocations(response.data.deliveryLocations);
         Actions.updateIsEddRequestable(response.data.isEddRequestable);
 
-        this.context.router.push(`/hold/request/${bibId}-${itemId}`);
+        this.context.router.push(`${appConfig.baseUrl}/hold/request/${bibId}-${itemId}`);
       })
       .catch(error => {
         console.log(error);
@@ -105,7 +105,7 @@ class ItemHoldings extends React.Component {
    */
   updatePage(page) {
     this.setState({ page });
-    this.context.router.push(`/bib/${this.props.bibId}?itemPage=${page}`);
+    this.context.router.push(`${appConfig.baseUrl}/bib/${this.props.bibId}?itemPage=${page}`);
   }
 
   /*

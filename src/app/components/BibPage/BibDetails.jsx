@@ -176,7 +176,7 @@ class BibDetails extends React.Component {
       Actions.updateFacets(response.data.facets);
       Actions.updateSearchKeywords('');
       Actions.updatePage('1');
-      this.context.router.push(`/search?${query}`);
+      this.context.router.push(`${appConfig.baseUrl}/search?${query}`);
       Actions.updateSpinner(false);
     });
   }

@@ -1,10 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
-import {
-  isEmpty as _isEmpty,
-  chain as _chain,
-} from 'underscore';
+import { isEmpty as _isEmpty } from 'underscore';
 
 import Actions from '../../actions/Actions';
 import LibraryItem from '../../utils/item';
@@ -35,7 +32,7 @@ class ResultsList extends React.Component {
       (response) => {
         Actions.updateBib(response.data);
 
-        this.routeHandler(`/bib/${bibId}`);
+        this.routeHandler(`${appConfig.baseUrl}/bib/${bibId}`);
       },
       error => {
         console.log(error);
@@ -60,7 +57,7 @@ class ResultsList extends React.Component {
         Actions.updateDeliveryLocations(response.data.deliveryLocations);
         Actions.updateIsEddRequestable(response.data.isEddRequestable);
 
-        this.routeHandler(`/hold/request/${bibId}-${itemId}`);
+        this.routeHandler(`${appConfig.baseUrl}/hold/request/${bibId}-${itemId}`);
       },
       error => {
         console.log(error);
