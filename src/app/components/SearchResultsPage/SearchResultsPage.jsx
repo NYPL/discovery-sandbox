@@ -7,7 +7,7 @@ import Breadcrumbs from '../Breadcrumbs/Breadcrumbs.jsx';
 import ResultList from '../Results/ResultsList';
 import Search from '../Search/Search.jsx';
 import Sorter from '../Sorter/Sorter';
-import SearchPagination from '../SearchPagination/SearchPagination';
+import Pagination from '../Pagination/Pagination';
 
 import {
   basicQuery,
@@ -57,23 +57,38 @@ const SearchResultsPage = (props, context) => {
       <main className="main-page">
         <div className="nypl-page-header">
           <div className="nypl-full-width-wrapper">
-            {breadcrumbs}
-            <h2 aria-label={h2Label}>
-              Search results
-            </h2>
-            <Search
-              searchKeywords={searchKeywords}
-              field={field}
-              spinning={spinning}
-              createAPIQuery={createAPIQuery}
-            />
+            <div className="nypl-row">
+              <div className="nypl-column-three-quarters">
+                {breadcrumbs}
+                <h2 aria-label={h2Label}>
+                  New York Public Library Research Catalog
+                </h2>
+                <Search
+                  searchKeywords={searchKeywords}
+                  field={field}
+                  spinning={spinning}
+                  createAPIQuery={createAPIQuery}
+                />
+
+                {
+                  !!(totalResults && totalResults !== 0) && (
+                    <Sorter
+                      sortBy={sortBy}
+                      page={page}
+                      searchKeywords={searchKeywords}
+                      createAPIQuery={createAPIQuery}
+                    />
+                  )
+                }
+              </div>
+            </div>
           </div>
         </div>
-        <div className="nypl-full-width-wrapper">
 
+        <div className="nypl-full-width-wrapper">
           <div className="nypl-row">
             <div
-              className="nypl-column-full"
+              className="nypl-column-three-quarters"
               role="region"
               id="mainContent"
               aria-live="polite"
@@ -85,16 +100,6 @@ const SearchResultsPage = (props, context) => {
                 !!(totalResults && totalResults !== 0) &&
                   (<ResultsCount spinning={spinning} count={totalResults} />)
               }
-              {
-                !!(totalResults && totalResults !== 0) && (
-                  <Sorter
-                    sortBy={sortBy}
-                    page={page}
-                    searchKeywords={searchKeywords}
-                    createAPIQuery={createAPIQuery}
-                  />
-                )
-              }
 
               {
                 !!(results && results.length !== 0) &&
@@ -103,10 +108,10 @@ const SearchResultsPage = (props, context) => {
 
               {
                 !!(totalResults && totalResults !== 0) &&
-                  (<SearchPagination
+                  (<Pagination
+                    ariaControls="nypl-column-full results-list"
                     total={totalResults}
                     perPage={50}
-                    perPageInGroup={8}
                     page={parseInt(page, 10)}
                     createAPIQuery={createAPIQuery}
                     updatePage={updatePage}

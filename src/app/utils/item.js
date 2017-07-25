@@ -3,8 +3,13 @@ import LocationCodes from '../../../locationCodes.js';
 import {
   findWhere as _findWhere,
   isEmpty as _isEmpty,
-  extend as _extend,
 } from 'underscore';
+
+const itemSourceMappings = {
+  SierraNypl: 'sierra-nypl',
+  RecapCul: 'recap-cul',
+  RecapPul: 'recap-pul',
+};
 
 function LibraryItem() {
   /**
@@ -99,10 +104,10 @@ function LibraryItem() {
     let url = null;
     let actionLabel = null;
     let actionLabelHelper = null;
-    // Currently using requestHold to display the Request button, only for ReCAP items.
-    let requestHold = false;
     // non-NYPL ReCAP
-    const recap = accessMessage.prefLabel === 'ADV REQUEST' && !item.holdingLocation;
+    const recap =
+      (accessMessage.prefLabel === 'ADV REQUEST' || accessMessage.prefLabel === 'USE IN LIBRARY')
+      && !item.holdingLocation;
     // nypl-owned ReCAP
     const nyplRecap = !!(holdingLocation && !_isEmpty(holdingLocation) &&
       holdingLocation['@id'].substring(4, 6) === 'rc');
@@ -110,6 +115,8 @@ function LibraryItem() {
     const identifiersArray = [{ name: 'barcode', value: 'urn:barcode:' }];
     const bibIdentifiers = this.getIdentifiers(item.identifier, identifiersArray);
     const barcode = bibIdentifiers.barcode || '';
+    const itemSource = item.idNyplSourceId ? item.idNyplSourceId['@type'] : undefined;
+    const mappedItemSource = itemSourceMappings[itemSource];
 
     if (isElectronicResource && item.electronicLocator[0].url) {
       status = { '@id': '', prefLabel: 'Available' };
@@ -120,14 +127,12 @@ function LibraryItem() {
       // The logic for this should be updated, but right now non-NYPL ReCAP items
       // don't have a holdingLocation (but a default gets added here);
     } else if (recap) {
-      requestHold = true;
       actionLabel = accessMessage.prefLabel;
       actionLabelHelper = `request hold on ${title}`;
     } else if (nyplRecap) {
       // Temporary for NYPL ReCAP items.
       // Making sure that if there is a holding location, that the location code starts with
       // rc. Ids are in the format of `loc:x` where x is the location code.
-      requestHold = true;
       actionLabel = accessMessage.prefLabel;
       actionLabelHelper = `request hold on ${title}`;
     } else if (availability === 'available') {
@@ -149,10 +154,10 @@ function LibraryItem() {
       url,
       actionLabel,
       actionLabelHelper,
-      requestHold,
       requestable,
       suppressed,
       barcode,
+      itemSource: mappedItemSource,
     };
   };
 
@@ -245,26 +250,22 @@ function LibraryItem() {
 
   /**
    * getHoldingLocation(item)
-   * Returns updated location data.
+   * Returns updated location data from the holdingLocation property in the API for each item.
    * @param {object} item
    * @return {object}
    */
   this.getHoldingLocation = (item) => {
-    const defaultLocation = this.getDefaultLocation();
     let location = this.getDefaultLocation();
 
     // this is a physical resource
     if (item.holdingLocation && item.holdingLocation.length) {
       location = item.holdingLocation[0];
+    }
     // this is an electronic resource
-    } else if (item.electronicLocator && item.electronicLocator.length) {
-      location = item.electronicLocator[0];
-      location['@id'] = '';
-    }
-
-    if (this.isOffsite(location.prefLabel)) {
-      location.prefLabel = `${defaultLocation.prefLabel} (requested from offsite storage)`;
-    }
+    // else if (item.electronicLocator && item.electronicLocator.length) {
+    //   location = item.electronicLocator[0];
+    //   location['@id'] = '';
+    // }
 
     return location;
   };
