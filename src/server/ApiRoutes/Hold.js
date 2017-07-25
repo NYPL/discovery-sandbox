@@ -118,13 +118,15 @@ function getDeliveryLocations(barcode, patronId, accessToken, cb, errorCb) {
     }
   )
   .then(barcodeAPIresponse => {
-    const deliveryLocationWithAddress = mapLocationDetails(
-      barcodeAPIresponse.data.itemListElement[0].deliveryLocation
-    );
+    const eddRequestable = (barcodeAPIresponse.data.itemListElement[0].eddRequestable) ?
+      barcodeAPIresponse.data.itemListElement[0].eddRequestable : false;
+    const deliveryLocationWithAddress =
+      (barcodeAPIresponse.data.itemListElement[0].deliveryLocation) ?
+      mapLocationDetails(barcodeAPIresponse.data.itemListElement[0].deliveryLocation) : [];
 
     cb(
       deliveryLocationWithAddress,
-      barcodeAPIresponse.data.itemListElement[0].eddRequestable
+      eddRequestable
     );
   })
   .catch(barcodeAPIError => {
