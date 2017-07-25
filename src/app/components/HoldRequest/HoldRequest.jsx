@@ -117,8 +117,6 @@ class HoldRequest extends React.Component {
     );
   }
 
-
-
   /**
    * renderDeliveryLocation(deliveryLocations = [])
    * Renders the radio input fields of delivery locations except EDD.
