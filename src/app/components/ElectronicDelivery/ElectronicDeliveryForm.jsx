@@ -79,7 +79,7 @@ class ElectronicDeliveryForm extends React.Component {
           <h3>Contact Information</h3>
 
           <div className={`nypl-text-field ${errorClass.emailAddress}`}>
-            <label htmlFor="email-address" id="email-address-label">Email address
+            <label htmlFor="email-address" id="email-address-label">Email Address
               <span className="nypl-required-field">&nbsp;(Required)</span>
             </label>
             <input
@@ -111,7 +111,7 @@ class ElectronicDeliveryForm extends React.Component {
           <h3>Chapter or Article Information</h3>
 
           <div className={`nypl-text-field ${errorClass.chapterTitle}`}>
-            <label htmlFor="chapter-title" id="chapter-title-label">Chapter number or article title
+            <label htmlFor="chapter-title" id="chapter-title-label">Chapter / Article Title
               <span className="nypl-required-field">&nbsp;(Required)</span>
             </label>
             <input
@@ -137,7 +137,7 @@ class ElectronicDeliveryForm extends React.Component {
           </div>
 
           <div className="nypl-text-field">
-            <label htmlFor="author" id="author-label">&nbsp;Article author</label>
+            <label htmlFor="author" id="author-label">&nbsp;Article Author</label>
             <input
               id="author"
               type="text"
@@ -149,7 +149,7 @@ class ElectronicDeliveryForm extends React.Component {
           </div>
 
           <div className="nypl-text-field">
-            <label htmlFor="date" id="date-label">Date published</label>
+            <label htmlFor="date" id="date-label">Date Published</label>
             <input
               id="date"
               type="text"
@@ -183,26 +183,14 @@ class ElectronicDeliveryForm extends React.Component {
               onChange={(e) => this.handleUpdate(e, 'issue')}
             />
           </div>
-
-          <div className="nypl-text-field">
-            <label htmlFor="request-notes" id="request-notes-label">Notes</label>
-            <input
-              id="request-notes"
-              type="text"
-              aria-labelledby="request-notes-label request-notes-status"
-              name="requestNotes"
-              value={this.state.form.requestNotes}
-              onChange={(e) => this.handleUpdate(e, 'requestNotes')}
-            />
-          </div>
         </fieldset>
 
         <fieldset className="nypl-fieldset v2 number-range">
-          <legend>Page Number Range (Max 50 pages)</legend>
-          <h3>Page Number Range (Max 50 pages)</h3>
+          <legend>Select Page Number Range (Max 50 pages)</legend>
+          <h3>Select Page Number Range (Max 50 pages)</h3>
 
           <div className={`nypl-year-field ${errorClass.startPage}`}>
-            <label htmlFor="start-page" id="start-page-label">Start Page
+            <label htmlFor="start-page" id="start-page-label">Starting Page
               <span className="nypl-required-field">&nbsp;(Required)</span>
             </label>
             <input
@@ -231,7 +219,7 @@ class ElectronicDeliveryForm extends React.Component {
           <span>&mdash;</span>
 
           <div className={`nypl-year-field ${errorClass.endPage}`}>
-            <label htmlFor="end-page" id="end-page-label">End Page
+            <label htmlFor="end-page" id="end-page-label">Ending Page
               <span className="nypl-required-field">&nbsp;(Required)</span>
             </label>
             <input
@@ -255,6 +243,24 @@ class ElectronicDeliveryForm extends React.Component {
                   {this.state.error.endPage}
                 </span>)
             }
+          </div>
+          <p>Values must be numeric only</p>
+          <p>(No special characters allowed)</p>
+        </fieldset>
+        <fieldset className="nypl-fieldset v2 additional-notes">
+          <legend>Additional Notes</legend>
+          <h3>Additional Notes</h3>
+
+          <div className="nypl-text-field">
+            <label htmlFor="request-notes" id="request-notes-label">Additional Notes</label>
+            <input
+              id="request-notes"
+              type="text"
+              aria-labelledby="request-notes-label request-notes-status"
+              name="requestNotes"
+              value={this.state.form.requestNotes}
+              onChange={(e) => this.handleUpdate(e, 'requestNotes')}
+            />
           </div>
         </fieldset>
 
