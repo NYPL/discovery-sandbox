@@ -1,0 +1,32 @@
+// Temporary until this is in the Design Toolkit
+.nypl-results-sorter {
+  form {
+    background-color: #fff;
+    border: 0.0625rem solid #9d9ea1;
+    border-radius: 0.2rem;
+    color: #080807;
+    display: inline-block;
+    font-size: 0.85rem;
+    font-weight: normal;
+    height: auto;
+    letter-spacing: normal;
+    padding: 0.4rem 0.75rem;
+    text-decoration: none;
+    text-transform: none;
+    white-space: nowrap;
+    position: relative;
+    padding-right: 1.5rem;
+    text-align: left;
+    padding-right: 1.75rem;
+    text-transform: uppercase;
+  }
+
+  select {
+    border: none;
+    background: #fff;
+    color: #080807;
+    width: 150px;
+    padding: 0;
+    cursor: pointer;
+  }
+}

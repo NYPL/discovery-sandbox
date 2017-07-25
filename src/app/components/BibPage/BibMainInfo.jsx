@@ -12,8 +12,39 @@ import { ajaxCall } from '../../utils/utils';
 import Actions from '../../actions/Actions';
 
 class BibMainInfo extends React.Component {
+  getDefinition(bibValues, fieldValue) {
+    if (bibValues.length === 1) {
+      const bibValue = bibValues[0];
+      const url = `filters[${fieldValue}]=${bibValue}`;
+
+      return (
+        <Link onClick={e => this.newSearch(e, url)} to={`/search?${url}`}>
+          {bibValue}
+        </Link>
+      );
+    }
+
+    return (
+      <ul>
+        {
+          bibValues.map((value, i) => {
+            const url = `filters[${fieldValue}]=${value}`;
+            return (
+              <li key={i}>
+                <Link onClick={e => this.newSearch(e, url)} to={`/search?${url}`}>
+                  {value}
+                </Link>
+              </li>
+            );
+          })
+        }
+      </ul>
+    );
+  }
+
   getMainInfo(bib) {
     const fields = [
+      { label: 'Title', value: 'titleDisplay' },
       { label: 'Author', value: 'creatorLiteral' },
       { label: 'Additional Authors', value: 'contributorLiteral' },
     ];
@@ -27,24 +58,7 @@ class BibMainInfo extends React.Component {
       if (bibValues && bibValues.length && _isArray(bibValues)) {
         fieldsToRender.push({
           term: fieldLabel,
-          definition: (
-            <span>
-              {
-                bibValues.map((value, i) => {
-                  const url = `filters[${fieldValue}]=${value}`;
-                  return (
-                    <Link
-                      key={i}
-                      onClick={e => this.newSearch(e, url)}
-                      to={`/search?${url}`}
-                    >
-                      {value}
-                    </Link>
-                  );
-                })
-              }
-            </span>
-          ),
+          definition: this.getDefinition(bibValues, fieldValue),
         });
       }
 
