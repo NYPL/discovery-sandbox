@@ -13,25 +13,34 @@ import Actions from '../../actions/Actions';
 import Definition from './Definition';
 
 class BibDetails extends React.Component {
+  /**
+   * getDisplayFields(bib)
+   * Get an array of definition term/values.
+   * @param {object} bib
+   * @return {array}
+   */
   getDisplayFields(bib) {
     const fields = [
       { label: 'Publisher', value: 'publisher' },
+      { label: 'Electronic Resource', value: '' },
       { label: 'Description', value: 'extent' },
       { label: 'Subject', value: 'subjectLiteral' },
       { label: 'Genre/Form', value: 'materialType' },
+      { label: 'Notes', value: '' },
       { label: 'Contents', value: 'note' },
-      // "Notes" TBD
-      // This needs to exist in the API to work, currently it doesn't.
-      { label: 'ISBN', value: 'idIsbn' },
-      { label: 'LCC', value: 'idLcc' },
-      { label: 'NYPL Research call number', value: 'idBnum' },
+      { label: 'Bibliography', value: '' },
+      { label: 'ISBN', value: 'identifier', identifier: 'urn:isbn' },
+      { label: 'ISSN', value: 'identifier', identifier: 'urn:issn' },
+      { label: 'LCC', value: 'identifier', identifier: 'urn:lcc' },
+      { label: 'GPO', value: '' },
+      { label: 'Other Titles', value: '' },
+      { label: 'Owning Institutions', value: '' },
     ];
     const fieldsToRender = [];
 
     fields.forEach((field) => {
       const fieldLabel = field.label;
       const fieldValue = field.value;
-      const fieldUrl = field.url;
       const bibValues = bib[fieldValue];
 
       // skip absent fields
@@ -39,35 +48,10 @@ class BibDetails extends React.Component {
         // Taking just the first value for each field
         const firstFieldValue = bibValues[0];
 
-        // Note: Not used at the moment since we are not longer linking to external
-        // sources. The data structure on top would have a `url` property to signify that
-        // it's a link.
-        // TODO: If this is used later in the future, check the value of `fieldUrl` and
-        // make sure that it's the correct one, and dynamic.
-        // external links
-        if (fieldUrl) {
-          fieldsToRender.push({
-            term: fieldLabel,
-            definition: (
-              <span>
-                {
-                  bibValues.map((value, i) => {
-                    const linkLabel = fieldValue === 'idOclc' ? 'View in Worldcat' : value;
-                    return (
-                      <span key={i}>
-                        <a href={fieldUrl} target="_blank">{linkLabel}</a>
-                      </span>
-                    );
-                  })
-                }
-              </span>
-            ),
-          });
-
         // List of links
         // Could use a better check but okay for now. This is the second most used statement,
         // mostly to link to different values in the UI.
-        } else if (firstFieldValue['@id']) {
+        if (firstFieldValue['@id']) {
           fieldsToRender.push({
             term: fieldLabel,
             definition: (
@@ -121,9 +105,9 @@ class BibDetails extends React.Component {
           fieldsToRender.push({
             term: fieldLabel,
             definition: (
-              <span>
-                {bibValues.map((value, i) => <p key={i}>{value}</p>)}
-              </span>
+              <ul>
+                {bibValues.map((value, i) => <li key={i}>{value}</li>)}
+              </ul>
             ),
           });
         }
