@@ -10,7 +10,6 @@ import {
 } from 'underscore';
 
 import Breadcrumbs from '../Breadcrumbs/Breadcrumbs.jsx';
-import LibraryItem from '../../utils/item.js';
 
 class HoldConfirmation extends React.Component {
   constructor(props) {
@@ -99,12 +98,21 @@ class HoldConfirmation extends React.Component {
       bib.title[0] : '';
     const id = (bib && bib['@id'] && typeof bib['@id'] === 'string') ?
       bib['@id'].substring(4) : '';
-    const itemId = (this.props.params && this.props.params.itemId) ? this.props.params.itemId : '';
-    const selectedItem = LibraryItem.getItem(bib, itemId);
-    const deliveryLocation = (this.props.deliveryLocations && this.props.deliveryLocations.length) ?
-      _findWhere(
-        this.props.deliveryLocations, { '@id': `loc:${this.props.location.query.pickupLocation}` }
-      ) : '';
+    let deliveryLocation = null;
+
+    if (this.props.deliveryLocations && this.props.deliveryLocations.length) {
+      if (this.props.location.query.pickupLocation !== 'edd') {
+        deliveryLocation = _findWhere(
+          this.props.deliveryLocations, { '@id': `loc:${this.props.location.query.pickupLocation}` }
+        );
+      } else {
+        deliveryLocation = {
+          id: null,
+          address: null,
+          prefLabel: 'n/a (electronic delivery)',
+        };
+      }
+    }
 
     return (
       <div id="mainContent">
