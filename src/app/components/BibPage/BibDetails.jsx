@@ -14,6 +14,33 @@ import Definition from './Definition';
 
 class BibDetails extends React.Component {
   /**
+   * getPublisher(bib)
+   * Get an object with publisher detail information.
+   * @param {object} bib
+   * @return {object}
+   */
+  getPublisher(bib) {
+    const fields = ['placeOfPublication', 'publisher', 'createdString'];
+    let publisherInfo = '';
+
+    fields.forEach(field => {
+      const fieldValue = bib[field];
+      if (fieldValue) {
+        publisherInfo += `${fieldValue} `;
+      }
+    });
+
+    if (!publisherInfo) {
+      return null;
+    }
+
+    return {
+      term: 'Publisher',
+      definition: <span>{publisherInfo}</span>,
+    };
+  }
+
+  /**
    * getDisplayFields(bib)
    * Get an array of definition term/values.
    * @param {object} bib
@@ -21,10 +48,9 @@ class BibDetails extends React.Component {
    */
   getDisplayFields(bib) {
     const fields = [
-      { label: 'Publisher', value: 'publisher' },
       { label: 'Electronic Resource', value: '' },
       { label: 'Description', value: 'extent' },
-      { label: 'Subject', value: 'subjectLiteral' },
+      { label: 'Subject', value: 'subjectLiteral', linkable: true },
       { label: 'Genre/Form', value: 'materialType' },
       { label: 'Notes', value: '' },
       { label: 'Contents', value: 'note' },
@@ -37,6 +63,11 @@ class BibDetails extends React.Component {
       { label: 'Owning Institutions', value: '' },
     ];
     const fieldsToRender = [];
+    const publisherInfo = this.getPublisher(bib);
+
+    if (publisherInfo) {
+      fieldsToRender.push(publisherInfo);
+    }
 
     fields.forEach((field) => {
       const fieldLabel = field.label;
