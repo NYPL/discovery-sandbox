@@ -244,8 +244,6 @@ class ElectronicDeliveryForm extends React.Component {
                 </span>)
             }
           </div>
-          <p>Values must be numeric only</p>
-          <p>(No special characters allowed)</p>
         </fieldset>
         <fieldset className="nypl-fieldset v2 additional-notes">
           <legend>Additional Notes</legend>
