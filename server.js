@@ -95,7 +95,7 @@ app.get('/*', (req, res) => {
           baseUrl: appConfig.baseUrl,
         });
     } else {
-      res.status(404).redirect('/');
+      res.status(404).redirect(`${appConfig.baseUrl}/`);
     }
   });
 });
