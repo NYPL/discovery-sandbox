@@ -16,7 +16,7 @@ class BibDetails extends React.Component {
   getDisplayFields(bib) {
     const fields = [
       { label: 'Publisher', value: 'publisher' },
-      { label: 'Description', value: 'description' },
+      { label: 'Description', value: 'extent' },
       { label: 'Subject', value: 'subjectLiteral' },
       { label: 'Genre/Form', value: 'materialType' },
       { label: 'Contents', value: 'note' },
