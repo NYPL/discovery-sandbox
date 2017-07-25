@@ -85,6 +85,8 @@ function mapLocationDetails(locations) {
       if (loc['@id'].replace('loc:', '') === c.delivery_location) {
         loc.address = (locationDetails[c.location]) ?
           locationDetails[c.location].address.address1 : null;
+        loc.shortName = (locationDetails[c.location]) ?
+          locationDetails[c.location]['short-name'] : null;
 
         return true;
       }

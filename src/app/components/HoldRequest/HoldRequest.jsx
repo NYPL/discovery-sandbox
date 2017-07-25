@@ -92,25 +92,11 @@ class HoldRequest extends React.Component {
   }
 
   /**
-   * renderLoggedInInstruction(patronName)
-   * Renders the HTML elements and contents based on the patron data
+   * renderEDD()
+   * Renders the radio input fields of EDD.
    *
-   * @param {String} patronName
    * @return {HTML Element}
    */
-  renderLoggedInInstruction(patronName) {
-    return (patronName) ?
-      <p className="loggedInInstruction">
-        You are currently logged in as <strong>{patronName}</strong>. If this is not you,
-        please <a href="https://isso.nypl.org/auth/logout">Log out</a> and sign in using
-        your library card.
-      </p>
-      :
-      <p className="loggedInInstruction">
-        Something went wrong retrieving your personal information.
-      </p>;
-  }
-
   renderEDD() {
     return (
       <div className="group selected">
@@ -131,24 +117,73 @@ class HoldRequest extends React.Component {
     );
   }
 
+
+
+  /**
+   * renderDeliveryLocation(deliveryLocations = [])
+   * Renders the radio input fields of delivery locations except EDD.
+   *
+   * @param {Array} deliveryLocations
+   * @return {HTML Element}
+   */
   renderDeliveryLocation(deliveryLocations = []) {
-    return deliveryLocations.map((location, i) => (
-      <div key={i} className="group selected">
-        <input
-          type="radio"
-          name="delivery-location"
-          id={`location${i}`}
-          value={location['@id'].replace('loc:', '')}
-          onChange={this.onRadioSelect}
-        />
-        <label htmlFor={`location${i}`}>
-          <span className="col location">
-            <p>{location.prefLabel}</p>
-            {location.address && <p>{location.address}</p>}
-          </span>
-        </label>
-      </div>
-    ));
+    return deliveryLocations.map((location, i) => {
+      const displayName = this.modelDeliveryLocationName(
+        location.prefLabel, location.shortName
+      );
+
+      return (
+        <div key={i} className="group selected">
+          <input
+            type="radio"
+            name="delivery-location"
+            id={`location${i}`}
+            value={location['@id'].replace('loc:', '')}
+            onChange={this.onRadioSelect}
+          />
+          <label htmlFor={`location${i}`}>
+            <span className="col location">
+              <p>{displayName}</p>
+              {location.address && <p>{location.address}</p>}
+            </span>
+          </label>
+        </div>
+      );
+    });
+  }
+
+  /**
+   * modelDeliveryLocationName(prefLabel, shortName)
+   * Renders the names of the radio input fields of delivery locations except EDD.
+   *
+   * @param {String} prefLabel
+   * @param {String} shortName
+   * @return {String}
+   */
+  modelDeliveryLocationName(prefLabel, shortName) {
+    if (prefLabel && typeof prefLabel == 'string' && shortName) {
+      return shortName + ' - ' + prefLabel.split(' - ')[1];
+    }
+  }
+
+  /**
+   * renderLoggedInInstruction(patronName)
+   * Renders the HTML elements and contents based on the patron data
+   *
+   * @param {String} patronName
+   * @return {HTML Element}
+   */
+  renderLoggedInInstruction(patronName) {
+    return (patronName) ?
+      <p className="loggedInInstruction">
+        You are currently logged in as <strong>{patronName}</strong>. If this is not you,
+        please <a href="https://isso.nypl.org/auth/logout">Log out</a> and sign in using
+        your library card.
+      </p>
+      :
+      <p className="loggedInInstruction">
+        Something went wrong retrieving your personal information.
+      </p>;
   }
 
   render() {
