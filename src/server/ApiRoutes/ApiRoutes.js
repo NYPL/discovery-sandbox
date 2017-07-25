@@ -39,7 +39,7 @@ router
   .get(Hold.newHoldRequestServer);
 
 router
-  .route('/hold/request/:bibId-:itemId-:itemSource')
+  .route(`${appConfig.baseUrl}/hold/request/:bibId-:itemId-:itemSource`)
   .post(Hold.createHoldRequestServer);
 
 router
@@ -59,23 +59,23 @@ router
   .get(Bib.bibSearchServer);
 
 router
-  .route('/edd')
+  .route(`${appConfig.baseUrl}/edd`)
   .post(Hold.eddServer);
 
 router
-  .route('/api')
+  .route(`${appConfig.baseUrl}/api`)
   .get(Search.searchAjax);
 
 router
-  .route('/api/bib')
+  .route(`${appConfig.baseUrl}/api/bib`)
   .get(Bib.bibSearchAjax);
 
 router
-  .route('/api/hold/request/:bibId-:itemId')
+  .route(`${appConfig.baseUrl}/api/hold/request/:bibId-:itemId`)
   .get(Hold.newHoldRequestAjax);
 
 router
-  .route('/api/newHold')
+  .route(`${appConfig.baseUrl}/api/newHold`)
   .get(Hold.createHoldRequestAjax)
   .post(Hold.createHoldRequestEdd);
 

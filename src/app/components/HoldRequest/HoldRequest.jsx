@@ -74,8 +74,8 @@ class HoldRequest extends React.Component {
     }
 
     axios
-      .get(`/api/newHold?itemId=${itemId}&pickupLocation=${this.state.delivery}` +
-        `&itemSource=${itemSource}`)
+      .get(`${appConfig.baseUrl}/api/newHold?itemId=${itemId}&pickupLocation=` +
+        `${this.state.delivery}&itemSource=${itemSource}`)
       .then(response => {
         if (response.data.error && response.data.error.status !== 200) {
           this.context.router.push(`${path}?errorMessage=${response.data.error.statusText}`);

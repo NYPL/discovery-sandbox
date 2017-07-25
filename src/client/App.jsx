@@ -15,6 +15,7 @@ import Iso from 'iso';
 import './styles/main.scss';
 
 import routes from '../app/routes/routes.jsx';
+import appConfig from '../../appConfig.js';
 
 if (loadA11y) {
   a11y(React, { ReactDOM, includeSrcNode: true });
@@ -33,9 +34,9 @@ window.onload = () => {
   Iso.bootstrap((state, container) => {
     alt.bootstrap(state);
 
-    const appHistory = useScroll(useRouterHistory(createBrowserHistory))({
-      basename: '/research/collections/discovery-beta',
-    });
+    const appHistory = useScroll(useRouterHistory(createBrowserHistory))();
+    const appRoutes = (window.location.pathname).indexOf(appConfig.baseUrl) !== -1 ?
+      routes.client : routes.server;
 
     ReactDOM.render(
       <Router history={appHistory}>{routes.client}</Router>,

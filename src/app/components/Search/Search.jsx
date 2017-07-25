@@ -7,6 +7,7 @@ import {
   trackDiscovery,
   ajaxCall,
 } from '../../utils/utils.js';
+import appConfig from '../../../../appConfig.js';
 
 /**
  * The main container for the top Search section.
@@ -85,7 +86,7 @@ class Search extends React.Component {
     Actions.updateSearchKeywords(keyword);
     Actions.updateSelectedFacets({});
 
-    ajaxCall(`/api?${apiQuery}`, (response) => {
+    ajaxCall(`${appConfig.baseUrl}/api?${apiQuery}`, (response) => {
       if (response.data.searchResults && response.data.facets) {
         Actions.updateSearchResults(response.data.searchResults);
         Actions.updateFacets(response.data.facets);

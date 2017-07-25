@@ -60,7 +60,7 @@ class BibMainInfo extends React.Component {
     e.preventDefault();
 
     Actions.updateSpinner(true);
-    ajaxCall(`/api?${query}`, (response) => {
+    ajaxCall(`${appConfig.baseUrl}/api?${query}`, (response) => {
       const closingBracketIndex = query.indexOf(']');
       const equalIndex = query.indexOf('=') + 1;
 
