@@ -51,7 +51,7 @@ class HoldConfirmation extends React.Component {
   goRestart(e) {
     e.preventDefault();
 
-    this.context.router.push('/');
+    this.context.router.push(`${appConfig.baseUrl}/`);
   }
 
   /**
