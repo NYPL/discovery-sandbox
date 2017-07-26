@@ -2,16 +2,16 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 import axios from 'axios';
-
-import Breadcrumbs from '../Breadcrumbs/Breadcrumbs.jsx';
-import PatronStore from '../../stores/PatronStore.js';
-import config from '../../../../appConfig.js';
-import LibraryItem from '../../utils/item.js';
 import {
   isArray as _isArray,
   isEmpty as _isEmpty,
   extend as _extend,
 } from 'underscore';
+
+import Breadcrumbs from '../Breadcrumbs/Breadcrumbs.jsx';
+import PatronStore from '../../stores/PatronStore.js';
+import appConfig from '../../../../appConfig.js';
+import LibraryItem from '../../utils/item.js';
 
 class HoldRequest extends React.Component {
   constructor(props) {
@@ -52,7 +52,7 @@ class HoldRequest extends React.Component {
 
     const fullUrl = encodeURIComponent(window.location.href);
 
-    window.location.replace(`${config.loginUrl}?redirect_uri=${fullUrl}`);
+    window.location.replace(`${appConfig.loginUrl}?redirect_uri=${fullUrl}`);
 
     return false;
   }
@@ -64,18 +64,18 @@ class HoldRequest extends React.Component {
   submitRequest(e, bibId, itemId, itemSource) {
     e.preventDefault();
 
-    let path = `/hold/confirmation/${bibId}-${itemId}`;
+    let path = `${appConfig.baseUrl}/hold/confirmation/${bibId}-${itemId}`;
 
     if (this.state.delivery === 'edd') {
-      path = `/hold/request/${bibId}-${itemId}/edd`;
+      path = `${appConfig.baseUrl}/hold/request/${bibId}-${itemId}/edd`;
 
       this.context.router.push(path);
       return;
     }
 
     axios
-      .get(`/api/newHold?itemId=${itemId}&pickupLocation=${this.state.delivery}` +
-        `&itemSource=${itemSource}`)
+      .get(`${appConfig.baseUrl}/api/newHold?itemId=${itemId}&pickupLocation=` +
+        `${this.state.delivery}&itemSource=${itemSource}`)
       .then(response => {
         if (response.data.error && response.data.error.status !== 200) {
           this.context.router.push(`${path}?errorMessage=${response.data.error.statusText}`);
@@ -92,25 +92,11 @@ class HoldRequest extends React.Component {
   }
 
   /**
-   * renderLoggedInInstruction(patronName)
-   * Renders the HTML elements and contents based on the patron data
+   * renderEDD()
+   * Renders the radio input fields of EDD.
    *
-   * @param {String} patronName
    * @return {HTML Element}
    */
-  renderLoggedInInstruction(patronName) {
-    return (patronName) ?
-      <p className="loggedInInstruction">
-        You are currently logged in as <strong>{patronName}</strong>. If this is not you,
-        please <a href="https://isso.nypl.org/auth/logout">Log out</a> and sign in using
-        your library card.
-      </p>
-      :
-      <p className="loggedInInstruction">
-        Something went wrong retrieving your personal information.
-      </p>;
-  }
-
   renderEDD() {
     return (
       <div className="group selected">
@@ -131,24 +117,71 @@ class HoldRequest extends React.Component {
     );
   }
 
+  /**
+   * renderDeliveryLocation(deliveryLocations = [])
+   * Renders the radio input fields of delivery locations except EDD.
+   *
+   * @param {Array} deliveryLocations
+   * @return {HTML Element}
+   */
   renderDeliveryLocation(deliveryLocations = []) {
-    return deliveryLocations.map((location, i) => (
-      <div key={i} className="group selected">
-        <input
-          type="radio"
-          name="delivery-location"
-          id={`location${i}`}
-          value={location['@id'].replace('loc:', '')}
-          onChange={this.onRadioSelect}
-        />
-        <label htmlFor={`location${i}`}>
-          <span className="col location">
-            <p>{location.prefLabel}</p>
-            {location.address && <p>{location.address}</p>}
-          </span>
-        </label>
-      </div>
-    ));
+    return deliveryLocations.map((location, i) => {
+      const displayName = this.modelDeliveryLocationName(
+        location.prefLabel, location.shortName
+      );
+
+      return (
+        <div key={i} className="group selected">
+          <input
+            type="radio"
+            name="delivery-location"
+            id={`location${i}`}
+            value={location['@id'].replace('loc:', '')}
+            onChange={this.onRadioSelect}
+          />
+          <label htmlFor={`location${i}`}>
+            <span className="col location">
+              <p>{displayName}</p>
+              {location.address && <p>{location.address}</p>}
+            </span>
+          </label>
+        </div>
+      );
+    });
+  }
+
+  /**
+   * modelDeliveryLocationName(prefLabel, shortName)
+   * Renders the names of the radio input fields of delivery locations except EDD.
+   *
+   * @param {String} prefLabel
+   * @param {String} shortName
+   * @return {String}
+   */
+  modelDeliveryLocationName(prefLabel, shortName) {
+    if (prefLabel && typeof prefLabel == 'string' && shortName) {
+      return shortName + ' - ' + prefLabel.split(' - ')[1];
+    }
+  }
+
+  /**
+   * renderLoggedInInstruction(patronName)
+   * Renders the HTML elements and contents based on the patron data
+   *
+   * @param {String} patronName
+   * @return {HTML Element}
+   */
+  renderLoggedInInstruction(patronName) {
+    return (patronName) ?
+      <p className="loggedInInstruction">
+        You are currently logged in as <strong>{patronName}</strong>. If this is not you,
+        please <a href="https://isso.nypl.org/auth/logout">Log out</a> and sign in using
+        your library card.
+      </p>
+      :
+      <p className="loggedInInstruction">
+        Something went wrong retrieving your personal information.
+      </p>;
   }
 
   render() {
@@ -184,7 +217,7 @@ class HoldRequest extends React.Component {
           <div className="item-summary">
             <div className="item">
               <h2>You are about to request a hold on the following research item:</h2>
-              <Link href={`/bib/${bibId}`}>{title}</Link>
+              <Link to={`${appConfig.baseUrl}/bib/${bibId}`}>{title}</Link>
               {callNo}
             </div>
           </div>
@@ -224,7 +257,7 @@ class HoldRequest extends React.Component {
           <div className="item-summary">
             <div className="item">
               <h2>Something went wrong with your request</h2>
-              <Link href={`/bib/${bibId}`}>{title}</Link>
+              <Link to={`${appConfig.baseUrl}/bib/${bibId}`}>{title}</Link>
             </div>
           </div>
           <h2>Confirm account</h2>

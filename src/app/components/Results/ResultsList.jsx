@@ -1,16 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
-import {
-  isEmpty as _isEmpty,
-  chain as _chain,
-} from 'underscore';
+import { isEmpty as _isEmpty } from 'underscore';
 
 import Actions from '../../actions/Actions';
 import LibraryItem from '../../utils/item';
 import { ajaxCall } from '../../utils/utils';
-
 import ItemTable from '../Item/ItemTable';
+
+import appConfig from '../../../../appConfig.js';
 
 class ResultsList extends React.Component {
   constructor(props) {
@@ -30,11 +28,11 @@ class ResultsList extends React.Component {
   getBibRecord(e, bibId) {
     e.preventDefault();
 
-    ajaxCall(`/api/bib?bibId=${bibId}`,
+    ajaxCall(`${appConfig.baseUrl}/api/bib?bibId=${bibId}`,
       (response) => {
         Actions.updateBib(response.data);
 
-        this.routeHandler(`/bib/${bibId}`);
+        this.routeHandler(`${appConfig.baseUrl}/bib/${bibId}`);
       },
       error => {
         console.log(error);
@@ -53,13 +51,13 @@ class ResultsList extends React.Component {
   getItemRecord(e, bibId, itemId) {
     e.preventDefault();
 
-    ajaxCall(`/api/hold/request/${bibId}-${itemId}`,
+    ajaxCall(`${appConfig.baseUrl}/api/hold/request/${bibId}-${itemId}`,
       (response) => {
         Actions.updateBib(response.data.bib);
         Actions.updateDeliveryLocations(response.data.deliveryLocations);
         Actions.updateIsEddRequestable(response.data.isEddRequestable);
 
-        this.routeHandler(`/hold/request/${bibId}-${itemId}`);
+        this.routeHandler(`${appConfig.baseUrl}/hold/request/${bibId}-${itemId}`);
       },
       error => {
         console.log(error);
@@ -126,7 +124,7 @@ class ResultsList extends React.Component {
         <h2>
           <Link
             onClick={(e) => this.getBibRecord(e, bibId)}
-            href={`/bib/${bibId}`}
+            to={`${appConfig.baseUrl}/bib/${bibId}`}
             className="title"
           >
             {bibTitle}
@@ -145,7 +143,12 @@ class ResultsList extends React.Component {
         </div>
         {
           (items.length === 1) &&
-            <ItemTable items={items} bibId={bibId} getRecord={this.getItemRecord} />
+            <ItemTable
+              items={items}
+              bibId={bibId}
+              getRecord={this.getItemRecord}
+              id="search-result-item-table"
+            />
         }
       </li>
     );
@@ -164,7 +167,10 @@ class ResultsList extends React.Component {
     }
 
     return (
-      <ul className={`nypl-results-list ${this.props.spinning ? 'hide-results-list ' : ''}`}>
+      <ul
+        id="nypl-results-list"
+        className={`nypl-results-list ${this.props.spinning ? 'hide-results-list ' : ''}`}
+      >
         {resultsElm}
       </ul>
     );
