@@ -129,6 +129,8 @@ class HoldRequest extends React.Component {
     if (prefLabel && typeof prefLabel === 'string' && shortName) {
       return `${shortName} - ${prefLabel.split(' - ')[1]}`;
     }
+
+    return '';
   }
 
   /**
@@ -211,7 +213,7 @@ class HoldRequest extends React.Component {
 
     return (
       <div id="mainContent">
-        <div className="nypl-request-page-header">
+        <div className="nypl-homepage-hero">
           <div className="nypl-full-width-wrapper">
             <div className="row">
               <div className="nypl-column-three-quarters">
@@ -221,7 +223,7 @@ class HoldRequest extends React.Component {
                   title={title}
                   url={bibId}
                 />
-                <h2>New York Public Library Research Catalog</h2>
+                <h1>Research Discovery (beta)</h1>
               </div>
             </div>
           </div>
