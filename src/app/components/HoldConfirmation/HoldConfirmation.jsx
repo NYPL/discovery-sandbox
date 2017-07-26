@@ -168,6 +168,11 @@ class HoldConfirmation extends React.Component {
               {this.renderStartOverLink()}
             </div>
           </div>
+          <div className="link-container">
+            <a target="_blank" href="https://www.nypl.org/help/request-research-materials">
+              Learn more about our off-site collections.
+            </a>
+          </div>
         </div>
       </div>
     );
