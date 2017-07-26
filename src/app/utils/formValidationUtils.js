@@ -118,31 +118,6 @@ function validate(form, cb) {
       validate: (val) => (isNumeric('' + val) && val > 0) ? true : false,
       errorMsg: 'Indicate the title of the chapter or article you are requesting. Enter "none" if you are requesting an entire item.',
     },
-    // optional
-    author: {
-      validate: () => true,
-      errorMsg: '',
-    },
-    // optional
-    date: {
-      validate: () => true,
-      errorMsg: '',
-    },
-    // optional
-    volume: {
-      validate: () => true,
-      errorMsg: '',
-    },
-    // optional
-    issue: {
-      validate: () => true,
-      errorMsg: '',
-    },
-    // optional
-    notes: {
-      validate: () => true,
-      errorMsg: '',
-    },
     startPage: {
       validate: (val) => (isNumeric('' + val) && val > 0) ? true : false,
       errorMsg: 'Page values must be alphanumeric (no special characters). You may request a maximum of 50 pages.',
