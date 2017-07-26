@@ -39,7 +39,7 @@ const Home = (props) => (
 
         <div className="nypl-row nypl-quarter-image">
           <div className="nypl-column-one-quarter image-column-one-quarter">
-            <img className="nypl-quarter-image" src="https://d2720ur5668dri.cloudfront.net/sites/default/files/styles/extralarge/public/archives-portal.jpg?itok=-oYtHmeO" alt="" role="img" />
+            <img className="nypl-quarter-image" src="https://d2720ur5668dri.cloudfront.net/sites/default/files/styles/extralarge/public/archives-portal.jpg?itok=-oYtHmeO" alt="" role="presentation" />
           </div>
           <div className="nypl-column-three-quarters image-column-three-quarters">
             <h4><a href="/research/collections">Collections</a></h4>
@@ -49,7 +49,7 @@ const Home = (props) => (
 
        <div className="nypl-row nypl-quarter-image">
          <div className="nypl-column-one-quarter image-column-one-quarter">
-           <img className="nypl-quarter-image" src="https://d2720ur5668dri.cloudfront.net/sites/default/files/styles/extralarge/public/sasb.jpg?itok=sdQBITR7" alt="" role="img" />
+           <img className="nypl-quarter-image" src="https://d2720ur5668dri.cloudfront.net/sites/default/files/styles/extralarge/public/sasb.jpg?itok=sdQBITR7" alt="" role="presentation" />
          </div>
          <div className="nypl-column-three-quarters image-column-three-quarters">
            <h4><a href="/locations/map?libraries=research">Locations</a></h4>
@@ -59,7 +59,7 @@ const Home = (props) => (
 
        <div className="nypl-row nypl-quarter-image">
          <div className="nypl-column-one-quarter image-column-one-quarter">
-           <img className="nypl-quarter-image" src="https://d2720ur5668dri.cloudfront.net/sites/default/files/styles/extralarge/public/divisions.jpg?itok=O4uSedcp" alt="" role="img" />
+           <img className="nypl-quarter-image" src="https://d2720ur5668dri.cloudfront.net/sites/default/files/styles/extralarge/public/divisions.jpg?itok=O4uSedcp" alt="" role="presentation" />
          </div>
          <div className="nypl-column-three-quarters image-column-three-quarters">
            <h4><a href="/research-divisions/">Divisions</a></h4>
@@ -69,7 +69,7 @@ const Home = (props) => (
 
        <div className="nypl-row nypl-quarter-image">
          <div className="nypl-column-one-quarter image-column-one-quarter">
-           <img className="nypl-quarter-image" src="https://d2720ur5668dri.cloudfront.net/sites/default/files/styles/extralarge/public/plan-you-visit.jpg?itok=scG6cFgy" alt="" role="img" />
+           <img className="nypl-quarter-image" src="https://d2720ur5668dri.cloudfront.net/sites/default/files/styles/extralarge/public/plan-you-visit.jpg?itok=scG6cFgy" alt="" role="presentation" />
          </div>
          <div className="nypl-column-three-quarters image-column-three-quarters">
            <h4><a href="/research/support">Support</a></h4>
@@ -79,7 +79,7 @@ const Home = (props) => (
 
        <div className="nypl-row nypl-quarter-image">
          <div className="nypl-column-one-quarter image-column-one-quarter">
-           <img className="nypl-quarter-image" src="https://d2720ur5668dri.cloudfront.net/sites/default/files/styles/extralarge/public/research-services.jpg?itok=rSo9t1VF" alt="" role="img" />
+           <img className="nypl-quarter-image" src="https://d2720ur5668dri.cloudfront.net/sites/default/files/styles/extralarge/public/research-services.jpg?itok=rSo9t1VF" alt="" role="presenation" />
          </div>
          <div className="nypl-column-three-quarters image-column-three-quarters">
            <h4><a href="/research/services">Services</a></h4>
