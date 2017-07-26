@@ -83,7 +83,7 @@ export default {
   "sibl": {
     "id": "65",
     "full-name": "Science, Industry and Business Library (SIBL)",
-    "short-name": "SIBL",
+    "short-name": "Science, Industry and Business Library",
     "symbol": "SIBL",
     "slug": "sibl",
     "phone": "(917) 275-6975",
