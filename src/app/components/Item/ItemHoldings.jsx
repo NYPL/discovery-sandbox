@@ -7,6 +7,7 @@ import { isArray as _isArray } from 'underscore';
 import Actions from '../../actions/Actions';
 import Pagination from '../Pagination/Pagination';
 import ItemTable from './ItemTable';
+import appConfig from '../../../../appConfig.js';
 
 class ItemHoldings extends React.Component {
   constructor(props) {
@@ -48,7 +49,7 @@ class ItemHoldings extends React.Component {
     });
 
     if (noItemPage) {
-      this.context.router.push(`/bib/${this.props.bibId}`);
+      this.context.router.push(`${appConfig.baseUrl}/bib/${this.props.bibId}`);
     }
   }
 
@@ -65,13 +66,13 @@ class ItemHoldings extends React.Component {
 
     // Search for the bib? Just pass the data.
     axios
-      .get(`/api/hold/request/${bibId}-${itemId}`)
+      .get(`${appConfig.baseUrl}/api/hold/request/${bibId}-${itemId}`)
       .then(response => {
         Actions.updateBib(response.data.bib);
         Actions.updateDeliveryLocations(response.data.deliveryLocations);
         Actions.updateIsEddRequestable(response.data.isEddRequestable);
 
-        this.context.router.push(`/hold/request/${bibId}-${itemId}`);
+        this.context.router.push(`${appConfig.baseUrl}/hold/request/${bibId}-${itemId}`);
       })
       .catch(error => {
         console.log(error);
@@ -109,7 +110,7 @@ class ItemHoldings extends React.Component {
    */
   updatePage(page) {
     this.setState({ page });
-    this.context.router.push(`/bib/${this.props.bibId}?itemPage=${page}`);
+    this.context.router.push(`${appConfig.baseUrl}/bib/${this.props.bibId}?itemPage=${page}`);
   }
 
   /*
@@ -173,7 +174,7 @@ class ItemHoldings extends React.Component {
                   this.state.js ?
                     (<a href="#" onClick={this.showAll}>View All Items</a>) :
                     (<Link
-                      to={`/bib/${this.props.bibId}/all`}
+                      to={`${appConfig.baseUrl}/bib/${this.props.bibId}/all`}
                       className="view-all-items"
                     >
                       View All Items

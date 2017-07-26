@@ -11,6 +11,7 @@ import {
 import { ajaxCall } from '../../utils/utils';
 import Actions from '../../actions/Actions';
 import Definition from './Definition';
+import appConfig from '../../../../appConfig.js';
 
 class BibDetails extends React.Component {
   getDisplayFields(bib) {
@@ -79,7 +80,7 @@ class BibDetails extends React.Component {
                       <li key={i}>
                         <Link
                           onClick={e => this.newSearch(e, url)}
-                          to={`/search?${url}`}
+                          to={`${appConfig.baseUrl}/search?${url}`}
                         >
                           {valueObj.prefLabel}
                         </Link>
@@ -105,7 +106,7 @@ class BibDetails extends React.Component {
                       <li key={i}>
                         <Link
                           onClick={e => this.newSearch(e, url)}
-                          to={`/search?${url}`}
+                          to={`${appConfig.baseUrl}/search?${url}`}
                         >
                           {value}
                         </Link>
@@ -139,7 +140,7 @@ class BibDetails extends React.Component {
     e.preventDefault();
 
     Actions.updateSpinner(true);
-    ajaxCall(`/api?${query}`, (response) => {
+    ajaxCall(`${appConfig.baseUrl}/api?${query}`, (response) => {
       const closingBracketIndex = query.indexOf(']');
       const equalIndex = query.indexOf('=') + 1;
 
@@ -175,7 +176,7 @@ class BibDetails extends React.Component {
       Actions.updateFacets(response.data.facets);
       Actions.updateSearchKeywords('');
       Actions.updatePage('1');
-      this.context.router.push(`/search?${query}`);
+      this.context.router.push(`${appConfig.baseUrl}/search?${query}`);
       Actions.updateSpinner(false);
     });
   }
