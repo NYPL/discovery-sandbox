@@ -13,124 +13,196 @@ import Actions from '../../actions/Actions';
 import Definition from './Definition';
 import appConfig from '../../../../appConfig.js';
 
+const getIdentifiers = (bibValues, fieldIdentifier) => {
+  let val = '';
+
+  if (bibValues.length) {
+    bibValues.forEach(value => {
+      if (value.indexOf(`${fieldIdentifier}:`) !== -1) {
+        val = value.substring(fieldIdentifier.length + 1);
+      }
+    });
+
+    if (val) {
+      return <span>{val}</span>;
+    }
+  }
+
+  return null;
+};
+
+const getDefinitionObject = (bibValues, fieldValue, fieldLinkable) => {
+  if (bibValues.length === 1) {
+    const bibValue = bibValues[0];
+    const url = `filters[${fieldValue}]=${bibValue['@id']}`;
+
+    if (fieldLinkable) {
+      return (
+        <Link onClick={e => this.newSearch(e, url)} to={`${appConfig.baseUrl}/search?${url}`}>
+          {bibValue.prefLabel}
+        </Link>
+      );
+    }
+
+    return <span>{bibValue.prefLabel}</span>;
+  }
+
+  return (
+    <ul>
+      {
+        bibValues.map((value, i) => {
+          const url = `filters[${fieldValue}]=${value['@id']}`;
+          return (
+            <li key={i}>
+              {
+                fieldLinkable ?
+                  <Link
+                    onClick={e => this.newSearch(e, url)}
+                    to={`${appConfig.baseUrl}/search?${url}`}
+                  >
+                    {value.prefLabel}
+                  </Link>
+                  : <span>{value.prefLabel}</span>
+              }
+            </li>
+          );
+        })
+      }
+    </ul>
+  );
+};
+
+const getDefinition = (bibValues, fieldValue, fieldLinkable, fieldIdentifier) => {
+  if (fieldValue === 'identifier') {
+    return getIdentifiers(bibValues, fieldIdentifier);
+  }
+
+  if (bibValues.length === 1) {
+    const bibValue = bibValues[0];
+    const url = `filters[${fieldValue}]=${bibValue}`;
+
+    if (fieldLinkable) {
+      return (
+        <Link onClick={e => this.newSearch(e, url)} to={`${appConfig.baseUrl}/search?${url}`}>
+          {bibValue}
+        </Link>
+      );
+    }
+
+    return <span>{bibValue}</span>;
+  }
+
+  return (
+    <ul>
+      {
+        bibValues.map((value, i) => {
+          const url = `filters[${fieldValue}]=${value}`;
+          return (
+            <li key={i}>
+              {
+                fieldLinkable ?
+                  <Link
+                    onClick={e => this.newSearch(e, url)}
+                    to={`${appConfig.baseUrl}/search?${url}`}
+                  >
+                    {value}
+                  </Link>
+                  : <span>{value}</span>
+              }
+            </li>
+          );
+        })
+      }
+    </ul>
+  );
+};
+
 class BibDetails extends React.Component {
+  /**
+   * getPublisher(bib)
+   * Get an object with publisher detail information.
+   * @param {object} bib
+   * @return {object}
+   */
+  getPublisher(bib) {
+    const fields = ['placeOfPublication', 'publisher', 'createdString'];
+    let publisherInfo = '';
+
+    fields.forEach(field => {
+      const fieldValue = bib[field];
+      if (fieldValue) {
+        publisherInfo += `${fieldValue} `;
+      }
+    });
+
+    if (!publisherInfo) {
+      return null;
+    }
+
+    return {
+      term: 'Publisher',
+      definition: <span>{publisherInfo}</span>,
+    };
+  }
+
+  /**
+   * getDisplayFields(bib)
+   * Get an array of definition term/values.
+   * @param {object} bib
+   * @return {array}
+   */
   getDisplayFields(bib) {
     const fields = [
-      { label: 'Publisher', value: 'publisher' },
-      { label: 'Description', value: 'description' },
-      { label: 'Subject', value: 'subjectLiteral' },
+      { label: 'Electronic Resource', value: '' },
+      { label: 'Description', value: 'extent' },
+      { label: 'Subject', value: 'subjectLiteral', linkable: true },
       { label: 'Genre/Form', value: 'materialType' },
+      { label: 'Notes', value: '' },
       { label: 'Contents', value: 'note' },
-      // "Notes" TBD
-      // This needs to exist in the API to work, currently it doesn't.
-      { label: 'ISBN', value: 'idIsbn' },
-      { label: 'LCC', value: 'idLcc' },
-      { label: 'NYPL Research call number', value: 'idBnum' },
+      { label: 'Bibliography', value: '' },
+      { label: 'ISBN', value: 'identifier', identifier: 'urn:isbn' },
+      { label: 'ISSN', value: 'identifier', identifier: 'urn:issn' },
+      { label: 'LCC', value: 'identifier', identifier: 'urn:lcc' },
+      { label: 'GPO', value: '' },
+      { label: 'Other Titles', value: '' },
+      { label: 'Owning Institutions', value: '' },
     ];
     const fieldsToRender = [];
+    const publisherInfo = this.getPublisher(bib);
+
+    // Publisher information should be the first one in the list.
+    if (publisherInfo) {
+      fieldsToRender.push(publisherInfo);
+    }
 
     fields.forEach((field) => {
       const fieldLabel = field.label;
       const fieldValue = field.value;
-      const fieldUrl = field.url;
+      const fieldLinkable = field.linkable;
+      const fieldIdentifier = field.identifier;
       const bibValues = bib[fieldValue];
 
       // skip absent fields
       if (bibValues && bibValues.length && _isArray(bibValues)) {
-        // Taking just the first value for each field
+        // Taking just the first value for each field to check the type.
         const firstFieldValue = bibValues[0];
 
-        // Note: Not used at the moment since we are not longer linking to external
-        // sources. The data structure on top would have a `url` property to signify that
-        // it's a link.
-        // TODO: If this is used later in the future, check the value of `fieldUrl` and
-        // make sure that it's the correct one, and dynamic.
-        // external links
-        if (fieldUrl) {
+        // Each value is an object with @id and prefLabel properties.
+        if (firstFieldValue['@id']) {
           fieldsToRender.push({
             term: fieldLabel,
-            definition: (
-              <span>
-                {
-                  bibValues.map((value, i) => {
-                    const linkLabel = fieldValue === 'idOclc' ? 'View in Worldcat' : value;
-                    return (
-                      <span key={i}>
-                        <a href={fieldUrl} target="_blank">{linkLabel}</a>
-                      </span>
-                    );
-                  })
-                }
-              </span>
-            ),
-          });
-
-        // List of links
-        // Could use a better check but okay for now. This is the second most used statement,
-        // mostly to link to different values in the UI.
-        } else if (firstFieldValue['@id']) {
-          fieldsToRender.push({
-            term: fieldLabel,
-            definition: (
-              <ul>
-                {
-                  bibValues.map((valueObj, i) => {
-                    const url = `filters[${fieldValue}]=${valueObj['@id']}`;
-                    return (
-                      <li key={i}>
-                        <Link
-                          onClick={e => this.newSearch(e, url)}
-                          to={`${appConfig.baseUrl}/search?${url}`}
-                        >
-                          {valueObj.prefLabel}
-                        </Link>
-                      </li>
-                    );
-                  })
-                }
-              </ul>
-            ),
-          });
-          // NOTE: Right now this is not working because we removed the `linkable` property.
-          // We added this because not all fields should be linkable. For example, maybe we
-          // want `materialType` to be linkable in the UI but not `issuance`.
-        } else if (field.linkable) {
-          fieldsToRender.push({
-            term: fieldLabel,
-            definition: (
-              <ul>
-                {
-                  bibValues.map((value, i) => {
-                    const url = `filters[${fieldValue}]=${value}`;
-                    return (
-                      <li key={i}>
-                        <Link
-                          onClick={e => this.newSearch(e, url)}
-                          to={`${appConfig.baseUrl}/search?${url}`}
-                        >
-                          {value}
-                        </Link>
-                      </li>
-                    );
-                  })
-                }
-              </ul>
-            ),
+            definition: getDefinitionObject(bibValues, fieldValue, fieldLinkable),
           });
         } else {
-          // Simple data display. This gets rendered the most.
-          fieldsToRender.push({
-            term: fieldLabel,
-            definition: (
-              <span>
-                {bibValues.map((value, i) => <p key={i}>{value}</p>)}
-              </span>
-            ),
-          });
+          const definition = getDefinition(bibValues, fieldValue, fieldLinkable, fieldIdentifier);
+          if (definition) {
+            fieldsToRender.push({
+              term: fieldLabel,
+              definition,
+            });
+          }
         }
       }
-
-      return null;
     }); // End of the forEach loop
 
     return fieldsToRender;
