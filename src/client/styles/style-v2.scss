@@ -25,15 +25,6 @@
   }
 }
 
-.nypl-page-header {
-  @include page-header-2(
-  $background-color: lighten($nypl-light-gray, 15%),
-  $font-weight: 100,
-  $type-color: $nypl-red);
-  border-bottom: $general-border-width / 1.5 solid darken($nypl-light-gray, 15%);
-  margin-bottom: 0;
-}
-
 // discovery-item.v2.html
 // item info / the full item record
 .nypl-item-details {

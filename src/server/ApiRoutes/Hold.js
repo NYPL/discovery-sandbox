@@ -83,8 +83,12 @@ function mapLocationDetails(locations) {
   locations.map(loc => {
     _mapObject(locationCodes, (c) => {
       if (loc['@id'].replace('loc:', '') === c.delivery_location) {
-        loc.address = (locationDetails[c.location]) ?
-          locationDetails[c.location].address.address1 : null;
+        const locationDetailsItem = locationDetails[c.location];
+
+        loc.address = (locationDetailsItem) ?
+          locationDetailsItem.address.address1 : null;
+        loc.shortName = (locationDetailsItem) ?
+          locationDetailsItem['short-name'] : null;
 
         return true;
       }
