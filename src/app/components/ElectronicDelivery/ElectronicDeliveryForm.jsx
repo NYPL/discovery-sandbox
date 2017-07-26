@@ -244,6 +244,16 @@ class ElectronicDeliveryForm extends React.Component {
               </span>
             }
           </div>
+          <div className={`nypl-text-field ${(errorClass.startPage || errorClass.endPage) ? 'nypl-field-error' : ''}`}>
+            <span
+              className="nypl-field-status"
+              id="page-status"
+              aria-live="assertive"
+              aria-atomic="true"
+            >
+              <span>You may request a maximum of 50 pages.</span>
+            </span>
+          </div>
         </fieldset>
         <fieldset className="nypl-fieldset v2 additional-notes">
           <legend>Additional Notes</legend>
@@ -251,7 +261,8 @@ class ElectronicDeliveryForm extends React.Component {
 
           <div className="nypl-text-field">
             <label htmlFor="request-notes" id="request-notes-label">Additional Notes</label>
-            <input
+            <textarea
+              className="nypl-text-area"
               id="request-notes"
               type="text"
               aria-labelledby="request-notes-label request-notes-status"
