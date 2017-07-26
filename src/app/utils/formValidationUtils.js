@@ -108,14 +108,15 @@ function renderServerValidationError(object) {
  * return {boolean}
  */
 function validate(form, cb) {
+  let errorMessage;
   const fieldsToCheck = {
     emailAddress: {
       validate: (val) => (val.trim().length && isEmail('' + val)),
-      errorMsg: 'Please enter a valid email address',
+      errorMsg: 'Please enter the email associated with your NYPL account.',
     },
     chapterTitle: {
       validate: (val) => (isNumeric('' + val) && val > 0) ? true : false,
-      errorMsg: 'Please indicate the chapter or article',
+      errorMsg: 'Please indicate the chapter or article.',
     },
     // optional
     author: {
@@ -125,12 +126,12 @@ function validate(form, cb) {
     // optional
     date: {
       validate: () => true,
-      errorMsg: 'Please enter the date published',
+      errorMsg: '',
     },
     // optional
     volume: {
       validate: () => true,
-      errorMsg: 'Please enter the item volume',
+      errorMsg: '',
     },
     // optional
     issue: {
@@ -144,11 +145,11 @@ function validate(form, cb) {
     },
     startPage: {
       validate: (val) => (isNumeric('' + val) && val > 0) ? true : false,
-      errorMsg: 'Values must be numeric only. (No special characters allowed)',
+      errorMsg: 'Please enter a starting page number.',
     },
     endPage: {
       validate: (val) => (isNumeric('' + val) && val > 0) ? true : false,
-      errorMsg: 'Values must be numeric only. (No special characters allowed)',
+      errorMsg: 'Please enter a ending page number.',
     },
   };
 
