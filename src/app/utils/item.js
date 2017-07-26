@@ -118,7 +118,7 @@ function LibraryItem() {
     const itemSource = item.idNyplSourceId ? item.idNyplSourceId['@type'] : undefined;
     const mappedItemSource = itemSourceMappings[itemSource];
     const isOffsite = this.isOffsite(holdingLocation.prefLabel.toLowerCase());
-    const temporaryRequestable = requestable && isOffsite;
+    const temporaryRequestable = (requestable && (isOffsite || recap));
 
     if (isElectronicResource && item.electronicLocator[0].url) {
       status = { '@id': '', prefLabel: 'Available' };
