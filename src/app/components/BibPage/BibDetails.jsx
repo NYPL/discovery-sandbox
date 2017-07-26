@@ -12,6 +12,104 @@ import { ajaxCall } from '../../utils/utils';
 import Actions from '../../actions/Actions';
 import Definition from './Definition';
 
+const getIdentifiers = (bibValues, fieldIdentifier) => {
+  let val = '';
+
+  if (bibValues.length) {
+    bibValues.forEach(value => {
+      if (value.indexOf(`${fieldIdentifier}:`) !== -1) {
+        val = value.substring(fieldIdentifier.length + 1);
+      }
+    });
+
+    if (val) {
+      return <span>{val}</span>;
+    }
+  }
+
+  return null;
+};
+
+const getDefinitionObject = (bibValues, fieldValue, fieldLinkable) => {
+  if (bibValues.length === 1) {
+    const bibValue = bibValues[0];
+    const url = `filters[${fieldValue}]=${bibValue['@id']}`;
+
+    if (fieldLinkable) {
+      return (
+        <Link onClick={e => this.newSearch(e, url)} to={`/search?${url}`}>
+          {bibValue.prefLabel}
+        </Link>
+      );
+    }
+
+    return <span>{bibValue.prefLabel}</span>;
+  }
+
+  return (
+    <ul>
+      {
+        bibValues.map((value, i) => {
+          const url = `filters[${fieldValue}]=${value['@id']}`;
+          return (
+            <li key={i}>
+              {
+                fieldLinkable ?
+                  <Link onClick={e => this.newSearch(e, url)} to={`/search?${url}`}>
+                    {value.prefLabel}
+                  </Link>
+                  : <span>{value.prefLabel}</span>
+              }
+            </li>
+          );
+        })
+      }
+    </ul>
+  );
+};
+
+const getDefinition = (bibValues, fieldValue, fieldLinkable, fieldIdentifier) => {
+  if (fieldValue === 'identifier') {
+    return getIdentifiers(bibValues, fieldIdentifier);
+  }
+
+  if (bibValues.length === 1) {
+    const bibValue = bibValues[0];
+    const url = `filters[${fieldValue}]=${bibValue}`;
+
+    if (fieldLinkable) {
+      return (
+        <Link onClick={e => this.newSearch(e, url)} to={`/search?${url}`}>
+          {bibValue}
+        </Link>
+      );
+    }
+
+    return <span>{bibValue}</span>;
+  }
+
+  return (
+    <ul>
+      {
+        bibValues.map((value, i) => {
+          const url = `filters[${fieldValue}]=${value}`;
+          return (
+            <li key={i}>
+              {
+                fieldLinkable ?
+                  <Link onClick={e => this.newSearch(e, url)} to={`/search?${url}`}>
+                    {value}
+                  </Link>
+                  : <span>{value}</span>
+              }
+            </li>
+          );
+        })
+      }
+    </ul>
+  );
+};
+
 class BibDetails extends React.Component {
   /**
    * getPublisher(bib)
@@ -65,6 +163,7 @@ class BibDetails extends React.Component {
     const fieldsToRender = [];
     const publisherInfo = this.getPublisher(bib);
 
+    // Publisher information should be the first one in the list.
     if (publisherInfo) {
       fieldsToRender.push(publisherInfo);
     }
@@ -72,79 +171,31 @@ class BibDetails extends React.Component {
     fields.forEach((field) => {
       const fieldLabel = field.label;
       const fieldValue = field.value;
+      const fieldLinkable = field.linkable;
+      const fieldIdentifier = field.identifier;
       const bibValues = bib[fieldValue];
 
       // skip absent fields
       if (bibValues && bibValues.length && _isArray(bibValues)) {
-        // Taking just the first value for each field
+        // Taking just the first value for each field to check the type.
         const firstFieldValue = bibValues[0];
 
-        // List of links
-        // Could use a better check but okay for now. This is the second most used statement,
-        // mostly to link to different values in the UI.
+        // Each value is an object with @id and prefLabel properties.
         if (firstFieldValue['@id']) {
           fieldsToRender.push({
             term: fieldLabel,
-            definition: (
-              <ul>
-                {
-                  bibValues.map((valueObj, i) => {
-                    const url = `filters[${fieldValue}]=${valueObj['@id']}`;
-                    return (
-                      <li key={i}>
-                        <Link
-                          onClick={e => this.newSearch(e, url)}
-                          to={`/search?${url}`}
-                        >
-                          {valueObj.prefLabel}
-                        </Link>
-                      </li>
-                    );
-                  })
-                }
-              </ul>
-            ),
-          });
-          // NOTE: Right now this is not working because we removed the `linkable` property.
-          // We added this because not all fields should be linkable. For example, maybe we
-          // want `materialType` to be linkable in the UI but not `issuance`.
-        } else if (field.linkable) {
-          fieldsToRender.push({
-            term: fieldLabel,
-            definition: (
-              <ul>
-                {
-                  bibValues.map((value, i) => {
-                    const url = `filters[${fieldValue}]=${value}`;
-                    return (
-                      <li key={i}>
-                        <Link
-                          onClick={e => this.newSearch(e, url)}
-                          to={`/search?${url}`}
-                        >
-                          {value}
-                        </Link>
-                      </li>
-                    );
-                  })
-                }
-              </ul>
-            ),
+            definition: getDefinitionObject(bibValues, fieldValue, fieldLinkable),
           });
         } else {
-          // Simple data display. This gets rendered the most.
-          fieldsToRender.push({
-            term: fieldLabel,
-            definition: (
-              <ul>
-                {bibValues.map((value, i) => <li key={i}>{value}</li>)}
-              </ul>
-            ),
-          });
+          const definition = getDefinition(bibValues, fieldValue, fieldLinkable, fieldIdentifier);
+          if (definition) {
+            fieldsToRender.push({
+              term: fieldLabel,
+              definition,
+            });
+          }
         }
       }
-
-      return null;
     }); // End of the forEach loop
 
     return fieldsToRender;
