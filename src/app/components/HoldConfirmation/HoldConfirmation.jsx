@@ -117,14 +117,19 @@ class HoldConfirmation extends React.Component {
 
     return (
       <div id="mainContent">
-        <div className="nypl-request-page-header">
-          <div className="content-wrapper">
-            <Breadcrumbs
-              query={this.props.searchKeywords}
-              type="holdConfirmation"
-              title={title}
-              url={id}
-            />
+        <div className="nypl-homepage-hero">
+          <div className="row">
+            <div className="nypl-full-width-wrapper">
+              <div className="nypl-column-three-quarters">
+                <Breadcrumbs
+                  query={this.props.searchKeywords}
+                  type="holdConfirmation"
+                  title={title}
+                  url={id}
+                />
+                <h1>Research Discovery (beta)</h1>
+              </div>
+            </div>
           </div>
         </div>
 
