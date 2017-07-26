@@ -83,6 +83,7 @@ class HoldConfirmation extends React.Component {
   renderStartOverLink() {
     return (
       <Link
+        className="nypl-request-button"
         to="/"
         onClick={(e) => this.goRestart(e)}
       >
@@ -116,7 +117,7 @@ class HoldConfirmation extends React.Component {
 
     return (
       <div id="mainContent">
-        <div className="page-header">
+        <div className="nypl-request-page-header">
           <div className="content-wrapper">
             <Breadcrumbs
               query={this.props.searchKeywords}
@@ -127,45 +128,56 @@ class HoldConfirmation extends React.Component {
           </div>
         </div>
 
-        <div className="content-wrapper">
-          <div className="item-header">
-            <h1>Request Confirmation</h1>
-            <h2>Submission Received</h2>
-          </div>
-
-          <div className="item-summary row">
-            <div className="details two-third">
-              <h2>Item Information</h2>
-              <p>We've received your request for <Link to={`${appConfig.baseUrl}/bib/${id}`}>{title}</Link></p>
-              <p>
-                Please check your library account for updates. The item will be listed as
-                Ready under your Holds tab when it is available. You will also recieve an email
-                confirmation after your item has arrived.
-              </p>
-              <p>
-                Your item will be delivered to: {this.renderLocationInfo(deliveryLocation)}
-              </p>
-              <p>
-                For off-site materials, requests made before 2:30 PM will be delivered the
-                following business day. Requests made after 2:30 PM on Fridays or over the
-                weekend will be delivered the following Tuesday. We will hold books for up
-                to seven days, so you can request materials up to a week in advance.
-              </p>
-
-              <h2>Electronic Delivery</h2>
-              <p>
-                If you selected Electronic delivery, you will be notified via email when the item
-                is available.
-              </p>
-              <p>
-                If you would like to cancel your request, or if you have further questions, please
-                contact 917-ASK-NYPL (917-275-6975).
-              </p>
+        <div className="nypl-full-width-wrapper">
+          <div className="nypl-row">
+            <div className="nypl-column-three-quarters">
+              <div className="item-header">
+                <h3>Request Confirmation</h3>
+              </div>
             </div>
           </div>
-          <div className="start-over-container">
-            <div>
-              {this.renderStartOverLink()}
+          <div className="nypl-row">
+            <div className="nypl-column-three-quarters">
+              <div className="nypl-request-item-summary">
+                <div className="item">
+                  <h4>Submission Received</h4>
+                  <p>Item Information</p>
+                  <p>We've received your request for <Link to={`${appConfig.baseUrl}/bib/${id}`}>{title}</Link>
+                  </p>
+                  <p>
+                    Please check your library account for updates. The item will be listed as
+                    Ready under your Holds tab when it is available. You will also recieve an email
+                    confirmation after your item has arrived.
+                  </p>
+                  <p>
+                    Your item will be delivered to: {this.renderLocationInfo(deliveryLocation)}
+                  </p>
+                  <p>
+                    For off-site materials, requests made before 2:30 PM will be delivered the
+                    following business day. Requests made after 2:30 PM on Fridays or over the
+                    weekend will be delivered the following Tuesday. We will hold books for up
+                    to seven days, so you can request materials up to a week in advance.
+                  </p>
+
+                  <h4>Electronic Delivery</h4>
+                  <p>
+                    If you selected Electronic delivery, you will be notified via email when the 
+                    item is available.
+                  </p>
+                  <p>
+                    If you would like to cancel your request, or if you have further questions, 
+                    please contact 917-ASK-NYPL (917-275-6975).
+                  </p>
+                  {this.renderStartOverLink()}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="nypl-row">
+            <div className="nypl-column-three-quarters">
+              <a target="_blank" href="https://www.nypl.org/help/request-research-materials">
+                Learn more about our off-site collections.
+              </a>
             </div>
           </div>
         </div>
