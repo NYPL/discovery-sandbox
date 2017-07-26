@@ -142,7 +142,8 @@ class HoldConfirmation extends React.Component {
                 <div className="item">
                   <h4>Submission Received</h4>
                   <p>Item Information</p>
-                  <p>We've received your request for <Link to={`${appConfig.baseUrl}/bib/${id}`}>{title}</Link></p>
+                  <p>We've received your request for <Link to={`${appConfig.baseUrl}/bib/${id}`}>{title}</Link>
+                  </p>
                   <p>
                     Please check your library account for updates. The item will be listed as
                     Ready under your Holds tab when it is available. You will also recieve an email
@@ -160,12 +161,12 @@ class HoldConfirmation extends React.Component {
 
                   <h4>Electronic Delivery</h4>
                   <p>
-                    If you selected Electronic delivery, you will be notified via email when the item
-                    is available.
+                    If you selected Electronic delivery, you will be notified via email when the 
+                    item is available.
                   </p>
                   <p>
-                    If you would like to cancel your request, or if you have further questions, please
-                    contact 917-ASK-NYPL (917-275-6975).
+                    If you would like to cancel your request, or if you have further questions, 
+                    please contact 917-ASK-NYPL (917-275-6975).
                   </p>
                   {this.renderStartOverLink()}
                 </div>
