@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import DocumentTitle from 'react-document-title';
+import { pick as _pick } from 'underscore';
 
 import { Header, navConfig } from '@nypl/dgx-header-component';
 import Footer from '@nypl/dgx-react-footer';
@@ -14,9 +15,7 @@ import {
   destructureFilters,
 } from '../../utils/utils.js';
 import Actions from '../../actions/Actions.js';
-import {
-  pick as _pick,
-} from 'underscore';
+import appConfig from '../../../../appConfig.js';
 
 const history = createAppHistory();
 
@@ -39,7 +38,7 @@ history.listen(location => {
   if (action === 'POP' && search) {
     Actions.updateSpinner(true);
 
-    ajaxCall(`/api${decodeURI(search)}`, (response) => {
+    ajaxCall(`${appConfig.baseUrl}/api${decodeURI(search)}`, (response) => {
       if (response.data.facets && response.data.searchResults) {
         const selectedFacets = destructureFilters(urlFilters, response.data.facets);
         Actions.updateSelectedFacets(selectedFacets);
@@ -64,7 +63,7 @@ class App extends React.Component {
 
   componentWillMount() {
     if (!this.state.data.searchResults) {
-      ajaxCall(`/api?q=${this.state.data.searchKeywords}`, (response) => {
+      ajaxCall(`${appConfig.baseUrl}/api?q=${this.state.data.searchKeywords}`, (response) => {
         Actions.updateSearchResults(response.data.searchResults);
         Actions.updateSearchKeywords(this.state.data.searchKeywords);
       });
