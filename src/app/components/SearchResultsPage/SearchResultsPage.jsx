@@ -33,9 +33,9 @@ const SearchResultsPage = (props, context) => {
     <Breadcrumbs query={searchKeywords} type="search" />
   );
   const createAPIQuery = basicQuery(props);
-  const h1searchKeywordsLabel = searchKeywords ? `for ${searchKeywords}` : '';
-  const h1pageLabel = totalPages ? `page ${page} of ${totalPages}` : '';
-  const h2Label = `Search results ${h1searchKeywordsLabel} ${h1pageLabel}`;
+  const searchKeywordsLabel = searchKeywords ? `for ${searchKeywords}` : '';
+  const pageLabel = totalPages ? `page ${page} of ${totalPages}` : '';
+  const headerLabel = `Search results ${searchKeywordsLabel} ${pageLabel}`;
   const updatePage = (nextPage) => {
     Actions.updateSpinner(true);
     // Temporary. Need to check cross-browser and if it's needed at all.
@@ -56,14 +56,12 @@ const SearchResultsPage = (props, context) => {
         'Search Results | Research Catalog | NYPL'}
     >
       <main className="main-page">
-        <div className="nypl-page-header">
+        <div className="nypl-homepage-hero">
           <div className="nypl-full-width-wrapper">
             <div className="nypl-row">
               <div className="nypl-column-three-quarters">
                 {breadcrumbs}
-                <h2 aria-label={h2Label}>
-                  New York Public Library Research Catalog
-                </h2>
+                <h1 aria-label={headerLabel}>Research Discovery (beta)</h1>
                 <Search
                   searchKeywords={searchKeywords}
                   field={field}
