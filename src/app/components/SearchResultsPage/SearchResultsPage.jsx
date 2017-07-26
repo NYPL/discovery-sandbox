@@ -110,7 +110,7 @@ const SearchResultsPage = (props, context) => {
               {
                 !!(totalResults && totalResults !== 0) &&
                   (<Pagination
-                    ariaControls="nypl-column-full results-list"
+                    ariaControls="nypl-results-list"
                     total={totalResults}
                     perPage={50}
                     page={parseInt(page, 10)}
