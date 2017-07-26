@@ -6,6 +6,7 @@ import {
   isArray as _isArray,
   isEmpty as _isEmpty,
   extend as _extend,
+  mapObject as _mapObject,
 } from 'underscore';
 
 import Breadcrumbs from '../Breadcrumbs/Breadcrumbs.jsx';
@@ -34,6 +35,7 @@ class ElectronicDelivery extends React.Component {
     }, { patron: PatronStore.getState() });
     this.requireUser = this.requireUser.bind(this);
     this.submitRequest = this.submitRequest.bind(this);
+    this.raiseError = this.raiseError.bind(this);
   }
 
   componentDidMount() {
@@ -56,6 +58,10 @@ class ElectronicDelivery extends React.Component {
     window.location.replace(`${appConfig.loginUrl}?redirect_uri=${fullUrl}`);
 
     return false;
+  }
+
+  raiseError(error) {
+    this.setState({raiseError : error });
   }
 
   /**
@@ -86,12 +92,29 @@ class ElectronicDelivery extends React.Component {
       });
   }
 
+  getRaisedErrors(raiseError) {
+    const headlineError = {
+      emailAddress: 'Email Address',
+      chapterTitle: 'Chapter / Article Title',
+      startPage: 'Starting Page Number',
+      endPage: 'Ending Page Number',
+    };
+
+    const raisedErrors = [];
+    _mapObject(raiseError, (val, key) => {
+      raisedErrors.push(<li key={key}>{headlineError[key]}</li>);
+    });
+
+    return raisedErrors;
+  }
+
   render() {
     const searchKeywords = this.props.searchKeywords || '';
     const {
       bibId,
       itemId,
       title,
+      raiseError,
     } = this.state;
     const bib = (this.props.bib && !_isEmpty(this.props.bib)) ? this.props.bib : null;
     const callNo = bib && bib.shelfMark && bib.shelfMark.length ? bib.shelfMark[0] : null;
@@ -117,7 +140,19 @@ class ElectronicDelivery extends React.Component {
           <div className="nypl-row">
             <div className="nypl-column-full">
               <h1>Electronic Delivery Request</h1>
-
+              {
+                raiseError && (
+                  <div className="nypl-raised-error">
+                    <strong>Error</strong>
+                    <p>Please check the following required fields and resubmit your request:</p>
+                    <ul>
+                      {
+                        this.getRaisedErrors(raiseError)
+                      }
+                    </ul>
+                  </div>
+                )
+              }
               <h3>
                 Material request for Electronic Delivery:
                 <br />
@@ -125,7 +160,6 @@ class ElectronicDelivery extends React.Component {
                   {title}
                 </Link>
               </h3>
-
               {
                 callNo && (
                   <div>
@@ -143,6 +177,7 @@ class ElectronicDelivery extends React.Component {
                 bibId={bibId}
                 itemId={itemId}
                 submitRequest={this.submitRequest}
+                raiseError={this.raiseError}
                 error={error}
                 form={form}
                 defaultEmail={patronEmail}
