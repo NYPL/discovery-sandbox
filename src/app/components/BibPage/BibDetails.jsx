@@ -11,6 +11,7 @@ import {
 import { ajaxCall } from '../../utils/utils';
 import Actions from '../../actions/Actions';
 import Definition from './Definition';
+import appConfig from '../../../../appConfig.js';
 
 const getIdentifiers = (bibValues, fieldIdentifier) => {
   let val = '';
@@ -37,7 +38,7 @@ const getDefinitionObject = (bibValues, fieldValue, fieldLinkable) => {
 
     if (fieldLinkable) {
       return (
-        <Link onClick={e => this.newSearch(e, url)} to={`/search?${url}`}>
+        <Link onClick={e => this.newSearch(e, url)} to={`${appConfig.baseUrl}/search?${url}`}>
           {bibValue.prefLabel}
         </Link>
       );
@@ -55,7 +56,10 @@ const getDefinitionObject = (bibValues, fieldValue, fieldLinkable) => {
             <li key={i}>
               {
                 fieldLinkable ?
-                  <Link onClick={e => this.newSearch(e, url)} to={`/search?${url}`}>
+                  <Link
+                    onClick={e => this.newSearch(e, url)}
+                    to={`${appConfig.baseUrl}/search?${url}`}
+                  >
                     {value.prefLabel}
                   </Link>
                   : <span>{value.prefLabel}</span>
@@ -79,7 +83,7 @@ const getDefinition = (bibValues, fieldValue, fieldLinkable, fieldIdentifier) =>
 
     if (fieldLinkable) {
       return (
-        <Link onClick={e => this.newSearch(e, url)} to={`/search?${url}`}>
+        <Link onClick={e => this.newSearch(e, url)} to={`${appConfig.baseUrl}/search?${url}`}>
           {bibValue}
         </Link>
       );
@@ -97,7 +101,10 @@ const getDefinition = (bibValues, fieldValue, fieldLinkable, fieldIdentifier) =>
             <li key={i}>
               {
                 fieldLinkable ?
-                  <Link onClick={e => this.newSearch(e, url)} to={`/search?${url}`}>
+                  <Link
+                    onClick={e => this.newSearch(e, url)}
+                    to={`${appConfig.baseUrl}/search?${url}`}
+                  >
                     {value}
                   </Link>
                   : <span>{value}</span>
@@ -205,7 +212,7 @@ class BibDetails extends React.Component {
     e.preventDefault();
 
     Actions.updateSpinner(true);
-    ajaxCall(`/api?${query}`, (response) => {
+    ajaxCall(`${appConfig.baseUrl}/api?${query}`, (response) => {
       const closingBracketIndex = query.indexOf(']');
       const equalIndex = query.indexOf('=') + 1;
 
@@ -241,7 +248,7 @@ class BibDetails extends React.Component {
       Actions.updateFacets(response.data.facets);
       Actions.updateSearchKeywords('');
       Actions.updatePage('1');
-      this.context.router.push(`/search?${query}`);
+      this.context.router.push(`${appConfig.baseUrl}/search?${query}`);
       Actions.updateSpinner(false);
     });
   }

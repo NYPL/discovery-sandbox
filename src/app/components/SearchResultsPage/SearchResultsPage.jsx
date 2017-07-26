@@ -14,6 +14,7 @@ import {
   ajaxCall,
 } from '../../utils/utils.js';
 import Actions from '../../actions/Actions.js';
+import appConfig from '../../../../appConfig.js';
 
 const SearchResultsPage = (props, context) => {
   const {
@@ -41,11 +42,11 @@ const SearchResultsPage = (props, context) => {
     window.scrollTo(0, 0);
     const apiQuery = createAPIQuery({ page: nextPage });
 
-    ajaxCall(`/api?${apiQuery}`, response => {
+    ajaxCall(`${appConfig.baseUrl}/api?${apiQuery}`, response => {
       Actions.updateSearchResults(response.data.searchResults);
       Actions.updatePage(nextPage.toString());
       Actions.updateSpinner(false);
-      context.router.push(`/search?${apiQuery}`);
+      context.router.push(`${appConfig.baseUrl}/search?${apiQuery}`);
     });
   };
 
@@ -109,7 +110,7 @@ const SearchResultsPage = (props, context) => {
               {
                 !!(totalResults && totalResults !== 0) &&
                   (<Pagination
-                    ariaControls="nypl-column-full results-list"
+                    ariaControls="nypl-results-list"
                     total={totalResults}
                     perPage={50}
                     page={parseInt(page, 10)}

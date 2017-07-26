@@ -7,9 +7,11 @@ import {
   findWhere as _findWhere,
   findIndex as _findIndex,
 } from 'underscore';
+
 import Definition from './Definition';
 import { ajaxCall } from '../../utils/utils';
 import Actions from '../../actions/Actions';
+import appConfig from '../../../../appConfig.js';
 
 class BibMainInfo extends React.Component {
   getDefinition(bibValues, fieldValue) {
@@ -18,7 +20,7 @@ class BibMainInfo extends React.Component {
       const url = `filters[${fieldValue}]=${bibValue}`;
 
       return (
-        <Link onClick={e => this.newSearch(e, url)} to={`/search?${url}`}>
+        <Link onClick={e => this.newSearch(e, url)} to={`${appConfig.baseUrl}/search?${url}`}>
           {bibValue}
         </Link>
       );
@@ -31,7 +33,10 @@ class BibMainInfo extends React.Component {
             const url = `filters[${fieldValue}]=${value}`;
             return (
               <li key={i}>
-                <Link onClick={e => this.newSearch(e, url)} to={`/search?${url}`}>
+                <Link
+                  onClick={e => this.newSearch(e, url)}
+                  to={`${appConfig.baseUrl}/search?${url}`}
+                >
                   {value}
                 </Link>
               </li>
@@ -72,7 +77,7 @@ class BibMainInfo extends React.Component {
     e.preventDefault();
 
     Actions.updateSpinner(true);
-    ajaxCall(`/api?${query}`, (response) => {
+    ajaxCall(`${appConfig.baseUrl}/api?${query}`, (response) => {
       const closingBracketIndex = query.indexOf(']');
       const equalIndex = query.indexOf('=') + 1;
 
@@ -108,7 +113,7 @@ class BibMainInfo extends React.Component {
       Actions.updateFacets(response.data.facets);
       Actions.updateSearchKeywords('');
       Actions.updatePage('1');
-      this.context.router.push(`/search?${query}`);
+      this.context.router.push(`${appConfig.baseUrl}/search?${query}`);
       Actions.updateSpinner(false);
     });
   }

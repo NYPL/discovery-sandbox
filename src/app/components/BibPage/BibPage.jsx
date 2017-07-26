@@ -67,10 +67,6 @@ const BibPage = (props) => {
               className="nypl-column-three-quarters"
               role="region"
               id="mainContent"
-              aria-live="polite"
-              aria-atomic="true"
-              aria-relevant="additions removals"
-              aria-describedby="results-description"
             >
               <div className="nypl-item-details">
                 <h1>{title}</h1>
