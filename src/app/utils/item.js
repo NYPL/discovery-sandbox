@@ -117,6 +117,8 @@ function LibraryItem() {
     const barcode = bibIdentifiers.barcode || '';
     const itemSource = item.idNyplSourceId ? item.idNyplSourceId['@type'] : undefined;
     const mappedItemSource = itemSourceMappings[itemSource];
+    const isOffsite = this.isOffsite(holdingLocation.prefLabel.toLowerCase());
+    const temporaryRequestable = requestable && isOffsite;
 
     if (isElectronicResource && item.electronicLocator[0].url) {
       status = { '@id': '', prefLabel: 'Available' };
@@ -154,7 +156,7 @@ function LibraryItem() {
       url,
       actionLabel,
       actionLabelHelper,
-      requestable,
+      requestable: temporaryRequestable,
       suppressed,
       barcode,
       itemSource: mappedItemSource,
@@ -284,7 +286,7 @@ function LibraryItem() {
    * @param {string} prefLabel
    * @return {boolean}
    */
-  this.isOffsite = (prefLabel = '') => prefLabel.substring(0, 7).toLowerCase() === 'offsite';
+  this.isOffsite = (prefLabel = '') => prefLabel.indexOf('offsite') !== -1;
 
   /**
    * isNYPLReCAP(bibId)
