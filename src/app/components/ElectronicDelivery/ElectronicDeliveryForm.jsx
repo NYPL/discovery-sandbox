@@ -93,15 +93,23 @@ class ElectronicDeliveryForm extends React.Component {
               onChange={(e) => this.handleUpdate(e, 'emailAddress')}
             />
             {
-              errorClass.emailAddress &&
-                (<span
+              (errorClass.emailAddress) ?
+                <span
                   className="nypl-field-status"
                   id="email-address-status"
                   aria-live="assertive"
                   aria-atomic="true"
                 >
                   {this.state.error.emailAddress}
-                </span>)
+                </span> :
+                <span
+                  className="nypl-field-status"
+                  id="email-address-status"
+                  aria-live="assertive"
+                  aria-atomic="true"
+                >
+                  Please enter a valid email address
+                </span>
             }
           </div>
         </fieldset>
@@ -124,15 +132,23 @@ class ElectronicDeliveryForm extends React.Component {
               onChange={(e) => this.handleUpdate(e, 'chapterTitle')}
             />
             {
-              errorClass.chapterTitle &&
-                (<span
+              (errorClass.chapterTitle) ?
+                <span
                   className="nypl-field-status"
                   id="chapter-title-status"
                   aria-live="assertive"
                   aria-atomic="true"
                 >
                   {this.state.error.chapterTitle}
-                </span>)
+                </span> :
+                <span
+                  className="nypl-field-status"
+                  id="chapter-title-status"
+                  aria-live="assertive"
+                  aria-atomic="true"
+                >
+                  Please indicate the chapter or article
+                </span>
             }
           </div>
 
@@ -146,6 +162,14 @@ class ElectronicDeliveryForm extends React.Component {
               value={this.state.form.author}
               onChange={(e) => this.handleUpdate(e, 'author')}
             />
+            <span
+              className="nypl-field-status"
+              id="author-status"
+              aria-live="assertive"
+              aria-atomic="true"
+            >
+              Please indicate the article author's name
+            </span>
           </div>
 
           <div className="nypl-text-field">
@@ -158,6 +182,14 @@ class ElectronicDeliveryForm extends React.Component {
               value={this.state.form.date}
               onChange={(e) => this.handleUpdate(e, 'date')}
             />
+            <span
+              className="nypl-field-status"
+              id="date-status"
+              aria-live="assertive"
+              aria-atomic="true"
+            >
+              Please indicate the date published
+            </span>
           </div>
 
           <div className="nypl-text-field">
@@ -170,6 +202,14 @@ class ElectronicDeliveryForm extends React.Component {
               value={this.state.form.volume}
               onChange={(e) => this.handleUpdate(e, 'volume')}
             />
+            <span
+              className="nypl-field-status"
+              id="volume-status"
+              aria-live="assertive"
+              aria-atomic="true"
+            >
+              Please indicate the volume
+            </span>
           </div>
 
           <div className="nypl-text-field">
@@ -182,6 +222,14 @@ class ElectronicDeliveryForm extends React.Component {
               value={this.state.form.issue}
               onChange={(e) => this.handleUpdate(e, 'issue')}
             />
+            <span
+              className="nypl-field-status"
+              id="issue-status"
+              aria-live="assertive"
+              aria-atomic="true"
+            >
+              Please indicate the issue
+            </span>
           </div>
         </fieldset>
 
@@ -203,16 +251,15 @@ class ElectronicDeliveryForm extends React.Component {
               value={this.state.form.startPage}
               onChange={(e) => this.handleUpdate(e, 'startPage')}
             />
-            {
-              errorClass.startPage &&
-                (<span
-                  className="nypl-field-status"
-                  id="start-page-status"
-                  aria-live="assertive"
-                  aria-atomic="true"
-                >
-                  {this.state.error.startPage}
-                </span>)
+            {(errorClass.startPage) &&
+              <span
+                className="nypl-field-status"
+                id="start-page-status"
+                aria-live="assertive"
+                aria-atomic="true"
+              >
+                {this.state.error.startPage}
+              </span>
             }
           </div>
 
@@ -232,17 +279,27 @@ class ElectronicDeliveryForm extends React.Component {
               value={this.state.form.endPage}
               onChange={(e) => this.handleUpdate(e, 'endPage')}
             />
-            {
-              errorClass.endPage &&
-                (<span
-                  className="nypl-field-status"
-                  id="end-page-status"
-                  aria-live="assertive"
-                  aria-atomic="true"
-                >
-                  {this.state.error.endPage}
-                </span>)
+            {(errorClass.endPage) &&
+              <span
+                className="nypl-field-status"
+                id="end-page-status"
+                aria-live="assertive"
+                aria-atomic="true"
+              >
+                {this.state.error.endPage}
+              </span>
             }
+          </div>
+          <div className={`nypl-text-field ${(errorClass.startPage || errorClass.endPage) ? 'nypl-field-error' : ''}`}>
+            <span
+              className="nypl-field-status"
+              id="page-status"
+              aria-live="assertive"
+              aria-atomic="true"
+            >
+              <span>Values muse be numeric only</span><br />
+              <span>(No special characters allowed)</span>
+            </span>
           </div>
         </fieldset>
         <fieldset className="nypl-fieldset v2 additional-notes">
@@ -285,7 +342,5 @@ ElectronicDeliveryForm.propTypes = {
 ElectronicDeliveryForm.defaultProps = {
   defaultEmail: '',
 };
-
-
 
 export default ElectronicDeliveryForm;
