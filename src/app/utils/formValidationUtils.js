@@ -108,7 +108,6 @@ function renderServerValidationError(object) {
  * return {boolean}
  */
 function validate(form, cb) {
-  let errorMessage;
   const fieldsToCheck = {
     emailAddress: {
       validate: (val) => (val.trim().length && isEmail('' + val)),

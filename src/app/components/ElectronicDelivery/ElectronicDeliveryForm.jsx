@@ -191,7 +191,11 @@ class ElectronicDeliveryForm extends React.Component {
           <legend>Select Page Number Range (Max 50 pages)</legend>
           <h3>Select Page Number Range (Max 50 pages)</h3>
 
-          <div className={`nypl-year-field ${errorClass.startPage}`}>
+          <div
+            className={
+             `nypl-year-field ${(errorClass.startPage || errorClass.endPage) ? 'nypl-field-error' :''}`
+            }
+          >
             <label htmlFor="start-page" id="start-page-label">Starting Page
               <span className="nypl-required-field">&nbsp;Required</span>
             </label>
@@ -205,21 +209,9 @@ class ElectronicDeliveryForm extends React.Component {
               value={this.state.form.startPage}
               onChange={(e) => this.handleUpdate(e, 'startPage')}
             />
-            {(errorClass.startPage) &&
-              <span
-                className="nypl-field-status"
-                id="start-page-status"
-                aria-live="assertive"
-                aria-atomic="true"
-              >
-                {this.state.error.startPage}
-              </span>
-            }
-          </div>
 
-          <span>&mdash;</span>
+            <br />
 
-          <div className={`nypl-year-field ${errorClass.endPage}`}>
             <label htmlFor="end-page" id="end-page-label">Ending Page
               <span className="nypl-required-field">&nbsp;Required</span>
             </label>
@@ -233,25 +225,13 @@ class ElectronicDeliveryForm extends React.Component {
               value={this.state.form.endPage}
               onChange={(e) => this.handleUpdate(e, 'endPage')}
             />
-            {(errorClass.endPage) &&
-              <span
-                className="nypl-field-status"
-                id="end-page-status"
-                aria-live="assertive"
-                aria-atomic="true"
-              >
-                {this.state.error.endPage}
-              </span>
-            }
-          </div>
-          <div className={`nypl-text-field ${(errorClass.startPage || errorClass.endPage) ? 'nypl-field-error' : ''}`}>
             <span
               className="nypl-field-status"
               id="page-status"
               aria-live="assertive"
               aria-atomic="true"
             >
-              <span>You may request a maximum of 50 pages.</span>
+              <span>{(this.state.error.startPage || this.state.error.startPage) ? this.state.error.startPage : 'You may request a maximum of 50 pages.'}</span>
             </span>
           </div>
         </fieldset>
