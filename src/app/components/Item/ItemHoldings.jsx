@@ -94,13 +94,12 @@ class ItemHoldings extends React.Component {
 
     return (
       (itemsToDisplay && _isArray(itemsToDisplay) && itemsToDisplay.length) ?
-        (<ItemTable
+        <ItemTable
           items={itemsToDisplay}
           bibId={bibId}
           getRecord={this.getRecord}
           id="bib-item-table"
-        />)
-        : null
+        /> : null
     );
   }
 
