@@ -111,44 +111,19 @@ function validate(form, cb) {
   const fieldsToCheck = {
     emailAddress: {
       validate: (val) => (val.trim().length && isEmail('' + val)),
-      errorMsg: 'Please enter the email address associated with your NYPL account.',
+      errorMsg: 'Enter a valid email address. Your request will be delivered to the email address you enter above.',
     },
     chapterTitle: {
       validate: (val) => (isNumeric('' + val) && val > 0) ? true : false,
-      errorMsg: 'Please indicate the chapter or article.',
-    },
-    // optional
-    author: {
-      validate: () => true,
-      errorMsg: '',
-    },
-    // optional
-    date: {
-      validate: () => true,
-      errorMsg: 'Please enter the date published',
-    },
-    // optional
-    volume: {
-      validate: () => true,
-      errorMsg: 'Please enter the item volume',
-    },
-    // optional
-    issue: {
-      validate: () => true,
-      errorMsg: '',
-    },
-    // optional
-    notes: {
-      validate: () => true,
-      errorMsg: '',
+      errorMsg: 'Indicate the title of the chapter or article you are requesting. Enter "none" if you are requesting an entire item.',
     },
     startPage: {
       validate: (val) => (isNumeric('' + val) && val > 0) ? true : false,
-      errorMsg: 'Please enter a starting page number. Values must be numeric only (No special characters allowed).',
+      errorMsg: 'Page values must be alphanumeric (no special characters). You may request a maximum of 50 pages.',
     },
     endPage: {
       validate: (val) => (isNumeric('' + val) && val > 0) ? true : false,
-      errorMsg: 'Please enter an ending page number. Values must be numeric only (No special characters allowed).',
+      errorMsg: 'Page values must be alphanumeric (no special characters). You may request a maximum of 50 pages.',
     },
   };
 

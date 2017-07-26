@@ -7,7 +7,6 @@ import {
   isEmpty as _isEmpty,
 } from 'underscore';
 
-
 class ElectronicDeliveryForm extends React.Component {
   constructor(props) {
     super(props);
@@ -18,19 +17,19 @@ class ElectronicDeliveryForm extends React.Component {
     // empty object structure is needed.
     this.state = {
       form: !_isEmpty(this.props.form) ? this.props.form :
-        {
-          emailAddress: this.props.defaultEmail,
-          chapterTitle: '',
-          startPage: 0,
-          endPage: 0,
-        },
+      {
+        emailAddress: this.props.defaultEmail,
+        chapterTitle: '',
+        startPage: 0,
+        endPage: 0,
+      },
       error: !_isEmpty(this.props.error) ? this.props.error :
-        {
-          emailAddress: '',
-          chapterTitle: '',
-          startPage: 0,
-          endPage: 0,
-        },
+      {
+        emailAddress: '',
+        chapterTitle: '',
+        startPage: 0,
+        endPage: 0,
+      },
     };
 
     this.submit = this.submit.bind(this);
@@ -40,7 +39,10 @@ class ElectronicDeliveryForm extends React.Component {
   submit(e) {
     e.preventDefault();
 
-    if (validate(this.state.form, (error) => this.setState({ error }))) {
+    if (validate(this.state.form, (error) => {
+      this.setState({ error })
+      this.props.raiseError(error);
+    })) {
       this.props.submitRequest(this.state);
     }
   }
@@ -271,6 +273,7 @@ class ElectronicDeliveryForm extends React.Component {
 
 ElectronicDeliveryForm.propTypes = {
   submitRequest: PropTypes.func,
+  raiseError: PropTypes.func,
   bibId: PropTypes.string,
   itemId: PropTypes.string,
   error: PropTypes.object,
