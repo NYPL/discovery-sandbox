@@ -32,6 +32,11 @@ class HoldConfirmation extends React.Component {
    */
   requireUser() {
     if (this.state.patron && this.state.patron.id) {
+      const queryID = this.props.location.query ? this.props.location.query.id : '';
+      if (queryID !== this.state.patron.id) {
+        this.context.router.push(`${appConfig.baseUrl}/`);
+      }
+
       return true;
     }
 

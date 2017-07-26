@@ -81,7 +81,9 @@ class HoldRequest extends React.Component {
           this.context.router.push(`${path}?errorMessage=${response.data.error.statusText}`);
         } else {
           this.context.router.push(
-            `${path}?pickupLocation=${response.data.pickupLocation}&requestId=${response.data.id}`
+            `${path}?pickupLocation=${response.data.pickupLocation}` +
+            `&requestId=${response.data.id}` +
+            `&id=${this.state.patron.id}`
           );
         }
       })
