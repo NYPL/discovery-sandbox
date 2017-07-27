@@ -116,10 +116,10 @@ class HoldConfirmation extends React.Component {
     }
 
     return (
-      <div id="mainContent">
-        <div className="nypl-homepage-hero">
-          <div className="nypl-full-width-wrapper">
-            <div className="row">
+      <main id="mainContent" className="main-page">
+        <div className="nypl-request-page-header">
+          <div className="row">
+            <div className="nypl-full-width-wrapper">
               <div className="nypl-column-three-quarters">
                 <Breadcrumbs
                   query={this.props.searchKeywords}
@@ -186,7 +186,7 @@ class HoldConfirmation extends React.Component {
             </div>
           </div>
         </div>
-      </div>
+      </main>
     );
   }
 }
