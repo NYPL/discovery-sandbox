@@ -81,8 +81,8 @@ class ElectronicDeliveryForm extends React.Component {
           <h3>Contact Information</h3>
 
           <div className={`nypl-text-field ${errorClass.emailAddress}`}>
-            <label htmlFor="email-address" id="email-address-label">Email address
-              <span className="nypl-required-field">&nbsp;(Required)</span>
+            <label htmlFor="email-address" id="email-address-label">Email Address
+              <span className="nypl-required-field">&nbsp;Required</span>
             </label>
             <input
               id="email-address"
@@ -94,17 +94,17 @@ class ElectronicDeliveryForm extends React.Component {
               value={this.state.form.emailAddress}
               onChange={(e) => this.handleUpdate(e, 'emailAddress')}
             />
-            {
-              errorClass.emailAddress &&
-                (<span
-                  className="nypl-field-status"
-                  id="email-address-status"
-                  aria-live="assertive"
-                  aria-atomic="true"
-                >
-                  {this.state.error.emailAddress}
-                </span>)
-            }
+            <span
+              className="nypl-field-status"
+              id="email-address-status"
+              aria-live="assertive"
+              aria-atomic="true"
+            >
+              {
+                errorClass.emailAddress ? this.state.error.emailAddress :
+                'Your request will be delivered to the email address you enter above.'
+              }
+            </span>
           </div>
         </fieldset>
 
@@ -113,8 +113,8 @@ class ElectronicDeliveryForm extends React.Component {
           <h3>Chapter or Article Information</h3>
 
           <div className={`nypl-text-field ${errorClass.chapterTitle}`}>
-            <label htmlFor="chapter-title" id="chapter-title-label">Chapter number or article title
-              <span className="nypl-required-field">&nbsp;(Required)</span>
+            <label htmlFor="chapter-title" id="chapter-title-label">Chapter / Article Title
+              <span className="nypl-required-field">&nbsp;Required</span>
             </label>
             <input
               id="chapter-title"
@@ -125,21 +125,21 @@ class ElectronicDeliveryForm extends React.Component {
               value={this.state.form.chapterTitle}
               onChange={(e) => this.handleUpdate(e, 'chapterTitle')}
             />
-            {
-              errorClass.chapterTitle &&
-                (<span
-                  className="nypl-field-status"
-                  id="chapter-title-status"
-                  aria-live="assertive"
-                  aria-atomic="true"
-                >
-                  {this.state.error.chapterTitle}
-                </span>)
-            }
+            <span
+              className="nypl-field-status"
+              id="chapter-title-status"
+              aria-live="assertive"
+              aria-atomic="true"
+            >
+              {
+                errorClass.chapterTitle ? this.state.error.chapterTitle :
+                'Enter "none" if you are requesting an entire item.'
+              }
+            </span>
           </div>
 
           <div className="nypl-text-field">
-            <label htmlFor="author" id="author-label">&nbsp;Article author</label>
+            <label htmlFor="author" id="author-label">&nbsp;Article Author</label>
             <input
               id="author"
               type="text"
@@ -151,7 +151,7 @@ class ElectronicDeliveryForm extends React.Component {
           </div>
 
           <div className="nypl-text-field">
-            <label htmlFor="date" id="date-label">Date published</label>
+            <label htmlFor="date" id="date-label">Date Published</label>
             <input
               id="date"
               type="text"
@@ -185,27 +185,19 @@ class ElectronicDeliveryForm extends React.Component {
               onChange={(e) => this.handleUpdate(e, 'issue')}
             />
           </div>
-
-          <div className="nypl-text-field">
-            <label htmlFor="request-notes" id="request-notes-label">Notes</label>
-            <input
-              id="request-notes"
-              type="text"
-              aria-labelledby="request-notes-label request-notes-status"
-              name="requestNotes"
-              value={this.state.form.requestNotes}
-              onChange={(e) => this.handleUpdate(e, 'requestNotes')}
-            />
-          </div>
         </fieldset>
 
         <fieldset className="nypl-fieldset v2 number-range">
-          <legend>Page Number Range (Max 50 pages)</legend>
-          <h3>Page Number Range (Max 50 pages)</h3>
+          <legend>Select Page Number Range (Max 50 pages)</legend>
+          <h3>Select Page Number Range (Max 50 pages)</h3>
 
-          <div className={`nypl-year-field ${errorClass.startPage}`}>
-            <label htmlFor="start-page" id="start-page-label">Start Page
-              <span className="nypl-required-field">&nbsp;(Required)</span>
+          <div
+            className={
+             `nypl-year-field ${(errorClass.startPage || errorClass.endPage) ? 'nypl-field-error' :''}`
+            }
+          >
+            <label htmlFor="start-page" id="start-page-label">Starting Page
+              <span className="nypl-required-field">&nbsp;Required</span>
             </label>
             <input
               id="start-page"
@@ -217,24 +209,11 @@ class ElectronicDeliveryForm extends React.Component {
               value={this.state.form.startPage}
               onChange={(e) => this.handleUpdate(e, 'startPage')}
             />
-            {
-              errorClass.startPage &&
-                (<span
-                  className="nypl-field-status"
-                  id="start-page-status"
-                  aria-live="assertive"
-                  aria-atomic="true"
-                >
-                  {this.state.error.startPage}
-                </span>)
-            }
-          </div>
 
-          <span>&mdash;</span>
+            <br />
 
-          <div className={`nypl-year-field ${errorClass.endPage}`}>
-            <label htmlFor="end-page" id="end-page-label">End Page
-              <span className="nypl-required-field">&nbsp;(Required)</span>
+            <label htmlFor="end-page" id="end-page-label">Ending Page
+              <span className="nypl-required-field">&nbsp;Required</span>
             </label>
             <input
               id="end-page"
@@ -246,17 +225,31 @@ class ElectronicDeliveryForm extends React.Component {
               value={this.state.form.endPage}
               onChange={(e) => this.handleUpdate(e, 'endPage')}
             />
-            {
-              errorClass.endPage &&
-                (<span
-                  className="nypl-field-status"
-                  id="end-page-status"
-                  aria-live="assertive"
-                  aria-atomic="true"
-                >
-                  {this.state.error.endPage}
-                </span>)
-            }
+            <span
+              className="nypl-field-status"
+              id="page-status"
+              aria-live="assertive"
+              aria-atomic="true"
+            >
+              <span>{(this.state.error.startPage || this.state.error.startPage) ? this.state.error.startPage : 'You may request a maximum of 50 pages.'}</span>
+            </span>
+          </div>
+        </fieldset>
+        <fieldset className="nypl-fieldset v2 additional-notes">
+          <legend>Additional Notes</legend>
+          <h3>Additional Notes</h3>
+
+          <div className="nypl-text-field">
+            <label htmlFor="request-notes" id="request-notes-label">Additional Notes</label>
+            <textarea
+              className="nypl-text-area"
+              id="request-notes"
+              type="text"
+              aria-labelledby="request-notes-label request-notes-status"
+              name="requestNotes"
+              value={this.state.form.requestNotes}
+              onChange={(e) => this.handleUpdate(e, 'requestNotes')}
+            />
           </div>
         </fieldset>
 
@@ -284,7 +277,5 @@ ElectronicDeliveryForm.propTypes = {
 ElectronicDeliveryForm.defaultProps = {
   defaultEmail: '',
 };
-
-
 
 export default ElectronicDeliveryForm;
