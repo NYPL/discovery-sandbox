@@ -74,6 +74,14 @@ const getDefinitionObject = (bibValues, fieldValue, fieldLinkable) => {
   );
 };
 
+/*
+ * getOwner(bib)
+ * This is currently only for non-NYPL partner items. If it's NYPL, it should return undefined.
+ * Requirement: Look at all the owners of all the items and if they were all the same and
+ * not NYPL, show that as the owning institution and otherwise show nothing.
+ * @param {object} bibId
+ * @return {string}
+ */
 const getOwner = (bib) => {
   const items = bib.items;
   const ownerArr = [];
