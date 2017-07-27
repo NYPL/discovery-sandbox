@@ -1,5 +1,16 @@
 ## CHANGE LOG
 
+### v0.6.0 - Internal Beta Release
+- Better workflow for placing a hold on physical items.
+- Electronic Delivery is now working.
+- Updated homepage, app name, and app styling.
+- Updated fields to display on a Catalog Record page.
+- Accessibility updates.
+- Removed filters for this release.
+- Updated to the Design-Toolkit included.
+- Big update to include reverse proxy integration on NYPL site.
+- More smaller updates to make it all come together!
+
 ### v0.5.0 - New Design v1
 - v2 of the bib page which added pagination for items but still includes the no-js fallback.
 - A lot more no-js fallbacks.
