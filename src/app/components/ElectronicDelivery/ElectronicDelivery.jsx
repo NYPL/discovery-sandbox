@@ -142,8 +142,8 @@ class ElectronicDelivery extends React.Component {
               <h1>Electronic Delivery Request</h1>
               {
                 raiseError && (
-                  <div className="nypl-raised-error">
-                    <strong>Error</strong>
+                  <div className="nypl-form-error">
+                    <h2>Error</h2>
                     <p>Please check the following required fields and resubmit your request:</p>
                     <ul>
                       {
