@@ -56,12 +56,12 @@ const SearchResultsPage = (props, context) => {
         'Search Results | Research Catalog | NYPL'}
     >
       <main className="main-page">
-        <div className="nypl-homepage-hero">
+        <div className="nypl-page-header">
           <div className="nypl-full-width-wrapper">
             <div className="nypl-row">
               <div className="nypl-column-three-quarters">
                 {breadcrumbs}
-                <h1 aria-label={headerLabel}>Research Discovery (beta)</h1>
+                <h2 aria-label={headerLabel}>Research Discovery (beta)</h2>
                 <Search
                   searchKeywords={searchKeywords}
                   field={field}
