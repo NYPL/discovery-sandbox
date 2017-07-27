@@ -6,6 +6,8 @@ import {
   isEmpty as _isEmpty,
   findWhere as _findWhere,
   findIndex as _findIndex,
+  contains as _contains,
+  every as _every,
 } from 'underscore';
 
 import { ajaxCall } from '../../utils/utils';
@@ -70,6 +72,32 @@ const getDefinitionObject = (bibValues, fieldValue, fieldLinkable) => {
       }
     </ul>
   );
+};
+
+const getOwner = (bib) => {
+  const items = bib.items;
+  const ownerArr = [];
+  let owner;
+
+  if (!items || !items.length) {
+    return null;
+  }
+
+  items.forEach(item => {
+    const ownerObj = item.owner && item.owner.length ?
+      item.owner[0].prefLabel : undefined;
+
+    ownerArr.push(ownerObj);
+  });
+
+  if (_every(ownerArr, (o) => (o === ownerArr[0]))) {
+    if ((ownerArr[0] === 'Princeton University Library') ||
+      (ownerArr[0] === 'Columbia University Libraries')) {
+      owner = ownerArr[0];
+    }
+  }
+
+  return owner;
 };
 
 const getDefinition = (bibValues, fieldValue, fieldLinkable, fieldIdentifier) => {
@@ -201,6 +229,16 @@ class BibDetails extends React.Component {
               definition,
             });
           }
+        }
+      }
+
+      if (fieldLabel === 'Owning Institutions') {
+        const owner = getOwner(this.props.bib);
+        if (owner) {
+          fieldsToRender.push({
+            term: fieldLabel,
+            definition: owner,
+          });
         }
       }
     }); // End of the forEach loop
