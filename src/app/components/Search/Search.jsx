@@ -123,9 +123,6 @@ class Search extends React.Component {
               <option value="all">All fields</option>
               <option value="title">Title</option>
               <option value="contributor">Author/Contributor</option>
-              <option value="subject">Subject</option>
-              <option value="series">Series</option>
-              <option value="call_number">Call number</option>
             </select>
           </span>
           <input
