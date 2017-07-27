@@ -127,7 +127,7 @@ class HoldConfirmation extends React.Component {
                   title={title}
                   url={id}
                 />
-                <h1>Research Discovery (beta)</h1>
+                <h2>Research Discovery (beta)</h2>
               </div>
             </div>
           </div>
