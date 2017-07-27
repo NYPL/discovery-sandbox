@@ -4,20 +4,20 @@ import { isArray as _isArray } from 'underscore';
 
 import ItemTableRow from './ItemTableRow';
 
-const ItemTable = ({ items, bibId, getRecord }) => {
+const ItemTable = ({ items, bibId, getRecord, id }) => {
   if (!_isArray(items) || !items.length) {
     return null;
   }
 
   return (
-    <table className="nypl-basic-table">
+    <table className="nypl-basic-table" id={id}>
       <caption className="hidden">Item details</caption>
       <thead>
         <tr>
-          <th>LOCATION</th>
-          <th>CALL NO.</th>
-          <th>STATUS</th>
-          <th>MESSAGE</th>
+          <th scope="col">LOCATION</th>
+          <th scope="col">CALL NO.</th>
+          <th scope="col">STATUS</th>
+          <th scope="col">MESSAGE</th>
         </tr>
       </thead>
       <tbody>
@@ -34,7 +34,12 @@ const ItemTable = ({ items, bibId, getRecord }) => {
 ItemTable.propTypes = {
   items: PropTypes.array,
   bibId: PropTypes.string,
+  id: PropTypes.string,
   getRecord: PropTypes.func,
+};
+
+ItemTable.defaultProps = {
+  id: '',
 };
 
 export default ItemTable;

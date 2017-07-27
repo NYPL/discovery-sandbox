@@ -16,6 +16,9 @@ class Store {
       updateSortBy: Actions.updateSortBy,
       updateSpinner: Actions.updateSpinner,
       updateField: Actions.updateField,
+      updateForm: Actions.updateForm,
+      updateDeliveryLocations: Actions.updateDeliveryLocations,
+      updateIsEddRequestable: Actions.updateIsEddRequestable,
     });
 
     this.state = {
@@ -29,6 +32,9 @@ class Store {
       spinning: false,
       field: 'all',
       error: {},
+      form: {},
+      deliveryLocations: [],
+      isEddRequestable: false,
     };
   }
 
@@ -76,6 +82,18 @@ class Store {
 
   updateField(data) {
     this.setState({ field: data });
+  }
+
+  updateForm(data) {
+    this.setState({ form: data });
+  }
+
+  updateDeliveryLocations(data) {
+    this.setState({ deliveryLocations: data });
+  }
+
+  updateIsEddRequestable(data) {
+    this.setState({ isEddRequestable: data });
   }
 }
 

@@ -36,7 +36,7 @@ window.onload = () => {
     const appHistory = useScroll(useRouterHistory(createBrowserHistory))();
 
     ReactDOM.render(
-      <Router history={appHistory}>{routes}</Router>,
+      <Router history={appHistory}>{routes.client}</Router>,
       container
     );
   });

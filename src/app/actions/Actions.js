@@ -45,6 +45,18 @@ class Actions {
   updateField(data) {
     return data;
   }
+
+  updateForm(data) {
+    return data;
+  }
+
+  updateDeliveryLocations(data) {
+    return data;
+  }
+
+  updateIsEddRequestable(data) {
+    return data;
+  }
 }
 
 export default alt.createActions(Actions);

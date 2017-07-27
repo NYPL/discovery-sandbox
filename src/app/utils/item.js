@@ -3,8 +3,13 @@ import LocationCodes from '../../../locationCodes.js';
 import {
   findWhere as _findWhere,
   isEmpty as _isEmpty,
-  extend as _extend,
 } from 'underscore';
+
+const itemSourceMappings = {
+  SierraNypl: 'sierra-nypl',
+  RecapCul: 'recap-cul',
+  RecapPul: 'recap-pul',
+};
 
 function LibraryItem() {
   /**
@@ -42,6 +47,34 @@ function LibraryItem() {
   ];
 
   /**
+   * getIdentifiers(identifiersArray, neededTagsArray)
+   * Gets into the array of the identifiers of an item. And then targets the identifiers we need
+   * by the prefixes in neededTagsArray. At last, extracts the identifiers and returns them.
+   *
+   * @param {array} identifiersArray
+   * @param {tagsArray} neededTagsArray
+   * @return {object}
+   */
+  this.getIdentifiers = (identifiersArray, neededTagsArray) => {
+    const identifierObj = {};
+
+    identifiersArray.map(
+      (i) => {
+        if (typeof i === 'string') {
+          neededTagsArray.map(
+            (t) => {
+              if (i.indexOf(t.name) !== -1) {
+                identifierObj[t.name] = i.replace(t.value, '');
+              }
+            });
+          }
+        }
+    );
+
+    return identifierObj;
+  };
+
+  /**
    * mapItem(item, title)
    * Massage data and update an item's properties.
    * @param {object} item The item to update the data for.
@@ -71,15 +104,21 @@ function LibraryItem() {
     let url = null;
     let actionLabel = null;
     let actionLabelHelper = null;
-    // Currently using requestHold to display the Request button, only for ReCAP items.
-    let requestHold = false;
     // non-NYPL ReCAP
-    const recap = accessMessage.prefLabel === 'ADV REQUEST' && !item.holdingLocation;
+    const recap =
+      (accessMessage.prefLabel === 'ADV REQUEST' || accessMessage.prefLabel === 'USE IN LIBRARY')
+      && !item.holdingLocation;
     // nypl-owned ReCAP
     const nyplRecap = !!(holdingLocation && !_isEmpty(holdingLocation) &&
       holdingLocation['@id'].substring(4, 6) === 'rc');
-    let deliveryLocations = item.deliveryLocation && item.deliveryLocation.length ?
-      item.deliveryLocation : this.getDeliveryLocations(item, true);
+    // The identifier we need for an item now
+    const identifiersArray = [{ name: 'barcode', value: 'urn:barcode:' }];
+    const bibIdentifiers = this.getIdentifiers(item.identifier, identifiersArray);
+    const barcode = bibIdentifiers.barcode || '';
+    const itemSource = item.idNyplSourceId ? item.idNyplSourceId['@type'] : undefined;
+    const mappedItemSource = itemSourceMappings[itemSource];
+    const isOffsite = this.isOffsite(holdingLocation.prefLabel.toLowerCase());
+    const temporaryRequestable = (requestable && (isOffsite || recap));
 
     if (isElectronicResource && item.electronicLocator[0].url) {
       status = { '@id': '', prefLabel: 'Available' };
@@ -90,17 +129,14 @@ function LibraryItem() {
       // The logic for this should be updated, but right now non-NYPL ReCAP items
       // don't have a holdingLocation (but a default gets added here);
     } else if (recap) {
-      requestHold = true;
       actionLabel = accessMessage.prefLabel;
       actionLabelHelper = `request hold on ${title}`;
     } else if (nyplRecap) {
       // Temporary for NYPL ReCAP items.
       // Making sure that if there is a holding location, that the location code starts with
       // rc. Ids are in the format of `loc:x` where x is the location code.
-      requestHold = true;
       actionLabel = accessMessage.prefLabel;
       actionLabelHelper = `request hold on ${title}`;
-      deliveryLocations = this.getDeliveryLocations(item, false);
     } else if (availability === 'available') {
       // For all items that we want to send to the Hold Request Form.
       url = this.getLocationHoldUrl(holdingLocation);
@@ -120,10 +156,10 @@ function LibraryItem() {
       url,
       actionLabel,
       actionLabelHelper,
-      requestHold,
-      requestable,
+      requestable: temporaryRequestable,
       suppressed,
-      deliveryLocations,
+      barcode,
+      itemSource: mappedItemSource,
     };
   };
 
@@ -215,93 +251,23 @@ function LibraryItem() {
   };
 
   /**
-   * getDeliveryLocations(item, single, bib, itemId)
-   * Get delivery locations for an item.
-   * @param {object} item
-   * @param {boolean} single Whether or not to just display one delivery location - temporary.
-   * @param {string} bib
-   * @param {string} itemId
-   * @return {object}
-   */
-  this.getDeliveryLocations = (item, single = true, bib = '', itemId = '') => {
-    const thisItem = !_isEmpty(item) ? item : this.getItem(bib, itemId);
-    // default to SASB - RMRR
-    const defaultDeliveryLocations = this.defaultDeliveryLocations();
-
-    // get location and location code
-    let deliveryLocations = defaultDeliveryLocations;
-    let locations = [];
-
-    if (thisItem) {
-      if (thisItem.deliveryLocations && thisItem.deliveryLocations.length &&
-        !(thisItem.id.substring(4) === 'i16429984')) {
-        deliveryLocations = thisItem.deliveryLocations;
-      }
-
-      deliveryLocations.forEach((location) => {
-        const locationCode = (location['@id'] && typeof location['@id'] === 'string') ?
-          location['@id'].substring(4) : '';
-        // location is set to defaultDeliveryLocations so it the following will always be false:
-        const isOffsite = this.isOffsite(location.prefLabel);
-        // retrieve delivery location
-        let deliveryLocationCode = location['@id'].substring(4);
-        let returnLocation = {};
-
-        // retrieve location data
-        if (locationCode && locationCode in LocationCodes) {
-          returnLocation = Locations[LocationCodes[locationCode].location];
-          deliveryLocationCode = LocationCodes[locationCode].delivery_location || '';
-        } else {
-          returnLocation =
-            Locations[LocationCodes[defaultDeliveryLocations[0]['@id'].substring(4)].location];
-        }
-
-        if (isOffsite && deliveryLocationCode === defaultDeliveryLocations[0]['@id'].substring(4)) {
-          returnLocation.prefLabel = defaultDeliveryLocations[0].prefLabel;
-        }
-
-        returnLocation = _extend({
-          customerCode: location.customerCode,
-          prefLabel: location.prefLabel,
-          offsite: isOffsite,
-          code: deliveryLocationCode,
-        }, returnLocation);
-
-        locations.push(returnLocation);
-      });
-    }
-
-    // Temporary for now
-    if (single) {
-      // just return the first element in the array.
-      locations = [locations[0]];
-    }
-
-    return locations;
-  };
-
-  /**
    * getHoldingLocation(item)
-   * Returns updated location data.
+   * Returns updated location data from the holdingLocation property in the API for each item.
    * @param {object} item
    * @return {object}
    */
   this.getHoldingLocation = (item) => {
-    const defaultLocation = this.getDefaultLocation();
     let location = this.getDefaultLocation();
 
     // this is a physical resource
     if (item.holdingLocation && item.holdingLocation.length) {
       location = item.holdingLocation[0];
+    }
     // this is an electronic resource
-    } else if (item.electronicLocator && item.electronicLocator.length) {
-      location = item.electronicLocator[0];
-      location['@id'] = '';
-    }
-
-    if (this.isOffsite(location.prefLabel)) {
-      location.prefLabel = `${defaultLocation.prefLabel} (requested from offsite storage)`;
-    }
+    // else if (item.electronicLocator && item.electronicLocator.length) {
+    //   location = item.electronicLocator[0];
+    //   location['@id'] = '';
+    // }
 
     return location;
   };
@@ -320,7 +286,16 @@ function LibraryItem() {
    * @param {string} prefLabel
    * @return {boolean}
    */
-  this.isOffsite = (prefLabel = '') => prefLabel.substring(0, 7).toLowerCase() === 'offsite';
+  this.isOffsite = (prefLabel = '') => prefLabel.indexOf('offsite') !== -1;
+
+  /**
+   * isNYPLReCAP(bibId)
+   * Return whether an bib is an NYPL ReCAP bib. Checks to see that it is NOT a Princeton
+   * or a Columbia ReCAP bib based on the bib's ID.
+   * @param {string} bibId
+   * @return {boolean}
+   */
+  this.isNYPLReCAP = (bibId = '') => (bibId.indexOf('pb') === -1) && (bibId.indexOf('cb') === -1);
 }
 
 export default new LibraryItem;

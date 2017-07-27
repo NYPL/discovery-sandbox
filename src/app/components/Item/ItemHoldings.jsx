@@ -7,6 +7,7 @@ import { isArray as _isArray } from 'underscore';
 import Actions from '../../actions/Actions';
 import Pagination from '../Pagination/Pagination';
 import ItemTable from './ItemTable';
+import appConfig from '../../../../appConfig.js';
 
 class ItemHoldings extends React.Component {
   constructor(props) {
@@ -16,7 +17,7 @@ class ItemHoldings extends React.Component {
       chunkedItems: [],
       showAll: false,
       js: false,
-      page: 1,
+      page: parseInt(this.props.itemPage.substring(10), 10) || 1,
     };
 
     this.getRecord = this.getRecord.bind(this);
@@ -29,21 +30,33 @@ class ItemHoldings extends React.Component {
     // Mostly things we want to do on the client-side only:
     const items = this.props.items;
     let chunkedItems = [];
+    let noItemPage = false;
 
     if (items && items.length >= 20) {
       chunkedItems = this.chunk(items, 20);
     }
 
+    // If the `itemPage` URL query is more than the number of pages, then
+    // go back to page 1 in the state and remove the query from the URL.
+    if (this.state.page > chunkedItems.length) {
+      noItemPage = true;
+    }
+
     this.setState({
       js: true,
       chunkedItems,
+      page: noItemPage ? 1 : this.state.page,
     });
+
+    if (noItemPage) {
+      this.context.router.push(`${appConfig.baseUrl}/bib/${this.props.bibId}`);
+    }
   }
 
   /*
    * getRecord(e, bibId, itemId)
-   * @description Get updated information for a bib, not exactly necessary but useful,
-   * and route to the correct page.
+   * @description Get updated information for an item along with its delivery locations,
+   * and the route to the correct page.
    * @param {object} e Event object.
    * @param {string} bibId The bib's id.
    * @param {string} itemId The item's id.
@@ -53,10 +66,13 @@ class ItemHoldings extends React.Component {
 
     // Search for the bib? Just pass the data.
     axios
-      .get(`/api/bib?bibId=${bibId}`)
+      .get(`${appConfig.baseUrl}/api/hold/request/${bibId}-${itemId}`)
       .then(response => {
-        Actions.updateBib(response.data);
-        this.context.router.push(`/hold/request/${bibId}-${itemId}`);
+        Actions.updateBib(response.data.bib);
+        Actions.updateDeliveryLocations(response.data.deliveryLocations);
+        Actions.updateIsEddRequestable(response.data.isEddRequestable);
+
+        this.context.router.push(`${appConfig.baseUrl}/hold/request/${bibId}-${itemId}`);
       })
       .catch(error => {
         console.log(error);
@@ -78,11 +94,12 @@ class ItemHoldings extends React.Component {
 
     return (
       (itemsToDisplay && _isArray(itemsToDisplay) && itemsToDisplay.length) ?
-      <dl>
-        <dd className="multi-item-list">
-          <ItemTable items={itemsToDisplay} bibId={bibId} getRecord={this.getRecord} />
-        </dd>
-      </dl> : null
+        <ItemTable
+          items={itemsToDisplay}
+          bibId={bibId}
+          getRecord={this.getRecord}
+          id="bib-item-table"
+        /> : null
     );
   }
 
@@ -93,6 +110,7 @@ class ItemHoldings extends React.Component {
    */
   updatePage(page) {
     this.setState({ page });
+    this.context.router.push(`${appConfig.baseUrl}/bib/${this.props.bibId}?itemPage=${page}`);
   }
 
   /*
@@ -128,6 +146,8 @@ class ItemHoldings extends React.Component {
           perPage={20}
           page={this.state.page}
           updatePage={this.updatePage}
+          to={{ pathname: `/bib/${this.props.bibId}?itemPage=` }}
+          ariaControls="bib-item-table"
         />
       );
 
@@ -136,34 +156,42 @@ class ItemHoldings extends React.Component {
 
     const itemTable = this.getTable(items, shortenItems, this.state.showAll);
 
+    if (!items || !items.length) {
+      return null;
+    }
+
     return (
-      <div id="item-holdings" className="item-holdings">
-        <h2>{this.props.title}</h2>
-        {itemTable}
-        {
-          !!(shortenItems && items.length >= 20 && !this.state.showAll) &&
-            (<div className="view-all-items-container">
-              {
-                this.state.js ?
-                  (<a href="#" onClick={this.showAll}>View All Items</a>) :
-                  (<Link
-                    to={`/bib/${this.props.bibId}/all`}
-                    className="view-all-items"
-                  >
-                    View All Items
-                  </Link>)
-              }
-            </div>)
-        }
-        {pagination}
-      </div>
+      <span id="item-holdings" className="item-holdings">
+        <dt className="list-multi-control">
+          <h3>Availability</h3>
+        </dt>
+        <dd className="multi-item-list">
+          {itemTable}
+          {
+            !!(shortenItems && items.length >= 20 && !this.state.showAll) &&
+              (<div className="view-all-items-container">
+                {
+                  this.state.js ?
+                    (<a href="#" onClick={this.showAll}>View All Items</a>) :
+                    (<Link
+                      to={`${appConfig.baseUrl}/bib/${this.props.bibId}/all`}
+                      className="view-all-items"
+                    >
+                      View All Items
+                    </Link>)
+                }
+              </div>)
+          }
+          {pagination}
+        </dd>
+      </span>
     );
   }
 }
 
 ItemHoldings.propTypes = {
   items: PropTypes.array,
-  title: PropTypes.string,
+  itemPage: PropTypes.string,
   bibId: PropTypes.string,
   shortenItems: PropTypes.bool,
 };

@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 import { isEmpty as _isEmpty } from 'underscore';
 
+import appConfig from '../../../../appConfig.js';
+
 const createMarkup = (html) => ({ __html: html });
 
 const ItemTableRow = ({ item, bibId, getRecord }) => {
@@ -13,14 +15,15 @@ const ItemTableRow = ({ item, bibId, getRecord }) => {
   let itemLink;
   let itemDisplay = null;
 
-  if (item.requestHold) {
+  if (item.requestable) {
     itemLink = item.available ?
-      <Link
-        className="request-button"
-        to={`/hold/request/${bibId}-${item.id}`}
+      (<Link
+        to={`${appConfig.baseUrl}/hold/request/${bibId}-${item.id}`}
         onClick={(e) => getRecord(e, bibId, item.id)}
         tabIndex="0"
-      >Request</Link> :
+      >
+        Request
+      </Link>) :
       <span>{item.status.prefLabel}</span>;
   }
 

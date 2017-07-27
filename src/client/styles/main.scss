@@ -27,6 +27,11 @@ Import style rules from NYPL React module components
 @import "components/HoldPage.scss";
 @import "components/Home.scss";
 @import "components/Tabs.scss";
+@import "components/ElectronicDeliveryForm.scss";
+@import "components/_forms.v2.scss";
+@import "components/SearchPagination.scss";
+@import "components/ItemTable.scss";
+@import "components/Sorter.scss";
 
 @import "style-v2.scss";
 
@@ -87,6 +92,7 @@ button {
 // Overrides for other components
 .footer {
   a {
+    color: white;
     background-color: transparent;
   }
 }
@@ -109,6 +115,10 @@ button {
   opacity: 0;
   visibility: hidden;
   height: 500px;
+}
+
+.nypl-raised-error {
+  color: red;
 }
 
 // odd override for Header alert

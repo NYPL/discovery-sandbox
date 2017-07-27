@@ -7,6 +7,7 @@ import {
   trackDiscovery,
   ajaxCall,
 } from '../../utils/utils.js';
+import appConfig from '../../../../appConfig.js';
 
 /**
  * The main container for the top Search section.
@@ -85,7 +86,7 @@ class Search extends React.Component {
     Actions.updateSearchKeywords(keyword);
     Actions.updateSelectedFacets({});
 
-    ajaxCall(`/api?${apiQuery}`, (response) => {
+    ajaxCall(`${appConfig.baseUrl}/api?${apiQuery}`, (response) => {
       if (response.data.searchResults && response.data.facets) {
         Actions.updateSearchResults(response.data.searchResults);
         Actions.updateFacets(response.data.facets);
@@ -96,7 +97,7 @@ class Search extends React.Component {
       Actions.updateSortBy('relevance');
       Actions.updatePage('1');
 
-      this.context.router.push(`/search?${apiQuery}`);
+      this.context.router.push(`${appConfig.baseUrl}/search?${apiQuery}`);
       Actions.updateSpinner(false);
     });
   }
@@ -109,7 +110,7 @@ class Search extends React.Component {
         method="POST"
       >
         <fieldset
-          className={`nypl-omnisearch nypl-spinner-field ${this.state.spinning ? 'spinning' : ''}`}
+          className={`nypl-omnisearch style-2 nypl-spinner-field ${this.state.spinning ? 'spinning' : ''}`}
         >
           <span className="nypl-omni-fields">
             <label htmlFor="search-by-field">Search in</label>
@@ -122,9 +123,6 @@ class Search extends React.Component {
               <option value="all">All fields</option>
               <option value="title">Title</option>
               <option value="contributor">Author/Contributor</option>
-              <option value="subject">Subject</option>
-              <option value="series">Series</option>
-              <option value="call_number">Call number</option>
             </select>
           </span>
           <input

@@ -2,9 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import DocumentTitle from 'react-document-title';
 
-import Hits from '../Hits/Hits.jsx';
+import ResultsCount from '../ResultsCount/ResultsCount.jsx';
 import Breadcrumbs from '../Breadcrumbs/Breadcrumbs.jsx';
-import FacetSidebar from '../FacetSidebar/FacetSidebar.jsx';
 import ResultList from '../Results/ResultsList';
 import Search from '../Search/Search.jsx';
 import Sorter from '../Sorter/Sorter';
@@ -15,46 +14,39 @@ import {
   ajaxCall,
 } from '../../utils/utils.js';
 import Actions from '../../actions/Actions.js';
+import appConfig from '../../../../appConfig.js';
 
 const SearchResultsPage = (props, context) => {
   const {
     searchResults,
     searchKeywords,
-    facets,
-    selectedFacets,
     page,
-    location,
     sortBy,
     field,
     spinning,
-    error,
   } = props;
 
-  const facetList = facets && facets.itemListElement ? facets.itemListElement : [];
-  const totalHits = searchResults ? searchResults.totalResults : undefined;
-  const totalPages = totalHits ? Math.floor(totalHits / 50) + 1 : 0;
+  const totalResults = searchResults ? searchResults.totalResults : undefined;
+  const totalPages = totalResults ? Math.floor(totalResults / 50) + 1 : 0;
   const results = searchResults ? searchResults.itemListElement : [];
   const breadcrumbs = (
     <Breadcrumbs query={searchKeywords} type="search" />
   );
   const createAPIQuery = basicQuery(props);
-  const h1searchKeywordsLabel = searchKeywords ? `for ${searchKeywords}` : '';
-  const h1pageLabel = totalPages ? `page ${page} of ${totalPages}` : '';
-  const h2Label = `Search results ${h1searchKeywordsLabel} ${h1pageLabel}`;
-
-  const searchStr = location.search;
-
+  const searchKeywordsLabel = searchKeywords ? `for ${searchKeywords}` : '';
+  const pageLabel = totalPages ? `page ${page} of ${totalPages}` : '';
+  const headerLabel = `Search results ${searchKeywordsLabel} ${pageLabel}`;
   const updatePage = (nextPage) => {
     Actions.updateSpinner(true);
     // Temporary. Need to check cross-browser and if it's needed at all.
     window.scrollTo(0, 0);
     const apiQuery = createAPIQuery({ page: nextPage });
 
-    ajaxCall(`/api?${apiQuery}`, response => {
+    ajaxCall(`${appConfig.baseUrl}/api?${apiQuery}`, response => {
       Actions.updateSearchResults(response.data.searchResults);
       Actions.updatePage(nextPage.toString());
       Actions.updateSpinner(false);
-      context.router.push(`/search?${apiQuery}`);
+      context.router.push(`${appConfig.baseUrl}/search?${apiQuery}`);
     });
   };
 
@@ -66,33 +58,34 @@ const SearchResultsPage = (props, context) => {
       <main className="main-page">
         <div className="nypl-page-header">
           <div className="nypl-full-width-wrapper">
-            {breadcrumbs}
-            <h2 aria-label={h2Label}>
-              Search results
-            </h2>
-            <Search
-              searchKeywords={searchKeywords}
-              field={field}
-              spinning={spinning}
-              createAPIQuery={createAPIQuery}
-            />
+            <div className="nypl-row">
+              <div className="nypl-column-three-quarters">
+                {breadcrumbs}
+                <h2 aria-label={headerLabel}>Research Discovery (beta)</h2>
+                <Search
+                  searchKeywords={searchKeywords}
+                  field={field}
+                  spinning={spinning}
+                  createAPIQuery={createAPIQuery}
+                />
+
+                {
+                  !!(totalResults && totalResults !== 0) && (
+                    <Sorter
+                      sortBy={sortBy}
+                      page={page}
+                      searchKeywords={searchKeywords}
+                      createAPIQuery={createAPIQuery}
+                    />
+                  )
+                }
+              </div>
+            </div>
           </div>
         </div>
+
         <div className="nypl-full-width-wrapper">
-
           <div className="nypl-row">
-
-            <FacetSidebar
-              facets={facetList}
-              spinning={spinning}
-              selectedFacets={selectedFacets}
-              searchKeywords={searchKeywords}
-              className="nypl-column-one-quarter"
-              totalHits={totalHits}
-              createAPIQuery={createAPIQuery}
-              field={field}
-            />
-
             <div
               className="nypl-column-three-quarters"
               role="region"
@@ -102,23 +95,9 @@ const SearchResultsPage = (props, context) => {
               aria-relevant="additions removals"
               aria-describedby="results-description"
             >
-              <Hits
-                hits={totalHits}
-                spinning={spinning}
-                searchKeywords={searchKeywords}
-                selectedFacets={selectedFacets}
-                createAPIQuery={createAPIQuery}
-                error={error}
-              />
-
               {
-                !!(totalHits && totalHits !== 0) && (
-                  <Sorter
-                    sortBy={sortBy}
-                    page={page}
-                    createAPIQuery={createAPIQuery}
-                  />
-                )
+                !!(totalResults && totalResults !== 0) &&
+                  (<ResultsCount spinning={spinning} count={totalResults} />)
               }
 
               {
@@ -127,9 +106,10 @@ const SearchResultsPage = (props, context) => {
               }
 
               {
-                !!(totalHits && totalHits !== 0) &&
+                !!(totalResults && totalResults !== 0) &&
                   (<Pagination
-                    total={totalHits}
+                    ariaControls="nypl-results-list"
+                    total={totalResults}
                     perPage={50}
                     page={parseInt(page, 10)}
                     createAPIQuery={createAPIQuery}
@@ -147,8 +127,6 @@ const SearchResultsPage = (props, context) => {
 SearchResultsPage.propTypes = {
   searchResults: PropTypes.object,
   searchKeywords: PropTypes.string,
-  facets: PropTypes.object,
-  selectedFacets: PropTypes.object,
   page: PropTypes.string,
   location: PropTypes.object,
   sortBy: PropTypes.string,

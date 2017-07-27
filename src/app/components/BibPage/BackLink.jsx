@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 
+import appConfig from '../../../../appConfig.js';
+
 const BibPage = ({ searchURL, searchKeywords = '' }) => {
   if (!searchURL) {
     return null;
@@ -11,7 +13,7 @@ const BibPage = ({ searchURL, searchKeywords = '' }) => {
     <Link
       title={`Go back to search results ${searchKeywords ? `for ${searchKeywords}` : ''}`}
       className="nypl-back-link"
-      to={`/search?${searchURL}`}
+      to={`${appConfig.baseUrl}/search?${searchURL}`}
     >
       Back to Results
     </Link>

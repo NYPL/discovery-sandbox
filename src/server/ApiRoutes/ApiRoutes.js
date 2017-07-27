@@ -3,6 +3,7 @@ import express from 'express';
 import Bib from './Bib.js';
 import Hold from './Hold.js';
 import Search from './Search.js';
+import appConfig from '../../../appConfig.js';
 
 const router = express.Router();
 
@@ -22,42 +23,65 @@ function MainApp(req, res, next) {
 }
 
 router
-  .route('/search')
-  .get(Search.searchServer)
-  .post(Search.searchServerPost);
-
-router
-  .route('/advanced')
+  .route(`${appConfig.baseUrl}/search`)
   .get(Search.searchServer);
 
 router
-  .route('/hold/request/:bibId-:itemId')
-  .get(Hold.newHoldRequestServer)
+  .route('/search')
+  .post(Search.searchServerPost);
+
+router
+  .route(`${appConfig.baseUrl}/advanced`)
+  .get(Search.searchServer);
+
+router
+  .route(`${appConfig.baseUrl}/hold/request/:bibId-:itemId`)
+  .get(Hold.newHoldRequestServer);
+
+router
+  .route(`${appConfig.baseUrl}/hold/request/:bibId-:itemId-:itemSource`)
   .post(Hold.createHoldRequestServer);
 
 router
-  .route('/hold/confirmation/:bibId-:itemId')
+  .route(`${appConfig.baseUrl}/hold/request/:bibId-:itemId/edd`)
+  .get(Hold.newHoldRequestServerEdd);
+
+router
+  .route(`${appConfig.baseUrl}/hold/confirmation/:bibId-:itemId`)
   .get(Hold.confirmRequestServer);
 
 router
-  .route('/bib/:bibId')
+  .route(`${appConfig.baseUrl}/bib/:bibId`)
   .get(Bib.bibSearchServer);
 
 router
-  .route('/bib/:bibId/all')
+  .route(`${appConfig.baseUrl}/bib/:bibId/all`)
   .get(Bib.bibSearchServer);
 
 router
-  .route('/api')
+  .route(`${appConfig.baseUrl}/edd`)
+  .post(Hold.eddServer);
+
+router
+  .route(`${appConfig.baseUrl}/api`)
   .get(Search.searchAjax);
 
 router
-  .route('/api/bib')
+  .route(`${appConfig.baseUrl}/api/bib`)
   .get(Bib.bibSearchAjax);
 
 router
-  .route('/api/newHold')
-  .get(Hold.createHoldRequestAjax);
+  .route(`${appConfig.baseUrl}/api/hold/request/:bibId-:itemId`)
+  .get(Hold.newHoldRequestAjax);
+
+router
+  .route(`${appConfig.baseUrl}/api/newHold`)
+  .get(Hold.createHoldRequestAjax)
+  .post(Hold.createHoldRequestEdd);
+
+router
+  .route(appConfig.baseUrl)
+  .get(MainApp);
 
 router
   .route('/')

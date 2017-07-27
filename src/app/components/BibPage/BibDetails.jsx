@@ -6,175 +6,259 @@ import {
   isEmpty as _isEmpty,
   findWhere as _findWhere,
   findIndex as _findIndex,
+  contains as _contains,
+  every as _every,
 } from 'underscore';
 
 import { ajaxCall } from '../../utils/utils';
 import Actions from '../../actions/Actions';
-import DefinitionList from './DefinitionList';
+import Definition from './Definition';
+import appConfig from '../../../../appConfig.js';
+
+const getIdentifiers = (bibValues, fieldIdentifier) => {
+  let val = '';
+
+  if (bibValues.length) {
+    bibValues.forEach(value => {
+      if (value.indexOf(`${fieldIdentifier}:`) !== -1) {
+        val = value.substring(fieldIdentifier.length + 1);
+      }
+    });
+
+    if (val) {
+      return <span>{val}</span>;
+    }
+  }
+
+  return null;
+};
+
+const getDefinitionObject = (bibValues, fieldValue, fieldLinkable) => {
+  if (bibValues.length === 1) {
+    const bibValue = bibValues[0];
+    const url = `filters[${fieldValue}]=${bibValue['@id']}`;
+
+    if (fieldLinkable) {
+      return (
+        <Link onClick={e => this.newSearch(e, url)} to={`${appConfig.baseUrl}/search?${url}`}>
+          {bibValue.prefLabel}
+        </Link>
+      );
+    }
+
+    return <span>{bibValue.prefLabel}</span>;
+  }
+
+  return (
+    <ul>
+      {
+        bibValues.map((value, i) => {
+          const url = `filters[${fieldValue}]=${value['@id']}`;
+          return (
+            <li key={i}>
+              {
+                fieldLinkable ?
+                  <Link
+                    onClick={e => this.newSearch(e, url)}
+                    to={`${appConfig.baseUrl}/search?${url}`}
+                  >
+                    {value.prefLabel}
+                  </Link>
+                  : <span>{value.prefLabel}</span>
+              }
+            </li>
+          );
+        })
+      }
+    </ul>
+  );
+};
+
+/*
+ * getOwner(bib)
+ * This is currently only for non-NYPL partner items. If it's NYPL, it should return undefined.
+ * Requirement: Look at all the owners of all the items and if they were all the same and
+ * not NYPL, show that as the owning institution and otherwise show nothing.
+ * @param {object} bibId
+ * @return {string}
+ */
+const getOwner = (bib) => {
+  const items = bib.items;
+  const ownerArr = [];
+  let owner;
+
+  if (!items || !items.length) {
+    return null;
+  }
+
+  items.forEach(item => {
+    const ownerObj = item.owner && item.owner.length ?
+      item.owner[0].prefLabel : undefined;
+
+    ownerArr.push(ownerObj);
+  });
+
+  if (_every(ownerArr, (o) => (o === ownerArr[0]))) {
+    if ((ownerArr[0] === 'Princeton University Library') ||
+      (ownerArr[0] === 'Columbia University Libraries')) {
+      owner = ownerArr[0];
+    }
+  }
+
+  return owner;
+};
+
+const getDefinition = (bibValues, fieldValue, fieldLinkable, fieldIdentifier) => {
+  if (fieldValue === 'identifier') {
+    return getIdentifiers(bibValues, fieldIdentifier);
+  }
+
+  if (bibValues.length === 1) {
+    const bibValue = bibValues[0];
+    const url = `filters[${fieldValue}]=${bibValue}`;
+
+    if (fieldLinkable) {
+      return (
+        <Link onClick={e => this.newSearch(e, url)} to={`${appConfig.baseUrl}/search?${url}`}>
+          {bibValue}
+        </Link>
+      );
+    }
+
+    return <span>{bibValue}</span>;
+  }
+
+  return (
+    <ul>
+      {
+        bibValues.map((value, i) => {
+          const url = `filters[${fieldValue}]=${value}`;
+          return (
+            <li key={i}>
+              {
+                fieldLinkable ?
+                  <Link
+                    onClick={e => this.newSearch(e, url)}
+                    to={`${appConfig.baseUrl}/search?${url}`}
+                  >
+                    {value}
+                  </Link>
+                  : <span>{value}</span>
+              }
+            </li>
+          );
+        })
+      }
+    </ul>
+  );
+};
 
 class BibDetails extends React.Component {
+  /**
+   * getPublisher(bib)
+   * Get an object with publisher detail information.
+   * @param {object} bib
+   * @return {object}
+   */
+  getPublisher(bib) {
+    const fields = ['placeOfPublication', 'publisher', 'createdString'];
+    let publisherInfo = '';
+
+    fields.forEach(field => {
+      const fieldValue = bib[field];
+      if (fieldValue) {
+        publisherInfo += `${fieldValue} `;
+      }
+    });
+
+    if (!publisherInfo) {
+      return null;
+    }
+
+    return {
+      term: 'Publisher',
+      definition: <span>{publisherInfo}</span>,
+    };
+  }
+
+  /**
+   * getDisplayFields(bib)
+   * Get an array of definition term/values.
+   * @param {object} bib
+   * @return {array}
+   */
   getDisplayFields(bib) {
     const fields = [
-      { label: 'Title', value: 'title' },
-      { label: 'Title (alternative)', value: 'titleAlt' },
-      { label: 'Title (display)', value: 'titleDisplay' },
-      { label: 'Material Type', value: 'materialType' },
-      { label: 'Media Type', value: 'mediaType' },
-      { label: 'Language', value: 'language' },
-      { label: 'Created String', value: 'createdString' },
-      { label: 'Creator', value: 'creatorLiteral' },
-      { label: 'Date String', value: 'dateString' },
-      { label: 'Date Created', value: 'createdYear' },
-      { label: 'Date Published', value: 'startYear' },
-      { label: 'Contributors', value: 'contributor' },
-      { label: 'Publisher', value: 'publisher' },
-      { label: 'Place of publication', value: 'placeOfPublication' },
-      { label: 'Subjects', value: 'subjectLiteral' },
-      { label: 'Dimensions', value: 'dimensions' },
-      { label: 'Extent', value: 'extent' },
-      { label: 'Owner', value: 'owner' },
-      { label: 'Location', value: 'location' },
-      { label: 'Notes', value: 'note' },
-      { label: 'LCC', value: 'idLcc' },
-      { label: 'Number available', value: 'numAvailable' },
-      { label: 'Number of items', value: 'numItems' },
+      { label: 'Electronic Resource', value: '' },
+      { label: 'Description', value: 'extent' },
+      { label: 'Subject', value: 'subjectLiteral', linkable: true },
+      { label: 'Genre/Form', value: 'materialType' },
+      { label: 'Notes', value: '' },
+      { label: 'Contents', value: 'note' },
+      { label: 'Bibliography', value: '' },
+      { label: 'ISBN', value: 'identifier', identifier: 'urn:isbn' },
+      { label: 'ISSN', value: 'identifier', identifier: 'urn:issn' },
+      { label: 'LCC', value: 'identifier', identifier: 'urn:lcc' },
+      { label: 'GPO', value: '' },
+      { label: 'Other Titles', value: '' },
+      { label: 'Owning Institutions', value: '' },
     ];
+    const fieldsToRender = [];
+    const publisherInfo = this.getPublisher(bib);
 
-    return fields.map((field) => {
+    // Publisher information should be the first one in the list.
+    if (publisherInfo) {
+      fieldsToRender.push(publisherInfo);
+    }
+
+    fields.forEach((field) => {
       const fieldLabel = field.label;
       const fieldValue = field.value;
-      const fieldUrl = field.url;
+      const fieldLinkable = field.linkable;
+      const fieldIdentifier = field.identifier;
       const bibValues = bib[fieldValue];
 
       // skip absent fields
-      if (!bibValues || !bibValues.length || !_isArray(bibValues)) {
-        return false;
-      }
-      // Taking just the first value for each field
-      const firstFieldValue = bibValues[0];
+      if (bibValues && bibValues.length && _isArray(bibValues)) {
+        // Taking just the first value for each field to check the type.
+        const firstFieldValue = bibValues[0];
 
-      // Note: Not used at the moment since we are not longer linking to external
-      // sources. The data structure on top would have a `url` property to signify that
-      // it's a link.
-      // TODO: If this is used later in the future, check the value of `fieldUrl` and
-      // make sure that it's the correct one, and dynamic.
-      // external links
-      if (fieldUrl) {
-        return {
-          term: fieldLabel,
-          definition: (
-            <ul>
-              {
-                bibValues.map((value, i) => {
-                  const linkLabel = fieldValue === 'idOclc' ? 'View in Worldcat' : value;
-                  return (
-                    <li key={i}>
-                      <a href={fieldUrl} title={linkLabel} target="_blank">{linkLabel}</a>
-                    </li>
-                  );
-                })
-              }
-            </ul>
-          ),
-        };
-
-      // List of links
-      // Could use a better check but okay for now. This is the second most used statement,
-      // mostly to link to different values in the UI.
-      } else if (firstFieldValue['@id']) {
-        return {
-          term: fieldLabel,
-          definition: (
-            <ul>
-              {
-                bibValues.map((valueObj, i) => {
-                  const url = `filters[${fieldValue}]=${valueObj['@id']}`;
-                  return (
-                    <li key={i}>
-                      <Link
-                        onClick={e => this.newSearch(e, url)}
-                        title={`Make a new search for ${fieldLabel}: ${valueObj.prefLabel}`}
-                        to={`/search?${url}`}
-                      >
-                        {valueObj.prefLabel}
-                      </Link>
-                    </li>
-                  );
-                })
-              }
-            </ul>
-          ),
-        };
-        // NOTE: Right now this is not working because we removed the `linkable` property.
-        // We added this because not all fields should be linkable. For example, maybe we
-        // want `materialType` to be linkable in the UI but not `issuance`.
-      } else if (field.linkable) {
-        // When we want all the links to be in sentence form separated by a comma:
-        // e.g. Benjamin Franklin, Thomas Jefferson, George Washington
-        if (fieldValue === 'contributorLiteral') {
-          return {
+        // Each value is an object with @id and prefLabel properties.
+        if (firstFieldValue['@id']) {
+          fieldsToRender.push({
             term: fieldLabel,
-            definition: bibValues.map((value, i) => {
-              const comma = bibValues.length > 1 ? ', ' : ' ';
-              const url = `filters[${fieldValue}]=${value}`;
-              return (
-                <span key={i}>
-                  <Link
-                    onClick={e => this.newSearch(e, url)}
-                    title={`Make a new search for ${fieldLabel}: "${value}"`}
-                    to={`/search?${url}`}
-                  >
-                    {value}
-                  </Link>{comma}
-                </span>
-              );
-            }),
-          };
+            definition: getDefinitionObject(bibValues, fieldValue, fieldLinkable),
+          });
+        } else {
+          const definition = getDefinition(bibValues, fieldValue, fieldLinkable, fieldIdentifier);
+          if (definition) {
+            fieldsToRender.push({
+              term: fieldLabel,
+              definition,
+            });
+          }
         }
-
-        // NOTE: because of the note above, this is never reached.
-        return {
-          term: fieldLabel,
-          definition: (
-            <ul>
-              {
-                bibValues.map((value, i) => {
-                  const url = `filters[${fieldValue}]=${value}`;
-                  return (
-                    <li key={i}>
-                      <Link
-                        onClick={e => this.newSearch(e, url)}
-                        title={`Make a new search for ${fieldLabel}: "${value}"`}
-                        to={`/search?${url}`}
-                      >
-                        {value}
-                      </Link>
-                    </li>
-                  );
-                })
-              }
-            </ul>
-          ),
-        };
       }
 
-      // Simple data display. This gets rendered the most.
-      return {
-        term: fieldLabel,
-        definition: (
-          <ul>
-            {bibValues.map((value, i) => <li key={i}>{value}</li>)}
-          </ul>
-        ),
-      };
-    });
+      if (fieldLabel === 'Owning Institutions') {
+        const owner = getOwner(this.props.bib);
+        if (owner) {
+          fieldsToRender.push({
+            term: fieldLabel,
+            definition: owner,
+          });
+        }
+      }
+    }); // End of the forEach loop
+
+    return fieldsToRender;
   }
 
   newSearch(e, query) {
     e.preventDefault();
 
     Actions.updateSpinner(true);
-    ajaxCall(`/api?${query}`, (response) => {
+    ajaxCall(`${appConfig.baseUrl}/api?${query}`, (response) => {
       const closingBracketIndex = query.indexOf(']');
       const equalIndex = query.indexOf('=') + 1;
 
@@ -210,7 +294,7 @@ class BibDetails extends React.Component {
       Actions.updateFacets(response.data.facets);
       Actions.updateSearchKeywords('');
       Actions.updatePage('1');
-      this.context.router.push(`/search?${query}`);
+      this.context.router.push(`${appConfig.baseUrl}/search?${query}`);
       Actions.updateSpinner(false);
     });
   }
@@ -222,12 +306,7 @@ class BibDetails extends React.Component {
 
     const bibDetails = this.getDisplayFields(this.props.bib);
 
-    return (
-      <DefinitionList
-        data={bibDetails}
-        title="Bib details"
-      />
-    );
+    return (<Definition definitions={bibDetails} />);
   }
 }
 

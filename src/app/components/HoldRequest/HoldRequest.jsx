@@ -2,24 +2,28 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 import axios from 'axios';
-
-import Breadcrumbs from '../Breadcrumbs/Breadcrumbs.jsx';
-import PatronStore from '../../stores/PatronStore.js';
-import config from '../../../../appConfig.js';
-import LibraryItem from '../../utils/item.js';
 import {
   isArray as _isArray,
   isEmpty as _isEmpty,
+  extend as _extend,
 } from 'underscore';
+
+import Breadcrumbs from '../Breadcrumbs/Breadcrumbs.jsx';
+import PatronStore from '../../stores/PatronStore.js';
+import appConfig from '../../../../appConfig.js';
+import LibraryItem from '../../utils/item.js';
 
 class HoldRequest extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = { patron: PatronStore.getState() };
+    this.state = _extend({
+      delivery: false,
+    }, { patron: PatronStore.getState() });
 
     // change all the components :(
     this.onChange = this.onChange.bind(this);
+    this.onRadioSelect = this.onRadioSelect.bind(this);
     this.submitRequest = this.submitRequest.bind(this);
   }
 
@@ -31,28 +35,8 @@ class HoldRequest extends React.Component {
     this.setState({ patron: PatronStore.getState() });
   }
 
-  /**
-   * submitRequest()
-   * Client-side submit call.
-   */
-  submitRequest(e, bibId, itemId) {
-    e.preventDefault();
-
-    axios
-      .get(`/api/newHold?itemId=${itemId}`)
-      .then(response => {
-        if (response.data.error && response.data.error.status !== 200) {
-          this.context.router.push(`/hold/confirmation/${bibId}-${itemId}?errorMessage=` +
-            `${response.data.error.statusText}`);
-        } else {
-          this.context.router
-            .push(`/hold/confirmation/${bibId}-${itemId}?requestId=${response.data.id}`);
-        }
-      })
-      .catch(error => {
-        console.log(error);
-        this.context.router.push(`/hold/confirmation/${bibId}-${itemId}?errorMessage=${error}`);
-      });
+  onRadioSelect(e) {
+    this.setState({ delivery: e.target.value });
   }
 
   /**
@@ -68,48 +52,116 @@ class HoldRequest extends React.Component {
 
     const fullUrl = encodeURIComponent(window.location.href);
 
-    window.location.replace(`${config.loginUrl}?redirect_uri=${fullUrl}`);
+    window.location.replace(`${appConfig.loginUrl}?redirect_uri=${fullUrl}`);
 
     return false;
   }
 
   /**
-   * renderLoggedInInstruction(patronName)
-   * Renders the HTML elements and contents based on the patron data
-   *
-   * @param {String} patronName
-   * @return {HTML Element}
+   * submitRequest()
+   * Client-side submit call.
    */
-  renderLoggedInInstruction(patronName) {
-    return (patronName) ?
-      <p className="loggedInInstruction">You are currently logged in as <strong>{patronName}</strong>. If this is not you, please <a href="https://isso.nypl.org/auth/logout">Log out</a> and sign in using your library card.</p>
-      : <p className="loggedInInstruction">Something went wrong retrieving your personal information.</p>;
+  submitRequest(e, bibId, itemId, itemSource) {
+    e.preventDefault();
+
+    let path = `${appConfig.baseUrl}/hold/confirmation/${bibId}-${itemId}`;
+
+    if (this.state.delivery === 'edd') {
+      path = `${appConfig.baseUrl}/hold/request/${bibId}-${itemId}/edd`;
+
+      this.context.router.push(path);
+      return;
+    }
+
+    axios
+      .get(`${appConfig.baseUrl}/api/newHold?itemId=${itemId}&pickupLocation=` +
+        `${this.state.delivery}&itemSource=${itemSource}`)
+      .then(response => {
+        if (response.data.error && response.data.error.status !== 200) {
+          this.context.router.push(`${path}?errorMessage=${response.data.error.statusText}`);
+        } else {
+          this.context.router.push(
+            `${path}?pickupLocation=${response.data.pickupLocation}&requestId=${response.data.id}`
+          );
+        }
+      })
+      .catch(error => {
+        console.log(error);
+        this.context.router.push(`${path}?errorMessage=${error}`);
+      });
   }
 
-  renderDeliveryLocation(deliveryLocations = [], callNo) {
-    return deliveryLocations.map((location, i) => (
-      <div key={i} className="group selected">
+  /**
+   * renderEDD()
+   * Renders the radio input fields of EDD.
+   *
+   * @return {HTML Element}
+   */
+  renderEDD() {
+    return (
+      <label
+        className="electronic-delivery"
+        id="radiobutton-group1_electronic-delivery"
+        htmlFor="available-electronic-delivery"
+      >
         <input
+          aria-labelledby="radiobutton-group1 radiobutton-group1_electronic-delivery"
           type="radio"
           name="delivery-location"
-          id={`location${i}`}
-          value={location['full-name']}
+          id="available-electronic-delivery"
+          value="edd"
+          onChange={this.onRadioSelect}
         />
-        <label htmlFor={`location${i}`}>
-          <span className="col location">
-            <a href={`${location.uri}`}>{location['full-name']}</a>
-            <br />{location.address.address1}<br />
-            {location.prefLabel}
-            {location.offsite &&
-              <span>
-                <br /><small>(requested from offsite storage)</small><br />
-              </span>
-            }
-          </span>
-          {callNo}
+        Have up to 50 pages scanned and sent to you via electronic mail.
+      </label>
+    );
+  }
+
+  /**
+   * modelDeliveryLocationName(prefLabel, shortName)
+   * Renders the names of the radio input fields of delivery locations except EDD.
+   *
+   * @param {String} prefLabel
+   * @param {String} shortName
+   * @return {String}
+   */
+  modelDeliveryLocationName(prefLabel, shortName) {
+    if (prefLabel && typeof prefLabel === 'string' && shortName) {
+      return `${shortName} - ${prefLabel.split(' - ')[1]}`;
+    }
+
+    return '';
+  }
+
+  /**
+   * renderDeliveryLocation(deliveryLocations = [])
+   * Renders the radio input fields of delivery locations except EDD.
+   *
+   * @param {Array} deliveryLocations
+   * @return {HTML Element}
+   */
+  renderDeliveryLocation(deliveryLocations = []) {
+    return deliveryLocations.map((location, i) => {
+      const displayName = this.modelDeliveryLocationName(
+        location.prefLabel, location.shortName
+      );
+
+      return (
+        <label htmlFor={`location${i}`} id={`location${i}-label`} key={i}>
+          <input
+            aria-labelledby={`radiobutton-group1 location${i}-label`}
+            type="radio"
+            name="delivery-location"
+            id={`location${i}`}
+            value={location['@id'].replace('loc:', '')}
+            onChange={this.onRadioSelect}
+          />
+          <span className="nypl-screenreader-only">Send to:</span>
+          <span>{displayName}</span><br />
+          {location.address && <span>{location.address}</span>}
         </label>
-      </div>
-    ));
+      );
+    });
   }
 
   render() {
@@ -120,90 +172,84 @@ class HoldRequest extends React.Component {
       bib.title[0] : '';
     const bibId = (bib && bib['@id'] && typeof bib['@id'] === 'string') ?
       bib['@id'].substring(4) : '';
-    const patronName = (
-      this.state.patron.names && _isArray(this.state.patron.names) && this.state.patron.names.length
-      ) ? this.state.patron.names[0] : '';
     const itemId = (this.props.params && this.props.params.itemId) ? this.props.params.itemId : '';
-    const selectedItem = (bib && itemId) ? LibraryItem.getItem(bib, itemId) : null;
+    const selectedItem = (bib && itemId) ? LibraryItem.getItem(bib, itemId) : {};
     const callNo =
       (selectedItem && selectedItem.callNumber && selectedItem.callNumber.length) ?
       (
-        <span className="col">
-          <small>Call number:</small><br />{selectedItem.callNumber}
-        </span>
+        <div className="call-number">
+          <span>Call number:</span><br />{selectedItem.callNumber}
+        </div>
       ) : null;
-    const deliveryLocations = selectedItem.deliveryLocations;
-    let content = null;
+    const itemSource = selectedItem.itemSource;
+    let form = null;
 
     if (bib) {
-      content =
-        <div className="content-wrapper">
-          <div className="item-header">
-            <h1>Research item hold request</h1>
-          </div>
-
-          <div className="item-summary">
-            <div className="item">
-              <h2>You are about to request a hold on the following research item:</h2>
-              <Link href={`/bib/${bibId}`}>{title}</Link>
-            </div>
-          </div>
-
-          <form
-            className="place-hold-form form"
-            action={`/hold/request/${bibId}-${itemId}`}
-            method="POST"
-          >
-            <h2>Confirm account</h2>
-            {this.renderLoggedInInstruction(patronName)}
-            <h2>Confirm delivery location</h2>
-            <p>When this item is ready, you will use it in the following location:</p>
-            <fieldset className="select-location-fieldset">
-              <legend className="visuallyHidden">Select a pickup location</legend>
-              {this.renderDeliveryLocation(deliveryLocations, callNo)}
+      form = (
+        <form
+          className="place-hold-form form"
+          action={`/hold/request/${bibId}-${itemId}-${itemSource}`}
+          method="POST"
+          onSubmit={(e) => this.submitRequest(e, bibId, itemId, itemSource)}
+        >
+          <h4>Choose a delivery option or location</h4>
+          <div className="nypl-request-radiobutton-field">
+            <fieldset>
+              <legend className="visuallyHidden" id="radiobutton-group1">
+                Select a pickup location
+              </legend>
+              {(this.props.isEddRequestable) && this.renderEDD()}
+              {this.renderDeliveryLocation(this.props.deliveryLocations)}
             </fieldset>
 
             <input type="hidden" name="pickupLocation" value="test" />
-
-            <button
-              type="submit"
-              className="large"
-              onClick={(e) => this.submitRequest(e, bibId, itemId)}
-            >
-              Submit your item hold request
-            </button>
-          </form>
-        </div>;
-    } else {
-      content =
-        <div className="content-wrapper">
-          <div className="item-header">
-            <h1>Research item hold request</h1>
           </div>
-          <div className="item-summary">
-            <div className="item">
-              <h2>Something went wrong with your request</h2>
-              <Link href={`/bib/${bibId}`}>{title}</Link>
-            </div>
-          </div>
-          <h2>Confirm account</h2>
-          {this.renderLoggedInInstruction(patronName)}
-        </div>;
+          <button type="submit" className="nypl-request-button">
+            Submit request
+          </button>
+        </form>
+      );
     }
 
     return (
       <div id="mainContent">
-        <div className="page-header">
-          <div className="content-wrapper">
-            <Breadcrumbs
-              query={searchKeywords}
-              type="hold"
-              title={title}
-              url={bibId}
-            />
+        <div className="nypl-request-page-header">
+          <div className="nypl-full-width-wrapper">
+            <div className="row">
+              <div className="nypl-column-three-quarters">
+                <Breadcrumbs
+                  query={searchKeywords}
+                  type="hold"
+                  title={title}
+                  url={bibId}
+                />
+                <h2>Research Discovery (beta)</h2>
+              </div>
+            </div>
           </div>
         </div>
-        {content}
+
+        <div className="nypl-full-width-wrapper">
+          <div className="row">
+            <div className="nypl-column-three-quarters">
+              <div className="item-header">
+                <h3>Research item hold request</h3>
+              </div>
+
+              <div className="nypl-request-item-summary">
+                <div className="item">
+                  {!bib && <p>Something went wrong with your request</p>}
+                  <h4>
+                    <Link to={`${appConfig.baseUrl}/bib/${bibId}`}>{title}</Link>
+                  </h4>
+                  {callNo}
+                </div>
+              </div>
+
+              {form}
+            </div>
+          </div>
+        </div>
       </div>
     );
   }
@@ -218,6 +264,17 @@ HoldRequest.propTypes = {
   bib: React.PropTypes.object,
   searchKeywords: React.PropTypes.string,
   params: React.PropTypes.object,
+  deliveryLocations: React.PropTypes.array,
+  isEddRequestable: React.PropTypes.bool,
+};
+
+HoldRequest.defaultProps = {
+  location: {},
+  bib: {},
+  searchKeywords: '',
+  params: {},
+  deliveryLocations: [],
+  isEddRequestable: false,
 };
 
 export default HoldRequest;
