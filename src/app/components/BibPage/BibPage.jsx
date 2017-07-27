@@ -36,7 +36,7 @@ const BibPage = (props) => {
           <div className="nypl-full-width-wrapper">
             <div className="nypl-row">
               <div className="nypl-column-three-quarters">
-                <h2>New York Public Library Research Catalog</h2>
+                <h2>Research Discovery (beta)</h2>
                 <Search
                   searchKeywords={props.searchKeywords}
                   field={props.field}
