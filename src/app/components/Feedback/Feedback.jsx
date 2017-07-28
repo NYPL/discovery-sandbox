@@ -29,7 +29,7 @@ class Feedback extends React.Component {
     return (
       <div className="feedback">
         <button className="feedback-button" onClick={() => this.toggleForm()}>
-          Contribute feedback
+          Feedback
         </button>
         <div className={`feedback-form-container${showForm ? ' active' : ''}`}>
           <form action="https://docs.google.com/a/nypl.org/forms/d/e/1FAIpQLSdprxjM2cOj2qH1fxizsuHyZuaD1oia_dCu0D6hvJeWiK9eOw/formResponse"
@@ -37,22 +37,9 @@ class Feedback extends React.Component {
             method="POST"
             onSubmit={() => this.onSubmitForm()}
           >
-            <p>Contribute by submitting your feedback below or <a href="https://docs.google.com/document/d/13sdehgz2ujghkEphov252oaOca1rhM5bjPk023rQ3oc/edit?usp=sharing" target="_blank" rel="noopener noreferrer">learn more about this website</a>.</p>
-            <label htmlFor="feedback-input-email">Your email address for follow-up questions (optional)</label>
+            <p>Please provide your feedback about this page in the field below.</p>
+            <label htmlFor="feedback-input-email">Email Address</label>
             <input id="feedback-input-email" name="entry.503620384" type="email" />
-
-            <label htmlFor="feedback-select-type">Type of feedback</label>
-            <select id="feedback-select-type" name="entry.746406700">
-              <option value="Feature request">Feature request</option>
-              <option value="Missing or incorrect information">Missing or incorrect information</option>
-              <option value="Language / copy">Language / copy</option>
-              <option value="Bug / error">Bug / error</option>
-              <option value="Design / user interface">Design / user interface</option>
-              <option value="Information architecture / navigation">Information architecture / navigation</option>
-              <option value="Accessibility">Accessibility</option>
-              <option value="Other">Other</option>
-            </select>
-
             <label htmlFor="feedback-textarea-comment">Your comment</label>
             <textarea id="feedback-textarea-comment" name="entry.148983317" rows="5" ref="commentText" required />
 
