@@ -32,21 +32,36 @@ class Feedback extends React.Component {
           Feedback
         </button>
         <div className={`feedback-form-container${showForm ? ' active' : ''}`}>
-          <form action="https://docs.google.com/a/nypl.org/forms/d/e/1FAIpQLSdprxjM2cOj2qH1fxizsuHyZuaD1oia_dCu0D6hvJeWiK9eOw/formResponse"
+          <form
+            action="https://docs.google.com/a/nypl.org/forms/d/e/1FAIpQLSdprxjM2cOj2qH1fxizsuHyZuaD1oia_dCu0D6hvJeWiK9eOw/formResponse"
             target="hidden_feedback_iframe"
             method="POST"
             onSubmit={() => this.onSubmitForm()}
           >
-            <p>Please provide your feedback about this page in the field below.</p>
-            <label htmlFor="feedback-input-email">Email Address</label>
-            <input id="feedback-input-email" name="entry.503620384" type="email" />
-            <label htmlFor="feedback-textarea-comment">Your comment</label>
-            <textarea id="feedback-textarea-comment" name="entry.148983317" rows="5" ref="commentText" required />
-
+            <div>
+              <label htmlFor="feedback-textarea-comment">
+                Please provide your feedback about this page in the field below.
+                <span className="nypl-required-field">&nbsp;Required</span>
+              </label>
+              <textarea
+                id="feedback-textarea-comment"
+                name="entry.148983317"
+                rows="5"
+                ref="commentText"
+                required
+              />
+            </div>
+            <div>
+              <label htmlFor="feedback-input-email">
+                Email Address
+                <span className="nypl-required-field">&nbsp;Required</span>
+              </label>
+              <input id="feedback-input-email" name="entry.503620384" type="email" required />
+            </div>
             <input id="feedback-input-url" name="entry.1973652282" value={currentURL} type="hidden" />
             <input name="fvv" value="1" type="hidden" />
 
-            <button type="submit">Submit</button>
+            <button type="submit" className="large">Submit</button>
           </form>
           <iframe name="hidden_feedback_iframe" title="NYPL Discovery Feedback Form" />
         </div>
