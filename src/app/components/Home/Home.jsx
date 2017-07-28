@@ -79,7 +79,7 @@ const Home = (props) => (
 
        <div className="nypl-row nypl-quarter-image">
          <div className="nypl-column-one-quarter image-column-one-quarter">
-           <img className="nypl-quarter-image" src="https://d2720ur5668dri.cloudfront.net/sites/default/files/styles/extralarge/public/research-services.jpg?itok=rSo9t1VF" alt="" role="presenation" />
+           <img className="nypl-quarter-image" src="https://d2720ur5668dri.cloudfront.net/sites/default/files/styles/extralarge/public/research-services.jpg?itok=rSo9t1VF" alt="" role="presentation" />
          </div>
          <div className="nypl-column-three-quarters image-column-three-quarters">
            <h4><a href="/research/services">Services</a></h4>
