@@ -116,10 +116,10 @@ class HoldConfirmation extends React.Component {
     }
 
     return (
-      <div id="mainContent">
-        <div className="nypl-homepage-hero">
-          <div className="nypl-full-width-wrapper">
-            <div className="row">
+      <main id="mainContent" className="main-page">
+        <div className="nypl-request-page-header">
+          <div className="row">
+            <div className="nypl-full-width-wrapper">
               <div className="nypl-column-three-quarters">
                 <Breadcrumbs
                   query={this.props.searchKeywords}
@@ -127,7 +127,7 @@ class HoldConfirmation extends React.Component {
                   title={title}
                   url={id}
                 />
-                <h1>Research Discovery (beta)</h1>
+                <h2>Research Discovery (beta)</h2>
               </div>
             </div>
           </div>
@@ -137,7 +137,7 @@ class HoldConfirmation extends React.Component {
           <div className="nypl-row">
             <div className="nypl-column-three-quarters">
               <div className="item-header">
-                <h3>Request Confirmation</h3>
+                <h1>Request Confirmation</h1>
               </div>
             </div>
           </div>
@@ -145,8 +145,8 @@ class HoldConfirmation extends React.Component {
             <div className="nypl-column-three-quarters">
               <div className="nypl-request-item-summary">
                 <div className="item">
-                  <h4>Submission Received</h4>
-                  <p>Item Information</p>
+                  <h2>Submission Received</h2>
+                  <h3>Item Information</h3>
                   <p>We've received your request for <Link to={`${appConfig.baseUrl}/bib/${id}`}>{title}</Link>
                   </p>
                   <p>
@@ -164,7 +164,7 @@ class HoldConfirmation extends React.Component {
                     to seven days, so you can request materials up to a week in advance.
                   </p>
 
-                  <h4>Electronic Delivery</h4>
+                  <h3>Electronic Delivery</h3>
                   <p>
                     If you selected Electronic delivery, you will be notified via email when the 
                     item is available.
@@ -186,7 +186,7 @@ class HoldConfirmation extends React.Component {
             </div>
           </div>
         </div>
-      </div>
+      </main>
     );
   }
 }

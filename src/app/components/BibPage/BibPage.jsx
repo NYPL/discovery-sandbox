@@ -32,11 +32,11 @@ const BibPage = (props) => {
   return (
     <DocumentTitle title={`${title} | Research Catalog`}>
       <main className="main-page">
-        <div className="nypl-homepage-hero">
+        <div className="nypl-page-header">
           <div className="nypl-full-width-wrapper">
             <div className="nypl-row">
               <div className="nypl-column-three-quarters">
-                <h1>Research Discovery (beta)</h1>
+                <h2>Research Discovery (beta)</h2>
                 <Search
                   searchKeywords={props.searchKeywords}
                   field={props.field}
