@@ -92,6 +92,24 @@ class HoldRequest extends React.Component {
   }
 
   /**
+   * modelDeliveryLocationName(prefLabel, shortName)
+   * Renders the names of the radio input fields of delivery locations except EDD.
+   *
+   * @param {String} prefLabel
+   * @param {String} shortName
+   * @return {String}
+   */
+  modelDeliveryLocationName(prefLabel, shortName) {
+    if (prefLabel && typeof prefLabel === 'string' && shortName) {
+      const deliveryRoom = (prefLabel.split(' - ')[1]) ? ` - ${prefLabel.split(' - ')[1]}` : '';
+
+      return `${shortName}${deliveryRoom}`;
+    }
+
+    return '';
+  }
+
+  /**
    * renderEDD()
    * Renders the radio input fields of EDD.
    *
@@ -115,22 +133,6 @@ class HoldRequest extends React.Component {
         Have up to 50 pages scanned and sent to you via electronic mail.
       </label>
     );
-  }
-
-  /**
-   * modelDeliveryLocationName(prefLabel, shortName)
-   * Renders the names of the radio input fields of delivery locations except EDD.
-   *
-   * @param {String} prefLabel
-   * @param {String} shortName
-   * @return {String}
-   */
-  modelDeliveryLocationName(prefLabel, shortName) {
-    if (prefLabel && typeof prefLabel === 'string' && shortName) {
-      return `${shortName} - ${prefLabel.split(' - ')[1]}`;
-    }
-
-    return '';
   }
 
   /**
