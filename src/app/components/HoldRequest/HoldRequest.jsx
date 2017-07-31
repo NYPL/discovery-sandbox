@@ -19,7 +19,7 @@ class HoldRequest extends React.Component {
 
     this.state = _extend({
       delivery: false,
-      checkedLocNum: 0,
+      checkedLocNum: (this.props.deliveryLocations.length > 0 ) ? 0 : -1,
     }, { patron: PatronStore.getState() });
 
     // change all the components :(
@@ -132,7 +132,8 @@ class HoldRequest extends React.Component {
           name="delivery-location"
           id="available-electronic-delivery"
           value="edd"
-          onChange={this.onRadioSelect}
+          checked={this.state.checkedLocNum === -1}
+          onChange={(e) => { this.onRadioSelect(e, -1)}}
         />
         Have up to 50 pages scanned and sent to you via electronic mail.
       </label>
