@@ -32,11 +32,14 @@ Import style rules from NYPL React module components
 @import "components/SearchPagination.scss";
 @import "components/ItemTable.scss";
 @import "components/Sorter.scss";
+@import "components/design-toolkit-updates.scss";
 
 @import "style-v2.scss";
 
 html {
   @include font-settings;
+  background: #fff;
+  color: #000;
 }
 
 #app {
