@@ -29,9 +29,6 @@ const SearchResultsPage = (props, context) => {
   const totalResults = searchResults ? searchResults.totalResults : undefined;
   const totalPages = totalResults ? Math.floor(totalResults / 50) + 1 : 0;
   const results = searchResults ? searchResults.itemListElement : [];
-  const breadcrumbs = (
-    <Breadcrumbs query={searchKeywords} type="search" />
-  );
   const createAPIQuery = basicQuery(props);
   const searchKeywordsLabel = searchKeywords ? `for ${searchKeywords}` : '';
   const pageLabel = totalPages ? `page ${page} of ${totalPages}` : '';
@@ -60,7 +57,7 @@ const SearchResultsPage = (props, context) => {
           <div className="nypl-full-width-wrapper">
             <div className="nypl-row">
               <div className="nypl-column-three-quarters">
-                {breadcrumbs}
+                <Breadcrumbs query={searchKeywords} type="search" />
                 <h2 aria-label={headerLabel}>Research Discovery (beta)</h2>
                 <Search
                   searchKeywords={searchKeywords}

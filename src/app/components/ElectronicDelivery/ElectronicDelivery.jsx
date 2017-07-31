@@ -130,9 +130,9 @@ class ElectronicDelivery extends React.Component {
           <div className="content-wrapper">
             <Breadcrumbs
               query={searchKeywords}
-              type="hold"
-              title={title}
-              url={bibId}
+              type="edd"
+              bibUrl={`/bib/${bibId}`}
+              itemUrl={`/hold/request/${bibId}-${itemId}`}
             />
           </div>
         </div>

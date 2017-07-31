@@ -218,12 +218,11 @@ class HoldRequest extends React.Component {
         <div className="nypl-request-page-header">
           <div className="nypl-full-width-wrapper">
             <div className="row">
-              <div className="nypl-column-three-quarters">
+              <div className="nypl-column-full">
                 <Breadcrumbs
                   query={searchKeywords}
+                  bibUrl={`/bib/${bibId}`}
                   type="hold"
-                  title={title}
-                  url={bibId}
                 />
                 <h2>Research Discovery (beta)</h2>
               </div>
