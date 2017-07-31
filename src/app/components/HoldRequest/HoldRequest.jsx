@@ -19,6 +19,7 @@ class HoldRequest extends React.Component {
 
     this.state = _extend({
       delivery: false,
+      checkedLocNum: 0,
     }, { patron: PatronStore.getState() });
 
     // change all the components :(
@@ -35,8 +36,11 @@ class HoldRequest extends React.Component {
     this.setState({ patron: PatronStore.getState() });
   }
 
-  onRadioSelect(e) {
-    this.setState({ delivery: e.target.value });
+  onRadioSelect(e, i) {
+    this.setState({
+      delivery: e.target.value,
+      checkedLocNum: i,
+    });
   }
 
   /**
@@ -156,7 +160,8 @@ class HoldRequest extends React.Component {
             name="delivery-location"
             id={`location${i}`}
             value={location['@id'].replace('loc:', '')}
-            onChange={this.onRadioSelect}
+            checked={i === this.state.checkedLocNum}
+            onChange={(e) => { this.onRadioSelect(e, i)}}
           />
           <span className="nypl-screenreader-only">Send to:</span>
           <span>{displayName}</span><br />
