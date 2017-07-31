@@ -140,19 +140,6 @@ class ElectronicDelivery extends React.Component {
           <div className="nypl-row">
             <div className="nypl-column-full">
               <h1>Electronic Delivery Request</h1>
-              {
-                raiseError && (
-                  <div className="nypl-raised-error">
-                    <strong>Error</strong>
-                    <p>Please check the following required fields and resubmit your request:</p>
-                    <ul>
-                      {
-                        this.getRaisedErrors(raiseError)
-                      }
-                    </ul>
-                  </div>
-                )
-              }
               <h3>
                 Material request for Electronic Delivery:
                 <br />
@@ -173,6 +160,19 @@ class ElectronicDelivery extends React.Component {
 
           <div className="nypl-row">
             <div className="nypl-column-half">
+              {
+                raiseError && (
+                  <div className="nypl-form-error">
+                    <h2>Error</h2>
+                    <p>Please check the following required fields and resubmit your request:</p>
+                    <ul>
+                      {
+                        this.getRaisedErrors(raiseError)
+                      }
+                    </ul>
+                  </div>
+                )
+              }
               <ElectronicDeliveryForm
                 bibId={bibId}
                 itemId={itemId}
