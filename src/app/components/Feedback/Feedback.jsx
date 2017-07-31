@@ -58,7 +58,12 @@ class Feedback extends React.Component {
               </label>
               <input id="feedback-input-email" name="entry.503620384" type="email" required />
             </div>
-            <input id="feedback-input-url" name="entry.1973652282" value={currentURL} type="hidden" />
+            <input
+              id="feedback-input-url"
+              name="entry.1973652282"
+              value={currentURL}
+              type="hidden"
+            />
             <input name="fvv" value="1" type="hidden" />
 
             <button type="submit" className="large">Submit</button>
