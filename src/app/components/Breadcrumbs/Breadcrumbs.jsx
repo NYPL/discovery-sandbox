@@ -2,54 +2,79 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 
-const Breadcrumbs = ({ query, type, title, url }) => {
-  let currentPageText = 'Research Catalog';
-  let crumbs = (
-    <ol role="navigation" aria-label="breadcrumbs" className="nypl-breadcrumbs">
-      <li><a href="https://nypl.org">Home</a></li>
-      <li><a href="https://nypl.org/research">Research</a></li>
-      <li>{currentPageText}</li>
-    </ol>
-  );
+import appConfig from '../../../../appConfig.js';
 
-  if (type === 'search') {
-    currentPageText = query ? `Search Results for "${query}"` : 'Search Results';
-    crumbs = (
-      <ol role="navigation" aria-label="breadcrumbs" className="nypl-breadcrumbs">
-        <li><a href="https://nypl.org">Home</a></li>
-        <li><a href="https://nypl.org/research">Research</a></li>
-        <li><Link to="/">Research Catalog</Link></li>
-        <li>{currentPageText}</li>
-      </ol>
+const baseUrl = appConfig.baseUrl;
+
+const Breadcrumbs = ({ query, type, bibUrl, itemUrl, edd }) => {
+  const defaultText = 'Research Discovery (beta)';
+  const homeLink = <li key="home"><Link to={`${baseUrl}/`}>{defaultText}</Link></li>;
+
+  /*
+   * getCrumbs()
+   * Returns an array of list elements to render for the breadcrumbs navigation.
+   * This will keep pushing new elements onto an array until it reaches the spot desired.
+   * It will then return the list up to that point with the desired spot being a simple
+   * text list element.
+   * @returns {array}
+   */
+  const getCrumbs = () => {
+    // The first link is the homepage and it will being appearing starting from the
+    // Search Results page.
+    const crumbs = [
+      homeLink,
+    ];
+
+    if (type === 'search') {
+      crumbs.push(<li key="search">Search Results</li>);
+      return crumbs;
+    }
+
+    crumbs.push(
+      <li key="search"><Link to={`${baseUrl}/search?${query}`}>Search Results</Link></li>
     );
-  }
 
-  currentPageText = title;
+    if (type === 'bib') {
+      crumbs.push(<li key="bib">Item Details</li>);
+      return crumbs;
+    }
 
-  if (type === 'bib') {
-    crumbs = (
-      <ol role="navigation" aria-label="breadcrumbs" className="nypl-breadcrumbs">
-        <li><a href="https://nypl.org">Home</a></li>
-        <li><a href="https://nypl.org/research">Research</a></li>
-        <li><Link to="/">Research Catalog</Link></li>
-        {
-          query ?
-          (<li>
-            <Link
-              title={`Make a new search for ${query}`}
-              to={`/search?q=${query}`}
-            >Items</Link></li>)
-          : null
-        }
-        <li>{currentPageText}</li>
-      </ol>
-    );
-  }
+    crumbs.push(<li key="bib"><Link to={`${baseUrl}${bibUrl}`}>Item Details</Link></li>);
+
+    if (type === 'hold') {
+      crumbs.push(<li key="hold">Item Request</li>);
+      return crumbs;
+    }
+
+    crumbs.push(<li key="hold"><Link to={`${baseUrl}${itemUrl}`}>Item Request</Link></li>);
+
+    if (type === 'edd') {
+      crumbs.push(<li key="edd">Electronic Delivery Request</li>);
+      return crumbs;
+    }
+
+    // If you came from the EDD form, then you want a link in the breadcrumbs for it.
+    if (edd) {
+      crumbs.push(
+        <li key="edd">
+          <Link to={`${baseUrl}${itemUrl}/edd`}>Electronic Delivery Request</Link>
+        </li>
+      );
+    }
+
+    // The last possible point in the breadcrumbs will be the Confirmation page.
+    crumbs.push(<li key="confirmation">Request Confirmation</li>);
+    return crumbs;
+  };
+
+  const crumbs = getCrumbs();
 
   return (
     <span>
       <span className="nypl-screenreader-only">You are here:</span>
-      {crumbs}
+      <ol role="navigation" aria-label="breadcrumbs" className="nypl-breadcrumbs">
+        {crumbs}
+      </ol>
     </span>
   );
 };
@@ -57,15 +82,9 @@ const Breadcrumbs = ({ query, type, title, url }) => {
 Breadcrumbs.propTypes = {
   query: PropTypes.string,
   type: PropTypes.string,
-  title: PropTypes.string,
-  url: PropTypes.string,
-};
-
-Breadcrumbs.defaultProps = {
-  query: '',
-  type: '',
-  title: '',
-  url: '',
+  bibUrl: PropTypes.string,
+  itemUrl: PropTypes.string,
+  edd: PropTypes.bool,
 };
 
 export default Breadcrumbs;
