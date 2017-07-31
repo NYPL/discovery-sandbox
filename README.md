@@ -139,3 +139,14 @@ Starting up from a [Node/React boilerplate](https://bitbucket.org/NYPL/dgx-nypl-
 
 ### Elastic Beanstalk
 We are using AWS EB to deploy our app. Check the [deployment file](DEPLOYMENT.md) for more information.
+
+## Feedback Form
+
+The _Feedback_ component in _src/app/components/Feedback/Feedback.jsx_ can help us collect the feedback from patrons and send it to a google form, and finally, present it with [the google spreadsheet](https://docs.google.com/spreadsheets/d/1jD8EnC0uoPuo118jUF3of9MNgvrXTv1Jww67ZVJCSHs/edit#gid=536144761).
+
+Everytime the _Feedback_ component has a significant updates, it might lead to create a new goolge form and spreadsheet to match the updates. Here are the steps to create and sync the HTML form with a google form.
+
+First, create a google form based on the fields of the HTML form. The fields need to be the same type respectively.
+Second, view the google form and get the form URL.
+Third, copy the URL, replace the path _/viewform_ with the path _/formResponse_ in the end. Enter the ULR to the HTML form's action attribute.
+Forth, view the page source of the google form and find the value of each field's name attribute. Enter the value to the name attribute of the respectively field in the HTML form.
