@@ -17,19 +17,19 @@ class ElectronicDeliveryForm extends React.Component {
     // empty object structure is needed.
     this.state = {
       form: !_isEmpty(this.props.form) ? this.props.form :
-      {
-        emailAddress: this.props.defaultEmail,
-        chapterTitle: '',
-        startPage: 0,
-        endPage: 0,
-      },
+        {
+          emailAddress: this.props.defaultEmail,
+          chapterTitle: '',
+          startPage: 0,
+          endPage: 0,
+        },
       error: !_isEmpty(this.props.error) ? this.props.error :
-      {
-        emailAddress: '',
-        chapterTitle: '',
-        startPage: 0,
-        endPage: 0,
-      },
+        {
+          emailAddress: '',
+          chapterTitle: '',
+          startPage: 0,
+          endPage: 0,
+        },
     };
 
     this.submit = this.submit.bind(this);
@@ -40,7 +40,7 @@ class ElectronicDeliveryForm extends React.Component {
     e.preventDefault();
 
     if (validate(this.state.form, (error) => {
-      this.setState({ error })
+      this.setState({ error });
       this.props.raiseError(error);
     })) {
       this.props.submitRequest(this.state);
@@ -65,6 +65,15 @@ class ElectronicDeliveryForm extends React.Component {
     _mapObject(this.state.form, (val, key) => {
       errorClass[key] = this.state.error[key] ? 'nypl-field-error' : '';
     });
+
+    let pageErrorMsg = 'You may request a maximum of 50 pages.';
+    let pageFieldErrorClass = '';
+
+    if (this.state.error.startPage || this.state.error.endPage) {
+      pageErrorMsg = 'Page values must be alphanumeric (no special characters). ' +
+        'You may request a maximum of 50 pages.';
+      pageFieldErrorClass = 'nypl-field-error';
+    }
 
     // A lot of this can be refactored to be in a loop but that's a later and next step.
     // I was thinking each `nypl-text-field` or `nypl-year-field` div can be
@@ -192,9 +201,7 @@ class ElectronicDeliveryForm extends React.Component {
           <h3>Select Page Number Range (Max 50 pages)</h3>
 
           <div
-            className={
-             `nypl-year-field ${(errorClass.startPage || errorClass.endPage) ? 'nypl-field-error' :''}`
-            }
+            className={`nypl-year-field ${pageFieldErrorClass}`}
           >
             <label htmlFor="start-page" id="start-page-label">Starting Page
               <span className="nypl-required-field">&nbsp;Required</span>
@@ -231,7 +238,7 @@ class ElectronicDeliveryForm extends React.Component {
               aria-live="assertive"
               aria-atomic="true"
             >
-              <span>{(this.state.error.startPage || this.state.error.startPage) ? this.state.error.startPage : 'You may request a maximum of 50 pages.'}</span>
+              <span>{pageErrorMsg}</span>
             </span>
           </div>
         </fieldset>
