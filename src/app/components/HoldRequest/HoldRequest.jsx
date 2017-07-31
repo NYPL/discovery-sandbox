@@ -19,6 +19,7 @@ class HoldRequest extends React.Component {
 
     this.state = _extend({
       delivery: false,
+      checkedLocNum: (this.props.deliveryLocations.length > 0 ) ? 0 : -1,
     }, { patron: PatronStore.getState() });
 
     // change all the components :(
@@ -35,8 +36,11 @@ class HoldRequest extends React.Component {
     this.setState({ patron: PatronStore.getState() });
   }
 
-  onRadioSelect(e) {
-    this.setState({ delivery: e.target.value });
+  onRadioSelect(e, i) {
+    this.setState({
+      delivery: e.target.value,
+      checkedLocNum: i,
+    });
   }
 
   /**
@@ -128,7 +132,8 @@ class HoldRequest extends React.Component {
           name="delivery-location"
           id="available-electronic-delivery"
           value="edd"
-          onChange={this.onRadioSelect}
+          checked={this.state.checkedLocNum === -1}
+          onChange={(e) => { this.onRadioSelect(e, -1)}}
         />
         Have up to 50 pages scanned and sent to you via electronic mail.
       </label>
@@ -156,7 +161,8 @@ class HoldRequest extends React.Component {
             name="delivery-location"
             id={`location${i}`}
             value={location['@id'].replace('loc:', '')}
-            onChange={this.onRadioSelect}
+            checked={i === this.state.checkedLocNum}
+            onChange={(e) => { this.onRadioSelect(e, i)}}
           />
           <span className="nypl-screenreader-only">Send to:</span>
           <span>{displayName}</span><br />
