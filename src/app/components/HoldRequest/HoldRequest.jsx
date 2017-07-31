@@ -18,7 +18,8 @@ class HoldRequest extends React.Component {
     super(props);
 
     this.state = _extend({
-      delivery: false,
+      delivery: (this.props.deliveryLocations.length > 0) ?
+        this.props.deliveryLocations[0]['@id'].replace('loc:', '') : 'edd',
       checkedLocNum: (this.props.deliveryLocations.length > 0 ) ? 0 : -1,
     }, { patron: PatronStore.getState() });
 
