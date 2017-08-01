@@ -78,10 +78,9 @@ function LibraryItem() {
    * mapItem(item, title)
    * Massage data and update an item's properties.
    * @param {object} item The item to update the data for.
-   * @param {string} title The bib's title.
    * @return {object}
    */
-  this.mapItem = (item = {}, title) => {
+  this.mapItem = (item = {}) => {
     const id = item && item['@id'] ? item['@id'].substring(4) : '';
     // Taking the first object in the accessMessage array.
     const accessMessage = item.accessMessage && item.accessMessage.length ?
@@ -90,11 +89,9 @@ function LibraryItem() {
     const callNumber = item.shelfMark && item.shelfMark.length ? item.shelfMark[0] : '';
     const holdingLocation = this.getHoldingLocation(item);
     // Taking the first value in the array.
-    const requestable = item.requestable && item.requestable.length ?
-      item.requestable[0] : false;
+    const requestable = item.requestable && item.requestable.length ? item.requestable[0] : false;
     // Taking the first value in the array;
-    const suppressed = item.suppressed && item.suppressed.length ?
-      item.suppressed[0] : false;
+    const suppressed = item.suppressed && item.suppressed.length ? item.suppressed[0] : false;
     const isElectronicResource = this.isElectronicResource(item);
     // Taking the first status object in the array.
     let status = item.status && item.status.length ? item.status[0] : {};
@@ -102,15 +99,16 @@ function LibraryItem() {
       status.prefLabel.replace(/\W/g, '').toLowerCase() : '';
     const available = availability === 'available';
     let url = null;
-    let actionLabel = null;
-    let actionLabelHelper = null;
     // non-NYPL ReCAP
-    const recap =
+    const partnerRecap =
       (accessMessage.prefLabel === 'ADV REQUEST' || accessMessage.prefLabel === 'USE IN LIBRARY')
       && !item.holdingLocation;
     // nypl-owned ReCAP
     const nyplRecap = !!(holdingLocation && !_isEmpty(holdingLocation) &&
       holdingLocation['@id'].substring(4, 6) === 'rc');
+    const nonRecapNYPL = !!(accessMessage.prefLabel === 'USE IN LIBRARY' &&
+      (item.holdingLocation && item.holdingLocation.length));
+    const isRecap = partnerRecap || nyplRecap;
     // The identifier we need for an item now
     const identifiersArray = [{ name: 'barcode', value: 'urn:barcode:' }];
     const bibIdentifiers = this.getIdentifiers(item.identifier, identifiersArray);
@@ -118,30 +116,14 @@ function LibraryItem() {
     const itemSource = item.idNyplSourceId ? item.idNyplSourceId['@type'] : undefined;
     const mappedItemSource = itemSourceMappings[itemSource];
     const isOffsite = this.isOffsite(holdingLocation.prefLabel.toLowerCase());
-    const temporaryRequestable = (requestable && (isOffsite || recap));
 
     if (isElectronicResource && item.electronicLocator[0].url) {
       status = { '@id': '', prefLabel: 'Available' };
       availability = 'available';
       url = item.electronicLocator[0].url;
-      actionLabel = 'View online';
-      actionLabelHelper = `resource for ${title}`;
-      // The logic for this should be updated, but right now non-NYPL ReCAP items
-      // don't have a holdingLocation (but a default gets added here);
-    } else if (recap) {
-      actionLabel = accessMessage.prefLabel;
-      actionLabelHelper = `request hold on ${title}`;
-    } else if (nyplRecap) {
-      // Temporary for NYPL ReCAP items.
-      // Making sure that if there is a holding location, that the location code starts with
-      // rc. Ids are in the format of `loc:x` where x is the location code.
-      actionLabel = accessMessage.prefLabel;
-      actionLabelHelper = `request hold on ${title}`;
     } else if (availability === 'available') {
       // For all items that we want to send to the Hold Request Form.
       url = this.getLocationHoldUrl(holdingLocation);
-      actionLabel = 'Request for in-library use';
-      actionLabelHelper = `for ${title} for use in library`;
     }
 
     return {
@@ -154,12 +136,12 @@ function LibraryItem() {
       location: holdingLocation.prefLabel,
       callNumber,
       url,
-      actionLabel,
-      actionLabelHelper,
-      requestable: temporaryRequestable,
+      requestable,
       suppressed,
       barcode,
       itemSource: mappedItemSource,
+      isRecap: isRecap || isOffsite,
+      nonRecapNYPL,
     };
   };
 
@@ -177,7 +159,7 @@ function LibraryItem() {
       // Will return undefined if not found.
       const item = _findWhere(items, { '@id': `res:${itemId}` });
       if (item) {
-        return this.mapItem(item, bib.title ? bib.title[0] : '');
+        return this.mapItem(item);
       }
     }
 
@@ -191,10 +173,9 @@ function LibraryItem() {
    * @return {array}
    */
   this.getItems = (bib) => {
-    const title = bib.title ? bib.title[0] : '';
     // filter out anything without a status or location
     const bibItems = bib && bib.items && bib.items.length ? bib.items : [];
-    const finalItems = bibItems.map((item) => this.mapItem(item, title));
+    const finalItems = bibItems.map((item) => this.mapItem(item));
 
     // sort: physical available items, then electronic resources, then everything else
     // Update: Remove sorting for now.
