@@ -114,7 +114,7 @@ function validate(form, cb) {
       errorMsg: 'Enter a valid email address. Your request will be delivered to the email address you enter above.',
     },
     chapterTitle: {
-      validate: (val) => (isNumeric('' + val) && val > 0) ? true : false,
+      validate: (val) => (val.trim().length) ? true : false,
       errorMsg: 'Indicate the title of the chapter or article you are requesting. Enter "none" if you are requesting an entire item.',
     },
     startPage: {

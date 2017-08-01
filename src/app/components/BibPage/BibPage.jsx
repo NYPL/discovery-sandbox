@@ -44,6 +44,7 @@ const BibPage = (props) => {
           <div className="nypl-full-width-wrapper">
             <div className="nypl-row">
               <div className="nypl-column-three-quarters">
+                <Breadcrumbs type="bib" query={searchURL} />
                 <h2>Research Discovery (beta)</h2>
                 <Search
                   searchKeywords={props.searchKeywords}

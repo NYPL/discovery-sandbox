@@ -2,3 +2,16 @@
   color: #000;
   background: #fff;
 }
+
+a {
+  &:link {
+    color: #145e7b;
+  }
+}
+
+.nypl-basic-table {
+  td span {
+    color: #000;
+    background: #fff;
+  }
+}

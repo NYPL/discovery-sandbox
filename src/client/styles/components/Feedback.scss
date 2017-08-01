@@ -8,9 +8,9 @@
 }
 
 .feedback-button {
-  background: $alert-color;
+  background: #d0343a;
   display: inline-block;
-  color: $page-text-color;
+  color: #FFF;
   cursor: pointer;
   box-sizing: border-box;
   padding: 0.5rem 1rem;
@@ -19,7 +19,9 @@
   font-size: 1rem;
 
   &:hover {
-    background: lighten($alert-color, 10%);
+    background: #FFF;
+    border: 0.04167rem solid #d0343a;
+    color: #d0343a;
   }
 }
 

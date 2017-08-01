@@ -147,7 +147,7 @@ class ResultsList extends React.Component {
               items={items}
               bibId={bibId}
               getRecord={this.getItemRecord}
-              id="search-result-item-table"
+              id={null}
             />
         }
       </li>
