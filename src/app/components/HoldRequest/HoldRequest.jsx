@@ -204,6 +204,10 @@ class HoldRequest extends React.Component {
         </div>
       ) : null;
     const itemSource = selectedItem.itemSource;
+    const deliveryLocations = this.props.deliveryLocations;
+    const isEddRequestable = this.props.isEddRequestable;
+    const deliveryLocationInstruction = (!deliveryLocations.length && !isEddRequestable) ?
+      'No delivery option is available' : 'Choose a delivery option or location';
     let form = null;
 
     if (bib) {
@@ -214,7 +218,7 @@ class HoldRequest extends React.Component {
           method="POST"
           onSubmit={(e) => this.submitRequest(e, bibId, itemId, itemSource)}
         >
-          <h4>Choose a delivery option or location</h4>
+          <h4>{deliveryLocationInstruction}</h4>
           <div className="nypl-request-radiobutton-field">
             <fieldset>
               <legend className="visuallyHidden" id="radiobutton-group1">
