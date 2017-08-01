@@ -201,7 +201,7 @@ class ElectronicDeliveryForm extends React.Component {
           <h3>Select Page Number Range (Max 50 pages)</h3>
 
           <div
-            className={`nypl-year-field ${pageFieldErrorClass}`}
+            className={`nypl-text-field ${pageFieldErrorClass}`}
           >
             <label htmlFor="start-page" id="start-page-label">Starting Page
               <span className="nypl-required-field">&nbsp;Required</span>
