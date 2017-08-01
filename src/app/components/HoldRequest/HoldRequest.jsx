@@ -23,6 +23,10 @@ class HoldRequest extends React.Component {
       deliveryLocationsFromAPI[0]['@id'].replace('loc:', '');
 
     this.state = _extend({
+      // If we have any delivery locations in the array that we receive from the API,
+      // set the first location as the selected option. 
+      // If there's no delivery locations, set the selected option as "-1" to
+      // indicate the selected option and its value is "edd".
       delivery: deliveryLocationsFromAPI.length ? firstLocationValue : 'edd',
       checkedLocNum: deliveryLocationsFromAPI.length ? 0 : -1,
     }, { patron: PatronStore.getState() });
