@@ -20,15 +20,15 @@ class ElectronicDeliveryForm extends React.Component {
         {
           emailAddress: this.props.defaultEmail,
           chapterTitle: '',
-          startPage: 0,
-          endPage: 0,
+          startPage: '',
+          endPage: '',
         },
       error: !_isEmpty(this.props.error) ? this.props.error :
         {
           emailAddress: '',
           chapterTitle: '',
-          startPage: 0,
-          endPage: 0,
+          startPage: '',
+          endPage: '',
         },
     };
 
@@ -208,7 +208,7 @@ class ElectronicDeliveryForm extends React.Component {
             </label>
             <input
               id="start-page"
-              type="number"
+              type="text"
               required
               className="form-text"
               aria-labelledby="start-page-label"
@@ -224,7 +224,7 @@ class ElectronicDeliveryForm extends React.Component {
             </label>
             <input
               id="end-page"
-              type="number"
+              type="text"
               required
               className="form-text"
               aria-labelledby="end-page-label"
