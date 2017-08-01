@@ -8,7 +8,6 @@ import ItemHoldings from '../Item/ItemHoldings';
 import BibDetails from './BibDetails';
 import LibraryItem from '../../utils/item';
 import BackLink from './BackLink';
-import BibMainInfo from './BibMainInfo';
 import MarcRecord from './MarcRecord';
 
 import { basicQuery } from '../../utils/utils';
@@ -29,6 +28,15 @@ const BibPage = (props) => {
     shortenItems = false;
   }
 
+  const itemHoldings = items.length ?
+    <ItemHoldings
+      shortenItems={shortenItems}
+      items={items}
+      bibId={bibId}
+      itemPage={itemPage}
+    /> : null;
+  const marcRecord = isNYPLReCAP ? <MarcRecord bNumber={bNumber[0]} /> : null;
+
   return (
     <DocumentTitle title={`${title} | Research Catalog`}>
       <main className="main-page">
@@ -36,6 +44,7 @@ const BibPage = (props) => {
           <div className="nypl-full-width-wrapper">
             <div className="nypl-row">
               <div className="nypl-column-three-quarters">
+                <Breadcrumbs type="bib" query={searchURL} />
                 <h2>Research Discovery (beta)</h2>
                 <Search
                   searchKeywords={props.searchKeywords}
@@ -70,20 +79,11 @@ const BibPage = (props) => {
             >
               <div className="nypl-item-details">
                 <h1>{title}</h1>
-                <dl>
-                  <BibMainInfo bib={bib} />
-
-                  <ItemHoldings
-                    shortenItems={shortenItems}
-                    items={items}
-                    bibId={bibId}
-                    itemPage={itemPage}
-                  />
-
-                  <BibDetails bib={bib} />
-
-                  {isNYPLReCAP && <MarcRecord bNumber={bNumber[0]} />}
-                </dl>
+                <BibDetails
+                  bib={bib}
+                  itemHoldings={itemHoldings}
+                  marcRecord={marcRecord}
+                />
               </div>
             </div>
           </div>

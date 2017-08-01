@@ -1,32 +1,29 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-// import { SearchIcon } from 'dgx-svg-icons';
 
 const SearchButton = ({
   id,
-  className,
-  label,
   onClick,
+  value,
 }) => (
-    <input
-      id="nypl-omni-button"
-      onSubmit={onClick}
-      onClick={onClick}
-      type="submit"
-    >
-    </input>
+  <input
+    id={id}
+    onSubmit={onClick}
+    onClick={onClick}
+    type="submit"
+    value={value}
+  />
 );
 
 SearchButton.propTypes = {
   onClick: PropTypes.func,
-  label: PropTypes.string,
   id: PropTypes.string,
-  className: PropTypes.string,
+  value: PropTypes.string,
 };
 
 SearchButton.defaultProps = {
-  id: 'searchButton',
-  label: 'Search',
+  id: 'nypl-omni-button',
+  value: 'Search',
 };
 
 export default SearchButton;

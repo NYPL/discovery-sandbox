@@ -17,8 +17,20 @@ class HoldRequest extends React.Component {
   constructor(props) {
     super(props);
 
+    const deliveryLocationsFromAPI = this.props.deliveryLocations;
+    const firstLocationValue = (
+      deliveryLocationsFromAPI.length &&
+      deliveryLocationsFromAPI[0]['@id'] &&
+      typeof deliveryLocationsFromAPI[0]['@id'] === 'string') ?
+      deliveryLocationsFromAPI[0]['@id'].replace('loc:', '') : '';
+
     this.state = _extend({
-      delivery: false,
+      // If we have any delivery locations in the array that we receive from the API,
+      // set the first location as the selected option. 
+      // If there's no delivery locations returned, set the selected option as "-1" to
+      // indicate the selected option and its value is "edd".
+      delivery: deliveryLocationsFromAPI.length ? firstLocationValue : 'edd',
+      checkedLocNum: deliveryLocationsFromAPI.length ? 0 : -1,
     }, { patron: PatronStore.getState() });
 
     // change all the components :(
@@ -35,8 +47,11 @@ class HoldRequest extends React.Component {
     this.setState({ patron: PatronStore.getState() });
   }
 
-  onRadioSelect(e) {
-    this.setState({ delivery: e.target.value });
+  onRadioSelect(e, i) {
+    this.setState({
+      delivery: e.target.value,
+      checkedLocNum: i,
+    });
   }
 
   /**
@@ -92,6 +107,24 @@ class HoldRequest extends React.Component {
   }
 
   /**
+   * modelDeliveryLocationName(prefLabel, shortName)
+   * Renders the names of the radio input fields of delivery locations except EDD.
+   *
+   * @param {String} prefLabel
+   * @param {String} shortName
+   * @return {String}
+   */
+  modelDeliveryLocationName(prefLabel, shortName) {
+    if (prefLabel && typeof prefLabel === 'string' && shortName) {
+      const deliveryRoom = (prefLabel.split(' - ')[1]) ? ` - ${prefLabel.split(' - ')[1]}` : '';
+
+      return `${shortName}${deliveryRoom}`;
+    }
+
+    return '';
+  }
+
+  /**
    * renderEDD()
    * Renders the radio input fields of EDD.
    *
@@ -110,27 +143,12 @@ class HoldRequest extends React.Component {
           name="delivery-location"
           id="available-electronic-delivery"
           value="edd"
-          onChange={this.onRadioSelect}
+          checked={this.state.checkedLocNum === -1}
+          onChange={(e) => this.onRadioSelect(e, -1)}
         />
         Have up to 50 pages scanned and sent to you via electronic mail.
       </label>
     );
-  }
-
-  /**
-   * modelDeliveryLocationName(prefLabel, shortName)
-   * Renders the names of the radio input fields of delivery locations except EDD.
-   *
-   * @param {String} prefLabel
-   * @param {String} shortName
-   * @return {String}
-   */
-  modelDeliveryLocationName(prefLabel, shortName) {
-    if (prefLabel && typeof prefLabel === 'string' && shortName) {
-      return `${shortName} - ${prefLabel.split(' - ')[1]}`;
-    }
-
-    return '';
   }
 
   /**
@@ -146,6 +164,9 @@ class HoldRequest extends React.Component {
         location.prefLabel, location.shortName
       );
 
+      const value = (location['@id'] && typeof location['@id'] === 'string') ?
+        location['@id'].replace('loc:', '') : '';
+
       return (
         <label htmlFor={`location${i}`} id={`location${i}-label`} key={i}>
           <input
@@ -153,8 +174,9 @@ class HoldRequest extends React.Component {
             type="radio"
             name="delivery-location"
             id={`location${i}`}
-            value={location['@id'].replace('loc:', '')}
-            onChange={this.onRadioSelect}
+            value={value}
+            checked={i === this.state.checkedLocNum}
+            onChange={(e) => this.onRadioSelect(e, i)}
           />
           <span className="nypl-screenreader-only">Send to:</span>
           <span>{displayName}</span><br />
@@ -216,12 +238,11 @@ class HoldRequest extends React.Component {
         <div className="nypl-request-page-header">
           <div className="nypl-full-width-wrapper">
             <div className="row">
-              <div className="nypl-column-three-quarters">
+              <div className="nypl-column-full">
                 <Breadcrumbs
-                  query={searchKeywords}
+                  query={`q=${searchKeywords}`}
+                  bibUrl={`/bib/${bibId}`}
                   type="hold"
-                  title={title}
-                  url={bibId}
                 />
                 <h2>Research Discovery (beta)</h2>
               </div>

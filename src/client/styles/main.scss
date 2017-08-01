@@ -32,11 +32,14 @@ Import style rules from NYPL React module components
 @import "components/SearchPagination.scss";
 @import "components/ItemTable.scss";
 @import "components/Sorter.scss";
+@import "components/design-toolkit-updates.scss";
 
 @import "style-v2.scss";
 
 html {
   @include font-settings;
+  background: #fff;
+  color: #000;
 }
 
 #app {
@@ -117,8 +120,8 @@ button {
   height: 500px;
 }
 
-.nypl-raised-error {
-  color: red;
+.nypl-form-error li {
+  margin-left: 0.5rem;
 }
 
 // odd override for Header alert
