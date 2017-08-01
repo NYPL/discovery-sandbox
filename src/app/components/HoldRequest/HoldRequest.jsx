@@ -17,10 +17,14 @@ class HoldRequest extends React.Component {
   constructor(props) {
     super(props);
 
+    const deliveryLocationsFromAPI = this.props.deliveryLocations.length;
+    const firstLocationValue = (deliveryLocationsFromAPI[0]['@id'] &&
+      typeof deliveryLocationsFromAPI[0]['@id'] === 'string') ?
+      deliveryLocationsFromAPI[0]['@id'].replace('loc:', '');
+
     this.state = _extend({
-      delivery: (this.props.deliveryLocations.length > 0) ?
-        this.props.deliveryLocations[0]['@id'].replace('loc:', '') : 'edd',
-      checkedLocNum: (this.props.deliveryLocations.length > 0) ? 0 : -1,
+      delivery: deliveryLocationsFromAPI.length ? firstLocationValue : 'edd',
+      checkedLocNum: deliveryLocationsFromAPI.length ? 0 : -1,
     }, { patron: PatronStore.getState() });
 
     // change all the components :(
@@ -154,6 +158,9 @@ class HoldRequest extends React.Component {
         location.prefLabel, location.shortName
       );
 
+      const value = (location['@id'] && typeof location['@id'] === 'string') ?
+        location['@id'].replace('loc:', '') : '';
+
       return (
         <label htmlFor={`location${i}`} id={`location${i}-label`} key={i}>
           <input
@@ -161,7 +168,7 @@ class HoldRequest extends React.Component {
             type="radio"
             name="delivery-location"
             id={`location${i}`}
-            value={location['@id'].replace('loc:', '')}
+            value
             checked={i === this.state.checkedLocNum}
             onChange={(e) => { this.onRadioSelect(e, i); }}
           />
