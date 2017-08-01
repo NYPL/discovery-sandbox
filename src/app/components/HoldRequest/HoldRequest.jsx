@@ -17,15 +17,17 @@ class HoldRequest extends React.Component {
   constructor(props) {
     super(props);
 
-    const deliveryLocationsFromAPI = this.props.deliveryLocations.length;
-    const firstLocationValue = (deliveryLocationsFromAPI[0]['@id'] &&
+    const deliveryLocationsFromAPI = this.props.deliveryLocations;
+    const firstLocationValue = (
+      deliveryLocationsFromAPI.length &&
+      deliveryLocationsFromAPI[0]['@id'] &&
       typeof deliveryLocationsFromAPI[0]['@id'] === 'string') ?
-      deliveryLocationsFromAPI[0]['@id'].replace('loc:', '');
+      deliveryLocationsFromAPI[0]['@id'].replace('loc:', '') : '';
 
     this.state = _extend({
       // If we have any delivery locations in the array that we receive from the API,
       // set the first location as the selected option. 
-      // If there's no delivery locations, set the selected option as "-1" to
+      // If there's no delivery locations returned, set the selected option as "-1" to
       // indicate the selected option and its value is "edd".
       delivery: deliveryLocationsFromAPI.length ? firstLocationValue : 'edd',
       checkedLocNum: deliveryLocationsFromAPI.length ? 0 : -1,
@@ -172,7 +174,7 @@ class HoldRequest extends React.Component {
             type="radio"
             name="delivery-location"
             id={`location${i}`}
-            value
+            value={value}
             checked={i === this.state.checkedLocNum}
             onChange={(e) => this.onRadioSelect(e, i)}
           />
