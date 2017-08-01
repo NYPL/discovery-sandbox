@@ -70,12 +70,12 @@ const Breadcrumbs = ({ query, type, bibUrl, itemUrl, edd }) => {
   const crumbs = getCrumbs();
 
   return (
-    <span>
+    <nav aria-label="Breadcrumbs" className="nypl-breadcrumbs">
       <span className="nypl-screenreader-only">You are here:</span>
-      <ol role="navigation" aria-label="breadcrumbs" className="nypl-breadcrumbs">
+      <ol>
         {crumbs}
       </ol>
-    </span>
+    </nav>
   );
 };
 

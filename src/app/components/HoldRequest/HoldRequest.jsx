@@ -220,7 +220,7 @@ class HoldRequest extends React.Component {
             <div className="row">
               <div className="nypl-column-full">
                 <Breadcrumbs
-                  query={searchKeywords}
+                  query={`q=${searchKeywords}`}
                   bibUrl={`/bib/${bibId}`}
                   type="hold"
                 />
