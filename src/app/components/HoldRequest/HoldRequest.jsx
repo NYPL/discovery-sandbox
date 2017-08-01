@@ -17,10 +17,20 @@ class HoldRequest extends React.Component {
   constructor(props) {
     super(props);
 
+    const deliveryLocationsFromAPI = this.props.deliveryLocations;
+    const firstLocationValue = (
+      deliveryLocationsFromAPI.length &&
+      deliveryLocationsFromAPI[0]['@id'] &&
+      typeof deliveryLocationsFromAPI[0]['@id'] === 'string') ?
+      deliveryLocationsFromAPI[0]['@id'].replace('loc:', '') : '';
+
     this.state = _extend({
-      delivery: (this.props.deliveryLocations.length > 0) ?
-        this.props.deliveryLocations[0]['@id'].replace('loc:', '') : 'edd',
-      checkedLocNum: (this.props.deliveryLocations.length > 0) ? 0 : -1,
+      // If we have any delivery locations in the array that we receive from the API,
+      // set the first location as the selected option. 
+      // If there's no delivery locations returned, set the selected option as "-1" to
+      // indicate the selected option and its value is "edd".
+      delivery: deliveryLocationsFromAPI.length ? firstLocationValue : 'edd',
+      checkedLocNum: deliveryLocationsFromAPI.length ? 0 : -1,
     }, { patron: PatronStore.getState() });
 
     // change all the components :(
@@ -134,7 +144,7 @@ class HoldRequest extends React.Component {
           id="available-electronic-delivery"
           value="edd"
           checked={this.state.checkedLocNum === -1}
-          onChange={(e) => { this.onRadioSelect(e, -1); }}
+          onChange={(e) => this.onRadioSelect(e, -1)}
         />
         Have up to 50 pages scanned and sent to you via electronic mail.
       </label>
@@ -154,6 +164,9 @@ class HoldRequest extends React.Component {
         location.prefLabel, location.shortName
       );
 
+      const value = (location['@id'] && typeof location['@id'] === 'string') ?
+        location['@id'].replace('loc:', '') : '';
+
       return (
         <label htmlFor={`location${i}`} id={`location${i}-label`} key={i}>
           <input
@@ -161,9 +174,9 @@ class HoldRequest extends React.Component {
             type="radio"
             name="delivery-location"
             id={`location${i}`}
-            value={location['@id'].replace('loc:', '')}
+            value={value}
             checked={i === this.state.checkedLocNum}
-            onChange={(e) => { this.onRadioSelect(e, i); }}
+            onChange={(e) => this.onRadioSelect(e, i)}
           />
           <span className="nypl-screenreader-only">Send to:</span>
           <span>{displayName}</span><br />
@@ -227,7 +240,7 @@ class HoldRequest extends React.Component {
             <div className="row">
               <div className="nypl-column-full">
                 <Breadcrumbs
-                  query={searchKeywords}
+                  query={`q=${searchKeywords}`}
                   bibUrl={`/bib/${bibId}`}
                   type="hold"
                 />
