@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import DocumentTitle from 'react-document-title';
 
-import Breadcrumbs from '../Breadcrumbs/Breadcrumbs.jsx';
 import Search from '../Search/Search.jsx';
 import { basicQuery } from '../../utils/utils.js';
 

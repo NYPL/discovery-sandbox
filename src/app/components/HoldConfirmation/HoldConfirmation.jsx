@@ -64,7 +64,6 @@ class HoldConfirmation extends React.Component {
   renderLocationInfo(loc) {
     if (!loc || _isEmpty(loc)) { return null; }
 
-    const address = (loc.address) ? loc.address.address : null;
     const prefLabel = (loc.prefLabel) ? loc.prefLabel : null;
 
     return (
@@ -97,14 +96,16 @@ class HoldConfirmation extends React.Component {
     const bib = this.props.bib;
     const title = (bib && _isArray(bib.title) && bib.title.length > 0) ?
       bib.title[0] : '';
-    const id = (bib && bib['@id'] && typeof bib['@id'] === 'string') ?
+    const bibId = (bib && bib['@id'] && typeof bib['@id'] === 'string') ?
       bib['@id'].substring(4) : '';
+    const itemId = this.props.params.itemId;
+    const pickupLocation = this.props.location.query.pickupLocation;
     let deliveryLocation = null;
 
     if (this.props.deliveryLocations && this.props.deliveryLocations.length) {
-      if (this.props.location.query.pickupLocation !== 'edd') {
+      if (pickupLocation !== 'edd') {
         deliveryLocation = _findWhere(
-          this.props.deliveryLocations, { '@id': `loc:${this.props.location.query.pickupLocation}` }
+          this.props.deliveryLocations, { '@id': `loc:${pickupLocation}` }
         );
       } else {
         deliveryLocation = {
@@ -120,12 +121,13 @@ class HoldConfirmation extends React.Component {
         <div className="nypl-request-page-header">
           <div className="row">
             <div className="nypl-full-width-wrapper">
-              <div className="nypl-column-three-quarters">
+              <div className="nypl-column-full">
                 <Breadcrumbs
                   query={this.props.searchKeywords}
-                  type="holdConfirmation"
-                  title={title}
-                  url={id}
+                  type="confirmation"
+                  bibUrl={`/bib/${bibId}`}
+                  itemUrl={`/hold/request/${bibId}-${itemId}`}
+                  edd={pickupLocation === 'edd'}
                 />
                 <h2>Research Discovery (beta)</h2>
               </div>
@@ -147,7 +149,7 @@ class HoldConfirmation extends React.Component {
                 <div className="item">
                   <h2>Submission Received</h2>
                   <h3>Item Information</h3>
-                  <p>We've received your request for <Link to={`${appConfig.baseUrl}/bib/${id}`}>{title}</Link>
+                  <p>We've received your request for <Link to={`${appConfig.baseUrl}/bib/${bibId}`}>{title}</Link>
                   </p>
                   <p>
                     Please check your library account for updates. The item will be listed as
@@ -166,11 +168,11 @@ class HoldConfirmation extends React.Component {
 
                   <h3>Electronic Delivery</h3>
                   <p>
-                    If you selected Electronic delivery, you will be notified via email when the 
+                    If you selected Electronic delivery, you will be notified via email when the
                     item is available.
                   </p>
                   <p>
-                    If you would like to cancel your request, or if you have further questions, 
+                    If you would like to cancel your request, or if you have further questions,
                     please contact 917-ASK-NYPL (917-275-6975).
                   </p>
                   {this.renderStartOverLink()}
