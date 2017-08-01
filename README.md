@@ -34,9 +34,10 @@ At last, visit `localhost:3001`.
 To run locally in production mode run
 
     $ npm run dist
-    $ NODE_ENV=production npm start
+    $ NODE_ENV=production APP_ENV=[environment variable] npm start
 
 and visit `localhost:3001`.
+NOTE: Currently the only working `environment variable` is `development`.
 
 ## Contributing
 
