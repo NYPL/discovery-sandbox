@@ -6,13 +6,12 @@ import {
   isEmpty as _isEmpty,
   findWhere as _findWhere,
   findIndex as _findIndex,
-  contains as _contains,
   every as _every,
 } from 'underscore';
 
 import { ajaxCall } from '../../utils/utils';
 import Actions from '../../actions/Actions';
-import Definition from './Definition';
+import DefinitionList from './DefinitionList';
 import appConfig from '../../../../appConfig.js';
 
 const getIdentifiers = (bibValues, fieldIdentifier) => {
@@ -188,7 +187,14 @@ class BibDetails extends React.Component {
    * @return {array}
    */
   getDisplayFields(bib) {
+    // A value of 'React Component' just means that we are getting it from a
+    // component rather than from the bib field properties.
     const fields = [
+      { label: 'Title', value: 'titleDisplay', linkable: true },
+      { label: 'Author', value: 'creatorLiteral', linkable: true },
+      { label: 'Additional Authors', value: 'contributorLiteral', linkable: true },
+      { label: 'Availability', value: 'React Component' },
+      { label: 'Publisher', value: 'React Component' },
       { label: 'Electronic Resource', value: '' },
       { label: 'Description', value: 'extent' },
       { label: 'Subject', value: 'subjectLiteral', linkable: true },
@@ -202,14 +208,10 @@ class BibDetails extends React.Component {
       { label: 'GPO', value: '' },
       { label: 'Other Titles', value: '' },
       { label: 'Owning Institutions', value: '' },
+      { label: 'MARC Record', value: 'React Component' },
     ];
     const fieldsToRender = [];
     const publisherInfo = this.getPublisher(bib);
-
-    // Publisher information should be the first one in the list.
-    if (publisherInfo) {
-      fieldsToRender.push(publisherInfo);
-    }
 
     fields.forEach((field) => {
       const fieldLabel = field.label;
@@ -240,12 +242,41 @@ class BibDetails extends React.Component {
         }
       }
 
+      // If it's not a field from the bib, then it's probably a React Component or a more
+      // complicated field. There are unique classes needed for the dt/dd elements.
+      if (fieldLabel === 'Availability') {
+        if (this.props.itemHoldings) {
+          fieldsToRender.push({
+            term: <h3>Availability</h3>,
+            definition: this.props.itemHoldings,
+            termClass: 'list-multi-control',
+            definitionClass: 'multi-item-list',
+          });
+        }
+      }
+
+      // This is made up of three different bib property values so it's special.
+      if (fieldLabel === 'Publisher') {
+        fieldsToRender.push(publisherInfo);
+      }
+
+      // The Owner is complicated too.
       if (fieldLabel === 'Owning Institutions') {
         const owner = getOwner(this.props.bib);
         if (owner) {
           fieldsToRender.push({
             term: fieldLabel,
             definition: owner,
+          });
+        }
+      }
+
+      // The MARC Record only shows up for NYPL items so it's special.
+      if (fieldLabel === 'MARC Record') {
+        if (this.props.marcRecord) {
+          fieldsToRender.push({
+            term: fieldLabel,
+            definition: this.props.marcRecord,
           });
         }
       }
@@ -306,12 +337,14 @@ class BibDetails extends React.Component {
 
     const bibDetails = this.getDisplayFields(this.props.bib);
 
-    return (<Definition definitions={bibDetails} />);
+    return (<DefinitionList data={bibDetails} />);
   }
 }
 
 BibDetails.propTypes = {
   bib: PropTypes.object,
+  itemHoldings: PropTypes.object,
+  marcRecord: PropTypes.object,
 };
 
 BibDetails.contextTypes = {
