@@ -55,6 +55,24 @@ class HoldConfirmation extends React.Component {
   }
 
   /**
+   * modelDeliveryLocationName(prefLabel, shortName)
+   * Renders the names of the radio input fields of delivery locations except EDD.
+   *
+   * @param {String} prefLabel
+   * @param {String} shortName
+   * @return {String}
+   */
+  modelDeliveryLocationName(prefLabel, shortName) {
+    if (prefLabel && typeof prefLabel === 'string' && shortName) {
+      const deliveryRoom = (prefLabel.split(' - ')[1]) ? ` - ${prefLabel.split(' - ')[1]}` : '';
+
+      return `${shortName}${deliveryRoom}`;
+    }
+
+    return '';
+  }
+
+  /**
    * renderLocationInfo()
    * Renders the location information.
    *
@@ -64,7 +82,7 @@ class HoldConfirmation extends React.Component {
   renderLocationInfo(loc) {
     if (!loc || _isEmpty(loc)) { return null; }
 
-    const prefLabel = (loc.prefLabel) ? loc.prefLabel : null;
+    const prefLabel = this.modelDeliveryLocationName(loc.prefLabel, loc.shortName);
 
     return (
       <span>
@@ -149,7 +167,9 @@ class HoldConfirmation extends React.Component {
                 <div className="item">
                   <h2>Submission Received</h2>
                   <h3>Item Information</h3>
-                  <p>We've received your request for <Link to={`${appConfig.baseUrl}/bib/${bibId}`}>{title}</Link>
+                  <p>
+                    We've received your request for <Link to={`${appConfig.baseUrl}/bib/${bibId}`}>
+                    {title}</Link>
                   </p>
                   <p>
                     Please check your library account for updates. The item will be listed as
