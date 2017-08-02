@@ -154,6 +154,7 @@ function confirmRequestServer(req, res, next) {
   const jobId = req.query.jobId || '';
 
   if (!loggedIn) return false;
+  if (!jobId) return res.redirect(`${appConfig.baseUrl}/`);
 
   const accessToken = req.tokenResponse.accessToken || '';
   const patronId = req.tokenResponse.decodedPatron.sub || '';
