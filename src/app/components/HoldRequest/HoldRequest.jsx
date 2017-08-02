@@ -26,7 +26,7 @@ class HoldRequest extends React.Component {
 
     this.state = _extend({
       // If we have any delivery locations in the array that we receive from the API,
-      // set the first location as the selected option. 
+      // set the first location as the selected option.
       // If there's no delivery locations returned, set the selected option as "-1" to
       // indicate the selected option and its value is "edd".
       delivery: deliveryLocationsFromAPI.length ? firstLocationValue : 'edd',
@@ -204,6 +204,12 @@ class HoldRequest extends React.Component {
         </div>
       ) : null;
     const itemSource = selectedItem.itemSource;
+    const deliveryLocations = this.props.deliveryLocations;
+    const isEddRequestable = this.props.isEddRequestable;
+    let deliveryLocationInstruction =
+      (!deliveryLocations.length && !isEddRequestable) ?
+      <h4>Delivery options for this item are currently unavailable. Please try again later or contact 917-ASK-NYPL (<a href="tel:917-275-6975">917-275-6975</a>).</h4> :
+      <h4>Choose a delivery option or location</h4>;
     let form = null;
 
     if (bib) {
@@ -214,7 +220,7 @@ class HoldRequest extends React.Component {
           method="POST"
           onSubmit={(e) => this.submitRequest(e, bibId, itemId, itemSource)}
         >
-          <h4>Choose a delivery option or location</h4>
+          {deliveryLocationInstruction}
           <div className="nypl-request-radiobutton-field">
             <fieldset>
               <legend className="visuallyHidden" id="radiobutton-group1">
@@ -226,9 +232,12 @@ class HoldRequest extends React.Component {
 
             <input type="hidden" name="pickupLocation" value="test" />
           </div>
-          <button type="submit" className="nypl-request-button">
-            Submit request
-          </button>
+          {
+            (deliveryLocations.length || isEddRequestable) &&
+              <button type="submit" className="nypl-request-button">
+                Submit request
+              </button>
+          }
         </form>
       );
     }
