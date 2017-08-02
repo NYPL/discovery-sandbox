@@ -13,7 +13,7 @@ const Home = (props) => (
         <div className="nypl-full-width-wrapper">
           <div className="nypl-row">
             <div className="nypl-column-three-quarters">
-              <h1>Research Discovery (beta)</h1>
+              <h1>Shared Collection Catalog</h1>
               <Search
                 spinning={props.spinning}
                 createAPIQuery={basicQuery(props)}
@@ -24,9 +24,9 @@ const Home = (props) => (
           <div className="nypl-row">
             <div className="nypl-column-three-quarters">
               <p className="nypl-lead">
-                Try The New York Public Library’s Discovery tool—now
-                in beta—to search for items available for use in our research centers. Be sure
-                to request materials in advance to make the most of your time on site.
+                The New York Public Library’s Shared Collection Catalog—now in
+                beta—provides researchers with access to materials from NYPL,
+                Columbia University, and Princeton University.
               </p>
             </div>
           </div>
