@@ -208,7 +208,9 @@ class HoldRequest extends React.Component {
     const isEddRequestable = this.props.isEddRequestable;
     let deliveryLocationInstruction =
       (!deliveryLocations.length && !isEddRequestable) ?
-      'No delivery option is available' : 'Choose a delivery option or location';
+      'Delivery options for this item are currently unavailable. ' +
+      'Please try again later or contact 917-ASK-NYPL (917-275-6975).' :
+      'Choose a delivery option or location';
     let form = null;
 
     if (bib) {
