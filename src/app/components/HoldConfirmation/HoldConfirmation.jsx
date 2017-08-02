@@ -82,6 +82,14 @@ class HoldConfirmation extends React.Component {
   renderLocationInfo(loc) {
     if (!loc || _isEmpty(loc)) { return null; }
 
+    if (loc.shortName === 'n/a') {
+      return (
+        <span>
+          {loc.prefLabel}
+        </span>
+      );
+    }
+
     const prefLabel = this.modelDeliveryLocationName(loc.prefLabel, loc.shortName);
 
     return (
@@ -130,6 +138,7 @@ class HoldConfirmation extends React.Component {
           id: null,
           address: null,
           prefLabel: 'n/a (electronic delivery)',
+          shortName: 'n/a',
         };
       }
     }
@@ -147,7 +156,7 @@ class HoldConfirmation extends React.Component {
                   itemUrl={`/hold/request/${bibId}-${itemId}`}
                   edd={pickupLocation === 'edd'}
                 />
-                <h2>Research Discovery (beta)</h2>
+                <h2>{appConfig.displayTitle}</h2>
               </div>
             </div>
           </div>

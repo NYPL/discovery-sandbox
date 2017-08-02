@@ -11,6 +11,7 @@ import BackLink from './BackLink';
 import MarcRecord from './MarcRecord';
 
 import { basicQuery } from '../../utils/utils';
+import appConfig from '../../../../appConfig.js';
 
 const BibPage = (props) => {
   const createAPIQuery = basicQuery(props);
@@ -45,7 +46,7 @@ const BibPage = (props) => {
             <div className="nypl-row">
               <div className="nypl-column-three-quarters">
                 <Breadcrumbs type="bib" query={searchURL} />
-                <h2>Research Discovery (beta)</h2>
+                <h2>{appConfig.displayTitle}</h2>
                 <Search
                   searchKeywords={props.searchKeywords}
                   field={props.field}
