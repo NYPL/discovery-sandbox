@@ -126,14 +126,17 @@ class ElectronicDelivery extends React.Component {
 
     return (
       <div id="mainContent">
-        <div className="page-header">
-          <div className="content-wrapper">
-            <Breadcrumbs
-              query={searchKeywords}
-              type="edd"
-              bibUrl={`/bib/${bibId}`}
-              itemUrl={`/hold/request/${bibId}-${itemId}`}
-            />
+        <div className="nypl-request-page-header">
+          <div className="row">
+            <div className="content-wrapper">
+              <Breadcrumbs
+                query={searchKeywords}
+                type="edd"
+                bibUrl={`/bib/${bibId}`}
+                itemUrl={`/hold/request/${bibId}-${itemId}`}
+              />
+              <h2>{appConfig.displayTitle}</h2>
+            </div>
           </div>
         </div>
         <div className="nypl-full-width-wrapper">
