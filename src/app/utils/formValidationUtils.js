@@ -118,18 +118,18 @@ function validate(form, cb) {
       errorMsg: 'Indicate the title of the chapter or article you are requesting. Enter "none" if you are requesting an entire item.',
     },
     startPage: {
-      validate: (val) => (isNumeric('' + val) && val > 0) ? true : false,
+      validate: (val) => (val.trim().length) ? true : false,
       errorMsg: 'Page values must be alphanumeric (no special characters). You may request a maximum of 50 pages.',
     },
     endPage: {
-      validate: (val) => (isNumeric('' + val) && val > 0) ? true : false,
+      validate: (val) => (val.trim().length) ? true : false,
       errorMsg: 'Page values must be alphanumeric (no special characters). You may request a maximum of 50 pages.',
     },
   };
 
   const error = {};
   _mapObject(form, (val, key) => {
-    const isValid = fieldsToCheck[key].validate(val);
+    const isValid = (fieldsToCheck[key]) ? fieldsToCheck[key].validate(val) : true;
 
     if (!isValid) {
       error[key] = fieldsToCheck[key].errorMsg;

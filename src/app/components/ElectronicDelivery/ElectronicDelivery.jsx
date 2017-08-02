@@ -126,63 +126,69 @@ class ElectronicDelivery extends React.Component {
 
     return (
       <div id="mainContent">
-        <div className="page-header">
-          <div className="content-wrapper">
-            <Breadcrumbs
-              query={searchKeywords}
-              type="edd"
-              bibUrl={`/bib/${bibId}`}
-              itemUrl={`/hold/request/${bibId}-${itemId}`}
-            />
+        <div className="nypl-request-page-header">
+          <div className="row">
+            <div className="content-wrapper">
+              <Breadcrumbs
+                query={searchKeywords}
+                type="edd"
+                bibUrl={`/bib/${bibId}`}
+                itemUrl={`/hold/request/${bibId}-${itemId}`}
+              />
+              <h2>{appConfig.displayTitle}</h2>
+            </div>
           </div>
         </div>
         <div className="nypl-full-width-wrapper">
           <div className="nypl-row">
-            <div className="nypl-column-full">
-              <h1>Electronic Delivery Request</h1>
-              <h3>
-                Material request for Electronic Delivery:
-                <br />
-                <Link to={`${appConfig.baseUrl}/bib/${bibId}`}>
-                  {title}
-                </Link>
-              </h3>
-              {
-                callNo && (
-                  <div>
-                    <p><strong>Call Number</strong></p>
-                    {callNo}
-                  </div>
-                )
-              }
+            <div className="nypl-column-three-quarters">
+              <div className="item-header">
+                <h1>Electronic Delivery Request</h1>
+              </div>
+
+              <div className="nypl-request-item-summary">
+                <h3>
+                  Material request for Electronic Delivery:
+                  <br />
+                  <Link to={`${appConfig.baseUrl}/bib/${bibId}`}>
+                    {title}
+                  </Link>
+                </h3>
+                {
+                  callNo && (
+                    <div className="call-number">
+                      <span>Call Number:</span><br />
+                      {callNo}
+                    </div>
+                  )
+                }
+              </div>
             </div>
           </div>
 
           <div className="nypl-row">
-            <div className="nypl-column-half">
-              {
-                raiseError && (
-                  <div className="nypl-form-error">
-                    <h2>Error</h2>
-                    <p>Please check the following required fields and resubmit your request:</p>
-                    <ul>
-                      {
-                        this.getRaisedErrors(raiseError)
-                      }
-                    </ul>
-                  </div>
-                )
-              }
-              <ElectronicDeliveryForm
-                bibId={bibId}
-                itemId={itemId}
-                submitRequest={this.submitRequest}
-                raiseError={this.raiseError}
-                error={error}
-                form={form}
-                defaultEmail={patronEmail}
-              />
-            </div>
+            {
+              raiseError && (
+                <div className="nypl-form-error">
+                  <h2>Error</h2>
+                  <p>Please check the following required fields and resubmit your request:</p>
+                  <ul>
+                    {
+                      this.getRaisedErrors(raiseError)
+                    }
+                  </ul>
+                </div>
+              )
+            }
+            <ElectronicDeliveryForm
+              bibId={bibId}
+              itemId={itemId}
+              submitRequest={this.submitRequest}
+              raiseError={this.raiseError}
+              error={error}
+              form={form}
+              defaultEmail={patronEmail}
+            />
           </div>
         </div>
       </div>

@@ -20,15 +20,15 @@ class ElectronicDeliveryForm extends React.Component {
         {
           emailAddress: this.props.defaultEmail,
           chapterTitle: '',
-          startPage: 0,
-          endPage: 0,
+          startPage: '',
+          endPage: '',
         },
       error: !_isEmpty(this.props.error) ? this.props.error :
         {
           emailAddress: '',
           chapterTitle: '',
-          startPage: 0,
-          endPage: 0,
+          startPage: '',
+          endPage: '',
         },
     };
 
@@ -84,186 +84,200 @@ class ElectronicDeliveryForm extends React.Component {
         action="/edd"
         method="POST"
         onSubmit={(e) => this.submit(e)}
+        id="edd-request"
       >
-        <fieldset className="nypl-fieldset v2">
+        <fieldset>
           <legend>Contact Information</legend>
-          <h3>Contact Information</h3>
+          <div className="nypl-row">
+            <div className="nypl-column-half">
+              <h4>Contact Information</h4>
 
-          <div className={`nypl-text-field ${errorClass.emailAddress}`}>
-            <label htmlFor="email-address" id="email-address-label">Email Address
-              <span className="nypl-required-field">&nbsp;Required</span>
-            </label>
-            <input
-              id="email-address"
-              type="text"
-              required
-              aria-labelledby="email-address-label email-address-status"
-              aria-required="true"
-              name="emailAddress"
-              value={this.state.form.emailAddress}
-              onChange={(e) => this.handleUpdate(e, 'emailAddress')}
-            />
-            <span
-              className="nypl-field-status"
-              id="email-address-status"
-              aria-live="assertive"
-              aria-atomic="true"
-            >
-              {
-                errorClass.emailAddress ? this.state.error.emailAddress :
-                'Your request will be delivered to the email address you enter above.'
-              }
-            </span>
+              <div className={`nypl-text-field ${errorClass.emailAddress}`}>
+                <label htmlFor="email-address" id="email-address-label">Email Address
+                  <span className="nypl-required-field">&nbsp;Required</span>
+                </label>
+                <input
+                  id="email-address"
+                  type="text"
+                  required
+                  aria-labelledby="email-address-label email-address-status"
+                  aria-required="true"
+                  name="emailAddress"
+                  value={this.state.form.emailAddress}
+                  onChange={(e) => this.handleUpdate(e, 'emailAddress')}
+                />
+                <span
+                  className="nypl-field-status"
+                  id="email-address-status"
+                  aria-live="assertive"
+                  aria-atomic="true"
+                >
+                  {
+                    errorClass.emailAddress ? this.state.error.emailAddress :
+                    'Your request will be delivered to the email address you enter above.'
+                  }
+                </span>
+              </div>
+            </div>
           </div>
         </fieldset>
 
-        <fieldset className="nypl-fieldset v2">
+        <fieldset>
           <legend>Chapter or Article Information</legend>
-          <h3>Chapter or Article Information</h3>
+          <div className="nypl-row">
+            <div className="nypl-column-half">
+              <h4>Chapter or Article Information</h4>
 
-          <div className={`nypl-text-field ${errorClass.chapterTitle}`}>
-            <label htmlFor="chapter-title" id="chapter-title-label">Chapter / Article Title
-              <span className="nypl-required-field">&nbsp;Required</span>
-            </label>
-            <input
-              id="chapter-title"
-              type="text"
-              required
-              aria-labelledby="chapter-title-label chapter-title-status"
-              name="chapterTitle"
-              value={this.state.form.chapterTitle}
-              onChange={(e) => this.handleUpdate(e, 'chapterTitle')}
-            />
-            <span
-              className="nypl-field-status"
-              id="chapter-title-status"
-              aria-live="assertive"
-              aria-atomic="true"
-            >
-              {
-                errorClass.chapterTitle ? this.state.error.chapterTitle :
-                'Enter "none" if you are requesting an entire item.'
-              }
-            </span>
+              <div className={`nypl-text-field ${errorClass.chapterTitle}`}>
+                <label htmlFor="chapter-title" id="chapter-title-label">Chapter / Article Title
+                  <span className="nypl-required-field">&nbsp;Required</span>
+                </label>
+                <input
+                  id="chapter-title"
+                  type="text"
+                  required
+                  aria-labelledby="chapter-title-label chapter-title-status"
+                  name="chapterTitle"
+                  value={this.state.form.chapterTitle}
+                  onChange={(e) => this.handleUpdate(e, 'chapterTitle')}
+                />
+                <span
+                  className="nypl-field-status"
+                  id="chapter-title-status"
+                  aria-live="assertive"
+                  aria-atomic="true"
+                >
+                  {
+                    errorClass.chapterTitle ? this.state.error.chapterTitle :
+                    'Enter "none" if you are requesting an entire item.'
+                  }
+                </span>
+              </div>
+            </div>
           </div>
 
-          <div className="nypl-text-field">
-            <label htmlFor="author" id="author-label">&nbsp;Article Author</label>
-            <input
-              id="author"
-              type="text"
-              aria-labelledby="author-label author-status"
-              name="author"
-              value={this.state.form.author}
-              onChange={(e) => this.handleUpdate(e, 'author')}
-            />
-          </div>
+          <div className="nypl-row">
+            <div className="nypl-column-one-quarter">
+              <div className="nypl-text-field">
+                <label htmlFor="author" id="author-label">&nbsp;Article Author</label>
+                <input
+                  id="author"
+                  type="text"
+                  aria-labelledby="author-label"
+                  name="author"
+                  value={this.state.form.author}
+                  onChange={(e) => this.handleUpdate(e, 'author')}
+                />
+              </div>
 
-          <div className="nypl-text-field">
-            <label htmlFor="date" id="date-label">Date Published</label>
-            <input
-              id="date"
-              type="text"
-              aria-labelledby="date-label date-status"
-              name="date"
-              value={this.state.form.date}
-              onChange={(e) => this.handleUpdate(e, 'date')}
-            />
-          </div>
+              <div className="nypl-text-field">
+                <label htmlFor="date" id="date-label">Date Published</label>
+                <input
+                  id="date"
+                  type="text"
+                  aria-labelledby="date-label"
+                  name="date"
+                  value={this.state.form.date}
+                  onChange={(e) => this.handleUpdate(e, 'date')}
+                />
+              </div>
 
-          <div className="nypl-text-field">
-            <label htmlFor="volume" id="volume-label">Volume</label>
-            <input
-              id="volume"
-              type="text"
-              aria-labelledby="volume-label volume-status"
-              name="volume"
-              value={this.state.form.volume}
-              onChange={(e) => this.handleUpdate(e, 'volume')}
-            />
-          </div>
+              <div className="nypl-text-field">
+                <label htmlFor="volume" id="volume-label">Volume</label>
+                <input
+                  id="volume"
+                  type="text"
+                  aria-labelledby="volume-label"
+                  name="volume"
+                  value={this.state.form.volume}
+                  onChange={(e) => this.handleUpdate(e, 'volume')}
+                />
+              </div>
 
-          <div className="nypl-text-field">
-            <label htmlFor="issue" id="issue-label">Issue</label>
-            <input
-              id="issue"
-              type="text"
-              aria-labelledby="issue-label issue-status"
-              name="issue"
-              value={this.state.form.issue}
-              onChange={(e) => this.handleUpdate(e, 'issue')}
-            />
+              <div className="nypl-text-field">
+                <label htmlFor="issue" id="issue-label">Issue</label>
+                <input
+                  id="issue"
+                  type="text"
+                  aria-labelledby="issue-label"
+                  name="issue"
+                  value={this.state.form.issue}
+                  onChange={(e) => this.handleUpdate(e, 'issue')}
+                />
+              </div>
+            </div>
           </div>
         </fieldset>
 
-        <fieldset className="nypl-fieldset v2 number-range">
+        <fieldset className="number-range">
           <legend>Select Page Number Range (Max 50 pages)</legend>
-          <h3>Select Page Number Range (Max 50 pages)</h3>
-
-          <div
-            className={`nypl-year-field ${pageFieldErrorClass}`}
-          >
-            <label htmlFor="start-page" id="start-page-label">Starting Page
-              <span className="nypl-required-field">&nbsp;Required</span>
-            </label>
-            <input
-              id="start-page"
-              type="number"
-              required
-              className="form-text"
-              aria-labelledby="start-page-label"
-              name="startPage"
-              value={this.state.form.startPage}
-              onChange={(e) => this.handleUpdate(e, 'startPage')}
-            />
-
-            <br />
-
-            <label htmlFor="end-page" id="end-page-label">Ending Page
-              <span className="nypl-required-field">&nbsp;Required</span>
-            </label>
-            <input
-              id="end-page"
-              type="number"
-              required
-              className="form-text"
-              aria-labelledby="end-page-label"
-              name="endPage"
-              value={this.state.form.endPage}
-              onChange={(e) => this.handleUpdate(e, 'endPage')}
-            />
-            <span
-              className="nypl-field-status"
-              id="page-status"
-              aria-live="assertive"
-              aria-atomic="true"
-            >
-              <span>{pageErrorMsg}</span>
-            </span>
+          <div className="nypl-row">
+            <div className="nypl-column-half">
+              <h4>Select Page Number Range (Max 50 pages)</h4>
+            </div>
           </div>
-        </fieldset>
-        <fieldset className="nypl-fieldset v2 additional-notes">
-          <legend>Additional Notes</legend>
-          <h3>Additional Notes</h3>
 
-          <div className="nypl-text-field">
-            <label htmlFor="request-notes" id="request-notes-label">Additional Notes</label>
-            <textarea
-              className="nypl-text-area"
-              id="request-notes"
-              type="text"
-              aria-labelledby="request-notes-label request-notes-status"
-              name="requestNotes"
-              value={this.state.form.requestNotes}
-              onChange={(e) => this.handleUpdate(e, 'requestNotes')}
-            />
+          <div className="nypl-row">
+            <div className="nypl-column-one-quarter">
+              <div className={`nypl-text-field ${pageFieldErrorClass}`}>
+                <label htmlFor="start-page" id="start-page-label">Starting Page
+                  <span className="nypl-required-field">&nbsp;Required</span>
+                </label>
+                <input
+                  id="start-page"
+                  type="text"
+                  required
+                  className="form-text"
+                  aria-labelledby="start-page-label"
+                  name="startPage"
+                  value={this.state.form.startPage}
+                  onChange={(e) => this.handleUpdate(e, 'startPage')}
+                />
+
+                <br />
+                <label htmlFor="end-page" id="end-page-label">Ending Page
+                  <span className="nypl-required-field">&nbsp;Required</span>
+                </label>
+                <input
+                  id="end-page"
+                  type="text"
+                  required
+                  className="form-text"
+                  aria-labelledby="end-page-label"
+                  name="endPage"
+                  value={this.state.form.endPage}
+                  onChange={(e) => this.handleUpdate(e, 'endPage')}
+                />
+                <span
+                  className="nypl-field-status"
+                  id="page-status"
+                  aria-live="assertive"
+                  aria-atomic="true"
+                >
+                  <span>{pageErrorMsg}</span>
+                </span>
+              </div>
+
+              <div className="nypl-text-field">
+                <label htmlFor="request-notes" id="request-notes-label">Additional Notes</label>
+                <textarea
+                  className="nypl-text-area"
+                  id="request-notes"
+                  type="text"
+                  aria-labelledby="request-notes-label"
+                  name="requestNotes"
+                  value={this.state.form.requestNotes}
+                  onChange={(e) => this.handleUpdate(e, 'requestNotes')}
+                />
+              </div>
+            </div>
           </div>
         </fieldset>
 
         <input type="hidden" name="bibId" value={this.props.bibId} />
         <input type="hidden" name="itemId" value={this.props.itemId} />
 
-        <button type="submit" className="large" onClick={this.submit} onSubmit={this.submit}>
+        <button type="submit" className="nypl-request-button" onClick={this.submit} onSubmit={this.submit}>
           Submit request
         </button>
       </form>
