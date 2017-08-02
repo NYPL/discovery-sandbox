@@ -12,19 +12,24 @@ const ItemTableRow = ({ item, bibId, getRecord }) => {
     return null;
   }
 
-  let itemLink;
+  let itemLink = <span>{item.status.prefLabel}</span>;
   let itemDisplay = null;
 
   if (item.requestable) {
-    itemLink = item.available ?
-      (<Link
-        to={`${appConfig.baseUrl}/hold/request/${bibId}-${item.id}`}
-        onClick={(e) => getRecord(e, bibId, item.id)}
-        tabIndex="0"
-      >
-        Request
-      </Link>) :
-      <span>{item.status.prefLabel}</span>;
+    if (item.isRecap) {
+      itemLink = item.available ?
+        (<Link
+          to={`${appConfig.baseUrl}/hold/request/${bibId}-${item.id}`}
+          onClick={(e) => getRecord(e, bibId, item.id)}
+          tabIndex="0"
+        >
+          Request
+        </Link>) :
+        <span>In Use</span>;
+    } else if (item.nonRecapNYPL) {
+      // Not in ReCAP
+      itemLink = <span>{item.status.prefLabel}</span>;
+    }
   }
 
   if (item.callNumber) {
