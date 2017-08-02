@@ -58,7 +58,7 @@ const SearchResultsPage = (props, context) => {
             <div className="nypl-row">
               <div className="nypl-column-three-quarters">
                 <Breadcrumbs query={searchKeywords} type="search" />
-                <h2 aria-label={headerLabel}>Research Discovery (beta)</h2>
+                <h2 aria-label={headerLabel}>Shared Collection Catalog</h2>
                 <Search
                   searchKeywords={searchKeywords}
                   field={field}
