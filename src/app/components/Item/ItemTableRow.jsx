@@ -12,7 +12,7 @@ const ItemTableRow = ({ item, bibId, getRecord }) => {
     return null;
   }
 
-  let itemLink;
+  let itemLink = <span>{item.status.prefLabel}</span>;
   let itemDisplay = null;
 
   if (item.requestable) {

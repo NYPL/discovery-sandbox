@@ -91,8 +91,7 @@ const getOwner = (bib) => {
   }
 
   items.forEach(item => {
-    const ownerObj = item.owner && item.owner.length ?
-      item.owner[0].prefLabel : undefined;
+    const ownerObj = item.owner && item.owner.length ? item.owner[0].prefLabel : undefined;
 
     ownerArr.push(ownerObj);
   });
