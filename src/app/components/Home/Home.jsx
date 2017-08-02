@@ -4,6 +4,7 @@ import DocumentTitle from 'react-document-title';
 
 import Search from '../Search/Search.jsx';
 import { basicQuery } from '../../utils/utils.js';
+import appConfig from '../../../../appConfig.js';
 
 const Home = (props) => (
   <DocumentTitle title="Research Catalog | NYPL">
@@ -13,7 +14,7 @@ const Home = (props) => (
         <div className="nypl-full-width-wrapper">
           <div className="nypl-row">
             <div className="nypl-column-three-quarters">
-              <h1>Shared Collection Catalog</h1>
+              <h1>{appConfig.displayTitle}</h1>
               <Search
                 spinning={props.spinning}
                 createAPIQuery={basicQuery(props)}
