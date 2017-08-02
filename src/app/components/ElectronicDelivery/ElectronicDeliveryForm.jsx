@@ -20,15 +20,15 @@ class ElectronicDeliveryForm extends React.Component {
         {
           emailAddress: this.props.defaultEmail,
           chapterTitle: '',
-          startPage: 0,
-          endPage: 0,
+          startPage: '',
+          endPage: '',
         },
       error: !_isEmpty(this.props.error) ? this.props.error :
         {
           emailAddress: '',
           chapterTitle: '',
-          startPage: 0,
-          endPage: 0,
+          startPage: '',
+          endPage: '',
         },
     };
 
@@ -219,13 +219,13 @@ class ElectronicDeliveryForm extends React.Component {
 
           <div className="nypl-row">
             <div className="nypl-column-one-quarter">
-              <div className={`nypl-year-field ${pageFieldErrorClass}`}>
+              <div className={`nypl-text-field ${pageFieldErrorClass}`}>
                 <label htmlFor="start-page" id="start-page-label">Starting Page
                   <span className="nypl-required-field">&nbsp;Required</span>
                 </label>
                 <input
                   id="start-page"
-                  type="number"
+                  type="text"
                   required
                   className="form-text"
                   aria-labelledby="start-page-label"
@@ -235,13 +235,12 @@ class ElectronicDeliveryForm extends React.Component {
                 />
 
                 <br />
-
                 <label htmlFor="end-page" id="end-page-label">Ending Page
                   <span className="nypl-required-field">&nbsp;Required</span>
                 </label>
                 <input
                   id="end-page"
-                  type="number"
+                  type="text"
                   required
                   className="form-text"
                   aria-labelledby="end-page-label"
