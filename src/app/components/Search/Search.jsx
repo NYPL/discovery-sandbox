@@ -103,16 +103,15 @@ class Search extends React.Component {
   }
 
   render() {
+    const spinningClass = this.state.spinning ? 'spinning' : '';
+
     return (
       <form
         onKeyPress={this.triggerSubmit}
         action="/search"
         method="POST"
       >
-        <fieldset
-          className={`nypl-omnisearch style-2 nypl-spinner-field
-            ${this.state.spinning ? 'spinning' : ''}`}
-        >
+        <div className={`nypl-omnisearch style-2 nypl-spinner-field ${spinningClass}`}>
           <span className="nypl-omni-fields">
             <label htmlFor="search-by-field">Search in</label>
             <select
@@ -140,7 +139,7 @@ class Search extends React.Component {
             ref="keywords"
           />
           <SearchButton onClick={this.submitSearchRequest} />
-        </fieldset>
+        </div>
       </form>
     );
   }
