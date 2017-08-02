@@ -88,15 +88,15 @@ class HoldConfirmation extends React.Component {
           {loc.prefLabel}
         </span>
       );
-    } else {
-      const prefLabel = this.modelDeliveryLocationName(loc.prefLabel, loc.shortName);
-
-      return (
-        <span>
-          {prefLabel}
-        </span>
-      );
     }
+
+    const prefLabel = this.modelDeliveryLocationName(loc.prefLabel, loc.shortName);
+
+    return (
+      <span>
+        {prefLabel}
+      </span>
+    );
   }
 
   /**
