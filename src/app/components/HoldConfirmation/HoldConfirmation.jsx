@@ -82,6 +82,14 @@ class HoldConfirmation extends React.Component {
   renderLocationInfo(loc) {
     if (!loc || _isEmpty(loc)) { return null; }
 
+    if (loc.shortName === 'n/a') {
+      return (
+        <span>
+          {loc.prefLabel}
+        </span>
+      );
+    }
+
     const prefLabel = this.modelDeliveryLocationName(loc.prefLabel, loc.shortName);
 
     return (
@@ -130,6 +138,7 @@ class HoldConfirmation extends React.Component {
           id: null,
           address: null,
           prefLabel: 'n/a (electronic delivery)',
+          shortName: 'n/a',
         };
       }
     }
