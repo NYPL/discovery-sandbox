@@ -208,9 +208,8 @@ class HoldRequest extends React.Component {
     const isEddRequestable = this.props.isEddRequestable;
     let deliveryLocationInstruction =
       (!deliveryLocations.length && !isEddRequestable) ?
-      'Delivery options for this item are currently unavailable. ' +
-      'Please try again later or contact 917-ASK-NYPL (917-275-6975).' :
-      'Choose a delivery option or location';
+      <h4>Delivery options for this item are currently unavailable. Please try again later or contact 917-ASK-NYPL (<a href="tel:917-275-6975">917-275-6975</a>).</h4> :
+      <h4>Choose a delivery option or location</h4>;
     let form = null;
 
     if (bib) {
@@ -221,7 +220,7 @@ class HoldRequest extends React.Component {
           method="POST"
           onSubmit={(e) => this.submitRequest(e, bibId, itemId, itemSource)}
         >
-          <h4>{deliveryLocationInstruction}</h4>
+          {deliveryLocationInstruction}
           <div className="nypl-request-radiobutton-field">
             <fieldset>
               <legend className="visuallyHidden" id="radiobutton-group1">
