@@ -253,7 +253,7 @@ class HoldRequest extends React.Component {
                   bibUrl={`/bib/${bibId}`}
                   type="hold"
                 />
-                <h2>Research Discovery (beta)</h2>
+                <h2>{appConfig.displayTitle}</h2>
               </div>
             </div>
           </div>

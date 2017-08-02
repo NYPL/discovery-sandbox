@@ -156,7 +156,7 @@ class HoldConfirmation extends React.Component {
                   itemUrl={`/hold/request/${bibId}-${itemId}`}
                   edd={pickupLocation === 'edd'}
                 />
-                <h2>Research Discovery (beta)</h2>
+                <h2>{appConfig.displayTitle}</h2>
               </div>
             </div>
           </div>
