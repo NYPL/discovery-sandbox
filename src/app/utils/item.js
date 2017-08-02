@@ -82,6 +82,7 @@ function LibraryItem() {
    */
   this.mapItem = (item = {}) => {
     const id = item && item['@id'] ? item['@id'].substring(4) : '';
+    const itemSource = item.idNyplSourceId ? item.idNyplSourceId['@type'] : undefined;
     // Taking the first object in the accessMessage array.
     const accessMessage = item.accessMessage && item.accessMessage.length ?
       item.accessMessage[0] : {};
@@ -100,20 +101,17 @@ function LibraryItem() {
     const available = availability === 'available';
     let url = null;
     // non-NYPL ReCAP
-    const partnerRecap =
-      (accessMessage.prefLabel === 'ADV REQUEST' || accessMessage.prefLabel === 'USE IN LIBRARY')
-      && !item.holdingLocation;
+    const nonNyplRecap = itemSource.indexOf('Recap') !== -1;
     // nypl-owned ReCAP
-    const nyplRecap = !!(holdingLocation && !_isEmpty(holdingLocation) &&
-      holdingLocation['@id'].substring(4, 6) === 'rc');
+    const nyplRecap = !!((holdingLocation && !_isEmpty(holdingLocation) &&
+      holdingLocation['@id'].substring(4, 6) === 'rc') && (itemSource === 'SierraNypl'));
     const nonRecapNYPL = !!(accessMessage.prefLabel === 'USE IN LIBRARY' &&
       (item.holdingLocation && item.holdingLocation.length));
-    const isRecap = partnerRecap || nyplRecap;
+    const isRecap = nonNyplRecap || nyplRecap;
     // The identifier we need for an item now
     const identifiersArray = [{ name: 'barcode', value: 'urn:barcode:' }];
     const bibIdentifiers = this.getIdentifiers(item.identifier, identifiersArray);
     const barcode = bibIdentifiers.barcode || '';
-    const itemSource = item.idNyplSourceId ? item.idNyplSourceId['@type'] : undefined;
     const mappedItemSource = itemSourceMappings[itemSource];
     const isOffsite = this.isOffsite(holdingLocation.prefLabel.toLowerCase());
 
