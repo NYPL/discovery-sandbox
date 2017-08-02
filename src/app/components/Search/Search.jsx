@@ -18,7 +18,7 @@ class Search extends React.Component {
 
     this.state = {
       spinning: this.props.spinning,
-      field: this.props.field,
+      field: this.props.field || 'all',
       searchKeywords: this.props.searchKeywords,
     };
 
@@ -154,7 +154,7 @@ Search.propTypes = {
 };
 
 Search.defaultProps = {
-  field: '',
+  field: 'all',
   searchKeywords: '',
   spinning: false,
 };
