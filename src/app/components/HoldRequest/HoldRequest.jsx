@@ -26,7 +26,7 @@ class HoldRequest extends React.Component {
 
     this.state = _extend({
       // If we have any delivery locations in the array that we receive from the API,
-      // set the first location as the selected option. 
+      // set the first location as the selected option.
       // If there's no delivery locations returned, set the selected option as "-1" to
       // indicate the selected option and its value is "edd".
       delivery: deliveryLocationsFromAPI.length ? firstLocationValue : 'edd',
@@ -210,7 +210,7 @@ class HoldRequest extends React.Component {
       form = (
         <form
           className="place-hold-form form"
-          action={`/hold/request/${bibId}-${itemId}-${itemSource}`}
+          action={`${appConfig.baseUrl}/hold/request/${bibId}-${itemId}-${itemSource}`}
           method="POST"
           onSubmit={(e) => this.submitRequest(e, bibId, itemId, itemSource)}
         >

@@ -98,8 +98,8 @@ class Sorter extends React.Component {
         <div className="nypl-results-sorter">
           <form
             action={
-              `/search${searchKeywords ?
-                `?q=${searchKeywords}` : ''}${field ? `&search_scope=${field}` : ''}`
+              `${appConfig.baseUrl}/search${searchKeywords ? `?q=${searchKeywords}` : ''}` +
+              `${field ? `&search_scope=${field}` : ''}`
             }
             method="POST"
           >

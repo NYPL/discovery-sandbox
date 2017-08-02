@@ -108,7 +108,7 @@ class Search extends React.Component {
     return (
       <form
         onKeyPress={this.triggerSubmit}
-        action="/search"
+        action={`${appConfig.baseUrl}/search`}
         method="POST"
       >
         <div className={`nypl-omnisearch style-2 nypl-spinner-field ${spinningClass}`}>
