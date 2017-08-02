@@ -129,7 +129,7 @@ function validate(form, cb) {
 
   const error = {};
   _mapObject(form, (val, key) => {
-    const isValid = fieldsToCheck[key].validate(val);
+    const isValid = (fieldsToCheck[key]) ? fieldsToCheck[key].validate(val) : true;
 
     if (!isValid) {
       error[key] = fieldsToCheck[key].errorMsg;
