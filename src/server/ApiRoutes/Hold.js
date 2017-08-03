@@ -151,23 +151,25 @@ function confirmRequestServer(req, res, next) {
   const bibId = req.params.bibId || '';
   const loggedIn = User.requireUser(req, res);
   const error = req.query.error ? JSON.parse(req.query.error) : {};
-  const jobId = req.query.jobId || '';
+  const requestId = req.query.requestId || '';
 
   if (!loggedIn) return false;
-  if (!jobId) return res.redirect(`${appConfig.baseUrl}/`);
+  if (!requestId) return res.redirect(`${appConfig.baseUrl}/`);
 
   const accessToken = req.tokenResponse.accessToken || '';
   const patronId = req.tokenResponse.decodedPatron.sub || '';
   let barcode;
 
   return axios
-    .get(`${apiBase}/jobs/${jobId}`)
+    .get(`${apiBase}/hold-requests/${requestId}`, {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
+      },
+    })
     .then(response => {
       const data = response.data.data;
-      let patronIdFromJobId;
-      if (data.notices && data.notices.length) {
-        patronIdFromJobId = data.notices[0].data.patron;
-      }
+      const patronIdFromJobId = data.patron;
 
       // The patron who is seeing the confirmation made the Hold Request
       if (patronIdFromJobId === patronId) {
@@ -223,7 +225,7 @@ function confirmRequestServer(req, res, next) {
       res.redirect(`${appConfig.baseUrl}/`);
       return false;
     })
-    .catch(jobIdError => console.log(jobIdError));
+    .catch(requestIdError => console.log(requestIdError));
 }
 
 /**
