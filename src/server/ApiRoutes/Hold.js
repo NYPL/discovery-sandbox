@@ -151,57 +151,86 @@ function confirmRequestServer(req, res, next) {
   const bibId = req.params.bibId || '';
   const loggedIn = User.requireUser(req, res);
   const error = req.query.error ? JSON.parse(req.query.error) : {};
+  const requestId = req.query.requestId || '';
 
   if (!loggedIn) return false;
+  if (!requestId) return res.redirect(`${appConfig.baseUrl}/`);
 
   const accessToken = req.tokenResponse.accessToken || '';
   const patronId = req.tokenResponse.decodedPatron.sub || '';
   let barcode;
 
-  // Retrieve item
-  return Bib.fetchBib(
-    bibId,
-    (bibResponseData) => {
-      barcode = LibraryItem.getItem(bibResponseData, req.params.itemId).barcode;
+  return axios
+    .get(`${apiBase}/hold-requests/${requestId}`, {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
+      },
+    })
+    .then(response => {
+      const data = response.data.data;
+      const patronIdFromHoldRequest = data.patron;
 
-      getDeliveryLocations(
-        barcode,
-        patronId,
-        accessToken,
-        (deliveryLocations, isEddRequestable) => {
-          res.locals.data.Store = {
-            bib: bibResponseData,
-            searchKeywords: '',
-            error,
-            deliveryLocations,
-            isEddRequestable,
-          };
-          next();
-        },
-        (e) => {
-          console.error(`deliverylocationsbybarcode API error: ${JSON.stringify(e, null, 2)}`);
+      // The patron who is seeing the confirmation made the Hold Request
+      if (patronIdFromHoldRequest === patronId) {
+        // Retrieve item
+        return Bib.fetchBib(
+          bibId,
+          (bibResponseData) => {
+            barcode = LibraryItem.getItem(bibResponseData, req.params.itemId).barcode;
 
-          res.locals.data.Store = {
-            bib: bibResponseData,
-            searchKeywords: '',
-            error,
-            deliveryLocations: [],
-            isEddRequestable: false,
-          };
+            getDeliveryLocations(
+              barcode,
+              patronId,
+              accessToken,
+              (deliveryLocations, isEddRequestable) => {
+                res.locals.data.Store = {
+                  bib: bibResponseData,
+                  searchKeywords: '',
+                  error,
+                  deliveryLocations,
+                  isEddRequestable,
+                };
+                next();
+              },
+              (e) => {
+                console.error(
+                  `deliverylocationsbybarcode API error: ${JSON.stringify(e, null, 2)}`
+                );
 
-          next();
-        }
-      );
-    },
-    (bibResponseError) => {
-      res.locals.data.Store = {
-        bib: {},
-        searchKeywords: '',
-        error,
-      };
-      next();
-    }
-  );
+                res.locals.data.Store = {
+                  bib: bibResponseData,
+                  searchKeywords: '',
+                  error,
+                  deliveryLocations: [],
+                  isEddRequestable: false,
+                };
+
+                next();
+              }
+            );
+          },
+          (bibResponseError) => {
+            res.locals.data.Store = {
+              bib: {},
+              searchKeywords: '',
+              error,
+            };
+            next();
+          }
+        );
+      }
+
+      // Else redirect to the homepage:
+      res.redirect(`${appConfig.baseUrl}/`);
+      return false;
+    })
+    .catch(requestIdError => {
+      console.log(`Error fetching Hold Request from id. Error: ${requestIdError}`);
+
+      res.redirect(`${appConfig.baseUrl}/`);
+      return false;
+    });
 }
 
 /**

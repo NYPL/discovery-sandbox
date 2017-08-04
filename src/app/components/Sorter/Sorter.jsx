@@ -83,7 +83,7 @@ class Sorter extends React.Component {
    */
   renderResultsSort() {
     return sortingOpts.map((d, i) => (
-      <option value={d.val} key={i} selected={d.val === this.state.sortValue}>
+      <option value={d.val} key={i}>
         {d.label}
       </option>
     ));
@@ -98,8 +98,8 @@ class Sorter extends React.Component {
         <div className="nypl-results-sorter">
           <form
             action={
-              `/search${searchKeywords ?
-                `?q=${searchKeywords}` : ''}${field ? `&search_scope=${field}` : ''}`
+              `${appConfig.baseUrl}/search${searchKeywords ? `?q=${searchKeywords}` : ''}` +
+              `${field ? `&search_scope=${field}` : ''}`
             }
             method="POST"
           >
