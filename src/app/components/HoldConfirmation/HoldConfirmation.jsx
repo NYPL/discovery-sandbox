@@ -117,6 +117,24 @@ class HoldConfirmation extends React.Component {
     );
   }
 
+  /**
+   * renderBackToSearchLink
+   * Renders the link back to the page of search results.
+   *
+   * @return {HTML Element}
+   */
+  renderBackToSearchLink() {
+    return (
+      <Link
+        className="nypl-request-button"
+        to="/"
+        onClick={(e) => this.goRestart(e)}
+      >
+        Back to results
+      </Link>
+    );
+  }
+
   render() {
     // Need to better clarify variable names later.
     const bib = this.props.bib;
@@ -204,6 +222,7 @@ class HoldConfirmation extends React.Component {
                     If you would like to cancel your request, or if you have further questions,
                     please contact 917-ASK-NYPL (917-275-6975).
                   </p>
+                  {this.renderBackToSearchLink()}
                   {this.renderStartOverLink()}
                 </div>
               </div>
