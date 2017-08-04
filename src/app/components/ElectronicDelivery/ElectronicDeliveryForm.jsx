@@ -1,11 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { validate } from '../../utils/formValidationUtils';
+import appConfig from '../../../../appConfig';
+
 import {
   mapObject as _mapObject,
   extend as _extend,
   isEmpty as _isEmpty,
 } from 'underscore';
+
 
 class ElectronicDeliveryForm extends React.Component {
   constructor(props) {
@@ -81,7 +84,7 @@ class ElectronicDeliveryForm extends React.Component {
     return (
       <form
         className="place-hold-form form electronic-delivery-form"
-        action="/edd"
+        action={`${appConfig.baseUrl}/edd`}
         method="POST"
         onSubmit={(e) => this.submit(e)}
         id="edd-request"
@@ -276,6 +279,8 @@ class ElectronicDeliveryForm extends React.Component {
 
         <input type="hidden" name="bibId" value={this.props.bibId} />
         <input type="hidden" name="itemId" value={this.props.itemId} />
+        <input type="hidden" name="pickupLocation" value="edd" />
+        <input type="hidden" name="itemSource" value={this.props.itemSource} />
 
         <button type="submit" className="nypl-request-button" onClick={this.submit} onSubmit={this.submit}>
           Submit request
@@ -290,6 +295,8 @@ ElectronicDeliveryForm.propTypes = {
   raiseError: PropTypes.func,
   bibId: PropTypes.string,
   itemId: PropTypes.string,
+  itemSource: PropTypes.string,
+  pickupLocation: PropTypes.string,
   error: PropTypes.object,
   form: PropTypes.object,
   defaultEmail: PropTypes.string,
