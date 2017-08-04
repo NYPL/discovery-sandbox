@@ -55,6 +55,18 @@ class HoldConfirmation extends React.Component {
   }
 
   /**
+   * goSearchResults(e)
+   * @param {event}
+   * Renders the route back to home page for single page application implementation.
+   *
+   */
+  goSearchResults(e) {
+    e.preventDefault();
+
+    this.context.router.push(`${appConfig.baseUrl}/search?${this.props.searchKeywords}`);
+  }
+
+  /**
    * modelDeliveryLocationName(prefLabel, shortName)
    * Renders the names of the radio input fields of delivery locations except EDD.
    *
@@ -109,7 +121,7 @@ class HoldConfirmation extends React.Component {
     return (
       <Link
         className="nypl-request-button"
-        to="/"
+        to={`${appConfig.baseUrl}/`}
         onClick={(e) => this.goRestart(e)}
       >
         Start Over
@@ -127,8 +139,8 @@ class HoldConfirmation extends React.Component {
     return (
       <Link
         className="nypl-request-button"
-        to="/"
-        onClick={(e) => this.goRestart(e)}
+        to={`${appConfig.baseUrl}/search?${this.props.searchKeywords}`}
+        onClick={(e) => this.goSearchResults(e)}
       >
         Back to results
       </Link>
