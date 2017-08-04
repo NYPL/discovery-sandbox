@@ -413,7 +413,7 @@ function createHoldRequestServer(req, res, pickedUpBibId = '', pickedUpItemId = 
     return res.redirect(`${appConfig.baseUrl}/someErrorPage`);
   }
 
-  if (pickupLocation === 'edd'){
+  if (pickupLocation === 'edd') {
     return res.redirect(`${appConfig.baseUrl}/hold/request/${bibId}-${itemId}/edd`);
   }
 
