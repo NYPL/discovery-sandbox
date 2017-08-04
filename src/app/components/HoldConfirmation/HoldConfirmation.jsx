@@ -136,6 +136,10 @@ class HoldConfirmation extends React.Component {
    * @return {HTML Element}
    */
   renderBackToSearchLink() {
+    if (!this.props.searchKeywords) {
+      return false;
+    }
+
     return (
       <Link
         className="nypl-request-button"
