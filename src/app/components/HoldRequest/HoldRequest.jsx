@@ -216,7 +216,7 @@ class HoldRequest extends React.Component {
       form = (
         <form
           className="place-hold-form form"
-          action={`/hold/request/${bibId}-${itemId}-${itemSource}`}
+          action={`${appConfig.baseUrl}/hold/request/${bibId}-${itemId}-${itemSource}`}
           method="POST"
           onSubmit={(e) => this.submitRequest(e, bibId, itemId, itemSource)}
         >

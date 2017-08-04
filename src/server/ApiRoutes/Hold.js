@@ -384,6 +384,10 @@ function createHoldRequestServer(req, res, pickedUpBibId = '', pickedUpItemId = 
     return res.redirect(`${appConfig.baseUrl}/someErrorPage`);
   }
 
+  if (pickupLocation === 'edd'){
+    return res.redirect(`${appConfig.baseUrl}/hold/request/${bibId}-${itemId}/edd`);
+  }
+
   return postHoldAPI(
     req,
     itemId,
@@ -454,14 +458,13 @@ function createHoldRequestEdd(req, res) {
     req,
     req.body.itemId,
     req.body.pickupLocation,
-    req.body.form,
+    req.body,
     req.body.itemSource,
     (response) => {
-      res.json({
-        id: response.data.data.id,
-        jobId: response.data.data.jobId,
-        pickupLocation: response.data.data.pickupLocation,
-      });
+      res.redirect(
+        `${appConfig.baseUrl}/hold/confirmation/${req.body.bibId}-${req.body.itemId}?pickupLocation=` +
+        `${req.body.pickupLocation}&requestId=${response.data.data.id}`
+      );
     },
     (error) => {
       console.log(`Error calling Holds API : ${error.data.message}`);
@@ -478,6 +481,7 @@ function eddServer(req, res) {
   const {
     bibId,
     itemId,
+    pickupLocation,
   } = req.body;
 
   let serverErrors = {};
@@ -497,7 +501,7 @@ function eddServer(req, res) {
   // NOTE: Mocking that this workflow works correctly:
   // Just a dummy redirect that doesn't actually do anything yet with the correct valid data
   // that was submitted.
-  return createHoldRequestServer(req, res, bibId, itemId);
+  return createHoldRequestEdd(req, res, bibId, itemId);
 }
 
 export default {
