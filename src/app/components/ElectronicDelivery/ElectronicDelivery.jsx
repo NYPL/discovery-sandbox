@@ -183,6 +183,7 @@ class ElectronicDelivery extends React.Component {
             <ElectronicDeliveryForm
               bibId={bibId}
               itemId={itemId}
+              itemSource={this.state.itemSource}
               submitRequest={this.submitRequest}
               raiseError={this.raiseError}
               error={error}
