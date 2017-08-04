@@ -24,10 +24,7 @@ function MainApp(req, res, next) {
 
 router
   .route(`${appConfig.baseUrl}/search`)
-  .get(Search.searchServer);
-
-router
-  .route('/search')
+  .get(Search.searchServer)
   .post(Search.searchServerPost);
 
 router
