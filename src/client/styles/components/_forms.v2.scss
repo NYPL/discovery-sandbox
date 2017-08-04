@@ -50,3 +50,28 @@
     margin-left: 1rem;
   }
 }
+
+.nypl-omnisearch {
+  input[type=text] {
+    &::placeholder {
+      opacity: 1;
+      color: #000;
+    }
+    &::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+      opacity: 1;
+      color: #000;
+    }
+    &::-moz-placeholder { /* Firefox 19+ */
+      opacity: 1;
+      color: #000;
+    }
+    &:-ms-input-placeholder { /* IE 10+ */
+      opacity: 1;
+      color: #000;
+    }
+    &:-moz-placeholder { /* Firefox 18- */
+      opacity: 1;
+      color: #000;
+    }
+  }
+}
