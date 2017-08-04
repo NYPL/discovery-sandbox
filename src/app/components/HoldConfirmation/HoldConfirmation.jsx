@@ -57,7 +57,7 @@ class HoldConfirmation extends React.Component {
   /**
    * goSearchResults(e)
    * @param {event}
-   * Renders the route back to home page for single page application implementation.
+   * Renders the route back to search results page.
    *
    */
   goSearchResults(e) {
