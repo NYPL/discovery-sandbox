@@ -169,10 +169,10 @@ function confirmRequestServer(req, res, next) {
     })
     .then(response => {
       const data = response.data.data;
-      const patronIdFromJobId = data.patron;
+      const patronIdFromHoldRequest = data.patron;
 
       // The patron who is seeing the confirmation made the Hold Request
-      if (patronIdFromJobId === patronId) {
+      if (patronIdFromHoldRequest === patronId) {
         // Retrieve item
         return Bib.fetchBib(
           bibId,
@@ -225,7 +225,12 @@ function confirmRequestServer(req, res, next) {
       res.redirect(`${appConfig.baseUrl}/`);
       return false;
     })
-    .catch(requestIdError => console.log(requestIdError));
+    .catch(requestIdError => {
+      console.log(`Error fetching Hold Request from id. Error: ${requestIdError}`);
+
+      res.redirect(`${appConfig.baseUrl}/`);
+      return false;
+    });
 }
 
 /**
