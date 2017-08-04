@@ -63,7 +63,7 @@ class HoldConfirmation extends React.Component {
   goSearchResults(e) {
     e.preventDefault();
 
-    this.context.router.push(`${appConfig.baseUrl}/search?${this.props.searchKeywords}`);
+    this.context.router.push(`${appConfig.baseUrl}/search?q=${this.props.searchKeywords}`);
   }
 
   /**
@@ -143,7 +143,7 @@ class HoldConfirmation extends React.Component {
     return (
       <Link
         className="nypl-request-button"
-        to={`${appConfig.baseUrl}/search?${this.props.searchKeywords}`}
+        to={`${appConfig.baseUrl}/search?q=${this.props.searchKeywords}`}
         onClick={(e) => this.goSearchResults(e)}
       >
         Back to results
