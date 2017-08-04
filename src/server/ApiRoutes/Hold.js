@@ -267,7 +267,7 @@ function newHoldRequestServer(req, res, next) {
         (deliveryLocations, isEddRequestable) => {
           res.locals.data.Store = {
             bib: bibResponseData,
-            searchKeywords: '',
+            searchKeywords: req.query.searchKeywords || '',
             error,
             form,
             deliveryLocations,
@@ -281,7 +281,7 @@ function newHoldRequestServer(req, res, next) {
 
           res.locals.data.Store = {
             bib: bibResponseData,
-            searchKeywords: '',
+            searchKeywords: req.query.searchKeywords || '',
             error,
             form,
             deliveryLocations: [],
@@ -427,9 +427,13 @@ function createHoldRequestServer(req, res, pickedUpBibId = '', pickedUpItemId = 
       console.log('Hold Request Id:', response.data.data.id);
       console.log('Job Id:', response.data.data.jobId);
 
+      const searchKeywordsQuery = (req.body['search-keywords']) ?
+        `&searchKeywords=${req.body['search-keywords']}` : '';
+
       res.redirect(
         `${appConfig.baseUrl}/hold/confirmation/${bibId}-${itemId}?pickupLocation=` +
-        `${response.data.data.pickupLocation}&requestId=${response.data.data.id}`
+        `${response.data.data.pickupLocation}&requestId=${response.data.data.id}` +
+        `${searchKeywordsQuery}`
       );
     },
     (error) => {
@@ -490,9 +494,12 @@ function createHoldRequestEdd(req, res) {
     req.body,
     req.body.itemSource,
     (response) => {
+      const searchKeywordsQuery = (req.body['search-keywords']) ?
+        `&searchKeywords=${req.body['search-keywords']}` : '';
+
       res.redirect(
         `${appConfig.baseUrl}/hold/confirmation/${req.body.bibId}-${req.body.itemId}?pickupLocation=` +
-        `${req.body.pickupLocation}&requestId=${response.data.data.id}`
+        `${req.body.pickupLocation}&requestId=${response.data.data.id}${searchKeywordsQuery}`
       );
     },
     (error) => {

@@ -136,14 +136,14 @@ class HoldConfirmation extends React.Component {
    * @return {HTML Element}
    */
   renderBackToSearchLink() {
-    if (!this.props.searchKeywords) {
+    if (!this.props.location.query.searchKeywords) {
       return false;
     }
 
     return (
       <Link
         className="nypl-request-button"
-        to={`${appConfig.baseUrl}/search?q=${this.props.searchKeywords}`}
+        to={`${appConfig.baseUrl}/search?q=${this.props.location.query.searchKeywords}`}
         onClick={(e) => this.goSearchResults(e)}
       >
         Back to results
@@ -184,7 +184,7 @@ class HoldConfirmation extends React.Component {
             <div className="nypl-full-width-wrapper">
               <div className="nypl-column-full">
                 <Breadcrumbs
-                  query={this.props.searchKeywords}
+                  query={this.props.location.query.searchKeywords}
                   type="confirmation"
                   bibUrl={`/bib/${bibId}`}
                   itemUrl={`/hold/request/${bibId}-${itemId}`}
