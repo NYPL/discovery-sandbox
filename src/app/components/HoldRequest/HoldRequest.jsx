@@ -238,6 +238,11 @@ class HoldRequest extends React.Component {
                 Submit request
               </button>
           }
+          <input
+            type="hidden"
+            name="searchKeywords"
+            value={(this.props.searchKeywords) ? this.props.searchKeywords : ''}
+          />
         </form>
       );
     }
