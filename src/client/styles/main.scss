@@ -128,3 +128,18 @@ button {
 header #skip {
   position: absolute;
 }
+
+// Misc override
+.footer-content .footerLinks {
+  line-height: 15px !important;
+}
+
+li, p {
+  max-width: 100%;
+}
+
+@media only screen and (min-width: 768px) {
+  .footer {
+    padding: 15px 0 30px !important;
+  }
+}
