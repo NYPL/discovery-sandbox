@@ -83,7 +83,7 @@ class Sorter extends React.Component {
    */
   renderResultsSort() {
     return sortingOpts.map((d, i) => (
-      <option value={d.val} key={i} selected={d.val === this.state.sortValue}>
+      <option value={d.val} key={i}>
         {d.label}
       </option>
     ));
