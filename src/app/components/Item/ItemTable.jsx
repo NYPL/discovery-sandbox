@@ -4,7 +4,7 @@ import { isArray as _isArray } from 'underscore';
 
 import ItemTableRow from './ItemTableRow';
 
-const ItemTable = ({ items, bibId, getRecord, id }) => {
+const ItemTable = ({ items, bibId, getRecord, id, searchKeywords, }) => {
   if (!_isArray(items) || !items.length) {
     return null;
   }
@@ -23,7 +23,13 @@ const ItemTable = ({ items, bibId, getRecord, id }) => {
       <tbody>
         {
           items.map((item, i) =>
-            <ItemTableRow key={i} item={item} bibId={bibId} getRecord={getRecord} />
+            <ItemTableRow
+              key={i}
+              item={item}
+              bibId={bibId}
+              getRecord={getRecord}
+              searchKeywords={searchKeywords}
+            />
           )
         }
       </tbody>

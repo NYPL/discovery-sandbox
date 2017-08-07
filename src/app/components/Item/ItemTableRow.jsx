@@ -7,7 +7,7 @@ import appConfig from '../../../../appConfig.js';
 
 const createMarkup = (html) => ({ __html: html });
 
-const ItemTableRow = ({ item, bibId, getRecord }) => {
+const ItemTableRow = ({ item, bibId, getRecord, searchKeywords }) => {
   if (_isEmpty(item)) {
     return null;
   }
@@ -19,7 +19,7 @@ const ItemTableRow = ({ item, bibId, getRecord }) => {
     if (item.isRecap) {
       itemLink = item.available ?
         (<Link
-          to={`${appConfig.baseUrl}/hold/request/${bibId}-${item.id}`}
+          to={`${appConfig.baseUrl}/hold/request/${bibId}-${item.id}?searchKeywords=${searchKeywords}`}
           onClick={(e) => getRecord(e, bibId, item.id)}
           tabIndex="0"
         >
