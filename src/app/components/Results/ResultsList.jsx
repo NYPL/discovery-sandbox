@@ -148,6 +148,7 @@ class ResultsList extends React.Component {
               bibId={bibId}
               getRecord={this.getItemRecord}
               id={null}
+              searchKeywords={this.props.searchKeywords}
             />
         }
       </li>

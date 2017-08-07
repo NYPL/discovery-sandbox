@@ -285,6 +285,11 @@ class ElectronicDeliveryForm extends React.Component {
         <input type="hidden" name="itemId" value={this.props.itemId} />
         <input type="hidden" name="pickupLocation" value="edd" />
         <input type="hidden" name="itemSource" value={this.props.itemSource} />
+        <input
+          type="hidden"
+          name="searchKeywords"
+          value={(this.props.searchKeywords) ? this.props.searchKeywords : ''}
+        />
 
         <button
           type="submit"
@@ -309,6 +314,7 @@ ElectronicDeliveryForm.propTypes = {
   error: PropTypes.object,
   form: PropTypes.object,
   defaultEmail: PropTypes.string,
+  searchKeywords: PropTypes.string,
 };
 
 ElectronicDeliveryForm.defaultProps = {

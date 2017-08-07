@@ -217,6 +217,7 @@ class ElectronicDelivery extends React.Component {
               error={error}
               form={form}
               defaultEmail={patronEmail}
+              searchKeywords={searchKeywords}
             />
           </div>
         </div>
