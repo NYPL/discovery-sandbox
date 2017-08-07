@@ -73,6 +73,11 @@ class ElectronicDelivery extends React.Component {
     };
 
     const raisedErrors = [];
+
+    if (!raiseError || _isEmpty(raiseError)) {
+      return null;
+    }
+
     _mapObject(raiseError, (val, key) => {
       raisedErrors.push(<li key={key}>{headlineError[key]}</li>);
     });
