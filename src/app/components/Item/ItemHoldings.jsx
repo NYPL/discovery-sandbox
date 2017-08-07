@@ -99,6 +99,7 @@ class ItemHoldings extends React.Component {
           bibId={bibId}
           getRecord={this.getRecord}
           id="bib-item-table"
+          searchKeywords={this.props.searchKeywords}
         /> : null
     );
   }
@@ -189,10 +190,12 @@ ItemHoldings.propTypes = {
   itemPage: PropTypes.string,
   bibId: PropTypes.string,
   shortenItems: PropTypes.bool,
+  searchKeywords: PropTypes.string,
 };
 
 ItemHoldings.defaultProps = {
   shortenItems: false,
+  searchKeywords: '',
 };
 
 ItemHoldings.contextTypes = {

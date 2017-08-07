@@ -91,7 +91,12 @@ class ElectronicDelivery extends React.Component {
       itemSource,
     } = this.state;
     const path = `${appConfig.baseUrl}/hold/confirmation/${bibId}-${itemId}`;
-    const data = _extend({ bibId, itemId, pickupLocation: 'edd', itemSource }, fields);
+    const data = _extend({
+      bibId,
+      itemId,
+      pickupLocation: 'edd',
+      itemSource,
+    }, fields);
 
     // This is to remove the error box on the top of the page on a successfull submission.
     this.setState({ raiseError: null });
@@ -101,7 +106,10 @@ class ElectronicDelivery extends React.Component {
         if (response.data.error && response.data.error.status !== 200) {
           this.context.router.push(`${path}?errorMessage=${response.data.error.statusText}`);
         } else {
-          this.context.router.push(`${path}?pickupLocation=edd&requestId=${response.data.id}`);
+          this.context.router.push(
+            `${path}?pickupLocation=edd&searchKeywords=${this.props.searchKeywords}` +
+            `&requestId=${response.data.id}`
+          );
         }
       })
       .catch(error => {
@@ -139,7 +147,6 @@ class ElectronicDelivery extends React.Component {
   }
 
   render() {
-    const searchKeywords = this.props.searchKeywords || '';
     const {
       bibId,
       itemId,
@@ -153,6 +160,7 @@ class ElectronicDelivery extends React.Component {
       this.state.patron.emails && _isArray(this.state.patron.emails)
       && this.state.patron.emails.length
       ) ? this.state.patron.emails[0] : '';
+    const searchKeywords = this.props.searchKeywords;
 
     return (
       <div id="mainContent">
@@ -237,6 +245,10 @@ ElectronicDelivery.propTypes = {
   params: PropTypes.object,
   error: PropTypes.object,
   form: PropTypes.object,
+};
+
+ElectronicDelivery.defaultProps = {
+  searchKeywords: '',
 };
 
 
