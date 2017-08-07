@@ -408,7 +408,7 @@ function createHoldRequestServer(req, res, pickedUpBibId = '', pickedUpItemId = 
   const pickupLocation = req.body['delivery-location'];
   const docDeliveryData = (req.body.form && pickupLocation === 'edd') ? req.body.form : null;
   const searchKeywordsQuery = (req.body['search-keywords']) ?
-    `searchKeywords=${req.body['search-keywords']}` : '';
+    `&searchKeywords=${req.body['search-keywords']}` : '';
 
   if (!bibId || !itemId) {
     // Dummy redirect for now
@@ -416,7 +416,8 @@ function createHoldRequestServer(req, res, pickedUpBibId = '', pickedUpItemId = 
   }
 
   if (pickupLocation === 'edd') {
-    const eddSearchKeywordsQuery = (searchKeywordsQuery) ? `?${searchKeywordsQuery}` : '';
+    const eddSearchKeywordsQuery = (req.body['search-keywords']) ?
+      `?searchKeywords=${req.body['search-keywords']}` : '';
 
     return res.redirect(
       `${appConfig.baseUrl}/hold/request/${bibId}-${itemId}/edd${eddSearchKeywordsQuery}`
