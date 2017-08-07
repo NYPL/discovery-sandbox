@@ -86,7 +86,7 @@ class HoldRequest extends React.Component {
     if (this.state.delivery === 'edd') {
       const searchKeywordsQueryEdd = searchKeywordsQuery ? `?${searchKeywordsQuery}` : '';
 
-      path = `${appConfig.baseUrl}/hold/request/${bibId}-${itemId}/edd`;
+      path = `${appConfig.baseUrl}/hold/request/${bibId}-${itemId}/edd${searchKeywordsQueryEdd}`;
 
       this.context.router.push(path);
       return;

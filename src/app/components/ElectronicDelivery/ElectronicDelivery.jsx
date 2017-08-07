@@ -80,7 +80,6 @@ class ElectronicDelivery extends React.Component {
       itemId,
       pickupLocation: 'edd',
       itemSource,
-      searchKeywords: this.props.searchKeywords,
     }, fields);
 
     axios
@@ -89,7 +88,10 @@ class ElectronicDelivery extends React.Component {
         if (response.data.error && response.data.error.status !== 200) {
           this.context.router.push(`${path}?errorMessage=${response.data.error.statusText}`);
         } else {
-          this.context.router.push(`${path}?pickupLocation=edd&requestId=${response.data.id}`);
+          this.context.router.push(
+            `${path}?pickupLocation=edd&searchKeywords=${this.props.searchKeywords}` +
+            `&requestId=${response.data.id}`
+          );
         }
       })
       .catch(error => {
