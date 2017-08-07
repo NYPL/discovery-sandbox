@@ -284,7 +284,7 @@ class ElectronicDeliveryForm extends React.Component {
         <input
           type="hidden"
           name="searchKeywords"
-          value={(this.props.searchKeywords) ? this.props.searchKeywords : ''}
+          value={this.props.searchKeywords}
         />
 
         <button
@@ -315,6 +315,7 @@ ElectronicDeliveryForm.propTypes = {
 
 ElectronicDeliveryForm.defaultProps = {
   defaultEmail: '',
+  searchKeywords: '',
 };
 
 export default ElectronicDeliveryForm;

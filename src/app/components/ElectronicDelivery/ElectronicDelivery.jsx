@@ -75,7 +75,13 @@ class ElectronicDelivery extends React.Component {
       itemSource,
     } = this.state;
     const path = `${appConfig.baseUrl}/hold/confirmation/${bibId}-${itemId}`;
-    const data = _extend({ bibId, itemId, pickupLocation: 'edd', itemSource }, fields);
+    const data = _extend({
+      bibId,
+      itemId,
+      pickupLocation: 'edd',
+      itemSource,
+      searchKeywords: this.props.searchKeywords,
+    }, fields);
 
     axios
       .post(`${appConfig.baseUrl}/api/newHold`, data)
@@ -109,7 +115,6 @@ class ElectronicDelivery extends React.Component {
   }
 
   render() {
-    const searchKeywords = this.props.searchKeywords || '';
     const {
       bibId,
       itemId,
@@ -123,6 +128,7 @@ class ElectronicDelivery extends React.Component {
       this.state.patron.emails && _isArray(this.state.patron.emails)
       && this.state.patron.emails.length
       ) ? this.state.patron.emails[0] : '';
+    const searchKeywords = this.props.searchKeywords;
 
     return (
       <div id="mainContent">
@@ -209,6 +215,10 @@ ElectronicDelivery.propTypes = {
   params: PropTypes.object,
   error: PropTypes.object,
   form: PropTypes.object,
+};
+
+ElectronicDelivery.defaultProps = {
+  searchKeywords: '',
 };
 
 
