@@ -520,8 +520,6 @@ function eddServer(req, res) {
   const {
     bibId,
     itemId,
-    pickupLocation,
-    searchKeywords,
   } = req.body;
 
   let serverErrors = {};
@@ -541,7 +539,7 @@ function eddServer(req, res) {
   // NOTE: Mocking that this workflow works correctly:
   // Just a dummy redirect that doesn't actually do anything yet with the correct valid data
   // that was submitted.
-  return createHoldRequestEdd(req, res, bibId, itemId);
+  return createHoldRequestEdd(req, res);
 }
 
 export default {

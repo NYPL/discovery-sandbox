@@ -287,7 +287,12 @@ class ElectronicDeliveryForm extends React.Component {
           value={(this.props.searchKeywords) ? this.props.searchKeywords : ''}
         />
 
-        <button type="submit" className="nypl-request-button" onClick={this.submit} onSubmit={this.submit}>
+        <button
+          type="submit"
+          className="nypl-request-button"
+          onClick={this.submit}
+          onSubmit={this.submit}
+        >
           Submit request
         </button>
       </form>
@@ -305,6 +310,7 @@ ElectronicDeliveryForm.propTypes = {
   error: PropTypes.object,
   form: PropTypes.object,
   defaultEmail: PropTypes.string,
+  searchKeywords: PropTypes.string,
 };
 
 ElectronicDeliveryForm.defaultProps = {
