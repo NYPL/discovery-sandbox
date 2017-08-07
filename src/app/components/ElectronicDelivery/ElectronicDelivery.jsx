@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import { Link } from 'react-router';
@@ -42,6 +43,83 @@ class ElectronicDelivery extends React.Component {
     this.requireUser();
   }
 
+  /*
+   * componentDidUpdate()
+   * After the component updates, if there are errors then the DOM for the error box message
+   * is rendered. Since it exists, it should be focused so that the patron can get a better
+   * idea of what is wrong.
+   */
+  componentDidUpdate() {
+    if (this.refs['nypl-form-error']) {
+      ReactDOM.findDOMNode(this.refs['nypl-form-error']).focus();
+    }
+  }
+
+  /*
+   * getRaisedErrors(raiseError)
+   * There's a set list of required inputs in the EDD form. If the key errors from the form
+   * are found in the set list, it will render those errors. This is meant to be an
+   * aggregate list that is displayed at the top of the form.
+   * @param {object} raiseError An object with the key/value pair of input elements in the
+   *   EDD form that have incorrect input.
+   * @return {object}
+   */
+  getRaisedErrors(raiseError) {
+    const headlineError = {
+      emailAddress: 'Email Address',
+      chapterTitle: 'Chapter / Article Title',
+      startPage: 'Starting Page Number',
+      endPage: 'Ending Page Number',
+    };
+
+    const raisedErrors = [];
+    _mapObject(raiseError, (val, key) => {
+      raisedErrors.push(<li key={key}>{headlineError[key]}</li>);
+    });
+
+    return raisedErrors;
+  }
+
+  /**
+   * submitRequest()
+   * Client-side submit call.
+   */
+  submitRequest(fields) {
+    const {
+      bibId,
+      itemId,
+      itemSource,
+    } = this.state;
+    const path = `${appConfig.baseUrl}/hold/confirmation/${bibId}-${itemId}`;
+    const data = _extend({ bibId, itemId, pickupLocation: 'edd', itemSource }, fields);
+
+    // This is to remove the error box on the top of the page on a successfull submission.
+    this.setState({ raiseError: null });
+    axios
+      .post(`${appConfig.baseUrl}/api/newHold`, data)
+      .then(response => {
+        if (response.data.error && response.data.error.status !== 200) {
+          this.context.router.push(`${path}?errorMessage=${response.data.error.statusText}`);
+        } else {
+          this.context.router.push(`${path}?pickupLocation=edd&requestId=${response.data.id}`);
+        }
+      })
+      .catch(error => {
+        console.log(error);
+        this.context.router.push(`${path}?errorMessage=${error}`);
+      });
+  }
+
+  /*
+   * raiseError()
+   * Simple function that sets the component's State's raiseError value to the error that
+   * gets returned after validation.
+   * @param {object} error
+   */
+  raiseError(error) {
+    this.setState({ raiseError: error });
+  }
+
   /**
    * requireUser()
    * Redirects the patron to OAuth log in page if he/she hasn't been logged in yet.
@@ -58,54 +136,6 @@ class ElectronicDelivery extends React.Component {
     window.location.replace(`${appConfig.loginUrl}?redirect_uri=${fullUrl}`);
 
     return false;
-  }
-
-  raiseError(error) {
-    this.setState({raiseError : error });
-  }
-
-  /**
-   * submitRequest()
-   * Client-side submit call.
-   */
-  submitRequest(fields) {
-    const {
-      bibId,
-      itemId,
-      itemSource,
-    } = this.state;
-    const path = `${appConfig.baseUrl}/hold/confirmation/${bibId}-${itemId}`;
-    const data = _extend({ bibId, itemId, pickupLocation: 'edd', itemSource }, fields);
-
-    axios
-      .post(`${appConfig.baseUrl}/api/newHold`, data)
-      .then(response => {
-        if (response.data.error && response.data.error.status !== 200) {
-          this.context.router.push(`${path}?errorMessage=${response.data.error.statusText}`);
-        } else {
-          this.context.router.push(`${path}?pickupLocation=edd&requestId=${response.data.id}`);
-        }
-      })
-      .catch(error => {
-        console.log(error);
-        this.context.router.push(`${path}?errorMessage=${error}`);
-      });
-  }
-
-  getRaisedErrors(raiseError) {
-    const headlineError = {
-      emailAddress: 'Email Address',
-      chapterTitle: 'Chapter / Article Title',
-      startPage: 'Starting Page Number',
-      endPage: 'Ending Page Number',
-    };
-
-    const raisedErrors = [];
-    _mapObject(raiseError, (val, key) => {
-      raisedErrors.push(<li key={key}>{headlineError[key]}</li>);
-    });
-
-    return raisedErrors;
   }
 
   render() {
@@ -169,13 +199,11 @@ class ElectronicDelivery extends React.Component {
           <div className="nypl-row">
             {
               raiseError && (
-                <div className="nypl-form-error">
+                <div className="nypl-form-error" ref="nypl-form-error" tabIndex="0">
                   <h2>Error</h2>
                   <p>Please check the following required fields and resubmit your request:</p>
                   <ul>
-                    {
-                      this.getRaisedErrors(raiseError)
-                    }
+                    {this.getRaisedErrors(raiseError)}
                   </ul>
                 </div>
               )
