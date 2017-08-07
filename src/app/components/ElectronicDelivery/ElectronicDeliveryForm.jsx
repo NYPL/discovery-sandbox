@@ -42,10 +42,12 @@ class ElectronicDeliveryForm extends React.Component {
   submit(e) {
     e.preventDefault();
 
-    if (validate(this.state.form, (error) => {
+    const errorCb = (error) => {
       this.setState({ error });
       this.props.raiseError(error);
-    })) {
+    };
+
+    if (validate(this.state.form, errorCb)) {
       this.props.submitRequest(this.state);
     }
   }
@@ -69,14 +71,7 @@ class ElectronicDeliveryForm extends React.Component {
       errorClass[key] = this.state.error[key] ? 'nypl-field-error' : '';
     });
 
-    let pageErrorMsg = 'You may request a maximum of 50 pages.';
-    let pageFieldErrorClass = '';
-
-    if (this.state.error.startPage || this.state.error.endPage) {
-      pageErrorMsg = 'Page values must be alphanumeric (no special characters). ' +
-        'You may request a maximum of 50 pages.';
-      pageFieldErrorClass = 'nypl-field-error';
-    }
+    const defaultPageMsg = 'You may request a maximum of 50 pages.';
 
     // A lot of this can be refactored to be in a loop but that's a later and next step.
     // I was thinking each `nypl-text-field` or `nypl-year-field` div can be
@@ -222,7 +217,7 @@ class ElectronicDeliveryForm extends React.Component {
 
           <div className="nypl-row">
             <div className="nypl-column-one-quarter">
-              <div className={`nypl-text-field ${pageFieldErrorClass}`}>
+              <div className={`nypl-text-field ${errorClass.startPage}`}>
                 <label htmlFor="start-page" id="start-page-label">Starting Page
                   <span className="nypl-required-field">&nbsp;Required</span>
                 </label>
@@ -231,13 +226,22 @@ class ElectronicDeliveryForm extends React.Component {
                   type="text"
                   required
                   className="form-text"
-                  aria-labelledby="start-page-label"
+                  aria-labelledby="start-page-label start-page-status"
                   name="startPage"
                   value={this.state.form.startPage}
                   onChange={(e) => this.handleUpdate(e, 'startPage')}
                 />
+                <span
+                  className="nypl-field-status"
+                  id="start-page-status"
+                  aria-live="assertive"
+                  aria-atomic="true"
+                >
+                  <span>{errorClass.startPage ? this.state.error.startPage : defaultPageMsg}</span>
+                </span>
+              </div>
 
-                <br />
+              <div className={`nypl-text-field ${errorClass.endPage}`}>
                 <label htmlFor="end-page" id="end-page-label">Ending Page
                   <span className="nypl-required-field">&nbsp;Required</span>
                 </label>
@@ -246,18 +250,18 @@ class ElectronicDeliveryForm extends React.Component {
                   type="text"
                   required
                   className="form-text"
-                  aria-labelledby="end-page-label"
+                  aria-labelledby="end-page-label end-page-status"
                   name="endPage"
                   value={this.state.form.endPage}
                   onChange={(e) => this.handleUpdate(e, 'endPage')}
                 />
                 <span
                   className="nypl-field-status"
-                  id="page-status"
+                  id="end-page-status"
                   aria-live="assertive"
                   aria-atomic="true"
                 >
-                  <span>{pageErrorMsg}</span>
+                  <span>{errorClass.endPage ? this.state.error.endPage : defaultPageMsg}</span>
                 </span>
               </div>
 
@@ -282,7 +286,12 @@ class ElectronicDeliveryForm extends React.Component {
         <input type="hidden" name="pickupLocation" value="edd" />
         <input type="hidden" name="itemSource" value={this.props.itemSource} />
 
-        <button type="submit" className="nypl-request-button" onClick={this.submit} onSubmit={this.submit}>
+        <button
+          type="submit"
+          className="nypl-request-button"
+          onClick={this.submit}
+          onSubmit={this.submit}
+        >
           Submit request
         </button>
       </form>
