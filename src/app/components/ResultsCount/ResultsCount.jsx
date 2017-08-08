@@ -25,7 +25,7 @@ class ResultsCount extends React.Component {
     let result = '';
 
     if (searchKeywords) {
-      result += `for keyword '${searchKeywords}'`;
+      result += `for keyword "${searchKeywords}"`;
     }
 
     if (!_isEmpty(selectedFacets)) {
@@ -33,7 +33,7 @@ class ResultsCount extends React.Component {
         const mappedKey = keyMapping[key];
 
         if (val[0] && val[0].value) {
-          result += `for ${mappedKey} '${val[0].value}'`;
+          result += `for ${mappedKey} "${val[0].value}"`;
         }
       });
     }
