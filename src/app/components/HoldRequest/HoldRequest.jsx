@@ -18,19 +18,28 @@ class HoldRequest extends React.Component {
     super(props);
 
     const deliveryLocationsFromAPI = this.props.deliveryLocations;
+    const isEddRequestable = this.props.isEddRequestable;
     const firstLocationValue = (
       deliveryLocationsFromAPI.length &&
       deliveryLocationsFromAPI[0]['@id'] &&
       typeof deliveryLocationsFromAPI[0]['@id'] === 'string') ?
       deliveryLocationsFromAPI[0]['@id'].replace('loc:', '') : '';
+    let defaultDelivery = 'edd';
+    let checkedLocNum = -1;
+
+    // If EDD is available from the API, set EDD as the default delivery location,
+    // and the selected option as "-1" to indicate it.
+    // If there's no EDD, set the default delivery location as the first one from the location list,
+    // and set the selected option as "0".
+    // If neither EDD or physical locations available, we will show an error message on the page.
+    if (!isEddRequestable && deliveryLocationsFromAPI.length) {
+      defaultDelivery = firstLocationValue;
+      checkedLocNum = 0;
+    }
 
     this.state = _extend({
-      // If we have any delivery locations in the array that we receive from the API,
-      // set the first location as the selected option.
-      // If there's no delivery locations returned, set the selected option as "-1" to
-      // indicate the selected option and its value is "edd".
-      delivery: deliveryLocationsFromAPI.length ? firstLocationValue : 'edd',
-      checkedLocNum: deliveryLocationsFromAPI.length ? 0 : -1,
+      delivery: defaultDelivery,
+      checkedLocNum,
     }, { patron: PatronStore.getState() });
 
     // change all the components :(
@@ -215,8 +224,8 @@ class HoldRequest extends React.Component {
     const isEddRequestable = this.props.isEddRequestable;
     let deliveryLocationInstruction =
       (!deliveryLocations.length && !isEddRequestable) ?
-      <h4>Delivery options for this item are currently unavailable. Please try again later or contact 917-ASK-NYPL (<a href="tel:917-275-6975">917-275-6975</a>).</h4> :
-      <h4>Choose a delivery option or location</h4>;
+        <h4>Delivery options for this item are currently unavailable. Please try again later or contact 917-ASK-NYPL (<a href="tel:917-275-6975">917-275-6975</a>).</h4> :
+        <h4>Choose a delivery option or location</h4>;
     let form = null;
 
     if (bib) {
