@@ -42,10 +42,12 @@ class ElectronicDeliveryForm extends React.Component {
   submit(e) {
     e.preventDefault();
 
-    if (validate(this.state.form, (error) => {
+    const errorCb = (error) => {
       this.setState({ error });
       this.props.raiseError(error);
-    })) {
+    };
+
+    if (validate(this.state.form, errorCb)) {
       this.props.submitRequest(this.state);
     }
   }
@@ -69,14 +71,7 @@ class ElectronicDeliveryForm extends React.Component {
       errorClass[key] = this.state.error[key] ? 'nypl-field-error' : '';
     });
 
-    let pageErrorMsg = 'You may request a maximum of 50 pages.';
-    let pageFieldErrorClass = '';
-
-    if (this.state.error.startPage || this.state.error.endPage) {
-      pageErrorMsg = 'Page values must be alphanumeric (no special characters). ' +
-        'You may request a maximum of 50 pages.';
-      pageFieldErrorClass = 'nypl-field-error';
-    }
+    const defaultPageMsg = 'You may request a maximum of 50 pages.';
 
     // A lot of this can be refactored to be in a loop but that's a later and next step.
     // I was thinking each `nypl-text-field` or `nypl-year-field` div can be
@@ -96,14 +91,14 @@ class ElectronicDeliveryForm extends React.Component {
               <h4>Contact Information</h4>
 
               <div className={`nypl-text-field ${errorClass.emailAddress}`}>
-                <label htmlFor="email-address" id="email-address-label">Email Address
+                <label htmlFor="emailAddress" id="emailAddress-label">Email Address
                   <span className="nypl-required-field">&nbsp;Required</span>
                 </label>
                 <input
-                  id="email-address"
+                  id="emailAddress"
                   type="text"
                   required
-                  aria-labelledby="email-address-label email-address-status"
+                  aria-labelledby="emailAddress-label emailAddress-status"
                   aria-required="true"
                   name="emailAddress"
                   value={this.state.form.emailAddress}
@@ -111,7 +106,7 @@ class ElectronicDeliveryForm extends React.Component {
                 />
                 <span
                   className="nypl-field-status"
-                  id="email-address-status"
+                  id="emailAddress-status"
                   aria-live="assertive"
                   aria-atomic="true"
                 >
@@ -132,21 +127,21 @@ class ElectronicDeliveryForm extends React.Component {
               <h4>Chapter or Article Information</h4>
 
               <div className={`nypl-text-field ${errorClass.chapterTitle}`}>
-                <label htmlFor="chapter-title" id="chapter-title-label">Chapter / Article Title
+                <label htmlFor="chapterTitle" id="chapterTitle-label">Chapter / Article Title
                   <span className="nypl-required-field">&nbsp;Required</span>
                 </label>
                 <input
-                  id="chapter-title"
+                  id="chapterTitle"
                   type="text"
                   required
-                  aria-labelledby="chapter-title-label chapter-title-status"
+                  aria-labelledby="chapterTitle-label chapterTitle-status"
                   name="chapterTitle"
                   value={this.state.form.chapterTitle}
                   onChange={(e) => this.handleUpdate(e, 'chapterTitle')}
                 />
                 <span
                   className="nypl-field-status"
-                  id="chapter-title-status"
+                  id="chapterTitle-status"
                   aria-live="assertive"
                   aria-atomic="true"
                 >
@@ -222,52 +217,61 @@ class ElectronicDeliveryForm extends React.Component {
 
           <div className="nypl-row">
             <div className="nypl-column-one-quarter">
-              <div className={`nypl-text-field ${pageFieldErrorClass}`}>
-                <label htmlFor="start-page" id="start-page-label">Starting Page
+              <div className={`nypl-text-field ${errorClass.startPage}`}>
+                <label htmlFor="startPage" id="startPage-label">Starting Page
                   <span className="nypl-required-field">&nbsp;Required</span>
                 </label>
                 <input
-                  id="start-page"
+                  id="startPage"
                   type="text"
                   required
                   className="form-text"
-                  aria-labelledby="start-page-label"
+                  aria-labelledby="startPage-label startPage-status"
                   name="startPage"
                   value={this.state.form.startPage}
                   onChange={(e) => this.handleUpdate(e, 'startPage')}
                 />
+                <span
+                  className="nypl-field-status"
+                  id="startPage-status"
+                  aria-live="assertive"
+                  aria-atomic="true"
+                >
+                  <span>{errorClass.startPage ? this.state.error.startPage : defaultPageMsg}</span>
+                </span>
+              </div>
 
-                <br />
-                <label htmlFor="end-page" id="end-page-label">Ending Page
+              <div className={`nypl-text-field ${errorClass.endPage}`}>
+                <label htmlFor="endPage" id="endPage-label">Ending Page
                   <span className="nypl-required-field">&nbsp;Required</span>
                 </label>
                 <input
-                  id="end-page"
+                  id="endPage"
                   type="text"
                   required
                   className="form-text"
-                  aria-labelledby="end-page-label"
+                  aria-labelledby="endPage-label endPage-status"
                   name="endPage"
                   value={this.state.form.endPage}
                   onChange={(e) => this.handleUpdate(e, 'endPage')}
                 />
                 <span
                   className="nypl-field-status"
-                  id="page-status"
+                  id="endPage-status"
                   aria-live="assertive"
                   aria-atomic="true"
                 >
-                  <span>{pageErrorMsg}</span>
+                  <span>{errorClass.endPage ? this.state.error.endPage : defaultPageMsg}</span>
                 </span>
               </div>
 
               <div className="nypl-text-field">
-                <label htmlFor="request-notes" id="request-notes-label">Additional Notes</label>
+                <label htmlFor="requestNotes" id="requestNotes-label">Additional Notes</label>
                 <textarea
                   className="nypl-text-area"
-                  id="request-notes"
+                  id="requestNotes"
                   type="text"
-                  aria-labelledby="request-notes-label"
+                  aria-labelledby="requestNotes-label"
                   name="requestNotes"
                   value={this.state.form.requestNotes}
                   onChange={(e) => this.handleUpdate(e, 'requestNotes')}
