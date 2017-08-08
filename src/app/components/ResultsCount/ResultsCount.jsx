@@ -7,6 +7,12 @@ import {
 } from 'underscore';
 
 class ResultsCount extends React.Component {
+  /*
+   * displayContext()
+   * Displays where the results are coming from. This currently only allows for one
+   * option at a time due to constraints on the front end not allowing for multiple
+   * selections to occur.
+   */
   displayContext() {
     const { searchKeywords, selectedFacets } = this.props;
     const keyMapping = {
