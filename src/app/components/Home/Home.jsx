@@ -7,7 +7,7 @@ import { basicQuery } from '../../utils/utils.js';
 import appConfig from '../../../../appConfig.js';
 
 const Home = (props) => (
-  <DocumentTitle title="Research Catalog | NYPL">
+  <DocumentTitle title="Shared Collection Catalog | NYPL">
     <div className="home" id="mainContent">
 
       <div className="nypl-homepage-hero">

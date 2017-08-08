@@ -84,7 +84,7 @@ class App extends React.Component {
 
   render() {
     return (
-      <DocumentTitle title="Research Catalog | NYPL">
+      <DocumentTitle title="Shared Collection Catalog | NYPL">
         <div className="app-wrapper">
           <Header navData={navConfig.current} skipNav={{ target: 'mainContent' }} />
 
