@@ -90,7 +90,7 @@ class ElectronicDelivery extends React.Component {
         } else {
           this.context.router.push(
             `${path}?pickupLocation=edd&requestId=${response.data.id}` +
-            + `&searchKeywords=${this.props.searchKeywords}`
+            `&searchKeywords=${this.props.searchKeywords}`
           );
         }
       })
