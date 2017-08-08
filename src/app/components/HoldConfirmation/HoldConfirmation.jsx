@@ -143,6 +143,8 @@ class HoldConfirmation extends React.Component {
     return (
       <Link
         className="nypl-request-button"
+        // We use this.props.location.query.searchKeywords here for the query from
+        // the URL to deal with no js situation.
         to={`${appConfig.baseUrl}/search?q=${this.props.location.query.searchKeywords}`}
         onClick={(e) => this.goSearchResults(e)}
       >
