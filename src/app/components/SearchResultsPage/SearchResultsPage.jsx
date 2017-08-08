@@ -20,6 +20,7 @@ const SearchResultsPage = (props, context) => {
   const {
     searchResults,
     searchKeywords,
+    selectedFacets,
     page,
     sortBy,
     field,
@@ -94,7 +95,12 @@ const SearchResultsPage = (props, context) => {
             >
               {
                 !!(totalResults && totalResults !== 0) &&
-                  (<ResultsCount spinning={spinning} count={totalResults} />)
+                  (<ResultsCount
+                    spinning={spinning}
+                    count={totalResults}
+                    selectedFacets={selectedFacets}
+                    searchKeywords={searchKeywords}
+                  />)
               }
 
               {
