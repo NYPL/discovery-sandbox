@@ -55,6 +55,18 @@ class HoldConfirmation extends React.Component {
   }
 
   /**
+   * goSearchResults(e)
+   * @param {event}
+   * Renders the route back to search results page.
+   *
+   */
+  goSearchResults(e) {
+    e.preventDefault();
+
+    this.context.router.push(`${appConfig.baseUrl}/search?q=${this.props.searchKeywords}`);
+  }
+
+  /**
    * modelDeliveryLocationName(prefLabel, shortName)
    * Renders the names of the radio input fields of delivery locations except EDD.
    *
@@ -109,10 +121,34 @@ class HoldConfirmation extends React.Component {
     return (
       <Link
         className="nypl-request-button"
-        to="/"
+        to={`${appConfig.baseUrl}/`}
         onClick={(e) => this.goRestart(e)}
       >
         Start Over
+      </Link>
+    );
+  }
+
+  /**
+   * renderBackToSearchLink
+   * Renders the link back to the page of search results.
+   *
+   * @return {HTML Element}
+   */
+  renderBackToSearchLink() {
+    if (!this.props.location.query.searchKeywords) {
+      return false;
+    }
+
+    return (
+      <Link
+        className="nypl-request-button"
+        // We use this.props.location.query.searchKeywords here for the query from
+        // the URL to deal with no js situation.
+        to={`${appConfig.baseUrl}/search?q=${this.props.location.query.searchKeywords}`}
+        onClick={(e) => this.goSearchResults(e)}
+      >
+        Back to results
       </Link>
     );
   }
@@ -150,7 +186,7 @@ class HoldConfirmation extends React.Component {
             <div className="nypl-full-width-wrapper">
               <div className="nypl-column-full">
                 <Breadcrumbs
-                  query={this.props.searchKeywords}
+                  query={this.props.location.query.searchKeywords}
                   type="confirmation"
                   bibUrl={`/bib/${bibId}`}
                   itemUrl={`/hold/request/${bibId}-${itemId}`}
@@ -204,6 +240,7 @@ class HoldConfirmation extends React.Component {
                     If you would like to cancel your request, or if you have further questions,
                     please contact 917-ASK-NYPL (917-275-6975).
                   </p>
+                  {this.renderBackToSearchLink()}
                   {this.renderStartOverLink()}
                 </div>
               </div>

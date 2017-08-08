@@ -35,6 +35,7 @@ const BibPage = (props) => {
       items={items}
       bibId={bibId}
       itemPage={itemPage}
+      searchKeywords={props.searchKeywords}
     /> : null;
   const marcRecord = isNYPLReCAP ? <MarcRecord bNumber={bNumber[0]} /> : null;
 

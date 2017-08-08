@@ -281,8 +281,18 @@ class ElectronicDeliveryForm extends React.Component {
         <input type="hidden" name="itemId" value={this.props.itemId} />
         <input type="hidden" name="pickupLocation" value="edd" />
         <input type="hidden" name="itemSource" value={this.props.itemSource} />
+        <input
+          type="hidden"
+          name="searchKeywords"
+          value={this.props.searchKeywords}
+        />
 
-        <button type="submit" className="nypl-request-button" onClick={this.submit} onSubmit={this.submit}>
+        <button
+          type="submit"
+          className="nypl-request-button"
+          onClick={this.submit}
+          onSubmit={this.submit}
+        >
           Submit request
         </button>
       </form>
@@ -300,10 +310,12 @@ ElectronicDeliveryForm.propTypes = {
   error: PropTypes.object,
   form: PropTypes.object,
   defaultEmail: PropTypes.string,
+  searchKeywords: PropTypes.string,
 };
 
 ElectronicDeliveryForm.defaultProps = {
   defaultEmail: '',
+  searchKeywords: '',
 };
 
 export default ElectronicDeliveryForm;
