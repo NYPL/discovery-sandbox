@@ -1,17 +1,49 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import {
+  isEmpty as _isEmpty,
+  mapObject as _mapObject,
+} from 'underscore';
+
 class ResultsCount extends React.Component {
+  displayContext() {
+    const { searchKeywords, selectedFacets } = this.props;
+    const keyMapping = {
+      creatorLiteral: 'Author',
+      contributorLiteral: 'Author',
+      titleDisplay: 'Title',
+      subjectLiteral: 'Subject',
+    };
+
+    let result = '';
+
+    if (searchKeywords) {
+      result += `for search keyword ${searchKeywords}`;
+    }
+
+    if (!_isEmpty(selectedFacets)) {
+      _mapObject(selectedFacets, (val, key) => {
+        const mappedKey = keyMapping[key];
+        result += `for ${mappedKey} ${val[0].value}`;
+      });
+    }
+
+    result += '.';
+    return result;
+  }
+
   displayCount() {
     const { count, spinning } = this.props;
     const countF = count ? count.toLocaleString() : '';
+    const displayContext = this.displayContext();
 
     if (spinning) {
       return (<p>Loading…</p>);
     }
 
     if (count !== 0) {
-      return (<p>{countF} results</p>);
+      return (<p>{countF} results {displayContext}</p>);
     }
     return (<p>No results found.</p>);
   }
@@ -36,6 +68,8 @@ class ResultsCount extends React.Component {
 ResultsCount.propTypes = {
   count: PropTypes.number,
   spinning: PropTypes.bool,
+  selectedFacets: PropTypes.object,
+  searchKeywords: PropTypes.string,
 };
 
 ResultsCount.defaultProps = {
