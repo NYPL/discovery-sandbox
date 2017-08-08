@@ -55,7 +55,7 @@ class ResultsCount extends React.Component {
     if (count !== 0) {
       return (<p>{countF} results {displayContext}</p>);
     }
-    return (<p>No results found.</p>);
+    return (<p>No results found. Please try another search.</p>);
   }
 
   render() {
