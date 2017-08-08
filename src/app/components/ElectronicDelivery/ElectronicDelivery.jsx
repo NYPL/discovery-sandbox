@@ -89,8 +89,8 @@ class ElectronicDelivery extends React.Component {
           this.context.router.push(`${path}?errorMessage=${response.data.error.statusText}`);
         } else {
           this.context.router.push(
-            `${path}?pickupLocation=edd&searchKeywords=${this.props.searchKeywords}` +
-            `&requestId=${response.data.id}`
+            `${path}?pickupLocation=edd&requestId=${response.data.id}` +
+            + `&searchKeywords=${this.props.searchKeywords}`
           );
         }
       })
