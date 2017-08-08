@@ -308,9 +308,8 @@ class BibDetails extends React.Component {
   }
 
   newSearch(e, query) {
-
     e.preventDefault();
-// console.log(query);
+
     Actions.updateSpinner(true);
     ajaxCall(`${appConfig.baseUrl}/api?${query}`, (response) => {
       const closingBracketIndex = query.indexOf(']');
