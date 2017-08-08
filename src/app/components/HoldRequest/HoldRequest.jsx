@@ -27,8 +27,7 @@ class HoldRequest extends React.Component {
     let defaultDelivery = 'edd';
     let checkedLocNum = -1;
 
-    // If EDD is available from the API, set EDD as the default delivery location,
-    // and the selected option as "-1" to indicate it.
+    // Sets EDD as the default delivery location and the selected option as "-1" to indicate it.
     // If there's no EDD, set the default delivery location as the first one from the location list,
     // and set the selected option as "0".
     // If neither EDD or physical locations available, we will show an error message on the page.
