@@ -169,7 +169,7 @@ class ElectronicDelivery extends React.Component {
     const searchKeywords = this.props.searchKeywords;
 
     return (
-      <DocumentTitle title={`${title} | Shared Collection Catalog | NYPL`}>
+      <DocumentTitle title="Electronic Delivery Request | Shared Collection Catalog | NYPL">
         <div id="mainContent">
           <div className="nypl-request-page-header">
             <div className="row">

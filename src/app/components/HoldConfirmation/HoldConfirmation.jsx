@@ -181,7 +181,7 @@ class HoldConfirmation extends React.Component {
     }
 
     return (
-      <DocumentTitle title={`${title} | Shared Collection Catalog | NYPL`}>
+      <DocumentTitle title="Request Confirmation | Shared Collection Catalog | NYPL">
         <main id="mainContent" className="main-page">
           <div className="nypl-request-page-header">
             <div className="row">
