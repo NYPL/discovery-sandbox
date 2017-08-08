@@ -144,3 +144,29 @@ li, p {
     padding: 15px 0 30px !important;
   }
 }
+
+// Override for the omnisearch div to work as a fieldset and
+// allow focus on the search button.
+div.nypl-omnisearch {
+  height: 48px;
+
+  &.nypl-spinner-field {
+    overflow: inherit;
+  }
+
+  &.spinning {
+    overflow: hidden;
+  }
+}
+
+button,
+html input[type=button],
+input[type=reset],
+input[type=submit] {
+  -moz-appearance: button;
+}
+input[type=submit]:focus {
+  outline-color: #ffb81d;
+  outline-style: solid;
+  outline-width: 3px;
+}
