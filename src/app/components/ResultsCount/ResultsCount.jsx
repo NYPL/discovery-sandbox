@@ -7,19 +7,25 @@ import {
 } from 'underscore';
 
 class ResultsCount extends React.Component {
+  /*
+   * displayContext()
+   * Displays where the results are coming from. This currently only allows for one
+   * option at a time due to constraints on the front end not allowing for multiple
+   * selections to occur.
+   */
   displayContext() {
     const { searchKeywords, selectedFacets } = this.props;
     const keyMapping = {
-      creatorLiteral: 'Author',
-      contributorLiteral: 'Author',
-      titleDisplay: 'Title',
-      subjectLiteral: 'Subject',
+      creatorLiteral: 'author',
+      contributorLiteral: 'author',
+      titleDisplay: 'title',
+      subjectLiteral: 'subject',
     };
 
     let result = '';
 
     if (searchKeywords) {
-      result += `for search keyword ${searchKeywords}`;
+      result += `for keyword '${searchKeywords}'`;
     }
 
     if (!_isEmpty(selectedFacets)) {
@@ -27,11 +33,9 @@ class ResultsCount extends React.Component {
         const mappedKey = keyMapping[key];
 
         if (val[0] && val[0].value) {
-          result += `for ${mappedKey} ${val[0].value}`;
+          result += `for ${mappedKey} '${val[0].value}'`;
         }
       });
-    } else {
-      result += '.';
     }
 
     return result;
@@ -49,7 +53,7 @@ class ResultsCount extends React.Component {
     if (count !== 0) {
       return (<p>{countF} results {displayContext}</p>);
     }
-    return (<p>No results found.</p>);
+    return (<p>No results found. Please try another search.</p>);
   }
 
   render() {
