@@ -80,7 +80,7 @@ class ElectronicDelivery extends React.Component {
     }
 
     _mapObject(raiseError, (val, key) => {
-      raisedErrors.push(<li key={key}>{headlineError[key]}</li>);
+      raisedErrors.push(<li key={key}><a href={`#${key}`}>{headlineError[key]}</a></li>);
     });
 
     return raisedErrors;

@@ -92,10 +92,7 @@ const SearchResultsPage = (props, context) => {
               aria-relevant="additions removals"
               aria-describedby="results-description"
             >
-              {
-                !!(totalResults && totalResults !== 0) &&
-                  (<ResultsCount spinning={spinning} count={totalResults} />)
-              }
+              <ResultsCount spinning={spinning} count={totalResults} />
 
               {
                 !!(results && results.length !== 0) &&
