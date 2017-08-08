@@ -256,7 +256,7 @@ class HoldRequest extends React.Component {
     }
 
     return (
-      <DocumentTitle title={`${title} | Shared Collection Catalog | NYPL`}>
+      <DocumentTitle title="Item Request | Shared Collection Catalog | NYPL">
         <div id="mainContent">
           <div className="nypl-request-page-header">
             <div className="nypl-full-width-wrapper">
