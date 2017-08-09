@@ -295,7 +295,7 @@ function newHoldRequestServer(req, res, next) {
     (bibResponseError) => {
       res.locals.data.Store = {
         bib: {},
-        searchKeywords: '',
+        searchKeywords: req.query.searchKeywords || '',
         error,
         form,
       };
