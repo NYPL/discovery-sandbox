@@ -98,6 +98,7 @@ const SearchResultsPage = (props, context) => {
                 count={totalResults}
                 selectedFacets={selectedFacets}
                 searchKeywords={searchKeywords}
+                field={field}
               />
 
               {
@@ -133,6 +134,7 @@ const SearchResultsPage = (props, context) => {
 SearchResultsPage.propTypes = {
   searchResults: PropTypes.object,
   searchKeywords: PropTypes.string,
+  selectedFacets: PropTypes.object,
   page: PropTypes.string,
   location: PropTypes.object,
   sortBy: PropTypes.string,
