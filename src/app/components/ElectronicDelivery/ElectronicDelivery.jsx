@@ -27,12 +27,14 @@ class ElectronicDelivery extends React.Component {
     const itemId = (this.props.params && this.props.params.itemId) ? this.props.params.itemId : '';
     const selectedItem = (bib && itemId) ? LibraryItem.getItem(bib, itemId) : {};
     const itemSource = selectedItem.itemSource;
+    const raiseError = _isEmpty(this.props.error) ? {} : this.props.error;
 
     this.state = _extend({
       title,
       bibId,
       itemId,
       itemSource,
+      raiseError,
     }, { patron: PatronStore.getState() });
     this.requireUser = this.requireUser.bind(this);
     this.submitRequest = this.submitRequest.bind(this);
@@ -211,7 +213,7 @@ class ElectronicDelivery extends React.Component {
 
           <div className="nypl-row">
             {
-              raiseError && (
+              !_isEmpty(raiseError) && (
                 <div className="nypl-form-error" ref="nypl-form-error" tabIndex="0">
                   <h2>Error</h2>
                   <p>Please check the following required fields and resubmit your request:</p>
