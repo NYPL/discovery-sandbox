@@ -50,8 +50,7 @@ const SearchResultsPage = (props, context) => {
 
   return (
     <DocumentTitle
-      title={`${searchKeywords ? `${searchKeywords} | ` : ''} ` +
-        'Search Results | Shared Collection Catalog | NYPL'}
+      title="Search Results | Shared Collection Catalog | NYPL"
     >
       <main className="main-page">
         <div className="nypl-page-header">
