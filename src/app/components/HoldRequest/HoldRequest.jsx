@@ -212,6 +212,10 @@ class HoldRequest extends React.Component {
       bib['@id'].substring(4) : '';
     const itemId = (this.props.params && this.props.params.itemId) ? this.props.params.itemId : '';
     const selectedItem = (bib && itemId) ? LibraryItem.getItem(bib, itemId) : {};
+    const bibLink = (bibId && title) ?
+      (<h4>
+        <Link to={`${appConfig.baseUrl}/bib/${bibId}`}>{title}</Link>
+      </h4>) : null;
     const callNo =
       (selectedItem && selectedItem.callNumber && selectedItem.callNumber.length) ?
       (
@@ -293,10 +297,14 @@ class HoldRequest extends React.Component {
 
                 <div className="nypl-request-item-summary">
                   <div className="item">
-                    {!bib && <p>Something went wrong with your request</p>}
-                    <h4>
-                      <Link to={`${appConfig.baseUrl}/bib/${bibId}`}>{title}</Link>
-                    </h4>
+                    {
+                      !bib &&
+                        <h4>
+                          This item cannot be requested at this time. Please try again later or
+                          contact 917-ASK-NYPL (<a href="tel:917-275-6975">917-275-6975</a>).
+                        </h4>
+                    }
+                    {bibLink}
                     {callNo}
                   </div>
                 </div>
