@@ -325,7 +325,7 @@ const basicQuery = (props) => {
     let pageQuery = props.page && props.page !== '1' ? `&page=${props.page}` : '';
     pageQuery = page && page !== '1' ? `&page=${page}` : pageQuery;
 
-    return `q=${query}${filterQuery}${sortQuery}${fieldQuery}${pageQuery}`;
+    return `q=${encodeURIComponent(query)}${filterQuery}${sortQuery}${fieldQuery}${pageQuery}`;
   };
 };
 
