@@ -240,7 +240,7 @@ class HoldConfirmation extends React.Component {
                     </p>
                     <p>
                       If you would like to cancel your request, or if you have further questions,
-                      please contact 917-ASK-NYPL (917-275-6975).
+                      please contact 917-ASK-NYPL (<a href="tel:19172756975">917-275-6975</a>).
                     </p>
                     {this.renderBackToSearchLink()}
                     {this.renderStartOverLink()}
