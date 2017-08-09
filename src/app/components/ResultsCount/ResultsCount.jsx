@@ -14,18 +14,27 @@ class ResultsCount extends React.Component {
    * selections to occur.
    */
   displayContext() {
-    const { searchKeywords, selectedFacets } = this.props;
+    const {
+      searchKeywords,
+      selectedFacets,
+      field,
+    } = this.props;
     const keyMapping = {
       creatorLiteral: 'author',
       contributorLiteral: 'author',
+      contributor: 'author',
       titleDisplay: 'title',
+      title: 'title',
       subjectLiteral: 'subject',
     };
-
     let result = '';
 
     if (searchKeywords) {
-      result += `for keyword "${searchKeywords}"`;
+      if (field !== 'all') {
+        result += `for ${keyMapping[field]} "${searchKeywords}"`;
+      } else {
+        result += `for keyword "${searchKeywords}"`;
+      }
     }
 
     if (!_isEmpty(selectedFacets)) {
@@ -78,6 +87,7 @@ ResultsCount.propTypes = {
   spinning: PropTypes.bool,
   selectedFacets: PropTypes.object,
   searchKeywords: PropTypes.string,
+  field: PropTypes.string,
 };
 
 ResultsCount.defaultProps = {
