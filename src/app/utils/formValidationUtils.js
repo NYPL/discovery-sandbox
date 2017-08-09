@@ -122,7 +122,7 @@ function validate(form, cb) {
     },
     endPage: {
       validate: (val) => !!(val.trim().length),
-      errorMsg: 'Enter a page number. You may request a maximum of 50 pages..',
+      errorMsg: 'Enter a page number. You may request a maximum of 50 pages.',
     },
   };
 
