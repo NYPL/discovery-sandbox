@@ -118,13 +118,11 @@ function validate(form, cb) {
     },
     startPage: {
       validate: (val) => !!(val.trim().length),
-      errorMsg: 'Page values must be alphanumeric (no special characters). You may ' +
-        'request a maximum of 50 pages.',
+      errorMsg: 'Enter a page number. You may request a maximum of 50 pages.',
     },
     endPage: {
       validate: (val) => !!(val.trim().length),
-      errorMsg: 'Page values must be alphanumeric (no special characters). You may ' +
-        'request a maximum of 50 pages.',
+      errorMsg: 'Enter a page number. You may request a maximum of 50 pages..',
     },
   };
 
