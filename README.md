@@ -1,4 +1,11 @@
 ## Discovery Sandbox
+[![GitHub version](https://badge.fury.io/gh/nypl-discovery%2Fdiscovery-front-end.svg)](https://badge.fury.io/gh/nypl-discovery%2Fdiscovery-front-end)
+[![Build Status](https://travis-ci.org/NYPL-discovery/discovery-front-end.svg?branch=master)](https://travis-ci.org/NYPL-discovery/discovery-front-end)
+[![Dependencies Status](https://david-dm.org/nypl-discovery/discovery-front-end/status.svg)](https://david-dm.org/nypl-discovery/discovery-front-end)
+[![devDependencies Status](https://david-dm.org/nypl-discovery/discovery-front-end/dev-status.svg)](https://david-dm.org/nypl-discovery/discovery-front-end?type=dev)
+
+[![forthebadge](http://forthebadge.com/images/badges/built-with-love.svg)](https://nypl.org)
+
 
 Front-end app for searching, discovering, and placing a hold on research items at NYPL. Using data from the [Discovery API](https://github.com/NYPL-discovery/registry-api).
 
@@ -158,4 +165,3 @@ Everytime the `Feedback` component has significant updates, it might lead to the
  - At last, view the page source of the Google Form page and find the value of each field's name attribute. Enter the value to the name attribute of the respectively field in the HTML form.
 
  - Run the application and test it with the feedback form.
- 
