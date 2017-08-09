@@ -7,6 +7,7 @@ import {
   isEmpty as _isEmpty,
   extend as _extend,
 } from 'underscore';
+import DocumentTitle from 'react-document-title';
 
 import Breadcrumbs from '../Breadcrumbs/Breadcrumbs.jsx';
 import PatronStore from '../../stores/PatronStore.js';
@@ -266,44 +267,46 @@ class HoldRequest extends React.Component {
     }
 
     return (
-      <div id="mainContent">
-        <div className="nypl-request-page-header">
-          <div className="nypl-full-width-wrapper">
-            <div className="row">
-              <div className="nypl-column-full">
-                <Breadcrumbs
-                  query={`q=${searchKeywords}`}
-                  bibUrl={`/bib/${bibId}`}
-                  type="hold"
-                />
-                <h2>{appConfig.displayTitle}</h2>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="nypl-full-width-wrapper">
-          <div className="row">
-            <div className="nypl-column-three-quarters">
-              <div className="item-header">
-                <h3>Research item hold request</h3>
-              </div>
-
-              <div className="nypl-request-item-summary">
-                <div className="item">
-                  {!bib && <p>Something went wrong with your request</p>}
-                  <h4>
-                    <Link to={`${appConfig.baseUrl}/bib/${bibId}`}>{title}</Link>
-                  </h4>
-                  {callNo}
+      <DocumentTitle title="Item Request | Shared Collection Catalog | NYPL">
+        <div id="mainContent">
+          <div className="nypl-request-page-header">
+            <div className="nypl-full-width-wrapper">
+              <div className="row">
+                <div className="nypl-column-full">
+                  <Breadcrumbs
+                    query={`q=${searchKeywords}`}
+                    bibUrl={`/bib/${bibId}`}
+                    type="hold"
+                  />
+                  <h2>{appConfig.displayTitle}</h2>
                 </div>
               </div>
+            </div>
+          </div>
 
-              {form}
+          <div className="nypl-full-width-wrapper">
+            <div className="row">
+              <div className="nypl-column-three-quarters">
+                <div className="item-header">
+                  <h3>Research item hold request</h3>
+                </div>
+
+                <div className="nypl-request-item-summary">
+                  <div className="item">
+                    {!bib && <p>Something went wrong with your request</p>}
+                    <h4>
+                      <Link to={`${appConfig.baseUrl}/bib/${bibId}`}>{title}</Link>
+                    </h4>
+                    {callNo}
+                  </div>
+                </div>
+
+                {form}
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      </DocumentTitle>
     );
   }
 }
