@@ -297,11 +297,12 @@ class HoldRequest extends React.Component {
 
                 <div className="nypl-request-item-summary">
                   <div className="item">
-                    {!bib &&
-                      <h4>
-                        This item cannot be requested at this time. Please try again later or
-                        contact 917-ASK-NYPL (<a href="tel:917-275-6975">917-275-6975</a>).
-                      </h4>
+                    {
+                      !bib &&
+                        <h4>
+                          This item cannot be requested at this time. Please try again later or
+                          contact 917-ASK-NYPL (<a href="tel:917-275-6975">917-275-6975</a>).
+                        </h4>
                     }
                     {bibLink}
                     {callNo}
