@@ -40,7 +40,7 @@ const BibPage = (props) => {
   const marcRecord = isNYPLReCAP ? <MarcRecord bNumber={bNumber[0]} /> : null;
 
   return (
-    <DocumentTitle title={`${title} | Research Catalog`}>
+    <DocumentTitle title="Item Details | Shared Collection Catalog | NYPL">
       <main className="main-page">
         <div className="nypl-page-header">
           <div className="nypl-full-width-wrapper">
