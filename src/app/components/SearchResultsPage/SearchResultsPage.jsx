@@ -20,6 +20,7 @@ const SearchResultsPage = (props, context) => {
   const {
     searchResults,
     searchKeywords,
+    selectedFacets,
     page,
     sortBy,
     field,
@@ -91,7 +92,12 @@ const SearchResultsPage = (props, context) => {
               aria-relevant="additions removals"
               aria-describedby="results-description"
             >
-              <ResultsCount spinning={spinning} count={totalResults} />
+              <ResultsCount
+                spinning={spinning}
+                count={totalResults}
+                selectedFacets={selectedFacets}
+                searchKeywords={searchKeywords}
+              />
 
               {
                 !!(results && results.length !== 0) &&
