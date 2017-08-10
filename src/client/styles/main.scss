@@ -32,11 +32,15 @@ Import style rules from NYPL React module components
 @import "components/SearchPagination.scss";
 @import "components/ItemTable.scss";
 @import "components/Sorter.scss";
+@import "components/design-toolkit-updates.scss";
+@import "components/HoldConfirmation.scss";
 
 @import "style-v2.scss";
 
 html {
   @include font-settings;
+  background: #fff;
+  color: #000;
 }
 
 #app {
@@ -117,11 +121,52 @@ button {
   height: 500px;
 }
 
-.nypl-raised-error {
-  color: red;
+.nypl-form-error li {
+  margin-left: 0.5rem;
 }
 
 // odd override for Header alert
 header #skip {
   position: absolute;
+}
+
+// Misc override
+.footer-content .footerLinks {
+  line-height: 15px !important;
+}
+
+li, p {
+  max-width: 100%;
+}
+
+@media only screen and (min-width: 768px) {
+  .footer {
+    padding: 15px 0 30px !important;
+  }
+}
+
+// Override for the omnisearch div to work as a fieldset and
+// allow focus on the search button.
+div.nypl-omnisearch {
+  height: 48px;
+
+  &.nypl-spinner-field {
+    overflow: inherit;
+  }
+
+  &.spinning {
+    overflow: hidden;
+  }
+}
+
+button,
+html input[type=button],
+input[type=reset],
+input[type=submit] {
+  -moz-appearance: button;
+}
+input[type=submit]:focus {
+  outline-color: #ffb81d;
+  outline-style: solid;
+  outline-width: 3px;
 }

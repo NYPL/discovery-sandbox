@@ -18,7 +18,7 @@ class Search extends React.Component {
 
     this.state = {
       spinning: this.props.spinning,
-      field: this.props.field,
+      field: this.props.field || 'all',
       searchKeywords: this.props.searchKeywords,
     };
 
@@ -103,15 +103,15 @@ class Search extends React.Component {
   }
 
   render() {
+    const spinningClass = this.state.spinning ? 'spinning' : '';
+
     return (
       <form
         onKeyPress={this.triggerSubmit}
-        action="/search"
+        action={`${appConfig.baseUrl}/search`}
         method="POST"
       >
-        <fieldset
-          className={`nypl-omnisearch style-2 nypl-spinner-field ${this.state.spinning ? 'spinning' : ''}`}
-        >
+        <div className={`nypl-omnisearch style-2 nypl-spinner-field ${spinningClass}`}>
           <span className="nypl-omni-fields">
             <label htmlFor="search-by-field">Search in</label>
             <select
@@ -125,23 +125,21 @@ class Search extends React.Component {
               <option value="contributor">Author/Contributor</option>
             </select>
           </span>
+          <label htmlFor="search-query" id="search-input-label" className="visuallyhidden">
+            Search for
+          </label>
           <input
             type="text"
             id="search-query"
-            aria-labelledby="nypl-omni-button"
+            aria-labelledby="search-input-label"
             placeholder="Keyword, title, name, or id"
             onChange={this.inputChange}
             value={this.state.searchKeywords}
             name="q"
             ref="keywords"
           />
-          <SearchButton
-            id="nypl-omni-button"
-            type="submit"
-            value="Search"
-            onClick={this.submitSearchRequest}
-          />
-        </fieldset>
+          <SearchButton onClick={this.submitSearchRequest} />
+        </div>
       </form>
     );
   }
@@ -155,7 +153,7 @@ Search.propTypes = {
 };
 
 Search.defaultProps = {
-  field: '',
+  field: 'all',
   searchKeywords: '',
   spinning: false,
 };

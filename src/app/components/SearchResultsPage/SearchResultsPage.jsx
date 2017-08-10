@@ -20,6 +20,7 @@ const SearchResultsPage = (props, context) => {
   const {
     searchResults,
     searchKeywords,
+    selectedFacets,
     page,
     sortBy,
     field,
@@ -29,9 +30,6 @@ const SearchResultsPage = (props, context) => {
   const totalResults = searchResults ? searchResults.totalResults : undefined;
   const totalPages = totalResults ? Math.floor(totalResults / 50) + 1 : 0;
   const results = searchResults ? searchResults.itemListElement : [];
-  const breadcrumbs = (
-    <Breadcrumbs query={searchKeywords} type="search" />
-  );
   const createAPIQuery = basicQuery(props);
   const searchKeywordsLabel = searchKeywords ? `for ${searchKeywords}` : '';
   const pageLabel = totalPages ? `page ${page} of ${totalPages}` : '';
@@ -52,16 +50,15 @@ const SearchResultsPage = (props, context) => {
 
   return (
     <DocumentTitle
-      title={`${searchKeywords ? `${searchKeywords} | ` : ''} ` +
-        'Search Results | Research Catalog | NYPL'}
+      title="Search Results | Shared Collection Catalog | NYPL"
     >
       <main className="main-page">
         <div className="nypl-page-header">
           <div className="nypl-full-width-wrapper">
             <div className="nypl-row">
               <div className="nypl-column-three-quarters">
-                {breadcrumbs}
-                <h2 aria-label={headerLabel}>Research Discovery (beta)</h2>
+                <Breadcrumbs query={searchKeywords} type="search" />
+                <h2 aria-label={headerLabel}>{appConfig.displayTitle}</h2>
                 <Search
                   searchKeywords={searchKeywords}
                   field={field}
@@ -95,14 +92,22 @@ const SearchResultsPage = (props, context) => {
               aria-relevant="additions removals"
               aria-describedby="results-description"
             >
-              {
-                !!(totalResults && totalResults !== 0) &&
-                  (<ResultsCount spinning={spinning} count={totalResults} />)
-              }
+              <ResultsCount
+                spinning={spinning}
+                count={totalResults}
+                selectedFacets={selectedFacets}
+                searchKeywords={searchKeywords}
+              />
 
               {
                 !!(results && results.length !== 0) &&
-                (<ResultList results={results} spinning={spinning} />)
+                (
+                  <ResultList
+                    results={results}
+                    spinning={spinning}
+                    searchKeywords={searchKeywords}
+                  />
+                )
               }
 
               {

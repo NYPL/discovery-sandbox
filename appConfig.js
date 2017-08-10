@@ -1,7 +1,8 @@
 export default {
   appTitle: 'NYPL | Discovery',
   appName: 'discovery',
-  baseUrl: '/research/collections/discovery-beta',
+  displayTitle: 'Shared Collection Catalog',
+  baseUrl: '/research/collections/shared-collection-catalog',
   favIconPath: '//d2znry4lg8s0tq.cloudfront.net/images/favicon.ico',
   port: 3001,
   webpackDevServerPort: 3000,

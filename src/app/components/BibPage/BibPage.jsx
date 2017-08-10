@@ -8,10 +8,10 @@ import ItemHoldings from '../Item/ItemHoldings';
 import BibDetails from './BibDetails';
 import LibraryItem from '../../utils/item';
 import BackLink from './BackLink';
-import BibMainInfo from './BibMainInfo';
 import MarcRecord from './MarcRecord';
 
 import { basicQuery } from '../../utils/utils';
+import appConfig from '../../../../appConfig.js';
 
 const BibPage = (props) => {
   const createAPIQuery = basicQuery(props);
@@ -29,14 +29,25 @@ const BibPage = (props) => {
     shortenItems = false;
   }
 
+  const itemHoldings = items.length ?
+    <ItemHoldings
+      shortenItems={shortenItems}
+      items={items}
+      bibId={bibId}
+      itemPage={itemPage}
+      searchKeywords={props.searchKeywords}
+    /> : null;
+  const marcRecord = isNYPLReCAP ? <MarcRecord bNumber={bNumber[0]} /> : null;
+
   return (
-    <DocumentTitle title={`${title} | Research Catalog`}>
+    <DocumentTitle title="Item Details | Shared Collection Catalog | NYPL">
       <main className="main-page">
         <div className="nypl-page-header">
           <div className="nypl-full-width-wrapper">
             <div className="nypl-row">
               <div className="nypl-column-three-quarters">
-                <h2>Research Discovery (beta)</h2>
+                <Breadcrumbs type="bib" query={searchURL} />
+                <h2>{appConfig.displayTitle}</h2>
                 <Search
                   searchKeywords={props.searchKeywords}
                   field={props.field}
@@ -70,20 +81,11 @@ const BibPage = (props) => {
             >
               <div className="nypl-item-details">
                 <h1>{title}</h1>
-                <dl>
-                  <BibMainInfo bib={bib} />
-
-                  <ItemHoldings
-                    shortenItems={shortenItems}
-                    items={items}
-                    bibId={bibId}
-                    itemPage={itemPage}
-                  />
-
-                  <BibDetails bib={bib} />
-
-                  {isNYPLReCAP && <MarcRecord bNumber={bNumber[0]} />}
-                </dl>
+                <BibDetails
+                  bib={bib}
+                  itemHoldings={itemHoldings}
+                  marcRecord={marcRecord}
+                />
               </div>
             </div>
           </div>

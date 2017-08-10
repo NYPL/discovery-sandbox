@@ -99,6 +99,7 @@ class ItemHoldings extends React.Component {
           bibId={bibId}
           getRecord={this.getRecord}
           id="bib-item-table"
+          searchKeywords={this.props.searchKeywords}
         /> : null
     );
   }
@@ -161,29 +162,24 @@ class ItemHoldings extends React.Component {
     }
 
     return (
-      <span id="item-holdings" className="item-holdings">
-        <dt className="list-multi-control">
-          <h3>Availability</h3>
-        </dt>
-        <dd className="multi-item-list">
-          {itemTable}
-          {
-            !!(shortenItems && items.length >= 20 && !this.state.showAll) &&
-              (<div className="view-all-items-container">
-                {
-                  this.state.js ?
-                    (<a href="#" onClick={this.showAll}>View All Items</a>) :
-                    (<Link
-                      to={`${appConfig.baseUrl}/bib/${this.props.bibId}/all`}
-                      className="view-all-items"
-                    >
-                      View All Items
-                    </Link>)
-                }
-              </div>)
-          }
-          {pagination}
-        </dd>
+      <span>
+        {itemTable}
+        {
+          !!(shortenItems && items.length >= 20 && !this.state.showAll) &&
+            (<div className="view-all-items-container">
+              {
+                this.state.js ?
+                  (<a href="#" onClick={this.showAll}>View All Items</a>) :
+                  (<Link
+                    to={`${appConfig.baseUrl}/bib/${this.props.bibId}/all`}
+                    className="view-all-items"
+                  >
+                    View All Items
+                  </Link>)
+              }
+            </div>)
+        }
+        {pagination}
       </span>
     );
   }
@@ -194,10 +190,12 @@ ItemHoldings.propTypes = {
   itemPage: PropTypes.string,
   bibId: PropTypes.string,
   shortenItems: PropTypes.bool,
+  searchKeywords: PropTypes.string,
 };
 
 ItemHoldings.defaultProps = {
   shortenItems: false,
+  searchKeywords: '',
 };
 
 ItemHoldings.contextTypes = {

@@ -124,7 +124,7 @@ class ResultsList extends React.Component {
         <h2>
           <Link
             onClick={(e) => this.getBibRecord(e, bibId)}
-            to={`${appConfig.baseUrl}/bib/${bibId}`}
+            to={`${appConfig.baseUrl}/bib/${bibId}?searchKeywords=${this.props.searchKeywords}`}
             className="title"
           >
             {bibTitle}
@@ -147,7 +147,8 @@ class ResultsList extends React.Component {
               items={items}
               bibId={bibId}
               getRecord={this.getItemRecord}
-              id="search-result-item-table"
+              id={null}
+              searchKeywords={this.props.searchKeywords}
             />
         }
       </li>
@@ -180,6 +181,7 @@ class ResultsList extends React.Component {
 ResultsList.propTypes = {
   results: PropTypes.array,
   spinning: PropTypes.bool,
+  searchKeywords: PropTypes.string,
 };
 
 ResultsList.contextTypes = {

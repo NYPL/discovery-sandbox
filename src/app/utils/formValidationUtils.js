@@ -1,8 +1,5 @@
 import React from 'react';
-import {
-  isEmail,
-  isNumeric,
-} from 'validator';
+import { isEmail } from 'validator';
 import {
   mapObject as _mapObject,
   isEmpty as _isEmpty,
@@ -111,25 +108,27 @@ function validate(form, cb) {
   const fieldsToCheck = {
     emailAddress: {
       validate: (val) => (val.trim().length && isEmail('' + val)),
-      errorMsg: 'Enter a valid email address. Your request will be delivered to the email address you enter above.',
+      errorMsg: 'Enter a valid email address. Your request will be delivered to ' +
+        'the email address you enter above.',
     },
     chapterTitle: {
-      validate: (val) => (isNumeric('' + val) && val > 0) ? true : false,
-      errorMsg: 'Indicate the title of the chapter or article you are requesting. Enter "none" if you are requesting an entire item.',
+      validate: (val) => !!(val.trim().length),
+      errorMsg: 'Indicate the title of the chapter or article you are requesting. ' +
+        'Enter "none" if you are requesting an entire item.',
     },
     startPage: {
-      validate: (val) => (isNumeric('' + val) && val > 0) ? true : false,
-      errorMsg: 'Page values must be alphanumeric (no special characters). You may request a maximum of 50 pages.',
+      validate: (val) => !!(val.trim().length),
+      errorMsg: 'Enter a page number. You may request a maximum of 50 pages.',
     },
     endPage: {
-      validate: (val) => (isNumeric('' + val) && val > 0) ? true : false,
-      errorMsg: 'Page values must be alphanumeric (no special characters). You may request a maximum of 50 pages.',
+      validate: (val) => !!(val.trim().length),
+      errorMsg: 'Enter a page number. You may request a maximum of 50 pages.',
     },
   };
 
   const error = {};
   _mapObject(form, (val, key) => {
-    const isValid = fieldsToCheck[key].validate(val);
+    const isValid = (fieldsToCheck[key]) ? fieldsToCheck[key].validate(val) : true;
 
     if (!isValid) {
       error[key] = fieldsToCheck[key].errorMsg;

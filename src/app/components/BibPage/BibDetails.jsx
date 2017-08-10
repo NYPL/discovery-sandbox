@@ -6,154 +6,174 @@ import {
   isEmpty as _isEmpty,
   findWhere as _findWhere,
   findIndex as _findIndex,
-  contains as _contains,
   every as _every,
 } from 'underscore';
 
 import { ajaxCall } from '../../utils/utils';
 import Actions from '../../actions/Actions';
-import Definition from './Definition';
+import DefinitionList from './DefinitionList';
 import appConfig from '../../../../appConfig.js';
 
-const getIdentifiers = (bibValues, fieldIdentifier) => {
-  let val = '';
+class BibDetails extends React.Component {
+  /*
+   * getOwner(bib)
+   * This is currently only for non-NYPL partner items. If it's NYPL, it should return undefined.
+   * Requirement: Look at all the owners of all the items and if they were all the same and
+   * not NYPL, show that as the owning institution and otherwise show nothing.
+   * @param {object} bibId
+   * @return {string}
+   */
+  getOwner(bib) {
+    const items = bib.items;
+    const ownerArr = [];
+    let owner;
 
-  if (bibValues.length) {
-    bibValues.forEach(value => {
-      if (value.indexOf(`${fieldIdentifier}:`) !== -1) {
-        val = value.substring(fieldIdentifier.length + 1);
-      }
+    if (!items || !items.length) {
+      return null;
+    }
+
+    items.forEach(item => {
+      const ownerObj = item.owner && item.owner.length ? item.owner[0].prefLabel : undefined;
+
+      ownerArr.push(ownerObj);
     });
 
-    if (val) {
-      return <span>{val}</span>;
-    }
-  }
-
-  return null;
-};
-
-const getDefinitionObject = (bibValues, fieldValue, fieldLinkable) => {
-  if (bibValues.length === 1) {
-    const bibValue = bibValues[0];
-    const url = `filters[${fieldValue}]=${bibValue['@id']}`;
-
-    if (fieldLinkable) {
-      return (
-        <Link onClick={e => this.newSearch(e, url)} to={`${appConfig.baseUrl}/search?${url}`}>
-          {bibValue.prefLabel}
-        </Link>
-      );
-    }
-
-    return <span>{bibValue.prefLabel}</span>;
-  }
-
-  return (
-    <ul>
-      {
-        bibValues.map((value, i) => {
-          const url = `filters[${fieldValue}]=${value['@id']}`;
-          return (
-            <li key={i}>
-              {
-                fieldLinkable ?
-                  <Link
-                    onClick={e => this.newSearch(e, url)}
-                    to={`${appConfig.baseUrl}/search?${url}`}
-                  >
-                    {value.prefLabel}
-                  </Link>
-                  : <span>{value.prefLabel}</span>
-              }
-            </li>
-          );
-        })
+    if (_every(ownerArr, (o) => (o === ownerArr[0]))) {
+      if ((ownerArr[0] === 'Princeton University Library') ||
+        (ownerArr[0] === 'Columbia University Libraries')) {
+        owner = ownerArr[0];
       }
-    </ul>
-  );
-};
+    }
 
-/*
- * getOwner(bib)
- * This is currently only for non-NYPL partner items. If it's NYPL, it should return undefined.
- * Requirement: Look at all the owners of all the items and if they were all the same and
- * not NYPL, show that as the owning institution and otherwise show nothing.
- * @param {object} bibId
- * @return {string}
- */
-const getOwner = (bib) => {
-  const items = bib.items;
-  const ownerArr = [];
-  let owner;
+    return owner;
+  }
 
-  if (!items || !items.length) {
+  /*
+   * getDefinitionObject(bibValues, fieldValue, fieldLinkable)
+   * Gets a list, or one value, of data to display for a field from the API, where
+   * the data is an object in the array.
+   * @param {array} bibValues
+   * @param {string} fieldValue
+   * @param {boolean} fieldLinkable
+   */
+  getDefinitionObject(bibValues, fieldValue, fieldLinkable) {
+    if (bibValues.length === 1) {
+      const bibValue = bibValues[0];
+      const url = `filters[${fieldValue}]=${bibValue['@id']}`;
+
+      if (fieldLinkable) {
+        return (
+          <Link onClick={e => this.newSearch(e, url)} to={`${appConfig.baseUrl}/search?${url}`}>
+            {bibValue.prefLabel}
+          </Link>
+        );
+      }
+
+      return <span>{bibValue.prefLabel}</span>;
+    }
+
+    return (
+      <ul>
+        {
+          bibValues.map((value, i) => {
+            const url = `filters[${fieldValue}]=${value['@id']}`;
+            return (
+              <li key={i}>
+                {
+                  fieldLinkable ?
+                    <Link
+                      onClick={e => this.newSearch(e, url)}
+                      to={`${appConfig.baseUrl}/search?${url}`}
+                    >
+                      {value.prefLabel}
+                    </Link>
+                    : <span>{value.prefLabel}</span>
+                }
+              </li>
+            );
+          })
+        }
+      </ul>
+    );
+  }
+
+  /*
+   * getIdentifiers(bibValues, fieldIdentifier)
+   * Gets specific values from the API for special identifiers.
+   * @param {array} bibValues
+   * @param {string} fieldIdentifier
+   */
+  getIdentifiers(bibValues, fieldIdentifier) {
+    let val = '';
+
+    if (bibValues.length) {
+      bibValues.forEach(value => {
+        if (value.indexOf(`${fieldIdentifier}:`) !== -1) {
+          val = value.substring(fieldIdentifier.length + 1);
+        }
+      });
+
+      if (val) {
+        return <span>{val}</span>;
+      }
+    }
+
     return null;
   }
 
-  items.forEach(item => {
-    const ownerObj = item.owner && item.owner.length ?
-      item.owner[0].prefLabel : undefined;
-
-    ownerArr.push(ownerObj);
-  });
-
-  if (_every(ownerArr, (o) => (o === ownerArr[0]))) {
-    if ((ownerArr[0] === 'Princeton University Library') ||
-      (ownerArr[0] === 'Columbia University Libraries')) {
-      owner = ownerArr[0];
-    }
-  }
-
-  return owner;
-};
-
-const getDefinition = (bibValues, fieldValue, fieldLinkable, fieldIdentifier) => {
-  if (fieldValue === 'identifier') {
-    return getIdentifiers(bibValues, fieldIdentifier);
-  }
-
-  if (bibValues.length === 1) {
-    const bibValue = bibValues[0];
-    const url = `filters[${fieldValue}]=${bibValue}`;
-
-    if (fieldLinkable) {
-      return (
-        <Link onClick={e => this.newSearch(e, url)} to={`${appConfig.baseUrl}/search?${url}`}>
-          {bibValue}
-        </Link>
-      );
+  /*
+   * getDefinition(bibValues, fieldValue, fieldLinkable, fieldIdentifier)
+   * Gets a list, or one value, of data to display for a field from the API.
+   * @param {array} bibValues
+   * @param {string} fieldValue
+   * @param {boolean} fieldLinkable
+   * @param {string} fieldIdentifier
+   */
+  getDefinition(bibValues, fieldValue, fieldLinkable, fieldIdentifier) {
+    if (fieldValue === 'identifier') {
+      return this.getIdentifiers(bibValues, fieldIdentifier);
     }
 
-    return <span>{bibValue}</span>;
-  }
+    if (bibValues.length === 1) {
+      const bibValue = bibValues[0];
+      const url = `filters[${fieldValue}]=${bibValue}`;
 
-  return (
-    <ul>
-      {
-        bibValues.map((value, i) => {
-          const url = `filters[${fieldValue}]=${value}`;
-          return (
-            <li key={i}>
-              {
-                fieldLinkable ?
-                  <Link
-                    onClick={e => this.newSearch(e, url)}
-                    to={`${appConfig.baseUrl}/search?${url}`}
-                  >
-                    {value}
-                  </Link>
-                  : <span>{value}</span>
-              }
-            </li>
-          );
-        })
+      if (fieldLinkable) {
+        return (
+          <Link onClick={e => this.newSearch(e, url)} to={`${appConfig.baseUrl}/search?${url}`}>
+            {bibValue}
+          </Link>
+        );
       }
-    </ul>
-  );
-};
 
-class BibDetails extends React.Component {
+      return <span>{bibValue}</span>;
+    }
+
+    return (
+      <ul>
+        {
+          bibValues.map((value, i) => {
+            const url = `filters[${fieldValue}]=${value}`;
+            return (
+              <li key={i}>
+                {
+                  fieldLinkable ?
+                    <Link
+                      onClick={e => this.newSearch(e, url)}
+                      to={`${appConfig.baseUrl}/search?${url}`}
+                    >
+                      {value}
+                    </Link>
+                    : <span>{value}</span>
+                }
+              </li>
+            );
+          })
+        }
+      </ul>
+    );
+  }
+
   /**
    * getPublisher(bib)
    * Get an object with publisher detail information.
@@ -188,7 +208,14 @@ class BibDetails extends React.Component {
    * @return {array}
    */
   getDisplayFields(bib) {
+    // A value of 'React Component' just means that we are getting it from a
+    // component rather than from the bib field properties.
     const fields = [
+      { label: 'Title', value: 'titleDisplay', linkable: true },
+      { label: 'Author', value: 'creatorLiteral', linkable: true },
+      { label: 'Additional Authors', value: 'contributorLiteral', linkable: true },
+      { label: 'Availability', value: 'React Component' },
+      { label: 'Publisher', value: 'React Component' },
       { label: 'Electronic Resource', value: '' },
       { label: 'Description', value: 'extent' },
       { label: 'Subject', value: 'subjectLiteral', linkable: true },
@@ -202,14 +229,10 @@ class BibDetails extends React.Component {
       { label: 'GPO', value: '' },
       { label: 'Other Titles', value: '' },
       { label: 'Owning Institutions', value: '' },
+      { label: 'MARC Record', value: 'React Component' },
     ];
     const fieldsToRender = [];
     const publisherInfo = this.getPublisher(bib);
-
-    // Publisher information should be the first one in the list.
-    if (publisherInfo) {
-      fieldsToRender.push(publisherInfo);
-    }
 
     fields.forEach((field) => {
       const fieldLabel = field.label;
@@ -227,10 +250,11 @@ class BibDetails extends React.Component {
         if (firstFieldValue['@id']) {
           fieldsToRender.push({
             term: fieldLabel,
-            definition: getDefinitionObject(bibValues, fieldValue, fieldLinkable),
+            definition: this.getDefinitionObject(bibValues, fieldValue, fieldLinkable),
           });
         } else {
-          const definition = getDefinition(bibValues, fieldValue, fieldLinkable, fieldIdentifier);
+          const definition =
+            this.getDefinition(bibValues, fieldValue, fieldLinkable, fieldIdentifier);
           if (definition) {
             fieldsToRender.push({
               term: fieldLabel,
@@ -240,12 +264,41 @@ class BibDetails extends React.Component {
         }
       }
 
+      // If it's not a field from the bib, then it's probably a React Component or a more
+      // complicated field. There are unique classes needed for the dt/dd elements.
+      if (fieldLabel === 'Availability') {
+        if (this.props.itemHoldings) {
+          fieldsToRender.push({
+            term: <h3>Availability</h3>,
+            definition: this.props.itemHoldings,
+            termClass: 'list-multi-control',
+            definitionClass: 'multi-item-list',
+          });
+        }
+      }
+
+      // This is made up of three different bib property values so it's special.
+      if (fieldLabel === 'Publisher') {
+        fieldsToRender.push(publisherInfo);
+      }
+
+      // The Owner is complicated too.
       if (fieldLabel === 'Owning Institutions') {
-        const owner = getOwner(this.props.bib);
+        const owner = this.getOwner(this.props.bib);
         if (owner) {
           fieldsToRender.push({
             term: fieldLabel,
             definition: owner,
+          });
+        }
+      }
+
+      // The MARC Record only shows up for NYPL items so it's special.
+      if (fieldLabel === 'MARC Record') {
+        if (this.props.marcRecord) {
+          fieldsToRender.push({
+            term: fieldLabel,
+            definition: this.props.marcRecord,
           });
         }
       }
@@ -265,11 +318,15 @@ class BibDetails extends React.Component {
       const field = query.substring(8, closingBracketIndex);
       const value = query.substring(equalIndex);
 
-      // Find the index where the field exists in the list of facets from the API
-      const index = _findIndex(response.data.facets.itemListElement, { field });
+      let index;
+
+      if (response.data.facet) {
+        // Find the index where the field exists in the list of facets from the API
+        index = _findIndex(response.data.facets.itemListElement, { field });
+      }
 
       // If the index exists, try to find the facet value from the API
-      if (response.data.facets.itemListElement[index]) {
+      if (response.data.facets && response.data.facets.itemListElement[index]) {
         const facet = _findWhere(response.data.facets.itemListElement[index].values, { value });
 
         // The API may return a list of facets in the selected field, but the wanted
@@ -290,8 +347,11 @@ class BibDetails extends React.Component {
           }],
         });
       }
-      Actions.updateSearchResults(response.data.searchResults);
-      Actions.updateFacets(response.data.facets);
+
+      if (response.data.searchResults && response.data.facets) {
+        Actions.updateSearchResults(response.data.searchResults);
+        Actions.updateFacets(response.data.facets);
+      }
       Actions.updateSearchKeywords('');
       Actions.updatePage('1');
       this.context.router.push(`${appConfig.baseUrl}/search?${query}`);
@@ -306,12 +366,14 @@ class BibDetails extends React.Component {
 
     const bibDetails = this.getDisplayFields(this.props.bib);
 
-    return (<Definition definitions={bibDetails} />);
+    return (<DefinitionList data={bibDetails} />);
   }
 }
 
 BibDetails.propTypes = {
   bib: PropTypes.object,
+  itemHoldings: PropTypes.object,
+  marcRecord: PropTypes.object,
 };
 
 BibDetails.contextTypes = {
