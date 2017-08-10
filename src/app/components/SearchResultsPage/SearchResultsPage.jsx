@@ -20,6 +20,7 @@ const SearchResultsPage = (props, context) => {
   const {
     searchResults,
     searchKeywords,
+    selectedFacets,
     page,
     sortBy,
     field,
@@ -49,8 +50,7 @@ const SearchResultsPage = (props, context) => {
 
   return (
     <DocumentTitle
-      title={`${searchKeywords ? `${searchKeywords} | ` : ''} ` +
-        'Search Results | Research Catalog | NYPL'}
+      title="Search Results | Shared Collection Catalog | NYPL"
     >
       <main className="main-page">
         <div className="nypl-page-header">
@@ -92,14 +92,22 @@ const SearchResultsPage = (props, context) => {
               aria-relevant="additions removals"
               aria-describedby="results-description"
             >
-              {
-                !!(totalResults && totalResults !== 0) &&
-                  (<ResultsCount spinning={spinning} count={totalResults} />)
-              }
+              <ResultsCount
+                spinning={spinning}
+                count={totalResults}
+                selectedFacets={selectedFacets}
+                searchKeywords={searchKeywords}
+              />
 
               {
                 !!(results && results.length !== 0) &&
-                (<ResultList results={results} spinning={spinning} />)
+                (
+                  <ResultList
+                    results={results}
+                    spinning={spinning}
+                    searchKeywords={searchKeywords}
+                  />
+                )
               }
 
               {

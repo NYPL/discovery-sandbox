@@ -7,6 +7,7 @@ import {
   isEmpty as _isEmpty,
   extend as _extend,
 } from 'underscore';
+import DocumentTitle from 'react-document-title';
 
 import Breadcrumbs from '../Breadcrumbs/Breadcrumbs.jsx';
 import PatronStore from '../../stores/PatronStore.js';
@@ -18,19 +19,27 @@ class HoldRequest extends React.Component {
     super(props);
 
     const deliveryLocationsFromAPI = this.props.deliveryLocations;
+    const isEddRequestable = this.props.isEddRequestable;
     const firstLocationValue = (
       deliveryLocationsFromAPI.length &&
       deliveryLocationsFromAPI[0]['@id'] &&
       typeof deliveryLocationsFromAPI[0]['@id'] === 'string') ?
       deliveryLocationsFromAPI[0]['@id'].replace('loc:', '') : '';
+    let defaultDelivery = 'edd';
+    let checkedLocNum = -1;
+
+    // Sets EDD as the default delivery location and the selected option as "-1" to indicate it.
+    // If there's no EDD, set the default delivery location as the first one from the location list,
+    // and set the selected option as "0".
+    // If neither EDD or physical locations available, we will show an error message on the page.
+    if (!isEddRequestable && deliveryLocationsFromAPI.length) {
+      defaultDelivery = firstLocationValue;
+      checkedLocNum = 0;
+    }
 
     this.state = _extend({
-      // If we have any delivery locations in the array that we receive from the API,
-      // set the first location as the selected option.
-      // If there's no delivery locations returned, set the selected option as "-1" to
-      // indicate the selected option and its value is "edd".
-      delivery: deliveryLocationsFromAPI.length ? firstLocationValue : 'edd',
-      checkedLocNum: deliveryLocationsFromAPI.length ? 0 : -1,
+      delivery: defaultDelivery,
+      checkedLocNum,
     }, { patron: PatronStore.getState() });
 
     // change all the components :(
@@ -80,9 +89,13 @@ class HoldRequest extends React.Component {
     e.preventDefault();
 
     let path = `${appConfig.baseUrl}/hold/confirmation/${bibId}-${itemId}`;
+    const searchKeywordsQuery =
+      (this.props.searchKeywords) ? `searchKeywords=${this.props.searchKeywords}` : '';
 
     if (this.state.delivery === 'edd') {
-      path = `${appConfig.baseUrl}/hold/request/${bibId}-${itemId}/edd`;
+      const searchKeywordsQueryEdd = searchKeywordsQuery ? `?${searchKeywordsQuery}` : '';
+
+      path = `${appConfig.baseUrl}/hold/request/${bibId}-${itemId}/edd${searchKeywordsQueryEdd}`;
 
       this.context.router.push(path);
       return;
@@ -95,8 +108,11 @@ class HoldRequest extends React.Component {
         if (response.data.error && response.data.error.status !== 200) {
           this.context.router.push(`${path}?errorMessage=${response.data.error.statusText}`);
         } else {
+          const searchKeywordsQueryPhysical = searchKeywordsQuery ? `&${searchKeywordsQuery}` : '';
+
           this.context.router.push(
-            `${path}?pickupLocation=${response.data.pickupLocation}&requestId=${response.data.id}`
+            `${path}?pickupLocation=${response.data.pickupLocation}&requestId=${response.data.id}` +
+            `${searchKeywordsQueryPhysical}`
           );
         }
       })
@@ -196,6 +212,10 @@ class HoldRequest extends React.Component {
       bib['@id'].substring(4) : '';
     const itemId = (this.props.params && this.props.params.itemId) ? this.props.params.itemId : '';
     const selectedItem = (bib && itemId) ? LibraryItem.getItem(bib, itemId) : {};
+    const bibLink = (bibId && title) ?
+      (<h4>
+        <Link to={`${appConfig.baseUrl}/bib/${bibId}`}>{title}</Link>
+      </h4>) : null;
     const callNo =
       (selectedItem && selectedItem.callNumber && selectedItem.callNumber.length) ?
       (
@@ -208,8 +228,11 @@ class HoldRequest extends React.Component {
     const isEddRequestable = this.props.isEddRequestable;
     let deliveryLocationInstruction =
       (!deliveryLocations.length && !isEddRequestable) ?
-      <h4>Delivery options for this item are currently unavailable. Please try again later or contact 917-ASK-NYPL (<a href="tel:917-275-6975">917-275-6975</a>).</h4> :
-      <h4>Choose a delivery option or location</h4>;
+        <h4>
+          Delivery options for this item are currently unavailable. Please try again later or
+          contact 917-ASK-NYPL (<a href="tel:917-275-6975">917-275-6975</a>).
+        </h4> :
+        <h4>Choose a delivery option or location</h4>;
     let form = null;
 
     if (bib) {
@@ -238,49 +261,60 @@ class HoldRequest extends React.Component {
                 Submit request
               </button>
           }
+          <input
+            type="hidden"
+            name="search-keywords"
+            value={searchKeywords}
+          />
         </form>
       );
     }
 
     return (
-      <div id="mainContent">
-        <div className="nypl-request-page-header">
-          <div className="nypl-full-width-wrapper">
-            <div className="row">
-              <div className="nypl-column-full">
-                <Breadcrumbs
-                  query={`q=${searchKeywords}`}
-                  bibUrl={`/bib/${bibId}`}
-                  type="hold"
-                />
-                <h2>{appConfig.displayTitle}</h2>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="nypl-full-width-wrapper">
-          <div className="row">
-            <div className="nypl-column-three-quarters">
-              <div className="item-header">
-                <h3>Research item hold request</h3>
-              </div>
-
-              <div className="nypl-request-item-summary">
-                <div className="item">
-                  {!bib && <p>Something went wrong with your request</p>}
-                  <h4>
-                    <Link to={`${appConfig.baseUrl}/bib/${bibId}`}>{title}</Link>
-                  </h4>
-                  {callNo}
+      <DocumentTitle title="Item Request | Shared Collection Catalog | NYPL">
+        <div id="mainContent">
+          <div className="nypl-request-page-header">
+            <div className="nypl-full-width-wrapper">
+              <div className="row">
+                <div className="nypl-column-full">
+                  <Breadcrumbs
+                    query={`q=${searchKeywords}`}
+                    bibUrl={`/bib/${bibId}`}
+                    type="hold"
+                  />
+                  <h2>{appConfig.displayTitle}</h2>
                 </div>
               </div>
+            </div>
+          </div>
 
-              {form}
+          <div className="nypl-full-width-wrapper">
+            <div className="row">
+              <div className="nypl-column-three-quarters">
+                <div className="item-header">
+                  <h3>Research item hold request</h3>
+                </div>
+
+                <div className="nypl-request-item-summary">
+                  <div className="item">
+                    {
+                      !bib &&
+                        <h4>
+                          This item cannot be requested at this time. Please try again later or
+                          contact 917-ASK-NYPL (<a href="tel:917-275-6975">917-275-6975</a>).
+                        </h4>
+                    }
+                    {bibLink}
+                    {callNo}
+                  </div>
+                </div>
+
+                {form}
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      </DocumentTitle>
     );
   }
 }

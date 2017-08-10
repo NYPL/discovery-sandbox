@@ -130,16 +130,17 @@ const getFacetFilterParam = (facets) => {
           if (facet.value && facet.value !== '') {
             // At this time, materialType filter requires _packed for filtering (but not as data).
             // Other filters do not.
-            strSearch += (key === 'materialType' ? `&filters[${key}_packed]=${facet.id}` :
-              `&filters[${key}]=${facet.id}`);
+            strSearch += (key === 'materialType' ?
+              `&filters[${key}_packed]=${encodeURIComponent(facet.id)}` :
+              `&filters[${key}]=${encodeURIComponent(facet.id)}`);
           } else if (typeof facet === 'string') {
-            strSearch += `&filters[${key}]=${facet}`;
+            strSearch += `&filters[${key}]=${encodeURIComponent(facet)}`;
           }
         });
       } else if (val.value && val.value !== '') {
-        strSearch += `&filters[${key}]=${val.id}`;
+        strSearch += `&filters[${key}]=${encodeURIComponent(val.id)}`;
       } else if (typeof val === 'string') {
-        strSearch += `&filters[${key}]=${val}`;
+        strSearch += `&filters[${key}]=${encodeURIComponent(val)}`;
       }
     });
   }
@@ -324,7 +325,7 @@ const basicQuery = (props) => {
     let pageQuery = props.page && props.page !== '1' ? `&page=${props.page}` : '';
     pageQuery = page && page !== '1' ? `&page=${page}` : pageQuery;
 
-    return `q=${query}${filterQuery}${sortQuery}${fieldQuery}${pageQuery}`;
+    return `q=${encodeURIComponent(query)}${filterQuery}${sortQuery}${fieldQuery}${pageQuery}`;
   };
 };
 

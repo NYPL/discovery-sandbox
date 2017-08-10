@@ -23,7 +23,7 @@ function bibSearchServer(req, res, next) {
     (data) => {
       res.locals.data.Store = {
         bib: data,
-        searchKeywords: '',
+        searchKeywords: req.query.searchKeywords || '',
         error: {},
       };
       next();
@@ -32,7 +32,7 @@ function bibSearchServer(req, res, next) {
       console.error(`bibSearchServer API error: ${JSON.stringify(error, null, 2)}`);
       res.locals.data.Store = {
         bib: {},
-        searchKeywords: '',
+        searchKeywords: req.query.searchKeywords || '',
         error,
       };
       next();
