@@ -1,5 +1,16 @@
 ## CHANGE LOG
 
+### 0.7.0 - QA v1
+- This was the first of two sprints before we go from Internal Beta to Public Beta. YAY!  :rocket: :books:
+- A lot of accessibility, QA, and feedback fixes were completed this sprint.
+  - Each page was checked through a11y tools.
+  - Page titles, duplicate IDs, color contrast, valid HTML, and other fixes were completed.
+- The EDD form went through another iteration with updated content, input validation, and error checking.
+  - This includes listing the errors and making them links to the input fields.
+- Also not allowing to place a request if EDD is not available or if there are no delivery locations.
+- Adding badges to the README to better know the status of our repo.
+  - Moving the version syntax to 0.7.0 without the `v` in the front.
+
 ### v0.6.0 - Internal Beta Release
 - Better workflow for placing a hold on physical items.
 - Electronic Delivery is now working.
