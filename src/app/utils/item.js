@@ -95,11 +95,10 @@ function LibraryItem() {
     const suppressed = item.suppressed && item.suppressed.length ? item.suppressed[0] : false;
     const isElectronicResource = this.isElectronicResource(item);
     // Taking the first status object in the array.
-    let status = item.status && item.status.length ? item.status[0] : {};
-    let availability = !_isEmpty(status) && status.prefLabel ?
+    const status = item.status && item.status.length ? item.status[0] : {};
+    const availability = !_isEmpty(status) && status.prefLabel ?
       status.prefLabel.replace(/\W/g, '').toLowerCase() : '';
     const available = availability === 'available';
-    let url = null;
     // non-NYPL ReCAP
     const nonNyplRecap = itemSource.indexOf('Recap') !== -1;
     // nypl-owned ReCAP
@@ -114,12 +113,9 @@ function LibraryItem() {
     const barcode = bibIdentifiers.barcode || '';
     const mappedItemSource = itemSourceMappings[itemSource];
     const isOffsite = this.isOffsite(holdingLocation.prefLabel.toLowerCase());
+    let url = null;
 
-    if (isElectronicResource && item.electronicLocator[0].url) {
-      status = { '@id': '', prefLabel: 'Available' };
-      availability = 'available';
-      url = item.electronicLocator[0].url;
-    } else if (availability === 'available') {
+    if (availability === 'available') {
       // For all items that we want to send to the Hold Request Form.
       url = this.getLocationHoldUrl(holdingLocation);
     }
@@ -138,8 +134,9 @@ function LibraryItem() {
       suppressed,
       barcode,
       itemSource: mappedItemSource,
-      isRecap: isRecap || isOffsite,
+      isRecap,
       nonRecapNYPL,
+      isOffsite,
     };
   };
 
@@ -242,11 +239,6 @@ function LibraryItem() {
     if (item.holdingLocation && item.holdingLocation.length) {
       location = item.holdingLocation[0];
     }
-    // this is an electronic resource
-    // else if (item.electronicLocator && item.electronicLocator.length) {
-    //   location = item.electronicLocator[0];
-    //   location['@id'] = '';
-    // }
 
     return location;
   };
@@ -257,7 +249,7 @@ function LibraryItem() {
    * @param {object} item
    * @return {boolean}
    */
-  this.isElectronicResource = (item) => item.electronicLocator && item.electronicLocator.length;
+  this.isElectronicResource = (item) => !!(item.electronicLocator && item.electronicLocator.length);
 
   /**
    * isOffsite(prefLabel)
