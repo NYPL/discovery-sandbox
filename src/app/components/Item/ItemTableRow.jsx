@@ -5,21 +5,25 @@ import { isEmpty as _isEmpty } from 'underscore';
 
 import appConfig from '../../../../appConfig.js';
 
-const createMarkup = (html) => ({ __html: html });
-
 const ItemTableRow = ({ item, bibId, getRecord, searchKeywords }) => {
   if (_isEmpty(item)) {
     return null;
   }
 
-  let itemLink = <span>{item.status.prefLabel}</span>;
-  let itemDisplay = null;
+  if (item.isElectronicResource) {
+    return null;
+  }
+
+  let itemRequestBtn = <span>{item.status.prefLabel}</span>;
+  let itemCallNumber = ' ';
 
   if (item.requestable) {
     if (item.isRecap) {
-      itemLink = item.available ?
+      itemRequestBtn = item.available ?
         (<Link
-          to={`${appConfig.baseUrl}/hold/request/${bibId}-${item.id}?searchKeywords=${searchKeywords}`}
+          to={
+            `${appConfig.baseUrl}/hold/request/${bibId}-${item.id}?searchKeywords=${searchKeywords}`
+          }
           onClick={(e) => getRecord(e, bibId, item.id)}
           tabIndex="0"
         >
@@ -28,21 +32,19 @@ const ItemTableRow = ({ item, bibId, getRecord, searchKeywords }) => {
         <span>In Use</span>;
     } else if (item.nonRecapNYPL) {
       // Not in ReCAP
-      itemLink = <span>{item.status.prefLabel}</span>;
+      itemRequestBtn = <span>{item.status.prefLabel}</span>;
     }
   }
 
   if (item.callNumber) {
-    itemDisplay = <span dangerouslySetInnerHTML={createMarkup(item.callNumber)}></span>;
-  } else if (item.isElectronicResource) {
-    itemDisplay = <span>{item.location}</span>;
+    itemCallNumber = item.callNumber;
   }
 
   return (
     <tr className={item.availability}>
       <td>{item.location}</td>
-      <td>{itemDisplay}</td>
-      <td>{itemLink}</td>
+      <td>{itemCallNumber}</td>
+      <td>{itemRequestBtn}</td>
       <td>{item.accessMessage.prefLabel}</td>
     </tr>
   );
@@ -51,6 +53,7 @@ const ItemTableRow = ({ item, bibId, getRecord, searchKeywords }) => {
 ItemTableRow.propTypes = {
   item: PropTypes.object,
   bibId: PropTypes.string,
+  searchKeywords: PropTypes.string,
   getRecord: PropTypes.func,
 };
 
