@@ -19,7 +19,7 @@ import apiRoutes from './src/server/ApiRoutes/ApiRoutes.js';
 import routes from './src/app/routes/routes.jsx';
 
 import cookieParser from 'cookie-parser';
-import { initializeTokenAuth } from './src/server/routes/auth';
+import auth from './src/server/routes/auth';
 import { getPatronData } from './src/server/routes/api';
 import bodyParser from 'body-parser';
 
@@ -63,7 +63,7 @@ app.use('/', (req, res, next) => {
   return next();
 });
 
-app.use('/*', initializeTokenAuth, getPatronData);
+app.use('/*', auth.initializePatronTokenAuth, getPatronData);
 app.use('/', apiRoutes);
 
 app.get('/*', (req, res) => {

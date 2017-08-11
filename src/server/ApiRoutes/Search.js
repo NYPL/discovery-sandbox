@@ -14,6 +14,7 @@ import {
   basicQuery,
   parseServerSelectedFilters,
 } from '../../app/utils/utils.js';
+import auth from '../routes/auth';
 
 const appEnvironment = process.env.APP_ENV || 'production';
 const apiBase = appConfig.api[appEnvironment];

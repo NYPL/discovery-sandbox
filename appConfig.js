@@ -11,6 +11,7 @@ export default {
     production: '',
   },
   loginUrl: 'https://login.nypl.org/auth/login',
+  tokenUrl: 'https://isso.nypl.org/',
   publicKey:
     '-----BEGIN PUBLIC KEY-----\n' +
     'MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA44ilHg/PxcJYsISHMRyo\n' +
