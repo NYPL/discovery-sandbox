@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import DocumentTitle from 'react-document-title';
+import { every as _every } from 'underscore';
 
 import Breadcrumbs from '../Breadcrumbs/Breadcrumbs';
 import Search from '../Search/Search';
@@ -19,6 +20,7 @@ const BibPage = (props) => {
   const bibId = bib && bib['@id'] ? bib['@id'].substring(4) : '';
   const title = bib.title && bib.title.length ? bib.title[0] : '';
   const items = LibraryItem.getItems(bib);
+  const electronicItems = _every(items, (i) => i.isElectronicResource);
   const isNYPLReCAP = LibraryItem.isNYPLReCAP(bib['@id']);
   const bNumber = bib && bib.idBnum ? bib.idBnum : '';
   const searchURL = createAPIQuery({});
@@ -29,7 +31,7 @@ const BibPage = (props) => {
     shortenItems = false;
   }
 
-  const itemHoldings = items.length ?
+  const itemHoldings = items.length && !electronicItems ?
     <ItemHoldings
       shortenItems={shortenItems}
       items={items}
@@ -40,7 +42,7 @@ const BibPage = (props) => {
   const marcRecord = isNYPLReCAP ? <MarcRecord bNumber={bNumber[0]} /> : null;
 
   return (
-    <DocumentTitle title={`${title} | Research Catalog`}>
+    <DocumentTitle title="Item Details | Shared Collection Catalog | NYPL">
       <main className="main-page">
         <div className="nypl-page-header">
           <div className="nypl-full-width-wrapper">

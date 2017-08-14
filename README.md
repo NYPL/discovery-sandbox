@@ -1,6 +1,14 @@
-## Discovery Sandbox
+## Discovery
+### Shared Collection Catalog
+[![GitHub version](https://badge.fury.io/gh/nypl-discovery%2Fdiscovery-front-end.svg)](https://badge.fury.io/gh/nypl-discovery%2Fdiscovery-front-end)
+[![Build Status](https://travis-ci.org/NYPL-discovery/discovery-front-end.svg?branch=master)](https://travis-ci.org/NYPL-discovery/discovery-front-end)
+[![Dependencies Status](https://david-dm.org/nypl-discovery/discovery-front-end/status.svg)](https://david-dm.org/nypl-discovery/discovery-front-end)
+[![devDependencies Status](https://david-dm.org/nypl-discovery/discovery-front-end/dev-status.svg)](https://david-dm.org/nypl-discovery/discovery-front-end?type=dev)
 
-Front-end app for searching, discovering, and placing a hold on research items at NYPL. Using data from the [Discovery API](https://github.com/NYPL-discovery/registry-api).
+[![forthebadge](http://forthebadge.com/images/badges/built-with-love.svg)](https://nypl.org)
+
+
+Front-end app for searching, discovering, and placing a hold on research items from NYPL and ReCAP partners. Currently using data from the [Discovery API](https://github.com/NYPL-discovery/registry-api).
 
 ## Technology
 
@@ -145,7 +153,7 @@ We are using AWS EB to deploy our app. Check the [deployment file](DEPLOYMENT.md
 
 The `Feedback` component in `src/app/components/Feedback/Feedback.jsx` can help us collect the feedback from patrons, send it to the Google Form, and finally, present it with [the Google Spreadsheet](https://docs.google.com/spreadsheets/d/1jD8EnC0uoPuo118jUF3of9MNgvrXTv1Jww67ZVJCSHs/edit#gid=536144761).
 
-Everytime the `Feedback` component has significant updates, it might lead to the need to create a new Goolge Form and Spreadsheet to match those updates. Here are the steps to create and sync the HTML form with a Google Form.
+Every time the `Feedback` component has significant updates, it might lead to the need to create a new Google Form and Spreadsheet to match those updates. Here are the steps to create and sync the HTML form with a Google Form.
 
  - First, create a Google Form based on the fields of the HTML form. The fields need to be the same type respectively.
 
@@ -158,4 +166,3 @@ Everytime the `Feedback` component has significant updates, it might lead to the
  - At last, view the page source of the Google Form page and find the value of each field's name attribute. Enter the value to the name attribute of the respectively field in the HTML form.
 
  - Run the application and test it with the feedback form.
- 

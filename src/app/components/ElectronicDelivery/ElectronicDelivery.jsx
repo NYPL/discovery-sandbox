@@ -9,6 +9,7 @@ import {
   extend as _extend,
   mapObject as _mapObject,
 } from 'underscore';
+import DocumentTitle from 'react-document-title';
 
 import Breadcrumbs from '../Breadcrumbs/Breadcrumbs.jsx';
 import PatronStore from '../../stores/PatronStore.js';
@@ -27,12 +28,14 @@ class ElectronicDelivery extends React.Component {
     const itemId = (this.props.params && this.props.params.itemId) ? this.props.params.itemId : '';
     const selectedItem = (bib && itemId) ? LibraryItem.getItem(bib, itemId) : {};
     const itemSource = selectedItem.itemSource;
+    const raiseError = _isEmpty(this.props.error) ? {} : this.props.error;
 
     this.state = _extend({
       title,
       bibId,
       itemId,
       itemSource,
+      raiseError,
     }, { patron: PatronStore.getState() });
     this.requireUser = this.requireUser.bind(this);
     this.submitRequest = this.submitRequest.bind(this);
@@ -168,73 +171,75 @@ class ElectronicDelivery extends React.Component {
     const searchKeywords = this.props.searchKeywords;
 
     return (
-      <div id="mainContent">
-        <div className="nypl-request-page-header">
-          <div className="row">
-            <div className="content-wrapper">
-              <Breadcrumbs
-                query={searchKeywords}
-                type="edd"
-                bibUrl={`/bib/${bibId}`}
-                itemUrl={`/hold/request/${bibId}-${itemId}`}
-              />
-              <h2>{appConfig.displayTitle}</h2>
-            </div>
-          </div>
-        </div>
-        <div className="nypl-full-width-wrapper">
-          <div className="nypl-row">
-            <div className="nypl-column-three-quarters">
-              <div className="item-header">
-                <h1>Electronic Delivery Request</h1>
-              </div>
-
-              <div className="nypl-request-item-summary">
-                <h3>
-                  Material request for Electronic Delivery:
-                  <br />
-                  <Link to={`${appConfig.baseUrl}/bib/${bibId}`}>
-                    {title}
-                  </Link>
-                </h3>
-                {
-                  callNo && (
-                    <div className="call-number">
-                      <span>Call Number:</span><br />
-                      {callNo}
-                    </div>
-                  )
-                }
+      <DocumentTitle title="Electronic Delivery Request | Shared Collection Catalog | NYPL">
+        <div id="mainContent">
+          <div className="nypl-request-page-header">
+            <div className="row">
+              <div className="content-wrapper">
+                <Breadcrumbs
+                  query={searchKeywords}
+                  type="edd"
+                  bibUrl={`/bib/${bibId}`}
+                  itemUrl={`/hold/request/${bibId}-${itemId}`}
+                />
+                <h2>{appConfig.displayTitle}</h2>
               </div>
             </div>
           </div>
-
-          <div className="nypl-row">
-            {
-              raiseError && (
-                <div className="nypl-form-error" ref="nypl-form-error" tabIndex="0">
-                  <h2>Error</h2>
-                  <p>Please check the following required fields and resubmit your request:</p>
-                  <ul>
-                    {this.getRaisedErrors(raiseError)}
-                  </ul>
+          <div className="nypl-full-width-wrapper">
+            <div className="nypl-row">
+              <div className="nypl-column-three-quarters">
+                <div className="item-header">
+                  <h1>Electronic Delivery Request</h1>
                 </div>
-              )
-            }
-            <ElectronicDeliveryForm
-              bibId={bibId}
-              itemId={itemId}
-              itemSource={this.state.itemSource}
-              submitRequest={this.submitRequest}
-              raiseError={this.raiseError}
-              error={error}
-              form={form}
-              defaultEmail={patronEmail}
-              searchKeywords={searchKeywords}
-            />
+
+                <div className="nypl-request-item-summary">
+                  <h3>
+                    Material request for Electronic Delivery:
+                    <br />
+                    <Link to={`${appConfig.baseUrl}/bib/${bibId}`}>
+                      {title}
+                    </Link>
+                  </h3>
+                  {
+                    callNo && (
+                      <div className="call-number">
+                        <span>Call Number:</span><br />
+                        {callNo}
+                      </div>
+                    )
+                  }
+                </div>
+              </div>
+            </div>
+
+            <div className="nypl-row">
+              {
+                !_isEmpty(raiseError) && (
+                  <div className="nypl-form-error" ref="nypl-form-error" tabIndex="0">
+                    <h2>Error</h2>
+                    <p>Please check the following required fields and resubmit your request:</p>
+                    <ul>
+                      {this.getRaisedErrors(raiseError)}
+                    </ul>
+                  </div>
+                )
+              }
+              <ElectronicDeliveryForm
+                bibId={bibId}
+                itemId={itemId}
+                itemSource={this.state.itemSource}
+                submitRequest={this.submitRequest}
+                raiseError={this.raiseError}
+                error={error}
+                form={form}
+                defaultEmail={patronEmail}
+                searchKeywords={searchKeywords}
+              />
+            </div>
           </div>
         </div>
-      </div>
+      </DocumentTitle>
     );
   }
 }
