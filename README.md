@@ -21,7 +21,7 @@ Front-end app for searching, discovering, and placing a hold on research items f
 * Express Server
 * [Travis](https://travis-ci.org/)
 
-## Installation
+## Installation and running locally
 
 To install packages run
 
@@ -29,11 +29,11 @@ To install packages run
 
 To run locally in development mode run
 
-    $ npm run dev-start
+    $ clientID=[client id] clientSecret=[client secret] npm run dev-start
 
 If you would like to run in different the environments, run
 
-    $ APP_ENV=[environment variable] npm start
+    $ clientID=[client id] clientSecret=[client secret] APP_ENV=[environment variable] npm start
 
 `environment variable` is the name of the particular environment, such as `qa`.
 
@@ -42,10 +42,13 @@ At last, visit `localhost:3001`.
 To run locally in production mode run
 
     $ npm run dist
-    $ NODE_ENV=production APP_ENV=[environment variable] npm start
+    $ clientID=[client id] clientSecret=[client secret] NODE_ENV=production APP_ENV=[environment variable] npm start
 
 and visit `localhost:3001`.
 NOTE: Currently the only working `environment variable` is `development`.
+
+## Client Id and Secret
+We are environment variables to make authorized requests to NYPL's API platform. The `clientId` and `clientSecret` environment variables should be received from a coworker.
 
 ## Contributing
 
