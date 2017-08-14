@@ -32,7 +32,7 @@ class ResultsCount extends React.Component {
     let result = '';
 
     if (searchKeywords) {
-      if (field !== 'all') {
+      if (field && field !== 'all') {
         result += `for ${keyMapping[field]} "${searchKeywords}"`;
       } else {
         result += `for keyword "${searchKeywords}"`;
