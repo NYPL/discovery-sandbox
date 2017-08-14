@@ -19,8 +19,9 @@ import apiRoutes from './src/server/ApiRoutes/ApiRoutes.js';
 import routes from './src/app/routes/routes.jsx';
 
 import cookieParser from 'cookie-parser';
-import auth from './src/server/routes/auth';
+import initializePatronTokenAuth from './src/server/routes/auth';
 import { getPatronData } from './src/server/routes/api';
+
 import bodyParser from 'body-parser';
 
 const ROOT_PATH = __dirname;
@@ -63,7 +64,8 @@ app.use('/', (req, res, next) => {
   return next();
 });
 
-app.use('/*', auth.initializePatronTokenAuth, getPatronData);
+// Init token and nypl data client.
+app.use('/*', initializePatronTokenAuth, getPatronData);
 app.use('/', apiRoutes);
 
 app.get('/*', (req, res) => {
@@ -150,6 +152,9 @@ if (!isProduction) {
     if (error) {
       console.log(colors.red(error));
     }
-    console.log(colors.magenta('Webpack Dev Server listening at'), colors.cyan(`localhost: ${WEBPACK_DEV_PORT}`));
+    console.log(
+      colors.magenta('Webpack Dev Server listening at'),
+      colors.cyan(`localhost: ${WEBPACK_DEV_PORT}`)
+    );
   });
 }

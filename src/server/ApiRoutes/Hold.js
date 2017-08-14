@@ -1,4 +1,3 @@
-import axios from 'axios';
 import {
   mapObject as _mapObject,
   omit as _omit,
@@ -11,10 +10,7 @@ import User from './User.js';
 import Bib from './Bib.js';
 import LibraryItem from './../../app/utils/item.js';
 import { validate } from '../../app/utils/formValidationUtils';
-import auth from '../routes/auth';
-
-const appEnvironment = process.env.APP_ENV || 'production';
-const apiBase = appConfig.api[appEnvironment];
+import client from '../routes/client';
 
 /**
  * postHoldAPI(req, pickedUpItemId, pickupLocation, cb, errorCb)
@@ -60,8 +56,8 @@ function postHoldAPI(
   };
   console.log('Making hold request', data);
 
-  return auth.client
-    .post(holdRequestEndpoint, data)
+  return client
+    .post(holdRequestEndpoint, JSON.stringify(data))
     .then(cb)
     .catch(errorCb);
 }
@@ -108,15 +104,15 @@ function mapLocationDetails(locations) {
 function getDeliveryLocations(barcode, patronId, cb, errorCb) {
   const deliveryEndpoint = `/request/deliveryLocationsByBarcode?barcodes[]=${barcode}` +
     `&patronId=${patronId}`;
-  return auth.client
+
+  return client
     .get(deliveryEndpoint)
     .then(barcodeAPIresponse => {
-      console.log(barcodeAPIresponse);
-      const eddRequestable = (barcodeAPIresponse.data.itemListElement[0].eddRequestable) ?
-        barcodeAPIresponse.data.itemListElement[0].eddRequestable : false;
+      const eddRequestable = (barcodeAPIresponse.itemListElement[0].eddRequestable) ?
+        barcodeAPIresponse.itemListElement[0].eddRequestable : false;
       const deliveryLocationWithAddress =
-        (barcodeAPIresponse.data.itemListElement[0].deliveryLocation) ?
-        mapLocationDetails(barcodeAPIresponse.data.itemListElement[0].deliveryLocation) : [];
+        (barcodeAPIresponse.itemListElement[0].deliveryLocation) ?
+        mapLocationDetails(barcodeAPIresponse.itemListElement[0].deliveryLocation) : [];
 
       cb(
         deliveryLocationWithAddress,
@@ -124,6 +120,7 @@ function getDeliveryLocations(barcode, patronId, cb, errorCb) {
       );
     })
     .catch(barcodeAPIError => {
+      console.log(`getDeliveryLocations error: ${barcodeAPIError}`);
       errorCb(barcodeAPIError);
     });
 }
@@ -149,11 +146,10 @@ function confirmRequestServer(req, res, next) {
   const patronId = req.patronTokenResponse.decodedPatron.sub || '';
   let barcode;
 
-  return auth.client
+  return client
     .get(`/hold-requests/${requestId}`)
     .then(response => {
-      const data = response.data.data;
-      const patronIdFromHoldRequest = data.patron;
+      const patronIdFromHoldRequest = response.patron;
 
       // The patron who is seeing the confirmation made the Hold Request
       if (patronIdFromHoldRequest === patronId) {
@@ -411,17 +407,18 @@ function createHoldRequestServer(req, res, pickedUpBibId = '', pickedUpItemId = 
     docDeliveryData,
     itemSource,
     (response) => {
-      console.log('Hold Request Id:', response.data.data.id);
-      console.log('Job Id:', response.data.data.jobId);
+      const data = JSON.parse(response).data;
+      console.log('data', data);
+      console.log('Hold Request Id:', data.id);
+      console.log('Job Id:', data.jobId);
 
       res.redirect(
         `${appConfig.baseUrl}/hold/confirmation/${bibId}-${itemId}?pickupLocation=` +
-        `${response.data.data.pickupLocation}&requestId=${response.data.data.id}` +
-        `${searchKeywordsQuery}`
+        `${data.pickupLocation}&requestId=${data.id}${searchKeywordsQuery}`
       );
     },
     (error) => {
-      console.log(`Error calling Holds API : ${error.data.message}`);
+      console.log(`Error calling Holds API createHoldRequestServer : ${error.data.message}`);
       res.redirect(
         `${appConfig.baseUrl}/hold/request/${bibId}-${itemId}?errorMessage=${error.data.message}`
       );
@@ -449,14 +446,15 @@ function createHoldRequestAjax(req, res) {
     null,
     req.query.itemSource,
     (response) => {
+      const data = JSON.parse(response).data;
       res.json({
-        id: response.data.data.id,
-        jobId: response.data.data.jobId,
-        pickupLocation: response.data.data.pickupLocation,
+        id: data.id,
+        jobId: data.jobId,
+        pickupLocation: data.pickupLocation,
       });
     },
     (error) => {
-      console.log(`Error calling Holds API : ${error.data.message}`);
+      console.log(`Error calling Holds API createHoldRequestAjax : ${error}`);
 
       res.json({
         status: error.status,
@@ -478,14 +476,15 @@ function createHoldRequestEdd(req, res) {
     req.body.form,
     req.body.itemSource,
     (response) => {
+      const data = JSON.parse(response).data;
       res.json({
-        id: response.data.data.id,
-        jobId: response.data.data.jobId,
-        pickupLocation: response.data.data.pickupLocation,
+        id: data.id,
+        jobId: data.jobId,
+        pickupLocation: data.pickupLocation,
       });
     },
     (error) => {
-      console.log(`Error calling Holds API : ${error.data.message}`);
+      console.log(`Error calling Holds API createHoldRequestEdd : ${error}`);
 
       res.json({
         status: error.status,
@@ -527,17 +526,18 @@ function eddServer(req, res) {
     req.body,
     req.body.itemSource,
     (response) => {
+      const data = JSON.parse(response).data;
       const searchKeywordsQuery = (req.body.searchKeywords) ?
         `&searchKeywords=${req.body.searchKeywords}` : '';
 
       res.redirect(
         `${appConfig.baseUrl}/hold/confirmation/${req.body.bibId}-${req.body.itemId}` +
-        `?pickupLocation=${req.body.pickupLocation}&requestId=${response.data.data.id}` +
+        `?pickupLocation=${req.body.pickupLocation}&requestId=${data.id}` +
         `${searchKeywordsQuery}`
       );
     },
     (error) => {
-      console.log(`Error calling Holds API : ${error.data.message}`);
+      console.log(`Error calling Holds API eddServer : ${error}`);
 
       res.redirect(
         `${appConfig.baseUrl}/hold/request/${bibId}-${itemId}/edd?error=${JSON.stringify(error)}` +

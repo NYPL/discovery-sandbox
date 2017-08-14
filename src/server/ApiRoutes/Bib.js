@@ -1,13 +1,9 @@
-import axios from 'axios';
-import appConfig from '../../../appConfig.js';
-
-const appEnvironment = process.env.APP_ENV || 'production';
-const apiBase = appConfig.api[appEnvironment];
+import client from '../routes/client';
 
 function fetchBib(bibId, cb, errorcb) {
-  return axios
-    .get(`${apiBase}/discovery/resources/${bibId}`)
-    .then(response => cb(response.data))
+  return client
+    .get(`/discovery/resources/${bibId}`)
+    .then(response => cb(response))
     .catch(error => {
       console.error(`fetchBib API error: ${JSON.stringify(error, null, 2)}`);
 

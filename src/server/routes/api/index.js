@@ -1,4 +1,4 @@
-import auth from '../auth';
+import client from '../client';
 import { isEmpty as _isEmpty } from 'underscore';
 
 export function getPatronData(req, res, next) {
@@ -8,7 +8,7 @@ export function getPatronData(req, res, next) {
   ) {
     const userId = req.patronTokenResponse.decodedPatron.sub;
 
-    return auth.client
+    return client
       .get(`/patrons/${userId}`)
       .then((response) => {
         if (_isEmpty(response)) {
