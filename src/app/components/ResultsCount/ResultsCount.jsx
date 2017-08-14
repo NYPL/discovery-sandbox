@@ -58,7 +58,7 @@ class ResultsCount extends React.Component {
     const displayContext = this.displayContext();
     const start = (page - 1) * 50 + 1;
     const end = (page) * 50 > count ? count : (page * 50);
-    const currentResultDisplay = `${start} - ${end}`;
+    const currentResultDisplay = `${start}-${end}`;
 
     if (spinning) {
       return (<p>Loading…</p>);
