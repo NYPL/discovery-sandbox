@@ -155,7 +155,7 @@ function confirmRequestServer(req, res, next) {
   const searchKeywords = req.query.searchKeywords || '';
   const errorStatus = req.query.errorStatus ? req.query.errorStatus : null;
   const errorMessage = req.query.errorMessage ? req.query.errorMessage : null;
-  const error = _extend({}, {errorStatus, errorMessage});
+  const error = _extend({}, { errorStatus, errorMessage });
 
   if (!loggedIn) return false;
 
@@ -212,7 +212,8 @@ function confirmRequestServer(req, res, next) {
               },
               (deliveryLocationError) => {
                 console.error(
-                  `deliverylocationsbybarcode API error: ${JSON.stringify(e, null, 2)}`
+                  `deliverylocationsbybarcode API error: ` +
+                  `${JSON.stringify(deliveryLocationError, null, 2)}`
                 );
 
                 res.locals.data.Store = {
