@@ -20,12 +20,14 @@ class ResultsCount extends React.Component {
       field,
     } = this.props;
     const keyMapping = {
+      // Currently from links on the bib page:
       creatorLiteral: 'author',
       contributorLiteral: 'author',
-      contributor: 'author',
-      titleDisplay: 'title',
-      title: 'title',
       subjectLiteral: 'subject',
+      titleDisplay: 'title',
+      // From the search field dropdown:
+      contributor: 'author/contributor',
+      title: 'title',
     };
     let result = '';
 
