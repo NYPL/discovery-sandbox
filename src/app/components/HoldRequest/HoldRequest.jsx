@@ -91,6 +91,7 @@ class HoldRequest extends React.Component {
     let path = `${appConfig.baseUrl}/hold/confirmation/${bibId}-${itemId}`;
     const searchKeywordsQuery =
       (this.props.searchKeywords) ? `searchKeywords=${this.props.searchKeywords}` : '';
+    const searchKeywordsQueryPhysical = searchKeywordsQuery ? `&${searchKeywordsQuery}` : '';
 
     if (this.state.delivery === 'edd') {
       const searchKeywordsQueryEdd = searchKeywordsQuery ? `?${searchKeywordsQuery}` : '';
@@ -106,10 +107,11 @@ class HoldRequest extends React.Component {
         `${this.state.delivery}&itemSource=${itemSource}`)
       .then(response => {
         if (response.data.error && response.data.error.status !== 200) {
-          this.context.router.push(`${path}?errorMessage=${response.data.error.statusText}`);
+          this.context.router.push(
+            `${path}?errorStatus=${response.data.error.status}` +
+            `&errorMessage=${response.data.error.statusText}${searchKeywordsQueryPhysical}`
+          );
         } else {
-          const searchKeywordsQueryPhysical = searchKeywordsQuery ? `&${searchKeywordsQuery}` : '';
-
           this.context.router.push(
             `${path}?pickupLocation=${response.data.pickupLocation}&requestId=${response.data.id}` +
             `${searchKeywordsQueryPhysical}`
