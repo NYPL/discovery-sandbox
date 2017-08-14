@@ -53,16 +53,19 @@ class ResultsCount extends React.Component {
   }
 
   displayCount() {
-    const { count, spinning } = this.props;
+    const { count, spinning, page } = this.props;
     const countF = count ? count.toLocaleString() : '';
     const displayContext = this.displayContext();
+    const start = (page - 1) * 50 + 1;
+    const end = (page) * 50 > count ? count : (page * 50);
+    const currentResultDisplay = `${start} - ${end}`;
 
     if (spinning) {
       return (<p>Loading…</p>);
     }
 
     if (count !== 0) {
-      return (<p>{countF} results {displayContext}</p>);
+      return (<p>Display {currentResultDisplay} of {countF} results {displayContext}</p>);
     }
     return (<p>No results found. Please try another search.</p>);
   }
@@ -86,6 +89,7 @@ class ResultsCount extends React.Component {
 
 ResultsCount.propTypes = {
   count: PropTypes.number,
+  page: PropTypes.string,
   spinning: PropTypes.bool,
   selectedFacets: PropTypes.object,
   searchKeywords: PropTypes.string,
