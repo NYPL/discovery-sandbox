@@ -165,56 +165,57 @@ class HoldConfirmation extends React.Component {
     const pickupLocation = this.props.location.query.pickupLocation;
     let deliveryLocation = null;
 
-    const item = !this.props.location.query.errorStatus ? (
-      <div className="item">
-        <h2>Submission Received</h2>
-        <h3>Item Information</h3>
-        <p>
-          We've received your request for <Link to={`${appConfig.baseUrl}/bib/${bibId}`}>
-          {title}</Link>
-        </p>
-        <p>
-          Please check your library account for updates. The item will be listed as
-          Ready under your Holds tab when it is available. You will also recieve an email
-          confirmation after your item has arrived.
-        </p>
-        <p>
-          Your item will be delivered to: {this.renderLocationInfo(deliveryLocation)}
-        </p>
-        <p>
-          For off-site materials, requests made before 2:30 PM will be delivered the
-          following business day. Requests made after 2:30 PM on Fridays or over the
-          weekend will be delivered the following Tuesday. We will hold books for up
-          to seven days, so you can request materials up to a week in advance.
-        </p>
+    const item = (!this.props.location.query.errorStatus && !this.props.location.query.errorMessage)
+      ? (
+        <div className="item">
+          <h2>Submission Received</h2>
+          <h3>Item Information</h3>
+          <p>
+            We've received your request for <Link to={`${appConfig.baseUrl}/bib/${bibId}`}>
+            {title}</Link>
+          </p>
+          <p>
+            Please check your library account for updates. The item will be listed as
+            Ready under your Holds tab when it is available. You will also recieve an email
+            confirmation after your item has arrived.
+          </p>
+          <p>
+            Your item will be delivered to: {this.renderLocationInfo(deliveryLocation)}
+          </p>
+          <p>
+            For off-site materials, requests made before 2:30 PM will be delivered the
+            following business day. Requests made after 2:30 PM on Fridays or over the
+            weekend will be delivered the following Tuesday. We will hold books for up
+            to seven days, so you can request materials up to a week in advance.
+          </p>
 
-        <h3>Electronic Delivery</h3>
-        <p>
-          If you selected Electronic delivery, you will be notified via email when the
-          item is available.
-        </p>
-        <p>
-          If you would like to cancel your request, or if you have further questions,
-          please contact 917-ASK-NYPL (<a href="tel:19172756975">917-275-6975</a>).
-        </p>
-        {this.renderBackToSearchLink()}
-        {this.renderStartOverLink()}
-      </div>
-    ) : (
-      <div className="item">
-        <h2>Submission Error</h2>
-        <h3>Item Information</h3>
-        <p>
-          Something is wrong with your request.
-        </p>
-        <p>
-          Please contact 917-ASK-NYPL (<a href="tel:19172756975">917-275-6975</a>) for further
-          information.
-        </p>
-        {this.renderBackToSearchLink()}
-        {this.renderStartOverLink()}
-      </div>
-    );
+          <h3>Electronic Delivery</h3>
+          <p>
+            If you selected Electronic delivery, you will be notified via email when the
+            item is available.
+          </p>
+          <p>
+            If you would like to cancel your request, or if you have further questions,
+            please contact 917-ASK-NYPL (<a href="tel:19172756975">917-275-6975</a>).
+          </p>
+          {this.renderBackToSearchLink()}
+          {this.renderStartOverLink()}
+        </div>
+      ) : (
+        <div className="item">
+          <h2>Submission Error</h2>
+          <h3>Item Information</h3>
+          <p>
+            Something is wrong with your request.
+          </p>
+          <p>
+            Please contact 917-ASK-NYPL (<a href="tel:19172756975">917-275-6975</a>) for further
+            information.
+          </p>
+          {this.renderBackToSearchLink()}
+          {this.renderStartOverLink()}
+        </div>
+      );
 
     if (this.props.deliveryLocations && this.props.deliveryLocations.length) {
       if (pickupLocation !== 'edd') {

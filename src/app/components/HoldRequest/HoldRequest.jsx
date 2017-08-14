@@ -120,7 +120,8 @@ class HoldRequest extends React.Component {
       })
       .catch(error => {
         console.log(error);
-        this.context.router.push(`${path}?errorMessage=${error}`);
+
+        this.context.router.push(`${path}?errorMessage=${error}${searchKeywordsQueryPhysical}`);
       });
   }
 
