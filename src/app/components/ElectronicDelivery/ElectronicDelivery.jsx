@@ -105,6 +105,8 @@ class ElectronicDelivery extends React.Component {
       pickupLocation: 'edd',
       itemSource,
     }, fields);
+    const searchKeywords = this.props.searchKeywords;
+    const searchKeywordsQuery = (searchKeywords) ? `&searchKeywords=${searchKeywords}` : '';
 
     // This is to remove the error box on the top of the page on a successfull submission.
     this.setState({ raiseError: null });
@@ -112,17 +114,20 @@ class ElectronicDelivery extends React.Component {
       .post(`${appConfig.baseUrl}/api/newHold`, data)
       .then(response => {
         if (response.data.error && response.data.error.status !== 200) {
-          this.context.router.push(`${path}?errorMessage=${response.data.error.statusText}`);
+          this.context.router.push(
+            `${path}?errorStatus=${response.data.error.status}` +
+            `&errorMessage=${response.data.error.statusText}${searchKeywordsQuery}`
+          );
         } else {
           this.context.router.push(
-            `${path}?pickupLocation=edd&requestId=${response.data.id}` +
-            `&searchKeywords=${this.props.searchKeywords}`
+            `${path}?pickupLocation=edd&requestId=${response.data.id}${searchKeywordsQuery}`
           );
         }
       })
       .catch(error => {
         console.log(error);
-        this.context.router.push(`${path}?errorMessage=${error}`);
+
+        this.context.router.push(`${path}?errorMessage=${error}${searchKeywordsQuery}`);
       });
   }
 
