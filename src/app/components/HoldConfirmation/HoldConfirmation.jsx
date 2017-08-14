@@ -206,11 +206,8 @@ class HoldConfirmation extends React.Component {
         <h2>Submission Error</h2>
         <h3>Item Information</h3>
         <p>
-          Something is wrong with your request.
-        </p>
-        <p>
-          Please contact 917-ASK-NYPL (<a href="tel:19172756975">917-275-6975</a>) for further
-          information.
+          We could not process your request at this time. Please try again or contact 917-ASK-NYPL
+          (<a href="tel:19172756975">917-275-6975</a>).
         </p>
         {this.renderBackToSearchLink()}
         {this.renderStartOverLink()}
