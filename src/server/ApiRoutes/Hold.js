@@ -41,7 +41,7 @@ function postHoldAPI(
   // retrieve access token and patron info
   const accessToken = req.tokenResponse.accessToken;
   const patronId = req.tokenResponse.decodedPatron.sub;
-  const patronHoldsApi = `${appConfig.api.development}/hold-requestsTest`;
+  const patronHoldsApi = `${appConfig.api.development}/hold-requests`;
 
   // get item id and pickup location
   // NOTE: pickedUpItemId and pickedUpBibId are coming from the EDD form function below:
