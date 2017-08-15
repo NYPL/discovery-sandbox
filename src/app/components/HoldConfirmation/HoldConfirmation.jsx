@@ -164,7 +164,6 @@ class HoldConfirmation extends React.Component {
     const itemId = this.props.params.itemId;
     const pickupLocation = this.props.location.query.pickupLocation;
     let deliveryLocation = null;
-    let confirmationTabTitle = 'Submission Error';
     let confirmationPageTitle = 'Submission Error';
     let confirmationInfo = (
       <div className="item">
@@ -178,7 +177,6 @@ class HoldConfirmation extends React.Component {
     );
 
     if (!this.props.location.query.errorStatus && !this.props.location.query.errorMessage) {
-      confirmationTabTitle = 'Request Confirmation';
       confirmationPageTitle = 'Request Confirmation';
       confirmationInfo = (
       <div className="item">
@@ -234,7 +232,7 @@ class HoldConfirmation extends React.Component {
     }
 
     return (
-      <DocumentTitle title={`${confirmationTabTitle} | Shared Collection Catalog | NYPL`}>
+      <DocumentTitle title={`${confirmationPageTitle} | Shared Collection Catalog | NYPL`}>
         <main id="mainContent" className="main-page">
           <div className="nypl-request-page-header">
             <div className="row">
