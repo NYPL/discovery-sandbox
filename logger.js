@@ -86,7 +86,7 @@ const loggerTransports = [
 if (process.env.NODE_ENV !== 'test') {
   loggerTransports.push(new winston.transports.Console({
     handleExceptions: true,
-    json: true,
+    json: false,
     stringify: true,
     colorize: true,
     timestamp,
