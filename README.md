@@ -48,7 +48,7 @@ and visit `localhost:3001`.
 NOTE: Currently the only working `environment variable` is `development`.
 
 ## Client Id and Secret
-We are environment variables to make authorized requests to NYPL's API platform. The `clientId` and `clientSecret` environment variables should be received from a coworker.
+We are environment variables to make authorized requests to NYPL's API platform. The `clientId` and `clientSecret` environment variables should be received from a developer in the NYPL Digital Department.
 
 ## Contributing
 

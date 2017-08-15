@@ -1,4 +1,4 @@
-import client from '../client';
+import nyplApiClient from '../nyplApiClient';
 import { isEmpty as _isEmpty } from 'underscore';
 
 export function getPatronData(req, res, next) {
@@ -8,7 +8,7 @@ export function getPatronData(req, res, next) {
   ) {
     const userId = req.patronTokenResponse.decodedPatron.sub;
 
-    return client
+    return nyplApiClient
       .get(`/patrons/${userId}`)
       .then((response) => {
         if (_isEmpty(response)) {

@@ -12,7 +12,7 @@ import {
   basicQuery,
   parseServerSelectedFilters,
 } from '../../app/utils/utils.js';
-import client from '../routes/client';
+import nyplApiClient from '../routes/nyplApiClient';
 
 const createAPIQuery = basicQuery({
   searchKeywords: '',
@@ -20,7 +20,7 @@ const createAPIQuery = basicQuery({
   field: '',
   selectedFacets: {},
 });
-const clientCall = (query) => client.get(`/discovery/resources${query}`);
+const nyplApiClientCall = (query) => nyplApiClient.get(`/discovery/resources${query}`);
 
 function search(searchKeywords, page, sortBy, order, field, filters, cb, errorcb) {
   const apiQuery = createAPIQuery({
@@ -36,7 +36,7 @@ function search(searchKeywords, page, sortBy, order, field, filters, cb, errorcb
 
   // Also need to make an async call to with aggregationQuery eventually...
   // It use to be with axios.all to concurrently get both endpoints.
-  clientCall(queryString)
+  nyplApiClientCall(queryString)
     .then((response) => {
       cb({}, response, page);
     })

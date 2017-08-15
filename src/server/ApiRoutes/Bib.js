@@ -1,7 +1,7 @@
-import client from '../routes/client';
+import nyplApiClient from '../routes/nyplApiClient';
 
 function fetchBib(bibId, cb, errorcb) {
-  return client
+  return nyplApiClient
     .get(`/discovery/resources/${bibId}`)
     .then(response => cb(response))
     .catch(error => {
