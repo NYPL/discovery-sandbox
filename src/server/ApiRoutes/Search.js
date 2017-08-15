@@ -1,5 +1,3 @@
-import axios from 'axios';
-
 import {
   isEmpty as _isEmpty,
   findWhere as _findWhere,
@@ -14,16 +12,15 @@ import {
   basicQuery,
   parseServerSelectedFilters,
 } from '../../app/utils/utils.js';
+import nyplApiClient from '../routes/nyplApiClient';
 
-const appEnvironment = process.env.APP_ENV || 'production';
-const apiBase = appConfig.api[appEnvironment];
 const createAPIQuery = basicQuery({
   searchKeywords: '',
   sortBy: '',
   field: '',
   selectedFacets: {},
 });
-const axiosApiCall = (query) => axios.get(`${apiBase}/discovery/resources${query}`);
+const nyplApiClientCall = (query) => nyplApiClient.get(`/discovery/resources${query}`);
 
 function search(searchKeywords, page, sortBy, order, field, filters, cb, errorcb) {
   const apiQuery = createAPIQuery({
@@ -34,19 +31,19 @@ function search(searchKeywords, page, sortBy, order, field, filters, cb, errorcb
     page,
   });
 
-  const aggregationQuery = `/aggregations?${apiQuery}`;
+  // const aggregationQuery = `/aggregations?${apiQuery}`;
   const queryString = `?${apiQuery}&per_page=50`;
 
-  axios
-    .all([axiosApiCall(aggregationQuery), axiosApiCall(queryString)])
-    .then(axios.spread((facets, response) => {
-      cb(facets.data, response.data, page);
-    }))
+  // Also need to make an async call to with aggregationQuery eventually...
+  // It use to be with axios.all to concurrently get both endpoints.
+  nyplApiClientCall(queryString)
+    .then((response) => {
+      cb({}, response, page);
+    })
     .catch(error => {
       console.error(`Search error: ${JSON.stringify(error, null, 2)}`);
-
       errorcb(error);
-    }); /* end axios call */
+    });
 }
 
 function searchAjax(req, res) {
