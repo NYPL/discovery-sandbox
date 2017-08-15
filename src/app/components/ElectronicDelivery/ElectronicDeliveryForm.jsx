@@ -97,7 +97,6 @@ class ElectronicDeliveryForm extends React.Component {
                 <input
                   id="emailAddress"
                   type="text"
-                  required
                   aria-labelledby="emailAddress-label emailAddress-status"
                   aria-required="true"
                   name="emailAddress"
@@ -133,7 +132,7 @@ class ElectronicDeliveryForm extends React.Component {
                 <input
                   id="chapterTitle"
                   type="text"
-                  required
+                  aria-required="true"
                   aria-labelledby="chapterTitle-label chapterTitle-status"
                   name="chapterTitle"
                   value={this.state.form.chapterTitle}
@@ -224,7 +223,7 @@ class ElectronicDeliveryForm extends React.Component {
                 <input
                   id="startPage"
                   type="text"
-                  required
+                  aria-required="true"
                   className="form-text"
                   aria-labelledby="startPage-label startPage-status"
                   name="startPage"
@@ -248,7 +247,7 @@ class ElectronicDeliveryForm extends React.Component {
                 <input
                   id="endPage"
                   type="text"
-                  required
+                  aria-required="true"
                   className="form-text"
                   aria-labelledby="endPage-label endPage-status"
                   name="endPage"
