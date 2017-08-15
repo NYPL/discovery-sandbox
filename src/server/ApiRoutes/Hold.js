@@ -162,7 +162,7 @@ function confirmRequestServer(req, res, next) {
   if (!requestId) {
     res.locals.data.Store = {
       bib: {},
-      searchKeywords: searchKeywords,
+      searchKeywords,
       error,
       deliveryLocations: [],
     };
@@ -203,7 +203,7 @@ function confirmRequestServer(req, res, next) {
               (deliveryLocations, isEddRequestable) => {
                 res.locals.data.Store = {
                   bib: bibResponseData,
-                  searchKeywords: searchKeywords,
+                  searchKeywords,
                   error,
                   deliveryLocations,
                   isEddRequestable,
@@ -218,7 +218,7 @@ function confirmRequestServer(req, res, next) {
 
                 res.locals.data.Store = {
                   bib: bibResponseData,
-                  searchKeywords: searchKeywords,
+                  searchKeywords,
                   error,
                   deliveryLocations: [],
                   isEddRequestable: false,
@@ -230,7 +230,7 @@ function confirmRequestServer(req, res, next) {
           (bibResponseError) => {
             res.locals.data.Store = {
               bib: {},
-              searchKeywords: searchKeywords,
+              searchKeywords,
               error,
               deliveryLocations: [],
             };
@@ -246,7 +246,7 @@ function confirmRequestServer(req, res, next) {
 
       res.locals.data.Store = {
         bib: {},
-        searchKeywords: searchKeywords,
+        searchKeywords,
         error,
         deliveryLocations: [],
       };
