@@ -89,7 +89,7 @@ class ResultsCount extends React.Component {
 
 ResultsCount.propTypes = {
   count: PropTypes.number,
-  page: PropTypes.string,
+  page: PropTypes.number,
   spinning: PropTypes.bool,
   selectedFacets: PropTypes.object,
   searchKeywords: PropTypes.string,
@@ -99,6 +99,7 @@ ResultsCount.propTypes = {
 ResultsCount.defaultProps = {
   count: 0,
   spinning: false,
+  page: 1,
 };
 
 export default ResultsCount;
