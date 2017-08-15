@@ -98,6 +98,7 @@ const SearchResultsPage = (props, context) => {
                 selectedFacets={selectedFacets}
                 searchKeywords={searchKeywords}
                 field={field}
+                page={parseInt(page, 10)}
               />
 
               {

@@ -32,7 +32,7 @@ class ResultsCount extends React.Component {
     let result = '';
 
     if (searchKeywords) {
-      if (field !== 'all') {
+      if (field && field !== 'all') {
         result += `for ${keyMapping[field]} "${searchKeywords}"`;
       } else {
         result += `for keyword "${searchKeywords}"`;
@@ -53,16 +53,19 @@ class ResultsCount extends React.Component {
   }
 
   displayCount() {
-    const { count, spinning } = this.props;
+    const { count, spinning, page } = this.props;
     const countF = count ? count.toLocaleString() : '';
     const displayContext = this.displayContext();
+    const start = (page - 1) * 50 + 1;
+    const end = (page) * 50 > count ? count : (page * 50);
+    const currentResultDisplay = `${start}-${end}`;
 
     if (spinning) {
       return (<p>Loading…</p>);
     }
 
     if (count !== 0) {
-      return (<p>{countF} results {displayContext}</p>);
+      return (<p>Displaying {currentResultDisplay} of {countF} results {displayContext}</p>);
     }
     return (<p>No results found. Please try another search.</p>);
   }
@@ -86,6 +89,7 @@ class ResultsCount extends React.Component {
 
 ResultsCount.propTypes = {
   count: PropTypes.number,
+  page: PropTypes.number,
   spinning: PropTypes.bool,
   selectedFacets: PropTypes.object,
   searchKeywords: PropTypes.string,
@@ -95,6 +99,7 @@ ResultsCount.propTypes = {
 ResultsCount.defaultProps = {
   count: 0,
   spinning: false,
+  page: 1,
 };
 
 export default ResultsCount;
