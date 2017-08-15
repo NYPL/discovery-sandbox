@@ -183,13 +183,13 @@ class HoldConfirmation extends React.Component {
         <h2>Submission Received</h2>
         <h3>Item Information</h3>
         <p>
-          We've received your request for <Link to={`${appConfig.baseUrl}/bib/${bibId}`}>
-          {title}</Link>
+          We've received your request
+          for <Link to={`${appConfig.baseUrl}/bib/${bibId}`}>{title}</Link>
         </p>
         <p>
           Please check your library account for updates. The item will be listed as
-          Ready under your Holds tab when it is available. You will also recieve an email
-          confirmation after your item has arrived.
+          Ready under your Holds tab when it is available. You will also recieve an
+          email confirmation after your item has arrived.
         </p>
         <p>
           Your item will be delivered to: {this.renderLocationInfo(deliveryLocation)}
@@ -200,15 +200,15 @@ class HoldConfirmation extends React.Component {
           weekend will be delivered the following Tuesday. We will hold books for up
           to seven days, so you can request materials up to a week in advance.
         </p>
+        <p>
+          If you would like to cancel your request, or if you have further questions,
+          please contact 917-ASK-NYPL (<a href="tel:19172756975">917-275-6975</a>).
+        </p>
 
         <h3>Electronic Delivery</h3>
         <p>
           If you selected Electronic delivery, you will be notified via email when the
           item is available.
-        </p>
-        <p>
-          If you would like to cancel your request, or if you have further questions,
-          please contact 917-ASK-NYPL (<a href="tel:19172756975">917-275-6975</a>).
         </p>
         {this.renderBackToSearchLink()}
         {this.renderStartOverLink()}
