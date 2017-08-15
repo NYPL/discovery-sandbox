@@ -212,7 +212,7 @@ function confirmRequestServer(req, res, next) {
               },
               (deliveryLocationError) => {
                 console.error(
-                  `deliverylocationsbybarcode API error: ` +
+                  `deliveryLocationsByBarcode API error: ` +
                   `${JSON.stringify(deliveryLocationError, null, 2)}`
                 );
 
