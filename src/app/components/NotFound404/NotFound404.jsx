@@ -6,7 +6,7 @@ import { Link } from 'react-router';
 import appConfig from '../../../../appConfig.js';
 
 const NotFound404 = () => (
-  <DocumentTitle title="Shared Collection Catalog | NYPL">
+  <DocumentTitle title="404 | Shared Collection Catalog | NYPL">
     <main id="mainContent" className="not-found-404">
       <div className="nypl-full-width-wrapper">
         <div className="nypl-row">
