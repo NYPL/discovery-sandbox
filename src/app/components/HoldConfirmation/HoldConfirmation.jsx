@@ -165,7 +165,7 @@ class HoldConfirmation extends React.Component {
     const pickupLocation = this.props.location.query.pickupLocation;
     let deliveryLocation = null;
 
-    const item = (!this.props.location.query.errorStatus && !this.props.location.query.errorMessage)
+    const confirmationInfo = (!this.props.location.query.errorStatus && !this.props.location.query.errorMessage)
       ? (
       <div className="item">
         <h2>Submission Received</h2>
@@ -260,7 +260,7 @@ class HoldConfirmation extends React.Component {
             <div className="nypl-row">
               <div className="nypl-column-three-quarters">
                 <div className="nypl-request-item-summary">
-                  {item}
+                  {confirmationInfo}
                 </div>
               </div>
             </div>
