@@ -29,11 +29,11 @@ To install packages run
 
 To run locally in development mode run
 
-    $ clientID=[client id] clientSecret=[client secret] npm run dev-start
+    $ clientId=[client id] clientSecret=[client secret] npm run dev-start
 
 If you would like to run in different the environments, run
 
-    $ clientID=[client id] clientSecret=[client secret] APP_ENV=[environment variable] npm start
+    $ clientId=[client id] clientSecret=[client secret] APP_ENV=[environment variable] npm start
 
 `environment variable` is the name of the particular environment, such as `qa`.
 
