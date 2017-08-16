@@ -8,6 +8,7 @@ import Bib from './Bib.js';
 import LibraryItem from './../../app/utils/item.js';
 import { validate } from '../../app/utils/formValidationUtils';
 import {
+  extend as _extend,
   mapObject as _mapObject,
   omit as _omit,
 } from 'underscore';
@@ -150,15 +151,31 @@ function getDeliveryLocations(barcode, patronId, accessToken, cb, errorCb) {
 function confirmRequestServer(req, res, next) {
   const bibId = req.params.bibId || '';
   const loggedIn = User.requireUser(req, res);
-  const error = req.query.error ? JSON.parse(req.query.error) : {};
   const requestId = req.query.requestId || '';
+  const searchKeywords = req.query.searchKeywords || '';
+  const errorStatus = req.query.errorStatus ? req.query.errorStatus : null;
+  const errorMessage = req.query.errorMessage ? req.query.errorMessage : null;
+  const error = _extend({}, { errorStatus, errorMessage });
 
   if (!loggedIn) return false;
-  if (!requestId) return res.redirect(`${appConfig.baseUrl}/`);
+
+  if (!requestId) {
+    res.locals.data.Store = {
+      bib: {},
+      searchKeywords,
+      error,
+      deliveryLocations: [],
+    };
+
+    next();
+    return false;
+  }
 
   const accessToken = req.tokenResponse.accessToken || '';
   const patronId = req.tokenResponse.decodedPatron.sub || '';
   let barcode;
+
+  console.log('confirmRequestServer');
 
   return axios
     .get(`${apiBase}/hold-requests/${requestId}`, {
@@ -186,26 +203,26 @@ function confirmRequestServer(req, res, next) {
               (deliveryLocations, isEddRequestable) => {
                 res.locals.data.Store = {
                   bib: bibResponseData,
-                  searchKeywords: '',
+                  searchKeywords,
                   error,
                   deliveryLocations,
                   isEddRequestable,
                 };
                 next();
               },
-              (e) => {
+              (deliveryLocationError) => {
                 console.error(
-                  `deliverylocationsbybarcode API error: ${JSON.stringify(e, null, 2)}`
+                  `deliveryLocationsByBarcode API error: ` +
+                  `${JSON.stringify(deliveryLocationError, null, 2)}`
                 );
 
                 res.locals.data.Store = {
                   bib: bibResponseData,
-                  searchKeywords: '',
+                  searchKeywords,
                   error,
                   deliveryLocations: [],
                   isEddRequestable: false,
                 };
-
                 next();
               }
             );
@@ -213,22 +230,28 @@ function confirmRequestServer(req, res, next) {
           (bibResponseError) => {
             res.locals.data.Store = {
               bib: {},
-              searchKeywords: '',
+              searchKeywords,
               error,
+              deliveryLocations: [],
             };
             next();
           }
         );
       }
 
-      // Else redirect to the homepage:
-      res.redirect(`${appConfig.baseUrl}/`);
       return false;
     })
     .catch(requestIdError => {
       console.log(`Error fetching Hold Request from id. Error: ${requestIdError}`);
 
-      res.redirect(`${appConfig.baseUrl}/`);
+      res.locals.data.Store = {
+        bib: {},
+        searchKeywords,
+        error,
+        deliveryLocations: [],
+      };
+      next();
+
       return false;
     });
 }
@@ -436,14 +459,17 @@ function createHoldRequestServer(req, res, pickedUpBibId = '', pickedUpItemId = 
 
       res.redirect(
         `${appConfig.baseUrl}/hold/confirmation/${bibId}-${itemId}?pickupLocation=` +
-        `${response.data.data.pickupLocation}&requestId=${response.data.data.id}` +
+        `${pickupLocation}&requestId=${response.data.data.id}` +
         `${searchKeywordsQuery}`
       );
     },
     (error) => {
       console.log(`Error calling Holds API : ${error.data.message}`);
+
       res.redirect(
-        `${appConfig.baseUrl}/hold/request/${bibId}-${itemId}?errorMessage=${error.data.message}`
+        `${appConfig.baseUrl}/hold/confirmation/${bibId}-${itemId}?pickupLocation=` +
+        `${pickupLocation}&errorStatus=${error.status}` +
+        `&errorMessage=${error.statusText}${searchKeywordsQuery}`
       );
     }
   );
@@ -519,7 +545,9 @@ function eddServer(req, res) {
   const {
     bibId,
     itemId,
+    searchKeywords,
   } = req.body;
+  const searchKeywordsQuery = (searchKeywords) ? `&searchKeywords=${searchKeywords}` : '';
 
   let serverErrors = {};
 
@@ -547,11 +575,8 @@ function eddServer(req, res) {
     req.body,
     req.body.itemSource,
     (response) => {
-      const searchKeywordsQuery = (req.body.searchKeywords) ?
-        `&searchKeywords=${req.body.searchKeywords}` : '';
-
       res.redirect(
-        `${appConfig.baseUrl}/hold/confirmation/${req.body.bibId}-${req.body.itemId}` +
+        `${appConfig.baseUrl}/hold/confirmation/${bibId}-${itemId}` +
         `?pickupLocation=${req.body.pickupLocation}&requestId=${response.data.data.id}` +
         `${searchKeywordsQuery}`
       );
@@ -560,8 +585,9 @@ function eddServer(req, res) {
       console.log(`Error calling Holds API : ${error.data.message}`);
 
       res.redirect(
-        `${appConfig.baseUrl}/hold/request/${bibId}-${itemId}/edd?error=${JSON.stringify(error)}` +
-        `&form=${JSON.stringify(req.body)}`
+        `${appConfig.baseUrl}/hold/confirmation/${bibId}-${itemId}?pickupLocation=edd` +
+        `&errorStatus=${error.status}` +
+        `&errorMessage=${error.statusText}${searchKeywordsQuery}`
       );
     }
   );
