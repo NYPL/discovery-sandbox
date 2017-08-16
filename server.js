@@ -145,6 +145,7 @@ if (!isProduction) {
     if (error) {
       logger.error(error);
     }
+
     logger.info(`Webpack Dev Server listening at localhost: ${WEBPACK_DEV_PORT}.`);
   });
 }
