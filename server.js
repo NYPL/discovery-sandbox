@@ -145,13 +145,7 @@ if (!isProduction) {
     if (error) {
       logger.error(error);
     }
-<<<<<<< HEAD
+
     logger.info(`Webpack Dev Server listening at localhost: ${WEBPACK_DEV_PORT}.`);
-=======
-    console.log(
-      colors.magenta('Webpack Dev Server listening at'),
-      colors.cyan(`localhost: ${WEBPACK_DEV_PORT}`)
-    );
->>>>>>> master
   });
 }
