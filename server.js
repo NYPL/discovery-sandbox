@@ -16,7 +16,8 @@ import WebpackDevServer from 'webpack-dev-server';
 import webpackConfig from './webpack.config.js';
 import apiRoutes from './src/server/ApiRoutes/ApiRoutes.js';
 import routes from './src/app/routes/routes.jsx';
-import { initializeTokenAuth } from './src/server/routes/auth';
+
+import initializePatronTokenAuth from './src/server/routes/auth';
 import { getPatronData } from './src/server/routes/api';
 import logger from './logger';
 
@@ -60,7 +61,8 @@ app.use('/', (req, res, next) => {
   return next();
 });
 
-app.use('/*', initializeTokenAuth, getPatronData);
+// Init token and nypl data client.
+app.use('/*', initializePatronTokenAuth, getPatronData);
 app.use('/', apiRoutes);
 
 app.get('/*', (req, res) => {
@@ -143,6 +145,13 @@ if (!isProduction) {
     if (error) {
       logger.error(error);
     }
+<<<<<<< HEAD
     logger.info(`Webpack Dev Server listening at localhost: ${WEBPACK_DEV_PORT}.`);
+=======
+    console.log(
+      colors.magenta('Webpack Dev Server listening at'),
+      colors.cyan(`localhost: ${WEBPACK_DEV_PORT}`)
+    );
+>>>>>>> master
   });
 }
