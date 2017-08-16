@@ -166,3 +166,7 @@ Every time the `Feedback` component has significant updates, it might lead to th
  - At last, view the page source of the Google Form page and find the value of each field's name attribute. Enter the value to the name attribute of the respectively field in the HTML form.
 
  - Run the application and test it with the feedback form.
+
+ ## Alarm and Monitoring with AWS CloudWatch
+
+ As one of the NYPL's services, we want to monitor its condition and receive necessary alarms if an error occurs. We set up the alarms and error filters on NYPL's [AWS CloudWatch](https://aws.amazon.com/cloudwatch/). For more details about setting up alarms and log metrics, please see NYPL engineering-general repo's [Monitoring & Alarms Instruction](https://github.com/NYPL/engineering-general/blob/master/standards/alerting.md).
