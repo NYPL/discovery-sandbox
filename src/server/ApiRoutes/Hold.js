@@ -161,20 +161,8 @@ function confirmRequestServer(req, res, next) {
   const patronId = req.patronTokenResponse.decodedPatron.sub || '';
   let barcode;
 
-<<<<<<< HEAD
-  console.log('confirmRequestServer');
-
-  return axios
-    .get(`${apiBase}/hold-requests/${requestId}`, {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${accessToken}`,
-      },
-    })
-=======
   return nyplApiClient
     .get(`/hold-requests/${requestId}`)
->>>>>>> master
     .then(response => {
       const patronIdFromHoldRequest = response.patron;
 
@@ -201,12 +189,8 @@ function confirmRequestServer(req, res, next) {
               },
               (deliveryLocationError) => {
                 console.error(
-<<<<<<< HEAD
                   `deliveryLocationsByBarcode API error: ` +
                   `${JSON.stringify(deliveryLocationError, null, 2)}`
-=======
-                  `deliverylocationsbybarcode API error 1: ${JSON.stringify(e, null, 2)}`
->>>>>>> master
                 );
 
                 res.locals.data.Store = {
@@ -451,21 +435,11 @@ function createHoldRequestServer(req, res, pickedUpBibId = '', pickedUpItemId = 
 
       res.redirect(
         `${appConfig.baseUrl}/hold/confirmation/${bibId}-${itemId}?pickupLocation=` +
-<<<<<<< HEAD
-        `${pickupLocation}&requestId=${response.data.data.id}` +
-        `${searchKeywordsQuery}`
-      );
-    },
-    (error) => {
-      console.log(`Error calling Holds API : ${error.data.message}`);
-
-=======
-        `${data.pickupLocation}&requestId=${data.id}${searchKeywordsQuery}`
+        `${pickupLocation}&requestId=${data.id}${searchKeywordsQuery}`
       );
     },
     (error) => {
       console.log(`Error calling Holds API createHoldRequestServer : ${error.data.message}`);
->>>>>>> master
       res.redirect(
         `${appConfig.baseUrl}/hold/confirmation/${bibId}-${itemId}?pickupLocation=` +
         `${pickupLocation}&errorStatus=${error.status}` +
@@ -577,20 +551,11 @@ function eddServer(req, res) {
     req.body,
     req.body.itemSource,
     (response) => {
-<<<<<<< HEAD
-      res.redirect(
-        `${appConfig.baseUrl}/hold/confirmation/${bibId}-${itemId}` +
-        `?pickupLocation=${req.body.pickupLocation}&requestId=${response.data.data.id}` +
-=======
       const data = JSON.parse(response).data;
-      const searchKeywordsQuery = (req.body.searchKeywords) ?
-        `&searchKeywords=${req.body.searchKeywords}` : '';
 
       res.redirect(
-        `${appConfig.baseUrl}/hold/confirmation/${req.body.bibId}-${req.body.itemId}` +
-        `?pickupLocation=${req.body.pickupLocation}&requestId=${data.id}` +
->>>>>>> master
-        `${searchKeywordsQuery}`
+        `${appConfig.baseUrl}/hold/confirmation/${bibId}-${itemId}` +
+        `?pickupLocation=${req.body.pickupLocation}&requestId=${data.id}${searchKeywordsQuery}`
       );
     },
     (error) => {
