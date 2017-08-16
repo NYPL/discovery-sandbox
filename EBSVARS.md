@@ -11,6 +11,8 @@ In order to encrypt, please use the `aws` [cli tool](https://aws.amazon.com/cli/
 
 The `aws kms encrypt` commands returns and object with a `CiphertextBlob` property. Since we only want that value, we use the `--query` flag to retrieve just that. This value can be copied and pasted into the AWS EBS configuration in the UI for the app's environment.
 
+More information can be found in the [encrypt docs](http://docs.aws.amazon.com/cli/latest/reference/kms/encrypt.html).
+
 NOTE: This value is base64 encoded, so when decoding make sure to decode using base64.
 
 ### Decrypting
