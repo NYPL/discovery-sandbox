@@ -13,6 +13,11 @@ import LibraryItem from './../../app/utils/item.js';
 import { validate } from '../../app/utils/formValidationUtils';
 import nyplApiClient from '../routes/nyplApiClient';
 
+const nyplApiClientGet = (endpoint) =>
+  nyplApiClient().then(client => client.get(endpoint));
+
+const nyplApiClientPost = (endpoint, opts) =>
+  nyplApiClient().then(client => client.post(endpoint, opts));
 /**
  * postHoldAPI(req, pickedUpItemId, pickupLocation, cb, errorCb)
  * The function to make a POST request to the hold request API.
@@ -57,8 +62,7 @@ function postHoldAPI(
   };
   console.log('Making hold request', data);
 
-  return nyplApiClient
-    .post(holdRequestEndpoint, JSON.stringify(data))
+  return nyplApiClientPost(holdRequestEndpoint, JSON.stringify(data))
     .then(cb)
     .catch(errorCb);
 }
@@ -106,8 +110,7 @@ function getDeliveryLocations(barcode, patronId, cb, errorCb) {
   const deliveryEndpoint = `/request/deliveryLocationsByBarcode?barcodes[]=${barcode}` +
     `&patronId=${patronId}`;
 
-  return nyplApiClient
-    .get(deliveryEndpoint)
+  return nyplApiClientGet(deliveryEndpoint)
     .then(barcodeAPIresponse => {
       const eddRequestable = (barcodeAPIresponse.itemListElement[0].eddRequestable) ?
         barcodeAPIresponse.itemListElement[0].eddRequestable : false;
@@ -161,8 +164,7 @@ function confirmRequestServer(req, res, next) {
   const patronId = req.patronTokenResponse.decodedPatron.sub || '';
   let barcode;
 
-  return nyplApiClient
-    .get(`/hold-requests/${requestId}`)
+  return nyplApiClientGet(`/hold-requests/${requestId}`)
     .then(response => {
       const patronIdFromHoldRequest = response.patron;
 
