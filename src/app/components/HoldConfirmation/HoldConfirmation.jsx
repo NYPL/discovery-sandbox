@@ -164,8 +164,21 @@ class HoldConfirmation extends React.Component {
     const itemId = this.props.params.itemId;
     const pickupLocation = this.props.location.query.pickupLocation;
     let deliveryLocation = null;
-    const item = (!this.props.location.query.errorStatus && !this.props.location.query.errorMessage)
-      ? (
+    let confirmationPageTitle = 'Submission Error';
+    let confirmationInfo = (
+      <div className="item">
+        <p>
+          We could not process your request at this time. Please try again or contact 917-ASK-NYPL
+          (<a href="tel:19172756975">917-275-6975</a>).
+        </p>
+        {this.renderBackToSearchLink()}
+        {this.renderStartOverLink()}
+      </div>
+    );
+
+    if (!this.props.location.query.errorStatus && !this.props.location.query.errorMessage) {
+      confirmationPageTitle = 'Request Confirmation';
+      confirmationInfo = (
       <div className="item">
         <h2>Submission Received</h2>
         <h3>Item Information</h3>
@@ -200,18 +213,8 @@ class HoldConfirmation extends React.Component {
         {this.renderBackToSearchLink()}
         {this.renderStartOverLink()}
       </div>
-    ) : (
-      <div className="item">
-        <h2>Submission Error</h2>
-        <h3>Item Information</h3>
-        <p>
-          We could not process your request at this time. Please try again or contact 917-ASK-NYPL
-          (<a href="tel:19172756975">917-275-6975</a>).
-        </p>
-        {this.renderBackToSearchLink()}
-        {this.renderStartOverLink()}
-      </div>
     );
+    }
 
     if (this.props.deliveryLocations && this.props.deliveryLocations.length) {
       if (pickupLocation !== 'edd') {
@@ -229,7 +232,7 @@ class HoldConfirmation extends React.Component {
     }
 
     return (
-      <DocumentTitle title="Request Confirmation | Shared Collection Catalog | NYPL">
+      <DocumentTitle title={`${confirmationPageTitle} | Shared Collection Catalog | NYPL`}>
         <main id="mainContent" className="main-page">
           <div className="nypl-request-page-header">
             <div className="row">
@@ -252,14 +255,14 @@ class HoldConfirmation extends React.Component {
             <div className="nypl-row">
               <div className="nypl-column-three-quarters">
                 <div className="item-header">
-                  <h1>Request Confirmation</h1>
+                  <h1>{confirmationPageTitle}</h1>
                 </div>
               </div>
             </div>
             <div className="nypl-row">
               <div className="nypl-column-three-quarters">
                 <div className="nypl-request-item-summary">
-                  {item}
+                  {confirmationInfo}
                 </div>
               </div>
             </div>

@@ -11,9 +11,6 @@ import User from './User.js';
 import Bib from './Bib.js';
 import LibraryItem from './../../app/utils/item.js';
 import { validate } from '../../app/utils/formValidationUtils';
-
-const appEnvironment = process.env.APP_ENV || 'production';
-const apiBase = appConfig.api[appEnvironment];
 import nyplApiClient from '../routes/nyplApiClient';
 
 /**
@@ -152,7 +149,7 @@ function confirmRequestServer(req, res, next) {
   if (!requestId) {
     res.locals.data.Store = {
       bib: {},
-      searchKeywords: searchKeywords,
+      searchKeywords,
       error,
       deliveryLocations: [],
     };
@@ -164,8 +161,25 @@ function confirmRequestServer(req, res, next) {
   const patronId = req.patronTokenResponse.decodedPatron.sub || '';
   let barcode;
 
+<<<<<<< HEAD
   return nyplApiClient
     .get(`/hold-requests/${requestId}`)
+=======
+<<<<<<< HEAD
+  console.log('confirmRequestServer');
+
+  return axios
+    .get(`${apiBase}/hold-requests/${requestId}`, {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
+      },
+    })
+=======
+  return nyplApiClient
+    .get(`/hold-requests/${requestId}`)
+>>>>>>> master
+>>>>>>> development
     .then(response => {
       const patronIdFromHoldRequest = response.patron;
 
@@ -183,7 +197,7 @@ function confirmRequestServer(req, res, next) {
               (deliveryLocations, isEddRequestable) => {
                 res.locals.data.Store = {
                   bib: bibResponseData,
-                  searchKeywords: searchKeywords,
+                  searchKeywords,
                   error,
                   deliveryLocations,
                   isEddRequestable,
@@ -192,13 +206,22 @@ function confirmRequestServer(req, res, next) {
               },
               (deliveryLocationError) => {
                 console.error(
+<<<<<<< HEAD
                   `deliverylocationsbybarcode API error: ` +
                   `${JSON.stringify(deliveryLocationError, null, 2)}`
+=======
+<<<<<<< HEAD
+                  `deliveryLocationsByBarcode API error: ` +
+                  `${JSON.stringify(deliveryLocationError, null, 2)}`
+=======
+                  `deliverylocationsbybarcode API error 1: ${JSON.stringify(e, null, 2)}`
+>>>>>>> master
+>>>>>>> development
                 );
 
                 res.locals.data.Store = {
                   bib: bibResponseData,
-                  searchKeywords: searchKeywords,
+                  searchKeywords,
                   error,
                   deliveryLocations: [],
                   isEddRequestable: false,
@@ -210,7 +233,7 @@ function confirmRequestServer(req, res, next) {
           (bibResponseError) => {
             res.locals.data.Store = {
               bib: {},
-              searchKeywords: searchKeywords,
+              searchKeywords,
               error,
               deliveryLocations: [],
             };
@@ -226,7 +249,7 @@ function confirmRequestServer(req, res, next) {
 
       res.locals.data.Store = {
         bib: {},
-        searchKeywords: searchKeywords,
+        searchKeywords,
         error,
         deliveryLocations: [],
       };
@@ -438,11 +461,28 @@ function createHoldRequestServer(req, res, pickedUpBibId = '', pickedUpItemId = 
 
       res.redirect(
         `${appConfig.baseUrl}/hold/confirmation/${bibId}-${itemId}?pickupLocation=` +
+<<<<<<< HEAD
         `${pickupLocation}&requestId=${data.id}${searchKeywordsQuery}`
+=======
+<<<<<<< HEAD
+        `${pickupLocation}&requestId=${response.data.data.id}` +
+        `${searchKeywordsQuery}`
+      );
+    },
+    (error) => {
+      console.log(`Error calling Holds API : ${error.data.message}`);
+
+=======
+        `${data.pickupLocation}&requestId=${data.id}${searchKeywordsQuery}`
+>>>>>>> development
       );
     },
     (error) => {
       console.log(`Error calling Holds API createHoldRequestServer : ${error.data.message}`);
+<<<<<<< HEAD
+=======
+>>>>>>> master
+>>>>>>> development
       res.redirect(
         `${appConfig.baseUrl}/hold/confirmation/${bibId}-${itemId}?pickupLocation=` +
         `${pickupLocation}&errorStatus=${error.status}` +
@@ -554,11 +594,23 @@ function eddServer(req, res) {
     req.body,
     req.body.itemSource,
     (response) => {
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+      res.redirect(
+        `${appConfig.baseUrl}/hold/confirmation/${bibId}-${itemId}` +
+        `?pickupLocation=${req.body.pickupLocation}&requestId=${response.data.data.id}` +
+=======
+>>>>>>> development
       const data = JSON.parse(response).data;
 
       res.redirect(
         `${appConfig.baseUrl}/hold/confirmation/${bibId}-${itemId}` +
         `?pickupLocation=${req.body.pickupLocation}&requestId=${data.id}` +
+<<<<<<< HEAD
+=======
+>>>>>>> master
+>>>>>>> development
         `${searchKeywordsQuery}`
       );
     },
