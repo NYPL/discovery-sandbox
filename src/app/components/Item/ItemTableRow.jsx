@@ -43,7 +43,7 @@ const ItemTableRow = ({ item, bibId, getRecord, searchKeywords }) => {
   return (
     <tr className={item.availability}>
       <td>{item.location || ' '}</td>
-      <td>{itemCallNumber || ' '}</td>
+      <td>{itemCallNumber}</td>
       <td>{itemRequestBtn || ' '}</td>
       <td>{item.accessMessage.prefLabel || ' '}</td>
     </tr>
