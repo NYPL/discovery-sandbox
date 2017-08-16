@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { IndexRoute, Route } from 'react-router';
+import { IndexRoute, Route, Redirect } from 'react-router';
 
 /*
  * Components
@@ -12,6 +12,7 @@ import BibPage from '../components/BibPage/BibPage.jsx';
 import HoldRequest from '../components/HoldRequest/HoldRequest.jsx';
 import HoldConfirmation from '../components/HoldConfirmation/HoldConfirmation.jsx';
 import ElectronicDelivery from '../components/ElectronicDelivery/ElectronicDelivery.jsx';
+import NotFound404 from '../components/NotFound404/NotFound404.jsx';
 import appConfig from '../../../appConfig.js';
 
 const baseUrl = appConfig.baseUrl;
@@ -25,6 +26,8 @@ const routes = {
       <Route path={'/hold/request/:bibId-:itemId'} component={HoldRequest} />
       <Route path={'/hold/request/:bibId-:itemId/edd'} component={ElectronicDelivery} />
       <Route path={'/hold/confirmation/:bibId-:itemId'} component={HoldConfirmation} />
+      <Route path={'/404'} component={NotFound404} />
+      <Redirect from="*" to="/404" />
     </Route>
   ),
   client: (
@@ -36,6 +39,8 @@ const routes = {
       <Route path={`${baseUrl}/hold/request/:bibId-:itemId`} component={HoldRequest} />
       <Route path={`${baseUrl}/hold/request/:bibId-:itemId/edd`} component={ElectronicDelivery} />
       <Route path={`${baseUrl}/hold/confirmation/:bibId-:itemId`} component={HoldConfirmation} />
+      <Route path={`${baseUrl}/404`} component={NotFound404} />
+      <Redirect from="*" to={`${baseUrl}/404`} />
     </Route>
   ),
 };
