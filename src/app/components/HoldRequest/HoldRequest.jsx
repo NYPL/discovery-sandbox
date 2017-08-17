@@ -13,6 +13,7 @@ import Breadcrumbs from '../Breadcrumbs/Breadcrumbs.jsx';
 import PatronStore from '../../stores/PatronStore.js';
 import appConfig from '../../../../appConfig.js';
 import LibraryItem from '../../utils/item.js';
+import logger from '../../../../logger';
 
 class HoldRequest extends React.Component {
   constructor(props) {
@@ -119,7 +120,7 @@ class HoldRequest extends React.Component {
         }
       })
       .catch(error => {
-        console.log(error);
+        logger.error('Error attempting to make an ajax Hold Request in HoldRequest', error);
 
         this.context.router.push(`${path}?errorMessage=${error}${searchKeywordsQueryPhysical}`);
       });
@@ -229,7 +230,7 @@ class HoldRequest extends React.Component {
     const itemSource = selectedItem.itemSource;
     const deliveryLocations = this.props.deliveryLocations;
     const isEddRequestable = this.props.isEddRequestable;
-    let deliveryLocationInstruction =
+    const deliveryLocationInstruction =
       (!deliveryLocations.length && !isEddRequestable) ?
         <h4>
           Delivery options for this item are currently unavailable. Please try again later or

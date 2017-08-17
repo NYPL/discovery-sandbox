@@ -17,6 +17,7 @@ import appConfig from '../../../appConfig.js';
 
 const baseUrl = appConfig.baseUrl;
 const routes = {
+  // Routes used in the Express server:
   server: (
     <Route path={'/'} component={Application}>
       <IndexRoute component={Home} />
@@ -30,6 +31,7 @@ const routes = {
       <Redirect from="*" to="/404" />
     </Route>
   ),
+  // Routes used in the client-side React-Router:
   client: (
     <Route path={`${baseUrl}/`} component={Application}>
       <IndexRoute component={Home} />

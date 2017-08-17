@@ -12,6 +12,7 @@ import Bib from './Bib.js';
 import LibraryItem from './../../app/utils/item.js';
 import { validate } from '../../app/utils/formValidationUtils';
 import nyplApiClient from '../routes/nyplApiClient';
+import logger from '../../../logger';
 
 /**
  * postHoldAPI(req, pickedUpItemId, pickupLocation, cb, errorCb)
@@ -55,7 +56,7 @@ function postHoldAPI(
     numberOfCopies: 1,
     docDeliveryData: (pickupLocation === 'edd') ? docDeliveryData : null,
   };
-  console.log('Making hold request', data);
+  logger.info('Making hold request in postHoldAPI', data);
 
   return nyplApiClient
     .post(holdRequestEndpoint, JSON.stringify(data))
@@ -121,7 +122,10 @@ function getDeliveryLocations(barcode, patronId, cb, errorCb) {
       );
     })
     .catch(barcodeAPIError => {
-      console.log(`getDeliveryLocations error: ${barcodeAPIError}`);
+      logger.error(
+        'Error attemping to make server side call using nyplApiClient in getDeliveryLocations',
+        barcodeAPIError
+      );
       errorCb(barcodeAPIError);
     });
 }
@@ -188,9 +192,9 @@ function confirmRequestServer(req, res, next) {
                 next();
               },
               (deliveryLocationError) => {
-                console.error(
-                  `deliveryLocationsByBarcode API error: ` +
-                  `${JSON.stringify(deliveryLocationError, null, 2)}`
+                logger.error(
+                  'Error retrieving server side delivery locations in confirmRequestServer',
+                  deliveryLocationError
                 );
 
                 res.locals.data.Store = {
@@ -205,6 +209,10 @@ function confirmRequestServer(req, res, next) {
             );
           },
           (bibResponseError) => {
+            logger.error(
+              'Error retrieving server side bib record in confirmRequestServer',
+              bibResponseError
+            );
             res.locals.data.Store = {
               bib: {},
               searchKeywords,
@@ -219,7 +227,10 @@ function confirmRequestServer(req, res, next) {
       return false;
     })
     .catch(requestIdError => {
-      console.log(`Error fetching Hold Request from id. Error: ${requestIdError}`);
+      logger.error(
+        'Error making a server side Hold Request in confirmRequestServer',
+        requestIdError
+      );
 
       res.locals.data.Store = {
         bib: {},
@@ -274,8 +285,11 @@ function newHoldRequestServer(req, res, next) {
 
           next();
         },
-        (e) => {
-          console.error(`deliverylocationsbybarcode API error 2: ${JSON.stringify(e, null, 2)}`);
+        (deliveryError) => {
+          logger.error(
+            'Error retrieving server side delivery locations in newHoldRequestServer',
+            deliveryError
+          );
 
           res.locals.data.Store = {
             bib: bibResponseData,
@@ -291,6 +305,10 @@ function newHoldRequestServer(req, res, next) {
       );
     },
     (bibResponseError) => {
+      logger.error(
+        'Error retrieving server side bib record in newHoldRequestServer',
+        bibResponseError
+      );
       res.locals.data.Store = {
         bib: {},
         searchKeywords: req.query.searchKeywords || '',
@@ -335,9 +353,9 @@ function newHoldRequestAjax(req, res) {
           });
         },
         (deliveryLocationsError) => {
-          console.error(
-            'deliverylocationsbybarcode API error 3: ' +
-            `${JSON.stringify(deliveryLocationsError, null, 2)}`
+          logger.error(
+            'Error retrieving server side delivery locations in newHoldRequestAjax',
+            deliveryLocationsError
           );
 
           res.json({
@@ -372,6 +390,10 @@ function newHoldRequestServerEdd(req, res, next) {
       next();
     },
     (bibResponseError) => {
+      logger.error(
+        'Error retrieving server side bib record in newHoldRequestServerEdd',
+        bibResponseError
+      );
       res.locals.data.Store = {
         bib: {},
         searchKeywords: req.query.searchKeywords || '',
@@ -429,17 +451,13 @@ function createHoldRequestServer(req, res, pickedUpBibId = '', pickedUpItemId = 
     itemSource,
     (response) => {
       const data = JSON.parse(response).data;
-      console.log('data', data);
-      console.log('Hold Request Id:', data.id);
-      console.log('Job Id:', data.jobId);
-
       res.redirect(
         `${appConfig.baseUrl}/hold/confirmation/${bibId}-${itemId}?pickupLocation=` +
         `${pickupLocation}&requestId=${data.id}${searchKeywordsQuery}`
       );
     },
     (error) => {
-      console.log(`Error calling Holds API createHoldRequestServer : ${error.data.message}`);
+      logger.error('Error calling postHoldAPI in createHoldRequestServer', error.data.message);
       res.redirect(
         `${appConfig.baseUrl}/hold/confirmation/${bibId}-${itemId}?pickupLocation=` +
         `${pickupLocation}&errorStatus=${error.status}` +
@@ -477,8 +495,7 @@ function createHoldRequestAjax(req, res) {
       });
     },
     (error) => {
-      console.log(`Error calling Holds API createHoldRequestAjax : ${error}`);
-
+      logger.error('Error calling postHoldAPI in createHoldRequestAjax', error);
       res.json({
         status: error.status,
         error,
@@ -507,8 +524,7 @@ function createHoldRequestEdd(req, res) {
       });
     },
     (error) => {
-      console.log(`Error calling Holds API createHoldRequestEdd : ${error}`);
-
+      logger.error('Error calling postHoldAPI in createHoldRequestEdd', error);
       res.json({
         status: error.status,
         error,
@@ -559,8 +575,7 @@ function eddServer(req, res) {
       );
     },
     (error) => {
-      console.log(`Error calling Holds API eddServer : ${error}`);
-
+      logger.error('Error calling postHoldAPI in eddServer', error);
       res.redirect(
         `${appConfig.baseUrl}/hold/confirmation/${bibId}-${itemId}?pickupLocation=edd` +
         `&errorStatus=${error.status}` +

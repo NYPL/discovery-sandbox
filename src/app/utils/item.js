@@ -1,4 +1,3 @@
-import Locations from '../../../locations.js';
 import LocationCodes from '../../../locationCodes.js';
 import {
   findWhere as _findWhere,
@@ -24,7 +23,7 @@ function LibraryItem() {
   });
 
   /**
-   * defaultDeliveryLocations()
+   * defaultDelivery Locations()
    * Temporarily return three hardcoded and default delivery locations.
    * @return {array}
    */

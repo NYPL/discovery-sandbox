@@ -7,8 +7,8 @@ import Actions from '../../actions/Actions';
 import LibraryItem from '../../utils/item';
 import { ajaxCall } from '../../utils/utils';
 import ItemTable from '../Item/ItemTable';
-
 import appConfig from '../../../../appConfig.js';
+import logger from '../../../../logger';
 
 class ResultsList extends React.Component {
   constructor(props) {
@@ -35,7 +35,10 @@ class ResultsList extends React.Component {
         this.routeHandler(`${appConfig.baseUrl}/bib/${bibId}`);
       },
       error => {
-        console.log(error);
+        logger.error(
+          'Error attempting to make an ajax request to fetch a bib record from ResultsList',
+          error
+        );
       }
     );
   }
@@ -60,7 +63,10 @@ class ResultsList extends React.Component {
         this.routeHandler(`${appConfig.baseUrl}/hold/request/${bibId}-${itemId}`);
       },
       error => {
-        console.log(error);
+        logger.error(
+          'Error attemping to make an ajax request to fetch an item in ResultsList',
+          error
+        );
       }
     );
   }

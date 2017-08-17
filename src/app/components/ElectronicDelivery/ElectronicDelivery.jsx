@@ -16,6 +16,7 @@ import PatronStore from '../../stores/PatronStore.js';
 import appConfig from '../../../../appConfig.js';
 import ElectronicDeliveryForm from './ElectronicDeliveryForm';
 import LibraryItem from '../../utils/item.js';
+import logger from '../../../../logger';
 
 class ElectronicDelivery extends React.Component {
   constructor(props) {
@@ -125,7 +126,10 @@ class ElectronicDelivery extends React.Component {
         }
       })
       .catch(error => {
-        console.log(error);
+        logger.error(
+          'Error attempting to submit an ajax EDD request at ElectronicDelivery',
+          error
+        );
 
         this.context.router.push(`${path}?errorMessage=${error}${searchKeywordsQuery}`);
       });
