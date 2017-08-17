@@ -16,7 +16,6 @@ import {
 } from 'underscore';
 
 import appConfig from '../../../appConfig.js';
-import logger from '../../../logger';
 
 /**
  * ajaxCall
@@ -28,7 +27,7 @@ import logger from '../../../logger';
 const ajaxCall = (
   endpoint,
   cb = () => {},
-  errorcb = (error) => logger.error('Error making ajaxCall', error)
+  errorcb = (error) => console.error('Error making ajaxCall', error)
 ) => {
   if (!endpoint) return null;
 

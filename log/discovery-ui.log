@@ -8,3 +8,5 @@
 {"timestamp":"2017-08-17T20:06:10.289Z","levelCode":6,"level":"INFO","pid":"64791","message":"Webpack Dev Server listening at localhost: 3000."}
 {"timestamp":"2017-08-17T20:06:29.325Z","levelCode":6,"level":"INFO","pid":"64791","message":"Received kill signal, shutting down gracefully."}
 {"timestamp":"2017-08-17T20:06:30.326Z","levelCode":3,"level":"ERROR","pid":"64791","message":"Could not close connections in time, forcefully shutting down"}
+{"timestamp":"2017-08-17T20:34:55.605Z","levelCode":6,"level":"INFO","pid":"68467","message":"App - Express server is listening at localhost: 3001."}
+{"timestamp":"2017-08-17T20:34:55.615Z","levelCode":6,"level":"INFO","pid":"68467","message":"Webpack Dev Server listening at localhost: 3000."}

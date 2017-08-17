@@ -8,7 +8,6 @@ import Actions from '../../actions/Actions';
 import Pagination from '../Pagination/Pagination';
 import ItemTable from './ItemTable';
 import appConfig from '../../../../appConfig.js';
-import logger from '../../../../logger';
 
 class ItemHoldings extends React.Component {
   constructor(props) {
@@ -76,7 +75,7 @@ class ItemHoldings extends React.Component {
         this.context.router.push(`${appConfig.baseUrl}/hold/request/${bibId}-${itemId}`);
       })
       .catch(error => {
-        logger.error('Error attemping to make an ajax Bib request in ItemHoldings', error);
+        console.error('Error attemping to make an ajax Bib request in ItemHoldings', error);
       });
   }
 
