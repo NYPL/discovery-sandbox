@@ -1,6 +1,6 @@
 # AWS Elastic Beanstalk Environment Variables
 
-As previously mentioned, ware environment variables to make authorized requests to NYPL's API platform. In order to be secure, we are encrypting and decrypting those environment variables using AWS KMS. Please get these variables from someone in the NYPL Digital Department.
+As previously mentioned in the [README](README.md), we are using environment variables to make authorized requests to NYPL's API platform. In order to be secure, we are encrypting and decrypting those environment variables using AWS KMS. Please get these variables from someone in the NYPL Digital Department.
 
 ### Encrypting
 There are two variables we care about: the `clientId` and the `clientSecret`. We need these variables to create an instance of the `nypl-data-api-client` npm package and make authorized requests to the NYPL Digital API endpoints. This is needed for the Discovery UI app to make requests itself to the APIs.
