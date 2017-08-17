@@ -49,13 +49,8 @@ const BibPage = (props) => {
             <div className="nypl-row">
               <div className="nypl-column-three-quarters">
                 <Breadcrumbs type="bib" query={searchURL} />
-                <h2>{appConfig.displayTitle}</h2>
-                <Search
-                  searchKeywords={props.searchKeywords}
-                  field={props.field}
-                  spinning={props.spinning}
-                  createAPIQuery={createAPIQuery}
-                />
+                <h1>Item Details</h1>
+                <h2>{title}</h2>
                 {
                   props.searchKeywords && (
                     <div className="nypl-row search-control">
@@ -82,7 +77,6 @@ const BibPage = (props) => {
               id="mainContent"
             >
               <div className="nypl-item-details">
-                <h1>{title}</h1>
                 <BibDetails
                   bib={bib}
                   itemHoldings={itemHoldings}
