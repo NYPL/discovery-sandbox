@@ -210,27 +210,7 @@ class BibDetails extends React.Component {
   getDisplayFields(bib) {
     // A value of 'React Component' just means that we are getting it from a
     // component rather than from the bib field properties.
-    const fields = [
-      { label: 'Title', value: 'titleDisplay', linkable: true },
-      { label: 'Author', value: 'creatorLiteral', linkable: true },
-      { label: 'Additional Authors', value: 'contributorLiteral', linkable: true },
-      { label: 'Availability', value: 'React Component' },
-      { label: 'Publisher', value: 'React Component' },
-      { label: 'Electronic Resource', value: '' },
-      { label: 'Description', value: 'extent' },
-      { label: 'Subject', value: 'subjectLiteral', linkable: true },
-      { label: 'Genre/Form', value: 'materialType' },
-      { label: 'Notes', value: '' },
-      { label: 'Contents', value: 'note' },
-      { label: 'Bibliography', value: '' },
-      { label: 'ISBN', value: 'identifier', identifier: 'urn:isbn' },
-      { label: 'ISSN', value: 'identifier', identifier: 'urn:issn' },
-      { label: 'LCC', value: 'identifier', identifier: 'urn:lcc' },
-      { label: 'GPO', value: '' },
-      { label: 'Other Titles', value: '' },
-      { label: 'Owning Institutions', value: '' },
-      { label: 'MARC Record', value: 'React Component' },
-    ];
+    const fields = this.props.fields;
     const fieldsToRender = [];
     const publisherInfo = this.getPublisher(bib);
 
@@ -261,19 +241,6 @@ class BibDetails extends React.Component {
               definition,
             });
           }
-        }
-      }
-
-      // If it's not a field from the bib, then it's probably a React Component or a more
-      // complicated field. There are unique classes needed for the dt/dd elements.
-      if (fieldLabel === 'Availability') {
-        if (this.props.itemHoldings) {
-          fieldsToRender.push({
-            term: <h3>Availability</h3>,
-            definition: this.props.itemHoldings,
-            termClass: 'list-multi-control',
-            definitionClass: 'multi-item-list',
-          });
         }
       }
 
@@ -372,8 +339,8 @@ class BibDetails extends React.Component {
 
 BibDetails.propTypes = {
   bib: PropTypes.object,
-  itemHoldings: PropTypes.object,
   marcRecord: PropTypes.object,
+  fields: PropTypes.array,
 };
 
 BibDetails.contextTypes = {

@@ -162,7 +162,8 @@ class ItemHoldings extends React.Component {
     }
 
     return (
-      <span>
+      <div className="nypl-results-item">
+        <h3>Availability</h3>
         {itemTable}
         {
           !!(shortenItems && items.length >= 20 && !this.state.showAll) &&
@@ -180,7 +181,7 @@ class ItemHoldings extends React.Component {
             </div>)
         }
         {pagination}
-      </span>
+      </div>
     );
   }
 }
