@@ -23,7 +23,7 @@ function LibraryItem() {
   });
 
   /**
-   * defaultDelivery Locations()
+   * defaultDeliveryLocations()
    * Temporarily return three hardcoded and default delivery locations.
    * @return {array}
    */
