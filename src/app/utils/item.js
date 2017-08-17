@@ -19,7 +19,7 @@ function LibraryItem() {
    */
   this.getDefaultLocation = () => ({
     '@id': 'loc:mal',
-    prefLabel: 'Stephen A. Schwarzman Building - Rose Main Reading Room 315',
+    prefLabel: 'Offsite',
     customerCode: 'NH',
   });
 
