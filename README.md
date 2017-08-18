@@ -29,11 +29,11 @@ To install packages run
 
 To run locally in development mode run
 
-    $ clientID=[client id] clientSecret=[client secret] npm run dev-start
+    $ clientId=[client id] clientSecret=[client secret] npm run dev-start
 
 If you would like to run in different the environments, run
 
-    $ clientID=[client id] clientSecret=[client secret] APP_ENV=[environment variable] npm start
+    $ clientId=[client id] clientSecret=[client secret] APP_ENV=[environment variable] npm start
 
 `environment variable` is the name of the particular environment, such as `qa`.
 
@@ -48,7 +48,9 @@ and visit `localhost:3001`.
 NOTE: Currently the only working `environment variable` is `development`.
 
 ## Client Id and Secret
-We are environment variables to make authorized requests to NYPL's API platform. The `clientId` and `clientSecret` environment variables should be received from a developer in the NYPL Digital Department.
+We are using environment variables to make authorized requests to NYPL's API platform. The `clientId` and `clientSecret` environment variables should be received from a developer in the NYPL Digital Department.
+
+Please check the [EBSVARS](EBSVARS.md) documentation for more information.
 
 ## Contributing
 

@@ -20,7 +20,9 @@ const createAPIQuery = basicQuery({
   field: '',
   selectedFacets: {},
 });
-const nyplApiClientCall = (query) => nyplApiClient.get(`/discovery/resources${query}`);
+
+const nyplApiClientCall = (query) =>
+  nyplApiClient().then(client => client.get(`/discovery/resources${query}`));
 
 function search(searchKeywords, page, sortBy, order, field, filters, cb, errorcb) {
   const apiQuery = createAPIQuery({
