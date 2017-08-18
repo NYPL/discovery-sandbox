@@ -176,6 +176,21 @@ class HoldConfirmation extends React.Component {
       </div>
     );
 
+    if (this.props.deliveryLocations && this.props.deliveryLocations.length) {
+      if (pickupLocation !== 'edd') {
+        deliveryLocation = _findWhere(
+          this.props.deliveryLocations, { '@id': `loc:${pickupLocation}` }
+        );
+      } else {
+        deliveryLocation = {
+          id: null,
+          address: null,
+          prefLabel: 'n/a (electronic delivery)',
+          shortName: 'n/a',
+        };
+      }
+    }
+
     if (!this.props.location.query.errorStatus && !this.props.location.query.errorMessage) {
       confirmationPageTitle = 'Request Confirmation';
       confirmationInfo = (
@@ -214,21 +229,6 @@ class HoldConfirmation extends React.Component {
           {this.renderStartOverLink()}
         </div>
       );
-    }
-
-    if (this.props.deliveryLocations && this.props.deliveryLocations.length) {
-      if (pickupLocation !== 'edd') {
-        deliveryLocation = _findWhere(
-          this.props.deliveryLocations, { '@id': `loc:${pickupLocation}` }
-        );
-      } else {
-        deliveryLocation = {
-          id: null,
-          address: null,
-          prefLabel: 'n/a (electronic delivery)',
-          shortName: 'n/a',
-        };
-      }
     }
 
     return (

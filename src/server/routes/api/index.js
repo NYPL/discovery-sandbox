@@ -1,5 +1,7 @@
-import nyplApiClient from '../nyplApiClient';
 import { isEmpty as _isEmpty } from 'underscore';
+
+import nyplApiClient from '../nyplApiClient';
+import logger from '../../../../logger';
 
 export function getPatronData(req, res, next) {
   if (req.patronTokenResponse.isTokenValid
@@ -38,7 +40,10 @@ export function getPatronData(req, res, next) {
             next();
           })
           .catch((error) => {
-            console.log(error);
+            logger.error(
+              'Error attemping to make server side fetch call to patrons in getPatronData',
+              error
+            );
             res.locals.data = {
               PatronStore: {
                 id: '',
@@ -50,7 +55,7 @@ export function getPatronData(req, res, next) {
             // Continue next function call
             next();
           })
-        );
+      );
   }
 
   res.locals.data = {

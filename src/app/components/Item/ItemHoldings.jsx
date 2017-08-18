@@ -75,7 +75,7 @@ class ItemHoldings extends React.Component {
         this.context.router.push(`${appConfig.baseUrl}/hold/request/${bibId}-${itemId}`);
       })
       .catch(error => {
-        console.log(error);
+        console.error('Error attemping to make an ajax Bib request in ItemHoldings', error);
       });
   }
 
