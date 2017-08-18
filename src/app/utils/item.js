@@ -29,7 +29,7 @@ function LibraryItem() {
    * @return {object}
    */
   this.nonNyplRecapLocation = () => ({
-    '@id': 'loc:',
+    '@id': '',
     prefLabel: 'Offsite',
     customerCode: '',
   });
@@ -246,7 +246,7 @@ function LibraryItem() {
    */
   this.getHoldingLocation = (item, nonNyplRecap) => {
     let location = this.getDefaultLocation();
-    console.log(nonNyplRecap);
+
     if (nonNyplRecap) {
       location = this.nonNyplRecapLocation();
     }
