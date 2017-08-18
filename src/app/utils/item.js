@@ -1,4 +1,3 @@
-import Locations from '../../../locations.js';
 import LocationCodes from '../../../locationCodes.js';
 import {
   findWhere as _findWhere,
@@ -13,14 +12,14 @@ const itemSourceMappings = {
 
 function LibraryItem() {
   /**
-   * getDefaultLocation()
+   * getDefaultNyplLocation()
    * Return the default delivery location for an item.
    * @return {object}
    */
-  this.getDefaultLocation = () => ({
-    '@id': 'loc:mal',
-    prefLabel: 'Stephen A. Schwarzman Building - Rose Main Reading Room 315',
-    customerCode: 'NH',
+  this.getDefaultNyplLocation = () => ({
+    '@id': '',
+    prefLabel: 'Check with Staff',
+    customerCode: '',
   });
 
   /**
@@ -245,7 +244,7 @@ function LibraryItem() {
    * @return {object}
    */
   this.getHoldingLocation = (item, nonNyplRecap) => {
-    let location = this.getDefaultLocation();
+    let location = this.getDefaultNyplLocation();
 
     if (nonNyplRecap) {
       location = this.nonNyplRecapLocation();
