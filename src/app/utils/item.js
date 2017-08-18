@@ -12,14 +12,14 @@ const itemSourceMappings = {
 
 function LibraryItem() {
   /**
-   * getDefaultLocation()
+   * getDefaultNyplLocation()
    * Return the default delivery location for an item.
    * @return {object}
    */
-  this.getDefaultLocation = () => ({
-    '@id': 'loc:mal',
-    prefLabel: 'Stephen A. Schwarzman Building - Rose Main Reading Room 315',
-    customerCode: 'NH',
+  this.getDefaultNyplLocation = () => ({
+    '@id': '',
+    prefLabel: 'Check with Staff',
+    customerCode: '',
   });
 
   /**
@@ -28,7 +28,7 @@ function LibraryItem() {
    * @return {object}
    */
   this.nonNyplRecapLocation = () => ({
-    '@id': 'loc:',
+    '@id': '',
     prefLabel: 'Offsite',
     customerCode: '',
   });
@@ -244,8 +244,8 @@ function LibraryItem() {
    * @return {object}
    */
   this.getHoldingLocation = (item, nonNyplRecap) => {
-    let location = this.getDefaultLocation();
-    console.log(nonNyplRecap);
+    let location = this.getDefaultNyplLocation();
+
     if (nonNyplRecap) {
       location = this.nonNyplRecapLocation();
     }
