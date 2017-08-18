@@ -125,7 +125,10 @@ class ElectronicDelivery extends React.Component {
         }
       })
       .catch(error => {
-        console.log(error);
+        console.error(
+          'Error attempting to submit an ajax EDD request at ElectronicDelivery',
+          error
+        );
 
         this.context.router.push(`${path}?errorMessage=${error}${searchKeywordsQuery}`);
       });
