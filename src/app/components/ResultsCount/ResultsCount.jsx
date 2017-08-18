@@ -65,9 +65,9 @@ class ResultsCount extends React.Component {
     }
 
     if (count !== 0) {
-      return (<p>Displaying {currentResultDisplay} of {countF} results {displayContext}</p>);
+      return (<h2>Displaying {currentResultDisplay} of {countF} results {displayContext}</h2>);
     }
-    return (<p>No results found. Please try another search.</p>);
+    return (<h2>No results found. Please try another search.</h2>);
   }
 
   render() {

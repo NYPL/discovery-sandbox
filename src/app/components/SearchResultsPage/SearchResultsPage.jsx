@@ -75,14 +75,21 @@ class SearchResultsPage extends React.Component {
               <div className="nypl-row">
                 <div className="nypl-column-three-quarters">
                   <Breadcrumbs query={searchKeywords} type="search" />
-                  <h2 aria-label={headerLabel}>{appConfig.displayTitle}</h2>
+                  <h1 aria-label={headerLabel}>Search Results</h1>
                   <Search
                     searchKeywords={searchKeywords}
                     field={field}
                     createAPIQuery={createAPIQuery}
                     updateIsDiscoveryingState={this.updateIsDiscoveryingState}
                   />
-
+                  <ResultsCount
+                    spinning={spinning}
+                    count={totalResults}
+                    selectedFacets={selectedFacets}
+                    searchKeywords={searchKeywords}
+                    field={field}
+                    page={parseInt(page, 10)}
+                  />
                   {
                     !!(totalResults && totalResults !== 0) && (
                       <Sorter
@@ -109,15 +116,6 @@ class SearchResultsPage extends React.Component {
                 aria-relevant="additions removals"
                 aria-describedby="results-description"
               >
-                <ResultsCount
-                  spinning={spinning}
-                  count={totalResults}
-                  selectedFacets={selectedFacets}
-                  searchKeywords={searchKeywords}
-                  field={field}
-                  page={parseInt(page, 10)}
-                />
-
                 {
                   !!(results && results.length !== 0) &&
                   (

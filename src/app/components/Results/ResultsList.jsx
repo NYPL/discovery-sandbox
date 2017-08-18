@@ -7,7 +7,6 @@ import Actions from '../../actions/Actions';
 import LibraryItem from '../../utils/item';
 import { ajaxCall } from '../../utils/utils';
 import ItemTable from '../Item/ItemTable';
-
 import appConfig from '../../../../appConfig.js';
 
 class ResultsList extends React.Component {
@@ -35,7 +34,10 @@ class ResultsList extends React.Component {
         this.routeHandler(`${appConfig.baseUrl}/bib/${bibId}`);
       },
       error => {
-        console.log(error);
+        console.error(
+          'Error attempting to make an ajax request to fetch a bib record from ResultsList',
+          error
+        );
       }
     );
   }
@@ -60,7 +62,10 @@ class ResultsList extends React.Component {
         this.routeHandler(`${appConfig.baseUrl}/hold/request/${bibId}-${itemId}`);
       },
       error => {
-        console.log(error);
+        console.error(
+          'Error attemping to make an ajax request to fetch an item in ResultsList',
+          error
+        );
       }
     );
   }
@@ -97,9 +102,9 @@ class ResultsList extends React.Component {
     dateEndYear = dateEndYear === 9999 ? 'present' : dateEndYear;
 
     if (dateStartYear && dateEndYear) {
-      return (<span className="nypl-results-date">{dateStartYear}-{dateEndYear}</span>);
+      return (<li className="nypl-results-date">{dateStartYear}-{dateEndYear}</li>);
     } else if (dateStartYear) {
-      return (<span className="nypl-results-date">{dateStartYear}</span>);
+      return (<li className="nypl-results-date">{dateStartYear}</li>);
     }
     return null;
   }
@@ -121,7 +126,7 @@ class ResultsList extends React.Component {
 
     return (
       <li key={i} className="nypl-results-item">
-        <h2>
+        <h3>
           <Link
             onClick={(e) => this.getBibRecord(e, bibId)}
             to={`${appConfig.baseUrl}/bib/${bibId}?searchKeywords=${this.props.searchKeywords}`}
@@ -129,17 +134,17 @@ class ResultsList extends React.Component {
           >
             {bibTitle}
           </Link>
-        </h2>
+        </h3>
         <div className="nypl-results-item-description">
-          <p>
-            <span className="nypl-results-media">{materialType}</span>
-            <span className="nypl-results-place">{placeOfPublication}</span>
-            <span className="nypl-results-publisher">{publisher}</span>
+          <ul>
+            <li className="nypl-results-media">{materialType}</li>
+            <li className="nypl-results-place">{placeOfPublication}</li>
+            <li className="nypl-results-publisher">{publisher}</li>
             {yearPublished}
-            <span className="nypl-results-info">
+            <li className="nypl-results-info">
               {totalItems} item{totalItems !== 1 ? 's' : ''}
-            </span>
-          </p>
+            </li>
+          </ul>
         </div>
         {
           (items.length === 1) &&

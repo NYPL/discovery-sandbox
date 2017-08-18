@@ -9,12 +9,10 @@ import {
   isEmpty as _isEmpty,
 } from 'underscore';
 
-
 class ElectronicDeliveryForm extends React.Component {
   constructor(props) {
     super(props);
 
-    // NOTE
     // this.props.form and this.props.error are coming from the server only in the
     // no-js scenario. If they're not available, then we use this 'fallback', but the
     // empty object structure is needed.
