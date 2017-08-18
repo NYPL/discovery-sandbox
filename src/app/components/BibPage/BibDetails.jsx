@@ -175,29 +175,29 @@ class BibDetails extends React.Component {
   }
 
   /**
-   * getPublisher(bib)
+   * getPublication(bib)
    * Get an object with publisher detail information.
    * @param {object} bib
    * @return {object}
    */
-  getPublisher(bib) {
+  getPublication(bib) {
     const fields = ['placeOfPublication', 'publisher', 'createdString'];
-    let publisherInfo = '';
+    let publicationInfo = '';
 
     fields.forEach(field => {
       const fieldValue = bib[field];
       if (fieldValue) {
-        publisherInfo += `${fieldValue} `;
+        publicationInfo += `${fieldValue} `;
       }
     });
 
-    if (!publisherInfo) {
+    if (!publicationInfo) {
       return null;
     }
 
     return {
-      term: 'Publisher',
-      definition: <span>{publisherInfo}</span>,
+      term: 'Publication',
+      definition: <span>{publicationInfo}</span>,
     };
   }
 
@@ -212,7 +212,7 @@ class BibDetails extends React.Component {
     // component rather than from the bib field properties.
     const fields = this.props.fields;
     const fieldsToRender = [];
-    const publisherInfo = this.getPublisher(bib);
+    const publicationInfo = this.getPublication(bib);
 
     fields.forEach((field) => {
       const fieldLabel = field.label;
@@ -245,8 +245,8 @@ class BibDetails extends React.Component {
       }
 
       // This is made up of three different bib property values so it's special.
-      if (fieldLabel === 'Publisher') {
-        fieldsToRender.push(publisherInfo);
+      if (fieldLabel === 'Publication') {
+        fieldsToRender.push(publicationInfo);
       }
 
       // The Owner is complicated too.
