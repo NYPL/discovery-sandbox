@@ -1,9 +1,11 @@
 import nyplApiClient from '../routes/nyplApiClient';
 import logger from '../../../logger';
 
+const nyplApiClientCall = (query) =>
+  nyplApiClient().then(client => client.get(`/discovery/resources/${query}`));
+
 function fetchBib(bibId, cb, errorcb) {
-  return nyplApiClient
-    .get(`/discovery/resources/${bibId}`)
+  return nyplApiClientCall(bibId)
     .then(response => cb(response))
     .catch(error => {
       logger.error('Error attemping to fetch a Bib server side in fetchBib', error);

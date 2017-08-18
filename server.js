@@ -19,6 +19,7 @@ import routes from './src/app/routes/routes.jsx';
 
 import initializePatronTokenAuth from './src/server/routes/auth';
 import { getPatronData } from './src/server/routes/api';
+import nyplApiClient from './src/server/routes/nyplApiClient';
 import logger from './logger';
 
 const ROOT_PATH = __dirname;
@@ -61,7 +62,9 @@ app.use('/', (req, res, next) => {
   return next();
 });
 
-// Init token and nypl data client.
+// Init the nypl data api client.
+nyplApiClient();
+
 app.use('/*', initializePatronTokenAuth, getPatronData);
 app.use('/', apiRoutes);
 

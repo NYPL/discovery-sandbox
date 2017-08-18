@@ -179,41 +179,41 @@ class HoldConfirmation extends React.Component {
     if (!this.props.location.query.errorStatus && !this.props.location.query.errorMessage) {
       confirmationPageTitle = 'Request Confirmation';
       confirmationInfo = (
-      <div className="item">
-        <h2>Submission Received</h2>
-        <h3>Item Information</h3>
-        <p>
-          We've received your request
-          for <Link to={`${appConfig.baseUrl}/bib/${bibId}`}>{title}</Link>
-        </p>
-        <p>
-          Please check your library account for updates. The item will be listed as
-          Ready under your Holds tab when it is available. You will also recieve an
-          email confirmation after your item has arrived.
-        </p>
-        <p>
-          Your item will be delivered to: {this.renderLocationInfo(deliveryLocation)}
-        </p>
-        <p>
-          For off-site materials, requests made before 2:30 PM will be delivered the
-          following business day. Requests made after 2:30 PM on Fridays or over the
-          weekend will be delivered the following Tuesday. We will hold books for up
-          to seven days, so you can request materials up to a week in advance.
-        </p>
-        <p>
-          If you would like to cancel your request, or if you have further questions,
-          please contact 917-ASK-NYPL (<a href="tel:19172756975">917-275-6975</a>).
-        </p>
+        <div className="item">
+          <h2>Submission Received</h2>
+          <h3>Item Information</h3>
+          <p>
+            We've received your request
+            for <Link to={`${appConfig.baseUrl}/bib/${bibId}`}>{title}</Link>
+          </p>
+          <p>
+            Please check your library account for updates. The item will be listed as
+            Ready under your Holds tab when it is available. You will also recieve an
+            email confirmation after your item has arrived.
+          </p>
+          <p>
+            Your item will be delivered to: {this.renderLocationInfo(deliveryLocation)}
+          </p>
+          <p>
+            For off-site materials, requests made before 2:30 PM will be delivered the
+            following business day. Requests made after 2:30 PM on Fridays or over the
+            weekend will be delivered the following Tuesday. We will hold books for up
+            to seven days, so you can request materials up to a week in advance.
+          </p>
+          <p>
+            If you would like to cancel your request, or if you have further questions,
+            please contact 917-ASK-NYPL (<a href="tel:19172756975">917-275-6975</a>).
+          </p>
 
-        <h3>Electronic Delivery</h3>
-        <p>
-          If you selected Electronic delivery, you will be notified via email when the
-          item is available.
-        </p>
-        {this.renderBackToSearchLink()}
-        {this.renderStartOverLink()}
-      </div>
-    );
+          <h3>Electronic Delivery</h3>
+          <p>
+            If you selected Electronic delivery, you will be notified via email when the
+            item is available.
+          </p>
+          {this.renderBackToSearchLink()}
+          {this.renderStartOverLink()}
+        </div>
+      );
     }
 
     if (this.props.deliveryLocations && this.props.deliveryLocations.length) {
@@ -245,20 +245,12 @@ class HoldConfirmation extends React.Component {
                     itemUrl={`/hold/request/${bibId}-${itemId}`}
                     edd={pickupLocation === 'edd'}
                   />
-                  <h2>{appConfig.displayTitle}</h2>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="nypl-full-width-wrapper">
-            <div className="nypl-row">
-              <div className="nypl-column-three-quarters">
-                <div className="item-header">
                   <h1>{confirmationPageTitle}</h1>
                 </div>
               </div>
             </div>
+          </div>
+          <div className="nypl-full-width-wrapper">
             <div className="nypl-row">
               <div className="nypl-column-three-quarters">
                 <div className="nypl-request-item-summary">
