@@ -4,7 +4,7 @@ import { isArray as _isArray } from 'underscore';
 
 import ItemTableRow from './ItemTableRow';
 
-const ItemTable = ({ items, bibId, getRecord, id, searchKeywords, }) => {
+const ItemTable = ({ items, bibId, getRecord, id, searchKeywords }) => {
   if (!_isArray(items) || !items.length) {
     return null;
   }
@@ -41,6 +41,7 @@ ItemTable.propTypes = {
   items: PropTypes.array,
   bibId: PropTypes.string,
   id: PropTypes.string,
+  searchKeywords: PropTypes.string,
   getRecord: PropTypes.func,
 };
 

@@ -1,4 +1,5 @@
-## Discovery Sandbox
+## Discovery
+### Shared Collection Catalog
 [![GitHub version](https://badge.fury.io/gh/nypl-discovery%2Fdiscovery-front-end.svg)](https://badge.fury.io/gh/nypl-discovery%2Fdiscovery-front-end)
 [![Build Status](https://travis-ci.org/NYPL-discovery/discovery-front-end.svg?branch=master)](https://travis-ci.org/NYPL-discovery/discovery-front-end)
 [![Dependencies Status](https://david-dm.org/nypl-discovery/discovery-front-end/status.svg)](https://david-dm.org/nypl-discovery/discovery-front-end)
@@ -7,7 +8,7 @@
 [![forthebadge](http://forthebadge.com/images/badges/built-with-love.svg)](https://nypl.org)
 
 
-Front-end app for searching, discovering, and placing a hold on research items at NYPL. Using data from the [Discovery API](https://github.com/NYPL-discovery/registry-api).
+Front-end app for searching, discovering, and placing a hold on research items from NYPL and ReCAP partners. Currently using data from the [Discovery API](https://github.com/NYPL-discovery/registry-api).
 
 ## Technology
 
@@ -20,7 +21,7 @@ Front-end app for searching, discovering, and placing a hold on research items a
 * Express Server
 * [Travis](https://travis-ci.org/)
 
-## Installation
+## Installation and running locally
 
 To install packages run
 
@@ -28,11 +29,11 @@ To install packages run
 
 To run locally in development mode run
 
-    $ npm run dev-start
+    $ clientId=[client id] clientSecret=[client secret] npm run dev-start
 
 If you would like to run in different the environments, run
 
-    $ APP_ENV=[environment variable] npm start
+    $ clientId=[client id] clientSecret=[client secret] APP_ENV=[environment variable] npm start
 
 `environment variable` is the name of the particular environment, such as `qa`.
 
@@ -41,10 +42,15 @@ At last, visit `localhost:3001`.
 To run locally in production mode run
 
     $ npm run dist
-    $ NODE_ENV=production APP_ENV=[environment variable] npm start
+    $ clientID=[client id] clientSecret=[client secret] NODE_ENV=production APP_ENV=[environment variable] npm start
 
 and visit `localhost:3001`.
 NOTE: Currently the only working `environment variable` is `development`.
+
+## Client Id and Secret
+We are using environment variables to make authorized requests to NYPL's API platform. The `clientId` and `clientSecret` environment variables should be received from a developer in the NYPL Digital Department.
+
+Please check the [EBSVARS](EBSVARS.md) documentation for more information.
 
 ## Contributing
 
@@ -71,7 +77,7 @@ To run the tests continuously for active development, run
 
 To run a specific test file, run
 
-    $ npm run test-file test/SearchResultsPage.test.js
+    $ npm run test-file test/unit/SearchResultsPage.test.js
 
 ### Code Coverage
 [Istanbul](https://istanbul.js.org/) is used for checking code coverage.
@@ -152,7 +158,7 @@ We are using AWS EB to deploy our app. Check the [deployment file](DEPLOYMENT.md
 
 The `Feedback` component in `src/app/components/Feedback/Feedback.jsx` can help us collect the feedback from patrons, send it to the Google Form, and finally, present it with [the Google Spreadsheet](https://docs.google.com/spreadsheets/d/1jD8EnC0uoPuo118jUF3of9MNgvrXTv1Jww67ZVJCSHs/edit#gid=536144761).
 
-Everytime the `Feedback` component has significant updates, it might lead to the need to create a new Goolge Form and Spreadsheet to match those updates. Here are the steps to create and sync the HTML form with a Google Form.
+Every time the `Feedback` component has significant updates, it might lead to the need to create a new Google Form and Spreadsheet to match those updates. Here are the steps to create and sync the HTML form with a Google Form.
 
  - First, create a Google Form based on the fields of the HTML form. The fields need to be the same type respectively.
 
@@ -165,3 +171,7 @@ Everytime the `Feedback` component has significant updates, it might lead to the
  - At last, view the page source of the Google Form page and find the value of each field's name attribute. Enter the value to the name attribute of the respectively field in the HTML form.
 
  - Run the application and test it with the feedback form.
+
+ ## Alarm and Monitoring with AWS CloudWatch
+
+ As one of the NYPL's services, we want to monitor its condition and receive necessary alarms if an error occurs. We set up the alarms and error filters on NYPL's [AWS CloudWatch](https://aws.amazon.com/cloudwatch/). For more details about setting up alarms and log metrics, please see NYPL engineering-general repo's [Monitoring & Alarms Instruction](https://github.com/NYPL/engineering-general/blob/master/standards/alerting.md).

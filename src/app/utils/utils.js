@@ -27,7 +27,7 @@ import appConfig from '../../../appConfig.js';
 const ajaxCall = (
   endpoint,
   cb = () => {},
-  errorcb = (error) => console.log(error)
+  errorcb = (error) => console.error('Error making ajaxCall', error)
 ) => {
   if (!endpoint) return null;
 

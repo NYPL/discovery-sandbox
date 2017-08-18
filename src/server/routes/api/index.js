@@ -1,31 +1,49 @@
-import axios from 'axios';
-import config from '../../../../appConfig.js';
+import { isEmpty as _isEmpty } from 'underscore';
 
-function constructApiHeaders(token = '') {
-  return {
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
-    },
-  };
-}
+import nyplApiClient from '../nyplApiClient';
+import logger from '../../../../logger';
 
 export function getPatronData(req, res, next) {
-  if (req.tokenResponse.isTokenValid
-    && req.tokenResponse.accessToken
-    && req.tokenResponse.decodedPatron
-    && req.tokenResponse.decodedPatron.sub
+  if (req.patronTokenResponse.isTokenValid
+    && req.patronTokenResponse.decodedPatron
+    && req.patronTokenResponse.decodedPatron.sub
   ) {
-    const userId = req.tokenResponse.decodedPatron.sub;
-    const userToken = req.tokenResponse.accessToken;
-    const patronHoldsApi = `${config.api.development}/patrons/${userId}`;
+    const userId = req.patronTokenResponse.decodedPatron.sub;
 
-    return axios
-      .get(patronHoldsApi, constructApiHeaders(userToken))
-      .then((response) => {
-        if (response.data) {
-          // Data is empty for the Patron
-          if (response.data.statusCode === 404) {
+    return nyplApiClient()
+      .then(client =>
+        client.get(`/patrons/${userId}`)
+          .then((response) => {
+            if (_isEmpty(response)) {
+              // Data is empty for the Patron
+              res.locals.data = {
+                PatronStore: {
+                  id: '',
+                  names: [],
+                  barcodes: [],
+                  emails: [],
+                },
+              };
+            } else {
+              // Data exists for the Patron
+              res.locals.data = {
+                PatronStore: {
+                  id: response.id,
+                  names: response.names,
+                  barcodes: response.barCodes,
+                  emails: response.emails,
+                },
+              };
+            }
+
+            // Continue next function call
+            next();
+          })
+          .catch((error) => {
+            logger.error(
+              'Error attemping to make server side fetch call to patrons in getPatronData',
+              error
+            );
             res.locals.data = {
               PatronStore: {
                 id: '',
@@ -34,36 +52,12 @@ export function getPatronData(req, res, next) {
                 emails: [],
               },
             };
-          }
-          // Data exists for the Patron
-          if (response.data.statusCode === 200 && response.data.data) {
-            res.locals.data = {
-              PatronStore: {
-                id: response.data.data.id,
-                names: response.data.data.names,
-                barcodes: response.data.data.barCodes,
-                emails: response.data.data.emails,
-              },
-            };
-          }
-        }
-        // Continue next function call
-        next();
-      })
-      .catch((error) => {
-        console.log(error);
-        res.locals.data = {
-          PatronStore: {
-            id: '',
-            names: [],
-            barcodes: [],
-            emails: [],
-          },
-        };
-        // Continue next function call
-        next();
-      });
+            // Continue next function call
+            next();
+          })
+      );
   }
+
   res.locals.data = {
     PatronStore: {
       id: '',

@@ -1,15 +1,14 @@
-import axios from 'axios';
-import appConfig from '../../../appConfig.js';
+import nyplApiClient from '../routes/nyplApiClient';
+import logger from '../../../logger';
 
-const appEnvironment = process.env.APP_ENV || 'production';
-const apiBase = appConfig.api[appEnvironment];
+const nyplApiClientCall = (query) =>
+  nyplApiClient().then(client => client.get(`/discovery/resources/${query}`));
 
 function fetchBib(bibId, cb, errorcb) {
-  return axios
-    .get(`${apiBase}/discovery/resources/${bibId}`)
-    .then(response => cb(response.data))
+  return nyplApiClientCall(bibId)
+    .then(response => cb(response))
     .catch(error => {
-      console.error(`fetchBib API error: ${JSON.stringify(error, null, 2)}`);
+      logger.error('Error attemping to fetch a Bib server side in fetchBib', error);
 
       errorcb(error);
     }); /* end axios call */
@@ -29,7 +28,7 @@ function bibSearchServer(req, res, next) {
       next();
     },
     (error) => {
-      console.error(`bibSearchServer API error: ${JSON.stringify(error, null, 2)}`);
+      logger.error('Error in bibSearchServer API error', error);
       res.locals.data.Store = {
         bib: {},
         searchKeywords: req.query.searchKeywords || '',

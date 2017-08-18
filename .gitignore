@@ -9,6 +9,7 @@ bin/*
 selenium-debug.log
 nightwatch_reports
 package-lock.json
+log/*.log
 
 # Elastic Beanstalk Files
 .elasticbeanstalk/*
