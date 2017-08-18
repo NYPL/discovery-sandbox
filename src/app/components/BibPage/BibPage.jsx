@@ -50,7 +50,6 @@ const BibPage = (props) => {
     { label: 'GPO', value: '' },
     { label: 'Other Titles', value: '' },
     { label: 'Owning Institutions', value: '' },
-    { label: 'MARC Record', value: 'React Component' },
   ];
 
   const itemHoldings = items.length && !electronicItems ?
@@ -107,7 +106,6 @@ const BibPage = (props) => {
                 <h1>{title}</h1>
                 <BibDetails
                   bib={bib}
-                  marcRecord={marcRecord}
                   fields={topFields}
                 />
 
@@ -116,9 +114,9 @@ const BibPage = (props) => {
                 <h3>Additional details</h3>
                 <BibDetails
                   bib={bib}
-                  marcRecord={marcRecord}
                   fields={bottomFields}
                 />
+                {marcRecord}
               </div>
             </div>
           </div>
