@@ -60,7 +60,7 @@ class SearchResultsPage extends React.Component {
         Actions.updateSearchResults(response.data.searchResults);
         Actions.updatePage(nextPage.toString());
         Actions.updateDiscoveryingStatus(false);
-        context.router.push(`${appConfig.baseUrl}/search?${apiQuery}`);
+        this.context.router.push(`${appConfig.baseUrl}/search?${apiQuery}`);
       });
     };
 
@@ -147,7 +147,7 @@ class SearchResultsPage extends React.Component {
       </DocumentTitle>
     );
   }
-};
+}
 
 SearchResultsPage.propTypes = {
   searchResults: PropTypes.object,
@@ -157,7 +157,7 @@ SearchResultsPage.propTypes = {
   location: PropTypes.object,
   sortBy: PropTypes.string,
   field: PropTypes.string,
-  spinning: PropTypes.bool,
+  isDiscoverying: PropTypes.bool,
   error: PropTypes.object,
 };
 
