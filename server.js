@@ -100,9 +100,9 @@ app.get('/*', (req, res) => {
           isProduction,
           baseUrl: appConfig.baseUrl,
           headers: JSON.stringify(headers),
-          href: JSON.string(headers.referrer || headers.referer),
-          referer: JSON.string(req.get('Referer')),
-          referrer: JSON.string(req.get('Referrer')),
+          href: JSON.stringify(headers.referrer || headers.referer),
+          referer: JSON.stringify(req.get('Referer')),
+          referrer: JSON.stringify(req.get('Referrer')),
         });
     } else {
       res.status(404).redirect(`${appConfig.baseUrl}/`);
