@@ -190,25 +190,19 @@ class ElectronicDelivery extends React.Component {
                   bibUrl={`/bib/${bibId}`}
                   itemUrl={`/hold/request/${bibId}-${itemId}`}
                 />
-                <h2>{appConfig.displayTitle}</h2>
+                <h1>Electronic Delivery Request</h1>
               </div>
             </div>
           </div>
           <div className="nypl-full-width-wrapper">
             <div className="nypl-row">
               <div className="nypl-column-three-quarters">
-                <div className="item-header">
-                  <h1>Electronic Delivery Request</h1>
-                </div>
-
                 <div className="nypl-request-item-summary">
-                  <h3>
-                    Material request for Electronic Delivery:
-                    <br />
+                  <h2>
                     <Link to={`${appConfig.baseUrl}/bib/${bibId}`}>
                       {title}
                     </Link>
-                  </h3>
+                  </h2>
                   {
                     callNo && (
                       <div className="call-number">
