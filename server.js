@@ -71,7 +71,10 @@ app.use('/', apiRoutes);
 app.get('/*', (req, res) => {
   alt.bootstrap(JSON.stringify(res.locals.data || {}));
 
+  const headers = req.headers;
   const appRoutes = (req.url).indexOf(appConfig.baseUrl) !== -1 ? routes.client : routes.server;
+
+  console.log(headers);
 
   match({ routes: appRoutes, location: req.url }, (error, redirectLocation, renderProps) => {
     if (error) {
@@ -95,6 +98,7 @@ app.get('/*', (req, res) => {
           path: req.url,
           isProduction,
           baseUrl: appConfig.baseUrl,
+          headers: JSON.stringify(headers),
         });
     } else {
       res.status(404).redirect(`${appConfig.baseUrl}/`);
