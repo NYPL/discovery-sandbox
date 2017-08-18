@@ -36,7 +36,7 @@ const BibPage = (props) => {
     { label: 'Additional Authors', value: 'contributorLiteral', linkable: true },
   ];
   const bottomFields = [
-    { label: 'Publisher', value: 'React Component' },
+    { label: 'Publication', value: 'React Component' },
     { label: 'Electronic Resource', value: '' },
     { label: 'Description', value: 'extent' },
     { label: 'Subject', value: 'subjectLiteral', linkable: true },
