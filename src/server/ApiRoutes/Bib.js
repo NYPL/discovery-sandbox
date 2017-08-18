@@ -1,13 +1,11 @@
-import axios from 'axios';
-import appConfig from '../../../appConfig.js';
+import nyplApiClient from '../routes/nyplApiClient';
 
-const appEnvironment = process.env.APP_ENV || 'production';
-const apiBase = appConfig.api[appEnvironment];
+const nyplApiClientCall = (query) =>
+  nyplApiClient().then(client => client.get(`/discovery/resources/${query}`));
 
 function fetchBib(bibId, cb, errorcb) {
-  return axios
-    .get(`${apiBase}/discovery/resources/${bibId}`)
-    .then(response => cb(response.data))
+  return nyplApiClientCall(bibId)
+    .then(response => cb(response))
     .catch(error => {
       console.error(`fetchBib API error: ${JSON.stringify(error, null, 2)}`);
 

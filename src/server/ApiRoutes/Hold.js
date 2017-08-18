@@ -1,4 +1,8 @@
-import axios from 'axios';
+import {
+  extend as _extend,
+  mapObject as _mapObject,
+  omit as _omit,
+} from 'underscore';
 
 import appConfig from '../../../appConfig.js';
 import locationCodes from '../../../locationCodes.js';
@@ -7,14 +11,13 @@ import User from './User.js';
 import Bib from './Bib.js';
 import LibraryItem from './../../app/utils/item.js';
 import { validate } from '../../app/utils/formValidationUtils';
-import {
-  mapObject as _mapObject,
-  omit as _omit,
-} from 'underscore';
+import nyplApiClient from '../routes/nyplApiClient';
 
-const appEnvironment = process.env.APP_ENV || 'production';
-const apiBase = appConfig.api[appEnvironment];
+const nyplApiClientGet = (endpoint) =>
+  nyplApiClient().then(client => client.get(endpoint));
 
+const nyplApiClientPost = (endpoint, opts) =>
+  nyplApiClient().then(client => client.post(endpoint, opts));
 /**
  * postHoldAPI(req, pickedUpItemId, pickupLocation, cb, errorCb)
  * The function to make a POST request to the hold request API.
@@ -37,10 +40,9 @@ function postHoldAPI(
   cb,
   errorCb
 ) {
-  // retrieve access token and patron info
-  const accessToken = req.tokenResponse.accessToken;
-  const patronId = req.tokenResponse.decodedPatron.sub;
-  const patronHoldsApi = `${appConfig.api.development}/hold-requests`;
+  // retrieve patron info
+  const patronId = req.patronTokenResponse.decodedPatron.sub;
+  const holdRequestEndpoint = '/hold-requests';
 
   // get item id and pickup location
   // NOTE: pickedUpItemId and pickedUpBibId are coming from the EDD form function below:
@@ -58,15 +60,9 @@ function postHoldAPI(
     numberOfCopies: 1,
     docDeliveryData: (pickupLocation === 'edd') ? docDeliveryData : null,
   };
-  console.log('Making hold request', data, accessToken);
+  console.log('Making hold request', data);
 
-  return axios
-    .post(patronHoldsApi, data, {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${accessToken}`,
-      },
-    })
+  return nyplApiClientPost(holdRequestEndpoint, JSON.stringify(data))
     .then(cb)
     .catch(errorCb);
 }
@@ -101,41 +97,36 @@ function mapLocationDetails(locations) {
 }
 
 /**
- * getDeliveryLocations(barcode, patronId, accessToken, cb, errorCb)
+ * getDeliveryLocations(barcode, patronId, cb, errorCb)
  * The function to make a request to get delivery locations of an item.
  *
  * @param {string} barcode
  * @param {string} patronId
- * @param {string} accessToken
  * @param {function} cb - callback when we have valid response
  * @param {function} errorCb - callback when error
  * @return {function}
  */
-function getDeliveryLocations(barcode, patronId, accessToken, cb, errorCb) {
-  return axios.get(
-    `${apiBase}/request/deliveryLocationsByBarcode?barcodes[]=${barcode}&patronId=${patronId}`,
-    {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${accessToken}`,
-      },
-    }
-  )
-  .then(barcodeAPIresponse => {
-    const eddRequestable = (barcodeAPIresponse.data.itemListElement[0].eddRequestable) ?
-      barcodeAPIresponse.data.itemListElement[0].eddRequestable : false;
-    const deliveryLocationWithAddress =
-      (barcodeAPIresponse.data.itemListElement[0].deliveryLocation) ?
-      mapLocationDetails(barcodeAPIresponse.data.itemListElement[0].deliveryLocation) : [];
+function getDeliveryLocations(barcode, patronId, cb, errorCb) {
+  const deliveryEndpoint = `/request/deliveryLocationsByBarcode?barcodes[]=${barcode}` +
+    `&patronId=${patronId}`;
 
-    cb(
-      deliveryLocationWithAddress,
-      eddRequestable
-    );
-  })
-  .catch(barcodeAPIError => {
-    errorCb(barcodeAPIError);
-  });
+  return nyplApiClientGet(deliveryEndpoint)
+    .then(barcodeAPIresponse => {
+      const eddRequestable = (barcodeAPIresponse.itemListElement[0].eddRequestable) ?
+        barcodeAPIresponse.itemListElement[0].eddRequestable : false;
+      const deliveryLocationWithAddress =
+        (barcodeAPIresponse.itemListElement[0].deliveryLocation) ?
+        mapLocationDetails(barcodeAPIresponse.itemListElement[0].deliveryLocation) : [];
+
+      cb(
+        deliveryLocationWithAddress,
+        eddRequestable
+      );
+    })
+    .catch(barcodeAPIError => {
+      console.log(`getDeliveryLocations error: ${barcodeAPIError}`);
+      errorCb(barcodeAPIError);
+    });
 }
 
 /**
@@ -150,26 +141,32 @@ function getDeliveryLocations(barcode, patronId, accessToken, cb, errorCb) {
 function confirmRequestServer(req, res, next) {
   const bibId = req.params.bibId || '';
   const loggedIn = User.requireUser(req, res);
-  const error = req.query.error ? JSON.parse(req.query.error) : {};
   const requestId = req.query.requestId || '';
+  const searchKeywords = req.query.searchKeywords || '';
+  const errorStatus = req.query.errorStatus ? req.query.errorStatus : null;
+  const errorMessage = req.query.errorMessage ? req.query.errorMessage : null;
+  const error = _extend({}, { errorStatus, errorMessage });
 
   if (!loggedIn) return false;
-  if (!requestId) return res.redirect(`${appConfig.baseUrl}/`);
 
-  const accessToken = req.tokenResponse.accessToken || '';
-  const patronId = req.tokenResponse.decodedPatron.sub || '';
+  if (!requestId) {
+    res.locals.data.Store = {
+      bib: {},
+      searchKeywords,
+      error,
+      deliveryLocations: [],
+    };
+
+    next();
+    return false;
+  }
+
+  const patronId = req.patronTokenResponse.decodedPatron.sub || '';
   let barcode;
 
-  return axios
-    .get(`${apiBase}/hold-requests/${requestId}`, {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${accessToken}`,
-      },
-    })
+  return nyplApiClientGet(`/hold-requests/${requestId}`)
     .then(response => {
-      const data = response.data.data;
-      const patronIdFromHoldRequest = data.patron;
+      const patronIdFromHoldRequest = response.patron;
 
       // The patron who is seeing the confirmation made the Hold Request
       if (patronIdFromHoldRequest === patronId) {
@@ -182,30 +179,29 @@ function confirmRequestServer(req, res, next) {
             getDeliveryLocations(
               barcode,
               patronId,
-              accessToken,
               (deliveryLocations, isEddRequestable) => {
                 res.locals.data.Store = {
                   bib: bibResponseData,
-                  searchKeywords: '',
+                  searchKeywords,
                   error,
                   deliveryLocations,
                   isEddRequestable,
                 };
                 next();
               },
-              (e) => {
+              (deliveryLocationError) => {
                 console.error(
-                  `deliverylocationsbybarcode API error: ${JSON.stringify(e, null, 2)}`
+                  `deliveryLocationsByBarcode API error: ` +
+                  `${JSON.stringify(deliveryLocationError, null, 2)}`
                 );
 
                 res.locals.data.Store = {
                   bib: bibResponseData,
-                  searchKeywords: '',
+                  searchKeywords,
                   error,
                   deliveryLocations: [],
                   isEddRequestable: false,
                 };
-
                 next();
               }
             );
@@ -213,22 +209,28 @@ function confirmRequestServer(req, res, next) {
           (bibResponseError) => {
             res.locals.data.Store = {
               bib: {},
-              searchKeywords: '',
+              searchKeywords,
               error,
+              deliveryLocations: [],
             };
             next();
           }
         );
       }
 
-      // Else redirect to the homepage:
-      res.redirect(`${appConfig.baseUrl}/`);
       return false;
     })
     .catch(requestIdError => {
       console.log(`Error fetching Hold Request from id. Error: ${requestIdError}`);
 
-      res.redirect(`${appConfig.baseUrl}/`);
+      res.locals.data.Store = {
+        bib: {},
+        searchKeywords,
+        error,
+        deliveryLocations: [],
+      };
+      next();
+
       return false;
     });
 }
@@ -250,8 +252,7 @@ function newHoldRequestServer(req, res, next) {
 
   if (!loggedIn) return false;
 
-  const accessToken = req.tokenResponse.accessToken || '';
-  const patronId = req.tokenResponse.decodedPatron.sub || '';
+  const patronId = req.patronTokenResponse.decodedPatron.sub || '';
   let barcode;
 
   // Retrieve item
@@ -263,7 +264,6 @@ function newHoldRequestServer(req, res, next) {
       getDeliveryLocations(
         barcode,
         patronId,
-        accessToken,
         (deliveryLocations, isEddRequestable) => {
           res.locals.data.Store = {
             bib: bibResponseData,
@@ -277,7 +277,7 @@ function newHoldRequestServer(req, res, next) {
           next();
         },
         (e) => {
-          console.error(`deliverylocationsbybarcode API error: ${JSON.stringify(e, null, 2)}`);
+          console.error(`deliverylocationsbybarcode API error 2: ${JSON.stringify(e, null, 2)}`);
 
           res.locals.data.Store = {
             bib: bibResponseData,
@@ -316,8 +316,8 @@ function newHoldRequestServer(req, res, next) {
  */
 function newHoldRequestAjax(req, res) {
   const bibId = req.params.bibId || '';
-  const accessToken = req.tokenResponse.accessToken || '';
-  const patronId = req.tokenResponse.decodedPatron ? req.tokenResponse.decodedPatron.sub : '';
+  const patronId = req.patronTokenResponse.decodedPatron ?
+    req.patronTokenResponse.decodedPatron.sub : '';
   let barcode;
 
   // Retrieve item
@@ -329,7 +329,6 @@ function newHoldRequestAjax(req, res) {
       getDeliveryLocations(
         barcode,
         patronId,
-        accessToken,
         (deliveryLocations, isEddRequestable) => {
           res.json({
             bib: bibResponseData,
@@ -339,7 +338,7 @@ function newHoldRequestAjax(req, res) {
         },
         (deliveryLocationsError) => {
           console.error(
-            'deliverylocationsbybarcode API error: ' +
+            'deliverylocationsbybarcode API error 3: ' +
             `${JSON.stringify(deliveryLocationsError, null, 2)}`
           );
 
@@ -431,19 +430,22 @@ function createHoldRequestServer(req, res, pickedUpBibId = '', pickedUpItemId = 
     docDeliveryData,
     itemSource,
     (response) => {
-      console.log('Hold Request Id:', response.data.data.id);
-      console.log('Job Id:', response.data.data.jobId);
+      const data = JSON.parse(response).data;
+      console.log('data', data);
+      console.log('Hold Request Id:', data.id);
+      console.log('Job Id:', data.jobId);
 
       res.redirect(
         `${appConfig.baseUrl}/hold/confirmation/${bibId}-${itemId}?pickupLocation=` +
-        `${response.data.data.pickupLocation}&requestId=${response.data.data.id}` +
-        `${searchKeywordsQuery}`
+        `${pickupLocation}&requestId=${data.id}${searchKeywordsQuery}`
       );
     },
     (error) => {
-      console.log(`Error calling Holds API : ${error.data.message}`);
+      console.log(`Error calling Holds API createHoldRequestServer : ${error.data.message}`);
       res.redirect(
-        `${appConfig.baseUrl}/hold/request/${bibId}-${itemId}?errorMessage=${error.data.message}`
+        `${appConfig.baseUrl}/hold/confirmation/${bibId}-${itemId}?pickupLocation=` +
+        `${pickupLocation}&errorStatus=${error.status}` +
+        `&errorMessage=${error.statusText}${searchKeywordsQuery}`
       );
     }
   );
@@ -469,14 +471,15 @@ function createHoldRequestAjax(req, res) {
     null,
     req.query.itemSource,
     (response) => {
+      const data = JSON.parse(response).data;
       res.json({
-        id: response.data.data.id,
-        jobId: response.data.data.jobId,
-        pickupLocation: response.data.data.pickupLocation,
+        id: data.id,
+        jobId: data.jobId,
+        pickupLocation: data.pickupLocation,
       });
     },
     (error) => {
-      console.log(`Error calling Holds API : ${error.data.message}`);
+      console.log(`Error calling Holds API createHoldRequestAjax : ${error}`);
 
       res.json({
         status: error.status,
@@ -498,14 +501,15 @@ function createHoldRequestEdd(req, res) {
     req.body.form,
     req.body.itemSource,
     (response) => {
+      const data = JSON.parse(response).data;
       res.json({
-        id: response.data.data.id,
-        jobId: response.data.data.jobId,
-        pickupLocation: response.data.data.pickupLocation,
+        id: data.id,
+        jobId: data.jobId,
+        pickupLocation: data.pickupLocation,
       });
     },
     (error) => {
-      console.log(`Error calling Holds API : ${error.data.message}`);
+      console.log(`Error calling Holds API createHoldRequestEdd : ${error}`);
 
       res.json({
         status: error.status,
@@ -519,7 +523,9 @@ function eddServer(req, res) {
   const {
     bibId,
     itemId,
+    searchKeywords,
   } = req.body;
+  const searchKeywordsQuery = (searchKeywords) ? `&searchKeywords=${searchKeywords}` : '';
 
   let serverErrors = {};
 
@@ -547,21 +553,20 @@ function eddServer(req, res) {
     req.body,
     req.body.itemSource,
     (response) => {
-      const searchKeywordsQuery = (req.body.searchKeywords) ?
-        `&searchKeywords=${req.body.searchKeywords}` : '';
+      const data = JSON.parse(response).data;
 
       res.redirect(
-        `${appConfig.baseUrl}/hold/confirmation/${req.body.bibId}-${req.body.itemId}` +
-        `?pickupLocation=${req.body.pickupLocation}&requestId=${response.data.data.id}` +
-        `${searchKeywordsQuery}`
+        `${appConfig.baseUrl}/hold/confirmation/${bibId}-${itemId}` +
+        `?pickupLocation=${req.body.pickupLocation}&requestId=${data.id}${searchKeywordsQuery}`
       );
     },
     (error) => {
-      console.log(`Error calling Holds API : ${error.data.message}`);
+      console.log(`Error calling Holds API eddServer : ${error}`);
 
       res.redirect(
-        `${appConfig.baseUrl}/hold/request/${bibId}-${itemId}/edd?error=${JSON.stringify(error)}` +
-        `&form=${JSON.stringify(req.body)}`
+        `${appConfig.baseUrl}/hold/confirmation/${bibId}-${itemId}?pickupLocation=edd` +
+        `&errorStatus=${error.status}` +
+        `&errorMessage=${error.statusText}${searchKeywordsQuery}`
       );
     }
   );
