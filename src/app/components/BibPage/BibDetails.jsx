@@ -259,16 +259,6 @@ class BibDetails extends React.Component {
           });
         }
       }
-
-      // The MARC Record only shows up for NYPL items so it's special.
-      if (fieldLabel === 'MARC Record') {
-        if (this.props.marcRecord) {
-          fieldsToRender.push({
-            term: fieldLabel,
-            definition: this.props.marcRecord,
-          });
-        }
-      }
     }); // End of the forEach loop
 
     return fieldsToRender;
@@ -339,7 +329,6 @@ class BibDetails extends React.Component {
 
 BibDetails.propTypes = {
   bib: PropTypes.object,
-  marcRecord: PropTypes.object,
   fields: PropTypes.array,
 };
 
