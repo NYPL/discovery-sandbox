@@ -97,9 +97,9 @@ class ResultsList extends React.Component {
     dateEndYear = dateEndYear === 9999 ? 'present' : dateEndYear;
 
     if (dateStartYear && dateEndYear) {
-      return (<span className="nypl-results-date">{dateStartYear}-{dateEndYear}</span>);
+      return (<li className="nypl-results-date">{dateStartYear}-{dateEndYear}</li>);
     } else if (dateStartYear) {
-      return (<span className="nypl-results-date">{dateStartYear}</span>);
+      return (<li className="nypl-results-date">{dateStartYear}</li>);
     }
     return null;
   }
