@@ -71,11 +71,7 @@ app.use('/', apiRoutes);
 app.get('/*', (req, res) => {
   alt.bootstrap(JSON.stringify(res.locals.data || {}));
 
-  const headers = req.headers;
   const appRoutes = (req.url).indexOf(appConfig.baseUrl) !== -1 ? routes.client : routes.server;
-
-  console.log(req.get('host'))
-  console.log(req.get('origin'))
 
   match({ routes: appRoutes, location: req.url }, (error, redirectLocation, renderProps) => {
     if (error) {
