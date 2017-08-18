@@ -74,8 +74,8 @@ app.get('/*', (req, res) => {
   const headers = req.headers;
   const appRoutes = (req.url).indexOf(appConfig.baseUrl) !== -1 ? routes.client : routes.server;
 
-  console.log(req.get('Referer'))
-  console.log(headers.referrer);
+  console.log(req.get('host'))
+  console.log(req.get('origin'))
 
   match({ routes: appRoutes, location: req.url }, (error, redirectLocation, renderProps) => {
     if (error) {
@@ -99,10 +99,8 @@ app.get('/*', (req, res) => {
           path: req.url,
           isProduction,
           baseUrl: appConfig.baseUrl,
-          headers: JSON.stringify(headers),
-          href: JSON.stringify(headers.referrer || headers.referer),
-          referer: JSON.stringify(req.get('Referer')),
-          referrer: JSON.stringify(req.get('Referrer')),
+          host: JSON.stringify(req.get('host')),
+          origin: JSON.stringify(req.get('origin')),
         });
     } else {
       res.status(404).redirect(`${appConfig.baseUrl}/`);
