@@ -5,8 +5,10 @@
   "main": "index.js",
   "scripts": {
     "start": "node index",
-    "dev-start": "APP_ENV=development node index",
-    "eb-start": "npm run dist && APP_ENV=development node index",
+    "prod-start": "NODE_ENV=production APP_ENV=production node index",
+    "dev-api-start": "APP_ENV=development node index",
+    "prod-api-start": "APP_ENV=production node index",
+    "eb-start": "npm run dist && node index",
     "dist": "NODE_ENV=production webpack --config webpack.config.js",
     "postinstall": "npm run dist",
     "test": "node_modules/.bin/mocha test/helpers/browser.js test/unit/*.test.js",
