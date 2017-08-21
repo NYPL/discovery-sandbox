@@ -119,14 +119,42 @@ class HoldConfirmation extends React.Component {
    * @return {HTML Element}
    */
   renderStartOverLink() {
+    let buttonText = 'Start Over';
+    if (this.props.location.query.fromUrl) {
+      buttonText = 'Try the new SCC Search';
+    }
+
     return (
       <Link
         className="nypl-request-button"
         to={`${appConfig.baseUrl}/`}
         onClick={(e) => this.goRestart(e)}
       >
-        Start Over
+        {buttonText}
       </Link>
+    );
+  }
+
+  /**
+   * renderBackToClassicLink
+   * Renders the link back to the page of search results.
+   *
+   * @return {HTML Element}
+   */
+  renderBackToClassicLink() {
+    if (!this.props.location.query.fromUrl) {
+      return false;
+    }
+
+    return (
+      <span>
+        <a className="nypl-request-button" href={this.props.location.query.fromUrl}>
+          Back to Classic results
+        </a>
+        <a className="nypl-request-button" href="https://catalog.nypl.org/search">
+          New Classic Search
+        </a>
+      </span>
     );
   }
 
@@ -171,6 +199,7 @@ class HoldConfirmation extends React.Component {
           We could not process your request at this time. Please try again or contact 917-ASK-NYPL
           (<a href="tel:19172756975">917-275-6975</a>).
         </p>
+        {this.renderBackToClassicLink()}
         {this.renderBackToSearchLink()}
         {this.renderStartOverLink()}
       </div>
@@ -225,6 +254,7 @@ class HoldConfirmation extends React.Component {
             If you selected Electronic delivery, you will be notified via email when the
             item is available.
           </p>
+          {this.renderBackToClassicLink()}
           {this.renderBackToSearchLink()}
           {this.renderStartOverLink()}
         </div>
