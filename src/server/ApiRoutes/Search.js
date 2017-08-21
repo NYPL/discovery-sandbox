@@ -27,7 +27,7 @@ const nyplApiClientCall = (query) =>
 
 function search(searchKeywords, page, sortBy, order, field, filters, cb, errorcb) {
   const apiQuery = createAPIQuery({
-    searchKeywords: encodeURIComponent(searchKeywords),
+    searchKeywords,
     sortBy: sortBy ? `${sortBy}_${order}` : '',
     selectedFacets: filters,
     field,
