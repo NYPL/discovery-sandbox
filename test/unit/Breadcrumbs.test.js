@@ -7,51 +7,41 @@ import Breadcrumbs from './../../src/app/components/Breadcrumbs/Breadcrumbs.jsx'
 
 // The current page is the last item in the breadcrumb and it is not linked.
 describe('Breadcrumbs', () => {
-  // Home > Research > Research Catalog
-  describe('Default on home page:\n\tHome > Research > Research Catalog', () => {
+  describe('Default rendering - all links', () => {
     let component;
 
     before(() => {
       component = shallow(<Breadcrumbs />);
     });
 
-    it('should contain an accessible and hidden message', () => {
-      expect(component.find('.nypl-screenreader-only')).to.exist;
+    it('should render a nav and an order list', () => {
+      expect(component.find('nav').length).to.equal(1);
+      expect(component.find('ol').length).to.equal(1);
     });
 
-    it('should be wrapped in a .breadcrumbs class', () => {
-      expect(component.find('.nypl-breadcrumbs')).to.exist;
-      expect(component.find('ol').hasClass('nypl-breadcrumbs')).to.equal(true);
+    it('should render five li\'s and four links', () => {
+      expect(component.find('li').length).to.equal(5);
+      expect(component.find('Link').length).to.equal(4);
     });
 
-    it('should contain two Link elements', () => {
-      expect(component.find('Link')).to.have.length(0);
-    });
-
-    it('should have the first link go to the nypl.org homepage', () => {
-      const firstLink = component.find('a').first();
-      expect(firstLink.prop('href')).to.equal('https://nypl.org');
-      expect(firstLink.children().text()).to.equal('Home');
-    });
-
-    it('should have the second link go to the nypl.org/research page', () => {
-      const secondLink = component.find('a').last();
-      expect(secondLink.prop('href')).to.equal('https://nypl.org/research');
-      expect(secondLink.children().text()).to.equal('Research');
-    });
-
-    it('should display the current page as "Research Catalog"', () => {
-      expect(component.find('li').at(2).text()).to.equal('Research Catalog');
+    it('should render all the navigation', () => {
+      const li = component.find('li');
+      expect(li.at(0).render().text()).to.equal('Shared Collection Catalog');
+      expect(li.at(1).render().text()).to.equal('Search Results');
+      expect(li.at(2).render().text()).to.equal('Item Details');
+      expect(li.at(3).render().text()).to.equal('Item Request');
+      expect(li.at(4).render().text()).to.equal('Request Confirmation');
     });
   });
 
   // Home > Research > Research Catalog > Search Results for [search keyword]
   describe('On the Search Results page', () => {
-    describe('No search keyword:\n\tHome > Research > Research Catalog > Search Results', () => {
+    describe('No search keyword:', () => {
+      const searchKeywords = '';
       let component;
 
       before(() => {
-        component = shallow(<Breadcrumbs type="search" />);
+        component = shallow(<Breadcrumbs query={searchKeywords} type="search" />);
       });
 
       it('should contain three Link elements', () => {
@@ -138,180 +128,181 @@ describe('Breadcrumbs', () => {
     });
   });
 
-  // Do not have this implemented yet.
-  describe('On the Hold page', () => {
-    // Home > Research > Research Catalog > [title] > Place a hold
-    describe('No search keyword:' +
-      '\n\tHome > Research > Research Catalog > [title] > Place a hold', () => {
-      const title = 'Locofoco Platform [electronic resource].';
-      const bNum = 'b20862164';
-      let component;
-
-      before(() => {
-        component = shallow(
-          <Breadcrumbs
-            type="hold"
-            title={title}
-            url={bNum}
-          />
-        );
-      });
-
-      it('should contain four Link elements', () => {
-        expect(component.find('Link')).to.have.length(4);
-      });
-
-      it('should link back to the item page as the fourth link', () => {
-        const searchLink = component.find('Link').at(3);
-        expect(searchLink.prop('to')).to.equal(`/item/${bNum}`);
-        expect(searchLink.children().text()).to.equal(title);
-      });
-
-      it('should display "Place a hold" on the current page', () => {
-        expect(component.find('.currentPage').text()).to.equal('Place a hold');
-      });
-    });
-
-    // Home > Research > Research Catalog > Items > [title] > Place a hold
-    describe('With a search keyword' +
-      '\n\tHome > Research > Research Catalog > Items > [title] > Place a hold', () => {
-      const title = 'Locofoco Platform [electronic resource].';
-      const bNum = 'b20862164';
-      let component;
-
-      before(() => {
-        component = shallow(
-          <Breadcrumbs
-            type="hold"
-            query="locofocos"
-            title={title}
-            url={bNum}
-          />
-        );
-      });
-
-      it('should contain five Link elements', () => {
-        expect(component.find('Link')).to.have.length(5);
-      });
-
-      it('should link back to the item page as the fifth link', () => {
-        const searchLink = component.find('Link').at(4);
-        expect(searchLink.prop('to')).to.equal(`/item/${bNum}`);
-        expect(searchLink.children().text()).to.equal(title);
-      });
-
-      it('should display "Place a hold" on the current page', () => {
-        expect(component.find('.currentPage').text()).to.equal('Place a hold');
-      });
-    });
-
-    // // Home > Research > Research Catalog > Items > [title] > Place a hold
-    describe('With a long item title', () => {
-      const title = 'Prospect before us, or Locofoco impositions exposed. ' +
-        'To the people of the United States.';
-      const bNum = 'b20862164';
-      let component;
-
-      before(() => {
-        component = shallow(
-          <Breadcrumbs
-            type="hold"
-            query="locofocos"
-            title={title}
-            url={bNum}
-          />
-        );
-      });
-
-      it('should shorten the item title to 50 characters', () => {
-        const titleLink = component.find('Link').at(4);
-        const shortenTitle = `${title.substring(0, 50)}...`;
-
-        expect(titleLink.children().text()).to.equal(shortenTitle);
-      });
-    });
-  });
-
-  describe('On the Hold Confirmation page', () => {
-    // Home > Research > Research Catalog > [title] > Hold confirmation
-    describe('No search keyword:' +
-      '\n\tHome > Research > Research Catalog > [title] > Hold confirmation', () => {
-      const title = 'Locofoco Platform [electronic resource].';
-      const bNum = 'b20862164';
-      let component;
-
-      before(() => {
-        component = shallow(
-          <Breadcrumbs
-            type="holdConfirmation"
-            title={title}
-            url={bNum}
-          />
-        );
-      });
-
-      it('should contain four Link elements', () => {
-        expect(component.find('Link')).to.have.length(4);
-      });
-
-      it('should display "Hold confirmation" on the current page', () => {
-        expect(component.find('.currentPage').text()).to.equal('Hold confirmation');
-      });
-    });
-
-    // Home > Research > Research Catalog > Items > [title] > Hold confirmation
-    describe('With a search keyword' +
-      '\n\tHome > Research > Research Catalog > Items > [title] > Hold confirmation', () => {
-      const title = 'Locofoco Platform [electronic resource].';
-      const bNum = 'b20862164';
-      let component;
-
-      before(() => {
-        component = shallow(
-          <Breadcrumbs
-            type="holdConfirmation"
-            query="locofocos"
-            title={title}
-            url={bNum}
-          />
-        );
-      });
-
-      it('should contain five Link elements', () => {
-        expect(component.find('Link')).to.have.length(5);
-      });
-
-      it('should link back to the item page as the fifth link', () => {
-        const searchLink = component.find('Link').at(4);
-        expect(searchLink.prop('to')).to.equal(`/item/${bNum}`);
-        expect(searchLink.children().text()).to.equal(title);
-      });
-    });
-
-    // // Home > Research > Research Catalog > Items > [title] > Hold confirmation
-    describe('With a long item title', () => {
-      const title = 'Prospect before us, or Locofoco impositions exposed. ' +
-        'To the people of the United States.';
-      const bNum = 'b20862164';
-      let component;
-
-      before(() => {
-        component = shallow(
-          <Breadcrumbs
-            type="holdConfirmation"
-            query="locofocos"
-            title={title}
-            url={bNum}
-          />
-        );
-      });
-
-      it('should shorten the item title to 50 characters', () => {
-        const titleLink = component.find('Link').at(4);
-        const shortenTitle = `${title.substring(0, 50)}...`;
-
-        expect(titleLink.children().text()).to.equal(shortenTitle);
-      });
-    });
-  });
+  //
+  // // Do not have this implemented yet.
+  // describe('On the Hold page', () => {
+  //   // Home > Research > Research Catalog > [title] > Place a hold
+  //   describe('No search keyword:' +
+  //     '\n\tHome > Research > Research Catalog > [title] > Place a hold', () => {
+  //     const title = 'Locofoco Platform [electronic resource].';
+  //     const bNum = 'b20862164';
+  //     let component;
+  //
+  //     before(() => {
+  //       component = shallow(
+  //         <Breadcrumbs
+  //           type="hold"
+  //           title={title}
+  //           url={bNum}
+  //         />
+  //       );
+  //     });
+  //
+  //     it('should contain four Link elements', () => {
+  //       expect(component.find('Link')).to.have.length(4);
+  //     });
+  //
+  //     it('should link back to the item page as the fourth link', () => {
+  //       const searchLink = component.find('Link').at(3);
+  //       expect(searchLink.prop('to')).to.equal(`/item/${bNum}`);
+  //       expect(searchLink.children().text()).to.equal(title);
+  //     });
+  //
+  //     it('should display "Place a hold" on the current page', () => {
+  //       expect(component.find('.currentPage').text()).to.equal('Place a hold');
+  //     });
+  //   });
+  //
+  //   // Home > Research > Research Catalog > Items > [title] > Place a hold
+  //   describe('With a search keyword' +
+  //     '\n\tHome > Research > Research Catalog > Items > [title] > Place a hold', () => {
+  //     const title = 'Locofoco Platform [electronic resource].';
+  //     const bNum = 'b20862164';
+  //     let component;
+  //
+  //     before(() => {
+  //       component = shallow(
+  //         <Breadcrumbs
+  //           type="hold"
+  //           query="locofocos"
+  //           title={title}
+  //           url={bNum}
+  //         />
+  //       );
+  //     });
+  //
+  //     it('should contain five Link elements', () => {
+  //       expect(component.find('Link')).to.have.length(5);
+  //     });
+  //
+  //     it('should link back to the item page as the fifth link', () => {
+  //       const searchLink = component.find('Link').at(4);
+  //       expect(searchLink.prop('to')).to.equal(`/item/${bNum}`);
+  //       expect(searchLink.children().text()).to.equal(title);
+  //     });
+  //
+  //     it('should display "Place a hold" on the current page', () => {
+  //       expect(component.find('.currentPage').text()).to.equal('Place a hold');
+  //     });
+  //   });
+  //
+  //   // // Home > Research > Research Catalog > Items > [title] > Place a hold
+  //   describe('With a long item title', () => {
+  //     const title = 'Prospect before us, or Locofoco impositions exposed. ' +
+  //       'To the people of the United States.';
+  //     const bNum = 'b20862164';
+  //     let component;
+  //
+  //     before(() => {
+  //       component = shallow(
+  //         <Breadcrumbs
+  //           type="hold"
+  //           query="locofocos"
+  //           title={title}
+  //           url={bNum}
+  //         />
+  //       );
+  //     });
+  //
+  //     it('should shorten the item title to 50 characters', () => {
+  //       const titleLink = component.find('Link').at(4);
+  //       const shortenTitle = `${title.substring(0, 50)}...`;
+  //
+  //       expect(titleLink.children().text()).to.equal(shortenTitle);
+  //     });
+  //   });
+  // });
+  //
+  // describe('On the Hold Confirmation page', () => {
+  //   // Home > Research > Research Catalog > [title] > Hold confirmation
+  //   describe('No search keyword:' +
+  //     '\n\tHome > Research > Research Catalog > [title] > Hold confirmation', () => {
+  //     const title = 'Locofoco Platform [electronic resource].';
+  //     const bNum = 'b20862164';
+  //     let component;
+  //
+  //     before(() => {
+  //       component = shallow(
+  //         <Breadcrumbs
+  //           type="holdConfirmation"
+  //           title={title}
+  //           url={bNum}
+  //         />
+  //       );
+  //     });
+  //
+  //     it('should contain four Link elements', () => {
+  //       expect(component.find('Link')).to.have.length(4);
+  //     });
+  //
+  //     it('should display "Hold confirmation" on the current page', () => {
+  //       expect(component.find('.currentPage').text()).to.equal('Hold confirmation');
+  //     });
+  //   });
+  //
+  //   // Home > Research > Research Catalog > Items > [title] > Hold confirmation
+  //   describe('With a search keyword' +
+  //     '\n\tHome > Research > Research Catalog > Items > [title] > Hold confirmation', () => {
+  //     const title = 'Locofoco Platform [electronic resource].';
+  //     const bNum = 'b20862164';
+  //     let component;
+  //
+  //     before(() => {
+  //       component = shallow(
+  //         <Breadcrumbs
+  //           type="holdConfirmation"
+  //           query="locofocos"
+  //           title={title}
+  //           url={bNum}
+  //         />
+  //       );
+  //     });
+  //
+  //     it('should contain five Link elements', () => {
+  //       expect(component.find('Link')).to.have.length(5);
+  //     });
+  //
+  //     it('should link back to the item page as the fifth link', () => {
+  //       const searchLink = component.find('Link').at(4);
+  //       expect(searchLink.prop('to')).to.equal(`/item/${bNum}`);
+  //       expect(searchLink.children().text()).to.equal(title);
+  //     });
+  //   });
+  //
+  //   // // Home > Research > Research Catalog > Items > [title] > Hold confirmation
+  //   describe('With a long item title', () => {
+  //     const title = 'Prospect before us, or Locofoco impositions exposed. ' +
+  //       'To the people of the United States.';
+  //     const bNum = 'b20862164';
+  //     let component;
+  //
+  //     before(() => {
+  //       component = shallow(
+  //         <Breadcrumbs
+  //           type="holdConfirmation"
+  //           query="locofocos"
+  //           title={title}
+  //           url={bNum}
+  //         />
+  //       );
+  //     });
+  //
+  //     it('should shorten the item title to 50 characters', () => {
+  //       const titleLink = component.find('Link').at(4);
+  //       const shortenTitle = `${title.substring(0, 50)}...`;
+  //
+  //       expect(titleLink.children().text()).to.equal(shortenTitle);
+  //     });
+  //   });
+  // });
 }); /* End of Breadcrumbs component */
