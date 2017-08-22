@@ -14,7 +14,7 @@ class Store {
       removeFacet: Actions.removeFacet,
       updatePage: Actions.updatePage,
       updateSortBy: Actions.updateSortBy,
-      updateDiscoveryingStatus: Actions.updateDiscoveryingStatus,
+      updateLoadingStatus: Actions.updateLoadingStatus,
       updateField: Actions.updateField,
       updateForm: Actions.updateForm,
       updateDeliveryLocations: Actions.updateDeliveryLocations,
@@ -29,7 +29,7 @@ class Store {
       selectedFacets: {},
       page: '1',
       sortBy: 'relevance',
-      isDiscoverying: false,
+      isLoading: false,
       field: 'all',
       error: {},
       form: {},
@@ -76,8 +76,8 @@ class Store {
     this.setState({ sortBy });
   }
 
-  updateDiscoveryingStatus(data) {
-    this.setState({ isDiscoverying: data });
+  updateLoadingStatus(data) {
+    this.setState({ isLoading: data });
   }
 
   updateField(data) {

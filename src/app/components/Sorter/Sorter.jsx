@@ -63,13 +63,13 @@ class Sorter extends React.Component {
   sortResultsBy(sortBy) {
     const apiQuery = this.props.createAPIQuery({ sortBy, page: this.props.page });
 
-    this.props.updateIsDiscoveryingState(true);
+    this.props.updateIsLoadingState(true);
     ajaxCall(`${appConfig.baseUrl}/api?${apiQuery}`, (response) => {
       Actions.updateSearchResults(response.data.searchResults);
       Actions.updateSortBy(sortBy);
       this.setState({ sortBy });
       this.context.router.push(`${appConfig.baseUrl}/search?${apiQuery}`);
-      this.props.updateIsDiscoveryingState(false);
+      this.props.updateIsLoadingState(false);
     });
     this.setState({ active: false });
   }
@@ -135,7 +135,7 @@ Sorter.propTypes = {
   field: PropTypes.string,
   page: PropTypes.string,
   createAPIQuery: PropTypes.func,
-  updateIsDiscoveryingState: PropTypes.func,
+  updateIsLoadingState: PropTypes.func,
 };
 
 Sorter.defaultProps = {

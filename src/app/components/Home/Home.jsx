@@ -12,21 +12,21 @@ class Home extends React.Component {
     super(props);
 
     this.state = {
-      isDiscoverying: this.props.isDiscoverying,
+      isLoading: this.props.isLoading,
     };
 
-    this.updateIsDiscoveryingState = this.updateIsDiscoveryingState.bind(this);
+    this.updateIsLoadingState = this.updateIsLoadingState.bind(this);
   }
 
-  updateIsDiscoveryingState(status) {
-    this.setState({ isDiscoverying: status });
+  updateIsLoadingState(status) {
+    this.setState({ isLoading: status });
   }
 
   render() {
     return (
       <DocumentTitle title="Shared Collection Catalog | NYPL">
         <div className="home" id="mainContent">
-          <LoadingLayer status={this.state.isDiscoverying} title="Searching" />
+          <LoadingLayer status={this.state.isLoading} title="Searching" />
           <div className="nypl-homepage-hero">
             <div className="nypl-full-width-wrapper">
               <div className="nypl-row">
@@ -34,7 +34,7 @@ class Home extends React.Component {
                   <h1>{appConfig.displayTitle}</h1>
                   <Search
                     createAPIQuery={basicQuery(this.props)}
-                    updateIsDiscoveryingState={this.updateIsDiscoveryingState}
+                    updateIsLoadingState={this.updateIsLoadingState}
                   />
                 </div>
               </div>
@@ -121,7 +121,7 @@ class Home extends React.Component {
 }
 
 Home.propTypes = {
-  isDiscoverying: PropTypes.bool,
+  isLoading: PropTypes.bool,
 };
 
 export default Home;

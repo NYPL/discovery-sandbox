@@ -81,7 +81,7 @@ class Search extends React.Component {
     });
 
     Actions.updateField(this.state.field);
-    this.props.updateIsDiscoveryingState(true);
+    this.props.updateIsLoadingState(true);
     Actions.updateSearchKeywords(keyword);
     Actions.updateSelectedFacets({});
 
@@ -96,7 +96,7 @@ class Search extends React.Component {
       Actions.updateSortBy('relevance');
       Actions.updatePage('1');
 
-      this.props.updateIsDiscoveryingState(false);
+      this.props.updateIsLoadingState(false);
       this.context.router.push(`${appConfig.baseUrl}/search?${apiQuery}`);
     });
   }
@@ -146,13 +146,13 @@ Search.propTypes = {
   field: PropTypes.string,
   searchKeywords: PropTypes.string,
   createAPIQuery: PropTypes.func,
-  updateIsDiscoveryingState: PropTypes.func,
+  updateIsLoadingState: PropTypes.func,
 };
 
 Search.defaultProps = {
   field: 'all',
   searchKeywords: '',
-  updateIsDiscoveryingState: () => {},
+  updateIsLoadingState: () => {},
 };
 
 Search.contextTypes = {
