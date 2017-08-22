@@ -30,6 +30,27 @@ const BibPage = (props) => {
   if (props.location.pathname.indexOf('all') === -1) {
     shortenItems = false;
   }
+  const topFields = [
+    { label: 'Title', value: 'titleDisplay', linkable: true },
+    { label: 'Author', value: 'creatorLiteral', linkable: true },
+    { label: 'Additional Authors', value: 'contributorLiteral', linkable: true },
+  ];
+  const bottomFields = [
+    { label: 'Publication', value: 'React Component' },
+    { label: 'Electronic Resource', value: '' },
+    { label: 'Description', value: 'extent' },
+    { label: 'Subject', value: 'subjectLiteral', linkable: true },
+    { label: 'Genre/Form', value: 'materialType' },
+    { label: 'Notes', value: '' },
+    { label: 'Contents', value: 'note' },
+    { label: 'Bibliography', value: '' },
+    { label: 'ISBN', value: 'identifier', identifier: 'urn:isbn' },
+    { label: 'ISSN', value: 'identifier', identifier: 'urn:issn' },
+    { label: 'LCC', value: 'identifier', identifier: 'urn:lcc' },
+    { label: 'GPO', value: '' },
+    { label: 'Other Titles', value: '' },
+    { label: 'Owning Institutions', value: '' },
+  ];
 
   const itemHoldings = items.length && !electronicItems ?
     <ItemHoldings
@@ -49,13 +70,8 @@ const BibPage = (props) => {
             <div className="nypl-row">
               <div className="nypl-column-three-quarters">
                 <Breadcrumbs type="bib" query={searchURL} />
-                <h2>{appConfig.displayTitle}</h2>
-                <Search
-                  searchKeywords={props.searchKeywords}
-                  field={props.field}
-                  spinning={props.spinning}
-                  createAPIQuery={createAPIQuery}
-                />
+                <h1>Item Details</h1>
+                <h2>{title}</h2>
                 {
                   props.searchKeywords && (
                     <div className="nypl-row search-control">
@@ -82,12 +98,19 @@ const BibPage = (props) => {
               id="mainContent"
             >
               <div className="nypl-item-details">
-                <h1>{title}</h1>
                 <BibDetails
                   bib={bib}
-                  itemHoldings={itemHoldings}
-                  marcRecord={marcRecord}
+                  fields={topFields}
                 />
+
+                {itemHoldings}
+
+                <h3>Additional details</h3>
+                <BibDetails
+                  bib={bib}
+                  fields={bottomFields}
+                />
+                {marcRecord}
               </div>
             </div>
           </div>
