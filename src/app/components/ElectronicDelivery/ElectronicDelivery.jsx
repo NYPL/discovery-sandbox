@@ -16,6 +16,7 @@ import PatronStore from '../../stores/PatronStore.js';
 import appConfig from '../../../../appConfig.js';
 import ElectronicDeliveryForm from './ElectronicDeliveryForm';
 import LibraryItem from '../../utils/item.js';
+import LoadingLayer from '../LoadingLayer/LoadingLayer.jsx';
 
 class ElectronicDelivery extends React.Component {
   constructor(props) {
@@ -36,10 +37,13 @@ class ElectronicDelivery extends React.Component {
       itemId,
       itemSource,
       raiseError,
+      isLoading: this.props.isLoading,
     }, { patron: PatronStore.getState() });
+
     this.requireUser = this.requireUser.bind(this);
     this.submitRequest = this.submitRequest.bind(this);
     this.raiseError = this.raiseError.bind(this);
+    this.updateIsLoadingState = this.updateIsLoadingState.bind(this);
   }
 
   componentDidMount() {
@@ -88,6 +92,11 @@ class ElectronicDelivery extends React.Component {
     return raisedErrors;
   }
 
+  updateIsLoadingState(status) {
+    this.setState({ isLoading: status });
+  }
+
+
   /**
    * submitRequest()
    * Client-side submit call.
@@ -110,15 +119,18 @@ class ElectronicDelivery extends React.Component {
 
     // This is to remove the error box on the top of the page on a successfull submission.
     this.setState({ raiseError: null });
+    this.updateIsLoadingState(true);
     axios
       .post(`${appConfig.baseUrl}/api/newHold`, data)
       .then(response => {
         if (response.data.error && response.data.error.status !== 200) {
+          this.updateIsLoadingState(false);
           this.context.router.push(
             `${path}?errorStatus=${response.data.error.status}` +
             `&errorMessage=${response.data.error.statusText}${searchKeywordsQuery}`
           );
         } else {
+          this.updateIsLoadingState(false);
           this.context.router.push(
             `${path}?pickupLocation=edd&requestId=${response.data.id}${searchKeywordsQuery}`
           );
@@ -130,6 +142,7 @@ class ElectronicDelivery extends React.Component {
           error
         );
 
+        this.updateIsLoadingState(false);
         this.context.router.push(`${path}?errorMessage=${error}${searchKeywordsQuery}`);
       });
   }
@@ -181,6 +194,7 @@ class ElectronicDelivery extends React.Component {
     return (
       <DocumentTitle title="Electronic Delivery Request | Shared Collection Catalog | NYPL">
         <div id="mainContent">
+          <LoadingLayer status={this.state.isLoading} title="Searching" />
           <div className="nypl-request-page-header">
             <div className="row">
               <div className="content-wrapper">
@@ -257,10 +271,12 @@ ElectronicDelivery.propTypes = {
   params: PropTypes.object,
   error: PropTypes.object,
   form: PropTypes.object,
+  isLoading: PropTypes.bool,
 };
 
 ElectronicDelivery.defaultProps = {
   searchKeywords: '',
+  isLoading: false,
 };
 
 
