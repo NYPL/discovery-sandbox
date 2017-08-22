@@ -4,6 +4,10 @@ import { expect } from 'chai';
 import { shallow } from 'enzyme';
 
 import Breadcrumbs from './../../src/app/components/Breadcrumbs/Breadcrumbs.jsx';
+import appConfig from '../../appConfig';
+
+const appTitle = appConfig.displayTitle;
+const baseUrl = `${appConfig.baseUrl}/`;
 
 // The current page is the last item in the breadcrumb and it is not linked.
 describe('Breadcrumbs', () => {
@@ -26,7 +30,7 @@ describe('Breadcrumbs', () => {
 
     it('should render all the navigation', () => {
       const li = component.find('li');
-      expect(li.at(0).render().text()).to.equal('Shared Collection Catalog');
+      expect(li.at(0).render().text()).to.equal(appTitle);
       expect(li.at(1).render().text()).to.equal('Search Results');
       expect(li.at(2).render().text()).to.equal('Item Details');
       expect(li.at(3).render().text()).to.equal('Item Request');
@@ -34,9 +38,8 @@ describe('Breadcrumbs', () => {
     });
   });
 
-  // Home > Research > Research Catalog > Search Results for [search keyword]
   describe('On the Search Results page', () => {
-    describe('No search keyword:', () => {
+    describe('No search keyword', () => {
       const searchKeywords = '';
       let component;
 
@@ -44,23 +47,22 @@ describe('Breadcrumbs', () => {
         component = shallow(<Breadcrumbs query={searchKeywords} type="search" />);
       });
 
-      it('should contain three Link elements', () => {
+      it('should contain one Link element', () => {
         expect(component.find('Link')).to.have.length(1);
       });
 
       it('should have a link to the Discovery homepage', () => {
-        const thirdLink = component.find('Link');
-        expect(thirdLink.prop('to')).to.equal('/');
-        expect(thirdLink.children().text()).to.equal('Research Catalog');
+        const link = component.find('Link');
+        expect(link.prop('to')).to.equal(baseUrl);
+        expect(link.children().text()).to.equal(appTitle);
       });
 
       it('should display the current page as "Search Results"', () => {
-        expect(component.find('li').at(3).text()).to.equal('Search Results');
+        expect(component.find('li').at(1).text()).to.equal('Search Results');
       });
     });
 
-    describe('With a search keyword:' +
-      '\n\tHome > Research > Research Catalog > Search Results for [search keyword]', () => {
+    describe('With a search keyword', () => {
       let component;
 
       before(() => {
@@ -68,62 +70,48 @@ describe('Breadcrumbs', () => {
       });
 
       it('should display the current page with the search keyword', () => {
-        expect(component.find('li').at(3).text()).to.equal('Search Results for "locofocos"');
+        expect(component.find('li').at(1).text()).to.equal('Search Results');
       });
     });
   });
 
   describe('On the Bib page', () => {
-    // The bib was access directly without a search.
-    // There is, therefore, no 'Bib' link to go to.
-    // Home > Research > Research Catalog > [title]
-    describe('No search keyword:\n\tHome > Research > Research Catalog > [title]', () => {
-      const title = 'Locofoco Platform [electronic resource].';
+    describe('No search keyword', () => {
       let component;
 
       before(() => {
-        component = shallow(
-          <Breadcrumbs type="bib" title={title} />
-        );
+        component = shallow(<Breadcrumbs type="bib" />);
       });
 
-      it('should contain three Link elements', () => {
-        expect(component.find('Link')).to.have.length(1);
+      it('should contain two Link elements', () => {
+        expect(component.find('Link')).to.have.length(2);
       });
 
       it('should display the current page with the bib title', () => {
-        expect(component.find('li').at(3).text()).to.equal(title);
+        expect(component.find('li').at(2).text()).to.equal('Item Details');
       });
     });
 
     // Home > Research > Research Catalog > Items > [title]
-    describe('With a search keyword:' +
-      '\n\tHome > Research > Research Catalog > Items > [title]', () => {
-      const title = 'Locofoco Platform [electronic resource].';
+    describe('With a search keyword', () => {
       let component;
 
       before(() => {
-        component = shallow(
-          <Breadcrumbs
-            type="bib"
-            query="locofocos"
-            title={title}
-          />
-        );
+        component = shallow(<Breadcrumbs type="bib" query="q=locofocos" />);
       });
 
-      it('should contain four Link elements', () => {
+      it('should contain two Link elements', () => {
         expect(component.find('Link')).to.have.length(2);
       });
 
       it('should link back to the search results page as the fourth link', () => {
         const searchLink = component.find('Link').at(1);
-        expect(searchLink.prop('to')).to.equal('/search?q=locofocos');
-        expect(searchLink.children().text()).to.equal('Items');
+        expect(searchLink.prop('to')).to.equal(`${baseUrl}search?q=locofocos`);
+        expect(searchLink.children().text()).to.equal('Search Results');
       });
 
       it('should display the current page with the item title', () => {
-        expect(component.find('li').at(4).text()).to.equal(title);
+        expect(component.find('li').at(2).text()).to.equal('Item Details');
       });
     });
   });
