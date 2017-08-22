@@ -53,14 +53,14 @@ class ResultsCount extends React.Component {
   }
 
   displayCount() {
-    const { count, spinning, page } = this.props;
+    const { count, isDiscoverying, page } = this.props;
     const countF = count ? count.toLocaleString() : '';
     const displayContext = this.displayContext();
     const start = (page - 1) * 50 + 1;
     const end = (page) * 50 > count ? count : (page * 50);
     const currentResultDisplay = `${start}-${end}`;
 
-    if (spinning) {
+    if (isDiscoverying) {
       return (<p>Loading…</p>);
     }
 
@@ -90,7 +90,7 @@ class ResultsCount extends React.Component {
 ResultsCount.propTypes = {
   count: PropTypes.number,
   page: PropTypes.number,
-  spinning: PropTypes.bool,
+  isDiscoverying: PropTypes.bool,
   selectedFacets: PropTypes.object,
   searchKeywords: PropTypes.string,
   field: PropTypes.string,
@@ -98,7 +98,7 @@ ResultsCount.propTypes = {
 
 ResultsCount.defaultProps = {
   count: 0,
-  spinning: false,
+  isDiscoverying: false,
   page: 1,
 };
 

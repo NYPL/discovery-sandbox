@@ -40,7 +40,7 @@ class SearchResultsPage extends React.Component {
       page,
       sortBy,
       field,
-      spinning,
+      isDiscoverying,
     } = this.props;
 
     const totalResults = searchResults ? searchResults.totalResults : undefined;
@@ -83,7 +83,7 @@ class SearchResultsPage extends React.Component {
                     updateIsDiscoveryingState={this.updateIsDiscoveryingState}
                   />
                   <ResultsCount
-                    spinning={spinning}
+                    isDiscoverying={isDiscoverying}
                     count={totalResults}
                     selectedFacets={selectedFacets}
                     searchKeywords={searchKeywords}
@@ -97,6 +97,7 @@ class SearchResultsPage extends React.Component {
                         page={page}
                         searchKeywords={searchKeywords}
                         createAPIQuery={createAPIQuery}
+                        updateIsDiscoveryingState={this.updateIsDiscoveryingState}
                       />
                     )
                   }
@@ -121,7 +122,7 @@ class SearchResultsPage extends React.Component {
                   (
                     <ResultList
                       results={results}
-                      spinning={spinning}
+                      isDiscoverying={isDiscoverying}
                       searchKeywords={searchKeywords}
                     />
                   )

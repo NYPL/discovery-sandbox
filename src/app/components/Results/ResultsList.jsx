@@ -175,7 +175,7 @@ class ResultsList extends React.Component {
     return (
       <ul
         id="nypl-results-list"
-        className={`nypl-results-list ${this.props.spinning ? 'hide-results-list ' : ''}`}
+        className={`nypl-results-list ${this.props.isDiscoverying ? 'hide-results-list ' : ''}`}
       >
         {resultsElm}
       </ul>
@@ -185,7 +185,7 @@ class ResultsList extends React.Component {
 
 ResultsList.propTypes = {
   results: PropTypes.array,
-  spinning: PropTypes.bool,
+  isDiscoverying: PropTypes.bool,
   searchKeywords: PropTypes.string,
 };
 
