@@ -40,7 +40,7 @@ class SearchResultsPage extends React.Component {
       page,
       sortBy,
       field,
-      spinning,
+      isDiscoverying,
     } = this.props;
 
     const totalResults = searchResults ? searchResults.totalResults : undefined;
@@ -51,7 +51,7 @@ class SearchResultsPage extends React.Component {
     const pageLabel = totalPages ? `page ${page} of ${totalPages}` : '';
     const headerLabel = `Search results ${searchKeywordsLabel} ${pageLabel}`;
     const updatePage = (nextPage) => {
-      Actions.updateDiscoveryingStatus(true);
+      this.updateIsDiscoveryingState(true);
       // Temporary. Need to check cross-browser and if it's needed at all.
       window.scrollTo(0, 0);
       const apiQuery = createAPIQuery({ page: nextPage });
@@ -59,7 +59,7 @@ class SearchResultsPage extends React.Component {
       ajaxCall(`${appConfig.baseUrl}/api?${apiQuery}`, response => {
         Actions.updateSearchResults(response.data.searchResults);
         Actions.updatePage(nextPage.toString());
-        Actions.updateDiscoveryingStatus(false);
+        this.updateIsDiscoveryingState(false);
         this.context.router.push(`${appConfig.baseUrl}/search?${apiQuery}`);
       });
     };
@@ -82,7 +82,7 @@ class SearchResultsPage extends React.Component {
                     createAPIQuery={createAPIQuery}
                   />
                   <ResultsCount
-                    spinning={spinning}
+                    isDiscoverying={isDiscoverying}
                     count={totalResults}
                     selectedFacets={selectedFacets}
                     searchKeywords={searchKeywords}
@@ -96,6 +96,7 @@ class SearchResultsPage extends React.Component {
                         page={page}
                         searchKeywords={searchKeywords}
                         createAPIQuery={createAPIQuery}
+                        updateIsDiscoveryingState={this.updateIsDiscoveryingState}
                       />
                     )
                   }
@@ -120,7 +121,7 @@ class SearchResultsPage extends React.Component {
                   (
                     <ResultList
                       results={results}
-                      spinning={spinning}
+                      isDiscoverying={isDiscoverying}
                       searchKeywords={searchKeywords}
                     />
                   )
