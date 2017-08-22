@@ -55,8 +55,9 @@ class BibDetails extends React.Component {
    * @param {array} bibValues
    * @param {string} fieldValue
    * @param {boolean} fieldLinkable
+   * @param {boolean} fieldSelfLinkable
    */
-  getDefinitionObject(bibValues, fieldValue, fieldLinkable) {
+  getDefinitionObject(bibValues, fieldValue, fieldLinkable, fieldSelfLinkable) {
     if (bibValues.length === 1) {
       const bibValue = bibValues[0];
       const url = `filters[${fieldValue}]=${bibValue['@id']}`;
@@ -69,6 +70,12 @@ class BibDetails extends React.Component {
         );
       }
 
+      if (fieldSelfLinkable) {
+        return (
+          <a href={bibValue['@id']}>{bibValue.prefLabel}</a>
+        );
+      }
+
       return <span>{bibValue.prefLabel}</span>;
     }
 
@@ -77,20 +84,19 @@ class BibDetails extends React.Component {
         {
           bibValues.map((value, i) => {
             const url = `filters[${fieldValue}]=${value['@id']}`;
-            return (
-              <li key={i}>
-                {
-                  fieldLinkable ?
-                    <Link
-                      onClick={e => this.newSearch(e, url)}
-                      to={`${appConfig.baseUrl}/search?${url}`}
-                    >
-                      {value.prefLabel}
-                    </Link>
-                    : <span>{value.prefLabel}</span>
-                }
-              </li>
-            );
+            let itemValue = fieldLinkable ?
+              <Link
+                onClick={e => this.newSearch(e, url)}
+                to={`${appConfig.baseUrl}/search?${url}`}
+              >
+                {value.prefLabel}
+              </Link>
+              : <span>{value.prefLabel}</span>;
+            if (fieldSelfLinkable) {
+              itemValue = <a href={value['@id']}>{value.prefLabel}</a>;
+            }
+
+            return (<li key={i}>{itemValue}</li>);
           })
         }
       </ul>
@@ -128,8 +134,9 @@ class BibDetails extends React.Component {
    * @param {string} fieldValue
    * @param {boolean} fieldLinkable
    * @param {string} fieldIdentifier
+   * @param {string} fieldSelfLinkable
    */
-  getDefinition(bibValues, fieldValue, fieldLinkable, fieldIdentifier) {
+  getDefinition(bibValues, fieldValue, fieldLinkable, fieldIdentifier, fieldSelfLinkable) {
     if (fieldValue === 'identifier') {
       return this.getIdentifiers(bibValues, fieldIdentifier);
     }
@@ -143,6 +150,12 @@ class BibDetails extends React.Component {
           <Link onClick={e => this.newSearch(e, url)} to={`${appConfig.baseUrl}/search?${url}`}>
             {bibValue}
           </Link>
+        );
+      }
+
+      if (fieldSelfLinkable) {
+        return (
+          <a href={bibValue}>{fieldValue}</a>
         );
       }
 
@@ -218,6 +231,7 @@ class BibDetails extends React.Component {
       const fieldLabel = field.label;
       const fieldValue = field.value;
       const fieldLinkable = field.linkable;
+      const fieldSelfLinkable = field.selfLinkable;
       const fieldIdentifier = field.identifier;
       const bibValues = bib[fieldValue];
 
@@ -230,11 +244,13 @@ class BibDetails extends React.Component {
         if (firstFieldValue['@id']) {
           fieldsToRender.push({
             term: fieldLabel,
-            definition: this.getDefinitionObject(bibValues, fieldValue, fieldLinkable),
+            definition:
+              this.getDefinitionObject(bibValues, fieldValue, fieldLinkable, fieldSelfLinkable),
           });
         } else {
-          const definition =
-            this.getDefinition(bibValues, fieldValue, fieldLinkable, fieldIdentifier);
+          const definition = this.getDefinition(
+            bibValues, fieldValue, fieldLinkable, fieldIdentifier, fieldSelfLinkable
+          );
           if (definition) {
             fieldsToRender.push({
               term: fieldLabel,
