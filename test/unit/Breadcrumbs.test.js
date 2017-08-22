@@ -11,6 +11,7 @@ const baseUrl = `${appConfig.baseUrl}/`;
 
 // The current page is the last item in the breadcrumb and it is not linked.
 describe('Breadcrumbs', () => {
+  // Shared Collection Catalog > Search Results > Item Details > Item Request > Request Confirmation
   describe('Default rendering - all links', () => {
     let component;
 
@@ -38,43 +39,32 @@ describe('Breadcrumbs', () => {
     });
   });
 
+  // Shared Collection Catalog > Search Results
   describe('On the Search Results page', () => {
-    describe('No search keyword', () => {
-      const searchKeywords = '';
-      let component;
+    // Note: There's only one type of way this will get rendered on the Search Results page
+    // and it does not matter if there is a searchKeywords prop or not.
+    let component;
 
-      before(() => {
-        component = shallow(<Breadcrumbs query={searchKeywords} type="search" />);
-      });
-
-      it('should contain one Link element', () => {
-        expect(component.find('Link')).to.have.length(1);
-      });
-
-      it('should have a link to the Discovery homepage', () => {
-        const link = component.find('Link');
-        expect(link.prop('to')).to.equal(baseUrl);
-        expect(link.children().text()).to.equal(appTitle);
-      });
-
-      it('should display the current page as "Search Results"', () => {
-        expect(component.find('li').at(1).text()).to.equal('Search Results');
-      });
+    before(() => {
+      component = shallow(<Breadcrumbs type="search" />);
     });
 
-    describe('With a search keyword', () => {
-      let component;
+    it('should contain one Link element', () => {
+      expect(component.find('Link')).to.have.length(1);
+    });
 
-      before(() => {
-        component = shallow(<Breadcrumbs type="search" query="locofocos" />);
-      });
+    it('should have a link to the Discovery homepage', () => {
+      const link = component.find('Link');
+      expect(link.prop('to')).to.equal(baseUrl);
+      expect(link.children().text()).to.equal(appTitle);
+    });
 
-      it('should display the current page with the search keyword', () => {
-        expect(component.find('li').at(1).text()).to.equal('Search Results');
-      });
+    it('should display the current page as "Search Results"', () => {
+      expect(component.find('li').at(1).text()).to.equal('Search Results');
     });
   });
 
+  // Shared Collection Catalog > Search Results > Item Details
   describe('On the Bib page', () => {
     describe('No search keyword', () => {
       let component;
@@ -87,12 +77,17 @@ describe('Breadcrumbs', () => {
         expect(component.find('Link')).to.have.length(2);
       });
 
-      it('should display the current page with the bib title', () => {
+      it('should link back to the regular search results page', () => {
+        const searchLink = component.find('Link').at(1);
+        expect(searchLink.children().text()).to.equal('Search Results');
+        expect(searchLink.prop('to')).to.equal(`${baseUrl}search?`);
+      });
+
+      it('should display the current page with the item title', () => {
         expect(component.find('li').at(2).text()).to.equal('Item Details');
       });
     });
 
-    // Home > Research > Research Catalog > Items > [title]
     describe('With a search keyword', () => {
       let component;
 
@@ -104,10 +99,10 @@ describe('Breadcrumbs', () => {
         expect(component.find('Link')).to.have.length(2);
       });
 
-      it('should link back to the search results page as the fourth link', () => {
+      it('should link back to the search results page with the passed search keyword', () => {
         const searchLink = component.find('Link').at(1);
-        expect(searchLink.prop('to')).to.equal(`${baseUrl}search?q=locofocos`);
         expect(searchLink.children().text()).to.equal('Search Results');
+        expect(searchLink.prop('to')).to.equal(`${baseUrl}search?q=locofocos`);
       });
 
       it('should display the current page with the item title', () => {
@@ -116,181 +111,133 @@ describe('Breadcrumbs', () => {
     });
   });
 
-  //
-  // // Do not have this implemented yet.
-  // describe('On the Hold page', () => {
-  //   // Home > Research > Research Catalog > [title] > Place a hold
-  //   describe('No search keyword:' +
-  //     '\n\tHome > Research > Research Catalog > [title] > Place a hold', () => {
-  //     const title = 'Locofoco Platform [electronic resource].';
-  //     const bNum = 'b20862164';
-  //     let component;
-  //
-  //     before(() => {
-  //       component = shallow(
-  //         <Breadcrumbs
-  //           type="hold"
-  //           title={title}
-  //           url={bNum}
-  //         />
-  //       );
-  //     });
-  //
-  //     it('should contain four Link elements', () => {
-  //       expect(component.find('Link')).to.have.length(4);
-  //     });
-  //
-  //     it('should link back to the item page as the fourth link', () => {
-  //       const searchLink = component.find('Link').at(3);
-  //       expect(searchLink.prop('to')).to.equal(`/item/${bNum}`);
-  //       expect(searchLink.children().text()).to.equal(title);
-  //     });
-  //
-  //     it('should display "Place a hold" on the current page', () => {
-  //       expect(component.find('.currentPage').text()).to.equal('Place a hold');
-  //     });
-  //   });
-  //
-  //   // Home > Research > Research Catalog > Items > [title] > Place a hold
-  //   describe('With a search keyword' +
-  //     '\n\tHome > Research > Research Catalog > Items > [title] > Place a hold', () => {
-  //     const title = 'Locofoco Platform [electronic resource].';
-  //     const bNum = 'b20862164';
-  //     let component;
-  //
-  //     before(() => {
-  //       component = shallow(
-  //         <Breadcrumbs
-  //           type="hold"
-  //           query="locofocos"
-  //           title={title}
-  //           url={bNum}
-  //         />
-  //       );
-  //     });
-  //
-  //     it('should contain five Link elements', () => {
-  //       expect(component.find('Link')).to.have.length(5);
-  //     });
-  //
-  //     it('should link back to the item page as the fifth link', () => {
-  //       const searchLink = component.find('Link').at(4);
-  //       expect(searchLink.prop('to')).to.equal(`/item/${bNum}`);
-  //       expect(searchLink.children().text()).to.equal(title);
-  //     });
-  //
-  //     it('should display "Place a hold" on the current page', () => {
-  //       expect(component.find('.currentPage').text()).to.equal('Place a hold');
-  //     });
-  //   });
-  //
-  //   // // Home > Research > Research Catalog > Items > [title] > Place a hold
-  //   describe('With a long item title', () => {
-  //     const title = 'Prospect before us, or Locofoco impositions exposed. ' +
-  //       'To the people of the United States.';
-  //     const bNum = 'b20862164';
-  //     let component;
-  //
-  //     before(() => {
-  //       component = shallow(
-  //         <Breadcrumbs
-  //           type="hold"
-  //           query="locofocos"
-  //           title={title}
-  //           url={bNum}
-  //         />
-  //       );
-  //     });
-  //
-  //     it('should shorten the item title to 50 characters', () => {
-  //       const titleLink = component.find('Link').at(4);
-  //       const shortenTitle = `${title.substring(0, 50)}...`;
-  //
-  //       expect(titleLink.children().text()).to.equal(shortenTitle);
-  //     });
-  //   });
-  // });
-  //
-  // describe('On the Hold Confirmation page', () => {
-  //   // Home > Research > Research Catalog > [title] > Hold confirmation
-  //   describe('No search keyword:' +
-  //     '\n\tHome > Research > Research Catalog > [title] > Hold confirmation', () => {
-  //     const title = 'Locofoco Platform [electronic resource].';
-  //     const bNum = 'b20862164';
-  //     let component;
-  //
-  //     before(() => {
-  //       component = shallow(
-  //         <Breadcrumbs
-  //           type="holdConfirmation"
-  //           title={title}
-  //           url={bNum}
-  //         />
-  //       );
-  //     });
-  //
-  //     it('should contain four Link elements', () => {
-  //       expect(component.find('Link')).to.have.length(4);
-  //     });
-  //
-  //     it('should display "Hold confirmation" on the current page', () => {
-  //       expect(component.find('.currentPage').text()).to.equal('Hold confirmation');
-  //     });
-  //   });
-  //
-  //   // Home > Research > Research Catalog > Items > [title] > Hold confirmation
-  //   describe('With a search keyword' +
-  //     '\n\tHome > Research > Research Catalog > Items > [title] > Hold confirmation', () => {
-  //     const title = 'Locofoco Platform [electronic resource].';
-  //     const bNum = 'b20862164';
-  //     let component;
-  //
-  //     before(() => {
-  //       component = shallow(
-  //         <Breadcrumbs
-  //           type="holdConfirmation"
-  //           query="locofocos"
-  //           title={title}
-  //           url={bNum}
-  //         />
-  //       );
-  //     });
-  //
-  //     it('should contain five Link elements', () => {
-  //       expect(component.find('Link')).to.have.length(5);
-  //     });
-  //
-  //     it('should link back to the item page as the fifth link', () => {
-  //       const searchLink = component.find('Link').at(4);
-  //       expect(searchLink.prop('to')).to.equal(`/item/${bNum}`);
-  //       expect(searchLink.children().text()).to.equal(title);
-  //     });
-  //   });
-  //
-  //   // // Home > Research > Research Catalog > Items > [title] > Hold confirmation
-  //   describe('With a long item title', () => {
-  //     const title = 'Prospect before us, or Locofoco impositions exposed. ' +
-  //       'To the people of the United States.';
-  //     const bNum = 'b20862164';
-  //     let component;
-  //
-  //     before(() => {
-  //       component = shallow(
-  //         <Breadcrumbs
-  //           type="holdConfirmation"
-  //           query="locofocos"
-  //           title={title}
-  //           url={bNum}
-  //         />
-  //       );
-  //     });
-  //
-  //     it('should shorten the item title to 50 characters', () => {
-  //       const titleLink = component.find('Link').at(4);
-  //       const shortenTitle = `${title.substring(0, 50)}...`;
-  //
-  //       expect(titleLink.children().text()).to.equal(shortenTitle);
-  //     });
-  //   });
-  // });
+  // The search keyword/no search keyword scenarios were tested above and won't be
+  // tested again in the following tests.
+
+  // Shared Collection Catalog > Search Results > Item Details > Item Request
+  describe('On the Hold Request page', () => {
+    const bibId = 'b123456789';
+    let component;
+
+    before(() => {
+      component = shallow(
+        <Breadcrumbs
+          query="q=hamlet"
+          bibUrl={`/bib/${bibId}`}
+          type="hold"
+        />
+      );
+    });
+
+    it('should contain three Link elements', () => {
+      expect(component.find('Link')).to.have.length(3);
+    });
+
+    it('should link back to the bib page as the third link', () => {
+      const searchLink = component.find('Link').at(2);
+      expect(searchLink.prop('to')).to.equal(`${baseUrl}bib/${bibId}`);
+    });
+
+    it('should display "Item Request" on the current page', () => {
+      expect(component.find('li').at(3).text()).to.equal('Item Request');
+    });
+  });
+
+  // Shared Collection Catalog > Search Results > Item Details > Item Request
+  //  > Electronic Delivery Request
+  describe('On the Electronic Delivery Request page', () => {
+    const bibId = 'b123456789';
+    const itemId = 'i987654321';
+    let component;
+
+    before(() => {
+      component = shallow(
+        <Breadcrumbs
+          type="edd"
+          bibUrl={`/bib/${bibId}`}
+          itemUrl={`/hold/request/${bibId}-${itemId}`}
+        />
+      );
+    });
+
+    it('should contain four Link elements', () => {
+      expect(component.find('Link')).to.have.length(4);
+    });
+
+    it('should link back to the item request page as the fouth link', () => {
+      const searchLink = component.find('Link').at(3);
+      expect(searchLink.prop('to')).to.equal(`${baseUrl}hold/request/${bibId}-${itemId}`);
+    });
+
+    it('should display "Electronic Delivery Request" on the current page', () => {
+      expect(component.find('li').at(4).text()).to.equal('Electronic Delivery Request');
+    });
+  });
+
+  describe('On the Hold Confirmation page', () => {
+    const bibId = 'b123456789';
+    const itemId = 'i987654321';
+
+    // Shared Collection Catalog > Search Results > Item Details > Item Request
+    //  > Request Confirmation
+    describe('From a physical Hold Request', () => {
+      const fromEdd = false;
+      let component;
+
+      before(() => {
+        component = shallow(
+          <Breadcrumbs
+            type="confirmation"
+            bibUrl={`/bib/${bibId}`}
+            itemUrl={`/hold/request/${bibId}-${itemId}`}
+            edd={fromEdd}
+          />
+        );
+      });
+
+      it('should contain four Link elements', () => {
+        expect(component.find('Link')).to.have.length(4);
+      });
+
+      it('should link back to the item request page as the fouth link', () => {
+        const searchLink = component.find('Link').at(3);
+        expect(searchLink.prop('to')).to.equal(`${baseUrl}hold/request/${bibId}-${itemId}`);
+      });
+
+      it('should display "Request Confirmation" on the current page', () => {
+        expect(component.find('li').at(4).text()).to.equal('Request Confirmation');
+      });
+    });
+
+    // Shared Collection Catalog > Search Results > Item Details > Item Request
+    //  > Electronic Delivery Request > Request Confirmation
+    describe('From the Electronic Delivery Request page', () => {
+      const fromEdd = true;
+      let component;
+
+      before(() => {
+        component = shallow(
+          <Breadcrumbs
+            type="confirmation"
+            bibUrl={`/bib/${bibId}`}
+            itemUrl={`/hold/request/${bibId}-${itemId}`}
+            edd={fromEdd}
+          />
+        );
+      });
+
+      it('should contain five Link elements', () => {
+        expect(component.find('Link')).to.have.length(5);
+      });
+
+      it('should link back to the Electronic Delivery Request page as the fifth link', () => {
+        const searchLink = component.find('Link').at(4);
+        expect(searchLink.prop('to')).to.equal(`${baseUrl}hold/request/${bibId}-${itemId}/edd`);
+      });
+
+      it('should display "Request Confirmation" on the current page', () => {
+        expect(component.find('li').at(5).text()).to.equal('Request Confirmation');
+      });
+    });
+  });
 }); /* End of Breadcrumbs component */
