@@ -22,14 +22,14 @@ class SearchResultsPage extends React.Component {
     super(props);
 
     this.state = {
-      isDiscoverying: this.props.isDiscoverying,
+      isLoading: this.props.isLoading,
     };
 
-    this.updateIsDiscoveryingState = this.updateIsDiscoveryingState.bind(this);
+    this.updateIsLoadingState = this.updateIsLoadingState.bind(this);
   }
 
-  updateIsDiscoveryingState(status) {
-    this.setState({ isDiscoverying: status });
+  updateIsLoadingState(status) {
+    this.setState({ isLoading: status });
   }
 
   render() {
@@ -40,7 +40,7 @@ class SearchResultsPage extends React.Component {
       page,
       sortBy,
       field,
-      isDiscoverying,
+      isLoading,
     } = this.props;
 
     const totalResults = searchResults ? searchResults.totalResults : undefined;
@@ -51,7 +51,7 @@ class SearchResultsPage extends React.Component {
     const pageLabel = totalPages ? `page ${page} of ${totalPages}` : '';
     const headerLabel = `Search results ${searchKeywordsLabel} ${pageLabel}`;
     const updatePage = (nextPage) => {
-      this.updateIsDiscoveryingState(true);
+      this.updateIsLoadingState(true);
       // Temporary. Need to check cross-browser and if it's needed at all.
       window.scrollTo(0, 0);
       const apiQuery = createAPIQuery({ page: nextPage });
@@ -59,7 +59,7 @@ class SearchResultsPage extends React.Component {
       ajaxCall(`${appConfig.baseUrl}/api?${apiQuery}`, response => {
         Actions.updateSearchResults(response.data.searchResults);
         Actions.updatePage(nextPage.toString());
-        this.updateIsDiscoveryingState(false);
+        this.updateIsLoadingState(false);
         this.context.router.push(`${appConfig.baseUrl}/search?${apiQuery}`);
       });
     };
@@ -69,7 +69,7 @@ class SearchResultsPage extends React.Component {
         title="Search Results | Shared Collection Catalog | NYPL"
       >
         <main className="main-page">
-          <LoadingLayer status={this.state.isDiscoverying} title="Searching" />
+          <LoadingLayer status={this.state.isLoading} title="Searching" />
           <div className="nypl-page-header">
             <div className="nypl-full-width-wrapper">
               <div className="nypl-row">
@@ -80,10 +80,10 @@ class SearchResultsPage extends React.Component {
                     searchKeywords={searchKeywords}
                     field={field}
                     createAPIQuery={createAPIQuery}
-                    updateIsDiscoveryingState={this.updateIsDiscoveryingState}
+                    updateIsLoadingState={this.updateIsLoadingState}
                   />
                   <ResultsCount
-                    isDiscoverying={isDiscoverying}
+                    isLoading={isLoading}
                     count={totalResults}
                     selectedFacets={selectedFacets}
                     searchKeywords={searchKeywords}
@@ -97,7 +97,7 @@ class SearchResultsPage extends React.Component {
                         page={page}
                         searchKeywords={searchKeywords}
                         createAPIQuery={createAPIQuery}
-                        updateIsDiscoveryingState={this.updateIsDiscoveryingState}
+                        updateIsLoadingState={this.updateIsLoadingState}
                       />
                     )
                   }
@@ -122,7 +122,7 @@ class SearchResultsPage extends React.Component {
                   (
                     <ResultList
                       results={results}
-                      isDiscoverying={isDiscoverying}
+                      isLoading={isLoading}
                       searchKeywords={searchKeywords}
                     />
                   )
@@ -156,7 +156,7 @@ SearchResultsPage.propTypes = {
   location: PropTypes.object,
   sortBy: PropTypes.string,
   field: PropTypes.string,
-  isDiscoverying: PropTypes.bool,
+  isLoading: PropTypes.bool,
   error: PropTypes.object,
 };
 

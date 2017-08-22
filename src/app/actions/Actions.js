@@ -38,7 +38,7 @@ class Actions {
     return sort;
   }
 
-  updateDiscoveryingStatus(data) {
+  updateLoadingStatus(data) {
     return data;
   }
 
