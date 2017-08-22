@@ -246,7 +246,7 @@ class HoldConfirmation extends React.Component {
 
           <h3>Electronic Delivery</h3>
           <p>
-            If you selected Electronic delivery, you will be notified via email when the
+            If you selected electronic delivery, you will be notified via email when the
             item is available.
           </p>
           {this.renderBackToClassicLink()}
