@@ -194,7 +194,7 @@ class ElectronicDelivery extends React.Component {
     return (
       <DocumentTitle title="Electronic Delivery Request | Shared Collection Catalog | NYPL">
         <div id="mainContent">
-          <LoadingLayer status={this.state.isLoading} title="Searching" />
+          <LoadingLayer status={this.state.isLoading} title="Requesting" />
           <div className="nypl-request-page-header">
             <div className="row">
               <div className="content-wrapper">
