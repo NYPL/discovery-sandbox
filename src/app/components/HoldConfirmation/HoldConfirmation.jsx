@@ -127,10 +127,12 @@ class HoldConfirmation extends React.Component {
         </span>
       );
     }
+    let text = 'Start a new search';
+    if (this.props.location.query.searchKeywords) {
+      text = 'start a new search';
+    }
 
-    return (
-      <Link to={`${appConfig.baseUrl}/`} onClick={(e) => this.goRestart(e)}>Start Over</Link>
-    );
+    return (<Link to={`${appConfig.baseUrl}/`} onClick={(e) => this.goRestart(e)}>{text}</Link>);
   }
 
   /**
@@ -170,8 +172,8 @@ class HoldConfirmation extends React.Component {
         to={`${appConfig.baseUrl}/search?q=${this.props.location.query.searchKeywords}`}
         onClick={(e) => this.goSearchResults(e)}
       >
-        Back to results
-      </Link>&nbsp;</span>
+        Go back to your search results
+      </Link> or </span>
     );
   }
 
