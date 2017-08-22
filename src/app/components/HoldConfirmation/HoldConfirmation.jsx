@@ -119,20 +119,20 @@ class HoldConfirmation extends React.Component {
    * @return {HTML Element}
    */
   renderStartOverLink() {
-    let buttonText = 'Start Over';
     if (this.props.location.query.fromUrl) {
-      buttonText = 'Try the new SCC Search';
+      return (
+        <span> You may also try your search in
+          our <Link to={`${appConfig.baseUrl}/`} onClick={(e) => this.goRestart(e)}>Shared
+          Collection Catalog</Link>.
+        </span>
+      );
+    }
+    let text = 'Start a new search';
+    if (this.props.location.query.searchKeywords) {
+      text = 'start a new search';
     }
 
-    return (
-      <Link
-        className="nypl-request-button"
-        to={`${appConfig.baseUrl}/`}
-        onClick={(e) => this.goRestart(e)}
-      >
-        {buttonText}
-      </Link>
-    );
+    return (<Link to={`${appConfig.baseUrl}/`} onClick={(e) => this.goRestart(e)}>{text}</Link>);
   }
 
   /**
@@ -148,12 +148,8 @@ class HoldConfirmation extends React.Component {
 
     return (
       <span>
-        <a className="nypl-request-button" href={this.props.location.query.fromUrl}>
-          Back to Classic results
-        </a>
-        <a className="nypl-request-button" href="https://catalog.nypl.org/search">
-          New Classic Search
-        </a>
+        <a href={this.props.location.query.fromUrl}>Go back to your search
+        results</a> or <a href="https://catalog.nypl.org/search">start a new search</a>.
       </span>
     );
   }
@@ -170,15 +166,14 @@ class HoldConfirmation extends React.Component {
     }
 
     return (
-      <Link
-        className="nypl-request-button"
+      <span><Link
         // We use this.props.location.query.searchKeywords here for the query from
         // the URL to deal with no js situation.
         to={`${appConfig.baseUrl}/search?q=${this.props.location.query.searchKeywords}`}
         onClick={(e) => this.goSearchResults(e)}
       >
-        Back to results
-      </Link>
+        Go back to your search results
+      </Link> or </span>
     );
   }
 
