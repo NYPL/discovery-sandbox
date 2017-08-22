@@ -51,7 +51,7 @@ class SearchResultsPage extends React.Component {
     const pageLabel = totalPages ? `page ${page} of ${totalPages}` : '';
     const headerLabel = `Search results ${searchKeywordsLabel} ${pageLabel}`;
     const updatePage = (nextPage) => {
-      Actions.updateDiscoveryingStatus(true);
+      this.updateIsDiscoveryingState(true);
       // Temporary. Need to check cross-browser and if it's needed at all.
       window.scrollTo(0, 0);
       const apiQuery = createAPIQuery({ page: nextPage });
@@ -59,7 +59,7 @@ class SearchResultsPage extends React.Component {
       ajaxCall(`${appConfig.baseUrl}/api?${apiQuery}`, response => {
         Actions.updateSearchResults(response.data.searchResults);
         Actions.updatePage(nextPage.toString());
-        Actions.updateDiscoveryingStatus(false);
+        this.updateIsDiscoveryingState(false);
         this.context.router.push(`${appConfig.baseUrl}/search?${apiQuery}`);
       });
     };
