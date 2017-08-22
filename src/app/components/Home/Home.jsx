@@ -33,8 +33,8 @@ class Home extends React.Component {
                 <div className="nypl-column-three-quarters">
                   <h1>{appConfig.displayTitle}</h1>
                   <Search
-                    spinning={props.spinning}
-                    createAPIQuery={basicQuery(props)}
+                    updateIsDiscoveryingState={this.updateIsDiscoveryingState}
+                    createAPIQuery={basicQuery(this.props)}
                   />
                 </div>
               </div>
