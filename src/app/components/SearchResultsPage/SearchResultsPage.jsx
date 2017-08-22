@@ -80,6 +80,7 @@ class SearchResultsPage extends React.Component {
                     searchKeywords={searchKeywords}
                     field={field}
                     createAPIQuery={createAPIQuery}
+                    updateIsDiscoveryingState={this.updateIsDiscoveryingState}
                   />
                   <ResultsCount
                     isDiscoverying={isDiscoverying}
