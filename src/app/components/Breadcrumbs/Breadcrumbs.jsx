@@ -6,7 +6,7 @@ import appConfig from '../../../../appConfig.js';
 
 const baseUrl = appConfig.baseUrl;
 
-const Breadcrumbs = ({ query, type, bibUrl, itemUrl, edd }) => {
+const Breadcrumbs = ({ query = '', type, bibUrl, itemUrl, edd }) => {
   const defaultText = appConfig.displayTitle;
   const homeLink = <li key="home"><Link to={`${baseUrl}/`}>{defaultText}</Link></li>;
 
