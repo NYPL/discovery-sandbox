@@ -4,7 +4,6 @@ import DocumentTitle from 'react-document-title';
 import { every as _every } from 'underscore';
 
 import Breadcrumbs from '../Breadcrumbs/Breadcrumbs';
-import Search from '../Search/Search';
 import ItemHoldings from '../Item/ItemHoldings';
 import BibDetails from './BibDetails';
 import LibraryItem from '../../utils/item';
@@ -12,7 +11,6 @@ import BackLink from './BackLink';
 import MarcRecord from './MarcRecord';
 
 import { basicQuery } from '../../utils/utils';
-import appConfig from '../../../../appConfig.js';
 
 const BibPage = (props) => {
   const createAPIQuery = basicQuery(props);
@@ -30,6 +28,9 @@ const BibPage = (props) => {
   if (props.location.pathname.indexOf('all') === -1) {
     shortenItems = false;
   }
+  // `linkable` means that those values are links inside the app.
+  // `selfLinkable` means that those values are external links and should be self-linked,
+  // e.g. the prefLabel is the label and the URL is the id.
   const topFields = [
     { label: 'Title', value: 'titleDisplay', linkable: true },
     { label: 'Author', value: 'creatorLiteral', linkable: true },
@@ -42,6 +43,7 @@ const BibPage = (props) => {
     { label: 'Subject', value: 'subjectLiteral', linkable: true },
     { label: 'Genre/Form', value: 'materialType' },
     { label: 'Notes', value: '' },
+    { label: 'Additional Resources', value: 'supplementaryContent', selfLinkable: true },
     { label: 'Contents', value: 'note' },
     { label: 'Bibliography', value: '' },
     { label: 'ISBN', value: 'identifier', identifier: 'urn:isbn' },

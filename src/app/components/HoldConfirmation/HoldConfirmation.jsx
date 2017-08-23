@@ -203,7 +203,7 @@ class HoldConfirmation extends React.Component {
           </p>
           <p>
             Please check your library account for updates. The item will be listed as
-            Ready under your Holds tab when it is available. You will also recieve an
+            Ready under your Holds tab when it is available. You will also receive an
             email confirmation after your item has arrived.
           </p>
           <p>

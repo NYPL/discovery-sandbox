@@ -13,46 +13,49 @@ describe('SearchButton', () => {
       component = shallow(<SearchButton />);
     });
 
-    it('should be wrapped in a .searchButton-wrapper', () => {
-      expect(component.hasClass('searchButton-wrapper')).to.equal(true);
+    it('should be wrapped in a #nypl-omni-button', () => {
+      expect(component.find('#nypl-omni-button').length).to.equal(1);
     });
 
-    it('should be wrapped in a #searchButton-wrapper', () => {
-      expect(component.find('#searchButton-wrapper')).to.have.length(1);
+    it('should have an input element', () => {
+      expect(component.find('input')).to.have.length(1);
     });
 
-    it('should have a button element', () => {
-      expect(component.find('button')).to.have.length(1);
-    });
-
-    it('should have a "Search" label', () => {
-      expect(component.find('button').text()).to.equal('Search');
+    it('should have a "Search" value', () => {
+      expect(component.find('input').prop('value')).to.equal('Search');
     });
   });
 
   describe('Adding props', () => {
     let component;
+    let val = 1;
+    // Dummy function to test.
+    const updateVal = () => {
+      val = 5;
+    };
 
     before(() => {
       component = shallow(
-        <SearchButton id="discoverySearch" className="discoverySearch" label="Search" />
+        <SearchButton
+          id="discoverySearch"
+          value="Search Discovery"
+          onClick={updateVal}
+        />
       );
     });
 
-    it('should be wrapped in a .discoverySearch-wrapper', () => {
-      expect(component.hasClass('discoverySearch-wrapper')).to.equal(true);
+    it('should be wrapped in a #discoverySearch', () => {
+      expect(component.find('#discoverySearch').length).to.equal(1);
     });
 
-    it('should be wrapped in a #discoverySearch-wrapper', () => {
-      expect(component.find('#discoverySearch-wrapper')).to.have.length(1);
+    it('should have a "Search Discovery" value', () => {
+      expect(component.find('input').prop('value')).to.equal('Search Discovery');
     });
 
-    it('should have a button element', () => {
-      expect(component.find('button')).to.have.length(1);
-    });
-
-    it('should have a "Search" label', () => {
-      expect(component.find('button').text()).to.equal('Search');
+    it('should perform the passed function when it is clicked', () => {
+      expect(val).to.equal(1);
+      component.simulate('click');
+      expect(val).to.equal(5);
     });
   });
 });
