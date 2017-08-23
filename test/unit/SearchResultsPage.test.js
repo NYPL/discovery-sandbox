@@ -10,7 +10,6 @@ const mock = new MockAdapter(axios);
 
 import SearchResultsPage from '../../src/app/components/SearchResultsPage/SearchResultsPage.jsx';
 import Actions from '../../src/app/actions/Actions.js';
-import FacetSidebar from '../../src/app/components/FacetSidebar/FacetSidebar.jsx';
 
 // Eventually, it would be nice to have mocked data in a different file and imported.
 const searchResults = {
@@ -44,28 +43,32 @@ describe('SearchResultsPage', () => {
       );
     });
 
-    it('should be wrapped in a .mainContent', () => {
-      expect(component.find('#mainContent')).to.have.length(1);
-    });
-
-    it('should render a <Search /> components', () => {
-      expect(component.find('Search')).to.have.length(1);
+    it('should be wrapped in a .main-page', () => {
+      expect(component.find('.main-page')).to.have.length(1);
     });
 
     it('should render a <Breadcrumbs /> components', () => {
       expect(component.find('Breadcrumbs')).to.have.length(1);
     });
 
-    it('should render a <FacetSidebar /> components', () => {
-      expect(component.find('FacetSidebar')).to.have.length(1);
+    it('should render a <Search /> components', () => {
+      expect(component.find('Search')).to.have.length(1);
     });
 
-    it('should render a <Hits /> components', () => {
-      expect(component.find('Hits')).to.have.length(1);
+    it('should render a <ResultsCount /> components', () => {
+      expect(component.find('ResultsCount')).to.have.length(1);
     });
 
-    it('should render a <ResultsList /> components', () => {
+    it('should not render a <Sorter /> components, since there are no results', () => {
+      expect(component.find('Sorter')).to.have.length(0);
+    });
+
+    it('should not render a <ResultsList /> components, since there are no results', () => {
       expect(component.find('ResultsList')).to.have.length(0);
+    });
+
+    it('should not render a <Pagination /> components, since there are no results', () => {
+      expect(component.find('Pagination')).to.have.length(0);
     });
 
     it('should have empty search results', () => {
@@ -77,8 +80,6 @@ describe('SearchResultsPage', () => {
 
   describe('With passed search results prop', () => {
     let component;
-    let spyUpdateSearchResults;
-    let spyUpdateSearchKeywords;
 
     before(() => {
       component = mount(
@@ -88,85 +89,56 @@ describe('SearchResultsPage', () => {
           location={{ search: '' }}
         />
       );
-      spyUpdateSearchResults = sinon.spy(Actions, 'updateSearchResults');
-      spyUpdateSearchKeywords = sinon.spy(Actions, 'updateSearchKeywords');
     });
 
-    after(() => {
-      Actions.updateSearchResults.restore();
-      Actions.updateSearchKeywords.restore();
-    })
-
     it('should have search results', () => {
-      expect(component.props().searchResults).to.be.defined;
+      // searchResults is the mocked object found in the beginning of the file.
+      expect(component.props().searchResults).to.eql(searchResults);
     });
 
     it('should have two results in the `itemListElement` array', () => {
       expect(component.props().searchResults.itemListElement).to.have.length(2);
     });
 
-    it('should not call two Action functions since data is being passed', () => {
-      expect(spyUpdateSearchResults.callCount).to.equal(0);
-      expect(spyUpdateSearchKeywords.callCount).to.equal(0);
+    it('should render a <Sorter /> components', () => {
+      expect(component.find('Sorter')).to.have.length(1);
+    });
+
+    it('should render a <ResultsList /> components', () => {
+      expect(component.find('ResultsList')).to.have.length(1);
+    });
+
+    it('should render a <Pagination /> components', () => {
+      expect(component.find('Pagination')).to.have.length(1);
     });
   });
 
-  // Mounting the SearchResultsPage without searchResults prop will make it fetch data. This is for
-  // a use case when navigation back in the history through the brower's back button. Still needs
-  // to be fully tested and updated.
-  // describe('Fetching data', () => {
-  //   let component;
-  //   let spyUpdateSearchResults;
-  //   let spyUpdateSearchKeywords;
-  //
-  //   before(() => {
-  //     spyUpdateSearchResults = sinon.spy(Actions, 'updateSearchResults');
-  //     spyUpdateSearchKeywords = sinon.spy(Actions, 'updateSearchKeywords');
-  //
-  //     mock
-  //       .onGet('/api?q=locofocos')
-  //       .reply(200, { searchResults });
-  //
-  //     component = mount(
-  //       <SearchResultsPage
-  //         searchKeywords="locofocos"
-  //         location={{ search: '' }}
-  //       />
-  //     );
-  //   });
-  //
-  //   after(() => {
-  //     mock.reset();
-  //     Actions.updateSearchResults.restore();
-  //     Actions.updateSearchKeywords.restore();
-  //   });
-  //
-  //   it('should call two Action functions after the ajax call for data', () => {
-  //     expect(spyUpdateSearchResults.callCount).to.equal(1);
-  //     expect(spyUpdateSearchKeywords.callCount).to.equal(1);
-  //   });
-  // });
-
-  describe('With facet data as prop', () => {
-    const facets = { itemListElement: [] };
+  describe('DOM structure', () => {
     let component;
 
     before(() => {
       component = mount(
         <SearchResultsPage
-          searchResults={{}}
           searchKeywords="locofocos"
-          facets={facets}
+          searchResults={searchResults}
           location={{ search: '' }}
         />
       );
     });
 
-    after(() => {
+    it('should an h1 with "Search Results"', () => {
+      const h1 = component.find('h1');
+      expect(h1).to.have.length(1);
+      expect(h1.text()).to.equal('Search Results');
+      expect(h1.prop('aria-label')).to.equal('Search results for locofocos page 1 of 1');
     });
 
-    it('should contain FacetSidebar', () => {
-      expect(component.find('FacetSidebar')).to.have.length(1);
+    it('should a .nypl-page-header', () => {
+      expect(component.find('.nypl-page-header')).to.have.length(1);
+    });
+
+    it('should two .nypl-full-width-wrapper elements', () => {
+      expect(component.find('.nypl-full-width-wrapper')).to.have.length(2);
     });
   });
 });
