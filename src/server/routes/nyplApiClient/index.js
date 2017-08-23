@@ -43,42 +43,42 @@ function client() {
     return Promise.resolve(CACHE.nyplApiClient);
   }
 
-  if (kmsEnvironment !== 'encrypted') {
-    const nyplApiClient = new NyplApiClient({
-      base_url: apiBase,
-      oauth_key: clientId,
-      oauth_secret: clientSecret,
-      oauth_url: config.tokenUrl,
+  if (kmsEnvironment === 'encrypted') {
+    return new Promise((resolve, reject) => {
+      Promise.all(keys.map(decryptKMS))
+        .then(([decryptedClientId, decryptedClientSecret]) => {
+          const nyplApiClient = new NyplApiClient({
+            base_url: apiBase,
+            oauth_key: decryptedClientId,
+            oauth_secret: decryptedClientSecret,
+            oauth_url: config.tokenUrl,
+          });
+
+          CACHE.clientId = decryptedClientId;
+          CACHE.clientSecret = decryptedClientSecret;
+          CACHE.nyplApiClient = nyplApiClient;
+
+          resolve(nyplApiClient);
+        })
+        .catch(error => {
+          logger.error('ERROR trying to decrypt using KMS.', error);
+          reject('ERROR trying to decrypt using KMS.', error);
+        });
     });
-
-    CACHE.clientId = clientId;
-    CACHE.clientSecret = clientSecret;
-    CACHE.nyplApiClient = nyplApiClient;
-
-    return Promise.resolve(nyplApiClient);
   }
 
-  return new Promise((resolve, reject) => {
-    Promise.all(keys.map(decryptKMS))
-      .then(([decryptedClientId, decryptedClientSecret]) => {
-        const nyplApiClient = new NyplApiClient({
-          base_url: apiBase,
-          oauth_key: decryptedClientId,
-          oauth_secret: decryptedClientSecret,
-          oauth_url: config.tokenUrl,
-        });
-
-        CACHE.clientId = decryptedClientId;
-        CACHE.clientSecret = decryptedClientSecret;
-        CACHE.nyplApiClient = nyplApiClient;
-
-        resolve(nyplApiClient);
-      })
-      .catch(error => {
-        logger.error('ERROR trying to decrypt using KMS.', error);
-        reject('ERROR trying to decrypt using KMS.', error);
-      });
+  const nyplApiClient = new NyplApiClient({
+    base_url: apiBase,
+    oauth_key: clientId,
+    oauth_secret: clientSecret,
+    oauth_url: config.tokenUrl,
   });
+
+  CACHE.clientId = clientId;
+  CACHE.clientSecret = clientSecret;
+  CACHE.nyplApiClient = nyplApiClient;
+
+  return Promise.resolve(nyplApiClient);
 }
 
 export default client;

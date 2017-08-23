@@ -21,6 +21,11 @@ Front-end app for searching, discovering, and placing a hold on research items f
 * Express Server
 * [Travis](https://travis-ci.org/)
 
+## Client Id and Secret
+We are using environment variables to make authorized requests to NYPL's API platform. The `clientId` and `clientSecret` environment variables should be received from a developer in the NYPL Digital Department.
+
+Please check the [EBSVARS](EBSVARS.md) documentation for more information.
+
 ## Installation and running locally
 
 #### Installation
@@ -57,11 +62,6 @@ or, if you'd like fewer environment variables in the command line:
     $ clientID=[client id] clientSecret=[client secret] npm run prod-start
 
 and visit `localhost:3001`.
-
-## Client Id and Secret
-We are using environment variables to make authorized requests to NYPL's API platform. The `clientId` and `clientSecret` environment variables should be received from a developer in the NYPL Digital Department.
-
-Please check the [EBSVARS](EBSVARS.md) documentation for more information.
 
 ## Contributing
 
