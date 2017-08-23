@@ -107,6 +107,8 @@ class ElectronicDelivery extends React.Component {
     }, fields);
     const searchKeywords = this.props.searchKeywords;
     const searchKeywordsQuery = (searchKeywords) ? `&searchKeywords=${searchKeywords}` : '';
+    const fromUrlQuery = this.props.location.query && this.props.location.query.fromUrl ?
+      `&fromUrl=${encodeURIComponent(this.props.location.query.fromUrl)}` : '';
 
     // This is to remove the error box on the top of the page on a successfull submission.
     this.setState({ raiseError: null });
@@ -116,11 +118,12 @@ class ElectronicDelivery extends React.Component {
         if (response.data.error && response.data.error.status !== 200) {
           this.context.router.push(
             `${path}?errorStatus=${response.data.error.status}` +
-            `&errorMessage=${response.data.error.statusText}${searchKeywordsQuery}`
+            `&errorMessage=${response.data.error.statusText}${searchKeywordsQuery}${fromUrlQuery}`
           );
         } else {
           this.context.router.push(
-            `${path}?pickupLocation=edd&requestId=${response.data.id}${searchKeywordsQuery}`
+            `${path}?pickupLocation=edd&requestId=${response.data.id}` +
+            `${searchKeywordsQuery}${fromUrlQuery}`
           );
         }
       })
@@ -130,7 +133,9 @@ class ElectronicDelivery extends React.Component {
           error
         );
 
-        this.context.router.push(`${path}?errorMessage=${error}${searchKeywordsQuery}`);
+        this.context.router.push(
+          `${path}?errorMessage=${error}${searchKeywordsQuery}${fromUrlQuery}`
+        );
       });
   }
 
