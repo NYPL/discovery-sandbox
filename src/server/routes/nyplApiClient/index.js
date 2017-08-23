@@ -1,27 +1,34 @@
 import NyplApiClient from '@nypl/nypl-data-api-client';
-import config from '../../../../appConfig.js';
 import aws from 'aws-sdk';
+
+import config from '../../../../appConfig.js';
+import logger from '../../../../logger.js';
 
 const appEnvironment = process.env.APP_ENV || 'production';
 const apiBase = config.api[appEnvironment];
-const kms = new aws.KMS({
-  region: 'us-east-1',
-});
+let decryptKMS;
+let kms;
 
-function decryptKMS(key) {
-  const params = {
-    CiphertextBlob: new Buffer(key, 'base64'),
-  };
-
-  return new Promise((resolve, reject) => {
-    kms.decrypt(params, (err, data) => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve(data.Plaintext.toString());
-      }
-    });
+if (appEnvironment === 'production') {
+  kms = new aws.KMS({
+    region: 'us-east-1',
   });
+
+  decryptKMS = (key) => {
+    const params = {
+      CiphertextBlob: new Buffer(key, 'base64'),
+    };
+
+    return new Promise((resolve, reject) => {
+      kms.decrypt(params, (err, data) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(data.Plaintext.toString());
+        }
+      });
+    });
+  };
 }
 
 const clientId = process.env.clientId;
@@ -33,6 +40,21 @@ const CACHE = {};
 function client() {
   if (CACHE.nyplApiClient) {
     return Promise.resolve(CACHE.nyplApiClient);
+  }
+
+  if (appEnvironment !== 'production') {
+    const nyplApiClient = new NyplApiClient({
+      base_url: apiBase,
+      oauth_key: clientId,
+      oauth_secret: clientSecret,
+      oauth_url: config.tokenUrl,
+    });
+
+    CACHE.clientId = clientId;
+    CACHE.clientSecret = clientSecret;
+    CACHE.nyplApiClient = nyplApiClient;
+
+    return Promise.resolve(nyplApiClient);
   }
 
   return new Promise((resolve, reject) => {
@@ -52,7 +74,7 @@ function client() {
         resolve(nyplApiClient);
       })
       .catch(error => {
-        console.log('ERROR trying to decrypt using KMS.', error);
+        logger.error('ERROR trying to decrypt using KMS.', error);
         reject('ERROR trying to decrypt using KMS.', error);
       });
   });

@@ -29,13 +29,13 @@ To install packages run
     $ npm install
 
 #### Development mode with different API environments
-To run locally in development mode with the development API run
+To run locally in development mode with the development API and with the regular unencrypted API keys, run:
 
     $ clientId=[client id] clientSecret=[client secret] npm run dev-api-start
 
-To run locally in development mode with the production API run
+To run locally in production mode with the production API and with encrypted API keys, run:
 
-    $ clientId=[client id] clientSecret=[client secret] npm run prod-api-start
+    $ clientId=[encrypted client id] clientSecret=[encrypted client secret] npm run prod-api-start
 
 If you would like to run in different the API environments without the special npm run scripts, run
 
