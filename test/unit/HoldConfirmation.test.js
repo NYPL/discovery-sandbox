@@ -11,17 +11,16 @@ describe('HoldConfirmation', () => {
   describe('After being rendered, <HoldConfirmation>', () => {
     let component;
     let requireUser;
-    const props = {
-      location: {
-        query: {
-          pickupLocation: 'myr',
-        },
+    const location = {
+      query: {
+        pickupLocation: 'myr',
+        searchKeywords: 'Bryant',
       },
     };
 
     before(() => {
       requireUser = sinon.spy(HoldConfirmation.prototype, 'requireUser');
-      component = mount(<HoldConfirmation props={props} />);
+      component = mount(<HoldConfirmation location={location} />);
     });
 
     after(() => {
@@ -37,10 +36,16 @@ describe('HoldConfirmation', () => {
   describe('If the patron is not logged in, <HoldConfirmation>', () => {
     let component;
     let requireUser;
+    const location = {
+      query: {
+        pickupLocation: 'myr',
+        searchKeywords: 'Bryant',
+      },
+    };
 
     before(() => {
       requireUser = sinon.spy(HoldConfirmation.prototype, 'requireUser');
-      component = mount(<HoldConfirmation />);
+      component = mount(<HoldConfirmation location={location} />);
     });
 
     after(() => {
@@ -57,6 +62,12 @@ describe('HoldConfirmation', () => {
     () => {
       let component;
       let requireUser;
+      const location = {
+        query: {
+          pickupLocation: 'myr',
+          searchKeywords: 'Bryant',
+        },
+      };
 
       before(() => {
         Actions.updatePatronData({
@@ -65,7 +76,7 @@ describe('HoldConfirmation', () => {
           barcodes: ['162402680435300'],
         });
         requireUser = sinon.spy(HoldConfirmation.prototype, 'requireUser');
-        component = mount(<HoldConfirmation />);
+        component = mount(<HoldConfirmation location={location} />);
       });
 
       after(() => {
