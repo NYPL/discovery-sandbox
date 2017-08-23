@@ -114,8 +114,8 @@ function LibraryItem() {
     // nypl-owned ReCAP
     const nyplRecap = !!((holdingLocation && !_isEmpty(holdingLocation) &&
       holdingLocation['@id'].substring(4, 6) === 'rc') && (itemSource === 'SierraNypl'));
-    const nonRecapNYPL = !!(accessMessage.prefLabel === 'USE IN LIBRARY' &&
-      (item.holdingLocation && item.holdingLocation.length));
+    const nonRecapNYPL = !!((holdingLocation && !_isEmpty(holdingLocation) &&
+      holdingLocation['@id'].substring(4, 6) !== 'rc') && (itemSource === 'SierraNypl'));
     const isRecap = nonNyplRecap || nyplRecap;
     // The identifier we need for an item now
     const identifiersArray = [{ name: 'barcode', value: 'urn:barcode:' }];
