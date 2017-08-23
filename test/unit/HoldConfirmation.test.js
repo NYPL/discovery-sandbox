@@ -4,7 +4,7 @@ import sinon from 'sinon';
 import { expect } from 'chai';
 import { mount } from 'enzyme';
 // Import the component that is going to be tested
-import HoldConfirmation from './../../src/app/components/HoldPage/HoldConfirmation.jsx';
+import HoldConfirmation from './../../src/app/components/HoldConfirmation/HoldConfirmation.jsx';
 import Actions from './../../src/app/actions/Actions.js';
 
 describe('HoldConfirmation', () => {

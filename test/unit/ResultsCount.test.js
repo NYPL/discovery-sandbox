@@ -86,7 +86,7 @@ describe('ResultsCount', () => {
         it('should output that no results were found', () => {
           expect(component.find('h2').length).to.equal(1);
           expect(component.find('h2').text())
-            .to.equal('Displaying 1-50 of 2,345 results for keyword "hamlet".');
+            .to.equal('Displaying 1-50 of 2,345 results for keyword "hamlet"');
         });
       });
 
@@ -106,7 +106,7 @@ describe('ResultsCount', () => {
         it('should output that no results were found', () => {
           expect(component.find('h2').length).to.equal(1);
           expect(component.find('h2').text())
-            .to.equal('Displaying 1-50 of 678 results for title "hamlet".');
+            .to.equal('Displaying 1-50 of 678 results for title "hamlet"');
         });
       });
 
@@ -126,7 +126,7 @@ describe('ResultsCount', () => {
         it('should output that no results were found', () => {
           expect(component.find('h2').length).to.equal(1);
           expect(component.find('h2').text())
-            .to.equal('Displaying 1-50 of 135 results for author/contributor "shakespeare".');
+            .to.equal('Displaying 1-50 of 135 results for author/contributor "shakespeare"');
         });
       });
     });
@@ -150,7 +150,7 @@ describe('ResultsCount', () => {
         it('should output that no results were found', () => {
           expect(component.find('h2').length).to.equal(1);
           expect(component.find('h2').text())
-            .to.equal('Displaying 1-50 of 2,345 results for author "Shakespeare".');
+            .to.equal('Displaying 1-50 of 2,345 results for author "Shakespeare"');
         });
       });
 
@@ -170,7 +170,7 @@ describe('ResultsCount', () => {
           expect(component.find('h2').length).to.equal(1);
           expect(component.find('h2').text())
             .to.equal(
-              'Displaying 1-50 of 6,789 results for subject "Children\'s art El Salvador".'
+              'Displaying 1-50 of 6,789 results for subject "Children\'s art El Salvador"'
             );
         });
       });
@@ -183,19 +183,19 @@ describe('ResultsCount', () => {
     it('should output that 40 results were found', () => {
       component = shallow(<ResultsCount count={40} />);
       expect(component.find('h2').text())
-        .to.equal('Displaying 1-40 of 40 results .');
+        .to.equal('Displaying 1-40 of 40 results ');
     });
 
     it('should output that 4,000 results were found from input 4000', () => {
       component = shallow(<ResultsCount count={4000} />);
       expect(component.find('h2').text())
-        .to.equal('Displaying 1-50 of 4,000 results .');
+        .to.equal('Displaying 1-50 of 4,000 results ');
     });
 
     it('should output that 4,000,000 results were found from input 4000000', () => {
       component = shallow(<ResultsCount count={4000000} />);
       expect(component.find('h2').text())
-        .to.equal('Displaying 1-50 of 4,000,000 results .');
+        .to.equal('Displaying 1-50 of 4,000,000 results ');
     });
   });
 
@@ -205,19 +205,19 @@ describe('ResultsCount', () => {
     it('should output the first 50 results', () => {
       component = shallow(<ResultsCount count={500} />);
       expect(component.find('h2').text())
-        .to.equal('Displaying 1-50 of 500 results .');
+        .to.equal('Displaying 1-50 of 500 results ');
     });
 
     it('should output 101-150 on the third page', () => {
       component = shallow(<ResultsCount count={500} page={3} />);
       expect(component.find('h2').text())
-        .to.equal('Displaying 101-150 of 500 results .');
+        .to.equal('Displaying 101-150 of 500 results ');
     });
 
     it('should output 451-489 on the last page', () => {
       component = shallow(<ResultsCount count={489} page={10} />);
       expect(component.find('h2').text())
-        .to.equal('Displaying 451-489 of 489 results .');
+        .to.equal('Displaying 451-489 of 489 results ');
     });
   });
 });
