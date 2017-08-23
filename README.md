@@ -23,32 +23,45 @@ Front-end app for searching, discovering, and placing a hold on research items f
 
 ## Installation and running locally
 
+#### Installation
 To install packages run
 
     $ npm install
 
-To run locally in development mode run
+#### Development mode with different API environments
+To run locally in development mode with the development API run
 
-    $ clientID=[client id] clientSecret=[client secret] npm run dev-start
+    $ clientId=[client id] clientSecret=[client secret] npm run dev-api-start
 
-If you would like to run in different the environments, run
+To run locally in development mode with the production API run
 
-    $ clientID=[client id] clientSecret=[client secret] APP_ENV=[environment variable] npm start
+    $ clientId=[client id] clientSecret=[client secret] npm run prod-api-start
 
-`environment variable` is the name of the particular environment, such as `qa`.
+If you would like to run in different the API environments without the special npm run scripts, run
 
-At last, visit `localhost:3001`.
+    $ clientId=[client id] clientSecret=[client secret] APP_ENV=[environment variable] npm start
 
-To run locally in production mode run
+`environment variable` is the name of the particular environment, such as `development` or `production`.
+
+Visit `localhost:3001` to see the UI locally.
+
+#### Production mode
+To run locally in production mode you need to run two commands:
 
     $ npm run dist
-    $ clientID=[client id] clientSecret=[client secret] NODE_ENV=production APP_ENV=[environment variable] npm start
+    $ clientID=[client id] clientSecret=[client secret] NODE_ENV=production APP_ENV=production npm start
+
+or, if you'd like fewer environment variables in the command line:
+
+    $ npm run dist
+    $ clientID=[client id] clientSecret=[client secret] npm run prod-start
 
 and visit `localhost:3001`.
-NOTE: Currently the only working `environment variable` is `development`.
 
 ## Client Id and Secret
-We are environment variables to make authorized requests to NYPL's API platform. The `clientId` and `clientSecret` environment variables should be received from a developer in the NYPL Digital Department.
+We are using environment variables to make authorized requests to NYPL's API platform. The `clientId` and `clientSecret` environment variables should be received from a developer in the NYPL Digital Department.
+
+Please check the [EBSVARS](EBSVARS.md) documentation for more information.
 
 ## Contributing
 
@@ -75,7 +88,7 @@ To run the tests continuously for active development, run
 
 To run a specific test file, run
 
-    $ npm run test-file test/SearchResultsPage.test.js
+    $ npm run test-file test/unit/SearchResultsPage.test.js
 
 ### Code Coverage
 [Istanbul](https://istanbul.js.org/) is used for checking code coverage.
@@ -169,3 +182,7 @@ Every time the `Feedback` component has significant updates, it might lead to th
  - At last, view the page source of the Google Form page and find the value of each field's name attribute. Enter the value to the name attribute of the respectively field in the HTML form.
 
  - Run the application and test it with the feedback form.
+
+ ## Alarm and Monitoring with AWS CloudWatch
+
+ As one of the NYPL's services, we want to monitor its condition and receive necessary alarms if an error occurs. We set up the alarms and error filters on NYPL's [AWS CloudWatch](https://aws.amazon.com/cloudwatch/). For more details about setting up alarms and log metrics, please see NYPL engineering-general repo's [Monitoring & Alarms Instruction](https://github.com/NYPL/engineering-general/blob/master/standards/alerting.md).

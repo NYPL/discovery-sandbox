@@ -119,14 +119,38 @@ class HoldConfirmation extends React.Component {
    * @return {HTML Element}
    */
   renderStartOverLink() {
+    if (this.props.location.query.fromUrl) {
+      return (
+        <span> You may also try your search in
+          our <Link to={`${appConfig.baseUrl}/`} onClick={(e) => this.goRestart(e)}>Shared
+          Collection Catalog</Link>.
+        </span>
+      );
+    }
+    let text = 'Start a new search';
+    if (this.props.location.query.searchKeywords) {
+      text = 'start a new search';
+    }
+
+    return (<Link to={`${appConfig.baseUrl}/`} onClick={(e) => this.goRestart(e)}>{text}</Link>);
+  }
+
+  /**
+   * renderBackToClassicLink
+   * Renders the link back to the page of search results.
+   *
+   * @return {HTML Element}
+   */
+  renderBackToClassicLink() {
+    if (!this.props.location.query.fromUrl) {
+      return false;
+    }
+
     return (
-      <Link
-        className="nypl-request-button"
-        to={`${appConfig.baseUrl}/`}
-        onClick={(e) => this.goRestart(e)}
-      >
-        Start Over
-      </Link>
+      <span>
+        <a href={this.props.location.query.fromUrl}>Go back to your search
+        results</a> or <a href="https://catalog.nypl.org/search">start a new search</a>.
+      </span>
     );
   }
 
@@ -142,15 +166,14 @@ class HoldConfirmation extends React.Component {
     }
 
     return (
-      <Link
-        className="nypl-request-button"
+      <span><Link
         // We use this.props.location.query.searchKeywords here for the query from
         // the URL to deal with no js situation.
         to={`${appConfig.baseUrl}/search?q=${this.props.location.query.searchKeywords}`}
         onClick={(e) => this.goSearchResults(e)}
       >
-        Back to results
-      </Link>
+        Go back to your search results
+      </Link> or </span>
     );
   }
 
@@ -164,6 +187,18 @@ class HoldConfirmation extends React.Component {
     const itemId = this.props.params.itemId;
     const pickupLocation = this.props.location.query.pickupLocation;
     let deliveryLocation = null;
+    let confirmationPageTitle = 'Submission Error';
+    let confirmationInfo = (
+      <div className="item">
+        <p>
+          We could not process your request at this time. Please try again or contact 917-ASK-NYPL
+          (<a href="tel:19172756975">917-275-6975</a>).
+        </p>
+        {this.renderBackToClassicLink()}
+        {this.renderBackToSearchLink()}
+        {this.renderStartOverLink()}
+      </div>
+    );
 
     if (this.props.deliveryLocations && this.props.deliveryLocations.length) {
       if (pickupLocation !== 'edd') {
@@ -180,8 +215,49 @@ class HoldConfirmation extends React.Component {
       }
     }
 
+    if (!this.props.location.query.errorStatus && !this.props.location.query.errorMessage) {
+      confirmationPageTitle = 'Request Confirmation';
+      confirmationInfo = (
+        <div className="item">
+          <h2>Submission Received</h2>
+          <h3>Item Information</h3>
+          <p>
+            We've received your request
+            for <Link to={`${appConfig.baseUrl}/bib/${bibId}`}>{title}</Link>
+          </p>
+          <p>
+            Please check your library account for updates. The item will be listed as
+            Ready under your Holds tab when it is available. You will also receive an
+            email confirmation after your item has arrived.
+          </p>
+          <p>
+            Your item will be delivered to: {this.renderLocationInfo(deliveryLocation)}
+          </p>
+          <p>
+            For off-site materials, requests made before 2:30 PM will be delivered the
+            following business day. Requests made after 2:30 PM on Fridays or over the
+            weekend will be delivered the following Tuesday. We will hold books for up
+            to seven days, so you can request materials up to a week in advance.
+          </p>
+          <p>
+            If you would like to cancel your request, or if you have further questions,
+            please contact 917-ASK-NYPL (<a href="tel:19172756975">917-275-6975</a>).
+          </p>
+
+          <h3>Electronic Delivery</h3>
+          <p>
+            If you selected electronic delivery, you will be notified via email when the
+            item is available.
+          </p>
+          {this.renderBackToClassicLink()}
+          {this.renderBackToSearchLink()}
+          {this.renderStartOverLink()}
+        </div>
+      );
+    }
+
     return (
-      <DocumentTitle title="Request Confirmation | Shared Collection Catalog | NYPL">
+      <DocumentTitle title={`${confirmationPageTitle} | Shared Collection Catalog | NYPL`}>
         <main id="mainContent" className="main-page">
           <div className="nypl-request-page-header">
             <div className="row">
@@ -194,57 +270,16 @@ class HoldConfirmation extends React.Component {
                     itemUrl={`/hold/request/${bibId}-${itemId}`}
                     edd={pickupLocation === 'edd'}
                   />
-                  <h2>{appConfig.displayTitle}</h2>
+                  <h1>{confirmationPageTitle}</h1>
                 </div>
               </div>
             </div>
           </div>
-
           <div className="nypl-full-width-wrapper">
             <div className="nypl-row">
               <div className="nypl-column-three-quarters">
-                <div className="item-header">
-                  <h1>Request Confirmation</h1>
-                </div>
-              </div>
-            </div>
-            <div className="nypl-row">
-              <div className="nypl-column-three-quarters">
                 <div className="nypl-request-item-summary">
-                  <div className="item">
-                    <h2>Submission Received</h2>
-                    <h3>Item Information</h3>
-                    <p>
-                      We've received your request for <Link to={`${appConfig.baseUrl}/bib/${bibId}`}>
-                      {title}</Link>
-                    </p>
-                    <p>
-                      Please check your library account for updates. The item will be listed as
-                      Ready under your Holds tab when it is available. You will also recieve an email
-                      confirmation after your item has arrived.
-                    </p>
-                    <p>
-                      Your item will be delivered to: {this.renderLocationInfo(deliveryLocation)}
-                    </p>
-                    <p>
-                      For off-site materials, requests made before 2:30 PM will be delivered the
-                      following business day. Requests made after 2:30 PM on Fridays or over the
-                      weekend will be delivered the following Tuesday. We will hold books for up
-                      to seven days, so you can request materials up to a week in advance.
-                    </p>
-
-                    <h3>Electronic Delivery</h3>
-                    <p>
-                      If you selected Electronic delivery, you will be notified via email when the
-                      item is available.
-                    </p>
-                    <p>
-                      If you would like to cancel your request, or if you have further questions,
-                      please contact 917-ASK-NYPL (<a href="tel:19172756975">917-275-6975</a>).
-                    </p>
-                    {this.renderBackToSearchLink()}
-                    {this.renderStartOverLink()}
-                  </div>
+                  {confirmationInfo}
                 </div>
               </div>
             </div>

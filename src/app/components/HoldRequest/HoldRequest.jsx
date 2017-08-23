@@ -88,14 +88,16 @@ class HoldRequest extends React.Component {
   submitRequest(e, bibId, itemId, itemSource) {
     e.preventDefault();
 
-    let path = `${appConfig.baseUrl}/hold/confirmation/${bibId}-${itemId}`;
     const searchKeywordsQuery =
       (this.props.searchKeywords) ? `searchKeywords=${this.props.searchKeywords}` : '';
+    const searchKeywordsQueryPhysical = searchKeywordsQuery ? `&${searchKeywordsQuery}` : '';
+    const fromUrlQuery = this.props.location.query && this.props.location.query.fromUrl ?
+      `&fromUrl=${encodeURIComponent(this.props.location.query.fromUrl)}` : '';
+    let path = `${appConfig.baseUrl}/hold/confirmation/${bibId}-${itemId}`;
 
     if (this.state.delivery === 'edd') {
-      const searchKeywordsQueryEdd = searchKeywordsQuery ? `?${searchKeywordsQuery}` : '';
-
-      path = `${appConfig.baseUrl}/hold/request/${bibId}-${itemId}/edd${searchKeywordsQueryEdd}`;
+      path = `${appConfig.baseUrl}/hold/request/${bibId}-${itemId}` +
+        `/edd?${searchKeywordsQuery}${fromUrlQuery}`;
 
       this.context.router.push(path);
       return;
@@ -106,19 +108,24 @@ class HoldRequest extends React.Component {
         `${this.state.delivery}&itemSource=${itemSource}`)
       .then(response => {
         if (response.data.error && response.data.error.status !== 200) {
-          this.context.router.push(`${path}?errorMessage=${response.data.error.statusText}`);
+          this.context.router.push(
+            `${path}?errorStatus=${response.data.error.status}` +
+            `&errorMessage=${response.data.error.statusText}${searchKeywordsQueryPhysical}` +
+            `${fromUrlQuery}`
+          );
         } else {
-          const searchKeywordsQueryPhysical = searchKeywordsQuery ? `&${searchKeywordsQuery}` : '';
-
           this.context.router.push(
             `${path}?pickupLocation=${response.data.pickupLocation}&requestId=${response.data.id}` +
-            `${searchKeywordsQueryPhysical}`
+            `${searchKeywordsQueryPhysical}${fromUrlQuery}`
           );
         }
       })
       .catch(error => {
-        console.log(error);
-        this.context.router.push(`${path}?errorMessage=${error}`);
+        console.error('Error attempting to make an ajax Hold Request in HoldRequest', error);
+
+        this.context.router.push(
+          `${path}?errorMessage=${error}${searchKeywordsQueryPhysical}${fromUrlQuery}`
+        );
       });
   }
 
@@ -213,9 +220,9 @@ class HoldRequest extends React.Component {
     const itemId = (this.props.params && this.props.params.itemId) ? this.props.params.itemId : '';
     const selectedItem = (bib && itemId) ? LibraryItem.getItem(bib, itemId) : {};
     const bibLink = (bibId && title) ?
-      (<h4>
+      (<h2>
         <Link to={`${appConfig.baseUrl}/bib/${bibId}`}>{title}</Link>
-      </h4>) : null;
+      </h2>) : null;
     const callNo =
       (selectedItem && selectedItem.callNumber && selectedItem.callNumber.length) ?
       (
@@ -226,13 +233,13 @@ class HoldRequest extends React.Component {
     const itemSource = selectedItem.itemSource;
     const deliveryLocations = this.props.deliveryLocations;
     const isEddRequestable = this.props.isEddRequestable;
-    let deliveryLocationInstruction =
+    const deliveryLocationInstruction =
       (!deliveryLocations.length && !isEddRequestable) ?
-        <h4>
+        <h2>
           Delivery options for this item are currently unavailable. Please try again later or
           contact 917-ASK-NYPL (<a href="tel:917-275-6975">917-275-6975</a>).
-        </h4> :
-        <h4>Choose a delivery option or location</h4>;
+        </h2> :
+        <h2>Choose a delivery option or location</h2>;
     let form = null;
 
     if (bib) {
@@ -282,7 +289,7 @@ class HoldRequest extends React.Component {
                     bibUrl={`/bib/${bibId}`}
                     type="hold"
                   />
-                  <h2>{appConfig.displayTitle}</h2>
+                  <h1>Item Request</h1>
                 </div>
               </div>
             </div>
@@ -291,18 +298,14 @@ class HoldRequest extends React.Component {
           <div className="nypl-full-width-wrapper">
             <div className="row">
               <div className="nypl-column-three-quarters">
-                <div className="item-header">
-                  <h3>Research item hold request</h3>
-                </div>
-
                 <div className="nypl-request-item-summary">
                   <div className="item">
                     {
                       !bib &&
-                        <h4>
+                        <h2>
                           This item cannot be requested at this time. Please try again later or
                           contact 917-ASK-NYPL (<a href="tel:917-275-6975">917-275-6975</a>).
-                        </h4>
+                        </h2>
                     }
                     {bibLink}
                     {callNo}

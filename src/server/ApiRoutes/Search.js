@@ -13,6 +13,7 @@ import {
   parseServerSelectedFilters,
 } from '../../app/utils/utils.js';
 import nyplApiClient from '../routes/nyplApiClient';
+import logger from '../../../logger';
 
 const createAPIQuery = basicQuery({
   searchKeywords: '',
@@ -20,11 +21,13 @@ const createAPIQuery = basicQuery({
   field: '',
   selectedFacets: {},
 });
-const nyplApiClientCall = (query) => nyplApiClient.get(`/discovery/resources${query}`);
+
+const nyplApiClientCall = (query) =>
+  nyplApiClient().then(client => client.get(`/discovery/resources${query}`));
 
 function search(searchKeywords, page, sortBy, order, field, filters, cb, errorcb) {
   const apiQuery = createAPIQuery({
-    searchKeywords: encodeURIComponent(searchKeywords),
+    searchKeywords,
     sortBy: sortBy ? `${sortBy}_${order}` : '',
     selectedFacets: filters,
     field,
@@ -41,7 +44,7 @@ function search(searchKeywords, page, sortBy, order, field, filters, cb, errorcb
       cb({}, response, page);
     })
     .catch(error => {
-      console.error(`Search error: ${JSON.stringify(error, null, 2)}`);
+      logger.error('Error making server search call in search function', error);
       errorcb(error);
     });
 }
@@ -159,7 +162,7 @@ function searchServer(req, res, next) {
       next();
     },
     (error) => {
-      console.log('search error', error);
+      logger.error('Error retrieving search data in searchServer', error);
       res.locals.data.Store = {
         searchResults: {},
         selectedFacets: {},

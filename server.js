@@ -1,28 +1,26 @@
 import path from 'path';
 import express from 'express';
 import compress from 'compression';
-import colors from 'colors';
 import DocumentTitle from 'react-document-title';
 import React from 'react';
 import ReactDOMServer from 'react-dom/server';
 import { match, RouterContext } from 'react-router';
-
 import Iso from 'iso';
-import alt from './src/app/alt.js';
-
-import appConfig from './appConfig.js';
 import webpack from 'webpack';
+import cookieParser from 'cookie-parser';
+import bodyParser from 'body-parser';
+
+import alt from './src/app/alt.js';
+import appConfig from './appConfig.js';
 import WebpackDevServer from 'webpack-dev-server';
 import webpackConfig from './webpack.config.js';
-
 import apiRoutes from './src/server/ApiRoutes/ApiRoutes.js';
 import routes from './src/app/routes/routes.jsx';
 
-import cookieParser from 'cookie-parser';
 import initializePatronTokenAuth from './src/server/routes/auth';
 import { getPatronData } from './src/server/routes/api';
-
-import bodyParser from 'body-parser';
+import nyplApiClient from './src/server/routes/nyplApiClient';
+import logger from './logger';
 
 const ROOT_PATH = __dirname;
 const INDEX_PATH = path.resolve(ROOT_PATH, 'src/client');
@@ -64,7 +62,9 @@ app.use('/', (req, res, next) => {
   return next();
 });
 
-// Init token and nypl data client.
+// Init the nypl data api client.
+nyplApiClient();
+
 app.use('/*', initializePatronTokenAuth, getPatronData);
 app.use('/', apiRoutes);
 
@@ -104,27 +104,23 @@ app.get('/*', (req, res) => {
 
 const server = app.listen(app.get('port'), (error) => {
   if (error) {
-    console.log(colors.red(error));
+    logger.error(error);
   }
 
-  console.log(colors.yellow.underline(appConfig.appName));
-  console.log(
-    colors.green('Express server is listening at'),
-    colors.cyan(`localhost: ${app.get('port')}`)
-  );
+  logger.info(`App - Express server is listening at localhost: ${app.get('port')}.`);
 });
 
 // This function is called when you want the server to die gracefully
 // i.e. wait for existing connections
 const gracefulShutdown = () => {
-  console.log('Received kill signal, shutting down gracefully.');
+  logger.info('Received kill signal, shutting down gracefully.');
   server.close(() => {
-    console.log('Closed out remaining connections.');
+    logger.info('Closed out remaining connections.');
     process.exit(0);
   });
   // if after
   setTimeout(() => {
-    console.error('Could not close connections in time, forcefully shutting down');
+    logger.error('Could not close connections in time, forcefully shutting down');
     process.exit();
   }, 1000);
 };
@@ -150,11 +146,9 @@ if (!isProduction) {
     },
   }).listen(WEBPACK_DEV_PORT, 'localhost', (error) => {
     if (error) {
-      console.log(colors.red(error));
+      logger.error(error);
     }
-    console.log(
-      colors.magenta('Webpack Dev Server listening at'),
-      colors.cyan(`localhost: ${WEBPACK_DEV_PORT}`)
-    );
+
+    logger.info(`Webpack Dev Server listening at localhost: ${WEBPACK_DEV_PORT}.`);
   });
 }

@@ -132,7 +132,7 @@ class Search extends React.Component {
             type="text"
             id="search-query"
             aria-labelledby="search-input-label"
-            placeholder="Keyword, title, name, or id"
+            placeholder="Keyword, title, or author/contributor"
             onChange={this.inputChange}
             value={this.state.searchKeywords}
             name="q"
