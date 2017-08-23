@@ -5,11 +5,12 @@ import config from '../../../../appConfig.js';
 import logger from '../../../../logger.js';
 
 const appEnvironment = process.env.APP_ENV || 'production';
+const kmsEnvironment = process.env.KMS_ENV || 'encrypted';
 const apiBase = config.api[appEnvironment];
 let decryptKMS;
 let kms;
 
-if (appEnvironment === 'production') {
+if (kmsEnvironment === 'encrypted') {
   kms = new aws.KMS({
     region: 'us-east-1',
   });
@@ -42,7 +43,7 @@ function client() {
     return Promise.resolve(CACHE.nyplApiClient);
   }
 
-  if (appEnvironment !== 'production') {
+  if (kmsEnvironment !== 'encrypted') {
     const nyplApiClient = new NyplApiClient({
       base_url: apiBase,
       oauth_key: clientId,
