@@ -87,10 +87,6 @@ describe('HoldConfirmation', () => {
       it('should pass the patron data check in requireUser().', () => {
         expect(requireUser.returnValues[0]).to.equal(true);
       });
-
-      it('should display the layout of error page.', () => {
-
-      });
     }
   );
 
@@ -99,16 +95,38 @@ describe('HoldConfirmation', () => {
 
     });
 
-    it('should deliver the item\'s title on the page', () => {
+    it('should deliver the item\'s title on the page.', () => {
 
     });
 
-    it('should deliver the link to the patron\'s account page', () => {
+    it('should deliver the link to the patron\'s account page.', () => {
 
     });
 
-    it('should deliver the location information', () => {
+    it('should deliver the location information.', () => {
 
     });
+
+    it('should have the link back to homepage.', () => {
+
+    });
+  });
+
+  describe('If the patron get here from a search result page, <HoldConfirmation>', () => {
+    it('should have the link back to search result.', () => {
+
+    });
+
+  });
+
+  describe('If the patron get here from a classic catalog search result page, <HoldConfirmation>',
+    () => {
+      it('should have the link back to the classic catalog search result page.', () => {
+
+      });
+
+       it('should have the link back to the classic catalog homepage.', () => {
+
+      });
   });
 });
