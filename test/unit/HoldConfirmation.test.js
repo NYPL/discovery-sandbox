@@ -11,10 +11,17 @@ describe('HoldConfirmation', () => {
   describe('After being rendered, <HoldConfirmation>', () => {
     let component;
     let requireUser;
+    const props = {
+      location: {
+        query: {
+          pickupLocation: 'myr',
+        },
+      },
+    };
 
     before(() => {
       requireUser = sinon.spy(HoldConfirmation.prototype, 'requireUser');
-      component = mount(<HoldConfirmation />);
+      component = mount(<HoldConfirmation props={props} />);
     });
 
     after(() => {
