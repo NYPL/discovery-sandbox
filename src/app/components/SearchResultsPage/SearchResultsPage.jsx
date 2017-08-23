@@ -58,14 +58,21 @@ const SearchResultsPage = (props, context) => {
             <div className="nypl-row">
               <div className="nypl-column-three-quarters">
                 <Breadcrumbs query={searchKeywords} type="search" />
-                <h2 aria-label={headerLabel}>{appConfig.displayTitle}</h2>
+                <h1 aria-label={headerLabel}>Search Results</h1>
                 <Search
                   searchKeywords={searchKeywords}
                   field={field}
                   spinning={spinning}
                   createAPIQuery={createAPIQuery}
                 />
-
+                <ResultsCount
+                  spinning={spinning}
+                  count={totalResults}
+                  selectedFacets={selectedFacets}
+                  searchKeywords={searchKeywords}
+                  field={field}
+                  page={parseInt(page, 10)}
+                />
                 {
                   !!(totalResults && totalResults !== 0) && (
                     <Sorter
@@ -92,15 +99,6 @@ const SearchResultsPage = (props, context) => {
               aria-relevant="additions removals"
               aria-describedby="results-description"
             >
-              <ResultsCount
-                spinning={spinning}
-                count={totalResults}
-                selectedFacets={selectedFacets}
-                searchKeywords={searchKeywords}
-                field={field}
-                page={parseInt(page, 10)}
-              />
-
               {
                 !!(results && results.length !== 0) &&
                 (

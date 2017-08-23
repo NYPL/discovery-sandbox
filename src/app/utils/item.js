@@ -1,4 +1,3 @@
-import Locations from '../../../locations.js';
 import LocationCodes from '../../../locationCodes.js';
 import {
   findWhere as _findWhere,
@@ -13,14 +12,25 @@ const itemSourceMappings = {
 
 function LibraryItem() {
   /**
-   * getDefaultLocation()
+   * getDefaultNyplLocation()
    * Return the default delivery location for an item.
    * @return {object}
    */
-  this.getDefaultLocation = () => ({
-    '@id': 'loc:mal',
-    prefLabel: 'Stephen A. Schwarzman Building - Rose Main Reading Room 315',
-    customerCode: 'NH',
+  this.getDefaultNyplLocation = () => ({
+    '@id': '',
+    prefLabel: 'Check with Staff',
+    customerCode: '',
+  });
+
+  /**
+   * nonNyplRecapLocation()
+   * Return the default delivery location for a nonNyplRecap item.
+   * @return {object}
+   */
+  this.nonNyplRecapLocation = () => ({
+    '@id': '',
+    prefLabel: 'Offsite',
+    customerCode: '',
   });
 
   /**
@@ -88,7 +98,6 @@ function LibraryItem() {
       item.accessMessage[0] : {};
     // Taking first callNumber.
     const callNumber = item.shelfMark && item.shelfMark.length ? item.shelfMark[0] : '';
-    const holdingLocation = this.getHoldingLocation(item);
     // Taking the first value in the array.
     const requestable = item.requestable && item.requestable.length ? item.requestable[0] : false;
     // Taking the first value in the array;
@@ -101,11 +110,12 @@ function LibraryItem() {
     const available = availability === 'available';
     // non-NYPL ReCAP
     const nonNyplRecap = itemSource.indexOf('Recap') !== -1;
+    const holdingLocation = this.getHoldingLocation(item, nonNyplRecap);
     // nypl-owned ReCAP
     const nyplRecap = !!((holdingLocation && !_isEmpty(holdingLocation) &&
       holdingLocation['@id'].substring(4, 6) === 'rc') && (itemSource === 'SierraNypl'));
-    const nonRecapNYPL = !!(accessMessage.prefLabel === 'USE IN LIBRARY' &&
-      (item.holdingLocation && item.holdingLocation.length));
+    const nonRecapNYPL = !!((holdingLocation && !_isEmpty(holdingLocation) &&
+      holdingLocation['@id'].substring(4, 6) !== 'rc') && (itemSource === 'SierraNypl'));
     const isRecap = nonNyplRecap || nyplRecap;
     // The identifier we need for an item now
     const identifiersArray = [{ name: 'barcode', value: 'urn:barcode:' }];
@@ -227,13 +237,18 @@ function LibraryItem() {
   };
 
   /**
-   * getHoldingLocation(item)
+   * getHoldingLocation(item, nonNyplRecap)
    * Returns updated location data from the holdingLocation property in the API for each item.
    * @param {object} item
+   * @param {boolean} nonNyplRecap
    * @return {object}
    */
-  this.getHoldingLocation = (item) => {
-    let location = this.getDefaultLocation();
+  this.getHoldingLocation = (item, nonNyplRecap) => {
+    let location = this.getDefaultNyplLocation();
+
+    if (nonNyplRecap) {
+      location = this.nonNyplRecapLocation();
+    }
 
     // this is a physical resource
     if (item.holdingLocation && item.holdingLocation.length) {

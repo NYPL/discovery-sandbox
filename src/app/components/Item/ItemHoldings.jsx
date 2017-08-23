@@ -75,7 +75,7 @@ class ItemHoldings extends React.Component {
         this.context.router.push(`${appConfig.baseUrl}/hold/request/${bibId}-${itemId}`);
       })
       .catch(error => {
-        console.log(error);
+        console.error('Error attemping to make an ajax Bib request in ItemHoldings', error);
       });
   }
 
@@ -162,7 +162,8 @@ class ItemHoldings extends React.Component {
     }
 
     return (
-      <span>
+      <div className="nypl-results-item">
+        <h3>Availability</h3>
         {itemTable}
         {
           !!(shortenItems && items.length >= 20 && !this.state.showAll) &&
@@ -180,7 +181,7 @@ class ItemHoldings extends React.Component {
             </div>)
         }
         {pagination}
-      </span>
+      </div>
     );
   }
 }

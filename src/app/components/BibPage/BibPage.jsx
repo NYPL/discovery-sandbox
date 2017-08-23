@@ -4,7 +4,6 @@ import DocumentTitle from 'react-document-title';
 import { every as _every } from 'underscore';
 
 import Breadcrumbs from '../Breadcrumbs/Breadcrumbs';
-import Search from '../Search/Search';
 import ItemHoldings from '../Item/ItemHoldings';
 import BibDetails from './BibDetails';
 import LibraryItem from '../../utils/item';
@@ -12,7 +11,6 @@ import BackLink from './BackLink';
 import MarcRecord from './MarcRecord';
 
 import { basicQuery } from '../../utils/utils';
-import appConfig from '../../../../appConfig.js';
 
 const BibPage = (props) => {
   const createAPIQuery = basicQuery(props);
@@ -30,6 +28,31 @@ const BibPage = (props) => {
   if (props.location.pathname.indexOf('all') === -1) {
     shortenItems = false;
   }
+  // `linkable` means that those values are links inside the app.
+  // `selfLinkable` means that those values are external links and should be self-linked,
+  // e.g. the prefLabel is the label and the URL is the id.
+  const topFields = [
+    { label: 'Title', value: 'titleDisplay', linkable: true },
+    { label: 'Author', value: 'creatorLiteral', linkable: true },
+    { label: 'Additional Authors', value: 'contributorLiteral', linkable: true },
+  ];
+  const bottomFields = [
+    { label: 'Publication', value: 'React Component' },
+    { label: 'Electronic Resource', value: '' },
+    { label: 'Description', value: 'extent' },
+    { label: 'Subject', value: 'subjectLiteral', linkable: true },
+    { label: 'Genre/Form', value: 'materialType' },
+    { label: 'Notes', value: '' },
+    { label: 'Additional Resources', value: 'supplementaryContent', selfLinkable: true },
+    { label: 'Contents', value: 'note' },
+    { label: 'Bibliography', value: '' },
+    { label: 'ISBN', value: 'identifier', identifier: 'urn:isbn' },
+    { label: 'ISSN', value: 'identifier', identifier: 'urn:issn' },
+    { label: 'LCC', value: 'identifier', identifier: 'urn:lcc' },
+    { label: 'GPO', value: '' },
+    { label: 'Other Titles', value: '' },
+    { label: 'Owning Institutions', value: '' },
+  ];
 
   const itemHoldings = items.length && !electronicItems ?
     <ItemHoldings
@@ -49,13 +72,8 @@ const BibPage = (props) => {
             <div className="nypl-row">
               <div className="nypl-column-three-quarters">
                 <Breadcrumbs type="bib" query={searchURL} />
-                <h2>{appConfig.displayTitle}</h2>
-                <Search
-                  searchKeywords={props.searchKeywords}
-                  field={props.field}
-                  spinning={props.spinning}
-                  createAPIQuery={createAPIQuery}
-                />
+                <h1>Item Details</h1>
+                <h2>{title}</h2>
                 {
                   props.searchKeywords && (
                     <div className="nypl-row search-control">
@@ -82,12 +100,19 @@ const BibPage = (props) => {
               id="mainContent"
             >
               <div className="nypl-item-details">
-                <h1>{title}</h1>
                 <BibDetails
                   bib={bib}
-                  itemHoldings={itemHoldings}
-                  marcRecord={marcRecord}
+                  fields={topFields}
                 />
+
+                {itemHoldings}
+
+                <h3>Additional details</h3>
+                <BibDetails
+                  bib={bib}
+                  fields={bottomFields}
+                />
+                {marcRecord}
               </div>
             </div>
           </div>

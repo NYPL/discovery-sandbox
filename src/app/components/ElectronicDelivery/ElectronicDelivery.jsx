@@ -107,6 +107,8 @@ class ElectronicDelivery extends React.Component {
     }, fields);
     const searchKeywords = this.props.searchKeywords;
     const searchKeywordsQuery = (searchKeywords) ? `&searchKeywords=${searchKeywords}` : '';
+    const fromUrlQuery = this.props.location.query && this.props.location.query.fromUrl ?
+      `&fromUrl=${encodeURIComponent(this.props.location.query.fromUrl)}` : '';
 
     // This is to remove the error box on the top of the page on a successfull submission.
     this.setState({ raiseError: null });
@@ -116,18 +118,24 @@ class ElectronicDelivery extends React.Component {
         if (response.data.error && response.data.error.status !== 200) {
           this.context.router.push(
             `${path}?errorStatus=${response.data.error.status}` +
-            `&errorMessage=${response.data.error.statusText}${searchKeywordsQuery}`
+            `&errorMessage=${response.data.error.statusText}${searchKeywordsQuery}${fromUrlQuery}`
           );
         } else {
           this.context.router.push(
-            `${path}?pickupLocation=edd&requestId=${response.data.id}${searchKeywordsQuery}`
+            `${path}?pickupLocation=edd&requestId=${response.data.id}` +
+            `${searchKeywordsQuery}${fromUrlQuery}`
           );
         }
       })
       .catch(error => {
-        console.log(error);
+        console.error(
+          'Error attempting to submit an ajax EDD request at ElectronicDelivery',
+          error
+        );
 
-        this.context.router.push(`${path}?errorMessage=${error}${searchKeywordsQuery}`);
+        this.context.router.push(
+          `${path}?errorMessage=${error}${searchKeywordsQuery}${fromUrlQuery}`
+        );
       });
   }
 
@@ -187,25 +195,19 @@ class ElectronicDelivery extends React.Component {
                   bibUrl={`/bib/${bibId}`}
                   itemUrl={`/hold/request/${bibId}-${itemId}`}
                 />
-                <h2>{appConfig.displayTitle}</h2>
+                <h1>Electronic Delivery Request</h1>
               </div>
             </div>
           </div>
           <div className="nypl-full-width-wrapper">
             <div className="nypl-row">
               <div className="nypl-column-three-quarters">
-                <div className="item-header">
-                  <h1>Electronic Delivery Request</h1>
-                </div>
-
                 <div className="nypl-request-item-summary">
-                  <h3>
-                    Material request for Electronic Delivery:
-                    <br />
+                  <h2>
                     <Link to={`${appConfig.baseUrl}/bib/${bibId}`}>
                       {title}
                     </Link>
-                  </h3>
+                  </h2>
                   {
                     callNo && (
                       <div className="call-number">
