@@ -160,6 +160,10 @@ SearchResultsPage.propTypes = {
   error: PropTypes.object,
 };
 
+SearchResultsPage.defaultProps = {
+  page: '1',
+};
+
 SearchResultsPage.contextTypes = {
   router: PropTypes.object,
 };

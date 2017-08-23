@@ -95,15 +95,16 @@ class HoldRequest extends React.Component {
   submitRequest(e, bibId, itemId, itemSource) {
     e.preventDefault();
 
-    let path = `${appConfig.baseUrl}/hold/confirmation/${bibId}-${itemId}`;
     const searchKeywordsQuery =
       (this.props.searchKeywords) ? `searchKeywords=${this.props.searchKeywords}` : '';
     const searchKeywordsQueryPhysical = searchKeywordsQuery ? `&${searchKeywordsQuery}` : '';
+    const fromUrlQuery = this.props.location.query && this.props.location.query.fromUrl ?
+      `&fromUrl=${encodeURIComponent(this.props.location.query.fromUrl)}` : '';
+    let path = `${appConfig.baseUrl}/hold/confirmation/${bibId}-${itemId}`;
 
     if (this.state.delivery === 'edd') {
-      const searchKeywordsQueryEdd = searchKeywordsQuery ? `?${searchKeywordsQuery}` : '';
-
-      path = `${appConfig.baseUrl}/hold/request/${bibId}-${itemId}/edd${searchKeywordsQueryEdd}`;
+      path = `${appConfig.baseUrl}/hold/request/${bibId}-${itemId}` +
+        `/edd?${searchKeywordsQuery}${fromUrlQuery}`;
 
       this.context.router.push(path);
       return;
@@ -119,13 +120,14 @@ class HoldRequest extends React.Component {
           this.updateIsLoadingState(false);
           this.context.router.push(
             `${path}?errorStatus=${response.data.error.status}` +
-            `&errorMessage=${response.data.error.statusText}${searchKeywordsQueryPhysical}`
+            `&errorMessage=${response.data.error.statusText}${searchKeywordsQueryPhysical}` +
+            `${fromUrlQuery}`
           );
         } else {
           this.updateIsLoadingState(false);
           this.context.router.push(
             `${path}?pickupLocation=${response.data.pickupLocation}&requestId=${response.data.id}` +
-            `${searchKeywordsQueryPhysical}`
+            `${searchKeywordsQueryPhysical}${fromUrlQuery}`
           );
         }
       })
@@ -133,7 +135,9 @@ class HoldRequest extends React.Component {
         console.error('Error attempting to make an ajax Hold Request in HoldRequest', error);
 
         this.updateIsLoadingState(false);
-        this.context.router.push(`${path}?errorMessage=${error}${searchKeywordsQueryPhysical}`);
+        this.context.router.push(
+          `${path}?errorMessage=${error}${searchKeywordsQueryPhysical}${fromUrlQuery}`
+        );
       });
   }
 
