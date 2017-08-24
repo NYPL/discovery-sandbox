@@ -14,7 +14,7 @@ describe('NotFound404', () => {
   });
 
   it('should be wrapped in a .not-found-404 class', () => {
-    expect(component.find('.not-found-404')).to.exist;
+    expect(component.find('.not-found-404').length).to.equal(1);
   });
 
   it('should contain a Link and an `a` element', () => {

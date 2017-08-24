@@ -61,7 +61,7 @@ class ResultsCount extends React.Component {
     const currentResultDisplay = `${start}-${end}`;
 
     if (isLoading) {
-      return (<p>Loading…</p>);
+      return (<p>Loading...</p>);
     }
 
     if (count !== 0) {
