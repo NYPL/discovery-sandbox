@@ -1,5 +1,18 @@
 ## CHANGE LOG
 
+### 0.8.0 - QA v2
+- The second sprint before we public launch. This released focused on NYPL's Production Readiness standards and fixing a11y issues.
+- OAuth credentials and AWS KMS keys were better handled and configured in Elastic Beanstalk for our development, qa, and production instances.
+- The header structure on each page was updated.
+- A 404 page was introduced.
+- Copy changes were made in the Hold Confirmation page, the Search Results page, and the omnisearch placeholder.
+- The bib record page was restructured to include two definition lists and the MARC record is outside those lists now. Supplementary Content is now displayed if available.
+- Logic for requestability and non-ReCAP NYPL items were improved.
+- Configurations were made to set up the UI for development and production API platforms.
+- Logging and an alarm in AWS Cloudwatch was set up.
+- The confirmation page can now link back to the Classic Catalog if that's where the patron came from.
+- Other general accessibility updates were made in the omnisearch, breadcrumbs, and hold confirmation page.
+
 ### 0.7.0 - QA v1
 - This was the first of two sprints before we go from Internal Beta to Public Beta. YAY!  :rocket: :books:
 - A lot of accessibility, QA, and feedback fixes were completed this sprint.
