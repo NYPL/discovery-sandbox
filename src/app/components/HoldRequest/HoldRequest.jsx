@@ -67,7 +67,11 @@ class HoldRequest extends React.Component {
   }
 
   updateIsLoadingState(status) {
-    this.setState({ isLoading: status });
+    setTimeout(
+      () => {
+        this.setState({ isLoading: status });
+      }, 100
+    );
   }
 
   /**
