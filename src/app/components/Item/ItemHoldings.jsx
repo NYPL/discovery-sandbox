@@ -63,6 +63,7 @@ class ItemHoldings extends React.Component {
    */
   getRecord(e, bibId, itemId) {
     e.preventDefault();
+    this.props.updateIsLoadingState(true);
 
     // Search for the bib? Just pass the data.
     axios
@@ -71,11 +72,14 @@ class ItemHoldings extends React.Component {
         Actions.updateBib(response.data.bib);
         Actions.updateDeliveryLocations(response.data.deliveryLocations);
         Actions.updateIsEddRequestable(response.data.isEddRequestable);
+        this.props.updateIsLoadingState(false);
 
         this.context.router.push(`${appConfig.baseUrl}/hold/request/${bibId}-${itemId}`);
       })
       .catch(error => {
         console.error('Error attemping to make an ajax Bib request in ItemHoldings', error);
+
+        this.props.updateIsLoadingState(false);
       });
   }
 
@@ -192,6 +196,7 @@ ItemHoldings.propTypes = {
   bibId: PropTypes.string,
   shortenItems: PropTypes.bool,
   searchKeywords: PropTypes.string,
+  updateIsLoadingState: PropTypes.func,
 };
 
 ItemHoldings.defaultProps = {
