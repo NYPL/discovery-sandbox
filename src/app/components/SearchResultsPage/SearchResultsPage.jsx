@@ -124,6 +124,7 @@ class SearchResultsPage extends React.Component {
                       results={results}
                       isLoading={isLoading}
                       searchKeywords={searchKeywords}
+                      updateIsLoadingState={this.updateIsLoadingState}
                     />
                   )
                 }

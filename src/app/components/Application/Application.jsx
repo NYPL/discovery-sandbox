@@ -36,7 +36,7 @@ history.listen(location => {
   });
 
   if (action === 'POP' && search) {
-    Actions.updateSpinner(true);
+    Actions.updateLoadingStatus(true);
 
     ajaxCall(`${appConfig.baseUrl}/api${decodeURI(search)}`, (response) => {
       if (response.data.facets && response.data.searchResults) {
@@ -46,7 +46,7 @@ history.listen(location => {
         Actions.updateSearchResults(response.data.searchResults);
         if (qParameter) Actions.updateSearchKeywords(qParameter);
       }
-      Actions.updateSpinner(false);
+      Actions.updateLoadingStatus(false);
     });
   }
 });
