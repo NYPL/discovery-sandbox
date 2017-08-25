@@ -28,7 +28,7 @@ class BibPage extends React.Component {
     setTimeout(
       () => {
         this.setState({ isLoading: status });
-      }, 100
+      }, 500
     );
   }
 
@@ -133,6 +133,7 @@ class BibPage extends React.Component {
                   <BibDetails
                     bib={bib}
                     fields={topFields}
+                    updateIsLoadingState={this.updateIsLoadingState}
                   />
 
                   {itemHoldings}
