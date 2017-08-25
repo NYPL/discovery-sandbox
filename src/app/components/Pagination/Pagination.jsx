@@ -45,9 +45,9 @@ class Pagination extends React.Component {
 
   /*
    * getPage()
-   * Get a button based on current page.
+   * Get a link based on current page.
    * @param {string} page The current page number.
-   * @param {string} type Either 'Next' or 'Previous' to indication button label.
+   * @param {string} type Either 'Next' or 'Previous' to indication link label.
    */
   getPage(page, type = 'Next') {
     if (!page) return null;
@@ -63,6 +63,7 @@ class Pagination extends React.Component {
       <Link
         to={url}
         rel={type.toLowerCase()}
+        className={`${type.toLowerCase()}-link`}
         aria-controls={this.props.ariaControls}
         onClick={(e) => this.onClick(e, pageNum)}
       >
@@ -112,6 +113,7 @@ Pagination.propTypes = {
 
 Pagination.defaultProps = {
   page: 1,
+  perPage: 50,
   ariaControls: 'results-region',
   to: { pathname: '#' },
   createAPIQuery: () => {},
