@@ -12,14 +12,14 @@ const mock = new MockAdapter(axios);
 const response = { searchResults: {} };
 
 // The Pagination component displays the items currently being displayed. If there are more
-// than 50 items then the "next" button gets rendered. If the page prop is greater than 1,
-// the "previous" button gets renderd.
+// than 50 items then the "next" link gets rendered. If the page prop is greater than 1,
+// the "previous" link gets rendered.
 describe('Pagination', () => {
   describe('Default component', () => {
     let component;
 
     before(() => {
-      component = mount(<Pagination />);
+      component = shallow(<Pagination />);
     });
 
     it('should return null', () => {
@@ -31,24 +31,25 @@ describe('Pagination', () => {
     let component;
 
     before(() => {
-      component = shallow(<Pagination hits={40} />);
+      component = shallow(<Pagination total={40} />);
     });
 
-    it('should be wrapped in a pagination wrapper', () => {
-      expect(component.hasClass('pagination')).to.be.true;
+    it('should be wrapped in a .nypl-results-pagination nav wrapper', () => {
+      expect(component.hasClass('nypl-results-pagination')).to.equal(true);
+      expect(component.type()).to.equal('nav');
     });
 
-    it('should not have any buttons since the results are less than 51', () => {
-      expect(component.find('button')).to.have.length(0);
+    it('should not have any Links since the results are less than 51', () => {
+      expect(component.find('Link').children().length).to.equal(0);
     });
 
     it('should display how many items are displayed', () => {
-      expect(component.find('span').text()).to.equal('1 - 40 of 40');
+      expect(component.find('.page-count').text()).to.equal('Page 1 of 1');
     });
 
     it('should have a descriptive aria-label', () => {
       expect(component.find('span').prop('aria-label'))
-        .to.equal('Displaying 1 - 40 out of 40 total items.');
+        .to.equal('Displaying page 1 out of 1 total pages.');
     });
   });
 
@@ -56,21 +57,26 @@ describe('Pagination', () => {
     let component;
 
     before(() => {
-      component = mount(<Pagination hits={400} />);
+      component = mount(<Pagination total={400} />);
     });
 
-    it('should have a "next page" button since there are more than 51 items', () => {
-      expect(component.find('button')).to.have.length(1);
-      expect(component.find('.next').text()).to.equal('Next Page');
+    it('should have a first page class for the text display', () => {
+      expect(component.find('.first').length).to.equal(1);
+    });
+
+    // The SVG titles should maybe not be here:
+    it('should have a "next" link since there are more than 51 items', () => {
+      expect(component.find('Link').children().length).to.equal(1);
+      expect(component.find('.next-link').text()).to.equal('Wedge Right Arrow Next');
     });
 
     it('should display how many items are displayed', () => {
-      expect(component.find('span').text()).to.equal('1 - 50 of 400');
+      expect(component.find('span').text()).to.equal('Page 1 of 9');
     });
 
     it('should have a descriptive aria-label', () => {
       expect(component.find('span').prop('aria-label'))
-        .to.equal('Displaying 1 - 50 out of 400 total items.');
+        .to.equal('Displaying page 1 out of 9 total pages.');
     });
   });
 
@@ -78,22 +84,26 @@ describe('Pagination', () => {
     let component;
 
     before(() => {
-      component = mount(<Pagination hits={400} page="2" />);
+      component = mount(<Pagination total={400} page={2} />);
     });
 
-    it('should have a "previous page" and a "next page" button', () => {
-      expect(component.find('button')).to.have.length(2);
-      expect(component.find('.previous').text()).to.equal('Previous Page');
-      expect(component.find('.next').text()).to.equal('Next Page');
+    it('should not have a first page class for the text display', () => {
+      expect(component.find('.first').length).to.equal(0);
+    });
+
+    it('should have a "previous" and a "next" link', () => {
+      expect(component.find('Link').children().length).to.equal(2);
+      expect(component.find('.previous-link').text()).to.equal('Wedge Left Arrow Previous');
+      expect(component.find('.next-link').text()).to.equal('Wedge Right Arrow Next');
     });
 
     it('should display how many items are displayed', () => {
-      expect(component.find('span').text()).to.equal('51 - 100 of 400');
+      expect(component.find('span').text()).to.equal('Page 2 of 9');
     });
 
     it('should have a description aria-label', () => {
       expect(component.find('span').prop('aria-label'))
-        .to.equal('Displaying 51 - 100 out of 400 total items.');
+        .to.equal('Displaying page 2 out of 9 total pages.');
     });
   });
 
@@ -101,22 +111,22 @@ describe('Pagination', () => {
     let component;
 
     before(() => {
-      component = mount(<Pagination hits={4000} page="3" />);
+      component = mount(<Pagination total={4000} page={3} />);
     });
 
-    it('should have a "previous page" and a "next page" button', () => {
-      expect(component.find('button')).to.have.length(2);
-      expect(component.find('.previous').text()).to.equal('Previous Page');
-      expect(component.find('.next').text()).to.equal('Next Page');
+    it('should have a "previous page" and a "next page" link', () => {
+      expect(component.find('Link')).to.have.length(2);
+      expect(component.find('.previous-link').text()).to.equal('Wedge Left Arrow Previous');
+      expect(component.find('.next-link').text()).to.equal('Wedge Right Arrow Next');
     });
 
     it('should display how many items are displayed', () => {
-      expect(component.find('span').text()).to.equal('101 - 150 of 4,000');
+      expect(component.find('span').text()).to.equal('Page 3 of 81');
     });
 
     it('should have a description aria-label', () => {
       expect(component.find('span').prop('aria-label'))
-        .to.equal('Displaying 101 - 150 out of 4,000 total items.');
+        .to.equal('Displaying page 3 out of 81 total pages.');
     });
   });
 
@@ -124,108 +134,69 @@ describe('Pagination', () => {
     let component;
 
     before(() => {
-      component = shallow(<Pagination hits={4000} page="3" />);
+      component = shallow(<Pagination total={4000} page={3} />);
     });
 
     it('should have the method "getPage()"', () => {
-      expect(component.instance().getPage).to.be.defined;
+      expect(typeof component.instance().getPage).to.equal(typeof Function);
     });
 
     it('should return null if no arguments are passed', () => {
-      expect(component.instance().getPage()).to.be.null;
+      expect(component.instance().getPage()).to.equal(null);
     });
 
-    it('should return a button with "Next Page" as the default text', () => {
+    it('should return a link with "Next" as the default text', () => {
       const nextPage = component.instance().getPage(2);
 
-      expect(nextPage.type).to.equal('button');
       expect(nextPage.props.rel).to.equal('next');
-      expect(nextPage.props.children[0] + nextPage.props.children[1]).to.equal('Next Page');
+      expect(nextPage.props.className).to.equal('next-link');
+      expect(nextPage.props.children[2]).to.equal('Next');
     });
 
-    it('should return a button with "Previous Page"', () => {
+    it('should return a link with "Previous"', () => {
       const nextPage = component.instance().getPage(2, 'Previous');
 
-      expect(nextPage.type).to.equal('button');
       expect(nextPage.props.rel).to.equal('previous');
-      expect(nextPage.props.children[0] + nextPage.props.children[1]).to.equal('Previous Page');
+      expect(nextPage.props.className).to.equal('previous-link');
+      expect(nextPage.props.children[2]).to.equal('Previous');
     });
   });
 
   describe('Start on the first page and go to the second page', () => {
     let component;
-    let spyAxios;
+    let page = 1;
+    // Dummy function to test.
+    const updatePage = (updatedPage) => {
+      page = updatedPage;
+    };
 
     before(() => {
-      mock
-        .onGet('/api?q=war&page=2')
-        // Doesn't matter what data gets returned from the API for this component.
-        .reply(200, response);
-
-      spyAxios = sinon.spy(axios, 'get');
-
-      component = mount(<Pagination hits={1000} location={{ query: { q: 'war' } }} />, {
-        context: { router: [] },
-      });
+      component = mount(<Pagination total={1000} page={page} updatePage={updatePage} />);
     });
 
-    after(() => {
-      spyAxios.restore();
-      mock.reset();
-    });
-
-    it('should only have the "next" button', () => {
-      expect(component.find('button')).to.have.length(1);
-      expect(component.find('.next').text()).to.equal('Next Page');
-    });
-
-    it('should fetch data for the second page when the "next" button is clicked', () => {
-      const nextButton = component.find('.next');
-      expect(nextButton.text()).to.equal('Next Page');
-
-      nextButton.simulate('click');
-
-      expect(spyAxios.calledOnce).to.be.true;
-      expect(spyAxios.calledWith('/api?q=war&page=2')).to.be.true;
+    it('should return "2" since the next link was clicked', () => {
+      expect(page).to.equal(1);
+      component.find('.next-link').simulate('click');
+      expect(page).to.equal(2);
     });
   });
 
   describe('Start on the second page and go to the first page', () => {
     let component;
-    let spyAxios;
+    let page = 2;
+    // Dummy function to test.
+    const updatePage = (updatedPage) => {
+      page = updatedPage;
+    };
 
     before(() => {
-      mock
-        .onGet('/api?q=war')
-        .reply(200, response);
-
-      spyAxios = sinon.spy(axios, 'get');
-
-      component = mount(<Pagination hits={1000} location={{ query: { q: 'war' } }} page="2" />, {
-        context: { router: [] },
-      });
+      component = mount(<Pagination total={1000} page={page} updatePage={updatePage} />);
     });
 
-    after(() => {
-      spyAxios.restore();
-      mock.reset();
-    });
-
-    it('should have a "previous" and "next" button', () => {
-      expect(component.find('button')).to.have.length(2);
-      expect(component.find('.previous').text()).to.equal('Previous Page');
-      expect(component.find('.next').text()).to.equal('Next Page');
-    });
-
-    it('should fetch data for the first page when the "previous" button is clicked', () => {
-      const previousButton = component.find('.previous');
-      expect(previousButton.text()).to.equal('Previous Page');
-
-      previousButton.simulate('click');
-
-      expect(spyAxios.calledOnce).to.be.true;
-      // No `&page` param to get initial data for page 1.
-      expect(spyAxios.calledWith('/api?q=war')).to.be.true;
+    it('should perform the passed function when it is clicked', () => {
+      expect(page).to.equal(2);
+      component.find('.previous-link').simulate('click');
+      expect(page).to.equal(1);
     });
   });
 });
