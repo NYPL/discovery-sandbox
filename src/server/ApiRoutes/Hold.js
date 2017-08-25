@@ -15,7 +15,7 @@ import nyplApiClient from '../routes/nyplApiClient';
 import logger from '../../../logger';
 
 const nyplApiClientGet = (endpoint) =>
-  nyplApiClient().then(client => client.get(endpoint));
+  nyplApiClient().then(client => client.get(endpoint, { cache: false }));
 
 const nyplApiClientPost = (endpoint, opts) =>
   nyplApiClient().then(client => client.post(endpoint, opts));

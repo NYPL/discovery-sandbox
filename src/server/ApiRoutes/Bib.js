@@ -2,7 +2,7 @@ import nyplApiClient from '../routes/nyplApiClient';
 import logger from '../../../logger';
 
 const nyplApiClientCall = (query) =>
-  nyplApiClient().then(client => client.get(`/discovery/resources/${query}`));
+  nyplApiClient().then(client => client.get(`/discovery/resources/${query}`, { cache: false }));
 
 function fetchBib(bibId, cb, errorcb) {
   return nyplApiClientCall(bibId)
