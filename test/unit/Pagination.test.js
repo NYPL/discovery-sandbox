@@ -2,14 +2,8 @@
 import React from 'react';
 import { expect } from 'chai';
 import { shallow, mount } from 'enzyme';
-import sinon from 'sinon';
-import MockAdapter from 'axios-mock-adapter';
-import axios from 'axios';
 
 import Pagination from '../../src/app/components/Pagination/Pagination.jsx';
-
-const mock = new MockAdapter(axios);
-const response = { searchResults: {} };
 
 // The Pagination component displays the items currently being displayed. If there are more
 // than 50 items then the "next" link gets rendered. If the page prop is greater than 1,
