@@ -133,6 +133,7 @@ class BibPage extends React.Component {
                   <BibDetails
                     bib={bib}
                     fields={topFields}
+                    updateIsLoadingState={this.updateIsLoadingState}
                   />
 
                   {itemHoldings}

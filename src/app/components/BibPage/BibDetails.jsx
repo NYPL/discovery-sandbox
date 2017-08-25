@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
+import Actions from '../../actions/Actions.js';
 import {
   isArray as _isArray,
   isEmpty as _isEmpty,
@@ -10,7 +11,6 @@ import {
 } from 'underscore';
 
 import { ajaxCall } from '../../utils/utils';
-import Actions from '../../actions/Actions';
 import DefinitionList from './DefinitionList';
 import appConfig from '../../../../appConfig.js';
 
@@ -283,7 +283,7 @@ class BibDetails extends React.Component {
   newSearch(e, query) {
     e.preventDefault();
 
-    Actions.updateSpinner(true);
+    this.props.updateIsLoadingState(true);
     ajaxCall(`${appConfig.baseUrl}/api?${query}`, (response) => {
       const closingBracketIndex = query.indexOf(']');
       const equalIndex = query.indexOf('=') + 1;
@@ -328,7 +328,7 @@ class BibDetails extends React.Component {
       Actions.updateSearchKeywords('');
       Actions.updatePage('1');
       this.context.router.push(`${appConfig.baseUrl}/search?${query}`);
-      Actions.updateSpinner(false);
+      this.props.updateIsLoadingState(false);
     });
   }
 
@@ -346,6 +346,7 @@ class BibDetails extends React.Component {
 BibDetails.propTypes = {
   bib: PropTypes.object,
   fields: PropTypes.array,
+  updateIsLoadingState: PropTypes.func,
 };
 
 BibDetails.contextTypes = {
