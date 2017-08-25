@@ -64,7 +64,10 @@ class BibDetails extends React.Component {
 
       if (fieldLinkable) {
         return (
-          <Link onClick={e => this.newSearch(e, url)} to={`${appConfig.baseUrl}/search?${url}`}>
+          <Link
+            onClick={e => this.newSearch(e, url, fieldValue, bibValue['@id'])}
+            to={`${appConfig.baseUrl}/search?${url}`}
+          >
             {bibValue.prefLabel}
           </Link>
         );
@@ -86,7 +89,7 @@ class BibDetails extends React.Component {
             const url = `filters[${fieldValue}]=${value['@id']}`;
             let itemValue = fieldLinkable ?
               <Link
-                onClick={e => this.newSearch(e, url)}
+                onClick={e => this.newSearch(e, url, fieldValue, value['@id'])}
                 to={`${appConfig.baseUrl}/search?${url}`}
               >
                 {value.prefLabel}
@@ -147,7 +150,10 @@ class BibDetails extends React.Component {
 
       if (fieldLinkable) {
         return (
-          <Link onClick={e => this.newSearch(e, url)} to={`${appConfig.baseUrl}/search?${url}`}>
+          <Link
+            onClick={e => this.newSearch(e, url, fieldValue, bibValue)}
+            to={`${appConfig.baseUrl}/search?${url}`}
+          >
             {bibValue}
           </Link>
         );
@@ -172,7 +178,7 @@ class BibDetails extends React.Component {
                 {
                   fieldLinkable ?
                     <Link
-                      onClick={e => this.newSearch(e, url)}
+                      onClick={e => this.newSearch(e, url, fieldValue, value)}
                       to={`${appConfig.baseUrl}/search?${url}`}
                     >
                       {value}
@@ -280,18 +286,11 @@ class BibDetails extends React.Component {
     return fieldsToRender;
   }
 
-  newSearch(e, query) {
+  newSearch(e, query, field, value) {
     e.preventDefault();
 
-    Actions.updateSpinner(true);
     ajaxCall(`${appConfig.baseUrl}/api?${query}`, (response) => {
-      const closingBracketIndex = query.indexOf(']');
-      const equalIndex = query.indexOf('=') + 1;
-
-      const field = query.substring(8, closingBracketIndex);
-      const value = query.substring(equalIndex);
-
-      let index;
+      let index = 0;
 
       if (response.data.facet) {
         // Find the index where the field exists in the list of facets from the API
@@ -299,7 +298,8 @@ class BibDetails extends React.Component {
       }
 
       // If the index exists, try to find the facet value from the API
-      if (response.data.facets && response.data.facets.itemListElement[index]) {
+      if (response.data.facets && response.data.facets.itemListElement
+        && response.data.facets.itemListElement[index]) {
         const facet = _findWhere(response.data.facets.itemListElement[index].values, { value });
 
         // The API may return a list of facets in the selected field, but the wanted
@@ -321,14 +321,12 @@ class BibDetails extends React.Component {
         });
       }
 
-      if (response.data.searchResults && response.data.facets) {
+      if (response.data.searchResults) {
         Actions.updateSearchResults(response.data.searchResults);
-        Actions.updateFacets(response.data.facets);
       }
       Actions.updateSearchKeywords('');
       Actions.updatePage('1');
       this.context.router.push(`${appConfig.baseUrl}/search?${query}`);
-      Actions.updateSpinner(false);
     });
   }
 
