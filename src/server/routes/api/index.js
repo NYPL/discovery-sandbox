@@ -12,7 +12,7 @@ export function getPatronData(req, res, next) {
 
     return nyplApiClient()
       .then(client =>
-        client.get(`/patrons/${userId}`)
+        client.get(`/patrons/${userId}`, { cache: false })
           .then((response) => {
             if (_isEmpty(response)) {
               // Data is empty for the Patron
