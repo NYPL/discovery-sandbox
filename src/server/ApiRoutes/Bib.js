@@ -3,7 +3,7 @@ import logger from '../../../logger';
 import appConfig from '../../../appConfig.js';
 
 const nyplApiClientCall = (query) =>
-  nyplApiClient().then(client => client.get(`/discovery/resources/${query}`));
+  nyplApiClient().then(client => client.get(`/discovery/resources/${query}`, { cache: false }));
 
 function fetchBib(bibId, cb, errorcb) {
   return nyplApiClientCall(bibId)
