@@ -37,7 +37,7 @@ describe('Pagination', () => {
       expect(component.find('Link').children().length).to.equal(0);
     });
 
-    it('should display how many items are displayed', () => {
+    it('should display what page you are on', () => {
       expect(component.find('.page-count').text()).to.equal('Page 1 of 1');
     });
 
@@ -58,13 +58,18 @@ describe('Pagination', () => {
       expect(component.find('.first').length).to.equal(1);
     });
 
+    it('should not have a previous link', () => {
+      expect(component.find('Link').children().length).to.equal(1);
+      expect(component.find('.previous-link').length).to.equal(0);
+    });
+
     // The SVG titles should maybe not be here:
     it('should have a "next" link since there are more than 51 items', () => {
       expect(component.find('Link').children().length).to.equal(1);
       expect(component.find('.next-link').text()).to.equal('Wedge Right Arrow Next');
     });
 
-    it('should display how many items are displayed', () => {
+    it('should display what page you are on', () => {
       expect(component.find('span').text()).to.equal('Page 1 of 9');
     });
 
@@ -91,7 +96,7 @@ describe('Pagination', () => {
       expect(component.find('.next-link').text()).to.equal('Wedge Right Arrow Next');
     });
 
-    it('should display how many items are displayed', () => {
+    it('should display what page you are on', () => {
       expect(component.find('span').text()).to.equal('Page 2 of 9');
     });
 
@@ -114,7 +119,7 @@ describe('Pagination', () => {
       expect(component.find('.next-link').text()).to.equal('Wedge Right Arrow Next');
     });
 
-    it('should display how many items are displayed', () => {
+    it('should display what page you are on', () => {
       expect(component.find('span').text()).to.equal('Page 3 of 81');
     });
 
