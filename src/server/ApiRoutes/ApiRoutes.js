@@ -17,6 +17,7 @@ function MainApp(req, res, next) {
     sortBy: 'relevance',
     field: 'all',
     error: {},
+    isLoading: false,
   };
 
   next();

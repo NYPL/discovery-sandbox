@@ -38,7 +38,7 @@ class Actions {
     return sort;
   }
 
-  updateSpinner(data) {
+  updateLoadingStatus(data) {
     return data;
   }
 

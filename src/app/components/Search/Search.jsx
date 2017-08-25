@@ -17,7 +17,6 @@ class Search extends React.Component {
     super(props);
 
     this.state = {
-      spinning: this.props.spinning,
       field: this.props.field || 'all',
       searchKeywords: this.props.searchKeywords,
     };
@@ -82,7 +81,7 @@ class Search extends React.Component {
     });
 
     Actions.updateField(this.state.field);
-    Actions.updateSpinner(true);
+    this.props.updateIsLoadingState(true);
     Actions.updateSearchKeywords(keyword);
     Actions.updateSelectedFacets({});
 
@@ -97,21 +96,19 @@ class Search extends React.Component {
       Actions.updateSortBy('relevance');
       Actions.updatePage('1');
 
+      this.props.updateIsLoadingState(false);
       this.context.router.push(`${appConfig.baseUrl}/search?${apiQuery}`);
-      Actions.updateSpinner(false);
     });
   }
 
   render() {
-    const spinningClass = this.state.spinning ? 'spinning' : '';
-
     return (
       <form
         onKeyPress={this.triggerSubmit}
         action={`${appConfig.baseUrl}/search`}
         method="POST"
       >
-        <div className={`nypl-omnisearch style-2 nypl-spinner-field ${spinningClass}`}>
+        <div className="nypl-omnisearch style-2 nypl-spinner-field">
           <span className="nypl-omni-fields">
             <label htmlFor="search-by-field">Search in</label>
             <select
@@ -148,14 +145,14 @@ class Search extends React.Component {
 Search.propTypes = {
   field: PropTypes.string,
   searchKeywords: PropTypes.string,
-  spinning: PropTypes.bool,
   createAPIQuery: PropTypes.func,
+  updateIsLoadingState: PropTypes.func,
 };
 
 Search.defaultProps = {
   field: 'all',
   searchKeywords: '',
-  spinning: false,
+  updateIsLoadingState: () => {},
 };
 
 Search.contextTypes = {

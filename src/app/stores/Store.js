@@ -14,7 +14,7 @@ class Store {
       removeFacet: Actions.removeFacet,
       updatePage: Actions.updatePage,
       updateSortBy: Actions.updateSortBy,
-      updateSpinner: Actions.updateSpinner,
+      updateLoadingStatus: Actions.updateLoadingStatus,
       updateField: Actions.updateField,
       updateForm: Actions.updateForm,
       updateDeliveryLocations: Actions.updateDeliveryLocations,
@@ -29,7 +29,7 @@ class Store {
       selectedFacets: {},
       page: '1',
       sortBy: 'relevance',
-      spinning: false,
+      isLoading: false,
       field: 'all',
       error: {},
       form: {},
@@ -76,8 +76,8 @@ class Store {
     this.setState({ sortBy });
   }
 
-  updateSpinner(data) {
-    this.setState({ spinning: data });
+  updateLoadingStatus(data) {
+    this.setState({ isLoading: data });
   }
 
   updateField(data) {
