@@ -55,11 +55,11 @@ describe('ResultsCount', () => {
   });
 
   describe('Loading display', () => {
-    const spinning = true;
+    const isLoading = true;
     let component;
 
     before(() => {
-      component = shallow(<ResultsCount searchKeywords="locofocos" spinning={spinning} />);
+      component = shallow(<ResultsCount searchKeywords="locofocos" isLoading={isLoading} />);
     });
 
     it('should output that no results were found', () => {
