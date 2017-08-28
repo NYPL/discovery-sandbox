@@ -336,7 +336,7 @@ class BibDetails extends React.Component {
     }
 
     const bibDetails = this.getDisplayFields(this.props.bib);
-console.log(bibDetails);
+
     return (<DefinitionList data={bibDetails} />);
   }
 }
