@@ -1,81 +1,76 @@
 /* eslint-env mocha */
 import React from 'react';
-import sinon from 'sinon';
 import { expect } from 'chai';
-import { mount } from 'enzyme';
+import { shallow } from 'enzyme';
 // Import the component that is going to be tested
 import ItemTable from './../../src/app/components/Item/ItemTable.jsx';
 
 describe('ItemTable', () => {
-  describe('If <ItemTable> receives no data', () => {
-    it('should have no <table>, <caption>, and <thead>.', () => {
-
+  describe('No rendered table', () => {
+    it('should return null with no props passed', () => {
+      const component = shallow(<ItemTable />);
+      expect(component.type()).to.equal(null);
     });
 
-    it('should have no <tbody>.', () => {
-
-    });
-  });
-
-  describe('If <ItemTable> receives an array with valid data', () => {
-    it('should have a <table>, <caption> with the texts "Item details", <thead> with a <tr>.',
-      () => {
-
+    it('should return null with no items passed', () => {
+      const component = shallow(<ItemTable items={[]} />);
+      expect(component.type()).to.equal(null);
     });
 
-    it('should have the <tr> with five <th>, the contents of the <th> are "Location", ' +
-      '"Call No.", "Status", "Message", and "".', () => {
+    it('should return null if items is not an array', () => {
+      const stringItem = shallow(<ItemTable items={'not an array'} />);
+      const objectItem = shallow(<ItemTable items={{ object: 'not an array' }} />);
 
-      }
-    );
-
-    it('should have the same number of the <tr> in its <tbody> as the data lenght it gets.', () => {
-
-    });
-
-    it('should render the item with its "location", "status", and "accessMessage" values', () => {
-
+      expect(stringItem.type()).to.equal(null);
+      expect(objectItem.type()).to.equal(null);
     });
   });
 
-  describe('If <ItemTable> receives an item without valid "requestable" value', () => {
-    it('should render the item with no request link.', () => {
+  describe('Basic <table> structure', () => {
+    const data = [
+      { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
+      { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
+      { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
+    ];
+    let component;
 
+    before(() => {
+      component = shallow(<ItemTable items={data} />);
     });
-  });
 
-  describe('If <ItemTable> receives an item with "requestable" value, but ' +
-    '"availability" is not available""', () => {
-    it('should render the item with no request link and the render the hint "Unavailable".', () => {
-
+    it('should be wrapped in a table element', () => {
+      expect(component.type()).to.equal('table');
+      expect(component.find('table').length).to.equal(1);
+      expect(component.find('table').prop('className')).to.equal('nypl-basic-table');
     });
 
-    it('should have the <tr> with the class "unavailable".', () => {
-
+    it('should have a <caption> element set to "Item details".', () => {
+      expect(component.find('caption').length).to.equal(1);
+      expect(component.find('caption').text()).to.equal('Item details');
     });
-  });
 
-  describe('If <ItemTable> receives an item with valid "requestable" value and ' +
-    '"availability" is available""', () => {
-      it('should render the item with request link. The link\'s href should be ' +
-        '"/hold/request/[bibId]-[itemId]". The link\'s text should be "Request".', () => {
-
-      });
-
-      it('should have the <tr> with the class "available".', () => {
-
-      });
-  });
-
-  describe('If <ItemTable> receives an item with "callNumber" value', () => {
-    it('should render the item with the "callNumber" value', () => {
-
+    it('should have a <thead> and a <tbody>', () => {
+      expect(component.find('thead').length).to.equal(1);
+      expect(component.find('tbody').length).to.equal(1);
     });
-  });
 
-  describe('If <ItemTable> receives an item with "isElectronicResource" value', () => {
-    it('should render the item with two "location" value', () => {
+    it('should have a <tr> with four headings <th> in the >thead>', () => {
+      const header = component.find('thead');
 
+      expect(header.find('tr').length).to.equal(1);
+      expect(header.find('th').length).to.equal(4);
+      expect(header.find('th').at(0).text()).to.equal('LOCATION');
+      expect(header.find('th').at(1).text()).to.equal('CALL NO.');
+      expect(header.find('th').at(2).text()).to.equal('STATUS');
+      expect(header.find('th').at(3).text()).to.equal('MESSAGE');
+    });
+
+    it('should have the same number <tr> elements in its <tbody> as the item length.', () => {
+      const tbody = component.find('tbody');
+      // Need to render the subcomponent first:
+      const tr = tbody.render().find('tr');
+
+      expect(tr.length).to.equal(3);
     });
   });
 });
