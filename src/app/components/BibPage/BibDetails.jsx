@@ -281,6 +281,16 @@ class BibDetails extends React.Component {
           });
         }
       }
+
+      if (fieldLabel === 'Electronic Resource') {
+        const electronicResources = this.props.electronicResources;
+        fieldsToRender.push({
+          term: fieldLabel,
+          definition: electronicResources.map((e, i) => (
+            <a key={i} href={e.url} target="_blank">{e.prefLabel}</a>
+          )),
+        });
+      }
     }); // End of the forEach loop
 
     return fieldsToRender;
@@ -344,6 +354,11 @@ class BibDetails extends React.Component {
 BibDetails.propTypes = {
   bib: PropTypes.object,
   fields: PropTypes.array,
+  electronicResources: PropTypes.array,
+};
+
+BibDetails.defaultProps = {
+  electronicResources: [],
 };
 
 BibDetails.contextTypes = {
