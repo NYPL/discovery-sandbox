@@ -28,6 +28,12 @@ class SearchResultsPage extends React.Component {
     this.updateIsLoadingState = this.updateIsLoadingState.bind(this);
   }
 
+  componentDidUpdate() {
+    if (this.loadingLayer) {
+      this.loadingLayer.focus();
+    }
+  }
+
   updateIsLoadingState(status) {
     setTimeout(
       () => {
@@ -73,7 +79,14 @@ class SearchResultsPage extends React.Component {
         title="Search Results | Shared Collection Catalog | NYPL"
       >
         <main className="main-page">
-          <LoadingLayer status={this.state.isLoading} title="Searching" />
+          {this.state.isLoading &&
+            <LoadingLayer
+              status={this.state.isLoading}
+              title="Searching"
+              childRef={(c) => { this.loadingLayer = c; }}
+              tabIndex={0}
+            />
+          }
           <div className="nypl-page-header">
             <div className="nypl-full-width-wrapper">
               <div className="nypl-row">

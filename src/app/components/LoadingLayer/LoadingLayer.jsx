@@ -19,7 +19,11 @@ class LoadingLayer extends React.Component {
           <span id="loading-animation" className="loadingLayer-texts-loadingWord">
             Loading...
           </span>
-          <span id="lloading-description" className="loadingLayer-texts-title">
+          <span
+            id="lloading-description"
+            className="loadingLayer-texts-title"
+            ref={this.props.childRef}
+          >
             {this.props.title}
           </span>
           <div className="loadingDots">
@@ -37,6 +41,7 @@ class LoadingLayer extends React.Component {
 LoadingLayer.propTypes = {
   status: PropTypes.bool,
   title: PropTypes.string,
+  childRef: PropTypes.func,
 };
 
 LoadingLayer.defaultProps = {
