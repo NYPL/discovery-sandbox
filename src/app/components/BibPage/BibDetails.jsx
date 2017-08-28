@@ -267,7 +267,7 @@ class BibDetails extends React.Component {
       }
 
       // This is made up of three different bib property values so it's special.
-      if (fieldLabel === 'Publication') {
+      if (fieldLabel === 'Publication' && publicationInfo) {
         fieldsToRender.push(publicationInfo);
       }
 
@@ -336,7 +336,7 @@ class BibDetails extends React.Component {
     }
 
     const bibDetails = this.getDisplayFields(this.props.bib);
-
+console.log(bibDetails);
     return (<DefinitionList data={bibDetails} />);
   }
 }
