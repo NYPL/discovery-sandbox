@@ -15,10 +15,13 @@ class Feedback extends React.Component {
     alert('Thank you, your feedback has been submitted.');
   }
 
-  toggleForm() {
-    this.setState({
-      showForm: !this.state.showForm,
-    });
+  openForm() {
+    this.setState({ showForm: true });
+    this.refs.commentText.value = '';
+  }
+
+  closeForm() {
+    this.setState({ showForm: false });
     this.refs.commentText.value = '';
   }
 
@@ -28,12 +31,29 @@ class Feedback extends React.Component {
 
     return (
       <div className="feedback">
-        <button className="feedback-button" onClick={() => this.toggleForm()}>
+        <button
+          className="feedback-button"
+          onClick={() => this.openForm()}
+          aria-haspopup="true"
+          aria-expanded={showForm}
+          aria-controls="feedback-menu"
+        >
           Feedback
         </button>
-        <div className={`feedback-form-container${showForm ? ' active' : ''}`}>
+        <button
+          className={`feedback-button ${!showForm ? 'hidden' : ''}`}
+          onClick={() => this.closeForm()}
+        >
+          Cancel
+        </button>
+        <div
+          id="feedback-menu"
+          role="menu"
+          className={`feedback-form-container${showForm ? ' active' : ''}`}
+        >
           <form
-            action="https://docs.google.com/a/nypl.org/forms/d/e/1FAIpQLScnoQV5OjAP-Y9BOJ1PO9YpMdLjMyWn7VOTFSrDhCAP5ZN5Dw/formResponse"
+            action={'https://docs.google.com/a/nypl.org/forms/d/e/1FAIpQLScnoQV5OjAP-Y9BOJ1PO9' +
+              'YpMdLjMyWn7VOTFSrDhCAP5ZN5Dw/formResponse'}
             target="hidden_feedback_iframe"
             method="POST"
             onSubmit={() => this.onSubmitForm()}
