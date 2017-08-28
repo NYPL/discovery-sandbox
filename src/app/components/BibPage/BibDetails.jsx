@@ -282,13 +282,29 @@ class BibDetails extends React.Component {
         }
       }
 
-      if (fieldLabel === 'Electronic Resource') {
+      if (fieldLabel === 'Electronic Resource' && this.props.electronicResources.length) {
         const electronicResources = this.props.electronicResources;
+        let electronicElem;
+
+        if (electronicResources.length === 1) {
+          const electronicItem = electronicResources[0];
+          electronicElem =
+            <a href={electronicItem.url} target="_blank">{electronicItem.prefLabel}</a>;
+        } else {
+          electronicElem = (
+            <ul>
+              {
+                electronicResources.map((e, i) => (
+                  <li key={i}><a href={e.url} target="_blank">{e.prefLabel}</a></li>
+                ))
+              }
+            </ul>
+          );
+        }
+
         fieldsToRender.push({
           term: fieldLabel,
-          definition: electronicResources.map((e, i) => (
-            <a key={i} href={e.url} target="_blank">{e.prefLabel}</a>
-          )),
+          definition: electronicElem,
         });
       }
     }); // End of the forEach loop
