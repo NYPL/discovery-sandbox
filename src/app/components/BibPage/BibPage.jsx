@@ -11,7 +11,10 @@ import LibraryItem from '../../utils/item';
 import BackLink from './BackLink';
 import MarcRecord from './MarcRecord';
 
-import { basicQuery } from '../../utils/utils';
+import {
+  basicQuery,
+  getAggregatedElectronicResources,
+} from '../../utils/utils';
 
 class BibPage extends React.Component {
   constructor(props) {
@@ -38,7 +41,8 @@ class BibPage extends React.Component {
     const bibId = bib && bib['@id'] ? bib['@id'].substring(4) : '';
     const title = bib.title && bib.title.length ? bib.title[0] : '';
     const items = LibraryItem.getItems(bib);
-    const electronicItems = _every(items, (i) => i.isElectronicResource);
+    const isElectronicResources = _every(items, (i) => i.isElectronicResource);
+    const aggregatedElectronicResources = getAggregatedElectronicResources(items);
     const isNYPLReCAP = LibraryItem.isNYPLReCAP(bib['@id']);
     const bNumber = bib && bib.idBnum ? bib.idBnum : '';
     const searchURL = createAPIQuery({});
@@ -58,7 +62,7 @@ class BibPage extends React.Component {
     ];
     const bottomFields = [
       { label: 'Publication', value: 'React Component' },
-      { label: 'Electronic Resource', value: '' },
+      { label: 'Electronic Resource', value: 'React Component' },
       { label: 'Description', value: 'extent' },
       { label: 'Subject', value: 'subjectLiteral', linkable: true },
       { label: 'Genre/Form', value: 'materialType' },
@@ -74,7 +78,7 @@ class BibPage extends React.Component {
       { label: 'Owning Institutions', value: '' },
     ];
 
-    const itemHoldings = items.length && !electronicItems ?
+    const itemHoldings = items.length && !isElectronicResources ?
       <ItemHoldings
         shortenItems={shortenItems}
         items={items}
@@ -142,6 +146,7 @@ class BibPage extends React.Component {
                   <BibDetails
                     bib={bib}
                     fields={bottomFields}
+                    electronicResources={aggregatedElectronicResources}
                   />
                   {marcRecord}
                 </div>

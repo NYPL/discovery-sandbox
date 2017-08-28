@@ -281,6 +281,32 @@ class BibDetails extends React.Component {
           });
         }
       }
+
+      if (fieldLabel === 'Electronic Resource' && this.props.electronicResources.length) {
+        const electronicResources = this.props.electronicResources;
+        let electronicElem;
+
+        if (electronicResources.length === 1) {
+          const electronicItem = electronicResources[0];
+          electronicElem =
+            <a href={electronicItem.url} target="_blank">{electronicItem.prefLabel}</a>;
+        } else {
+          electronicElem = (
+            <ul>
+              {
+                electronicResources.map((e, i) => (
+                  <li key={i}><a href={e.url} target="_blank">{e.prefLabel}</a></li>
+                ))
+              }
+            </ul>
+          );
+        }
+
+        fieldsToRender.push({
+          term: fieldLabel,
+          definition: electronicElem,
+        });
+      }
     }); // End of the forEach loop
 
     return fieldsToRender;
@@ -338,7 +364,7 @@ class BibDetails extends React.Component {
     }
 
     const bibDetails = this.getDisplayFields(this.props.bib);
-console.log(bibDetails);
+
     return (<DefinitionList data={bibDetails} />);
   }
 }
@@ -347,6 +373,11 @@ BibDetails.propTypes = {
   bib: PropTypes.object,
   fields: PropTypes.array,
   updateIsLoadingState: PropTypes.func,
+  electronicResources: PropTypes.array,
+};
+
+BibDetails.defaultProps = {
+  electronicResources: [],
 };
 
 BibDetails.contextTypes = {

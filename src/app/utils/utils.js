@@ -13,6 +13,7 @@ import {
   isArray as _isArray,
   extend as _extend,
   chain as _chain,
+  flatten as _flatten,
 } from 'underscore';
 
 import appConfig from '../../../appConfig.js';
@@ -400,6 +401,28 @@ function parseServerSelectedFilters(filters, dateAfter, dateBefore) {
   return selectedFacets;
 }
 
+/**
+ * getAggregatedElectronicResources(items)
+ * Get an aggregated array of electronic items from each item if available.
+ * @param {array} items
+ * @return {object}
+ */
+function getAggregatedElectronicResources(items = []) {
+  if (!items && !items.length) {
+    return [];
+  }
+
+  const electronicResources = [];
+
+  _forEach(items, item => {
+    if (item.isElectronicResource) {
+      electronicResources.push(item.electronicResources);
+    }
+  });
+
+  return _flatten(electronicResources);
+}
+
 export {
   collapse,
   trackDiscovery,
@@ -414,4 +437,5 @@ export {
   basicQuery,
   getReqParams,
   parseServerSelectedFilters,
+  getAggregatedElectronicResources,
 };
