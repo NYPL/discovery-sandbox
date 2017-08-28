@@ -171,3 +171,66 @@ input[type=submit]:focus {
   outline-style: solid;
   outline-width: 3px;
 }
+
+.nypl-results-list {
+  table {
+    thead {
+      tr {
+        @include media($mobile-breakpoint) {
+          @include visuallyHidden;
+        }
+      }
+    }
+
+    td {
+      &::before {
+        content: '';
+        display: none;
+      }
+
+      @include media($mobile-breakpoint) {
+        display: block;
+        position: relative;
+        width: 100%;
+
+        &::before {
+          display: block;
+          float: left;
+          font-weight: bold;
+          margin-bottom: 2rem;
+          width: 40%;
+        }
+
+        &:nth-of-type(1)::before {
+          content: "LOCATION";
+        }
+        &:nth-of-type(2)::before {
+          content: "CALL NO.";
+        }
+        &:nth-of-type(3)::before {
+          content: "STATUS";
+        }
+        &:nth-of-type(4)::before {
+          content: "MESSAGE";
+        }
+      }
+    }
+  }
+
+  .nypl-basic-table {
+    @include media($mobile-breakpoint) {
+      thead {
+        th:first-child,
+        th:last-child {
+          display: block;
+        }
+      }
+      tbody {
+        td:first-child,
+        td:last-child {
+          display: block;
+        }
+      }
+    }
+  }
+}
