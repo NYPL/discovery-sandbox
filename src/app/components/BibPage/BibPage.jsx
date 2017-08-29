@@ -42,16 +42,17 @@ class BibPage extends React.Component {
     const title = bib.title && bib.title.length ? bib.title[0] : '';
     const items = LibraryItem.getItems(bib);
     const isElectronicResources = _every(items, (i) => i.isElectronicResource);
-    const aggregatedElectronicResources = getAggregatedElectronicResources(items);
     const isNYPLReCAP = LibraryItem.isNYPLReCAP(bib['@id']);
     const bNumber = bib && bib.idBnum ? bib.idBnum : '';
     const searchURL = createAPIQuery({});
     const itemPage = this.props.location.search;
+    const aggregatedElectronicResources = getAggregatedElectronicResources(items);
     let shortenItems = true;
 
     if (this.props.location.pathname.indexOf('all') === -1) {
       shortenItems = false;
     }
+
     // `linkable` means that those values are links inside the app.
     // `selfLinkable` means that those values are external links and should be self-linked,
     // e.g. the prefLabel is the label and the URL is the id.
