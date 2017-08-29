@@ -18,6 +18,12 @@ class Home extends React.Component {
     this.updateIsLoadingState = this.updateIsLoadingState.bind(this);
   }
 
+  componentDidUpdate() {
+    if (this.loadingLayer) {
+      this.loadingLayer.focus();
+    }
+  }
+
   updateIsLoadingState(status) {
     setTimeout(
       () => {
@@ -30,7 +36,11 @@ class Home extends React.Component {
     return (
       <DocumentTitle title="Shared Collection Catalog | NYPL">
         <div className="home" id="mainContent">
-          <LoadingLayer status={this.state.isLoading} title="Searching" />
+          <LoadingLayer
+            status={this.state.isLoading}
+            title="Searching"
+            childRef={(c) => { this.loadingLayer = c; }}
+          />
           <div className="nypl-homepage-hero">
             <div className="nypl-full-width-wrapper">
               <div className="nypl-row">
@@ -100,7 +110,8 @@ class Home extends React.Component {
               <div className="nypl-column-three-quarters image-column-three-quarters">
                 <h3><a href="/research/support">Support</a></h3>
                 <p>
-                  Plan your in-person research visit and discover resources for scholars and writers.
+                  Plan your in-person research visit and discover resources for scholars and
+                  writers.
                 </p>
               </div>
             </div>
