@@ -127,12 +127,20 @@ class HoldConfirmation extends React.Component {
         </span>
       );
     }
+
     let text = 'Start a new search';
+
     if (this.props.location.query.searchKeywords) {
       text = 'start a new search';
     }
 
-    return (<Link to={`${appConfig.baseUrl}/`} onClick={(e) => this.goRestart(e)}>{text}</Link>);
+    return (
+      <Link
+        id="start-new-search"
+        to={`${appConfig.baseUrl}/`}
+        onClick={(e) => this.goRestart(e)}>{text}
+      </Link>
+    );
   }
 
   /**
@@ -223,7 +231,7 @@ class HoldConfirmation extends React.Component {
           <h3 id="item-information">Item Information</h3>
           <p>
             We've received your request
-            for <Link to={`${appConfig.baseUrl}/bib/${bibId}`}>{title}</Link>
+            for <Link id="item-link" to={`${appConfig.baseUrl}/bib/${bibId}`}>{title}</Link>
           </p>
           <p>
             Please check your library account for updates. The item will be listed as

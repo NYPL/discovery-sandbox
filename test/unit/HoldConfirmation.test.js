@@ -100,6 +100,10 @@ describe('HoldConfirmation', () => {
       },
     };
 
+    const bib = {
+      title: ['Harry Potter'],
+    };
+
     before(() => {
       Actions.updatePatronData({
         id: '6677200',
@@ -107,7 +111,7 @@ describe('HoldConfirmation', () => {
         barcodes: ['162402680435300'],
       });
       requireUser = sinon.spy(HoldConfirmation.prototype, 'requireUser');
-      component = mount(<HoldConfirmation location={location} />);
+      component = mount(<HoldConfirmation location={location} bib={bib} />);
     });
 
     after(() => {
@@ -141,19 +145,17 @@ describe('HoldConfirmation', () => {
     });
 
     it('should deliver the item\'s title on the page.', () => {
+      const main = component.find('main');
 
-    });
-
-    it('should deliver the link to the patron\'s account page.', () => {
-
-    });
-
-    it('should deliver the location information.', () => {
-
+      expect(main.find('#item-link')).to.have.length(1);
+      expect(main.find('#item-link').text()).to.equal('Harry Potter');
     });
 
     it('should have the link back to homepage.', () => {
+      const main = component.find('main');
 
+      expect(main.find('#start-new-search')).to.have.length(1);
+      expect(main.find('#start-new-search').text()).to.equal('start a new search');
     });
   });
 
@@ -161,7 +163,6 @@ describe('HoldConfirmation', () => {
     it('should have the link back to search result.', () => {
 
     });
-
   });
 
   describe('If the patron get here from a classic catalog search result page, <HoldConfirmation>',
