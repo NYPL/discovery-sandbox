@@ -91,8 +91,53 @@ describe('HoldConfirmation', () => {
   );
 
   describe('If the patron is logged in and the App receives valid data, <HoldConfirmation>', () => {
-    it('should display the layout of request confirmation.', () => {
+    let component;
+    let requireUser;
+    const location = {
+      query: {
+        pickupLocation: 'myr',
+        searchKeywords: 'Bryant',
+      },
+    };
 
+    before(() => {
+      Actions.updatePatronData({
+        id: '6677200',
+        names: ['Leonard, Mike'],
+        barcodes: ['162402680435300'],
+      });
+      requireUser = sinon.spy(HoldConfirmation.prototype, 'requireUser');
+      component = mount(<HoldConfirmation location={location} />);
+    });
+
+    after(() => {
+      requireUser.restore();
+      component.unmount();
+    });
+
+    it('should display the layout of request confirmation page\'s header.', () => {
+      const main = component.find('main');
+      const pageHeader = component.find('.nypl-request-page-header');
+
+      expect(main).to.have.length(1);
+      expect(pageHeader).to.have.length(1);
+      expect(pageHeader.find('h1')).to.have.length(1);
+      expect(pageHeader.find('h1').text()).to.equal('Request Confirmation');
+      expect(pageHeader.contains(<h1>Request Confirmation</h1>)).to.equal(true);
+    });
+
+    it('should display the layout of request confirmation page\'s contents.', () => {
+      const main = component.find('main');
+
+      expect(main.find('h2')).to.have.length(1);
+      expect(main.find('h2').text()).to.equal('Submission Received');
+      expect(main.contains(<h2>Submission Received</h2>)).to.equal(true);
+
+      expect(main.find('h3')).to.have.length(2);
+      expect(main.find('#item-information').text()).to.equal('Item Information');
+      expect(main.find('#electronic-delivery').text()).to.equal('Electronic Delivery');
+      expect(main.contains(<h3 id="item-information">Item Information</h3>)).to.equal(true);
+      expect(main.contains(<h3 id="electronic-delivery">Electronic Delivery</h3>)).to.equal(true);
     });
 
     it('should deliver the item\'s title on the page.', () => {

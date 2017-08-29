@@ -220,7 +220,7 @@ class HoldConfirmation extends React.Component {
       confirmationInfo = (
         <div className="item">
           <h2>Submission Received</h2>
-          <h3>Item Information</h3>
+          <h3 id="item-information">Item Information</h3>
           <p>
             We've received your request
             for <Link to={`${appConfig.baseUrl}/bib/${bibId}`}>{title}</Link>
@@ -244,7 +244,7 @@ class HoldConfirmation extends React.Component {
             please contact 917-ASK-NYPL (<a href="tel:19172756975">917-275-6975</a>).
           </p>
 
-          <h3>Electronic Delivery</h3>
+          <h3 id="electronic-delivery">Electronic Delivery</h3>
           <p>
             If you selected electronic delivery, you will be notified via email when the
             item is available.
