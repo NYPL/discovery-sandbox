@@ -60,7 +60,7 @@
     "react-addons-test-utils": "15.6.0"
   },
   "dependencies": {
-    "@nypl/design-toolkit": "git+https://github.com/NYPL/design-toolkit.git#development",
+    "@nypl/design-toolkit": "0.1.24.2",
     "@nypl/dgx-header-component": "2.0.0",
     "@nypl/dgx-react-footer": "0.4.0",
     "@nypl/nypl-data-api-client": "0.2.5",
