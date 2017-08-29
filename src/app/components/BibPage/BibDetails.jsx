@@ -267,7 +267,7 @@ class BibDetails extends React.Component {
       }
 
       // This is made up of three different bib property values so it's special.
-      if (fieldLabel === 'Publication') {
+      if (fieldLabel === 'Publication' && publicationInfo) {
         fieldsToRender.push(publicationInfo);
       }
 
@@ -280,6 +280,32 @@ class BibDetails extends React.Component {
             definition: owner,
           });
         }
+      }
+
+      if (fieldLabel === 'Electronic Resource' && this.props.electronicResources.length) {
+        const electronicResources = this.props.electronicResources;
+        let electronicElem;
+
+        if (electronicResources.length === 1) {
+          const electronicItem = electronicResources[0];
+          electronicElem =
+            <a href={electronicItem.url} target="_blank">{electronicItem.prefLabel}</a>;
+        } else {
+          electronicElem = (
+            <ul>
+              {
+                electronicResources.map((e, i) => (
+                  <li key={i}><a href={e.url} target="_blank">{e.prefLabel}</a></li>
+                ))
+              }
+            </ul>
+          );
+        }
+
+        fieldsToRender.push({
+          term: fieldLabel,
+          definition: electronicElem,
+        });
       }
     }); // End of the forEach loop
 
@@ -344,6 +370,11 @@ class BibDetails extends React.Component {
 BibDetails.propTypes = {
   bib: PropTypes.object,
   fields: PropTypes.array,
+  electronicResources: PropTypes.array,
+};
+
+BibDetails.defaultProps = {
+  electronicResources: [],
 };
 
 BibDetails.contextTypes = {

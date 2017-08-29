@@ -85,6 +85,19 @@ function LibraryItem() {
   };
 
   /**
+   * getElectronicResources(item)
+   * @param {object} items The item to get an electronic resource from.
+   * @return {array}
+   */
+  this.getElectronicResources = (item = {}) => {
+    if (item.electronicLocator) {
+      return item.electronicLocator;
+    }
+
+    return [];
+  };
+
+  /**
    * mapItem(item, title)
    * Massage data and update an item's properties.
    * @param {object} item The item to update the data for.
@@ -103,6 +116,7 @@ function LibraryItem() {
     // Taking the first value in the array;
     const suppressed = item.suppressed && item.suppressed.length ? item.suppressed[0] : false;
     const isElectronicResource = this.isElectronicResource(item);
+    const electronicResources = isElectronicResource ? this.getElectronicResources(item) : null;
     // Taking the first status object in the array.
     const status = item.status && item.status.length ? item.status[0] : {};
     const availability = !_isEmpty(status) && status.prefLabel ?
@@ -137,6 +151,7 @@ function LibraryItem() {
       available,
       accessMessage,
       isElectronicResource,
+      electronicResources,
       location: holdingLocation.prefLabel,
       callNumber,
       url,
