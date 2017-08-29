@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { findWhere as _findWhere } from 'underscore';
 
-import Actions from '../../actions/Actions';
+import Actions from '../../actions/Actions.js';
 import { ajaxCall } from '../../utils/utils';
 import appConfig from '../../../../appConfig.js';
 
@@ -63,13 +63,13 @@ class Sorter extends React.Component {
   sortResultsBy(sortBy) {
     const apiQuery = this.props.createAPIQuery({ sortBy, page: this.props.page });
 
-    Actions.updateSpinner(true);
+    this.props.updateIsLoadingState(true);
     ajaxCall(`${appConfig.baseUrl}/api?${apiQuery}`, (response) => {
       Actions.updateSearchResults(response.data.searchResults);
       Actions.updateSortBy(sortBy);
       this.setState({ sortBy });
       this.context.router.push(`${appConfig.baseUrl}/search?${apiQuery}`);
-      Actions.updateSpinner(false);
+      this.props.updateIsLoadingState(false);
     });
     this.setState({ active: false });
   }
@@ -135,6 +135,7 @@ Sorter.propTypes = {
   field: PropTypes.string,
   page: PropTypes.string,
   createAPIQuery: PropTypes.func,
+  updateIsLoadingState: PropTypes.func,
 };
 
 Sorter.defaultProps = {

@@ -13,6 +13,7 @@ import Breadcrumbs from '../Breadcrumbs/Breadcrumbs.jsx';
 import PatronStore from '../../stores/PatronStore.js';
 import appConfig from '../../../../appConfig.js';
 import LibraryItem from '../../utils/item.js';
+import LoadingLayer from '../LoadingLayer/LoadingLayer.jsx';
 
 class HoldRequest extends React.Component {
   constructor(props) {
@@ -39,6 +40,7 @@ class HoldRequest extends React.Component {
 
     this.state = _extend({
       delivery: defaultDelivery,
+      isLoading: this.props.isLoading,
       checkedLocNum,
     }, { patron: PatronStore.getState() });
 
@@ -46,6 +48,7 @@ class HoldRequest extends React.Component {
     this.onChange = this.onChange.bind(this);
     this.onRadioSelect = this.onRadioSelect.bind(this);
     this.submitRequest = this.submitRequest.bind(this);
+    this.updateIsLoadingState = this.updateIsLoadingState.bind(this);
   }
 
   componentDidMount() {
@@ -61,6 +64,10 @@ class HoldRequest extends React.Component {
       delivery: e.target.value,
       checkedLocNum: i,
     });
+  }
+
+  updateIsLoadingState(status) {
+    this.setState({ isLoading: status });
   }
 
   /**
@@ -88,40 +95,49 @@ class HoldRequest extends React.Component {
   submitRequest(e, bibId, itemId, itemSource) {
     e.preventDefault();
 
-    let path = `${appConfig.baseUrl}/hold/confirmation/${bibId}-${itemId}`;
     const searchKeywordsQuery =
       (this.props.searchKeywords) ? `searchKeywords=${this.props.searchKeywords}` : '';
     const searchKeywordsQueryPhysical = searchKeywordsQuery ? `&${searchKeywordsQuery}` : '';
+    const fromUrlQuery = this.props.location.query && this.props.location.query.fromUrl ?
+      `&fromUrl=${encodeURIComponent(this.props.location.query.fromUrl)}` : '';
+    let path = `${appConfig.baseUrl}/hold/confirmation/${bibId}-${itemId}`;
 
     if (this.state.delivery === 'edd') {
-      const searchKeywordsQueryEdd = searchKeywordsQuery ? `?${searchKeywordsQuery}` : '';
-
-      path = `${appConfig.baseUrl}/hold/request/${bibId}-${itemId}/edd${searchKeywordsQueryEdd}`;
+      path = `${appConfig.baseUrl}/hold/request/${bibId}-${itemId}` +
+        `/edd?${searchKeywordsQuery}${fromUrlQuery}`;
 
       this.context.router.push(path);
       return;
     }
+
+    this.updateIsLoadingState(true);
 
     axios
       .get(`${appConfig.baseUrl}/api/newHold?itemId=${itemId}&pickupLocation=` +
         `${this.state.delivery}&itemSource=${itemSource}`)
       .then(response => {
         if (response.data.error && response.data.error.status !== 200) {
+          this.updateIsLoadingState(false);
           this.context.router.push(
             `${path}?errorStatus=${response.data.error.status}` +
-            `&errorMessage=${response.data.error.statusText}${searchKeywordsQueryPhysical}`
+            `&errorMessage=${response.data.error.statusText}${searchKeywordsQueryPhysical}` +
+            `${fromUrlQuery}`
           );
         } else {
+          this.updateIsLoadingState(false);
           this.context.router.push(
             `${path}?pickupLocation=${response.data.pickupLocation}&requestId=${response.data.id}` +
-            `${searchKeywordsQueryPhysical}`
+            `${searchKeywordsQueryPhysical}${fromUrlQuery}`
           );
         }
       })
       .catch(error => {
         console.error('Error attempting to make an ajax Hold Request in HoldRequest', error);
 
-        this.context.router.push(`${path}?errorMessage=${error}${searchKeywordsQueryPhysical}`);
+        this.updateIsLoadingState(false);
+        this.context.router.push(
+          `${path}?errorMessage=${error}${searchKeywordsQueryPhysical}${fromUrlQuery}`
+        );
       });
   }
 
@@ -276,6 +292,7 @@ class HoldRequest extends React.Component {
     return (
       <DocumentTitle title="Item Request | Shared Collection Catalog | NYPL">
         <div id="mainContent">
+          <LoadingLayer status={this.state.isLoading} title="Requesting" />
           <div className="nypl-request-page-header">
             <div className="nypl-full-width-wrapper">
               <div className="row">
@@ -329,6 +346,7 @@ HoldRequest.propTypes = {
   params: React.PropTypes.object,
   deliveryLocations: React.PropTypes.array,
   isEddRequestable: React.PropTypes.bool,
+  isLoading: React.PropTypes.bool,
 };
 
 HoldRequest.defaultProps = {
@@ -338,6 +356,7 @@ HoldRequest.defaultProps = {
   params: {},
   deliveryLocations: [],
   isEddRequestable: false,
+  isLoading: false,
 };
 
 export default HoldRequest;
