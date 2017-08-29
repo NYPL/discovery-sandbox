@@ -43,6 +43,8 @@ class Feedback extends React.Component {
         <button
           className={`feedback-button ${!showForm ? 'hidden' : ''}`}
           onClick={() => this.closeForm()}
+          aria-expanded={!showForm}
+          aria-controls="feedback-menu"
         >
           Cancel
         </button>
