@@ -8,11 +8,24 @@ class LoadingLayer extends React.Component {
     }
 
     return (
-      <div className="loadingLayer">
+      <div
+        className="loadingLayer"
+        role="alertdialog"
+        aria-labelledby="loading-animation"
+        aria-describedby="loading-description"
+        aria-live="assertive"
+        aria-atomic="true"
+        ref={this.props.childRef}
+      >
         <div className="loadingLayer-layer"></div>
         <div className="loadingLayer-texts">
-          <span className="loadingLayer-texts-loadingWord">Loading...</span>
-          <span className="loadingLayer-texts-title">
+          <span id="loading-animation" className="loadingLayer-texts-loadingWord">
+            Loading...
+          </span>
+          <span
+            id="loading-description"
+            className="loadingLayer-texts-title"
+          >
             {this.props.title}
           </span>
           <div className="loadingDots">
@@ -30,6 +43,7 @@ class LoadingLayer extends React.Component {
 LoadingLayer.propTypes = {
   status: PropTypes.bool,
   title: PropTypes.string,
+  childRef: PropTypes.func,
 };
 
 LoadingLayer.defaultProps = {

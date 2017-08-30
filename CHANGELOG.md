@@ -1,5 +1,17 @@
 ## CHANGE LOG
 
+### 1.0.0
+- :rocket:!
+- First release of Discovery/Shared Collection Catalog.
+- Updated the accessibility for the loading layer animation screen including aria labels and better
+focus.
+- Updated the DOM structure of the EDD form page.
+- Updated npm package versions.
+- Updated the accessibility for the feedback form, removing required attributed for aria-required
+and adding a Cancel button.
+- Updated the Google Analytics ID.
+- Updated the Hold Confirmation copy.
+
 ### 0.8.2
 - Small pre-launch update.
 - Added tests for more components.

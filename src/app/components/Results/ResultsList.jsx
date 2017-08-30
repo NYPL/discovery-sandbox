@@ -27,13 +27,24 @@ class ResultsList extends React.Component {
   getBibRecord(e, bibId) {
     e.preventDefault();
 
+    this.props.updateIsLoadingState(true);
+
     ajaxCall(`${appConfig.baseUrl}/api/bib?bibId=${bibId}`,
       (response) => {
         Actions.updateBib(response.data);
+        setTimeout(
+          () => { this.props.updateIsLoadingState(false); },
+          500
+        );
 
         this.routeHandler(`${appConfig.baseUrl}/bib/${bibId}`);
       },
       error => {
+        setTimeout(
+          () => { this.props.updateIsLoadingState(false); },
+          500
+        );
+
         console.error(
           'Error attempting to make an ajax request to fetch a bib record from ResultsList',
           error
@@ -53,15 +64,25 @@ class ResultsList extends React.Component {
   getItemRecord(e, bibId, itemId) {
     e.preventDefault();
 
+    this.props.updateIsLoadingState(true);
+
     ajaxCall(`${appConfig.baseUrl}/api/hold/request/${bibId}-${itemId}`,
       (response) => {
         Actions.updateBib(response.data.bib);
         Actions.updateDeliveryLocations(response.data.deliveryLocations);
         Actions.updateIsEddRequestable(response.data.isEddRequestable);
+        setTimeout(
+          () => { this.props.updateIsLoadingState(false); },
+          500
+        );
 
         this.routeHandler(`${appConfig.baseUrl}/hold/request/${bibId}-${itemId}`);
       },
       error => {
+        setTimeout(
+          () => { this.props.updateIsLoadingState(false); },
+          500
+        );
         console.error(
           'Error attemping to make an ajax request to fetch an item in ResultsList',
           error
@@ -187,6 +208,7 @@ ResultsList.propTypes = {
   results: PropTypes.array,
   isLoading: PropTypes.bool,
   searchKeywords: PropTypes.string,
+  updateIsLoadingState: PropTypes.func,
 };
 
 ResultsList.contextTypes = {

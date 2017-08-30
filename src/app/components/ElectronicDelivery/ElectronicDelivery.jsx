@@ -28,7 +28,7 @@ class ElectronicDelivery extends React.Component {
       bib['@id'].substring(4) : '';
     const itemId = (this.props.params && this.props.params.itemId) ? this.props.params.itemId : '';
     const selectedItem = (bib && itemId) ? LibraryItem.getItem(bib, itemId) : {};
-    const itemSource = selectedItem.itemSource;
+    const itemSource = (selectedItem && selectedItem.itemSource) ? selectedItem.itemSource : null;
     const raiseError = _isEmpty(this.props.error) ? {} : this.props.error;
 
     this.state = _extend({
@@ -52,11 +52,16 @@ class ElectronicDelivery extends React.Component {
 
   /*
    * componentDidUpdate()
-   * After the component updates, if there are errors then the DOM for the error box message
+   * If the component makes a request, it will focus on the loading layer component.
+   * Also, after the component updates, if there are errors then the DOM for the error box message
    * is rendered. Since it exists, it should be focused so that the patron can get a better
    * idea of what is wrong.
    */
   componentDidUpdate() {
+    if (this.loadingLayer) {
+      this.loadingLayer.focus();
+    }
+
     if (this.refs['nypl-form-error']) {
       ReactDOM.findDOMNode(this.refs['nypl-form-error']).focus();
     }
@@ -95,7 +100,6 @@ class ElectronicDelivery extends React.Component {
   updateIsLoadingState(status) {
     this.setState({ isLoading: status });
   }
-
 
   /**
    * submitRequest()
@@ -199,7 +203,11 @@ class ElectronicDelivery extends React.Component {
     return (
       <DocumentTitle title="Electronic Delivery Request | Shared Collection Catalog | NYPL">
         <div id="mainContent">
-          <LoadingLayer status={this.state.isLoading} title="Requesting" />
+          <LoadingLayer
+            status={this.state.isLoading}
+            title="Requesting"
+            childRef={(c) => { this.loadingLayer = c; }}
+          />
           <div className="nypl-request-page-header">
             <div className="row">
               <div className="content-wrapper">
