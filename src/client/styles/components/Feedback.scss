@@ -1,10 +1,17 @@
 .feedback {
-  position: fixed;
-  max-width: 400px;
+  position: static;
   bottom: 0;
   right: 0;
   z-index: 100;
   text-align: right;
+  background: #54514A;
+  color: #000;
+
+  @include min-screen($tablet-portrait) {
+    position: fixed;
+    background: inherit;
+    max-width: 400px;
+  }
 }
 
 .feedback-button {
@@ -14,9 +21,10 @@
   cursor: pointer;
   box-sizing: border-box;
   padding: 0.5rem 1rem;
-  border: 0;
+  border: 1px solid #d0343a;
   text-align: center;
   font-size: 1rem;
+  position: relative;
 
   &:hover {
     background: #FFF;
@@ -24,6 +32,20 @@
     color: #d0343a;
   }
 }
+
+.cancel-button {
+  background: #d0343a;
+  display: inline-block;
+  color: #FFF;
+  cursor: pointer;
+  box-sizing: border-box;
+  border: 1px solid #d0343a;
+  text-align: center;
+  font-size: 1rem;
+  position: relative;
+  margin-right: 15px;
+}
+
 
 .feedback-form-container {
   display: none;

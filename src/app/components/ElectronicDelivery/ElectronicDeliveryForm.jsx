@@ -69,8 +69,6 @@ class ElectronicDeliveryForm extends React.Component {
       errorClass[key] = this.state.error[key] ? 'nypl-field-error' : '';
     });
 
-    const defaultPageMsg = 'You may request a maximum of 50 pages.';
-
     // A lot of this can be refactored to be in a loop but that's a later and next step.
     // I was thinking each `nypl-text-field` or `nypl-year-field` div can be
     // its own component in a loop with the required props and errors passed down.
@@ -82,12 +80,12 @@ class ElectronicDeliveryForm extends React.Component {
         onSubmit={(e) => this.submit(e)}
         id="edd-request"
       >
-        <fieldset>
-          <legend>Contact Information</legend>
+        <fieldset className="nypl-fieldset">
+          <legend>
+            <h3>Required Information</h3>
+          </legend>
           <div className="nypl-row">
             <div className="nypl-column-half">
-              <h4>Contact Information</h4>
-
               <div className={`nypl-text-field ${errorClass.emailAddress}`}>
                 <label htmlFor="emailAddress" id="emailAddress-label">Email Address
                   <span className="nypl-required-field">&nbsp;Required</span>
@@ -113,18 +111,67 @@ class ElectronicDeliveryForm extends React.Component {
                   }
                 </span>
               </div>
-            </div>
-          </div>
-        </fieldset>
+              <span>You may request a maximum of 50 pages.</span>
+              <div className={`nypl-text-field ${errorClass.startPage}`}>
+                <label htmlFor="startPage" id="startPage-label">Starting Page Number
+                  <span className="nypl-required-field">&nbsp;Required</span>
+                </label>
+                <input
+                  id="startPage"
+                  type="text"
+                  aria-required="true"
+                  className="form-text"
+                  aria-labelledby="startPage-label startPage-status"
+                  name="startPage"
+                  value={this.state.form.startPage}
+                  onChange={(e) => this.handleUpdate(e, 'startPage')}
+                />
+                <span
+                  className="nypl-field-status"
+                  id="startPage-status"
+                  aria-live="assertive"
+                  aria-atomic="true"
+                >
+                  <span>
+                    {
+                      errorClass.startPage ?
+                      this.state.error.startPage : 'Enter the first page of your selection.'
+                    }
+                    </span>
+                </span>
+              </div>
 
-        <fieldset>
-          <legend>Chapter or Article Information</legend>
-          <div className="nypl-row">
-            <div className="nypl-column-half">
-              <h4>Chapter or Article Information</h4>
+              <div className={`nypl-text-field ${errorClass.endPage}`}>
+                <label htmlFor="endPage" id="endPage-label">Ending Page Number
+                  <span className="nypl-required-field">&nbsp;Required</span>
+                </label>
+                <input
+                  id="endPage"
+                  type="text"
+                  aria-required="true"
+                  className="form-text"
+                  aria-labelledby="endPage-label endPage-status"
+                  name="endPage"
+                  value={this.state.form.endPage}
+                  onChange={(e) => this.handleUpdate(e, 'endPage')}
+                />
+                <span
+                  className="nypl-field-status"
+                  id="endPage-status"
+                  aria-live="assertive"
+                  aria-atomic="true"
+                >
+                  <span>
+                    {
+                      errorClass.endPage ?
+                      this.state.error.endPage : 'Enter the last page of your selection.'
+                    }
+                  </span>
+                </span>
+              </div>
 
               <div className={`nypl-text-field ${errorClass.chapterTitle}`}>
-                <label htmlFor="chapterTitle" id="chapterTitle-label">Chapter / Article Title
+                <label htmlFor="chapterTitle" id="chapterTitle-label">Chapter/Article Title
                   <span className="nypl-required-field">&nbsp;Required</span>
                 </label>
                 <input
@@ -150,11 +197,19 @@ class ElectronicDeliveryForm extends React.Component {
               </div>
             </div>
           </div>
-
+        </fieldset>
+        <fieldset className="nypl-fieldset">
+          <legend>
+            <h3>Additional Details</h3>
+          </legend>
           <div className="nypl-row">
-            <div className="nypl-column-one-quarter">
+            <div className="nypl-column-half">
+              <span>
+                Feel free to provide more information that could be helpful in processing your
+                request. (Additional details are optional and not required.)
+              </span>
               <div className="nypl-text-field">
-                <label htmlFor="author" id="author-label">&nbsp;Article Author</label>
+                <label htmlFor="author" id="author-label">&nbsp;Author</label>
                 <input
                   id="author"
                   type="text"
@@ -200,70 +255,8 @@ class ElectronicDeliveryForm extends React.Component {
                   onChange={(e) => this.handleUpdate(e, 'issue')}
                 />
               </div>
-            </div>
-          </div>
-        </fieldset>
-
-        <fieldset className="number-range">
-          <legend>Select Page Number Range (Max 50 pages)</legend>
-          <div className="nypl-row">
-            <div className="nypl-column-half">
-              <h4>Select Page Number Range (Max 50 pages)</h4>
-            </div>
-          </div>
-
-          <div className="nypl-row">
-            <div className="nypl-column-one-quarter">
-              <div className={`nypl-text-field ${errorClass.startPage}`}>
-                <label htmlFor="startPage" id="startPage-label">Starting Page
-                  <span className="nypl-required-field">&nbsp;Required</span>
-                </label>
-                <input
-                  id="startPage"
-                  type="text"
-                  aria-required="true"
-                  className="form-text"
-                  aria-labelledby="startPage-label startPage-status"
-                  name="startPage"
-                  value={this.state.form.startPage}
-                  onChange={(e) => this.handleUpdate(e, 'startPage')}
-                />
-                <span
-                  className="nypl-field-status"
-                  id="startPage-status"
-                  aria-live="assertive"
-                  aria-atomic="true"
-                >
-                  <span>{errorClass.startPage ? this.state.error.startPage : defaultPageMsg}</span>
-                </span>
-              </div>
-
-              <div className={`nypl-text-field ${errorClass.endPage}`}>
-                <label htmlFor="endPage" id="endPage-label">Ending Page
-                  <span className="nypl-required-field">&nbsp;Required</span>
-                </label>
-                <input
-                  id="endPage"
-                  type="text"
-                  aria-required="true"
-                  className="form-text"
-                  aria-labelledby="endPage-label endPage-status"
-                  name="endPage"
-                  value={this.state.form.endPage}
-                  onChange={(e) => this.handleUpdate(e, 'endPage')}
-                />
-                <span
-                  className="nypl-field-status"
-                  id="endPage-status"
-                  aria-live="assertive"
-                  aria-atomic="true"
-                >
-                  <span>{errorClass.endPage ? this.state.error.endPage : defaultPageMsg}</span>
-                </span>
-              </div>
-
               <div className="nypl-text-field">
-                <label htmlFor="requestNotes" id="requestNotes-label">Additional Notes</label>
+                <label htmlFor="requestNotes" id="requestNotes-label">Notes</label>
                 <textarea
                   className="nypl-text-area"
                   id="requestNotes"
