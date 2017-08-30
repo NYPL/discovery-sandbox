@@ -169,7 +169,8 @@ dl dd.multi-item-list,
 .nypl-results-sorting-controls.style-2 {
 
   @include results-sorting-controls(
-    $border: 0);
+    $border: 0
+  );
 
   .nypl-results-sorter {
 

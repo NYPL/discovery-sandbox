@@ -80,7 +80,7 @@ class ElectronicDeliveryForm extends React.Component {
         onSubmit={(e) => this.submit(e)}
         id="edd-request"
       >
-        <fieldset>
+        <fieldset className="nypl-fieldset">
           <legend>
             <h3>Required Information</h3>
           </legend>
@@ -198,7 +198,7 @@ class ElectronicDeliveryForm extends React.Component {
             </div>
           </div>
         </fieldset>
-        <fieldset>
+        <fieldset className="nypl-fieldset">
           <legend>
             <h4>Additional Details</h4>
           </legend>
