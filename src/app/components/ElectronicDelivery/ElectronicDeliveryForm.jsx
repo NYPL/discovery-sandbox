@@ -200,7 +200,7 @@ class ElectronicDeliveryForm extends React.Component {
         </fieldset>
         <fieldset className="nypl-fieldset">
           <legend>
-            <h4>Additional Details</h4>
+            <h3>Additional Details</h3>
           </legend>
           <div className="nypl-row">
             <div className="nypl-column-half">
