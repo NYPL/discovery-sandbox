@@ -139,6 +139,7 @@ class HoldConfirmation extends React.Component {
         id="start-new-search"
         to={`${appConfig.baseUrl}/`}
         onClick={(e) => this.goRestart(e)}>{text}
+      >
       </Link>
     );
   }
@@ -155,7 +156,7 @@ class HoldConfirmation extends React.Component {
     }
 
     return (
-      <span>
+      <span id="go-back-catalog">
         <a href={this.props.location.query.fromUrl}>Go back to your search
         results</a> or <a href="https://catalog.nypl.org/search">start a new search</a>.
       </span>
@@ -175,6 +176,7 @@ class HoldConfirmation extends React.Component {
 
     return (
       <span><Link
+        id="go-back-search-results"
         // We use this.props.location.query.searchKeywords here for the query from
         // the URL to deal with no js situation.
         to={`${appConfig.baseUrl}/search?q=${this.props.location.query.searchKeywords}`}

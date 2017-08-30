@@ -99,7 +99,7 @@ describe('HoldConfirmation', () => {
             (<a href="tel:19172756975">917-275-6975</a>).
           </p>
         )).to.equal(true);
-      })
+      });
     }
   );
 
@@ -109,7 +109,6 @@ describe('HoldConfirmation', () => {
     const location = {
       query: {
         pickupLocation: 'myr',
-        searchKeywords: 'Bryant',
       },
     };
 
@@ -168,24 +167,97 @@ describe('HoldConfirmation', () => {
       const main = component.find('main');
 
       expect(main.find('#start-new-search')).to.have.length(1);
-      expect(main.find('#start-new-search').text()).to.equal('start a new search');
+      expect(main.find('#start-new-search').text()).to.equal('Start a new search');
     });
   });
 
   describe('If the patron get here from a search result page, <HoldConfirmation>', () => {
-    it('should have the link back to search result.', () => {
+    let component;
+    let requireUser;
+    const location = {
+      query: {
+        pickupLocation: 'myr',
+        searchKeywords: 'Bryant',
+      },
+    };
 
+    const bib = {
+      title: ['Harry Potter'],
+    };
+
+    before(() => {
+      Actions.updatePatronData({
+        id: '6677200',
+        names: ['Leonard, Mike'],
+        barcodes: ['162402680435300'],
+      });
+      requireUser = sinon.spy(HoldConfirmation.prototype, 'requireUser');
+      component = mount(<HoldConfirmation location={location} bib={bib} />);
+    });
+
+    after(() => {
+      requireUser.restore();
+      component.unmount();
+    });
+
+    it('should have the link back to search result.', () => {
+      const main = component.find('main');
+
+      expect(main.find('#start-new-search')).to.have.length(1);
+      expect(main.find('#start-new-search').text()).to.equal('start a new search');
+      expect(main.find('#go-back-search-results')).to.have.length(1);
+      expect(main.find('#go-back-search-results').text()).to.equal(
+        'Go back to your search results'
+      );
     });
   });
 
   describe('If the patron get here from a classic catalog search result page, <HoldConfirmation>',
     () => {
-      it('should have the link back to the classic catalog search result page.', () => {
+      let component;
+      let requireUser;
+      const location = {
+        query: {
+          pickupLocation: 'myr',
+          searchKeywords: 'Bryant',
+          fromUrl: 'https://catalog.nypl.org/search~S1/?searchtype=X&searcharg=bryant&' +
+            'searchscope=1&sortdropdown=-&SORT=DZ&extended=0&SUBMIT=Search&searchlimits' +
+            '=&searchorigarg=Xbryant%26SORT%3DD',
+        },
+      };
 
+      const bib = {
+        title: ['Harry Potter'],
+      };
+
+      before(() => {
+        Actions.updatePatronData({
+          id: '6677200',
+          names: ['Leonard, Mike'],
+          barcodes: ['162402680435300'],
+        });
+        requireUser = sinon.spy(HoldConfirmation.prototype, 'requireUser');
+        component = mount(<HoldConfirmation location={location} bib={bib} />);
       });
 
-       it('should have the link back to the classic catalog homepage.', () => {
-
+      after(() => {
+        requireUser.restore();
+        component.unmount();
       });
-  });
+
+      it('should have the link back to the classic catalog homepage or and search result page',
+        () => {
+          const main = component.find('main');
+
+          expect(main.find('#go-back-catalog')).to.have.length(1);
+          expect(main.contains(
+            <span id="go-back-catalog">
+              <a href={location.query.fromUrl}>Go back to your search
+              results</a> or <a href="https://catalog.nypl.org/search">start a new search</a>.
+            </span>
+          )).to.equal(true);
+        }
+      );
+    }
+  );
 });
