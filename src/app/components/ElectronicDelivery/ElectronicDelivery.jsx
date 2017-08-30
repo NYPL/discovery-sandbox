@@ -28,7 +28,7 @@ class ElectronicDelivery extends React.Component {
       bib['@id'].substring(4) : '';
     const itemId = (this.props.params && this.props.params.itemId) ? this.props.params.itemId : '';
     const selectedItem = (bib && itemId) ? LibraryItem.getItem(bib, itemId) : {};
-    const itemSource = selectedItem.itemSource;
+    const itemSource = (selectedItem && selectedItem.itemSource) ? selectedItem.itemSource : null;
     const raiseError = _isEmpty(this.props.error) ? {} : this.props.error;
 
     this.state = _extend({

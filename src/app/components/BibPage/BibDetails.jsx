@@ -15,6 +15,10 @@ import DefinitionList from './DefinitionList';
 import appConfig from '../../../../appConfig.js';
 
 class BibDetails extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+
   /*
    * getOwner(bib)
    * This is currently only for non-NYPL partner items. If it's NYPL, it should return undefined.

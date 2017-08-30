@@ -150,6 +150,7 @@ class BibPage extends React.Component {
                     bib={bib}
                     fields={bottomFields}
                     electronicResources={aggregatedElectronicResources}
+                    updateIsLoadingState={this.updateIsLoadingState}
                   />
                   {marcRecord}
                 </div>
