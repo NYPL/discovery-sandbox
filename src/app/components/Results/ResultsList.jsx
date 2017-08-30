@@ -1,7 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
-import { isEmpty as _isEmpty } from 'underscore';
+import {
+  isEmpty as _isEmpty,
+  isArray as _isArray,
+} from 'underscore';
 
 import Actions from '../../actions/Actions';
 import LibraryItem from '../../utils/item';
@@ -168,9 +171,11 @@ class ResultsList extends React.Component {
     const results = this.props.results;
     let resultsElm = null;
 
-    if (results && results.length) {
-      resultsElm = results.map((bib, i) => this.getBib(bib, true, i));
+    if (!results || !_isArray(results) || !results.length) {
+      return null;
     }
+
+    resultsElm = results.map((bib, i) => this.getBib(bib, true, i));
 
     return (
       <ul
