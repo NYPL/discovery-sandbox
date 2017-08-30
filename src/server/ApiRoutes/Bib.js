@@ -1,5 +1,6 @@
 import nyplApiClient from '../routes/nyplApiClient';
 import logger from '../../../logger';
+import appConfig from '../../../appConfig.js';
 
 const nyplApiClientCall = (query) =>
   nyplApiClient().then(client => client.get(`/discovery/resources/${query}`, { cache: false }));
@@ -20,6 +21,10 @@ function bibSearchServer(req, res, next) {
   fetchBib(
     bibId,
     (data) => {
+      if (data.status && data.status === 404) {
+        return res.redirect(`${appConfig.baseUrl}/404`);
+      }
+
       res.locals.data.Store = {
         bib: data,
         searchKeywords: req.query.searchKeywords || '',

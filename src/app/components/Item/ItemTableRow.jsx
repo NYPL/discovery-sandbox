@@ -14,7 +14,8 @@ const ItemTableRow = ({ item, bibId, getRecord, searchKeywords }) => {
     return null;
   }
 
-  let itemRequestBtn = <span>{item.status.prefLabel}</span>;
+  const status = item.status && item.status.prefLabel ? item.status.prefLabel : ' ';
+  let itemRequestBtn = <span>{status}</span>;
   let itemCallNumber = ' ';
 
   if (item.requestable) {
@@ -32,7 +33,7 @@ const ItemTableRow = ({ item, bibId, getRecord, searchKeywords }) => {
         <span>In Use</span>;
     } else if (item.nonRecapNYPL) {
       // Not in ReCAP
-      itemRequestBtn = <span>{item.status.prefLabel}</span>;
+      itemRequestBtn = <span>{status}</span>;
     }
   }
 
@@ -44,7 +45,7 @@ const ItemTableRow = ({ item, bibId, getRecord, searchKeywords }) => {
     <tr className={item.availability}>
       <td>{item.location || ' '}</td>
       <td>{itemCallNumber}</td>
-      <td>{itemRequestBtn || ' '}</td>
+      <td>{itemRequestBtn}</td>
       <td>{item.accessMessage.prefLabel || ' '}</td>
     </tr>
   );

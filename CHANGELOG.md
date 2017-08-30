@@ -1,5 +1,8 @@
 ## CHANGE LOG
 
+### 0.8.1 - Cache hotfix
+- Removed caching from API calls from the nypl-data-api-client module.
+
 ### 0.8.0 - QA v2
 - The second sprint before we public launch. This released focused on NYPL's Production Readiness standards and fixing a11y issues.
 - OAuth credentials and AWS KMS keys were better handled and configured in Elastic Beanstalk for our development, qa, and production instances.
