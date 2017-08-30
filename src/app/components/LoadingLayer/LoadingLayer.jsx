@@ -13,16 +13,18 @@ class LoadingLayer extends React.Component {
         role="alertdialog"
         aria-labelledby="loading-animation"
         aria-describedby="loading-description"
+        aria-live="assertive"
+        aria-atomic="true"
+        ref={this.props.childRef}
       >
         <div className="loadingLayer-layer"></div>
-        <div aria-live="assertive" aria-atomic="true" className="loadingLayer-texts">
+        <div className="loadingLayer-texts">
           <span id="loading-animation" className="loadingLayer-texts-loadingWord">
             Loading...
           </span>
           <span
             id="lloading-description"
             className="loadingLayer-texts-title"
-            ref={this.props.childRef}
           >
             {this.props.title}
           </span>
