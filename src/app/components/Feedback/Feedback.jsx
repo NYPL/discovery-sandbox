@@ -20,7 +20,8 @@ class Feedback extends React.Component {
     this.refs.commentText.value = '';
   }
 
-  closeForm() {
+  closeForm(e) {
+    e.preventDefault();
     this.setState({ showForm: false });
     this.refs.commentText.value = '';
   }
@@ -39,14 +40,6 @@ class Feedback extends React.Component {
           aria-controls="feedback-menu"
         >
           Feedback
-        </button>
-        <button
-          className={`feedback-button ${!showForm ? 'hidden' : ''}`}
-          onClick={() => this.closeForm()}
-          aria-expanded={!showForm}
-          aria-controls="feedback-menu"
-        >
-          Cancel
         </button>
         <div
           id="feedback-menu"
@@ -70,15 +63,12 @@ class Feedback extends React.Component {
                 name="entry.148983317"
                 rows="5"
                 ref="commentText"
-                required
+                aria-required="true"
               />
             </div>
             <div>
-              <label htmlFor="feedback-input-email">
-                Email Address
-                <span className="nypl-required-field">&nbsp;Required</span>
-              </label>
-              <input id="feedback-input-email" name="entry.503620384" type="email" required />
+              <label htmlFor="feedback-input-email">Email Address</label>
+              <input id="feedback-input-email" name="entry.503620384" type="email" />
             </div>
             <input
               id="feedback-input-url"
@@ -87,6 +77,15 @@ class Feedback extends React.Component {
               type="hidden"
             />
             <input name="fvv" value="1" type="hidden" />
+
+            <button
+              className={`cancel-button ${!showForm ? 'hidden' : ''}`}
+              onClick={(e) => this.closeForm(e)}
+              aria-expanded={!showForm}
+              aria-controls="feedback-menu"
+            >
+              Cancel
+            </button>
 
             <button type="submit" className="large">Submit</button>
           </form>
