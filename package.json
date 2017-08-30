@@ -1,13 +1,13 @@
 {
   "name": "nypl-discovery",
-  "version": "0.8.1",
+  "version": "0.8.2",
   "description": "Isomorphic React App for NYPL Research Catalog.",
   "main": "index.js",
   "scripts": {
     "start": "node index",
     "prod-start": "NODE_ENV=production APP_ENV=production node index",
-    "dev-api-start": "APP_ENV=development node index",
-    "prod-api-start": "APP_ENV=production node index",
+    "dev-api-start": "APP_ENV=development KMS_ENV=unencrypted node index",
+    "prod-api-start": "APP_ENV=production KMS_ENV=encrypted node index",
     "eb-start": "npm run dist && node index",
     "dist": "NODE_ENV=production webpack --config webpack.config.js",
     "postinstall": "npm run dist",

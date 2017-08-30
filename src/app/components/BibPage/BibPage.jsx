@@ -10,7 +10,10 @@ import LibraryItem from '../../utils/item';
 import BackLink from './BackLink';
 import MarcRecord from './MarcRecord';
 
-import { basicQuery } from '../../utils/utils';
+import {
+  basicQuery,
+  getAggregatedElectronicResources,
+} from '../../utils/utils';
 
 const BibPage = (props) => {
   const createAPIQuery = basicQuery(props);
@@ -18,11 +21,12 @@ const BibPage = (props) => {
   const bibId = bib && bib['@id'] ? bib['@id'].substring(4) : '';
   const title = bib.title && bib.title.length ? bib.title[0] : '';
   const items = LibraryItem.getItems(bib);
-  const electronicItems = _every(items, (i) => i.isElectronicResource);
+  const isElectronicResources = _every(items, (i) => i.isElectronicResource);
   const isNYPLReCAP = LibraryItem.isNYPLReCAP(bib['@id']);
   const bNumber = bib && bib.idBnum ? bib.idBnum : '';
   const searchURL = createAPIQuery({});
   const itemPage = props.location.search;
+  const aggregatedElectronicResources = getAggregatedElectronicResources(items);
   let shortenItems = true;
 
   if (props.location.pathname.indexOf('all') === -1) {
@@ -33,12 +37,13 @@ const BibPage = (props) => {
   // e.g. the prefLabel is the label and the URL is the id.
   const topFields = [
     { label: 'Title', value: 'titleDisplay', linkable: true },
+    { label: 'Found In', value: 'partOf' },
     { label: 'Author', value: 'creatorLiteral', linkable: true },
     { label: 'Additional Authors', value: 'contributorLiteral', linkable: true },
   ];
   const bottomFields = [
     { label: 'Publication', value: 'React Component' },
-    { label: 'Electronic Resource', value: '' },
+    { label: 'Electronic Resource', value: 'React Component' },
     { label: 'Description', value: 'extent' },
     { label: 'Subject', value: 'subjectLiteral', linkable: true },
     { label: 'Genre/Form', value: 'materialType' },
@@ -54,7 +59,7 @@ const BibPage = (props) => {
     { label: 'Owning Institutions', value: '' },
   ];
 
-  const itemHoldings = items.length && !electronicItems ?
+  const itemHoldings = items.length && !isElectronicResources ?
     <ItemHoldings
       shortenItems={shortenItems}
       items={items}
@@ -111,6 +116,7 @@ const BibPage = (props) => {
                 <BibDetails
                   bib={bib}
                   fields={bottomFields}
+                  electronicResources={aggregatedElectronicResources}
                 />
                 {marcRecord}
               </div>

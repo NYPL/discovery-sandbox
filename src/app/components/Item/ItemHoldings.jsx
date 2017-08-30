@@ -89,7 +89,7 @@ class ItemHoldings extends React.Component {
   getTable(items, shortenItems = false, showAll) {
     // If there are more than 20 items and we need to shorten it to 20 AND we are not
     // showing all items.
-    const itemsToDisplay = shortenItems && !showAll ? items.slice(0, 20) : items;
+    const itemsToDisplay = items && shortenItems && !showAll ? items.slice(0, 20) : items;
     const bibId = this.props.bibId;
 
     return (
@@ -197,6 +197,7 @@ ItemHoldings.propTypes = {
 ItemHoldings.defaultProps = {
   shortenItems: false,
   searchKeywords: '',
+  itemPage: '0',
 };
 
 ItemHoldings.contextTypes = {

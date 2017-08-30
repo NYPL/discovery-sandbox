@@ -12,7 +12,7 @@ const DefinitionList = ({ data }) => {
     }
 
     return definitions.map((item) => {
-      if (!item.term && !item.definition) {
+      if (!item || (!item.term && !item.definition)) {
         return null;
       }
       return ([
