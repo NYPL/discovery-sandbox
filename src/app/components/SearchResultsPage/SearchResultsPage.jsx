@@ -28,6 +28,12 @@ class SearchResultsPage extends React.Component {
     this.updateIsLoadingState = this.updateIsLoadingState.bind(this);
   }
 
+  componentDidUpdate() {
+    if (this.loadingLayer) {
+      this.loadingLayer.focus();
+    }
+  }
+
   updateIsLoadingState(status) {
     this.setState({ isLoading: status });
   }
@@ -59,7 +65,10 @@ class SearchResultsPage extends React.Component {
       ajaxCall(`${appConfig.baseUrl}/api?${apiQuery}`, response => {
         Actions.updateSearchResults(response.data.searchResults);
         Actions.updatePage(nextPage.toString());
-        this.updateIsLoadingState(false);
+        setTimeout(
+          () => { this.updateIsLoadingState(false); },
+          500
+        );
         this.context.router.push(`${appConfig.baseUrl}/search?${apiQuery}`);
       });
     };
@@ -69,7 +78,12 @@ class SearchResultsPage extends React.Component {
         title="Search Results | Shared Collection Catalog | NYPL"
       >
         <main className="main-page">
-          <LoadingLayer status={this.state.isLoading} title="Searching" />
+          <LoadingLayer
+            status={this.state.isLoading}
+            title="Searching"
+            childRef={(c) => { this.loadingLayer = c; }}
+            tabIndex={0}
+          />
           <div className="nypl-page-header">
             <div className="nypl-full-width-wrapper">
               <div className="nypl-row">
@@ -124,6 +138,7 @@ class SearchResultsPage extends React.Component {
                       results={results}
                       isLoading={isLoading}
                       searchKeywords={searchKeywords}
+                      updateIsLoadingState={this.updateIsLoadingState}
                     />
                   )
                 }

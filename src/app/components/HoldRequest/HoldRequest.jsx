@@ -55,6 +55,12 @@ class HoldRequest extends React.Component {
     this.requireUser();
   }
 
+  componentDidUpdate() {
+    if (this.loadingLayer) {
+      this.loadingLayer.focus();
+    }
+  }
+
   onChange() {
     this.setState({ patron: PatronStore.getState() });
   }
@@ -292,7 +298,11 @@ class HoldRequest extends React.Component {
     return (
       <DocumentTitle title="Item Request | Shared Collection Catalog | NYPL">
         <div id="mainContent">
-          <LoadingLayer status={this.state.isLoading} title="Requesting" />
+          <LoadingLayer
+            status={this.state.isLoading}
+            title="Requesting"
+            childRef={(c) => { this.loadingLayer = c; }}
+          />
           <div className="nypl-request-page-header">
             <div className="nypl-full-width-wrapper">
               <div className="row">
