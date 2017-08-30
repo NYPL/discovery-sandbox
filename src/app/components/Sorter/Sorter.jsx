@@ -69,7 +69,10 @@ class Sorter extends React.Component {
       Actions.updateSortBy(sortBy);
       this.setState({ sortBy });
       this.context.router.push(`${appConfig.baseUrl}/search?${apiQuery}`);
-      this.props.updateIsLoadingState(false);
+      setTimeout(
+        () => { this.props.updateIsLoadingState(false); },
+        500
+      );
     });
     this.setState({ active: false });
   }

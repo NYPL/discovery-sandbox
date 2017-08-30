@@ -35,11 +35,7 @@ class SearchResultsPage extends React.Component {
   }
 
   updateIsLoadingState(status) {
-    setTimeout(
-      () => {
-        this.setState({ isLoading: status });
-      }, 500
-    );
+    this.setState({ isLoading: status });
   }
 
   render() {
@@ -69,7 +65,10 @@ class SearchResultsPage extends React.Component {
       ajaxCall(`${appConfig.baseUrl}/api?${apiQuery}`, response => {
         Actions.updateSearchResults(response.data.searchResults);
         Actions.updatePage(nextPage.toString());
-        this.updateIsLoadingState(false);
+        setTimeout(
+          () => { this.updateIsLoadingState(false); },
+          500
+        );
         this.context.router.push(`${appConfig.baseUrl}/search?${apiQuery}`);
       });
     };

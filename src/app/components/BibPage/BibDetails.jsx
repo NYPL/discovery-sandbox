@@ -357,7 +357,10 @@ class BibDetails extends React.Component {
       }
       Actions.updateSearchKeywords('');
       Actions.updatePage('1');
-      this.props.updateIsLoadingState(false);
+      setTimeout(
+        () => { this.props.updateIsLoadingState(false); },
+        500
+      );
       this.context.router.push(`${appConfig.baseUrl}/search?${query}`);
     });
   }

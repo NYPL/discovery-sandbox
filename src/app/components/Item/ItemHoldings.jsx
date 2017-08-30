@@ -72,14 +72,20 @@ class ItemHoldings extends React.Component {
         Actions.updateBib(response.data.bib);
         Actions.updateDeliveryLocations(response.data.deliveryLocations);
         Actions.updateIsEddRequestable(response.data.isEddRequestable);
-        this.props.updateIsLoadingState(false);
+        setTimeout(
+          () => { this.props.updateIsLoadingState(false); },
+          500
+        );
 
         this.context.router.push(`${appConfig.baseUrl}/hold/request/${bibId}-${itemId}`);
       })
       .catch(error => {
         console.error('Error attemping to make an ajax Bib request in ItemHoldings', error);
 
-        this.props.updateIsLoadingState(false);
+        setTimeout(
+          () => { this.props.updateIsLoadingState(false); },
+          500
+        );
       });
   }
 

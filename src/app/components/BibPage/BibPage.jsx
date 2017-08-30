@@ -28,11 +28,7 @@ class BibPage extends React.Component {
   }
 
   updateIsLoadingState(status) {
-    setTimeout(
-      () => {
-        this.setState({ isLoading: status });
-      }, 500
-    );
+    this.setState({ isLoading: status });
   }
 
   render() {
