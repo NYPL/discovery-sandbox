@@ -62,6 +62,7 @@ class BibPage extends React.Component {
       { label: 'Author', value: 'creatorLiteral', linkable: true },
       { label: 'Additional Authors', value: 'contributorLiteral', linkable: true },
     ];
+
     const bottomFields = [
       { label: 'Publication', value: 'React Component' },
       { label: 'Electronic Resource', value: 'React Component' },
