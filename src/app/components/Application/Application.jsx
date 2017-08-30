@@ -36,8 +36,6 @@ history.listen(location => {
   });
 
   if (action === 'POP' && search) {
-    Actions.updateSpinner(true);
-
     ajaxCall(`${appConfig.baseUrl}/api${decodeURI(search)}`, (response) => {
       if (response.data.facets && response.data.searchResults) {
         const selectedFacets = destructureFilters(urlFilters, response.data.facets);
@@ -46,7 +44,6 @@ history.listen(location => {
         Actions.updateSearchResults(response.data.searchResults);
         if (qParameter) Actions.updateSearchKeywords(qParameter);
       }
-      Actions.updateSpinner(false);
     });
   }
 });
