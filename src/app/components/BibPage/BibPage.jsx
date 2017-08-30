@@ -28,11 +28,7 @@ class BibPage extends React.Component {
   }
 
   updateIsLoadingState(status) {
-    setTimeout(
-      () => {
-        this.setState({ isLoading: status });
-      }, 500
-    );
+    this.setState({ isLoading: status });
   }
 
   render() {
@@ -150,6 +146,7 @@ class BibPage extends React.Component {
                     bib={bib}
                     fields={bottomFields}
                     electronicResources={aggregatedElectronicResources}
+                    updateIsLoadingState={this.updateIsLoadingState}
                   />
                   {marcRecord}
                 </div>

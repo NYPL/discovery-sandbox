@@ -73,11 +73,7 @@ class HoldRequest extends React.Component {
   }
 
   updateIsLoadingState(status) {
-    setTimeout(
-      () => {
-        this.setState({ isLoading: status });
-      }, 500
-    );
+    this.setState({ isLoading: status });
   }
 
   /**
@@ -113,11 +109,9 @@ class HoldRequest extends React.Component {
     let path = `${appConfig.baseUrl}/hold/confirmation/${bibId}-${itemId}`;
 
     if (this.state.delivery === 'edd') {
-      this.updateIsLoadingState(true);
       path = `${appConfig.baseUrl}/hold/request/${bibId}-${itemId}` +
         `/edd?${searchKeywordsQuery}${fromUrlQuery}`;
 
-      this.updateIsLoadingState(false);
       this.context.router.push(path);
       return;
     }
