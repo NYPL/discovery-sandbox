@@ -27,7 +27,7 @@ window.onload = () => {
   }
 
   // Used for debugging
-  // ga.initialize('UA-1420324-144', { debug: true });
+  // ga.initialize('', { debug: true });
 
   // Render Isomorphically
   Iso.bootstrap((state, container) => {
