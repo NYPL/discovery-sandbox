@@ -1,5 +1,14 @@
 ## CHANGE LOG
 
+### 0.8.2
+- Small pre-launch update.
+- Added tests for more components.
+- Added a 'partOf' field for a bib.
+- Fixed a server issue where the bib did not exist. Now it redirects to the 404 page.
+- Fixed a bug where links did not go back to a search for that linked value.
+- Displaying electronic resources on the bib page.
+- Updating logic for 'Publication' information that broke a few pages.
+
 ### 0.8.1 - Cache hotfix
 - Removed caching from API calls from the nypl-data-api-client module.
 
