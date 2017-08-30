@@ -37,6 +37,7 @@ const BibPage = (props) => {
   // e.g. the prefLabel is the label and the URL is the id.
   const topFields = [
     { label: 'Title', value: 'titleDisplay', linkable: true },
+    { label: 'Found In', value: 'partOf' },
     { label: 'Author', value: 'creatorLiteral', linkable: true },
     { label: 'Additional Authors', value: 'contributorLiteral', linkable: true },
   ];
