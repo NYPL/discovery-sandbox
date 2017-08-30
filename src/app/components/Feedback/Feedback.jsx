@@ -11,8 +11,12 @@ class Feedback extends React.Component {
   }
 
   onSubmitForm() {
-    this.setState({ showForm: false });
-    alert('Thank you, your feedback has been submitted.');
+    if (!this.refs.commentText.value) {
+      this.refs.commentText.focus();
+    } else {
+      this.setState({ showForm: false });
+      alert('Thank you, your feedback has been submitted.');
+    }
   }
 
   openForm() {
