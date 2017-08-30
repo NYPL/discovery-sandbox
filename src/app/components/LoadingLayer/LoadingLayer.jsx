@@ -15,7 +15,7 @@ class LoadingLayer extends React.Component {
         aria-describedby="loading-description"
       >
         <div className="loadingLayer-layer"></div>
-        <div className="loadingLayer-texts">
+        <div aria-live="assertive" aria-atomic="true" className="loadingLayer-texts">
           <span id="loading-animation" className="loadingLayer-texts-loadingWord">
             Loading...
           </span>
