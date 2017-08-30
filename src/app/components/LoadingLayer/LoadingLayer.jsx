@@ -23,7 +23,7 @@ class LoadingLayer extends React.Component {
             Loading...
           </span>
           <span
-            id="lloading-description"
+            id="loading-description"
             className="loadingLayer-texts-title"
           >
             {this.props.title}
