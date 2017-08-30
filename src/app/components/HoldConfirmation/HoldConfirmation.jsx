@@ -132,7 +132,11 @@ class HoldConfirmation extends React.Component {
       text = 'start a new search';
     }
 
-    return (<Link to={`${appConfig.baseUrl}/`} onClick={(e) => this.goRestart(e)}>{text}</Link>);
+    return (
+      <span>
+        <Link to={`${appConfig.baseUrl}/`} onClick={(e) => this.goRestart(e)}>{text}</Link>.
+      </span>
+    );
   }
 
   /**
@@ -219,19 +223,19 @@ class HoldConfirmation extends React.Component {
       confirmationPageTitle = 'Request Confirmation';
       confirmationInfo = (
         <div className="item">
-          <h2>Submission Received</h2>
-          <h3>Item Information</h3>
           <p>
             We've received your request
             for <Link to={`${appConfig.baseUrl}/bib/${bibId}`}>{title}</Link>
           </p>
           <p>
-            Please check your library account for updates. The item will be listed as
-            Ready under your Holds tab when it is available. You will also receive an
-            email confirmation after your item has arrived.
+            The item will be delivered to: {this.renderLocationInfo(deliveryLocation)}
           </p>
+
+          <h3>Physical Delivery</h3>
           <p>
-            Your item will be delivered to: {this.renderLocationInfo(deliveryLocation)}
+            Please log into your library account to check for updates. The item will be
+            listed as “Ready for Pickup” under your Holds tab when it is available. You
+            will also receive an email confirmation after your item has arrived.
           </p>
           <p>
             For off-site materials, requests made before 2:30 PM will be delivered the
@@ -240,14 +244,15 @@ class HoldConfirmation extends React.Component {
             to seven days, so you can request materials up to a week in advance.
           </p>
           <p>
-            If you would like to cancel your request, or if you have further questions,
-            please contact 917-ASK-NYPL (<a href="tel:19172756975">917-275-6975</a>).
+            If you would like to cancel your request, or if you have questions,
+            please <a href="https://gethelp.nypl.org/customer/portal/emails/new">email us</a> or
+            call 917-ASK-NYPL (<a href="tel:19172756975">917-275-6975</a>).
           </p>
 
           <h3>Electronic Delivery</h3>
           <p>
-            If you selected electronic delivery, you will be notified via email when the
-            item is available.
+            If you selected electronic delivery, you will receive an email when the item is
+            available to download.
           </p>
           {this.renderBackToClassicLink()}
           {this.renderBackToSearchLink()}
@@ -281,13 +286,6 @@ class HoldConfirmation extends React.Component {
                 <div className="nypl-request-item-summary">
                   {confirmationInfo}
                 </div>
-              </div>
-            </div>
-            <div className="nypl-row">
-              <div className="nypl-column-three-quarters">
-                <a target="_blank" href="https://www.nypl.org/help/request-research-materials">
-                  Learn more about our off-site collections.
-                </a>
               </div>
             </div>
           </div>
