@@ -93,7 +93,14 @@ class HoldConfirmation extends React.Component {
    * @return {HTML Element}
    */
   renderLocationInfo(loc) {
-    if (!loc || _isEmpty(loc)) { return null; }
+    if (!loc || _isEmpty(loc)) {
+      return (
+        <span>
+          please <a href="https://gethelp.nypl.org/customer/portal/emails/new">email us</a> or
+          call 917-ASK-NYPL (<a href="tel:19172756975">917-275-6975</a>) for your delivery location.
+        </span>
+      );
+    }
 
     if (loc.shortName === 'n/a') {
       return (
@@ -236,11 +243,11 @@ class HoldConfirmation extends React.Component {
             We've received your request
             for <Link id="item-link" to={`${appConfig.baseUrl}/bib/${bibId}`}>{title}</Link>
           </p>
-          <p>
+          <p id="delivery-location">
             The item will be delivered to: {this.renderLocationInfo(deliveryLocation)}
           </p>
 
-          <h3>Physical Delivery</h3>
+          <h3 id="physical-delivery">Physical Delivery</h3>
           <p>
             Please log into your library account to check for updates. The item will be
             listed as “Ready for Pickup” under your Holds tab when it is available. You

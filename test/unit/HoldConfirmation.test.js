@@ -145,14 +145,10 @@ describe('HoldConfirmation', () => {
     it('should display the layout of request confirmation page\'s contents.', () => {
       const main = component.find('main');
 
-      expect(main.find('h2')).to.have.length(1);
-      expect(main.find('h2').text()).to.equal('Submission Received');
-      expect(main.contains(<h2>Submission Received</h2>)).to.equal(true);
-
       expect(main.find('h3')).to.have.length(2);
-      expect(main.find('#item-information').text()).to.equal('Item Information');
+      expect(main.find('#physical-delivery').text()).to.equal('Physical Delivery');
       expect(main.find('#electronic-delivery').text()).to.equal('Electronic Delivery');
-      expect(main.contains(<h3 id="item-information">Item Information</h3>)).to.equal(true);
+      expect(main.contains(<h3 id="physical-delivery">Physical Delivery</h3>)).to.equal(true);
       expect(main.contains(<h3 id="electronic-delivery">Electronic Delivery</h3>)).to.equal(true);
     });
 
@@ -169,6 +165,54 @@ describe('HoldConfirmation', () => {
       expect(main.find('#start-new-search')).to.have.length(1);
       expect(main.find('#start-new-search').text()).to.equal('Start a new search');
     });
+  });
+
+  describe('If the App does not receive valid pick up location data, ', () => {
+    let component;
+    let requireUser;
+    const location = {
+      query: {
+      },
+    };
+
+    const bib = {
+      title: ['Harry Potter'],
+    };
+
+    before(() => {
+      Actions.updatePatronData({
+        id: '6677200',
+        names: ['Leonard, Mike'],
+        barcodes: ['162402680435300'],
+      });
+      requireUser = sinon.spy(HoldConfirmation.prototype, 'requireUser');
+      component = mount(<HoldConfirmation location={location} bib={bib} />);
+    });
+
+    after(() => {
+      requireUser.restore();
+      component.unmount();
+    });
+
+    it('should render the defalut error message.', () => {
+      const main = component.find('main');
+
+      expect(main.find('#delivery-location')).to.have.length(1);
+      expect(main.contains(
+        <span>
+          please <a href="https://gethelp.nypl.org/customer/portal/emails/new">email us</a> or
+          call 917-ASK-NYPL (<a href="tel:19172756975">917-275-6975</a>) for your delivery location.
+        </span>
+      )).to.equal(true);
+    });
+  });
+
+  describe('If the App receives pick up location as "edd, "', () => {
+    it('should render the message for EDD.', () => {});
+  });
+
+  describe('If the App receives pick up location as one of the "physical locations, "', () => {
+    it('should render the message for the physical location.', () => {});
   });
 
   describe('If the patron get here from a search result page, <HoldConfirmation>', () => {
