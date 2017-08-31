@@ -128,7 +128,7 @@ class HoldConfirmation extends React.Component {
   renderStartOverLink() {
     if (this.props.location.query.fromUrl) {
       return (
-        <span> You may also try your search in
+        <span id="go-to-shared-catalog"> You may also try your search in
           our <Link to={`${appConfig.baseUrl}/`} onClick={(e) => this.goRestart(e)}>Shared
           Collection Catalog</Link>.
         </span>

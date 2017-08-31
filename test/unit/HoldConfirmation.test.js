@@ -106,9 +106,10 @@ describe('HoldConfirmation', () => {
   describe('If the patron is logged in and the App receives valid data, <HoldConfirmation>', () => {
     let component;
     let requireUser;
+    let modelDeliveryLocationName;
     const location = {
       query: {
-        pickupLocation: 'myr',
+        pickupLocation: 'mala',
       },
     };
 
@@ -144,6 +145,10 @@ describe('HoldConfirmation', () => {
         barcodes: ['162402680435300'],
       });
       requireUser = sinon.spy(HoldConfirmation.prototype, 'requireUser');
+      modelDeliveryLocationName = sinon.spy(
+        HoldConfirmation.prototype,
+        'modelDeliveryLocationName'
+      );
       component = mount(
         <HoldConfirmation
           location={location}
@@ -155,6 +160,7 @@ describe('HoldConfirmation', () => {
 
     after(() => {
       requireUser.restore();
+      modelDeliveryLocationName.restore();
       component.unmount();
     });
 
@@ -177,14 +183,19 @@ describe('HoldConfirmation', () => {
       expect(main.find('#electronic-delivery').text()).to.equal('Electronic Delivery');
       expect(main.contains(<h3 id="physical-delivery">Physical Delivery</h3>)).to.equal(true);
       expect(main.contains(<h3 id="electronic-delivery">Electronic Delivery</h3>)).to.equal(true);
+      expect(main.find('.item')).to.have.length(1);
     });
 
     it('should render the message for the physical delivery location.', () => {
       const main = component.find('main');
 
+      expect(modelDeliveryLocationName.returnValues[0]).to.equal(
+        'Schwarzman Building - Allen Scholar Room'
+      );
+
       expect(main.find('#delivery-location')).to.have.length(1);
       expect(main.find('#delivery-location').text()).to.equal(
-        'The item will be delivered to: Library for the Performing Arts'
+        'The item will be delivered to: Schwarzman Building - Allen Scholar Room'
       );
     });
 
@@ -203,7 +214,7 @@ describe('HoldConfirmation', () => {
     });
   });
 
-  describe('If the App does not receive valid pick up location data, ', () => {
+  describe('If the App does not receive valid pick up location data', () => {
     let component;
     let requireUser;
     const location = {
@@ -273,7 +284,7 @@ describe('HoldConfirmation', () => {
     });
   });
 
-  describe('If the App does receive valid pick up location data but no locations data, ', () => {
+  describe('If the App receives valid pick up location data but no locations data', () => {
     let component;
     let requireUser;
     const location = {
@@ -317,7 +328,7 @@ describe('HoldConfirmation', () => {
     });
   });
 
-  describe('If the App receives pick up location as "edd, "', () => {
+  describe('If the App receives pick up location as "edd"', () => {
     let component;
     let requireUser;
     const location = {
@@ -382,9 +393,37 @@ describe('HoldConfirmation', () => {
     });
   });
 
-  describe('If the patron get here from a search result page, <HoldConfirmation>', () => {
+  describe('If the patron does not get here from a search result page, <HoldConfirmation>', () => {
     let component;
-    let requireUser;
+    const location = {
+      query: {
+        pickupLocation: 'myr',
+      },
+    };
+
+    const bib = {
+      title: ['Harry Potter'],
+    };
+
+    before(() => {
+      component = mount(<HoldConfirmation location={location} bib={bib} />);
+    });
+
+    after(() => {
+      component.unmount();
+    });
+
+    it('should have the link back to search result.', () => {
+      const main = component.find('main');
+
+      expect(main.find('#start-new-search')).to.have.length(1);
+      expect(main.find('#start-new-search').text()).to.equal('Start a new search');
+      expect(main.find('#go-back-search-results')).to.have.length(0);
+    });
+  });
+
+  describe('If the patron gets here from a search result page, <HoldConfirmation>', () => {
+    let component;
     const location = {
       query: {
         pickupLocation: 'myr',
@@ -397,17 +436,10 @@ describe('HoldConfirmation', () => {
     };
 
     before(() => {
-      Actions.updatePatronData({
-        id: '6677200',
-        names: ['Leonard, Mike'],
-        barcodes: ['162402680435300'],
-      });
-      requireUser = sinon.spy(HoldConfirmation.prototype, 'requireUser');
       component = mount(<HoldConfirmation location={location} bib={bib} />);
     });
 
     after(() => {
-      requireUser.restore();
       component.unmount();
     });
 
@@ -423,10 +455,54 @@ describe('HoldConfirmation', () => {
     });
   });
 
-  describe('If the patron get here from a classic catalog search result page, <HoldConfirmation>',
+  describe('If the patron does not get here from a classic catalog, <HoldConfirmation>',
     () => {
       let component;
-      let requireUser;
+      let renderBackToClassicLink;
+      const location = {
+        query: {
+          pickupLocation: 'myr',
+          searchKeywords: 'Bryant',
+        },
+      };
+
+      const bib = {
+        title: ['Harry Potter'],
+      };
+
+      before(() => {
+        renderBackToClassicLink = sinon.spy(HoldConfirmation.prototype, 'renderBackToClassicLink');
+        component = mount(<HoldConfirmation location={location} bib={bib} />);
+      });
+
+      after(() => {
+        renderBackToClassicLink.restore();
+        component.unmount();
+      });
+
+      it('should not have the link back to the classic catalog homepage.',
+        () => {
+          const main = component.find('main');
+
+          expect(renderBackToClassicLink.returnValues[0]).to.equal(false);
+
+          expect(main.find('#go-back-catalog')).to.have.length(0);
+        }
+      );
+
+      it('should have the link to shared collection catalog.', () => {
+        const main = component.find('main');
+
+        expect(main.find('#start-new-search').text()).to.equal(
+          'start a new search'
+        );
+      });
+    }
+  );
+
+  describe('If the patron gets here from a classic catalog search result page, <HoldConfirmation>',
+    () => {
+      let component;
       const location = {
         query: {
           pickupLocation: 'myr',
@@ -442,21 +518,14 @@ describe('HoldConfirmation', () => {
       };
 
       before(() => {
-        Actions.updatePatronData({
-          id: '6677200',
-          names: ['Leonard, Mike'],
-          barcodes: ['162402680435300'],
-        });
-        requireUser = sinon.spy(HoldConfirmation.prototype, 'requireUser');
         component = mount(<HoldConfirmation location={location} bib={bib} />);
       });
 
       after(() => {
-        requireUser.restore();
         component.unmount();
       });
 
-      it('should have the link back to the classic catalog homepage or and search result page',
+      it('should have the link back to the classic catalog homepage and search result page',
         () => {
           const main = component.find('main');
 
@@ -469,6 +538,14 @@ describe('HoldConfirmation', () => {
           )).to.equal(true);
         }
       );
+
+      it('should have the link to shared collection catalog.', () => {
+        const main = component.find('main');
+
+        expect(main.find('#go-to-shared-catalog').text()).to.equal(
+          ' You may also try your search in our Shared Collection Catalog.'
+        );
+      });
     }
   );
 });
