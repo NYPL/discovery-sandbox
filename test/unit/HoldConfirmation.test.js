@@ -116,6 +116,27 @@ describe('HoldConfirmation', () => {
       title: ['Harry Potter'],
     };
 
+    const deliveryLocations = [
+      {
+        '@id': 'loc:myr',
+        address: '40 Lincoln Center Plaza',
+        prefLabel: 'Performing Arts Research Collections',
+        shortName: 'Library for the Performing Arts',
+      },
+      {
+        '@id': 'loc:sc',
+        prefLabel: 'Schomburg Center',
+        address: '515 Malcolm X Boulevard',
+        shortName: 'Schomburg Center',
+      },
+      {
+        '@id': 'loc:mala',
+        prefLabel: 'Schwarzman Building - Allen Scholar Room',
+        address: '476 Fifth Avenue (42nd St and Fifth Ave)',
+        shortName: 'Schwarzman Building',
+      },
+    ];
+
     before(() => {
       Actions.updatePatronData({
         id: '6677200',
@@ -123,7 +144,13 @@ describe('HoldConfirmation', () => {
         barcodes: ['162402680435300'],
       });
       requireUser = sinon.spy(HoldConfirmation.prototype, 'requireUser');
-      component = mount(<HoldConfirmation location={location} bib={bib} />);
+      component = mount(
+        <HoldConfirmation
+          location={location}
+          bib={bib}
+          deliveryLocations={deliveryLocations}
+        />
+      );
     });
 
     after(() => {
@@ -152,6 +179,15 @@ describe('HoldConfirmation', () => {
       expect(main.contains(<h3 id="electronic-delivery">Electronic Delivery</h3>)).to.equal(true);
     });
 
+    it('should render the message for the physical delivery location.', () => {
+      const main = component.find('main');
+
+      expect(main.find('#delivery-location')).to.have.length(1);
+      expect(main.find('#delivery-location').text()).to.equal(
+        'The item will be delivered to: Library for the Performing Arts'
+      );
+    });
+
     it('should deliver the item\'s title on the page.', () => {
       const main = component.find('main');
 
@@ -172,6 +208,77 @@ describe('HoldConfirmation', () => {
     let requireUser;
     const location = {
       query: {
+        pickupLocation: '',
+      },
+    };
+
+    const bib = {
+      title: ['Harry Potter'],
+    };
+
+    const deliveryLocations = [
+      {
+        '@id': 'loc:myr',
+        address: '40 Lincoln Center Plaza',
+        prefLabel: 'Performing Arts Research Collections',
+        shortName: 'Library for the Performing Arts',
+      },
+      {
+        '@id': 'loc:sc',
+        prefLabel: 'Schomburg Center',
+        address: '515 Malcolm X Boulevard',
+        shortName: 'Schomburg Center',
+      },
+      {
+        '@id': 'loc:mala',
+        prefLabel: 'Schwarzman Building - Allen Scholar Room',
+        address: '476 Fifth Avenue (42nd St and Fifth Ave)',
+        shortName: 'Schwarzman Building',
+      },
+    ];
+
+    before(() => {
+      Actions.updatePatronData({
+        id: '6677200',
+        names: ['Leonard, Mike'],
+        barcodes: ['162402680435300'],
+      });
+      requireUser = sinon.spy(HoldConfirmation.prototype, 'requireUser');
+      component = mount(
+        <HoldConfirmation
+          location={location}
+          bib={bib}
+          deliveryLocations={deliveryLocations}
+        />);
+    });
+
+    after(() => {
+      requireUser.restore();
+      component.unmount();
+    });
+
+    it('should render the defalut error message.', () => {
+      const main = component.find('main');
+
+      expect(main.find('#delivery-location')).to.have.length(1);
+      expect(main.contains(
+        <p id="delivery-location">
+          The item will be delivered to: <span>
+            please <a href="https://gethelp.nypl.org/customer/portal/emails/new">email us</a> or
+            call 917-ASK-NYPL (<a href="tel:19172756975">917-275-6975</a>) for your delivery
+            location.
+          </span>
+        </p>
+      )).to.equal(true);
+    });
+  });
+
+  describe('If the App does receive valid pick up location data but no locations data, ', () => {
+    let component;
+    let requireUser;
+    const location = {
+      query: {
+        pickupLocation: 'myr',
       },
     };
 
@@ -199,20 +306,80 @@ describe('HoldConfirmation', () => {
 
       expect(main.find('#delivery-location')).to.have.length(1);
       expect(main.contains(
-        <span>
-          please <a href="https://gethelp.nypl.org/customer/portal/emails/new">email us</a> or
-          call 917-ASK-NYPL (<a href="tel:19172756975">917-275-6975</a>) for your delivery location.
-        </span>
+        <p id="delivery-location">
+          The item will be delivered to: <span>
+            please <a href="https://gethelp.nypl.org/customer/portal/emails/new">email us</a> or
+            call 917-ASK-NYPL (<a href="tel:19172756975">917-275-6975</a>) for your delivery
+            location.
+          </span>
+        </p>
       )).to.equal(true);
     });
   });
 
   describe('If the App receives pick up location as "edd, "', () => {
-    it('should render the message for EDD.', () => {});
-  });
+    let component;
+    let requireUser;
+    const location = {
+      query: {
+        pickupLocation: 'edd',
+      },
+    };
 
-  describe('If the App receives pick up location as one of the "physical locations, "', () => {
-    it('should render the message for the physical location.', () => {});
+    const deliveryLocations = [
+      {
+        '@id': 'loc:myr',
+        address: '40 Lincoln Center Plaza',
+        prefLabel: 'Performing Arts Research Collections',
+        shortName: 'Library for the Performing Arts',
+      },
+      {
+        '@id': 'loc:sc',
+        prefLabel: 'Schomburg Center',
+        address: '515 Malcolm X Boulevard',
+        shortName: 'Schomburg Center',
+      },
+      {
+        '@id': 'loc:mala',
+        prefLabel: 'Schwarzman Building - Allen Scholar Room',
+        address: '476 Fifth Avenue (42nd St and Fifth Ave)',
+        shortName: 'Schwarzman Building',
+      },
+    ];
+
+    const bib = {
+      title: ['Harry Potter'],
+    };
+
+    before(() => {
+      Actions.updatePatronData({
+        id: '6677200',
+        names: ['Leonard, Mike'],
+        barcodes: ['162402680435300'],
+      });
+      requireUser = sinon.spy(HoldConfirmation.prototype, 'requireUser');
+      component = mount(
+        <HoldConfirmation
+          location={location}
+          bib={bib}
+          deliveryLocations={deliveryLocations}
+        />
+      );
+    });
+
+    after(() => {
+      requireUser.restore();
+      component.unmount();
+    });
+
+    it('should render the message for EDD.', () => {
+      const main = component.find('main');
+
+      expect(main.find('#delivery-location')).to.have.length(1);
+      expect(main.find('#delivery-location').text()).to.equal(
+        'The item will be delivered to: n/a (electronic delivery)'
+      );
+    });
   });
 
   describe('If the patron get here from a search result page, <HoldConfirmation>', () => {
