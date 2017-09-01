@@ -14,10 +14,10 @@ const ItemTable = ({ items, bibId, getRecord, id, searchKeywords }) => {
       <caption className="hidden">Item details</caption>
       <thead>
         <tr>
-          <th scope="col">LOCATION</th>
-          <th scope="col">CALL NO.</th>
-          <th scope="col">STATUS</th>
-          <th scope="col">MESSAGE</th>
+          <th scope="col">Location</th>
+          <th scope="col">Call Number</th>
+          <th scope="col">Status</th>
+          <th scope="col">Message</th>
         </tr>
       </thead>
       <tbody>
