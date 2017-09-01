@@ -1,13 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import FocusTrap from 'focus-trap-react';
 
 class Feedback extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      showForm: false,
-    };
+    this.state = { showForm: false };
+
+    this.onSubmitForm = this.onSubmitForm.bind(this);
+    this.openForm = this.openForm.bind(this);
+    this.closeForm = this.closeForm.bind(this);
+    this.deactivateForm = this.deactivateForm.bind(this);
   }
 
   onSubmitForm() {
@@ -21,18 +25,76 @@ class Feedback extends React.Component {
 
   openForm() {
     this.setState({ showForm: true });
-    this.refs.commentText.value = '';
   }
 
   closeForm(e) {
     e.preventDefault();
+    this.deactivateForm();
+  }
+
+  deactivateForm() {
     this.setState({ showForm: false });
-    this.refs.commentText.value = '';
   }
 
   render() {
     const showForm = this.state.showForm;
     const currentURL = this.props.location.pathname + this.props.location.search;
+    const feedbackModal = showForm ?
+      (<FocusTrap
+        focusTrapOptions={{
+          onDeactivate: this.deactivateForm,
+          clickOutsideDeactivates: true,
+        }}
+        id="feedback-menu"
+        role="menu"
+        className={`feedback-form-container${showForm ? ' active' : ''}`}
+      >
+        <form
+          action={'https://docs.google.com/a/nypl.org/forms/d/e/1FAIpQLScnoQV5OjAP-Y9BOJ1PO9' +
+            'YpMdLjMyWn7VOTFSrDhCAP5ZN5Dw/formResponse'}
+          target="hidden_feedback_iframe"
+          method="POST"
+          onSubmit={() => this.onSubmitForm()}
+        >
+          <div>
+            <label htmlFor="feedback-textarea-comment">
+              Please provide your feedback about this page in the field below.
+              <span className="nypl-required-field">&nbsp;Required</span>
+            </label>
+            <textarea
+              id="feedback-textarea-comment"
+              name="entry.148983317"
+              rows="5"
+              ref="commentText"
+              aria-required="true"
+              tabIndex="0"
+            />
+          </div>
+          <div>
+            <label htmlFor="feedback-input-email">Email Address</label>
+            <input id="feedback-input-email" name="entry.503620384" type="email" />
+          </div>
+          <input
+            id="feedback-input-url"
+            name="entry.1973652282"
+            value={currentURL}
+            type="hidden"
+          />
+          <input name="fvv" value="1" type="hidden" />
+
+          <button
+            className={`cancel-button ${!showForm ? 'hidden' : ''}`}
+            onClick={(e) => this.closeForm(e)}
+            aria-expanded={!showForm}
+            aria-controls="feedback-menu"
+          >
+            Cancel
+          </button>
+
+          <button type="submit" className="large">Submit</button>
+        </form>
+        <iframe name="hidden_feedback_iframe" title="NYPL Discovery Feedback Form" />
+      </FocusTrap>) : null;
 
     return (
       <div className="feedback">
@@ -45,56 +107,7 @@ class Feedback extends React.Component {
         >
           Feedback
         </button>
-        <div
-          id="feedback-menu"
-          role="menu"
-          className={`feedback-form-container${showForm ? ' active' : ''}`}
-        >
-          <form
-            action={'https://docs.google.com/a/nypl.org/forms/d/e/1FAIpQLScnoQV5OjAP-Y9BOJ1PO9' +
-              'YpMdLjMyWn7VOTFSrDhCAP5ZN5Dw/formResponse'}
-            target="hidden_feedback_iframe"
-            method="POST"
-            onSubmit={() => this.onSubmitForm()}
-          >
-            <div>
-              <label htmlFor="feedback-textarea-comment">
-                Please provide your feedback about this page in the field below.
-                <span className="nypl-required-field">&nbsp;Required</span>
-              </label>
-              <textarea
-                id="feedback-textarea-comment"
-                name="entry.148983317"
-                rows="5"
-                ref="commentText"
-                aria-required="true"
-              />
-            </div>
-            <div>
-              <label htmlFor="feedback-input-email">Email Address</label>
-              <input id="feedback-input-email" name="entry.503620384" type="email" />
-            </div>
-            <input
-              id="feedback-input-url"
-              name="entry.1973652282"
-              value={currentURL}
-              type="hidden"
-            />
-            <input name="fvv" value="1" type="hidden" />
-
-            <button
-              className={`cancel-button ${!showForm ? 'hidden' : ''}`}
-              onClick={(e) => this.closeForm(e)}
-              aria-expanded={!showForm}
-              aria-controls="feedback-menu"
-            >
-              Cancel
-            </button>
-
-            <button type="submit" className="large">Submit</button>
-          </form>
-          <iframe name="hidden_feedback_iframe" title="NYPL Discovery Feedback Form" />
-        </div>
+        {feedbackModal}
       </div>
     );
   }

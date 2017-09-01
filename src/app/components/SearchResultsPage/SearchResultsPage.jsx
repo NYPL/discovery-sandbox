@@ -74,9 +74,7 @@ class SearchResultsPage extends React.Component {
     };
 
     return (
-      <DocumentTitle
-        title="Search Results | Shared Collection Catalog | NYPL"
-      >
+      <DocumentTitle title="Search Results | Shared Collection Catalog | NYPL">
         <main className="main-page">
           <LoadingLayer
             status={this.state.isLoading}
