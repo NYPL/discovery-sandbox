@@ -157,7 +157,7 @@ class ItemHoldings extends React.Component {
           perPage={20}
           page={this.state.page}
           updatePage={this.updatePage}
-          to={{ pathname: `/bib/${this.props.bibId}?itemPage=` }}
+          to={{ pathname: `${appConfig.baseUrl}/bib/${this.props.bibId}?itemPage=` }}
           ariaControls="bib-item-table"
         />
       );
