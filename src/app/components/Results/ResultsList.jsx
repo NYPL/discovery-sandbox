@@ -73,31 +73,18 @@ class ResultsList extends React.Component {
     );
   }
 
-  getCollapsedBibs(collapsedBibs) {
-    if (!collapsedBibs.length) return null;
-
-    const bibs = collapsedBibs.map((bib, i) => this.getBib(bib, false, i));
-
-    return (
-      <div className="related-items">
-        <h4>Related formats and editions</h4>
-        <ul>
-          {bibs}
-        </ul>
-      </div>
-    );
-  }
-
   getBibTitle(bib) {
-    if (!bib.titleDisplay) {
+    if (!bib.titleDisplay || !bib.titleDisplay.length) {
       const author = bib.creatorLiteral && bib.creatorLiteral.length ?
         ` / ${bib.creatorLiteral[0]}` : '';
       return bib.title && bib.title.length ? `${bib.title[0]}${author}` : '';
     }
-    return bib.titleDisplay;
+    return bib.titleDisplay[0];
   }
 
   getYearDisplay(bib) {
+    if (_isEmpty(bib)) return null;
+
     let dateStartYear = bib.dateStartYear;
     let dateEndYear = bib.dateEndYear;
 
@@ -112,7 +99,7 @@ class ResultsList extends React.Component {
     return null;
   }
 
-  getBib(bib, author, i) {
+  getBib(bib, i) {
     if (!bib.result || _isEmpty(bib.result) || !bib.result.title) return null;
 
     const result = bib.result;
@@ -175,7 +162,7 @@ class ResultsList extends React.Component {
       return null;
     }
 
-    resultsElm = results.map((bib, i) => this.getBib(bib, true, i));
+    resultsElm = results.map((bib, i) => this.getBib(bib, i));
 
     return (
       <ul
