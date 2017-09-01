@@ -141,7 +141,7 @@ class BibPage extends React.Component {
 
                   {itemHoldings}
 
-                  <h3>Additional details</h3>
+                  <h3>Additional Details</h3>
                   <BibDetails
                     bib={bib}
                     fields={bottomFields}
