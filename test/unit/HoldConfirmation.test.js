@@ -268,7 +268,7 @@ describe('HoldConfirmation', () => {
       component.unmount();
     });
 
-    it('should render the defalut error message.', () => {
+    it('should render the default error message.', () => {
       const main = component.find('main');
 
       expect(main.find('#delivery-location')).to.have.length(1);
