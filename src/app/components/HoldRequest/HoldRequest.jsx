@@ -283,7 +283,7 @@ class HoldRequest extends React.Component {
           {
             (deliveryLocations.length || isEddRequestable) &&
               <button type="submit" className="nypl-request-button">
-                Submit request
+                Submit Request
               </button>
           }
           <input
