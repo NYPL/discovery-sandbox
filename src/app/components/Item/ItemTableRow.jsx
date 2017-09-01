@@ -28,7 +28,7 @@ const ItemTableRow = ({ item, bibId, getRecord, searchKeywords }) => {
           onClick={(e) => getRecord(e, bibId, item.id)}
           tabIndex="0"
         >
-          request
+          Request
         </Link>) :
         <span>In Use</span>;
     } else if (item.nonRecapNYPL) {
