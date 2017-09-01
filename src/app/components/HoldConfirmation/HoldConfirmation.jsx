@@ -93,7 +93,14 @@ class HoldConfirmation extends React.Component {
    * @return {HTML Element}
    */
   renderLocationInfo(loc) {
-    if (!loc || _isEmpty(loc)) { return null; }
+    if (!loc || _isEmpty(loc)) {
+      return (
+        <span>
+          please <a href="https://gethelp.nypl.org/customer/portal/emails/new">email us</a> or
+          call 917-ASK-NYPL (<a href="tel:19172756975">917-275-6975</a>) for your delivery location.
+        </span>
+      );
+    }
 
     if (loc.shortName === 'n/a') {
       return (
@@ -121,20 +128,28 @@ class HoldConfirmation extends React.Component {
   renderStartOverLink() {
     if (this.props.location.query.fromUrl) {
       return (
-        <span> You may also try your search in
+        <span id="go-to-shared-catalog"> You may also try your search in
           our <Link to={`${appConfig.baseUrl}/`} onClick={(e) => this.goRestart(e)}>Shared
           Collection Catalog</Link>.
         </span>
       );
     }
+
     let text = 'Start a new search';
+
     if (this.props.location.query.searchKeywords) {
       text = 'start a new search';
     }
 
     return (
       <span>
-        <Link to={`${appConfig.baseUrl}/`} onClick={(e) => this.goRestart(e)}>{text}</Link>.
+        <Link
+          id="start-new-search"
+          to={`${appConfig.baseUrl}/`}
+          onClick={(e) => this.goRestart(e)}
+        >
+          {text}
+        </Link>.
       </span>
     );
   }
@@ -151,7 +166,7 @@ class HoldConfirmation extends React.Component {
     }
 
     return (
-      <span>
+      <span id="go-back-catalog">
         <a href={this.props.location.query.fromUrl}>Go back to your search
         results</a> or <a href="https://catalog.nypl.org/search">start a new search</a>.
       </span>
@@ -171,6 +186,7 @@ class HoldConfirmation extends React.Component {
 
     return (
       <span><Link
+        id="go-back-search-results"
         // We use this.props.location.query.searchKeywords here for the query from
         // the URL to deal with no js situation.
         to={`${appConfig.baseUrl}/search?q=${this.props.location.query.searchKeywords}`}
@@ -225,13 +241,13 @@ class HoldConfirmation extends React.Component {
         <div className="item">
           <p>
             We've received your request
-            for <Link to={`${appConfig.baseUrl}/bib/${bibId}`}>{title}</Link>
+            for <Link id="item-link" to={`${appConfig.baseUrl}/bib/${bibId}`}>{title}</Link>
           </p>
-          <p>
+          <p id="delivery-location">
             The item will be delivered to: {this.renderLocationInfo(deliveryLocation)}
           </p>
 
-          <h3>Physical Delivery</h3>
+          <h3 id="physical-delivery">Physical Delivery</h3>
           <p>
             Please log into your library account to check for updates. The item will be
             listed as “Ready for Pickup” under your Holds tab when it is available. You
@@ -249,7 +265,7 @@ class HoldConfirmation extends React.Component {
             call 917-ASK-NYPL (<a href="tel:19172756975">917-275-6975</a>).
           </p>
 
-          <h3>Electronic Delivery</h3>
+          <h3 id="electronic-delivery">Electronic Delivery</h3>
           <p>
             If you selected electronic delivery, you will receive an email when the item is
             available to download.

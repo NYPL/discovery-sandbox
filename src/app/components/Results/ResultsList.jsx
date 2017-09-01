@@ -1,7 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
-import { isEmpty as _isEmpty } from 'underscore';
+import {
+  isEmpty as _isEmpty,
+  isArray as _isArray,
+} from 'underscore';
 
 import Actions from '../../actions/Actions';
 import LibraryItem from '../../utils/item';
@@ -91,31 +94,18 @@ class ResultsList extends React.Component {
     );
   }
 
-  getCollapsedBibs(collapsedBibs) {
-    if (!collapsedBibs.length) return null;
-
-    const bibs = collapsedBibs.map((bib, i) => this.getBib(bib, false, i));
-
-    return (
-      <div className="related-items">
-        <h4>Related formats and editions</h4>
-        <ul>
-          {bibs}
-        </ul>
-      </div>
-    );
-  }
-
   getBibTitle(bib) {
-    if (!bib.titleDisplay) {
+    if (!bib.titleDisplay || !bib.titleDisplay.length) {
       const author = bib.creatorLiteral && bib.creatorLiteral.length ?
         ` / ${bib.creatorLiteral[0]}` : '';
       return bib.title && bib.title.length ? `${bib.title[0]}${author}` : '';
     }
-    return bib.titleDisplay;
+    return bib.titleDisplay[0];
   }
 
   getYearDisplay(bib) {
+    if (_isEmpty(bib)) return null;
+
     let dateStartYear = bib.dateStartYear;
     let dateEndYear = bib.dateEndYear;
 
@@ -130,7 +120,7 @@ class ResultsList extends React.Component {
     return null;
   }
 
-  getBib(bib, author, i) {
+  getBib(bib, i) {
     if (!bib.result || _isEmpty(bib.result) || !bib.result.title) return null;
 
     const result = bib.result;
@@ -189,9 +179,11 @@ class ResultsList extends React.Component {
     const results = this.props.results;
     let resultsElm = null;
 
-    if (results && results.length) {
-      resultsElm = results.map((bib, i) => this.getBib(bib, true, i));
+    if (!results || !_isArray(results) || !results.length) {
+      return null;
     }
+
+    resultsElm = results.map((bib, i) => this.getBib(bib, i));
 
     return (
       <ul
