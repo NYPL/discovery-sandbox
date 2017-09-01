@@ -38,6 +38,11 @@ const ajaxCall = (
     .catch(errorcb);
 };
 
+/**
+ * getDefaultFacets
+ * Get the default facets needed from the API.
+ * @return {object}
+ */
 const getDefaultFacets = () => _extend({}, appConfig.defaultFacets);
 
 /**
@@ -52,6 +57,13 @@ const createAppHistory = () => {
   return useQueries(createMemoryHistory)();
 };
 
+/**
+ * ajaxCall
+ * Utility function to make ajax requests.
+ * @param {string} endpoint The endpoint to call.
+ * @param {function} cb The callback function.
+ * @param {function} errorcb The error callback function.
+ */
 function destructureFilters(filters, apiFacet) {
   const selectedFacets = {};
   const facetArray = apiFacet && apiFacet.itemListElement && apiFacet.itemListElement.length ?

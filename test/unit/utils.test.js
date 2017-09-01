@@ -3,11 +3,15 @@ import MockAdapter from 'axios-mock-adapter';
 import { expect } from 'chai';
 import axios from 'axios';
 import sinon from 'sinon';
+import { useQueries } from 'history';
 
 const mock = new MockAdapter(axios);
 
 import {
   ajaxCall,
+  getDefaultFacets,
+  createAppHistory,
+  destructureFilters,
   getSortQuery,
   getFacetParams,
 } from '../../src/app/utils/utils.js';
@@ -15,7 +19,7 @@ import {
 /**
  * ajaxCall()
  */
-describe('ajaxCall()', () => {
+describe('ajaxCall', () => {
   describe('No input', () => {
     it('should return null if no enpoint is passed', () => {
       expect(ajaxCall()).to.equal(null);
@@ -65,15 +69,28 @@ describe('ajaxCall()', () => {
       mock.reset();
     });
 
-    it('should invoke the error callback function', () => {
+    it('should invoke the default error callback function', () => {
       const cbSpy = sinon.spy();
-      const cbErrorSpy = sinon.spy();
-      ajaxCall('/api?q=locofocos', cbSpy, cbErrorSpy);
+      // const consoleError = sinon.spy(console, 'error');
+      ajaxCall('/api?q=locofocos', cbSpy);
 
       setTimeout(() => {
         expect(cbSpy.callCount).to.equal(0);
-        expect(cbErrorSpy.callCount).to.equal(1);
+        // expect(consoleError.callCount).to.equal(1);
       }, 0);
+
+      cbSpy.reset();
+      // consoleError.reset();
+    });
+
+    it('should invoke the error callback function', () => {
+      const cbSpy = sinon.spy();
+      const cbErrorSpy = sinon.spy();
+      ajaxCall('/api?q=locofocos', (cbSpy), cbErrorSpy)
+        .then(() => {
+          expect(cbSpy.callCount).to.equal(0);
+          expect(cbErrorSpy.callCount).to.equal(1);
+        });
 
       cbSpy.reset();
       cbErrorSpy.reset();
@@ -82,9 +99,69 @@ describe('ajaxCall()', () => {
 });
 
 /**
+ * getDefaultFacets
+ */
+describe('getDefaultFacets', () => {
+  it('should return an object with a list of facets', () => {
+    const defaultFacets = getDefaultFacets();
+
+    expect(defaultFacets).to.eql({
+      owner: [],
+      contributorLiteral: [],
+      materialType: [],
+      issuance: [],
+      publisher: [],
+      language: [],
+      mediaType: [],
+      subjectLiteral: [],
+      creatorLiteral: [],
+      dateAfter: {},
+      dateBefore: {},
+    });
+  });
+});
+
+/**
+ * createAppHistory
+ */
+describe('createAppHistory', () => {
+  // Don't think this is working too well.
+  // TODO: find a better way to test this function:
+  it('should create a server-side history', () => {
+    const useQueriesSpy = sinon.spy(useQueries);
+
+    createAppHistory();
+    setTimeout(() => {
+      expect(useQueriesSpy.callCount).to.equal(1);
+    }, 0);
+
+    useQueriesSpy.reset();
+  });
+});
+
+/**
+ * destructureFilters
+ */
+describe('destructureFilters', () => {
+  describe('Default call', () => {
+    it('should return an empty object', () => {
+      const filters = destructureFilters();
+      expect(filters).to.eql({});
+    });
+  });
+
+  describe('No facets from the API', () => {
+    // it('should return an empty object', () => {
+    //   const filters = destructureFilters();
+    //   expect(filters).to.eql({});
+    // });
+  });
+});
+
+/**
  * getSortQuery()
  */
-describe('getSortQuery()', () => {
+describe('getSortQuery', () => {
   describe('No input', () => {
     it('should return an empty string', () => {
       expect(getSortQuery()).to.equal('');
@@ -124,7 +201,7 @@ describe('getSortQuery()', () => {
 /**
  * getFacetParams()
  */
-describe('getFacetParams()', () => {
+describe('getFacetParams', () => {
   describe('No input', () => {
     it('should return an empty string', () => {
       expect(getFacetParams()).to.equal('');
