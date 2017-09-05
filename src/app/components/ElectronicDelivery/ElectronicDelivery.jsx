@@ -17,6 +17,7 @@ import appConfig from '../../../../appConfig.js';
 import ElectronicDeliveryForm from './ElectronicDeliveryForm';
 import LibraryItem from '../../utils/item.js';
 import LoadingLayer from '../LoadingLayer/LoadingLayer.jsx';
+import { trackDiscovery } from '../../utils/utils.js';
 
 class ElectronicDelivery extends React.Component {
   constructor(props) {
@@ -110,6 +111,7 @@ class ElectronicDelivery extends React.Component {
       bibId,
       itemId,
       itemSource,
+      title,
     } = this.state;
     const path = `${appConfig.baseUrl}/hold/confirmation/${bibId}-${itemId}`;
     const data = _extend({
@@ -122,10 +124,18 @@ class ElectronicDelivery extends React.Component {
     const searchKeywordsQuery = (searchKeywords) ? `&searchKeywords=${searchKeywords}` : '';
     const fromUrlQuery = this.props.location.query && this.props.location.query.fromUrl ?
       `&fromUrl=${encodeURIComponent(this.props.location.query.fromUrl)}` : '';
+    const itemSourceMapping = {
+      'recap-pul': 'Princeton',
+      'recap-cul': 'Columbia',
+    };
+    const partnerEvent = itemSource !== 'sierra-nypl' ?
+      ` - Partner item - ${itemSourceMapping[itemSource]}` : '';
 
     // This is to remove the error box on the top of the page on a successfull submission.
     this.setState({ raiseError: null });
     this.updateIsLoadingState(true);
+    trackDiscovery(`Submit Request EDD${partnerEvent}`, `${title} - ${itemId}`);
+
     axios
       .post(`${appConfig.baseUrl}/api/newHold`, data)
       .then(response => {
@@ -164,6 +174,7 @@ class ElectronicDelivery extends React.Component {
    */
   raiseError(error) {
     this.setState({ raiseError: error });
+    trackDiscovery('Error', 'EDD');
   }
 
   /**
@@ -226,7 +237,10 @@ class ElectronicDelivery extends React.Component {
               <div className="nypl-column-three-quarters">
                 <div className="nypl-request-item-summary">
                   <h2>
-                    <Link to={`${appConfig.baseUrl}/bib/${bibId}`}>
+                    <Link
+                      to={`${appConfig.baseUrl}/bib/${bibId}`}
+                      onClick={() => trackDiscovery('EDD - Bib', title)}
+                    >
                       {title}
                     </Link>
                   </h2>
