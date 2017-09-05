@@ -10,15 +10,14 @@ import {
   every as _every,
 } from 'underscore';
 
-import { ajaxCall } from '../../utils/utils';
+import {
+  ajaxCall,
+  trackDiscovery,
+} from '../../utils/utils';
 import DefinitionList from './DefinitionList';
 import appConfig from '../../../../appConfig.js';
 
 class BibDetails extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   /*
    * getOwner(bib)
    * This is currently only for non-NYPL partner items. If it's NYPL, it should return undefined.
@@ -60,8 +59,9 @@ class BibDetails extends React.Component {
    * @param {string} fieldValue
    * @param {boolean} fieldLinkable
    * @param {boolean} fieldSelfLinkable
+   * @param {string} fieldLabel
    */
-  getDefinitionObject(bibValues, fieldValue, fieldLinkable, fieldSelfLinkable) {
+  getDefinitionObject(bibValues, fieldValue, fieldLinkable, fieldSelfLinkable, fieldLabel) {
     if (bibValues.length === 1) {
       const bibValue = bibValues[0];
       const url = `filters[${fieldValue}]=${bibValue['@id']}`;
@@ -69,7 +69,7 @@ class BibDetails extends React.Component {
       if (fieldLinkable) {
         return (
           <Link
-            onClick={e => this.newSearch(e, url, fieldValue, bibValue['@id'])}
+            onClick={e => this.newSearch(e, url, fieldValue, bibValue['@id'], fieldLabel)}
             to={`${appConfig.baseUrl}/search?${url}`}
           >
             {bibValue.prefLabel}
@@ -79,7 +79,12 @@ class BibDetails extends React.Component {
 
       if (fieldSelfLinkable) {
         return (
-          <a href={bibValue['@id']}>{bibValue.prefLabel}</a>
+          <a
+            href={bibValue['@id']}
+            onClick={() => trackDiscovery('Bib fields', `${fieldLabel} - ${bibValue.prefLabel}`)}
+          >
+            {bibValue.prefLabel}
+          </a>
         );
       }
 
@@ -93,14 +98,20 @@ class BibDetails extends React.Component {
             const url = `filters[${fieldValue}]=${value['@id']}`;
             let itemValue = fieldLinkable ?
               <Link
-                onClick={e => this.newSearch(e, url, fieldValue, value['@id'])}
+                onClick={e => this.newSearch(e, url, fieldValue, value['@id'], fieldLabel)}
                 to={`${appConfig.baseUrl}/search?${url}`}
               >
                 {value.prefLabel}
               </Link>
               : <span>{value.prefLabel}</span>;
             if (fieldSelfLinkable) {
-              itemValue = <a href={value['@id']}>{value.prefLabel}</a>;
+              itemValue =
+                (<a
+                  href={value['@id']}
+                  onClick={() => trackDiscovery('Bib fields', `${fieldLabel} - ${value.prefLabel}`)}
+                >
+                  {value.prefLabel}
+                </a>);
             }
 
             return (<li key={i}>{itemValue}</li>);
@@ -143,7 +154,9 @@ class BibDetails extends React.Component {
    * @param {string} fieldIdentifier
    * @param {string} fieldSelfLinkable
    */
-  getDefinition(bibValues, fieldValue, fieldLinkable, fieldIdentifier, fieldSelfLinkable) {
+  getDefinition(
+    bibValues, fieldValue, fieldLinkable, fieldIdentifier, fieldSelfLinkable, fieldLabel
+  ) {
     if (fieldValue === 'identifier') {
       return this.getIdentifiers(bibValues, fieldIdentifier);
     }
@@ -155,7 +168,7 @@ class BibDetails extends React.Component {
       if (fieldLinkable) {
         return (
           <Link
-            onClick={e => this.newSearch(e, url, fieldValue, bibValue)}
+            onClick={e => this.newSearch(e, url, fieldValue, bibValue, fieldLabel)}
             to={`${appConfig.baseUrl}/search?${url}`}
           >
             {bibValue}
@@ -165,7 +178,12 @@ class BibDetails extends React.Component {
 
       if (fieldSelfLinkable) {
         return (
-          <a href={bibValue.url}>{bibValue.prefLabel}</a>
+          <a
+            href={bibValue.url}
+            onClick={() => trackDiscovery('Bib fields', `${fieldLabel} - ${bibValue.prefLabel}`)}
+          >
+            {bibValue.prefLabel}
+          </a>
         );
       }
 
@@ -179,14 +197,20 @@ class BibDetails extends React.Component {
             const url = `filters[${fieldValue}]=${value}`;
             let itemValue = fieldLinkable ?
               <Link
-                onClick={e => this.newSearch(e, url, fieldValue, value)}
+                onClick={e => this.newSearch(e, url, fieldValue, value, fieldLabel)}
                 to={`${appConfig.baseUrl}/search?${url}`}
               >
                 {value}
               </Link>
               : <span>{value}</span>;
             if (fieldSelfLinkable) {
-              itemValue = <a href={value.url}>{value.prefLabel}</a>;
+              itemValue =
+                (<a
+                  href={value.url}
+                  onClick={() => trackDiscovery('Bib fields', `${fieldLabel} - ${value.prefLabel}`)}
+                >
+                  {value.prefLabel}
+                </a>);
             }
 
             return (<li key={i}>{itemValue}</li>);
@@ -254,11 +278,13 @@ class BibDetails extends React.Component {
           fieldsToRender.push({
             term: fieldLabel,
             definition:
-              this.getDefinitionObject(bibValues, fieldValue, fieldLinkable, fieldSelfLinkable),
+              this.getDefinitionObject(
+                bibValues, fieldValue, fieldLinkable, fieldSelfLinkable, fieldLabel
+              ),
           });
         } else {
           const definition = this.getDefinition(
-            bibValues, fieldValue, fieldLinkable, fieldIdentifier, fieldSelfLinkable
+            bibValues, fieldValue, fieldLinkable, fieldIdentifier, fieldSelfLinkable, fieldLabel
           );
           if (definition) {
             fieldsToRender.push({
@@ -292,13 +318,31 @@ class BibDetails extends React.Component {
         if (electronicResources.length === 1) {
           const electronicItem = electronicResources[0];
           electronicElem =
-            <a href={electronicItem.url} target="_blank">{electronicItem.prefLabel}</a>;
+            (<a
+              href={electronicItem.url}
+              target="_blank"
+              onClick={() =>
+                trackDiscovery('Bib fields', `Electronic Resource - ${electronicItem.prefLabel}`)
+              }
+            >
+              {electronicItem.prefLabel}
+            </a>);
         } else {
           electronicElem = (
             <ul>
               {
                 electronicResources.map((e, i) => (
-                  <li key={i}><a href={e.url} target="_blank">{e.prefLabel}</a></li>
+                  <li key={i}>
+                    <a
+                      href={e.url}
+                      target="_blank"
+                      onClick={
+                        () => trackDiscovery('Bib fields', `Electronic Resource - ${e.prefLabel}`)
+                      }
+                    >
+                      {e.prefLabel}
+                    </a>
+                  </li>
                 ))
               }
             </ul>
@@ -315,10 +359,12 @@ class BibDetails extends React.Component {
     return fieldsToRender;
   }
 
-  newSearch(e, query, field, value) {
+  newSearch(e, query, field, value, label) {
     e.preventDefault();
 
     this.props.updateIsLoadingState(true);
+
+    trackDiscovery('Bib fields', `${label} - ${value}`);
     ajaxCall(`${appConfig.baseUrl}/api?${query}`, (response) => {
       let index = 0;
 
