@@ -8,6 +8,7 @@ import Actions from '../../actions/Actions';
 import Pagination from '../Pagination/Pagination';
 import ItemTable from './ItemTable';
 import appConfig from '../../../../appConfig.js';
+import { trackDiscovery } from '../../utils/utils.js';
 
 class ItemHoldings extends React.Component {
   constructor(props) {
@@ -65,6 +66,7 @@ class ItemHoldings extends React.Component {
     e.preventDefault();
     this.props.updateIsLoadingState(true);
 
+    trackDiscovery('Bib Item Request', `Item Details - ${itemId}`);
     // Search for the bib? Just pass the data.
     axios
       .get(`${appConfig.baseUrl}/api/hold/request/${bibId}-${itemId}`)
@@ -118,9 +120,11 @@ class ItemHoldings extends React.Component {
    * updatePage(page)
    * @description Update the client-side state of the component's page value.
    * @param {number} page The next number/index of what items should be displayed.
+   * @param {string} type Either Next or Previous.
    */
-  updatePage(page) {
+  updatePage(page, type) {
     this.setState({ page });
+    trackDiscovery('Pagination', `${type} - page ${page}`);
     this.context.router.push(`${appConfig.baseUrl}/bib/${this.props.bibId}?itemPage=${page}`);
   }
 
@@ -142,10 +146,12 @@ class ItemHoldings extends React.Component {
    * @description Display all items on the page.
    */
   showAll() {
+    trackDiscovery('View All Items', `Click - ${this.props.bibId}`);
     this.setState({ showAll: true });
   }
 
   render() {
+    const bibId = this.props.bibId;
     let items = this.props.items;
     const shortenItems = !this.props.shortenItems;
     let pagination = null;
@@ -157,7 +163,7 @@ class ItemHoldings extends React.Component {
           perPage={20}
           page={this.state.page}
           updatePage={this.updatePage}
-          to={{ pathname: `${appConfig.baseUrl}/bib/${this.props.bibId}?itemPage=` }}
+          to={{ pathname: `${appConfig.baseUrl}/bib/${bibId}?itemPage=` }}
           ariaControls="bib-item-table"
         />
       );
@@ -182,8 +188,9 @@ class ItemHoldings extends React.Component {
                 this.state.js ?
                   (<a href="#" onClick={this.showAll}>View All Items</a>) :
                   (<Link
-                    to={`${appConfig.baseUrl}/bib/${this.props.bibId}/all`}
+                    to={`${appConfig.baseUrl}/bib/${bibId}/all`}
                     className="view-all-items"
+                    onClick={() => trackDiscovery('View All Items', `Click - ${bibId}`)}
                   >
                     View All Items
                   </Link>)

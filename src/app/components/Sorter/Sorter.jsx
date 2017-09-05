@@ -3,7 +3,10 @@ import PropTypes from 'prop-types';
 import { findWhere as _findWhere } from 'underscore';
 
 import Actions from '../../actions/Actions.js';
-import { ajaxCall } from '../../utils/utils';
+import {
+  ajaxCall,
+  trackDiscovery,
+} from '../../utils/utils';
 import appConfig from '../../../../appConfig.js';
 
 const sortingOpts = [
@@ -63,6 +66,7 @@ class Sorter extends React.Component {
   sortResultsBy(sortBy) {
     const apiQuery = this.props.createAPIQuery({ sortBy, page: this.props.page });
 
+    trackDiscovery('Sort by', sortBy);
     this.props.updateIsLoadingState(true);
     ajaxCall(`${appConfig.baseUrl}/api?${apiQuery}`, (response) => {
       Actions.updateSearchResults(response.data.searchResults);

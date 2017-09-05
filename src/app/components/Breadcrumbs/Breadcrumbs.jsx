@@ -2,13 +2,17 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 
+import { trackDiscovery } from '../../utils/utils.js';
 import appConfig from '../../../../appConfig.js';
 
 const baseUrl = appConfig.baseUrl;
 
 const Breadcrumbs = ({ query = '', type, bibUrl, itemUrl, edd }) => {
   const defaultText = appConfig.displayTitle;
-  const homeLink = <li key="home"><Link to={`${baseUrl}/`}>{defaultText}</Link></li>;
+  const onClick = (pageTitle) => trackDiscovery('Breadcrumbs', pageTitle);
+  const homeLink = (<li key="home">
+    <Link to={`${baseUrl}/`} onClick={() => onClick(defaultText)}>{defaultText}</Link>
+  </li>);
 
   /*
    * getCrumbs()
@@ -31,7 +35,11 @@ const Breadcrumbs = ({ query = '', type, bibUrl, itemUrl, edd }) => {
     }
 
     crumbs.push(
-      <li key="search"><Link to={`${baseUrl}/search?${query}`}>Search Results</Link></li>
+      <li key="search">
+        <Link to={`${baseUrl}/search?${query}`} onClick={() => onClick('Search Results')}>
+          Search Results
+        </Link>
+      </li>
     );
 
     if (type === 'bib') {
@@ -39,14 +47,18 @@ const Breadcrumbs = ({ query = '', type, bibUrl, itemUrl, edd }) => {
       return crumbs;
     }
 
-    crumbs.push(<li key="bib"><Link to={`${baseUrl}${bibUrl}`}>Item Details</Link></li>);
+    crumbs.push(<li key="bib">
+      <Link to={`${baseUrl}${bibUrl}`} onClick={() => onClick('Item Details')}>Item Details</Link>
+    </li>);
 
     if (type === 'hold') {
       crumbs.push(<li key="hold">Item Request</li>);
       return crumbs;
     }
 
-    crumbs.push(<li key="hold"><Link to={`${baseUrl}${itemUrl}`}>Item Request</Link></li>);
+    crumbs.push(<li key="hold">
+      <Link to={`${baseUrl}${itemUrl}`} onClick={() => onClick('Item Request')}>Item Request</Link>
+    </li>);
 
     if (type === 'edd') {
       crumbs.push(<li key="edd">Electronic Delivery Request</li>);
@@ -57,7 +69,12 @@ const Breadcrumbs = ({ query = '', type, bibUrl, itemUrl, edd }) => {
     if (edd) {
       crumbs.push(
         <li key="edd">
-          <Link to={`${baseUrl}${itemUrl}/edd`}>Electronic Delivery Request</Link>
+          <Link
+            to={`${baseUrl}${itemUrl}/edd`}
+            onClick={() => onClick('Electronic Delivery Request')}
+          >
+            Electronic Delivery Request
+          </Link>
         </li>
       );
     }
