@@ -165,7 +165,7 @@ class BibDetails extends React.Component {
 
       if (fieldSelfLinkable) {
         return (
-          <a href={bibValue}>{fieldValue}</a>
+          <a href={bibValue.url}>{bibValue.prefLabel}</a>
         );
       }
 
@@ -177,20 +177,19 @@ class BibDetails extends React.Component {
         {
           bibValues.map((value, i) => {
             const url = `filters[${fieldValue}]=${value}`;
-            return (
-              <li key={i}>
-                {
-                  fieldLinkable ?
-                    <Link
-                      onClick={e => this.newSearch(e, url, fieldValue, value)}
-                      to={`${appConfig.baseUrl}/search?${url}`}
-                    >
-                      {value}
-                    </Link>
-                    : <span>{value}</span>
-                }
-              </li>
-            );
+            let itemValue = fieldLinkable ?
+              <Link
+                onClick={e => this.newSearch(e, url, fieldValue, value)}
+                to={`${appConfig.baseUrl}/search?${url}`}
+              >
+                {value}
+              </Link>
+              : <span>{value}</span>;
+            if (fieldSelfLinkable) {
+              itemValue = <a href={value.url}>{value.prefLabel}</a>;
+            }
+
+            return (<li key={i}>{itemValue}</li>);
           })
         }
       </ul>
