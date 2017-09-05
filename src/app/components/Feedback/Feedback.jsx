@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import FocusTrap from 'focus-trap-react';
 
+import { trackDiscovery } from '../../utils/utils.js';
+
 class Feedback extends React.Component {
   constructor(props) {
     super(props);
@@ -19,11 +21,13 @@ class Feedback extends React.Component {
       this.refs.commentText.focus();
     } else {
       this.setState({ showForm: false });
+      trackDiscovery('Feedback', 'Submit');
       alert('Thank you, your feedback has been submitted.');
     }
   }
 
   openForm() {
+    trackDiscovery('Feedback', 'Open');
     this.setState({ showForm: true });
   }
 
@@ -33,6 +37,7 @@ class Feedback extends React.Component {
   }
 
   deactivateForm() {
+    trackDiscovery('Feedback', 'Close');
     this.setState({ showForm: false });
   }
 

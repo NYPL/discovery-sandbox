@@ -11,6 +11,7 @@ import {
 import DocumentTitle from 'react-document-title';
 
 import Breadcrumbs from '../Breadcrumbs/Breadcrumbs.jsx';
+import { trackDiscovery } from '../../utils/utils.js';
 
 class HoldConfirmation extends React.Component {
   constructor(props) {
@@ -52,6 +53,7 @@ class HoldConfirmation extends React.Component {
   goRestart(e) {
     e.preventDefault();
 
+    trackDiscovery('Discovery Search', 'New Search');
     this.context.router.push(`${appConfig.baseUrl}/`);
   }
 
@@ -64,6 +66,7 @@ class HoldConfirmation extends React.Component {
   goSearchResults(e) {
     e.preventDefault();
 
+    trackDiscovery('Discovery Search', 'Existing Search');
     this.context.router.push(`${appConfig.baseUrl}/search?q=${this.props.searchKeywords}`);
   }
 
@@ -167,8 +170,13 @@ class HoldConfirmation extends React.Component {
 
     return (
       <span id="go-back-catalog">
-        <a href={this.props.location.query.fromUrl}>Go back to your search
-        results</a> or <a href="https://catalog.nypl.org/search">start a new search</a>.
+        <a
+          href={this.props.location.query.fromUrl}
+          onClick={() => trackDiscovery('Catalog Link', 'Existing Search')}
+        >Go back to your search results</a> or <a
+          href="https://catalog.nypl.org/search"
+          onClick={() => trackDiscovery('Catalog Link', 'New Search')}
+        >start a new search</a>.
       </span>
     );
   }
@@ -275,6 +283,10 @@ class HoldConfirmation extends React.Component {
           {this.renderStartOverLink()}
         </div>
       );
+    }
+
+    if (this.props.location.query.errorStatus && this.props.location.query.errorMessage) {
+      trackDiscovery('Error', 'Hold Confirmation');
     }
 
     return (

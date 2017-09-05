@@ -8,7 +8,10 @@ import {
 
 import Actions from '../../actions/Actions';
 import LibraryItem from '../../utils/item';
-import { ajaxCall } from '../../utils/utils';
+import {
+  ajaxCall,
+  trackDiscovery,
+} from '../../utils/utils';
 import ItemTable from '../Item/ItemTable';
 import appConfig from '../../../../appConfig.js';
 
@@ -26,12 +29,14 @@ class ResultsList extends React.Component {
    * @description Get updated information for a bib and route the patron to the bib page.
    * @param {object} e Event object.
    * @param {string} bibId The bib's id.
+   * @param {string} bibTitle The bib's title.
    */
-  getBibRecord(e, bibId) {
+  getBibRecord(e, bibId, bibTitle) {
     e.preventDefault();
 
     this.props.updateIsLoadingState(true);
 
+    trackDiscovery('Bib', bibTitle);
     ajaxCall(`${appConfig.baseUrl}/api/bib?bibId=${bibId}`,
       (response) => {
         Actions.updateBib(response.data);
@@ -69,6 +74,7 @@ class ResultsList extends React.Component {
 
     this.props.updateIsLoadingState(true);
 
+    trackDiscovery('Bib Item Request', `Search Results - ${itemId}`);
     ajaxCall(`${appConfig.baseUrl}/api/hold/request/${bibId}-${itemId}`,
       (response) => {
         Actions.updateBib(response.data.bib);
@@ -139,7 +145,7 @@ class ResultsList extends React.Component {
       <li key={i} className="nypl-results-item">
         <h3>
           <Link
-            onClick={(e) => this.getBibRecord(e, bibId)}
+            onClick={(e) => this.getBibRecord(e, bibId, bibTitle)}
             to={`${appConfig.baseUrl}/bib/${bibId}?searchKeywords=${this.props.searchKeywords}`}
             className="title"
           >

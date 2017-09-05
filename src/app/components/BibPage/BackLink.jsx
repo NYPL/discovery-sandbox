@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 
+import { trackDiscovery } from '../../utils/utils.js';
 import appConfig from '../../../../appConfig.js';
 
 const BibPage = ({ searchURL, searchKeywords = '' }) => {
@@ -13,6 +14,7 @@ const BibPage = ({ searchURL, searchKeywords = '' }) => {
     <Link
       title={`Go back to search results ${searchKeywords ? `for ${searchKeywords}` : ''}`}
       className="nypl-back-link"
+      onClick={() => trackDiscovery('Back', 'Back to Search')}
       to={`${appConfig.baseUrl}/search?${searchURL}`}
     >
       Back to Results
