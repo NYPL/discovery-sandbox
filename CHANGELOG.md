@@ -1,5 +1,12 @@
 ## CHANGE LOG
 
+### 1.1.0
+- Adding more unit tests for React Components.
+- Added a11y updates to the animation layer and the feedback widget by adding a focus trap when they are opened.
+- Cleaning up CSS and JS.
+- Capitalization update on some headings.
+- Fix to the updated supplementary content property from the API.
+
 ### 1.0.0
 - :rocket:!
 - First release of Discovery/Shared Collection Catalog.
