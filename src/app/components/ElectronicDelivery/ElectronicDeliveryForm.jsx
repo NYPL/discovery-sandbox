@@ -287,7 +287,7 @@ class ElectronicDeliveryForm extends React.Component {
           onClick={this.submit}
           onSubmit={this.submit}
         >
-          Submit request
+          Submit Request
         </button>
       </form>
     );
