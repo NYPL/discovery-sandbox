@@ -220,8 +220,8 @@ class HoldRequest extends React.Component {
             onChange={(e) => this.onRadioSelect(e, i)}
           />
           <span className="nypl-screenreader-only">Send to:</span>
-          <span>{displayName}</span><br />
-          {location.address && <span>{location.address}</span>}
+          <span className="nypl-location-name">{displayName}</span><br />
+          {location.address && <span className="nypl-location-address">{location.address}</span>}
         </label>
       );
     });
@@ -239,7 +239,7 @@ class HoldRequest extends React.Component {
     const selectedItem = (bib && itemId) ? LibraryItem.getItem(bib, itemId) : {};
     const bibLink = (bibId && title) ?
       (<h2>
-        <Link to={`${appConfig.baseUrl}/bib/${bibId}`}>{title}</Link>
+        <Link id="item-link" to={`${appConfig.baseUrl}/bib/${bibId}`}>{title}</Link>
       </h2>) : null;
     const callNo =
       (selectedItem && selectedItem.callNumber && selectedItem.callNumber.length) ?
