@@ -13,6 +13,7 @@ import LoadingLayer from '../LoadingLayer/LoadingLayer.jsx';
 import {
   basicQuery,
   ajaxCall,
+  trackDiscovery,
 } from '../../utils/utils.js';
 import Actions from '../../actions/Actions.js';
 import appConfig from '../../../../appConfig.js';
@@ -56,12 +57,13 @@ class SearchResultsPage extends React.Component {
     const searchKeywordsLabel = searchKeywords ? `for ${searchKeywords}` : '';
     const pageLabel = totalPages ? `page ${page} of ${totalPages}` : '';
     const headerLabel = `Search results ${searchKeywordsLabel} ${pageLabel}`;
-    const updatePage = (nextPage) => {
+    const updatePage = (nextPage, pageType) => {
       this.updateIsLoadingState(true);
       // Temporary. Need to check cross-browser and if it's needed at all.
       window.scrollTo(0, 0);
       const apiQuery = createAPIQuery({ page: nextPage });
 
+      trackDiscovery('Pagination - Search Results', `${pageType} - page ${nextPage}`);
       ajaxCall(`${appConfig.baseUrl}/api?${apiQuery}`, response => {
         Actions.updateSearchResults(response.data.searchResults);
         Actions.updatePage(nextPage.toString());

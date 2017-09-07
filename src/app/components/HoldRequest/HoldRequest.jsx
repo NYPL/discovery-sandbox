@@ -14,6 +14,7 @@ import PatronStore from '../../stores/PatronStore.js';
 import appConfig from '../../../../appConfig.js';
 import LibraryItem from '../../utils/item.js';
 import LoadingLayer from '../LoadingLayer/LoadingLayer.jsx';
+import { trackDiscovery } from '../../utils/utils.js';
 
 class HoldRequest extends React.Component {
   constructor(props) {
@@ -66,6 +67,7 @@ class HoldRequest extends React.Component {
   }
 
   onRadioSelect(e, i) {
+    trackDiscovery('Delivery Location', e.target.value);
     this.setState({
       delivery: e.target.value,
       checkedLocNum: i,
@@ -98,14 +100,20 @@ class HoldRequest extends React.Component {
    * submitRequest()
    * Client-side submit call.
    */
-  submitRequest(e, bibId, itemId, itemSource) {
+  submitRequest(e, bibId, itemId, itemSource, title) {
     e.preventDefault();
 
+    const itemSourceMapping = {
+      'recap-pul': 'Princeton',
+      'recap-cul': 'Columbia',
+    };
     const searchKeywordsQuery =
       (this.props.searchKeywords) ? `searchKeywords=${this.props.searchKeywords}` : '';
     const searchKeywordsQueryPhysical = searchKeywordsQuery ? `&${searchKeywordsQuery}` : '';
     const fromUrlQuery = this.props.location.query && this.props.location.query.fromUrl ?
       `&fromUrl=${encodeURIComponent(this.props.location.query.fromUrl)}` : '';
+    const partnerEvent = itemSource !== 'sierra-nypl' ?
+      ` - Partner item - ${itemSourceMapping[itemSource]}` : '';
     let path = `${appConfig.baseUrl}/hold/confirmation/${bibId}-${itemId}`;
 
     if (this.state.delivery === 'edd') {
@@ -117,7 +125,7 @@ class HoldRequest extends React.Component {
     }
 
     this.updateIsLoadingState(true);
-
+    trackDiscovery(`Submit Request${partnerEvent}`, `${title} - ${itemId}`);
     axios
       .get(`${appConfig.baseUrl}/api/newHold?itemId=${itemId}&pickupLocation=` +
         `${this.state.delivery}&itemSource=${itemSource}`)
@@ -220,8 +228,8 @@ class HoldRequest extends React.Component {
             onChange={(e) => this.onRadioSelect(e, i)}
           />
           <span className="nypl-screenreader-only">Send to:</span>
-          <span>{displayName}</span><br />
-          {location.address && <span>{location.address}</span>}
+          <span className="nypl-location-name">{displayName}</span><br />
+          {location.address && <span className="nypl-location-address">{location.address}</span>}
         </label>
       );
     });
@@ -239,7 +247,13 @@ class HoldRequest extends React.Component {
     const selectedItem = (bib && itemId) ? LibraryItem.getItem(bib, itemId) : {};
     const bibLink = (bibId && title) ?
       (<h2>
-        <Link to={`${appConfig.baseUrl}/bib/${bibId}`}>{title}</Link>
+        <Link
+          id="item-link"
+          to={`${appConfig.baseUrl}/bib/${bibId}`}
+          onClick={() => trackDiscovery('Hold Request - Bib', title)}
+        >
+          {title}
+        </Link>
       </h2>) : null;
     const callNo =
       (selectedItem && selectedItem.callNumber && selectedItem.callNumber.length) ?
@@ -266,7 +280,7 @@ class HoldRequest extends React.Component {
           className="place-hold-form form"
           action={`${appConfig.baseUrl}/hold/request/${bibId}-${itemId}-${itemSource}`}
           method="POST"
-          onSubmit={(e) => this.submitRequest(e, bibId, itemId, itemSource)}
+          onSubmit={(e) => this.submitRequest(e, bibId, itemId, itemSource, title)}
         >
           {deliveryLocationInstruction}
           <div className="nypl-request-radiobutton-field">
@@ -283,7 +297,7 @@ class HoldRequest extends React.Component {
           {
             (deliveryLocations.length || isEddRequestable) &&
               <button type="submit" className="nypl-request-button">
-                Submit request
+                Submit Request
               </button>
           }
           <input

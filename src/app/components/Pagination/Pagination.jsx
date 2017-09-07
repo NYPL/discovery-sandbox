@@ -1,11 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
-// import {
-//   LeftWedgeIcon,
-//   RightWedgeIcon,
-// } from 'dgx-svg-icons';
-
 import appConfig from '../../../../appConfig.js';
 
 const LeftWedgeIcon = () => (
@@ -38,9 +33,9 @@ class Pagination extends React.Component {
    * onClick()
    * @param {string} page The next page to get results from.
    */
-  onClick(e, page) {
+  onClick(e, page, type) {
     e.preventDefault();
-    this.props.updatePage(page);
+    this.props.updatePage(page, type);
   }
 
   /*
@@ -65,7 +60,7 @@ class Pagination extends React.Component {
         rel={type.toLowerCase()}
         className={`${type.toLowerCase()}-link`}
         aria-controls={this.props.ariaControls}
-        onClick={(e) => this.onClick(e, pageNum)}
+        onClick={(e) => this.onClick(e, pageNum, type)}
       >
         {svg} {type}
       </Link>
