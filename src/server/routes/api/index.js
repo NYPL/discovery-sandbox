@@ -41,7 +41,8 @@ export function getPatronData(req, res, next) {
           })
           .catch((error) => {
             logger.error(
-              'Error attemping to make server side fetch call to patrons in getPatronData',
+              'Error attemping to make server side fetch call to patrons in getPatronData' +
+              `, /patrons/${userId}`,
               error
             );
             res.locals.data = {
