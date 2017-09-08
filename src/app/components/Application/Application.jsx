@@ -38,7 +38,6 @@ history.listen(location => {
   if (action === 'POP' && search) {
     ajaxCall(`${appConfig.baseUrl}/api${decodeURI(search)}`, (response) => {
       if (response.data.facets && response.data.searchResults) {
-        console.log(urlFilters, response.data.facets);
         const selectedFacets = destructureFilters(urlFilters, response.data.facets);
         Actions.updateSelectedFacets(selectedFacets);
         Actions.updateFacets(response.data.facets);
