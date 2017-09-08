@@ -1,5 +1,10 @@
 ## CHANGE LOG
 
+### 1.1.1
+- Added Google Analytics events throughout the app.
+- Added new Google Form for the feedback widget and refactored it so it's always rendered on the page. Otherwise, the dynamic rendering of the form caused it to not submit any new submissions.
+- New Design-Toolkit upgrade.
+
 ### 1.1.0
 - Adding more unit tests for React Components.
 - Added a11y updates to the animation layer and the feedback widget by adding a focus trap when they are opened.
