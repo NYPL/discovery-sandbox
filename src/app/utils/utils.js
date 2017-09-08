@@ -115,7 +115,7 @@ function destructureFilters(filters, apiFacet) {
  * Get the sort type and order and pass it in URL query form.
  * @param {string} sortBy URL parameter with sort type and order.
  */
-const getSortQuery = (sortBy) => {
+const getSortQuery = (sortBy = '') => {
   const reset = sortBy === 'relevance';
   let sortQuery = '';
 
@@ -162,142 +162,16 @@ const getFacetFilterParam = (facets) => {
 };
 
 /**
- * getFacetParams
- * Get the search params from the facet values.
- * @param {object} facets Key/value pair of facet and the selected value.
- */
-const getFacetParams = (facets, field, value) => {
-  let strSearch = '';
-
-  if (facets) {
-    _mapObject(facets, (val, key) => {
-      if (field) {
-        // Specific to the FacetSidebar component.
-        // You can select and unselect a facet.
-        if (value) {
-          if (val.value !== '' && field !== key) {
-            strSearch += ` ${key}:"${val.id}"`;
-          } else if (field === key && value !== `${field}_any`) {
-            strSearch += ` ${field}:"${value}"`;
-          }
-
-        // Specific logic for the Hits component.
-        // If a field is selected selected then it is skipped over.
-        } else if (val.value !== '' && field !== key) {
-          strSearch += ` ${key}:"${val.id}"`;
-        }
-
-      // For all other use cases.
-      } else if (val.value !== '') {
-        strSearch += ` ${key}:"${val.id}"`;
-      }
-    });
-  }
-
-  return strSearch;
-};
-
-/**
  * getFieldParam
  * Get the search param from the field selected.
  * @param {string} field Value of field to query against.
  */
-const getFieldParam = (field) => {
+const getFieldParam = (field = '') => {
   if (!field || field.trim() === 'all') {
     return '';
   }
   return `&search_scope=${field}`;
 };
-
-function collapse(results) {
-  const owiLookup = {};
-  if (!results || !results.searchResults || !results.searchResults.itemListElement) return results
-  // make the lookup by owi
-  results.searchResults.itemListElement.forEach((r) => {
-    if (r.result && r.result.idOwi && r.result.idOwi[0]) {
-      if (!owiLookup[r.result.idOwi[0]]) owiLookup[r.result.idOwi[0]] = []
-      owiLookup[r.result.idOwi[0]].push(r)
-    }
-  })
-
-  let newItemListElement = [];
-  let completedOwis = [];
-
-  results.searchResults.itemListElement.forEach((r) => {
-    if (r.result && r.result.idOwi && r.result.idOwi[0] &&
-      owiLookup[r.result.idOwi[0]].length > 1) {
-      // if we did a result w/ one of the OWIs we did it for all of them
-      if (completedOwis.indexOf(r.result.idOwi[0]) > -1) return
-      completedOwis.push(r.result.idOwi[0])
-
-      // there are more than one/none owi matching in this results set,
-      // pick the best one and collapse the rest
-      // pick one that has a physcial local copy
-      let parent = null;
-      owiLookup[r.result.idOwi[0]].forEach((i) => {
-        if (parent) return
-        if (i.result && i.result.items) {
-          i.result.items.forEach((ii) => {
-            if (ii.location && ii.location[0] && ii.location[0][0]) {
-              if (ii.location[0][0]['@id'].search(/loc:ma/) > -1) {
-                parent = i
-              }
-            }
-          })
-        }
-      })
-      // pick the first physcial one at recap if no local ver
-      if (!parent) {
-        owiLookup[r.result.idOwi[0]].forEach((i) => {
-          if (parent) return
-          if (i.result && i.result.items) {
-            i.result.items.forEach((ii) => {
-              if (ii.location && ii.location[0] && ii.location[0][0]) {
-                if (ii.location[0][0]['@id'].search(/loc:rc/) > -1) {
-                  parent = i
-                }
-              }
-            })
-          }
-        })
-      }
-      // just select the first one
-      if (!parent) {
-        owiLookup[r.result.idOwi[0]].forEach((i) => {
-          if (parent) return
-          if (i.result && i.result.items) {
-            i.result.items.forEach((ii) => {
-              if (ii.location && ii.location[0] && ii.location[0][0]) {
-                parent = i
-              }
-            })
-          }
-        })
-      }
-
-      if (parent) {
-        parent.collapsedBibs = []
-
-        owiLookup[r.result.idOwi[0]].forEach((i) => {
-          if (parent.result['@id'] !== i.result['@id']) {
-            parent.collapsedBibs.push(i)
-          }
-        })
-        newItemListElement.push(parent)
-      } else {
-        // something went wrong, just add them all in
-        owiLookup[r.result.idOwi[0]].forEach((i) => {
-          newItemListElement.push(i)
-        })
-      }
-    } else {
-      newItemListElement.push(r)
-    }
-  })
-
-  results.searchResults.itemListElement = newItemListElement
-  return results
-}
 
 /**
  * Tracks Google Analytics (GA) events. `.trackEvent` returns a function with
@@ -322,7 +196,7 @@ const trackDiscovery = gaUtils.trackEvent('Discovery');
  * // apiQuery3 == 'q=hamlet&page=3'
  * @param {object} props The application props.
  */
-const basicQuery = (props) => {
+const basicQuery = (props = {}) => {
   return ({
     sortBy,
     field,
@@ -335,10 +209,11 @@ const basicQuery = (props) => {
     const filterQuery = getFacetFilterParam(selectedFacets || props.selectedFacets);
     // `searchKeywords` can be an empty string, so check if it's undefined instead.
     const query = searchKeywords !== undefined ? searchKeywords : props.searchKeywords;
+    const searchKeywordsQuery = query ? encodeURIComponent(query) : '';
     let pageQuery = props.page && props.page !== '1' ? `&page=${props.page}` : '';
     pageQuery = page && page !== '1' ? `&page=${page}` : pageQuery;
 
-    return `q=${encodeURIComponent(query)}${filterQuery}${sortQuery}${fieldQuery}${pageQuery}`;
+    return `q=${searchKeywordsQuery}${filterQuery}${sortQuery}${fieldQuery}${pageQuery}`;
   };
 };
 
@@ -436,11 +311,9 @@ function getAggregatedElectronicResources(items = []) {
 }
 
 export {
-  collapse,
   trackDiscovery,
   ajaxCall,
   getSortQuery,
-  getFacetParams,
   createAppHistory,
   getFieldParam,
   getFacetFilterParam,
