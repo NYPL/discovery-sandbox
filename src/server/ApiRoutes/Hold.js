@@ -113,10 +113,13 @@ function getDeliveryLocations(barcode, patronId, cb, errorCb) {
 
   return nyplApiClientGet(deliveryEndpoint)
     .then(barcodeAPIresponse => {
-      const eddRequestable = (barcodeAPIresponse.itemListElement[0].eddRequestable) ?
+      const eddRequestable = (barcodeAPIresponse && barcodeAPIresponse.itemListElement &&
+        barcodeAPIresponse.itemListElement.length &&
+        barcodeAPIresponse.itemListElement[0].eddRequestable) ?
         barcodeAPIresponse.itemListElement[0].eddRequestable : false;
-      const deliveryLocationWithAddress =
-        (barcodeAPIresponse.itemListElement[0].deliveryLocation) ?
+      const deliveryLocationWithAddress = (barcodeAPIresponse &&
+          barcodeAPIresponse.itemListElement && barcodeAPIresponse.itemListElement.length &&
+          barcodeAPIresponse.itemListElement[0].deliveryLocation) ?
         mapLocationDetails(barcodeAPIresponse.itemListElement[0].deliveryLocation) : [];
 
       cb(
@@ -126,7 +129,8 @@ function getDeliveryLocations(barcode, patronId, cb, errorCb) {
     })
     .catch(barcodeAPIError => {
       logger.error(
-        'Error attemping to make server side call using nyplApiClient in getDeliveryLocations',
+        'Error attemping to make server side call using nyplApiClient in getDeliveryLocations' +
+        `, endpoint: ${deliveryEndpoint}`,
         barcodeAPIError
       );
       errorCb(barcodeAPIError);
@@ -195,7 +199,8 @@ function confirmRequestServer(req, res, next) {
               },
               (deliveryLocationError) => {
                 logger.error(
-                  'Error retrieving server side delivery locations in confirmRequestServer',
+                  'Error retrieving server side delivery locations in confirmRequestServer' +
+                  `, bibId: ${bibId}`,
                   deliveryLocationError
                 );
 
@@ -212,7 +217,7 @@ function confirmRequestServer(req, res, next) {
           },
           (bibResponseError) => {
             logger.error(
-              'Error retrieving server side bib record in confirmRequestServer',
+              `Error retrieving server side bib record in confirmRequestServer, id: ${bibId}`,
               bibResponseError
             );
             res.locals.data.Store = {
@@ -289,7 +294,7 @@ function newHoldRequestServer(req, res, next) {
         },
         (deliveryError) => {
           logger.error(
-            'Error retrieving server side delivery locations in newHoldRequestServer',
+            `Error retrieving server side delivery locations in newHoldRequestServer, id: ${bibId}`,
             deliveryError
           );
 
@@ -308,7 +313,7 @@ function newHoldRequestServer(req, res, next) {
     },
     (bibResponseError) => {
       logger.error(
-        'Error retrieving server side bib record in newHoldRequestServer',
+        `Error retrieving server side bib record in newHoldRequestServer, id: ${bibId}`,
         bibResponseError
       );
       res.locals.data.Store = {
@@ -356,7 +361,7 @@ function newHoldRequestAjax(req, res) {
         },
         (deliveryLocationsError) => {
           logger.error(
-            'Error retrieving server side delivery locations in newHoldRequestAjax',
+            `Error retrieving serverside delivery locations in newHoldRequestAjax, bibId: ${bibId}`,
             deliveryLocationsError
           );
 
@@ -376,12 +381,13 @@ function newHoldRequestServerEdd(req, res, next) {
   const loggedIn = User.requireUser(req, res);
   const error = req.query.error ? JSON.parse(req.query.error) : {};
   const form = req.query.form ? JSON.parse(req.query.form) : {};
+  const bibId = req.params.bibId || '';
 
   if (!loggedIn) return false;
 
   // Retrieve item
   return Bib.fetchBib(
-    req.params.bibId,
+    bibId,
     (data) => {
       res.locals.data.Store = {
         bib: data,
@@ -393,7 +399,7 @@ function newHoldRequestServerEdd(req, res, next) {
     },
     (bibResponseError) => {
       logger.error(
-        'Error retrieving server side bib record in newHoldRequestServerEdd',
+        `Error retrieving server side bib record in newHoldRequestServerEdd, id: ${bibId}`,
         bibResponseError
       );
       res.locals.data.Store = {
@@ -459,7 +465,10 @@ function createHoldRequestServer(req, res, pickedUpBibId = '', pickedUpItemId = 
       );
     },
     (error) => {
-      logger.error('Error calling postHoldAPI in createHoldRequestServer', error.data.message);
+      logger.error(
+        `Error calling postHoldAPI in createHoldRequestServer, bibId: {bibId}, itemId: ${itemId}`,
+        error.data.message
+      );
       res.redirect(
         `${appConfig.baseUrl}/hold/confirmation/${bibId}-${itemId}?pickupLocation=` +
         `${pickupLocation}&errorStatus=${error.status}` +
@@ -497,7 +506,10 @@ function createHoldRequestAjax(req, res) {
       });
     },
     (error) => {
-      logger.error('Error calling postHoldAPI in createHoldRequestAjax', error);
+      logger.error(
+        `Error calling postHoldAPI in createHoldRequestAjax, itemId: ${req.query.itemId}`,
+        error
+      );
       res.json({
         status: error.status,
         error,
@@ -526,7 +538,10 @@ function createHoldRequestEdd(req, res) {
       });
     },
     (error) => {
-      logger.error('Error calling postHoldAPI in createHoldRequestEdd', error);
+      logger.error(
+        `Error calling postHoldAPI in createHoldRequestEdd, itemId: ${req.body.itemId}`,
+        error
+      );
       res.json({
         status: error.status,
         error,
@@ -577,7 +592,10 @@ function eddServer(req, res) {
       );
     },
     (error) => {
-      logger.error('Error calling postHoldAPI in eddServer', error);
+      logger.error(
+        `Error calling postHoldAPI in eddServer, bibID: ${bibId}, itemId: ${itemId}`,
+        error
+      );
       res.redirect(
         `${appConfig.baseUrl}/hold/confirmation/${bibId}-${itemId}?pickupLocation=edd` +
         `&errorStatus=${error.status}` +
