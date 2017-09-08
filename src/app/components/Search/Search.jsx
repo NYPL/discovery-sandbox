@@ -32,12 +32,6 @@ class Search extends React.Component {
     this.setState(nextProps);
   }
 
-  // componentDidUpdate() {
-  //   if (this.refs.keywords) {
-  //     this.refs.keywords.focus();
-  //   }
-  // }
-
   /**
    * onFieldChange(e)
    * Listen to the select dropdown for field searching.
