@@ -19,6 +19,7 @@ class Search extends React.Component {
     this.state = {
       field: this.props.field || 'all',
       searchKeywords: this.props.searchKeywords,
+      inputError: false,
     };
 
     this.inputChange = this.inputChange.bind(this);
@@ -30,6 +31,12 @@ class Search extends React.Component {
   componentWillReceiveProps(nextProps) {
     this.setState(nextProps);
   }
+
+  // componentDidUpdate() {
+  //   if (this.refs.keywords) {
+  //     this.refs.keywords.focus();
+  //   }
+  // }
 
   /**
    * onFieldChange(e)
@@ -48,6 +55,12 @@ class Search extends React.Component {
    */
   triggerSubmit(event) {
     if (event && event.charCode === 13) {
+      if (!this.state.searchKeywords) {
+        this.setState({ inputError: true });
+        return;
+      }
+
+      this.setState({ inputError: false });
       this.submitSearchRequest(event);
     }
   }
@@ -70,20 +83,30 @@ class Search extends React.Component {
   submitSearchRequest(e) {
     e.preventDefault();
     // Store the data that the user entered
-    const keyword = this.state.searchKeywords.trim();
+    const userSearchKeywords = this.state.searchKeywords.trim();
+
+    if (!userSearchKeywords) {
+      this.setState({ inputError: true });
+      this.refs.keywords.focus();
+      return;
+    }
+
     // Track the submitted keyword search.
-    trackDiscovery('Search', keyword);
+    trackDiscovery('Search', userSearchKeywords);
     trackDiscovery('Search', `Field - ${this.state.field}`);
 
+    const searchKeywords = userSearchKeywords === '*' ? '' : userSearchKeywords;
+
+    this.setState({ inputError: false });
     const apiQuery = this.props.createAPIQuery({
       field: this.state.field,
-      searchKeywords: keyword,
       selectedFacets: {},
+      searchKeywords,
     });
 
     Actions.updateField(this.state.field);
     this.props.updateIsLoadingState(true);
-    Actions.updateSearchKeywords(keyword);
+    Actions.updateSearchKeywords(userSearchKeywords);
     Actions.updateSelectedFacets({});
 
     ajaxCall(`${appConfig.baseUrl}/api?${apiQuery}`, (response) => {
@@ -107,13 +130,16 @@ class Search extends React.Component {
   }
 
   render() {
+    const inputError = this.state.inputError;
+
     return (
       <form
         onKeyPress={this.triggerSubmit}
         action={`${appConfig.baseUrl}/search`}
         method="POST"
+        className="nypl-omnisearch-form"
       >
-        <div className="nypl-omnisearch style-2 nypl-spinner-field">
+        <div className={`nypl-omnisearch nypl-text-field ${inputError ? 'nypl-field-error' : ''}`}>
           <span className="nypl-omni-fields">
             <label htmlFor="search-by-field">Search in</label>
             <select
@@ -133,7 +159,8 @@ class Search extends React.Component {
           <input
             type="text"
             id="search-query"
-            aria-labelledby="search-input-label"
+            aria-labelledby="search-input-label search-input-status"
+            aria-required="true"
             placeholder="Keyword, title, or author/contributor"
             onChange={this.inputChange}
             value={this.state.searchKeywords}
@@ -142,6 +169,14 @@ class Search extends React.Component {
           />
           <SearchButton onClick={this.submitSearchRequest} />
         </div>
+        <span
+          className="nypl-field-status"
+          id="search-input-status"
+          aria-live="assertive"
+          aria-atomic="true"
+        >
+          {inputError ? 'Please enter a search term.' : ''}
+        </span>
       </form>
     );
   }
