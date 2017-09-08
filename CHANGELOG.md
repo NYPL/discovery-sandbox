@@ -1,14 +1,20 @@
 ## CHANGE LOG
 
+### 1.1.2
+- Small updates:
+- Update the display text for electronic resources to use `label` instead of `prefLabel`.
+- Added better error messages with more information to check in Cloudwatch.
+- Added a few more tests to the util functions.
+
 ### 1.1.1
 - Added Google Analytics events throughout the app.
 - Added new Google Form for the feedback widget and refactored it so it's always rendered on the page. Otherwise, the dynamic rendering of the form caused it to not submit any new submissions.
 - New Design-Toolkit upgrade.
 
 ### 1.1.0
-- Adding more unit tests for React Components.
+- Added more unit tests for React Components.
 - Added a11y updates to the animation layer and the feedback widget by adding a focus trap when they are opened.
-- Cleaning up CSS and JS.
+- Cleaned up CSS and JS.
 - Capitalization update on some headings.
 - Fix to the updated supplementary content property from the API.
 
