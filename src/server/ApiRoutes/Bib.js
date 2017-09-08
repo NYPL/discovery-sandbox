@@ -9,7 +9,7 @@ function fetchBib(bibId, cb, errorcb) {
   return nyplApiClientCall(bibId)
     .then(response => cb(response))
     .catch(error => {
-      logger.error('Error attemping to fetch a Bib server side in fetchBib', error);
+      logger.error(`Error attemping to fetch a Bib server side in fetchBib, id: ${bibId}`, error);
 
       errorcb(error);
     }); /* end axios call */
@@ -33,7 +33,7 @@ function bibSearchServer(req, res, next) {
       next();
     },
     (error) => {
-      logger.error('Error in bibSearchServer API error', error);
+      logger.error(`Error in bibSearchServer API error, id: ${bibId}`, error);
       res.locals.data.Store = {
         bib: {},
         searchKeywords: req.query.searchKeywords || '',
