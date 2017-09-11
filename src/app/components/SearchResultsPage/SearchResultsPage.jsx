@@ -9,6 +9,7 @@ import Search from '../Search/Search.jsx';
 import Sorter from '../Sorter/Sorter';
 import Pagination from '../Pagination/Pagination';
 import LoadingLayer from '../LoadingLayer/LoadingLayer.jsx';
+import FilterPopup from '../FilterPopup/FilterPopup.jsx';
 
 import {
   basicQuery,
@@ -115,6 +116,7 @@ class SearchResultsPage extends React.Component {
                       />
                     )
                   }
+                  <FilterPopup />
                 </div>
               </div>
             </div>

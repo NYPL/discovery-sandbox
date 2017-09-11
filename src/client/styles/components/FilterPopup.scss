@@ -1,0 +1,17 @@
+.filter-popup-btn-container {
+  display: inline-block;
+  float: left;
+  margin: 2.5rem 1rem 0;
+}
+.filter-popup-container {
+  float: left;
+  display: block;
+
+  .filter-popup-form-container {
+    display: none;
+
+    &.active {
+      display: block;
+    }
+  }
+}
