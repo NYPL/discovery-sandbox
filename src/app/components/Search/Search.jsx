@@ -19,7 +19,7 @@ class Search extends React.Component {
     this.state = {
       field: this.props.field || 'all',
       searchKeywords: this.props.searchKeywords,
-      inputError: false,
+      inputError: this.props.searchError === 'true',
     };
 
     this.inputChange = this.inputChange.bind(this);
@@ -31,12 +31,6 @@ class Search extends React.Component {
   componentWillReceiveProps(nextProps) {
     this.setState(nextProps);
   }
-
-  // componentDidUpdate() {
-  //   if (this.refs.keywords) {
-  //     this.refs.keywords.focus();
-  //   }
-  // }
 
   /**
    * onFieldChange(e)
@@ -187,11 +181,13 @@ Search.propTypes = {
   searchKeywords: PropTypes.string,
   createAPIQuery: PropTypes.func,
   updateIsLoadingState: PropTypes.func,
+  searchError: PropTypes.string,
 };
 
 Search.defaultProps = {
   field: 'all',
   searchKeywords: '',
+  searchError: 'false',
   updateIsLoadingState: () => {},
 };
 

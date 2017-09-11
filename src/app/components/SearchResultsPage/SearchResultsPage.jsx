@@ -48,6 +48,7 @@ class SearchResultsPage extends React.Component {
       sortBy,
       field,
       isLoading,
+      location,
     } = this.props;
 
     const totalResults = searchResults ? searchResults.totalResults : undefined;
@@ -73,6 +74,7 @@ class SearchResultsPage extends React.Component {
         }, 500);
       });
     };
+    const searchError = location.query && location.query.error ? location.query.error : '';
 
     return (
       <DocumentTitle title="Search Results | Shared Collection Catalog | NYPL">
@@ -94,6 +96,7 @@ class SearchResultsPage extends React.Component {
                     field={field}
                     createAPIQuery={createAPIQuery}
                     updateIsLoadingState={this.updateIsLoadingState}
+                    searchError={searchError}
                   />
                   <ResultsCount
                     isLoading={isLoading}
