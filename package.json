@@ -58,7 +58,7 @@
     "nightwatch": "0.9.9",
     "nyc": "9.0.1",
     "react-addons-test-utils": "15.6.0",
-    "webpack-bundle-analyzer": "^2.9.0"
+    "webpack-bundle-analyzer": "2.9.0"
   },
   "dependencies": {
     "@nypl/design-toolkit": "0.1.25.1",
