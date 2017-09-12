@@ -15,7 +15,7 @@ const NotFound404 = () => (
             <p>We're sorry...</p>
             <p>The page you were looking for doesn't exist.</p>
             <p>
-              Search the <Link to={`${appConfig.baseUrl}`}>
+              Search the <Link to={`${appConfig.baseUrl}/`}>
               Shared Collection Catalog</Link> or our classic <a href="http://catalog.nypl.org/">
               Research Catalog</a> for research materials.</p>
           </div>
