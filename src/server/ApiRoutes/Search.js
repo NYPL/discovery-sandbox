@@ -78,6 +78,13 @@ function searchServerPost(req, res) {
   if (req.query.q) {
     searchKeywords = req.query.q;
   }
+
+  if (!searchKeywords) {
+    return res.redirect(`${appConfig.baseUrl}/search?error=true`);
+  }
+
+  const updatedSearchKeywords = searchKeywords === '*' ? '' : searchKeywords;
+
   if (req.query.search_scope) {
     field = req.query.search_scope;
   }
@@ -86,13 +93,13 @@ function searchServerPost(req, res) {
   }
 
   const apiQuery = createAPIQuery({
-    searchKeywords: encodeURIComponent(searchKeywords),
+    searchKeywords: encodeURIComponent(updatedSearchKeywords),
     selectedFacets,
     field,
     sortBy,
   });
 
-  res.redirect(`${appConfig.baseUrl}/search?${apiQuery}`);
+  return res.redirect(`${appConfig.baseUrl}/search?${apiQuery}`);
 }
 
 function searchServer(req, res, next) {
