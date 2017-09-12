@@ -48,37 +48,59 @@ class FilterPopup extends React.Component {
       showForm,
       js,
     } = this.state;
+    const closePopupButton = js ?
+      <button
+        onClick={(e) => this.closeForm(e)}
+        aria-expanded={!showForm}
+        aria-controls="filter-popup-menu"
+        className="popup-btn-close"
+      >
+        Close
+        <svg width="48" height="19" viewBox="0 0 32 32" className="svgIcon">
+          <title>x.close.icon</title>
+          <path d="M17.91272,15.97339l5.65689-5.65689A1.32622,1.32622,0,0,0,21.694,8.44093L16.04938,14.0856l-5.65082-5.725A1.32671,1.32671,0,1,0,8.51,10.22454l5.66329,5.73712L8.43038,21.7046a1.32622,1.32622,0,1,0,1.87557,1.87557l5.73088-5.73088,5.65074,5.72441a1.32626,1.32626,0,1,0,1.88852-1.86261Z"/>
+        </svg>
+      </button>
+      : (<a
+        aria-expanded
+        href="#"
+        aria-controls="filter-popup-menu"
+        className="popup-btn-close"
+      >Close
+        <svg width="48" height="19" viewBox="0 0 32 32" className="svgIcon">
+          <title>x.close.icon</title>
+          <path d="M17.91272,15.97339l5.65689-5.65689A1.32622,1.32622,0,0,0,21.694,8.44093L16.04938,14.0856l-5.65082-5.725A1.32671,1.32671,0,1,0,8.51,10.22454l5.66329,5.73712L8.43038,21.7046a1.32622,1.32622,0,1,0,1.87557,1.87557l5.73088-5.73088,5.65074,5.72441a1.32626,1.32626,0,1,0,1.88852-1.86261Z"/>
+        </svg>
+      </a>);
+    const openPopupButton = js ?
+      (<button
+        className="popup-btn-open"
+        onClick={() => this.openForm()}
+        aria-haspopup="true"
+        aria-expanded={showForm}
+        aria-controls="filter-popup-menu"
+        ref="filterOpen"
+      >
+        FILTER RESULTS
+      </button>)
+      : (<a
+        className="popup-btn-open"
+        href="#popup-no-js"
+        aria-haspopup="true"
+        aria-expanded={false}
+        aria-controls="filter-popup-menu"
+        ref="filterOpen"
+      >
+        FILTER RESULTS
+      </a>);
 
     return (
-      <div>
-        <div className="filter-popup-btn-container">
-          {
-            js ?
-              (<button
-                className="filter-popup-btn"
-                onClick={() => this.openForm()}
-                aria-haspopup="true"
-                aria-expanded={showForm}
-                aria-controls="filter-popup-menu"
-                ref="filterOpen"
-              >
-                FILTER RESULTS
-              </button>)
-              : (<a
-                href="#popup-no-js"
-                className="filter-popup-btn"
-                aria-haspopup="true"
-                aria-expanded={false}
-                aria-controls="filter-popup-menu"
-                ref="filterOpen"
-              >
-                FILTER RESULTS
-              </a>)
-        }
-        </div>
-        <div className={`noshow ${showForm ? 'active' : ''}`} id={js ? '' : 'popup-no-js'}>
+      <div className="filter-container">
+        {openPopupButton}
+
+        <div className={`popup-container ${showForm ? 'active' : ''}`} id={js ? '' : 'popup-no-js'}>
           {!js && (<a className="cancel-no-js" href="#"></a>)}
-          <div className={js ? 'overlay-js' : 'overlay'}></div>
+          <div className="overlay"></div>
           <FocusTrap
             focusTrapOptions={{
               onDeactivate: this.deactivateForm,
@@ -87,7 +109,7 @@ class FilterPopup extends React.Component {
             active={showForm}
             id="filter-popup-menu"
             role="menu"
-            className={`${js ? 'filter-popup-container' : 'popup'} ${showForm ? 'active' : ''}`}
+            className={`${js ? 'popup' : 'popup-no-js'} ${showForm ? 'active' : ''}`}
           >
             <form action="" method="POST" onSubmit={() => this.onSubmitForm()}>
               <fieldset>
@@ -95,26 +117,9 @@ class FilterPopup extends React.Component {
                   <h3>Filter Results</h3>
                 </legend>
                 <button type="button" name="Clear-Filters">Clear Filters</button>
-                {js ?
-                  <button
-                    onClick={(e) => this.closeForm(e)}
-                    aria-expanded={!showForm}
-                    aria-controls="filter-popup-menu"
-                    className="filter-popup-close"
-                  >
-                    Close
-                    <svg width="48" height="19" viewBox="0 0 32 32" className="svgIcon">
-                      <title>x.close.icon</title>
-                      <path d="M17.91272,15.97339l5.65689-5.65689A1.32622,1.32622,0,0,0,21.694,8.44093L16.04938,14.0856l-5.65082-5.725A1.32671,1.32671,0,1,0,8.51,10.22454l5.66329,5.73712L8.43038,21.7046a1.32622,1.32622,0,1,0,1.87557,1.87557l5.73088-5.73088,5.65074,5.72441a1.32626,1.32626,0,1,0,1.88852-1.86261Z"/>
-                    </svg>
-                  </button>
-                  : (<a aria-expanded={true} href="#" aria-controls="filter-popup-menu">Close
-                    <svg width="48" height="19" viewBox="0 0 32 32" className="svgIcon">
-                      <title>x.close.icon</title>
-                      <path d="M17.91272,15.97339l5.65689-5.65689A1.32622,1.32622,0,0,0,21.694,8.44093L16.04938,14.0856l-5.65082-5.725A1.32671,1.32671,0,1,0,8.51,10.22454l5.66329,5.73712L8.43038,21.7046a1.32622,1.32622,0,1,0,1.87557,1.87557l5.73088-5.73088,5.65074,5.72441a1.32626,1.32626,0,1,0,1.88852-1.86261Z"/>
-                    </svg>
-                  </a>)
-                }
+
+                {closePopupButton}
+
                 <fieldset>
                   <legend>Format</legend>
                   <div className="new-checkbox">

@@ -1,43 +1,91 @@
-.filter-popup-btn-container {
-  display: inline-block;
-  float: left;
-  margin: 2.5rem 1rem 0;
-}
-.overlay-js {
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  position: fixed;
-  z-index: 1000;
-  background: rgba(0,0,0,0.5);
-  &.active {
-    opacity: 1;
-    visibility: visible;
+.filter-container {
+  .popup-btn-open {
+    display: inline-block;
+    float: left;
+    margin: 2.5rem 1rem 0;
+    color: #fff;
+    background: #776e64;
+    border: 1px solid #776e64;
+    padding: 4px 10px;
+    display: block;
+    text-decoration: none;
+  }
+
+  .popup-container {
+    visibility: hidden;
+    display: none;
+    opacity: 0;
+
+    &.active,
+    &:target {
+      visibility: visible;
+      display: block;
+      opacity: 1;
+    }
   }
 }
-.filter-popup-container {
-  display: none;
-  float: left;
-  background: #fff;
-  border: 1px solid #666;
-  width: 100%;
-  box-shadow: 0 0 50px rgba(0,0,0,0.5);
-  margin: 25px auto;
-  padding: 20px;
 
-  &.active {
-    display: block;
+.popup-container {
+  .cancel-no-js {
+    width: 100%;
+    height: 100%;
+    cursor: default;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 10000;
+    position: fixed;
+  }
+
+  .overlay {
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    position: fixed;
+    z-index: 1000;
+    background: rgba(0,0,0,0.5);
+    &.active {
+      opacity: 1;
+      visibility: visible;
+    }
+  }
+
+  .popup,
+  .popup-no-js {
+    margin: 25px auto;
+    padding: 20px;
+    background: #fff;
+    border: 1px solid #666;
+    box-shadow: 0 0 50px rgba(0,0,0,0.5);
+    float: left;
     position: absolute;
     width: auto;
-    top: 50px;
-    z-index: 1000;
+    z-index: 10000;
   }
 
-  .filter-popup-close {
+  .popup {
+    display: none;
+
+    &.active {
+      display: block;
+      top: 50px;
+      z-index: 1000;
+    }
+  }
+
+  .popup-btn-close {
     float: right;
+    color: #fff;
+    background: #776e64;
+    border: 1px solid #776e64;
+    padding: 4px 10px;
+    display: block;
+    text-decoration: none;
   }
 }
+
 
 // Form
 fieldset > fieldset {
@@ -49,19 +97,19 @@ fieldset > fieldset > legend {
 }
 .new-checkbox input[type="checkbox"] {
   opacity: 0;
-  }
-  .new-checkbox label {
-    display: inline-block;
-    position: relative;
-    padding-left: 23px;
-  }
-  .new-checkbox label::after,
-  .new-checkbox label::before {
-    content: "";
-    display: inline-block;
-    position: absolute;
-  }
-.new-checkbox label::before{
+}
+.new-checkbox label {
+  display: inline-block;
+  position: relative;
+  padding-left: 23px;
+}
+.new-checkbox label::after,
+.new-checkbox label::before {
+  content: "";
+  display: inline-block;
+  position: absolute;
+}
+.new-checkbox label::before {
   border: 1px solid;
   height: 16px;
   left: 0;
@@ -77,7 +125,7 @@ fieldset > fieldset > legend {
   left: 4px;
   top: 3px;
 }
-      /*Hide the checkmark by default*/
+/*Hide the checkmark by default*/
 .new-checkbox input[type="checkbox"] + label::after {
   content: none;
 }
@@ -88,51 +136,4 @@ fieldset > fieldset > legend {
 /*Adding focus styles on the outer-box of the fake checkbox*/
 .new-checkbox input[type="checkbox"]:focus + label::before {
   outline: rgb(59, 153, 252) auto 2px;
-}
-
-.noshow {
-  visibility: hidden;
-  display: none;
-  opacity: 0;
-  &:target {
-    visibility: visible;
-    display: block;
-    opacity: 1;
-  }
-  &.active {
-    visibility: visible;
-    display: block;
-    opacity: 1;
-  }
-}
-// NO JS
-.overlay {
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  transition: opacity 200ms;
-  background: rgba(0,0,0,0.5);
-}
-.cancel-no-js {
-  width: 100%;
-  height: 100%;
-  cursor: default;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 10000;
-  position: fixed;
-}
-.popup {
-  margin: 25px auto;
-  padding: 20px;
-  background: #fff;
-  border: 1px solid #666;
-  width: auto;
-  z-index: 10000;
-  box-shadow: 0 0 50px rgba(0,0,0,0.5);
-  position: absolute;
-  float: left;
 }
