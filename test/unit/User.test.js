@@ -4,16 +4,8 @@ import { expect } from 'chai';
 // Import the component that is going to be tested
 import User from './../../src/server/ApiRoutes/User.js';
 
-let mockTokenResponse = {
+let mockPatronTokenResponse = {
   isTokenValid: true,
-  accessToken: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJodHRwczpcL1wvd3d3Lm55cGwub3J' +
-    'nIiwic3ViIjoiNjY3NzI3MyIsImF1ZCI6ImFwcF9teWFjY291bnQiLCJpYXQiOjE0OTgxNjI4MzMsImV4cCI6MT' +
-    'Q5ODE2NjQzMywiYXV0aF90aW1lIjoxNDk4MTYyODMzLCJzY29wZSI6Im9wZW5pZCBvZmZsaW5lX2FjY2VzcyBwY' +
-    'XRyb246cmVhZCJ9.ay8XM1ASsb346pOlBmZuZHTi5fewQe3-XRqIg9rxCw8T8iGftQJWYLzLImhIMVhAMlQ6YTu' +
-    '3pIb7Kv5Drkq_nnvSz85B2-bwuZh75PcLj7oT_7J4STHQYc1haDOcHTdoWhE8qMJs49CvcgCsBq_1_mqCD4e1mr' +
-    'kE9binHd3AfFbUogYK8GyqgCSxLjH_GkhwGZL_YewQQ32sJWlPJIpREKvCDxPMsHm16WzjD9YXXFZzrU-9NjOim' +
-    'ewFuZFEKpk56j3T-94GBrz4bubr1o3wzPYEgAZJjQQf9aHIZm1zRpx3av1dm80kTJTgDCZv6HFZM2uZsntkSejD' +
-    'elmut_H1Jg',
   decodedPatron: {
     iss: 'https://www.nypl.org',
     sub: '6677666',
@@ -30,30 +22,22 @@ const renderMockReq = (data) => (
     get: (n) => n,
     protocol: 'http',
     originalUrl: '/hold/request/b11995345-i14211097',
-    tokenResponse: data,
+    patronTokenResponse: data,
   }
 );
 const mockRes = { redirect: () => {} };
 
-describe('If requireUser does not receive valid value from "req.tokenResponse"', () => {
+describe('If requireUser does not receive valid value from "req.patronTokenResponse"', () => {
   let requireUser;
 
   before(() => {
     requireUser = sinon.spy(User, 'requireUser');
-    mockTokenResponse = {};
+    mockPatronTokenResponse = {};
   });
 
   after(() => {
-    mockTokenResponse = {
+    mockPatronTokenResponse = {
       isTokenValid: true,
-      accessToken: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJodHRwczpcL1wvd3d3Lm55cGwub3J' +
-        'nIiwic3ViIjoiNjY3NzI3MyIsImF1ZCI6ImFwcF9teWFjY291bnQiLCJpYXQiOjE0OTgxNjI4MzMsImV4cCI6MT' +
-        'Q5ODE2NjQzMywiYXV0aF90aW1lIjoxNDk4MTYyODMzLCJzY29wZSI6Im9wZW5pZCBvZmZsaW5lX2FjY2VzcyBwY' +
-        'XRyb246cmVhZCJ9.ay8XM1ASsb346pOlBmZuZHTi5fewQe3-XRqIg9rxCw8T8iGftQJWYLzLImhIMVhAMlQ6YTu' +
-        '3pIb7Kv5Drkq_nnvSz85B2-bwuZh75PcLj7oT_7J4STHQYc1haDOcHTdoWhE8qMJs49CvcgCsBq_1_mqCD4e1mr' +
-        'kE9binHd3AfFbUogYK8GyqgCSxLjH_GkhwGZL_YewQQ32sJWlPJIpREKvCDxPMsHm16WzjD9YXXFZzrU-9NjOim' +
-        'ewFuZFEKpk56j3T-94GBrz4bubr1o3wzPYEgAZJjQQf9aHIZm1zRpx3av1dm80kTJTgDCZv6HFZM2uZsntkSejD' +
-        'elmut_H1Jg',
       decodedPatron: {
         iss: 'https://www.nypl.org',
         sub: '6677666',
@@ -69,73 +53,45 @@ describe('If requireUser does not receive valid value from "req.tokenResponse"',
   });
 
   it('should return false', () => {
-    requireUser(renderMockReq(mockTokenResponse), mockRes);
+    requireUser(renderMockReq(mockPatronTokenResponse), mockRes);
 
     expect(requireUser.returnValues[0]).to.equal(false);
   });
 });
 
-describe('If requireUser does not receive valid value from "req.tokenResponse.isTokenValid"',
+describe('If requireUser does not receive valid value from "req.patronTokenResponse.isTokenValid"',
   () => {
     let requireUser;
 
     before(() => {
       requireUser = sinon.spy(User, 'requireUser');
-      mockTokenResponse.isTokenValid = false;
+      mockPatronTokenResponse.isTokenValid = false;
     });
 
     after(() => {
-      mockTokenResponse.isTokenValid = true;
+      mockPatronTokenResponse.isTokenValid = true;
       requireUser.restore();
     });
 
     it('should return false', () => {
-      requireUser(renderMockReq(mockTokenResponse), mockRes);
+      requireUser(renderMockReq(mockPatronTokenResponse), mockRes);
 
       expect(requireUser.returnValues[0]).to.equal(false);
     });
   }
 );
 
-describe('If requireUser does not receive valid value from "req.tokenResponse.accessToken"', () => {
-  let requireUser;
-
-  before(() => {
-    requireUser = sinon.spy(User, 'requireUser');
-    mockTokenResponse.accessToken = undefined;
-  });
-
-  after(() => {
-    mockTokenResponse.accessToken =
-      'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJodHRwczpcL1wvd3d3Lm55cGwub3J' +
-      'nIiwic3ViIjoiNjY3NzI3MyIsImF1ZCI6ImFwcF9teWFjY291bnQiLCJpYXQiOjE0OTgxNjI4MzMsImV4cCI6MT' +
-      'Q5ODE2NjQzMywiYXV0aF90aW1lIjoxNDk4MTYyODMzLCJzY29wZSI6Im9wZW5pZCBvZmZsaW5lX2FjY2VzcyBwY' +
-      'XRyb246cmVhZCJ9.ay8XM1ASsb346pOlBmZuZHTi5fewQe3-XRqIg9rxCw8T8iGftQJWYLzLImhIMVhAMlQ6YTu' +
-      '3pIb7Kv5Drkq_nnvSz85B2-bwuZh75PcLj7oT_7J4STHQYc1haDOcHTdoWhE8qMJs49CvcgCsBq_1_mqCD4e1mr' +
-      'kE9binHd3AfFbUogYK8GyqgCSxLjH_GkhwGZL_YewQQ32sJWlPJIpREKvCDxPMsHm16WzjD9YXXFZzrU-9NjOim' +
-      'ewFuZFEKpk56j3T-94GBrz4bubr1o3wzPYEgAZJjQQf9aHIZm1zRpx3av1dm80kTJTgDCZv6HFZM2uZsntkSejD' +
-      'elmut_H1Jg';
-    requireUser.restore();
-  });
-
-  it('should return false', () => {
-    requireUser(renderMockReq(mockTokenResponse), mockRes);
-
-    expect(requireUser.returnValues[0]).to.equal(false);
-  });
-});
-
-describe('If requireUser does not receive valid value from "req.tokenResponse.decodedPatron"',
+describe('If requireUser does not receive valid value from "req.patronTokenResponse.decodedPatron"',
   () => {
     let requireUser;
 
     before(() => {
       requireUser = sinon.spy(User, 'requireUser');
-      mockTokenResponse.decodedPatron = undefined;
+      mockPatronTokenResponse.decodedPatron = undefined;
     });
 
     after(() => {
-      mockTokenResponse.decodedPatron = {
+      mockPatronTokenResponse.decodedPatron = {
         decodedPatron:
         {
           iss: 'https://www.nypl.org',
@@ -151,34 +107,33 @@ describe('If requireUser does not receive valid value from "req.tokenResponse.de
     });
 
     it('should return false', () => {
-      requireUser(renderMockReq(mockTokenResponse), mockRes);
+      requireUser(renderMockReq(mockPatronTokenResponse), mockRes);
 
       expect(requireUser.returnValues[0]).to.equal(false);
     });
   }
 );
 
-describe('If requireUser does not receive valid value from "req.tokenResponse.decodedPatron.sub"',
-  () => {
-    let requireUser;
+describe('If requireUser does not receive valid value from "req.patronTokenResponse.' +
+  'decodedPatron.sub"', () => {
+  let requireUser;
 
-    before(() => {
-      requireUser = sinon.spy(User, 'requireUser');
-      mockTokenResponse.decodedPatron.sub = undefined;
-    });
+  before(() => {
+    requireUser = sinon.spy(User, 'requireUser');
+    mockPatronTokenResponse.decodedPatron.sub = undefined;
+  });
 
-    after(() => {
-      mockTokenResponse.decodedPatron.sub = '6677666';
-      requireUser.restore();
-    });
+  after(() => {
+    mockPatronTokenResponse.decodedPatron.sub = '6677666';
+    requireUser.restore();
+  });
 
-    it('should return false', () => {
-      requireUser(renderMockReq(mockTokenResponse), mockRes);
+  it('should return false', () => {
+    requireUser(renderMockReq(mockPatronTokenResponse), mockRes);
 
-      expect(requireUser.returnValues[0]).to.equal(false);
-    });
-  }
-);
+    expect(requireUser.returnValues[0]).to.equal(false);
+  });
+});
 
 describe('If requireUser receives all valid values from "req"', () => {
   let requireUser;
@@ -192,7 +147,7 @@ describe('If requireUser receives all valid values from "req"', () => {
   });
 
   it('should return true', () => {
-    requireUser({ tokenResponse: mockTokenResponse }, mockRes);
+    requireUser({ patronTokenResponse: mockPatronTokenResponse }, mockRes);
 
     expect(requireUser.returnValues[0]).to.equal(true);
   });
