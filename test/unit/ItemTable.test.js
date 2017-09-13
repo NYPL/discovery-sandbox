@@ -59,10 +59,10 @@ describe('ItemTable', () => {
 
       expect(header.find('tr').length).to.equal(1);
       expect(header.find('th').length).to.equal(4);
-      expect(header.find('th').at(0).text()).to.equal('LOCATION');
-      expect(header.find('th').at(1).text()).to.equal('CALL NO.');
-      expect(header.find('th').at(2).text()).to.equal('STATUS');
-      expect(header.find('th').at(3).text()).to.equal('MESSAGE');
+      expect(header.find('th').at(0).text()).to.equal('Location');
+      expect(header.find('th').at(1).text()).to.equal('Call Number');
+      expect(header.find('th').at(2).text()).to.equal('Status');
+      expect(header.find('th').at(3).text()).to.equal('Message');
     });
 
     it('should have the same number <tr> elements in its <tbody> as the item length.', () => {

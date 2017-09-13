@@ -5,6 +5,7 @@ import { expect } from 'chai';
 import { mount } from 'enzyme';
 // Import the component that is going to be tested
 import HoldRequest from './../../src/app/components/HoldRequest/HoldRequest.jsx';
+import Actions from './../../src/app/actions/Actions.js';
 
 describe('HoldRequest', () => {
   describe('After being rendered, <HoldRequest>', () => {
@@ -21,6 +22,7 @@ describe('HoldRequest', () => {
       component.unmount();
     });
 
+    // TODO: This should check the state and not that the function was called.
     it('should check if the patron is logged in.', () => {
       expect(requireUser.calledOnce).to.equal(true);
     });
@@ -31,6 +33,7 @@ describe('HoldRequest', () => {
     let requireUser;
 
     before(() => {
+      Actions.updatePatronData({});
       requireUser = sinon.spy(HoldRequest.prototype, 'requireUser');
       component = mount(<HoldRequest />);
     });
@@ -41,6 +44,7 @@ describe('HoldRequest', () => {
     });
 
     it('should redirect the patron to OAuth log in page.', () => {
+      component.setState({ patron: {} });
       expect(requireUser.returnValues[0]).to.equal(false);
     });
   });
