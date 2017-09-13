@@ -17,7 +17,7 @@ class Search extends React.Component {
     super(props);
 
     this.state = {
-      field: this.props.field || 'all',
+      field: this.props.field,
       searchKeywords: this.props.searchKeywords,
       inputError: this.props.searchError === 'true',
     };

@@ -69,11 +69,10 @@ class SearchResultsPage extends React.Component {
       ajaxCall(`${appConfig.baseUrl}/api?${apiQuery}`, response => {
         Actions.updateSearchResults(response.data.searchResults);
         Actions.updatePage(nextPage.toString());
-        setTimeout(
-          () => { this.updateIsLoadingState(false); },
-          500
-        );
-        this.context.router.push(`${appConfig.baseUrl}/search?${apiQuery}`);
+        setTimeout(() => {
+          this.updateIsLoadingState(false);
+          this.context.router.push(`${appConfig.baseUrl}/search?${apiQuery}`);
+        }, 500);
       });
     };
     const searchError = location.query && location.query.error ? location.query.error : '';
