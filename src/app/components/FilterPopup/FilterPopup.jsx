@@ -1,8 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import FocusTrap from 'focus-trap-react';
+import { findWhere as _findWhere } from 'underscore';
 
 import { trackDiscovery } from '../../utils/utils.js';
+import FieldsetDate from '../Filters/FieldsetDate';
+import FieldsetList from '../Filters/FieldsetList';
 
 class FilterPopup extends React.Component {
   constructor(props) {
@@ -93,6 +96,9 @@ class FilterPopup extends React.Component {
       >
         FILTER RESULTS
       </a>);
+    const filters = this.props.filters;
+    const materialTypeFilters = _findWhere(filters, { id: 'materialType' });
+    const languageFilters = _findWhere(filters, { id: 'language' });
 
     return (
       <div className="filter-container">
@@ -113,88 +119,19 @@ class FilterPopup extends React.Component {
           >
             <form action="" method="POST" onSubmit={() => this.onSubmitForm()}>
               <fieldset>
-                <legend>
-                  <h3>Filter Results</h3>
-                </legend>
-                <button type="button" name="Clear-Filters">Clear Filters</button>
+                <legend><h3>Filter Results</h3></legend>
 
+                <FieldsetList legend="Format" filter={materialTypeFilters} />
+
+                <FieldsetDate />
+
+                <FieldsetList legend="Language" filter={languageFilters} />
+
+                <button type="submit" name="apply-filters" >Apply Filters</button>
+                <button type="button" name="Clear-Filters">Clear Filters</button>
                 {closePopupButton}
 
-                <fieldset>
-                  <legend>Format</legend>
-                  <div className="new-checkbox">
-                    <input id="book-check-filter" className="switch-input" type="checkbox" name="format" value="Book" />
-                    <label htmlFor="book-check-filter">Book</label>
-                  </div>
-                  <div className="new-checkbox">
-                    <input id="still-image-check-filter" type="checkbox" name="format" value="Still Image" />
-                    <label htmlFor="still-image-check-filter">Still Image</label>
-                  </div>
-                  <div className="new-checkbox">
-                    <input id="audio-check-filter" type="checkbox" name="format" value="Audio" />
-                    <label htmlFor="audio-check-filter">
-                      Audio
-                    </label>
-                  </div>
-                  <div className="new-checkbox">
-                    <input id="music-check-filter" type="checkbox" name="format" value="Notated Music" />
-                    <label htmlFor="music-check-filter">Notated Music</label>
-                  </div>
-                  <div className="new-checkbox">
-                    <input id="mixed-check-filter" type="checkbox" name="format" value="Mixed Material" />
-                    <label htmlFor="mixed-check-filter">Mixed Material</label>
-                  </div>
-                </fieldset>
-                <fieldset>
-                  <legend>Date</legend>
-                  <div>
-                    <label htmlFor="start-date">Start Year
-                      <input id="start-date" name="start" className="form-text" type="number" min="1895" max="9999" step="1" />
-                    </label>
-                    <label htmlFor="end-date">End Year
-                      <input id="end-date" type="date" className="form-text" type="number" min="1895" max="9999" step="1" />
-                    </label>
-                    <span>The Start year cannot be later than the end year</span>
-                  </div>
-                </fieldset>
-                <fieldset>
-                  <legend>Language</legend>
-                  <div className="nypl-terms-checkbox new-checkbox">
-                    <input id="english-language-filter" type="checkbox" name="language" value="English" />
-                    <label htmlFor="english-language-filter">English</label>
-                  </div>
-                  <div className="nypl-terms-checkbox new-checkbox">
-                    <input id="spanish-language-filter" type="checkbox" name="language" value="Spanish" />
-                    <label htmlFor="spanish-language-filter">Spanish</label>
-                  </div>
-                  <div className="nypl-terms-checkbox new-checkbox">
-                    <input id="language-filter-0" type="checkbox" name="language" value="Language" />
-                    <label htmlFor="language-filter-0">Language</label>
-                  </div>
-                  <div className="nypl-terms-checkbox new-checkbox">
-                    <input id="language-filter-1" type="checkbox" name="language" value="Language" />
-                    <label htmlFor="language-filter-1">Language</label>
-                  </div>
-                  <div className="nypl-terms-checkbox new-checkbox">
-                    <input id="language-filter-2" type="checkbox" name="language" value="Language" />
-                    <label htmlFor="language-filter-2">Language</label>
-                  </div>
-                  <div className="nypl-terms-checkbox new-checkbox">
-                    <input id="language-filter-3" type="checkbox" name="language" value="Language" />
-                    <label htmlFor="language-filter-3">Language</label>
-                  </div>
-                  <div className="nypl-terms-checkbox new-checkbox">
-                    <input id="language-filter-4" type="checkbox" name="language" value="Language" />
-                    <label htmlFor="language-filter-4">Language</label>
-                  </div>
-                  <div className="nypl-terms-checkbox new-checkbox">
-                    <input id="language-filter-5" type="checkbox" name="language" value="Language" />
-                    <label htmlFor="language-filter-5">Language</label>
-                  </div>
-
-                </fieldset>
               </fieldset>
-              <button type="submit" name="apply-filters" >Apply Filters</button>
             </form>
           </FocusTrap>
         </div>
@@ -205,6 +142,7 @@ class FilterPopup extends React.Component {
 
 FilterPopup.propTypes = {
   location: PropTypes.object,
+  filters: PropTypes.array,
 };
 
 export default FilterPopup;
