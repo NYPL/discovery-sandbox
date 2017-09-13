@@ -14,7 +14,6 @@ import {
 } from '../../src/app/utils/utils.js';
 import Sorter from '../../src/app/components/Sorter/Sorter';
 import appConfig from '../../appConfig';
-import Actions from '../../src/app/actions/Actions';
 
 describe('Sorter', () => {
   describe('Default - no javascript', () => {
@@ -130,7 +129,6 @@ describe('Sorter', () => {
       let component;
       let createAPIQuery;
       let axiosSpy;
-      let ajaxCallSpy;
 
       before(() => {
         createAPIQuery = basicQuery({});
@@ -146,12 +144,10 @@ describe('Sorter', () => {
       after(() => {
         mock.reset();
         axiosSpy.restore();
-        ajaxCallSpy.reset();
       });
 
       it('should make an ajax request and update the state', () => {
         axiosSpy = sinon.spy(axios, 'get');
-        ajaxCallSpy = sinon.spy(ajaxCall);
 
         expect(component.state('sortValue')).to.equal('relevance');
         expect(component.state('sortLabel')).to.equal('relevance');
