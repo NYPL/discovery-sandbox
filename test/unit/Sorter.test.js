@@ -8,10 +8,7 @@ import sinon from 'sinon';
 
 const mock = new MockAdapter(axios);
 
-import {
-  ajaxCall,
-  basicQuery,
-} from '../../src/app/utils/utils.js';
+import { basicQuery } from '../../src/app/utils/utils.js';
 import Sorter from '../../src/app/components/Sorter/Sorter';
 import appConfig from '../../appConfig';
 
