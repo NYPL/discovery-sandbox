@@ -112,15 +112,8 @@ describe('getDefaultFacets', () => {
     const defaultFacets = getDefaultFacets();
 
     expect(defaultFacets).to.eql({
-      owner: [],
-      contributorLiteral: [],
       materialType: [],
-      issuance: [],
-      publisher: [],
       language: [],
-      mediaType: [],
-      subjectLiteral: [],
-      creatorLiteral: [],
       dateAfter: {},
       dateBefore: {},
     });
@@ -215,15 +208,15 @@ describe('getFacetFilterParam', () => {
 
     it('should return an empty string with no selected facets', () => {
       const facets = {
-        date: { id: '', value: '' },
-        issuance: { id: '', value: '' },
-        language: { id: '', value: '' },
-        location: { id: '', value: '' },
-        materialType: { id: '', value: '' },
-        mediaType: { id: '', value: '' },
-        owner: { id: '', value: '' },
-        publisher: { id: '', value: '' },
-        subject: { id: '', value: '' },
+        date: { value: '', label: '' },
+        issuance: { value: '', label: '' },
+        language: { value: '', label: '' },
+        location: { value: '', label: '' },
+        materialType: { value: '', label: '' },
+        mediaType: { value: '', label: '' },
+        owner: { value: '', label: '' },
+        publisher: { value: '', label: '' },
+        subject: { value: '', label: '' },
       };
       expect(getFacetFilterParam(facets)).to.equal('');
     });
@@ -232,15 +225,15 @@ describe('getFacetFilterParam', () => {
   describe('Only facets object input', () => {
     it('should return a key:value string from two facets', () => {
       const facets = {
-        date: { id: '', value: '' },
-        issuance: { id: '', value: '' },
-        language: { id: '', value: '' },
-        location: { id: '', value: '' },
-        materialType: { id: 'resourcetypes:aud', value: 'Audio' },
-        mediaType: { id: '', value: '' },
-        owner: { id: 'orgs:1000', value: 'Stephen A. Schwarzman Building' },
-        publisher: { id: '', value: '' },
-        subject: { id: '', value: '' },
+        date: { value: '', label: '' },
+        issuance: { value: '', label: '' },
+        language: { value: '', label: '' },
+        location: { value: '', label: '' },
+        materialType: { value: 'resourcetypes:aud', label: 'Audio' },
+        mediaType: { value: '', label: '' },
+        owner: { value: 'orgs:1000', label: 'Stephen A. Schwarzman Building' },
+        publisher: { value: '', label: '' },
+        subject: { value: '', label: '' },
       };
       expect(getFacetFilterParam(facets))
         .to.equal('&filters[materialType]=resourcetypes%3Aaud&filters[owner]=orgs%3A1000');
@@ -248,15 +241,15 @@ describe('getFacetFilterParam', () => {
 
     it('should return a key:value string from three facets', () => {
       const facets = {
-        date: { id: '', value: '' },
-        issuance: { id: '', value: '' },
-        language: { id: 'lang:ger', value: 'German' },
-        location: { id: '', value: '' },
-        materialType: { id: '', value: '' },
-        mediaType: { id: '', value: '' },
-        owner: { id: '', value: '' },
-        publisher: { id: '[Berlin] : Walter de Gruyter', value: '[Berlin] : Walter de Gruyter' },
-        subject: { id: 'Electronic journals.', value: 'Electronic journals.' },
+        date: { value: '', label: '' },
+        issuance: { value: '', label: '' },
+        language: { value: 'lang:ger', label: 'German' },
+        location: { value: '', label: '' },
+        materialType: { value: '', label: '' },
+        mediaType: { value: '', label: '' },
+        owner: { value: '', label: '' },
+        publisher: { value: '[Berlin] : Walter de Gruyter', label: '[Berlin] : Walter de Gruyter' },
+        subject: { value: 'Electronic journals.', label: 'Electronic journals.' },
       };
       expect(getFacetFilterParam(facets))
         .to.equal('&filters[language]=lang%3Ager&filters[publisher]=%5BBerlin%5D%20%3A%20Walter' +
@@ -382,10 +375,10 @@ describe('basicQuery', () => {
       // There are more tests in the `getFacetFilterParam` suite.
       expect(createAPIQuery({
         selectedFacets: {
-          language: { id: '', value: '' },
-          materialType: { id: 'resourcetypes:aud', value: 'Audio' },
-          owner: { id: 'orgs:1000', value: 'Stephen A. Schwarzman Building' },
-          subject: { id: '', value: '' },
+          language: { value: '', label: '' },
+          materialType: { value: 'resourcetypes:aud', label: 'Audio' },
+          owner: { value: 'orgs:1000', label: 'Stephen A. Schwarzman Building' },
+          subject: { value: '', label: '' },
         },
       })).to.equal('q=&filters[materialType]=resourcetypes%3Aaud&filters[owner]=orgs%3A1000');
     });
