@@ -1,20 +1,23 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import FocusTrap from 'focus-trap-react';
-import { findWhere as _findWhere } from 'underscore';
-
+import {
+  findWhere as _findWhere,
+  extend as _extend,
+} from 'underscore';
 import { trackDiscovery } from '../../utils/utils.js';
 import FieldsetDate from '../Filters/FieldsetDate';
 import FieldsetList from '../Filters/FieldsetList';
+import Store from '../../stores/Store.js';
 
 class FilterPopup extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {
+    this.state = _extend({
       showForm: false,
       js: false,
-    };
+    }, { selectedFacets: Store.getState().selectedFacets });
 
     this.openForm = this.openForm.bind(this);
     this.closeForm = this.closeForm.bind(this);
@@ -61,7 +64,7 @@ class FilterPopup extends React.Component {
         Close
         <svg width="48" height="19" viewBox="0 0 32 32" className="svgIcon">
           <title>x.close.icon</title>
-          <path d="M17.91272,15.97339l5.65689-5.65689A1.32622,1.32622,0,0,0,21.694,8.44093L16.04938,14.0856l-5.65082-5.725A1.32671,1.32671,0,1,0,8.51,10.22454l5.66329,5.73712L8.43038,21.7046a1.32622,1.32622,0,1,0,1.87557,1.87557l5.73088-5.73088,5.65074,5.72441a1.32626,1.32626,0,1,0,1.88852-1.86261Z"/>
+          <path d="M17.91272,15.97339l5.65689-5.65689A1.32622,1.32622,0,0,0,21.694,8.44093L16.04938,14.0856l-5.65082-5.725A1.32671,1.32671,0,1,0,8.51,10.22454l5.66329,5.73712L8.43038,21.7046a1.32622,1.32622,0,1,0,1.87557,1.87557l5.73088-5.73088,5.65074,5.72441a1.32626,1.32626,0,1,0,1.88852-1.86261Z" />
         </svg>
       </button>
       : (<a
@@ -72,7 +75,7 @@ class FilterPopup extends React.Component {
       >Close
         <svg width="48" height="19" viewBox="0 0 32 32" className="svgIcon">
           <title>x.close.icon</title>
-          <path d="M17.91272,15.97339l5.65689-5.65689A1.32622,1.32622,0,0,0,21.694,8.44093L16.04938,14.0856l-5.65082-5.725A1.32671,1.32671,0,1,0,8.51,10.22454l5.66329,5.73712L8.43038,21.7046a1.32622,1.32622,0,1,0,1.87557,1.87557l5.73088-5.73088,5.65074,5.72441a1.32626,1.32626,0,1,0,1.88852-1.86261Z"/>
+          <path d="M17.91272,15.97339l5.65689-5.65689A1.32622,1.32622,0,0,0,21.694,8.44093L16.04938,14.0856l-5.65082-5.725A1.32671,1.32671,0,1,0,8.51,10.22454l5.66329,5.73712L8.43038,21.7046a1.32622,1.32622,0,1,0,1.87557,1.87557l5.73088-5.73088,5.65074,5.72441a1.32626,1.32626,0,1,0,1.88852-1.86261Z" />
         </svg>
       </a>);
     const openPopupButton = js ?
@@ -123,7 +126,7 @@ class FilterPopup extends React.Component {
 
                 <FieldsetList legend="Format" filter={materialTypeFilters} />
 
-                <FieldsetDate />
+                <FieldsetDate selectedFacets={this.state.selectedFacets} />
 
                 <FieldsetList legend="Language" filter={languageFilters} />
 

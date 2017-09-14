@@ -1,5 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Actions from '../../actions/Actions.js';
+import {
+  extend as _extend,
+} from 'underscore';
 
 class FieldsetDate extends React.Component {
   constructor(props) {
@@ -8,13 +12,16 @@ class FieldsetDate extends React.Component {
     this.state = {
       startDateInput: 0,
       endDateInput: 0,
+      selectedFacets: this.props.selectedFacets,
     };
 
     this.inputChange = this.inputChange.bind(this);
   }
 
-  /*
-   * inputChange
+  /**
+   * inputChange()
+   * Updates the states and the store based on the input values.
+   *
    */
   inputChange(e) {
     const value = (e.target.value).replace(/[a-zA-Z]/g, '');
@@ -27,9 +34,18 @@ class FieldsetDate extends React.Component {
     }
 
     if (displayValue) {
-      this.setState({
-        [displayValue]: value
-      });
+      this.setState(
+        {
+          [displayValue]: value,
+          selectedFacets: _extend(
+            this.state.selectedFacets,
+            { [displayValue]: value }
+          ),
+        },
+        () => {
+          Actions.updateSelectedFacets(this.state.selectedFacets);
+        }
+      );
     }
   }
 
@@ -37,7 +53,7 @@ class FieldsetDate extends React.Component {
     let errorMessage = '';
 
     if (this.state.endDateInput && this.state.startDateInput) {
-      if (this.state.endDateInput < this.state.startDateInput) {
+      if (Number(this.state.endDateInput) < Number(this.state.startDateInput)) {
         errorMessage = 'end year should be later than start year.';
       }
     } else {
@@ -78,6 +94,7 @@ class FieldsetDate extends React.Component {
 }
 
 FieldsetDate.propTypes = {
+  selectedFacets: PropTypes.object,
 };
 
 export default FieldsetDate;
