@@ -45,6 +45,7 @@ class SearchResultsPage extends React.Component {
       searchResults,
       searchKeywords,
       selectedFacets,
+      facets,
       page,
       sortBy,
       field,
@@ -76,6 +77,8 @@ class SearchResultsPage extends React.Component {
       });
     };
     const searchError = location.query && location.query.error ? location.query.error : '';
+    const filters = facets && facets.itemListElement && facets.itemListElement.length ?
+      facets.itemListElement : [];
 
     return (
       <DocumentTitle title="Search Results | Shared Collection Catalog | NYPL">
@@ -118,7 +121,9 @@ class SearchResultsPage extends React.Component {
                       />
                     )
                   }
-                  <FilterPopup />
+
+                  <FilterPopup filters={filters} />
+
                 </div>
               </div>
             </div>

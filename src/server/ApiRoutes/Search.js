@@ -34,14 +34,14 @@ function search(searchKeywords, page, sortBy, order, field, filters, cb, errorcb
     page,
   });
 
-  // const aggregationQuery = `/aggregations?${apiQuery}`;
+  const aggregationQuery = `/aggregations?${apiQuery}`;
   const queryString = `?${apiQuery}&per_page=50`;
 
-  // Also need to make an async call to with aggregationQuery eventually...
-  // It use to be with axios.all to concurrently get both endpoints.
-  nyplApiClientCall(queryString)
-    .then((response) => {
-      cb({}, response, page);
+  // Need to get both results and aggregations before proceeding.
+  Promise.all([nyplApiClientCall(queryString), nyplApiClientCall(aggregationQuery)])
+    .then(response => {
+      const [results, aggregations] = response;
+      cb(aggregations, results, page);
     })
     .catch(error => {
       logger.error('Error making server search call in search function', error);
