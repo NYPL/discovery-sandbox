@@ -10,8 +10,8 @@ class FieldsetDate extends React.Component {
     super(props);
 
     this.state = {
-      startDateInput: 0,
-      endDateInput: 0,
+      dateAfter: 0,
+      dateBefore: 0,
       selectedFacets: this.props.selectedFacets,
     };
 
@@ -28,9 +28,9 @@ class FieldsetDate extends React.Component {
     let displayValue = '';
 
     if (e.target.name === 'start-date') {
-      displayValue = 'startDateInput';
+      displayValue = 'dateAfter';
     } else if (e.target.name === 'end-date') {
-      displayValue = 'endDateInput';
+      displayValue = 'dateBefore';
     }
 
     if (displayValue) {
@@ -63,7 +63,7 @@ class FieldsetDate extends React.Component {
     return (
       <fieldset>
         <legend>Date</legend>
-        <div>
+        <div id="input-container">
           <label htmlFor="start-date">Start Year
             <input
               id="start-date"
