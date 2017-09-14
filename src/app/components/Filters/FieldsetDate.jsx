@@ -6,7 +6,8 @@ class FilterPopup extends React.Component {
     super(props);
 
     this.state = {
-
+      startDateInput: '',
+      endDateInput: '',
     };
   }
 
@@ -20,17 +21,17 @@ class FilterPopup extends React.Component {
               id="start-date"
               name="start-date"
               className="form-text"
-              type="date"
-              pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}"
+              type="number"
+              max="9999"
             />
           </label>
           <label htmlFor="end-date">End Year
             <input
               id="end-date"
-              type="date"
-              className="form-text"
               name="end-date"
-              pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}"
+              className="form-text"
+              type="number"
+              max="9999"
             />
           </label>
           <span>The Start year cannot be later than the end year</span>
