@@ -1,17 +1,24 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import { isEmpty as _isEmpty } from 'underscore';
+
 class FieldsetList extends React.Component {
   render() {
     const {
       legend,
       filter,
     } = this.props;
+
+    if (_isEmpty(filter)) {
+      return null;
+    }
+
     const values = filter.values && filter.values.length ? filter.values : [];
 
     return (
       <fieldset>
-        <legend>{this.props.legend}</legend>
+        {legend && <legend>{legend}</legend>}
         <ul>
           {
             values.map((value, i) => (
@@ -37,6 +44,10 @@ class FieldsetList extends React.Component {
 FieldsetList.propTypes = {
   legend: PropTypes.string,
   filter: PropTypes.object,
+};
+
+FieldsetList.defaultProps = {
+  filter: {},
 };
 
 export default FieldsetList;
