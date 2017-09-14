@@ -148,4 +148,8 @@ FilterPopup.propTypes = {
   filters: PropTypes.array,
 };
 
+FilterPopup.defaultProps = {
+  filters: [],
+};
+
 export default FilterPopup;
