@@ -70,6 +70,7 @@ function searchServerPost(req, res) {
   // The filters from req.body may be an array of selected filters, or just an object
   // with one selected filter.
   const reqFilters = _isArray(filters) ? filters : [filters];
+
   const selectedFacets = parseServerSelectedFilters(reqFilters, dateAfter, dateBefore);
   let searchKeywords = q;
   let field = fieldQuery;
@@ -135,20 +136,23 @@ function searchServer(req, res, next) {
 
               if (foundFacet && !_findWhere(selectedFacets[key], { id: foundFacet.value })) {
                 selectedFacets[key].push({
-                  id: foundFacet.value,
-                  value: foundFacet.label || foundFacet.value,
+                  selected: true,
+                  value: foundFacet.value,
+                  label: foundFacet.label || foundFacet.value,
+                  count: foundFacet.count,
                 });
               }
             });
           } else if (typeof value === 'string') {
             facetObj = _findWhere(facets.itemListElement, { field: key });
-            const foundFacet =
-              _isEmpty(facetObj) ? {} : _findWhere(facetObj.values, { value });
+            const foundFacet = _isEmpty(facetObj) ? {} : _findWhere(facetObj.values, { value });
 
             if (foundFacet && !_findWhere(selectedFacets[key], { id: foundFacet.value })) {
               selectedFacets[key] = [{
-                id: foundFacet.value,
-                value: foundFacet.label || foundFacet.value,
+                selected: true,
+                value: foundFacet.value,
+                label: foundFacet.label || foundFacet.value,
+                count: foundFacet.count,
               }];
             }
           }

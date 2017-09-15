@@ -122,7 +122,13 @@ class SearchResultsPage extends React.Component {
                     )
                   }
 
-                  <FilterPopup filters={filters} />
+                  <FilterPopup
+                    filters={filters}
+                    createAPIQuery={createAPIQuery}
+                    updateIsLoadingState={this.updateIsLoadingState}
+                    selectedFilters={selectedFacets}
+                    searchKeywords={searchKeywords}
+                  />
 
                 </div>
               </div>
@@ -182,6 +188,7 @@ SearchResultsPage.propTypes = {
   field: PropTypes.string,
   isLoading: PropTypes.bool,
   error: PropTypes.object,
+  facets: PropTypes.object,
 };
 
 SearchResultsPage.defaultProps = {

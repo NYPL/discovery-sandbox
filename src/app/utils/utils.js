@@ -129,29 +129,27 @@ const getSortQuery = (sortBy = '') => {
 
 /**
  * getFacetFilterParam
- * Get the search params from the facet values.
- * @param {object} facets Key/value pair of facet and the selected value.
+ * Get the search params from the filter values.
+ * @param {object} filters Key/value pair of filter and the selected value.
  */
-const getFacetFilterParam = (facets) => {
+const getFacetFilterParam = (filters) => {
   let strSearch = '';
 
-  if (!_isEmpty(facets)) {
-    _mapObject(facets, (val, key) => {
-      // Property contains an array of its selected facet values:
+  if (!_isEmpty(filters)) {
+    _mapObject(filters, (val, key) => {
+      // Property contains an array of its selected filter values:
       if (val.length && _isArray(val)) {
-        _forEach(val, (facet) => {
-          if (facet.value && facet.value !== '') {
+        _forEach(val, (filter) => {
+          if (filter.value && filter.value !== '') {
             // At this time, materialType filter requires _packed for filtering (but not as data).
             // Other filters do not.
-            strSearch += (key === 'materialType' ?
-              `&filters[${key}_packed]=${encodeURIComponent(facet.id)}` :
-              `&filters[${key}]=${encodeURIComponent(facet.id)}`);
-          } else if (typeof facet === 'string') {
-            strSearch += `&filters[${key}]=${encodeURIComponent(facet)}`;
+            strSearch += `&filters[${key}]=${encodeURIComponent(filter.value)}`;
+          } else if (typeof filter === 'string') {
+            strSearch += `&filters[${key}]=${encodeURIComponent(filter)}`;
           }
         });
       } else if (val.value && val.value !== '') {
-        strSearch += `&filters[${key}]=${encodeURIComponent(val.id)}`;
+        strSearch += `&filters[${key}]=${encodeURIComponent(val.value)}`;
       } else if (typeof val === 'string') {
         strSearch += `&filters[${key}]=${encodeURIComponent(val)}`;
       }
@@ -262,6 +260,7 @@ function getReqParams(query = {}) {
  */
 function parseServerSelectedFilters(filters, dateAfter, dateBefore) {
   const selectedFacets = {};
+  // console.log(filters);
   if (_isArray(filters) && filters.length && !_isEmpty(filters[0])) {
     _chain(filters)
       // Each incoming filter is in JSON string format so it needs to be parsed first.
@@ -272,7 +271,12 @@ function parseServerSelectedFilters(filters, dateAfter, dateBefore) {
       .mapObject((facetArray, key) => {
         if (key) {
           selectedFacets[key] =
-            facetArray.map((facet) => ({ id: facet.value, value: facet.label }));
+            facetArray.map((facet) => ({
+              value: facet.value,
+              label: facet.label,
+              count: facet.count,
+              selected: true,
+            }));
         }
       });
   }

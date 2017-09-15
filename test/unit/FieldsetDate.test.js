@@ -18,16 +18,20 @@ describe('FieldsetDate', () => {
       component = mount(<FieldsetDate selectedFacets={selectedFacets} />);
     });
 
-    it('should render a fieldset', () => {
+    after(() => {
+      component.unmount();
+    });
+
+    it('should render a fieldset.', () => {
       expect(component.find('fieldset').length).to.equal(1);
     });
 
-    it('should render a legend with text Date', () => {
+    it('should render a legend with text Date.', () => {
       expect(component.find('legend').length).to.equal(1);
       expect(component.find('legend').text()).to.equal('Date');
     });
 
-    it('should have an input and label for each list item', () => {
+    it('should have an input and label for each list item.', () => {
       const container = component.find('#input-container');
 
       expect(container.find('label').length).to.equal(2);
@@ -42,45 +46,76 @@ describe('FieldsetDate', () => {
       expect(container.find('label').at(1).find('input').props().type).to.equal('text');
       expect(container.find('label').at(1).find('input').props().maxLength).to.equal('4');
     });
+
+    it('should have the default state of dateAfter and dateBefore of "0".', () => {
+      expect(component.state('dateAfter')).to.equal('0');
+      expect(component.state('dateBefore')).to.equal('0');
+    });
+
+    it('should have the default state of selectedFacets as the props passed.', () => {
+      expect(component.state('selectedFacets')).to.equal(selectedFacets);
+    });
   });
 
-  describe('It will update the store', () => {
+  describe('It updates the store', () => {
+    let component;
+    let updateSelectedFacets;
     const selectedFacets = {
       language: ['lang:fr', 'lang:fr'],
     };
-    let component;
-    let updateSelectedFacets;
-    let inputChange;
-    const calledWithValues = {
-      language: ['lang:fr', 'lang:fr'],
-      dateAfter: '',
-      dateBefore: '2100',
+    const calledWithStartDateValues = {
+      language: [ 'lang:fr', 'lang:fr' ],
+      dateAfter: '2001'
+    };
+    const calledWithEndDateValues = {
+      language: [ 'lang:fr', 'lang:fr' ],
+      dateAfter: '2001', 
+      dateBefore: '2100'
     };
 
     before(() => {
       component = mount(<FieldsetDate selectedFacets={selectedFacets} />);
       updateSelectedFacets = sinon.spy(Actions, 'updateSelectedFacets');
-      inputChange = sinon.spy(FieldsetDate.prototype, 'inputChange');
     });
 
-    it('should update selectedFacets based on it\'s inputs', () => {
+    afterEach(() => {
+      updateSelectedFacets.reset();
+    });
+
+    after(() => {
+      updateSelectedFacets.restore();
+      component.unmount();
+    });
+
+    it('should not update the state if no valid target name exists.', () => {
       const startYearInput = component.find('#input-container').find('label').at(0).find('input');
       const endYearInput = component.find('#input-container').find('label').at(1).find('input');
 
-      // startYearInput.simulate('input', {target: {value: '2001'}});
-      // endYearInput.simulate('change', {target: {value: '2100'}});
+      startYearInput.simulate('change', { target: { name: 'test-name', value: '2001' } });
 
-      startYearInput.node.value = '2001';
-      startYearInput.simulate('change');
-      // endYearInput.simulate('change', {target: {value: '2100'}});
+      expect(component.state('dateAfter')).to.equal('0');
+      expect(component.state('dateBefore')).to.equal('0');
+      expect(updateSelectedFacets.calledOnce).to.equal(false);
+    });
 
-      // console.log(component.state.dateBefore);
+    it('should update selectedFacets based on it\'s input from Start Year input.', () => {
+      const startYearInput = component.find('#input-container').find('label').at(0).find('input');
 
-      // expect(updateSelectedFacets.calledOnce).to.equal(true);
-      // expect(updateSelectedFacets.calledWithMatch).to.equal(calledWithValues);
-      // expect(updateSelectedFacets.callCount).to.equal(1);
-      component.update();
-      expect(inputChange.callCount).to.equal(1);
+      startYearInput.simulate('change', { target: { name: 'start-date', value: '2001' } });
+
+      expect(component.state('dateAfter')).to.equal('2001');
+      expect(updateSelectedFacets.calledOnce).to.equal(true);
+      expect(component.state('selectedFacets')).to.deep.equal(calledWithStartDateValues);
+    });
+
+    it('should update selectedFacets based on it\'s input from End Year input.', () => {
+      const endYearInput = component.find('#input-container').find('label').at(1).find('input');
+
+      endYearInput.simulate('change', { target: { name: 'end-date', value: '2100' } });
+
+      expect(component.state('dateBefore')).to.equal('2100');
+      expect(updateSelectedFacets.calledOnce).to.equal(true);
+      expect(component.state('selectedFacets')).to.deep.equal(calledWithEndDateValues);
     });
   });
 

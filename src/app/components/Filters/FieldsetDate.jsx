@@ -10,8 +10,8 @@ class FieldsetDate extends React.Component {
     super(props);
 
     this.state = {
-      dateAfter: 0,
-      dateBefore: 0,
+      dateAfter: '0',
+      dateBefore: '0',
       selectedFacets: this.props.selectedFacets,
     };
 
