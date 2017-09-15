@@ -1,10 +1,11 @@
 /* eslint-env mocha */
 import React from 'react';
 import { expect } from 'chai';
+import sinon from 'sinon';
 import { shallow, mount } from 'enzyme';
 
-import FieldsetList from '../../src/app/components/Filters/FieldsetList';
 import FieldsetDate from '../../src/app/components/Filters/FieldsetDate';
+import Actions from './../../src/app/actions/Actions.js';
 
 describe('FieldsetDate', () => {
   describe('Default', () => {
@@ -48,13 +49,38 @@ describe('FieldsetDate', () => {
       language: ['lang:fr', 'lang:fr'],
     };
     let component;
+    let updateSelectedFacets;
+    let inputChange;
+    const calledWithValues = {
+      language: ['lang:fr', 'lang:fr'],
+      dateAfter: '',
+      dateBefore: '2100',
+    };
 
     before(() => {
       component = mount(<FieldsetDate selectedFacets={selectedFacets} />);
+      updateSelectedFacets = sinon.spy(Actions, 'updateSelectedFacets');
+      inputChange = sinon.spy(FieldsetDate.prototype, 'inputChange');
     });
 
     it('should update selectedFacets based on it\'s inputs', () => {
+      const startYearInput = component.find('#input-container').find('label').at(0).find('input');
+      const endYearInput = component.find('#input-container').find('label').at(1).find('input');
 
+      // startYearInput.simulate('input', {target: {value: '2001'}});
+      // endYearInput.simulate('change', {target: {value: '2100'}});
+
+      startYearInput.node.value = '2001';
+      startYearInput.simulate('change');
+      // endYearInput.simulate('change', {target: {value: '2100'}});
+
+      // console.log(component.state.dateBefore);
+
+      // expect(updateSelectedFacets.calledOnce).to.equal(true);
+      // expect(updateSelectedFacets.calledWithMatch).to.equal(calledWithValues);
+      // expect(updateSelectedFacets.callCount).to.equal(1);
+      component.update();
+      expect(inputChange.callCount).to.equal(1);
     });
   });
 
