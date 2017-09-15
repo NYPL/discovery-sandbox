@@ -5,48 +5,35 @@ import {
   extend as _extend,
   findWhere as _findWhere,
 } from 'underscore';
+import {
+  getUpdatedFilterValues,
+} from '../../utils/utils';
 
 class FieldsetList extends React.Component {
   constructor(props) {
     super(props);
 
-    const {
-      filter,
-      selectedFilters,
-    } = this.props;
-    const filterValues = filter.values && filter.values.length ? filter.values : [];
-    // Just want to add the `selected` property here.
-    const defaultFilterValues = filterValues.map(value => _extend({ selected: false }, value));
-    let updatedFilterValues = defaultFilterValues;
-
-    // If there are selected filters, then we want to update the filter values with those
-    // filters already selected. That way, the checkboxes will be checked.
-    if (selectedFilters) {
-      updatedFilterValues = defaultFilterValues.map(defaultFilterValue => {
-        const defaultFilter = defaultFilterValue;
-        selectedFilters.forEach(selectedFilter => {
-          if (selectedFilter.value === defaultFilter.value) {
-            defaultFilter.selected = true;
-          }
-        });
-
-        return defaultFilter;
-      });
-    }
+    const updatedFilterValues = getUpdatedFilterValues(props);
 
     this.state = {
       values: updatedFilterValues,
     };
   }
 
+  componentWillReceiveProps(nextProps) {
+    const updatedFilterValues = getUpdatedFilterValues(nextProps);
+
+    this.setState({
+      values: updatedFilterValues,
+    });
+  }
+
   onFilterClick(e, filter) {
     // Find the filter we selected and toggle it's selected value.
     const match = _findWhere(this.state.values, { value: filter.value });
     if (match) {
-      match.selected = !filter.selected;
+      filter.selected = !filter.selected;
     }
-
-    this.setState({ values: this.state.values });
     this.props.onFilterClick(this.props.filterId, filter);
   }
 
@@ -74,7 +61,7 @@ class FieldsetList extends React.Component {
                   name="filters"
                   value={JSON.stringify(_extend({ field: filterId }, filter))}
                   onClick={(e) => this.onFilterClick(e, filter)}
-                  defaultChecked={filter.selected}
+                  checked={filter.selected}
                 />
                 <label htmlFor={`${filter.label}-label`}>
                   {filter.label} ({filter.count.toLocaleString()})

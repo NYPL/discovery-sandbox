@@ -10,6 +10,7 @@ import Sorter from '../Sorter/Sorter';
 import Pagination from '../Pagination/Pagination';
 import LoadingLayer from '../LoadingLayer/LoadingLayer.jsx';
 import FilterPopup from '../FilterPopup/FilterPopup.jsx';
+import SelectedFilters from '../Filters/SelectedFilters.jsx';
 
 import {
   basicQuery,
@@ -128,6 +129,12 @@ class SearchResultsPage extends React.Component {
                     updateIsLoadingState={this.updateIsLoadingState}
                     selectedFilters={selectedFacets}
                     searchKeywords={searchKeywords}
+                  />
+
+                  <SelectedFilters
+                    selectedFilters={selectedFacets}
+                    createAPIQuery={createAPIQuery}
+                    updateIsLoadingState={this.updateIsLoadingState}
                   />
 
                 </div>

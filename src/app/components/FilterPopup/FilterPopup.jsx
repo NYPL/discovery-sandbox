@@ -10,7 +10,6 @@ import {
 
 import {
   trackDiscovery,
-  getDefaultFacets,
   ajaxCall,
 } from '../../utils/utils.js';
 
@@ -69,14 +68,22 @@ class FilterPopup extends React.Component {
   constructor(props) {
     super(props);
 
-    const selectedFilters = this.props.selectedFilters;
+    const {
+      selectedFilters,
+      filters,
+    } = this.props;
 
     this.state = {
-      selectedFilters: _extend(getDefaultFacets(), selectedFilters),
-      filters: [],
+      selectedFilters: _extend({
+        materialType: [],
+        language: [],
+        dateAfter: {},
+        dateBefore: {},
+      }, selectedFilters),
       showForm: false,
       js: false,
       selectedFacets: Store.getState().selectedFacets,
+      filters,
     };
 
     this.openForm = this.openForm.bind(this);
@@ -93,7 +100,15 @@ class FilterPopup extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    this.setState({ selectedFilters: nextProps.selectedFilters });
+    this.setState({
+      selectedFilters: _extend({
+        materialType: [],
+        language: [],
+        dateAfter: {},
+        dateBefore: {},
+      }, nextProps.selectedFilters),
+      filters: nextProps.filters,
+    });
   }
 
   onFilterClick(filterId, filter) {
@@ -119,6 +134,7 @@ class FilterPopup extends React.Component {
     this.deactivateForm();
     this.props.updateIsLoadingState(true);
 
+    Actions.updateSelectedFacets(this.state.selectedFilters);
     ajaxCall(`${appConfig.baseUrl}/api?${apiQuery}`, (response) => {
       if (response.data.searchResults && response.data.facets) {
         Actions.updateSearchResults(response.data.searchResults);
@@ -161,6 +177,7 @@ class FilterPopup extends React.Component {
       showForm,
       js,
       selectedFilters,
+      filters,
     } = this.state;
     const closePopupButton = js ?
       <button
@@ -200,10 +217,7 @@ class FilterPopup extends React.Component {
       >
         FILTER RESULTS <FilterIcon />
       </a>);
-    const {
-      filters,
-      searchKeywords,
-    } = this.props;
+    const { searchKeywords } = this.props;
     const materialTypeFilters = _findWhere(filters, { id: 'materialType' });
     const languageFilters = _findWhere(filters, { id: 'language' });
 
@@ -282,6 +296,7 @@ FilterPopup.propTypes = {
   createAPIQuery: PropTypes.func,
   updateIsLoadingState: PropTypes.func,
   selectedFilters: PropTypes.object,
+  searchKeywords: PropTypes.string,
 };
 
 FilterPopup.defaultProps = {

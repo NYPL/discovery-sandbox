@@ -43,7 +43,7 @@ class ResultsCount extends React.Component {
       _mapObject(selectedFacets, (val, key) => {
         const mappedKey = keyMapping[key];
 
-        if (val[0] && val[0].value) {
+        if (val[0] && val[0].value && mappedKey) {
           result += `for ${mappedKey} "${val[0].value}"`;
         }
       });
