@@ -4,6 +4,7 @@ import Actions from '../../actions/Actions.js';
 import {
   extend as _extend,
 } from 'underscore';
+import NumberFormat from 'react-number-format';
 
 class FieldsetDate extends React.Component {
   constructor(props) {
@@ -65,23 +66,23 @@ class FieldsetDate extends React.Component {
         <legend>Date</legend>
         <div id="input-container">
           <label htmlFor="start-date">Start Year
-            <input
+            <NumberFormat
               id="start-date"
               name="start-date"
               className="form-text"
-              type="text"
-              maxLength="4"
               onChange={this.inputChange}
+              format="####"
+              type="number"
             />
           </label>
           <label htmlFor="end-date">End Year
-            <input
+            <NumberFormat
               id="end-date"
               name="end-date"
               className="form-text"
-              type="text"
-              maxLength="4"
               onChange={this.inputChange}
+              format="####"
+              type="number"
             />
           </label>
           <span>The Start year cannot be later than the end year</span>
