@@ -72,7 +72,6 @@ class FieldsetDate extends React.Component {
               className="form-text"
               onChange={this.inputChange}
               format="####"
-              type="number"
             />
           </label>
           <label htmlFor="end-date">End Year
@@ -82,7 +81,6 @@ class FieldsetDate extends React.Component {
               className="form-text"
               onChange={this.inputChange}
               format="####"
-              type="number"
             />
           </label>
           <span>The Start year cannot be later than the end year</span>
