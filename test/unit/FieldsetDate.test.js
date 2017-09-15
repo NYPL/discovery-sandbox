@@ -31,7 +31,7 @@ describe('FieldsetDate', () => {
       expect(component.find('legend').text()).to.equal('Date');
     });
 
-    it('should have an input and label for each list item.', () => {
+    it('should have inputs and labels for start year and end year.', () => {
       const container = component.find('#input-container');
 
       expect(container.find('label').length).to.equal(2);
