@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import FocusTrap from 'focus-trap-react';
+import Store from '../../stores/Store.js';
 import {
   findWhere as _findWhere,
   reject as _reject,
@@ -12,6 +13,7 @@ import {
   getDefaultFacets,
   ajaxCall,
 } from '../../utils/utils.js';
+
 import appConfig from '../../../../appConfig';
 import FieldsetDate from '../Filters/FieldsetDate';
 import FieldsetList from '../Filters/FieldsetList';
@@ -74,6 +76,7 @@ class FilterPopup extends React.Component {
       filters: [],
       showForm: false,
       js: false,
+      selectedFacets: Store.getState().selectedFacets,
     };
 
     this.openForm = this.openForm.bind(this);
@@ -237,7 +240,7 @@ class FilterPopup extends React.Component {
                   onFilterClick={this.onFilterClick}
                 />
 
-                <FieldsetDate />
+                <FieldsetDate selectedFacets={this.state.selectedFacets} />
 
                 <FieldsetList
                   legend="Language"
