@@ -18,14 +18,48 @@ import FieldsetList from '../Filters/FieldsetList';
 import Actions from '../../actions/Actions';
 
 const XCloseSVG = () => (
-  <svg width="48" height="19" viewBox="0 0 32 32" className="svgIcon">
-    <title>x.close.icon</title>
+  <svg
+    aria-hidden="true"
+    aria-controls="filter-popup-menu"
+    className="nypl-icon"
+    preserveAspectRatio="xMidYMid meet" viewBox="0 0 100 100"
+  >
+    <title>x-close-rev</title>
     <path
-      d={'M17.91272,15.97339l5.65689-5.65689A1.32622,1.32622,0,0,0,21.694,8.44093L16.' +
-      '04938,14.0856l-5.65082-5.725A1.32671,1.32671,0,1,0,8.51,10.22454l5.66329,5.73712L8.' +
-      '43038,21.7046a1.32622,1.32622,0,1,0,1.87557,1.87557l5.73088-5.73088,5.65074,5.72441' +
-      'a1.32626,1.32626,0,1,0,1.88852-1.86261Z'}
+      d={'M82.07922,14.06287a48.0713,48.0713,0,1,0,0,68.01563A48.15148,48.15148,0,0,0,82.0792' +
+        '2,14.06287ZM65.06232,60.84845A2.97437,2.97437,0,1,1,60.827,65.0257L48.154,52.18756,35' +
+        '.30133,65.04022a2.97432,2.97432,0,1,1-4.20636-4.2063L43.97473,47.95416,31.27362,35.087' +
+        '46A2.97542,2.97542,0,0,1,35.509,30.90729L48.18213,43.7467,60.84149,31.0874a2.97432,2.9' +
+        '7432,0,0,1,4.2063,4.20636L52.36108,47.98047Z'}
     />
+  </svg>
+);
+
+const FilterIcon = () => (
+  <svg
+    aria-hidden="true"
+    className="nypl-icon"
+    preserveAspectRatio="xMidYMid meet"
+    viewBox="0 0 19 22"
+  >
+    <title>filter.icon.3</title>
+    <g>
+      <circle cx="6.65947" cy="2.31986" r="1.31924" />
+      <circle cx="13.18733" cy="1.31986" r="1.31895" />
+      <circle cx="9.56477" cy="5.46901" r="1.31927" />
+      <g>
+        <path
+          d={'M7.74355,22.50683a.95047.95047,0,0,1-.95022-.95022V11.28645L.25259,4.2341' +
+          '3A.95041.95041,0,1,1,1.64824,2.94366l7.04554,7.598v11.015A.95047.95047,0,0,1,7.7435' +
+          '5,22.50683Z'}
+        />
+        <path
+          d={'M11.60384,19.73881a.95047.95047,0,0,1-.95022-.95022V10.5478l7.126-7.81485a.' +
+          '95047.95047,0,0,1,1.41049,1.27439l-6.636,7.27293v7.50832A.95047.95047,0,0,1,11.60384,' +
+          '19.73881Z'}
+        />
+      </g>
+    </g>
   </svg>
 );
 
@@ -130,7 +164,7 @@ class FilterPopup extends React.Component {
         onClick={(e) => this.closeForm(e)}
         aria-expanded={!showForm}
         aria-controls="filter-popup-menu"
-        className="popup-btn-close"
+        className="popup-btn-close nypl-x-close-button"
       >
         Close <XCloseSVG />
       </button>
@@ -138,30 +172,30 @@ class FilterPopup extends React.Component {
         aria-expanded
         href="#"
         aria-controls="filter-popup-menu"
-        className="popup-btn-close"
+        className="popup-btn-close nypl-x-close-button"
       >
         Close <XCloseSVG />
       </a>);
     const openPopupButton = js ?
       (<button
-        className="popup-btn-open"
+        className="popup-btn-open nypl-short-button"
         onClick={() => this.openForm()}
         aria-haspopup="true"
         aria-expanded={showForm}
         aria-controls="filter-popup-menu"
         ref="filterOpen"
       >
-        FILTER RESULTS
+        FILTER RESULTS <FilterIcon />
       </button>)
       : (<a
-        className="popup-btn-open"
+        className="popup-btn-open nypl-short-button"
         href="#popup-no-js"
         aria-haspopup="true"
         aria-expanded={false}
         aria-controls="filter-popup-menu"
         ref="filterOpen"
       >
-        FILTER RESULTS
+        FILTER RESULTS <FilterIcon />
       </a>);
     const {
       filters,
@@ -213,10 +247,21 @@ class FilterPopup extends React.Component {
                   onFilterClick={this.onFilterClick}
                 />
 
-                <button type="submit" name="apply-filters" onClick={this.submitForm}>
+                <button
+                  type="submit"
+                  name="apply-filters"
+                  onClick={this.submitForm}
+                  className="nypl-basic-button"
+                >
                   Apply Filters
                 </button>
-                <button type="button" name="Clear-Filters">Clear Filters</button>
+                <button
+                  type="button"
+                  name="Clear-Filters"
+                  className="nypl-basic-button"
+                >
+                  Clear Filters
+                </button>
                 {closePopupButton}
 
               </fieldset>
