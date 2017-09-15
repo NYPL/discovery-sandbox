@@ -44,16 +44,16 @@ describe('SelectedFilters', () => {
         expect(component.find('ul').length).to.equal(1);
       });
 
-      it('should render two list items', () => {
-        expect(component.find('li').length).to.equal(2);
+      it('should render three list items, one text and two with data', () => {
+        expect(component.find('li').length).to.equal(3);
       });
 
       it('should have one button inside each list item with the filter name', () => {
-        expect(listItemAt(component, 0).find('button').length).to.equal(1);
-        expect(listItemAt(component, 0).find('button').text()).to.equal('FrenchClose Icon');
-
         expect(listItemAt(component, 1).find('button').length).to.equal(1);
-        expect(listItemAt(component, 1).find('button').text()).to.equal('EnglishClose Icon');
+        expect(listItemAt(component, 1).find('button').text()).to.equal('FrenchClose Icon');
+
+        expect(listItemAt(component, 2).find('button').length).to.equal(1);
+        expect(listItemAt(component, 2).find('button').text()).to.equal('EnglishClose Icon');
       });
     });
 
@@ -97,21 +97,21 @@ describe('SelectedFilters', () => {
       });
 
       it('should render four list items', () => {
-        expect(component.find('li').length).to.equal(4);
+        expect(component.find('li').length).to.equal(5);
       });
 
       it('should have one button inside each list item with the filter name', () => {
-        expect(listItemAt(component, 0).find('button').length).to.equal(1);
-        expect(listItemAt(component, 0).find('button').text()).to.equal('FrenchClose Icon');
-
         expect(listItemAt(component, 1).find('button').length).to.equal(1);
-        expect(listItemAt(component, 1).find('button').text()).to.equal('EnglishClose Icon');
+        expect(listItemAt(component, 1).find('button').text()).to.equal('FrenchClose Icon');
 
         expect(listItemAt(component, 2).find('button').length).to.equal(1);
-        expect(listItemAt(component, 2).find('button').text()).to.equal('Still ImageClose Icon');
+        expect(listItemAt(component, 2).find('button').text()).to.equal('EnglishClose Icon');
 
         expect(listItemAt(component, 3).find('button').length).to.equal(1);
-        expect(listItemAt(component, 3).find('button').text()).to.equal('CartographicClose Icon');
+        expect(listItemAt(component, 3).find('button').text()).to.equal('Still ImageClose Icon');
+
+        expect(listItemAt(component, 4).find('button').length).to.equal(1);
+        expect(listItemAt(component, 4).find('button').text()).to.equal('CartographicClose Icon');
       });
     });
   });

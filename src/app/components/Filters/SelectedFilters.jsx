@@ -86,13 +86,24 @@ class SelectedFilters extends React.Component {
     }
 
     return (
-      <ul className="selected-filters-container">
+      <ul
+        className="selected-filters-container"
+        aria-live="assertive"
+        aria-atomic="true"
+        aria-relevant="additions removals"
+        aria-describedby="read-text"
+      >
+        <li id="read-text" className="visuallyHidden">
+          There are {filtersToRender.length} selected filters.
+        </li>
         {
           filtersToRender.map((filter, i) => (
             <li key={i}>
               <button
                 className="nypl-unset-filter"
                 onClick={(e) => this.onFilterClick(e, filter)}
+                aria-controls="selected-filters-container"
+                aria-label={filter.label}
               >
                 {filter.label}
                 <XCloseIcon />
