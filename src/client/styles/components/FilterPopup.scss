@@ -3,12 +3,13 @@
     display: inline-block;
     float: left;
     margin: 2.5rem 1rem 0;
-    color: #fff;
-    background: #776e64;
     border: 1px solid #776e64;
-    padding: 4px 10px;
     display: block;
     text-decoration: none;
+  }
+
+  a.popup-btn-open {
+    padding-top: 3px;
   }
 
   .popup-container {
@@ -77,10 +78,6 @@
 
   .popup-btn-close {
     float: right;
-    color: #000;
-    background: #fff;
-    border: 1px solid #776e64;
-    padding: 4px 10px;
     display: block;
     text-decoration: none;
   }
@@ -94,73 +91,12 @@ fieldset > fieldset > legend {
   font-weight: bold;
   border: none;
 }
-.new-checkbox input[type="checkbox"] {
-  opacity: 0;
-  }
-  .new-checkbox label {
-    display: inline-block;
-    position: relative;
-    padding-left: 23px;
-  }
-  .new-checkbox label::after,
-  .new-checkbox label::before {
-    content: "";
-    display: inline-block;
-    position: absolute;
-  }
-.new-checkbox label::before{
-  border: 1px solid;
-  height: 16px;
-  left: 0;
-  width: 16px;
-  top: 0;
-}
-.new-checkbox label::after {
-  height: 6px;
-  width: 9px;
-  border-left: 2px solid;
-  border-bottom: 2px solid;
-  transform: rotate(-45deg);
-  left: 4px;
-  top: 3px;
-}
-      /*Hide the checkmark by default*/
-.new-checkbox input[type="checkbox"] + label::after {
-    content: none;
-}
-/*Unhide on the checked state*/
-/*.new-checkbox input[type="checkbox"]:checked {
-  border-color: #d0343a;
-}*/
-.new-checkbox input[type="checkbox"]:checked + label,
-.new-checkbox input[type="checkbox"]:checked + label::before {
-  border-color: #d0343a;
-  color: #d0343a;
-}
-.new-checkbox input[type="checkbox"]:checked + label::after {
-    border-color: #d0343a;
-    color: #d0343a;
-    content: "";
-}
-/*Adding focus styles on the outer-box of the fake checkbox*/
-.new-checkbox input[type="checkbox"]:focus + label::before {
-    outline: rgb(59, 153, 252) auto 2px;
-}
+
 .filter-container {
   button {
-    background: #fff;
-    color: #000;
-    border: 1px solid #ddd;
     cursor: pointer;
-    font-size: 1rem;
     -webkit-appearance: none;
     -moz-appearance: none;
-  }
-  button svg {
-    background: #fff;
-    fill: #d0343a;
-    width: 1.5rem;
-    height: 1.5rem;
   }
   ul {
     margin: 0;

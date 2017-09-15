@@ -67,7 +67,7 @@ class FieldsetList extends React.Component {
         <ul>
           {
             values.map((filter, i) => (
-              <li className="nypl-terms-checkbox new-checkbox" key={i}>
+              <li className="nypl-generic-checkbox" key={i}>
                 <input
                   id={`${filter.label}-label`}
                   type="checkbox"
