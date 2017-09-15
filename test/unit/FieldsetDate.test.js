@@ -2,7 +2,7 @@
 import React from 'react';
 import { expect } from 'chai';
 import sinon from 'sinon';
-import { shallow, mount } from 'enzyme';
+import { mount } from 'enzyme';
 
 import FieldsetDate from '../../src/app/components/Filters/FieldsetDate';
 import Actions from './../../src/app/actions/Actions.js';
@@ -55,6 +55,10 @@ describe('FieldsetDate', () => {
     it('should have the default state of selectedFacets as the props passed.', () => {
       expect(component.state('selectedFacets')).to.equal(selectedFacets);
     });
+
+    it('should render no error messages', () => {
+      expect(component.find('#error-message').text()).to.equal('');
+    });
   });
 
   describe('It updates the store', () => {
@@ -64,13 +68,13 @@ describe('FieldsetDate', () => {
       language: ['lang:fr', 'lang:fr'],
     };
     const calledWithStartDateValues = {
-      language: [ 'lang:fr', 'lang:fr' ],
-      dateAfter: '2001'
+      language: ['lang:fr', 'lang:fr'],
+      dateAfter: '2001',
     };
     const calledWithEndDateValues = {
-      language: [ 'lang:fr', 'lang:fr' ],
-      dateAfter: '2001', 
-      dateBefore: '2100'
+      language: ['lang:fr', 'lang:fr'],
+      dateAfter: '2001',
+      dateBefore: '2100',
     };
 
     before(() => {
@@ -89,7 +93,6 @@ describe('FieldsetDate', () => {
 
     it('should not update the state if no valid target name exists.', () => {
       const startYearInput = component.find('#input-container').find('label').at(0).find('input');
-      const endYearInput = component.find('#input-container').find('label').at(1).find('input');
 
       startYearInput.simulate('change', { target: { name: 'test-name', value: '2001' } });
 
@@ -129,8 +132,20 @@ describe('FieldsetDate', () => {
       component = mount(<FieldsetDate selectedFacets={selectedFacets} />);
     });
 
-    it('should show the error message if dateBefore is earlier than dateAfter', () => {
+    after(() => {
+      component.unmount();
+    });
 
+    it('should show the error message if dateBefore is earlier than dateAfter', () => {
+      const startYearInput = component.find('#input-container').find('label').at(0).find('input');
+      const endYearInput = component.find('#input-container').find('label').at(1).find('input');
+
+      startYearInput.simulate('change', { target: { name: 'start-date', value: '2100' } });
+      endYearInput.simulate('change', { target: { name: 'end-date', value: '2001' } });
+
+      expect(component.find('#error-message').text()).to.equal(
+        'end year should be later than start year.'
+      );
     });
   });
 });

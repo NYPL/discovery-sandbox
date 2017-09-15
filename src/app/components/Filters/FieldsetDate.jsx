@@ -52,8 +52,8 @@ class FieldsetDate extends React.Component {
   render() {
     let errorMessage = '';
 
-    if (this.state.endDateInput && this.state.startDateInput) {
-      if (Number(this.state.endDateInput) < Number(this.state.startDateInput)) {
+    if (this.state.dateAfter && this.state.dateBefore) {
+      if (Number(this.state.dateBefore) < Number(this.state.dateAfter)) {
         errorMessage = 'end year should be later than start year.';
       }
     } else {
@@ -86,7 +86,7 @@ class FieldsetDate extends React.Component {
           </label>
           <span>The Start year cannot be later than the end year</span>
           <br />
-          <span>{errorMessage}</span>
+          <span id="error-message">{errorMessage}</span>
         </div>
       </fieldset>
     );
