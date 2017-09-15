@@ -18,10 +18,12 @@ describe('FilterPopup', () => {
       expect(component.find('button').length).to.equal(2);
       // These tests will need to be updated when the DOM structure gets updated.
       // The second <a> element is the no-js 'cancel' element for the "smart" no-js solution.
-      expect(component.find('a').at(0).prop('className')).to.equal('popup-btn-open');
+      expect(component.find('a').at(0).prop('className'))
+        .to.equal('popup-btn-open nypl-short-button');
       expect(component.find('a').at(0).prop('href')).to.equal('#popup-no-js');
       expect(component.find('a').at(1).prop('className')).to.equal('cancel-no-js');
-      expect(component.find('a').at(2).prop('className')).to.equal('popup-btn-close');
+      expect(component.find('a').at(2).prop('className'))
+        .to.equal('popup-btn-close nypl-x-close-button');
     });
 
     it('should have specific "no-js" id and class', () => {
@@ -48,10 +50,12 @@ describe('FilterPopup', () => {
       expect(component.state('js')).to.equal(true);
       // All buttons should be rendered
       expect(component.find('button').length).to.equal(4);
-      expect(component.find('button').at(0).prop('className')).to.equal('popup-btn-open');
+      expect(component.find('button').at(0).prop('className'))
+        .to.equal('popup-btn-open nypl-short-button');
       expect(component.find('button').at(1).prop('name')).to.equal('apply-filters');
       expect(component.find('button').at(2).prop('name')).to.equal('Clear-Filters');
-      expect(component.find('button').at(3).prop('className')).to.equal('popup-btn-close');
+      expect(component.find('button').at(3).prop('className'))
+        .to.equal('popup-btn-close nypl-x-close-button');
     });
 
     it('should not render the "no-js" <a> element', () => {
