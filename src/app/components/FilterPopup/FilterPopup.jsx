@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import FocusTrap from 'focus-trap-react';
-import Store from '../../stores/Store.js';
 import {
   findWhere as _findWhere,
   reject as _reject,
@@ -281,6 +280,7 @@ FilterPopup.propTypes = {
   createAPIQuery: PropTypes.func,
   updateIsLoadingState: PropTypes.func,
   selectedFilters: PropTypes.object,
+  searchKeywords: PropTypes.string,
 };
 
 FilterPopup.defaultProps = {
