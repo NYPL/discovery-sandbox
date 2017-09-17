@@ -76,7 +76,6 @@ class FilterPopup extends React.Component {
       filters: [],
       showForm: false,
       js: false,
-      selectedFacets: Store.getState().selectedFacets,
     };
 
     this.openForm = this.openForm.bind(this);
