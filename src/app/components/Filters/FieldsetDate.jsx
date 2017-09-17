@@ -25,7 +25,7 @@ class FieldsetDate extends React.Component {
    *
    */
   inputChange(e) {
-    const value = (e.target.value).replace(/[a-zA-Z]/g, '');
+    const value = e.target.value;
     let displayValue = '';
 
     if (e.target.name === 'start-date') {
