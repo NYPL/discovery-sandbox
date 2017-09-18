@@ -238,7 +238,11 @@ class FilterPopup extends React.Component {
                   onFilterClick={this.onFilterClick}
                 />
 
-                <FieldsetDate selectedFacets={this.state.selectedFacets} />
+                <FieldsetDate
+                  legend="Date"
+                  filterId="date"
+                  selectedFacets={this.state.selectedFilters}
+                />
 
                 <FieldsetList
                   legend="Language"
