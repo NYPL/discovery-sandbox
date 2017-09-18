@@ -279,6 +279,7 @@ FilterPopup.propTypes = {
   createAPIQuery: PropTypes.func,
   updateIsLoadingState: PropTypes.func,
   selectedFilters: PropTypes.object,
+  searchKeywords: PropTypes.string,
 };
 
 FilterPopup.defaultProps = {
