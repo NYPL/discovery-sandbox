@@ -65,27 +65,36 @@ class FieldsetDate extends React.Component {
       <fieldset>
         <legend>Date</legend>
         <div id="input-container">
-          <label htmlFor="start-date">Start Year
+          <label htmlFor="startDate" id="startDate-label">Start Year
             <NumberFormat
               id="start-date"
               name="start-date"
               className="form-text"
               onChange={this.inputChange}
               format="####"
+              aria-labelledby="startDate-label dateInput-status"
             />
           </label>
-          <label htmlFor="end-date">End Year
+          <label htmlFor="endDate" id="endDate-label">End Year
             <NumberFormat
               id="end-date"
               name="end-date"
               className="form-text"
               onChange={this.inputChange}
               format="####"
+              aria-labelledby="endDate-label dateInput-status"
             />
           </label>
           <span>The Start year cannot be later than the end year</span>
           <br />
-          <span id="error-message">{errorMessage}</span>
+          <span
+            id="dateInput-status"
+            className="nypl-field-status"
+            aria-live="assertive"
+            aria-atomic="true"
+          >
+            {errorMessage}
+          </span>
         </div>
       </fieldset>
     );

@@ -39,10 +39,18 @@ describe('FieldsetDate', () => {
       expect(container.find('label').at(0).text()).to.equal('Start Year');
       expect(container.find('label').at(0).find('input').length).to.equal(1);
       expect(container.find('label').at(0).find('input').props().type).to.equal('text');
+      expect(container.find('label').at(0).props().id).to.equal('startDate-label');
+      expect(container.find('label').at(0).find('input').props()['aria-labelledby']).to.equal(
+        'startDate-label dateInput-status'
+      );
 
       expect(container.find('label').at(1).text()).to.equal('End Year');
       expect(container.find('label').at(1).find('input').length).to.equal(1);
       expect(container.find('label').at(1).find('input').props().type).to.equal('text');
+      expect(container.find('label').at(1).props().id).to.equal('endDate-label');
+      expect(container.find('label').at(1).find('input').props()['aria-labelledby']).to.equal(
+        'endDate-label dateInput-status'
+      );
     });
 
     it('should have the default state of dateAfter and dateBefore of "0".', () => {
@@ -55,7 +63,7 @@ describe('FieldsetDate', () => {
     });
 
     it('should render no error messages', () => {
-      expect(component.find('#error-message').text()).to.equal('');
+      expect(component.find('#dateInput-status').text()).to.equal('');
     });
   });
 
@@ -89,36 +97,45 @@ describe('FieldsetDate', () => {
       component.unmount();
     });
 
-    // it('should not update the state if no valid target name exists.', () => {
-    //   const startYearInput = component.find('#input-container').find('label').at(0).find('input');
-    //   const endYearInput = component.find('#input-container').find('label').at(1).find('input');
-      // startYearInput.simulate('change', { target: { name: 'start-date', value: 2001 } });
-      // endYearInput.simulate('change', { target: { name: 'end-date', value: '2100' } });
+    it('should update selectedFacets based on it\'s input from Start Year input.', () => {
+      const startYearInput = component.find('#input-container').find('label').at(0).find('input');
+      const getCustomEvent = (value, name) => {
+        let event = new Event('custom');
+        const el = document.createElement('input');
 
-      // expect(component.state('dateAfter')).to.equal('0');
-      // expect(component.state('dateBefore')).to.equal('0');
-      // expect(updateSelectedFacets.calledOnce).to.equal(false);
-    // });
+        event = Object.assign({}, event, { target: el, persist: () => {} });
+        event.target = el;
+        el.value = value;
+        el.name = name;
+        return event;
+      };
 
-    // it('should update selectedFacets based on it\'s input from Start Year input.', () => {
-      // const startYearInput = component.find('#input-container').find('label').at(0).find('input');
+      startYearInput.simulate('change', getCustomEvent(2001, 'start-date'));
 
-      // startYearInput.simulate('change', { target: { name: 'start-date', value: 2001 } });
+      expect(component.state('dateAfter')).to.equal('2001');
+      expect(updateSelectedFacets.calledOnce).to.equal(true);
+      expect(component.state('selectedFacets')).to.deep.equal(calledWithStartDateValues);
+    });
 
-      // expect(component.state('dateAfter')).to.equal(2001);
-      // expect(updateSelectedFacets.calledOnce).to.equal(true);
-      // expect(component.state('selectedFacets')).to.deep.equal(calledWithStartDateValues);
-    // });
+    it('should update selectedFacets based on it\'s input from End Year input.', () => {
+      const endYearInput = component.find('#input-container').find('label').at(1).find('input');
+      const getCustomEvent = (value, name) => {
+        let event = new Event('custom');
+        const el = document.createElement('input');
 
-    // it('should update selectedFacets based on it\'s input from End Year input.', () => {
-    //   const endYearInput = component.find('#input-container').find('label').at(1).find('input');
+        event = Object.assign({}, event, { target: el, persist: () => {} });
+        event.target = el;
+        el.value = value;
+        el.name = name;
+        return event;
+      };
 
-    //   endYearInput.simulate('change', { target: { name: 'end-date', value: '2100' } });
+      endYearInput.simulate('change', getCustomEvent(2100, 'end-date'));
 
-    //   expect(component.state('dateBefore')).to.equal('2100');
-    //   expect(updateSelectedFacets.calledOnce).to.equal(true);
-    //   expect(component.state('selectedFacets')).to.deep.equal(calledWithEndDateValues);
-    // });
+      expect(component.state('dateBefore')).to.equal('2100');
+      expect(updateSelectedFacets.calledOnce).to.equal(true);
+      expect(component.state('selectedFacets')).to.deep.equal(calledWithEndDateValues);
+    });
   });
 
   describe('It will show the error message', () => {
@@ -138,7 +155,7 @@ describe('FieldsetDate', () => {
     it('should show the error message if dateBefore is earlier than dateAfter', () => {
       component.setState({ dateAfter: '2100', dateBefore: '2001' });
 
-      expect(component.find('#error-message').text()).to.equal(
+      expect(component.find('#dateInput-status').text()).to.equal(
         'end year should be later than start year.'
       );
     });
