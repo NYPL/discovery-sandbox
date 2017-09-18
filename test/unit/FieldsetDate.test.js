@@ -39,10 +39,18 @@ describe('FieldsetDate', () => {
       expect(container.find('label').at(0).text()).to.equal('Start Year');
       expect(container.find('label').at(0).find('input').length).to.equal(1);
       expect(container.find('label').at(0).find('input').props().type).to.equal('text');
+      expect(container.find('label').at(0).props().id).to.equal('startDate-label');
+      expect(container.find('label').at(0).find('input').props()['aria-labelledby']).to.equal(
+        'startDate-label dateInput-status'
+      );
 
       expect(container.find('label').at(1).text()).to.equal('End Year');
       expect(container.find('label').at(1).find('input').length).to.equal(1);
       expect(container.find('label').at(1).find('input').props().type).to.equal('text');
+      expect(container.find('label').at(1).props().id).to.equal('endDate-label');
+      expect(container.find('label').at(1).find('input').props()['aria-labelledby']).to.equal(
+        'endDate-label dateInput-status'
+      );
     });
 
     it('should have the default state of dateAfter and dateBefore of "0".', () => {
@@ -55,7 +63,7 @@ describe('FieldsetDate', () => {
     });
 
     it('should render no error messages', () => {
-      expect(component.find('#error-message').text()).to.equal('');
+      expect(component.find('#dateInput-status').text()).to.equal('');
     });
   });
 
@@ -92,7 +100,7 @@ describe('FieldsetDate', () => {
     it('should update selectedFacets based on it\'s input from Start Year input.', () => {
       const startYearInput = component.find('#input-container').find('label').at(0).find('input');
       const getCustomEvent = (value, name) => {
-        let event =  new Event('custom');
+        let event = new Event('custom');
         const el = document.createElement('input');
 
         event = Object.assign({}, event, { target: el, persist: () => {} });
@@ -112,7 +120,7 @@ describe('FieldsetDate', () => {
     it('should update selectedFacets based on it\'s input from End Year input.', () => {
       const endYearInput = component.find('#input-container').find('label').at(1).find('input');
       const getCustomEvent = (value, name) => {
-        let event =  new Event('custom');
+        let event = new Event('custom');
         const el = document.createElement('input');
 
         event = Object.assign({}, event, { target: el, persist: () => {} });
@@ -147,7 +155,7 @@ describe('FieldsetDate', () => {
     it('should show the error message if dateBefore is earlier than dateAfter', () => {
       component.setState({ dateAfter: '2100', dateBefore: '2001' });
 
-      expect(component.find('#error-message').text()).to.equal(
+      expect(component.find('#dateInput-status').text()).to.equal(
         'end year should be later than start year.'
       );
     });
