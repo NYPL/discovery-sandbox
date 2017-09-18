@@ -50,10 +50,10 @@ describe('SelectedFilters', () => {
 
       it('should have one button inside each list item with the filter name', () => {
         expect(listItemAt(component, 1).find('button').length).to.equal(1);
-        expect(listItemAt(component, 1).find('button').text()).to.equal('FrenchClose Icon');
+        expect(listItemAt(component, 1).find('button').text()).to.equal('FrenchRemove Filter');
 
         expect(listItemAt(component, 2).find('button').length).to.equal(1);
-        expect(listItemAt(component, 2).find('button').text()).to.equal('EnglishClose Icon');
+        expect(listItemAt(component, 2).find('button').text()).to.equal('EnglishRemove Filter');
       });
     });
 
@@ -102,16 +102,17 @@ describe('SelectedFilters', () => {
 
       it('should have one button inside each list item with the filter name', () => {
         expect(listItemAt(component, 1).find('button').length).to.equal(1);
-        expect(listItemAt(component, 1).find('button').text()).to.equal('FrenchClose Icon');
+        expect(listItemAt(component, 1).find('button').text()).to.equal('FrenchRemove Filter');
 
         expect(listItemAt(component, 2).find('button').length).to.equal(1);
-        expect(listItemAt(component, 2).find('button').text()).to.equal('EnglishClose Icon');
+        expect(listItemAt(component, 2).find('button').text()).to.equal('EnglishRemove Filter');
 
         expect(listItemAt(component, 3).find('button').length).to.equal(1);
-        expect(listItemAt(component, 3).find('button').text()).to.equal('Still ImageClose Icon');
+        expect(listItemAt(component, 3).find('button').text()).to.equal('Still ImageRemove Filter');
 
         expect(listItemAt(component, 4).find('button').length).to.equal(1);
-        expect(listItemAt(component, 4).find('button').text()).to.equal('CartographicClose Icon');
+        expect(listItemAt(component, 4).find('button').text())
+          .to.equal('CartographicRemove Filter');
       });
     });
   });
