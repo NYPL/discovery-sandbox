@@ -13,12 +13,11 @@ import { ajaxCall } from '../../utils/utils';
 
 const XCloseIcon = () => (
   <svg
-    aria-hidden="true"
     className="nypl-icon svgIcon"
     preserveAspectRatio="xMidYMid meet"
     viewBox="0 0 32 32"
   >
-    <title>Close Icon</title>
+    <title>Remove Filter</title>
     <path
       d={'M17.91272,15.97339l5.65689-5.65689A1.32622,1.32622,0,0,0,21.694,8.44093L16.04938' +
         ',14.0856l-5.65082-5.725A1.32671,1.32671,0,1,0,8.51,10.22454l5.66329,5.73712L8.4303' +
