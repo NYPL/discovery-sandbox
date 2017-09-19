@@ -114,8 +114,8 @@ describe('getDefaultFacets', () => {
     expect(defaultFacets).to.eql({
       materialType: [],
       language: [],
-      dateAfter: {},
-      dateBefore: {},
+      dateAfter: '',
+      dateBefore: '',
     });
   });
 });
