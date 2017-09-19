@@ -259,7 +259,12 @@ function getReqParams(query = {}) {
  * @return {object}
  */
 function parseServerSelectedFilters(filters, dateAfter, dateBefore) {
-  const selectedFacets = {};
+  const selectedFacets = {
+    materialType: [],
+    language: [],
+    dateAfter: {},
+    dateBefore: {},
+  };
   // console.log(filters);
   if (_isArray(filters) && filters.length && !_isEmpty(filters[0])) {
     _chain(filters)

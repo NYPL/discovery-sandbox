@@ -52,8 +52,29 @@ class ResultsCount extends React.Component {
     return result;
   }
 
+  /*
+   * checkSelectedFilters()
+   * Returns true if there are any selected format or language filters. TODO: add Date.
+   */
+  checkSelectedFilters() {
+    const selectedFilters = this.props.selectedFacets;
+
+    if ((selectedFilters.materialType && selectedFilters.materialType.length) ||
+      (selectedFilters.language && selectedFilters.language.length)) {
+      return true;
+    }
+
+    // Eventually need to add check for date.
+    return false;
+  }
+
   displayCount() {
-    const { count, isLoading, page } = this.props;
+    const {
+      count,
+      isLoading,
+      page,
+      searchKeywords,
+    } = this.props;
     const countF = count ? count.toLocaleString() : '';
     const displayContext = this.displayContext();
     const start = (page - 1) * 50 + 1;
@@ -67,7 +88,16 @@ class ResultsCount extends React.Component {
     if (count !== 0) {
       return (<h2>Displaying {currentResultDisplay} of {countF} results {displayContext}</h2>);
     }
-    return (<h2>No results found. Please try another search.</h2>);
+
+    if (this.checkSelectedFilters()) {
+      return (
+        <h2>No results for the keyword "{searchKeywords}" with the chosen filters. Try
+          a different search or different filters.
+        </h2>
+      );
+    }
+
+    return (<h2>No results for the keyword "{searchKeywords}". Try a different search.</h2>);
   }
 
   render() {
@@ -100,6 +130,12 @@ ResultsCount.defaultProps = {
   count: 0,
   isLoading: false,
   page: 1,
+  selectedFacets: {
+    materialType: [],
+    language: [],
+    dateAfter: {},
+    dateBefore: {},
+  },
 };
 
 export default ResultsCount;

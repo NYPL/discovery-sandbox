@@ -114,7 +114,12 @@ function searchServer(req, res, next) {
     fieldQuery,
     filters,
     (facets, data, pageQuery) => {
-      const selectedFacets = {};
+      const selectedFacets = {
+        materialType: [],
+        language: [],
+        dateAfter: {},
+        dateBefore: {},
+      };
 
       if (!_isEmpty(filters)) {
         _mapObject(filters, (value, key) => {
@@ -176,7 +181,12 @@ function searchServer(req, res, next) {
       logger.error('Error retrieving search data in searchServer', error);
       res.locals.data.Store = {
         searchResults: {},
-        selectedFacets: {},
+        selectedFacets: {
+          materialType: [],
+          language: [],
+          dateAfter: {},
+          dateBefore: {},
+        },
         searchKeywords: '',
         facets: {},
         page: '1',
