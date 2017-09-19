@@ -1,5 +1,8 @@
 ## CHANGE LOG
 
+### 1.1.2.1
+- Hotfix to display the publisher field which went from `publisher` to `publisherLiteral`.
+
 ### 1.1.2
 - Small updates:
 - Update the display text for electronic resources to use `label` instead of `prefLabel`.
