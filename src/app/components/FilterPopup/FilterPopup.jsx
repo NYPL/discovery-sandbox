@@ -81,6 +81,7 @@ class FilterPopup extends React.Component {
     this.deactivateForm = this.deactivateForm.bind(this);
     this.onFilterClick = this.onFilterClick.bind(this);
     this.submitForm = this.submitForm.bind(this);
+    this.clearFilters = this.clearFilters.bind(this);
   }
 
   componentDidMount() {
@@ -132,6 +133,16 @@ class FilterPopup extends React.Component {
         this.context.router.push(`${appConfig.baseUrl}/search?${apiQuery}`);
       }, 500);
     });
+  }
+
+  clearFilters() {
+    console.log(this.state.selectedFilters);
+    this.setState(
+      {
+        selectedFilters: appConfig.defaultFacets
+      },
+      () => { console.log(this.state.selectedFilters);}
+    );
   }
 
   openForm() {
@@ -204,6 +215,8 @@ class FilterPopup extends React.Component {
     const materialTypeFilters = _findWhere(filters, { id: 'materialType' });
     const languageFilters = _findWhere(filters, { id: 'language' });
 
+    console.log(selectedFilters.language);
+
     return (
       <div className="filter-container">
         {openPopupButton}
@@ -259,6 +272,7 @@ class FilterPopup extends React.Component {
                   type="button"
                   name="Clear-Filters"
                   className="nypl-basic-button"
+                  onClick={this.clearFilters}
                 >
                   Clear Filters
                 </button>
