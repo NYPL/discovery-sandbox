@@ -23,15 +23,8 @@ export default {
     'EQIDAQAB\n' +
     '-----END PUBLIC KEY-----',
   defaultFacets: {
-    owner: [],
-    contributorLiteral: [],
     materialType: [],
-    issuance: [],
-    publisher: [],
     language: [],
-    mediaType: [],
-    subjectLiteral: [],
-    creatorLiteral: [],
     dateAfter: {},
     dateBefore: {},
   },
