@@ -7,8 +7,8 @@ class FieldsetDate extends React.Component {
     super(props);
 
     this.state = {
-      dateAfter: '0',
-      dateBefore: '0',
+      dateAfter: '',
+      dateBefore: '',
     };
 
     this.inputChange = this.inputChange.bind(this);
@@ -57,7 +57,7 @@ class FieldsetDate extends React.Component {
       <fieldset>
         <legend>Date</legend>
         <div id="input-container">
-          <label htmlFor="star-date" id="startDate-label">Start Year
+          <label htmlFor="start-date" id="startDate-label">Start Year
             <NumberFormat
               id="start-date"
               name="start-date"
