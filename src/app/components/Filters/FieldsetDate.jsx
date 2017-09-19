@@ -13,7 +13,6 @@ class FieldsetDate extends React.Component {
     this.state = {
       dateAfter: '0',
       dateBefore: '0',
-      selectedFacets: this.props.selectedFacets,
     };
 
     this.inputChange = this.inputChange.bind(this);
@@ -38,13 +37,8 @@ class FieldsetDate extends React.Component {
       this.setState(
         {
           [displayValue]: value,
-          selectedFacets: _extend(
-            this.state.selectedFacets,
-            { [displayValue]: value }
-          ),
         },
         () => {
-          Actions.updateSelectedFacets(this.state.selectedFacets);
         }
       );
     }
@@ -101,8 +95,6 @@ class FieldsetDate extends React.Component {
   }
 }
 
-FieldsetDate.propTypes = {
-  selectedFacets: PropTypes.object,
-};
+FieldsetDate.propTypes = {};
 
 export default FieldsetDate;
