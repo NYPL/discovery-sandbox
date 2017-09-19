@@ -1,9 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Actions from '../../actions/Actions.js';
-import {
-  extend as _extend,
-} from 'underscore';
 import NumberFormat from 'react-number-format';
 
 class FieldsetDate extends React.Component {
@@ -13,7 +9,6 @@ class FieldsetDate extends React.Component {
     this.state = {
       dateAfter: '0',
       dateBefore: '0',
-      selectedFacets: this.props.selectedFacets,
     };
 
     this.inputChange = this.inputChange.bind(this);
@@ -23,6 +18,7 @@ class FieldsetDate extends React.Component {
    * inputChange()
    * Updates the states and the store based on the input values.
    *
+   * @param {Event} e
    */
   inputChange(e) {
     const value = e.target.value;
@@ -38,13 +34,9 @@ class FieldsetDate extends React.Component {
       this.setState(
         {
           [displayValue]: value,
-          selectedFacets: _extend(
-            this.state.selectedFacets,
-            { [displayValue]: value }
-          ),
         },
         () => {
-          Actions.updateSelectedFacets(this.state.selectedFacets);
+          this.props.onDateFilterChange(displayValue, value);
         }
       );
     }
@@ -65,7 +57,7 @@ class FieldsetDate extends React.Component {
       <fieldset>
         <legend>Date</legend>
         <div id="input-container">
-          <label htmlFor="startDate" id="startDate-label">Start Year
+          <label htmlFor="star-date" id="startDate-label">Start Year
             <NumberFormat
               id="start-date"
               name="start-date"
@@ -75,7 +67,7 @@ class FieldsetDate extends React.Component {
               aria-labelledby="startDate-label dateInput-status"
             />
           </label>
-          <label htmlFor="endDate" id="endDate-label">End Year
+          <label htmlFor="end-date" id="endDate-label">End Year
             <NumberFormat
               id="end-date"
               name="end-date"
@@ -102,7 +94,7 @@ class FieldsetDate extends React.Component {
 }
 
 FieldsetDate.propTypes = {
-  selectedFacets: PropTypes.object,
+  onDateFilterChange: PropTypes.func,
 };
 
 export default FieldsetDate;

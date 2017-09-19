@@ -83,6 +83,21 @@ describe('FieldsetDate', () => {
       dateBefore: '2100',
     };
 
+    // As we use the module 'react-number-format' to build the input fields in FieldsetDate,
+    // it needs this specific function to simulate changes for those input fields.
+    // The function is referenced from the tests of the module itself.
+    // See node_modules/react-number-format/test/test_utils.js
+    const getCustomEvent = (value, name) => {
+      let event = new Event('custom');
+      const el = document.createElement('input');
+
+      event = Object.assign({}, event, { target: el, persist: () => {} });
+      event.target = el;
+      el.value = value;
+      el.name = name;
+      return event;
+    };
+
     before(() => {
       component = mount(<FieldsetDate selectedFacets={selectedFacets} />);
       updateSelectedFacets = sinon.spy(Actions, 'updateSelectedFacets');
@@ -97,18 +112,8 @@ describe('FieldsetDate', () => {
       component.unmount();
     });
 
-    it('should update selectedFacets based on it\'s input from Start Year input.', () => {
+    it('should update selectedFacets based on its input from Start Year input.', () => {
       const startYearInput = component.find('#input-container').find('label').at(0).find('input');
-      const getCustomEvent = (value, name) => {
-        let event = new Event('custom');
-        const el = document.createElement('input');
-
-        event = Object.assign({}, event, { target: el, persist: () => {} });
-        event.target = el;
-        el.value = value;
-        el.name = name;
-        return event;
-      };
 
       startYearInput.simulate('change', getCustomEvent(2001, 'start-date'));
 
@@ -117,18 +122,8 @@ describe('FieldsetDate', () => {
       expect(component.state('selectedFacets')).to.deep.equal(calledWithStartDateValues);
     });
 
-    it('should update selectedFacets based on it\'s input from End Year input.', () => {
+    it('should update selectedFacets based on its input from End Year input.', () => {
       const endYearInput = component.find('#input-container').find('label').at(1).find('input');
-      const getCustomEvent = (value, name) => {
-        let event = new Event('custom');
-        const el = document.createElement('input');
-
-        event = Object.assign({}, event, { target: el, persist: () => {} });
-        event.target = el;
-        el.value = value;
-        el.name = name;
-        return event;
-      };
 
       endYearInput.simulate('change', getCustomEvent(2100, 'end-date'));
 
