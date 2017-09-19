@@ -1,9 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Actions from '../../actions/Actions.js';
-import {
-  extend as _extend,
-} from 'underscore';
 import NumberFormat from 'react-number-format';
 
 class FieldsetDate extends React.Component {
@@ -22,6 +18,7 @@ class FieldsetDate extends React.Component {
    * inputChange()
    * Updates the states and the store based on the input values.
    *
+   * @param {Event} e
    */
   inputChange(e) {
     const value = e.target.value;
@@ -39,6 +36,7 @@ class FieldsetDate extends React.Component {
           [displayValue]: value,
         },
         () => {
+          this.props.onDateFilterChange(displayValue, value);
         }
       );
     }
@@ -95,6 +93,8 @@ class FieldsetDate extends React.Component {
   }
 }
 
-FieldsetDate.propTypes = {};
+FieldsetDate.propTypes = {
+  onDateFilterChange: PropTypes.func,
+};
 
 export default FieldsetDate;
