@@ -12,6 +12,7 @@ import {
   getDefaultFacets,
   ajaxCall,
 } from '../../utils/utils.js';
+
 import appConfig from '../../../../appConfig';
 import FieldsetDate from '../Filters/FieldsetDate';
 import FieldsetList from '../Filters/FieldsetList';
@@ -80,6 +81,7 @@ class FilterPopup extends React.Component {
     this.closeForm = this.closeForm.bind(this);
     this.deactivateForm = this.deactivateForm.bind(this);
     this.onFilterClick = this.onFilterClick.bind(this);
+    this.onDateFilterChange = this.onDateFilterChange.bind(this);
     this.submitForm = this.submitForm.bind(this);
   }
 
@@ -106,6 +108,20 @@ class FilterPopup extends React.Component {
         );
     }
 
+    this.setState({ selectedFilters });
+  }
+
+  /**
+   * onDateFilterChange(filterId, value)
+   * The function to be passed down to FieldsetDate component for updating the value of its input.
+   *
+   * @param {String} filterId
+   * @param {String} value
+   */
+  onDateFilterChange(filterId, value) {
+    const selectedFilters = this.state.selectedFilters;
+
+    selectedFilters[filterId] = value;
     this.setState({ selectedFilters });
   }
 
@@ -237,7 +253,7 @@ class FilterPopup extends React.Component {
                   onFilterClick={this.onFilterClick}
                 />
 
-                <FieldsetDate />
+                <FieldsetDate legend="Date" onDateFilterChange={this.onDateFilterChange} />
 
                 <FieldsetList
                   legend="Language"
