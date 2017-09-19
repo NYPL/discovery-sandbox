@@ -65,7 +65,7 @@ class FieldsetDate extends React.Component {
       <fieldset>
         <legend>Date</legend>
         <div id="input-container">
-          <label htmlFor="startDate" id="startDate-label">Start Year
+          <label htmlFor="star-date" id="startDate-label">Start Year
             <NumberFormat
               id="start-date"
               name="start-date"
@@ -75,7 +75,7 @@ class FieldsetDate extends React.Component {
               aria-labelledby="startDate-label dateInput-status"
             />
           </label>
-          <label htmlFor="endDate" id="endDate-label">End Year
+          <label htmlFor="end-date" id="endDate-label">End Year
             <NumberFormat
               id="end-date"
               name="end-date"
