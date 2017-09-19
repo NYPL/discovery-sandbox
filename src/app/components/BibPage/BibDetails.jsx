@@ -227,7 +227,7 @@ class BibDetails extends React.Component {
    * @return {object}
    */
   getPublication(bib) {
-    const fields = ['placeOfPublication', 'publisher', 'createdString'];
+    const fields = ['placeOfPublication', 'publisherLiteral', 'createdString'];
     let publicationInfo = '';
 
     fields.forEach(field => {
