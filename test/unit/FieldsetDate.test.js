@@ -3,7 +3,6 @@ import React from 'react';
 import { expect } from 'chai';
 import { mount } from 'enzyme';
 import FieldsetDate from '../../src/app/components/Filters/FieldsetDate';
-import appConfig from '../../appConfig';
 
 describe('FieldsetDate', () => {
   describe('Default', () => {
@@ -63,7 +62,12 @@ describe('FieldsetDate', () => {
     // this is the function for simulating the props of "onDateFilterChange" that is passed to
     // FieldsetDate
     const onDateFilterChange = (filterId, value) => {
-      const selectedFilters = appConfig.defaultFacets;
+      const selectedFilters = {
+        materialType: [],
+        language: [],
+        dateAfter: '',
+        dateBefore: '',
+      };
 
       selectedFilters[filterId] = value;
 
@@ -82,6 +86,7 @@ describe('FieldsetDate', () => {
       event.target = el;
       el.value = value;
       el.name = name;
+
       return event;
     };
 
