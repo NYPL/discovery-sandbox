@@ -35,7 +35,7 @@ describe('ResultsCount', () => {
       it('should output that no results were found', () => {
         expect(component.find('h2').length).to.equal(1);
         expect(component.find('h2').text())
-          .to.equal('No results found. Please try another search.');
+          .to.equal('No results for the keyword "". Try a different search.');
       });
     });
 
@@ -49,7 +49,7 @@ describe('ResultsCount', () => {
       it('should output that no results were found', () => {
         expect(component.find('h2').length).to.equal(1);
         expect(component.find('h2').text())
-          .to.equal('No results found. Please try another search.');
+          .to.equal('No results for the keyword "locofocos". Try a different search.');
       });
     });
   });

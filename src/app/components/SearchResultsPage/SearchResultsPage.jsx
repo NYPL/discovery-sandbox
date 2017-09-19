@@ -113,29 +113,32 @@ class SearchResultsPage extends React.Component {
                   />
                   {
                     !!(totalResults && totalResults !== 0) && (
-                      <Sorter
-                        sortBy={sortBy}
-                        page={page}
-                        searchKeywords={searchKeywords}
-                        createAPIQuery={createAPIQuery}
-                        updateIsLoadingState={this.updateIsLoadingState}
-                      />
+                      <div>
+                        <Sorter
+                          sortBy={sortBy}
+                          page={page}
+                          searchKeywords={searchKeywords}
+                          createAPIQuery={createAPIQuery}
+                          updateIsLoadingState={this.updateIsLoadingState}
+                        />
+                        <FilterPopup
+                          filters={filters}
+                          createAPIQuery={createAPIQuery}
+                          updateIsLoadingState={this.updateIsLoadingState}
+                          selectedFilters={selectedFacets}
+                          searchKeywords={searchKeywords}
+                        />
+                      </div>
                     )
                   }
 
-                  <FilterPopup
-                    filters={filters}
-                    createAPIQuery={createAPIQuery}
-                    updateIsLoadingState={this.updateIsLoadingState}
-                    selectedFilters={selectedFacets}
-                    searchKeywords={searchKeywords}
-                  />
-
-                  <SelectedFilters
-                    selectedFilters={selectedFacets}
-                    createAPIQuery={createAPIQuery}
-                    updateIsLoadingState={this.updateIsLoadingState}
-                  />
+                  {
+                    <SelectedFilters
+                      selectedFilters={selectedFacets}
+                      createAPIQuery={createAPIQuery}
+                      updateIsLoadingState={this.updateIsLoadingState}
+                    />
+                  }
 
                 </div>
               </div>
