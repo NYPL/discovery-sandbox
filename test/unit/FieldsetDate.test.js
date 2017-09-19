@@ -48,9 +48,9 @@ describe('FieldsetDate', () => {
       );
     });
 
-    it('should have the default state of dateAfter and dateBefore of "0".', () => {
-      expect(component.state('dateAfter')).to.equal('0');
-      expect(component.state('dateBefore')).to.equal('0');
+    it('should have the default state of dateAfter and dateBefore of "".', () => {
+      expect(component.state('dateAfter')).to.equal('');
+      expect(component.state('dateBefore')).to.equal('');
     });
 
     it('should render no error messages', () => {

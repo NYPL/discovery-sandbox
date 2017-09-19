@@ -7,8 +7,8 @@ class FieldsetDate extends React.Component {
     super(props);
 
     this.state = {
-      dateAfter: '0',
-      dateBefore: '0',
+      dateAfter: '',
+      dateBefore: '',
     };
 
     this.inputChange = this.inputChange.bind(this);
