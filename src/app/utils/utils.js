@@ -265,7 +265,7 @@ function parseServerSelectedFilters(filters, dateAfter, dateBefore) {
     dateAfter: {},
     dateBefore: {},
   };
-  // console.log(filters);
+
   if (_isArray(filters) && filters.length && !_isEmpty(filters[0])) {
     _chain(filters)
       // Each incoming filter is in JSON string format so it needs to be parsed first.
