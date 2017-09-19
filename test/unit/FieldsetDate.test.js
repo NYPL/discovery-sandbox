@@ -112,7 +112,7 @@ describe('FieldsetDate', () => {
       component.unmount();
     });
 
-    it('should update selectedFacets based on it\'s input from Start Year input.', () => {
+    it('should update selectedFacets based on its input from Start Year input.', () => {
       const startYearInput = component.find('#input-container').find('label').at(0).find('input');
 
       startYearInput.simulate('change', getCustomEvent(2001, 'start-date'));
@@ -122,7 +122,7 @@ describe('FieldsetDate', () => {
       expect(component.state('selectedFacets')).to.deep.equal(calledWithStartDateValues);
     });
 
-    it('should update selectedFacets based on it\'s input from End Year input.', () => {
+    it('should update selectedFacets based on its input from End Year input.', () => {
       const endYearInput = component.find('#input-container').find('label').at(1).find('input');
 
       endYearInput.simulate('change', getCustomEvent(2100, 'end-date'));
