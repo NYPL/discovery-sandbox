@@ -1,21 +1,16 @@
 /* eslint-env mocha */
 import React from 'react';
 import { expect } from 'chai';
-import sinon from 'sinon';
 import { mount } from 'enzyme';
-
 import FieldsetDate from '../../src/app/components/Filters/FieldsetDate';
-import Actions from './../../src/app/actions/Actions.js';
+import appConfig from '../../appConfig';
 
 describe('FieldsetDate', () => {
   describe('Default', () => {
-    const selectedFacets = {
-      language: ['lang:fr', 'lang:sp'],
-    };
     let component;
 
     before(() => {
-      component = mount(<FieldsetDate selectedFacets={selectedFacets} />);
+      component = mount(<FieldsetDate />);
     });
 
     after(() => {
@@ -58,10 +53,6 @@ describe('FieldsetDate', () => {
       expect(component.state('dateBefore')).to.equal('0');
     });
 
-    it('should have the default state of selectedFacets as the props passed.', () => {
-      expect(component.state('selectedFacets')).to.equal(selectedFacets);
-    });
-
     it('should render no error messages', () => {
       expect(component.find('#dateInput-status').text()).to.equal('');
     });
@@ -69,18 +60,14 @@ describe('FieldsetDate', () => {
 
   describe('If entering dates', () => {
     let component;
-    let updateSelectedFacets;
-    const selectedFacets = {
-      language: ['lang:fr', 'lang:sp'],
-    };
-    const calledWithStartDateValues = {
-      language: ['lang:fr', 'lang:sp'],
-      dateAfter: '2001',
-    };
-    const calledWithEndDateValues = {
-      language: ['lang:fr', 'lang:sp'],
-      dateAfter: '2001',
-      dateBefore: '2100',
+    // this is the function for simulating the props of "onDateFilterChange" that is passed to
+    // FieldsetDate
+    const onDateFilterChange = (filterId, value) => {
+      const selectedFilters = appConfig.defaultFacets;
+
+      selectedFilters[filterId] = value;
+
+      return selectedFilters;
     };
 
     // As we use the module 'react-number-format' to build the input fields in FieldsetDate,
@@ -99,16 +86,10 @@ describe('FieldsetDate', () => {
     };
 
     before(() => {
-      component = mount(<FieldsetDate selectedFacets={selectedFacets} />);
-      updateSelectedFacets = sinon.spy(Actions, 'updateSelectedFacets');
-    });
-
-    afterEach(() => {
-      updateSelectedFacets.reset();
+      component = mount(<FieldsetDate onDateFilterChange={onDateFilterChange} />);
     });
 
     after(() => {
-      updateSelectedFacets.restore();
       component.unmount();
     });
 
@@ -118,8 +99,6 @@ describe('FieldsetDate', () => {
       startYearInput.simulate('change', getCustomEvent(2001, 'start-date'));
 
       expect(component.state('dateAfter')).to.equal('2001');
-      expect(updateSelectedFacets.calledOnce).to.equal(true);
-      expect(component.state('selectedFacets')).to.deep.equal(calledWithStartDateValues);
     });
 
     it('should update selectedFacets based on its input from End Year input.', () => {
@@ -128,19 +107,14 @@ describe('FieldsetDate', () => {
       endYearInput.simulate('change', getCustomEvent(2100, 'end-date'));
 
       expect(component.state('dateBefore')).to.equal('2100');
-      expect(updateSelectedFacets.calledOnce).to.equal(true);
-      expect(component.state('selectedFacets')).to.deep.equal(calledWithEndDateValues);
     });
   });
 
   describe('It will show the error message', () => {
-    const selectedFacets = {
-      language: ['lang:fr', 'lang:sp'],
-    };
     let component;
 
     before(() => {
-      component = mount(<FieldsetDate selectedFacets={selectedFacets} />);
+      component = mount(<FieldsetDate />);
     });
 
     after(() => {
