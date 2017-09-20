@@ -144,7 +144,7 @@ class FilterPopup extends React.Component {
       datePrefix = 'before ';
     }
 
-    selectedFilters[filterId] = { value: `${datePrefix}${value}` };
+    selectedFilters[filterId] = value;
     this.setState({ selectedFilters });
   }
 
@@ -218,6 +218,7 @@ class FilterPopup extends React.Component {
       selectedFilters,
       filters,
     } = this.state;
+
     const closePopupButton = js ?
       <button
         onClick={(e) => this.closeForm(e)}
@@ -260,11 +261,9 @@ class FilterPopup extends React.Component {
     const materialTypeFilters = _findWhere(filters, { id: 'materialType' });
     const languageFilters = _findWhere(filters, { id: 'language' });
     const dateAfterFilterValue =
-      (selectedFilters.dateAfter && selectedFilters.dateAfter.value) ?
-      Number(selectedFilters.dateAfter.value.split(' ')[1]) : null;
+      selectedFilters.dateAfter ? Number(selectedFilters.dateAfter) : null;
     const dateBeforeFilterValue =
-      (selectedFilters.dateBefore && selectedFilters.dateBefore.value) ?
-      Number(selectedFilters.dateBefore.value.split(' ')[1]) : null;
+      selectedFilters.dateBefore ? Number(selectedFilters.dateBefore) : null;
     const dateSelectedFilters = {
       dateAfter: dateAfterFilterValue,
       dateBefore: dateBeforeFilterValue,

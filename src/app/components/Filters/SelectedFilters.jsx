@@ -73,7 +73,7 @@ class SelectedFilters extends React.Component {
 
     const filtersToRender = [];
     _mapObject(selectedFilters, (values, key) => {
-      if (values && values.length) {
+      if (values && values.length && typeof values === 'array') {
         values.forEach(value => {
           filtersToRender.push(_extend({ field: key }, value));
         });

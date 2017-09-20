@@ -120,11 +120,7 @@ function searchServer(req, res, next) {
         _mapObject(filters, (value, key) => {
           let facetObj;
           if (key === 'dateAfter' || key === 'dateBefore') {
-            // Since only one date can be selected per date facet.
-            selectedFacets[key] = {
-              id: value,
-              value: key === 'dateAfter' ? `after ${value}` : `before ${value}`,
-            };
+            selectedFacets[key] = value;
           } else if (_isArray(value) && value.length) {
             if (!selectedFacets[key]) {
               selectedFacets[key] = [];
