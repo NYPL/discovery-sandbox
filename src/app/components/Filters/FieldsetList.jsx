@@ -42,8 +42,6 @@ class FieldsetList extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log('nextProps', nextProps);
-
     const {
       filter,
       selectedFilters,
