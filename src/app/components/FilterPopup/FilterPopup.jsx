@@ -151,13 +151,21 @@ class FilterPopup extends React.Component {
     });
   }
 
+  /**
+   * clearFilters()
+   * Clears all the selected filters before making an API call.
+   *
+   */
   clearFilters() {
-    console.log(this.state.selectedFilters);
     this.setState(
       {
-        selectedFilters: appConfig.defaultFacets
-      },
-      () => { console.log(this.state.selectedFilters);}
+        selectedFilters: {
+          materialType: [],
+          language: [],
+          dateAfter: '',
+          dateBefore: '',
+        },
+      }
     );
   }
 
@@ -231,8 +239,6 @@ class FilterPopup extends React.Component {
     const materialTypeFilters = _findWhere(filters, { id: 'materialType' });
     const languageFilters = _findWhere(filters, { id: 'language' });
 
-    console.log(selectedFilters.language);
-
     return (
       <div className="filter-container">
         {openPopupButton}
@@ -266,7 +272,16 @@ class FilterPopup extends React.Component {
                   onFilterClick={this.onFilterClick}
                 />
 
-                <FieldsetDate legend="Date" onDateFilterChange={this.onDateFilterChange} />
+                <FieldsetDate
+                  legend="Date"
+                  selectedFilters={
+                    {
+                      dateAfter: selectedFilters.dateAfter,
+                      dateBefore: selectedFilters.dateBefore,
+                    }
+                  }
+                  onDateFilterChange={this.onDateFilterChange}
+                />
 
                 <FieldsetList
                   legend="Language"

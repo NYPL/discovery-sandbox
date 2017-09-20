@@ -7,12 +7,20 @@ class FieldsetDate extends React.Component {
     super(props);
 
     this.state = {
-      dateAfter: '',
-      dateBefore: '',
+      dateAfter: this.props.selectedFilters.dateAfter,
+      dateBefore: this.props.selectedFilters.dateBefore,
     };
 
     this.inputChange = this.inputChange.bind(this);
   }
+
+  // componentWillReceiveProps() {
+  //   console.log('date props update');
+  //   this.setState({
+  //     dateAfter: this.props.selectedFilters.dateAfter,
+  //     dateBefore: this.props.selectedFilters.dateBefore,
+  //   });
+  // }
 
   /**
    * inputChange()
@@ -65,6 +73,7 @@ class FieldsetDate extends React.Component {
               onChange={this.inputChange}
               format="####"
               aria-labelledby="startDate-label dateInput-status"
+              value={this.state.dateAfter}
             />
           </label>
           <label htmlFor="end-date" id="endDate-label">End Year
@@ -75,6 +84,7 @@ class FieldsetDate extends React.Component {
               onChange={this.inputChange}
               format="####"
               aria-labelledby="endDate-label dateInput-status"
+              value={this.state.dateBefore}
             />
           </label>
           <span>The Start year cannot be later than the end year</span>
@@ -94,7 +104,15 @@ class FieldsetDate extends React.Component {
 }
 
 FieldsetDate.propTypes = {
+  selectedFilters: PropTypes.object,
   onDateFilterChange: PropTypes.func,
+};
+
+FieldsetDate.defaultProps = {
+  selectedFilters: {
+    dateAfter: '',
+    dateBefore: '',
+  },
 };
 
 export default FieldsetDate;
