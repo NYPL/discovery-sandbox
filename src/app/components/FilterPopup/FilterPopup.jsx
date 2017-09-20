@@ -265,6 +265,10 @@ class FilterPopup extends React.Component {
     const dateBeforeFilterValue =
       (selectedFilters.dateBefore && selectedFilters.dateBefore.value) ?
       Number(selectedFilters.dateBefore.value.split(' ')[1]) : null;
+    const dateSelectedFilters = {
+      dateAfter: dateAfterFilterValue,
+      dateBefore: dateBeforeFilterValue,
+    };
 
     return (
       <div className="filter-container">
@@ -301,12 +305,7 @@ class FilterPopup extends React.Component {
 
                 <FieldsetDate
                   legend="Date"
-                  selectedFilters={
-                    {
-                      dateAfter: dateAfterFilterValue,
-                      dateBefore: dateBeforeFilterValue,
-                    }
-                  }
+                  selectedFilters={dateSelectedFilters}
                   onDateFilterChange={this.onDateFilterChange}
                 />
 
