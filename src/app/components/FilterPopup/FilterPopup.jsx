@@ -130,6 +130,8 @@ class FilterPopup extends React.Component {
     e.preventDefault();
     const apiQuery = this.props.createAPIQuery({ selectedFacets: this.state.selectedFilters });
 
+    console.log(this.state.selectedFilters);
+
     this.deactivateForm();
     this.props.updateIsLoadingState(true);
 
