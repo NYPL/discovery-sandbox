@@ -56,8 +56,8 @@ class FieldsetDate extends React.Component {
       errorMessage = '';
     }
 
-    const defalutValueDateAfter = (this.state.dateAfter) ? this.state.dateAfter : null;
-    const defalutValueDateBefore = (this.state.dateBefore) ? this.state.dateBefore : null;
+    const defaultValueDateAfter = (this.state.dateAfter) ? this.state.dateAfter : null;
+    const defaultValueDateBefore = (this.state.dateBefore) ? this.state.dateBefore : null;
 
     return (
       <fieldset>
@@ -71,7 +71,7 @@ class FieldsetDate extends React.Component {
               onChange={this.inputChange}
               format="####"
               aria-labelledby="startDate-label dateInput-status"
-              value={defalutValueDateAfter}
+              value={defaultValueDateAfter}
             />
           </label>
           <label htmlFor="end-date" id="endDate-label">End Year
@@ -82,7 +82,7 @@ class FieldsetDate extends React.Component {
               onChange={this.inputChange}
               format="####"
               aria-labelledby="endDate-label dateInput-status"
-              value={defalutValueDateBefore}
+              value={defaultValueDateBefore}
             />
           </label>
           <span>The Start year cannot be later than the end year</span>
