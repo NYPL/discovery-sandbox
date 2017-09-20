@@ -136,16 +136,21 @@ class FilterPopup extends React.Component {
    */
   onDateFilterChange(filterId, value) {
     const selectedFilters = this.state.selectedFilters;
+    let datePrefix = '';
 
-    selectedFilters[filterId] = value;
+    if (filterId === 'dateAfter') {
+      datePrefix = 'after ';
+    } else if (filterId === 'dateBefore') {
+      datePrefix = 'before ';
+    }
+
+    selectedFilters[filterId] = { value: `${datePrefix}${value}` };
     this.setState({ selectedFilters });
   }
 
   submitForm(e) {
     e.preventDefault();
     const apiQuery = this.props.createAPIQuery({ selectedFacets: this.state.selectedFilters });
-
-    console.log(this.state.selectedFilters);
 
     this.deactivateForm();
     this.props.updateIsLoadingState(true);
@@ -254,6 +259,12 @@ class FilterPopup extends React.Component {
     const { searchKeywords } = this.props;
     const materialTypeFilters = _findWhere(filters, { id: 'materialType' });
     const languageFilters = _findWhere(filters, { id: 'language' });
+    const dateAfterFilterValue =
+      (selectedFilters.dateAfter && selectedFilters.dateAfter.value) ?
+      Number(selectedFilters.dateAfter.value.split(' ')[1]) : null;
+    const dateBeforeFilterValue =
+      (selectedFilters.dateBefore && selectedFilters.dateBefore.value) ?
+      Number(selectedFilters.dateBefore.value.split(' ')[1]) : null;
 
     return (
       <div className="filter-container">
@@ -292,8 +303,8 @@ class FilterPopup extends React.Component {
                   legend="Date"
                   selectedFilters={
                     {
-                      dateAfter: selectedFilters.dateAfter,
-                      dateBefore: selectedFilters.dateBefore,
+                      dateAfter: dateAfterFilterValue,
+                      dateBefore: dateBeforeFilterValue,
                     }
                   }
                   onDateFilterChange={this.onDateFilterChange}

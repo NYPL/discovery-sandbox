@@ -14,6 +14,15 @@ class FieldsetDate extends React.Component {
     this.inputChange = this.inputChange.bind(this);
   }
 
+  componentWillReceiveProps(nextProps) {
+    const updatedDateAfter = nextProps.selectedFilters.dateAfter;
+    const updatedDateBefore = nextProps.selectedFilters.dateBefore;
+
+    this.setState({
+      dateAfter: updatedDateAfter,
+      dateBefore: updatedDateBefore,
+    });
+  }
 
   /**
    * inputChange()
@@ -32,14 +41,7 @@ class FieldsetDate extends React.Component {
     }
 
     if (displayValue) {
-      this.setState(
-        {
-          [displayValue]: value,
-        },
-        () => {
-          this.props.onDateFilterChange(displayValue, value);
-        }
-      );
+      this.props.onDateFilterChange(displayValue, value);
     }
   }
 
@@ -54,6 +56,9 @@ class FieldsetDate extends React.Component {
       errorMessage = '';
     }
 
+    const defalutValueDateAfter = (this.state.dateAfter) ? this.state.dateAfter : null;
+    const defalutValueDateBefore = (this.state.dateBefore) ? this.state.dateBefore : null;
+
     return (
       <fieldset>
         <legend>Date</legend>
@@ -66,6 +71,7 @@ class FieldsetDate extends React.Component {
               onChange={this.inputChange}
               format="####"
               aria-labelledby="startDate-label dateInput-status"
+              value={defalutValueDateAfter}
             />
           </label>
           <label htmlFor="end-date" id="endDate-label">End Year
@@ -76,6 +82,7 @@ class FieldsetDate extends React.Component {
               onChange={this.inputChange}
               format="####"
               aria-labelledby="endDate-label dateInput-status"
+              value={defalutValueDateBefore}
             />
           </label>
           <span>The Start year cannot be later than the end year</span>
