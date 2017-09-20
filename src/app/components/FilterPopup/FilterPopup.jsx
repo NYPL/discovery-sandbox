@@ -136,7 +136,6 @@ class FilterPopup extends React.Component {
    */
   onDateFilterChange(filterId, value) {
     const selectedFilters = this.state.selectedFilters;
-    let datePrefix = '';
 
     if (filterId === 'dateAfter') {
       datePrefix = 'after ';

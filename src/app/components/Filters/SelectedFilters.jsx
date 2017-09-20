@@ -5,6 +5,7 @@ import {
   mapObject as _mapObject,
   extend as _extend,
   reject as _reject,
+  isArray as _isArray,
 } from 'underscore';
 
 import Actions from '../../actions/Actions';
@@ -73,7 +74,7 @@ class SelectedFilters extends React.Component {
 
     const filtersToRender = [];
     _mapObject(selectedFilters, (values, key) => {
-      if (values && values.length && typeof values === 'array') {
+      if (values && values.length && _isArray(values)) {
         values.forEach(value => {
           filtersToRender.push(_extend({ field: key }, value));
         });
