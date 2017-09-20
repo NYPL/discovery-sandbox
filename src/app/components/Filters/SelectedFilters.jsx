@@ -6,6 +6,7 @@ import {
   extend as _extend,
   reject as _reject,
   keys as _keys,
+  contains as _contains,
 } from 'underscore';
 
 import Actions from '../../actions/Actions';
@@ -76,7 +77,7 @@ class SelectedFilters extends React.Component {
     const acceptedFilters = _keys(appConfig.defaultFacets);
 
     _mapObject(selectedFilters, (values, key) => {
-      if ((key in acceptedFilters) && values && values.length) {
+      if (_contains(acceptedFilters, key) && values && values.length) {
         values.forEach(value => {
           filtersToRender.push(_extend({ field: key }, value));
         });
