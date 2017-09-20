@@ -112,4 +112,54 @@ describe('FilterPopup', () => {
     //   expect(component.find('.popup-container').hasClass('active')).to.equal(false);
     // });
   });
+
+  describe('If clicking "Clear Filters" button', () => {
+    const selectedFilters = {
+      dateAfter: {
+        value: 'after 2000',
+      },
+      language: [
+        {
+          count: 4,
+          label: 'German',
+          selected: true,
+          value: 'lang:ger',
+        },
+        {
+          count: 8,
+          label: 'Spainish',
+          selected: true,
+          value: 'lang:sp',
+        },
+      ],
+      materialType: {
+        count: 5,
+        label: 'Text',
+        selected: true,
+        value: 'resourcetypes:txt',
+      },
+    };
+    const emptySelectedFilters = {
+      materialType: [],
+      language: [],
+      dateAfter: '',
+      dateBefore: '',
+    };
+    let component;
+
+    before(() => {
+      component = mount(<FilterPopup selectedFilters={selectedFilters} />);
+    });
+
+    after(() => {
+      component.unmount();
+    });
+
+    it('should clear all the selected filters in the state.', () => {
+      const clearFiltersButton = component.find('#clear-filters');
+
+      clearFiltersButton.simulate('click');
+      expect(component.state('selectedFilters')).to.deep.equal(emptySelectedFilters);
+    });
+  });
 });

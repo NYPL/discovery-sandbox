@@ -18,6 +18,36 @@ class FieldsetList extends React.Component {
     this.state = {
       values: updatedFilterValues,
     };
+
+    this.onFilterClick = this.onFilterClick.bind(this);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const {
+      filter,
+      selectedFilters,
+    } = nextProps;
+    const filterValues = filter.values && filter.values.length ? filter.values : [];
+    // Just want to add the `selected` property here.
+    const defaultFilterValues = filterValues.map(value => _extend({ selected: false }, value));
+    let updatedFilterValues = defaultFilterValues;
+
+    // If there are selected filters, then we want to update the filter values with those
+    // filters already selected. That way, the checkboxes will be checked.
+    if (selectedFilters) {
+      updatedFilterValues = defaultFilterValues.map(defaultFilterValue => {
+        const defaultFilter = defaultFilterValue;
+        selectedFilters.forEach(selectedFilter => {
+          if (selectedFilter.value === defaultFilter.value) {
+            defaultFilter.selected = true;
+          }
+        });
+
+        return defaultFilter;
+      });
+    }
+
+    this.setState({ values: updatedFilterValues });
   }
 
   componentWillReceiveProps(nextProps) {

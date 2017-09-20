@@ -92,6 +92,7 @@ class FilterPopup extends React.Component {
     this.onFilterClick = this.onFilterClick.bind(this);
     this.onDateFilterChange = this.onDateFilterChange.bind(this);
     this.submitForm = this.submitForm.bind(this);
+    this.clearFilters = this.clearFilters.bind(this);
   }
 
   componentDidMount() {
@@ -137,8 +138,15 @@ class FilterPopup extends React.Component {
    */
   onDateFilterChange(filterId, value) {
     const selectedFilters = this.state.selectedFilters;
+    let datePrefix = '';
 
-    selectedFilters[filterId] = value;
+    if (filterId === 'dateAfter') {
+      datePrefix = 'after ';
+    } else if (filterId === 'dateBefore') {
+      datePrefix = 'before ';
+    }
+
+    selectedFilters[filterId] = { value: `${datePrefix}${value}` };
     this.setState({ selectedFilters });
   }
 
@@ -166,6 +174,24 @@ class FilterPopup extends React.Component {
         this.context.router.push(`${appConfig.baseUrl}/search?${apiQuery}`);
       }, 500);
     });
+  }
+
+  /**
+   * clearFilters()
+   * Clears all the selected filters before making an API call.
+   *
+   */
+  clearFilters() {
+    this.setState(
+      {
+        selectedFilters: {
+          materialType: [],
+          language: [],
+          dateAfter: '',
+          dateBefore: '',
+        },
+      }
+    );
   }
 
   openForm() {
@@ -237,6 +263,12 @@ class FilterPopup extends React.Component {
     const { searchKeywords } = this.props;
     const materialTypeFilters = _findWhere(filters, { id: 'materialType' });
     const languageFilters = _findWhere(filters, { id: 'language' });
+    const dateAfterFilterValue =
+      (selectedFilters.dateAfter && selectedFilters.dateAfter.value) ?
+      Number(selectedFilters.dateAfter.value.split(' ')[1]) : null;
+    const dateBeforeFilterValue =
+      (selectedFilters.dateBefore && selectedFilters.dateBefore.value) ?
+      Number(selectedFilters.dateBefore.value.split(' ')[1]) : null;
 
     return (
       <div className="filter-container">
@@ -271,7 +303,16 @@ class FilterPopup extends React.Component {
                   onFilterClick={this.onFilterClick}
                 />
 
-                <FieldsetDate legend="Date" onDateFilterChange={this.onDateFilterChange} />
+                <FieldsetDate
+                  legend="Date"
+                  selectedFilters={
+                    {
+                      dateAfter: dateAfterFilterValue,
+                      dateBefore: dateBeforeFilterValue,
+                    }
+                  }
+                  onDateFilterChange={this.onDateFilterChange}
+                />
 
                 <FieldsetList
                   legend="Language"
@@ -290,9 +331,11 @@ class FilterPopup extends React.Component {
                   Apply Filters
                 </button>
                 <button
+                  id="clear-filters"
                   type="button"
                   name="Clear-Filters"
                   className="nypl-basic-button"
+                  onClick={this.clearFilters}
                 >
                   Clear Filters
                 </button>

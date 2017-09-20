@@ -7,11 +7,21 @@ class FieldsetDate extends React.Component {
     super(props);
 
     this.state = {
-      dateAfter: '',
-      dateBefore: '',
+      dateAfter: this.props.selectedFilters.dateAfter,
+      dateBefore: this.props.selectedFilters.dateBefore,
     };
 
     this.inputChange = this.inputChange.bind(this);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const updatedDateAfter = nextProps.selectedFilters.dateAfter;
+    const updatedDateBefore = nextProps.selectedFilters.dateBefore;
+
+    this.setState({
+      dateAfter: updatedDateAfter,
+      dateBefore: updatedDateBefore,
+    });
   }
 
   /**
@@ -31,14 +41,7 @@ class FieldsetDate extends React.Component {
     }
 
     if (displayValue) {
-      this.setState(
-        {
-          [displayValue]: value,
-        },
-        () => {
-          this.props.onDateFilterChange(displayValue, value);
-        }
-      );
+      this.props.onDateFilterChange(displayValue, value);
     }
   }
 
@@ -53,6 +56,9 @@ class FieldsetDate extends React.Component {
       errorMessage = '';
     }
 
+    const defalutValueDateAfter = (this.state.dateAfter) ? this.state.dateAfter : null;
+    const defalutValueDateBefore = (this.state.dateBefore) ? this.state.dateBefore : null;
+
     return (
       <fieldset>
         <legend>Date</legend>
@@ -65,6 +71,7 @@ class FieldsetDate extends React.Component {
               onChange={this.inputChange}
               format="####"
               aria-labelledby="startDate-label dateInput-status"
+              value={defalutValueDateAfter}
             />
           </label>
           <label htmlFor="end-date" id="endDate-label">End Year
@@ -75,6 +82,7 @@ class FieldsetDate extends React.Component {
               onChange={this.inputChange}
               format="####"
               aria-labelledby="endDate-label dateInput-status"
+              value={defalutValueDateBefore}
             />
           </label>
           <span>The Start year cannot be later than the end year</span>
@@ -94,7 +102,15 @@ class FieldsetDate extends React.Component {
 }
 
 FieldsetDate.propTypes = {
+  selectedFilters: PropTypes.object,
   onDateFilterChange: PropTypes.func,
+};
+
+FieldsetDate.defaultProps = {
+  selectedFilters: {
+    dateAfter: '',
+    dateBefore: '',
+  },
 };
 
 export default FieldsetDate;
