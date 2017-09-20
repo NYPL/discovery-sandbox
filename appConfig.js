@@ -25,7 +25,7 @@ export default {
   defaultFacets: {
     materialType: [],
     language: [],
-    dateAfter: {},
-    dateBefore: {},
+    dateAfter: '',
+    dateBefore: '',
   },
 };
