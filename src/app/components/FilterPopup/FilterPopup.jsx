@@ -327,6 +327,7 @@ class FilterPopup extends React.Component {
                   Apply Filters
                 </button>
                 <button
+                  id="clear-filters"
                   type="button"
                   name="Clear-Filters"
                   className="nypl-basic-button"
