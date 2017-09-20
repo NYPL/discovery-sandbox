@@ -1,5 +1,8 @@
 ## CHANGE LOG
 
+### 1.1.4
+- Hotfix to display the publisher field which went from `publisher` to `publisherLiteral` in the Search Results.
+
 ### 1.1.3
 - Hotfix to display the publisher field which went from `publisher` to `publisherLiteral`.
 

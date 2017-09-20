@@ -101,7 +101,7 @@ const resultsBibs = [
           prefLabel: 'monograph/item',
         },
       ],
-      publisher: ['Cambridge University Press,'],
+      publisherLiteral: ['Cambridge University Press,'],
       items: [
         {
           '@id': 'res:i21106088',
@@ -164,7 +164,7 @@ const resultsBibs = [
           prefLabel: 'monograph/item',
         },
       ],
-      publisher: ['Cambridge University Press,'],
+      publisherLiteral: ['Cambridge University Press,'],
       items: [
         {
           '@id': 'res:i21106088',
