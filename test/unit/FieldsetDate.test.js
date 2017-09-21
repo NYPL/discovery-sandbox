@@ -59,19 +59,18 @@ describe('FieldsetDate', () => {
 
   describe('If entering dates', () => {
     let component;
+    const noSelectedFilters = {
+      materialType: [],
+      language: [],
+      dateAfter: '',
+      dateBefore: '',
+    };
     // this is the function for simulating the props of "onDateFilterChange" that is passed to
     // FieldsetDate
     const onDateFilterChange = (filterId, value) => {
-      const selectedFilters = {
-        materialType: [],
-        language: [],
-        dateAfter: '',
-        dateBefore: '',
-      };
+      noSelectedFilters[filterId] = value;
 
-      selectedFilters[filterId] = value;
-
-      return selectedFilters;
+      return noSelectedFilters;
     };
 
     // As we use the module 'react-number-format' to build the input fields in FieldsetDate,
@@ -91,7 +90,12 @@ describe('FieldsetDate', () => {
     };
 
     before(() => {
-      component = mount(<FieldsetDate onDateFilterChange={onDateFilterChange} />);
+      component = mount(
+        <FieldsetDate
+          selectedFilters={noSelectedFilters}
+          onDateFilterChange={onDateFilterChange}
+        />
+      );
     });
 
     after(() => {
@@ -102,6 +106,7 @@ describe('FieldsetDate', () => {
       const startYearInput = component.find('#input-container').find('label').at(0).find('input');
 
       startYearInput.simulate('change', getCustomEvent(2001, 'start-date'));
+      component.update();
 
       expect(component.state('dateAfter')).to.equal('2001');
     });
@@ -110,6 +115,7 @@ describe('FieldsetDate', () => {
       const endYearInput = component.find('#input-container').find('label').at(1).find('input');
 
       endYearInput.simulate('change', getCustomEvent(2100, 'end-date'));
+      component.update();
 
       expect(component.state('dateBefore')).to.equal('2100');
     });
