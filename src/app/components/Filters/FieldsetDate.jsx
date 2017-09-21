@@ -63,25 +63,25 @@ class FieldsetDate extends React.Component {
       <fieldset>
         <legend>Date</legend>
         <div id="input-container">
-          <label htmlFor="dateAfter" id="startDate-label">Start Year
+          <label htmlFor="dateAfter" id="dateAfter-label">Start Year
             <NumberFormat
-              id="start-date"
+              id="dateAfter"
               name="dateAfter"
               className="form-text"
               onChange={this.inputChange}
               format="####"
-              aria-labelledby="startDate-label dateInput-status"
+              aria-labelledby="dateAfter-label dateInput-status"
               value={defaultValueDateAfter}
             />
           </label>
-          <label htmlFor="dateBefore" id="endDate-label">End Year
+          <label htmlFor="dateBefore" id="dateBefore-label">End Year
             <NumberFormat
-              id="end-date"
+              id="dateBefore"
               name="dateBefore"
               className="form-text"
               onChange={this.inputChange}
               format="####"
-              aria-labelledby="endDate-label dateInput-status"
+              aria-labelledby="dateBefore-label dateInput-status"
               value={defaultValueDateBefore}
             />
           </label>
