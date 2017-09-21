@@ -182,7 +182,9 @@ class FilterPopup extends React.Component {
     trackDiscovery('FilterPopup', 'Close');
     this.setState({ showForm: false });
 
-    this.refs.filterOpen.focus();
+    if (this.refs.filterOpen) {
+      this.refs.filterOpen.focus();
+    }
   }
 
   render() {
