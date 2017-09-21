@@ -259,8 +259,13 @@ function getReqParams(query = {}) {
  * @return {object}
  */
 function parseServerSelectedFilters(filters, dateAfter, dateBefore) {
-  const selectedFacets = {};
-  // console.log(filters);
+  const selectedFacets = {
+    materialType: [],
+    language: [],
+    dateAfter: {},
+    dateBefore: {},
+  };
+
   if (_isArray(filters) && filters.length && !_isEmpty(filters[0])) {
     _chain(filters)
       // Each incoming filter is in JSON string format so it needs to be parsed first.

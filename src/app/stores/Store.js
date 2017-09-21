@@ -26,7 +26,12 @@ class Store {
       bib: {},
       searchKeywords: '',
       facets: {},
-      selectedFacets: {},
+      selectedFacets: {
+        materialType: [],
+        language: [],
+        dateAfter: {},
+        dateBefore: {},
+      },
       page: '1',
       sortBy: 'relevance',
       isLoading: false,

@@ -35,7 +35,7 @@ describe('ResultsCount', () => {
       it('should output that no results were found', () => {
         expect(component.find('h2').length).to.equal(1);
         expect(component.find('h2').text())
-          .to.equal('No results found. Please try another search.');
+          .to.equal('No results for the keyword "". Try a different search.');
       });
     });
 
@@ -49,7 +49,21 @@ describe('ResultsCount', () => {
       it('should output that no results were found', () => {
         expect(component.find('h2').length).to.equal(1);
         expect(component.find('h2').text())
-          .to.equal('No results found. Please try another search.');
+          .to.equal('No results for the keyword "locofocos". Try a different search.');
+      });
+    });
+
+    describe('No result count with multiple search keywords', () => {
+      let component;
+
+      before(() => {
+        component = shallow(<ResultsCount searchKeywords="harry potter" count={0} />);
+      });
+
+      it('should output that no results were found', () => {
+        expect(component.find('h2').length).to.equal(1);
+        expect(component.find('h2').text())
+          .to.equal('No results for the keywords "harry potter". Try a different search.');
       });
     });
   });
@@ -87,6 +101,25 @@ describe('ResultsCount', () => {
           expect(component.find('h2').length).to.equal(1);
           expect(component.find('h2').text())
             .to.equal('Displaying 1-50 of 2,345 results for keyword "hamlet"');
+        });
+      });
+
+      describe('Multiple search keyword', () => {
+        let component;
+
+        before(() => {
+          component = shallow(
+            <ResultsCount
+              searchKeywords="harry potter"
+              count={2345}
+            />
+          );
+        });
+
+        it('should output that no results were found', () => {
+          expect(component.find('h2').length).to.equal(1);
+          expect(component.find('h2').text())
+            .to.equal('Displaying 1-50 of 2,345 results for keywords "harry potter"');
         });
       });
 
