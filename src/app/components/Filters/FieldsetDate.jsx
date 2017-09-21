@@ -54,30 +54,36 @@ class FieldsetDate extends React.Component {
     }
 
     return (
-      <fieldset>
+      <fieldset className="nypl-inner-fieldset nypl-inner-fieldset-date">
         <legend>Date</legend>
-        <div id="input-container">
-          <label htmlFor="start-date" id="startDate-label">Start Year
-            <NumberFormat
-              id="start-date"
-              name="start-date"
-              className="form-text"
-              onChange={this.inputChange}
-              format="####"
-              aria-labelledby="startDate-label dateInput-status"
-            />
-          </label>
-          <label htmlFor="end-date" id="endDate-label">End Year
-            <NumberFormat
-              id="end-date"
-              name="end-date"
-              className="form-text"
-              onChange={this.inputChange}
-              format="####"
-              aria-labelledby="endDate-label dateInput-status"
-            />
-          </label>
-          <span>The Start year cannot be later than the end year</span>
+        <div id="input-container" className="nypl-name-field">
+          <div>
+            <label htmlFor="start-date" id="startDate-label">Start Year
+              <NumberFormat
+                id="start-date"
+                name="start-date"
+                className="form-text"
+                onChange={this.inputChange}
+                format="####"
+                aria-labelledby="startDate-label dateInput-status"
+              />
+            </label>
+          </div>
+          <div>
+            <label htmlFor="end-date" id="endDate-label">End Year
+              <NumberFormat
+                id="end-date"
+                name="end-date"
+                className="form-text"
+                onChange={this.inputChange}
+                format="####"
+                aria-labelledby="endDate-label dateInput-status"
+              />
+            </label>
+          </div>
+          {
+            //<span>The Start year cannot be later than the end year</span>
+          }
           <br />
           <span
             id="dateInput-status"

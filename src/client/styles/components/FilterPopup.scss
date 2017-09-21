@@ -70,9 +70,16 @@
     display: none;
 
     &.active {
+      // display: block;
+      // top: 50px;
+      // z-index: 1000;
       display: block;
-      top: 50px;
-      z-index: 1000;
+      top: -240px;
+      z-index: 2000;
+      left: -70px;
+      right: 200px;
+      width: 110%;
+      position: absolute;
     }
   }
 
@@ -83,27 +90,23 @@
   }
 }
 
-// Form
-fieldset > fieldset {
-  margin-top: 1rem;
-}
-fieldset > fieldset > legend {
-  font-weight: bold;
-  border: none;
-}
-
 .filter-container {
   button {
     cursor: pointer;
     -webkit-appearance: none;
     -moz-appearance: none;
   }
-  ul {
-    margin: 0;
-    padding: 0
-  }
   ul li {
     list-style: none;
-    margin: 0;
+  }
+}
+
+.nypl-popup-container.active {
+  .nypl-popup-filter-menu .nypl-x-close-button {
+    margin-right: 2rem !important;
+    top: -102.65rem !important;
+  }
+  .nypl-popup-filter-overlay {
+    z-index: 1000 !important;
   }
 }
