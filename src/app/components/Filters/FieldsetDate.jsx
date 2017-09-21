@@ -7,11 +7,21 @@ class FieldsetDate extends React.Component {
     super(props);
 
     this.state = {
-      dateAfter: '',
-      dateBefore: '',
+      dateAfter: this.props.selectedFilters.dateAfter,
+      dateBefore: this.props.selectedFilters.dateBefore,
     };
 
     this.inputChange = this.inputChange.bind(this);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const updatedDateAfter = nextProps.selectedFilters.dateAfter;
+    const updatedDateBefore = nextProps.selectedFilters.dateBefore;
+
+    this.setState({
+      dateAfter: updatedDateAfter,
+      dateBefore: updatedDateBefore,
+    });
   }
 
   /**
@@ -31,14 +41,7 @@ class FieldsetDate extends React.Component {
     }
 
     if (displayValue) {
-      this.setState(
-        {
-          [displayValue]: value,
-        },
-        () => {
-          this.props.onDateFilterChange(displayValue, value);
-        }
-      );
+      this.props.onDateFilterChange(displayValue, value);
     }
   }
 
@@ -53,6 +56,9 @@ class FieldsetDate extends React.Component {
       errorMessage = '';
     }
 
+    const defaultValueDateAfter = (this.state.dateAfter) ? this.state.dateAfter : null;
+    const defaultValueDateBefore = (this.state.dateBefore) ? this.state.dateBefore : null;
+
     return (
       <fieldset className="nypl-inner-fieldset nypl-inner-fieldset-date">
         <legend>Date</legend>
@@ -66,6 +72,7 @@ class FieldsetDate extends React.Component {
                 onChange={this.inputChange}
                 format="####"
                 aria-labelledby="startDate-label dateInput-status"
+                value={defaultValueDateAfter}
               />
             </label>
           </div>
@@ -78,6 +85,7 @@ class FieldsetDate extends React.Component {
                 onChange={this.inputChange}
                 format="####"
                 aria-labelledby="endDate-label dateInput-status"
+                value={defaultValueDateBefore}
               />
             </label>
           </div>
@@ -100,7 +108,15 @@ class FieldsetDate extends React.Component {
 }
 
 FieldsetDate.propTypes = {
+  selectedFilters: PropTypes.object,
   onDateFilterChange: PropTypes.func,
+};
+
+FieldsetDate.defaultProps = {
+  selectedFilters: {
+    dateAfter: '',
+    dateBefore: '',
+  },
 };
 
 export default FieldsetDate;
