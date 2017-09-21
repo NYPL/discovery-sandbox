@@ -34,6 +34,8 @@ function search(searchKeywords, page, sortBy, order, field, filters, cb, errorcb
     page,
   });
 
+  console.log(searchKeywords);
+
   const aggregationQuery = `/aggregations?${apiQuery}`;
   const queryString = `?${apiQuery}&per_page=50`;
 
@@ -67,8 +69,6 @@ function searchAjax(req, res) {
 function searchServerPost(req, res) {
   const { fieldQuery, q, filters, sortQuery } = getReqParams(req.body);
   const { dateAfter, dateBefore } = req.body;
-
-  console.log(dateAfter, dateBefore);
   // The filters from req.body may be an array of selected filters, or just an object
   // with one selected filter.
   const reqFilters = _isArray(filters) ? filters : [filters];
@@ -83,7 +83,13 @@ function searchServerPost(req, res) {
   }
 
   if (!searchKeywords) {
-    return res.redirect(`${appConfig.baseUrl}/search?error=true`);
+    return res.redirect(`${appConfig.baseUrl}/search?error=noKeyword`);
+  }
+
+  if (dateAfter && dateBefore) {
+    if (Number(dateAfter) > Number(dateBefore)) {
+      return res.redirect(`${appConfig.baseUrl}/search?q=${searchKeywords}&error=dateFilterError`);
+    }
   }
 
   const updatedSearchKeywords = searchKeywords === '*' ? '' : searchKeywords;
@@ -119,8 +125,8 @@ function searchServer(req, res, next) {
       const selectedFacets = {
         materialType: [],
         language: [],
-        dateAfter: {},
-        dateBefore: {},
+        dateAfter: '',
+        dateBefore: '',
       };
 
       if (!_isEmpty(filters)) {
@@ -182,8 +188,8 @@ function searchServer(req, res, next) {
         selectedFacets: {
           materialType: [],
           language: [],
-          dateAfter: {},
-          dateBefore: {},
+          dateAfter: '',
+          dateBefore: '',
         },
         searchKeywords: '',
         facets: {},
