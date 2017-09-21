@@ -63,10 +63,10 @@ class FieldsetDate extends React.Component {
       <fieldset>
         <legend>Date</legend>
         <div id="input-container">
-          <label htmlFor="start-date" id="startDate-label">Start Year
+          <label htmlFor="dateAfter" id="startDate-label">Start Year
             <NumberFormat
               id="start-date"
-              name="start-date"
+              name="dateAfter"
               className="form-text"
               onChange={this.inputChange}
               format="####"
@@ -74,10 +74,10 @@ class FieldsetDate extends React.Component {
               value={defaultValueDateAfter}
             />
           </label>
-          <label htmlFor="end-date" id="endDate-label">End Year
+          <label htmlFor="dateBefore" id="endDate-label">End Year
             <NumberFormat
               id="end-date"
-              name="end-date"
+              name="dateBefore"
               className="form-text"
               onChange={this.inputChange}
               format="####"

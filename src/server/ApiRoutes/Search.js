@@ -67,6 +67,8 @@ function searchAjax(req, res) {
 function searchServerPost(req, res) {
   const { fieldQuery, q, filters, sortQuery } = getReqParams(req.body);
   const { dateAfter, dateBefore } = req.body;
+
+  console.log(dateAfter, dateBefore);
   // The filters from req.body may be an array of selected filters, or just an object
   // with one selected filter.
   const reqFilters = _isArray(filters) ? filters : [filters];
