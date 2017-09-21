@@ -103,8 +103,9 @@
 
 .nypl-popup-container.active {
   .nypl-popup-filter-menu .nypl-x-close-button {
-    margin-right: 2rem !important;
-    top: -102.65rem !important;
+    top: 1rem !important;
+    position: fixed;
+    right: 1rem;
   }
   .nypl-popup-filter-overlay {
     z-index: 1000 !important;

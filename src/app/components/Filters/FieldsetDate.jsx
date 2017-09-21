@@ -56,8 +56,8 @@ class FieldsetDate extends React.Component {
       errorMessage = '';
     }
 
-    const defalutValueDateAfter = (this.state.dateAfter) ? this.state.dateAfter : null;
-    const defalutValueDateBefore = (this.state.dateBefore) ? this.state.dateBefore : null;
+    const defaultValueDateAfter = (this.state.dateAfter) ? this.state.dateAfter : null;
+    const defaultValueDateBefore = (this.state.dateBefore) ? this.state.dateBefore : null;
 
     return (
       <fieldset className="nypl-inner-fieldset nypl-inner-fieldset-date">
@@ -72,7 +72,7 @@ class FieldsetDate extends React.Component {
                 onChange={this.inputChange}
                 format="####"
                 aria-labelledby="startDate-label dateInput-status"
-                value={defalutValueDateAfter}
+                value={defaultValueDateAfter}
               />
             </label>
           </div>
@@ -85,7 +85,7 @@ class FieldsetDate extends React.Component {
                 onChange={this.inputChange}
                 format="####"
                 aria-labelledby="endDate-label dateInput-status"
-                value={defalutValueDateBefore}
+                value={defaultValueDateBefore}
               />
             </label>
           </div>
