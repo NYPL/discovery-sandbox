@@ -172,7 +172,8 @@ class FilterPopup extends React.Component {
    * Clears all the selected filters before making an API call.
    *
    */
-  clearFilters() {
+  clearFilters(e) {
+    e.persist();
     this.setState(
       {
         selectedFilters: {
@@ -181,7 +182,8 @@ class FilterPopup extends React.Component {
           dateAfter: '',
           dateBefore: '',
         },
-      }
+      },
+      () => { this.submitForm(e); }
     );
   }
 
