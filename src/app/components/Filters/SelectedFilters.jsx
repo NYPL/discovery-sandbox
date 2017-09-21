@@ -7,6 +7,7 @@ import {
   reject as _reject,
   keys as _keys,
   contains as _contains,
+  isArray as _isArray,
 } from 'underscore';
 
 import Actions from '../../actions/Actions';
@@ -34,12 +35,19 @@ class SelectedFilters extends React.Component {
     e.preventDefault();
 
     const selectedFilters = this.props.selectedFilters;
+    const field = filter.field;
 
-    selectedFilters[filter.field] =
-      _reject(
-        selectedFilters[filter.field],
-        (selectedFilter) => selectedFilter.value === filter.value
-      );
+    if (field === 'dateAfter' || field === 'dateBefore') {
+      if (filter.value !== '') {
+        selectedFilters[field] = '';
+      }
+    } else {
+      selectedFilters[field] =
+        _reject(
+          selectedFilters[field],
+          (selectedFilter) => selectedFilter.value === filter.value
+        );
+    }
 
     const apiQuery = this.props.createAPIQuery({ selectedFacets: selectedFilters });
 
@@ -78,9 +86,18 @@ class SelectedFilters extends React.Component {
 
     _mapObject(selectedFilters, (values, key) => {
       if (_contains(acceptedFilters, key) && values && values.length) {
-        values.forEach(value => {
-          filtersToRender.push(_extend({ field: key }, value));
-        });
+        if (_isArray(values)) {
+          values.forEach(value => {
+            filtersToRender.push(_extend({ field: key }, value));
+          });
+        } else {
+          filtersToRender.push(_extend({ field: key },
+            {
+              value: values,
+              label: values,
+            }
+          ));
+        }
       }
     });
 
