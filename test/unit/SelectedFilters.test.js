@@ -115,5 +115,79 @@ describe('SelectedFilters', () => {
           .to.equal('CartographicRemove Filter');
       });
     });
+
+    describe('Date filters', () => {
+      describe('With dateBefore filters', () => {
+        const selectedFilters = {
+          language: [],
+          materialType: [],
+          dateBefore: '2010',
+          dateAfter: '',
+        };
+        let component;
+
+        before(() => {
+          component = mount(<SelectedFilters selectedFilters={selectedFilters} />);
+        });
+
+        it('should render two list items', () => {
+          expect(component.find('li').length).to.equal(2);
+        });
+
+        it('should have one button inside each list item with the filter name', () => {
+          expect(listItemAt(component, 1).find('button').length).to.equal(1);
+          expect(listItemAt(component, 1).find('button').text()).to.equal('2010Remove Filter');
+        });
+      });
+
+      describe('With dateAfter filters', () => {
+        const selectedFilters = {
+          language: [],
+          materialType: [],
+          dateBefore: '',
+          dateAfter: '1999',
+        };
+        let component;
+
+        before(() => {
+          component = mount(<SelectedFilters selectedFilters={selectedFilters} />);
+        });
+
+        it('should render two list items', () => {
+          expect(component.find('li').length).to.equal(2);
+        });
+
+        it('should have one button inside each list item with the filter name', () => {
+          expect(listItemAt(component, 1).find('button').length).to.equal(1);
+          expect(listItemAt(component, 1).find('button').text()).to.equal('1999Remove Filter');
+        });
+      });
+
+      describe('With dateBefore and dateAfter filters', () => {
+        const selectedFilters = {
+          language: [],
+          materialType: [],
+          dateBefore: '2010',
+          dateAfter: '1999',
+        };
+        let component;
+
+        before(() => {
+          component = mount(<SelectedFilters selectedFilters={selectedFilters} />);
+        });
+
+        it('should render three list items', () => {
+          expect(component.find('li').length).to.equal(3);
+        });
+
+        it('should have one button inside each list item with the filter name', () => {
+          expect(listItemAt(component, 1).find('button').length).to.equal(1);
+          expect(listItemAt(component, 1).find('button').text()).to.equal('2010Remove Filter');
+
+          expect(listItemAt(component, 2).find('button').length).to.equal(1);
+          expect(listItemAt(component, 2).find('button').text()).to.equal('1999Remove Filter');
+        });
+      });
+    });
   });
 });
