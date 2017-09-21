@@ -187,11 +187,11 @@ const trackDiscovery = gaUtils.trackEvent('Discovery');
  * @example
  * const apiQueryFunc = basicQuery(this.props);
  * const apiQuery = apiQueryFunc();
- * // apiQuery == 'q='
+ * // apiQuery === 'q='
  * const apiQuery2 = apiQueryFunc({ page: 3 });
- * // apiQuery2 == 'q=&page=3'
+ * // apiQuery2 === 'q=&page=3'
  * const apiQuery3 = apiQueryFunc({ page: 3, q: 'hamlet' });
- * // apiQuery3 == 'q=hamlet&page=3'
+ * // apiQuery3 === 'q=hamlet&page=3'
  * @param {object} props The application props.
  */
 const basicQuery = (props = {}) => {

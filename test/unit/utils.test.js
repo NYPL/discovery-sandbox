@@ -255,6 +255,17 @@ describe('getFacetFilterParam', () => {
         .to.equal('&filters[language]=lang%3Ager&filters[publisher]=%5BBerlin%5D%20%3A%20Walter' +
           '%20de%20Gruyter&filters[subject]=Electronic%20journals.');
     });
+
+    it('should return a key:value string from date filters and a language filter', () => {
+      const facets = {
+        language: { value: 'lang:ger', label: 'German' },
+        materialType: { value: '', label: '' },
+        dateAfter: '1999',
+        dateBefore: '2010',
+      };
+      expect(getFacetFilterParam(facets))
+        .to.equal('&filters[language]=lang%3Ager&filters[dateAfter]=1999&filters[dateBefore]=2010');
+    });
   });
 });
 
