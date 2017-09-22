@@ -35,7 +35,11 @@ class ResultsCount extends React.Component {
       if (field && field !== 'all') {
         result += `for ${keyMapping[field]} "${searchKeywords}"`;
       } else {
-        result += `for keyword "${searchKeywords}"`;
+        if (searchKeywords.indexOf(' ') !== -1) {
+          result += `for keywords "${searchKeywords}"`;
+        } else {
+          result += `for keyword "${searchKeywords}"`;
+        }
       }
     }
 
@@ -80,6 +84,7 @@ class ResultsCount extends React.Component {
     const start = (page - 1) * 50 + 1;
     const end = (page) * 50 > count ? count : (page * 50);
     const currentResultDisplay = `${start}-${end}`;
+    const plural = (searchKeywords && searchKeywords.indexOf(' ') !== -1) ? 's' : '';
 
     if (isLoading) {
       return (<p>Loading...</p>);
@@ -91,13 +96,17 @@ class ResultsCount extends React.Component {
 
     if (this.checkSelectedFilters()) {
       return (
-        <h2>No results for the keyword "{searchKeywords}" with the chosen filters. Try
+        <h2>No results for the keyword{plural} "{searchKeywords}" with the chosen filters. Try
           a different search or different filters.
         </h2>
       );
     }
 
-    return (<h2>No results for the keyword "{searchKeywords}". Try a different search.</h2>);
+    return (
+      <h2>
+        No results for the keyword{plural} "{searchKeywords}". Try a different search.
+      </h2>
+    );
   }
 
   render() {

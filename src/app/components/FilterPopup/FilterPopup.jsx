@@ -90,6 +90,7 @@ class FilterPopup extends React.Component {
     this.onFilterClick = this.onFilterClick.bind(this);
     this.onDateFilterChange = this.onDateFilterChange.bind(this);
     this.submitForm = this.submitForm.bind(this);
+    this.clearFilters = this.clearFilters.bind(this);
   }
 
   componentDidMount() {
@@ -166,6 +167,26 @@ class FilterPopup extends React.Component {
     });
   }
 
+  /**
+   * clearFilters()
+   * Clears all the selected filters before making an API call.
+   *
+   */
+  clearFilters(e) {
+    e.persist();
+    this.setState(
+      {
+        selectedFilters: {
+          materialType: [],
+          language: [],
+          dateAfter: '',
+          dateBefore: '',
+        },
+      },
+      () => { this.submitForm(e); }
+    );
+  }
+
   openForm() {
     if (!this.state.showForm) {
       trackDiscovery('FilterPopup', 'Open');
@@ -194,6 +215,7 @@ class FilterPopup extends React.Component {
       selectedFilters,
       filters,
     } = this.state;
+
     const closePopupButton = js ?
       <button
         onClick={(e) => this.closeForm(e)}
@@ -235,14 +257,25 @@ class FilterPopup extends React.Component {
     const { searchKeywords } = this.props;
     const materialTypeFilters = _findWhere(filters, { id: 'materialType' });
     const languageFilters = _findWhere(filters, { id: 'language' });
+    const dateAfterFilterValue =
+      selectedFilters.dateAfter ? Number(selectedFilters.dateAfter) : null;
+    const dateBeforeFilterValue =
+      selectedFilters.dateBefore ? Number(selectedFilters.dateBefore) : null;
+    const dateSelectedFilters = {
+      dateAfter: dateAfterFilterValue,
+      dateBefore: dateBeforeFilterValue,
+    };
 
     return (
       <div className="filter-container">
         {openPopupButton}
 
-        <div className={`popup-container ${showForm ? 'active' : ''}`} id={js ? '' : 'popup-no-js'}>
+        <div
+          className={`nypl-popup-container popup-container ${showForm ? 'active' : ''}`}
+          id={js ? '' : 'popup-no-js'}
+        >
           {!js && (<a className="cancel-no-js" href="#"></a>)}
-          <div className="overlay"></div>
+          <div className="nypl-popup-filter-overlay"></div>
           <FocusTrap
             focusTrapOptions={{
               onDeactivate: this.deactivateForm,
@@ -251,14 +284,14 @@ class FilterPopup extends React.Component {
             active={showForm}
             id="filter-popup-menu"
             role="menu"
-            className={`${js ? 'popup' : 'popup-no-js'} ${showForm ? 'active' : ''}`}
+            className={`${js ? 'popup' : 'popup-no-js'} nypl-popup-filter-menu ${showForm ? 'active' : ''}`}
           >
             <form
               action={`${appConfig.baseUrl}/search?q=${searchKeywords}`}
               method="POST"
               onSubmit={() => this.onSubmitForm()}
             >
-              <fieldset>
+              <fieldset className="nypl-parent-fieldset">
                 <legend><h3>Filter Results</h3></legend>
 
                 <FieldsetList
@@ -269,7 +302,11 @@ class FilterPopup extends React.Component {
                   onFilterClick={this.onFilterClick}
                 />
 
-                <FieldsetDate legend="Date" onDateFilterChange={this.onDateFilterChange} />
+                <FieldsetDate
+                  legend="Date"
+                  selectedFilters={dateSelectedFilters}
+                  onDateFilterChange={this.onDateFilterChange}
+                />
 
                 <FieldsetList
                   legend="Language"
@@ -279,23 +316,26 @@ class FilterPopup extends React.Component {
                   onFilterClick={this.onFilterClick}
                 />
 
-                <button
-                  type="submit"
-                  name="apply-filters"
-                  onClick={this.submitForm}
-                  className="nypl-basic-button"
-                >
-                  Apply Filters
-                </button>
-                <button
-                  type="button"
-                  name="Clear-Filters"
-                  className="nypl-basic-button"
-                >
-                  Clear Filters
-                </button>
-                {closePopupButton}
-
+                <div className="nypl-filter-button-container">
+                  <button
+                    type="submit"
+                    name="apply-filters"
+                    onClick={this.submitForm}
+                    className="nypl-filter-button"
+                  >
+                    Apply Filters
+                  </button>
+                  <button
+                    id="clear-filters"
+                    type="button"
+                    name="Clear-Filters"
+                    className="nypl-filter-button"
+                    onClick={this.clearFilters}
+                  >
+                    Clear Filters
+                  </button>
+                  {closePopupButton}
+                </div>
               </fieldset>
             </form>
           </FocusTrap>

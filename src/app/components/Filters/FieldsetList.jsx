@@ -18,6 +18,8 @@ class FieldsetList extends React.Component {
     this.state = {
       values: updatedFilterValues,
     };
+
+    this.onFilterClick = this.onFilterClick.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -31,6 +33,7 @@ class FieldsetList extends React.Component {
   onFilterClick(e, filter) {
     // Find the filter we selected and toggle it's selected value.
     const match = _findWhere(this.state.values, { value: filter.value });
+
     if (match) {
       filter.selected = !filter.selected;
     }
@@ -49,9 +52,9 @@ class FieldsetList extends React.Component {
     }
 
     return (
-      <fieldset>
+      <fieldset className="nypl-inner-fieldset">
         {legend && <legend>{legend}</legend>}
-        <ul>
+        <ul className="nypl-generic-checkbox">
           {
             values.map((filter, i) => (
               <li className="nypl-generic-checkbox" key={i}>

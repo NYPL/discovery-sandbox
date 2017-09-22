@@ -7,11 +7,21 @@ class FieldsetDate extends React.Component {
     super(props);
 
     this.state = {
-      dateAfter: '',
-      dateBefore: '',
+      dateAfter: this.props.selectedFilters.dateAfter,
+      dateBefore: this.props.selectedFilters.dateBefore,
     };
 
     this.inputChange = this.inputChange.bind(this);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const updatedDateAfter = nextProps.selectedFilters.dateAfter;
+    const updatedDateBefore = nextProps.selectedFilters.dateBefore;
+
+    this.setState({
+      dateAfter: updatedDateAfter,
+      dateBefore: updatedDateBefore,
+    });
   }
 
   /**
@@ -31,14 +41,7 @@ class FieldsetDate extends React.Component {
     }
 
     if (displayValue) {
-      this.setState(
-        {
-          [displayValue]: value,
-        },
-        () => {
-          this.props.onDateFilterChange(displayValue, value);
-        }
-      );
+      this.props.onDateFilterChange(displayValue, value);
     }
   }
 
@@ -53,31 +56,42 @@ class FieldsetDate extends React.Component {
       errorMessage = '';
     }
 
+    const defaultValueDateAfter = (this.state.dateAfter) ? this.state.dateAfter : null;
+    const defaultValueDateBefore = (this.state.dateBefore) ? this.state.dateBefore : null;
+
     return (
-      <fieldset>
+      <fieldset className="nypl-inner-fieldset nypl-inner-fieldset-date">
         <legend>Date</legend>
-        <div id="input-container">
-          <label htmlFor="start-date" id="startDate-label">Start Year
-            <NumberFormat
-              id="start-date"
-              name="start-date"
-              className="form-text"
-              onChange={this.inputChange}
-              format="####"
-              aria-labelledby="startDate-label dateInput-status"
-            />
-          </label>
-          <label htmlFor="end-date" id="endDate-label">End Year
-            <NumberFormat
-              id="end-date"
-              name="end-date"
-              className="form-text"
-              onChange={this.inputChange}
-              format="####"
-              aria-labelledby="endDate-label dateInput-status"
-            />
-          </label>
-          <span>The Start year cannot be later than the end year</span>
+        <div id="input-container" className="nypl-name-field">
+          <div>
+            <label htmlFor="start-date" id="startDate-label">Start Year
+              <NumberFormat
+                id="start-date"
+                name="start-date"
+                className="form-text"
+                onChange={this.inputChange}
+                format="####"
+                aria-labelledby="startDate-label dateInput-status"
+                value={defaultValueDateAfter}
+              />
+            </label>
+          </div>
+          <div>
+            <label htmlFor="end-date" id="endDate-label">End Year
+              <NumberFormat
+                id="end-date"
+                name="end-date"
+                className="form-text"
+                onChange={this.inputChange}
+                format="####"
+                aria-labelledby="endDate-label dateInput-status"
+                value={defaultValueDateBefore}
+              />
+            </label>
+          </div>
+          {
+            //<span>The Start year cannot be later than the end year</span>
+          }
           <br />
           <span
             id="dateInput-status"
@@ -94,7 +108,15 @@ class FieldsetDate extends React.Component {
 }
 
 FieldsetDate.propTypes = {
+  selectedFilters: PropTypes.object,
   onDateFilterChange: PropTypes.func,
+};
+
+FieldsetDate.defaultProps = {
+  selectedFilters: {
+    dateAfter: '',
+    dateBefore: '',
+  },
 };
 
 export default FieldsetDate;
