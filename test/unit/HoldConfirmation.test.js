@@ -3,9 +3,11 @@ import React from 'react';
 import sinon from 'sinon';
 import { expect } from 'chai';
 import { mount } from 'enzyme';
+
 // Import the component that is going to be tested
 import HoldConfirmation from './../../src/app/components/HoldConfirmation/HoldConfirmation.jsx';
 import Actions from './../../src/app/actions/Actions.js';
+import appConfig from '../../appConfig';
 
 describe('HoldConfirmation', () => {
   describe('After being rendered, <HoldConfirmation>', () => {
@@ -62,8 +64,6 @@ describe('HoldConfirmation', () => {
 
   describe('If the patron is logged in but the App doesn\'t get valid data,<HoldConfirmation>',
     () => {
-      let component;
-      let requireUser;
       const location = {
         query: {
           pickupLocation: 'myr',
@@ -72,6 +72,8 @@ describe('HoldConfirmation', () => {
           errorMessage: 'Something is wrong with the server.',
         },
       };
+      let component;
+      let requireUser;
 
       before(() => {
         Actions.updatePatronData({
@@ -106,19 +108,14 @@ describe('HoldConfirmation', () => {
   );
 
   describe('If the patron is logged in and the App receives valid data, <HoldConfirmation>', () => {
-    let component;
-    let requireUser;
-    let modelDeliveryLocationName;
     const location = {
       query: {
         pickupLocation: 'mala',
       },
     };
-
     const bib = {
       title: ['Harry Potter'],
     };
-
     const deliveryLocations = [
       {
         '@id': 'loc:myr',
@@ -139,6 +136,10 @@ describe('HoldConfirmation', () => {
         shortName: 'Schwarzman Building',
       },
     ];
+    let component;
+    let requireUser;
+    let modelDeliveryLocationName;
+    let pushSpy;
 
     before(() => {
       Actions.updatePatronData({
@@ -151,12 +152,14 @@ describe('HoldConfirmation', () => {
         HoldConfirmation.prototype,
         'modelDeliveryLocationName'
       );
+      pushSpy = sinon.spy();
       component = mount(
         <HoldConfirmation
           location={location}
           bib={bib}
           deliveryLocations={deliveryLocations}
-        />
+        />,
+        { context: { router: { createHref: () => {}, push: pushSpy } } }
       );
     });
 
@@ -214,7 +217,59 @@ describe('HoldConfirmation', () => {
       expect(main.find('#start-new-search')).to.have.length(1);
       expect(main.find('#start-new-search').text()).to.equal('Start a new search');
     });
+
+    it('should call the React Router context with a url to the homepage.', () => {
+      const main = component.find('main');
+
+      main.find('#start-new-search').simulate('click');
+      expect(pushSpy.callCount).to.equal(1);
+      expect(pushSpy.calledWith(`${appConfig.baseUrl}/`)).to.equal(true);
+    });
   });
+
+  describe('If the patron is logged in and the App receives valid data but no delivery ' +
+    'location label',
+    () => {
+      const location = {
+        query: {
+          pickupLocation: 'myr',
+        },
+      };
+      const deliveryLocations = [
+        {
+          '@id': 'loc:myr',
+          address: '',
+          prefLabel: '',
+          shortName: '',
+        },
+      ];
+      let component;
+      let modelDeliveryLocationName;
+
+      before(() => {
+        Actions.updatePatronData({
+          id: '6677200',
+          names: ['Leonard, Mike'],
+          barcodes: ['162402680435300'],
+        });
+        modelDeliveryLocationName = sinon.spy(
+          HoldConfirmation.prototype,
+          'modelDeliveryLocationName'
+        );
+        component = mount(
+          <HoldConfirmation location={location} deliveryLocations={deliveryLocations} />
+        );
+      });
+
+      after(() => {
+        modelDeliveryLocationName.restore();
+        component.unmount();
+      });
+
+      it('should display the layout of request confirmation page\'s header.', () => {
+        expect(modelDeliveryLocationName.returnValues[0]).to.equal('');
+      });
+    });
 
   describe('If the App does not receive valid pick up location data', () => {
     let component;
@@ -314,7 +369,7 @@ describe('HoldConfirmation', () => {
       component.unmount();
     });
 
-    it('should render the defalut error message.', () => {
+    it('should render the default error message.', () => {
       const main = component.find('main');
 
       expect(main.find('#delivery-location')).to.have.length(1);
@@ -425,20 +480,24 @@ describe('HoldConfirmation', () => {
   });
 
   describe('If the patron gets here from a search result page, <HoldConfirmation>', () => {
-    let component;
     const location = {
       query: {
         pickupLocation: 'myr',
         searchKeywords: 'Bryant',
       },
     };
-
     const bib = {
       title: ['Harry Potter'],
     };
+    let component;
+    let pushSpy;
 
     before(() => {
-      component = mount(<HoldConfirmation location={location} bib={bib} />);
+      pushSpy = sinon.spy();
+      component = mount(
+        <HoldConfirmation location={location} bib={bib} searchKeywords="Bryant" />,
+        { context: { router: { createHref: () => {}, push: pushSpy } } }
+      );
     });
 
     after(() => {
@@ -454,6 +513,14 @@ describe('HoldConfirmation', () => {
       expect(main.find('#go-back-search-results').text()).to.equal(
         'Go back to your search results'
       );
+    });
+
+    it('should call the React Router context with the link back to the search results', () => {
+      const main = component.find('main');
+
+      main.find('#go-back-search-results').simulate('click');
+      expect(pushSpy.callCount).to.equal(1);
+      expect(pushSpy.calledWith(`${appConfig.baseUrl}/search?q=Bryant`)).to.equal(true);
     });
   });
 
