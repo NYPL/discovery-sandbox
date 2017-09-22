@@ -5,6 +5,8 @@ import {
   findWhere as _findWhere,
   reject as _reject,
   extend as _extend,
+  map as _map,
+  isEmpty as _isEmpty,
 } from 'underscore';
 
 import {
@@ -82,6 +84,7 @@ class FilterPopup extends React.Component {
       showForm: false,
       js: false,
       filters,
+      raisedErrors: [],
     };
 
     this.openForm = this.openForm.bind(this);
@@ -97,6 +100,10 @@ class FilterPopup extends React.Component {
     this.setState({
       js: true,
     });
+
+    // if (this.refs['nypl-form-error']) {
+    //   ReactDOM.findDOMNode(this.refs['nypl-form-error']).focus();
+    // }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -141,8 +148,52 @@ class FilterPopup extends React.Component {
     this.setState({ selectedFilters });
   }
 
+  /*
+   * getRaisedErrors(errors)
+   * There's a set list of inputs in the filter form. If the key errors from the form
+   * are found in the set list, it will render those errors. This is meant to be an
+   * aggregate list that is displayed at the top of the form.
+   * @param {Array} errors - An array of the objects with key/value pair of input elements in the
+   *   filter form that have incorrect input.
+   * @return {Array}
+   */
+  getRaisedErrors(errors) {
+    const headlineError = {
+      date: 'dateAfter',
+    };
+
+    const raisedErrors = [];
+
+    if (!errors || _isEmpty(errors)) {
+      return null;
+    }
+
+    _map(errors, (val, key) => {
+      raisedErrors.push(<li key={key}><a href={`#${headlineError[val.name]}`}>{val.value}</a></li>);
+    });
+
+    return raisedErrors;
+  }
+
   submitForm(e) {
+    const filterErrors = [];
+
     e.preventDefault();
+
+    if (
+      Number(this.state.selectedFilters.dateBefore) < Number(this.state.selectedFilters.dateAfter)
+    ) {
+      const dateInputError = {
+        name: 'date',
+        value: 'Date',
+      };
+
+      filterErrors.push(dateInputError);
+      this.setState({ raisedErrors: filterErrors });
+
+      return false;
+    }
+
     const apiQuery = this.props.createAPIQuery({ selectedFacets: this.state.selectedFilters });
 
     this.deactivateForm();
@@ -165,6 +216,8 @@ class FilterPopup extends React.Component {
         this.context.router.push(`${appConfig.baseUrl}/search?${apiQuery}`);
       }, 500);
     });
+
+    return true;
   }
 
   /**
@@ -283,6 +336,17 @@ class FilterPopup extends React.Component {
             role="menu"
             className={`${js ? 'popup' : 'popup-no-js'} ${showForm ? 'active' : ''}`}
           >
+            {
+              this.state.raisedErrors && !_isEmpty(this.state.raisedErrors) && (
+                <div className="nypl-form-error" ref="nypl-filter-error" tabIndex="0">
+                  <h2>Error</h2>
+                  <p>Please enter valid filter values:</p>
+                  <ul>
+                    {this.getRaisedErrors(this.state.raisedErrors)}
+                  </ul>
+                </div>
+              )
+            }
             <form
               action={`${appConfig.baseUrl}/search?q=${searchKeywords}`}
               method="POST"
