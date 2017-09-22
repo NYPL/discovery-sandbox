@@ -34,9 +34,9 @@ class FieldsetDate extends React.Component {
     const value = e.target.value;
     let displayValue = '';
 
-    if (e.target.name === 'start-date') {
+    if (e.target.name === 'dateAfter') {
       displayValue = 'dateAfter';
-    } else if (e.target.name === 'end-date') {
+    } else if (e.target.name === 'dateBefore') {
       displayValue = 'dateBefore';
     }
 
