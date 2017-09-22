@@ -357,7 +357,9 @@ class FilterPopup extends React.Component {
             active={showForm}
             id="filter-popup-menu"
             role="menu"
-            className={`${js ? 'popup' : 'popup-no-js'} nypl-popup-filter-menu ${showForm ? 'active' : ''}`}
+            className={
+              `${js ? 'popup' : 'popup-no-js'} nypl-popup-filter-menu ${showForm ? 'active' : ''}`
+            }
           >
             {
               this.state.raisedErrors && !_isEmpty(this.state.raisedErrors) && (
@@ -402,6 +404,7 @@ class FilterPopup extends React.Component {
 
                 <div className="nypl-filter-button-container">
                   <button
+                    id="submit-form"
                     type="submit"
                     name="apply-filters"
                     onClick={this.submitForm}
