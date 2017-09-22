@@ -343,9 +343,12 @@ class FilterPopup extends React.Component {
       <div className="filter-container">
         {openPopupButton}
 
-        <div className={`popup-container ${showForm ? 'active' : ''}`} id={js ? '' : 'popup-no-js'}>
+        <div
+          className={`nypl-popup-container popup-container ${showForm ? 'active' : ''}`}
+          id={js ? '' : 'popup-no-js'}
+        >
           {!js && (<a className="cancel-no-js" href="#"></a>)}
-          <div className="overlay"></div>
+          <div className="nypl-popup-filter-overlay"></div>
           <FocusTrap
             focusTrapOptions={{
               onDeactivate: this.deactivateForm,
@@ -354,7 +357,7 @@ class FilterPopup extends React.Component {
             active={showForm}
             id="filter-popup-menu"
             role="menu"
-            className={`${js ? 'popup' : 'popup-no-js'} ${showForm ? 'active' : ''}`}
+            className={`${js ? 'popup' : 'popup-no-js'} nypl-popup-filter-menu ${showForm ? 'active' : ''}`}
           >
             {
               this.state.raisedErrors && !_isEmpty(this.state.raisedErrors) && (
@@ -372,7 +375,7 @@ class FilterPopup extends React.Component {
               method="POST"
               onSubmit={() => this.onSubmitForm()}
             >
-              <fieldset>
+              <fieldset className="nypl-parent-fieldset">
                 <legend><h3>Filter Results</h3></legend>
 
                 <FieldsetList
@@ -397,25 +400,26 @@ class FilterPopup extends React.Component {
                   onFilterClick={this.onFilterClick}
                 />
 
-                <button
-                  type="submit"
-                  name="apply-filters"
-                  onClick={this.submitForm}
-                  className="nypl-basic-button"
-                >
-                  Apply Filters
-                </button>
-                <button
-                  id="clear-filters"
-                  type="button"
-                  name="Clear-Filters"
-                  className="nypl-basic-button"
-                  onClick={this.clearFilters}
-                >
-                  Clear Filters
-                </button>
-                {closePopupButton}
-
+                <div className="nypl-filter-button-container">
+                  <button
+                    type="submit"
+                    name="apply-filters"
+                    onClick={this.submitForm}
+                    className="nypl-filter-button"
+                  >
+                    Apply Filters
+                  </button>
+                  <button
+                    id="clear-filters"
+                    type="button"
+                    name="Clear-Filters"
+                    className="nypl-filter-button"
+                    onClick={this.clearFilters}
+                  >
+                    Clear Filters
+                  </button>
+                  {closePopupButton}
+                </div>
               </fieldset>
             </form>
           </FocusTrap>

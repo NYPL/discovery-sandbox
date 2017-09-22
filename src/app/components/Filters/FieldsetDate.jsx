@@ -60,32 +60,38 @@ class FieldsetDate extends React.Component {
     const defaultValueDateBefore = (this.state.dateBefore) ? this.state.dateBefore : null;
 
     return (
-      <fieldset>
+      <fieldset className="nypl-inner-fieldset nypl-inner-fieldset-date">
         <legend>Date</legend>
-        <div id="input-container">
-          <label htmlFor="dateAfter" id="dateAfter-label">Start Year
-            <NumberFormat
-              id="dateAfter"
-              name="dateAfter"
-              className="form-text"
-              onChange={this.inputChange}
-              format="####"
-              aria-labelledby="dateAfter-label dateInput-status"
-              value={defaultValueDateAfter}
-            />
-          </label>
-          <label htmlFor="dateBefore" id="dateBefore-label">End Year
-            <NumberFormat
-              id="dateBefore"
-              name="dateBefore"
-              className="form-text"
-              onChange={this.inputChange}
-              format="####"
-              aria-labelledby="dateBefore-label dateInput-status"
-              value={defaultValueDateBefore}
-            />
-          </label>
-          <span>The Start year cannot be later than the end year</span>
+        <div id="input-container" className="nypl-name-field">
+          <div>
+            <label htmlFor="dateAfter" id="dateAfter-label">Start Year
+              <NumberFormat
+                id="dateAfter"
+                name="dateAfter"
+                className="form-text"
+                onChange={this.inputChange}
+                format="####"
+                aria-labelledby="dateAfter-label dateInput-status"
+                value={defaultValueDateAfter}
+              />
+            </label>
+          </div>
+          <div>
+            <label htmlFor="dateBefore" id="dateBefore-label">End Year
+              <NumberFormat
+                id="dateBefore"
+                name="dateBefore"
+                className="form-text"
+                onChange={this.inputChange}
+                format="####"
+                aria-labelledby="dateBefore-label dateInput-status"
+                value={defaultValueDateBefore}
+              />
+            </label>
+          </div>
+          {
+            //<span>The Start year cannot be later than the end year</span>
+          }
           <br />
           <span
             id="dateInput-status"
