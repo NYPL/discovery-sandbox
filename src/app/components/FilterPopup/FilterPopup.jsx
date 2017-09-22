@@ -104,12 +104,6 @@ class FilterPopup extends React.Component {
     });
   }
 
-  componentDidUpdate() {
-    if (this.refs['nypl-filter-error']) {
-      ReactDOM.findDOMNode(this.refs['nypl-filter-error']).focus();
-    }
-  }
-
   componentWillReceiveProps(nextProps) {
     this.setState({
       selectedFilters: _extend({
@@ -120,6 +114,12 @@ class FilterPopup extends React.Component {
       }, nextProps.selectedFilters),
       filters: nextProps.filters,
     });
+  }
+
+  componentDidUpdate() {
+    if (this.refs['nypl-filter-error']) {
+      ReactDOM.findDOMNode(this.refs['nypl-filter-error']).focus();
+    }
   }
 
   onFilterClick(filterId, filter) {
@@ -198,8 +198,9 @@ class FilterPopup extends React.Component {
       filterErrors.push(dateInputError);
     }
 
+    this.setState({ raisedErrors: filterErrors });
+
     if (!_isEmpty(filterErrors)) {
-      this.setState({ raisedErrors: filterErrors });
       return false;
     }
 
