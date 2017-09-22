@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import FocusTrap from 'focus-trap-react';
 import {
@@ -92,6 +93,7 @@ class FilterPopup extends React.Component {
     this.deactivateForm = this.deactivateForm.bind(this);
     this.onFilterClick = this.onFilterClick.bind(this);
     this.onDateFilterChange = this.onDateFilterChange.bind(this);
+    this.validateFilterValue = this.validateFilterValue.bind(this);
     this.submitForm = this.submitForm.bind(this);
     this.clearFilters = this.clearFilters.bind(this);
   }
@@ -100,10 +102,12 @@ class FilterPopup extends React.Component {
     this.setState({
       js: true,
     });
+  }
 
-    // if (this.refs['nypl-form-error']) {
-    //   ReactDOM.findDOMNode(this.refs['nypl-form-error']).focus();
-    // }
+  componentDidUpdate() {
+    if (this.refs['nypl-filter-error']) {
+      ReactDOM.findDOMNode(this.refs['nypl-filter-error']).focus();
+    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -161,7 +165,6 @@ class FilterPopup extends React.Component {
     const headlineError = {
       date: 'dateAfter',
     };
-
     const raisedErrors = [];
 
     if (!errors || _isEmpty(errors)) {
@@ -175,22 +178,38 @@ class FilterPopup extends React.Component {
     return raisedErrors;
   }
 
-  submitForm(e) {
+  /*
+   * validateFilterValue(filterValue)
+   * Checks if the values from the input fields are valid. If no, updates the state.
+   *
+   * @param {Object} filterValue
+   * @return {Boolean}
+   */
+  validateFilterValue(filterValue) {
     const filterErrors = [];
 
-    e.preventDefault();
-
-    if (
-      Number(this.state.selectedFilters.dateBefore) < Number(this.state.selectedFilters.dateAfter)
-    ) {
+    // If the date input values are invalid
+    if (Number(filterValue.dateBefore) < Number(filterValue.dateAfter)) {
       const dateInputError = {
         name: 'date',
         value: 'Date',
       };
 
       filterErrors.push(dateInputError);
-      this.setState({ raisedErrors: filterErrors });
+    }
 
+    if (!_isEmpty(filterErrors)) {
+      this.setState({ raisedErrors: filterErrors });
+      return false;
+    }
+
+    return true;
+  }
+
+  submitForm(e) {
+    e.preventDefault();
+
+    if (!this.validateFilterValue(this.state.selectedFilters)) {
       return false;
     }
 
