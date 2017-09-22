@@ -19,7 +19,7 @@ class Search extends React.Component {
     this.state = {
       field: this.props.field,
       searchKeywords: this.props.searchKeywords,
-      inputError: this.props.searchError === 'true',
+      inputError: this.props.searchError,
     };
 
     this.inputChange = this.inputChange.bind(this);
@@ -50,11 +50,11 @@ class Search extends React.Component {
   triggerSubmit(event) {
     if (event && event.charCode === 13) {
       if (!this.state.searchKeywords) {
-        this.setState({ inputError: true });
+        this.setState({ inputError: 'noKeyword' });
         return;
       }
 
-      this.setState({ inputError: false });
+      this.setState({ inputError: '' });
       this.submitSearchRequest(event);
     }
   }
@@ -80,7 +80,7 @@ class Search extends React.Component {
     const userSearchKeywords = this.state.searchKeywords.trim();
 
     if (!userSearchKeywords) {
-      this.setState({ inputError: true });
+      this.setState({ inputError: 'noKeyword' });
       this.refs.keywords.focus();
       return;
     }
@@ -91,7 +91,7 @@ class Search extends React.Component {
 
     const searchKeywords = userSearchKeywords === '*' ? '' : userSearchKeywords;
 
-    this.setState({ inputError: false });
+    this.setState({ inputError: '' });
     const apiQuery = this.props.createAPIQuery({
       field: this.state.field,
       selectedFacets: {},
@@ -124,7 +124,13 @@ class Search extends React.Component {
   }
 
   render() {
-    const inputError = this.state.inputError;
+    let inputError = '';
+
+    if (this.state.inputError === 'noKeyword') {
+      inputError = 'Please enter a search term.'
+    } else if (this.state.inputError === 'dateFilterError') {
+      inputError = 'Please enter valid dates.'
+    }
 
     return (
       <form
@@ -169,7 +175,7 @@ class Search extends React.Component {
           aria-live="assertive"
           aria-atomic="true"
         >
-          {inputError ? 'Please enter a search term.' : ''}
+          {inputError}
         </span>
       </form>
     );
