@@ -2,16 +2,13 @@
 import React from 'react';
 import MockAdapter from 'axios-mock-adapter';
 import { expect } from 'chai';
-import { shallow, mount } from 'enzyme';
+import { mount } from 'enzyme';
 import axios from 'axios';
 import sinon from 'sinon';
 
 const mock = new MockAdapter(axios);
 
-import {
-  ajaxCall,
-  basicQuery,
-} from '../../src/app/utils/utils.js';
+import { basicQuery } from '../../src/app/utils/utils.js';
 import Search from '../../src/app/components/Search/Search';
 import appConfig from '../../appConfig';
 
