@@ -83,7 +83,11 @@ class App extends React.Component {
     return (
       <DocumentTitle title="Shared Collection Catalog | NYPL">
         <div className="app-wrapper">
-          <Header navData={navConfig.current} skipNav={{ target: 'mainContent' }} />
+          <Header
+            navData={navConfig.current}
+            skipNav={{ target: 'mainContent' }}
+            patron={this.state.patron}
+          />
 
           {React.cloneElement(this.props.children, this.state.data)}
 

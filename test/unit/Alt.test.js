@@ -145,12 +145,34 @@ describe('Alt', () => {
       expect(dispatcherArgs.data).to.eql({ facetKey: 'owner', valueId: 'SASB' });
     });
 
+    it('should pass data to removeFacet Action with a dateBefore filter', () => {
+      const action = actions.REMOVE_FACET;
+
+      actions.removeFacet('dateBefore', '2010');
+
+      const dispatcherArgs = getDispatcherArguments(dispatcherSpy, 7);
+
+      expect(dispatcherArgs.action).to.equal(action);
+      expect(dispatcherArgs.data).to.eql({ facetKey: 'dateBefore', valueId: '2010' });
+    });
+
+    it('should pass data to removeFacet Action with a dateAfter filter', () => {
+      const action = actions.REMOVE_FACET;
+
+      actions.removeFacet('dateAfter', '1999');
+
+      const dispatcherArgs = getDispatcherArguments(dispatcherSpy, 8);
+
+      expect(dispatcherArgs.action).to.equal(action);
+      expect(dispatcherArgs.data).to.eql({ facetKey: 'dateAfter', valueId: '1999' });
+    });
+
     it('should pass data to updatePage Action', () => {
       const action = actions.UPDATE_PAGE;
 
       actions.updatePage('3');
 
-      const dispatcherArgs = getDispatcherArguments(dispatcherSpy, 7);
+      const dispatcherArgs = getDispatcherArguments(dispatcherSpy, 9);
 
       expect(dispatcherArgs.action).to.equal(action);
       expect(dispatcherArgs.data).to.eql('3');
@@ -161,7 +183,7 @@ describe('Alt', () => {
 
       actions.updateSortBy('title_asc');
 
-      const dispatcherArgs = getDispatcherArguments(dispatcherSpy, 8);
+      const dispatcherArgs = getDispatcherArguments(dispatcherSpy, 10);
 
       expect(dispatcherArgs.action).to.equal(action);
       expect(dispatcherArgs.data).to.eql('title_asc');
@@ -172,7 +194,7 @@ describe('Alt', () => {
 
       actions.updateLoadingStatus(true);
 
-      const dispatcherArgs = getDispatcherArguments(dispatcherSpy, 9);
+      const dispatcherArgs = getDispatcherArguments(dispatcherSpy, 11);
 
       expect(dispatcherArgs.action).to.equal(action);
       expect(dispatcherArgs.data).to.eql(true);
@@ -183,7 +205,7 @@ describe('Alt', () => {
 
       actions.updateField('all');
 
-      const dispatcherArgs = getDispatcherArguments(dispatcherSpy, 10);
+      const dispatcherArgs = getDispatcherArguments(dispatcherSpy, 12);
 
       expect(dispatcherArgs.action).to.equal(action);
       expect(dispatcherArgs.data).to.eql('all');
@@ -194,7 +216,7 @@ describe('Alt', () => {
 
       actions.updateForm({});
 
-      const dispatcherArgs = getDispatcherArguments(dispatcherSpy, 11);
+      const dispatcherArgs = getDispatcherArguments(dispatcherSpy, 13);
 
       expect(dispatcherArgs.action).to.equal(action);
       expect(dispatcherArgs.data).to.eql({});
@@ -205,7 +227,7 @@ describe('Alt', () => {
 
       actions.updateDeliveryLocations([]);
 
-      const dispatcherArgs = getDispatcherArguments(dispatcherSpy, 12);
+      const dispatcherArgs = getDispatcherArguments(dispatcherSpy, 14);
 
       expect(dispatcherArgs.action).to.equal(action);
       expect(dispatcherArgs.data).to.eql([]);
@@ -216,7 +238,7 @@ describe('Alt', () => {
 
       actions.updateIsEddRequestable(false);
 
-      const dispatcherArgs = getDispatcherArguments(dispatcherSpy, 13);
+      const dispatcherArgs = getDispatcherArguments(dispatcherSpy, 15);
 
       expect(dispatcherArgs.action).to.equal(action);
       expect(dispatcherArgs.data).to.eql(false);
