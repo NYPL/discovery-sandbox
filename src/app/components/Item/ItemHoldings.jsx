@@ -123,9 +123,14 @@ class ItemHoldings extends React.Component {
    * @param {string} type Either Next or Previous.
    */
   updatePage(page, type) {
+    this.props.updateIsLoadingState(true);
     this.setState({ page });
     trackDiscovery('Pagination', `${type} - page ${page}`);
-    this.context.router.push(`${appConfig.baseUrl}/bib/${this.props.bibId}?itemPage=${page}`);
+
+    setTimeout(() => {
+      this.props.updateIsLoadingState(false);
+      this.context.router.push(`${appConfig.baseUrl}/bib/${this.props.bibId}?itemPage=${page}`);
+    }, 500);
   }
 
   /*
