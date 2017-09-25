@@ -218,7 +218,7 @@ describe('HoldConfirmation', () => {
       expect(main.find('#start-new-search').text()).to.equal('Start a new search');
     });
 
-    it('should call the React Router context with a url to the homepage.', () => {
+    it('should call the React Router context when the link to the homepage is clicked.', () => {
       const main = component.find('main');
 
       main.find('#start-new-search').simulate('click');
