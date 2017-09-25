@@ -202,7 +202,7 @@ class FilterPopup extends React.Component {
 
     this.setState({ raisedErrors: filterErrors });
 
-    if (!_isEmpty(filterErrors) || !filterErrors.length) {
+    if (!_isEmpty(filterErrors) || filterErrors.length) {
       return false;
     }
 
