@@ -139,13 +139,13 @@ const getFacetFilterParam = (filters) => {
     _mapObject(filters, (val, key) => {
       // Property contains an array of its selected filter values:
       if (val.length && _isArray(val)) {
-        _forEach(val, (filter) => {
+        _forEach(val, (filter, index) => {
           if (filter.value && filter.value !== '') {
             // At this time, materialType filter requires _packed for filtering (but not as data).
             // Other filters do not.
-            strSearch += `&filters[${key}]=${encodeURIComponent(filter.value)}`;
+            strSearch += `&filters[${key}][${index}]=${encodeURIComponent(filter.value)}`;
           } else if (typeof filter === 'string') {
-            strSearch += `&filters[${key}]=${encodeURIComponent(filter)}`;
+            strSearch += `&filters[${key}][${index}]=${encodeURIComponent(filter)}`;
           }
         });
       } else if (val.value && val.value !== '') {
@@ -210,6 +210,7 @@ const basicQuery = (props = {}) => {
     const searchKeywordsQuery = query ? encodeURIComponent(query) : '';
     let pageQuery = props.page && props.page !== '1' ? `&page=${props.page}` : '';
     pageQuery = page && page !== '1' ? `&page=${page}` : pageQuery;
+    pageQuery = page === '1' ? '' : pageQuery;
 
     return `q=${searchKeywordsQuery}${filterQuery}${sortQuery}${fieldQuery}${pageQuery}`;
   };
