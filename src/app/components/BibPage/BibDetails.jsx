@@ -370,13 +370,13 @@ class BibDetails extends React.Component {
 
       if (response.data.facet) {
         // Find the index where the field exists in the list of filters from the API
-        index = _findIndex(response.data.facets.itemListElement, { field });
+        index = _findIndex(response.data.filters.itemListElement, { field });
       }
 
       // If the index exists, try to find the filter value from the API
-      if (response.data.facets && response.data.facets.itemListElement
-        && response.data.facets.itemListElement[index]) {
-        const filter = _findWhere(response.data.facets.itemListElement[index].values, { value });
+      if (response.data.filters && response.data.filters.itemListElement
+        && response.data.filters.itemListElement[index]) {
+        const filter = _findWhere(response.data.filters.itemListElement[index].values, { value });
 
         // The API may return a list of filters in the selected field, but the wanted
         // filter may still not appear. If that's the case, return the clicked filter value.
