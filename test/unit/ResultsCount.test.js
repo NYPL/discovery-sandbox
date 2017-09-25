@@ -5,7 +5,7 @@ import { shallow, mount } from 'enzyme';
 
 import ResultsCount from '../../src/app/components/ResultsCount/ResultsCount.jsx';
 
-const facets = {
+const filters = {
   subjectLiteral: {
     owner: [{}],
     subjectLiteral: [{ id: 'Children\'s art El Salvador', value: 'Children\'s art El Salvador' }],
@@ -16,6 +16,12 @@ const facets = {
     creatorLiteral: [{ id: 'Shakespeare', value: 'Shakespeare' }],
     materialType: [],
     issuance: [],
+  },
+  materialTypeAndLanguage: {
+    owner: [],
+    creatorLiteral: [],
+    materialType: [{ label: 'Text', value: 'resourcetypes:aud' }],
+    langauge: [{ label: 'French', value: 'lang:fr' }],
   },
 };
 
@@ -64,6 +70,27 @@ describe('ResultsCount', () => {
         expect(component.find('h2').length).to.equal(1);
         expect(component.find('h2').text())
           .to.equal('No results for the keywords "harry potter". Try a different search.');
+      });
+    });
+
+    describe('No result count with search keywords and selected filters', () => {
+      let component;
+
+      before(() => {
+        component = shallow(
+          <ResultsCount
+            searchKeywords="harry potter"
+            count={0}
+            selectedFacets={filters.materialTypeAndLanguage}
+          />
+        );
+      });
+
+      it('should output that no results were found', () => {
+        expect(component.find('h2').length).to.equal(1);
+        expect(component.find('h2').text())
+          .to.equal('No results for the keywords "harry potter" with the chosen filters. ' +
+            'Try a different search or different filters.');
       });
     });
   });
@@ -174,7 +201,7 @@ describe('ResultsCount', () => {
         before(() => {
           component = mount(
             <ResultsCount
-              selectedFacets={facets.creatorLiteral}
+              selectedFacets={filters.creatorLiteral}
               count={2345}
             />
           );
@@ -193,7 +220,7 @@ describe('ResultsCount', () => {
         before(() => {
           component = mount(
             <ResultsCount
-              selectedFacets={facets.subjectLiteral}
+              selectedFacets={filters.subjectLiteral}
               count={6789}
             />
           );
