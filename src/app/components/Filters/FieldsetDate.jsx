@@ -35,8 +35,9 @@ class FieldsetDate extends React.Component {
     const displayValue = e.target.name;
 
     if (displayValue) {
-      if (displayValue === 'dateAfter' || displayValue === 'dateBefore')
-      this.props.onDateFilterChange(displayValue, value);
+      if (displayValue === 'dateAfter' || displayValue === 'dateBefore') {
+        this.props.onDateFilterChange(displayValue, value);
+      }
     }
   }
 

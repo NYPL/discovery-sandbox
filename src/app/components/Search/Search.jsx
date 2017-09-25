@@ -127,9 +127,9 @@ class Search extends React.Component {
     let inputError = '';
 
     if (this.state.inputError === 'noKeyword') {
-      inputError = 'Please enter a search term.'
+      inputError = 'Please enter a search term.';
     } else if (this.state.inputError === 'dateFilterError') {
-      inputError = 'Please enter valid dates.'
+      inputError = 'Please enter valid dates.';
     }
 
     return (
