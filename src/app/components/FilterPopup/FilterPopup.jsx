@@ -340,6 +340,15 @@ class FilterPopup extends React.Component {
       dateAfter: dateAfterFilterValue,
       dateBefore: dateBeforeFilterValue,
     };
+    const errorMessageBlock = (
+      <div className="nypl-form-error" ref="nypl-filter-error" tabIndex="0">
+        <h2>Error</h2>
+        <p>Please enter valid filter values:</p>
+        <ul>
+          {this.getRaisedErrors(this.state.raisedErrors)}
+        </ul>
+      </div>
+    );
 
     return (
       <div className="filter-container">
@@ -364,15 +373,7 @@ class FilterPopup extends React.Component {
             }
           >
             {
-              this.state.raisedErrors && !_isEmpty(this.state.raisedErrors) && (
-                <div className="nypl-form-error" ref="nypl-filter-error" tabIndex="0">
-                  <h2>Error</h2>
-                  <p>Please enter valid filter values:</p>
-                  <ul>
-                    {this.getRaisedErrors(this.state.raisedErrors)}
-                  </ul>
-                </div>
-              )
+              this.state.raisedErrors && !_isEmpty(this.state.raisedErrors) && (errorMessageBlock)
             }
             <form
               action={`${appConfig.baseUrl}/search?q=${searchKeywords}`}
