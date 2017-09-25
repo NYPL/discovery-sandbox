@@ -9,9 +9,9 @@ class Store {
       updateSearchResults: Actions.updateSearchResults,
       updateSearchKeywords: Actions.updateSearchKeywords,
       updateBib: Actions.updateBib,
-      updateFacets: Actions.updateFacets,
-      updateSelectedFacets: Actions.updateSelectedFacets,
-      removeFacet: Actions.removeFacet,
+      updateFilters: Actions.updateFilters,
+      updateSelectedFilters: Actions.updateSelectedFilters,
+      removeFilter: Actions.removeFilter,
       updatePage: Actions.updatePage,
       updateSortBy: Actions.updateSortBy,
       updateLoadingStatus: Actions.updateLoadingStatus,
@@ -25,8 +25,8 @@ class Store {
       searchResults: {},
       bib: {},
       searchKeywords: '',
-      facets: {},
-      selectedFacets: {
+      filters: {},
+      selectedFilters: {
         materialType: [],
         language: [],
         dateAfter: {},
@@ -55,22 +55,22 @@ class Store {
     this.setState({ bib: data });
   }
 
-  updateFacets(data) {
-    this.setState({ facets: data });
+  updateFilters(data) {
+    this.setState({ filters: data });
   }
 
-  updateSelectedFacets(data) {
-    this.setState({ selectedFacets: data });
+  updateSelectedFilters(data) {
+    this.setState({ selectedFilters: data });
   }
 
-  removeFacet({ facetKey, valueId }) {
-    if (facetKey === 'dateBefore' || facetKey === 'dateAfter') {
-      this.state.selectedFacets[facetKey] = {};
+  removeFilter({ filterKey, valueId }) {
+    if (filterKey === 'dateBefore' || filterKey === 'dateAfter') {
+      this.state.selectedFilters[filterKey] = {};
     } else {
-      this.state.selectedFacets[facetKey] =
-        _reject(this.state.selectedFacets[facetKey], { id: valueId });
+      this.state.selectedFilters[filterKey] =
+        _reject(this.state.selectedFilters[filterKey], { id: valueId });
     }
-    this.setState({ selectedFacets: this.state.selectedFacets });
+    this.setState({ selectedFilters: this.state.selectedFilters });
   }
 
   updatePage(page) {

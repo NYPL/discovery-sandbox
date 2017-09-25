@@ -94,7 +94,7 @@ class Search extends React.Component {
     this.setState({ inputError: '' });
     const apiQuery = this.props.createAPIQuery({
       field: this.state.field,
-      selectedFacets: {},
+      selectedFilters: {},
       searchKeywords,
       page: '1',
     });
@@ -102,15 +102,15 @@ class Search extends React.Component {
     Actions.updateField(this.state.field);
     this.props.updateIsLoadingState(true);
     Actions.updateSearchKeywords(userSearchKeywords);
-    Actions.updateSelectedFacets({});
+    Actions.updateSelectedFilters({});
 
     ajaxCall(`${appConfig.baseUrl}/api?${apiQuery}`, (response) => {
-      if (response.data.searchResults && response.data.facets) {
+      if (response.data.searchResults && response.data.filters) {
         Actions.updateSearchResults(response.data.searchResults);
-        Actions.updateFacets(response.data.facets);
+        Actions.updateFilters(response.data.filters);
       } else {
         Actions.updateSearchResults({});
-        Actions.updateFacets({});
+        Actions.updateFilters({});
       }
       Actions.updateSortBy('relevance');
       Actions.updatePage('1');

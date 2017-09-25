@@ -16,7 +16,7 @@ class ResultsCount extends React.Component {
   displayContext() {
     const {
       searchKeywords,
-      selectedFacets,
+      selectedFilters,
       field,
     } = this.props;
     const keyMapping = {
@@ -43,8 +43,8 @@ class ResultsCount extends React.Component {
       }
     }
 
-    if (!_isEmpty(selectedFacets)) {
-      _mapObject(selectedFacets, (val, key) => {
+    if (!_isEmpty(selectedFilters)) {
+      _mapObject(selectedFilters, (val, key) => {
         const mappedKey = keyMapping[key];
 
         if (val[0] && val[0].value && mappedKey) {
@@ -61,7 +61,7 @@ class ResultsCount extends React.Component {
    * Returns true if there are any selected format or language filters. TODO: add Date.
    */
   checkSelectedFilters() {
-    const selectedFilters = this.props.selectedFacets;
+    const selectedFilters = this.props.selectedFilters;
 
     if ((selectedFilters.materialType && selectedFilters.materialType.length) ||
       (selectedFilters.language && selectedFilters.language.length)) {
@@ -130,7 +130,7 @@ ResultsCount.propTypes = {
   count: PropTypes.number,
   page: PropTypes.number,
   isLoading: PropTypes.bool,
-  selectedFacets: PropTypes.object,
+  selectedFilters: PropTypes.object,
   searchKeywords: PropTypes.string,
   field: PropTypes.string,
 };
@@ -139,7 +139,7 @@ ResultsCount.defaultProps = {
   count: 0,
   isLoading: false,
   page: 1,
-  selectedFacets: {
+  selectedFilters: {
     materialType: [],
     language: [],
     dateAfter: {},

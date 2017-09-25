@@ -216,19 +216,19 @@ class FilterPopup extends React.Component {
       return false;
     }
 
-    const apiQuery = this.props.createAPIQuery({ selectedFacets: this.state.selectedFilters });
+    const apiQuery = this.props.createAPIQuery({ selectedFilters: this.state.selectedFilters });
 
     this.deactivateForm();
     this.props.updateIsLoadingState(true);
 
-    Actions.updateSelectedFacets(this.state.selectedFilters);
+    Actions.updateSelectedFilters(this.state.selectedFilters);
     ajaxCall(`${appConfig.baseUrl}/api?${apiQuery}`, (response) => {
-      if (response.data.searchResults && response.data.facets) {
+      if (response.data.searchResults && response.data.filters) {
         Actions.updateSearchResults(response.data.searchResults);
-        Actions.updateFacets(response.data.facets);
+        Actions.updateFilters(response.data.filters);
       } else {
         Actions.updateSearchResults({});
-        Actions.updateFacets({});
+        Actions.updateFilters({});
       }
       Actions.updateSortBy('relevance');
       Actions.updatePage('1');
