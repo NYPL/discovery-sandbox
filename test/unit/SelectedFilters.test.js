@@ -1,7 +1,7 @@
 /* eslint-env mocha */
 import React from 'react';
 import { expect } from 'chai';
-import { mount } from 'enzyme';
+import { shallow, mount } from 'enzyme';
 
 import SelectedFilters from '../../src/app/components/Filters/SelectedFilters';
 
@@ -12,6 +12,40 @@ describe('SelectedFilters', () => {
     it('should not render a ul', () => {
       const component = mount(<SelectedFilters />);
       expect(component.find('ul').length).to.equal(0);
+    });
+  });
+
+  describe('No JS - clear all link', () => {
+    const selectedFilters = {
+      language: [
+        {
+          value: 'lang:en',
+          label: 'English',
+          count: 4267,
+        },
+      ],
+      materialType: [],
+      dateBefore: '',
+      dateAfter: '',
+    };
+    let component;
+
+    before(() => {
+      component = shallow(<SelectedFilters selectedFilters={selectedFilters} />);
+    });
+
+    it('should render a ul', () => {
+      expect(component.find('ul').length).to.equal(1);
+    });
+
+    it('should render three list items, one text, one with data, one clear link', () => {
+      expect(component.find('li').length).to.equal(3);
+    });
+
+    it('should have a clear all filters link', () => {
+      expect(listItemAt(component, 2).find('a').length).to.equal(1);
+      expect(listItemAt(component, 2).find('a').render().text())
+        .to.equal('Clear FiltersRemove Filter');
     });
   });
 
@@ -44,8 +78,8 @@ describe('SelectedFilters', () => {
         expect(component.find('ul').length).to.equal(1);
       });
 
-      it('should render three list items, one text and two with data', () => {
-        expect(component.find('li').length).to.equal(3);
+      it('should render four list items, one text, two with data, one clear', () => {
+        expect(component.find('li').length).to.equal(4);
       });
 
       it('should have one button inside each list item with the filter name', () => {
@@ -54,6 +88,12 @@ describe('SelectedFilters', () => {
 
         expect(listItemAt(component, 2).find('button').length).to.equal(1);
         expect(listItemAt(component, 2).find('button').text()).to.equal('EnglishRemove Filter');
+      });
+
+      it('should have a clear all filters button', () => {
+        expect(listItemAt(component, 3).find('button').length).to.equal(1);
+        expect(listItemAt(component, 3).find('button').text())
+          .to.equal('Clear FiltersRemove Filter');
       });
     });
 
@@ -96,8 +136,8 @@ describe('SelectedFilters', () => {
         component = mount(<SelectedFilters selectedFilters={selectedFilters} />);
       });
 
-      it('should render four list items', () => {
-        expect(component.find('li').length).to.equal(5);
+      it('should render five list items', () => {
+        expect(component.find('li').length).to.equal(6);
       });
 
       it('should have one button inside each list item with the filter name', () => {
@@ -130,8 +170,8 @@ describe('SelectedFilters', () => {
           component = mount(<SelectedFilters selectedFilters={selectedFilters} />);
         });
 
-        it('should render two list items', () => {
-          expect(component.find('li').length).to.equal(2);
+        it('should render three list items', () => {
+          expect(component.find('li').length).to.equal(3);
         });
 
         it('should have one button inside each list item with the filter name', () => {
@@ -153,8 +193,8 @@ describe('SelectedFilters', () => {
           component = mount(<SelectedFilters selectedFilters={selectedFilters} />);
         });
 
-        it('should render two list items', () => {
-          expect(component.find('li').length).to.equal(2);
+        it('should render three list items', () => {
+          expect(component.find('li').length).to.equal(3);
         });
 
         it('should have one button inside each list item with the filter name', () => {
@@ -176,8 +216,8 @@ describe('SelectedFilters', () => {
           component = mount(<SelectedFilters selectedFilters={selectedFilters} />);
         });
 
-        it('should render three list items', () => {
-          expect(component.find('li').length).to.equal(3);
+        it('should render four list items', () => {
+          expect(component.find('li').length).to.equal(4);
         });
 
         it('should have one button inside each list item with the filter name', () => {

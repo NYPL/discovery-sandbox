@@ -37,6 +37,8 @@ class SelectedFilters extends React.Component {
     this.state = {
       js: false,
     };
+
+    this.clearFilters = this.clearFilters.bind(this);
   }
 
   componentDidMount() {
@@ -84,6 +86,29 @@ class SelectedFilters extends React.Component {
     });
   }
 
+  clearFilters() {
+    const apiQuery = this.props.createAPIQuery({ selectedFacets: {} });
+
+    this.props.updateIsLoadingState(true);
+    Actions.updateSelectedFacets({});
+    ajaxCall(`${appConfig.baseUrl}/api?${apiQuery}`, (response) => {
+      if (response.data.searchResults && response.data.facets) {
+        Actions.updateSearchResults(response.data.searchResults);
+        Actions.updateFacets(response.data.facets);
+      } else {
+        Actions.updateSearchResults({});
+        Actions.updateFacets({});
+      }
+      Actions.updateSortBy('relevance');
+      Actions.updatePage('1');
+
+      setTimeout(() => {
+        this.props.updateIsLoadingState(false);
+        this.context.router.push(`${appConfig.baseUrl}/search?${apiQuery}`);
+      }, 500);
+    });
+  }
+
   render() {
     const {
       selectedFilters,
@@ -95,6 +120,33 @@ class SelectedFilters extends React.Component {
 
     const filtersToRender = [];
     const acceptedFilters = _keys(appConfig.defaultFacets);
+    let clearAllFilters = (
+      <button
+        className="nypl-unset-filter"
+        onClick={this.clearFilters}
+        aria-controls="selected-filters-container"
+        aria-label="Clear all filters"
+      >
+        Clear Filters
+        <XCloseIcon />
+      </button>
+    );
+
+    if (!this.state.js) {
+      const apiQuery = this.props.createAPIQuery({ selectedFacets: {} });
+
+      clearAllFilters = (
+        <a
+          className="nypl-unset-filter"
+          href={`${appConfig.baseUrl}/search?${apiQuery}`}
+          aria-controls="selected-filters-container"
+          aria-label="Clear all filters"
+        >
+          Clear Filters
+          <XCloseIcon />
+        </a>
+      );
+    }
 
     _mapObject(selectedFilters, (values, key) => {
       if (_contains(acceptedFilters, key) && values && values.length) {
@@ -167,6 +219,9 @@ class SelectedFilters extends React.Component {
             return (<li key={i}>{filterBtn}</li>);
           })
         }
+        <li>
+          {clearAllFilters}
+        </li>
       </ul>
     );
   }
