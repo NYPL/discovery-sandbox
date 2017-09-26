@@ -31,6 +31,18 @@ const XCloseIcon = () => (
 );
 
 class SelectedFilters extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      js: false,
+    };
+  }
+
+  componentDidMount() {
+    this.setState({ js: true });
+  }
+
   onFilterClick(e, filter) {
     e.preventDefault();
 
@@ -117,8 +129,8 @@ class SelectedFilters extends React.Component {
           There are {filtersToRender.length} selected filters.
         </li>
         {
-          filtersToRender.map((filter, i) => (
-            <li key={i}>
+          filtersToRender.map((filter, i) => {
+            let filterBtn = (
               <button
                 className="nypl-unset-filter"
                 onClick={(e) => this.onFilterClick(e, filter)}
@@ -128,8 +140,32 @@ class SelectedFilters extends React.Component {
                 {filter.label}
                 <XCloseIcon />
               </button>
-            </li>
-          ))
+            );
+
+            if (!this.state.js) {
+              const removedSelectedFilters = JSON.parse(JSON.stringify(selectedFilters));
+              removedSelectedFilters[filter.field] =
+                _reject(selectedFilters[filter.field], (f) => (f.value === filter.value));
+
+              const apiQuery = this.props.createAPIQuery({
+                selectedFacets: removedSelectedFilters,
+              });
+
+              filterBtn = (
+                <a
+                  className="nypl-unset-filter"
+                  href={`${appConfig.baseUrl}/search?${apiQuery}`}
+                  aria-controls="selected-filters-container"
+                  aria-label={filter.label}
+                >
+                  {filter.label}
+                  <XCloseIcon />
+                </a>
+              );
+            }
+
+            return (<li key={i}>{filterBtn}</li>);
+          })
         }
       </ul>
     );
