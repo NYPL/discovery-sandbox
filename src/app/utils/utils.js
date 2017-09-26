@@ -58,56 +58,61 @@ const createAppHistory = () => {
 };
 
 /**
- * ajaxCall
- * Utility function to make ajax requests.
- * @param {string} endpoint The endpoint to call.
- * @param {function} cb The callback function.
- * @param {function} errorcb The error callback function.
+ * destructureFilters
+ * Get filters directly from the URL and parse and combine them into selected filter values.
+ * @param {object} filters Filters in the url.
+ * @param {object} apiFilters All filters from the API.
  */
-function destructureFilters(filters, apiFacet) {
-  const selectedFacets = {};
-  const facetArray = apiFacet && apiFacet.itemListElement && apiFacet.itemListElement.length ?
-    apiFacet.itemListElement : [];
+function destructureFilters(filters, apiFilters) {
+  const selectedFilters = {};
+  const filterArrayfromAPI =
+    apiFilters && apiFilters.itemListElement && apiFilters.itemListElement.length ?
+    apiFilters.itemListElement : [];
 
   _forEach(filters, (value, key) => {
-    const id = key.substring(8, key.length - 1);
+    const id = key.indexOf('date') !== -1 ?
+      // Because filters are in the form of `filters[language][0]`;
+      key.substring(8, key.length - 1) : key.substring(8, key.length - 4);
 
     if (id === 'dateAfter' || id === 'dateBefore') {
-      selectedFacets[id] = {
-        id: value,
-        value: id === 'dateAfter' ? `after ${value}` : `before ${value}`,
+      selectedFilters[id] = {
+        label: value,
+        value,
       };
     } else if (_isArray(value) && value.length) {
-      if (!selectedFacets[id]) {
-        selectedFacets[id] = [];
+      if (!selectedFilters[id]) {
+        selectedFilters[id] = [];
       }
-      _forEach(value, facetValue => {
-        const facetObjFromAPI = _findWhere(facetArray, { id });
-        if (facetObjFromAPI && facetObjFromAPI.values && facetObjFromAPI.values.length) {
-          const facet = _findWhere(facetObjFromAPI.values, { value: facetValue });
-          if (facet) {
-            selectedFacets[id].push({
-              id: facet.value,
-              value: facet.label || facet.value,
+      _forEach(value, filterValue => {
+        const filterObjFromApi = _findWhere(filterArrayfromAPI, { id });
+        if (filterObjFromApi && filterObjFromApi.values && filterObjFromApi.values.length) {
+          const filter = _findWhere(filterObjFromApi.values, { value: filterValue });
+          if (filter) {
+            selectedFilters[id].push({
+              value: filter.value,
+              label: filter.label || filter.value,
             });
           }
         }
       });
     } else if (typeof value === 'string') {
-      const facetObjFromAPI = _findWhere(facetArray, { id });
-      if (facetObjFromAPI && facetObjFromAPI.values && facetObjFromAPI.values.length) {
-        const facet = _findWhere(facetObjFromAPI.values, { value });
-        if (facet) {
-          selectedFacets[id] = [{
-            id: facet.value,
-            value: facet.label || facet.value,
-          }];
+      const filterObjFromApi = _findWhere(filterArrayfromAPI, { id });
+      if (filterObjFromApi && filterObjFromApi.values && filterObjFromApi.values.length) {
+        const filter = _findWhere(filterObjFromApi.values, { value });
+        if (filter) {
+          if (!selectedFilters[id]) {
+            selectedFilters[id] = [];
+          }
+          selectedFilters[id].push({
+            value: filter.value,
+            label: filter.label || filter.value,
+          });
         }
       }
     }
   });
 
-  return selectedFacets;
+  return selectedFilters;
 }
 
 /**
@@ -139,13 +144,13 @@ const getFacetFilterParam = (filters) => {
     _mapObject(filters, (val, key) => {
       // Property contains an array of its selected filter values:
       if (val.length && _isArray(val)) {
-        _forEach(val, (filter) => {
+        _forEach(val, (filter, index) => {
           if (filter.value && filter.value !== '') {
             // At this time, materialType filter requires _packed for filtering (but not as data).
             // Other filters do not.
-            strSearch += `&filters[${key}]=${encodeURIComponent(filter.value)}`;
+            strSearch += `&filters[${key}][${index}]=${encodeURIComponent(filter.value)}`;
           } else if (typeof filter === 'string') {
-            strSearch += `&filters[${key}]=${encodeURIComponent(filter)}`;
+            strSearch += `&filters[${key}][${index}]=${encodeURIComponent(filter)}`;
           }
         });
       } else if (val.value && val.value !== '') {
@@ -210,6 +215,7 @@ const basicQuery = (props = {}) => {
     const searchKeywordsQuery = query ? encodeURIComponent(query) : '';
     let pageQuery = props.page && props.page !== '1' ? `&page=${props.page}` : '';
     pageQuery = page && page !== '1' ? `&page=${page}` : pageQuery;
+    pageQuery = page === '1' ? '' : pageQuery;
 
     return `q=${searchKeywordsQuery}${filterQuery}${sortQuery}${fieldQuery}${pageQuery}`;
   };
@@ -219,7 +225,7 @@ const basicQuery = (props = {}) => {
  * getReqParams
  * Read the query param from the request object from Express and returns its value or
  * default values for each. It also returns a string representation of all the selected
- * facets in the url from the `filter` query.
+ * filters in the url from the `filter` query.
  * @param {object} query The request query object from Express.
  */
 function getReqParams(query = {}) {

@@ -96,6 +96,7 @@ class Search extends React.Component {
       field: this.state.field,
       selectedFacets: {},
       searchKeywords,
+      page: '1',
     });
 
     Actions.updateField(this.state.field);
@@ -189,7 +190,7 @@ Search.propTypes = {
 Search.defaultProps = {
   field: 'all',
   searchKeywords: '',
-  searchError: 'false',
+  searchError: false,
   updateIsLoadingState: () => {},
 };
 
