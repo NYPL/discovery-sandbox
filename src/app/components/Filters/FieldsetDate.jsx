@@ -59,7 +59,7 @@ class FieldsetDate extends React.Component {
       <fieldset className="nypl-inner-fieldset nypl-inner-fieldset-date">
         <legend>Date</legend>
         <div id="input-container" className="nypl-name-field">
-          <div>
+          <div className="nypl-year-field">
             <label htmlFor="dateAfter" id="dateAfter-label">Start Year
               <NumberFormat
                 id="dateAfter"
@@ -72,7 +72,7 @@ class FieldsetDate extends React.Component {
               />
             </label>
           </div>
-          <div>
+          <div className="nypl-year-field">
             <label htmlFor="dateBefore" id="dateBefore-label">End Year
               <NumberFormat
                 id="dateBefore"
