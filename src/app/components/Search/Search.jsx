@@ -19,7 +19,7 @@ class Search extends React.Component {
     this.state = {
       field: this.props.field,
       searchKeywords: this.props.searchKeywords,
-      inputError: !!this.props.searchError,
+      inputError: this.props.searchError,
     };
 
     this.inputChange = this.inputChange.bind(this);
@@ -50,11 +50,11 @@ class Search extends React.Component {
   triggerSubmit(event) {
     if (event && event.charCode === 13) {
       if (!this.state.searchKeywords) {
-        this.setState({ inputError: 'noKeyword' });
+        this.setState({ inputError: true });
         return;
       }
 
-      this.setState({ inputError: '' });
+      this.setState({ inputError: false });
       this.submitSearchRequest(event);
     }
   }
@@ -80,7 +80,7 @@ class Search extends React.Component {
     const userSearchKeywords = this.state.searchKeywords.trim();
 
     if (!userSearchKeywords) {
-      this.setState({ inputError: 'noKeyword' });
+      this.setState({ inputError: true });
       this.refs.keywords.focus();
       return;
     }
@@ -91,7 +91,7 @@ class Search extends React.Component {
 
     const searchKeywords = userSearchKeywords === '*' ? '' : userSearchKeywords;
 
-    this.setState({ inputError: '' });
+    this.setState({ inputError: false });
     const apiQuery = this.props.createAPIQuery({
       field: this.state.field,
       selectedFacets: {},
@@ -163,6 +163,16 @@ class Search extends React.Component {
           />
           <SearchButton onClick={this.submitSearchRequest} />
         </div>
+        {inputError &&
+          <span
+            className="nypl-field-status"
+            id="search-input-status"
+            aria-live="assertive"
+            aria-atomic="true"
+          >
+            Please enter a search term.
+          </span>
+        }
       </form>
     );
   }
@@ -173,7 +183,7 @@ Search.propTypes = {
   searchKeywords: PropTypes.string,
   createAPIQuery: PropTypes.func,
   updateIsLoadingState: PropTypes.func,
-  searchError: PropTypes.string,
+  searchError: PropTypes.bool,
 };
 
 Search.defaultProps = {
