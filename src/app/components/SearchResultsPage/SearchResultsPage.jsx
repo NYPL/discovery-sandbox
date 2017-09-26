@@ -80,6 +80,11 @@ class SearchResultsPage extends React.Component {
     const searchError = location.query && location.query.error ? location.query.error : '';
     const apiFilters = filters && filters.itemListElement && filters.itemListElement.length ?
       filters.itemListElement : [];
+    let searchErrorMessage = '';
+
+    if (searchError === 'dateFilterError') {
+      searchErrorMessage = 'Please enter valid dates.';
+    }
 
     return (
       <DocumentTitle title="Search Results | Shared Collection Catalog | NYPL">
@@ -101,8 +106,18 @@ class SearchResultsPage extends React.Component {
                     field={field}
                     createAPIQuery={createAPIQuery}
                     updateIsLoadingState={this.updateIsLoadingState}
-                    searchError={searchError}
+                    searchError={searchError === 'noKeyword'}
                   />
+                  {searchErrorMessage &&
+                    <span
+                      className="nypl-field-status"
+                      id="search-input-status"
+                      aria-live="assertive"
+                      aria-atomic="true"
+                    >
+                      {searchErrorMessage}
+                    </span>
+                  }
                   <ResultsCount
                     isLoading={isLoading}
                     count={totalResults}

@@ -155,7 +155,7 @@ const getFilterParam = (filters) => {
         });
       } else if (val.value && val.value !== '') {
         strSearch += `&filters[${key}]=${encodeURIComponent(val.value)}`;
-      } else if (typeof val === 'string') {
+      } else if (val && typeof val === 'string') {
         strSearch += `&filters[${key}]=${encodeURIComponent(val)}`;
       }
     });

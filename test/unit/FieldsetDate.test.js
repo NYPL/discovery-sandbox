@@ -33,17 +33,17 @@ describe('FieldsetDate', () => {
       expect(container.find('label').at(0).text()).to.equal('Start Year');
       expect(container.find('label').at(0).find('input').length).to.equal(1);
       expect(container.find('label').at(0).find('input').props().type).to.equal('text');
-      expect(container.find('label').at(0).props().id).to.equal('startDate-label');
+      expect(container.find('label').at(0).props().id).to.equal('dateAfter-label');
       expect(container.find('label').at(0).find('input').props()['aria-labelledby']).to.equal(
-        'startDate-label dateInput-status'
+        'dateAfter-label dateInput-status'
       );
 
       expect(container.find('label').at(1).text()).to.equal('End Year');
       expect(container.find('label').at(1).find('input').length).to.equal(1);
       expect(container.find('label').at(1).find('input').props().type).to.equal('text');
-      expect(container.find('label').at(1).props().id).to.equal('endDate-label');
+      expect(container.find('label').at(1).props().id).to.equal('dateBefore-label');
       expect(container.find('label').at(1).find('input').props()['aria-labelledby']).to.equal(
-        'endDate-label dateInput-status'
+        'dateBefore-label dateInput-status'
       );
     });
 
@@ -105,7 +105,7 @@ describe('FieldsetDate', () => {
     it('should update selectedFacets based on its input from Start Year input.', () => {
       const startYearInput = component.find('#input-container').find('label').at(0).find('input');
 
-      startYearInput.simulate('change', getCustomEvent(2001, 'start-date'));
+      startYearInput.simulate('change', getCustomEvent(2001, 'dateAfter'));
       component.update();
 
       expect(component.state('dateAfter')).to.equal('2001');
@@ -114,7 +114,7 @@ describe('FieldsetDate', () => {
     it('should update selectedFacets based on its input from End Year input.', () => {
       const endYearInput = component.find('#input-container').find('label').at(1).find('input');
 
-      endYearInput.simulate('change', getCustomEvent(2100, 'end-date'));
+      endYearInput.simulate('change', getCustomEvent(2100, 'dateBefore'));
       component.update();
 
       expect(component.state('dateBefore')).to.equal('2100');

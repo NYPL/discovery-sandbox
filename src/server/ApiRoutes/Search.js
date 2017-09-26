@@ -85,7 +85,13 @@ function searchServerPost(req, res) {
   }
 
   if (!searchKeywords) {
-    return res.redirect(`${appConfig.baseUrl}/search?error=true`);
+    return res.redirect(`${appConfig.baseUrl}/search?error=noKeyword`);
+  }
+
+  if (dateAfter && dateBefore) {
+    if (Number(dateAfter) > Number(dateBefore)) {
+      return res.redirect(`${appConfig.baseUrl}/search?q=${searchKeywords}&error=dateFilterError`);
+    }
   }
 
   const updatedSearchKeywords = searchKeywords === '*' ? '' : searchKeywords;
@@ -121,8 +127,8 @@ function searchServer(req, res, next) {
       const selectedFilters = {
         materialType: [],
         language: [],
-        dateAfter: {},
-        dateBefore: {},
+        dateAfter: '',
+        dateBefore: '',
       };
 
       if (!_isEmpty(filters)) {
@@ -184,8 +190,8 @@ function searchServer(req, res, next) {
         selectedFilters: {
           materialType: [],
           language: [],
-          dateAfter: {},
-          dateBefore: {},
+          dateAfter: '',
+          dateBefore: '',
         },
         searchKeywords: '',
         filters: {},
