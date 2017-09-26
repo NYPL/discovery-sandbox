@@ -80,6 +80,13 @@ class SearchResultsPage extends React.Component {
     const searchError = location.query && location.query.error ? location.query.error : '';
     const filters = facets && facets.itemListElement && facets.itemListElement.length ?
       facets.itemListElement : [];
+    let searchErrorMessage = '';
+
+    if (searchError === 'noKeyword') {
+      searchErrorMessage = 'Please enter a search term.';
+    } else if (searchError === 'dateFilterError') {
+      searchErrorMessage = 'Please enter valid dates.';
+    }
 
     return (
       <DocumentTitle title="Search Results | Shared Collection Catalog | NYPL">
@@ -103,6 +110,14 @@ class SearchResultsPage extends React.Component {
                     updateIsLoadingState={this.updateIsLoadingState}
                     searchError={searchError}
                   />
+                  <span
+                    className="nypl-field-status"
+                    id="search-input-status"
+                    aria-live="assertive"
+                    aria-atomic="true"
+                  >
+                    {searchErrorMessage}
+                  </span>
                   <ResultsCount
                     isLoading={isLoading}
                     count={totalResults}
