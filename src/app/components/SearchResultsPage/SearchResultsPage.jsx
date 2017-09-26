@@ -82,9 +82,7 @@ class SearchResultsPage extends React.Component {
       facets.itemListElement : [];
     let searchErrorMessage = '';
 
-    if (searchError === 'noKeyword') {
-      searchErrorMessage = 'Please enter a search term.';
-    } else if (searchError === 'dateFilterError') {
+    if (searchError === 'dateFilterError') {
       searchErrorMessage = 'Please enter valid dates.';
     }
 
@@ -108,16 +106,18 @@ class SearchResultsPage extends React.Component {
                     field={field}
                     createAPIQuery={createAPIQuery}
                     updateIsLoadingState={this.updateIsLoadingState}
-                    searchError={searchError}
+                    searchError={searchError === 'noKeyword'}
                   />
-                  <span
-                    className="nypl-field-status"
-                    id="search-input-status"
-                    aria-live="assertive"
-                    aria-atomic="true"
-                  >
-                    {searchErrorMessage}
-                  </span>
+                  {searchErrorMessage &&
+                    <span
+                      className="nypl-field-status"
+                      id="search-input-status"
+                      aria-live="assertive"
+                      aria-atomic="true"
+                    >
+                      {searchErrorMessage}
+                    </span>
+                  }
                   <ResultsCount
                     isLoading={isLoading}
                     count={totalResults}

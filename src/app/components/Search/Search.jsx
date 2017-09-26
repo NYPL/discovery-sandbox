@@ -19,7 +19,7 @@ class Search extends React.Component {
     this.state = {
       field: this.props.field,
       searchKeywords: this.props.searchKeywords,
-      inputError: !!this.props.searchError,
+      inputError: this.props.searchError,
     };
 
     this.inputChange = this.inputChange.bind(this);
@@ -163,6 +163,16 @@ class Search extends React.Component {
           />
           <SearchButton onClick={this.submitSearchRequest} />
         </div>
+        {inputError &&
+          <span
+            className="nypl-field-status"
+            id="search-input-status"
+            aria-live="assertive"
+            aria-atomic="true"
+          >
+            Please enter a search term.
+          </span>
+        }
       </form>
     );
   }
@@ -173,7 +183,7 @@ Search.propTypes = {
   searchKeywords: PropTypes.string,
   createAPIQuery: PropTypes.func,
   updateIsLoadingState: PropTypes.func,
-  searchError: PropTypes.string,
+  searchError: PropTypes.bool,
 };
 
 Search.defaultProps = {
