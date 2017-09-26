@@ -159,7 +159,11 @@ describe('ItemHoldings', () => {
 
     before(() => {
       component = mount(
-        <ItemHoldings items={longListItems} shortenItems={false} />,
+        <ItemHoldings
+          items={longListItems}
+          shortenItems={false}
+          updateIsLoadingState={() => {}}
+        />,
         { context: { router: { createHref: () => {}, push: () => {} } } }
       );
     });
