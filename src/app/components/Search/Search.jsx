@@ -50,11 +50,11 @@ class Search extends React.Component {
   triggerSubmit(event) {
     if (event && event.charCode === 13) {
       if (!this.state.searchKeywords) {
-        this.setState({ inputError: 'noKeyword' });
+        this.setState({ inputError: true });
         return;
       }
 
-      this.setState({ inputError: '' });
+      this.setState({ inputError: false });
       this.submitSearchRequest(event);
     }
   }
@@ -80,7 +80,7 @@ class Search extends React.Component {
     const userSearchKeywords = this.state.searchKeywords.trim();
 
     if (!userSearchKeywords) {
-      this.setState({ inputError: 'noKeyword' });
+      this.setState({ inputError: true });
       this.refs.keywords.focus();
       return;
     }
@@ -91,7 +91,7 @@ class Search extends React.Component {
 
     const searchKeywords = userSearchKeywords === '*' ? '' : userSearchKeywords;
 
-    this.setState({ inputError: '' });
+    this.setState({ inputError: false });
     const apiQuery = this.props.createAPIQuery({
       field: this.state.field,
       selectedFacets: {},
