@@ -32,16 +32,12 @@ class FieldsetDate extends React.Component {
    */
   inputChange(e) {
     const value = e.target.value;
-    let displayValue = '';
-
-    if (e.target.name === 'dateAfter') {
-      displayValue = 'dateAfter';
-    } else if (e.target.name === 'dateBefore') {
-      displayValue = 'dateBefore';
-    }
+    const displayValue = e.target.name;
 
     if (displayValue) {
-      this.props.onDateFilterChange(displayValue, value);
+      if (displayValue === 'dateAfter' || displayValue === 'dateBefore') {
+        this.props.onDateFilterChange(displayValue, value);
+      }
     }
   }
 

@@ -182,7 +182,7 @@ class FilterPopup extends React.Component {
 
   /*
    * validateFilterValue(filterValue)
-   * Checks if the values from the input fields are valid. If no, updates the state.
+   * Checks if the values from the input fields are valid. If not, updates the state.
    *
    * @param {Object} filterValue
    * @return {Boolean}
@@ -190,19 +190,21 @@ class FilterPopup extends React.Component {
   validateFilterValue(filterValue) {
     const filterErrors = [];
 
-    // If the date input values are invalid
-    if (Number(filterValue.dateBefore) < Number(filterValue.dateAfter)) {
-      const dateInputError = {
-        name: 'date',
-        value: 'Date',
-      };
+    if (filterValue.dateBefore && filterValue.dateAfter) {
+      // If the date input values are invalid
+      if (Number(filterValue.dateBefore) < Number(filterValue.dateAfter)) {
+        const dateInputError = {
+          name: 'date',
+          value: 'Date',
+        };
 
-      filterErrors.push(dateInputError);
+        filterErrors.push(dateInputError);
+      }
     }
 
     this.setState({ raisedErrors: filterErrors });
 
-    if (!_isEmpty(filterErrors)) {
+    if (!_isEmpty(filterErrors) || filterErrors.length) {
       return false;
     }
 
@@ -340,6 +342,15 @@ class FilterPopup extends React.Component {
       dateAfter: dateAfterFilterValue,
       dateBefore: dateBeforeFilterValue,
     };
+    const errorMessageBlock = (
+      <div className="nypl-form-error" ref="nypl-filter-error" tabIndex="0">
+        <h2>Error</h2>
+        <p>Please enter valid filter values:</p>
+        <ul>
+          {this.getRaisedErrors(this.state.raisedErrors)}
+        </ul>
+      </div>
+    );
 
     return (
       <div className="filter-container">
@@ -364,15 +375,7 @@ class FilterPopup extends React.Component {
             }
           >
             {
-              this.state.raisedErrors && !_isEmpty(this.state.raisedErrors) && (
-                <div className="nypl-form-error" ref="nypl-filter-error" tabIndex="0">
-                  <h2>Error</h2>
-                  <p>Please enter valid filter values:</p>
-                  <ul>
-                    {this.getRaisedErrors(this.state.raisedErrors)}
-                  </ul>
-                </div>
-              )
+              this.state.raisedErrors && !_isEmpty(this.state.raisedErrors) && (errorMessageBlock)
             }
             <form
               action={`${appConfig.baseUrl}/search?q=${searchKeywords}`}

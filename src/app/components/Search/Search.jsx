@@ -19,7 +19,7 @@ class Search extends React.Component {
     this.state = {
       field: this.props.field,
       searchKeywords: this.props.searchKeywords,
-      inputError: this.props.searchError,
+      inputError: !!this.props.searchError,
     };
 
     this.inputChange = this.inputChange.bind(this);
@@ -125,13 +125,7 @@ class Search extends React.Component {
   }
 
   render() {
-    let inputError = '';
-
-    if (this.state.inputError === 'noKeyword') {
-      inputError = 'Please enter a search term.'
-    } else if (this.state.inputError === 'dateFilterError') {
-      inputError = 'Please enter valid dates.'
-    }
+    const inputError = this.state.inputError;
 
     return (
       <form
@@ -170,14 +164,6 @@ class Search extends React.Component {
           />
           <SearchButton onClick={this.submitSearchRequest} />
         </div>
-        <span
-          className="nypl-field-status"
-          id="search-input-status"
-          aria-live="assertive"
-          aria-atomic="true"
-        >
-          {inputError}
-        </span>
       </form>
     );
   }
