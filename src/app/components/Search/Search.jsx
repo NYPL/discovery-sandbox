@@ -189,7 +189,7 @@ Search.propTypes = {
 Search.defaultProps = {
   field: 'all',
   searchKeywords: '',
-  searchError: 'false',
+  searchError: false,
   updateIsLoadingState: () => {},
 };
 
