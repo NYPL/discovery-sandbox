@@ -32,16 +32,12 @@ class FieldsetDate extends React.Component {
    */
   inputChange(e) {
     const value = e.target.value;
-    let displayValue = '';
-
-    if (e.target.name === 'start-date') {
-      displayValue = 'dateAfter';
-    } else if (e.target.name === 'end-date') {
-      displayValue = 'dateBefore';
-    }
+    const displayValue = e.target.name;
 
     if (displayValue) {
-      this.props.onDateFilterChange(displayValue, value);
+      if (displayValue === 'dateAfter' || displayValue === 'dateBefore') {
+        this.props.onDateFilterChange(displayValue, value);
+      }
     }
   }
 
@@ -64,27 +60,27 @@ class FieldsetDate extends React.Component {
         <legend>Date</legend>
         <div id="input-container" className="nypl-name-field">
           <div>
-            <label htmlFor="start-date" id="startDate-label">Start Year
+            <label htmlFor="dateAfter" id="dateAfter-label">Start Year
               <NumberFormat
-                id="start-date"
-                name="start-date"
+                id="dateAfter"
+                name="dateAfter"
                 className="form-text"
                 onChange={this.inputChange}
                 format="####"
-                aria-labelledby="startDate-label dateInput-status"
+                aria-labelledby="dateAfter-label dateInput-status"
                 value={defaultValueDateAfter}
               />
             </label>
           </div>
           <div>
-            <label htmlFor="end-date" id="endDate-label">End Year
+            <label htmlFor="dateBefore" id="dateBefore-label">End Year
               <NumberFormat
-                id="end-date"
-                name="end-date"
+                id="dateBefore"
+                name="dateBefore"
                 className="form-text"
                 onChange={this.inputChange}
                 format="####"
-                aria-labelledby="endDate-label dateInput-status"
+                aria-labelledby="dateBefore-label dateInput-status"
                 value={defaultValueDateBefore}
               />
             </label>
