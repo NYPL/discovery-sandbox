@@ -14,11 +14,12 @@ import Actions from '../../actions/Actions';
 import appConfig from '../../../../appConfig';
 import { ajaxCall } from '../../utils/utils';
 
-const XCloseIcon = () => (
+const XCloseIcon = (props) => (
   <svg
     className="nypl-icon svgIcon"
     preserveAspectRatio="xMidYMid meet"
     viewBox="0 0 32 32"
+    aria-hidden={props['aria-hidden']}
   >
     <title>Remove Filter</title>
     <path
@@ -29,6 +30,10 @@ const XCloseIcon = () => (
     />
   </svg>
 );
+
+XCloseIcon.propTypes = {
+  'aria-hidden': React.PropTypes.bool,
+};
 
 class SelectedFilters extends React.Component {
   constructor(props) {
@@ -128,7 +133,7 @@ class SelectedFilters extends React.Component {
         aria-label="Clear all filters"
       >
         Clear Filters
-        <XCloseIcon />
+        <XCloseIcon aria-hidden />
       </button>
     );
 
@@ -170,59 +175,59 @@ class SelectedFilters extends React.Component {
     }
 
     return (
-      <ul
-        className="selected-filters-container"
-        aria-live="assertive"
-        aria-atomic="true"
-        aria-relevant="additions removals"
-        aria-describedby="read-text"
-      >
-        <li id="read-text" className="visuallyHidden">
-          There are {filtersToRender.length} selected filters.
-        </li>
-        {
-          filtersToRender.map((filter, i) => {
-            let filterBtn = (
-              <button
-                className="nypl-unset-filter"
-                onClick={(e) => this.onFilterClick(e, filter)}
-                aria-controls="selected-filters-container"
-                aria-label={filter.label}
-              >
-                {filter.label}
-                <XCloseIcon />
-              </button>
-            );
-
-            if (!this.state.js) {
-              const removedSelectedFilters = JSON.parse(JSON.stringify(selectedFilters));
-              removedSelectedFilters[filter.field] =
-                _reject(selectedFilters[filter.field], (f) => (f.value === filter.value));
-
-              const apiQuery = this.props.createAPIQuery({
-                selectedFilters: removedSelectedFilters,
-              });
-
-              filterBtn = (
-                <a
+      <div>
+        <span id="read-text" className="visuallyHidden">Selected filters.</span>
+        <ul
+          id="selected-filters-container"
+          aria-live="assertive"
+          aria-atomic="true"
+          aria-relevant="additions removals"
+          aria-describedby="read-text"
+        >
+          {
+            filtersToRender.map((filter, i) => {
+              let filterBtn = (
+                <button
                   className="nypl-unset-filter"
-                  href={`${appConfig.baseUrl}/search?${apiQuery}`}
+                  onClick={(e) => this.onFilterClick(e, filter)}
                   aria-controls="selected-filters-container"
-                  aria-label={filter.label}
+                  aria-label={`${filter.label} Remove Filter`}
                 >
                   {filter.label}
                   <XCloseIcon />
-                </a>
+                </button>
               );
-            }
 
-            return (<li key={i}>{filterBtn}</li>);
-          })
-        }
-        <li>
-          {clearAllFilters}
-        </li>
-      </ul>
+              if (!this.state.js) {
+                const removedSelectedFilters = JSON.parse(JSON.stringify(selectedFilters));
+                removedSelectedFilters[filter.field] =
+                  _reject(selectedFilters[filter.field], (f) => (f.value === filter.value));
+
+                const apiQuery = this.props.createAPIQuery({
+                  selectedFilters: removedSelectedFilters,
+                });
+
+                filterBtn = (
+                  <a
+                    className="nypl-unset-filter"
+                    href={`${appConfig.baseUrl}/search?${apiQuery}`}
+                    aria-controls="selected-filters-container"
+                    aria-label={filter.label}
+                  >
+                    {filter.label}
+                    <XCloseIcon />
+                  </a>
+                );
+              }
+
+              return (<li key={i}>{filterBtn}</li>);
+            })
+          }
+          <li>
+            {clearAllFilters}
+          </li>
+        </ul>
+      </div>
     );
   }
 }
