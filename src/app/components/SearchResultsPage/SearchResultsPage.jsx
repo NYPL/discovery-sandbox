@@ -45,8 +45,8 @@ class SearchResultsPage extends React.Component {
     const {
       searchResults,
       searchKeywords,
-      selectedFacets,
-      facets,
+      selectedFilters,
+      filters,
       page,
       sortBy,
       field,
@@ -78,8 +78,8 @@ class SearchResultsPage extends React.Component {
       });
     };
     const searchError = location.query && location.query.error ? location.query.error : '';
-    const filters = facets && facets.itemListElement && facets.itemListElement.length ?
-      facets.itemListElement : [];
+    const apiFilters = filters && filters.itemListElement && filters.itemListElement.length ?
+      filters.itemListElement : [];
     let searchErrorMessage = '';
 
     if (searchError === 'dateFilterError') {
@@ -121,7 +121,7 @@ class SearchResultsPage extends React.Component {
                   <ResultsCount
                     isLoading={isLoading}
                     count={totalResults}
-                    selectedFacets={selectedFacets}
+                    selectedFilters={selectedFilters}
                     searchKeywords={searchKeywords}
                     field={field}
                     page={parseInt(page, 10)}
@@ -137,10 +137,10 @@ class SearchResultsPage extends React.Component {
                           updateIsLoadingState={this.updateIsLoadingState}
                         />
                         <FilterPopup
-                          filters={filters}
+                          filters={apiFilters}
                           createAPIQuery={createAPIQuery}
                           updateIsLoadingState={this.updateIsLoadingState}
-                          selectedFilters={selectedFacets}
+                          selectedFilters={selectedFilters}
                           searchKeywords={searchKeywords}
                         />
                       </div>
@@ -149,7 +149,7 @@ class SearchResultsPage extends React.Component {
 
                   {
                     <SelectedFilters
-                      selectedFilters={selectedFacets}
+                      selectedFilters={selectedFilters}
                       createAPIQuery={createAPIQuery}
                       updateIsLoadingState={this.updateIsLoadingState}
                     />
@@ -206,14 +206,14 @@ class SearchResultsPage extends React.Component {
 SearchResultsPage.propTypes = {
   searchResults: PropTypes.object,
   searchKeywords: PropTypes.string,
-  selectedFacets: PropTypes.object,
+  selectedFilters: PropTypes.object,
   page: PropTypes.string,
   location: PropTypes.object,
   sortBy: PropTypes.string,
   field: PropTypes.string,
   isLoading: PropTypes.bool,
   error: PropTypes.object,
-  facets: PropTypes.object,
+  filters: PropTypes.object,
 };
 
 SearchResultsPage.defaultProps = {

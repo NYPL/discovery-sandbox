@@ -10,9 +10,9 @@ const router = express.Router();
 function MainApp(req, res, next) {
   res.locals.data.Store = {
     searchResults: {},
-    selectedFacets: {},
+    selectedFilters: {},
     searchKeywords: '',
-    facets: {},
+    filters: {},
     page: '1',
     sortBy: 'relevance',
     field: 'all',

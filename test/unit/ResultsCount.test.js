@@ -81,7 +81,7 @@ describe('ResultsCount', () => {
           <ResultsCount
             searchKeywords="harry potter"
             count={0}
-            selectedFacets={filters.materialTypeAndLanguage}
+            selectedFilters={filters.materialTypeAndLanguage}
           />
         );
       });
@@ -191,17 +191,17 @@ describe('ResultsCount', () => {
       });
     });
 
-    // Currently, the use case is only ONE facet being displayed at a time.
-    // Why? We have no actionable selection for facets/filters, and the only way to select
-    // a facet is from the bib page using a link.
-    describe('Selected Facets', () => {
-      describe('creatorLiteral selected facet', () => {
+    // Currently, the use case is only ONE filter being displayed at a time.
+    // Why? We have no actionable selection for filters/filters, and the only way to select
+    // a filter is from the bib page using a link.
+    describe('Selected Filters', () => {
+      describe('creatorLiteral selected filter', () => {
         let component;
 
         before(() => {
           component = mount(
             <ResultsCount
-              selectedFacets={filters.creatorLiteral}
+              selectedFilters={filters.creatorLiteral}
               count={2345}
             />
           );
@@ -214,13 +214,13 @@ describe('ResultsCount', () => {
         });
       });
 
-      describe('subjectLiteral selected facet', () => {
+      describe('subjectLiteral selected filter', () => {
         let component;
 
         before(() => {
           component = mount(
             <ResultsCount
-              selectedFacets={filters.subjectLiteral}
+              selectedFilters={filters.subjectLiteral}
               count={6789}
             />
           );
