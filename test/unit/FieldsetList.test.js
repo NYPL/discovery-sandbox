@@ -8,18 +8,17 @@ import FieldsetList from '../../src/app/components/Filters/FieldsetList';
 const listItemAt = (component, n) => component.find('li').at(n);
 
 describe('FilterPopup', () => {
-  // describe('Default', () => {
-  //   let component;
-  //
-  //   before(() => {
-  //     component = mount(<FieldsetList />);
-  //   });
-  //
-  //   // TODO: Enzyme doesn't seem to check when components are null ??
-  //   // it('should return null', () => {
-  //   //   expect(component.get(0)).to.equal(false);
-  //   // });
-  // });
+  describe('Default', () => {
+    let component;
+
+    before(() => {
+      component = mount(<FieldsetList />);
+    });
+
+    it('should return null', () => {
+      expect(component.html()).to.equal(null);
+    });
+  });
 
   describe('Default', () => {
     const languageFilter = {

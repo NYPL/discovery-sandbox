@@ -39,11 +39,11 @@ const ajaxCall = (
 };
 
 /**
- * getDefaultFacets
- * Get the default facets needed from the API.
+ * getDefaultFilters
+ * Get the default filters needed from the API.
  * @return {object}
  */
-const getDefaultFacets = () => _extend({}, appConfig.defaultFacets);
+const getDefaultFilters = () => _extend({}, appConfig.defaultFilters);
 
 /**
  * createAppHistory
@@ -133,11 +133,11 @@ const getSortQuery = (sortBy = '') => {
 };
 
 /**
- * getFacetFilterParam
+ * getFilterParam
  * Get the search params from the filter values.
  * @param {object} filters Key/value pair of filter and the selected value.
  */
-const getFacetFilterParam = (filters) => {
+const getFilterParam = (filters) => {
   let strSearch = '';
 
   if (!_isEmpty(filters)) {
@@ -155,7 +155,7 @@ const getFacetFilterParam = (filters) => {
         });
       } else if (val.value && val.value !== '') {
         strSearch += `&filters[${key}]=${encodeURIComponent(val.value)}`;
-      } else if (typeof val === 'string') {
+      } else if (val && typeof val === 'string') {
         strSearch += `&filters[${key}]=${encodeURIComponent(val)}`;
       }
     });
@@ -203,13 +203,13 @@ const basicQuery = (props = {}) => {
   return ({
     sortBy,
     field,
-    selectedFacets,
+    selectedFilters,
     searchKeywords,
     page,
   }) => {
     const sortQuery = getSortQuery(sortBy || props.sortBy);
     const fieldQuery = getFieldParam(field || props.field);
-    const filterQuery = getFacetFilterParam(selectedFacets || props.selectedFacets);
+    const filterQuery = getFilterParam(selectedFilters || props.selectedFilters);
     // `searchKeywords` can be an empty string, so check if it's undefined instead.
     const query = searchKeywords !== undefined ? searchKeywords : props.searchKeywords;
     const searchKeywordsQuery = query ? encodeURIComponent(query) : '';
@@ -265,7 +265,7 @@ function getReqParams(query = {}) {
  * @return {object}
  */
 function parseServerSelectedFilters(filters, dateAfter, dateBefore) {
-  const selectedFacets = {
+  const selectedFilters = {
     materialType: [],
     language: [],
     dateAfter: {},
@@ -276,16 +276,16 @@ function parseServerSelectedFilters(filters, dateAfter, dateBefore) {
     _chain(filters)
       // Each incoming filter is in JSON string format so it needs to be parsed first.
       .map(filter => JSON.parse(filter))
-      // Group selected facets into arrays according to their field.
+      // Group selected filters into arrays according to their field.
       .groupBy('field')
       // Created the needed data structure.
-      .mapObject((facetArray, key) => {
+      .mapObject((filterArray, key) => {
         if (key) {
-          selectedFacets[key] =
-            facetArray.map((facet) => ({
-              value: facet.value,
-              label: facet.label,
-              count: facet.count,
+          selectedFilters[key] =
+            filterArray.map((filter) => ({
+              value: filter.value,
+              label: filter.label,
+              count: filter.count,
               selected: true,
             }));
         }
@@ -293,14 +293,14 @@ function parseServerSelectedFilters(filters, dateAfter, dateBefore) {
   }
 
   if (dateAfter) {
-    selectedFacets.dateAfter = { id: dateAfter, value: dateAfter };
+    selectedFilters.dateAfter = { id: dateAfter, value: dateAfter };
   }
 
   if (dateBefore) {
-    selectedFacets.dateBefore = { id: dateBefore, value: dateBefore };
+    selectedFilters.dateBefore = { id: dateBefore, value: dateBefore };
   }
 
-  return selectedFacets;
+  return selectedFilters;
 }
 
 /**
@@ -366,9 +366,9 @@ export {
   getSortQuery,
   createAppHistory,
   getFieldParam,
-  getFacetFilterParam,
+  getFilterParam,
   destructureFilters,
-  getDefaultFacets,
+  getDefaultFilters,
   basicQuery,
   getReqParams,
   parseServerSelectedFilters,

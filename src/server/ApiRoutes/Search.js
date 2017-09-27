@@ -19,7 +19,7 @@ const createAPIQuery = basicQuery({
   searchKeywords: '',
   sortBy: '',
   field: '',
-  selectedFacets: {},
+  selectedFilters: {},
 });
 
 const nyplApiClientCall = (query) =>
@@ -29,7 +29,7 @@ function search(searchKeywords, page, sortBy, order, field, filters, cb, errorcb
   const apiQuery = createAPIQuery({
     searchKeywords,
     sortBy: sortBy ? `${sortBy}_${order}` : '',
-    selectedFacets: filters,
+    selectedFilters: filters,
     field,
     page,
   });
@@ -59,7 +59,11 @@ function searchAjax(req, res) {
     order,
     fieldQuery,
     filters,
-    (facets, searchResults, pageQuery) => res.json({ facets, searchResults, pageQuery }),
+    (apiFilters, searchResults, pageQuery) => res.json({
+      filters: apiFilters,
+      searchResults,
+      pageQuery,
+    }),
     (error) => res.json(error)
   );
 }
@@ -71,7 +75,7 @@ function searchServerPost(req, res) {
   // with one selected filter.
   const reqFilters = _isArray(filters) ? filters : [filters];
 
-  const selectedFacets = parseServerSelectedFilters(reqFilters, dateAfter, dateBefore);
+  const selectedFilters = parseServerSelectedFilters(reqFilters, dateAfter, dateBefore);
   let searchKeywords = q;
   let field = fieldQuery;
   let sortBy = sortQuery;
@@ -81,7 +85,13 @@ function searchServerPost(req, res) {
   }
 
   if (!searchKeywords) {
-    return res.redirect(`${appConfig.baseUrl}/search?error=true`);
+    return res.redirect(`${appConfig.baseUrl}/search?error=noKeyword`);
+  }
+
+  if (dateAfter && dateBefore) {
+    if (Number(dateAfter) > Number(dateBefore)) {
+      return res.redirect(`${appConfig.baseUrl}/search?q=${searchKeywords}&error=dateFilterError`);
+    }
   }
 
   const updatedSearchKeywords = searchKeywords === '*' ? '' : searchKeywords;
@@ -95,7 +105,7 @@ function searchServerPost(req, res) {
 
   const apiQuery = createAPIQuery({
     searchKeywords: encodeURIComponent(updatedSearchKeywords),
-    selectedFacets,
+    selectedFilters,
     field,
     sortBy,
   });
@@ -113,47 +123,47 @@ function searchServer(req, res, next) {
     order,
     fieldQuery,
     filters,
-    (facets, data, pageQuery) => {
-      const selectedFacets = {
+    (apiFilters, data, pageQuery) => {
+      const selectedFilters = {
         materialType: [],
         language: [],
-        dateAfter: {},
-        dateBefore: {},
+        dateAfter: '',
+        dateBefore: '',
       };
 
       if (!_isEmpty(filters)) {
         _mapObject(filters, (value, key) => {
-          let facetObj;
+          let filterObj;
           if (key === 'dateAfter' || key === 'dateBefore') {
-            selectedFacets[key] = value;
+            selectedFilters[key] = value;
           } else if (_isArray(value) && value.length) {
-            if (!selectedFacets[key]) {
-              selectedFacets[key] = [];
+            if (!selectedFilters[key]) {
+              selectedFilters[key] = [];
             }
-            _forEach(value, facetValue => {
-              facetObj = _findWhere(facets.itemListElement, { field: key });
-              const foundFacet =
-                _isEmpty(facetObj) ? {} : _findWhere(facetObj.values, { value: facetValue });
+            _forEach(value, filterValue => {
+              filterObj = _findWhere(apiFilters.itemListElement, { field: key });
+              const foundFilter =
+                _isEmpty(filterObj) ? {} : _findWhere(filterObj.values, { value: filterValue });
 
-              if (foundFacet && !_findWhere(selectedFacets[key], { id: foundFacet.value })) {
-                selectedFacets[key].push({
+              if (foundFilter && !_findWhere(selectedFilters[key], { id: foundFilter.value })) {
+                selectedFilters[key].push({
                   selected: true,
-                  value: foundFacet.value,
-                  label: foundFacet.label || foundFacet.value,
-                  count: foundFacet.count,
+                  value: foundFilter.value,
+                  label: foundFilter.label || foundFilter.value,
+                  count: foundFilter.count,
                 });
               }
             });
           } else if (typeof value === 'string') {
-            facetObj = _findWhere(facets.itemListElement, { field: key });
-            const foundFacet = _isEmpty(facetObj) ? {} : _findWhere(facetObj.values, { value });
+            filterObj = _findWhere(apiFilters.itemListElement, { field: key });
+            const foundFilter = _isEmpty(filterObj) ? {} : _findWhere(filterObj.values, { value });
 
-            if (foundFacet && !_findWhere(selectedFacets[key], { id: foundFacet.value })) {
-              selectedFacets[key] = [{
+            if (foundFilter && !_findWhere(selectedFilters[key], { id: foundFilter.value })) {
+              selectedFilters[key] = [{
                 selected: true,
-                value: foundFacet.value,
-                label: foundFacet.label || foundFacet.value,
-                count: foundFacet.count,
+                value: foundFilter.value,
+                label: foundFilter.label || foundFilter.value,
+                count: foundFilter.count,
               }];
             }
           }
@@ -162,9 +172,9 @@ function searchServer(req, res, next) {
 
       res.locals.data.Store = {
         searchResults: data,
-        selectedFacets,
+        selectedFilters,
         searchKeywords: q,
-        facets,
+        filters: apiFilters,
         page: pageQuery,
         sortBy: sort ? `${sort}_${order}` : 'relevance',
         field: fieldQuery,
@@ -177,14 +187,14 @@ function searchServer(req, res, next) {
       logger.error('Error retrieving search data in searchServer', error);
       res.locals.data.Store = {
         searchResults: {},
-        selectedFacets: {
+        selectedFilters: {
           materialType: [],
           language: [],
-          dateAfter: {},
-          dateBefore: {},
+          dateAfter: '',
+          dateBefore: '',
         },
         searchKeywords: '',
-        facets: {},
+        filters: {},
         page: '1',
         sortBy: 'relevance',
         field: 'all',

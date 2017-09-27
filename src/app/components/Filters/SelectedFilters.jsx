@@ -63,18 +63,18 @@ class SelectedFilters extends React.Component {
         );
     }
 
-    const apiQuery = this.props.createAPIQuery({ selectedFacets: selectedFilters });
+    const apiQuery = this.props.createAPIQuery({ selectedFilters });
 
     this.props.updateIsLoadingState(true);
 
-    Actions.updateSelectedFacets(selectedFilters);
+    Actions.updateSelectedFilters(selectedFilters);
     ajaxCall(`${appConfig.baseUrl}/api?${apiQuery}`, (response) => {
-      if (response.data.searchResults && response.data.facets) {
+      if (response.data.searchResults && response.data.filters) {
         Actions.updateSearchResults(response.data.searchResults);
-        Actions.updateFacets(response.data.facets);
+        Actions.updateFilters(response.data.filters);
       } else {
         Actions.updateSearchResults({});
-        Actions.updateFacets({});
+        Actions.updateFilters({});
       }
       Actions.updateSortBy('relevance');
       Actions.updatePage('1');
@@ -87,17 +87,17 @@ class SelectedFilters extends React.Component {
   }
 
   clearFilters() {
-    const apiQuery = this.props.createAPIQuery({ selectedFacets: {} });
+    const apiQuery = this.props.createAPIQuery({ selectedFilters: {} });
 
     this.props.updateIsLoadingState(true);
-    Actions.updateSelectedFacets({});
+    Actions.updateSelectedFilters({});
     ajaxCall(`${appConfig.baseUrl}/api?${apiQuery}`, (response) => {
-      if (response.data.searchResults && response.data.facets) {
+      if (response.data.searchResults && response.data.filters) {
         Actions.updateSearchResults(response.data.searchResults);
-        Actions.updateFacets(response.data.facets);
+        Actions.updateFilters(response.data.filters);
       } else {
         Actions.updateSearchResults({});
-        Actions.updateFacets({});
+        Actions.updateFilters({});
       }
       Actions.updateSortBy('relevance');
       Actions.updatePage('1');
@@ -119,7 +119,7 @@ class SelectedFilters extends React.Component {
     }
 
     const filtersToRender = [];
-    const acceptedFilters = _keys(appConfig.defaultFacets);
+    const acceptedFilters = _keys(appConfig.defaultFilters);
     let clearAllFilters = (
       <button
         className="nypl-unset-filter"
@@ -133,7 +133,7 @@ class SelectedFilters extends React.Component {
     );
 
     if (!this.state.js) {
-      const apiQuery = this.props.createAPIQuery({ selectedFacets: {} });
+      const apiQuery = this.props.createAPIQuery({ selectedFilters: {} });
 
       clearAllFilters = (
         <a
@@ -200,7 +200,7 @@ class SelectedFilters extends React.Component {
                 _reject(selectedFilters[filter.field], (f) => (f.value === filter.value));
 
               const apiQuery = this.props.createAPIQuery({
-                selectedFacets: removedSelectedFilters,
+                selectedFilters: removedSelectedFilters,
               });
 
               filterBtn = (

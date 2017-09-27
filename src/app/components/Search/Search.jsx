@@ -19,7 +19,7 @@ class Search extends React.Component {
     this.state = {
       field: this.props.field,
       searchKeywords: this.props.searchKeywords,
-      inputError: this.props.searchError === 'true',
+      inputError: this.props.searchError,
     };
 
     this.inputChange = this.inputChange.bind(this);
@@ -94,7 +94,7 @@ class Search extends React.Component {
     this.setState({ inputError: false });
     const apiQuery = this.props.createAPIQuery({
       field: this.state.field,
-      selectedFacets: {},
+      selectedFilters: {},
       searchKeywords,
       page: '1',
     });
@@ -102,15 +102,15 @@ class Search extends React.Component {
     Actions.updateField(this.state.field);
     this.props.updateIsLoadingState(true);
     Actions.updateSearchKeywords(userSearchKeywords);
-    Actions.updateSelectedFacets({});
+    Actions.updateSelectedFilters({});
 
     ajaxCall(`${appConfig.baseUrl}/api?${apiQuery}`, (response) => {
-      if (response.data.searchResults && response.data.facets) {
+      if (response.data.searchResults && response.data.filters) {
         Actions.updateSearchResults(response.data.searchResults);
-        Actions.updateFacets(response.data.facets);
+        Actions.updateFilters(response.data.filters);
       } else {
         Actions.updateSearchResults({});
-        Actions.updateFacets({});
+        Actions.updateFilters({});
       }
       Actions.updateSortBy('relevance');
       Actions.updatePage('1');
@@ -164,14 +164,16 @@ class Search extends React.Component {
           />
           <SearchButton onClick={this.submitSearchRequest} />
         </div>
-        <span
-          className="nypl-field-status"
-          id="search-input-status"
-          aria-live="assertive"
-          aria-atomic="true"
-        >
-          {inputError ? 'Please enter a search term.' : ''}
-        </span>
+        {inputError &&
+          <span
+            className="nypl-field-status"
+            id="search-input-status"
+            aria-live="assertive"
+            aria-atomic="true"
+          >
+            Please enter a search term.
+          </span>
+        }
       </form>
     );
   }
@@ -182,13 +184,13 @@ Search.propTypes = {
   searchKeywords: PropTypes.string,
   createAPIQuery: PropTypes.func,
   updateIsLoadingState: PropTypes.func,
-  searchError: PropTypes.string,
+  searchError: PropTypes.bool,
 };
 
 Search.defaultProps = {
   field: 'all',
   searchKeywords: '',
-  searchError: 'false',
+  searchError: false,
   updateIsLoadingState: () => {},
 };
 

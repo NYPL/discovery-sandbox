@@ -115,9 +115,7 @@ describe('FilterPopup', () => {
 
   describe('If clicking "Clear Filters" button', () => {
     const selectedFilters = {
-      dateAfter: {
-        value: 'after 2000',
-      },
+      dateAfter: '2000',
       language: [
         {
           count: 4,
@@ -160,6 +158,65 @@ describe('FilterPopup', () => {
 
       clearFiltersButton.simulate('click');
       expect(component.state('selectedFilters')).to.deep.equal(emptySelectedFilters);
+    });
+  });
+
+  describe('If submitting with invalid input values', () => {
+    const selectedFilters = {
+      dateAfter: '2000',
+      dateBefore: '1999',
+      language: [
+        {
+          count: 4,
+          label: 'German',
+          selected: true,
+          value: 'lang:ger',
+        },
+        {
+          count: 8,
+          label: 'Spainish',
+          selected: true,
+          value: 'lang:sp',
+        },
+      ],
+      materialType: {
+        count: 5,
+        label: 'Text',
+        selected: true,
+        value: 'resourcetypes:txt',
+      },
+    };
+    let component;
+
+    beforeEach(() => {
+      component = mount(<FilterPopup selectedFilters={selectedFilters} />);
+    });
+
+    afterEach(() => {
+      component.unmount();
+    });
+
+    after(() => {
+      component.unmount();
+    });
+
+    it('should stop submitting and the function of submitting returns false', () => {
+      const submitFormButton = component.find('#submit-form');
+
+      expect(component.find('.nypl-form-error').length).to.equal(0);
+
+      submitFormButton.simulate('click');
+      expect(component.state('raisedErrors')).to.deep.equal([{ name: 'date', value: 'Date' }]);
+      expect(component.find('.nypl-form-error').length).to.equal(1);
+    });
+
+    it('should render a div for error messages', () => {
+      const submitFormButton = component.find('#submit-form');
+
+      expect(component.find('.nypl-form-error').length).to.equal(0);
+
+      submitFormButton.simulate('click');
+      expect(component.find('.nypl-form-error').length).to.equal(1);
     });
   });
 });
