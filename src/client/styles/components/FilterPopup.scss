@@ -110,3 +110,14 @@
     z-index: 1000 !important;
   }
 }
+
+.nypl-generic-checkbox > li {
+  margin-left: 0;
+}
+
+.nypl-generic-columns {
+  -webkit-columns: 118px 2;
+  -moz-columns: 118px 2;
+  columns: 118px 2;
+}
+
