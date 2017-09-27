@@ -14,11 +14,12 @@ import Actions from '../../actions/Actions';
 import appConfig from '../../../../appConfig';
 import { ajaxCall } from '../../utils/utils';
 
-const XCloseIcon = () => (
+const XCloseIcon = (props) => (
   <svg
     className="nypl-icon svgIcon"
     preserveAspectRatio="xMidYMid meet"
     viewBox="0 0 32 32"
+    aria-hidden={props['aria-hidden']}
   >
     <title>Remove Filter</title>
     <path
@@ -29,6 +30,10 @@ const XCloseIcon = () => (
     />
   </svg>
 );
+
+XCloseIcon.propTypes = {
+  'aria-hidden': React.PropTypes.bool,
+};
 
 class SelectedFilters extends React.Component {
   constructor(props) {
@@ -128,7 +133,7 @@ class SelectedFilters extends React.Component {
         aria-label="Clear all filters"
       >
         Clear Filters
-        <XCloseIcon />
+        <XCloseIcon aria-hidden />
       </button>
     );
 
