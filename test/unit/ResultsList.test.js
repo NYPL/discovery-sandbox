@@ -6,7 +6,7 @@ import MockAdapter from 'axios-mock-adapter';
 import axios from 'axios';
 import sinon from 'sinon';
 
-// import { ajaxCall } from '../../src/app/utils/utils.js';
+import { ajaxCall } from '../../src/app/utils/utils.js';
 
 const mock = new MockAdapter(axios);
 
@@ -312,11 +312,13 @@ describe('ResultsList', () => {
 
   describe('Mocking ajax call for the bib', () => {
     describe('Good response', () => {
+      const updateIsLoadingState = () => {};
       let component;
 
       before(() => {
-        component = mount(<ResultsList results={resultsBibs} />,
-          { context: { router: { createHref: () => {}, push: () => {} } } }
+        component = mount(
+          <ResultsList results={resultsBibs} updateIsLoadingState={updateIsLoadingState} />,
+          { context: { router: { createHref: () => {}, push: () => {}, replace: () => {} } } }
         );
         mock
           .onGet('/research/collections/shared-collection-catalog/api/bib?bibId=b17692265')
@@ -339,10 +341,12 @@ describe('ResultsList', () => {
   });
 
   describe('Bad response', () => {
+    const updateIsLoadingState = () => {};
     let component;
 
     before(() => {
-      component = mount(<ResultsList results={resultsBibs} />,
+      component = mount(
+        <ResultsList results={resultsBibs} updateIsLoadingState={updateIsLoadingState} />,
         { context: { router: { createHref: () => {}, push: () => {} } } }
       );
       mock
@@ -443,6 +447,39 @@ describe('ResultsList', () => {
         expect(getYearDisplay.type).to.equal('li');
         expect(getYearDisplay.props.children.join('')).to.equal('1999-present');
       });
+    });
+  });
+
+  describe('ResultsList functions', () => {
+    const updateIsLoadingState = () => {};
+    let component;
+    let getBibRecordSpy;
+    let axiosSpy;
+
+    before(() => {
+      getBibRecordSpy = sinon.spy(ResultsList.prototype, 'getBibRecord');
+      component = mount(
+        <ResultsList results={resultsBibs} updateIsLoadingState={updateIsLoadingState} />,
+        { context: { router: { createHref: () => {}, push: () => {} } } }
+      );
+      mock
+        .onGet('/research/collections/shared-collection-catalog/api/bib?bibId=b17692265')
+        .reply(404, { error: 'Some error' });
+    });
+
+    after(() => {
+      mock.reset();
+      getBibRecordSpy.restore();
+      component.unmount();
+      axiosSpy.restore();
+    });
+
+    it('should call getBibRecord function when the title is clicked', () => {
+      axiosSpy = sinon.spy(axios, 'get');
+      component.find('h3').at(0).find('Link').simulate('click');
+
+      expect(axiosSpy.callCount).to.equal(1);
+      expect(getBibRecordSpy.calledOnce).to.equal(true);
     });
   });
 });

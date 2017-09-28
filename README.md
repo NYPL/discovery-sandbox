@@ -65,7 +65,10 @@ and visit `localhost:3001`.
 
 ## Contributing
 
-Cut branches off of the `development` branch, and open pull requests against `development`.  
+Cut branches off of the `development` branch, and open pull requests against `development`.
+
+## Webpack Bundle Analyzer
+We're using the [webpack-bundle-analyzer](https://github.com/th0r/webpack-bundle-analyzer) to analyze what is making the bundle file so big. When starting the app locally, or when running `npm run dist`, a `report.html` file will be generated in `/dist`. View this file in the browser to see the results from `webpack-bundle-analyzer`.
 
 ## Testing
 
