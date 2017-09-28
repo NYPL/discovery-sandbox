@@ -42,14 +42,13 @@ class FieldsetDate extends React.Component {
   }
 
   render() {
-    let errorMessage = '';
+    let errorMessage = 'The end year should be the same year as or later than the start year.';
 
     if (this.state.dateAfter && this.state.dateBefore) {
       if (Number(this.state.dateBefore) < Number(this.state.dateAfter)) {
-        errorMessage = 'end year should be later than start year.';
+        errorMessage = 'Enter a valid range in the Start Year and End Year fields or remove what ' +
+        'you\'ve entered from those fields.';
       }
-    } else {
-      errorMessage = '';
     }
 
     const defaultValueDateAfter = (this.state.dateAfter) ? this.state.dateAfter : null;
@@ -85,10 +84,6 @@ class FieldsetDate extends React.Component {
               />
             </label>
           </div>
-          {
-            //<span>The Start year cannot be later than the end year</span>
-          }
-          <br />
           <span
             id="dateInput-status"
             className="nypl-field-status"
