@@ -9,7 +9,8 @@ import LoadingLayer from '../LoadingLayer/LoadingLayer.jsx';
 import BibDetails from './BibDetails';
 import LibraryItem from '../../utils/item';
 import BackLink from './BackLink';
-import MarcRecord from './MarcRecord';
+// Removed MarcRecord because the webpack MarcRecord is not working. Sep/28/2017
+// import MarcRecord from './MarcRecord';
 
 import {
   basicQuery,
@@ -38,8 +39,9 @@ class BibPage extends React.Component {
     const title = bib.title && bib.title.length ? bib.title[0] : '';
     const items = LibraryItem.getItems(bib);
     const isElectronicResources = _every(items, (i) => i.isElectronicResource);
-    const isNYPLReCAP = LibraryItem.isNYPLReCAP(bib['@id']);
-    const bNumber = bib && bib.idBnum ? bib.idBnum : '';
+    // Related to removing MarcRecord because the webpack MarcRecord is not working. Sep/28/2017
+    // const isNYPLReCAP = LibraryItem.isNYPLReCAP(bib['@id']);
+    // const bNumber = bib && bib.idBnum ? bib.idBnum : '';
     const searchURL = createAPIQuery({});
     const itemPage = this.props.location.search;
     const aggregatedElectronicResources = getAggregatedElectronicResources(items);
@@ -86,7 +88,8 @@ class BibPage extends React.Component {
         searchKeywords={this.props.searchKeywords}
         updateIsLoadingState={this.updateIsLoadingState}
       /> : null;
-    const marcRecord = isNYPLReCAP ? <MarcRecord bNumber={bNumber[0]} /> : null;
+    // Related to removing MarcRecord because the webpack MarcRecord is not working. Sep/28/2017
+    // const marcRecord = isNYPLReCAP ? <MarcRecord bNumber={bNumber[0]} /> : null;
 
     return (
       <DocumentTitle title="Item Details | Shared Collection Catalog | NYPL">
@@ -148,7 +151,6 @@ class BibPage extends React.Component {
                     electronicResources={aggregatedElectronicResources}
                     updateIsLoadingState={this.updateIsLoadingState}
                   />
-                  {marcRecord}
                 </div>
               </div>
             </div>
