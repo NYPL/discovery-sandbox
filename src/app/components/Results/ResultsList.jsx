@@ -135,7 +135,8 @@ class ResultsList extends React.Component {
     const materialType = result && result.materialType && result.materialType[0] ?
       result.materialType[0].prefLabel : null;
     const yearPublished = this.getYearDisplay(result);
-    const publisher = result.publisher && result.publisher.length ? result.publisher[0] : '';
+    const publisher = result.publisherLiteral && result.publisherLiteral.length ?
+      result.publisherLiteral[0] : '';
     const placeOfPublication = result.placeOfPublication && result.placeOfPublication.length ?
       result.placeOfPublication[0] : '';
     const items = LibraryItem.getItems(result);
