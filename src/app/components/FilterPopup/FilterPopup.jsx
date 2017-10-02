@@ -411,7 +411,7 @@ class FilterPopup extends React.Component {
                   legend="Date"
                   selectedFilters={dateSelectedFilters}
                   onDateFilterChange={this.onDateFilterChange}
-                  submitError={dateInputError.length > 0}
+                  submitError={dateInputError.length}
                 />
 
                 <FieldsetList
