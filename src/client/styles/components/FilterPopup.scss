@@ -63,9 +63,13 @@
   }
 
   .popup-btn-close {
+    display: none;
     float: right;
-    display: block;
     text-decoration: none;
+
+    &.active {
+      display: block;
+    }
   }
 }
 

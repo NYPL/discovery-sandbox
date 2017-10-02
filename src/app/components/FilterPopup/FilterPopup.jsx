@@ -415,7 +415,7 @@ class FilterPopup extends React.Component {
                     onFilterClick={this.onFilterClick}
                   />
 
-                  <div className="nypl-filter-button-container">
+                  <div className="inner nypl-filter-button-container">
                     <button
                       id="submit-form"
                       type="submit"
@@ -423,6 +423,11 @@ class FilterPopup extends React.Component {
                       onClick={this.submitForm}
                       className="nypl-filter-button"
                     >
+                      <svg className="nypl-icon" preserveAspectRatio="xMidYMid meet"  aria-hidden="true" aria-labelledby="apply" viewBox="0 0 41.66739 49.79988">
+                        <title id="apply">apply.v2.icon</title>
+                        <path d="M38.97923,20.60587a3.1833,3.1833,0,0,0-4.332,0L23.33308,31.71167V2.91584C23.33308,1.31208,22.43745,0,20.83369,0s-2.49938,1.31208-2.49938,2.91584V31.71167L7.0202,20.60587a3.05228,3.05228,0,0,0-4.22789,0,2.925,2.925,0,0,0-.05208,4.12374L18.78063,40.796c.0061.0061-.00539.01464.00071.02075a2.92278,2.92278,0,0,0,4.121,0c.0061-.0061.006-.01464.0121-.02075L38.98,24.7296A2.92444,2.92444,0,0,0,38.97923,20.60587Z"/>
+                        <rect x="17.91775" y="26.05024" width="5.83189" height="41.66739" rx="1.16667" ry="1.16667" transform="translate(-26.05024 67.71763) rotate(-90)"/>
+                      </svg>
                       Apply Filters
                     </button>
                     <button
@@ -432,13 +437,24 @@ class FilterPopup extends React.Component {
                       className="nypl-filter-button"
                       onClick={this.clearFilters}
                     >
+                      <svg className="nypl-icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 41" aria-hidden="true" aria-labelledby="reset">
+                        <title title="reset">reset.icon</title>
+                        <path d="M14.30581,12.04054,25.36758,4.37413A2.4,2.4,0,0,0,22.63242.4296L2.25352,14.553,23.45977,29.54835a2.39954,2.39954,0,1,0,2.77031-3.91875L13.80146,16.84054H43.2v19.2H2.4a2.4,2.4,0,1,0,0,4.8H48v-28.8Z"/>
+                      </svg>
                       Clear Filters
                     </button>
-                    {closePopupButton}
+                    <button id="cancelFiltering" className="nypl-filter-button" type="button" name="button">
+                      <svg viewBox="0 0 32 32" className="nypl-icon" preserveAspectRatio="xMidYMid meet"  aria-hidden="true" aria-labelledby="close">
+                        <title id="close">x.close.icon</title>
+                        <path d="M17.91272,15.97339l5.65689-5.65689A1.32622,1.32622,0,0,0,21.694,8.44093L16.04938,14.0856l-5.65082-5.725A1.32671,1.32671,0,1,0,8.51,10.22454l5.66329,5.73712L8.43038,21.7046a1.32622,1.32622,0,1,0,1.87557,1.87557l5.73088-5.73088,5.65074,5.72441a1.32626,1.32626,0,1,0,1.88852-1.86261Z"/>
+                      </svg>
+                      <span>Cancel</span>
+                    </button>
                   </div>
                 </fieldset>
               </form>
             </FocusTrap>
+            {closePopupButton}
           </div>
         </div>
       </div>
