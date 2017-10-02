@@ -14,11 +14,12 @@ import Actions from '../../actions/Actions';
 import appConfig from '../../../../appConfig';
 import { ajaxCall } from '../../utils/utils';
 
-const XCloseIcon = () => (
+const XCloseIcon = (props) => (
   <svg
     className="nypl-icon svgIcon"
     preserveAspectRatio="xMidYMid meet"
     viewBox="0 0 32 32"
+    aria-hidden={props['aria-hidden']}
   >
     <title>Remove Filter</title>
     <path
@@ -30,6 +31,10 @@ const XCloseIcon = () => (
   </svg>
 );
 
+XCloseIcon.propTypes = {
+  'aria-hidden': React.PropTypes.bool,
+};
+
 class SelectedFilters extends React.Component {
   constructor(props) {
     super(props);
@@ -37,6 +42,8 @@ class SelectedFilters extends React.Component {
     this.state = {
       js: false,
     };
+
+    this.clearFilters = this.clearFilters.bind(this);
   }
 
   componentDidMount() {
@@ -84,6 +91,29 @@ class SelectedFilters extends React.Component {
     });
   }
 
+  clearFilters() {
+    const apiQuery = this.props.createAPIQuery({ selectedFilters: {} });
+
+    this.props.updateIsLoadingState(true);
+    Actions.updateSelectedFilters({});
+    ajaxCall(`${appConfig.baseUrl}/api?${apiQuery}`, (response) => {
+      if (response.data.searchResults && response.data.filters) {
+        Actions.updateSearchResults(response.data.searchResults);
+        Actions.updateFilters(response.data.filters);
+      } else {
+        Actions.updateSearchResults({});
+        Actions.updateFilters({});
+      }
+      Actions.updateSortBy('relevance');
+      Actions.updatePage('1');
+
+      setTimeout(() => {
+        this.props.updateIsLoadingState(false);
+        this.context.router.push(`${appConfig.baseUrl}/search?${apiQuery}`);
+      }, 500);
+    });
+  }
+
   render() {
     const {
       selectedFilters,
@@ -95,6 +125,33 @@ class SelectedFilters extends React.Component {
 
     const filtersToRender = [];
     const acceptedFilters = _keys(appConfig.defaultFilters);
+    let clearAllFilters = (
+      <button
+        className="nypl-unset-filter"
+        onClick={this.clearFilters}
+        aria-controls="selected-filters-container"
+        aria-label="Clear all filters"
+      >
+        Clear Filters
+        <XCloseIcon aria-hidden />
+      </button>
+    );
+
+    if (!this.state.js) {
+      const apiQuery = this.props.createAPIQuery({ selectedFilters: {} });
+
+      clearAllFilters = (
+        <a
+          className="nypl-unset-filter"
+          href={`${appConfig.baseUrl}/search?${apiQuery}`}
+          aria-controls="selected-filters-container"
+          aria-label="Clear all filters"
+        >
+          Clear Filters
+          <XCloseIcon />
+        </a>
+      );
+    }
 
     _mapObject(selectedFilters, (values, key) => {
       if (_contains(acceptedFilters, key) && values && values.length) {
@@ -118,56 +175,59 @@ class SelectedFilters extends React.Component {
     }
 
     return (
-      <ul
-        className="selected-filters-container"
-        aria-live="assertive"
-        aria-atomic="true"
-        aria-relevant="additions removals"
-        aria-describedby="read-text"
-      >
-        <li id="read-text" className="visuallyHidden">
-          There are {filtersToRender.length} selected filters.
-        </li>
-        {
-          filtersToRender.map((filter, i) => {
-            let filterBtn = (
-              <button
-                className="nypl-unset-filter"
-                onClick={(e) => this.onFilterClick(e, filter)}
-                aria-controls="selected-filters-container"
-                aria-label={filter.label}
-              >
-                {filter.label}
-                <XCloseIcon />
-              </button>
-            );
-
-            if (!this.state.js) {
-              const removedSelectedFilters = JSON.parse(JSON.stringify(selectedFilters));
-              removedSelectedFilters[filter.field] =
-                _reject(selectedFilters[filter.field], (f) => (f.value === filter.value));
-
-              const apiQuery = this.props.createAPIQuery({
-                selectedFilters: removedSelectedFilters,
-              });
-
-              filterBtn = (
-                <a
+      <div>
+        <span id="read-text" className="visuallyHidden">Selected filters.</span>
+        <ul
+          id="selected-filters-container"
+          aria-live="assertive"
+          aria-atomic="true"
+          aria-relevant="additions removals"
+          aria-describedby="read-text"
+        >
+          {
+            filtersToRender.map((filter, i) => {
+              let filterBtn = (
+                <button
                   className="nypl-unset-filter"
-                  href={`${appConfig.baseUrl}/search?${apiQuery}`}
+                  onClick={(e) => this.onFilterClick(e, filter)}
                   aria-controls="selected-filters-container"
-                  aria-label={filter.label}
+                  aria-label={`${filter.label} Remove Filter`}
                 >
                   {filter.label}
                   <XCloseIcon />
-                </a>
+                </button>
               );
-            }
 
-            return (<li key={i}>{filterBtn}</li>);
-          })
-        }
-      </ul>
+              if (!this.state.js) {
+                const removedSelectedFilters = JSON.parse(JSON.stringify(selectedFilters));
+                removedSelectedFilters[filter.field] =
+                  _reject(selectedFilters[filter.field], (f) => (f.value === filter.value));
+
+                const apiQuery = this.props.createAPIQuery({
+                  selectedFilters: removedSelectedFilters,
+                });
+
+                filterBtn = (
+                  <a
+                    className="nypl-unset-filter"
+                    href={`${appConfig.baseUrl}/search?${apiQuery}`}
+                    aria-controls="selected-filters-container"
+                    aria-label={filter.label}
+                  >
+                    {filter.label}
+                    <XCloseIcon />
+                  </a>
+                );
+              }
+
+              return (<li key={i}>{filterBtn}</li>);
+            })
+          }
+          <li>
+            {clearAllFilters}
+          </li>
+        </ul>
+      </div>
     );
   }
 }
