@@ -56,7 +56,7 @@ class FieldsetDate extends React.Component {
     const defaultValueDateBefore = (this.state.dateBefore) ? this.state.dateBefore : null;
 
     return (
-      <fieldset className="nypl-inner-fieldset nypl-inner-fieldset-date">
+      <fieldset className="nypl-fieldset inner nypl-inner-fieldset-date">
         <legend>Date</legend>
         <div id="input-container" className="nypl-name-field">
           <div className="nypl-year-field">
@@ -72,6 +72,10 @@ class FieldsetDate extends React.Component {
               />
             </label>
           </div>
+          <svg viewBox="0 0 98 98" className="nypl-icon" preserveAspectRatio="xMidYMid meet"  aria-hidden="true" aria-labelledby="dash" role="img">
+            <title id="dash">dash.icon</title>
+            <polygon points="72.996 54.95 25.002 54.95 25.003 45.991 72.994 46.011 72.996 54.95"/>
+          </svg>
           <div className="nypl-year-field">
             <label htmlFor="dateBefore" id="dateBefore-label">End Year
               <NumberFormat

@@ -363,82 +363,83 @@ class FilterPopup extends React.Component {
     return (
       <div className="filter-container">
         {openPopupButton}
-
         <div
-          className={`nypl-popup-container popup-container ${showForm ? 'active' : ''}`}
+          className={`nypl-basic-modal-container nypl-popup-container popup-container ${showForm ? 'active' : ''}`}
           id={js ? '' : 'popup-no-js'}
         >
-          {!js && (<a className="cancel-no-js" href="#"></a>)}
-          <div className="nypl-popup-filter-overlay"></div>
-          <FocusTrap
-            focusTrapOptions={{
-              onDeactivate: this.deactivateForm,
-              clickOutsideDeactivates: true,
-            }}
-            active={showForm}
-            id="filter-popup-menu"
-            role="menu"
-            className={
-              `${js ? 'popup' : 'popup-no-js'} nypl-popup-filter-menu ${showForm ? 'active' : ''}`
-            }
-          >
-            {
-              this.state.raisedErrors && !_isEmpty(this.state.raisedErrors) && (errorMessageBlock)
-            }
-            <form
-              action={`${appConfig.baseUrl}/search?q=${searchKeywords}`}
-              method="POST"
-              onSubmit={() => this.onSubmitForm()}
+          <div className="nypl-modal-content">
+            {!js && (<a className="cancel-no-js" href="#"></a>)}
+            <div className="nypl-popup-filter-overlay"></div>
+            <FocusTrap
+              focusTrapOptions={{
+                onDeactivate: this.deactivateForm,
+                clickOutsideDeactivates: true,
+              }}
+              active={showForm}
+              id="filter-popup-menu"
+              role="menu"
+              className={
+                `${js ? 'popup' : 'popup-no-js'} nypl-modal-filter-form nypl-popup-filter-menu ${showForm ? 'active' : ''}`
+              }
             >
-              <fieldset className="nypl-parent-fieldset">
-                <legend><h3>Filter Results</h3></legend>
+              {
+                this.state.raisedErrors && !_isEmpty(this.state.raisedErrors) && (errorMessageBlock)
+              }
+              <form
+                action={`${appConfig.baseUrl}/search?q=${searchKeywords}`}
+                method="POST"
+                onSubmit={() => this.onSubmitForm()}
+              >
+                <fieldset className="nypl-fieldset">
+                  <legend><h3>Filter Results</h3></legend>
 
-                <FieldsetList
-                  legend="Format"
-                  filterId="materialType"
-                  filter={materialTypeFilters}
-                  selectedFilters={selectedFilters.materialType}
-                  onFilterClick={this.onFilterClick}
-                />
+                  <FieldsetList
+                    legend="Format"
+                    filterId="materialType"
+                    filter={materialTypeFilters}
+                    selectedFilters={selectedFilters.materialType}
+                    onFilterClick={this.onFilterClick}
+                  />
 
-                <FieldsetDate
-                  legend="Date"
-                  selectedFilters={dateSelectedFilters}
-                  onDateFilterChange={this.onDateFilterChange}
-                />
+                  <FieldsetDate
+                    legend="Date"
+                    selectedFilters={dateSelectedFilters}
+                    onDateFilterChange={this.onDateFilterChange}
+                  />
 
-                <FieldsetList
-                  legend="Language"
-                  filterId="language"
-                  filter={languageFilters}
-                  selectedFilters={selectedFilters.language}
-                  onFilterClick={this.onFilterClick}
-                />
+                  <FieldsetList
+                    legend="Language"
+                    filterId="language"
+                    filter={languageFilters}
+                    selectedFilters={selectedFilters.language}
+                    onFilterClick={this.onFilterClick}
+                  />
 
-                <div className="nypl-filter-button-container">
-                  <button
-                    id="submit-form"
-                    type="submit"
-                    name="apply-filters"
-                    onClick={this.submitForm}
-                    className="nypl-filter-button"
-                  >
-                    Apply Filters
-                  </button>
-                  <button
-                    id="clear-filters"
-                    type="button"
-                    name="Clear-Filters"
-                    className="nypl-filter-button"
-                    onClick={this.clearFilters}
-                  >
-                    Clear Filters
-                  </button>
-                  {closePopupButton}
-                </div>
-              </fieldset>
-            </form>
-          </FocusTrap>
+                  <div className="nypl-filter-button-container">
+                    <button
+                      id="submit-form"
+                      type="submit"
+                      name="apply-filters"
+                      onClick={this.submitForm}
+                      className="nypl-filter-button"
+                    >
+                      Apply Filters
+                    </button>
+                    <button
+                      id="clear-filters"
+                      type="button"
+                      name="Clear-Filters"
+                      className="nypl-filter-button"
+                      onClick={this.clearFilters}
+                    >
+                      Clear Filters
+                    </button>
+                    {closePopupButton}
+                  </div>
+                </fieldset>
+              </form>
+            </FocusTrap>
+          </div>
         </div>
       </div>
     );
