@@ -56,39 +56,35 @@ class FieldsetDate extends React.Component {
     const defaultValueDateBefore = (this.state.dateBefore) ? this.state.dateBefore : null;
 
     return (
-      <fieldset className="nypl-fieldset inner nypl-inner-fieldset-date">
+      <fieldset className="nypl-fieldset inner">
         <legend>Date</legend>
-        <div id="input-container" className="nypl-name-field">
-          <div className="nypl-year-field">
-            <label htmlFor="dateAfter" id="dateAfter-label">Start Year
-              <NumberFormat
-                id="dateAfter"
-                name="dateAfter"
-                className="form-text"
-                onChange={this.inputChange}
-                format="####"
-                aria-labelledby="dateAfter-label dateInput-status"
-                value={defaultValueDateAfter}
-              />
-            </label>
-          </div>
+        <div id="input-container" className="nypl-name-field nypl-filter-date-field">
+          <label htmlFor="dateAfter" id="dateAfter-label">Start Year
+            <NumberFormat
+              id="dateAfter"
+              name="dateAfter"
+              className="form-text"
+              onChange={this.inputChange}
+              format="####"
+              aria-labelledby="dateAfter-label dateInput-status"
+              value={defaultValueDateAfter}
+            />
+          </label>
           <svg viewBox="0 0 98 98" className="nypl-icon" preserveAspectRatio="xMidYMid meet"  aria-hidden="true" aria-labelledby="dash" role="img">
             <title id="dash">dash.icon</title>
             <polygon points="72.996 54.95 25.002 54.95 25.003 45.991 72.994 46.011 72.996 54.95"/>
           </svg>
-          <div className="nypl-year-field">
-            <label htmlFor="dateBefore" id="dateBefore-label">End Year
-              <NumberFormat
-                id="dateBefore"
-                name="dateBefore"
-                className="form-text"
-                onChange={this.inputChange}
-                format="####"
-                aria-labelledby="dateBefore-label dateInput-status"
-                value={defaultValueDateBefore}
-              />
-            </label>
-          </div>
+          <label htmlFor="dateBefore" id="dateBefore-label">End Year
+            <NumberFormat
+              id="dateBefore"
+              name="dateBefore"
+              className="form-text"
+              onChange={this.inputChange}
+              format="####"
+              aria-labelledby="dateBefore-label dateInput-status"
+              value={defaultValueDateBefore}
+            />
+          </label>
           {
             //<span>The Start year cannot be later than the end year</span>
           }
