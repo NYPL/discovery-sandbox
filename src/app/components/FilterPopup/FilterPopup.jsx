@@ -265,7 +265,12 @@ class FilterPopup extends React.Component {
   openForm() {
     if (!this.state.showForm) {
       trackDiscovery('FilterPopup', 'Open');
-      this.setState({ showForm: true });
+      this.setState(
+        { showForm: true },
+        () => {
+          document.body.classList.add('no-scroll');
+        }
+      );
     }
   }
 
@@ -276,7 +281,12 @@ class FilterPopup extends React.Component {
 
   deactivateForm() {
     trackDiscovery('FilterPopup', 'Close');
-    this.setState({ showForm: false });
+    this.setState(
+      { showForm: false },
+      () => {
+        document.body.classList.remove('no-scroll');
+      }
+    );
 
     if (this.refs.filterOpen) {
       this.refs.filterOpen.focus();
@@ -349,6 +359,12 @@ class FilterPopup extends React.Component {
         </ul>
       </div>
     );
+    const dateInputError = _map(this.state.raisedErrors, (item) => {
+      if (item.name && item.name === 'date') {
+        return item;
+      }
+      return null;
+    });
 
     return (
       <div className="filter-container">
@@ -395,6 +411,7 @@ class FilterPopup extends React.Component {
                   legend="Date"
                   selectedFilters={dateSelectedFilters}
                   onDateFilterChange={this.onDateFilterChange}
+                  submitError={dateInputError.length > 0}
                 />
 
                 <FieldsetList
