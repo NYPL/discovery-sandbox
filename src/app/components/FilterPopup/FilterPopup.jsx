@@ -361,6 +361,12 @@ class FilterPopup extends React.Component {
         </ul>
       </div>
     );
+    const dateInputError = _map(this.state.raisedErrors, (item) => {
+      if (item.name && item.name === 'date') {
+        return item;
+      }
+      return null;
+    });
 
     return (
       <div className="filter-container">
@@ -407,6 +413,7 @@ class FilterPopup extends React.Component {
                   legend="Date"
                   selectedFilters={dateSelectedFilters}
                   onDateFilterChange={this.onDateFilterChange}
+                  submitError={dateInputError.length > 0}
                 />
 
                 <FieldsetList
