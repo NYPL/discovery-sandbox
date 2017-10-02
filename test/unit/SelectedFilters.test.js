@@ -9,9 +9,9 @@ const listItemAt = (component, n) => component.find('li').at(n);
 
 describe('SelectedFilters', () => {
   describe('Default', () => {
-    it('should not render a ul', () => {
+    it('should not render a div', () => {
       const component = mount(<SelectedFilters />);
-      expect(component.find('ul').length).to.equal(0);
+      expect(component.find('div').length).to.equal(0);
     });
   });
 
@@ -38,13 +38,13 @@ describe('SelectedFilters', () => {
       expect(component.find('ul').length).to.equal(1);
     });
 
-    it('should render three list items, one text, one with data, one clear link', () => {
-      expect(component.find('li').length).to.equal(3);
+    it('should render two list items, one with data and one clear link', () => {
+      expect(component.find('li').length).to.equal(2);
     });
 
     it('should have a clear all filters link', () => {
-      expect(listItemAt(component, 2).find('a').length).to.equal(1);
-      expect(listItemAt(component, 2).find('a').render().text())
+      expect(listItemAt(component, 1).find('a').length).to.equal(1);
+      expect(listItemAt(component, 1).find('a').render().text())
         .to.equal('Clear FiltersRemove Filter');
     });
   });
@@ -78,21 +78,21 @@ describe('SelectedFilters', () => {
         expect(component.find('ul').length).to.equal(1);
       });
 
-      it('should render four list items, one text, two with data, one clear', () => {
-        expect(component.find('li').length).to.equal(4);
+      it('should render three list items, two with data, one clear', () => {
+        expect(component.find('li').length).to.equal(3);
       });
 
       it('should have one button inside each list item with the filter name', () => {
-        expect(listItemAt(component, 1).find('button').length).to.equal(1);
-        expect(listItemAt(component, 1).find('button').text()).to.equal('FrenchRemove Filter');
+        expect(listItemAt(component, 0).find('button').length).to.equal(1);
+        expect(listItemAt(component, 0).find('button').text()).to.equal('FrenchRemove Filter');
 
-        expect(listItemAt(component, 2).find('button').length).to.equal(1);
-        expect(listItemAt(component, 2).find('button').text()).to.equal('EnglishRemove Filter');
+        expect(listItemAt(component, 1).find('button').length).to.equal(1);
+        expect(listItemAt(component, 1).find('button').text()).to.equal('EnglishRemove Filter');
       });
 
       it('should have a clear all filters button', () => {
-        expect(listItemAt(component, 3).find('button').length).to.equal(1);
-        expect(listItemAt(component, 3).find('button').text())
+        expect(listItemAt(component, 2).find('button').length).to.equal(1);
+        expect(listItemAt(component, 2).find('button').text())
           .to.equal('Clear FiltersRemove Filter');
       });
     });
@@ -137,21 +137,21 @@ describe('SelectedFilters', () => {
       });
 
       it('should render five list items', () => {
-        expect(component.find('li').length).to.equal(6);
+        expect(component.find('li').length).to.equal(5);
       });
 
       it('should have one button inside each list item with the filter name', () => {
+        expect(listItemAt(component, 0).find('button').length).to.equal(1);
+        expect(listItemAt(component, 0).find('button').text()).to.equal('FrenchRemove Filter');
+
         expect(listItemAt(component, 1).find('button').length).to.equal(1);
-        expect(listItemAt(component, 1).find('button').text()).to.equal('FrenchRemove Filter');
+        expect(listItemAt(component, 1).find('button').text()).to.equal('EnglishRemove Filter');
 
         expect(listItemAt(component, 2).find('button').length).to.equal(1);
-        expect(listItemAt(component, 2).find('button').text()).to.equal('EnglishRemove Filter');
+        expect(listItemAt(component, 2).find('button').text()).to.equal('Still ImageRemove Filter');
 
         expect(listItemAt(component, 3).find('button').length).to.equal(1);
-        expect(listItemAt(component, 3).find('button').text()).to.equal('Still ImageRemove Filter');
-
-        expect(listItemAt(component, 4).find('button').length).to.equal(1);
-        expect(listItemAt(component, 4).find('button').text())
+        expect(listItemAt(component, 3).find('button').text())
           .to.equal('CartographicRemove Filter');
       });
     });
@@ -170,13 +170,13 @@ describe('SelectedFilters', () => {
           component = mount(<SelectedFilters selectedFilters={selectedFilters} />);
         });
 
-        it('should render three list items', () => {
-          expect(component.find('li').length).to.equal(3);
+        it('should render two list items', () => {
+          expect(component.find('li').length).to.equal(2);
         });
 
         it('should have one button inside each list item with the filter name', () => {
-          expect(listItemAt(component, 1).find('button').length).to.equal(1);
-          expect(listItemAt(component, 1).find('button').text()).to.equal('2010Remove Filter');
+          expect(listItemAt(component, 0).find('button').length).to.equal(1);
+          expect(listItemAt(component, 0).find('button').text()).to.equal('2010Remove Filter');
         });
       });
 
@@ -193,13 +193,13 @@ describe('SelectedFilters', () => {
           component = mount(<SelectedFilters selectedFilters={selectedFilters} />);
         });
 
-        it('should render three list items', () => {
-          expect(component.find('li').length).to.equal(3);
+        it('should render two list items', () => {
+          expect(component.find('li').length).to.equal(2);
         });
 
         it('should have one button inside each list item with the filter name', () => {
-          expect(listItemAt(component, 1).find('button').length).to.equal(1);
-          expect(listItemAt(component, 1).find('button').text()).to.equal('1999Remove Filter');
+          expect(listItemAt(component, 0).find('button').length).to.equal(1);
+          expect(listItemAt(component, 0).find('button').text()).to.equal('1999Remove Filter');
         });
       });
 
@@ -216,16 +216,16 @@ describe('SelectedFilters', () => {
           component = mount(<SelectedFilters selectedFilters={selectedFilters} />);
         });
 
-        it('should render four list items', () => {
-          expect(component.find('li').length).to.equal(4);
+        it('should render three list items', () => {
+          expect(component.find('li').length).to.equal(3);
         });
 
         it('should have one button inside each list item with the filter name', () => {
-          expect(listItemAt(component, 1).find('button').length).to.equal(1);
-          expect(listItemAt(component, 1).find('button').text()).to.equal('2010Remove Filter');
+          expect(listItemAt(component, 0).find('button').length).to.equal(1);
+          expect(listItemAt(component, 0).find('button').text()).to.equal('2010Remove Filter');
 
-          expect(listItemAt(component, 2).find('button').length).to.equal(1);
-          expect(listItemAt(component, 2).find('button').text()).to.equal('1999Remove Filter');
+          expect(listItemAt(component, 1).find('button').length).to.equal(1);
+          expect(listItemAt(component, 1).find('button').text()).to.equal('1999Remove Filter');
         });
       });
     });

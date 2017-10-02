@@ -112,4 +112,4 @@ Deploy to the production server:
     global:
       application_name: discovery-ui
 ```
-- Run `eb deploy discovery-ui --profile nypl-digital-dev`
+- Run `eb deploy discovery-ui-production --profile nypl-digital-dev`
