@@ -95,8 +95,25 @@
     -webkit-appearance: none;
     -moz-appearance: none;
   }
-  ul li {
-    list-style: none;
+  ul {
+    li {
+      list-style: none;
+    }
+
+    &.nypl-generic-columns {
+      li {
+        &.nypl-generic-checkbox {
+          label {
+            max-width: 135px;
+
+            @include min-screen($tablet-portrait) {
+              max-width: 100%;
+              position: absolute;
+            }
+          }
+        }
+      }
+    }
   }
 }
 
