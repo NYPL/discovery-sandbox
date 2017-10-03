@@ -356,7 +356,7 @@ class FilterPopup extends React.Component {
       dateBefore: dateBeforeFilterValue,
     };
     const errorMessageBlock = (
-      <div className="nypl-form-error" ref="nypl-filter-error" tabIndex="0">
+      <div className="nypl-form-error filter-error-box" ref="nypl-filter-error" tabIndex="0">
         <h2>Error</h2>
         <p>Please enter valid filter values:</p>
         <ul>
