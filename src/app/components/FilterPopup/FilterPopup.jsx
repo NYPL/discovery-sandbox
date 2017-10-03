@@ -361,11 +361,7 @@ class FilterPopup extends React.Component {
       </div>
     );
     const isDateInputError = _some(this.state.raisedErrors, (item) => {
-      if (item.name) {
-        return item.name === 'date';
-      }
-
-      return null;
+      return (item.name && item.name === 'date');
     });
 
     return (
