@@ -58,13 +58,15 @@ class ElectronicDelivery extends React.Component {
    * is rendered. Since it exists, it should be focused so that the patron can get a better
    * idea of what is wrong.
    */
-  componentDidUpdate() {
+  componentDidUpdate(prevProps, prevState) {
     if (this.loadingLayer) {
       this.loadingLayer.focus();
     }
 
-    if (this.refs['nypl-form-error']) {
-      ReactDOM.findDOMNode(this.refs['nypl-form-error']).focus();
+    if (prevState.raiseError !== this.state.raiseError) {
+      if (this.refs['nypl-form-error']) {
+        ReactDOM.findDOMNode(this.refs['nypl-form-error']).focus();
+      }
     }
   }
 

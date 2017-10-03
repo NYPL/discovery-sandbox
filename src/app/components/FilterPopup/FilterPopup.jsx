@@ -117,9 +117,13 @@ class FilterPopup extends React.Component {
     });
   }
 
-  componentDidUpdate() {
-    if (this.refs['nypl-filter-error']) {
-      ReactDOM.findDOMNode(this.refs['nypl-filter-error']).focus();
+  componentDidUpdate(prevProps, prevState) {
+    // This check is to make sure it only focus after hitting submit and states
+    // changed
+    if (prevState.raisedErrors !== this.state.raisedErrors) {
+      if (this.refs['nypl-filter-error']) {
+        ReactDOM.findDOMNode(this.refs['nypl-filter-error']).focus();
+      }
     }
   }
 
@@ -360,9 +364,9 @@ class FilterPopup extends React.Component {
         </ul>
       </div>
     );
-    const isDateInputError = _some(this.state.raisedErrors, (item) => {
-      return (item.name && item.name === 'date');
-    });
+    const isDateInputError = _some(this.state.raisedErrors, (item) =>
+      (item.name && item.name === 'date')
+    );
 
     return (
       <div className="filter-container">
