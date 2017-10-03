@@ -69,7 +69,7 @@ class FieldsetDate extends React.Component {
               value={defaultValueDateAfter}
             />
           </label>
-          <svg viewBox="0 0 98 98" className="nypl-icon" preserveAspectRatio="xMidYMid meet"  aria-hidden="true" aria-labelledby="dash" role="img">
+          <svg viewBox="0 0 98 98" className="nypl-icon date-hyphen" preserveAspectRatio="xMidYMid meet"  aria-hidden="true" aria-labelledby="dash" role="img">
             <title id="dash">dash.icon</title>
             <polygon points="72.996 54.95 25.002 54.95 25.003 45.991 72.994 46.011 72.996 54.95"/>
           </svg>
