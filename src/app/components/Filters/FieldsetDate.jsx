@@ -42,14 +42,13 @@ class FieldsetDate extends React.Component {
   }
 
   render() {
-    let errorMessage = '';
+    let errorMessage = 'The end year should be the same year as or later than the start year.';
+    let errorClass = '';
 
-    if (this.state.dateAfter && this.state.dateBefore) {
-      if (Number(this.state.dateBefore) < Number(this.state.dateAfter)) {
-        errorMessage = 'end year should be later than start year.';
-      }
-    } else {
-      errorMessage = '';
+    if (this.props.submitError) {
+      errorMessage = 'Enter a valid range in the Start Year and End Year fields or remove what ' +
+      'you\'ve entered from those fields.';
+      errorClass = 'nypl-field-error';
     }
 
     const defaultValueDateAfter = (this.state.dateAfter) ? this.state.dateAfter : null;
@@ -58,7 +57,7 @@ class FieldsetDate extends React.Component {
     return (
       <fieldset className="nypl-fieldset inner">
         <legend>Date</legend>
-        <div id="input-container" className="nypl-name-field nypl-filter-date-field">
+        <div id="input-container" className={`nypl-name-field nypl-filter-date-field ${errorClass}`}>
           <label htmlFor="dateAfter" id="dateAfter-label">Start Year
             <NumberFormat
               id="dateAfter"
@@ -85,17 +84,15 @@ class FieldsetDate extends React.Component {
               value={defaultValueDateBefore}
             />
           </label>
-          {
-            //<span>The Start year cannot be later than the end year</span>
-          }
-          <br />
           <span
             id="dateInput-status"
             className="nypl-field-status"
             aria-live="assertive"
             aria-atomic="true"
           >
-            {errorMessage}
+            <span>
+              {errorMessage}
+            </span>
           </span>
         </div>
       </fieldset>
@@ -106,6 +103,7 @@ class FieldsetDate extends React.Component {
 FieldsetDate.propTypes = {
   selectedFilters: PropTypes.object,
   onDateFilterChange: PropTypes.func,
+  submitError: PropTypes.bool,
 };
 
 FieldsetDate.defaultProps = {

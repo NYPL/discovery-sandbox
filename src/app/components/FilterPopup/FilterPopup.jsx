@@ -8,6 +8,7 @@ import {
   extend as _extend,
   map as _map,
   isEmpty as _isEmpty,
+  some as _some,
 } from 'underscore';
 
 import {
@@ -116,9 +117,13 @@ class FilterPopup extends React.Component {
     });
   }
 
-  componentDidUpdate() {
-    if (this.refs['nypl-filter-error']) {
-      ReactDOM.findDOMNode(this.refs['nypl-filter-error']).focus();
+  componentDidUpdate(prevProps, prevState) {
+    // This check is to make sure it only focus after hitting submit and states
+    // changed
+    if (prevState.raisedErrors !== this.state.raisedErrors) {
+      if (this.refs['nypl-filter-error']) {
+        ReactDOM.findDOMNode(this.refs['nypl-filter-error']).focus();
+      }
     }
   }
 
@@ -359,6 +364,9 @@ class FilterPopup extends React.Component {
         </ul>
       </div>
     );
+    const isDateInputError = _some(this.state.raisedErrors, (item) =>
+      (item.name && item.name === 'date')
+    );
 
     return (
       <div className="filter-container">
@@ -405,6 +413,7 @@ class FilterPopup extends React.Component {
                     legend="Date"
                     selectedFilters={dateSelectedFilters}
                     onDateFilterChange={this.onDateFilterChange}
+                    submitError={isDateInputError}
                   />
 
                   <FieldsetList
@@ -442,13 +451,6 @@ class FilterPopup extends React.Component {
                         <path d="M14.30581,12.04054,25.36758,4.37413A2.4,2.4,0,0,0,22.63242.4296L2.25352,14.553,23.45977,29.54835a2.39954,2.39954,0,1,0,2.77031-3.91875L13.80146,16.84054H43.2v19.2H2.4a2.4,2.4,0,1,0,0,4.8H48v-28.8Z"/>
                       </svg>
                       Clear Filters
-                    </button>
-                    <button id="cancelFiltering" className="nypl-filter-button" type="button" name="button">
-                      <svg viewBox="0 0 32 32" className="nypl-icon" preserveAspectRatio="xMidYMid meet"  aria-hidden="true" aria-labelledby="close">
-                        <title id="close">x.close.icon</title>
-                        <path d="M17.91272,15.97339l5.65689-5.65689A1.32622,1.32622,0,0,0,21.694,8.44093L16.04938,14.0856l-5.65082-5.725A1.32671,1.32671,0,1,0,8.51,10.22454l5.66329,5.73712L8.43038,21.7046a1.32622,1.32622,0,1,0,1.87557,1.87557l5.73088-5.73088,5.65074,5.72441a1.32626,1.32626,0,1,0,1.88852-1.86261Z"/>
-                      </svg>
-                      <span>Cancel</span>
                     </button>
                   </div>
                 </fieldset>

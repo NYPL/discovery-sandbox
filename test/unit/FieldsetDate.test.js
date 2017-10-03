@@ -52,8 +52,10 @@ describe('FieldsetDate', () => {
       expect(component.state('dateBefore')).to.equal('');
     });
 
-    it('should render no error messages', () => {
-      expect(component.find('#dateInput-status').text()).to.equal('');
+    it('should render instruction messages', () => {
+      expect(component.find('#dateInput-status').text()).to.equal(
+        'The end year should be the same year as or later than the start year.'
+      );
     });
   });
 
@@ -125,18 +127,17 @@ describe('FieldsetDate', () => {
     let component;
 
     before(() => {
-      component = mount(<FieldsetDate />);
+      component = mount(<FieldsetDate submitError />);
     });
 
     after(() => {
       component.unmount();
     });
 
-    it('should show the error message if dateBefore is earlier than dateAfter', () => {
-      component.setState({ dateAfter: '2100', dateBefore: '2001' });
-
+    it('should show the error message after submitting invalid dates', () => {
       expect(component.find('#dateInput-status').text()).to.equal(
-        'end year should be later than start year.'
+        'Enter a valid range in the Start Year and End Year fields or remove what ' +
+        'you\'ve entered from those fields.'
       );
     });
   });
