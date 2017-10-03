@@ -8,7 +8,7 @@ import {
   extend as _extend,
   map as _map,
   isEmpty as _isEmpty,
-  find as _find,
+  some as _some,
 } from 'underscore';
 
 import {
@@ -360,13 +360,13 @@ class FilterPopup extends React.Component {
         </ul>
       </div>
     );
-    const isDateInputError = !!(_find(this.state.raisedErrors, (item) => {
+    const isDateInputError = _some(this.state.raisedErrors, (item) => {
       if (item.name) {
         return item.name === 'date';
       }
 
       return null;
-    }));
+    });
 
     return (
       <div className="filter-container">
