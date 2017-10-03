@@ -9,6 +9,7 @@ import {
   extend as _extend,
   map as _map,
   isEmpty as _isEmpty,
+  some as _some,
 } from 'underscore';
 
 import {
@@ -118,9 +119,13 @@ class FilterPopup extends React.Component {
     });
   }
 
-  componentDidUpdate() {
-    if (this.refs['nypl-filter-error']) {
-      ReactDOM.findDOMNode(this.refs['nypl-filter-error']).focus();
+  componentDidUpdate(prevProps, prevState) {
+    // This check is to make sure it only focus after hitting submit and states
+    // changed
+    if (prevState.raisedErrors !== this.state.raisedErrors) {
+      if (this.refs['nypl-filter-error']) {
+        ReactDOM.findDOMNode(this.refs['nypl-filter-error']).focus();
+      }
     }
   }
 
@@ -361,12 +366,9 @@ class FilterPopup extends React.Component {
         </ul>
       </div>
     );
-    const dateInputError = _map(this.state.raisedErrors, (item) => {
-      if (item.name && item.name === 'date') {
-        return item;
-      }
-      return null;
-    });
+    const isDateInputError = _some(this.state.raisedErrors, (item) =>
+      (item.name && item.name === 'date')
+    );
 
     return (
       <div className="filter-container">
@@ -413,7 +415,7 @@ class FilterPopup extends React.Component {
                   legend="Date"
                   selectedFilters={dateSelectedFilters}
                   onDateFilterChange={this.onDateFilterChange}
-                  submitError={dateInputError.length > 0}
+                  submitError={isDateInputError}
                 />
 
                 <FieldsetList
