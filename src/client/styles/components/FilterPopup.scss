@@ -23,7 +23,7 @@
       display: block;
       opacity: 1;
     }
-   }
+  }
 }
 
 .popup-container {
@@ -71,6 +71,7 @@
 
     &.active {
       display: block;
+      z-index: 2000;
       overflow: scroll;
       -webkit-overflow-scrolling: touch;
     }
