@@ -11,6 +11,19 @@
   a.popup-btn-open {
     padding-top: 3px;
   }
+
+  .popup-container {
+    visibility: hidden;
+    display: none;
+    opacity: 0;
+
+    &.active,
+    &:target {
+      visibility: visible;
+      display: block;
+      opacity: 1;
+    }
+   }
 }
 
 .popup-container {

@@ -374,7 +374,7 @@ class FilterPopup extends React.Component {
         {openPopupButton}
         <div
           className={
-            `nypl-basic-modal-container nypl-popup-container popup-container ` +
+            'nypl-basic-modal-container nypl-popup-container popup-container ' +
             `${showForm ? 'active' : ''}`
           }
           id={js ? '' : 'popup-no-js'}
@@ -382,6 +382,7 @@ class FilterPopup extends React.Component {
           aria-labelledby="filter-title"
           aria-describedby="modal-description"
         >
+          {!js && (<a className="cancel-no-js" href="#"></a>)}
           <div className="nypl-modal-content">
             <div className="nypl-popup-filter-overlay"></div>
             <p id="modal-description" className="nypl-screenreader-only">Filter search results</p>
