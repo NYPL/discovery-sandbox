@@ -74,6 +74,7 @@ class FilterPopup extends React.Component {
     const {
       selectedFilters,
       filters,
+      raisedErrors,
     } = this.props;
 
     this.state = {
@@ -86,7 +87,7 @@ class FilterPopup extends React.Component {
       showForm: false,
       js: false,
       filters,
-      raisedErrors: [],
+      raisedErrors: this.props.raisedErrors,
     };
 
     this.openForm = this.openForm.bind(this);
