@@ -81,9 +81,14 @@ class SearchResultsPage extends React.Component {
     const apiFilters = filters && filters.itemListElement && filters.itemListElement.length ?
       filters.itemListElement : [];
     let searchErrorMessage = '';
+    let dateFilterErrors = [];
 
     if (searchError === 'dateFilterError') {
       searchErrorMessage = 'Please enter valid dates.';
+      dateFilterErrors.push({
+        name: 'date',
+        value: 'Date',
+      });
     }
 
     return (
@@ -142,6 +147,7 @@ class SearchResultsPage extends React.Component {
                           updateIsLoadingState={this.updateIsLoadingState}
                           selectedFilters={selectedFilters}
                           searchKeywords={searchKeywords}
+                          raisedErrors={dateFilterErrors}
                         />
                       </div>
                     )
