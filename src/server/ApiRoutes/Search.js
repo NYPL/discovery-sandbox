@@ -90,7 +90,9 @@ function searchServerPost(req, res) {
 
   if (dateAfter && dateBefore) {
     if (Number(dateAfter) > Number(dateBefore)) {
-      return res.redirect(`${appConfig.baseUrl}/search?q=${searchKeywords}&error=dateFilterError`);
+      return res.redirect(
+        `${appConfig.baseUrl}/search?q=${searchKeywords}&error=dateFilterError#popup-no-js`
+      );
     }
   }
 
