@@ -2,7 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import FocusTrap from 'focus-trap-react';
-import Store from '../../stores/Store.js';
 import {
   findWhere as _findWhere,
   reject as _reject,
@@ -86,7 +85,6 @@ class FilterPopup extends React.Component {
       }, selectedFilters),
       showForm: false,
       js: false,
-      selectedFacets: Store.getState().selectedFacets,
       filters,
       raisedErrors: [],
     };
@@ -378,7 +376,6 @@ class FilterPopup extends React.Component {
             `nypl-basic-modal-container nypl-popup-container popup-container ` +
             `${showForm ? 'active' : ''}`
           }
-          id={js ? '' : 'popup-no-js'}
           role="dialog"
           aria-labelledby="filter-title"
           aria-describedby="modal-description"
