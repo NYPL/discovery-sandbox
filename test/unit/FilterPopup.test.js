@@ -21,7 +21,8 @@ describe('FilterPopup', () => {
       expect(component.find('a').at(0).prop('className'))
         .to.equal('popup-btn-open nypl-short-button');
       expect(component.find('a').at(0).prop('href')).to.equal('#popup-no-js');
-      expect(component.find('a').at(1).prop('className'))
+      expect(component.find('a').at(1).prop('className')).to.equal('cancel-no-js');
+      expect(component.find('a').at(2).prop('className'))
         .to.equal('popup-btn-close nypl-x-close-button');
     });
 

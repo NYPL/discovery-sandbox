@@ -382,6 +382,7 @@ class FilterPopup extends React.Component {
           aria-labelledby="filter-title"
           aria-describedby="modal-description"
         >
+          {!js && (<a className="cancel-no-js" href="#"></a>)}
           <div className="nypl-modal-content">
             <div className="nypl-popup-filter-overlay"></div>
             <p id="modal-description" className="nypl-screenreader-only">Filter search results</p>
