@@ -74,6 +74,7 @@ class FilterPopup extends React.Component {
     const {
       selectedFilters,
       filters,
+      raisedErrors,
     } = this.props;
 
     this.state = {
@@ -86,7 +87,7 @@ class FilterPopup extends React.Component {
       showForm: false,
       js: false,
       filters,
-      raisedErrors: [],
+      raisedErrors,
     };
 
     this.openForm = this.openForm.bind(this);
@@ -170,17 +171,17 @@ class FilterPopup extends React.Component {
     const headlineError = {
       date: 'dateAfter',
     };
-    const raisedErrors = [];
+    const errorArray = [];
 
     if (!errors || _isEmpty(errors)) {
       return null;
     }
 
     _map(errors, (val, key) => {
-      raisedErrors.push(<li key={key}><a href={`#${headlineError[val.name]}`}>{val.value}</a></li>);
+      errorArray.push(<li key={key}><a href={`#${headlineError[val.name]}`}>{val.value}</a></li>);
     });
 
-    return raisedErrors;
+    return errorArray;
   }
 
   /*
@@ -510,6 +511,7 @@ FilterPopup.propTypes = {
   updateIsLoadingState: PropTypes.func,
   selectedFilters: PropTypes.object,
   searchKeywords: PropTypes.string,
+  raisedErrors: PropTypes.array,
 };
 
 FilterPopup.defaultProps = {
