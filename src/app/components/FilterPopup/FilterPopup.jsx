@@ -178,7 +178,12 @@ class FilterPopup extends React.Component {
     }
 
     _map(errors, (val, key) => {
-      errorArray.push(<li key={key}><a href={`#${headlineError[val.name]}`}>{val.value}</a></li>);
+      if (val.name && val.value) {
+        const anchorTag = (this.state.js) ?
+          <a href={`#${headlineError[val.name]}`}>{val.value}</a> : <span>{val.value}</span>;
+
+        errorArray.push(<li key={key}>{anchorTag}</li>);
+      }
     });
 
     return errorArray;
