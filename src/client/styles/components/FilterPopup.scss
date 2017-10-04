@@ -61,31 +61,30 @@
     border: 1px solid #666;
     box-shadow: 0 0 50px rgba(0,0,0,0.5);
     float: left;
-    position: absolute;
     width: auto;
     z-index: 10000;
   }
 
   .popup {
     display: none;
+    width: 100%;
 
     &.active {
-      // display: block;
-      // top: 50px;
-      // z-index: 1000;
       display: block;
       z-index: 2000;
-      width: 100%;
-      height: 95%;
       overflow: scroll;
       -webkit-overflow-scrolling: touch;
     }
   }
 
   .popup-btn-close {
+    display: none;
     float: right;
-    display: block;
     text-decoration: none;
+
+    &.active {
+      display: block;
+    }
   }
 }
 
@@ -103,7 +102,6 @@
 .nypl-popup-container.active {
   .nypl-popup-filter-menu .nypl-x-close-button {
     top: 1rem !important;
-    position: fixed;
     right: 1rem;
   }
   .nypl-popup-filter-overlay {
@@ -133,4 +131,15 @@
 
 .nypl-name-field input[type=text] {
   -webkit-appearance: none;
+}
+
+.date-hyphen {
+  margin: 0 2px;
+}
+
+.filter-error-box {
+  margin: 0 3.125rem;
+  @media (max-width: 483px) {
+    margin: 0 1rem;
+  }
 }
