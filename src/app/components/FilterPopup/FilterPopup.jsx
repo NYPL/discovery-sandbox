@@ -376,7 +376,6 @@ class FilterPopup extends React.Component {
             `nypl-basic-modal-container nypl-popup-container popup-container ` +
             `${showForm ? 'active' : ''}`
           }
-          id={js ? '' : 'popup-no-js'}
           role="dialog"
           aria-labelledby="filter-title"
           aria-describedby="modal-description"
