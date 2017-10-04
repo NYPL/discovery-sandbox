@@ -87,7 +87,7 @@ class FilterPopup extends React.Component {
       showForm: false,
       js: false,
       filters,
-      raisedErrors: this.props.raisedErrors,
+      raisedErrors,
     };
 
     this.openForm = this.openForm.bind(this);
@@ -171,17 +171,17 @@ class FilterPopup extends React.Component {
     const headlineError = {
       date: 'dateAfter',
     };
-    const raisedErrors = [];
+    const errorArray = [];
 
     if (!errors || _isEmpty(errors)) {
       return null;
     }
 
     _map(errors, (val, key) => {
-      raisedErrors.push(<li key={key}><a href={`#${headlineError[val.name]}`}>{val.value}</a></li>);
+      errorArray.push(<li key={key}><a href={`#${headlineError[val.name]}`}>{val.value}</a></li>);
     });
 
-    return raisedErrors;
+    return errorArray;
   }
 
   /*
@@ -374,7 +374,7 @@ class FilterPopup extends React.Component {
         {openPopupButton}
         <div
           className={
-            `nypl-basic-modal-container nypl-popup-container popup-container ` +
+            'nypl-basic-modal-container nypl-popup-container popup-container ' +
             `${showForm ? 'active' : ''}`
           }
           id={js ? '' : 'popup-no-js'}
@@ -510,6 +510,7 @@ FilterPopup.propTypes = {
   updateIsLoadingState: PropTypes.func,
   selectedFilters: PropTypes.object,
   searchKeywords: PropTypes.string,
+  raisedErrors: PropTypes.array,
 };
 
 FilterPopup.defaultProps = {
