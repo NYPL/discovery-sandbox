@@ -376,12 +376,12 @@ class FilterPopup extends React.Component {
             `nypl-basic-modal-container nypl-popup-container popup-container ` +
             `${showForm ? 'active' : ''}`
           }
+          id={js ? '' : 'popup-no-js'}
           role="dialog"
           aria-labelledby="filter-title"
           aria-describedby="modal-description"
         >
           <div className="nypl-modal-content">
-            {!js && (<a className="cancel-no-js" href="#"></a>)}
             <div className="nypl-popup-filter-overlay"></div>
             <p id="modal-description" className="nypl-screenreader-only">Filter search results</p>
             <FocusTrap
