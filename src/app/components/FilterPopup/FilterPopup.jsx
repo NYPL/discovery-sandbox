@@ -111,8 +111,8 @@ class FilterPopup extends React.Component {
       selectedFilters: _extend({
         materialType: [],
         language: [],
-        dateAfter: {},
-        dateBefore: {},
+        dateAfter: undefined,
+        dateBefore: undefined,
       }, nextProps.selectedFilters),
       filters: nextProps.filters,
     });
