@@ -52,7 +52,7 @@ class FieldsetList extends React.Component {
     }
 
     return (
-      <fieldset className="nypl-inner-fieldset">
+      <fieldset className="nypl-fieldset inner">
         {legend && <legend>{legend}</legend>}
         <ul
           className={`nypl-generic-checkbox ${(filterId === 'language') ?

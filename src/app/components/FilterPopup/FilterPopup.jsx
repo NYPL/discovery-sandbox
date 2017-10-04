@@ -356,7 +356,7 @@ class FilterPopup extends React.Component {
       dateBefore: dateBeforeFilterValue,
     };
     const errorMessageBlock = (
-      <div className="nypl-form-error" ref="nypl-filter-error" tabIndex="0">
+      <div className="nypl-form-error filter-error-box" ref="nypl-filter-error" tabIndex="0">
         <h2>Error</h2>
         <p>Please enter valid filter values:</p>
         <ul>
@@ -371,83 +371,132 @@ class FilterPopup extends React.Component {
     return (
       <div className="filter-container">
         {openPopupButton}
-
         <div
-          className={`nypl-popup-container popup-container ${showForm ? 'active' : ''}`}
+          className={
+            'nypl-basic-modal-container nypl-popup-container popup-container ' +
+            `${showForm ? 'active' : ''}`
+          }
           id={js ? '' : 'popup-no-js'}
+          role="dialog"
+          aria-labelledby="filter-title"
+          aria-describedby="modal-description"
         >
           {!js && (<a className="cancel-no-js" href="#"></a>)}
-          <div className="nypl-popup-filter-overlay"></div>
-          <FocusTrap
-            focusTrapOptions={{
-              onDeactivate: this.deactivateForm,
-              clickOutsideDeactivates: true,
-            }}
-            active={showForm}
-            id="filter-popup-menu"
-            role="menu"
-            className={
-              `${js ? 'popup' : 'popup-no-js'} nypl-popup-filter-menu ${showForm ? 'active' : ''}`
-            }
-          >
-            {
-              this.state.raisedErrors && !_isEmpty(this.state.raisedErrors) && (errorMessageBlock)
-            }
-            <form
-              action={`${appConfig.baseUrl}/search?q=${searchKeywords}`}
-              method="POST"
-              onSubmit={() => this.onSubmitForm()}
+          <div className="nypl-modal-content">
+            <div className="nypl-popup-filter-overlay"></div>
+            <p id="modal-description" className="nypl-screenreader-only">Filter search results</p>
+            <FocusTrap
+              focusTrapOptions={{
+                onDeactivate: this.deactivateForm,
+                clickOutsideDeactivates: true,
+              }}
+              active={showForm}
+              id="filter-popup-menu"
+              role="menu"
+              className={
+                `${js ? 'popup' : 'popup-no-js'} nypl-modal-filter-form nypl-popup-filter-menu ` +
+                `${showForm ? 'active' : ''}`
+              }
             >
-              <fieldset className="nypl-parent-fieldset">
-                <legend><h3>Filter Results</h3></legend>
+              {
+                this.state.raisedErrors && !_isEmpty(this.state.raisedErrors) && (errorMessageBlock)
+              }
+              <form
+                action={`${appConfig.baseUrl}/search?q=${searchKeywords}`}
+                method="POST"
+                onSubmit={() => this.onSubmitForm()}
+              >
+                <fieldset className="nypl-fieldset">
+                  <legend><h3 id="filter-title">Filter Results</h3></legend>
 
-                <FieldsetList
-                  legend="Format"
-                  filterId="materialType"
-                  filter={materialTypeFilters}
-                  selectedFilters={selectedFilters.materialType}
-                  onFilterClick={this.onFilterClick}
-                />
+                  <FieldsetList
+                    legend="Format"
+                    filterId="materialType"
+                    filter={materialTypeFilters}
+                    selectedFilters={selectedFilters.materialType}
+                    onFilterClick={this.onFilterClick}
+                  />
 
-                <FieldsetDate
-                  legend="Date"
-                  selectedFilters={dateSelectedFilters}
-                  onDateFilterChange={this.onDateFilterChange}
-                  submitError={isDateInputError}
-                />
+                  <FieldsetDate
+                    legend="Date"
+                    selectedFilters={dateSelectedFilters}
+                    onDateFilterChange={this.onDateFilterChange}
+                    submitError={isDateInputError}
+                  />
 
-                <FieldsetList
-                  legend="Language"
-                  filterId="language"
-                  filter={languageFilters}
-                  selectedFilters={selectedFilters.language}
-                  onFilterClick={this.onFilterClick}
-                />
+                  <FieldsetList
+                    legend="Language"
+                    filterId="language"
+                    filter={languageFilters}
+                    selectedFilters={selectedFilters.language}
+                    onFilterClick={this.onFilterClick}
+                  />
 
-                <div className="nypl-filter-button-container">
-                  <button
-                    id="submit-form"
-                    type="submit"
-                    name="apply-filters"
-                    onClick={this.submitForm}
-                    className="nypl-filter-button"
-                  >
-                    Apply Filters
-                  </button>
-                  <button
-                    id="clear-filters"
-                    type="button"
-                    name="Clear-Filters"
-                    className="nypl-filter-button"
-                    onClick={this.clearFilters}
-                  >
-                    Clear Filters
-                  </button>
-                  {closePopupButton}
-                </div>
-              </fieldset>
-            </form>
-          </FocusTrap>
+                  <div className="inner nypl-filter-button-container">
+                    <button
+                      id="submit-form"
+                      type="submit"
+                      name="apply-filters"
+                      onClick={this.submitForm}
+                      className="nypl-filter-button"
+                    >
+                      <svg
+                        className="nypl-icon"
+                        preserveAspectRatio="xMidYMid meet"
+                        aria-hidden="true"
+                        aria-labelledby="apply"
+                        viewBox="0 0 41.66739 49.79988"
+                      >
+                        <title id="apply">apply.v2.icon</title>
+                        <path
+                          d={'M38.97923,20.60587a3.1833,3.1833,0,0,0-4.332,0L23.33308,31.71167V2' +
+                          '.91584C23.33308,1.31208,22.43745,0,20.83369,0s-2.49938,1.31208-2.49938' +
+                          ',2.91584V31.71167L7.0202,20.60587a3.05228,3.05228,0,0,0-4.22789,0,2.92' +
+                          '5,2.925,0,0,0-.05208,4.12374L18.78063,40.796c.0061.0061-.00539.01464.0' +
+                          '0071.02075a2.92278,2.92278,0,0,0,4.121,0c.0061-.0061.006-.01464.0121-.' +
+                          '02075L38.98,24.7296A2.92444,2.92444,0,0,0,38.97923,20.60587Z'}
+                        />
+                        <rect
+                          x="17.91775"
+                          y="26.05024"
+                          width="5.83189"
+                          height="41.66739"
+                          rx="1.16667"
+                          ry="1.16667"
+                          transform="translate(-26.05024 67.71763) rotate(-90)"
+                        />
+                      </svg>
+                      Apply Filters
+                    </button>
+                    <button
+                      id="clear-filters"
+                      type="button"
+                      name="Clear-Filters"
+                      className="nypl-filter-button"
+                      onClick={this.clearFilters}
+                    >
+                      <svg
+                        className="nypl-icon"
+                        preserveAspectRatio="xMidYMid meet"
+                        viewBox="0 0 48 41"
+                        aria-hidden="true"
+                        aria-labelledby="reset"
+                      >
+                        <title title="reset">reset.icon</title>
+                        <path
+                          d={'M14.30581,12.04054,25.36758,4.37413A2.4,2.4,0,0,0,22.63242.4296L2.' +
+                          '25352,14.553,23.45977,29.54835a2.39954,2.39954,0,1,0,2.77031-3.91875L' +
+                          '13.80146,16.84054H43.2v19.2H2.4a2.4,2.4,0,1,0,0,4.8H48v-28.8Z'}
+                        />
+                      </svg>
+                      Clear Filters
+                    </button>
+                  </div>
+                </fieldset>
+              </form>
+            </FocusTrap>
+            {closePopupButton}
+          </div>
         </div>
       </div>
     );
