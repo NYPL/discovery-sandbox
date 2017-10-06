@@ -321,7 +321,8 @@ class FilterPopup extends React.Component {
         aria-controls="filter-popup-menu"
         className="popup-btn-close nypl-x-close-button"
       >
-        Close <XCloseSVG />
+        <span>Close</span>
+        <XCloseSVG />
       </button>
       : (<a
         aria-expanded
