@@ -1,0 +1,146 @@
+.filter-container {
+  .popup-btn-open {
+    display: inline-block;
+    float: left;
+    margin: 2.5rem 1rem 0;
+    border: 1px solid #776e64;
+    display: block;
+    text-decoration: none;
+  }
+
+  a.popup-btn-open {
+    padding-top: 3px;
+  }
+
+  .popup-container {
+    visibility: hidden;
+    display: none;
+    opacity: 0;
+
+    &.active,
+    &:target {
+      visibility: visible;
+      display: block;
+      opacity: 1;
+    }
+  }
+}
+
+.popup-container {
+  .cancel-no-js {
+    width: 100%;
+    height: 100%;
+    cursor: default;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 10000;
+    position: fixed;
+  }
+
+  .overlay {
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    position: fixed;
+    z-index: 1000;
+    background: rgba(0,0,0,0.5);
+    &.active {
+      opacity: 1;
+      visibility: visible;
+    }
+  }
+
+  .popup,
+  .popup-no-js {
+    margin: -1px 0 auto;
+    padding: 20px 0 0 0;
+    background: #fff;
+    border: 1px solid #666;
+    box-shadow: 0 0 50px rgba(0,0,0,0.5);
+    float: left;
+    width: auto;
+    z-index: 10000;
+    position: relative;
+  }
+
+  .popup {
+    display: none;
+    width: 100%;
+
+    &.active {
+      display: block;
+      z-index: 2000;
+      overflow: scroll;
+      -webkit-overflow-scrolling: touch;
+    }
+  }
+
+  .popup-btn-close {
+    display: none;
+    float: right;
+    text-decoration: none;
+
+    &.active {
+      display: block;
+    }
+  }
+}
+
+.filter-container {
+  button {
+    cursor: pointer;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+  }
+  ul li {
+    list-style: none;
+  }
+}
+
+.nypl-popup-container.active {
+  .nypl-popup-filter-menu .nypl-x-close-button {
+    top: 1rem !important;
+    right: 1rem;
+  }
+  .nypl-popup-filter-overlay {
+    z-index: 1000 !important;
+  }
+}
+
+.nypl-inner-fieldset-date {
+  .nypl-field-status {
+    display: inline-block;
+  }
+}
+
+.nypl-generic-checkbox > li {
+  margin-left: 0;
+}
+
+.nypl-generic-checkbox input[type="checkbox"] {
+  margin: 0 -7px;
+}
+
+.nypl-generic-columns {
+  -webkit-columns: 118px 2;
+  -moz-columns: 118px 2;
+  columns: 118px 2;
+}
+
+.nypl-name-field input[type=text] {
+  -webkit-appearance: none;
+}
+
+.date-hyphen {
+  margin: 0 2px;
+}
+
+.filter-error-box {
+  margin: 0 3.125rem;
+  @media (max-width: 483px) {
+    margin: 0 1rem;
+  }
+}

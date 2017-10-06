@@ -22,17 +22,10 @@ export default {
     'Q9RrzMLTqxKnVVn2+hVpk4F/8tMsGCdd4s/AJqEQBy5lsq7ji1B63XYqi5fc1SnJ\n' +
     'EQIDAQAB\n' +
     '-----END PUBLIC KEY-----',
-  defaultFacets: {
-    owner: [],
-    contributorLiteral: [],
+  defaultFilters: {
     materialType: [],
-    issuance: [],
-    publisher: [],
     language: [],
-    mediaType: [],
-    subjectLiteral: [],
-    creatorLiteral: [],
-    dateAfter: {},
-    dateBefore: {},
+    dateAfter: '',
+    dateBefore: '',
   },
 };

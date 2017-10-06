@@ -37,10 +37,10 @@ history.listen(location => {
 
   if (action === 'POP' && search) {
     ajaxCall(`${appConfig.baseUrl}/api${decodeURI(search)}`, (response) => {
-      if (response.data.facets && response.data.searchResults) {
-        const selectedFacets = destructureFilters(urlFilters, response.data.facets);
-        Actions.updateSelectedFacets(selectedFacets);
-        Actions.updateFacets(response.data.facets);
+      if (response.data.filters && response.data.searchResults) {
+        const selectedFilters = destructureFilters(urlFilters, response.data.filters);
+        Actions.updateSelectedFilters(selectedFilters);
+        Actions.updateFilters(response.data.filters);
         Actions.updateSearchResults(response.data.searchResults);
         if (qParameter) Actions.updateSearchKeywords(qParameter);
       }
@@ -83,7 +83,11 @@ class App extends React.Component {
     return (
       <DocumentTitle title="Shared Collection Catalog | NYPL">
         <div className="app-wrapper">
-          <Header navData={navConfig.current} skipNav={{ target: 'mainContent' }} />
+          <Header
+            navData={navConfig.current}
+            skipNav={{ target: 'mainContent' }}
+            patron={this.state.patron}
+          />
 
           {React.cloneElement(this.props.children, this.state.data)}
 

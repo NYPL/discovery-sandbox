@@ -9,6 +9,8 @@ import Search from '../Search/Search.jsx';
 import Sorter from '../Sorter/Sorter';
 import Pagination from '../Pagination/Pagination';
 import LoadingLayer from '../LoadingLayer/LoadingLayer.jsx';
+import FilterPopup from '../FilterPopup/FilterPopup.jsx';
+import SelectedFilters from '../Filters/SelectedFilters.jsx';
 
 import {
   basicQuery,
@@ -43,11 +45,13 @@ class SearchResultsPage extends React.Component {
     const {
       searchResults,
       searchKeywords,
-      selectedFacets,
+      selectedFilters,
+      filters,
       page,
       sortBy,
       field,
       isLoading,
+      location,
     } = this.props;
 
     const totalResults = searchResults ? searchResults.totalResults : undefined;
@@ -73,6 +77,19 @@ class SearchResultsPage extends React.Component {
         }, 500);
       });
     };
+    const searchError = location.query && location.query.error ? location.query.error : '';
+    const apiFilters = filters && filters.itemListElement && filters.itemListElement.length ?
+      filters.itemListElement : [];
+    let searchErrorMessage = '';
+    let dateFilterErrors = [];
+
+    if (searchError === 'dateFilterError') {
+      searchErrorMessage = 'Please enter valid dates.';
+      dateFilterErrors.push({
+        name: 'date',
+        value: 'Date',
+      });
+    }
 
     return (
       <DocumentTitle title="Search Results | Shared Collection Catalog | NYPL">
@@ -94,26 +111,56 @@ class SearchResultsPage extends React.Component {
                     field={field}
                     createAPIQuery={createAPIQuery}
                     updateIsLoadingState={this.updateIsLoadingState}
+                    searchError={searchError === 'noKeyword'}
                   />
+                  {searchErrorMessage &&
+                    <span
+                      className="nypl-field-status"
+                      id="search-input-status"
+                      aria-live="assertive"
+                      aria-atomic="true"
+                    >
+                      {searchErrorMessage}
+                    </span>
+                  }
                   <ResultsCount
                     isLoading={isLoading}
                     count={totalResults}
-                    selectedFacets={selectedFacets}
+                    selectedFilters={selectedFilters}
                     searchKeywords={searchKeywords}
                     field={field}
                     page={parseInt(page, 10)}
                   />
                   {
                     !!(totalResults && totalResults !== 0) && (
-                      <Sorter
-                        sortBy={sortBy}
-                        page={page}
-                        searchKeywords={searchKeywords}
-                        createAPIQuery={createAPIQuery}
-                        updateIsLoadingState={this.updateIsLoadingState}
-                      />
+                      <div>
+                        <Sorter
+                          sortBy={sortBy}
+                          page={page}
+                          searchKeywords={searchKeywords}
+                          createAPIQuery={createAPIQuery}
+                          updateIsLoadingState={this.updateIsLoadingState}
+                        />
+                        <FilterPopup
+                          filters={apiFilters}
+                          createAPIQuery={createAPIQuery}
+                          updateIsLoadingState={this.updateIsLoadingState}
+                          selectedFilters={selectedFilters}
+                          searchKeywords={searchKeywords}
+                          raisedErrors={dateFilterErrors}
+                        />
+                      </div>
                     )
                   }
+
+                  {
+                    <SelectedFilters
+                      selectedFilters={selectedFilters}
+                      createAPIQuery={createAPIQuery}
+                      updateIsLoadingState={this.updateIsLoadingState}
+                    />
+                  }
+
                 </div>
               </div>
             </div>
@@ -165,13 +212,14 @@ class SearchResultsPage extends React.Component {
 SearchResultsPage.propTypes = {
   searchResults: PropTypes.object,
   searchKeywords: PropTypes.string,
-  selectedFacets: PropTypes.object,
+  selectedFilters: PropTypes.object,
   page: PropTypes.string,
   location: PropTypes.object,
   sortBy: PropTypes.string,
   field: PropTypes.string,
   isLoading: PropTypes.bool,
   error: PropTypes.object,
+  filters: PropTypes.object,
 };
 
 SearchResultsPage.defaultProps = {

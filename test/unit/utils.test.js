@@ -10,11 +10,11 @@ const mock = new MockAdapter(axios);
 
 import {
   ajaxCall,
-  getDefaultFacets,
+  getDefaultFilters,
   createAppHistory,
   destructureFilters,
   getSortQuery,
-  getFacetFilterParam,
+  getFilterParam,
   getFieldParam,
   trackDiscovery,
   basicQuery,
@@ -105,24 +105,17 @@ describe('ajaxCall', () => {
 });
 
 /**
- * getDefaultFacets
+ * getDefaultFilters
  */
-describe('getDefaultFacets', () => {
-  it('should return an object with a list of facets', () => {
-    const defaultFacets = getDefaultFacets();
+describe('getDefaultFilters', () => {
+  it('should return an object with a list of filters', () => {
+    const defaultFilters = getDefaultFilters();
 
-    expect(defaultFacets).to.eql({
-      owner: [],
-      contributorLiteral: [],
+    expect(defaultFilters).to.eql({
       materialType: [],
-      issuance: [],
-      publisher: [],
       language: [],
-      mediaType: [],
-      subjectLiteral: [],
-      creatorLiteral: [],
-      dateAfter: {},
-      dateBefore: {},
+      dateAfter: '',
+      dateBefore: '',
     });
   });
 });
@@ -156,7 +149,7 @@ describe('destructureFilters', () => {
     });
   });
 
-  // describe('No facets from the API', () => {
+  // describe('No filters from the API', () => {
     // it('should return an empty object', () => {
     //   const filters = destructureFilters();
     //   expect(filters).to.eql({});
@@ -205,62 +198,73 @@ describe('getSortQuery', () => {
 });
 
 /**
- * getFacetFilterParam()
+ * getFilterParam()
  */
-describe('getFacetFilterParam', () => {
+describe('getFilterParam', () => {
   describe('No input', () => {
     it('should return an empty string', () => {
-      expect(getFacetFilterParam()).to.equal('');
+      expect(getFilterParam()).to.equal('');
     });
 
-    it('should return an empty string with no selected facets', () => {
-      const facets = {
-        date: { id: '', value: '' },
-        issuance: { id: '', value: '' },
-        language: { id: '', value: '' },
-        location: { id: '', value: '' },
-        materialType: { id: '', value: '' },
-        mediaType: { id: '', value: '' },
-        owner: { id: '', value: '' },
-        publisher: { id: '', value: '' },
-        subject: { id: '', value: '' },
+    it('should return an empty string with no selected filters', () => {
+      const filters = {
+        date: { value: '', label: '' },
+        issuance: { value: '', label: '' },
+        language: { value: '', label: '' },
+        location: { value: '', label: '' },
+        materialType: { value: '', label: '' },
+        mediaType: { value: '', label: '' },
+        owner: { value: '', label: '' },
+        publisher: { value: '', label: '' },
+        subject: { value: '', label: '' },
       };
-      expect(getFacetFilterParam(facets)).to.equal('');
+      expect(getFilterParam(filters)).to.equal('');
     });
   });
 
-  describe('Only facets object input', () => {
-    it('should return a key:value string from two facets', () => {
-      const facets = {
-        date: { id: '', value: '' },
-        issuance: { id: '', value: '' },
-        language: { id: '', value: '' },
-        location: { id: '', value: '' },
-        materialType: { id: 'resourcetypes:aud', value: 'Audio' },
-        mediaType: { id: '', value: '' },
-        owner: { id: 'orgs:1000', value: 'Stephen A. Schwarzman Building' },
-        publisher: { id: '', value: '' },
-        subject: { id: '', value: '' },
+  describe('Only filters object input', () => {
+    it('should return a key:value string from two filters', () => {
+      const filters = {
+        date: { value: '', label: '' },
+        issuance: { value: '', label: '' },
+        language: { value: '', label: '' },
+        location: { value: '', label: '' },
+        materialType: { value: 'resourcetypes:aud', label: 'Audio' },
+        mediaType: { value: '', label: '' },
+        owner: { value: 'orgs:1000', label: 'Stephen A. Schwarzman Building' },
+        publisher: { value: '', label: '' },
+        subject: { value: '', label: '' },
       };
-      expect(getFacetFilterParam(facets))
+      expect(getFilterParam(filters))
         .to.equal('&filters[materialType]=resourcetypes%3Aaud&filters[owner]=orgs%3A1000');
     });
 
-    it('should return a key:value string from three facets', () => {
-      const facets = {
-        date: { id: '', value: '' },
-        issuance: { id: '', value: '' },
-        language: { id: 'lang:ger', value: 'German' },
-        location: { id: '', value: '' },
-        materialType: { id: '', value: '' },
-        mediaType: { id: '', value: '' },
-        owner: { id: '', value: '' },
-        publisher: { id: '[Berlin] : Walter de Gruyter', value: '[Berlin] : Walter de Gruyter' },
-        subject: { id: 'Electronic journals.', value: 'Electronic journals.' },
+    it('should return a key:value string from three filters', () => {
+      const filters = {
+        date: { value: '', label: '' },
+        issuance: { value: '', label: '' },
+        language: { value: 'lang:ger', label: 'German' },
+        location: { value: '', label: '' },
+        materialType: { value: '', label: '' },
+        mediaType: { value: '', label: '' },
+        owner: { value: '', label: '' },
+        publisher: { value: '[Berlin] : Walter de Gruyter', label: '[Berlin] : Walter de Gruyter' },
+        subject: { value: 'Electronic journals.', label: 'Electronic journals.' },
       };
-      expect(getFacetFilterParam(facets))
+      expect(getFilterParam(filters))
         .to.equal('&filters[language]=lang%3Ager&filters[publisher]=%5BBerlin%5D%20%3A%20Walter' +
           '%20de%20Gruyter&filters[subject]=Electronic%20journals.');
+    });
+
+    it('should return a key:value string from date filters and a language filter', () => {
+      const filters = {
+        language: { value: 'lang:ger', label: 'German' },
+        materialType: { value: '', label: '' },
+        dateAfter: '1999',
+        dateBefore: '2010',
+      };
+      expect(getFilterParam(filters))
+        .to.equal('&filters[language]=lang%3Ager&filters[dateAfter]=1999&filters[dateBefore]=2010');
     });
   });
 });
@@ -314,14 +318,14 @@ describe('basicQuery', () => {
   const defaultQueryObj = {
     sortBy: 'relevance',
     field: 'all',
-    selectedFacets: {},
+    selectedFilters: {},
     searchKeywords: '',
     page: '1',
   };
   const defaultQueryObjwithData = {
     sortBy: 'title_desc',
     field: 'all',
-    selectedFacets: {},
+    selectedFilters: {},
     searchKeywords: 'shakespeare',
     page: '4',
   };
@@ -378,14 +382,14 @@ describe('basicQuery', () => {
       expect(createAPIQuery({ field: 'author' })).to.equal('q=&search_scope=author');
     });
 
-    it('should update the selected facets query', () => {
-      // There are more tests in the `getFacetFilterParam` suite.
+    it('should update the selected filters query', () => {
+      // There are more tests in the `getFilterParam` suite.
       expect(createAPIQuery({
-        selectedFacets: {
-          language: { id: '', value: '' },
-          materialType: { id: 'resourcetypes:aud', value: 'Audio' },
-          owner: { id: 'orgs:1000', value: 'Stephen A. Schwarzman Building' },
-          subject: { id: '', value: '' },
+        selectedFilters: {
+          language: { value: '', label: '' },
+          materialType: { value: 'resourcetypes:aud', label: 'Audio' },
+          owner: { value: 'orgs:1000', label: 'Stephen A. Schwarzman Building' },
+          subject: { value: '', label: '' },
         },
       })).to.equal('q=&filters[materialType]=resourcetypes%3Aaud&filters[owner]=orgs%3A1000');
     });
