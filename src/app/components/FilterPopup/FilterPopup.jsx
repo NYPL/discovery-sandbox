@@ -453,6 +453,7 @@ class FilterPopup extends React.Component {
                         className="nypl-icon"
                         preserveAspectRatio="xMidYMid meet"
                         title="apply"
+                        labelledById="apply"
                       />
                       Apply Filters
                     </button>
@@ -467,6 +468,7 @@ class FilterPopup extends React.Component {
                         className="nypl-icon"
                         preserveAspectRatio="xMidYMid meet"
                         title="reset"
+                        labelledById="reset"
                       />
                       Clear Filters
                     </button>

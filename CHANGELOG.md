@@ -1,5 +1,8 @@
 ## CHANGE LOG
 
+### 1.1.6
+- Update the header to version v2.1.1.
+
 ### 1.1.5
 - Hotfix to remove the MARC link on bib detail page as the link to Webpack is not working.
 
