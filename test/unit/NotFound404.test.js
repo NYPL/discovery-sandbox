@@ -23,7 +23,7 @@ describe('NotFound404', () => {
   });
 
   it('should contain a link to the homepage', () => {
-    expect(component.find('Link').prop('to')).to.equal(config.baseUrl);
+    expect(component.find('Link').prop('to')).to.equal(`${config.baseUrl}/`);
   });
 
   it('should contain a link to the old catalog', () => {

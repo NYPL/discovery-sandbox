@@ -166,6 +166,61 @@ describe('Alt', () => {
       expect(dispatcherArgs.action).to.equal(action);
       expect(dispatcherArgs.data).to.eql('title_asc');
     });
+
+    it('should pass data to updateLoadingStatus Action', () => {
+      const action = actions.UPDATE_LOADING_STATUS;
+
+      actions.updateLoadingStatus(true);
+
+      const dispatcherArgs = getDispatcherArguments(dispatcherSpy, 9);
+
+      expect(dispatcherArgs.action).to.equal(action);
+      expect(dispatcherArgs.data).to.eql(true);
+    });
+
+    it('should pass data to updateField Action', () => {
+      const action = actions.UPDATE_FIELD;
+
+      actions.updateField('all');
+
+      const dispatcherArgs = getDispatcherArguments(dispatcherSpy, 10);
+
+      expect(dispatcherArgs.action).to.equal(action);
+      expect(dispatcherArgs.data).to.eql('all');
+    });
+
+    it('should pass data to updateForm Action', () => {
+      const action = actions.UPDATE_FORM;
+
+      actions.updateForm({});
+
+      const dispatcherArgs = getDispatcherArguments(dispatcherSpy, 11);
+
+      expect(dispatcherArgs.action).to.equal(action);
+      expect(dispatcherArgs.data).to.eql({});
+    });
+
+    it('should pass data to updateDeliveryLocations Action', () => {
+      const action = actions.UPDATE_DELIVERY_LOCATIONS;
+
+      actions.updateDeliveryLocations([]);
+
+      const dispatcherArgs = getDispatcherArguments(dispatcherSpy, 12);
+
+      expect(dispatcherArgs.action).to.equal(action);
+      expect(dispatcherArgs.data).to.eql([]);
+    });
+
+    it('should pass data to updateIsEddRequestable Action', () => {
+      const action = actions.UPDATE_IS_EDD_REQUESTABLE;
+
+      actions.updateIsEddRequestable(false);
+
+      const dispatcherArgs = getDispatcherArguments(dispatcherSpy, 13);
+
+      expect(dispatcherArgs.action).to.equal(action);
+      expect(dispatcherArgs.data).to.eql(false);
+    });
   });
 
   describe('Store', () => {
@@ -277,6 +332,71 @@ describe('Alt', () => {
 
       expect(oldSortBy).to.eql('title_asc');
       expect(newSortBy).to.eql('date_asc');
+    });
+
+    it('should pass data to updateLoadingStatus Action', () => {
+      const oldIsLoading = store.getState().isLoading;
+      const action = actions.UPDATE_LOADING_STATUS;
+      const data = false;
+
+      // Dispatching new data.
+      alt.dispatcher.dispatch({ action, data });
+      const newIsLoading = store.getState().isLoading;
+
+      expect(oldIsLoading).to.eql(true);
+      expect(newIsLoading).to.eql(false);
+    });
+
+    it('should pass data to updateField Action', () => {
+      const oldField = store.getState().field;
+      const action = actions.UPDATE_FIELD;
+      const data = 'author';
+
+      // Dispatching new data.
+      alt.dispatcher.dispatch({ action, data });
+      const newField = store.getState().field;
+
+      expect(oldField).to.eql('all');
+      expect(newField).to.eql('author');
+    });
+
+    it('should pass data to updateForm Action', () => {
+      const oldForm = store.getState().form;
+      const action = actions.UPDATE_FORM;
+      const data = { email: 'edwin@nypl.org' };
+
+      // Dispatching new data.
+      alt.dispatcher.dispatch({ action, data });
+      const newForm = store.getState().form;
+
+      expect(oldForm).to.eql({});
+      expect(newForm).to.eql({ email: 'edwin@nypl.org' });
+    });
+
+    it('should pass data to updateDeliveryLocations Action', () => {
+      const oldForm = store.getState().deliveryLocations;
+      const action = actions.UPDATE_DELIVERY_LOCATIONS;
+      const data = [{ name: 'sasb' }, { name: 'lpa' }];
+
+      // Dispatching new data.
+      alt.dispatcher.dispatch({ action, data });
+      const newForm = store.getState().deliveryLocations;
+
+      expect(oldForm).to.eql([]);
+      expect(newForm).to.eql([{ name: 'sasb' }, { name: 'lpa' }]);
+    });
+
+    it('should pass data to updateIsEddRequestable Action', () => {
+      const oldForm = store.getState().isEddRequestable;
+      const action = actions.UPDATE_IS_EDD_REQUESTABLE;
+      const data = true;
+
+      // Dispatching new data.
+      alt.dispatcher.dispatch({ action, data });
+      const newForm = store.getState().isEddRequestable;
+
+      expect(oldForm).to.eql(false);
+      expect(newForm).to.eql(true);
     });
   });
 });
