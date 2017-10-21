@@ -16,6 +16,8 @@ import {
   ajaxCall,
 } from '../../utils/utils.js';
 
+import { ApplyIcon, ResetIcon } from 'dgx-svg-icons';
+
 import appConfig from '../../../../appConfig';
 import FieldsetDate from '../Filters/FieldsetDate';
 import FieldsetList from '../Filters/FieldsetList';
@@ -442,32 +444,12 @@ class FilterPopup extends React.Component {
                       onClick={this.submitForm}
                       className="nypl-filter-button"
                     >
-                      <svg
+                      <ApplyIcon
                         className="nypl-icon"
                         preserveAspectRatio="xMidYMid meet"
-                        aria-hidden="true"
-                        aria-labelledby="apply"
-                        viewBox="0 0 41.66739 49.79988"
-                      >
-                        <title id="apply">apply.v2.icon</title>
-                        <path
-                          d={'M38.97923,20.60587a3.1833,3.1833,0,0,0-4.332,0L23.33308,31.71167V2' +
-                          '.91584C23.33308,1.31208,22.43745,0,20.83369,0s-2.49938,1.31208-2.49938' +
-                          ',2.91584V31.71167L7.0202,20.60587a3.05228,3.05228,0,0,0-4.22789,0,2.92' +
-                          '5,2.925,0,0,0-.05208,4.12374L18.78063,40.796c.0061.0061-.00539.01464.0' +
-                          '0071.02075a2.92278,2.92278,0,0,0,4.121,0c.0061-.0061.006-.01464.0121-.' +
-                          '02075L38.98,24.7296A2.92444,2.92444,0,0,0,38.97923,20.60587Z'}
-                        />
-                        <rect
-                          x="17.91775"
-                          y="26.05024"
-                          width="5.83189"
-                          height="41.66739"
-                          rx="1.16667"
-                          ry="1.16667"
-                          transform="translate(-26.05024 67.71763) rotate(-90)"
-                        />
-                      </svg>
+                        title="apply"
+                        labelledById="apply"
+                      />
                       Apply Filters
                     </button>
                     <button
@@ -477,20 +459,12 @@ class FilterPopup extends React.Component {
                       className="nypl-filter-button"
                       onClick={this.clearFilters}
                     >
-                      <svg
+                      <ResetIcon
                         className="nypl-icon"
                         preserveAspectRatio="xMidYMid meet"
-                        viewBox="0 0 48 41"
-                        aria-hidden="true"
-                        aria-labelledby="reset"
-                      >
-                        <title title="reset">reset.icon</title>
-                        <path
-                          d={'M14.30581,12.04054,25.36758,4.37413A2.4,2.4,0,0,0,22.63242.4296L2.' +
-                          '25352,14.553,23.45977,29.54835a2.39954,2.39954,0,1,0,2.77031-3.91875L' +
-                          '13.80146,16.84054H43.2v19.2H2.4a2.4,2.4,0,1,0,0,4.8H48v-28.8Z'}
-                        />
-                      </svg>
+                        title="reset"
+                        labelledById="reset"
+                      />
                       Clear Filters
                     </button>
                   </div>
