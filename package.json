@@ -61,7 +61,7 @@
   },
   "dependencies": {
     "@nypl/design-toolkit": "0.1.25.1",
-    "@nypl/dgx-header-component": "git+https://bitbucket.org/NYPL/dgx-header-component.git#integrate-fundraising-component",
+    "@nypl/dgx-header-component": "2.3.0",
     "@nypl/dgx-react-footer": "0.4.0",
     "@nypl/nypl-data-api-client": "0.2.5",
     "aws-sdk": "2.99.0",
