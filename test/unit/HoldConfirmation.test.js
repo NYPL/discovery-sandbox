@@ -44,6 +44,7 @@ describe('HoldConfirmation', () => {
     };
 
     before(() => {
+      Actions.updatePatronData({});
       requireUser = sinon.spy(HoldConfirmation.prototype, 'requireUser');
       component = mount(<HoldConfirmation location={location} />);
     });
@@ -54,6 +55,7 @@ describe('HoldConfirmation', () => {
     });
 
     it('should redirect the patron to OAuth log in page.', () => {
+      component.setState({ patron: {} });
       expect(requireUser.returnValues[0]).to.equal(false);
     });
   });
@@ -530,12 +532,18 @@ describe('HoldConfirmation', () => {
           const main = component.find('main');
 
           expect(main.find('#go-back-catalog')).to.have.length(1);
-          expect(main.contains(
-            <span id="go-back-catalog">
-              <a href={location.query.fromUrl}>Go back to your search
-              results</a> or <a href="https://catalog.nypl.org/search">start a new search</a>.
-            </span>
-          )).to.equal(true);
+          expect(main.find('#go-back-catalog a').length).to.equal(2);
+
+          expect(main.find('#go-back-catalog a').at(0).text())
+            .to.equal('Go back to your search results');
+          expect(main.find('#go-back-catalog a').at(0).prop('href'))
+            .to.equal('https://catalog.nypl.org/search~S1/?searchtype=X&searcharg=bryant&' +
+              'searchscope=1&sortdropdown=-&SORT=DZ&extended=0&SUBMIT=Search&searchlimits' +
+              '=&searchorigarg=Xbryant%26SORT%3DD');
+
+          expect(main.find('#go-back-catalog a').at(1).text()).to.equal('start a new search');
+          expect(main.find('#go-back-catalog a').at(1).prop('href'))
+            .to.equal('https://catalog.nypl.org/search');
         }
       );
 

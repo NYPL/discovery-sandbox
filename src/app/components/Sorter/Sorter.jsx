@@ -26,7 +26,6 @@ class Sorter extends React.Component {
     this.state = {
       sortValue: this.props.sortBy || 'relevance',
       sortLabel: defaultLabel || 'relevance',
-      active: false,
       className: '',
       js: false,
     };
@@ -71,14 +70,12 @@ class Sorter extends React.Component {
     ajaxCall(`${appConfig.baseUrl}/api?${apiQuery}`, (response) => {
       Actions.updateSearchResults(response.data.searchResults);
       Actions.updateSortBy(sortBy);
-      this.setState({ sortBy });
       this.context.router.push(`${appConfig.baseUrl}/search?${apiQuery}`);
       setTimeout(
         () => { this.props.updateIsLoadingState(false); },
         500
       );
     });
-    this.setState({ active: false });
   }
 
   /**
@@ -122,13 +119,7 @@ class Sorter extends React.Component {
                 </select>
               </strong>
             </span>
-            {
-              !this.state.js &&
-                <input
-                  type="submit"
-                >
-                </input>
-            }
+            {!this.state.js && <input type="submit" />}
           </form>
         </div>
       </div>

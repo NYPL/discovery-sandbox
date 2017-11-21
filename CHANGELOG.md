@@ -1,5 +1,11 @@
 ## CHANGE LOG
 
+### 1.1.6
+- Update the header to version v2.1.1.
+
+### 1.1.5
+- Hotfix to remove the MARC link on bib detail page as the link to Webpack is not working.
+
 ### 1.1.4
 - Hotfix to display the publisher field which went from `publisher` to `publisherLiteral` in the Search Results.
 
