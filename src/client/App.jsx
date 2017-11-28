@@ -6,7 +6,7 @@ import { Router, useRouterHistory } from 'react-router';
 import createBrowserHistory from 'history/lib/createBrowserHistory';
 import useScroll from 'scroll-behavior/lib/useStandardScroll';
 import FeatureFlags from 'dgx-feature-flags';
-// import { ga } from 'dgx-react-ga';
+import { config, gaUtils } from 'dgx-react-ga';
 import a11y from 'react-a11y';
 
 import alt from '../app/alt.js';
@@ -26,8 +26,12 @@ window.onload = () => {
     window.dgxFeatureFlags = FeatureFlags.utils;
   }
 
-  // Used for debugging
-  // ga.initialize('', { debug: true });
+  if (!window.ga) {
+    const isProd = process.env.NODE_ENV === 'production';
+    const gaOpts = { debug: !isProd, titleCase: false };
+
+    gaUtils.initialize(config.google.code(isProd), gaOpts);
+  }
 
   // Render Isomorphically
   Iso.bootstrap((state, container) => {
@@ -39,5 +43,6 @@ window.onload = () => {
       <Router history={appHistory}>{routes.client}</Router>,
       container
     );
+    gaUtils.trackPageview(window.location.pathname);
   });
 };
