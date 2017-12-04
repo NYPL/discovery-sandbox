@@ -1,5 +1,8 @@
 ## CHANGE LOG
 
+### 1.2.0
+- Update dgx-react-ga related functions for Header Component and dgx-react-ga updates.
+
 ### 1.1.7
 - New version of the header just in time for the Fundraising Banner! :unamused:
 
