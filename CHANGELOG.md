@@ -1,5 +1,8 @@
 ## CHANGE LOG
 
+### 1.2.1
+- Update Header component version to 2.4.0.
+
 ### 1.2.0
 - Update dgx-react-ga related functions for Header Component and dgx-react-ga updates.
 
