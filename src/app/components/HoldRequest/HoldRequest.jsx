@@ -53,7 +53,7 @@ class HoldRequest extends React.Component {
   }
 
   componentDidMount() {
-    this.requireUser();
+    // this.requireUser();
   }
 
   componentDidUpdate() {
@@ -235,12 +235,14 @@ class HoldRequest extends React.Component {
     });
   }
 
-  getHolidayNotification() {
+  getNotification() {
     return (
-      <p>
-        Please plan your visits to NYPL's research libraries with the holidays in mind as there will be a delay in the delivery of some items.
-        Some books requested after 2:30 PM on December 21 through the morning of December 26 will be ready for collection on December 27. Over the New Year holiday, some books requested after 2:30 PM on December 28 through the morning of January 2 will be delivered on January 3. Please check your Library account to confirm that your requested items are available.
-      </p>
+      <div className="nypl-banner-alert">
+        <p style={{ padding: '10px 20px', margin: 0 }}>
+          Please plan your visits to NYPL's research libraries with the holidays in mind as there will be a delay in the delivery of some items.
+          Some books requested after 2:30 PM on December 21 through the morning of December 26 will be ready for collection on December 27. Over the New Year holiday, some books requested after 2:30 PM on December 28 through the morning of January 2 will be delivered on January 3. Please check your Library account to confirm that your requested items are available.
+        </p>
+      </div>
     );
   }
 
@@ -353,7 +355,7 @@ class HoldRequest extends React.Component {
                           contact 917-ASK-NYPL (<a href="tel:917-275-6975">917-275-6975</a>).
                         </h2>
                     }
-                    {this.getHolidayNotification()}
+                    {this.getNotification()}
                     {bibLink}
                     {callNo}
                   </div>
