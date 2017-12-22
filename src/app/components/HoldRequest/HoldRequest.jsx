@@ -53,7 +53,7 @@ class HoldRequest extends React.Component {
   }
 
   componentDidMount() {
-    // this.requireUser();
+    this.requireUser();
   }
 
   componentDidUpdate() {
