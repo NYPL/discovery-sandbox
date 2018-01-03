@@ -235,12 +235,20 @@ class HoldRequest extends React.Component {
     });
   }
 
+  /**
+   * getNotification()
+   * Renders notification text surrounded by a 'nypl-banner-alert' toolkit wrapper.
+   *
+   * @return {HTML Element}
+   */
   getNotification() {
     return (
       <div className="nypl-banner-alert">
         <p style={{ padding: '10px 20px', margin: 0 }}>
-          Please plan your visits to NYPL's research libraries with the holidays in mind as there will be a delay in the delivery of some items.
-          Some books requested after 2:30 PM on December 21 through the morning of December 26 will be ready for collection on December 27. Over the New Year holiday, some books requested after 2:30 PM on December 28 through the morning of January 2 will be delivered on January 3. Please check your Library account to confirm that your requested items are available.
+          The Miriam and Ira D. Wallach Division Art and Architecture Reading Room (300) will be closed from January 8-14, 2018.
+          During this time, room 300 services will be available in room 308 on a limited basis.
+          Room 300 will reopen on Tuesday, January 16, 2018.
+          If you have any questions, please contact: <a href="mailto:art@nypl.org" target="_top">art@nypl.org</a>.
         </p>
       </div>
     );
