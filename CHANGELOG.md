@@ -1,5 +1,11 @@
 ## CHANGE LOG
 
+### 1.2.3
+- Updated Notification on Hold Request component in support of hours of operation changes for January 2018
+
+### 1.2.2
+- Added Notification on Hold Request component for 2017 holiday closings
+
 ### 1.2.1
 - Update Header component version to 2.4.0.
 
