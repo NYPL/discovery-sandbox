@@ -12,7 +12,6 @@ import bodyParser from 'body-parser';
 
 import alt from './src/app/alt.js';
 import appConfig from './appConfig.js';
-import WebpackDevServer from 'webpack-dev-server';
 import webpackConfig from './webpack.config.js';
 import apiRoutes from './src/server/ApiRoutes/ApiRoutes.js';
 import routes from './src/app/routes/routes.jsx';
@@ -135,6 +134,8 @@ process.on('SIGINT', gracefulShutdown);
  * - Using Webpack Dev Server
 */
 if (!isProduction) {
+  const WebpackDevServer = require('webpack-dev-server');
+
   new WebpackDevServer(webpack(webpackConfig), {
     publicPath: webpackConfig.output.publicPath,
     hot: true,
