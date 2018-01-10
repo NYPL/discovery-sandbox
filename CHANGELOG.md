@@ -1,5 +1,26 @@
 ## CHANGE LOG
 
+### 1.2.5
+- Update to Header component v2.4.2 and ejs package update.
+
+### 1.2.4
+- Update the Header and Footer npm components to v2.4.1 and v0.4.1, respectively.
+
+### 1.2.3
+- Updated Notification on Hold Request component in support of hours of operation changes for January 2018
+
+### 1.2.2
+- Added Notification on Hold Request component for 2017 holiday closings
+
+### 1.2.1
+- Update Header component version to 2.4.0.
+
+### 1.2.0
+- Update dgx-react-ga related functions for Header Component and dgx-react-ga updates.
+
+### 1.1.7
+- New version of the header just in time for the Fundraising Banner! :unamused:
+
 ### 1.1.6
 - Update the header to version v2.1.1.
 
