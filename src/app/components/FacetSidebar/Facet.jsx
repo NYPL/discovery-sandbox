@@ -6,7 +6,7 @@ import {
   findWhere as _findWhere,
   isEmpty as _isEmpty,
 } from 'underscore';
-import { DownWedgeIcon } from 'dgx-svg-icons';
+import { DownWedgeIcon } from '@nypl/dgx-svg-icons';
 
 import Actions from '../../actions/Actions';
 import { ajaxCall } from '../../utils/utils';
