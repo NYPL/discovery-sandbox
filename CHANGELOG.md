@@ -1,5 +1,11 @@
 ## CHANGE LOG
 
+### 1.2.5
+- Update to Header component v2.4.2 and ejs package update.
+
+### 1.2.4
+- Update the Header and Footer npm components to v2.4.1 and v0.4.1, respectively.
+
 ### 1.2.3
 - Updated Notification on Hold Request component in support of hours of operation changes for January 2018
 
