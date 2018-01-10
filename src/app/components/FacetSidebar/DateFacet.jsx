@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { DownWedgeIcon } from 'dgx-svg-icons';
+import { DownWedgeIcon } from '@nypl/dgx-svg-icons';
 
 import Actions from '../../actions/Actions';
 import { ajaxCall } from '../../utils/utils';
