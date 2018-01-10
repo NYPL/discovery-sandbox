@@ -16,7 +16,7 @@ import {
   ajaxCall,
 } from '../../utils/utils.js';
 
-import { ApplyIcon, ResetIcon } from 'dgx-svg-icons';
+import { ApplyIcon, ResetIcon } from '@nypl/dgx-svg-icons';
 
 import appConfig from '../../../../appConfig';
 import FieldsetDate from '../Filters/FieldsetDate';
