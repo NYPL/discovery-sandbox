@@ -54,6 +54,7 @@
   "devDependencies": {
     "axios-mock-adapter": "1.7.1",
     "create-react-class": "15.5.3",
+    "eslint-plugin-import": "^2.8.0",
     "jsdom": "9.0.0",
     "nightwatch": "0.9.9",
     "nyc": "9.0.1",
