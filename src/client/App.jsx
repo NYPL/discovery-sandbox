@@ -5,7 +5,6 @@ import ReactDOM from 'react-dom';
 import { Router, useRouterHistory } from 'react-router';
 import createBrowserHistory from 'history/lib/createBrowserHistory';
 import useScroll from 'scroll-behavior/lib/useStandardScroll';
-import FeatureFlags from 'dgx-feature-flags';
 import { config, gaUtils } from 'dgx-react-ga';
 import a11y from 'react-a11y';
 
@@ -21,11 +20,6 @@ if (loadA11y) {
 }
 
 window.onload = () => {
-  // Used to activate/deactivate AB tests on global namespace.
-  if (!window.dgxFeatureFlags) {
-    window.dgxFeatureFlags = FeatureFlags.utils;
-  }
-
   if (!window.ga) {
     const isProd = process.env.NODE_ENV === 'production';
     const gaOpts = { debug: !isProd, titleCase: false };
