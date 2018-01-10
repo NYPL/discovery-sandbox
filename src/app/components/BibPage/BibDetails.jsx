@@ -369,29 +369,29 @@ class BibDetails extends React.Component {
       let index = 0;
 
       if (response.data.facet) {
-        // Find the index where the field exists in the list of facets from the API
-        index = _findIndex(response.data.facets.itemListElement, { field });
+        // Find the index where the field exists in the list of filters from the API
+        index = _findIndex(response.data.filters.itemListElement, { field });
       }
 
-      // If the index exists, try to find the facet value from the API
-      if (response.data.facets && response.data.facets.itemListElement
-        && response.data.facets.itemListElement[index]) {
-        const facet = _findWhere(response.data.facets.itemListElement[index].values, { value });
+      // If the index exists, try to find the filter value from the API
+      if (response.data.filters && response.data.filters.itemListElement
+        && response.data.filters.itemListElement[index]) {
+        const filter = _findWhere(response.data.filters.itemListElement[index].values, { value });
 
-        // The API may return a list of facets in the selected field, but the wanted
-        // facet may still not appear. If that's the case, return the clicked facet value.
-        Actions.updateSelectedFacets({
+        // The API may return a list of filters in the selected field, but the wanted
+        // filter may still not appear. If that's the case, return the clicked filter value.
+        Actions.updateSelectedFilters({
           [field]: [{
-            id: facet ? facet.value : value,
-            value: facet ? (facet.label || facet.value) : value,
+            value: filter ? filter.value : value,
+            label: filter ? (filter.label || filter.value) : value,
           }],
         });
       } else {
         // Otherwise, the field wasn't found in the API. Returning this highlights the
-        // facet in the selected facet region, but not in the facet sidebar.
-        Actions.updateSelectedFacets({
+        // filter in the selected filter region, but not in the filter sidebar.
+        Actions.updateSelectedFilters({
           [field]: [{
-            id: value,
+            label: value,
             value,
           }],
         });

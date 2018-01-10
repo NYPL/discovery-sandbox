@@ -5,7 +5,7 @@ import { shallow, mount } from 'enzyme';
 
 import ResultsCount from '../../src/app/components/ResultsCount/ResultsCount.jsx';
 
-const facets = {
+const filters = {
   subjectLiteral: {
     owner: [{}],
     subjectLiteral: [{ id: 'Children\'s art El Salvador', value: 'Children\'s art El Salvador' }],
@@ -16,6 +16,12 @@ const facets = {
     creatorLiteral: [{ id: 'Shakespeare', value: 'Shakespeare' }],
     materialType: [],
     issuance: [],
+  },
+  materialTypeAndLanguage: {
+    owner: [],
+    creatorLiteral: [],
+    materialType: [{ label: 'Text', value: 'resourcetypes:aud' }],
+    langauge: [{ label: 'French', value: 'lang:fr' }],
   },
 };
 
@@ -35,7 +41,7 @@ describe('ResultsCount', () => {
       it('should output that no results were found', () => {
         expect(component.find('h2').length).to.equal(1);
         expect(component.find('h2').text())
-          .to.equal('No results found. Please try another search.');
+          .to.equal('No results for the keyword "". Try a different search.');
       });
     });
 
@@ -49,7 +55,42 @@ describe('ResultsCount', () => {
       it('should output that no results were found', () => {
         expect(component.find('h2').length).to.equal(1);
         expect(component.find('h2').text())
-          .to.equal('No results found. Please try another search.');
+          .to.equal('No results for the keyword "locofocos". Try a different search.');
+      });
+    });
+
+    describe('No result count with multiple search keywords', () => {
+      let component;
+
+      before(() => {
+        component = shallow(<ResultsCount searchKeywords="harry potter" count={0} />);
+      });
+
+      it('should output that no results were found', () => {
+        expect(component.find('h2').length).to.equal(1);
+        expect(component.find('h2').text())
+          .to.equal('No results for the keywords "harry potter". Try a different search.');
+      });
+    });
+
+    describe('No result count with search keywords and selected filters', () => {
+      let component;
+
+      before(() => {
+        component = shallow(
+          <ResultsCount
+            searchKeywords="harry potter"
+            count={0}
+            selectedFilters={filters.materialTypeAndLanguage}
+          />
+        );
+      });
+
+      it('should output that no results were found', () => {
+        expect(component.find('h2').length).to.equal(1);
+        expect(component.find('h2').text())
+          .to.equal('No results for the keywords "harry potter" with the chosen filters. ' +
+            'Try a different search or different filters.');
       });
     });
   });
@@ -87,6 +128,25 @@ describe('ResultsCount', () => {
           expect(component.find('h2').length).to.equal(1);
           expect(component.find('h2').text())
             .to.equal('Displaying 1-50 of 2,345 results for keyword "hamlet"');
+        });
+      });
+
+      describe('Multiple search keyword', () => {
+        let component;
+
+        before(() => {
+          component = shallow(
+            <ResultsCount
+              searchKeywords="harry potter"
+              count={2345}
+            />
+          );
+        });
+
+        it('should output that no results were found', () => {
+          expect(component.find('h2').length).to.equal(1);
+          expect(component.find('h2').text())
+            .to.equal('Displaying 1-50 of 2,345 results for keywords "harry potter"');
         });
       });
 
@@ -131,17 +191,17 @@ describe('ResultsCount', () => {
       });
     });
 
-    // Currently, the use case is only ONE facet being displayed at a time.
-    // Why? We have no actionable selection for facets/filters, and the only way to select
-    // a facet is from the bib page using a link.
-    describe('Selected Facets', () => {
-      describe('creatorLiteral selected facet', () => {
+    // Currently, the use case is only ONE filter being displayed at a time.
+    // Why? We have no actionable selection for filters/filters, and the only way to select
+    // a filter is from the bib page using a link.
+    describe('Selected Filters', () => {
+      describe('creatorLiteral selected filter', () => {
         let component;
 
         before(() => {
           component = mount(
             <ResultsCount
-              selectedFacets={facets.creatorLiteral}
+              selectedFilters={filters.creatorLiteral}
               count={2345}
             />
           );
@@ -154,13 +214,13 @@ describe('ResultsCount', () => {
         });
       });
 
-      describe('subjectLiteral selected facet', () => {
+      describe('subjectLiteral selected filter', () => {
         let component;
 
         before(() => {
           component = mount(
             <ResultsCount
-              selectedFacets={facets.subjectLiteral}
+              selectedFilters={filters.subjectLiteral}
               count={6789}
             />
           );

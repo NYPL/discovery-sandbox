@@ -19,21 +19,19 @@ Import style rules from NYPL React module components
 @import "~@nypl/dgx-header-component/dist/styles/main";
 @import "~@nypl/dgx-react-footer/dist/styles/styles";
 
-@import "components/Account.scss";
-@import "components/Advanced.scss";
 @import "components/BibPage.scss";
-@import "components/Facets.scss";
 @import "components/Feedback.scss";
 @import "components/HoldPage.scss";
 @import "components/Home.scss";
-@import "components/Tabs.scss";
 @import "components/_forms.v2.scss";
-@import "components/SearchPagination.scss";
 @import "components/ItemTable.scss";
 @import "components/Sorter.scss";
 @import "components/design-toolkit-updates.scss";
 @import "components/HoldConfirmation.scss";
 @import "components/LoadingLayer.scss";
+@import "components/FilterPopup.scss";
+@import "components/Search.scss";
+@import "components/SelectedFilters.scss";
 
 @import "style-v2.scss";
 
@@ -63,7 +61,7 @@ button {
 }
 
 .hidden {
-    display: none;
+  display: none;
 }
 
 .search-results-container {
@@ -169,6 +167,10 @@ input[type=submit]:focus {
   outline-color: #ffb81d;
   outline-style: solid;
   outline-width: 3px;
+}
+
+.no-scroll {
+  overflow: hidden;
 }
 
 .emailSubscription-wrapper {
