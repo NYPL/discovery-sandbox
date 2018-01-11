@@ -10,13 +10,12 @@ import {
   isEmpty as _isEmpty,
   some as _some,
 } from 'underscore';
+import { ApplyIcon, ResetIcon } from '@nypl/dgx-svg-icons';
 
 import {
   trackDiscovery,
   ajaxCall,
-} from '../../utils/utils.js';
-
-import { ApplyIcon, ResetIcon } from '@nypl/dgx-svg-icons';
+} from '../../utils/utils';
 
 import appConfig from '../../../../appConfig';
 import FieldsetDate from '../Filters/FieldsetDate';
@@ -28,7 +27,8 @@ const XCloseSVG = () => (
     aria-hidden="true"
     aria-controls="filter-popup-menu"
     className="nypl-icon"
-    preserveAspectRatio="xMidYMid meet" viewBox="0 0 100 100"
+    preserveAspectRatio="xMidYMid meet"
+    viewBox="0 0 100 100"
   >
     <title>x-close-rev</title>
     <path
