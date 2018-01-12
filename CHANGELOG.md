@@ -1,5 +1,8 @@
 ## CHANGE LOG
 
+### 1.2.6
+- Update to Header component v2.4.3 (small hotfix) and update to Notifaction on Hold Request Page.
+
 ### 1.2.5
 - Update to Header component v2.4.2 and ejs package update.
 
