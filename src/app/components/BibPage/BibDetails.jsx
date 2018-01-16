@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
-import Actions from '../../actions/Actions.js';
 import {
   isArray as _isArray,
   isEmpty as _isEmpty,
@@ -10,12 +9,13 @@ import {
   every as _every,
 } from 'underscore';
 
+import Actions from '../../actions/Actions';
 import {
   ajaxCall,
   trackDiscovery,
 } from '../../utils/utils';
 import DefinitionList from './DefinitionList';
-import appConfig from '../../../../appConfig.js';
+import appConfig from '../../../../appConfig';
 
 class BibDetails extends React.Component {
   /*
@@ -35,13 +35,13 @@ class BibDetails extends React.Component {
       return null;
     }
 
-    items.forEach(item => {
+    items.forEach((item) => {
       const ownerObj = item.owner && item.owner.length ? item.owner[0].prefLabel : undefined;
 
       ownerArr.push(ownerObj);
     });
 
-    if (_every(ownerArr, (o) => (o === ownerArr[0]))) {
+    if (_every(ownerArr, o => (o === ownerArr[0]))) {
       if ((ownerArr[0] === 'Princeton University Library') ||
         (ownerArr[0] === 'Columbia University Libraries')) {
         owner = ownerArr[0];
@@ -97,12 +97,12 @@ class BibDetails extends React.Component {
           bibValues.map((value, i) => {
             const url = `filters[${fieldValue}]=${value['@id']}`;
             let itemValue = fieldLinkable ?
-              <Link
+              (<Link
                 onClick={e => this.newSearch(e, url, fieldValue, value['@id'], fieldLabel)}
                 to={`${appConfig.baseUrl}/search?${url}`}
               >
                 {value.prefLabel}
-              </Link>
+              </Link>)
               : <span>{value.prefLabel}</span>;
             if (fieldSelfLinkable) {
               itemValue =
