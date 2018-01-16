@@ -94,7 +94,6 @@ class FilterPopup extends React.Component {
 
     this.openForm = this.openForm.bind(this);
     this.closeForm = this.closeForm.bind(this);
-    this.deactivateForm = this.deactivateForm.bind(this);
     this.onFilterClick = this.onFilterClick.bind(this);
     this.onDateFilterChange = this.onDateFilterChange.bind(this);
     this.validateFilterValue = this.validateFilterValue.bind(this);
@@ -226,7 +225,7 @@ class FilterPopup extends React.Component {
 
     const apiQuery = this.props.createAPIQuery({ selectedFilters: this.state.selectedFilters });
 
-    this.deactivateForm();
+    this.closeForm();
     this.props.updateIsLoadingState(true);
 
     Actions.updateSelectedFilters(this.state.selectedFilters);
@@ -279,10 +278,6 @@ class FilterPopup extends React.Component {
 
   closeForm(e) {
     e.preventDefault();
-    this.deactivateForm();
-  }
-
-  deactivateForm() {
     trackDiscovery('FilterPopup', 'Close');
     this.setState({ showForm: false });
 
@@ -299,24 +294,6 @@ class FilterPopup extends React.Component {
       filters,
     } = this.state;
 
-    const closePopupButton = js ?
-      <button
-        onClick={(e) => this.closeForm(e)}
-        aria-expanded={!showForm}
-        aria-controls="filter-popup-menu"
-        className="popup-btn-close nypl-x-close-button"
-      >
-        <span>Close</span>
-        <XCloseSVG />
-      </button>
-      : (<a
-        aria-expanded
-        href="#"
-        aria-controls="filter-popup-menu"
-        className="popup-btn-close nypl-x-close-button"
-      >
-        Close <XCloseSVG />
-      </a>);
     const openPopupButton = js ?
       (<button
         className="popup-btn-open nypl-short-button"
@@ -377,14 +354,8 @@ class FilterPopup extends React.Component {
         >
           {!js && (<a className="cancel-no-js" href="#"></a>)}
           <p id="modal-description" className="nypl-screenreader-only">Filter search results</p>
-          <FocusTrap
-            focusTrapOptions={{
-              onDeactivate: this.deactivateForm,
-              clickOutsideDeactivates: true,
-            }}
-            active={showForm}
+          <div
             id="filter-popup-menu"
-            role="menu"
             className={
               `${js ? 'popup' : 'popup-no-js'} nypl-modal-filter-form nypl-popup-filter-menu ` +
               `${showForm ? 'active' : ''}`
@@ -396,7 +367,7 @@ class FilterPopup extends React.Component {
             <form
               action={`${appConfig.baseUrl}/search?q=${searchKeywords}`}
               method="POST"
-              onSubmit={() => this.onSubmitForm()}
+              onSubmit={() => this.submitForm()}
             >
               <fieldset className="nypl-fieldset">
                 <legend><h3 id="filter-title">Filter Results</h3></legend>
@@ -426,6 +397,14 @@ class FilterPopup extends React.Component {
 
                 <div className="inner nypl-filter-button-container">
                   <button
+                    onClick={this.closeForm}
+                    aria-expanded={!showForm}
+                    aria-controls="filter-popup-menu"
+                    className="nypl-filter-button"
+                  >
+                    Close
+                  </button>
+                  <button
                     id="submit-form"
                     type="submit"
                     name="apply-filters"
@@ -437,6 +416,7 @@ class FilterPopup extends React.Component {
                       preserveAspectRatio="xMidYMid meet"
                       title="apply"
                       labelledById="apply"
+                      iconId="filterApply"
                     />
                     Apply Filters
                   </button>
@@ -452,14 +432,14 @@ class FilterPopup extends React.Component {
                       preserveAspectRatio="xMidYMid meet"
                       title="reset"
                       labelledById="reset"
+                      iconId="filterReset"
                     />
                     Clear Filters
                   </button>
                 </div>
               </fieldset>
             </form>
-          </FocusTrap>
-          {closePopupButton}
+          </div>
         </div>
       </div>
     );

@@ -39,31 +39,28 @@
     position: fixed;
   }
 
-  .overlay {
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    position: fixed;
-    z-index: 1000;
-    background: rgba(0,0,0,0.5);
-    &.active {
-      opacity: 1;
-      visibility: visible;
-    }
-  }
+  // .overlay {
+  //   top: 0;
+  //   bottom: 0;
+  //   left: 0;
+  //   right: 0;
+  //   position: fixed;
+  //   z-index: 1000;
+  //   background: rgba(0,0,0,0.5);
+  //   &.active {
+  //     opacity: 1;
+  //     visibility: visible;
+  //   }
+  // }
 
   .popup,
   .popup-no-js {
-    margin: -1px 0 auto;
     padding: 20px 30px 0;
-    background: #fff;
-    border: 1px solid #666;
-    float: left;
+    background: #efedeb;
     width: auto;
     z-index: 10000;
-    position: relative;
-    top: -60px;
+    // position: relative;
+    // top: -60px;
 
     @include min-screen($tablet-portrait) {
       width: 42rem;
@@ -80,8 +77,7 @@
 
     &.active {
       display: block;
-      z-index: 2000;
-      overflow: scroll;
+      overflow: auto;
       -webkit-overflow-scrolling: touch;
     }
   }
@@ -93,6 +89,17 @@
 
     &.active {
       display: block;
+    }
+  }
+
+  // need to override the background color
+  .nypl-fieldset {
+    background-color: #efedeb;
+  }
+
+  .nypl-generic-checkbox {
+    label::before {
+      background: #fff;
     }
   }
 }
@@ -110,8 +117,7 @@
 
 .nypl-popup-container.active {
   .nypl-popup-filter-menu .nypl-x-close-button {
-    top: 1rem !important;
-    right: 1rem;
+    
   }
   .nypl-popup-filter-overlay {
     z-index: 1000 !important;
@@ -142,8 +148,17 @@
   -webkit-appearance: none;
 }
 
+.nypl-name-field {
+  background: #efedeb;
+
+  .nypl-field-status {
+    background: #efedeb;
+  }
+}
+
 .date-hyphen {
   margin: 0 2px;
+  background: #efedeb;
 }
 
 .filter-error-box {
