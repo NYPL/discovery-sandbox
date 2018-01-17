@@ -39,28 +39,11 @@
     position: fixed;
   }
 
-  // .overlay {
-  //   top: 0;
-  //   bottom: 0;
-  //   left: 0;
-  //   right: 0;
-  //   position: fixed;
-  //   z-index: 1000;
-  //   background: rgba(0,0,0,0.5);
-  //   &.active {
-  //     opacity: 1;
-  //     visibility: visible;
-  //   }
-  // }
-
   .popup,
   .popup-no-js {
-    padding: 20px 30px 0;
     background: #efedeb;
     width: auto;
     z-index: 10000;
-    // position: relative;
-    // top: -60px;
 
     @include min-screen($tablet-portrait) {
       width: 42rem;
@@ -119,7 +102,7 @@
 
 .nypl-popup-container.active {
   .nypl-popup-filter-menu .nypl-x-close-button {
-    
+
   }
   .nypl-popup-filter-overlay {
     z-index: 1000 !important;
@@ -167,5 +150,27 @@
   margin: 0 3.125rem;
   @media (max-width: 483px) {
     margin: 0 1rem;
+  }
+}
+
+
+.nypl-modal-filter-form {
+  fieldset:last-of-type {
+    border-bottom: none;
+  }
+  .inner {
+    padding: 0;
+
+    legend {
+      padding-top: 15px;
+    }
+
+    ul {
+      margin-top: 10px;
+    }
+
+    &:last-child {
+      border-bottom: none;
+    }
   }
 }

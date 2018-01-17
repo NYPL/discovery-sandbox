@@ -229,7 +229,7 @@ class FilterPopup extends React.Component {
 
     const apiQuery = this.props.createAPIQuery({ selectedFilters: this.state.selectedFilters });
 
-    this.closeForm();
+    this.closeForm(e);
     this.props.updateIsLoadingState(true);
 
     Actions.updateSelectedFilters(this.state.selectedFilters);
@@ -298,18 +298,47 @@ class FilterPopup extends React.Component {
       filters,
     } = this.state;
 
-    const openPopupButton = js ?
-      (<button
-        className="popup-btn-open nypl-short-button"
-        onClick={() => this.openForm()}
-        aria-haspopup="true"
-        aria-expanded={showForm}
-        aria-controls="filter-popup-menu"
-        ref="filterOpen"
+    const applyButton = showForm ? (
+      <button
+        id="submit-form"
+        type="submit"
+        name="apply-filters"
+        onClick={e => this.submitForm(e)}
+        className="nypl-filter-button"
       >
-        FILTER RESULTS <FilterIcon />
-      </button>)
-      : (<a
+        Apply Filters
+        <ApplyIcon
+          className="nypl-icon"
+          preserveAspectRatio="xMidYMid meet"
+          title="apply"
+          labelledById="apply"
+          iconId="filterApply"
+        />
+      </button>) : (
+        <button
+          className="popup-btn-open nypl-short-button"
+          onClick={() => this.openForm()}
+          aria-haspopup="true"
+          aria-expanded={showForm || null}
+          aria-controls="filter-popup-menu"
+          ref="filterOpen"
+        >
+          Add filters <FilterIcon />
+        </button>);
+    const cancelButton = (
+      <button
+        onClick={this.closeForm}
+        aria-expanded={!showForm}
+        aria-controls="filter-popup-menu"
+        className="nypl-filter-button"
+      >
+        Cancel
+      </button>
+    );
+
+
+    const openPopupButton = js ? applyButton :
+      (<a
         className="popup-btn-open nypl-short-button"
         href="#popup-no-js"
         aria-haspopup="true"
@@ -345,6 +374,7 @@ class FilterPopup extends React.Component {
 
     return (
       <div className="filter-container">
+        {showForm && cancelButton}
         {openPopupButton}
         <div
           className={
@@ -374,8 +404,6 @@ class FilterPopup extends React.Component {
               onSubmit={() => this.submitForm()}
             >
               <fieldset className="nypl-fieldset">
-                <legend><h3 id="filter-title">Filter Results</h3></legend>
-
                 <FieldsetList
                   legend="Format"
                   filterId="materialType"
@@ -401,36 +429,13 @@ class FilterPopup extends React.Component {
 
                 <div className="inner nypl-filter-button-container">
                   <button
-                    onClick={this.closeForm}
-                    aria-expanded={!showForm}
-                    aria-controls="filter-popup-menu"
-                    className="nypl-filter-button"
-                  >
-                    Close
-                  </button>
-                  <button
-                    id="submit-form"
-                    type="submit"
-                    name="apply-filters"
-                    onClick={this.submitForm}
-                    className="nypl-filter-button"
-                  >
-                    <ApplyIcon
-                      className="nypl-icon"
-                      preserveAspectRatio="xMidYMid meet"
-                      title="apply"
-                      labelledById="apply"
-                      iconId="filterApply"
-                    />
-                    Apply Filters
-                  </button>
-                  <button
                     id="clear-filters"
                     type="button"
                     name="Clear-Filters"
                     className="nypl-filter-button"
                     onClick={this.clearFilters}
                   >
+                    Clear Filters
                     <ResetIcon
                       className="nypl-icon"
                       preserveAspectRatio="xMidYMid meet"
@@ -438,8 +443,9 @@ class FilterPopup extends React.Component {
                       labelledById="reset"
                       iconId="filterReset"
                     />
-                    Clear Filters
                   </button>
+                  {cancelButton}
+                  {applyButton}
                 </div>
               </fieldset>
             </form>
