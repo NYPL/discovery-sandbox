@@ -2,10 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import DocumentTitle from 'react-document-title';
 import { every as _every } from 'underscore';
+import { LeftWedgeIcon } from '@nypl/dgx-svg-icons';
 
 import Breadcrumbs from '../Breadcrumbs/Breadcrumbs';
 import ItemHoldings from '../Item/ItemHoldings';
-import LoadingLayer from '../LoadingLayer/LoadingLayer.jsx';
+import LoadingLayer from '../LoadingLayer/LoadingLayer';
 import BibDetails from './BibDetails';
 import LibraryItem from '../../utils/item';
 import BackLink from './BackLink';
@@ -105,17 +106,10 @@ class BibPage extends React.Component {
                   {
                     this.props.searchKeywords && (
                       <div className="nypl-row search-control">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="25" height="42"
-                          viewBox="0 0 25 42"
+                        <LeftWedgeIcon
                           preserveAspectRatio="xMidYMid meet"
-                          aria-labelledby="left-arrow"
-                          aria-hidden="true"
-                        >
-                          <title id="left-arrow">Back to Results</title>
-                          <polygon points="21.172 42.344 0 21.172 21.172 0 25.112 3.939 7.88 21.172 25.112 38.404 21.172 42.344"></polygon>
-                        </svg>
+                          title="Back to Results"
+                        />
                         <BackLink
                           searchURL={searchURL}
                           searchKeywords={this.props.searchKeywords}

@@ -143,7 +143,7 @@ const getFilterParam = (filters) => {
   if (!_isEmpty(filters)) {
     _mapObject(filters, (val, key) => {
       // Property contains an array of its selected filter values:
-      if (val.length && _isArray(val)) {
+      if (val && val.length && _isArray(val)) {
         _forEach(val, (filter, index) => {
           if (filter.value && filter.value !== '') {
             // At this time, materialType filter requires _packed for filtering (but not as data).

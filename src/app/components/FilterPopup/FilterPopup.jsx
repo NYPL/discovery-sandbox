@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
-import FocusTrap from 'focus-trap-react';
 import {
   findWhere as _findWhere,
   reject as _reject,
@@ -10,7 +9,11 @@ import {
   isEmpty as _isEmpty,
   some as _some,
 } from 'underscore';
-import { ApplyIcon, ResetIcon } from '@nypl/dgx-svg-icons';
+import {
+  CheckSoloIcon,
+  FilterIcon,
+  ResetIcon,
+} from '@nypl/dgx-svg-icons';
 
 import {
   trackDiscovery,
@@ -21,53 +24,6 @@ import appConfig from '../../../../appConfig';
 import FieldsetDate from '../Filters/FieldsetDate';
 import FieldsetList from '../Filters/FieldsetList';
 import Actions from '../../actions/Actions';
-
-const XCloseSVG = () => (
-  <svg
-    aria-hidden="true"
-    aria-controls="filter-popup-menu"
-    className="nypl-icon"
-    preserveAspectRatio="xMidYMid meet"
-    viewBox="0 0 100 100"
-  >
-    <title>x-close-rev</title>
-    <path
-      d={'M82.07922,14.06287a48.0713,48.0713,0,1,0,0,68.01563A48.15148,48.15148,0,0,0,82.0792' +
-        '2,14.06287ZM65.06232,60.84845A2.97437,2.97437,0,1,1,60.827,65.0257L48.154,52.18756,35' +
-        '.30133,65.04022a2.97432,2.97432,0,1,1-4.20636-4.2063L43.97473,47.95416,31.27362,35.087' +
-        '46A2.97542,2.97542,0,0,1,35.509,30.90729L48.18213,43.7467,60.84149,31.0874a2.97432,2.9' +
-        '7432,0,0,1,4.2063,4.20636L52.36108,47.98047Z'}
-    />
-  </svg>
-);
-
-const FilterIcon = () => (
-  <svg
-    aria-hidden="true"
-    className="nypl-icon"
-    preserveAspectRatio="xMidYMid meet"
-    viewBox="0 0 19 22"
-  >
-    <title>filter.icon.3</title>
-    <g>
-      <circle cx="6.65947" cy="2.31986" r="1.31924" />
-      <circle cx="13.18733" cy="1.31986" r="1.31895" />
-      <circle cx="9.56477" cy="5.46901" r="1.31927" />
-      <g>
-        <path
-          d={'M7.74355,22.50683a.95047.95047,0,0,1-.95022-.95022V11.28645L.25259,4.2341' +
-          '3A.95041.95041,0,1,1,1.64824,2.94366l7.04554,7.598v11.015A.95047.95047,0,0,1,7.7435' +
-          '5,22.50683Z'}
-        />
-        <path
-          d={'M11.60384,19.73881a.95047.95047,0,0,1-.95022-.95022V10.5478l7.126-7.81485a.' +
-          '95047.95047,0,0,1,1.41049,1.27439l-6.636,7.27293v7.50832A.95047.95047,0,0,1,11.60384,' +
-          '19.73881Z'}
-        />
-      </g>
-    </g>
-  </svg>
-);
 
 class FilterPopup extends React.Component {
   constructor(props) {
@@ -294,33 +250,23 @@ class FilterPopup extends React.Component {
       filters,
     } = this.state;
 
-    const applyButton = showForm ? (
+    const applyButton = (
       <button
         id="submit-form"
         type="submit"
         name="apply-filters"
         onClick={e => this.submitForm(e)}
-        className="nypl-filter-button"
+        className="nypl-primary-button"
       >
         Apply Filters
-        <ApplyIcon
-          className="nypl-icon"
+        <CheckSoloIcon
+          className="apply-icon"
           preserveAspectRatio="xMidYMid meet"
           title="apply"
           labelledById="apply"
           iconId="filterApply"
         />
-      </button>) : (
-        <button
-          className="popup-btn-open nypl-short-button"
-          onClick={() => this.openForm()}
-          aria-haspopup="true"
-          aria-expanded={showForm || null}
-          aria-controls="filter-popup-menu"
-          ref="filterOpen"
-        >
-          Add filters <FilterIcon />
-        </button>);
+      </button>);
     const cancelButton = (
       <button
         onClick={this.closeForm}
@@ -331,9 +277,34 @@ class FilterPopup extends React.Component {
         Cancel
       </button>
     );
-
-
-    const openPopupButton = js ? applyButton :
+    const resetButton = (
+      <button
+        id="clear-filters"
+        type="button"
+        name="Clear-Filters"
+        className="nypl-basic-button"
+        onClick={this.clearFilters}
+      >
+        Clear Filters
+        <ResetIcon
+          className="nypl-icon"
+          preserveAspectRatio="xMidYMid meet"
+          title="reset"
+          labelledById="reset"
+          iconId="filterReset"
+        />
+      </button>);
+    const openPopupButton = js ?
+      (<button
+        className="popup-btn-open nypl-short-button"
+        onClick={() => this.openForm()}
+        aria-haspopup="true"
+        aria-expanded={showForm || null}
+        aria-controls="filter-popup-menu"
+        ref="filterOpen"
+      >
+        Add filters <FilterIcon />
+      </button>) :
       (<a
         className="popup-btn-open nypl-short-button"
         href="#popup-no-js"
@@ -342,7 +313,7 @@ class FilterPopup extends React.Component {
         aria-controls="filter-popup-menu"
         ref="filterOpen"
       >
-        FILTER RESULTS <FilterIcon />
+        Add filters <FilterIcon />
       </a>);
     const { searchKeywords } = this.props;
     const materialTypeFilters = _findWhere(filters, { id: 'materialType' });
@@ -388,7 +359,7 @@ class FilterPopup extends React.Component {
             id="filter-popup-menu"
             className={
               `${js ? 'popup' : 'popup-no-js'} nypl-modal-filter-form nypl-popup-filter-menu ` +
-              `${showForm ? 'active' : ''}`
+              `${showForm ? 'expand active' : 'collapse'}`
             }
           >
             {
@@ -424,24 +395,9 @@ class FilterPopup extends React.Component {
                 />
 
                 <div className="inner nypl-filter-button-container">
-                  <button
-                    id="clear-filters"
-                    type="button"
-                    name="Clear-Filters"
-                    className="nypl-filter-button"
-                    onClick={this.clearFilters}
-                  >
-                    Clear Filters
-                    <ResetIcon
-                      className="nypl-icon"
-                      preserveAspectRatio="xMidYMid meet"
-                      title="reset"
-                      labelledById="reset"
-                      iconId="filterReset"
-                    />
-                  </button>
-                  {cancelButton}
+                  {resetButton}
                   {applyButton}
+                  {cancelButton}
                 </div>
               </fieldset>
             </form>
