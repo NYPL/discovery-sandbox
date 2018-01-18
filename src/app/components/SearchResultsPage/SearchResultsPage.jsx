@@ -153,15 +153,7 @@ class SearchResultsPage extends React.Component {
 
           <div className="nypl-full-width-wrapper">
             <div className="nypl-row">
-              <div
-                className="nypl-column-three-quarters"
-                role="region"
-                id="mainContent"
-                aria-live="polite"
-                aria-atomic="true"
-                aria-relevant="additions removals"
-                aria-describedby="results-description"
-              >
+              <div className="nypl-column-three-quarters">
                 <ResultsCount
                   isLoading={isLoading}
                   count={totalResults}
