@@ -24,6 +24,23 @@
     //   opacity: 1;
     // }
   }
+
+  svg {
+    vertical-align: middle;
+  }
+
+  .cancel-button {
+    border: none;
+    background: #efedeb;
+    color: #000;
+
+    &:hover {
+      background: #efedeb;
+      color: #000;
+      border: none;
+      text-decoration: underline;
+    }
+  }
 }
 
 .popup-container {

@@ -272,7 +272,7 @@ class FilterPopup extends React.Component {
         onClick={this.closeForm}
         aria-expanded={!showForm}
         aria-controls="filter-popup-menu"
-        className="nypl-filter-button"
+        className="nypl-filter-button cancel-button"
       >
         Cancel
       </button>
