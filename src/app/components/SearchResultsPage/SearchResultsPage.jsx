@@ -26,9 +26,11 @@ class SearchResultsPage extends React.Component {
 
     this.state = {
       isLoading: this.props.isLoading,
+      dropdownOpen: false,
     };
 
     this.updateIsLoadingState = this.updateIsLoadingState.bind(this);
+    this.updateDropdownState = this.updateDropdownState.bind(this);
   }
 
   componentDidUpdate() {
@@ -39,6 +41,10 @@ class SearchResultsPage extends React.Component {
 
   updateIsLoadingState(status) {
     this.setState({ isLoading: status });
+  }
+
+  updateDropdownState(status) {
+    this.setState({ dropdownOpen: status });
   }
 
   render() {
@@ -133,12 +139,13 @@ class SearchResultsPage extends React.Component {
                           selectedFilters={selectedFilters}
                           searchKeywords={searchKeywords}
                           raisedErrors={dateFilterErrors}
+                          updateDropdownState={this.updateDropdownState}
                         />
                       </div>
                     )
                   }
 
-                  {
+                  {!this.state.dropdownOpen &&
                     <SelectedFilters
                       selectedFilters={selectedFilters}
                       createAPIQuery={createAPIQuery}

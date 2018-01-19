@@ -5,6 +5,17 @@
     border: 1px solid #776e64;
     display: block;
     text-decoration: none;
+
+    svg {
+      fill: #fff;
+      margin: 0 0 2px 0px;
+    }
+
+    &:hover {
+      svg {
+        fill: #1b7fa7;
+      }
+    }
   }
 
   a.popup-btn-open {
@@ -46,6 +57,10 @@
       border: none;
       text-decoration: underline;
     }
+  }
+
+  .nypl-name-field input[type=text] {
+    transition: none;
   }
 }
 
@@ -111,12 +126,18 @@
 }
 
 .filter-container {
+  svg {
+    @include transition-list(all 0.1s ease-in 0s);
+  }
   #clear-filters {
     svg {
       fill: #fff;
       background: #000;
+      height: 25px;
+      width: 25px;
+      padding: 0;
+      margin: 0 0 0 5px;
     }
-
     &:hover {
       svg {
         fill: #000;
@@ -127,6 +148,9 @@
   #submit-form {
     svg {
       fill: #fff;
+      height: 25px;
+      width: 25px;
+      margin: 0 0 2px 5px;
     }
     &:hover {
       svg {
@@ -147,9 +171,6 @@
 }
 
 .nypl-popup-container.active {
-  .nypl-popup-filter-menu .nypl-x-close-button {
-
-  }
   .nypl-popup-filter-overlay {
     z-index: 1000 !important;
   }

@@ -229,6 +229,7 @@ class FilterPopup extends React.Component {
     if (!this.state.showForm) {
       trackDiscovery('FilterPopup', 'Open');
       this.setState({ showForm: true });
+      this.props.updateDropdownState(true);
     }
   }
 
@@ -236,6 +237,7 @@ class FilterPopup extends React.Component {
     e.preventDefault();
     trackDiscovery('FilterPopup', 'Close');
     this.setState({ showForm: false });
+    this.props.updateDropdownState(false);
 
     if (this.refs.filterOpen) {
       this.refs.filterOpen.focus();
@@ -296,7 +298,7 @@ class FilterPopup extends React.Component {
       </button>);
     const openPopupButton = js ?
       (<button
-        className="popup-btn-open nypl-short-button"
+        className="popup-btn-open nypl-primary-button"
         onClick={() => this.openForm()}
         aria-haspopup="true"
         aria-expanded={showForm || null}
@@ -306,7 +308,7 @@ class FilterPopup extends React.Component {
         Add filters <FilterIcon />
       </button>) :
       (<a
-        className="popup-btn-open nypl-short-button"
+        className="popup-btn-open nypl-primary-button"
         href="#popup-no-js"
         aria-haspopup="true"
         aria-expanded={false}
@@ -422,12 +424,14 @@ FilterPopup.propTypes = {
   selectedFilters: PropTypes.object,
   searchKeywords: PropTypes.string,
   raisedErrors: PropTypes.array,
+  updateDropdownState: PropTypes.func,
 };
 
 FilterPopup.defaultProps = {
   filters: [],
   createAPIQuery: () => {},
   updateIsLoadingState: () => {},
+  updateDropdownState: () => {},
 };
 
 FilterPopup.contextTypes = {

@@ -9,4 +9,30 @@
     margin: 10px 15px 0 0;
     display: inline-block;
   }
+
+  .nypl-unset-filter {
+    background: #fff;
+    border: 1px solid #000;
+    color: #000;
+
+    svg {
+      fill: #000;
+      height: 25px;
+      width: 25px;
+      margin: 0 0 0 0px;
+      padding: 0;
+      float: right;
+      @include transition-list(all 0.1s ease-in 0s);
+    }
+
+    &:hover {
+      background: #000;
+      border: 1px solid #fff;
+      color: #fff;
+
+      svg {
+        fill: #fff;
+      }
+    }
+  }
 }
