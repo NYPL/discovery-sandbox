@@ -346,8 +346,14 @@ class FilterPopup extends React.Component {
 
     return (
       <div className="filter-container">
-        {showForm && cancelButton}
-        {openPopupButton}
+        <div className="filter-text">
+          <h2>Refine your search</h2>
+          <p>Add filters to narrow and define your search</p>
+        </div>
+        <div className="filter-action-buttons">
+          {showForm && cancelButton}
+          {openPopupButton}
+        </div>
         <div
           className={
             'nypl-basic-modal-container nypl-popup-container popup-container ' +

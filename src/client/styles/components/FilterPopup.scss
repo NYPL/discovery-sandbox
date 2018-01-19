@@ -2,7 +2,6 @@
   .popup-btn-open {
     display: inline-block;
     float: left;
-    margin: 2.5rem 1rem 0;
     border: 1px solid #776e64;
     display: block;
     text-decoration: none;
@@ -27,6 +26,13 @@
 
   svg {
     vertical-align: middle;
+  }
+
+  .filter-text {
+    float: left;
+  }
+  .filter-action-buttons {
+    float: right;
   }
 
   .cancel-button {
@@ -105,11 +111,35 @@
 }
 
 .filter-container {
+  #clear-filters {
+    svg {
+      fill: #fff;
+      background: #000;
+    }
+
+    &:hover {
+      svg {
+        fill: #000;
+        background: #fff;
+      }
+    }
+  }
+  #submit-form {
+    svg {
+      fill: #fff;
+    }
+    &:hover {
+      svg {
+        fill: #1b7fa7;
+        background: #fff;
+      }
+    }
+  }
   button {
     cursor: pointer;
     -webkit-appearance: none;
     -moz-appearance: none;
-    margin: 2.5rem 1rem 0;
+    margin: 1rem 0 0;
   }
   ul {
     li {
