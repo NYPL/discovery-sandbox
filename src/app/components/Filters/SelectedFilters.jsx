@@ -169,10 +169,11 @@ class SelectedFilters extends React.Component {
         >
           {
             filtersToRender.map((filter, i) => {
+              const dateClass = filter.field;
               let filterBtn = (
                 <button
                   className="nypl-unset-filter"
-                  onClick={(e) => this.onFilterClick(e, filter)}
+                  onClick={e => this.onFilterClick(e, filter)}
                   aria-controls="selected-filters-container"
                   aria-label={`${filter.label} Remove Filter`}
                 >
@@ -184,7 +185,10 @@ class SelectedFilters extends React.Component {
               if (!this.state.js) {
                 const removedSelectedFilters = JSON.parse(JSON.stringify(selectedFilters));
                 removedSelectedFilters[filter.field] =
-                  _reject(selectedFilters[filter.field], (f) => (f.value === filter.value));
+                  _reject(
+                    selectedFilters[filter.field],
+                    f => (f.value === filter.value),
+                  );
 
                 const apiQuery = this.props.createAPIQuery({
                   selectedFilters: removedSelectedFilters,
@@ -203,7 +207,7 @@ class SelectedFilters extends React.Component {
                 );
               }
 
-              return (<li key={i}>{filterBtn}</li>);
+              return (<li key={i} className={dateClass}>{filterBtn}</li>);
             })
           }
           <li>
