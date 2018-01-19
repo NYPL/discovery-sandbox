@@ -45,7 +45,7 @@ describe('SelectedFilters', () => {
     it('should have a clear all filters link', () => {
       expect(listItemAt(component, 1).find('a').length).to.equal(1);
       expect(listItemAt(component, 1).find('a').render().text())
-        .to.equal('Clear FiltersRemove Filter');
+        .to.equal('Clear FiltersNYPL Filter SVG Icon');
     });
   });
 
@@ -84,16 +84,16 @@ describe('SelectedFilters', () => {
 
       it('should have one button inside each list item with the filter name', () => {
         expect(listItemAt(component, 0).find('button').length).to.equal(1);
-        expect(listItemAt(component, 0).find('button').text()).to.equal('FrenchRemove Filter');
+        expect(listItemAt(component, 0).find('button').text()).to.equal('FrenchClose Icon');
 
         expect(listItemAt(component, 1).find('button').length).to.equal(1);
-        expect(listItemAt(component, 1).find('button').text()).to.equal('EnglishRemove Filter');
+        expect(listItemAt(component, 1).find('button').text()).to.equal('EnglishClose Icon');
       });
 
       it('should have a clear all filters button', () => {
         expect(listItemAt(component, 2).find('button').length).to.equal(1);
         expect(listItemAt(component, 2).find('button').text())
-          .to.equal('Clear FiltersRemove Filter');
+          .to.equal('Clear FiltersNYPL Filter SVG Icon');
       });
     });
 
@@ -142,17 +142,17 @@ describe('SelectedFilters', () => {
 
       it('should have one button inside each list item with the filter name', () => {
         expect(listItemAt(component, 0).find('button').length).to.equal(1);
-        expect(listItemAt(component, 0).find('button').text()).to.equal('FrenchRemove Filter');
+        expect(listItemAt(component, 0).find('button').text()).to.equal('FrenchClose Icon');
 
         expect(listItemAt(component, 1).find('button').length).to.equal(1);
-        expect(listItemAt(component, 1).find('button').text()).to.equal('EnglishRemove Filter');
+        expect(listItemAt(component, 1).find('button').text()).to.equal('EnglishClose Icon');
 
         expect(listItemAt(component, 2).find('button').length).to.equal(1);
-        expect(listItemAt(component, 2).find('button').text()).to.equal('Still ImageRemove Filter');
+        expect(listItemAt(component, 2).find('button').text()).to.equal('Still ImageClose Icon');
 
         expect(listItemAt(component, 3).find('button').length).to.equal(1);
         expect(listItemAt(component, 3).find('button').text())
-          .to.equal('CartographicRemove Filter');
+          .to.equal('CartographicClose Icon');
       });
     });
 
@@ -176,7 +176,7 @@ describe('SelectedFilters', () => {
 
         it('should have one button inside each list item with the filter name', () => {
           expect(listItemAt(component, 0).find('button').length).to.equal(1);
-          expect(listItemAt(component, 0).find('button').text()).to.equal('2010Remove Filter');
+          expect(listItemAt(component, 0).find('button').text()).to.equal('2010Close Icon');
         });
       });
 
@@ -199,7 +199,7 @@ describe('SelectedFilters', () => {
 
         it('should have one button inside each list item with the filter name', () => {
           expect(listItemAt(component, 0).find('button').length).to.equal(1);
-          expect(listItemAt(component, 0).find('button').text()).to.equal('1999Remove Filter');
+          expect(listItemAt(component, 0).find('button').text()).to.equal('1999Close Icon');
         });
       });
 
@@ -222,10 +222,10 @@ describe('SelectedFilters', () => {
 
         it('should have one button inside each list item with the filter name', () => {
           expect(listItemAt(component, 0).find('button').length).to.equal(1);
-          expect(listItemAt(component, 0).find('button').text()).to.equal('2010Remove Filter');
+          expect(listItemAt(component, 0).find('button').text()).to.equal('2010Close Icon');
 
           expect(listItemAt(component, 1).find('button').length).to.equal(1);
-          expect(listItemAt(component, 1).find('button').text()).to.equal('1999Remove Filter');
+          expect(listItemAt(component, 1).find('button').text()).to.equal('1999Close Icon');
         });
       });
     });
