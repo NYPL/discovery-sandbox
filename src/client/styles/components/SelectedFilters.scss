@@ -35,4 +35,12 @@
       }
     }
   }
+
+  .clear-filters-button {
+    @include clear-filters-button;
+  }
+}
+
+.clear-filters-button {
+  @include clear-filters-button;
 }

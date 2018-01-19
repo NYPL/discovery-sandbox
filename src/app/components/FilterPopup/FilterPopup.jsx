@@ -68,8 +68,8 @@ class FilterPopup extends React.Component {
       selectedFilters: _extend({
         materialType: [],
         language: [],
-        dateAfter: {},
-        dateBefore: {},
+        dateAfter: undefined,
+        dateBefore: undefined,
       }, nextProps.selectedFilters),
       filters: nextProps.filters,
     });
@@ -135,7 +135,12 @@ class FilterPopup extends React.Component {
     }
 
     _map(errors, (val, key) => {
-      errorArray.push(<li key={key}><a href={`#${headlineError[val.name]}`}>{val.value}</a></li>);
+      if (val.name && val.value) {
+        const anchorTag = (this.state.js) ?
+          <a href={`#${headlineError[val.name]}`}>{val.value}</a> : <span>{val.value}</span>;
+
+        errorArray.push(<li key={key}>{anchorTag}</li>);
+      }
     });
 
     return errorArray;
@@ -284,11 +289,11 @@ class FilterPopup extends React.Component {
         id="clear-filters"
         type="button"
         name="Clear-Filters"
-        className="nypl-basic-button"
+        className="nypl-basic-button clear-filters-button"
         onClick={this.clearFilters}
       >
         Clear Filters
-        <ResetIcon
+        <FilterIcon
           className="nypl-icon"
           preserveAspectRatio="xMidYMid meet"
           title="reset"

@@ -131,8 +131,6 @@
   }
   #clear-filters {
     svg {
-      fill: #fff;
-      background: #000;
       height: 25px;
       width: 25px;
       padding: 0;
@@ -140,8 +138,8 @@
     }
     &:hover {
       svg {
-        fill: #000;
-        background: #fff;
+        fill: #fff;
+        background: #d0343a;
       }
     }
   }
