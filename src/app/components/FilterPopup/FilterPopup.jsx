@@ -289,11 +289,11 @@ class FilterPopup extends React.Component {
         id="clear-filters"
         type="button"
         name="Clear-Filters"
-        className="nypl-basic-button"
+        className="nypl-basic-button clear-filters-button"
         onClick={this.clearFilters}
       >
         Clear Filters
-        <ResetIcon
+        <FilterIcon
           className="nypl-icon"
           preserveAspectRatio="xMidYMid meet"
           title="reset"

@@ -9,7 +9,10 @@ import {
   contains as _contains,
   isArray as _isArray,
 } from 'underscore';
-import { XIcon } from '@nypl/dgx-svg-icons';
+import {
+  FilterIcon,
+  XIcon,
+} from '@nypl/dgx-svg-icons';
 
 import Actions from '../../actions/Actions';
 import appConfig from '../../../../appConfig';
@@ -107,13 +110,13 @@ class SelectedFilters extends React.Component {
     const acceptedFilters = _keys(appConfig.defaultFilters);
     let clearAllFilters = (
       <button
-        className="nypl-unset-filter"
+        className="nypl-unset-filter clear-filters-button"
         onClick={this.clearFilters}
         aria-controls="selected-filters-container"
         aria-label="Clear all filters"
       >
         Clear Filters
-        <XIcon fill="#fff" ariaHidden />
+        <FilterIcon ariaHidden />
       </button>
     );
 
@@ -122,13 +125,13 @@ class SelectedFilters extends React.Component {
 
       clearAllFilters = (
         <a
-          className="nypl-unset-filter"
+          className="nypl-unset-filter clear-filters-button"
           href={`${appConfig.baseUrl}/search?${apiQuery}`}
           aria-controls="selected-filters-container"
           aria-label="Clear all filters"
         >
           Clear Filters
-          <XIcon fill="#fff" ariaHidden />
+          <FilterIcon ariaHidden />
         </a>
       );
     }
