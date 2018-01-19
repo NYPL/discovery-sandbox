@@ -99,6 +99,7 @@ class Sorter extends React.Component {
     return (
       <div className="nypl-results-sorting-controls">
         <div className="nypl-results-sorter">
+          <label htmlFor="sort-by-label">Sort by</label>
           <form
             action={
               `${appConfig.baseUrl}/search${searchKeywords ? `?q=${searchKeywords}` : ''}` +
@@ -107,7 +108,6 @@ class Sorter extends React.Component {
             method="POST"
           >
             <span className="nypl-omni-fields">
-              <label htmlFor="sort-by-label">Sort by</label>
               <strong>
                 <select
                   id="sort-by-label"
