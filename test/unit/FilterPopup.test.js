@@ -53,9 +53,9 @@ describe('FilterPopup', () => {
       expect(component.find('button').at(0).prop('className'))
         .to.equal('popup-btn-open nypl-primary-button');
       expect(component.find('button').at(1).prop('name')).to.equal('Clear-Filters');
-      expect(component.find('button').at(2).prop('name')).to.equal('apply-filters');
+      expect(component.find('button').at(2).prop('className')).to.equal('nypl-filter-button cancel-button');
       expect(component.find('button').at(3).prop('className'))
-        .to.equal('nypl-filter-button cancel-button');
+        .to.equal('nypl-primary-button apply-button');
     });
 
     it('should not render the "no-js" <a> element', () => {
@@ -154,7 +154,7 @@ describe('FilterPopup', () => {
     });
 
     it('should clear all the selected filters in the state.', () => {
-      const clearFiltersButton = component.find('#clear-filters');
+      const clearFiltersButton = component.find('.clear-filters-button');
 
       clearFiltersButton.simulate('click');
       expect(component.state('selectedFilters')).to.deep.equal(emptySelectedFilters);
@@ -201,7 +201,7 @@ describe('FilterPopup', () => {
     });
 
     it('should stop submitting and the function of submitting returns false', () => {
-      const submitFormButton = component.find('#submit-form');
+      const submitFormButton = component.find('.apply-button');
 
       expect(component.find('.nypl-form-error').length).to.equal(0);
 
@@ -211,7 +211,7 @@ describe('FilterPopup', () => {
     });
 
     it('should render a div for error messages', () => {
-      const submitFormButton = component.find('#submit-form');
+      const submitFormButton = component.find('.apply-button');
 
       expect(component.find('.nypl-form-error').length).to.equal(0);
 
