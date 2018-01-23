@@ -259,11 +259,10 @@ class FilterPopup extends React.Component {
 
     const applyButton = (
       <button
-        id="submit-form"
         type="submit"
         name="apply-filters"
         onClick={e => this.submitForm(e)}
-        className="nypl-primary-button"
+        className="nypl-primary-button apply-button"
       >
         Apply Filters
         <CheckSoloIcon
@@ -286,7 +285,6 @@ class FilterPopup extends React.Component {
     );
     const resetButton = (
       <button
-        id="clear-filters"
         type="button"
         name="Clear-Filters"
         className="nypl-basic-button clear-filters-button"
@@ -301,17 +299,20 @@ class FilterPopup extends React.Component {
           iconId="filterReset"
         />
       </button>);
-    const openPopupButton = js ?
-      (<button
+    const openButton = (
+      <button
         className="popup-btn-open nypl-primary-button"
         onClick={() => this.openForm()}
         aria-haspopup="true"
         aria-expanded={showForm || null}
         aria-controls="filter-popup-menu"
-        ref="filterOpen"
       >
         Add filters <FilterIcon />
-      </button>) :
+      </button>
+    );
+    const popupOrApplyButton = showForm ? applyButton : openButton;
+    const openPopupButton = js ?
+      popupOrApplyButton :
       (<a
         className="popup-btn-open nypl-primary-button"
         href="#popup-no-js"
@@ -334,7 +335,11 @@ class FilterPopup extends React.Component {
       dateBefore: dateBeforeFilterValue,
     };
     const errorMessageBlock = (
-      <div className="nypl-form-error filter-error-box" ref="nypl-filter-error" tabIndex="0">
+      <div
+        className="nypl-form-error filter-error-box"
+        ref="nypl-filter-error"
+        tabIndex="0"
+      >
         <h2>Error</h2>
         <p>Please enter valid filter values:</p>
         <ul>
@@ -342,19 +347,19 @@ class FilterPopup extends React.Component {
         </ul>
       </div>
     );
-    const isDateInputError = _some(this.state.raisedErrors, (item) =>
-      (item.name && item.name === 'date')
-    );
+    const isDateInputError = _some(this.state.raisedErrors, item =>
+      (item.name && item.name === 'date'));
 
     return (
       <div className="filter-container">
         <div className="filter-text">
           <h2>Refine your search</h2>
-          <p>Add filters to narrow and define your search</p>
         </div>
         <div className="filter-action-buttons">
-          {showForm && cancelButton}
+          {!showForm && (<p>Add filters to narrow and define your search</p>)}
+          {showForm && resetButton}
           {openPopupButton}
+          {showForm && cancelButton}
         </div>
         <div
           className={

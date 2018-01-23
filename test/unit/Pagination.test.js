@@ -66,7 +66,7 @@ describe('Pagination', () => {
     // The SVG titles should maybe not be here:
     it('should have a "next" link since there are more than 51 items', () => {
       expect(component.find('Link').children().length).to.equal(1);
-      expect(component.find('.next-link').text()).to.equal('Wedge Right Arrow Next');
+      expect(component.find('.next-link').text()).to.equal('NYPL Right Wedge SVG Icon Next');
     });
 
     it('should display what page you are on', () => {
@@ -92,8 +92,8 @@ describe('Pagination', () => {
 
     it('should have a "previous" and a "next" link', () => {
       expect(component.find('Link').children().length).to.equal(2);
-      expect(component.find('.previous-link').text()).to.equal('Wedge Left Arrow Previous');
-      expect(component.find('.next-link').text()).to.equal('Wedge Right Arrow Next');
+      expect(component.find('.previous-link').text()).to.equal('NYPL Left Wedge SVG Icon Previous');
+      expect(component.find('.next-link').text()).to.equal('NYPL Right Wedge SVG Icon Next');
     });
 
     it('should display what page you are on', () => {
@@ -115,8 +115,8 @@ describe('Pagination', () => {
 
     it('should have a "previous page" and a "next page" link', () => {
       expect(component.find('Link')).to.have.length(2);
-      expect(component.find('.previous-link').text()).to.equal('Wedge Left Arrow Previous');
-      expect(component.find('.next-link').text()).to.equal('Wedge Right Arrow Next');
+      expect(component.find('.previous-link').text()).to.equal('NYPL Left Wedge SVG Icon Previous');
+      expect(component.find('.next-link').text()).to.equal('NYPL Right Wedge SVG Icon Next');
     });
 
     it('should display what page you are on', () => {
