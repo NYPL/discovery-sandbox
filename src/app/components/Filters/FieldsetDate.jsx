@@ -69,6 +69,7 @@ class FieldsetDate extends React.Component {
               format="####"
               aria-labelledby="dateAfter-label dateInput-status"
               value={defaultValueDateAfter}
+              placeholder="YYYY"
             />
           </label>
           {/*<svg viewBox="0 0 98 98" className="nypl-icon date-hyphen" preserveAspectRatio="xMidYMid meet"  aria-hidden="true" aria-labelledby="dash" role="img">
@@ -85,6 +86,7 @@ class FieldsetDate extends React.Component {
               format="####"
               aria-labelledby="dateBefore-label dateInput-status"
               value={defaultValueDateBefore}
+              placeholder="YYYY"
             />
           </label>
           <span
