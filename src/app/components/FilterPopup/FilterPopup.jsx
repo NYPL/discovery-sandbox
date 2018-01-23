@@ -275,7 +275,7 @@ class FilterPopup extends React.Component {
         onClick={e => this.submitForm(e)}
         className="nypl-primary-button apply-button"
       >
-        Apply Filters
+        Apply filters
         <CheckSoloIcon
           className="apply-icon"
           preserveAspectRatio="xMidYMid meet"
@@ -301,7 +301,7 @@ class FilterPopup extends React.Component {
         className="nypl-basic-button clear-filters-button"
         onClick={this.clearFilters}
       >
-        Clear Filters
+        Clear filters
         <FilterResetIcon
           className="nypl-icon"
           preserveAspectRatio="xMidYMid meet"
