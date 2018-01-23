@@ -1,10 +1,19 @@
 // Temporary until this is in the Design Toolkit
-.nypl-results-sorting-controls {
+.nypl-results-summary {
   display: inline-block;
   float: left;
+  max-width: 65%;
+}
+
+.nypl-results-sorting-controls {
+  display: inline-block;
+  float: right;
+  margin: 1rem 0;
 }
 
 .nypl-results-sorter {
+  margin-right: 0;
+
   form {
     background-color: #fff;
     border: 0.0625rem solid #9d9ea1;
