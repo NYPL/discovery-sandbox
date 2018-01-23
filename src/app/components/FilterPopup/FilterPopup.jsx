@@ -25,6 +25,17 @@ import FieldsetDate from '../Filters/FieldsetDate';
 import FieldsetList from '../Filters/FieldsetList';
 import Actions from '../../actions/Actions';
 
+const FilterResetIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="57.69298" height="71.85359" viewBox="0 0 57.69298 71.85359">
+    <title>filter.reset.icon</title>
+    <g>
+      <path d="M22.98743,71.85359a2.82155,2.82155,0,0,1-2.82082-2.82082V38.545L.7499,17.6096A2.82138,2.82138,0,0,1,4.893,13.77872L25.80825,36.33386V69.03277A2.82155,2.82155,0,0,1,22.98743,71.85359Z"/>
+      <path d="M34.447,63.63651a2.82155,2.82155,0,0,1-2.82082-2.82082V36.35223l21.15409-23.199a2.82154,2.82154,0,0,1,4.18715,3.78313L37.26782,38.52661V60.81569A2.82155,2.82155,0,0,1,34.447,63.63651Z"/>
+      <path d="M31.17492,11.19237l7.7782-7.77814A2,2,0,0,0,36.12469.5858L28.34649,8.364,20.56829.5858a2,2,0,1,0-2.82843,2.82843l7.7782,7.77814-7.7782,7.7782A2,2,0,0,0,20.56829,21.799l7.7782-7.7782,7.7782,7.7782a2,2,0,0,0,2.82843-2.82843Z"/>
+    </g>
+  </svg>
+);
+
 class FilterPopup extends React.Component {
   constructor(props) {
     super(props);
@@ -291,12 +302,10 @@ class FilterPopup extends React.Component {
         onClick={this.clearFilters}
       >
         Clear Filters
-        <FilterIcon
+        <FilterResetIcon
           className="nypl-icon"
           preserveAspectRatio="xMidYMid meet"
           title="reset"
-          labelledById="reset"
-          iconId="filterReset"
         />
       </button>);
     const openButton = (
