@@ -41,9 +41,13 @@
     }
   }
 
+  .cancel-apply-buttons {
+    float: right;
+    display: inline-block;
+  }
+
   .popup-btn-open,
   .apply-button {
-    float: right;
     background: #fff;
     border-color: #1b7fa7;
     color: #1b7fa7;
@@ -71,7 +75,6 @@
     background: #efedeb;
     color: #000;
     margin: 20px;
-    float: right;
 
     &:hover {
       background: #efedeb;

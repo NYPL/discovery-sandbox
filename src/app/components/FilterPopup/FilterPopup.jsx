@@ -367,8 +367,10 @@ class FilterPopup extends React.Component {
         <div className="filter-action-buttons">
           {!showForm && (<p>Add filters to narrow and define your search</p>)}
           {showForm && resetButton}
-          {openPopupButton}
-          {showForm && cancelButton}
+          <div className="cancel-apply-buttons">
+            {showForm && cancelButton}
+            {openPopupButton}
+          </div>
         </div>
         <div
           className={
@@ -423,8 +425,10 @@ class FilterPopup extends React.Component {
 
                 <div className="inner nypl-filter-button-container">
                   {resetButton}
-                  {applyButton}
-                  {cancelButton}
+                  <div className="cancel-apply-buttons">
+                    {cancelButton}
+                    {applyButton}
+                  </div>
                 </div>
               </fieldset>
             </form>
