@@ -6,12 +6,125 @@
 
   .nypl-text-field {
     input[type=text] {
-      height: 2rem;
       -webkit-box-shadow: none;
       box-shadow: none;
     }
   }
 
   .nypl-field-error {
+  }
+
+  // Larger screen collapsed version of search form elements.
+
+  .nypl-omnisearch {
+    background-color: #fff;
+    margin-left: 0.25rem;
+  }
+
+  .nypl-omnisearch .nypl-omni-fields {
+    display: block;
+    border-right: 0.08333rem solid #080807;
+    float: left;
+    width: 28%;
+  }
+
+  .nypl-omnisearch .nypl-omni-fields input[type=text] {
+    border: 0;
+    border-radius: 0.25rem;
+    font-size: 1rem;
+    padding: 0;
+    margin: 0 1%;
+    text-indent: 0.5rem;
+  }
+
+  .nypl-text-field {
+    background-color: #fff;
+    border-radius: 0.2rem;
+    box-shadow: none;
+    display: block;
+    margin: 0;
+    padding: 0;
+    position: relative;
+  }
+
+  // Button specific CSS for submit
+
+  .nypl-omnisearch-button-wrapper {
+    display: block;
+  }
+
+  .nypl-omnisearch-button {
+    font-weight: 200;
+    height: 3rem;
+    background: #1B7FA7;
+    border-left: solid 0.0625rem #080807;
+    border-radius: 0;
+    color: #fff;
+    float: right;
+    position: relative;
+    width: 8em;
+  }
+
+  .nypl-omnisearch-button input[type=submit] {
+    background: #1B7FA7;
+    height: 2.5rem;
+    border: 0;
+    color: #fff;
+    float: left;
+    width: 4em;
+  }
+
+  .nypl-omnisearch-button svg {
+    float: right;
+    fill: #fff;
+    vertical-align: middle;
+  }
+
+  .nypl-omnisearch-button .nypl-search-icon {
+    background-color: #1B7FA7;
+    speak: none;
+  }
+
+  // Small screen stacked version of search form elements.
+
+  @media (max-width: $xtrasmall-breakpoint) {
+    .nypl-search-form {
+      display: inherit;
+    }
+
+    .nypl-omnisearch {
+      display: block;
+      background-color: transparent;
+      border: 0;
+    }
+
+    .nypl-omnisearch .nypl-text-field {
+      background-color: #fff;
+      border: solid 0.0625rem #080807;
+      border-radius: 0.2rem;
+      height: 3rem;
+    }
+
+    .nypl-omnisearch input[type=text] {
+      background: #fff;
+    }
+
+    .nypl-omnisearch .nypl-omni-fields {
+      border-right: 0;
+      width: 96%;
+    }
+
+    .nypl-text-field {
+      background-color: #fff;
+      border-radius: 0.2rem;
+      box-shadow: none;
+      margin: 1rem 0;
+    }
+
+    .nypl-omnisearch-button {
+      border: solid 0.0625rem #080807;
+      border-radius: 0.2rem;
+      margin-right: 0.5em;
+    }
   }
 }

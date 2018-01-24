@@ -1,13 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import Actions from '../../actions/Actions.js';
-import SearchButton from '../Buttons/SearchButton.jsx';
+import Actions from '../../actions/Actions';
+import SearchButton from '../Buttons/SearchButton';
 import {
   trackDiscovery,
   ajaxCall,
-} from '../../utils/utils.js';
-import appConfig from '../../../../appConfig.js';
+} from '../../utils/utils';
+import appConfig from '../../../../appConfig';
+import {
+  SearchIcon
+} from '@nypl/dgx-svg-icons';
 
 /**
  * The main container for the top Search section.
@@ -134,46 +137,55 @@ class Search extends React.Component {
         method="POST"
         className="nypl-omnisearch-form"
       >
-        <div className={`nypl-omnisearch nypl-text-field ${inputError ? 'nypl-field-error' : ''}`}>
-          <span className="nypl-omni-fields">
-            <label htmlFor="search-by-field">Search in</label>
-            <select
-              id="search-by-field"
-              onChange={this.onFieldChange}
-              value={this.state.field}
-              name="search_scope"
+        <div className="nypl-omnisearch">
+          <div className={`nypl-text-field ${inputError ? 'nypl-field-error' : ''}`}>
+            <span className="nypl-omni-fields">
+              <label htmlFor="search-by-field">Search in</label>
+              <select
+                id="search-by-field"
+                onChange={this.onFieldChange}
+                value={this.state.field}
+                name="search_scope"
+              >
+                <option value="all">All fields</option>
+                <option value="title">Title</option>
+                <option value="contributor">Author/Contributor</option>
+              </select>
+            </span>
+          </div>
+          <div className="nypl-text-field">
+            <span className="nypl-omni-fields">
+              <label htmlFor="search-query" id="search-input-label" className="visuallyhidden">
+                Search for
+              </label>
+              <input
+                type="text"
+                id="search-query"
+                aria-labelledby="search-input-label search-input-status"
+                aria-required="true"
+                placeholder="Keyword, title, or author/contributor"
+                onChange={this.inputChange}
+                value={this.state.searchKeywords}
+                name="q"
+                ref="keywords"
+              />
+            </span>
+          </div>
+          <button className="nypl-omnisearch-button nypl-primary-button">
+            <SearchButton onClick={this.submitSearchRequest} />
+            <SearchIcon />
+          </button>
+          {inputError &&
+            <span
+              className="nypl-field-status"
+              id="search-input-status"
+              aria-live="assertive"
+              aria-atomic="true"
             >
-              <option value="all">All fields</option>
-              <option value="title">Title</option>
-              <option value="contributor">Author/Contributor</option>
-            </select>
-          </span>
-          <label htmlFor="search-query" id="search-input-label" className="visuallyhidden">
-            Search for
-          </label>
-          <input
-            type="text"
-            id="search-query"
-            aria-labelledby="search-input-label search-input-status"
-            aria-required="true"
-            placeholder="Keyword, title, or author/contributor"
-            onChange={this.inputChange}
-            value={this.state.searchKeywords}
-            name="q"
-            ref="keywords"
-          />
-          <SearchButton onClick={this.submitSearchRequest} />
+              Please enter a search term.
+            </span>
+          }
         </div>
-        {inputError &&
-          <span
-            className="nypl-field-status"
-            id="search-input-status"
-            aria-live="assertive"
-            aria-atomic="true"
-          >
-            Please enter a search term.
-          </span>
-        }
       </form>
     );
   }
