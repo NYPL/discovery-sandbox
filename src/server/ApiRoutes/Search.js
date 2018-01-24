@@ -34,7 +34,7 @@ function search(searchKeywords, page, sortBy, order, field, filters, cb, errorcb
     page,
   });
 
-  const aggregationQuery = `/aggregations?${apiQuery}`;
+  const aggregationQuery = `/aggregations`;
   const queryString = `?${apiQuery}&per_page=50`;
 
   // Need to get both results and aggregations before proceeding.

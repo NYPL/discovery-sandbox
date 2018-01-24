@@ -1,28 +1,107 @@
 .filter-container {
   .popup-btn-open {
-    display: inline-block;
-    float: left;
-    margin: 2.5rem 1rem 0;
+    float: right;
     border: 1px solid #776e64;
     display: block;
     text-decoration: none;
+
+    svg {
+      fill: #fff;
+      margin: 0 0 2px 0px;
+    }
+
+    &:hover {
+      svg {
+        fill: #1b7fa7;
+      }
+    }
   }
 
   a.popup-btn-open {
     padding-top: 3px;
   }
 
-  .popup-container {
-    visibility: hidden;
-    display: none;
-    opacity: 0;
+  svg {
+    vertical-align: middle;
+  }
 
-    &.active,
-    &:target {
-      visibility: visible;
-      display: block;
-      opacity: 1;
+  .filter-text {
+    float: left;
+    width: 100%;
+    border-bottom: 0.125rem solid #d7d4d0;
+  }
+  .filter-action-buttons {
+    float: left;
+    width: 100%;
+
+    p {
+      margin: 20px 0;
+      float: left;
+      display: inline-block;
     }
+
+    .clear-filters-button {
+      display: none;
+
+      @include min-screen($xtrasmall-breakpoint) {
+        display: inline-block;
+      }
+    }
+  }
+
+  .cancel-apply-buttons {
+    float: right;
+    display: inline-block;
+  }
+
+  .popup-btn-open,
+  .apply-button {
+    background: #fff;
+    border-color: #1b7fa7;
+    color: #1b7fa7;
+
+    svg {
+      fill: #1b7fa7;
+      background: #fff;
+      margin: 0 0 3px 3px;
+    }
+
+    &:hover {
+      background-color: #1b7fa7;
+      border: 0.04167rem solid #1b7fa7;
+      color: #fff;
+
+      svg {
+        fill: #fff;
+        background-color: #1b7fa7;
+      }
+    }
+  }
+
+  .cancel-button {
+    border: none;
+    background: #efedeb;
+    color: #000;
+    margin: 20px;
+
+    @include min-screen(410px) {
+      margin-left: 60px;
+    }
+
+    @include min-screen($xtrasmall-breakpoint) {
+      margin-left: 20px;
+    }
+
+    &:hover {
+      background: #efedeb;
+      color: #000;
+      border: none;
+      text-decoration: underline;
+    }
+  }
+
+  .nypl-name-field input[type=text] {
+    transition: none;
   }
 }
 
@@ -39,32 +118,11 @@
     position: fixed;
   }
 
-  .overlay {
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    position: fixed;
-    z-index: 1000;
-    background: rgba(0,0,0,0.5);
-    &.active {
-      opacity: 1;
-      visibility: visible;
-    }
-  }
-
   .popup,
   .popup-no-js {
-    margin: -1px 0 auto;
-    padding: 20px 30px 0;
-    background: #fff;
-    border: 1px solid #666;
-    box-shadow: 0 0 50px rgba(0,0,0,0.5);
-    float: left;
+    background: #efedeb;
     width: auto;
     z-index: 10000;
-    position: relative;
-    top: -60px;
 
     @include min-screen($tablet-portrait) {
       width: 42rem;
@@ -76,13 +134,12 @@
   }
 
   .popup {
-    display: none;
+    // display: none;
     width: 100%;
 
     &.active {
-      display: block;
-      z-index: 2000;
-      overflow: scroll;
+      // display: block;
+      overflow: auto;
       -webkit-overflow-scrolling: touch;
     }
   }
@@ -96,13 +153,50 @@
       display: block;
     }
   }
+
+  // need to override the background color
+  .nypl-fieldset {
+    background-color: #efedeb;
+  }
+
+  .nypl-generic-checkbox {
+    label::before {
+      background: #fff;
+    }
+  }
 }
 
 .filter-container {
+  svg {
+    @include transition-list(all 0.1s ease-in 0s);
+  }
+  .clear-filters-button {
+    float: right;
+    padding: 7px 16px;
+    @include border-radius(5px);
+
+    @include min-screen($xtrasmall-breakpoint) {
+      float: left;
+    }
+
+    svg {
+      height: 25px;
+      width: 25px;
+      padding: 0;
+      margin: 0px 0 2px 5px;
+    }
+    &:hover {
+      svg {
+        fill: #fff;
+        background: #d0343a;
+      }
+    }
+  }
   button {
     cursor: pointer;
     -webkit-appearance: none;
     -moz-appearance: none;
+    margin: 1rem 0 0;
   }
   ul li {
     list-style: none;
@@ -110,10 +204,6 @@
 }
 
 .nypl-popup-container.active {
-  .nypl-popup-filter-menu .nypl-x-close-button {
-    top: 1rem !important;
-    right: 1rem;
-  }
   .nypl-popup-filter-overlay {
     z-index: 1000 !important;
   }
@@ -143,13 +233,61 @@
   -webkit-appearance: none;
 }
 
+.nypl-name-field {
+  background: #efedeb;
+
+  .nypl-field-status {
+    background: #efedeb;
+  }
+}
+
 .date-hyphen {
-  margin: 0 2px;
+  background: #efedeb;
+  width: 25px;
+  margin: 0px 15px;
+  height: 10px;
 }
 
 .filter-error-box {
   margin: 0 3.125rem;
   @media (max-width: 483px) {
     margin: 0 1rem;
+  }
+}
+
+
+.nypl-modal-filter-form {
+  @include transition-list(max-height .3s ease-in-out);
+  height: auto;
+
+  // Accordion rules
+  &.collapse {
+    max-height: 0;
+    visibility: hidden;
+  }
+
+  &.expand {
+    max-height: 100em;
+    visibility: visible;
+  }
+
+  fieldset:last-of-type {
+    border-bottom: none;
+  }
+
+  .inner {
+    padding: 0;
+
+    legend {
+      padding-top: 15px;
+    }
+
+    ul {
+      margin-top: 10px;
+    }
+
+    &:last-child {
+      border-bottom: none;
+    }
   }
 }

@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
-import FocusTrap from 'focus-trap-react';
 import {
   findWhere as _findWhere,
   reject as _reject,
@@ -10,7 +9,11 @@ import {
   isEmpty as _isEmpty,
   some as _some,
 } from 'underscore';
-import { ApplyIcon, ResetIcon } from '@nypl/dgx-svg-icons';
+import {
+  CheckSoloIcon,
+  FilterIcon,
+  ResetIcon,
+} from '@nypl/dgx-svg-icons';
 
 import {
   trackDiscovery,
@@ -22,49 +25,13 @@ import FieldsetDate from '../Filters/FieldsetDate';
 import FieldsetList from '../Filters/FieldsetList';
 import Actions from '../../actions/Actions';
 
-const XCloseSVG = () => (
-  <svg
-    aria-hidden="true"
-    aria-controls="filter-popup-menu"
-    className="nypl-icon"
-    preserveAspectRatio="xMidYMid meet"
-    viewBox="0 0 100 100"
-  >
-    <title>x-close-rev</title>
-    <path
-      d={'M82.07922,14.06287a48.0713,48.0713,0,1,0,0,68.01563A48.15148,48.15148,0,0,0,82.0792' +
-        '2,14.06287ZM65.06232,60.84845A2.97437,2.97437,0,1,1,60.827,65.0257L48.154,52.18756,35' +
-        '.30133,65.04022a2.97432,2.97432,0,1,1-4.20636-4.2063L43.97473,47.95416,31.27362,35.087' +
-        '46A2.97542,2.97542,0,0,1,35.509,30.90729L48.18213,43.7467,60.84149,31.0874a2.97432,2.9' +
-        '7432,0,0,1,4.2063,4.20636L52.36108,47.98047Z'}
-    />
-  </svg>
-);
-
-const FilterIcon = () => (
-  <svg
-    aria-hidden="true"
-    className="nypl-icon"
-    preserveAspectRatio="xMidYMid meet"
-    viewBox="0 0 19 22"
-  >
-    <title>filter.icon.3</title>
+const FilterResetIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="57.69298" height="71.85359" viewBox="0 0 57.69298 71.85359">
+    <title>filter.reset.icon</title>
     <g>
-      <circle cx="6.65947" cy="2.31986" r="1.31924" />
-      <circle cx="13.18733" cy="1.31986" r="1.31895" />
-      <circle cx="9.56477" cy="5.46901" r="1.31927" />
-      <g>
-        <path
-          d={'M7.74355,22.50683a.95047.95047,0,0,1-.95022-.95022V11.28645L.25259,4.2341' +
-          '3A.95041.95041,0,1,1,1.64824,2.94366l7.04554,7.598v11.015A.95047.95047,0,0,1,7.7435' +
-          '5,22.50683Z'}
-        />
-        <path
-          d={'M11.60384,19.73881a.95047.95047,0,0,1-.95022-.95022V10.5478l7.126-7.81485a.' +
-          '95047.95047,0,0,1,1.41049,1.27439l-6.636,7.27293v7.50832A.95047.95047,0,0,1,11.60384,' +
-          '19.73881Z'}
-        />
-      </g>
+      <path d="M22.98743,71.85359a2.82155,2.82155,0,0,1-2.82082-2.82082V38.545L.7499,17.6096A2.82138,2.82138,0,0,1,4.893,13.77872L25.80825,36.33386V69.03277A2.82155,2.82155,0,0,1,22.98743,71.85359Z"/>
+      <path d="M34.447,63.63651a2.82155,2.82155,0,0,1-2.82082-2.82082V36.35223l21.15409-23.199a2.82154,2.82154,0,0,1,4.18715,3.78313L37.26782,38.52661V60.81569A2.82155,2.82155,0,0,1,34.447,63.63651Z"/>
+      <path d="M31.17492,11.19237l7.7782-7.77814A2,2,0,0,0,36.12469.5858L28.34649,8.364,20.56829.5858a2,2,0,1,0-2.82843,2.82843l7.7782,7.77814-7.7782,7.7782A2,2,0,0,0,20.56829,21.799l7.7782-7.7782,7.7782,7.7782a2,2,0,0,0,2.82843-2.82843Z"/>
     </g>
   </svg>
 );
@@ -94,7 +61,6 @@ class FilterPopup extends React.Component {
 
     this.openForm = this.openForm.bind(this);
     this.closeForm = this.closeForm.bind(this);
-    this.deactivateForm = this.deactivateForm.bind(this);
     this.onFilterClick = this.onFilterClick.bind(this);
     this.onDateFilterChange = this.onDateFilterChange.bind(this);
     this.validateFilterValue = this.validateFilterValue.bind(this);
@@ -113,8 +79,8 @@ class FilterPopup extends React.Component {
       selectedFilters: _extend({
         materialType: [],
         language: [],
-        dateAfter: {},
-        dateBefore: {},
+        dateAfter: undefined,
+        dateBefore: undefined,
       }, nextProps.selectedFilters),
       filters: nextProps.filters,
     });
@@ -180,7 +146,12 @@ class FilterPopup extends React.Component {
     }
 
     _map(errors, (val, key) => {
-      errorArray.push(<li key={key}><a href={`#${headlineError[val.name]}`}>{val.value}</a></li>);
+      if (val.name && val.value) {
+        const anchorTag = (this.state.js) ?
+          <a href={`#${headlineError[val.name]}`}>{val.value}</a> : <span>{val.value}</span>;
+
+        errorArray.push(<li key={key}>{anchorTag}</li>);
+      }
     });
 
     return errorArray;
@@ -226,7 +197,7 @@ class FilterPopup extends React.Component {
 
     const apiQuery = this.props.createAPIQuery({ selectedFilters: this.state.selectedFilters });
 
-    this.deactivateForm();
+    this.closeForm(e);
     this.props.updateIsLoadingState(true);
 
     Actions.updateSelectedFilters(this.state.selectedFilters);
@@ -273,28 +244,16 @@ class FilterPopup extends React.Component {
   openForm() {
     if (!this.state.showForm) {
       trackDiscovery('FilterPopup', 'Open');
-      this.setState(
-        { showForm: true },
-        () => {
-          document.body.classList.add('no-scroll');
-        }
-      );
+      this.setState({ showForm: true });
+      this.props.updateDropdownState(true);
     }
   }
 
   closeForm(e) {
     e.preventDefault();
-    this.deactivateForm();
-  }
-
-  deactivateForm() {
     trackDiscovery('FilterPopup', 'Close');
-    this.setState(
-      { showForm: false },
-      () => {
-        document.body.classList.remove('no-scroll');
-      }
-    );
+    this.setState({ showForm: false });
+    this.props.updateDropdownState(false);
 
     if (this.refs.filterOpen) {
       this.refs.filterOpen.focus();
@@ -309,44 +268,69 @@ class FilterPopup extends React.Component {
       filters,
     } = this.state;
 
-    const closePopupButton = js ?
+    const applyButton = (
       <button
-        onClick={(e) => this.closeForm(e)}
+        type="submit"
+        name="apply-filters"
+        onClick={e => this.submitForm(e)}
+        className="nypl-primary-button apply-button"
+      >
+        Apply filters
+        <CheckSoloIcon
+          className="apply-icon"
+          preserveAspectRatio="xMidYMid meet"
+          title="apply"
+          labelledById="apply"
+          iconId="filterApply"
+        />
+      </button>);
+    const cancelButton = (
+      <button
+        onClick={this.closeForm}
         aria-expanded={!showForm}
         aria-controls="filter-popup-menu"
-        className="popup-btn-close nypl-x-close-button"
+        className="nypl-filter-button cancel-button"
       >
-        <span>Close</span>
-        <XCloseSVG />
+        Cancel
       </button>
-      : (<a
-        aria-expanded
-        href="#"
-        aria-controls="filter-popup-menu"
-        className="popup-btn-close nypl-x-close-button"
+    );
+    const resetButton = (
+      <button
+        type="button"
+        name="Clear-Filters"
+        className="nypl-basic-button clear-filters-button"
+        onClick={this.clearFilters}
       >
-        Close <XCloseSVG />
-      </a>);
-    const openPopupButton = js ?
-      (<button
-        className="popup-btn-open nypl-short-button"
+        Clear filters
+        <FilterResetIcon
+          className="nypl-icon"
+          preserveAspectRatio="xMidYMid meet"
+          title="reset"
+        />
+      </button>);
+    const openButton = (
+      <button
+        className="popup-btn-open nypl-primary-button"
         onClick={() => this.openForm()}
         aria-haspopup="true"
-        aria-expanded={showForm}
+        aria-expanded={showForm || null}
         aria-controls="filter-popup-menu"
-        ref="filterOpen"
       >
-        FILTER RESULTS <FilterIcon />
-      </button>)
-      : (<a
-        className="popup-btn-open nypl-short-button"
+        Add filters <FilterIcon />
+      </button>
+    );
+    const popupOrApplyButton = showForm ? applyButton : openButton;
+    const openPopupButton = js ?
+      popupOrApplyButton :
+      (<a
+        className="popup-btn-open nypl-primary-button"
         href="#popup-no-js"
         aria-haspopup="true"
         aria-expanded={false}
         aria-controls="filter-popup-menu"
         ref="filterOpen"
       >
-        FILTER RESULTS <FilterIcon />
+        Add filters <FilterIcon />
       </a>);
     const { searchKeywords } = this.props;
     const materialTypeFilters = _findWhere(filters, { id: 'materialType' });
@@ -360,7 +344,11 @@ class FilterPopup extends React.Component {
       dateBefore: dateBeforeFilterValue,
     };
     const errorMessageBlock = (
-      <div className="nypl-form-error filter-error-box" ref="nypl-filter-error" tabIndex="0">
+      <div
+        className="nypl-form-error filter-error-box"
+        ref="nypl-filter-error"
+        tabIndex="0"
+      >
         <h2>Error</h2>
         <p>Please enter valid filter values:</p>
         <ul>
@@ -368,13 +356,22 @@ class FilterPopup extends React.Component {
         </ul>
       </div>
     );
-    const isDateInputError = _some(this.state.raisedErrors, (item) =>
-      (item.name && item.name === 'date')
-    );
+    const isDateInputError = _some(this.state.raisedErrors, item =>
+      (item.name && item.name === 'date'));
 
     return (
       <div className="filter-container">
-        {openPopupButton}
+        <div className="filter-text">
+          <h2>Refine your search</h2>
+        </div>
+        <div className="filter-action-buttons">
+          {!showForm && (<p>Add filters to narrow and define your search</p>)}
+          {showForm && resetButton}
+          <div className="cancel-apply-buttons">
+            {showForm && cancelButton}
+            {openPopupButton}
+          </div>
+        </div>
         <div
           className={
             'nypl-basic-modal-container nypl-popup-container popup-container ' +
@@ -386,92 +383,55 @@ class FilterPopup extends React.Component {
           aria-describedby="modal-description"
         >
           {!js && (<a className="cancel-no-js" href="#"></a>)}
-          <div className="nypl-modal-content">
-            <div className="nypl-popup-filter-overlay"></div>
-            <p id="modal-description" className="nypl-screenreader-only">Filter search results</p>
-            <FocusTrap
-              focusTrapOptions={{
-                onDeactivate: this.deactivateForm,
-                clickOutsideDeactivates: true,
-              }}
-              active={showForm}
-              id="filter-popup-menu"
-              role="menu"
-              className={
-                `${js ? 'popup' : 'popup-no-js'} nypl-modal-filter-form nypl-popup-filter-menu ` +
-                `${showForm ? 'active' : ''}`
-              }
+          <p id="modal-description" className="nypl-screenreader-only">Filter search results</p>
+          <div
+            id="filter-popup-menu"
+            className={
+              `${js ? 'popup' : 'popup-no-js'} nypl-modal-filter-form nypl-popup-filter-menu ` +
+              `${showForm ? 'expand active' : 'collapse'}`
+            }
+          >
+            {
+              this.state.raisedErrors && !_isEmpty(this.state.raisedErrors) && (errorMessageBlock)
+            }
+            <form
+              action={`${appConfig.baseUrl}/search?q=${searchKeywords}`}
+              method="POST"
+              onSubmit={() => this.submitForm()}
             >
-              {
-                this.state.raisedErrors && !_isEmpty(this.state.raisedErrors) && (errorMessageBlock)
-              }
-              <form
-                action={`${appConfig.baseUrl}/search?q=${searchKeywords}`}
-                method="POST"
-                onSubmit={() => this.onSubmitForm()}
-              >
-                <fieldset className="nypl-fieldset">
-                  <legend><h3 id="filter-title">Filter Results</h3></legend>
+              <fieldset className="nypl-fieldset">
+                <FieldsetList
+                  legend="Format"
+                  filterId="materialType"
+                  filter={materialTypeFilters}
+                  selectedFilters={selectedFilters.materialType}
+                  onFilterClick={this.onFilterClick}
+                />
 
-                  <FieldsetList
-                    legend="Format"
-                    filterId="materialType"
-                    filter={materialTypeFilters}
-                    selectedFilters={selectedFilters.materialType}
-                    onFilterClick={this.onFilterClick}
-                  />
+                <FieldsetDate
+                  legend="Date"
+                  selectedFilters={dateSelectedFilters}
+                  onDateFilterChange={this.onDateFilterChange}
+                  submitError={isDateInputError}
+                />
 
-                  <FieldsetDate
-                    legend="Date"
-                    selectedFilters={dateSelectedFilters}
-                    onDateFilterChange={this.onDateFilterChange}
-                    submitError={isDateInputError}
-                  />
+                <FieldsetList
+                  legend="Language"
+                  filterId="language"
+                  filter={languageFilters}
+                  selectedFilters={selectedFilters.language}
+                  onFilterClick={this.onFilterClick}
+                />
 
-                  <FieldsetList
-                    legend="Language"
-                    filterId="language"
-                    filter={languageFilters}
-                    selectedFilters={selectedFilters.language}
-                    onFilterClick={this.onFilterClick}
-                  />
-
-                  <div className="inner nypl-filter-button-container">
-                    <button
-                      id="submit-form"
-                      type="submit"
-                      name="apply-filters"
-                      onClick={this.submitForm}
-                      className="nypl-filter-button"
-                    >
-                      <ApplyIcon
-                        className="nypl-icon"
-                        preserveAspectRatio="xMidYMid meet"
-                        title="apply"
-                        labelledById="apply"
-                      />
-                      Apply Filters
-                    </button>
-                    <button
-                      id="clear-filters"
-                      type="button"
-                      name="Clear-Filters"
-                      className="nypl-filter-button"
-                      onClick={this.clearFilters}
-                    >
-                      <ResetIcon
-                        className="nypl-icon"
-                        preserveAspectRatio="xMidYMid meet"
-                        title="reset"
-                        labelledById="reset"
-                      />
-                      Clear Filters
-                    </button>
+                <div className="inner nypl-filter-button-container">
+                  {resetButton}
+                  <div className="cancel-apply-buttons">
+                    {cancelButton}
+                    {applyButton}
                   </div>
-                </fieldset>
-              </form>
-            </FocusTrap>
-            {closePopupButton}
+                </div>
+              </fieldset>
+            </form>
           </div>
         </div>
       </div>
@@ -487,12 +447,14 @@ FilterPopup.propTypes = {
   selectedFilters: PropTypes.object,
   searchKeywords: PropTypes.string,
   raisedErrors: PropTypes.array,
+  updateDropdownState: PropTypes.func,
 };
 
 FilterPopup.defaultProps = {
   filters: [],
   createAPIQuery: () => {},
   updateIsLoadingState: () => {},
+  updateDropdownState: () => {},
 };
 
 FilterPopup.contextTypes = {

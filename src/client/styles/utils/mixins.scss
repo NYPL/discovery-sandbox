@@ -186,3 +186,23 @@
        -o-transition: -o-transform $values;
           transition: transform $values;
 }
+
+@mixin clear-filters-button {
+  border: 1px solid #d0343a;
+  color: #d0343a;
+  background: #fff;
+
+  svg {
+    fill: #d0343a;
+  }
+
+  &:hover {
+    border: 1px solid #fff;
+    color: #fff;
+    background: #d0343a;
+
+    svg {
+      fill: #fff;
+    }
+  }
+}

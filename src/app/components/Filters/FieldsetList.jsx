@@ -53,11 +53,8 @@ class FieldsetList extends React.Component {
 
     return (
       <fieldset className="nypl-fieldset inner">
-        {legend && <legend>{legend}</legend>}
-        <ul
-          className={`nypl-generic-checkbox ${(filterId === 'language') ?
-          'nypl-generic-columns' : ''}`}
-        >
+        {legend && <legend><strong>{legend}</strong></legend>}
+        <ul className="nypl-generic-checkbox nypl-generic-columns">
           {
             values.map((filter, i) => (
               <li className="nypl-generic-checkbox" key={i}>
