@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 
-import { trackDiscovery } from '../../utils/utils.js';
-import appConfig from '../../../../appConfig.js';
+import { trackDiscovery } from '../../utils/utils';
+import appConfig from '../../../../appConfig';
 
 const BibPage = ({ searchURL, searchKeywords = '' }) => {
   if (!searchURL) {

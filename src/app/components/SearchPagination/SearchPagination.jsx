@@ -4,7 +4,7 @@ import { Link } from 'react-router';
 import {
   LeftArrowIcon,
   RightArrowIcon,
-} from 'dgx-svg-icons';
+} from '@nypl/dgx-svg-icons';
 import { times as _times } from 'underscore';
 
 class SearchPagination extends React.Component {

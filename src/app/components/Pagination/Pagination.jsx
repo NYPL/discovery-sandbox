@@ -1,32 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
-import appConfig from '../../../../appConfig.js';
+import {
+  LeftWedgeIcon,
+  RightWedgeIcon,
+} from '@nypl/dgx-svg-icons';
 
-const LeftWedgeIcon = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    preserveAspectRatio="xMidYMid meet"
-    aria-hidden="true"
-    viewBox="0 0 8.97 15.125"
-  >
-    <title>Wedge Left Arrow</title>
-    <polygon
-      points="7.563 15.125 0 7.562 7.563 0 8.97 1.407 2.815 7.562 8.97 13.717 7.563 15.125"
-    />
-  </svg>
-);
-const RightWedgeIcon = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    preserveAspectRatio="xMidYMid meet"
-    aria-hidden="true"
-    viewBox="0 0 8.97 15.126"
-  >
-    <title>Wedge Right Arrow</title>
-    <polygon points="1.407 0 8.97 7.563 1.407 15.126 0 13.718 6.155 7.563 0 1.408 1.407 0" />
-  </svg>
-);
+import appConfig from '../../../../appConfig';
 
 class Pagination extends React.Component {
   /*

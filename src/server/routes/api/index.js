@@ -1,3 +1,4 @@
+/* eslint import/prefer-default-export: "off" */
 import { isEmpty as _isEmpty } from 'underscore';
 
 import nyplApiClient from '../nyplApiClient';

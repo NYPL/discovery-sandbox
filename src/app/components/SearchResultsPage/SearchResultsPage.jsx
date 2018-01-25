@@ -2,23 +2,23 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import DocumentTitle from 'react-document-title';
 
-import ResultsCount from '../ResultsCount/ResultsCount.jsx';
-import Breadcrumbs from '../Breadcrumbs/Breadcrumbs.jsx';
+import ResultsCount from '../ResultsCount/ResultsCount';
+import Breadcrumbs from '../Breadcrumbs/Breadcrumbs';
 import ResultList from '../Results/ResultsList';
-import Search from '../Search/Search.jsx';
+import Search from '../Search/Search';
 import Sorter from '../Sorter/Sorter';
 import Pagination from '../Pagination/Pagination';
-import LoadingLayer from '../LoadingLayer/LoadingLayer.jsx';
-import FilterPopup from '../FilterPopup/FilterPopup.jsx';
-import SelectedFilters from '../Filters/SelectedFilters.jsx';
+import LoadingLayer from '../LoadingLayer/LoadingLayer';
+import FilterPopup from '../FilterPopup/FilterPopup';
+import SelectedFilters from '../Filters/SelectedFilters';
 
 import {
   basicQuery,
   ajaxCall,
   trackDiscovery,
-} from '../../utils/utils.js';
-import Actions from '../../actions/Actions.js';
-import appConfig from '../../../../appConfig.js';
+} from '../../utils/utils';
+import Actions from '../../actions/Actions';
+import appConfig from '../../../../appConfig';
 
 class SearchResultsPage extends React.Component {
   constructor(props) {
@@ -26,9 +26,11 @@ class SearchResultsPage extends React.Component {
 
     this.state = {
       isLoading: this.props.isLoading,
+      dropdownOpen: false,
     };
 
     this.updateIsLoadingState = this.updateIsLoadingState.bind(this);
+    this.updateDropdownState = this.updateDropdownState.bind(this);
   }
 
   componentDidUpdate() {
@@ -39,6 +41,10 @@ class SearchResultsPage extends React.Component {
 
   updateIsLoadingState(status) {
     this.setState({ isLoading: status });
+  }
+
+  updateDropdownState(status) {
+    this.setState({ dropdownOpen: status });
   }
 
   render() {
@@ -123,24 +129,9 @@ class SearchResultsPage extends React.Component {
                       {searchErrorMessage}
                     </span>
                   }
-                  <ResultsCount
-                    isLoading={isLoading}
-                    count={totalResults}
-                    selectedFilters={selectedFilters}
-                    searchKeywords={searchKeywords}
-                    field={field}
-                    page={parseInt(page, 10)}
-                  />
                   {
                     !!(totalResults && totalResults !== 0) && (
                       <div>
-                        <Sorter
-                          sortBy={sortBy}
-                          page={page}
-                          searchKeywords={searchKeywords}
-                          createAPIQuery={createAPIQuery}
-                          updateIsLoadingState={this.updateIsLoadingState}
-                        />
                         <FilterPopup
                           filters={apiFilters}
                           createAPIQuery={createAPIQuery}
@@ -148,12 +139,13 @@ class SearchResultsPage extends React.Component {
                           selectedFilters={selectedFilters}
                           searchKeywords={searchKeywords}
                           raisedErrors={dateFilterErrors}
+                          updateDropdownState={this.updateDropdownState}
                         />
                       </div>
                     )
                   }
 
-                  {
+                  {!this.state.dropdownOpen &&
                     <SelectedFilters
                       selectedFilters={selectedFilters}
                       createAPIQuery={createAPIQuery}
@@ -162,6 +154,32 @@ class SearchResultsPage extends React.Component {
                   }
 
                 </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="nypl-full-width-wrapper">
+            <div className="nypl-row">
+              <div className="nypl-column-three-quarters">
+                <ResultsCount
+                  isLoading={isLoading}
+                  count={totalResults}
+                  selectedFilters={selectedFilters}
+                  searchKeywords={searchKeywords}
+                  field={field}
+                  page={parseInt(page, 10)}
+                />
+                {
+                  !!(totalResults && totalResults !== 0) && (
+                    <Sorter
+                      sortBy={sortBy}
+                      page={page}
+                      searchKeywords={searchKeywords}
+                      createAPIQuery={createAPIQuery}
+                      updateIsLoadingState={this.updateIsLoadingState}
+                    />
+                  )
+                }
               </div>
             </div>
           </div>

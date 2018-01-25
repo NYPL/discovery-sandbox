@@ -15,15 +15,15 @@ describe('FilterPopup', () => {
 
       expect(component.state('js')).to.equal(false);
       // The Apply and Clear buttons should still be rendered:
-      expect(component.find('button').length).to.equal(2);
+      expect(component.find('button').length).to.equal(3);
       // These tests will need to be updated when the DOM structure gets updated.
       // The second <a> element is the no-js 'cancel' element for the "smart" no-js solution.
       expect(component.find('a').at(0).prop('className'))
-        .to.equal('popup-btn-open nypl-short-button');
+        .to.equal('popup-btn-open nypl-primary-button');
       expect(component.find('a').at(0).prop('href')).to.equal('#popup-no-js');
       expect(component.find('a').at(1).prop('className')).to.equal('cancel-no-js');
-      expect(component.find('a').at(2).prop('className'))
-        .to.equal('popup-btn-close nypl-x-close-button');
+      // expect(component.find('a').at(2).prop('className'))
+      //   .to.equal('popup-btn-close nypl-x-close-button');
     });
 
     it('should have specific "no-js" id and class', () => {
@@ -51,11 +51,11 @@ describe('FilterPopup', () => {
       // All buttons should be rendered
       expect(component.find('button').length).to.equal(4);
       expect(component.find('button').at(0).prop('className'))
-        .to.equal('popup-btn-open nypl-short-button');
-      expect(component.find('button').at(1).prop('name')).to.equal('apply-filters');
-      expect(component.find('button').at(2).prop('name')).to.equal('Clear-Filters');
+        .to.equal('popup-btn-open nypl-primary-button');
+      expect(component.find('button').at(1).prop('name')).to.equal('Clear-Filters');
+      expect(component.find('button').at(2).prop('className')).to.equal('nypl-filter-button cancel-button');
       expect(component.find('button').at(3).prop('className'))
-        .to.equal('popup-btn-close nypl-x-close-button');
+        .to.equal('nypl-primary-button apply-button');
     });
 
     it('should not render the "no-js" <a> element', () => {
@@ -65,15 +65,15 @@ describe('FilterPopup', () => {
     it('should have accessible open button', () => {
       const openBtn = component.find('.popup-btn-open');
       expect(openBtn.prop('aria-haspopup')).to.equal('true');
-      expect(openBtn.prop('aria-expanded')).to.equal(false);
+      expect(openBtn.prop('aria-expanded')).to.equal(null);
       expect(openBtn.prop('aria-controls')).to.equal('filter-popup-menu');
     });
 
-    it('should have accessible close button', () => {
-      const openBtn = component.find('.popup-btn-close');
-      expect(openBtn.prop('aria-expanded')).to.equal(true);
-      expect(openBtn.prop('aria-controls')).to.equal('filter-popup-menu');
-    });
+    // it('should have accessible close button', () => {
+    //   const openBtn = component.find('.popup-btn-close');
+    //   expect(openBtn.prop('aria-expanded')).to.equal(true);
+    //   expect(openBtn.prop('aria-controls')).to.equal('filter-popup-menu');
+    // });
 
     it('should not have specific "no-js" id and class', () => {
       expect(component.state('js')).to.equal(true);
@@ -154,7 +154,7 @@ describe('FilterPopup', () => {
     });
 
     it('should clear all the selected filters in the state.', () => {
-      const clearFiltersButton = component.find('#clear-filters');
+      const clearFiltersButton = component.find('.clear-filters-button');
 
       clearFiltersButton.simulate('click');
       expect(component.state('selectedFilters')).to.deep.equal(emptySelectedFilters);
@@ -201,7 +201,7 @@ describe('FilterPopup', () => {
     });
 
     it('should stop submitting and the function of submitting returns false', () => {
-      const submitFormButton = component.find('#submit-form');
+      const submitFormButton = component.find('.apply-button');
 
       expect(component.find('.nypl-form-error').length).to.equal(0);
 
@@ -211,7 +211,7 @@ describe('FilterPopup', () => {
     });
 
     it('should render a div for error messages', () => {
-      const submitFormButton = component.find('#submit-form');
+      const submitFormButton = component.find('.apply-button');
 
       expect(component.find('.nypl-form-error').length).to.equal(0);
 

@@ -9,31 +9,14 @@ import {
   contains as _contains,
   isArray as _isArray,
 } from 'underscore';
+import {
+  FilterIcon,
+  XIcon,
+} from '@nypl/dgx-svg-icons';
 
 import Actions from '../../actions/Actions';
 import appConfig from '../../../../appConfig';
 import { ajaxCall } from '../../utils/utils';
-
-const XCloseIcon = (props) => (
-  <svg
-    className="nypl-icon svgIcon"
-    preserveAspectRatio="xMidYMid meet"
-    viewBox="0 0 32 32"
-    aria-hidden={props['aria-hidden']}
-  >
-    <title>Remove Filter</title>
-    <path
-      d={'M17.91272,15.97339l5.65689-5.65689A1.32622,1.32622,0,0,0,21.694,8.44093L16.04938' +
-        ',14.0856l-5.65082-5.725A1.32671,1.32671,0,1,0,8.51,10.22454l5.66329,5.73712L8.4303' +
-        '8,21.7046a1.32622,1.32622,0,1,0,1.87557,1.87557l5.73088-5.73088,5.65074,5.72441a1.3' +
-        '2626,1.32626,0,1,0,1.88852-1.86261Z'}
-    />
-  </svg>
-);
-
-XCloseIcon.propTypes = {
-  'aria-hidden': React.PropTypes.bool,
-};
 
 class SelectedFilters extends React.Component {
   constructor(props) {
@@ -127,13 +110,13 @@ class SelectedFilters extends React.Component {
     const acceptedFilters = _keys(appConfig.defaultFilters);
     let clearAllFilters = (
       <button
-        className="nypl-unset-filter"
+        className="nypl-unset-filter clear-filters-button"
         onClick={this.clearFilters}
         aria-controls="selected-filters-container"
         aria-label="Clear all filters"
       >
         Clear Filters
-        <XCloseIcon aria-hidden />
+        <FilterIcon ariaHidden />
       </button>
     );
 
@@ -142,13 +125,13 @@ class SelectedFilters extends React.Component {
 
       clearAllFilters = (
         <a
-          className="nypl-unset-filter"
+          className="nypl-unset-filter clear-filters-button"
           href={`${appConfig.baseUrl}/search?${apiQuery}`}
           aria-controls="selected-filters-container"
           aria-label="Clear all filters"
         >
           Clear Filters
-          <XCloseIcon />
+          <FilterIcon ariaHidden />
         </a>
       );
     }
@@ -186,22 +169,26 @@ class SelectedFilters extends React.Component {
         >
           {
             filtersToRender.map((filter, i) => {
+              const dateClass = filter.field;
               let filterBtn = (
                 <button
                   className="nypl-unset-filter"
-                  onClick={(e) => this.onFilterClick(e, filter)}
+                  onClick={e => this.onFilterClick(e, filter)}
                   aria-controls="selected-filters-container"
                   aria-label={`${filter.label} Remove Filter`}
                 >
                   {filter.label}
-                  <XCloseIcon />
+                  <XIcon fill="#fff" ariaHidden />
                 </button>
               );
 
               if (!this.state.js) {
                 const removedSelectedFilters = JSON.parse(JSON.stringify(selectedFilters));
                 removedSelectedFilters[filter.field] =
-                  _reject(selectedFilters[filter.field], (f) => (f.value === filter.value));
+                  _reject(
+                    selectedFilters[filter.field],
+                    f => (f.value === filter.value),
+                  );
 
                 const apiQuery = this.props.createAPIQuery({
                   selectedFilters: removedSelectedFilters,
@@ -215,12 +202,12 @@ class SelectedFilters extends React.Component {
                     aria-label={filter.label}
                   >
                     {filter.label}
-                    <XCloseIcon />
+                    <XIcon fill="#fff" ariaHidden />
                   </a>
                 );
               }
 
-              return (<li key={i}>{filterBtn}</li>);
+              return (<li key={i} className={dateClass}>{filterBtn}</li>);
             })
           }
           <li>

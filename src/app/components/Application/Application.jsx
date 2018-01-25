@@ -6,21 +6,21 @@ import { pick as _pick } from 'underscore';
 import { Header, navConfig } from '@nypl/dgx-header-component';
 import Footer from '@nypl/dgx-react-footer';
 
-import Feedback from '../Feedback/Feedback.jsx';
-import Store from '../../stores/Store.js';
-import PatronStore from '../../stores/PatronStore.js';
+import Feedback from '../Feedback/Feedback';
+import Store from '../../stores/Store';
+import PatronStore from '../../stores/PatronStore';
 import {
   ajaxCall,
   createAppHistory,
   destructureFilters,
-} from '../../utils/utils.js';
-import Actions from '../../actions/Actions.js';
-import appConfig from '../../../../appConfig.js';
+} from '../../utils/utils';
+import Actions from '../../actions/Actions';
+import appConfig from '../../../../appConfig';
 
 const history = createAppHistory();
 
 // Listen to the browser's navigation buttons.
-history.listen(location => {
+history.listen((location) => {
   const {
     action,
     search,
@@ -103,6 +103,11 @@ class App extends React.Component {
 App.propTypes = {
   children: PropTypes.object,
   location: PropTypes.object,
+};
+
+App.defaultProps = {
+  children: {},
+  location: {},
 };
 
 App.contextTypes = {
