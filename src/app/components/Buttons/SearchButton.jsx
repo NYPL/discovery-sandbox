@@ -1,18 +1,21 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import SearchIconReversed from './SearchIconReversed';
 
 const SearchButton = ({
   id,
   onClick,
   value,
 }) => (
-  <input
+  <button
     id={id}
-    onSubmit={onClick}
+    className="nypl-omnisearch-button nypl-primary-button"
     onClick={onClick}
     type="submit"
-    value={value}
-  />
+  >
+    {value}
+    <SearchIconReversed />
+  </button>
 );
 
 SearchButton.propTypes = {

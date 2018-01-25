@@ -8,9 +8,6 @@ import {
   ajaxCall,
 } from '../../utils/utils';
 import appConfig from '../../../../appConfig';
-import {
-  SearchIcon
-} from '@nypl/dgx-svg-icons';
 
 /**
  * The main container for the top Search section.
@@ -171,10 +168,7 @@ class Search extends React.Component {
               />
             </span>
           </div>
-          <button className="nypl-omnisearch-button nypl-primary-button">
-            <SearchButton onClick={this.submitSearchRequest} />
-            <SearchIcon />
-          </button>
+          <SearchButton onClick={this.submitSearchRequest} />
           {inputError &&
             <span
               className="nypl-field-status"
