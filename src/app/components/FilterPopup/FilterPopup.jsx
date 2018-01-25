@@ -189,7 +189,6 @@ class FilterPopup extends React.Component {
   }
 
   submitForm(e) {
-    console.log(e.keyCode)
     e.preventDefault();
 
     if (!this.validateFilterValue(this.state.selectedFilters)) {
