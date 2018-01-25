@@ -1,5 +1,8 @@
 ## CHANGE LOG
 
+### 1.2.8
+- Update to Header component v2.4.5.
+
 ### 1.2.7
 - Removing notifications from Hold Request page.
 
