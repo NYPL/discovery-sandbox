@@ -286,6 +286,7 @@ class FilterPopup extends React.Component {
       </button>);
     const cancelButton = (
       <button
+        type="button"
         onClick={this.closeForm}
         aria-expanded={!showForm}
         aria-controls="filter-popup-menu"
