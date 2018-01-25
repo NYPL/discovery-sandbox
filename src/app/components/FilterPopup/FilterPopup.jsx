@@ -189,6 +189,7 @@ class FilterPopup extends React.Component {
   }
 
   submitForm(e) {
+    console.log(e.keyCode)
     e.preventDefault();
 
     if (!this.validateFilterValue(this.state.selectedFilters)) {
@@ -286,6 +287,7 @@ class FilterPopup extends React.Component {
       </button>);
     const cancelButton = (
       <button
+        type="button"
         onClick={this.closeForm}
         aria-expanded={!showForm}
         aria-controls="filter-popup-menu"
