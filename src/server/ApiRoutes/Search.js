@@ -6,12 +6,12 @@ import {
   forEach as _forEach,
 } from 'underscore';
 
-import appConfig from '../../../appConfig.js';
+import appConfig from '../../../appConfig';
 import {
   getReqParams,
   basicQuery,
   parseServerSelectedFilters,
-} from '../../app/utils/utils.js';
+} from '../../app/utils/utils';
 import nyplApiClient from '../routes/nyplApiClient';
 import logger from '../../../logger';
 
@@ -22,8 +22,10 @@ const createAPIQuery = basicQuery({
   selectedFilters: {},
 });
 
-const nyplApiClientCall = (query) =>
-  nyplApiClient().then(client => client.get(`/discovery/resources${query}`, { cache: false }));
+const nyplApiClientCall = query =>
+  nyplApiClient()
+    .then(client =>
+      client.get(`/discovery/resources${query}`, { cache: false }));
 
 function search(searchKeywords, page, sortBy, order, field, filters, cb, errorcb) {
   const apiQuery = createAPIQuery({
@@ -34,16 +36,16 @@ function search(searchKeywords, page, sortBy, order, field, filters, cb, errorcb
     page,
   });
 
-  const aggregationQuery = `/aggregations`;
+  const aggregationQuery = '/aggregations';
   const queryString = `?${apiQuery}&per_page=50`;
 
   // Need to get both results and aggregations before proceeding.
   Promise.all([nyplApiClientCall(queryString), nyplApiClientCall(aggregationQuery)])
-    .then(response => {
+    .then((response) => {
       const [results, aggregations] = response;
       cb(aggregations, results, page);
     })
-    .catch(error => {
+    .catch((error) => {
       logger.error('Error making server search call in search function', error);
       errorcb(error);
     });
@@ -64,7 +66,7 @@ function searchAjax(req, res) {
       searchResults,
       pageQuery,
     }),
-    (error) => res.json(error)
+    error => res.json(error),
   );
 }
 
@@ -84,19 +86,12 @@ function searchServerPost(req, res) {
     searchKeywords = req.query.q;
   }
 
-  if (!searchKeywords) {
-    return res.redirect(`${appConfig.baseUrl}/search?error=noKeyword`);
-  }
-
   if (dateAfter && dateBefore) {
     if (Number(dateAfter) > Number(dateBefore)) {
-      return res.redirect(
-        `${appConfig.baseUrl}/search?q=${searchKeywords}&error=dateFilterError#popup-no-js`
-      );
+      return res.redirect(`${appConfig.baseUrl}/search?q=${searchKeywords}&` +
+        'error=dateFilterError#popup-no-js');
     }
   }
-
-  const updatedSearchKeywords = searchKeywords === '*' ? '' : searchKeywords;
 
   if (req.query.search_scope) {
     field = req.query.search_scope;
@@ -106,7 +101,7 @@ function searchServerPost(req, res) {
   }
 
   const apiQuery = createAPIQuery({
-    searchKeywords: encodeURIComponent(updatedSearchKeywords),
+    searchKeywords: encodeURIComponent(searchKeywords),
     selectedFilters,
     field,
     sortBy,
@@ -142,12 +137,15 @@ function searchServer(req, res, next) {
             if (!selectedFilters[key]) {
               selectedFilters[key] = [];
             }
-            _forEach(value, filterValue => {
-              filterObj = _findWhere(apiFilters.itemListElement, { field: key });
+            _forEach(value, (filterValue) => {
+              filterObj =
+                _findWhere(apiFilters.itemListElement, { field: key });
               const foundFilter =
-                _isEmpty(filterObj) ? {} : _findWhere(filterObj.values, { value: filterValue });
+                _isEmpty(filterObj) ? {} :
+                  _findWhere(filterObj.values, { value: filterValue });
 
-              if (foundFilter && !_findWhere(selectedFilters[key], { id: foundFilter.value })) {
+              if (foundFilter &&
+                  !_findWhere(selectedFilters[key], { id: foundFilter.value })) {
                 selectedFilters[key].push({
                   selected: true,
                   value: foundFilter.value,
@@ -158,9 +156,11 @@ function searchServer(req, res, next) {
             });
           } else if (typeof value === 'string') {
             filterObj = _findWhere(apiFilters.itemListElement, { field: key });
-            const foundFilter = _isEmpty(filterObj) ? {} : _findWhere(filterObj.values, { value });
+            const foundFilter = _isEmpty(filterObj) ? {} :
+              _findWhere(filterObj.values, { value });
 
-            if (foundFilter && !_findWhere(selectedFilters[key], { id: foundFilter.value })) {
+            if (foundFilter &&
+                !_findWhere(selectedFilters[key], { id: foundFilter.value })) {
               selectedFilters[key] = [{
                 selected: true,
                 value: foundFilter.value,
@@ -204,7 +204,7 @@ function searchServer(req, res, next) {
       };
 
       next();
-    }
+    },
   );
 }
 

@@ -74,7 +74,7 @@ class SearchResultsPage extends React.Component {
       const apiQuery = createAPIQuery({ page: nextPage });
 
       trackDiscovery('Pagination - Search Results', `${pageType} - page ${nextPage}`);
-      ajaxCall(`${appConfig.baseUrl}/api?${apiQuery}`, response => {
+      ajaxCall(`${appConfig.baseUrl}/api?${apiQuery}`, (response) => {
         Actions.updateSearchResults(response.data.searchResults);
         Actions.updatePage(nextPage.toString());
         setTimeout(() => {
@@ -86,11 +86,9 @@ class SearchResultsPage extends React.Component {
     const searchError = location.query && location.query.error ? location.query.error : '';
     const apiFilters = filters && filters.itemListElement && filters.itemListElement.length ?
       filters.itemListElement : [];
-    let searchErrorMessage = '';
-    let dateFilterErrors = [];
+    const dateFilterErrors = [];
 
     if (searchError === 'dateFilterError') {
-      searchErrorMessage = 'Please enter valid dates.';
       dateFilterErrors.push({
         name: 'date',
         value: 'Date',
@@ -117,18 +115,7 @@ class SearchResultsPage extends React.Component {
                     field={field}
                     createAPIQuery={createAPIQuery}
                     updateIsLoadingState={this.updateIsLoadingState}
-                    searchError={searchError === 'noKeyword'}
                   />
-                  {searchErrorMessage &&
-                    <span
-                      className="nypl-field-status"
-                      id="search-input-status"
-                      aria-live="assertive"
-                      aria-atomic="true"
-                    >
-                      {searchErrorMessage}
-                    </span>
-                  }
                   {
                     !!(totalResults && totalResults !== 0) && (
                       <div>
