@@ -322,7 +322,7 @@ class BibDetails extends React.Component {
               href={electronicItem.url}
               target="_blank"
               onClick={() =>
-                trackDiscovery('Bib fields', `Electronic Resource - ${electronicItem.label}`)
+                trackDiscovery('Bib fields', `Electronic Resource - ${electronicItem.label} - ${electronicItem.url}`)
               }
             >
               {electronicItem.label}
@@ -337,7 +337,7 @@ class BibDetails extends React.Component {
                       href={e.url}
                       target="_blank"
                       onClick={
-                        () => trackDiscovery('Bib fields', `Electronic Resource - ${e.label}`)
+                        () => trackDiscovery('Bib fields', `Electronic Resource - ${e.label} - ${e.url}`)
                       }
                     >
                       {e.label}
