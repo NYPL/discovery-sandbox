@@ -113,6 +113,7 @@ class Search extends React.Component {
     return (
       <form
         onSubmit={this.triggerSubmit}
+        onKeyPress={this.triggerSubmit}
         action={`${appConfig.baseUrl}/search`}
         method="POST"
         className="nypl-omnisearch-form"
