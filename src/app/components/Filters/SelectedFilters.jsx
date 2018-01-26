@@ -226,7 +226,11 @@ class SelectedFilters extends React.Component {
               const dateClass = filter.field;
               let singleDateLabel = '';
               if (singleDate) {
-                console.log(filter)
+                if (dateClass === 'dateAfter') {
+                  singleDateLabel = 'After';
+                } else if (dateClass === 'dateBefore') {
+                  singleDateLabel = 'Before';
+                }
               }
 
               let filterBtn = (
@@ -236,7 +240,7 @@ class SelectedFilters extends React.Component {
                   aria-controls="selected-filters-container"
                   aria-label={`${singleDateLabel} ${filter.label} Remove Filter`}
                 >
-                  {filter.label}
+                  {singleDateLabel} {filter.label}
                   <XIcon fill="#fff" ariaHidden />
                 </button>
               );
@@ -266,7 +270,14 @@ class SelectedFilters extends React.Component {
                 );
               }
 
-              return (<li key={i} className={dateClass}>{filterBtn}</li>);
+              return (
+                <li
+                  className={`${dateClass} ${!singleDate ? 'combined' : ''}`}
+                  key={i}
+                >
+                  {filterBtn}
+                </li>
+              );
             })
           }
           <li>
