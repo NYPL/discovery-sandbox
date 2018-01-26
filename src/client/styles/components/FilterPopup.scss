@@ -30,6 +30,11 @@
     width: 100%;
     border-bottom: 0.125rem solid #d7d4d0;
   }
+  @media (max-width: $xtrasmall-breakpoint) {
+    .filter-text {
+    margin-top: 100px;
+    }
+  }
   .filter-action-buttons {
     float: left;
     width: 100%;
