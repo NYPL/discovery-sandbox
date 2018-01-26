@@ -9,7 +9,6 @@ const SearchButton = ({
 }) => (
   <button
     id={id}
-    className="nypl-omnisearch-button nypl-primary-button"
     onClick={onClick}
     type="submit"
   >
