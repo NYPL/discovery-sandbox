@@ -4,11 +4,13 @@ import SearchIconReversed from './SearchIconReversed';
 
 const SearchButton = ({
   id,
+  className,
   onClick,
   value,
 }) => (
   <button
     id={id}
+    className={`${className}`}
     onClick={onClick}
     type="submit"
   >
@@ -20,6 +22,7 @@ const SearchButton = ({
 SearchButton.propTypes = {
   onClick: PropTypes.func,
   id: PropTypes.string,
+  className: PropTypes.string,
   value: PropTypes.string,
 };
 
