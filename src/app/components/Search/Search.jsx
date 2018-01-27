@@ -119,7 +119,7 @@ class Search extends React.Component {
         className="nypl-omnisearch-form"
       >
         <div className="nypl-omnisearch">
-          <div className={`nypl-text-field ${inputError ? 'nypl-field-error' : ''}`}>
+          <div className="nypl-text-field">
             <span className="nypl-omni-fields">
               <label htmlFor="search-by-field">Search in</label>
               <select
@@ -152,17 +152,10 @@ class Search extends React.Component {
               />
             </span>
           </div>
-          <SearchButton className={"nypl-omnisearch-button nypl-primary-button"} onClick={this.submitSearchRequest} />
-          {inputError &&
-            <span
-              className="nypl-field-status"
-              id="search-input-status"
-              aria-live="assertive"
-              aria-atomic="true"
-            >
-              Please enter a search term.
-            </span>
-          }
+          <SearchButton
+            className={'nypl-omnisearch-button nypl-primary-button'}
+            onClick={this.submitSearchRequest}
+          />
         </div>
       </form>
     );
