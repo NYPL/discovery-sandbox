@@ -151,7 +151,7 @@ class Search extends React.Component {
             </span>
           </div>
           <div className="nypl-text-field">
-            <span className="nypl-omni-fields">
+            <span className="nypl-omni-fields-text">
               <label htmlFor="search-query" id="search-input-label" className="visuallyhidden">
                 Search for
               </label>
