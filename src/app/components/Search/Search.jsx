@@ -118,33 +118,51 @@ class Search extends React.Component {
         method="POST"
         className="nypl-omnisearch-form"
       >
-        <div className="nypl-omnisearch nypl-text-field">
-          <span className="nypl-omni-fields">
-            <label htmlFor="search-by-field">Search in</label>
-            <select
-              id="search-by-field"
-              onChange={this.onFieldChange}
-              value={this.state.field}
-              name="search_scope"
+        <div className="nypl-omnisearch">
+          <div className={`nypl-text-field ${inputError ? 'nypl-field-error' : ''}`}>
+            <span className="nypl-omni-fields">
+              <label htmlFor="search-by-field">Search in</label>
+              <select
+                id="search-by-field"
+                onChange={this.onFieldChange}
+                value={this.state.field}
+                name="search_scope"
+              >
+                <option value="all">All fields</option>
+                <option value="title">Title</option>
+                <option value="contributor">Author/Contributor</option>
+              </select>
+            </span>
+          </div>
+          <div className="nypl-text-field">
+            <span className="nypl-omni-fields">
+              <label htmlFor="search-query" id="search-input-label" className="visuallyhidden">
+                Search for
+              </label>
+              <input
+                type="text"
+                id="search-query"
+                aria-labelledby="search-input-label search-input-status"
+                aria-required="true"
+                placeholder="Keyword, title, or author/contributor"
+                onChange={this.inputChange}
+                value={this.state.searchKeywords}
+                name="q"
+                ref="keywords"
+              />
+            </span>
+          </div>
+          <SearchButton className={"nypl-omnisearch-button nypl-primary-button"} onClick={this.submitSearchRequest} />
+          {inputError &&
+            <span
+              className="nypl-field-status"
+              id="search-input-status"
+              aria-live="assertive"
+              aria-atomic="true"
             >
-              <option value="all">All fields</option>
-              <option value="title">Title</option>
-              <option value="contributor">Author/Contributor</option>
-            </select>
-          </span>
-          <label htmlFor="search-query" id="search-input-label" className="visuallyhidden">
-            Search for
-          </label>
-          <input
-            type="text"
-            id="search-query"
-            aria-labelledby="search-input-label"
-            placeholder="Keyword, title, or author/contributor"
-            onChange={this.inputChange}
-            value={this.state.searchKeywords}
-            name="q"
-          />
-          <SearchButton onClick={this.submitSearchRequest} />
+              Please enter a search term.
+            </span>
+          }
         </div>
       </form>
     );

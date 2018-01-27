@@ -57,14 +57,13 @@ describe('Search', () => {
     });
 
     it('should render an input text element', () => {
-      expect(component.find('input').length).to.equal(2);
+      expect(component.find('input').length).to.equal(1);
       expect(component.find('input').at(0).prop('type')).to.equal('text');
     });
 
-    it('should render an input submit button', () => {
-      expect(component.find('input').length).to.equal(2);
-      expect(component.find('input').at(1).prop('type')).to.equal('submit');
-      expect(component.find('input').at(1).prop('value')).to.equal('Search');
+    it('should render a submit button', () => {
+      expect(component.find('button').length).to.equal(1);
+      expect(component.find('button').at(0).prop('type')).to.equal('submit');
     });
   });
 
@@ -167,7 +166,7 @@ describe('Search', () => {
       expect(component.state('searchKeywords')).to.equal('');
 
       component.find('input').at(0).simulate('change', { target: { value: 'Dune' } });
-      component.find('input').at(1).simulate('click');
+      component.find('button').at(0).simulate('click');
 
       expect(component.state('searchKeywords')).to.equal('Dune');
       expect(submitSearchRequestSpy.callCount).to.equal(1);
@@ -176,7 +175,7 @@ describe('Search', () => {
     it('should submit the input entered when pressing enter', () => {
       expect(component.state('searchKeywords')).to.equal('Dune');
       component.find('input').at(0).simulate('change', { target: { value: 'Harry Potter' } });
-      component.find('input').at(0).simulate('keyPress');
+      component.find('button').at(0).simulate('keyPress');
 
       expect(component.state('searchKeywords')).to.equal('Harry Potter');
       expect(triggerSubmitSpy.callCount).to.equal(1);
