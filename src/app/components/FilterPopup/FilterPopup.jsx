@@ -9,10 +9,7 @@ import {
   isEmpty as _isEmpty,
   some as _some,
 } from 'underscore';
-import {
-  CheckSoloIcon,
-  FilterIcon,
-} from '@nypl/dgx-svg-icons';
+import { CheckSoloIcon } from '@nypl/dgx-svg-icons';
 
 import {
   trackDiscovery,
@@ -260,6 +257,7 @@ class FilterPopup extends React.Component {
   }
 
   render() {
+    const { totalResults } = this.props;
     const {
       showForm,
       js,
@@ -289,7 +287,7 @@ class FilterPopup extends React.Component {
         onClick={this.closeForm}
         aria-expanded={!showForm}
         aria-controls="filter-popup-menu"
-        className="nypl-filter-button cancel-button"
+        className="nypl-primary-button cancel-button"
       >
         Cancel
       </button>
@@ -316,12 +314,11 @@ class FilterPopup extends React.Component {
         aria-expanded={showForm || null}
         aria-controls="filter-popup-menu"
       >
-        Add filters <FilterIcon />
+        Refine Search
       </button>
     );
-    const popupOrApplyButton = showForm ? applyButton : openButton;
     const openPopupButton = js ?
-      popupOrApplyButton :
+      openButton :
       (<a
         className="popup-btn-open nypl-primary-button"
         href="#popup-no-js"
@@ -330,7 +327,7 @@ class FilterPopup extends React.Component {
         aria-controls="filter-popup-menu"
         ref="filterOpen"
       >
-        Add filters <FilterIcon />
+        Refine Search
       </a>);
     const { searchKeywords } = this.props;
     const materialTypeFilters = _findWhere(filters, { id: 'materialType' });
@@ -363,15 +360,18 @@ class FilterPopup extends React.Component {
       <div className="filter-container">
         <div className="filter-text">
           <h2>Refine your search</h2>
+          <p>Add filters to narrow and define your search</p>
         </div>
-        <div className="filter-action-buttons">
-          {!showForm && (<p>Add filters to narrow and define your search</p>)}
-          {showForm && resetButton}
-          <div className="cancel-apply-buttons">
-            {showForm && cancelButton}
-            {openPopupButton}
-          </div>
-        </div>
+        {(!showForm && !!(totalResults && totalResults !== 0)) && openPopupButton}
+        {showForm && (
+          <div className="filter-action-buttons">
+            {resetButton}
+            <div className="cancel-apply-buttons">
+              {cancelButton}
+              {applyButton}
+            </div>
+          </div>)
+        }
         <div
           className={
             'nypl-basic-modal-container nypl-popup-container popup-container ' +
@@ -423,7 +423,7 @@ class FilterPopup extends React.Component {
                   onFilterClick={this.onFilterClick}
                 />
 
-                <div className="inner nypl-filter-button-container">
+                <div className="filter-action-buttons">
                   {resetButton}
                   <div className="cancel-apply-buttons">
                     {cancelButton}
@@ -448,6 +448,7 @@ FilterPopup.propTypes = {
   searchKeywords: PropTypes.string,
   raisedErrors: PropTypes.array,
   updateDropdownState: PropTypes.func,
+  totalResults: PropTypes.number,
 };
 
 FilterPopup.defaultProps = {
@@ -455,6 +456,7 @@ FilterPopup.defaultProps = {
   createAPIQuery: () => {},
   updateIsLoadingState: () => {},
   updateDropdownState: () => {},
+  totalResults: 0,
 };
 
 FilterPopup.contextTypes = {
