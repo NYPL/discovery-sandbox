@@ -116,19 +116,16 @@ class SearchResultsPage extends React.Component {
                     createAPIQuery={createAPIQuery}
                     updateIsLoadingState={this.updateIsLoadingState}
                   />
-                  {
-                    // !!(totalResults && totalResults !== 0) && (
-                    <FilterPopup
-                      filters={apiFilters}
-                      createAPIQuery={createAPIQuery}
-                      updateIsLoadingState={this.updateIsLoadingState}
-                      selectedFilters={selectedFilters}
-                      searchKeywords={searchKeywords}
-                      raisedErrors={dateFilterErrors}
-                      updateDropdownState={this.updateDropdownState}
-                      totalResults={totalResults}
-                    />
-                  }
+                  <FilterPopup
+                    filters={apiFilters}
+                    createAPIQuery={createAPIQuery}
+                    updateIsLoadingState={this.updateIsLoadingState}
+                    selectedFilters={selectedFilters}
+                    searchKeywords={searchKeywords}
+                    raisedErrors={dateFilterErrors}
+                    updateDropdownState={this.updateDropdownState}
+                    totalResults={totalResults}
+                  />
 
                   {!this.state.dropdownOpen &&
                     <SelectedFilters
