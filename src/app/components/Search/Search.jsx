@@ -153,7 +153,7 @@ class Search extends React.Component {
             </span>
           </div>
           <SearchButton
-            className={'nypl-omnisearch-button nypl-primary-button'}
+            className={'nypl-omnisearch-button'}
             onClick={this.submitSearchRequest}
           />
         </div>
