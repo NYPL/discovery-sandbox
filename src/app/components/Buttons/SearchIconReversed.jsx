@@ -31,9 +31,9 @@ SearchIconReversed.defaultProps = {
   ariaHidden: true,
   className: 'nypl-search-icon',
   title: 'NYPL Search SVG Icon',
-  width: '48',
-  height: '48',
-  viewBox: '0 0 32 32',
+  width: '28',
+  height: '28',
+  viewBox: '0 0 28 28',
 };
 
 export default SearchIconReversed;

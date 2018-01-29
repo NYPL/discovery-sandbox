@@ -168,7 +168,7 @@ class Search extends React.Component {
               />
             </span>
           </div>
-          <SearchButton className={"nypl-omnisearch-button nypl-primary-button"} onClick={this.submitSearchRequest} />
+          <SearchButton className={"nypl-omnisearch-button"} onClick={this.submitSearchRequest} />
           {inputError &&
             <span
               className="nypl-field-status"
