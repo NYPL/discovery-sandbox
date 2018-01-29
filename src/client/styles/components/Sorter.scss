@@ -1,20 +1,43 @@
+.nypl-sorter-row {
+  border-top: 1px solid;
+  border-bottom: 1px solid;
+  padding-top: 0.5rem;
+  padding-bottom: 0;
+
+  .nypl-column-three-quarters {
+    margin-bottom: 0;
+  }
+}
+
 // Temporary until this is in the Design Toolkit
 .nypl-results-summary {
   display: inline-block;
   float: left;
-  max-width: 65%;
+
+  h2 {
+    margin-top: 1.35rem;
+  }
+
+  @include min-screen($xtrasmall-breakpoint) {
+    max-width: 65%;
+  }
 }
 
 .nypl-results-sorting-controls {
+  float: left;
   display: inline-block;
-  float: right;
   margin: 1rem 0;
+
+  @include min-screen($xtrasmall-breakpoint) {
+    float: right;
+  }
 }
 
 .nypl-results-sorter {
   margin-right: 0;
 
   form {
+    margin-left: 10px;
     background-color: #fff;
     border: 0.0625rem solid #9d9ea1;
     border-radius: 0.2rem;
