@@ -53,7 +53,7 @@ class FieldsetList extends React.Component {
 
     return (
       <fieldset className="nypl-fieldset inner">
-        {legend && <legend><strong>{legend}</strong></legend>}
+        {legend && <legend><h3>{legend}</h3></legend>}
         <ul className="nypl-generic-checkbox nypl-generic-columns">
           {
             values.map((filter, i) => (
