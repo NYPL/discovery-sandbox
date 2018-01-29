@@ -12,7 +12,6 @@ import {
 import {
   CheckSoloIcon,
   FilterIcon,
-  ResetIcon,
 } from '@nypl/dgx-svg-icons';
 
 import {
