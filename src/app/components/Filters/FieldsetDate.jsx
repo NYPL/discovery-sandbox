@@ -56,7 +56,7 @@ class FieldsetDate extends React.Component {
 
     return (
       <fieldset className="nypl-fieldset inner date-fieldset">
-        <legend><strong>Date</strong></legend>
+        <legend><h3>Date</h3></legend>
         <div id="input-container" className={`nypl-name-field nypl-filter-date-field ${errorClass}`}>
           <label htmlFor="dateAfter" id="dateAfter-label">Start Year
             <NumberFormat
