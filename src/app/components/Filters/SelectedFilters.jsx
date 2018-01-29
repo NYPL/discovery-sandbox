@@ -17,7 +17,6 @@ import {
 import Actions from '../../actions/Actions';
 import appConfig from '../../../../appConfig';
 import { ajaxCall } from '../../utils/utils';
-import SelectedDateFilters from './SelectedDateFilters';
 
 class SelectedFilters extends React.Component {
   constructor(props) {
@@ -48,7 +47,7 @@ class SelectedFilters extends React.Component {
       selectedFilters[field] =
         _reject(
           selectedFilters[field],
-          (selectedFilter) => selectedFilter.value === filter.value
+          selectedFilter => selectedFilter.value === filter.value,
         );
     }
 
@@ -222,15 +221,68 @@ class SelectedFilters extends React.Component {
             })
           }
           {
-            datesToRender.map((filter) => {
-              return (<SelectedDateFilters
-                selectedFilters={selectedFilters}
-                createAPIQuery={this.props.createAPIQuery}
-                datesToRender={datesToRender}
-                filter={filter}
-              />);
-          })
-        }
+            datesToRender.map((filter, i) => {
+              const singleDate = datesToRender.length === 1;
+              const dateClass = filter.field;
+              let singleDateLabel = '';
+              if (singleDate) {
+                if (dateClass === 'dateAfter') {
+                  singleDateLabel = 'After';
+                } else if (dateClass === 'dateBefore') {
+                  singleDateLabel = 'Before';
+                }
+              }
+
+              let filterBtn = (
+                <button
+                  className="nypl-unset-filter"
+                  onClick={e => this.onFilterClick(e, filter)}
+                  aria-controls="selected-filters-container"
+                  aria-label={`${singleDateLabel} ${filter.label} Remove Filter`}
+                >
+                  {singleDateLabel} {filter.label}
+                  <XIcon fill="#fff" ariaHidden />
+                </button>
+              );
+
+              if (!this.state.js) {
+                const removedSelectedFilters = JSON.parse(JSON.stringify(selectedFilters));
+                removedSelectedFilters[filter.field] =
+                  _reject(
+                    selectedFilters[filter.field],
+                    f => (f.value === filter.value),
+                  );
+
+                const apiQuery = this.props.createAPIQuery({
+                  selectedFilters: removedSelectedFilters,
+                });
+
+                filterBtn = (
+                  <a
+                    className="nypl-unset-filter"
+                    href={`${appConfig.baseUrl}/search?${apiQuery}`}
+                    aria-controls="selected-filters-container"
+                    aria-label={filter.label}
+                  >
+                    {filter.label}
+                    <XIcon fill="#fff" ariaHidden />
+                  </a>
+                );
+              }
+
+              return (
+                <li
+                  className={`${dateClass} ${!singleDate ? 'combined' : ''}`}
+                  key={filter.value}
+                >
+                  {filterBtn}
+                </li>
+              );
+            })
+          }
+          <li>
+            {clearAllFilters}
+          </li>
         </ul>
       </div>
     );
