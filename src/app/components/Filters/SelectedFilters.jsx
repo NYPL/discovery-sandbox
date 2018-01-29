@@ -177,6 +177,7 @@ class SelectedFilters extends React.Component {
           aria-atomic="true"
           aria-relevant="additions removals"
           aria-describedby="read-text"
+          aria-label="Click to remove applied filters."
         >
           {
             filtersToRender.map((filter, i) => {
@@ -209,7 +210,7 @@ class SelectedFilters extends React.Component {
                     className="nypl-unset-filter"
                     href={`${appConfig.baseUrl}/search?${apiQuery}`}
                     aria-controls="selected-filters-container"
-                    aria-label={filter.label}
+                    aria-label={`${filter.label} Remove Filter`}
                   >
                     {filter.label}
                     <XIcon fill="#fff" ariaHidden />
@@ -262,7 +263,7 @@ class SelectedFilters extends React.Component {
                     className="nypl-unset-filter"
                     href={`${appConfig.baseUrl}/search?${apiQuery}`}
                     aria-controls="selected-filters-container"
-                    aria-label={filter.label}
+                    aria-label={`${singleDateLabel} ${filter.label} Remove Filter`}
                   >
                     {filter.label}
                     <XIcon fill="#fff" ariaHidden />
