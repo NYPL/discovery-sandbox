@@ -142,20 +142,15 @@ class Search extends React.Component {
               <input
                 type="text"
                 id="search-query"
-                aria-labelledby="search-input-label search-input-status"
-                aria-required="true"
+                aria-labelledby="search-input-label"
                 placeholder="Keyword, title, or author/contributor"
                 onChange={this.inputChange}
                 value={this.state.searchKeywords}
                 name="q"
-                ref="keywords"
               />
             </span>
           </div>
-          <SearchButton
-            className={'nypl-omnisearch-button'}
-            onClick={this.submitSearchRequest}
-          />
+          <SearchButton className={"nypl-omnisearch-button nypl-primary-button"} onClick={this.submitSearchRequest} />
         </div>
       </form>
     );
