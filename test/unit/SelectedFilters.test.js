@@ -176,7 +176,7 @@ describe('SelectedFilters', () => {
 
         it('should have one button inside each list item with the filter name', () => {
           expect(listItemAt(component, 0).find('button').length).to.equal(1);
-          expect(listItemAt(component, 0).find('button').text()).to.equal('2010Close Icon');
+          expect(listItemAt(component, 0).find('button').text()).to.equal('Before 2010Close Icon');
         });
       });
 
@@ -199,7 +199,7 @@ describe('SelectedFilters', () => {
 
         it('should have one button inside each list item with the filter name', () => {
           expect(listItemAt(component, 0).find('button').length).to.equal(1);
-          expect(listItemAt(component, 0).find('button').text()).to.equal('1999Close Icon');
+          expect(listItemAt(component, 0).find('button').text()).to.equal('After 1999Close Icon');
         });
       });
 
@@ -222,10 +222,10 @@ describe('SelectedFilters', () => {
 
         it('should have one button inside each list item with the filter name', () => {
           expect(listItemAt(component, 0).find('button').length).to.equal(1);
-          expect(listItemAt(component, 0).find('button').text()).to.equal('2010Close Icon');
+          expect(listItemAt(component, 0).find('button').text()).to.equal(' 2010Close Icon');
 
           expect(listItemAt(component, 1).find('button').length).to.equal(1);
-          expect(listItemAt(component, 1).find('button').text()).to.equal('1999Close Icon');
+          expect(listItemAt(component, 1).find('button').text()).to.equal(' 1999Close Icon');
         });
       });
     });
