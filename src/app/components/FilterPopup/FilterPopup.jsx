@@ -242,6 +242,12 @@ class FilterPopup extends React.Component {
       trackDiscovery('FilterPopup', 'Open');
       this.setState({ showForm: true });
       this.props.updateDropdownState(true);
+
+      setTimeout(() => {
+        if (this.refs.filterResetBtn) {
+          ReactDOM.findDOMNode(this.refs.filterResetBtn).focus();
+        }
+      }, 250);
     }
   }
 
@@ -292,12 +298,13 @@ class FilterPopup extends React.Component {
         Cancel
       </button>
     );
-    const resetButton = (
+    const resetButton = (ref = '') => (
       <button
         type="button"
         name="Clear-Filters"
         className="nypl-basic-button clear-filters-button"
         onClick={this.clearFilters}
+        ref={ref}
       >
         Clear filters
         <FilterResetIcon
@@ -365,7 +372,7 @@ class FilterPopup extends React.Component {
         {(!showForm && !!(totalResults && totalResults !== 0)) && openPopupButton}
         {showForm && (
           <div className="filter-action-buttons">
-            {resetButton}
+            {resetButton('filterResetBtn')}
             <div className="cancel-apply-buttons">
               {cancelButton}
               {applyButton}
@@ -424,7 +431,7 @@ class FilterPopup extends React.Component {
                 />
 
                 <div className="filter-action-buttons">
-                  {resetButton}
+                  {resetButton()}
                   <div className="cancel-apply-buttons">
                     {cancelButton}
                     {applyButton}
