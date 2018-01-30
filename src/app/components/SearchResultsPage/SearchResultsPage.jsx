@@ -74,7 +74,7 @@ class SearchResultsPage extends React.Component {
       const apiQuery = createAPIQuery({ page: nextPage });
 
       trackDiscovery('Pagination - Search Results', `${pageType} - page ${nextPage}`);
-      ajaxCall(`${appConfig.baseUrl}/api?${apiQuery}`, response => {
+      ajaxCall(`${appConfig.baseUrl}/api?${apiQuery}`, (response) => {
         Actions.updateSearchResults(response.data.searchResults);
         Actions.updatePage(nextPage.toString());
         setTimeout(() => {
@@ -86,11 +86,9 @@ class SearchResultsPage extends React.Component {
     const searchError = location.query && location.query.error ? location.query.error : '';
     const apiFilters = filters && filters.itemListElement && filters.itemListElement.length ?
       filters.itemListElement : [];
-    let searchErrorMessage = '';
-    let dateFilterErrors = [];
+    const dateFilterErrors = [];
 
     if (searchError === 'dateFilterError') {
-      searchErrorMessage = 'Please enter valid dates.';
       dateFilterErrors.push({
         name: 'date',
         value: 'Date',
@@ -107,7 +105,7 @@ class SearchResultsPage extends React.Component {
             tabIndex={0}
           />
           <div className="nypl-page-header">
-            <div className="nypl-full-width-wrapper">
+            <div className="nypl-full-width-wrapper filter-page">
               <div className="nypl-row">
                 <div className="nypl-column-three-quarters">
                   <Breadcrumbs query={searchKeywords} type="search" />
@@ -117,33 +115,17 @@ class SearchResultsPage extends React.Component {
                     field={field}
                     createAPIQuery={createAPIQuery}
                     updateIsLoadingState={this.updateIsLoadingState}
-                    searchError={searchError === 'noKeyword'}
                   />
-                  {searchErrorMessage &&
-                    <span
-                      className="nypl-field-status"
-                      id="search-input-status"
-                      aria-live="assertive"
-                      aria-atomic="true"
-                    >
-                      {searchErrorMessage}
-                    </span>
-                  }
-                  {
-                    !!(totalResults && totalResults !== 0) && (
-                      <div>
-                        <FilterPopup
-                          filters={apiFilters}
-                          createAPIQuery={createAPIQuery}
-                          updateIsLoadingState={this.updateIsLoadingState}
-                          selectedFilters={selectedFilters}
-                          searchKeywords={searchKeywords}
-                          raisedErrors={dateFilterErrors}
-                          updateDropdownState={this.updateDropdownState}
-                        />
-                      </div>
-                    )
-                  }
+                  <FilterPopup
+                    filters={apiFilters}
+                    createAPIQuery={createAPIQuery}
+                    updateIsLoadingState={this.updateIsLoadingState}
+                    selectedFilters={selectedFilters}
+                    searchKeywords={searchKeywords}
+                    raisedErrors={dateFilterErrors}
+                    updateDropdownState={this.updateDropdownState}
+                    totalResults={totalResults}
+                  />
 
                   {!this.state.dropdownOpen &&
                     <SelectedFilters
@@ -158,7 +140,7 @@ class SearchResultsPage extends React.Component {
             </div>
           </div>
 
-          <div className="nypl-full-width-wrapper">
+          <div className="nypl-full-width-wrapper nypl-sorter-row">
             <div className="nypl-row">
               <div className="nypl-column-three-quarters">
                 <ResultsCount

@@ -5,12 +5,11 @@ import { expect } from 'chai';
 import { mount } from 'enzyme';
 import axios from 'axios';
 import sinon from 'sinon';
+import Search from '../../src/app/components/Search/Search';
+import { basicQuery } from '../../src/app/utils/utils';
+import appConfig from '../../appConfig';
 
 const mock = new MockAdapter(axios);
-
-import { basicQuery } from '../../src/app/utils/utils.js';
-import Search from '../../src/app/components/Search/Search';
-import appConfig from '../../appConfig';
 
 describe('Search', () => {
   describe('Default render', () => {
@@ -91,7 +90,7 @@ describe('Search', () => {
       onFieldChangeSpy = sinon.spy(Search.prototype, 'onFieldChange');
       component = mount(
         <Search createAPIQuery={createAPIQuery} updateIsLoadingState={() => {}} />,
-        { context: { router: { createHref: () => {}, push: () => {} } } }
+        { context: { router: { createHref: () => {}, push: () => {} } } },
       );
     });
 
@@ -157,7 +156,7 @@ describe('Search', () => {
         .reply(200, { searchResults: [] });
     });
 
-    after(() => {
+    afterEach(() => {
       mock.reset();
       triggerSubmitSpy.restore();
       submitSearchRequestSpy.restore();
@@ -175,7 +174,6 @@ describe('Search', () => {
 
     it('should submit the input entered when pressing enter', () => {
       expect(component.state('searchKeywords')).to.equal('Dune');
-
       component.find('input').at(0).simulate('change', { target: { value: 'Harry Potter' } });
       component.find('button').at(0).simulate('keyPress');
 

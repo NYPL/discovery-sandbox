@@ -9,5 +9,6 @@
     "jsx-a11y/anchor-is-valid": 0,
     "class-methods-use-this": 0,
     "prefer-destructuring": 0,
+    "no-lonely-if": 0,
   }
 }

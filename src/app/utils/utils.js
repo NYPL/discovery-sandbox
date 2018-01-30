@@ -14,6 +14,7 @@ import {
   extend as _extend,
   chain as _chain,
   flatten as _flatten,
+  sortBy as _sortBy,
 } from 'underscore';
 
 import appConfig from '../../../appConfig.js';
@@ -153,7 +154,7 @@ const getFilterParam = (filters) => {
             strSearch += `&filters[${key}][${index}]=${encodeURIComponent(filter)}`;
           }
         });
-      } else if (val.value && val.value !== '') {
+      } else if (val && val.value && val.value !== '') {
         strSearch += `&filters[${key}]=${encodeURIComponent(val.value)}`;
       } else if (val && typeof val === 'string') {
         strSearch += `&filters[${key}]=${encodeURIComponent(val)}`;
@@ -345,9 +346,9 @@ const getUpdatedFilterValues = (props) => {
   // If there are selected filters, then we want to update the filter values with those
   // filters already selected. That way, the checkboxes will be checked.
   if (selectedFilters) {
-    updatedFilterValues = defaultFilterValues.map(defaultFilterValue => {
+    updatedFilterValues = defaultFilterValues.map((defaultFilterValue) => {
       const defaultFilter = defaultFilterValue;
-      selectedFilters.forEach(selectedFilter => {
+      selectedFilters.forEach((selectedFilter) => {
         if (selectedFilter.value === defaultFilter.value) {
           defaultFilter.selected = true;
         }
@@ -356,6 +357,8 @@ const getUpdatedFilterValues = (props) => {
       return defaultFilter;
     });
   }
+
+  updatedFilterValues = _sortBy(updatedFilterValues, f => f.label);
 
   return updatedFilterValues;
 };

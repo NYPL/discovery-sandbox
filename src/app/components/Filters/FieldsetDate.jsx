@@ -2,8 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import NumberFormat from 'react-number-format';
 
-import { DivideLineIcon } from '@nypl/dgx-svg-icons';
-
 class FieldsetDate extends React.Component {
   constructor(props) {
     super(props);
@@ -69,14 +67,10 @@ class FieldsetDate extends React.Component {
               format="####"
               aria-labelledby="dateAfter-label dateInput-status"
               value={defaultValueDateAfter}
-              placeholder="YYYY"
+              placeholder="Ex: 1901"
             />
           </label>
-          {/*<svg viewBox="0 0 98 98" className="nypl-icon date-hyphen" preserveAspectRatio="xMidYMid meet"  aria-hidden="true" aria-labelledby="dash" role="img">
-            <title id="dash">dash.icon</title>
-            <polygon points="72.996 54.95 25.002 54.95 25.003 45.991 72.994 46.011 72.996 54.95"/>
-          </svg>*/}
-          <DivideLineIcon className="date-hyphen" />
+          <span className="date-divider">to</span>
           <label htmlFor="dateBefore" id="dateBefore-label">End Year
             <NumberFormat
               id="dateBefore"
@@ -86,7 +80,7 @@ class FieldsetDate extends React.Component {
               format="####"
               aria-labelledby="dateBefore-label dateInput-status"
               value={defaultValueDateBefore}
-              placeholder="YYYY"
+              placeholder="Ex: 2001"
             />
           </label>
           <span
