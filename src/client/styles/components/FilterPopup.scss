@@ -1,3 +1,11 @@
+.nypl-full-width-wrapper.filter-page {
+  padding-bottom: 0;
+
+  .nypl-column-three-quarters {
+    margin-bottom: -1px;
+  }
+}
+
 .filter-container {
   .nypl-form-error {
     margin: 10px 0;
@@ -23,6 +31,7 @@
     border: 1px solid #776e64;
     display: block;
     text-decoration: none;
+    margin: 0 0 25px;
 
     svg {
       fill: #fff;
@@ -33,6 +42,10 @@
       svg {
         fill: #1b7fa7;
       }
+    }
+
+    @include min-screen($xtrasmall-breakpoint) {
+      margin-top: 35px;
     }
   }
 
@@ -48,19 +61,28 @@
   .filter-text {
     float: left;
     width: 100%;
-    border-bottom: 0.125rem solid #d7d4d0;
-  }
-  @media (max-width: $xtrasmall-breakpoint) {
-    .filter-text {
     margin-top: 100px;
+
+    @include min-screen($xtrasmall-breakpoint) {
+      width: 70%;
+      margin-top: 0;
+    }
+
+    h2 {
+      margin-bottom: 0.5rem;
+      margin-top: 1rem;
     }
   }
+
   .filter-action-buttons {
     float: left;
     width: 100%;
+    padding: 15px 0;
+    border-bottom: 1px solid;
+    border-top: 1px solid;
 
     p {
-      margin: 20px 0;
+      margin: 10px 0;
       float: left;
       display: inline-block;
     }
@@ -79,7 +101,12 @@
     display: inline-block;
   }
 
-  .popup-btn-open,
+  .cancel-button {
+    margin-right: 20px;
+    padding: 0 15px;
+  }
+
+  .cancel-button,
   .apply-button {
     background: #fff;
     border-color: #1b7fa7;
@@ -100,28 +127,6 @@
         fill: #fff;
         background-color: #1b7fa7;
       }
-    }
-  }
-
-  .cancel-button {
-    border: none;
-    background: #efedeb;
-    color: #000;
-    margin: 20px;
-
-    @include min-screen(410px) {
-      margin-left: 60px;
-    }
-
-    @include min-screen($xtrasmall-breakpoint) {
-      margin-left: 20px;
-    }
-
-    &:hover {
-      background: #efedeb;
-      color: #000;
-      border: none;
-      text-decoration: underline;
     }
   }
 
@@ -164,7 +169,7 @@
 
     &.active {
       // display: block;
-      overflow: auto;
+      overflow: hidden;
       -webkit-overflow-scrolling: touch;
     }
   }
@@ -198,10 +203,12 @@
   .clear-filters-button {
     float: right;
     padding: 7px 16px;
+    margin-bottom: 20px;
     @include border-radius(5px);
 
     @include min-screen($xtrasmall-breakpoint) {
       float: left;
+      margin-bottom: 0;
     }
 
     svg {
@@ -221,7 +228,7 @@
     cursor: pointer;
     -webkit-appearance: none;
     -moz-appearance: none;
-    margin: 1rem 0 0;
+    height: 40px;
   }
   ul li {
     list-style: none;
@@ -282,6 +289,13 @@
 
 
 .nypl-modal-filter-form {
+  padding: 0 1px;
+
+  form {
+    & > fieldset {
+      margin-bottom: 0;
+    }
+  }
   @include transition-list(max-height .3s ease-in-out);
   height: auto;
 
@@ -292,7 +306,7 @@
   }
 
   &.expand {
-    max-height: 100em;
+    max-height: 300em;
     visibility: visible;
   }
 
@@ -314,5 +328,9 @@
     &:last-child {
       border-bottom: none;
     }
+  }
+
+  .date-divider {
+    margin: 0 20px;
   }
 }

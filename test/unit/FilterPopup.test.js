@@ -19,9 +19,9 @@ describe('FilterPopup', () => {
       // These tests will need to be updated when the DOM structure gets updated.
       // The second <a> element is the no-js 'cancel' element for the "smart" no-js solution.
       expect(component.find('a').at(0).prop('className'))
-        .to.equal('popup-btn-open nypl-primary-button');
-      expect(component.find('a').at(0).prop('href')).to.equal('#popup-no-js');
-      expect(component.find('a').at(1).prop('className')).to.equal('cancel-no-js');
+        .to.equal('cancel-no-js');
+      expect(component.find('a').at(0).prop('href')).to.equal('#');
+      // expect(component.find('a').at(1).prop('className')).to.equal('cancel-no-js');
       // expect(component.find('a').at(2).prop('className'))
       //   .to.equal('popup-btn-close nypl-x-close-button');
     });
@@ -49,12 +49,11 @@ describe('FilterPopup', () => {
     it('should render open/close buttons', () => {
       expect(component.state('js')).to.equal(true);
       // All buttons should be rendered
-      expect(component.find('button').length).to.equal(4);
+      expect(component.find('button').length).to.equal(3);
       expect(component.find('button').at(0).prop('className'))
-        .to.equal('popup-btn-open nypl-primary-button');
-      expect(component.find('button').at(1).prop('name')).to.equal('Clear-Filters');
-      expect(component.find('button').at(2).prop('className')).to.equal('nypl-filter-button cancel-button');
-      expect(component.find('button').at(3).prop('className'))
+        .to.equal('nypl-basic-button clear-filters-button');
+      // expect(component.find('button').at(1).prop('name')).to.equal('Clear-Filters');
+      expect(component.find('button').at(2).prop('className'))
         .to.equal('nypl-primary-button apply-button');
     });
 
@@ -62,12 +61,12 @@ describe('FilterPopup', () => {
       expect(component.find('.cancel-no-js').length).to.equal(0);
     });
 
-    it('should have accessible open button', () => {
-      const openBtn = component.find('.popup-btn-open');
-      expect(openBtn.prop('aria-haspopup')).to.equal('true');
-      expect(openBtn.prop('aria-expanded')).to.equal(null);
-      expect(openBtn.prop('aria-controls')).to.equal('filter-popup-menu');
-    });
+    // it('should have accessible open button', () => {
+    //   const openBtn = component.find('.popup-btn-open');
+    //   expect(openBtn.prop('aria-haspopup')).to.equal('true');
+    //   expect(openBtn.prop('aria-expanded')).to.equal(null);
+    //   expect(openBtn.prop('aria-controls')).to.equal('filter-popup-menu');
+    // });
 
     // it('should have accessible close button', () => {
     //   const openBtn = component.find('.popup-btn-close');
