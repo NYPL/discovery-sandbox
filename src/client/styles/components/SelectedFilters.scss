@@ -2,7 +2,7 @@
   padding: 0;
   float: left;
   width: 100%;
-  margin: 10px 0;
+  margin: 10px 0 25px;
 
   li {
     list-style: none;
@@ -10,18 +10,22 @@
     display: inline-block;
 
     &.dateAfter {
-      button {
-        border-top-right-radius: 0;
-        border-bottom-right-radius: 0;
+      &.combined {
+        button {
+          border-top-right-radius: 0;
+          border-bottom-right-radius: 0;
+        }
       }
     }
 
     &.dateBefore {
-      margin-right: -15px;
+      &.combined {
+        margin-left: -15px;
 
-      button {
-        border-top-left-radius: 0;
-        border-bottom-left-radius: 0;
+        button {
+          border-top-left-radius: 0;
+          border-bottom-left-radius: 0;
+        }
       }
     }
   }
