@@ -115,6 +115,7 @@ class SearchResultsPage extends React.Component {
                     field={field}
                     createAPIQuery={createAPIQuery}
                     updateIsLoadingState={this.updateIsLoadingState}
+                    selectedFilters={selectedFilters}
                   />
                   <FilterPopup
                     filters={apiFilters}
@@ -218,7 +219,6 @@ SearchResultsPage.propTypes = {
   sortBy: PropTypes.string,
   field: PropTypes.string,
   isLoading: PropTypes.bool,
-  error: PropTypes.object,
   filters: PropTypes.object,
 };
 

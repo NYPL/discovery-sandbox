@@ -79,7 +79,7 @@ class Search extends React.Component {
     const searchKeywords = userSearchKeywords === '*' ? '' : userSearchKeywords;
     const apiQuery = this.props.createAPIQuery({
       field: this.state.field,
-      selectedFilters: {},
+      selectedFilters: this.props.selectedFilters,
       searchKeywords,
       page: '1',
     });
@@ -87,7 +87,7 @@ class Search extends React.Component {
     Actions.updateField(this.state.field);
     this.props.updateIsLoadingState(true);
     Actions.updateSearchKeywords(userSearchKeywords);
-    Actions.updateSelectedFilters({});
+    Actions.updateSelectedFilters(this.props.selectedFilters);
 
     ajaxCall(`${appConfig.baseUrl}/api?${apiQuery}`, (response) => {
       if (response.data.searchResults && response.data.filters) {
@@ -102,7 +102,7 @@ class Search extends React.Component {
 
       setTimeout(
         () => { this.props.updateIsLoadingState(false); },
-        500
+        500,
       );
 
       this.context.router.push(`${appConfig.baseUrl}/search?${apiQuery}`);
@@ -162,12 +162,14 @@ Search.propTypes = {
   searchKeywords: PropTypes.string,
   createAPIQuery: PropTypes.func,
   updateIsLoadingState: PropTypes.func,
+  selectedFilters: PropTypes.object,
 };
 
 Search.defaultProps = {
   field: 'all',
   searchKeywords: '',
   updateIsLoadingState: () => {},
+  selectedFilters: {},
 };
 
 Search.contextTypes = {
