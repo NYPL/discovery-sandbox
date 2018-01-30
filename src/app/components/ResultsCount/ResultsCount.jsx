@@ -47,7 +47,7 @@ class ResultsCount extends React.Component {
       _mapObject(selectedFilters, (val, key) => {
         const mappedKey = keyMapping[key];
 
-        if (val[0] && val[0].value && mappedKey) {
+        if (val && val[0] && val[0].value && mappedKey) {
           result += `for ${mappedKey} "${val[0].value}"`;
         }
       });
