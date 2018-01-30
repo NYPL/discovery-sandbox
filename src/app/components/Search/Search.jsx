@@ -151,7 +151,7 @@ class Search extends React.Component {
             </span>
           </div>
           <div className="nypl-text-field">
-            <span className="nypl-omni-fields">
+            <span className="nypl-omni-fields-text">
               <label htmlFor="search-query" id="search-input-label" className="visuallyhidden">
                 Search for
               </label>
@@ -168,7 +168,7 @@ class Search extends React.Component {
               />
             </span>
           </div>
-          <SearchButton className={"nypl-omnisearch-button nypl-primary-button"} onClick={this.submitSearchRequest} />
+          <SearchButton className={"nypl-omnisearch-button"} onClick={this.submitSearchRequest} />
           {inputError &&
             <span
               className="nypl-field-status"
