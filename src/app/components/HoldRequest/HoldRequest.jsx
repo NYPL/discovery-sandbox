@@ -9,12 +9,12 @@ import {
 } from 'underscore';
 import DocumentTitle from 'react-document-title';
 
-import Breadcrumbs from '../Breadcrumbs/Breadcrumbs.jsx';
-import PatronStore from '../../stores/PatronStore.js';
-import appConfig from '../../../../appConfig.js';
-import LibraryItem from '../../utils/item.js';
-import LoadingLayer from '../LoadingLayer/LoadingLayer.jsx';
-import { trackDiscovery } from '../../utils/utils.js';
+import Breadcrumbs from '../Breadcrumbs/Breadcrumbs';
+import PatronStore from '../../stores/PatronStore';
+import appConfig from '../../../../appConfig';
+import LibraryItem from '../../utils/item';
+import LoadingLayer from '../LoadingLayer/LoadingLayer';
+import { trackDiscovery } from '../../utils/utils';
 
 class HoldRequest extends React.Component {
   constructor(props) {
@@ -268,6 +268,7 @@ class HoldRequest extends React.Component {
       bib['@id'].substring(4) : '';
     const itemId = (this.props.params && this.props.params.itemId) ? this.props.params.itemId : '';
     const selectedItem = (bib && itemId) ? LibraryItem.getItem(bib, itemId) : {};
+    const selectedItemAvailable = selectedItem ? selectedItem.available : false;
     const bibLink = (bibId && title) ?
       (<h2>
         <Link
@@ -297,7 +298,7 @@ class HoldRequest extends React.Component {
         <h2>Choose a delivery option or location</h2>;
     let form = null;
 
-    if (bib) {
+    if (bib && selectedItemAvailable) {
       form = (
         <form
           className="place-hold-form form"
@@ -361,7 +362,7 @@ class HoldRequest extends React.Component {
                 <div className="nypl-request-item-summary">
                   <div className="item">
                     {
-                      !bib &&
+                      (!bib || !selectedItemAvailable) &&
                         <h2>
                           This item cannot be requested at this time. Please try again later or
                           contact 917-ASK-NYPL (<a href="tel:917-275-6975">917-275-6975</a>).
