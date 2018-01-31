@@ -257,9 +257,11 @@ class FilterPopup extends React.Component {
     this.setState({ showForm: false });
     this.props.updateDropdownState(false);
 
-    if (this.refs.filterOpen) {
-      this.refs.filterOpen.focus();
-    }
+    setTimeout(() => {
+      if (this.refs.filterOpen) {
+        ReactDOM.findDOMNode(this.refs.filterOpen).focus();
+      }
+    }, 250);
   }
 
   render() {
@@ -313,19 +315,17 @@ class FilterPopup extends React.Component {
           title="reset"
         />
       </button>);
-    const openButton = (
-      <button
+    const openPopupButton = js ?
+      (<button
         className="popup-btn-open nypl-primary-button"
         onClick={() => this.openForm()}
         aria-haspopup="true"
         aria-expanded={showForm || null}
         aria-controls="filter-popup-menu"
+        ref="filterOpen"
       >
         Refine Search
-      </button>
-    );
-    const openPopupButton = js ?
-      openButton :
+      </button>) :
       (<a
         className="popup-btn-open nypl-primary-button"
         href="#popup-no-js"
