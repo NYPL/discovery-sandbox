@@ -242,6 +242,12 @@ class FilterPopup extends React.Component {
       trackDiscovery('FilterPopup', 'Open');
       this.setState({ showForm: true });
       this.props.updateDropdownState(true);
+
+      setTimeout(() => {
+        if (this.refs.filterResetBtn) {
+          ReactDOM.findDOMNode(this.refs.filterResetBtn).focus();
+        }
+      }, 250);
     }
   }
 
@@ -251,9 +257,11 @@ class FilterPopup extends React.Component {
     this.setState({ showForm: false });
     this.props.updateDropdownState(false);
 
-    if (this.refs.filterOpen) {
-      this.refs.filterOpen.focus();
-    }
+    setTimeout(() => {
+      if (this.refs.filterOpen) {
+        ReactDOM.findDOMNode(this.refs.filterOpen).focus();
+      }
+    }, 250);
   }
 
   render() {
@@ -292,12 +300,13 @@ class FilterPopup extends React.Component {
         Cancel
       </button>
     );
-    const resetButton = (
+    const resetButton = (ref = '') => (
       <button
         type="button"
         name="Clear-Filters"
         className="nypl-basic-button clear-filters-button"
         onClick={this.clearFilters}
+        ref={ref}
       >
         Clear filters
         <FilterResetIcon
@@ -306,19 +315,17 @@ class FilterPopup extends React.Component {
           title="reset"
         />
       </button>);
-    const openButton = (
-      <button
+    const openPopupButton = js ?
+      (<button
         className="popup-btn-open nypl-primary-button"
         onClick={() => this.openForm()}
         aria-haspopup="true"
         aria-expanded={showForm || null}
         aria-controls="filter-popup-menu"
+        ref="filterOpen"
       >
         Refine Search
-      </button>
-    );
-    const openPopupButton = js ?
-      openButton :
+      </button>) :
       (<a
         className="popup-btn-open nypl-primary-button"
         href="#popup-no-js"
@@ -365,7 +372,7 @@ class FilterPopup extends React.Component {
         {(!showForm && !!(totalResults && totalResults !== 0)) && openPopupButton}
         {showForm && (
           <div className="filter-action-buttons">
-            {resetButton}
+            {resetButton('filterResetBtn')}
             <div className="cancel-apply-buttons">
               {cancelButton}
               {applyButton}
@@ -424,7 +431,7 @@ class FilterPopup extends React.Component {
                 />
 
                 <div className="filter-action-buttons">
-                  {resetButton}
+                  {resetButton()}
                   <div className="cancel-apply-buttons">
                     {cancelButton}
                     {applyButton}
