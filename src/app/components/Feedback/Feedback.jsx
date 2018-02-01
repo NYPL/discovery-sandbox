@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import FocusTrap from 'focus-trap-react';
 
-import { trackDiscovery } from '../../utils/utils.js';
+import { trackDiscovery } from '../../utils/utils';
 
 class Feedback extends React.Component {
   constructor(props) {
@@ -101,7 +101,7 @@ class Feedback extends React.Component {
 
             <button
               className={`cancel-button ${!showForm ? 'hidden' : ''}`}
-              onClick={(e) => this.closeForm(e)}
+              onClick={e => this.closeForm(e)}
               aria-expanded={!showForm}
               aria-controls="feedback-menu"
             >

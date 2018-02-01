@@ -2,9 +2,9 @@
 import { expect } from 'chai';
 
 import sinon from 'sinon';
-import alt from '../../src/app/alt.js';
-import actions from '../../src/app/actions/Actions.js';
-import store from '../../src/app/stores/Store.js';
+import alt from '../../src/app/alt';
+import actions from '../../src/app/actions/Actions';
+import store from '../../src/app/stores/Store';
 
 /*
  * getDispatcherArguments

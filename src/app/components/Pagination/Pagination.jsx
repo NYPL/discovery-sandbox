@@ -40,7 +40,7 @@ class Pagination extends React.Component {
         rel={type.toLowerCase()}
         className={`${type.toLowerCase()}-link`}
         aria-controls={this.props.ariaControls}
-        onClick={(e) => this.onClick(e, pageNum, type)}
+        onClick={e => this.onClick(e, pageNum, type)}
       >
         {svg} {type}
       </Link>

@@ -118,7 +118,7 @@ describe('Search', () => {
       inputChangeSpy = sinon.spy(Search.prototype, 'inputChange');
       component = mount(
         <Search createAPIQuery={createAPIQuery} updateIsLoadingState={() => {}} />,
-        { context: { router: { createHref: () => {}, push: () => {} } } }
+        { context: { router: { createHref: () => {}, push: () => {} } } },
       );
     });
 
@@ -148,7 +148,7 @@ describe('Search', () => {
       submitSearchRequestSpy = sinon.spy(Search.prototype, 'submitSearchRequest');
       component = mount(
         <Search createAPIQuery={createAPIQuery} updateIsLoadingState={() => {}} />,
-        { context: { router: { createHref: () => {}, push: () => {} } } }
+        { context: { router: { createHref: () => {}, push: () => {} } } },
       );
 
       mock

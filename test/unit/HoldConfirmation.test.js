@@ -5,8 +5,8 @@ import { expect } from 'chai';
 import { mount } from 'enzyme';
 
 // Import the component that is going to be tested
-import HoldConfirmation from './../../src/app/components/HoldConfirmation/HoldConfirmation.jsx';
-import Actions from './../../src/app/actions/Actions.js';
+import HoldConfirmation from './../../src/app/components/HoldConfirmation/HoldConfirmation';
+import Actions from './../../src/app/actions/Actions';
 import appConfig from '../../appConfig';
 
 describe('HoldConfirmation', () => {
@@ -101,10 +101,10 @@ describe('HoldConfirmation', () => {
           <p>
             We could not process your request at this time. Please try again or contact 917-ASK-NYPL
             (<a href="tel:19172756975">917-275-6975</a>).
-          </p>
+          </p>,
         )).to.equal(true);
       });
-    }
+    },
   );
 
   describe('If the patron is logged in and the App receives valid data, <HoldConfirmation>', () => {
@@ -150,7 +150,7 @@ describe('HoldConfirmation', () => {
       requireUser = sinon.spy(HoldConfirmation.prototype, 'requireUser');
       modelDeliveryLocationName = sinon.spy(
         HoldConfirmation.prototype,
-        'modelDeliveryLocationName'
+        'modelDeliveryLocationName',
       );
       pushSpy = sinon.spy();
       component = mount(
@@ -159,7 +159,7 @@ describe('HoldConfirmation', () => {
           bib={bib}
           deliveryLocations={deliveryLocations}
         />,
-        { context: { router: { createHref: () => {}, push: pushSpy } } }
+        { context: { router: { createHref: () => {}, push: pushSpy } } },
       );
     });
 
@@ -194,14 +194,12 @@ describe('HoldConfirmation', () => {
     it('should render the message for the physical delivery location.', () => {
       const main = component.find('main');
 
-      expect(modelDeliveryLocationName.returnValues[0]).to.equal(
-        'Schwarzman Building - Allen Scholar Room'
-      );
+      expect(modelDeliveryLocationName.returnValues[0])
+        .to.equal('Schwarzman Building - Allen Scholar Room');
 
       expect(main.find('#delivery-location')).to.have.length(1);
-      expect(main.find('#delivery-location').text()).to.equal(
-        'The item will be delivered to: Schwarzman Building - Allen Scholar Room'
-      );
+      expect(main.find('#delivery-location').text())
+        .to.equal('The item will be delivered to: Schwarzman Building - Allen Scholar Room');
     });
 
     it('should deliver the item\'s title on the page.', () => {
@@ -228,48 +226,47 @@ describe('HoldConfirmation', () => {
   });
 
   describe('If the patron is logged in and the App receives valid data but no delivery ' +
-    'location label',
-    () => {
-      const location = {
-        query: {
-          pickupLocation: 'myr',
-        },
-      };
-      const deliveryLocations = [
-        {
-          '@id': 'loc:myr',
-          address: '',
-          prefLabel: '',
-          shortName: '',
-        },
-      ];
-      let component;
-      let modelDeliveryLocationName;
+    'location label', () => {
+    const location = {
+      query: {
+        pickupLocation: 'myr',
+      },
+    };
+    const deliveryLocations = [
+      {
+        '@id': 'loc:myr',
+        address: '',
+        prefLabel: '',
+        shortName: '',
+      },
+    ];
+    let component;
+    let modelDeliveryLocationName;
 
-      before(() => {
-        Actions.updatePatronData({
-          id: '6677200',
-          names: ['Leonard, Mike'],
-          barcodes: ['162402680435300'],
-        });
-        modelDeliveryLocationName = sinon.spy(
-          HoldConfirmation.prototype,
-          'modelDeliveryLocationName'
-        );
-        component = mount(
-          <HoldConfirmation location={location} deliveryLocations={deliveryLocations} />
-        );
+    before(() => {
+      Actions.updatePatronData({
+        id: '6677200',
+        names: ['Leonard, Mike'],
+        barcodes: ['162402680435300'],
       });
-
-      after(() => {
-        modelDeliveryLocationName.restore();
-        component.unmount();
-      });
-
-      it('should display the layout of request confirmation page\'s header.', () => {
-        expect(modelDeliveryLocationName.returnValues[0]).to.equal('');
-      });
+      modelDeliveryLocationName = sinon.spy(
+        HoldConfirmation.prototype,
+        'modelDeliveryLocationName',
+      );
+      component = mount(
+        <HoldConfirmation location={location} deliveryLocations={deliveryLocations} />
+      );
     });
+
+    after(() => {
+      modelDeliveryLocationName.restore();
+      component.unmount();
+    });
+
+    it('should display the layout of request confirmation page\'s header.', () => {
+      expect(modelDeliveryLocationName.returnValues[0]).to.equal('');
+    });
+  });
 
   describe('If the App does not receive valid pick up location data', () => {
     let component;
@@ -431,7 +428,7 @@ describe('HoldConfirmation', () => {
           location={location}
           bib={bib}
           deliveryLocations={deliveryLocations}
-        />
+        />,
       );
     });
 
@@ -444,9 +441,8 @@ describe('HoldConfirmation', () => {
       const main = component.find('main');
 
       expect(main.find('#delivery-location')).to.have.length(1);
-      expect(main.find('#delivery-location').text()).to.equal(
-        'The item will be delivered to: n/a (electronic delivery)'
-      );
+      expect(main.find('#delivery-location').text())
+        .to.equal('The item will be delivered to: n/a (electronic delivery)');
     });
   });
 
@@ -496,7 +492,7 @@ describe('HoldConfirmation', () => {
       pushSpy = sinon.spy();
       component = mount(
         <HoldConfirmation location={location} bib={bib} searchKeywords="Bryant" />,
-        { context: { router: { createHref: () => {}, push: pushSpy } } }
+        { context: { router: { createHref: () => {}, push: pushSpy } } },
       );
     });
 
@@ -510,9 +506,8 @@ describe('HoldConfirmation', () => {
       expect(main.find('#start-new-search')).to.have.length(1);
       expect(main.find('#start-new-search').text()).to.equal('start a new search');
       expect(main.find('#go-back-search-results')).to.have.length(1);
-      expect(main.find('#go-back-search-results').text()).to.equal(
-        'Go back to your search results'
-      );
+      expect(main.find('#go-back-search-results').text())
+        .to.equal('Go back to your search results');
     });
 
     it('should call the React Router context with the link back to the search results', () => {
@@ -524,50 +519,43 @@ describe('HoldConfirmation', () => {
     });
   });
 
-  describe('If the patron does not get here from a classic catalog, <HoldConfirmation>',
-    () => {
-      let component;
-      let renderBackToClassicLink;
-      const location = {
-        query: {
-          pickupLocation: 'myr',
-          searchKeywords: 'Bryant',
-        },
-      };
+  describe('If the patron does not get here from a classic catalog, <HoldConfirmation>', () => {
+    let component;
+    let renderBackToClassicLink;
+    const location = {
+      query: {
+        pickupLocation: 'myr',
+        searchKeywords: 'Bryant',
+      },
+    };
 
-      const bib = {
-        title: ['Harry Potter'],
-      };
+    const bib = {
+      title: ['Harry Potter'],
+    };
 
-      before(() => {
-        renderBackToClassicLink = sinon.spy(HoldConfirmation.prototype, 'renderBackToClassicLink');
-        component = mount(<HoldConfirmation location={location} bib={bib} />);
-      });
+    before(() => {
+      renderBackToClassicLink = sinon.spy(HoldConfirmation.prototype, 'renderBackToClassicLink');
+      component = mount(<HoldConfirmation location={location} bib={bib} />);
+    });
 
-      after(() => {
-        renderBackToClassicLink.restore();
-        component.unmount();
-      });
+    after(() => {
+      renderBackToClassicLink.restore();
+      component.unmount();
+    });
 
-      it('should not have the link back to the classic catalog homepage.',
-        () => {
-          const main = component.find('main');
+    it('should not have the link back to the classic catalog homepage.', () => {
+      const main = component.find('main');
 
-          expect(renderBackToClassicLink.returnValues[0]).to.equal(false);
+      expect(renderBackToClassicLink.returnValues[0]).to.equal(false);
+      expect(main.find('#go-back-catalog')).to.have.length(0);
+    });
 
-          expect(main.find('#go-back-catalog')).to.have.length(0);
-        }
-      );
+    it('should have the link to shared collection catalog.', () => {
+      const main = component.find('main');
 
-      it('should have the link to shared collection catalog.', () => {
-        const main = component.find('main');
-
-        expect(main.find('#start-new-search').text()).to.equal(
-          'start a new search'
-        );
-      });
-    }
-  );
+      expect(main.find('#start-new-search').text()).to.equal('start a new search');
+    });
+  });
 
   describe('If the patron gets here from a classic catalog search result page, <HoldConfirmation>',
     () => {
@@ -611,16 +599,15 @@ describe('HoldConfirmation', () => {
           expect(main.find('#go-back-catalog a').at(1).text()).to.equal('start a new search');
           expect(main.find('#go-back-catalog a').at(1).prop('href'))
             .to.equal('https://catalog.nypl.org/search');
-        }
+        },
       );
 
       it('should have the link to shared collection catalog.', () => {
         const main = component.find('main');
 
-        expect(main.find('#go-to-shared-catalog').text()).to.equal(
-          ' You may also try your search in our Shared Collection Catalog.'
-        );
+        expect(main.find('#go-to-shared-catalog').text())
+          .to.equal(' You may also try your search in our Shared Collection Catalog.');
       });
-    }
+    },
   );
 });

@@ -13,7 +13,7 @@ import {
   trackDiscovery,
 } from '../../utils/utils';
 import ItemTable from '../Item/ItemTable';
-import appConfig from '../../../../appConfig.js';
+import appConfig from '../../../../appConfig';
 
 class ResultsList extends React.Component {
   constructor(props) {
@@ -47,17 +47,17 @@ class ResultsList extends React.Component {
 
         this.routeHandler(`${appConfig.baseUrl}/bib/${bibId}`);
       },
-      error => {
+      (error) => {
         setTimeout(
           () => { this.props.updateIsLoadingState(false); },
-          500
+          500,
         );
 
         console.error(
           'Error attempting to make an ajax request to fetch a bib record from ResultsList',
-          error
+          error,
         );
-      }
+      },
     );
   }
 
@@ -82,21 +82,21 @@ class ResultsList extends React.Component {
         Actions.updateIsEddRequestable(response.data.isEddRequestable);
         setTimeout(
           () => { this.props.updateIsLoadingState(false); },
-          500
+          500,
         );
 
         this.routeHandler(`${appConfig.baseUrl}/hold/request/${bibId}-${itemId}`);
       },
-      error => {
+      (error) => {
         setTimeout(
           () => { this.props.updateIsLoadingState(false); },
-          500
+          500,
         );
         console.error(
           'Error attemping to make an ajax request to fetch an item in ResultsList',
-          error
+          error,
         );
-      }
+      },
     );
   }
 
@@ -146,7 +146,7 @@ class ResultsList extends React.Component {
       <li key={i} className="nypl-results-item">
         <h3>
           <Link
-            onClick={(e) => this.getBibRecord(e, bibId, bibTitle)}
+            onClick={e => this.getBibRecord(e, bibId, bibTitle)}
             to={`${appConfig.baseUrl}/bib/${bibId}?searchKeywords=${this.props.searchKeywords}`}
             className="title"
           >

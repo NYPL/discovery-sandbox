@@ -21,7 +21,7 @@ const ClearHits = (props, context) => {
 
   return (
     <div className="nypl-clear-results">
-      <a href="/search" className="nypl-link-button" onClick={(e) => clearResults(e)}>
+      <a href="/search" className="nypl-link-button" onClick={e => clearResults(e)}>
         Clear current search query, filters, and sorts
       </a>
     </div>

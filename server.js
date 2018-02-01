@@ -10,11 +10,11 @@ import webpack from 'webpack';
 import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
 
-import alt from './src/app/alt.js';
-import appConfig from './appConfig.js';
-import webpackConfig from './webpack.config.js';
-import apiRoutes from './src/server/ApiRoutes/ApiRoutes.js';
-import routes from './src/app/routes/routes.jsx';
+import alt from './src/app/alt';
+import appConfig from './appConfig';
+import webpackConfig from './webpack.config';
+import apiRoutes from './src/server/ApiRoutes/ApiRoutes';
+import routes from './src/app/routes/routes';
 
 import initializePatronTokenAuth from './src/server/routes/auth';
 import { getPatronData } from './src/server/routes/api';
@@ -42,10 +42,10 @@ app.set('views', VIEWS_PATH);
 app.set('port', process.env.PORT || appConfig.port || 3001);
 
 app.use(cookieParser());
-app.use(bodyParser.json());       // to support JSON-encoded bodies
-app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
-  extended: true,
-}));
+// to support JSON-encoded bodies
+app.use(bodyParser.json());
+// to support URL-encoded bodies
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // Set Global publicKey
 app.set('nyplPublicKey', appConfig.publicKey);

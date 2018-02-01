@@ -3,7 +3,7 @@ import React from 'react';
 import { expect } from 'chai';
 import { shallow } from 'enzyme';
 
-import SearchButton from './../../src/app/components/Buttons/SearchButton.jsx';
+import SearchButton from './../../src/app/components/Buttons/SearchButton';
 
 describe('SearchButton', () => {
   describe('Default props', () => {
@@ -40,7 +40,7 @@ describe('SearchButton', () => {
           id="discoverySearch"
           value="Search Discovery"
           onClick={updateVal}
-        />
+        />,
       );
     });
 

@@ -131,7 +131,7 @@ class BibDetails extends React.Component {
     let val = '';
 
     if (bibValues.length) {
-      bibValues.forEach(value => {
+      bibValues.forEach((value) => {
         if (value.indexOf(`${fieldIdentifier}:`) !== -1) {
           val = value.substring(fieldIdentifier.length + 1);
         }
@@ -155,7 +155,8 @@ class BibDetails extends React.Component {
    * @param {string} fieldSelfLinkable
    */
   getDefinition(
-    bibValues, fieldValue, fieldLinkable, fieldIdentifier, fieldSelfLinkable, fieldLabel
+    bibValues, fieldValue, fieldLinkable, fieldIdentifier,
+    fieldSelfLinkable, fieldLabel,
   ) {
     if (fieldValue === 'identifier') {
       return this.getIdentifiers(bibValues, fieldIdentifier);
@@ -195,17 +196,17 @@ class BibDetails extends React.Component {
         {
           bibValues.map((value, i) => {
             const url = `filters[${fieldValue}]=${value}`;
-            let itemValue = fieldLinkable ?
+            let itemValue = fieldLinkable ? (
               <Link
                 onClick={e => this.newSearch(e, url, fieldValue, value, fieldLabel)}
                 to={`${appConfig.baseUrl}/search?${url}`}
               >
                 {value}
-              </Link>
+              </Link>)
               : <span>{value}</span>;
             if (fieldSelfLinkable) {
-              itemValue =
-                (<a
+              itemValue = (
+                <a
                   href={value.url}
                   onClick={() => trackDiscovery('Bib fields', `${fieldLabel} - ${value.prefLabel}`)}
                 >
@@ -230,7 +231,7 @@ class BibDetails extends React.Component {
     const fields = ['placeOfPublication', 'publisherLiteral', 'createdString'];
     let publicationInfo = '';
 
-    fields.forEach(field => {
+    fields.forEach((field) => {
       const fieldValue = bib[field];
       if (fieldValue) {
         publicationInfo += `${fieldValue} `;
@@ -279,12 +280,14 @@ class BibDetails extends React.Component {
             term: fieldLabel,
             definition:
               this.getDefinitionObject(
-                bibValues, fieldValue, fieldLinkable, fieldSelfLinkable, fieldLabel
+                bibValues, fieldValue, fieldLinkable, fieldSelfLinkable,
+                fieldLabel,
               ),
           });
         } else {
           const definition = this.getDefinition(
-            bibValues, fieldValue, fieldLinkable, fieldIdentifier, fieldSelfLinkable, fieldLabel
+            bibValues, fieldValue, fieldLinkable, fieldIdentifier,
+            fieldSelfLinkable, fieldLabel,
           );
           if (definition) {
             fieldsToRender.push({
@@ -317,8 +320,8 @@ class BibDetails extends React.Component {
 
         if (electronicResources.length === 1) {
           const electronicItem = electronicResources[0];
-          electronicElem =
-            (<a
+          electronicElem = (
+            <a
               href={electronicItem.url}
               target="_blank"
               onClick={() =>
@@ -404,7 +407,7 @@ class BibDetails extends React.Component {
       Actions.updatePage('1');
       setTimeout(
         () => { this.props.updateIsLoadingState(false); },
-        500
+        500,
       );
       this.context.router.push(`${appConfig.baseUrl}/search?${query}`);
     });

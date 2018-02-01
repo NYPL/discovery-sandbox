@@ -1,21 +1,21 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { validate } from '../../utils/formValidationUtils';
-import appConfig from '../../../../appConfig';
-
 import {
   mapObject as _mapObject,
   extend as _extend,
   isEmpty as _isEmpty,
 } from 'underscore';
 
+import { validate } from '../../utils/formValidationUtils';
+import appConfig from '../../../../appConfig';
+
 class ElectronicDeliveryForm extends React.Component {
   constructor(props) {
     super(props);
 
-    // this.props.form and this.props.error are coming from the server only in the
-    // no-js scenario. If they're not available, then we use this 'fallback', but the
-    // empty object structure is needed.
+    // this.props.form and this.props.error are coming from the server only
+    // in the no-js scenario. If they're not available, then we use this
+    // 'fallback', but the empty object structure is needed.
     this.state = {
       form: !_isEmpty(this.props.form) ? this.props.form :
         {
@@ -51,9 +51,10 @@ class ElectronicDeliveryForm extends React.Component {
   }
 
   handleUpdate(e, input) {
-    // Kind of hard to read. Basically, the `form` property is being updated and all
-    // the values are being retained. If we don't `extend` the object value for `form`,
-    // then only the last value in the form gets updated and the rest are gone.
+    // Kind of hard to read. Basically, the `form` property is being updated
+    // and all the values are being retained. If we don't `extend` the object
+    // value for `form`, then only the last value in the form gets updated
+    // and the rest are gone.
     this.setState({ form: _extend(this.state.form, { [input]: e.target.value }) });
   }
 
@@ -69,15 +70,16 @@ class ElectronicDeliveryForm extends React.Component {
       errorClass[key] = this.state.error[key] ? 'nypl-field-error' : '';
     });
 
-    // A lot of this can be refactored to be in a loop but that's a later and next step.
-    // I was thinking each `nypl-text-field` or `nypl-year-field` div can be
-    // its own component in a loop with the required props and errors passed down.
+    // A lot of this can be refactored to be in a loop but that's a later and
+    // next step. I was thinking each `nypl-text-field` or `nypl-year-field`
+    // div can be its own component in a loop with the required props and
+    // errors passed down.
     return (
       <form
         className="place-hold-form form electronic-delivery-form"
         action={`${appConfig.baseUrl}/edd`}
         method="POST"
-        onSubmit={(e) => this.submit(e)}
+        onSubmit={e => this.submit(e)}
         id="edd-request"
       >
         <fieldset className="nypl-fieldset">
@@ -97,7 +99,7 @@ class ElectronicDeliveryForm extends React.Component {
                   aria-required="true"
                   name="emailAddress"
                   value={this.state.form.emailAddress}
-                  onChange={(e) => this.handleUpdate(e, 'emailAddress')}
+                  onChange={e => this.handleUpdate(e, 'emailAddress')}
                 />
                 <span
                   className="nypl-field-status"
@@ -124,7 +126,7 @@ class ElectronicDeliveryForm extends React.Component {
                   aria-labelledby="startPage-label startPage-status"
                   name="startPage"
                   value={this.state.form.startPage}
-                  onChange={(e) => this.handleUpdate(e, 'startPage')}
+                  onChange={e => this.handleUpdate(e, 'startPage')}
                 />
                 <span
                   className="nypl-field-status"
@@ -137,7 +139,7 @@ class ElectronicDeliveryForm extends React.Component {
                       errorClass.startPage ?
                       this.state.error.startPage : 'Enter the first page of your selection.'
                     }
-                    </span>
+                  </span>
                 </span>
               </div>
 
@@ -153,7 +155,7 @@ class ElectronicDeliveryForm extends React.Component {
                   aria-labelledby="endPage-label endPage-status"
                   name="endPage"
                   value={this.state.form.endPage}
-                  onChange={(e) => this.handleUpdate(e, 'endPage')}
+                  onChange={e => this.handleUpdate(e, 'endPage')}
                 />
                 <span
                   className="nypl-field-status"
@@ -181,7 +183,7 @@ class ElectronicDeliveryForm extends React.Component {
                   aria-labelledby="chapterTitle-label chapterTitle-status"
                   name="chapterTitle"
                   value={this.state.form.chapterTitle}
-                  onChange={(e) => this.handleUpdate(e, 'chapterTitle')}
+                  onChange={e => this.handleUpdate(e, 'chapterTitle')}
                 />
                 <span
                   className="nypl-field-status"
@@ -216,7 +218,7 @@ class ElectronicDeliveryForm extends React.Component {
                   aria-labelledby="author-label"
                   name="author"
                   value={this.state.form.author}
-                  onChange={(e) => this.handleUpdate(e, 'author')}
+                  onChange={e => this.handleUpdate(e, 'author')}
                 />
               </div>
 
@@ -228,7 +230,7 @@ class ElectronicDeliveryForm extends React.Component {
                   aria-labelledby="date-label"
                   name="date"
                   value={this.state.form.date}
-                  onChange={(e) => this.handleUpdate(e, 'date')}
+                  onChange={e => this.handleUpdate(e, 'date')}
                 />
               </div>
 
@@ -240,7 +242,7 @@ class ElectronicDeliveryForm extends React.Component {
                   aria-labelledby="volume-label"
                   name="volume"
                   value={this.state.form.volume}
-                  onChange={(e) => this.handleUpdate(e, 'volume')}
+                  onChange={e => this.handleUpdate(e, 'volume')}
                 />
               </div>
 
@@ -252,7 +254,7 @@ class ElectronicDeliveryForm extends React.Component {
                   aria-labelledby="issue-label"
                   name="issue"
                   value={this.state.form.issue}
-                  onChange={(e) => this.handleUpdate(e, 'issue')}
+                  onChange={e => this.handleUpdate(e, 'issue')}
                 />
               </div>
               <div className="nypl-text-field">
@@ -264,7 +266,7 @@ class ElectronicDeliveryForm extends React.Component {
                   aria-labelledby="requestNotes-label"
                   name="requestNotes"
                   value={this.state.form.requestNotes}
-                  onChange={(e) => this.handleUpdate(e, 'requestNotes')}
+                  onChange={e => this.handleUpdate(e, 'requestNotes')}
                 />
               </div>
             </div>
@@ -300,7 +302,6 @@ ElectronicDeliveryForm.propTypes = {
   bibId: PropTypes.string,
   itemId: PropTypes.string,
   itemSource: PropTypes.string,
-  pickupLocation: PropTypes.string,
   error: PropTypes.object,
   form: PropTypes.object,
   defaultEmail: PropTypes.string,

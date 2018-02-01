@@ -3,7 +3,7 @@ import React from 'react';
 import { expect } from 'chai';
 import { shallow } from 'enzyme';
 // Import the component that is going to be tested
-import ItemTable from './../../src/app/components/Item/ItemTable.jsx';
+import ItemTable from './../../src/app/components/Item/ItemTable';
 
 describe('ItemTable', () => {
   describe('No rendered table', () => {
@@ -18,7 +18,7 @@ describe('ItemTable', () => {
     });
 
     it('should return null if items is not an array', () => {
-      const stringItem = shallow(<ItemTable items={'not an array'} />);
+      const stringItem = shallow(<ItemTable items="not an array" />);
       const objectItem = shallow(<ItemTable items={{ object: 'not an array' }} />);
 
       expect(stringItem.type()).to.equal(null);

@@ -9,10 +9,13 @@ const baseUrl = appConfig.baseUrl;
 
 const Breadcrumbs = ({ query = '', type, bibUrl, itemUrl, edd }) => {
   const defaultText = appConfig.displayTitle;
-  const onClick = (pageTitle) => trackDiscovery('Breadcrumbs', pageTitle);
-  const homeLink = (<li key="home">
-    <Link to={`${baseUrl}/`} onClick={() => onClick(defaultText)}>{defaultText}</Link>
-  </li>);
+  const onClick = pageTitle => trackDiscovery('Breadcrumbs', pageTitle);
+  const homeLink = (
+    <li key="home">
+      <Link to={`${baseUrl}/`} onClick={() => onClick(defaultText)}>
+        {defaultText}
+      </Link>
+    </li>);
 
   /*
    * getCrumbs()
@@ -39,26 +42,27 @@ const Breadcrumbs = ({ query = '', type, bibUrl, itemUrl, edd }) => {
         <Link to={`${baseUrl}/search?${query}`} onClick={() => onClick('Search Results')}>
           Search Results
         </Link>
-      </li>
-    );
+      </li>);
 
     if (type === 'bib') {
       crumbs.push(<li key="bib">Item Details</li>);
       return crumbs;
     }
 
-    crumbs.push(<li key="bib">
-      <Link to={`${baseUrl}${bibUrl}`} onClick={() => onClick('Item Details')}>Item Details</Link>
-    </li>);
+    crumbs.push(
+      <li key="bib">
+        <Link to={`${baseUrl}${bibUrl}`} onClick={() => onClick('Item Details')}>Item Details</Link>
+      </li>);
 
     if (type === 'hold') {
       crumbs.push(<li key="hold">Item Request</li>);
       return crumbs;
     }
 
-    crumbs.push(<li key="hold">
-      <Link to={`${baseUrl}${itemUrl}`} onClick={() => onClick('Item Request')}>Item Request</Link>
-    </li>);
+    crumbs.push(
+      <li key="hold">
+        <Link to={`${baseUrl}${itemUrl}`} onClick={() => onClick('Item Request')}>Item Request</Link>
+      </li>);
 
     if (type === 'edd') {
       crumbs.push(<li key="edd">Electronic Delivery Request</li>);
@@ -75,8 +79,7 @@ const Breadcrumbs = ({ query = '', type, bibUrl, itemUrl, edd }) => {
           >
             Electronic Delivery Request
           </Link>
-        </li>
-      );
+        </li>);
     }
 
     // The last possible point in the breadcrumbs will be the Confirmation page.

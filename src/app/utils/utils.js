@@ -17,7 +17,7 @@ import {
   sortBy as _sortBy,
 } from 'underscore';
 
-import appConfig from '../../../appConfig.js';
+import appConfig from '../../../appConfig';
 
 /**
  * ajaxCall
@@ -29,7 +29,7 @@ import appConfig from '../../../appConfig.js';
 const ajaxCall = (
   endpoint,
   cb = () => {},
-  errorcb = (error) => console.error('Error making ajaxCall', error)
+  errorcb = error => console.error('Error making ajaxCall', error),
 ) => {
   if (!endpoint) return null;
 
@@ -51,7 +51,7 @@ const getDefaultFilters = () => _extend({}, appConfig.defaultFilters);
  * Create a history in the browser or server that coincides with react-router.
  */
 const createAppHistory = () => {
-  if (typeof(window) !== 'undefined') {
+  if (typeof window !== 'undefined') {
     return useQueries(createHistory)();
   }
 
@@ -68,7 +68,7 @@ function destructureFilters(filters, apiFilters) {
   const selectedFilters = {};
   const filterArrayfromAPI =
     apiFilters && apiFilters.itemListElement && apiFilters.itemListElement.length ?
-    apiFilters.itemListElement : [];
+      apiFilters.itemListElement : [];
 
   _forEach(filters, (value, key) => {
     const id = key.indexOf('date') !== -1 ?
@@ -84,7 +84,7 @@ function destructureFilters(filters, apiFilters) {
       if (!selectedFilters[id]) {
         selectedFilters[id] = [];
       }
-      _forEach(value, filterValue => {
+      _forEach(value, (filterValue) => {
         const filterObjFromApi = _findWhere(filterArrayfromAPI, { id });
         if (filterObjFromApi && filterObjFromApi.values && filterObjFromApi.values.length) {
           const filter = _findWhere(filterObjFromApi.values, { value: filterValue });
@@ -283,7 +283,7 @@ function parseServerSelectedFilters(filters, dateAfter, dateBefore) {
       .mapObject((filterArray, key) => {
         if (key) {
           selectedFilters[key] =
-            filterArray.map((filter) => ({
+            filterArray.map(filter => ({
               value: filter.value,
               label: filter.label,
               count: filter.count,
@@ -317,7 +317,7 @@ function getAggregatedElectronicResources(items = []) {
 
   const electronicResources = [];
 
-  _forEach(items, item => {
+  _forEach(items, (item) => {
     if (item.isElectronicResource) {
       electronicResources.push(item.electronicResources);
     }
