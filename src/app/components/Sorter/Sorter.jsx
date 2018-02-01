@@ -2,12 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { findWhere as _findWhere } from 'underscore';
 
-import Actions from '../../actions/Actions.js';
+import Actions from '../../actions/Actions';
 import {
   ajaxCall,
   trackDiscovery,
 } from '../../utils/utils';
-import appConfig from '../../../../appConfig.js';
+import appConfig from '../../../../appConfig';
 
 const sortingOpts = [
   { val: 'relevance', label: 'relevance' },
@@ -20,13 +20,9 @@ const sortingOpts = [
 class Sorter extends React.Component {
   constructor(props) {
     super(props);
-    const defaultLabelObject = _findWhere(sortingOpts, { val: this.props.sortBy });
-    const defaultLabel = defaultLabelObject ? defaultLabelObject.label : undefined;
 
     this.state = {
       sortValue: this.props.sortBy || 'relevance',
-      sortLabel: defaultLabel || 'relevance',
-      className: '',
       js: false,
     };
 
@@ -51,8 +47,8 @@ class Sorter extends React.Component {
     const value = e.target.value;
 
     this.setState(
-      { sortValue: value, sortLabel: e.target.value },
-      () => { this.sortResultsBy(value); }
+      { sortValue: value },
+      () => { this.sortResultsBy(value); },
     );
   }
 
@@ -73,7 +69,7 @@ class Sorter extends React.Component {
       this.context.router.push(`${appConfig.baseUrl}/search?${apiQuery}`);
       setTimeout(
         () => { this.props.updateIsLoadingState(false); },
-        500
+        500,
       );
     });
   }

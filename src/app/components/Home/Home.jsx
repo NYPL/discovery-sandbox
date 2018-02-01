@@ -2,13 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import DocumentTitle from 'react-document-title';
 
-import Search from '../Search/Search.jsx';
-import LoadingLayer from '../LoadingLayer/LoadingLayer.jsx';
+import Search from '../Search/Search';
+import LoadingLayer from '../LoadingLayer/LoadingLayer';
 import {
   basicQuery,
   trackDiscovery,
-} from '../../utils/utils.js';
-import appConfig from '../../../../appConfig.js';
+} from '../../utils/utils';
+import appConfig from '../../../../appConfig';
 
 class Home extends React.Component {
   constructor(props) {

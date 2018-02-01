@@ -48,7 +48,7 @@ class SearchPagination extends React.Component {
         to={url}
         rel={type.toLowerCase()}
         aria-controls={this.props.ariaControls}
-        onClick={(e) => this.onClick(e, pageNum)}
+        onClick={e => this.onClick(e, pageNum)}
         key={(type === 'Number') ? pageNum : type}
         className={`${pageClass} ${currentPageClass}`}
       >
@@ -76,7 +76,7 @@ class SearchPagination extends React.Component {
       () => {
         linksArray.push(this.getPage(pageNum, 'Number'));
         pageNum ++;
-      }
+      },
     );
 
     const lastPage = ((totalPages - firstPageInGroup) > perPageInGroup) ?
@@ -85,7 +85,7 @@ class SearchPagination extends React.Component {
     if (linksArray.length > 8) {
       return this.renderPagerElement(
         linksArray.slice(firstPageInGroup, lastPageInGroup),
-        lastPage
+        lastPage,
       );
     }
 

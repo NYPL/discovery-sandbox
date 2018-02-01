@@ -4,17 +4,17 @@ import {
   omit as _omit,
 } from 'underscore';
 
-import appConfig from '../../../appConfig.js';
-import locationCodes from '../../../locationCodes.js';
-import locationDetails from '../../../locations.js';
-import User from './User.js';
-import Bib from './Bib.js';
-import LibraryItem from './../../app/utils/item.js';
+import appConfig from '../../../appConfig';
+import locationCodes from '../../../locationCodes';
+import locationDetails from '../../../locations';
+import User from './User';
+import Bib from './Bib';
+import LibraryItem from './../../app/utils/item';
 import { validate } from '../../app/utils/formValidationUtils';
 import nyplApiClient from '../routes/nyplApiClient';
 import logger from '../../../logger';
 
-const nyplApiClientGet = (endpoint) =>
+const nyplApiClientGet = endpoint =>
   nyplApiClient().then(client => client.get(endpoint, { cache: false }));
 
 const nyplApiClientPost = (endpoint, opts) =>
@@ -39,7 +39,7 @@ function postHoldAPI(
   docDeliveryData,
   itemSource,
   cb,
-  errorCb
+  errorCb,
 ) {
   // retrieve patron info
   const patronId = req.patronTokenResponse.decodedPatron.sub;
@@ -77,7 +77,7 @@ function postHoldAPI(
  * @return {array}
  */
 function mapLocationDetails(locations) {
-  locations.map(loc => {
+  locations.map((loc) => {
     _mapObject(locationCodes, (c) => {
       if (loc['@id'].replace('loc:', '') === c.delivery_location) {
         const locationDetailsItem = locationDetails[c.location];
@@ -112,7 +112,7 @@ function getDeliveryLocations(barcode, patronId, cb, errorCb) {
     `&patronId=${patronId}`;
 
   return nyplApiClientGet(deliveryEndpoint)
-    .then(barcodeAPIresponse => {
+    .then((barcodeAPIresponse) => {
       const eddRequestable = (barcodeAPIresponse && barcodeAPIresponse.itemListElement &&
         barcodeAPIresponse.itemListElement.length &&
         barcodeAPIresponse.itemListElement[0].eddRequestable) ?
@@ -124,14 +124,14 @@ function getDeliveryLocations(barcode, patronId, cb, errorCb) {
 
       cb(
         deliveryLocationWithAddress,
-        eddRequestable
+        eddRequestable,
       );
     })
-    .catch(barcodeAPIError => {
+    .catch((barcodeAPIError) => {
       logger.error(
         'Error attemping to make server side call using nyplApiClient in getDeliveryLocations' +
         `, endpoint: ${deliveryEndpoint}`,
-        barcodeAPIError
+        barcodeAPIError,
       );
       errorCb(barcodeAPIError);
     });
@@ -173,7 +173,7 @@ function confirmRequestServer(req, res, next) {
   let barcode;
 
   return nyplApiClientGet(`/hold-requests/${requestId}`)
-    .then(response => {
+    .then((response) => {
       const patronIdFromHoldRequest = response.patron;
 
       // The patron who is seeing the confirmation made the Hold Request
@@ -201,7 +201,7 @@ function confirmRequestServer(req, res, next) {
                 logger.error(
                   'Error retrieving server side delivery locations in confirmRequestServer' +
                   `, bibId: ${bibId}`,
-                  deliveryLocationError
+                  deliveryLocationError,
                 );
 
                 res.locals.data.Store = {
@@ -212,13 +212,13 @@ function confirmRequestServer(req, res, next) {
                   isEddRequestable: false,
                 };
                 next();
-              }
+              },
             );
           },
           (bibResponseError) => {
             logger.error(
               `Error retrieving server side bib record in confirmRequestServer, id: ${bibId}`,
-              bibResponseError
+              bibResponseError,
             );
             res.locals.data.Store = {
               bib: {},
@@ -227,16 +227,16 @@ function confirmRequestServer(req, res, next) {
               deliveryLocations: [],
             };
             next();
-          }
+          },
         );
       }
 
       return false;
     })
-    .catch(requestIdError => {
+    .catch((requestIdError) => {
       logger.error(
         'Error making a server side Hold Request in confirmRequestServer',
-        requestIdError
+        requestIdError,
       );
 
       res.locals.data.Store = {
@@ -295,7 +295,7 @@ function newHoldRequestServer(req, res, next) {
         (deliveryError) => {
           logger.error(
             `Error retrieving server side delivery locations in newHoldRequestServer, id: ${bibId}`,
-            deliveryError
+            deliveryError,
           );
 
           res.locals.data.Store = {
@@ -308,13 +308,13 @@ function newHoldRequestServer(req, res, next) {
           };
 
           next();
-        }
+        },
       );
     },
     (bibResponseError) => {
       logger.error(
         `Error retrieving server side bib record in newHoldRequestServer, id: ${bibId}`,
-        bibResponseError
+        bibResponseError,
       );
       res.locals.data.Store = {
         bib: {},
@@ -324,7 +324,7 @@ function newHoldRequestServer(req, res, next) {
       };
 
       next();
-    }
+    },
   );
 }
 
@@ -362,7 +362,7 @@ function newHoldRequestAjax(req, res) {
         (deliveryLocationsError) => {
           logger.error(
             `Error retrieving serverside delivery locations in newHoldRequestAjax, bibId: ${bibId}`,
-            deliveryLocationsError
+            deliveryLocationsError,
           );
 
           res.json({
@@ -370,10 +370,10 @@ function newHoldRequestAjax(req, res) {
             deliveryLocations: [],
             isEddRequestable: false,
           });
-        }
+        },
       );
     },
-    (bibResponseError) => res.json(bibResponseError)
+    bibResponseError => res.json(bibResponseError),
   );
 }
 
@@ -400,7 +400,7 @@ function newHoldRequestServerEdd(req, res, next) {
     (bibResponseError) => {
       logger.error(
         `Error retrieving server side bib record in newHoldRequestServerEdd, id: ${bibId}`,
-        bibResponseError
+        bibResponseError,
       );
       res.locals.data.Store = {
         bib: {},
@@ -409,7 +409,7 @@ function newHoldRequestServerEdd(req, res, next) {
         form,
       };
       next();
-    }
+    },
   );
 }
 
@@ -447,7 +447,7 @@ function createHoldRequestServer(req, res, pickedUpBibId = '', pickedUpItemId = 
       `?searchKeywords=${req.body['search-keywords']}` : '';
 
     return res.redirect(
-      `${appConfig.baseUrl}/hold/request/${bibId}-${itemId}/edd${eddSearchKeywordsQuery}`
+      `${appConfig.baseUrl}/hold/request/${bibId}-${itemId}/edd${eddSearchKeywordsQuery}`,
     );
   }
 
@@ -461,20 +461,20 @@ function createHoldRequestServer(req, res, pickedUpBibId = '', pickedUpItemId = 
       const data = JSON.parse(response).data;
       res.redirect(
         `${appConfig.baseUrl}/hold/confirmation/${bibId}-${itemId}?pickupLocation=` +
-        `${pickupLocation}&requestId=${data.id}${searchKeywordsQuery}`
+        `${pickupLocation}&requestId=${data.id}${searchKeywordsQuery}`,
       );
     },
     (error) => {
       logger.error(
         `Error calling postHoldAPI in createHoldRequestServer, bibId: {bibId}, itemId: ${itemId}`,
-        error.data.message
+        error.data.message,
       );
       res.redirect(
         `${appConfig.baseUrl}/hold/confirmation/${bibId}-${itemId}?pickupLocation=` +
         `${pickupLocation}&errorStatus=${error.status}` +
-        `&errorMessage=${error.statusText}${searchKeywordsQuery}`
+        `&errorMessage=${error.statusText}${searchKeywordsQuery}`,
       );
-    }
+    },
   );
 }
 
@@ -508,13 +508,13 @@ function createHoldRequestAjax(req, res) {
     (error) => {
       logger.error(
         `Error calling postHoldAPI in createHoldRequestAjax, itemId: ${req.query.itemId}`,
-        error
+        error,
       );
       res.json({
         status: error.status,
         error,
       });
-    }
+    },
   );
 }
 
@@ -540,13 +540,13 @@ function createHoldRequestEdd(req, res) {
     (error) => {
       logger.error(
         `Error calling postHoldAPI in createHoldRequestEdd, itemId: ${req.body.itemId}`,
-        error
+        error,
       );
       res.json({
         status: error.status,
         error,
       });
-    }
+    },
   );
 }
 
@@ -588,20 +588,20 @@ function eddServer(req, res) {
 
       res.redirect(
         `${appConfig.baseUrl}/hold/confirmation/${bibId}-${itemId}` +
-        `?pickupLocation=${req.body.pickupLocation}&requestId=${data.id}${searchKeywordsQuery}`
+        `?pickupLocation=${req.body.pickupLocation}&requestId=${data.id}${searchKeywordsQuery}`,
       );
     },
     (error) => {
       logger.error(
         `Error calling postHoldAPI in eddServer, bibID: ${bibId}, itemId: ${itemId}`,
-        error
+        error,
       );
       res.redirect(
         `${appConfig.baseUrl}/hold/confirmation/${bibId}-${itemId}?pickupLocation=edd` +
         `&errorStatus=${error.status}` +
-        `&errorMessage=${error.statusText}${searchKeywordsQuery}`
+        `&errorMessage=${error.statusText}${searchKeywordsQuery}`,
       );
-    }
+    },
   );
 }
 

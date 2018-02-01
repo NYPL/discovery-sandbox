@@ -9,12 +9,12 @@ import {
 } from 'underscore';
 import DocumentTitle from 'react-document-title';
 
-import Breadcrumbs from '../Breadcrumbs/Breadcrumbs.jsx';
-import PatronStore from '../../stores/PatronStore.js';
-import appConfig from '../../../../appConfig.js';
-import LibraryItem from '../../utils/item.js';
-import LoadingLayer from '../LoadingLayer/LoadingLayer.jsx';
-import { trackDiscovery } from '../../utils/utils.js';
+import Breadcrumbs from '../Breadcrumbs/Breadcrumbs';
+import PatronStore from '../../stores/PatronStore';
+import appConfig from '../../../../appConfig';
+import LibraryItem from '../../utils/item';
+import LoadingLayer from '../LoadingLayer/LoadingLayer';
+import { trackDiscovery } from '../../utils/utils';
 
 class HoldRequest extends React.Component {
   constructor(props) {
@@ -129,30 +129,53 @@ class HoldRequest extends React.Component {
     axios
       .get(`${appConfig.baseUrl}/api/newHold?itemId=${itemId}&pickupLocation=` +
         `${this.state.delivery}&itemSource=${itemSource}`)
-      .then(response => {
+      .then((response) => {
         if (response.data.error && response.data.error.status !== 200) {
           this.updateIsLoadingState(false);
           this.context.router.push(
             `${path}?errorStatus=${response.data.error.status}` +
             `&errorMessage=${response.data.error.statusText}${searchKeywordsQueryPhysical}` +
-            `${fromUrlQuery}`
+            `${fromUrlQuery}`,
           );
         } else {
           this.updateIsLoadingState(false);
           this.context.router.push(
             `${path}?pickupLocation=${response.data.pickupLocation}&requestId=${response.data.id}` +
-            `${searchKeywordsQueryPhysical}${fromUrlQuery}`
+            `${searchKeywordsQueryPhysical}${fromUrlQuery}`,
           );
         }
       })
-      .catch(error => {
+      .catch((error) => {
         console.error('Error attempting to make an ajax Hold Request in HoldRequest', error);
 
         this.updateIsLoadingState(false);
         this.context.router.push(
-          `${path}?errorMessage=${error}${searchKeywordsQueryPhysical}${fromUrlQuery}`
+          `${path}?errorMessage=${error}${searchKeywordsQueryPhysical}${fromUrlQuery}`,
         );
       });
+  }
+
+  /**
+   * getNotification()
+   * Renders notification text surrounded by a 'nypl-banner-alert' toolkit wrapper.
+   *
+   * @return {HTML Element}
+   */
+  getNotification() {
+    return (
+      <div className="nypl-banner-alert">
+        <p style={{ padding: '10px 20px 0px', margin: 0 }}>
+          Please note that due to the holiday, items requested between Friday afternoon (1/12), and Tuesday afternoon (1/16),
+          will be delivered on Wednesday morning (1/17). Please check your patron account to be sure items are Ready for Pickup before your visit.
+        </p>
+        <p style={{ padding: '10px 20px', margin: 0 }}>
+          The Miriam and Ira D. Wallach Division Art and Architecture Reading Room (300) will be closed from January 8-14, 2018.
+          During this time, room 300 services will be available in room 308 on a limited basis.
+          Room 300 will reopen on Tuesday, January 16, 2018.
+          If you have any questions, please contact: <a href="mailto:art@nypl.org" target="_top">art@nypl.org</a>.
+        </p>
+      </div>
+    );
   }
 
   /**
@@ -193,7 +216,7 @@ class HoldRequest extends React.Component {
           id="available-electronic-delivery"
           value="edd"
           checked={this.state.checkedLocNum === -1}
-          onChange={(e) => this.onRadioSelect(e, -1)}
+          onChange={e => this.onRadioSelect(e, -1)}
         />
         Have up to 50 pages scanned and sent to you via electronic mail.
       </label>
@@ -209,9 +232,7 @@ class HoldRequest extends React.Component {
    */
   renderDeliveryLocation(deliveryLocations = []) {
     return deliveryLocations.map((location, i) => {
-      const displayName = this.modelDeliveryLocationName(
-        location.prefLabel, location.shortName
-      );
+      const displayName = this.modelDeliveryLocationName(location.prefLabel, location.shortName);
 
       const value = (location['@id'] && typeof location['@id'] === 'string') ?
         location['@id'].replace('loc:', '') : '';
@@ -225,7 +246,7 @@ class HoldRequest extends React.Component {
             id={`location${i}`}
             value={value}
             checked={i === this.state.checkedLocNum}
-            onChange={(e) => this.onRadioSelect(e, i)}
+            onChange={e => this.onRadioSelect(e, i)}
           />
           <span className="nypl-screenreader-only">Send to:</span>
           <span className="nypl-location-name">{displayName}</span><br />
@@ -233,29 +254,6 @@ class HoldRequest extends React.Component {
         </label>
       );
     });
-  }
-
-  /**
-   * getNotification()
-   * Renders notification text surrounded by a 'nypl-banner-alert' toolkit wrapper.
-   *
-   * @return {HTML Element}
-   */
-  getNotification() {
-    return (
-      <div className="nypl-banner-alert">
-        <p style={{ padding: '10px 20px 0px', margin: 0 }}>
-          Please note that due to the holiday, items requested between Friday afternoon (1/12), and Tuesday afternoon (1/16),
-          will be delivered on Wednesday morning (1/17). Please check your patron account to be sure items are Ready for Pickup before your visit.
-        </p>
-        <p style={{ padding: '10px 20px', margin: 0 }}>
-          The Miriam and Ira D. Wallach Division Art and Architecture Reading Room (300) will be closed from January 8-14, 2018.
-          During this time, room 300 services will be available in room 308 on a limited basis.
-          Room 300 will reopen on Tuesday, January 16, 2018.
-          If you have any questions, please contact: <a href="mailto:art@nypl.org" target="_top">art@nypl.org</a>.
-        </p>
-      </div>
-    );
   }
 
   render() {
@@ -280,20 +278,18 @@ class HoldRequest extends React.Component {
       </h2>) : null;
     const callNo =
       (selectedItem && selectedItem.callNumber && selectedItem.callNumber.length) ?
-      (
-        <div className="call-number">
+        (<div className="call-number">
           <span>Call number:</span><br />{selectedItem.callNumber}
-        </div>
-      ) : null;
+        </div>) : null;
     const itemSource = selectedItem.itemSource;
     const deliveryLocations = this.props.deliveryLocations;
     const isEddRequestable = this.props.isEddRequestable;
     const deliveryLocationInstruction =
       (!deliveryLocations.length && !isEddRequestable) ?
-        <h2>
+        (<h2>
           Delivery options for this item are currently unavailable. Please try again later or
           contact 917-ASK-NYPL (<a href="tel:917-275-6975">917-275-6975</a>).
-        </h2> :
+        </h2>) :
         <h2>Choose a delivery option or location</h2>;
     let form = null;
 
@@ -303,7 +299,7 @@ class HoldRequest extends React.Component {
           className="place-hold-form form"
           action={`${appConfig.baseUrl}/hold/request/${bibId}-${itemId}-${itemSource}`}
           method="POST"
-          onSubmit={(e) => this.submitRequest(e, bibId, itemId, itemSource, title)}
+          onSubmit={e => this.submitRequest(e, bibId, itemId, itemSource, title)}
         >
           {deliveryLocationInstruction}
           <div className="nypl-request-radiobutton-field">
@@ -387,13 +383,13 @@ HoldRequest.contextTypes = {
 };
 
 HoldRequest.propTypes = {
-  location: React.PropTypes.object,
-  bib: React.PropTypes.object,
-  searchKeywords: React.PropTypes.string,
-  params: React.PropTypes.object,
-  deliveryLocations: React.PropTypes.array,
-  isEddRequestable: React.PropTypes.bool,
-  isLoading: React.PropTypes.bool,
+  location: PropTypes.object,
+  bib: PropTypes.object,
+  searchKeywords: PropTypes.string,
+  params: PropTypes.object,
+  deliveryLocations: PropTypes.array,
+  isEddRequestable: PropTypes.bool,
+  isLoading: PropTypes.bool,
 };
 
 HoldRequest.defaultProps = {

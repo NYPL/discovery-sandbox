@@ -59,10 +59,11 @@ class App extends React.Component {
   }
 
   componentWillMount() {
-    if (!this.state.data.searchResults) {
-      ajaxCall(`${appConfig.baseUrl}/api?q=${this.state.data.searchKeywords}`, (response) => {
+    const { data } = this.state;
+    if (!data.searchResults) {
+      ajaxCall(`${appConfig.baseUrl}/api?q=${data.searchKeywords}`, (response) => {
         Actions.updateSearchResults(response.data.searchResults);
-        Actions.updateSearchKeywords(this.state.data.searchKeywords);
+        Actions.updateSearchKeywords(data.searchKeywords);
       });
     }
   }

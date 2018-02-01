@@ -1,7 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import PatronStore from '../../stores/PatronStore.js';
-import appConfig from '../../../../appConfig.js';
 import { Link } from 'react-router';
 import {
   isArray as _isArray,
@@ -10,8 +8,10 @@ import {
 } from 'underscore';
 import DocumentTitle from 'react-document-title';
 
-import Breadcrumbs from '../Breadcrumbs/Breadcrumbs.jsx';
-import { trackDiscovery } from '../../utils/utils.js';
+import PatronStore from '../../stores/PatronStore';
+import appConfig from '../../../../appConfig';
+import Breadcrumbs from '../Breadcrumbs/Breadcrumbs';
+import { trackDiscovery } from '../../utils/utils';
 
 class HoldConfirmation extends React.Component {
   constructor(props) {
@@ -132,7 +132,7 @@ class HoldConfirmation extends React.Component {
     if (this.props.location.query.fromUrl) {
       return (
         <span id="go-to-shared-catalog"> You may also try your search in
-          our <Link to={`${appConfig.baseUrl}/`} onClick={(e) => this.goRestart(e)}>Shared
+          our <Link to={`${appConfig.baseUrl}/`} onClick={e => this.goRestart(e)}>Shared
           Collection Catalog</Link>.
         </span>
       );
@@ -149,7 +149,7 @@ class HoldConfirmation extends React.Component {
         <Link
           id="start-new-search"
           to={`${appConfig.baseUrl}/`}
-          onClick={(e) => this.goRestart(e)}
+          onClick={e => this.goRestart(e)}
         >
           {text}
         </Link>.
@@ -198,7 +198,7 @@ class HoldConfirmation extends React.Component {
         // We use this.props.location.query.searchKeywords here for the query from
         // the URL to deal with no js situation.
         to={`${appConfig.baseUrl}/search?q=${this.props.location.query.searchKeywords}`}
-        onClick={(e) => this.goSearchResults(e)}
+        onClick={e => this.goSearchResults(e)}
       >
         Go back to your search results
       </Link> or </span>
@@ -231,7 +231,7 @@ class HoldConfirmation extends React.Component {
     if (this.props.deliveryLocations && this.props.deliveryLocations.length) {
       if (pickupLocation !== 'edd') {
         deliveryLocation = _findWhere(
-          this.props.deliveryLocations, { '@id': `loc:${pickupLocation}` }
+          this.props.deliveryLocations, { '@id': `loc:${pickupLocation}` },
         );
       } else {
         deliveryLocation = {

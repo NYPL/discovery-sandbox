@@ -3,7 +3,7 @@ import React from 'react';
 import { expect } from 'chai';
 import { shallow, mount } from 'enzyme';
 
-import Pagination from '../../src/app/components/Pagination/Pagination.jsx';
+import Pagination from '../../src/app/components/Pagination/Pagination';
 
 // The Pagination component displays the items currently being displayed. If there are more
 // than 50 items then the "next" link gets rendered. If the page prop is greater than 1,

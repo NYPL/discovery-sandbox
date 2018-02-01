@@ -11,13 +11,13 @@ import {
 } from 'underscore';
 import DocumentTitle from 'react-document-title';
 
-import Breadcrumbs from '../Breadcrumbs/Breadcrumbs.jsx';
-import PatronStore from '../../stores/PatronStore.js';
-import appConfig from '../../../../appConfig.js';
+import Breadcrumbs from '../Breadcrumbs/Breadcrumbs';
+import PatronStore from '../../stores/PatronStore';
+import appConfig from '../../../../appConfig';
 import ElectronicDeliveryForm from './ElectronicDeliveryForm';
-import LibraryItem from '../../utils/item.js';
-import LoadingLayer from '../LoadingLayer/LoadingLayer.jsx';
-import { trackDiscovery } from '../../utils/utils.js';
+import LibraryItem from '../../utils/item';
+import LoadingLayer from '../LoadingLayer/LoadingLayer';
+import { trackDiscovery } from '../../utils/utils';
 
 class ElectronicDelivery extends React.Component {
   constructor(props) {
@@ -140,30 +140,30 @@ class ElectronicDelivery extends React.Component {
 
     axios
       .post(`${appConfig.baseUrl}/api/newHold`, data)
-      .then(response => {
+      .then((response) => {
         if (response.data.error && response.data.error.status !== 200) {
           this.updateIsLoadingState(false);
           this.context.router.push(
             `${path}?errorStatus=${response.data.error.status}` +
-            `&errorMessage=${response.data.error.statusText}${searchKeywordsQuery}${fromUrlQuery}`
+            `&errorMessage=${response.data.error.statusText}${searchKeywordsQuery}${fromUrlQuery}`,
           );
         } else {
           this.updateIsLoadingState(false);
           this.context.router.push(
             `${path}?pickupLocation=edd&requestId=${response.data.id}` +
-            `${searchKeywordsQuery}${fromUrlQuery}`
+            `${searchKeywordsQuery}${fromUrlQuery}`,
           );
         }
       })
-      .catch(error => {
+      .catch((error) => {
         console.error(
           'Error attempting to submit an ajax EDD request at ElectronicDelivery',
-          error
+          error,
         );
 
         this.updateIsLoadingState(false);
         this.context.router.push(
-          `${path}?errorMessage=${error}${searchKeywordsQuery}${fromUrlQuery}`
+          `${path}?errorMessage=${error}${searchKeywordsQuery}${fromUrlQuery}`,
         );
       });
   }
@@ -210,7 +210,7 @@ class ElectronicDelivery extends React.Component {
     const patronEmail = (
       this.state.patron.emails && _isArray(this.state.patron.emails)
       && this.state.patron.emails.length
-      ) ? this.state.patron.emails[0] : '';
+    ) ? this.state.patron.emails[0] : '';
     const searchKeywords = this.props.searchKeywords;
 
     return (
