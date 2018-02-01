@@ -194,8 +194,12 @@
   }
 
   .nypl-generic-checkbox {
-    label::before {
-      background: #fff;
+    label {
+      width: 70%;
+
+      &::before {
+        background: #fff;
+      }
     }
   }
 }
@@ -322,17 +326,10 @@
 
   .inner {
     padding: 0;
-
-    legend {
-      padding-top: 15px;
-    }
+    border-bottom: none;
 
     ul {
       margin-top: 10px;
-    }
-
-    &:last-child {
-      border-bottom: none;
     }
   }
 

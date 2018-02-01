@@ -141,28 +141,30 @@ class SearchResultsPage extends React.Component {
             </div>
           </div>
 
-          <div className="nypl-full-width-wrapper nypl-sorter-row">
-            <div className="nypl-row">
-              <div className="nypl-column-three-quarters">
-                <ResultsCount
-                  isLoading={isLoading}
-                  count={totalResults}
-                  selectedFilters={selectedFilters}
-                  searchKeywords={searchKeywords}
-                  field={field}
-                  page={parseInt(page, 10)}
-                />
-                {
-                  !!(totalResults && totalResults !== 0) && (
-                    <Sorter
-                      sortBy={sortBy}
-                      page={page}
-                      searchKeywords={searchKeywords}
-                      createAPIQuery={createAPIQuery}
-                      updateIsLoadingState={this.updateIsLoadingState}
-                    />
-                  )
-                }
+          <div className="nypl-sorter-row">
+            <div className="nypl-full-width-wrapper">
+              <div className="nypl-row">
+                <div className="nypl-column-three-quarters">
+                  <ResultsCount
+                    isLoading={isLoading}
+                    count={totalResults}
+                    selectedFilters={selectedFilters}
+                    searchKeywords={searchKeywords}
+                    field={field}
+                    page={parseInt(page, 10)}
+                  />
+                  {
+                    !!(totalResults && totalResults !== 0) && (
+                      <Sorter
+                        sortBy={sortBy}
+                        page={page}
+                        searchKeywords={searchKeywords}
+                        createAPIQuery={createAPIQuery}
+                        updateIsLoadingState={this.updateIsLoadingState}
+                      />
+                    )
+                  }
+                </div>
               </div>
             </div>
           </div>
