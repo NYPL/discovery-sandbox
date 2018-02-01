@@ -371,13 +371,14 @@ class FilterPopup extends React.Component {
         </div>
         {(!showForm && !!(totalResults && totalResults !== 0)) && openPopupButton}
         {showForm && (
-          <div className="filter-action-buttons">
-            {resetButton('filterResetBtn')}
-            <div className="cancel-apply-buttons">
-              {cancelButton}
-              {applyButton}
-            </div>
-          </div>)
+          <ul
+            className="filter-action-buttons"
+            aria-label="Refine Search Options"
+          >
+            <li>{resetButton('filterResetBtn')}</li>
+            <li>{cancelButton}</li>
+            <li>{applyButton}</li>
+          </ul>)
         }
         <div
           className={
@@ -430,13 +431,14 @@ class FilterPopup extends React.Component {
                   onFilterClick={this.onFilterClick}
                 />
 
-                <div className="filter-action-buttons">
-                  {resetButton()}
-                  <div className="cancel-apply-buttons">
-                    {cancelButton}
-                    {applyButton}
-                  </div>
-                </div>
+                <ul
+                  className="filter-action-buttons bottom-action-row"
+                  aria-label="Refine Search Options"
+                >
+                  <li>{resetButton()}</li>
+                  <li>{cancelButton}</li>
+                  <li>{applyButton}</li>
+                </ul>
               </fieldset>
             </form>
           </div>
