@@ -69,8 +69,6 @@ class SearchResultsPage extends React.Component {
     const headerLabel = `Search results ${searchKeywordsLabel} ${pageLabel}`;
     const updatePage = (nextPage, pageType) => {
       this.updateIsLoadingState(true);
-      // Temporary. Need to check cross-browser and if it's needed at all.
-      window.scrollTo(0, 0);
       const apiQuery = createAPIQuery({ page: nextPage });
 
       trackDiscovery('Pagination - Search Results', `${pageType} - page ${nextPage}`);

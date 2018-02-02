@@ -5,10 +5,13 @@ import { Link } from 'react-router';
 import { trackDiscovery } from '../../utils/utils';
 import appConfig from '../../../../appConfig';
 
-const baseUrl = appConfig.baseUrl;
+const {
+  baseUrl,
+  displayTitle,
+} = appConfig;
 
 const Breadcrumbs = ({ query = '', type, bibUrl, itemUrl, edd }) => {
-  const defaultText = appConfig.displayTitle;
+  const defaultText = displayTitle;
   const onClick = pageTitle => trackDiscovery('Breadcrumbs', pageTitle);
   const homeLink = (
     <li key="home">
@@ -21,16 +24,14 @@ const Breadcrumbs = ({ query = '', type, bibUrl, itemUrl, edd }) => {
    * getCrumbs()
    * Returns an array of list elements to render for the breadcrumbs navigation.
    * This will keep pushing new elements onto an array until it reaches the spot desired.
-   * It will then return the list up to that point with the desired spot being a simple
+   * It will then return the list up to that point with the active location being a simple
    * text list element.
    * @returns {array}
    */
   const getCrumbs = () => {
     // The first link is the homepage and it will being appearing starting from the
     // Search Results page.
-    const crumbs = [
-      homeLink,
-    ];
+    const crumbs = [homeLink];
 
     if (type === 'search') {
       crumbs.push(<li key="search">Search Results</li>);
