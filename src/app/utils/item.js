@@ -1,8 +1,8 @@
-import LocationCodes from '../../../locationCodes.js';
 import {
   findWhere as _findWhere,
   isEmpty as _isEmpty,
 } from 'underscore';
+import LocationCodes from '../../../locationCodes';
 
 const itemSourceMappings = {
   SierraNypl: 'sierra-nypl',
@@ -195,17 +195,7 @@ function LibraryItem() {
   this.getItems = (bib) => {
     // filter out anything without a status or location
     const bibItems = bib && bib.items && bib.items.length ? bib.items : [];
-    const finalItems = bibItems.map((item) => this.mapItem(item));
-
-    // sort: physical available items, then electronic resources, then everything else
-    // Update: Remove sorting for now.
-    // finalItems.sort((a, b) => {
-    //   let aAvailability = a.status === 'available' ? -1 : 1;
-    //   let bAvailability = b.status === 'available' ? -1 : 1;
-    //   if (a.isElectronicResource) aAvailability = 0;
-    //   if (b.isElectronicResource) bAvailability = 0;
-    //   return aAvailability - bAvailability;
-    // });
+    const finalItems = bibItems.map(item => this.mapItem(item));
 
     return finalItems;
   };
@@ -279,7 +269,7 @@ function LibraryItem() {
    * @param {object} item
    * @return {boolean}
    */
-  this.isElectronicResource = (item) => !!(item.electronicLocator && item.electronicLocator.length);
+  this.isElectronicResource = item => !!(item.electronicLocator && item.electronicLocator.length);
 
   /**
    * isOffsite(prefLabel)

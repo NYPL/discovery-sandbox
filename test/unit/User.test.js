@@ -2,7 +2,7 @@
 import sinon from 'sinon';
 import { expect } from 'chai';
 // Import the component that is going to be tested
-import User from './../../src/server/ApiRoutes/User.js';
+import User from './../../src/server/ApiRoutes/User';
 
 let mockPatronTokenResponse = {
   isTokenValid: true,
@@ -17,14 +17,12 @@ let mockPatronTokenResponse = {
   },
   errorCode: null,
 };
-const renderMockReq = (data) => (
-  {
-    get: (n) => n,
-    protocol: 'http',
-    originalUrl: '/hold/request/b11995345-i14211097',
-    patronTokenResponse: data,
-  }
-);
+const renderMockReq = data => ({
+  get: n => n,
+  protocol: 'http',
+  originalUrl: '/hold/request/b11995345-i14211097',
+  patronTokenResponse: data,
+});
 const mockRes = { redirect: () => {} };
 
 describe('If requireUser does not receive valid value from "req.patronTokenResponse"', () => {
@@ -78,7 +76,7 @@ describe('If requireUser does not receive valid value from "req.patronTokenRespo
 
       expect(requireUser.returnValues[0]).to.equal(false);
     });
-  }
+  },
 );
 
 describe('If requireUser does not receive valid value from "req.patronTokenResponse.decodedPatron"',
@@ -111,7 +109,7 @@ describe('If requireUser does not receive valid value from "req.patronTokenRespo
 
       expect(requireUser.returnValues[0]).to.equal(false);
     });
-  }
+  },
 );
 
 describe('If requireUser does not receive valid value from "req.patronTokenResponse.' +

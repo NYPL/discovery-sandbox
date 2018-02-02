@@ -63,7 +63,7 @@ class FieldsetList extends React.Component {
                   type="checkbox"
                   name="filters"
                   value={JSON.stringify(_extend({ field: filterId }, filter))}
-                  onClick={(e) => this.onFilterClick(e, filter)}
+                  onClick={e => this.onFilterClick(e, filter)}
                   checked={filter.selected}
                 />
                 <label htmlFor={`${filter.label}-label`}>

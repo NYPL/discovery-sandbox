@@ -1,9 +1,9 @@
 import express from 'express';
 
-import Bib from './Bib.js';
-import Hold from './Hold.js';
-import Search from './Search.js';
-import appConfig from '../../../appConfig.js';
+import Bib from './Bib';
+import Hold from './Hold';
+import Search from './Search';
+import appConfig from '../../../appConfig';
 
 const router = express.Router();
 

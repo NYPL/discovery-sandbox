@@ -2,14 +2,8 @@
 import React from 'react';
 import { expect } from 'chai';
 import { mount } from 'enzyme';
-import MockAdapter from 'axios-mock-adapter';
-import axios from 'axios';
-import sinon from 'sinon';
 
-const mock = new MockAdapter(axios);
-
-import SearchResultsPage from '../../src/app/components/SearchResultsPage/SearchResultsPage.jsx';
-import Actions from '../../src/app/actions/Actions.js';
+import SearchResultsPage from '../../src/app/components/SearchResultsPage/SearchResultsPage';
 
 // Eventually, it would be nice to have mocked data in a different file and imported.
 const searchResults = {
@@ -87,7 +81,7 @@ describe('SearchResultsPage', () => {
           searchKeywords="locofocos"
           searchResults={searchResults}
           location={{ search: '' }}
-        />
+        />,
       );
     });
 
@@ -122,7 +116,7 @@ describe('SearchResultsPage', () => {
           searchKeywords="locofocos"
           searchResults={searchResults}
           location={{ search: '' }}
-        />
+        />,
       );
     });
 

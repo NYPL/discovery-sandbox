@@ -39,7 +39,7 @@ class BibPage extends React.Component {
     const bibId = bib && bib['@id'] ? bib['@id'].substring(4) : '';
     const title = bib.title && bib.title.length ? bib.title[0] : '';
     const items = LibraryItem.getItems(bib);
-    const isElectronicResources = _every(items, (i) => i.isElectronicResource);
+    const isElectronicResources = _every(items, i => i.isElectronicResource);
     // Related to removing MarcRecord because the webpack MarcRecord is not working. Sep/28/2017
     // const isNYPLReCAP = LibraryItem.isNYPLReCAP(bib['@id']);
     // const bNumber = bib && bib.idBnum ? bib.idBnum : '';
@@ -80,7 +80,7 @@ class BibPage extends React.Component {
       { label: 'Owning Institutions', value: '' },
     ];
 
-    const itemHoldings = items.length && !isElectronicResources ?
+    const itemHoldings = items.length && !isElectronicResources ? (
       <ItemHoldings
         shortenItems={shortenItems}
         items={items}
@@ -88,7 +88,7 @@ class BibPage extends React.Component {
         itemPage={itemPage}
         searchKeywords={this.props.searchKeywords}
         updateIsLoadingState={this.updateIsLoadingState}
-      /> : null;
+      />) : null;
     // Related to removing MarcRecord because the webpack MarcRecord is not working. Sep/28/2017
     // const marcRecord = isNYPLReCAP ? <MarcRecord bNumber={bNumber[0]} /> : null;
 
@@ -156,15 +156,10 @@ class BibPage extends React.Component {
 }
 
 BibPage.propTypes = {
-  item: PropTypes.object,
   searchKeywords: PropTypes.string,
   location: PropTypes.object,
-  selectedFacets: PropTypes.object,
   bib: PropTypes.object,
-  field: PropTypes.string,
   isLoading: PropTypes.bool,
-  sortBy: PropTypes.string,
-  page: PropTypes.string,
 };
 
 export default BibPage;

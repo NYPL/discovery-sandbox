@@ -1,4 +1,4 @@
-import appConfig from '../../../appConfig.js';
+import appConfig from '../../../appConfig';
 
 function requireUser(req, res) {
   if (!req.patronTokenResponse || !req.patronTokenResponse.isTokenValid ||

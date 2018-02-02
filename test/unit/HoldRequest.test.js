@@ -4,8 +4,8 @@ import sinon from 'sinon';
 import { expect } from 'chai';
 import { mount } from 'enzyme';
 // Import the component that is going to be tested
-import HoldRequest from './../../src/app/components/HoldRequest/HoldRequest.jsx';
-import Actions from './../../src/app/actions/Actions.js';
+import HoldRequest from './../../src/app/components/HoldRequest/HoldRequest';
+import Actions from './../../src/app/actions/Actions';
 
 describe('HoldRequest', () => {
   describe('After being rendered, <HoldRequest>', () => {
@@ -79,7 +79,7 @@ describe('HoldRequest', () => {
           </h2>)
         ).to.equal(true);
       });
-    }
+    },
   );
 
   describe('If the patron is logged in and the App receives invalid delivery location data, ' +
@@ -148,9 +148,7 @@ describe('HoldRequest', () => {
     ];
 
     before(() => {
-      component = mount(
-        <HoldRequest bib={bib} deliveryLocations={deliveryLocations} />
-      );
+      component = mount(<HoldRequest bib={bib} deliveryLocations={deliveryLocations} />);
     });
 
     after(() => {
@@ -161,9 +159,7 @@ describe('HoldRequest', () => {
       const form = component.find('form');
 
       expect(form.find('h2')).to.have.length(1);
-      expect(form.contains(
-        <h2>Choose a delivery option or location</h2>
-      )).to.equal(true);
+      expect(form.contains(<h2>Choose a delivery option or location</h2>)).to.equal(true);
     });
 
     it('should display the form of the display locations.', () => {
@@ -195,9 +191,7 @@ describe('HoldRequest', () => {
       const label2 = fieldset.find('label').at(2);
 
       expect(label0.find('.nypl-screenreader-only').text()).to.equal('Send to:');
-      expect(label0.find('.nypl-location-name').text()).to.equal(
-        'Library for the Performing Arts'
-      );
+      expect(label0.find('.nypl-location-name').text()).to.equal('Library for the Performing Arts');
       expect(label0.find('.nypl-location-address').text()).to.equal('40 Lincoln Center Plaza');
 
       expect(label1.find('.nypl-screenreader-only').text()).to.equal('Send to:');
@@ -205,12 +199,10 @@ describe('HoldRequest', () => {
       expect(label1.find('.nypl-location-address').text()).to.equal('515 Malcolm X Boulevard');
 
       expect(label2.find('.nypl-screenreader-only').text()).to.equal('Send to:');
-      expect(label2.find('.nypl-location-name').text()).to.equal(
-        'Schwarzman Building - Allen Scholar Room'
-      );
-      expect(label2.find('.nypl-location-address').text()).to.equal(
-        '476 Fifth Avenue (42nd St and Fifth Ave)'
-      );
+      expect(label2.find('.nypl-location-name').text())
+        .to.equal('Schwarzman Building - Allen Scholar Room');
+      expect(label2.find('.nypl-location-address').text())
+        .to.equal('476 Fifth Avenue (42nd St and Fifth Ave)');
     });
 
     it('should deliver request button with the respective URL on the page.', () => {
@@ -251,9 +243,8 @@ describe('HoldRequest', () => {
     ];
 
     before(() => {
-      component = mount(
-        <HoldRequest bib={bib} deliveryLocations={deliveryLocations} isEddRequestable />
-      );
+      component =
+        mount(<HoldRequest bib={bib} deliveryLocations={deliveryLocations} isEddRequestable />);
     });
 
     after(() => {
@@ -269,9 +260,8 @@ describe('HoldRequest', () => {
       expect(fieldset.find('legend')).to.have.length(1);
       expect(fieldset.find('label').at(0).find('input').props().type).to.equal('radio');
       expect(fieldset.find('label').at(0).find('input').props().checked).to.equal(true);
-      expect(fieldset.find('label').at(0).text()).to.equal(
-        'Have up to 50 pages scanned and sent to you via electronic mail.'
-      );
+      expect(fieldset.find('label').at(0).text())
+        .to.equal('Have up to 50 pages scanned and sent to you via electronic mail.');
     });
   });
 });
