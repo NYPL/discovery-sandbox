@@ -77,15 +77,10 @@
   .filter-action-buttons {
     float: left;
     width: 100%;
-    padding: 15px 0;
+    padding: 15px 0 0;
     border-bottom: 1px solid;
     border-top: 1px solid;
-
-    p {
-      margin: 10px 0;
-      float: left;
-      display: inline-block;
-    }
+    text-align: right;
 
     .clear-filters-button {
       display: none;
@@ -93,6 +88,18 @@
       @include min-screen($xtrasmall-breakpoint) {
         display: inline-block;
       }
+    }
+
+    li {
+      display: inline-block;
+
+      &:first-child() {
+        float: left;
+      }
+    }
+
+    &.bottom-action-row {
+      margin-bottom: 0;
     }
   }
 
