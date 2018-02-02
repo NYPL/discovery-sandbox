@@ -41,6 +41,8 @@ class BibDetails extends React.Component {
       ownerArr.push(ownerObj);
     });
 
+    // From above, check to see if all the owners are the same, and if so, proceed if the owner
+    // is either Princeton or Columbia.
     if (_every(ownerArr, o => (o === ownerArr[0]))) {
       if ((ownerArr[0] === 'Princeton University Library') ||
         (ownerArr[0] === 'Columbia University Libraries')) {
@@ -52,7 +54,7 @@ class BibDetails extends React.Component {
   }
 
   /*
-   * getDefinitionObject(bibValues, fieldValue, fieldLinkable)
+   * getDefinitionObject(bibValues, fieldValue, fieldLinkable, fieldSelfLinkable, fieldLabel)
    * Gets a list, or one value, of data to display for a field from the API, where
    * the data is an object in the array.
    * @param {array} bibValues
@@ -62,6 +64,7 @@ class BibDetails extends React.Component {
    * @param {string} fieldLabel
    */
   getDefinitionObject(bibValues, fieldValue, fieldLinkable, fieldSelfLinkable, fieldLabel) {
+    // If there's only one value, we just want that value and not a list.
     if (bibValues.length === 1) {
       const bibValue = bibValues[0];
       const url = `filters[${fieldValue}]=${bibValue['@id']}`;
@@ -146,13 +149,15 @@ class BibDetails extends React.Component {
   }
 
   /*
-   * getDefinition(bibValues, fieldValue, fieldLinkable, fieldIdentifier)
+   * getDefinition(bibValues, fieldValue, fieldLinkable, fieldIdentifier,
+   * fieldSelfLinkable, fieldLabel)
    * Gets a list, or one value, of data to display for a field from the API.
    * @param {array} bibValues
    * @param {string} fieldValue
    * @param {boolean} fieldLinkable
    * @param {string} fieldIdentifier
    * @param {string} fieldSelfLinkable
+   * @param {string} fieldLabel
    */
   getDefinition(
     bibValues, fieldValue, fieldLinkable, fieldIdentifier,

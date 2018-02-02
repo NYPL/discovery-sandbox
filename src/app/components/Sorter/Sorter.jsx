@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { findWhere as _findWhere } from 'underscore';
 
 import Actions from '../../actions/Actions';
 import {

@@ -197,16 +197,6 @@ function LibraryItem() {
     const bibItems = bib && bib.items && bib.items.length ? bib.items : [];
     const finalItems = bibItems.map(item => this.mapItem(item));
 
-    // sort: physical available items, then electronic resources, then everything else
-    // Update: Remove sorting for now.
-    // finalItems.sort((a, b) => {
-    //   let aAvailability = a.status === 'available' ? -1 : 1;
-    //   let bAvailability = b.status === 'available' ? -1 : 1;
-    //   if (a.isElectronicResource) aAvailability = 0;
-    //   if (b.isElectronicResource) bAvailability = 0;
-    //   return aAvailability - bAvailability;
-    // });
-
     return finalItems;
   };
 
