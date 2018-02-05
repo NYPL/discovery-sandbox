@@ -147,8 +147,6 @@ const getFilterParam = (filters) => {
       if (val && val.length && _isArray(val)) {
         _forEach(val, (filter, index) => {
           if (filter.value && filter.value !== '') {
-            // At this time, materialType filter requires _packed for filtering (but not as data).
-            // Other filters do not.
             strSearch += `&filters[${key}][${index}]=${encodeURIComponent(filter.value)}`;
           } else if (typeof filter === 'string') {
             strSearch += `&filters[${key}][${index}]=${encodeURIComponent(filter)}`;

@@ -37,11 +37,12 @@ history.listen((location) => {
 
   if (action === 'POP' && search) {
     ajaxCall(`${appConfig.baseUrl}/api${decodeURI(search)}`, (response) => {
-      if (response.data.filters && response.data.searchResults) {
-        const selectedFilters = destructureFilters(urlFilters, response.data.filters);
+      const { data } = response;
+      if (data.filters && data.searchResults) {
+        const selectedFilters = destructureFilters(urlFilters, data.filters);
         Actions.updateSelectedFilters(selectedFilters);
-        Actions.updateFilters(response.data.filters);
-        Actions.updateSearchResults(response.data.searchResults);
+        Actions.updateFilters(data.filters);
+        Actions.updateSearchResults(data.searchResults);
         if (qParameter) Actions.updateSearchKeywords(qParameter);
       }
     });

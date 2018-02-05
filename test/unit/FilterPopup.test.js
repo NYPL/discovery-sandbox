@@ -10,20 +10,14 @@ describe('FilterPopup', () => {
     // Since this is a shallow render, the component itself is not mounted. The `js` flag
     // becomes true when the component is mounted on the client-side so we know that
     // javascript is enabled.
-    it('should not render a open/close buttons but <a>s instead', () => {
-      const component = shallow(<FilterPopup />);
+    it('should not render an open button but an <a> instead', () => {
+      const component = shallow(<FilterPopup totalResults={1} />);
 
       expect(component.state('js')).to.equal(false);
-      // The Apply and Clear buttons should still be rendered:
-      expect(component.find('button').length).to.equal(3);
       // These tests will need to be updated when the DOM structure gets updated.
-      // The second <a> element is the no-js 'cancel' element for the "smart" no-js solution.
       expect(component.find('a').at(0).prop('className'))
-        .to.equal('cancel-no-js');
-      expect(component.find('a').at(0).prop('href')).to.equal('#');
-      // expect(component.find('a').at(1).prop('className')).to.equal('cancel-no-js');
-      // expect(component.find('a').at(2).prop('className'))
-      //   .to.equal('popup-btn-close nypl-x-close-button');
+        .to.equal('popup-btn-open nypl-primary-button');
+      expect(component.find('a').at(0).prop('href')).to.equal('#popup-no-js');
     });
 
     it('should have specific "no-js" id and class', () => {
@@ -49,7 +43,7 @@ describe('FilterPopup', () => {
     it('should render open/close buttons', () => {
       expect(component.state('js')).to.equal(true);
       // All buttons should be rendered
-      expect(component.find('button').length).to.equal(3);
+      expect(component.find('button').length).to.equal(6);
       expect(component.find('button').at(0).prop('className'))
         .to.equal('nypl-basic-button clear-filters-button');
       // expect(component.find('button').at(1).prop('name')).to.equal('Clear-Filters');
@@ -153,7 +147,7 @@ describe('FilterPopup', () => {
     });
 
     it('should clear all the selected filters in the state.', () => {
-      const clearFiltersButton = component.find('.clear-filters-button');
+      const clearFiltersButton = component.find('.clear-filters-button').at(0);
 
       clearFiltersButton.simulate('click');
       expect(component.state('selectedFilters')).to.deep.equal(emptySelectedFilters);
@@ -200,7 +194,7 @@ describe('FilterPopup', () => {
     });
 
     it('should stop submitting and the function of submitting returns false', () => {
-      const submitFormButton = component.find('.apply-button');
+      const submitFormButton = component.find('.apply-button').at(0);
 
       expect(component.find('.nypl-form-error').length).to.equal(0);
 
@@ -210,7 +204,7 @@ describe('FilterPopup', () => {
     });
 
     it('should render a div for error messages', () => {
-      const submitFormButton = component.find('.apply-button');
+      const submitFormButton = component.find('.apply-button').at(0);
 
       expect(component.find('.nypl-form-error').length).to.equal(0);
 

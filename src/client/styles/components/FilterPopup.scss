@@ -28,7 +28,6 @@
   }
   .popup-btn-open {
     float: right;
-    border: 1px solid #776e64;
     display: block;
     text-decoration: none;
     margin: 0 0 25px;
@@ -51,6 +50,11 @@
 
   a.popup-btn-open {
     padding-top: 3px;
+
+    &:hover {
+      color: #176e91;
+      border: 1px solid #176e91;
+    }
   }
 
   svg {
@@ -85,6 +89,7 @@
     border-bottom: 1px solid;
     border-top: 1px solid;
     text-align: right;
+    display: none;
 
     .clear-filters-button {
       display: none;
@@ -117,6 +122,11 @@
     padding: 0 15px;
   }
 
+  a.cancel-button {
+    padding: 6px 15px;
+    -webkit-appearance: initial;
+  }
+
   .cancel-button,
   .apply-button {
     background: #fff;
@@ -131,7 +141,7 @@
 
     &:hover {
       background-color: #1b7fa7;
-      border: 0.04167rem solid #1b7fa7;
+      border: 1px solid #1b7fa7;
       color: #fff;
 
       svg {
@@ -159,6 +169,17 @@
     position: fixed;
   }
 
+  &#popup-no-js:target {
+    display: inline-block;
+    opacity: 1;
+    visibility: visible;
+
+    form,
+    .filter-action-buttons {
+      display: block;
+    }
+  }
+
   .popup,
   .popup-no-js {
     background: #efedeb;
@@ -171,6 +192,11 @@
 
     @include min-screen(966px) {
       width: 52rem;
+    }
+
+    &.collapse {
+      visibility: visible;
+      max-height: 3000px;
     }
   }
 
@@ -215,6 +241,18 @@
   svg {
     @include transition-list(all 0.1s ease-in 0s);
   }
+
+  a.clear-filters-button {
+    -webkit-appearance: initial;
+    color: #d0343a;
+
+    &:hover {
+      border: 1px solid #d0343a;
+      color: #fff;
+      background: #d0343a;
+    }
+  }
+
   .clear-filters-button {
     float: right;
     padding: 7px 16px;
@@ -255,6 +293,14 @@
 .nypl-popup-container.active {
   .nypl-popup-filter-overlay {
     z-index: 1000 !important;
+  }
+
+  form {
+    display: block;
+  }
+
+  .filter-action-buttons {
+    display: block;
   }
 }
 
@@ -309,6 +355,8 @@
   padding: 0 1px;
 
   form {
+    display: none;
+
     & > fieldset {
       margin-bottom: 0;
     }
