@@ -23,13 +23,13 @@ const ItemTable = ({ items, bibId, getRecord, id, searchKeywords }) => {
       <tbody>
         {
           items.map((item, i) =>
-            <ItemTableRow
+            (<ItemTableRow
               key={i}
               item={item}
               bibId={bibId}
               getRecord={getRecord}
               searchKeywords={searchKeywords}
-            />
+            />),
           )
         }
       </tbody>

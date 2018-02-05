@@ -6,11 +6,11 @@ import { shallow, mount } from 'enzyme';
 import axios from 'axios';
 import sinon from 'sinon';
 
-const mock = new MockAdapter(axios);
-
-import { basicQuery } from '../../src/app/utils/utils.js';
+import { basicQuery } from '../../src/app/utils/utils';
 import Sorter from '../../src/app/components/Sorter/Sorter';
 import appConfig from '../../appConfig';
+
+const mock = new MockAdapter(axios);
 
 describe('Sorter', () => {
   describe('Default - no javascript', () => {
@@ -35,8 +35,6 @@ describe('Sorter', () => {
 
     it('should have default state', () => {
       expect(component.state('sortValue')).to.equal('relevance');
-      expect(component.state('sortLabel')).to.equal('relevance');
-      expect(component.state('className')).to.equal('');
       // Above suite tests for the default false since this one is the mounted component.
       expect(component.state('js')).to.equal(true);
     });
@@ -87,7 +85,6 @@ describe('Sorter', () => {
 
     it('should not be able to find the sortBy prop but still render the default label', () => {
       expect(component.state('sortValue')).to.equal('some_other_value');
-      expect(component.state('sortLabel')).to.equal('relevance');
     });
   });
 
@@ -98,16 +95,13 @@ describe('Sorter', () => {
       const searchKeywords = 'harry potter';
       const sortBy = 'title_asc';
       const field = 'title';
-      component = mount(
-        <Sorter sortBy={sortBy} searchKeywords={searchKeywords} field={field} />
-      );
+      component = mount(<Sorter sortBy={sortBy} searchKeywords={searchKeywords} field={field} />);
     });
 
     it('should have updated state based on sortBy prop', () => {
       expect(component.find('input').length).to.equal(0);
 
       expect(component.state('sortValue')).to.equal('title_asc');
-      expect(component.state('sortLabel')).to.equal('title (a - z)');
     });
 
     it('should have title as the selected option', () => {
@@ -131,7 +125,7 @@ describe('Sorter', () => {
         createAPIQuery = basicQuery({});
         component = mount(
           <Sorter createAPIQuery={createAPIQuery} updateIsLoadingState={() => {}} />,
-          { context: { router: { createHref: () => {}, push: () => {} } } }
+          { context: { router: { createHref: () => {}, push: () => {} } } },
         );
         mock
           .onGet(`${appConfig.baseUrl}/api?q=&sort=title&sort_direction=desc`)
@@ -147,14 +141,11 @@ describe('Sorter', () => {
         axiosSpy = sinon.spy(axios, 'get');
 
         expect(component.state('sortValue')).to.equal('relevance');
-        expect(component.state('sortLabel')).to.equal('relevance');
 
         component.find('select').simulate('change', { target: { value: 'title_desc' } });
 
         expect(axiosSpy.callCount).to.equal(1);
         expect(component.state('sortValue')).to.equal('title_desc');
-        // This gets updated on a re-render.
-        expect(component.state('sortLabel')).to.equal('title_desc');
       });
     });
   });
@@ -171,7 +162,7 @@ describe('Sorter', () => {
 
       component = mount(
         <Sorter createAPIQuery={createAPIQuery} updateIsLoadingState={updateIsLoadingState} />,
-        { context: { router: { createHref: () => {}, push: () => {} } } }
+        { context: { router: { createHref: () => {}, push: () => {} } } },
       );
       mock
         .onGet(`${appConfig.baseUrl}/api?q=&sort=date&sort_direction=desc`)

@@ -37,11 +37,12 @@ history.listen((location) => {
 
   if (action === 'POP' && search) {
     ajaxCall(`${appConfig.baseUrl}/api${decodeURI(search)}`, (response) => {
-      if (response.data.filters && response.data.searchResults) {
-        const selectedFilters = destructureFilters(urlFilters, response.data.filters);
+      const { data } = response;
+      if (data.filters && data.searchResults) {
+        const selectedFilters = destructureFilters(urlFilters, data.filters);
         Actions.updateSelectedFilters(selectedFilters);
-        Actions.updateFilters(response.data.filters);
-        Actions.updateSearchResults(response.data.searchResults);
+        Actions.updateFilters(data.filters);
+        Actions.updateSearchResults(data.searchResults);
         if (qParameter) Actions.updateSearchKeywords(qParameter);
       }
     });
@@ -59,10 +60,11 @@ class App extends React.Component {
   }
 
   componentWillMount() {
-    if (!this.state.data.searchResults) {
-      ajaxCall(`${appConfig.baseUrl}/api?q=${this.state.data.searchKeywords}`, (response) => {
+    const { data } = this.state;
+    if (!data.searchResults) {
+      ajaxCall(`${appConfig.baseUrl}/api?q=${data.searchKeywords}`, (response) => {
         Actions.updateSearchResults(response.data.searchResults);
-        Actions.updateSearchKeywords(this.state.data.searchKeywords);
+        Actions.updateSearchKeywords(data.searchKeywords);
       });
     }
   }

@@ -83,8 +83,7 @@ class FilterPopup extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    // This check is to make sure it only focus after hitting submit and states
-    // changed
+    // This check is to make sure it only focus after hitting submit and states changed
     if (prevState.raisedErrors !== this.state.raisedErrors) {
       if (this.refs['nypl-filter-error']) {
         ReactDOM.findDOMNode(this.refs['nypl-filter-error']).focus();
@@ -101,7 +100,7 @@ class FilterPopup extends React.Component {
       selectedFilters[filterId] =
         _reject(
           selectedFilters[filterId],
-          (selectedFilter) => selectedFilter.value === filter.value
+          selectedFilter => selectedFilter.value === filter.value,
         );
     }
 
@@ -124,11 +123,11 @@ class FilterPopup extends React.Component {
 
   /*
    * getRaisedErrors(errors)
-   * There's a set list of inputs in the filter form. If the key errors from the form
-   * are found in the set list, it will render those errors. This is meant to be an
-   * aggregate list that is displayed at the top of the form.
-   * @param {Array} errors - An array of the objects with key/value pair of input elements in the
-   *   filter form that have incorrect input.
+   * There's a set list of inputs in the filter form. If the key errors from the form are found
+   * in the set list, it will render those errors. This is meant to be an aggregate list that is
+   * displayed at the top of the form.
+   * @param {Array} errors - An array of the objects with key/value pair of
+   *  input elements in the filter form that have incorrect input.
    * @return {Array}
    */
   getRaisedErrors(errors) {
@@ -144,7 +143,8 @@ class FilterPopup extends React.Component {
     _map(errors, (val, key) => {
       if (val.name && val.value) {
         const anchorTag = (this.state.js) ?
-          <a href={`#${headlineError[val.name]}`}>{val.value}</a> : <span>{val.value}</span>;
+          <a href={`#${headlineError[val.name]}`}>{val.value}</a> :
+          <span>{val.value}</span>;
 
         errorArray.push(<li key={key}>{anchorTag}</li>);
       }
@@ -191,7 +191,8 @@ class FilterPopup extends React.Component {
       return false;
     }
 
-    const apiQuery = this.props.createAPIQuery({ selectedFilters: this.state.selectedFilters });
+    const apiQuery =
+      this.props.createAPIQuery({ selectedFilters: this.state.selectedFilters });
 
     this.closeForm(e);
     this.props.updateIsLoadingState(true);
@@ -233,7 +234,7 @@ class FilterPopup extends React.Component {
           dateBefore: '',
         },
       },
-      () => { this.submitForm(e); }
+      () => { this.submitForm(e); },
     );
   }
 
@@ -315,8 +316,8 @@ class FilterPopup extends React.Component {
           title="reset"
         />
       </button>);
-    const openPopupButton = js ?
-      (<button
+    const openPopupButton = js ? (
+      <button
         className="popup-btn-open nypl-primary-button"
         onClick={() => this.openForm()}
         aria-haspopup="true"
@@ -335,7 +336,7 @@ class FilterPopup extends React.Component {
         ref="filterOpen"
       >
         Refine Search
-      </a>);
+       </a>);
     const { searchKeywords } = this.props;
     const materialTypeFilters = _findWhere(filters, { id: 'materialType' });
     const languageFilters = _findWhere(filters, { id: 'language' });
@@ -371,13 +372,14 @@ class FilterPopup extends React.Component {
         </div>
         {(!showForm && !!(totalResults && totalResults !== 0)) && openPopupButton}
         {showForm && (
-          <div className="filter-action-buttons">
-            {resetButton('filterResetBtn')}
-            <div className="cancel-apply-buttons">
-              {cancelButton}
-              {applyButton}
-            </div>
-          </div>)
+          <ul
+            className="filter-action-buttons"
+            aria-label="Refine Search Options"
+          >
+            <li>{resetButton('filterResetBtn')}</li>
+            <li>{cancelButton}</li>
+            <li>{applyButton}</li>
+          </ul>)
         }
         <div
           className={
@@ -430,13 +432,14 @@ class FilterPopup extends React.Component {
                   onFilterClick={this.onFilterClick}
                 />
 
-                <div className="filter-action-buttons">
-                  {resetButton()}
-                  <div className="cancel-apply-buttons">
-                    {cancelButton}
-                    {applyButton}
-                  </div>
-                </div>
+                <ul
+                  className="filter-action-buttons bottom-action-row"
+                  aria-label="Refine Search Options"
+                >
+                  <li>{resetButton()}</li>
+                  <li>{cancelButton}</li>
+                  <li>{applyButton}</li>
+                </ul>
               </fieldset>
             </form>
           </div>
@@ -447,7 +450,6 @@ class FilterPopup extends React.Component {
 }
 
 FilterPopup.propTypes = {
-  location: PropTypes.object,
   filters: PropTypes.array,
   createAPIQuery: PropTypes.func,
   updateIsLoadingState: PropTypes.func,
