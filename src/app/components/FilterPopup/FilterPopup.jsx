@@ -266,7 +266,10 @@ class FilterPopup extends React.Component {
   }
 
   render() {
-    const { totalResults } = this.props;
+    const {
+      totalResults,
+      searchKeywords
+    } = this.props;
     const {
       showForm,
       js,
@@ -303,6 +306,7 @@ class FilterPopup extends React.Component {
     ) :
       (<a
         type="button"
+        role="button"
         href="#"
         onClick={this.closeForm}
         aria-expanded={!showForm}
@@ -312,7 +316,7 @@ class FilterPopup extends React.Component {
         Cancel
       </a>);
     const resetButton = (ref = '') => (
-      <button
+      js ? (<button
         type="button"
         name="Clear-Filters"
         className="nypl-basic-button clear-filters-button"
@@ -325,7 +329,24 @@ class FilterPopup extends React.Component {
           preserveAspectRatio="xMidYMid meet"
           title="reset"
         />
-      </button>);
+      </button>) :
+        (<a
+          href={`${appConfig.baseUrl}/search?q=${searchKeywords}`}
+          type="button"
+          role="button"
+          name="Clear-Filters"
+          className="nypl-basic-button clear-filters-button"
+          onClick={this.clearFilters}
+          ref={ref}
+        >
+          Clear filters
+          <FilterResetIcon
+            className="nypl-icon"
+            preserveAspectRatio="xMidYMid meet"
+            title="reset"
+          />
+        </a>)
+    );
     const openPopupButton = js ? (
       <button
         className="popup-btn-open nypl-primary-button"
@@ -344,10 +365,10 @@ class FilterPopup extends React.Component {
         aria-expanded={false}
         aria-controls="filter-popup-menu"
         ref="filterOpen"
+        role="button"
       >
         Refine Search
        </a>);
-    const { searchKeywords } = this.props;
     const materialTypeFilters = _findWhere(filters, { id: 'materialType' });
     const languageFilters = _findWhere(filters, { id: 'language' });
     const dateAfterFilterValue =
@@ -381,16 +402,6 @@ class FilterPopup extends React.Component {
           <p>Add filters to narrow and define your search</p>
         </div>
         {(!showForm && !!(totalResults && totalResults !== 0)) && openPopupButton}
-        {/*showForm && (
-          <ul
-            className="filter-action-buttons"
-            aria-label="Refine Search Options"
-          >
-            <li>{resetButton('filterResetBtn')}</li>
-            <li>{cancelButton}</li>
-            <li>{applyButton}</li>
-          </ul>)
-        */}
         <div
           className={
             'nypl-basic-modal-container nypl-popup-container popup-container ' +
@@ -483,6 +494,7 @@ FilterPopup.defaultProps = {
   updateIsLoadingState: () => {},
   updateDropdownState: () => {},
   totalResults: 0,
+  searchKeywords: '',
 };
 
 FilterPopup.contextTypes = {

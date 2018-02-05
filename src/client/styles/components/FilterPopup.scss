@@ -237,6 +237,18 @@
   svg {
     @include transition-list(all 0.1s ease-in 0s);
   }
+
+  a.clear-filters-button {
+    -webkit-appearance: initial;
+    color: #d0343a;
+
+    &:hover {
+      border: 1px solid #d0343a;
+      color: #fff;
+      background: #d0343a;
+    }
+  }
+
   .clear-filters-button {
     float: right;
     padding: 7px 16px;
