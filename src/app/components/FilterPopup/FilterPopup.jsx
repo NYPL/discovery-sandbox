@@ -290,7 +290,7 @@ class FilterPopup extends React.Component {
           iconId="filterApply"
         />
       </button>);
-    const cancelButton = (
+    const cancelButton = js ? (
       <button
         type="button"
         onClick={this.closeForm}
@@ -300,7 +300,17 @@ class FilterPopup extends React.Component {
       >
         Cancel
       </button>
-    );
+    ) :
+      (<a
+        type="button"
+        href="#"
+        onClick={this.closeForm}
+        aria-expanded={!showForm}
+        aria-controls="filter-popup-menu"
+        className="nypl-primary-button cancel-button"
+      >
+        Cancel
+      </a>);
     const resetButton = (ref = '') => (
       <button
         type="button"
@@ -371,7 +381,7 @@ class FilterPopup extends React.Component {
           <p>Add filters to narrow and define your search</p>
         </div>
         {(!showForm && !!(totalResults && totalResults !== 0)) && openPopupButton}
-        {showForm && (
+        {/*showForm && (
           <ul
             className="filter-action-buttons"
             aria-label="Refine Search Options"
@@ -380,7 +390,7 @@ class FilterPopup extends React.Component {
             <li>{cancelButton}</li>
             <li>{applyButton}</li>
           </ul>)
-        }
+        */}
         <div
           className={
             'nypl-basic-modal-container nypl-popup-container popup-container ' +
@@ -391,7 +401,6 @@ class FilterPopup extends React.Component {
           aria-labelledby="filter-title"
           aria-describedby="modal-description"
         >
-          {!js && (<a className="cancel-no-js" href="#"></a>)}
           <p id="modal-description" className="nypl-screenreader-only">Filter search results</p>
           <div
             id="filter-popup-menu"
@@ -408,6 +417,14 @@ class FilterPopup extends React.Component {
               method="POST"
               onSubmit={() => this.submitForm()}
             >
+              <ul
+                className="filter-action-buttons"
+                aria-label="Refine Search Options"
+              >
+                <li>{resetButton('filterResetBtn')}</li>
+                <li>{cancelButton}</li>
+                <li>{applyButton}</li>
+              </ul>
               <fieldset className="nypl-fieldset">
                 <FieldsetList
                   legend="Format"
