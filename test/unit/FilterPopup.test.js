@@ -33,7 +33,7 @@ describe('FilterPopup', () => {
     let component;
 
     before(() => {
-      component = mount(<FilterPopup />);
+      component = mount(<FilterPopup totalResults={1} />);
     });
 
     it('should have a .filter-container class for the wrapper', () => {
@@ -43,12 +43,12 @@ describe('FilterPopup', () => {
     it('should render open/close buttons', () => {
       expect(component.state('js')).to.equal(true);
       // All buttons should be rendered
-      expect(component.find('button').length).to.equal(6);
+      expect(component.find('button').length).to.equal(7);
       expect(component.find('button').at(0).prop('className'))
-        .to.equal('nypl-basic-button clear-filters-button');
+        .to.equal('popup-btn-open nypl-primary-button');
       // expect(component.find('button').at(1).prop('name')).to.equal('Clear-Filters');
       expect(component.find('button').at(2).prop('className'))
-        .to.equal('nypl-primary-button apply-button');
+        .to.equal('nypl-primary-button cancel-button');
     });
 
     it('should not render the "no-js" <a> element', () => {

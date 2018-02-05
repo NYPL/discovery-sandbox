@@ -125,7 +125,6 @@ class SearchResultsPage extends React.Component {
                     updateDropdownState={this.updateDropdownState}
                     totalResults={totalResults}
                   />
-
                   {!this.state.dropdownOpen &&
                     <SelectedFilters
                       selectedFilters={selectedFilters}
@@ -133,7 +132,6 @@ class SearchResultsPage extends React.Component {
                       updateIsLoadingState={this.updateIsLoadingState}
                     />
                   }
-
                 </div>
               </div>
             </div>
@@ -180,14 +178,12 @@ class SearchResultsPage extends React.Component {
               >
                 {
                   !!(results && results.length !== 0) &&
-                  (
-                    <ResultList
+                    (<ResultList
                       results={results}
                       isLoading={isLoading}
                       searchKeywords={searchKeywords}
                       updateIsLoadingState={this.updateIsLoadingState}
-                    />
-                  )
+                    />)
                 }
 
                 {

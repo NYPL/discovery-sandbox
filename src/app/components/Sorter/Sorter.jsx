@@ -65,11 +65,10 @@ class Sorter extends React.Component {
     ajaxCall(`${appConfig.baseUrl}/api?${apiQuery}`, (response) => {
       Actions.updateSearchResults(response.data.searchResults);
       Actions.updateSortBy(sortBy);
-      this.context.router.push(`${appConfig.baseUrl}/search?${apiQuery}`);
-      setTimeout(
-        () => { this.props.updateIsLoadingState(false); },
-        500,
-      );
+      setTimeout(() => {
+        this.props.updateIsLoadingState(false);
+        this.context.router.push(`${appConfig.baseUrl}/search?${apiQuery}`);
+      }, 500);
     });
   }
 
@@ -80,8 +79,8 @@ class Sorter extends React.Component {
    * @return {HTML Element}
    */
   renderResultsSort() {
-    return sortingOpts.map((d, i) => (
-      <option value={d.val} key={i}>
+    return sortingOpts.map(d => (
+      <option value={d.val} key={d.val}>
         {d.label}
       </option>
     ));

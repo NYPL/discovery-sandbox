@@ -20,7 +20,7 @@ class LoadingLayer extends React.Component {
           ref={this.props.childRef}
           tabIndex={0}
         >
-          <div className="loadingLayer-layer"></div>
+          <div className="loadingLayer-layer" />
           <div className="loadingLayer-texts">
             <span id="loading-animation" className="loadingLayer-texts-loadingWord">
               Loading...
@@ -32,10 +32,10 @@ class LoadingLayer extends React.Component {
               {this.props.title}
             </span>
             <div className="loadingDots">
-              <span></span>
-              <span></span>
-              <span></span>
-              <span></span>
+              <span />
+              <span />
+              <span />
+              <span />
             </div>
           </div>
         </div>

@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
 import {
   extend as _extend,
   findWhere as _findWhere,
 } from 'underscore';
+
 import {
   getUpdatedFilterValues,
 } from '../../utils/utils';
@@ -56,8 +56,8 @@ class FieldsetList extends React.Component {
         {legend && <legend><h3>{legend}</h3></legend>}
         <ul className="nypl-generic-checkbox nypl-generic-columns">
           {
-            values.map((filter, i) => (
-              <li className="nypl-generic-checkbox" key={i}>
+            values.map(filter => (
+              <li className="nypl-generic-checkbox" key={filter.value}>
                 <input
                   id={`${filter.label}-label`}
                   type="checkbox"
@@ -80,14 +80,11 @@ class FieldsetList extends React.Component {
 
 FieldsetList.propTypes = {
   legend: PropTypes.string,
-  filter: PropTypes.object,
   filterId: PropTypes.string,
   onFilterClick: PropTypes.func,
-  selectedFilters: PropTypes.array,
 };
 
 FieldsetList.defaultProps = {
-  filter: {},
   onFilterClick: () => {},
 };
 

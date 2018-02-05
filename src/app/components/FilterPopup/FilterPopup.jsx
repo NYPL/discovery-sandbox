@@ -268,7 +268,7 @@ class FilterPopup extends React.Component {
   render() {
     const {
       totalResults,
-      searchKeywords
+      searchKeywords,
     } = this.props;
     const {
       showForm,
