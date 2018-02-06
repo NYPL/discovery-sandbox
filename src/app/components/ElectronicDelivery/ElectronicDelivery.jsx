@@ -1,3 +1,4 @@
+/* global window */
 import React from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
@@ -191,7 +192,6 @@ class ElectronicDelivery extends React.Component {
     }
 
     const fullUrl = encodeURIComponent(window.location.href);
-
     window.location.replace(`${appConfig.loginUrl}?redirect_uri=${fullUrl}`);
 
     return false;

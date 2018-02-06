@@ -22,9 +22,9 @@ const ItemTable = ({ items, bibId, getRecord, id, searchKeywords }) => {
       </thead>
       <tbody>
         {
-          items.map((item, i) =>
+          items.map(item =>
             (<ItemTableRow
-              key={i}
+              key={item.id}
               item={item}
               bibId={bibId}
               getRecord={getRecord}

@@ -180,7 +180,7 @@ class SelectedFilters extends React.Component {
           aria-label="Click to remove applied filters."
         >
           {
-            filtersToRender.map((filter, i) => {
+            filtersToRender.map((filter) => {
               let filterBtn = (
                 <button
                   className="nypl-unset-filter"
@@ -218,11 +218,11 @@ class SelectedFilters extends React.Component {
                 );
               }
 
-              return (<li key={i}>{filterBtn}</li>);
+              return (<li key={filter.value}>{filterBtn}</li>);
             })
           }
           {
-            datesToRender.map((filter, i) => {
+            datesToRender.map((filter) => {
               const singleDate = datesToRender.length === 1;
               const dateClass = filter.field;
               let singleDateLabel = '';
