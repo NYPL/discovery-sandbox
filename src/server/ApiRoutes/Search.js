@@ -27,7 +27,7 @@ const nyplApiClientCall = query =>
     .then(client =>
       client.get(`/discovery/resources${query}`, { cache: false }));
 
-function search(searchKeywords, page, sortBy, order, field, filters, cb, errorcb) {
+function search(searchKeywords = '', page, sortBy, order, field, filters, cb, errorcb) {
   const apiQuery = createAPIQuery({
     searchKeywords,
     sortBy: sortBy ? `${sortBy}_${order}` : '',
@@ -36,7 +36,7 @@ function search(searchKeywords, page, sortBy, order, field, filters, cb, errorcb
     page,
   });
 
-  const aggregationQuery = '/aggregations';
+  const aggregationQuery = `/aggregations?q=${searchKeywords}`;
   const queryString = `?${apiQuery}&per_page=50`;
 
   // Need to get both results and aggregations before proceeding.
