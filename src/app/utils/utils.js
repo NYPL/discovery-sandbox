@@ -336,7 +336,7 @@ const getUpdatedFilterValues = (props) => {
     filter,
     selectedFilters,
   } = props;
-  const filterValues = filter.values && filter.values.length ? filter.values : [];
+  const filterValues = filter && filter.values && filter.values.length ? filter.values : [];
   // Just want to add the `selected` property here.
   const defaultFilterValues = filterValues.map(value => _extend({ selected: false }, value));
   let updatedFilterValues = defaultFilterValues;

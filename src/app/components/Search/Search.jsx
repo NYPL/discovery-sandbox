@@ -100,12 +100,10 @@ class Search extends React.Component {
       Actions.updateSortBy('relevance');
       Actions.updatePage('1');
 
-      setTimeout(
-        () => { this.props.updateIsLoadingState(false); },
-        500,
-      );
-
-      this.context.router.push(`${appConfig.baseUrl}/search?${apiQuery}`);
+      setTimeout(() => {
+        this.props.updateIsLoadingState(false);
+        this.context.router.push(`${appConfig.baseUrl}/search?${apiQuery}`);
+      }, 500);
     });
   }
 

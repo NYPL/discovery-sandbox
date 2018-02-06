@@ -1,3 +1,4 @@
+/* global window */
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
@@ -38,19 +39,18 @@ class HoldConfirmation extends React.Component {
     }
 
     const fullUrl = encodeURIComponent(window.location.href);
-
     window.location.replace(`${appConfig.loginUrl}?redirect_uri=${fullUrl}`);
 
     return false;
   }
 
   /**
-   * goRestart(e)
+   * backToHome(e)
    * @param {event}
    * Renders the route back to home page for single page application implementation.
    *
    */
-  goRestart(e) {
+  backToHome(e) {
     e.preventDefault();
 
     trackDiscovery('Discovery Search', 'New Search');
@@ -58,12 +58,12 @@ class HoldConfirmation extends React.Component {
   }
 
   /**
-   * goSearchResults(e)
+   * goToSearchResults(e)
    * @param {event}
    * Renders the route back to search results page.
    *
    */
-  goSearchResults(e) {
+  goToSearchResults(e) {
     e.preventDefault();
 
     trackDiscovery('Discovery Search', 'Existing Search');
@@ -132,7 +132,7 @@ class HoldConfirmation extends React.Component {
     if (this.props.location.query.fromUrl) {
       return (
         <span id="go-to-shared-catalog"> You may also try your search in
-          our <Link to={`${appConfig.baseUrl}/`} onClick={e => this.goRestart(e)}>Shared
+          our <Link to={`${appConfig.baseUrl}/`} onClick={e => this.backToHome(e)}>Shared
           Collection Catalog</Link>.
         </span>
       );
@@ -149,7 +149,7 @@ class HoldConfirmation extends React.Component {
         <Link
           id="start-new-search"
           to={`${appConfig.baseUrl}/`}
-          onClick={e => this.goRestart(e)}
+          onClick={e => this.backToHome(e)}
         >
           {text}
         </Link>.
@@ -198,7 +198,7 @@ class HoldConfirmation extends React.Component {
         // We use this.props.location.query.searchKeywords here for the query from
         // the URL to deal with no js situation.
         to={`${appConfig.baseUrl}/search?q=${this.props.location.query.searchKeywords}`}
-        onClick={e => this.goSearchResults(e)}
+        onClick={e => this.goToSearchResults(e)}
       >
         Go back to your search results
       </Link> or </span>
