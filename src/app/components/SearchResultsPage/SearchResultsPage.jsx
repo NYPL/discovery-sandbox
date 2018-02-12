@@ -51,10 +51,12 @@ class SearchResultsPage extends React.Component {
   checkForSelectedFilters() {
     const { selectedFilters } = this.props;
 
-    if (selectedFilters.dateBefore !== '' ||
-      selectedFilters.dateAfter !== '' ||
-      (selectedFilters.language && selectedFilters.language.length) ||
-      (selectedFilters.materialType && selectedFilters.materialType.length)
+    if (selectedFilters &&
+      (selectedFilters.dateBefore !== '' ||
+        selectedFilters.dateAfter !== '' ||
+        (selectedFilters.language && selectedFilters.language.length) ||
+        (selectedFilters.materialType && selectedFilters.materialType.length)
+      )
     ) {
       if (!this.state.dropdownOpen) {
         return true;
