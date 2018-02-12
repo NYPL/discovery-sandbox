@@ -10,6 +10,7 @@
   .nypl-form-error {
     margin: 10px 0;
     padding-left: 0;
+    display: none;
 
     &.filter-error-box {
       margin: 10px 0px;
@@ -285,6 +286,10 @@
 }
 
 .nypl-popup-container.active {
+  .nypl-form-error {
+    display: block;
+  }
+
   .nypl-popup-filter-overlay {
     z-index: 1000 !important;
   }
