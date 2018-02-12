@@ -1,12 +1,38 @@
-.nypl-full-width-wrapper.filter-page {
-  padding-bottom: 0;
+.form-full-width {
+  border-bottom: 1px solid;
+  border-top: 1px solid;
+
+  &.bottom-action-row {
+    border-bottom: none;
+  }
+
+  .nypl-full-width-wrapper {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
 
   .nypl-column-three-quarters {
-    margin-bottom: -1px;
+    margin-bottom: 0;
+  }
+}
+
+.nypl-full-width-wrapper {
+  &.filter-page {
+    padding-bottom: 0;
+
+    .nypl-column-three-quarters {
+      margin-bottom: -1px;
+    }
   }
 }
 
 .filter-container {
+  > .nypl-full-width-wrapper {
+    .nypl-column-three-quarters {
+      margin-bottom: -1px;
+    }
+  }
+
   .nypl-form-error {
     margin: 10px 0;
     padding-left: 0;
@@ -66,7 +92,7 @@
   .filter-text {
     float: left;
     width: 100%;
-    margin-top: 100px;
+    // margin-top: 100px;
 
     @include min-screen($xtrasmall-breakpoint) {
       width: 70%;
@@ -87,29 +113,34 @@
     float: left;
     width: 100%;
     padding: 15px 0 0;
-    border-bottom: 1px solid;
-    border-top: 1px solid;
-    text-align: right;
     display: none;
+    margin-bottom: 0;
 
-    .clear-filters-button {
-      display: none;
-
-      @include min-screen($xtrasmall-breakpoint) {
-        display: inline-block;
-      }
+    @include min-screen($xtrasmall-breakpoint) {
+      text-align: right;
+      margin-bottom: 15px;
     }
 
     li {
       display: inline-block;
+      margin-bottom: 0;
+      width: 100%;
 
       &:first-child() {
         float: left;
       }
-    }
 
-    &.bottom-action-row {
-      margin-bottom: 0;
+      button {
+        margin-bottom: 20px;
+      }
+
+      @include min-screen($xtrasmall-breakpoint) {
+        width: auto;
+
+        button {
+          margin-bottom: 0;
+        }
+      }
     }
   }
 
@@ -255,13 +286,13 @@
   }
 
   .clear-filters-button {
-    float: right;
+    // float: right;
     padding: 7px 16px;
     margin-bottom: 20px;
     @include border-radius(5px);
 
     @include min-screen($xtrasmall-breakpoint) {
-      float: left;
+      // float: left;
       margin-bottom: 0;
     }
 
