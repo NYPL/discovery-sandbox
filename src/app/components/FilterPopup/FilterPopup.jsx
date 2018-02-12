@@ -403,11 +403,17 @@ class FilterPopup extends React.Component {
 
     return (
       <div className="filter-container">
-        <div className="filter-text">
-          <h2>Refine your search</h2>
-          <p>Add filters to narrow and define your search</p>
+        <div className="nypl-full-width-wrapper">
+          <div className="nypl-row">
+            <div className="nypl-column-three-quarters">
+              <div className="filter-text">
+                <h2>Refine your search</h2>
+                <p>Add filters to narrow and define your search</p>
+              </div>
+              {(!showForm && !!(totalResults && totalResults !== 0)) && openPopupButton}
+            </div>
+          </div>
         </div>
-        {(!showForm && !!(totalResults && totalResults !== 0)) && openPopupButton}
         <div
           className={
             'nypl-basic-modal-container nypl-popup-container popup-container ' +
@@ -434,46 +440,69 @@ class FilterPopup extends React.Component {
               method="POST"
               onSubmit={() => this.submitForm()}
             >
-              <ul
-                className="filter-action-buttons"
-                aria-label="Refine Search Options"
-              >
-                <li>{resetButton('filterResetBtn')}</li>
-                <li>{cancelButton}</li>
-                <li>{applyButton}</li>
-              </ul>
+              <div className="form-full-width">
+                <div className="nypl-full-width-wrapper">
+                  <div className="nypl-row">
+                    <div className="nypl-column-three-quarters">
+                      <ul
+                        className="filter-action-buttons"
+                        aria-label="Refine Search Options"
+                      >
+                        <li>{resetButton('filterResetBtn')}</li>
+                        <li>{cancelButton}</li>
+                        <li>{applyButton}</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
               <fieldset className="nypl-fieldset">
-                <FieldsetList
-                  legend="Format"
-                  filterId="materialType"
-                  filter={materialTypeFilters}
-                  selectedFilters={selectedFilters.materialType}
-                  onFilterClick={this.onFilterClick}
-                />
+                <div className="nypl-full-width-wrapper">
+                  <div className="nypl-row">
+                    <div className="nypl-column-three-quarters">
+                      <FieldsetList
+                        legend="Format"
+                        filterId="materialType"
+                        filter={materialTypeFilters}
+                        selectedFilters={selectedFilters.materialType}
+                        onFilterClick={this.onFilterClick}
+                      />
 
-                <FieldsetDate
-                  legend="Date"
-                  selectedFilters={dateSelectedFilters}
-                  onDateFilterChange={this.onDateFilterChange}
-                  submitError={isDateInputError}
-                />
+                      <FieldsetDate
+                        legend="Date"
+                        selectedFilters={dateSelectedFilters}
+                        onDateFilterChange={this.onDateFilterChange}
+                        submitError={isDateInputError}
+                      />
 
-                <FieldsetList
-                  legend="Language"
-                  filterId="language"
-                  filter={languageFilters}
-                  selectedFilters={selectedFilters.language}
-                  onFilterClick={this.onFilterClick}
-                />
+                      <FieldsetList
+                        legend="Language"
+                        filterId="language"
+                        filter={languageFilters}
+                        selectedFilters={selectedFilters.language}
+                        onFilterClick={this.onFilterClick}
+                      />
+                    </div>
+                  </div>
+                </div>
 
-                <ul
-                  className="filter-action-buttons bottom-action-row"
-                  aria-label="Refine Search Options"
-                >
-                  <li>{resetButton()}</li>
-                  <li>{cancelButton}</li>
-                  <li>{applyButton}</li>
-                </ul>
+                <div className="bottom-action-row form-full-width">
+                  <div className="nypl-full-width-wrapper">
+                    <div className="nypl-row">
+                      <div className="nypl-column-three-quarters">
+                        <ul
+                          className="filter-action-buttons"
+                          aria-label="Refine Search Options"
+                        >
+                          <li>{resetButton()}</li>
+                          <li>{cancelButton}</li>
+                          <li>{applyButton}</li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </fieldset>
             </form>
           </div>
