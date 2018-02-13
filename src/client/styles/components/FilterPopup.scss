@@ -92,7 +92,6 @@
   .filter-text {
     float: left;
     width: 100%;
-    // margin-top: 100px;
 
     @include min-screen($xtrasmall-breakpoint) {
       width: 70%;
@@ -229,11 +228,9 @@
   }
 
   .popup {
-    // display: none;
     width: 100%;
 
     &.active {
-      // display: block;
       overflow: hidden;
       -webkit-overflow-scrolling: touch;
     }
@@ -282,13 +279,11 @@
   }
 
   .clear-filters-button {
-    // float: right;
     padding: 7px 16px;
     margin-bottom: 20px;
     @include border-radius(5px);
 
     @include min-screen($xtrasmall-breakpoint) {
-      // float: left;
       margin-bottom: 0;
     }
 
