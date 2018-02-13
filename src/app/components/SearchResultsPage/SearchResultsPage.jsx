@@ -31,6 +31,7 @@ class SearchResultsPage extends React.Component {
 
     this.updateIsLoadingState = this.updateIsLoadingState.bind(this);
     this.updateDropdownState = this.updateDropdownState.bind(this);
+    this.checkForSelectedFilters = this.checkForSelectedFilters.bind(this);
   }
 
   componentDidUpdate() {
@@ -45,6 +46,24 @@ class SearchResultsPage extends React.Component {
 
   updateDropdownState(status) {
     this.setState({ dropdownOpen: status });
+  }
+
+  checkForSelectedFilters() {
+    const { selectedFilters } = this.props;
+
+    if (selectedFilters &&
+      (selectedFilters.dateBefore !== '' ||
+        selectedFilters.dateAfter !== '' ||
+        (selectedFilters.language && selectedFilters.language.length) ||
+        (selectedFilters.materialType && selectedFilters.materialType.length)
+      )
+    ) {
+      if (!this.state.dropdownOpen) {
+        return true;
+      }
+    }
+
+    return false;
   }
 
   render() {
@@ -85,6 +104,7 @@ class SearchResultsPage extends React.Component {
     const apiFilters = filters && filters.itemListElement && filters.itemListElement.length ?
       filters.itemListElement : [];
     const dateFilterErrors = [];
+    const selectedFiltersAvailable = this.checkForSelectedFilters();
 
     if (searchError === 'dateFilterError') {
       dateFilterErrors.push({
@@ -105,7 +125,7 @@ class SearchResultsPage extends React.Component {
           <div className="nypl-page-header">
             <div className="nypl-full-width-wrapper filter-page">
               <div className="nypl-row">
-                <div className="nypl-column-three-quarters">
+                <div className="nypl-column-full">
                   <Breadcrumbs query={searchKeywords} type="search" />
                   <h1 aria-label={headerLabel}>Search Results</h1>
                   <Search
@@ -115,32 +135,38 @@ class SearchResultsPage extends React.Component {
                     updateIsLoadingState={this.updateIsLoadingState}
                     selectedFilters={selectedFilters}
                   />
-                  <FilterPopup
-                    filters={apiFilters}
-                    createAPIQuery={createAPIQuery}
-                    updateIsLoadingState={this.updateIsLoadingState}
-                    selectedFilters={selectedFilters}
-                    searchKeywords={searchKeywords}
-                    raisedErrors={dateFilterErrors}
-                    updateDropdownState={this.updateDropdownState}
-                    totalResults={totalResults}
-                  />
-                  {!this.state.dropdownOpen &&
+                </div>
+              </div>
+            </div>
+            <FilterPopup
+              filters={apiFilters}
+              createAPIQuery={createAPIQuery}
+              updateIsLoadingState={this.updateIsLoadingState}
+              selectedFilters={selectedFilters}
+              searchKeywords={searchKeywords}
+              raisedErrors={dateFilterErrors}
+              updateDropdownState={this.updateDropdownState}
+              totalResults={totalResults}
+            />
+            {selectedFiltersAvailable &&
+              <div className="nypl-full-width-wrapper selected-filters">
+                <div className="nypl-row">
+                  <div className="nypl-column-full">
                     <SelectedFilters
                       selectedFilters={selectedFilters}
                       createAPIQuery={createAPIQuery}
                       updateIsLoadingState={this.updateIsLoadingState}
                     />
-                  }
+                  </div>
                 </div>
               </div>
-            </div>
+            }
           </div>
 
           <div className="nypl-sorter-row">
             <div className="nypl-full-width-wrapper">
               <div className="nypl-row">
-                <div className="nypl-column-three-quarters">
+                <div className="nypl-column-full">
                   <ResultsCount
                     isLoading={isLoading}
                     count={totalResults}
@@ -168,7 +194,7 @@ class SearchResultsPage extends React.Component {
           <div className="nypl-full-width-wrapper">
             <div className="nypl-row">
               <div
-                className="nypl-column-three-quarters"
+                className="nypl-column-full"
                 role="region"
                 id="mainContent"
                 aria-live="polite"

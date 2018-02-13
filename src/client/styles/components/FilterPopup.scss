@@ -1,12 +1,38 @@
-.nypl-full-width-wrapper.filter-page {
-  padding-bottom: 0;
+.form-full-width {
+  border-bottom: 1px solid;
+  border-top: 1px solid;
 
-  .nypl-column-three-quarters {
-    margin-bottom: -1px;
+  &.bottom-action-row {
+    border-bottom: none;
+  }
+
+  .nypl-full-width-wrapper {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
+  .nypl-column-full {
+    margin-bottom: 0;
+  }
+}
+
+.nypl-full-width-wrapper {
+  &.filter-page {
+    padding-bottom: 0;
+
+    .nypl-column-full {
+      margin-bottom: -1px;
+    }
   }
 }
 
 .filter-container {
+  > .nypl-full-width-wrapper {
+    .nypl-column-full {
+      margin-bottom: -1px;
+    }
+  }
+
   .nypl-form-error {
     margin: 10px 0;
     padding-left: 0;
@@ -66,7 +92,6 @@
   .filter-text {
     float: left;
     width: 100%;
-    margin-top: 100px;
 
     @include min-screen($xtrasmall-breakpoint) {
       width: 70%;
@@ -76,6 +101,7 @@
     h2 {
       margin-bottom: 0.5rem;
       margin-top: 1rem;
+      font-size: 1.4375rem;
     }
   }
 
@@ -83,29 +109,34 @@
     float: left;
     width: 100%;
     padding: 15px 0 0;
-    border-bottom: 1px solid;
-    border-top: 1px solid;
-    text-align: right;
     display: none;
+    margin-bottom: 0;
 
-    .clear-filters-button {
-      display: none;
-
-      @include min-screen($xtrasmall-breakpoint) {
-        display: inline-block;
-      }
+    @include min-screen($xtrasmall-breakpoint) {
+      text-align: right;
+      margin-bottom: 15px;
     }
 
     li {
       display: inline-block;
+      margin-bottom: 0;
+      width: 100%;
 
       &:first-child() {
         float: left;
       }
-    }
 
-    &.bottom-action-row {
-      margin-bottom: 0;
+      button {
+        margin-bottom: 20px;
+      }
+
+      @include min-screen($xtrasmall-breakpoint) {
+        width: auto;
+
+        button {
+          margin-bottom: 0;
+        }
+      }
     }
   }
 
@@ -198,11 +229,9 @@
   }
 
   .popup {
-    // display: none;
     width: 100%;
 
     &.active {
-      // display: block;
       overflow: hidden;
       -webkit-overflow-scrolling: touch;
     }
@@ -226,6 +255,7 @@
   .nypl-generic-checkbox {
     label {
       width: 70%;
+      padding-left: 0.65rem;
 
       &::before {
         background: #fff;
@@ -251,13 +281,11 @@
   }
 
   .clear-filters-button {
-    float: right;
     padding: 7px 16px;
     margin-bottom: 20px;
     @include border-radius(5px);
 
     @include min-screen($xtrasmall-breakpoint) {
-      float: left;
       margin-bottom: 0;
     }
 
@@ -310,11 +338,7 @@
 }
 
 .nypl-generic-checkbox > li {
-  margin-left: 0;
-}
-
-.nypl-generic-checkbox input[type="checkbox"] {
-  margin: 0 -7px;
+  margin-left: 5px;
 }
 
 .nypl-generic-columns {
@@ -360,6 +384,7 @@
       margin-bottom: 0;
     }
   }
+
   @include transition-list(max-height .3s ease-in-out);
   height: auto;
 
@@ -383,7 +408,7 @@
     border-bottom: none;
 
     ul {
-      margin-top: 10px;
+      margin-top: 0.6rem;
     }
   }
 

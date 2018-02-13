@@ -4,14 +4,11 @@
   padding: 0;
 
   .nypl-full-width-wrapper {
-    padding: 0 1rem 0 2rem;
-
-    @include min-screen($mobile-breakpoint) {
-      padding-left: 6rem;
-    }
+    padding-top: 0;
+    padding-bottom: 0;
   }
 
-  .nypl-column-three-quarters {
+  .nypl-column-full {
     margin-bottom: 0;
   }
 }

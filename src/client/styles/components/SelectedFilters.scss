@@ -1,8 +1,17 @@
+.nypl-full-width-wrapper.selected-filters {
+  padding-top: 5px;
+  padding-bottom: 0;
+
+  .nypl-column-full {
+    margin-bottom: 0;
+  }
+}
+
 #selected-filters-container {
   padding: 0;
   float: left;
   width: 100%;
-  margin: 10px 0 25px;
+  margin: 0 0 20px;
 
   li {
     list-style: none;
