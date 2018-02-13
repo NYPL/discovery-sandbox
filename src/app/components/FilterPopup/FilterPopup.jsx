@@ -96,12 +96,14 @@ class FilterPopup extends React.Component {
 
     if (filter.selected) {
       selectedFilters[filterId].push(filter);
+      trackDiscovery('Filters - Select', `${filterId} - ${filter.label}`);
     } else {
       selectedFilters[filterId] =
         _reject(
           selectedFilters[filterId],
           selectedFilter => selectedFilter.value === filter.value,
         );
+      trackDiscovery('Filters - Deselect', `${filterId} - ${filter.label}`);
     }
 
     this.setState({ selectedFilters });
@@ -175,9 +177,7 @@ class FilterPopup extends React.Component {
       if (dateBefore < dateAfter || (dateBefore > currentYear || dateAfter > currentYear)) {
         filterErrors.push(dateInputError);
       }
-    }
-
-    if ((dateBefore && dateBefore > currentYear) || (dateAfter && dateAfter > currentYear)) {
+    } else if ((dateBefore && dateBefore > currentYear) || (dateAfter && dateAfter > currentYear)) {
       filterErrors.push(dateInputError);
     }
 
@@ -190,15 +190,26 @@ class FilterPopup extends React.Component {
     return true;
   }
 
-  submitForm(e) {
+  submitForm(e, position = '') {
     e.preventDefault();
 
     if (!this.validateFilterValue(this.state.selectedFilters)) {
       return false;
     }
 
-    const apiQuery =
-      this.props.createAPIQuery({ selectedFilters: this.state.selectedFilters });
+    if (position) {
+      trackDiscovery(`Filters - ${position}`, 'Apply Filters');
+    }
+
+    const apiQuery = this.props.createAPIQuery({ selectedFilters: this.state.selectedFilters });
+    const { dateAfter, dateBefore } = this.state.selectedFilters;
+
+    if (dateAfter) {
+      trackDiscovery('Filters - Date', `After - ${dateAfter}`);
+    }
+    if (dateBefore) {
+      trackDiscovery('Filters - Date', `Before - ${dateBefore}`);
+    }
 
     this.closeForm(e);
     this.props.updateIsLoadingState(true);
@@ -229,8 +240,11 @@ class FilterPopup extends React.Component {
    * Clears all the selected filters before making an API call.
    *
    */
-  clearFilters(e) {
+  clearFilters(e, position) {
     e.persist();
+
+    trackDiscovery(`Filters - ${position}`, 'Clear Filters');
+
     this.setState(
       {
         selectedFilters: {
@@ -246,7 +260,7 @@ class FilterPopup extends React.Component {
 
   openForm() {
     if (!this.state.showForm) {
-      trackDiscovery('FilterPopup', 'Open');
+      trackDiscovery('Filters', 'Open Dropdown');
       this.setState({ showForm: true });
       this.props.updateDropdownState(true);
 
@@ -258,9 +272,13 @@ class FilterPopup extends React.Component {
     }
   }
 
-  closeForm(e) {
+  closeForm(e, position = '') {
     e.preventDefault();
-    trackDiscovery('FilterPopup', 'Close');
+
+    if (position) {
+      trackDiscovery(`Filters - ${position}`, 'Close Dropdown');
+    }
+
     this.setState({ showForm: false });
     this.props.updateDropdownState(false);
 
@@ -283,11 +301,11 @@ class FilterPopup extends React.Component {
       filters,
     } = this.state;
 
-    const applyButton = (
+    const applyButton = (position = '') => (
       <button
         type="submit"
         name="apply-filters"
-        onClick={e => this.submitForm(e)}
+        onClick={e => this.submitForm(e, position)}
         className="nypl-primary-button apply-button"
       >
         Apply filters
@@ -299,34 +317,36 @@ class FilterPopup extends React.Component {
           iconId="filterApply"
         />
       </button>);
-    const cancelButton = js ? (
-      <button
-        type="button"
-        onClick={this.closeForm}
-        aria-expanded={!showForm}
-        aria-controls="filter-popup-menu"
-        className="nypl-primary-button cancel-button"
-      >
-        Cancel
-      </button>
-    ) :
-      (<a
-        type="button"
-        role="button"
-        href="#"
-        onClick={this.closeForm}
-        aria-expanded={!showForm}
-        aria-controls="filter-popup-menu"
-        className="nypl-primary-button cancel-button"
-      >
-        Cancel
-      </a>);
-    const resetButton = (ref = '') => (
+    const cancelButton = (position = '') => (
+      js ? (
+        <button
+          type="button"
+          onClick={e => this.closeForm(e, position)}
+          aria-expanded={!showForm}
+          aria-controls="filter-popup-menu"
+          className="nypl-primary-button cancel-button"
+        >
+          Cancel
+        </button>
+      ) :
+        (<a
+          type="button"
+          role="button"
+          href="#"
+          onClick={e => this.closeForm(e, position)}
+          aria-expanded={!showForm}
+          aria-controls="filter-popup-menu"
+          className="nypl-primary-button cancel-button"
+        >
+          Cancel
+        </a>)
+    );
+    const resetButton = ({ ref = '', position = '' }) => (
       js ? (<button
         type="button"
         name="Clear-Filters"
         className="nypl-basic-button clear-filters-button"
-        onClick={this.clearFilters}
+        onClick={e => this.clearFilters(e, position)}
         ref={ref}
       >
         Clear filters
@@ -342,7 +362,7 @@ class FilterPopup extends React.Component {
           role="button"
           name="Clear-Filters"
           className="nypl-basic-button clear-filters-button"
-          onClick={this.clearFilters}
+          onClick={e => this.clearFilters(e, position)}
           ref={ref}
         >
           Clear filters
@@ -386,16 +406,18 @@ class FilterPopup extends React.Component {
       dateBefore: dateBeforeFilterValue,
     };
     const errorMessageBlock = (
-      <div
-        className="nypl-form-error filter-error-box"
-        ref="nypl-filter-error"
-        tabIndex="0"
-      >
-        <h2>Error</h2>
-        <p>Please enter valid filter values:</p>
-        <ul>
-          {this.getRaisedErrors(this.state.raisedErrors)}
-        </ul>
+      <div className="nypl-full-width-wrapper">
+        <div
+          className="nypl-form-error filter-error-box"
+          ref="nypl-filter-error"
+          tabIndex="0"
+        >
+          <h2>Error</h2>
+          <p>Please enter valid filter values:</p>
+          <ul>
+            {this.getRaisedErrors(this.state.raisedErrors)}
+          </ul>
+        </div>
       </div>
     );
     const isDateInputError = _some(this.state.raisedErrors, item =>
@@ -438,7 +460,7 @@ class FilterPopup extends React.Component {
             <form
               action={`${appConfig.baseUrl}/search?q=${searchKeywords}`}
               method="POST"
-              onSubmit={() => this.submitForm()}
+              onSubmit={() => this.submitForm('Form submission')}
             >
               <div className="form-full-width">
                 <div className="nypl-full-width-wrapper">
@@ -448,9 +470,9 @@ class FilterPopup extends React.Component {
                         className="filter-action-buttons"
                         aria-label="Refine Search Options"
                       >
-                        <li>{resetButton('filterResetBtn')}</li>
-                        <li>{cancelButton}</li>
-                        <li>{applyButton}</li>
+                        <li>{resetButton({ ref: 'filterResetBtn', position: 'top row' })}</li>
+                        <li>{cancelButton('top row')}</li>
+                        <li>{applyButton('top row')}</li>
                       </ul>
                     </div>
                   </div>
@@ -495,9 +517,9 @@ class FilterPopup extends React.Component {
                           className="filter-action-buttons"
                           aria-label="Refine Search Options"
                         >
-                          <li>{resetButton()}</li>
-                          <li>{cancelButton}</li>
-                          <li>{applyButton}</li>
+                          <li>{resetButton({ ref: '', position: 'bottom row' })}</li>
+                          <li>{cancelButton('bottom row')}</li>
+                          <li>{applyButton('bottom row')}</li>
                         </ul>
                       </div>
                     </div>
