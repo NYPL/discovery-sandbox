@@ -43,7 +43,7 @@ class Home extends React.Component {
           <div className="nypl-homepage-hero">
             <div className="nypl-full-width-wrapper">
               <div className="nypl-row">
-                <div className="nypl-column-three-quarters">
+                <div className="nypl-column-full">
                   <h1>{appConfig.displayTitle}</h1>
                   <Search
                     updateIsLoadingState={this.updateIsLoadingState}
@@ -53,7 +53,7 @@ class Home extends React.Component {
               </div>
 
               <div className="nypl-row">
-                <div className="nypl-column-three-quarters">
+                <div className="nypl-column-full">
                   <p className="nypl-lead">
                     The New York Public Library’s Shared Collection Catalog—now in
                     beta—provides researchers with access to materials from NYPL,
