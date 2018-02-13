@@ -405,7 +405,7 @@ class FilterPopup extends React.Component {
       <div className="filter-container">
         <div className="nypl-full-width-wrapper">
           <div className="nypl-row">
-            <div className="nypl-column-three-quarters">
+            <div className="nypl-full-column">
               <div className="filter-text">
                 <h2>Refine your search</h2>
                 <p>Add filters to narrow and define your search</p>
@@ -443,7 +443,7 @@ class FilterPopup extends React.Component {
               <div className="form-full-width">
                 <div className="nypl-full-width-wrapper">
                   <div className="nypl-row">
-                    <div className="nypl-column-three-quarters">
+                    <div className="nypl-full-column">
                       <ul
                         className="filter-action-buttons"
                         aria-label="Refine Search Options"
@@ -460,7 +460,7 @@ class FilterPopup extends React.Component {
               <fieldset className="nypl-fieldset">
                 <div className="nypl-full-width-wrapper">
                   <div className="nypl-row">
-                    <div className="nypl-column-three-quarters">
+                    <div className="nypl-full-column">
                       <FieldsetList
                         legend="Format"
                         filterId="materialType"
@@ -490,7 +490,7 @@ class FilterPopup extends React.Component {
                 <div className="bottom-action-row form-full-width">
                   <div className="nypl-full-width-wrapper">
                     <div className="nypl-row">
-                      <div className="nypl-column-three-quarters">
+                      <div className="nypl-full-column">
                         <ul
                           className="filter-action-buttons"
                           aria-label="Refine Search Options"

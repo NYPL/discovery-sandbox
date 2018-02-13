@@ -254,6 +254,7 @@
   .nypl-generic-checkbox {
     label {
       width: 70%;
+      padding-left: 0.65rem;
 
       &::before {
         background: #fff;
@@ -336,11 +337,7 @@
 }
 
 .nypl-generic-checkbox > li {
-  margin-left: 0;
-}
-
-.nypl-generic-checkbox input[type="checkbox"] {
-  margin: 0 -7px;
+  margin-left: 5px;
 }
 
 .nypl-generic-columns {
@@ -386,6 +383,7 @@
       margin-bottom: 0;
     }
   }
+
   @include transition-list(max-height .3s ease-in-out);
   height: auto;
 
@@ -409,7 +407,7 @@
     border-bottom: none;
 
     ul {
-      margin-top: 10px;
+      margin-top: 0.6rem;
     }
   }
 
