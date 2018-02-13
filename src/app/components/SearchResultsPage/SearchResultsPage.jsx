@@ -125,7 +125,7 @@ class SearchResultsPage extends React.Component {
           <div className="nypl-page-header">
             <div className="nypl-full-width-wrapper filter-page">
               <div className="nypl-row">
-                <div className="nypl-column-three-quarters">
+                <div className="nypl-full-column">
                   <Breadcrumbs query={searchKeywords} type="search" />
                   <h1 aria-label={headerLabel}>Search Results</h1>
                   <Search
@@ -151,7 +151,7 @@ class SearchResultsPage extends React.Component {
             {selectedFiltersAvailable &&
               <div className="nypl-full-width-wrapper selected-filters">
                 <div className="nypl-row">
-                  <div className="nypl-column-three-quarters">
+                  <div className="nypl-full-column">
                     <SelectedFilters
                       selectedFilters={selectedFilters}
                       createAPIQuery={createAPIQuery}
@@ -166,7 +166,7 @@ class SearchResultsPage extends React.Component {
           <div className="nypl-sorter-row">
             <div className="nypl-full-width-wrapper">
               <div className="nypl-row">
-                <div className="nypl-column-three-quarters">
+                <div className="nypl-full-column">
                   <ResultsCount
                     isLoading={isLoading}
                     count={totalResults}
@@ -194,7 +194,7 @@ class SearchResultsPage extends React.Component {
           <div className="nypl-full-width-wrapper">
             <div className="nypl-row">
               <div
-                className="nypl-column-three-quarters"
+                className="nypl-full-column"
                 role="region"
                 id="mainContent"
                 aria-live="polite"
