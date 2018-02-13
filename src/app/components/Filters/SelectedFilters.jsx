@@ -16,7 +16,10 @@ import {
 
 import Actions from '../../actions/Actions';
 import appConfig from '../../../../appConfig';
-import { ajaxCall } from '../../utils/utils';
+import {
+  ajaxCall,
+  trackDiscovery,
+} from '../../utils/utils';
 
 class SelectedFilters extends React.Component {
   constructor(props) {
@@ -52,6 +55,7 @@ class SelectedFilters extends React.Component {
     }
 
     const apiQuery = this.props.createAPIQuery({ selectedFilters });
+    trackDiscovery('Filters - Selected list', `Remove - ${filter.field} ${filter.label}`);
 
     this.props.updateIsLoadingState(true);
 
@@ -77,6 +81,7 @@ class SelectedFilters extends React.Component {
   clearFilters() {
     const apiQuery = this.props.createAPIQuery({ selectedFilters: {} });
 
+    trackDiscovery('Filters - Selected list', 'Clear Filters');
     this.props.updateIsLoadingState(true);
     Actions.updateSelectedFilters({});
     ajaxCall(`${appConfig.baseUrl}/api?${apiQuery}`, (response) => {
