@@ -92,7 +92,6 @@
   .filter-text {
     float: left;
     width: 100%;
-    // margin-top: 100px;
 
     @include min-screen($xtrasmall-breakpoint) {
       width: 70%;
@@ -233,11 +232,9 @@
   }
 
   .popup {
-    // display: none;
     width: 100%;
 
     &.active {
-      // display: block;
       overflow: hidden;
       -webkit-overflow-scrolling: touch;
     }
@@ -261,6 +258,7 @@
   .nypl-generic-checkbox {
     label {
       width: 70%;
+      padding-left: 0.65rem;
 
       &::before {
         background: #fff;
@@ -286,13 +284,11 @@
   }
 
   .clear-filters-button {
-    // float: right;
     padding: 7px 16px;
     margin-bottom: 20px;
     @include border-radius(5px);
 
     @include min-screen($xtrasmall-breakpoint) {
-      // float: left;
       margin-bottom: 0;
     }
 
@@ -347,11 +343,7 @@
 }
 
 .nypl-generic-checkbox > li {
-  margin-left: 0;
-}
-
-.nypl-generic-checkbox input[type="checkbox"] {
-  margin: 0 -7px;
+  margin-left: 5px;
 }
 
 .nypl-generic-columns {
@@ -397,6 +389,7 @@
       margin-bottom: 0;
     }
   }
+
   @include transition-list(max-height .3s ease-in-out);
   height: auto;
 
@@ -420,7 +413,7 @@
     border-bottom: none;
 
     ul {
-      margin-top: 10px;
+      margin-top: 0.6rem;
     }
   }
 

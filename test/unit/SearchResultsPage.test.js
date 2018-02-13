@@ -131,8 +131,8 @@ describe('SearchResultsPage', () => {
       expect(component.find('.nypl-page-header')).to.have.length(1);
     });
 
-    it('should two .nypl-full-width-wrapper elements', () => {
-      expect(component.find('.nypl-full-width-wrapper')).to.have.length(3);
+    it('should have seven .nypl-full-width-wrapper elements', () => {
+      expect(component.find('.nypl-full-width-wrapper')).to.have.length(7);
     });
   });
 });
