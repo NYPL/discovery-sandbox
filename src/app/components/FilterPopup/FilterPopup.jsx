@@ -164,20 +164,20 @@ class FilterPopup extends React.Component {
    */
   validateFilterValue(filterValue) {
     const filterErrors = [];
-    const dateBefore = filterValue.dateBefore ? Number(filterValue.dateBefore) : 0;
     const dateAfter = filterValue.dateAfter ? Number(filterValue.dateAfter) : 0;
+    const dateBefore = filterValue.dateBefore ? Number(filterValue.dateBefore) : 0;
     const currentYear = (new Date()).getFullYear();
     const dateInputError = {
       name: 'date',
       value: 'Date',
     };
 
-    if (dateBefore && dateAfter) {
+    if (dateAfter && dateBefore) {
       // If the date input values are invalid
-      if (dateBefore < dateAfter || (dateBefore > currentYear || dateAfter > currentYear)) {
+      if (dateAfter > dateBefore || dateAfter > currentYear) {
         filterErrors.push(dateInputError);
       }
-    } else if ((dateBefore && dateBefore > currentYear) || (dateAfter && dateAfter > currentYear)) {
+    } else if (dateAfter && dateAfter > currentYear) {
       filterErrors.push(dateInputError);
     }
 
