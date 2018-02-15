@@ -8,6 +8,8 @@ import {
   map as _map,
   isEmpty as _isEmpty,
   some as _some,
+  clone as _clone,
+  union as _union,
 } from 'underscore';
 import { CheckSoloIcon } from '@nypl/dgx-svg-icons';
 
@@ -43,12 +45,18 @@ class FilterPopup extends React.Component {
     } = this.props;
 
     this.state = {
+      provisionalSelectedFilters: {
+        materialType: [],
+        language: [],
+        dateAfter: '',
+        dateBefore: '',
+      },
       selectedFilters: _extend({
         materialType: [],
         language: [],
         dateAfter: '',
         dateBefore: '',
-      }, selectedFilters),
+      }, _clone(selectedFilters)),
       showForm: false,
       js: false,
       filters,
@@ -92,12 +100,26 @@ class FilterPopup extends React.Component {
   }
 
   onFilterClick(filterId, filter) {
-    const selectedFilters = this.state.selectedFilters;
+    const {
+      provisionalSelectedFilters,
+      selectedFilters,
+    } = this.state;
 
+    const clickedFilters = {
+      materialType: _union(provisionalSelectedFilters.materialType, selectedFilters.materialType),
+      language: _union(provisionalSelectedFilters.language, selectedFilters.language),
+      dateAfter: selectedFilters.dateAfter,
+      dateBefore: selectedFilters.dateBefore,
+    };
     if (filter.selected) {
-      selectedFilters[filterId].push(filter);
+      clickedFilters[filterId].push(filter);
       trackDiscovery('Filters - Select', `${filterId} - ${filter.label}`);
     } else {
+      clickedFilters[filterId] =
+        _reject(
+          clickedFilters[filterId],
+          selectedFilter => selectedFilter.value === filter.value,
+        );
       selectedFilters[filterId] =
         _reject(
           selectedFilters[filterId],
@@ -106,7 +128,7 @@ class FilterPopup extends React.Component {
       trackDiscovery('Filters - Deselect', `${filterId} - ${filter.label}`);
     }
 
-    this.setState({ selectedFilters });
+    this.setState({ provisionalSelectedFilters: clickedFilters });
   }
 
   /**
@@ -197,12 +219,17 @@ class FilterPopup extends React.Component {
       return false;
     }
 
+    const {
+      selectedFilters,
+      provisionalSelectedFilters,
+    } = this.state;
+
     if (position) {
       trackDiscovery(`Filters - ${position}`, 'Apply Filters');
     }
 
-    const apiQuery = this.props.createAPIQuery({ selectedFilters: this.state.selectedFilters });
-    const { dateAfter, dateBefore } = this.state.selectedFilters;
+    const apiQuery = this.props.createAPIQuery({ selectedFilters });
+    const { dateAfter, dateBefore } = selectedFilters;
 
     if (dateAfter) {
       trackDiscovery('Filters - Date', `After - ${dateAfter}`);
@@ -214,7 +241,12 @@ class FilterPopup extends React.Component {
     this.closeForm(e);
     this.props.updateIsLoadingState(true);
 
-    Actions.updateSelectedFilters(this.state.selectedFilters);
+    Actions.updateSelectedFilters({
+      materialType: _union(provisionalSelectedFilters.materialType, selectedFilters.materialType),
+      language: _union(provisionalSelectedFilters.language, selectedFilters.language),
+      dateAfter: selectedFilters.dateAfter,
+      dateBefore: selectedFilters.dateBefore,
+    });
     ajaxCall(`${appConfig.baseUrl}/api?${apiQuery}`, (response) => {
       if (response.data.searchResults && response.data.filters) {
         Actions.updateSearchResults(response.data.searchResults);
@@ -279,7 +311,15 @@ class FilterPopup extends React.Component {
       trackDiscovery(`Filters - ${position}`, 'Close Dropdown');
     }
 
-    this.setState({ showForm: false });
+    this.setState({
+      showForm: false,
+      provisionalSelectedFilters: {
+        materialType: [],
+        language: [],
+        dateAfter: '',
+        dateBefore: '',
+      },
+    });
     this.props.updateDropdownState(false);
 
     setTimeout(() => {
@@ -299,7 +339,14 @@ class FilterPopup extends React.Component {
       js,
       selectedFilters,
       filters,
+      provisionalSelectedFilters,
     } = this.state;
+    const filtersToShow = {
+      materialType: _union(provisionalSelectedFilters.materialType, selectedFilters.materialType),
+      language: _union(provisionalSelectedFilters.language, selectedFilters.language),
+      dateAfter: selectedFilters.dateAfter,
+      dateBefore: selectedFilters.dateBefore,
+    };
 
     const applyButton = (position = '') => (
       <button
@@ -395,12 +442,13 @@ class FilterPopup extends React.Component {
       >
         Refine Search
        </a>);
+
     const materialTypeFilters = _findWhere(filters, { id: 'materialType' });
     const languageFilters = _findWhere(filters, { id: 'language' });
     const dateAfterFilterValue =
-      selectedFilters.dateAfter ? Number(selectedFilters.dateAfter) : null;
+      filtersToShow.dateAfter ? Number(filtersToShow.dateAfter) : null;
     const dateBeforeFilterValue =
-      selectedFilters.dateBefore ? Number(selectedFilters.dateBefore) : null;
+      filtersToShow.dateBefore ? Number(filtersToShow.dateBefore) : null;
     const dateSelectedFilters = {
       dateAfter: dateAfterFilterValue,
       dateBefore: dateBeforeFilterValue,
@@ -487,7 +535,7 @@ class FilterPopup extends React.Component {
                         legend="Format"
                         filterId="materialType"
                         filter={materialTypeFilters}
-                        selectedFilters={selectedFilters.materialType}
+                        selectedFilters={filtersToShow.materialType}
                         onFilterClick={this.onFilterClick}
                       />
 
@@ -502,7 +550,7 @@ class FilterPopup extends React.Component {
                         legend="Language"
                         filterId="language"
                         filter={languageFilters}
-                        selectedFilters={selectedFilters.language}
+                        selectedFilters={filtersToShow.language}
                         onFilterClick={this.onFilterClick}
                       />
                     </div>
