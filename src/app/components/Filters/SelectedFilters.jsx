@@ -174,7 +174,7 @@ class SelectedFilters extends React.Component {
     }
 
     return (
-      <div>
+      <div className="selected-filters">
         <span id="read-text" className="visuallyHidden">Selected filters.</span>
         <ul
           id="selected-filters-container"
@@ -279,17 +279,15 @@ class SelectedFilters extends React.Component {
               return (
                 <li
                   className={`${dateClass} ${!singleDate ? 'combined' : ''}`}
-                  key={filter.value}
+                  key={`${dateClass}${filter.value}`}
                 >
                   {filterBtn}
                 </li>
               );
             })
           }
-          <li>
-            {clearAllFilters}
-          </li>
         </ul>
+        {clearAllFilters}
       </div>
     );
   }
