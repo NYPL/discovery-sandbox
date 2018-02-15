@@ -279,7 +279,7 @@ class SelectedFilters extends React.Component {
               return (
                 <li
                   className={`${dateClass} ${!singleDate ? 'combined' : ''}`}
-                  key={filter.value}
+                  key={`${dateClass}${filter.value}`}
                 >
                   {filterBtn}
                 </li>
