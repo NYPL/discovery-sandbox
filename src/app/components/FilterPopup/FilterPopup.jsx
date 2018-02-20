@@ -228,8 +228,15 @@ class FilterPopup extends React.Component {
       trackDiscovery(`Filters - ${position}`, 'Apply Filters');
     }
 
-    const apiQuery = this.props.createAPIQuery({ selectedFilters });
     const { dateAfter, dateBefore } = selectedFilters;
+    const filtersToApply = {
+      materialType: _union(provisionalSelectedFilters.materialType, selectedFilters.materialType),
+      language: _union(provisionalSelectedFilters.language, selectedFilters.language),
+      dateAfter,
+      dateBefore,
+    };
+
+    const apiQuery = this.props.createAPIQuery({ selectedFilters: filtersToApply });
 
     if (dateAfter) {
       trackDiscovery('Filters - Date', `After - ${dateAfter}`);
@@ -241,12 +248,7 @@ class FilterPopup extends React.Component {
     this.closeForm(e);
     this.props.updateIsLoadingState(true);
 
-    Actions.updateSelectedFilters({
-      materialType: _union(provisionalSelectedFilters.materialType, selectedFilters.materialType),
-      language: _union(provisionalSelectedFilters.language, selectedFilters.language),
-      dateAfter: selectedFilters.dateAfter,
-      dateBefore: selectedFilters.dateBefore,
-    });
+    Actions.updateSelectedFilters(filtersToApply);
     ajaxCall(`${appConfig.baseUrl}/api?${apiQuery}`, (response) => {
       if (response.data.searchResults && response.data.filters) {
         Actions.updateSearchResults(response.data.searchResults);
