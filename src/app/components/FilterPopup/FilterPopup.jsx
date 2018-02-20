@@ -429,8 +429,8 @@ class FilterPopup extends React.Component {
           <div className="nypl-row">
             <div className="nypl-column-full">
               <div className="filter-text">
-                <h2>Refine your search</h2>
-                <p>Add filters to narrow and define your search</p>
+                <h2 id="filter-title">Refine your search</h2>
+                <p>Toggle filters to narrow and define your search</p>
               </div>
               {(!showForm && !!(totalResults && totalResults !== 0)) && openPopupButton}
             </div>
