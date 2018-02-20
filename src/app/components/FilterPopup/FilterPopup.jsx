@@ -276,15 +276,17 @@ class FilterPopup extends React.Component {
     e.persist();
 
     trackDiscovery(`Filters - ${position}`, 'Clear Filters');
+    const resetFilters = {
+      materialType: [],
+      language: [],
+      dateAfter: '',
+      dateBefore: '',
+    };
 
     this.setState(
       {
-        selectedFilters: {
-          materialType: [],
-          language: [],
-          dateAfter: '',
-          dateBefore: '',
-        },
+        selectedFilters: resetFilters,
+        provisionalSelectedFilters: resetFilters,
       },
       () => { this.submitForm(e); },
     );
