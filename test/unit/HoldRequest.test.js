@@ -7,6 +7,64 @@ import { mount } from 'enzyme';
 import HoldRequest from './../../src/app/components/HoldRequest/HoldRequest.jsx';
 import Actions from './../../src/app/actions/Actions.js';
 
+const mockedItems = [
+  {
+    "@id": "res:i10000003",
+    "uri": "i10000003",
+    "status": [
+      {
+        "@id": "status:a",
+        "prefLabel": "Available"
+      }
+    ],
+    "owner": [
+      {
+        "@id": "orgs:1000",
+        "prefLabel": "Stephen A. Schwarzman Building"
+      }
+    ],
+    "catalogItemType": [
+      {
+        "@id": "catalogItemType:55",
+        "prefLabel": "book, limited circ, MaRLI"
+      },
+      {
+        "@id": "catalogItemType:55",
+        "prefLabel": "book, limited circ, MaRLI"
+      }
+    ],
+    "identifier": [
+      "urn:barcode:33433014514719",
+      "urn:SierraNypl:10000003"
+    ],
+    "holdingLocation": [
+      {
+        "@id": "loc:rcma2",
+        "prefLabel": "Offsite"
+      }
+    ],
+    "requestable": [
+      true
+    ],
+    "accessMessage": [
+      {
+        "@id": "accessMessage:2",
+        "prefLabel": "Request in advance"
+      }
+    ],
+    "shelfMark": [
+      "*OFS 84-1997"
+    ],
+    "idBarcode": [
+      "33433014514719"
+    ],
+    "idNyplSourceId": {
+      "@type": "SierraNypl",
+      "@value": "10000003"
+    },
+  }
+];
+
 describe('HoldRequest', () => {
   describe('After being rendered, <HoldRequest>', () => {
     let component;
@@ -88,10 +146,11 @@ describe('HoldRequest', () => {
     const bib = {
       title: ['Harry Potter'],
       '@id': 'res:b17688688',
+      items: mockedItems,
     };
 
     before(() => {
-      component = mount(<HoldRequest bib={bib} />);
+      component = mount(<HoldRequest bib={bib} params={{ itemId: 'i10000003' }} />);
     });
 
     after(() => {
@@ -124,6 +183,7 @@ describe('HoldRequest', () => {
     const bib = {
       title: ['Harry Potter'],
       '@id': 'res:b17688688',
+      items: mockedItems,
     };
 
     const deliveryLocations = [
@@ -149,7 +209,11 @@ describe('HoldRequest', () => {
 
     before(() => {
       component = mount(
-        <HoldRequest bib={bib} deliveryLocations={deliveryLocations} />
+        <HoldRequest
+          bib={bib}
+          deliveryLocations={deliveryLocations}
+          params={{ itemId: 'i10000003' }}
+        />
       );
     });
 
@@ -227,6 +291,7 @@ describe('HoldRequest', () => {
     const bib = {
       title: ['Harry Potter'],
       '@id': 'res:b17688688',
+      items: mockedItems,
     };
 
     const deliveryLocations = [
@@ -252,7 +317,12 @@ describe('HoldRequest', () => {
 
     before(() => {
       component = mount(
-        <HoldRequest bib={bib} deliveryLocations={deliveryLocations} isEddRequestable />
+        <HoldRequest
+          bib={bib}
+          deliveryLocations={deliveryLocations}
+          isEddRequestable
+          params={{ itemId: 'i10000003' }}
+        />
       );
     });
 
