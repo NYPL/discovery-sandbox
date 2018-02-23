@@ -1,6 +1,6 @@
 {
   "name": "nypl-discovery",
-  "version": "1.2.8",
+  "version": "1.2.9",
   "description": "Isomorphic React App for NYPL Research Catalog.",
   "main": "index.js",
   "scripts": {
