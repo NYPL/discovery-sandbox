@@ -261,7 +261,7 @@ class ElectronicDeliveryForm extends React.Component {
                   onChange={e => this.handleUpdate(e, 'issue')}
                 />
               </div>
-              <div className="nypl-text-field">
+              <div className="nypl-text-area-with-label">
                 <label htmlFor="requestNotes" id="requestNotes-label">Notes</label>
                 <p>
                   Provide additional instructions here. In case electronic delivery is unavailable,
