@@ -93,28 +93,30 @@ class Sorter extends React.Component {
     return (
       <div className="nypl-results-sorting-controls">
         <div className="nypl-results-sorter">
-          <label htmlFor="sort-by-label">Sort by</label>
-          <form
-            action={
-              `${appConfig.baseUrl}/search${searchKeywords ? `?q=${searchKeywords}` : ''}` +
-              `${field ? `&search_scope=${field}` : ''}`
-            }
-            method="POST"
-          >
-            <span className="nypl-omni-fields">
-              <strong>
-                <select
-                  id="sort-by-label"
-                  onChange={this.updateSortValue}
-                  value={this.state.sortValue}
-                  name="sort_scope"
-                >
-                  {this.renderResultsSort()}
-                </select>
-              </strong>
-            </span>
-            {!this.state.js && <input type="submit" />}
-          </form>
+          <div className="nypl-select-field-results">
+            <label htmlFor="sort-by-label">Sort by</label>
+            <form
+              action={
+                `${appConfig.baseUrl}/search${searchKeywords ? `?q=${searchKeywords}` : ''}` +
+                `${field ? `&search_scope=${field}` : ''}`
+              }
+              method="POST"
+            >
+              <span className="nypl-omni-fields">
+                <strong>
+                  <select
+                    id="sort-by-label"
+                    onChange={this.updateSortValue}
+                    value={this.state.sortValue}
+                    name="sort_scope"
+                  >
+                    {this.renderResultsSort()}
+                  </select>
+                </strong>
+              </span>
+              {!this.state.js && <input type="submit" />}
+            </form>
+          </div>
         </div>
       </div>
     );

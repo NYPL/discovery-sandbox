@@ -45,6 +45,11 @@ class Home extends React.Component {
               <div className="nypl-row">
                 <div className="nypl-column-full">
                   <h1>{appConfig.displayTitle}</h1>
+                </div>
+              </div>
+
+              <div className="nypl-row">
+                <div className="nypl-column-full">
                   <Search
                     updateIsLoadingState={this.updateIsLoadingState}
                     createAPIQuery={basicQuery(this.props)}

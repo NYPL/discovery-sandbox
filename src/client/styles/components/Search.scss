@@ -1,21 +1,6 @@
 .nypl-omnisearch-form {
-  select#search-by-field {
-    &:focus {
-      outline-width: 2px;
-    }
-  }
-
-  .nypl-field-status {
-    color: #d0343a;
-    background: #efedeb;
-    margin-top: 6rem;
-  }
-
   // Larger screen collapsed version of search form elements.
   .nypl-omnisearch {
-    background-color: #fff;
-    margin-left: 0.25rem;
-
     .nypl-omni-fields-text {
       font-size: 0.9rem;
       margin-left: 0.15rem;
@@ -58,7 +43,6 @@
   }
 
   // Button specific CSS for submit
-
   .nypl-omnisearch-button {
     font-weight: 200;
     background: #1B7FA7;
@@ -90,7 +74,6 @@
 
 
   // Small screen stacked version of search form elements.
-
   @media (max-width: $xtrasmall-breakpoint) {
     .nypl-omnisearch {
       display: block;
@@ -122,6 +105,12 @@
       input[type=text] {
         width: 100%;
       }
+    }
+  }
+
+  @media (max-width: $mobile-breakpoint) {
+    .nypl-omnisearch {
+      width: 100%;
     }
   }
 }
