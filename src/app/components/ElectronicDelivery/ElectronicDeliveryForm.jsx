@@ -113,7 +113,11 @@ class ElectronicDeliveryForm extends React.Component {
                   }
                 </span>
               </div>
-              <span>You may request a maximum of 50 pages.</span>
+              <span>You may request a maximum of 50 pages.</span><br />
+              <span>
+                Read <a href="https://www.nypl.org/help/request-research-materials#EDD" target="_blank" rel="noopener noreferrer">
+                more about this service</a>.
+              </span>
               <div className={`nypl-text-field ${errorClass.startPage}`}>
                 <label htmlFor="startPage" id="startPage-label">Starting Page Number
                   <span className="nypl-required-field">&nbsp;Required</span>
@@ -259,6 +263,12 @@ class ElectronicDeliveryForm extends React.Component {
               </div>
               <div className="nypl-text-field">
                 <label htmlFor="requestNotes" id="requestNotes-label">Notes</label>
+                <p>
+                  Provide additional instructions here. In case electronic delivery is unavailable,
+                  please indicate a physical delivery location in the field below. For more
+                  information on placing an electronic delivery request, please
+                  see <a href="https://www.nypl.org/help/request-research-materials">Requesting Research Materials</a>.
+                </p>
                 <textarea
                   className="nypl-text-area"
                   id="requestNotes"
