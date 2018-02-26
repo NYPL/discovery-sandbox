@@ -115,7 +115,7 @@ class ElectronicDeliveryForm extends React.Component {
               </div>
               <span>You may request a maximum of 50 pages.</span><br />
               <span>
-                Read <a href="https://www.nypl.org/help/request-research-materials#EDD" target="_blank" rel="noopener noreferrer">
+                Read <a href="https://www.nypl.org/help/request-research-materials#EDD">
                 more about this service</a>.
               </span>
               <div className={`nypl-text-field ${errorClass.startPage}`}>
