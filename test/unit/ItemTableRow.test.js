@@ -217,7 +217,7 @@ describe('ItemTableRow', () => {
       });
 
       it('should have an access message as the fourth <td> column data', () => {
-        expect(component.find('td').at(3).text()).to.equal('use in library');
+        expect(component.find('td').at(3).text()).to.equal('USE IN LIBRARY');
       });
     });
 
@@ -243,7 +243,7 @@ describe('ItemTableRow', () => {
       });
 
       it('should have an access message as the fourth <td> column data', () => {
-        expect(component.find('td').at(3).text()).to.equal('use in library');
+        expect(component.find('td').at(3).text()).to.equal('USE IN LIBRARY');
       });
     });
 
