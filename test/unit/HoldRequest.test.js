@@ -169,7 +169,7 @@ describe('HoldRequest', () => {
 
       expect(form.find('h2')).to.have.length(1);
       expect(form.contains(
-        <h2>
+        <h2 className="nypl-request-form-title">
           Delivery options for this item are currently unavailable. Please try again later or
           contact 917-ASK-NYPL (<a href="tel:917-275-6975">917-275-6975</a>).
         </h2>
@@ -225,7 +225,9 @@ describe('HoldRequest', () => {
       const form = component.find('form');
 
       expect(form.find('h2')).to.have.length(1);
-      expect(form.contains(<h2>Choose a delivery option or location</h2>)).to.equal(true);
+      expect(form.contains(
+        <h2 className="nypl-request-form-title">Choose a delivery option or location</h2>
+      )).to.equal(true);
     });
 
     it('should display the form of the display locations.', () => {
