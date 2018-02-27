@@ -56,7 +56,7 @@ class HoldRequest extends React.Component {
   componentDidMount() {
     this.requireUser();
 
-    document.getElementById('item-link').focus();
+    document.getElementById('item-title').focus();
   }
 
   onChange() {
@@ -271,7 +271,6 @@ class HoldRequest extends React.Component {
     const bibLink = (bibId && title) ?
       (<h2>
         <Link
-          id="item-link"
           to={`${appConfig.baseUrl}/bib/${bibId}`}
           onClick={() => trackDiscovery('Hold Request - Bib', title)}
         >
@@ -346,7 +345,7 @@ class HoldRequest extends React.Component {
                     bibUrl={`/bib/${bibId}`}
                     type="hold"
                   />
-                  <h1 id="item-title">Item Request</h1>
+                  <h1 id="item-title" tabIndex="0">Item Request</h1>
                 </div>
               </div>
             </div>
