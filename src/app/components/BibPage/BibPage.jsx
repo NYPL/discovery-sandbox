@@ -1,3 +1,4 @@
+/* globals document */
 import React from 'react';
 import PropTypes from 'prop-types';
 import DocumentTitle from 'react-document-title';
@@ -27,6 +28,10 @@ class BibPage extends React.Component {
     };
 
     this.updateIsLoadingState = this.updateIsLoadingState.bind(this);
+  }
+
+  componentDidMount() {
+    document.getElementById('bib-title').focus();
   }
 
   updateIsLoadingState(status) {
@@ -95,13 +100,16 @@ class BibPage extends React.Component {
     return (
       <DocumentTitle title="Item Details | Shared Collection Catalog | NYPL">
         <main className="main-page">
-          <LoadingLayer status={this.state.isLoading} title="Searching" />
+          <LoadingLayer
+            status={this.state.isLoading}
+            title="Searching"
+          />
           <div className="nypl-page-header">
             <div className="nypl-full-width-wrapper">
               <div className="nypl-row">
                 <div className="nypl-column-three-quarters">
                   <Breadcrumbs type="bib" query={searchURL} />
-                  <h1>Item Details</h1>
+                  <h1 id="bib-title" tabIndex="0">Item Details</h1>
                   <h2>{title}</h2>
                   {
                     this.props.searchKeywords && (

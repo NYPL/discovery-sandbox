@@ -1,3 +1,4 @@
+/* globals document */
 import React from 'react';
 import PropTypes from 'prop-types';
 import DocumentTitle from 'react-document-title';
@@ -34,10 +35,12 @@ class SearchResultsPage extends React.Component {
     this.checkForSelectedFilters = this.checkForSelectedFilters.bind(this);
   }
 
+  componentDidMount() {
+    document.getElementById('search-query').focus();
+  }
+
   componentDidUpdate() {
-    if (this.loadingLayer) {
-      this.loadingLayer.focus();
-    }
+    document.getElementById('filter-title').focus();
   }
 
   updateIsLoadingState(status) {
@@ -119,15 +122,15 @@ class SearchResultsPage extends React.Component {
           <LoadingLayer
             status={this.state.isLoading}
             title="Searching"
-            childRef={(c) => { this.loadingLayer = c; }}
-            tabIndex={0}
           />
           <div className="nypl-page-header">
             <div className="nypl-full-width-wrapper filter-page">
               <div className="nypl-row">
                 <div className="nypl-column-full">
                   <Breadcrumbs query={searchKeywords} type="search" />
-                  <h1 aria-label={headerLabel}>Search Results</h1>
+                  <h1 aria-label={headerLabel} tabIndex="0">
+                    Search Results
+                  </h1>
                   <Search
                     searchKeywords={searchKeywords}
                     field={field}

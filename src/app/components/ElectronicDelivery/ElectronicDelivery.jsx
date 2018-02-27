@@ -1,4 +1,4 @@
-/* global window */
+/* global window document */
 import React from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
@@ -50,6 +50,8 @@ class ElectronicDelivery extends React.Component {
 
   componentDidMount() {
     this.requireUser();
+
+    document.getElementById('edd-request').focus();
   }
 
   /*
@@ -219,7 +221,6 @@ class ElectronicDelivery extends React.Component {
           <LoadingLayer
             status={this.state.isLoading}
             title="Requesting"
-            childRef={(c) => { this.loadingLayer = c; }}
           />
           <div className="nypl-request-page-header">
             <div className="row">
