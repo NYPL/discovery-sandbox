@@ -73,6 +73,7 @@ class BibPage extends React.Component {
       { label: 'Description', value: 'extent' },
       { label: 'Subject', value: 'subjectLiteral', linkable: true },
       { label: 'Genre/Form', value: 'genreForm' },
+      { label: 'Series', value: 'seriesStatement' },
       { label: 'Notes', value: '' },
       { label: 'Additional Resources', value: 'supplementaryContent', selfLinkable: true },
       { label: 'Contents', value: 'note' },
