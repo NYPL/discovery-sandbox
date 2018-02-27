@@ -46,7 +46,7 @@ const ItemTableRow = ({ item, bibId, getRecord, searchKeywords }) => {
       <td>{item.location || ' '}</td>
       <td>{itemCallNumber}</td>
       <td>{itemRequestBtn}</td>
-      <td>{item.accessMessage.prefLabel ? item.accessMessage.prefLabel.toLowerCase() : ' '}</td>
+      <td>{item.accessMessage.prefLabel || ' '}</td>
     </tr>
   );
 };
