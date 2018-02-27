@@ -51,7 +51,7 @@ class ElectronicDelivery extends React.Component {
   componentDidMount() {
     this.requireUser();
 
-    document.getElementById('edd-request').focus();
+    document.getElementById('edd-request-title').focus();
   }
 
   /*
@@ -62,10 +62,6 @@ class ElectronicDelivery extends React.Component {
    * idea of what is wrong.
    */
   componentDidUpdate(prevProps, prevState) {
-    if (this.loadingLayer) {
-      this.loadingLayer.focus();
-    }
-
     if (prevState.raiseError !== this.state.raiseError) {
       if (this.refs['nypl-form-error']) {
         ReactDOM.findDOMNode(this.refs['nypl-form-error']).focus();
@@ -231,7 +227,7 @@ class ElectronicDelivery extends React.Component {
                   bibUrl={`/bib/${bibId}`}
                   itemUrl={`/hold/request/${bibId}-${itemId}`}
                 />
-                <h1>Electronic Delivery Request</h1>
+                <h1 id="edd-request-title" tabIndex="0">Electronic Delivery Request</h1>
               </div>
             </div>
           </div>

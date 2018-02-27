@@ -80,8 +80,6 @@ class ElectronicDeliveryForm extends React.Component {
         action={`${appConfig.baseUrl}/edd`}
         method="POST"
         onSubmit={e => this.submit(e)}
-        id="edd-request"
-        tabIndex="0"
       >
         <fieldset className="nypl-fieldset">
           <legend>
