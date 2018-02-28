@@ -53,6 +53,24 @@ class BibDetails extends React.Component {
     return owner;
   }
 
+  // Parse the original and new note format.
+  // Original format: ['string1', 'string2']
+  // 2018 format: [ {'noteType': 'typeString', 'prefLabel': 'labelString', '@type': 'bf:Note'}, {...}]
+  getNote(bib) {
+    const notes = bib.note;
+    if (!notes || !notes.length) {
+      return null;
+    }
+
+    let noteObjects = notes && notes.length ? notes : null;
+
+    if (!noteObjects) {
+      return null;
+    }
+
+    return noteObjects;
+  }
+
   /*
    * getDefinitionObject(bibValues, fieldValue, fieldLinkable, fieldSelfLinkable, fieldLabel)
    * Gets a list, or one value, of data to display for a field from the API, where
@@ -317,6 +335,40 @@ class BibDetails extends React.Component {
             definition: owner,
           });
         }
+      }
+
+      // Note field rendering as array of objects instead of an array of strings.
+      if (fieldLabel === 'Contents') {
+        const note = this.getNote(this.props.bib);
+        let notes;
+        if (typeof note[0] === 'object') {
+          notes  = (
+            note.map((n, iter) => (
+              <div key={iter.toString()}>
+                <h4>
+                  {n.noteType}
+                </h4>
+                <div>
+                  {n.prefLabel}
+                </div>
+              </div>
+            ))
+          );
+        } else {
+          notes  = (
+            <ul>
+              {
+                note.map((noteStr, x) => (
+                  <li key={x.toString()}>{noteStr}</li>
+                ))
+              }
+            </ul>
+          );
+        }
+        fieldsToRender.push({
+          term: fieldLabel,
+          definition: notes,
+        });
       }
 
       if (fieldLabel === 'Electronic Resource' && this.props.electronicResources.length) {
