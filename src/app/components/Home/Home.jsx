@@ -34,6 +34,7 @@ class Home extends React.Component {
   render() {
     return (
       <DocumentTitle title="Shared Collection Catalog | NYPL">
+      <main>
         <div className="home" id="mainContent">
           <LoadingLayer
             status={this.state.isLoading}
@@ -139,6 +140,7 @@ class Home extends React.Component {
             </div>
           </div>
         </div>
+      </main>
       </DocumentTitle>
     );
   }
