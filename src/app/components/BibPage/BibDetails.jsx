@@ -344,27 +344,31 @@ class BibDetails extends React.Component {
         if (note) {
           if (note.length === 1) {
             notes = (
-              <div>{note[0]}</div>
+              <span>{note[0]}</span>
             );
           } else if (typeof note[0] === 'object') {
             notes  = (
-              note.map((n, iter) => (
-                <div key={iter.toString()}>
-                  <h4>
-                    {n.noteType}
-                  </h4>
-                  <p>
-                    {n.prefLabel}
-                  </p>
-                </div>
-              ))
+              <ul>
+                {
+                  note.map((n, i) => (
+                    <li key={i.toString()}>
+                      <h4>
+                        {n.noteType}
+                      </h4>
+                      <p>
+                        {n.prefLabel}
+                      </p>
+                    </li>
+                  ))
+                }
+              </ul>
             );
           } else {
             notes  = (
               <ul>
                 {
-                  note.map((noteStr, key) => (
-                    <li key={key.toString()}>{noteStr}</li>
+                  note.map((n, i) => (
+                    <li key={i.toString()}>{n}</li>
                   ))
                 }
               </ul>
