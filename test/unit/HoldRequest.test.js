@@ -72,7 +72,7 @@ describe('HoldRequest', () => {
 
     before(() => {
       requireUser = sinon.spy(HoldRequest.prototype, 'requireUser');
-      component = mount(<HoldRequest />);
+      component = mount(<HoldRequest />, { attachTo: document.body });
     });
 
     after(() => {
@@ -93,7 +93,7 @@ describe('HoldRequest', () => {
     before(() => {
       Actions.updatePatronData({});
       requireUser = sinon.spy(HoldRequest.prototype, 'requireUser');
-      component = mount(<HoldRequest />);
+      component = mount(<HoldRequest />, { attachTo: document.body });
     });
 
     after(() => {
@@ -112,7 +112,7 @@ describe('HoldRequest', () => {
       let component;
 
       before(() => {
-        component = mount(<HoldRequest />);
+        component = mount(<HoldRequest />, { attachTo: document.body });
       });
 
       after(() => {
@@ -150,7 +150,7 @@ describe('HoldRequest', () => {
     };
 
     before(() => {
-      component = mount(<HoldRequest bib={bib} params={{ itemId: 'i10000003' }} />);
+      component = mount(<HoldRequest bib={bib} params={{ itemId: 'i10000003' }} />, { attachTo: document.body });
     });
 
     after(() => {
@@ -169,7 +169,7 @@ describe('HoldRequest', () => {
 
       expect(form.find('h2')).to.have.length(1);
       expect(form.contains(
-        <h2>
+        <h2 className="nypl-request-form-title">
           Delivery options for this item are currently unavailable. Please try again later or
           contact 917-ASK-NYPL (<a href="tel:917-275-6975">917-275-6975</a>).
         </h2>
@@ -213,7 +213,8 @@ describe('HoldRequest', () => {
           bib={bib}
           deliveryLocations={deliveryLocations}
           params={{ itemId: 'i10000003' }}
-        />
+        />,
+        { attachTo: document.body }
       );
     });
 
@@ -225,7 +226,9 @@ describe('HoldRequest', () => {
       const form = component.find('form');
 
       expect(form.find('h2')).to.have.length(1);
-      expect(form.contains(<h2>Choose a delivery option or location</h2>)).to.equal(true);
+      expect(form.contains(
+        <h2 className="nypl-request-form-title">Choose a delivery option or location</h2>
+      )).to.equal(true);
     });
 
     it('should display the form of the display locations.', () => {
@@ -316,7 +319,8 @@ describe('HoldRequest', () => {
           deliveryLocations={deliveryLocations}
           isEddRequestable
           params={{ itemId: 'i10000003' }}
-        />
+        />,
+        { attachTo: document.body }
       );
     });
 

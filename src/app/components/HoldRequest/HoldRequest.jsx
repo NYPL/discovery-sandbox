@@ -1,4 +1,4 @@
-/* globals window */
+/* globals window document */
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
@@ -55,12 +55,8 @@ class HoldRequest extends React.Component {
 
   componentDidMount() {
     this.requireUser();
-  }
 
-  componentDidUpdate() {
-    if (this.loadingLayer) {
-      this.loadingLayer.focus();
-    }
+    document.getElementById('item-title').focus();
   }
 
   onChange() {
@@ -292,11 +288,11 @@ class HoldRequest extends React.Component {
     const isEddRequestable = this.props.isEddRequestable;
     const deliveryLocationInstruction =
       (!deliveryLocations.length && !isEddRequestable) ?
-        (<h2>
+        (<h2 className="nypl-request-form-title">
           Delivery options for this item are currently unavailable. Please try again later or
           contact 917-ASK-NYPL (<a href="tel:917-275-6975">917-275-6975</a>).
         </h2>) :
-        <h2>Choose a delivery option or location</h2>;
+        <h2 className="nypl-request-form-title">Choose a delivery option or location</h2>;
     let form = null;
 
     if (bib && selectedItemAvailable) {
@@ -340,7 +336,6 @@ class HoldRequest extends React.Component {
           <LoadingLayer
             status={this.state.isLoading}
             title="Requesting"
-            childRef={(c) => { this.loadingLayer = c; }}
           />
           <div className="nypl-request-page-header">
             <div className="nypl-full-width-wrapper">
@@ -351,7 +346,7 @@ class HoldRequest extends React.Component {
                     bibUrl={`/bib/${bibId}`}
                     type="hold"
                   />
-                  <h1>Item Request</h1>
+                  <h1 id="item-title" tabIndex="0">Item Request</h1>
                 </div>
               </div>
             </div>

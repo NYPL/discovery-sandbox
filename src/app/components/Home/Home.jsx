@@ -21,12 +21,6 @@ class Home extends React.Component {
     this.updateIsLoadingState = this.updateIsLoadingState.bind(this);
   }
 
-  componentDidUpdate() {
-    if (this.loadingLayer) {
-      this.loadingLayer.focus();
-    }
-  }
-
   updateIsLoadingState(status) {
     this.setState({ isLoading: status });
   }
@@ -39,13 +33,17 @@ class Home extends React.Component {
             <LoadingLayer
               status={this.state.isLoading}
               title="Searching"
-              childRef={(c) => { this.loadingLayer = c; }}
             />
             <div className="nypl-homepage-hero">
               <div className="nypl-full-width-wrapper">
                 <div className="nypl-row">
                   <div className="nypl-column-full">
                     <h1>{appConfig.displayTitle}</h1>
+                  </div>
+                </div>
+
+                <div className="nypl-row">
+                  <div className="nypl-column-full">
                     <Search
                       createAPIQuery={basicQuery(this.props)}
                       updateIsLoadingState={this.updateIsLoadingState}

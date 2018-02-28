@@ -22,7 +22,7 @@ describe('HoldConfirmation', () => {
 
     before(() => {
       requireUser = sinon.spy(HoldConfirmation.prototype, 'requireUser');
-      component = mount(<HoldConfirmation location={location} />);
+      component = mount(<HoldConfirmation location={location} />, { attachTo: document.body });
     });
 
     after(() => {
@@ -48,7 +48,7 @@ describe('HoldConfirmation', () => {
     before(() => {
       Actions.updatePatronData({});
       requireUser = sinon.spy(HoldConfirmation.prototype, 'requireUser');
-      component = mount(<HoldConfirmation location={location} />);
+      component = mount(<HoldConfirmation location={location} />, { attachTo: document.body });
     });
 
     after(() => {
@@ -82,7 +82,7 @@ describe('HoldConfirmation', () => {
           barcodes: ['162402680435300'],
         });
         requireUser = sinon.spy(HoldConfirmation.prototype, 'requireUser');
-        component = mount(<HoldConfirmation location={location} />);
+        component = mount(<HoldConfirmation location={location} />, { attachTo: document.body });
       });
 
       after(() => {
@@ -159,7 +159,10 @@ describe('HoldConfirmation', () => {
           bib={bib}
           deliveryLocations={deliveryLocations}
         />,
-        { context: { router: { createHref: () => {}, push: pushSpy } } },
+        {
+          context: { router: { createHref: () => {}, push: pushSpy } },
+          attachTo: document.body,
+        },
       );
     });
 
@@ -177,7 +180,9 @@ describe('HoldConfirmation', () => {
       expect(pageHeader).to.have.length(1);
       expect(pageHeader.find('h1')).to.have.length(1);
       expect(pageHeader.find('h1').text()).to.equal('Request Confirmation');
-      expect(pageHeader.contains(<h1>Request Confirmation</h1>)).to.equal(true);
+      expect(
+        pageHeader.contains(<h1 id="confirmation-title" tabIndex="0">Request Confirmation</h1>)
+      ).to.equal(true);
     });
 
     it('should display the layout of request confirmation page\'s contents.', () => {
@@ -254,7 +259,8 @@ describe('HoldConfirmation', () => {
         'modelDeliveryLocationName',
       );
       component = mount(
-        <HoldConfirmation location={location} deliveryLocations={deliveryLocations} />
+        <HoldConfirmation location={location} deliveryLocations={deliveryLocations} />,
+        { attachTo: document.body }
       );
     });
 
@@ -314,7 +320,8 @@ describe('HoldConfirmation', () => {
           location={location}
           bib={bib}
           deliveryLocations={deliveryLocations}
-        />);
+        />,
+        { attachTo: document.body });
     });
 
     after(() => {
@@ -358,7 +365,8 @@ describe('HoldConfirmation', () => {
         barcodes: ['162402680435300'],
       });
       requireUser = sinon.spy(HoldConfirmation.prototype, 'requireUser');
-      component = mount(<HoldConfirmation location={location} bib={bib} />);
+      component =
+        mount(<HoldConfirmation location={location} bib={bib} />, { attachTo: document.body });
     });
 
     after(() => {
@@ -429,6 +437,7 @@ describe('HoldConfirmation', () => {
           bib={bib}
           deliveryLocations={deliveryLocations}
         />,
+        { attachTo: document.body }
       );
     });
 
@@ -459,7 +468,8 @@ describe('HoldConfirmation', () => {
     };
 
     before(() => {
-      component = mount(<HoldConfirmation location={location} bib={bib} />);
+      component =
+        mount(<HoldConfirmation location={location} bib={bib} />, { attachTo: document.body });
     });
 
     after(() => {
@@ -492,7 +502,10 @@ describe('HoldConfirmation', () => {
       pushSpy = sinon.spy();
       component = mount(
         <HoldConfirmation location={location} bib={bib} searchKeywords="Bryant" />,
-        { context: { router: { createHref: () => {}, push: pushSpy } } },
+        {
+          context: { router: { createHref: () => {}, push: pushSpy } },
+          attachTo: document.body,
+        },
       );
     });
 
@@ -535,7 +548,8 @@ describe('HoldConfirmation', () => {
 
     before(() => {
       renderBackToClassicLink = sinon.spy(HoldConfirmation.prototype, 'renderBackToClassicLink');
-      component = mount(<HoldConfirmation location={location} bib={bib} />);
+      component =
+        mount(<HoldConfirmation location={location} bib={bib} />, { attachTo: document.body });
     });
 
     after(() => {
@@ -575,7 +589,8 @@ describe('HoldConfirmation', () => {
       };
 
       before(() => {
-        component = mount(<HoldConfirmation location={location} bib={bib} />);
+        component =
+          mount(<HoldConfirmation location={location} bib={bib} />, { attachTo: document.body });
       });
 
       after(() => {

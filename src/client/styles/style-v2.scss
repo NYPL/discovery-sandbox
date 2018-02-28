@@ -1,29 +1,3 @@
-#skip a {
-  background-color: $nypl-white;
-  border: 0;
-  color: $link-color;
-  display: block;
-  font-size: 13px;
-  height: 1px;
-  left: -10000px;
-  line-height: 2;
-  overflow: hidden;
-  padding: 5px 10px 3px;
-  position: absolute;
-  top: 7px;
-  width: 1px;
-  z-index: 1000;
-
-  &:focus {
-    border: 5px solid $link-color;
-    height: auto;
-    left: 7px;
-    outline: 0;
-    overflow: visible;
-    width: auto;
-  }
-}
-
 // discovery-item.v2.html
 // item info / the full item record
 .nypl-item-details {
@@ -64,36 +38,3 @@
   }
 
 } // /.nypl-item-details
-
-.nypl-results-list {
-  .nypl-results-item {
-    @include results-item;
-    border: 0;
-
-    // If there is a request table inline in the results, add the class
-    &.has-request {
-      margin-bottom: 3rem;
-    }
-
-    .nypl-results-media {
-      @include results-media(
-        $color: $nypl-dark-gray,
-        $font-size: 0.85rem,
-        $font-weight: 400);
-    } // /.nypl-results-media
-
-    // TODO: find a more elegant way of writing this:
-    // Posibly a for/in thing...
-    .nypl-results-room,
-    .nypl-results-place,
-    .nypl-results-publisher,
-    .nypl-results-date,
-    .nypl-results-info {
-      font-size: 0.85rem;
-    } // /.nypl-results-room
-    // Special case where we need the the publisher & published date closer to one another:
-    .nypl-results-publisher {
-      margin-right: 0.25rem;
-    }
-  } // /.nypl-results-item
-}

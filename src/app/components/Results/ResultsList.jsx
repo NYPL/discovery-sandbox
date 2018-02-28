@@ -136,9 +136,10 @@ class ResultsList extends React.Component {
       result.placeOfPublication[0] : '';
     const items = LibraryItem.getItems(result);
     const totalItems = items.length;
+    const hasRequestTable = items.length === 1;
 
     return (
-      <li key={i} className="nypl-results-item">
+      <li key={i} className={`nypl-results-item ${hasRequestTable ? 'has-request' : ''}`}>
         <h3>
           <Link
             onClick={e => this.getBibRecord(e, bibId, bibTitle)}
@@ -160,7 +161,7 @@ class ResultsList extends React.Component {
           </ul>
         </div>
         {
-          (items.length === 1) &&
+          hasRequestTable &&
             <ItemTable
               items={items}
               bibId={bibId}

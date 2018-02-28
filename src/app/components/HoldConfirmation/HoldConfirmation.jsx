@@ -1,4 +1,4 @@
-/* global window */
+/* global window document */
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
@@ -25,6 +25,8 @@ class HoldConfirmation extends React.Component {
 
   componentDidMount() {
     this.requireUser();
+
+    document.getElementById('confirmation-title').focus();
   }
 
   /**
@@ -303,7 +305,7 @@ class HoldConfirmation extends React.Component {
                     itemUrl={`/hold/request/${bibId}-${itemId}`}
                     edd={pickupLocation === 'edd'}
                   />
-                  <h1>{confirmationPageTitle}</h1>
+                  <h1 id="confirmation-title" tabIndex="0">{confirmationPageTitle}</h1>
                 </div>
               </div>
             </div>
