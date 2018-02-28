@@ -33,7 +33,8 @@ describe('SearchResultsPage', () => {
         <SearchResultsPage
           searchResults={{}}
           location={{ search: '' }}
-        />
+        />,
+        { attachTo: document.body }
       );
     });
 
@@ -82,6 +83,7 @@ describe('SearchResultsPage', () => {
           searchResults={searchResults}
           location={{ search: '' }}
         />,
+        { attachTo: document.body }
       );
     });
 
@@ -117,6 +119,7 @@ describe('SearchResultsPage', () => {
           searchResults={searchResults}
           location={{ search: '' }}
         />,
+        { attachTo: document.body }
       );
     });
 
