@@ -57,18 +57,18 @@ class BibDetails extends React.Component {
   // Original format: ['string1', 'string2']
   // 2018 format: [ {'noteType': 'typeString', 'prefLabel': 'labelString', '@type': 'bf:Note'}, {...}]
   getNote(bib) {
-    const notes = bib.note;
-    if (!notes || !notes.length) {
+    const note = bib.note;
+    if (!note || !note.length) {
       return null;
     }
 
-    let noteObjects = notes && notes.length ? notes : null;
+    let notes = note && note.length ? note : null;
 
-    if (!noteObjects) {
+    if (!notes) {
       return null;
     }
 
-    return noteObjects;
+    return notes;
   }
 
   /*
@@ -341,34 +341,40 @@ class BibDetails extends React.Component {
       if (fieldLabel === 'Contents') {
         const note = this.getNote(this.props.bib);
         let notes;
-        if (typeof note[0] === 'object') {
-          notes  = (
-            note.map((n, iter) => (
-              <div key={iter.toString()}>
-                <h4>
-                  {n.noteType}
-                </h4>
-                <div>
-                  {n.prefLabel}
+        if (note) {
+          if (note.length === 1) {
+            notes = (
+              <div>{note[0]}</div>
+            );
+          } else if (typeof note[0] === 'object') {
+            notes  = (
+              note.map((n, iter) => (
+                <div key={iter.toString()}>
+                  <h4>
+                    {n.noteType}
+                  </h4>
+                  <p>
+                    {n.prefLabel}
+                  </p>
                 </div>
-              </div>
-            ))
-          );
-        } else {
-          notes  = (
-            <ul>
-              {
-                note.map((noteStr, x) => (
-                  <li key={x.toString()}>{noteStr}</li>
-                ))
-              }
-            </ul>
-          );
+              ))
+            );
+          } else {
+            notes  = (
+              <ul>
+                {
+                  note.map((noteStr, key) => (
+                    <li key={key.toString()}>{noteStr}</li>
+                  ))
+                }
+              </ul>
+            );
+          }
+          fieldsToRender.push({
+            term: fieldLabel,
+            definition: notes,
+          });
         }
-        fieldsToRender.push({
-          term: fieldLabel,
-          definition: notes,
-        });
       }
 
       if (fieldLabel === 'Electronic Resource' && this.props.electronicResources.length) {
