@@ -53,9 +53,11 @@ class BibDetails extends React.Component {
     return owner;
   }
 
-  // Parse the original and new note format.
-  // Original format: ['string1', 'string2']
-  // 2018 format: [ {'noteType': 'typeString', 'prefLabel': 'labelString', '@type': 'bf:Note'}, {...}]
+  /*
+   * Return note array or null.
+   * @param {object} bib
+   * @return {null|array}
+   */
   getNote(bib) {
     const note = bib.note;
     if (!note || !note.length) {
@@ -338,6 +340,13 @@ class BibDetails extends React.Component {
       }
 
       // Note field rendering as array of objects instead of an array of strings.
+      // Parse the original and new note format.
+      // Original format: ['string1', 'string2']
+      // 2018 format:
+      //    [{'noteType': 'string',
+      //     'prefLabel': 'string',
+      //     '@type': 'bf:Note'},
+      //    {...}]
       if (fieldLabel === 'Contents') {
         const note = this.getNote(this.props.bib);
         let notes;
