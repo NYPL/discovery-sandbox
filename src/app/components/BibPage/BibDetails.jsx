@@ -60,10 +60,6 @@ class BibDetails extends React.Component {
    */
   getNote(bib) {
     const note = bib.note;
-    if (!note || !note.length) {
-      return null;
-    }
-
     let notes = note && note.length ? note : null;
 
     if (!notes) {
@@ -351,29 +347,14 @@ class BibDetails extends React.Component {
         const note = this.getNote(this.props.bib);
         let notes;
         if (note) {
-          if (note.length === 1) {
+          if (note.length === 1 && typeof note[0] !== 'object') {
             notes = (
               <span>{note[0]}</span>
             );
           } else if (typeof note[0] === 'object') {
-            notes  = (
-              <ul>
-                {
-                  note.map((n, i) => (
-                    <li key={i.toString()}>
-                      <h4>
-                        {n.noteType}
-                      </h4>
-                      <p>
-                        {n.prefLabel}
-                      </p>
-                    </li>
-                  ))
-                }
-              </ul>
-            );
+            notes = this.noteObjectDisplay(note);
           } else {
-            notes  = (
+            notes = (
               <ul>
                 {
                   note.map((n, i) => (
@@ -436,6 +417,42 @@ class BibDetails extends React.Component {
     }); // End of the forEach loop
 
     return fieldsToRender;
+  }
+
+  /*
+   * Display for single and multivalued object arrays.
+   * @param {array} note
+   * @return {string}
+   */
+  noteObjectDisplay(note) {
+    let display;
+    if (note.length === 1) {
+      display = (
+        <div>
+          <h4>{note[0].noteType}</h4>
+          <p>{note[0].prefLabel}</p>
+        </div>
+      );
+    } else {
+      display = (
+        <ul>
+          {
+            note.map((n, i) => (
+              <li key={i.toString()}>
+                <h4>
+                  {n.noteType}
+                </h4>
+                <p>
+                  {n.prefLabel}
+                </p>
+              </li>
+            ))
+          }
+        </ul>
+      );
+    }
+
+    return display;
   }
 
   newSearch(e, query, field, value, label) {
