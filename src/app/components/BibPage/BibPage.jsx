@@ -75,7 +75,7 @@ class BibPage extends React.Component {
       { label: 'Genre/Form', value: 'materialType' },
       { label: 'Notes', value: '' },
       { label: 'Additional Resources', value: 'supplementaryContent', selfLinkable: true },
-      { label: 'Contents', value: 'note' },
+      { label: 'Contents', value: 'React Component' },
       { label: 'Bibliography', value: '' },
       { label: 'ISBN', value: 'identifier', identifier: 'urn:isbn' },
       { label: 'ISSN', value: 'identifier', identifier: 'urn:issn' },
