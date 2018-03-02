@@ -116,7 +116,7 @@ class ResultsCount extends React.Component {
       <div
         id="results-description"
         className="nypl-results-summary"
-        aria-live="assertive"
+        aria-live="polite"
         aria-atomic="true"
         role="presentation"
       >

@@ -54,6 +54,22 @@ class BibDetails extends React.Component {
   }
 
   /*
+   * Return note array or null.
+   * @param {object} bib
+   * @return {null|array}
+   */
+  getNote(bib) {
+    const note = bib.note;
+    let notes = note && note.length ? note : null;
+
+    if (!notes) {
+      return null;
+    }
+
+    return notes;
+  }
+
+  /*
    * getDefinitionObject(bibValues, fieldValue, fieldLinkable, fieldSelfLinkable, fieldLabel)
    * Gets a list, or one value, of data to display for a field from the API, where
    * the data is an object in the array.
@@ -319,6 +335,42 @@ class BibDetails extends React.Component {
         }
       }
 
+      // Note field rendering as array of objects instead of an array of strings.
+      // Parse the original and new note format.
+      // Original format: ['string1', 'string2']
+      // 2018 format:
+      //    [{'noteType': 'string',
+      //     'prefLabel': 'string',
+      //     '@type': 'bf:Note'},
+      //    {...}]
+      if (fieldLabel === 'Contents') {
+        const note = this.getNote(this.props.bib);
+        let notes;
+        if (note) {
+          if (note.length === 1 && typeof note[0] !== 'object') {
+            notes = (
+              <span>{note[0]}</span>
+            );
+          } else if (typeof note[0] === 'object') {
+            notes = this.noteObjectDisplay(note);
+          } else {
+            notes = (
+              <ul>
+                {
+                  note.map((n, i) => (
+                    <li key={i.toString()}>{n}</li>
+                  ))
+                }
+              </ul>
+            );
+          }
+          fieldsToRender.push({
+            term: fieldLabel,
+            definition: notes,
+          });
+        }
+      }
+
       if (fieldLabel === 'Electronic Resource' && this.props.electronicResources.length) {
         const electronicResources = this.props.electronicResources;
         let electronicElem;
@@ -365,6 +417,42 @@ class BibDetails extends React.Component {
     }); // End of the forEach loop
 
     return fieldsToRender;
+  }
+
+  /*
+   * Display for single and multivalued object arrays.
+   * @param {array} note
+   * @return {string}
+   */
+  noteObjectDisplay(note) {
+    let display;
+    if (note.length === 1) {
+      display = (
+        <div>
+          <h4>{note[0].noteType}</h4>
+          <p>{note[0].prefLabel}</p>
+        </div>
+      );
+    } else {
+      display = (
+        <ul>
+          {
+            note.map((n, i) => (
+              <li key={i.toString()}>
+                <h4>
+                  {n.noteType}
+                </h4>
+                <p>
+                  {n.prefLabel}
+                </p>
+              </li>
+            ))
+          }
+        </ul>
+      );
+    }
+
+    return display;
   }
 
   newSearch(e, query, field, value, label) {

@@ -72,7 +72,7 @@ describe('HoldRequest', () => {
 
     before(() => {
       requireUser = sinon.spy(HoldRequest.prototype, 'requireUser');
-      component = mount(<HoldRequest />);
+      component = mount(<HoldRequest />, { attachTo: document.body });
     });
 
     after(() => {
@@ -93,7 +93,7 @@ describe('HoldRequest', () => {
     before(() => {
       Actions.updatePatronData({});
       requireUser = sinon.spy(HoldRequest.prototype, 'requireUser');
-      component = mount(<HoldRequest />);
+      component = mount(<HoldRequest />, { attachTo: document.body });
     });
 
     after(() => {
@@ -112,7 +112,7 @@ describe('HoldRequest', () => {
       let component;
 
       before(() => {
-        component = mount(<HoldRequest />);
+        component = mount(<HoldRequest />, { attachTo: document.body });
       });
 
       after(() => {
@@ -150,7 +150,7 @@ describe('HoldRequest', () => {
     };
 
     before(() => {
-      component = mount(<HoldRequest bib={bib} params={{ itemId: 'i10000003' }} />);
+      component = mount(<HoldRequest bib={bib} params={{ itemId: 'i10000003' }} />, { attachTo: document.body });
     });
 
     after(() => {
@@ -213,7 +213,8 @@ describe('HoldRequest', () => {
           bib={bib}
           deliveryLocations={deliveryLocations}
           params={{ itemId: 'i10000003' }}
-        />
+        />,
+        { attachTo: document.body }
       );
     });
 
@@ -322,7 +323,8 @@ describe('HoldRequest', () => {
           deliveryLocations={deliveryLocations}
           isEddRequestable
           params={{ itemId: 'i10000003' }}
-        />
+        />,
+        { attachTo: document.body }
       );
     });
 

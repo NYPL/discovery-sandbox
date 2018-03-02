@@ -271,6 +271,7 @@ class HoldRequest extends React.Component {
     const bibLink = (bibId && title) ?
       (<h2>
         <Link
+          id="item-link"
           to={`${appConfig.baseUrl}/bib/${bibId}`}
           onClick={() => trackDiscovery('Hold Request - Bib', title)}
         >
