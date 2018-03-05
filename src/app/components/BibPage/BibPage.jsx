@@ -68,7 +68,8 @@ class BibPage extends React.Component {
     ];
 
     const bottomFields = [
-      { label: 'Publication', value: 'React Component' },
+      { label: 'Publication', value: 'publicationStatement' },
+      { label: 'Publication Date', value: 'serialPublicationDates' },
       { label: 'Electronic Resource', value: 'React Component' },
       { label: 'Description', value: 'extent' },
       { label: 'Series', value: 'seriesStatement' },
