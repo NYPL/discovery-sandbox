@@ -14,7 +14,7 @@ const LoadingLayer = ({ status, title }) => {
         role="alertdialog"
         aria-labelledby="loading-animation"
         aria-describedby="loading-description"
-        aria-live="polite"
+        aria-live="assertive"
         aria-atomic="true"
         tabIndex="0"
       >
