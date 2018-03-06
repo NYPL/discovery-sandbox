@@ -115,6 +115,7 @@ class Search extends React.Component {
         action={`${appConfig.baseUrl}/search`}
         method="POST"
         className="nypl-omnisearch-form"
+        aria-controls="results-description"
       >
         <div className="nypl-omnisearch">
           <div className="nypl-text-field">
@@ -141,6 +142,7 @@ class Search extends React.Component {
                 type="text"
                 id="search-query"
                 aria-labelledby="search-input-label"
+                aria-controls="results-description"
                 placeholder="Keyword, title, or author/contributor"
                 onChange={this.inputChange}
                 value={this.state.searchKeywords}
