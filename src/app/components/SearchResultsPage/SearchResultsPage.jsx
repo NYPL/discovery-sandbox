@@ -36,11 +36,11 @@ class SearchResultsPage extends React.Component {
   }
 
   componentDidMount() {
-    document.getElementById('filter-title').focus();
+    // document.getElementById('filter-title').focus();
   }
 
   componentDidUpdate() {
-    document.getElementById('filter-title').focus();
+    // document.getElementById('filter-title').focus();
   }
 
   updateIsLoadingState(status) {
@@ -200,9 +200,6 @@ class SearchResultsPage extends React.Component {
                 className="nypl-column-full"
                 role="region"
                 id="mainContent"
-                aria-live="polite"
-                aria-atomic="true"
-                aria-relevant="additions removals"
                 aria-describedby="results-description"
               >
                 {
