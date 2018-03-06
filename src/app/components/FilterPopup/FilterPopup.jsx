@@ -358,6 +358,7 @@ class FilterPopup extends React.Component {
         name="apply-filters"
         onClick={e => this.submitForm(e, position)}
         className="nypl-primary-button apply-button"
+        aria-controls="results-description"
       >
         Apply filters
         <CheckSoloIcon
@@ -513,6 +514,7 @@ class FilterPopup extends React.Component {
               action={`${appConfig.baseUrl}/search?q=${searchKeywords}`}
               method="POST"
               onSubmit={() => this.submitForm('Form submission')}
+              aria-controls="results-description"
             >
               <div className="form-full-width">
                 <div className="nypl-full-width-wrapper">

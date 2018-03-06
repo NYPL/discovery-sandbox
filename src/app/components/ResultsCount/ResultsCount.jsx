@@ -87,26 +87,20 @@ class ResultsCount extends React.Component {
     const plural = (searchKeywords && searchKeywords.indexOf(' ') !== -1) ? 's' : '';
 
     if (isLoading) {
-      return (<p>Loading...</p>);
+      return ('Loading...');
     }
 
     if (count !== 0) {
-      return (<h2>Displaying {currentResultDisplay} of {countF} results {displayContext}</h2>);
+      return (`Displaying ${currentResultDisplay} of ${countF} results ${displayContext}`);
     }
 
     if (this.checkSelectedFilters()) {
       return (
-        <h2>No results for the keyword{plural} "{searchKeywords}" with the chosen filters. Try
-          a different search or different filters.
-        </h2>
+        `No results for the keyword${plural} "${searchKeywords}" with the chosen filters. Try a different search or different filters.`
       );
     }
 
-    return (
-      <h2>
-        No results for the keyword{plural} "{searchKeywords}". Try a different search.
-      </h2>
-    );
+    return `No results for the keyword{plural} "${searchKeywords}". Try a different search.`;
   }
 
   render() {
@@ -114,13 +108,17 @@ class ResultsCount extends React.Component {
 
     return (
       <div
-        id="results-description"
         className="nypl-results-summary"
-        aria-live="assertive"
-        aria-atomic="true"
-        role="presentation"
       >
-        {results}
+        <h2
+          id="results-description"
+          aria-live="polite"
+          aria-relevant="additions removals"
+          role="alertdialog"
+          aria-atomic="true"
+        >
+          {results}
+        </h2>
       </div>
     );
   }
