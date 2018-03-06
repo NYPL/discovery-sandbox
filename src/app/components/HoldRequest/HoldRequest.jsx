@@ -190,8 +190,8 @@ class HoldRequest extends React.Component {
    */
   modelDeliveryLocationName(prefLabel, shortName) {
     if (prefLabel && typeof prefLabel === 'string' && shortName) {
-      const deliveryRoom = (prefLabel.split(' - ')[1]) ? ` - ${prefLabel.split(' - ')[1]}` : '';
-
+      const deliveryRoom = (prefLabel.split(' - ')[1]) ?
+        ` - ${prefLabel.split(' - ').slice(1).join(' - ')}` : '';
       return `${shortName}${deliveryRoom}`;
     }
 
