@@ -133,7 +133,7 @@ class SelectedFilters extends React.Component {
         <a
           className="nypl-unset-filter clear-filters-button"
           href={`${appConfig.baseUrl}/search?${apiQuery}`}
-          aria-controls="selected-filters-container"
+          aria-controls="selected-filters-container results-description"
           aria-label="Clear all filters"
         >
           Clear Filters
@@ -190,7 +190,7 @@ class SelectedFilters extends React.Component {
                 <button
                   className="nypl-unset-filter"
                   onClick={e => this.onFilterClick(e, filter)}
-                  aria-controls="selected-filters-container"
+                  aria-controls="selected-filters-container results-description"
                   aria-label={`${filter.label} Remove Filter`}
                 >
                   {filter.label}
@@ -214,7 +214,7 @@ class SelectedFilters extends React.Component {
                   <a
                     className="nypl-unset-filter"
                     href={`${appConfig.baseUrl}/search?${apiQuery}`}
-                    aria-controls="selected-filters-container"
+                    aria-controls="selected-filters-container results-description"
                     aria-label={`${filter.label} Remove Filter`}
                   >
                     {filter.label}

@@ -36,7 +36,7 @@ class SearchResultsPage extends React.Component {
   }
 
   componentDidMount() {
-    // document.getElementById('filter-title').focus();
+    document.getElementById('filter-title').focus();
   }
 
   componentDidUpdate() {
@@ -128,7 +128,7 @@ class SearchResultsPage extends React.Component {
               <div className="nypl-row">
                 <div className="nypl-column-full">
                   <Breadcrumbs query={searchKeywords} type="search" />
-                  <h1 aria-label={headerLabel} tabIndex="0">
+                  <h1 aria-label={headerLabel}>
                     Search Results
                   </h1>
                   <Search

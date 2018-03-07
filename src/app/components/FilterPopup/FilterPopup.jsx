@@ -387,7 +387,7 @@ class FilterPopup extends React.Component {
           href="#"
           onClick={e => this.closeForm(e, position)}
           aria-expanded={!showForm}
-          aria-controls="filter-popup-menu"
+          aria-controls="filter-popup-menu results-description"
           className="nypl-primary-button cancel-button"
         >
           Cancel
@@ -398,6 +398,7 @@ class FilterPopup extends React.Component {
         type="button"
         name="Clear-Filters"
         className="nypl-basic-button clear-filters-button"
+        aria-controls="results-description"
         onClick={e => this.clearFilters(e, position)}
         ref={ref}
       >
@@ -415,6 +416,7 @@ class FilterPopup extends React.Component {
           name="Clear-Filters"
           className="nypl-basic-button clear-filters-button"
           onClick={e => this.clearFilters(e, position)}
+          aria-controls="results-description"
           ref={ref}
         >
           Clear filters
