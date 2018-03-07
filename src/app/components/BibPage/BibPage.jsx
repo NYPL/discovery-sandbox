@@ -68,12 +68,16 @@ class BibPage extends React.Component {
     ];
 
     const bottomFields = [
-      { label: 'Publication', value: 'React Component' },
+      { label: 'Publication', value: 'publicationStatement' },
+      { label: 'Publication Date', value: 'serialPublicationDates' },
       { label: 'Electronic Resource', value: 'React Component' },
       { label: 'Description', value: 'extent' },
-      { label: 'Series', value: 'seriesStatement' },
+      { label: 'Series Statement', value: 'seriesStatement' },
+      { label: 'Uniform Title', value: 'uniformTitle' },
+      { label: 'Alternative Title', value: 'titleAlt' },
+      { label: 'Former Title', value: 'formerTitle' },
       { label: 'Subject', value: 'subjectLiteral', linkable: true },
-      { label: 'Genre/Form', value: 'materialType' },
+      { label: 'Genre/Form', value: 'genreForm' },
       { label: 'Notes', value: '' },
       { label: 'Additional Resources', value: 'supplementaryContent', selfLinkable: true },
       { label: 'Contents', value: 'React Component' },
