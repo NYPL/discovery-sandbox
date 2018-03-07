@@ -6,11 +6,9 @@ import MockAdapter from 'axios-mock-adapter';
 import axios from 'axios';
 import sinon from 'sinon';
 
-import { ajaxCall } from '../../src/app/utils/utils.js';
+import ResultsList from '../../src/app/components/Results/ResultsList';
 
 const mock = new MockAdapter(axios);
-
-import ResultsList from '../../src/app/components/Results/ResultsList.jsx';
 
 const results = [{}, {}, {}];
 const singleBibNoTitleDisplay = {
@@ -318,7 +316,7 @@ describe('ResultsList', () => {
       before(() => {
         component = mount(
           <ResultsList results={resultsBibs} updateIsLoadingState={updateIsLoadingState} />,
-          { context: { router: { createHref: () => {}, push: () => {}, replace: () => {} } } }
+          { context: { router: { createHref: () => {}, push: () => {}, replace: () => {} } } },
         );
         mock
           .onGet('/research/collections/shared-collection-catalog/api/bib?bibId=b17692265')
@@ -347,7 +345,7 @@ describe('ResultsList', () => {
     before(() => {
       component = mount(
         <ResultsList results={resultsBibs} updateIsLoadingState={updateIsLoadingState} />,
-        { context: { router: { createHref: () => {}, push: () => {} } } }
+        { context: { router: { createHref: () => {}, push: () => {} } } },
       );
       mock
         .onGet('/research/collections/shared-collection-catalog/api/bib?bibId=b17692265')
@@ -460,7 +458,7 @@ describe('ResultsList', () => {
       getBibRecordSpy = sinon.spy(ResultsList.prototype, 'getBibRecord');
       component = mount(
         <ResultsList results={resultsBibs} updateIsLoadingState={updateIsLoadingState} />,
-        { context: { router: { createHref: () => {}, push: () => {} } } }
+        { context: { router: { createHref: () => {}, push: () => {} } } },
       );
       mock
         .onGet('/research/collections/shared-collection-catalog/api/bib?bibId=b17692265')

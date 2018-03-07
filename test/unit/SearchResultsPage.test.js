@@ -2,14 +2,8 @@
 import React from 'react';
 import { expect } from 'chai';
 import { mount } from 'enzyme';
-import MockAdapter from 'axios-mock-adapter';
-import axios from 'axios';
-import sinon from 'sinon';
 
-const mock = new MockAdapter(axios);
-
-import SearchResultsPage from '../../src/app/components/SearchResultsPage/SearchResultsPage.jsx';
-import Actions from '../../src/app/actions/Actions.js';
+import SearchResultsPage from '../../src/app/components/SearchResultsPage/SearchResultsPage';
 
 // Eventually, it would be nice to have mocked data in a different file and imported.
 const searchResults = {
@@ -39,7 +33,8 @@ describe('SearchResultsPage', () => {
         <SearchResultsPage
           searchResults={{}}
           location={{ search: '' }}
-        />
+        />,
+        { attachTo: document.body }
       );
     });
 
@@ -87,7 +82,8 @@ describe('SearchResultsPage', () => {
           searchKeywords="locofocos"
           searchResults={searchResults}
           location={{ search: '' }}
-        />
+        />,
+        { attachTo: document.body }
       );
     });
 
@@ -122,7 +118,8 @@ describe('SearchResultsPage', () => {
           searchKeywords="locofocos"
           searchResults={searchResults}
           location={{ search: '' }}
-        />
+        />,
+        { attachTo: document.body }
       );
     });
 
@@ -137,8 +134,8 @@ describe('SearchResultsPage', () => {
       expect(component.find('.nypl-page-header')).to.have.length(1);
     });
 
-    it('should two .nypl-full-width-wrapper elements', () => {
-      expect(component.find('.nypl-full-width-wrapper')).to.have.length(2);
+    it('should have seven .nypl-full-width-wrapper elements', () => {
+      expect(component.find('.nypl-full-width-wrapper')).to.have.length(7);
     });
   });
 });

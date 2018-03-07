@@ -3,7 +3,7 @@ import React from 'react';
 import { expect } from 'chai';
 import { shallow, mount } from 'enzyme';
 
-import ItemHoldings from './../../src/app/components/Item/ItemHoldings.jsx';
+import ItemHoldings from './../../src/app/components/Item/ItemHoldings';
 
 const items = [
   {
@@ -160,7 +160,7 @@ describe('ItemHoldings', () => {
     before(() => {
       component = mount(
         <ItemHoldings items={longListItems} shortenItems={false} />,
-        { context: { router: { createHref: () => {}, push: () => {} } } }
+        { context: { router: { createHref: () => {}, push: () => {} } } },
       );
     });
 
@@ -206,7 +206,7 @@ describe('ItemHoldings', () => {
     before(() => {
       component = mount(
         <ItemHoldings items={longListItems} shortenItems={false} page="4" />,
-        { context: { router: { createHref: () => {}, push: () => {} } } }
+        { context: { router: { createHref: () => {}, push: () => {} } } },
       );
     });
 
@@ -259,7 +259,7 @@ describe('ItemHoldings', () => {
             { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
             { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
           ],
-        ]
+        ],
       );
 
       expect(component.state('chunkedItems')[0].length).to.equal(20);

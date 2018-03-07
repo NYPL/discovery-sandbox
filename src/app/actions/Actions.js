@@ -1,5 +1,5 @@
 // ACTIONS
-import alt from '../alt.js';
+import alt from '../alt';
 
 class Actions {
   updateSearchResults(data) {
@@ -14,11 +14,11 @@ class Actions {
     return data;
   }
 
-  updateFacets(data) {
+  updateFilters(data) {
     return data;
   }
 
-  updateSelectedFacets(data) {
+  updateSelectedFilters(data) {
     return data;
   }
 
@@ -26,8 +26,8 @@ class Actions {
     return data;
   }
 
-  removeFacet(facetKey, valueId) {
-    return { facetKey, valueId };
+  removeFilter(filterKey, valueId) {
+    return { filterKey, valueId };
   }
 
   updatePage(page) {

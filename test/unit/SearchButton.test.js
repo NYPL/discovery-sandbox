@@ -3,7 +3,7 @@ import React from 'react';
 import { expect } from 'chai';
 import { shallow } from 'enzyme';
 
-import SearchButton from './../../src/app/components/Buttons/SearchButton.jsx';
+import SearchButton from './../../src/app/components/Buttons/SearchButton';
 
 describe('SearchButton', () => {
   describe('Default props', () => {
@@ -17,12 +17,12 @@ describe('SearchButton', () => {
       expect(component.find('#nypl-omni-button').length).to.equal(1);
     });
 
-    it('should have an input element', () => {
-      expect(component.find('input')).to.have.length(1);
+    it('should have a button element', () => {
+      expect(component.find('button')).to.have.length(1);
     });
 
     it('should have a "Search" value', () => {
-      expect(component.find('input').prop('value')).to.equal('Search');
+      expect(component.find('button').prop('type')).to.equal('submit');
     });
   });
 
@@ -40,7 +40,7 @@ describe('SearchButton', () => {
           id="discoverySearch"
           value="Search Discovery"
           onClick={updateVal}
-        />
+        />,
       );
     });
 
@@ -49,7 +49,7 @@ describe('SearchButton', () => {
     });
 
     it('should have a "Search Discovery" value', () => {
-      expect(component.find('input').prop('value')).to.equal('Search Discovery');
+      expect(component.find('button').text()).to.include('Search').and.include('Discovery');
     });
 
     it('should perform the passed function when it is clicked', () => {

@@ -2,18 +2,14 @@
 import React from 'react';
 import MockAdapter from 'axios-mock-adapter';
 import { expect } from 'chai';
-import { shallow, mount } from 'enzyme';
+import { mount } from 'enzyme';
 import axios from 'axios';
 import sinon from 'sinon';
+import Search from '../../src/app/components/Search/Search';
+import { basicQuery } from '../../src/app/utils/utils';
+import appConfig from '../../appConfig';
 
 const mock = new MockAdapter(axios);
-
-import {
-  ajaxCall,
-  basicQuery,
-} from '../../src/app/utils/utils.js';
-import Search from '../../src/app/components/Search/Search';
-import appConfig from '../../appConfig';
 
 describe('Search', () => {
   describe('Default render', () => {
@@ -61,14 +57,13 @@ describe('Search', () => {
     });
 
     it('should render an input text element', () => {
-      expect(component.find('input').length).to.equal(2);
+      expect(component.find('input').length).to.equal(1);
       expect(component.find('input').at(0).prop('type')).to.equal('text');
     });
 
-    it('should render an input submit button', () => {
-      expect(component.find('input').length).to.equal(2);
-      expect(component.find('input').at(1).prop('type')).to.equal('submit');
-      expect(component.find('input').at(1).prop('value')).to.equal('Search');
+    it('should render a submit button', () => {
+      expect(component.find('button').length).to.equal(1);
+      expect(component.find('button').at(0).prop('type')).to.equal('submit');
     });
   });
 
@@ -95,7 +90,7 @@ describe('Search', () => {
       onFieldChangeSpy = sinon.spy(Search.prototype, 'onFieldChange');
       component = mount(
         <Search createAPIQuery={createAPIQuery} updateIsLoadingState={() => {}} />,
-        { context: { router: { createHref: () => {}, push: () => {} } } }
+        { context: { router: { createHref: () => {}, push: () => {} } } },
       );
     });
 
@@ -123,7 +118,7 @@ describe('Search', () => {
       inputChangeSpy = sinon.spy(Search.prototype, 'inputChange');
       component = mount(
         <Search createAPIQuery={createAPIQuery} updateIsLoadingState={() => {}} />,
-        { context: { router: { createHref: () => {}, push: () => {} } } }
+        { context: { router: { createHref: () => {}, push: () => {} } } },
       );
     });
 
@@ -153,7 +148,7 @@ describe('Search', () => {
       submitSearchRequestSpy = sinon.spy(Search.prototype, 'submitSearchRequest');
       component = mount(
         <Search createAPIQuery={createAPIQuery} updateIsLoadingState={() => {}} />,
-        { context: { router: { createHref: () => {}, push: () => {} } } }
+        { context: { router: { createHref: () => {}, push: () => {} } } },
       );
 
       mock
@@ -161,7 +156,7 @@ describe('Search', () => {
         .reply(200, { searchResults: [] });
     });
 
-    after(() => {
+    afterEach(() => {
       mock.reset();
       triggerSubmitSpy.restore();
       submitSearchRequestSpy.restore();
@@ -171,7 +166,7 @@ describe('Search', () => {
       expect(component.state('searchKeywords')).to.equal('');
 
       component.find('input').at(0).simulate('change', { target: { value: 'Dune' } });
-      component.find('input').at(1).simulate('click');
+      component.find('button').at(0).simulate('click');
 
       expect(component.state('searchKeywords')).to.equal('Dune');
       expect(submitSearchRequestSpy.callCount).to.equal(1);
@@ -179,9 +174,8 @@ describe('Search', () => {
 
     it('should submit the input entered when pressing enter', () => {
       expect(component.state('searchKeywords')).to.equal('Dune');
-
       component.find('input').at(0).simulate('change', { target: { value: 'Harry Potter' } });
-      component.find('input').at(0).simulate('keyPress');
+      component.find('button').at(0).simulate('keyPress');
 
       expect(component.state('searchKeywords')).to.equal('Harry Potter');
       expect(triggerSubmitSpy.callCount).to.equal(1);
