@@ -81,14 +81,8 @@ class HoldRequest extends React.Component {
     return (
       <div className="nypl-banner-alert">
         <p style={{ padding: '10px 20px 0px', margin: 0 }}>
-          Please note that due to the holiday, items requested between Friday afternoon (1/12), and Tuesday afternoon (1/16),
-          will be delivered on Wednesday morning (1/17). Please check your patron account to be sure items are Ready for Pickup before your visit.
-        </p>
-        <p style={{ padding: '10px 20px', margin: 0 }}>
-          The Miriam and Ira D. Wallach Division Art and Architecture Reading Room (300) will be closed from January 8-14, 2018.
-          During this time, room 300 services will be available in room 308 on a limited basis.
-          Room 300 will reopen on Tuesday, January 16, 2018.
-          If you have any questions, please contact: <a href="mailto:art@nypl.org" target="_top">art@nypl.org</a>.
+          Due to inclement weather, delivery of material from offsite storage may be delayed.
+          Please check your patron account to be sure items are Ready for Pickup in advance of your visit.
         </p>
       </div>
     );
@@ -364,6 +358,7 @@ class HoldRequest extends React.Component {
                           contact 917-ASK-NYPL (<a href="tel:917-275-6975">917-275-6975</a>).
                         </h2>
                     }
+                    {this.getNotification()}
                     {bibLink}
                     {callNo}
                   </div>
