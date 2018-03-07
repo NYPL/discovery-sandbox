@@ -97,13 +97,11 @@ class ResultsCount extends React.Component {
     const currentResultDisplay = `${start}-${end}`;
     const plural = (searchKeywords && searchKeywords.indexOf(' ') !== -1) ? 's' : '';
 
-    console.log(isLoading);
     if (isLoading) {
       return ('Loading...');
     }
 
     if (count !== 0) {
-      // console.log(countF, displayContext);
       return (`Displaying ${currentResultDisplay} of ${countF} results ${displayContext}`);
     }
 
@@ -118,7 +116,6 @@ class ResultsCount extends React.Component {
 
   render() {
     const results = this.displayCount();
-
     return (
       <div
         className="nypl-results-summary"
