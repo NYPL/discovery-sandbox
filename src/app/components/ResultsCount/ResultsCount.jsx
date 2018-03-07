@@ -7,6 +7,17 @@ import {
 } from 'underscore';
 
 class ResultsCount extends React.Component {
+  // The `searchKeywords` prop gets updated before the `count` and we want to wait until both
+  // are updated to be read to screen readers. Otherwise, it would read the previous `count`
+  // number for the next `searchKeywords`.
+  shouldComponentUpdate(nextProps) {
+    if (this.props.count !== nextProps.count) {
+      return true;
+    }
+
+    return false;
+  }
+
   /*
    * displayContext()
    * Displays where the results are coming from. This currently only allows for one
@@ -86,11 +97,13 @@ class ResultsCount extends React.Component {
     const currentResultDisplay = `${start}-${end}`;
     const plural = (searchKeywords && searchKeywords.indexOf(' ') !== -1) ? 's' : '';
 
+    console.log(isLoading);
     if (isLoading) {
       return ('Loading...');
     }
 
     if (count !== 0) {
+      // console.log(countF, displayContext);
       return (`Displaying ${currentResultDisplay} of ${countF} results ${displayContext}`);
     }
 
@@ -100,7 +113,7 @@ class ResultsCount extends React.Component {
       );
     }
 
-    return `No results for the keyword{plural} "${searchKeywords}". Try a different search.`;
+    return `No results for the keyword${plural} "${searchKeywords}". Try a different search.`;
   }
 
   render() {
@@ -113,8 +126,7 @@ class ResultsCount extends React.Component {
         <h2
           id="results-description"
           aria-live="polite"
-          aria-relevant="additions removals"
-          role="alertdialog"
+          role="alert"
           aria-atomic="true"
         >
           {results}
@@ -134,6 +146,7 @@ ResultsCount.propTypes = {
 };
 
 ResultsCount.defaultProps = {
+  searchKeywords: '',
   count: 0,
   isLoading: false,
   page: 1,

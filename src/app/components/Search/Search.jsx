@@ -74,7 +74,9 @@ class Search extends React.Component {
 
     // Track the submitted keyword search.
     trackDiscovery('Search', userSearchKeywords);
-    trackDiscovery('Search', `Field - ${this.state.field}`);
+    if (this.state.field) {
+      trackDiscovery('Search', `Field - ${this.state.field}`);
+    }
 
     const searchKeywords = userSearchKeywords === '*' ? '' : userSearchKeywords;
     const apiQuery = this.props.createAPIQuery({

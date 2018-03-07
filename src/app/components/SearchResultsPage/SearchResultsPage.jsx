@@ -36,7 +36,7 @@ class SearchResultsPage extends React.Component {
   }
 
   componentDidMount() {
-    // document.getElementById('filter-title').focus();
+    document.getElementById('filter-title').focus();
   }
 
   componentDidUpdate() {
