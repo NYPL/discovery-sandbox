@@ -26,7 +26,7 @@ class SearchResultsPage extends React.Component {
     super(props);
 
     this.state = {
-      isLoading: this.props.isLoading,
+      isLoading: false,
       dropdownOpen: false,
     };
 
@@ -40,7 +40,9 @@ class SearchResultsPage extends React.Component {
   }
 
   componentDidUpdate() {
-    document.getElementById('filter-title').focus();
+    if (!this.state.isLoading) {
+      document.getElementById('filter-title').focus();
+    }
   }
 
   updateIsLoadingState(status) {
