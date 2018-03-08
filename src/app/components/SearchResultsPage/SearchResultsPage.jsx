@@ -39,9 +39,19 @@ class SearchResultsPage extends React.Component {
     document.getElementById('filter-title').focus();
   }
 
+  shouldComponentUpdate() {
+    if (!this.state.isLoading) {
+      return true;
+    }
+
+    return false;
+  }
+
   componentDidUpdate() {
     if (!this.state.isLoading) {
       document.getElementById('filter-title').focus();
+      // document.getElementById('results-description').focus();
+      // setTimeout(() => document.getElementById('filter-title').focus(), 1500);
     }
   }
 

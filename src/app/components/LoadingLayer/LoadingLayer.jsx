@@ -8,7 +8,12 @@ const LoadingLayer = ({ status, title }) => {
   }
 
   return (
-    <FocusTrap className="focus-trap">
+    <FocusTrap
+      className="focus-trap"
+      focusTrapOptions={{
+        returnFocusOnDeactivate: false,
+      }}
+    >
       <div
         className="loadingLayer"
         role="alert"
