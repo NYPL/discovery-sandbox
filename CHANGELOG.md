@@ -1,5 +1,8 @@
 ## CHANGE LOG
 
+### 1.2.10
+- Small hold request content notification for inclement weather.
+
 ### 1.2.9
 - Deploying logic check to make sure that an item really is available before placing a hold request on it. Mostly for the situation where a patron comes from the catalog.
 
