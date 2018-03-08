@@ -50,8 +50,6 @@ class SearchResultsPage extends React.Component {
   componentDidUpdate() {
     if (!this.state.isLoading) {
       document.getElementById('filter-title').focus();
-      // document.getElementById('results-description').focus();
-      // setTimeout(() => document.getElementById('filter-title').focus(), 1500);
     }
   }
 
