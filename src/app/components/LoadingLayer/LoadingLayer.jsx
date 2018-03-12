@@ -12,6 +12,7 @@ const LoadingLayer = ({ status, title }) => {
       className="focus-trap"
       focusTrapOptions={{
         returnFocusOnDeactivate: false,
+        initialFocus: 'loadingLayer-texts',
       }}
     >
       <div
@@ -19,11 +20,10 @@ const LoadingLayer = ({ status, title }) => {
         role="alert"
         aria-labelledby="loading-animation"
         aria-describedby="loading-description"
-        tabIndex="0"
       >
         <div className="loadingLayer-layer" />
-        <div className="loadingLayer-texts">
-          <span id="loading-animation" className="loadingLayer-texts-loadingWord">
+        <div id="loadingLayer-texts" className="loadingLayer-texts">
+          <span tabIndex="0" id="loading-animation" className="loadingLayer-texts-loadingWord">
             Loading...
           </span>
           <span
