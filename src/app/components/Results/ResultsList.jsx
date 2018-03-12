@@ -130,10 +130,8 @@ class ResultsList extends React.Component {
     const materialType = result && result.materialType && result.materialType[0] ?
       result.materialType[0].prefLabel : null;
     const yearPublished = this.getYearDisplay(result);
-    const publisher = result.publisherLiteral && result.publisherLiteral.length ?
-      result.publisherLiteral[0] : '';
-    const placeOfPublication = result.placeOfPublication && result.placeOfPublication.length ?
-      result.placeOfPublication[0] : '';
+    const publicationStatement = result.publicationStatement && result.publicationStatement.length ?
+      result.publicationStatement[0] : '';
     const items = LibraryItem.getItems(result);
     const totalItems = items.length;
     const hasRequestTable = items.length === 1;
@@ -152,8 +150,7 @@ class ResultsList extends React.Component {
         <div className="nypl-results-item-description">
           <ul>
             <li className="nypl-results-media">{materialType}</li>
-            <li className="nypl-results-place">{placeOfPublication}</li>
-            <li className="nypl-results-publisher">{publisher}</li>
+            <li className="nypl-results-publication">{publicationStatement}</li>
             {yearPublished}
             <li className="nypl-results-info">
               {totalItems} item{totalItems !== 1 ? 's' : ''}
