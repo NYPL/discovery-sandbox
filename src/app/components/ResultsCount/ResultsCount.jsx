@@ -122,9 +122,6 @@ class ResultsCount extends React.Component {
       >
         <h2
           id="results-description"
-          aria-live="polite"
-          role="alert"
-          aria-atomic="true"
         >
           {results}
         </h2>
