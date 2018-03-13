@@ -2,20 +2,27 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import FocusTrap from 'focus-trap-react';
 
-const LoadingLayer = ({ status, title }) => {
+const LoadingLayer = ({ status, title, focus }) => {
   if (status === false) {
     return null;
   }
 
   return (
-    <FocusTrap className="focus-trap">
+    <FocusTrap
+      className="focus-trap"
+      focusTrapOptions={{
+        onDeactivate: () => {
+          if (focus) {
+            focus();
+          }
+        },
+      }}
+    >
       <div
         className="loadingLayer"
-        role="alertdialog"
         aria-labelledby="loading-animation"
         aria-describedby="loading-description"
-        aria-live="assertive"
-        aria-atomic="true"
+        role="alert"
         tabIndex="0"
       >
         <div className="loadingLayer-layer" />
@@ -23,10 +30,7 @@ const LoadingLayer = ({ status, title }) => {
           <span id="loading-animation" className="loadingLayer-texts-loadingWord">
             Loading...
           </span>
-          <span
-            id="loading-description"
-            className="loadingLayer-texts-title"
-          >
+          <span id="loading-description" className="loadingLayer-texts-title">
             {title}
           </span>
           <div className="loadingDots">
@@ -44,6 +48,7 @@ const LoadingLayer = ({ status, title }) => {
 LoadingLayer.propTypes = {
   status: PropTypes.bool,
   title: PropTypes.string,
+  focus: PropTypes.func,
 };
 
 LoadingLayer.defaultProps = {

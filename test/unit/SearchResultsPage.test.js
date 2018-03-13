@@ -135,7 +135,7 @@ describe('SearchResultsPage', () => {
     });
 
     it('should have seven .nypl-full-width-wrapper elements', () => {
-      expect(component.find('.nypl-full-width-wrapper')).to.have.length(7);
+      expect(component.find('.nypl-full-width-wrapper')).to.have.length(4);
     });
   });
 });
