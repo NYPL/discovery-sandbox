@@ -13,8 +13,7 @@ const LoadingLayer = ({ status, title }) => {
         className="loadingLayer"
         aria-labelledby="loading-animation"
         aria-describedby="loading-description"
-        aria-live="assertive"
-        aria-atomic="true"
+        role="alert"
         tabIndex="0"
       >
         <div className="loadingLayer-layer" />
