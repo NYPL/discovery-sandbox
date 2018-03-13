@@ -104,9 +104,8 @@ describe('ResultsCount', () => {
     });
 
     it('should output that no results were found', () => {
-      expect(component.find('h2').length).to.equal(0);
-      expect(component.find('p').length).to.equal(1);
-      expect(component.find('p').text()).to.equal('Loading...');
+      expect(component.find('h2').length).to.equal(1);
+      expect(component.find('h2').text()).to.equal('Loading...');
     });
   });
 

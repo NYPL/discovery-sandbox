@@ -118,7 +118,7 @@ class SelectedFilters extends React.Component {
       <button
         className="nypl-unset-filter clear-filters-button"
         onClick={this.clearFilters}
-        aria-controls="selected-filters-container"
+        aria-controls="selected-filters-container results-description"
         aria-label="Clear all filters"
       >
         Clear Filters
