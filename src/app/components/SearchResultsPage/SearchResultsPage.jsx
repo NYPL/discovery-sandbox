@@ -39,13 +39,13 @@ class SearchResultsPage extends React.Component {
     document.getElementById('search-query').focus();
   }
 
-  shouldComponentUpdate() {
-    if (!this.state.isLoading) {
-      return true;
-    }
-
-    return false;
-  }
+  // shouldComponentUpdate() {
+  //   if (!this.state.isLoading) {
+  //     return true;
+  //   }
+  //
+  //   return false;
+  // }
 
   updateIsLoadingState(status) {
     this.setState({ isLoading: status });
@@ -119,6 +119,8 @@ class SearchResultsPage extends React.Component {
         value: 'Date',
       });
     }
+
+    console.log('search page render');
 
     return (
       <DocumentTitle title="Search Results | Shared Collection Catalog | NYPL">
