@@ -8,25 +8,24 @@ const LoadingLayer = ({ status, title }) => {
   }
 
   return (
-    <FocusTrap className="focus-trap">
+    <FocusTrap
+      className="focus-trap"
+      focusTrapOptions={{
+        returnFocusOnDeactivate: false,
+      }}
+    >
       <div
         className="loadingLayer"
-        role="alertdialog"
-        aria-labelledby="loading-animation"
         aria-describedby="loading-description"
-        aria-live="assertive"
-        aria-atomic="true"
         tabIndex="0"
+        role="alert"
       >
         <div className="loadingLayer-layer" />
         <div className="loadingLayer-texts">
-          <span id="loading-animation" className="loadingLayer-texts-loadingWord">
+          <span className="loadingLayer-texts-loadingWord">
             Loading...
           </span>
-          <span
-            id="loading-description"
-            className="loadingLayer-texts-title"
-          >
+          <span id="loading-description" className="loadingLayer-texts-title">
             {title}
           </span>
           <div className="loadingDots">

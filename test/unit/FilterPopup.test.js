@@ -20,8 +20,18 @@ describe('FilterPopup', () => {
       expect(component.find('a').at(0).prop('href')).to.equal('#popup-no-js');
     });
 
-    it('should have specific "no-js" id and class', () => {
+    it('should not have specific "no-js" id and class', () => {
       const component = shallow(<FilterPopup />);
+
+      expect(component.state('js')).to.equal(false);
+      expect(component.find('#popup-no-js').length).to.equal(0);
+      expect(component.find('.popup-no-js').length).to.equal(0);
+    });
+
+    it('should not have specific "no-js" id and class', () => {
+      const component = shallow(<FilterPopup />);
+
+      component.setState({ showForm: true });
 
       expect(component.state('js')).to.equal(false);
       expect(component.find('#popup-no-js').length).to.equal(1);
@@ -40,27 +50,24 @@ describe('FilterPopup', () => {
       expect(component.find('.filter-container').length).to.equal(1);
     });
 
-    it('should render open/close buttons', () => {
+    it('should not render open/close buttons', () => {
       expect(component.state('js')).to.equal(true);
       // All buttons should be rendered
-      expect(component.find('button').length).to.equal(7);
+      expect(component.find('button').length).to.equal(1);
       expect(component.find('button').at(0).prop('className'))
         .to.equal('popup-btn-open nypl-primary-button');
-      // expect(component.find('button').at(1).prop('name')).to.equal('Clear-Filters');
-      expect(component.find('button').at(2).prop('className'))
-        .to.equal('nypl-primary-button cancel-button');
     });
 
     it('should not render the "no-js" <a> element', () => {
       expect(component.find('.cancel-no-js').length).to.equal(0);
     });
 
-    // it('should have accessible open button', () => {
-    //   const openBtn = component.find('.popup-btn-open');
-    //   expect(openBtn.prop('aria-haspopup')).to.equal('true');
-    //   expect(openBtn.prop('aria-expanded')).to.equal(null);
-    //   expect(openBtn.prop('aria-controls')).to.equal('filter-popup-menu');
-    // });
+    it('should have accessible open button', () => {
+      const openBtn = component.find('.popup-btn-open');
+      expect(openBtn.prop('aria-haspopup')).to.equal('true');
+      expect(openBtn.prop('aria-expanded')).to.equal(null);
+      expect(openBtn.prop('aria-controls')).to.equal('filter-popup-menu');
+    });
 
     // it('should have accessible close button', () => {
     //   const openBtn = component.find('.popup-btn-close');
@@ -74,7 +81,12 @@ describe('FilterPopup', () => {
       expect(component.find('.popup-no-js').length).to.equal(0);
     });
 
-    it('should have a form', () => {
+    it('should not have a form', () => {
+      expect(component.find('form').length).to.equal(0);
+    });
+
+    it('should not have a form', () => {
+      component.setState({ showForm: true });
       expect(component.find('form').length).to.equal(1);
       expect(component.find('form').prop('method')).to.equal('POST');
     });
@@ -87,8 +99,8 @@ describe('FilterPopup', () => {
       component = mount(<FilterPopup />);
     });
 
-    it('should be hidden at first', () => {
-      expect(component.find('.popup-container').hasClass('active')).to.equal(false);
+    it('should not be rendered', () => {
+      expect(component.find('.popup-container').length).to.equal(0);
     });
 
     // TODO: Figure out how to get the `FocusTrap` component to work with these tests:
@@ -142,11 +154,8 @@ describe('FilterPopup', () => {
       component = mount(<FilterPopup selectedFilters={selectedFilters} />);
     });
 
-    after(() => {
-      component.unmount();
-    });
-
     it('should clear all the selected filters in the state.', () => {
+      component.setState({ showForm: true });
       const clearFiltersButton = component.find('.clear-filters-button').at(0);
 
       clearFiltersButton.simulate('click');
@@ -183,14 +192,7 @@ describe('FilterPopup', () => {
 
     beforeEach(() => {
       component = mount(<FilterPopup selectedFilters={selectedFilters} />);
-    });
-
-    afterEach(() => {
-      component.unmount();
-    });
-
-    after(() => {
-      component.unmount();
+      component.setState({ showForm: true });
     });
 
     it('should stop submitting and the function of submitting returns false', () => {

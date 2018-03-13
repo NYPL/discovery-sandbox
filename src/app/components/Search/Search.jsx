@@ -74,7 +74,9 @@ class Search extends React.Component {
 
     // Track the submitted keyword search.
     trackDiscovery('Search', userSearchKeywords);
-    trackDiscovery('Search', `Field - ${this.state.field}`);
+    if (this.state.field) {
+      trackDiscovery('Search', `Field - ${this.state.field}`);
+    }
 
     const searchKeywords = userSearchKeywords === '*' ? '' : userSearchKeywords;
     const apiQuery = this.props.createAPIQuery({
@@ -115,6 +117,7 @@ class Search extends React.Component {
         action={`${appConfig.baseUrl}/search`}
         method="POST"
         className="nypl-omnisearch-form"
+        aria-controls="results-description"
       >
         <div className="nypl-omnisearch">
           <div className="nypl-text-field">
@@ -135,12 +138,13 @@ class Search extends React.Component {
           <div className="nypl-text-field">
             <span className="nypl-omni-fields-text">
               <label htmlFor="search-query" id="search-input-label" className="visuallyhidden">
-                Search for
+                Search Shared Collection Catalog for
               </label>
               <input
                 type="text"
                 id="search-query"
                 aria-labelledby="search-input-label"
+                aria-controls="results-description"
                 placeholder="Keyword, title, or author/contributor"
                 onChange={this.inputChange}
                 value={this.state.searchKeywords}
