@@ -92,7 +92,6 @@ class FilterPopup extends React.Component {
 
   componentDidUpdate(prevProps, prevState) {
     if (!this.state.showForm) {
-      // document.getElementById('filter-title').focus();
       ReactDOM.findDOMNode(this.refs['filter-title']).focus();
     }
 

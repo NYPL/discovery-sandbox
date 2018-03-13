@@ -47,12 +47,6 @@ class SearchResultsPage extends React.Component {
     return false;
   }
 
-  // componentDidUpdate() {
-  //   if (!this.state.isLoading) {
-  //     document.getElementById('filter-title').focus();
-  //   }
-  // }
-
   updateIsLoadingState(status) {
     this.setState({ isLoading: status });
   }
