@@ -329,12 +329,6 @@ class FilterPopup extends React.Component {
       },
     });
     this.props.updateDropdownState(false);
-
-    setTimeout(() => {
-      if (this.refs.filterOpen) {
-        ReactDOM.findDOMNode(this.refs.filterOpen).focus();
-      }
-    }, 250);
   }
 
   render() {
@@ -440,7 +434,6 @@ class FilterPopup extends React.Component {
         aria-haspopup="true"
         aria-expanded={showForm || null}
         aria-controls="filter-popup-menu"
-        ref="filterOpen"
       >
         Refine Search
       </button>) :
@@ -450,7 +443,6 @@ class FilterPopup extends React.Component {
         aria-haspopup="true"
         aria-expanded={false}
         aria-controls="filter-popup-menu"
-        ref="filterOpen"
         role="button"
       >
         Refine Search

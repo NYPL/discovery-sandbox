@@ -18,10 +18,9 @@ const LoadingLayer = ({ status, title }) => {
         className="loadingLayer"
         aria-labelledby="loading-animation"
         aria-describedby="loading-description"
-        tabIndex="0"
       >
         <div className="loadingLayer-layer" />
-        <div className="loadingLayer-texts">
+        <div className="loadingLayer-texts" tabIndex="0">
           <span className="loadingLayer-texts-loadingWord">
             Loading...
           </span>
