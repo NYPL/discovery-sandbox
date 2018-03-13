@@ -7,6 +7,16 @@ import {
 } from 'underscore';
 
 class ResultsCount extends React.Component {
+  // The `searchKeywords` prop gets updated before the `count` and we want to wait until both
+  // are updated to be read to screen readers. Otherwise, it would read the previous `count`
+  // number for the next `searchKeywords`.
+  shouldComponentUpdate(nextProps) {
+    if (this.props.count !== nextProps.count) {
+      return true;
+    }
+    return false;
+  }
+
   /*
    * displayContext()
    * Displays where the results are coming from. This currently only allows for one
@@ -87,26 +97,20 @@ class ResultsCount extends React.Component {
     const plural = (searchKeywords && searchKeywords.indexOf(' ') !== -1) ? 's' : '';
 
     if (isLoading) {
-      return (<p>Loading...</p>);
+      return 'Loading...';
     }
 
     if (count !== 0) {
-      return (<h2>Displaying {currentResultDisplay} of {countF} results {displayContext}</h2>);
+      return `Displaying ${currentResultDisplay} of ${countF} results ${displayContext}`;
     }
 
     if (this.checkSelectedFilters()) {
       return (
-        <h2>No results for the keyword{plural} "{searchKeywords}" with the chosen filters. Try
-          a different search or different filters.
-        </h2>
+        `No results for the keyword${plural} "${searchKeywords}" with the chosen filters. Try a different search or different filters.`
       );
     }
 
-    return (
-      <h2>
-        No results for the keyword{plural} "{searchKeywords}". Try a different search.
-      </h2>
-    );
+    return `No results for the keyword${plural} "${searchKeywords}". Try a different search.`;
   }
 
   render() {
@@ -114,13 +118,16 @@ class ResultsCount extends React.Component {
 
     return (
       <div
-        id="results-description"
         className="nypl-results-summary"
-        aria-live="polite"
-        aria-atomic="true"
-        role="presentation"
       >
-        {results}
+        <h2
+          id="results-description"
+          aria-live="polite"
+          aria-atomic="true"
+          role="alert"
+        >
+          {results}
+        </h2>
       </div>
     );
   }
@@ -136,6 +143,7 @@ ResultsCount.propTypes = {
 };
 
 ResultsCount.defaultProps = {
+  searchKeywords: '',
   count: 0,
   isLoading: false,
   page: 1,

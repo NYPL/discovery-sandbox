@@ -91,6 +91,10 @@ class FilterPopup extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
+    if (!this.state.showForm) {
+      ReactDOM.findDOMNode(this.refs['filter-title']).focus();
+    }
+
     // This check is to make sure it only focus after hitting submit and states changed
     if (prevState.raisedErrors !== this.state.raisedErrors) {
       if (this.refs['nypl-filter-error']) {
@@ -325,12 +329,6 @@ class FilterPopup extends React.Component {
       },
     });
     this.props.updateDropdownState(false);
-
-    setTimeout(() => {
-      if (this.refs.filterOpen) {
-        ReactDOM.findDOMNode(this.refs.filterOpen).focus();
-      }
-    }, 250);
   }
 
   render() {
@@ -358,6 +356,7 @@ class FilterPopup extends React.Component {
         name="apply-filters"
         onClick={e => this.submitForm(e, position)}
         className="nypl-primary-button apply-button"
+        aria-controls="results-description"
       >
         Apply filters
         <CheckSoloIcon
@@ -397,6 +396,7 @@ class FilterPopup extends React.Component {
         type="button"
         name="Clear-Filters"
         className="nypl-basic-button clear-filters-button"
+        aria-controls="results-description"
         onClick={e => this.clearFilters(e, position)}
         ref={ref}
       >
@@ -413,6 +413,7 @@ class FilterPopup extends React.Component {
           role="button"
           name="Clear-Filters"
           className="nypl-basic-button clear-filters-button"
+          aria-controls="results-description"
           onClick={e => this.clearFilters(e, position)}
           ref={ref}
         >
@@ -421,6 +422,7 @@ class FilterPopup extends React.Component {
             className="nypl-icon"
             preserveAspectRatio="xMidYMid meet"
             title="reset"
+            ariahidden
           />
         </a>)
     );
@@ -431,7 +433,6 @@ class FilterPopup extends React.Component {
         aria-haspopup="true"
         aria-expanded={showForm || null}
         aria-controls="filter-popup-menu"
-        ref="filterOpen"
       >
         Refine Search
       </button>) :
@@ -441,7 +442,6 @@ class FilterPopup extends React.Component {
         aria-haspopup="true"
         aria-expanded={false}
         aria-controls="filter-popup-menu"
-        ref="filterOpen"
         role="button"
       >
         Refine Search
@@ -481,106 +481,110 @@ class FilterPopup extends React.Component {
           <div className="nypl-row">
             <div className="nypl-column-full">
               <div className="filter-text">
-                <h2 id="filter-title" tabIndex="0">Refine your search</h2>
+                <h2 id="filter-title" ref="filter-title" tabIndex="0">Refine your search</h2>
                 <p>Toggle filters to narrow and define your search</p>
               </div>
               {(!showForm && !!(totalResults && totalResults !== 0)) && openPopupButton}
             </div>
           </div>
         </div>
-        <div
-          className={
-            'nypl-basic-modal-container nypl-popup-container popup-container ' +
-            `${showForm ? 'active' : ''}`
-          }
-          id={js ? '' : 'popup-no-js'}
-          role="dialog"
-          aria-labelledby="filter-title"
-          aria-describedby="modal-description"
-        >
-          <p id="modal-description" className="nypl-screenreader-only">Filter search results</p>
-          <div
-            id="filter-popup-menu"
-            className={
-              `${js ? 'popup' : 'popup-no-js'} nypl-modal-filter-form nypl-popup-filter-menu ` +
-              `${showForm ? 'expand active' : 'collapse'}`
-            }
-          >
-            {
-              this.state.raisedErrors && !_isEmpty(this.state.raisedErrors) && (errorMessageBlock)
-            }
-            <form
-              action={`${appConfig.baseUrl}/search?q=${searchKeywords}`}
-              method="POST"
-              onSubmit={() => this.submitForm('Form submission')}
+        {
+          showForm && (
+            <div
+              className={
+                'nypl-basic-modal-container nypl-popup-container popup-container ' +
+                `${showForm ? 'active' : ''}`
+              }
+              id={js ? '' : 'popup-no-js'}
+              role="dialog"
+              aria-labelledby="filter-title"
+              aria-describedby="modal-description"
             >
-              <div className="form-full-width">
-                <div className="nypl-full-width-wrapper">
-                  <div className="nypl-row">
-                    <div className="nypl-column-full">
-                      <ul
-                        className="filter-action-buttons"
-                        aria-label="Refine Search Options"
-                      >
-                        <li>{resetButton({ ref: 'filterResetBtn', position: 'top row' })}</li>
-                        <li>{cancelButton('top row')}</li>
-                        <li>{applyButton('top row')}</li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <fieldset className="nypl-fieldset">
-                <div className="nypl-full-width-wrapper">
-                  <div className="nypl-row">
-                    <div className="nypl-column-full">
-                      <FieldsetList
-                        legend="Format"
-                        filterId="materialType"
-                        filter={materialTypeFilters}
-                        selectedFilters={filtersToShow.materialType}
-                        onFilterClick={this.onFilterClick}
-                      />
-
-                      <FieldsetDate
-                        legend="Date"
-                        selectedFilters={dateSelectedFilters}
-                        onDateFilterChange={this.onDateFilterChange}
-                        submitError={isDateInputError}
-                      />
-
-                      <FieldsetList
-                        legend="Language"
-                        filterId="language"
-                        filter={languageFilters}
-                        selectedFilters={filtersToShow.language}
-                        onFilterClick={this.onFilterClick}
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                <div className="bottom-action-row form-full-width">
-                  <div className="nypl-full-width-wrapper">
-                    <div className="nypl-row">
-                      <div className="nypl-column-full">
-                        <ul
-                          className="filter-action-buttons"
-                          aria-label="Refine Search Options"
-                        >
-                          <li>{resetButton({ ref: '', position: 'bottom row' })}</li>
-                          <li>{cancelButton('bottom row')}</li>
-                          <li>{applyButton('bottom row')}</li>
-                        </ul>
+              <p id="modal-description" className="nypl-screenreader-only">Filter search results</p>
+              <div
+                id="filter-popup-menu"
+                className={
+                  `${js ? 'popup' : 'popup-no-js'} nypl-modal-filter-form nypl-popup-filter-menu ` +
+                  `${showForm ? 'expand active' : 'collapse'}`
+                }
+              >
+                {
+                  this.state.raisedErrors && !_isEmpty(this.state.raisedErrors) && (errorMessageBlock)
+                }
+                <form
+                  action={`${appConfig.baseUrl}/search?q=${searchKeywords}`}
+                  method="POST"
+                  onSubmit={() => this.submitForm('Form submission')}
+                >
+                  <div className="form-full-width">
+                    <div className="nypl-full-width-wrapper">
+                      <div className="nypl-row">
+                        <div className="nypl-column-full">
+                          <ul
+                            className="filter-action-buttons"
+                            aria-label="Refine Search Options"
+                          >
+                            <li>{resetButton({ ref: 'filterResetBtn', position: 'top row' })}</li>
+                            <li>{cancelButton('top row')}</li>
+                            <li>{applyButton('top row')}</li>
+                          </ul>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              </fieldset>
-            </form>
-          </div>
-        </div>
+
+                  <fieldset className="nypl-fieldset">
+                    <div className="nypl-full-width-wrapper">
+                      <div className="nypl-row">
+                        <div className="nypl-column-full">
+                          <FieldsetList
+                            legend="Format"
+                            filterId="materialType"
+                            filter={materialTypeFilters}
+                            selectedFilters={filtersToShow.materialType}
+                            onFilterClick={this.onFilterClick}
+                          />
+
+                          <FieldsetDate
+                            legend="Date"
+                            selectedFilters={dateSelectedFilters}
+                            onDateFilterChange={this.onDateFilterChange}
+                            submitError={isDateInputError}
+                          />
+
+                          <FieldsetList
+                            legend="Language"
+                            filterId="language"
+                            filter={languageFilters}
+                            selectedFilters={filtersToShow.language}
+                            onFilterClick={this.onFilterClick}
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="bottom-action-row form-full-width">
+                      <div className="nypl-full-width-wrapper">
+                        <div className="nypl-row">
+                          <div className="nypl-column-full">
+                            <ul
+                              className="filter-action-buttons"
+                              aria-label="Refine Search Options"
+                            >
+                              <li>{resetButton({ ref: '', position: 'bottom row' })}</li>
+                              <li>{cancelButton('bottom row')}</li>
+                              <li>{applyButton('bottom row')}</li>
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </fieldset>
+                </form>
+              </div>
+            </div>
+          )
+        }
       </div>
     );
   }

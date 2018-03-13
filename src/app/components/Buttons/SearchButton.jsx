@@ -13,6 +13,7 @@ const SearchButton = ({
     className={`${className}`}
     onClick={onClick}
     type="submit"
+    aria-controls="results-description"
   >
     {value}
     <SearchIconReversed />

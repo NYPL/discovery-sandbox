@@ -11,7 +11,6 @@ const LoadingLayer = ({ status, title }) => {
     <FocusTrap className="focus-trap">
       <div
         className="loadingLayer"
-        role="alertdialog"
         aria-labelledby="loading-animation"
         aria-describedby="loading-description"
         aria-live="assertive"
@@ -23,10 +22,7 @@ const LoadingLayer = ({ status, title }) => {
           <span id="loading-animation" className="loadingLayer-texts-loadingWord">
             Loading...
           </span>
-          <span
-            id="loading-description"
-            className="loadingLayer-texts-title"
-          >
+          <span id="loading-description" className="loadingLayer-texts-title">
             {title}
           </span>
           <div className="loadingDots">

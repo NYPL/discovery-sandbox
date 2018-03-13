@@ -26,7 +26,8 @@ class SearchResultsPage extends React.Component {
     super(props);
 
     this.state = {
-      isLoading: this.props.isLoading,
+      // isLoading: this.props.isLoading,
+      isLoading: false,
       dropdownOpen: false,
     };
 
@@ -36,11 +37,17 @@ class SearchResultsPage extends React.Component {
   }
 
   componentDidMount() {
-    document.getElementById('filter-title').focus();
+    document.getElementById('search-query').focus();
   }
 
-  componentDidUpdate() {
-    document.getElementById('filter-title').focus();
+  // componentDidUpdate() {
+  //   document.getElementById('filter-title').focus();
+  // }
+  shouldComponentUpdate() {
+    if (!this.state.isLoading) {
+      return true;
+    }
+    return false;
   }
 
   updateIsLoadingState(status) {
@@ -200,9 +207,6 @@ class SearchResultsPage extends React.Component {
                 className="nypl-column-full"
                 role="region"
                 id="mainContent"
-                aria-live="polite"
-                aria-atomic="true"
-                aria-relevant="additions removals"
                 aria-describedby="results-description"
               >
                 {
