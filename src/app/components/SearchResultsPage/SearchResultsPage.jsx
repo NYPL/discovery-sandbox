@@ -29,6 +29,7 @@ class SearchResultsPage extends React.Component {
       isLoading: this.props.isLoading,
       // isLoading: false,
       dropdownOpen: false,
+      document: undefined,
     };
 
     this.updateIsLoadingState = this.updateIsLoadingState.bind(this);
@@ -39,6 +40,7 @@ class SearchResultsPage extends React.Component {
 
   componentDidMount() {
     document.getElementById('search-query').focus();
+    this.setState({ document: window.document });
   }
 
   shouldComponentUpdate() {
@@ -49,7 +51,9 @@ class SearchResultsPage extends React.Component {
   }
 
   focus() {
-    document.getElementById('filter-title').focus();
+    if (this.state.document) {
+      document.getElementById('filter-title').focus();
+    }
   }
 
   updateIsLoadingState(status) {
