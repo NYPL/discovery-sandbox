@@ -91,11 +91,6 @@ class FilterPopup extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (!this.state.showForm) {
-      // ReactDOM.findDOMNode(this.refs['filter-title']).focus();
-      // document.getElementById('filter-title').focus();
-    }
-
     // // This check is to make sure it only focus after hitting submit and states changed
     if (prevState.raisedErrors !== this.state.raisedErrors) {
       if (this.refs['nypl-filter-error']) {

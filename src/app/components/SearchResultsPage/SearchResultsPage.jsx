@@ -27,7 +27,6 @@ class SearchResultsPage extends React.Component {
 
     this.state = {
       isLoading: this.props.isLoading,
-      // isLoading: false,
       dropdownOpen: false,
       document: undefined,
     };
