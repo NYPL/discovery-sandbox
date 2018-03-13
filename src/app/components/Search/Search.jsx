@@ -138,7 +138,7 @@ class Search extends React.Component {
           <div className="nypl-text-field">
             <span className="nypl-omni-fields-text">
               <label htmlFor="search-query" id="search-input-label" className="visuallyhidden">
-                Search for
+                Search Shared Collection Catalog for
               </label>
               <input
                 type="text"
