@@ -3,7 +3,7 @@ import React from 'react';
 import { expect } from 'chai';
 import { shallow } from 'enzyme';
 // Import the component that is going to be tested
-import ItemTableRow from './../../src/app/components/Item/ItemTableRow.jsx';
+import ItemTableRow from './../../src/app/components/Item/ItemTableRow';
 
 const item = {
   full: {
@@ -258,9 +258,8 @@ describe('ItemTableRow', () => {
       };
 
       before(() => {
-        component = shallow(
-          <ItemTableRow item={data} getRecord={getRecord} bibId="b12345" />
-        );
+        component =
+          shallow(<ItemTableRow item={data} getRecord={getRecord} bibId="b12345" />);
       });
 
       it('should render the Request button the third <td> column data', () => {
@@ -284,9 +283,7 @@ describe('ItemTableRow', () => {
       let component;
 
       before(() => {
-        component = shallow(
-          <ItemTableRow item={data} bibId="b12345" />
-        );
+        component = shallow(<ItemTableRow item={data} bibId="b12345" />);
       });
 
       it('should not render the Request button the third <td> column data', () => {

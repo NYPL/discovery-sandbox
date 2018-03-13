@@ -1,13 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import Actions from '../../actions/Actions.js';
-import SearchButton from '../Buttons/SearchButton.jsx';
+import Actions from '../../actions/Actions';
+import SearchButton from '../Buttons/SearchButton';
 import {
   trackDiscovery,
   ajaxCall,
-} from '../../utils/utils.js';
-import appConfig from '../../../../appConfig.js';
+} from '../../utils/utils';
+import appConfig from '../../../../appConfig';
 
 /**
  * The main container for the top Search section.
@@ -70,77 +70,92 @@ class Search extends React.Component {
   submitSearchRequest(e) {
     e.preventDefault();
     // Store the data that the user entered
-    const keyword = this.state.searchKeywords.trim();
-    // Track the submitted keyword search.
-    trackDiscovery('Search', keyword);
-    trackDiscovery('Search', `Field - ${this.state.field}`);
+    const userSearchKeywords = this.state.searchKeywords.trim();
 
+    // Track the submitted keyword search.
+    trackDiscovery('Search', userSearchKeywords);
+    if (this.state.field) {
+      trackDiscovery('Search', `Field - ${this.state.field}`);
+    }
+
+    const searchKeywords = userSearchKeywords === '*' ? '' : userSearchKeywords;
     const apiQuery = this.props.createAPIQuery({
       field: this.state.field,
-      searchKeywords: keyword,
-      selectedFacets: {},
+      selectedFilters: this.props.selectedFilters,
+      searchKeywords,
+      page: '1',
     });
 
     Actions.updateField(this.state.field);
     this.props.updateIsLoadingState(true);
-    Actions.updateSearchKeywords(keyword);
-    Actions.updateSelectedFacets({});
+    Actions.updateSearchKeywords(userSearchKeywords);
+    Actions.updateSelectedFilters(this.props.selectedFilters);
 
     ajaxCall(`${appConfig.baseUrl}/api?${apiQuery}`, (response) => {
-      if (response.data.searchResults && response.data.facets) {
+      if (response.data.searchResults && response.data.filters) {
         Actions.updateSearchResults(response.data.searchResults);
-        Actions.updateFacets(response.data.facets);
+        Actions.updateFilters(response.data.filters);
       } else {
         Actions.updateSearchResults({});
-        Actions.updateFacets({});
+        Actions.updateFilters({});
       }
       Actions.updateSortBy('relevance');
       Actions.updatePage('1');
 
-      setTimeout(
-        () => { this.props.updateIsLoadingState(false); },
-        500
-      );
-
-      this.context.router.push(`${appConfig.baseUrl}/search?${apiQuery}`);
+      setTimeout(() => {
+        this.props.updateIsLoadingState(false);
+        this.context.router.push(`${appConfig.baseUrl}/search?${apiQuery}`);
+      }, 500);
     });
   }
 
   render() {
     return (
       <form
+        onSubmit={this.triggerSubmit}
         onKeyPress={this.triggerSubmit}
         action={`${appConfig.baseUrl}/search`}
         method="POST"
+        className="nypl-omnisearch-form"
+        aria-controls="results-description"
       >
-        <div className="nypl-omnisearch style-2 nypl-spinner-field">
-          <span className="nypl-omni-fields">
-            <label htmlFor="search-by-field">Search in</label>
-            <select
-              id="search-by-field"
-              onChange={this.onFieldChange}
-              value={this.state.field}
-              name="search_scope"
-            >
-              <option value="all">All fields</option>
-              <option value="title">Title</option>
-              <option value="contributor">Author/Contributor</option>
-            </select>
-          </span>
-          <label htmlFor="search-query" id="search-input-label" className="visuallyhidden">
-            Search for
-          </label>
-          <input
-            type="text"
-            id="search-query"
-            aria-labelledby="search-input-label"
-            placeholder="Keyword, title, or author/contributor"
-            onChange={this.inputChange}
-            value={this.state.searchKeywords}
-            name="q"
-            ref="keywords"
+        <div className="nypl-omnisearch">
+          <div className="nypl-text-field">
+            <span className="nypl-omni-fields">
+              <label htmlFor="search-by-field">Search in</label>
+              <select
+                id="search-by-field"
+                onChange={this.onFieldChange}
+                value={this.state.field}
+                name="search_scope"
+              >
+                <option value="all">All fields</option>
+                <option value="title">Title</option>
+                <option value="contributor">Author/Contributor</option>
+              </select>
+            </span>
+          </div>
+          <div className="nypl-text-field">
+            <span className="nypl-omni-fields-text">
+              <label htmlFor="search-query" id="search-input-label" className="visuallyhidden">
+                Search Shared Collection Catalog for
+              </label>
+              <input
+                type="text"
+                id="search-query"
+                aria-labelledby="search-input-label"
+                aria-controls="results-description"
+                placeholder="Keyword, title, or author/contributor"
+                onChange={this.inputChange}
+                value={this.state.searchKeywords}
+                name="q"
+              />
+            </span>
+          </div>
+          <SearchButton
+            className="nypl-omnisearch-button nypl-primary-button"
+            onClick={this.submitSearchRequest}
           />
-          <SearchButton onClick={this.submitSearchRequest} />
         </div>
       </form>
     );
@@ -152,12 +167,14 @@ Search.propTypes = {
   searchKeywords: PropTypes.string,
   createAPIQuery: PropTypes.func,
   updateIsLoadingState: PropTypes.func,
+  selectedFilters: PropTypes.object,
 };
 
 Search.defaultProps = {
   field: 'all',
   searchKeywords: '',
   updateIsLoadingState: () => {},
+  selectedFilters: {},
 };
 
 Search.contextTypes = {

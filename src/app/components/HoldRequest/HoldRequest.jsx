@@ -1,3 +1,4 @@
+/* globals window document */
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
@@ -9,12 +10,12 @@ import {
 } from 'underscore';
 import DocumentTitle from 'react-document-title';
 
-import Breadcrumbs from '../Breadcrumbs/Breadcrumbs.jsx';
-import PatronStore from '../../stores/PatronStore.js';
-import appConfig from '../../../../appConfig.js';
-import LibraryItem from '../../utils/item.js';
-import LoadingLayer from '../LoadingLayer/LoadingLayer.jsx';
-import { trackDiscovery } from '../../utils/utils.js';
+import Breadcrumbs from '../Breadcrumbs/Breadcrumbs';
+import PatronStore from '../../stores/PatronStore';
+import appConfig from '../../../../appConfig';
+import LibraryItem from '../../utils/item';
+import LoadingLayer from '../LoadingLayer/LoadingLayer';
+import { trackDiscovery } from '../../utils/utils';
 
 class HoldRequest extends React.Component {
   constructor(props) {
@@ -54,12 +55,8 @@ class HoldRequest extends React.Component {
 
   componentDidMount() {
     this.requireUser();
-  }
 
-  componentDidUpdate() {
-    if (this.loadingLayer) {
-      this.loadingLayer.focus();
-    }
+    document.getElementById('item-title').focus();
   }
 
   onChange() {
@@ -74,26 +71,21 @@ class HoldRequest extends React.Component {
     });
   }
 
-  updateIsLoadingState(status) {
-    this.setState({ isLoading: status });
-  }
-
   /**
-   * requireUser()
-   * Redirects the patron to OAuth log in page if he/she hasn't been logged in yet.
+   * getNotification()
+   * Renders notification text surrounded by a 'nypl-banner-alert' toolkit wrapper.
    *
-   * @return {Boolean}
+   * @return {HTML Element}
    */
-  requireUser() {
-    if (this.state.patron && this.state.patron.id) {
-      return true;
-    }
-
-    const fullUrl = encodeURIComponent(window.location.href);
-
-    window.location.replace(`${appConfig.loginUrl}?redirect_uri=${fullUrl}`);
-
-    return false;
+  getNotification() {
+    return (
+      <div className="nypl-banner-alert">
+        <p style={{ padding: '10px 20px 0px', margin: 0 }}>
+          Due to inclement weather, delivery of material from offsite storage may be delayed.
+          Please check your patron account to be sure items are Ready for Pickup in advance of your visit.
+        </p>
+      </div>
+    );
   }
 
   /**
@@ -129,30 +121,57 @@ class HoldRequest extends React.Component {
     axios
       .get(`${appConfig.baseUrl}/api/newHold?itemId=${itemId}&pickupLocation=` +
         `${this.state.delivery}&itemSource=${itemSource}`)
-      .then(response => {
+      .then((response) => {
         if (response.data.error && response.data.error.status !== 200) {
           this.updateIsLoadingState(false);
           this.context.router.push(
             `${path}?errorStatus=${response.data.error.status}` +
             `&errorMessage=${response.data.error.statusText}${searchKeywordsQueryPhysical}` +
-            `${fromUrlQuery}`
+            `${fromUrlQuery}`,
           );
         } else {
           this.updateIsLoadingState(false);
           this.context.router.push(
             `${path}?pickupLocation=${response.data.pickupLocation}&requestId=${response.data.id}` +
-            `${searchKeywordsQueryPhysical}${fromUrlQuery}`
+            `${searchKeywordsQueryPhysical}${fromUrlQuery}`,
           );
         }
       })
-      .catch(error => {
+      .catch((error) => {
         console.error('Error attempting to make an ajax Hold Request in HoldRequest', error);
 
         this.updateIsLoadingState(false);
         this.context.router.push(
-          `${path}?errorMessage=${error}${searchKeywordsQueryPhysical}${fromUrlQuery}`
+          `${path}?errorMessage=${error}${searchKeywordsQueryPhysical}${fromUrlQuery}`,
         );
       });
+  }
+
+  /**
+   * requireUser()
+   * Redirects the patron to OAuth log in page if he/she hasn't been logged in yet.
+   *
+   * @return {Boolean}
+   */
+  requireUser() {
+    if (this.state.patron && this.state.patron.id) {
+      return true;
+    }
+
+    const fullUrl = encodeURIComponent(window.location.href);
+    window.location.replace(`${appConfig.loginUrl}?redirect_uri=${fullUrl}`);
+
+    return false;
+  }
+
+  /**
+   * updateIsLoadingState(status)
+   * Update the state of the loading layer component.
+   *
+   * @param {Boolean} status
+   */
+  updateIsLoadingState(status) {
+    this.setState({ isLoading: status });
   }
 
   /**
@@ -193,7 +212,7 @@ class HoldRequest extends React.Component {
           id="available-electronic-delivery"
           value="edd"
           checked={this.state.checkedLocNum === -1}
-          onChange={(e) => this.onRadioSelect(e, -1)}
+          onChange={e => this.onRadioSelect(e, -1)}
         />
         Have up to 50 pages scanned and sent to you via electronic mail.
       </label>
@@ -209,15 +228,12 @@ class HoldRequest extends React.Component {
    */
   renderDeliveryLocation(deliveryLocations = []) {
     return deliveryLocations.map((location, i) => {
-      const displayName = this.modelDeliveryLocationName(
-        location.prefLabel, location.shortName
-      );
-
+      const displayName = this.modelDeliveryLocationName(location.prefLabel, location.shortName);
       const value = (location['@id'] && typeof location['@id'] === 'string') ?
         location['@id'].replace('loc:', '') : '';
 
       return (
-        <label htmlFor={`location${i}`} id={`location${i}-label`} key={i}>
+        <label htmlFor={`location${i}`} id={`location${i}-label`} key={location['@id']}>
           <input
             aria-labelledby={`radiobutton-group1 location${i}-label`}
             type="radio"
@@ -225,7 +241,7 @@ class HoldRequest extends React.Component {
             id={`location${i}`}
             value={value}
             checked={i === this.state.checkedLocNum}
-            onChange={(e) => this.onRadioSelect(e, i)}
+            onChange={e => this.onRadioSelect(e, i)}
           />
           <span className="nypl-screenreader-only">Send to:</span>
           <span className="nypl-location-name">{displayName}</span><br />
@@ -233,23 +249,6 @@ class HoldRequest extends React.Component {
         </label>
       );
     });
-  }
-
-  /**
-   * getNotification()
-   * Renders notification text surrounded by a 'nypl-banner-alert' toolkit wrapper.
-   *
-   * @return {HTML Element}
-   */
-  getNotification() {
-    return (
-      <div className="nypl-banner-alert">
-        <p style={{ padding: '10px 20px 0px', margin: 0 }}>
-          Due to inclement weather, delivery of material from offsite storage may be delayed.
-          Please check your patron account to be sure items are Ready for Pickup in advance of your visit.
-        </p>
-      </div>
-    );
   }
 
   render() {
@@ -275,21 +274,19 @@ class HoldRequest extends React.Component {
       </h2>) : null;
     const callNo =
       (selectedItem && selectedItem.callNumber && selectedItem.callNumber.length) ?
-      (
-        <div className="call-number">
+        (<div className="call-number">
           <span>Call number:</span><br />{selectedItem.callNumber}
-        </div>
-      ) : null;
+        </div>) : null;
     const itemSource = selectedItem.itemSource;
     const deliveryLocations = this.props.deliveryLocations;
     const isEddRequestable = this.props.isEddRequestable;
     const deliveryLocationInstruction =
       (!deliveryLocations.length && !isEddRequestable) ?
-        <h2>
+        (<h2 className="nypl-request-form-title">
           Delivery options for this item are currently unavailable. Please try again later or
           contact 917-ASK-NYPL (<a href="tel:917-275-6975">917-275-6975</a>).
-        </h2> :
-        <h2>Choose a delivery option or location</h2>;
+        </h2>) :
+        <h2 className="nypl-request-form-title">Choose a delivery option or location</h2>;
     let form = null;
 
     if (bib && selectedItemAvailable) {
@@ -298,7 +295,7 @@ class HoldRequest extends React.Component {
           className="place-hold-form form"
           action={`${appConfig.baseUrl}/hold/request/${bibId}-${itemId}-${itemSource}`}
           method="POST"
-          onSubmit={(e) => this.submitRequest(e, bibId, itemId, itemSource, title)}
+          onSubmit={e => this.submitRequest(e, bibId, itemId, itemSource, title)}
         >
           {deliveryLocationInstruction}
           <div className="nypl-request-radiobutton-field">
@@ -333,7 +330,6 @@ class HoldRequest extends React.Component {
           <LoadingLayer
             status={this.state.isLoading}
             title="Requesting"
-            childRef={(c) => { this.loadingLayer = c; }}
           />
           <div className="nypl-request-page-header">
             <div className="nypl-full-width-wrapper">
@@ -344,7 +340,7 @@ class HoldRequest extends React.Component {
                     bibUrl={`/bib/${bibId}`}
                     type="hold"
                   />
-                  <h1>Item Request</h1>
+                  <h1 id="item-title" tabIndex="0">Item Request</h1>
                 </div>
               </div>
             </div>
@@ -362,7 +358,6 @@ class HoldRequest extends React.Component {
                           contact 917-ASK-NYPL (<a href="tel:917-275-6975">917-275-6975</a>).
                         </h2>
                     }
-                    {this.getNotification()}
                     {bibLink}
                     {callNo}
                   </div>
@@ -383,13 +378,13 @@ HoldRequest.contextTypes = {
 };
 
 HoldRequest.propTypes = {
-  location: React.PropTypes.object,
-  bib: React.PropTypes.object,
-  searchKeywords: React.PropTypes.string,
-  params: React.PropTypes.object,
-  deliveryLocations: React.PropTypes.array,
-  isEddRequestable: React.PropTypes.bool,
-  isLoading: React.PropTypes.bool,
+  location: PropTypes.object,
+  bib: PropTypes.object,
+  searchKeywords: PropTypes.string,
+  params: PropTypes.object,
+  deliveryLocations: PropTypes.array,
+  isEddRequestable: PropTypes.bool,
+  isLoading: PropTypes.bool,
 };
 
 HoldRequest.defaultProps = {

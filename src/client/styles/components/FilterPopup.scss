@@ -1,0 +1,419 @@
+.form-full-width {
+  border-bottom: 1px solid;
+  border-top: 1px solid;
+
+  &.bottom-action-row {
+    border-bottom: none;
+  }
+
+  .nypl-full-width-wrapper {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
+  .nypl-column-full {
+    margin-bottom: 0;
+  }
+}
+
+.nypl-full-width-wrapper {
+  &.filter-page {
+    padding-bottom: 0;
+
+    .nypl-column-full {
+      margin-bottom: -1px;
+    }
+  }
+}
+
+.filter-container {
+  > .nypl-full-width-wrapper {
+    .nypl-column-full {
+      margin-bottom: -1px;
+    }
+  }
+
+  .nypl-form-error {
+    margin: 10px 0;
+    padding-left: 0;
+    display: none;
+
+    &.filter-error-box {
+      margin: 10px 0px;
+      padding: 1px 0 1px 1rem;
+    }
+
+    h2 {
+      margin: 0.5rem 0 1rem;
+    }
+
+    ul {
+      li {
+        margin-left: 0;
+      }
+    }
+  }
+  .popup-btn-open {
+    float: right;
+    display: block;
+    text-decoration: none;
+    margin: 0 0 25px;
+
+    svg {
+      fill: #fff;
+      margin: 0 0 2px 0px;
+    }
+
+    &:hover {
+      svg {
+        fill: #1b7fa7;
+      }
+    }
+
+    @include min-screen($xtrasmall-breakpoint) {
+      margin-top: 35px;
+    }
+  }
+
+  a.popup-btn-open {
+    padding-top: 3px;
+
+    &:hover {
+      color: #176e91;
+      border: 1px solid #176e91;
+    }
+  }
+
+  svg {
+    vertical-align: middle;
+    white-space: normal;
+  }
+
+  .filter-text {
+    float: left;
+    width: 100%;
+
+    @include min-screen($xtrasmall-breakpoint) {
+      width: 70%;
+      margin-top: 0;
+    }
+
+    h2 {
+      margin-bottom: 0.5rem;
+      margin-top: 1rem;
+      font-size: 1.4375rem;
+      padding: 0.2rem;
+    }
+  }
+
+  .filter-action-buttons {
+    float: left;
+    width: 100%;
+    padding: 15px 0 0;
+    display: none;
+    margin-bottom: 0;
+
+    @include min-screen($xtrasmall-breakpoint) {
+      text-align: right;
+      margin-bottom: 15px;
+    }
+
+    li {
+      display: inline-block;
+      margin-bottom: 0;
+      width: 100%;
+
+      &:first-child() {
+        float: left;
+      }
+
+      button {
+        margin-bottom: 20px;
+      }
+
+      @include min-screen($xtrasmall-breakpoint) {
+        width: auto;
+
+        button {
+          margin-bottom: 0;
+        }
+      }
+    }
+  }
+
+  .cancel-apply-buttons {
+    float: right;
+    display: inline-block;
+  }
+
+  .cancel-button {
+    margin-right: 20px;
+    padding: 0 15px;
+  }
+
+  a.cancel-button {
+    padding: 6px 15px;
+    -webkit-appearance: initial;
+  }
+
+  .cancel-button,
+  .apply-button {
+    background: #fff;
+    border-color: #1b7fa7;
+    color: #1b7fa7;
+
+    svg {
+      fill: #1b7fa7;
+      background: #fff;
+      margin: 0 0 3px 3px;
+    }
+
+    &:hover {
+      background-color: #1b7fa7;
+      border: 1px solid #1b7fa7;
+      color: #fff;
+
+      svg {
+        fill: #fff;
+        background-color: #1b7fa7;
+      }
+    }
+  }
+
+  .nypl-name-field input[type=text] {
+    transition: none;
+  }
+}
+
+.popup-container {
+  .cancel-no-js {
+    width: 100%;
+    height: 100%;
+    cursor: default;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 10000;
+    position: fixed;
+  }
+
+  &#popup-no-js:target {
+    display: inline-block;
+    opacity: 1;
+    visibility: visible;
+
+    form,
+    .filter-action-buttons {
+      display: block;
+    }
+  }
+
+  .popup,
+  .popup-no-js {
+    background: #efedeb;
+    width: auto;
+    z-index: 10000;
+
+    @include min-screen($tablet-portrait) {
+      width: 42rem;
+    }
+
+    @include min-screen(966px) {
+      width: 52rem;
+    }
+
+    &.collapse {
+      visibility: visible;
+      max-height: 3000px;
+    }
+  }
+
+  .popup {
+    width: 100%;
+
+    &.active {
+      overflow: hidden;
+      -webkit-overflow-scrolling: touch;
+    }
+  }
+
+  .popup-btn-close {
+    display: none;
+    float: right;
+    text-decoration: none;
+
+    &.active {
+      display: block;
+    }
+  }
+
+  // need to override the background color
+  .nypl-fieldset {
+    background-color: #efedeb;
+  }
+
+  .nypl-generic-checkbox {
+    label {
+      width: 70%;
+      padding-left: 0.65rem;
+
+      &::before {
+        background: #fff;
+      }
+    }
+  }
+}
+
+.filter-container {
+  svg {
+    @include transition-list(all 0.1s ease-in 0s);
+  }
+
+  a.clear-filters-button {
+    -webkit-appearance: initial;
+    color: #d0343a;
+
+    &:hover {
+      border: 1px solid #d0343a;
+      color: #fff;
+      background: #d0343a;
+    }
+  }
+
+  .clear-filters-button {
+    padding: 7px 16px;
+    margin-bottom: 20px;
+    @include border-radius(5px);
+
+    @include min-screen($xtrasmall-breakpoint) {
+      margin-bottom: 0;
+    }
+
+    svg {
+      height: 25px;
+      width: 25px;
+      padding: 0;
+      margin: 0px 0 2px 5px;
+    }
+    &:hover {
+      svg {
+        fill: #fff;
+        background: #d0343a;
+      }
+    }
+  }
+  button {
+    cursor: pointer;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    height: 40px;
+  }
+  ul li {
+    list-style: none;
+  }
+}
+
+.nypl-popup-container.active {
+  .nypl-form-error {
+    display: block;
+  }
+
+  .nypl-popup-filter-overlay {
+    z-index: 1000 !important;
+  }
+
+  form {
+    display: block;
+  }
+
+  .filter-action-buttons {
+    display: block;
+  }
+}
+
+.nypl-inner-fieldset-date {
+  .nypl-field-status {
+    display: inline-block;
+  }
+}
+
+.nypl-generic-checkbox > li {
+  margin-left: 5px;
+}
+
+.nypl-generic-columns {
+  -webkit-columns: 118px 2;
+  -moz-columns: 118px 2;
+  columns: 118px 2;
+}
+
+.nypl-name-field input[type=text] {
+  -webkit-appearance: none;
+}
+
+.nypl-name-field {
+  background: #efedeb;
+
+  .nypl-field-status {
+    background: #efedeb;
+  }
+}
+
+.date-hyphen {
+  background: #efedeb;
+  width: 25px;
+  margin: 0px 15px;
+  height: 10px;
+}
+
+.filter-error-box {
+  margin: 0 3.125rem;
+  @media (max-width: 483px) {
+    margin: 0 1rem;
+  }
+}
+
+
+.nypl-modal-filter-form {
+  padding: 0 1px;
+
+  form {
+    display: none;
+
+    & > fieldset {
+      margin-bottom: 0;
+    }
+  }
+
+  @include transition-list(max-height .3s ease-in-out);
+  height: auto;
+
+  // Accordion rules
+  &.collapse {
+    max-height: 0;
+    visibility: hidden;
+  }
+
+  &.expand {
+    max-height: 300em;
+    visibility: visible;
+  }
+
+  fieldset:last-of-type {
+    border-bottom: none;
+  }
+
+  .inner {
+    padding: 0;
+    border-bottom: none;
+
+    ul {
+      margin-top: 0.6rem;
+    }
+  }
+
+  .date-divider {
+    margin: 0 20px;
+  }
+}
