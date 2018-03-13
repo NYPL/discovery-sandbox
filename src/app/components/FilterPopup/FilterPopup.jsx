@@ -92,7 +92,8 @@ class FilterPopup extends React.Component {
 
   componentDidUpdate(prevProps, prevState) {
     if (!this.state.showForm) {
-      document.getElementById('filter-title').focus();
+      // document.getElementById('filter-title').focus();
+      ReactDOM.findDOMNode(this.refs['filter-title']).focus();
     }
 
     // This check is to make sure it only focus after hitting submit and states changed
@@ -482,7 +483,13 @@ class FilterPopup extends React.Component {
           <div className="nypl-row">
             <div className="nypl-column-full">
               <div className="filter-text">
-                <h2 id="filter-title" tabIndex="0">Refine your search</h2>
+                <h2
+                  id="filter-title"
+                  ref="filter-title"
+                  tabIndex="0"
+                >
+                  Refine your search
+                </h2>
                 <p>Toggle filters to narrow and define your search</p>
               </div>
               {(!showForm && !!(totalResults && totalResults !== 0)) && openPopupButton}
