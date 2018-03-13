@@ -1,5 +1,16 @@
 ## CHANGE LOG
 
+### 1.3.0
+## ReCAP 1.2 Release
+The main goal for this release was to add more delivery locations options for Hold Requests, to get more fields exposed for bib information in the UI, and to release a dropdown form for selecting filters for searching.
+- The Design Toolkit was updated and that include layout and style updates on the Search Results page, Hold Request page, and Electronic Document Delivery page.
+- The omnisearch on the Search Results page has a new mobile design for better usability.
+- Accessibility updates were added throughout the page. This included minor heading and label changes, but also big ones for better screenreader usability.
+- New bib fields were rendered on the Bib Page, including `Publication` (update to `publicationStatement`), `Publication Date`, `Uniform Title`, `Alternative Title`, `Genre/Form`, `Contents` (updated notes). Some field attributes have not change but more data is being rendered since updates were made in the metadata and API side.
+- This was the second attempt at releasing Filters. Since the first iteration months ago, bugs were fixed, components refactored, and the design was changed. Many of the existing CSS DOM and class names have not changed from "modal"/"popup" to "dropdown" but we're working on updating both this repo and the Design Toolkit (where the class names come from). Users can select filter options from the Format, Date, and Language categories, remove them one by one or all at once, and adjust existing selections.
+- The biggest hurdle in this deployment was the accessibility update necessary to make the filter and search work for screenreaders. Multiple combinations of `aria-live` and javascript focus scripts were used. It's not perfect but we're at a good stable place where, after searching or applying any number of filters, the screen reader announces that the page is 1) loading, 2) that they are currently on an h2 heading, and 3) how many search results have returned.
+- Deploying with 78% code coverage.
+
 ### 1.2.10
 - Small hold request content notification for inclement weather.
 
@@ -13,7 +24,7 @@
 - Removing notifications from Hold Request page.
 
 ### 1.2.6
-- Update to Header component v2.4.3 (small hotfix) and update to Notifaction on Hold Request Page.
+- Update to Header component v2.4.3 (small hotfix) and update to Notification on Hold Request Page.
 
 ### 1.2.5
 - Update to Header component v2.4.2 and ejs package update.
@@ -22,10 +33,10 @@
 - Update the Header and Footer npm components to v2.4.1 and v0.4.1, respectively.
 
 ### 1.2.3
-- Updated Notification on Hold Request component in support of hours of operation changes for January 2018
+- Updated Notification on Hold Request component in support of hours of operation changes for January 2018.
 
 ### 1.2.2
-- Added Notification on Hold Request component for 2017 holiday closings
+- Added Notification on Hold Request component for 2017 holiday closings.
 
 ### 1.2.1
 - Update Header component version to 2.4.0.
