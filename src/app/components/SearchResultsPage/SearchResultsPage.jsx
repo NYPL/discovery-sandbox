@@ -26,28 +26,30 @@ class SearchResultsPage extends React.Component {
     super(props);
 
     this.state = {
-      // isLoading: this.props.isLoading,
-      isLoading: false,
+      isLoading: this.props.isLoading,
+      // isLoading: false,
       dropdownOpen: false,
     };
 
     this.updateIsLoadingState = this.updateIsLoadingState.bind(this);
     this.updateDropdownState = this.updateDropdownState.bind(this);
     this.checkForSelectedFilters = this.checkForSelectedFilters.bind(this);
+    this.focus = this.focus.bind(this);
   }
 
   componentDidMount() {
     document.getElementById('search-query').focus();
   }
 
-  // componentDidUpdate() {
-  //   document.getElementById('filter-title').focus();
-  // }
   shouldComponentUpdate() {
     if (!this.state.isLoading) {
       return true;
     }
     return false;
+  }
+
+  focus() {
+    document.getElementById('filter-title').focus();
   }
 
   updateIsLoadingState(status) {
@@ -129,6 +131,7 @@ class SearchResultsPage extends React.Component {
           <LoadingLayer
             status={this.state.isLoading}
             title="Searching"
+            focus={this.focus()}
           />
           <div className="nypl-page-header">
             <div className="nypl-full-width-wrapper filter-page">
