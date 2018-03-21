@@ -251,6 +251,22 @@ class HoldRequest extends React.Component {
     });
   }
 
+  /**
+   * getNotification()
+   * Renders notification text surrounded by a 'nypl-banner-alert' toolkit wrapper.
+   *
+   * @return {HTML Element}
+   */
+  getNotification() {
+    return (
+      <div className="nypl-banner-alert">
+        <p style={{ padding: '10px 20px', margin: 0 }}>
+          Due to inclement weather, delivery of material from offsite storage is subject to delays. Please check your patron account to be sure items are Ready for Pickup in advance of your visit.
+        </p>
+      </div>
+    );
+  }
+
   render() {
     const searchKeywords = this.props.searchKeywords || '';
     const bib = (this.props.bib && !_isEmpty(this.props.bib)) ?
