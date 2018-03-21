@@ -10,24 +10,27 @@ describe('FilterPopup', () => {
     // Since this is a shallow render, the component itself is not mounted. The `js` flag
     // becomes true when the component is mounted on the client-side so we know that
     // javascript is enabled.
-    it('should not render a open/close buttons but <a>s instead', () => {
-      const component = shallow(<FilterPopup />);
+    it('should not render an open button but an <a> instead', () => {
+      const component = shallow(<FilterPopup totalResults={1} />);
 
       expect(component.state('js')).to.equal(false);
-      // The Apply and Clear buttons should still be rendered:
-      expect(component.find('button').length).to.equal(3);
       // These tests will need to be updated when the DOM structure gets updated.
-      // The second <a> element is the no-js 'cancel' element for the "smart" no-js solution.
       expect(component.find('a').at(0).prop('className'))
         .to.equal('popup-btn-open nypl-primary-button');
       expect(component.find('a').at(0).prop('href')).to.equal('#popup-no-js');
-      expect(component.find('a').at(1).prop('className')).to.equal('cancel-no-js');
-      // expect(component.find('a').at(2).prop('className'))
-      //   .to.equal('popup-btn-close nypl-x-close-button');
+    });
+
+    it('should not have specific "no-js" id and class', () => {
+      const component = shallow(<FilterPopup />);
+
+      expect(component.state('js')).to.equal(false);
+      expect(component.find('#popup-no-js').length).to.equal(0);
+      expect(component.find('.popup-no-js').length).to.equal(0);
     });
 
     it('should have specific "no-js" id and class', () => {
       const component = shallow(<FilterPopup />);
+      component.setState({ showForm: true });
 
       expect(component.state('js')).to.equal(false);
       expect(component.find('#popup-no-js').length).to.equal(1);
@@ -39,23 +42,22 @@ describe('FilterPopup', () => {
     let component;
 
     before(() => {
-      component = mount(<FilterPopup />);
+      component = mount(<FilterPopup totalResults={1} />);
     });
 
     it('should have a .filter-container class for the wrapper', () => {
       expect(component.find('.filter-container').length).to.equal(1);
     });
 
-    it('should render open/close buttons', () => {
+    it('should not render open/close buttons', () => {
       expect(component.state('js')).to.equal(true);
       // All buttons should be rendered
-      expect(component.find('button').length).to.equal(4);
+      expect(component.find('button').length).to.equal(1);
       expect(component.find('button').at(0).prop('className'))
         .to.equal('popup-btn-open nypl-primary-button');
-      expect(component.find('button').at(1).prop('name')).to.equal('Clear-Filters');
-      expect(component.find('button').at(2).prop('className')).to.equal('nypl-filter-button cancel-button');
-      expect(component.find('button').at(3).prop('className'))
-        .to.equal('nypl-primary-button apply-button');
+      // expect(component.find('button').at(1).prop('name')).to.equal('Clear-Filters');
+      // expect(component.find('button').at(2).prop('className'))
+      //   .to.equal('nypl-primary-button cancel-button');
     });
 
     it('should not render the "no-js" <a> element', () => {
@@ -69,11 +71,14 @@ describe('FilterPopup', () => {
       expect(openBtn.prop('aria-controls')).to.equal('filter-popup-menu');
     });
 
-    // it('should have accessible close button', () => {
-    //   const openBtn = component.find('.popup-btn-close');
-    //   expect(openBtn.prop('aria-expanded')).to.equal(true);
-    //   expect(openBtn.prop('aria-controls')).to.equal('filter-popup-menu');
-    // });
+    it('should have accessible close button', () => {
+      component.setState({ showForm: true });
+      const cancelBtn = component.find('.cancel-button');
+
+      expect(cancelBtn.length).to.equal(2);
+      expect(cancelBtn.at(0).prop('aria-expanded')).to.equal(false);
+      expect(cancelBtn.at(0).prop('aria-controls')).to.equal('filter-popup-menu');
+    });
 
     it('should not have specific "no-js" id and class', () => {
       expect(component.state('js')).to.equal(true);
@@ -81,7 +86,13 @@ describe('FilterPopup', () => {
       expect(component.find('.popup-no-js').length).to.equal(0);
     });
 
+    it('should not have a form', () => {
+      component.setState({ showForm: false });
+      expect(component.find('form').length).to.equal(0);
+    });
+
     it('should have a form', () => {
+      component.setState({ showForm: true });
       expect(component.find('form').length).to.equal(1);
       expect(component.find('form').prop('method')).to.equal('POST');
     });
@@ -94,8 +105,8 @@ describe('FilterPopup', () => {
       component = mount(<FilterPopup />);
     });
 
-    it('should be hidden at first', () => {
-      expect(component.find('.popup-container').hasClass('active')).to.equal(false);
+    it('should not be rendered at first', () => {
+      expect(component.find('.popup-container').length).to.equal(0);
     });
 
     // TODO: Figure out how to get the `FocusTrap` component to work with these tests:
@@ -154,7 +165,8 @@ describe('FilterPopup', () => {
     });
 
     it('should clear all the selected filters in the state.', () => {
-      const clearFiltersButton = component.find('.clear-filters-button');
+      component.setState({ showForm: true });
+      const clearFiltersButton = component.find('.clear-filters-button').at(0);
 
       clearFiltersButton.simulate('click');
       expect(component.state('selectedFilters')).to.deep.equal(emptySelectedFilters);
@@ -190,6 +202,7 @@ describe('FilterPopup', () => {
 
     beforeEach(() => {
       component = mount(<FilterPopup selectedFilters={selectedFilters} />);
+      component.setState({ showForm: true });
     });
 
     afterEach(() => {
@@ -201,7 +214,7 @@ describe('FilterPopup', () => {
     });
 
     it('should stop submitting and the function of submitting returns false', () => {
-      const submitFormButton = component.find('.apply-button');
+      const submitFormButton = component.find('.apply-button').at(0);
 
       expect(component.find('.nypl-form-error').length).to.equal(0);
 
@@ -211,7 +224,7 @@ describe('FilterPopup', () => {
     });
 
     it('should render a div for error messages', () => {
-      const submitFormButton = component.find('.apply-button');
+      const submitFormButton = component.find('.apply-button').at(0);
 
       expect(component.find('.nypl-form-error').length).to.equal(0);
 

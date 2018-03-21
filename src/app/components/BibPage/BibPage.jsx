@@ -1,3 +1,4 @@
+/* globals document */
 import React from 'react';
 import PropTypes from 'prop-types';
 import DocumentTitle from 'react-document-title';
@@ -29,6 +30,10 @@ class BibPage extends React.Component {
     this.updateIsLoadingState = this.updateIsLoadingState.bind(this);
   }
 
+  componentDidMount() {
+    document.getElementById('bib-title').focus();
+  }
+
   updateIsLoadingState(status) {
     this.setState({ isLoading: status });
   }
@@ -39,7 +44,7 @@ class BibPage extends React.Component {
     const bibId = bib && bib['@id'] ? bib['@id'].substring(4) : '';
     const title = bib.title && bib.title.length ? bib.title[0] : '';
     const items = LibraryItem.getItems(bib);
-    const isElectronicResources = _every(items, (i) => i.isElectronicResource);
+    const isElectronicResources = _every(items, i => i.isElectronicResource);
     // Related to removing MarcRecord because the webpack MarcRecord is not working. Sep/28/2017
     // const isNYPLReCAP = LibraryItem.isNYPLReCAP(bib['@id']);
     // const bNumber = bib && bib.idBnum ? bib.idBnum : '';
@@ -63,14 +68,19 @@ class BibPage extends React.Component {
     ];
 
     const bottomFields = [
-      { label: 'Publication', value: 'React Component' },
+      { label: 'Publication', value: 'publicationStatement' },
+      { label: 'Publication Date', value: 'serialPublicationDates' },
       { label: 'Electronic Resource', value: 'React Component' },
       { label: 'Description', value: 'extent' },
+      { label: 'Series Statement', value: 'seriesStatement' },
+      { label: 'Uniform Title', value: 'uniformTitle' },
+      { label: 'Alternative Title', value: 'titleAlt' },
+      { label: 'Former Title', value: 'formerTitle' },
       { label: 'Subject', value: 'subjectLiteral', linkable: true },
-      { label: 'Genre/Form', value: 'materialType' },
+      { label: 'Genre/Form', value: 'genreForm' },
       { label: 'Notes', value: '' },
       { label: 'Additional Resources', value: 'supplementaryContent', selfLinkable: true },
-      { label: 'Contents', value: 'note' },
+      { label: 'Contents', value: 'React Component' },
       { label: 'Bibliography', value: '' },
       { label: 'ISBN', value: 'identifier', identifier: 'urn:isbn' },
       { label: 'ISSN', value: 'identifier', identifier: 'urn:issn' },
@@ -80,7 +90,7 @@ class BibPage extends React.Component {
       { label: 'Owning Institutions', value: '' },
     ];
 
-    const itemHoldings = items.length && !isElectronicResources ?
+    const itemHoldings = items.length && !isElectronicResources ? (
       <ItemHoldings
         shortenItems={shortenItems}
         items={items}
@@ -88,20 +98,23 @@ class BibPage extends React.Component {
         itemPage={itemPage}
         searchKeywords={this.props.searchKeywords}
         updateIsLoadingState={this.updateIsLoadingState}
-      /> : null;
+      />) : null;
     // Related to removing MarcRecord because the webpack MarcRecord is not working. Sep/28/2017
     // const marcRecord = isNYPLReCAP ? <MarcRecord bNumber={bNumber[0]} /> : null;
 
     return (
       <DocumentTitle title="Item Details | Shared Collection Catalog | NYPL">
         <main className="main-page">
-          <LoadingLayer status={this.state.isLoading} title="Searching" />
+          <LoadingLayer
+            status={this.state.isLoading}
+            title="Searching"
+          />
           <div className="nypl-page-header">
             <div className="nypl-full-width-wrapper">
               <div className="nypl-row">
                 <div className="nypl-column-three-quarters">
                   <Breadcrumbs type="bib" query={searchURL} />
-                  <h1>Item Details</h1>
+                  <h1 id="bib-title" tabIndex="0">Item Details</h1>
                   <h2>{title}</h2>
                   {
                     this.props.searchKeywords && (
@@ -156,15 +169,10 @@ class BibPage extends React.Component {
 }
 
 BibPage.propTypes = {
-  item: PropTypes.object,
   searchKeywords: PropTypes.string,
   location: PropTypes.object,
-  selectedFacets: PropTypes.object,
   bib: PropTypes.object,
-  field: PropTypes.string,
   isLoading: PropTypes.bool,
-  sortBy: PropTypes.string,
-  page: PropTypes.string,
 };
 
 export default BibPage;

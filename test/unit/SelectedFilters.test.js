@@ -38,14 +38,14 @@ describe('SelectedFilters', () => {
       expect(component.find('ul').length).to.equal(1);
     });
 
-    it('should render two list items, one with data and one clear link', () => {
-      expect(component.find('li').length).to.equal(2);
+    it('should render one list item', () => {
+      expect(component.find('li').length).to.equal(1);
     });
 
     it('should have a clear all filters link', () => {
-      expect(listItemAt(component, 1).find('a').length).to.equal(1);
-      expect(listItemAt(component, 1).find('a').render().text())
-        .to.equal('Clear FiltersNYPL Filter SVG Icon');
+      expect(component.find('a').length).to.equal(2);
+      // The first <a> element is the selected filter link.
+      expect(component.find('a').at(1).render().text()).to.equal('Clear FiltersNYPL Filter SVG Icon');
     });
   });
 
@@ -78,8 +78,8 @@ describe('SelectedFilters', () => {
         expect(component.find('ul').length).to.equal(1);
       });
 
-      it('should render three list items, two with data, one clear', () => {
-        expect(component.find('li').length).to.equal(3);
+      it('should render two list items', () => {
+        expect(component.find('li').length).to.equal(2);
       });
 
       it('should have one button inside each list item with the filter name', () => {
@@ -91,9 +91,8 @@ describe('SelectedFilters', () => {
       });
 
       it('should have a clear all filters button', () => {
-        expect(listItemAt(component, 2).find('button').length).to.equal(1);
-        expect(listItemAt(component, 2).find('button').text())
-          .to.equal('Clear FiltersNYPL Filter SVG Icon');
+        expect(component.find('button').length).to.equal(3);
+        expect(component.find('button').at(2).text()).to.equal('Clear FiltersNYPL Filter SVG Icon');
       });
     });
 
@@ -136,8 +135,8 @@ describe('SelectedFilters', () => {
         component = mount(<SelectedFilters selectedFilters={selectedFilters} />);
       });
 
-      it('should render five list items', () => {
-        expect(component.find('li').length).to.equal(5);
+      it('should render four list items', () => {
+        expect(component.find('li').length).to.equal(4);
       });
 
       it('should have one button inside each list item with the filter name', () => {
@@ -170,13 +169,13 @@ describe('SelectedFilters', () => {
           component = mount(<SelectedFilters selectedFilters={selectedFilters} />);
         });
 
-        it('should render two list items', () => {
-          expect(component.find('li').length).to.equal(2);
+        it('should render one list items', () => {
+          expect(component.find('li').length).to.equal(1);
         });
 
         it('should have one button inside each list item with the filter name', () => {
           expect(listItemAt(component, 0).find('button').length).to.equal(1);
-          expect(listItemAt(component, 0).find('button').text()).to.equal('2010Close Icon');
+          expect(listItemAt(component, 0).find('button').text()).to.equal('Before 2010Close Icon');
         });
       });
 
@@ -193,13 +192,13 @@ describe('SelectedFilters', () => {
           component = mount(<SelectedFilters selectedFilters={selectedFilters} />);
         });
 
-        it('should render two list items', () => {
-          expect(component.find('li').length).to.equal(2);
+        it('should render one list items', () => {
+          expect(component.find('li').length).to.equal(1);
         });
 
         it('should have one button inside each list item with the filter name', () => {
           expect(listItemAt(component, 0).find('button').length).to.equal(1);
-          expect(listItemAt(component, 0).find('button').text()).to.equal('1999Close Icon');
+          expect(listItemAt(component, 0).find('button').text()).to.equal('After 1999Close Icon');
         });
       });
 
@@ -216,16 +215,16 @@ describe('SelectedFilters', () => {
           component = mount(<SelectedFilters selectedFilters={selectedFilters} />);
         });
 
-        it('should render three list items', () => {
-          expect(component.find('li').length).to.equal(3);
+        it('should render two list items', () => {
+          expect(component.find('li').length).to.equal(2);
         });
 
         it('should have one button inside each list item with the filter name', () => {
           expect(listItemAt(component, 0).find('button').length).to.equal(1);
-          expect(listItemAt(component, 0).find('button').text()).to.equal('2010Close Icon');
+          expect(listItemAt(component, 0).find('button').text()).to.equal(' 2010Close Icon');
 
           expect(listItemAt(component, 1).find('button').length).to.equal(1);
-          expect(listItemAt(component, 1).find('button').text()).to.equal('1999Close Icon');
+          expect(listItemAt(component, 1).find('button').text()).to.equal(' 1999Close Icon');
         });
       });
     });

@@ -1,23 +1,29 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import SearchIconReversed from './SearchIconReversed';
 
 const SearchButton = ({
   id,
+  className,
   onClick,
   value,
 }) => (
-  <input
+  <button
     id={id}
-    onSubmit={onClick}
+    className={`${className}`}
     onClick={onClick}
     type="submit"
-    value={value}
-  />
+    aria-controls="results-description"
+  >
+    {value}
+    <SearchIconReversed />
+  </button>
 );
 
 SearchButton.propTypes = {
   onClick: PropTypes.func,
   id: PropTypes.string,
+  className: PropTypes.string,
   value: PropTypes.string,
 };
 

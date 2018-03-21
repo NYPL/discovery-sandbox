@@ -21,17 +21,14 @@ Import style rules from NYPL React module components
 
 @import "components/BibPage.scss";
 @import "components/Feedback.scss";
-@import "components/HoldPage.scss";
 @import "components/Home.scss";
 @import "components/_forms.v2.scss";
 @import "components/ItemTable.scss";
-@import "components/Sorter.scss";
-@import "components/design-toolkit-updates.scss";
-@import "components/HoldConfirmation.scss";
 @import "components/LoadingLayer.scss";
-@import "components/Search.scss";
 @import "components/FilterPopup.scss";
+@import "components/Search.scss";
 @import "components/SelectedFilters.scss";
+@import "components/Search.scss";
 
 @import "style-v2.scss";
 
@@ -39,25 +36,6 @@ html {
   @include font-settings;
   background: #fff;
   color: #000;
-}
-
-#app {
-  margin: 0;
-}
-
-button {
-  color: $button-text-color;
-}
-
-.page-header {
-  @include page-header;
-}
-
-.container {
-  max-width: $container-width;
-  padding: 0.5rem 1rem;
-  margin: 0 auto;
-  @include box-sizing(border-box);
 }
 
 .hidden {
@@ -185,4 +163,24 @@ input[type=submit]:focus {
       margin-top: 0;
     }
   }
+}
+
+select {
+  color: #000;
+}
+
+.nypl-basic-table {
+  td span {
+    color: #000;
+    background: #fff;
+  }
+}
+
+// For now until it's in the Design Toolkit
+.nypl-results-publication {
+  display: inline-block;
+  margin-right: 1rem;
+  color: #080807;
+  font-size: "";
+  font-weight: 400;
 }

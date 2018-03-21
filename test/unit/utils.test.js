@@ -4,9 +4,6 @@ import { expect } from 'chai';
 import axios from 'axios';
 import sinon from 'sinon';
 import { useQueries } from 'history';
-import { gaUtils } from 'dgx-react-ga';
-
-const mock = new MockAdapter(axios);
 
 import {
   ajaxCall,
@@ -16,11 +13,12 @@ import {
   getSortQuery,
   getFilterParam,
   getFieldParam,
-  trackDiscovery,
   basicQuery,
   getReqParams,
   getAggregatedElectronicResources,
-} from '../../src/app/utils/utils.js';
+} from '../../src/app/utils/utils';
+
+const mock = new MockAdapter(axios);
 
 /**
  * ajaxCall()
@@ -150,10 +148,10 @@ describe('destructureFilters', () => {
   });
 
   // describe('No filters from the API', () => {
-    // it('should return an empty object', () => {
-    //   const filters = destructureFilters();
-    //   expect(filters).to.eql({});
-    // });
+  // it('should return an empty object', () => {
+  //   const filters = destructureFilters();
+  //   expect(filters).to.eql({});
+  // });
   // });
 });
 

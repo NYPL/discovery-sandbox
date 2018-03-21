@@ -1,26 +1,37 @@
+.nypl-full-width-wrapper.selected-filters {
+  padding-top: 5px;
+
+  .nypl-column-full {
+    margin-bottom: 0;
+  }
+}
+
 #selected-filters-container {
-  padding: 0;
   float: left;
-  width: 100%;
-  margin: 10px 0;
+  margin: 0;
 
   li {
     list-style: none;
-    margin: 10px 15px 0 0;
+    margin: 0 15px 15px 0;
     display: inline-block;
 
     &.dateAfter {
-      margin-right: 0;
-      button {
-        border-top-right-radius: 0;
-        border-bottom-right-radius: 0;
+      &.combined {
+        button {
+          border-top-right-radius: 0;
+          border-bottom-right-radius: 0;
+        }
       }
     }
 
     &.dateBefore {
-      button {
-        border-top-left-radius: 0;
-        border-bottom-left-radius: 0;
+      &.combined {
+        margin-left: -15px;
+
+        button {
+          border-top-left-radius: 0;
+          border-bottom-left-radius: 0;
+        }
       }
     }
   }
@@ -50,12 +61,18 @@
       }
     }
   }
-
-  .clear-filters-button {
-    @include clear-filters-button;
-  }
 }
 
 .clear-filters-button {
+  svg {
+    fill: #000;
+    height: 25px;
+    width: 25px;
+    margin: 0 0 0 0px;
+    padding: 0;
+    float: right;
+    @include transition-list(all 0.1s ease-in 0s);
+  }
+
   @include clear-filters-button;
 }

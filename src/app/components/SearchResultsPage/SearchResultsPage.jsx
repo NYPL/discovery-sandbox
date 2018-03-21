@@ -1,3 +1,4 @@
+/* globals document */
 import React from 'react';
 import PropTypes from 'prop-types';
 import DocumentTitle from 'react-document-title';
@@ -25,17 +26,32 @@ class SearchResultsPage extends React.Component {
     super(props);
 
     this.state = {
-      isLoading: this.props.isLoading,
+      isLoading: false,
       dropdownOpen: false,
+      document: undefined,
     };
 
     this.updateIsLoadingState = this.updateIsLoadingState.bind(this);
     this.updateDropdownState = this.updateDropdownState.bind(this);
+    this.checkForSelectedFilters = this.checkForSelectedFilters.bind(this);
+    this.focus = this.focus.bind(this);
   }
 
-  componentDidUpdate() {
-    if (this.loadingLayer) {
-      this.loadingLayer.focus();
+  componentDidMount() {
+    document.getElementById('search-query').focus();
+    this.setState({ document: window.document });
+  }
+
+  shouldComponentUpdate() {
+    if (!this.state.isLoading) {
+      return true;
+    }
+    return false;
+  }
+
+  focus() {
+    if (this.state.document) {
+      document.getElementById('filter-title').focus();
     }
   }
 
@@ -45,6 +61,24 @@ class SearchResultsPage extends React.Component {
 
   updateDropdownState(status) {
     this.setState({ dropdownOpen: status });
+  }
+
+  checkForSelectedFilters() {
+    const { selectedFilters } = this.props;
+
+    if (selectedFilters &&
+      (selectedFilters.dateBefore !== '' ||
+        selectedFilters.dateAfter !== '' ||
+        (selectedFilters.language && selectedFilters.language.length) ||
+        (selectedFilters.materialType && selectedFilters.materialType.length)
+      )
+    ) {
+      if (!this.state.dropdownOpen) {
+        return true;
+      }
+    }
+
+    return false;
   }
 
   render() {
@@ -69,12 +103,10 @@ class SearchResultsPage extends React.Component {
     const headerLabel = `Search results ${searchKeywordsLabel} ${pageLabel}`;
     const updatePage = (nextPage, pageType) => {
       this.updateIsLoadingState(true);
-      // Temporary. Need to check cross-browser and if it's needed at all.
-      window.scrollTo(0, 0);
       const apiQuery = createAPIQuery({ page: nextPage });
 
       trackDiscovery('Pagination - Search Results', `${pageType} - page ${nextPage}`);
-      ajaxCall(`${appConfig.baseUrl}/api?${apiQuery}`, response => {
+      ajaxCall(`${appConfig.baseUrl}/api?${apiQuery}`, (response) => {
         Actions.updateSearchResults(response.data.searchResults);
         Actions.updatePage(nextPage.toString());
         setTimeout(() => {
@@ -86,11 +118,10 @@ class SearchResultsPage extends React.Component {
     const searchError = location.query && location.query.error ? location.query.error : '';
     const apiFilters = filters && filters.itemListElement && filters.itemListElement.length ?
       filters.itemListElement : [];
-    let searchErrorMessage = '';
-    let dateFilterErrors = [];
+    const dateFilterErrors = [];
+    const selectedFiltersAvailable = this.checkForSelectedFilters();
 
     if (searchError === 'dateFilterError') {
-      searchErrorMessage = 'Please enter valid dates.';
       dateFilterErrors.push({
         name: 'date',
         value: 'Date',
@@ -103,56 +134,74 @@ class SearchResultsPage extends React.Component {
           <LoadingLayer
             status={this.state.isLoading}
             title="Searching"
-            childRef={(c) => { this.loadingLayer = c; }}
-            tabIndex={0}
+            focus={this.focus()}
           />
           <div className="nypl-page-header">
-            <div className="nypl-full-width-wrapper">
+            <div className="nypl-full-width-wrapper filter-page">
               <div className="nypl-row">
-                <div className="nypl-column-three-quarters">
+                <div className="nypl-column-full">
                   <Breadcrumbs query={searchKeywords} type="search" />
-                  <h1 aria-label={headerLabel}>Search Results</h1>
+                  <h1 aria-label={headerLabel}>
+                    Search Results
+                  </h1>
                   <Search
                     searchKeywords={searchKeywords}
                     field={field}
                     createAPIQuery={createAPIQuery}
                     updateIsLoadingState={this.updateIsLoadingState}
-                    searchError={searchError === 'noKeyword'}
+                    selectedFilters={selectedFilters}
                   />
-                  {searchErrorMessage &&
-                    <span
-                      className="nypl-field-status"
-                      id="search-input-status"
-                      aria-live="assertive"
-                      aria-atomic="true"
-                    >
-                      {searchErrorMessage}
-                    </span>
-                  }
-                  {
-                    !!(totalResults && totalResults !== 0) && (
-                      <div>
-                        <FilterPopup
-                          filters={apiFilters}
-                          createAPIQuery={createAPIQuery}
-                          updateIsLoadingState={this.updateIsLoadingState}
-                          selectedFilters={selectedFilters}
-                          searchKeywords={searchKeywords}
-                          raisedErrors={dateFilterErrors}
-                          updateDropdownState={this.updateDropdownState}
-                        />
-                      </div>
-                    )
-                  }
-
-                  {!this.state.dropdownOpen &&
+                </div>
+              </div>
+            </div>
+            <FilterPopup
+              filters={apiFilters}
+              createAPIQuery={createAPIQuery}
+              updateIsLoadingState={this.updateIsLoadingState}
+              selectedFilters={selectedFilters}
+              searchKeywords={searchKeywords}
+              raisedErrors={dateFilterErrors}
+              updateDropdownState={this.updateDropdownState}
+              totalResults={totalResults}
+            />
+            {selectedFiltersAvailable &&
+              <div className="nypl-full-width-wrapper selected-filters">
+                <div className="nypl-row">
+                  <div className="nypl-column-full">
                     <SelectedFilters
                       selectedFilters={selectedFilters}
                       createAPIQuery={createAPIQuery}
                       updateIsLoadingState={this.updateIsLoadingState}
                     />
-                  }
+                  </div>
+                </div>
+              </div>
+            }
+          </div>
 
+          <div className="nypl-sorter-row">
+            <div className="nypl-full-width-wrapper">
+              <div className="nypl-row">
+                <div className="nypl-column-full">
+                  <ResultsCount
+                    isLoading={isLoading}
+                    count={totalResults}
+                    selectedFilters={selectedFilters}
+                    searchKeywords={searchKeywords}
+                    field={field}
+                    page={parseInt(page, 10)}
+                  />
+                  {
+                    !!(totalResults && totalResults !== 0) && (
+                      <Sorter
+                        sortBy={sortBy}
+                        page={page}
+                        searchKeywords={searchKeywords}
+                        createAPIQuery={createAPIQuery}
+                        updateIsLoadingState={this.updateIsLoadingState}
+                      />
+                    )
+                  }
                 </div>
               </div>
             </div>
@@ -160,51 +209,20 @@ class SearchResultsPage extends React.Component {
 
           <div className="nypl-full-width-wrapper">
             <div className="nypl-row">
-              <div className="nypl-column-three-quarters">
-                <ResultsCount
-                  isLoading={isLoading}
-                  count={totalResults}
-                  selectedFilters={selectedFilters}
-                  searchKeywords={searchKeywords}
-                  field={field}
-                  page={parseInt(page, 10)}
-                />
-                {
-                  !!(totalResults && totalResults !== 0) && (
-                    <Sorter
-                      sortBy={sortBy}
-                      page={page}
-                      searchKeywords={searchKeywords}
-                      createAPIQuery={createAPIQuery}
-                      updateIsLoadingState={this.updateIsLoadingState}
-                    />
-                  )
-                }
-              </div>
-            </div>
-          </div>
-
-          <div className="nypl-full-width-wrapper">
-            <div className="nypl-row">
               <div
-                className="nypl-column-three-quarters"
+                className="nypl-column-full"
                 role="region"
                 id="mainContent"
-                aria-live="polite"
-                aria-atomic="true"
-                aria-relevant="additions removals"
                 aria-describedby="results-description"
               >
                 {
                   !!(results && results.length !== 0) &&
-                  (
-                    <ResultList
+                    (<ResultList
                       results={results}
                       isLoading={isLoading}
                       searchKeywords={searchKeywords}
                       updateIsLoadingState={this.updateIsLoadingState}
-                    />
-                  )
+                    />)
                 }
 
                 {
@@ -236,7 +254,6 @@ SearchResultsPage.propTypes = {
   sortBy: PropTypes.string,
   field: PropTypes.string,
   isLoading: PropTypes.bool,
-  error: PropTypes.object,
   filters: PropTypes.object,
 };
 

@@ -81,14 +81,14 @@ describe('FilterPopup', () => {
       const thirdItem = listItemAt(component, 2);
 
       expect(firstItem.find('input').length).to.equal(1);
-      expect(firstItem.find('input').prop('id')).to.equal('French-label');
+      expect(firstItem.find('input').prop('id')).to.equal('English-label');
       expect(firstItem.find('label').length).to.equal(1);
-      expect(firstItem.find('label').text()).to.equal('French (145)');
+      expect(firstItem.find('label').text()).to.equal('English (4,267)');
 
       expect(secondItem.find('input').length).to.equal(1);
-      expect(secondItem.find('input').prop('id')).to.equal('English-label');
+      expect(secondItem.find('input').prop('id')).to.equal('French-label');
       expect(secondItem.find('label').length).to.equal(1);
-      expect(secondItem.find('label').text()).to.equal('English (4,267)');
+      expect(secondItem.find('label').text()).to.equal('French (145)');
 
       expect(thirdItem.find('input').length).to.equal(1);
       expect(thirdItem.find('input').prop('id')).to.equal('Spanish-label');

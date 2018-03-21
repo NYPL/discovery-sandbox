@@ -7,8 +7,8 @@ import { isArray as _isArray } from 'underscore';
 import Actions from '../../actions/Actions';
 import Pagination from '../Pagination/Pagination';
 import ItemTable from './ItemTable';
-import appConfig from '../../../../appConfig.js';
-import { trackDiscovery } from '../../utils/utils.js';
+import appConfig from '../../../../appConfig';
+import { trackDiscovery } from '../../utils/utils';
 
 class ItemHoldings extends React.Component {
   constructor(props) {
@@ -70,24 +70,21 @@ class ItemHoldings extends React.Component {
     // Search for the bib? Just pass the data.
     axios
       .get(`${appConfig.baseUrl}/api/hold/request/${bibId}-${itemId}`)
-      .then(response => {
+      .then((response) => {
         Actions.updateBib(response.data.bib);
         Actions.updateDeliveryLocations(response.data.deliveryLocations);
         Actions.updateIsEddRequestable(response.data.isEddRequestable);
-        setTimeout(
-          () => { this.props.updateIsLoadingState(false); },
-          500
-        );
-
-        this.context.router.push(`${appConfig.baseUrl}/hold/request/${bibId}-${itemId}`);
+        setTimeout(() => {
+          this.props.updateIsLoadingState(false);
+          this.context.router.push(`${appConfig.baseUrl}/hold/request/${bibId}-${itemId}`);
+        }, 500);
       })
-      .catch(error => {
+      .catch((error) => {
         console.error('Error attemping to make an ajax Bib request in ItemHoldings', error);
 
-        setTimeout(
-          () => { this.props.updateIsLoadingState(false); },
-          500
-        );
+        setTimeout(() => {
+          this.props.updateIsLoadingState(false);
+        }, 500);
       });
   }
 

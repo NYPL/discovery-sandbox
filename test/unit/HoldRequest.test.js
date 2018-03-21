@@ -4,8 +4,66 @@ import sinon from 'sinon';
 import { expect } from 'chai';
 import { mount } from 'enzyme';
 // Import the component that is going to be tested
-import HoldRequest from './../../src/app/components/HoldRequest/HoldRequest.jsx';
-import Actions from './../../src/app/actions/Actions.js';
+import HoldRequest from './../../src/app/components/HoldRequest/HoldRequest';
+import Actions from './../../src/app/actions/Actions';
+
+const mockedItems = [
+  {
+    "@id": "res:i10000003",
+    "uri": "i10000003",
+    "status": [
+      {
+        "@id": "status:a",
+        "prefLabel": "Available"
+      }
+    ],
+    "owner": [
+      {
+        "@id": "orgs:1000",
+        "prefLabel": "Stephen A. Schwarzman Building"
+      }
+    ],
+    "catalogItemType": [
+      {
+        "@id": "catalogItemType:55",
+        "prefLabel": "book, limited circ, MaRLI"
+      },
+      {
+        "@id": "catalogItemType:55",
+        "prefLabel": "book, limited circ, MaRLI"
+      }
+    ],
+    "identifier": [
+      "urn:barcode:33433014514719",
+      "urn:SierraNypl:10000003"
+    ],
+    "holdingLocation": [
+      {
+        "@id": "loc:rcma2",
+        "prefLabel": "Offsite"
+      }
+    ],
+    "requestable": [
+      true
+    ],
+    "accessMessage": [
+      {
+        "@id": "accessMessage:2",
+        "prefLabel": "Request in advance"
+      }
+    ],
+    "shelfMark": [
+      "*OFS 84-1997"
+    ],
+    "idBarcode": [
+      "33433014514719"
+    ],
+    "idNyplSourceId": {
+      "@type": "SierraNypl",
+      "@value": "10000003"
+    },
+  }
+];
 
 describe('HoldRequest', () => {
   describe('After being rendered, <HoldRequest>', () => {
@@ -14,7 +72,7 @@ describe('HoldRequest', () => {
 
     before(() => {
       requireUser = sinon.spy(HoldRequest.prototype, 'requireUser');
-      component = mount(<HoldRequest />);
+      component = mount(<HoldRequest />, { attachTo: document.body });
     });
 
     after(() => {
@@ -35,7 +93,7 @@ describe('HoldRequest', () => {
     before(() => {
       Actions.updatePatronData({});
       requireUser = sinon.spy(HoldRequest.prototype, 'requireUser');
-      component = mount(<HoldRequest />);
+      component = mount(<HoldRequest />, { attachTo: document.body });
     });
 
     after(() => {
@@ -54,7 +112,7 @@ describe('HoldRequest', () => {
       let component;
 
       before(() => {
-        component = mount(<HoldRequest />);
+        component = mount(<HoldRequest />, { attachTo: document.body });
       });
 
       after(() => {
@@ -88,10 +146,11 @@ describe('HoldRequest', () => {
     const bib = {
       title: ['Harry Potter'],
       '@id': 'res:b17688688',
+      items: mockedItems,
     };
 
     before(() => {
-      component = mount(<HoldRequest bib={bib} />);
+      component = mount(<HoldRequest bib={bib} params={{ itemId: 'i10000003' }} />, { attachTo: document.body });
     });
 
     after(() => {
@@ -110,7 +169,7 @@ describe('HoldRequest', () => {
 
       expect(form.find('h2')).to.have.length(1);
       expect(form.contains(
-        <h2>
+        <h2 className="nypl-request-form-title">
           Delivery options for this item are currently unavailable. Please try again later or
           contact 917-ASK-NYPL (<a href="tel:917-275-6975">917-275-6975</a>).
         </h2>
@@ -124,6 +183,7 @@ describe('HoldRequest', () => {
     const bib = {
       title: ['Harry Potter'],
       '@id': 'res:b17688688',
+      items: mockedItems,
     };
 
     const deliveryLocations = [
@@ -149,7 +209,12 @@ describe('HoldRequest', () => {
 
     before(() => {
       component = mount(
-        <HoldRequest bib={bib} deliveryLocations={deliveryLocations} />
+        <HoldRequest
+          bib={bib}
+          deliveryLocations={deliveryLocations}
+          params={{ itemId: 'i10000003' }}
+        />,
+        { attachTo: document.body }
       );
     });
 
@@ -162,7 +227,7 @@ describe('HoldRequest', () => {
 
       expect(form.find('h2')).to.have.length(1);
       expect(form.contains(
-        <h2>Choose a delivery option or location</h2>
+        <h2 className="nypl-request-form-title">Choose a delivery option or location</h2>
       )).to.equal(true);
     });
 
@@ -227,6 +292,7 @@ describe('HoldRequest', () => {
     const bib = {
       title: ['Harry Potter'],
       '@id': 'res:b17688688',
+      items: mockedItems,
     };
 
     const deliveryLocations = [
@@ -252,7 +318,13 @@ describe('HoldRequest', () => {
 
     before(() => {
       component = mount(
-        <HoldRequest bib={bib} deliveryLocations={deliveryLocations} isEddRequestable />
+        <HoldRequest
+          bib={bib}
+          deliveryLocations={deliveryLocations}
+          isEddRequestable
+          params={{ itemId: 'i10000003' }}
+        />,
+        { attachTo: document.body }
       );
     });
 

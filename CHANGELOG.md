@@ -1,5 +1,14 @@
 ## CHANGE LOG
 
+### 1.2.10
+- Small hold request content notification for inclement weather.
+
+### 1.2.9
+- Deploying logic check to make sure that an item really is available before placing a hold request on it. Mostly for the situation where a patron comes from the catalog.
+
+### 1.2.8
+- Update to Header component v2.4.5.
+
 ### 1.2.7
 - Removing notifications from Hold Request page.
 

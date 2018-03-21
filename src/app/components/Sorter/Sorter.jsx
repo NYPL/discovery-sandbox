@@ -1,13 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { findWhere as _findWhere } from 'underscore';
 
-import Actions from '../../actions/Actions.js';
+import Actions from '../../actions/Actions';
 import {
   ajaxCall,
   trackDiscovery,
 } from '../../utils/utils';
-import appConfig from '../../../../appConfig.js';
+import appConfig from '../../../../appConfig';
 
 const sortingOpts = [
   { val: 'relevance', label: 'relevance' },
@@ -20,13 +19,9 @@ const sortingOpts = [
 class Sorter extends React.Component {
   constructor(props) {
     super(props);
-    const defaultLabelObject = _findWhere(sortingOpts, { val: this.props.sortBy });
-    const defaultLabel = defaultLabelObject ? defaultLabelObject.label : undefined;
 
     this.state = {
       sortValue: this.props.sortBy || 'relevance',
-      sortLabel: defaultLabel || 'relevance',
-      className: '',
       js: false,
     };
 
@@ -51,8 +46,8 @@ class Sorter extends React.Component {
     const value = e.target.value;
 
     this.setState(
-      { sortValue: value, sortLabel: e.target.value },
-      () => { this.sortResultsBy(value); }
+      { sortValue: value },
+      () => { this.sortResultsBy(value); },
     );
   }
 
@@ -70,11 +65,10 @@ class Sorter extends React.Component {
     ajaxCall(`${appConfig.baseUrl}/api?${apiQuery}`, (response) => {
       Actions.updateSearchResults(response.data.searchResults);
       Actions.updateSortBy(sortBy);
-      this.context.router.push(`${appConfig.baseUrl}/search?${apiQuery}`);
-      setTimeout(
-        () => { this.props.updateIsLoadingState(false); },
-        500
-      );
+      setTimeout(() => {
+        this.props.updateIsLoadingState(false);
+        this.context.router.push(`${appConfig.baseUrl}/search?${apiQuery}`);
+      }, 500);
     });
   }
 
@@ -85,8 +79,8 @@ class Sorter extends React.Component {
    * @return {HTML Element}
    */
   renderResultsSort() {
-    return sortingOpts.map((d, i) => (
-      <option value={d.val} key={i}>
+    return sortingOpts.map(d => (
+      <option value={d.val} key={d.val}>
         {d.label}
       </option>
     ));
@@ -99,28 +93,30 @@ class Sorter extends React.Component {
     return (
       <div className="nypl-results-sorting-controls">
         <div className="nypl-results-sorter">
-          <label htmlFor="sort-by-label">Sort by</label>
-          <form
-            action={
-              `${appConfig.baseUrl}/search${searchKeywords ? `?q=${searchKeywords}` : ''}` +
-              `${field ? `&search_scope=${field}` : ''}`
-            }
-            method="POST"
-          >
-            <span className="nypl-omni-fields">
-              <strong>
-                <select
-                  id="sort-by-label"
-                  onChange={this.updateSortValue}
-                  value={this.state.sortValue}
-                  name="sort_scope"
-                >
-                  {this.renderResultsSort()}
-                </select>
-              </strong>
-            </span>
-            {!this.state.js && <input type="submit" />}
-          </form>
+          <div className="nypl-select-field-results">
+            <label htmlFor="sort-by-label">Sort by</label>
+            <form
+              action={
+                `${appConfig.baseUrl}/search${searchKeywords ? `?q=${searchKeywords}` : ''}` +
+                `${field ? `&search_scope=${field}` : ''}`
+              }
+              method="POST"
+            >
+              <span className="nypl-omni-fields">
+                <strong>
+                  <select
+                    id="sort-by-label"
+                    onChange={this.updateSortValue}
+                    value={this.state.sortValue}
+                    name="sort_scope"
+                  >
+                    {this.renderResultsSort()}
+                  </select>
+                </strong>
+              </span>
+              {!this.state.js && <input type="submit" />}
+            </form>
+          </div>
         </div>
       </div>
     );

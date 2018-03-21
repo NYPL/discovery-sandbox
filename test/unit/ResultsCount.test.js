@@ -3,7 +3,7 @@ import React from 'react';
 import { expect } from 'chai';
 import { shallow, mount } from 'enzyme';
 
-import ResultsCount from '../../src/app/components/ResultsCount/ResultsCount.jsx';
+import ResultsCount from '../../src/app/components/ResultsCount/ResultsCount';
 
 const filters = {
   subjectLiteral: {
@@ -82,7 +82,7 @@ describe('ResultsCount', () => {
             searchKeywords="harry potter"
             count={0}
             selectedFilters={filters.materialTypeAndLanguage}
-          />
+          />,
         );
       });
 
@@ -104,9 +104,8 @@ describe('ResultsCount', () => {
     });
 
     it('should output that no results were found', () => {
-      expect(component.find('h2').length).to.equal(0);
-      expect(component.find('p').length).to.equal(1);
-      expect(component.find('p').text()).to.equal('Loading...');
+      expect(component.find('h2').length).to.equal(1);
+      expect(component.find('h2').text()).to.equal('Loading...');
     });
   });
 
@@ -120,7 +119,7 @@ describe('ResultsCount', () => {
             <ResultsCount
               searchKeywords="hamlet"
               count={2345}
-            />
+            />,
           );
         });
 
@@ -139,7 +138,7 @@ describe('ResultsCount', () => {
             <ResultsCount
               searchKeywords="harry potter"
               count={2345}
-            />
+            />,
           );
         });
 
@@ -159,7 +158,7 @@ describe('ResultsCount', () => {
               searchKeywords="hamlet"
               field="title"
               count={678}
-            />
+            />,
           );
         });
 
@@ -179,7 +178,7 @@ describe('ResultsCount', () => {
               searchKeywords="shakespeare"
               field="contributor"
               count={135}
-            />
+            />,
           );
         });
 
@@ -203,7 +202,7 @@ describe('ResultsCount', () => {
             <ResultsCount
               selectedFilters={filters.creatorLiteral}
               count={2345}
-            />
+            />,
           );
         });
 
@@ -222,16 +221,14 @@ describe('ResultsCount', () => {
             <ResultsCount
               selectedFilters={filters.subjectLiteral}
               count={6789}
-            />
+            />,
           );
         });
 
         it('should output that no results were found', () => {
           expect(component.find('h2').length).to.equal(1);
           expect(component.find('h2').text())
-            .to.equal(
-              'Displaying 1-50 of 6,789 results for subject "Children\'s art El Salvador"'
-            );
+            .to.equal('Displaying 1-50 of 6,789 results for subject "Children\'s art El Salvador"');
         });
       });
     });

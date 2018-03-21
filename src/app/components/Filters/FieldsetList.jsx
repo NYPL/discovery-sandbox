@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
 import {
   extend as _extend,
   findWhere as _findWhere,
 } from 'underscore';
+
 import {
   getUpdatedFilterValues,
 } from '../../utils/utils';
@@ -53,24 +53,31 @@ class FieldsetList extends React.Component {
 
     return (
       <fieldset className="nypl-fieldset inner">
-        {legend && <legend><strong>{legend}</strong></legend>}
+        {legend && <legend><h3>{legend}</h3></legend>}
         <ul className="nypl-generic-checkbox nypl-generic-columns">
           {
-            values.map((filter, i) => (
-              <li className="nypl-generic-checkbox" key={i}>
-                <input
-                  id={`${filter.label}-label`}
-                  type="checkbox"
-                  name="filters"
-                  value={JSON.stringify(_extend({ field: filterId }, filter))}
-                  onClick={(e) => this.onFilterClick(e, filter)}
-                  checked={filter.selected}
-                />
-                <label htmlFor={`${filter.label}-label`}>
-                  {filter.label} ({filter.count.toLocaleString()})
-                </label>
-              </li>
-            ))
+            values.map((filter) => {
+              let filterLabel = filter.label;
+              if (filter.label === 'Greek, Modern (1453- )') {
+                filterLabel = 'Greek, Modern (1453-present)';
+              }
+
+              return (
+                <li className="nypl-generic-checkbox" key={filter.value}>
+                  <input
+                    id={`${filter.label}-label`}
+                    type="checkbox"
+                    name="filters"
+                    value={JSON.stringify(_extend({ field: filterId }, filter))}
+                    onClick={e => this.onFilterClick(e, filter)}
+                    checked={filter.selected}
+                  />
+                  <label htmlFor={`${filter.label}-label`}>
+                    {filterLabel} ({filter.count.toLocaleString('en-US')})
+                  </label>
+                </li>
+              );
+            })
           }
         </ul>
       </fieldset>
@@ -80,14 +87,11 @@ class FieldsetList extends React.Component {
 
 FieldsetList.propTypes = {
   legend: PropTypes.string,
-  filter: PropTypes.object,
   filterId: PropTypes.string,
   onFilterClick: PropTypes.func,
-  selectedFilters: PropTypes.array,
 };
 
 FieldsetList.defaultProps = {
-  filter: {},
   onFilterClick: () => {},
 };
 

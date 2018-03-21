@@ -16,7 +16,10 @@ import {
 
 import Actions from '../../actions/Actions';
 import appConfig from '../../../../appConfig';
-import { ajaxCall } from '../../utils/utils';
+import {
+  ajaxCall,
+  trackDiscovery,
+} from '../../utils/utils';
 
 class SelectedFilters extends React.Component {
   constructor(props) {
@@ -47,11 +50,12 @@ class SelectedFilters extends React.Component {
       selectedFilters[field] =
         _reject(
           selectedFilters[field],
-          (selectedFilter) => selectedFilter.value === filter.value
+          selectedFilter => selectedFilter.value === filter.value,
         );
     }
 
     const apiQuery = this.props.createAPIQuery({ selectedFilters });
+    trackDiscovery('Filters - Selected list', `Remove - ${filter.field} ${filter.label}`);
 
     this.props.updateIsLoadingState(true);
 
@@ -77,6 +81,7 @@ class SelectedFilters extends React.Component {
   clearFilters() {
     const apiQuery = this.props.createAPIQuery({ selectedFilters: {} });
 
+    trackDiscovery('Filters - Selected list', 'Clear Filters');
     this.props.updateIsLoadingState(true);
     Actions.updateSelectedFilters({});
     ajaxCall(`${appConfig.baseUrl}/api?${apiQuery}`, (response) => {
@@ -107,12 +112,13 @@ class SelectedFilters extends React.Component {
     }
 
     const filtersToRender = [];
+    const datesToRender = [];
     const acceptedFilters = _keys(appConfig.defaultFilters);
     let clearAllFilters = (
       <button
         className="nypl-unset-filter clear-filters-button"
         onClick={this.clearFilters}
-        aria-controls="selected-filters-container"
+        aria-controls="selected-filters-container results-description"
         aria-label="Clear all filters"
       >
         Clear Filters
@@ -127,7 +133,7 @@ class SelectedFilters extends React.Component {
         <a
           className="nypl-unset-filter clear-filters-button"
           href={`${appConfig.baseUrl}/search?${apiQuery}`}
-          aria-controls="selected-filters-container"
+          aria-controls="selected-filters-container results-description"
           aria-label="Clear all filters"
         >
           Clear Filters
@@ -138,27 +144,37 @@ class SelectedFilters extends React.Component {
 
     _mapObject(selectedFilters, (values, key) => {
       if (_contains(acceptedFilters, key) && values && values.length) {
-        if (_isArray(values)) {
-          values.forEach(value => {
-            filtersToRender.push(_extend({ field: key }, value));
-          });
-        } else {
-          filtersToRender.push(_extend({ field: key },
+        if (key === 'dateAfter' || key === 'dateBefore') {
+          datesToRender.push(_extend(
+            { field: key },
             {
               value: values,
               label: values,
-            }
+            },
           ));
+        } else {
+          if (_isArray(values)) {
+            values.forEach(value =>
+              filtersToRender.push(_extend({ field: key }, value)));
+          } else {
+            filtersToRender.push(_extend(
+              { field: key },
+              {
+                value: values,
+                label: values,
+              },
+            ));
+          }
         }
       }
     });
 
-    if (!filtersToRender.length) {
+    if (!filtersToRender.length && !datesToRender.length) {
       return null;
     }
 
     return (
-      <div>
+      <div className="selected-filters">
         <span id="read-text" className="visuallyHidden">Selected filters.</span>
         <ul
           id="selected-filters-container"
@@ -166,15 +182,15 @@ class SelectedFilters extends React.Component {
           aria-atomic="true"
           aria-relevant="additions removals"
           aria-describedby="read-text"
+          aria-label="Click to remove applied filters."
         >
           {
-            filtersToRender.map((filter, i) => {
-              const dateClass = filter.field;
+            filtersToRender.map((filter) => {
               let filterBtn = (
                 <button
                   className="nypl-unset-filter"
                   onClick={e => this.onFilterClick(e, filter)}
-                  aria-controls="selected-filters-container"
+                  aria-controls="selected-filters-container results-description"
                   aria-label={`${filter.label} Remove Filter`}
                 >
                   {filter.label}
@@ -198,8 +214,8 @@ class SelectedFilters extends React.Component {
                   <a
                     className="nypl-unset-filter"
                     href={`${appConfig.baseUrl}/search?${apiQuery}`}
-                    aria-controls="selected-filters-container"
-                    aria-label={filter.label}
+                    aria-controls="selected-filters-container results-description"
+                    aria-label={`${filter.label} Remove Filter`}
                   >
                     {filter.label}
                     <XIcon fill="#fff" ariaHidden />
@@ -207,13 +223,71 @@ class SelectedFilters extends React.Component {
                 );
               }
 
-              return (<li key={i} className={dateClass}>{filterBtn}</li>);
+              return (<li key={filter.value}>{filterBtn}</li>);
             })
           }
-          <li>
-            {clearAllFilters}
-          </li>
+          {
+            datesToRender.map((filter) => {
+              const singleDate = datesToRender.length === 1;
+              const dateClass = filter.field;
+              let singleDateLabel = '';
+              if (singleDate) {
+                if (dateClass === 'dateAfter') {
+                  singleDateLabel = 'After';
+                } else if (dateClass === 'dateBefore') {
+                  singleDateLabel = 'Before';
+                }
+              }
+
+              let filterBtn = (
+                <button
+                  className="nypl-unset-filter"
+                  onClick={e => this.onFilterClick(e, filter)}
+                  aria-controls="selected-filters-container"
+                  aria-label={`${singleDateLabel} ${filter.label} Remove Filter`}
+                >
+                  {singleDateLabel} {filter.label}
+                  <XIcon fill="#fff" ariaHidden />
+                </button>
+              );
+
+              if (!this.state.js) {
+                const removedSelectedFilters = JSON.parse(JSON.stringify(selectedFilters));
+                removedSelectedFilters[filter.field] =
+                  _reject(
+                    selectedFilters[filter.field],
+                    f => (f.value === filter.value),
+                  );
+
+                const apiQuery = this.props.createAPIQuery({
+                  selectedFilters: removedSelectedFilters,
+                });
+
+                filterBtn = (
+                  <a
+                    className="nypl-unset-filter"
+                    href={`${appConfig.baseUrl}/search?${apiQuery}`}
+                    aria-controls="selected-filters-container"
+                    aria-label={`${singleDateLabel} ${filter.label} Remove Filter`}
+                  >
+                    {filter.label}
+                    <XIcon fill="#fff" ariaHidden />
+                  </a>
+                );
+              }
+
+              return (
+                <li
+                  className={`${dateClass} ${!singleDate ? 'combined' : ''}`}
+                  key={`${dateClass}${filter.value}`}
+                >
+                  {filterBtn}
+                </li>
+              );
+            })
+          }
         </ul>
+        {clearAllFilters}
       </div>
     );
   }

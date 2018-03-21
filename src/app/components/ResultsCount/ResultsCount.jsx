@@ -7,6 +7,16 @@ import {
 } from 'underscore';
 
 class ResultsCount extends React.Component {
+  // The `searchKeywords` prop gets updated before the `count` and we want to wait until both
+  // are updated to be read to screen readers. Otherwise, it would read the previous `count`
+  // number for the next `searchKeywords`.
+  shouldComponentUpdate(nextProps) {
+    if (this.props.count !== nextProps.count) {
+      return true;
+    }
+    return false;
+  }
+
   /*
    * displayContext()
    * Displays where the results are coming from. This currently only allows for one
@@ -47,7 +57,7 @@ class ResultsCount extends React.Component {
       _mapObject(selectedFilters, (val, key) => {
         const mappedKey = keyMapping[key];
 
-        if (val[0] && val[0].value && mappedKey) {
+        if (val && val[0] && val[0].value && mappedKey) {
           result += `for ${mappedKey} "${val[0].value}"`;
         }
       });
@@ -87,40 +97,44 @@ class ResultsCount extends React.Component {
     const plural = (searchKeywords && searchKeywords.indexOf(' ') !== -1) ? 's' : '';
 
     if (isLoading) {
-      return (<p>Loading...</p>);
+<<<<<<< HEAD
+      return ('Loading...');
     }
 
     if (count !== 0) {
-      return (<h2>Displaying {currentResultDisplay} of {countF} results {displayContext}</h2>);
+      return (`Displaying ${currentResultDisplay} of ${countF} results ${displayContext}`);
+=======
+      return 'Loading...';
+    }
+
+    if (count !== 0) {
+      return `Displaying ${currentResultDisplay} of ${countF} results ${displayContext}`;
+>>>>>>> development
     }
 
     if (this.checkSelectedFilters()) {
       return (
-        <h2>No results for the keyword{plural} "{searchKeywords}" with the chosen filters. Try
-          a different search or different filters.
-        </h2>
+        `No results for the keyword${plural} "${searchKeywords}" with the chosen filters. Try a different search or different filters.`
       );
     }
 
-    return (
-      <h2>
-        No results for the keyword{plural} "{searchKeywords}". Try a different search.
-      </h2>
-    );
+    return `No results for the keyword${plural} "${searchKeywords}". Try a different search.`;
   }
 
   render() {
     const results = this.displayCount();
-
     return (
       <div
-        id="results-description"
         className="nypl-results-summary"
-        aria-live="assertive"
-        aria-atomic="true"
-        role="presentation"
       >
-        {results}
+        <h2
+          id="results-description"
+          aria-live="polite"
+          aria-atomic="true"
+          role="alert"
+        >
+          {results}
+        </h2>
       </div>
     );
   }
@@ -136,6 +150,7 @@ ResultsCount.propTypes = {
 };
 
 ResultsCount.defaultProps = {
+  searchKeywords: '',
   count: 0,
   isLoading: false,
   page: 1,

@@ -1,5 +1,5 @@
 // ACTIONS
-import alt from '../alt.js';
+import alt from '../alt';
 
 class Actions {
   updateSearchResults(data) {

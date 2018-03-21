@@ -8,12 +8,10 @@ import {
   map as _map,
   isEmpty as _isEmpty,
   some as _some,
+  clone as _clone,
+  union as _union,
 } from 'underscore';
-import {
-  CheckSoloIcon,
-  FilterIcon,
-  ResetIcon,
-} from '@nypl/dgx-svg-icons';
+import { CheckSoloIcon } from '@nypl/dgx-svg-icons';
 
 import {
   trackDiscovery,
@@ -47,12 +45,18 @@ class FilterPopup extends React.Component {
     } = this.props;
 
     this.state = {
+      provisionalSelectedFilters: {
+        materialType: [],
+        language: [],
+        dateAfter: '',
+        dateBefore: '',
+      },
       selectedFilters: _extend({
         materialType: [],
         language: [],
         dateAfter: '',
         dateBefore: '',
-      }, selectedFilters),
+      }, _clone(selectedFilters)),
       showForm: false,
       js: false,
       filters,
@@ -87,8 +91,7 @@ class FilterPopup extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    // This check is to make sure it only focus after hitting submit and states
-    // changed
+    // // This check is to make sure it only focus after hitting submit and states changed
     if (prevState.raisedErrors !== this.state.raisedErrors) {
       if (this.refs['nypl-filter-error']) {
         ReactDOM.findDOMNode(this.refs['nypl-filter-error']).focus();
@@ -97,19 +100,35 @@ class FilterPopup extends React.Component {
   }
 
   onFilterClick(filterId, filter) {
-    const selectedFilters = this.state.selectedFilters;
+    const {
+      provisionalSelectedFilters,
+      selectedFilters,
+    } = this.state;
 
+    const clickedFilters = {
+      materialType: _union(provisionalSelectedFilters.materialType, selectedFilters.materialType),
+      language: _union(provisionalSelectedFilters.language, selectedFilters.language),
+      dateAfter: selectedFilters.dateAfter,
+      dateBefore: selectedFilters.dateBefore,
+    };
     if (filter.selected) {
-      selectedFilters[filterId].push(filter);
+      clickedFilters[filterId].push(filter);
+      trackDiscovery('Filters - Select', `${filterId} - ${filter.label}`);
     } else {
+      clickedFilters[filterId] =
+        _reject(
+          clickedFilters[filterId],
+          selectedFilter => selectedFilter.value === filter.value,
+        );
       selectedFilters[filterId] =
         _reject(
           selectedFilters[filterId],
-          (selectedFilter) => selectedFilter.value === filter.value
+          selectedFilter => selectedFilter.value === filter.value,
         );
+      trackDiscovery('Filters - Deselect', `${filterId} - ${filter.label}`);
     }
 
-    this.setState({ selectedFilters });
+    this.setState({ provisionalSelectedFilters: clickedFilters });
   }
 
   /**
@@ -128,11 +147,11 @@ class FilterPopup extends React.Component {
 
   /*
    * getRaisedErrors(errors)
-   * There's a set list of inputs in the filter form. If the key errors from the form
-   * are found in the set list, it will render those errors. This is meant to be an
-   * aggregate list that is displayed at the top of the form.
-   * @param {Array} errors - An array of the objects with key/value pair of input elements in the
-   *   filter form that have incorrect input.
+   * There's a set list of inputs in the filter form. If the key errors from the form are found
+   * in the set list, it will render those errors. This is meant to be an aggregate list that is
+   * displayed at the top of the form.
+   * @param {Array} errors - An array of the objects with key/value pair of
+   *  input elements in the filter form that have incorrect input.
    * @return {Array}
    */
   getRaisedErrors(errors) {
@@ -148,7 +167,8 @@ class FilterPopup extends React.Component {
     _map(errors, (val, key) => {
       if (val.name && val.value) {
         const anchorTag = (this.state.js) ?
-          <a href={`#${headlineError[val.name]}`}>{val.value}</a> : <span>{val.value}</span>;
+          <a href={`#${headlineError[val.name]}`}>{val.value}</a> :
+          <span>{val.value}</span>;
 
         errorArray.push(<li key={key}>{anchorTag}</li>);
       }
@@ -166,17 +186,21 @@ class FilterPopup extends React.Component {
    */
   validateFilterValue(filterValue) {
     const filterErrors = [];
+    const dateAfter = filterValue.dateAfter ? Number(filterValue.dateAfter) : 0;
+    const dateBefore = filterValue.dateBefore ? Number(filterValue.dateBefore) : 0;
+    const currentYear = (new Date()).getFullYear();
+    const dateInputError = {
+      name: 'date',
+      value: 'Date',
+    };
 
-    if (filterValue.dateBefore && filterValue.dateAfter) {
+    if (dateAfter && dateBefore) {
       // If the date input values are invalid
-      if (Number(filterValue.dateBefore) < Number(filterValue.dateAfter)) {
-        const dateInputError = {
-          name: 'date',
-          value: 'Date',
-        };
-
+      if (dateAfter > dateBefore || dateAfter > currentYear) {
         filterErrors.push(dateInputError);
       }
+    } else if (dateAfter && dateAfter > currentYear) {
+      filterErrors.push(dateInputError);
     }
 
     this.setState({ raisedErrors: filterErrors });
@@ -188,19 +212,43 @@ class FilterPopup extends React.Component {
     return true;
   }
 
-  submitForm(e) {
+  submitForm(e, position = '') {
     e.preventDefault();
 
     if (!this.validateFilterValue(this.state.selectedFilters)) {
       return false;
     }
 
-    const apiQuery = this.props.createAPIQuery({ selectedFilters: this.state.selectedFilters });
+    const {
+      selectedFilters,
+      provisionalSelectedFilters,
+    } = this.state;
+
+    if (position) {
+      trackDiscovery(`Filters - ${position}`, 'Apply Filters');
+    }
+
+    const { dateAfter, dateBefore } = selectedFilters;
+    const filtersToApply = {
+      materialType: _union(provisionalSelectedFilters.materialType, selectedFilters.materialType),
+      language: _union(provisionalSelectedFilters.language, selectedFilters.language),
+      dateAfter,
+      dateBefore,
+    };
+
+    const apiQuery = this.props.createAPIQuery({ selectedFilters: filtersToApply });
+
+    if (dateAfter) {
+      trackDiscovery('Filters - Date', `After - ${dateAfter}`);
+    }
+    if (dateBefore) {
+      trackDiscovery('Filters - Date', `Before - ${dateBefore}`);
+    }
 
     this.closeForm(e);
     this.props.updateIsLoadingState(true);
 
-    Actions.updateSelectedFilters(this.state.selectedFilters);
+    Actions.updateSelectedFilters(filtersToApply);
     ajaxCall(`${appConfig.baseUrl}/api?${apiQuery}`, (response) => {
       if (response.data.searchResults && response.data.filters) {
         Actions.updateSearchResults(response.data.searchResults);
@@ -226,54 +274,85 @@ class FilterPopup extends React.Component {
    * Clears all the selected filters before making an API call.
    *
    */
-  clearFilters(e) {
+  clearFilters(e, position) {
     e.persist();
+
+    trackDiscovery(`Filters - ${position}`, 'Clear Filters');
+    const resetFilters = {
+      materialType: [],
+      language: [],
+      dateAfter: '',
+      dateBefore: '',
+    };
+
     this.setState(
       {
-        selectedFilters: {
-          materialType: [],
-          language: [],
-          dateAfter: '',
-          dateBefore: '',
-        },
+        selectedFilters: resetFilters,
+        provisionalSelectedFilters: resetFilters,
       },
-      () => { this.submitForm(e); }
+      () => { this.submitForm(e); },
     );
   }
 
   openForm() {
     if (!this.state.showForm) {
-      trackDiscovery('FilterPopup', 'Open');
+      trackDiscovery('Filters', 'Open Dropdown');
       this.setState({ showForm: true });
       this.props.updateDropdownState(true);
+
+      setTimeout(() => {
+        if (this.refs.filterResetBtn) {
+          ReactDOM.findDOMNode(this.refs.filterResetBtn).focus();
+        }
+      }, 250);
     }
   }
 
-  closeForm(e) {
+  closeForm(e, position = '') {
     e.preventDefault();
-    trackDiscovery('FilterPopup', 'Close');
-    this.setState({ showForm: false });
-    this.props.updateDropdownState(false);
 
-    if (this.refs.filterOpen) {
-      this.refs.filterOpen.focus();
+    if (position) {
+      trackDiscovery(`Filters - ${position}`, 'Close Dropdown');
     }
+
+    this.setState({
+      showForm: false,
+      provisionalSelectedFilters: {
+        materialType: [],
+        language: [],
+        dateAfter: '',
+        dateBefore: '',
+      },
+    });
+    this.props.updateDropdownState(false);
   }
 
   render() {
+    const {
+      totalResults,
+      searchKeywords,
+    } = this.props;
     const {
       showForm,
       js,
       selectedFilters,
       filters,
+      provisionalSelectedFilters,
     } = this.state;
+    const filtersToShow = {
+      materialType: _union(provisionalSelectedFilters.materialType, selectedFilters.materialType),
+      language: _union(provisionalSelectedFilters.language, selectedFilters.language),
+      dateAfter: selectedFilters.dateAfter,
+      dateBefore: selectedFilters.dateBefore,
+    };
 
-    const applyButton = (
+    const applyButton = (position = '') => (
       <button
         type="submit"
         name="apply-filters"
-        onClick={e => this.submitForm(e)}
+        onClick={e => this.submitForm(e, position)}
         className="nypl-primary-button apply-button"
+        aria-controls="results-description"
       >
         Apply filters
         <CheckSoloIcon
@@ -284,22 +363,38 @@ class FilterPopup extends React.Component {
           iconId="filterApply"
         />
       </button>);
-    const cancelButton = (
-      <button
-        onClick={this.closeForm}
-        aria-expanded={!showForm}
-        aria-controls="filter-popup-menu"
-        className="nypl-filter-button cancel-button"
-      >
-        Cancel
-      </button>
+    const cancelButton = (position = '') => (
+      js ? (
+        <button
+          type="button"
+          onClick={e => this.closeForm(e, position)}
+          aria-expanded={!showForm}
+          aria-controls="filter-popup-menu"
+          className="nypl-primary-button cancel-button"
+        >
+          Cancel
+        </button>
+      ) :
+        (<a
+          type="button"
+          role="button"
+          href="#"
+          onClick={e => this.closeForm(e, position)}
+          aria-expanded={!showForm}
+          aria-controls="filter-popup-menu results-description"
+          className="nypl-primary-button cancel-button"
+        >
+          Cancel
+        </a>)
     );
-    const resetButton = (
-      <button
+    const resetButton = ({ ref = '', position = '' }) => (
+      js ? (<button
         type="button"
         name="Clear-Filters"
         className="nypl-basic-button clear-filters-button"
-        onClick={this.clearFilters}
+        aria-controls="results-description"
+        onClick={e => this.clearFilters(e, position)}
+        ref={ref}
       >
         Clear filters
         <FilterResetIcon
@@ -307,8 +402,28 @@ class FilterPopup extends React.Component {
           preserveAspectRatio="xMidYMid meet"
           title="reset"
         />
-      </button>);
-    const openButton = (
+      </button>) :
+        (<a
+          href={`${appConfig.baseUrl}/search?q=${searchKeywords}`}
+          type="button"
+          role="button"
+          name="Clear-Filters"
+          className="nypl-basic-button clear-filters-button"
+          aria-controls="results-description"
+          onClick={e => this.clearFilters(e, position)}
+          aria-controls="results-description"
+          ref={ref}
+        >
+          Clear filters
+          <FilterResetIcon
+            className="nypl-icon"
+            preserveAspectRatio="xMidYMid meet"
+            title="reset"
+            ariahidden
+          />
+        </a>)
+    );
+    const openPopupButton = js ? (
       <button
         className="popup-btn-open nypl-primary-button"
         onClick={() => this.openForm()}
@@ -316,44 +431,42 @@ class FilterPopup extends React.Component {
         aria-expanded={showForm || null}
         aria-controls="filter-popup-menu"
       >
-        Add filters <FilterIcon />
-      </button>
-    );
-    const popupOrApplyButton = showForm ? applyButton : openButton;
-    const openPopupButton = js ?
-      popupOrApplyButton :
+        Refine Search
+      </button>) :
       (<a
         className="popup-btn-open nypl-primary-button"
         href="#popup-no-js"
         aria-haspopup="true"
         aria-expanded={false}
         aria-controls="filter-popup-menu"
-        ref="filterOpen"
+        role="button"
       >
-        Add filters <FilterIcon />
-      </a>);
-    const { searchKeywords } = this.props;
+        Refine Search
+       </a>);
+
     const materialTypeFilters = _findWhere(filters, { id: 'materialType' });
     const languageFilters = _findWhere(filters, { id: 'language' });
     const dateAfterFilterValue =
-      selectedFilters.dateAfter ? Number(selectedFilters.dateAfter) : null;
+      filtersToShow.dateAfter ? Number(filtersToShow.dateAfter) : null;
     const dateBeforeFilterValue =
-      selectedFilters.dateBefore ? Number(selectedFilters.dateBefore) : null;
+      filtersToShow.dateBefore ? Number(filtersToShow.dateBefore) : null;
     const dateSelectedFilters = {
       dateAfter: dateAfterFilterValue,
       dateBefore: dateBeforeFilterValue,
     };
     const errorMessageBlock = (
-      <div
-        className="nypl-form-error filter-error-box"
-        ref="nypl-filter-error"
-        tabIndex="0"
-      >
-        <h2>Error</h2>
-        <p>Please enter valid filter values:</p>
-        <ul>
-          {this.getRaisedErrors(this.state.raisedErrors)}
-        </ul>
+      <div className="nypl-full-width-wrapper">
+        <div
+          className="nypl-form-error filter-error-box"
+          ref="nypl-filter-error"
+          tabIndex="0"
+        >
+          <h2>Error</h2>
+          <p>Please enter valid filter values:</p>
+          <ul>
+            {this.getRaisedErrors(this.state.raisedErrors)}
+          </ul>
+        </div>
       </div>
     );
     const isDateInputError = _some(this.state.raisedErrors, item =>
@@ -361,86 +474,120 @@ class FilterPopup extends React.Component {
 
     return (
       <div className="filter-container">
-        <div className="filter-text">
-          <h2>Refine your search</h2>
-        </div>
-        <div className="filter-action-buttons">
-          {!showForm && (<p>Add filters to narrow and define your search</p>)}
-          {showForm && resetButton}
-          <div className="cancel-apply-buttons">
-            {showForm && cancelButton}
-            {openPopupButton}
+        <div className="nypl-full-width-wrapper">
+          <div className="nypl-row">
+            <div className="nypl-column-full">
+              <div className="filter-text">
+                <h2 id="filter-title" ref="filter-title" tabIndex="0">Refine your search</h2>
+                <p>Toggle filters to narrow and define your search</p>
+              </div>
+              {(!showForm && !!(totalResults && totalResults !== 0)) && openPopupButton}
+            </div>
           </div>
         </div>
-        <div
-          className={
-            'nypl-basic-modal-container nypl-popup-container popup-container ' +
-            `${showForm ? 'active' : ''}`
-          }
-          id={js ? '' : 'popup-no-js'}
-          role="dialog"
-          aria-labelledby="filter-title"
-          aria-describedby="modal-description"
-        >
-          {!js && (<a className="cancel-no-js" href="#"></a>)}
-          <p id="modal-description" className="nypl-screenreader-only">Filter search results</p>
-          <div
-            id="filter-popup-menu"
-            className={
-              `${js ? 'popup' : 'popup-no-js'} nypl-modal-filter-form nypl-popup-filter-menu ` +
-              `${showForm ? 'expand active' : 'collapse'}`
-            }
-          >
-            {
-              this.state.raisedErrors && !_isEmpty(this.state.raisedErrors) && (errorMessageBlock)
-            }
-            <form
-              action={`${appConfig.baseUrl}/search?q=${searchKeywords}`}
-              method="POST"
-              onSubmit={() => this.submitForm()}
+        {
+          showForm && (
+            <div
+              className={
+                'nypl-basic-modal-container nypl-popup-container popup-container ' +
+                `${showForm ? 'active' : ''}`
+              }
+              id={js ? '' : 'popup-no-js'}
+              role="dialog"
+              aria-labelledby="filter-title"
+              aria-describedby="modal-description"
             >
-              <fieldset className="nypl-fieldset">
-                <FieldsetList
-                  legend="Format"
-                  filterId="materialType"
-                  filter={materialTypeFilters}
-                  selectedFilters={selectedFilters.materialType}
-                  onFilterClick={this.onFilterClick}
-                />
-
-                <FieldsetDate
-                  legend="Date"
-                  selectedFilters={dateSelectedFilters}
-                  onDateFilterChange={this.onDateFilterChange}
-                  submitError={isDateInputError}
-                />
-
-                <FieldsetList
-                  legend="Language"
-                  filterId="language"
-                  filter={languageFilters}
-                  selectedFilters={selectedFilters.language}
-                  onFilterClick={this.onFilterClick}
-                />
-
-                <div className="inner nypl-filter-button-container">
-                  {resetButton}
-                  <div className="cancel-apply-buttons">
-                    {cancelButton}
-                    {applyButton}
+              <p id="modal-description" className="nypl-screenreader-only">Filter search results</p>
+              <div
+                id="filter-popup-menu"
+                className={
+                  `${js ? 'popup' : 'popup-no-js'} nypl-modal-filter-form nypl-popup-filter-menu ` +
+                  `${showForm ? 'expand active' : 'collapse'}`
+                }
+              >
+                {
+                  this.state.raisedErrors && !_isEmpty(this.state.raisedErrors) && (errorMessageBlock)
+                }
+                <form
+                  action={`${appConfig.baseUrl}/search?q=${searchKeywords}`}
+                  method="POST"
+                  onSubmit={() => this.submitForm('Form submission')}
+                >
+                  <div className="form-full-width">
+                    <div className="nypl-full-width-wrapper">
+                      <div className="nypl-row">
+                        <div className="nypl-column-full">
+                          <ul
+                            className="filter-action-buttons"
+                            aria-label="Refine Search Options"
+                          >
+                            <li>{resetButton({ ref: 'filterResetBtn', position: 'top row' })}</li>
+                            <li>{cancelButton('top row')}</li>
+                            <li>{applyButton('top row')}</li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </fieldset>
-            </form>
-          </div>
-        </div>
+
+                  <fieldset className="nypl-fieldset">
+                    <div className="nypl-full-width-wrapper">
+                      <div className="nypl-row">
+                        <div className="nypl-column-full">
+                          <FieldsetList
+                            legend="Format"
+                            filterId="materialType"
+                            filter={materialTypeFilters}
+                            selectedFilters={filtersToShow.materialType}
+                            onFilterClick={this.onFilterClick}
+                          />
+
+                          <FieldsetDate
+                            legend="Date"
+                            selectedFilters={dateSelectedFilters}
+                            onDateFilterChange={this.onDateFilterChange}
+                            submitError={isDateInputError}
+                          />
+
+                          <FieldsetList
+                            legend="Language"
+                            filterId="language"
+                            filter={languageFilters}
+                            selectedFilters={filtersToShow.language}
+                            onFilterClick={this.onFilterClick}
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="bottom-action-row form-full-width">
+                      <div className="nypl-full-width-wrapper">
+                        <div className="nypl-row">
+                          <div className="nypl-column-full">
+                            <ul
+                              className="filter-action-buttons"
+                              aria-label="Refine Search Options"
+                            >
+                              <li>{resetButton({ ref: '', position: 'bottom row' })}</li>
+                              <li>{cancelButton('bottom row')}</li>
+                              <li>{applyButton('bottom row')}</li>
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </fieldset>
+                </form>
+              </div>
+            </div>
+          )
+        }
       </div>
     );
   }
 }
 
 FilterPopup.propTypes = {
-  location: PropTypes.object,
   filters: PropTypes.array,
   createAPIQuery: PropTypes.func,
   updateIsLoadingState: PropTypes.func,
@@ -448,6 +595,7 @@ FilterPopup.propTypes = {
   searchKeywords: PropTypes.string,
   raisedErrors: PropTypes.array,
   updateDropdownState: PropTypes.func,
+  totalResults: PropTypes.number,
 };
 
 FilterPopup.defaultProps = {
@@ -455,6 +603,8 @@ FilterPopup.defaultProps = {
   createAPIQuery: () => {},
   updateIsLoadingState: () => {},
   updateDropdownState: () => {},
+  totalResults: 0,
+  searchKeywords: '',
 };
 
 FilterPopup.contextTypes = {

@@ -1,9 +1,63 @@
+.form-full-width {
+  border-bottom: 1px solid;
+  border-top: 1px solid;
+
+  &.bottom-action-row {
+    border-bottom: none;
+  }
+
+  .nypl-full-width-wrapper {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
+  .nypl-column-full {
+    margin-bottom: 0;
+  }
+}
+
+.nypl-full-width-wrapper {
+  &.filter-page {
+    padding-bottom: 0;
+
+    .nypl-column-full {
+      margin-bottom: -1px;
+    }
+  }
+}
+
 .filter-container {
+  > .nypl-full-width-wrapper {
+    .nypl-column-full {
+      margin-bottom: -1px;
+    }
+  }
+
+  .nypl-form-error {
+    margin: 10px 0;
+    padding-left: 0;
+    display: none;
+
+    &.filter-error-box {
+      margin: 10px 0px;
+      padding: 1px 0 1px 1rem;
+    }
+
+    h2 {
+      margin: 0.5rem 0 1rem;
+    }
+
+    ul {
+      li {
+        margin-left: 0;
+      }
+    }
+  }
   .popup-btn-open {
     float: right;
-    border: 1px solid #776e64;
     display: block;
     text-decoration: none;
+    margin: 0 0 25px;
 
     svg {
       fill: #fff;
@@ -15,36 +69,74 @@
         fill: #1b7fa7;
       }
     }
+
+    @include min-screen($xtrasmall-breakpoint) {
+      margin-top: 35px;
+    }
   }
 
   a.popup-btn-open {
     padding-top: 3px;
+
+    &:hover {
+      color: #176e91;
+      border: 1px solid #176e91;
+    }
   }
 
   svg {
     vertical-align: middle;
+    white-space: normal;
   }
 
   .filter-text {
     float: left;
     width: 100%;
-    border-bottom: 0.125rem solid #d7d4d0;
+
+    @include min-screen($xtrasmall-breakpoint) {
+      width: 70%;
+      margin-top: 0;
+    }
+
+    h2 {
+      margin-bottom: 0.5rem;
+      margin-top: 1rem;
+      font-size: 1.4375rem;
+      padding: 0.15rem;
+    }
   }
+
   .filter-action-buttons {
     float: left;
     width: 100%;
+    padding: 15px 0 0;
+    display: none;
+    margin-bottom: 0;
 
-    p {
-      margin: 20px 0;
-      float: left;
-      display: inline-block;
+    @include min-screen($xtrasmall-breakpoint) {
+      text-align: right;
+      margin-bottom: 15px;
     }
 
-    .clear-filters-button {
-      display: none;
+    li {
+      display: inline-block;
+      margin-bottom: 0;
+      width: 100%;
+
+      &:first-child() {
+        float: left;
+      }
+
+      button {
+        margin-bottom: 20px;
+      }
 
       @include min-screen($xtrasmall-breakpoint) {
-        display: inline-block;
+        width: auto;
+
+        button {
+          margin-bottom: 0;
+        }
       }
     }
   }
@@ -54,7 +146,17 @@
     display: inline-block;
   }
 
-  .popup-btn-open,
+  .cancel-button {
+    margin-right: 20px;
+    padding: 0 15px;
+  }
+
+  a.cancel-button {
+    padding: 6px 15px;
+    -webkit-appearance: initial;
+  }
+
+  .cancel-button,
   .apply-button {
     background: #fff;
     border-color: #1b7fa7;
@@ -68,35 +170,13 @@
 
     &:hover {
       background-color: #1b7fa7;
-      border: 0.04167rem solid #1b7fa7;
+      border: 1px solid #1b7fa7;
       color: #fff;
 
       svg {
         fill: #fff;
         background-color: #1b7fa7;
       }
-    }
-  }
-
-  .cancel-button {
-    border: none;
-    background: #efedeb;
-    color: #000;
-    margin: 20px;
-
-    @include min-screen(410px) {
-      margin-left: 60px;
-    }
-
-    @include min-screen($xtrasmall-breakpoint) {
-      margin-left: 20px;
-    }
-
-    &:hover {
-      background: #efedeb;
-      color: #000;
-      border: none;
-      text-decoration: underline;
     }
   }
 
@@ -118,6 +198,17 @@
     position: fixed;
   }
 
+  &#popup-no-js:target {
+    display: inline-block;
+    opacity: 1;
+    visibility: visible;
+
+    form,
+    .filter-action-buttons {
+      display: block;
+    }
+  }
+
   .popup,
   .popup-no-js {
     background: #efedeb;
@@ -131,15 +222,18 @@
     @include min-screen(966px) {
       width: 52rem;
     }
+
+    &.collapse {
+      visibility: visible;
+      max-height: 3000px;
+    }
   }
 
   .popup {
-    // display: none;
     width: 100%;
 
     &.active {
-      // display: block;
-      overflow: auto;
+      overflow: hidden;
       -webkit-overflow-scrolling: touch;
     }
   }
@@ -160,8 +254,13 @@
   }
 
   .nypl-generic-checkbox {
-    label::before {
-      background: #fff;
+    label {
+      width: 70%;
+      padding-left: 0.65rem;
+
+      &::before {
+        background: #fff;
+      }
     }
   }
 }
@@ -170,13 +269,25 @@
   svg {
     @include transition-list(all 0.1s ease-in 0s);
   }
+
+  a.clear-filters-button {
+    -webkit-appearance: initial;
+    color: #d0343a;
+
+    &:hover {
+      border: 1px solid #d0343a;
+      color: #fff;
+      background: #d0343a;
+    }
+  }
+
   .clear-filters-button {
-    float: right;
     padding: 7px 16px;
+    margin-bottom: 20px;
     @include border-radius(5px);
 
     @include min-screen($xtrasmall-breakpoint) {
-      float: left;
+      margin-bottom: 0;
     }
 
     svg {
@@ -196,7 +307,7 @@
     cursor: pointer;
     -webkit-appearance: none;
     -moz-appearance: none;
-    margin: 1rem 0 0;
+    height: 40px;
   }
   ul {
     li {
@@ -206,8 +317,20 @@
 }
 
 .nypl-popup-container.active {
+  .nypl-form-error {
+    display: block;
+  }
+
   .nypl-popup-filter-overlay {
     z-index: 1000 !important;
+  }
+
+  form {
+    display: block;
+  }
+
+  .filter-action-buttons {
+    display: block;
   }
 }
 
@@ -218,11 +341,7 @@
 }
 
 .nypl-generic-checkbox > li {
-  margin-left: 0;
-}
-
-.nypl-generic-checkbox input[type="checkbox"] {
-  margin: 0 -7px;
+  margin-left: 5px;
 }
 
 .nypl-generic-columns {
@@ -259,6 +378,16 @@
 
 
 .nypl-modal-filter-form {
+  padding: 0 1px;
+
+  form {
+    display: none;
+
+    & > fieldset {
+      margin-bottom: 0;
+    }
+  }
+
   @include transition-list(max-height .3s ease-in-out);
   height: auto;
 
@@ -269,7 +398,7 @@
   }
 
   &.expand {
-    max-height: 100em;
+    max-height: 300em;
     visibility: visible;
   }
 
@@ -279,17 +408,14 @@
 
   .inner {
     padding: 0;
-
-    legend {
-      padding-top: 15px;
-    }
+    border-bottom: none;
 
     ul {
-      margin-top: 10px;
+      margin-top: 0.6rem;
     }
+  }
 
-    &:last-child {
-      border-bottom: none;
-    }
+  .date-divider {
+    margin: 0 20px;
   }
 }
