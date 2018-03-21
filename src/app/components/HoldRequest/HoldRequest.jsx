@@ -347,7 +347,6 @@ class HoldRequest extends React.Component {
           </div>
 
           <div className="nypl-full-width-wrapper">
-            {this.getNotification()}
             <div className="row">
               <div className="nypl-column-three-quarters">
                 <div className="nypl-request-item-summary">
@@ -359,6 +358,7 @@ class HoldRequest extends React.Component {
                           contact 917-ASK-NYPL (<a href="tel:917-275-6975">917-275-6975</a>).
                         </h2>
                     }
+                    {this.getNotification()}
                     {bibLink}
                     {callNo}
                   </div>
