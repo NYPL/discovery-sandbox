@@ -347,6 +347,7 @@ class HoldRequest extends React.Component {
           </div>
 
           <div className="nypl-full-width-wrapper">
+            {this.getNotification()}
             <div className="row">
               <div className="nypl-column-three-quarters">
                 <div className="nypl-request-item-summary">
