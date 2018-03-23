@@ -97,19 +97,11 @@ class ResultsCount extends React.Component {
     const plural = (searchKeywords && searchKeywords.indexOf(' ') !== -1) ? 's' : '';
 
     if (isLoading) {
-<<<<<<< HEAD
-      return ('Loading...');
-    }
-
-    if (count !== 0) {
-      return (`Displaying ${currentResultDisplay} of ${countF} results ${displayContext}`);
-=======
       return 'Loading...';
     }
 
     if (count !== 0) {
       return `Displaying ${currentResultDisplay} of ${countF} results ${displayContext}`;
->>>>>>> development
     }
 
     if (this.checkSelectedFilters()) {

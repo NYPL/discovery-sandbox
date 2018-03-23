@@ -358,6 +358,7 @@ class HoldRequest extends React.Component {
                           contact 917-ASK-NYPL (<a href="tel:917-275-6975">917-275-6975</a>).
                         </h2>
                     }
+                    {this.getNotification()}
                     {bibLink}
                     {callNo}
                   </div>
