@@ -2,11 +2,22 @@ import nyplApiClient from '../routes/nyplApiClient';
 import logger from '../../../logger';
 import appConfig from '../../../appConfig.js';
 
-const nyplApiClientCall = (query) =>
-  nyplApiClient().then(client => client.get(`/discovery/resources/${query}`, { cache: false }));
+const nyplApiClientCall = (query) => {
+  console.log('querying ', `/discovery/resources/${query}`)
+  return nyplApiClient().then(client => client.get(`/discovery/resources/${query}`, { cache: false }));
+}
 
 function fetchBib(bibId, cb, errorcb) {
-  return nyplApiClientCall(bibId)
+  return Promise.all([
+      nyplApiClientCall(bibId),
+      nyplApiClientCall(`${bibId}.annotated-marc`),
+    ])
+    .then(response => {
+      console.log('here: ', response)
+      let data = response[0]
+      data.annotatedMarc = response[1]
+      return data
+    })
     .then(response => cb(response))
     .catch(error => {
       logger.error(`Error attemping to fetch a Bib server side in fetchBib, id: ${bibId}`, error);

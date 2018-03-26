@@ -9,6 +9,8 @@ import LoadingLayer from '../LoadingLayer/LoadingLayer.jsx';
 import BibDetails from './BibDetails';
 import LibraryItem from '../../utils/item';
 import BackLink from './BackLink';
+import DefinitionList from './DefinitionList';
+import nyplApiClient from '../../../server/routes/nyplApiClient';
 // Removed MarcRecord because the webpack MarcRecord is not working. Sep/28/2017
 // import MarcRecord from './MarcRecord';
 
@@ -91,6 +93,17 @@ class BibPage extends React.Component {
     // Related to removing MarcRecord because the webpack MarcRecord is not working. Sep/28/2017
     // const marcRecord = isNYPLReCAP ? <MarcRecord bNumber={bNumber[0]} /> : null;
 
+    const annotatedMarcDetails = bib.annotatedMarc.bib.fields.map((field) => {
+      return {
+        term: field.label,
+        definition: field.values.map((value) => {
+          return <div title={JSON.stringify(value.source, null, 2)}>
+            {value.content}
+          </div>
+        })
+      }
+    })
+
     return (
       <DocumentTitle title="Item Details | Shared Collection Catalog | NYPL">
         <main className="main-page">
@@ -151,6 +164,13 @@ class BibPage extends React.Component {
                     electronicResources={aggregatedElectronicResources}
                     updateIsLoadingState={this.updateIsLoadingState}
                   />
+                  { annotatedMarcDetails && (
+                    <div style={{backgroundColor: '#efedeb', padding: '5px 20px', position: 'relative', left: '-20px'}}>
+                      <h3>Source</h3>
+                      <DefinitionList data={annotatedMarcDetails} />
+                    </div>
+                    )
+                  }
                 </div>
               </div>
             </div>
