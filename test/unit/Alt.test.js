@@ -2,9 +2,9 @@
 import { expect } from 'chai';
 
 import sinon from 'sinon';
-import alt from '../../src/app/alt.js';
-import actions from '../../src/app/actions/Actions.js';
-import store from '../../src/app/stores/Store.js';
+import alt from '../../src/app/alt';
+import actions from '../../src/app/actions/Actions';
+import store from '../../src/app/stores/Store';
 
 /*
  * getDispatcherArguments
@@ -29,7 +29,7 @@ const bib = {
   items: [],
   // ...
 };
-const updatedFacets = {
+const updatedFilters = {
   owner: [{ id: 'orgs:1000', value: 'Stephen A. Schwarzman Building' }],
   date: [{ id: '', value: '' }],
   subject: [{ id: 'Children\'s art El Salvador.', value: 'Children\'s art El Salvador.' }],
@@ -40,7 +40,7 @@ const updatedFacets = {
   language: [],
   mediaType: [],
 };
-const selectedFacet = {
+const selectedFilter = {
   owner: [{ id: 'orgs:1000', value: 'Stephen A. Schwarzman Building' }],
   date: [],
   subject: [],
@@ -101,26 +101,26 @@ describe('Alt', () => {
       expect(dispatcherArgs.data).to.eql(bib);
     });
 
-    it('should pass data to updateFacets Action', () => {
-      const action = actions.UPDATE_FACETS;
+    it('should pass data to updateFilters Action', () => {
+      const action = actions.UPDATE_FILTERS;
 
-      actions.updateFacets(updatedFacets);
+      actions.updateFilters(updatedFilters);
 
       const dispatcherArgs = getDispatcherArguments(dispatcherSpy, 3);
 
       expect(dispatcherArgs.action).to.equal(action);
-      expect(dispatcherArgs.data).to.eql(updatedFacets);
+      expect(dispatcherArgs.data).to.eql(updatedFilters);
     });
 
-    it('should pass data to updateSelectedFacets Action', () => {
-      const action = actions.UPDATE_SELECTED_FACETS;
+    it('should pass data to updateSelectedFilters Action', () => {
+      const action = actions.UPDATE_SELECTED_FILTERS;
 
-      actions.updateSelectedFacets(selectedFacet);
+      actions.updateSelectedFilters(selectedFilter);
 
       const dispatcherArgs = getDispatcherArguments(dispatcherSpy, 4);
 
       expect(dispatcherArgs.action).to.equal(action);
-      expect(dispatcherArgs.data).to.eql(selectedFacet);
+      expect(dispatcherArgs.data).to.eql(selectedFilter);
     });
 
     it('should pass data to updatePatronData Action', () => {
@@ -134,15 +134,37 @@ describe('Alt', () => {
       expect(dispatcherArgs.data).to.eql('locofocos');
     });
 
-    it('should pass data to removeFacet Action', () => {
-      const action = actions.REMOVE_FACET;
+    it('should pass data to removeFilter Action', () => {
+      const action = actions.REMOVE_FILTER;
 
-      actions.removeFacet('owner', 'SASB');
+      actions.removeFilter('owner', 'SASB');
 
       const dispatcherArgs = getDispatcherArguments(dispatcherSpy, 6);
 
       expect(dispatcherArgs.action).to.equal(action);
-      expect(dispatcherArgs.data).to.eql({ facetKey: 'owner', valueId: 'SASB' });
+      expect(dispatcherArgs.data).to.eql({ filterKey: 'owner', valueId: 'SASB' });
+    });
+
+    it('should pass data to removeFilter Action with a dateBefore filter', () => {
+      const action = actions.REMOVE_FILTER;
+
+      actions.removeFilter('dateBefore', '2010');
+
+      const dispatcherArgs = getDispatcherArguments(dispatcherSpy, 7);
+
+      expect(dispatcherArgs.action).to.equal(action);
+      expect(dispatcherArgs.data).to.eql({ filterKey: 'dateBefore', valueId: '2010' });
+    });
+
+    it('should pass data to removeFilter Action with a dateAfter filter', () => {
+      const action = actions.REMOVE_FILTER;
+
+      actions.removeFilter('dateAfter', '1999');
+
+      const dispatcherArgs = getDispatcherArguments(dispatcherSpy, 8);
+
+      expect(dispatcherArgs.action).to.equal(action);
+      expect(dispatcherArgs.data).to.eql({ filterKey: 'dateAfter', valueId: '1999' });
     });
 
     it('should pass data to updatePage Action', () => {
@@ -150,7 +172,7 @@ describe('Alt', () => {
 
       actions.updatePage('3');
 
-      const dispatcherArgs = getDispatcherArguments(dispatcherSpy, 7);
+      const dispatcherArgs = getDispatcherArguments(dispatcherSpy, 9);
 
       expect(dispatcherArgs.action).to.equal(action);
       expect(dispatcherArgs.data).to.eql('3');
@@ -161,7 +183,7 @@ describe('Alt', () => {
 
       actions.updateSortBy('title_asc');
 
-      const dispatcherArgs = getDispatcherArguments(dispatcherSpy, 8);
+      const dispatcherArgs = getDispatcherArguments(dispatcherSpy, 10);
 
       expect(dispatcherArgs.action).to.equal(action);
       expect(dispatcherArgs.data).to.eql('title_asc');
@@ -172,7 +194,7 @@ describe('Alt', () => {
 
       actions.updateLoadingStatus(true);
 
-      const dispatcherArgs = getDispatcherArguments(dispatcherSpy, 9);
+      const dispatcherArgs = getDispatcherArguments(dispatcherSpy, 11);
 
       expect(dispatcherArgs.action).to.equal(action);
       expect(dispatcherArgs.data).to.eql(true);
@@ -183,7 +205,7 @@ describe('Alt', () => {
 
       actions.updateField('all');
 
-      const dispatcherArgs = getDispatcherArguments(dispatcherSpy, 10);
+      const dispatcherArgs = getDispatcherArguments(dispatcherSpy, 12);
 
       expect(dispatcherArgs.action).to.equal(action);
       expect(dispatcherArgs.data).to.eql('all');
@@ -194,7 +216,7 @@ describe('Alt', () => {
 
       actions.updateForm({});
 
-      const dispatcherArgs = getDispatcherArguments(dispatcherSpy, 11);
+      const dispatcherArgs = getDispatcherArguments(dispatcherSpy, 13);
 
       expect(dispatcherArgs.action).to.equal(action);
       expect(dispatcherArgs.data).to.eql({});
@@ -205,7 +227,7 @@ describe('Alt', () => {
 
       actions.updateDeliveryLocations([]);
 
-      const dispatcherArgs = getDispatcherArguments(dispatcherSpy, 12);
+      const dispatcherArgs = getDispatcherArguments(dispatcherSpy, 14);
 
       expect(dispatcherArgs.action).to.equal(action);
       expect(dispatcherArgs.data).to.eql([]);
@@ -216,7 +238,7 @@ describe('Alt', () => {
 
       actions.updateIsEddRequestable(false);
 
-      const dispatcherArgs = getDispatcherArguments(dispatcherSpy, 13);
+      const dispatcherArgs = getDispatcherArguments(dispatcherSpy, 15);
 
       expect(dispatcherArgs.action).to.equal(action);
       expect(dispatcherArgs.data).to.eql(false);
@@ -268,44 +290,44 @@ describe('Alt', () => {
       expect(newBib).to.eql({});
     });
 
-    it('should pass data to updateFacets Action', () => {
-      const oldFacets = store.getState().facets;
-      const action = actions.UPDATE_FACETS;
+    it('should pass data to updateFilters Action', () => {
+      const oldFilters = store.getState().filters;
+      const action = actions.UPDATE_FILTERS;
       const data = {};
 
       // Dispatching new data.
       alt.dispatcher.dispatch({ action, data });
-      const newFacets = store.getState().facets;
+      const newFilters = store.getState().filters;
 
-      expect(oldFacets).to.eql(updatedFacets);
-      expect(newFacets).to.eql({});
+      expect(oldFilters).to.eql(updatedFilters);
+      expect(newFilters).to.eql({});
     });
 
-    it('should pass data to updateSelectedFacets Action', () => {
-      const oldSelectedFacets = store.getState().selectedFacets;
-      const action = actions.UPDATE_SELECTED_FACETS;
+    it('should pass data to updateSelectedFilters Action', () => {
+      const oldSelectedFilters = store.getState().selectedFilters;
+      const action = actions.UPDATE_SELECTED_FILTERS;
       const data = {};
 
       // Dispatching new data.
       alt.dispatcher.dispatch({ action, data });
-      const newSelectedFacets = store.getState().selectedFacets;
+      const newSelectedFilters = store.getState().selectedFilters;
 
-      expect(oldSelectedFacets).to.eql(selectedFacet);
-      expect(newSelectedFacets).to.eql({});
+      expect(oldSelectedFilters).to.eql(selectedFilter);
+      expect(newSelectedFilters).to.eql({});
     });
 
     // This one is a bit weird. Must go back and verify results.
-    it('should pass data to removeFacet Action', () => {
-      const oldSelectedFacets = store.getState().selectedFacets;
-      const action = actions.REMOVE_FACET;
-      const data = { facetKey: 'owner', valueId: 'SASB' };
+    it('should pass data to removeFilter Action', () => {
+      const oldSelectedFilters = store.getState().selectedFilters;
+      const action = actions.REMOVE_FILTER;
+      const data = { filterKey: 'owner', valueId: 'SASB' };
 
       // Dispatching new data.
       alt.dispatcher.dispatch({ action, data });
-      const newSelectedFacets = store.getState().selectedFacets;
+      const newSelectedFilters = store.getState().selectedFilters;
 
-      expect(oldSelectedFacets).to.eql({ owner: [] });
-      expect(newSelectedFacets).to.eql({ owner: [] });
+      expect(oldSelectedFilters).to.eql({ owner: [] });
+      expect(newSelectedFilters).to.eql({ owner: [] });
     });
 
     it('should pass data to updatePage Action', () => {

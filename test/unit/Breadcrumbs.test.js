@@ -3,7 +3,7 @@ import React from 'react';
 import { expect } from 'chai';
 import { shallow } from 'enzyme';
 
-import Breadcrumbs from './../../src/app/components/Breadcrumbs/Breadcrumbs.jsx';
+import Breadcrumbs from './../../src/app/components/Breadcrumbs/Breadcrumbs';
 import appConfig from '../../appConfig';
 
 const appTitle = appConfig.displayTitle;
@@ -125,7 +125,7 @@ describe('Breadcrumbs', () => {
           query="q=hamlet"
           bibUrl={`/bib/${bibId}`}
           type="hold"
-        />
+        />,
       );
     });
 
@@ -156,7 +156,7 @@ describe('Breadcrumbs', () => {
           type="edd"
           bibUrl={`/bib/${bibId}`}
           itemUrl={`/hold/request/${bibId}-${itemId}`}
-        />
+        />,
       );
     });
 
@@ -191,7 +191,7 @@ describe('Breadcrumbs', () => {
             bibUrl={`/bib/${bibId}`}
             itemUrl={`/hold/request/${bibId}-${itemId}`}
             edd={fromEdd}
-          />
+          />,
         );
       });
 
@@ -222,7 +222,7 @@ describe('Breadcrumbs', () => {
             bibUrl={`/bib/${bibId}`}
             itemUrl={`/hold/request/${bibId}-${itemId}`}
             edd={fromEdd}
-          />
+          />,
         );
       });
 

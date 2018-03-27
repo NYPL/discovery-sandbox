@@ -6,11 +6,9 @@ import MockAdapter from 'axios-mock-adapter';
 import axios from 'axios';
 import sinon from 'sinon';
 
-import { ajaxCall } from '../../src/app/utils/utils.js';
+import ResultsList from '../../src/app/components/Results/ResultsList';
 
 const mock = new MockAdapter(axios);
-
-import ResultsList from '../../src/app/components/Results/ResultsList.jsx';
 
 const results = [{}, {}, {}];
 const singleBibNoTitleDisplay = {
@@ -95,6 +93,7 @@ const resultsBibs = [
         'b17692265-i21106086',
       ],
       placeOfPublication: ['Cambridge, UK ; New York :'],
+      publicationStatement: ['Cambridge, UK ; New York : Cambridge University Press,'],
       issuance: [
         {
           '@id': 'urn:biblevel:m',
@@ -158,6 +157,7 @@ const resultsBibs = [
         'b17692265-i21106086',
       ],
       placeOfPublication: ['New York :'],
+      publicationStatement: ['New York :'],
       issuance: [
         {
           '@id': 'urn:biblevel:m',
@@ -230,8 +230,8 @@ describe('ResultsList', () => {
         .to.equal(resultsBibs[0].result.titleDisplay[0]);
     });
 
-    it('should render 12 lis since each bib displays 5 li for their info', () => {
-      expect(component.find('li').length).to.equal(12);
+    it('should render 10 `li`s since each bib displays 4 li for their info', () => {
+      expect(component.find('li').length).to.equal(10);
     });
 
     // Only renders the table if the bib has only ONE item:
@@ -253,7 +253,7 @@ describe('ResultsList', () => {
     });
 
     it('should have five lis for the bib\'s description', () => {
-      expect(component.find('.nypl-results-item-description').find('li').length).to.equal(5);
+      expect(component.find('.nypl-results-item-description').find('li').length).to.equal(4);
     });
 
     it('should have a media description', () => {
@@ -262,16 +262,10 @@ describe('ResultsList', () => {
       expect(materialType.text()).to.equal('Text');
     });
 
-    it('should have a place of publication description', () => {
-      const place = component.find('.nypl-results-place');
+    it('should have a publication statement description', () => {
+      const place = component.find('.nypl-results-publication');
       expect(place.length).to.equal(1);
-      expect(place.text()).to.equal('Cambridge, UK ; New York :');
-    });
-
-    it('should have a publisher description', () => {
-      const publisher = component.find('.nypl-results-publisher');
-      expect(publisher.length).to.equal(1);
-      expect(publisher.text()).to.equal('Cambridge University Press,');
+      expect(place.text()).to.equal('Cambridge, UK ; New York : Cambridge University Press,');
     });
 
     it('should have a year published description', () => {
@@ -318,7 +312,7 @@ describe('ResultsList', () => {
       before(() => {
         component = mount(
           <ResultsList results={resultsBibs} updateIsLoadingState={updateIsLoadingState} />,
-          { context: { router: { createHref: () => {}, push: () => {}, replace: () => {} } } }
+          { context: { router: { createHref: () => {}, push: () => {}, replace: () => {} } } },
         );
         mock
           .onGet('/research/collections/shared-collection-catalog/api/bib?bibId=b17692265')
@@ -347,7 +341,7 @@ describe('ResultsList', () => {
     before(() => {
       component = mount(
         <ResultsList results={resultsBibs} updateIsLoadingState={updateIsLoadingState} />,
-        { context: { router: { createHref: () => {}, push: () => {} } } }
+        { context: { router: { createHref: () => {}, push: () => {} } } },
       );
       mock
         .onGet('/research/collections/shared-collection-catalog/api/bib?bibId=b17692265')
@@ -460,7 +454,7 @@ describe('ResultsList', () => {
       getBibRecordSpy = sinon.spy(ResultsList.prototype, 'getBibRecord');
       component = mount(
         <ResultsList results={resultsBibs} updateIsLoadingState={updateIsLoadingState} />,
-        { context: { router: { createHref: () => {}, push: () => {} } } }
+        { context: { router: { createHref: () => {}, push: () => {} } } },
       );
       mock
         .onGet('/research/collections/shared-collection-catalog/api/bib?bibId=b17692265')

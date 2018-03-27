@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { trackDiscovery } from '../../utils/utils.js';
+import { trackDiscovery } from '../../utils/utils';
 
 const MarcRecord = ({ bNumber }) => {
   if (!bNumber) {

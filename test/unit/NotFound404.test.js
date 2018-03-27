@@ -4,7 +4,7 @@ import { expect } from 'chai';
 import { shallow } from 'enzyme';
 import config from '../../appConfig';
 
-import NotFound404 from '../../src/app/components/NotFound404/NotFound404.jsx';
+import NotFound404 from '../../src/app/components/NotFound404/NotFound404';
 
 describe('NotFound404', () => {
   let component;

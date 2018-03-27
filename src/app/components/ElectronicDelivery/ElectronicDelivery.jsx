@@ -1,3 +1,4 @@
+/* global window document */
 import React from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
@@ -11,13 +12,13 @@ import {
 } from 'underscore';
 import DocumentTitle from 'react-document-title';
 
-import Breadcrumbs from '../Breadcrumbs/Breadcrumbs.jsx';
-import PatronStore from '../../stores/PatronStore.js';
-import appConfig from '../../../../appConfig.js';
+import Breadcrumbs from '../Breadcrumbs/Breadcrumbs';
+import PatronStore from '../../stores/PatronStore';
+import appConfig from '../../../../appConfig';
 import ElectronicDeliveryForm from './ElectronicDeliveryForm';
-import LibraryItem from '../../utils/item.js';
-import LoadingLayer from '../LoadingLayer/LoadingLayer.jsx';
-import { trackDiscovery } from '../../utils/utils.js';
+import LibraryItem from '../../utils/item';
+import LoadingLayer from '../LoadingLayer/LoadingLayer';
+import { trackDiscovery } from '../../utils/utils';
 
 class ElectronicDelivery extends React.Component {
   constructor(props) {
@@ -49,6 +50,8 @@ class ElectronicDelivery extends React.Component {
 
   componentDidMount() {
     this.requireUser();
+
+    document.getElementById('edd-request-title').focus();
   }
 
   /*
@@ -58,13 +61,11 @@ class ElectronicDelivery extends React.Component {
    * is rendered. Since it exists, it should be focused so that the patron can get a better
    * idea of what is wrong.
    */
-  componentDidUpdate() {
-    if (this.loadingLayer) {
-      this.loadingLayer.focus();
-    }
-
-    if (this.refs['nypl-form-error']) {
-      ReactDOM.findDOMNode(this.refs['nypl-form-error']).focus();
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.raiseError !== this.state.raiseError) {
+      if (this.refs['nypl-form-error']) {
+        ReactDOM.findDOMNode(this.refs['nypl-form-error']).focus();
+      }
     }
   }
 
@@ -138,30 +139,30 @@ class ElectronicDelivery extends React.Component {
 
     axios
       .post(`${appConfig.baseUrl}/api/newHold`, data)
-      .then(response => {
+      .then((response) => {
         if (response.data.error && response.data.error.status !== 200) {
           this.updateIsLoadingState(false);
           this.context.router.push(
             `${path}?errorStatus=${response.data.error.status}` +
-            `&errorMessage=${response.data.error.statusText}${searchKeywordsQuery}${fromUrlQuery}`
+            `&errorMessage=${response.data.error.statusText}${searchKeywordsQuery}${fromUrlQuery}`,
           );
         } else {
           this.updateIsLoadingState(false);
           this.context.router.push(
             `${path}?pickupLocation=edd&requestId=${response.data.id}` +
-            `${searchKeywordsQuery}${fromUrlQuery}`
+            `${searchKeywordsQuery}${fromUrlQuery}`,
           );
         }
       })
-      .catch(error => {
+      .catch((error) => {
         console.error(
           'Error attempting to submit an ajax EDD request at ElectronicDelivery',
-          error
+          error,
         );
 
         this.updateIsLoadingState(false);
         this.context.router.push(
-          `${path}?errorMessage=${error}${searchKeywordsQuery}${fromUrlQuery}`
+          `${path}?errorMessage=${error}${searchKeywordsQuery}${fromUrlQuery}`,
         );
       });
   }
@@ -189,7 +190,6 @@ class ElectronicDelivery extends React.Component {
     }
 
     const fullUrl = encodeURIComponent(window.location.href);
-
     window.location.replace(`${appConfig.loginUrl}?redirect_uri=${fullUrl}`);
 
     return false;
@@ -208,7 +208,7 @@ class ElectronicDelivery extends React.Component {
     const patronEmail = (
       this.state.patron.emails && _isArray(this.state.patron.emails)
       && this.state.patron.emails.length
-      ) ? this.state.patron.emails[0] : '';
+    ) ? this.state.patron.emails[0] : '';
     const searchKeywords = this.props.searchKeywords;
 
     return (
@@ -217,7 +217,6 @@ class ElectronicDelivery extends React.Component {
           <LoadingLayer
             status={this.state.isLoading}
             title="Requesting"
-            childRef={(c) => { this.loadingLayer = c; }}
           />
           <div className="nypl-request-page-header">
             <div className="row">
@@ -228,7 +227,7 @@ class ElectronicDelivery extends React.Component {
                   bibUrl={`/bib/${bibId}`}
                   itemUrl={`/hold/request/${bibId}-${itemId}`}
                 />
-                <h1>Electronic Delivery Request</h1>
+                <h1 id="edd-request-title" tabIndex="0">Electronic Delivery Request</h1>
               </div>
             </div>
           </div>
