@@ -1,5 +1,11 @@
 ## CHANGE LOG
 
+### 1.3.2
+- Adding OptinMonster script and updating header to 2.4.7.
+
+### 1.3.1
+- Removing hold request notification due to inclement weather (again).
+
 ### 1.3.0
 ## ReCAP 1.2 Release
 The main goal for this release was to add more delivery locations options for Hold Requests, to get more fields exposed for bib information in the UI, and to release a dropdown form for selecting filters for searching.
