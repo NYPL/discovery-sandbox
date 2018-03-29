@@ -1,7 +1,8 @@
 ## CHANGE LOG
 
-### 1.3.2
+### 1.4.0
 - Adding OptinMonster script and updating header to 2.4.7.
+- Updating Travis CI configuration for CD to AWS Elastic Beanstalk.
 
 ### 1.3.1
 - Removing hold request notification due to inclement weather (again).
