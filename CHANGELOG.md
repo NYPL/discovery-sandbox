@@ -1,5 +1,9 @@
 ## CHANGE LOG
 
+### 1.4.1
+- Change how Notes are rendred: Render notes grouped by noteType, with noteType shown at root level of hierarchy.
+- Add support for rendering Contents (tableOfContents)
+
 ### 1.4.0
 - Adding OptinMonster script and updating header to 2.4.7.
 - Updating Travis CI configuration for CD to AWS Elastic Beanstalk.
