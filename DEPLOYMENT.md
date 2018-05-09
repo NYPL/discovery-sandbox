@@ -44,6 +44,7 @@ Run `eb init` at the root of this repo with the following settings:
  - Select application 'Discovery'
  - Select default environment 'discovery-ui-dev'
  - If asked about CodeCommit, select 'n'
+ - If asked if you want to set up SSH for your instances, select 'n'
  - Now manually edit `.elasticbeanstalk/config.yml` to include the following `branch-defaults`:
 ```
 branch-defaults:
@@ -63,10 +64,11 @@ Right now, the production AWS account (nypl-digital-dev) has an SSL certificatio
 ### Deployment
 The `.elasticbeanstalk/config.yml` file needs to be updated before deploying. If deploying to the development account, the `application_name` needs to change to `discovery`, and if deploying to the production account, the `application_name` needs to change to `discovery-ui`.
 
-|   | Development | QA | Production
-|---|---|---|
-| Application Name | discovery | discovery-ui | discovery-ui
-| Environment Name | discovery-ui-dev | discovery-ui-qa | discovery-ui
+|                  | Development      | QA              | Production   |
+| ---              | ---              | ---             | ---          |
+| Application Name | discovery        | discovery-ui    | discovery-ui |
+| Environment Name | discovery-ui-dev | discovery-ui-qa | discovery-ui |
+
 ----
 Deploy to the dev server:
 
@@ -99,3 +101,9 @@ global:
   application_name: discovery-ui
 ```
 - Run `eb deploy discovery-ui-production --profile nypl-digital-dev`
+
+### Troubleshooting
+
+#### Python error: "ERROR: TypeError :: cannot concatenate 'str' and 'NoneType' objects"
+
+This may indicate your `.elasticbeanstalk/config.yml` is missing a value or two. Try running `eb init` to fill in missing values. See "Configuration" section above for best defaults.
