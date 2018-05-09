@@ -6,11 +6,12 @@ Install:
 * EB CLI
 
 ### Repo Branches
-We will deploy three branches: `dev-eb-deploy`, `qa`, `master`.
+We use four branches for deployment: `dev-eb-deploy`, `development`, `qa`, `master`.
 
-- `master` will always be deployed to production discovery.nypl.org
-- `qa` will always be deployed to qa qa-discovery.nypl.org
-- `dev-eb-deploy` will be deployed to development dev-discovery.nypl.org
+- `dev-eb-deploy`: Special pre-merge development branch for deploying features before PR merge. Manually deployed to `discovery-ui-dev` (dev-discovery.nypl.org)
+ - `development`: This branch is the target of all PRs and thus contains all approved features. *Automatically* deployed to `discovery-ui-dev` (dev-discovery.nypl.org)
+- `qa`: Automatically deployed to `discovery-ui-qa` (qa-discovery.nypl.org)
+- `master`: Our "production" branch. Automatically deployed to `discovery-ui-production` (discovery.nypl.org)
 
 If we have a new feature to add, the suggested workflow is:
 - Create branch for new feature `git checkout -b new-feature` off the `development` branch.
@@ -21,13 +22,6 @@ If we have a new feature to add, the suggested workflow is:
 - Deploy to dev (see instructions under 'Deployment' below)
 - Once the Pull Request is accepted and merged into `development`, the `development` branch should be
 merged to `qa` and then `qa` should be merged to the `master` branch when ready.
-
-The following documentation is for after your code has been merged into `dev-eb-deploy`, `qa`, or `master`.
-
-### Why three branches?
-Currently, all our development and new features are going into the development branch. As of our
-Internal Beta release, we are introducing a QA environment for NYPL staff training and preview, and for
-QA testing. The master branch will be our production branch for live releases to the public.
 
 ### Elastic Beanstalk
 There are two existing AWS accounts that we are deploying to for development and for qa/production.
@@ -52,14 +46,14 @@ branch-defaults:
     environment: discovery-ui-dev
     group_suffix: null
   master:
-    environment: discovery-ui
+    environment: discovery-ui-production
     group_suffix: null
   qa:
     environment: discovery-ui-qa
     group_suffix: null
 ```
 
-Right now, the production AWS account (nypl-digital-dev) has an SSL certification which is committed to the repo in `.ebextensions/01_loadbalancer-terminatehttps.config`. This will fail to upload to the development AWS account since they are both two different accounts. To remedy this, the `dev-eb-deploy` branch does not have that file committed and it can be used to deploy to the development account (which does not have the SSL certificate).
+Right now, the production AWS account (nypl-digital-dev) has an SSL certification which is committed to the repo in `.ebextensions/01_loadbalancer-terminatehttps.config`. This will fail to upload to the development AWS account since they are both two different accounts. To remedy this, the `dev-eb-deploy` branch does not have that file committed and it can be used to deploy to the sandbox account (which does not have the SSL certificate).
 
 ### Deployment
 The `.elasticbeanstalk/config.yml` file needs to be updated before deploying. If deploying to the development account, the `application_name` needs to change to `discovery`, and if deploying to the production account, the `application_name` needs to change to `discovery-ui`.
@@ -72,6 +66,8 @@ The `.elasticbeanstalk/config.yml` file needs to be updated before deploying. If
 ----
 Deploy to the dev server:
 
+_(Note that updates to origin/development trigger a deploy to discovery-ui-dev. If you've manually merged a feature branch into `dev-eb-deploy`, you can manually deploy that to development as follows.)_
+
 - Merge feature branches to `dev-eb-deploy`
 - Update `global.application_name` in `.elasticbeanstalk/config.yml`:
 ```
@@ -83,6 +79,8 @@ global:
 ----
 Deploy to the qa server:
 
+_(Note that updates to origin/qa trigger a deploy to discovery-ui-qa. The following demonstrates manually deploying qa should you need to.)_
+
 - Merge working and approved changes up to `qa`
 - Update `global.application_name` in `.elasticbeanstalk/config.yml`:
 ```
@@ -93,6 +91,8 @@ global:
 
 ----
 Deploy to the production server:
+
+_(Note that updates to origin/master trigger a deploy to discovery-ui-production. The following demonstrates manually deploying production should you need to.)_
 
 - Merge working and approved changes up to `master`
 - Update `global.application_name` in `.elasticbeanstalk/config.yml`:
