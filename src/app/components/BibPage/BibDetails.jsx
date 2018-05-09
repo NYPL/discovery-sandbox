@@ -310,30 +310,35 @@ class BibDetails extends React.Component {
       //     'prefLabel': 'string',
       //     '@type': 'bf:Note'},
       //    {...}]
-      if (fieldLabel === 'Contents') {
+      if (fieldLabel === 'Notes') {
         const note = this.getNote(this.props.bib);
-        let notes;
-        if (note) {
-          if (note.length === 1 && typeof note[0] !== 'object') {
-            notes = (
-              <span>{note[0]}</span>
-            );
-          } else if (typeof note[0] === 'object') {
-            notes = this.noteObjectDisplay(note);
-          } else {
-            notes = (
+        // Make sure we have at least one note
+        if (note && Array.isArray(note)) {
+          // Group notes by noteType:
+          const notesGroupedByNoteType = note
+            // Make sure all notes are blanknodes:
+            .filter(n => (typeof n) === 'object')
+            .reduce((groups, n) => {
+              if (!groups[n.noteType]) groups[n.noteType] = [];
+              groups[n.noteType].push(n);
+              return groups;
+            }, {});
+
+          // For each group of notes, add a fieldToRender:
+          Object.keys(notesGroupedByNoteType).forEach((noteType) => {
+            const notesList = (
               <ul>
                 {
-                  note.map((n, i) => (
-                    <li key={i.toString()}>{n}</li>
+                  notesGroupedByNoteType[noteType].map((n, i) => (
+                    <li key={i.toString()}>{n.prefLabel}</li>
                   ))
                 }
               </ul>
             );
-          }
-          fieldsToRender.push({
-            term: fieldLabel,
-            definition: notes,
+            fieldsToRender.push({
+              term: noteType,
+              definition: notesList,
+            });
           });
         }
       }
