@@ -57,15 +57,15 @@ Right now, the production AWS account (nypl-digital-dev) has an SSL certificatio
 
 ### Deployment
 
-|                  | Development      | QA              | Production              |
-| ---              | ---              | ---             | ---                     |
-| Application Name | discovery-ui     | discovery-ui    | discovery-ui            |
-| Environment Name | discovery-ui-dev | discovery-ui-qa | discovery-ui-production |
+|                  | Development              | QA              | Production              |
+| ---              | ---                      | ---             | ---                     |
+| Application Name | discovery-ui             | discovery-ui    | discovery-ui            |
+| Environment Name | discovery-ui-development | discovery-ui-qa | discovery-ui-production |
 
 ----
 Deploy to the dev server:
 
-_(Note that updates to origin/development trigger a deploy to discovery-ui-dev. If you've manually merged a feature branch into `dev-eb-deploy`, you can manually deploy that to development as follows.)_
+_(Note that updates to origin/development trigger a deploy to discovery-ui-development. If you've manually merged a feature branch into `dev-eb-deploy`, you can manually deploy that to development as follows.)_
 
 - Merge feature branches to `dev-eb-deploy`
 - Run `eb deploy discovery-ui-development --profile nypl-sandbox`
