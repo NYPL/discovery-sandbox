@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 import {
   isArray as _isArray,
+  isObject as _isObject,
   isEmpty as _isEmpty,
   findWhere as _findWhere,
   findIndex as _findIndex,
@@ -16,6 +17,7 @@ import {
 } from '../../utils/utils';
 import DefinitionList from './DefinitionList';
 import appConfig from '../../../../appConfig';
+import LibraryItem from '../../utils/item';
 
 class BibDetails extends React.Component {
   /*
@@ -141,26 +143,16 @@ class BibDetails extends React.Component {
   }
 
   /*
-   * getIdentifiers(bibValues, fieldIdentifier)
-   * Gets specific values from the API for special identifiers.
+   * getIdentifier(bibValues, fieldIdentifier)
+   * Gets specific value from the API for special identifier.
    * @param {array} bibValues
    * @param {string} fieldIdentifier
    */
-  getIdentifiers(bibValues, fieldIdentifier) {
-    let val = '';
-
-    if (bibValues.length) {
-      bibValues.forEach((value) => {
-        if (value.indexOf(`${fieldIdentifier}:`) !== -1) {
-          val = value.substring(fieldIdentifier.length + 1);
-        }
-      });
-
-      if (val) {
-        return <span>{val}</span>;
-      }
+  getIdentifier(bibValues, fieldIdentifier) {
+    const val = LibraryItem.getIdentifierValueByType(bibValues, fieldIdentifier);
+    if (val) {
+      return <span>{val}</span>;
     }
-
     return null;
   }
 
@@ -180,7 +172,7 @@ class BibDetails extends React.Component {
     fieldSelfLinkable, fieldLabel,
   ) {
     if (fieldValue === 'identifier') {
-      return this.getIdentifiers(bibValues, fieldIdentifier);
+      return this.getIdentifier(bibValues, fieldIdentifier);
     }
 
     if (bibValues.length === 1) {
@@ -479,7 +471,15 @@ class BibDetails extends React.Component {
   }
 
   render() {
-    if (_isEmpty(this.props.bib)) {
+    // Make sure bib prop is
+    //  1) nonempty
+    //  2) an object
+    //  3) not an array (which is also an object)
+    if (_isEmpty(this.props.bib) || !_isObject(this.props.bib) || _isArray(this.props.bib)) {
+      return null;
+    }
+    // Make sure fields is a nonempty array:
+    if (_isEmpty(this.props.fields) || !_isArray(this.props.fields)) {
       return null;
     }
 
@@ -490,8 +490,8 @@ class BibDetails extends React.Component {
 }
 
 BibDetails.propTypes = {
-  bib: PropTypes.object,
-  fields: PropTypes.array,
+  bib: PropTypes.object.isRequired,
+  fields: PropTypes.array.isRequired,
   updateIsLoadingState: PropTypes.func,
   electronicResources: PropTypes.array,
 };
