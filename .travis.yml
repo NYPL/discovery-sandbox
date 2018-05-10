@@ -36,7 +36,7 @@ deploy:
   access_key_id: "$AWS_ACCESS_KEY_ID_DEVELOPMENT"
   secret_access_key: "$AWS_SECRET_ACCESS_KEY_DEVELOPMENT"
   region: us-east-1
-  app: Discovery
+  app: discovery-ui
   env: discovery-ui-development
   bucket_name: elasticbeanstalk-us-east-1-224280085904
   bucket_path: discovery-ui-development
