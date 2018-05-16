@@ -1,4 +1,4 @@
-/* global loadA11y */
+/* global loadA11y, window */
 import 'babel-polyfill';
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -7,13 +7,13 @@ import createBrowserHistory from 'history/lib/createBrowserHistory';
 import useScroll from 'scroll-behavior/lib/useStandardScroll';
 import { config, gaUtils } from 'dgx-react-ga';
 import a11y from 'react-a11y';
-
-import alt from '../app/alt.js';
 import Iso from 'iso';
+
+import alt from '../app/alt';
 
 import './styles/main.scss';
 
-import routes from '../app/routes/routes.jsx';
+import routes from '../app/routes/routes';
 
 if (loadA11y) {
   a11y(React, { ReactDOM, includeSrcNode: true });

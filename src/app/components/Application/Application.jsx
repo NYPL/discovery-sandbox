@@ -6,21 +6,21 @@ import { pick as _pick } from 'underscore';
 import { Header, navConfig } from '@nypl/dgx-header-component';
 import Footer from '@nypl/dgx-react-footer';
 
-import Feedback from '../Feedback/Feedback.jsx';
-import Store from '../../stores/Store.js';
-import PatronStore from '../../stores/PatronStore.js';
+import Feedback from '../Feedback/Feedback';
+import Store from '../../stores/Store';
+import PatronStore from '../../stores/PatronStore';
 import {
   ajaxCall,
   createAppHistory,
   destructureFilters,
-} from '../../utils/utils.js';
-import Actions from '../../actions/Actions.js';
-import appConfig from '../../../../appConfig.js';
+} from '../../utils/utils';
+import Actions from '../../actions/Actions';
+import appConfig from '../../../../appConfig';
 
 const history = createAppHistory();
 
 // Listen to the browser's navigation buttons.
-history.listen(location => {
+history.listen((location) => {
   const {
     action,
     search,
@@ -37,11 +37,12 @@ history.listen(location => {
 
   if (action === 'POP' && search) {
     ajaxCall(`${appConfig.baseUrl}/api${decodeURI(search)}`, (response) => {
-      if (response.data.facets && response.data.searchResults) {
-        const selectedFacets = destructureFilters(urlFilters, response.data.facets);
-        Actions.updateSelectedFacets(selectedFacets);
-        Actions.updateFacets(response.data.facets);
-        Actions.updateSearchResults(response.data.searchResults);
+      const { data } = response;
+      if (data.filters && data.searchResults) {
+        const selectedFilters = destructureFilters(urlFilters, data.filters);
+        Actions.updateSelectedFilters(selectedFilters);
+        Actions.updateFilters(data.filters);
+        Actions.updateSearchResults(data.searchResults);
         if (qParameter) Actions.updateSearchKeywords(qParameter);
       }
     });
@@ -59,10 +60,11 @@ class App extends React.Component {
   }
 
   componentWillMount() {
-    if (!this.state.data.searchResults) {
-      ajaxCall(`${appConfig.baseUrl}/api?q=${this.state.data.searchKeywords}`, (response) => {
+    const { data } = this.state;
+    if (!data.searchResults) {
+      ajaxCall(`${appConfig.baseUrl}/api?q=${data.searchKeywords}`, (response) => {
         Actions.updateSearchResults(response.data.searchResults);
-        Actions.updateSearchKeywords(this.state.data.searchKeywords);
+        Actions.updateSearchKeywords(data.searchKeywords);
       });
     }
   }
@@ -83,7 +85,11 @@ class App extends React.Component {
     return (
       <DocumentTitle title="Shared Collection Catalog | NYPL">
         <div className="app-wrapper">
-          <Header navData={navConfig.current} skipNav={{ target: 'mainContent' }} />
+          <Header
+            navData={navConfig.current}
+            skipNav={{ target: 'mainContent' }}
+            patron={this.state.patron}
+          />
 
           {React.cloneElement(this.props.children, this.state.data)}
 
@@ -99,6 +105,11 @@ class App extends React.Component {
 App.propTypes = {
   children: PropTypes.object,
   location: PropTypes.object,
+};
+
+App.defaultProps = {
+  children: {},
+  location: {},
 };
 
 App.contextTypes = {

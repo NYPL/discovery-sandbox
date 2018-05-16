@@ -6,12 +6,12 @@ import {
   forEach as _forEach,
 } from 'underscore';
 
-import appConfig from '../../../appConfig.js';
+import appConfig from '../../../appConfig';
 import {
   getReqParams,
   basicQuery,
   parseServerSelectedFilters,
-} from '../../app/utils/utils.js';
+} from '../../app/utils/utils';
 import nyplApiClient from '../routes/nyplApiClient';
 import logger from '../../../logger';
 
@@ -19,31 +19,33 @@ const createAPIQuery = basicQuery({
   searchKeywords: '',
   sortBy: '',
   field: '',
-  selectedFacets: {},
+  selectedFilters: {},
 });
 
-const nyplApiClientCall = (query) =>
-  nyplApiClient().then(client => client.get(`/discovery/resources${query}`, { cache: false }));
+const nyplApiClientCall = query =>
+  nyplApiClient()
+    .then(client =>
+      client.get(`/discovery/resources${query}`, { cache: false }));
 
-function search(searchKeywords, page, sortBy, order, field, filters, cb, errorcb) {
+function search(searchKeywords = '', page, sortBy, order, field, filters, cb, errorcb) {
   const apiQuery = createAPIQuery({
     searchKeywords,
     sortBy: sortBy ? `${sortBy}_${order}` : '',
-    selectedFacets: filters,
+    selectedFilters: filters,
     field,
     page,
   });
 
-  // const aggregationQuery = `/aggregations?${apiQuery}`;
+  const aggregationQuery = `/aggregations?q=${searchKeywords}`;
   const queryString = `?${apiQuery}&per_page=50`;
 
-  // Also need to make an async call to with aggregationQuery eventually...
-  // It use to be with axios.all to concurrently get both endpoints.
-  nyplApiClientCall(queryString)
+  // Need to get both results and aggregations before proceeding.
+  Promise.all([nyplApiClientCall(queryString), nyplApiClientCall(aggregationQuery)])
     .then((response) => {
-      cb({}, response, page);
+      const [results, aggregations] = response;
+      cb(aggregations, results, page);
     })
-    .catch(error => {
+    .catch((error) => {
       logger.error('Error making server search call in search function', error);
       errorcb(error);
     });
@@ -59,8 +61,12 @@ function searchAjax(req, res) {
     order,
     fieldQuery,
     filters,
-    (facets, searchResults, pageQuery) => res.json({ facets, searchResults, pageQuery }),
-    (error) => res.json(error)
+    (apiFilters, searchResults, pageQuery) => res.json({
+      filters: apiFilters,
+      searchResults,
+      pageQuery,
+    }),
+    error => res.json(error),
   );
 }
 
@@ -70,7 +76,8 @@ function searchServerPost(req, res) {
   // The filters from req.body may be an array of selected filters, or just an object
   // with one selected filter.
   const reqFilters = _isArray(filters) ? filters : [filters];
-  const selectedFacets = parseServerSelectedFilters(reqFilters, dateAfter, dateBefore);
+
+  const selectedFilters = parseServerSelectedFilters(reqFilters, dateAfter, dateBefore);
   let searchKeywords = q;
   let field = fieldQuery;
   let sortBy = sortQuery;
@@ -78,6 +85,14 @@ function searchServerPost(req, res) {
   if (req.query.q) {
     searchKeywords = req.query.q;
   }
+
+  if (dateAfter && dateBefore) {
+    if (Number(dateAfter) > Number(dateBefore)) {
+      return res.redirect(`${appConfig.baseUrl}/search?q=${searchKeywords}&` +
+        'error=dateFilterError#popup-no-js');
+    }
+  }
+
   if (req.query.search_scope) {
     field = req.query.search_scope;
   }
@@ -87,12 +102,12 @@ function searchServerPost(req, res) {
 
   const apiQuery = createAPIQuery({
     searchKeywords: encodeURIComponent(searchKeywords),
-    selectedFacets,
+    selectedFilters,
     field,
     sortBy,
   });
 
-  res.redirect(`${appConfig.baseUrl}/search?${apiQuery}`);
+  return res.redirect(`${appConfig.baseUrl}/search?${apiQuery}`);
 }
 
 function searchServer(req, res, next) {
@@ -105,43 +120,52 @@ function searchServer(req, res, next) {
     order,
     fieldQuery,
     filters,
-    (facets, data, pageQuery) => {
-      const selectedFacets = {};
+    (apiFilters, data, pageQuery) => {
+      const selectedFilters = {
+        materialType: [],
+        language: [],
+        dateAfter: '',
+        dateBefore: '',
+      };
 
       if (!_isEmpty(filters)) {
         _mapObject(filters, (value, key) => {
-          let facetObj;
+          let filterObj;
           if (key === 'dateAfter' || key === 'dateBefore') {
-            // Since only one date can be selected per date facet.
-            selectedFacets[key] = {
-              id: value,
-              value: key === 'dateAfter' ? `after ${value}` : `before ${value}`,
-            };
+            selectedFilters[key] = value;
           } else if (_isArray(value) && value.length) {
-            if (!selectedFacets[key]) {
-              selectedFacets[key] = [];
+            if (!selectedFilters[key]) {
+              selectedFilters[key] = [];
             }
-            _forEach(value, facetValue => {
-              facetObj = _findWhere(facets.itemListElement, { field: key });
-              const foundFacet =
-                _isEmpty(facetObj) ? {} : _findWhere(facetObj.values, { value: facetValue });
+            _forEach(value, (filterValue) => {
+              filterObj =
+                _findWhere(apiFilters.itemListElement, { field: key });
+              const foundFilter =
+                _isEmpty(filterObj) ? {} :
+                  _findWhere(filterObj.values, { value: filterValue });
 
-              if (foundFacet && !_findWhere(selectedFacets[key], { id: foundFacet.value })) {
-                selectedFacets[key].push({
-                  id: foundFacet.value,
-                  value: foundFacet.label || foundFacet.value,
+              if (foundFilter &&
+                  !_findWhere(selectedFilters[key], { id: foundFilter.value })) {
+                selectedFilters[key].push({
+                  selected: true,
+                  value: foundFilter.value,
+                  label: foundFilter.label || foundFilter.value,
+                  count: foundFilter.count,
                 });
               }
             });
           } else if (typeof value === 'string') {
-            facetObj = _findWhere(facets.itemListElement, { field: key });
-            const foundFacet =
-              _isEmpty(facetObj) ? {} : _findWhere(facetObj.values, { value });
+            filterObj = _findWhere(apiFilters.itemListElement, { field: key });
+            const foundFilter = _isEmpty(filterObj) ? {} :
+              _findWhere(filterObj.values, { value });
 
-            if (foundFacet && !_findWhere(selectedFacets[key], { id: foundFacet.value })) {
-              selectedFacets[key] = [{
-                id: foundFacet.value,
-                value: foundFacet.label || foundFacet.value,
+            if (foundFilter &&
+                !_findWhere(selectedFilters[key], { id: foundFilter.value })) {
+              selectedFilters[key] = [{
+                selected: true,
+                value: foundFilter.value,
+                label: foundFilter.label || foundFilter.value,
+                count: foundFilter.count,
               }];
             }
           }
@@ -150,9 +174,9 @@ function searchServer(req, res, next) {
 
       res.locals.data.Store = {
         searchResults: data,
-        selectedFacets,
+        selectedFilters,
         searchKeywords: q,
-        facets,
+        filters: apiFilters,
         page: pageQuery,
         sortBy: sort ? `${sort}_${order}` : 'relevance',
         field: fieldQuery,
@@ -165,9 +189,14 @@ function searchServer(req, res, next) {
       logger.error('Error retrieving search data in searchServer', error);
       res.locals.data.Store = {
         searchResults: {},
-        selectedFacets: {},
+        selectedFilters: {
+          materialType: [],
+          language: [],
+          dateAfter: '',
+          dateBefore: '',
+        },
         searchKeywords: '',
-        facets: {},
+        filters: {},
         page: '1',
         sortBy: 'relevance',
         field: 'all',
@@ -175,7 +204,7 @@ function searchServer(req, res, next) {
       };
 
       next();
-    }
+    },
   );
 }
 

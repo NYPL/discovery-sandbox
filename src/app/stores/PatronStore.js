@@ -1,5 +1,5 @@
-import Actions from '../actions/Actions.js';
-import alt from '../alt.js';
+import Actions from '../actions/Actions';
+import alt from '../alt';
 
 class PatronStore {
   constructor() {
@@ -12,6 +12,7 @@ class PatronStore {
       names: [],
       barcodes: [],
       emails: [],
+      loggedIn: false,
     };
   }
 
@@ -21,6 +22,7 @@ class PatronStore {
       names: data.names,
       barcodes: data.barcodes,
       emails: data.emails,
+      loggedIn: true,
     });
   }
 }

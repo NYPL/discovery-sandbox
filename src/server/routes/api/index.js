@@ -23,6 +23,7 @@ export function getPatronData(req, res, next) {
                   names: [],
                   barcodes: [],
                   emails: [],
+                  loggedIn: false,
                 },
               };
             } else {
@@ -33,6 +34,7 @@ export function getPatronData(req, res, next) {
                   names: response.names,
                   barcodes: response.barCodes,
                   emails: response.emails,
+                  loggedIn: true,
                 },
               };
             }
@@ -52,6 +54,7 @@ export function getPatronData(req, res, next) {
                 names: [],
                 barcodes: [],
                 emails: [],
+                loggedIn: false,
               },
             };
             // Continue next function call
@@ -66,6 +69,7 @@ export function getPatronData(req, res, next) {
       names: [],
       barcodes: [],
       emails: [],
+      loggedIn: false,
     },
   };
   return next();

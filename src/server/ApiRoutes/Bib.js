@@ -1,11 +1,9 @@
 import nyplApiClient from '../routes/nyplApiClient';
 import logger from '../../../logger';
-import appConfig from '../../../appConfig.js';
+import appConfig from '../../../appConfig';
 
-const nyplApiClientCall = (query) => {
-  console.log('querying ', `/discovery/resources/${query}`)
-  return nyplApiClient().then(client => client.get(`/discovery/resources/${query}`, { cache: false }));
-}
+const nyplApiClientCall = query =>
+  nyplApiClient().then(client => client.get(`/discovery/resources/${query}`, { cache: false }));
 
 function fetchBib(bibId, cb, errorcb) {
   return Promise.all([
@@ -19,7 +17,7 @@ function fetchBib(bibId, cb, errorcb) {
       return data
     })
     .then(response => cb(response))
-    .catch(error => {
+    .catch((error) => {
       logger.error(`Error attemping to fetch a Bib server side in fetchBib, id: ${bibId}`, error);
 
       errorcb(error);
@@ -51,7 +49,7 @@ function bibSearchServer(req, res, next) {
         error,
       };
       next();
-    }
+    },
   );
 }
 
@@ -60,8 +58,8 @@ function bibSearchAjax(req, res) {
 
   fetchBib(
     bibId,
-    (data) => res.json(data),
-    (error) => res.json(error)
+    data => res.json(data),
+    error => res.json(error),
   );
 }
 

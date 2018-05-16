@@ -1,9 +1,8 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import DocumentTitle from 'react-document-title';
 import { Link } from 'react-router';
 
-import appConfig from '../../../../appConfig.js';
+import appConfig from '../../../../appConfig';
 
 const NotFound404 = () => (
   <DocumentTitle title="404 | Shared Collection Catalog | NYPL">
@@ -24,10 +23,5 @@ const NotFound404 = () => (
     </main>
   </DocumentTitle>
 );
-
-NotFound404.propTypes = {
-  searchKeywords: PropTypes.string,
-  searchURL: PropTypes.string,
-};
 
 export default NotFound404;

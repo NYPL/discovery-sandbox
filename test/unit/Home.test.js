@@ -3,7 +3,7 @@ import React from 'react';
 import { expect } from 'chai';
 import { mount } from 'enzyme';
 
-import Home from '../../src/app/components/Home/Home.jsx';
+import Home from '../../src/app/components/Home/Home';
 
 describe('Home', () => {
   let component;
