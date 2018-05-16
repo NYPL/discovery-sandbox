@@ -11,6 +11,7 @@ import LoadingLayer from '../LoadingLayer/LoadingLayer';
 import BibDetails from './BibDetails';
 import LibraryItem from '../../utils/item';
 import BackLink from './BackLink';
+import AdditionalDetailsButton from './AdditionalDetailsButton';
 // Removed MarcRecord because the webpack MarcRecord is not working. Sep/28/2017
 // import MarcRecord from './MarcRecord';
 
@@ -159,6 +160,7 @@ class BibPage extends React.Component {
                     updateIsLoadingState={this.updateIsLoadingState}
                     button={true}
                   />
+                  <AdditionalDetailsButton/>
                 </div>
               </div>
             </div>

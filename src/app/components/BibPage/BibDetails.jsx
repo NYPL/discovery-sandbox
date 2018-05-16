@@ -489,8 +489,6 @@ class BibDetails extends React.Component {
     return (
       <div>
       <DefinitionList data={bibDetails} />
-      {/*<p>Hello!</p>*/}
-      { this.props.button ? <AdditionalDetailsButton/> : null}
     </div>);
   }
 }

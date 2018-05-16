@@ -13,23 +13,6 @@ class AdditionalDetailsButton extends React.Component {
     this.setState({display: !this.state.display});
   }
 
-  // render(){
-  //     if(this.state.display){
-  //       return(
-  //         <div>
-  //           <button onClick={() => this.setState({display:false})}>Close Details</button>
-  //           <p> Additional Details Will Go Here </p>
-  //         </div>
-  //       )
-  //     }else{
-  //       return (
-  //         <button onClick={() => this.setState({display:true})}>
-  //         See More Details
-  //         </button>
-  //       )
-  //     }
-  // }
-
   render(){
     return(
       <div>
