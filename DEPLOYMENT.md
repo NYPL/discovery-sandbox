@@ -8,8 +8,8 @@ Install:
 ### Repo Branches
 We use four branches for deployment: `dev-eb-deploy`, `development`, `qa`, `master`.
 
-- `dev-eb-deploy`: Special pre-merge development branch for deploying features before PR merge. Manually deployed to `discovery-ui-development` (dev-discovery.nypl.org)
- - `development`: This branch is the target of all PRs and thus contains all approved features. *Automatically* deployed to `discovery-ui-development` (dev-discovery.nypl.org)
+- `dev-eb-deploy`: Special pre-merge development branch for deploying features before PR merge. Manually deployed to `discovery-ui-development` (dev-discovery.nypl.org). This lacks a cert config, allowing it to be deployed to discovery-ui-development.
+ - `development`: This branch is the target of all PRs and thus contains all approved features.
 - `qa`: Automatically deployed to `discovery-ui-qa` (qa-discovery.nypl.org)
 - `master`: Our "production" branch. Automatically deployed to `discovery-ui-production` (discovery.nypl.org)
 
