@@ -157,6 +157,7 @@ class BibPage extends React.Component {
                     fields={bottomFields}
                     electronicResources={aggregatedElectronicResources}
                     updateIsLoadingState={this.updateIsLoadingState}
+                    button={true}
                   />
                 </div>
               </div>

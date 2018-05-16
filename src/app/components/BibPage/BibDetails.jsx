@@ -16,6 +16,7 @@ import {
 } from '../../utils/utils';
 import DefinitionList from './DefinitionList';
 import appConfig from '../../../../appConfig';
+import AdditionalDetailsButton from './AdditionalDetailsButton';
 
 class BibDetails extends React.Component {
   /*
@@ -485,7 +486,12 @@ class BibDetails extends React.Component {
 
     const bibDetails = this.getDisplayFields(this.props.bib);
 
-    return (<DefinitionList data={bibDetails} />);
+    return (
+      <div>
+      <DefinitionList data={bibDetails} />
+      {/*<p>Hello!</p>*/}
+      { this.props.button ? <AdditionalDetailsButton/> : null}
+    </div>);
   }
 }
 
