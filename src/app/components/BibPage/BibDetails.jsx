@@ -16,7 +16,6 @@ import {
 } from '../../utils/utils';
 import DefinitionList from './DefinitionList';
 import appConfig from '../../../../appConfig';
-import AdditionalDetailsButton from './AdditionalDetailsButton';
 
 class BibDetails extends React.Component {
   /*
