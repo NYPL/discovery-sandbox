@@ -3,6 +3,7 @@ const webpack = require('webpack');
 const merge = require('webpack-merge');
 const CleanBuild = require('clean-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
 const sassPaths = require('@nypl/design-toolkit').includePaths
   .map(sassPath => sassPath).join('&');
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
@@ -103,6 +104,7 @@ if (ENV === 'development') {
     },
     plugins: [
       new webpack.HotModuleReplacementPlugin(),
+      new FriendlyErrorsWebpackPlugin(),
     ],
     resolve: {
       modules: [
