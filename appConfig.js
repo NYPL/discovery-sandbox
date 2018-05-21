@@ -7,8 +7,7 @@ export default {
   port: 3001,
   webpackDevServerPort: 3000,
   api: {
-    // development: 'https://dev-platform.nypl.org/api/v0.1',
-    development: 'http://localhost:3003/api/v0.1',
+    development: 'https://dev-platform.nypl.org/api/v0.1',
     production: 'https://platform.nypl.org/api/v0.1',
   },
   loginUrl: 'https://login.nypl.org/auth/login',
