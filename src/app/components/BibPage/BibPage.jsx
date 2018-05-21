@@ -11,6 +11,8 @@ import LoadingLayer from '../LoadingLayer/LoadingLayer';
 import BibDetails from './BibDetails';
 import LibraryItem from '../../utils/item';
 import BackLink from './BackLink';
+import AdditionalDetailsViewer from './AdditionalDetailsViewer';
+import DefinitionList from './DefinitionList';
 // Removed MarcRecord because the webpack MarcRecord is not working. Sep/28/2017
 // import MarcRecord from './MarcRecord';
 
@@ -102,6 +104,8 @@ class BibPage extends React.Component {
     // Related to removing MarcRecord because the webpack MarcRecord is not working. Sep/28/2017
     // const marcRecord = isNYPLReCAP ? <MarcRecord bNumber={bNumber[0]} /> : null;
 
+    
+
     return (
       <DocumentTitle title="Item Details | Shared Collection Catalog | NYPL">
         <main className="main-page">
@@ -158,6 +162,8 @@ class BibPage extends React.Component {
                     electronicResources={aggregatedElectronicResources}
                     updateIsLoadingState={this.updateIsLoadingState}
                   />
+                  <AdditionalDetailsViewer bib={bib}/>
+
                 </div>
               </div>
             </div>
