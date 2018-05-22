@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
  */
 const DefinitionList = ({ data }) => {
   const getDefinitions = (definitions) => {
-    if (!definitions && !definitions.length) {
+    if (!definitions && !definitions.length) { 
       return null;
     }
 
