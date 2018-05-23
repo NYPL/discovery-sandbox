@@ -6,7 +6,19 @@ const nyplApiClientCall = query =>
   nyplApiClient().then(client => client.get(`/discovery/resources/${query}`, { cache: false }));
 
 function fetchBib(bibId, cb, errorcb) {
-  return nyplApiClientCall(bibId)
+  return Promise.all([
+    nyplApiClientCall(bibId),
+    nyplApiClientCall(`${bibId}.annotated-marc`),
+  ])
+    .then((response) => {
+      // First response is jsonld formatting:
+      const data = response[0];
+      // Assign second response (annotated-marc formatting) as property of bib:
+      data.annotatedMarc = response[1];
+      // Make sure retrieved annotated-marc document is valid:
+      if (!data.annotatedMarc || !data.annotatedMarc.bib) data.annotatedMarc = null;
+      return data;
+    })
     .then(response => cb(response))
     .catch((error) => {
       logger.error(`Error attemping to fetch a Bib server side in fetchBib, id: ${bibId}`, error);

@@ -34,7 +34,8 @@ class AdditionalDetailsViewer extends React.Component {
   }
 
 
-  render(){
+  render (){
+    if (!this.props.bib || !this.props.bib.annotatedMarc) return null;
 
     const annotatedMarcDetails = this.props.bib.annotatedMarc.bib.fields.map((field) => {
       return {
