@@ -22,7 +22,7 @@ class AdditionalDetailsViewer extends React.Component {
         <a  href={value.content} title={JSON.stringify(value.source, null, 2)}>
         {value.label}
         </a>
-        </div> //why is there not a break here automatically?
+        </div>
     );
     } else { //currently there is only one other type of item
       return (
@@ -41,9 +41,7 @@ class AdditionalDetailsViewer extends React.Component {
       return {
         term: field.label,
         definition: field.values.map((value) => {
-          return this.definitionItem(value)/* <div title={JSON.stringify(value.source, null, 2)}>
-          {value.content}
-          </div> */// replace this div with this.definitionItem(value)
+          return this.definitionItem(value)
         })
       }
     })
