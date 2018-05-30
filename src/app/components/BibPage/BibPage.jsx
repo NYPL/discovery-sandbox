@@ -11,6 +11,7 @@ import LoadingLayer from '../LoadingLayer/LoadingLayer';
 import BibDetails from './BibDetails';
 import LibraryItem from '../../utils/item';
 import BackLink from './BackLink';
+import AdditionalDetailsViewer from './AdditionalDetailsViewer';
 // Removed MarcRecord because the webpack MarcRecord is not working. Sep/28/2017
 // import MarcRecord from './MarcRecord';
 
@@ -78,9 +79,9 @@ class BibPage extends React.Component {
       { label: 'Former Title', value: 'formerTitle' },
       { label: 'Subject', value: 'subjectLiteral', linkable: true },
       { label: 'Genre/Form', value: 'genreForm' },
-      { label: 'Notes', value: '' },
+      { label: 'Notes', value: 'React Component' },
       { label: 'Additional Resources', value: 'supplementaryContent', selfLinkable: true },
-      { label: 'Contents', value: 'React Component' },
+      { label: 'Contents', value: 'tableOfContents' },
       { label: 'Bibliography', value: '' },
       { label: 'ISBN', value: 'identifier', identifier: 'urn:isbn' },
       { label: 'ISSN', value: 'identifier', identifier: 'urn:issn' },
@@ -158,6 +159,7 @@ class BibPage extends React.Component {
                     electronicResources={aggregatedElectronicResources}
                     updateIsLoadingState={this.updateIsLoadingState}
                   />
+                  <AdditionalDetailsViewer bib={bib}/>
                 </div>
               </div>
             </div>

@@ -1,5 +1,16 @@
 ## CHANGE LOG
 
+### 1.4.1
+- Change how Notes are rendred: Render notes grouped by noteType, with noteType shown at root level of hierarchy.
+- Add support for rendering Contents (tableOfContents)
+
+### 1.4.0
+- Adding OptinMonster script and updating header to 2.4.7.
+- Updating Travis CI configuration for CD to AWS Elastic Beanstalk.
+
+### 1.3.1
+- Removing hold request notification due to inclement weather (again).
+
 ### 1.3.0
 ## ReCAP 1.2 Release
 The main goal for this release was to add more delivery locations options for Hold Requests, to get more fields exposed for bib information in the UI, and to release a dropdown form for selecting filters for searching.
