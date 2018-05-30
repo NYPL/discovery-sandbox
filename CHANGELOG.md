@@ -1,5 +1,8 @@
 ## CHANGE LOG
 
+### 1.4.2
+- Updating @nypl/dgx-react-footer version to 0.5.0 and @nypl/dgx-header-component to 2.4.8.
+
 ### 1.4.1
 - Change how Notes are rendred: Render notes grouped by noteType, with noteType shown at root level of hierarchy.
 - Add support for rendering Contents (tableOfContents)
