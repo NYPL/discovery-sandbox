@@ -17,9 +17,3 @@ log/*.log
 !.elasticbeanstalk/*.global.yml
 
 #Files with names of missing fields
-fields.js
-discovery-items-2.js
-caughtfields.js
-longermissing.txt
-remainder-2.js
-session.log
