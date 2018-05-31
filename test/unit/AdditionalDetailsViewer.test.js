@@ -152,7 +152,7 @@ describe('After Clicking on Button', () => {
   });
 
   it('should display correct text for url fields', () => {
-    expect(link.someWhere(item => item.text() === "856 40")).to.equal(true);
+    expect(link.someWhere(item => item.text().trim() === "856 40")).to.equal(true);
   });
 
 });
