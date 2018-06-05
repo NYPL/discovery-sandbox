@@ -34,7 +34,6 @@ class Tabbed extends React.Component {
     const panel = document.getElementById('panel');//.children[0];
     const index = parseInt(e.currentTarget.getAttribute('data'));
     let dir = e.which === 37 ? index - 1 : e.which === 39 ? index + 1 : e.which === 40 ? 'down' : null;
-    debugger
     if (dir !== null) {
       e.preventDefault();
       dir ===  'down' ? panel.focus() : dir < this.state.numberOfTabs ? this.switchTab(dir) : void 0;
