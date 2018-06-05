@@ -67,23 +67,23 @@ Deploy to the development server:
 _(Note that updates to origin/development trigger a deploy to discovery-ui-development. The following demonstrates manually deploying development - or a feature branch - to discovery-ui-development should you need to.)_
 
 - Check out `development` branch (or feature branch if deploying a feature to dev before merge)
-- Run `eb deploy discovery-ui-development --profile nypl-sandbox`
+- Run `npm run deploy-development`
 
 ----
 Deploy to the qa server:
 
 _(Note that updates to origin/qa trigger a deploy to discovery-ui-qa. The following demonstrates manually deploying qa should you need to.)_
 
-- Merge `development` into `qa`
-- Run `eb deploy discovery-ui-qa --profile nypl-digital-dev`
+- `git checkout qa`, `git merge development`, `git push origin qa`
+- Run `npm run deploy-qa`
 
 ----
 Deploy to the production server:
 
 _(Note that updates to origin/master trigger a deploy to discovery-ui-production. The following demonstrates manually deploying production should you need to.)_
 
-- Merge `qa` into `master`
-- Run `eb deploy discovery-ui-production --profile nypl-digital-dev`
+- `git checkout master`, `git merge qa`, `git push origin master`
+- Run `npm run deploy-production`
 
 ### Troubleshooting
 

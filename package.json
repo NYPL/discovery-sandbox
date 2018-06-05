@@ -16,7 +16,10 @@
     "test-file": "node_modules/.bin/mocha -w test/helpers/browser.js",
     "coverage": "BABEL_ENV=test node_modules/.bin/nyc --require mocha npm test",
     "coverage-report": "BABEL_ENV=test node_modules/.bin/nyc report --reporter=lcov",
-    "nightwatch": "./node_modules/.bin/nightwatch"
+    "nightwatch": "./node_modules/.bin/nightwatch",
+    "deploy-development": "eb deploy discovery-ui-development --profile nypl-sandbox",
+    "deploy-qa": "git checkout qa && git pull origin qa && eb deploy discovery-ui-qa --profile nypl-digital-dev",
+    "deploy-production": "git checkout master && git pull origin master && eb deploy discovery-ui-production --profile nypl-digital-dev"
   },
   "repository": {
     "type": "git",
