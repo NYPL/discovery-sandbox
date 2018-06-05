@@ -15,7 +15,7 @@ We use three branches for deployment: `development`, `qa`, `master`.
 If we have a new feature to add, the suggested workflow is:
 - Create branch for new feature `git checkout -b new-feature` off the `development` branch.
 - Create Pull Request pointing to the `development` branch.
-- To test the branch on the development server, follow the instructions below for deploying - Deploy to dev (see instructions under 'Deployment' below)
+- To test the branch on the development server, follow the instructions below for deploying to Development
 - Once the Pull Request is accepted and merged into `development`, the `development` branch should be
 merged to `qa` and then `qa` should be merged to the `master` branch when ready.
 
@@ -62,7 +62,7 @@ Note that `development` will always differ from `qa` in one respect: Apps deploy
 | Environment Name | discovery-ui-development | discovery-ui-qa  | discovery-ui-production |
 
 ----
-Deploy to the dev server:
+Deploy to the development server:
 
 _(Note that updates to origin/development trigger a deploy to discovery-ui-development. The following demonstrates manually deploying development - or a feature branch - to discovery-ui-development should you need to.)_
 
