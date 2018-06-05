@@ -12,6 +12,7 @@ import BibDetails from './BibDetails';
 import LibraryItem from '../../utils/item';
 import BackLink from './BackLink';
 import AdditionalDetailsViewer from './AdditionalDetailsViewer';
+import Tabbed from './Tabbed';
 // Removed MarcRecord because the webpack MarcRecord is not working. Sep/28/2017
 // import MarcRecord from './MarcRecord';
 
@@ -103,6 +104,28 @@ class BibPage extends React.Component {
     // Related to removing MarcRecord because the webpack MarcRecord is not working. Sep/28/2017
     // const marcRecord = isNYPLReCAP ? <MarcRecord bNumber={bNumber[0]} /> : null;
 
+    const tabItems = (index) => {
+      if (index === 0) {
+        return (<BibDetails
+          bib={bib}
+          fields={bottomFields}
+          electronicResources={aggregatedElectronicResources}
+          updateIsLoadingState={this.updateIsLoadingState}
+        />)
+      } else {
+        return (<AdditionalDetailsViewer bib={bib}/>)
+      }
+    }
+
+    const bibDetails = (<BibDetails
+      bib={bib}
+      fields={bottomFields}
+      electronicResources={aggregatedElectronicResources}
+      updateIsLoadingState={this.updateIsLoadingState}
+    />);
+
+    const additionalDetails = (<AdditionalDetailsViewer bib={bib}/>);
+
     return (
       <DocumentTitle title="Item Details | Shared Collection Catalog | NYPL">
         <main className="main-page">
@@ -153,13 +176,7 @@ class BibPage extends React.Component {
                   {itemHoldings}
 
                   <h3>Additional Details</h3>
-                  <BibDetails
-                    bib={bib}
-                    fields={bottomFields}
-                    electronicResources={aggregatedElectronicResources}
-                    updateIsLoadingState={this.updateIsLoadingState}
-                  />
-                  <AdditionalDetailsViewer bib={bib}/>
+                  <Tabbed tabItems={tabItems} tabs={[{title: 'details', content: additionalDetails}, {title: 'classic', content: bibDetails}]} />
                 </div>
               </div>
             </div>

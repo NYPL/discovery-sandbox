@@ -9,6 +9,7 @@ function fetchBib(bibId, cb, errorcb) {
   return Promise.all([
     nyplApiClientCall(bibId),
     nyplApiClientCall(`${bibId}.annotated-marc`),
+    // require('axios').get('http://localhost:8000/b12082323.json').then(resp => resp.data)
   ])
     .then((response) => {
       // First response is jsonld formatting:
