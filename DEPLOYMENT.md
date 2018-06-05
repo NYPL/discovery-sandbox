@@ -6,20 +6,16 @@ Install:
 * EB CLI
 
 ### Repo Branches
-We use four branches for deployment: `dev-eb-deploy`, `development`, `qa`, `master`.
+We use three branches for deployment: `development`, `qa`, `master`.
 
-- `dev-eb-deploy`: Special pre-merge development branch for deploying features before PR merge. Manually deployed to `discovery-ui-development` (dev-discovery.nypl.org). This lacks a cert config, allowing it to be deployed to discovery-ui-development.
- - `development`: This branch is the target of all PRs and thus contains all approved features.
+- `development`: This branch is the target of all PRs and thus contains all approved features. Automatically deployed to `discovery-ui-develpoment` (dev-discovery.nypl.org)
 - `qa`: Automatically deployed to `discovery-ui-qa` (qa-discovery.nypl.org)
 - `master`: Our "production" branch. Automatically deployed to `discovery-ui-production` (discovery.nypl.org)
 
 If we have a new feature to add, the suggested workflow is:
 - Create branch for new feature `git checkout -b new-feature` off the `development` branch.
 - Create Pull Request pointing to the `development` branch.
-- To test the branch on the development server, merge your feature branch to `dev-eb-deploy`
--- `git checkout dev-eb-deploy`
--- `git merge --no-ff new-feature`
-- Deploy to dev (see instructions under 'Deployment' below)
+- To test the branch on the development server, follow the instructions below for deploying - Deploy to dev (see instructions under 'Deployment' below)
 - Once the Pull Request is accepted and merged into `development`, the `development` branch should be
 merged to `qa` and then `qa` should be merged to the `master` branch when ready.
 
@@ -33,6 +29,7 @@ Make sure you have the AWS CLI tool installed on your machine and make sure you 
 Pass in the correct credentials and now we can start deploying.
 
 ### Configuration
+
 Run `eb init` at the root of this repo with the following settings:
  - Select region 'us-east-1'
  - Select application 'discovery-ui'
@@ -53,21 +50,23 @@ branch-defaults:
     group_suffix: null
 ```
 
-Right now, the production AWS account (nypl-digital-dev) has an SSL certification which is committed to the repo in `.ebextensions/01_loadbalancer-terminatehttps.config`. This will fail to upload to the development AWS account since they are both two different accounts. To remedy this, the `dev-eb-deploy` branch does not have that file committed and it can be used to deploy to the sandbox account (which does not have the SSL certificate).
+Note that `development` will always differ from `qa` in one respect: Apps deployed to `nypl-sandbox` require a different cert ARN than that for `nypl-digital-dev`. Accordingly, `development` will always have a slightly different `.ebextensions/01_loadbalancer-terminatehttps.config` from that of `qa`. Due to the order in which those differences were originally committed, merging `development` into `qa` should never disrupt that.
 
 ### Deployment
 
-|                  | Development              | QA              | Production              |
-| ---              | ---                      | ---             | ---                     |
-| Application Name | discovery-ui             | discovery-ui    | discovery-ui            |
-| Environment Name | discovery-ui-development | discovery-ui-qa | discovery-ui-production |
+|                  | Development              | QA               | Production              |
+| ---              | ---                      | ---              | ---                     |
+| Git branch       | development              | qa               | master                  |
+| AWS Profile      | nypl-sandbox             | nypl-digital-dev | nypl-digital-dev        |
+| Application Name | discovery-ui             | discovery-ui     | discovery-ui            |
+| Environment Name | discovery-ui-development | discovery-ui-qa  | discovery-ui-production |
 
 ----
 Deploy to the dev server:
 
-_(Note that updates to origin/development trigger a deploy to discovery-ui-development. If you've manually merged a feature branch into `dev-eb-deploy`, you can manually deploy that to development as follows.)_
+_(Note that updates to origin/development trigger a deploy to discovery-ui-development. The following demonstrates manually deploying development - or a feature branch - to discovery-ui-development should you need to.)_
 
-- Merge feature branches to `dev-eb-deploy`
+- Check out `development` branch (or feature branch if deploying a feature to dev before merge)
 - Run `eb deploy discovery-ui-development --profile nypl-sandbox`
 
 ----
@@ -75,7 +74,7 @@ Deploy to the qa server:
 
 _(Note that updates to origin/qa trigger a deploy to discovery-ui-qa. The following demonstrates manually deploying qa should you need to.)_
 
-- Merge working and approved changes up to `qa`
+- Merge `development` into `qa`
 - Run `eb deploy discovery-ui-qa --profile nypl-digital-dev`
 
 ----
@@ -83,7 +82,7 @@ Deploy to the production server:
 
 _(Note that updates to origin/master trigger a deploy to discovery-ui-production. The following demonstrates manually deploying production should you need to.)_
 
-- Merge working and approved changes up to `master`
+- Merge `qa` into `master`
 - Run `eb deploy discovery-ui-production --profile nypl-digital-dev`
 
 ### Troubleshooting
