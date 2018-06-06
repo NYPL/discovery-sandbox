@@ -49,12 +49,12 @@ class Tabbed extends React.Component {
           return (<li role='presentation' key={i}>
               <a href={`#section${i}`} tabIndex={ i === this.state.tabNumber ? null : -1 }
                aria-selected={ i === this.state.tabNumber ? true : false} role='tab' data={i} id={i}
-               onClick={this.clickHandler} onKeyDown={this.keyDownHandler} > {tab.title} </a>
+               onClick={this.clickHandler} onKeyDown={this.keyDownHandler} >{tab.title}</a>
             </li>);
         })}
       </ul>
       <section id="panel" tabIndex="0" >
-      { this.props.tabs[this.state.tabNumber].content }
+      {this.props.tabs[this.state.tabNumber].content}
       </section>
     </div>)
   }
