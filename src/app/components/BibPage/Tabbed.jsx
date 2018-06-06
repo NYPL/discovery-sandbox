@@ -53,7 +53,7 @@ class Tabbed extends React.Component {
             </li>);
         })}
       </ul>
-      <section id="panel" tabIndex="0">
+      <section id="panel" tabIndex="0" >
       { this.props.tabs[this.state.tabNumber].content }
       </section>
     </div>)
