@@ -11,6 +11,7 @@ import LoadingLayer from '../LoadingLayer/LoadingLayer';
 import BibDetails from './BibDetails';
 import LibraryItem from '../../utils/item';
 import BackLink from './BackLink';
+import AdditionalDetailsViewer from './AdditionalDetailsViewer';
 // Removed MarcRecord because the webpack MarcRecord is not working. Sep/28/2017
 // import MarcRecord from './MarcRecord';
 
@@ -158,6 +159,7 @@ class BibPage extends React.Component {
                     electronicResources={aggregatedElectronicResources}
                     updateIsLoadingState={this.updateIsLoadingState}
                   />
+                  <AdditionalDetailsViewer bib={bib}/>
                 </div>
               </div>
             </div>
