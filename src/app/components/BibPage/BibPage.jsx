@@ -175,7 +175,7 @@ class BibPage extends React.Component {
 
                   {itemHoldings}
 
-                  <h3>Additional Details</h3>
+                  <h3>Placeholder Heading</h3>
                   <Tabbed tabItems={tabItems} tabs={[{title: 'details', content: additionalDetails}, {title: 'classic', content: bibDetails}]} />
                 </div>
               </div>
