@@ -59,35 +59,75 @@ ul[role="tablist"]{
     margin-bottom: 20px;
     padding-left: 0px;
     display: flex;
-    list-style-type: none;
-    a {
-          color: gray;
-          font-weight: 500;
-          text-decoration: none;
+    list-style-type: none; }
+
+ul[role="tablist"] >  li {
+
           padding: 20px;
           padding-left: 30px;
           padding-right: 30px;
           border-bottom: 1px solid black;
           display: table-cell;
+          margin-bottom: 0;
         }
-        a[aria-selected=true] {
-          color: black;
-          border: 1px solid black;
-          border-bottom: none;
-        }
+  ul[role="tablist"] > li > a {
+    color: gray;
+    font-weight: 500;
+    text-decoration: none;
+  }
+        // a[aria-selected=true] {
+        //   color: black;
+        //   border: 1px solid black;
+        //   border-bottom: none;
+        // }
 
-
-
-
+ul[role="tablist"]::after {
+  border-bottom: 1px solid black;
+  color: white;
+  padding: 10px;
+  content: "";
+  width: 50%;
 }
-#dummy0:target ~ ul > li > #link0 {
-  color: black;
+
+#dummy0.targeted ~ ul[role="tablist"] > li#li0 {
+  a {
+     color: black;
+   }
   border: 1px solid black;
   border-bottom: none;
 }
 
-#dummy1:target ~ ul > li > #link1 {
-  color: black;
+#dummy1.targeted ~ ul[role="tablist"] > li#li0 {
+  border: none;
+  border-bottom: 1px solid black;
+}
+
+#dummy1.targeted ~ ul[role="tablist"] > li#li1 {
+  a {
+    color: black;
+  }
+  border: 1px solid black;
+  border-bottom: none;
+}
+
+
+#dummy0:target ~ ul[role="tablist"] > li#li0 {
+  a {
+    color: black;
+  }
+  border: 1px solid black;
+  border-bottom: none;
+}
+
+#dummy1:target ~ ul[role="tablist"] > li#li0 {
+  border: none;
+  border-bottom: 1px solid black;
+}
+
+#dummy1:target ~ ul[role="tablist"] > li#li1 {
+  a {
+    color: black;
+  }
   border: 1px solid black;
   border-bottom: none;
 }
