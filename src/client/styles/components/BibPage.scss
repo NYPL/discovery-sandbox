@@ -19,39 +19,87 @@ div .tabbed {
 
 
 
-ul[role="tablist"] {
-  margin: 0;
-  margin-bottom: 20px;
-  padding-left: 0px;
-  display: flex;
-  list-style-type: none;
-  box-sizing: border-box;
-  li[role='presentation'] {
-    margin-bottom: 0;
+// ul[role="tablist"] {
+//   margin: 0;
+//   margin-bottom: 20px;
+//   padding-left: 0px;
+//   display: flex;
+//   list-style-type: none;
+//   box-sizing: border-box;
+//   li[role='presentation'] {
+//     margin-bottom: 0;
+//     a {
+//       color: gray;
+//       font-weight: 500;
+//       text-decoration: none;
+//       padding: 20px;
+//       padding-left: 30px;
+//       padding-right: 30px;
+//       border-bottom: 1px solid black;
+//       display: table-cell;
+//     }
+//     a[aria-selected=true] {
+//       color: black;
+//       border: 1px solid black;
+//       border-bottom: none;
+//     }
+//   }
+// }
+//
+// ul[role="tablist"]::after {
+//   border-bottom: 1px solid black;
+//   color: white;
+//   padding: 10px;
+//   content: "";
+//   width: 50%;
+// }
+
+ul[role="tablist"]{
+    margin: 0;
+    margin-bottom: 20px;
+    padding-left: 0px;
+    display: flex;
+    list-style-type: none;
     a {
-      color: gray;
-      font-weight: 500;
-      text-decoration: none;
-      padding: 20px;
-      padding-left: 30px;
-      padding-right: 30px;
-      border-bottom: 1px solid black;
-      display: table-cell;
-    }
-    a[aria-selected=true] {
-      color: black;
-      border: 1px solid black;
-      border-bottom: none;
-    }
-  }
+          color: gray;
+          font-weight: 500;
+          text-decoration: none;
+          padding: 20px;
+          padding-left: 30px;
+          padding-right: 30px;
+          border-bottom: 1px solid black;
+          display: table-cell;
+        }
+        a[aria-selected=true] {
+          color: black;
+          border: 1px solid black;
+          border-bottom: none;
+        }
+
+}
+section {
+  display: none;
+}
+.default {
+  display: block;
 }
 
-ul[role="tablist"]::after {
-  border-bottom: 1px solid black;
-  color: white;
-  padding: 10px;
-  content: "";
-  width: 50%;
+.nonDefault:target ~ #section0 {
+  display: none;
+}
+#dummy0:target ~ #section0 {
+  display: block;
+}
+#dummy1:target ~ #section1 {
+  display: block;
+}
+
+.activeTab {
+  display: block;
+}
+
+.inactiveTab {
+  display: none;
 }
 
 #additionalDetails {

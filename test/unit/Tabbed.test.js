@@ -4,6 +4,7 @@ import { shallow, mount } from 'enzyme';
 import BibDetails from './../../src/app/components/BibPage/BibDetails';
 import AdditionalDetailsViewer from './../../src/app/components/BibPage/AdditionalDetailsViewer';
 import Tabbed from './../../src/app/components/BibPage/Tabbed';
+import sinon from 'sinon';
 
 describe('Tabbed', () => {
   const sampleBib =
@@ -137,14 +138,50 @@ describe('Tabbed', () => {
 
   const additionalDetails = (<AdditionalDetailsViewer bib={sampleBib}/>);
 
-  let component = mount(<Tabbed tabs={[{title: 'Details', content: bibDetails}, {title: 'Full Description', content: additionalDetails}]} />);
-  describe.only('Initial Rendering', () => {
+  let component = mount(<Tabbed tabs={[{title: 'Details', content: bibDetails}, {title: 'Full Description', content: additionalDetails}]} />, {attachTo: document.body });
+  let details = component.find('a').at(0);
+  let fullDescription = component.find('a').at(1);
+
+  describe('Initial Rendering', () => {
 
     it('should focus on Details', () => {
-      console.log(component.html());
       expect(component.find('a').length).to.equal(2);
       expect(component.find('a').at(0).prop('aria-selected')).to.equal(true);
       expect(component.find('a').at(0).text()).to.equal('Details');
     });
+
+    it('should have a tab for Full Description', () => {
+      expect(component.find('a').at(1).text()).to.equal("Full Description");
+    })
   })
+
+  describe.only('Navigating with Click', () => {
+
+    it('should focus on Full Description on click', () => {
+      let spy = sinon.spy(Tabbed.prototype, 'clickHandler');
+      fullDescription.simulate('click');
+      let focused = document.activeElement;
+      console.log(focused.outerHTML);
+      expect(fullDescription.node).to.equal(focused);
+      expect(spy.calledOnce).to.equal(true);
+    });
+
+    it('should focus on Details when clicked back', () => {
+      details.simulate('click');
+      let focused = document.activeElement;
+      expect(details.node).to.equal(focused);
+    });
+  })
+
+  describe('Navigating with Key Press', () => {
+
+    it('should focus on Full Description on Right Arrow Press', () => {
+      let spy = sinon.spy(Tabbed.prototype, 'keyDownHandler');
+      fullDescription.simulate('keydown', { key: "right arrow" });
+      let focused = document.activeElement;
+      // console.log(focused.outerHTML);
+      expect(spy.calledOnce).to.equal(true);
+      // expect(fullDescription.node).to.equal(focused);
+    });
+  });
 })
