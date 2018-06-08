@@ -33,6 +33,7 @@ class Tabbed extends React.Component {
   }
 
   keyDownHandler (e) {
+    console.log('This is being hit')
     const panel = document.getElementsByClassName('activeTab')[0];
     const index = parseInt(e.currentTarget.getAttribute('data'));
     let dir = e.which === 37 ? index - 1 : e.which === 39 ? index + 1 : e.which === 40 ? 'down' : null;
@@ -58,7 +59,7 @@ class Tabbed extends React.Component {
             return(
                 <li><a href={`#dummy${i}`}
                 id={`link${i}`}
-                 tabIndex={!this.state.tabNumber ? i : parseInt(this.state.tabNumber) === i ? null : -1}
+                 tabIndex={!this.state.tabNumber ? i+1 : parseInt(this.state.tabNumber) === i ? null : -1}
                   aria-selected={this.state.tabNumber && i === parseInt(this.state.tabNumber) ? true: false}
                   role='tab'
                   data={`${i}`}
@@ -75,7 +76,7 @@ class Tabbed extends React.Component {
           return (
             <section id={`section${i}`}
             className={this.state.tabNumber ? i === parseInt(this.state.tabNumber) ? 'activeTab': 'inactiveTab' : i === 0 ? 'default' : null}
-            tabIndex={!this.state.tabNumber ? this.state.numberOfTabs + i : '0'}>
+            tabIndex={!this.state.tabNumber ? this.state.numberOfTabs + i + 1 : '0'}>
             {this.props.tabs[i].content}
             </section>
           )
