@@ -46,6 +46,13 @@ class Tabbed extends React.Component {
   render () {
     return(
       <div className="tabbed">
+      { this.props.tabs.map((tab, i) => {
+        return(
+          <div id={`dummy${i}` }
+          className={i === 0 ? null : 'nonDefault'}></div>
+        )
+      })
+    }
         <ul role='tablist'>
           { this.props.tabs.map((tab, i) => {
             return(
@@ -63,13 +70,6 @@ class Tabbed extends React.Component {
         }
 
         </ul>
-        { this.props.tabs.map((tab, i) => {
-          return(
-            <div id={`dummy${i}` }
-            className={i === 0 ? null : 'nonDefault'}></div>
-          )
-        })
-      }
       {
         this.props.tabs.map((tab, i) => {
           return (
