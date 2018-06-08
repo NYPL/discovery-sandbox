@@ -96,6 +96,18 @@ ul[role="tablist"]::after {
   border: 1px solid black;
   border-bottom: none;
 }
+
+#dummy1.targeted ~ ul[role="tablist"] > li#li0 {
+  border: none;
+  border-bottom: 1px solid black;
+}
+#dummy1.targeted ~ ul[role="tablist"] > li#li1 {
+  a {
+    color: black;
+  }
+  border: 1px solid black;
+  border-bottom: none;
+}
 #dummy0:target ~ ul[role="tablist"] > li#li0 {
   a {
     color: black;
@@ -109,18 +121,6 @@ ul[role="tablist"]::after {
   border-bottom: 1px solid black;
 }
 
-#dummy1.targeted ~ ul[role="tablist"] > li#li0 {
-  border: none;
-  border-bottom: 1px solid black;
-}
-
-#dummy1.targeted ~ ul[role="tablist"] > li#li1 {
-  a {
-    color: black;
-  }
-  border: 1px solid black;
-  border-bottom: none;
-}
 
 
 
@@ -138,7 +138,7 @@ section {
   display: block;
 }
 
-.nonDefault:target ~ #section0 {
+.untargeted:target ~ #section0 {
   display: none;
 }
 #dummy0:target ~ #section0 {
