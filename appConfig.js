@@ -8,7 +8,7 @@ export default {
   webpackDevServerPort: 3000,
   api: {
     development: 'https://dev-platform.nypl.org/api/v0.1',
-    production: 'https://dev-platform.nypl.org/api/v0.1',
+    production: 'https://platform.nypl.org/api/v0.1',
   },
   loginUrl: 'https://login.nypl.org/auth/login',
   tokenUrl: 'https://isso.nypl.org/',
