@@ -96,6 +96,18 @@ ul[role="tablist"]::after {
   border: 1px solid black;
   border-bottom: none;
 }
+#dummy0:target ~ ul[role="tablist"] > li#li0 {
+  a {
+    color: black;
+  }
+  border: 1px solid black;
+  border-bottom: none;
+}
+
+#dummy1:target ~ ul[role="tablist"] > li#li0 {
+  border: none;
+  border-bottom: 1px solid black;
+}
 
 #dummy1.targeted ~ ul[role="tablist"] > li#li0 {
   border: none;
@@ -111,18 +123,6 @@ ul[role="tablist"]::after {
 }
 
 
-#dummy0:target ~ ul[role="tablist"] > li#li0 {
-  a {
-    color: black;
-  }
-  border: 1px solid black;
-  border-bottom: none;
-}
-
-#dummy1:target ~ ul[role="tablist"] > li#li0 {
-  border: none;
-  border-bottom: 1px solid black;
-}
 
 #dummy1:target ~ ul[role="tablist"] > li#li1 {
   a {

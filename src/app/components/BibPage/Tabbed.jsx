@@ -12,7 +12,9 @@ class Tabbed extends React.Component {
 
   componentDidMount () {
     if(!this.state.tabNumber){
-      this.setState({ tabNumber: '0' } )}
+      this.setState({ tabNumber: '0' } )
+      // window.location.href = window.location.href.split("#")[0] + `#dummy0`;
+    }
   }
 
   switchTab (newTabIndex) {
@@ -20,6 +22,7 @@ class Tabbed extends React.Component {
     // debugger
     this.setState({ tabNumber: newTabIndex.toString() }); //prop vs attribute
     let newTab = document.getElementById(`link${newTabIndex}`);
+    // newTab.click();
     newTab.focus(); //this may need to be changed because of re-rendering and synchronicity issues
   }
 
@@ -27,13 +30,13 @@ class Tabbed extends React.Component {
     e.preventDefault();
     let clickedTab = e.currentTarget;
     let index = clickedTab.getAttribute('data');
+    // window.location.href = window.location.href.split("#")[0] + `#dummy${index}`;
     if (index !== this.state.tabNumber) {
       this.switchTab(index);
     }
   }
 
   keyDownHandler (e) {
-    console.log('This is being hit')
     const panel = document.getElementsByClassName('activeTab')[0];
     const index = parseInt(e.currentTarget.getAttribute('data'));
     let dir = e.which === 37 ? index - 1 : e.which === 39 ? index + 1 : e.which === 40 ? 'down' : null;
