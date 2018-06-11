@@ -13,7 +13,7 @@ class Tabbed extends React.Component {
   componentDidMount () {
     if(!this.state.tabNumber){
       this.setState({ tabNumber: '0' } )
-      // window.location.href = window.location.href.split("#")[0] + `#dummy0`;
+      window.location.href = window.location.href.split("#")[0] + `#ind0`;
     }
   }
 
@@ -23,6 +23,7 @@ class Tabbed extends React.Component {
     this.setState({ tabNumber: newTabIndex.toString() }); //prop vs attribute
     let newTab = document.getElementById(`link${newTabIndex}`);
     // newTab.click();
+    window.location.href = window.location.href.split('#')[0] + `#ind${newTabIndex}`;
     newTab.focus(); //this may need to be changed because of re-rendering and synchronicity issues
   }
 
