@@ -10,16 +10,27 @@ class Tabbed extends React.Component {
     this.keyDownHandler = this.keyDownHandler.bind(this);
   }
 
+  // componentDidMount () {
+  //   if(!this.state.tabNumber){
+  //     let tab;
+  //     if(this.props.hash){
+  //       tab = document.getElementById(`link${this.props.hash[4]}`);
+  //     }
+  //     let tabNum = this.props.hash[4] || '0';
+  //     this.setState({ tabNumber: tabNum });
+  //     window.location.href = window.location.href.split("#")[0] + `#ind${tabNum}`;
+  //   }
+  // }
+
   componentDidMount () {
-    if(!this.state.tabNumber){
-      let tab;
-      if(this.props.hash){
-        tab = document.getElementById(`link${this.props.hash[4]}`);
+      let hash = this.props.hash;
+      window.location.href += hash || "#ind0";
+
+      if (hash) {
+        let tab = document.getElementById(`link${hash[4]}`);
+        console.log(tab);
+        tab.focus();
       }
-      let tabNum = this.props.hash[4] || '0';
-      this.setState({ tabNumber: tabNum });
-      window.location.href = window.location.href.split("#")[0] + `#ind${tabNum}`;
-    }
   }
 
   switchTab (newTabIndex) {
@@ -53,7 +64,6 @@ class Tabbed extends React.Component {
 
 
   render () {
-    console.log('rendering');
     return(
       <div className="tabbed">
       { this.props.tabs.map((tab, i) => {

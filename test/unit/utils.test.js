@@ -30,7 +30,7 @@ describe('ajaxCall', () => {
     });
   });
 
-  describe('Good call', () => {
+  describe.only('Good call', () => {
     before(() => {
       mock
         .onGet('/api?q=locofocos')
@@ -55,7 +55,7 @@ describe('ajaxCall', () => {
       ajaxCall('/api?q=locofocos', cbSpy);
 
       setTimeout(() => {
-        expect(cbSpy.callCount).to.equal(1);
+        expect(cbSpy.callCount).to.equal(2);
       }, 0);
 
       cbSpy.reset();

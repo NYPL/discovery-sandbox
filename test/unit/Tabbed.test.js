@@ -173,7 +173,7 @@ describe('Tabbed', () => {
     });
   })
 
-  describe.only('Navigating with Key Press', () => {
+  describe('Navigating with Key Press', () => {
 
     it('should focus on Full Description on Right Arrow Press', () => {
       details.simulate('keypress', { keyCode: 39 });

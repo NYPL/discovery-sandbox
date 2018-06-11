@@ -33,7 +33,10 @@ class BibPage extends React.Component {
   }
 
   componentDidMount() {
-    document.getElementById('bib-title').focus();
+    // console.log(this.props.location.hash);
+    if(!this.props.location.hash){
+      document.getElementById('bib-title').focus();
+    }
   }
 
   updateIsLoadingState(status) {
