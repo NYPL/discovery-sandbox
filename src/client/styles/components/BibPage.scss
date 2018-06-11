@@ -17,43 +17,6 @@ div .tabbed {
   box-shadow: inset 0 0 0 4px lightBlue;
 }
 
-
-
-// ul[role="tablist"] {
-//   margin: 0;
-//   margin-bottom: 20px;
-//   padding-left: 0px;
-//   display: flex;
-//   list-style-type: none;
-//   box-sizing: border-box;
-//   li[role='presentation'] {
-//     margin-bottom: 0;
-//     a {
-//       color: gray;
-//       font-weight: 500;
-//       text-decoration: none;
-//       padding: 20px;
-//       padding-left: 30px;
-//       padding-right: 30px;
-//       border-bottom: 1px solid black;
-//       display: table-cell;
-//     }
-//     a[aria-selected=true] {
-//       color: black;
-//       border: 1px solid black;
-//       border-bottom: none;
-//     }
-//   }
-// }
-//
-// ul[role="tablist"]::after {
-//   border-bottom: 1px solid black;
-//   color: white;
-//   padding: 10px;
-//   content: "";
-//   width: 50%;
-// }
-
 ul[role="tablist"]{
     margin: 0;
     margin-bottom: 20px;
@@ -75,77 +38,80 @@ ul[role="tablist"] >  li {
     font-weight: 500;
     text-decoration: none;
   }
-        // a[aria-selected=true] {
-        //   color: black;
-        //   border: 1px solid black;
-        //   border-bottom: none;
-        // }
 
-ul[role="tablist"]::after {
-  border-bottom: 1px solid black;
-  color: white;
-  padding: 10px;
-  content: "";
-  width: 50%;
-}
-
-#dummy0.targeted ~ ul[role="tablist"] > li#li0 {
-  a {
-     color: black;
-   }
-  border: 1px solid black;
-  border-bottom: none;
-}
-
-#dummy1.targeted ~ ul[role="tablist"] > li#li0 {
-  border: none;
-  border-bottom: 1px solid black;
-}
-#dummy1.targeted ~ ul[role="tablist"] > li#li1 {
-  a {
-    color: black;
+  ul[role="tablist"]::after {
+    border-bottom: 1px solid black;
+    color: white;
+    padding: 10px;
+    content: "";
+    width: 50%;
   }
-  border: 1px solid black;
-  border-bottom: none;
-}
-#dummy0:target ~ ul[role="tablist"] > li#li0 {
-  a {
-    color: black;
+
+  #dummy0.targeted ~ ul[role="tablist"] > li#li0 {
+    a {
+       color: black;
+     }
+    border: 1px solid black;
+    border-bottom: none;
   }
-  border: 1px solid black;
-  border-bottom: none;
-}
 
-#dummy1:target ~ ul[role="tablist"] > li#li0 {
-  border: none;
-  border-bottom: 1px solid black;
-}
-
-
-
-
-#dummy1:target ~ ul[role="tablist"] > li#li1 {
-  a {
-    color: black;
+  @for $i from 1 through 1 {
+    #dummy#{$i}.targeted ~ ul[role="tablist"] > li#li0 {
+      border: none;
+      border-bottom: 1px solid black;
+    }
+    #dummy#{$i}.targeted ~ ul[role="tablist"] > li#li#{$i} {
+      a {
+        color: black;
+      }
+      border: 1px solid black;
+      border-bottom: none;
+    }
   }
-  border: 1px solid black;
-  border-bottom: none;
+
+  #dummy0:target ~ ul[role="tablist"] > li#li0 {
+    a {
+      color: black;
+    }
+    border: 1px solid black;
+    border-bottom: none;
+  }
+
+@for $i from 1 through 1 {
+  #dummy#{$i}:target ~ ul[role="tablist"] > li#li0 {
+    border: none;
+    border-bottom: 1px solid black;
+  }
+
+
+
+
+  #dummy#{$i}:target ~ ul[role="tablist"] > li#li#{$i} {
+    a {
+      color: black;
+    }
+    border: 1px solid black;
+    border-bottom: none;
+  }
 }
+
 section {
   display: none;
 }
 .default {
   display: block;
 }
-
 .untargeted:target ~ #section0 {
   display: none;
 }
-#dummy0:target ~ #section0 {
-  display: block;
-}
-#dummy1:target ~ #section1 {
-  display: block;
+
+@for $i from 0 through 1 {
+  #dummy#{$i}:target ~ #section#{$i} {
+    display: block;
+  }
+  #dummy#{$i}:target ~ #section#{$i} {
+    display: block;
+  }
 }
 
 .activeTab {
@@ -161,7 +127,5 @@ section {
     float: none;
   }
 }
-
-
 
 }
