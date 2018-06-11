@@ -12,14 +12,18 @@ class Tabbed extends React.Component {
 
   componentDidMount () {
     if(!this.state.tabNumber){
-      this.setState({ tabNumber: '0' } )
-      window.location.href = window.location.href.split("#")[0] + `#ind0`;
+      let tab;
+      if(this.props.hash){
+        tab = document.getElementById(`link${this.props.hash[4]}`);
+      }
+      let tabNum = this.props.hash[4] || '0';
+      this.setState({ tabNumber: tabNum });
+      window.location.href = window.location.href.split("#")[0] + `#ind${tabNum}`;
     }
   }
 
   switchTab (newTabIndex) {
     // const index  = parseInt(newTab.getAttribute('data'));
-    console.log(this.state);
     this.setState({ tabNumber: newTabIndex.toString() }); //prop vs attribute
     let newTab = document.getElementById(`link${newTabIndex}`);
     // newTab.click();
@@ -41,7 +45,6 @@ class Tabbed extends React.Component {
     const panel = document.getElementsByClassName('activeTab')[0];
     const index = parseInt(e.currentTarget.getAttribute('data'));
     let dir = e.which === 37 ? index - 1 : e.which === 39 ? index + 1 : e.which === 40 ? 'down' : null;
-    console.log('keydown')
     if (dir !== null) {
       e.preventDefault();
       dir ===  'down' ? panel.focus() : dir < this.state.numberOfTabs && 0 <= dir ? this.switchTab(dir) : void 0;
@@ -50,6 +53,7 @@ class Tabbed extends React.Component {
 
 
   render () {
+    console.log('rendering');
     return(
       <div className="tabbed">
       { this.props.tabs.map((tab, i) => {

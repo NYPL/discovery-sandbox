@@ -176,7 +176,8 @@ class BibPage extends React.Component {
                   {itemHoldings}
 
                   <h3>Placeholder Heading</h3>
-                  <Tabbed tabItems={tabItems} tabs={[{title: 'Details', content: bibDetails}, {title: 'Full Description', content: additionalDetails}]} />
+                  <Tabbed tabItems={tabItems} tabs={[{title: 'Details', content: bibDetails}, {title: 'Full Description', content: additionalDetails}]}
+                  hash={this.props.location.hash}/>
                 </div>
               </div>
             </div>
