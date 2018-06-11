@@ -26,15 +26,16 @@ ul[role="tablist"]{
 
 ul[role="tablist"] >  li {
 
-          padding: 20px;
-          padding-left: 30px;
-          padding-right: 30px;
           border-bottom: 1px solid black;
           display: table-cell;
           margin-bottom: 0;
         }
-  ul[role="tablist"] > li > a {
+  ul[role="tablist"] > li > h4 > a {
     color: gray;
+    padding: 20px;
+    padding-left: 30px;
+    padding-right: 30px;
+    display: table-cell;
     font-weight: 500;
     text-decoration: none;
   }
@@ -47,8 +48,8 @@ ul[role="tablist"] >  li {
     width: 50%;
   }
 
-  #dummy0.targeted ~ ul[role="tablist"] > li#li0 {
-    a {
+  #ind0.targeted ~ ul[role="tablist"] > li#li0 {
+    h4 > a {
        color: black;
      }
     border: 1px solid black;
@@ -56,12 +57,12 @@ ul[role="tablist"] >  li {
   }
 
   @for $i from 1 through 1 {
-    #dummy#{$i}.targeted ~ ul[role="tablist"] > li#li0 {
+    #ind#{$i}.targeted ~ ul[role="tablist"] > li#li0 {
       border: none;
       border-bottom: 1px solid black;
     }
-    #dummy#{$i}.targeted ~ ul[role="tablist"] > li#li#{$i} {
-      a {
+    #ind#{$i}.targeted ~ ul[role="tablist"] > li#li#{$i} {
+      h4 > a {
         color: black;
       }
       border: 1px solid black;
@@ -69,8 +70,8 @@ ul[role="tablist"] >  li {
     }
   }
 
-  #dummy0:target ~ ul[role="tablist"] > li#li0 {
-    a {
+  #ind0:target ~ ul[role="tablist"] > li#li0 {
+    h4 > a {
       color: black;
     }
     border: 1px solid black;
@@ -78,7 +79,7 @@ ul[role="tablist"] >  li {
   }
 
 @for $i from 1 through 1 {
-  #dummy#{$i}:target ~ ul[role="tablist"] > li#li0 {
+  #ind#{$i}:target ~ ul[role="tablist"] > li#li0 {
     border: none;
     border-bottom: 1px solid black;
   }
@@ -86,8 +87,8 @@ ul[role="tablist"] >  li {
 
 
 
-  #dummy#{$i}:target ~ ul[role="tablist"] > li#li#{$i} {
-    a {
+  #ind#{$i}:target ~ ul[role="tablist"] > li#li#{$i} {
+    h4 > a {
       color: black;
     }
     border: 1px solid black;
@@ -106,10 +107,10 @@ section {
 }
 
 @for $i from 0 through 1 {
-  #dummy#{$i}:target ~ #section#{$i} {
+  #ind#{$i}:target ~ #section#{$i} {
     display: block;
   }
-  #dummy#{$i}:target ~ #section#{$i} {
+  #ind#{$i}:target ~ #section#{$i} {
     display: block;
   }
 }

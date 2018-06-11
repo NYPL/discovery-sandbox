@@ -19,7 +19,7 @@ class Tabbed extends React.Component {
 
   switchTab (newTabIndex) {
     // const index  = parseInt(newTab.getAttribute('data'));
-    // debugger
+    console.log(this.state);
     this.setState({ tabNumber: newTabIndex.toString() }); //prop vs attribute
     let newTab = document.getElementById(`link${newTabIndex}`);
     // newTab.click();
@@ -40,9 +40,10 @@ class Tabbed extends React.Component {
     const panel = document.getElementsByClassName('activeTab')[0];
     const index = parseInt(e.currentTarget.getAttribute('data'));
     let dir = e.which === 37 ? index - 1 : e.which === 39 ? index + 1 : e.which === 40 ? 'down' : null;
+    console.log('keydown')
     if (dir !== null) {
       e.preventDefault();
-      dir ===  'down' ? panel.focus() : dir < this.state.numberOfTabs ? this.switchTab(dir) : void 0;
+      dir ===  'down' ? panel.focus() : dir < this.state.numberOfTabs && 0 <= dir ? this.switchTab(dir) : void 0;
     }
   }
 
@@ -52,7 +53,7 @@ class Tabbed extends React.Component {
       <div className="tabbed">
       { this.props.tabs.map((tab, i) => {
         return(
-          <div id={`dummy${i}` }
+          <div id={`ind${i}` }
           className={this.state.tabNumber ? i === parseInt(this.state.tabNumber) ? 'targeted' : 'untargeted' : i === 0 ? 'targeted' : 'untargeted'}></div>
         )
       })
@@ -60,7 +61,7 @@ class Tabbed extends React.Component {
         <ul role='tablist'>
           { this.props.tabs.map((tab, i) => {
             return(
-                <li id={`li${i}`}><a href={`#dummy${i}`}
+                <li id={`li${i}`}><h4><a href={`#ind${i}`}
                 id={`link${i}`}
                  tabIndex={!this.state.tabNumber ? i+1 : parseInt(this.state.tabNumber) === i ? null : -1}
                   aria-selected={this.state.tabNumber && i === parseInt(this.state.tabNumber) ? true: false}
@@ -68,7 +69,7 @@ class Tabbed extends React.Component {
                   data={`${i}`}
                   onClick={this.clickHandler}
                   onKeyDown={this.keyDownHandler}
-                  >{tab.title}</a></li>
+                  >{tab.title}</a></h4></li>
              )
           })
         }
