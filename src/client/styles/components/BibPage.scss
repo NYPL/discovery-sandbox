@@ -30,6 +30,15 @@ ul[role="tablist"] >  li {
           display: table-cell;
           margin-bottom: 0;
         }
+
+ul[role="tablist"] > li.activeTab {
+  border: 1px solid black;
+  border-bottom: none;
+  display: table-cell;
+  margin-bottom: 0;
+
+
+}
   ul[role="tablist"] > li > h4 > a {
     color: gray;
     padding: 20px;
@@ -38,6 +47,19 @@ ul[role="tablist"] >  li {
     display: table-cell;
     font-weight: 500;
     text-decoration: none;
+    // border-bottom: 1px solid black;
+  }
+
+  ul[role="tablist"] > li > h4 > a[aria-selected='true'] {
+    padding: 20px;
+    padding-left: 30px;
+    padding-right: 30px;
+    display: table-cell;
+    font-weight: 500;
+    text-decoration: none;
+    // border: 1px solid black;
+    // border-bottom: none;
+    color: black;
   }
 
   ul[role="tablist"]::after {
@@ -48,85 +70,56 @@ ul[role="tablist"] >  li {
     width: 50%;
   }
 
-  #ind0.targeted ~ ul[role="tablist"] > li#li0 {
-    h4 > a {
-       color: black;
-     }
-    border: 1px solid black;
-    border-bottom: none;
-  }
 
-  @for $i from 1 through 1 {
-    #ind#{$i}.targeted ~ ul[role="tablist"] > li#li0 {
-      border: none;
-      border-bottom: 1px solid black;
-    }
-    #ind#{$i}.targeted ~ ul[role="tablist"] > li#li#{$i} {
-      h4 > a {
-        color: black;
-      }
-      border: 1px solid black;
-      border-bottom: none;
-    }
-  }
-
-  #ind0:target ~ ul[role="tablist"] > li#li0 {
-    h4 > a {
-      color: black;
-    }
-    border: 1px solid black;
-    border-bottom: none;
-  }
-
-@for $i from 1 through 1 {
-  #ind#{$i}:target ~ ul[role="tablist"] > li#li0 {
-    border: none;
-    border-bottom: 1px solid black;
-  }
-
-
-
-
-  #ind#{$i}:target ~ ul[role="tablist"] > li#li#{$i} {
-    h4 > a {
-      color: black;
-    }
-    border: 1px solid black;
-    border-bottom: none;
-  }
 }
 
-section {
+.non-default {
   display: none;
 }
+
 .default {
   display: block;
 }
-.untargeted:target ~ #section0 {
-  display: none;
-}
 
-@for $i from 0 through 1 {
-  #ind#{$i}:target ~ #section#{$i} {
-    display: block;
-  }
-  #ind#{$i}:target ~ #section#{$i} {
-    display: block;
-  }
-}
-
-.activeTab {
+.non-default:target {
   display: block;
 }
 
-.inactiveTab {
-  display: none;
+.non-default:target ~ .default {
+  display: none
 }
+//
+// section {
+//   display: none;
+// }
+// .default {
+//   display: block;
+// }
+// .untargeted:target ~ #section0 {
+//   display: none;
+// }
+//
+// @for $i from 0 through 1 {
+//   #ind#{$i}:target ~ #section#{$i} {
+//     display: block;
+//   }
+//   #ind#{$i}:target ~ #section#{$i} {
+//     display: block;
+//   }
+// }
+//
+// .activeTab {
+//   display: block;
+// }
+//
+// .inactiveTab {
+//   display: none;
+// }
 
-#additionalDetails {
+@media (max-width: 1120px) {
+  .additionalDetails {
   dt {
     float: none;
   }
 }
-
 }

@@ -41,7 +41,7 @@ class AdditionalDetailsViewer extends React.Component {
       <div>
       <br/>
       {this.state.display && annotatedMarcDetails ? (
-        <div id="additionalDetails" style={{padding: '5px 20px', position: 'relative', left: '-20px'}}>
+        <div className={"additionalDetails"} style={{padding: '5px 20px', position: 'relative', left: '-20px'}}>
           <DefinitionList data={annotatedMarcDetails} />
         </div>
         ) : null}

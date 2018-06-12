@@ -111,7 +111,7 @@ class BibDetails extends React.Component {
     }
 
     return (
-      <ul>
+      <ul className={'additionalDetails'}>
         {
           bibValues.map((value, i) => {
             const url = `filters[${fieldValue}]=${value['@id']}`;

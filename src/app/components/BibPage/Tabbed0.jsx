@@ -23,18 +23,14 @@ class Tabbed extends React.Component {
   // }
 
   componentDidMount () {
+      let hash = this.props.hash;
+      window.location.href += hash || "#ind0";
 
-      if (this.props.hash) {
-        let hash = this.props.hash;
-        window.location.href += hash;
-        console.log(hash);
-        let tab = document.getElementById(`link${hash[8]}`);
+      if (hash) {
+        let tab = document.getElementById(`link${hash[4]}`);
         console.log(tab);
         tab.focus();
-      } else {
-        window.location.href += "#section0"
       }
-      this.setState({tabNumber: this.props.hash[8] || '0'});
   }
 
   switchTab (newTabIndex) {
@@ -42,7 +38,7 @@ class Tabbed extends React.Component {
     this.setState({ tabNumber: newTabIndex.toString() }); //prop vs attribute
     let newTab = document.getElementById(`link${newTabIndex}`);
     // newTab.click();
-    window.location.href = window.location.href.split('#')[0] + `#section${newTabIndex}`;
+    window.location.href = window.location.href.split('#')[0] + `#ind${newTabIndex}`;
     newTab.focus(); //this may need to be changed because of re-rendering and synchronicity issues
   }
 
@@ -57,10 +53,8 @@ class Tabbed extends React.Component {
   }
 
   keyDownHandler (e) {
-    const sectionNumber = e.currentTarget.href.split("#")[1];
-    const panel = document.getElementById(sectionNumber);
+    const panel = document.getElementsByClassName('activeTab')[0];
     const index = parseInt(e.currentTarget.getAttribute('data'));
-    console.log(e.currentTarget.href);
     let dir = e.which === 37 ? index - 1 : e.which === 39 ? index + 1 : e.which === 40 ? 'down' : null;
     if (dir !== null) {
       e.preventDefault();
@@ -72,10 +66,17 @@ class Tabbed extends React.Component {
   render () {
     return(
       <div className="tabbed">
+      { this.props.tabs.map((tab, i) => {
+        return(
+          <div id={`ind${i}` }
+          className={this.state.tabNumber ? i === parseInt(this.state.tabNumber) ? 'targeted' : 'untargeted' : i === 0 ? 'targeted' : 'untargeted'}></div>
+        )
+      })
+    }
         <ul role='tablist'>
           { this.props.tabs.map((tab, i) => {
             return(
-                <li id={`li${i}`} className={parseInt(this.state.tabNumber) === i ? 'activeTab' : null}><h4><a href={`#section${i}`}
+                <li id={`li${i}`}><h4><a href={`#ind${i}`}
                 id={`link${i}`}
                  tabIndex={!this.state.tabNumber ? i+1 : parseInt(this.state.tabNumber) === i ? null : -1}
                   aria-selected={this.state.tabNumber && i === parseInt(this.state.tabNumber) ? true: false}
@@ -93,16 +94,13 @@ class Tabbed extends React.Component {
         this.props.tabs.map((tab, i) => {
           return (
             <section id={`section${i}`}
-            className={'non-default'}
+            className={this.state.tabNumber ? i === parseInt(this.state.tabNumber) ? 'activeTab': 'inactiveTab' : i === 0 ? 'default' : null}
             tabIndex={!this.state.tabNumber ? this.state.numberOfTabs + i + 1 : '0'}>
             {this.props.tabs[i].content}
             </section>
           )
         })
       }
-      <section className='default' tabIndex={!this.state.tabNumber ? 2*this.state.numberOfTabs + 1 : '0'}>
-        {this.props.tabs[0].content}
-      </section>
       </div>
     )
   }
