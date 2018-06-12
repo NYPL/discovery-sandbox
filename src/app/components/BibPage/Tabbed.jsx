@@ -77,7 +77,8 @@ class Tabbed extends React.Component {
             return(
                 <li id={`li${i}`} className={parseInt(this.state.tabNumber) === i ? 'activeTab' : null}><h4><a href={`#section${i}`}
                 id={`link${i}`}
-                 tabIndex={!this.state.tabNumber ? i+1 : parseInt(this.state.tabNumber) === i ? null : -1}
+                //i+1
+                 tabIndex={!this.state.tabNumber ?  '0' : parseInt(this.state.tabNumber) === i ? null : -1}
                   aria-selected={this.state.tabNumber && i === parseInt(this.state.tabNumber) ? true: false}
                   role='tab'
                   data={`${i}`}
@@ -94,13 +95,15 @@ class Tabbed extends React.Component {
           return (
             <section id={`section${i}`}
             className={'non-default'}
-            tabIndex={!this.state.tabNumber ? this.state.numberOfTabs + i + 1 : '0'}>
+            //this.state.numberOfTabs + i + 1
+            tabIndex={!this.state.tabNumber ? '0' : '0'}>
             {this.props.tabs[i].content}
             </section>
           )
         })
       }
-      <section className='default' tabIndex={!this.state.tabNumber ? 2*this.state.numberOfTabs + 1 : '0'}>
+      //2*this.state.numberOfTabs + 1
+      <section className='default' tabIndex={!this.state.tabNumber ?  '0' : '0'}>
         {this.props.tabs[0].content}
       </section>
       </div>
