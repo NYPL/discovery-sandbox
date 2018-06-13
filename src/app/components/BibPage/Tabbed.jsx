@@ -94,7 +94,7 @@ class Tabbed extends React.Component {
         this.props.tabs.map((tab, i) => {
           return (
             <section id={`section${i}`}
-            className={'non-default'}
+            className={this.state.tabNumber? 'non-default' : null}
             //this.state.numberOfTabs + i + 1
             tabIndex={!this.state.tabNumber ? '0' : '0'}>
             {this.props.tabs[i].content}
