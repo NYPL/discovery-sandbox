@@ -32,7 +32,7 @@ class Tabbed extends React.Component {
         console.log(tab);
         tab.focus();
       } else {
-        window.location.href += "#section0"
+        // window.location.href += "#section0"
       }
       this.setState({tabNumber: this.props.hash[8] || '0'});
   }
@@ -42,7 +42,7 @@ class Tabbed extends React.Component {
     this.setState({ tabNumber: newTabIndex.toString() }); //prop vs attribute
     let newTab = document.getElementById(`link${newTabIndex}`);
     // newTab.click();
-    window.location.href = window.location.href.split('#')[0] + `#section${newTabIndex}`;
+    window.location.replace(window.location.href.split('#')[0] + `#section${newTabIndex}`);
     newTab.focus(); //this may need to be changed because of re-rendering and synchronicity issues
   }
 

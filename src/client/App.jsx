@@ -4,7 +4,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Router, useRouterHistory } from 'react-router';
 import createBrowserHistory from 'history/lib/createBrowserHistory';
-import useScroll from 'scroll-behavior/lib/useStandardScroll';
+import useScroll from 'scroll-behavior/lib/useSimpleScroll';
 import { config, gaUtils } from 'dgx-react-ga';
 import a11y from 'react-a11y';
 import Iso from 'iso';
