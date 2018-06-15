@@ -75,7 +75,7 @@ class Tabbed extends React.Component {
         <ul role='tablist'>
           { this.props.tabs.map((tab, i) => {
             return(
-                <li id={`li${i}`} className={parseInt(this.state.tabNumber) === i ? 'activeTab' : null}><h4><a href={`#section${i}`}
+                <li id={`li${i}`} className={parseInt(this.state.tabNumber) === i ? 'activeTab' : null}><h4><a href={`#li${i}`}
                 id={`link${i}`}
                 //i+1
                  tabIndex={!this.state.tabNumber ?  '0' : parseInt(this.state.tabNumber) === i ? null : -1}
@@ -89,24 +89,24 @@ class Tabbed extends React.Component {
           })
         }
 
-        </ul>
-      {
-        this.props.tabs.map((tab, i) => {
-          return (
-            <section id={`section${i}`}
-            className={this.state.tabNumber ? 'non-default' : 'non-default'}
-            //this.state.numberOfTabs + i + 1
-            tabIndex={!this.state.tabNumber ? '0' : '0'}>
-            {this.props.tabs[i].content}
-            </section>
-          )
-        })
-      }
-      //2*this.state.numberOfTabs + 1
-      <section className='default' tabIndex={!this.state.tabNumber ?  '0' : '0'}>
+        {
+          this.props.tabs.map((tab, i) => {
+            return (
+              <section id={`section${i}`}
+              className={this.state.tabNumber ? 'non-default' : 'non-default'}
+              //this.state.numberOfTabs + i + 1
+              tabIndex={!this.state.tabNumber ? '0' : '0'}>
+              {this.props.tabs[i].content}
+              </section>
+            )
+          })
+        }
+        //2*this.state.numberOfTabs + 1
+        <section className='default' tabIndex={!this.state.tabNumber ?  '0' : '0'}>
         {this.props.tabs[0].content}
-      </section>
-      </div>
+        </section>
+        </ul>
+        </div>
     )
   }
 

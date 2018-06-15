@@ -21,7 +21,7 @@ ul[role="tablist"]{
     margin: 0;
     margin-bottom: 20px;
     padding-left: 0px;
-    display: flex;
+    display: block;
     list-style-type: none; }
 
 ul[role="tablist"] >  li {
@@ -72,22 +72,54 @@ ul[role="tablist"] > li.activeTab {
 
 
 }
+.default {
+  display: block;
+}
+
+li:target ~ .default {
+  display: none;
+}
+
+li:target {
+  border: 1px solid black;
+  border-bottom: none;
+}
+
+li:target:after {
+  background-color: blue;
+  content: 'selected'
+}
+
+li:target > a > h4 {
+  color: black;
+}
 
 .non-default {
   display: none;
 }
 
-.default {
+#li0:target ~ #section0 {
   display: block;
 }
 
-.non-default:target {
+#li1:target ~ #section1 {
   display: block;
 }
-
-.non-default:target ~ .default {
-  display: none
-}
+// .non-default {
+//   display: none;
+// }
+//
+// .default {
+//   display: block;
+// }
+//
+// .non-default:target {
+//   display: block;
+// }
+//
+// .non-default:target ~ .default {
+//   display: none
+// }
 //
 // section {
 //   display: none;
