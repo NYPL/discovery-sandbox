@@ -8,6 +8,8 @@ class Tabbed extends React.Component {
     };
     this.clickHandler = this.clickHandler.bind(this);
     this.keyDownHandler = this.keyDownHandler.bind(this);
+    this.links = [];
+    this.sections = [];
   }
 
   // componentDidMount () {
@@ -23,26 +25,30 @@ class Tabbed extends React.Component {
   // }
 
   componentDidMount () {
-
+      let hashNumber = 0;
       if (this.props.hash) {
-        let hash = this.props.hash;
-        window.location.href += hash;
-        console.log(hash);
-        let tab = document.getElementById(`link${hash[8]}`);
-        console.log(tab);
+        let hash = this.props.hash
+        hashNumber = this.props.hash[3];
+        window.location.href += hash; //might want to change this?
+        //console.log(hash);
+        //let tab = document.getElementById(`link${hash[8]}`);
+        console.log(hashNumber);
+        let tab = this.links[hashNumber];
         tab.focus();
       } else {
         // window.location.href += "#section0"
       }
-      this.setState({tabNumber: this.props.hash[8] || '0'});
+      this.setState({tabNumber: hashNumber.toString() || '0'});
   }
 
   switchTab (newTabIndex) {
     // const index  = parseInt(newTab.getAttribute('data'));
     this.setState({ tabNumber: newTabIndex.toString() }); //prop vs attribute
-    let newTab = document.getElementById(`link${newTabIndex}`);
+    //let newTab = document.getElementById(`link${newTabIndex}`);
+    //console.log(this.links);
+    let newTab = this.links[newTabIndex];
     // newTab.click();
-    window.location.replace(window.location.href.split('#')[0] + `#section${newTabIndex}`);
+    window.location.replace(window.location.href.split('#')[0] + `#li${newTabIndex}`);
     newTab.focus(); //this may need to be changed because of re-rendering and synchronicity issues
   }
 
@@ -57,10 +63,12 @@ class Tabbed extends React.Component {
   }
 
   keyDownHandler (e) {
-    const sectionNumber = e.currentTarget.href.split("#")[1];
-    const panel = document.getElementById(sectionNumber);
+    //const sectionNumber = e.currentTarget.href.split("#")[1][2];
+    //const panel = document.getElementById(sectionNumber);
+    //let panel = this.refs.sections[sectionNumber];
+    //console.log(this.state.tabNumber)
+    let panel = window.location.href.split("#")[1] ? this.sections[this.state.tabNumber] : this.default
     const index = parseInt(e.currentTarget.getAttribute('data'));
-    console.log(e.currentTarget.href);
     let dir = e.which === 37 ? index - 1 : e.which === 39 ? index + 1 : e.which === 40 ? 'down' : null;
     if (dir !== null) {
       e.preventDefault();
@@ -83,7 +91,7 @@ class Tabbed extends React.Component {
                   data={`${i}`}
                   onClick={this.clickHandler}
                   onKeyDown={this.keyDownHandler}
-                  
+                  ref={(input) => {this.links[`${i}`] = input;}}
                   >{tab.title}</a></h4></li>
              )
           })
@@ -94,14 +102,18 @@ class Tabbed extends React.Component {
             return (
               <section id={`section${i}`}
               className={this.state.tabNumber ? 'non-default' : 'non-default'}
-              tabIndex={!this.state.tabNumber ? '0' : '0'}>
+              tabIndex={!this.state.tabNumber ? '0' : '0'}
+              ref={(input) => {this.sections[`${i}`] = input;}}
+              >
               <h4 hidden>{`Currently displaying ${this.props.tabs[i].title}`}</h4>
               {this.props.tabs[i].content}
               </section>
             )
           })
         }
-        <section className='default' tabIndex={!this.state.tabNumber ?  '0' : '0'}>
+        <section className='default' tabIndex={!this.state.tabNumber ?  '0' : '0'}
+        ref={(input) => {this.default = input;}}
+        >
         {this.props.tabs[0].content}
         </section>
         </ul>
