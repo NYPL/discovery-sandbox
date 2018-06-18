@@ -76,22 +76,27 @@ ul[role="tablist"] > li.activeTab {
   display: block;
 }
 
-li:target ~ .default {
-  display: none;
-}
+div .tabbed {
+  ul[role="tablist"] {
 
-li:target {
-  border: 1px solid black;
-  border-bottom: none;
-}
+  li:target ~ .default {
+    display: none;
+  }
 
-li:target:after {
-  background-color: blue;
-  content: 'selected'
-}
+  li:target {
+    border: 1px solid black;
+    border-bottom: none;
+  }
 
-li:target > a > h4 {
-  color: black;
+  li:target:after {
+    background-color: blue;
+    content: 'selected'
+  }
+
+  li:target > a > h4 {
+    color: black;
+  }
+}
 }
 
 .non-default {

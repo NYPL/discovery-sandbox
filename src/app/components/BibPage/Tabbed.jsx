@@ -114,6 +114,7 @@ class Tabbed extends React.Component {
         <section className='default' tabIndex={!this.state.tabNumber ?  '0' : '0'}
         ref={(input) => {this.default = input;}}
         >
+        <h4 hidden> Currently displaying Details </h4>
         {this.props.tabs[0].content}
         </section>
         </ul>
