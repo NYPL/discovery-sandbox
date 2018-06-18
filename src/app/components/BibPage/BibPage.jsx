@@ -120,6 +120,8 @@ class BibPage extends React.Component {
       }
     }
 
+    bib.items[0].owner[0].id === '0001'
+
     const bibDetails = (<BibDetails
       bib={bib}
       fields={bottomFields}

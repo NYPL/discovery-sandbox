@@ -1,4 +1,5 @@
 import React from 'react';
+import { trackDiscovery } from '../../utils/utils';
 
 class Tabbed extends React.Component {
   constructor(props){
@@ -42,6 +43,7 @@ class Tabbed extends React.Component {
   }
 
   switchTab (newTabIndex) {
+    trackDiscovery('Tab Switch', newTabIndex.toString());
     // const index  = parseInt(newTab.getAttribute('data'));
     this.setState({ tabNumber: newTabIndex.toString() }); //prop vs attribute
     //let newTab = document.getElementById(`link${newTabIndex}`);
@@ -83,7 +85,7 @@ class Tabbed extends React.Component {
         <ul role='tablist'>
           { this.props.tabs.map((tab, i) => {
             return(
-                <li id={`li${i}`} className={parseInt(this.state.tabNumber) === i ? 'activeTab' : null}><h4><a href={`#li${i}`}
+                <li id={`li${i}`} className={(parseInt(this.state.tabNumber) === i ? 'activeTab' : null) }><h4><a href={`#li${i}`}
                 id={`link${i}`}
                  tabIndex={!this.state.tabNumber ?  '0' : parseInt(this.state.tabNumber) === i ? null : -1}
                   aria-selected={this.state.tabNumber && i === parseInt(this.state.tabNumber) ? true: false}
@@ -96,6 +98,7 @@ class Tabbed extends React.Component {
              )
           })
         }
+        <li className={"blank"}>" "</li>
 
         {
           this.props.tabs.map((tab, i) => {

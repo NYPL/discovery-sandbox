@@ -17,6 +17,7 @@ div .tabbed {
   box-shadow: inset 0 0 0 4px lightBlue;
 }
 
+
 ul[role="tablist"]{
     margin: 0;
     margin-bottom: 20px;
@@ -62,14 +63,21 @@ ul[role="tablist"] > li.activeTab {
     color: black;
   }
 
-  ul[role="tablist"]::after {
-    border-bottom: 1px solid black;
-    color: white;
-    padding: 10px;
-    content: "";
-    width: 50%;
-  }
+  // ul[role="tablist"]::after {
+  //   border-bottom: 1px solid black;
+  //   color: white;
+  //   padding: 10px;
+  //   content: "";
+  //   width: 50%;
+  // }
 
+.blank {
+  border-bottom: 1px solid black;
+   color: white;
+   //padding: 10px;
+   content: "";
+   width: 50%;
+}
 
 }
 .default {
@@ -89,6 +97,8 @@ div .tabbed {
   }
 
   li:target:after {
+    position: absolute;
+    visibility: hidden;
     background-color: blue;
     content: 'selected'
   }
