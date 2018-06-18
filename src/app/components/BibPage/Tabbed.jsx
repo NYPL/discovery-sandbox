@@ -77,13 +77,13 @@ class Tabbed extends React.Component {
             return(
                 <li id={`li${i}`} className={parseInt(this.state.tabNumber) === i ? 'activeTab' : null}><h4><a href={`#li${i}`}
                 id={`link${i}`}
-                //i+1
                  tabIndex={!this.state.tabNumber ?  '0' : parseInt(this.state.tabNumber) === i ? null : -1}
                   aria-selected={this.state.tabNumber && i === parseInt(this.state.tabNumber) ? true: false}
                   role='tab'
                   data={`${i}`}
                   onClick={this.clickHandler}
                   onKeyDown={this.keyDownHandler}
+                  
                   >{tab.title}</a></h4></li>
              )
           })
@@ -94,14 +94,13 @@ class Tabbed extends React.Component {
             return (
               <section id={`section${i}`}
               className={this.state.tabNumber ? 'non-default' : 'non-default'}
-              //this.state.numberOfTabs + i + 1
               tabIndex={!this.state.tabNumber ? '0' : '0'}>
+              <h4 hidden>{`Currently displaying ${this.props.tabs[i].title}`}</h4>
               {this.props.tabs[i].content}
               </section>
             )
           })
         }
-        //2*this.state.numberOfTabs + 1
         <section className='default' tabIndex={!this.state.tabNumber ?  '0' : '0'}>
         {this.props.tabs[0].content}
         </section>
