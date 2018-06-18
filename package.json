@@ -5,9 +5,9 @@
   "main": "index.js",
   "scripts": {
     "start": "node index",
-    "prod-start": "NODE_ENV=production APP_ENV=production node index",
-    "dev-api-start": "APP_ENV=development KMS_ENV=unencrypted node index",
-    "prod-api-start": "APP_ENV=production KMS_ENV=encrypted node index",
+    "prod-start": "NODE_ENV=production PLATFORM_API_BASE_URL=https://platform.nypl.org/api/v0.1 node index",
+    "dev-api-start": "PLATFORM_API_BASE_URL=https://dev-platform.nypl.org/api/v0.1 KMS_ENV=unencrypted node index",
+    "prod-api-start": "PLATFORM_API_BASE_URL=https://platform.nypl.org/api/v0.1 KMS_ENV=encrypted node index",
     "eb-start": "npm run dist && node index",
     "dist": "NODE_ENV=production webpack --config webpack.config.js",
     "postinstall": "npm run dist",
