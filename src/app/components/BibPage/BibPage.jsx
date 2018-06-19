@@ -37,10 +37,47 @@ class BibPage extends React.Component {
     if(!this.props.location.hash){
       document.getElementById('bib-title').focus();
     }
+    window.bibDetails = this.state.bibDetails;
   }
 
   updateIsLoadingState(status) {
     this.setState({ isLoading: status });
+  }
+
+  /*
+  * getOwner(bib)
+  * This is currently only for non-NYPL partner items. If it's NYPL, it should return undefined.
+  * Requirement: Look at all the owners of all the items and if they were all the same and
+  * not NYPL, show that as the owning institution and otherwise show nothing.
+  * @param {object} bibId
+  * @return {string}
+  */
+
+  getOwner(bib) {
+    const items = bib.items;
+    const ownerArr = [];
+    let owner;
+
+    if (!items || !items.length) {
+      return null;
+    }
+
+    items.forEach((item) => {
+      const ownerObj = item.owner && item.owner.length ? item.owner[0].prefLabel : undefined;
+
+      ownerArr.push(ownerObj);
+    });
+
+    // From above, check to see if all the owners are the same, and if so, proceed if the owner
+    // is either Princeton or Columbia.
+    if (_every(ownerArr, o => (o === ownerArr[0]))) {
+      if ((ownerArr[0] === 'Princeton University Library') ||
+      (ownerArr[0] === 'Columbia University Libraries')) {
+        owner = ownerArr[0];
+      }
+    }
+
+    return owner;
   }
 
   render() {
@@ -107,6 +144,19 @@ class BibPage extends React.Component {
     // Related to removing MarcRecord because the webpack MarcRecord is not working. Sep/28/2017
     // const marcRecord = isNYPLReCAP ? <MarcRecord bNumber={bNumber[0]} /> : null;
 
+    const bibDetails = (<BibDetails
+      bib={bib}
+      fields={bottomFields}
+      electronicResources={aggregatedElectronicResources}
+      updateIsLoadingState={this.updateIsLoadingState}
+      />);
+
+    const additionalDetails = (<AdditionalDetailsViewer bib={bib}/>);
+
+
+    const otherLibraries = ['Princeton University Library', 'Columbia University Libraries'];
+    const tabs = otherLibraries.includes(this.getOwner(bib)) ? [{title: 'Details', content: bibDetails}] : [{title: 'Details', content: bibDetails}, {title: 'Full Description', content: additionalDetails}];
+
     const tabItems = (index) => {
       if (index === 0) {
         return (<BibDetails
@@ -120,16 +170,14 @@ class BibPage extends React.Component {
       }
     }
 
-    bib.items[0].owner[0].id === '0001'
 
-    const bibDetails = (<BibDetails
-      bib={bib}
-      fields={bottomFields}
-      electronicResources={aggregatedElectronicResources}
-      updateIsLoadingState={this.updateIsLoadingState}
-    />);
 
-    const additionalDetails = (<AdditionalDetailsViewer bib={bib}/>);
+
+    //bib.items && bib.items[0] && bib.items[0].owner && bib.items[0].owner[0] && bib.items[0].owner[0].id && bib.items[0].owner[0].id !== '0001'
+
+
+
+    //const tabs = otherLibraries.includes(bibDetails.getOwner(bib)) ? [{title: 'Details', content: bibDetails}] : [{title: 'Details', content: bibDetails}, {title: 'Full Description', content: additionalDetails}]
 
     return (
       <DocumentTitle title="Item Details | Shared Collection Catalog | NYPL">
@@ -181,7 +229,7 @@ class BibPage extends React.Component {
                   {itemHoldings}
 
                   <h3>Placeholder Heading</h3>
-                  <Tabbed tabItems={tabItems} tabs={[{title: 'Details', content: bibDetails}, {title: 'Full Description', content: additionalDetails}]}
+                  <Tabbed tabItems={tabItems} tabs={tabs}
                   hash={this.props.location.hash}/>
                 </div>
               </div>

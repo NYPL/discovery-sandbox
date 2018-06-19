@@ -18,6 +18,12 @@ import DefinitionList from './DefinitionList';
 import appConfig from '../../../../appConfig';
 
 class BibDetails extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.owner = this.getOwner(this.props.bib);
+  }
+
   /*
    * getOwner(bib)
    * This is currently only for non-NYPL partner items. If it's NYPL, it should return undefined.
@@ -26,6 +32,7 @@ class BibDetails extends React.Component {
    * @param {object} bibId
    * @return {string}
    */
+
   getOwner(bib) {
     const items = bib.items;
     const ownerArr = [];
