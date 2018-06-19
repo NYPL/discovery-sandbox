@@ -107,6 +107,7 @@ class Tabbed extends React.Component {
               className={this.state.tabNumber ? 'non-default' : 'non-default'}
               tabIndex={!this.state.tabNumber ? '0' : '0'}
               ref={(input) => {this.sections[`${i}`] = input;}}
+              aria-describedby={`link${i}`}
               >
               <h4 hidden>{`Currently displaying ${this.props.tabs[i].title}`}</h4>
               {this.props.tabs[i].content}
@@ -116,6 +117,7 @@ class Tabbed extends React.Component {
         }
         <section className='default' tabIndex={!this.state.tabNumber ?  '0' : '0'}
         ref={(input) => {this.default = input;}}
+        aria-describedby={'link0'}
         >
         <h4 hidden> Currently displaying Details </h4>
         {this.props.tabs[0].content}
