@@ -43,7 +43,6 @@ class Tabbed extends React.Component {
   }
 
   switchTab (newTabIndex) {
-    trackDiscovery('Tab Switch', newTabIndex.toString());
     // const index  = parseInt(newTab.getAttribute('data'));
     this.setState({ tabNumber: newTabIndex.toString() }); //prop vs attribute
     //let newTab = document.getElementById(`link${newTabIndex}`);
@@ -60,8 +59,10 @@ class Tabbed extends React.Component {
     let index = clickedTab.getAttribute('data');
     // window.location.href = window.location.href.split("#")[0] + `#dummy${index}`;
     if (index !== this.state.tabNumber) {
-      this.switchTab(index);
+      const tabChoices = ['Details', 'Full Description'];
+      trackDiscovery('BibPage Tabs Switch', tabChoices[index]);
     }
+    this.switchTab(index);
   }
 
   keyDownHandler (e) {
@@ -107,9 +108,8 @@ class Tabbed extends React.Component {
               className={this.state.tabNumber ? 'non-default' : 'non-default'}
               tabIndex={!this.state.tabNumber ? '0' : '0'}
               ref={(input) => {this.sections[`${i}`] = input;}}
-              aria-describedby={`link${i}`}
+              aria-labelledby={`link${i}`}
               >
-              <h4 hidden>{`Currently displaying ${this.props.tabs[i].title}`}</h4>
               {this.props.tabs[i].content}
               </section>
             )
@@ -117,9 +117,8 @@ class Tabbed extends React.Component {
         }
         <section className='default' tabIndex={!this.state.tabNumber ?  '0' : '0'}
         ref={(input) => {this.default = input;}}
-        aria-describedby={'link0'}
+        aria-labelledby={'link0'}
         >
-        <h4 hidden> Currently displaying Details </h4>
         {this.props.tabs[0].content}
         </section>
         </ul>

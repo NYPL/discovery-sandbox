@@ -140,6 +140,7 @@ if (!isProduction) {
     publicPath: webpackConfig.output.publicPath,
     hot: true,
     stats: false,
+    //disableHostCheck: true,
     historyApiFallback: true,
     headers: {
       'Access-Control-Allow-Origin': 'http://localhost:3001',

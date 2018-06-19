@@ -96,12 +96,11 @@ div .tabbed {
     border-bottom: none;
   }
 
-  li:target:after {
-    position: absolute;
-    visibility: hidden;
-    background-color: blue;
-    content: 'selected'
-  }
+  // li:target:after {
+  //   position: absolute;
+  //   background-color: blue;
+  //   content: 'selected'
+  // }
 
   li:target > a > h4 {
     color: black;
