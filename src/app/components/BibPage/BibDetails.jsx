@@ -16,12 +16,13 @@ import {
 } from '../../utils/utils';
 import DefinitionList from './DefinitionList';
 import appConfig from '../../../../appConfig';
+import getOwner from '../../utils/getOwner';
 
 class BibDetails extends React.Component {
 
   constructor(props) {
     super(props);
-    this.owner = this.getOwner(this.props.bib);
+    this.owner = getOwner(this.props.bib);
   }
 
   /*
@@ -33,32 +34,32 @@ class BibDetails extends React.Component {
    * @return {string}
    */
 
-  getOwner(bib) {
-    const items = bib.items;
-    const ownerArr = [];
-    let owner;
-
-    if (!items || !items.length) {
-      return null;
-    }
-
-    items.forEach((item) => {
-      const ownerObj = item.owner && item.owner.length ? item.owner[0].prefLabel : undefined;
-
-      ownerArr.push(ownerObj);
-    });
-
-    // From above, check to see if all the owners are the same, and if so, proceed if the owner
-    // is either Princeton or Columbia.
-    if (_every(ownerArr, o => (o === ownerArr[0]))) {
-      if ((ownerArr[0] === 'Princeton University Library') ||
-        (ownerArr[0] === 'Columbia University Libraries')) {
-        owner = ownerArr[0];
-      }
-    }
-
-    return owner;
-  }
+  // getOwner(bib) {
+  //   const items = bib.items;
+  //   const ownerArr = [];
+  //   let owner;
+  //
+  //   if (!items || !items.length) {
+  //     return null;
+  //   }
+  //
+  //   items.forEach((item) => {
+  //     const ownerObj = item.owner && item.owner.length ? item.owner[0].prefLabel : undefined;
+  //
+  //     ownerArr.push(ownerObj);
+  //   });
+  //
+  //   // From above, check to see if all the owners are the same, and if so, proceed if the owner
+  //   // is either Princeton or Columbia.
+  //   if (_every(ownerArr, o => (o === ownerArr[0]))) {
+  //     if ((ownerArr[0] === 'Princeton University Library') ||
+  //       (ownerArr[0] === 'Columbia University Libraries')) {
+  //       owner = ownerArr[0];
+  //     }
+  //   }
+  //
+  //   return owner;
+  // }
 
   /*
    * Return note array or null.
@@ -300,7 +301,7 @@ class BibDetails extends React.Component {
 
       // The Owner is complicated too.
       if (fieldLabel === 'Owning Institutions') {
-        const owner = this.getOwner(this.props.bib);
+        const owner = getOwner(this.props.bib);
         if (owner) {
           fieldsToRender.push({
             term: fieldLabel,

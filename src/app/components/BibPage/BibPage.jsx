@@ -13,6 +13,7 @@ import LibraryItem from '../../utils/item';
 import BackLink from './BackLink';
 import AdditionalDetailsViewer from './AdditionalDetailsViewer';
 import Tabbed from './Tabbed';
+import getOwner from '../../utils/getOwner';
 // Removed MarcRecord because the webpack MarcRecord is not working. Sep/28/2017
 // import MarcRecord from './MarcRecord';
 
@@ -53,32 +54,32 @@ class BibPage extends React.Component {
   * @return {string}
   */
 
-  getOwner(bib) {
-    const items = bib.items;
-    const ownerArr = [];
-    let owner;
-
-    if (!items || !items.length) {
-      return null;
-    }
-
-    items.forEach((item) => {
-      const ownerObj = item.owner && item.owner.length ? item.owner[0].prefLabel : undefined;
-
-      ownerArr.push(ownerObj);
-    });
-
-    // From above, check to see if all the owners are the same, and if so, proceed if the owner
-    // is either Princeton or Columbia.
-    if (_every(ownerArr, o => (o === ownerArr[0]))) {
-      if ((ownerArr[0] === 'Princeton University Library') ||
-      (ownerArr[0] === 'Columbia University Libraries')) {
-        owner = ownerArr[0];
-      }
-    }
-
-    return owner;
-  }
+  // getOwner(bib) {
+  //   const items = bib.items;
+  //   const ownerArr = [];
+  //   let owner;
+  //
+  //   if (!items || !items.length) {
+  //     return null;
+  //   }
+  //
+  //   items.forEach((item) => {
+  //     const ownerObj = item.owner && item.owner.length ? item.owner[0].prefLabel : undefined;
+  //
+  //     ownerArr.push(ownerObj);
+  //   });
+  //
+  //   // From above, check to see if all the owners are the same, and if so, proceed if the owner
+  //   // is either Princeton or Columbia.
+  //   if (_every(ownerArr, o => (o === ownerArr[0]))) {
+  //     if ((ownerArr[0] === 'Princeton University Library') ||
+  //     (ownerArr[0] === 'Columbia University Libraries')) {
+  //       owner = ownerArr[0];
+  //     }
+  //   }
+  //
+  //   return owner;
+  // }
 
   render() {
     const createAPIQuery = basicQuery(this.props);
@@ -155,7 +156,7 @@ class BibPage extends React.Component {
 
 
     const otherLibraries = ['Princeton University Library', 'Columbia University Libraries'];
-    const tabs = otherLibraries.includes(this.getOwner(bib)) ? [{title: 'Details', content: bibDetails}] : [{title: 'Details', content: bibDetails}, {title: 'Full Description', content: additionalDetails}];
+    const tabs = otherLibraries.includes(getOwner(bib)) ? [{title: 'Details', content: bibDetails}] : [{title: 'Details', content: bibDetails}, {title: 'Full Description', content: additionalDetails}];
 
     const tabItems = (index) => {
       if (index === 0) {
