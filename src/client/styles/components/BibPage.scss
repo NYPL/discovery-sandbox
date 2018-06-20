@@ -30,6 +30,7 @@ ul[role="tablist"] >  li {
           border-bottom: 1px solid black;
           display: table-cell;
           margin-bottom: 0;
+          white-space: nowrap;
         }
 
 ul[role="tablist"] > li.activeTab {
