@@ -93,7 +93,7 @@ class Tabbed extends React.Component {
           { this.props.tabs.map((tab, i) => {
             let j = i + 1;
             return(
-                <li id={`tab${j}`} className={(parseInt(this.state.tabNumber) === j ? 'activeTab' : null) }><h4><a href={`#tab${j}`}
+                <li id={`tab${j}`} className={(parseInt(this.state.tabNumber) === j ? 'activeTab' : null) } role='presentation'><h4 role='presentation'><a href={`#tab${j}`}
                 id={`link${j}`}
                  tabIndex={!this.state.tabNumber ?  '0' : parseInt(this.state.tabNumber) === j ? null : -1}
                   aria-selected={this.state.tabNumber && j === parseInt(this.state.tabNumber) ? true: false}
