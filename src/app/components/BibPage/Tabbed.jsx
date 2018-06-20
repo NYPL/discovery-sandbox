@@ -43,8 +43,17 @@ class Tabbed extends React.Component {
       this.setState({tabNumber: hashNumber.toString() || '0'});
   }
 
+  focusTab (newTabIndex) {
+    let newTab = this.links[newTabIndex];
+    newTab.focus();
+  }
+
   switchTab (newTabIndex) {
     // const index  = parseInt(newTab.getAttribute('data'));
+    if (newTabIndex !== this.state.tabNumber) {
+      const tabChoices = ['Details', 'Full Description'];
+      trackDiscovery('BibPage Tabs Switch', tabChoices[newTabIndex]);
+    }
     this.setState({ tabNumber: newTabIndex.toString() }); //prop vs attribute
     //let newTab = document.getElementById(`link${newTabIndex}`);
     //console.log(this.links);
@@ -59,10 +68,6 @@ class Tabbed extends React.Component {
     let clickedTab = e.currentTarget;
     let index = clickedTab.getAttribute('data');
     // window.location.href = window.location.href.split("#")[0] + `#dummy${index}`;
-    if (index !== this.state.tabNumber) {
-      const tabChoices = ['Details', 'Full Description'];
-      trackDiscovery('BibPage Tabs Switch', tabChoices[index]);
-    }
     this.switchTab(index);
   }
 
@@ -76,7 +81,7 @@ class Tabbed extends React.Component {
     let dir = e.which === 37 ? index - 1 : e.which === 39 ? index + 1 : e.which === 40 ? 'down' : null;
     if (dir !== null) {
       e.preventDefault();
-      dir ===  'down' ? panel.focus() : dir < this.state.numberOfTabs && 0 <= dir ? this.switchTab(dir) : void 0;
+      dir ===  'down' ? panel.focus() : dir < this.state.numberOfTabs && 0 <= dir ? this.focusTab(dir) : void 0;
     }
   }
 
