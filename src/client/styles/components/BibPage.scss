@@ -113,13 +113,18 @@ div .tabbed {
   display: none;
 }
 
-#tab0:target ~ #section0 {
-  display: block;
+@for $i from 0 through 1 {
+  #tab#{$i}:target ~ #section#{$i} {
+    display: block;
+  }
 }
-
-#tab1:target ~ #section1 {
-  display: block;
-}
+// #tab0:target ~ #section0 {
+//   display: block;
+// }
+//
+// #tab1:target ~ #section1 {
+//   display: block;
+// }
 // .non-default {
 //   display: none;
 // }
