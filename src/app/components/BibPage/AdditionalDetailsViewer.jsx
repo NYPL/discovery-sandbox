@@ -39,7 +39,6 @@ class AdditionalDetailsViewer extends React.Component {
     // <button onClick = {this.toggleState}>{this.state.display ? "Hide Full Record" : "View Full Record"}</button>
     return(
       <div>
-      <br/>
       {this.state.display && annotatedMarcDetails ? (
         <div className={"additionalDetails"} style={{padding: '5px 20px', position: 'relative', left: '-20px'}}>
           <DefinitionList data={annotatedMarcDetails} />

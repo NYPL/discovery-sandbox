@@ -29,7 +29,7 @@ class Tabbed extends React.Component {
       let hashNumber = 0;
       if (this.props.hash) {
         let hash = this.props.hash
-        hashNumber = this.props.hash[3];
+        hashNumber = this.props.hash[4];
         window.location.href += hash; //might want to change this?
         //console.log(hash);
         //let tab = document.getElementById(`link${hash[8]}`);
@@ -49,7 +49,7 @@ class Tabbed extends React.Component {
     //console.log(this.links);
     let newTab = this.links[newTabIndex];
     // newTab.click();
-    window.location.replace(window.location.href.split('#')[0] + `#li${newTabIndex}`);
+    window.location.replace(window.location.href.split('#')[0] + `#tab${newTabIndex}`);
     newTab.focus(); //this may need to be changed because of re-rendering and synchronicity issues
   }
 
@@ -86,7 +86,7 @@ class Tabbed extends React.Component {
         <ul role='tablist'>
           { this.props.tabs.map((tab, i) => {
             return(
-                <li id={`li${i}`} className={(parseInt(this.state.tabNumber) === i ? 'activeTab' : null) }><h4><a href={`#li${i}`}
+                <li id={`tab${i}`} className={(parseInt(this.state.tabNumber) === i ? 'activeTab' : null) }><h4><a href={`#tab${i}`}
                 id={`link${i}`}
                  tabIndex={!this.state.tabNumber ?  '0' : parseInt(this.state.tabNumber) === i ? null : -1}
                   aria-selected={this.state.tabNumber && i === parseInt(this.state.tabNumber) ? true: false}
@@ -110,6 +110,7 @@ class Tabbed extends React.Component {
               ref={(input) => {this.sections[`${i}`] = input;}}
               aria-labelledby={`link${i}`}
               >
+              <br/>
               {this.props.tabs[i].content}
               </section>
             )
@@ -119,6 +120,7 @@ class Tabbed extends React.Component {
         ref={(input) => {this.default = input;}}
         aria-labelledby={'link0'}
         >
+        <br/>
         {this.props.tabs[0].content}
         </section>
         </ul>

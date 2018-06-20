@@ -113,11 +113,11 @@ div .tabbed {
   display: none;
 }
 
-#li0:target ~ #section0 {
+#tab0:target ~ #section0 {
   display: block;
 }
 
-#li1:target ~ #section1 {
+#tab1:target ~ #section1 {
   display: block;
 }
 // .non-default {
