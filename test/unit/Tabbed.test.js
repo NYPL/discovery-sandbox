@@ -138,14 +138,14 @@ describe('Tabbed', () => {
 
   const additionalDetails = (<AdditionalDetailsViewer bib={sampleBib}/>);
 
-  let component = mount(<Tabbed tabs={[{title: 'Details', content: bibDetails}, {title: 'Full Description', content: additionalDetails}]} />, {attachTo: document.body });
+  let component = mount(<Tabbed tabs={[{title: 'Details', content: bibDetails}, {title: 'Full Description', content: additionalDetails}]} />);
   let details = component.find('a').at(0);
   let fullDescription = component.find('a').at(1);
 
   describe('Initial Rendering', () => {
-
+    console.log(component.html());
     it('should focus on Details', () => {
-      expect(component.find('a').length).to.equal(2);
+      expect(component.find('a').length).to.be.at.least(2);
       expect(component.find('a').at(0).prop('aria-selected')).to.equal(true);
       expect(component.find('a').at(0).text()).to.equal('Details');
     });
@@ -158,10 +158,10 @@ describe('Tabbed', () => {
   describe('Navigating with Click', () => {
 
     it('should focus on Full Description on click', () => {
-      let spy = sinon.spy(Tabbed.prototype, 'clickHandler');
+      //let spy = sinon.spy(Tabbed.prototype, 'clickHandler');
       fullDescription.simulate('click');
       let focused = document.activeElement;
-      console.log(focused.outerHTML);
+      //console.log(focused.outerHTML);
       expect(fullDescription.node).to.equal(focused);
       // expect(spy.calledOnce).to.equal(true);
     });
@@ -176,39 +176,42 @@ describe('Tabbed', () => {
   describe('Navigating with Key Press', () => {
 
     it('should focus on Full Description on Right Arrow Press', () => {
-      details.simulate('keypress', { keyCode: 39 });
-      setTimeout(() => {
-        let focused = document.activeElement;
-        // console.log(focused.outerHTML);
-        expect(fullDescription.node).to.equal(focused);
-      }, 0);
+      details.simulate('keydown', { keyCode: 39, which: 39 });
+      let focused = document.activeElement;
+      // console.log(focused.outerHTML);
+      expect(fullDescription.node).to.equal(focused);
     });
 
     it('should focus on Details on Left Arrow Press', () => {
-      fullDescription.simulate('keypress', {keycode: 37});
-      setTimeout(() => {
-        let focused = document.activeElement;
-        expect(details.node).to.equal(focused);
-      }, 0);
+      fullDescription.simulate('keydown', {keycode: 37, which: 37});
+      let focused = document.activeElement;
+      expect(details.node).to.equal(focused);
     });
 
-    it('should focus on section when tab is pressed', () => {
-      details.simulate('keypress', {keycode: 9});
-      setTimeout(() => {
-        let focused = document.activeElement;
-        expect(component.find('section').at(0)).to.equal(focused);
-      }, 0);
-    });
-
-    it('should focus on Details when shift tab is pressed', () => {
+    it('should focus on panel on Down Arrow Press', () => {
+      details.simulate('keydown', {keycode: 40, which: 40});
+      let focused = document.activeElement;
       let section = component.find('section').at(0);
-      section.simulate('keydown', {keycode: 16});
-      section.simulate('keydown', {keycode: 9});
-      setTimeout(() => {
-        let focused = document.activeElement;
-        expect(details.node).to.equal(focused);
-      });
+      expect(section.node).to.equal(focused);
     });
 
+  });
+
+  describe('Displaying Correct Tab on Click', () => {
+    it('should display Full Description when clicked', () => {
+      fullDescription.simulate('click');
+      fullDescription.simulate('keydown', {keycode: 40, which: 40});
+      let focused = document.activeElement;
+      let section = component.find('section').at(1);
+      expect(section.node).to.equal(focused);
+    });
+
+    it('should display Details when clicked', () => {
+      details.simulate('click');
+      details.simulate('keydown', {keycode: 40, which: 40});
+      let focused = document.activeElement;
+      let section = component.find('section').at(0);
+      expect(section.node).to.equal(focused);
+    });
   });
 })

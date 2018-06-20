@@ -104,38 +104,11 @@ describe('AdditionalDetailsViewer', () => {
 
 let component = mount(<AdditionalDetailsViewer bib={sampleBib}/>);
 
-describe('Initial Rendering', () => {
-
-  it('should render with a button to see additional details', () => {
-    expect(component.find('button').length).to.equal(1);
-  });
-
-  it('should say \'View Full Record\' ', () => {
-    expect(component.find('button').at(0).text()).to.equal("View Full Record");
-  });
-
-  it('should not render the word \'Source\'', () => {
-    expect(component.find('h3').length).to.equal(0);
-  });
-
-  it('should not render the annotated MARC details', () => {
-    expect(component.find('dd').length).to.equal(0); //is there a way of making this play well with React?
-  });
-
-});
 
 describe('After Clicking on Button', () => {
 
-  let link ;
+  let link = component.find('a');
 
-  before(() => {
-    component.find('button').at(0).simulate('click');
-    link = component.find('a');
-  });
-
-  it('should update the button text to \'Hide Full Record\'', () => {
-    expect(component.find('button').at(0).text()).to.equal("Hide Full Record")
-  });
 
   //These tests should be changed to be more informative
 

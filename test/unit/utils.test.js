@@ -30,7 +30,7 @@ describe('ajaxCall', () => {
     });
   });
 
-  describe.only('Good call', () => {
+  describe('Good call', () => {
     before(() => {
       mock
         .onGet('/api?q=locofocos')
