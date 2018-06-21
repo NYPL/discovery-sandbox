@@ -34,52 +34,15 @@ class BibPage extends React.Component {
   }
 
   componentDidMount() {
-    // console.log(this.props.location.hash);
     if(!this.props.location.hash){
       document.getElementById('bib-title').focus();
     }
-    window.bibDetails = this.state.bibDetails;
   }
 
   updateIsLoadingState(status) {
     this.setState({ isLoading: status });
   }
 
-  /*
-  * getOwner(bib)
-  * This is currently only for non-NYPL partner items. If it's NYPL, it should return undefined.
-  * Requirement: Look at all the owners of all the items and if they were all the same and
-  * not NYPL, show that as the owning institution and otherwise show nothing.
-  * @param {object} bibId
-  * @return {string}
-  */
-
-  // getOwner(bib) {
-  //   const items = bib.items;
-  //   const ownerArr = [];
-  //   let owner;
-  //
-  //   if (!items || !items.length) {
-  //     return null;
-  //   }
-  //
-  //   items.forEach((item) => {
-  //     const ownerObj = item.owner && item.owner.length ? item.owner[0].prefLabel : undefined;
-  //
-  //     ownerArr.push(ownerObj);
-  //   });
-  //
-  //   // From above, check to see if all the owners are the same, and if so, proceed if the owner
-  //   // is either Princeton or Columbia.
-  //   if (_every(ownerArr, o => (o === ownerArr[0]))) {
-  //     if ((ownerArr[0] === 'Princeton University Library') ||
-  //     (ownerArr[0] === 'Columbia University Libraries')) {
-  //       owner = ownerArr[0];
-  //     }
-  //   }
-  //
-  //   return owner;
-  // }
 
   render() {
     const createAPIQuery = basicQuery(this.props);
@@ -171,14 +134,6 @@ class BibPage extends React.Component {
       }
     }
 
-
-
-
-    //bib.items && bib.items[0] && bib.items[0].owner && bib.items[0].owner[0] && bib.items[0].owner[0].id && bib.items[0].owner[0].id !== '0001'
-
-
-
-    //const tabs = otherLibraries.includes(bibDetails.getOwner(bib)) ? [{title: 'Details', content: bibDetails}] : [{title: 'Details', content: bibDetails}, {title: 'Full Description', content: additionalDetails}]
 
     return (
       <DocumentTitle title="Item Details | Shared Collection Catalog | NYPL">

@@ -21,7 +21,6 @@ if (loadA11y) {
 
 window.onload = () => {
   if (!window.ga) {
-    console.log(`process.env.GA_ENV: ${process.env.GA_ENV}`)
     const isProd = process.env.GA_ENV === 'development' ? false : process.env.NODE_ENV === 'production';
     const gaOpts = { debug: !isProd, titleCase: false };
 

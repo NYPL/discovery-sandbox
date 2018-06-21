@@ -143,7 +143,6 @@ describe('Tabbed', () => {
   let fullDescription = component.find('a').at(1);
 
   describe('Initial Rendering', () => {
-    console.log(component.html());
     it('should focus on Details', () => {
       expect(component.find('a').length).to.be.at.least(2);
       expect(component.find('a').at(0).prop('aria-selected')).to.equal(true);
@@ -158,12 +157,9 @@ describe('Tabbed', () => {
   describe('Navigating with Click', () => {
 
     it('should focus on Full Description on click', () => {
-      //let spy = sinon.spy(Tabbed.prototype, 'clickHandler');
       fullDescription.simulate('click');
       let focused = document.activeElement;
-      //console.log(focused.outerHTML);
       expect(fullDescription.node).to.equal(focused);
-      // expect(spy.calledOnce).to.equal(true);
     });
 
     it('should focus on Details when clicked back', () => {
@@ -178,7 +174,6 @@ describe('Tabbed', () => {
     it('should focus on Full Description on Right Arrow Press', () => {
       details.simulate('keydown', { keyCode: 39, which: 39 });
       let focused = document.activeElement;
-      // console.log(focused.outerHTML);
       expect(fullDescription.node).to.equal(focused);
     });
 

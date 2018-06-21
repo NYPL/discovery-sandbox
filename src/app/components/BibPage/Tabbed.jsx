@@ -13,32 +13,17 @@ class Tabbed extends React.Component {
     this.sections = [];
   }
 
-  // componentDidMount () {
-  //   if(!this.state.tabNumber){
-  //     let tab;
-  //     if(this.props.hash){
-  //       tab = document.getElementById(`link${this.props.hash[4]}`);
-  //     }
-  //     let tabNum = this.props.hash[4] || '0';
-  //     this.setState({ tabNumber: tabNum });
-  //     window.location.href = window.location.href.split("#")[0] + `#ind${tabNum}`;
-  //   }
-  // }
+  //componentDidMount will set the initial tab, either 1 or the number fetched from the
+  //url hash (to accommodate deep linking)
 
   componentDidMount () {
       let hashNumber = 1;
       if (this.props.hash) {
-        let hash = this.props.hash
-        //hashNumber = this.props.hash[4];
+        let hash = this.props.hash;
         hashNumber = this.props.hash.match(/[^\d]*(\d)/)[1];
-        window.location.href += hash; //might want to change this?
-        //console.log(hash);
-        //let tab = document.getElementById(`link${hash[8]}`);
-        console.log(hashNumber);
+        window.location.href += hash;
         let tab = this.links[hashNumber];
         tab.focus();
-      } else {
-        // window.location.href += "#section0"
       }
       this.setState({tabNumber: hashNumber.toString()});
   }
@@ -48,34 +33,29 @@ class Tabbed extends React.Component {
     newTab.focus();
   }
 
+  //switches tabs by updating state and href
+
   switchTab (newTabIndex) {
-    // const index  = parseInt(newTab.getAttribute('data'));
     if (newTabIndex !== this.state.tabNumber) {
       const tabChoices = ['Details', 'Full Description'];
       trackDiscovery('BibPage Tabs Switch', tabChoices[newTabIndex-1]);
     }
-    this.setState({ tabNumber: newTabIndex.toString() }); //prop vs attribute
-    //let newTab = document.getElementById(`link${newTabIndex}`);
-    //console.log(this.links);
+    this.setState({ tabNumber: newTabIndex.toString() });
     let newTab = this.links[newTabIndex];
-    // newTab.click();
     window.location.replace(window.location.href.split('#')[0] + `#tab${newTabIndex}`);
-    newTab.focus(); //this may need to be changed because of re-rendering and synchronicity issues
+    newTab.focus();
   }
 
   clickHandler (e) {
     e.preventDefault();
     let clickedTab = e.currentTarget;
     let index = clickedTab.getAttribute('data');
-    // window.location.href = window.location.href.split("#")[0] + `#dummy${index}`;
     this.switchTab(index);
   }
 
+  //enables navigation with arrow keys
+  
   keyDownHandler (e) {
-    //const sectionNumber = e.currentTarget.href.split("#")[1][2];
-    //const panel = document.getElementById(sectionNumber);
-    //let panel = this.refs.sections[sectionNumber];
-    //console.log(this.state.tabNumber)
     let panel = window.location.href.split("#")[1] ? this.sections[this.state.tabNumber] : this.default
     const index = parseInt(e.currentTarget.getAttribute('data'));
     let dir = e.which === 37 ? index - 1 : e.which === 39 ? index + 1 : e.which === 40 ? 'down' : null;
