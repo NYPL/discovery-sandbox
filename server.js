@@ -90,7 +90,6 @@ app.get('/*', (req, res) => {
           appTitle: title,
           favicon: appConfig.favIconPath,
           webpackPort: WEBPACK_DEV_PORT,
-          appEnv: process.env.APP_ENV,
           path: req.url,
           isProduction,
           baseUrl: appConfig.baseUrl,

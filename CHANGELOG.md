@@ -1,5 +1,9 @@
 ## CHANGE LOG
 
+### 1.4.3
+- Documentation: Revised DEPLOYMENT.md to remove dev-eb-deploy, simplify strategy
+- Added deploy-* scripts to package.json
+
 ### 1.4.2
 - Updating @nypl/dgx-react-footer version to 0.5.0 and @nypl/dgx-header-component to 2.4.8.
 
