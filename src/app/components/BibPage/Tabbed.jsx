@@ -54,7 +54,7 @@ class Tabbed extends React.Component {
   }
 
   //enables navigation with arrow keys
-  
+
   keyDownHandler (e) {
     let panel = window.location.href.split("#")[1] ? this.sections[this.state.tabNumber] : this.default
     const index = parseInt(e.currentTarget.getAttribute('data'));
@@ -73,7 +73,7 @@ class Tabbed extends React.Component {
           { this.props.tabs.map((tab, i) => {
             let j = i + 1;
             return(
-                <li id={`tab${j}`} className={(parseInt(this.state.tabNumber) === j ? 'activeTab' : null) } role='presentation'><h4 role='presentation'><a href={`#tab${j}`}
+                <li id={`tab${j}`} className={(parseInt(this.state.tabNumber) === j ? 'activeTab' : null) } role='presentation'><a href={`#tab${j}`}
                 id={`link${j}`}
                  tabIndex={!this.state.tabNumber ?  '0' : parseInt(this.state.tabNumber) === j ? null : -1}
                   aria-selected={this.state.tabNumber && j === parseInt(this.state.tabNumber) ? true: false}
@@ -82,12 +82,11 @@ class Tabbed extends React.Component {
                   onClick={this.clickHandler}
                   onKeyDown={this.keyDownHandler}
                   ref={(input) => {this.links[`${j}`] = input;}}
-                  >{tab.title}</a></h4></li>
+                  >{tab.title}</a></li>
              )
           })
         }
-        <li className={"blank"}>" "</li>
-
+        <li className={"blank"} role='presentation'>      </li>
         {
           this.props.tabs.map((tab, i) => {
             let j = i+1;

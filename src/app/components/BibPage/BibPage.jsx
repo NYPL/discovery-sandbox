@@ -68,15 +68,16 @@ class BibPage extends React.Component {
     // e.g. the prefLabel is the label and the URL is the id.
     const topFields = [
       { label: 'Title', value: 'titleDisplay' },
-      { label: 'Found In', value: 'partOf' },
       { label: 'Author', value: 'creatorLiteral', linkable: true },
-      { label: 'Additional Authors', value: 'contributorLiteral', linkable: true },
+      { label: 'Publication', value: 'publicationStatement' },
+      { label: 'Electronic Resource', value: 'React Component' },
+      { label: 'Additional Resources', value: 'supplementaryContent', selfLinkable: true },
     ];
 
     const bottomFields = [
-      { label: 'Publication', value: 'publicationStatement' },
+      { label: 'Additional Authors', value: 'contributorLiteral', linkable: true },
+      { label: 'Found In', value: 'partOf' },
       { label: 'Publication Date', value: 'serialPublicationDates' },
-      { label: 'Electronic Resource', value: 'React Component' },
       { label: 'Description', value: 'extent' },
       { label: 'Series Statement', value: 'seriesStatement' },
       { label: 'Uniform Title', value: 'uniformTitle' },
@@ -85,7 +86,6 @@ class BibPage extends React.Component {
       { label: 'Subject', value: 'subjectLiteral', linkable: true },
       { label: 'Genre/Form', value: 'genreForm' },
       { label: 'Notes', value: 'React Component' },
-      { label: 'Additional Resources', value: 'supplementaryContent', selfLinkable: true },
       { label: 'Contents', value: 'tableOfContents' },
       { label: 'Bibliography', value: '' },
       { label: 'ISBN', value: 'identifier', identifier: 'urn:isbn' },
@@ -147,8 +147,7 @@ class BibPage extends React.Component {
               <div className="nypl-row">
                 <div className="nypl-column-three-quarters">
                   <Breadcrumbs type="bib" query={searchURL} />
-                  <h1 id="bib-title" tabIndex="0">Item Details</h1>
-                  <h2>{title}</h2>
+                  <h1>{title}</h1>
                   {
                     this.props.searchKeywords && (
                       <div className="nypl-row search-control">
@@ -179,12 +178,14 @@ class BibPage extends React.Component {
                   <BibDetails
                     bib={bib}
                     fields={topFields}
+                    logging={true}
                     updateIsLoadingState={this.updateIsLoadingState}
+                    electronicResources={aggregatedElectronicResources}
                   />
 
                   {itemHoldings}
 
-                  <h3>Placeholder Heading</h3>
+                  <h2>{tabs.map(tab => tab.title).join(" and ")}</h2>
                   <Tabbed tabItems={tabItems} tabs={tabs}
                   hash={this.props.location.hash}/>
                 </div>

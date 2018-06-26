@@ -41,7 +41,7 @@ ul[role="tablist"] > li.activeTab {
 
 
 }
-  ul[role="tablist"] > li > h4 > a {
+  ul[role="tablist"] > li > a {
     color: gray;
     padding: 20px;
     padding-left: 30px;
@@ -52,11 +52,11 @@ ul[role="tablist"] > li.activeTab {
     // border-bottom: 1px solid black;
   }
 
-  ul[role="tablist"] > li:target > h4 > a {
+  ul[role="tablist"] > li:target > a {
     color: black;
   }
 
-  ul[role="tablist"] > li > h4 > a[aria-selected='true'] {
+  ul[role="tablist"] > li > a[aria-selected='true'] {
     padding: 20px;
     padding-left: 30px;
     padding-right: 30px;
@@ -120,6 +120,7 @@ div .tabbed {
     display: block;
   }
 }
+
 // #tab0:target ~ #section0 {
 //   display: block;
 // }

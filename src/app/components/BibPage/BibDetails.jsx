@@ -220,6 +220,8 @@ class BibDetails extends React.Component {
    * @param {object} bib
    * @return {array}
    */
+
+
   getDisplayFields(bib) {
     // A value of 'React Component' just means that we are getting it from a
     // component rather than from the bib field properties.
@@ -233,6 +235,9 @@ class BibDetails extends React.Component {
       const fieldSelfLinkable = field.selfLinkable;
       const fieldIdentifier = field.identifier;
       const bibValues = bib[fieldValue];
+      if(fieldLabel === "Electronic Resource" || 'Additional Resources'){
+        console.log(fieldLabel, fieldValue, bibValues);
+      }
 
       // skip absent fields
       if (bibValues && bibValues.length && _isArray(bibValues)) {
@@ -255,6 +260,7 @@ class BibDetails extends React.Component {
             fieldSelfLinkable, fieldLabel,
           );
           if (definition) {
+            console.log(fieldLabel, 'line 263');
             fieldsToRender.push({
               term: fieldLabel,
               definition,
@@ -315,7 +321,7 @@ class BibDetails extends React.Component {
         }
       }
 
-      if (fieldLabel === 'Electronic Resource' && this.props.electronicResources.length) {
+      if ((fieldLabel === 'Electronic Resource' || fieldLabel === 'Additional Resources') && this.props.electronicResources.length) {
         const electronicResources = this.props.electronicResources;
         let electronicElem;
 
@@ -329,7 +335,7 @@ class BibDetails extends React.Component {
                 trackDiscovery('Bib fields', `Electronic Resource - ${electronicItem.label} - ${electronicItem.url}`)
               }
             >
-              {electronicItem.label}
+              {electronicItem.label || electronicItem.url}
             </a>);
         } else {
           electronicElem = (
@@ -344,7 +350,7 @@ class BibDetails extends React.Component {
                         () => trackDiscovery('Bib fields', `Electronic Resource - ${e.label} - ${e.url}`)
                       }
                     >
-                      {e.label}
+                      {e.label || e.url}
                     </a>
                   </li>
                 ))
