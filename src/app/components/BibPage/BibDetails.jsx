@@ -176,7 +176,7 @@ class BibDetails extends React.Component {
             href={bibValue.url}
             onClick={() => trackDiscovery('Bib fields', `${fieldLabel} - ${bibValue.prefLabel}`)}
           >
-            {bibValue.prefLabel}
+            {bibValue.prefLabel || bibValue.Label || bibValue.url}
           </a>
         );
       }
@@ -203,7 +203,7 @@ class BibDetails extends React.Component {
                   href={value.url}
                   onClick={() => trackDiscovery('Bib fields', `${fieldLabel} - ${value.prefLabel}`)}
                 >
-                  {value.prefLabel}
+                  {value.prefLabel || value.Label || value.url}
                 </a>);
             }
 
@@ -235,9 +235,6 @@ class BibDetails extends React.Component {
       const fieldSelfLinkable = field.selfLinkable;
       const fieldIdentifier = field.identifier;
       const bibValues = bib[fieldValue];
-      if(fieldLabel === "Electronic Resource" || 'Additional Resources'){
-        console.log(fieldLabel, fieldValue, bibValues);
-      }
 
       // skip absent fields
       if (bibValues && bibValues.length && _isArray(bibValues)) {
@@ -260,7 +257,6 @@ class BibDetails extends React.Component {
             fieldSelfLinkable, fieldLabel,
           );
           if (definition) {
-            console.log(fieldLabel, 'line 263');
             fieldsToRender.push({
               term: fieldLabel,
               definition,
@@ -321,7 +317,7 @@ class BibDetails extends React.Component {
         }
       }
 
-      if ((fieldLabel === 'Electronic Resource' || fieldLabel === 'Additional Resources') && this.props.electronicResources.length) {
+      if ((fieldLabel === 'Electronic Resource') && this.props.electronicResources.length) {
         const electronicResources = this.props.electronicResources;
         let electronicElem;
 
