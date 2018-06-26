@@ -176,7 +176,7 @@ class BibDetails extends React.Component {
             href={bibValue.url}
             onClick={() => trackDiscovery('Bib fields', `${fieldLabel} - ${bibValue.prefLabel}`)}
           >
-            {bibValue.prefLabel || bibValue.Label || bibValue.url}
+            {bibValue.prefLabel || bibValue.label || bibValue.url}
           </a>
         );
       }
