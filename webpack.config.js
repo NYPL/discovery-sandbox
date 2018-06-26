@@ -90,6 +90,9 @@ const commonSettings = {
 // Need to configure webpack-dev-server and hot-reload
 // module correctly.
 if (ENV === 'development') {
+  // Load dev depencies:
+  const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
+
   module.exports = merge(commonSettings, {
     devtool: 'eval',
     entry: {
@@ -103,6 +106,7 @@ if (ENV === 'development') {
     },
     plugins: [
       new webpack.HotModuleReplacementPlugin(),
+      new FriendlyErrorsWebpackPlugin(),
     ],
     resolve: {
       modules: [

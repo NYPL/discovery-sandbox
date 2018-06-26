@@ -11,6 +11,9 @@ nightwatch_reports
 package-lock.json
 log/*.log
 
+# Local env:
+.env
+
 # Elastic Beanstalk Files
 .elasticbeanstalk/*
 !.elasticbeanstalk/*.cfg.yml
