@@ -158,30 +158,7 @@ class BibDetails extends React.Component {
     if (bibValues.length === 1) {
       const bibValue = bibValues[0];
       const url = `filters[${fieldValue}]=${bibValue}`;
-
-      if (fieldLinkable) {
-        return (
-          <Link
-            onClick={e => this.newSearch(e, url, fieldValue, bibValue, fieldLabel)}
-            to={`${appConfig.baseUrl}/search?${url}`}
-          >
-            {bibValue}
-          </Link>
-        );
-      }
-
-      if (fieldSelfLinkable) {
-        return (
-          <a
-            href={bibValue.url}
-            onClick={() => trackDiscovery('Bib fields', `${fieldLabel} - ${bibValue.prefLabel}`)}
-          >
-            {bibValue.prefLabel || bibValue.label || bibValue.url}
-          </a>
-        );
-      }
-
-      return <span>{bibValue}</span>;
+      return this.getDefinitionOneItem(bibValue, url, bibValues, fieldValue, fieldLinkable, fieldIdentifier, fieldSelfLinkable, fieldLabel)
     }
 
     return (
@@ -189,29 +166,41 @@ class BibDetails extends React.Component {
         {
           bibValues.map((value, i) => {
             const url = `filters[${fieldValue}]=${value}`;
-            let itemValue = fieldLinkable ? (
-              <Link
-                onClick={e => this.newSearch(e, url, fieldValue, value, fieldLabel)}
-                to={`${appConfig.baseUrl}/search?${url}`}
-              >
-                {value}
-              </Link>)
-              : <span>{value}</span>;
-            if (fieldSelfLinkable) {
-              itemValue = (
-                <a
-                  href={value.url}
-                  onClick={() => trackDiscovery('Bib fields', `${fieldLabel} - ${value.prefLabel}`)}
-                >
-                  {value.prefLabel || value.label || value.url}
-                </a>);
-            }
-
-            return (<li key={i}>{itemValue}</li>);
+            return <li>{this.getDefinitionOneItem(value, url, bibValues, fieldValue, fieldLinkable, fieldIdentifier, fieldSelfLinkable, fieldLabel)}</li>;
           })
         }
       </ul>
     );
+  }
+
+  getDefinitionOneItem (
+    bibValue, url, bibValues, fieldValue, fieldLinkable, fieldIdentifier,
+    fieldSelfLinkable, fieldLabel
+  ) {
+
+    if (fieldLinkable) {
+      return (
+        <Link
+          onClick={e => this.newSearch(e, url, fieldValue, bibValue, fieldLabel)}
+          to={`${appConfig.baseUrl}/search?${url}`}
+        >
+          {bibValue}
+        </Link>
+      );
+    }
+
+    if (fieldSelfLinkable) {
+      return (
+        <a
+          href={bibValue.url}
+          onClick={() => trackDiscovery('Bib fields', `${fieldLabel} - ${bibValue.prefLabel}`)}
+        >
+          {bibValue.prefLabel || bibValue.label || bibValue.url}
+        </a>
+      );
+    }
+
+    return <span>{bibValue}</span>;
   }
 
   /**

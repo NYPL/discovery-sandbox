@@ -37,7 +37,7 @@ class Tabbed extends React.Component {
 
   switchTab (newTabIndex) {
     if (newTabIndex !== this.state.tabNumber) {
-      const tabChoices = ['Details', 'Full Description'];
+      const tabChoices = ['Details Tab1', 'Full Description Tab2'];
       trackDiscovery('BibPage Tabs Switch', tabChoices[newTabIndex-1]);
     }
     this.setState({ tabNumber: newTabIndex.toString() });
