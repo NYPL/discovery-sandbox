@@ -59,6 +59,10 @@ class Tabbed extends React.Component {
     let panel = window.location.href.split("#")[1] ? this.sections[this.state.tabNumber] : this.default
     const index = parseInt(e.currentTarget.getAttribute('data'));
     let dir = e.which === 37 ? index - 1 : e.which === 39 ? index + 1 : e.which === 40 ? 'down' : null;
+    if (e.which === 32) {
+      e.preventDefault();
+      this.clickHandler(e);
+    }
     if (dir !== null) {
       e.preventDefault();
       dir ===  'down' ? panel.focus() : dir <= this.state.numberOfTabs && 0 <= dir ? this.focusTab(dir) : void 0;
