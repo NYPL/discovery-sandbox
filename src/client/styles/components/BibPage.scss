@@ -1,3 +1,5 @@
+@import 'toolkit';
+
 .view-all-items-container {
   margin-top: 1.5rem;
 }
@@ -42,7 +44,7 @@ ul[role="tablist"] > li.activeTab {
 
 }
   ul[role="tablist"] > li > a {
-    color: lightgray;
+    color: $nypl-gray-brown;
     padding: 20px;
     padding-left: 30px;
     padding-right: 30px;
