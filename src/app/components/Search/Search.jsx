@@ -86,10 +86,7 @@ class Search extends React.Component {
       page: '1',
     });
 
-    Actions.updateField(this.state.field);
     this.props.updateIsLoadingState(true);
-    Actions.updateSearchKeywords(userSearchKeywords);
-    Actions.updateSelectedFilters(this.props.selectedFilters);
 
     ajaxCall(`${appConfig.baseUrl}/api?${apiQuery}`, (response) => {
       if (response.data.searchResults && response.data.filters) {
@@ -99,9 +96,11 @@ class Search extends React.Component {
         Actions.updateSearchResults({});
         Actions.updateFilters({});
       }
+      Actions.updateField(this.state.field);
+      Actions.updateSearchKeywords(userSearchKeywords);
+      Actions.updateSelectedFilters(this.props.selectedFilters);
       Actions.updateSortBy('relevance');
       Actions.updatePage('1');
-
       setTimeout(() => {
         this.props.updateIsLoadingState(false);
         this.context.router.push(`${appConfig.baseUrl}/search?${apiQuery}`);
