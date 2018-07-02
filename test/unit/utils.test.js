@@ -18,8 +18,6 @@ import {
   getAggregatedElectronicResources,
 } from '../../src/app/utils/utils';
 
-const mock = new MockAdapter(axios);
-
 /**
  * ajaxCall()
  */
@@ -31,14 +29,17 @@ describe('ajaxCall', () => {
   });
 
   describe('Good call', () => {
+    let mock;
+
     before(() => {
+      mock = new MockAdapter(axios);
       mock
         .onGet('/api?q=locofocos')
         .reply(200, { searchResults: [] });
     });
 
     after(() => {
-      mock.reset();
+      mock.restore();
     });
 
     it('should call the "get" function from axios with an endpoint', () => {
@@ -63,14 +64,17 @@ describe('ajaxCall', () => {
   });
 
   describe('Bad call', () => {
+    let mock;
+
     before(() => {
+      mock = new MockAdapter(axios);
       mock
         .onGet('/api?q=locofocos')
         .reply(400, { searchResults: [] });
     });
 
     after(() => {
-      mock.reset();
+      mock.restore();
     });
 
     it('should invoke the default error callback function', () => {

@@ -9,8 +9,6 @@ import Search from '../../src/app/components/Search/Search';
 import { basicQuery } from '../../src/app/utils/utils';
 import appConfig from '../../appConfig';
 
-const mock = new MockAdapter(axios);
-
 describe('Search', () => {
   describe('Default render', () => {
     let component;
@@ -141,6 +139,7 @@ describe('Search', () => {
     let createAPIQuery;
     let triggerSubmitSpy;
     let submitSearchRequestSpy;
+    let mock;
 
     before(() => {
       createAPIQuery = basicQuery({});
@@ -151,13 +150,14 @@ describe('Search', () => {
         { context: { router: { createHref: () => {}, push: () => {} } } },
       );
 
+      mock = new MockAdapter(axios);
       mock
         .onGet(`${appConfig.baseUrl}/api?q=Dune`)
         .reply(200, { searchResults: [] });
     });
 
     afterEach(() => {
-      mock.reset();
+      mock.restore();
       triggerSubmitSpy.restore();
       submitSearchRequestSpy.restore();
     });
