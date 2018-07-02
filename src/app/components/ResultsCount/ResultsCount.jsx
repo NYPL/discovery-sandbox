@@ -118,7 +118,6 @@ class ResultsCount extends React.Component {
 
   render() {
     const results = this.displayCount();
-    console.log('rendering resultscount with props', this.props);
     return (
       <div
         className="nypl-results-summary"

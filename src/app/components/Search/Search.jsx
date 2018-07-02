@@ -88,24 +88,28 @@ class Search extends React.Component {
 
     this.props.updateIsLoadingState(true);
 
-    ajaxCall(`${appConfig.baseUrl}/api?${apiQuery}`, (response) => {
-      if (response.data.searchResults && response.data.filters) {
-        Actions.updateSearchResults(response.data.searchResults);
-        Actions.updateFilters(response.data.filters);
-      } else {
-        Actions.updateSearchResults({});
-        Actions.updateFilters({});
-      }
-      Actions.updateField(this.state.field);
-      Actions.updateSearchKeywords(userSearchKeywords);
-      Actions.updateSelectedFilters(this.props.selectedFilters);
-      Actions.updateSortBy('relevance');
-      Actions.updatePage('1');
-      setTimeout(() => {
-        this.props.updateIsLoadingState(false);
-        this.context.router.push(`${appConfig.baseUrl}/search?${apiQuery}`);
-      }, 500);
+    return new Promise((resolve, reject) => {
+      ajaxCall(`${appConfig.baseUrl}/api?${apiQuery}`, (response) => {
+        if (response.data.searchResults && response.data.filters) {
+          Actions.updateSearchResults(response.data.searchResults);
+          Actions.updateFilters(response.data.filters);
+        } else {
+          Actions.updateSearchResults({});
+          Actions.updateFilters({});
+        }
+        Actions.updateSearchKeywords(userSearchKeywords);
+        Actions.updateField(this.state.field);
+        Actions.updateSelectedFilters(this.props.selectedFilters);
+        Actions.updateSortBy('relevance');
+        Actions.updatePage('1');
+        setTimeout(() => {
+          this.props.updateIsLoadingState(false);
+          this.context.router.push(`${appConfig.baseUrl}/search?${apiQuery}`);
+        }, 500);
+        resolve();
+      });
     });
+
   }
 
   render() {
