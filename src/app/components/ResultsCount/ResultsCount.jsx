@@ -17,7 +17,7 @@ class ResultsCount extends React.Component {
   //   return false;
   // }
   shouldComponentUpdate(nextProps) {
-    return !!!this.props.isLoading;
+    return !this.props.isLoading;
   }
 
   /*
@@ -47,12 +47,10 @@ class ResultsCount extends React.Component {
     if (searchKeywords) {
       if (field && field !== 'all') {
         result += `for ${keyMapping[field]} "${searchKeywords}"`;
+      } else if (searchKeywords.indexOf(' ') !== -1) {
+        result += `for keywords "${searchKeywords}"`;
       } else {
-        if (searchKeywords.indexOf(' ') !== -1) {
-          result += `for keywords "${searchKeywords}"`;
-        } else {
-          result += `for keyword "${searchKeywords}"`;
-        }
+        result += `for keyword "${searchKeywords}"`;
       }
     }
 
@@ -117,6 +115,7 @@ class ResultsCount extends React.Component {
   }
 
   render() {
+    console.log('rendering resultscount', this.props);
     const results = this.displayCount();
     return (
       <div

@@ -224,9 +224,11 @@ describe('ResultsList', () => {
       expect(component.find('h3').length).to.equal(2);
       expect(component.find('h3').find('Link').length).to.equal(2);
 
-      expect(component.find('h3').at(0).find('Link').render().text())
+      expect(component.find('h3').at(0).find('Link').render()
+        .text())
         .to.equal(resultsBibs[0].result.titleDisplay[0]);
-      expect(component.find('h3').at(1).find('Link').render().text())
+      expect(component.find('h3').at(1).find('Link').render()
+        .text())
         .to.equal(resultsBibs[0].result.titleDisplay[0]);
     });
 
