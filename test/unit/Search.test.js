@@ -178,7 +178,6 @@ describe('Search', () => {
       component.find('input').at(0).simulate('change', { target: { value: 'Dune' } });
       component.find('button').at(0).simulate('click');
       setTimeout(() => {
-        //  axios.get(`${appConfig.baseUrl}/api?q=Dune`);
         expect(component.state('searchKeywords')).to.equal('Dune');
         expect(submitSearchRequestSpy.callCount).to.equal(1);
         done();
