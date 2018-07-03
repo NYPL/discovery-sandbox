@@ -11,7 +11,6 @@ import appConfig from '../../appConfig';
 import store from '../../src/app/stores/Store';
 
 
-// const mock = new MockAdapter(axios);
 describe('Search', () => {
   describe('Default render', () => {
     let component;
@@ -142,18 +141,11 @@ describe('Search', () => {
     let createAPIQuery;
     let triggerSubmitSpy;
     let submitSearchRequestSpy;
-    // const mock = new MockAdapter(axios);
 
     before(() => {
       createAPIQuery = basicQuery({});
       triggerSubmitSpy = sinon.spy(Search.prototype, 'triggerSubmit');
       submitSearchRequestSpy = sinon.spy(Search.prototype, 'submitSearchRequest');
-      // mock
-      //   .onGet(`${appConfig.baseUrl}/api?q=Dune`)
-      //   .reply(200, { searchResults: [] })
-      //   .onAny()
-      //   .reply(500);
-
       component = mount(
         <Search createAPIQuery={createAPIQuery} updateIsLoadingState={() => {}} />,
         { context: { router: { createHref: () => {}, push: () => {} } } },
@@ -161,7 +153,6 @@ describe('Search', () => {
     });
 
     afterEach(() => {
-      // mock.reset();
       triggerSubmitSpy.restore();
       submitSearchRequestSpy.restore();
     });
