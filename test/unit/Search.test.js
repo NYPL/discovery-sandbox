@@ -10,7 +10,6 @@ import { basicQuery } from '../../src/app/utils/utils';
 import appConfig from '../../appConfig';
 import store from '../../src/app/stores/Store';
 
-
 describe('Search', () => {
   describe('Default render', () => {
     let component;
@@ -141,6 +140,7 @@ describe('Search', () => {
     let createAPIQuery;
     let triggerSubmitSpy;
     let submitSearchRequestSpy;
+    let mock;
 
     before(() => {
       createAPIQuery = basicQuery({});
@@ -150,20 +150,22 @@ describe('Search', () => {
         <Search createAPIQuery={createAPIQuery} updateIsLoadingState={() => {}} />,
         { context: { router: { createHref: () => {}, push: () => {} } } },
       );
+
+      mock = new MockAdapter(axios);
+      mock
+        .onGet(new RegExp(`${appConfig.baseUrl}/api\\?q=.*`))
+        .reply(200, { searchResults: [] })
+        .onAny()
+        .reply(500);
     });
 
-    afterEach(() => {
+    after(() => {
+      mock.restore();
       triggerSubmitSpy.restore();
       submitSearchRequestSpy.restore();
     });
 
     it('should submit the input entered when clicking the submit button', (done) => {
-      const mock = new MockAdapter(axios);
-      mock
-        .onGet(`${appConfig.baseUrl}/api?q=Dune`)
-        .reply(200, { searchResults: [] })
-        .onAny()
-        .reply(500);
       expect(component.state('searchKeywords')).to.equal('');
 
       component.find('input').at(0).simulate('change', { target: { value: 'Dune' } });
@@ -176,12 +178,6 @@ describe('Search', () => {
     });
 
     it('should submit the input entered when pressing enter', () => {
-      const mock = new MockAdapter(axios);
-      mock
-        .onGet(`${appConfig.baseUrl}/api?q=Dune`)
-        .reply(200, { searchResults: [] })
-        .onAny()
-        .reply(500);
       expect(component.state('searchKeywords')).to.equal('Dune');
       component.find('input').at(0).simulate('change', { target: { value: 'Harry Potter' } });
       component.find('button').at(0).simulate('keyPress');
@@ -191,12 +187,6 @@ describe('Search', () => {
     });
 
     it('should not update the searchKeywords before it submits the request', () => {
-      const mock = new MockAdapter(axios);
-      mock
-        .onGet(`${appConfig.baseUrl}/api?q=Watts`)
-        .reply(200, { searchResults: [] })
-        .onAny()
-        .reply(500);
       component.find('input').at(0).simulate('change', { target: { value: 'Watts' } });
       component.find('button').at(0).simulate('click');
       expect(store.state.searchKeywords).not.to.equal('Watts');
@@ -204,12 +194,6 @@ describe('Search', () => {
 
 
     it('should update the searchKeywords after it submits the request', (done) => {
-      const mock = new MockAdapter(axios);
-      mock
-        .onGet(`${appConfig.baseUrl}/api?q=Blindsight`)
-        .reply(200, { searchResults: [] })
-        .onAny()
-        .reply(500);
       component.find('input').at(0).simulate('change', { target: { value: 'Blindsight' } });
       component.find('button').at(0).simulate('click');
       setTimeout(() => {

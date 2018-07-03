@@ -56,7 +56,6 @@
   },
   "devDependencies": {
     "axios-mock-adapter": "1.7.1",
-    "babel-eslint": "^8.2.5",
     "chai": "3.5.0",
     "create-react-class": "15.5.3",
     "esdoc": "0.4.5",
