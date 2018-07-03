@@ -10,12 +10,6 @@ class ResultsCount extends React.Component {
   // The `searchKeywords` prop gets updated before the `count` and we want to wait until both
   // are updated to be read to screen readers. Otherwise, it would read the previous `count`
   // number for the next `searchKeywords`.
-  // shouldComponentUpdate(nextProps) {
-  //   if (this.props.count !== nextProps.count) {
-  //     return true;
-  //   }
-  //   return false;
-  // }
   shouldComponentUpdate(nextProps) {
     return !this.props.isLoading;
   }
