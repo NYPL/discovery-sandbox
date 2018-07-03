@@ -109,7 +109,6 @@ class ResultsCount extends React.Component {
   }
 
   render() {
-    console.log('rendering resultscount', this.props);
     const results = this.displayCount();
     return (
       <div
