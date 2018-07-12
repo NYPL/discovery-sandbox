@@ -2,6 +2,7 @@
 import React from 'react';
 import { expect } from 'chai';
 import { shallow, mount } from 'enzyme';
+import sinon from 'sinon';
 
 import ResultsCount from '../../src/app/components/ResultsCount/ResultsCount';
 
@@ -275,6 +276,21 @@ describe('ResultsCount', () => {
       component = shallow(<ResultsCount count={489} page={10} />);
       expect(component.find('h2').text())
         .to.equal('Displaying 451-489 of 489 results ');
+    });
+  });
+
+  describe('Correctly Updates on New Search', () => {
+    it('Should only rerender when loading is done', (done) => {
+      const component = shallow(<ResultsCount count={0} searchKeywords="locofocos" />);
+      const spy = sinon.spy(ResultsCount.prototype, 'render');
+      component.setProps({ isLoading: true });
+      component.setProps({ field: null });
+      component.setProps({ searchKeywords: 'locofoci' });
+      component.setProps({ selectedFilters: {} });
+      component.setProps({ page: 1 });
+      component.setProps({ isLoading: false });
+      expect(spy.callCount).to.equal(1);
+      done();
     });
   });
 });
