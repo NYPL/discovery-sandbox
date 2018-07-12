@@ -25,7 +25,6 @@ class HoldConfirmation extends React.Component {
 
   componentDidMount() {
     this.requireUser();
-
     document.getElementById('confirmation-title').focus();
   }
 
@@ -207,9 +206,21 @@ class HoldConfirmation extends React.Component {
     );
   }
 
+  errorText() {
+    if (this.props.location.query.errorStatus === 'eligibility') {
+      const errors = JSON.parse(this.props.location.query.errorMessage);
+      const expired = errors.expired ? 'Your card is expired. ' : '';
+      const blocked = errors.blocked ? 'Your account has blocks. ' : '';
+      const moneyOwed = errors.moneyOwed ? 'Your fines have exceeded the limit.' : '';
+      const defaultText = expired || blocked || moneyOwed ? '' : 'There is a problem with your account. Please contact library staff. '
+      return `${expired}${blocked}${moneyOwed}${defaultText}`
+    }
+    return null;
+  }
+
   render() {
     // Need to better clarify variable names later.
-    const bib = this.props.bib;
+    const bib = this.props.bib
     const title = (bib && _isArray(bib.title) && bib.title.length > 0) ?
       bib.title[0] : '';
     const bibId = (bib && bib['@id'] && typeof bib['@id'] === 'string') ?
@@ -221,7 +232,7 @@ class HoldConfirmation extends React.Component {
     let confirmationInfo = (
       <div className="item">
         <p>
-          We could not process your request at this time. Please try again or contact 917-ASK-NYPL
+          {`We could not process your request at this time. ${this.errorText()} Please try again or contact 917-ASK-NYPL`}
           (<a href="tel:19172756975">917-275-6975</a>).
         </p>
         {this.renderBackToClassicLink()}

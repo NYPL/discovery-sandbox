@@ -51,11 +51,25 @@ class HoldRequest extends React.Component {
     this.onRadioSelect = this.onRadioSelect.bind(this);
     this.submitRequest = this.submitRequest.bind(this);
     this.updateIsLoadingState = this.updateIsLoadingState.bind(this);
+    console.log('Hold Request Constructor', this.state.patron.id, this.props.bib, this.props.params);
   }
 
   componentDidMount() {
     this.requireUser();
-
+    this.checkEligibility(this.state.patron.id).then((eligibility) => {
+      if (eligibility !== 'eligible to place holds') {
+        const bib = (this.props.bib && !_isEmpty(this.props.bib)) ?
+          this.props.bib : null;
+        const bibId = (bib && bib['@id'] && typeof bib['@id'] === 'string') ?
+          bib['@id'].substring(4) : '';
+        const itemId = (this.props.params && this.props.params.itemId) ? this.props.params.itemId : '';
+        const path = `${appConfig.baseUrl}/hold/confirmation/${bibId}-${itemId}`;
+        this.context.router.replace(
+          `${path}?errorStatus=${'eligibility'}` +
+          `&errorMessage=${eligibility}`,
+        );
+      }
+    });
     document.getElementById('item-title').focus();
   }
 
@@ -86,6 +100,17 @@ class HoldRequest extends React.Component {
         </p>
       </div>
     );
+  }
+
+  checkEligibility(id) {
+    // return new Promise((resolve, reject) => {
+    //   axios.get(`${appConfig.api}/request/patronEligibility/${id}`)
+    //     .then(response => resolve(response.data));
+    // });
+    return new Promise((resolve, reject) => {
+      axios.get(`http://localhost:3003/api/v0.1/request/patronEligibility/${id}`)
+        .then(response => resolve(response.data));
+    });
   }
 
   /**
@@ -120,7 +145,7 @@ class HoldRequest extends React.Component {
     trackDiscovery(`Submit Request${partnerEvent}`, `${title} - ${itemId}`);
     axios
       .get(`${appConfig.baseUrl}/api/newHold?itemId=${itemId}&pickupLocation=` +
-        `${this.state.delivery}&itemSource=${itemSource}`)
+      `${this.state.delivery}&itemSource=${itemSource}`)
       .then((response) => {
         if (response.data.error && response.data.error.status !== 200) {
           this.updateIsLoadingState(false);
