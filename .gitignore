@@ -17,3 +17,5 @@ log/*.log
 .elasticbeanstalk/*
 !.elasticbeanstalk/*.cfg.yml
 !.elasticbeanstalk/*.global.yml
+
+#Files with names of missing fields

@@ -16,7 +16,7 @@ class Feedback extends React.Component {
     this.deactivateForm = this.deactivateForm.bind(this);
   }
 
-  onSubmitForm() {
+  onSubmitForm(e) {
     if (!this.refs.commentText.value) {
       this.refs.commentText.focus();
     } else {
@@ -43,7 +43,7 @@ class Feedback extends React.Component {
 
   render() {
     const showForm = this.state.showForm;
-    const currentURL = this.props.location.pathname + this.props.location.search;
+    const currentURL = this.props.location.pathname + this.props.location.hash + this.props.location.search;
 
     return (
       <div className="feedback">
@@ -71,7 +71,7 @@ class Feedback extends React.Component {
               '_ebzhSGy34tnfAtuWKdVA/formResponse'}
             target="hidden_feedback_iframe"
             method="POST"
-            onSubmit={() => this.onSubmitForm()}
+            onSubmit={(e) => this.onSubmitForm(e)}
           >
             <div>
               <label htmlFor="feedback-textarea-comment">
