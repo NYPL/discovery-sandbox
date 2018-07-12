@@ -16,41 +16,13 @@ import {
 } from '../../utils/utils';
 import DefinitionList from './DefinitionList';
 import appConfig from '../../../../appConfig';
+import getOwner from '../../utils/getOwner';
 
 class BibDetails extends React.Component {
-  /*
-   * getOwner(bib)
-   * This is currently only for non-NYPL partner items. If it's NYPL, it should return undefined.
-   * Requirement: Look at all the owners of all the items and if they were all the same and
-   * not NYPL, show that as the owning institution and otherwise show nothing.
-   * @param {object} bibId
-   * @return {string}
-   */
-  getOwner(bib) {
-    const items = bib.items;
-    const ownerArr = [];
-    let owner;
 
-    if (!items || !items.length) {
-      return null;
-    }
-
-    items.forEach((item) => {
-      const ownerObj = item.owner && item.owner.length ? item.owner[0].prefLabel : undefined;
-
-      ownerArr.push(ownerObj);
-    });
-
-    // From above, check to see if all the owners are the same, and if so, proceed if the owner
-    // is either Princeton or Columbia.
-    if (_every(ownerArr, o => (o === ownerArr[0]))) {
-      if ((ownerArr[0] === 'Princeton University Library') ||
-        (ownerArr[0] === 'Columbia University Libraries')) {
-        owner = ownerArr[0];
-      }
-    }
-
-    return owner;
+  constructor(props) {
+    super(props);
+    this.owner = getOwner(this.props.bib);
   }
 
   /*
@@ -111,7 +83,7 @@ class BibDetails extends React.Component {
     }
 
     return (
-      <ul>
+      <ul className={'additionalDetails'}>
         {
           bibValues.map((value, i) => {
             const url = `filters[${fieldValue}]=${value['@id']}`;
@@ -186,30 +158,7 @@ class BibDetails extends React.Component {
     if (bibValues.length === 1) {
       const bibValue = bibValues[0];
       const url = `filters[${fieldValue}]=${bibValue}`;
-
-      if (fieldLinkable) {
-        return (
-          <Link
-            onClick={e => this.newSearch(e, url, fieldValue, bibValue, fieldLabel)}
-            to={`${appConfig.baseUrl}/search?${url}`}
-          >
-            {bibValue}
-          </Link>
-        );
-      }
-
-      if (fieldSelfLinkable) {
-        return (
-          <a
-            href={bibValue.url}
-            onClick={() => trackDiscovery('Bib fields', `${fieldLabel} - ${bibValue.prefLabel}`)}
-          >
-            {bibValue.prefLabel}
-          </a>
-        );
-      }
-
-      return <span>{bibValue}</span>;
+      return this.getDefinitionOneItem(bibValue, url, bibValues, fieldValue, fieldLinkable, fieldIdentifier, fieldSelfLinkable, fieldLabel)
     }
 
     return (
@@ -217,29 +166,41 @@ class BibDetails extends React.Component {
         {
           bibValues.map((value, i) => {
             const url = `filters[${fieldValue}]=${value}`;
-            let itemValue = fieldLinkable ? (
-              <Link
-                onClick={e => this.newSearch(e, url, fieldValue, value, fieldLabel)}
-                to={`${appConfig.baseUrl}/search?${url}`}
-              >
-                {value}
-              </Link>)
-              : <span>{value}</span>;
-            if (fieldSelfLinkable) {
-              itemValue = (
-                <a
-                  href={value.url}
-                  onClick={() => trackDiscovery('Bib fields', `${fieldLabel} - ${value.prefLabel}`)}
-                >
-                  {value.prefLabel}
-                </a>);
-            }
-
-            return (<li key={i}>{itemValue}</li>);
+            return <li>{this.getDefinitionOneItem(value, url, bibValues, fieldValue, fieldLinkable, fieldIdentifier, fieldSelfLinkable, fieldLabel)}</li>;
           })
         }
       </ul>
     );
+  }
+
+  getDefinitionOneItem (
+    bibValue, url, bibValues, fieldValue, fieldLinkable, fieldIdentifier,
+    fieldSelfLinkable, fieldLabel
+  ) {
+
+    if (fieldLinkable) {
+      return (
+        <Link
+          onClick={e => this.newSearch(e, url, fieldValue, bibValue, fieldLabel)}
+          to={`${appConfig.baseUrl}/search?${url}`}
+        >
+          {bibValue}
+        </Link>
+      );
+    }
+
+    if (fieldSelfLinkable) {
+      return (
+        <a
+          href={bibValue.url}
+          onClick={() => trackDiscovery('Bib fields', `${fieldLabel} - ${bibValue.prefLabel}`)}
+        >
+          {bibValue.prefLabel || bibValue.label || bibValue.url}
+        </a>
+      );
+    }
+
+    return <span>{bibValue}</span>;
   }
 
   /**
@@ -248,6 +209,8 @@ class BibDetails extends React.Component {
    * @param {object} bib
    * @return {array}
    */
+
+
   getDisplayFields(bib) {
     // A value of 'React Component' just means that we are getting it from a
     // component rather than from the bib field properties.
@@ -293,7 +256,7 @@ class BibDetails extends React.Component {
 
       // The Owner is complicated too.
       if (fieldLabel === 'Owning Institutions') {
-        const owner = this.getOwner(this.props.bib);
+        const owner = getOwner(this.props.bib);
         if (owner) {
           fieldsToRender.push({
             term: fieldLabel,
@@ -343,7 +306,7 @@ class BibDetails extends React.Component {
         }
       }
 
-      if (fieldLabel === 'Electronic Resource' && this.props.electronicResources.length) {
+      if ((fieldLabel === 'Electronic Resource') && this.props.electronicResources.length) {
         const electronicResources = this.props.electronicResources;
         let electronicElem;
 
@@ -357,7 +320,7 @@ class BibDetails extends React.Component {
                 trackDiscovery('Bib fields', `Electronic Resource - ${electronicItem.label} - ${electronicItem.url}`)
               }
             >
-              {electronicItem.label}
+              {electronicItem.label || electronicItem.url}
             </a>);
         } else {
           electronicElem = (
@@ -372,7 +335,7 @@ class BibDetails extends React.Component {
                         () => trackDiscovery('Bib fields', `Electronic Resource - ${e.label} - ${e.url}`)
                       }
                     >
-                      {e.label}
+                      {e.label || e.url}
                     </a>
                   </li>
                 ))

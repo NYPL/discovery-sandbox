@@ -1,15 +1,14 @@
 /* eslint-env mocha */
+import axios from 'axios';
 import React from 'react';
 import MockAdapter from 'axios-mock-adapter';
 import { expect } from 'chai';
 import { mount } from 'enzyme';
-import axios from 'axios';
 import sinon from 'sinon';
 import Search from '../../src/app/components/Search/Search';
 import { basicQuery } from '../../src/app/utils/utils';
 import appConfig from '../../appConfig';
-
-const mock = new MockAdapter(axios);
+import store from '../../src/app/stores/Store';
 
 describe('Search', () => {
   describe('Default render', () => {
@@ -141,6 +140,7 @@ describe('Search', () => {
     let createAPIQuery;
     let triggerSubmitSpy;
     let submitSearchRequestSpy;
+    let mock;
 
     before(() => {
       createAPIQuery = basicQuery({});
@@ -151,25 +151,30 @@ describe('Search', () => {
         { context: { router: { createHref: () => {}, push: () => {} } } },
       );
 
+      mock = new MockAdapter(axios);
       mock
-        .onGet(`${appConfig.baseUrl}/api?q=Dune`)
-        .reply(200, { searchResults: [] });
+        .onGet(new RegExp(`${appConfig.baseUrl}/api\\?q=.*`))
+        .reply(200, { searchResults: [] })
+        .onAny()
+        .reply(500);
     });
 
-    afterEach(() => {
-      mock.reset();
+    after(() => {
+      mock.restore();
       triggerSubmitSpy.restore();
       submitSearchRequestSpy.restore();
     });
 
-    it('should submit the input entered when clicking the submit button', () => {
+    it('should submit the input entered when clicking the submit button', (done) => {
       expect(component.state('searchKeywords')).to.equal('');
 
       component.find('input').at(0).simulate('change', { target: { value: 'Dune' } });
       component.find('button').at(0).simulate('click');
-
-      expect(component.state('searchKeywords')).to.equal('Dune');
-      expect(submitSearchRequestSpy.callCount).to.equal(1);
+      setTimeout(() => {
+        expect(component.state('searchKeywords')).to.equal('Dune');
+        expect(submitSearchRequestSpy.callCount).to.equal(1);
+        done();
+      }, 1000);
     });
 
     it('should submit the input entered when pressing enter', () => {
@@ -179,6 +184,22 @@ describe('Search', () => {
 
       expect(component.state('searchKeywords')).to.equal('Harry Potter');
       expect(triggerSubmitSpy.callCount).to.equal(1);
+    });
+
+    it('should not update the searchKeywords before it submits the request', () => {
+      component.find('input').at(0).simulate('change', { target: { value: 'Watts' } });
+      component.find('button').at(0).simulate('click');
+      expect(store.state.searchKeywords).not.to.equal('Watts');
+    });
+
+
+    it('should update the searchKeywords after it submits the request', (done) => {
+      component.find('input').at(0).simulate('change', { target: { value: 'Blindsight' } });
+      component.find('button').at(0).simulate('click');
+      setTimeout(() => {
+        expect(store.state.searchKeywords).to.equal('Blindsight');
+        done();
+      }, 1000);
     });
   });
 });

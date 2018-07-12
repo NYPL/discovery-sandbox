@@ -188,6 +188,7 @@ if (ENV === 'production') {
       new webpack.DefinePlugin({
         'process.env': {
           NODE_ENV: JSON.stringify('production'),
+          GA_ENV: JSON.stringify(process.env.GA_ENV),
         },
       }),
     ],
