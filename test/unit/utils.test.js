@@ -50,12 +50,13 @@ describe('ajaxCall', () => {
       ajaxCallGetSpy.restore();
     });
 
-    it('should invoke the callback function', () => {
+    it('should invoke the callback function', (done) => {
       const cbSpy = sinon.spy();
       ajaxCall('/api?q=locofocos', cbSpy);
 
       setTimeout(() => {
-        expect(cbSpy.callCount).to.equal(2);
+        expect(cbSpy.callCount).to.equal(1);
+        done();
       }, 0);
 
       cbSpy.reset();
