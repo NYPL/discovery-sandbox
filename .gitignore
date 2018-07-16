@@ -8,10 +8,14 @@ coverage
 bin/*
 selenium-debug.log
 nightwatch_reports
-package-lock.json
 log/*.log
+
+# Local env:
+.env
 
 # Elastic Beanstalk Files
 .elasticbeanstalk/*
 !.elasticbeanstalk/*.cfg.yml
 !.elasticbeanstalk/*.global.yml
+
+#Files with names of missing fields

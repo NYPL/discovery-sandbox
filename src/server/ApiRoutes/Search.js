@@ -28,19 +28,20 @@ const nyplApiClientCall = query =>
       client.get(`/discovery/resources${query}`, { cache: false }));
 
 function search(searchKeywords = '', page, sortBy, order, field, filters, cb, errorcb) {
-  const apiQuery = createAPIQuery({
+  const encodedResultsQueryString = createAPIQuery({
     searchKeywords,
     sortBy: sortBy ? `${sortBy}_${order}` : '',
     selectedFilters: filters,
     field,
     page,
   });
+  const encodedAggregationsQueryString = encodeURIComponent(searchKeywords);
 
-  const aggregationQuery = `/aggregations?q=${searchKeywords}`;
-  const queryString = `?${apiQuery}&per_page=50`;
+  const aggregationQuery = `/aggregations?q=${encodedAggregationsQueryString}`;
+  const resultsQuery = `?${encodedResultsQueryString}&per_page=50`;
 
   // Need to get both results and aggregations before proceeding.
-  Promise.all([nyplApiClientCall(queryString), nyplApiClientCall(aggregationQuery)])
+  Promise.all([nyplApiClientCall(resultsQuery), nyplApiClientCall(aggregationQuery)])
     .then((response) => {
       const [results, aggregations] = response;
       cb(aggregations, results, page);

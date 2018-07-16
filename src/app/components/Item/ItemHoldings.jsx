@@ -50,7 +50,7 @@ class ItemHoldings extends React.Component {
     });
 
     if (noItemPage) {
-      this.context.router.push(`${appConfig.baseUrl}/bib/${this.props.bibId}`);
+      this.context.router.replace(`${appConfig.baseUrl}/bib/${this.props.bibId}`);
     }
   }
 
@@ -176,7 +176,7 @@ class ItemHoldings extends React.Component {
 
     return (
       <div className="nypl-results-item">
-        <h3>Availability</h3>
+        <h2>Availability</h2>
         {itemTable}
         {
           !!(shortenItems && items.length >= 20 && !this.state.showAll) &&
