@@ -3,6 +3,8 @@ import React from 'react';
 import sinon from 'sinon';
 import { expect } from 'chai';
 import { mount } from 'enzyme';
+import axios from 'axios';
+import MockAdapter from 'axios-mock-adapter';
 // Import the component that is going to be tested
 import HoldRequest from './../../src/app/components/HoldRequest/HoldRequest';
 import Actions from './../../src/app/actions/Actions';
@@ -66,6 +68,38 @@ const mockedItems = [
 ];
 
 describe('HoldRequest', () => {
+  const mock = new MockAdapter(axios);
+  describe.only('When component did mount', () => {
+    after(() => {
+      // HoldRequest.prototype.requireUser.restore();
+      HoldRequest.prototype.redirectWithErrors.restore();
+      mock.reset();
+    });
+    it('should redirect for ineligible patrons', (done) => {
+      mock
+        .onGet(/\/patronEligibility\/1/)
+        .reply(200, { data: 'ineligible' });
+      const redirect = sinon.spy(HoldRequest.prototype, 'redirectWithErrors');
+      const component = mount(<HoldRequest />, { attachTo: document.body });
+      const instance = component.instance();
+      return new Promise((resolve, reject) => {
+        // sinon.stub(instance, 'requireUser').callsFake(() => {
+        //   instance.setState({ patron: { id: 1 } });
+        // });
+        instance.setState({ patron: { id: 1 } });
+        resolve();
+      })
+        .then(() => console.log(component.state))
+        .then(() => instance.componentDidMount())
+        .then(() => {
+          expect(redirect.called).to.equal(true);
+        }).then(done, done);
+    });
+    it('should not redirect for eligible patrons', () => {
+
+    });
+  });
+
   describe('After being rendered, <HoldRequest>', () => {
     let component;
     let requireUser;

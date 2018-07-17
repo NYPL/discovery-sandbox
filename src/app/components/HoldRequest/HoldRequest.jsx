@@ -51,6 +51,7 @@ class HoldRequest extends React.Component {
     this.onRadioSelect = this.onRadioSelect.bind(this);
     this.submitRequest = this.submitRequest.bind(this);
     this.updateIsLoadingState = this.updateIsLoadingState.bind(this);
+    this.redirectWithErrors = this.redirectWithErrors.bind(this);
     console.log('Hold Request Constructor', this.state.patron.id, this.props.bib, this.props.params);
   }
 
@@ -64,10 +65,7 @@ class HoldRequest extends React.Component {
           bib['@id'].substring(4) : '';
         const itemId = (this.props.params && this.props.params.itemId) ? this.props.params.itemId : '';
         const path = `${appConfig.baseUrl}/hold/confirmation/${bibId}-${itemId}`;
-        this.context.router.replace(
-          `${path}?errorStatus=${'eligibility'}` +
-          `&errorMessage=${eligibility}`,
-        );
+        this.redirectWithErrors(path, 'eligibility', eligibility);
       }
     });
     document.getElementById('item-title').focus();
@@ -289,6 +287,13 @@ class HoldRequest extends React.Component {
           Due to inclement weather, delivery of material from offsite storage is subject to delays. Please check your patron account to be sure items are Ready for Pickup in advance of your visit.
         </p>
       </div>
+    );
+  }
+
+  redirectWithErrors(path, status, message) {
+    this.context.router.replace(
+      `${path}?errorStatus=${status}` +
+      `&errorMessage=${message}`,
     );
   }
 
