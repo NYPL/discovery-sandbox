@@ -51,13 +51,14 @@ class HoldRequest extends React.Component {
     this.onRadioSelect = this.onRadioSelect.bind(this);
     this.submitRequest = this.submitRequest.bind(this);
     this.updateIsLoadingState = this.updateIsLoadingState.bind(this);
-    this.redirectWithErrors = this.redirectWithErrors.bind(this);
+    // this.redirectWithErrors = this.redirectWithErrors.bind(this);
     console.log('Hold Request Constructor', this.state.patron.id, this.props.bib, this.props.params);
   }
 
   componentDidMount() {
     this.requireUser();
     this.checkEligibility(this.state.patron.id).then((eligibility) => {
+      console.log('eligibility', eligibility);
       if (eligibility !== 'eligible to place holds') {
         const bib = (this.props.bib && !_isEmpty(this.props.bib)) ?
           this.props.bib : null;
@@ -65,6 +66,7 @@ class HoldRequest extends React.Component {
           bib['@id'].substring(4) : '';
         const itemId = (this.props.params && this.props.params.itemId) ? this.props.params.itemId : '';
         const path = `${appConfig.baseUrl}/hold/confirmation/${bibId}-${itemId}`;
+        console.log('redirecting with errors');
         this.redirectWithErrors(path, 'eligibility', eligibility);
       }
     });
@@ -105,9 +107,13 @@ class HoldRequest extends React.Component {
     //   axios.get(`${appConfig.api}/request/patronEligibility/${id}`)
     //     .then(response => resolve(response.data));
     // });
+    console.log('checking eligibility', id);
     return new Promise((resolve, reject) => {
       axios.get(`http://localhost:3003/api/v0.1/request/patronEligibility/${id}`)
-        .then(response => resolve(response.data));
+        .then(response => {
+          console.log('response.data: ', response.data);
+          resolve(response.data)
+        });
     });
   }
 
@@ -291,6 +297,7 @@ class HoldRequest extends React.Component {
   }
 
   redirectWithErrors(path, status, message) {
+    console.log('blahblahblahblah');
     this.context.router.replace(
       `${path}?errorStatus=${status}` +
       `&errorMessage=${message}`,
