@@ -58,8 +58,6 @@ class HoldRequest extends React.Component {
   componentDidMount() {
     this.requireUser();
     this.checkEligibility(this.state.patron.id).then((eligibility) => {
-      console.log('eligibility', eligibility);
-      console.log('equals?', eligibility !== 'eligible to place holds');
       if (eligibility !== 'eligible to place holds') {
         const bib = (this.props.bib && !_isEmpty(this.props.bib)) ?
           this.props.bib : null;
@@ -67,7 +65,6 @@ class HoldRequest extends React.Component {
           bib['@id'].substring(4) : '';
         const itemId = (this.props.params && this.props.params.itemId) ? this.props.params.itemId : '';
         const path = `${appConfig.baseUrl}/hold/confirmation/${bibId}-${itemId}`;
-        console.log('redirecting with errors');
         this.redirectWithErrors(path, 'eligibility', eligibility);
       }
     });
@@ -103,19 +100,20 @@ class HoldRequest extends React.Component {
     );
   }
 
-  checkEligibility(id) {
-    // return new Promise((resolve, reject) => {
-    //   axios.get(`${appConfig.api}/request/patronEligibility/${id}`)
-    //     .then(response => resolve(response.data));
-    // });
-    console.log('checking eligibility', id);
-    return new Promise((resolve, reject) => {
-      axios.get(`http://localhost:3003/api/v0.1/request/patronEligibility/${id}`)
-        .then(response => {
-          console.log('response.data: ', response.data);
-          resolve(response.data)
-        });
-    });
+  /**
+   * getNotification()
+   * Renders notification text surrounded by a 'nypl-banner-alert' toolkit wrapper.
+   *
+   * @return {HTML Element}
+   */
+  getNotification() {
+    return (
+      <div className="nypl-banner-alert">
+        <p style={{ padding: '10px 20px', margin: 0 }}>
+          Due to inclement weather, delivery of material from offsite storage is subject to delays. Please check your patron account to be sure items are Ready for Pickup in advance of your visit.
+        </p>
+      </div>
+    );
   }
 
   /**
@@ -222,40 +220,29 @@ class HoldRequest extends React.Component {
     return '';
   }
 
-  /**
-   * renderEDD()
-   * Renders the radio input fields of EDD.
-   *
-   * @return {HTML Element}
-   */
-  renderEDD() {
-    return (
-      <label
-        className="electronic-delivery"
-        id="radiobutton-group1_electronic-delivery"
-        htmlFor="available-electronic-delivery"
-      >
-        <input
-          aria-labelledby="radiobutton-group1 radiobutton-group1_electronic-delivery"
-          type="radio"
-          name="delivery-location"
-          id="available-electronic-delivery"
-          value="edd"
-          checked={this.state.checkedLocNum === -1}
-          onChange={e => this.onRadioSelect(e, -1)}
-        />
-        Have up to 50 pages scanned and sent to you via electronic mail.
-      </label>
-    );
+  // checks whether a patron is eligible to place a hold
+  checkEligibility(id) {
+    return new Promise((resolve, reject) => {
+      axios.get(`http://localhost:3003/api/v0.1/request/patronEligibility/${id}`)
+        .then(response =>
+          resolve(response.data),
+        );
+    });
   }
 
+  redirectWithErrors(path, status, message) {
+    this.context.router.replace(
+      `${path}?errorStatus=${status}` +
+      `&errorMessage=${message}`,
+    );
+  }
   /**
-   * renderDeliveryLocation(deliveryLocations = [])
-   * Renders the radio input fields of delivery locations except EDD.
-   *
-   * @param {Array} deliveryLocations
-   * @return {HTML Element}
-   */
+     * renderDeliveryLocation(deliveryLocations = [])
+     * Renders the radio input fields of delivery locations except EDD.
+     *
+     * @param {Array} deliveryLocations
+     * @return {HTML Element}
+     */
   renderDeliveryLocation(deliveryLocations = []) {
     return deliveryLocations.map((location, i) => {
       const displayName = this.modelDeliveryLocationName(location.prefLabel, location.shortName);
@@ -282,26 +269,29 @@ class HoldRequest extends React.Component {
   }
 
   /**
-   * getNotification()
-   * Renders notification text surrounded by a 'nypl-banner-alert' toolkit wrapper.
-   *
-   * @return {HTML Element}
-   */
-  getNotification() {
+  * renderEDD()
+  * Renders the radio input fields of EDD.
+  *
+  * @return {HTML Element}
+  */
+  renderEDD() {
     return (
-      <div className="nypl-banner-alert">
-        <p style={{ padding: '10px 20px', margin: 0 }}>
-          Due to inclement weather, delivery of material from offsite storage is subject to delays. Please check your patron account to be sure items are Ready for Pickup in advance of your visit.
-        </p>
-      </div>
-    );
-  }
-
-  redirectWithErrors(path, status, message) {
-    console.log('blahblahblahblah');
-    this.context.router.replace(
-      `${path}?errorStatus=${status}` +
-      `&errorMessage=${message}`,
+      <label
+        className="electronic-delivery"
+        id="radiobutton-group1_electronic-delivery"
+        htmlFor="available-electronic-delivery"
+      >
+        <input
+          aria-labelledby="radiobutton-group1 radiobutton-group1_electronic-delivery"
+          type="radio"
+          name="delivery-location"
+          id="available-electronic-delivery"
+          value="edd"
+          checked={this.state.checkedLocNum === -1}
+          onChange={e => this.onRadioSelect(e, -1)}
+        />
+        Have up to 50 pages scanned and sent to you via electronic mail.
+      </label>
     );
   }
 

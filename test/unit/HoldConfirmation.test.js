@@ -96,7 +96,6 @@ describe('HoldConfirmation', () => {
 
       it('should render the error message.', () => {
         const main = component.find('main');
-        console.log(main.html());
         const expectedText = new RegExp(
           '<p>(.*)We could not process your request at this time\.' +
           ' Please try again or contact 917-ASK-NYPL(.*)' +

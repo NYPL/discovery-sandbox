@@ -68,39 +68,29 @@ const mockedItems = [
 ];
 
 describe('HoldRequest', () => {
-  // const mock = new MockAdapter(axios);
   describe('When component did mount', () => {
     afterEach(() => {
       axios.get.restore();
     });
     it('should redirect for ineligible patrons', () => {
-      // mock
-      //   .onGet(/\/patronEligibility\/1/)
-      //   .reply(200, { data: 'ineligible' });
       const router = sinon.stub(axios, 'get').callsFake((url) => {
-        console.log('faking router', url);
         if (url.match(/\/patronEligibility\/1/)) {
           return new Promise((resolve, reject) => {
             resolve({ data: 'ineligible' });
-          })
+          });
         }
-      })
+      });
       const component = mount(<HoldRequest />, { attachTo: document.body });
       const instance = component.instance();
       const redirect = sinon.stub(instance, 'redirectWithErrors').callsFake(() => {
-        console.log('line 92');
         return true;
       });
       const didMount = sinon.spy(instance, 'componentDidMount');
       return new Promise((resolve, reject) => {
-        // sinon.stub(instance, 'requireUser').callsFake(() => {
-        //   instance.setState({ patron: { id: 1 } });
-        // });
         instance.setState({ patron: { id: 1 } });
         resolve();
       })
         .then(() => {
-          console.log(instance.state);
           instance.componentDidMount();
         })
         .then(() => {
@@ -109,35 +99,28 @@ describe('HoldRequest', () => {
         })
         .catch(() => {
           expect(didMount.called).to.equal(true);
-          console.log('redirect called for ineligible: ', redirect.called);
           expect(redirect.called).to.equal(true);
         });
     });
     it('should not redirect for eligible patrons', () => {
       const router = sinon.stub(axios, 'get').callsFake((url) => {
-        console.log('faking router', url);
         if (url.match(/\/patronEligibility\/2/)) {
           return new Promise((resolve, reject) => {
             resolve({ data: 'eligible to place holds' });
-          })
+          });
         }
-      })
+      });
       const component = mount(<HoldRequest />, { attachTo: document.body });
       const instance = component.instance();
       const redirect = sinon.stub(instance, 'redirectWithErrors').callsFake(() => {
-        console.log('line 128');
         return true;
       });
       const didMount = sinon.spy(instance, 'componentDidMount');
       return new Promise((resolve, reject) => {
-        // sinon.stub(instance, 'requireUser').callsFake(() => {
-        //   instance.setState({ patron: { id: 1 } });
-        // });
         instance.setState({ patron: { id: 2 } });
         resolve();
       })
         .then(() => {
-          console.log(instance.state);
           instance.componentDidMount();
         })
         .then(() => {
@@ -146,7 +129,6 @@ describe('HoldRequest', () => {
         })
         .catch(() => {
           expect(didMount.called).to.equal(true);
-          console.log('redirect called for eligible ', redirect.called);
           expect(redirect.called).to.equal(false);
         });
     });

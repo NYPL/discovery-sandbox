@@ -28,6 +28,20 @@ class HoldConfirmation extends React.Component {
     document.getElementById('confirmation-title').focus();
   }
 
+// errorText supplies the appropriate text in case a patron is ineligible to place holds
+
+  errorText() {
+    if (this.props.location.query.errorStatus === 'eligibility') {
+      const errors = JSON.parse(this.props.location.query.errorMessage);
+      const expired = errors.expired ? 'Your card is expired. ' : '';
+      const blocked = errors.blocked ? 'Your account has blocks. ' : '';
+      const moneyOwed = errors.moneyOwed ? 'Your fines have exceeded the limit.' : '';
+      const defaultText = expired || blocked || moneyOwed ? '' : 'There is a problem with your account. Please contact library staff. '
+      return ` ${expired}${blocked}${moneyOwed}${defaultText}`
+    }
+    return '';
+  }
+
   /**
    * requireUser()
    * Redirects the patron to OAuth log in page if he/she hasn't been logged in yet.
@@ -206,19 +220,6 @@ class HoldConfirmation extends React.Component {
     );
   }
 
-  errorText() {
-    if (this.props.location.query.errorStatus === 'eligibility') {
-      const errors = JSON.parse(this.props.location.query.errorMessage);
-      const expired = errors.expired ? 'Your card is expired. ' : '';
-      const blocked = errors.blocked ? 'Your account has blocks. ' : '';
-      const moneyOwed = errors.moneyOwed ? 'Your fines have exceeded the limit.' : '';
-      const defaultText = expired || blocked || moneyOwed ? '' : 'There is a problem with your account. Please contact library staff. '
-      console.log(216)
-      return ` ${expired}${blocked}${moneyOwed}${defaultText}`
-    }
-    console.log(219)
-    return '';
-  }
 
   render() {
     // Need to better clarify variable names later.
