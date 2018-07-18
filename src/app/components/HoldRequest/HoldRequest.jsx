@@ -59,6 +59,7 @@ class HoldRequest extends React.Component {
     this.requireUser();
     this.checkEligibility(this.state.patron.id).then((eligibility) => {
       console.log('eligibility', eligibility);
+      console.log('equals?', eligibility !== 'eligible to place holds');
       if (eligibility !== 'eligible to place holds') {
         const bib = (this.props.bib && !_isEmpty(this.props.bib)) ?
           this.props.bib : null;
