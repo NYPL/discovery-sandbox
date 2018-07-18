@@ -33,12 +33,6 @@ class BibPage extends React.Component {
     this.updateIsLoadingState = this.updateIsLoadingState.bind(this);
   }
 
-  componentDidMount() {
-    if(!this.props.location.hash){
-      document.getElementById('bib-title').focus();
-    }
-  }
-
   updateIsLoadingState(status) {
     this.setState({ isLoading: status });
   }
