@@ -69,7 +69,7 @@ const mockedItems = [
 
 describe('HoldRequest', () => {
   // const mock = new MockAdapter(axios);
-  describe.skip('When component did mount', () => {
+  describe('When component did mount', () => {
     afterEach(() => {
       axios.get.restore();
     });

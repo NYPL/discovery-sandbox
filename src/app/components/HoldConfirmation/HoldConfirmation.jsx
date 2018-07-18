@@ -213,9 +213,11 @@ class HoldConfirmation extends React.Component {
       const blocked = errors.blocked ? 'Your account has blocks. ' : '';
       const moneyOwed = errors.moneyOwed ? 'Your fines have exceeded the limit.' : '';
       const defaultText = expired || blocked || moneyOwed ? '' : 'There is a problem with your account. Please contact library staff. '
-      return `${expired}${blocked}${moneyOwed}${defaultText}`
+      console.log(216)
+      return ` ${expired}${blocked}${moneyOwed}${defaultText}`
     }
-    return null;
+    console.log(219)
+    return '';
   }
 
   render() {
@@ -232,7 +234,7 @@ class HoldConfirmation extends React.Component {
     let confirmationInfo = (
       <div className="item">
         <p>
-          {`We could not process your request at this time. ${this.errorText()} Please try again or contact 917-ASK-NYPL`}
+          {`We could not process your request at this time.${this.errorText()} Please try again or contact 917-ASK-NYPL`}
           (<a href="tel:19172756975">917-275-6975</a>).
         </p>
         {this.renderBackToClassicLink()}
