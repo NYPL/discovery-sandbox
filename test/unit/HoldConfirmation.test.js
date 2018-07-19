@@ -628,4 +628,22 @@ describe('HoldConfirmation', () => {
       });
     },
   );
+
+  describe.only('If there are eligibility errors', () => {
+    it('should render an error message with specific errors when available', () => {
+      const location = { query: { errorStatus: 'eligibility', errorMessage: '{"expired":true,"blocked":true,"moneyOwed":true}' } };
+      const component = mount(<HoldConfirmation location={location} />, { attachTo: document.body });
+      const text = component.text();
+      expect(text.includes('Your card is expired.')).to.equal(true);
+      expect(text.includes('Your account has blocks.')).to.equal(true);
+      expect(text.includes('Your fines have exceeded the limit.')).to.equal(true);
+      expect(text.includes('There is a problem with your account. Please contact library staff.')).to.equal(false);
+    });
+    it('should render a default error message when no specific errors are available', () => {
+      const location = { query: { errorStatus: 'eligibility', errorMessage: '{}' } };
+      const component = mount(<HoldConfirmation location={location} />, { attachTo: document.body });
+      const text = component.text();
+      expect(text.includes('There is a problem with your account. Please contact library staff.')).to.equal(true);
+    });
+  });
 });
