@@ -51,23 +51,14 @@ class HoldRequest extends React.Component {
     this.onRadioSelect = this.onRadioSelect.bind(this);
     this.submitRequest = this.submitRequest.bind(this);
     this.updateIsLoadingState = this.updateIsLoadingState.bind(this);
+    this.checkEligibility = this.checkEligibility.bind(this);
     // this.redirectWithErrors = this.redirectWithErrors.bind(this);
     console.log('Hold Request Constructor', this.state.patron.id, this.props.bib, this.props.params);
   }
 
   componentDidMount() {
     this.requireUser();
-    this.checkEligibility(this.state.patron.id).then((eligibility) => {
-      if (eligibility !== 'eligible to place holds') {
-        const bib = (this.props.bib && !_isEmpty(this.props.bib)) ?
-          this.props.bib : null;
-        const bibId = (bib && bib['@id'] && typeof bib['@id'] === 'string') ?
-          bib['@id'].substring(4) : '';
-        const itemId = (this.props.params && this.props.params.itemId) ? this.props.params.itemId : '';
-        const path = `${appConfig.baseUrl}/hold/confirmation/${bibId}-${itemId}`;
-        this.redirectWithErrors(path, 'eligibility', eligibility);
-      }
-    });
+    this.conditionallyRedirect();
     document.getElementById('item-title').focus();
   }
 
@@ -220,6 +211,19 @@ class HoldRequest extends React.Component {
     return '';
   }
 
+  conditionallyRedirect() {
+    return this.checkEligibility(this.state.patron.id).then((eligibility) => {
+      if (eligibility !== 'eligible to place holds') {
+        const bib = (this.props.bib && !_isEmpty(this.props.bib)) ?
+          this.props.bib : null;
+        const bibId = (bib && bib['@id'] && typeof bib['@id'] === 'string') ?
+          bib['@id'].substring(4) : '';
+        const itemId = (this.props.params && this.props.params.itemId) ? this.props.params.itemId : '';
+        const path = `${appConfig.baseUrl}/hold/confirmation/${bibId}-${itemId}`;
+        this.redirectWithErrors(path, 'eligibility', eligibility);
+      }
+    });
+  }
   // checks whether a patron is eligible to place a hold
   checkEligibility(id) {
     return new Promise((resolve, reject) => {

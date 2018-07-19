@@ -629,7 +629,7 @@ describe('HoldConfirmation', () => {
     },
   );
 
-  describe.only('If there are eligibility errors', () => {
+  describe('If there are eligibility errors', () => {
     it('should render an error message with specific errors when available', () => {
       const location = { query: { errorStatus: 'eligibility', errorMessage: '{"expired":true,"blocked":true,"moneyOwed":true}' } };
       const component = mount(<HoldConfirmation location={location} />, { attachTo: document.body });

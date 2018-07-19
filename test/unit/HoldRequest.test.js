@@ -74,6 +74,7 @@ describe('HoldRequest', () => {
     });
     it('should redirect for ineligible patrons', () => {
       const router = sinon.stub(axios, 'get').callsFake((url) => {
+        console.log('mocking axios: ', url)
         if (url.match(/\/patronEligibility\/1/)) {
           return new Promise((resolve, reject) => {
             resolve({ data: 'ineligible' });
@@ -85,25 +86,20 @@ describe('HoldRequest', () => {
       const redirect = sinon.stub(instance, 'redirectWithErrors').callsFake(() => {
         return true;
       });
-      const didMount = sinon.spy(instance, 'componentDidMount');
       return new Promise((resolve, reject) => {
         instance.setState({ patron: { id: 1 } });
         resolve();
       })
         .then(() => {
-          instance.componentDidMount();
-        })
-        .then(() => {
-          expect(didMount.called).to.equal(true);
-          expect(redirect.called).to.equal(true);
-        })
-        .catch(() => {
-          expect(didMount.called).to.equal(true);
-          expect(redirect.called).to.equal(true);
+          return instance.conditionallyRedirect()
+            .then(() => {
+              expect(redirect.called).to.equal(true);
+            })
         });
     });
     it('should not redirect for eligible patrons', () => {
       const router = sinon.stub(axios, 'get').callsFake((url) => {
+        console.log('mocking axios: ', url)
         if (url.match(/\/patronEligibility\/2/)) {
           return new Promise((resolve, reject) => {
             resolve({ data: 'eligible to place holds' });
@@ -115,22 +111,16 @@ describe('HoldRequest', () => {
       const redirect = sinon.stub(instance, 'redirectWithErrors').callsFake(() => {
         return true;
       });
-      const didMount = sinon.spy(instance, 'componentDidMount');
       return new Promise((resolve, reject) => {
         instance.setState({ patron: { id: 2 } });
         resolve();
       })
         .then(() => {
-          instance.componentDidMount();
+          return instance.conditionallyRedirect()
+            .then(() => {
+              expect(redirect.called).to.equal(false);
+            })
         })
-        .then(() => {
-          expect(didMount.called).to.equal(true);
-          expect(redirect.called).to.equal(true);
-        })
-        .catch(() => {
-          expect(didMount.called).to.equal(true);
-          expect(redirect.called).to.equal(false);
-        });
     });
   });
 
