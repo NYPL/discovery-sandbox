@@ -1,7 +1,7 @@
 /* globals window document */
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router';
+import { Link, Redirect } from 'react-router';
 import axios from 'axios';
 import {
   isArray as _isArray,
@@ -52,9 +52,11 @@ class HoldRequest extends React.Component {
     this.submitRequest = this.submitRequest.bind(this);
     this.updateIsLoadingState = this.updateIsLoadingState.bind(this);
     this.checkEligibility = this.checkEligibility.bind(this);
+    this.conditionallyRedirect = this.conditionallyRedirect.bind(this);
     // this.redirectWithErrors = this.redirectWithErrors.bind(this);
     console.log('Hold Request Constructor', this.state.patron.id, this.props.bib, this.props.params);
   }
+
 
   componentDidMount() {
     this.requireUser();
@@ -214,14 +216,16 @@ class HoldRequest extends React.Component {
   conditionallyRedirect() {
     return this.checkEligibility(this.state.patron.id).then((eligibility) => {
       if (eligibility !== 'eligible to place holds') {
+        // return true;
         const bib = (this.props.bib && !_isEmpty(this.props.bib)) ?
           this.props.bib : null;
         const bibId = (bib && bib['@id'] && typeof bib['@id'] === 'string') ?
           bib['@id'].substring(4) : '';
         const itemId = (this.props.params && this.props.params.itemId) ? this.props.params.itemId : '';
         const path = `${appConfig.baseUrl}/hold/confirmation/${bibId}-${itemId}`;
-        this.redirectWithErrors(path, 'eligibility', eligibility);
+        return this.redirectWithErrors(path, 'eligibility', eligibility);
       }
+      return false;
     });
   }
   // checks whether a patron is eligible to place a hold
@@ -239,6 +243,7 @@ class HoldRequest extends React.Component {
       `${path}?errorStatus=${status}` +
       `&errorMessage=${message}`,
     );
+    //return `${path}?errorStatus=${status}&errorMessage=${message}`;
   }
   /**
      * renderDeliveryLocation(deliveryLocations = [])
@@ -300,6 +305,13 @@ class HoldRequest extends React.Component {
   }
 
   render() {
+    console.log('redirect: ', this.state.redirect);
+    if (this.state.redirect === undefined) {
+      return (<p> Loading...</p>);
+    }
+    if (this.state.redirect) {
+      return (<Redirect to="" />);
+    }
     const searchKeywords = this.props.searchKeywords || '';
     const bib = (this.props.bib && !_isEmpty(this.props.bib)) ?
       this.props.bib : null;

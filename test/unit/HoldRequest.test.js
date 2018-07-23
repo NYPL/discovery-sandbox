@@ -80,8 +80,7 @@ describe('HoldRequest', () => {
           return new Promise((resolve, reject) => {
             resolve({ data: 'ineligible' });
           });
-        }
-        else if (url.match(/\/patronEligibility\/2/)) {
+        } else if (url.match(/\/patronEligibility\/2/)) {
           return new Promise((resolve, reject) => {
             resolve(({ data: 'eligible to place holds' }));
           });
