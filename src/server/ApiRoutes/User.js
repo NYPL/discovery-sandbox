@@ -1,4 +1,5 @@
 import appConfig from '../../../appConfig';
+import nyplApiClient from '../../server/routes/nyplApiClient';
 
 function requireUser(req, res) {
   if (!req.patronTokenResponse || !req.patronTokenResponse.isTokenValid ||
@@ -12,4 +13,12 @@ function requireUser(req, res) {
   return true;
 }
 
-export default { requireUser };
+function eligibility(req, res) {
+  console.log(req.patronTokenResponse.decodedPatron.sub);
+  const id = req.patronTokenResponse.decodedPatron.sub;
+  nyplApiClient().then(client => client.get(`/patrons/${id}/hold-request-eligibility`, { cache: false }))
+    .then((response) => { console.log('thennnn', response); res.send(JSON.stringify(response)); }
+    );
+}
+
+export default { eligibility, requireUser };

@@ -10,7 +10,9 @@ import {
 } from 'underscore';
 import DocumentTitle from 'react-document-title';
 
+
 import Breadcrumbs from '../Breadcrumbs/Breadcrumbs';
+
 import PatronStore from '../../stores/PatronStore';
 import appConfig from '../../../../appConfig';
 import LibraryItem from '../../utils/item';
@@ -230,11 +232,13 @@ class HoldRequest extends React.Component {
   }
   // checks whether a patron is eligible to place a hold
   checkEligibility(id) {
+    console.log(id, process.env.APP_ENV)
     return new Promise((resolve, reject) => {
-      axios.get(`http://localhost:3003/api/v0.1/request/patronEligibility/${id}`)
-        .then(response =>
-          resolve(response.data),
-        );
+      // nyplApiClient().then(client => client.get(`/patrons/${id}/hold-request-eligibility`, { cache: false }))
+      //   .then((response) => { console.log('then', response); resolve(response.data); }
+      //   );
+      axios.get(`${appConfig.baseUrl}/api/patronEligibility`)
+        .then((response) => { console.log('then: ', response); resolve(response.data); });
     });
   }
 
