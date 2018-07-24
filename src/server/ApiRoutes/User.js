@@ -22,3 +22,5 @@ function eligibility(req, res) {
 }
 
 export default { eligibility, requireUser };
+
+// /patrons/${id}/hold-request-eligibility

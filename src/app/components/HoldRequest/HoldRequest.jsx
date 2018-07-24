@@ -220,7 +220,8 @@ class HoldRequest extends React.Component {
 
   conditionallyRedirect() {
     return this.checkEligibility(this.state.patron.id).then((eligibility) => {
-      if (eligibility !== 'eligible to place holds') {
+      console.log('eligibility: ', eligibility);
+      if (eligibility.eligibility !== 'eligible to place holds') {
         // return true;
         const bib = (this.props.bib && !_isEmpty(this.props.bib)) ?
           this.props.bib : null;
@@ -228,7 +229,7 @@ class HoldRequest extends React.Component {
           bib['@id'].substring(4) : '';
         const itemId = (this.props.params && this.props.params.itemId) ? this.props.params.itemId : '';
         const path = `${appConfig.baseUrl}/hold/confirmation/${bibId}-${itemId}`;
-        return this.redirectWithErrors(path, 'eligibility', eligibility);
+        return this.redirectWithErrors(path, 'eligibility', JSON.stringify(eligibility));
       }
       this.setState({ redirect: false });
     });
