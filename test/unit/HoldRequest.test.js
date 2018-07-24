@@ -74,18 +74,6 @@ describe('HoldRequest', () => {
     let instance;
     let redirect;
     beforeEach(() => {
-      router = sinon.stub(axios, 'get').callsFake((url) => {
-        console.log('mocking axios: ', url)
-        if (url.match(/\/patronEligibility\/1/)) {
-          return new Promise((resolve, reject) => {
-            resolve({ data: 'ineligible' });
-          });
-        } else if (url.match(/\/patronEligibility\/2/)) {
-          return new Promise((resolve, reject) => {
-            resolve(({ data: 'eligible to place holds' }));
-          });
-        }
-      });
       component = mount(<HoldRequest />, { attachTo: document.body });
       instance = component.instance();
       redirect = sinon.stub(instance, 'redirectWithErrors').callsFake(() => {
@@ -96,7 +84,12 @@ describe('HoldRequest', () => {
       axios.get.restore();
     });
     it('should redirect for ineligible patrons', () => {
-
+      router = sinon.stub(axios, 'get').callsFake(() => {
+        console.log('mocking axios: 1');
+        return new Promise((resolve, reject) => {
+          resolve({ data: 'ineligible' });
+        });
+      });
       return new Promise((resolve, reject) => {
         instance.setState({ patron: { id: 1 } });
         resolve();
@@ -109,6 +102,12 @@ describe('HoldRequest', () => {
         });
     });
     it('should not redirect for eligible patrons', () => {
+      router = sinon.stub(axios, 'get').callsFake(() => {
+        console.log('mocking axios: 1');
+        return new Promise((resolve, reject) => {
+          resolve({ data: 'eligible to place holds' });
+        });
+      });
       return new Promise((resolve, reject) => {
         instance.setState({ patron: { id: 2 } });
         resolve();

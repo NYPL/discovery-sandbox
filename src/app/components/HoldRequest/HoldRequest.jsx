@@ -63,7 +63,10 @@ class HoldRequest extends React.Component {
   componentDidMount() {
     this.requireUser();
     this.conditionallyRedirect();
-    document.getElementById('item-title').focus();
+    const title = document.getElementById('item-title');
+    if (title) {
+      title.focus();
+    }
   }
 
   onChange() {
