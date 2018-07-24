@@ -227,7 +227,7 @@ class HoldRequest extends React.Component {
         const path = `${appConfig.baseUrl}/hold/confirmation/${bibId}-${itemId}`;
         return this.redirectWithErrors(path, 'eligibility', eligibility);
       }
-      return false;
+      this.setState({ redirect: false });
     });
   }
   // checks whether a patron is eligible to place a hold
