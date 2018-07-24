@@ -1,7 +1,7 @@
 ## CHANGE LOG
 
 ### 1.5.1
-- Updating the Header component to v2.4.10 and the Footer component to v0.5.1.
+- Updating the Header component to v2.4.11 and the Footer component to v0.5.1.
 
 ### 1.5.0
 - Adds Tab interface for details and additional details together with attendant css and changes to BibPage and AdditionalDetailsViewer
