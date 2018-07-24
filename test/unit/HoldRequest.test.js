@@ -67,8 +67,8 @@ const mockedItems = [
   }
 ];
 
-describe('HoldRequest', () => {
-  describe.only('When component did mount', () => {
+describe.only('HoldRequest', () => {
+  describe('When component did mount', () => {
     let router;
     let component;
     let instance;
@@ -128,6 +128,7 @@ describe('HoldRequest', () => {
     before(() => {
       requireUser = sinon.spy(HoldRequest.prototype, 'requireUser');
       component = mount(<HoldRequest />, { attachTo: document.body });
+      component.setState({ redirect: false });
     });
 
     after(() => {
@@ -149,6 +150,7 @@ describe('HoldRequest', () => {
       Actions.updatePatronData({});
       requireUser = sinon.spy(HoldRequest.prototype, 'requireUser');
       component = mount(<HoldRequest />, { attachTo: document.body });
+      component.setState({ redirect: false });
     });
 
     after(() => {
@@ -168,6 +170,7 @@ describe('HoldRequest', () => {
 
       before(() => {
         component = mount(<HoldRequest />, { attachTo: document.body });
+        component.setState({ redirect: false });
       });
 
       after(() => {
@@ -206,6 +209,7 @@ describe('HoldRequest', () => {
 
     before(() => {
       component = mount(<HoldRequest bib={bib} params={{ itemId: 'i10000003' }} />, { attachTo: document.body });
+      component.setState({ redirect: false });
     });
 
     after(() => {
@@ -271,6 +275,7 @@ describe('HoldRequest', () => {
         />,
         { attachTo: document.body }
       );
+      component.setState({ redirect: false });
     });
 
     after(() => {
@@ -377,6 +382,7 @@ describe('HoldRequest', () => {
         />,
         { attachTo: document.body }
       );
+      component.setState({ redirect: false });
     });
 
     after(() => {
