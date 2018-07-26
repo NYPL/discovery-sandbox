@@ -183,3 +183,14 @@ select {
   font-size: "";
   font-weight: 400;
 }
+
+.footer-content {
+  .footerLinks {
+    .linkItemList {
+      li {
+        padding: 2px;
+        margin: 5px;
+      }
+    }
+  }
+}
