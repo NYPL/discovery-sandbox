@@ -87,7 +87,7 @@ describe.only('HoldRequest', () => {
       router = sinon.stub(axios, 'get').callsFake(() => {
         console.log('mocking axios: 1');
         return new Promise((resolve, reject) => {
-          resolve({ data: 'ineligible' });
+          resolve({ data: { eligibility: false } });
         });
       });
       return new Promise((resolve, reject) => {
@@ -103,9 +103,9 @@ describe.only('HoldRequest', () => {
     });
     it('should not redirect for eligible patrons', () => {
       router = sinon.stub(axios, 'get').callsFake(() => {
-        console.log('mocking axios: 1');
+        console.log('mocking axios: 2');
         return new Promise((resolve, reject) => {
-          resolve({ data: 'eligible to place holds' });
+          resolve({ data: { eligibility: true } });
         });
       });
       return new Promise((resolve, reject) => {
