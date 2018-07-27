@@ -30,16 +30,41 @@ class HoldConfirmation extends React.Component {
 
 // errorText supplies the appropriate text in case a patron is ineligible to place holds
 
-  errorText() {
+  expiredMessage() {
+    return (<li className="errorItem">Your account has expired-- Please see <a href="https://www.nypl.org/help/library-card/terms-conditions#renew">Library Terms and Conditions -- Renewing or Validating Your Library Card</a> about renewing your card</li>)
+  }
+
+  moneyOwedMessage() {
+    return (<li className="errorItem">Your fines have exceeded the limit — you can pay your fines in a branch or online from the links under "My Account"</li>)
+  }
+
+  blockedMessage() {
+    <li className="errorItem">There is a problem with your library account</li>
+  }
+
+  eligibilityErrorText() {
     if (this.props.location.query.errorStatus === 'eligibility') {
       const errors = JSON.parse(this.props.location.query.errorMessage);
-      const expired = errors.expired ? 'Your card is expired. ' : '';
-      const blocked = errors.blocked ? 'Your account has blocks. ' : '';
-      const moneyOwed = errors.moneyOwed ? 'Your fines have exceeded the limit.' : '';
-      const defaultText = expired || blocked || moneyOwed ? '' : 'There is a problem with your account. Please contact library staff. '
-      return ` ${expired}${blocked}${moneyOwed}${defaultText}`
+      const expired = errors.expired ? this.expiredMessage() : null;
+      const blocked = errors.blocked ? this.blockedMessage() : '';
+      const moneyOwed = errors.moneyOwed ? this.moneyOwedMessage() : '';
+      const defaultText = expired || blocked || moneyOwed ? '' : 'There is a problem with your library account.';
+      return (
+        <p> This is because:
+          <ul>
+            {moneyOwed}
+            {expired}
+            {blocked}
+          </ul>
+           Please see a librarian or contact 917-ASK-NYPL (<a href="tel:19172756975">917-275-6975</a>) if you require assistance.
+        </p>);
     }
     return '';
+  }
+
+  defaultErrorText() {
+    return (
+      <div>Please try again or contact 917-ASK-NYPL(<a href="tel:19172756975">917-275-6975</a>)</div>)
   }
 
   /**
@@ -235,8 +260,7 @@ class HoldConfirmation extends React.Component {
     let confirmationInfo = (
       <div className="item">
         <p>
-          {`We could not process your request at this time.${this.errorText()} Please try again or contact 917-ASK-NYPL`}
-          (<a href="tel:19172756975">917-275-6975</a>).
+          We could not process your request at this time. {this.eligibilityErrorText() || this.defaultErrorText()}
         </p>
         {this.renderBackToClassicLink()}
         {this.renderBackToSearchLink()}

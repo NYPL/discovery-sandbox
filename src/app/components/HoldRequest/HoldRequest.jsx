@@ -221,7 +221,7 @@ class HoldRequest extends React.Component {
   conditionallyRedirect() {
     return this.checkEligibility(this.state.patron.id).then((eligibility) => {
       console.log('eligibility: ', eligibility);
-      if (eligibility.eligibility !== 'eligible to place holds') {
+      if (!eligibility.eligibility) {
         // return true;
         const bib = (this.props.bib && !_isEmpty(this.props.bib)) ?
           this.props.bib : null;
