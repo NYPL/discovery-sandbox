@@ -67,7 +67,7 @@ const mockedItems = [
   }
 ];
 
-describe.only('HoldRequest', () => {
+describe('HoldRequest', () => {
   describe('When component did mount', () => {
     let router;
     let component;

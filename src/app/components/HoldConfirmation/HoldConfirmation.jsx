@@ -39,7 +39,7 @@ class HoldConfirmation extends React.Component {
   }
 
   blockedMessage() {
-    <li className="errorItem">There is a problem with your library account</li>
+    return (<li className="errorItem">There is a problem with your library account</li>)
   }
 
   eligibilityErrorText() {
@@ -55,6 +55,7 @@ class HoldConfirmation extends React.Component {
             {moneyOwed}
             {expired}
             {blocked}
+            {defaultText}
           </ul>
            Please see a librarian or contact 917-ASK-NYPL (<a href="tel:19172756975">917-275-6975</a>) if you require assistance.
         </p>);

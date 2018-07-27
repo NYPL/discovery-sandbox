@@ -96,9 +96,10 @@ describe('HoldConfirmation', () => {
 
       it('should render the error message.', () => {
         const main = component.find('main');
+        console.log(main.html());
         const expectedText = new RegExp(
           '<p>(.*)We could not process your request at this time\.' +
-          ' Please try again or contact 917-ASK-NYPL(.*)' +
+          '(.*)Please try again or contact 917-ASK-NYPL(.*)' +
           '((.*)<a href="tel:19172756975">917-275-6975<\/a>(.*))\.(.*)<\/p>'
         );
         expect(
@@ -634,16 +635,16 @@ describe('HoldConfirmation', () => {
       const location = { query: { errorStatus: 'eligibility', errorMessage: '{"expired":true,"blocked":true,"moneyOwed":true}' } };
       const component = mount(<HoldConfirmation location={location} />, { attachTo: document.body });
       const text = component.text();
-      expect(text.includes('Your card is expired.')).to.equal(true);
-      expect(text.includes('Your account has blocks.')).to.equal(true);
-      expect(text.includes('Your fines have exceeded the limit.')).to.equal(true);
-      expect(text.includes('There is a problem with your account. Please contact library staff.')).to.equal(false);
+      expect(text.includes('Your account has expired')).to.equal(true);
+      expect(text.includes('There is a problem with your library account')).to.equal(true);
+      expect(text.includes('Your fines have exceeded the limit')).to.equal(true);
     });
     it('should render a default error message when no specific errors are available', () => {
       const location = { query: { errorStatus: 'eligibility', errorMessage: '{}' } };
       const component = mount(<HoldConfirmation location={location} />, { attachTo: document.body });
       const text = component.text();
-      expect(text.includes('There is a problem with your account. Please contact library staff.')).to.equal(true);
+      console.log(text);
+      expect(text.includes('There is a problem with your library account.')).to.equal(true);
     });
   });
 });
