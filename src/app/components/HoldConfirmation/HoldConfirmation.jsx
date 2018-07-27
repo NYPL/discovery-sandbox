@@ -65,7 +65,8 @@ class HoldConfirmation extends React.Component {
 
   defaultErrorText() {
     return (
-      <div>Please try again or contact 917-ASK-NYPL(<a href="tel:19172756975">917-275-6975</a>)</div>)
+      <div>Please try again or contact 917-ASK-NYPL(<a href="tel:19172756975">917-275-6975</a>)</div>
+    );
   }
 
   /**

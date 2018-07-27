@@ -55,8 +55,6 @@ class HoldRequest extends React.Component {
     this.updateIsLoadingState = this.updateIsLoadingState.bind(this);
     this.checkEligibility = this.checkEligibility.bind(this);
     this.conditionallyRedirect = this.conditionallyRedirect.bind(this);
-    // this.redirectWithErrors = this.redirectWithErrors.bind(this);
-    console.log('Hold Request Constructor', this.state.patron.id, this.props.bib, this.props.params);
   }
 
 
@@ -220,7 +218,6 @@ class HoldRequest extends React.Component {
 
   conditionallyRedirect() {
     return this.checkEligibility(this.state.patron.id).then((eligibility) => {
-      console.log('eligibility: ', eligibility);
       if (!eligibility.eligibility) {
         // return true;
         const bib = (this.props.bib && !_isEmpty(this.props.bib)) ?
@@ -236,13 +233,9 @@ class HoldRequest extends React.Component {
   }
   // checks whether a patron is eligible to place a hold
   checkEligibility(id) {
-    console.log(id, process.env.APP_ENV)
     return new Promise((resolve, reject) => {
-      // nyplApiClient().then(client => client.get(`/patrons/${id}/hold-request-eligibility`, { cache: false }))
-      //   .then((response) => { console.log('then', response); resolve(response.data); }
-      //   );
       axios.get(`${appConfig.baseUrl}/api/patronEligibility`)
-        .then((response) => { console.log('then: ', response); resolve(response.data); });
+        .then((response) => { resolve(response.data); });
     });
   }
 
@@ -313,7 +306,6 @@ class HoldRequest extends React.Component {
   }
 
   render() {
-    console.log('redirect: ', this.state.redirect);
     if (this.state.redirect === undefined) {
       return (<p> Loading...</p>);
     }
