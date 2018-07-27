@@ -14,10 +14,9 @@ function requireUser(req, res) {
 }
 
 function eligibility(req, res) {
-  console.log(req.patronTokenResponse.decodedPatron.sub);
   const id = req.patronTokenResponse.decodedPatron.sub;
   nyplApiClient().then(client => client.get(`/patrons/${id}/hold-request-eligibility`, { cache: false }))
-    .then((response) => { console.log('thennnn', response); res.send(JSON.stringify(response)); }
+    .then((response) => { res.send(JSON.stringify(response)); }
     );
 }
 

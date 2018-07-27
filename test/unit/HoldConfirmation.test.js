@@ -96,7 +96,6 @@ describe('HoldConfirmation', () => {
 
       it('should render the error message.', () => {
         const main = component.find('main');
-        console.log(main.html());
         const expectedText = new RegExp(
           '<p>(.*)We could not process your request at this time\.' +
           '(.*)Please try again or contact 917-ASK-NYPL(.*)' +
@@ -643,7 +642,6 @@ describe('HoldConfirmation', () => {
       const location = { query: { errorStatus: 'eligibility', errorMessage: '{}' } };
       const component = mount(<HoldConfirmation location={location} />, { attachTo: document.body });
       const text = component.text();
-      console.log(text);
       expect(text.includes('There is a problem with your library account.')).to.equal(true);
     });
   });
