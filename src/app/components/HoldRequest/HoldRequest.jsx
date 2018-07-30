@@ -244,7 +244,6 @@ class HoldRequest extends React.Component {
       `${path}?errorStatus=${status}` +
       `&errorMessage=${message}`,
     );
-    //return `${path}?errorStatus=${status}&errorMessage=${message}`;
   }
   /**
      * renderDeliveryLocation(deliveryLocations = [])

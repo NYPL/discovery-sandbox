@@ -28,18 +28,18 @@ class HoldConfirmation extends React.Component {
     document.getElementById('confirmation-title').focus();
   }
 
-// errorText supplies the appropriate text in case a patron is ineligible to place holds
+// eligibilityErrorText supplies the appropriate text in case a patron is ineligible to place holds
 
   expiredMessage() {
-    return (<li className="errorItem">Your account has expired-- Please see <a href="https://www.nypl.org/help/library-card/terms-conditions#renew">Library Terms and Conditions -- Renewing or Validating Your Library Card</a> about renewing your card</li>)
+    return (<li className="errorItem">Your account has expired-- Please see <a href="https://www.nypl.org/help/library-card/terms-conditions#renew">Library Terms and Conditions -- Renewing or Validating Your Library Card</a> about renewing your card</li>);
   }
 
   moneyOwedMessage() {
-    return (<li className="errorItem">Your fines have exceeded the limit — you can pay your fines in a branch or online from the links under "My Account"</li>)
+    return (<li className="errorItem">Your fines have exceeded the limit — you can pay your fines in a branch or online from the links under "My Account"</li>);
   }
 
   blockedMessage() {
-    return (<li className="errorItem">There is a problem with your library account</li>)
+    return (<li className="errorItem">There is a problem with your library account</li>);
   }
 
   eligibilityErrorText() {
