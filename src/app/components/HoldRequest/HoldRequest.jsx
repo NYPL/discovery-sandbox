@@ -308,9 +308,6 @@ class HoldRequest extends React.Component {
     if (this.state.redirect === undefined) {
       return (<p> Loading...</p>);
     }
-    if (this.state.redirect) {
-      return (<Redirect to="" />);
-    }
     const searchKeywords = this.props.searchKeywords || '';
     const bib = (this.props.bib && !_isEmpty(this.props.bib)) ?
       this.props.bib : null;
