@@ -4,7 +4,6 @@ import sinon from 'sinon';
 import { expect } from 'chai';
 import { mount } from 'enzyme';
 import axios from 'axios';
-import MockAdapter from 'axios-mock-adapter';
 // Import the component that is going to be tested
 import HoldRequest from './../../src/app/components/HoldRequest/HoldRequest';
 import Actions from './../../src/app/actions/Actions';
