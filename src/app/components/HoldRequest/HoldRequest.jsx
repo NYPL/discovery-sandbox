@@ -1,7 +1,7 @@
 /* globals window document */
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link, Redirect } from 'react-router';
+import { Link } from 'react-router';
 import axios from 'axios';
 import {
   isArray as _isArray,
@@ -66,7 +66,7 @@ class HoldRequest extends React.Component {
     if (title) {
       title.focus();
     }
-    this.timeoutId = setTimeout(() => { console.log('timeout'); this.setState({ redirect: false, isLoading: false }); }, 5000);
+    this.timeoutId = setTimeout(() => { this.updateIsLoadingState(false); }, 5000);
   }
 
   onChange() {
@@ -218,12 +218,12 @@ class HoldRequest extends React.Component {
     return '';
   }
 
+  // redirects if patron is ineligible to place holds
+
   conditionallyRedirect() {
     return this.checkEligibility(this.state.patron.id).then((eligibility) => {
       clearTimeout(this.timeoutId);
-      console.log('conditionallyRedirect');
       if (!eligibility.eligibility) {
-        // return true;
         const bib = (this.props.bib && !_isEmpty(this.props.bib)) ?
           this.props.bib : null;
         const bibId = (bib && bib['@id'] && typeof bib['@id'] === 'string') ?
@@ -232,12 +232,12 @@ class HoldRequest extends React.Component {
         const path = `${appConfig.baseUrl}/hold/confirmation/${bibId}-${itemId}`;
         return this.redirectWithErrors(path, 'eligibility', JSON.stringify(eligibility));
       }
-      this.setState({ redirect: false, isLoading: false });
+      this.updateIsLoadingState(false);
     });
   }
   // checks whether a patron is eligible to place a hold
-  checkEligibility(id) {
-    return new Promise((resolve, reject) => {
+  checkEligibility() {
+    return new Promise((resolve) => {
       axios.get(`${appConfig.baseUrl}/api/patronEligibility`)
         .then((response) => { resolve(response.data); });
     });
@@ -309,9 +309,6 @@ class HoldRequest extends React.Component {
   }
 
   render() {
-    // if (this.state.redirect === undefined) {
-    //   return (<p> Loading...</p>);
-    // }
     const searchKeywords = this.props.searchKeywords || '';
     const bib = (this.props.bib && !_isEmpty(this.props.bib)) ?
       this.props.bib : null;
