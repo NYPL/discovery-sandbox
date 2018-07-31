@@ -44,7 +44,8 @@ class HoldRequest extends React.Component {
 
     this.state = _extend({
       delivery: defaultDelivery,
-      isLoading: this.props.isLoading,
+      // isLoading: this.props.isLoading,
+      isLoading: true,
       checkedLocNum,
     }, { patron: PatronStore.getState() });
 
@@ -65,6 +66,7 @@ class HoldRequest extends React.Component {
     if (title) {
       title.focus();
     }
+    this.timeoutId = setTimeout(() => { console.log('timeout'); this.setState({ redirect: false, isLoading: false }); }, 5000);
   }
 
   onChange() {
@@ -218,6 +220,8 @@ class HoldRequest extends React.Component {
 
   conditionallyRedirect() {
     return this.checkEligibility(this.state.patron.id).then((eligibility) => {
+      clearTimeout(this.timeoutId);
+      console.log('conditionallyRedirect');
       if (!eligibility.eligibility) {
         // return true;
         const bib = (this.props.bib && !_isEmpty(this.props.bib)) ?
@@ -228,7 +232,7 @@ class HoldRequest extends React.Component {
         const path = `${appConfig.baseUrl}/hold/confirmation/${bibId}-${itemId}`;
         return this.redirectWithErrors(path, 'eligibility', JSON.stringify(eligibility));
       }
-      this.setState({ redirect: false });
+      this.setState({ redirect: false, isLoading: false });
     });
   }
   // checks whether a patron is eligible to place a hold
@@ -305,9 +309,9 @@ class HoldRequest extends React.Component {
   }
 
   render() {
-    if (this.state.redirect === undefined) {
-      return (<p> Loading...</p>);
-    }
+    // if (this.state.redirect === undefined) {
+    //   return (<p> Loading...</p>);
+    // }
     const searchKeywords = this.props.searchKeywords || '';
     const bib = (this.props.bib && !_isEmpty(this.props.bib)) ?
       this.props.bib : null;
