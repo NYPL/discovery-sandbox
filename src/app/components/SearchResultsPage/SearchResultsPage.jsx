@@ -12,7 +12,6 @@ import Pagination from '../Pagination/Pagination';
 import LoadingLayer from '../LoadingLayer/LoadingLayer';
 import FilterPopup from '../FilterPopup/FilterPopup';
 import SelectedFilters from '../Filters/SelectedFilters';
-
 import {
   basicQuery,
   ajaxCall,

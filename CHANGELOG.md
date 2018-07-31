@@ -1,5 +1,10 @@
 ## CHANGE LOG
 
+### 1.5.0
+- Adds Tab interface for details and additional details together with attendant css and changes to BibPage and AdditionalDetailsViewer
+- Fix dependency vulnerabilities, most via minor upgrades.
+- Fix two bugs related to paging through search results (https://jira.nypl.org/browse/SCC-940 , https://jira.nypl.org/browse/SCC-939 )
+
 ### 1.4.3
 - Documentation: Revised DEPLOYMENT.md to remove dev-eb-deploy, simplify strategy
 - Added deploy-* scripts to package.json

@@ -7,9 +7,6 @@ import PropTypes from 'prop-types';
  */
 const DefinitionList = ({ data }) => {
   const getDefinitions = (definitions) => {
-    if (!definitions && !definitions.length) {
-      return null;
-    }
 
     return definitions.map((item) => {
       if (!item || (!item.term && !item.definition)) {
@@ -22,7 +19,7 @@ const DefinitionList = ({ data }) => {
     });
   };
 
-  if (!data && !data.length) {
+  if (!data || !data.length) {
     return null;
   }
 

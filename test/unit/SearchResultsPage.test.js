@@ -2,8 +2,8 @@
 import React from 'react';
 import { expect } from 'chai';
 import { mount } from 'enzyme';
-
 import SearchResultsPage from '../../src/app/components/SearchResultsPage/SearchResultsPage';
+
 
 // Eventually, it would be nice to have mocked data in a different file and imported.
 const searchResults = {
