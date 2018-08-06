@@ -97,22 +97,6 @@ class HoldRequest extends React.Component {
   }
 
   /**
-   * getNotification()
-   * Renders notification text surrounded by a 'nypl-banner-alert' toolkit wrapper.
-   *
-   * @return {HTML Element}
-   */
-  getNotification() {
-    return (
-      <div className="nypl-banner-alert">
-        <p style={{ padding: '10px 20px', margin: 0 }}>
-          Due to inclement weather, delivery of material from offsite storage is subject to delays. Please check your patron account to be sure items are Ready for Pickup in advance of your visit.
-        </p>
-      </div>
-    );
-  }
-
-  /**
    * submitRequest()
    * Client-side submit call.
    */
@@ -216,10 +200,11 @@ class HoldRequest extends React.Component {
     return '';
   }
 
-  // redirects if patron is ineligible to place holds
+  // Redirects to HoldConfirmation if patron is ineligible to place holds. We are particularly
+  // checking for manual blocks, expired cards, and excessive fines.
 
   conditionallyRedirect() {
-    return this.checkEligibility(this.state.patron.id).then((eligibility) => {
+    return this.checkEligibility().then((eligibility) => {
       clearTimeout(this.timeoutId);
       if (!eligibility.eligibility) {
         const bib = (this.props.bib && !_isEmpty(this.props.bib)) ?
@@ -233,11 +218,12 @@ class HoldRequest extends React.Component {
       this.updateIsLoadingState(false);
     });
   }
-  // checks whether a patron is eligible to place a hold
+  // checks whether a patron is eligible to place a hold. Uses cookie to get the patron's id
   checkEligibility() {
     return new Promise((resolve) => {
       axios.get(`${appConfig.baseUrl}/api/patronEligibility`)
-        .then((response) => { resolve(response.data); });
+        .then((response) => { resolve(response.data); })
+        .catch(() => resolve({ eligibility: true }));
     });
   }
 
