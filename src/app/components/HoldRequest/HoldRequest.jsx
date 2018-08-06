@@ -10,7 +10,6 @@ import {
 } from 'underscore';
 import DocumentTitle from 'react-document-title';
 
-
 import Breadcrumbs from '../Breadcrumbs/Breadcrumbs';
 
 import PatronStore from '../../stores/PatronStore';
@@ -44,7 +43,6 @@ class HoldRequest extends React.Component {
 
     this.state = _extend({
       delivery: defaultDelivery,
-      // isLoading: this.props.isLoading,
       isLoading: true,
       checkedLocNum,
     }, { patron: PatronStore.getState() });
@@ -146,7 +144,7 @@ class HoldRequest extends React.Component {
     trackDiscovery(`Submit Request${partnerEvent}`, `${title} - ${itemId}`);
     axios
       .get(`${appConfig.baseUrl}/api/newHold?itemId=${itemId}&pickupLocation=` +
-      `${this.state.delivery}&itemSource=${itemSource}`)
+        `${this.state.delivery}&itemSource=${itemSource}`)
       .then((response) => {
         if (response.data.error && response.data.error.status !== 200) {
           this.updateIsLoadingState(false);

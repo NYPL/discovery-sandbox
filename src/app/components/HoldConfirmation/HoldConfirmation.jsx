@@ -46,8 +46,8 @@ class HoldConfirmation extends React.Component {
     if (this.props.location.query.errorStatus === 'eligibility') {
       const errors = JSON.parse(this.props.location.query.errorMessage);
       const expired = errors.expired ? this.expiredMessage() : null;
-      const blocked = errors.blocked ? this.blockedMessage() : '';
-      const moneyOwed = errors.moneyOwed ? this.moneyOwedMessage() : '';
+      const blocked = errors.blocked ? this.blockedMessage() : null;
+      const moneyOwed = errors.moneyOwed ? this.moneyOwedMessage() : null;
       const defaultText = expired || blocked || moneyOwed ? '' : 'There is a problem with your library account.';
       return (
         <p> This is because:
@@ -250,7 +250,7 @@ class HoldConfirmation extends React.Component {
 
   render() {
     // Need to better clarify variable names later.
-    const bib = this.props.bib
+    const bib = this.props.bib;
     const title = (bib && _isArray(bib.title) && bib.title.length > 0) ?
       bib.title[0] : '';
     const bibId = (bib && bib['@id'] && typeof bib['@id'] === 'string') ?
