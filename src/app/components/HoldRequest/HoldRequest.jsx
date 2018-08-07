@@ -90,7 +90,8 @@ class HoldRequest extends React.Component {
       <div className="nypl-banner-alert">
         <p style={{ padding: '10px 20px 0px', margin: 0 }}>
           Due to inclement weather, delivery of material from offsite storage may be delayed.
-          Please check your patron account to be sure items are Ready for Pickup in advance of your visit.
+          Please check your patron account to be sure items are Ready for Pickup in advance of
+          your visit.
         </p>
       </div>
     );
