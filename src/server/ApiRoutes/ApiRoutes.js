@@ -1,6 +1,7 @@
 import express from 'express';
 
 import Bib from './Bib';
+import User from './User';
 import Hold from './Hold';
 import Search from './Search';
 import appConfig from '../../../appConfig';
@@ -71,6 +72,10 @@ router
 router
   .route(`${appConfig.baseUrl}/api/hold/request/:bibId-:itemId`)
   .get(Hold.newHoldRequestAjax);
+
+router
+  .route(`${appConfig.baseUrl}/api/patronEligibility`)
+  .get(User.eligibility);
 
 router
   .route(`${appConfig.baseUrl}/api/newHold`)
