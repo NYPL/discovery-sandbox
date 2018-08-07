@@ -4,8 +4,11 @@ node_js:
 install: npm install
 before_script: npm run dist
 script: npm test
-before_deploy: echo 'All unit tests passed; Successfull built distribution assets;
-  Preparing to deploy Discovery Shared Collection Catalog to AWS.'
+before_deploy: 
+- echo 'All unit tests passed; Successfull built distribution assets;
+    Preparing to deploy Discovery Shared Collection Catalog to AWS.'
+- echo Printing lb config
+- cat .ebextensions/01_loadbalancer-terminatehttps.config
 deploy:
 - provider: elasticbeanstalk
   skip_cleanup: true
