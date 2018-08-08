@@ -30,7 +30,7 @@ class HoldConfirmation extends React.Component {
 
 
   expiredMessage() {
-    return (<li className="errorItem">Your account has expired-- Please see <a href="https://www.nypl.org/help/library-card/terms-conditions#renew">Library Terms and Conditions -- Renewing or Validating Your Library Card</a> about renewing your card</li>);
+    return (<li className="errorItem">Your account has expired -- Please see <a href="https://www.nypl.org/help/library-card/terms-conditions#renew">Library Terms and Conditions -- Renewing or Validating Your Library Card</a> about renewing your card</li>);
   }
 
   moneyOwedMessage() {
