@@ -7,7 +7,6 @@
 
 [![forthebadge](http://forthebadge.com/images/badges/built-with-love.svg)](https://nypl.org)
 
-
 Front-end app for searching, discovering, and placing a hold on research items from NYPL and ReCAP partners. Currently using data from the [Discovery API](https://github.com/NYPL-discovery/registry-api).
 
 ## Technology
