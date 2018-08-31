@@ -267,6 +267,23 @@ class HoldRequest extends React.Component {
     );
   }
 
+  /**
+   * getNotification()
+   * Renders notification text surrounded by a 'nypl-banner-alert' toolkit wrapper.
+   *
+   * @return {HTML Element}
+   */
+  getNotification() {
+    return (
+      <div className="nypl-banner-alert">
+        <p style={{ padding: '10px 20px', margin: 0 }}>
+          Please note that due to the Labor Day holiday closure, items requested between Friday August 31 and 3:00pm Tuesday, September 4 will be delivered Wednesday, September 5. Please be sure that your patron account says Ready for Pickup in advance of your visit.
+        </p>
+      </div>
+    );
+  }
+  
+  
   render() {
     const searchKeywords = this.props.searchKeywords || '';
     const bib = (this.props.bib && !_isEmpty(this.props.bib)) ?
@@ -374,6 +391,7 @@ class HoldRequest extends React.Component {
                           contact 917-ASK-NYPL (<a href="tel:917-275-6975">917-275-6975</a>).
                         </h2>
                     }
+                    {this.getNotification()}
                     {bibLink}
                     {callNo}
                   </div>
