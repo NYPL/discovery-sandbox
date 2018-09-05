@@ -309,7 +309,6 @@ class HoldRequest extends React.Component {
     );
   }
   
-  
   render() {
     const searchKeywords = this.props.searchKeywords || '';
     const bib = (this.props.bib && !_isEmpty(this.props.bib)) ?
