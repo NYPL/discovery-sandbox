@@ -96,13 +96,16 @@ describe('HoldConfirmation', () => {
 
       it('should render the error message.', () => {
         const main = component.find('main');
-
-        expect(main.contains(
-          <p>
-            We could not process your request at this time. Please try again or contact 917-ASK-NYPL
-            (<a href="tel:19172756975">917-275-6975</a>).
-          </p>,
-        )).to.equal(true);
+        const expectedHTML = new RegExp(
+          '<p>(.*)We could not process your request at this time\.' +
+          '(.*)Please try again or contact 917-ASK-NYPL(.*)' +
+          '((.*)<a href="tel:19172756975">917-275-6975<\/a>(.*))\.(.*)<\/p>'
+        );
+        expect(
+          expectedHTML
+            .test(main.html()))
+          .to
+          .equal(true);
       });
     },
   );
@@ -625,4 +628,21 @@ describe('HoldConfirmation', () => {
       });
     },
   );
+
+  describe('If there are eligibility errors', () => {
+    it('should render an error message with specific errors when available', () => {
+      const location = { query: { errorStatus: 'eligibility', errorMessage: '{"expired":true,"blocked":true,"moneyOwed":true}' } };
+      const component = mount(<HoldConfirmation location={location} />, { attachTo: document.body });
+      const text = component.text();
+      expect(text.includes('Your account has expired')).to.equal(true);
+      expect(text.includes('There is a problem with your library account')).to.equal(true);
+      expect(text.includes('Your fines have exceeded the limit')).to.equal(true);
+    });
+    it('should render a default error message when no specific errors are available', () => {
+      const location = { query: { errorStatus: 'eligibility', errorMessage: '{}' } };
+      const component = mount(<HoldConfirmation location={location} />, { attachTo: document.body });
+      const text = component.text();
+      expect(text.includes('There is a problem with your library account.')).to.equal(true);
+    });
+  });
 });
