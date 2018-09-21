@@ -398,7 +398,7 @@ describe('HoldRequest', () => {
       expect(fieldset.find('label').at(0).find('input').props().type).to.equal('radio');
       expect(fieldset.find('label').at(0).find('input').props().checked).to.equal(true);
       expect(fieldset.find('label').at(0).text())
-        .to.equal('Have up to 50 pages scanned and sent to you via electronic mail.');
+        .to.equal('Have a small portion scanned and sent to you via electronic mail.');
     });
   });
 });
