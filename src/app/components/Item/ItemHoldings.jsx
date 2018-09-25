@@ -66,7 +66,7 @@ class ItemHoldings extends React.Component {
     e.preventDefault();
     this.props.updateIsLoadingState(true);
 
-    trackDiscovery('Bib Item Request', `Item Details - ${itemId}`);
+    trackDiscovery('Item Request', `Item Details`);
     // Search for the bib? Just pass the data.
     axios
       .get(`${appConfig.baseUrl}/api/hold/request/${bibId}-${itemId}`)
