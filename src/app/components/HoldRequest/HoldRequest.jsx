@@ -288,7 +288,7 @@ class HoldRequest extends React.Component {
           checked={this.state.checkedLocNum === -1}
           onChange={e => this.onRadioSelect(e, -1)}
         />
-        Have up to 50 pages scanned and sent to you via electronic mail.
+        Have a small portion scanned and sent to you via electronic mail.
       </label>
     );
   }
