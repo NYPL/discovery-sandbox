@@ -1,5 +1,8 @@
 ## CHANGE LOG
 
+### 1.5.2
+- Updating the instructions for EDD form.
+
 ### 1.5.1
 - Updating the Header component to v2.4.11 and the Footer component to v0.5.1.
 - Remove `componentDidMount` from `BibPage` component to fix log in and seeing Delivery Locations issues.
