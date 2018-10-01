@@ -71,7 +71,7 @@ class ResultsList extends React.Component {
 
     this.props.updateIsLoadingState(true);
 
-    trackDiscovery('Bib Item Request', `Search Results - ${itemId}`);
+    trackDiscovery('Item Request', 'Search Results');
     ajaxCall(`${appConfig.baseUrl}/api/hold/request/${bibId}-${itemId}`,
       (response) => {
         Actions.updateBib(response.data.bib);
