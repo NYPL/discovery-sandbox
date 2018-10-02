@@ -10,6 +10,38 @@ const itemSourceMappings = {
   RecapPul: 'recap-pul',
 };
 
+// Map local identifier names to their @type and urn: indicators:
+const itemIdentifierTypeMappings = {
+  barcode: {
+    type: 'bf:Barcode',
+    legacyUrnPrefix: 'urn:barcode:',
+  },
+  bnum: {
+    type: 'nypl:Bnumber',
+    legacyUrnPrefix: 'urn:bnum:',
+  },
+  callnumber: {
+    type: 'bf:ShelfMark',
+    legacyUrnPrefix: 'urn:callnumber:',
+  },
+  isbn: {
+    type: 'bf:Isbn',
+    legacyUrnPrefix: 'urn:isbn:',
+  },
+  issn: {
+    type: 'bf:Issn',
+    legacyUrnPrefix: 'urn:issn:',
+  },
+  lccn: {
+    type: 'bf:Lccn',
+    legacyUrnPrefix: 'urn:lccn:',
+  },
+  oclc: {
+    type: 'nypl:Oclc',
+    legacyUrnPrefix: 'urn:oclc:',
+  },
+};
+
 function LibraryItem() {
   /**
    * getDefaultNyplLocation()
@@ -56,33 +88,61 @@ function LibraryItem() {
     },
   ];
 
+
+  /**
+   * Given an identifier value, returns same identifier transformed to entity
+   * representation.
+   */
+  this.ensureLegacyIdentifierIsEntity = (identifier) => {
+    // If API has given us urn: prefixed identifiers..
+    if (typeof identifier === 'string') {
+      // Convert them to entitys:
+      return Object.keys(itemIdentifierTypeMappings)
+        .filter(name => identifier.indexOf(itemIdentifierTypeMappings[name].legacyUrnPrefix) === 0)
+        .map(name => (
+          {
+            '@type': itemIdentifierTypeMappings[name].type,
+            '@value': identifier.replace(itemIdentifierTypeMappings[name].legacyUrnPrefix, ''),
+          }
+        ))
+        .pop();
+    }
+
+    // Otherwise we assume it's already an entity:
+    return identifier;
+  };
+
+  this.getIdentifierValueByType = (identifiersArray, type) => {
+    const match = identifiersArray
+      .map(this.ensureLegacyIdentifierIsEntity)
+      .filter(identifier => identifier && identifier['@type'] === type)
+      .pop();
+    return match ? match['@value'] : null;
+  };
+
+  /**
+   * @typedef {IdentifierMapping}
+   * @property {string} name - Name to use in resulting mapping (e.g. 'barcode')
+   * @property {string} value - Type to look for in source (e.g. 'bf:Barcode')
+   */
+
   /**
    * getIdentifiers(identifiersArray, neededTagsArray)
    * Gets into the array of the identifiers of an item. And then targets the identifiers we need
    * by the prefixes in neededTagsArray. At last, extracts the identifiers and returns them.
    *
    * @param {array} identifiersArray
-   * @param {tagsArray} neededTagsArray
+   * @param {IdentifierMapping[]} neededTagsArray
+   *
    * @return {object}
    */
-  this.getIdentifiers = (identifiersArray, neededTagsArray) => {
-    const identifierObj = {};
-
-    identifiersArray.map(
-      (i) => {
-        if (typeof i === 'string') {
-          neededTagsArray.map(
-            (t) => {
-              if (i.indexOf(t.name) !== -1) {
-                identifierObj[t.name] = i.replace(t.value, '');
-              }
-            });
-          }
-        }
-    );
-
-    return identifierObj;
-  };
+  this.getIdentifiers = (identifiersArray, neededTagsArray) => (
+    neededTagsArray.reduce((identifierMap, neededTag) => {
+      const match = this.getIdentifierValueByType(identifiersArray, neededTag.value);
+      if (match) return Object.assign(identifierMap, { [neededTag.name]: match });
+      return identifierMap;
+    }, {})
+  );
 
   /**
    * getElectronicResources(item)
@@ -132,7 +192,7 @@ function LibraryItem() {
       holdingLocation['@id'].substring(4, 6) !== 'rc') && (itemSource === 'SierraNypl'));
     const isRecap = nonNyplRecap || nyplRecap;
     // The identifier we need for an item now
-    const identifiersArray = [{ name: 'barcode', value: 'urn:barcode:' }];
+    const identifiersArray = [{ name: 'barcode', value: 'bf:Barcode' }];
     const bibIdentifiers = this.getIdentifiers(item.identifier, identifiersArray);
     const barcode = bibIdentifiers.barcode || '';
     const mappedItemSource = itemSourceMappings[itemSource];
