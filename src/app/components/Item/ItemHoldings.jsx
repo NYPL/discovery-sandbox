@@ -50,7 +50,7 @@ class ItemHoldings extends React.Component {
     });
 
     if (noItemPage) {
-      this.context.router.push(`${appConfig.baseUrl}/bib/${this.props.bibId}`);
+      this.context.router.replace(`${appConfig.baseUrl}/bib/${this.props.bibId}`);
     }
   }
 
@@ -66,7 +66,7 @@ class ItemHoldings extends React.Component {
     e.preventDefault();
     this.props.updateIsLoadingState(true);
 
-    trackDiscovery('Bib Item Request', `Item Details - ${itemId}`);
+    trackDiscovery('Item Request', 'Item Details');
     // Search for the bib? Just pass the data.
     axios
       .get(`${appConfig.baseUrl}/api/hold/request/${bibId}-${itemId}`)
@@ -176,7 +176,7 @@ class ItemHoldings extends React.Component {
 
     return (
       <div className="nypl-results-item">
-        <h3>Availability</h3>
+        <h2>Availability</h2>
         {itemTable}
         {
           !!(shortenItems && items.length >= 20 && !this.state.showAll) &&

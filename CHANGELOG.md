@@ -1,5 +1,24 @@
 ## CHANGE LOG
 
+### 1.5.2
+- Updating the instructions for EDD form.
+
+### 1.5.1
+- Updating the Header component to v2.4.11 and the Footer component to v0.5.1.
+- Remove `componentDidMount` from `BibPage` component to fix log in and seeing Delivery Locations issues.
+
+### 1.5.0
+- Adds Tab interface for details and additional details together with attendant css and changes to BibPage and AdditionalDetailsViewer
+- Fix dependency vulnerabilities, most via minor upgrades.
+- Fix two bugs related to paging through search results (https://jira.nypl.org/browse/SCC-940 , https://jira.nypl.org/browse/SCC-939 )
+
+### 1.4.3
+- Documentation: Revised DEPLOYMENT.md to remove dev-eb-deploy, simplify strategy
+- Added deploy-* scripts to package.json
+
+### 1.4.2
+- Updating @nypl/dgx-react-footer version to 0.5.0 and @nypl/dgx-header-component to 2.4.8.
+
 ### 1.4.1
 - Change how Notes are rendred: Render notes grouped by noteType, with noteType shown at root level of hierarchy.
 - Add support for rendering Contents (tableOfContents)

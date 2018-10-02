@@ -11,6 +11,9 @@ import LoadingLayer from '../LoadingLayer/LoadingLayer';
 import BibDetails from './BibDetails';
 import LibraryItem from '../../utils/item';
 import BackLink from './BackLink';
+import AdditionalDetailsViewer from './AdditionalDetailsViewer';
+import Tabbed from './Tabbed';
+import getOwner from '../../utils/getOwner';
 // Removed MarcRecord because the webpack MarcRecord is not working. Sep/28/2017
 // import MarcRecord from './MarcRecord';
 
@@ -30,13 +33,10 @@ class BibPage extends React.Component {
     this.updateIsLoadingState = this.updateIsLoadingState.bind(this);
   }
 
-  componentDidMount() {
-    document.getElementById('bib-title').focus();
-  }
-
   updateIsLoadingState(status) {
     this.setState({ isLoading: status });
   }
+
 
   render() {
     const createAPIQuery = basicQuery(this.props);
@@ -62,15 +62,16 @@ class BibPage extends React.Component {
     // e.g. the prefLabel is the label and the URL is the id.
     const topFields = [
       { label: 'Title', value: 'titleDisplay' },
-      { label: 'Found In', value: 'partOf' },
       { label: 'Author', value: 'creatorLiteral', linkable: true },
-      { label: 'Additional Authors', value: 'contributorLiteral', linkable: true },
+      { label: 'Publication', value: 'publicationStatement' },
+      { label: 'Electronic Resource', value: 'React Component' },
+      { label: 'Supplementary Content', value: 'supplementaryContent', selfLinkable: true },
     ];
 
     const bottomFields = [
-      { label: 'Publication', value: 'publicationStatement' },
+      { label: 'Additional Authors', value: 'contributorLiteral', linkable: true },
+      { label: 'Found In', value: 'partOf' },
       { label: 'Publication Date', value: 'serialPublicationDates' },
-      { label: 'Electronic Resource', value: 'React Component' },
       { label: 'Description', value: 'extent' },
       { label: 'Series Statement', value: 'seriesStatement' },
       { label: 'Uniform Title', value: 'uniformTitle' },
@@ -79,7 +80,6 @@ class BibPage extends React.Component {
       { label: 'Subject', value: 'subjectLiteral', linkable: true },
       { label: 'Genre/Form', value: 'genreForm' },
       { label: 'Notes', value: 'React Component' },
-      { label: 'Additional Resources', value: 'supplementaryContent', selfLinkable: true },
       { label: 'Contents', value: 'tableOfContents' },
       { label: 'Bibliography', value: '' },
       { label: 'Call Number', value: 'identifier', identifier: 'bf:ShelfMark' },
@@ -104,6 +104,33 @@ class BibPage extends React.Component {
     // Related to removing MarcRecord because the webpack MarcRecord is not working. Sep/28/2017
     // const marcRecord = isNYPLReCAP ? <MarcRecord bNumber={bNumber[0]} /> : null;
 
+    const bibDetails = (<BibDetails
+      bib={bib}
+      fields={bottomFields}
+      electronicResources={aggregatedElectronicResources}
+      updateIsLoadingState={this.updateIsLoadingState}
+      />);
+
+    const additionalDetails = (<AdditionalDetailsViewer bib={bib}/>);
+
+
+    const otherLibraries = ['Princeton University Library', 'Columbia University Libraries'];
+    const tabs = otherLibraries.includes(getOwner(bib)) ? [{title: 'Details', content: bibDetails}] : [{title: 'Details', content: bibDetails}, {title: 'Full Description', content: additionalDetails}];
+
+    const tabItems = (index) => {
+      if (index === 0) {
+        return (<BibDetails
+          bib={bib}
+          fields={bottomFields}
+          electronicResources={aggregatedElectronicResources}
+          updateIsLoadingState={this.updateIsLoadingState}
+        />)
+      } else {
+        return (<AdditionalDetailsViewer bib={bib}/>)
+      }
+    }
+
+
     return (
       <DocumentTitle title="Item Details | Shared Collection Catalog | NYPL">
         <main className="main-page">
@@ -116,8 +143,7 @@ class BibPage extends React.Component {
               <div className="nypl-row">
                 <div className="nypl-column-three-quarters">
                   <Breadcrumbs type="bib" query={searchURL} />
-                  <h1 id="bib-title" tabIndex="0">Item Details</h1>
-                  <h2>{title}</h2>
+                  <h1>{title}</h1>
                   {
                     this.props.searchKeywords && (
                       <div className="nypl-row search-control">
@@ -148,18 +174,16 @@ class BibPage extends React.Component {
                   <BibDetails
                     bib={bib}
                     fields={topFields}
+                    logging={true}
                     updateIsLoadingState={this.updateIsLoadingState}
+                    electronicResources={aggregatedElectronicResources}
                   />
 
                   {itemHoldings}
 
-                  <h3>Additional Details</h3>
-                  <BibDetails
-                    bib={bib}
-                    fields={bottomFields}
-                    electronicResources={aggregatedElectronicResources}
-                    updateIsLoadingState={this.updateIsLoadingState}
-                  />
+                  <h2>{tabs.map(tab => tab.title).join(" and ")}</h2>
+                  <Tabbed tabItems={tabItems} tabs={tabs}
+                  hash={this.props.location.hash}/>
                 </div>
               </div>
             </div>

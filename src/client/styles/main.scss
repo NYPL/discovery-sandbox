@@ -28,6 +28,7 @@ Import style rules from NYPL React module components
 @import "components/FilterPopup.scss";
 @import "components/Search.scss";
 @import "components/SelectedFilters.scss";
+@import "components/HoldConfirmation.scss";
 
 @import "style-v2.scss";
 
@@ -182,4 +183,15 @@ select {
   color: #080807;
   font-size: "";
   font-weight: 400;
+}
+
+.footer-content {
+  .footerLinks {
+    .linkItemList {
+      li {
+        padding: 2px;
+        margin: 5px;
+      }
+    }
+  }
 }

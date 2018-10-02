@@ -6,27 +6,28 @@ Install:
 * EB CLI
 
 ### Repo Branches
-We will deploy three branches: `dev-eb-deploy`, `qa`, `master`.
+We use three branches for deployment: `development`, `qa`, `master`.
 
-- `master` will always be deployed to production discovery.nypl.org
-- `qa` will always be deployed to qa qa-discovery.nypl.org
-- `dev-eb-deploy` will be deployed to development dev-discovery.nypl.org
+- `development`: This branch is the target of all PRs and thus contains all approved features. Automatically deployed to `discovery-ui-develpoment` (dev-discovery.nypl.org)
+- `qa`: Automatically deployed to `discovery-ui-qa` (qa-discovery.nypl.org)
+- `master`: Our "production" branch. Automatically deployed to `discovery-ui-production` (discovery.nypl.org)
 
 If we have a new feature to add, the suggested workflow is:
 - Create branch for new feature `git checkout -b new-feature` off the `development` branch.
 - Create Pull Request pointing to the `development` branch.
-- To test the branch on the development server, merge your feature branch to `dev-eb-deploy`
--- `git checkout dev-eb-deploy`
--- `git merge --no-ff new-feature`
-- Once the Pull Request is accepted and merged into `development`, the `development` branch should be
-merged to `qa` and then `qa` should be merged to the `master` branch when ready.
+- To test the branch on the development server, follow the instructions below for deploying to Development
+- Once the Pull Request is accepted merge it into `development`
+- Update version in `development` branch:
+  - Decide on appropriate new version number
+  - Add notes to CHANGELOG.md & update `package.json` version number. Commit.
+  - `git push origin development`
+- Eventually merge `development` into `qa`
+- Eventually merge `qa` into `master`
+- Add git tag to `master` (e.g. `git tag -a v1.4.3; git push --tags`)
 
-The following documentation is for after your code has been merged into `dev-eb-deploy`, `qa`, or `master`.
+### Versioning
 
-### Why three branches?
-Currently, all our development and new features are going into the development branch. As of our
-Internal Beta release, we are introducing a QA environment for NYPL staff training and preview, and for
-QA testing. The master branch will be our production branch for live releases to the public.
+Once a feature branch has been approved and merged into development
 
 ### Elastic Beanstalk
 There are two existing AWS accounts that we are deploying to for development and for qa/production.
@@ -38,78 +39,64 @@ Make sure you have the AWS CLI tool installed on your machine and make sure you 
 Pass in the correct credentials and now we can start deploying.
 
 ### Configuration
-Run `eb init` at the root of this repo with the default settings. Then update the `.elasticbeanstalk/config.yml` file with the correct configuration for either the development or production account.
 
-Right now, the production AWS account (nypl-digital-dev) has an SSL certification which is committed to the repo in `.ebextensions/01_loadbalancer-terminatehttps.config`. This will fail to upload to the development AWS account since they are both two different accounts.
+Run `eb init` at the root of this repo with the following settings:
+ - Select region 'us-east-1'
+ - Select application 'discovery-ui'
+ - Select default environment 'discovery-ui-development'
+ - If asked about CodeCommit, select 'n'
+ - If asked if you want to set up SSH for your instances, select 'n'
+ - Now manually edit `.elasticbeanstalk/config.yml` to include the following `branch-defaults`:
+```
+branch-defaults:
+  dev-eb-deploy:
+    environment: discovery-ui-development
+    group_suffix: null
+  master:
+    environment: discovery-ui-production
+    group_suffix: null
+  qa:
+    environment: discovery-ui-qa
+    group_suffix: null
+```
 
-To remedy this, the `dev-eb-deploy` branch does not have that file committed and it can be used to deploy to the development account (which does not have the SSL certificate).
+Note that `development` will always differ from `qa` in one respect: Apps deployed to `nypl-sandbox` require a different cert ARN than that for `nypl-digital-dev`. Accordingly, `development` will always have a slightly different `.ebextensions/01_loadbalancer-terminatehttps.config` from that of `qa`. Due to the order in which those differences were originally committed, merging `development` into `qa` should never disrupt that.
 
 ### Deployment
-The `.elasticbeanstalk/config.yml` file needs to be updated before deploying. If deploying to the development account, the `application_name` needs to change to `discovery`, and if deploying to the production account, the `application_name` needs to change to `discovery-ui`.
 
-|   | Development | QA | Production
-|---|---|---|
-| Application Name | discovery | discovery-ui | discovery-ui
-| Environment Name | discovery-ui-dev | discovery-ui-qa | discovery-ui
+|                  | Development              | QA               | Production              |
+| ---              | ---                      | ---              | ---                     |
+| Git branch       | development              | qa               | master                  |
+| AWS Profile      | nypl-sandbox             | nypl-digital-dev | nypl-digital-dev        |
+| Application Name | discovery-ui             | discovery-ui     | discovery-ui            |
+| Environment Name | discovery-ui-development | discovery-ui-qa  | discovery-ui-production |
+
 ----
-Deploy to the dev server:
+Deploy to the development server:
 
-- Merge feature branches to `dev-eb-deploy`
-- Update `.elasticbeanstalk/config.yml`:
-```
-    branch-defaults:
-      dev-eb-deploy:
-        environment: discovery-ui-dev
-        group_suffix: null
-      qa:
-        environment: discovery-ui-qa
-        group_suffix: null
-      master:
-        environment: discovery-ui
-        group_suffix: null
-    global:
-      application_name: discovery
-```
-- Run `eb deploy discovery-ui-dev --profile default`
+_(Note that updates to origin/development trigger a deploy to discovery-ui-development. The following demonstrates manually deploying development - or a feature branch - to discovery-ui-development should you need to.)_
+
+- Check out `development` branch (or feature branch if deploying a feature to dev before merge)
+- Run `npm run deploy-development`
 
 ----
 Deploy to the qa server:
 
-- Merge working and approved changes up to `qa`
-- Update `.elasticbeanstalk/config.yml`:
-```
-    branch-defaults:
-      dev-eb-deploy:
-        environment: discovery-ui-dev
-        group_suffix: null
-      qa:
-        environment: discovery-ui-qa
-        group_suffix: null
-      master:
-        environment: discovery-ui
-        group_suffix: null
-    global:
-      application_name: discovery-ui
-```
-- Run `eb deploy discovery-ui-qa --profile nypl-digital-dev`
+_(Note that updates to origin/qa trigger a deploy to discovery-ui-qa. The following demonstrates manually deploying qa should you need to.)_
+
+- `git checkout qa`, `git merge development`, `git push origin qa`
+- Run `npm run deploy-qa`
 
 ----
 Deploy to the production server:
 
-- Merge working and approved changes up to `master`
-- Update `.elasticbeanstalk/config.yml`:
-```
-    branch-defaults:
-      dev-eb-deploy:
-        environment: discovery-ui-dev
-        group_suffix: null
-      qa:
-        environment: discovery-ui-qa
-        group_suffix: null
-      master:
-        environment: discovery-ui
-        group_suffix: null
-    global:
-      application_name: discovery-ui
-```
-- Run `eb deploy discovery-ui-production --profile nypl-digital-dev`
+_(Note that updates to origin/master trigger a deploy to discovery-ui-production. The following demonstrates manually deploying production should you need to.)_
+
+- `git checkout master`, `git merge qa`, `git push origin master`
+- Run `npm run deploy-production`
+
+### Troubleshooting
+
+#### Python error: "ERROR: TypeError :: cannot concatenate 'str' and 'NoneType' objects"
+
+This may indicate your `.elasticbeanstalk/config.yml` is missing a value or two. Try running `eb init` to fill in missing values. See "Configuration" section above for best defaults.

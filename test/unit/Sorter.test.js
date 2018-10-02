@@ -10,8 +10,6 @@ import { basicQuery } from '../../src/app/utils/utils';
 import Sorter from '../../src/app/components/Sorter/Sorter';
 import appConfig from '../../appConfig';
 
-const mock = new MockAdapter(axios);
-
 describe('Sorter', () => {
   describe('Default - no javascript', () => {
     // Since this is a shallow render, the component itself is not mounted. The `js` flag
@@ -120,6 +118,7 @@ describe('Sorter', () => {
       let component;
       let createAPIQuery;
       let axiosSpy;
+      let mock;
 
       before(() => {
         createAPIQuery = basicQuery({});
@@ -127,13 +126,14 @@ describe('Sorter', () => {
           <Sorter createAPIQuery={createAPIQuery} updateIsLoadingState={() => {}} />,
           { context: { router: { createHref: () => {}, push: () => {} } } },
         );
+        mock = new MockAdapter(axios);
         mock
           .onGet(`${appConfig.baseUrl}/api?q=&sort=title&sort_direction=desc`)
           .reply(200, { searchResults: [] });
       });
 
       after(() => {
-        mock.reset();
+        mock.restore();
         axiosSpy.restore();
       });
 
@@ -154,6 +154,7 @@ describe('Sorter', () => {
     let component;
     let createAPIQuery;
     let sortResultsBySpy;
+    let mock;
     const updateIsLoadingState = () => {};
 
     before(() => {
@@ -164,13 +165,14 @@ describe('Sorter', () => {
         <Sorter createAPIQuery={createAPIQuery} updateIsLoadingState={updateIsLoadingState} />,
         { context: { router: { createHref: () => {}, push: () => {} } } },
       );
+      mock = new MockAdapter(axios);
       mock
         .onGet(`${appConfig.baseUrl}/api?q=&sort=date&sort_direction=desc`)
         .reply(200, { searchResults: [] });
     });
 
     after(() => {
-      mock.reset();
+      mock.restore();
       sortResultsBySpy.restore();
       component.unmount();
     });

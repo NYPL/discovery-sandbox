@@ -4,7 +4,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Router, useRouterHistory } from 'react-router';
 import createBrowserHistory from 'history/lib/createBrowserHistory';
-import useScroll from 'scroll-behavior/lib/useStandardScroll';
+import useScroll from 'scroll-behavior/lib/useSimpleScroll';
 import { config, gaUtils } from 'dgx-react-ga';
 import a11y from 'react-a11y';
 import Iso from 'iso';
@@ -21,7 +21,7 @@ if (loadA11y) {
 
 window.onload = () => {
   if (!window.ga) {
-    const isProd = process.env.NODE_ENV === 'production';
+    const isProd = process.env.GA_ENV === 'development' ? false : process.env.NODE_ENV === 'production';
     const gaOpts = { debug: !isProd, titleCase: false };
 
     gaUtils.initialize(config.google.code(isProd), gaOpts);

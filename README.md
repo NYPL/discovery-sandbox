@@ -7,7 +7,6 @@
 
 [![forthebadge](http://forthebadge.com/images/badges/built-with-love.svg)](https://nypl.org)
 
-
 Front-end app for searching, discovering, and placing a hold on research items from NYPL and ReCAP partners. Currently using data from the [Discovery API](https://github.com/NYPL-discovery/registry-api).
 
 ## Technology
@@ -21,47 +20,44 @@ Front-end app for searching, discovering, and placing a hold on research items f
 * Express Server
 * [Travis](https://travis-ci.org/)
 
-## Client Id and Secret
-We are using environment variables to make authorized requests to NYPL's API platform. The `clientId` and `clientSecret` environment variables should be received from a developer in the NYPL Digital Department.
-
-Please check the [EBSVARS](EBSVARS.md) documentation for more information.
-
 ## Installation and running locally
 
-#### Installation
+### Installation
 To install packages run
 
     $ npm install
 
-#### Development mode with different API environments
-To run locally in development mode with the development API and with the regular unencrypted API keys, run:
+### Configuration
 
-    $ clientId=[client id] clientSecret=[client secret] npm run dev-api-start
+See `.env-sample` for supported environmental variables. Copy `.env-sample` to `.env` and replace placeholder values with your own - or obtain a prefilled version from a coworker.
 
-To run locally in production mode with the production API and with encrypted API keys, run:
+See [EBSVARS](EBSVARS.md) for more information.
 
-    $ clientId=[encrypted client id] clientSecret=[encrypted client secret] npm run prod-api-start
+### Development mode with different API environments
 
-If you would like to run in different the API environments without the special npm run scripts, run
+To run locally using config from `.env`:
 
-    $ clientId=[client id] clientSecret=[client secret] APP_ENV=[environment variable] npm start
+```
+source .env; npm run start
+```
 
-`environment variable` is the name of the particular environment, such as `development` or `production`.
+As a convenience, the following commands override some config for you:
+
+ * `source .env; npm run dev-api-start`: Use development API with *un*encrypted creds from `.env`
+ * `source .env; npm run prod-api-start`: Use production API with encrypted creds from `.env`
 
 Visit `localhost:3001` to see the UI locally.
 
-#### Production mode
-To run locally in production mode you need to run two commands:
+### Production mode
 
-    $ npm run dist
-    $ clientID=[client id] clientSecret=[client secret] NODE_ENV=production APP_ENV=production npm start
+By default, the app runs with `NODE_ENV=development`, which means a separate server is invoked to serve live updates to assets in development. Deployed instances of the app operate with `NODE_ENV=production`, indicating the app should serve pre-built assets. Sometimes it's useful to run the app in production mode locally (e.g. to test the app for NOSCRIPT visitors).
 
-or, if you'd like fewer environment variables in the command line:
+To run the app locally in production mode you need to run two commands:
 
-    $ npm run dist
-    $ clientID=[client id] clientSecret=[client secret] npm run prod-start
+ * `npm run dist`: This builds the assets.
+ * `source .env; npm run prod-start`: Start servers using production API & serve prebundled assets.
 
-and visit `localhost:3001`.
+Visit `localhost:3001` to see the UI locally.
 
 ## Contributing
 

@@ -90,6 +90,9 @@ const commonSettings = {
 // Need to configure webpack-dev-server and hot-reload
 // module correctly.
 if (ENV === 'development') {
+  // Load dev depencies:
+  const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
+
   module.exports = merge(commonSettings, {
     devtool: 'eval',
     entry: {
@@ -103,6 +106,7 @@ if (ENV === 'development') {
     },
     plugins: [
       new webpack.HotModuleReplacementPlugin(),
+      new FriendlyErrorsWebpackPlugin(),
     ],
     resolve: {
       modules: [
@@ -184,6 +188,7 @@ if (ENV === 'production') {
       new webpack.DefinePlugin({
         'process.env': {
           NODE_ENV: JSON.stringify('production'),
+          GA_ENV: JSON.stringify(process.env.GA_ENV),
         },
       }),
     ],

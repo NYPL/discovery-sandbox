@@ -3,6 +3,7 @@ import React from 'react';
 import sinon from 'sinon';
 import { expect } from 'chai';
 import { mount } from 'enzyme';
+import axios from 'axios';
 // Import the component that is going to be tested
 import HoldRequest from './../../src/app/components/HoldRequest/HoldRequest';
 import Actions from './../../src/app/actions/Actions';
@@ -66,6 +67,59 @@ const mockedItems = [
 ];
 
 describe('HoldRequest', () => {
+  describe('When component did mount', () => {
+    let router;
+    let component;
+    let instance;
+    let redirect;
+    beforeEach(() => {
+      component = mount(<HoldRequest />, { attachTo: document.body });
+      instance = component.instance();
+      redirect = sinon.stub(instance, 'redirectWithErrors').callsFake(() => {
+        return true;
+      });
+    })
+    afterEach(() => {
+      axios.get.restore();
+    });
+    it('should redirect for ineligible patrons', () => {
+      router = sinon.stub(axios, 'get').callsFake(() => {
+        console.log('mocking axios: 1');
+        return new Promise((resolve, reject) => {
+          resolve({ data: { eligibility: false } });
+        });
+      });
+      return new Promise((resolve, reject) => {
+        instance.setState({ patron: { id: 1 } });
+        resolve();
+      })
+        .then(() => {
+          return instance.conditionallyRedirect()
+            .then(() => {
+              expect(redirect.called).to.equal(true);
+            })
+        });
+    });
+    it('should not redirect for eligible patrons', () => {
+      router = sinon.stub(axios, 'get').callsFake(() => {
+        console.log('mocking axios: 2');
+        return new Promise((resolve, reject) => {
+          resolve({ data: { eligibility: true } });
+        });
+      });
+      return new Promise((resolve, reject) => {
+        instance.setState({ patron: { id: 2 } });
+        resolve();
+      })
+        .then(() => {
+          return instance.conditionallyRedirect()
+            .then(() => {
+              expect(redirect.called).to.equal(false);
+            })
+        })
+    });
+  });
+
   describe('After being rendered, <HoldRequest>', () => {
     let component;
     let requireUser;
@@ -73,6 +127,7 @@ describe('HoldRequest', () => {
     before(() => {
       requireUser = sinon.spy(HoldRequest.prototype, 'requireUser');
       component = mount(<HoldRequest />, { attachTo: document.body });
+      component.setState({ redirect: false });
     });
 
     after(() => {
@@ -94,6 +149,7 @@ describe('HoldRequest', () => {
       Actions.updatePatronData({});
       requireUser = sinon.spy(HoldRequest.prototype, 'requireUser');
       component = mount(<HoldRequest />, { attachTo: document.body });
+      component.setState({ redirect: false });
     });
 
     after(() => {
@@ -113,6 +169,7 @@ describe('HoldRequest', () => {
 
       before(() => {
         component = mount(<HoldRequest />, { attachTo: document.body });
+        component.setState({ redirect: false });
       });
 
       after(() => {
@@ -151,6 +208,7 @@ describe('HoldRequest', () => {
 
     before(() => {
       component = mount(<HoldRequest bib={bib} params={{ itemId: 'i10000003' }} />, { attachTo: document.body });
+      component.setState({ redirect: false });
     });
 
     after(() => {
@@ -216,6 +274,7 @@ describe('HoldRequest', () => {
         />,
         { attachTo: document.body }
       );
+      component.setState({ redirect: false });
     });
 
     after(() => {
@@ -322,6 +381,7 @@ describe('HoldRequest', () => {
         />,
         { attachTo: document.body }
       );
+      component.setState({ redirect: false });
     });
 
     after(() => {
@@ -338,7 +398,7 @@ describe('HoldRequest', () => {
       expect(fieldset.find('label').at(0).find('input').props().type).to.equal('radio');
       expect(fieldset.find('label').at(0).find('input').props().checked).to.equal(true);
       expect(fieldset.find('label').at(0).text())
-        .to.equal('Have up to 50 pages scanned and sent to you via electronic mail.');
+        .to.equal('Have a small portion scanned and sent to you via electronic mail.');
     });
   });
 });

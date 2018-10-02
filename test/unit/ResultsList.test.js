@@ -8,8 +8,6 @@ import sinon from 'sinon';
 
 import ResultsList from '../../src/app/components/Results/ResultsList';
 
-const mock = new MockAdapter(axios);
-
 const results = [{}, {}, {}];
 const singleBibNoTitleDisplay = {
   result: {
@@ -433,19 +431,21 @@ describe('ResultsList', () => {
     describe('Good response', () => {
       const updateIsLoadingState = () => {};
       let component;
+      let mock;
 
       before(() => {
         component = mount(
           <ResultsList results={resultsBibs} updateIsLoadingState={updateIsLoadingState} />,
           { context: { router: { createHref: () => {}, push: () => {}, replace: () => {} } } },
         );
+        mock = new MockAdapter(axios);
         mock
           .onGet('/research/collections/shared-collection-catalog/api/bib?bibId=b17692265')
           .reply(200, { searchResults: [] });
       });
 
       after(() => {
-        mock.reset();
+        mock.restore();
       });
 
       it('should make an ajax request', () => {
@@ -462,19 +462,21 @@ describe('ResultsList', () => {
   describe('Bad response', () => {
     const updateIsLoadingState = () => {};
     let component;
+    let mock;
 
     before(() => {
       component = mount(
         <ResultsList results={resultsBibs} updateIsLoadingState={updateIsLoadingState} />,
         { context: { router: { createHref: () => {}, push: () => {} } } },
       );
+      mock = new MockAdapter(axios);
       mock
         .onGet('/research/collections/shared-collection-catalog/api/bib?bibId=b17692265')
         .reply(404, { error: 'Some error' });
     });
 
     after(() => {
-      mock.reset();
+      mock.restore();
     });
 
     it('should make an ajax request', () => {
@@ -574,6 +576,7 @@ describe('ResultsList', () => {
     let component;
     let getBibRecordSpy;
     let axiosSpy;
+    let mock;
 
     before(() => {
       getBibRecordSpy = sinon.spy(ResultsList.prototype, 'getBibRecord');
@@ -581,13 +584,14 @@ describe('ResultsList', () => {
         <ResultsList results={resultsBibs} updateIsLoadingState={updateIsLoadingState} />,
         { context: { router: { createHref: () => {}, push: () => {} } } },
       );
+      mock = new MockAdapter(axios);
       mock
         .onGet('/research/collections/shared-collection-catalog/api/bib?bibId=b17692265')
         .reply(404, { error: 'Some error' });
     });
 
     after(() => {
-      mock.reset();
+      mock.restore();
       getBibRecordSpy.restore();
       component.unmount();
       axiosSpy.restore();
