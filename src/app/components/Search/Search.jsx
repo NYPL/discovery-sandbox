@@ -135,6 +135,7 @@ class Search extends React.Component {
                 <option value="all">All fields</option>
                 <option value="title">Title</option>
                 <option value="contributor">Author/Contributor</option>
+                <option value="standard_number">Standard Numbers</option>
               </select>
             </span>
           </div>
