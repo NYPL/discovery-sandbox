@@ -12,6 +12,8 @@ import {
 
 
 export default function getOwner(bib) {
+  if (!bib) return null;
+
   const items = bib.items;
   const ownerArr = [];
   let owner;

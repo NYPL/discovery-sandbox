@@ -17,10 +17,12 @@ describe('LibraryItem', () => {
 
   describe('getIdentifierValueByType', () => {
     it('should get an identifier by rdf type', () => {
-      const output = LibraryItem.getIdentifierValueByType(['urn:barcode:1234'], 'bf:Barcode');
+      const output = LibraryItem.getIdentifierEntitiesByType(['urn:barcode:1234'], 'bf:Barcode');
 
-      expect(output).to.be.a('string');
-      expect(output).to.equal('1234');
+      expect(output).to.be.a('array');
+      expect(output[0]).to.be.a('object');
+      expect(output[0]['@value']).to.equal('1234');
+      expect(output[0]['@type']).to.equal('bf:Barcode');
     });
   });
 

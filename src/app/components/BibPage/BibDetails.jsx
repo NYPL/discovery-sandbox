@@ -114,16 +114,25 @@ class BibDetails extends React.Component {
     );
   }
 
-  /*
-   * getIdentifier(bibValues, fieldIdentifier)
-   * Gets specific value from the API for special identifier.
-   * @param {array} bibValues
-   * @param {string} fieldIdentifier
+  /**
+   * Given an array of identifier entities and an rdf:type, returns markup to
+   * render the values - if any - for the requested type.
+   *
+   * @param {array<object>} bibValues - Array of entities to inspect
+   * @param {string} identifierType - The rdf:type to get (e.g. bf:Isbn)
    */
-  getIdentifier(bibValues, fieldIdentifier) {
-    const val = LibraryItem.getIdentifierValueByType(bibValues, fieldIdentifier);
-    if (val) {
-      return <span>{val}</span>;
+  getIdentifiers(bibValues, identifierType) {
+    const entities = LibraryItem.getIdentifierEntitiesByType(bibValues, identifierType);
+    if (Array.isArray(entities) && entities.length > 0) {
+      const markup = entities
+        .map((ent) => {
+          const nodes = [(<span>{ent['@value']}</span>)];
+          if (ent.identifierStatus) nodes.push(<span> <em>({ent.identifierStatus})</em></span>);
+          return nodes;
+        });
+      return markup.length === 1
+        ? markup.pop()
+        : (<ul>{markup.map((m, ind) => (<li key={`${ind}`}>{m}</li>))}</ul>);
     }
     return null;
   }
@@ -144,7 +153,7 @@ class BibDetails extends React.Component {
     fieldSelfLinkable, fieldLabel,
   ) {
     if (fieldValue === 'identifier') {
-      return this.getIdentifier(bibValues, fieldIdentifier);
+      return this.getIdentifiers(bibValues, fieldIdentifier);
     }
 
     if (bibValues.length === 1) {

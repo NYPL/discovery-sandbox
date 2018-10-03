@@ -35,6 +35,11 @@ const bibs = [
         '@value': '0198117787',
       },
       {
+        '@type': 'bf:Isbn',
+        '@value': '012345',
+        identifierStatus: 'incorrect',
+      },
+      {
         '@type': 'bf:Lccn',
         '@value': '90048121',
       },
@@ -144,6 +149,7 @@ const bibs = [
       'urn:callnumber:JFD 91-4064',
       'urn:bnum:11417539',
       'urn:isbn:0198117787',
+      'urn:isbn:012345',
       'urn:lccn:90048121',
       'urn:oclc:22452233',
     ],
@@ -272,7 +278,7 @@ describe('BibDetails', () => {
     });
   });
 
-  describe.only('Bottom fields', () => {
+  describe('Bottom fields', () => {
     const fields = [
       { label: 'Publication', value: 'publicationStatement' },
       { label: 'Publication Date', value: 'serialPublicationDates' },
@@ -324,8 +330,12 @@ describe('BibDetails', () => {
         expect(component.find('dd').at(3).text()).to.equal(bibs[0].note[0].prefLabel);
         expect(component.find('dd').at(4).text()).to.equal(bibs[0].shelfMark[0]);
         // Isbn:
-        const isbn = bibs[0].identifier.filter(ident => ident['@type'] === 'bf:Isbn').pop();
-        expect(component.find('dd').at(5).text()).to.equal(isbn['@value']);
+        const [isbn, incorrectIsbn] = bibs[0].identifier.filter(ident => ident['@type'] === 'bf:Isbn');
+        expect(component.find('dd').at(5).find('li').at(0).text()).to.equal(isbn['@value']);
+        // Only check for identityStatus message if serialization supports it (urn: style does not):
+        if (typeof bibs[0].identifier[0] === 'string') {
+          expect(component.find('dd').at(5).find('li').at(1).text()).to.equal(`${incorrectIsbn['@value']} (${incorrectIsbn.identifierStatus})`);
+        }
         // Lccn:
         const lccn = bibs[0].identifier.filter(ident => ident['@type'] === 'bf:Lccn').pop();
         expect(component.find('dd').at(6).text()).to.equal(lccn['@value']);

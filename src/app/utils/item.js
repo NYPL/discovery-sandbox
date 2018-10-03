@@ -92,6 +92,8 @@ function LibraryItem() {
   /**
    * Given an identifier value, returns same identifier transformed to entity
    * representation.
+   *
+   * @param {object} identifier - Identifier entity (i.e. with @type & @value attributes)
    */
   this.ensureLegacyIdentifierIsEntity = (identifier) => {
     // If API has given us urn: prefixed identifiers..
@@ -112,12 +114,23 @@ function LibraryItem() {
     return identifier;
   };
 
-  this.getIdentifierValueByType = (identifiersArray, type) => {
-    const match = identifiersArray
+  /**
+   * Given an array of identifier entries (either serialized as entities or
+   * string literals), returns the identifers (as entities) that match the
+   * given rdf:type
+   *
+   * @param {array<object>} identifiersArray - Array of identifiers. May be
+   * either entities (i.e. with @type & @value properties) or string literals
+   * (e.g. "urn:isbn:1234")
+   *
+   * @param {string} type - The rdf:type to extract (e.g. "bf:Isbn")
+   *
+   * @return {array<object>} An array of matching identifier entities
+   */
+  this.getIdentifierEntitiesByType = (identifiersArray, type) => {
+    return identifiersArray
       .map(this.ensureLegacyIdentifierIsEntity)
-      .filter(identifier => identifier && identifier['@type'] === type)
-      .pop();
-    return match ? match['@value'] : null;
+      .filter(identifier => identifier && identifier['@type'] === type);
   };
 
   /**
@@ -138,8 +151,8 @@ function LibraryItem() {
    */
   this.getIdentifiers = (identifiersArray, neededTagsArray) => (
     neededTagsArray.reduce((identifierMap, neededTag) => {
-      const match = this.getIdentifierValueByType(identifiersArray, neededTag.value);
-      if (match) return Object.assign(identifierMap, { [neededTag.name]: match });
+      const matches = this.getIdentifierEntitiesByType(identifiersArray, neededTag.value);
+      if (matches && matches.length > 0) return Object.assign(identifierMap, { [neededTag.name]: matches[0]['@value'] });
       return identifierMap;
     }, {})
   );

@@ -48,7 +48,7 @@ describe('Search', () => {
     });
 
     it('should render three option elements', () => {
-      expect(component.find('option').length).to.equal(3);
+      expect(component.find('option').length).to.equal(4);
     });
 
     it('should have relevance as the default selected option', () => {
