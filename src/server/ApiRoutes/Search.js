@@ -35,9 +35,13 @@ function search(searchKeywords = '', page, sortBy, order, field, filters, cb, er
     field,
     page,
   });
-  const encodedAggregationsQueryString = encodeURIComponent(searchKeywords);
+  const encodedAggregationsQueryString = createAPIQuery({
+    searchKeywords,
+    selectedFilters: filters,
+    field,
+  });
 
-  const aggregationQuery = `/aggregations?q=${encodedAggregationsQueryString}`;
+  const aggregationQuery = `/aggregations?${encodedAggregationsQueryString}`;
   const resultsQuery = `?${encodedResultsQueryString}&per_page=50`;
 
   // Need to get both results and aggregations before proceeding.
@@ -129,6 +133,18 @@ function searchServer(req, res, next) {
         dateBefore: '',
       };
 
+      // The purpose of the following is to create `selectedFilters` hash that
+      // maps property names (e.g materialType, title) to arrays of filters
+      // (e.g. [{ value: 'resourcetypes:aud', label: 'Audio' }]), which are
+      // used 1) in subsequent searches and 2) to build a human readable
+      // description of results (e.g. 'Displaying 1-100 for title "Romeo"').
+      // The actual filter in the query string includes only the raw value
+      // filtered on (e.g. 'resourcetypes:aud'), so we need to get the label
+      // (e.g. 'Audio'). Because all searches accompany an aggregations query
+      // with the same clauses, we can lean on the aggregations response to
+      // derive a label for any raw filter value.
+      // TODO: This should really be centralized as it seems to happen in a few
+      // places.
       if (!_isEmpty(filters)) {
         _mapObject(filters, (value, key) => {
           let filterObj;
