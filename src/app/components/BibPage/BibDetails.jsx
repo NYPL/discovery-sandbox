@@ -132,7 +132,7 @@ class BibDetails extends React.Component {
         });
       return markup.length === 1
         ? markup.pop()
-        : (<ul>{markup.map((m, ind) => (<li key={`${ind}`}>{m}</li>))}</ul>);
+        : (<ul>{markup.map(m => (<li key={m}>{m}</li>))}</ul>);
     }
     return null;
   }

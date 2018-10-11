@@ -134,7 +134,7 @@ function LibraryItem() {
   };
 
   /**
-   * @typedef {IdentifierMapping}
+   * @typedef {object} IdentifierMapping
    * @property {string} name - Name to use in resulting mapping (e.g. 'barcode')
    * @property {string} value - Type to look for in source (e.g. 'bf:Barcode')
    */
