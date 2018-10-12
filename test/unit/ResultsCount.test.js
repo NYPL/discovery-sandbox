@@ -87,6 +87,9 @@ describe('ResultsCount', () => {
         );
       });
 
+      // Neither materialType nor language are currently filters we talk about
+      // in the results string, so we expect the "No results for" phrase to
+      // only mention keywords:
       it('should output that no results were found', () => {
         expect(component.find('h2').length).to.equal(1);
         expect(component.find('h2').text())
