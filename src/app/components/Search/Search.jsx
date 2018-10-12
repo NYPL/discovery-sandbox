@@ -110,7 +110,7 @@ class Search extends React.Component {
         // We'd maintain one instance of a SearchQuery in the Alt store,
         // representing the "current" query associated with the current
         // results. This Search component would own it's own instance of that
-        // model in state, reprenting the more transient state of the form
+        // model in state, representing the more transient state of the form
         // (which would be promoted to the Alt store when results are received
         // below).
         if (response.data.searchResults && response.data.filters) {
