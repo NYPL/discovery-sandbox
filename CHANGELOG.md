@@ -1,5 +1,8 @@
 ## CHANGE LOG
 
+### 1.5.3
+- Updating @nypl/dgx-header-component to 2.4.12.
+
 ### 1.5.2
 - Updating the instructions for EDD form.
 
