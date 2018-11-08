@@ -48,7 +48,7 @@ describe('Search', () => {
     });
 
     it('should render three option elements', () => {
-      expect(component.find('option').length).to.equal(3);
+      expect(component.find('option').length).to.equal(4);
     });
 
     it('should have relevance as the default selected option', () => {
@@ -100,7 +100,13 @@ describe('Search', () => {
     it('should update the select value and update the state', () => {
       expect(component.state('field')).to.equal('all');
 
-      component.find('select').simulate('change', { target: { value: 'title' } });
+      // Because Search#onFieldChange derives the selected value from the DOM
+      // node by reference (rather than reading the target node referenced in
+      // the event, which may have been trashed by the time we read it), we
+      // need to both set the node value directly and then also simulate a
+      // 'change' event to trigger the handler:
+      component.find('select').node.value = 'title';
+      component.find('select').simulate('change');
 
       expect(onFieldChangeSpy.callCount).to.equal(1);
       expect(component.state('field')).to.equal('title');

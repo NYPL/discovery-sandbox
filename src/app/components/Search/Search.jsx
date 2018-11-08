@@ -25,6 +25,12 @@ class Search extends React.Component {
     this.submitSearchRequest = this.submitSearchRequest.bind(this);
     this.triggerSubmit = this.triggerSubmit.bind(this);
     this.onFieldChange = this.onFieldChange.bind(this);
+
+    // Build ref for search-by-field (aka search_scope) selector:
+    this.searchByFieldRef = null;
+    this.setSearchByFieldRef = (element) => {
+      this.searchByFieldRef = element;
+    };
   }
 
   componentWillReceiveProps(nextProps) {
@@ -35,8 +41,9 @@ class Search extends React.Component {
    * onFieldChange(e)
    * Listen to the select dropdown for field searching.
    */
-  onFieldChange(e) {
-    this.setState({ field: e.target.value });
+  onFieldChange() {
+    const newFieldVal = this.searchByFieldRef.value;
+    this.setState({ field: newFieldVal });
   }
 
   /**
@@ -85,11 +92,27 @@ class Search extends React.Component {
       searchKeywords,
       page: '1',
     });
+    // Need to save a copy of the present value of this.state.field because
+    // it's going to be overwritten by this.props.field at least once before
+    // the ajax call returns, causing this.state.field to be mismatched with
+    // the actual selection, creating much confusion for the visitor..
+    const searchField = String(this.state.field);
 
     this.props.updateIsLoadingState(true);
 
     return new Promise((resolve, reject) => {
       ajaxCall(`${appConfig.baseUrl}/api?${apiQuery}`, (response) => {
+        // TODO Might it be helpful to have a "SearchQuery" model that
+        // stores all of the distinct properties that represent a search
+        // (i.e. keyword, filters, page, sort, search_scope, etc.)
+        // so that the store has only one thing to hold onto. The following
+        // series of Actions calls should be atomic.
+        // We'd maintain one instance of a SearchQuery in the Alt store,
+        // representing the "current" query associated with the current
+        // results. This Search component would own it's own instance of that
+        // model in state, representing the more transient state of the form
+        // (which would be promoted to the Alt store when results are received
+        // below).
         if (response.data.searchResults && response.data.filters) {
           Actions.updateSearchResults(response.data.searchResults);
           Actions.updateFilters(response.data.filters);
@@ -98,7 +121,7 @@ class Search extends React.Component {
           Actions.updateFilters({});
         }
         Actions.updateSearchKeywords(userSearchKeywords);
-        Actions.updateField(this.state.field);
+        Actions.updateField(searchField);
         Actions.updateSelectedFilters(this.props.selectedFilters);
         Actions.updateSortBy('relevance');
         Actions.updatePage('1');
@@ -107,9 +130,8 @@ class Search extends React.Component {
           this.context.router.push(`${appConfig.baseUrl}/search?${apiQuery}`);
         }, 500);
         resolve();
-      });
+      }, reject);
     });
-
   }
 
   render() {
@@ -127,6 +149,7 @@ class Search extends React.Component {
             <span className="nypl-omni-fields">
               <label htmlFor="search-by-field">Search in</label>
               <select
+                ref={this.setSearchByFieldRef}
                 id="search-by-field"
                 onChange={this.onFieldChange}
                 value={this.state.field}
@@ -135,6 +158,7 @@ class Search extends React.Component {
                 <option value="all">All fields</option>
                 <option value="title">Title</option>
                 <option value="contributor">Author/Contributor</option>
+                <option value="standard_number">Standard Numbers</option>
               </select>
             </span>
           </div>
