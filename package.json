@@ -1,6 +1,6 @@
 {
   "name": "nypl-discovery",
-  "version": "1.5.5",
+  "version": "1.5.6",
   "description": "Isomorphic React App for NYPL Research Catalog.",
   "main": "index.js",
   "scripts": {
@@ -76,7 +76,7 @@
   },
   "dependencies": {
     "@nypl/design-toolkit": "0.1.35",
-    "@nypl/dgx-header-component": "2.4.14",
+    "@nypl/dgx-header-component": "2.4.15",
     "@nypl/dgx-react-footer": "0.5.1",
     "@nypl/dgx-svg-icons": "0.2.5",
     "@nypl/nypl-data-api-client": "0.2.5",
