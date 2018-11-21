@@ -86,12 +86,20 @@ class HoldRequest extends React.Component {
    * @return {HTML Element}
    */
   getNotification() {
+    // Show holiday schedule warning if current date strictly less than
+    // 2018-11-27 (i.e. don't show notification after 2018-11-26 23:59:59)
+    const isNov27OrLater = new Date() >= new Date(2018, 10, 27)
+    if (isNov27OrLater) {
+      return null;
+    }
+
     return (
       <div className="nypl-banner-alert">
         <p style={{ padding: '10px 20px 0px', margin: 0 }}>
-          Due to inclement weather, delivery of material from offsite storage may be delayed.
-          Please check your patron account to be sure items are Ready for Pickup in advance of
-          your visit.
+          Due to the holiday schedule, items requested between November 21 and
+          November 26 will be available on Tuesday November 27. Please check
+          your account to be sure items are ready for pickup in advance of your
+          visit.
         </p>
       </div>
     );
@@ -400,6 +408,7 @@ class HoldRequest extends React.Component {
                           contact 917-ASK-NYPL (<a href="tel:917-275-6975">917-275-6975</a>).
                         </h2>
                     }
+                    {this.getNotification()}
                     {bibLink}
                     {callNo}
                   </div>
