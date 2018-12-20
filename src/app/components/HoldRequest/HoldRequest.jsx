@@ -87,19 +87,18 @@ class HoldRequest extends React.Component {
    */
   getNotification() {
     // Show holiday schedule warning if current date strictly less than
-    // 2018-11-27 (i.e. don't show notification after 2018-11-26 23:59:59)
-    const isNov27OrLater = new Date() >= new Date(2018, 10, 27)
-    if (isNov27OrLater) {
+    // 2019-01-02 (i.e. don't show notification after 2019-01-01 23:59:59)
+    const is2019Jan2OrLater = new Date() >= new Date(2019, 0, 2)
+    if (is2019Jan2OrLater) {
       return null;
     }
 
     return (
       <div className="nypl-banner-alert">
         <p style={{ padding: '10px 20px 0px', margin: 0 }}>
-          Due to the holiday schedule, items requested between November 21 and
-          November 26 will be available on Tuesday November 27. Please check
-          your account to be sure items are ready for pickup in advance of your
-          visit.
+          Deliveries of offsite requests are subject to holiday scheduling. Please check 
+          that your items are labeled "Ready for Pickup" in your account in advance of 
+          your visit.
         </p>
       </div>
     );
