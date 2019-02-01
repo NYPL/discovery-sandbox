@@ -30,7 +30,7 @@ const nyplApiClientCall = query =>
       client.get(`/discovery/resources${query}`, { cache: false })
     ).then((x) => {
       console.log('nyplApiClientCall query: ', query);
-      console.log('nyplApiClientCall result: ', JSON.stringify(findProperty(x, /status|availab/g)));
+      console.log('nyplApiClientCall result: ', JSON.stringify(findProperty(x, /status|availab|title/g)));
       return x;
     });
 
@@ -75,7 +75,7 @@ function searchAjax(req, res) {
     filters,
     (apiFilters, searchResults, pageQuery) => {
       console.log('searchAjax query: ', q);
-      console.log('searchAjax results: ', JSON.stringify(findProperty(searchResults, /status|availab/)));
+      console.log('searchAjax results: ', JSON.stringify(findProperty(searchResults, /status|availab|title/)));
       res.json({
       filters: apiFilters,
       searchResults,

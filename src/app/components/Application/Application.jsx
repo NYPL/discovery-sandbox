@@ -121,5 +121,5 @@ export default App;
 
 
 
-// <div>{`Application props: ${findProperty(this.props.children, /status|availab/i)}`}</div>
-// <div>{`Application state: ${findProperty(this.state.data, /status|availab/i)}`}</div>
+// <div>{`Application props: ${findProperty(this.props.children, /status|availab|title/i)}`}</div>
+// <div>{`Application state: ${findProperty(this.state.data, /status|availab|title/i)}`}</div>

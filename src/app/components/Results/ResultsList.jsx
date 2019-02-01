@@ -138,7 +138,7 @@ class ResultsList extends React.Component {
     const hasRequestTable = items.length === 1;
     return (
       <li key={i} className={`nypl-results-item ${hasRequestTable ? 'has-request' : ''}`}>
-        <h3>{`getBib: ${JSON.stringify(findProperty(bib, /status|availab/i))}`}</h3>
+        <h3>{`getBib: ${JSON.stringify(findProperty(bib, /status|availab|title/i))}`}</h3>
         <h3>
           <Link
             onClick={e => this.getBibRecord(e, bibId, bibTitle)}
@@ -186,7 +186,7 @@ class ResultsList extends React.Component {
 
     resultsElm = results.map((bib, i) => this.getBib(bib, i));
 
-    console.log('ResultsList Props: ', findProperty(results, /status|availab/g));
+    console.log('ResultsList Props: ', findProperty(results, /status|availab|title/g));
 
     return (
       <ul

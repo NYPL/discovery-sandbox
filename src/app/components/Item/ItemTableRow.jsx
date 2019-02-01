@@ -45,7 +45,7 @@ const ItemTableRow = ({ item, bibId, getRecord, searchKeywords }) => {
 
   return (
     <tr className={item.availability}>
-      <td>{`ItemTableRow: ${JSON.stringify(findProperty(item, /status|availab/i))}`}</td>
+      <td>{`ItemTableRow: ${JSON.stringify(findProperty(item, /status|availab|title/i))}`}</td>
       <td>{item.location || ' '}</td>
       <td>{itemCallNumber}</td>
       <td>{itemRequestBtn}</td>

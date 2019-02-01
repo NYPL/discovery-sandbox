@@ -45,7 +45,7 @@ class Store {
   }
 
   updateSearchResults(data) {
-    console.log('updateSearchResults data: ', findProperty(data, /status|availab/g));
+    console.log('updateSearchResults data: ', findProperty(data, /status|availab|title/g));
     this.setState({ searchResults: data });
   }
 

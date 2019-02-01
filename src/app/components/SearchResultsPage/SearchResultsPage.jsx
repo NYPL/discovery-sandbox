@@ -145,7 +145,7 @@ class SearchResultsPage extends React.Component {
                     Search Results
                   </h1>
                   <h1>
-                    {`SearchResultsPage props: ${JSON.stringify(findProperty(searchResults, /status|availab/g))}`}
+                    {`SearchResultsPage props: ${JSON.stringify(findProperty(searchResults, /status|availab|title/g))}`}
                   </h1>
                   <Search
                     searchKeywords={searchKeywords}
