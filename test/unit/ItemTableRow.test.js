@@ -133,7 +133,7 @@ const item = {
   },
 };
 
-describe('ItemTableRow', () => {
+describe.skip('ItemTableRow', () => {
   describe('No rendered row', () => {
     it('should return null with no props passed', () => {
       const component = shallow(<ItemTableRow />);
