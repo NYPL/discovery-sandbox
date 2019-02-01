@@ -39,6 +39,7 @@ const keys = [clientId, clientSecret];
 const CACHE = {};
 
 function client() {
+  console.log('client', apiBase)
   if (CACHE.nyplApiClient) {
     return Promise.resolve(CACHE.nyplApiClient);
   }
