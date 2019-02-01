@@ -14,6 +14,7 @@ import {
 } from '../../utils/utils';
 import ItemTable from '../Item/ItemTable';
 import appConfig from '../../../../appConfig';
+import findProperty from '../../../../findProperty';
 
 class ResultsList extends React.Component {
   constructor(props) {
@@ -135,9 +136,9 @@ class ResultsList extends React.Component {
     const items = LibraryItem.getItems(result);
     const totalItems = items.length;
     const hasRequestTable = items.length === 1;
-
     return (
       <li key={i} className={`nypl-results-item ${hasRequestTable ? 'has-request' : ''}`}>
+        <h3>{`getBib: ${JSON.stringify(findProperty(bib, /status|availab/i))}`}</h3>
         <h3>
           <Link
             onClick={e => this.getBibRecord(e, bibId, bibTitle)}
@@ -184,6 +185,8 @@ class ResultsList extends React.Component {
     }
 
     resultsElm = results.map((bib, i) => this.getBib(bib, i));
+
+    console.log('ResultsList Props: ', findProperty(results, /status|availab/g));
 
     return (
       <ul

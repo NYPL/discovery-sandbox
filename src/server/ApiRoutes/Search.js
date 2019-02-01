@@ -14,6 +14,8 @@ import {
 } from '../../app/utils/utils';
 import nyplApiClient from '../routes/nyplApiClient';
 import logger from '../../../logger';
+import findProperty from '../../../findProperty';
+import printUtil from '../../../printUtil';
 
 const createAPIQuery = basicQuery({
   searchKeywords: '',
@@ -25,7 +27,12 @@ const createAPIQuery = basicQuery({
 const nyplApiClientCall = query =>
   nyplApiClient()
     .then(client =>
-      client.get(`/discovery/resources${query}`, { cache: false }));
+      client.get(`/discovery/resources${query}`, { cache: false })
+    ).then((x) => {
+      console.log('nyplApiClientCall query: ', query);
+      console.log('nyplApiClientCall result: ', JSON.stringify(findProperty(x, /status|availab/g)));
+      return x;
+    });
 
 function search(searchKeywords = '', page, sortBy, order, field, filters, cb, errorcb) {
   const encodedResultsQueryString = createAPIQuery({
@@ -66,11 +73,14 @@ function searchAjax(req, res) {
     order,
     fieldQuery,
     filters,
-    (apiFilters, searchResults, pageQuery) => res.json({
+    (apiFilters, searchResults, pageQuery) => {
+      console.log('searchAjax query: ', q);
+      console.log('searchAjax results: ', JSON.stringify(findProperty(searchResults, /status|availab/)));
+      res.json({
       filters: apiFilters,
       searchResults,
       pageQuery,
-    }),
+    })},
     error => res.json(error),
   );
 }
