@@ -12,7 +12,7 @@ const ItemTable = ({ items, bibId, getRecord, id, searchKeywords }) => {
 
   return (
     <table className="nypl-basic-table" id={id}>
-      <div>{`ItemTable: ${JSON.stringify(findProperty(items, /status|availab|title/i))}`}</div>
+      <div>{`ItemTable: ${JSON.stringify(findProperty(items, /status|availab/i))}`}</div>
       <caption className="hidden">Item details</caption>
       <thead>
         <tr>
