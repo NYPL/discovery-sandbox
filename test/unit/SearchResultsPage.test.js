@@ -109,7 +109,7 @@ describe('SearchResultsPage', () => {
     });
   });
 
-  describe.skip('DOM structure', () => {
+  describe('DOM structure', () => {
     let component;
 
     before(() => {
