@@ -4,7 +4,6 @@ import { Link } from 'react-router';
 import { isEmpty as _isEmpty } from 'underscore';
 
 import appConfig from '../../../../appConfig';
-import findProperty from '../../../../findProperty';
 
 const ItemTableRow = ({ item, bibId, getRecord, searchKeywords }) => {
   if (_isEmpty(item)) {
@@ -42,10 +41,8 @@ const ItemTableRow = ({ item, bibId, getRecord, searchKeywords }) => {
     itemCallNumber = item.callNumber;
   }
 
-
   return (
     <tr className={item.availability}>
-      <td>{`ItemTableRow: ${JSON.stringify(findProperty(item, /status|availab/i))}`}</td>
       <td>{item.location || ' '}</td>
       <td>{itemCallNumber}</td>
       <td>{itemRequestBtn}</td>

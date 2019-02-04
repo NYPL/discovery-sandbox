@@ -2,7 +2,6 @@ import { reject as _reject } from 'underscore';
 
 import Actions from '../actions/Actions';
 import alt from '../alt';
-import findProperty from '../../../findProperty';
 
 class Store {
   constructor() {
@@ -45,7 +44,6 @@ class Store {
   }
 
   updateSearchResults(data) {
-    console.log('updateSearchResults data: ', findProperty(data, /status|availab/g));
     this.setState({ searchResults: data });
   }
 

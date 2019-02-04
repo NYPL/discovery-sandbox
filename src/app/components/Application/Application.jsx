@@ -16,7 +16,6 @@ import {
 } from '../../utils/utils';
 import Actions from '../../actions/Actions';
 import appConfig from '../../../../appConfig';
-import findProperty from '../../../../findProperty';
 
 const history = createAppHistory();
 
@@ -91,6 +90,7 @@ class App extends React.Component {
             skipNav={{ target: 'mainContent' }}
             patron={this.state.patron}
           />
+
           {React.cloneElement(this.props.children, this.state.data)}
 
           <Footer />
@@ -118,8 +118,3 @@ App.contextTypes = {
 
 
 export default App;
-
-
-
-// <div>{`Application props: ${findProperty(this.props.children, /status|availab/i)}`}</div>
-// <div>{`Application state: ${findProperty(this.state.data, /status|availab/i)}`}</div>

@@ -19,7 +19,6 @@ import {
 } from '../../utils/utils';
 import Actions from '../../actions/Actions';
 import appConfig from '../../../../appConfig';
-import findProperty from '../../../../findProperty';
 
 class SearchResultsPage extends React.Component {
   constructor(props) {
@@ -143,9 +142,6 @@ class SearchResultsPage extends React.Component {
                   <Breadcrumbs query={searchKeywords} type="search" />
                   <h1 aria-label={headerLabel}>
                     Search Results
-                  </h1>
-                  <h1>
-                    {`SearchResultsPage props: ${JSON.stringify(findProperty(searchResults, /status|availab/g))}`}
                   </h1>
                   <Search
                     searchKeywords={searchKeywords}

@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { isArray as _isArray } from 'underscore';
-import findProperty from '../../../../findProperty';
 
 import ItemTableRow from './ItemTableRow';
 
@@ -12,7 +11,6 @@ const ItemTable = ({ items, bibId, getRecord, id, searchKeywords }) => {
 
   return (
     <table className="nypl-basic-table" id={id}>
-      <div>{`ItemTable: ${JSON.stringify(findProperty(items, /status|availab/i))}`}</div>
       <caption className="hidden">Item details</caption>
       <thead>
         <tr>
