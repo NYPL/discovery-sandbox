@@ -1,5 +1,3 @@
-console.log('appConfig: ', process.env.PLATFORM_API_BASE_URL);
-
 export default {
   appTitle: 'NYPL | Discovery',
   appName: 'discovery',
