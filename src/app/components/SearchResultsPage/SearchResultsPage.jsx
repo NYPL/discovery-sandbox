@@ -64,12 +64,13 @@ class SearchResultsPage extends React.Component {
 
   checkForSelectedFilters() {
     const { selectedFilters } = this.props;
-
+    console.log("Checking for selected filters ", selectedFilters.subjectLiteral);
     if (selectedFilters &&
       (selectedFilters.dateBefore !== '' ||
         selectedFilters.dateAfter !== '' ||
         (selectedFilters.language && selectedFilters.language.length) ||
-        (selectedFilters.materialType && selectedFilters.materialType.length)
+        (selectedFilters.materialType && selectedFilters.materialType.length) ||
+        selectedFilters.subjectLiteral.length
       )
     ) {
       if (!this.state.dropdownOpen) {
@@ -126,6 +127,8 @@ class SearchResultsPage extends React.Component {
         value: 'Date',
       });
     }
+
+    console.log("Filters: ", selectedFilters, selectedFiltersAvailable);
 
     return (
       <DocumentTitle title="Search Results | Shared Collection Catalog | NYPL">

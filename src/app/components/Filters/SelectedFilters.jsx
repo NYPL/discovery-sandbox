@@ -107,9 +107,14 @@ class SelectedFilters extends React.Component {
       selectedFilters,
     } = this.props;
 
+    console.log("Rendering SelectedFilters ", selectedFilters)
+
     if (_isEmpty(selectedFilters)) {
+      console.log("empty");
       return null;
     }
+
+    console.log("not empty")
 
     const filtersToRender = [];
     const datesToRender = [];
@@ -169,9 +174,13 @@ class SelectedFilters extends React.Component {
       }
     });
 
+    console.log("Filters to render: ", filtersToRender)
+
     if (!filtersToRender.length && !datesToRender.length) {
       return null;
     }
+
+    console.log("SelectedFilters: ", selectedFilters);
 
     return (
       <div className="selected-filters">
