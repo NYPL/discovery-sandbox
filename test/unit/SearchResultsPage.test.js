@@ -134,7 +134,7 @@ describe('SearchResultsPage', () => {
       expect(component.find('.nypl-page-header')).to.have.length(1);
     });
 
-    it('should have seven .nypl-full-width-wrapper elements', () => {
+    it('should have four .nypl-full-width-wrapper elements', () => {
       expect(component.find('.nypl-full-width-wrapper')).to.have.length(4);
     });
   });
