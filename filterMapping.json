@@ -1,5 +1,5 @@
 {
-  "Language" : [
+  "language" : [
     {"value": "lang:afr", "label": "Afrikaans"},
     {"value": "lang:ara", "label": "Arabic"},
     {"value": "lang:bul", "label": "Bulgarian"},
@@ -51,7 +51,7 @@
     {"value": "lang:wel", "label": "Welsh"},
     {"value": "lang:yid", "label": "Yiddish"},
   ],
-  "Material Type": [
+  "materialType": [
     {"label": "Audio",
     "value": "resourcetypes:aud"},
     {"label": "Cartographic",
