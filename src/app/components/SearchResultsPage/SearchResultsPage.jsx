@@ -102,7 +102,8 @@ class SearchResultsPage extends React.Component {
   }
 
   checkForSelectedFilters() {
-    const { selectedFilters } = this.props;
+    // const { selectedFilters } = this.props;
+    const selectedFilters = this.convertLocationToFilters();
 
     if (selectedFilters &&
       (selectedFilters.dateBefore !== '' ||
@@ -123,7 +124,7 @@ class SearchResultsPage extends React.Component {
     const {
       searchResults,
       searchKeywords,
-      selectedFilters,
+      // selectedFilters,
       filters,
       page,
       sortBy,
@@ -131,6 +132,8 @@ class SearchResultsPage extends React.Component {
       isLoading,
       location,
     } = this.props;
+
+    const selectedFilters = this.convertLocationToFilters();
 
     const totalResults = searchResults ? searchResults.totalResults : undefined;
     const totalPages = totalResults ? Math.floor(totalResults / 50) + 1 : 0;
