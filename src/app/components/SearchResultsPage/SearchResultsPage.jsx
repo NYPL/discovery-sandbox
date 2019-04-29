@@ -71,9 +71,11 @@ class SearchResultsPage extends React.Component {
     const selectedFilters = { language: [], materialType: [] };
     const languages = filterMappings.language;
     const materialTypes = filterMappings.materialType;
+    const query = location.query;
 
 
-    Object.values(location.query).forEach((filter) => {
+    Object.keys(query).forEach((filterKey) => {
+      const filter = query[filterKey];
       if (filter in languages) {
         selectedFilters.language.push({
           selected: true,
@@ -289,7 +291,6 @@ class SearchResultsPage extends React.Component {
 SearchResultsPage.propTypes = {
   searchResults: PropTypes.object,
   searchKeywords: PropTypes.string,
-  selectedFilters: PropTypes.object,
   page: PropTypes.string,
   location: PropTypes.object,
   sortBy: PropTypes.string,
