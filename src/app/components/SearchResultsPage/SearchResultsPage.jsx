@@ -104,7 +104,6 @@ class SearchResultsPage extends React.Component {
   }
 
   checkForSelectedFilters() {
-    // const { selectedFilters } = this.props;
     const selectedFilters = this.convertLocationToFilters();
 
     if (selectedFilters &&
@@ -126,7 +125,6 @@ class SearchResultsPage extends React.Component {
     const {
       searchResults,
       searchKeywords,
-      // selectedFilters,
       filters,
       page,
       sortBy,
