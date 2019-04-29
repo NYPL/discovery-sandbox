@@ -27,7 +27,7 @@ const nyplApiClientCall = query =>
     .then((client) => {
       // console.log("client: ", client);
       return client.get(`/discovery/resources${query}`, { cache: false })
-        .then(resp => {console.log("resp: ", resp); return resp})
+        .then(resp => {console.log("resp: ", JSON.stringify(resp, null, 4)); return resp})
         .catch(error => console.log("error message: ", error.message));
     })
     .catch((error) => {

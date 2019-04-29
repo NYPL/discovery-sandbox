@@ -70,7 +70,7 @@ class SearchResultsPage extends React.Component {
         selectedFilters.dateAfter !== '' ||
         (selectedFilters.language && selectedFilters.language.length) ||
         (selectedFilters.materialType && selectedFilters.materialType.length) ||
-        selectedFilters.subjectLiteral.length
+        selectedFilters.subjectLiteral && subjectFilters.subjectLiteral.length
       )
     ) {
       if (!this.state.dropdownOpen) {
@@ -128,7 +128,8 @@ class SearchResultsPage extends React.Component {
       });
     }
 
-    console.log("Filters: ", selectedFilters, selectedFiltersAvailable);
+    console.log("Filters (131): ", JSON.stringify(selectedFilters, null, 2), selectedFiltersAvailable);
+    console.log("location: ", location);
 
     return (
       <DocumentTitle title="Search Results | Shared Collection Catalog | NYPL">
