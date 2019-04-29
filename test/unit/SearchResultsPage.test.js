@@ -32,7 +32,7 @@ describe('SearchResultsPage', () => {
       component = mount(
         <SearchResultsPage
           searchResults={{}}
-          location={{ search: '' }}
+          location={{ search: '', query: {} }}
         />,
         { attachTo: document.body }
       );
@@ -81,7 +81,7 @@ describe('SearchResultsPage', () => {
         <SearchResultsPage
           searchKeywords="locofocos"
           searchResults={searchResults}
-          location={{ search: '' }}
+          location={{ search: '', query: {} }}
         />,
         { attachTo: document.body }
       );
@@ -117,7 +117,7 @@ describe('SearchResultsPage', () => {
         <SearchResultsPage
           searchKeywords="locofocos"
           searchResults={searchResults}
-          location={{ search: '' }}
+          location={{ search: '', query: {} }}
         />,
         { attachTo: document.body }
       );
