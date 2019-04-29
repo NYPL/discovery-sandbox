@@ -1,4 +1,4 @@
-{
+export default {
   "language" : {
     "lang:afr": "Afrikaans",
     "lang:ara": "Arabic",
@@ -61,4 +61,4 @@
    "resourcetypes:img": "Still image",
    "resourcetypes:txt": "Text"
   }
-}
+};

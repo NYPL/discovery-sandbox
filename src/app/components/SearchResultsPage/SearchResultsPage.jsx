@@ -19,6 +19,7 @@ import {
 } from '../../utils/utils';
 import Actions from '../../actions/Actions';
 import appConfig from '../../../../appConfig';
+import filterMappings from '../../../../filterMapping';
 
 class SearchResultsPage extends React.Component {
   constructor(props) {
@@ -60,6 +61,44 @@ class SearchResultsPage extends React.Component {
 
   updateDropdownState(status) {
     this.setState({ dropdownOpen: status });
+  }
+
+  convertLocationToFilters() {
+    const {
+      location,
+    } = this.props;
+
+    const selectedFilters = { language: [], materialType: [] };
+    const languages = filterMappings.language;
+    const materialTypes = filterMappings.materialType;
+
+
+    Object.values(location.query).forEach((filter) => {
+      if (filter in languages) {
+        selectedFilters.language.push({
+          selected: true,
+          value: filter,
+          label: languages[filter],
+        });
+      }
+      if (filter in materialTypes) {
+        selectedFilters.materialType.push({
+          selected: true,
+          value: filter,
+          label: materialTypes[filter],
+        });
+      }
+    });
+
+    if (location.query['filters[dateAfter]']) {
+      selectedFilters.dateAfter = location.query['filters[dateAfter]'];
+    }
+
+    if (location.query['filters[dateBefore]']) {
+      selectedFilters.dateBefore = location.query['filters[dateBefore]'];
+    }
+
+    return selectedFilters;
   }
 
   checkForSelectedFilters() {
