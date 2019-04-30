@@ -24,8 +24,15 @@ const createAPIQuery = basicQuery({
 
 const nyplApiClientCall = query =>
   nyplApiClient()
-    .then(client =>
-      client.get(`/discovery/resources${query}`, { cache: false }));
+    .then((client) => {
+      // console.log("client: ", client);
+      return client.get(`/discovery/resources${query}`, { cache: false })
+        .then(resp => {console.log("resp: ", JSON.stringify(resp, null, 4)); return resp})
+        .catch(error => console.log("error message: ", error.message));
+    })
+    .catch((error) => {
+      console.log("error message: ", error.message);
+    });
 
 function search(searchKeywords = '', page, sortBy, order, field, filters, cb, errorcb) {
   const encodedResultsQueryString = createAPIQuery({

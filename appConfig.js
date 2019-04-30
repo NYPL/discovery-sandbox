@@ -1,3 +1,5 @@
+console.log("base_url: ", process.env.PLATFORM_API_BASE_URL);
+
 export default {
   appTitle: 'NYPL | Discovery',
   appName: 'discovery',
@@ -27,5 +29,6 @@ export default {
     language: [],
     dateAfter: '',
     dateBefore: '',
+    subjectLiteral: '',
   },
 };
