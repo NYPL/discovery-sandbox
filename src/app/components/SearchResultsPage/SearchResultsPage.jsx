@@ -73,7 +73,6 @@ class SearchResultsPage extends React.Component {
         const { data } = response;
         if (data.filters && data.searchResults) {
           const selectedFilters = destructureFilters(urlFilters, data.filters);
-          console.log('SelectedFilters: ', JSON.stringify(selectedFilters, null, 4));
           Actions.updateSelectedFilters(selectedFilters);
           Actions.updateFilters(data.filters);
           Actions.updateSearchResults(data.searchResults);

@@ -65,7 +65,6 @@ const createAppHistory = () => {
  * @param {object} apiFilters All filters from the API.
  */
 function destructureFilters(filters, apiFilters) {
-  console.log('Destructuring: ', JSON.stringify(filters, null, 4), "\n with: ", JSON.stringify(apiFilters, null, 4));
   const selectedFilters = {};
   const filterArrayfromAPI =
     apiFilters && apiFilters.itemListElement && apiFilters.itemListElement.length ?
@@ -99,7 +98,6 @@ function destructureFilters(filters, apiFilters) {
       });
     } else if (typeof value === 'string') {
       const filterObjFromApi = _findWhere(filterArrayfromAPI, { id });
-      console.log('filterObjFromApi: ', JSON.stringify(filterObjFromApi, null, 4));
       if (filterObjFromApi && filterObjFromApi.values && filterObjFromApi.values.length) {
         const filter = _findWhere(filterObjFromApi.values, { value });
         if (filter) {
