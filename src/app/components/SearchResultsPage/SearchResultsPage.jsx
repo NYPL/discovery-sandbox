@@ -73,6 +73,7 @@ class SearchResultsPage extends React.Component {
         const { data } = response;
         if (data.filters && data.searchResults) {
           const selectedFilters = destructureFilters(urlFilters, data.filters);
+          console.log('SelectedFilters: ', JSON.stringify(selectedFilters, null, 4));
           Actions.updateSelectedFilters(selectedFilters);
           Actions.updateFilters(data.filters);
           Actions.updateSearchResults(data.searchResults);
@@ -99,7 +100,6 @@ class SearchResultsPage extends React.Component {
 
   checkForSelectedFilters() {
     const { selectedFilters } = this.props;
-    console.log("Checking for selected filters ", selectedFilters.subjectLiteral);
     if (selectedFilters &&
       (selectedFilters.dateBefore !== '' ||
         selectedFilters.dateAfter !== '' ||
@@ -162,9 +162,6 @@ class SearchResultsPage extends React.Component {
         value: 'Date',
       });
     }
-
-    console.log("Filters (131): ", JSON.stringify(selectedFilters, null, 2), selectedFiltersAvailable);
-    console.log("location: ", location);
 
     return (
       <DocumentTitle title="Search Results | Shared Collection Catalog | NYPL">
