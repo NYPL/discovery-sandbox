@@ -61,7 +61,6 @@ class SearchResultsPage extends React.Component {
       query,
     } = location;
 
-    console.log('Update: ', location.search, prevProps.location.search);
     if (search !== prevProps.location.search) {
       const qParameter = query.q;
       const urlFilters = _pick(query, (value, key) => {
@@ -77,6 +76,7 @@ class SearchResultsPage extends React.Component {
           Actions.updateSelectedFilters(selectedFilters);
           Actions.updateFilters(data.filters);
           Actions.updateSearchResults(data.searchResults);
+          Actions.updatePage(location.query.page || 1);
           if (qParameter) Actions.updateSearchKeywords(qParameter);
         }
       });
