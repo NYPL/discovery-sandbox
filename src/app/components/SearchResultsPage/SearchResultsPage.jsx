@@ -2,6 +2,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import DocumentTitle from 'react-document-title';
+import { pick as _pick } from 'underscore';
 
 import ResultsCount from '../ResultsCount/ResultsCount';
 import Breadcrumbs from '../Breadcrumbs/Breadcrumbs';
@@ -16,6 +17,7 @@ import {
   basicQuery,
   ajaxCall,
   trackDiscovery,
+  destructureFilters,
 } from '../../utils/utils';
 import Actions from '../../actions/Actions';
 import appConfig from '../../../../appConfig';
@@ -41,11 +43,44 @@ class SearchResultsPage extends React.Component {
     this.setState({ document: window.document });
   }
 
+
   shouldComponentUpdate() {
     if (!this.state.isLoading) {
       return true;
     }
     return false;
+  }
+
+  componentDidUpdate(prevProps) {
+    const {
+      location,
+    } = this.props;
+
+    const {
+      search,
+      query,
+    } = location;
+
+    console.log('Update: ', location.search, prevProps.location.search);
+    if (search !== prevProps.location.search) {
+      const qParameter = query.q;
+      const urlFilters = _pick(query, (value, key) => {
+        if (key.indexOf('filter') !== -1) {
+          return value;
+        }
+        return null;
+      });
+      ajaxCall(`${appConfig.baseUrl}/api${decodeURI(search)}`, (response) => {
+        const { data } = response;
+        if (data.filters && data.searchResults) {
+          const selectedFilters = destructureFilters(urlFilters, data.filters);
+          Actions.updateSelectedFilters(selectedFilters);
+          Actions.updateFilters(data.filters);
+          Actions.updateSearchResults(data.searchResults);
+          if (qParameter) Actions.updateSearchKeywords(qParameter);
+        }
+      });
+    }
   }
 
   focus() {
