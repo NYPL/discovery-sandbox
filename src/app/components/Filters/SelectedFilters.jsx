@@ -105,6 +105,7 @@ class SelectedFilters extends React.Component {
   render() {
     const {
       selectedFilters,
+      dropdownOpen,
     } = this.props;
 
 
@@ -144,8 +145,9 @@ class SelectedFilters extends React.Component {
     }
 
     _mapObject(selectedFilters, (values, key) => {
+      console.log('values: ', values, "key: ", key, dropdownOpen);
       if (_contains(acceptedFilters, key) && values && values.length) {
-        if (key === 'dateAfter' || key === 'dateBefore') {
+        if ((key === 'dateAfter' || key === 'dateBefore') && !dropdownOpen) {
           datesToRender.push(_extend(
             { field: key },
             {
@@ -154,7 +156,7 @@ class SelectedFilters extends React.Component {
             },
           ));
         } else {
-          if (_isArray(values)) {
+          if (_isArray(values) && (!dropdownOpen || key === 'subjectLiteral')) {
             values.forEach(value =>
               filtersToRender.push(_extend({ field: key }, value)));
           } else {
