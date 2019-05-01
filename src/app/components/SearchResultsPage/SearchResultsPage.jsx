@@ -104,7 +104,7 @@ class SearchResultsPage extends React.Component {
         selectedFilters.dateAfter !== '' ||
         (selectedFilters.language && selectedFilters.language.length) ||
         (selectedFilters.materialType && selectedFilters.materialType.length) ||
-        selectedFilters.subjectLiteral && subjectFilters.subjectLiteral.length
+        (selectedFilters.subjectLiteral && selectedFilters.subjectLiteral.length)
       )
     ) {
       if (!this.state.dropdownOpen) {
