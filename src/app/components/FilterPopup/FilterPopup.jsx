@@ -234,6 +234,7 @@ class FilterPopup extends React.Component {
       language: _union(provisionalSelectedFilters.language, selectedFilters.language),
       dateAfter,
       dateBefore,
+      subjectLiteral: selectedFilters.subjectLiteral,
     };
 
     const apiQuery = this.props.createAPIQuery({ selectedFilters: filtersToApply });
