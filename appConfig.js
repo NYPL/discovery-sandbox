@@ -27,6 +27,6 @@ export default {
     language: [],
     dateAfter: '',
     dateBefore: '',
-    subjectLiteral: '',
+    subjectLiteral: [],
   },
 };

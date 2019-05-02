@@ -120,6 +120,7 @@ describe('getDefaultFilters', () => {
       language: [],
       dateAfter: '',
       dateBefore: '',
+      subjectLiteral: [],
     });
   });
 });
