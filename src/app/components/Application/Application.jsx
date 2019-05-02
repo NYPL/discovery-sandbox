@@ -36,7 +36,6 @@ history.listen((location) => {
   });
 
   if (action === 'POP' && search) {
-    console.log('Application action')
     ajaxCall(`${appConfig.baseUrl}/api${decodeURI(search)}`, (response) => {
       const { data } = response;
       if (data.filters && data.searchResults) {
