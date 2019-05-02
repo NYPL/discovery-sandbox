@@ -393,7 +393,6 @@ class BibDetails extends React.Component {
 
   newSearch(e, query, field, value, label) {
     e.preventDefault();
-
     this.props.updateIsLoadingState(true);
 
     trackDiscovery('Bib fields', `${label} - ${value}`);
@@ -418,6 +417,7 @@ class BibDetails extends React.Component {
             label: filter ? (filter.label || filter.value) : value,
           }],
         });
+        Actions.updateFilters(response.data.filters);
       } else {
         // Otherwise, the field wasn't found in the API. Returning this highlights the
         // filter in the selected filter region, but not in the filter sidebar.
@@ -427,6 +427,7 @@ class BibDetails extends React.Component {
             value,
           }],
         });
+        Actions.updateFilters(response.data.filters); // does this belong here?
       }
 
       if (response.data.searchResults) {
