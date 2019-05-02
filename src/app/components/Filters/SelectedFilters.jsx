@@ -291,7 +291,7 @@ class SelectedFilters extends React.Component {
             })
           }
         </ul>
-        {clearAllFilters}
+        {this.props.dropdownOpen ? null : clearAllFilters}
       </div>
     );
   }
