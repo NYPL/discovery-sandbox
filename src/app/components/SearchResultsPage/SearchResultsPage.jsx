@@ -2,7 +2,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import DocumentTitle from 'react-document-title';
-import { pick as _pick } from 'underscore';
 
 import ResultsCount from '../ResultsCount/ResultsCount';
 import Breadcrumbs from '../Breadcrumbs/Breadcrumbs';
