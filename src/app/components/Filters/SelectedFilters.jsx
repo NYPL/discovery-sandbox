@@ -105,6 +105,7 @@ class SelectedFilters extends React.Component {
   render() {
     const {
       selectedFilters,
+      dropdownOpen,
     } = this.props;
 
 
@@ -144,7 +145,7 @@ class SelectedFilters extends React.Component {
     }
 
     _mapObject(selectedFilters, (values, key) => {
-      if (key === 'subjectLiteral' || !this.props.dropdownOpen) {
+      if (key === 'subjectLiteral' || !dropdownOpen) {
         if (_contains(acceptedFilters, key) && values && values.length) {
           if (key === 'dateAfter' || key === 'dateBefore') {
             datesToRender.push(_extend(
@@ -301,6 +302,7 @@ SelectedFilters.propTypes = {
   selectedFilters: PropTypes.object,
   createAPIQuery: PropTypes.func,
   updateIsLoadingState: PropTypes.func,
+  dropdownOpen: PropTypes.bool,
 };
 
 SelectedFilters.defaultProps = {
