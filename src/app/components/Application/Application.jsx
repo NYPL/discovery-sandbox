@@ -11,13 +11,10 @@ import Store from '../../stores/Store';
 import PatronStore from '../../stores/PatronStore';
 import {
   ajaxCall,
-  createAppHistory,
   destructureFilters,
 } from '../../utils/utils';
 import Actions from '../../actions/Actions';
 import appConfig from '../../../../appConfig';
-
-const history = createAppHistory();
 
 class App extends React.Component {
   constructor(props) {
