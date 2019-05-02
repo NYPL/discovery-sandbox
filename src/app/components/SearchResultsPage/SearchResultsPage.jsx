@@ -51,38 +51,6 @@ class SearchResultsPage extends React.Component {
     return false;
   }
 
-  componentDidUpdate(prevProps) {
-    const {
-      location,
-    } = this.props;
-
-    const {
-      search,
-      query,
-    } = location;
-
-    if (search !== prevProps.location.search) {
-      const qParameter = query.q;
-      const urlFilters = _pick(query, (value, key) => {
-        if (key.indexOf('filter') !== -1) {
-          return value;
-        }
-        return null;
-      });
-      ajaxCall(`${appConfig.baseUrl}/api${decodeURI(search)}`, (response) => {
-        const { data } = response;
-        if (data.filters && data.searchResults) {
-          const selectedFilters = destructureFilters(urlFilters, data.filters);
-          Actions.updateSelectedFilters(selectedFilters);
-          Actions.updateFilters(data.filters);
-          Actions.updateSearchResults(data.searchResults);
-          Actions.updatePage(location.query.page || 1);
-          if (qParameter) Actions.updateSearchKeywords(qParameter);
-        }
-      });
-    }
-  }
-
   focus() {
     if (this.state.document) {
       document.getElementById('filter-title').focus();
