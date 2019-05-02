@@ -144,27 +144,29 @@ class SelectedFilters extends React.Component {
     }
 
     _mapObject(selectedFilters, (values, key) => {
-      if (_contains(acceptedFilters, key) && values && values.length) {
-        if (key === 'dateAfter' || key === 'dateBefore') {
-          datesToRender.push(_extend(
-            { field: key },
-            {
-              value: values,
-              label: values,
-            },
-          ));
-        } else {
-          if (_isArray(values)) {
-            values.forEach(value =>
-              filtersToRender.push(_extend({ field: key }, value)));
-          } else {
-            filtersToRender.push(_extend(
+      if (key === 'subjectLiteral' || !this.props.dropdownOpen) {
+        if (_contains(acceptedFilters, key) && values && values.length) {
+          if (key === 'dateAfter' || key === 'dateBefore') {
+            datesToRender.push(_extend(
               { field: key },
               {
                 value: values,
                 label: values,
               },
             ));
+          } else {
+            if (_isArray(values)) {
+              values.forEach(value =>
+                filtersToRender.push(_extend({ field: key }, value)));
+            } else {
+              filtersToRender.push(_extend(
+                { field: key },
+                {
+                  value: values,
+                  label: values,
+                },
+              ));
+            }
           }
         }
       }
