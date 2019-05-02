@@ -17,7 +17,6 @@ import {
   basicQuery,
   ajaxCall,
   trackDiscovery,
-  destructureFilters,
 } from '../../utils/utils';
 import Actions from '../../actions/Actions';
 import appConfig from '../../../../appConfig';
