@@ -62,7 +62,7 @@ class App extends React.Component {
             Actions.updateSelectedFilters(selectedFilters);
             Actions.updateFilters(data.filters);
             Actions.updateSearchResults(data.searchResults);
-            Actions.updatePage(query.page || 1);
+            Actions.updatePage(query.page || '1');
             if (qParameter) Actions.updateSearchKeywords(qParameter);
           }
         });
