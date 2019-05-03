@@ -32,7 +32,6 @@ window.onload = () => {
     alt.bootstrap(state);
 
     const appHistory = useScroll(useRouterHistory(createBrowserHistory))();
-    window.appHistory = appHistory;
 
     ReactDOM.render(
       <Router history={appHistory}>{routes(appHistory).client}</Router>,
