@@ -73,10 +73,9 @@ class SearchResultsPage extends React.Component {
         (selectedFilters.subjectLiteral && selectedFilters.subjectLiteral.length)
       )
     ) {
-      // if (!this.state.dropdownOpen) {
-      //   return true;
-      // }
-      return true;
+      if (!this.state.dropdownOpen) {
+        return true;
+      }
     }
 
     return false;
@@ -173,7 +172,6 @@ class SearchResultsPage extends React.Component {
                       selectedFilters={selectedFilters}
                       createAPIQuery={createAPIQuery}
                       updateIsLoadingState={this.updateIsLoadingState}
-                      dropdownOpen={this.state.dropdownOpen}
                     />
                   </div>
                 </div>
