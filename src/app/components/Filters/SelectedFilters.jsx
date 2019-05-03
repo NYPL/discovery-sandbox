@@ -143,6 +143,14 @@ class SelectedFilters extends React.Component {
       );
     }
 
+    const keyMappings = {
+      materialType: 'Format',
+      dateAfter: 'End Year',
+      dateBefore: 'Start Year',
+      subjectLiteral: 'Subject',
+      language: 'Language',
+    };
+
     _mapObject(selectedFilters, (values, key) => {
       if (_contains(acceptedFilters, key) && values && values.length) {
         if (key === 'dateAfter' || key === 'dateBefore') {
@@ -175,6 +183,8 @@ class SelectedFilters extends React.Component {
       return null;
     }
 
+    console.log('filtersToRender: ', filtersToRender);
+
     return (
       <div className="selected-filters">
         <span id="read-text" className="visuallyHidden">Selected filters.</span>
@@ -188,6 +198,7 @@ class SelectedFilters extends React.Component {
         >
           {
             filtersToRender.map((filter) => {
+              filter.label = `${keyMappings[filter.field]}: ${filter.label}`;
               let filterBtn = (
                 <button
                   className="nypl-unset-filter"
@@ -230,6 +241,7 @@ class SelectedFilters extends React.Component {
           }
           {
             datesToRender.map((filter) => {
+              filter.label = `${keyMappings[filter.field]}: ${filter.label}`;
               const singleDate = datesToRender.length === 1;
               const dateClass = filter.field;
               let singleDateLabel = '';
