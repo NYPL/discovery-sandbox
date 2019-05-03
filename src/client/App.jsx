@@ -35,8 +35,8 @@ window.onload = () => {
     window.appHistory = appHistory;
 
     ReactDOM.render(
-      <Router history={appHistory}>{routes.client}</Router>,
-      container
+      <Router history={appHistory}>{routes(appHistory).client}</Router>,
+      container,
     );
     gaUtils.trackPageview(window.location.pathname);
   });
