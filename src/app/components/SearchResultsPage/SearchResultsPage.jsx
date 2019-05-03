@@ -81,6 +81,26 @@ class SearchResultsPage extends React.Component {
     return false;
   }
 
+  narrowSubjectFilters(apiFilters, selectedFilters) {
+    const apiSubjectLiteralFilters = apiFilters.filter(
+      apiFilter => apiFilter.field === 'subjectLiteral',
+    );
+    if (apiSubjectLiteralFilters.length) {
+      const subjectLiteralFilters = apiSubjectLiteralFilters[0];
+      subjectLiteralFilters.values = subjectLiteralFilters
+        .values
+        .filter(
+          subjectLiteralFilter => (
+            selectedFilters
+              .subjectLiteral
+              .some(selectedFilter =>
+                subjectLiteralFilter.value === selectedFilter.value,
+              )
+          ),
+        );
+    }
+  }
+
   render() {
     const {
       searchResults,
@@ -118,23 +138,7 @@ class SearchResultsPage extends React.Component {
     const searchError = location.query && location.query.error ? location.query.error : '';
     const apiFilters = filters && filters.itemListElement && filters.itemListElement.length ?
       filters.itemListElement : [];
-    const apiSubjectLiteralFilters = apiFilters.filter(
-      apiFilter => apiFilter.field === 'subjectLiteral',
-    );
-    if (apiSubjectLiteralFilters.length) {
-      const subjectLiteralFilters = apiSubjectLiteralFilters[0];
-      subjectLiteralFilters.values = subjectLiteralFilters
-        .values
-        .filter(
-          subjectLiteralFilter => (
-            selectedFilters
-              .subjectLiteral
-              .some(selectedFilter =>
-                subjectLiteralFilter.value === selectedFilter.value,
-              )
-          ),
-        );
-    }
+    this.narrowSubjectFilters(apiFilters, selectedFilters);
     const dateFilterErrors = [];
     const selectedFiltersAvailable = this.checkForSelectedFilters();
 
