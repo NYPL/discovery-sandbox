@@ -143,7 +143,7 @@ class SearchResultsPage extends React.Component {
     const searchError = location.query && location.query.error ? location.query.error : '';
     const apiFilters = filters && filters.itemListElement && filters.itemListElement.length ?
       filters.itemListElement : [];
-    this.narrowSubjectFilters(apiFilters, selectedFilters || []);
+    this.narrowSubjectFilters(apiFilters, selectedFilters || {});
     const dateFilterErrors = [];
     const selectedFiltersAvailable = this.checkForSelectedFilters();
 
