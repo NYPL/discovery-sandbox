@@ -349,7 +349,8 @@ class FilterPopup extends React.Component {
     const filtersToShow = {
       materialType: _union(provisionalSelectedFilters.materialType, selectedFilters.materialType),
       language: _union(provisionalSelectedFilters.language, selectedFilters.language),
-      subjectLiteral: _union(provisionalSelectedFilters.subjectLiteral, selectedFilters.subjectLiteral),
+      subjectLiteral:
+        _union(provisionalSelectedFilters.subjectLiteral, selectedFilters.subjectLiteral),
       dateAfter: selectedFilters.dateAfter,
       dateBefore: selectedFilters.dateBefore,
     };
