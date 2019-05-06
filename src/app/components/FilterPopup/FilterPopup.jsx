@@ -237,7 +237,6 @@ class FilterPopup extends React.Component {
       subjectLiteral: _union(provisionalSelectedFilters.subjectLiteral, selectedFilters.subjectLiteral),
       dateAfter,
       dateBefore,
-      // subjectLiteral: selectedFilters.subjectLiteral,
     };
 
     const apiQuery = this.props.createAPIQuery({ selectedFilters: filtersToApply });
