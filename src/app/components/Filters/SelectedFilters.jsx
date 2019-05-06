@@ -142,7 +142,7 @@ class SelectedFilters extends React.Component {
         </a>
       );
     }
-    
+
     _mapObject(selectedFilters, (values, key) => {
       if (_contains(acceptedFilters, key) && values && values.length) {
         if (key === 'dateAfter' || key === 'dateBefore') {

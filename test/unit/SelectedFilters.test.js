@@ -269,8 +269,8 @@ describe('SelectedFilters', () => {
         expect(listItemAt(component, 0).find('button').text()).to.contain('Counting');
       });
 
-      it('Should not display non-subject filter or clear filter button', () => {
-        expect(component.find('li').length).to.equal(1);
+      it('Should not extra clear filter button', () => {
+        expect(component.find('li').length).to.equal(2);
       });
     });
   });
