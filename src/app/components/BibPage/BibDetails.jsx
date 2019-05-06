@@ -417,7 +417,7 @@ class BibDetails extends React.Component {
             label: filter ? (filter.label || filter.value) : value,
           }],
         });
-        Actions.updateFilters(response.data.filters);
+        Actions.updateFilters(response.data.filters ? response.data.filters : {});
       } else {
         // Otherwise, the field wasn't found in the API. Returning this highlights the
         // filter in the selected filter region, but not in the filter sidebar.
@@ -427,9 +427,7 @@ class BibDetails extends React.Component {
             value,
           }],
         });
-        Actions.updateFilters(response.data.filters); // does this belong here?
-      }
-
+        Actions.updateFilters(response.data.filters ? response.data.filters : {});
       if (response.data.searchResults) {
         Actions.updateSearchResults(response.data.searchResults);
       }
