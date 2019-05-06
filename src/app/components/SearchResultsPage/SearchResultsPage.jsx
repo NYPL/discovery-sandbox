@@ -97,7 +97,7 @@ class SearchResultsPage extends React.Component {
 
   narrowSubjectFilters(apiFilters, selectedFilters) {
     const subjectLiteralFilters = this.getSubjectLiteralFilters(apiFilters);
-    const selectedSubjectLiteralFilters = selectedFilters.subjectLiteral;
+    const selectedSubjectLiteralFilters = selectedFilters.subjectLiteral || [];
     const checkIsSelected = this.subjectFilterIsSelected(selectedSubjectLiteralFilters);
     if (subjectLiteralFilters) {
       subjectLiteralFilters.values = subjectLiteralFilters
@@ -143,7 +143,7 @@ class SearchResultsPage extends React.Component {
     const searchError = location.query && location.query.error ? location.query.error : '';
     const apiFilters = filters && filters.itemListElement && filters.itemListElement.length ?
       filters.itemListElement : [];
-    this.narrowSubjectFilters(apiFilters, selectedFilters);
+    this.narrowSubjectFilters(apiFilters, selectedFilters || []);
     const dateFilterErrors = [];
     const selectedFiltersAvailable = this.checkForSelectedFilters();
 
