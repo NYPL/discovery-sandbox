@@ -428,6 +428,7 @@ class BibDetails extends React.Component {
           }],
         });
         Actions.updateFilters(response.data.filters ? response.data.filters : {});
+      }
       if (response.data.searchResults) {
         Actions.updateSearchResults(response.data.searchResults);
       }
