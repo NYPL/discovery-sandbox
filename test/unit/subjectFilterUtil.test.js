@@ -2,7 +2,7 @@
 import { expect } from 'chai';
 import subjectFilterUtil from '../../src/app/utils/subjectFilterUtils';
 
-describe.only('subjectFilterUtil', () => {
+describe('subjectFilterUtil', () => {
   describe('getSubjectLiteralFilters', () => {
     it('should return null if apiFilters has no filters with subjectLiteral field', () => {
       const noSubjectFilters = [
