@@ -175,8 +175,6 @@ class SelectedFilters extends React.Component {
       return null;
     }
 
-    console.log('filtersToRender: ', filtersToRender);
-
     return (
       <div className="selected-filters">
         <span id="read-text" className="visuallyHidden">Selected filters.</span>
