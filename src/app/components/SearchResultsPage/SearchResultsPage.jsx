@@ -17,6 +17,7 @@ import {
   ajaxCall,
   trackDiscovery,
 } from '../../utils/utils';
+import subjectFilterUtil from '../../utils/subjectFilterUtils';
 import Actions from '../../actions/Actions';
 import appConfig from '../../../../appConfig';
 
@@ -81,31 +82,6 @@ class SearchResultsPage extends React.Component {
     return false;
   }
 
-  getSubjectLiteralFilters(apiFilters) {
-    const apiSubjectLiteralFilters = apiFilters.filter(
-      apiFilter => apiFilter.field === 'subjectLiteral',
-    );
-    return apiSubjectLiteralFilters.length ? apiSubjectLiteralFilters[0] : null;
-  }
-
-  subjectFilterIsSelected(selectedSubjectLiteralFilters) {
-    return subjectLiteralFilter =>
-      selectedSubjectLiteralFilters.some(
-        selectedFilter => subjectLiteralFilter.value === selectedFilter.value,
-      );
-  }
-
-  narrowSubjectFilters(apiFilters, selectedFilters) {
-    const subjectLiteralFilters = this.getSubjectLiteralFilters(apiFilters);
-    const selectedSubjectLiteralFilters = selectedFilters.subjectLiteral || [];
-    const checkIsSelected = this.subjectFilterIsSelected(selectedSubjectLiteralFilters);
-    if (subjectLiteralFilters) {
-      subjectLiteralFilters.values = subjectLiteralFilters
-        .values
-        .filter(checkIsSelected);
-    }
-  }
-
   render() {
     const {
       searchResults,
@@ -143,7 +119,7 @@ class SearchResultsPage extends React.Component {
     const searchError = location.query && location.query.error ? location.query.error : '';
     const apiFilters = filters && filters.itemListElement && filters.itemListElement.length ?
       filters.itemListElement : [];
-    this.narrowSubjectFilters(apiFilters, selectedFilters || {});
+    subjectFilterUtil.narrowSubjectFilters(apiFilters, selectedFilters || {});
     const dateFilterErrors = [];
     const selectedFiltersAvailable = this.checkForSelectedFilters();
 
