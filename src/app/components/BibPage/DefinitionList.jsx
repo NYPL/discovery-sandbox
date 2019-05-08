@@ -13,8 +13,8 @@ const DefinitionList = ({ data }) => {
         return null;
       }
       return ([
-        (<dt>{item.term}</dt>),
-        (<dd>{item.definition}</dd>),
+        (<dt key={item.term}>{item.term}</dt>),
+        (<dd key={item.definition}>{item.definition}</dd>),
       ]);
     });
   };

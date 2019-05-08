@@ -126,8 +126,8 @@ class BibDetails extends React.Component {
     if (Array.isArray(entities) && entities.length > 0) {
       const markup = entities
         .map((ent) => {
-          const nodes = [(<span>{ent['@value']}</span>)];
-          if (ent.identifierStatus) nodes.push(<span> <em>({ent.identifierStatus})</em></span>);
+          const nodes = [(<span key={`${ent}`}>{ent['@value']}</span>)];
+          if (ent.identifierStatus) nodes.push(<span key={`${ent}`}> <em>({ent.identifierStatus})</em></span>);
           return nodes;
         });
       return markup.length === 1
@@ -167,7 +167,7 @@ class BibDetails extends React.Component {
         {
           bibValues.map((value, i) => {
             const url = `filters[${fieldValue}]=${value}`;
-            return <li>{this.getDefinitionOneItem(value, url, bibValues, fieldValue, fieldLinkable, fieldIdentifier, fieldSelfLinkable, fieldLabel)}</li>;
+            return <li key={`filter${i}`}>{this.getDefinitionOneItem(value, url, bibValues, fieldValue, fieldLinkable, fieldIdentifier, fieldSelfLinkable, fieldLabel)}</li>;
           })
         }
       </ul>
