@@ -107,6 +107,7 @@ class SelectedFilters extends React.Component {
       selectedFilters,
     } = this.props;
 
+
     if (_isEmpty(selectedFilters)) {
       return null;
     }
@@ -168,6 +169,7 @@ class SelectedFilters extends React.Component {
         }
       }
     });
+
 
     if (!filtersToRender.length && !datesToRender.length) {
       return null;
@@ -297,6 +299,7 @@ SelectedFilters.propTypes = {
   selectedFilters: PropTypes.object,
   createAPIQuery: PropTypes.func,
   updateIsLoadingState: PropTypes.func,
+  dropdownOpen: PropTypes.bool,
 };
 
 SelectedFilters.defaultProps = {

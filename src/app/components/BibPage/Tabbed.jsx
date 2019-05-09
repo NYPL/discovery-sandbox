@@ -74,7 +74,7 @@ class Tabbed extends React.Component {
           { this.props.tabs.map((tab, i) => {
             let j = i + 1;
             return (
-              <li id={`tab${j}`} className={(parseInt(this.state.tabNumber) === j ? 'activeTab' : null) } role='presentation'>
+              <li id={`tab${j}`} key={`tab${j}`} className={(parseInt(this.state.tabNumber) === j ? 'activeTab' : null) } role='presentation'>
                 <a href={`#tab${j}`}
                   id={`link${j}`}
                   tabIndex={!this.state.tabNumber ?  '0' : parseInt(this.state.tabNumber) === j ? null : -1}
@@ -96,6 +96,7 @@ class Tabbed extends React.Component {
               let j = i+1;
               return (
                 <section id={`section${j}`}
+                  key={`section${j}`}
                   className={this.state.tabNumber ? 'non-default' : 'non-default'}
                   tabIndex={!this.state.tabNumber ? '0' : '0'}
                   ref={(input) => {this.sections[`${j}`] = input;}}

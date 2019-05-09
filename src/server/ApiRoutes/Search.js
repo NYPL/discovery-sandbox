@@ -25,7 +25,8 @@ const createAPIQuery = basicQuery({
 const nyplApiClientCall = query =>
   nyplApiClient()
     .then(client =>
-      client.get(`/discovery/resources${query}`, { cache: false }));
+      client.get(`/discovery/resources${query}`, { cache: false }),
+    );
 
 function search(searchKeywords = '', page, sortBy, order, field, filters, cb, errorcb) {
   const encodedResultsQueryString = createAPIQuery({

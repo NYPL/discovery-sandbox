@@ -111,6 +111,13 @@ function destructureFilters(filters, apiFilters) {
         }
       }
     }
+    if (key === 'filters[subjectLiteral]') {
+      selectedFilters.subjectLiteral = selectedFilters.subjectLiteral || [];
+      selectedFilters.subjectLiteral.push({
+        value: value,
+        label: value,
+      })
+    }
   });
 
   return selectedFilters;
