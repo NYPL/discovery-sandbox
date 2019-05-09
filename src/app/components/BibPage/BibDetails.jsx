@@ -126,8 +126,8 @@ class BibDetails extends React.Component {
     if (Array.isArray(entities) && entities.length > 0) {
       const markup = entities
         .map((ent) => {
-          const nodes = [(<span>{ent['@value']}</span>)];
-          if (ent.identifierStatus) nodes.push(<span> <em>({ent.identifierStatus})</em></span>);
+          const nodes = [(<span key={`${ent}`}>{ent['@value']}</span>)];
+          if (ent.identifierStatus) nodes.push(<span key={`${ent}`}> <em>({ent.identifierStatus})</em></span>);
           return nodes;
         });
       return markup.length === 1
@@ -167,7 +167,7 @@ class BibDetails extends React.Component {
         {
           bibValues.map((value, i) => {
             const url = `filters[${fieldValue}]=${value}`;
-            return <li>{this.getDefinitionOneItem(value, url, bibValues, fieldValue, fieldLinkable, fieldIdentifier, fieldSelfLinkable, fieldLabel)}</li>;
+            return <li key={`filter${i}`}>{this.getDefinitionOneItem(value, url, bibValues, fieldValue, fieldLinkable, fieldIdentifier, fieldSelfLinkable, fieldLabel)}</li>;
           })
         }
       </ul>
@@ -393,7 +393,6 @@ class BibDetails extends React.Component {
 
   newSearch(e, query, field, value, label) {
     e.preventDefault();
-
     this.props.updateIsLoadingState(true);
 
     trackDiscovery('Bib fields', `${label} - ${value}`);
@@ -418,6 +417,7 @@ class BibDetails extends React.Component {
             label: filter ? (filter.label || filter.value) : value,
           }],
         });
+        Actions.updateFilters(response.data.filters ? response.data.filters : {});
       } else {
         // Otherwise, the field wasn't found in the API. Returning this highlights the
         // filter in the selected filter region, but not in the filter sidebar.
@@ -427,8 +427,8 @@ class BibDetails extends React.Component {
             value,
           }],
         });
+        Actions.updateFilters(response.data.filters ? response.data.filters : {});
       }
-
       if (response.data.searchResults) {
         Actions.updateSearchResults(response.data.searchResults);
       }

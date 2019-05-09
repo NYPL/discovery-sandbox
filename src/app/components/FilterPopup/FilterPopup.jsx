@@ -48,6 +48,7 @@ class FilterPopup extends React.Component {
       provisionalSelectedFilters: {
         materialType: [],
         language: [],
+        subjectLiteral: [],
         dateAfter: '',
         dateBefore: '',
       },
@@ -108,6 +109,8 @@ class FilterPopup extends React.Component {
     const clickedFilters = {
       materialType: _union(provisionalSelectedFilters.materialType, selectedFilters.materialType),
       language: _union(provisionalSelectedFilters.language, selectedFilters.language),
+      subjectLiteral:
+        _union(provisionalSelectedFilters.subjectLiteral, selectedFilters.subjectLiteral),
       dateAfter: selectedFilters.dateAfter,
       dateBefore: selectedFilters.dateBefore,
     };
@@ -232,6 +235,8 @@ class FilterPopup extends React.Component {
     const filtersToApply = {
       materialType: _union(provisionalSelectedFilters.materialType, selectedFilters.materialType),
       language: _union(provisionalSelectedFilters.language, selectedFilters.language),
+      subjectLiteral:
+        _union(provisionalSelectedFilters.subjectLiteral, selectedFilters.subjectLiteral),
       dateAfter,
       dateBefore,
     };
@@ -281,6 +286,7 @@ class FilterPopup extends React.Component {
     const resetFilters = {
       materialType: [],
       language: [],
+      subjectLiteral: [],
       dateAfter: '',
       dateBefore: '',
     };
@@ -320,6 +326,7 @@ class FilterPopup extends React.Component {
       provisionalSelectedFilters: {
         materialType: [],
         language: [],
+        subjectLiteral: [],
         dateAfter: '',
         dateBefore: '',
       },
@@ -342,6 +349,8 @@ class FilterPopup extends React.Component {
     const filtersToShow = {
       materialType: _union(provisionalSelectedFilters.materialType, selectedFilters.materialType),
       language: _union(provisionalSelectedFilters.language, selectedFilters.language),
+      subjectLiteral:
+        _union(provisionalSelectedFilters.subjectLiteral, selectedFilters.subjectLiteral),
       dateAfter: selectedFilters.dateAfter,
       dateBefore: selectedFilters.dateBefore,
     };
@@ -445,6 +454,7 @@ class FilterPopup extends React.Component {
 
     const materialTypeFilters = _findWhere(filters, { id: 'materialType' });
     const languageFilters = _findWhere(filters, { id: 'language' });
+    const subjectLiteralFilters = _findWhere(filters, {id: 'subjectLiteral'});
     const dateAfterFilterValue =
       filtersToShow.dateAfter ? Number(filtersToShow.dateAfter) : null;
     const dateBeforeFilterValue =
@@ -553,6 +563,14 @@ class FilterPopup extends React.Component {
                             filterId="language"
                             filter={languageFilters}
                             selectedFilters={filtersToShow.language}
+                            onFilterClick={this.onFilterClick}
+                          />
+
+                          <FieldsetList
+                            legend="Subject"
+                            filterId="subjectLiteral"
+                            filter={subjectLiteralFilters}
+                            selectedFilters={filtersToShow.subjectLiteral}
                             onFilterClick={this.onFilterClick}
                           />
                         </div>

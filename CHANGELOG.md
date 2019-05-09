@@ -1,7 +1,14 @@
 ## CHANGE LOG
 
+### 1.5.9
+- Updating the filters to include subject literal as a possible filter type
+- Fix bugs relating to browser navigation
+
+### 1.5.8
+- Updating @nypl/dgx-react-footer to 0.5.2.
+
 ### 1.5.7
-- Updating @nypl/dgx-header-component to 2.4.19
+- Updating @nypl/dgx-header-component to 2.4.19.
 
 ### 1.5.6
 - Updating @nypl/dgx-header-component to 2.4.15 and checking for QA in APP_ENV.

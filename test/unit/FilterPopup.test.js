@@ -151,6 +151,7 @@ describe('FilterPopup', () => {
     const emptySelectedFilters = {
       materialType: [],
       language: [],
+      subjectLiteral: [],
       dateAfter: '',
       dateBefore: '',
     };

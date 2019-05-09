@@ -17,6 +17,7 @@ import {
   ajaxCall,
   trackDiscovery,
 } from '../../utils/utils';
+import subjectFilterUtil from '../../utils/subjectFilterUtils';
 import Actions from '../../actions/Actions';
 import appConfig from '../../../../appConfig';
 
@@ -41,6 +42,7 @@ class SearchResultsPage extends React.Component {
     this.setState({ document: window.document });
   }
 
+
   shouldComponentUpdate() {
     if (!this.state.isLoading) {
       return true;
@@ -64,12 +66,12 @@ class SearchResultsPage extends React.Component {
 
   checkForSelectedFilters() {
     const { selectedFilters } = this.props;
-
     if (selectedFilters &&
       (selectedFilters.dateBefore !== '' ||
         selectedFilters.dateAfter !== '' ||
         (selectedFilters.language && selectedFilters.language.length) ||
-        (selectedFilters.materialType && selectedFilters.materialType.length)
+        (selectedFilters.materialType && selectedFilters.materialType.length) ||
+        (selectedFilters.subjectLiteral && selectedFilters.subjectLiteral.length)
       )
     ) {
       if (!this.state.dropdownOpen) {
@@ -117,6 +119,7 @@ class SearchResultsPage extends React.Component {
     const searchError = location.query && location.query.error ? location.query.error : '';
     const apiFilters = filters && filters.itemListElement && filters.itemListElement.length ?
       filters.itemListElement : [];
+    subjectFilterUtil.narrowSubjectFilters(apiFilters, selectedFilters || {});
     const dateFilterErrors = [];
     const selectedFiltersAvailable = this.checkForSelectedFilters();
 
