@@ -229,4 +229,49 @@ describe('SelectedFilters', () => {
       });
     });
   });
+
+
+  describe('Dropdown opening and closing', () => {
+    let component;
+    const selectedFilters = {
+      subjectLiteral: [{ value: 'Counting.', label: 'Counting.' }],
+      language: [{ selected: true, value: 'lang:spa', count: 11, label: 'Spanish' }],
+    };
+
+    describe('When dropdown is closed', () => {
+      before(() => {
+        component = mount(
+          <SelectedFilters selectedFilters={selectedFilters} dropdownOpen={false} />,
+        );
+      });
+
+      it('Should display subject filter', () => {
+        expect(listItemAt(component, 0).find('button').text()).to.contain('Counting');
+      });
+
+      it('Should display non-subject filter', () => {
+        expect(listItemAt(component, 1).find('button').text()).to.contain('Spanish');
+      });
+
+      it('Should display clear filters button', () => {
+        expect(component.find('button').at(2).text()).to.contain('Clear Filters');
+      });
+    });
+
+    describe('When dropdown is open', () => {
+      before(() => {
+        component = mount(
+          <SelectedFilters selectedFilters={selectedFilters} dropdownOpen />,
+        );
+      });
+
+      it('Should dislay subject filter', () => {
+        expect(listItemAt(component, 0).find('button').text()).to.contain('Counting');
+      });
+
+      it('Should not extra clear filter button', () => {
+        expect(component.find('li').length).to.equal(2);
+      });
+    });
+  });
 });

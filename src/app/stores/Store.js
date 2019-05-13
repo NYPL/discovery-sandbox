@@ -29,6 +29,7 @@ class Store {
       selectedFilters: {
         materialType: [],
         language: [],
+        subjectLiteral: [],
         dateAfter: {},
         dateBefore: {},
       },

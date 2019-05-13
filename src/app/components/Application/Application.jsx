@@ -11,43 +11,10 @@ import Store from '../../stores/Store';
 import PatronStore from '../../stores/PatronStore';
 import {
   ajaxCall,
-  createAppHistory,
   destructureFilters,
 } from '../../utils/utils';
 import Actions from '../../actions/Actions';
 import appConfig from '../../../../appConfig';
-
-const history = createAppHistory();
-
-// Listen to the browser's navigation buttons.
-history.listen((location) => {
-  const {
-    action,
-    search,
-    query,
-  } = location;
-
-  const qParameter = query.q;
-  const urlFilters = _pick(query, (value, key) => {
-    if (key.indexOf('filter') !== -1) {
-      return value;
-    }
-    return null;
-  });
-
-  if (action === 'POP' && search) {
-    ajaxCall(`${appConfig.baseUrl}/api${decodeURI(search)}`, (response) => {
-      const { data } = response;
-      if (data.filters && data.searchResults) {
-        const selectedFilters = destructureFilters(urlFilters, data.filters);
-        Actions.updateSelectedFilters(selectedFilters);
-        Actions.updateFilters(data.filters);
-        Actions.updateSearchResults(data.searchResults);
-        if (qParameter) Actions.updateSearchKeywords(qParameter);
-      }
-    });
-  }
-});
 
 class App extends React.Component {
   constructor(props) {
@@ -71,6 +38,36 @@ class App extends React.Component {
 
   componentDidMount() {
     Store.listen(this.onChange);
+    // Listen to the browser's navigation buttons.
+    this.props.route.history.listen((location = { action: '', search: '', query: {} }) => {
+      const {
+        action,
+        search,
+        query,
+      } = location;
+
+      const qParameter = query.q;
+      const urlFilters = _pick(query, (value, key) => {
+        if (key.indexOf('filter') !== -1) {
+          return value;
+        }
+        return null;
+      });
+
+      if (action === 'POP' && search) {
+        ajaxCall(`${appConfig.baseUrl}/api${decodeURI(search)}`, (response) => {
+          const { data } = response;
+          if (data.filters && data.searchResults) {
+            const selectedFilters = destructureFilters(urlFilters, data.filters);
+            Actions.updateSelectedFilters(selectedFilters);
+            Actions.updateFilters(data.filters);
+            Actions.updateSearchResults(data.searchResults);
+            Actions.updatePage(query.page || '1');
+            if (qParameter) Actions.updateSearchKeywords(qParameter);
+          }
+        });
+      }
+    });
   }
 
   componentWillUnmount() {

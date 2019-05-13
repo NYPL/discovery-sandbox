@@ -16,10 +16,10 @@ import NotFound404 from '../components/NotFound404/NotFound404';
 import appConfig from '../../../appConfig';
 
 const baseUrl = appConfig.baseUrl;
-const routes = {
+const routes = history => ({
   // Routes used in the Express server:
   server: (
-    <Route path="/" component={Application}>
+    <Route path="/" component={Application} history={history}>
       <IndexRoute component={Home} />
       <Route path="/search" component={SearchResultsPage} />
       <Route path="/bib/:bibId" component={BibPage} />
@@ -33,7 +33,7 @@ const routes = {
   ),
   // Routes used in the client-side React-Router:
   client: (
-    <Route path={`${baseUrl}/`} component={Application}>
+    <Route path={`${baseUrl}/`} component={Application} history={history}>
       <IndexRoute component={Home} />
       <Route path={`${baseUrl}/search`} component={SearchResultsPage} />
       <Route path={`${baseUrl}/bib/:bibId`} component={BibPage} />
@@ -45,6 +45,6 @@ const routes = {
       <Redirect from="*" to={`${baseUrl}/404`} />
     </Route>
   ),
-};
+});
 
 export default routes;
