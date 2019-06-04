@@ -52,6 +52,12 @@ As a convenience, the following commands override some config for you:
 
 Visit `localhost:3001` to see the UI locally.
 
+### API Responses
+
+There is a sample of the API responses that we receive from Platform in `sampleApiResponseStructure.json`. It is abbreviated but shows how we receive filters and
+searchresults.
+
+
 ### Production mode
 
 By default, the app runs with `NODE_ENV=development`, which means a separate server is invoked to serve live updates to assets in development. Deployed instances of the app operate with `NODE_ENV=production`, indicating the app should serve pre-built assets. Sometimes it's useful to run the app in production mode locally (e.g. to test the app for NOSCRIPT visitors).
