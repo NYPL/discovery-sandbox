@@ -1,0 +1,86 @@
+{
+  "data": {
+    "filters": {
+      "itemListElement": [
+        {
+          "@type": "nypl:Aggregation",
+          "@id": "res:subjectLiteral",
+          "id": "subjectLiteral",
+          "field": "subjectLiteral",
+          "values": [
+            {
+              "value": "Bhutan -- Description and travel -- Periodicals.",
+              "count": 7,
+              "label": "Bhutan -- Description and travel -- Periodicals."
+            }
+          ]
+        },
+        {
+          "@type": "nypl:Aggregation",
+          "@id": "res:mediaType",
+          "id": "mediaType",
+          "field": "mediaType",
+          "values": [
+            {
+              "value": "mediatypes:n",
+              "count": 3,
+              "label": "unmediated"
+            },
+            {
+              "value": "mediatypes:c",
+              "count": 1,
+              "label": "computer"
+            }
+          ]
+        }
+      ]
+    },
+    "searchResults": {
+      "@context": "http://localhost:8080/api/v0.1/discovery/context_all.jsonld",
+      "@type": "itemList",
+      "itemListElement": [
+        {
+          "@type": "searchResult",
+          "searchResultScore": null,
+          "result": {
+            "@id": "res:b21425008",
+            "@type": ["nypl:Item", "nypl:Resource"],
+            "carrierType": [{"..."}],
+            "contributorLiteral": [
+              "United States. Department of State. Bureau of South and Central Asian Affairs."
+            ],
+            "createdString": ["999"],
+            "createdYear": 999,
+            "dateEndString": ["9999"],
+            "dateEndYear": 9999,
+            "dateStartYear": 999,
+            "dateString": ["999"],
+            "genreForm": ["Electronic journals."],
+            "identifier": [{"…"}],
+            "issuance": [{"…"}],
+            "items": [{"…"}],
+            "language": [{"…"}],
+            "lccClassification": ["DS491.5"],
+            "materialType": [{"…"}],
+            "mediaType": [{"…"}],
+            "note": [{"…"}, {"…"}, {"…"}, {"…"}],
+            "numAvailable": 0,
+            "numItems": 1,
+            "placeOfPublication": ["[Washington, D.C.] :"],
+            "publicationStatement": ["[Washington, D.C.] : U.S. Dept. of State"],
+            "publisherLiteral": ["U.S. Dept. of State"],
+            "subjectLiteral": ["Bhutan -- Description and travel -- Periodicals.", "Bhutan -- Foreign relations -- Periodicals.", "Bhutan -- Politics and government -- Periodicals."],
+            "suppressed": false,
+            "title": ["Background note, Bhutan [electronic resource]"],
+            "titleAlt": ["Background notes on countries of the world, Bhutan", "Bhutan"],
+            "titleDisplay": ["Background note, Bhutan [electronic resource] / Bureau of South and Central Asian Affairs."],
+            "type": ["nypl:Item"],
+            "uniformTitle": ["Background note, Bhutan (Online)"],
+            "updatedAt": 1530639338853,
+            "uri": "b21425008",
+          }
+        }
+      ]
+    }
+  }
+}
