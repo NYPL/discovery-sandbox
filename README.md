@@ -54,8 +54,8 @@ Visit `localhost:3001` to see the UI locally.
 
 ### API Responses
 
-There is a sample of the API responses that we receive from Platform in `sampleApiResponseStructure.json`. It is abbreviated but shows how we receive filters and
-searchresults.
+There is a sample of the API responses that we receive from Platform in `sampleApiResponseStructure.json`. It is abbreviated but shows how we receive filters and search results. This is the response from the api endpoint, which the app sends requests to
+whenever it requires new search results (for example when a new search is entered from the home page or when a subject link is followed from a Bib show page).
 
 
 ### Production mode
