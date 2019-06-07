@@ -174,10 +174,48 @@ class BibDetails extends React.Component {
     );
   }
 
+  constructSubjectHeading(bibValue, url, fieldValue, fieldLabel) {
+    let currentArrayString = '';
+    const singleSubjectHeadingArray = bibValue.split(' > ');
+    const returnArray = [];
+
+    const urlArray = url.split(' > ').map((urlString, index) => {
+      const dashDivided = (index !== 0) ? ' -- ' : '';
+      currentArrayString = `${currentArrayString}${dashDivided}${urlString}`;
+
+      return currentArrayString;
+    });
+
+    const linkArray = singleSubjectHeadingArray.map((heading, index) => {
+      return(
+        <Link
+          onClick={e => this.newSearch(e, url, fieldValue, bibValue, fieldLabel)}
+          to={`${appConfig.baseUrl}/search?${urlArray[index]}.`}
+          key={index}
+        >
+          {heading}
+        </Link>
+      );
+    });
+
+    linkArray.forEach((linkElement, index) => {
+      returnArray.push(linkElement);
+      if (index < linkArray.length - 1) {
+        returnArray.push(<span key={`divider-${index}`}> > </span>);
+      }
+    });
+
+    return(returnArray);
+  }
+
   getDefinitionOneItem (
     bibValue, url, bibValues, fieldValue, fieldLinkable, fieldIdentifier,
     fieldSelfLinkable, fieldLabel
   ) {
+
+    if (fieldValue === 'subjectLiteral') {
+      return this.constructSubjectHeading(bibValue, url, fieldValue, fieldLabel);
+    }
 
     if (fieldLinkable) {
       return (
@@ -204,14 +242,22 @@ class BibDetails extends React.Component {
     return <span>{bibValue}</span>;
   }
 
+  compressSubjectLiteral(subjectLiteralArray) {
+    if (Array.isArray(subjectLiteralArray) && subjectLiteralArray.length) {
+      subjectLiteralArray = subjectLiteralArray.map((item) => {
+        return item.replace(/\.$/, '').replace(/--/g, '>');
+      });
+    }
+
+    return subjectLiteralArray;
+  }
+
   /**
    * getDisplayFields(bib)
    * Get an array of definition term/values.
    * @param {object} bib
    * @return {array}
    */
-
-
   getDisplayFields(bib) {
     // A value of 'React Component' just means that we are getting it from a
     // component rather than from the bib field properties.
@@ -225,6 +271,10 @@ class BibDetails extends React.Component {
       const fieldSelfLinkable = field.selfLinkable;
       const fieldIdentifier = field.identifier;
       const bibValues = bib[fieldValue];
+
+      if (fieldValue === 'subjectLiteral') {
+        bib[fieldValue] = this.compressSubjectLiteral(bib[fieldValue]);
+      }
 
       // skip absent fields
       if (bibValues && bibValues.length && _isArray(bibValues)) {
