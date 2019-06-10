@@ -335,7 +335,7 @@ describe('BibDetails', () => {
     });
   });
 
-  describe.only('Subject headings', () => {
+  describe('Subject headings', () => {
     const fields = [
       { label: 'Publication', value: 'publicationStatement' },
       { label: 'Publication Date', value: 'serialPublicationDates' },
