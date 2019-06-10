@@ -318,14 +318,6 @@ describe('BibDetails', () => {
         expect(component.find('dt')).to.have.lengthOf(8);
         expect(component.find('dd').at(0).text()).to.equal(bibs[0].publicationStatement[0]);
         expect(component.find('dd').at(1).text()).to.equal(bibs[0].extent[0]);
-        // Expect 4 specific subjectLiterals:
-        expect(component.find('dd').at(2).find('li')).to.have.lengthOf(4);
-        bibs[0].subjectLiteral.forEach((subjectLiteral, ind) => {
-          expect(
-            component.find('dd').at(2).find('li').at(ind)
-              .text(),
-          ).to.equal(subjectLiteral);
-        });
         // Note with noteType=Bibliography:
         expect(component.find('dd').at(3).text()).to.equal(bibs[0].note[0].prefLabel);
         expect(component.find('dd').at(4).text()).to.equal(bibs[0].shelfMark[0]);
@@ -339,6 +331,52 @@ describe('BibDetails', () => {
         // Lccn:
         const lccn = bibs[0].identifier.filter(ident => ident['@type'] === 'bf:Lccn').pop();
         expect(component.find('dd').at(6).text()).to.equal(lccn['@value']);
+      });
+    });
+  });
+
+  describe.only('Subject headings', () => {
+    const fields = [
+      { label: 'Publication', value: 'publicationStatement' },
+      { label: 'Publication Date', value: 'serialPublicationDates' },
+      { label: 'Electronic Resource', value: 'React Component' },
+      { label: 'Description', value: 'extent' },
+      { label: 'Series Statement', value: 'seriesStatement' },
+      { label: 'Uniform Title', value: 'uniformTitle' },
+      { label: 'Alternative Title', value: 'titleAlt' },
+      { label: 'Former Title', value: 'formerTitle' },
+      { label: 'Subject', value: 'subjectLiteral', linkable: true },
+      { label: 'Genre/Form', value: 'genreForm' },
+      { label: 'Notes', value: 'React Component' },
+      { label: 'Additional Resources', value: 'supplementaryContent', selfLinkable: true },
+      { label: 'Contents', value: 'tableOfContents' },
+      { label: 'Bibliography', value: '' },
+      { label: 'Call Number', value: 'identifier', identifier: 'bf:ShelfMark' },
+      { label: 'ISBN', value: 'identifier', identifier: 'bf:Isbn' },
+      { label: 'ISSN', value: 'identifier', identifier: 'bf:Issn' },
+      { label: 'LCCN', value: 'identifier', identifier: 'bf:Lccn' },
+      { label: 'OCLC', value: 'identifier', identifier: 'nypl:Oclc' },
+      { label: 'GPO', value: '' },
+      { label: 'Other Titles', value: '' },
+      { label: 'Owning Institutions', value: '' },
+    ];
+    let component;
+    const expectSubjectLiterals = [
+      'Editing > History > 18th century',
+      'Malone, Edmond, 1741-1812',
+      'Shakespeare, William, 1564-1616 > Criticism, Textual',
+      'Shakespeare, William, 1564-1616',
+    ];
+
+    it('should render proper texts and link(s) for each subject heading', () => {
+      component = mount(React.createElement(BibDetails, { bib: bibs[0], fields }));
+
+      // Expect 4 specific subjectLiterals:
+      expect(component.find('dd').at(2).find('li')).to.have.lengthOf(4);
+      expectSubjectLiterals.forEach((subjectLiteral, ind) => {
+        expect(
+          component.find('dd').at(2).find('li').at(ind).text(),
+        ).to.equal(subjectLiteral);
       });
     });
   });

@@ -270,10 +270,10 @@ class BibDetails extends React.Component {
       const fieldLinkable = field.linkable;
       const fieldSelfLinkable = field.selfLinkable;
       const fieldIdentifier = field.identifier;
-      const bibValues = bib[fieldValue];
+      let bibValues = bib[fieldValue];
 
       if (fieldValue === 'subjectLiteral') {
-        bib[fieldValue] = this.compressSubjectLiteral(bib[fieldValue]);
+        bibValues = this.compressSubjectLiteral(bib[fieldValue]);
       }
 
       // skip absent fields
