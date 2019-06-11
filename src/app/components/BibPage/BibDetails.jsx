@@ -27,8 +27,9 @@ class BibDetails extends React.Component {
     this.owner = getOwner(this.props.bib);
   }
 
-  /*
+  /**
    * Return note array or null.
+   *
    * @param {object} bib
    * @return {null|array}
    */
@@ -43,15 +44,17 @@ class BibDetails extends React.Component {
     return notes;
   }
 
-  /*
+  /**
    * getDefinitionObject(bibValues, fieldValue, fieldLinkable, fieldSelfLinkable, fieldLabel)
    * Gets a list, or one value, of data to display for a field from the API, where
    * the data is an object in the array.
-   * @param {array} bibValues
-   * @param {string} fieldValue
-   * @param {boolean} fieldLinkable
-   * @param {boolean} fieldSelfLinkable
-   * @param {string} fieldLabel
+   *
+   * @param {array} bibValues - the value(s) of the current field
+   * @param {string} fieldValue - the name of the current field
+   * @param {boolean} fieldLinkable - flags true if the field should be clickable
+   * @param {boolean} fieldSelfLinkable - flags true if the Bib field already has a URL
+   * @param {string} fieldLabel - offers the type of search keywords
+   * @return {HTML element}
    */
   getDefinitionObject(bibValues, fieldValue, fieldLinkable, fieldSelfLinkable, fieldLabel) {
     // If there's only one value, we just want that value and not a list.
@@ -137,16 +140,18 @@ class BibDetails extends React.Component {
     return null;
   }
 
-  /*
+  /**
    * getDefinition(bibValues, fieldValue, fieldLinkable, fieldIdentifier,
    * fieldSelfLinkable, fieldLabel)
    * Gets a list, or one value, of data to display for a field from the API.
-   * @param {array} bibValues
-   * @param {string} fieldValue
-   * @param {boolean} fieldLinkable
+   *
+   * @param {array} bibValues - the value(s) of the current field
+   * @param {string} fieldValue - the name of the current field
+   * @param {boolean} fieldLinkable  - flags true if the field should be clickable
    * @param {string} fieldIdentifier
-   * @param {string} fieldSelfLinkable
-   * @param {string} fieldLabel
+   * @param {string} fieldSelfLinkable - flags true if the Bib field already has a URL
+   * @param {string} fieldLabel - offers the type of search keywords
+   * @return {HTML element}
    */
   getDefinition(
     bibValues, fieldValue, fieldLinkable, fieldIdentifier,
@@ -174,25 +179,37 @@ class BibDetails extends React.Component {
     );
   }
 
+  /**
+   * constructSubjectHeading(bibValue, url, fieldValue, fieldLabel)
+   * Constructs the link elements of subject headings.
+   *
+   * @param {string} bibValue - for constructing the texts of link elements
+   * @param {string} url - for constructing the query values of the URLs
+   * @param {string} fieldValue - offers the values of search keywords
+   * @param {string} fieldLabel - offers the type of search keywords
+   * @return {HTML element}
+   */
   constructSubjectHeading(bibValue, url, fieldValue, fieldLabel) {
     let currentArrayString = '';
+    const filterQueryForSubjectHeading = 'filters[subjectLiteral]=';
     const singleSubjectHeadingArray = bibValue.split(' > ');
     const returnArray = [];
 
-    const urlArray = url.split(' > ').map((urlString, index) => {
-      const dashDivided = (index !== 0) ? ' -- ' : '';
-      currentArrayString = `${currentArrayString}${dashDivided}${urlString}`;
+    const urlArray = url.replace(filterQueryForSubjectHeading, '').split(' > ')
+      .map((urlString, index) => {
+        const dashDivided = (index !== 0) ? ' -- ' : '';
+        currentArrayString = `${currentArrayString}${dashDivided}${urlString}`;
 
-      return currentArrayString;
-    });
+        return currentArrayString;
+      });
 
     const linkArray = singleSubjectHeadingArray.map((heading, index) => {
-      const searchQueryValue = urlArray[index].replace('filters[subjectLiteral]=', '');
+      const urlWithFilterQuery = `${filterQueryForSubjectHeading}${urlArray[index]}`;
 
       return(
         <Link
-          onClick={e => this.newSearch(e, urlArray[index], fieldValue, searchQueryValue, fieldLabel)}
-          to={`${appConfig.baseUrl}/search?${urlArray[index]}.`}
+          onClick={e => this.newSearch(e, urlWithFilterQuery, fieldValue, urlArray[index], fieldLabel)}
+          to={`${appConfig.baseUrl}/search?${urlWithFilterQuery}.`}
           key={index}
         >
           {heading}
@@ -210,11 +227,25 @@ class BibDetails extends React.Component {
     return returnArray;
   }
 
+  /**
+   * getDefinitionOneItem (bibValue, url, bibValues, fieldValue, fieldLinkable, fieldIdentifier,
+   * fieldSelfLinkable, fieldLabel)
+   * Gets the value for a single Bib detail field.
+   *
+   * @param {string} bibValue - the value for the current field
+   * @param {string} url - for constructing the query values of the URLs
+   * @param {string} bibValues
+   * @param {string} fieldValue - the name of the current field
+   * @param {boolean} fieldLinkable - if the field should be clickable
+   * @param {string} fieldIdentifier
+   * @param {boolean} fieldSelfLinkable - if the Bib field already has a URL
+   * @param {string} fieldLabel - offers the type of search keywords
+   * @return {HTML element}
+   */
   getDefinitionOneItem (
     bibValue, url, bibValues, fieldValue, fieldLinkable, fieldIdentifier,
     fieldSelfLinkable, fieldLabel
   ) {
-
     if (fieldValue === 'subjectLiteral') {
       return this.constructSubjectHeading(bibValue, url, fieldValue, fieldLabel);
     }
@@ -244,6 +275,13 @@ class BibDetails extends React.Component {
     return <span>{bibValue}</span>;
   }
 
+  /**
+   * compressSubjectLiteral(subjectLiteralArray)
+   * Updates the string structure of subject literals.
+   *
+   * @param {array} subjectLiteralArray
+   * @return {array}
+   */
   compressSubjectLiteral(subjectLiteralArray) {
     if (Array.isArray(subjectLiteralArray) && subjectLiteralArray.length) {
       subjectLiteralArray = subjectLiteralArray.map((item) => {
@@ -257,6 +295,7 @@ class BibDetails extends React.Component {
   /**
    * getDisplayFields(bib)
    * Get an array of definition term/values.
+   *
    * @param {object} bib
    * @return {array}
    */
@@ -407,7 +446,7 @@ class BibDetails extends React.Component {
     return fieldsToRender;
   }
 
-  /*
+  /**
    * Display for single and multivalued object arrays.
    * @param {array} note
    * @return {string}
@@ -443,6 +482,17 @@ class BibDetails extends React.Component {
     return display;
   }
 
+  /**
+   * newSearch(e, query, field, value, label)
+   * The method that passed as a callback to a Link element for handling onClick events.
+   *
+   * @param e {event} - onClick event
+   * @param {string} query - the search query that is attached to the search endpoint
+   * @param {string} field - the type of the search query
+   * @param {string} value - the search keyword of the search. It will be used for the filter button
+   * @param {string} label - the type of the search keyword. It will be used for
+   * the search instruction
+   */
   newSearch(e, query, field, value, label) {
     e.preventDefault();
     this.props.updateIsLoadingState(true);
