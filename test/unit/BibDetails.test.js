@@ -362,21 +362,52 @@ describe('BibDetails', () => {
     ];
     let component;
     const expectSubjectLiterals = [
-      'Editing > History > 18th century',
-      'Malone, Edmond, 1741-1812',
-      'Shakespeare, William, 1564-1616 > Criticism, Textual',
-      'Shakespeare, William, 1564-1616',
+      { text: 'Editing > History > 18th century',
+        linksAffixes: [
+          'Editing',
+          'Editing -- History',
+          'Editing -- History -- 18th century',
+        ],
+      },
+      { text: 'Malone, Edmond, 1741-1812',
+        linksAffixes: [
+          'Malone, Edmond, 1741-1812',
+        ],
+      },
+      { text: 'Shakespeare, William, 1564-1616 > Criticism, Textual',
+        linksAffixes: [
+          'Shakespeare, William, 1564-1616',
+          'Shakespeare, William, 1564-1616 -- Criticism, Textual',
+        ],
+      },
+      { text: 'Shakespeare, William, 1564-1616',
+        linksAffixes: [
+          'Shakespeare, William, 1564-1616',
+        ],
+      },
     ];
 
     it('should render proper texts and link(s) for each subject heading', () => {
-      component = mount(React.createElement(BibDetails, { bib: bibs[0], fields }));
+      component = mount(
+        React.createElement(
+          BibDetails, { bib: bibs[0], fields }
+        )
+      );
 
       // Expect 4 specific subjectLiterals:
       expect(component.find('dd').at(2).find('li')).to.have.lengthOf(4);
       expectSubjectLiterals.forEach((subjectLiteral, ind) => {
         expect(
           component.find('dd').at(2).find('li').at(ind).text(),
-        ).to.equal(subjectLiteral);
+        ).to.equal(subjectLiteral.text);
+        subjectLiteral.linksAffixes.forEach((affix, index) => {
+          expect(
+            component.find('dd').at(2).find('li').at(ind).find('Link').at(index).prop('to')
+          ).to.equal(
+            '/research/collections/shared-collection-catalog/search?filters[subjectLiteral]='
+            + `${affix}.`
+          );
+        });
       });
     });
   });
