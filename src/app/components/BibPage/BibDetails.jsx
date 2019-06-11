@@ -203,10 +203,10 @@ class BibDetails extends React.Component {
         return currentArrayString;
       });
 
-    const linkArray = singleSubjectHeadingArray.map((heading, index) => {
+    singleSubjectHeadingArray.forEach((heading, index) => {
       const urlWithFilterQuery = `${filterQueryForSubjectHeading}${urlArray[index]}`;
 
-      return(
+      const subjectHeadingLink = (
         <Link
           onClick={e => this.newSearch(e, urlWithFilterQuery, fieldValue, urlArray[index], fieldLabel)}
           to={`${appConfig.baseUrl}/search?${urlWithFilterQuery}.`}
@@ -215,11 +215,11 @@ class BibDetails extends React.Component {
           {heading}
         </Link>
       );
-    });
 
-    linkArray.forEach((linkElement, index) => {
-      returnArray.push(linkElement);
-      if (index < linkArray.length - 1) {
+      returnArray.push(subjectHeadingLink);
+
+      // Push a divider in between the link elements
+      if (index < singleSubjectHeadingArray.length - 1) {
         returnArray.push(<span key={`divider-${index}`}> > </span>);
       }
     });
