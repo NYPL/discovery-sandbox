@@ -189,7 +189,7 @@ class BibDetails extends React.Component {
     const linkArray = singleSubjectHeadingArray.map((heading, index) => {
       return(
         <Link
-          onClick={e => this.newSearch(e, url, fieldValue, bibValue, fieldLabel)}
+          onClick={e => this.newSearch(e, urlArray[index], fieldValue, bibValue, fieldLabel)}
           to={`${appConfig.baseUrl}/search?${urlArray[index]}.`}
           key={index}
         >
