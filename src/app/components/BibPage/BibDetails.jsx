@@ -187,9 +187,11 @@ class BibDetails extends React.Component {
     });
 
     const linkArray = singleSubjectHeadingArray.map((heading, index) => {
+      const searchQueryValue = urlArray[index].replace('filters[subjectLiteral]=', '');
+
       return(
         <Link
-          onClick={e => this.newSearch(e, urlArray[index], fieldValue, bibValue, fieldLabel)}
+          onClick={e => this.newSearch(e, urlArray[index], fieldValue, searchQueryValue, fieldLabel)}
           to={`${appConfig.baseUrl}/search?${urlArray[index]}.`}
           key={index}
         >
@@ -205,7 +207,7 @@ class BibDetails extends React.Component {
       }
     });
 
-    return(returnArray);
+    return returnArray;
   }
 
   getDefinitionOneItem (
