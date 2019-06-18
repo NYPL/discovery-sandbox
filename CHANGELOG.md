@@ -1,5 +1,8 @@
 ## CHANGE LOG
 
+### 1.6.0
+- Updating to add more checks to see if the bib detail fields include subject headings. If so, it will then call the additional string methods to generate new texts and URLs for the link.
+
 ### 1.5.9
 - Updating the filters to include subject literal as a possible filter type
 - Fix bugs relating to browser navigation
