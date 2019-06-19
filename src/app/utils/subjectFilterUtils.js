@@ -13,7 +13,22 @@ const subjectFilterUtil = {
       );
   },
 
+  stripPeriodsFromSubject(apiFilters) {
+    const subjectLiterals = apiFilters.filter(aggregation => aggregation.id === 'subjectLiteral')[0];
+    if (subjectLiterals) {
+      subjectLiterals.values.forEach((subjectLiteralValue) => {
+        let value = subjectLiteralValue.value;
+        if (value.slice(-1) === '.') {
+          value = value.slice(0, -1);
+        }
+        subjectLiteralValue.value = value;
+      });
+    }
+  },
+
   narrowSubjectFilters(apiFilters, selectedFilters) {
+    // console.log('apiFilters: ', apiFilters, 'selectedFilters: ', selectedFilters);
+    subjectFilterUtil.stripPeriodsFromSubject(apiFilters);
     const subjectLiteralFilters = this.getSubjectLiteralFilters(apiFilters);
     const selectedSubjectLiteralFilters = selectedFilters.subjectLiteral || [];
     const checkIsSelected = this.subjectFilterIsSelected(selectedSubjectLiteralFilters);
