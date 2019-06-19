@@ -440,7 +440,7 @@ class BibDetails extends React.Component {
           onClick={
             e => this.newSearch(e, urlWithFilterQuery, fieldValue, urlArray[index], fieldLabel)
           }
-          to={`${appConfig.baseUrl}/search?${urlWithFilterQuery}.`}
+          to={`${appConfig.baseUrl}/search?${urlWithFilterQuery}`}
           key={index}
         >
           {heading}
