@@ -27,7 +27,6 @@ const subjectFilterUtil = {
   },
 
   narrowSubjectFilters(apiFilters, selectedFilters) {
-    // console.log('apiFilters: ', apiFilters, 'selectedFilters: ', selectedFilters);
     subjectFilterUtil.stripPeriodsFromSubject(apiFilters);
     const subjectLiteralFilters = this.getSubjectLiteralFilters(apiFilters);
     const selectedSubjectLiteralFilters = selectedFilters.subjectLiteral || [];
