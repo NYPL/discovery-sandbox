@@ -35,7 +35,9 @@ const subjectFilterUtil = {
   narrowSubjectFilters(apiFilters, selectedFilters) {
     const newApiFilters = JSON.parse(JSON.stringify(apiFilters));
     const subjectLiteralFilters = this.getSubjectLiteralFilters(newApiFilters);
-    this.explodeSubjectFilters(subjectLiteralFilters);
+    if (subjectLiteralFilters) {
+      this.explodeSubjectFilters(subjectLiteralFilters);
+    }
     const selectedSubjectLiteralFilters = selectedFilters.subjectLiteral || [];
     const checkIsSelected = this.subjectFilterIsSelected(selectedSubjectLiteralFilters);
     if (subjectLiteralFilters) {
