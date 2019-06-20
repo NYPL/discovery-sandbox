@@ -13,6 +13,35 @@ const subjectFilterUtil = {
       );
   },
 
+  /**
+    params: selectedSubjectLiteralFilters is an object with a 'values' property, which
+    points to an array of objects of the form:
+    {
+      value,
+      label,
+      count
+    }
+    e.g. the value could be 'Dogs -- Card Games -- Painting.'
+
+    explodedSubjectFilters modifies the array by adding
+
+    {
+      value: X,
+      label: X,
+      count: Y
+    }
+
+    whenever
+
+    {
+      value: X -- Z,
+      label: X -- Z,
+      count: Y
+    }
+
+    is in the original array.
+  */
+
   explodeSubjectFilters(selectedSubjectLiteralFilters) {
     selectedSubjectLiteralFilters
       .values
@@ -32,7 +61,17 @@ const subjectFilterUtil = {
       });
   },
 
+  /**
+    params:
+      apiFilters: an object containing all the aggregations received from the api
+      selectedFilters: an object containing the currently selected filters (selected in
+         the Refine Search accordion)
+    narrowSubjectFilters returns a new object, which is a copy of apiFilters but with only
+     the selected subjectLiteralFilters
+  */
+
   narrowSubjectFilters(apiFilters, selectedFilters) {
+    // deep copy the apiFilters object
     const newApiFilters = JSON.parse(JSON.stringify(apiFilters));
     const subjectLiteralFilters = this.getSubjectLiteralFilters(newApiFilters);
     if (subjectLiteralFilters) {
