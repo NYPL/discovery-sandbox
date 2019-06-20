@@ -13,8 +13,29 @@ const subjectFilterUtil = {
       );
   },
 
+  explodeSubjectFilters(selectedSubjectLiteralFilters) {
+    selectedSubjectLiteralFilters
+      .values
+      .forEach((valueObject) => {
+        let explodedValues = valueObject
+          .value
+          .replace(/\.$/, '')
+          .split(/--/g);
+        explodedValues = explodedValues.map((_, i) => explodedValues.slice(0, i + 1).join('--').trim());
+        explodedValues.forEach((explodedValue) => {
+          selectedSubjectLiteralFilters.values.push({
+            value: explodedValue,
+            label: explodedValue,
+            count: valueObject.count, // this seems like it could cause problems when there is more than one subject
+          });
+        });
+      });
+  },
+
   narrowSubjectFilters(apiFilters, selectedFilters) {
-    const subjectLiteralFilters = this.getSubjectLiteralFilters(apiFilters);
+    const newApiFilters = JSON.parse(JSON.stringify(apiFilters));
+    const subjectLiteralFilters = this.getSubjectLiteralFilters(newApiFilters);
+    this.explodeSubjectFilters(subjectLiteralFilters);
     const selectedSubjectLiteralFilters = selectedFilters.subjectLiteral || [];
     const checkIsSelected = this.subjectFilterIsSelected(selectedSubjectLiteralFilters);
     if (subjectLiteralFilters) {
@@ -22,6 +43,7 @@ const subjectFilterUtil = {
         .values
         .filter(checkIsSelected);
     }
+    return newApiFilters;
   },
 };
 
