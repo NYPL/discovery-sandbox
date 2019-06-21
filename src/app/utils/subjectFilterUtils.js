@@ -51,7 +51,6 @@ const subjectFilterUtil = {
   */
 
   explodeSubjectFilters(selectedSubjectLiteralFilters) {
-    console.log('triggerring')
     let explodedSubjectFilters = selectedSubjectLiteralFilters
       .values
       .reduce((acc, subjectFilterObject) => {
@@ -82,7 +81,6 @@ const subjectFilterUtil = {
   */
 
   narrowSubjectFilters(apiFilters, selectedFilters) {
-    console.log('apiFilters: ', JSON.stringify(apiFilters, null, 4), '\n selectedFilters: ', JSON.stringify(selectedFilters, null, 4))
     // deep copy the apiFilters object
     const newApiFilters = JSON.parse(JSON.stringify(apiFilters));
     // grab the aggregated subject literal filters
