@@ -73,12 +73,17 @@ const subjectFilterUtil = {
   narrowSubjectFilters(apiFilters, selectedFilters) {
     // deep copy the apiFilters object
     const newApiFilters = JSON.parse(JSON.stringify(apiFilters));
+    // grab the aggregated subject literal filters
     const subjectLiteralFilters = this.getSubjectLiteralFilters(newApiFilters);
+    // add the exploded subject literals if there are any
     if (subjectLiteralFilters) {
       this.explodeSubjectFilters(subjectLiteralFilters);
     }
+    // get the selected subject literals
     const selectedSubjectLiteralFilters = selectedFilters.subjectLiteral || [];
+    // build a function which filters subject filters down to those in selectedSubjectLiteralFilters
     const checkIsSelected = this.subjectFilterIsSelected(selectedSubjectLiteralFilters);
+    // remove all the unselected filters from subject literal filters
     if (subjectLiteralFilters) {
       subjectLiteralFilters.values = subjectLiteralFilters
         .values
