@@ -15,7 +15,7 @@ const subjectFilterUtil = {
 
   /**
     params: selectedSubjectLiteralFilters is an object with a 'values' property, which
-    points to an array of objects of the form:
+    points to an array of filters represented by objects of the form:
     {
       value,
       label,
@@ -46,11 +46,15 @@ const subjectFilterUtil = {
     selectedSubjectLiteralFilters
       .values
       .forEach((valueObject) => {
+        // get all the components of a subject filter, e.g. 'X -- Y -- Z' => ['X', 'Y', 'Z']
         let explodedValues = valueObject
           .value
           .replace(/\.$/, '')
           .split(/--/g);
+        // map all the components to the subject filter up to that point
+        // e.g. [X, Y, Z] => [X, X -- Y, X -- Y -- Z]
         explodedValues = explodedValues.map((_, i) => explodedValues.slice(0, i + 1).join('--').trim());
+        // add objects representing each exploded filter back into the list of filters
         explodedValues.forEach((explodedValue) => {
           selectedSubjectLiteralFilters.values.push({
             value: explodedValue,
