@@ -13,6 +13,14 @@ const subjectFilterUtil = {
       );
   },
 
+  explodeSubjectFilter(subjectFilterObject) {
+    const explodedValues = subjectFilterObject
+      .value
+      .replace(/\.$/, '')
+      .split(/--/g);
+    return explodedValues.map((_, i) => explodedValues.slice(0, i + 1).join('--').trim());
+  },
+
   /**
     params: selectedSubjectLiteralFilters is an object with a 'values' property, which
     points to an array of filters represented by objects of the form:
@@ -43,26 +51,25 @@ const subjectFilterUtil = {
   */
 
   explodeSubjectFilters(selectedSubjectLiteralFilters) {
-    selectedSubjectLiteralFilters
+    console.log('triggerring')
+    let explodedSubjectFilters = selectedSubjectLiteralFilters
       .values
-      .forEach((valueObject) => {
-        // get all the components of a subject filter, e.g. 'X -- Y -- Z' => ['X', 'Y', 'Z']
-        let explodedValues = valueObject
-          .value
-          .replace(/\.$/, '')
-          .split(/--/g);
-        // map all the components to the subject filter up to that point
-        // e.g. [X, Y, Z] => [X, X -- Y, X -- Y -- Z]
-        explodedValues = explodedValues.map((_, i) => explodedValues.slice(0, i + 1).join('--').trim());
-        // add objects representing each exploded filter back into the list of filters
-        explodedValues.forEach((explodedValue) => {
-          selectedSubjectLiteralFilters.values.push({
-            value: explodedValue,
-            label: explodedValue,
-            count: valueObject.count, // this seems like it could cause problems when there is more than one subject
+      .reduce((acc, subjectFilterObject) => {
+        this.explodeSubjectFilter(subjectFilterObject)
+          .forEach((explodedSubjectFilter) => {
+            acc.add(explodedSubjectFilter);
           });
-        });
-      });
+        return acc;
+      }, new Set());
+    explodedSubjectFilters = Array.from(explodedSubjectFilters)
+      .map(explodedSubjectFilter => (
+        {
+          value: explodedSubjectFilter,
+          label: explodedSubjectFilter,
+        }
+      ),
+      );
+    selectedSubjectLiteralFilters.values = explodedSubjectFilters;
   },
 
   /**
@@ -75,6 +82,7 @@ const subjectFilterUtil = {
   */
 
   narrowSubjectFilters(apiFilters, selectedFilters) {
+    console.log('apiFilters: ', JSON.stringify(apiFilters, null, 4), '\n selectedFilters: ', JSON.stringify(selectedFilters, null, 4))
     // deep copy the apiFilters object
     const newApiFilters = JSON.parse(JSON.stringify(apiFilters));
     // grab the aggregated subject literal filters
