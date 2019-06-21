@@ -13,6 +13,17 @@ const subjectFilterUtil = {
       );
   },
 
+  /**
+    params: subjectFilterObject is an object representing a subject filter, e.g.
+    {
+      value: 'Dogs -- Painting -- Smoking',
+      label: 'Dogs -- Painting -- Smoking',
+      count: 100000000,
+    }
+    returns an array of exploded values, e.g.
+    ['Dogs', 'Dogs -- Painting', 'Dogs -- Painting -- Smoking']
+  */
+
   explodeSubjectFilter(subjectFilterObject) {
     const explodedValues = subjectFilterObject
       .value
@@ -31,23 +42,8 @@ const subjectFilterUtil = {
     }
     e.g. the value could be 'Dogs -- Card Games -- Painting.'
 
-    explodedSubjectFilters modifies the array by adding
-
-    {
-      value: X,
-      label: X,
-      count: Y
-    }
-
-    whenever
-
-    {
-      value: X -- Z,
-      label: X -- Z,
-      count: Y
-    }
-
-    is in the original array.
+    explodedSubjectFilters modifies the array by replacing the values with exploded
+    versions of those values. Exploded values have no 'count' property.
   */
 
   explodeSubjectFilters(selectedSubjectLiteralFilters) {
