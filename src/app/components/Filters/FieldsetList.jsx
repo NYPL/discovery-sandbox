@@ -47,6 +47,8 @@ class FieldsetList extends React.Component {
     } = this.props;
     const values = this.state.values;
 
+    console.log('values: ', JSON.stringify(values, null, 4));
+
     if (!values || !values.length) {
       return null;
     }
@@ -73,7 +75,7 @@ class FieldsetList extends React.Component {
                     checked={filter.selected}
                   />
                   <label htmlFor={`${filter.label}-label`}>
-                    {filterLabel} ({filter.count.toLocaleString()})
+                    {filterLabel} {filter.count ? `(${filter.count.toLocaleString()})` : null}
                   </label>
                 </li>
               );
