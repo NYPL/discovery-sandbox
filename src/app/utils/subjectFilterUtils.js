@@ -13,15 +13,22 @@ const subjectFilterUtil = {
       );
   },
 
+  /**
+    params:
+      apiFilters: an object containing all the aggregations received from the api
+      selectedFilters: an object containing the currently selected filters (selected in
+         the Refine Search accordion)
+    narrowSubjectFilters returns a new object, which is a copy of apiFilters but with only
+     the selected subjectFilters from selectedFilters
+  */
   narrowSubjectFilters(apiFilters, selectedFilters) {
-    const subjectLiteralFilters = this.getSubjectLiteralFilters(apiFilters);
+    const newApiFilters = JSON.parse(JSON.stringify(apiFilters));
+    const subjectLiteralFilters = this.getSubjectLiteralFilters(newApiFilters);
     const selectedSubjectLiteralFilters = selectedFilters.subjectLiteral || [];
-    const checkIsSelected = this.subjectFilterIsSelected(selectedSubjectLiteralFilters);
     if (subjectLiteralFilters) {
-      subjectLiteralFilters.values = subjectLiteralFilters
-        .values
-        .filter(checkIsSelected);
+      subjectLiteralFilters.values = selectedSubjectLiteralFilters;
     }
+    return newApiFilters;
   },
 };
 
