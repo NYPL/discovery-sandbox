@@ -132,6 +132,7 @@ function searchServer(req, res, next) {
         language: [],
         dateAfter: '',
         dateBefore: '',
+        subjectLiteral: [],
       };
 
       // The purpose of the following is to create `selectedFilters` hash that
@@ -151,6 +152,15 @@ function searchServer(req, res, next) {
           let filterObj;
           if (key === 'dateAfter' || key === 'dateBefore') {
             selectedFilters[key] = value;
+          } else if (key === 'subjectLiteral') {
+            const subjectLiteralValues = _isArray(value) ? value : [value];
+            subjectLiteralValues.forEach((subjectLiteralValue) => {
+              selectedFilters[key].push({
+                selected: true,
+                value: subjectLiteralValue,
+                label: subjectLiteralValue,
+              });
+            });
           } else if (_isArray(value) && value.length) {
             if (!selectedFilters[key]) {
               selectedFilters[key] = [];
