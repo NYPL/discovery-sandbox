@@ -64,18 +64,19 @@ describe('subjectFilterUtil', () => {
       subjectLiteral: [{ value: 'puppy' }],
     };
     it('should change the subjectLiteral values to only include those which are selected', () => {
-      subjectFilterUtil.narrowSubjectFilters(apiFilters, selectedFilters);
-      expect(apiFilters[0].values.length).to.equal(1);
-      expect(apiFilters[0].values[0].value).to.equal('puppy');
+      const newApiFilters = subjectFilterUtil.narrowSubjectFilters(apiFilters, selectedFilters);
+      expect(newApiFilters[0].values.length).to.equal(1);
+      expect(newApiFilters[0].values[0].value).to.equal('puppy');
     });
 
     it('should change the subjectLiteral values to be empty if none are selected', () => {
-      subjectFilterUtil.narrowSubjectFilters(apiFilters, {});
-      expect(apiFilters[0].values.length).to.equal(0);
+      const newApiFilters = subjectFilterUtil.narrowSubjectFilters(apiFilters, {});
+      expect(newApiFilters[0].values.length).to.equal(0);
     });
 
     it('should leave the other filters unchanged', () => {
-      expect(apiFilters[1].values.length).to.equal(2);
+      const newApiFilters = subjectFilterUtil.narrowSubjectFilters(apiFilters, {});
+      expect(newApiFilters[1].values.length).to.equal(2);
     });
   });
 });

@@ -405,7 +405,7 @@ describe('BibDetails', () => {
             component.find('dd').at(2).find('li').at(ind).find('Link').at(index).prop('to')
           ).to.equal(
             '/research/collections/shared-collection-catalog/search?filters[subjectLiteral]='
-            + `${affix}.`
+            + `${affix}`
           );
         });
       });

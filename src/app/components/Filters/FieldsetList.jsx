@@ -73,7 +73,7 @@ class FieldsetList extends React.Component {
                     checked={filter.selected}
                   />
                   <label htmlFor={`${filter.label}-label`}>
-                    {filterLabel} ({filter.count.toLocaleString()})
+                    {filterLabel} {filter.count ? `(${filter.count.toLocaleString()})` : null}
                   </label>
                 </li>
               );
