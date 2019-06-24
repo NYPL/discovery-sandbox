@@ -94,7 +94,7 @@ class SearchResultsPage extends React.Component {
       isLoading,
       location,
     } = this.props;
-    
+
     const totalResults = searchResults ? searchResults.totalResults : undefined;
     const totalPages = totalResults ? Math.floor(totalResults / 50) + 1 : 0;
     const results = searchResults ? searchResults.itemListElement : [];
