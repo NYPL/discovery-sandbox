@@ -111,7 +111,7 @@ function destructureFilters(filters, apiFilters) {
         }
       }
     }
-    if (key === 'filters[subjectLiteral]') {
+    if (key.includes('filters[subjectLiteral]')) {
       selectedFilters.subjectLiteral = selectedFilters.subjectLiteral || [];
       selectedFilters.subjectLiteral.push({
         value: value,
