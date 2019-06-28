@@ -124,22 +124,39 @@ div .tabbed {
 }
 
 .tabbed dd:hover a {
-  color: yellow;
+  color: #81E5FF;
+  text-decoration: none;
 }
 
 .tabbed dd a:hover ~ a {
-  color: inherit;
+  color: #1b7fa7;
+  text-decoration: underline;
 }
 
 .tabbed dd:hover ul li a {
-  color: inherit;
+  color: #1b7fa7;
+  text-decoration: underline;
+}
+
+.tabbed dd a:hover ~ a:visited {
+  color: #104d65;
+}
+
+.tabbed dd:hover ul li a:visited {
+  color: #104d65;
 }
 
 .tabbed dd:hover ul li:hover a {
-  color: yellow;
+  color: #81E5FF;
+  text-decoration: none;
 }
 .tabbed dd ul li:hover a:hover ~ a {
-  color: inherit;
+  color: #1b7fa7;
+  text-decoration: underline;
+}
+
+.tabbed dd ul li:hover a:hover ~ a:visited {
+  color: #104d65;
 }
 
 // #tab0:target ~ #section0 {
