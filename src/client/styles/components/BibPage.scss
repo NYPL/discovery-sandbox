@@ -123,6 +123,25 @@ div .tabbed {
   }
 }
 
+.tabbed dd:hover a {
+  color: yellow;
+}
+
+.tabbed dd a:hover ~ a {
+  color: inherit;
+}
+
+.tabbed dd:hover ul li a {
+  color: inherit;
+}
+
+.tabbed dd:hover ul li:hover a {
+  color: yellow;
+}
+.tabbed dd ul li:hover a:hover ~ a {
+  color: inherit;
+}
+
 // #tab0:target ~ #section0 {
 //   display: block;
 // }
