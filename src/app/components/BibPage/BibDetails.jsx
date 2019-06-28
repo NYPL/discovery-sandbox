@@ -178,11 +178,11 @@ class BibDetails extends React.Component {
     }
 
     return (
-      <ul className="getDefinition">
+      <ul>
         {
           bibValues.map((value, i) => {
             const url = `filters[${fieldValue}]=${value}`;
-            return <li className="getDefinitionItem" key={`filter${i}`}>{this.getDefinitionOneItem(value, url, bibValues, fieldValue, fieldLinkable, fieldIdentifier, fieldSelfLinkable, fieldLabel)}</li>;
+            return <li key={`filter${i}`}>{this.getDefinitionOneItem(value, url, bibValues, fieldValue, fieldLinkable, fieldIdentifier, fieldSelfLinkable, fieldLabel)}</li>;
           })
         }
       </ul>
