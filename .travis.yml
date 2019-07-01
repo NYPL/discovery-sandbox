@@ -21,8 +21,8 @@ deploy:
     branch: master
 - provider: elasticbeanstalk
   skip_cleanup: true
-  access_key_id: "$AWS_ACCESS_KEY_ID_PRODUCTION"
-  secret_access_key: "$AWS_SECRET_ACCESS_KEY_PRODUCTION"
+  access_key_id: "$AWS_ACCESS_KEY_ID_QA"
+  secret_access_key: "$AWS_SECRET_ACCESS_KEY_QA"
   region: us-east-1
   app: discovery-ui
   env: discovery-ui-qa
@@ -43,6 +43,8 @@ deploy:
   on:
     repo: NYPL-discovery/discovery-front-end
     branch: development
+    # We've removed development EB, so skip deploy:
+    condition: 1 == 0
 after_deploy: echo 'Successfully executed deploy trigger for Discovery Shared Collection
   Catalog on AWS'
 env:
