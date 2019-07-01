@@ -123,6 +123,63 @@ div .tabbed {
   }
 }
 
+// Start styles for subject highlighting on hover
+
+// If there is a single hierarchical string of subjects,
+// they will appear as a's under a dd. If the dd is hovered, we make the
+// a's light blue
+.tabbed dd:hover a {
+  color: #81E5FF;
+  text-decoration: none;
+}
+
+// then we make the a's following the hovered a regular blue. We have to do it
+// this way because there is no 'younger sibling' selector
+.tabbed dd a:hover ~ a {
+  color: #1b7fa7;
+  text-decoration: underline;
+}
+
+// If there are multiple hierarchical strings of subjects, they will appear as
+// a ul of li's containing a's (each li is a single string of subjects)
+// So we need to cancel the above stylings in this case. Below we apply the same
+// trick as above, but to each li separately.
+.tabbed dd:hover ul li a {
+  color: #1b7fa7;
+  text-decoration: underline;
+}
+
+// Visited a's have a darker shade of blue as their default
+
+.tabbed dd a:hover ~ a:visited {
+  color: #104d65;
+}
+
+.tabbed dd:hover ul li a:visited {
+  color: #104d65;
+}
+
+// If we have multiple subject strings, each li gets the styling above.
+// If an li is hovered, we make the links light blue
+
+.tabbed dd:hover ul li:hover a {
+  color: #81E5FF;
+  text-decoration: none;
+}
+
+// Then we restore links to their default if they come after the link
+.tabbed dd ul li:hover a:hover ~ a {
+  color: #1b7fa7;
+  text-decoration: underline;
+}
+
+// Visited links have a darker default
+.tabbed dd ul li:hover a:hover ~ a:visited {
+  color: #104d65;
+}
+
+// end styles for hierarchical subjects
+
 // #tab0:target ~ #section0 {
 //   display: block;
 // }
