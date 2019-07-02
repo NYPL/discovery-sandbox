@@ -133,11 +133,21 @@ div .tabbed {
   width: fit-content;
 }
 
+.tabbed a {
+  display: inline-block;
+}
+
+.tabbed span {
+  display: inline-block;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
 // If there is a single hierarchical string of subjects,
 // they will appear as a's under a dd. If the dd is hovered, we make the
 // a's light blue
 .tabbed dd:hover a {
-  color: #81E5FF;
+  color: #3ab0df;
   text-decoration: none;
 }
 
@@ -180,7 +190,7 @@ div .tabbed {
 // If an li is hovered, we make the links light blue
 
 .tabbed dd:hover ul li:hover a {
-  color: #81E5FF;
+  color: #3ab0df;
   text-decoration: none;
 }
 
