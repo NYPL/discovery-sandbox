@@ -8,13 +8,14 @@ import PropTypes from 'prop-types';
 const DefinitionList = ({ data }) => {
   const getDefinitions = (definitions) => {
 
-    return definitions.map((item) => {
+    return definitions.map((item, i) => {
       if (!item || (!item.term && !item.definition)) {
         return null;
       }
+
       return ([
-        (<dt key={item.term}>{item.term}</dt>),
-        (<dd key={item.definition}>{item.definition}</dd>),
+        (<dt key={`term-${i}`}>{item.term}</dt>),
+        (<dd key={`definition-${i}`}>{item.definition}</dd>),
       ]);
     });
   };

@@ -117,9 +117,9 @@ class SearchResultsPage extends React.Component {
       });
     };
     const searchError = location.query && location.query.error ? location.query.error : '';
-    const apiFilters = filters && filters.itemListElement && filters.itemListElement.length ?
+    let apiFilters = filters && filters.itemListElement && filters.itemListElement.length ?
       filters.itemListElement : [];
-    subjectFilterUtil.narrowSubjectFilters(apiFilters, selectedFilters || {});
+    apiFilters = subjectFilterUtil.narrowSubjectFilters(apiFilters, selectedFilters || {});
     const dateFilterErrors = [];
     const selectedFiltersAvailable = this.checkForSelectedFilters();
 
