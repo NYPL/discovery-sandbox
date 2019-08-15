@@ -1,5 +1,9 @@
 ## CHANGE LOG
 
+### 1.6.1
+- Subject heading "explosion": Subject headings on bib pages contain multiple hierarchical filtered search links.
+- Updating @nypl/dgx-header-component to 2.5.6
+
 ### 1.6.0
 - Updating to add more checks to see if the bib detail fields include subject headings. If so, it will then call the additional string methods to generate new texts and URLs for the link.
 
