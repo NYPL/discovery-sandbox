@@ -1,5 +1,8 @@
 ## CHANGE LOG
 
+### 1.6.2
+- Updating @nypl/dgx-header-component to 2.5.8
+
 ### 1.6.1
 - Subject heading "explosion": Subject headings on bib pages contain multiple hierarchical filtered search links.
 - Updating @nypl/dgx-header-component to 2.5.6
