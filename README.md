@@ -195,3 +195,20 @@ Every time the `Feedback` component has significant updates, it might lead to th
  ## Alarm and Monitoring with AWS CloudWatch
 
  As one of the NYPL's services, we want to monitor its condition and receive necessary alarms if an error occurs. We set up the alarms and error filters on NYPL's [AWS CloudWatch](https://aws.amazon.com/cloudwatch/). For more details about setting up alarms and log metrics, please see NYPL engineering-general repo's [Monitoring & Alarms Instruction](https://github.com/NYPL/engineering-general/blob/master/standards/alerting.md).
+
+## Adding Locations
+
+Two local JSONs are critical to adding locations:
+
+  * `./locations.js`: A JSON mapping major hub names (e.g. "schwarzman", "sibl") to data about them (e.g. "full-name", "address")
+  * `./locationCodes.js`: A JSON mapping *all* sierra location codes to their `delivery_location` and relevant hub name (referencing the keys in `./locations.js`) (Note that sierra locations that act only as *delivery locations* must be entered in this hash and cite themselves as `delivery_location`.)
+
+These files must be kept up to date with newly added locations to ensure the delivery locations listing shown on the hold-request page show correct labels. For example, when Scholar rooms 217 and 223 were added to SASB, entries like the following needed to be added to `./locationCodes.js`:
+```
+  "mal17": {
+    "delivery_location": "mal17",
+    "location": "schwarzman"
+  },
+```
+
+Changes to building hours, name, etc. may necessitate changes to `./locations.js`.
