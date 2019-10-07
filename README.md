@@ -198,7 +198,9 @@ Every time the `Feedback` component has significant updates, it might lead to th
 
 ## Adding Locations
 
-Two local JSONs are critical to adding locations:
+When new Sierra locations (especially Sierra locations that are "delivery locations") are added to [NYPL-Core](https://github.com/NYPL/nypl-core), those locations will need to be added to this app. The complete set of steps for adding a location [is a documented LSP Workflow](https://github.com/NYPL/lsp_workflows/blob/5242526be2ad483c3945b94c3660f523bfdbc6bb/workflows/add_scsb_location.md#add-entries-to-nypl-core).
+
+In this repo, two local JSONs are critical to adding locations:
 
   * `./locations.js`: A JSON mapping major hub names (e.g. "schwarzman", "sibl") to data about them (e.g. "full-name", "address")
   * `./locationCodes.js`: A JSON mapping *all* sierra location codes to their `delivery_location` and relevant hub name (referencing the keys in `./locations.js`) (Note that sierra locations that act only as *delivery locations* must be entered in this hash and cite themselves as `delivery_location`.)
@@ -211,4 +213,4 @@ These files must be kept up to date with newly added locations to ensure that th
   },
 ```
 
-Changes to building hours, name, etc. may necessitate changes to `./locations.js`.
+Less frequently, when an NYPL location address changes, we should change the corresponding entry in `./locations.js`.
