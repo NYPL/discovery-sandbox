@@ -1,5 +1,8 @@
 ## CHANGE LOG
 
+### 1.6.3
+- Add new Scholar rooms, mal17 and mal23, to locations.js
+
 ### 1.6.2
 - Updating @nypl/dgx-header-component to 2.5.8
 
