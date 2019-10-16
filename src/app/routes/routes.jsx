@@ -12,7 +12,7 @@ import BibPage from '../components/BibPage/BibPage';
 import HoldRequest from '../components/HoldRequest/HoldRequest';
 import HoldConfirmation from '../components/HoldConfirmation/HoldConfirmation';
 import ElectronicDelivery from '../components/ElectronicDelivery/ElectronicDelivery';
-import SubjectHeadings from '../components/SubjectHeadings/SubjectHeadings';
+import SubjectHeadings from '../components/SubjectHeading/SubjectHeadings';
 import NotFound404 from '../components/NotFound404/NotFound404';
 import appConfig from '../../../appConfig';
 
