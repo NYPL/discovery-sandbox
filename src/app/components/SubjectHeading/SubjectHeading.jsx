@@ -2,6 +2,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
+import SubjectHeadingsTable from './SubjectHeadingsTable';
 
 class SubjectHeading extends React.Component {
   constructor(props) {
@@ -61,11 +62,19 @@ class SubjectHeading extends React.Component {
     } = this.state;
 
     return(
-      <div>
-        <div onClick={this.toggleOpen}>{!open ? '+' : '-'}</div>
-        {`${label} ${uuid} ${bib_count} ${desc_count}`}
-        {open ? children.map(child => < SubjectHeading subjectHeading={child}/>): null}
-      </div>
+      <tbody>
+        <tr>
+          <td onClick={this.toggleOpen}>{!open ? '+' : '-'}</td>
+          <td>{`${label}`}</td>
+          <td>{`${bib_count}`}</td>
+          <td>{`${desc_count}`}</td>
+        </tr>
+        <tr>
+          <td>
+            {open ? <SubjectHeadingsTable subjectHeadings={children} /> : null }
+          </td>
+        </tr>
+      </tbody>
     )
   }
 }

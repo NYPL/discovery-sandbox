@@ -4,6 +4,7 @@ import { Link } from 'react-router';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import SubjectHeading from './SubjectHeading';
+import SubjectHeadingsTable from './SubjectHeadingsTable';
 
 
 class SubjectHeadings extends React.Component {
@@ -100,9 +101,7 @@ class SubjectHeadings extends React.Component {
     return (
       <div>
         {this.pagination()}
-        {subjectHeadings.map(
-          (heading, i) => <SubjectHeading subjectHeading={heading} key={i} />
-        )}
+        <SubjectHeadingsTable subjectHeadings={subjectHeadings} />
         {this.pagination()}
       </div>
     );
