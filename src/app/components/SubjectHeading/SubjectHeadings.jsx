@@ -14,6 +14,7 @@ class SubjectHeadings extends React.Component {
       error: false,
     };
     this.pagination = this.pagination.bind(this);
+    this.redirectTo = this.redirectTo.bind(this);
   }
 
   componentDidMount() {
@@ -63,6 +64,14 @@ class SubjectHeadings extends React.Component {
     return `${path}?fromLabel=${this.extractParam('from_label', url)}&fromComparator=${this.extractParam('from_comparator', url)}`;
   }
 
+  redirectTo(url) {
+    const redirectFunction = function (e) {
+      e.preventDefault;
+      this.context.router.push(url);
+    }
+    return redirectFunction.bind(this);
+  }
+
   pagination() {
     const {
       previousUrl,
@@ -72,8 +81,8 @@ class SubjectHeadings extends React.Component {
     const urlForNext = this.convertApiUrlToFrontendUrl(nextUrl);
     return (
       <div>
-        <a href={urlForPrevious}>Previous Results</a>
-        <a href={urlForNext}>Next Results</a>
+        <a href={urlForPrevious} onClick={this.redirectTo(urlForPrevious)}>Previous Results</a>
+        <a href={urlForNext} onClick={this.redirectTo(urlForNext)}>Next Results</a>
       </div>
     )
   }
@@ -98,6 +107,10 @@ class SubjectHeadings extends React.Component {
       </div>
     );
   }
+}
+
+SubjectHeadings.contextTypes = {
+  router: PropTypes.object,
 }
 
 export default SubjectHeadings;
