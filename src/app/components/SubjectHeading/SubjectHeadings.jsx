@@ -36,7 +36,13 @@ class SubjectHeadings extends React.Component {
       },
     }
     ).then(
-      res => Actions.updateSubjectHeadings(res.data.first_level_index)
+      (res) => {
+        Actions.updateSubjectHeadings(res.data.first_level_index);
+        this.setState({
+          previousUrl: res.data.previous_url,
+          nextUrl: res.data.next_url,
+        });
+      },
     ).catch(
       (err) => {
         console.log('error: ', err)
