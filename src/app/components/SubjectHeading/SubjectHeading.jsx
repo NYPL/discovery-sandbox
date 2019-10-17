@@ -21,6 +21,14 @@ class SubjectHeading extends React.Component {
     return subjectHeadings;
   }
 
+  pad(label, inset = 0) {
+    let labelHtml = label;
+    for (let i = 0; i < inset; i += 5 * inset) {
+      labelHtml = `\u00A0${labelHtml}`;
+    }
+    return `${labelHtml}`;
+  }
+
   toggleOpen() {
     const {
       subjectHeading,
@@ -63,12 +71,13 @@ class SubjectHeading extends React.Component {
       bib_count,
       desc_count,
       open,
+      inset,
     } = this.props.subjectHeading;
 
     return (
       <tr>
         <td onClick={this.toggleOpen}>{!open ? '+' : '-'}</td>
-        <td>{`${label}`}</td>
+        <td>{`${this.pad(label, inset)}`}</td>
         <td>{`${bib_count}`}</td>
         <td>{`${desc_count}`}</td>
       </tr>

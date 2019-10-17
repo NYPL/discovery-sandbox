@@ -10,11 +10,12 @@ class SubjectHeadingsTable extends React.Component {
     this.flatten = this.flatten.bind(this);
   }
 
-  flatten(forest) {
+  flatten(forest, inset = 0) {
     if (forest.constructor === [].constructor) {
-      return forest.reduce((acc, el) => acc.concat(this.flatten(el)), []);
+      return forest.reduce((acc, el) => acc.concat(this.flatten(el, inset)), []);
     }
-    return [forest].concat((forest.open && forest.narrower) ? this.flatten(forest.narrower) : []);
+    forest.inset = inset;
+    return [forest].concat((forest.open && forest.narrower) ? this.flatten(forest.narrower, inset + 1) : []);
   }
 
   render() {
