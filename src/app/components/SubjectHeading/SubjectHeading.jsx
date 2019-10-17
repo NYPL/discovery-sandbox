@@ -23,7 +23,7 @@ class SubjectHeading extends React.Component {
 
   pad(label, inset = 0) {
     let labelHtml = label;
-    for (let i = 0; i < inset; i += 5 * inset) {
+    for (let i = 0; i < 5 * inset; i++) {
       labelHtml = `\u00A0${labelHtml}`;
     }
     return `${labelHtml}`;
@@ -51,9 +51,11 @@ class SubjectHeading extends React.Component {
         (resp) => {
           const {
             narrower,
+            next_url,
           } = resp.data;
+          console.log('data', resp.data);
           Actions.updateSubjectHeadings(
-            this.updateSubjectHeading(subjectHeadings, subjectHeading, { narrower: narrower, open: true })
+            this.updateSubjectHeading(subjectHeadings, subjectHeading, { narrower: narrower, more: next_url, open: true })
           );
         },
       ).catch(resp => console.log(resp));
@@ -62,6 +64,10 @@ class SubjectHeading extends React.Component {
         this.updateSubjectHeading(subjectHeadings, subjectHeading, { open: false }),
       );
     }
+  }
+
+  testMethod() {
+    console.log('this works');
   }
 
   render() {

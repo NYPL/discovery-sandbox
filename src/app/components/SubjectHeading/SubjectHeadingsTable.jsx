@@ -3,6 +3,7 @@ import React from 'react';
 import { Link } from 'react-router';
 import PropTypes from 'prop-types';
 import SubjectHeading from './SubjectHeading';
+import SubjectHeadingMoreButton from './SubjectHeadingMoreButton';
 
 class SubjectHeadingsTable extends React.Component {
   constructor(props) {
@@ -15,7 +16,14 @@ class SubjectHeadingsTable extends React.Component {
       return forest.reduce((acc, el) => acc.concat(this.flatten(el, inset)), []);
     }
     forest.inset = inset;
-    return [forest].concat((forest.open && forest.narrower) ? this.flatten(forest.narrower, inset + 1) : []);
+    let flattened = [forest];
+    if (forest.open && forest.narrower) {
+      flattened = flattened.concat(this.flatten(forest.narrower, inset + 1));
+    }
+    if (forest.more) {
+      flattened = flattened.concat([{ more: forest.more, parent: forest, inset: inset, isButton: true }]);
+    }
+    return flattened;
   }
 
   render() {
@@ -35,7 +43,10 @@ class SubjectHeadingsTable extends React.Component {
         <tbody>
           {this.flatten(subjectHeadings).map(
             (heading, i) =>
-              <SubjectHeading subjectHeading={heading} subjectHeadings={subjectHeadings} />,
+              (heading.isButton
+                ? <SubjectHeadingMoreButton more={heading.more} parent={heading.parent} inset={heading.inset} subjectHeadings={subjectHeadings} />
+                : <SubjectHeading subjectHeading={heading} subjectHeadings={subjectHeadings} />
+              ),
             )
           }
         </tbody>
