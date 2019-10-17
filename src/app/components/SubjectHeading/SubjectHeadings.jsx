@@ -3,6 +3,7 @@ import React from 'react';
 import { Link } from 'react-router';
 import PropTypes from 'prop-types';
 import axios from 'axios';
+import Actions from '../../actions/Actions';
 import SubjectHeading from './SubjectHeading';
 import SubjectHeadingsTable from './SubjectHeadingsTable';
 
@@ -11,7 +12,7 @@ class SubjectHeadings extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      subjectHeadings: [],
+      // subjectHeadings: [],
       error: false,
     };
     this.pagination = this.pagination.bind(this);
@@ -26,7 +27,6 @@ class SubjectHeadings extends React.Component {
     fromComparator = fromComparator.replace(/(^')|('$)/g, '');
     fromLabel = fromLabel.replace(/(^')|('$)/g, '');
     console.log(`http://localhost:8080/api/v0.1/subject_headings?from_label=${fromLabel}&from_comparator=${fromComparator}`)
-    window.component = this;
     axios({
       method: 'GET',
       url: `http://localhost:8080/api/v0.1/subject_headings?from_label=${fromLabel}&from_comparator=${fromComparator}`,
@@ -37,16 +37,17 @@ class SubjectHeadings extends React.Component {
       },
     }
     ).then(
-      res => this.setState({
-        subjectHeadings: res.data.first_level_index,
-        previousUrl: res.data.previous_url,
-        nextUrl: res.data.next_url,
-        error: false
-      })
+      // res => this.setState({
+      //   subjectHeadings: res.data.first_level_index,
+      //   previousUrl: res.data.previous_url,
+      //   nextUrl: res.data.next_url,
+      //   error: false
+      // })
+      res => Actions.updateSubjectHeadings(res.data.first_level_index)
     ).catch(
       (err) => {
         console.log('error: ', err)
-        if (this.state.subjectHeadings.length === 0) {
+        if (this.props.subjectHeadings.length === 0) {
           this.setState({ error: true })
         }
       }
@@ -89,8 +90,9 @@ class SubjectHeadings extends React.Component {
   }
 
   render() {
-    const { subjectHeadings, error } = this.state;
-    console.log('state error: ', error);
+    const { error } = this.state;
+    const { subjectHeadings } = this.props;
+    console.log('subjectHeadings: ', subjectHeadings);
     if (error) {
       return (
         <div>

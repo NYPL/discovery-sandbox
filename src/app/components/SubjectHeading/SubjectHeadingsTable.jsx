@@ -14,7 +14,9 @@ const SubjectHeadingsTable = props => (
         <th>Narrower</th>
       </tr>
     </thead>
-    {props.subjectHeadings.map((heading, i) => <SubjectHeading subjectHeading={heading}/>)}
+    <tbody>
+      {props.subjectHeadings.map((heading, i) => <SubjectHeading subjectHeading={heading} subjectHeadings={props.subjectHeadings} />)}
+    </tbody>
   </table>
 );
 

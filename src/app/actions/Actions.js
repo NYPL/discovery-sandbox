@@ -57,6 +57,10 @@ class Actions {
   updateIsEddRequestable(data) {
     return data;
   }
+
+  updateSubjectHeadings(data) {
+    return data;
+  }
 }
 
 export default alt.createActions(Actions);
