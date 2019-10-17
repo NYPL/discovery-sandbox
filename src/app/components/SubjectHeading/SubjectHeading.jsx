@@ -7,11 +7,8 @@ import Actions from '../../actions/Actions';
 class SubjectHeading extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      open: false,
-    };
     this.toggleOpen = this.toggleOpen.bind(this);
-    this.updateNarrower = this.updateNarrower.bind(this);
+    this.updateSubjectHeading = this.updateSubjectHeading.bind(this);
   }
 
   componentDidMount() {
@@ -19,21 +16,19 @@ class SubjectHeading extends React.Component {
     window.components.push(this);
   }
 
-  updateNarrower(subjectHeadings, subjectHeading, narrower) {
-    subjectHeading.narrower = narrower;
+  updateSubjectHeading(subjectHeadings, subjectHeading, properties) {
+    Object.assign(subjectHeading, properties);
     return subjectHeadings;
   }
 
   toggleOpen() {
     const {
-      open,
-    } = this.state;
-    const {
       subjectHeading,
       subjectHeadings,
     } = this.props;
     const {
-      uuid
+      uuid,
+      open,
     } = subjectHeading;
     if (!open) {
       axios({
@@ -50,17 +45,14 @@ class SubjectHeading extends React.Component {
             narrower,
           } = resp.data;
           Actions.updateSubjectHeadings(
-            this.updateNarrower(subjectHeadings, subjectHeading, narrower)
-          )
-          this.setState({
-            open: true,
-          });
+            this.updateSubjectHeading(subjectHeadings, subjectHeading, { narrower: narrower, open: true })
+          );
         },
       ).catch(resp => console.log(resp));
     } else {
-      this.setState({
-        open: !open,
-      });
+      Actions.updateSubjectHeadings(
+        this.updateSubjectHeading(subjectHeadings, subjectHeading, { open: false }),
+      );
     }
   }
 
@@ -70,10 +62,8 @@ class SubjectHeading extends React.Component {
       uuid,
       bib_count,
       desc_count,
-    } = this.props.subjectHeading;
-    const {
       open,
-    } = this.state;
+    } = this.props.subjectHeading;
 
     return (
       <tr>

@@ -12,7 +12,6 @@ class SubjectHeadings extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      // subjectHeadings: [],
       error: false,
     };
     this.pagination = this.pagination.bind(this);
@@ -37,12 +36,6 @@ class SubjectHeadings extends React.Component {
       },
     }
     ).then(
-      // res => this.setState({
-      //   subjectHeadings: res.data.first_level_index,
-      //   previousUrl: res.data.previous_url,
-      //   nextUrl: res.data.next_url,
-      //   error: false
-      // })
       res => Actions.updateSubjectHeadings(res.data.first_level_index)
     ).catch(
       (err) => {
