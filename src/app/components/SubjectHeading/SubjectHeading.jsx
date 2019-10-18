@@ -56,7 +56,6 @@ class SubjectHeading extends React.Component {
             narrower,
             next_url,
           } = resp.data;
-          console.log('data', resp.data);
           narrower.forEach((child) => { child.inset = (inset || 0) + 1; });
           if (narrower.length > 10) {
             narrower[narrower.length - 1] = { button: 'more', url: next_url, updateParent: this.addMore, inset: (inset || 0) + 1 };
@@ -73,11 +72,10 @@ class SubjectHeading extends React.Component {
     const {
       narrower,
     } = this.state;
-    console.log('addMore ', 'element: ', element, 'data: ', data, 'narrower: ', narrower)
     data.narrower.forEach((child) => { child.inset = (this.props.subjectHeading.inset || 0) + 1; });
     narrower.splice(-1, 1, ...data.narrower);
     if (data.narrower.length > 10) {
-      narrower.splice(-1, 1, { button: 'more', url: data.next_url, updateParent: this.addMore, inset: (this.props.subjectHeading.inset || 0) + 1 })
+      narrower.splice(-1, 1, { button: 'more', url: data.next_url, updateParent: this.addMore, inset: (this.props.subjectHeading.inset || 0) + 1 });
     }
     this.setState({ narrower });
   }
@@ -109,5 +107,9 @@ class SubjectHeading extends React.Component {
     )
   }
 }
+
+SubjectHeading.propTypes = {
+  subjectHeading: PropTypes.object,
+};
 
 export default SubjectHeading;

@@ -23,7 +23,6 @@ class SubjectHeadings extends React.Component {
     } = this.props.location.query;
     fromComparator = fromComparator.replace(/(^')|('$)/g, '');
     fromLabel = fromLabel.replace(/(^')|('$)/g, '');
-    console.log(`http://localhost:8080/api/v0.1/subject_headings?from_label=${fromLabel}&from_comparator=${fromComparator}`)
     axios({
       method: 'GET',
       url: `http://localhost:8080/api/v0.1/subject_headings?from_label=${fromLabel}&from_comparator=${fromComparator}`,
@@ -116,6 +115,10 @@ class SubjectHeadings extends React.Component {
 
 SubjectHeadings.contextTypes = {
   router: PropTypes.object,
-}
+};
+
+SubjectHeadings.propTypes = {
+  location: PropTypes.object,
+};
 
 export default SubjectHeadings;

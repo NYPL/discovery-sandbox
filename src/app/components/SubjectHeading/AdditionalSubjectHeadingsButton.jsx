@@ -39,7 +39,7 @@ class AdditionalSubjectHeadingsButton extends React.Component {
   render() {
     const {
       inset,
-    } = this.props;
+    } = this.props.data;
 
     return (
       <li onClick={this.onClick} className="seeMoreButton">
@@ -48,5 +48,9 @@ class AdditionalSubjectHeadingsButton extends React.Component {
     );
   }
 }
+
+AdditionalSubjectHeadingsButton.propTypes = {
+  data: PropTypes.object,
+};
 
 export default AdditionalSubjectHeadingsButton;
