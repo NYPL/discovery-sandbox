@@ -1,0 +1,54 @@
+.subjectHeadingRow {
+  list-style: none;
+  margin-left: 15px;
+  font-weight: 500;
+}
+
+.subjectHeadingRow.openSubjectHeading {
+  background: #E8E4E3;
+}
+
+.subjectHeadingRow > li {
+  display: inline-block;
+}
+
+.subjectHeadingRow > .subjectHeadingToggle {
+  max-width: none;
+  width: 20px;
+}
+
+.subjectHeadingRow > .subjectHeadingLabel {
+  max-width: none;
+  width: 500px;
+  padding-left: 20px;
+}
+
+.subjectHeadingRow > .subjectHeadingAttribute {
+  max-width: none;
+  width: 150px;
+}
+
+.subjectHeadingNav {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.subjectNavButton {
+  margin-right: 200px;
+  border: 1px solid #104d65;
+  text-decoration: none;
+  padding: 20px;
+}
+
+.subjectHeadingsBanner {
+  font-size: 35px;
+  font-weight: 200;
+  background: #E8E4E3;
+  padding: 35px;
+  margin-bottom: 50px;
+}
+
+.seeMoreButton {
+  color: #104d65;
+  font-style: italic;
+}

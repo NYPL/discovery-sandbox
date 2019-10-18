@@ -3,9 +3,7 @@ import React from 'react';
 import { Link } from 'react-router';
 import PropTypes from 'prop-types';
 import axios from 'axios';
-import Actions from '../../actions/Actions';
-import SubjectHeading from './SubjectHeading';
-import SubjectHeadingsTable from './SubjectHeadingsTable';
+import SubjectHeadingsList from './SubjectHeadingsList';
 
 
 class SubjectHeadings extends React.Component {
@@ -34,22 +32,23 @@ class SubjectHeadings extends React.Component {
         'Access-Control-Allow-Origin': '*',
         'Content-Type': 'application/json',
       },
-    }
+    },
     ).then(
       (res) => {
-        Actions.updateSubjectHeadings(res.data.first_level_index);
         this.setState({
           previousUrl: res.data.previous_url,
           nextUrl: res.data.next_url,
+          subjectHeadings: res.data.first_level_index,
+          error: res.data.first_level_index.length === 0,
         });
       },
     ).catch(
       (err) => {
-        console.log('error: ', err)
-        if (this.props.subjectHeadings.length === 0) {
-          this.setState({ error: true })
+        console.log('error: ', err);
+        if (!this.state.subjectHeadings || this.state.subjectHeadings.length === 0) {
+          this.setState({ error: true });
         }
-      }
+      },
     );
   }
 
@@ -81,16 +80,15 @@ class SubjectHeadings extends React.Component {
     const urlForPrevious = this.convertApiUrlToFrontendUrl(previousUrl);
     const urlForNext = this.convertApiUrlToFrontendUrl(nextUrl);
     return (
-      <div>
-        <a href={urlForPrevious} onClick={this.redirectTo(urlForPrevious)}>Previous Results</a>
-        <a href={urlForNext} onClick={this.redirectTo(urlForNext)}>Next Results</a>
+      <div className="subjectHeadingNav">
+        <a className="subjectNavButton" href={urlForPrevious} onClick={this.redirectTo(urlForPrevious)}>{'\u25C0'}</a>
+        <a className="subjectNavButton" href={urlForNext} onClick={this.redirectTo(urlForNext)}>{'\u25B6'}</a>
       </div>
     )
   }
 
   render() {
-    const { error } = this.state;
-    const { subjectHeadings } = this.props;
+    const { error, subjectHeadings } = this.state;
     console.log('subjectHeadings: ', subjectHeadings);
     if (error) {
       return (
@@ -101,8 +99,15 @@ class SubjectHeadings extends React.Component {
     }
     return (
       <div>
+        <div className="subjectHeadingsBanner">Subject Headings</div>
         {this.pagination()}
-        <SubjectHeadingsTable subjectHeadings={subjectHeadings} />
+        <ul className="subjectHeadingRow">
+          <li></li>
+          <li className="subjectHeadingLabel">Subject Heading</li>
+          <li className="subjectHeadingAttribute">Titles</li>
+          <li className="subjectHeadingAttribute">Narrower</li>
+        </ul>
+        <SubjectHeadingsList subjectHeadings={subjectHeadings} />
         {this.pagination()}
       </div>
     );

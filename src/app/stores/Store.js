@@ -19,7 +19,6 @@ class Store {
       updateForm: Actions.updateForm,
       updateDeliveryLocations: Actions.updateDeliveryLocations,
       updateIsEddRequestable: Actions.updateIsEddRequestable,
-      updateSubjectHeadings: Actions.updateSubjectHeadings,
     });
 
     this.state = {
@@ -42,7 +41,6 @@ class Store {
       form: {},
       deliveryLocations: [],
       isEddRequestable: false,
-      subjectHeadings: [],
     };
   }
 
@@ -102,10 +100,6 @@ class Store {
 
   updateIsEddRequestable(data) {
     this.setState({ isEddRequestable: data });
-  }
-
-  updateSubjectHeadings(data) {
-    this.setState({ subjectHeadings: data });
   }
 }
 
