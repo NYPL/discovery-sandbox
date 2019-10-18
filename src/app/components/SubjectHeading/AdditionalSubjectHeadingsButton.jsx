@@ -42,8 +42,19 @@ class AdditionalSubjectHeadingsButton extends React.Component {
     } = this.props.data;
 
     return (
-      <li onClick={this.onClick} className="seeMoreButton">
-        {`${this.pad('See more', inset)}`}
+      <li>
+        <ul className="subjectHeadingRow" >
+          <li>
+            <ul className="subjectHeadingLabelAndToggle">
+              <li onClick={this.toggleOpen} className="subjectHeadingToggle" style={{'padding-left': `${20*inset}px`}}></li>
+              <li onClick={this.onClick} className="subjectHeadingLabel seeMoreButton" style={{"padding-left":`${20*inset}px`}}>
+                See more
+              </li>
+            </ul>
+          </li>
+          <li className="subjectHeadingAttribute" />
+          <li className="subjectHeadingAttribute" />
+        </ul>
       </li>
     );
   }
