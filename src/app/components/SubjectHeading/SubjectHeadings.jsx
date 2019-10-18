@@ -101,8 +101,12 @@ class SubjectHeadings extends React.Component {
         <div className="subjectHeadingsBanner">Subject Headings</div>
         {this.pagination()}
         <ul className="subjectHeadingRow">
-          <li></li>
-          <li className="subjectHeadingLabel">Subject Heading</li>
+          <li>
+            <ul className="subjectHeadingLabelAndToggle">
+              <li className="subjectHeadingToggle"></li>
+              <li className="subjectHeadingLabel">Subject Heading</li>
+            </ul>
+          </li>
           <li className="subjectHeadingAttribute">Titles</li>
           <li className="subjectHeadingAttribute">Narrower</li>
         </ul>

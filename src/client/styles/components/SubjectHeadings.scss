@@ -12,20 +12,28 @@
   display: inline-block;
 }
 
-.subjectHeadingRow > .subjectHeadingToggle {
-  max-width: none;
-  width: 20px;
+.subjectHeadingLabelAndToggle {
+  list-style: none;
+  margin-left: 15px;
+  font-weight: 500;
+  width: 650px;
 }
 
-.subjectHeadingRow > .subjectHeadingLabel {
+.subjectHeadingLabelAndToggle > .subjectHeadingToggle {
   max-width: none;
-  width: 500px;
+  display: inline-block;
+  width: 50px;
+}
+
+.subjectHeadingLabelAndToggle > .subjectHeadingLabel {
+  max-width: none;
   padding-left: 20px;
+  display: inline-block;
 }
 
 .subjectHeadingRow > .subjectHeadingAttribute {
   max-width: none;
-  width: 150px;
+  width: 100px;
 }
 
 .subjectHeadingNav {
