@@ -4,6 +4,7 @@ import { Link } from 'react-router';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import SubjectHeadingsList from './SubjectHeadingsList';
+import appConfig from '../../../../appConfig';
 
 
 class SubjectHeadings extends React.Component {
@@ -25,7 +26,7 @@ class SubjectHeadings extends React.Component {
     fromLabel = fromLabel.replace(/(^')|('$)/g, '');
     axios({
       method: 'GET',
-      url: `http://localhost:8080/api/v0.1/subject_headings?from_label=${fromLabel}&from_comparator=${fromComparator}`,
+      url: `${appConfig.shepApi}/subject_headings?from_label=${fromLabel}&from_comparator=${fromComparator}`,
       crossDomain: true,
       headers: {
         'Access-Control-Allow-Origin': '*',
@@ -88,7 +89,6 @@ class SubjectHeadings extends React.Component {
 
   render() {
     const { error, subjectHeadings } = this.state;
-    console.log('subjectHeadings: ', subjectHeadings);
     if (error) {
       return (
         <div>

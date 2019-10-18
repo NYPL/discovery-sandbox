@@ -3,6 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import SubjectHeadingsList from './SubjectHeadingsList';
+import appConfig from '../../../../appConfig';
 
 class SubjectHeading extends React.Component {
   constructor(props) {
@@ -44,7 +45,7 @@ class SubjectHeading extends React.Component {
     if (!open) {
       axios({
         method: 'GET',
-        url: `http://localhost:8080/api/v0.1/subject_headings/${uuid}/narrower`,
+        url: `${appConfig.shepApi}/subject_headings/${uuid}/narrower`,
         crossDomain: true,
         headers: {
           'Access-Control-Allow-Origin': '*',

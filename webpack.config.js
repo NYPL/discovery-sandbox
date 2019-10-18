@@ -12,7 +12,6 @@ const ROOT_PATH = path.resolve(__dirname);
 
 // Sets the variable as either development or production
 const ENV = process.env.NODE_ENV || 'development';
-
 // Sets appEnv so the the header component will point to the search app on either Dev or Prod
 const appEnv = process.env.APP_ENV ? process.env.APP_ENV : 'production';
 
@@ -46,6 +45,9 @@ const commonSettings = {
     new webpack.DefinePlugin({
       loadA11y: process.env.loadA11y || false,
       appEnv: JSON.stringify(appEnv),
+      'process.env': {
+        SHEP_API: JSON.stringify(process.env.SHEP_API),
+      },
     }),
     // new BundleAnalyzerPlugin({
     //   // Can be `server`, `static` or `disabled`.
@@ -193,6 +195,7 @@ if (ENV === 'production') {
         'process.env': {
           NODE_ENV: JSON.stringify('production'),
           GA_ENV: JSON.stringify(process.env.GA_ENV),
+          SHEP_API: process.env.SHEP_API,
         },
       }),
     ],
