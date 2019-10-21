@@ -28,17 +28,9 @@ class AdditionalSubjectHeadingsButton extends React.Component {
     ).catch((resp) => { console.log(resp); });
   }
 
-  pad(label, inset = 0) {
-    let labelHtml = label;
-    for (let i = 0; i < inset; i += 5 * inset) {
-      labelHtml = `\u00A0${labelHtml}`;
-    }
-    return `${labelHtml}`;
-  }
-
   render() {
     const {
-      inset,
+      indentation,
     } = this.props.data;
 
     return (
@@ -46,8 +38,8 @@ class AdditionalSubjectHeadingsButton extends React.Component {
         <ul className="subjectHeadingRow" >
           <li>
             <ul className="subjectHeadingLabelAndToggle">
-              <li onClick={this.toggleOpen} className="subjectHeadingToggle" style={{'padding-left': `${20*inset}px`}}></li>
-              <li onClick={this.onClick} className="subjectHeadingLabel seeMoreButton" style={{"padding-left":`${20*inset}px`}}>
+              <li onClick={this.toggleOpen} className="subjectHeadingToggle" style={{'padding-left': `${20*indentation}px`}}></li>
+              <li onClick={this.onClick} className="subjectHeadingLabel seeMoreButton" style={{"padding-left":`${20*indentation}px`}}>
                 See more
               </li>
             </ul>

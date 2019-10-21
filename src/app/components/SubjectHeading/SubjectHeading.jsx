@@ -26,18 +26,10 @@ class SubjectHeading extends React.Component {
     this.setState(properties);
   }
 
-  pad(label, inset = 0) {
-    let labelHtml = label;
-    for (let i = 0; i < 5 * inset; i++) {
-      labelHtml = `\u00A0${labelHtml}`;
-    }
-    return `${labelHtml}`;
-  }
-
   toggleOpen() {
     const {
       uuid,
-      inset,
+      indentation,
     } = this.props.subjectHeading;
     const {
       open,
@@ -57,9 +49,9 @@ class SubjectHeading extends React.Component {
             narrower,
             next_url,
           } = resp.data;
-          narrower.forEach((child) => { child.inset = (inset || 0) + 1; });
+          narrower.forEach((child) => { child.indentation = (indentation || 0) + 1; });
           if (narrower.length > 10) {
-            narrower[narrower.length - 1] = { button: 'more', url: next_url, updateParent: this.addMore, inset: (inset || 0) + 1 };
+            narrower[narrower.length - 1] = { button: 'more', url: next_url, updateParent: this.addMore, indentation: (indentation || 0) + 1 };
           }
           this.updateSubjectHeading({ narrower: narrower, open: true })
         },
@@ -73,10 +65,10 @@ class SubjectHeading extends React.Component {
     const {
       narrower,
     } = this.state;
-    data.narrower.forEach((child) => { child.inset = (this.props.subjectHeading.inset || 0) + 1; });
+    data.narrower.forEach((child) => { child.indentation = (this.props.subjectHeading.indentation || 0) + 1; });
     narrower.splice(-1, 1, ...data.narrower);
     if (data.narrower.length > 10) {
-      narrower.splice(-1, 1, { button: 'more', url: data.next_url, updateParent: this.addMore, inset: (this.props.subjectHeading.inset || 0) + 1 });
+      narrower.splice(-1, 1, { button: 'more', url: data.next_url, updateParent: this.addMore, indentation: (this.props.subjectHeading.indentation || 0) + 1 });
     }
     this.setState({ narrower });
   }
@@ -87,7 +79,7 @@ class SubjectHeading extends React.Component {
       uuid,
       bib_count,
       desc_count,
-      inset,
+      indentation,
     } = this.props.subjectHeading;
 
     const {
@@ -100,7 +92,7 @@ class SubjectHeading extends React.Component {
         <ul className={`subjectHeadingRow ${ open ? "openSubjectHeading" : ""}`} >
           <li>
             <ul className="subjectHeadingLabelAndToggle">
-              <li onClick={this.toggleOpen} className="subjectHeadingToggle" style={{'padding-left': `${20*inset}px`}}>{desc_count > 0 ? (!open ? '+' : '-') : null}</li>
+              <li onClick={this.toggleOpen} className="subjectHeadingToggle" style={{'padding-left': `${20*indentation}px`}}>{desc_count > 0 ? (!open ? '+' : '-') : null}</li>
               <li className="subjectHeadingLabel">{`${label}`}</li>
             </ul>
           </li>
