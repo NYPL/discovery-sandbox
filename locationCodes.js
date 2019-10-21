@@ -622,5 +622,13 @@ export default {
   "qcmo2": {
     "delivery_location": "",
     "location": "schwarzman"
+  },
+  "mal17": {
+    "delivery_location": "mal17",
+    "location": "schwarzman"
+  },
+  "mal23": {
+    "delivery_location": "mal23",
+    "location": "schwarzman"
   }
 }

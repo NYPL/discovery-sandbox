@@ -1,7 +1,7 @@
 ## Discovery
 
 ### Version
-> 1.6.0
+> 1.6.3
 
 ### Shared Collection Catalog
 [![GitHub version](https://badge.fury.io/gh/nypl-discovery%2Fdiscovery-front-end.svg)](https://badge.fury.io/gh/nypl-discovery%2Fdiscovery-front-end)
@@ -195,3 +195,22 @@ Every time the `Feedback` component has significant updates, it might lead to th
  ## Alarm and Monitoring with AWS CloudWatch
 
  As one of the NYPL's services, we want to monitor its condition and receive necessary alarms if an error occurs. We set up the alarms and error filters on NYPL's [AWS CloudWatch](https://aws.amazon.com/cloudwatch/). For more details about setting up alarms and log metrics, please see NYPL engineering-general repo's [Monitoring & Alarms Instruction](https://github.com/NYPL/engineering-general/blob/master/standards/alerting.md).
+
+## Adding Locations
+
+When new Sierra locations (especially Sierra locations that are "delivery locations") are added to [NYPL-Core](https://github.com/NYPL/nypl-core), those locations will need to be added to this app. The complete set of steps for adding a location [is a documented LSP Workflow](https://github.com/NYPL/lsp_workflows/blob/5242526be2ad483c3945b94c3660f523bfdbc6bb/workflows/add_scsb_location.md#add-entries-to-nypl-core).
+
+In this repo, two local JSONs are critical to adding locations:
+
+  * `./locations.js`: A JSON mapping major hub names (e.g. "schwarzman", "sibl") to data about them (e.g. "full-name", "address")
+  * `./locationCodes.js`: A JSON mapping *all* sierra location codes to their `delivery_location` and relevant hub name (referencing the keys in `./locations.js`) (Note that sierra locations that act only as *delivery locations* must be entered in this hash and cite themselves as `delivery_location`.)
+
+These files must be kept up to date with newly added locations to ensure that the hold-request page presents delivery locations with correct labels and building addresses. For example, when Scholar rooms 217 and 223 were added to SASB, entries like the following needed to be added to `./locationCodes.js`:
+```
+  "mal17": {
+    "delivery_location": "mal17",
+    "location": "schwarzman"
+  },
+```
+
+Less frequently, when an NYPL location address changes, we should change the corresponding entry in `./locations.js`.
