@@ -11,8 +11,8 @@ const SubjectHeadingsList = props => (
       props.subjectHeadings ?
         props.subjectHeadings
           .map(subjectHeading => (subjectHeading.button ?
-            <AdditionalSubjectHeadingsButton data={subjectHeading} /> :
-            <SubjectHeading subjectHeading={subjectHeading} />)
+            <AdditionalSubjectHeadingsButton data={subjectHeading} key={subjectHeading.uuid} /> :
+            <SubjectHeading subjectHeading={subjectHeading} key={subjectHeading.uuid} />)
           ) :
         null
     }
