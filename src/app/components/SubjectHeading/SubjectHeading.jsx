@@ -92,7 +92,7 @@ class SubjectHeading extends React.Component {
         <span className={`subjectHeadingRow ${ open ? "openSubjectHeading" : ""}`} >
           <span>
             <span className="subjectHeadingLabelAndToggle">
-              <span onClick={this.toggleOpen} className="subjectHeadingToggle" style={{'padding-left': `${20*indentation}px`}}>{desc_count > 0 ? (!open ? '+' : '-') : null}</span>
+              <span onClick={this.toggleOpen} className="subjectHeadingToggle" style={{'paddingLeft': `${20*indentation}px`}}>{desc_count > 0 ? (!open ? '+' : '-') : null}</span>
               <span className="subjectHeadingLabel">{`${label}`}</span>
             </span>
           </span>

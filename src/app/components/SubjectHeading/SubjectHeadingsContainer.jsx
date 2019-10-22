@@ -117,11 +117,11 @@ class SubjectHeadingsContainer extends React.Component {
   }
 }
 
-SubjectHeadings.contextTypes = {
+SubjectHeadingsContainer.contextTypes = {
   router: PropTypes.object,
 };
 
-SubjectHeadings.propTypes = {
+SubjectHeadingsContainer.propTypes = {
   location: PropTypes.object,
 };
 
