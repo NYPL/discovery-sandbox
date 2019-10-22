@@ -73,6 +73,12 @@ class SubjectHeading extends React.Component {
     this.setState({ narrower });
   }
 
+  addEmphasis(string) {
+    const components = string.split(" -- ");
+    console.log(string, { emph: components[-1], rest: components.slice(0, -1).join(' -- ') })
+    return { emph: components.slice(-1), rest: components.slice(0, -1).join(' -- ') };
+  }
+
   render() {
     const {
       label,
@@ -87,12 +93,17 @@ class SubjectHeading extends React.Component {
       narrower,
     } = this.state;
 
+    const {
+      emph,
+      rest,
+    } = this.addEmphasis(label);
+
     return (
       <li >
         <span className={`subjectHeadingRow ${ open ? "openSubjectHeading" : ""}` + `${this.props.nested ? ' nestedSubjectHeading' : ''}`} >
           <span className="subjectHeadingLabelAndToggle">
             <span onClick={this.toggleOpen} className="subjectHeadingToggle" style={{'paddingLeft': `${20*indentation}px`}}>{desc_count > 0 ? (!open ? '+' : '-') : null}</span>
-            <span className="subjectHeadingLabel">{`${label}`}</span>
+            <span className="subjectHeadingLabel"><span>{rest}</span>{rest === '' ? '' : ' -- ' }<span className='emph'>{emph}</span></span>
           </span>
           <span className="subjectHeadingAttribute">{`${bib_count}`}</span>
           <span className="subjectHeadingAttribute">{`${desc_count}`}</span>

@@ -29,24 +29,27 @@
   list-style: none;
   margin-left: 15px;
   font-weight: 500;
-  width: 650px;
+  width: 450px;
 }
 
 .subjectHeadingLabelAndToggle > .subjectHeadingToggle {
   max-width: none;
   display: inline-block;
-  width: 50px;
+  width: 15px;
+  font-size: 20px;
 }
 
 .subjectHeadingLabelAndToggle > .subjectHeadingLabel {
   max-width: none;
   padding-left: 20px;
   display: inline-block;
+  word-wrap: break-word;
 }
 
 .subjectHeadingRow > .subjectHeadingAttribute {
   max-width: none;
-  width: 100px;
+  width: 90px;
+  text-align: right;
 }
 
 .subjectHeadingNav {
@@ -106,4 +109,18 @@
 
 .subjectHeadingList {
   list-style: none;
+}
+
+.subjectHeadingRow.tableHeadings {
+  font-weight: 700;
+  font-size: 18px;
+  margin-bottom: 125px;
+}
+
+.subjectHeadingRow.tableHeadings span {
+  font-weight: 700;
+}
+
+.emph {
+  color: #eb9234;
 }
