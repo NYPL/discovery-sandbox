@@ -88,8 +88,8 @@ class SubjectHeading extends React.Component {
     } = this.state;
 
     return (
-      <li>
-        <span className={`subjectHeadingRow ${ open ? "openSubjectHeading" : ""}`} >
+      <li >
+        <span className={`subjectHeadingRow ${ open ? "openSubjectHeading" : ""}` + `${this.props.nested ? ' nestedSubjectHeading' : ''}`} >
           <span className="subjectHeadingLabelAndToggle">
             <span onClick={this.toggleOpen} className="subjectHeadingToggle" style={{'paddingLeft': `${20*indentation}px`}}>{desc_count > 0 ? (!open ? '+' : '-') : null}</span>
             <span className="subjectHeadingLabel">{`${label}`}</span>
@@ -97,7 +97,7 @@ class SubjectHeading extends React.Component {
           <span className="subjectHeadingAttribute">{`${bib_count}`}</span>
           <span className="subjectHeadingAttribute">{`${desc_count}`}</span>
         </span>
-        { open ? <SubjectHeadingsList subjectHeadings={narrower} /> : null}
+        { open ? <SubjectHeadingsList subjectHeadings={narrower} nested="true" /> : null}
       </li>
     )
   }

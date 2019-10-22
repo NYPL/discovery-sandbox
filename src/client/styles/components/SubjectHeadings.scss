@@ -1,16 +1,28 @@
 .subjectHeadingRow {
   list-style: none;
-  margin-left: 15px;
+  // margin-left: 15px;
   font-weight: 500;
 }
 
 .subjectHeadingRow.openSubjectHeading {
-  background: #E8E4E3;
-  border: 1px solid white;
+  background: lightgray;
+  // border: 1px solid white;
+}
+
+.nestedSubjectHeading {
+  // background: lightgray;
+}
+
+.subjectHeadingRow {
+  height: fit-content;
 }
 
 .subjectHeadingRow > span {
   display: inline-block;
+}
+
+.subjectHeadingRow span {
+  margin-bottom: 0px;
 }
 
 .subjectHeadingLabelAndToggle {
@@ -44,7 +56,8 @@
 
 .subjectNavButton {
   margin-right: 200px;
-  border: 1px solid #104d65;
+  // border: 1px solid #104d65;
+  font-size: 20px;
   text-decoration: none;
   padding: 20px;
 }
@@ -60,4 +73,37 @@
 .seeMoreButton {
   color: #104d65;
   font-style: italic;
+}
+
+.nestedSubjectHeadingList {
+  background-color: #E8E4E3;
+  width: fit-content;
+}
+
+.nestedSubjectHeadingList.frames {
+  font-size: 0;
+}
+
+.nestedSubjectHeadingList.frames li {
+  font-size: 14px; font-size: 1.4rem;
+  display: inline;
+}
+
+.nestedSubjectHeadingList > li {
+  margin-bottom: 0px;
+  width: fit-content;
+  height: fit-content;
+}
+
+.subjectHeadingMainContentWrapper {
+  text-align: center;
+}
+
+.subjectHeadingMainContent {
+  width: fit-content;
+  margin: 0 auto;
+}
+
+.subjectHeadingList {
+  list-style: none;
 }
