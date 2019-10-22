@@ -15,8 +15,6 @@ class SubjectHeadingShow extends React.Component {
         label: ''
       }
     }
-
-    this.getMainLabel = this.getMainLabel.bind(this)
   }
 
   componentDidMount() {
@@ -39,10 +37,6 @@ class SubjectHeadingShow extends React.Component {
         }
       })
     })
-  }
-
-  getMainLabel() {
-    if (this.state.subjectHeadings.length > 0) return this.state.subjectHeadings.find(heading => heading.uuid === this.state.mainUuid).label
   }
 
   render() {
