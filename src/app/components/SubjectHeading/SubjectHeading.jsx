@@ -89,16 +89,16 @@ class SubjectHeading extends React.Component {
 
     return (
       <li>
-        <ul className={`subjectHeadingRow ${ open ? "openSubjectHeading" : ""}`} >
-          <li>
-            <ul className="subjectHeadingLabelAndToggle">
-              <li onClick={this.toggleOpen} className="subjectHeadingToggle" style={{'padding-left': `${20*indentation}px`}}>{desc_count > 0 ? (!open ? '+' : '-') : null}</li>
-              <li className="subjectHeadingLabel">{`${label}`}</li>
-            </ul>
-          </li>
-          <li className="subjectHeadingAttribute">{`${bib_count}`}</li>
-          <li className="subjectHeadingAttribute">{`${desc_count}`}</li>
-        </ul>
+        <span className={`subjectHeadingRow ${ open ? "openSubjectHeading" : ""}`} >
+          <span>
+            <span className="subjectHeadingLabelAndToggle">
+              <span onClick={this.toggleOpen} className="subjectHeadingToggle" style={{'padding-left': `${20*indentation}px`}}>{desc_count > 0 ? (!open ? '+' : '-') : null}</span>
+              <span className="subjectHeadingLabel">{`${label}`}</span>
+            </span>
+          </span>
+          <span className="subjectHeadingAttribute">{`${bib_count}`}</span>
+          <span className="subjectHeadingAttribute">{`${desc_count}`}</span>
+        </span>
         { open ? <SubjectHeadingsList subjectHeadings={narrower} /> : null}
       </li>
     )
