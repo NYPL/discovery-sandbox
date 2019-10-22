@@ -7,7 +7,7 @@ import SubjectHeadingsList from './SubjectHeadingsList';
 import appConfig from '../../../../appConfig';
 
 
-class SubjectHeadings extends React.Component {
+class SubjectHeadingsContainer extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -125,4 +125,4 @@ SubjectHeadings.propTypes = {
   location: PropTypes.object,
 };
 
-export default SubjectHeadings;
+export default SubjectHeadingsContainer;
