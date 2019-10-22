@@ -36,7 +36,8 @@
   max-width: none;
   display: inline-block;
   width: 15px;
-  font-size: 20px;
+  font-size: 25px;
+  font-weight: 100;
 }
 
 .subjectHeadingLabelAndToggle > .subjectHeadingLabel {
@@ -50,6 +51,7 @@
   max-width: none;
   width: 90px;
   text-align: right;
+  padding-right: 5px;
 }
 
 .subjectHeadingNav {
@@ -122,11 +124,12 @@
 }
 
 .emph {
-  color: #eb9234;
+  color: #a83232;
 }
 
 .subjectHeadingMainContent span {
-  line-height: 1.00
+  line-height: 1.00;
+  font-weight: 400;
 }
 
 .subjectHeadingMainContent { font-size: 0;}
