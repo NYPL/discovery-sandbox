@@ -38,8 +38,8 @@ class AdditionalSubjectHeadingsButton extends React.Component {
         <ul className="subjectHeadingRow" >
           <li>
             <ul className="subjectHeadingLabelAndToggle">
-              <li onClick={this.toggleOpen} className="subjectHeadingToggle" style={{'padding-left': `${20*indentation}px`}}></li>
-              <li onClick={this.onClick} className="subjectHeadingLabel seeMoreButton" style={{"padding-left":`${20*indentation}px`}}>
+              <li onClick={this.toggleOpen} className="subjectHeadingToggle" style={{'paddingLeft': `${20*indentation}px`}}></li>
+              <li onClick={this.onClick} className="subjectHeadingLabel seeMoreButton" style={{"paddingLeft":`${20*indentation}px`}}>
                 See more
               </li>
             </ul>

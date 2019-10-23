@@ -42,13 +42,15 @@ class SubjectHeadingShow extends React.Component {
   render() {
     const { subjectHeadings } = this.state
 
-    const { label } = this.state.mainHeading
+    const { label, uuid } = this.state.mainHeading
 
     return (
       <div>
         <div className="subjectHeadingsBanner">Subject Headings</div>
-        <h2>Subject Heading: <em>{label}</em></h2>
-        <SubjectHeadingsList subjectHeadings={subjectHeadings} />
+        <div className="subjectHeadingMainContent">
+          <h2>Subject Heading: <em>{label}</em></h2>
+          <SubjectHeadingsList subjectHeadings={subjectHeadings} mainUuid={uuid}/>
+        </div>
       </div>
     )
   }

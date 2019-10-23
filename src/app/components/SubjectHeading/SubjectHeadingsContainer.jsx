@@ -99,17 +99,21 @@ class SubjectHeadingsContainer extends React.Component {
     return (
       <div>
         <div className="subjectHeadingsBanner">Subject Headings</div>
-        {this.pagination()}
-          <span className="subjectHeadingRow">
-            <span className="subjectHeadingLabelAndToggle">
-              <span className="subjectHeadingToggle"></span>
-              <span className="subjectHeadingLabel">Subject Heading</span>
-            </span>
-            <span className="subjectHeadingAttribute">Titles</span>
-            <span className="subjectHeadingAttribute">Narrower</span>
-          </span>
-        <SubjectHeadingsList subjectHeadings={subjectHeadings} />
-        {this.pagination()}
+        <div className="subjectMainContentWrapper">
+          <div className="subjectHeadingMainContent">
+            {this.pagination()}
+            <div className="subjectHeadingRow tableHeadings">
+              <span className="subjectHeadingLabelAndToggle">
+                <span className="subjectHeadingToggle"></span>
+                <span className="subjectHeadingLabel">Subject Heading</span>
+              </span>
+              <span className="subjectHeadingAttribute">Titles</span>
+              <span className="subjectHeadingAttribute">Narrower</span>
+            </div>
+            <SubjectHeadingsList subjectHeadings={subjectHeadings} />
+            {this.pagination()}
+          </div>
+        </div>
       </div>
     );
   }

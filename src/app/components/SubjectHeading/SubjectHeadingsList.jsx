@@ -5,17 +5,57 @@ import PropTypes from 'prop-types';
 import SubjectHeading from './SubjectHeading';
 import AdditionalSubjectHeadingsButton from './AdditionalSubjectHeadingsButton';
 
-const SubjectHeadingsList = props => (
-  <ul>
-    {
-      props.subjectHeadings ?
-        props.subjectHeadings
-          .map(subjectHeading => (subjectHeading.button ?
-            <AdditionalSubjectHeadingsButton data={subjectHeading} key={subjectHeading.uuid} /> :
-            <SubjectHeading subjectHeading={subjectHeading} key={subjectHeading.uuid} />)
-          ) :
-        null
+class SubjectHeadingsList extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      mainHeading: {
+        uuid: '',
+        label: ''
+      }
     }
-  </ul>
-);
+  }
+
+  componentDidMount() {
+    console.log(this.props.params);
+  }
+
+  render() {
+    const {
+      indentation,
+      subjectHeadings,
+      nested
+    } = this.props
+
+    return (
+      <ul className={nested ? 'subjectHeadingList nestedSubjectHeadingList' : 'subjectHeadingList'}>
+      {
+        subjectHeadings ?
+        subjectHeadings
+        .map(subjectHeading => (subjectHeading.button ?
+          <AdditionalSubjectHeadingsButton
+            data={subjectHeading}
+            key={subjectHeading.uuid}
+            nested={nested}
+            indentation={indentation}
+          />
+          : <SubjectHeading
+            subjectHeading={subjectHeading}
+            key={subjectHeading.uuid}
+            nested={nested}
+            indentation={indentation}
+          />
+        ),) :
+        null
+      }
+      </ul>
+    )
+  }
+};
+
+SubjectHeadingsList.propTypes = {
+  nested: PropTypes.string,
+  subjectHeadings: PropTypes.array,
+};
+
 export default SubjectHeadingsList;

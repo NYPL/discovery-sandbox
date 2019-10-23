@@ -9,8 +9,8 @@ class SubjectHeading extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      open: false,
-      narrower: [],
+      open: !!this.props.subjectHeading.children,
+      narrower: (this.props.subjectHeading.children || []),
     };
     this.toggleOpen = this.toggleOpen.bind(this);
     this.updateSubjectHeading = this.updateSubjectHeading.bind(this);
@@ -73,31 +73,45 @@ class SubjectHeading extends React.Component {
     this.setState({ narrower });
   }
 
+  addEmphasis(string) {
+    const components = string.split(" -- ");
+    return { emph: components.slice(-1), rest: components.slice(0, -1).join(' -- ') };
+  }
+
   render() {
     const {
       label,
       uuid,
       bib_count,
       desc_count,
-      indentation,
+      children
     } = this.props.subjectHeading;
+
+    const {
+      indentation
+    } = this.props
 
     const {
       open,
       narrower,
     } = this.state;
 
+    const {
+      emph,
+      rest,
+    } = this.addEmphasis(label);
+
     return (
-      <li>
-        <span className={`subjectHeadingRow ${ open ? "openSubjectHeading" : ""}`} >
+      <li >
+        <span className={`subjectHeadingRow ${ open || children ? "openSubjectHeading" : ""}` + `${this.props.nested ? ' nestedSubjectHeading' : ''}`} >
           <span className="subjectHeadingLabelAndToggle">
             <span onClick={this.toggleOpen} className="subjectHeadingToggle" style={{'paddingLeft': `${20*indentation}px`}}>{desc_count > 0 ? (!open ? '+' : '-') : null}</span>
-            <span className="subjectHeadingLabel">{`${label}`}</span>
+            <span className="subjectHeadingLabel"><span>{rest}</span>{rest === '' ? '' : ' -- ' }<span className='emph'>{emph}</span></span>
           </span>
           <span className="subjectHeadingAttribute">{`${bib_count}`}</span>
           <span className="subjectHeadingAttribute">{`${desc_count}`}</span>
         </span>
-        { open ? <SubjectHeadingsList subjectHeadings={narrower} /> : null}
+        { open ? <SubjectHeadingsList subjectHeadings={narrower} nested="true" indentation={(indentation || 0) + 1}/> : null}
       </li>
     )
   }

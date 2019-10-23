@@ -1,40 +1,57 @@
 .subjectHeadingRow {
   list-style: none;
-  margin-left: 15px;
+  // margin-left: 15px;
   font-weight: 500;
 }
 
 .subjectHeadingRow.openSubjectHeading {
-  background: #E8E4E3;
-  border: 1px solid white;
+  background: lightgray;
+  // border: 1px solid white;
+}
+
+.nestedSubjectHeading {
+  // background: lightgray;
+}
+
+.subjectHeadingRow {
+  height: fit-content;
 }
 
 .subjectHeadingRow > span {
   display: inline-block;
 }
 
+.subjectHeadingRow span {
+  margin-bottom: 0px;
+}
+
 .subjectHeadingLabelAndToggle {
   list-style: none;
   margin-left: 15px;
   font-weight: 500;
-  width: 650px;
+  width: 450px;
 }
 
 .subjectHeadingLabelAndToggle > .subjectHeadingToggle {
   max-width: none;
   display: inline-block;
-  width: 50px;
+  width: 15px;
+  font-size: 25px;
+  font-weight: 100;
 }
 
 .subjectHeadingLabelAndToggle > .subjectHeadingLabel {
   max-width: none;
   padding-left: 20px;
   display: inline-block;
+  word-wrap: break-word;
 }
 
 .subjectHeadingRow > .subjectHeadingAttribute {
   max-width: none;
-  width: 100px;
+  width: 90px;
+  text-align: right;
+  padding-right: 5px;
 }
 
 .subjectHeadingNav {
@@ -43,8 +60,9 @@
 }
 
 .subjectNavButton {
-  margin-right: 200px;
-  border: 1px solid #104d65;
+  margin: 100px;
+  // border: 1px solid #104d65;
+  font-size: 20px;
   text-decoration: none;
   padding: 20px;
 }
@@ -60,4 +78,68 @@
 .seeMoreButton {
   color: #104d65;
   font-style: italic;
+  font-size: 14px;
 }
+
+.nestedSubjectHeadingList {
+  background-color: #E8E4E3;
+  width: fit-content;
+}
+
+.nestedSubjectHeadingList.frames {
+  font-size: 0;
+}
+
+.nestedSubjectHeadingList.frames li {
+  font-size: 14px; font-size: 1.4rem;
+  display: inline;
+}
+
+.nestedSubjectHeadingList > li {
+  margin-bottom: 0px;
+  width: fit-content;
+  height: fit-content;
+}
+
+.subjectHeadingMainContentWrapper {
+  text-align: center;
+}
+
+.subjectHeadingMainContent {
+  width: fit-content;
+  margin: 0 auto;
+}
+
+.subjectHeadingList {
+  list-style: none;
+}
+
+.subjectHeadingRow.tableHeadings {
+  font-weight: 700;
+  font-size: 18px;
+  margin-bottom: 15px;
+}
+
+.subjectHeadingRow.tableHeadings span {
+  font-weight: 700;
+}
+
+.emph {
+  color: #a83232;
+}
+
+.subjectHeadingMainContent span {
+  line-height: 1.00;
+  font-weight: 400;
+}
+
+.subjectHeadingMainContent { font-size: 0;}
+
+.subjectHeadingList {font-size: 0;}
+
+.subjectHeadingList li {
+  margin-bottom: 0;
+  padding-top: 0.4rem;
+}
+
+.subjectHeadingMainContent span {font-size: 1rem;}
