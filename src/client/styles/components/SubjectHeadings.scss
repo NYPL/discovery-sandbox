@@ -143,3 +143,27 @@
 }
 
 .subjectHeadingMainContent span {font-size: 1rem;}
+
+.subjectHeadingMainContent.show {
+  width: auto;
+  display: grid;
+  grid-template-areas:
+  'main main main main'
+  'bibs bibs context';
+  padding-left: 10px;
+  padding-bottom: 20px;
+}
+
+.bibs-list {
+  list-style: none;
+  font-size: 14px;
+  grid-area: bibs;
+}
+
+.subjectHeadingContext  {
+  grid-area: context;
+}
+
+.subjectHeadingContext * {
+  width: auto;
+}

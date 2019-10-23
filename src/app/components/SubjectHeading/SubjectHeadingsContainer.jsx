@@ -4,6 +4,7 @@ import { Link } from 'react-router';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import SubjectHeadingsList from './SubjectHeadingsList';
+import SubjectHeadingTableHeader from './SubjectHeadingTableHeader'
 import appConfig from '../../../../appConfig';
 
 
@@ -102,14 +103,7 @@ class SubjectHeadingsContainer extends React.Component {
         <div className="subjectMainContentWrapper">
           <div className="subjectHeadingMainContent">
             {this.pagination()}
-            <div className="subjectHeadingRow tableHeadings">
-              <span className="subjectHeadingLabelAndToggle">
-                <span className="subjectHeadingToggle"></span>
-                <span className="subjectHeadingLabel">Subject Heading</span>
-              </span>
-              <span className="subjectHeadingAttribute">Titles</span>
-              <span className="subjectHeadingAttribute">Narrower</span>
-            </div>
+            <SubjectHeadingTableHeader />
             <SubjectHeadingsList subjectHeadings={subjectHeadings} />
             {this.pagination()}
           </div>
