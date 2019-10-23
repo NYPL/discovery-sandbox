@@ -16,10 +16,6 @@ class SubjectHeadingsList extends React.Component {
     }
   }
 
-  componentDidMount() {
-    console.log(this.props.params);
-  }
-
   render() {
     const {
       indentation,
