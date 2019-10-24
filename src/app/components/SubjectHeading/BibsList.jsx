@@ -14,9 +14,9 @@ class BibsList extends React.Component {
     )
 
     return (
-      <div>
-        <h3>Titles</h3>
-        <ul className="bibs-list">
+      <div className="bibs-list">
+        <h4>Titles</h4>
+        <ul>
           {bibLis}
         </ul>
       </div>
