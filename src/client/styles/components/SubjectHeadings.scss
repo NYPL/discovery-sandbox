@@ -43,9 +43,8 @@
 .subjectHeadingLabelAndToggle > .subjectHeadingLabel {
   max-width: none;
   padding-left: 20px;
-  display: inline;
+  display: inline-block;
   word-wrap: break-word;
-  width: 435px;
 }
 
 .subjectHeadingRow > .subjectHeadingAttribute {

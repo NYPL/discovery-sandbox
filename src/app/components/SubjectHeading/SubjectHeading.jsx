@@ -9,8 +9,8 @@ class SubjectHeading extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      open: false,
-      narrower: [],
+      open: !!this.props.subjectHeading.children,
+      narrower: (this.props.subjectHeading.children || []),
     };
     this.toggleOpen = this.toggleOpen.bind(this);
     this.updateSubjectHeading = this.updateSubjectHeading.bind(this);
@@ -75,7 +75,6 @@ class SubjectHeading extends React.Component {
 
   addEmphasis(string) {
     const components = string.split(" -- ");
-    console.log(string, { emph: components[-1], rest: components.slice(0, -1).join(' -- ') })
     return { emph: components.slice(-1), rest: components.slice(0, -1).join(' -- ') };
   }
 
@@ -85,8 +84,12 @@ class SubjectHeading extends React.Component {
       uuid,
       bib_count,
       desc_count,
-      indentation,
+      children
     } = this.props.subjectHeading;
+
+    const {
+      indentation
+    } = this.props
 
     const {
       open,
@@ -100,7 +103,7 @@ class SubjectHeading extends React.Component {
 
     return (
       <li >
-        <span className={`subjectHeadingRow ${ open ? "openSubjectHeading" : ""}` + `${this.props.nested ? ' nestedSubjectHeading' : ''}`} >
+        <span className={`subjectHeadingRow ${ open || children ? "openSubjectHeading" : ""}` + `${this.props.nested ? ' nestedSubjectHeading' : ''}`} >
           <span className="subjectHeadingLabelAndToggle">
             <span onClick={this.toggleOpen} className="subjectHeadingToggle" style={{'paddingLeft': `${20*indentation}px`}}>{desc_count > 0 ? (!open ? '+' : '-') : null}</span>
             <span className="subjectHeadingLabel"><span>{rest}</span>{rest === '' ? '' : ' -- ' }<span className='emph'>{emph}</span></span>
@@ -108,7 +111,7 @@ class SubjectHeading extends React.Component {
           <span className="subjectHeadingAttribute">{`${bib_count}`}</span>
           <span className="subjectHeadingAttribute">{`${desc_count}`}</span>
         </span>
-        { open ? <SubjectHeadingsList subjectHeadings={narrower} nested="true" /> : null}
+        { open ? <SubjectHeadingsList subjectHeadings={narrower} nested="true" indentation={(indentation || 0) + 1}/> : null}
       </li>
     )
   }
