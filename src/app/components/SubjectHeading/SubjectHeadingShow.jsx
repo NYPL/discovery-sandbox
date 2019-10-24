@@ -11,7 +11,8 @@ class SubjectHeadingShow extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      subjectHeadings: [],
+      contextHeadings: [],
+      relatedHeadings: [],
       mainHeading: {
         uuid: this.props.params.subjectHeadingUuid,
         label: ''
@@ -34,12 +35,13 @@ class SubjectHeadingShow extends React.Component {
     })
     .then((res) => {
       this.setState({
-        subjectHeadings: res.data.subject_headings,
+        contextHeadings: res.data.subject_headings,
         mainHeading: {
           label: res.data.request.main_label
         }
       })
     })
+
     axios({
       method: 'GET',
       url: `${appConfig.shepApi}/subject_headings/${uuid}/bibs`,
@@ -54,10 +56,25 @@ class SubjectHeadingShow extends React.Component {
         bibs: res.data.bibs
       })
     })
+
+    axios({
+      method: 'GET',
+      url: `${appConfig.shepApi}/subject_headings/${uuid}/related`,
+      crossDomain: true,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Content-Type': 'application/json',
+      },
+    })
+    .then((res) => {
+      this.setState({
+        relatedHeadings: res.data.related_headings
+      })
+    })
   }
 
   render() {
-    const { subjectHeadings, bibs } = this.state
+    const { contextHeadings, relatedHeadings, bibs } = this.state
 
     const { label, uuid } = this.state.mainHeading
 
@@ -67,10 +84,15 @@ class SubjectHeadingShow extends React.Component {
         <h2>Subject Heading: <em>{label}</em></h2>
         <div className="subjectHeadingMainContent show">
           <BibsList bibs={bibs}/>
+          <div className="subjectHeadingRelated">
+            <h3>Related Subject Headings for <em>{label}</em></h3>
+            <SubjectHeadingTableHeader />
+            <SubjectHeadingsList subjectHeadings={relatedHeadings} related={true}/>
+          </div>
           <div className="subjectHeadingContext">
             <h3>Subject Headings around <em>{label}</em></h3>
             <SubjectHeadingTableHeader />
-            <SubjectHeadingsList subjectHeadings={subjectHeadings} mainUuid={uuid}/>
+            <SubjectHeadingsList subjectHeadings={contextHeadings} mainUuid={uuid}/>
           </div>
         </div>
       </div>

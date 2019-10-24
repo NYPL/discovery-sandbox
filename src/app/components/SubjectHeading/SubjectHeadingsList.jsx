@@ -20,7 +20,8 @@ class SubjectHeadingsList extends React.Component {
     const {
       indentation,
       subjectHeadings,
-      nested
+      nested,
+      related
     } = this.props
 
     return (
