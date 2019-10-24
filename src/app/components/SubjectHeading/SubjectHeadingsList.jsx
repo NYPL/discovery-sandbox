@@ -46,7 +46,8 @@ class SubjectHeadingsList extends React.Component {
       );
       Object.assign(matchingHeading, subjectHeading);
     });
-    this.setState({ subjectHeadings: this.state.subjectHeadings }, () => { console.log('after: ', this.state.subjectHeadings); });
+    this.setState({ subjectHeadings: JSON.parse(JSON.stringify(this.state.subjectHeadings)) }, () => { console.log('after: ', this.state.subjectHeadings); });
+    // this.setState({ subjectHeadings: [] });
   }
 
   render() {
@@ -58,6 +59,8 @@ class SubjectHeadingsList extends React.Component {
     const {
       subjectHeadings,
     } = this.state;
+
+    console.log('render: ', subjectHeadings)
 
     return (
       <ul className={nested ? 'subjectHeadingList nestedSubjectHeadingList' : 'subjectHeadingList'}>
