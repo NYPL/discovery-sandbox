@@ -9,8 +9,8 @@ const SubjectHeadingTableHeader = () => {
         <span className="subjectHeadingToggle"></span>
         <span className="subjectHeadingLabel">Subject Heading</span>
       </span>
-      <span className="subjectHeadingAttribute">Titles</span>
-      <span className="subjectHeadingAttribute">Narrower</span>
+      <span className="subjectHeadingAttribute titles">Titles</span>
+      <span className="subjectHeadingAttribute narrower">Narrower</span>
     </div>
   )
 }

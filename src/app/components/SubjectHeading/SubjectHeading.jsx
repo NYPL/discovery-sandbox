@@ -104,12 +104,12 @@ class SubjectHeading extends React.Component {
     return (
       <li >
         <span className={`subjectHeadingRow ${ open || children ? "openSubjectHeading" : ""}` + `${this.props.nested ? ' nestedSubjectHeading' : ''}`} >
-          <span className="subjectHeadingLabelAndToggle">
-            <span onClick={this.toggleOpen} className="subjectHeadingToggle" style={{'paddingLeft': `${20*indentation}px`}}>{desc_count > 0 ? (!open ? '+' : '-') : null}</span>
+          <span style={{'paddingLeft': `${20*indentation}px`}} className="subjectHeadingLabelAndToggle">
+            <span onClick={this.toggleOpen} className="subjectHeadingToggle" >{desc_count > 0 ? (!open ? '+' : '-') : null}</span>
             <span className="subjectHeadingLabel"><span>{rest}</span>{rest === '' ? '' : ' -- ' }<span className='emph'>{emph}</span></span>
           </span>
-          <span className="subjectHeadingAttribute">{`${bib_count}`}</span>
-          <span className="subjectHeadingAttribute">{`${desc_count}`}</span>
+          <span className="subjectHeadingAttribute titles">{`${bib_count}`}</span>
+          <span className="subjectHeadingAttribute narrower">{`${desc_count}`}</span>
         </span>
         { open ? <SubjectHeadingsList subjectHeadings={narrower} nested="true" indentation={(indentation || 0) + 1}/> : null}
       </li>
