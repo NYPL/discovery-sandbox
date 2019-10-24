@@ -89,6 +89,8 @@ class SubjectHeadingsContainer extends React.Component {
 
   render() {
     const { error, subjectHeadings } = this.state;
+    const { linked } = this.props.location.query;
+
     if (error) {
       return (
         <div>
@@ -110,7 +112,7 @@ class SubjectHeadingsContainer extends React.Component {
               <span className="subjectHeadingAttribute">Titles</span>
               <span className="subjectHeadingAttribute">Narrower</span>
             </div>
-            <SubjectHeadingsList subjectHeadings={subjectHeadings} />
+            <SubjectHeadingsList subjectHeadings={subjectHeadings} linked={linked} />
             {this.pagination()}
           </div>
         </div>
