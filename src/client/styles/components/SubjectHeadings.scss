@@ -2,14 +2,31 @@
   font-weight: 500;
 }
 
+.subjectHeadingAttribute {
+  position: absolute;
+}
+
+.subjectHeadingAttribute.titles {
+  left: 75%;
+}
+
+.subjectHeadingAttribute.narrower {
+  left: 86%;
+}
+
 .subjectMainContentWrapper {
+  position: relative;
   .subjectHeadingRow.tableHeadings {
     margin-bottom: 15px;
+  }
+
+  .subjectHeadingLabel {
+    padding-left: 2%;
   }
 }
 
 .subjectHeadingRow.openSubjectHeading {
-  background: lightgray;
+  background: lightgrey;
 }
 
 .subjectHeadingToggle {
@@ -113,9 +130,6 @@
   list-style: none;
 }
 
-.subjectHeadingRow.tableHeadings {
-}
-
 .subjectHeadingRow.tableHeadings span {
   font-weight: 700;
 }
@@ -196,16 +210,8 @@
     width: 100%
   }
 
-  .subjectHeadingAttribute {
-    position: absolute;
-  }
-
-  .subjectHeadingAttribute.titles {
-    right: 1%;
-  }
-
-  .subjectHeadingAttribute.narrower {
-    right: 11%;
+  .subjectHeadingToggle {
+    font-size: 1em;
   }
 }
 
