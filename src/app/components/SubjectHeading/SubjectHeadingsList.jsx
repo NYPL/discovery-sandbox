@@ -70,7 +70,8 @@ class SubjectHeadingsList extends React.Component {
           subjectHeadings
           .map(subjectHeading => (subjectHeading.button ?
             <AdditionalSubjectHeadingsButton
-              data={subjectHeading}
+              indentation={subjectHeading.indentation}
+              updateParent={subjectHeading.updateParent}
               key={subjectHeading.uuid}
               nested={nested}
               indentation={indentation}

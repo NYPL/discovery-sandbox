@@ -11,13 +11,11 @@ class AdditionalSubjectHeadingsButton extends React.Component {
   }
 
   onClick() {
-    this.props.data.updateParent(this);
+    this.props.updateParent(this);
   }
 
   render() {
-    const {
-      indentation,
-    } = this.props.data;
+    const indentation = this.props.indentation;
 
     return (
       <li>
@@ -39,7 +37,8 @@ class AdditionalSubjectHeadingsButton extends React.Component {
 }
 
 AdditionalSubjectHeadingsButton.propTypes = {
-  data: PropTypes.object,
+  updateParent: PropTypes.func,
+  indentation: PropTypes.number,
 };
 
 export default AdditionalSubjectHeadingsButton;
