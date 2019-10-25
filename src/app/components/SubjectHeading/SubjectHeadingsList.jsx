@@ -9,6 +9,7 @@ import appConfig from '../../../../appConfig';
 
 class SubjectHeadingsList extends React.Component {
   constructor(props) {
+    console.log('subjectheadingslist constructor')
     super(props);
     this.state = { subjectHeadings: props.subjectHeadings };
   }
@@ -38,8 +39,8 @@ class SubjectHeadingsList extends React.Component {
   }
 
   mergeSubjectHeadings(subjectHeadings) {
-    console.log('merge subjectHeadings: ', subjectHeadings);
-    console.log('state subjectheadings: ', this.state.subjectHeadings);
+    // console.log('merge subjectHeadings: ', subjectHeadings);
+    // console.log('state subjectheadings: ', this.state.subjectHeadings);
     subjectHeadings.forEach((subjectHeading) => {
       const matchingHeading = this.state.subjectHeadings.find(
         heading => heading.uuid === subjectHeading.uuid,
@@ -60,7 +61,7 @@ class SubjectHeadingsList extends React.Component {
       subjectHeadings,
     } = this.state;
 
-    console.log('render: ', subjectHeadings)
+    // console.log('render: ', subjectHeadings)
 
     return (
       <ul className={nested ? 'subjectHeadingList nestedSubjectHeadingList' : 'subjectHeadingList'}>

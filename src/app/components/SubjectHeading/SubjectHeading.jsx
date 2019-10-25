@@ -16,7 +16,7 @@ class SubjectHeading extends React.Component {
     this.toggleOpen = this.toggleOpen.bind(this);
     this.updateSubjectHeading = this.updateSubjectHeading.bind(this);
     this.addMore = this.addMore.bind(this);
-    if (this.props.subjectHeading.children) console.log(this.state, this.props);
+    // if (this.props.subjectHeading.children) console.log(this.state, this.props);
   }
 
   componentDidMount() {
@@ -24,7 +24,8 @@ class SubjectHeading extends React.Component {
     window.components.push(this);
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(prevProps, nextProps) {
+    console.log(this.props.subjectHeading.label, 'updateProps: ', prevProps, nextProps)
     if (this.state.narrower.length === 0 && this.props.subjectHeading.children) {
       this.setState({
         narrower: this.props.subjectHeading.children,
@@ -62,7 +63,7 @@ class SubjectHeading extends React.Component {
           } = resp.data;
           narrower.forEach((child) => { child.indentation = (indentation || 0) + 1; });
           if (narrower.length > 10) {
-            narrower[narrower.length - 1] = { button: 'more', url: next_url, updateParent: this.addMore, indentation: (indentation || 0) + 1 };
+            narrower[narrower.length - 1] = { button: 'more', updateParent: this.fetchAndUpdate(next_url), indentation: (indentation || 0) + 1 };
           }
           this.updateSubjectHeading({ narrower: narrower, open: true })
         },
@@ -79,9 +80,25 @@ class SubjectHeading extends React.Component {
     data.narrower.forEach((child) => { child.indentation = (this.props.subjectHeading.indentation || 0) + 1; });
     narrower.splice(-1, 1, ...data.narrower);
     if (data.narrower.length > 10) {
-      narrower.splice(-1, 1, { button: 'more', url: data.next_url, updateParent: this.addMore, indentation: (this.props.subjectHeading.indentation || 0) + 1 });
+      narrower.splice(-1, 1, { button: 'more', updateParent: this.fetchAndUpdate(data.next_url), indentation: (this.props.subjectHeading.indentation || 0) + 1 });
     }
     this.setState({ narrower });
+  }
+
+  fetchAndUpdate(url) {
+    return (element) => {
+      axios({
+        method: 'GET',
+        url: url,
+        crossDomain: true,
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Content-Type': 'application/json',
+        },
+      }).then(
+        resp => this.addMore(element, resp.data),
+      ).catch((resp) => { console.log(resp); });
+    };
   }
 
   addEmphasis(string) {

@@ -11,21 +11,7 @@ class AdditionalSubjectHeadingsButton extends React.Component {
   }
 
   onClick() {
-    const {
-      url,
-      updateParent,
-    } = this.props.data;
-    axios({
-      method: 'GET',
-      url: url,
-      crossDomain: true,
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Content-Type': 'application/json',
-      },
-    }).then(
-      resp => updateParent(this, resp.data),
-    ).catch((resp) => { console.log(resp); });
+    this.props.data.updateParent(this);
   }
 
   render() {
