@@ -5,18 +5,28 @@ import PropTypes from 'prop-types';
 import axios from 'axios';
 import SubjectHeading from './SubjectHeading';
 import AdditionalSubjectHeadingsButton from './AdditionalSubjectHeadingsButton';
+import Range from '../../models/Range';
 import appConfig from '../../../../appConfig';
 
 class SubjectHeadingsList extends React.Component {
   constructor(props) {
     console.log('subjectheadingslist constructor')
     super(props);
-    this.state = { subjectHeadings: props.subjectHeadings };
+    this.state = {
+      subjectHeadings: props.subjectHeadings,
+      range: props.subjectHeadings ?
+        this.initialRange(props.subjectHeadings)
+        : null,
+    };
+    this.updateRange = this.updateRange.bind(this);
+    this.inRangeHeadings = this.inRangeHeadings.bind(this);
+    this.inIntervalHeadings = this.inIntervalHeadings.bind(this);
   }
 
   componentDidUpdate() {
     if (!this.state.subjectHeadings) {
-      this.setState({ subjectHeadings: this.props.subjectHeadings }, () => {
+      const newSubjectHeadings = this.props.subjectHeadings
+      this.setState({ subjectHeadings: newSubjectHeadings, range: this.initialRange(newSubjectHeadings) }, () => {
         const { linked } = this.props;
         if (linked) {
           axios({
@@ -47,8 +57,54 @@ class SubjectHeadingsList extends React.Component {
       );
       Object.assign(matchingHeading, subjectHeading);
     });
-    this.setState({ subjectHeadings: JSON.parse(JSON.stringify(this.state.subjectHeadings)) }, () => { console.log('after: ', this.state.subjectHeadings); });
+    const newSubjectHeadings = JSON.parse(JSON.stringify(this.state.subjectHeadings));
+    this.setState({
+      subjectHeadings: newSubjectHeadings,
+      range: this.initialRange(newSubjectHeadings)
+    }, () => { console.log('after: ', this.state.subjectHeadings); });
     // this.setState({ subjectHeadings: [] });
+  }
+
+  initialRange() {
+    return new Range(0, 'infinity', [{ start: 0, end: 'infinity' }]);
+  }
+
+  updateRange(rangeElement, intervalElement, endpoint, increment) {
+    intervalElement[endpoint] += increment;
+    rangeElement.normalize();
+    this.setState({ range: rangeElement });
+  }
+
+  inRangeHeadings() {
+    const {
+      range,
+      subjectHeadings,
+    } = this.state;
+    return range.intervals.reduce((acc, el) =>
+      acc.concat(this.inIntervalHeadings(el))
+      , []);
+  }
+
+  inIntervalHeadings(interval) {
+    const { indentation } = this.props;
+    const { subjectHeadings, range } = this.state;
+    const { start, end } = interval;
+    const subjectHeadingsInInterval = subjectHeadings.filter((el, i) => i >= start && (end === 'infinity' || i <= end));
+    if (subjectHeadings[start - 1]) {
+      subjectHeadingsInInterval.unshift({
+        button: 'more',
+        indentation,
+        updateParent: element => this.updateRange(range, interval, 'start', -10),
+      });
+    };
+    if (end !== 'infinity' && subjectHeadings[end + 1]) {
+      subjectHeadingsInInterval.push({
+        button: 'more',
+        indentation,
+        updateParent: element => this.updateRange(range, interval, 'end', 10),
+      });
+    }
+    return subjectHeadingsInInterval;
   }
 
   render() {
@@ -67,7 +123,7 @@ class SubjectHeadingsList extends React.Component {
       <ul className={nested ? 'subjectHeadingList nestedSubjectHeadingList' : 'subjectHeadingList'}>
         {
           subjectHeadings ?
-          subjectHeadings
+          this.inRangeHeadings(subjectHeadings)
           .map(subjectHeading => (subjectHeading.button ?
             <AdditionalSubjectHeadingsButton
               indentation={subjectHeading.indentation}
