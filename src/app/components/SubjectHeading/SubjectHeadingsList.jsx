@@ -50,15 +50,13 @@ class SubjectHeadingsList extends React.Component {
   }
 
   mergeSubjectHeadings(subjectHeadings, linked) {
-    console.log('before: ', this.state.subjectHeadings);
     const responseSubjectHeading = subjectHeadings[0];
     this.addRangeData(responseSubjectHeading);
-    console.log('resp: ', responseSubjectHeading);
     const existingSubjectHeadingIndex = this.state.subjectHeadings.findIndex(
       heading => heading.uuid === responseSubjectHeading.uuid,
     );
     this.state.subjectHeadings[existingSubjectHeadingIndex] = responseSubjectHeading;
-    this.setState({ subjectHeadings: this.state.subjectHeadings }, () => { console.log('after: ', this.state.subjectHeadings); });
+    this.setState({ subjectHeadings: this.state.subjectHeadings });
   }
 
   addRangeData(subjectHeading) {
