@@ -93,14 +93,14 @@ class SubjectHeadingsList extends React.Component {
     const subjectHeadingsInInterval = subjectHeadings.filter((el, i) => i >= start && (end === 'infinity' || i <= end));
     if (subjectHeadings[start - 1]) {
       subjectHeadingsInInterval.unshift({
-        button: 'more',
+        button: 'previous',
         indentation,
         updateParent: element => this.updateRange(range, interval, 'start', -10),
       });
     };
     if (end !== 'infinity' && subjectHeadings[end + 1]) {
       subjectHeadingsInInterval.push({
-        button: 'more',
+        button: 'next',
         indentation,
         updateParent: element => this.updateRange(range, interval, 'end', 10),
       });
@@ -110,8 +110,8 @@ class SubjectHeadingsList extends React.Component {
 
   render() {
 
-    window.lists = window.lists || [];
-    window.lists.push(this);
+    // window.lists = window.lists || [];
+    // window.lists.push(this);
 
     const {
       indentation,
@@ -130,6 +130,7 @@ class SubjectHeadingsList extends React.Component {
           .map(subjectHeading => (subjectHeading.button ?
             <AdditionalSubjectHeadingsButton
               indentation={subjectHeading.indentation}
+              button={subjectHeading.button}
               updateParent={subjectHeading.updateParent}
               key={subjectHeading.uuid}
               nested={nested}

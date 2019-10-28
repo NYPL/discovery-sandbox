@@ -16,6 +16,7 @@ class AdditionalSubjectHeadingsButton extends React.Component {
 
   render() {
     const indentation = this.props.indentation;
+    const previous = this.props.button === 'previous';
 
     return (
       <li>
@@ -24,7 +25,9 @@ class AdditionalSubjectHeadingsButton extends React.Component {
             <ul className="subjectHeadingLabelAndToggle">
               <li onClick={this.toggleOpen} className="subjectHeadingToggle" style={{'paddingLeft': `${20*indentation}px`}}></li>
               <li onClick={this.onClick} className="subjectHeadingLabel seeMoreButton" style={{"paddingLeft":`${20*indentation}px`}}>
-                See more
+                {`${previous ? '↑' : '↓'} See more`}
+                {previous ? null : <br /> }
+                {previous ? null : '...'}
               </li>
             </ul>
           </li>
@@ -39,6 +42,7 @@ class AdditionalSubjectHeadingsButton extends React.Component {
 AdditionalSubjectHeadingsButton.propTypes = {
   updateParent: PropTypes.func,
   indentation: PropTypes.number,
+  button: PropTypes.string,
 };
 
 export default AdditionalSubjectHeadingsButton;
