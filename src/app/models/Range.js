@@ -44,7 +44,7 @@ Range.fromSubjectHeading = (subjectHeading, linked) => {
   if (children && uuid !== linked) {
     const mid = children.findIndex(heading => heading.children);
     const intervals = [
-      { start: 0, end: 1 },
+      { start: 0, end: 0 },
     ];
     if (mid > -1) intervals.push({ start: mid - 1, end: mid + 4 });
     range = new Range(0, children.length, intervals);
