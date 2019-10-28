@@ -31,7 +31,7 @@ class SubjectHeadingsList extends React.Component {
         if (linked) {
           axios({
             method: 'GET',
-            url: `${appConfig.shepApi}/subject_headings/${linked}/context`,
+            url: `${appConfig.shepApi}/subject_headings/${linked}/context?type=relatives`,
             crossDomain: true,
             headers: {
               'Access-Control-Allow-Origin': '*',
@@ -40,7 +40,7 @@ class SubjectHeadingsList extends React.Component {
           })
             .then(
               (res) => {
-                this.mergeSubjectHeadings(res.data.subject_headings);
+                this.mergeSubjectHeadings(res.data.subject_headings, linked);
               },
             );
         }
@@ -48,20 +48,21 @@ class SubjectHeadingsList extends React.Component {
     }
   }
 
-  mergeSubjectHeadings(subjectHeadings) {
-    // console.log('merge subjectHeadings: ', subjectHeadings);
-    // console.log('state subjectheadings: ', this.state.subjectHeadings);
-    subjectHeadings.forEach((subjectHeading) => {
-      const matchingHeading = this.state.subjectHeadings.find(
-        heading => heading.uuid === subjectHeading.uuid,
-      );
-      Object.assign(matchingHeading, subjectHeading);
-    });
-    const newSubjectHeadings = JSON.parse(JSON.stringify(this.state.subjectHeadings));
-    this.setState({
-      subjectHeadings: newSubjectHeadings,
-      range: this.initialRange(newSubjectHeadings)
-    }, () => { console.log('after: ', this.state.subjectHeadings); });
+  mergeSubjectHeadings(subjectHeadings, linked) {
+    // subjectHeadings.forEach((subjectHeading) => {
+    //   const matchingHeading = this.state.subjectHeadings.find(
+    //     heading => heading.uuid === subjectHeading.uuid,
+    //   );
+    //   Object.assign(matchingHeading, subjectHeading);
+    // });
+    const responseSubjectHeading = subjectHeadings[0];
+    const existingSubjectHeadingIndex = this.state.subjectHeadings.findIndex(
+      heading => heading.uuid === responseSubjectHeading.uuid,
+    );
+    console.log('index', existingSubjectHeadingIndex);
+    // this.state.subjectHeadings.find(heading => heading.uuid === linked).children = subjectHeadings;
+    this.state.subjectHeadings[existingSubjectHeadingIndex] = responseSubjectHeading;
+    this.setState({ subjectHeadings: JSON.parse(JSON.stringify(this.state.subjectHeadings)) }, () => { console.log('after: ', this.state.subjectHeadings); });
     // this.setState({ subjectHeadings: [] });
   }
 
