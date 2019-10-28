@@ -40,9 +40,9 @@ Range.fromSubjectHeading = (subjectHeading) => {
   const end = children ? children.length : 'infinity';
   const mid = children ? children.findIndex(heading => heading.children) : -1;
   const intervals = [
-    { start: 0, end: 10 },
+    { start: 0, end: 1 },
   ];
-  if (mid > -1) intervals.push({ start: mid - 5, end: mid + 5 });
+  if (mid > -1) intervals.push({ start: mid - 1, end: mid + 4 });
   const range = new Range(0, end, intervals);
   range.normalize();
   return range;
