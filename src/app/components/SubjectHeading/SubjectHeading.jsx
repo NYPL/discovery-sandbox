@@ -8,7 +8,6 @@ import appConfig from '../../../../appConfig';
 class SubjectHeading extends React.Component {
   constructor(props) {
     super(props);
-    console.log('constructing: ', this.props.subjectHeading, this.props.subjectHeading.children);
     this.state = {
       open: !!this.props.subjectHeading.children,
       narrower: (this.props.subjectHeading.children || []),
@@ -16,7 +15,6 @@ class SubjectHeading extends React.Component {
     this.toggleOpen = this.toggleOpen.bind(this);
     this.updateSubjectHeading = this.updateSubjectHeading.bind(this);
     this.addMore = this.addMore.bind(this);
-    if (this.props.subjectHeading.children) console.log(this.state, this.props);
   }
 
   componentDidMount() {
@@ -90,7 +88,6 @@ class SubjectHeading extends React.Component {
   }
 
   render() {
-    console.log('rendering: ', this.props.subjectHeading, this.props.subjectHeading.children);
     const {
       label,
       uuid,
