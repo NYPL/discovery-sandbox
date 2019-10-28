@@ -23,7 +23,6 @@ class SubjectHeading extends React.Component {
   }
 
   componentDidUpdate(prevProps, nextProps) {
-    console.log(this.props.subjectHeading.label, 'updateProps: ', prevProps, nextProps)
     if (this.state.narrower.length === 0 && this.props.subjectHeading.children) {
       this.setState({
         narrower: this.props.subjectHeading.children,
@@ -106,16 +105,18 @@ class SubjectHeading extends React.Component {
 
   render() {
     const {
+      indentation,
+      subjectHeading,
+    } = this.props
+
+    const {
       label,
       uuid,
       bib_count,
       desc_count,
-      children
-    } = this.props.subjectHeading;
-
-    const {
-      indentation
-    } = this.props
+      children,
+      range,
+    } = subjectHeading;
 
     const {
       open,
@@ -137,7 +138,7 @@ class SubjectHeading extends React.Component {
           <span className="subjectHeadingAttribute">{`${bib_count}`}</span>
           <span className="subjectHeadingAttribute">{`${desc_count}`}</span>
         </span>
-        { open ? <SubjectHeadingsList subjectHeadings={narrower} nested="true" indentation={(indentation || 0) + 1}/> : null}
+        { open ? <SubjectHeadingsList subjectHeadings={narrower} range={range} nested="true" indentation={(indentation || 0) + 1}/> : null}
       </li>
     )
   }

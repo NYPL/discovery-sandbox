@@ -18,7 +18,7 @@ class Range {
         acc.push(el);
       }
       return acc;
-    });
+    }, [this.intervals[0]]);
   }
 
   max(a, b) {
@@ -29,8 +29,23 @@ class Range {
   }
 
   min(a, b) {
+    if (a === 'infinity') return b;
+    if (b === 'infinity') return a;
     return a > b ? b : a;
   }
 }
+
+Range.fromSubjectHeading = (subjectHeading) => {
+  const children = subjectHeading.children;
+  const end = children ? children.length : 'infinity';
+  const mid = children ? children.findIndex(heading => heading.children) : -1;
+  const intervals = [
+    { start: 0, end: 10 },
+  ];
+  if (mid > -1) intervals.push({ start: mid - 5, end: mid + 5 });
+  const range = new Range(0, end, intervals);
+  range.normalize();
+  return range;
+};
 
 export default Range;

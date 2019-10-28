@@ -10,64 +10,66 @@ import appConfig from '../../../../appConfig';
 
 class SubjectHeadingsList extends React.Component {
   constructor(props) {
-    console.log('subjectheadingslist constructor')
     super(props);
     this.state = {
       subjectHeadings: props.subjectHeadings,
-      range: props.subjectHeadings ?
-        this.initialRange(props.subjectHeadings)
-        : null,
+      range: this.initialRange(props),
     };
     this.updateRange = this.updateRange.bind(this);
     this.inRangeHeadings = this.inRangeHeadings.bind(this);
     this.inIntervalHeadings = this.inIntervalHeadings.bind(this);
+    this.addRangeData = this.addRangeData.bind(this);
   }
 
   componentDidUpdate() {
     if (!this.state.subjectHeadings) {
       const newSubjectHeadings = this.props.subjectHeadings
-      this.setState({ subjectHeadings: newSubjectHeadings, range: this.initialRange(newSubjectHeadings) }, () => {
-        const { linked } = this.props;
-        if (linked) {
-          axios({
-            method: 'GET',
-            url: `${appConfig.shepApi}/subject_headings/${linked}/context?type=relatives`,
-            crossDomain: true,
-            headers: {
-              'Access-Control-Allow-Origin': '*',
-              'Content-Type': 'application/json',
-            },
-          })
-            .then(
-              (res) => {
-                this.mergeSubjectHeadings(res.data.subject_headings, linked);
+      this.setState(
+        { subjectHeadings: newSubjectHeadings,
+          range: this.initialRange({ subjectHeadings: newSubjectHeadings }),
+        }, () => {
+          const { linked } = this.props;
+          if (linked) {
+            axios({
+              method: 'GET',
+              url: `${appConfig.shepApi}/subject_headings/${linked}/context?type=relatives`,
+              crossDomain: true,
+              headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Content-Type': 'application/json',
               },
-            );
-        }
-      });
+            })
+              .then(
+                (res) => {
+                  this.mergeSubjectHeadings(res.data.subject_headings, linked);
+                },
+              );
+          }
+        });
     }
   }
 
   mergeSubjectHeadings(subjectHeadings, linked) {
-    // subjectHeadings.forEach((subjectHeading) => {
-    //   const matchingHeading = this.state.subjectHeadings.find(
-    //     heading => heading.uuid === subjectHeading.uuid,
-    //   );
-    //   Object.assign(matchingHeading, subjectHeading);
-    // });
+    console.log('before: ', this.state.subjectHeadings);
     const responseSubjectHeading = subjectHeadings[0];
+    this.addRangeData(responseSubjectHeading);
+    console.log('resp: ', responseSubjectHeading);
     const existingSubjectHeadingIndex = this.state.subjectHeadings.findIndex(
       heading => heading.uuid === responseSubjectHeading.uuid,
     );
-    console.log('index', existingSubjectHeadingIndex);
-    // this.state.subjectHeadings.find(heading => heading.uuid === linked).children = subjectHeadings;
     this.state.subjectHeadings[existingSubjectHeadingIndex] = responseSubjectHeading;
-    this.setState({ subjectHeadings: JSON.parse(JSON.stringify(this.state.subjectHeadings)) }, () => { console.log('after: ', this.state.subjectHeadings); });
-    // this.setState({ subjectHeadings: [] });
+    this.setState({ subjectHeadings: this.state.subjectHeadings }, () => { console.log('after: ', this.state.subjectHeadings); });
   }
 
-  initialRange() {
-    return new Range(0, 'infinity', [{ start: 0, end: 'infinity' }]);
+  addRangeData(subjectHeading) {
+    subjectHeading.range = Range.fromSubjectHeading(subjectHeading);
+    if (subjectHeading.children) subjectHeading.children.forEach(child => this.addRangeData(child));
+  }
+
+  initialRange(props) {
+    if (props.range) return props.range;
+    if (props.subjectHeadings) return new Range(0, 'infinity', [{ start: 0, end: 'infinity' }]);
+    return null;
   }
 
   updateRange(rangeElement, intervalElement, endpoint, increment) {
@@ -109,6 +111,10 @@ class SubjectHeadingsList extends React.Component {
   }
 
   render() {
+
+    window.lists = window.lists || [];
+    window.lists.push(this);
+
     const {
       indentation,
       nested,
@@ -117,8 +123,6 @@ class SubjectHeadingsList extends React.Component {
     const {
       subjectHeadings,
     } = this.state;
-
-    // console.log('render: ', subjectHeadings)
 
     return (
       <ul className={nested ? 'subjectHeadingList nestedSubjectHeadingList' : 'subjectHeadingList'}>
