@@ -49,9 +49,14 @@ class SubjectHeadingsList extends React.Component {
     }
   }
 
+  componentDidMount() {
+    window.lists = window.lists || [];
+    window.lists.push(this);
+  }
+
   mergeSubjectHeadings(subjectHeadings, linked) {
     const responseSubjectHeading = subjectHeadings[0];
-    this.addRangeData(responseSubjectHeading);
+    this.addRangeData(responseSubjectHeading, linked);
     const existingSubjectHeadingIndex = this.state.subjectHeadings.findIndex(
       heading => heading.uuid === responseSubjectHeading.uuid,
     );
@@ -59,8 +64,8 @@ class SubjectHeadingsList extends React.Component {
     this.setState({ subjectHeadings: this.state.subjectHeadings });
   }
 
-  addRangeData(subjectHeading) {
-    subjectHeading.range = Range.fromSubjectHeading(subjectHeading);
+  addRangeData(subjectHeading, linked) {
+    subjectHeading.range = Range.fromSubjectHeading(subjectHeading, linked);
     if (subjectHeading.children) subjectHeading.children.forEach(child => this.addRangeData(child));
   }
 
@@ -109,9 +114,6 @@ class SubjectHeadingsList extends React.Component {
   }
 
   render() {
-
-    // window.lists = window.lists || [];
-    // window.lists.push(this);
 
     const {
       indentation,

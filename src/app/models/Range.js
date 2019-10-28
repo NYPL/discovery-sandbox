@@ -35,15 +35,24 @@ class Range {
   }
 }
 
-Range.fromSubjectHeading = (subjectHeading) => {
-  const children = subjectHeading.children;
-  const end = children ? children.length : 'infinity';
-  const mid = children ? children.findIndex(heading => heading.children) : -1;
-  const intervals = [
-    { start: 0, end: 1 },
-  ];
-  if (mid > -1) intervals.push({ start: mid - 1, end: mid + 4 });
-  const range = new Range(0, end, intervals);
+Range.fromSubjectHeading = (subjectHeading, linked) => {
+  const {
+    children,
+    uuid,
+  } = subjectHeading;
+  let range;
+  if (children && uuid !== linked) {
+    const mid = children.findIndex(heading => heading.children);
+    const intervals = [
+      { start: 0, end: 1 },
+    ];
+    if (mid > -1) intervals.push({ start: mid - 1, end: mid + 4 });
+    range = new Range(0, children.length, intervals);
+  } else if (children && uuid === linked) {
+    range = new Range(0, children.length, [{ start: 0, end: 4 }]);
+  } else {
+    range = new Range(0, 'infinity', [{ start: 0, end: 'infinity' }]);
+  }
   range.normalize();
   return range;
 };
