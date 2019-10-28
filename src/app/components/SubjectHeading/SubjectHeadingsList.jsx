@@ -61,7 +61,7 @@ class SubjectHeadingsList extends React.Component {
       heading => heading.uuid === responseSubjectHeading.uuid,
     );
     this.state.subjectHeadings[existingSubjectHeadingIndex] = responseSubjectHeading;
-    this.setState({ subjectHeadings: this.state.subjectHeadings });
+    this.setState(prevState => prevState);
   }
 
   addRangeData(subjectHeading, linked) {
