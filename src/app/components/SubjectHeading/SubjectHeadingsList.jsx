@@ -78,7 +78,7 @@ class SubjectHeadingsList extends React.Component {
   updateRange(rangeElement, intervalElement, endpoint, increment) {
     intervalElement[endpoint] += increment;
     rangeElement.normalize();
-    this.setState({ range: rangeElement });
+    this.setState(prevState => prevState);
   }
 
   inRangeHeadings() {
