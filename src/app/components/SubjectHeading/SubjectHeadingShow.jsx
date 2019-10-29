@@ -12,8 +12,6 @@ class SubjectHeadingShow extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      contextHeadings: [],
-      relatedHeadings: [],
       mainHeading: {
         uuid: this.props.params.subjectHeadingUuid,
         label: ''

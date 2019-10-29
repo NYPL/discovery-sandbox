@@ -22,7 +22,7 @@ class SubjectHeadingsList extends React.Component {
   }
 
   componentDidUpdate() {
-    if (!this.state.subjectHeadings) {
+    if (!this.state.subjectHeadings && this.props.subjectHeadings) {
       const newSubjectHeadings = this.props.subjectHeadings
       this.setState(
         { subjectHeadings: newSubjectHeadings,
@@ -124,7 +124,7 @@ class SubjectHeadingsList extends React.Component {
     const {
       subjectHeadings,
     } = this.state;
-    
+
     return (
       <ul className={nested ? 'subjectHeadingList nestedSubjectHeadingList' : 'subjectHeadingList'}>
         {
