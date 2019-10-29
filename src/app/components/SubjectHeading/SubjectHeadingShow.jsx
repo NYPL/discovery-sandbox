@@ -6,9 +6,6 @@ import BibsList from './BibsList';
 import ResultsList from '../Results/ResultsList';
 import SubjectHeadingTableHeader from './SubjectHeadingTableHeader';
 import appConfig from '../../../../appConfig';
-import {
-  ajaxCall
-} from '../../utils/utils';
 
 
 class SubjectHeadingShow extends React.Component {
@@ -80,18 +77,6 @@ class SubjectHeadingShow extends React.Component {
       })
     })
   }
-
-  // fetchBib(bibId) {
-  //   return axios({
-  //     method: 'GET',
-  //     url: `${appConfig.baseUrl}/api/bib?bibId=b${bibId}`,
-  //     crossDomain: true,
-  //     headers: {
-  //       'Access-Control-Allow-Origin': '*',
-  //       'Content-Type': 'application/json',
-  //     },
-  //   })
-  // }
 
   render() {
     const { contextHeadings, relatedHeadings, bibIds } = this.state
