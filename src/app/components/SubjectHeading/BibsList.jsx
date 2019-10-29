@@ -24,13 +24,9 @@ class BibsList extends React.Component {
     .then(bibs => this.setState({
       bibs
     }))
-    .then(() => {
-      console.log(this.state.bibs);
-    })
   }
 
   fetchBib(bibId) {
-    console.log("fetching bib");
     return axios({
       method: 'GET',
       url: `${appConfig.baseUrl}/api/bib?bibId=b${bibId}`,
@@ -72,7 +68,6 @@ class BibsList extends React.Component {
     if (!bib.data || _isEmpty(bib.data) || !bib.data.title) return null;
 
     const result = bib.data;
-    console.log(result);
     const bibTitle = this.getBibTitle(result);
     const bibId = result && result['@id'] ? result['@id'].substring(4) : '';
     const materialType = result && result.materialType && result.materialType[0] ?
