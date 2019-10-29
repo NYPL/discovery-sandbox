@@ -119,11 +119,14 @@ class SubjectHeadingsList extends React.Component {
       indentation,
       nested,
       related,
+      location,
     } = this.props;
 
     const {
       subjectHeadings,
     } = this.state;
+
+    console.log('list location: ', location);
 
     return (
       <ul className={nested ? 'subjectHeadingList nestedSubjectHeadingList' : 'subjectHeadingList'}>
@@ -144,6 +147,7 @@ class SubjectHeadingsList extends React.Component {
               key={subjectHeading.uuid}
               nested={nested}
               indentation={indentation}
+              location={location}
             />
           )) :
           null
@@ -158,6 +162,7 @@ SubjectHeadingsList.propTypes = {
   subjectHeadings: PropTypes.array,
   indentation: PropTypes.number,
   linked: PropTypes.string,
+  location: PropTypes.object,
 };
 
 export default SubjectHeadingsList;

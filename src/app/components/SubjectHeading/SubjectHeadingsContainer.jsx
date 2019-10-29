@@ -90,7 +90,9 @@ class SubjectHeadingsContainer extends React.Component {
 
   render() {
     const { error, subjectHeadings } = this.state;
+    const location = this.props.location;
     const { linked } = this.props.location.query;
+    console.log('container location: ', location);
 
     if (error) {
       return (
@@ -106,7 +108,7 @@ class SubjectHeadingsContainer extends React.Component {
           <div className="subjectHeadingMainContent index">
             {this.pagination()}
             <SubjectHeadingTableHeader />
-            <SubjectHeadingsList subjectHeadings={subjectHeadings} linked={linked} />
+            <SubjectHeadingsList subjectHeadings={subjectHeadings} linked={linked} location={location} />
             {this.pagination()}
           </div>
         </div>

@@ -15,6 +15,7 @@ class SubjectHeading extends React.Component {
     this.toggleOpen = this.toggleOpen.bind(this);
     this.updateSubjectHeading = this.updateSubjectHeading.bind(this);
     this.addMore = this.addMore.bind(this);
+    this.linkToShow = this.linkToShow.bind(this);
   }
 
   componentDidMount() {
@@ -105,10 +106,17 @@ class SubjectHeading extends React.Component {
     return { emph: components.slice(-1), rest: components.slice(0, -1).join(' -- ') };
   }
 
+  linkToShow(e) {
+    e.preventDefault();
+    console.log('url: ', `${this.props.location.pathname}/${this.props.subjectHeading.uuid}`);
+    this.context.router.push(`${this.props.location.pathname}/${this.props.subjectHeading.uuid}`)
+  }
+
   render() {
     const {
       indentation,
       subjectHeading,
+      location,
     } = this.props
 
     const {
@@ -130,17 +138,19 @@ class SubjectHeading extends React.Component {
       rest,
     } = this.addEmphasis(label);
 
+    console.log('heading location: ', this.props.location);
+
     return (
       <li >
         <div className={`subjectHeadingRow ${ open || children ? "openSubjectHeading" : ""}` + `${this.props.nested ? ' nestedSubjectHeading' : ''}`} >
           <span style={{'paddingLeft': `${20*indentation}px`}} className="subjectHeadingLabelAndToggle">
             <span onClick={this.toggleOpen} className="subjectHeadingToggle" >{desc_count > 0 ? (!open ? '+' : '-') : null}</span>
-            <span className="subjectHeadingLabel"><span>{rest}</span>{rest === '' ? '' : ' -- ' }<span className='emph'>{emph}</span></span>
+            <span className="subjectHeadingLabel" onClick={this.linkToShow}><span>{rest}</span>{rest === '' ? '' : ' -- ' }<span className='emph'>{emph}</span></span>
           </span>
           <span className="subjectHeadingAttribute titles">{`${bib_count}`}</span>
           <span className="subjectHeadingAttribute narrower">{`${desc_count}`}</span>
         </div>
-        { open ? <SubjectHeadingsList subjectHeadings={narrower} nested="true" indentation={(indentation || 0) + 1}/> : null}
+        { open ? <SubjectHeadingsList subjectHeadings={narrower} nested="true" indentation={(indentation || 0) + 1} location={location}/> : null}
       </li>
     )
   }
@@ -148,6 +158,11 @@ class SubjectHeading extends React.Component {
 
 SubjectHeading.propTypes = {
   subjectHeading: PropTypes.object,
+  location: PropTypes.object,
+};
+
+SubjectHeading.contextTypes = {
+  router: PropTypes.object,
 };
 
 export default SubjectHeading;
