@@ -3,8 +3,12 @@ import PropTypes from 'prop-types';
 import axios from 'axios';
 import SubjectHeadingsList from './SubjectHeadingsList';
 import BibsList from './BibsList';
+import ResultsList from '../Results/ResultsList';
 import SubjectHeadingTableHeader from './SubjectHeadingTableHeader';
 import appConfig from '../../../../appConfig';
+import {
+  ajaxCall
+} from '../../utils/utils';
 
 
 class SubjectHeadingShow extends React.Component {
@@ -17,8 +21,11 @@ class SubjectHeadingShow extends React.Component {
         uuid: this.props.params.subjectHeadingUuid,
         label: ''
       },
+      bibIds: [],
       bibs: []
     }
+
+
   }
 
   componentDidMount() {
@@ -52,8 +59,9 @@ class SubjectHeadingShow extends React.Component {
       },
     })
     .then((res) => {
+      let bibIds = res.data.bibs.map(bib => bib.bnumber)
       this.setState({
-        bibs: res.data.bibs
+        bibIds: bibIds
       })
     })
 
@@ -73,17 +81,29 @@ class SubjectHeadingShow extends React.Component {
     })
   }
 
+  // fetchBib(bibId) {
+  //   return axios({
+  //     method: 'GET',
+  //     url: `${appConfig.baseUrl}/api/bib?bibId=b${bibId}`,
+  //     crossDomain: true,
+  //     headers: {
+  //       'Access-Control-Allow-Origin': '*',
+  //       'Content-Type': 'application/json',
+  //     },
+  //   })
+  // }
+
   render() {
-    const { contextHeadings, relatedHeadings, bibs } = this.state
+    const { contextHeadings, relatedHeadings, bibIds } = this.state
 
     const { label, uuid } = this.state.mainHeading
 
     return (
-      <div>
+      <div className="subjectHeadingShow">
         <div className="subjectHeadingsBanner">Subject Headings</div>
         <h2>Subject Heading: <em>{label}</em></h2>
         <div className="subjectHeadingMainContent show">
-          <BibsList bibs={bibs}/>
+          {bibIds.length > 0 ? <BibsList bibs={bibIds}/> : null}
           <div className="subjectHeadingRelated">
             <div className="backgroundContainer">
               <h4>Related Subject Headings for <em>{label}</em></h4>

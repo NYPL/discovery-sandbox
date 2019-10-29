@@ -35,10 +35,6 @@
   top: 1px;
 }
 
-.subjectHeadingRow > span {
-  display: inline-block;
-}
-
 .subjectHeadingRow span {
   margin-bottom: 0px;
 }
@@ -160,9 +156,9 @@
   width: auto;
   display: grid;
   grid-template-areas:
-  'main main main'
-  'bibs bibs related'
-  'bibs bibs context'
+  'main main'
+  'bibs related'
+  'bibs context'
   ;
   padding-left: 20px;
   padding-right: 20px;
@@ -175,6 +171,12 @@
 
   ul {
     list-style: none;
+  }
+}
+
+.subjectHeadingShow {
+  h2 {
+    max-width: 40rem;
   }
 }
 
