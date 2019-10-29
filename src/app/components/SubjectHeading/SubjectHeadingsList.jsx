@@ -118,6 +118,7 @@ class SubjectHeadingsList extends React.Component {
     const {
       indentation,
       nested,
+      related,
     } = this.props;
 
     const {

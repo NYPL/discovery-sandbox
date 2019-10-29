@@ -143,3 +143,57 @@
 }
 
 .subjectHeadingMainContent span {font-size: 1rem;}
+
+.subjectHeadingMainContent.show {
+  width: auto;
+  display: grid;
+  grid-template-areas:
+  'main main main'
+  'bibs bibs related'
+  'bibs bibs context'
+  ;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-bottom: 20px;
+}
+
+.bibs-list {
+  font-size: 14px;
+  grid-area: bibs;
+
+  ul {
+    list-style: none;
+  }
+}
+
+.subjectHeadingContext, .subjectHeadingRelated  {
+  width: fit-content;
+  border-style: solid;
+  border-width: thin;
+  border-color: #478130;
+  justify-self: end;
+  padding-bottom: 1%;
+  margin-left: 1%;
+  margin-bottom: 1%;
+
+  h3 {
+    background-color: #E8E4E3;
+    margin-left: 1%;
+  }
+}
+
+.subjectHeadingContext {
+  grid-area: context;
+}
+
+.subjectHeadingRelated {
+  grid-area: related;
+
+  .emph {
+    color: inherit;
+  }
+
+  .subjectHeadingToggle {
+    display: none;
+  }
+}
