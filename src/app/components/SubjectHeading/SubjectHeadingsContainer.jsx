@@ -101,7 +101,7 @@ class SubjectHeadingsContainer extends React.Component {
       <div>
         <div className="subjectHeadingsBanner">Subject Headings</div>
         <div className="subjectMainContentWrapper">
-          <div className="subjectHeadingMainContent">
+          <div className="subjectHeadingMainContent index">
             {this.pagination()}
             <SubjectHeadingTableHeader />
             <SubjectHeadingsList subjectHeadings={subjectHeadings} />
