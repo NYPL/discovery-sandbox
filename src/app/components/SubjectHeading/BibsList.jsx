@@ -4,18 +4,29 @@ import PropTypes from 'prop-types';
 import LibraryItem from '../../utils/item';
 import axios from 'axios';
 import appConfig from '../../../../appConfig';
+import {
+  isEmpty as _isEmpty,
+  isArray as _isArray,
+} from 'underscore';
+import ItemTable from '../Item/ItemTable';
 
 class BibsList extends React.Component {
   constructor() {
     super()
-    this.getBibTitle = this.getBibTitle.bind(this)
-    this.generateBibLi = this.generateBibLi.bind(this)
+    this.state = {
+      bibs: []
+    }
     this.fetchBib = this.fetchBib.bind(this)
   }
 
   componentDidMount() {
-    Promise.all(this.props.bibs.map(bib => this.fetchBib(bib)))
-    .then(console.log)
+    Promise.all(this.props.bibIds.map(bib => this.fetchBib(bib)))
+    .then(bibs => this.setState({
+      bibs
+    }))
+    .then(() => {
+      console.log(this.state.bibs);
+    })
   }
 
   fetchBib(bibId) {
@@ -58,21 +69,31 @@ class BibsList extends React.Component {
   }
 
   generateBibLi(bib) {
-    const bibTitle = this.getBibTitle(bib);
-    const bibId = bib['@id'] ? result['@id'].substring(4) : '';
-    const materialType = bib && bib.materialType && bib.materialType[0] ?
-      bib.materialType[0].prefLabel : null;
-    const yearPublished = this.getYearDisplay(bib);
-    const publicationStatement = bib.publicationStatement && bib.publicationStatement.length ?
-      bib.publicationStatement[0] : '';
+    if (!bib.data || _isEmpty(bib.data) || !bib.data.title) return null;
+
+    const result = bib.data;
+    console.log(result);
+    const bibTitle = this.getBibTitle(result);
+    const bibId = result && result['@id'] ? result['@id'].substring(4) : '';
+    const materialType = result && result.materialType && result.materialType[0] ?
+      result.materialType[0].prefLabel : null;
+    const yearPublished = this.getYearDisplay(result);
+    const publicationStatement = result.publicationStatement && result.publicationStatement.length ?
+      result.publicationStatement[0] : '';
     const items = LibraryItem.getItems(result);
     const totalItems = items.length;
     const hasRequestTable = items.length === 1;
 
     return (
-      <li key={i} className={`nypl-results-item ${hasRequestTable ? 'has-request' : ''}`}>
+      <li key={bibId} className={`nypl-results-item ${hasRequestTable ? 'has-request' : ''}`}>
         <h3>
+          <Link
+            onClick={e => this.getBibRecord(e, bibId, bibTitle)}
+            to={`${appConfig.baseUrl}/bib/${bibId}?searchKeywords=${this.props.searchKeywords}`}
+            className="title"
+          >
             {bibTitle}
+          </Link>
         </h3>
         <div className="nypl-results-item-description">
           <ul>
@@ -95,16 +116,16 @@ class BibsList extends React.Component {
             />
         }
       </li>
-    )
+    );
   }
 
 
   render() {
-    console.log(this.props.bibs);
     return (
       <div className="bibs-list">
         <h4>Titles</h4>
         <ul>
+        {this.state.bibs.map((bib) => this.generateBibLi(bib))}
         </ul>
       </div>
     )
