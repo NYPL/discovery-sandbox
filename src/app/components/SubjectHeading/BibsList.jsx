@@ -38,6 +38,8 @@ class BibsList extends React.Component {
     })
   }
 
+  // from here down until render() is copied and only slightly modifed from '../Results/ResultsList'
+
   getBibTitle(bib) {
     if (!bib.titleDisplay || !bib.titleDisplay.length) {
       const author = bib.creatorLiteral && bib.creatorLiteral.length ?
