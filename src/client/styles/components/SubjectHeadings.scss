@@ -233,6 +233,7 @@
 
 .subjectHeadingRelated {
   grid-area: related;
+  height: fit-content;
 
   .emph {
     color: inherit;
