@@ -92,7 +92,6 @@ class SubjectHeadingsContainer extends React.Component {
     const { error, subjectHeadings } = this.state;
     const location = this.props.location;
     const { linked } = this.props.location.query;
-    console.log('container location: ', location);
 
     if (error) {
       return (

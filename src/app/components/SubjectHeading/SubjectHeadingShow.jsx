@@ -18,9 +18,10 @@ class SubjectHeadingShow extends React.Component {
       },
       bibIds: [],
       bibs: []
-    }
+    };
 
-
+    this.linkToContext = this.linkToContext.bind(this);
+    this.hasUuid = this.hasUuid.bind(this);
   }
 
   componentDidMount() {
@@ -76,10 +77,36 @@ class SubjectHeadingShow extends React.Component {
     })
   }
 
-  render() {
-    const { contextHeadings, relatedHeadings, bibIds } = this.state
+  hasUuid(headings) {
+    const uuid = this.props.params.subjectHeadingUuid;
+    console.log('hasUuid: ', uuid, headings);
+    if (!headings.reduce) return headings.uuid === uuid || this.hasUuid(headings.children || []);
+    return headings.reduce(
+      (acc, el) => el.uuid === uuid || this.hasUuid(el.children || []) || acc,
+      false,
+    );
+  }
 
-    const { label, uuid } = this.state.mainHeading
+  linkToContext(e) {
+    e.preventDefault();
+    const {
+      contextHeadings,
+    } = this.state;
+    const uuid = this.props.params.subjectHeadingUuid;
+    console.log('show state: ', this.state);
+    const topLevelIndex = contextHeadings.findIndex(this.hasUuid);
+    console.log('topLevelIndex: ', topLevelIndex);
+    const linkLabel = contextHeadings[topLevelIndex && topLevelIndex - 1].label;
+    const path = this.props.location.pathname.replace(/\/subject_headings.*/, '');
+    this.context.router.push(`${path}/subject_headings?fromLabel=${linkLabel}&fromComparator=start&linked=${uuid}`)
+  }
+
+  render() {
+    const { contextHeadings, relatedHeadings, bibIds } = this.state;
+
+    const { label } = this.state.mainHeading;
+
+    const { location } = this.props;
 
     return (
       <div className="subjectHeadingShow">
@@ -92,19 +119,31 @@ class SubjectHeadingShow extends React.Component {
               <h4>Related Subject Headings for <em>{label}</em></h4>
             </div>
             <SubjectHeadingTableHeader />
-            <SubjectHeadingsList subjectHeadings={relatedHeadings}/>
+            <SubjectHeadingsList subjectHeadings={relatedHeadings} location={location}/>
           </div>
           <div className="subjectHeadingContext">
             <div className="backgroundContainer">
               <h4>Subject Headings around <em>{label}</em></h4>
             </div>
             <SubjectHeadingTableHeader />
-            <SubjectHeadingsList subjectHeadings={contextHeadings}/>
+            <SubjectHeadingsList subjectHeadings={contextHeadings} location={location}/>
+            <a onClick={this.linkToContext} className="linkToIndex">See full context</a>
           </div>
         </div>
       </div>
     )
   }
 }
+
+
+SubjectHeadingShow.propTypes = {
+  location: PropTypes.object,
+};
+
+
+SubjectHeadingShow.contextTypes = {
+  router: PropTypes.object,
+};
+
 
 export default SubjectHeadingShow;

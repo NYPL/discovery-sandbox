@@ -126,8 +126,6 @@ class SubjectHeadingsList extends React.Component {
       subjectHeadings,
     } = this.state;
 
-    console.log('list location: ', location);
-
     return (
       <ul className={nested ? 'subjectHeadingList nestedSubjectHeadingList' : 'subjectHeadingList'}>
         {

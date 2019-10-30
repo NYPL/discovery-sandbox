@@ -7,6 +7,7 @@ import appConfig from '../../../../appConfig';
 
 class SubjectHeading extends React.Component {
   constructor(props) {
+
     super(props);
     this.state = {
       open: !!this.props.subjectHeading.children,
@@ -24,6 +25,7 @@ class SubjectHeading extends React.Component {
   }
 
   componentDidUpdate(prevProps, nextProps) {
+
     if (this.state.narrower.length === 0 && this.props.subjectHeading.children) {
       this.setState({
         narrower: this.props.subjectHeading.children,
@@ -108,8 +110,8 @@ class SubjectHeading extends React.Component {
 
   linkToShow(e) {
     e.preventDefault();
-    console.log('url: ', `${this.props.location.pathname}/${this.props.subjectHeading.uuid}`);
-    this.context.router.push(`${this.props.location.pathname}/${this.props.subjectHeading.uuid}`)
+    let path = this.props.location.pathname.replace(/\/subject_headings.*/, '');
+    this.context.router.push(`${path}/subject_headings/${this.props.subjectHeading.uuid}`)
   }
 
   render() {
@@ -138,10 +140,8 @@ class SubjectHeading extends React.Component {
       rest,
     } = this.addEmphasis(label);
 
-    console.log('heading location: ', this.props.location);
-
     return (
-      <li >
+      <li data={`${subjectHeading.uuid}`}>
         <div className={`subjectHeadingRow ${ open || children ? "openSubjectHeading" : ""}` + `${this.props.nested ? ' nestedSubjectHeading' : ''}`} >
           <span style={{'paddingLeft': `${20*indentation}px`}} className="subjectHeadingLabelAndToggle">
             <span onClick={this.toggleOpen} className="subjectHeadingToggle" >{desc_count > 0 ? (!open ? '+' : '-') : null}</span>
