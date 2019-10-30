@@ -79,7 +79,6 @@ class SubjectHeadingShow extends React.Component {
 
   hasUuid(headings) {
     const uuid = this.props.params.subjectHeadingUuid;
-    console.log('hasUuid: ', uuid, headings);
     if (!headings.reduce) return headings.uuid === uuid || this.hasUuid(headings.children || []);
     return headings.reduce(
       (acc, el) => el.uuid === uuid || this.hasUuid(el.children || []) || acc,
@@ -93,9 +92,7 @@ class SubjectHeadingShow extends React.Component {
       contextHeadings,
     } = this.state;
     const uuid = this.props.params.subjectHeadingUuid;
-    console.log('show state: ', this.state);
     const topLevelIndex = contextHeadings.findIndex(this.hasUuid);
-    console.log('topLevelIndex: ', topLevelIndex);
     const linkLabel = contextHeadings[topLevelIndex && topLevelIndex - 1].label;
     const path = this.props.location.pathname.replace(/\/subject_headings.*/, '');
     this.context.router.push(`${path}/subject_headings?fromLabel=${linkLabel}&fromComparator=start&linked=${uuid}`)
