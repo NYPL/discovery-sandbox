@@ -24,6 +24,12 @@ class BibsList extends React.Component {
     .then(bibs => this.setState({
       bibs
     }))
+    .catch(
+      (err) => {
+        console.log('error: ', err);
+        this.setState({ error: true });
+      },
+    )
   }
 
   fetchBib(bibId) {
@@ -81,7 +87,10 @@ class BibsList extends React.Component {
     const totalItems = items.length;
     const hasRequestTable = items.length === 1;
 
-    return (
+    if (this.state.error) return (
+      <div>There are no titles for this subject heading</div>
+    )
+    else return (
       <li key={bibId} className={`nypl-results-item ${hasRequestTable ? 'has-request' : ''}`}>
         <h3>
           <Link

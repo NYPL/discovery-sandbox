@@ -19,8 +19,6 @@ class SubjectHeadingShow extends React.Component {
       bibIds: [],
       bibs: []
     }
-
-
   }
 
   componentDidMount() {
@@ -43,6 +41,12 @@ class SubjectHeadingShow extends React.Component {
         }
       })
     })
+    .catch(
+      (err) => {
+        console.log('error: ', err);
+        this.setState({ error: true });
+      },
+    )
 
     axios({
       method: 'GET',
@@ -59,6 +63,12 @@ class SubjectHeadingShow extends React.Component {
         bibIds: bibIds
       })
     })
+    .catch(
+      (err) => {
+        console.log('error: ', err);
+        this.setState({ error: true });
+      },
+    )
 
     axios({
       method: 'GET',
@@ -74,36 +84,45 @@ class SubjectHeadingShow extends React.Component {
         relatedHeadings: res.data.related_headings
       })
     })
+    .catch(
+      (err) => {
+        console.log('error: ', err);
+        this.setState({ error: true });
+      },
+    )
   }
 
   render() {
-    const { contextHeadings, relatedHeadings, bibIds } = this.state
+    const { contextHeadings, relatedHeadings, bibIds, error } = this.state
 
     const { label, uuid } = this.state.mainHeading
-
-    return (
-      <div className="subjectHeadingShow">
-        <div className="subjectHeadingsBanner">Subject Headings</div>
-        <h2>Subject Heading: <em>{label}</em></h2>
-        <div className="subjectHeadingMainContent show">
-          {bibIds.length > 0 ? <BibsList bibIds={bibIds}/> : null}
-          <div className="subjectHeadingRelated">
-            <div className="backgroundContainer">
-              <h4>Related Subject Headings for <em>{label}</em></h4>
+    if (error) {
+      return (<div>Not a subject heading</div>)
+    } else {
+      return (
+        <div className="subjectHeadingShow">
+          <div className="subjectHeadingsBanner">Subject Headings</div>
+          <h2>Subject Heading: <em>{label}</em></h2>
+          <div className="subjectHeadingMainContent show">
+            {bibIds.length > 0 ? <BibsList bibIds={bibIds}/> : null}
+            <div className="subjectHeadingRelated">
+              <div className="backgroundContainer">
+                <h4>Related Subject Headings for <em>{label}</em></h4>
+              </div>
+              <SubjectHeadingTableHeader />
+              <SubjectHeadingsList subjectHeadings={relatedHeadings}/>
             </div>
-            <SubjectHeadingTableHeader />
-            <SubjectHeadingsList subjectHeadings={relatedHeadings}/>
-          </div>
-          <div className="subjectHeadingContext">
-            <div className="backgroundContainer">
-              <h4>Subject Headings around <em>{label}</em></h4>
+            <div className="subjectHeadingContext">
+              <div className="backgroundContainer">
+                <h4>Subject Headings around <em>{label}</em></h4>
+              </div>
+              <SubjectHeadingTableHeader />
+              <SubjectHeadingsList subjectHeadings={contextHeadings}/>
             </div>
-            <SubjectHeadingTableHeader />
-            <SubjectHeadingsList subjectHeadings={contextHeadings}/>
           </div>
         </div>
-      </div>
-    )
+      )
+    }
   }
 }
 
