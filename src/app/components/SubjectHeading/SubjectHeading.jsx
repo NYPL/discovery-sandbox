@@ -142,14 +142,14 @@ class SubjectHeading extends React.Component {
 
     return (
       <li data={`${subjectHeading.uuid}`}>
-        <div className={`subjectHeadingRow ${ open || children ? "openSubjectHeading" : ""}` + `${this.props.nested ? ' nestedSubjectHeading' : ''}`} >
+        <a className={`subjectHeadingRow ${ open || children ? "openSubjectHeading" : ""}` + `${this.props.nested ? ' nestedSubjectHeading' : ''}`} >
           <span style={{'paddingLeft': `${20*indentation}px`}} className="subjectHeadingLabelAndToggle">
             <span onClick={this.toggleOpen} className="subjectHeadingToggle" >{desc_count > 0 ? (!open ? '+' : '-') : null}</span>
             <span className="subjectHeadingLabel" onClick={this.linkToShow}><span>{rest}</span>{rest === '' ? '' : ' -- ' }<span className='emph'>{emph}</span></span>
           </span>
           <span className="subjectHeadingAttribute titles">{`${bib_count}`}</span>
           <span className="subjectHeadingAttribute narrower">{`${desc_count}`}</span>
-        </div>
+        </a>
         { open ? <SubjectHeadingsList subjectHeadings={narrower} nested="true" indentation={(indentation || 0) + 1} location={location}/> : null}
       </li>
     )

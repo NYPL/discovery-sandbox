@@ -39,6 +39,11 @@
   margin-bottom: 0px;
 }
 
+.subjectHeadingRow span:hover {
+  text-decoration: underline;
+  color: #176e91;
+}
+
 .subjectHeadingLabelAndToggle {
   list-style: none;
   margin-left: 15px;
@@ -136,6 +141,10 @@
 
 .emph {
   color: #a83232;
+}
+
+.subjectHeadingRow:hover .emph {
+  color: #176e91;
 }
 
 .subjectHeadingMainContent span {
