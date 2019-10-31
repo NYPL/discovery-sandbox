@@ -10,14 +10,14 @@ import appConfig from '../../../../appConfig';
 
 class SubjectHeadingShow extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       mainHeading: {
         uuid: this.props.params.subjectHeadingUuid,
-        label: ''
+        label: '',
       },
       bibIds: [],
-      bibs: []
+      bibs: [],
     };
 
     this.linkToContext = this.linkToContext.bind(this);
@@ -145,7 +145,7 @@ class SubjectHeadingShow extends React.Component {
             </div>
             <SubjectHeadingTableHeader />
             <SubjectHeadingsList subjectHeadings={contextHeadings} location={location}/>
-            <a onClick={this.linkToContext} className="linkToIndex">See full context</a>
+            <a onClick={this.linkToContext} className="link toIndex">See full context</a>
           </div>
         </div>
       </div>
