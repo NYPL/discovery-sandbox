@@ -2,6 +2,10 @@
   font-weight: 500;
 }
 
+.subjectHeadingRow:hover {
+  color: inherit;
+}
+
 .subjectHeadingAttribute {
   position: absolute;
 }
@@ -39,7 +43,7 @@
   margin-bottom: 0px;
 }
 
-.subjectHeadingRow span:hover {
+.subjectHeadingLabel:hover {
   text-decoration: underline;
   color: #176e91;
 }
@@ -143,7 +147,7 @@
   color: #a83232;
 }
 
-.subjectHeadingRow:hover .emph {
+.subjectHeadingLabel:hover .emph {
   color: #176e91;
 }
 
