@@ -130,6 +130,8 @@ class SubjectHeading extends React.Component {
       range,
     } = subjectHeading;
 
+    console.log(label, range);
+
     const {
       open,
       narrower,
@@ -150,7 +152,7 @@ class SubjectHeading extends React.Component {
           <span className="subjectHeadingAttribute titles">{`${bib_count}`}</span>
           <span className="subjectHeadingAttribute narrower">{`${desc_count}`}</span>
         </a>
-        { open ? <SubjectHeadingsList subjectHeadings={narrower} nested="true" indentation={(indentation || 0) + 1} location={location}/> : null}
+        { open ? <SubjectHeadingsList subjectHeadings={narrower} nested="true" indentation={(indentation || 0) + 1} location={location} range={range} /> : null}
       </li>
     )
   }

@@ -65,11 +65,14 @@ class SubjectHeadingsList extends React.Component {
   }
 
   addRangeData(subjectHeading, linked) {
+    // console.log('adding range data', subjectHeading, linked);
     subjectHeading.range = Range.fromSubjectHeading(subjectHeading, linked);
+    // console.log(subjectHeading.range);
     if (subjectHeading.children) subjectHeading.children.forEach(child => this.addRangeData(child));
   }
 
   initialRange(props) {
+    console.log(props);
     if (props.range) return props.range;
     if (props.subjectHeadings) return new Range(0, 'infinity', [{ start: 0, end: 'infinity' }]);
     return null;
@@ -125,6 +128,8 @@ class SubjectHeadingsList extends React.Component {
     const {
       subjectHeadings,
     } = this.state;
+
+    console.log('subjectHeadings', this.inRangeHeadings(subjectHeadings))
 
     return (
       <ul className={nested ? 'subjectHeadingList nestedSubjectHeadingList' : 'subjectHeadingList'}>
