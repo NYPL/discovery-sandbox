@@ -130,8 +130,6 @@ class SubjectHeading extends React.Component {
       range,
     } = subjectHeading;
 
-    console.log(label, range);
-
     const {
       open,
       narrower,
