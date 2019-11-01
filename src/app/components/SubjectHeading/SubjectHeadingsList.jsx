@@ -11,7 +11,6 @@ import appConfig from '../../../../appConfig';
 class SubjectHeadingsList extends React.Component {
   constructor(props) {
     super(props);
-    console.log('props: ', props);
     const {
       subjectHeadings,
       container,
@@ -23,7 +22,6 @@ class SubjectHeadingsList extends React.Component {
       range: this.initialRange(props),
       interactive: !(container === 'context') || location.pathname.includes(parentUuid),
     };
-    console.log('state: ', this.state);
     this.updateRange = this.updateRange.bind(this);
     this.inRangeHeadings = this.inRangeHeadings.bind(this);
     this.inIntervalHeadings = this.inIntervalHeadings.bind(this);
