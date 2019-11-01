@@ -22,14 +22,14 @@ class AdditionalSubjectHeadingsButton extends React.Component {
     const previous = this.props.button === 'previous';
 
     return (
-      <li>
+      <li className={interactive ? '' : 'staticDots'}>
         <ul className="subjectHeadingRow" >
           <li>
             <ul className="subjectHeadingLabelAndToggle">
               <li onClick={this.toggleOpen} className="subjectHeadingToggle" style={{'paddingLeft': `${20*indentation}px`}}></li>
               <li onClick={this.onClick} className="subjectHeadingLabel seeMoreButton" style={{"paddingLeft":`${20*indentation}px`}}>
                 {interactive ? `${previous ? '↑' : '↓'} See more` : null}
-                {previous ? null : <br /> }
+                {previous || !interactive ? null : <br /> }
                 {previous ? null : '...'}
               </li>
             </ul>
