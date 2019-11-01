@@ -11,7 +11,6 @@ import appConfig from '../../../../appConfig';
 class SubjectHeadingsList extends React.Component {
   constructor(props) {
     super(props);
-    console.log(props);
     this.state = {
       subjectHeadings: props.subjectHeadings,
       range: this.initialRange(props),
@@ -21,15 +20,12 @@ class SubjectHeadingsList extends React.Component {
     this.inIntervalHeadings = this.inIntervalHeadings.bind(this);
   }
 
-
-
   componentDidMount() {
     window.lists = window.lists || [];
     window.lists.push(this);
   }
 
   componentDidUpdate() {
-    console.log('updating: ', this.props);
     if (!this.state.subjectHeadings && this.props.subjectHeadings) {
       const newSubjectHeadings = this.props.subjectHeadings
       this.setState(
