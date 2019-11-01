@@ -154,7 +154,7 @@ class SubjectHeadingShow extends React.Component {
               <h4>Subject Headings around <em>{label}</em></h4>
             </div>
             <SubjectHeadingTableHeader />
-            <SubjectHeadingsList subjectHeadings={contextHeadings} location={location} showId={uuid} keyId="context" />
+            <SubjectHeadingsList subjectHeadings={contextHeadings} location={location} showId={uuid} keyId="context" container="context"/>
             <a onClick={this.linkToContext} className="link toIndex">See full context</a>
           </div>
         </div>

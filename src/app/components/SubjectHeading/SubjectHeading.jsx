@@ -7,11 +7,17 @@ import appConfig from '../../../../appConfig';
 
 class SubjectHeading extends React.Component {
   constructor(props) {
-
     super(props);
+    const {
+      subjectHeading,
+      container,
+    } = this.props;
+    const {
+      children,
+    } = subjectHeading;
     this.state = {
-      open: !!this.props.subjectHeading.children,
-      narrower: (this.props.subjectHeading.children || []),
+      open: !!children,
+      narrower: (children || []),
     };
     this.toggleOpen = this.toggleOpen.bind(this);
     this.updateSubjectHeading = this.updateSubjectHeading.bind(this);
@@ -119,6 +125,7 @@ class SubjectHeading extends React.Component {
       indentation,
       subjectHeading,
       location,
+      container,
     } = this.props
 
     const {
@@ -150,9 +157,19 @@ class SubjectHeading extends React.Component {
           <span className="subjectHeadingAttribute titles">{`${bib_count}`}</span>
           <span className="subjectHeadingAttribute narrower">{`${desc_count}`}</span>
         </a>
-        { open ? <SubjectHeadingsList subjectHeadings={narrower} nested="true" indentation={(indentation || 0) + 1} location={location} range={range} /> : null}
+        { open
+          ? <SubjectHeadingsList
+            subjectHeadings={narrower}
+            nested="true"
+            indentation={(indentation || 0) + 1}
+            location={location}
+            range={range}
+            container={container}
+            parentUuid={uuid}
+          />
+          : null}
       </li>
-    )
+    );
   }
 }
 
