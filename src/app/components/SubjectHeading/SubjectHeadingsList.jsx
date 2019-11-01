@@ -11,10 +11,19 @@ import appConfig from '../../../../appConfig';
 class SubjectHeadingsList extends React.Component {
   constructor(props) {
     super(props);
+    console.log('props: ', props);
+    const {
+      subjectHeadings,
+      container,
+      location,
+      parentUuid,
+    } = props;
     this.state = {
-      subjectHeadings: props.subjectHeadings,
+      subjectHeadings: subjectHeadings,
       range: this.initialRange(props),
+      interactive: !(container === 'context') || location.pathname.includes(parentUuid),
     };
+    console.log('state: ', this.state);
     this.updateRange = this.updateRange.bind(this);
     this.inRangeHeadings = this.inRangeHeadings.bind(this);
     this.inIntervalHeadings = this.inIntervalHeadings.bind(this);
@@ -120,10 +129,12 @@ class SubjectHeadingsList extends React.Component {
       nested,
       related,
       location,
+      container,
     } = this.props;
 
     const {
       subjectHeadings,
+      interactive,
     } = this.state;
 
     return (
@@ -139,6 +150,7 @@ class SubjectHeadingsList extends React.Component {
               key={subjectHeading.uuid}
               nested={nested}
               indentation={indentation}
+              interactive={interactive}
             />
             : <SubjectHeading
               subjectHeading={subjectHeading}
@@ -146,6 +158,7 @@ class SubjectHeadingsList extends React.Component {
               nested={nested}
               indentation={indentation}
               location={location}
+              container={container}
             />
           )) :
           null
