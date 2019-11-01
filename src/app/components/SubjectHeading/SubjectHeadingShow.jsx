@@ -5,6 +5,7 @@ import SubjectHeadingsList from './SubjectHeadingsList';
 import BibsList from './BibsList';
 import ResultsList from '../Results/ResultsList';
 import SubjectHeadingTableHeader from './SubjectHeadingTableHeader';
+import Range from '../../models/Range';
 import appConfig from '../../../../appConfig';
 
 
@@ -22,6 +23,7 @@ class SubjectHeadingShow extends React.Component {
 
     this.linkToContext = this.linkToContext.bind(this);
     this.hasUuid = this.hasUuid.bind(this);
+    this.processContextHeadings = this.processContextHeadings.bind(this);
   }
 
   componentDidMount() {
@@ -36,20 +38,20 @@ class SubjectHeadingShow extends React.Component {
         'Content-Type': 'application/json',
       },
     })
-    .then((res) => {
-      this.setState({
-        contextHeadings: res.data.subject_headings,
-        mainHeading: {
-          label: res.data.request.main_label
-        }
+      .then((res) => {
+        this.setState({
+          contextHeadings: this.processContextHeadings(res.data.subject_headings, uuid),
+          mainHeading: {
+            label: res.data.request.main_label,
+          },
+        });
       })
-    })
-    .catch(
-      (err) => {
-        console.log('error: ', err);
-        this.setState({ error: true });
-      },
-    )
+      .catch(
+        (err) => {
+          console.log('error: ', err);
+          this.setState({ error: true });
+        },
+      );
 
     axios({
       method: 'GET',
@@ -60,18 +62,18 @@ class SubjectHeadingShow extends React.Component {
         'Content-Type': 'application/json',
       },
     })
-    .then((res) => {
-      let bibIds = res.data.bibs.map(bib => bib.bnumber)
-      this.setState({
-        bibIds: bibIds
+      .then((res) => {
+        let bibIds = res.data.bibs.map(bib => bib.bnumber);
+        this.setState({
+          bibIds: bibIds
+        });
       })
-    })
-    .catch(
-      (err) => {
-        console.log('error: ', err);
-        this.setState({ error: true });
-      },
-    )
+      .catch(
+        (err) => {
+          console.log('error: ', err);
+          this.setState({ error: true });
+        },
+      );
 
     axios({
       method: 'GET',
@@ -82,17 +84,17 @@ class SubjectHeadingShow extends React.Component {
         'Content-Type': 'application/json',
       },
     })
-    .then((res) => {
-      this.setState({
-        relatedHeadings: res.data.related_headings
+      .then((res) => {
+        this.setState({
+          relatedHeadings: res.data.related_headings,
+        });
       })
-    })
-    .catch(
-      (err) => {
-        console.log('error: ', err);
-        this.setState({ error: true });
-      },
-    )
+      .catch(
+        (err) => {
+          console.log('error: ', err);
+          this.setState({ error: true });
+        },
+      );
   }
 
   hasUuid(headings) {
@@ -116,6 +118,14 @@ class SubjectHeadingShow extends React.Component {
     this.context.router.push(`${path}/subject_headings?fromLabel=${linkLabel}&fromComparator=start&linked=${uuid}`)
   }
 
+  processContextHeadings(headings, uuid) {
+    headings.forEach(heading => Range.addRangeData(heading, uuid, 'show'));
+    const mainHeadingIndex = headings.findIndex(heading => heading.children || heading.uuid === uuid);
+    const startIndex = mainHeadingIndex > 0 ? mainHeadingIndex - 1 : 0;
+    const endIndex = mainHeadingIndex + 2;
+    return headings.slice(startIndex, endIndex);
+  }
+
   render() {
     const { contextHeadings, relatedHeadings, bibIds, error, mainHeading } = this.state
 
@@ -137,14 +147,14 @@ class SubjectHeadingShow extends React.Component {
               <h4>Related Subject Headings for <em>{label}</em></h4>
             </div>
             <SubjectHeadingTableHeader />
-            <SubjectHeadingsList subjectHeadings={relatedHeadings} location={location}/>
+            <SubjectHeadingsList subjectHeadings={relatedHeadings} location={location} keyId="related"/>
           </div>
           <div className="subjectHeadingContext">
             <div className="backgroundContainer">
               <h4>Subject Headings around <em>{label}</em></h4>
             </div>
             <SubjectHeadingTableHeader />
-            <SubjectHeadingsList subjectHeadings={contextHeadings} location={location}/>
+            <SubjectHeadingsList subjectHeadings={contextHeadings} location={location} showId={uuid} keyId="context" />
             <a onClick={this.linkToContext} className="link toIndex">See full context</a>
           </div>
         </div>
