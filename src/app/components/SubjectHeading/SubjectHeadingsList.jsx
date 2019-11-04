@@ -72,7 +72,7 @@ class SubjectHeadingsList extends React.Component {
 
   initialRange(props) {
     if (props.range) return props.range;
-    if (props.subjectHeadings) return new Range(0, 'infinity', [{ start: 0, end: 'infinity' }]);
+    if (props.subjectHeadings) return new Range(0, Infinity, [{ start: 0, end: Infinity }]);
     return null;
   }
 
@@ -96,7 +96,7 @@ class SubjectHeadingsList extends React.Component {
     const { indentation } = this.props;
     const { subjectHeadings, range } = this.state;
     const { start, end } = interval;
-    const subjectHeadingsInInterval = subjectHeadings.filter((el, i) => i >= start && (end === 'infinity' || i <= end));
+    const subjectHeadingsInInterval = subjectHeadings.filter((el, i) => i >= start && i <= end);
     if (subjectHeadings[start - 1]) {
       subjectHeadingsInInterval.unshift({
         button: 'previous',
@@ -104,7 +104,7 @@ class SubjectHeadingsList extends React.Component {
         updateParent: element => this.updateRange(range, interval, 'start', -10),
       });
     };
-    if (end !== 'infinity' && subjectHeadings[end + 1]) {
+    if (end !== Infinity && subjectHeadings[end + 1]) {
       subjectHeadingsInInterval.push({
         button: 'next',
         indentation,

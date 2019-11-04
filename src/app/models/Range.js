@@ -7,31 +7,18 @@ class Range {
 
   normalize() {
     this.intervals.forEach((interval) => {
-      interval.start = this.max(interval.start, this.start);
-      interval.end = this.min(interval.end, this.end);
+      interval.start = Math.max(interval.start, this.start);
+      interval.end = Math.min(interval.end, this.end);
     });
     this.intervals = this.intervals.reduce((acc, el) => {
       const last = acc[acc.length - 1];
-      if (last.end === 'infinity' || last.end >= el.start - 1) {
-        last.end = this.max(last.end, el.end);
+      if (last.end >= el.start - 1) {
+        last.end = Math.max(last.end, el.end);
       } else {
         acc.push(el);
       }
       return acc;
     }, [this.intervals[0]]);
-  }
-
-  max(a, b) {
-    if (a === 'infinity' || b === 'infinity') {
-      return 'infinity';
-    }
-    return a > b ? a : b;
-  }
-
-  min(a, b) {
-    if (a === 'infinity') return b;
-    if (b === 'infinity') return a;
-    return a > b ? b : a;
   }
 }
 
@@ -53,13 +40,11 @@ Range.fromSubjectHeading = (subjectHeading, linked, show = null) => {
   } else if (children && uuid === linked && show) {
     range = new Range(0, children.length, [{ start: 0, end: 0 }]);
   } else {
-    range = new Range(0, 'infinity', [{ start: 0, end: 'infinity' }]);
+    range = new Range(0, Infinity, [{ start: 0, end: Infinity }]);
   }
   range.normalize();
   return range;
 };
-
-
 
 
 Range.addRangeData = (subjectHeading, linked, show = null) => {
