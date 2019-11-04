@@ -69,7 +69,7 @@ class SubjectHeading extends React.Component {
           } = resp.data;
           narrower.forEach((child) => { child.indentation = (indentation || 0) + 1; });
           if (next_url) {
-            narrower[narrower.length - 1] = { button: 'more', updateParent: this.fetchAndUpdate(next_url), indentation: (indentation || 0) + 1 };
+            narrower[narrower.length - 1] = { button: 'next', updateParent: this.fetchAndUpdate(next_url), indentation: (indentation || 0) + 1 };
           }
           this.updateSubjectHeading({ narrower: narrower, open: true })
         },
