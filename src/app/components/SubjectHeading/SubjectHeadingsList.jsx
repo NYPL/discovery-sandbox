@@ -23,8 +23,8 @@ class SubjectHeadingsList extends React.Component {
       interactive: !(container === 'context') || location.pathname.includes(parentUuid),
     };
     this.updateRange = this.updateRange.bind(this);
-    this.inRangeHeadings = this.inRangeHeadings.bind(this);
-    this.inIntervalHeadings = this.inIntervalHeadings.bind(this);
+    this.inRangeListItems = this.inRangeListItems.bind(this);
+    this.inIntervalListItems = this.inIntervalListItems.bind(this);
   }
 
   componentDidMount() {
@@ -82,17 +82,17 @@ class SubjectHeadingsList extends React.Component {
     this.setState(prevState => prevState);
   }
 
-  inRangeHeadings() {
+  inRangeListItems() {
     const {
       range,
       subjectHeadings,
     } = this.state;
     return range.intervals.reduce((acc, el) =>
-      acc.concat(this.inIntervalHeadings(el))
+      acc.concat(this.inIntervalListItems(el))
       , []);
   }
 
-  inIntervalHeadings(interval) {
+  inIntervalListItems(interval) {
     const { indentation } = this.props;
     const { subjectHeadings, range } = this.state;
     const { start, end } = interval;
@@ -133,20 +133,21 @@ class SubjectHeadingsList extends React.Component {
       <ul className={nested ? 'subjectHeadingList nestedSubjectHeadingList' : 'subjectHeadingList'}>
         {
           subjectHeadings ?
-          this.inRangeHeadings(subjectHeadings)
-          .map(subjectHeading => (subjectHeading.button ?
+          this.inRangeListItems(subjectHeadings)
+          .map(listItem => (listItem.button ?
+            // A listItem will either be a subject heading or a place holder for a button
             <AdditionalSubjectHeadingsButton
-              indentation={subjectHeading.indentation}
-              button={subjectHeading.button}
-              updateParent={subjectHeading.updateParent}
-              key={subjectHeading.uuid}
+              indentation={listItem.indentation}
+              button={listItem.button}
+              updateParent={listItem.updateParent}
+              key={listItem.uuid}
               nested={nested}
               indentation={indentation}
               interactive={interactive}
             />
             : <SubjectHeading
-              subjectHeading={subjectHeading}
-              key={subjectHeading.uuid}
+              subjectHeading={listItem}
+              key={listItem.uuid}
               nested={nested}
               indentation={indentation}
               location={location}
