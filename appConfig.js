@@ -10,6 +10,7 @@ export default {
     development: process.env.PLATFORM_API_BASE_URL || 'https://dev-platform.nypl.org/api/v0.1',
     production: process.env.PLATFORM_API_BASE_URL || 'https://platform.nypl.org/api/v0.1',
   },
+  shepApi: process.env.SHEP_API,
   loginUrl: 'https://login.nypl.org/auth/login',
   tokenUrl: 'https://isso.nypl.org/',
   publicKey:
