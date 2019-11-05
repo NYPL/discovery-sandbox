@@ -11,22 +11,25 @@ class AdditionalSubjectHeadingsButton extends React.Component {
   }
 
   onClick() {
-    this.props.updateParent(this);
+    if (this.props.interactive) this.props.updateParent(this);
   }
 
   render() {
-    const indentation = this.props.indentation;
+    const {
+      indentation,
+      interactive,
+    } = this.props;
     const previous = this.props.button === 'previous';
 
     return (
-      <li>
+      <li className={interactive ? '' : 'staticDots'}>
         <ul className="subjectHeadingRow" >
           <li>
             <ul className="subjectHeadingLabelAndToggle">
               <li onClick={this.toggleOpen} className="subjectHeadingToggle" style={{'paddingLeft': `${20*indentation}px`}}></li>
               <li onClick={this.onClick} className="subjectHeadingLabel seeMoreButton" style={{"paddingLeft":`${20*indentation}px`}}>
-                {`${previous ? '↑' : '↓'} See more`}
-                {previous ? null : <br /> }
+                {interactive ? `${previous ? '↑' : '↓'} See more` : null}
+                {previous || !interactive ? null : <br /> }
                 {previous ? null : '...'}
               </li>
             </ul>

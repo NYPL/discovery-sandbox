@@ -7,11 +7,17 @@ import appConfig from '../../../../appConfig';
 
 class SubjectHeading extends React.Component {
   constructor(props) {
-
     super(props);
+    const {
+      subjectHeading,
+      container,
+    } = this.props;
+    const {
+      children,
+    } = subjectHeading;
     this.state = {
-      open: !!this.props.subjectHeading.children,
-      narrower: (this.props.subjectHeading.children || []),
+      open: !!children,
+      narrower: (children || []),
     };
     this.toggleOpen = this.toggleOpen.bind(this);
     this.updateSubjectHeading = this.updateSubjectHeading.bind(this);
@@ -62,8 +68,8 @@ class SubjectHeading extends React.Component {
             next_url,
           } = resp.data;
           narrower.forEach((child) => { child.indentation = (indentation || 0) + 1; });
-          if (narrower.length > 10) {
-            narrower[narrower.length - 1] = { button: 'more', updateParent: this.fetchAndUpdate(next_url), indentation: (indentation || 0) + 1 };
+          if (next_url) {
+            narrower[narrower.length - 1] = { button: 'next', updateParent: this.fetchAndUpdate(next_url), indentation: (indentation || 0) + 1 };
           }
           this.updateSubjectHeading({ narrower: narrower, open: true })
         },
@@ -81,7 +87,7 @@ class SubjectHeading extends React.Component {
       (child) => { child.indentation = (this.props.subjectHeading.indentation || 0) + 1; }
     );
     narrower.splice(-1, 1, ...data.narrower);
-    if (data.narrower.length > 10) {
+    if (data.next_url) {
       narrower.splice(-1, 1, { button: 'next', updateParent: this.fetchAndUpdate(data.next_url), indentation: (this.props.subjectHeading.indentation || 0) + 1 });
     }
     this.setState(prevState => prevState);
@@ -119,6 +125,7 @@ class SubjectHeading extends React.Component {
       indentation,
       subjectHeading,
       location,
+      container,
     } = this.props
 
     const {
@@ -141,18 +148,28 @@ class SubjectHeading extends React.Component {
     } = this.addEmphasis(label);
 
     return (
-      <li data={`${subjectHeading.uuid}`}>
+      <li data={`${subjectHeading.uuid}, ${container}`}>
         <a className={`subjectHeadingRow ${ open || children ? "openSubjectHeading" : ""}` + `${this.props.nested ? ' nestedSubjectHeading' : ''}`} >
           <span style={{'paddingLeft': `${20*indentation}px`}} className="subjectHeadingLabelAndToggle">
-            <span onClick={this.toggleOpen} className="subjectHeadingToggle" >{desc_count > 0 ? (!open ? '+' : '-') : null}</span>
+            <span onClick={container !== 'context' ? this.toggleOpen : () => {} } className="subjectHeadingToggle" >{desc_count > 0 ? (!open ? '+' : '-') : null}</span>
             <span className="subjectHeadingLabel" onClick={this.linkToShow}><span>{rest}</span>{rest === '' ? '' : ' -- ' }<span className='emph'>{emph}</span></span>
           </span>
           <span className="subjectHeadingAttribute titles">{`${bib_count}`}</span>
           <span className="subjectHeadingAttribute narrower">{`${desc_count}`}</span>
         </a>
-        { open ? <SubjectHeadingsList subjectHeadings={narrower} nested="true" indentation={(indentation || 0) + 1} location={location} range={range} /> : null}
+        { open
+          ? <SubjectHeadingsList
+            subjectHeadings={narrower}
+            nested="true"
+            indentation={(indentation || 0) + 1}
+            location={location}
+            range={range}
+            container={container}
+            parentUuid={uuid}
+          />
+          : null}
       </li>
-    )
+    );
   }
 }
 
