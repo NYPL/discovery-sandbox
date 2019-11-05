@@ -11,6 +11,7 @@ class SubjectHeading extends React.Component {
     const {
       subjectHeading,
       container,
+      sortBy,
     } = this.props;
     const {
       children,
@@ -18,11 +19,14 @@ class SubjectHeading extends React.Component {
     this.state = {
       open: !!children,
       narrower: (children || []),
+      sortBy: sortBy || "alphabetical",
     };
     this.toggleOpen = this.toggleOpen.bind(this);
     this.updateSubjectHeading = this.updateSubjectHeading.bind(this);
     this.addMore = this.addMore.bind(this);
     this.linkToShow = this.linkToShow.bind(this);
+    this.updateSortBy = this.updateSortBy.bind(this);
+    this.fetchInitial = this.fetchInitial.bind(this);
   }
 
   componentDidMount() {
@@ -46,34 +50,10 @@ class SubjectHeading extends React.Component {
 
   toggleOpen() {
     const {
-      uuid,
-      indentation,
-    } = this.props.subjectHeading;
-    const {
       open,
     } = this.state;
     if (!open) {
-      axios({
-        method: 'GET',
-        url: `${appConfig.shepApi}/subject_headings/${uuid}/narrower`,
-        crossDomain: true,
-        headers: {
-          'Access-Control-Allow-Origin': '*',
-          'Content-Type': 'application/json',
-        },
-      }).then(
-        (resp) => {
-          const {
-            narrower,
-            next_url,
-          } = resp.data;
-          narrower.forEach((child) => { child.indentation = (indentation || 0) + 1; });
-          if (next_url) {
-            narrower[narrower.length - 1] = { button: 'next', updateParent: this.fetchAndUpdate(next_url), indentation: (indentation || 0) + 1 };
-          }
-          this.updateSubjectHeading({ narrower: narrower, open: true })
-        },
-      ).catch(resp => console.log(resp));
+      this.fetchInitial();
     } else {
       this.updateSubjectHeading({ open: false });
     }
@@ -120,6 +100,43 @@ class SubjectHeading extends React.Component {
     this.context.router.push(`${path}/subject_headings/${this.props.subjectHeading.uuid}`)
   }
 
+  updateSortBy(sortByValue) {
+    if (this.state.sortBy !== sortByValue) {
+      this.setState({ sortBy: sortByValue }, this.fetchInitial);
+    }
+  }
+
+  fetchInitial() {
+    const {
+      uuid,
+      indentation,
+    } = this.props.subjectHeading;
+    const {
+      sortBy,
+    } = this.state;
+    axios({
+      method: 'GET',
+      url: `${appConfig.shepApi}/subject_headings/${uuid}/narrower?sort_by=${sortBy}`,
+      crossDomain: true,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Content-Type': 'application/json',
+      },
+    }).then(
+      (resp) => {
+        const {
+          narrower,
+          next_url,
+        } = resp.data;
+        narrower.forEach((child) => { child.indentation = (indentation || 0) + 1; });
+        if (next_url) {
+          narrower[narrower.length - 1] = { button: 'next', updateParent: this.fetchAndUpdate(next_url), indentation: (indentation || 0) + 1 };
+        }
+        this.updateSubjectHeading({ narrower: narrower, open: true })
+      },
+    ).catch(resp => console.log(resp));
+  }
+
   render() {
     const {
       indentation,
@@ -140,6 +157,7 @@ class SubjectHeading extends React.Component {
     const {
       open,
       narrower,
+      sortBy,
     } = this.state;
 
     const {
@@ -166,6 +184,7 @@ class SubjectHeading extends React.Component {
             range={range}
             container={container}
             parentUuid={uuid}
+            sortBy={sortBy}
           />
           : null}
       </li>

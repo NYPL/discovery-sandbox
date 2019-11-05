@@ -147,7 +147,7 @@ class SubjectHeadingShow extends React.Component {
               <h4>Related Subject Headings for <em>{label}</em></h4>
             </div>
             <SubjectHeadingTableHeader />
-            <SubjectHeadingsList subjectHeadings={relatedHeadings} location={location} keyId="related"/>
+            <SubjectHeadingsList subjectHeadings={relatedHeadings} location={location} keyId="related" container="context"/>
           </div>
           <div className="subjectHeadingContext">
             <div className="backgroundContainer">

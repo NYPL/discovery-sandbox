@@ -122,6 +122,7 @@ class SubjectHeadingsList extends React.Component {
       related,
       location,
       container,
+      sortBy,
     } = this.props;
 
     const {
@@ -152,6 +153,7 @@ class SubjectHeadingsList extends React.Component {
               indentation={indentation}
               location={location}
               container={container}
+              sortBy={sortBy}
             />
           )) :
           null
@@ -167,6 +169,7 @@ SubjectHeadingsList.propTypes = {
   indentation: PropTypes.number,
   linked: PropTypes.string,
   location: PropTypes.object,
+  sortBy: PropTypes.string,
 };
 
 export default SubjectHeadingsList;
