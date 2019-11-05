@@ -39,8 +39,8 @@ class SubjectHeadingsContainer extends React.Component {
         this.setState({
           previousUrl: res.data.previous_url,
           nextUrl: res.data.next_url,
-          subjectHeadings: res.data.first_level_index,
-          error: res.data.first_level_index.length === 0,
+          subjectHeadings: res.data.subject_headings,
+          error: res.data.subject_headings.length === 0,
         });
       },
     ).catch(
