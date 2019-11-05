@@ -22,12 +22,20 @@ class SubjectHeadingsContainer extends React.Component {
     let {
       fromLabel,
       fromComparator,
+      filter,
     } = this.props.location.query;
-    fromComparator = fromComparator.replace(/(^')|('$)/g, '');
-    fromLabel = fromLabel.replace(/(^')|('$)/g, '');
+    const apiParamHash = {
+      from_comparator: fromComparator,
+      from_label: fromLabel,
+      filter,
+    };
+    const apiParamString = Object
+      .entries(apiParamHash)
+      .map(([key, value]) => (value ? `${key}=${value}` : ''))
+      .join('&');
     axios({
       method: 'GET',
-      url: `${appConfig.shepApi}/subject_headings?from_label=${fromLabel}&from_comparator=${fromComparator}`,
+      url: `${appConfig.shepApi}/subject_headings?${apiParamString}`,
       crossDomain: true,
       headers: {
         'Access-Control-Allow-Origin': '*',
@@ -56,13 +64,25 @@ class SubjectHeadingsContainer extends React.Component {
   extractParam(paramName, url) {
     const params = url.replace(/[^\?]*\?/, '');
     const matchdata = params.match(new RegExp(`(^|&)${paramName}=([^&]*)`));
-    return matchdata[2];
+    return matchdata && matchdata[2];
   }
 
   convertApiUrlToFrontendUrl(url) {
     if (!url) return null;
     const path = this.props.location.pathname;
-    return `${path}?fromLabel=${this.extractParam('from_label', url)}&fromComparator=${this.extractParam('from_comparator', url)}`;
+    const paramHash = {
+      fromLabel: 'from_label',
+      fromComparator: 'from_comparator',
+      filter: 'filter',
+    };
+    const paramString = Object.entries(paramHash)
+      .map(([key, value]) => {
+        const extractedValue = this.extractParam(value, url);
+        return extractedValue ? `${key}=${extractedValue}` : '';
+      },
+      )
+      .join('&');
+    return `${path}?${paramString}`;
   }
 
   redirectTo(url) {
