@@ -19,7 +19,7 @@ class SubjectHeadingsContainer extends React.Component {
   }
 
   componentDidMount() {
-    const {
+    let {
       fromLabel,
       fromComparator,
       filter,

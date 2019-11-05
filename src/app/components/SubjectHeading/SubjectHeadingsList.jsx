@@ -23,8 +23,8 @@ class SubjectHeadingsList extends React.Component {
       interactive: !(container === 'context') || location.pathname.includes(parentUuid),
     };
     this.updateRange = this.updateRange.bind(this);
-    this.inRangeListItems = this.inRangeListItems.bind(this);
-    this.inIntervalListItems = this.inIntervalListItems.bind(this);
+    this.listItemsInRange = this.listItemsInRange.bind(this);
+    this.listItemsInInterval = this.listItemsInInterval.bind(this);
   }
 
   componentDidMount() {
@@ -82,17 +82,17 @@ class SubjectHeadingsList extends React.Component {
     this.setState(prevState => prevState);
   }
 
-  inRangeListItems() {
+  listItemsInRange() {
     const {
       range,
       subjectHeadings,
     } = this.state;
     return range.intervals.reduce((acc, el) =>
-      acc.concat(this.inIntervalListItems(el))
+      acc.concat(this.listItemsInInterval(el))
       , []);
   }
 
-  inIntervalListItems(interval) {
+  listItemsInInterval(interval) {
     const { indentation } = this.props;
     const { subjectHeadings, range } = this.state;
     const { start, end } = interval;
@@ -133,7 +133,7 @@ class SubjectHeadingsList extends React.Component {
       <ul className={nested ? 'subjectHeadingList nestedSubjectHeadingList' : 'subjectHeadingList'}>
         {
           subjectHeadings ?
-          this.inRangeListItems(subjectHeadings)
+          this.listItemsInRange(subjectHeadings)
           .map(listItem => (listItem.button ?
             // A listItem will either be a subject heading or a place holder for a button
             <AdditionalSubjectHeadingsButton
