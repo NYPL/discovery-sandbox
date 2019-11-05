@@ -280,3 +280,45 @@
   margin-top: -20px;
   margin-bottom: -20px;
 }
+
+.autocomplete {
+  float: right;
+  font-size: 1rem;
+  width: 200px;
+  position: absolute;
+}
+
+.autocomplete-field {
+  width: 200px;
+
+  input {
+    border: 1px solid #999;
+    width: 200px;
+  }
+}
+
+.suggestions {
+  border: 1px solid #999;
+  border-top-width: 0;
+  list-style: none;
+  margin-top: 0;
+  max-height: 143px;
+  overflow-y: auto;
+  padding-left: 0;
+  width: 200px;
+  background-color: white;
+  position: relative;
+  display: inline-block;
+}
+
+
+.suggestion-active,
+.suggestions li {
+  cursor: pointer;
+  position: absolute;
+  z-index: 99;
+}
+
+.suggestions li:not(:last-of-type) {
+  border-bottom: 1px solid #999;
+}

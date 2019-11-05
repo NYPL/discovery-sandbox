@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import axios from 'axios';
 import SubjectHeadingsList from './SubjectHeadingsList';
 import SubjectHeadingTableHeader from './SubjectHeadingTableHeader'
+import SubjectHeadingSearch from './SubjectHeadingSearch'
 import appConfig from '../../../../appConfig';
 
 
@@ -104,7 +105,10 @@ class SubjectHeadingsContainer extends React.Component {
     }
     return (
       <div>
-        <div className="subjectHeadingsBanner">Subject Headings</div>
+        <div className="subjectHeadingsBanner">
+          Subject Headings
+          <SubjectHeadingSearch />
+        </div>
         <div className="subjectMainContentWrapper">
           <div className="subjectHeadingMainContent index">
             {this.pagination()}

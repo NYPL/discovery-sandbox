@@ -13,7 +13,6 @@ import HoldRequest from '../components/HoldRequest/HoldRequest';
 import HoldConfirmation from '../components/HoldConfirmation/HoldConfirmation';
 import ElectronicDelivery from '../components/ElectronicDelivery/ElectronicDelivery';
 import SubjectHeadingsContainer from '../components/SubjectHeading/SubjectHeadingsContainer';
-import SubjectHeadingShow from '../components/SubjectHeading/SubjectHeadingShow';
 import SubjectHeadingShowWrapper from '../components/SubjectHeading/SubjectHeadingShowWrapper';
 import NotFound404 from '../components/NotFound404/NotFound404';
 import appConfig from '../../../appConfig';
