@@ -35,7 +35,7 @@ class Range {
   }
 }
 
-Range.fromSubjectHeading = (subjectHeading, linked) => {
+Range.fromSubjectHeading = (subjectHeading, linked, show = null) => {
   const {
     children,
     uuid,
@@ -48,13 +48,23 @@ Range.fromSubjectHeading = (subjectHeading, linked) => {
     ];
     if (mid > -1) intervals.push({ start: mid - 1, end: mid + 4 });
     range = new Range(0, children.length, intervals);
-  } else if (children && uuid === linked) {
+  } else if (children && uuid === linked && !show) {
     range = new Range(0, children.length, [{ start: 0, end: 4 }]);
+  } else if (children && uuid === linked && show) {
+    range = new Range(0, children.length, [{ start: 0, end: 0 }]);
   } else {
     range = new Range(0, 'infinity', [{ start: 0, end: 'infinity' }]);
   }
   range.normalize();
   return range;
+};
+
+
+
+
+Range.addRangeData = (subjectHeading, linked, show = null) => {
+  subjectHeading.range = Range.fromSubjectHeading(subjectHeading, linked, show);
+  if (subjectHeading.children) subjectHeading.children.forEach(child => Range.addRangeData(child, linked, show));
 };
 
 export default Range;

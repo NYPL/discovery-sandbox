@@ -18,7 +18,11 @@ class SubjectHeadingsList extends React.Component {
     this.updateRange = this.updateRange.bind(this);
     this.inRangeHeadings = this.inRangeHeadings.bind(this);
     this.inIntervalHeadings = this.inIntervalHeadings.bind(this);
-    this.addRangeData = this.addRangeData.bind(this);
+  }
+
+  componentDidMount() {
+    window.lists = window.lists || [];
+    window.lists.push(this);
   }
 
   componentDidUpdate() {
@@ -49,24 +53,14 @@ class SubjectHeadingsList extends React.Component {
     }
   }
 
-  componentDidMount() {
-    window.lists = window.lists || [];
-    window.lists.push(this);
-  }
-
   mergeSubjectHeadings(subjectHeadings, linked) {
     const responseSubjectHeading = subjectHeadings[0];
-    this.addRangeData(responseSubjectHeading, linked);
+    Range.addRangeData(responseSubjectHeading, linked);
     const existingSubjectHeadingIndex = this.state.subjectHeadings.findIndex(
       heading => heading.uuid === responseSubjectHeading.uuid,
     );
     this.state.subjectHeadings[existingSubjectHeadingIndex] = responseSubjectHeading;
     this.setState(prevState => prevState);
-  }
-
-  addRangeData(subjectHeading, linked) {
-    subjectHeading.range = Range.fromSubjectHeading(subjectHeading, linked);
-    if (subjectHeading.children) subjectHeading.children.forEach(child => this.addRangeData(child));
   }
 
   initialRange(props) {
