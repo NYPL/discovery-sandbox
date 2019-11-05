@@ -19,15 +19,23 @@ class SubjectHeadingsContainer extends React.Component {
   }
 
   componentDidMount() {
-    let {
+    const {
       fromLabel,
       fromComparator,
+      filter,
     } = this.props.location.query;
-    fromComparator = fromComparator.replace(/(^')|('$)/g, '');
-    fromLabel = fromLabel.replace(/(^')|('$)/g, '');
+    const apiParamHash = {
+      from_comparator: fromComparator,
+      from_label: fromLabel,
+      filter,
+    };
+    const apiParamString = Object
+      .entries(apiParamHash)
+      .map(([key, value]) => (value ? `${key}=${value}` : ''))
+      .join('&');
     axios({
       method: 'GET',
-      url: `${appConfig.shepApi}/subject_headings?from_label=${fromLabel}&from_comparator=${fromComparator}`,
+      url: `${appConfig.shepApi}/subject_headings?${apiParamString}`,
       crossDomain: true,
       headers: {
         'Access-Control-Allow-Origin': '*',
