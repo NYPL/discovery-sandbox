@@ -23,6 +23,8 @@ class SubjectHeadingsContainer extends React.Component {
       fromLabel,
       fromComparator,
     } = this.props.location.query;
+    if (!fromComparator) fromComparator = "start"
+    if (!fromLabel) fromLabel = "Aac"
     fromComparator = fromComparator.replace(/(^')|('$)/g, '');
     fromLabel = fromLabel.replace(/(^')|('$)/g, '');
     axios({
