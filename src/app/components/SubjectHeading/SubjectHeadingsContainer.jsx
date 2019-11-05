@@ -64,13 +64,25 @@ class SubjectHeadingsContainer extends React.Component {
   extractParam(paramName, url) {
     const params = url.replace(/[^\?]*\?/, '');
     const matchdata = params.match(new RegExp(`(^|&)${paramName}=([^&]*)`));
-    return matchdata[2];
+    return matchdata && matchdata[2];
   }
 
   convertApiUrlToFrontendUrl(url) {
     if (!url) return null;
     const path = this.props.location.pathname;
-    return `${path}?fromLabel=${this.extractParam('from_label', url)}&fromComparator=${this.extractParam('from_comparator', url)}`;
+    const paramHash = {
+      fromLabel: 'from_label',
+      fromComparator: 'from_comparator',
+      filter: 'filter',
+    };
+    const paramString = Object.entries(paramHash)
+      .map(([key, value]) => {
+        const extractedValue = this.extractParam(value, url);
+        return extractedValue ? `${key}=${extractedValue}` : '';
+      },
+      )
+      .join('&');
+    return `${path}?${paramString}`;
   }
 
   redirectTo(url) {
