@@ -11,7 +11,7 @@ const SubjectHeadingPageWrapper = (props) => {
     <div>
       <div className="subjectHeadingsBanner">
         Subject Headings
-        <SubjectHeadingSearch location={location}/>
+        <SubjectHeadingSearch/>
       </div>
       {props.params.subjectHeadingUuid ?
         <SubjectHeadingShow {...props} key={props.params.subjectHeadingUuid}/>
