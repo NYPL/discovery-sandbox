@@ -129,10 +129,6 @@ class SubjectHeadingsContainer extends React.Component {
     }
     return (
       <div>
-        <div className="subjectHeadingsBanner">
-          Subject Headings
-          <SubjectHeadingSearch location={location}/>
-        </div>
         <div className="subjectMainContentWrapper">
           <div className="subjectHeadingMainContent index">
             {this.pagination()}

@@ -27,7 +27,6 @@ const AutosuggestItem = (props) => {
   return (
     <li
       className={`${className} ${item.class}`}
-      onClick={onClick}
       data={subfield ? item.label : item.uuid}
     >
       <Link to={generatePath(item)}>

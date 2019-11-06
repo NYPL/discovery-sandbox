@@ -137,8 +137,6 @@ class SubjectHeadingShow extends React.Component {
     }
     return (
       <div className="subjectHeadingShow">
-        <div className="subjectHeadingsBanner">Subject Headings</div>
-        <h2>Subject Heading: <em>{label}</em></h2>
         <div className="subjectHeadingMainContent show">
           {bibIds.length > 0 ? <BibsList bibIds={bibIds}/> : null}
           <div className="subjectHeadingRelated">
