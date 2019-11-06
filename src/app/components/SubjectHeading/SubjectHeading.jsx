@@ -3,7 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import SubjectHeadingsList from './SubjectHeadingsList';
-import SortButtons from './SortButtons';
+import SortButton from './SortButton';
 import Range from '../../models/Range';
 import appConfig from '../../../../appConfig';
 
@@ -187,7 +187,7 @@ class SubjectHeading extends React.Component {
           <span className="subjectHeadingAttribute titles">{`${bib_count}`}</span>
           <span className="subjectHeadingAttribute narrower">{`${desc_count}`}</span>
           { open && narrower.length > 1 && uuid.length > 0 && (container !== 'context' || location.pathname.includes(uuid))
-            ? <SortButtons sortBy={sortBy} handler={this.sortHandler} />
+            ? <SortButton sortBy={sortBy} handler={this.sortHandler} />
             : null
           }
         </a>
