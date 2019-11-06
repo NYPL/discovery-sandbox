@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const SortButtons = props => (
-  <span>
+  <span className="subjectHeadingAttribute sortButton">
     <select onChange={props.handler} defaultValue={props.sortBy}>
       <option value="alphabetical">Alphabetical</option>
       <option value="bibs">Titles</option>
