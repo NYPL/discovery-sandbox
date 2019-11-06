@@ -178,8 +178,8 @@ class SubjectHeading extends React.Component {
     } = this.addEmphasis(label);
 
     return (
-      <li data={`${subjectHeading.uuid}, ${container}`}>
-        <a className={`subjectHeadingRow ${ open || children ? "openSubjectHeading" : ""}` + `${this.props.nested ? ' nestedSubjectHeading' : ''}`} >
+      <li data={`${subjectHeading.uuid}, ${container}`} className={`subjectHeadingRow ${ open || children ? "openSubjectHeading" : ""}`}>
+        <a  className={`${this.props.nested ? ' nestedSubjectHeading' : ''}`} >
           <span style={{'paddingLeft': `${20*indentation}px`}} className="subjectHeadingLabelAndToggle">
             <span onClick={container !== 'context' ? this.toggleOpen : () => {} } className="subjectHeadingToggle" >{desc_count > 0 ? (!open ? '+' : '-') : null}</span>
             <span className="subjectHeadingLabel" onClick={this.linkToShow}><span>{rest}</span>{rest === '' ? '' : ' -- ' }<span className='emph'>{emph}</span></span>
