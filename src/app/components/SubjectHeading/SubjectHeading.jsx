@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import axios from 'axios';
 import SubjectHeadingsList from './SubjectHeadingsList';
 import SortButtons from './SortButtons';
+import Range from '../../models/Range';
 import appConfig from '../../../../appConfig';
 
 class SubjectHeading extends React.Component {
@@ -107,6 +108,7 @@ class SubjectHeading extends React.Component {
     console.log('updateSortBy')
     if (this.state.sortBy !== sortByValue) {
       this.state.sortBy = sortByValue;
+      this.props.subjectHeading.range = new Range(0, Infinity, [{ start: 0, end: Infinity }]);
       this.fetchInitial();
     }
   }
