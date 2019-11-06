@@ -172,7 +172,10 @@ a {
   font-size: 1rem;
 }
 
-.subjectHeadingMainContent { font-size: 0;}
+.subjectHeadingMainContent {
+  font-size: 0;
+  max-width: 550px;
+}
 
 .subjectHeadingList {font-size: 0;}
 
