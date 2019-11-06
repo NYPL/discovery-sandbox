@@ -134,13 +134,13 @@ class SubjectHeadingsList extends React.Component {
         {
           subjectHeadings ?
           this.listItemsInRange(subjectHeadings)
-          .map(listItem => (listItem.button ?
+          .map((listItem, index) => (listItem.button ?
             // A listItem will either be a subject heading or a place holder for a button
             <AdditionalSubjectHeadingsButton
               indentation={listItem.indentation}
               button={listItem.button}
               updateParent={listItem.updateParent}
-              key={listItem.uuid}
+              key={listItem.uuid || index}
               nested={nested}
               indentation={indentation}
               interactive={interactive}

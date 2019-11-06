@@ -308,6 +308,9 @@
   z-index: 1;
 }
 
+.suggestion-active {
+  font-weight: bold;
+}
 
 .suggestion-active,
 .suggestions li {
@@ -318,6 +321,10 @@
 
   em > em {
     color: #31806a;
+  }
+
+  a {
+    display: block;
   }
 }
 
