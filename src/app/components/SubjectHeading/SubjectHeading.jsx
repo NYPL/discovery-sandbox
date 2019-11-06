@@ -3,6 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import SubjectHeadingsList from './SubjectHeadingsList';
+import SortButtons from './SortButtons';
 import appConfig from '../../../../appConfig';
 
 class SubjectHeading extends React.Component {
@@ -46,7 +47,8 @@ class SubjectHeading extends React.Component {
   }
 
   updateSubjectHeading(properties) {
-    this.setState(properties);
+    console.log('properties: ', properties);
+    this.setState(properties, () => console.log('updated: ', this.state));
   }
 
   toggleOpen() {
@@ -102,12 +104,15 @@ class SubjectHeading extends React.Component {
   }
 
   updateSortBy(sortByValue) {
+    console.log('updateSortBy')
     if (this.state.sortBy !== sortByValue) {
-      this.setState({ sortBy: sortByValue }, this.fetchInitial);
+      this.state.sortBy = sortByValue;
+      this.fetchInitial();
     }
   }
 
   fetchInitial() {
+    console.log('fetching initial');
     const {
       uuid,
       indentation,
@@ -140,11 +145,11 @@ class SubjectHeading extends React.Component {
 
   sortHandler(e) {
     e.preventDefault();
-    console.log('e: ', e);
-    window.e = e;
+    this.updateSortBy(e.target.value);
   }
 
   render() {
+    console.log('rendering heading', this.state);
     const {
       indentation,
       subjectHeading,
@@ -196,6 +201,7 @@ class SubjectHeading extends React.Component {
             container={container}
             parentUuid={uuid}
             sortBy={sortBy}
+            key={`${uuid}-list-${sortBy}`}
           />
           : null}
       </li>
