@@ -27,6 +27,7 @@ class SubjectHeading extends React.Component {
     this.linkToShow = this.linkToShow.bind(this);
     this.updateSortBy = this.updateSortBy.bind(this);
     this.fetchInitial = this.fetchInitial.bind(this);
+    this.sortHandler = this.sortHandler.bind(this);
   }
 
   componentDidMount() {
@@ -137,6 +138,12 @@ class SubjectHeading extends React.Component {
     ).catch(resp => console.log(resp));
   }
 
+  sortHandler(e) {
+    e.preventDefault();
+    console.log('e: ', e);
+    window.e = e;
+  }
+
   render() {
     const {
       indentation,
@@ -174,6 +181,10 @@ class SubjectHeading extends React.Component {
           </span>
           <span className="subjectHeadingAttribute titles">{`${bib_count}`}</span>
           <span className="subjectHeadingAttribute narrower">{`${desc_count}`}</span>
+          { open && narrower.length > 1
+            ? <SortButtons sortBy={sortBy} handler={this.sortHandler} />
+            : null
+          }
         </a>
         { open
           ? <SubjectHeadingsList
