@@ -10,7 +10,6 @@ import appConfig from '../../../../appConfig';
 
 class SubjectHeadingsList extends React.Component {
   constructor(props) {
-    console.log('constructing list')
     super(props);
     const {
       subjectHeadings,
@@ -116,7 +115,6 @@ class SubjectHeadingsList extends React.Component {
   }
 
   render() {
-    console.log('rendering list:  ', this.state.subjectHeadings)
     const {
       indentation,
       nested,

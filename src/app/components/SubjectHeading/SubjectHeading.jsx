@@ -48,8 +48,7 @@ class SubjectHeading extends React.Component {
   }
 
   updateSubjectHeading(properties) {
-    console.log('properties: ', properties);
-    this.setState(properties, () => console.log('updated: ', this.state));
+    this.setState(properties);
   }
 
   toggleOpen() {
@@ -105,7 +104,6 @@ class SubjectHeading extends React.Component {
   }
 
   updateSortBy(sortByValue) {
-    console.log('updateSortBy')
     if (this.state.sortBy !== sortByValue) {
       this.state.sortBy = sortByValue;
       this.props.subjectHeading.range = new Range(0, Infinity, [{ start: 0, end: Infinity }]);
@@ -114,7 +112,6 @@ class SubjectHeading extends React.Component {
   }
 
   fetchInitial() {
-    console.log('fetching initial');
     const {
       uuid,
       indentation,
