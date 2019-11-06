@@ -17,11 +17,13 @@ class SubjectHeading extends React.Component {
     } = this.props;
     const {
       children,
+      range,
     } = subjectHeading;
     this.state = {
       open: !!children,
       narrower: (children || []),
       sortBy: sortBy || "alphabetical",
+      range: range || new Range(0, Infinity, [{ start: 0, end: Infinity }]),
     };
     this.toggleOpen = this.toggleOpen.bind(this);
     this.updateSubjectHeading = this.updateSubjectHeading.bind(this);
@@ -38,11 +40,11 @@ class SubjectHeading extends React.Component {
   }
 
   componentDidUpdate(prevProps, nextProps) {
-
     if (this.state.narrower.length === 0 && this.props.subjectHeading.children) {
       this.setState({
         narrower: this.props.subjectHeading.children,
         open: true,
+        range: this.props.subjectHeading.range,
       });
     }
   }
@@ -106,7 +108,7 @@ class SubjectHeading extends React.Component {
   updateSortBy(sortByValue) {
     if (this.state.sortBy !== sortByValue) {
       this.state.sortBy = sortByValue;
-      this.props.subjectHeading.range = new Range(0, Infinity, [{ start: 0, end: Infinity }]);
+      this.state.range = new Range(0, Infinity, [{ start: 0, end: Infinity }]);
       this.fetchInitial();
     }
   }
@@ -161,13 +163,13 @@ class SubjectHeading extends React.Component {
       bib_count,
       desc_count,
       children,
-      range,
     } = subjectHeading;
 
     const {
       open,
       narrower,
       sortBy,
+      range,
     } = this.state;
 
     const {
