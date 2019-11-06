@@ -149,7 +149,6 @@ class SubjectHeading extends React.Component {
   }
 
   render() {
-    console.log('rendering heading', this.state);
     const {
       indentation,
       subjectHeading,
@@ -186,7 +185,7 @@ class SubjectHeading extends React.Component {
           </span>
           <span className="subjectHeadingAttribute titles">{`${bib_count}`}</span>
           <span className="subjectHeadingAttribute narrower">{`${desc_count}`}</span>
-          { open && narrower.length > 1
+          { open && narrower.length > 1 && uuid.length > 0 && (container !== 'context' || location.pathname.includes(uuid))
             ? <SortButtons sortBy={sortBy} handler={this.sortHandler} />
             : null
           }
