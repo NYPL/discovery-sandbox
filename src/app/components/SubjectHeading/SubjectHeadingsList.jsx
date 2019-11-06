@@ -23,8 +23,8 @@ class SubjectHeadingsList extends React.Component {
       interactive: !(container === 'context') || location.pathname.includes(parentUuid),
     };
     this.updateRange = this.updateRange.bind(this);
-    this.inRangeHeadings = this.inRangeHeadings.bind(this);
-    this.inIntervalHeadings = this.inIntervalHeadings.bind(this);
+    this.listItemsInRange = this.listItemsInRange.bind(this);
+    this.listItemsInInterval = this.listItemsInInterval.bind(this);
   }
 
   componentDidMount() {
@@ -72,7 +72,7 @@ class SubjectHeadingsList extends React.Component {
 
   initialRange(props) {
     if (props.range) return props.range;
-    if (props.subjectHeadings) return new Range(0, 'infinity', [{ start: 0, end: 'infinity' }]);
+    if (props.subjectHeadings) return new Range(0, Infinity, [{ start: 0, end: Infinity }]);
     return null;
   }
 
@@ -82,21 +82,21 @@ class SubjectHeadingsList extends React.Component {
     this.setState(prevState => prevState);
   }
 
-  inRangeHeadings() {
+  listItemsInRange() {
     const {
       range,
       subjectHeadings,
     } = this.state;
     return range.intervals.reduce((acc, el) =>
-      acc.concat(this.inIntervalHeadings(el))
+      acc.concat(this.listItemsInInterval(el))
       , []);
   }
 
-  inIntervalHeadings(interval) {
+  listItemsInInterval(interval) {
     const { indentation } = this.props;
     const { subjectHeadings, range } = this.state;
     const { start, end } = interval;
-    const subjectHeadingsInInterval = subjectHeadings.filter((el, i) => i >= start && (end === 'infinity' || i <= end));
+    const subjectHeadingsInInterval = subjectHeadings.filter((el, i) => i >= start && i <= end);
     if (subjectHeadings[start - 1]) {
       subjectHeadingsInInterval.unshift({
         button: 'previous',
@@ -104,7 +104,7 @@ class SubjectHeadingsList extends React.Component {
         updateParent: element => this.updateRange(range, interval, 'start', -10),
       });
     };
-    if (end !== 'infinity' && subjectHeadings[end + 1]) {
+    if (end !== Infinity && subjectHeadings[end + 1]) {
       subjectHeadingsInInterval.push({
         button: 'next',
         indentation,
@@ -133,20 +133,21 @@ class SubjectHeadingsList extends React.Component {
       <ul className={nested ? 'subjectHeadingList nestedSubjectHeadingList' : 'subjectHeadingList'}>
         {
           subjectHeadings ?
-          this.inRangeHeadings(subjectHeadings)
-          .map(subjectHeading => (subjectHeading.button ?
+          this.listItemsInRange(subjectHeadings)
+          .map(listItem => (listItem.button ?
+            // A listItem will either be a subject heading or a place holder for a button
             <AdditionalSubjectHeadingsButton
-              indentation={subjectHeading.indentation}
-              button={subjectHeading.button}
-              updateParent={subjectHeading.updateParent}
-              key={subjectHeading.uuid}
+              indentation={listItem.indentation}
+              button={listItem.button}
+              updateParent={listItem.updateParent}
+              key={listItem.uuid}
               nested={nested}
               indentation={indentation}
               interactive={interactive}
             />
             : <SubjectHeading
-              subjectHeading={subjectHeading}
-              key={subjectHeading.uuid}
+              subjectHeading={listItem}
+              key={listItem.uuid}
               nested={nested}
               indentation={indentation}
               location={location}
