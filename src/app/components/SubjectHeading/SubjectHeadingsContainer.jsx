@@ -14,6 +14,7 @@ class SubjectHeadingsContainer extends React.Component {
     super(props);
     this.state = {
       error: false,
+      query: this.props.location.query
     };
     this.pagination = this.pagination.bind(this);
     this.redirectTo = this.redirectTo.bind(this);
@@ -24,16 +25,17 @@ class SubjectHeadingsContainer extends React.Component {
       fromLabel,
       fromComparator,
       filter,
-    } = this.props.location.query;
-    if (!fromComparator) fromComparator = "start"
-    if (!fromLabel) fromLabel = "Aac"
-    fromComparator = fromComparator.replace(/(^')|('$)/g, '');
-    fromLabel = fromLabel.replace(/(^')|('$)/g, '');
+    } = this.state.query;
+    if (!fromComparator) fromComparator = filter ? null : "start"
+    if (!fromLabel) fromLabel = filter ? null : "Aac"
+    fromComparator = fromComparator && fromComparator.replace(/(^')|('$)/g, '');
+    fromLabel = fromLabel && fromLabel.replace(/(^')|('$)/g, '');
     const apiParamHash = {
       from_comparator: fromComparator,
       from_label: fromLabel,
       filter,
     };
+
     const apiParamString = Object
       .entries(apiParamHash)
       .map(([key, value]) => (value ? `${key}=${value}` : ''))

@@ -92,7 +92,6 @@ class SubjectHeadingShow extends React.Component {
       .catch(
         (err) => {
           console.log('error: ', err);
-          this.setState({ error: true });
         },
       );
   }
