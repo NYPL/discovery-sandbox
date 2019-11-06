@@ -107,7 +107,7 @@ class SubjectHeadingsContainer extends React.Component {
       <div>
         <div className="subjectHeadingsBanner">
           Subject Headings
-          <SubjectHeadingSearch />
+          <SubjectHeadingSearch location={location}/>
         </div>
         <div className="subjectMainContentWrapper">
           <div className="subjectHeadingMainContent index">

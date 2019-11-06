@@ -3,6 +3,7 @@ import { Link } from 'react-router';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import appConfig from '../../../../appConfig';
+import AutosuggestItem from './AutosuggestItem'
 
 class SubjectHeadingSearch extends React.Component {
   constructor(props) {
@@ -60,17 +61,13 @@ class SubjectHeadingSearch extends React.Component {
         suggestionsListComponent = (
           <ul className="suggestions">
           {suggestions.map((suggestion, index) => {
-            let className = "suggestion"
-            if (index === activeSuggestion) {
-              className += "-active"
-            }
             return (
-              <li
-                className={`${className} ${suggestion.class}`}
-                key={suggestion.label}
-              >
-                {suggestion.label}
-              </li>
+              <AutosuggestItem
+                item={suggestion}
+                activeSuggestion={index === activeSuggestion}
+                key={suggestion.uuid || suggestion.label}
+                location={location}
+              />
             )
           })}
           </ul>
@@ -81,8 +78,9 @@ class SubjectHeadingSearch extends React.Component {
     return (
       <form className="autocomplete" autoComplete="off" action="/action_page.php">
         <div className="autocomplete-field">
+          <label htmlFor="autosuggest">Subject Heading Search:</label>
           <input
-            id="myInput"
+            id="autosuggest"
             type="text"
             onChange={onChange}
             value={userInput}
@@ -90,7 +88,6 @@ class SubjectHeadingSearch extends React.Component {
           />
           {suggestionsListComponent}
         </div>
-        <input type="submit"/>
       </form>
     )
   }
