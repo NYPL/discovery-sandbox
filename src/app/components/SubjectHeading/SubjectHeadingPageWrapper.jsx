@@ -10,6 +10,7 @@ const SubjectHeadingPageWrapper = (props) => {
   const containerKey = Object.entries(props.location.query)
     .map(([key, value]) => `${key}=${value}`)
     .join('&')
+  console.log('container key ', containerKey)
   return (
     <div>
       <div className="subjectHeadingsBanner">

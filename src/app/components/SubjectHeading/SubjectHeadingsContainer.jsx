@@ -116,12 +116,7 @@ class SubjectHeadingsContainer extends React.Component {
       pathname,
       query,
     } = this.props.location
-    const newQueryParams = Object.assign({}, query);
-    delete newQueryParams.sortBy;
-    const paramString = Object.entries(newQueryParams)
-      .map(([key, value]) => `${key}=${value}`)
-      .concat([`sortBy=${e.target.value}`])
-      .join('&');
+    const paramString = `filter=${query.filter}&sortBy=${e.target.value}`;
     console.log('redirecting ', `${pathname}?${paramString}`);
     this.context.router.push(`${pathname}?${paramString}`);
   }
@@ -150,7 +145,6 @@ class SubjectHeadingsContainer extends React.Component {
   }
 
   render() {
-    console.log('rendering container')
     const { error, subjectHeadings } = this.state;
     const location = this.props.location;
     const { linked } = this.props.location.query;
