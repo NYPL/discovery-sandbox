@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 
 const AutosuggestItem = (props) => {
-  const {item, activeSuggestion, onClick, generatePath} = props
+  const {item, activeSuggestion, onClick, path} = props
   const subfield = item.class === 'subfield'
 
   let className = "suggestion"
@@ -17,7 +17,7 @@ const AutosuggestItem = (props) => {
       data={subfield ? item.label : item.uuid}
       onClick={onClick}
     >
-      <Link to={generatePath(item)}>
+      <Link to={path}>
         {subfield ? item.label : <em><em>Subject:</em> {item.label}</em>}
       </Link>
     </li>

@@ -24,7 +24,6 @@ class SubjectHeadingSearch extends React.Component {
   onSubmit(submitEvent) {
     submitEvent.preventDefault();
     const url = this.generatePath(this.state.suggestions[this.state.activeSuggestion])
-    console.log(this.props, this.context);
     this.clearUserInput()
     this.context.router.push(url)
   }
@@ -41,11 +40,7 @@ class SubjectHeadingSearch extends React.Component {
       axios({
         method: 'GET',
         url: `${appConfig.shepApi}/autosuggest?query=${userInput}`,
-        crossDomain: true,
-        headers: {
-          'Access-Control-Allow-Origin': '*',
-          'Content-Type': 'application/json',
-        },
+        crossDomain: true
       })
       .then(res => {
         this.setState({
@@ -93,7 +88,7 @@ class SubjectHeadingSearch extends React.Component {
           return (
             <AutosuggestItem
               item={suggestion}
-              generatePath={this.generatePath}
+              path={this.generatePath(suggestion)}
               activeSuggestion={index === activeSuggestion}
               key={suggestion.uuid || suggestion.label}
               location={location}

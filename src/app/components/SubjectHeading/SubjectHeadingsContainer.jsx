@@ -28,8 +28,7 @@ class SubjectHeadingsContainer extends React.Component {
     } = this.state.query;
     if (!fromComparator) fromComparator = filter ? null : "start"
     if (!fromLabel) fromLabel = filter ? null : "Aac"
-    fromComparator = fromComparator && fromComparator.replace(/(^')|('$)/g, '');
-    fromLabel = fromLabel && fromLabel.replace(/(^')|('$)/g, '');
+    
     const apiParamHash = {
       from_comparator: fromComparator,
       from_label: fromLabel,
