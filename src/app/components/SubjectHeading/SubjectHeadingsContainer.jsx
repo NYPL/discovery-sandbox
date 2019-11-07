@@ -14,7 +14,6 @@ class SubjectHeadingsContainer extends React.Component {
     super(props);
     this.state = {
       error: false,
-      query: this.props.location.query
     };
     this.pagination = this.pagination.bind(this);
     this.redirectTo = this.redirectTo.bind(this);
@@ -25,10 +24,10 @@ class SubjectHeadingsContainer extends React.Component {
       fromLabel,
       fromComparator,
       filter,
-    } = this.state.query;
+    } = this.props.location.query;
     if (!fromComparator) fromComparator = filter ? null : "start"
     if (!fromLabel) fromLabel = filter ? null : "Aac"
-    
+
     const apiParamHash = {
       from_comparator: fromComparator,
       from_label: fromLabel,
@@ -39,6 +38,7 @@ class SubjectHeadingsContainer extends React.Component {
       .entries(apiParamHash)
       .map(([key, value]) => (value ? `${key}=${value}` : ''))
       .join('&');
+
     axios({
       method: 'GET',
       url: `${appConfig.shepApi}/subject_headings?${apiParamString}`,
