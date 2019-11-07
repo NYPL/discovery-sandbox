@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import axios from 'axios';
 import SubjectHeadingsList from './SubjectHeadingsList';
 import SubjectHeadingTableHeader from './SubjectHeadingTableHeader'
+import SubjectHeadingSearch from './SubjectHeadingSearch'
 import appConfig from '../../../../appConfig';
 
 
@@ -24,15 +25,21 @@ class SubjectHeadingsContainer extends React.Component {
       fromComparator,
       filter,
     } = this.props.location.query;
+
+    if (!fromComparator) fromComparator = filter ? null : "start"
+    if (!fromLabel) fromLabel = filter ? null : "Aac"
+
     const apiParamHash = {
       from_comparator: fromComparator,
       from_label: fromLabel,
       filter,
     };
+
     const apiParamString = Object
       .entries(apiParamHash)
       .map(([key, value]) => (value ? `${key}=${value}` : ''))
       .join('&');
+
     axios({
       method: 'GET',
       url: `${appConfig.shepApi}/subject_headings?${apiParamString}`,
@@ -122,7 +129,6 @@ class SubjectHeadingsContainer extends React.Component {
     }
     return (
       <div>
-        <div className="subjectHeadingsBanner">Subject Headings</div>
         <div className="subjectMainContentWrapper">
           <div className="subjectHeadingMainContent index">
             {this.pagination()}

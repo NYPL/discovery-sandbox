@@ -100,7 +100,6 @@ class SubjectHeading extends React.Component {
   }
 
   linkToShow(e) {
-    e.preventDefault();
     let path = this.props.location.pathname.replace(/\/subject_headings.*/, '');
     this.context.router.push(`${path}/subject_headings/${this.props.subjectHeading.uuid}`)
   }
