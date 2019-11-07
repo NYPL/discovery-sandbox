@@ -39,10 +39,6 @@ class SubjectHeading extends React.Component {
     window.components.push(this);
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    return this.state.sortBy === nextState.sortBy;
-  }
-
   componentDidUpdate(prevProps, nextProps) {
     if (this.state.narrower.length === 0 && this.props.subjectHeading.children) {
       this.setState({
@@ -111,21 +107,19 @@ class SubjectHeading extends React.Component {
 
   updateSort(sortType) {
     if (this.state.sortBy !== sortType) {
-      // this.state.sortBy = sortType;
-      // this.state.range = Range.default();
-      this.setState({ sortBy: sortType, range: Range.default()}, this.fetchInitial);
-      // this.fetchInitial();
+      this.fetchInitial({ sortBy: sortType, range: Range.default() });
     }
   }
 
-  fetchInitial() {
+  fetchInitial(additionalParameters = {}) {
     const {
       uuid,
       indentation,
     } = this.props.subjectHeading;
-    const {
+    let {
       sortBy,
     } = this.state;
+    if (additionalParameters.sortBy) sortBy = additionalParameters.sortBy;
     axios({
       method: 'GET',
       url: `${appConfig.shepApi}/subject_headings/${uuid}/narrower?sort_by=${sortBy}`,
@@ -144,7 +138,12 @@ class SubjectHeading extends React.Component {
         if (next_url) {
           narrower[narrower.length - 1] = { button: 'next', updateParent: this.fetchAndUpdate(next_url), indentation: (indentation || 0) + 1 };
         }
-        this.updateSubjectHeading({ narrower: narrower, open: true })
+        this.updateSubjectHeading(
+          Object.assign(
+            { narrower: narrower, open: true },
+            additionalParameters,
+          ),
+        );
       },
     ).catch(resp => console.log(resp));
   }
