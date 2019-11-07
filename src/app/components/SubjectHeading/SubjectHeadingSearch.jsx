@@ -18,7 +18,6 @@ class SubjectHeadingSearch extends React.Component {
     this.onChange = this.onChange.bind(this)
     this.onSubmit = this.onSubmit.bind(this)
     this.clearUserInput = this.clearUserInput.bind(this)
-    this.generatePath = this.generatePath.bind(this)
   }
 
   onSubmit(submitEvent) {
