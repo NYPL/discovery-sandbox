@@ -25,6 +25,7 @@ class SubjectHeadingsContainer extends React.Component {
       fromComparator,
       filter,
     } = this.props.location.query;
+
     if (!fromComparator) fromComparator = filter ? null : "start"
     if (!fromLabel) fromLabel = filter ? null : "Aac"
 
