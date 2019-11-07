@@ -3,7 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import SubjectHeadingsList from './SubjectHeadingsList';
-import SortButtons from './SortButtons';
+import SortButton from './SortButton';
 import Range from '../../models/Range';
 import appConfig from '../../../../appConfig';
 
@@ -23,13 +23,13 @@ class SubjectHeading extends React.Component {
       open: !!children,
       narrower: (children || []),
       sortBy: sortBy || "alphabetical",
-      range: range || new Range(0, Infinity, [{ start: 0, end: Infinity }]),
+      range: range || Range.default(),
     };
     this.toggleOpen = this.toggleOpen.bind(this);
     this.updateSubjectHeading = this.updateSubjectHeading.bind(this);
     this.addMore = this.addMore.bind(this);
     this.linkToShow = this.linkToShow.bind(this);
-    this.updateSortBy = this.updateSortBy.bind(this);
+    this.updateSort = this.updateSort.bind(this);
     this.fetchInitial = this.fetchInitial.bind(this);
     this.sortHandler = this.sortHandler.bind(this);
   }
@@ -105,10 +105,10 @@ class SubjectHeading extends React.Component {
     this.context.router.push(`${path}/subject_headings/${this.props.subjectHeading.uuid}`)
   }
 
-  updateSortBy(sortByValue) {
-    if (this.state.sortBy !== sortByValue) {
-      this.state.sortBy = sortByValue;
-      this.state.range = new Range(0, Infinity, [{ start: 0, end: Infinity }]);
+  updateSort(sortType) {
+    if (this.state.sortBy !== sortType) {
+      this.state.sortBy = sortType;
+      this.state.range = Range.default();
       this.fetchInitial();
     }
   }
@@ -146,7 +146,7 @@ class SubjectHeading extends React.Component {
 
   sortHandler(e) {
     e.preventDefault();
-    this.updateSortBy(e.target.value);
+    this.updateSort(e.target.value);
   }
 
   render() {

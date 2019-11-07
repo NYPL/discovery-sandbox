@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const SortButtons = props => (
+const SortButton = props => (
   <span className="subjectHeadingAttribute sortButton">
     <select onChange={props.handler} defaultValue={props.sortBy}>
       <option value="alphabetical">Alphabetical</option>
@@ -11,9 +11,9 @@ const SortButtons = props => (
   </span>
 );
 
-SortButtons.propTypes = {
+SortButton.propTypes = {
   sortBy: PropTypes.string,
   handler: PropTypes.func,
 };
 
-export default SortButtons;
+export default SortButton;
