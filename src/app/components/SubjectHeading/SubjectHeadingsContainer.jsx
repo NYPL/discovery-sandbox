@@ -24,6 +24,8 @@ class SubjectHeadingsContainer extends React.Component {
       fromLabel,
       fromComparator,
       filter,
+      sortBy,
+      fromAttributeValue,
     } = this.props.location.query;
 
     if (!fromComparator) fromComparator = filter ? null : "start"
@@ -33,11 +35,14 @@ class SubjectHeadingsContainer extends React.Component {
       from_comparator: fromComparator,
       from_label: fromLabel,
       filter,
+      sort_by: sortBy,
+      from_attribute_value: fromAttributeValue,
     };
 
     const apiParamString = Object
       .entries(apiParamHash)
-      .map(([key, value]) => (value ? `${key}=${value}` : ''))
+      .map(([key, value]) => (value ? `${key}=${value}` : null))
+      .filter(pair => pair)
       .join('&');
 
     axios({
@@ -81,13 +86,16 @@ class SubjectHeadingsContainer extends React.Component {
       fromLabel: 'from_label',
       fromComparator: 'from_comparator',
       filter: 'filter',
+      fromAttributeValue: 'from_attribute_value',
+      sortBy: 'sort_by',
     };
     const paramString = Object.entries(paramHash)
       .map(([key, value]) => {
         const extractedValue = this.extractParam(value, url);
-        return extractedValue ? `${key}=${extractedValue}` : '';
+        return extractedValue ? `${key}=${extractedValue}` : null;
       },
       )
+      .filter(pair => pair)
       .join('&');
     return `${path}?${paramString}`;
   }
