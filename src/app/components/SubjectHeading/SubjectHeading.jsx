@@ -3,6 +3,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import SubjectHeadingsList from './SubjectHeadingsList';
+import SortButton from './SortButton';
+import Range from '../../models/Range';
 import appConfig from '../../../../appConfig';
 
 class SubjectHeading extends React.Component {
@@ -11,18 +13,25 @@ class SubjectHeading extends React.Component {
     const {
       subjectHeading,
       container,
+      sortBy,
     } = this.props;
     const {
       children,
+      range,
     } = subjectHeading;
     this.state = {
       open: !!children,
       narrower: (children || []),
+      sortBy: sortBy || "alphabetical",
+      range: range || Range.default(),
     };
     this.toggleOpen = this.toggleOpen.bind(this);
     this.updateSubjectHeading = this.updateSubjectHeading.bind(this);
     this.addMore = this.addMore.bind(this);
     this.linkToShow = this.linkToShow.bind(this);
+    this.updateSort = this.updateSort.bind(this);
+    this.fetchInitial = this.fetchInitial.bind(this);
+    this.sortHandler = this.sortHandler.bind(this);
   }
 
   componentDidMount() {
@@ -31,11 +40,11 @@ class SubjectHeading extends React.Component {
   }
 
   componentDidUpdate(prevProps, nextProps) {
-
     if (this.state.narrower.length === 0 && this.props.subjectHeading.children) {
       this.setState({
         narrower: this.props.subjectHeading.children,
         open: true,
+        range: this.props.subjectHeading.range,
       });
     }
   }
@@ -46,34 +55,10 @@ class SubjectHeading extends React.Component {
 
   toggleOpen() {
     const {
-      uuid,
-      indentation,
-    } = this.props.subjectHeading;
-    const {
       open,
     } = this.state;
     if (!open) {
-      axios({
-        method: 'GET',
-        url: `${appConfig.shepApi}/subject_headings/${uuid}/narrower`,
-        crossDomain: true,
-        headers: {
-          'Access-Control-Allow-Origin': '*',
-          'Content-Type': 'application/json',
-        },
-      }).then(
-        (resp) => {
-          const {
-            narrower,
-            next_url,
-          } = resp.data;
-          narrower.forEach((child) => { child.indentation = (indentation || 0) + 1; });
-          if (next_url) {
-            narrower[narrower.length - 1] = { button: 'next', updateParent: this.fetchAndUpdate(next_url), indentation: (indentation || 0) + 1 };
-          }
-          this.updateSubjectHeading({ narrower: narrower, open: true })
-        },
-      ).catch(resp => console.log(resp));
+      this.fetchInitial();
     } else {
       this.updateSubjectHeading({ open: false });
     }
@@ -119,6 +104,54 @@ class SubjectHeading extends React.Component {
     this.context.router.push(`${path}/subject_headings/${this.props.subjectHeading.uuid}`)
   }
 
+  updateSort(sortType) {
+    if (this.state.sortBy !== sortType) {
+      this.fetchInitial({ sortBy: sortType, range: Range.default() });
+    }
+  }
+
+  fetchInitial(additionalParameters = {}) {
+    const {
+      uuid,
+      indentation,
+    } = this.props.subjectHeading;
+    let {
+      sortBy,
+    } = this.state;
+    if (additionalParameters.sortBy) sortBy = additionalParameters.sortBy;
+    axios({
+      method: 'GET',
+      url: `${appConfig.shepApi}/subject_headings/${uuid}/narrower?sort_by=${sortBy}`,
+      crossDomain: true,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Content-Type': 'application/json',
+      },
+    }).then(
+      (resp) => {
+        const {
+          narrower,
+          next_url,
+        } = resp.data;
+        narrower.forEach((child) => { child.indentation = (indentation || 0) + 1; });
+        if (next_url) {
+          narrower[narrower.length - 1] = { button: 'next', updateParent: this.fetchAndUpdate(next_url), indentation: (indentation || 0) + 1 };
+        }
+        this.updateSubjectHeading(
+          Object.assign(
+            { narrower: narrower, open: true },
+            additionalParameters,
+          ),
+        );
+      },
+    ).catch(resp => console.log(resp));
+  }
+
+  sortHandler(e) {
+    e.preventDefault();
+    this.updateSort(e.target.value);
+  }
+
   render() {
     const {
       indentation,
@@ -133,12 +166,13 @@ class SubjectHeading extends React.Component {
       bib_count,
       desc_count,
       children,
-      range,
     } = subjectHeading;
 
     const {
       open,
       narrower,
+      sortBy,
+      range,
     } = this.state;
 
     const {
@@ -147,14 +181,18 @@ class SubjectHeading extends React.Component {
     } = this.addEmphasis(label);
 
     return (
-      <li data={`${subjectHeading.uuid}, ${container}`}>
-        <a className={`subjectHeadingRow ${ open || children ? "openSubjectHeading" : ""}` + `${this.props.nested ? ' nestedSubjectHeading' : ''}`} >
+      <li data={`${subjectHeading.uuid}, ${container}`} className={`subjectHeadingRow ${ open || children ? "openSubjectHeading" : ""}`}>
+        <a  className={`subjectHeadingRow ${ open || children ? "openSubjectHeading" : ""} + ${this.props.nested ? ' nestedSubjectHeading' : ''}`} >
           <span style={{'paddingLeft': `${20*indentation}px`}} className="subjectHeadingLabelAndToggle">
             <span onClick={container !== 'context' ? this.toggleOpen : () => {} } className="subjectHeadingToggle" >{desc_count > 0 ? (!open ? '+' : '-') : null}</span>
             <span className="subjectHeadingLabel" onClick={this.linkToShow}><span>{rest}</span>{rest === '' ? '' : ' -- ' }<span className='emph'>{emph}</span></span>
           </span>
           <span className="subjectHeadingAttribute titles">{`${bib_count}`}</span>
           <span className="subjectHeadingAttribute narrower">{`${desc_count}`}</span>
+          { open && narrower.length > 1 && uuid.length > 0 && (container !== 'context' || location.pathname.includes(uuid))
+            ? <SortButton sortBy={sortBy} handler={this.sortHandler} />
+            : null
+          }
         </a>
         { open
           ? <SubjectHeadingsList
@@ -165,6 +203,8 @@ class SubjectHeading extends React.Component {
             range={range}
             container={container}
             parentUuid={uuid}
+            sortBy={sortBy}
+            key={`${uuid}-list-${sortBy}`}
           />
           : null}
       </li>

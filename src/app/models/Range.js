@@ -22,6 +22,8 @@ class Range {
   }
 }
 
+Range.default = () => new Range(0, Infinity, [{ start: 0, end: Infinity }]);
+
 Range.fromSubjectHeading = (subjectHeading, linked, show = null) => {
   const {
     children,
