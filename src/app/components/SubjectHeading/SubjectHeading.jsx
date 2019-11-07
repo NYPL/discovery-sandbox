@@ -39,6 +39,10 @@ class SubjectHeading extends React.Component {
     window.components.push(this);
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    return this.state.sortBy === nextState.sortBy;
+  }
+
   componentDidUpdate(prevProps, nextProps) {
     if (this.state.narrower.length === 0 && this.props.subjectHeading.children) {
       this.setState({
@@ -107,9 +111,10 @@ class SubjectHeading extends React.Component {
 
   updateSort(sortType) {
     if (this.state.sortBy !== sortType) {
-      this.state.sortBy = sortType;
-      this.state.range = Range.default();
-      this.fetchInitial();
+      // this.state.sortBy = sortType;
+      // this.state.range = Range.default();
+      this.setState({ sortBy: sortType, range: Range.default()}, this.fetchInitial);
+      // this.fetchInitial();
     }
   }
 
