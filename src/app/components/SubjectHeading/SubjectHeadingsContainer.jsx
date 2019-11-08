@@ -117,7 +117,6 @@ class SubjectHeadingsContainer extends React.Component {
       query,
     } = this.props.location;
     const paramString = `filter=${query.filter}&sortBy=${e.target.value}`;
-    console.log('redirecting ', `${pathname}?${paramString}`);
     if (e.target.value !== this.state.sortBy) {
       this.context.router.push(`${pathname}?${paramString}`);
     }
