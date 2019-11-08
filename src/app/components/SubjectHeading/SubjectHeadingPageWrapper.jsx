@@ -5,8 +5,9 @@ import SubjectHeadingsContainer from './SubjectHeadingsContainer';
 import SubjectHeadingSearch from './SubjectHeadingSearch';
 
 const SubjectHeadingPageWrapper = (props) => {
-  let containerKey = props.location.query.filter || props.location.query.fromLabel || ""
-
+  const containerKey = Object.entries(props.location.query)
+    .map(([key, value]) => `${key}=${value}`)
+    .join('&')
   return (
     <div>
       <div className="subjectHeadingsBanner">

@@ -6,6 +6,7 @@ import axios from 'axios';
 import SubjectHeadingsList from './SubjectHeadingsList';
 import SubjectHeadingTableHeader from './SubjectHeadingTableHeader'
 import SubjectHeadingSearch from './SubjectHeadingSearch'
+import SortButton from './SortButton';
 import appConfig from '../../../../appConfig';
 
 
@@ -17,6 +18,7 @@ class SubjectHeadingsContainer extends React.Component {
     };
     this.pagination = this.pagination.bind(this);
     this.redirectTo = this.redirectTo.bind(this);
+    this.updateSort = this.updateSort.bind(this);
   }
 
   componentDidMount() {
@@ -24,6 +26,8 @@ class SubjectHeadingsContainer extends React.Component {
       fromLabel,
       fromComparator,
       filter,
+      sortBy,
+      fromAttributeValue,
     } = this.props.location.query;
 
     if (!fromComparator) fromComparator = filter ? null : "start"
@@ -33,11 +37,14 @@ class SubjectHeadingsContainer extends React.Component {
       from_comparator: fromComparator,
       from_label: fromLabel,
       filter,
+      sort_by: sortBy,
+      from_attribute_value: fromAttributeValue,
     };
 
     const apiParamString = Object
       .entries(apiParamHash)
-      .map(([key, value]) => (value ? `${key}=${value}` : ''))
+      .map(([key, value]) => (value ? `${key}=${value}` : null))
+      .filter(pair => pair)
       .join('&');
 
     axios({
@@ -81,23 +88,38 @@ class SubjectHeadingsContainer extends React.Component {
       fromLabel: 'from_label',
       fromComparator: 'from_comparator',
       filter: 'filter',
+      fromAttributeValue: 'from_attribute_value',
+      sortBy: 'sort_by',
     };
     const paramString = Object.entries(paramHash)
       .map(([key, value]) => {
         const extractedValue = this.extractParam(value, url);
-        return extractedValue ? `${key}=${extractedValue}` : '';
+        return extractedValue ? `${key}=${extractedValue}` : null;
       },
       )
+      .filter(pair => pair)
       .join('&');
     return `${path}?${paramString}`;
   }
 
   redirectTo(url) {
     const redirectFunction = function (e) {
-      e.preventDefault;
+      e.preventDefault();
       this.context.router.push(url);
-    }
+    };
     return redirectFunction.bind(this);
+  }
+
+  updateSort(e) {
+    e.preventDefault();
+    const {
+      pathname,
+      query,
+    } = this.props.location;
+    const paramString = `filter=${query.filter}&sortBy=${e.target.value}`;
+    if (e.target.value !== this.state.sortBy) {
+      this.context.router.push(`${pathname}?${paramString}`);
+    }
   }
 
   pagination() {
@@ -105,20 +127,28 @@ class SubjectHeadingsContainer extends React.Component {
       previousUrl,
       nextUrl,
     } = this.state;
+    const {
+      filter,
+      sortBy,
+    } = this.props.location.query;
     const urlForPrevious = this.convertApiUrlToFrontendUrl(previousUrl);
     const urlForNext = this.convertApiUrlToFrontendUrl(nextUrl);
     return (
       <div className="subjectHeadingNav">
         <a className="subjectNavButton" href={urlForPrevious} onClick={this.redirectTo(urlForPrevious)}>{'\u25C0'}</a>
         <a className="subjectNavButton" href={urlForNext} onClick={this.redirectTo(urlForNext)}>{'\u25B6'}</a>
+        { filter
+          ? <SortButton sortBy={sortBy || 'alphabetical'} handler={this.updateSort} />
+          : null
+        }
       </div>
-    )
+    );
   }
 
   render() {
     const { error, subjectHeadings } = this.state;
     const location = this.props.location;
-    const { linked } = this.props.location.query;
+    const { linked, sortBy } = this.props.location.query;
 
     if (error) {
       return (
@@ -133,7 +163,7 @@ class SubjectHeadingsContainer extends React.Component {
           <div className="subjectHeadingMainContent index">
             {this.pagination()}
             <SubjectHeadingTableHeader />
-            <SubjectHeadingsList subjectHeadings={subjectHeadings} linked={linked} location={location} />
+            <SubjectHeadingsList subjectHeadings={subjectHeadings} linked={linked} location={location} sortBy={sortBy}/>
             {this.pagination()}
           </div>
         </div>
