@@ -7,6 +7,7 @@ import SubjectHeadingsList from './SubjectHeadingsList';
 import SubjectHeadingTableHeader from './SubjectHeadingTableHeader'
 import SubjectHeadingSearch from './SubjectHeadingSearch'
 import appConfig from '../../../../appConfig';
+import SubtleLoadingLayer from './SubtleLoadingLayer'
 
 
 class SubjectHeadingsContainer extends React.Component {
@@ -14,6 +15,7 @@ class SubjectHeadingsContainer extends React.Component {
     super(props);
     this.state = {
       error: false,
+      loading: true
     };
     this.pagination = this.pagination.bind(this);
     this.redirectTo = this.redirectTo.bind(this);
@@ -56,6 +58,7 @@ class SubjectHeadingsContainer extends React.Component {
           nextUrl: res.data.next_url,
           subjectHeadings: res.data.subject_headings,
           error: res.data.subject_headings.length === 0,
+          loading: false
         });
       },
     ).catch(
@@ -116,7 +119,7 @@ class SubjectHeadingsContainer extends React.Component {
   }
 
   render() {
-    const { error, subjectHeadings } = this.state;
+    const { error, subjectHeadings, loading } = this.state;
     const location = this.props.location;
     const { linked } = this.props.location.query;
 
@@ -129,6 +132,7 @@ class SubjectHeadingsContainer extends React.Component {
     }
     return (
       <div>
+      <SubtleLoadingLayer status={loading} title={"Subject Headings"}/>
         <div className="subjectMainContentWrapper">
           <div className="subjectHeadingMainContent index">
             {this.pagination()}

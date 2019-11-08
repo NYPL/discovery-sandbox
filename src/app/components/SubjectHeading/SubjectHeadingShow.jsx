@@ -19,6 +19,9 @@ class SubjectHeadingShow extends React.Component {
       },
       bibIds: [],
       bibs: [],
+      contextLoading: true,
+      relatedLoading: true,
+      bibsLoading: true
     };
 
     this.linkToContext = this.linkToContext.bind(this);
@@ -44,6 +47,7 @@ class SubjectHeadingShow extends React.Component {
           mainHeading: {
             label: res.data.request.main_label,
           },
+          contextLoading: false
         });
       })
       .catch(
@@ -87,6 +91,7 @@ class SubjectHeadingShow extends React.Component {
       .then((res) => {
         this.setState({
           relatedHeadings: res.data.related_headings,
+          relatedLoading: false
         });
       })
       .catch(

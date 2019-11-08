@@ -14,7 +14,8 @@ class BibsList extends React.Component {
   constructor() {
     super()
     this.state = {
-      bibs: []
+      bibs: [],
+      loading: true
     }
     this.fetchBib = this.fetchBib.bind(this)
   }
@@ -22,7 +23,8 @@ class BibsList extends React.Component {
   componentDidMount() {
     Promise.all(this.props.bibIds.map(bib => this.fetchBib(bib)))
     .then(bibs => this.setState({
-      bibs
+      bibs,
+      loading: false
     }))
     .catch(
       (err) => {
@@ -131,7 +133,7 @@ class BibsList extends React.Component {
       <div className="bibs-list">
         <h4>Titles</h4>
         <ul>
-        {this.state.bibs.map((bib) => this.generateBibLi(bib))}
+          {this.state.bibs.map((bib) => this.generateBibLi(bib))}
         </ul>
       </div>
     )
