@@ -5,8 +5,6 @@ import SubjectHeadingsContainer from './SubjectHeadingsContainer';
 import SubjectHeadingSearch from './SubjectHeadingSearch';
 
 const SubjectHeadingPageWrapper = (props) => {
-  // let containerKey = props.location.query.filter || props.location.query.fromLabel || ""
-  // if (props.location.query.sortBy) containerKey += `&sortBy${props.location.query.sortBy}`
   const containerKey = Object.entries(props.location.query)
     .map(([key, value]) => `${key}=${value}`)
     .join('&')
