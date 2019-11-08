@@ -1,33 +1,48 @@
 .subjectHeadingRow {
   font-weight: 500;
+  width: 100%;
+  min-width: 100%;
+  min-height: 1px;
+}
+
+.subjectHeadingRow.tableHeadings {
+  display: flex;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
 }
 
 .subjectHeadingRow:hover {
   color: inherit;
 }
 
+.subjectHeadingInfo {
+  display: flex;
+}
+
 .subjectHeadingAttribute {
-  position: absolute;
 }
 
 .subjectHeadingAttribute.titles {
-  left: 75%;
 }
 
 .subjectHeadingAttribute.narrower {
-  left: 86%;
 }
 
 .subjectHeadingAttribute.sortButton {
-  left: 100%;
   height: 1rem;
   font-size: 0.75rem;
+  margin-top: -3px;
+  margin-left: 5px;
 }
 
 .subjectMainContentWrapper {
   position: relative;
   .subjectHeadingRow.tableHeadings {
     margin-bottom: 15px;
+    display: flex;
   }
 
   .subjectHeadingLabel {
@@ -41,7 +56,6 @@
 
 .subjectHeadingToggle {
   margin-top: -2%;
-  position: relative;
   top: 1px;
 }
 
@@ -58,7 +72,7 @@
   list-style: none;
   margin-left: 15px;
   font-weight: 500;
-  width: 75%;
+  width: 50%;
 }
 
 .subjectHeadingLabelAndToggle > .subjectHeadingToggle {
@@ -92,7 +106,6 @@
 
 .subjectNavButton {
   margin: 100px;
-  // border: 1px solid #104d65;
   font-size: 20px;
   text-decoration: none;
   padding: 20px;
@@ -168,7 +181,10 @@
   font-size: 1rem;
 }
 
-.subjectHeadingMainContent { font-size: 0;}
+.subjectHeadingMainContent.index {
+  font-size: 0;
+  max-width: 550px;
+}
 
 .subjectHeadingList {font-size: 0;}
 
@@ -236,7 +252,6 @@
   padding-bottom: 1%;
   margin-left: 1%;
   margin-bottom: 1%;
-  position: relative;
 
   .subjectHeadingLabelAndToggle > .subjectHeadingLabel {
     padding-left: 0px;
