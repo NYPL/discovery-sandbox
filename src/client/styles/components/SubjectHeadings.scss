@@ -147,6 +147,11 @@
 
 .subjectHeadingRow.tableHeadings span {
   font-weight: 700;
+  
+  .subjectHeadingLabel:hover {
+    text-decoration: none;
+    color: inherit;
+  }
 }
 
 .emph {
