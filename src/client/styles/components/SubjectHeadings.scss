@@ -3,7 +3,7 @@
   width: 100%;
   min-width: 100%;
   min-height: 1px;
-  // justify-content: space-around;
+
 }
 
 .subjectHeadingMainContent.index .subjectHeadingRow {
@@ -48,7 +48,6 @@ a {
 
 .subjectMainContentWrapper {
   position: relative;
-  // width: 75%;
   .subjectHeadingRow.tableHeadings {
     margin-bottom: 15px;
     display: flex;
@@ -153,14 +152,11 @@ a {
 }
 
 .subjectHeadingMainContent {
-  // min-width: 700px;
-  // width: fit-content;
   margin: 0 auto;
 }
 
 .subjectMainContentWrapper {
   margin: 0 auto;
-  // width: fit-content;
 }
 
 .subjectHeadingList {
@@ -193,7 +189,6 @@ a {
 .subjectHeadingMainContent.index {
   font-size: 0;
   width: 80%;
-  // max-width: 550px;
 }
 
 .subjectHeadingList {font-size: 0;}
