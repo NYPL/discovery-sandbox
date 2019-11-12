@@ -7,6 +7,7 @@ import ResultsList from '../Results/ResultsList';
 import SubjectHeadingTableHeader from './SubjectHeadingTableHeader';
 import Range from '../../models/Range';
 import appConfig from '../../../../appConfig';
+import LoadingLayer from '../LoadingLayer/LoadingLayer'
 
 
 class SubjectHeadingShow extends React.Component {
@@ -17,8 +18,9 @@ class SubjectHeadingShow extends React.Component {
         uuid: this.props.params.subjectHeadingUuid,
         label: '',
       },
-      bibIds: [],
+      shepBibs: [],
       bibs: [],
+      contextLoading: true
     };
 
     this.linkToContext = this.linkToContext.bind(this);
@@ -44,6 +46,7 @@ class SubjectHeadingShow extends React.Component {
           mainHeading: {
             label: res.data.request.main_label,
           },
+          contextLoading: false
         });
       })
       .catch(
@@ -63,9 +66,8 @@ class SubjectHeadingShow extends React.Component {
       },
     })
       .then((res) => {
-        let bibIds = res.data.bibs.map(bib => bib.bnumber);
         this.setState({
-          bibIds: bibIds
+          shepBibs: res.data.bibs
         });
       })
       .catch(
@@ -86,7 +88,7 @@ class SubjectHeadingShow extends React.Component {
     })
       .then((res) => {
         this.setState({
-          relatedHeadings: res.data.related_headings,
+          relatedHeadings: res.data.related_headings
         });
       })
       .catch(
@@ -126,7 +128,7 @@ class SubjectHeadingShow extends React.Component {
   }
 
   render() {
-    const { contextHeadings, relatedHeadings, bibIds, error, mainHeading } = this.state
+    const { contextHeadings, relatedHeadings, shepBibs, error, mainHeading, contextLoading } = this.state
 
     const { label, uuid } = mainHeading;
 
@@ -137,8 +139,9 @@ class SubjectHeadingShow extends React.Component {
     }
     return (
       <div className="subjectHeadingShow">
+        <LoadingLayer status={contextLoading} title={"Subject Heading"}/>
         <div className="subjectHeadingMainContent show">
-          {bibIds.length > 0 ? <BibsList bibIds={bibIds}/> : null}
+          {shepBibs.length > 0 ? <BibsList shepBibs={shepBibs}/> : null}
           <div className="subjectHeadingRelated">
             <div className="backgroundContainer">
               <h4>Related Subject Headings for <em>{label}</em></h4>

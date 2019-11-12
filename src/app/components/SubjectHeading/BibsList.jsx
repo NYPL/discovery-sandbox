@@ -14,15 +14,17 @@ class BibsList extends React.Component {
   constructor() {
     super()
     this.state = {
-      bibs: []
+      bibs: [],
+      loading: true
     }
     this.fetchBib = this.fetchBib.bind(this)
   }
 
   componentDidMount() {
-    Promise.all(this.props.bibIds.map(bib => this.fetchBib(bib)))
+    Promise.all(this.props.shepBibs.map(bib => this.fetchBib(bib)))
     .then(bibs => this.setState({
-      bibs
+      bibs,
+      loading: false
     }))
     .catch(
       (err) => {
@@ -32,10 +34,23 @@ class BibsList extends React.Component {
     )
   }
 
-  fetchBib(bibId) {
+  fetchBib(bib) {
+    let instutionCode
+    switch (bib.institution) {
+      case "sierra-nypl":
+        instutionCode = 'b'
+        break;
+      case "recap-cul":
+        instutionCode = 'cb'
+        break;
+      case "recap-pul":
+        instutionCode = 'pb'
+        break;
+    }
+
     return axios({
       method: 'GET',
-      url: `${appConfig.baseUrl}/api/bib?bibId=b${bibId}`,
+      url: `${appConfig.baseUrl}/api/bib?bibId=${instutionCode}${bib.bnumber}`,
       crossDomain: true,
       headers: {
         'Access-Control-Allow-Origin': '*',
@@ -72,8 +87,10 @@ class BibsList extends React.Component {
     return null;
   }
 
-  generateBibLi(bib) {
-    if (!bib.data || _isEmpty(bib.data) || !bib.data.title) return null;
+  generateBibLi(shepBib) {
+    let bib = this.state.bibs.find(discoveryBib => discoveryBib.data.uri && discoveryBib.data.uri.includes(shepBib.bnumber)) || shepBib
+
+    if (!bib.data || _isEmpty(bib.data) || !bib.data.title) return <li className="nypl-results-item not-in-discovery" key={bib.bnumber}>{bib.title} bib id: {bib.bnumber}</li>;
 
     const result = bib.data;
     const bibTitle = this.getBibTitle(result);
@@ -87,10 +104,7 @@ class BibsList extends React.Component {
     const totalItems = items.length;
     const hasRequestTable = items.length === 1;
 
-    if (this.state.error) return (
-      <div>There are no titles for this subject heading</div>
-    )
-    else return (
+    return (
       <li key={bibId} className={`nypl-results-item ${hasRequestTable ? 'has-request' : ''}`}>
         <h3>
           <Link
@@ -131,7 +145,7 @@ class BibsList extends React.Component {
       <div className="bibs-list">
         <h4>Titles</h4>
         <ul>
-        {this.state.bibs.map((bib) => this.generateBibLi(bib))}
+          {this.state.bibs.length > 0 ? this.props.shepBibs.map((bib) => this.generateBibLi(bib)) : null}
         </ul>
       </div>
     )

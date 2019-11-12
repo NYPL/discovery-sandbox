@@ -160,7 +160,7 @@ a {
 
 .subjectHeadingRow.tableHeadings span {
   font-weight: 700;
-  
+
   .subjectHeadingLabel:hover {
     text-decoration: none;
     color: inherit;
@@ -356,4 +356,9 @@ a {
 
 .suggestions li:not(:last-of-type) {
   border-bottom: 1px solid #999;
+}
+
+.not-in-discovery {
+  color: grey;
+  font-style: italic;
 }
