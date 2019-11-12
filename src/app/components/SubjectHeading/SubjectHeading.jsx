@@ -182,17 +182,19 @@ class SubjectHeading extends React.Component {
 
     return (
       <li data={`${subjectHeading.uuid}, ${container}`} className={`subjectHeadingRow ${ open || children ? "openSubjectHeading" : ""}`}>
-        <a  className={`subjectHeadingRow ${ open || children ? "openSubjectHeading" : ""} + ${this.props.nested ? ' nestedSubjectHeading' : ''}`} >
-          <span style={{'paddingLeft': `${20*indentation}px`}} className="subjectHeadingLabelAndToggle">
-            <span onClick={container !== 'context' ? this.toggleOpen : () => {} } className="subjectHeadingToggle" >{desc_count > 0 ? (!open ? '+' : '-') : null}</span>
-            <span className="subjectHeadingLabel" onClick={this.linkToShow}><span>{rest}</span>{rest === '' ? '' : ' -- ' }<span className='emph'>{emph}</span></span>
-          </span>
-          <span className="subjectHeadingAttribute titles">{`${bib_count}`}</span>
-          <span className="subjectHeadingAttribute narrower">{`${desc_count}`}</span>
-          { open && narrower.length > 1 && uuid.length > 0 && (container !== 'context' || location.pathname.includes(uuid))
-            ? <SortButton sortBy={sortBy} handler={this.sortHandler} />
+        <a>
+          <div  className={`subjectHeadingInfo subjectHeadingRow ${ open || children ? "openSubjectHeading" : ""} + ${this.props.nested ? ' nestedSubjectHeading' : ''}`} >
+            <span  className="subjectHeadingLabelAndToggle">
+              <span style={{'paddingLeft': `${20*indentation}px`}} onClick={container !== 'context' ? this.toggleOpen : () => {} } className="subjectHeadingToggle" >{desc_count > 0 ? (!open ? '+' : '-') : null}</span>
+              <span className="subjectHeadingLabel" onClick={this.linkToShow}><span>{rest}</span>{rest === '' ? '' : ' -- ' }<span className='emph'>{emph}</span></span>
+            </span>
+            <span className="subjectHeadingAttribute titles">{`${bib_count}`}</span>
+            <span className="subjectHeadingAttribute narrower">{`${desc_count}`}</span>
+            { open && narrower.length > 1 && uuid.length > 0 && (container !== 'context' || location.pathname.includes(uuid))
+              ? <SortButton sortBy={sortBy} handler={this.sortHandler} />
             : null
           }
+          </div>
         </a>
         { open
           ? <SubjectHeadingsList

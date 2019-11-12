@@ -18,6 +18,7 @@ class SubjectHeadingSearch extends React.Component {
     this.onChange = this.onChange.bind(this)
     this.onSubmit = this.onSubmit.bind(this)
     this.clearUserInput = this.clearUserInput.bind(this)
+    this.changeActiveSuggestion = this.changeActiveSuggestion.bind(this)
   }
 
   onSubmit(submitEvent) {
@@ -35,19 +36,33 @@ class SubjectHeadingSearch extends React.Component {
       userInput
     })
 
-    if (userInput.length > 2) {
-      axios({
-        method: 'GET',
-        url: `${appConfig.shepApi}/autosuggest?query=${userInput}`,
-        crossDomain: true
+    axios({
+      method: 'GET',
+      url: `${appConfig.shepApi}/autosuggest?query=${userInput}`,
+      crossDomain: true
+    })
+    .then(res => {
+      this.setState({
+        suggestions: res.data.autosuggest
       })
-      .then(res => {
-        this.setState({
-          suggestions: res.data.autosuggest
-        })
-      })
-    }
+    })
+  }
 
+  changeActiveSuggestion(keyEvent) {
+    const {suggestions, activeSuggestion} = this.state
+    if (suggestions.length > 0) {
+      if (keyEvent.key === 'ArrowDown' && suggestions.length - 1 > activeSuggestion) {
+        keyEvent.preventDefault();
+        this.setState(prevState => {
+          return {activeSuggestion: prevState.activeSuggestion += 1}
+        })
+      } else if (keyEvent.key === 'ArrowUp' && activeSuggestion > 0) {
+        keyEvent.preventDefault();
+        this.setState(prevState => {
+          return {activeSuggestion: this.state.activeSuggestion -= 1}
+        })
+      }
+    }
   }
 
   clearUserInput() {
@@ -70,6 +85,7 @@ class SubjectHeadingSearch extends React.Component {
     const {
       onChange,
       onSubmit,
+      changeActiveSuggestion,
       state: {
         suggestions,
         activeSuggestion,
@@ -103,8 +119,8 @@ class SubjectHeadingSearch extends React.Component {
       <form
         className="autocomplete"
         autoComplete="off"
-        action="/action_page.php"
         onSubmit={onSubmit}
+        onKeyDown={changeActiveSuggestion}
       >
         <div className="autocomplete-field">
           <label htmlFor="autosuggest">Subject Heading Search:</label>
