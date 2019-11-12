@@ -3,6 +3,11 @@
   width: 100%;
   min-width: 100%;
   min-height: 1px;
+  // justify-content: space-around;
+}
+
+.subjectHeadingMainContent.index .subjectHeadingRow {
+  justify-content: space-around;
 }
 
 .subjectHeadingRow.tableHeadings {
@@ -40,6 +45,7 @@ a {
 
 .subjectMainContentWrapper {
   position: relative;
+  // width: 75%;
   .subjectHeadingRow.tableHeadings {
     margin-bottom: 15px;
     display: flex;
@@ -144,14 +150,14 @@ a {
 }
 
 .subjectHeadingMainContent {
-  min-width: 700px;
-  width: fit-content;
+  // min-width: 700px;
+  // width: fit-content;
   margin: 0 auto;
 }
 
 .subjectMainContentWrapper {
   margin: 0 auto;
-  width: fit-content;
+  // width: fit-content;
 }
 
 .subjectHeadingList {
@@ -183,7 +189,8 @@ a {
 
 .subjectHeadingMainContent.index {
   font-size: 0;
-  max-width: 550px;
+  width: 85%;
+  // max-width: 550px;
 }
 
 .subjectHeadingList {font-size: 0;}
