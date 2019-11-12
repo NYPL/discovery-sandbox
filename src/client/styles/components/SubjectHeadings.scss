@@ -8,6 +8,9 @@
 
 .subjectHeadingMainContent.index .subjectHeadingRow {
   justify-content: space-around;
+  a {
+    display: flex;
+  }
 }
 
 .subjectHeadingRow.tableHeadings {
@@ -189,7 +192,7 @@ a {
 
 .subjectHeadingMainContent.index {
   font-size: 0;
-  width: 85%;
+  width: 80%;
   // max-width: 550px;
 }
 
