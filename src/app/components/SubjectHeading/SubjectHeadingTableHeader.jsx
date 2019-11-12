@@ -2,17 +2,20 @@ import React from 'react';
 import { Link } from 'react-router';
 import PropTypes from 'prop-types';
 
-const SubjectHeadingTableHeader = () => {
+const SubjectHeadingTableHeader = (props) => {
   return (
-    <div className="subjectHeadingRow tableHeadings">
-      <span className="subjectHeadingLabelAndToggle">
-        <span className="subjectHeadingToggle"></span>
-        <span className="subjectHeadingLabel">Subject Heading</span>
-      </span>
-      <span className="subjectHeadingAttribute titles">Titles</span>
-      <span className="subjectHeadingAttribute narrower">Narrower</span>
+    <div className="tableHeadingsWrapper">
+      <div className="subjectHeadingRow tableHeadings">
+        <span className="subjectHeadingLabelAndToggle">
+          <span className="subjectHeadingToggle"></span>
+          <span className="subjectHeadingLabel">Subject Heading</span>
+        </span>
+        <span className="subjectHeadingAttribute titles">Titles</span>
+        <span className="subjectHeadingAttribute narrower">Narrower</span>
+      </div>
+      {props.sortButton}
     </div>
-  )
-}
+  );
+};
 
 export default SubjectHeadingTableHeader
