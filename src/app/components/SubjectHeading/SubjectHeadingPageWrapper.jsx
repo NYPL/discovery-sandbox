@@ -9,10 +9,12 @@ const SubjectHeadingPageWrapper = (props) => {
     .map(key => `${key}=${props.location.query[key]}`)
     .join('&')
 
+  const filter = props.location.query.filter;
+
   return (
     <div>
       <div className="subjectHeadingsBanner">
-        Subject Headings
+        {`Subject Headings${filter ? ` for '${filter}'` : ''}`}
         <SubjectHeadingSearch/>
       </div>
       {props.params.subjectHeadingUuid ?
