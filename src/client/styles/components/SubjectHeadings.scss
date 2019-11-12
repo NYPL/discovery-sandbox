@@ -316,6 +316,7 @@ a {
 }
 
 .autocomplete-field {
+  position: relative;
   input {
     border: 1px solid #999;
     width: 200px;
@@ -324,14 +325,17 @@ a {
 
 .suggestions {
   border: 1px solid #999;
-  border-top-width: 0;
   list-style: none;
-  height: fit-content;
-  overflow-y: auto;
-  width: 250px;
+  // height: fit-content;
+  // overflow-y: auto;
   background-color: white;
   position: absolute;
   z-index: 1;
+  right: -2%;
+  margin-top: -1.5%;
+  margin-bottom: 0px;
+  width: max-content;
+  min-width: 200px;
 }
 
 .suggestion-active {
@@ -343,7 +347,6 @@ a {
   cursor: pointer;
   margin-bottom: 0;
   font-size: .9rem;
-  width: 250px;
 
   em > em {
     color: #31806a;
@@ -361,4 +364,9 @@ a {
 .not-in-discovery {
   color: grey;
   font-style: italic;
+}
+
+.heading-count {
+  float: right;
+  padding-right: 2%;
 }

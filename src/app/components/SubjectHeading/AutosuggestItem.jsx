@@ -18,7 +18,13 @@ const AutosuggestItem = (props) => {
       onClick={onClick}
     >
       <Link to={path}>
-        {subfield ? item.label : <em><em>Subject:</em> {item.label}</em>}
+        {subfield ?
+          <span>{item.label}
+            <span className="heading-count">
+              [{item.heading_count} {item.heading_count > 1 ? 'headings' : 'heading'}]
+            </span>
+          </span>
+          : <em><em>Subject:</em> {item.label}</em>}
       </Link>
     </li>
   )
