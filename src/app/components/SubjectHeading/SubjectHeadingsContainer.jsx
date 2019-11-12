@@ -8,7 +8,7 @@ import SubjectHeadingTableHeader from './SubjectHeadingTableHeader'
 import SubjectHeadingSearch from './SubjectHeadingSearch'
 import SortButton from './SortButton';
 import appConfig from '../../../../appConfig';
-import SubtleLoadingLayer from './SubtleLoadingLayer'
+import LoadingLayer from '../LoadingLayer/LoadingLayer'
 
 
 class SubjectHeadingsContainer extends React.Component {
@@ -162,7 +162,7 @@ class SubjectHeadingsContainer extends React.Component {
     }
     return (
       <div>
-      <SubtleLoadingLayer status={loading} title={"Subject Headings"}/>
+        <LoadingLayer status={loading} title={"Subject Headings"}/>
         <div className="subjectMainContentWrapper">
           <div className="subjectHeadingMainContent index">
             {this.pagination()}
