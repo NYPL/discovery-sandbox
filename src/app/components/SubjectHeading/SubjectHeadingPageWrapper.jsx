@@ -14,7 +14,7 @@ const SubjectHeadingPageWrapper = (props) => {
   return (
     <div>
       <div className="subjectHeadingsBanner">
-        {`Subject Headings${filter ? ` for '${filter}'` : ''}`}
+        {`Subject Headings${filter ? ` containing '${filter}'` : ''}`}
         <SubjectHeadingSearch/>
       </div>
       {props.params.subjectHeadingUuid ?
