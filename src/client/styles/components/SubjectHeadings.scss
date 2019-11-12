@@ -3,6 +3,14 @@
   width: 100%;
   min-width: 100%;
   min-height: 1px;
+
+}
+
+.subjectHeadingMainContent.index .subjectHeadingRow {
+  justify-content: space-around;
+  a {
+    display: flex;
+  }
 }
 
 .subjectHeadingRow.tableHeadings {
@@ -144,14 +152,11 @@ a {
 }
 
 .subjectHeadingMainContent {
-  min-width: 700px;
-  width: fit-content;
   margin: 0 auto;
 }
 
 .subjectMainContentWrapper {
   margin: 0 auto;
-  width: fit-content;
 }
 
 .subjectHeadingList {
@@ -183,7 +188,7 @@ a {
 
 .subjectHeadingMainContent.index {
   font-size: 0;
-  max-width: 550px;
+  width: 80%;
 }
 
 .subjectHeadingList {font-size: 0;}
