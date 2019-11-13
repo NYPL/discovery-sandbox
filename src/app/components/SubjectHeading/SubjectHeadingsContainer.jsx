@@ -140,10 +140,6 @@ class SubjectHeadingsContainer extends React.Component {
       <div className="subjectHeadingNav">
         <a className="subjectNavButton" href={urlForPrevious} onClick={this.redirectTo(urlForPrevious)}>{'\u25C0'}</a>
         <a className="subjectNavButton" href={urlForNext} onClick={this.redirectTo(urlForNext)}>{'\u25B6'}</a>
-        { filter
-          ? <SortButton sortBy={sortBy || 'alphabetical'} handler={this.updateSort} />
-          : null
-        }
       </div>
     );
   }
@@ -151,7 +147,7 @@ class SubjectHeadingsContainer extends React.Component {
   render() {
     const { error, subjectHeadings, loading } = this.state;
     const location = this.props.location;
-    const { linked, sortBy } = this.props.location.query;
+    const { linked, sortBy, filter } = this.props.location.query;
 
     if (error) {
       return (
@@ -166,7 +162,14 @@ class SubjectHeadingsContainer extends React.Component {
         <div className="subjectMainContentWrapper">
           <div className="subjectHeadingMainContent index">
             {this.pagination()}
-            <SubjectHeadingTableHeader />
+            <div className="tableHeadingsWrapper">
+              <SubjectHeadingTableHeader />
+              {
+                filter
+                ? <SortButton sortBy={sortBy || 'alphabetical'} handler={this.updateSort} />
+                : null
+              }
+            </div>
             <SubjectHeadingsList subjectHeadings={subjectHeadings} linked={linked} location={location} sortBy={sortBy}/>
             {this.pagination()}
           </div>

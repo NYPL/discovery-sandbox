@@ -4,15 +4,15 @@ import PropTypes from 'prop-types';
 
 const SubjectHeadingTableHeader = () => {
   return (
-    <div className="subjectHeadingRow tableHeadings">
-      <span className="subjectHeadingLabelAndToggle">
-        <span className="subjectHeadingToggle"></span>
-        <span className="subjectHeadingLabel">Subject Heading</span>
-      </span>
-      <span className="subjectHeadingAttribute titles">Titles</span>
-      <span className="subjectHeadingAttribute narrower">Narrower</span>
-    </div>
-  )
-}
+      <div className="subjectHeadingRow tableHeadings">
+        <span className="subjectHeadingLabelAndToggle">
+          <span className="subjectHeadingToggle"></span>
+          <span className="subjectHeadingLabel">Subject Heading</span>
+        </span>
+        <span className="subjectHeadingAttribute titles">Titles</span>
+        <span className="subjectHeadingAttribute narrower">Narrower</span>
+      </div>
+  );
+};
 
 export default SubjectHeadingTableHeader

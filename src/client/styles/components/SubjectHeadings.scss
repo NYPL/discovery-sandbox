@@ -6,11 +6,15 @@
 
 }
 
-.subjectHeadingMainContent.index .subjectHeadingRow {
-  justify-content: space-around;
+.subjectHeadingMainContent .subjectHeadingRow {
+  justify-content: space-between;
   a {
     display: flex;
   }
+}
+
+.subjectHeadingMainContent.index .tableHeadingsWrapper {
+  display: flex;
 }
 
 .subjectHeadingRow.tableHeadings {
