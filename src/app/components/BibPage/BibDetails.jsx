@@ -18,6 +18,7 @@ import DefinitionList from './DefinitionList';
 import appConfig from '../../../../appConfig';
 import getOwner from '../../utils/getOwner';
 import LibraryItem from '../../utils/item';
+import axios from 'axios';
 
 class BibDetails extends React.Component {
   constructor(props) {
@@ -408,6 +409,28 @@ class BibDetails extends React.Component {
     return subjectLiteralArray;
   }
 
+  getUuidFromShepApiAndRedirect(subjectLiteral) {
+    const fetchUuidAndRedirect = function (e) {
+      e.preventDefault();
+      axios({
+        method: 'GET',
+        url: `${appConfig.shepApi}/subject_headings?subject_literal=${subjectLiteral}`,
+        crossDomain: true
+      },
+      ).then(
+        (res) => {
+          this.context.router.push(`${appConfig.baseUrl}/subject_headings/${res.data.subject_heading.id}`)
+        },
+      ).catch(
+        (err) => {
+          console.log('error: ', err);
+        },
+      );
+    }
+
+    return fetchUuidAndRedirect.bind(this);
+  }
+
   /**
    * constructSubjectHeading(bibValue, url, fieldValue, fieldLabel)
    * Constructs the link elements of subject headings.
@@ -437,10 +460,8 @@ class BibDetails extends React.Component {
 
       const subjectHeadingLink = (
         <Link
-          onClick={
-            e => this.newSearch(e, urlWithFilterQuery, fieldValue, urlArray[index], fieldLabel)
-          }
-          to={`${appConfig.baseUrl}/search?${urlWithFilterQuery}`}
+          onClick={this.getUuidFromShepApiAndRedirect(heading)}
+          href={''}
           key={index}
         >
           {heading}
