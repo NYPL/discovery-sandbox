@@ -34,16 +34,16 @@ class SubjectHeadingSearch extends React.Component {
 
     this.setState({
       userInput
-    })
-
-    axios({
-      method: 'GET',
-      url: `${appConfig.shepApi}/autosuggest?query=${userInput}`,
-      crossDomain: true
-    })
-    .then(res => {
-      this.setState({
-        suggestions: res.data.autosuggest
+    }, () => {
+      axios({
+        method: 'GET',
+        url: `${appConfig.shepApi}/autosuggest?query=${userInput}`,
+        crossDomain: true
+      })
+      .then(res => {
+        this.setState({
+          suggestions: res.data.autosuggest
+        })
       })
     })
   }
