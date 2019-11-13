@@ -148,11 +148,6 @@ class SubjectHeadingsContainer extends React.Component {
     const { error, subjectHeadings, loading } = this.state;
     const location = this.props.location;
     const { linked, sortBy, filter } = this.props.location.query;
-    const sortButton = (
-      filter
-        ? <SortButton sortBy={sortBy || 'alphabetical'} handler={this.updateSort} />
-        : null
-    );
 
     if (error) {
       return (
@@ -169,7 +164,11 @@ class SubjectHeadingsContainer extends React.Component {
             {this.pagination()}
             <div className="tableHeadingsWrapper">
               <SubjectHeadingTableHeader />
-              {sortButton}
+              {
+                filter
+                ? <SortButton sortBy={sortBy || 'alphabetical'} handler={this.updateSort} />
+                : null
+              }
             </div>
             <SubjectHeadingsList subjectHeadings={subjectHeadings} linked={linked} location={location} sortBy={sortBy}/>
             {this.pagination()}
