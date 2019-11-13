@@ -2,9 +2,8 @@ import React from 'react';
 import { Link } from 'react-router';
 import PropTypes from 'prop-types';
 
-const SubjectHeadingTableHeader = (props) => {
+const SubjectHeadingTableHeader = () => {
   return (
-    <div className="tableHeadingsWrapper">
       <div className="subjectHeadingRow tableHeadings">
         <span className="subjectHeadingLabelAndToggle">
           <span className="subjectHeadingToggle"></span>
@@ -13,8 +12,6 @@ const SubjectHeadingTableHeader = (props) => {
         <span className="subjectHeadingAttribute titles">Titles</span>
         <span className="subjectHeadingAttribute narrower">Narrower</span>
       </div>
-      {props.sortButton}
-    </div>
   );
 };
 

@@ -167,7 +167,10 @@ class SubjectHeadingsContainer extends React.Component {
         <div className="subjectMainContentWrapper">
           <div className="subjectHeadingMainContent index">
             {this.pagination()}
-            <SubjectHeadingTableHeader sortButton={sortButton} />
+            <div className="tableHeadingsWrapper">
+              <SubjectHeadingTableHeader />
+              {sortButton}
+            </div>
             <SubjectHeadingsList subjectHeadings={subjectHeadings} linked={linked} location={location} sortBy={sortBy}/>
             {this.pagination()}
           </div>
