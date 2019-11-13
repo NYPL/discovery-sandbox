@@ -344,7 +344,12 @@ a {
   margin-top: -1.5%;
   margin-bottom: 0px;
   width: max-content;
-  min-width: 200px;
+  min-width: 202px;
+  max-width: none;
+
+  // &.hide {
+  //   display: none;
+  // }
 }
 
 .suggestion-active {
@@ -356,13 +361,15 @@ a {
   cursor: pointer;
   margin-bottom: 0;
   font-size: .9rem;
+  line-height: .75;
 
   em > em {
     color: #31806a;
   }
 
   a {
-    display: block;
+    // display: block;
+    padding: 0% 1%;
   }
 }
 
@@ -378,4 +385,12 @@ a {
 .heading-count {
   float: right;
   padding-right: 2%;
+  display: inline-flex;
+  padding-left: 2%;
+}
+
+.autosuggestItem {
+  span {
+    display: inline-block;
+  }
 }

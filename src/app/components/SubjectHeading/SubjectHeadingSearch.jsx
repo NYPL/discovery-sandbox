@@ -12,7 +12,8 @@ class SubjectHeadingSearch extends React.Component {
     this.state = {
       activeSuggestion: 0,
       suggestions: [],
-      userInput: ''
+      userInput: '',
+      showSuggestions: true
     }
 
     this.onChange = this.onChange.bind(this)
@@ -98,7 +99,7 @@ class SubjectHeadingSearch extends React.Component {
 
     if (userInput && suggestions.length) {
       suggestionsListComponent = (
-        <ul className="suggestions">
+        <ul className={`suggestions ${showSuggestions ? null : 'hide'}`}>
         {suggestions.map((suggestion, index) => {
           return (
             <AutosuggestItem
@@ -121,6 +122,8 @@ class SubjectHeadingSearch extends React.Component {
         autoComplete="off"
         onSubmit={onSubmit}
         onKeyDown={changeActiveSuggestion}
+        onBlur={() => this.setState({showSuggestions: false})}
+        onFocus={() => this.setState({showSuggestions: true})}
       >
         <div className="autocomplete-field">
           <label htmlFor="autosuggest">Subject Heading Search:</label>
