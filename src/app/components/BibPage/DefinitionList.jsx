@@ -15,7 +15,7 @@ const DefinitionList = ({ data }) => {
 
       return ([
         (<dt key={`term-${i}`}>{item.term}</dt>),
-        (<dd className={`bib-detail ${item.term}`} key={`definition-${i}`}>{item.definition}</dd>),
+        (<dd key={`definition-${i}`}>{item.definition}</dd>),
       ]);
     });
   };
