@@ -460,8 +460,7 @@ class BibDetails extends React.Component {
 
       const subjectHeadingLink = (
         <Link
-          onClick={this.getUuidFromShepApiAndRedirect(heading)}
-          href={''}
+          onClick={this.getUuidFromShepApiAndRedirect(urlArray[index])}
           key={index}
         >
           {heading}
