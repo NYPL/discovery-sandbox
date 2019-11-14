@@ -424,6 +424,7 @@ class BibDetails extends React.Component {
       ).catch(
         (err) => {
           console.log('error: ', err);
+          this.context.router.push(`${appConfig.baseUrl}/search?${urlWithFilterQuery}`)
         },
       );
     }
