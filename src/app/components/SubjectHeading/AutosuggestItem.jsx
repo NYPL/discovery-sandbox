@@ -17,7 +17,10 @@ const AutosuggestItem = (props) => {
       data={subfield ? item.label : item.uuid}
       onClick={onClick}
     >
-      <Link to={path}>
+      <Link
+        to={path}
+        className='extendAutosuggestFormFocus'
+      >
         {subfield ?
           <div className="autosuggest component">
             <span>{item.label}</span>

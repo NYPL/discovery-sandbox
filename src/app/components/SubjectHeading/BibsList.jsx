@@ -37,15 +37,14 @@ class BibsList extends React.Component {
   fetchBib(bib) {
     let instutionCode
     switch (bib.institution) {
-      case "sierra-nypl":
-        instutionCode = 'b'
-        break;
       case "recap-cul":
         instutionCode = 'cb'
         break;
       case "recap-pul":
         instutionCode = 'pb'
         break;
+      default:
+        instutionCode = 'b';
     }
 
     return axios({

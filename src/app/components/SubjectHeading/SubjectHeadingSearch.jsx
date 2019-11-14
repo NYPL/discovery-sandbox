@@ -18,14 +18,15 @@ class SubjectHeadingSearch extends React.Component {
 
     this.onChange = this.onChange.bind(this)
     this.onSubmit = this.onSubmit.bind(this)
-    this.clearUserInput = this.clearUserInput.bind(this)
+    this.resetAutosuggest = this.resetAutosuggest.bind(this)
     this.changeActiveSuggestion = this.changeActiveSuggestion.bind(this)
+    this.hideSuggestions = this.hideSuggestions.bind(this)
   }
 
   onSubmit(submitEvent) {
     submitEvent.preventDefault();
     const url = this.generatePath(this.state.suggestions[this.state.activeSuggestion])
-    this.clearUserInput()
+    this.resetAutosuggest()
     this.context.router.push(url)
   }
 
@@ -66,9 +67,11 @@ class SubjectHeadingSearch extends React.Component {
     }
   }
 
-  clearUserInput() {
+  resetAutosuggest() {
     this.setState({
-      userInput: ''
+      userInput: '',
+      activeSuggestion: 0,
+      showSuggestions: true
     })
   }
 
@@ -80,6 +83,14 @@ class SubjectHeadingSearch extends React.Component {
     } else if (item.uuid) {
       return `${base}/subject_headings/${item.uuid}`
     }
+  }
+
+  hideSuggestions(e) {
+    e.preventDefault();
+    if (e.relatedTarget && e.relatedTarget.className === 'extendAutosuggestFormFocus') {
+      return;
+    }
+    this.setState({showSuggestions: false})
   }
 
   render() {
@@ -108,7 +119,7 @@ class SubjectHeadingSearch extends React.Component {
               activeSuggestion={index === activeSuggestion}
               key={suggestion.uuid || suggestion.label}
               location={location}
-              onClick={this.clearUserInput}
+              onClick={this.resetAutosuggest}
             />
           )
         })}
@@ -122,7 +133,7 @@ class SubjectHeadingSearch extends React.Component {
         autoComplete="off"
         onSubmit={onSubmit}
         onKeyDown={changeActiveSuggestion}
-        onBlur={() => this.setState({showSuggestions: false})}
+        onBlur={this.hideSuggestions}
         onFocus={() => this.setState({showSuggestions: true})}
       >
         <div className="autocomplete-field">
