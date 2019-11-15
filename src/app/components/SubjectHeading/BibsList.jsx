@@ -9,32 +9,38 @@ import {
   isArray as _isArray,
 } from 'underscore';
 import ItemTable from '../Item/ItemTable';
+import Pagination from '../Pagination/Pagination';
 
 class BibsList extends React.Component {
   constructor() {
     super()
     this.state = {
       bibs: [],
-      loading: true
+      loading: true,
+      bibPage: 1,
+      lastBib: null,
     }
-    this.fetchBib = this.fetchBib.bind(this)
+    this.fetchBib = this.fetchBib.bind(this);
+    this.updateBibPage = this.updateBibPage.bind(this);
   }
 
   componentDidMount() {
     Promise.all(this.props.shepBibs.map(bib => this.fetchBib(bib)))
-    .then(bibs => this.setState({
-      bibs,
-      loading: false
-    }))
-    .catch(
-      (err) => {
-        console.log('error: ', err);
-        this.setState({ error: true });
-      },
-    )
+      .then(bibs => this.setState({
+        bibs,
+        loading: false,
+        lastBib: bibs.length - 1,
+      }))
+      .catch(
+        (err) => {
+          console.log('error: ', err);
+          this.setState({ error: true });
+        },
+      );
   }
 
   fetchBib(bib) {
+    console.log('fetching for bib ', bib)
     let instutionCode
     switch (bib.institution) {
       case "recap-cul":
@@ -139,15 +145,66 @@ class BibsList extends React.Component {
   }
 
 
+
+  updateBibPage(page, type) {
+    const {
+      bibs,
+      lastBib,
+    } = this.state;
+    const fromComparator = type === 'Previous' ? 'before' : 'after';
+    console.log(bibs[lastBib]);
+    // axios({
+    //   method: 'GET',
+    //   url: `${appConfig.shepApi}/subject_headings/${uuid}/bibs`,
+    //   crossDomain: true,
+    //   headers: {
+    //     'Access-Control-Allow-Origin': '*',
+    //     'Content-Type': 'application/json',
+    //   },
+    // })
+    //   .then((res) => {
+    //     this.setState({
+    //       shepBibs: res.data.bibs
+    //     });
+    //   })
+    //   .catch(
+    //     (err) => {
+    //       console.log('error: ', err);
+    //       this.setState({ error: true });
+    //     },
+    //   );
+  }
+
+
   render() {
+    const {
+      bibPage,
+    } = this.state;
+
+    const pagination = (
+      <Pagination
+        updatePage={this.updateBibPage}
+        page={bibPage}
+        subjectShowPage
+      />
+    );
+
     return (
       <div className="bibs-list">
+        {pagination}
         <h4>Titles</h4>
         <ul>
-          {this.state.bibs.length > 0 ? this.props.shepBibs.map((bib) => this.generateBibLi(bib)) : null}
+          {
+            this.state.bibs.length > 0
+            ? this.props.shepBibs.map(
+              bib => this.generateBibLi(bib),
+            )
+            : null
+          }
         </ul>
+        {pagination}
       </div>
-    )
+    );
   }
 }
 

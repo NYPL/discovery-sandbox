@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import axios from 'axios';
 import SubjectHeadingsList from './SubjectHeadingsList';
 import BibsList from './BibsList';
-import Pagination from '../Pagination/Pagination';
 import ResultsList from '../Results/ResultsList';
 import SubjectHeadingTableHeader from './SubjectHeadingTableHeader';
 import Range from '../../models/Range';
@@ -22,13 +21,11 @@ class SubjectHeadingShow extends React.Component {
       shepBibs: [],
       bibs: [],
       contextLoading: true,
-      bibPage: 1,
     };
 
     this.linkToContext = this.linkToContext.bind(this);
     this.hasUuid = this.hasUuid.bind(this);
     this.processContextHeadings = this.processContextHeadings.bind(this);
-    this.updateBibPage = this.updateBibPage.bind(this);
   }
 
   componentDidMount() {
@@ -130,10 +127,6 @@ class SubjectHeadingShow extends React.Component {
     return headings.slice(startIndex, endIndex);
   }
 
-  updateBibPage(page, type) {
-
-  }
-
   render() {
     const {
       contextHeadings,
@@ -142,20 +135,11 @@ class SubjectHeadingShow extends React.Component {
       error,
       mainHeading,
       contextLoading,
-      bibPage,
     } = this.state;
 
     const { label, uuid } = mainHeading;
 
     const { location } = this.props;
-
-    const pagination = (
-      <Pagination
-        updatePage={this.updateBibPage}
-        page={bibPage}
-        subjectShowPage
-      />
-    );
 
     if (error) {
       return (<div>Not a subject heading</div>)
@@ -166,11 +150,7 @@ class SubjectHeadingShow extends React.Component {
         <LoadingLayer status={contextLoading} title={"Subject Heading"}/>
         <div className="subjectHeadingMainContent show">
           {shepBibs.length > 0 ?
-            <div className="shepBibsContainer">
-              {pagination}
-              <BibsList shepBibs={shepBibs} />
-              {pagination}
-            </div>
+            <BibsList shepBibs={shepBibs} />
             : null
           }
           <div className="subjectHeadingRelated">
