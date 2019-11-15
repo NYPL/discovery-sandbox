@@ -185,6 +185,7 @@ class BibsList extends React.Component {
                   loading: false,
                   lastBib: newLast,
                   nextUrl: newNextUrl,
+                  bibPage: this.state.bibPage + 1,
                 });
               },
               );
