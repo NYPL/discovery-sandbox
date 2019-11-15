@@ -24,15 +24,17 @@ class Pagination extends React.Component {
    * @param {string} page The current page number.
    * @param {string} type Either 'Next' or 'Previous' to indication link label.
    */
-  getPage(page, type = 'Next') {
+  getPage(page, type = 'Next', url = null) {
     if (!page) return null;
     const intPage = parseInt(page, 10);
     const pageNum = type === 'Next' ? intPage + 1 : intPage - 1;
     const svg = type === 'Next' ? <RightWedgeIcon /> : <LeftWedgeIcon />;
     const apiUrl = this.props.createAPIQuery({ page: pageNum });
     const localUrl = `${this.props.to.pathname}${pageNum}`;
-    const url = apiUrl ?
-      { pathname: `${appConfig.baseUrl}/search?${apiUrl}` } : { pathname: localUrl };
+    if (!url) {
+      url = apiUrl ?
+        { pathname: `${appConfig.baseUrl}/search?${apiUrl}` } : { pathname: localUrl };
+    }
 
     return (
       <Link
@@ -52,12 +54,14 @@ class Pagination extends React.Component {
       total,
       page,
       perPage,
+      prevUrl,
+      nextUrl,
     } = this.props;
     if (!total) return null;
 
     const pageFactor = parseInt(page, 10) * perPage;
-    const nextPage = (total < perPage || pageFactor > total) ? null : this.getPage(page, 'Next');
-    const prevPage = page > 1 ? this.getPage(page, 'Previous') : null;
+    const nextPage = (total < perPage || pageFactor > total) ? null : this.getPage(page, 'Next', nextUrl);
+    const prevPage = page > 1 ? this.getPage(page, 'Previous', prevUrl) : null;
     const totalPages = Math.floor(total / perPage) + 1;
 
     return (
@@ -84,6 +88,8 @@ Pagination.propTypes = {
   to: PropTypes.object,
   updatePage: PropTypes.func,
   createAPIQuery: PropTypes.func,
+  prevUrl: PropTypes.string,
+  nextUrl: PropTypes.string,
 };
 
 Pagination.defaultProps = {

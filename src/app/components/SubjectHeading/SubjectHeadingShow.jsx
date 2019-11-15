@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import axios from 'axios';
 import SubjectHeadingsList from './SubjectHeadingsList';
 import BibsList from './BibsList';
+import Pagination from '../Pagination/Pagination';
 import ResultsList from '../Results/ResultsList';
 import SubjectHeadingTableHeader from './SubjectHeadingTableHeader';
 import Range from '../../models/Range';
@@ -134,6 +135,12 @@ class SubjectHeadingShow extends React.Component {
 
     const { location } = this.props;
 
+    const pagination = (
+      <Pagination
+        perPage
+      />
+    );
+
     if (error) {
       return (<div>Not a subject heading</div>)
     }
@@ -142,7 +149,14 @@ class SubjectHeadingShow extends React.Component {
       <h2>Subject Heading: <em>{label}</em></h2>
         <LoadingLayer status={contextLoading} title={"Subject Heading"}/>
         <div className="subjectHeadingMainContent show">
-          {shepBibs.length > 0 ? <BibsList shepBibs={shepBibs}/> : null}
+          {shepBibs.length > 0 ?
+            <div className="shepBibsContainer">
+              {pagination}
+              <BibsList shepBibs={shepBibs} />
+              {pagination}
+            </div>
+            : null
+          }
           <div className="subjectHeadingRelated">
             <div className="backgroundContainer">
               <h4>Related Subject Headings for <em>{label}</em></h4>
