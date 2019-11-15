@@ -28,7 +28,6 @@ class BibsList extends React.Component {
   componentDidMount() {
     Promise.all(this.props.shepBibs.map(bib => this.fetchBib(bib)))
       .then(bibs => {
-        console.log('bibs resp: ', bibs);
         this.setState({
         bibs,
         loading: false,
@@ -43,7 +42,6 @@ class BibsList extends React.Component {
   }
 
   fetchBib(bib) {
-    console.log('fetching for bib ', bib)
     let instutionCode
     switch (bib.institution) {
       case "recap-cul":
@@ -156,7 +154,6 @@ class BibsList extends React.Component {
       bibPage,
     } = this.state;
 
-    console.log(bibs[lastBib], nextUrl);
     if (type === 'Previous') {
       if (lastBib > 9) this.setState({ lastBib: lastBib - 10, bibPage: bibPage - 1 });
     } else {
