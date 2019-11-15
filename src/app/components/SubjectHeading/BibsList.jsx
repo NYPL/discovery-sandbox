@@ -32,7 +32,7 @@ class BibsList extends React.Component {
           bibs,
           loading: false,
           lastBib: bibs.length - 1,
-        }, () => {console.log('loaded ', this.state)});
+        });
       })
       .catch(
         (err) => {
@@ -205,7 +205,6 @@ class BibsList extends React.Component {
       lastBib,
       loading,
     } = this.state;
-    console.log('rendering')
     const pagination = (
       <Pagination
         updatePage={this.updateBibPage}
