@@ -67,7 +67,8 @@ class SubjectHeadingShow extends React.Component {
     })
       .then((res) => {
         this.setState({
-          shepBibs: res.data.bibs
+          shepBibs: res.data.bibs,
+          bibsNextUrl: res.data.next_url,
         });
       })
       .catch(
@@ -132,6 +133,7 @@ class SubjectHeadingShow extends React.Component {
       contextHeadings,
       relatedHeadings,
       shepBibs,
+      bibsNextUrl,
       error,
       mainHeading,
       contextLoading,
@@ -150,7 +152,7 @@ class SubjectHeadingShow extends React.Component {
         <LoadingLayer status={contextLoading} title={"Subject Heading"}/>
         <div className="subjectHeadingMainContent show">
           {shepBibs.length > 0 ?
-            <BibsList shepBibs={shepBibs} />
+            <BibsList shepBibs={shepBibs} nextUrl={bibsNextUrl} />
             : null
           }
           <div className="subjectHeadingRelated">

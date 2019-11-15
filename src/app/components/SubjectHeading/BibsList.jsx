@@ -12,13 +12,14 @@ import ItemTable from '../Item/ItemTable';
 import Pagination from '../Pagination/Pagination';
 
 class BibsList extends React.Component {
-  constructor() {
+  constructor(props) {
     super()
     this.state = {
       bibs: [],
       loading: true,
       bibPage: 1,
       lastBib: null,
+      nextUrl: props.nextUrl,
     }
     this.fetchBib = this.fetchBib.bind(this);
     this.updateBibPage = this.updateBibPage.bind(this);
@@ -26,11 +27,13 @@ class BibsList extends React.Component {
 
   componentDidMount() {
     Promise.all(this.props.shepBibs.map(bib => this.fetchBib(bib)))
-      .then(bibs => this.setState({
+      .then(bibs => {
+        console.log('bibs resp: ', bibs);
+        this.setState({
         bibs,
         loading: false,
         lastBib: bibs.length - 1,
-      }))
+      })})
       .catch(
         (err) => {
           console.log('error: ', err);
@@ -62,6 +65,7 @@ class BibsList extends React.Component {
         'Content-Type': 'application/json',
       },
     })
+    .then(resp => (resp.data.status === 404 ? bib : resp))
   }
 
   // from here down until render() is copied and only slightly modifed from '../Results/ResultsList'
@@ -92,8 +96,8 @@ class BibsList extends React.Component {
     return null;
   }
 
-  generateBibLi(shepBib) {
-    let bib = this.state.bibs.find(discoveryBib => discoveryBib.data.uri && discoveryBib.data.uri.includes(shepBib.bnumber)) || shepBib
+  generateBibLi(bib) {
+    // let bib = this.state.bibs.find(discoveryBib => discoveryBib.data.uri && discoveryBib.data.uri.includes(shepBib.bnumber)) || shepBib
 
     if (!bib.data || _isEmpty(bib.data) || !bib.data.title) return <li className="nypl-results-item not-in-discovery" key={bib.bnumber}>{bib.title} bib id: {bib.bnumber}</li>;
 
@@ -150,35 +154,55 @@ class BibsList extends React.Component {
     const {
       bibs,
       lastBib,
+      nextUrl,
+      bibPage,
     } = this.state;
-    const fromComparator = type === 'Previous' ? 'before' : 'after';
-    console.log(bibs[lastBib]);
-    // axios({
-    //   method: 'GET',
-    //   url: `${appConfig.shepApi}/subject_headings/${uuid}/bibs`,
-    //   crossDomain: true,
-    //   headers: {
-    //     'Access-Control-Allow-Origin': '*',
-    //     'Content-Type': 'application/json',
-    //   },
-    // })
-    //   .then((res) => {
-    //     this.setState({
-    //       shepBibs: res.data.bibs
-    //     });
-    //   })
-    //   .catch(
-    //     (err) => {
-    //       console.log('error: ', err);
-    //       this.setState({ error: true });
-    //     },
-    //   );
+
+    console.log(bibs[lastBib], nextUrl);
+    if (type === 'Previous') {
+      if (lastBib > 9) this.setState({ lastBib: lastBib - 10, bibPage: bibPage - 1 });
+    } else {
+      if (lastBib + 10 < bibs.length) {
+        this.setState({ lastBib: lastBib + 10, bibPage: bibPage + 1 });
+      } else {
+        axios({
+          method: 'GET',
+          url: nextUrl,
+          crossDomain: true,
+          headers: {
+            'Access-Control-Allow-Origin': '*',
+            'Content-Type': 'application/json',
+          },
+        })
+          .then((res) => {
+            const newNextUrl = res.data.next_url;
+            Promise.all(res.data.bibs.map(bib => this.fetchBib(bib)))
+              .then((respBibs) => {
+                const newBibs = this.state.bibs.concat(respBibs);
+                const newLast = newBibs.length - 1;
+                this.setState({
+                  bibs: newBibs,
+                  loading: false,
+                  lastBib: newLast,
+                  nextUrl: newNextUrl,
+                });
+              },
+              );
+          })
+          .catch(
+            (err) => {
+              console.log('error: ', err);
+            },
+          );
+      }
+    }
   }
 
 
   render() {
     const {
       bibPage,
+      lastBib,
     } = this.state;
 
     const pagination = (
@@ -196,7 +220,7 @@ class BibsList extends React.Component {
         <ul>
           {
             this.state.bibs.length > 0
-            ? this.props.shepBibs.map(
+            ? this.state.bibs.slice(lastBib - 9, lastBib + 1).map(
               bib => this.generateBibLi(bib),
             )
             : null
