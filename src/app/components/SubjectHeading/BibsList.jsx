@@ -228,7 +228,20 @@ class BibsList extends React.Component {
                 : null
               }
             </ul>
-          : <div>Loading more titles...</div>
+          :
+            <div className="subjectHeadingShowLoadingWrapper">
+              <div className="loadingLayer-texts subjectHeadingShow">
+                <span id="loading-animation" className="loadingLayer-texts-loadingWord subjectHeadingShow">
+                  Loading More Titles
+                </span>
+                <div className="loadingDots">
+                  <span />
+                  <span />
+                  <span />
+                  <span />
+                </div>
+              </div>
+            </div>
         }
         {pagination}
       </div>
