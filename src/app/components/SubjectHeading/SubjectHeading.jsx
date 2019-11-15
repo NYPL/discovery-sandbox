@@ -6,6 +6,7 @@ import SubjectHeadingsList from './SubjectHeadingsList';
 import SortButton from './SortButton';
 import Range from '../../models/Range';
 import appConfig from '../../../../appConfig';
+import {Preview, PreviewItem} from './PreviewComponents';
 
 class SubjectHeading extends React.Component {
   constructor(props) {
@@ -100,6 +101,7 @@ class SubjectHeading extends React.Component {
   }
 
   linkToShow(e) {
+    e.preventDefault();
     let path = this.props.location.pathname.replace(/\/subject_headings.*/, '');
     this.context.router.push(`${path}/subject_headings/${this.props.subjectHeading.uuid}`)
   }
@@ -166,6 +168,7 @@ class SubjectHeading extends React.Component {
       bib_count,
       desc_count,
       children,
+      preview
     } = subjectHeading;
 
     const {
@@ -196,8 +199,8 @@ class SubjectHeading extends React.Component {
             : null
           }
         </a>
-        { open
-          ? <SubjectHeadingsList
+        { open ?
+          <SubjectHeadingsList
             subjectHeadings={narrower}
             nested="true"
             indentation={(indentation || 0) + 1}
@@ -209,6 +212,10 @@ class SubjectHeading extends React.Component {
             key={`${uuid}-list-${sortBy}`}
           />
           : null}
+          {!open && preview ?
+            <Preview topHeadings={preview}/>
+            : null
+          }
       </li>
     );
   }
