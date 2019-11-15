@@ -27,12 +27,13 @@ class BibsList extends React.Component {
 
   componentDidMount() {
     Promise.all(this.props.shepBibs.map(bib => this.fetchBib(bib)))
-      .then(bibs => {
+      .then((bibs) => {
         this.setState({
-        bibs,
-        loading: false,
-        lastBib: bibs.length - 1,
-      })})
+          bibs,
+          loading: false,
+          lastBib: bibs.length - 1,
+        }, () => {console.log('loaded ', this.state)});
+      })
       .catch(
         (err) => {
           console.log('error: ', err);
@@ -160,36 +161,39 @@ class BibsList extends React.Component {
       if (lastBib + 10 < bibs.length) {
         this.setState({ lastBib: lastBib + 10, bibPage: bibPage + 1 });
       } else {
-        axios({
-          method: 'GET',
-          url: nextUrl,
-          crossDomain: true,
-          headers: {
-            'Access-Control-Allow-Origin': '*',
-            'Content-Type': 'application/json',
-          },
-        })
-          .then((res) => {
-            const newNextUrl = res.data.next_url;
-            Promise.all(res.data.bibs.map(bib => this.fetchBib(bib)))
-              .then((respBibs) => {
-                const newBibs = this.state.bibs.concat(respBibs);
-                const newLast = newBibs.length - 1;
-                this.setState({
-                  bibs: newBibs,
-                  loading: false,
-                  lastBib: newLast,
-                  nextUrl: newNextUrl,
-                  bibPage: this.state.bibPage + 1,
-                });
-              },
-              );
-          })
-          .catch(
-            (err) => {
-              console.log('error: ', err);
+        this.setState({ loading: true }, () => {
+          axios({
+            method: 'GET',
+            url: nextUrl,
+            crossDomain: true,
+            headers: {
+              'Access-Control-Allow-Origin': '*',
+              'Content-Type': 'application/json',
             },
-          );
+          })
+            .then((res) => {
+              const newNextUrl = res.data.next_url;
+              Promise.all(res.data.bibs.map(bib => this.fetchBib(bib)))
+                .then((respBibs) => {
+                  const newBibs = this.state.bibs.concat(respBibs);
+                  const newLast = newBibs.length - 1;
+                  this.setState({
+                    bibs: newBibs,
+                    loading: false,
+                    lastBib: newLast,
+                    nextUrl: newNextUrl,
+                    bibPage: this.state.bibPage + 1,
+                  });
+                },
+                );
+            })
+            .catch(
+              (err) => {
+                console.log('error: ', err);
+                this.setState({ loading: false });
+              },
+            );
+        });
       }
     }
   }
@@ -199,8 +203,9 @@ class BibsList extends React.Component {
     const {
       bibPage,
       lastBib,
+      loading,
     } = this.state;
-
+    console.log('rendering')
     const pagination = (
       <Pagination
         updatePage={this.updateBibPage}
@@ -208,20 +213,23 @@ class BibsList extends React.Component {
         subjectShowPage
       />
     );
-
     return (
       <div className="bibs-list">
         {pagination}
         <h4>Titles</h4>
-        <ul>
-          {
-            this.state.bibs.length > 0
-            ? this.state.bibs.slice(lastBib - 9, lastBib + 1).map(
-              bib => this.generateBibLi(bib),
-            )
-            : null
-          }
-        </ul>
+        {
+          !loading ?
+            <ul>
+              {
+                this.state.bibs.length > 0
+                ? this.state.bibs.slice(lastBib - 9, lastBib + 1).map(
+                  bib => this.generateBibLi(bib),
+                )
+                : null
+              }
+            </ul>
+          : <div>Loading more titles...</div>
+        }
         {pagination}
       </div>
     );
