@@ -97,8 +97,6 @@ class BibsList extends React.Component {
   }
 
   generateBibLi(bib) {
-    // let bib = this.state.bibs.find(discoveryBib => discoveryBib.data.uri && discoveryBib.data.uri.includes(shepBib.bnumber)) || shepBib
-
     if (!bib.data || _isEmpty(bib.data) || !bib.data.title) return <li className="nypl-results-item not-in-discovery" key={bib.bnumber}>{bib.title} bib id: {bib.bnumber}</li>;
 
     const result = bib.data;
