@@ -398,3 +398,11 @@ a {
     padding: 0%, 2%;
   }
 }
+
+.nypl-results-pagination.showPage {
+  display: flex;
+  justify-content: space-between;
+  a {
+    width: fit-content;
+  }
+}

@@ -21,12 +21,14 @@ class SubjectHeadingShow extends React.Component {
       },
       shepBibs: [],
       bibs: [],
-      contextLoading: true
+      contextLoading: true,
+      bibPage: 1,
     };
 
     this.linkToContext = this.linkToContext.bind(this);
     this.hasUuid = this.hasUuid.bind(this);
     this.processContextHeadings = this.processContextHeadings.bind(this);
+    this.updateBibPage = this.updateBibPage.bind(this);
   }
 
   componentDidMount() {
@@ -128,8 +130,20 @@ class SubjectHeadingShow extends React.Component {
     return headings.slice(startIndex, endIndex);
   }
 
+  updateBibPage(page, type) {
+
+  }
+
   render() {
-    const { contextHeadings, relatedHeadings, shepBibs, error, mainHeading, contextLoading } = this.state
+    const {
+      contextHeadings,
+      relatedHeadings,
+      shepBibs,
+      error,
+      mainHeading,
+      contextLoading,
+      bibPage,
+    } = this.state;
 
     const { label, uuid } = mainHeading;
 
@@ -137,7 +151,9 @@ class SubjectHeadingShow extends React.Component {
 
     const pagination = (
       <Pagination
-        perPage
+        updatePage={this.updateBibPage}
+        page={bibPage}
+        subjectShowPage
       />
     );
 

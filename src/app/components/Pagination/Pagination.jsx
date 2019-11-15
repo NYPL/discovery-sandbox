@@ -24,14 +24,17 @@ class Pagination extends React.Component {
    * @param {string} page The current page number.
    * @param {string} type Either 'Next' or 'Previous' to indication link label.
    */
-  getPage(page, type = 'Next', url = null) {
+  getPage(page, type = 'Next') {
     if (!page) return null;
     const intPage = parseInt(page, 10);
     const pageNum = type === 'Next' ? intPage + 1 : intPage - 1;
     const svg = type === 'Next' ? <RightWedgeIcon /> : <LeftWedgeIcon />;
-    const apiUrl = this.props.createAPIQuery({ page: pageNum });
-    const localUrl = `${this.props.to.pathname}${pageNum}`;
-    if (!url) {
+    let url;
+    let apiUrl;
+    let localUrl;
+    if (!this.props.subjectShowPage) {
+      apiUrl = this.props.createAPIQuery({ page: pageNum });
+      localUrl = `${this.props.to.pathname}${pageNum}`;
       url = apiUrl ?
         { pathname: `${appConfig.baseUrl}/search?${apiUrl}` } : { pathname: localUrl };
     }
@@ -54,26 +57,37 @@ class Pagination extends React.Component {
       total,
       page,
       perPage,
-      prevUrl,
-      nextUrl,
+      subjectShowPage,
     } = this.props;
-    if (!total) return null;
-
-    const pageFactor = parseInt(page, 10) * perPage;
-    const nextPage = (total < perPage || pageFactor > total) ? null : this.getPage(page, 'Next', nextUrl);
-    const prevPage = page > 1 ? this.getPage(page, 'Previous', prevUrl) : null;
-    const totalPages = Math.floor(total / perPage) + 1;
+    let nextPage;
+    let prevPage;
+    let pageFactor;
+    let totalPages;
+    if (!subjectShowPage) {
+      if (!total) return null;
+      pageFactor = parseInt(page, 10) * perPage;
+      nextPage = (total < perPage || pageFactor > total) ? null : this.getPage(page, 'Next');
+      prevPage = page > 1 ? this.getPage(page, 'Previous', prevUrl) : null;
+      totalPages = Math.floor(total / perPage) + 1;
+    } else {
+      nextPage = this.getPage(page, 'Next');
+      prevPage = this.getPage(page, 'Previous');
+    }
 
     return (
-      <nav className="nypl-results-pagination" aria-label="More results">
+      <nav className="nypl-results-pagination showPage" aria-label="More results">
         {prevPage}
-        <span
-          className={`page-count ${page === 1 ? 'first' : ''}`}
-          aria-label={`Displaying page ${page} out of ${totalPages} total pages.`}
-          tabIndex="0"
-        >
-          Page {page} of {totalPages}
-        </span>
+        {!subjectShowPage
+          ?
+            <span
+              className={`page-count ${page === 1 ? 'first' : ''}`}
+              aria-label={`Displaying page ${page} out of ${totalPages} total pages.`}
+              tabIndex="0"
+            >
+              Page {page} of {totalPages}
+            </span>
+          : null
+        }
         {nextPage}
       </nav>
     );
@@ -88,8 +102,7 @@ Pagination.propTypes = {
   to: PropTypes.object,
   updatePage: PropTypes.func,
   createAPIQuery: PropTypes.func,
-  prevUrl: PropTypes.string,
-  nextUrl: PropTypes.string,
+  subjectShowPage: PropTypes.bool,
 };
 
 Pagination.defaultProps = {
