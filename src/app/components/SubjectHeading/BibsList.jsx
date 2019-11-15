@@ -96,7 +96,7 @@ class BibsList extends React.Component {
   }
 
   generateBibLi(bib) {
-    if (!bib.data || _isEmpty(bib.data) || !bib.data.title) return <li className="nypl-results-item not-in-discovery" key={bib.bnumber}>{bib.title} bib id: {bib.bnumber}</li>;
+    if (!bib.data || _isEmpty(bib.data) || !bib.data.title) return <li className="nypl-results-item not-in-discovery" key={bib.bnumber}>{bib.title} <br/> bib id: {bib.bnumber} <br/> [circ title; for proto only]</li>;
 
     const result = bib.data;
     const bibTitle = this.getBibTitle(result);

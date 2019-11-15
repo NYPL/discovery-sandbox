@@ -1,5 +1,4 @@
 .subjectHeadingRow {
-  font-weight: 500;
   width: 100%;
   min-width: 100%;
   min-height: 1px;
@@ -19,6 +18,7 @@
 
 .subjectHeadingRow.tableHeadings {
   display: flex;
+  font-weight: 500;
 }
 
 a {
@@ -167,7 +167,7 @@ a {
   margin: 0 auto;
 }
 
-.subjectHeadingList {
+.subjectHeadingList, .preview ul {
   list-style: none;
 }
 
@@ -203,7 +203,37 @@ a {
 
 .subjectHeadingList li {
   margin-bottom: 0;
-  padding-top: 0.4rem;
+  padding-bottom: 0.4rem;
+
+  .preview {
+    font-size: 1rem;
+    margin-left: 12%;
+    max-width: 760px;
+
+    a {
+      padding: 0% 1%;
+    }
+
+    & > ul {
+      -webkit-columns: 2;
+      list-style: none;
+      line-height: 1em;
+      padding-top: .4em;
+    }
+
+    & > em {
+      margin-left: -4%;
+      width: 100%;
+    }
+
+    .fullLabel {
+      font-size: .75rem;
+    }
+
+    .bibCount, em, .fullLabel {
+      color: #31806a;
+    }
+  }
 }
 
 .subjectHeadingMainContent.show {
