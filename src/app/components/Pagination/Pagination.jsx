@@ -60,18 +60,16 @@ class Pagination extends React.Component {
       subjectShowPage,
     } = this.props;
     let nextPage;
-    let prevPage;
+    const prevPage = page > 1 ? this.getPage(page, 'Previous') : null;
     let pageFactor;
     let totalPages;
     if (!subjectShowPage) {
       if (!total) return null;
       pageFactor = parseInt(page, 10) * perPage;
       nextPage = (total < perPage || pageFactor > total) ? null : this.getPage(page, 'Next');
-      prevPage = page > 1 ? this.getPage(page, 'Previous', prevUrl) : null;
       totalPages = Math.floor(total / perPage) + 1;
     } else {
       nextPage = this.getPage(page, 'Next');
-      prevPage = this.getPage(page, 'Previous');
     }
 
     return (
@@ -86,7 +84,14 @@ class Pagination extends React.Component {
             >
               Page {page} of {totalPages}
             </span>
-          : null
+          :
+            <span
+              className={`page-count ${page === 1 ? 'first' : ''}`}
+              aria-label={`Displaying page ${page}`}
+              tabIndex="0"
+            >
+              Page {page}
+            </span>
         }
         {nextPage}
       </nav>
