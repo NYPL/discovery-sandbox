@@ -9,29 +9,37 @@ import {
   isArray as _isArray,
 } from 'underscore';
 import ItemTable from '../Item/ItemTable';
+import Pagination from '../Pagination/Pagination';
 
 class BibsList extends React.Component {
-  constructor() {
+  constructor(props) {
     super()
     this.state = {
       bibs: [],
-      loading: true
+      loading: true,
+      bibPage: 1,
+      lastBib: null,
+      nextUrl: props.nextUrl,
     }
-    this.fetchBib = this.fetchBib.bind(this)
+    this.fetchBib = this.fetchBib.bind(this);
+    this.updateBibPage = this.updateBibPage.bind(this);
   }
 
   componentDidMount() {
     Promise.all(this.props.shepBibs.map(bib => this.fetchBib(bib)))
-    .then(bibs => this.setState({
-      bibs,
-      loading: false
-    }))
-    .catch(
-      (err) => {
-        console.log('error: ', err);
-        this.setState({ error: true });
-      },
-    )
+      .then((bibs) => {
+        this.setState({
+          bibs,
+          loading: false,
+          lastBib: bibs.length - 1,
+        });
+      })
+      .catch(
+        (err) => {
+          console.log('error: ', err);
+          this.setState({ error: true });
+        },
+      );
   }
 
   fetchBib(bib) {
@@ -56,6 +64,7 @@ class BibsList extends React.Component {
         'Content-Type': 'application/json',
       },
     })
+    .then(resp => (resp.data.status === 404 ? bib : resp))
   }
 
   // from here down until render() is copied and only slightly modifed from '../Results/ResultsList'
@@ -86,9 +95,7 @@ class BibsList extends React.Component {
     return null;
   }
 
-  generateBibLi(shepBib) {
-    let bib = this.state.bibs.find(discoveryBib => discoveryBib.data.uri && discoveryBib.data.uri.includes(shepBib.bnumber)) || shepBib
-
+  generateBibLi(bib) {
     if (!bib.data || _isEmpty(bib.data) || !bib.data.title) return <li className="nypl-results-item not-in-discovery" key={bib.bnumber}>{bib.title} <br/> bib id: {bib.bnumber} <br/> [circ title; for proto only]</li>;
 
     const result = bib.data;
@@ -139,15 +146,105 @@ class BibsList extends React.Component {
   }
 
 
+
+  updateBibPage(page, type) {
+    const {
+      bibs,
+      lastBib,
+      nextUrl,
+      bibPage,
+    } = this.state;
+
+    if (type === 'Previous') {
+      if (lastBib > 9) this.setState({ lastBib: lastBib - 10, bibPage: bibPage - 1 });
+    } else {
+      if (lastBib + 10 < bibs.length) {
+        this.setState({ lastBib: lastBib + 10, bibPage: bibPage + 1 });
+      } else {
+        this.setState({ loading: true }, () => {
+          axios({
+            method: 'GET',
+            url: nextUrl,
+            crossDomain: true,
+            headers: {
+              'Access-Control-Allow-Origin': '*',
+              'Content-Type': 'application/json',
+            },
+          })
+            .then((res) => {
+              const newNextUrl = res.data.next_url;
+              Promise.all(res.data.bibs.map(bib => this.fetchBib(bib)))
+                .then((respBibs) => {
+                  const newBibs = this.state.bibs.concat(respBibs);
+                  const newLast = newBibs.length - 1;
+                  this.setState({
+                    bibs: newBibs,
+                    loading: false,
+                    lastBib: newLast,
+                    nextUrl: newNextUrl,
+                    bibPage: this.state.bibPage + 1,
+                  });
+                },
+                );
+            })
+            .catch(
+              (err) => {
+                console.log('error: ', err);
+                this.setState({ loading: false });
+              },
+            );
+        });
+      }
+    }
+  }
+
+
   render() {
+    const {
+      bibPage,
+      lastBib,
+      loading,
+    } = this.state;
+    const pagination = (
+      <Pagination
+        updatePage={this.updateBibPage}
+        page={bibPage}
+        subjectShowPage
+      />
+    );
     return (
       <div className="bibs-list">
+        {pagination}
         <h4>Titles</h4>
-        <ul>
-          {this.state.bibs.length > 0 ? this.props.shepBibs.map((bib) => this.generateBibLi(bib)) : null}
-        </ul>
+        {
+          !loading ?
+            <ul>
+              {
+                this.state.bibs.length > 0
+                ? this.state.bibs.slice(lastBib - 9, lastBib + 1).map(
+                  bib => this.generateBibLi(bib),
+                )
+                : null
+              }
+            </ul>
+          :
+            <div className="subjectHeadingShowLoadingWrapper">
+              <div className="loadingLayer-texts subjectHeadingShow">
+                <span id="loading-animation" className="loadingLayer-texts-loadingWord subjectHeadingShow">
+                  Loading More Titles
+                </span>
+                <div className="loadingDots">
+                  <span />
+                  <span />
+                  <span />
+                  <span />
+                </div>
+              </div>
+            </div>
+        }
+        {pagination}
       </div>
-    )
+    );
   }
 }
 

@@ -105,3 +105,20 @@
     opacity: 0.85;
   }
 }
+
+.subjectHeadingShowLoadingWrapper .loadingLayer {
+  position: inherit;
+  width: inherit;
+  height: inherit;
+  z-index: inherit;
+  top: inherit;
+
+  &-texts {
+    width: inherit;
+    margin: inherit;
+    z-index: inherit;
+    position: inherit;
+    text-align: inherit;
+    top:inherit;
+  }
+}

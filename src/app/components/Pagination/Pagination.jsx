@@ -29,10 +29,15 @@ class Pagination extends React.Component {
     const intPage = parseInt(page, 10);
     const pageNum = type === 'Next' ? intPage + 1 : intPage - 1;
     const svg = type === 'Next' ? <RightWedgeIcon /> : <LeftWedgeIcon />;
-    const apiUrl = this.props.createAPIQuery({ page: pageNum });
-    const localUrl = `${this.props.to.pathname}${pageNum}`;
-    const url = apiUrl ?
-      { pathname: `${appConfig.baseUrl}/search?${apiUrl}` } : { pathname: localUrl };
+    let url;
+    let apiUrl;
+    let localUrl;
+    if (!this.props.subjectShowPage) {
+      apiUrl = this.props.createAPIQuery({ page: pageNum });
+      localUrl = `${this.props.to.pathname}${pageNum}`;
+      url = apiUrl ?
+        { pathname: `${appConfig.baseUrl}/search?${apiUrl}` } : { pathname: localUrl };
+    }
 
     return (
       <Link
@@ -52,24 +57,42 @@ class Pagination extends React.Component {
       total,
       page,
       perPage,
+      subjectShowPage,
     } = this.props;
-    if (!total) return null;
-
-    const pageFactor = parseInt(page, 10) * perPage;
-    const nextPage = (total < perPage || pageFactor > total) ? null : this.getPage(page, 'Next');
+    let nextPage;
     const prevPage = page > 1 ? this.getPage(page, 'Previous') : null;
-    const totalPages = Math.floor(total / perPage) + 1;
+    let pageFactor;
+    let totalPages;
+    if (!subjectShowPage) {
+      if (!total) return null;
+      pageFactor = parseInt(page, 10) * perPage;
+      nextPage = (total < perPage || pageFactor > total) ? null : this.getPage(page, 'Next');
+      totalPages = Math.floor(total / perPage) + 1;
+    } else {
+      nextPage = this.getPage(page, 'Next');
+    }
 
     return (
-      <nav className="nypl-results-pagination" aria-label="More results">
+      <nav className="nypl-results-pagination showPage" aria-label="More results">
         {prevPage}
-        <span
-          className={`page-count ${page === 1 ? 'first' : ''}`}
-          aria-label={`Displaying page ${page} out of ${totalPages} total pages.`}
-          tabIndex="0"
-        >
-          Page {page} of {totalPages}
-        </span>
+        {!subjectShowPage
+          ?
+            <span
+              className={`page-count ${page === 1 ? 'first' : ''}`}
+              aria-label={`Displaying page ${page} out of ${totalPages} total pages.`}
+              tabIndex="0"
+            >
+              Page {page} of {totalPages}
+            </span>
+          :
+            <span
+              className={`page-count ${page === 1 ? 'first' : ''}`}
+              aria-label={`Displaying page ${page}`}
+              tabIndex="0"
+            >
+              Page {page}
+            </span>
+        }
         {nextPage}
       </nav>
     );
@@ -84,6 +107,7 @@ Pagination.propTypes = {
   to: PropTypes.object,
   updatePage: PropTypes.func,
   createAPIQuery: PropTypes.func,
+  subjectShowPage: PropTypes.bool,
 };
 
 Pagination.defaultProps = {

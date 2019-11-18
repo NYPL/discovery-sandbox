@@ -20,7 +20,7 @@ class SubjectHeadingShow extends React.Component {
       },
       shepBibs: [],
       bibs: [],
-      contextLoading: true
+      contextLoading: true,
     };
 
     this.linkToContext = this.linkToContext.bind(this);
@@ -67,7 +67,8 @@ class SubjectHeadingShow extends React.Component {
     })
       .then((res) => {
         this.setState({
-          shepBibs: res.data.bibs
+          shepBibs: res.data.bibs,
+          bibsNextUrl: res.data.next_url,
         });
       })
       .catch(
@@ -128,7 +129,15 @@ class SubjectHeadingShow extends React.Component {
   }
 
   render() {
-    const { contextHeadings, relatedHeadings, shepBibs, error, mainHeading, contextLoading } = this.state
+    const {
+      contextHeadings,
+      relatedHeadings,
+      shepBibs,
+      bibsNextUrl,
+      error,
+      mainHeading,
+      contextLoading,
+    } = this.state;
 
     const { label, uuid } = mainHeading;
 
@@ -142,7 +151,10 @@ class SubjectHeadingShow extends React.Component {
       <h2>Subject Heading: <em>{label}</em></h2>
         <LoadingLayer status={contextLoading} title={"Subject Heading"}/>
         <div className="subjectHeadingMainContent show">
-          {shepBibs.length > 0 ? <BibsList shepBibs={shepBibs}/> : null}
+          {shepBibs.length > 0 ?
+            <BibsList shepBibs={shepBibs} nextUrl={bibsNextUrl} />
+            : null
+          }
           <div className="subjectHeadingRelated">
             <div className="backgroundContainer">
               <h4>Related Subject Headings for <em>{label}</em></h4>
