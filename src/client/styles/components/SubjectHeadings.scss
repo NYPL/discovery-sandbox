@@ -238,7 +238,6 @@ a {
 }
 
 .subjectHeadingMainContent.show {
-  width: auto;
   display: grid;
   grid-template-areas:
   'main main'
@@ -246,9 +245,6 @@ a {
   'bibs context'
   'bibs space'
   ;
-  padding-left: 20px;
-  padding-right: 20px;
-  padding-bottom: 20px;
 
   .toIndex {
     font-size: 14px;
