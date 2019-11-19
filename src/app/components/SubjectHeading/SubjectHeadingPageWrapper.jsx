@@ -10,10 +10,11 @@ const SubjectHeadingPageWrapper = (props) => {
     .join('&')
 
   const filter = props.location.query.filter;
+  const index = !props.params.subjectHeadingUuid
 
   return (
     <div>
-      <div className="subjectHeadingsBanner">
+      <div className="subjectHeadingsBanner nypl-full-width-wrapper">
         Subject Heading{index ? 's ' : ':'}
         {filter ? <span>containing <em>{filter}</em></span> : ''}
         <SubjectHeadingSearch/>
