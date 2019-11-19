@@ -7,7 +7,8 @@ import ResultsList from '../Results/ResultsList';
 import SubjectHeadingTableHeader from './SubjectHeadingTableHeader';
 import Range from '../../models/Range';
 import appConfig from '../../../../appConfig';
-import LoadingLayer from '../LoadingLayer/LoadingLayer'
+import LoadingLayer from '../LoadingLayer/LoadingLayer';
+import Actions from '../../actions/Actions';
 
 
 class SubjectHeadingShow extends React.Component {
@@ -48,6 +49,7 @@ class SubjectHeadingShow extends React.Component {
           },
           contextLoading: false
         });
+        Actions.updateSubjectHeading(res.data.request.main_label);
       })
       .catch(
         (err) => {
@@ -148,7 +150,6 @@ class SubjectHeadingShow extends React.Component {
     }
     return (
       <div className="subjectHeadingShow">
-      <h2>Subject Heading: <em>{label}</em></h2>
         <LoadingLayer status={contextLoading} title={"Subject Heading"}/>
         <div className="subjectHeadingMainContent show">
           {shepBibs.length > 0 ?
