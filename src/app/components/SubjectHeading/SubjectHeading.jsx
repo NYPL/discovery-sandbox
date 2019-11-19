@@ -6,7 +6,7 @@ import SubjectHeadingsList from './SubjectHeadingsList';
 import SortButton from './SortButton';
 import Range from '../../models/Range';
 import appConfig from '../../../../appConfig';
-import {Preview, PreviewItem} from './PreviewComponents';
+import { Preview } from './PreviewComponents';
 
 class SubjectHeading extends React.Component {
   constructor(props) {

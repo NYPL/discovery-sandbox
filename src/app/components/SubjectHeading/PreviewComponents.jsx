@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 import appConfig from '../../../../appConfig';
 
-export const Preview = (props) => {
-  const {topHeadings} = props
+const Preview = (props) => {
+  const { topHeadings } = props
 
   return (
     <div className="preview"><em>Most common subheadings:</em>
@@ -15,7 +15,7 @@ export const Preview = (props) => {
   )
 }
 
-export const PreviewItem = (props) => {
+const PreviewItem = (props) => {
   const {heading} = props
 
   const displayLabel = heading.label.split(" -- ").slice(1).join(" -- ")
@@ -40,3 +40,5 @@ export const PreviewItem = (props) => {
 Preview.propTypes = {
   preview: PropTypes.array
 };
+
+export { Preview }
