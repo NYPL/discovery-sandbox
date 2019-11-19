@@ -14,7 +14,7 @@ const SubjectHeadingPageWrapper = (props) => {
 
   return (
     <div>
-      <div className="subjectHeadingsBanner nypl-full-width-wrapper">
+      <div className="subjectHeadingsBanner">
         Subject Heading{index ? 's ' : ':'}
         {filter ? <span>containing <em>{filter}</em></span> : ''}
         <SubjectHeadingSearch/>
