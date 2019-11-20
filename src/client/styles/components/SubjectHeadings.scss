@@ -56,11 +56,6 @@ a {
   background: lightgrey;
 }
 
-.subjectHeadingToggle {
-  margin-top: -2%;
-  top: 1px;
-}
-
 .subjectHeadingRow span {
   margin-bottom: 0px;
 }
@@ -75,15 +70,6 @@ a {
   margin-left: 15px;
   font-weight: 500;
   width: 65%;
-}
-
-.subjectHeadingLabelAndToggle > .subjectHeadingToggle {
-  display: inline-block;
-  max-width: none;
-  width: 15px;
-  font-size: 25px;
-  font-weight: 100;
-  text-align: center;
 }
 
 .subjectHeadingLabelAndToggle > .subjectHeadingLabel {
@@ -443,4 +429,14 @@ a {
 .subjectHeadingInfoBox {
   width: 80%;
   min-width: 400px;
+}
+
+span.subjectHeadingToggle {
+  display: inline-block;
+  max-width: none;
+  width: 15px;
+  font-size: 25px;
+  font-weight: 100;
+  text-align: center;
+  line-height: .75;
 }
