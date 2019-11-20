@@ -19,19 +19,17 @@ const SubjectHeadingPageWrapper = (props) => {
     }
   } = props;
 
+  // console.log('uuid', props.params.subjectHeadingUuid);
   const containerKey = Object.keys(query)
     .map(key => `${key}=${query[key]}`)
     .join('&');
-    const filter = props.location.query.filter;
-    const index = !props.params.subjectHeadingUuid
 
   return (
     <div>
       <div className="subjectHeadingsBanner">
-        { subjectHeading
+        { subjectHeadingUuid
           ? ['Subject Heading: ', React.createElement('em', null, subjectHeading)]
-          : Subject Heading{index ? 's ' : ':'}
-            {filter ? <span>containing <em>{filter}</em></span> : ''}
+          : ['Subject Headings ', filter ? <span>containing <em>{filter}</em></span> : '']
         }
         <SubjectHeadingSearch />
       </div>
