@@ -34,15 +34,6 @@ a {
   display: flex;
 }
 
-.subjectHeadingAttribute {
-}
-
-.subjectHeadingAttribute.titles {
-}
-
-.subjectHeadingAttribute.narrower {
-}
-
 .subjectHeadingAttribute.sortButton {
   height: 1rem;
   font-size: 0.75rem;
@@ -204,7 +195,6 @@ a {
 
 .subjectHeadingList li {
   margin-bottom: 0;
-  padding-bottom: 0.5rem;
 
   .preview {
     font-size: 1rem;
