@@ -22,13 +22,16 @@ const SubjectHeadingPageWrapper = (props) => {
   const containerKey = Object.keys(query)
     .map(key => `${key}=${query[key]}`)
     .join('&');
+    const filter = props.location.query.filter;
+    const index = !props.params.subjectHeadingUuid
 
   return (
     <div>
       <div className="subjectHeadingsBanner">
         { subjectHeading
           ? ['Subject Heading: ', React.createElement('em', null, subjectHeading)]
-          : `Subject Headings${filter ? ` containing '${filter}'` : ''}`
+          : Subject Heading{index ? 's ' : ':'}
+            {filter ? <span>containing <em>{filter}</em></span> : ''}
         }
         <SubjectHeadingSearch />
       </div>
