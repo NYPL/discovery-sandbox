@@ -83,12 +83,7 @@ class SubjectHeading extends React.Component {
     return (element) => {
       axios({
         method: 'GET',
-        url: url,
-        crossDomain: true,
-        headers: {
-          'Access-Control-Allow-Origin': '*',
-          'Content-Type': 'application/json',
-        },
+        url: url
       }).then(
         resp => this.addMore(element, resp.data),
       ).catch((resp) => { console.log(resp); });

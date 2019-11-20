@@ -6,7 +6,7 @@
 }
 
 .subjectHeadingMainContent .subjectHeadingRow {
-  justify-content: space-between;
+  // justify-content: space-between;
   a {
     display: flex;
   }
@@ -67,7 +67,7 @@ a {
 }
 
 .subjectHeadingLabel:hover {
-  text-decoration: underline;
+  // text-decoration: underline; most SCC pages do not have underline on hover
   color: #176e91;
 }
 
@@ -131,10 +131,12 @@ a {
   color: #104d65;
   font-style: italic;
   font-size: 14px;
+  margin-left: 60px;
 }
 
 .nestedSubjectHeadingList {
   background-color: #E8E4E3;
+  padding-left: 10px;
 }
 
 .nestedSubjectHeadingList.frames {
@@ -147,8 +149,8 @@ a {
 }
 
 .nestedSubjectHeadingList > li {
-  margin-bottom: 0px;
-  height: fit-content;
+  // margin-bottom: 0px;
+  // height: fit-content;
 }
 
 .subjectHeadingMainContent {
@@ -181,7 +183,7 @@ a {
 }
 
 .subjectHeadingMainContent span {
-  line-height: 1.00;
+  line-height: 1.50;
   font-weight: 400;
   font-size: 1rem;
 }
@@ -194,7 +196,7 @@ a {
 .subjectHeadingList {font-size: 0;}
 
 .subjectHeadingList li {
-  margin-bottom: 0;
+  margin-bottom: .5rem;
 
   .preview {
     font-size: 1rem;
@@ -417,4 +419,11 @@ a {
     width: 125px;
     height: 25px;
   }
+}
+
+.verticalEllipse {
+  font-size: 14px;
+  margin-bottom: 3px;
+  line-height: 5px;
+  padding: 1%;
 }
