@@ -211,6 +211,10 @@ class SubjectHeading extends React.Component {
             <Preview topHeadings={preview}/>
             : null
           }
+          {container === 'narrower' ?
+            <hr className="relatedHeadingsBoundary"/>
+            : null
+          }
       </li>
     );
   }
