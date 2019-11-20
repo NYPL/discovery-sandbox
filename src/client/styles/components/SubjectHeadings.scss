@@ -105,9 +105,9 @@ a {
 
 .subjectHeadingRow > .subjectHeadingAttribute {
   max-width: none;
-  width: 17%;
+  width: 13%;
   text-align: right;
-  padding-right: 5px;
+  padding-right: 2%;
   overflow-wrap: initial;
 }
 
@@ -442,4 +442,5 @@ a {
 
 .subjectHeadingInfoBox {
   width: 90%;
+  min-width: 500px;
 }
