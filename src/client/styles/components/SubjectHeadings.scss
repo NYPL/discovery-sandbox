@@ -92,7 +92,7 @@ a {
 
 .subjectHeadingRow > .subjectHeadingAttribute {
   max-width: none;
-  width: 13%;
+  width: 80px;
   text-align: right;
   padding-right: 2%;
   overflow-wrap: initial;
@@ -127,12 +127,7 @@ a {
   color: #104d65;
   font-style: italic;
   font-size: 14px;
-  margin-left: 60px;
-}
-
-.nestedSubjectHeadingList {
-  background-color: #E8E4E3;
-  padding-left: 10px;
+  margin-left: 40px;
 }
 
 .nestedSubjectHeadingList.frames {
@@ -142,6 +137,10 @@ a {
 .nestedSubjectHeadingList.frames li {
   font-size: 14px; font-size: 1.4rem;
   display: inline;
+}
+
+.nestedSubjectHeading {
+  background-color: #E8E4E3;
 }
 
 .subjectHeadingMainContent {
@@ -216,6 +215,25 @@ a {
 
     .bibCount, em, .fullLabel {
       color: #31806a;
+    }
+  }
+}
+
+.nestedSubjectHeadingList {
+  background-color: white;
+  padding-left: 20px;
+
+  li {
+    margin-bottom: 0;
+  }
+
+  .subjectHeadingLabelAndToggle {
+    margin-left: 0px;
+  }
+
+  .openSubjectHeading {
+    li:last-child {
+      margin-bottom: .5rem;
     }
   }
 }
