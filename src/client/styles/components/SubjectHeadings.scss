@@ -127,8 +127,9 @@ a {
   font-size: 35px;
   font-weight: 200;
   background: #E8E4E3;
-  padding: 35px;
-  margin-bottom: 25px;
+  padding: 1rem 4rem 1rem 10.5rem; // borrowed mostly from .nypl-full-width-wrapper
+  position: relative; // from .nypl-full-width-wrapper
+  margin: 0 auto 25px;
 
   form {
     display: initial;
@@ -203,7 +204,7 @@ a {
 
 .subjectHeadingList li {
   margin-bottom: 0;
-  padding-bottom: 0.4rem;
+  padding-bottom: 0.5rem;
 
   .preview {
     font-size: 1rem;
@@ -237,7 +238,6 @@ a {
 }
 
 .subjectHeadingMainContent.show {
-  width: auto;
   display: grid;
   grid-template-areas:
   'main main'
@@ -245,9 +245,6 @@ a {
   'bibs context'
   'bibs space'
   ;
-  padding-left: 20px;
-  padding-right: 20px;
-  padding-bottom: 20px;
 
   .toIndex {
     font-size: 14px;
@@ -354,7 +351,6 @@ a {
   float: right;
   font-size: 1rem;
   width: 200px;
-  margin-right: 8%;
   margin-top: 1%;
 }
 

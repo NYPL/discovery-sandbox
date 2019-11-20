@@ -148,9 +148,8 @@ class SubjectHeadingShow extends React.Component {
     }
     return (
       <div className="subjectHeadingShow">
-      <h2>Subject Heading: <em>{label}</em></h2>
         <LoadingLayer status={contextLoading} title={"Subject Heading"}/>
-        <div className="subjectHeadingMainContent show">
+        <div className="subjectHeadingMainContent show nypl-full-width-wrapper">
           {shepBibs.length > 0 ?
             <BibsList shepBibs={shepBibs} nextUrl={bibsNextUrl} />
             : null
