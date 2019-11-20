@@ -417,15 +417,21 @@ a {
 }
 
 .heading-count {
-  float: right;
   display: inline-flex;
   padding-left: 2%;
+  width: fit-content;
+  white-space: nowrap;
 }
 
 .autosuggest {
   margin: 0 1%;
   span {
-    padding: 0%, 2%;
+    padding: 0% 2%;
+    line-height: initial;
+  }
+  &.component {
+    display: flex;
+    justify-content: space-between;
   }
 }
 
