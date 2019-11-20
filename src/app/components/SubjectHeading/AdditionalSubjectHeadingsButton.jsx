@@ -22,24 +22,23 @@ class AdditionalSubjectHeadingsButton extends React.Component {
     const previous = this.props.button === 'previous';
 
     return (
-      <li className={interactive ? '' : 'staticDots'}>
-        <ul className="subjectHeadingRow" >
-          <li>
-            <ul className="subjectHeadingLabelAndToggle">
-              <li onClick={this.toggleOpen} className="subjectHeadingToggle" style={{'paddingLeft': `${20*indentation}px`}}></li>
-              <li onClick={this.onClick} className="subjectHeadingLabel seeMoreButton" style={{"paddingLeft":`${20*indentation}px`}}>
-                {interactive ? `${previous ? '↑' : '↓'} See more` : null}
-                {previous || !interactive ? null : <br /> }
-                {previous ? null : '...'}
-              </li>
-            </ul>
-          </li>
-          <li className="subjectHeadingAttribute" />
-          <li className="subjectHeadingAttribute" />
-        </ul>
-      </li>
+      <div onClick={this.onClick} className={interactive ? 'seeMoreButton' : ''} style={{"paddingLeft":`${20*indentation}px`}}>
+          {interactive ? `${previous ? '↑' : '↓'} See more` : null}
+          {previous || !interactive ? null : <br /> }
+          {previous ? null : <VerticalEllipse />}
+      </div>
     );
   }
+}
+
+const VerticalEllipse = () => {
+  return (
+    <div className="verticalEllipse">
+      <div>.</div>
+      <div>.</div>
+      <div>.</div>
+    </div>
+  )
 }
 
 AdditionalSubjectHeadingsButton.propTypes = {

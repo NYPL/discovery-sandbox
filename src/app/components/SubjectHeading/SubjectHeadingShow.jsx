@@ -7,7 +7,8 @@ import ResultsList from '../Results/ResultsList';
 import SubjectHeadingTableHeader from './SubjectHeadingTableHeader';
 import Range from '../../models/Range';
 import appConfig from '../../../../appConfig';
-import LoadingLayer from '../LoadingLayer/LoadingLayer'
+import LoadingLayer from '../LoadingLayer/LoadingLayer';
+import Actions from '../../actions/Actions';
 
 
 class SubjectHeadingShow extends React.Component {
@@ -48,6 +49,7 @@ class SubjectHeadingShow extends React.Component {
           },
           contextLoading: false
         });
+        Actions.updateSubjectHeading(res.data.request.main_label);
       })
       .catch(
         (err) => {
@@ -154,14 +156,14 @@ class SubjectHeadingShow extends React.Component {
             <BibsList shepBibs={shepBibs} nextUrl={bibsNextUrl} />
             : null
           }
-          <div className="subjectHeadingRelated">
+          <div className="subjectHeadingRelated subjectHeadingInfoBox">
             <div className="backgroundContainer">
               <h4>Related Subject Headings for <em>{label}</em></h4>
             </div>
             <SubjectHeadingTableHeader />
             <SubjectHeadingsList subjectHeadings={relatedHeadings} location={location} keyId="related" container="narrower"/>
           </div>
-          <div className="subjectHeadingContext">
+          <div className="subjectHeadingContext subjectHeadingInfoBox">
             <div className="backgroundContainer">
               <h4>Subject Headings around <em>{label}</em></h4>
             </div>

@@ -214,7 +214,6 @@ class BibsList extends React.Component {
     );
     return (
       <div className="bibs-list">
-        {pagination}
         <h4>Titles</h4>
         {
           !loading ?
