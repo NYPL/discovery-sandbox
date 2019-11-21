@@ -46,10 +46,6 @@ a {
     margin-bottom: 15px;
     display: flex;
   }
-
-  .subjectHeadingLabel {
-    padding-left: 2%;
-  }
 }
 
 .subjectHeadingRow.openSubjectHeading {
@@ -127,6 +123,11 @@ a {
 
 .nestedSubjectHeading {
   background-color: #E8E4E3;
+
+  span.subjectHeadingToggle {
+    padding-right: 2%;
+    margin-left: -2%;
+  }
 }
 
 .subjectHeadingMainContent {
@@ -206,7 +207,7 @@ a {
 }
 
 .nestedSubjectHeadingList {
-  background-color: white;
+  background-color: #E8E4E3;
   padding-left: 20px;
 
   li {
@@ -308,7 +309,7 @@ a {
   }
 
   .subjectHeadingToggle {
-    font-size: 1em;
+    font-size: 1rem;
   }
 }
 
