@@ -95,12 +95,16 @@ a {
 }
 
 .subjectHeadingsBanner {
-  font-size: 35px;
-  font-weight: 200;
   background: #E8E4E3;
-  padding: 1rem 4rem 1rem 10.5rem; // borrowed mostly from .nypl-full-width-wrapper
+  padding: 1rem 1.5rem 1rem 8rem;
   position: relative; // from .nypl-full-width-wrapper
   margin: 0 auto 25px;
+
+  h2 {
+    font-size: 35px;
+    font-weight: 200;
+    display: inline-block;
+  }
 
   form {
     display: initial;
@@ -445,4 +449,12 @@ span.subjectHeadingToggle {
   text-align: center;
   line-height: .75;
   cursor: default;
+}
+
+.nypl-breadcrumbs a {
+  text-decoration: underline;
+
+  &:hover {
+    text-decoration: none;
+  }
 }
