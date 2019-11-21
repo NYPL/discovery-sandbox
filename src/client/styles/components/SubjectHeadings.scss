@@ -70,6 +70,7 @@ a {
 
 .subjectHeadingLabelAndToggle > .subjectHeadingLabel {
   word-wrap: break-word;
+  cursor: pointer;
 }
 
 .subjectHeadingRow > .subjectHeadingAttribute {
@@ -78,6 +79,7 @@ a {
   text-align: right;
   padding-right: 2%;
   overflow-wrap: initial;
+  cursor: pointer;
 }
 
 .subjectHeadingNav {
@@ -110,6 +112,7 @@ a {
   font-style: italic;
   font-size: 14px;
   margin-left: 40px;
+  cursor: default;
 }
 
 .nestedSubjectHeadingList.frames {
@@ -440,4 +443,5 @@ span.subjectHeadingToggle {
   font-weight: 100;
   text-align: center;
   line-height: .75;
+  cursor: default;
 }
