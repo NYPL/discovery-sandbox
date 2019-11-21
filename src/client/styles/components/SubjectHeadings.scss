@@ -46,19 +46,10 @@ a {
     margin-bottom: 15px;
     display: flex;
   }
-
-  .subjectHeadingLabel {
-    padding-left: 2%;
-  }
 }
 
 .subjectHeadingRow.openSubjectHeading {
   background: lightgrey;
-}
-
-.subjectHeadingToggle {
-  margin-top: -2%;
-  top: 1px;
 }
 
 .subjectHeadingRow span {
@@ -77,25 +68,18 @@ a {
   width: 65%;
 }
 
-.subjectHeadingLabelAndToggle > .subjectHeadingToggle {
-  display: inline-block;
-  max-width: none;
-  width: 15px;
-  font-size: 25px;
-  font-weight: 100;
-  text-align: center;
-}
-
 .subjectHeadingLabelAndToggle > .subjectHeadingLabel {
   word-wrap: break-word;
+  cursor: pointer;
 }
 
 .subjectHeadingRow > .subjectHeadingAttribute {
   max-width: none;
-  width: 13%;
+  width: 80px;
   text-align: right;
   padding-right: 2%;
   overflow-wrap: initial;
+  cursor: pointer;
 }
 
 .subjectHeadingNav {
@@ -127,12 +111,8 @@ a {
   color: #104d65;
   font-style: italic;
   font-size: 14px;
-  margin-left: 60px;
-}
-
-.nestedSubjectHeadingList {
-  background-color: #E8E4E3;
-  padding-left: 10px;
+  margin-left: 40px;
+  cursor: default;
 }
 
 .nestedSubjectHeadingList.frames {
@@ -142,6 +122,15 @@ a {
 .nestedSubjectHeadingList.frames li {
   font-size: 14px; font-size: 1.4rem;
   display: inline;
+}
+
+.nestedSubjectHeading {
+  background-color: #E8E4E3;
+
+  span.subjectHeadingToggle {
+    padding-right: 2%;
+    margin-left: -2%;
+  }
 }
 
 .subjectHeadingMainContent {
@@ -158,6 +147,7 @@ a {
 
 .subjectHeadingRow.tableHeadings span {
   font-weight: 700;
+  cursor: default;
 
   .subjectHeadingLabel:hover {
     text-decoration: none;
@@ -216,6 +206,25 @@ a {
 
     .bibCount, em, .fullLabel {
       color: #31806a;
+    }
+  }
+}
+
+.nestedSubjectHeadingList {
+  background-color: #E8E4E3;
+  padding-left: 20px;
+
+  li {
+    margin-bottom: 0;
+  }
+
+  .subjectHeadingLabelAndToggle {
+    margin-left: 0px;
+  }
+
+  .openSubjectHeading {
+    li:last-child {
+      margin-bottom: .5rem;
     }
   }
 }
@@ -304,7 +313,7 @@ a {
   }
 
   .subjectHeadingToggle {
-    font-size: 1em;
+    font-size: 1rem;
   }
 }
 
@@ -425,4 +434,15 @@ a {
 .subjectHeadingInfoBox {
   width: 80%;
   min-width: 400px;
+}
+
+span.subjectHeadingToggle {
+  display: inline-block;
+  max-width: none;
+  width: 15px;
+  font-size: 25px;
+  font-weight: 100;
+  text-align: center;
+  line-height: .75;
+  cursor: default;
 }
