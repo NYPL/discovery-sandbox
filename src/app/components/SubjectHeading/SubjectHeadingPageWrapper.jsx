@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import SubjectHeadingShow from './SubjectHeadingShow';
 import SubjectHeadingsContainer from './SubjectHeadingsContainer';
 import SubjectHeadingSearch from './SubjectHeadingSearch';
+import Breadcrumbs from '../Breadcrumbs/Breadcrumbs';
 // import Store from '../../stores/Store';
 
 const SubjectHeadingPageWrapper = (props) => {
@@ -27,13 +28,14 @@ const SubjectHeadingPageWrapper = (props) => {
   return (
     <div>
       <div className="subjectHeadingsBanner">
-        <div className="subjectHeadingsBannerInner">
+        <Breadcrumbs type="subjectHeading" headingDetails={!!subjectHeadingUuid}/>
+        <h2>
           { subjectHeadingUuid
-            ? ['Subject Heading: ', React.createElement('em', null, subjectHeading)]
+            ? <em>{subjectHeading}</em>
             : ['Subject Headings ', filter ? <span>containing <em>{filter}</em></span> : '']
           }
-          <SubjectHeadingSearch />
-        </div>
+        </h2>
+        <SubjectHeadingSearch />
       </div>
       {subjectHeadingUuid ?
         <SubjectHeadingShow {...props} key={subjectHeadingUuid} />

@@ -25,7 +25,7 @@ const AutosuggestItem = (props) => {
           <div className="autosuggest component">
             <span>{item.label}</span>
             <div className="heading-count">
-              [{item.heading_count} {item.heading_count > 1 ? 'headings' : 'heading'}]
+              {item.heading_count} {item.heading_count > 1 ? 'headings' : 'heading'}
             </div>
           </div>
           : <div className="autosuggest subject"><em>Subject:</em> {item.label}</div>}
