@@ -57,7 +57,7 @@ a {
   background: #E8E4E3;
 }
 
-.subjectHeadingRow.openSubjectHeading {
+div.subjectHeadingRow.openSubjectHeading {
   border-bottom: 2px solid #E8E4E3;
 
   > .subjectHeadingLabelAndToggle {
@@ -493,4 +493,8 @@ span.subjectHeadingToggle {
   &:hover {
     text-decoration: none;
   }
+}
+
+.subjectHeadingRow.openSubjectHeading:not(.nestedSubjectHeading) {
+  background: lightgray;
 }
