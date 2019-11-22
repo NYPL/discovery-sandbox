@@ -55,7 +55,6 @@ class SubjectHeading extends React.Component {
   }
 
   toggleOpen() {
-    console.log('toggling')
     const {
       open,
     } = this.state;
