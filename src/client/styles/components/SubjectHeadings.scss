@@ -2,7 +2,6 @@
   width: 100%;
   min-width: 100%;
   min-height: 1px;
-
 }
 
 .subjectHeadingMainContent .subjectHeadingRow {
@@ -55,11 +54,27 @@ a {
 }
 
 .subjectHeadingRow.openSubjectHeading {
-  background: lightgrey;
+  background: #E8E4E3;
+}
+
+.subjectHeadingRow.openSubjectHeading {
+  > .subjectHeadingLabelContainer {
+    background: lightgrey;
+  }
+  > .subjectHeadingToggle {
+    background: lightgrey;
+  }
+  > .subjectHeadingAttribute {
+    background: lightgrey;
+  }
 }
 
 .subjectHeadingRow span {
   margin-bottom: 0px;
+}
+
+.subjectHeadingToggle {
+  padding-right: 10px;
 }
 
 .subjectHeadingLabel:hover {
@@ -67,16 +82,23 @@ a {
   color: #176e91;
 }
 
-.subjectHeadingLabelAndToggle {
+.subjectHeadingLabelContainer {
   list-style: none;
-  margin-left: 15px;
   font-weight: 500;
   width: 65%;
+  position: sticky;
+
+  .subjectHeadingLabel {
+    word-wrap: break-word;
+    cursor: pointer;
+    position: relative;
+  }
+
 }
 
-.subjectHeadingLabelAndToggle > .subjectHeadingLabel {
-  word-wrap: break-word;
-  cursor: pointer;
+.subjectHeadingToggle {
+  position: relative;
+  z-index: 1;
 }
 
 .subjectHeadingRow > .subjectHeadingAttribute {
@@ -141,11 +163,6 @@ a {
 
 .nestedSubjectHeading {
   background-color: #E8E4E3;
-
-  span.subjectHeadingToggle {
-    padding-right: 2%;
-    margin-left: -2%;
-  }
 }
 
 .subjectHeadingMainContent {
@@ -189,7 +206,10 @@ a {
   width: 80%;
 }
 
-.subjectHeadingList {font-size: 0;}
+.subjectHeadingList {
+  font-size: 0;
+  padding-left: 0px;
+}
 
 .subjectHeadingList li {
   margin-bottom: .5rem;
@@ -198,10 +218,6 @@ a {
     font-size: 1rem;
     margin-left: 12%;
     max-width: 760px;
-
-    a {
-      padding: 0% 1%;
-    }
 
     & > ul {
       -webkit-columns: 2;
@@ -227,13 +243,12 @@ a {
 
 .nestedSubjectHeadingList {
   background-color: #E8E4E3;
-  padding-left: 20px;
 
   li {
     margin-bottom: 0;
   }
 
-  .subjectHeadingLabelAndToggle {
+  .subjectHeadingLabelContainer {
     margin-left: 0px;
   }
 
@@ -300,7 +315,7 @@ a {
   margin-left: 1%;
   margin-bottom: 1%;
 
-  .subjectHeadingLabelAndToggle > .subjectHeadingLabel {
+  .subjectHeadingLabelContainer > .subjectHeadingLabel {
     padding-left: 0px;
   }
 
