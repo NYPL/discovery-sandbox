@@ -178,15 +178,16 @@ class SubjectHeading extends React.Component {
       emph,
       rest,
     } = this.addEmphasis(label);
-// 'paddingLeft': `${20*indentation}#px`
-console.log('indentation', indentation)
+
+    const positionStyle = { left: 20 * (indentation || 0) };
+
     return (
       <li data={`${subjectHeading.uuid}, ${container}`} className={`subjectHeadingRow ${ open || children ? "openSubjectHeading" : ""}`}>
         <a>
           <div  className={`subjectHeadingInfo subjectHeadingRow ${ open || children ? "openSubjectHeading" : ""} ${this.props.nested ? ' nestedSubjectHeading' : ''}`} >
-            <span data={ container !== 'context' } style={{ left: 20*(indentation || 0) } } onClick={container !== 'context' ? this.toggleOpen : () => {} } className="subjectHeadingToggle" >{desc_count > 0 ? (!open ? '+' : '-') : null}</span>
-            <span  className="subjectHeadingLabelAndToggle">
-              <span className="subjectHeadingLabel" style={{ left: 20*(indentation||0) } } onClick={this.linkToShow}><span>{rest}</span>{rest === '' ? '' : ' -- ' }<span className='emph'>{emph}</span></span>
+            <span style={positionStyle} onClick={container !== 'context' ? this.toggleOpen : () => {} } className="subjectHeadingToggle" >{desc_count > 0 ? (!open ? '+' : '-') : null}</span>
+            <span className="subjectHeadingLabelAndToggle">
+              <span className="subjectHeadingLabel" style={positionStyle} onClick={this.linkToShow}><span>{rest}</span>{rest === '' ? '' : ' -- ' }<span className='emph'>{emph}</span></span>
             </span>
             <span className="subjectHeadingAttribute titles">{`${bib_count}`}</span>
             <span className="subjectHeadingAttribute narrower">{`${desc_count}`}</span>
