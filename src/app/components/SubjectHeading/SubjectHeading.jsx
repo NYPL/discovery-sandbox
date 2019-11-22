@@ -186,7 +186,7 @@ class SubjectHeading extends React.Component {
         <a>
           <div  className={`subjectHeadingInfo subjectHeadingRow ${ open || children ? "openSubjectHeading" : ""} ${this.props.nested ? ' nestedSubjectHeading' : ''}`} >
             <span style={positionStyle} onClick={container !== 'context' ? this.toggleOpen : () => {} } className="subjectHeadingToggle" >{desc_count > 0 ? (!open ? '+' : '-') : null}</span>
-            <span className="subjectHeadingLabelAndToggle">
+            <span className="subjectHeadingLabelContainer">
               <span className="subjectHeadingLabel" style={positionStyle} onClick={this.linkToShow}><span>{rest}</span>{rest === '' ? '' : ' -- ' }<span className='emph'>{emph}</span></span>
             </span>
             <span className="subjectHeadingAttribute titles">{`${bib_count}`}</span>
