@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 const SubjectHeadingTableHeader = () => {
   return (
       <div className="subjectHeadingRow tableHeadings">
-      <span className="subjectHeadingToggle"></span>
+        <span className="subjectHeadingToggle"></span>
         <span className="subjectHeadingLabelContainer">
           <span className="subjectHeadingLabel">Subject Heading</span>
         </span>
