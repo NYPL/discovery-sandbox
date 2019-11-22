@@ -180,7 +180,7 @@ class SubjectHeading extends React.Component {
     } = this.addEmphasis(label);
 
     const positionStyle = { left: 20 * (indentation || 0) };
-
+    // changes to HTML structure here will need to be replicated in ./SubjectHeadingTableHeader
     return (
       <li data={`${subjectHeading.uuid}, ${container}`} className={`subjectHeadingRow ${ open || children ? "openSubjectHeading" : ""}`}>
         <a>
