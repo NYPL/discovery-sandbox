@@ -78,7 +78,6 @@ a {
 
 .subjectHeadingLabelAndToggle {
   list-style: none;
-  // margin-left: 15px;
   font-weight: 500;
   width: 65%;
   position: sticky;
@@ -87,7 +86,6 @@ a {
     word-wrap: break-word;
     cursor: pointer;
     position: relative;
-    // top: 0;
   }
 
 }
@@ -95,7 +93,6 @@ a {
 .subjectHeadingToggle {
   position: relative;
   z-index: 1;
-  // top: 0;
 }
 
 .subjectHeadingRow > .subjectHeadingAttribute {
@@ -151,11 +148,6 @@ a {
 
 .nestedSubjectHeading {
   background-color: #E8E4E3;
-
-  // span.subjectHeadingToggle {
-  //   padding-right: 2%;
-  //   margin-left: -2%;
-  // }
 }
 
 .subjectHeadingMainContent {
@@ -212,10 +204,6 @@ a {
     margin-left: 12%;
     max-width: 760px;
 
-    // a {
-    //   padding: 0% 1%;
-    // }
-
     & > ul {
       -webkit-columns: 2;
       list-style: none;
@@ -240,7 +228,6 @@ a {
 
 .nestedSubjectHeadingList {
   background-color: #E8E4E3;
-  // padding-left: 20px;
 
   li {
     margin-bottom: 0;
