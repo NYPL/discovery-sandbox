@@ -31,7 +31,7 @@ const SubjectHeadingPageWrapper = (props) => {
         <Breadcrumbs type="subjectHeading" headingDetails={!!subjectHeadingUuid}/>
         <h2>
           { subjectHeadingUuid
-            ? ['Subject Heading: ', React.createElement('em', null, subjectHeading)]
+            ? <em>{subjectHeading}</em>
             : ['Subject Headings ', filter ? <span>containing <em>{filter}</em></span> : '']
           }
         </h2>
