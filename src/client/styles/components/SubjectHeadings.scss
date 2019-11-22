@@ -18,6 +18,7 @@
 .subjectHeadingRow.tableHeadings {
   display: flex;
   font-weight: 500;
+  margin-bottom: 10px;
 }
 
 a {
@@ -104,6 +105,11 @@ a {
     font-size: 35px;
     font-weight: 200;
     display: inline-block;
+  }
+
+  .subjectHeadingsBannerInner {
+    display: inline-block;
+    width: 100%;
   }
 
   form {
@@ -343,6 +349,7 @@ a {
   font-size: 1rem;
   width: 200px;
   margin-top: 1%;
+  margin-left: 25px;
 }
 
 .autocomplete-field {
@@ -438,6 +445,13 @@ a {
 .subjectHeadingInfoBox {
   width: 80%;
   min-width: 400px;
+}
+
+
+.relatedHeadingsBoundary {
+  border-top: #ebf0f7;
+  width: 90%;
+  margin-top: 3px;
 }
 
 span.subjectHeadingToggle {
