@@ -381,6 +381,10 @@ div.subjectHeadingRow.openSubjectHeading {
     border: 1px solid #999;
     width: 200px;
   }
+
+  &:focus-within .suggestions {
+    display: inherit;
+  }
 }
 
 .suggestions {
@@ -395,10 +399,7 @@ div.subjectHeadingRow.openSubjectHeading {
   margin-bottom: 0px;
   min-width: 202px;
   width: max-content;
-
-  &.hide {
-    display: none;
-  }
+  display: none;
 }
 
 .suggestion-active {
@@ -411,13 +412,15 @@ div.subjectHeadingRow.openSubjectHeading {
   margin-bottom: 0;
   font-size: .9rem;
   line-height: .75;
+  height: 100%;
 
   em {
     color: #31806a;
   }
 
   a {
-    padding: 0% 1%;
+    padding: 1% 1%;
+    display: block;
   }
 }
 
@@ -435,6 +438,7 @@ div.subjectHeadingRow.openSubjectHeading {
   padding-left: 2%;
   width: fit-content;
   white-space: nowrap;
+  padding-top: 1%;
 }
 
 .autosuggest {
@@ -442,6 +446,7 @@ div.subjectHeadingRow.openSubjectHeading {
   span {
     padding: 0% 2%;
     line-height: initial;
+    width: fit-content;
   }
   &.component {
     display: flex;
