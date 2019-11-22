@@ -27,11 +27,13 @@ const SubjectHeadingPageWrapper = (props) => {
   return (
     <div>
       <div className="subjectHeadingsBanner">
-        { subjectHeadingUuid
-          ? ['Subject Heading: ', React.createElement('em', null, subjectHeading)]
-          : ['Subject Headings ', filter ? <span>containing <em>{filter}</em></span> : '']
-        }
-        <SubjectHeadingSearch />
+        <div className="subjectHeadingsBannerInner">
+          { subjectHeadingUuid
+            ? ['Subject Heading: ', React.createElement('em', null, subjectHeading)]
+            : ['Subject Headings ', filter ? <span>containing <em>{filter}</em></span> : '']
+          }
+          <SubjectHeadingSearch />
+        </div>
       </div>
       {subjectHeadingUuid ?
         <SubjectHeadingShow {...props} key={subjectHeadingUuid} />
