@@ -67,6 +67,10 @@ a {
   margin-bottom: 0px;
 }
 
+.subjectHeadingToggle {
+  padding-right: 10px;
+}
+
 .subjectHeadingLabel:hover {
   // text-decoration: underline; most SCC pages do not have underline on hover
   color: #176e91;
@@ -90,6 +94,7 @@ a {
 
 .subjectHeadingToggle {
   position: relative;
+  z-index: 1;
   // top: 0;
 }
 

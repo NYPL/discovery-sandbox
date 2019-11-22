@@ -55,6 +55,7 @@ class SubjectHeading extends React.Component {
   }
 
   toggleOpen() {
+    console.log('toggling')
     const {
       open,
     } = this.state;
@@ -183,7 +184,7 @@ console.log('indentation', indentation)
       <li data={`${subjectHeading.uuid}, ${container}`} className={`subjectHeadingRow ${ open || children ? "openSubjectHeading" : ""}`}>
         <a>
           <div  className={`subjectHeadingInfo subjectHeadingRow ${ open || children ? "openSubjectHeading" : ""} ${this.props.nested ? ' nestedSubjectHeading' : ''}`} >
-            <span style={{ left: 20*(indentation || 0) } } onClick={container !== 'context' ? this.toggleOpen : () => {} } className="subjectHeadingToggle" >{desc_count > 0 ? (!open ? '+' : '-') : null}</span>
+            <span data={ container !== 'context' } style={{ left: 20*(indentation || 0) } } onClick={container !== 'context' ? this.toggleOpen : () => {} } className="subjectHeadingToggle" >{desc_count > 0 ? (!open ? '+' : '-') : null}</span>
             <span  className="subjectHeadingLabelAndToggle">
               <span className="subjectHeadingLabel" style={{ left: 20*(indentation||0) } } onClick={this.linkToShow}><span>{rest}</span>{rest === '' ? '' : ' -- ' }<span className='emph'>{emph}</span></span>
             </span>
