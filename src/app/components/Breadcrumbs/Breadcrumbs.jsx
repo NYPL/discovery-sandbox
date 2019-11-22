@@ -10,7 +10,7 @@ const {
   displayTitle,
 } = appConfig;
 
-const Breadcrumbs = ({ query = '', type, bibUrl, itemUrl, edd }) => {
+const Breadcrumbs = ({ query = '', type, bibUrl, itemUrl, edd, headingDetails }) => {
   const defaultText = displayTitle;
   const onClick = pageTitle => trackDiscovery('Breadcrumbs', pageTitle);
   const homeLink = (
@@ -32,6 +32,20 @@ const Breadcrumbs = ({ query = '', type, bibUrl, itemUrl, edd }) => {
     // The first link is the homepage and it will being appearing starting from the
     // Search Results page.
     const crumbs = [homeLink];
+
+    if (type === 'subjectHeading') {
+      crumbs.push(
+        <li key="subjectHeading">
+          <Link to={`${baseUrl}/subject_headings`}>
+            Subject Headings
+          </Link>
+        </li>
+      );
+      if (headingDetails) {
+        crumbs.push(<li key="subjectHeadingDetails">Heading Details</li>);
+      }
+      return crumbs
+    }
 
     if (type === 'search') {
       crumbs.push(<li key="search">Search Results</li>);
@@ -85,6 +99,7 @@ const Breadcrumbs = ({ query = '', type, bibUrl, itemUrl, edd }) => {
 
     // The last possible point in the breadcrumbs will be the Confirmation page.
     crumbs.push(<li key="confirmation">Request Confirmation</li>);
+
     return crumbs;
   };
 
