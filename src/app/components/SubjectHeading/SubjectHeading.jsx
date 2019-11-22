@@ -180,6 +180,10 @@ class SubjectHeading extends React.Component {
 
     return (
       <li data={`${subjectHeading.uuid}, ${container}`} className={`subjectHeadingRow ${ open || children ? "openSubjectHeading" : ""}`}>
+      {container === 'narrower' ?
+        <hr className="relatedHeadingsBoundary"/>
+        : null
+      }
         <a>
           <div  className={`subjectHeadingInfo subjectHeadingRow ${ open || children ? "openSubjectHeading" : ""} + ${this.props.nested ? ' nestedSubjectHeading' : ''}`} >
             <span  className="subjectHeadingLabelAndToggle">
@@ -209,10 +213,6 @@ class SubjectHeading extends React.Component {
           : null}
           {!open && preview ?
             <Preview topHeadings={preview}/>
-            : null
-          }
-          {container === 'narrower' ?
-            <hr className="relatedHeadingsBoundary"/>
             : null
           }
       </li>
