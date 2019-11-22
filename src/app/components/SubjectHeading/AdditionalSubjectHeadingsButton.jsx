@@ -22,7 +22,7 @@ class AdditionalSubjectHeadingsButton extends React.Component {
     const previous = this.props.button === 'previous';
 
     return (
-      <div onClick={this.onClick} className={interactive ? 'seeMoreButton' : ''} style={{"paddingLeft":`${20*indentation}px`}}>
+      <div onClick={this.onClick} className={interactive ? 'seeMoreButton' : 'staticDots'} style={{"paddingLeft":`${20*indentation}px`}}>
           {interactive ? `${previous ? '↑' : '↓'} See more` : null}
           {previous || !interactive ? null : <br /> }
           {previous ? null : <VerticalEllipse />}

@@ -245,6 +245,7 @@ div.subjectHeadingRow.openSubjectHeading {
 
 .nestedSubjectHeadingList {
   background-color: #E8E4E3;
+  padding-bottom: 3px;
 
   li {
     margin-bottom: 0;
@@ -455,6 +456,10 @@ div.subjectHeadingRow.openSubjectHeading {
     width: 125px;
     height: 25px;
   }
+}
+
+.staticDots {
+  margin-left: 20px;
 }
 
 .verticalEllipse {
