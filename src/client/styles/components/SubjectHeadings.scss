@@ -52,7 +52,7 @@ a {
 }
 
 .subjectHeadingRow.openSubjectHeading {
-  > .subjectHeadingLabelAndToggle {
+  > .subjectHeadingLabelContainer {
     background: lightgrey;
   }
   > .subjectHeadingToggle {
@@ -76,7 +76,7 @@ a {
   color: #176e91;
 }
 
-.subjectHeadingLabelAndToggle {
+.subjectHeadingLabelContainer {
   list-style: none;
   font-weight: 500;
   width: 65%;
@@ -233,7 +233,7 @@ a {
     margin-bottom: 0;
   }
 
-  .subjectHeadingLabelAndToggle {
+  .subjectHeadingLabelContainer {
     margin-left: 0px;
   }
 
@@ -300,7 +300,7 @@ a {
   margin-left: 1%;
   margin-bottom: 1%;
 
-  .subjectHeadingLabelAndToggle > .subjectHeadingLabel {
+  .subjectHeadingLabelContainer > .subjectHeadingLabel {
     padding-left: 0px;
   }
 
