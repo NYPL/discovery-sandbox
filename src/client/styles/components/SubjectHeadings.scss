@@ -51,6 +51,9 @@ a {
     margin-bottom: 15px;
     display: flex;
   }
+  .page-count {
+    display: none;
+  }
 }
 
 .subjectHeadingRow.openSubjectHeading {
@@ -492,5 +495,11 @@ span.subjectHeadingToggle {
 
   &:hover {
     text-decoration: none;
+  }
+}
+
+.sortButton {
+  select {
+    border: none;
   }
 }

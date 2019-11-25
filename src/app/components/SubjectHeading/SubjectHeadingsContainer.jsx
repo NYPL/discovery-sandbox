@@ -8,7 +8,8 @@ import SubjectHeadingTableHeader from './SubjectHeadingTableHeader'
 import SubjectHeadingSearch from './SubjectHeadingSearch'
 import SortButton from './SortButton';
 import appConfig from '../../../../appConfig';
-import LoadingLayer from '../LoadingLayer/LoadingLayer'
+import LoadingLayer from '../LoadingLayer/LoadingLayer';
+import Pagination from '../Pagination/Pagination';
 
 
 class SubjectHeadingsContainer extends React.Component {
@@ -16,11 +17,12 @@ class SubjectHeadingsContainer extends React.Component {
     super(props);
     this.state = {
       error: false,
-      loading: true
+      loading: true,
     };
     this.pagination = this.pagination.bind(this);
     this.redirectTo = this.redirectTo.bind(this);
     this.updateSort = this.updateSort.bind(this);
+    this.updatePage = this.updatePage.bind(this);
   }
 
   componentDidMount() {
@@ -125,23 +127,45 @@ class SubjectHeadingsContainer extends React.Component {
     }
   }
 
-  pagination() {
+  updatePage(page, type) {
     const {
       previousUrl,
       nextUrl,
     } = this.state;
-    const {
-      filter,
-      sortBy,
-    } = this.props.location.query;
     const urlForPrevious = this.convertApiUrlToFrontendUrl(previousUrl);
     const urlForNext = this.convertApiUrlToFrontendUrl(nextUrl);
+    if (type === 'Previous') {
+      this.context.router.push(urlForPrevious);
+    } else {
+      this.context.router.push(urlForNext);
+    }
+  }
+
+  pagination() {
+    // const {
+    //   previousUrl,
+    //   nextUrl,
+    // } = this.state;
+    // const {
+    //   filter,
+    //   sortBy,
+    // } = this.props.location.query;
+    // const urlForPrevious = this.convertApiUrlToFrontendUrl(previousUrl);
+    // const urlForNext = this.convertApiUrlToFrontendUrl(nextUrl);
+    // return (
+    //   <div className="subjectHeadingNav">
+    //     <a className="subjectNavButton" href={urlForPrevious} onClick={this.redirectTo(urlForPrevious)}>{'\u25C0'}</a>
+    //     <a className="subjectNavButton" href={urlForNext} onClick={this.redirectTo(urlForNext)}>{'\u25B6'}</a>
+    //   </div>
+    // );
     return (
-      <div className="subjectHeadingNav">
-        <a className="subjectNavButton" href={urlForPrevious} onClick={this.redirectTo(urlForPrevious)}>{'\u25C0'}</a>
-        <a className="subjectNavButton" href={urlForNext} onClick={this.redirectTo(urlForNext)}>{'\u25B6'}</a>
-      </div>
-    );
+      <Pagination
+        page={2}
+        perPage={60}
+        updatePage={this.updatePage}
+        subjectShowPage
+        />
+    )
   }
 
   render() {
