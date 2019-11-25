@@ -51,13 +51,18 @@ a {
     margin-bottom: 15px;
     display: flex;
   }
+  .page-count {
+    display: none;
+  }
 }
 
 .subjectHeadingRow.openSubjectHeading {
   background: #E8E4E3;
 }
 
-.subjectHeadingRow.openSubjectHeading {
+div.subjectHeadingRow.openSubjectHeading {
+  border-bottom: 2px solid #E8E4E3;
+
   > .subjectHeadingLabelContainer {
     background: lightgrey;
   }
@@ -243,6 +248,7 @@ a {
 
 .nestedSubjectHeadingList {
   background-color: #E8E4E3;
+  padding-bottom: 3px;
 
   li {
     margin-bottom: 0;
@@ -455,6 +461,10 @@ a {
   }
 }
 
+.staticDots {
+  margin-left: 20px;
+}
+
 .verticalEllipse {
   font-size: 14px;
   margin-bottom: 3px;
@@ -465,6 +475,9 @@ a {
 .subjectHeadingInfoBox {
   width: 80%;
   min-width: 400px;
+  span {
+    font-size: 11px;
+  }
 }
 
 
@@ -491,4 +504,14 @@ span.subjectHeadingToggle {
   &:hover {
     text-decoration: none;
   }
+}
+
+.sortButton {
+  select {
+    border: none;
+  }
+}
+
+.subjectHeadingRow.openSubjectHeading:not(.nestedSubjectHeading) {
+  background: lightgray;
 }
