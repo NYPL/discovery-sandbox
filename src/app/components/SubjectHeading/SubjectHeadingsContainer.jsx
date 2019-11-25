@@ -161,7 +161,6 @@ class SubjectHeadingsContainer extends React.Component {
     return (
       <Pagination
         page={2}
-        perPage={60}
         updatePage={this.updatePage}
         subjectShowPage
         />
