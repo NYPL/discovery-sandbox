@@ -193,7 +193,7 @@ class SubjectHeading extends React.Component {
               <span className="subjectHeadingLabel" style={positionStyle} onClick={this.linkToShow}><span>{rest}</span>{rest === '' ? '' : ' -- ' }<span className='emph'>{emph}</span></span>
             </span>
             <span className="subjectHeadingAttribute titles">{`${bib_count}`}</span>
-            <span className="subjectHeadingAttribute narrower">{`${desc_count}`}</span>
+            <span className="subjectHeadingAttribute narrower">{`${desc_count || '-'}`}</span>
           </div>
           { open && narrower.length > 1 && uuid.length > 0 && (container !== 'context')
             ? <SortButton sortBy={sortBy} handler={this.sortHandler} />
