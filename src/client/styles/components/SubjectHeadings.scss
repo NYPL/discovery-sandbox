@@ -60,7 +60,7 @@ a {
   background: #E8E4E3;
 }
 
-.subjectHeadingRow.openSubjectHeading {
+div.subjectHeadingRow.openSubjectHeading {
   border-bottom: 2px solid #E8E4E3;
 
   > .subjectHeadingLabelAndToggle {
@@ -248,6 +248,7 @@ a {
 
 .nestedSubjectHeadingList {
   background-color: #E8E4E3;
+  padding-bottom: 3px;
 
   li {
     margin-bottom: 0;
@@ -460,6 +461,10 @@ a {
   }
 }
 
+.staticDots {
+  margin-left: 20px;
+}
+
 .verticalEllipse {
   font-size: 14px;
   margin-bottom: 3px;
@@ -505,4 +510,8 @@ span.subjectHeadingToggle {
   select {
     border: none;
   }
+}
+
+.subjectHeadingRow.openSubjectHeading:not(.nestedSubjectHeading) {
+  background: lightgray;
 }
