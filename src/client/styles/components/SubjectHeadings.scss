@@ -148,10 +148,17 @@ div.subjectHeadingRow.openSubjectHeading {
 
 .seeMoreButton {
   color: #104d65;
-  font-style: italic;
   font-size: 14px;
   margin-left: 40px;
   cursor: default;
+
+  em {
+    padding-left: 10px;
+  }
+
+  &:hover {
+    color: #1b7fa7;
+  }
 }
 
 .nestedSubjectHeadingList.frames {
@@ -223,6 +230,7 @@ div.subjectHeadingRow.openSubjectHeading {
 
     & > ul {
       -webkit-columns: 2;
+      columns: 2;
       list-style: none;
       line-height: 1em;
       padding-top: .4em;
