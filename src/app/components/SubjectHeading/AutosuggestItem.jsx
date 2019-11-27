@@ -19,7 +19,6 @@ const AutosuggestItem = (props) => {
     >
       <Link
         to={path}
-        className='extendAutosuggestFormFocus'
       >
         {subfield ?
           <div className="autosuggest component">
@@ -28,7 +27,7 @@ const AutosuggestItem = (props) => {
               {item.heading_count} {item.heading_count > 1 ? 'headings' : 'heading'}
             </div>
           </div>
-          : <div className="autosuggest subject"><em>Subject:</em> {item.label}</div>}
+          : <div className="autosuggest subject"><em>Subject:</em> <span>{item.label}</span></div>}
       </Link>
     </li>
   )

@@ -110,7 +110,7 @@ class SubjectHeadingSearch extends React.Component {
 
     if (userInput && suggestions.length) {
       suggestionsListComponent = (
-        <ul className={`suggestions ${showSuggestions ? null : 'hide'}`}>
+        <ul className='suggestions'>
         {suggestions.map((suggestion, index) => {
           return (
             <AutosuggestItem

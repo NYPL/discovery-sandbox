@@ -151,10 +151,17 @@ div.subjectHeadingRow.openSubjectHeading {
 
 .seeMoreButton {
   color: #104d65;
-  font-style: italic;
   font-size: 14px;
   margin-left: 40px;
   cursor: default;
+
+  em {
+    padding-left: 10px;
+  }
+
+  &:hover {
+    color: #1b7fa7;
+  }
 }
 
 .nestedSubjectHeadingList.frames {
@@ -226,6 +233,7 @@ div.subjectHeadingRow.openSubjectHeading {
 
     & > ul {
       -webkit-columns: 2;
+      columns: 2;
       list-style: none;
       line-height: 1em;
       padding-top: .4em;
@@ -384,6 +392,10 @@ div.subjectHeadingRow.openSubjectHeading {
     border: 1px solid #999;
     width: 200px;
   }
+
+  &:focus-within .suggestions {
+    display: inherit;
+  }
 }
 
 .suggestions {
@@ -398,10 +410,7 @@ div.subjectHeadingRow.openSubjectHeading {
   margin-bottom: 0px;
   min-width: 202px;
   width: max-content;
-
-  &.hide {
-    display: none;
-  }
+  display: none;
 }
 
 .suggestion-active {
@@ -414,13 +423,15 @@ div.subjectHeadingRow.openSubjectHeading {
   margin-bottom: 0;
   font-size: .9rem;
   line-height: .75;
+  height: 100%;
 
   em {
     color: #31806a;
   }
 
   a {
-    padding: 0% 1%;
+    padding: 1% 1%;
+    display: block;
   }
 }
 
@@ -438,13 +449,15 @@ div.subjectHeadingRow.openSubjectHeading {
   padding-left: 2%;
   width: fit-content;
   white-space: nowrap;
+  padding-top: 1%;
+  font-size: .8em;
 }
 
 .autosuggest {
   margin: 0 1%;
   span {
-    padding: 0% 2%;
     line-height: initial;
+    width: fit-content;
   }
   &.component {
     display: flex;
