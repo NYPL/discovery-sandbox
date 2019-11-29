@@ -194,11 +194,11 @@ class SubjectHeading extends React.Component {
             </span>
             <span className="subjectHeadingAttribute titles">{`${bib_count}`}</span>
             <span className="subjectHeadingAttribute narrower">{`${desc_count || '-'}`}</span>
-          </div>
-          { open && narrower.length > 1 && uuid.length > 0 && (container !== 'context')
-            ? <SortButton sortBy={sortBy} handler={this.sortHandler} />
+            { open && narrower.length > 1 && uuid.length > 0 && (container !== 'context')
+              ? <SortButton sortBy={sortBy} handler={this.sortHandler} />
             : null
           }
+          </div>
         </a>
         { open ?
           <SubjectHeadingsList
