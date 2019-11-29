@@ -409,7 +409,7 @@ class BibDetails extends React.Component {
     return subjectLiteralArray;
   }
 
-  getUuidFromShepApiAndRedirect(subjectLiteral) {
+  getUuidFromShepApiAndRedirect(subjectLiteral, urlWithFilterQuery) {
     const fetchUuidAndRedirect = function (e) {
       e.preventDefault();
       axios({
@@ -461,7 +461,7 @@ class BibDetails extends React.Component {
 
       const subjectHeadingLink = (
         <Link
-          onClick={this.getUuidFromShepApiAndRedirect(urlArray[index])}
+          onClick={this.getUuidFromShepApiAndRedirect(urlArray[index], urlWithFilterQuery)}
           key={index}
         >
           {heading}
@@ -591,7 +591,6 @@ class BibDetails extends React.Component {
     }
 
     const bibDetails = this.getDisplayFields(this.props.bib);
-
     return (<DefinitionList data={bibDetails} />);
   }
 }

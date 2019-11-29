@@ -15,7 +15,7 @@ const DefinitionList = ({ data }) => {
 
       return ([
         (<dt key={`term-${i}`}>{item.term}</dt>),
-        (<dd key={`definition-${i}`}>{item.definition}</dd>),
+        (<dd data={`definition-${i}`} key={`definition-${i}`}>{item.definition}</dd>),
       ]);
     });
   };
@@ -23,6 +23,7 @@ const DefinitionList = ({ data }) => {
   if (!data || !data.length) {
     return null;
   }
+
 
   return (<dl>{getDefinitions(data)}</dl>);
 };
