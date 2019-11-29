@@ -539,3 +539,16 @@ span.subjectHeadingToggle {
 .subjectHeadingRow.openSubjectHeading:not(.nestedSubjectHeading) {
   background: lightgray;
 }
+
+.subjectHeadingBannerNav {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  nav {
+    // margin: 0 auto;
+    align-self: flex-end;
+  }
+  ol {
+    margin: 0 auto;
+  }
+}
