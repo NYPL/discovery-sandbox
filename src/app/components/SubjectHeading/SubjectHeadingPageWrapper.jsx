@@ -33,7 +33,7 @@ const SubjectHeadingPageWrapper = (props) => {
           <h2>
             { subjectHeadingUuid
               ? subjectHeading
-              : ['Subject Headings ', filter ? React.createElement('span', null, `containing ${filter}`) : '']
+              : ['Subject Headings ', filter ? <span>containing <em>{filter}</em></span>: '']
             }
           </h2>
           <SubjectHeadingSearch />
