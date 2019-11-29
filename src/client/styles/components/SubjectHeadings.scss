@@ -134,9 +134,10 @@ div.subjectHeadingRow.openSubjectHeading {
   margin: 0 auto 25px;
 
   h2 {
-    font-size: 35px;
+    font-size: 32px;
     font-weight: 200;
     display: inline-block;
+    font-family: "Milo-Light";
   }
 
   .subjectHeadingsBannerInner {
@@ -146,6 +147,10 @@ div.subjectHeadingRow.openSubjectHeading {
 
   form {
     display: initial;
+  }
+
+  em {
+    font-style: italic;
   }
 }
 
@@ -489,7 +494,13 @@ div.subjectHeadingRow.openSubjectHeading {
   width: 80%;
   min-width: 400px;
   span {
-    font-size: 11px;
+    font-size: 12px;
+  }
+  h4 {
+    font-size: 16px;
+  }
+  .subjectHeadingLabelContainer {
+    padding: 2px;
   }
 }
 
@@ -527,4 +538,17 @@ span.subjectHeadingToggle {
 
 .subjectHeadingRow.openSubjectHeading:not(.nestedSubjectHeading) {
   background: lightgray;
+}
+
+.subjectHeadingBannerNav {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  nav {
+    // margin: 0 auto;
+    align-self: flex-end;
+  }
+  ol {
+    margin: 0 auto;
+  }
 }

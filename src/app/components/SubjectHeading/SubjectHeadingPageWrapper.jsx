@@ -28,15 +28,17 @@ const SubjectHeadingPageWrapper = (props) => {
   return (
     <div>
       <div className="subjectHeadingsBanner">
-        <Breadcrumbs type="subjectHeading" headingDetails={!!subjectHeadingUuid}/>
+        <div className="subjectHeadingBannerNav">
+          <Breadcrumbs type="subjectHeading" headingDetails={!!subjectHeadingUuid}/>
+          <SubjectHeadingSearch />
+        </div>
         <div className="subjectHeadingsBannerInner">
           <h2>
             { subjectHeadingUuid
-              ? <em>{subjectHeading}</em>
-              : ['Subject Headings ', filter ? <span>containing <em>{filter}</em></span> : '']
+              ? subjectHeading
+              : ['Subject Headings ', filter ? <span>containing <em>{filter}</em></span>: '']
             }
           </h2>
-          <SubjectHeadingSearch />
         </div>
       </div>
       {subjectHeadingUuid ?
