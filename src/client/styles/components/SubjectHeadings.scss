@@ -494,7 +494,13 @@ div.subjectHeadingRow.openSubjectHeading {
   width: 80%;
   min-width: 400px;
   span {
-    font-size: 11px;
+    font-size: 12px;
+  }
+  h4 {
+    font-size: 16px;
+  }
+  .subjectHeadingLabelContainer {
+    padding: 2px;
   }
 }
 
