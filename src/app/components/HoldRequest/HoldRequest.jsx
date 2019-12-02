@@ -93,7 +93,7 @@ class HoldRequest extends React.Component {
       return (
         <div className="nypl-banner-alert">
           <p style={{ padding: '10px 20px 0px', margin: 0 }}>
-            Please note that due to the holiday schedule, requests for offsite material placed between 2:30pm on November 26 and 2:30pm on Monday, December 2 will be delivered on Tueday, December 3.
+            Please note that due to the holiday schedule, requests for offsite material placed between 2:30pm on November 26 and 2:30pm on Monday, December 2 will be delivered on Tuesday, December 3.
           </p>
         </div>
       );
