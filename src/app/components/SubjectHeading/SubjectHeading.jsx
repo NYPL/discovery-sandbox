@@ -209,7 +209,7 @@ class SubjectHeading extends React.Component {
             : null
           }
         </a>
-        { open ?
+        { open && narrower.length > 0 ?
           <SubjectHeadingsList
             subjectHeadings={narrower}
             nested="true"
