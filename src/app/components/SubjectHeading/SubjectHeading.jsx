@@ -15,13 +15,10 @@ class SubjectHeading extends React.Component {
       subjectHeading,
       container,
       sortBy,
-      linked,
-      location,
     } = this.props;
     const {
       children,
       range,
-      uuid,
     } = subjectHeading;
     this.state = {
       open: !!children || this.isMain(),
