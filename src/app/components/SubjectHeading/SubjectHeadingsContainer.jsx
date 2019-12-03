@@ -5,7 +5,6 @@ import PropTypes from 'prop-types';
 import axios from 'axios';
 import SubjectHeadingsList from './SubjectHeadingsList';
 import SubjectHeadingTableHeader from './SubjectHeadingTableHeader'
-import SubjectHeadingSearch from './SubjectHeadingSearch'
 import SortButton from './SortButton';
 import appConfig from '../../../../appConfig';
 import LoadingLayer from '../LoadingLayer/LoadingLayer';
