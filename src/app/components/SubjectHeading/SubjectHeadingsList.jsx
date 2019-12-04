@@ -122,6 +122,7 @@ class SubjectHeadingsList extends React.Component {
       location,
       container,
       sortBy,
+      linked,
     } = this.props;
 
     const {
@@ -153,6 +154,7 @@ class SubjectHeadingsList extends React.Component {
               location={location}
               container={container}
               sortBy={sortBy}
+              linked={linked}
             />
           )) :
           null

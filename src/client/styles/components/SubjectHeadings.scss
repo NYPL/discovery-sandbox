@@ -61,7 +61,9 @@ a {
 }
 
 div.subjectHeadingRow.openSubjectHeading {
-  border-bottom: 2px solid #E8E4E3;
+  &:not(.noChildren) {
+    border-bottom: 2px solid #E8E4E3;
+  }
 
   > .subjectHeadingLabelContainer {
     background: lightgrey;
@@ -551,4 +553,8 @@ span.subjectHeadingToggle {
   ol {
     margin: 0 auto;
   }
+}
+
+.subjectHeadingLabel.mainLabel {
+  font-style: italic;
 }

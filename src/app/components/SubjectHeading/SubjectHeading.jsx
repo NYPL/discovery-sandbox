@@ -21,7 +21,7 @@ class SubjectHeading extends React.Component {
       range,
     } = subjectHeading;
     this.state = {
-      open: !!children,
+      open: !!children || this.isMain(),
       narrower: (children || []),
       sortBy: sortBy || "alphabetical",
       range: range || Range.default(),
@@ -52,6 +52,15 @@ class SubjectHeading extends React.Component {
 
   updateSubjectHeading(properties) {
     this.setState(properties);
+  }
+
+  isMain() {
+    const {
+      subjectHeading: { uuid },
+      location: { pathname },
+      linked,
+    } = this.props;
+    return linked === uuid || pathname.includes(uuid);
   }
 
   toggleOpen() {
@@ -179,18 +188,19 @@ class SubjectHeading extends React.Component {
     } = this.addEmphasis(label);
 
     const positionStyle = { left: 20 * (indentation || 0) };
+    const noChildren = this.isMain() && narrower.length === 0 ? 'noChildren' : '';
     // changes to HTML structure here will need to be replicated in ./SubjectHeadingTableHeader
     return (
-      <li data={`${subjectHeading.uuid}, ${container}`} className={`subjectHeadingRow ${ open || children ? "openSubjectHeading" : ""}`}>
+      <li data={`${subjectHeading.uuid}, ${container}`} className={`subjectHeadingRow ${ open || children ? "openSubjectHeading" : ""} ${noChildren}`}>
       {container === 'narrower' ?
         <hr className="relatedHeadingsBoundary"/>
         : null
       }
         <a>
-          <div  className={`subjectHeadingInfo subjectHeadingRow ${ open || children ? "openSubjectHeading" : ""} ${this.props.nested ? ' nestedSubjectHeading' : ''}`} >
+          <div  className={`subjectHeadingInfo subjectHeadingRow ${ open || children ? "openSubjectHeading" : ""} ${this.props.nested ? ' nestedSubjectHeading' : ''} ${noChildren}`} >
             <span style={positionStyle} onClick={container !== 'context' ? this.toggleOpen : () => {} } className="subjectHeadingToggle" >{desc_count > 0 ? (!open ? '+' : '-') : null}</span>
             <span className="subjectHeadingLabelContainer">
-              <span className="subjectHeadingLabel" style={positionStyle} onClick={this.linkToShow}><span>{rest}</span>{rest === '' ? '' : ' -- ' }<span className='emph'>{emph}</span></span>
+              <span className={`subjectHeadingLabel ${this.isMain() ? 'mainLabel' : ''}`} style={positionStyle} onClick={this.linkToShow}><span>{rest}</span>{rest === '' ? '' : ' -- ' }<span className='emph'>{emph}</span></span>
             </span>
             <span className="subjectHeadingAttribute titles">{`${bib_count}`}</span>
             <span className="subjectHeadingAttribute narrower">{`${desc_count || '-'}`}</span>
@@ -200,7 +210,7 @@ class SubjectHeading extends React.Component {
             : null
           }
         </a>
-        { open ?
+        { open && narrower.length > 0 ?
           <SubjectHeadingsList
             subjectHeadings={narrower}
             nested="true"
