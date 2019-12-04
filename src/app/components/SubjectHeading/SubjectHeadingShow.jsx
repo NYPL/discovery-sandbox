@@ -27,6 +27,7 @@ class SubjectHeadingShow extends React.Component {
     this.linkToContext = this.linkToContext.bind(this);
     this.hasUuid = this.hasUuid.bind(this);
     this.processContextHeadings = this.processContextHeadings.bind(this);
+    this.removeChildrenOffMainPath = this.removeChildrenOffMainPath.bind(this);
   }
 
   componentDidMount() {
@@ -122,8 +123,21 @@ class SubjectHeadingShow extends React.Component {
     this.context.router.push(`${path}/subject_headings?fromLabel=${linkLabel}&fromComparator=start&linked=${uuid}`)
   }
 
+  // returns true or false depending on whether the heading has a descendant with the given uuid.
+  // If not, removes the children of that heading
+  removeChildrenOffMainPath(heading, uuid) {
+    const onMainPath =
+      heading.uuid === uuid ||
+      (heading.children && heading.children.some(child => this.removeChildrenOffMainPath(child, uuid)));
+    if (!onMainPath) heading.children = null;
+    return onMainPath;
+  }
+
   processContextHeadings(headings, uuid) {
-    headings.forEach(heading => Range.addRangeData(heading, uuid, 'show'));
+    headings.forEach((heading) => {
+      this.removeChildrenOffMainPath(heading, uuid);
+      Range.addRangeData(heading, uuid, 'show');
+    });
     const mainHeadingIndex = headings.findIndex(heading => heading.children || heading.uuid === uuid);
     const startIndex = mainHeadingIndex > 0 ? mainHeadingIndex - 1 : 0;
     const endIndex = mainHeadingIndex + 2;
