@@ -15,7 +15,7 @@ const DefinitionList = ({ data, headings }) => {
       }
 
       if (item.term === "Subject") {
-        return <SubjectHeadings key='subjects' headings={headings}/>
+        return <SubjectHeadings i={i} key='subjects' headings={headings}/>
       }
 
       return ([

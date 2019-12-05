@@ -18,7 +18,7 @@ const constructSubjectHeading = (heading, i) => {
 
   return([
     constructSubjectHeading(parent),
-    <span> > </span>,
+    <span key={i}> > </span>,
     <Link
       key={`${uuid} ${i}`}
       to={`${appConfig.baseUrl}/subject_headings/${uuid}`}
@@ -32,10 +32,9 @@ const generateHeadingLi = (heading) => {
   return <li key={heading.uuid}>{constructSubjectHeading(heading)}</li>
 }
 
-const SubjectHeadings = (props, i) => {
-  const { headings } = props
+const SubjectHeadings = (props) => {
+  const { headings, i } = props
 
-  console.log(headings);
   if (!headings) return null;
 
   return (
