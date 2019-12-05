@@ -56,19 +56,16 @@ class Feedback extends React.Component {
         >
           Feedback
         </button>
-        {
-
-          // <FocusTrap
-          //   focusTrapOptions={{
-          //     onDeactivate: this.deactivateForm,
-          //     clickOutsideDeactivates: true,
-          //   }}
-          //   active={showForm}
-          //   id="feedback-menu"
-          //   role="menu"
-          //   className={`feedback-form-container${showForm ? ' active' : ''}`}
-          //   >
-        }
+        <FocusTrap
+          focusTrapOptions={{
+            onDeactivate: this.deactivateForm,
+            clickOutsideDeactivates: true,
+          }}
+          active={showForm}
+          id="feedback-menu"
+          role="menu"
+          className={`feedback-form-container${showForm ? ' active' : ''}`}
+        >
           <form
             action={'https://docs.google.com/forms/d/e/1FAIpQLSc7PuMbOB6S0_cqqeZ6sIImw058r' +
               '_ebzhSGy34tnfAtuWKdVA/formResponse'}
