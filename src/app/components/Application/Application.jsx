@@ -95,7 +95,9 @@ class App extends React.Component {
 
           <Footer />
 
-          <Feedback location={this.props.location} />
+          {
+          //<Feedback location={this.props.location} />  
+          }
         </div>
       </DocumentTitle>
     );
