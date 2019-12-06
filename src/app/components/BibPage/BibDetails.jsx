@@ -259,10 +259,6 @@ class BibDetails extends React.Component {
       const fieldIdentifier = field.identifier;
       let bibValues = bib[fieldValue];
 
-      if (fieldValue === 'subjectLiteral') {
-        bibValues = this.compressSubjectLiteral(bib[fieldValue]);
-      }
-
       // skip absent fields
       if (bibValues && bibValues.length && _isArray(bibValues)) {
         // Taking just the first value for each field to check the type.
@@ -393,93 +389,6 @@ class BibDetails extends React.Component {
   }
 
   /**
-   * compressSubjectLiteral(subjectLiteralArray)
-   * Updates the string structure of subject literals.
-   *
-   * @param {array} subjectLiteralArray
-   * @return {array}
-   */
-  compressSubjectLiteral(subjectLiteralArray) {
-    if (Array.isArray(subjectLiteralArray) && subjectLiteralArray.length) {
-      subjectLiteralArray = subjectLiteralArray.map(item =>
-        item.replace(/\.$/, '').replace(/--/g, '>'),
-      );
-    }
-
-    return subjectLiteralArray;
-  }
-
-  getUuidFromShepApiAndRedirect(subjectLiteral, urlWithFilterQuery) {
-    const fetchUuidAndRedirect = function (e) {
-      e.preventDefault();
-      axios({
-        method: 'GET',
-        url: `${appConfig.shepApi}/subject_headings?subject_literal=${subjectLiteral}`,
-        crossDomain: true
-      },
-      ).then(
-        (res) => {
-          this.context.router.push(`${appConfig.baseUrl}/subject_headings/${res.data.subject_heading.id}`)
-        },
-      ).catch(
-        (err) => {
-          console.log('error: ', err);
-          this.context.router.push(`${appConfig.baseUrl}/search?${urlWithFilterQuery}`)
-        },
-      );
-    }
-
-    return fetchUuidAndRedirect.bind(this);
-  }
-
-  /**
-   * constructSubjectHeading(bibValue, url, fieldValue, fieldLabel)
-   * Constructs the link elements of subject headings.
-   *
-   * @param {string} bibValue - for constructing the texts of link elements
-   * @param {string} url - for constructing the query values of the URLs
-   * @param {string} fieldValue - offers the values of search keywords
-   * @param {string} fieldLabel - offers the type of search keywords
-   * @return {HTML element}
-   */
-  constructSubjectHeading(bibValue, url, fieldValue, fieldLabel) {
-    let currentArrayString = '';
-    const filterQueryForSubjectHeading = 'filters[subjectLiteral]=';
-    const singleSubjectHeadingArray = bibValue.split(' > ');
-    const returnArray = [];
-
-    const urlArray = url.replace(filterQueryForSubjectHeading, '').split(' > ')
-      .map((urlString, index) => {
-        const dashDivided = (index !== 0) ? ' -- ' : '';
-        currentArrayString = `${currentArrayString}${dashDivided}${urlString}`;
-
-        return currentArrayString;
-      });
-
-    singleSubjectHeadingArray.forEach((heading, index) => {
-      const urlWithFilterQuery = `${filterQueryForSubjectHeading}${urlArray[index]}`;
-
-      const subjectHeadingLink = (
-        <Link
-          onClick={this.getUuidFromShepApiAndRedirect(urlArray[index], urlWithFilterQuery)}
-          key={index}
-        >
-          {heading}
-        </Link>
-      );
-
-      returnArray.push(subjectHeadingLink);
-
-      // Push a divider in between the link elements
-      if (index < singleSubjectHeadingArray.length - 1) {
-        returnArray.push(<span key={`divider-${index}`}> &gt; </span>);
-      }
-    });
-
-    return returnArray;
-  }
-
-  /**
    * Display for single and multivalued object arrays.
    * @param {array} note
    * @return {string}
@@ -591,7 +500,8 @@ class BibDetails extends React.Component {
     }
 
     const bibDetails = this.getDisplayFields(this.props.bib);
-    return (<DefinitionList data={bibDetails} />);
+
+    return (<DefinitionList data={bibDetails} headings={this.props.bib.subjectHeadingData}/>);
   }
 }
 

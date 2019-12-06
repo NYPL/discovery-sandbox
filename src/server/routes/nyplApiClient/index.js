@@ -38,7 +38,7 @@ const clientSecret = process.env.clientSecret || process.env.PLATFORM_API_CLIENT
 const keys = [clientId, clientSecret];
 const CACHE = {};
 
-function client() {
+function nyplApiClient() {
   if (CACHE.nyplApiClient) {
     return Promise.resolve(CACHE.nyplApiClient);
   }
@@ -81,4 +81,4 @@ function client() {
   return Promise.resolve(nyplApiClient);
 }
 
-export default client;
+export default nyplApiClient;
