@@ -64,6 +64,11 @@ class FilterPopup extends React.Component {
       raisedErrors,
     };
 
+    this.nyplFilterError = React.createRef();
+    this.nullRef = React.createRef();
+    this.filterTitle = React.createRef();
+    this.filterResetBtn = React.createRef();
+
     this.openForm = this.openForm.bind(this);
     this.closeForm = this.closeForm.bind(this);
     this.onFilterClick = this.onFilterClick.bind(this);
@@ -94,8 +99,8 @@ class FilterPopup extends React.Component {
   componentDidUpdate(prevProps, prevState) {
     // // This check is to make sure it only focus after hitting submit and states changed
     if (prevState.raisedErrors !== this.state.raisedErrors) {
-      if (this.refs['nypl-filter-error']) {
-        ReactDOM.findDOMNode(this.refs['nypl-filter-error']).focus();
+      if (this.nyplFilterError.current) {
+        ReactDOM.findDOMNode(this.nyplFilterError.current).focus();
       }
     }
   }
@@ -307,8 +312,8 @@ class FilterPopup extends React.Component {
       this.props.updateDropdownState(true);
 
       setTimeout(() => {
-        if (this.refs.filterResetBtn) {
-          ReactDOM.findDOMNode(this.refs.filterResetBtn).focus();
+        if (this.filterResetBtn.current) {
+          ReactDOM.findDOMNode(this.filterResetBtn.current).focus();
         }
       }, 250);
     }
@@ -396,7 +401,7 @@ class FilterPopup extends React.Component {
           Cancel
         </a>)
     );
-    const resetButton = ({ ref = '', position = '' }) => (
+    const resetButton = ({ ref = this.nullRef, position = '' }) => (
       js ? (<button
         type="button"
         name="Clear-Filters"
@@ -467,7 +472,7 @@ class FilterPopup extends React.Component {
       <div className="nypl-full-width-wrapper">
         <div
           className="nypl-form-error filter-error-box"
-          ref="nypl-filter-error"
+          ref={this.nyplFilterError}
           tabIndex="0"
         >
           <h2>Error</h2>
@@ -487,7 +492,7 @@ class FilterPopup extends React.Component {
           <div className="nypl-row">
             <div className="nypl-column-full">
               <div className="filter-text">
-                <h2 id="filter-title" ref="filter-title" tabIndex="0">Refine your search</h2>
+                <h2 id="filter-title" ref={this.filterTitle} tabIndex="0">Refine your search</h2>
                 <p>Toggle filters to narrow and define your search</p>
               </div>
               {(!showForm && !!(totalResults && totalResults !== 0)) && openPopupButton}
@@ -530,7 +535,7 @@ class FilterPopup extends React.Component {
                             className="filter-action-buttons"
                             aria-label="Refine Search Options"
                           >
-                            <li>{resetButton({ ref: 'filterResetBtn', position: 'top row' })}</li>
+                            <li>{resetButton({ ref: this.filterResetBtn, position: 'top row' })}</li>
                             <li>{cancelButton('top row')}</li>
                             <li>{applyButton('top row')}</li>
                           </ul>
@@ -585,7 +590,7 @@ class FilterPopup extends React.Component {
                               className="filter-action-buttons"
                               aria-label="Refine Search Options"
                             >
-                              <li>{resetButton({ ref: '', position: 'bottom row' })}</li>
+                              <li>{resetButton({ ref: this.nullRef, position: 'bottom row' })}</li>
                               <li>{cancelButton('bottom row')}</li>
                               <li>{applyButton('bottom row')}</li>
                             </ul>

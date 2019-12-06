@@ -38,7 +38,7 @@ class SearchResultsPage extends React.Component {
   }
 
   componentDidMount() {
-    // document.getElementById('search-query').focus();
+    document.getElementById('search-query').focus();
     this.setState({ document: window.document });
   }
 
@@ -51,7 +51,7 @@ class SearchResultsPage extends React.Component {
   }
 
   focus() {
-    if (false && this.state.document) {
+    if (this.state.document) {
       document.getElementById('filter-title').focus();
     }
   }
@@ -157,16 +157,16 @@ class SearchResultsPage extends React.Component {
               </div>
             </div>
             {
-              // <FilterPopup
-              //   filters={apiFilters}
-              //   createAPIQuery={createAPIQuery}
-              //   updateIsLoadingState={this.updateIsLoadingState}
-              //   selectedFilters={selectedFilters}
-              //   searchKeywords={searchKeywords}
-              //   raisedErrors={dateFilterErrors}
-              //   updateDropdownState={this.updateDropdownState}
-              //   totalResults={totalResults}
-              //   />
+              <FilterPopup
+                filters={apiFilters}
+                createAPIQuery={createAPIQuery}
+                updateIsLoadingState={this.updateIsLoadingState}
+                selectedFilters={selectedFilters}
+                searchKeywords={searchKeywords}
+                raisedErrors={dateFilterErrors}
+                updateDropdownState={this.updateDropdownState}
+                totalResults={totalResults}
+                />
             }
             {selectedFiltersAvailable &&
               <div className="nypl-full-width-wrapper selected-filters">

@@ -44,7 +44,6 @@ class Feedback extends React.Component {
   }
 
   render() {
-    console.log('rendering feedback')
     const showForm = this.state.showForm;
     const currentURL = this.props.location.pathname + this.props.location.hash + this.props.location.search;
 
