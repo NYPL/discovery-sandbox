@@ -9,16 +9,18 @@ class Feedback extends React.Component {
     super(props);
 
     this.state = { showForm: false };
+    this.commentText = React.createRef();
 
     this.onSubmitForm = this.onSubmitForm.bind(this);
     this.openForm = this.openForm.bind(this);
     this.closeForm = this.closeForm.bind(this);
     this.deactivateForm = this.deactivateForm.bind(this);
+
   }
 
   onSubmitForm(e) {
-    if (!this.refs.commentText.value) {
-      this.refs.commentText.focus();
+    if (!this.commentText.value) {
+      this.commentText.current.focus();
     } else {
       this.setState({ showForm: false });
       trackDiscovery('Feedback', 'Submit');
@@ -42,6 +44,7 @@ class Feedback extends React.Component {
   }
 
   render() {
+    console.log('rendering feedback')
     const showForm = this.state.showForm;
     const currentURL = this.props.location.pathname + this.props.location.hash + this.props.location.search;
 
@@ -82,7 +85,7 @@ class Feedback extends React.Component {
                 id="feedback-textarea-comment"
                 name="entry.148983317"
                 rows="5"
-                ref="commentText"
+                ref={this.commentText}
                 aria-required="true"
                 tabIndex="0"
               />
