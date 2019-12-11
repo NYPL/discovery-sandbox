@@ -5,7 +5,7 @@ import appConfig from '../../../../appConfig';
 
 const constructSubjectHeading = (heading, i) => {
   const { uuid, parent, label } = heading
-  let subjectComponent
+  let subjectComponent;
   if (label) subjectComponent = label.split(" -- ").pop()
   if (!parent) return (
     <Link
@@ -18,9 +18,9 @@ const constructSubjectHeading = (heading, i) => {
 
   return([
     constructSubjectHeading(parent),
-    <span key={i}> > </span>,
+    <span key={`${uuid} ${i}`}> > </span>,
     <Link
-      key={`${uuid} ${i}`}
+      key={uuid}
       to={`${appConfig.baseUrl}/subject_headings/${uuid}`}
     >
       {subjectComponent}
@@ -28,8 +28,8 @@ const constructSubjectHeading = (heading, i) => {
   ])
 }
 
-const generateHeadingLi = (heading) => {
-  return <li key={heading.uuid}>{constructSubjectHeading(heading)}</li>
+const generateHeadingLi = (heading, i) => {
+  return <li key={heading.uuid}>{constructSubjectHeading(heading, i)}</li>
 }
 
 const SubjectHeadings = (props) => {
