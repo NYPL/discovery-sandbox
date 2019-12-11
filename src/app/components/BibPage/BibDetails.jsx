@@ -135,9 +135,10 @@ class BibDetails extends React.Component {
           if (ent.identifierStatus) nodes.push(<span key={`${ent}`}> <em>({ent.identifierStatus})</em></span>);
           return nodes;
         });
+
       return markup.length === 1
         ? markup.pop()
-        : (<ul>{markup.map(m => (<li key={m}>{m}</li>))}</ul>);
+        : (<ul>{markup.map((m, i) => (<li key={i}>{m}</li>))}</ul>);
     }
     return null;
   }
