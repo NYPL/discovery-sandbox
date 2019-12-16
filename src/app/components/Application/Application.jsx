@@ -84,11 +84,11 @@ class App extends React.Component {
         <div className="app-wrapper">
           {
 
-            // <Header
-            //   navData={navConfig.current}
-            //   skipNav={{ target: 'mainContent' }}
-            //   patron={this.state.patron}
-            //   />
+            <Header
+              navData={navConfig.current}
+              skipNav={{ target: 'mainContent' }}
+              patron={this.state.patron}
+              />
           }
 
           {React.cloneElement(this.props.children, this.state.data)}
@@ -96,7 +96,7 @@ class App extends React.Component {
           <Footer />
 
           {
-          <Feedback location={this.props.location} />  
+          <Feedback location={this.props.location} />
           }
         </div>
       </DocumentTitle>
