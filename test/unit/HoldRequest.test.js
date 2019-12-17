@@ -2,12 +2,15 @@
 import React from 'react';
 import sinon from 'sinon';
 import { expect } from 'chai';
-import { mount } from 'enzyme';
+import Enzyme, { mount } from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
+
 import axios from 'axios';
 // Import the component that is going to be tested
 import HoldRequest from './../../src/app/components/HoldRequest/HoldRequest';
 import Actions from './../../src/app/actions/Actions';
 
+Enzyme.configure({ adapter: new Adapter() });
 const mockedItems = [
   {
     "@id": "res:i10000003",
