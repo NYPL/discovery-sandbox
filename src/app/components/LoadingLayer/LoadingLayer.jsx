@@ -9,7 +9,6 @@ const LoadingLayer = ({ status, title, focus }) => {
 
   return (
     <FocusTrap
-      className="focus-trap"
       focusTrapOptions={{
         onDeactivate: () => {
           if (focus) {
@@ -19,7 +18,7 @@ const LoadingLayer = ({ status, title, focus }) => {
       }}
     >
       <div
-        className="loadingLayer"
+        className="loadingLayer focus-trap"
         aria-labelledby="loading-animation"
         aria-describedby="loading-description"
         role="alert"
