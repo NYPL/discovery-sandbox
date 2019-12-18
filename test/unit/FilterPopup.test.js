@@ -14,7 +14,7 @@ describe('FilterPopup', () => {
     // becomes true when the component is mounted on the client-side so we know that
     // javascript is enabled.
     it('should not render an open button but an <a> instead', () => {
-      const component = shallow(<FilterPopup totalResults={1} />);
+      const component = shallow(<FilterPopup totalResults={1} />, { disableLifecycleMethods: true });
 
       expect(component.state('js')).to.equal(false);
       // These tests will need to be updated when the DOM structure gets updated.
@@ -24,7 +24,7 @@ describe('FilterPopup', () => {
     });
 
     it('should not have specific "no-js" id and class', () => {
-      const component = shallow(<FilterPopup />);
+      const component = shallow(<FilterPopup />, { disableLifecycleMethods: true });
 
       expect(component.state('js')).to.equal(false);
       expect(component.find('#popup-no-js').length).to.equal(0);
@@ -32,7 +32,7 @@ describe('FilterPopup', () => {
     });
 
     it('should have specific "no-js" id and class', () => {
-      const component = shallow(<FilterPopup />);
+      const component = shallow(<FilterPopup />, { disableLifecycleMethods: true });
       component.setState({ showForm: true });
 
       expect(component.state('js')).to.equal(false);
@@ -210,10 +210,6 @@ describe('FilterPopup', () => {
     });
 
     afterEach(() => {
-      component.unmount();
-    });
-
-    after(() => {
       component.unmount();
     });
 
