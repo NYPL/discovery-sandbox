@@ -163,13 +163,13 @@ describe('Tabbed', () => {
     it('should focus on Full Description on click', () => {
       fullDescription.simulate('click');
       let focused = document.activeElement;
-      expect(fullDescription.node).to.equal(focused);
+      expect(fullDescription.getDOMNode()).to.equal(focused);
     });
 
     it('should focus on Details when clicked back', () => {
       details.simulate('click');
       let focused = document.activeElement;
-      expect(details.node).to.equal(focused);
+      expect(details.getDOMNode()).to.equal(focused);
     });
   })
 
@@ -178,20 +178,20 @@ describe('Tabbed', () => {
     it('should focus on Full Description on Right Arrow Press', () => {
       details.simulate('keydown', { keyCode: 39, which: 39 });
       let focused = document.activeElement;
-      expect(fullDescription.node).to.equal(focused);
+      expect(fullDescription.getDOMNode()).to.equal(focused);
     });
 
     it('should focus on Details on Left Arrow Press', () => {
       fullDescription.simulate('keydown', {keycode: 37, which: 37});
       let focused = document.activeElement;
-      expect(details.node).to.equal(focused);
+      expect(details.getDOMNode()).to.equal(focused);
     });
 
     it('should focus on panel on Down Arrow Press', () => {
       details.simulate('keydown', {keycode: 40, which: 40});
       let focused = document.activeElement;
       let section = component.find('section').at(0);
-      expect(section.node).to.equal(focused);
+      expect(section.getDOMNode()).to.equal(focused);
     });
 
   });
@@ -202,7 +202,7 @@ describe('Tabbed', () => {
       fullDescription.simulate('keydown', {keycode: 40, which: 40});
       let focused = document.activeElement;
       let section = component.find('section').at(1);
-      expect(section.node).to.equal(focused);
+      expect(section.getDOMNode()).to.equal(focused);
     });
 
     it('should display Details when clicked', () => {
@@ -210,7 +210,7 @@ describe('Tabbed', () => {
       details.simulate('keydown', {keycode: 40, which: 40});
       let focused = document.activeElement;
       let section = component.find('section').at(0);
-      expect(section.node).to.equal(focused);
+      expect(section.getDOMNode()).to.equal(focused);
     });
   });
-})
+});
