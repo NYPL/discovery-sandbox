@@ -1,11 +1,14 @@
 /* eslint-env mocha */
 import React from 'react';
 import { expect } from 'chai';
-import { shallow, mount } from 'enzyme';
+import Enzyme, { shallow, mount } from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
+
 import sinon from 'sinon';
 
 import ResultsCount from '../../src/app/components/ResultsCount/ResultsCount';
 
+Enzyme.configure({ adapter: new Adapter() });
 const filters = {
   subjectLiteral: {
     owner: [{}],

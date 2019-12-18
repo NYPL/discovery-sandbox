@@ -2,7 +2,9 @@
 import React from 'react';
 import MockAdapter from 'axios-mock-adapter';
 import { expect } from 'chai';
-import { shallow, mount } from 'enzyme';
+import Enzyme, { shallow, mount } from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
+
 import axios from 'axios';
 import sinon from 'sinon';
 
@@ -10,6 +12,7 @@ import { basicQuery } from '../../src/app/utils/utils';
 import Sorter from '../../src/app/components/Sorter/Sorter';
 import appConfig from '../../appConfig';
 
+Enzyme.configure({ adapter: new Adapter() });
 describe('Sorter', () => {
   describe('Default - no javascript', () => {
     // Since this is a shallow render, the component itself is not mounted. The `js` flag

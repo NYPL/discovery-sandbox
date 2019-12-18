@@ -1,10 +1,12 @@
 /* eslint-env mocha */
 import React from 'react';
 import { expect } from 'chai';
-import { mount } from 'enzyme';
+import Enzyme, { mount } from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
 
 import Home from '../../src/app/components/Home/Home';
 
+Enzyme.configure({ adapter: new Adapter() });
 describe('Home', () => {
   let component;
 

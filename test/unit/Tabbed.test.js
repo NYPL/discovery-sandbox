@@ -1,11 +1,15 @@
+/* eslint-env mocha */
 import React from 'react';
 import { expect } from 'chai';
-import { shallow, mount } from 'enzyme';
+import Enzyme, { shallow, mount } from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
+
 import BibDetails from './../../src/app/components/BibPage/BibDetails';
 import AdditionalDetailsViewer from './../../src/app/components/BibPage/AdditionalDetailsViewer';
 import Tabbed from './../../src/app/components/BibPage/Tabbed';
 import sinon from 'sinon';
 
+Enzyme.configure({ adapter: new Adapter() });
 describe('Tabbed', () => {
   const sampleBib =
   {

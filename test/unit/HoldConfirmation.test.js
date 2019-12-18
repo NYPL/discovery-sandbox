@@ -2,13 +2,15 @@
 import React from 'react';
 import sinon from 'sinon';
 import { expect } from 'chai';
-import { mount } from 'enzyme';
+import Enzyme, { mount } from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
 
 // Import the component that is going to be tested
 import HoldConfirmation from './../../src/app/components/HoldConfirmation/HoldConfirmation';
 import Actions from './../../src/app/actions/Actions';
 import appConfig from '../../appConfig';
 
+Enzyme.configure({ adapter: new Adapter() });
 describe('HoldConfirmation', () => {
   describe('After being rendered, <HoldConfirmation>', () => {
     let component;

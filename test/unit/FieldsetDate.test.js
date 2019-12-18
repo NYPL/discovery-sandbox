@@ -1,9 +1,12 @@
 /* eslint-env mocha */
 import React from 'react';
 import { expect } from 'chai';
-import { mount } from 'enzyme';
+import Enzyme, { mount } from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
+
 import FieldsetDate from '../../src/app/components/Filters/FieldsetDate';
 
+Enzyme.configure({ adapter: new Adapter() });
 describe('FieldsetDate', () => {
   describe('Default', () => {
     let component;

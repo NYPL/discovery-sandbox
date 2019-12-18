@@ -1,10 +1,13 @@
 /* eslint-env mocha */
 import React from 'react';
 import { expect } from 'chai';
-import { mount } from 'enzyme';
+import Enzyme, { mount } from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
+
 
 import FieldsetList from '../../src/app/components/Filters/FieldsetList';
 
+Enzyme.configure({ adapter: new Adapter() });
 const listItemAt = (component, n) => component.find('li').at(n);
 
 describe('FilterPopup', () => {

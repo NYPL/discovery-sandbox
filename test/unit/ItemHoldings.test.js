@@ -1,10 +1,12 @@
 /* eslint-env mocha */
 import React from 'react';
 import { expect } from 'chai';
-import { shallow, mount } from 'enzyme';
+import Enzyme, { shallow, mount } from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
 
 import ItemHoldings from './../../src/app/components/Item/ItemHoldings';
 
+Enzyme.configure({ adapter: new Adapter() });
 const items = [
   {
     accessMessage: {
