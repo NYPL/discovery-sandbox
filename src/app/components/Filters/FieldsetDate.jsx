@@ -5,7 +5,6 @@ import NumberFormat from 'react-number-format';
 class FieldsetDate extends React.Component {
   constructor(props) {
     super(props);
-
     this.state = {
       dateAfter: this.props.selectedFilters.dateAfter,
       dateBefore: this.props.selectedFilters.dateBefore,
@@ -17,7 +16,6 @@ class FieldsetDate extends React.Component {
   componentWillReceiveProps(nextProps) {
     const updatedDateAfter = nextProps.selectedFilters.dateAfter;
     const updatedDateBefore = nextProps.selectedFilters.dateBefore;
-
     this.setState({
       dateAfter: updatedDateAfter,
       dateBefore: updatedDateBefore,
