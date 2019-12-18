@@ -34,7 +34,7 @@ describe('SelectedFilters', () => {
     let component;
 
     before(() => {
-      component = shallow(<SelectedFilters selectedFilters={selectedFilters} />);
+      component = shallow(<SelectedFilters selectedFilters={selectedFilters} />, { disableLifecycleMethods: true });
     });
 
     it('should render a ul', () => {
