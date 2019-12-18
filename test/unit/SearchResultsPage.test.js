@@ -41,6 +41,10 @@ describe('SearchResultsPage', () => {
       );
     });
 
+    after(() => {
+      component.unmount();
+    });
+
     it('should be wrapped in a .main-page', () => {
       expect(component.find('.main-page')).to.have.length(1);
     });
@@ -90,6 +94,10 @@ describe('SearchResultsPage', () => {
       );
     });
 
+    after(() => {
+      component.unmount();
+    });
+
     it('should have search results', () => {
       // searchResults is the mocked object found in the beginning of the file.
       expect(component.props().searchResults).to.eql(searchResults);
@@ -124,6 +132,10 @@ describe('SearchResultsPage', () => {
         />,
         { attachTo: document.body }
       );
+    });
+
+    after(() => {
+      component.unmount();
     });
 
     it('should an h1 with "Search Results"', () => {
