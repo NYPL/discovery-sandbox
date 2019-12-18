@@ -57,7 +57,7 @@ const longListItems = [
 describe('ItemHoldings', () => {
   describe('Default rendering', () => {
     it('should return null with no props passed', () => {
-      const component = shallow(<ItemHoldings />);
+      const component = shallow(<ItemHoldings />, { disableLifecycleMethods: true });
       expect(component.type()).to.equal(null);
     });
   });
@@ -66,7 +66,7 @@ describe('ItemHoldings', () => {
     let component;
 
     before(() => {
-      component = shallow(<ItemHoldings items={items} />);
+      component = shallow(<ItemHoldings items={items} />, { disableLifecycleMethods: true });
     });
 
     it('should be wrapped in a .nypl-results-item div', () => {
@@ -86,7 +86,7 @@ describe('ItemHoldings', () => {
     it('should have an ItemTable component, which renders a table', () => {
       expect(component.find('ItemTable').length).to.equal(1);
       // Need to render the componet to actually find what gets rendered.
-      expect(component.find('ItemTable').render().find('table').length).to.equal(1);
+      expect(component.find('ItemTable').render().is('table')).to.equal(true);
       // One heading and 2 item rows
       expect(component.find('ItemTable').render().find('tr').length).to.equal(3);
     });
@@ -115,7 +115,7 @@ describe('ItemHoldings', () => {
     it('should have an ItemTable component, which renders a table', () => {
       expect(component.find('ItemTable').length).to.equal(1);
       // Need to render the componet to actually find what gets rendered.
-      expect(component.find('ItemTable').render().find('table').length).to.equal(1);
+      expect(component.find('ItemTable').render().is('table')).to.equal(true);
       // One heading and 20 item rows since only 20 get displayed at a time by default
       expect(component.find('ItemTable').render().find('tr').length).to.equal(21);
     });
@@ -222,7 +222,7 @@ describe('ItemHoldings', () => {
     // NOTE: This is the initial rendering so we are only doing shallow. The chunking process
     // gets done in componentDidMount which is called when the component actually mounts.
     it('should have an empty chunkedItems state', () => {
-      const component = shallow(<ItemHoldings items={longListItems} />);
+      const component = shallow(<ItemHoldings items={longListItems} />, { disableLifecycleMethods: true });
       expect(component.state('chunkedItems')).to.eql([]);
     });
 
