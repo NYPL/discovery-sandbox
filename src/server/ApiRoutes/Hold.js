@@ -498,7 +498,6 @@ function createHoldRequestAjax(req, res) {
     null,
     req.query.itemSource,
     (response) => {
-      console.log('response: ', response, response.data, 'req: ', req);
       const data = JSON.parse(response).data;
       res.json({
         id: data.id,
@@ -531,7 +530,6 @@ function createHoldRequestEdd(req, res) {
     req.body.form,
     req.body.itemSource,
     (response) => {
-      console.log('response: ', response);
       const data = JSON.parse(response).data;
       res.json({
         id: data.id,
