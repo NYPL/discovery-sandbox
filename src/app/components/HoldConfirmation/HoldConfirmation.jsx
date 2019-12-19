@@ -42,7 +42,7 @@ class HoldConfirmation extends React.Component {
   }
 
   ptypeDisallowsHolds() {
-    return (<li className="errorItem">Your card does not permit placing holds.</li>);
+    return (<li className="errorItem">Your card does not permit placing holds on ReCAP materials.</li>);
   }
 
   /**
