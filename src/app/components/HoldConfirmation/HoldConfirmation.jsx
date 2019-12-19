@@ -41,6 +41,10 @@ class HoldConfirmation extends React.Component {
     return (<li className="errorItem">There is a problem with your library account</li>);
   }
 
+  ptypeDisallowsHolds() {
+    return (<li className="errorItem">Your card does not permit placing holds on ReCAP materials.</li>);
+  }
+
   /**
    * eligibilityErrorText supplies the appropriate text when a patron is ineligible to place holds.
    * @return {HTML Element}
@@ -51,13 +55,15 @@ class HoldConfirmation extends React.Component {
       const expired = errors.expired ? this.expiredMessage() : null;
       const blocked = errors.blocked ? this.blockedMessage() : null;
       const moneyOwed = errors.moneyOwed ? this.moneyOwedMessage() : null;
-      const defaultText = expired || blocked || moneyOwed ? null : 'There is a problem with your library account.';
+      const ptypeDisallowsHolds = errors.ptypeDisallowsHolds ? this.ptypeDisallowsHolds() : null;
+      const defaultText = expired || blocked || moneyOwed || ptypeDisallowsHolds  ? null : 'There is a problem with your library account.';
       return (
         <p> This is because:
           <ul>
             {moneyOwed}
             {expired}
             {blocked}
+            {ptypeDisallowsHolds}
             {defaultText}
           </ul>
           Please see a librarian or contact 917-ASK-NYPL (<a href="tel:19172756975">917-275-6975</a>) if you require assistance.
@@ -330,7 +336,8 @@ class HoldConfirmation extends React.Component {
       );
     }
 
-    if (this.props.location.query.errorStatus && this.props.location.query.errorMessage) {
+    // If running client-side, generate GA event
+    if ((typeof window !== 'undefined') && this.props.location.query.errorStatus && this.props.location.query.errorMessage) {
       trackDiscovery('Error', 'Hold Confirmation');
     }
 
