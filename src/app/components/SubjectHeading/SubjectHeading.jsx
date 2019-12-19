@@ -2,7 +2,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
-import SubjectHeadingsList from './SubjectHeadingsList';
+import SubjectHeadingsTableBody from './SubjectHeadingsTableBody';
 import SortButton from './SortButton';
 import Range from '../../models/Range';
 import appConfig from '../../../../appConfig';
@@ -178,30 +178,34 @@ class SubjectHeading extends React.Component {
       rest,
     } = this.addEmphasis(label);
 
-    const positionStyle = { left: 20 * (indentation || 0) };
+    const positionStyle = { marginLeft: 50 * (indentation || 0) };
+    // const positionStyle = {}
     // changes to HTML structure here will need to be replicated in ./SubjectHeadingTableHeader
     return (
-      <li data={`${subjectHeading.uuid}, ${container}`} className={`subjectHeadingRow ${ open || children ? "openSubjectHeading" : ""}`}>
-      {container === 'narrower' ?
-        <hr className="relatedHeadingsBoundary"/>
-        : null
-      }
-        <a>
-          <div  className={`subjectHeadingInfo subjectHeadingRow ${ open || children ? "openSubjectHeading" : ""} ${this.props.nested ? ' nestedSubjectHeading' : ''}`} >
-            <span style={positionStyle} onClick={container !== 'context' ? this.toggleOpen : () => {} } className="subjectHeadingToggle" >{desc_count > 0 ? (!open ? '+' : '-') : null}</span>
-            <span className="subjectHeadingLabelContainer">
-              <span className="subjectHeadingLabel" style={positionStyle} onClick={this.linkToShow}><span>{rest}</span>{rest === '' ? '' : ' -- ' }<span className='emph'>{emph}</span></span>
-            </span>
-            <span className="subjectHeadingAttribute titles">{`${bib_count}`}</span>
-            <span className="subjectHeadingAttribute narrower">{`${desc_count || '-'}`}</span>
+      <React.Fragment>
+        <div data={`${subjectHeading.uuid}, ${container}`} className={`subjectHeadingRow ${ open || children ? "openSubjectHeading" : ""}`}>
+          {container === 'narrower' ?
+            <hr className="relatedHeadingsBoundary"/>
+            : null
+          }
+          <div className="subjectHeadingsTableCell subjectHeadingLabel" >
+            <div className="subjectHeadingLabelInner" style={positionStyle}>
+              <div onClick={container !== 'context' ? this.toggleOpen : () => {} } className="subjectHeadingToggle" >{desc_count > 0 ? (!open ? '+' : '-') : ""}</div>
+              <a onClick={this.linkToShow}>
+                {rest === '' ? null : <div>{`${rest} -- `}</div>}
+                <div className='emph'>{emph}</div>
+              </a>
+            </div>
           </div>
+          <a className="subjectHeadingsTableCell subjectHeadingAttribute titles">{`${bib_count}`}</a>
+          <a className="subjectHeadingsTableCell subjectHeadingAttribute narrower">{`${desc_count || '-'}`}</a>
           { open && narrower.length > 1 && uuid.length > 0 && (container !== 'context')
             ? <SortButton sortBy={sortBy} handler={this.sortHandler} />
             : null
           }
-        </a>
+        </div>
         { open ?
-          <SubjectHeadingsList
+          <SubjectHeadingsTableBody
             subjectHeadings={narrower}
             nested="true"
             indentation={(indentation || 0) + 1}
@@ -213,11 +217,11 @@ class SubjectHeading extends React.Component {
             key={`${uuid}-list-${sortBy}`}
           />
           : null}
-          {!open && preview ?
-            <Preview topHeadings={preview}/>
-            : null
-          }
-      </li>
+        {!open && preview ?
+          <Preview topHeadings={preview} />
+          : null
+        }
+      </React.Fragment>
     );
   }
 }

@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
-import SubjectHeadingsList from './SubjectHeadingsList';
+// import SubjectHeadingsList from './SubjectHeadingsList';
 import BibsList from './BibsList';
 import ResultsList from '../Results/ResultsList';
-import SubjectHeadingTableHeader from './SubjectHeadingTableHeader';
+import SubjectHeadingsTableHeader from './SubjectHeadingsTableHeader';
 import Range from '../../models/Range';
 import appConfig from '../../../../appConfig';
 import LoadingLayer from '../LoadingLayer/LoadingLayer';
@@ -148,32 +148,32 @@ class SubjectHeadingShow extends React.Component {
     if (error) {
       return (<div>Not a subject heading</div>)
     }
-    return (
-      <div className="subjectHeadingShow">
-        <LoadingLayer status={contextLoading} title={"Subject Heading"}/>
-        <div className="subjectHeadingMainContent show nypl-full-width-wrapper">
-          {shepBibs.length > 0 ?
-            <BibsList shepBibs={shepBibs} nextUrl={bibsNextUrl} />
-            : null
-          }
-          <div className="subjectHeadingRelated subjectHeadingInfoBox">
-            <div className="backgroundContainer">
-              <h4>Related Headings</h4>
-            </div>
-            <SubjectHeadingTableHeader />
-            <SubjectHeadingsList subjectHeadings={relatedHeadings} location={location} keyId="related" container="narrower"/>
-          </div>
-          <div className="subjectHeadingContext subjectHeadingInfoBox">
-            <div className="backgroundContainer">
-              <h4>Adjacent Headings</h4>
-            </div>
-            <SubjectHeadingTableHeader />
-            <SubjectHeadingsList subjectHeadings={contextHeadings} location={location} showId={uuid} keyId="context" container="context"/>
-            <a onClick={this.linkToContext} className="link toIndex">See full context</a>
-          </div>
-        </div>
-      </div>
-    )
+    // return (
+    //   <div className="subjectHeadingShow">
+    //     <LoadingLayer status={contextLoading} title={"Subject Heading"}/>
+    //     <div className="subjectHeadingMainContent show nypl-full-width-wrapper">
+    //       {shepBibs.length > 0 ?
+    //         <BibsList shepBibs={shepBibs} nextUrl={bibsNextUrl} />
+    //         : null
+    //       }
+    //       <div className="subjectHeadingRelated subjectHeadingInfoBox">
+    //         <div className="backgroundContainer">
+    //           <h4>Related Headings</h4>
+    //         </div>
+    //         <SubjectHeadingsTableHeader />
+    //         <SubjectHeadingsList subjectHeadings={relatedHeadings} location={location} keyId="related" container="narrower"/>
+    //       </div>
+    //       <div className="subjectHeadingContext subjectHeadingInfoBox">
+    //         <div className="backgroundContainer">
+    //           <h4>Adjacent Headings</h4>
+    //         </div>
+    //         <SubjectHeadingsTableHeader />
+    //         <SubjectHeadingsList subjectHeadings={contextHeadings} location={location} showId={uuid} keyId="context" container="context"/>
+    //         <a onClick={this.linkToContext} className="link toIndex">See full context</a>
+    //       </div>
+    //     </div>
+    //   </div>
+    // )
   }
 }
 

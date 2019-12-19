@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router';
 import PropTypes from 'prop-types';
 
-const SubjectHeadingTableHeader = () => {
+const SubjectHeadingsTableHeader = () => {
   return (
       <div className="subjectHeadingRow tableHeadings">
         <span className="subjectHeadingToggle"></span>
@@ -15,4 +15,4 @@ const SubjectHeadingTableHeader = () => {
   );
 };
 
-export default SubjectHeadingTableHeader
+export default SubjectHeadingsTableHeader

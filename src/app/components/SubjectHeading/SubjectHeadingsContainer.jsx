@@ -3,8 +3,9 @@ import React from 'react';
 import { Link } from 'react-router';
 import PropTypes from 'prop-types';
 import axios from 'axios';
-import SubjectHeadingsList from './SubjectHeadingsList';
-import SubjectHeadingTableHeader from './SubjectHeadingTableHeader'
+import SubjectHeadingsTable from './SubjectHeadingsTable'
+// import SubjectHeadingsList from './SubjectHeadingsList';
+import SubjectHeadingsTableHeader from './SubjectHeadingsTableHeader'
 import SubjectHeadingSearch from './SubjectHeadingSearch'
 import SortButton from './SortButton';
 import appConfig from '../../../../appConfig';
@@ -170,14 +171,14 @@ class SubjectHeadingsContainer extends React.Component {
           <div className="subjectHeadingMainContent index">
             {this.pagination()}
             <div className="tableHeadingsWrapper">
-              <SubjectHeadingTableHeader />
+              <SubjectHeadingsTableHeader />
               {
                 filter
                 ? <SortButton sortBy={sortBy || 'alphabetical'} handler={this.updateSort} />
                 : null
               }
             </div>
-            <SubjectHeadingsList subjectHeadings={subjectHeadings} linked={linked} location={location} sortBy={sortBy}/>
+            <SubjectHeadingsTable subjectHeadings={subjectHeadings} linked={linked} location={location} sortBy={sortBy}/>
             {this.pagination()}
           </div>
         </div>
