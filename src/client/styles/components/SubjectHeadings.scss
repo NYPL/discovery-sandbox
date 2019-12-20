@@ -66,6 +66,16 @@
 }
 
 
+.emph {
+  color: #a83232;
+  word-break: break-word;
+  .noEmph {
+    color: black;
+    float: left;
+  }
+}
+
+
 
 
 .subjectHeadingsBannerInner {
@@ -247,14 +257,6 @@
 //   }
 // }
 
-.emph {
-  color: #a83232;
-  word-break: break-word;
-  .noEmph {
-    color: black;
-    float: left;
-  }
-}
 
 // .subjectHeadingLabel:hover .emph {
 //   color: #176e91;

@@ -205,19 +205,17 @@ class SubjectHeading extends React.Component {
           }
         </div>
         { open ?
-          <React.Fragment >
-            <SubjectHeadingsTableBody
-              subjectHeadings={narrower}
-              nested="true"
-              indentation={(indentation || 0) + 1}
-              location={location}
-              range={range}
-              container={container}
-              parentUuid={uuid}
-              sortBy={sortBy}
-              key={`${uuid}-list-${sortBy}`}
-              />
-          </React.Fragment>
+          <SubjectHeadingsTableBody
+            subjectHeadings={narrower}
+            nested="true"
+            indentation={(indentation || 0) + 1}
+            location={location}
+            range={range}
+            container={container}
+            parentUuid={uuid}
+            sortBy={sortBy}
+            key={`${uuid}-list-${sortBy}`}
+            />
           : null}
         {!open && preview ?
           <Preview topHeadings={preview} />
