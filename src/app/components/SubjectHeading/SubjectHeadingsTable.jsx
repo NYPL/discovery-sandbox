@@ -9,7 +9,10 @@ export default (props) => {
     subjectHeadings,
     linked,
     location,
-    sortBy
+    sortBy,
+    showId,
+    keyId,
+    container,
   } = props;
 
   return (
@@ -20,6 +23,9 @@ export default (props) => {
         linked={linked}
         location={location}
         sortBy={sortBy}
+        showId={showId}
+        keyId={keyId}
+        container={container}
       />
     </div>
   );

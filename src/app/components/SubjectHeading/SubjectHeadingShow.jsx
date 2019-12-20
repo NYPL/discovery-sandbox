@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
-// import SubjectHeadingsList from './SubjectHeadingsList';
+import SubjectHeadingsTable from './SubjectHeadingsTable';
 import BibsList from './BibsList';
 import ResultsList from '../Results/ResultsList';
 import SubjectHeadingsTableHeader from './SubjectHeadingsTableHeader';
@@ -148,32 +148,30 @@ class SubjectHeadingShow extends React.Component {
     if (error) {
       return (<div>Not a subject heading</div>)
     }
-    // return (
-    //   <div className="subjectHeadingShow">
-    //     <LoadingLayer status={contextLoading} title={"Subject Heading"}/>
-    //     <div className="subjectHeadingMainContent show nypl-full-width-wrapper">
-    //       {shepBibs.length > 0 ?
-    //         <BibsList shepBibs={shepBibs} nextUrl={bibsNextUrl} />
-    //         : null
-    //       }
-    //       <div className="subjectHeadingRelated subjectHeadingInfoBox">
-    //         <div className="backgroundContainer">
-    //           <h4>Related Headings</h4>
-    //         </div>
-    //         <SubjectHeadingsTableHeader />
-    //         <SubjectHeadingsList subjectHeadings={relatedHeadings} location={location} keyId="related" container="narrower"/>
-    //       </div>
-    //       <div className="subjectHeadingContext subjectHeadingInfoBox">
-    //         <div className="backgroundContainer">
-    //           <h4>Adjacent Headings</h4>
-    //         </div>
-    //         <SubjectHeadingsTableHeader />
-    //         <SubjectHeadingsList subjectHeadings={contextHeadings} location={location} showId={uuid} keyId="context" container="context"/>
-    //         <a onClick={this.linkToContext} className="link toIndex">See full context</a>
-    //       </div>
-    //     </div>
-    //   </div>
-    // )
+    return (
+      <div className="subjectHeadingShow">
+        <LoadingLayer status={contextLoading} title={"Subject Heading"}/>
+        <div className="subjectHeadingMainContent show nypl-full-width-wrapper">
+          {shepBibs.length > 0 ?
+            <BibsList shepBibs={shepBibs} nextUrl={bibsNextUrl} />
+            : null
+          }
+          <div className="subjectHeadingRelated subjectHeadingInfoBox">
+            <div className="backgroundContainer">
+              <h4>Related Headings</h4>
+            </div>
+            <SubjectHeadingsTable subjectHeadings={relatedHeadings} location={location} keyId="related" container="narrower"/>
+          </div>
+          <div className="subjectHeadingContext subjectHeadingInfoBox">
+            <div className="backgroundContainer">
+              <h4>Adjacent Headings</h4>
+            </div>
+            <SubjectHeadingsTable subjectHeadings={contextHeadings} location={location} showId={uuid} keyId="context" container="context"/>
+            <a onClick={this.linkToContext} className="link toIndex">See full context</a>
+          </div>
+        </div>
+      </div>
+    )
   }
 }
 
