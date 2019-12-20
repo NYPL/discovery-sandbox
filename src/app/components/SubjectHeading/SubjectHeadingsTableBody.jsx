@@ -122,6 +122,7 @@ class SubjectHeadingsTableBody extends React.Component {
       location,
       container,
       sortBy,
+      topLevel,
     } = this.props;
 
     const {

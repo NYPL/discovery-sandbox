@@ -155,6 +155,7 @@ class SubjectHeading extends React.Component {
       subjectHeading,
       location,
       container,
+      topLevel,
     } = this.props
 
     const {
@@ -178,12 +179,12 @@ class SubjectHeading extends React.Component {
       rest,
     } = this.addEmphasis(label);
 
-    const positionStyle = { marginLeft: 50 * (indentation || 0) };
+    const positionStyle = { marginLeft: 30 * (indentation || 0) };
     // const positionStyle = {}
     // changes to HTML structure here will need to be replicated in ./SubjectHeadingTableHeader
     return (
       <React.Fragment>
-        <div data={`${subjectHeading.uuid}, ${container}`} className={`subjectHeadingRow ${ open || children ? "openSubjectHeading" : ""}`}>
+        <div data={`${subjectHeading.uuid}, ${container}`} className={`subjectHeadingRow ${ (open || children) ? "openSubjectHeading" : ""} ${(indentation || 0) === 0 ? 'topLevel' : ''} ${(indentation || 0) !== 0 ? 'nestedSubjectHeading' : ''}`}>
           {container === 'narrower' ?
             <hr className="relatedHeadingsBoundary"/>
             : null
@@ -192,8 +193,7 @@ class SubjectHeading extends React.Component {
             <div className="subjectHeadingLabelInner" style={positionStyle}>
               <div onClick={container !== 'context' ? this.toggleOpen : () => {} } className="subjectHeadingToggle" >{desc_count > 0 ? (!open ? '+' : '-') : ""}</div>
               <a onClick={this.linkToShow}>
-                {rest === '' ? null : <div>{`${rest} -- `}</div>}
-                <div className='emph'>{emph}</div>
+                <span className='emph'>{rest === '' ? null : <span className='noEmph'>{`${rest}\u0020--\u00a0`}</span>}{emph}</span>
               </a>
             </div>
           </div>
@@ -205,17 +205,19 @@ class SubjectHeading extends React.Component {
           }
         </div>
         { open ?
-          <SubjectHeadingsTableBody
-            subjectHeadings={narrower}
-            nested="true"
-            indentation={(indentation || 0) + 1}
-            location={location}
-            range={range}
-            container={container}
-            parentUuid={uuid}
-            sortBy={sortBy}
-            key={`${uuid}-list-${sortBy}`}
-          />
+          <React.Fragment >
+            <SubjectHeadingsTableBody
+              subjectHeadings={narrower}
+              nested="true"
+              indentation={(indentation || 0) + 1}
+              location={location}
+              range={range}
+              container={container}
+              parentUuid={uuid}
+              sortBy={sortBy}
+              key={`${uuid}-list-${sortBy}`}
+              />
+          </React.Fragment>
           : null}
         {!open && preview ?
           <Preview topHeadings={preview} />

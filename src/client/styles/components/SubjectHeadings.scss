@@ -28,21 +28,36 @@
     text-decoration: none;
     display: flex;
   }
+  > .openSubjectHeading {
+    background-color: #E8E4E3;
+      &.topLevel {
+        background-color: lightgray;
+      }
+      .subjectHeadingLabelInner, .subjectHeadingAttribute {
+        background-color: lightgray;
+      }
+  }
+  .nestedSubjectHeading {
+    background-color: #E8E4E3;
+    .subjectHeadingsTableCell {
+      border-top: 1px solid #E8E4E3;
+    }
+  }
   .subjectHeadingRow {
-    color: inherit;
     text-align: center;
     display: table-row;
-    height: inherit;
+    .subjectHeadingAttribute {
+      padding-left: 10px;
+    }
     .subjectHeadingsTableCell {
       height: 100%;
       display: table-cell;
       .subjectHeadingLabelInner {
-        display: flex;
         height: 100%;
         position: relative;
+        padding-left: 5px;
         .subjectHeadingToggle {
           position: absolute;
-          // right: 10px;
           left: -20px;
         }
       }
@@ -234,6 +249,11 @@
 
 .emph {
   color: #a83232;
+  word-break: break-word;
+  .noEmph {
+    color: black;
+    float: left;
+  }
 }
 
 // .subjectHeadingLabel:hover .emph {
@@ -287,24 +307,24 @@
 //   }
 // }
 
-.nestedSubjectHeadingList {
-  background-color: #E8E4E3;
-  padding-bottom: 3px;
-
-  li {
-    margin-bottom: 0;
-  }
-
-  .subjectHeadingLabelContainer {
-    margin-left: 0px;
-  }
-
-  .openSubjectHeading {
-    li:last-child {
-      margin-bottom: .5rem;
-    }
-  }
-}
+// .nestedSubjectHeadingList {
+//   background-color: #E8E4E3;
+//   padding-bottom: 3px;
+//
+//   li {
+//     margin-bottom: 0;
+//   }
+//
+//   .subjectHeadingLabelContainer {
+//     margin-left: 0px;
+//   }
+//
+//   .openSubjectHeading {
+//     li:last-child {
+//       margin-bottom: .5rem;
+//     }
+//   }
+// }
 
 .subjectHeadingMainContent.show {
   display: grid;
@@ -564,9 +584,9 @@ span.subjectHeadingToggle {
   }
 }
 
-.subjectHeadingRow.openSubjectHeading:not(.nestedSubjectHeading) {
-  background: lightgray;
-}
+// .subjectHeadingRow.openSubjectHeading:not(.nestedSubjectHeading) {
+//   background: lightgray;
+// }
 
 .subjectHeadingBannerNav {
   display: flex;
