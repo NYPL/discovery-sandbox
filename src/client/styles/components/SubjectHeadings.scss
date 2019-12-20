@@ -44,10 +44,16 @@
     }
   }
   .subjectHeadingRow {
-    text-align: center;
+    text-align: right;
     display: table-row;
+    &.tableHeadings {
+      .subjectHeadingLabelInner {
+        float: left;
+      }
+    }
     .subjectHeadingAttribute {
       padding-left: 10px;
+      padding-right: 10px;
     }
     .subjectHeadingsTableCell {
       height: 100%;
@@ -62,17 +68,20 @@
         }
       }
     }
+    .sortButton {
+      position: absolute;
+    }
   }
 }
 
 
 .emph {
   color: #a83232;
-  word-break: break-word;
   .noEmph {
     color: black;
     float: left;
   }
+  text-align: left;
 }
 
 

@@ -171,7 +171,6 @@ class SubjectHeadingsContainer extends React.Component {
           <div className="subjectHeadingMainContent index">
             {this.pagination()}
             <div className="tableHeadingsWrapper">
-              <SubjectHeadingsTableHeader />
               {
                 filter
                 ? <SortButton sortBy={sortBy || 'alphabetical'} handler={this.updateSort} />

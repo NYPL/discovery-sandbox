@@ -5,12 +5,12 @@ import PropTypes from 'prop-types';
 const SubjectHeadingsTableHeader = () => {
   return (
       <div className="subjectHeadingRow tableHeadings">
-        <span className="subjectHeadingToggle"></span>
-        <span className="subjectHeadingLabelContainer">
-          <span className="subjectHeadingLabel">Subject Heading</span>
+        <span className="subjectHeadingsTableCell subjectHeadingLabel">
+          <span className="subjectHeadingToggle"></span>
+          <span className="subjectHeadingLabelInner">Subject Heading</span>
         </span>
-        <span className="subjectHeadingAttribute titles">Titles</span>
-        <span className="subjectHeadingAttribute narrower">Narrower</span>
+        <span className="subjectHeadingsTableCell subjectHeadingAttribute titles">Titles</span>
+        <span className="subjectHeadingsTableCell subjectHeadingAttribute narrower">Narrower</span>
       </div>
   );
 };
