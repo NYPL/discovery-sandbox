@@ -11,8 +11,8 @@ const Preview = (props) => {
   return (
     <div className="preview subjectHeadingRow" colSpan="4">
       <div className="previewDiv">
+        <em>Most common subheadings:</em>
         <div className="previewInner">
-          <em>Most common subheadings:</em>
           <table>
             {groupedHeadings.map(headings => <PreviewRow row={headings} />)}
           </table>

@@ -50,12 +50,16 @@
       width: 100%;
       .previewDiv {
         width: 100%;
-        display: flex;
         justify-content: center;
+        .previewInner {
+          width: 100%;
+          justify-content: center;
+          display: flex;
+        }
       }
       td {
         justify-content: left;
-        padding-right: 25px;
+        padding-right: 45px;
         ul {
           width: 100%;
           justify-content: left;
