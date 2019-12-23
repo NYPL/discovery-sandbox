@@ -20,7 +20,6 @@ const SubjectHeadingPageWrapper = (props) => {
     }
   } = props;
 
-  // console.log('uuid', props.params.subjectHeadingUuid);
   const containerKey = Object.keys(query)
     .map(key => `${key}=${query[key]}`)
     .join('&');

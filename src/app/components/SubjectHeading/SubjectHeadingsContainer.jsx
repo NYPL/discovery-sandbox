@@ -165,7 +165,6 @@ class SubjectHeadingsContainer extends React.Component {
       )
     }
 
-    console.log('filter: ', filter)
     const sortButton = (
       filter
         ? <SortButton sortBy={sortBy || 'alphabetical'} handler={this.updateSort} />

@@ -181,8 +181,6 @@ class SubjectHeading extends React.Component {
 
     const positionStyle = { marginLeft: 30 * ((indentation || 0) + 1) };
     const isMain = location.pathname.includes(uuid);
-    // console.log('isMain ', location )
-    // const positionStyle = {}
     // changes to HTML structure here will need to be replicated in ./SubjectHeadingTableHeader
     return (
       <React.Fragment>
