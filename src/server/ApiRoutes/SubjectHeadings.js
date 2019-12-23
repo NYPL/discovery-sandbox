@@ -46,7 +46,7 @@ const convertShepBibsToDiscoveryBibs = (response) => {
  *  @param {object} queryParams An object containing query parameters
  *
  *  @return {Promise<Object>} A promise that resolves the response (or rejects
- *    with an Axios error object - See 
+ *    with an Axios error object - See
  *    https://www.npmjs.com/package/axios#handling-errors )
  */
 const shepApiCall = (path, queryParams) => {
@@ -71,7 +71,7 @@ const shepApiCall = (path, queryParams) => {
  */
 const proxyRequest = (req, res) => {
   const shepApiPath = req.params[0]
-  
+
   shepApiCall(shepApiPath, req.query)
     .then((response) => res.status(response.status || 200).json(response.data))
     .catch((error) => {
