@@ -44,8 +44,29 @@
     }
   }
   .subjectHeadingRow {
-    text-align: right;
+    text-align: left;
     display: table-row;
+    &.preview {
+      width: 100%;
+      .previewDiv {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+      }
+      td {
+        justify-content: left;
+        padding-right: 25px;
+        ul {
+          width: 100%;
+          justify-content: left;
+          li {
+            display: flex;
+            justify-content: left;
+            margin-bottom: 5px;
+          }
+        }
+      }
+    }
     &.tableHeadings {
       .subjectHeadingLabelInner {
         float: left;
@@ -54,6 +75,7 @@
     .subjectHeadingAttribute {
       padding-left: 10px;
       padding-right: 10px;
+      text-align: right;
     }
     .subjectHeadingsTableCell {
       height: 100%;
@@ -317,24 +339,24 @@
 //   }
 // }
 
-// .nestedSubjectHeadingList {
-//   background-color: #E8E4E3;
-//   padding-bottom: 3px;
-//
-//   li {
-//     margin-bottom: 0;
-//   }
-//
-//   .subjectHeadingLabelContainer {
-//     margin-left: 0px;
-//   }
-//
-//   .openSubjectHeading {
-//     li:last-child {
-//       margin-bottom: .5rem;
-//     }
-//   }
-// }
+.nestedSubjectHeadingList {
+  background-color: #E8E4E3;
+  padding-bottom: 3px;
+
+  li {
+    margin-bottom: 0;
+  }
+
+  .subjectHeadingLabelContainer {
+    margin-left: 0px;
+  }
+
+  .openSubjectHeading {
+    li:last-child {
+      margin-bottom: .5rem;
+    }
+  }
+}
 
 // .preview {
 //   > ul {

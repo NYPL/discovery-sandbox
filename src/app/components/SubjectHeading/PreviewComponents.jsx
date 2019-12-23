@@ -4,26 +4,42 @@ import { Link } from 'react-router';
 import appConfig from '../../../../appConfig';
 
 const Preview = (props) => {
-  const { topHeadings } = props
-
+  const { topHeadings } = props;
+  const groupedHeadings = topHeadings.reduce((acc, el, i) =>
+    (i % 2 === 0 ? acc.concat([[el, topHeadings[i + 1]]]) : acc)
+    , []);
   return (
-    <div className="preview"><em>Most common subheadings:</em>
-      <ul>
-        {topHeadings.map(heading => <PreviewItem heading={heading} key={heading.uuid}/>)}
-      </ul>
+    <div className="preview subjectHeadingRow" colSpan="4">
+      <div className="previewDiv">
+        <div className="previewInner">
+          <em>Most common subheadings:</em>
+          <table>
+            {groupedHeadings.map(headings => <PreviewRow row={headings} />)}
+          </table>
+        </div>
+      </div>
     </div>
-  )
-}
+  );
+};
+
+const PreviewRow = (props) => {
+  const { row } = props;
+  return (
+    <tr>
+      {row.map(heading => <PreviewItem heading={heading} key={heading.uuid} />)}
+    </tr>
+  );
+};
 
 const PreviewItem = (props) => {
-  const {heading} = props
+  const { heading } = props;
 
-  const displayLabel = heading.label.split(" -- ").slice(1).join(" -- ")
+  const displayLabel = heading.label.split(" -- ").slice(1).join(" -- ");
 
-  const path = `${appConfig.baseUrl}/subject_headings/${heading.uuid}`
+  const path = `${appConfig.baseUrl}/subject_headings/${heading.uuid}`;
 
   return (
-    <li>
+    <td>
       <Link
         to={path}
       >
@@ -33,9 +49,9 @@ const PreviewItem = (props) => {
           <li className="fullLabel"><em>{heading.label}</em></li>
         </ul>
       </Link>
-    </li>
-  )
-}
+    </td>
+  );
+};
 
 Preview.propTypes = {
   preview: PropTypes.array
