@@ -179,7 +179,7 @@ class SubjectHeading extends React.Component {
       rest,
     } = this.addEmphasis(label);
 
-    const positionStyle = { marginLeft: 30 * (indentation || 0) };
+    const positionStyle = { marginLeft: 30 * ((indentation || 0) + 1) };
     // const positionStyle = {}
     // changes to HTML structure here will need to be replicated in ./SubjectHeadingTableHeader
     return (

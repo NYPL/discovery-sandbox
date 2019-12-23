@@ -251,7 +251,7 @@
 //   margin: 0 auto;
 // }
 
-.subjectHeadingList, .preview ul {
+.subjectHeadingsTable, .preview ul {
   list-style: none;
 }
 
@@ -273,7 +273,7 @@
 .subjectHeadingMainContent span {
   // line-height: 1.50;
   font-weight: 400;
-  font-size: 1rem;
+  // font-size: 1rem;
 }
 
 .subjectHeadingMainContent.index {
@@ -286,7 +286,7 @@
   padding-left: 0px;
 }
 
-// .subjectHeadingList li {
+// .subjectHeadingsTable li {
 //   margin-bottom: .5rem;
 //
 //   .preview {
@@ -332,6 +332,15 @@
 //   .openSubjectHeading {
 //     li:last-child {
 //       margin-bottom: .5rem;
+//     }
+//   }
+// }
+
+// .preview {
+//   > ul {
+//     ul {
+//       display: flex;
+//       justify-content: space-around;
 //     }
 //   }
 // }
@@ -419,9 +428,9 @@
   //   width: 100%;
   // }
 
-  .subjectHeadingToggle {
-    font-size: 1rem;
-  }
+  // .subjectHeadingToggle {
+  //   font-size: 1rem;
+  // }
 }
 
 .subjectHeadingContext {
@@ -551,7 +560,7 @@
 .subjectHeadingInfoBox {
   width: 80%;
   min-width: 400px;
-  span {
+  .subjectHeadingsTableCell {
     font-size: 12px;
   }
   h4 {
@@ -569,16 +578,16 @@
   margin-top: 3px;
 }
 
-span.subjectHeadingToggle {
-  display: inline-block;
-  max-width: none;
-  width: 15px;
-  font-size: 25px;
-  font-weight: 100;
-  text-align: center;
-  line-height: .75;
-  cursor: default;
-}
+// span.subjectHeadingToggle {
+//   // display: inline-block;
+//   // max-width: none;
+//   // width: 15px;
+//   // font-size: 25px;
+//   // font-weight: 100;
+//   // text-align: center;
+//   // line-height: .75;
+//   // cursor: default;
+// }
 
 .nypl-breadcrumbs a {
   text-decoration: underline;
