@@ -30,10 +30,16 @@
       .previewDiv {
         width: 100%;
         justify-content: center;
+        > em {
+          margin-left: 15%;
+        }
         .previewInner {
           width: 100%;
           justify-content: center;
           display: flex;
+        }
+        em {
+          color: #31806a;
         }
       }
       .previewUl {
@@ -49,6 +55,12 @@
             display: flex;
             justify-content: left;
             margin-bottom: 5px;
+            &.fullLabel {
+              font-size: .75rem;
+            }
+            &.bibCount {
+              color: #31806a;
+            }
           }
         }
       }
