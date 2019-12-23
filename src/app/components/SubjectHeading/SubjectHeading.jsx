@@ -164,7 +164,7 @@ class SubjectHeading extends React.Component {
       bib_count,
       desc_count,
       children,
-      preview
+      preview,
     } = subjectHeading;
 
     const {
@@ -180,6 +180,8 @@ class SubjectHeading extends React.Component {
     } = this.addEmphasis(label);
 
     const positionStyle = { marginLeft: 30 * ((indentation || 0) + 1) };
+    const isMain = location.pathname.includes(uuid);
+    // console.log('isMain ', location )
     // const positionStyle = {}
     // changes to HTML structure here will need to be replicated in ./SubjectHeadingTableHeader
     return (
@@ -198,7 +200,7 @@ class SubjectHeading extends React.Component {
             <div className="subjectHeadingLabelInner" style={positionStyle}>
               <div onClick={container !== 'context' ? this.toggleOpen : () => {} } className="subjectHeadingToggle" >{desc_count > 0 ? (!open ? '+' : '-') : ""}</div>
               <a onClick={this.linkToShow}>
-                <span className='emph'>{rest === '' ? null : <span className='noEmph'>{`${rest}\u0020--\u00a0`}</span>}{emph}</span>
+                <span className={`emph ${isMain ? 'mainHeading' : ''}`}>{rest === '' ? null : <span className='noEmph'>{`${rest}\u0020--\u00a0`}</span>}{emph}</span>
               </a>
             </div>
           </td>

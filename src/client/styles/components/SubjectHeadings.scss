@@ -82,12 +82,21 @@
 
 
 .emph {
+  &.mainHeading {
+    font-weight: bold;
+    span {
+      font-weight: bold;
+    }
+  }
   color: #a83232;
   .noEmph {
     color: black;
   }
   text-align: left;
 }
+
+
+/// ^^^^^^ this should probably be a separate file ^^^^^
 
 .subjectHeadingsBannerInner {
   display: inline-block;
@@ -163,19 +172,19 @@
   margin: 0 auto;
 }
 
-.subjectHeadingMainContent span {
-  font-weight: 400;
-}
+// .subjectHeadingMainContent span {
+//   font-weight: 400;
+// }
 
 .subjectHeadingMainContent.index {
   font-size: 0;
   width: 80%;
 }
 
-.subjectHeadingList {
-  font-size: 0;
-  padding-left: 0px;
-}
+// .subjectHeadingList {
+//   font-size: 0;
+//   padding-left: 0px;
+// }
 
 .subjectHeadingMainContent.show {
   display: grid;
