@@ -189,22 +189,22 @@ class SubjectHeading extends React.Component {
               <hr className="relatedHeadingsBoundary" />
           : null
         }
-        <div data={`${subjectHeading.uuid}, ${container}`} className={`subjectHeadingRow ${ (open || children) ? "openSubjectHeading" : ""} ${(indentation || 0) === 0 ? 'topLevel' : ''} ${(indentation || 0) !== 0 ? 'nestedSubjectHeading' : ''}`}>
-          <div className="subjectHeadingsTableCell subjectHeadingLabel" >
+        <tr data={`${subjectHeading.uuid}, ${container}`} className={`subjectHeadingRow ${ (open || children) ? "openSubjectHeading" : ""} ${(indentation || 0) === 0 ? 'topLevel' : ''} ${(indentation || 0) !== 0 ? 'nestedSubjectHeading' : ''}`}>
+          <td className="subjectHeadingsTableCell subjectHeadingLabel" >
             <div className="subjectHeadingLabelInner" style={positionStyle}>
               <div onClick={container !== 'context' ? this.toggleOpen : () => {} } className="subjectHeadingToggle" >{desc_count > 0 ? (!open ? '+' : '-') : ""}</div>
               <a onClick={this.linkToShow}>
                 <span className='emph'>{rest === '' ? null : <span className='noEmph'>{`${rest}\u0020--\u00a0`}</span>}{emph}</span>
               </a>
             </div>
-          </div>
-          <a className="subjectHeadingsTableCell subjectHeadingAttribute titles">{`${bib_count}`}</a>
-          <a className="subjectHeadingsTableCell subjectHeadingAttribute narrower">{`${desc_count || '-'}`}</a>
+          </td>
+          <td className="subjectHeadingsTableCell subjectHeadingAttribute titles">{`${bib_count}`}</td>
+          <td className="subjectHeadingsTableCell subjectHeadingAttribute narrower">{`${desc_count || '-'}`}</td>
           { open && narrower.length > 1 && uuid.length > 0 && (container !== 'context')
             ? <SortButton sortBy={sortBy} handler={this.sortHandler} />
             : null
           }
-        </div>
+        </tr>
         { open ?
           <SubjectHeadingsTableBody
             subjectHeadings={narrower}

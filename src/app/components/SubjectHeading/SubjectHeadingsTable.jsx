@@ -17,7 +17,7 @@ export default (props) => {
   } = props;
 
   return (
-    <div className="subjectHeadingsTable">
+    <table className="subjectHeadingsTable">
       <SubjectHeadingsTableHeader sortButton={sortButton}/>
       <SubjectHeadingsTableBody
         subjectHeadings={subjectHeadings}
@@ -28,6 +28,6 @@ export default (props) => {
         keyId={keyId}
         container={container}
       />
-    </div>
+  </table>
   );
 };
