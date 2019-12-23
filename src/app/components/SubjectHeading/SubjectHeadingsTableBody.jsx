@@ -138,16 +138,16 @@ class SubjectHeadingsTableBody extends React.Component {
           this.listItemsInRange(subjectHeadings)
           .map((listItem, index) => (listItem.button ?
             // A listItem will either be a subject heading or a place holder for a button
-            null
-            // <AdditionalSubjectHeadingsButton
-            //   indentation={listItem.indentation}
-            //   button={listItem.button}
-            //   updateParent={listItem.updateParent}
-            //   key={listItem.uuid || index}
-            //   nested={nested}
-            //   indentation={indentation}
-            //   interactive={interactive}
-            // />
+            // null
+            <AdditionalSubjectHeadingsButton
+              indentation={listItem.indentation}
+              button={listItem.button}
+              updateParent={listItem.updateParent}
+              key={listItem.uuid || index}
+              nested={nested}
+              indentation={indentation}
+              interactive={interactive}
+            />
             : <SubjectHeading
               subjectHeading={listItem}
               key={listItem.uuid}
