@@ -186,7 +186,11 @@ class SubjectHeading extends React.Component {
       <React.Fragment>
         {
           container === 'narrower' ?
-              <hr className="relatedHeadingsBoundary" />
+            <tr>
+              <td colSpan="4">
+                <hr className="relatedHeadingsBoundary" />
+              </td>
+            </tr>
           : null
         }
         <tr data={`${subjectHeading.uuid}, ${container}`} className={`subjectHeadingRow ${ (open || children) ? "openSubjectHeading" : ""} ${(indentation || 0) === 0 ? 'topLevel' : ''} ${(indentation || 0) !== 0 ? 'nestedSubjectHeading' : ''}`}>
