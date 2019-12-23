@@ -7,16 +7,18 @@ const Preview = (props) => {
   const { topHeadings } = props;
   const groupedHeadings = [[topHeadings[0], topHeadings[2]], [topHeadings[1], topHeadings[3]]];
   return (
-    <div className="preview subjectHeadingRow" colSpan={4}>
-      <div className="previewDiv">
-        <em>Most common subheadings:</em>
-        <div className="previewInner">
-          <ul className="previewUl">
-            {groupedHeadings.map(headings => <PreviewCol col={headings} />)}
-          </ul>
+    <tr className="preview subjectHeadingRow">
+      <td colSpan="4">
+        <div className="previewDiv">
+          <em>Most common subheadings:</em>
+          <div className="previewInner">
+            <ul className="previewUl">
+              {groupedHeadings.map(headings => <PreviewCol col={headings} />)}
+            </ul>
+          </div>
         </div>
-      </div>
-    </div>
+      </td>
+    </tr>
   );
 };
 
