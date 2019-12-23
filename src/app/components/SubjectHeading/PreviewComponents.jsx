@@ -5,29 +5,29 @@ import appConfig from '../../../../appConfig';
 
 const Preview = (props) => {
   const { topHeadings } = props;
-  const groupedHeadings = topHeadings.reduce((acc, el, i) =>
-    (i % 2 === 0 ? acc.concat([[el, topHeadings[i + 1]]]) : acc)
-    , []);
+  const groupedHeadings = [[topHeadings[0], topHeadings[2]], [topHeadings[1], topHeadings[3]]];
   return (
     <div className="preview subjectHeadingRow" colSpan="4">
       <div className="previewDiv">
         <em>Most common subheadings:</em>
         <div className="previewInner">
-          <table>
-            {groupedHeadings.map(headings => <PreviewRow row={headings} />)}
-          </table>
+          <ul className="previewUl">
+            {groupedHeadings.map(headings => <PreviewCol col={headings} />)}
+          </ul>
         </div>
       </div>
     </div>
   );
 };
 
-const PreviewRow = (props) => {
-  const { row } = props;
+const PreviewCol = (props) => {
+  const { col } = props;
   return (
-    <tr>
-      {row.map(heading => <PreviewItem heading={heading} key={heading.uuid} />)}
-    </tr>
+    <li>
+      <ul className="previewCol">
+        {col.map(heading => <PreviewItem heading={heading} key={heading.uuid} />)}
+      </ul>
+    </li>
   );
 };
 
@@ -39,7 +39,7 @@ const PreviewItem = (props) => {
   const path = `${appConfig.baseUrl}/subject_headings/${heading.uuid}`;
 
   return (
-    <td>
+    <li>
       <Link
         to={path}
       >
@@ -49,7 +49,7 @@ const PreviewItem = (props) => {
           <li className="fullLabel"><em>{heading.label}</em></li>
         </ul>
       </Link>
-    </td>
+    </li>
   );
 };
 

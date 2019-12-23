@@ -57,9 +57,11 @@
           display: flex;
         }
       }
-      td {
-        justify-content: left;
-        padding-right: 45px;
+      .previewUl {
+        justify-content: space-around;
+        display: flex;
+        width: 100%;
+        margin-bottom: 0px;
         ul {
           width: 100%;
           justify-content: left;
