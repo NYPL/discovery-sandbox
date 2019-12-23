@@ -184,11 +184,18 @@ class SubjectHeading extends React.Component {
     // changes to HTML structure here will need to be replicated in ./SubjectHeadingTableHeader
     return (
       <React.Fragment>
+        {
+          container === 'narrower' ?
+            <div className="subjectHeadingRow">
+              <div className="subjectHeadingsTableCell" colSpan="4">
+                <div className="boundaryWrapper">
+                  <hr className="relatedHeadingsBoundary" />
+                </div>
+              </div>
+            </div>
+          : null
+        }
         <div data={`${subjectHeading.uuid}, ${container}`} className={`subjectHeadingRow ${ (open || children) ? "openSubjectHeading" : ""} ${(indentation || 0) === 0 ? 'topLevel' : ''} ${(indentation || 0) !== 0 ? 'nestedSubjectHeading' : ''}`}>
-          {container === 'narrower' ?
-            <hr className="relatedHeadingsBoundary"/>
-            : null
-          }
           <div className="subjectHeadingsTableCell subjectHeadingLabel" >
             <div className="subjectHeadingLabelInner" style={positionStyle}>
               <div onClick={container !== 'context' ? this.toggleOpen : () => {} } className="subjectHeadingToggle" >{desc_count > 0 ? (!open ? '+' : '-') : ""}</div>

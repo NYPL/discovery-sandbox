@@ -13,11 +13,12 @@ export default (props) => {
     showId,
     keyId,
     container,
+    sortButton,
   } = props;
 
   return (
     <div className="subjectHeadingsTable">
-      <SubjectHeadingsTableHeader />
+      <SubjectHeadingsTableHeader sortButton={sortButton}/>
       <SubjectHeadingsTableBody
         subjectHeadings={subjectHeadings}
         linked={linked}

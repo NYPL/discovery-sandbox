@@ -6,6 +6,7 @@
     text-decoration: none;
     display: flex;
   }
+
   > .openSubjectHeading {
     background-color: #E8E4E3;
       &.topLevel {
@@ -50,11 +51,6 @@
             margin-bottom: 5px;
           }
         }
-      }
-    }
-    &.tableHeadings {
-      .subjectHeadingLabelInner {
-        float: left;
       }
     }
     .subjectHeadingAttribute {
@@ -246,6 +242,7 @@
     background-color: #E8E4E3;
     margin-left: 1%;
   }
+
 }
 
 .subjectHeadingContext {
@@ -263,6 +260,10 @@
   .subjectHeadingToggle {
     display: none;
   }
+
+  // .subjectHeadingLabel, .subjectHeadingAttribute {
+  //   border-bottom: 1px solid #E8E4E3;
+  // }
 }
 
 .autocomplete {

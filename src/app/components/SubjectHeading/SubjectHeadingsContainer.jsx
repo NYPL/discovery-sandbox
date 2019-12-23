@@ -164,6 +164,13 @@ class SubjectHeadingsContainer extends React.Component {
         </div>
       )
     }
+
+    console.log('filter: ', filter)
+    const sortButton = (
+      filter
+        ? <SortButton sortBy={sortBy || 'alphabetical'} handler={this.updateSort} />
+        : null
+    );
     return (
       <div>
         <LoadingLayer status={loading} title={"Subject Headings"}/>
@@ -171,13 +178,14 @@ class SubjectHeadingsContainer extends React.Component {
           <div className="subjectHeadingMainContent index">
             {this.pagination()}
             <div className="tableHeadingsWrapper">
-              {
-                filter
-                ? <SortButton sortBy={sortBy || 'alphabetical'} handler={this.updateSort} />
-                : null
-              }
             </div>
-            <SubjectHeadingsTable subjectHeadings={subjectHeadings} linked={linked} location={location} sortBy={sortBy}/>
+            <SubjectHeadingsTable
+              subjectHeadings={subjectHeadings}
+              linked={linked}
+              location={location}
+              sortBy={sortBy}
+              sortButton={sortButton}
+            />
             {this.pagination()}
           </div>
         </div>
