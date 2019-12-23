@@ -65,6 +65,10 @@
         height: 100%;
         position: relative;
         padding-left: 5px;
+        a:hover {
+          color: #176e91;
+          cursor: pointer;
+        }
         .subjectHeadingToggle {
           position: absolute;
           left: -20px;
@@ -88,11 +92,13 @@
       font-weight: bold;
     }
   }
-  color: #a83232;
-  .noEmph {
-    color: black;
+  &:not(:hover) {
+    color: #a83232;
+    .noEmph:not(:hover) {
+      color: black;
+    }
+    text-align: left;
   }
-  text-align: left;
 }
 
 
@@ -204,6 +210,7 @@
 
   .toIndex:hover {
     text-decoration: underline;
+    cursor: pointer;
   }
 }
 
