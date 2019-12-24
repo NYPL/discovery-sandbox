@@ -6,7 +6,7 @@ import axios from 'axios';
 import SubjectHeadingsTable from './SubjectHeadingsTable'
 // import SubjectHeadingsList from './SubjectHeadingsList';
 import SubjectHeadingsTableHeader from './SubjectHeadingsTableHeader'
-import SubjectHeadingSearch from './SubjectHeadingSearch'
+import SubjectHeadingSearch from './Search/SubjectHeadingSearch'
 import SortButton from './SortButton';
 import appConfig from '../../../../appConfig';
 import LoadingLayer from '../LoadingLayer/LoadingLayer';
@@ -155,7 +155,9 @@ class SubjectHeadingsContainer extends React.Component {
   render() {
     const { error, subjectHeadings, loading } = this.state;
     const location = this.props.location;
-    const { linked, sortBy, filter } = this.props.location.query;
+    let { linked, sortBy, filter } = this.props.location.query;
+
+    if (!linked) linked = '';
 
     if (error) {
       return (

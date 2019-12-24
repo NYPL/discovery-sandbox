@@ -7,15 +7,17 @@ const SubjectHeadingsTableHeader = (props) => {
     sortButton
   } = props;
   return (
-      <div className="subjectHeadingRow tableHeadings">
-        <span className="subjectHeadingsTableCell subjectHeadingLabel">
-          <span className="subjectHeadingToggle"></span>
-          <span className="subjectHeadingLabelInner">Subject Heading</span>
-        </span>
-        <span className="subjectHeadingsTableCell subjectHeadingAttribute titles">Titles</span>
-        <span className="subjectHeadingsTableCell subjectHeadingAttribute narrower">Narrower</span>
-        {sortButton}
-      </div>
+      <thead>
+        <tr>
+          <th className="subjectHeadingsTableCell subjectHeadingLabel">
+            <div className="subjectHeadingToggle"></div>
+            <div className="subjectHeadingLabelInner">Subject Heading</div>
+          </th>
+          <th className="subjectHeadingsTableCell subjectHeadingAttribute titles">Titles</th>
+          <th className="subjectHeadingsTableCell subjectHeadingAttribute narrower">Narrower</th>
+          {sortButton}
+        </tr>
+      </thead>
   );
 };
 

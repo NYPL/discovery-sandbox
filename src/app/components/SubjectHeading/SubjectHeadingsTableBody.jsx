@@ -42,13 +42,7 @@ class SubjectHeadingsTableBody extends React.Component {
           const { linked } = this.props;
           if (linked) {
             axios({
-              method: 'GET',
-              url: `${appConfig.shepApi}/subject_headings/${linked}/context?type=relatives`,
-              crossDomain: true,
-              headers: {
-                'Access-Control-Allow-Origin': '*',
-                'Content-Type': 'application/json',
-              },
+              url: `${appConfig.shepApi}/subject_headings/${linked}/context?type=relatives`
             })
               .then(
                 (res) => {
@@ -123,6 +117,7 @@ class SubjectHeadingsTableBody extends React.Component {
       container,
       sortBy,
       topLevel,
+      linked
     } = this.props;
 
     const {
@@ -156,6 +151,7 @@ class SubjectHeadingsTableBody extends React.Component {
               location={location}
               container={container}
               sortBy={sortBy}
+              linked={linked}
             />
           )) :
           null

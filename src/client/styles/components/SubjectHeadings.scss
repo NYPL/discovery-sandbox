@@ -391,7 +391,7 @@
 }
 
 .staticDots {
-  margin-left: 20px;
+  margin-left: 40px;
 }
 
 .verticalEllipse {
@@ -446,4 +446,8 @@
   ol {
     margin: 0 auto;
   }
+}
+
+.subjectHeadingLabel.mainLabel {
+  font-style: italic;
 }

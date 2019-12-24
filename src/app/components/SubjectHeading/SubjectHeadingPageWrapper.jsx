@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types';
 import SubjectHeadingShow from './SubjectHeadingShow';
 import SubjectHeadingsContainer from './SubjectHeadingsContainer';
-import SubjectHeadingSearch from './SubjectHeadingSearch';
+import SubjectHeadingSearch from './Search/SubjectHeadingSearch';
 import Breadcrumbs from '../Breadcrumbs/Breadcrumbs';
 // import Store from '../../stores/Store';
 

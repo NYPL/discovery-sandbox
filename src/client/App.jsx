@@ -33,7 +33,7 @@ window.onload = () => {
 
     const appHistory = useScroll(useRouterHistory(createBrowserHistory))();
 
-    ReactDOM.render(
+    ReactDOM.hydrate(
       <Router history={appHistory}>{routes(appHistory).client}</Router>,
       container,
     );

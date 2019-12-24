@@ -21,7 +21,7 @@ class SubjectHeading extends React.Component {
       range,
     } = subjectHeading;
     this.state = {
-      open: !!children,
+      open: !!children || this.isMain(),
       narrower: (children || []),
       sortBy: sortBy || "alphabetical",
       range: range || Range.default(),
@@ -52,6 +52,15 @@ class SubjectHeading extends React.Component {
 
   updateSubjectHeading(properties) {
     this.setState(properties);
+  }
+
+  isMain() {
+    const {
+      subjectHeading: { uuid },
+      location: { pathname },
+      linked,
+    } = this.props;
+    return linked === uuid || pathname.includes(uuid);
   }
 
   toggleOpen() {
@@ -193,7 +202,15 @@ class SubjectHeading extends React.Component {
             </tr>
           : null
         }
-        <tr data={`${subjectHeading.uuid}, ${container}`} className={`subjectHeadingRow ${ (open || children) ? "openSubjectHeading" : ""} ${(indentation || 0) === 0 ? 'topLevel' : ''} ${(indentation || 0) !== 0 ? 'nestedSubjectHeading' : ''}`}>
+        <tr
+          data={`${subjectHeading.uuid}, ${container}`}
+          className={`
+            subjectHeadingRow
+            ${(open || children) ? "openSubjectHeading" : ""}
+            ${(indentation || 0) === 0 ? 'topLevel' : ''}
+            ${(indentation || 0) !== 0 ? 'nestedSubjectHeading' : ''}
+          `}
+        >
           <td className="subjectHeadingsTableCell subjectHeadingLabel" >
             <div className="subjectHeadingLabelInner" style={positionStyle}>
               <div onClick={container !== 'context' ? this.toggleOpen : () => {} } className="subjectHeadingToggle" >{desc_count > 0 ? (!open ? '+' : '-') : ""}</div>
