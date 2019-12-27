@@ -221,8 +221,8 @@ describe('HoldRequest', () => {
 
     it('should display the item title.', () => {
       const item = component.find('.item');
-      expect(item.find('#item-link')).to.have.length(2);
-      expect(item.find('#item-link').at(1).text()).to.equal('Harry Potter');
+      expect(item.find('#item-link').hostNodes()).to.have.length(1);
+      expect(item.find('#item-link').hostNodes().text()).to.equal('Harry Potter');
     });
 
     it('should display the error message for invalid delivery locations.', () => {
