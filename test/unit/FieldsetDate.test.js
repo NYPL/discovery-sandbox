@@ -71,7 +71,7 @@ describe('FieldsetDate', () => {
     // FieldsetDate
     const onDateFilterChange = (filterId, value) => {
       noSelectedFilters[filterId] = value;
-      component.setProps({ noSelectedFilters });
+      component.setProps({ selectedFilters: noSelectedFilters });
     };
 
     // As we use the module 'react-number-format' to build the input fields in FieldsetDate,
