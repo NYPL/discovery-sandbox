@@ -2,6 +2,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
+import { Link } from 'react-router';
+
 import SubjectHeadingsTableBody from './SubjectHeadingsTableBody';
 import SortButton from './SortButton';
 import Range from '../../models/Range';
@@ -29,7 +31,7 @@ class SubjectHeading extends React.Component {
     this.toggleOpen = this.toggleOpen.bind(this);
     this.updateSubjectHeading = this.updateSubjectHeading.bind(this);
     this.addMore = this.addMore.bind(this);
-    this.linkToShow = this.linkToShow.bind(this);
+    this.generateUrl = this.generateUrl.bind(this);
     this.updateSort = this.updateSort.bind(this);
     this.fetchInitial = this.fetchInitial.bind(this);
     this.sortHandler = this.sortHandler.bind(this);
@@ -104,10 +106,9 @@ class SubjectHeading extends React.Component {
     return { emph: components.slice(-1), rest: components.slice(0, -1).join(' -- ') };
   }
 
-  linkToShow(e) {
-    e.preventDefault();
+  generateUrl() {
     let path = this.props.location.pathname.replace(/\/subject_headings.*/, '');
-    this.context.router.push(`${path}/subject_headings/${this.props.subjectHeading.uuid}`)
+    return `${path}/subject_headings/${this.props.subjectHeading.uuid}`
   }
 
   updateSort(sortType) {
@@ -214,9 +215,9 @@ class SubjectHeading extends React.Component {
           <td className="subjectHeadingsTableCell subjectHeadingLabel" >
             <div className="subjectHeadingLabelInner" style={positionStyle}>
               <div onClick={container !== 'context' ? this.toggleOpen : () => {} } className="subjectHeadingToggle" >{desc_count > 0 ? (!open ? '+' : '-') : ""}</div>
-              <a onClick={this.linkToShow}>
+              <Link to={this.generateUrl}>
                 <span className={`emph ${isMain ? 'mainHeading' : ''}`}>{rest === '' ? null : <span className='noEmph'>{`${rest}\u0020--\u00a0`}</span>}{emph}</span>
-              </a>
+              </Link>
             </div>
           </td>
           <td className="subjectHeadingsTableCell subjectHeadingAttribute titles">{`${bib_count}`}</td>

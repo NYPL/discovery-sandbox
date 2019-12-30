@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
+import { Link } from 'react-router';
+
 import SubjectHeadingsTable from './SubjectHeadingsTable';
 import BibsList from './BibsList';
 import ResultsList from '../Results/ResultsList';
@@ -21,10 +23,10 @@ class SubjectHeadingShow extends React.Component {
       },
       shepBibs: [],
       bibs: [],
-      contextLoading: true,
+      contextLoading: true
     };
 
-    this.linkToContext = this.linkToContext.bind(this);
+    this.generateFullContextUrl = this.generateFullContextUrl.bind(this);
     this.hasUuid = this.hasUuid.bind(this);
     this.processContextHeadings = this.processContextHeadings.bind(this);
     this.removeChildrenOffMainPath = this.removeChildrenOffMainPath.bind(this);
@@ -50,7 +52,7 @@ class SubjectHeadingShow extends React.Component {
           },
           contextLoading: false
         });
-        Actions.updateSubjectHeading(res.data.request.main_label);
+        // Actions.updateSubjectHeading(res.data.request.main_label);
       })
       .catch(
         (err) => {
@@ -111,8 +113,7 @@ class SubjectHeadingShow extends React.Component {
     );
   }
 
-  linkToContext(e) {
-    e.preventDefault();
+  generateFullContextUrl(e) {
     const {
       contextHeadings,
     } = this.state;
@@ -120,7 +121,7 @@ class SubjectHeadingShow extends React.Component {
     const topLevelIndex = contextHeadings.findIndex(this.hasUuid);
     const linkLabel = contextHeadings[topLevelIndex && topLevelIndex - 1].label;
     const path = this.props.location.pathname.replace(/\/subject_headings.*/, '');
-    this.context.router.push(`${path}/subject_headings?fromLabel=${linkLabel}&fromComparator=start&linked=${uuid}`)
+    return `${path}/subject_headings?fromLabel=${linkLabel}&fromComparator=start&linked=${uuid}`
   }
 
   // returns true or false depending on whether the heading has a descendant with the given uuid.
@@ -170,18 +171,42 @@ class SubjectHeadingShow extends React.Component {
             <BibsList shepBibs={shepBibs} nextUrl={bibsNextUrl} />
             : null
           }
-          <div className="subjectHeadingRelated subjectHeadingInfoBox">
+          <div
+            className="subjectHeadingRelated subjectHeadingInfoBox"
+            tabIndex='0'
+            aria-label='Related Subject Headings'
+          >
             <div className="backgroundContainer">
               <h4>Related Headings</h4>
             </div>
-            <SubjectHeadingsTable subjectHeadings={relatedHeadings} location={location} keyId="related" container="narrower"/>
+            <SubjectHeadingsTable
+              subjectHeadings={relatedHeadings}
+              location={location}
+              keyId="related"
+              container="narrower"
+            />
           </div>
-          <div className="subjectHeadingContext subjectHeadingInfoBox">
+          <div
+            className="subjectHeadingContext subjectHeadingInfoBox"
+            tabIndex='0'
+            aria-label='Adjacent Subject Headings'
+          >
             <div className="backgroundContainer">
               <h4>Adjacent Headings</h4>
             </div>
-            <SubjectHeadingsTable subjectHeadings={contextHeadings} location={location} showId={uuid} keyId="context" container="context"/>
-            <a onClick={this.linkToContext} className="link toIndex">See full context</a>
+            <SubjectHeadingsTable
+              subjectHeadings={contextHeadings}
+              location={location}
+              showId={uuid}
+              keyId="context"
+              container="context"
+            />
+            <Link
+              to={contextHeadings && contextHeadings.length ? this.generateFullContextUrl() : '#'}
+              className="link toIndex"
+            >
+              See full context
+            </Link>
           </div>
         </div>
       </div>
