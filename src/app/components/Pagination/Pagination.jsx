@@ -14,10 +14,8 @@ class Pagination extends React.Component {
    * @param {string} page The next page to get results from.
    */
   onClick(e, page, type) {
-    if (!this.props.subjectShowPage) {
-      e.preventDefault();
-      this.props.updatePage(page, type);
-    }
+    e.preventDefault();
+    this.props.updatePage(page, type);
   }
 
   /*
@@ -36,7 +34,7 @@ class Pagination extends React.Component {
     let url;
     let apiUrl;
     let localUrl;
-    if (this.props.subjectShowPage) {
+    if (this.props.subjectShowPage && shepNavigation) {
       url = type === 'Next' ? shepNavigation.next : shepNavigation.previous
     } else {
       apiUrl = this.props.createAPIQuery({ page: pageNum });

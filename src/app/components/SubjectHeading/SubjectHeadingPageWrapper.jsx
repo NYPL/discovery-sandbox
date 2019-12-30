@@ -35,7 +35,7 @@ const SubjectHeadingPageWrapper = (props) => {
           <h2>
             { subjectHeadingUuid
               ? subjectHeading
-              : ['Subject Headings ', filter ? <span>containing <em>{filter}</em></span>: '']
+              : ['Subject Headings ', filter ? <span key='bannerText'>containing <em>{filter}</em></span>: '']
             }
           </h2>
         </div>
