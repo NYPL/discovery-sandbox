@@ -52,7 +52,6 @@ class SubjectHeadingShow extends React.Component {
           },
           contextLoading: false
         });
-        // Actions.updateSubjectHeading(res.data.request.main_label);
       })
       .catch(
         (err) => {
