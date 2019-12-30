@@ -51,7 +51,7 @@ class SubjectHeadingShow extends React.Component {
             label: res.data.request.main_label,
           },
           contextLoading: false
-        });
+        }, () => this.props.setBannerText(this.state.mainHeading.label));
       })
       .catch(
         (err) => {
