@@ -8,7 +8,7 @@ import sinon from 'sinon';
 
 import ResultsCount from '../../src/app/components/ResultsCount/ResultsCount';
 
-Enzyme.configure({ adapter: new Adapter() });
+import testHelper from './testHelper';
 const filters = {
   subjectLiteral: {
     owner: [{}],

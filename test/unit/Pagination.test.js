@@ -9,8 +9,8 @@ import Pagination from '../../src/app/components/Pagination/Pagination';
 // The Pagination component displays the items currently being displayed. If there are more
 // than 50 items then the "next" link gets rendered. If the page prop is greater than 1,
 // the "previous" link gets rendered.
-Enzyme.configure({ adapter: new Adapter() });
-describe.only('Pagination', () => {
+import testHelper from './testHelper';
+describe('Pagination', () => {
   describe('Default component', () => {
     let component;
 

@@ -8,7 +8,7 @@ import config from '../../appConfig';
 
 import NotFound404 from '../../src/app/components/NotFound404/NotFound404';
 
-Enzyme.configure({ adapter: new Adapter() });
+import testHelper from './testHelper';
 describe('NotFound404', () => {
   let component;
 
