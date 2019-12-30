@@ -41,7 +41,8 @@ class Pagination extends React.Component {
 
     return (
       <Link
-        to={url}
+        {/* the below should be changed once refactored for SHEP */}
+        to={url || '#'}
         rel={type.toLowerCase()}
         className={`${type.toLowerCase()}-link`}
         aria-controls={this.props.ariaControls}
