@@ -14,8 +14,10 @@ class Pagination extends React.Component {
    * @param {string} page The next page to get results from.
    */
   onClick(e, page, type) {
-    e.preventDefault();
-    this.props.updatePage(page, type);
+    if (!this.props.subjectShowPage) {
+      e.preventDefault();
+      this.props.updatePage(page, type);
+    }
   }
 
   /*
@@ -29,19 +31,24 @@ class Pagination extends React.Component {
     const intPage = parseInt(page, 10);
     const pageNum = type === 'Next' ? intPage + 1 : intPage - 1;
     const svg = type === 'Next' ? <RightWedgeIcon /> : <LeftWedgeIcon />;
+    const { shepNavigation } = this.props
+
     let url;
     let apiUrl;
     let localUrl;
-    if (!this.props.subjectShowPage) {
+    if (this.props.subjectShowPage) {
+      url = type === 'Next' ? shepNavigation.next : shepNavigation.previous
+    } else {
       apiUrl = this.props.createAPIQuery({ page: pageNum });
       localUrl = `${this.props.to.pathname}${pageNum}`;
       url = apiUrl ?
-        { pathname: `${appConfig.baseUrl}/search?${apiUrl}` } : { pathname: localUrl };
+      { pathname: `${appConfig.baseUrl}/search?${apiUrl}` }
+      : { pathname: localUrl };
     }
 
     return (
       <Link
-        to={url || '#'}
+        to={url}
         rel={type.toLowerCase()}
         className={`${type.toLowerCase()}-link`}
         aria-controls={this.props.ariaControls}
