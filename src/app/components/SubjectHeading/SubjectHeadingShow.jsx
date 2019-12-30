@@ -34,13 +34,7 @@ class SubjectHeadingShow extends React.Component {
     let { uuid } = this.state.mainHeading
 
     axios({
-      method: 'GET',
-      url: `${appConfig.shepApi}/subject_headings/${uuid}/context`,
-      crossDomain: true,
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Content-Type': 'application/json',
-      },
+      url: `${appConfig.baseUrl}/api/subjectHeadings/subject_headings/${uuid}/context`,
     })
       .then((res) => {
         this.setState({
@@ -60,13 +54,7 @@ class SubjectHeadingShow extends React.Component {
       );
 
     axios({
-      method: 'GET',
-      url: `${appConfig.shepApi}/subject_headings/${uuid}/bibs`,
-      crossDomain: true,
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Content-Type': 'application/json',
-      },
+      url: `${appConfig.baseUrl}/api/subjectHeadings/subject_headings/${uuid}/bibs`,
     })
       .then((res) => {
         this.setState({
@@ -82,13 +70,7 @@ class SubjectHeadingShow extends React.Component {
       );
 
     axios({
-      method: 'GET',
-      url: `${appConfig.shepApi}/subject_headings/${uuid}/related`,
-      crossDomain: true,
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Content-Type': 'application/json',
-      },
+      url: `${appConfig.baseUrl}/api/subjectHeadings/subject_headings/${uuid}/related`,
     })
       .then((res) => {
         this.setState({
