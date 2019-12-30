@@ -8,7 +8,7 @@ import Adapter from 'enzyme-adapter-react-16';
 import BibDetails from './../../src/app/components/BibPage/BibDetails';
 import DefinitionList from './../../src/app/components/BibPage/DefinitionList';
 
-Enzyme.configure({ adapter: new Adapter() });
+import testHelper from './testHelper';
 const bibs = [
   {
     '@type': ['nypl:Item', 'nypl:Resource'],

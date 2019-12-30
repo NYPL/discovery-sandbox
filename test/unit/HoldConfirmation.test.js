@@ -10,7 +10,7 @@ import HoldConfirmation from './../../src/app/components/HoldConfirmation/HoldCo
 import Actions from './../../src/app/actions/Actions';
 import appConfig from '../../appConfig';
 
-Enzyme.configure({ adapter: new Adapter() });
+import testHelper from './testHelper';
 describe('HoldConfirmation', () => {
   describe('After being rendered, <HoldConfirmation>', () => {
     let component;

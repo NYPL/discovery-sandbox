@@ -6,7 +6,7 @@ import Adapter from 'enzyme-adapter-react-16';
 
 import ItemHoldings from './../../src/app/components/Item/ItemHoldings';
 
-Enzyme.configure({ adapter: new Adapter() });
+import testHelper from './testHelper';
 const items = [
   {
     accessMessage: {

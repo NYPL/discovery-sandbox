@@ -10,7 +10,7 @@ import axios from 'axios';
 import HoldRequest from './../../src/app/components/HoldRequest/HoldRequest';
 import Actions from './../../src/app/actions/Actions';
 
-Enzyme.configure({ adapter: new Adapter() });
+import testHelper from './testHelper';
 const mockedItems = [
   {
     "@id": "res:i10000003",

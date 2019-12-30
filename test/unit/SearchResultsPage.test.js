@@ -8,7 +8,7 @@ import SearchResultsPage from '../../src/app/components/SearchResultsPage/Search
 
 
 // Eventually, it would be nice to have mocked data in a different file and imported.
-Enzyme.configure({ adapter: new Adapter() });
+import testHelper from './testHelper';
 const searchResults = {
   '@context': 'http://api.data.nypl.org/api/v1/context_all.jsonld',
   '@type': 'itemList',

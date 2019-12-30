@@ -6,7 +6,7 @@ import Adapter from 'enzyme-adapter-react-16';
 
 import Home from '../../src/app/components/Home/Home';
 
-Enzyme.configure({ adapter: new Adapter() });
+import testHelper from './testHelper';
 describe('Home', () => {
   let component;
 

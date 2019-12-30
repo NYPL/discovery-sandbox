@@ -7,7 +7,7 @@ import Adapter from 'enzyme-adapter-react-16';
 
 import FieldsetList from '../../src/app/components/Filters/FieldsetList';
 
-Enzyme.configure({ adapter: new Adapter() });
+import testHelper from './testHelper';
 const listItemAt = (component, n) => component.find('li').at(n);
 
 describe('FilterPopup', () => {

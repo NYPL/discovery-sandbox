@@ -6,7 +6,7 @@ import Adapter from 'enzyme-adapter-react-16';
 
 import SearchButton from './../../src/app/components/Buttons/SearchButton';
 
-Enzyme.configure({ adapter: new Adapter() });
+import testHelper from './testHelper';
 describe('SearchButton', () => {
   describe('Default props', () => {
     let component;

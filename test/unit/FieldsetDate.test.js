@@ -6,7 +6,7 @@ import Adapter from 'enzyme-adapter-react-16';
 
 import FieldsetDate from '../../src/app/components/Filters/FieldsetDate';
 
-Enzyme.configure({ adapter: new Adapter() });
+import testHelper from './testHelper';
 describe('FieldsetDate', () => {
   describe('Default', () => {
     let component;
