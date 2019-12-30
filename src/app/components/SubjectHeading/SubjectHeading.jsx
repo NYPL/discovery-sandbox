@@ -189,6 +189,31 @@ class SubjectHeading extends React.Component {
       rest,
     } = this.addEmphasis(label);
 
+    const handleEnter = (e) => {
+
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        this.toggleOpen()
+      }
+    }
+
+    const toggle = () => {
+      const innerText = desc_count > 0 ? (!open ? '+' : '-') : "";
+      const props = {};
+
+      props.onClick = container !== 'context' ? this.toggleOpen : () => {}
+      props.className = "subjectHeadingToggle"
+
+      if (desc_count > 0) {
+        props.tabIndex = '0'
+        props.onKeyDown = (event) => handleEnter(event);
+      }
+
+      const element = React.createElement('div', props, innerText)
+
+      return element
+  }
+
     const positionStyle = { marginLeft: 30 * ((indentation || 0) + 1) };
     const isMain = location.pathname.includes(uuid);
     // changes to HTML structure here will need to be replicated in ./SubjectHeadingTableHeader
@@ -214,7 +239,7 @@ class SubjectHeading extends React.Component {
         >
           <td className="subjectHeadingsTableCell subjectHeadingLabel" >
             <div className="subjectHeadingLabelInner" style={positionStyle}>
-              <div onClick={container !== 'context' ? this.toggleOpen : () => {} } className="subjectHeadingToggle" >{desc_count > 0 ? (!open ? '+' : '-') : ""}</div>
+              { toggle() }
               <Link to={this.generateUrl}>
                 <span className={`emph ${isMain ? 'mainHeading' : ''}`}>{rest === '' ? null : <span className='noEmph'>{`${rest}\u0020--\u00a0`}</span>}{emph}</span>
               </Link>
