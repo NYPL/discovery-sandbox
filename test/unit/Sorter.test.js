@@ -12,7 +12,7 @@ import { basicQuery } from '../../src/app/utils/utils';
 import Sorter from '../../src/app/components/Sorter/Sorter';
 import appConfig from '../../appConfig';
 
-import testHelper from './testHelper';
+Enzyme.configure({ adapter: new Adapter() });
 describe('Sorter', () => {
   describe('Default - no javascript', () => {
     // Since this is a shallow render, the component itself is not mounted. The `js` flag

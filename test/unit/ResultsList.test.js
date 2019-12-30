@@ -10,7 +10,7 @@ import sinon from 'sinon';
 
 import ResultsList from '../../src/app/components/Results/ResultsList';
 
-import testHelper from './testHelper';
+Enzyme.configure({ adapter: new Adapter() });
 const results = [{}, {}, {}];
 const singleBibNoTitleDisplay = {
   result: {

@@ -12,7 +12,7 @@ import { basicQuery } from '../../src/app/utils/utils';
 import appConfig from '../../appConfig';
 import store from '../../src/app/stores/Store';
 
-import testHelper from './testHelper';
+Enzyme.configure({ adapter: new Adapter() });
 describe('Search', () => {
   describe('Default render', () => {
     let component;

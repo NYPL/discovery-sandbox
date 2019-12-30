@@ -9,7 +9,7 @@ import AdditionalDetailsViewer from './../../src/app/components/BibPage/Addition
 import Tabbed from './../../src/app/components/BibPage/Tabbed';
 import sinon from 'sinon';
 
-import testHelper from './testHelper';
+Enzyme.configure({ adapter: new Adapter() });
 describe('Tabbed', () => {
   const sampleBib =
   {

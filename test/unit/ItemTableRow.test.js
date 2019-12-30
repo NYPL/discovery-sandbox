@@ -7,7 +7,7 @@ import Adapter from 'enzyme-adapter-react-16';
 // Import the component that is going to be tested
 import ItemTableRow from './../../src/app/components/Item/ItemTableRow';
 
-import testHelper from './testHelper';
+Enzyme.configure({ adapter: new Adapter() });
 const item = {
   full: {
     accessMessage: {

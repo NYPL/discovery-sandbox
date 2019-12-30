@@ -3,7 +3,7 @@ import { expect } from 'chai';
 import Enzyme, { shallow, mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 
-import testHelper from './testHelper';
+Enzyme.configure({ adapter: new Adapter() });
 // Import the component that is going to be tested
 import AdditionalDetailsViewer from './../../src/app/components/BibPage/AdditionalDetailsViewer';
 

@@ -7,7 +7,7 @@ import Adapter from 'enzyme-adapter-react-16';
 
 import FilterPopup from '../../src/app/components/FilterPopup/FilterPopup';
 
-import testHelper from './testHelper';
+Enzyme.configure({ adapter: new Adapter() });
 describe('FilterPopup', () => {
   describe('Default - no javascript', () => {
     // Since this is a shallow render, the component itself is not mounted. The `js` flag

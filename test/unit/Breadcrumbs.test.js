@@ -8,7 +8,7 @@ import Adapter from 'enzyme-adapter-react-16';
 import Breadcrumbs from './../../src/app/components/Breadcrumbs/Breadcrumbs';
 import appConfig from '../../appConfig';
 
-import testHelper from './testHelper';
+Enzyme.configure({ adapter: new Adapter() });
 
 const appTitle = appConfig.displayTitle;
 const baseUrl = `${appConfig.baseUrl}/`;

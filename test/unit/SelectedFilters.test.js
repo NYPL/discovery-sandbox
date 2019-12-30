@@ -9,7 +9,7 @@ import SelectedFilters from '../../src/app/components/Filters/SelectedFilters';
 
 const listItemAt = (component, n) => component.find('li').at(n);
 
-import testHelper from './testHelper';
+Enzyme.configure({ adapter: new Adapter() });
 describe('SelectedFilters', () => {
   describe('Default', () => {
     it('should not render a div', () => {
