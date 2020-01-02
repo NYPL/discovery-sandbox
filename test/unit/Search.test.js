@@ -3,13 +3,16 @@ import axios from 'axios';
 import React from 'react';
 import MockAdapter from 'axios-mock-adapter';
 import { expect } from 'chai';
-import { mount } from 'enzyme';
+import Enzyme, { mount } from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
+
 import sinon from 'sinon';
 import Search from '../../src/app/components/Search/Search';
 import { basicQuery } from '../../src/app/utils/utils';
 import appConfig from '../../appConfig';
 import store from '../../src/app/stores/Store';
 
+Enzyme.configure({ adapter: new Adapter() });
 describe('Search', () => {
   describe('Default render', () => {
     let component;
@@ -105,7 +108,7 @@ describe('Search', () => {
       // the event, which may have been trashed by the time we read it), we
       // need to both set the node value directly and then also simulate a
       // 'change' event to trigger the handler:
-      component.find('select').node.value = 'title';
+      component.find('select').getDOMNode().value = 'title';
       component.find('select').simulate('change');
 
       expect(onFieldChangeSpy.callCount).to.equal(1);

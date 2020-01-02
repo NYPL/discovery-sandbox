@@ -1,8 +1,8 @@
-import React from 'react'
+import React, { useState } from 'react'
 import PropTypes from 'prop-types';
 import SubjectHeadingShow from './SubjectHeadingShow';
 import SubjectHeadingsContainer from './SubjectHeadingsContainer';
-import SubjectHeadingSearch from './SubjectHeadingSearch';
+import SubjectHeadingSearch from './Search/SubjectHeadingSearch';
 import Breadcrumbs from '../Breadcrumbs/Breadcrumbs';
 // import Store from '../../stores/Store';
 
@@ -14,16 +14,16 @@ const SubjectHeadingPageWrapper = (props) => {
         filter,
       },
     },
-    subjectHeading,
     params: {
       subjectHeadingUuid,
     }
   } = props;
 
-  // console.log('uuid', props.params.subjectHeadingUuid);
   const containerKey = Object.keys(query)
     .map(key => `${key}=${query[key]}`)
     .join('&');
+
+  const [label, setLabel] = useState('');
 
   return (
     <div>
@@ -35,14 +35,18 @@ const SubjectHeadingPageWrapper = (props) => {
         <div className="subjectHeadingsBannerInner">
           <h2>
             { subjectHeadingUuid
-              ? subjectHeading
-              : ['Subject Headings ', filter ? <span>containing <em>{filter}</em></span>: '']
+              ? label
+              : ['Subject Headings ', filter ? <span key='bannerText'>containing <em>{filter}</em></span>: '']
             }
           </h2>
         </div>
       </div>
       {subjectHeadingUuid ?
-        <SubjectHeadingShow {...props} key={subjectHeadingUuid} />
+        <SubjectHeadingShow
+          {...props}
+          key={subjectHeadingUuid}
+          setBannerText={setLabel}
+        />
         :
         <SubjectHeadingsContainer {...props} key={containerKey} />
       }

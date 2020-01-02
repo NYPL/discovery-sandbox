@@ -2,13 +2,15 @@
 import React from 'react';
 import sinon from 'sinon';
 import { expect } from 'chai';
-import { mount } from 'enzyme';
+import Enzyme, { mount } from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
 
 // Import the component that is going to be tested
 import HoldConfirmation from './../../src/app/components/HoldConfirmation/HoldConfirmation';
 import Actions from './../../src/app/actions/Actions';
 import appConfig from '../../appConfig';
 
+Enzyme.configure({ adapter: new Adapter() });
 describe('HoldConfirmation', () => {
   describe('After being rendered, <HoldConfirmation>', () => {
     let component;
@@ -212,22 +214,20 @@ describe('HoldConfirmation', () => {
 
     it('should deliver the item\'s title on the page.', () => {
       const main = component.find('main');
-
-      expect(main.find('#item-link')).to.have.length(1);
-      expect(main.find('#item-link').text()).to.equal('Harry Potter');
+      expect(main.find('#item-link')).to.have.length(2);
+      expect(main.find('#item-link').at(1).text()).to.equal('Harry Potter');
     });
 
     it('should have the link back to homepage.', () => {
       const main = component.find('main');
-
-      expect(main.find('#start-new-search')).to.have.length(1);
-      expect(main.find('#start-new-search').text()).to.equal('Start a new search');
+      expect(main.find('#start-new-search')).to.have.length(2);
+      expect(main.find('#start-new-search').at(1).text()).to.equal('Start a new search');
     });
 
     it('should call the React Router context when the link to the homepage is clicked.', () => {
       const main = component.find('main');
 
-      main.find('#start-new-search').simulate('click');
+      main.find('#start-new-search').at(1).simulate('click');
       expect(pushSpy.callCount).to.equal(1);
       expect(pushSpy.calledWith(`${appConfig.baseUrl}/`)).to.equal(true);
     });
@@ -482,8 +482,8 @@ describe('HoldConfirmation', () => {
     it('should have the link back to search result.', () => {
       const main = component.find('main');
 
-      expect(main.find('#start-new-search')).to.have.length(1);
-      expect(main.find('#start-new-search').text()).to.equal('Start a new search');
+      expect(main.find('#start-new-search')).to.have.length(2);
+      expect(main.find('#start-new-search').at(1).text()).to.equal('Start a new search');
       expect(main.find('#go-back-search-results')).to.have.length(0);
     });
   });
@@ -519,17 +519,16 @@ describe('HoldConfirmation', () => {
     it('should have the link back to search result.', () => {
       const main = component.find('main');
 
-      expect(main.find('#start-new-search')).to.have.length(1);
-      expect(main.find('#start-new-search').text()).to.equal('start a new search');
-      expect(main.find('#go-back-search-results')).to.have.length(1);
-      expect(main.find('#go-back-search-results').text())
+      expect(main.find('#start-new-search')).to.have.length(2);
+      expect(main.find('#start-new-search').at(1).text()).to.equal('start a new search');
+      expect(main.find('#go-back-search-results')).to.have.length(2);
+      expect(main.find('#go-back-search-results').at(1).text())
         .to.equal('Go back to your search results');
     });
 
     it('should call the React Router context with the link back to the search results', () => {
       const main = component.find('main');
-
-      main.find('#go-back-search-results').simulate('click');
+      main.find('#go-back-search-results').at(1).simulate('click');
       expect(pushSpy.callCount).to.equal(1);
       expect(pushSpy.calledWith(`${appConfig.baseUrl}/search?q=Bryant`)).to.equal(true);
     });
@@ -570,7 +569,7 @@ describe('HoldConfirmation', () => {
     it('should have the link to shared collection catalog.', () => {
       const main = component.find('main');
 
-      expect(main.find('#start-new-search').text()).to.equal('start a new search');
+      expect(main.find('#start-new-search').at(1).text()).to.equal('start a new search');
     });
   });
 
@@ -634,6 +633,7 @@ describe('HoldConfirmation', () => {
       const location = { query: { errorStatus: 'eligibility', errorMessage: '{"expired":true,"blocked":true,"moneyOwed":true}' } };
       const component = mount(<HoldConfirmation location={location} />, { attachTo: document.body });
       const text = component.text();
+      component.unmount()
       expect(text.includes('Your account has expired')).to.equal(true);
       expect(text.includes('There is a problem with your library account')).to.equal(true);
       expect(text.includes('Your fines have exceeded the limit')).to.equal(true);
@@ -642,6 +642,7 @@ describe('HoldConfirmation', () => {
       const location = { query: { errorStatus: 'eligibility', errorMessage: '{}' } };
       const component = mount(<HoldConfirmation location={location} />, { attachTo: document.body });
       const text = component.text();
+      component.unmount()
       expect(text.includes('There is a problem with your library account.')).to.equal(true);
     });
   });

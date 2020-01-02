@@ -8,7 +8,7 @@ import AdditionalSubjectHeadingsButton from './AdditionalSubjectHeadingsButton';
 import Range from '../../models/Range';
 import appConfig from '../../../../appConfig';
 
-class SubjectHeadingsList extends React.Component {
+class SubjectHeadingsTableBody extends React.Component {
   constructor(props) {
     super(props);
     const {
@@ -42,13 +42,7 @@ class SubjectHeadingsList extends React.Component {
           const { linked } = this.props;
           if (linked) {
             axios({
-              method: 'GET',
-              url: `${appConfig.shepApi}/subject_headings/${linked}/context?type=relatives`,
-              crossDomain: true,
-              headers: {
-                'Access-Control-Allow-Origin': '*',
-                'Content-Type': 'application/json',
-              },
+              url: `${appConfig.shepApi}/subject_headings/${linked}/context?type=relatives`
             })
               .then(
                 (res) => {
@@ -122,20 +116,24 @@ class SubjectHeadingsList extends React.Component {
       location,
       container,
       sortBy,
+      topLevel,
+      linked
     } = this.props;
 
     const {
       subjectHeadings,
       interactive,
     } = this.state;
+    // className={nested ? 'subjectHeadingList nestedSubjectHeadingList' : 'subjectHeadingList'}
 
     return (
-      <ul className={nested ? 'subjectHeadingList nestedSubjectHeadingList' : 'subjectHeadingList'}>
+      <React.Fragment>
         {
           subjectHeadings ?
           this.listItemsInRange(subjectHeadings)
           .map((listItem, index) => (listItem.button ?
             // A listItem will either be a subject heading or a place holder for a button
+            // null
             <AdditionalSubjectHeadingsButton
               indentation={listItem.indentation}
               button={listItem.button}
@@ -153,16 +151,17 @@ class SubjectHeadingsList extends React.Component {
               location={location}
               container={container}
               sortBy={sortBy}
+              linked={linked}
             />
           )) :
           null
         }
-      </ul>
+      </React.Fragment>
     );
   }
 }
 
-SubjectHeadingsList.propTypes = {
+SubjectHeadingsTableBody.propTypes = {
   nested: PropTypes.string,
   subjectHeadings: PropTypes.array,
   indentation: PropTypes.number,
@@ -171,4 +170,4 @@ SubjectHeadingsList.propTypes = {
   sortBy: PropTypes.string,
 };
 
-export default SubjectHeadingsList;
+export default SubjectHeadingsTableBody;

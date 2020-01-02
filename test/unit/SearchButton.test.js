@@ -1,10 +1,12 @@
 /* eslint-env mocha */
 import React from 'react';
 import { expect } from 'chai';
-import { shallow } from 'enzyme';
+import Enzyme, { shallow } from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
 
 import SearchButton from './../../src/app/components/Buttons/SearchButton';
 
+Enzyme.configure({ adapter: new Adapter() });
 describe('SearchButton', () => {
   describe('Default props', () => {
     let component;

@@ -1,11 +1,14 @@
 /* eslint-env mocha */
 import React from 'react';
 import { expect } from 'chai';
-import { shallow } from 'enzyme';
+import Enzyme, { shallow } from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
+
 import config from '../../appConfig';
 
 import NotFound404 from '../../src/app/components/NotFound404/NotFound404';
 
+Enzyme.configure({ adapter: new Adapter() });
 describe('NotFound404', () => {
   let component;
 

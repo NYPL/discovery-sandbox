@@ -1,11 +1,14 @@
 /* eslint-env mocha */
 import React from 'react';
 import { expect } from 'chai';
-import { mount } from 'enzyme';
+import Enzyme, { mount } from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
+
 import SearchResultsPage from '../../src/app/components/SearchResultsPage/SearchResultsPage';
 
 
 // Eventually, it would be nice to have mocked data in a different file and imported.
+Enzyme.configure({ adapter: new Adapter() });
 const searchResults = {
   '@context': 'http://api.data.nypl.org/api/v1/context_all.jsonld',
   '@type': 'itemList',
@@ -36,6 +39,10 @@ describe('SearchResultsPage', () => {
         />,
         { attachTo: document.body }
       );
+    });
+
+    after(() => {
+      component.unmount();
     });
 
     it('should be wrapped in a .main-page', () => {
@@ -87,6 +94,10 @@ describe('SearchResultsPage', () => {
       );
     });
 
+    after(() => {
+      component.unmount();
+    });
+
     it('should have search results', () => {
       // searchResults is the mocked object found in the beginning of the file.
       expect(component.props().searchResults).to.eql(searchResults);
@@ -121,6 +132,10 @@ describe('SearchResultsPage', () => {
         />,
         { attachTo: document.body }
       );
+    });
+
+    after(() => {
+      component.unmount();
     });
 
     it('should an h1 with "Search Results"', () => {

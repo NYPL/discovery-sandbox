@@ -1,17 +1,20 @@
 /* eslint-env mocha */
 import React from 'react';
 import { expect } from 'chai';
-import { shallow, mount } from 'enzyme';
+import Enzyme, { shallow, mount } from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
+
 
 import FilterPopup from '../../src/app/components/FilterPopup/FilterPopup';
 
+Enzyme.configure({ adapter: new Adapter() });
 describe('FilterPopup', () => {
   describe('Default - no javascript', () => {
     // Since this is a shallow render, the component itself is not mounted. The `js` flag
     // becomes true when the component is mounted on the client-side so we know that
     // javascript is enabled.
     it('should not render an open button but an <a> instead', () => {
-      const component = shallow(<FilterPopup totalResults={1} />);
+      const component = shallow(<FilterPopup totalResults={1} />, { disableLifecycleMethods: true });
 
       expect(component.state('js')).to.equal(false);
       // These tests will need to be updated when the DOM structure gets updated.
@@ -21,7 +24,7 @@ describe('FilterPopup', () => {
     });
 
     it('should not have specific "no-js" id and class', () => {
-      const component = shallow(<FilterPopup />);
+      const component = shallow(<FilterPopup />, { disableLifecycleMethods: true });
 
       expect(component.state('js')).to.equal(false);
       expect(component.find('#popup-no-js').length).to.equal(0);
@@ -29,7 +32,7 @@ describe('FilterPopup', () => {
     });
 
     it('should have specific "no-js" id and class', () => {
-      const component = shallow(<FilterPopup />);
+      const component = shallow(<FilterPopup />, { disableLifecycleMethods: true });
       component.setState({ showForm: true });
 
       expect(component.state('js')).to.equal(false);
@@ -207,10 +210,6 @@ describe('FilterPopup', () => {
     });
 
     afterEach(() => {
-      component.unmount();
-    });
-
-    after(() => {
       component.unmount();
     });
 
