@@ -5,7 +5,11 @@ import appConfig from '../../../../appConfig';
 
 const Preview = (props) => {
   const { topHeadings } = props;
-  const groupedHeadings = [[topHeadings[0], topHeadings[2]], [topHeadings[1], topHeadings[3]]];
+  const groupedHeadings = [[topHeadings[0]], [topHeadings[1]]];
+
+  if (topHeadings[2]) groupedHeadings[0].push(topHeadings[2]);
+  if (topHeadings[3]) groupedHeadings[1].push(topHeadings[3]);
+
   return (
     <tr className="preview subjectHeadingRow">
       <td colSpan="4">
@@ -13,7 +17,7 @@ const Preview = (props) => {
           <em>Most common subheadings:</em>
           <div className="previewInner">
             <ul className="previewUl">
-              {groupedHeadings.map(headings => <PreviewCol col={headings} />)}
+              {groupedHeadings.map((headings, i) => <PreviewColumn key={i} column={headings} />)}
             </ul>
           </div>
         </div>
@@ -22,12 +26,12 @@ const Preview = (props) => {
   );
 };
 
-const PreviewCol = (props) => {
-  const { col } = props;
+const PreviewColumn = (props) => {
+  const { column } = props;
   return (
     <li>
-      <ul className="previewCol">
-        {col.map(heading => <PreviewItem heading={heading} key={heading.uuid} />)}
+      <ul className="previewColumn">
+        {column.map(heading => <PreviewItem heading={heading} key={heading.uuid} />)}
       </ul>
     </li>
   );
