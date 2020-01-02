@@ -30,11 +30,12 @@ class Pagination extends React.Component {
     const pageNum = type === 'Next' ? intPage + 1 : intPage - 1;
     const svg = type === 'Next' ? <RightWedgeIcon /> : <LeftWedgeIcon />;
     const { shepNavigation } = this.props
+    const subjectHeadingPage = this.props.subjectShowPage
 
     let url;
     let apiUrl;
     let localUrl;
-    if (this.props.subjectShowPage && shepNavigation) {
+    if (subjectHeadingPage && shepNavigation) {
       url = type === 'Next' ? shepNavigation.next : shepNavigation.previous
     } else {
       apiUrl = this.props.createAPIQuery({ page: pageNum });
@@ -44,13 +45,17 @@ class Pagination extends React.Component {
       : { pathname: localUrl };
     }
 
+    const linkProps = {}
+    linkProps.to = url
+    linkProps.rel = type.toLowerCase()
+    linkProps.className = `${type.toLowerCase()}-link`
+    linkProps.ariaControls = this.props.ariaControls
+
+    if (!subjectHeadingPage) linkProps.onClick = e => this.onClick(e, pageNum, type)
+
     return (
       <Link
-        to={url}
-        rel={type.toLowerCase()}
-        className={`${type.toLowerCase()}-link`}
-        aria-controls={this.props.ariaControls}
-        onClick={e => this.onClick(e, pageNum, type)}
+        {...linkProps}
       >
         {svg} {type}
       </Link>
