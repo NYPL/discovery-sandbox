@@ -108,7 +108,7 @@ describe('Search', () => {
       // the event, which may have been trashed by the time we read it), we
       // need to both set the node value directly and then also simulate a
       // 'change' event to trigger the handler:
-      component.find('select').node.value = 'title';
+      component.find('select').getDOMNode().value = 'title';
       component.find('select').simulate('change');
 
       expect(onFieldChangeSpy.callCount).to.equal(1);

@@ -19,7 +19,7 @@ describe('Sorter', () => {
     // becomes true when the component is mounted on the client-side so we know that
     // javascript is enabled.
     it('should not render an input submit element', () => {
-      const component = shallow(<Sorter />);
+      const component = shallow(<Sorter />, { disableLifecycleMethods: true });
 
       expect(component.state('js')).to.equal(false);
       expect(component.find('input').length).to.equal(1);

@@ -77,7 +77,7 @@ class BibPage extends React.Component {
       { label: 'Uniform Title', value: 'uniformTitle' },
       { label: 'Alternative Title', value: 'titleAlt' },
       { label: 'Former Title', value: 'formerTitle' },
-      { label: 'Subject', value: 'subjectLiteral', linkable: true },
+      { label: 'Subject', value: 'subjectHeadingData'},
       { label: 'Genre/Form', value: 'genreForm' },
       { label: 'Notes', value: 'React Component' },
       { label: 'Contents', value: 'tableOfContents' },
@@ -104,7 +104,7 @@ class BibPage extends React.Component {
     // Related to removing MarcRecord because the webpack MarcRecord is not working. Sep/28/2017
     // const marcRecord = isNYPLReCAP ? <MarcRecord bNumber={bNumber[0]} /> : null;
 
-    const bibDetails = (<BibDetails
+    const bottomDetails = (<BibDetails
       bib={bib}
       fields={bottomFields}
       electronicResources={aggregatedElectronicResources}
@@ -115,16 +115,11 @@ class BibPage extends React.Component {
 
 
     const otherLibraries = ['Princeton University Library', 'Columbia University Libraries'];
-    const tabs = otherLibraries.includes(getOwner(bib)) ? [{title: 'Details', content: bibDetails}] : [{title: 'Details', content: bibDetails}, {title: 'Full Description', content: additionalDetails}];
+    const tabs = otherLibraries.includes(getOwner(bib)) ? [{title: 'Details', content: bottomDetails}] : [{title: 'Details', content: bottomDetails}, {title: 'Full Description', content: additionalDetails}];
 
     const tabItems = (index) => {
       if (index === 0) {
-        return (<BibDetails
-          bib={bib}
-          fields={bottomFields}
-          electronicResources={aggregatedElectronicResources}
-          updateIsLoadingState={this.updateIsLoadingState}
-        />)
+        return (bottomDetails)
       } else {
         return (<AdditionalDetailsViewer bib={bib}/>)
       }

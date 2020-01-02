@@ -71,8 +71,7 @@ describe('FieldsetDate', () => {
     // FieldsetDate
     const onDateFilterChange = (filterId, value) => {
       noSelectedFilters[filterId] = value;
-
-      return noSelectedFilters;
+      component.setProps({ noSelectedFilters });
     };
 
     // As we use the module 'react-number-format' to build the input fields in FieldsetDate,
@@ -109,7 +108,6 @@ describe('FieldsetDate', () => {
 
       startYearInput.simulate('change', getCustomEvent(2001, 'dateAfter'));
       component.update();
-
       expect(component.state('dateAfter')).to.equal('2001');
     });
 
@@ -118,7 +116,6 @@ describe('FieldsetDate', () => {
 
       endYearInput.simulate('change', getCustomEvent(2100, 'dateBefore'));
       component.update();
-
       expect(component.state('dateBefore')).to.equal('2100');
     });
   });

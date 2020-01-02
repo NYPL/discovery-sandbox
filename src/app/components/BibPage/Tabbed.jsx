@@ -110,7 +110,7 @@ class Tabbed extends React.Component {
           }
           <section
             className='default'
-            tabIndex={!this.state.tabNumber ?  '0' : '0'}
+            tabIndex='0'
             ref={(input) => {this.default = input;}}
             aria-labelledby={'link1'}
           >

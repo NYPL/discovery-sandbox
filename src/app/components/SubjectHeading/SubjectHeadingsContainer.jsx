@@ -3,9 +3,10 @@ import React from 'react';
 import { Link } from 'react-router';
 import PropTypes from 'prop-types';
 import axios from 'axios';
-import SubjectHeadingsList from './SubjectHeadingsList';
-import SubjectHeadingTableHeader from './SubjectHeadingTableHeader'
-import SubjectHeadingSearch from './SubjectHeadingSearch'
+import SubjectHeadingsTable from './SubjectHeadingsTable'
+// import SubjectHeadingsList from './SubjectHeadingsList';
+import SubjectHeadingsTableHeader from './SubjectHeadingsTableHeader'
+import SubjectHeadingSearch from './Search/SubjectHeadingSearch'
 import SortButton from './SortButton';
 import appConfig from '../../../../appConfig';
 import LoadingLayer from '../LoadingLayer/LoadingLayer';
@@ -22,7 +23,7 @@ class SubjectHeadingsContainer extends React.Component {
     this.pagination = this.pagination.bind(this);
     this.redirectTo = this.redirectTo.bind(this);
     this.updateSort = this.updateSort.bind(this);
-    this.updatePage = this.updatePage.bind(this);
+    this.navigationLinks = this.navigationLinks.bind(this);
   }
 
   componentDidMount() {
@@ -127,25 +128,22 @@ class SubjectHeadingsContainer extends React.Component {
     }
   }
 
-  updatePage(page, type) {
+  navigationLinks() {
     const {
       previousUrl,
       nextUrl,
     } = this.state;
     const urlForPrevious = this.convertApiUrlToFrontendUrl(previousUrl);
     const urlForNext = this.convertApiUrlToFrontendUrl(nextUrl);
-    if (type === 'Previous') {
-      this.context.router.push(urlForPrevious);
-    } else {
-      this.context.router.push(urlForNext);
-    }
+
+    return { previous: urlForPrevious, next: urlForNext }
   }
 
   pagination() {
     return (
       <Pagination
         page={2}
-        updatePage={this.updatePage}
+        shepNavigation={this.navigationLinks()}
         subjectShowPage
       />
     );
@@ -154,7 +152,9 @@ class SubjectHeadingsContainer extends React.Component {
   render() {
     const { error, subjectHeadings, loading } = this.state;
     const location = this.props.location;
-    const { linked, sortBy, filter } = this.props.location.query;
+    let { linked, sortBy, filter } = this.props.location.query;
+
+    if (!linked) linked = '';
 
     if (error) {
       return (
@@ -163,6 +163,12 @@ class SubjectHeadingsContainer extends React.Component {
         </div>
       )
     }
+
+    const sortButton = (
+      filter
+        ? <SortButton sortBy={sortBy || 'alphabetical'} handler={this.updateSort} />
+        : null
+    );
     return (
       <div>
         <LoadingLayer status={loading} title={"Subject Headings"}/>
@@ -170,14 +176,14 @@ class SubjectHeadingsContainer extends React.Component {
           <div className="subjectHeadingMainContent index">
             {this.pagination()}
             <div className="tableHeadingsWrapper">
-              <SubjectHeadingTableHeader />
-              {
-                filter
-                ? <SortButton sortBy={sortBy || 'alphabetical'} handler={this.updateSort} />
-                : null
-              }
             </div>
-            <SubjectHeadingsList subjectHeadings={subjectHeadings} linked={linked} location={location} sortBy={sortBy}/>
+            <SubjectHeadingsTable
+              subjectHeadings={subjectHeadings}
+              linked={linked}
+              location={location}
+              sortBy={sortBy}
+              sortButton={sortButton}
+            />
             {this.pagination()}
           </div>
         </div>
