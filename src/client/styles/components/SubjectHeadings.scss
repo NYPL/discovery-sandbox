@@ -93,6 +93,17 @@
   }
   .seeMoreButton {
     background-color: #E8E4E3;
+    border: none;
+    background: none;
+    padding: 0;
+    text-align: inherit;
+
+    &:focus {
+      outline-color: #ffb81d;
+      outline-style: solid;
+      outline-width: 0.125rem;
+    }
+
   }
 
   th > .subjectHeadingLabelInner {

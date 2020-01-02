@@ -24,7 +24,7 @@ class AdditionalSubjectHeadingsButton extends React.Component {
     return (
       <tr className="subjectHeadingRow nestedSubjectHeading">
         <td colSpan="4">
-          <div
+          <button
             onClick={this.onClick}
             className={interactive ? 'seeMoreButton' : 'staticDots'}
             style={{"paddingLeft":`${40*indentation}px`}}
@@ -32,7 +32,7 @@ class AdditionalSubjectHeadingsButton extends React.Component {
             {interactive ? [previous ? '↑' : '↓', <em key='seeMoreText'>See more</em>] : null}
             {previous || !interactive ? null : <br /> }
             {previous ? null : <VerticalEllipse />}
-          </div>
+          </button>
           <div className="subjectHeadingsTableCell"></div>
           <div className="subjectHeadingsTableCell"></div>
         </td>
