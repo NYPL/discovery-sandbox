@@ -2,6 +2,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
+import { Link } from 'react-router';
+
 import SubjectHeadingsTableBody from './SubjectHeadingsTableBody';
 import SortButton from './SortButton';
 import Range from '../../models/Range';
@@ -21,7 +23,7 @@ class SubjectHeading extends React.Component {
       range,
     } = subjectHeading;
     this.state = {
-      open: !!children,
+      open: !!children || this.isMain(),
       narrower: (children || []),
       sortBy: sortBy || "alphabetical",
       range: range || Range.default(),
@@ -29,7 +31,7 @@ class SubjectHeading extends React.Component {
     this.toggleOpen = this.toggleOpen.bind(this);
     this.updateSubjectHeading = this.updateSubjectHeading.bind(this);
     this.addMore = this.addMore.bind(this);
-    this.linkToShow = this.linkToShow.bind(this);
+    this.generateUrl = this.generateUrl.bind(this);
     this.updateSort = this.updateSort.bind(this);
     this.fetchInitial = this.fetchInitial.bind(this);
     this.sortHandler = this.sortHandler.bind(this);
@@ -52,6 +54,15 @@ class SubjectHeading extends React.Component {
 
   updateSubjectHeading(properties) {
     this.setState(properties);
+  }
+
+  isMain() {
+    const {
+      subjectHeading: { uuid },
+      location: { pathname },
+      linked,
+    } = this.props;
+    return linked === uuid || pathname.includes(uuid);
   }
 
   toggleOpen() {
@@ -95,10 +106,9 @@ class SubjectHeading extends React.Component {
     return { emph: components.slice(-1), rest: components.slice(0, -1).join(' -- ') };
   }
 
-  linkToShow(e) {
-    e.preventDefault();
+  generateUrl() {
     let path = this.props.location.pathname.replace(/\/subject_headings.*/, '');
-    this.context.router.push(`${path}/subject_headings/${this.props.subjectHeading.uuid}`)
+    return `${path}/subject_headings/${this.props.subjectHeading.uuid}`
   }
 
   updateSort(sortType) {
@@ -179,6 +189,31 @@ class SubjectHeading extends React.Component {
       rest,
     } = this.addEmphasis(label);
 
+    const handleEnter = (e) => {
+
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        this.toggleOpen()
+      }
+    }
+
+    const toggle = () => {
+      const innerText = desc_count > 0 ? (!open ? '+' : '-') : "";
+      const props = {};
+
+      props.onClick = container !== 'context' ? this.toggleOpen : () => {}
+      props.className = "subjectHeadingToggle"
+
+      if (desc_count > 0) {
+        props.tabIndex = '0'
+        props.onKeyDown = (event) => handleEnter(event);
+      }
+
+      const element = React.createElement('div', props, innerText)
+
+      return element
+  }
+
     const positionStyle = { marginLeft: 30 * ((indentation || 0) + 1) };
     const isMain = location.pathname.includes(uuid);
     // changes to HTML structure here will need to be replicated in ./SubjectHeadingTableHeader
@@ -193,13 +228,21 @@ class SubjectHeading extends React.Component {
             </tr>
           : null
         }
-        <tr data={`${subjectHeading.uuid}, ${container}`} className={`subjectHeadingRow ${ (open || children) ? "openSubjectHeading" : ""} ${(indentation || 0) === 0 ? 'topLevel' : ''} ${(indentation || 0) !== 0 ? 'nestedSubjectHeading' : ''}`}>
+        <tr
+          data={`${subjectHeading.uuid}, ${container}`}
+          className={`
+            subjectHeadingRow
+            ${(open || children) ? "openSubjectHeading" : ""}
+            ${(indentation || 0) === 0 ? 'topLevel' : ''}
+            ${(indentation || 0) !== 0 ? 'nestedSubjectHeading' : ''}
+          `}
+        >
           <td className="subjectHeadingsTableCell subjectHeadingLabel" >
             <div className="subjectHeadingLabelInner" style={positionStyle}>
-              <div onClick={container !== 'context' ? this.toggleOpen : () => {} } className="subjectHeadingToggle" >{desc_count > 0 ? (!open ? '+' : '-') : ""}</div>
-              <a onClick={this.linkToShow}>
+              { toggle() }
+              <Link to={this.generateUrl}>
                 <span className={`emph ${isMain ? 'mainHeading' : ''}`}>{rest === '' ? null : <span className='noEmph'>{`${rest}\u0020--\u00a0`}</span>}{emph}</span>
-              </a>
+              </Link>
             </div>
           </td>
           <td className="subjectHeadingsTableCell subjectHeadingAttribute titles">{`${bib_count}`}</td>

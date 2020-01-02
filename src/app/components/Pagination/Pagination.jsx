@@ -29,14 +29,19 @@ class Pagination extends React.Component {
     const intPage = parseInt(page, 10);
     const pageNum = type === 'Next' ? intPage + 1 : intPage - 1;
     const svg = type === 'Next' ? <RightWedgeIcon /> : <LeftWedgeIcon />;
+    const { shepNavigation } = this.props
+
     let url;
     let apiUrl;
     let localUrl;
-    if (!this.props.subjectShowPage) {
+    if (this.props.subjectShowPage && shepNavigation) {
+      url = type === 'Next' ? shepNavigation.next : shepNavigation.previous
+    } else {
       apiUrl = this.props.createAPIQuery({ page: pageNum });
       localUrl = `${this.props.to.pathname}${pageNum}`;
       url = apiUrl ?
-        { pathname: `${appConfig.baseUrl}/search?${apiUrl}` } : { pathname: localUrl };
+      { pathname: `${appConfig.baseUrl}/search?${apiUrl}` }
+      : { pathname: localUrl };
     }
 
     return (

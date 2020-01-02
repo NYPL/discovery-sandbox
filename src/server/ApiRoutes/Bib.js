@@ -1,14 +1,26 @@
 import nyplApiClient from '../routes/nyplApiClient';
 import logger from '../../../logger';
 import appConfig from '../../../appConfig';
+import axios from 'axios';
 
 const nyplApiClientCall = query =>
   nyplApiClient().then(client => client.get(`/discovery/resources/${query}`, { cache: false }));
+
+const shepApiCall = bibId => axios({
+  method: 'GET',
+  url: `${appConfig.shepApi}/bibs/${bibId}/subject_headings`,
+  crossDomain: true,
+  headers: {
+    'Access-Control-Allow-Origin': '*',
+    'Content-Type': 'application/json',
+  },
+})
 
 function fetchBib(bibId, cb, errorcb) {
   return Promise.all([
     nyplApiClientCall(bibId),
     nyplApiClientCall(`${bibId}.annotated-marc`),
+    shepApiCall(bibId)
   ])
     .then((response) => {
       // First response is jsonld formatting:
@@ -17,6 +29,8 @@ function fetchBib(bibId, cb, errorcb) {
       data.annotatedMarc = response[1];
       // Make sure retrieved annotated-marc document is valid:
       if (!data.annotatedMarc || !data.annotatedMarc.bib) data.annotatedMarc = null;
+      data.subjectHeadingData = response[2].data.subject_headings
+
       return data;
     })
     .then(response => cb(response))

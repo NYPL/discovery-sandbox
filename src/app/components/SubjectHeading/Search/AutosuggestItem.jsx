@@ -20,14 +20,16 @@ const AutosuggestItem = (props) => {
       <Link
         to={path}
       >
-        {subfield ?
+        {
+          subfield ?
           <div className="autosuggest component">
             <span>{item.label}</span>
-            <div className="heading-count">
-              {item.heading_count} {item.heading_count > 1 ? 'headings' : 'heading'}
-            </div>
           </div>
-          : <div className="autosuggest subject"><em>Subject:</em> <span>{item.label}</span></div>}
+          :
+          <div className="autosuggest subject">
+            <em>Subject:</em> <span>{item.label}</span>
+          </div>
+        }
       </Link>
     </li>
   )

@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
+import { Link } from 'react-router';
+
 import SubjectHeadingsTable from './SubjectHeadingsTable';
 import BibsList from './BibsList';
 import ResultsList from '../Results/ResultsList';
@@ -21,12 +23,13 @@ class SubjectHeadingShow extends React.Component {
       },
       shepBibs: [],
       bibs: [],
-      contextLoading: true,
+      contextLoading: true
     };
 
-    this.linkToContext = this.linkToContext.bind(this);
+    this.generateFullContextUrl = this.generateFullContextUrl.bind(this);
     this.hasUuid = this.hasUuid.bind(this);
     this.processContextHeadings = this.processContextHeadings.bind(this);
+    this.removeChildrenOffMainPath = this.removeChildrenOffMainPath.bind(this);
   }
 
   componentDidMount() {
@@ -48,8 +51,7 @@ class SubjectHeadingShow extends React.Component {
             label: res.data.request.main_label,
           },
           contextLoading: false
-        });
-        Actions.updateSubjectHeading(res.data.request.main_label);
+        }, () => this.props.setBannerText(this.state.mainHeading.label));
       })
       .catch(
         (err) => {
@@ -110,8 +112,7 @@ class SubjectHeadingShow extends React.Component {
     );
   }
 
-  linkToContext(e) {
-    e.preventDefault();
+  generateFullContextUrl(e) {
     const {
       contextHeadings,
     } = this.state;
@@ -119,11 +120,24 @@ class SubjectHeadingShow extends React.Component {
     const topLevelIndex = contextHeadings.findIndex(this.hasUuid);
     const linkLabel = contextHeadings[topLevelIndex && topLevelIndex - 1].label;
     const path = this.props.location.pathname.replace(/\/subject_headings.*/, '');
-    this.context.router.push(`${path}/subject_headings?fromLabel=${linkLabel}&fromComparator=start&linked=${uuid}`)
+    return `${path}/subject_headings?fromLabel=${linkLabel}&fromComparator=start&linked=${uuid}`
+  }
+
+  // returns true or false depending on whether the heading has a descendant with the given uuid.
+  // If not, removes the children of that heading
+  removeChildrenOffMainPath(heading, uuid) {
+    const onMainPath =
+      heading.uuid === uuid ||
+      (heading.children && heading.children.some(child => this.removeChildrenOffMainPath(child, uuid)));
+    if (!onMainPath) heading.children = null;
+    return onMainPath;
   }
 
   processContextHeadings(headings, uuid) {
-    headings.forEach(heading => Range.addRangeData(heading, uuid, 'show'));
+    headings.forEach((heading) => {
+      this.removeChildrenOffMainPath(heading, uuid);
+      Range.addRangeData(heading, uuid, 'show');
+    });
     const mainHeadingIndex = headings.findIndex(heading => heading.children || heading.uuid === uuid);
     const startIndex = mainHeadingIndex > 0 ? mainHeadingIndex - 1 : 0;
     const endIndex = mainHeadingIndex + 2;
@@ -156,18 +170,42 @@ class SubjectHeadingShow extends React.Component {
             <BibsList shepBibs={shepBibs} nextUrl={bibsNextUrl} />
             : null
           }
-          <div className="subjectHeadingRelated subjectHeadingInfoBox">
+          <div
+            className="subjectHeadingRelated subjectHeadingInfoBox"
+            tabIndex='0'
+            aria-label='Related Subject Headings'
+          >
             <div className="backgroundContainer">
               <h4>Related Headings</h4>
             </div>
-            <SubjectHeadingsTable subjectHeadings={relatedHeadings} location={location} keyId="related" container="narrower"/>
+            <SubjectHeadingsTable
+              subjectHeadings={relatedHeadings}
+              location={location}
+              keyId="related"
+              container="narrower"
+            />
           </div>
-          <div className="subjectHeadingContext subjectHeadingInfoBox">
+          <div
+            className="subjectHeadingContext subjectHeadingInfoBox"
+            tabIndex='0'
+            aria-label='Adjacent Subject Headings'
+          >
             <div className="backgroundContainer">
               <h4>Adjacent Headings</h4>
             </div>
-            <SubjectHeadingsTable subjectHeadings={contextHeadings} location={location} showId={uuid} keyId="context" container="context"/>
-            <a onClick={this.linkToContext} className="link toIndex">See full context</a>
+            <SubjectHeadingsTable
+              subjectHeadings={contextHeadings}
+              location={location}
+              showId={uuid}
+              keyId="context"
+              container="context"
+            />
+            <Link
+              to={contextHeadings && contextHeadings.length ? this.generateFullContextUrl() : '#'}
+              className="link toIndex"
+            >
+              See full context
+            </Link>
           </div>
         </div>
       </div>

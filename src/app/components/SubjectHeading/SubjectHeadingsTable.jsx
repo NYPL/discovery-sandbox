@@ -19,15 +19,17 @@ export default (props) => {
   return (
     <table className="subjectHeadingsTable">
       <SubjectHeadingsTableHeader sortButton={sortButton}/>
-      <SubjectHeadingsTableBody
-        subjectHeadings={subjectHeadings}
-        linked={linked}
-        location={location}
-        sortBy={sortBy}
-        showId={showId}
-        keyId={keyId}
-        container={container}
-      />
+      <tbody>
+        <SubjectHeadingsTableBody
+          subjectHeadings={subjectHeadings}
+          linked={linked}
+          location={location}
+          sortBy={sortBy}
+          showId={showId}
+          keyId={keyId}
+          container={container}
+        />
+      </tbody>
   </table>
   );
 };
