@@ -22,7 +22,7 @@ const commonSettings = {
   // React App that is to be rendered.
   entry: {
     app: [
-      'babel-polyfill',
+      'core-js/stable', 'regenerator-runtime/runtime',
       path.resolve(ROOT_PATH, 'src/client/App.jsx'),
     ],
   },

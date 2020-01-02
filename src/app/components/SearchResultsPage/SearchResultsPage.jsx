@@ -156,18 +156,16 @@ class SearchResultsPage extends React.Component {
                 </div>
               </div>
             </div>
-            {
-              <FilterPopup
-                filters={apiFilters}
-                createAPIQuery={createAPIQuery}
-                updateIsLoadingState={this.updateIsLoadingState}
-                selectedFilters={selectedFilters}
-                searchKeywords={searchKeywords}
-                raisedErrors={dateFilterErrors}
-                updateDropdownState={this.updateDropdownState}
-                totalResults={totalResults}
-                />
-            }
+            <FilterPopup
+              filters={apiFilters}
+              createAPIQuery={createAPIQuery}
+              updateIsLoadingState={this.updateIsLoadingState}
+              selectedFilters={selectedFilters}
+              searchKeywords={searchKeywords}
+              raisedErrors={dateFilterErrors}
+              updateDropdownState={this.updateDropdownState}
+              totalResults={totalResults}
+              />
             {selectedFiltersAvailable &&
               <div className="nypl-full-width-wrapper selected-filters">
                 <div className="nypl-row">

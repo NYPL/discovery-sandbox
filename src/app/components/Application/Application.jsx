@@ -26,16 +26,6 @@ class App extends React.Component {
     this.onChange = this.onChange.bind(this);
   }
 
-  componentWillMount() {
-    const { data } = this.state;
-    if (!data.searchResults) {
-      ajaxCall(`${appConfig.baseUrl}/api?q=${data.searchKeywords}`, (response) => {
-        Actions.updateSearchResults(response.data.searchResults);
-        Actions.updateSearchKeywords(data.searchKeywords);
-      });
-    }
-  }
-
   componentDidMount() {
     Store.listen(this.onChange);
     // Listen to the browser's navigation buttons.
