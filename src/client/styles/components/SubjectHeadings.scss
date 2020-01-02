@@ -7,7 +7,7 @@
     display: flex;
   }
 
-  > .openSubjectHeading {
+  tbody > .openSubjectHeading {
     background-color: #E8E4E3;
       &.topLevel {
         background-color: lightgray;
