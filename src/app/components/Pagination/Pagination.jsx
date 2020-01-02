@@ -49,12 +49,12 @@ class Pagination extends React.Component {
     linkProps.to = url
     linkProps.rel = type.toLowerCase()
     linkProps.className = `${type.toLowerCase()}-link`
-    linkProps.ariaControls = this.props.ariaControls
 
     if (!subjectHeadingPage) linkProps.onClick = e => this.onClick(e, pageNum, type)
 
     return (
       <Link
+        aria-controls={this.props.ariaControls}
         {...linkProps}
       >
         {svg} {type}

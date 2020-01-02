@@ -84,6 +84,12 @@
         .subjectHeadingToggle {
           position: absolute;
           left: -20px;
+
+          &:focus {
+            outline-color: #ffb81d;
+            outline-style: solid;
+            outline-width: 0.125rem;
+          }
         }
       }
     }
@@ -411,7 +417,7 @@
   }
 }
 
-.staticDots {
+span > .verticalEllipse {
   margin-left: 40px;
 }
 
