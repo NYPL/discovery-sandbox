@@ -7,7 +7,7 @@
     display: flex;
   }
 
-  > .openSubjectHeading {
+  tbody > .openSubjectHeading {
     background-color: #E8E4E3;
       &.topLevel {
         background-color: lightgray;
@@ -84,6 +84,12 @@
         .subjectHeadingToggle {
           position: absolute;
           left: -20px;
+
+          &:focus {
+            outline-color: #ffb81d;
+            outline-style: solid;
+            outline-width: 0.125rem;
+          }
         }
       }
     }
@@ -93,6 +99,17 @@
   }
   .seeMoreButton {
     background-color: #E8E4E3;
+    border: none;
+    background: none;
+    padding: 0;
+    text-align: inherit;
+
+    &:focus {
+      outline-color: #ffb81d;
+      outline-style: solid;
+      outline-width: 0.125rem;
+    }
+
   }
 
   th > .subjectHeadingLabelInner {
@@ -400,7 +417,7 @@
   }
 }
 
-.staticDots {
+span > .verticalEllipse {
   margin-left: 40px;
 }
 
