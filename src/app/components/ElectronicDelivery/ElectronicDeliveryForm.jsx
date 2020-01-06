@@ -7,7 +7,7 @@ import {
 } from 'underscore';
 
 import { validate } from '../../utils/formValidationUtils';
-import appConfig from '../../../../appConfig';
+import appConfig from '../../appConfig';
 
 class ElectronicDeliveryForm extends React.Component {
   constructor(props) {

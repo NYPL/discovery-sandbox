@@ -7,7 +7,7 @@ import {
   trackDiscovery,
   ajaxCall,
 } from '../../utils/utils';
-import appConfig from '../../../../appConfig';
+import appConfig from '../../appConfig';
 
 /**
  * The main container for the top Search section.

@@ -8,7 +8,7 @@ import BibsList from './BibsList';
 import ResultsList from '../Results/ResultsList';
 import SubjectHeadingsTableHeader from './SubjectHeadingsTableHeader';
 import Range from '../../models/Range';
-import appConfig from '../../../../appConfig';
+import appConfig from '../../appConfig';
 import LoadingLayer from '../LoadingLayer/LoadingLayer';
 import Actions from '../../actions/Actions';
 

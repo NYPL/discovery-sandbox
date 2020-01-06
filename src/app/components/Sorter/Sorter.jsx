@@ -6,7 +6,7 @@ import {
   ajaxCall,
   trackDiscovery,
 } from '../../utils/utils';
-import appConfig from '../../../../appConfig';
+import appConfig from '../../appConfig';
 
 const sortingOpts = [
   { val: 'relevance', label: 'relevance' },

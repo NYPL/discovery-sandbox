@@ -3,7 +3,7 @@ import { Link } from 'react-router';
 import PropTypes from 'prop-types';
 import LibraryItem from '../../utils/item';
 import axios from 'axios';
-import appConfig from '../../../../appConfig';
+import appConfig from '../../appConfig';
 import {
   isEmpty as _isEmpty,
   isArray as _isArray,

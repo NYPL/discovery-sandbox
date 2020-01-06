@@ -1,6 +1,6 @@
 import nyplApiClient from '../routes/nyplApiClient';
 import logger from '../../../logger';
-import appConfig from '../../../appConfig';
+import appConfig from '../../app/appConfig';
 import axios from 'axios';
 
 const nyplApiClientCall = query =>

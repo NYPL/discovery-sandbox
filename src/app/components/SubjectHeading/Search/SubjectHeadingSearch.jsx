@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router';
 import PropTypes from 'prop-types';
 import axios from 'axios';
-import appConfig from '../../../../../appConfig';
+import appConfig from '../../../appConfig';
 import AutosuggestItem from './AutosuggestItem'
 
 class SubjectHeadingSearch extends React.Component {

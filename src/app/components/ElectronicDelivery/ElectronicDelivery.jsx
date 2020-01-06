@@ -14,7 +14,7 @@ import DocumentTitle from 'react-document-title';
 
 import Breadcrumbs from '../Breadcrumbs/Breadcrumbs';
 import PatronStore from '../../stores/PatronStore';
-import appConfig from '../../../../appConfig';
+import appConfig from '../../appConfig';
 import ElectronicDeliveryForm from './ElectronicDeliveryForm';
 import LibraryItem from '../../utils/item';
 import LoadingLayer from '../LoadingLayer/LoadingLayer';

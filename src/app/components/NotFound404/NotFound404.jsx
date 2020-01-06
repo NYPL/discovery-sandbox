@@ -2,7 +2,7 @@ import React from 'react';
 import DocumentTitle from 'react-document-title';
 import { Link } from 'react-router';
 
-import appConfig from '../../../../appConfig';
+import appConfig from '../../appConfig';
 
 const NotFound404 = () => (
   <DocumentTitle title="404 | Shared Collection Catalog | NYPL">

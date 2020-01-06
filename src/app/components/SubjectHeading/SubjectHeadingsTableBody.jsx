@@ -6,7 +6,7 @@ import axios from 'axios';
 import SubjectHeading from './SubjectHeading';
 import AdditionalSubjectHeadingsButton from './AdditionalSubjectHeadingsButton';
 import Range from '../../models/Range';
-import appConfig from '../../../../appConfig';
+import appConfig from '../../appConfig';
 
 class SubjectHeadingsTableBody extends React.Component {
   constructor(props) {

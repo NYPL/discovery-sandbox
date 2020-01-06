@@ -14,7 +14,7 @@ import {
   destructureFilters,
 } from '../../utils/utils';
 import Actions from '../../actions/Actions';
-import appConfig from '../../../../appConfig';
+import appConfig from '../../appConfig';
 
 class App extends React.Component {
   constructor(props) {

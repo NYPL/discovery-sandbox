@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 import { isEmpty as _isEmpty } from 'underscore';
 
-import appConfig from '../../../../appConfig';
+import appConfig from '../../appConfig';
 
 const ItemTableRow = ({ item, bibId, getRecord, searchKeywords }) => {
   if (_isEmpty(item)) {

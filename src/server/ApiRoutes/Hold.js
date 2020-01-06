@@ -4,7 +4,7 @@ import {
   omit as _omit,
 } from 'underscore';
 
-import appConfig from '../../../appConfig';
+import appConfig from '../../app/appConfig';
 import locationCodes from '../../../locationCodes';
 import locationDetails from '../../../locations';
 import User from './User';

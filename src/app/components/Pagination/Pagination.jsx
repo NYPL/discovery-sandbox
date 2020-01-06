@@ -6,7 +6,7 @@ import {
   RightWedgeIcon,
 } from '@nypl/dgx-svg-icons';
 
-import appConfig from '../../../../appConfig';
+import appConfig from '../../appConfig';
 
 class Pagination extends React.Component {
   /*
