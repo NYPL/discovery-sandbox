@@ -19,7 +19,7 @@ import {
 } from '../../utils/utils';
 import subjectFilterUtil from '../../utils/subjectFilterUtils';
 import Actions from '../../actions/Actions';
-import appConfig from '../../../../appConfig';
+import appConfig from '../../data/appConfig';
 
 class SearchResultsPage extends React.Component {
   constructor(props) {

@@ -18,7 +18,7 @@ import {
   ajaxCall,
 } from '../../utils/utils';
 
-import appConfig from '../../../../appConfig';
+import appConfig from '../../data/appConfig';
 import FieldsetDate from '../Filters/FieldsetDate';
 import FieldsetList from '../Filters/FieldsetList';
 import Actions from '../../actions/Actions';

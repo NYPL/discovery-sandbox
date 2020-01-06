@@ -8,7 +8,7 @@ import Adapter from 'enzyme-adapter-react-16';
 // Import the component that is going to be tested
 import HoldConfirmation from './../../src/app/components/HoldConfirmation/HoldConfirmation';
 import Actions from './../../src/app/actions/Actions';
-import appConfig from '../../appConfig';
+import appConfig from '../../data/appConfig';
 
 Enzyme.configure({ adapter: new Adapter() });
 describe('HoldConfirmation', () => {

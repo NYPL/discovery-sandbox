@@ -1,7 +1,7 @@
 import NyplApiClient from '@nypl/nypl-data-api-client';
 import aws from 'aws-sdk';
 
-import config from '../../../../appConfig.js';
+import config from '../../../app/data/appConfig.js';
 import logger from '../../../../logger.js';
 
 const appEnvironment = process.env.APP_ENV || 'production';

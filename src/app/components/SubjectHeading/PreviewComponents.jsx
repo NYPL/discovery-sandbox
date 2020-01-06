@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
-import appConfig from '../../../../appConfig';
+import appConfig from '../../data/appConfig';
 
 const Preview = (props) => {
   const { topHeadings } = props;

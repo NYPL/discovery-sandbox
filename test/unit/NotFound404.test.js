@@ -4,7 +4,7 @@ import { expect } from 'chai';
 import Enzyme, { shallow } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 
-import config from '../../appConfig';
+import config from '../../data/appConfig';
 
 import NotFound404 from '../../src/app/components/NotFound404/NotFound404';
 

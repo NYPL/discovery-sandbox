@@ -8,7 +8,7 @@ import SubjectHeadingsTable from './SubjectHeadingsTable'
 import SubjectHeadingsTableHeader from './SubjectHeadingsTableHeader'
 import SubjectHeadingSearch from './Search/SubjectHeadingSearch'
 import SortButton from './SortButton';
-import appConfig from '../../../../appConfig';
+import appConfig from '../../data/appConfig';
 import LoadingLayer from '../LoadingLayer/LoadingLayer';
 import Pagination from '../Pagination/Pagination';
 

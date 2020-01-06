@@ -1,6 +1,6 @@
 import nyplApiClient from '../routes/nyplApiClient';
 import logger from '../../../logger';
-import appConfig from '../../../appConfig';
+import appConfig from '../../app/data/appConfig';
 import axios from 'axios';
 import SubjectHeadings from './SubjectHeadings';
 

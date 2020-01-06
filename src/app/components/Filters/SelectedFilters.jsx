@@ -15,7 +15,7 @@ import {
 } from '@nypl/dgx-svg-icons';
 
 import Actions from '../../actions/Actions';
-import appConfig from '../../../../appConfig';
+import appConfig from '../../data/appConfig';
 import {
   ajaxCall,
   trackDiscovery,

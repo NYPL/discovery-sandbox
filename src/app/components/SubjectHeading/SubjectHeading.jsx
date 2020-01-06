@@ -7,7 +7,7 @@ import { Link } from 'react-router';
 import SubjectHeadingsTableBody from './SubjectHeadingsTableBody';
 import SortButton from './SortButton';
 import Range from '../../models/Range';
-import appConfig from '../../../../appConfig';
+import appConfig from '../../data/appConfig';
 import { Preview } from './PreviewComponents';
 
 class SubjectHeading extends React.Component {

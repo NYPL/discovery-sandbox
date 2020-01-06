@@ -10,7 +10,7 @@ import sinon from 'sinon';
 
 import { basicQuery } from '../../src/app/utils/utils';
 import Sorter from '../../src/app/components/Sorter/Sorter';
-import appConfig from '../../appConfig';
+import appConfig from '../../data/appConfig';
 
 Enzyme.configure({ adapter: new Adapter() });
 describe('Sorter', () => {
