@@ -36,13 +36,7 @@ class SubjectHeadingShow extends React.Component {
     let { uuid } = this.state.mainHeading
 
     axios({
-      method: 'GET',
-      url: `${appConfig.shepApi}/subject_headings/${uuid}/context`,
-      crossDomain: true,
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Content-Type': 'application/json',
-      },
+      url: `${appConfig.baseUrl}/api/subjectHeadings/subject_headings/${uuid}/context`,
     })
       .then((res) => {
         this.setState({
@@ -61,13 +55,7 @@ class SubjectHeadingShow extends React.Component {
       );
 
     axios({
-      method: 'GET',
-      url: `${appConfig.shepApi}/subject_headings/${uuid}/bibs`,
-      crossDomain: true,
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Content-Type': 'application/json',
-      },
+      url: `${appConfig.baseUrl}/api/subjectHeadings/subject_headings/${uuid}/bibs`,
     })
       .then((res) => {
         this.setState({
@@ -83,13 +71,7 @@ class SubjectHeadingShow extends React.Component {
       );
 
     axios({
-      method: 'GET',
-      url: `${appConfig.shepApi}/subject_headings/${uuid}/related`,
-      crossDomain: true,
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Content-Type': 'application/json',
-      },
+      url: `${appConfig.baseUrl}/api/subjectHeadings/subject_headings/${uuid}/related`,
     })
       .then((res) => {
         this.setState({
@@ -121,6 +103,16 @@ class SubjectHeadingShow extends React.Component {
     const linkLabel = contextHeadings[topLevelIndex && topLevelIndex - 1].label;
     const path = this.props.location.pathname.replace(/\/subject_headings.*/, '');
     return `${path}/subject_headings?fromLabel=${linkLabel}&fromComparator=start&linked=${uuid}`
+  }
+
+  // returns true or false depending on whether the heading has a descendant with the given uuid.
+  // If not, removes the children of that heading
+  removeChildrenOffMainPath(heading, uuid) {
+    const onMainPath =
+      heading.uuid === uuid ||
+      (heading.children && heading.children.some(child => this.removeChildrenOffMainPath(child, uuid)));
+    if (!onMainPath) heading.children = null;
+    return onMainPath;
   }
 
   // returns true or false depending on whether the heading has a descendant with the given uuid.
