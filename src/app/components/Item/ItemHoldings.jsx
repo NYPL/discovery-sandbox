@@ -7,7 +7,7 @@ import { isArray as _isArray } from 'underscore';
 import Actions from '../../actions/Actions';
 import Pagination from '../Pagination/Pagination';
 import ItemTable from './ItemTable';
-import appConfig from '../../appConfig';
+import appConfig from '../../data/appConfig';
 import { trackDiscovery } from '../../utils/utils';
 
 class ItemHoldings extends React.Component {

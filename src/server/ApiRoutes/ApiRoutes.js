@@ -4,7 +4,7 @@ import Bib from './Bib';
 import User from './User';
 import Hold from './Hold';
 import Search from './Search';
-import appConfig from '../../app/appConfig';
+import appConfig from '../../app/data/appConfig';
 
 const router = express.Router();
 

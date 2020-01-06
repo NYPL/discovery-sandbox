@@ -17,7 +17,7 @@ import {
   sortBy as _sortBy,
 } from 'underscore';
 
-import appConfig from '../appConfig';
+import appConfig from '../data/appConfig';
 
 /**
  * ajaxCall

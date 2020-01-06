@@ -10,7 +10,7 @@ import {
 import DocumentTitle from 'react-document-title';
 
 import PatronStore from '../../stores/PatronStore';
-import appConfig from '../../appConfig';
+import appConfig from '../../data/appConfig';
 import Breadcrumbs from '../Breadcrumbs/Breadcrumbs';
 import { trackDiscovery } from '../../utils/utils';
 

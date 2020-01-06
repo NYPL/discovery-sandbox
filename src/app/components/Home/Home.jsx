@@ -8,7 +8,7 @@ import {
   basicQuery,
   trackDiscovery,
 } from '../../utils/utils';
-import appConfig from '../../appConfig';
+import appConfig from '../../data/appConfig';
 
 class Home extends React.Component {
   constructor(props) {

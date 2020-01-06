@@ -15,7 +15,7 @@ import ElectronicDelivery from '../components/ElectronicDelivery/ElectronicDeliv
 import SubjectHeadingsContainer from '../components/SubjectHeading/SubjectHeadingsContainer';
 import SubjectHeadingPageWrapper from '../components/SubjectHeading/SubjectHeadingPageWrapper';
 import NotFound404 from '../components/NotFound404/NotFound404';
-import appConfig from '../appConfig';
+import appConfig from '../data/appConfig';
 
 const baseUrl = appConfig.baseUrl;
 const routes = history => ({

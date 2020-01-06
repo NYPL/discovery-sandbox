@@ -1,4 +1,4 @@
-import appConfig from '../../app/appConfig';
+import appConfig from '../../app/data/appConfig';
 import nyplApiClient from '../../server/routes/nyplApiClient';
 
 function requireUser(req, res) {

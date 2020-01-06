@@ -203,7 +203,7 @@ When new Sierra locations (especially Sierra locations that are "delivery locati
 In this repo, two local JSONs are critical to adding locations:
 
   * `./locations.js`: A JSON mapping major hub names (e.g. "schwarzman", "sibl") to data about them (e.g. "full-name", "address")
-  * `./locationCodes.js`: A JSON mapping *all* sierra location codes to their `delivery_location` and relevant hub name (referencing the keys in `./locations.js`) (Note that sierra locations that act only as *delivery locations* must be entered in this hash and cite themselves as `delivery_location`.)
+  * `./data/locationCodes.js`: A JSON mapping *all* sierra location codes to their `delivery_location` and relevant hub name (referencing the keys in `./locations.js`) (Note that sierra locations that act only as *delivery locations* must be entered in this hash and cite themselves as `delivery_location`.)
 
 These files must be kept up to date with newly added locations to ensure that the hold-request page presents delivery locations with correct labels and building addresses. For example, when Scholar rooms 217 and 223 were added to SASB, entries like the following needed to be added to `./locationCodes.js`:
 ```

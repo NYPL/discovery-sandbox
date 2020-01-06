@@ -15,7 +15,7 @@ import {
   trackDiscovery,
 } from '../../utils/utils';
 import DefinitionList from './DefinitionList';
-import appConfig from '../../appConfig';
+import appConfig from '../../data/appConfig';
 import getOwner from '../../utils/getOwner';
 import LibraryItem from '../../utils/item';
 import axios from 'axios';

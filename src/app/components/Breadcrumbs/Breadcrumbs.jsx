@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 
 import { trackDiscovery } from '../../utils/utils';
-import appConfig from '../../appConfig';
+import appConfig from '../../data/appConfig';
 
 const {
   baseUrl,
