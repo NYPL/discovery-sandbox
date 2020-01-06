@@ -2,6 +2,7 @@ import nyplApiClient from '../routes/nyplApiClient';
 import logger from '../../../logger';
 import appConfig from '../../app/data/appConfig';
 import axios from 'axios';
+import SubjectHeadings from './SubjectHeadings';
 
 const nyplApiClientCall = query =>
   nyplApiClient().then(client => client.get(`/discovery/resources/${query}`, { cache: false }));
@@ -20,7 +21,7 @@ function fetchBib(bibId, cb, errorcb) {
   return Promise.all([
     nyplApiClientCall(bibId),
     nyplApiClientCall(`${bibId}.annotated-marc`),
-    shepApiCall(bibId)
+    SubjectHeadings.shepApiCall(`/bibs/${bibId}/subject_headings`)
   ])
     .then((response) => {
       // First response is jsonld formatting:
@@ -84,4 +85,5 @@ export default {
   bibSearchServer,
   bibSearchAjax,
   fetchBib,
+  nyplApiClientCall,
 };

@@ -45,15 +45,6 @@
       "babel-register"
     ]
   },
-  "babel": {
-    "env": {
-      "test": {
-        "plugins": [
-          "instanbul"
-        ]
-      }
-    }
-  },
   "devDependencies": {
     "axios-mock-adapter": "1.7.1",
     "chai": "3.5.0",
