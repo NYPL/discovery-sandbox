@@ -15,56 +15,13 @@ class BibsList extends React.Component {
   constructor(props) {
     super()
     this.state = {
-      bibs: [],
-      loading: true,
+      bibs: props.shepBibs,
+      loading: false,
       bibPage: 1,
-      lastBib: null,
+      lastBib: props.shepBibs.length - 1,
       nextUrl: props.nextUrl,
     }
-    this.fetchBib = this.fetchBib.bind(this);
     this.updateBibPage = this.updateBibPage.bind(this);
-  }
-
-  componentDidMount() {
-    Promise.all(this.props.shepBibs.map(bib => this.fetchBib(bib)))
-      .then((bibs) => {
-        this.setState({
-          bibs,
-          loading: false,
-          lastBib: bibs.length - 1,
-        });
-      })
-      .catch(
-        (err) => {
-          console.log('error: ', err);
-          this.setState({ error: true });
-        },
-      );
-  }
-
-  fetchBib(bib) {
-    let instutionCode
-    switch (bib.institution) {
-      case "recap-cul":
-        instutionCode = 'cb'
-        break;
-      case "recap-pul":
-        instutionCode = 'pb'
-        break;
-      default:
-        instutionCode = 'b';
-    }
-
-    return axios({
-      method: 'GET',
-      url: `${appConfig.baseUrl}/api/bib?bibId=${instutionCode}${bib.bnumber}`,
-      crossDomain: true,
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Content-Type': 'application/json',
-      },
-    })
-    .then(resp => (resp.data.status === 404 ? bib : resp))
   }
 
   // from here down until render() is copied and only slightly modifed from '../Results/ResultsList'
@@ -96,9 +53,14 @@ class BibsList extends React.Component {
   }
 
   generateBibLi(bib) {
-    if (!bib.data || _isEmpty(bib.data) || !bib.data.title) return <li className="nypl-results-item not-in-discovery" key={bib.bnumber}>{bib.title} <br/> bib id: {bib.bnumber} <br/> [circ title; for proto only]</li>;
 
-    const result = bib.data;
+    // If bib was not successfully converted to a Discovery (json-ld) resource,
+    // display minimal properties from SHEP API:
+    if (!bib['@id']) {
+      return <li className="nypl-results-item not-in-discovery" key={bib.bnumber}>{bib.title} <br/> bib id: {bib.bnumber} <br/> [circ title; for proto only]</li>;
+    }
+
+    const result = bib;
     const bibTitle = this.getBibTitle(result);
     const bibId = result && result['@id'] ? result['@id'].substring(4) : '';
     const materialType = result && result.materialType && result.materialType[0] ?
@@ -156,6 +118,12 @@ class BibsList extends React.Component {
     } = this.state;
 
     if (type === 'Previous') {
+      // FIXME: The following sometimes produces a bad `lastBib` value.
+      // e.g. If there are a total of 18 bibs, navigating to page "2" will
+      // set lastBib to 17. On clicking "Previous", lastBib will be set
+      // hereafter to 17-10=7. That will lead to the following call in render:
+      //   this.state.bibs.slice(7 - 9, 8)
+      // which is not a valid range.
       if (lastBib > 9) this.setState({ lastBib: lastBib - 10, bibPage: bibPage - 1 });
     } else {
       if (lastBib + 10 < bibs.length) {
@@ -173,19 +141,15 @@ class BibsList extends React.Component {
           })
             .then((res) => {
               const newNextUrl = res.data.next_url;
-              Promise.all(res.data.bibs.map(bib => this.fetchBib(bib)))
-                .then((respBibs) => {
-                  const newBibs = this.state.bibs.concat(respBibs);
-                  const newLast = newBibs.length - 1;
-                  this.setState({
-                    bibs: newBibs,
-                    loading: false,
-                    lastBib: newLast,
-                    nextUrl: newNextUrl,
-                    bibPage: this.state.bibPage + 1,
-                  });
-                },
-                );
+              const newBibs = this.state.bibs.concat(res.data.bibs);
+              const newLast = newBibs.length - 1;
+              this.setState({
+                bibs: newBibs,
+                loading: false,
+                lastBib: newLast,
+                nextUrl: newNextUrl,
+                bibPage: this.state.bibPage + 1,
+              });
             })
             .catch(
               (err) => {
