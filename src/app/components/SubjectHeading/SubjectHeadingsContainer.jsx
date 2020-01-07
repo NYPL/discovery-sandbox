@@ -3,15 +3,15 @@ import React from 'react';
 import { Link } from 'react-router';
 import PropTypes from 'prop-types';
 import axios from 'axios';
+import { connect } from 'react-redux';
+
 import SubjectHeadingsTable from './SubjectHeadingsTable'
-// import SubjectHeadingsList from './SubjectHeadingsList';
 import SubjectHeadingsTableHeader from './SubjectHeadingsTableHeader'
 import SubjectHeadingSearch from './Search/SubjectHeadingSearch'
 import SortButton from './SortButton';
 import appConfig from '../../data/appConfig';
 import LoadingLayer from '../LoadingLayer/LoadingLayer';
 import Pagination from '../Pagination/Pagination';
-
 
 class SubjectHeadingsContainer extends React.Component {
   constructor(props) {
@@ -24,61 +24,6 @@ class SubjectHeadingsContainer extends React.Component {
     this.redirectTo = this.redirectTo.bind(this);
     this.updateSort = this.updateSort.bind(this);
     this.navigationLinks = this.navigationLinks.bind(this);
-  }
-
-  componentDidMount() {
-    let {
-      fromLabel,
-      fromComparator,
-      filter,
-      sortBy,
-      fromAttributeValue,
-    } = this.props.location.query;
-
-    if (!fromComparator) fromComparator = filter ? null : "start"
-    if (!fromLabel) fromLabel = filter ? null : "Aac"
-
-    const apiParamHash = {
-      from_comparator: fromComparator,
-      from_label: fromLabel,
-      filter,
-      sort_by: sortBy,
-      from_attribute_value: fromAttributeValue,
-    };
-
-    const apiParamString = Object
-      .entries(apiParamHash)
-      .map(([key, value]) => (value ? `${key}=${value}` : null))
-      .filter(pair => pair)
-      .join('&');
-
-    axios({
-      method: 'GET',
-      url: `${appConfig.shepApi}/subject_headings?${apiParamString}`,
-      crossDomain: true,
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Content-Type': 'application/json',
-      },
-    },
-    ).then(
-      (res) => {
-        this.setState({
-          previousUrl: res.data.previous_url,
-          nextUrl: res.data.next_url,
-          subjectHeadings: res.data.subject_headings,
-          error: res.data.subject_headings.length === 0,
-          loading: false
-        });
-      },
-    ).catch(
-      (err) => {
-        console.log('error: ', err);
-        if (!this.state.subjectHeadings || this.state.subjectHeadings.length === 0) {
-          this.setState({ error: true });
-        }
-      },
-    );
   }
 
   extractParam(paramName, url) {
@@ -150,13 +95,16 @@ class SubjectHeadingsContainer extends React.Component {
   }
 
   render() {
-    const { error, subjectHeadings, loading } = this.state;
+    const { error, loading } = this.state;
+    const { subjectHeadings } = this.props;
     const location = this.props.location;
     let { linked, sortBy, filter } = this.props.location.query;
 
     if (!linked) linked = '';
 
-    if (error) {
+    console.log("SUBJECT HEADINGS", this.props.subjectHeadings);
+
+    if (error || subjectHeadings.length === 0) {
       return (
         <div>
             'No results found for that search'
@@ -171,7 +119,6 @@ class SubjectHeadingsContainer extends React.Component {
     );
     return (
       <div>
-        <LoadingLayer status={loading} title={"Subject Headings"}/>
         <div className="subjectMainContentWrapper">
           <div className="subjectHeadingMainContent index">
             {this.pagination()}
@@ -184,11 +131,25 @@ class SubjectHeadingsContainer extends React.Component {
               sortBy={sortBy}
               sortButton={sortButton}
             />
-            {this.pagination()}
+            {/*this.pagination()*/}
           </div>
         </div>
       </div>
     );
+  }
+}
+
+function mapStateToProps(state) {
+  return {
+    subjectHeadings: state.subjectHeadings,
+  }
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    updateSubjectHeadings: (subjectHeadings) => {
+      return dispatch({type: "UPDATE_SUBJECT_HEADINGS", subjectHeadings})
+    }
   }
 }
 
@@ -200,4 +161,4 @@ SubjectHeadingsContainer.propTypes = {
   location: PropTypes.object,
 };
 
-export default SubjectHeadingsContainer;
+export default connect(mapStateToProps, mapDispatchToProps)(SubjectHeadingsContainer);

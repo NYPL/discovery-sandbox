@@ -43,7 +43,11 @@ window.onload = () => {
 
     ReactDOM.hydrate(
       <Provider store={store}>
-        <Router history={appHistory}>{routes(appHistory).client}</Router>
+        <Router
+          history={appHistory}
+        >
+          {routes(appHistory).client}
+        </Router>
       </Provider>,
       container,
     );

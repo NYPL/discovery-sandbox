@@ -94,6 +94,10 @@ router
   .get(SubjectHeadings.proxyRequest)
 
 router
+  .route(`${appConfig.baseUrl}/subject_headings`)
+  .get(SubjectHeadings.proxyRequest)
+
+router
   .route(appConfig.baseUrl)
   .get(MainApp);
 

@@ -91,7 +91,7 @@ app.get('/*', (req, res) => {
       const iso = new Iso();
 
       iso.add(application, alt.flush());
-      console.log("iso render", iso.render());
+
       res
         .status(200)
         .render('index', {

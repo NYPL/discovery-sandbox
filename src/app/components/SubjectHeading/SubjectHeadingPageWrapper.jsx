@@ -4,7 +4,6 @@ import SubjectHeadingShow from './SubjectHeadingShow';
 import SubjectHeadingsContainer from './SubjectHeadingsContainer';
 import SubjectHeadingSearch from './Search/SubjectHeadingSearch';
 import Breadcrumbs from '../Breadcrumbs/Breadcrumbs';
-// import Store from '../../stores/Store';
 
 const SubjectHeadingPageWrapper = (props) => {
   const {
