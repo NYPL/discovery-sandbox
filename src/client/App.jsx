@@ -11,8 +11,12 @@ import useScroll from 'scroll-behavior/lib/useSimpleScroll';
 import { config, gaUtils } from 'dgx-react-ga';
 import a11y from 'react-a11y';
 import Iso from 'iso';
+import { createStore } from 'redux'
+import { Provider } from 'react-redux'
 
 import alt from '../app/alt';
+import reducer from '../app/reducer'
+
 
 import './styles/main.scss';
 
@@ -35,9 +39,12 @@ window.onload = () => {
     alt.bootstrap(state);
 
     const appHistory = useScroll(useRouterHistory(createBrowserHistory))();
+    const store = createStore(reducer)
 
     ReactDOM.hydrate(
-      <Router history={appHistory}>{routes(appHistory).client}</Router>,
+      <Provider store={store}>
+        <Router history={appHistory}>{routes(appHistory).client}</Router>
+      </Provider>,
       container,
     );
     gaUtils.trackPageview(window.location.pathname);

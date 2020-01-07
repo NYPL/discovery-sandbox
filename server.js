@@ -9,8 +9,11 @@ import Iso from 'iso';
 import webpack from 'webpack';
 import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
+import { createStore } from 'redux'
+import { Provider } from 'react-redux'
 
 import alt from './src/app/alt';
+import reducer from './src/app/reducer';
 import appConfig from './src/app/data/appConfig';
 import webpackConfig from './webpack.config';
 import apiRoutes from './src/server/ApiRoutes/ApiRoutes';
@@ -78,11 +81,17 @@ app.get('/*', (req, res) => {
     } else if (redirectLocation) {
       res.redirect(302, redirectLocation.pathname + redirectLocation.search);
     } else if (renderProps) {
-      const application = ReactDOMServer.renderToString(<RouterContext {...renderProps} />);
+      const store = createStore(reducer)
+      const application = ReactDOMServer.renderToString(
+        <Provider store={store}>
+          <RouterContext {...renderProps} />
+        </Provider>
+      );
       const title = DocumentTitle.rewind();
       const iso = new Iso();
 
       iso.add(application, alt.flush());
+      console.log("iso render", iso.render());
       res
         .status(200)
         .render('index', {
