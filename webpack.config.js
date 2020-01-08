@@ -97,6 +97,7 @@ const commonSettings = {
 // module correctly.
 if (ENV === 'development') {
   // Load dev depencies:
+  console.log('webpack dev')
   const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
 
   module.exports = merge(commonSettings, {
@@ -125,7 +126,14 @@ if (ENV === 'development') {
         {
           test: /\.jsx?$/,
           exclude: /(node_modules|bower_components)/,
-          use: 'babel-loader',
+          use: [
+            {
+              loader: 'babel-loader',
+              options: {
+                presets: ['@babel/preset-env'],
+              },
+            },
+          ],
         },
         {
           test: /\.scss?$/,
