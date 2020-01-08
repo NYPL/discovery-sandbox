@@ -131,7 +131,7 @@ class SubjectHeadingsContainer extends React.Component {
               sortBy={sortBy}
               sortButton={sortButton}
             />
-            {/*this.pagination()*/}
+            {this.pagination()}
           </div>
         </div>
       </div>
@@ -145,13 +145,13 @@ function mapStateToProps(state) {
   }
 }
 
-function mapDispatchToProps(dispatch) {
-  return {
-    updateSubjectHeadings: (subjectHeadings) => {
-      return dispatch({type: "UPDATE_SUBJECT_HEADINGS", subjectHeadings})
-    }
-  }
-}
+// function mapDispatchToProps(dispatch) {
+//   return {
+//     updateSubjectHeadings: (subjectHeadings) => {
+//       return dispatch({type: "UPDATE_SUBJECT_HEADINGS", subjectHeadings})
+//     }
+//   }
+// }
 
 SubjectHeadingsContainer.contextTypes = {
   router: PropTypes.object,
@@ -161,4 +161,4 @@ SubjectHeadingsContainer.propTypes = {
   location: PropTypes.object,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(SubjectHeadingsContainer);
+export default connect(mapStateToProps)(SubjectHeadingsContainer);

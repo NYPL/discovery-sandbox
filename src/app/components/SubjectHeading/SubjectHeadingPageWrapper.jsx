@@ -1,4 +1,7 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import { connect } from 'react-redux'
+// import { useParams } from 'react-router-dom'
+
 import PropTypes from 'prop-types';
 import SubjectHeadingShow from './SubjectHeadingShow';
 import SubjectHeadingsContainer from './SubjectHeadingsContainer';
@@ -24,6 +27,10 @@ const SubjectHeadingPageWrapper = (props) => {
 
   const [label, setLabel] = useState('');
 
+  const isShow = subjectHeadingUuid ? true : false;
+
+  if (!isShow) useEffect(useSubjectHeadingIndexParams)
+
   return (
     <div>
       <div className="subjectHeadingsBanner">
@@ -33,24 +40,42 @@ const SubjectHeadingPageWrapper = (props) => {
         </div>
         <div className="subjectHeadingsBannerInner">
           <h2>
-            { subjectHeadingUuid
+            { isShow
               ? label
               : ['Subject Headings ', filter ? <span key='bannerText'>containing <em>{filter}</em></span>: '']
             }
           </h2>
         </div>
       </div>
-      {subjectHeadingUuid ?
+      {isShow ?
         <SubjectHeadingShow
           {...props}
           key={subjectHeadingUuid}
           setBannerText={setLabel}
         />
         :
-        <SubjectHeadingsContainer {...props} key={containerKey} />
+        <SubjectHeadingsContainer
+          {...props}
+          key={containerKey}
+          subjectHeadings={[]}
+        />
       }
     </div>
   );
 };
 
-export default SubjectHeadingPageWrapper;
+function mapStateToProps(state) {
+  return {
+    subjectHeadings: state.subjectHeadings,
+  }
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    updateSubjectHeadings: (subjectHeadings) => {
+      return dispatch({type: "UPDATE_SUBJECT_HEADINGS", subjectHeadings})
+    }
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(SubjectHeadingPageWrapper);

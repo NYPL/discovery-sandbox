@@ -93,9 +93,10 @@ router
   .route(`${appConfig.baseUrl}/api/subjectHeadings*`)
   .get(SubjectHeadings.proxyRequest)
 
-router
-  .route(`${appConfig.baseUrl}/subject_headings`)
-  .get(SubjectHeadings.proxyRequest)
+// to be implemented if this is the pattern we want to continue with...
+// router
+//   .route(`${appConfig.baseUrl}/subject_headings`)
+//   .get(SubjectHeadings.proxyRequest)
 
 router
   .route(appConfig.baseUrl)
