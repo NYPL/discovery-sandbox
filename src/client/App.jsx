@@ -40,7 +40,7 @@ window.onload = () => {
 
     const appHistory = useScroll(useRouterHistory(createBrowserHistory))();
 
-    ReactDOM.hydrate(
+    ReactDOM.render(
       <BrowserRouter basename={appConfig.baseUrl}>
         <Route path="/"
           component={Application}
