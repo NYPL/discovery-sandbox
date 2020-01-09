@@ -29,7 +29,7 @@ const SubjectHeadingPageWrapper = (props) => {
 
   const isShow = subjectHeadingUuid ? true : false;
 
-  if (!isShow) useEffect(useSubjectHeadingIndexParams)
+  // if (!isShow) useEffect(useSubjectHeadingIndexParams)
 
   return (
     <div>
@@ -64,18 +64,4 @@ const SubjectHeadingPageWrapper = (props) => {
   );
 };
 
-function mapStateToProps(state) {
-  return {
-    subjectHeadings: state.subjectHeadings,
-  }
-}
-
-function mapDispatchToProps(dispatch) {
-  return {
-    updateSubjectHeadings: (subjectHeadings) => {
-      return dispatch({type: "UPDATE_SUBJECT_HEADINGS", subjectHeadings})
-    }
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(SubjectHeadingPageWrapper);
+export default SubjectHeadingPageWrapper;

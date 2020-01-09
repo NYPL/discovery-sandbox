@@ -1,8 +1,9 @@
 import axios from 'axios';
+// import { connect } from 'react-redux'
 
 import appConfig from '../data/appConfig';
 
-function fetchForSubjectHeadingIndex(query) {
+export function fetchForSubjectHeadingIndex(query) {
   console.log(dispatch);
   let {
     fromLabel,
@@ -54,6 +55,6 @@ function fetchForSubjectHeadingIndex(query) {
   );
 }
 
-export {
-  subjectHeadingIndexFetcher
+export default {
+  fetchForSubjectHeadingIndex
 };

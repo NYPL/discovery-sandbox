@@ -13,6 +13,8 @@ import appConfig from '../../data/appConfig';
 import LoadingLayer from '../LoadingLayer/LoadingLayer';
 import Pagination from '../Pagination/Pagination';
 
+import { fetchForSubjectHeadingIndex } from '../../actions/SubjectHeadingActions'
+
 class SubjectHeadingsContainer extends React.Component {
   constructor(props) {
     super(props);
@@ -24,6 +26,63 @@ class SubjectHeadingsContainer extends React.Component {
     this.redirectTo = this.redirectTo.bind(this);
     this.updateSort = this.updateSort.bind(this);
     this.navigationLinks = this.navigationLinks.bind(this);
+  }
+
+  componentDidMount() {
+    let {
+      fromLabel,
+      fromComparator,
+      filter,
+      sortBy,
+      fromAttributeValue,
+    } = this.props.location.query;
+
+    if (!fromComparator) fromComparator = filter ? null : "start"
+    if (!fromLabel) fromLabel = filter ? null : "Aac"
+
+    const apiParamHash = {
+      from_comparator: fromComparator,
+      from_label: fromLabel,
+      filter,
+      sort_by: sortBy,
+      from_attribute_value: fromAttributeValue,
+    };
+
+    const apiParamString = Object
+      .entries(apiParamHash)
+      .map(([key, value]) => (value ? `${key}=${value}` : null))
+      .filter(pair => pair)
+      .join('&');
+
+    axios({
+      method: 'GET',
+      url: `${appConfig.shepApi}/subject_headings?${apiParamString}`,
+      crossDomain: true,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Content-Type': 'application/json',
+      },
+    },
+    ).then(
+      (res) => {
+        console.log(res.data.subject_headings);
+        this.props.updateSubjectHeadings(res.data.subject_headings)
+        // this.setState({
+        //   previousUrl: res.data.previous_url,
+        //   nextUrl: res.data.next_url,
+        //   subjectHeadings: res.data.subject_headings,
+        //   error: res.data.subject_headings.length === 0,
+        //   loading: false
+        // });
+      },
+    ).catch(
+      (err) => {
+        console.log('error: ', err);
+        if (!this.state.subjectHeadings || this.state.subjectHeadings.length === 0) {
+          this.setState({ error: true });
+        }
+      },
+    );
   }
 
   extractParam(paramName, url) {
@@ -102,15 +161,17 @@ class SubjectHeadingsContainer extends React.Component {
 
     if (!linked) linked = '';
 
+    console.log(subjectHeadings);
+
     console.log("SUBJECT HEADINGS", this.props.subjectHeadings);
 
-    if (error || subjectHeadings.length === 0) {
-      return (
-        <div>
-            'No results found for that search'
-        </div>
-      )
-    }
+    // if (error || subjectHeadings.length === 0) {
+    //   return (
+    //     <div>
+    //         'No results found for that search'
+    //     </div>
+    //   )
+    // }
 
     const sortButton = (
       filter
@@ -124,13 +185,16 @@ class SubjectHeadingsContainer extends React.Component {
             {this.pagination()}
             <div className="tableHeadingsWrapper">
             </div>
-            <SubjectHeadingsTable
-              subjectHeadings={subjectHeadings}
-              linked={linked}
-              location={location}
-              sortBy={sortBy}
-              sortButton={sortButton}
-            />
+            {subjectHeadings.length > 0 ?
+              <SubjectHeadingsTable
+                subjectHeadings={subjectHeadings}
+                linked={linked}
+                location={location}
+                sortBy={sortBy}
+                sortButton={sortButton}
+              />
+              : null
+            }
             {this.pagination()}
           </div>
         </div>
@@ -145,13 +209,13 @@ function mapStateToProps(state) {
   }
 }
 
-// function mapDispatchToProps(dispatch) {
-//   return {
-//     updateSubjectHeadings: (subjectHeadings) => {
-//       return dispatch({type: "UPDATE_SUBJECT_HEADINGS", subjectHeadings})
-//     }
-//   }
-// }
+function mapDispatchToProps(dispatch) {
+  return {
+    updateSubjectHeadings: (subjectHeadings) => {
+      return dispatch({type: "UPDATE_SUBJECT_HEADINGS", subjectHeadings})
+    }
+  }
+}
 
 SubjectHeadingsContainer.contextTypes = {
   router: PropTypes.object,
@@ -161,4 +225,4 @@ SubjectHeadingsContainer.propTypes = {
   location: PropTypes.object,
 };
 
-export default connect(mapStateToProps)(SubjectHeadingsContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(SubjectHeadingsContainer);
