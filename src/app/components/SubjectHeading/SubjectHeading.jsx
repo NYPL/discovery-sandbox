@@ -2,7 +2,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 
 import SubjectHeadingsTableBody from './SubjectHeadingsTableBody';
 import SortButton from './SortButton';

@@ -1,6 +1,6 @@
 /* globals document */
 import React from 'react';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import SubjectHeading from './SubjectHeading';

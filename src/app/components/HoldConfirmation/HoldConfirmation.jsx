@@ -1,7 +1,7 @@
 /* global window document */
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import {
   isArray as _isArray,
   isEmpty as _isEmpty,
