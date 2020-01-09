@@ -3,6 +3,8 @@ import React from 'react';
 import { Link } from 'react-router';
 import PropTypes from 'prop-types';
 import axios from 'axios';
+import { connect } from 'react-redux';
+
 import SubjectHeading from './SubjectHeading';
 import AdditionalSubjectHeadingsButton from './AdditionalSubjectHeadingsButton';
 import Range from '../../models/Range';
@@ -160,6 +162,12 @@ class SubjectHeadingsTableBody extends React.Component {
   }
 }
 
+function mapStateToProps(state) {
+  return {
+    subjectHeadings: state.subjectHeadings,
+  }
+}
+
 SubjectHeadingsTableBody.propTypes = {
   nested: PropTypes.string,
   subjectHeadings: PropTypes.array,
@@ -169,4 +177,4 @@ SubjectHeadingsTableBody.propTypes = {
   sortBy: PropTypes.string,
 };
 
-export default SubjectHeadingsTableBody;
+export default connect(mapStateToProps)(SubjectHeadingsTableBody);

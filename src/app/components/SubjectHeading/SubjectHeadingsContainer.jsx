@@ -187,7 +187,6 @@ class SubjectHeadingsContainer extends React.Component {
             </div>
             {subjectHeadings.length > 0 ?
               <SubjectHeadingsTable
-                subjectHeadings={subjectHeadings}
                 linked={linked}
                 location={location}
                 sortBy={sortBy}

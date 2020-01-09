@@ -19,8 +19,7 @@ const defaultState = {
 function reducer(state = defaultState, action) {
   switch (action.type) {
     case "UPDATE_SUBJECT_HEADINGS":
-      console.log("action", action);
-      return Object.assign({}, state, action.subjectHeadings)
+      return Object.assign({}, state, {subjectHeadings: action.subjectHeadings})
     default:
       return state
   }

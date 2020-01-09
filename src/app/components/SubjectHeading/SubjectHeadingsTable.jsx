@@ -21,7 +21,6 @@ export default (props) => {
       <SubjectHeadingsTableHeader sortButton={sortButton}/>
       <tbody>
         <SubjectHeadingsTableBody
-          subjectHeadings={subjectHeadings}
           linked={linked}
           location={location}
           sortBy={sortBy}
