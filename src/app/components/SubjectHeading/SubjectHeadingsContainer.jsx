@@ -3,6 +3,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import axios from 'axios';
+
 import SubjectHeadingsTable from './SubjectHeadingsTable'
 // import SubjectHeadingsList from './SubjectHeadingsList';
 import SubjectHeadingsTableHeader from './SubjectHeadingsTableHeader'
@@ -11,6 +12,8 @@ import SortButton from './SortButton';
 import appConfig from '../../data/appConfig';
 import LoadingLayer from '../LoadingLayer/LoadingLayer';
 import Pagination from '../Pagination/Pagination';
+
+import useQuery from '../../utils/useQuery'
 
 
 class SubjectHeadingsContainer extends React.Component {
@@ -33,7 +36,7 @@ class SubjectHeadingsContainer extends React.Component {
       filter,
       sortBy,
       fromAttributeValue,
-    } = this.props.location.query;
+    } = this.state.query;
 
     if (!fromComparator) fromComparator = filter ? null : "start"
     if (!fromLabel) fromLabel = filter ? null : "Aac"
@@ -151,8 +154,7 @@ class SubjectHeadingsContainer extends React.Component {
 
   render() {
     const { error, subjectHeadings, loading } = this.state;
-    const location = this.props.location;
-    let { linked, sortBy, filter } = this.props.location.query;
+    let { linked, sortBy, filter } = this.state.query;
 
     if (!linked) linked = '';
 

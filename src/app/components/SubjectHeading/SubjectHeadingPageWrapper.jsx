@@ -1,21 +1,23 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types';
+
 import SubjectHeadingShow from './SubjectHeadingShow';
 import SubjectHeadingsContainer from './SubjectHeadingsContainer';
 import SubjectHeadingSearch from './Search/SubjectHeadingSearch';
 import Breadcrumbs from '../Breadcrumbs/Breadcrumbs';
-// import Store from '../../stores/Store';
+
+import useQuery from '../../utils/useQuery'
 
 const SubjectHeadingPageWrapper = (props) => {
+  const queryString = props.location.search.replace('?', '')
+  const query = useQuery(queryString)
+
   const {
-    location: {
-      query,
-      query: {
-        filter,
-      },
-    },
-    params: {
-      subjectHeadingUuid,
+    filter,
+    match: {
+      params: {
+        subjectHeadingUuid,
+      }
     }
   } = props;
 
