@@ -33,7 +33,8 @@ class Search extends React.Component {
     };
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
+    console.log("nextProps", nextProps);
     this.setState(nextProps);
   }
 
@@ -127,7 +128,7 @@ class Search extends React.Component {
         Actions.updatePage('1');
         setTimeout(() => {
           this.props.updateIsLoadingState(false);
-          this.context.router.push(`${appConfig.baseUrl}/search?${apiQuery}`);
+          this.props.push(`${appConfig.baseUrl}/search?${apiQuery}`);
         }, 500);
         resolve();
       }, reject);

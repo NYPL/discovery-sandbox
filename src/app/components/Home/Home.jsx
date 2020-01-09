@@ -47,6 +47,7 @@ class Home extends React.Component {
                     <Search
                       createAPIQuery={basicQuery(this.props)}
                       updateIsLoadingState={this.updateIsLoadingState}
+                      push={this.props.history.push}
                     />
                   </div>
                 </div>
