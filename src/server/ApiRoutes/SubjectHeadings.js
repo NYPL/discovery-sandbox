@@ -2,7 +2,7 @@ import axios from 'axios';
 
 import Bib from './Bib';
 import logger from '../../../logger';
-import appConfig from '../../../appConfig';
+import appConfig from '../../app/data/appConfig';
 
 const convertShepBibsToDiscoveryBibs = (response) => {
   return Promise.all(

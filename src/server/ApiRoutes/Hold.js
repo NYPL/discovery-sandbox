@@ -5,7 +5,7 @@ import {
 } from 'underscore';
 
 import appConfig from '../../app/data/appConfig';
-import locationCodes from '../app/data/locationCodes';
+import locationCodes from '../../app/data/locationCodes';
 import locationDetails from '../../../locations';
 import User from './User';
 import Bib from './Bib';
