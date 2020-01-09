@@ -22,6 +22,7 @@ class SubjectHeadingsContainer extends React.Component {
     this.state = {
       error: false,
       loading: true,
+      query: useQuery(props.location.search)
     };
     this.pagination = this.pagination.bind(this);
     this.redirectTo = this.redirectTo.bind(this);
