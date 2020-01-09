@@ -4,7 +4,8 @@ import compress from 'compression';
 import DocumentTitle from 'react-document-title';
 import React from 'react';
 import ReactDOMServer from 'react-dom/server';
-import { match, RouterContext } from 'react-router';
+import { match, } from 'react-router';
+import { StaticRouter } from 'react-router-dom';
 import Iso from 'iso';
 import webpack from 'webpack';
 import cookieParser from 'cookie-parser';
@@ -15,6 +16,7 @@ import appConfig from './src/app/data/appConfig';
 import webpackConfig from './webpack.config';
 import apiRoutes from './src/server/ApiRoutes/ApiRoutes';
 import routes from './src/app/routes/routes';
+import Application from './src/app/components/Application/Application'
 
 import initializePatronTokenAuth from './src/server/routes/auth';
 import { getPatronData } from './src/server/routes/api';
@@ -70,19 +72,25 @@ app.use('/', apiRoutes);
 app.get('/*', (req, res) => {
   alt.bootstrap(JSON.stringify(res.locals.data || {}));
 
-  const appRoutes = (req.url).indexOf(appConfig.baseUrl) !== -1 ? routes().client : routes().server;
+  // const appRoutes = routes
 
-  match({ routes: appRoutes, location: req.url }, (error, redirectLocation, renderProps) => {
-    if (error) {
-      res.status(500).send(error.message);
-    } else if (redirectLocation) {
-      res.redirect(302, redirectLocation.pathname + redirectLocation.search);
-    } else if (renderProps) {
-      const application = ReactDOMServer.renderToString(<RouterContext {...renderProps} />);
+  // match({ routes: appRoutes, location: req.url }, (error, redirectLocation, renderProps) => {
+    // if (error) {
+    //   res.status(500).send(error.message);
+    // } else if (redirectLocation) {
+    //   res.redirect(302, redirectLocation.pathname + redirectLocation.search);
+    // } else if (renderProps) {
+      const context = {}
+
+      const serverSideApplication = ReactDOMServer.renderToString(
+        <StaticRouter context={context} location={req.url}>
+          <Application />
+        </StaticRouter>
+      );
       const title = DocumentTitle.rewind();
       const iso = new Iso();
 
-      iso.add(application, alt.flush());
+      iso.add(serverSideApplication, alt.flush());
       res
         .status(200)
         .render('index', {
@@ -94,10 +102,10 @@ app.get('/*', (req, res) => {
           isProduction,
           baseUrl: appConfig.baseUrl,
         });
-    } else {
-      res.status(404).redirect(`${appConfig.baseUrl}/`);
-    }
-  });
+    // } else {
+    //   res.status(404).redirect(`${appConfig.baseUrl}/`);
+    // }
+  // });
 });
 
 const server = app.listen(app.get('port'), (error) => {

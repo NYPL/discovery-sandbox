@@ -5,12 +5,16 @@ import "regenerator-runtime/runtime";
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Router, useRouterHistory } from 'react-router';
+import { useRouterHistory } from 'react-router';
+import { Route, BrowserRouter } from 'react-router-dom';
 import createBrowserHistory from 'history/lib/createBrowserHistory';
 import useScroll from 'scroll-behavior/lib/useSimpleScroll';
 import { config, gaUtils } from 'dgx-react-ga';
 import a11y from 'react-a11y';
 import Iso from 'iso';
+
+import appConfig from '../app/data/appConfig'
+import Application from '../app/components/Application/Application'
 
 import alt from '../app/alt';
 
@@ -37,7 +41,11 @@ window.onload = () => {
     const appHistory = useScroll(useRouterHistory(createBrowserHistory))();
 
     ReactDOM.hydrate(
-      <Router history={appHistory}>{routes(appHistory).client}</Router>,
+      <BrowserRouter basename={appConfig.baseUrl}>
+        <Route path="/"
+          component={Application}
+        />
+      </BrowserRouter>,
       container,
     );
     gaUtils.trackPageview(window.location.pathname);
