@@ -40,7 +40,7 @@ const SubjectHeadingPageWrapper = (props) => {
                       : ['Subject Headings ', filter ? <span key='bannerText'>containing <em>{filter}</em></span>: '']
                     }
                 </h1>
-                <SubjectHeadingSearch />
+                
               </div>
             </div>
           </div>
