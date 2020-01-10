@@ -42,9 +42,7 @@ window.onload = () => {
 
     ReactDOM.render(
       <BrowserRouter basename={appConfig.baseUrl}>
-        <Route path="/"
-          component={Application}
-        />
+        <Application />
       </BrowserRouter>,
       container,
     );
