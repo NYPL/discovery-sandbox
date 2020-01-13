@@ -37,10 +37,10 @@ class SearchResultsPage extends React.Component {
     // this.focus = this.focus.bind(this);
   }
 
-  componentDidMount() {
-    // document.getElementById('search-query').focus();
-    // this.setState({ document: window.document });
-  }
+  // componentDidMount() {
+  //   document.getElementById('search-query').focus();
+  //   this.setState({ document: window.document });
+  // }
 
 
   shouldComponentUpdate() {
@@ -136,7 +136,7 @@ class SearchResultsPage extends React.Component {
           <LoadingLayer
             status={this.state.isLoading}
             title="Searching"
-          
+
           />
           <div className="nypl-page-header">
             <div className="nypl-full-width-wrapper filter-page">

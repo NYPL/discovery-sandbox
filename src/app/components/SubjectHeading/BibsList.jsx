@@ -1,14 +1,20 @@
 import React from 'react';
 import { Link } from 'react-router';
 import PropTypes from 'prop-types';
-import LibraryItem from '../../utils/item';
 import axios from 'axios';
-import appConfig from '../../data/appConfig';
 import {
   isEmpty as _isEmpty,
   isArray as _isArray,
 } from 'underscore';
+
+import Actions from '../../actions/Actions';
+import LibraryItem from '../../utils/item';
+import {
+  ajaxCall,
+  trackDiscovery,
+} from '../../utils/utils';
 import ItemTable from '../Item/ItemTable';
+import appConfig from '../../data/appConfig';
 import Pagination from '../Pagination/Pagination';
 
 class BibsList extends React.Component {
@@ -22,9 +28,37 @@ class BibsList extends React.Component {
       nextUrl: props.nextUrl,
     }
     this.updateBibPage = this.updateBibPage.bind(this);
+    this.getBibRecord = this.getBibRecord.bind(this);
   }
 
   // from here down until render() is copied and only slightly modifed from '../Results/ResultsList'
+
+  /*
+   * getBibRecord(e, bibId)
+   * @description Get updated information for a bib and route the patron to the bib page.
+   * @param {object} e Event object.
+   * @param {string} bibId The bib's id.
+   * @param {string} bibTitle The bib's title.
+   */
+  getBibRecord(e, bibId, bibTitle) {
+    e.preventDefault();
+
+    trackDiscovery('Bib', bibTitle);
+    ajaxCall(`${appConfig.baseUrl}/api/bib?bibId=${bibId}`,
+      (response) => {
+        Actions.updateBib(response.data);
+        setTimeout(() => {
+          this.context.router.push(`${appConfig.baseUrl}/bib/${bibId}`);
+        }, 500);
+      },
+      (error) => {
+        console.error(
+          'Error attempting to make an ajax request to fetch a bib record from ResultsList',
+          error,
+        );
+      },
+    );
+  }
 
   getBibTitle(bib) {
     if (!bib.titleDisplay || !bib.titleDisplay.length) {
@@ -76,7 +110,7 @@ class BibsList extends React.Component {
       <li key={bibId} className={`nypl-results-item ${hasRequestTable ? 'has-request' : ''}`}>
         <h3>
           <Link
-            onClick={(e) => console.log(e)}
+            onClick={e => this.getBibRecord(e, bibId, bibTitle)}
             to={`${appConfig.baseUrl}/bib/${bibId}`}
             className="title"
           >
@@ -215,5 +249,9 @@ class BibsList extends React.Component {
     );
   }
 }
+
+BibsList.contextTypes = {
+  router: PropTypes.object,
+};
 
 export default BibsList;
