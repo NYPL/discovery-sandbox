@@ -76,7 +76,8 @@ class BibsList extends React.Component {
       <li key={bibId} className={`nypl-results-item ${hasRequestTable ? 'has-request' : ''}`}>
         <h3>
           <Link
-            to={`${appConfig.baseUrl}/bib/${bibId}?searchKeywords=${this.props.searchKeywords}`}
+            onClick={(e) => console.log(e)}
+            to={`${appConfig.baseUrl}/bib/${bibId}`}
             className="title"
           >
             {bibTitle}
