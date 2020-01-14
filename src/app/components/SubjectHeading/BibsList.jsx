@@ -53,7 +53,7 @@ class BibsList extends React.Component {
       },
       (error) => {
         console.error(
-          'Error attempting to make an ajax request to fetch a bib record from ResultsList',
+          'Error attempting to make an ajax request to fetch a bib record from BibsList',
           error,
         );
       },
