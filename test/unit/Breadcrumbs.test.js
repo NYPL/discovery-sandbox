@@ -6,7 +6,7 @@ import Adapter from 'enzyme-adapter-react-16';
 
 
 import Breadcrumbs from './../../src/app/components/Breadcrumbs/Breadcrumbs';
-import appConfig from '../../data/appConfig';
+import appConfig from '../../src/app/data/appConfig';
 
 Enzyme.configure({ adapter: new Adapter() });
 

@@ -9,7 +9,7 @@ import Adapter from 'enzyme-adapter-react-16';
 import sinon from 'sinon';
 import Search from '../../src/app/components/Search/Search';
 import { basicQuery } from '../../src/app/utils/utils';
-import appConfig from '../../data/appConfig';
+import appConfig from '../../src/app/data/appConfig';
 import store from '../../src/app/stores/Store';
 
 Enzyme.configure({ adapter: new Adapter() });
