@@ -4,8 +4,8 @@ import Bib from './Bib';
 import User from './User';
 import Hold from './Hold';
 import Search from './Search';
+import appConfig from '../../app/data/appConfig';
 import SubjectHeadings from './SubjectHeadings';
-import appConfig from '../../../appConfig';
 
 const router = express.Router();
 

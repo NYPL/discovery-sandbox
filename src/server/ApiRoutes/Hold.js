@@ -4,8 +4,8 @@ import {
   omit as _omit,
 } from 'underscore';
 
-import appConfig from '../../../appConfig';
-import locationCodes from '../../../locationCodes';
+import appConfig from '../../app/data/appConfig';
+import locationCodes from '../../app/data/locationCodes';
 import locationDetails from '../../../locations';
 import User from './User';
 import Bib from './Bib';
@@ -498,6 +498,7 @@ function createHoldRequestAjax(req, res) {
     null,
     req.query.itemSource,
     (response) => {
+      console.log('response: ', response, response.data, 'req: ', req);
       const data = JSON.parse(response).data;
       res.json({
         id: data.id,
@@ -530,6 +531,7 @@ function createHoldRequestEdd(req, res) {
     req.body.form,
     req.body.itemSource,
     (response) => {
+      console.log('response: ', response);
       const data = JSON.parse(response).data;
       res.json({
         id: data.id,

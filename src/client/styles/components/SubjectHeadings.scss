@@ -1,120 +1,157 @@
-.subjectHeadingRow {
+.subjectHeadingsTable {
+  display: table;
   width: 100%;
-  min-width: 100%;
-  min-height: 1px;
-}
-
-.subjectHeadingMainContent .subjectHeadingRow {
+  font-size: 16px;
   a {
+    text-decoration: none;
     display: flex;
+  }
+
+  tbody > .openSubjectHeading {
+    background-color: #E8E4E3;
+      &.topLevel {
+        background-color: lightgray;
+      }
+      .subjectHeadingLabelInner, .subjectHeadingAttribute {
+        background-color: lightgray;
+      }
+  }
+  .nestedSubjectHeading {
+    background-color: #E8E4E3;
+    .subjectHeadingsTableCell {
+      border-top: 1px solid #E8E4E3;
+    }
+  }
+  .subjectHeadingRow {
+    text-align: left;
+    display: table-row;
+    &.preview {
+      width: 100%;
+      .previewDiv {
+        width: 100%;
+        justify-content: center;
+        > em {
+          margin-left: 15%;
+        }
+        .previewInner {
+          width: 100%;
+          justify-content: center;
+          display: flex;
+        }
+        em {
+          color: #31806a;
+        }
+      }
+      .previewUl {
+        justify-content: space-around;
+        display: flex;
+        width: 100%;
+        margin-bottom: 0px;
+        list-style: none;
+        ul {
+          width: 100%;
+          justify-content: left;
+          li {
+            display: flex;
+            justify-content: left;
+            margin-bottom: 5px;
+            &.fullLabel {
+              font-size: .75rem;
+            }
+            &.bibCount {
+              color: #31806a;
+            }
+          }
+        }
+      }
+    }
+    .subjectHeadingAttribute {
+      padding-left: 10px;
+      padding-right: 10px;
+      text-align: right;
+    }
+    .subjectHeadingsTableCell {
+      height: 100%;
+      display: table-cell;
+      .subjectHeadingLabelInner {
+        height: 100%;
+        position: relative;
+        padding-left: 5px;
+        a:hover {
+          color: #176e91;
+          cursor: pointer;
+        }
+        .subjectHeadingToggle {
+          position: absolute;
+          left: -20px;
+
+          &:focus {
+            outline-color: #ffb81d;
+            outline-style: solid;
+            outline-width: 0.125rem;
+          }
+        }
+      }
+    }
+    .sortButton {
+      position: absolute;
+    }
+  }
+  .seeMoreButton {
+    background-color: #E8E4E3;
+    border: none;
+    background: none;
+    padding: 0;
+    text-align: inherit;
+
+    &:focus {
+      outline-color: #ffb81d;
+      outline-style: solid;
+      outline-width: 0.125rem;
+    }
+
+  }
+
+  th > .subjectHeadingLabelInner {
+    text-align: initial;
+    padding-left: 5px;
   }
 }
 
-.subjectHeadingMainContent.index .tableHeadingsWrapper {
-  display: flex;
+
+.emph {
+  &.mainHeading {
+    font-weight: bold;
+    span {
+      font-weight: bold;
+    }
+  }
+  &:not(:hover) {
+    color: #a83232;
+    .noEmph:not(:hover) {
+      color: black;
+    }
+    text-align: left;
+  }
 }
 
-.subjectHeadingRow.tableHeadings {
-  display: flex;
-  font-weight: 500;
-  margin-bottom: 10px;
-}
 
-a {
-  color: inherit;
-  text-decoration: none;
-}
+/// ^^^^^^ this should probably be a separate file ^^^^^
 
 .subjectHeadingsBannerInner {
   display: inline-block;
   width: 100%;
 }
 
-.subjectHeadingRow:hover {
-  color: inherit;
-}
-
 .subjectHeadingInfo {
   display: flex;
 }
 
-.subjectHeadingAttribute.sortButton {
-  height: 1rem;
-  font-size: 0.75rem;
-  margin-top: -3px;
-  margin-left: 5px;
-}
-
 .subjectMainContentWrapper {
   position: relative;
-  .subjectHeadingRow.tableHeadings {
-    margin-bottom: 15px;
-    display: flex;
-  }
   .page-count {
     display: none;
   }
-}
-
-.subjectHeadingRow.openSubjectHeading {
-  background: #E8E4E3;
-}
-
-div.subjectHeadingRow.openSubjectHeading {
-  &:not(.noChildren) {
-    border-bottom: 2px solid #E8E4E3;
-  }
-
-  > .subjectHeadingLabelContainer {
-    background: lightgrey;
-  }
-  > .subjectHeadingToggle {
-    background: lightgrey;
-  }
-  > .subjectHeadingAttribute {
-    background: lightgrey;
-  }
-}
-
-.subjectHeadingRow span {
-  margin-bottom: 0px;
-}
-
-.subjectHeadingToggle {
-  padding-right: 10px;
-}
-
-.subjectHeadingLabel:hover {
-  // text-decoration: underline; most SCC pages do not have underline on hover
-  color: #176e91;
-}
-
-.subjectHeadingLabelContainer {
-  list-style: none;
-  font-weight: 500;
-  width: 65%;
-  position: sticky;
-
-  .subjectHeadingLabel {
-    word-wrap: break-word;
-    cursor: pointer;
-    position: relative;
-  }
-
-}
-
-.subjectHeadingToggle {
-  position: relative;
-  z-index: 1;
-}
-
-.subjectHeadingRow > .subjectHeadingAttribute {
-  max-width: none;
-  width: 80px;
-  text-align: right;
-  padding-right: 2%;
-  overflow-wrap: initial;
-  cursor: pointer;
 }
 
 .subjectHeadingNav {
@@ -171,114 +208,23 @@ div.subjectHeadingRow.openSubjectHeading {
   }
 }
 
-.nestedSubjectHeadingList.frames {
-  font-size: 0;
-}
-
-.nestedSubjectHeadingList.frames li {
-  font-size: 14px; font-size: 1.4rem;
-  display: inline;
-}
-
-.nestedSubjectHeading {
-  background-color: #E8E4E3;
-}
-
 .subjectHeadingMainContent {
   margin: 0 auto;
 }
 
-.subjectMainContentWrapper {
-  margin: 0 auto;
-}
-
-.subjectHeadingList, .preview ul {
-  list-style: none;
-}
-
-.subjectHeadingRow.tableHeadings span {
-  font-weight: 700;
-  cursor: default;
-
-  .subjectHeadingLabel:hover {
-    text-decoration: none;
-    color: inherit;
-  }
-}
-
-.emph {
-  color: #a83232;
-}
-
-.subjectHeadingLabel:hover .emph {
-  color: #176e91;
-}
-
-.subjectHeadingMainContent span {
-  line-height: 1.50;
-  font-weight: 400;
-  font-size: 1rem;
-}
+// .subjectHeadingMainContent span {
+//   font-weight: 400;
+// }
 
 .subjectHeadingMainContent.index {
   font-size: 0;
   width: 80%;
 }
 
-.subjectHeadingList {
-  font-size: 0;
-  padding-left: 0px;
-}
-
-.subjectHeadingList li {
-  margin-bottom: .5rem;
-
-  .preview {
-    font-size: 1rem;
-    margin-left: 12%;
-    max-width: 760px;
-
-    & > ul {
-      -webkit-columns: 2;
-      columns: 2;
-      list-style: none;
-      line-height: 1em;
-      padding-top: .4em;
-    }
-
-    & > em {
-      margin-left: -4%;
-      width: 100%;
-    }
-
-    .fullLabel {
-      font-size: .75rem;
-    }
-
-    .bibCount, em, .fullLabel {
-      color: #31806a;
-    }
-  }
-}
-
-.nestedSubjectHeadingList {
-  background-color: #E8E4E3;
-  padding-bottom: 3px;
-
-  li {
-    margin-bottom: 0;
-  }
-
-  .subjectHeadingLabelContainer {
-    margin-left: 0px;
-  }
-
-  .openSubjectHeading {
-    li:last-child {
-      margin-bottom: .5rem;
-    }
-  }
-}
+// .subjectHeadingList {
+//   font-size: 0;
+//   padding-left: 0px;
+// }
 
 .subjectHeadingMainContent.show {
   display: grid;
@@ -298,12 +244,18 @@ div.subjectHeadingRow.openSubjectHeading {
 
   .toIndex:hover {
     text-decoration: underline;
+    cursor: pointer;
   }
 }
 
 .bibs-list {
   font-size: 14px;
   grid-area: bibs;
+
+  &:focus {
+    outline: none;
+    box-shadow: inset 0 0 0 4px lightBlue;
+  }
 
   ul {
     list-style: none;
@@ -336,10 +288,6 @@ div.subjectHeadingRow.openSubjectHeading {
   margin-left: 1%;
   margin-bottom: 1%;
 
-  .subjectHeadingLabelContainer > .subjectHeadingLabel {
-    padding-left: 0px;
-  }
-
   .backgroundContainer {
     background-color: #E8E4E3;
     margin-bottom: 1%;
@@ -350,22 +298,6 @@ div.subjectHeadingRow.openSubjectHeading {
     margin-left: 1%;
   }
 
-  .subjectHeadingRow.tableHeadings span {
-    font-weight: 600;
-    font-size: 12px;
-  }
-
-  span {
-    font-size: .8rem;
-  }
-
-  li {
-    width: 100%;
-  }
-
-  .subjectHeadingToggle {
-    font-size: 1rem;
-  }
 }
 
 .subjectHeadingContext {
@@ -383,6 +315,10 @@ div.subjectHeadingRow.openSubjectHeading {
   .subjectHeadingToggle {
     display: none;
   }
+
+  // .subjectHeadingLabel, .subjectHeadingAttribute {
+  //   border-bottom: 1px solid #E8E4E3;
+  // }
 }
 
 .autocomplete {
@@ -481,8 +417,8 @@ div.subjectHeadingRow.openSubjectHeading {
   }
 }
 
-.staticDots {
-  margin-left: 20px;
+span > .verticalEllipse {
+  margin-left: 40px;
 }
 
 .verticalEllipse {
@@ -495,7 +431,7 @@ div.subjectHeadingRow.openSubjectHeading {
 .subjectHeadingInfoBox {
   width: 80%;
   min-width: 400px;
-  span {
+  .subjectHeadingsTableCell {
     font-size: 12px;
   }
   h4 {
@@ -513,17 +449,6 @@ div.subjectHeadingRow.openSubjectHeading {
   margin-top: 3px;
 }
 
-span.subjectHeadingToggle {
-  display: inline-block;
-  max-width: none;
-  width: 15px;
-  font-size: 25px;
-  font-weight: 100;
-  text-align: center;
-  line-height: .75;
-  cursor: default;
-}
-
 .nypl-breadcrumbs a {
   text-decoration: underline;
 
@@ -538,16 +463,11 @@ span.subjectHeadingToggle {
   }
 }
 
-.subjectHeadingRow.openSubjectHeading:not(.nestedSubjectHeading) {
-  background: lightgray;
-}
-
 .subjectHeadingBannerNav {
   display: flex;
   width: 100%;
   justify-content: space-between;
   nav {
-    // margin: 0 auto;
     align-self: flex-end;
   }
   ol {

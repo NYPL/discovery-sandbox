@@ -3,7 +3,7 @@ import { Link } from 'react-router';
 import PropTypes from 'prop-types';
 import LibraryItem from '../../utils/item';
 import axios from 'axios';
-import appConfig from '../../../../appConfig';
+import appConfig from '../../data/appConfig';
 import {
   isEmpty as _isEmpty,
   isArray as _isArray,
@@ -174,10 +174,15 @@ class BibsList extends React.Component {
         updatePage={this.updateBibPage}
         page={bibPage}
         subjectShowPage
+        ariaControls="nypl-results-list"
       />
     );
     return (
-      <div className="bibs-list">
+      <div
+        className="bibs-list"
+        tabIndex='0'
+        aria-label='Titles related to this Subject Heading'
+      >
         <h4>Titles</h4>
         {
           !loading ?
@@ -185,7 +190,7 @@ class BibsList extends React.Component {
               {
                 this.state.bibs.length > 0
                 ? this.state.bibs.slice(lastBib - 9, lastBib + 1).map(
-                  bib => this.generateBibLi(bib),
+                  bib => this.generateBibLi(bib)
                 )
                 : null
               }

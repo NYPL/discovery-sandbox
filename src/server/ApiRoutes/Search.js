@@ -6,7 +6,7 @@ import {
   forEach as _forEach,
 } from 'underscore';
 
-import appConfig from '../../../appConfig';
+import appConfig from '../../app/data/appConfig';
 import {
   getReqParams,
   basicQuery,

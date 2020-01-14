@@ -2,13 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const SortButton = props => (
-  <span className="subjectHeadingAttribute sortButton">
+  <td className="sortButton">
     <select onChange={props.handler} defaultValue={props.sortBy}>
       <option value="alphabetical">Alphabetical</option>
       <option value="bibs">Titles</option>
       <option value="descendants">Subheadings</option>
     </select>
-  </span>
+  </td>
 );
 
 SortButton.propTypes = {

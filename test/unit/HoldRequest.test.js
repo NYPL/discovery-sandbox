@@ -2,12 +2,15 @@
 import React from 'react';
 import sinon from 'sinon';
 import { expect } from 'chai';
-import { mount } from 'enzyme';
+import Enzyme, { mount } from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
+
 import axios from 'axios';
 // Import the component that is going to be tested
 import HoldRequest from './../../src/app/components/HoldRequest/HoldRequest';
 import Actions from './../../src/app/actions/Actions';
 
+Enzyme.configure({ adapter: new Adapter() });
 const mockedItems = [
   {
     "@id": "res:i10000003",
@@ -81,10 +84,10 @@ describe('HoldRequest', () => {
     })
     afterEach(() => {
       axios.get.restore();
+      component.unmount();
     });
     it('should redirect for ineligible patrons', () => {
       router = sinon.stub(axios, 'get').callsFake(() => {
-        console.log('mocking axios: 1');
         return new Promise((resolve, reject) => {
           resolve({ data: { eligibility: false } });
         });
@@ -102,7 +105,6 @@ describe('HoldRequest', () => {
     });
     it('should not redirect for eligible patrons', () => {
       router = sinon.stub(axios, 'get').callsFake(() => {
-        console.log('mocking axios: 2');
         return new Promise((resolve, reject) => {
           resolve({ data: { eligibility: true } });
         });
@@ -217,9 +219,8 @@ describe('HoldRequest', () => {
 
     it('should display the item title.', () => {
       const item = component.find('.item');
-
-      expect(item.find('#item-link')).to.have.length(1);
-      expect(item.find('#item-link').text()).to.equal('Harry Potter');
+      expect(item.find('#item-link')).to.have.length(2);
+      expect(item.find('#item-link').at(1).text()).to.equal('Harry Potter');
     });
 
     it('should display the error message for invalid delivery locations.', () => {

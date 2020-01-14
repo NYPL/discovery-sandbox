@@ -1,5 +1,8 @@
 /* global loadA11y, window */
-import 'babel-polyfill';
+// lines 2 and 3 replace deprecated "babel-polyfill"
+import "core-js/stable";
+import "regenerator-runtime/runtime";
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Router, useRouterHistory } from 'react-router';
@@ -33,7 +36,7 @@ window.onload = () => {
 
     const appHistory = useScroll(useRouterHistory(createBrowserHistory))();
 
-    ReactDOM.render(
+    ReactDOM.hydrate(
       <Router history={appHistory}>{routes(appHistory).client}</Router>,
       container,
     );

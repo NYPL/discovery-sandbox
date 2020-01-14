@@ -1,13 +1,15 @@
 /* eslint-env mocha */
 import React from 'react';
 import { expect } from 'chai';
-import { shallow, mount } from 'enzyme';
+import Enzyme, { shallow, mount } from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
 
 import Pagination from '../../src/app/components/Pagination/Pagination';
 
 // The Pagination component displays the items currently being displayed. If there are more
 // than 50 items then the "next" link gets rendered. If the page prop is greater than 1,
 // the "previous" link gets rendered.
+Enzyme.configure({ adapter: new Adapter() });
 describe('Pagination', () => {
   describe('Default component', () => {
     let component;
@@ -66,7 +68,7 @@ describe('Pagination', () => {
     // The SVG titles should maybe not be here:
     it('should have a "next" link since there are more than 51 items', () => {
       expect(component.find('Link').children().length).to.equal(1);
-      expect(component.find('.next-link').text()).to.equal('NYPL Right Wedge SVG Icon Next');
+      expect(component.find('.next-link').at(1).text()).to.equal('NYPL Right Wedge SVG Icon Next');
     });
 
     it('should display what page you are on', () => {
@@ -92,8 +94,8 @@ describe('Pagination', () => {
 
     it('should have a "previous" and a "next" link', () => {
       expect(component.find('Link').children().length).to.equal(2);
-      expect(component.find('.previous-link').text()).to.equal('NYPL Left Wedge SVG Icon Previous');
-      expect(component.find('.next-link').text()).to.equal('NYPL Right Wedge SVG Icon Next');
+      expect(component.find('.previous-link').at(1).text()).to.equal('NYPL Left Wedge SVG Icon Previous');
+      expect(component.find('.next-link').at(1).text()).to.equal('NYPL Right Wedge SVG Icon Next');
     });
 
     it('should display what page you are on', () => {
@@ -115,8 +117,8 @@ describe('Pagination', () => {
 
     it('should have a "previous page" and a "next page" link', () => {
       expect(component.find('Link')).to.have.length(2);
-      expect(component.find('.previous-link').text()).to.equal('NYPL Left Wedge SVG Icon Previous');
-      expect(component.find('.next-link').text()).to.equal('NYPL Right Wedge SVG Icon Next');
+      expect(component.find('.previous-link').at(1).text()).to.equal('NYPL Left Wedge SVG Icon Previous');
+      expect(component.find('.next-link').at(1).text()).to.equal('NYPL Right Wedge SVG Icon Next');
     });
 
     it('should display what page you are on', () => {
@@ -175,7 +177,7 @@ describe('Pagination', () => {
 
     it('should return "2" since the next link was clicked', () => {
       expect(page).to.equal(1);
-      component.find('.next-link').simulate('click');
+      component.find('.next-link').at(1).simulate('click');
       expect(page).to.equal(2);
     });
   });
@@ -194,7 +196,7 @@ describe('Pagination', () => {
 
     it('should perform the passed function when it is clicked', () => {
       expect(page).to.equal(2);
-      component.find('.previous-link').simulate('click');
+      component.find('.previous-link').at(1).simulate('click');
       expect(page).to.equal(1);
     });
   });

@@ -1,26 +1,48 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
-import appConfig from '../../../../appConfig';
+import appConfig from '../../data/appConfig';
 
 const Preview = (props) => {
-  const { topHeadings } = props
+  const { topHeadings } = props;
+  const groupedHeadings = [[topHeadings[0]], [topHeadings[1]]];
+
+  if (topHeadings[2]) groupedHeadings[0].push(topHeadings[2]);
+  if (topHeadings[3]) groupedHeadings[1].push(topHeadings[3]);
 
   return (
-    <div className="preview"><em>Most common subheadings:</em>
-      <ul>
-        {topHeadings.map(heading => <PreviewItem heading={heading} key={heading.uuid}/>)}
+    <tr className="preview subjectHeadingRow">
+      <td colSpan="4">
+        <div className="previewDiv">
+          <em>Most common subheadings:</em>
+          <div className="previewInner">
+            <ul className="previewUl">
+              {groupedHeadings.map((headings, i) => <PreviewColumn key={i} column={headings} />)}
+            </ul>
+          </div>
+        </div>
+      </td>
+    </tr>
+  );
+};
+
+const PreviewColumn = (props) => {
+  const { column } = props;
+  return (
+    <li>
+      <ul className="previewColumn">
+        {column.map(heading => <PreviewItem heading={heading} key={heading.uuid} />)}
       </ul>
-    </div>
-  )
-}
+    </li>
+  );
+};
 
 const PreviewItem = (props) => {
-  const {heading} = props
+  const { heading } = props;
 
-  const displayLabel = heading.label.split(" -- ").slice(1).join(" -- ")
+  const displayLabel = heading.label.split(" -- ").slice(1).join(" -- ");
 
-  const path = `${appConfig.baseUrl}/subject_headings/${heading.uuid}`
+  const path = `${appConfig.baseUrl}/subject_headings/${heading.uuid}`;
 
   return (
     <li>
@@ -34,8 +56,8 @@ const PreviewItem = (props) => {
         </ul>
       </Link>
     </li>
-  )
-}
+  );
+};
 
 Preview.propTypes = {
   preview: PropTypes.array

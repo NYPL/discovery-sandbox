@@ -2,21 +2,24 @@
 import React from 'react';
 import MockAdapter from 'axios-mock-adapter';
 import { expect } from 'chai';
-import { shallow, mount } from 'enzyme';
+import Enzyme, { shallow, mount } from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
+
 import axios from 'axios';
 import sinon from 'sinon';
 
 import { basicQuery } from '../../src/app/utils/utils';
 import Sorter from '../../src/app/components/Sorter/Sorter';
-import appConfig from '../../appConfig';
+import appConfig from '../../src/app/data/appConfig';
 
+Enzyme.configure({ adapter: new Adapter() });
 describe('Sorter', () => {
   describe('Default - no javascript', () => {
     // Since this is a shallow render, the component itself is not mounted. The `js` flag
     // becomes true when the component is mounted on the client-side so we know that
     // javascript is enabled.
     it('should not render an input submit element', () => {
-      const component = shallow(<Sorter />);
+      const component = shallow(<Sorter />, { disableLifecycleMethods: true });
 
       expect(component.state('js')).to.equal(false);
       expect(component.find('input').length).to.equal(1);

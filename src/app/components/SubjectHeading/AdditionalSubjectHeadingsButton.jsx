@@ -22,11 +22,24 @@ class AdditionalSubjectHeadingsButton extends React.Component {
     const previous = this.props.button === 'previous';
 
     return (
-      <div onClick={this.onClick} className={interactive ? 'seeMoreButton' : 'staticDots'} style={{"paddingLeft":`${20*indentation}px`}}>
-          {interactive ? [previous ? '↑' : '↓', <em>See more</em>] : null}
-          {previous || !interactive ? null : <br /> }
-          {previous ? null : <VerticalEllipse />}
-      </div>
+      <tr className="subjectHeadingRow nestedSubjectHeading">
+        <td colSpan="3">
+          <span style={{"paddingLeft":`${40*indentation}px`}}>
+          {
+            interactive ?
+            <button
+              onClick={this.onClick}
+              className='seeMoreButton'
+            >
+              {previous ? '↑' : '↓'} <em key='seeMoreText'>See more</em>
+              {previous ? null : <br /> }
+              {previous ? null : <VerticalEllipse />}
+            </button>
+            : previous ? null : <VerticalEllipse />
+            }
+          </span>
+        </td>
+      </tr>
     );
   }
 }
