@@ -2,11 +2,10 @@ import React, { useState } from 'react'
 import PropTypes from 'prop-types';
 import DocumentTitle from 'react-document-title';
 
-import SccContainer from '../SccContainer/SccContainer'
-import SubjectHeadingShow from './SubjectHeadingShow';
-import SubjectHeadingsContainer from './SubjectHeadingsContainer';
-import SubjectHeadingSearch from './Search/SubjectHeadingSearch';
-import Breadcrumbs from '../Breadcrumbs/Breadcrumbs';
+import SccContainer from '../components/SccContainer/SccContainer'
+import SubjectHeadingShow from '../components/SubjectHeading/SubjectHeadingShow';
+import SubjectHeadingSearch from '../components/SubjectHeading/Search/SubjectHeadingSearch';
+import Breadcrumbs from '../components/Breadcrumbs/Breadcrumbs';
 
 const SubjectHeadingShowPage = (props) => {
   const {

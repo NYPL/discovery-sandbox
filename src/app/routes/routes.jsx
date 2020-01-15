@@ -6,7 +6,7 @@ import { IndexRoute, Route, Redirect } from 'react-router';
  * Pages
  */
 import SubjectHeadingsIndex from '../pages/SubjectHeadingsIndex';
-import SubjectHeadingShow from '../pages/SubjectHeading/SubjectHeadingShow';
+import SubjectHeadingShow from '../pages/SubjectHeadingShow';
 
 /*
  * Components
