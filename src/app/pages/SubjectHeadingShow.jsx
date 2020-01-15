@@ -17,8 +17,6 @@ const SubjectHeadingShowPage = (props) => {
 
   const [label, setLabel] = useState('');
 
-  console.log(label);
-
   return (
     <SccContainer
       mainContent={
