@@ -16,7 +16,6 @@ const useSccContainer = (MainPageComponent, bannerText) => {
                   <h1>
                       { bannerText }
                   </h1>
-                  { sccBannerRightElement }
                 </div>
               </div>
             </div>
