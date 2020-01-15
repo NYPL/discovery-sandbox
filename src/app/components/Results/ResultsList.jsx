@@ -13,7 +13,7 @@ import {
   trackDiscovery,
 } from '../../utils/utils';
 import ItemTable from '../Item/ItemTable';
-import appConfig from '../../../../appConfig';
+import appConfig from '../../data/appConfig';
 
 class ResultsList extends React.Component {
   constructor(props) {

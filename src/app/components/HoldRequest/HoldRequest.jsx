@@ -13,7 +13,7 @@ import DocumentTitle from 'react-document-title';
 import Breadcrumbs from '../Breadcrumbs/Breadcrumbs';
 
 import PatronStore from '../../stores/PatronStore';
-import appConfig from '../../../../appConfig';
+import appConfig from '../../data/appConfig';
 import LibraryItem from '../../utils/item';
 import LoadingLayer from '../LoadingLayer/LoadingLayer';
 import { trackDiscovery } from '../../utils/utils';
@@ -96,8 +96,8 @@ class HoldRequest extends React.Component {
     return (
       <div className="nypl-banner-alert">
         <p style={{ padding: '10px 20px 0px', margin: 0 }}>
-          Deliveries of offsite requests are subject to holiday scheduling. Please check 
-          that your items are labeled "Ready for Pickup" in your account in advance of 
+          Deliveries of offsite requests are subject to holiday scheduling. Please check
+          that your items are labeled "Ready for Pickup" in your account in advance of
           your visit.
         </p>
       </div>
@@ -299,7 +299,7 @@ class HoldRequest extends React.Component {
       </label>
     );
   }
-  
+
   render() {
     const searchKeywords = this.props.searchKeywords || '';
     const bib = (this.props.bib && !_isEmpty(this.props.bib)) ?

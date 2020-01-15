@@ -2,7 +2,7 @@ import {
   findWhere as _findWhere,
   isEmpty as _isEmpty,
 } from 'underscore';
-import LocationCodes from '../../../locationCodes';
+import LocationCodes from '../data/locationCodes';
 
 const itemSourceMappings = {
   SierraNypl: 'sierra-nypl',

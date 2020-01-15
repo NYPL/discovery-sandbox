@@ -14,7 +14,7 @@ import {
   destructureFilters,
 } from '../../utils/utils';
 import Actions from '../../actions/Actions';
-import appConfig from '../../../../appConfig';
+import appConfig from '../../data/appConfig';
 
 class App extends React.Component {
   constructor(props) {
@@ -24,16 +24,6 @@ class App extends React.Component {
       patron: PatronStore.getState(),
     };
     this.onChange = this.onChange.bind(this);
-  }
-
-  componentWillMount() {
-    const { data } = this.state;
-    if (!data.searchResults) {
-      ajaxCall(`${appConfig.baseUrl}/api?q=${data.searchKeywords}`, (response) => {
-        Actions.updateSearchResults(response.data.searchResults);
-        Actions.updateSearchKeywords(data.searchKeywords);
-      });
-    }
   }
 
   componentDidMount() {
@@ -87,11 +77,8 @@ class App extends React.Component {
             skipNav={{ target: 'mainContent' }}
             patron={this.state.patron}
           />
-
           {React.cloneElement(this.props.children, this.state.data)}
-
           <Footer />
-
           <Feedback location={this.props.location} />
         </div>
       </DocumentTitle>

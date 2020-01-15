@@ -11,7 +11,7 @@ import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
 
 import alt from './src/app/alt';
-import appConfig from './appConfig';
+import appConfig from './src/app/data/appConfig';
 import webpackConfig from './webpack.config';
 import apiRoutes from './src/server/ApiRoutes/ApiRoutes';
 import routes from './src/app/routes/routes';

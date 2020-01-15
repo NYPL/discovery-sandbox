@@ -1,11 +1,21 @@
 import nyplApiClient from '../routes/nyplApiClient';
 import logger from '../../../logger';
-import appConfig from '../../../appConfig';
+import appConfig from '../../app/data/appConfig';
 import axios from 'axios';
 import SubjectHeadings from './SubjectHeadings';
 
 const nyplApiClientCall = query =>
   nyplApiClient().then(client => client.get(`/discovery/resources/${query}`, { cache: false }));
+
+const shepApiCall = bibId => axios({
+  method: 'GET',
+  url: `${appConfig.shepApi}/bibs/${bibId}/subject_headings`,
+  crossDomain: true,
+  headers: {
+    'Access-Control-Allow-Origin': '*',
+    'Content-Type': 'application/json',
+  },
+})
 
 function fetchBib(bibId, cb, errorcb) {
   return Promise.all([
