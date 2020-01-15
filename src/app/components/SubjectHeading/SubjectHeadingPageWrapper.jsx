@@ -1,13 +1,14 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types';
+import DocumentTitle from 'react-document-title';
+
+import useSccContainer from '../SccContainer/SccContainer'
 import SubjectHeadingShow from './SubjectHeadingShow';
 import SubjectHeadingsContainer from './SubjectHeadingsContainer';
 import SubjectHeadingSearch from './Search/SubjectHeadingSearch';
 import Breadcrumbs from '../Breadcrumbs/Breadcrumbs';
-import DocumentTitle from 'react-document-title';
-// import Store from '../../stores/Store';
 
-const SubjectHeadingPageWrapper = (props) => {
+const SubjectHeadingPageContent = (props) => {
   const {
     location: {
       query,
@@ -26,37 +27,28 @@ const SubjectHeadingPageWrapper = (props) => {
 
   const [label, setLabel] = useState('');
 
+  const bannerText = subjectHeadingUuid ?
+      label
+      : ['Subject Headings', filter ? <span key='bannerText'> containing <em>{filter}</em></span>: '']
+
   return (
-    <DocumentTitle title="Subject Headings">
-      <main className="main-page">
-        <div className="nypl-page-header">
-          <div className="nypl-full-width-wrapper filter-page">
-            <div className="nypl-row">
-              <div className="nypl-column-full">
-                <Breadcrumbs type="subjectHeading" headingDetails={!!subjectHeadingUuid}/>
-                <h1>
-                    { subjectHeadingUuid
-                      ? label
-                      : ['Subject Headings ', filter ? <span key='bannerText'>containing <em>{filter}</em></span>: '']
-                    }
-                </h1>
-                
-              </div>
-            </div>
-          </div>
-        </div>
-              {subjectHeadingUuid ?
-                <SubjectHeadingShow
-                  {...props}
-                  key={subjectHeadingUuid}
-                  setBannerText={setLabel}
-                />
-                :
-                <SubjectHeadingsContainer {...props} key={containerKey} />
-              }
-      </main>
-    </DocumentTitle>
-  );
+    <React.Fragment>
+      {subjectHeadingUuid ?
+        <SubjectHeadingShow
+          {...props}
+          key={subjectHeadingUuid}
+          setBannerText={setLabel}
+        />
+        :
+        <SubjectHeadingsContainer {...props} key={containerKey}/>
+      }
+    </React.Fragment>
+  )
 };
+
+const SubjectHeadingPageWrapper = useSccContainer(
+  SubjectHeadingPageContent,
+  "Subject Headings"
+)
 
 export default SubjectHeadingPageWrapper;
