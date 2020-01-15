@@ -114,10 +114,6 @@ const Breadcrumbs = ({ query = '', type, bibUrl, itemUrl, edd, headingDetails })
         <ol>
           {crumbs}
         </ol>
-        {type === "subjectHeading"
-          ? <SubjectHeadingSearch />
-        : null
-      }
       </div>
     </nav>
   );
