@@ -61,12 +61,12 @@ class Sorter extends React.Component {
     const apiQuery = this.props.createAPIQuery({ sortBy, page: this.props.page });
 
     trackDiscovery('Sort by', sortBy);
-    this.props.updateIsLoadingState(true);
+    Actions.updateLoadingStatus(true);
     ajaxCall(`${appConfig.baseUrl}/api?${apiQuery}`, (response) => {
       Actions.updateSearchResults(response.data.searchResults);
       Actions.updateSortBy(sortBy);
       setTimeout(() => {
-        this.props.updateIsLoadingState(false);
+        Actions.updateLoadingStatus(false);
         this.context.router.push(`${appConfig.baseUrl}/search?${apiQuery}`);
       }, 500);
     });

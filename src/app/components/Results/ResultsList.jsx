@@ -34,20 +34,20 @@ class ResultsList extends React.Component {
   getBibRecord(e, bibId, bibTitle) {
     e.preventDefault();
 
-    this.props.updateIsLoadingState(true);
+    Actions.updateLoadingStatus(true);
 
     trackDiscovery('Bib', bibTitle);
     ajaxCall(`${appConfig.baseUrl}/api/bib?bibId=${bibId}`,
       (response) => {
         Actions.updateBib(response.data);
         setTimeout(() => {
-          this.props.updateIsLoadingState(false);
+          Actions.updateLoadingStatus(false);
           this.routeHandler(`${appConfig.baseUrl}/bib/${bibId}`);
         }, 500);
       },
       (error) => {
         setTimeout(() => {
-          this.props.updateIsLoadingState(false);
+          Actions.updateLoadingStatus(false);
         }, 500);
 
         console.error(
