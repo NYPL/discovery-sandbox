@@ -11,8 +11,6 @@ const IGNORE = [
 
 const fs = require('fs');
 
-console.log(process.cwd());
-
 function getExportStatement(file) {
   const text = fs.readFileSync(file, 'utf8');
   const match = text.match(/.*export(.*)/);
@@ -47,21 +45,28 @@ function getFileNames(file) {
 
 function shortenName(fileName, files) {
   const split = fileName.split('/');
-  let shortened = split.pop();
+  let shortened = split.pop().replace(/\..*/, '');
   while (files[shortened]) {
     shortened = split.pop() + shortened;
   }
-  return `@${shortened.replace(/\..*/, '')}`;
+  return `${shortened}`;
 }
 
 function mapNames(files) {
-  const mapped = {};
-  files.forEach((file) => {
-    mapped[shortenName(file, mapped)] = file;
-  });
-  return mapped;
+  const withoutAt = files
+    .reduce(
+      (mapped, file) =>
+        Object
+          .assign(mapped, { [shortenName(file, mapped)]: file }),
+      {},
+    );
+  return Object.keys(withoutAt)
+    .reduce(
+      (mapped, key) =>
+        Object
+          .assign(mapped, { [`@${key}`]: withoutAt[key] }),
+      {},
+    );
 }
 
 module.exports = { constructFileStructure, getFileNames, mapNames };
-
-// console.log(constructFileStructure(process.cwd()));
