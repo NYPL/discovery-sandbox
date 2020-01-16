@@ -10,7 +10,7 @@ import SubjectHeadingSearch from './Search/SubjectHeadingSearch'
 import SortButton from './SortButton';
 import appConfig from '../../data/appConfig';
 import LoadingLayer from '../LoadingLayer/LoadingLayer';
-import Pagination from '@pagination';
+import Pagination from '@Pagination';
 
 
 class SubjectHeadingsContainer extends React.Component {
