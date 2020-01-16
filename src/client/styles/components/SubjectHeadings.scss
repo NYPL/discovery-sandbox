@@ -431,11 +431,15 @@ span > .verticalEllipse {
 .subjectHeadingInfoBox {
   width: 80%;
   min-width: 400px;
+  padding-left: 4px;
+  padding-top: 4px;
+  margin-bottom: 14px;
   .subjectHeadingsTableCell {
     font-size: 12px;
   }
   h4 {
     font-size: 16px;
+    padding-bottom: 8px;
   }
   .subjectHeadingLabelContainer {
     padding: 2px;
@@ -444,7 +448,8 @@ span > .verticalEllipse {
 
 
 .relatedHeadingsBoundary {
-  border-top: #ebf0f7;
+  border-top: rgb(240, 240, 240);
+  color: rgb(240, 240, 240);
   width: 90%;
   margin-top: 3px;
 }

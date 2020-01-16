@@ -190,10 +190,10 @@ class SubjectHeadingShow extends React.Component {
           <div
             className="subjectHeadingContext subjectHeadingInfoBox"
             tabIndex='0'
-            aria-label='Adjacent Subject Headings'
+            aria-label='Neighboring Subject Headings'
           >
             <div className="backgroundContainer">
-              <h4>Adjacent Headings</h4>
+              <h4>Neighboring Subject Headings</h4>
             </div>
             <SubjectHeadingsTable
               subjectHeadings={contextHeadings}
@@ -206,7 +206,7 @@ class SubjectHeadingShow extends React.Component {
               to={contextHeadings && contextHeadings.length ? this.generateFullContextUrl() : '#'}
               className="link toIndex"
             >
-              See full context
+              Go to Subject Headings Index
             </Link>
           </div>
         </div>
