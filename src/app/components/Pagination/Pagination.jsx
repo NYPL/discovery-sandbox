@@ -30,7 +30,7 @@ class Pagination extends React.Component {
     const pageNum = type === 'Next' ? intPage + 1 : intPage - 1;
     const svg = type === 'Next' ? <RightWedgeIcon /> : <LeftWedgeIcon />;
     const { shepNavigation } = this.props
-    const subjectHeadingPage = this.props.subjectShowPage
+    const subjectHeadingPage = this.props.subjectShowPage || this.props.subjectIndexPage
 
     let url;
     let apiUrl;
@@ -50,7 +50,8 @@ class Pagination extends React.Component {
     linkProps.rel = type.toLowerCase()
     linkProps.className = `${type.toLowerCase()}-link`
 
-    if (!subjectHeadingPage) linkProps.onClick = e => this.onClick(e, pageNum, type)
+    if (!this.props.subjectIndexPage) linkProps.onClick = e => this.onClick(e, pageNum)
+
 
     return (
       <Link
@@ -67,13 +68,13 @@ class Pagination extends React.Component {
       total,
       page,
       perPage,
-      subjectShowPage,
     } = this.props;
+    const subjectHeadingPage = this.props.subjectShowPage || this.props.subjectIndexPage
     let nextPage;
     const prevPage = page > 1 ? this.getPage(page, 'Previous') : null;
     let pageFactor;
     let totalPages;
-    if (!subjectShowPage) {
+    if (!subjectHeadingPage) {
       if (!total) return null;
       pageFactor = parseInt(page, 10) * perPage;
       nextPage = (total < perPage || pageFactor > total) ? null : this.getPage(page, 'Next');
@@ -85,7 +86,7 @@ class Pagination extends React.Component {
     return (
       <nav className="nypl-results-pagination showPage" aria-label="More results">
         {prevPage}
-        {!subjectShowPage
+        {!subjectHeadingPage
           ?
             <span
               className={`page-count ${page === 1 ? 'first' : ''}`}

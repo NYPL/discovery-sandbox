@@ -147,13 +147,6 @@
   display: flex;
 }
 
-.subjectMainContentWrapper {
-  position: relative;
-  .page-count {
-    display: none;
-  }
-}
-
 .subjectHeadingNav {
   text-align: center;
   margin-bottom: 50px;
@@ -262,7 +255,7 @@
   }
 }
 
-.subjectHeadingShow {
+.subjectHeadingMainContent.show {
   h2 {
     max-width: 40rem;
     padding-left: 1.5%;
