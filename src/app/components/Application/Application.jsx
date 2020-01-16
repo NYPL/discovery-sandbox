@@ -76,7 +76,7 @@ class App extends React.Component {
             navData={navConfig.current}
             skipNav={{ target: 'mainContent' }}
             patron={this.state.patron}
-            />
+          />
           {React.cloneElement(this.props.children, this.state.data)}
           <Footer />
           <Feedback location={this.props.location} />

@@ -10,11 +10,13 @@ import SubjectHeadingSearch from './Search/SubjectHeadingSearch'
 import SortButton from './SortButton';
 import appConfig from '../../data/appConfig';
 import LoadingLayer from '../LoadingLayer/LoadingLayer';
-import Pagination from '../Pagination/Pagination';
+import easyTest from './easyTest';
 
 
 class SubjectHeadingsContainer extends React.Component {
   constructor(props) {
+    let Pagination;
+    import(`${easyTest.Pagination}`).then(pagination => Pagination = pagination);
     super(props);
     this.state = {
       error: false,
