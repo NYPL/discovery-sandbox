@@ -17,10 +17,14 @@ const SubjectHeadingsIndex = (props) => {
   return (
     <SccContainer
       mainContent={<SubjectHeadingsContainer {...props}/>}
-      bannerText={
-        ['Subject Headings', filter ? <span key='bannerText'> containing <em>{filter}</em></span>: '']
+      bannerOptions={
+        {
+          text: ['Subject Headings', filter ? <span key='bannerText'> containing <em>{filter}</em></span>: '']
+        }
       }
       bannerRightElement={<SubjectHeadingSearch />}
+      loadingLayerText="Subject Headings"
+      breadcrumbsType="subjectHeadings"
     />
   )
 }

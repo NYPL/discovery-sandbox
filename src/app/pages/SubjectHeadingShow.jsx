@@ -25,8 +25,14 @@ const SubjectHeadingShowPage = (props) => {
           setBannerText={setLabel}
         />
       }
-      bannerText={label}
-      bannerRightElement={<SubjectHeadingSearch />}
+      bannerOptions={
+        {
+          text: label,
+        }
+      }
+      extraBannerElement={<SubjectHeadingSearch />}
+      loadingLayerText="Subject Heading"
+      breadcrumbsType="subjectHeading"
     />
   )
 };
