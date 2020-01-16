@@ -1,3 +1,14 @@
+const IGNORE = [
+  '.ebextensions',
+  '.elasticbeanstalk',
+  '.git',
+  '.nyc_output',
+  'coverage',
+  'log',
+  'node_modules',
+  '.env',
+];
+
 const fs = require('fs');
 
 console.log(process.cwd());
@@ -22,6 +33,35 @@ function constructFileStructure(file) {
   return fileStructure;
 }
 
-module.exports = {constructFileStructure} ;
+function getFileNames(file) {
+  try {
+    if (IGNORE.some(name => file.includes(name))) return [];
+    return fs
+      .readdirSync(file)
+      .map(subfile => getFileNames(`${file}/${subfile}`))
+      .reduce((acc, el) => acc.concat(el), []);
+  } catch (ex) {
+    return [file];
+  }
+}
+
+function shortenName(fileName, files) {
+  const split = fileName.split('/');
+  let shortened = split.pop();
+  while (files[shortened]) {
+    shortened = split.pop() + shortened;
+  }
+  return `@${shortened.replace(/\..*/, '')}`;
+}
+
+function mapNames(files) {
+  const mapped = {};
+  files.forEach((file) => {
+    mapped[shortenName(file, mapped)] = file;
+  });
+  return mapped;
+}
+
+module.exports = { constructFileStructure, getFileNames, mapNames };
 
 // console.log(constructFileStructure(process.cwd()));
