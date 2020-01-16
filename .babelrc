@@ -9,5 +9,13 @@
       }
     ],
     "@babel/preset-react"
+  ],
+  "plugins": [
+    ["module-resolver", {
+     "root": ["./src"],
+     "alias": {
+       "@pagination": "./src/app/components/Pagination/Pagination.jsx"
+     }
+    }]
   ]
 }
