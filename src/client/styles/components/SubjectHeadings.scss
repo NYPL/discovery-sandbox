@@ -289,12 +289,10 @@
   margin-bottom: 1%;
 
   .backgroundContainer {
-    background-color: #E8E4E3;
     margin-bottom: 1%;
   }
 
   h4 {
-    background-color: #E8E4E3;
     margin-left: 1%;
   }
 
@@ -431,11 +429,14 @@ span > .verticalEllipse {
 .subjectHeadingInfoBox {
   width: 80%;
   min-width: 400px;
+  padding: 4px;
+  margin-bottom: 14px;
   .subjectHeadingsTableCell {
     font-size: 12px;
   }
   h4 {
     font-size: 16px;
+    padding-bottom: 8px;
   }
   .subjectHeadingLabelContainer {
     padding: 2px;
@@ -444,7 +445,8 @@ span > .verticalEllipse {
 
 
 .relatedHeadingsBoundary {
-  border-top: #ebf0f7;
+  border-top: rgb(240, 240, 240);
+  color: rgb(240, 240, 240);
   width: 90%;
   margin-top: 3px;
 }

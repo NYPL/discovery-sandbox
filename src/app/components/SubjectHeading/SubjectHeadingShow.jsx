@@ -173,6 +173,28 @@ class SubjectHeadingShow extends React.Component {
             : null
           }
           <div
+            className="subjectHeadingContext subjectHeadingInfoBox"
+            tabIndex='0'
+            aria-label='Neighboring Subject Headings'
+          >
+            <div className="backgroundContainer">
+              <h4>Neighboring Subject Headings</h4>
+            </div>
+            <SubjectHeadingsTable
+              subjectHeadings={contextHeadings}
+              location={location}
+              showId={uuid}
+              keyId="context"
+              container="context"
+            />
+            <Link
+              to={contextHeadings && contextHeadings.length ? this.generateFullContextUrl() : '#'}
+              className="link toIndex"
+            >
+              Go to Subject Headings Index
+            </Link>
+          </div>
+          <div
             className="subjectHeadingRelated subjectHeadingInfoBox"
             tabIndex='0'
             aria-label='Related Subject Headings'
@@ -186,28 +208,6 @@ class SubjectHeadingShow extends React.Component {
               keyId="related"
               container="narrower"
             />
-          </div>
-          <div
-            className="subjectHeadingContext subjectHeadingInfoBox"
-            tabIndex='0'
-            aria-label='Adjacent Subject Headings'
-          >
-            <div className="backgroundContainer">
-              <h4>Adjacent Headings</h4>
-            </div>
-            <SubjectHeadingsTable
-              subjectHeadings={contextHeadings}
-              location={location}
-              showId={uuid}
-              keyId="context"
-              container="context"
-            />
-            <Link
-              to={contextHeadings && contextHeadings.length ? this.generateFullContextUrl() : '#'}
-              className="link toIndex"
-            >
-              See full context
-            </Link>
           </div>
         </div>
       </div>
