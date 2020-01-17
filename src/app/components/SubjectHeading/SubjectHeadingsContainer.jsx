@@ -23,9 +23,11 @@ class SubjectHeadingsContainer extends React.Component {
     this.pagination = this.pagination.bind(this);
     this.updateSort = this.updateSort.bind(this);
     this.navigationLinks = this.navigationLinks.bind(this);
+    this.currentPage = this.currentPage.bind(this);
   }
 
   componentDidMount() {
+    console.log('mounting')
     let {
       fromLabel,
       fromComparator,
@@ -72,13 +74,17 @@ class SubjectHeadingsContainer extends React.Component {
     );
   }
 
+  currentPage() {
+    return parseInt(this.props.location.query.page || 2);
+  }
+
   extractParam(paramName, url) {
     const params = url.replace(/[^\?]*\?/, '');
     const matchdata = params.match(new RegExp(`(^|&)${paramName}=([^&]*)`));
     return matchdata && matchdata[2];
   }
 
-  convertApiUrlToFrontendUrl(url) {
+  convertApiUrlToFrontendUrl(url, type) {
     if (!url) return null;
     const path = this.props.location.pathname;
     const paramHash = {
@@ -96,7 +102,7 @@ class SubjectHeadingsContainer extends React.Component {
       )
       .filter(pair => pair)
       .join('&');
-    return `${path}?${paramString}`;
+    return `${path}?${paramString}&page=${this.currentPage() + (type === 'next' ? 1 : -1)}`;
   }
 
   updateSort(e) {
@@ -116,8 +122,8 @@ class SubjectHeadingsContainer extends React.Component {
       previousUrl,
       nextUrl,
     } = this.state;
-    const urlForPrevious = this.convertApiUrlToFrontendUrl(previousUrl);
-    const urlForNext = this.convertApiUrlToFrontendUrl(nextUrl);
+    const urlForPrevious = this.convertApiUrlToFrontendUrl(previousUrl, 'previous');
+    const urlForNext = this.convertApiUrlToFrontendUrl(nextUrl, 'next');
 
     return { previous: urlForPrevious, next: urlForNext }
   }
@@ -125,7 +131,7 @@ class SubjectHeadingsContainer extends React.Component {
   pagination() {
     return (
       <Pagination
-        page={2}
+        page={this.currentPage()}
         shepNavigation={this.navigationLinks()}
         subjectIndexPage
       />
@@ -152,8 +158,13 @@ class SubjectHeadingsContainer extends React.Component {
         ? <SortButton sortBy={sortBy || 'alphabetical'} handler={this.updateSort} />
         : null
     );
+
+
+    console.log('rendering', this.props.location.query);
     return (
-      <div className="nypl-column-full subjectHeadingMainContent index">
+      <div
+        className="nypl-column-full subjectHeadingMainContent index"
+      >
         {this.pagination()}
         <SubjectHeadingsTable
           subjectHeadings={subjectHeadings}
