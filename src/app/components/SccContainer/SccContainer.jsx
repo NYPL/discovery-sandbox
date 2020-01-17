@@ -18,13 +18,11 @@ const SccContainer = (props) => {
         <div className="nypl-full-width-wrapper filter-page">
           <div className="nypl-row">
             <div className="nypl-column-full">
-              <Breadcrumbs
-                type={props.breadcrumbsType}
-              />
-              <h1 aria-label={ props.bannerOptions.ariaLabel }>
+              <Breadcrumbs type="subjectHeading" headingDetails={false}/>
+              { props.extraBannerElement }
+              <h1>
                   { props.bannerOptions.text }
               </h1>
-              { props.extraBannerElement }
             </div>
           </div>
         </div>

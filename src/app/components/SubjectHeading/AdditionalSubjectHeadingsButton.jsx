@@ -23,7 +23,7 @@ class AdditionalSubjectHeadingsButton extends React.Component {
 
     return (
       <tr className="subjectHeadingRow nestedSubjectHeading">
-        <td colSpan="3">
+        <td colSpan="4">
           <span style={{"paddingLeft":`${40*indentation}px`}}>
           {
             interactive ?
