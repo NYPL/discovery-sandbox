@@ -20,7 +20,7 @@
     "deploy-development": "eb deploy discovery-ui-development --profile nypl-sandbox",
     "deploy-qa": "git checkout qa && git pull origin qa && eb deploy discovery-ui-qa --profile nypl-digital-dev",
     "deploy-production": "git checkout master && git pull origin master && eb deploy discovery-ui-production --profile nypl-digital-dev",
-    "mapNames": "node -e 'require(\".\/easyImports\").write()'"
+    "mapNames": "node -e 'require(\"./easyImports\").write()'"
   },
   "repository": {
     "type": "git",
@@ -83,7 +83,7 @@
     "alt": "^0.18.6",
     "aws-sdk": "2.99.0",
     "axios": "^0.19.0",
-    "babel-loader": "^6.4.1",
+    "babel-loader": "^8.0.0-beta.6",
     "babel-plugin-istanbul": "3.0.0",
     "babel-plugin-module-resolver": "^4.0.0",
     "babel-preset-env": "1.6.1",
