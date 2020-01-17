@@ -140,7 +140,6 @@ class SubjectHeadingsContainer extends React.Component {
   }
 
   pagination() {
-    console.log('Pagination: ', Pagination)
     return (
       <Pagination
         page={2}
