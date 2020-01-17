@@ -27,7 +27,6 @@ class SubjectHeadingsContainer extends React.Component {
   }
 
   componentDidMount() {
-    console.log('mounting')
     let {
       fromLabel,
       fromComparator,
@@ -159,8 +158,6 @@ class SubjectHeadingsContainer extends React.Component {
         : null
     );
 
-
-    console.log('rendering', this.props.location.query);
     return (
       <div
         className="nypl-column-full subjectHeadingMainContent index"
