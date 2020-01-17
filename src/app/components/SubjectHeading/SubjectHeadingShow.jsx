@@ -173,21 +173,6 @@ class SubjectHeadingShow extends React.Component {
             : null
           }
           <div
-            className="subjectHeadingRelated subjectHeadingInfoBox"
-            tabIndex='0'
-            aria-label='Related Subject Headings'
-          >
-            <div className="backgroundContainer">
-              <h4>Related Headings</h4>
-            </div>
-            <SubjectHeadingsTable
-              subjectHeadings={relatedHeadings}
-              location={location}
-              keyId="related"
-              container="narrower"
-            />
-          </div>
-          <div
             className="subjectHeadingContext subjectHeadingInfoBox"
             tabIndex='0'
             aria-label='Neighboring Subject Headings'
@@ -208,6 +193,21 @@ class SubjectHeadingShow extends React.Component {
             >
               Go to Subject Headings Index
             </Link>
+          </div>
+          <div
+            className="subjectHeadingRelated subjectHeadingInfoBox"
+            tabIndex='0'
+            aria-label='Related Subject Headings'
+          >
+            <div className="backgroundContainer">
+              <h4>Related Headings</h4>
+            </div>
+            <SubjectHeadingsTable
+              subjectHeadings={relatedHeadings}
+              location={location}
+              keyId="related"
+              container="narrower"
+            />
           </div>
         </div>
       </div>
