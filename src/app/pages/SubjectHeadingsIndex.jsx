@@ -15,7 +15,7 @@ const SubjectHeadingsIndex = (props) => {
     }
   } = props;
 
-  const componentKey = `subjectHeadingIndex${location.search}`
+  const componentKey = `subjectHeadingIndex${search}`
 
   return (
     <SccContainer
