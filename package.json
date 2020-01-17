@@ -19,7 +19,8 @@
     "nightwatch": "./node_modules/.bin/nightwatch",
     "deploy-development": "eb deploy discovery-ui-development --profile nypl-sandbox",
     "deploy-qa": "git checkout qa && git pull origin qa && eb deploy discovery-ui-qa --profile nypl-digital-dev",
-    "deploy-production": "git checkout master && git pull origin master && eb deploy discovery-ui-production --profile nypl-digital-dev"
+    "deploy-production": "git checkout master && git pull origin master && eb deploy discovery-ui-production --profile nypl-digital-dev",
+    "mapNames": "node -e 'require(\".\/easyImports\").write()'"
   },
   "repository": {
     "type": "git",
@@ -84,6 +85,7 @@
     "axios": "^0.19.0",
     "babel-loader": "^6.4.1",
     "babel-plugin-istanbul": "3.0.0",
+    "babel-plugin-module-resolver": "^4.0.0",
     "babel-preset-env": "1.6.1",
     "babel-preset-react": "6.24.1",
     "babel-register": "6.24.0",

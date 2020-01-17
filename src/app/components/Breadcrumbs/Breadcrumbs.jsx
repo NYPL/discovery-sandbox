@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 
+import SubjectHeadingSearch from '../SubjectHeading/Search/SubjectHeadingSearch';
+
 import { trackDiscovery } from '../../utils/utils';
 import appConfig from '../../data/appConfig';
 
@@ -108,9 +110,11 @@ const Breadcrumbs = ({ query = '', type, bibUrl, itemUrl, edd, headingDetails })
   return (
     <nav aria-label="Breadcrumbs" className="nypl-breadcrumbs">
       <span className="nypl-screenreader-only">You are here:</span>
-      <ol>
-        {crumbs}
-      </ol>
+      <div className="breadcrumbs-and-search-wrapper">
+        <ol>
+          {crumbs}
+        </ol>
+      </div>
     </nav>
   );
 };

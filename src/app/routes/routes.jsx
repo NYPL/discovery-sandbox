@@ -3,6 +3,12 @@ import React from 'react';
 import { IndexRoute, Route, Redirect } from 'react-router';
 
 /*
+ * Pages
+ */
+import SubjectHeadingsIndex from '../pages/SubjectHeadingsIndex';
+import SubjectHeadingShow from '../pages/SubjectHeadingShow';
+
+/*
  * Components
  */
 import Application from '../components/Application/Application';
@@ -12,8 +18,6 @@ import BibPage from '../components/BibPage/BibPage';
 import HoldRequest from '../components/HoldRequest/HoldRequest';
 import HoldConfirmation from '../components/HoldConfirmation/HoldConfirmation';
 import ElectronicDelivery from '../components/ElectronicDelivery/ElectronicDelivery';
-import SubjectHeadingsContainer from '../components/SubjectHeading/SubjectHeadingsContainer';
-import SubjectHeadingPageWrapper from '../components/SubjectHeading/SubjectHeadingPageWrapper';
 import NotFound404 from '../components/NotFound404/NotFound404';
 import appConfig from '../data/appConfig';
 
@@ -29,8 +33,8 @@ const routes = history => ({
       <Route path="/hold/request/:bibId-:itemId" component={HoldRequest} />
       <Route path="/hold/request/:bibId-:itemId/edd" component={ElectronicDelivery} />
       <Route path="/hold/confirmation/:bibId-:itemId" component={HoldConfirmation} />
-      <Route path="/subject_headings/:subjectHeadingUuid" component={SubjectHeadingPageWrapper} />
-      <Route path="/subject_headings" component={SubjectHeadingPageWrapper} />
+      <Route path="/subject_headings/:subjectHeadingUuid" component={SubjectHeadingShow} />
+      <Route path="/subject_headings" component={SubjectHeadingsIndex} />
       <Route path="/404" component={NotFound404} />
       <Redirect from="*" to="/404" />
     </Route>
@@ -45,8 +49,8 @@ const routes = history => ({
       <Route path={`${baseUrl}/hold/request/:bibId-:itemId`} component={HoldRequest} />
       <Route path={`${baseUrl}/hold/request/:bibId-:itemId/edd`} component={ElectronicDelivery} />
       <Route path={`${baseUrl}/hold/confirmation/:bibId-:itemId`} component={HoldConfirmation} />
-      <Route path={`${baseUrl}/subject_headings/:subjectHeadingUuid`} component={SubjectHeadingPageWrapper} />
-      <Route path={`${baseUrl}/subject_headings`} component={SubjectHeadingPageWrapper} />
+      <Route path={`${baseUrl}/subject_headings/:subjectHeadingUuid`} component={SubjectHeadingShow} />
+      <Route path={`${baseUrl}/subject_headings`} component={SubjectHeadingsIndex} />
       <Route path={`${baseUrl}/404`} component={NotFound404} />
       <Redirect from="*" to={`${baseUrl}/404`} />
     </Route>
