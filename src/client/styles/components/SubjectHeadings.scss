@@ -73,6 +73,9 @@
     .subjectHeadingsTableCell {
       height: 100%;
       display: table-cell;
+      &.sortButton {
+        text-align: center;
+      }
       .subjectHeadingLabelInner {
         height: 100%;
         position: relative;
@@ -109,10 +112,17 @@
 
   }
 
-  th > .subjectHeadingLabelInner {
-    text-align: initial;
-    padding-left: 5px;
+  th {
+    &> .subjectHeadingLabelInner {
+      text-align: initial;
+      padding-left: 5px;
+    }
+
+    &.sort {
+      text-align: center;
+    }
   }
+
 }
 
 
@@ -197,24 +207,6 @@
     color: #1b7fa7;
   }
 }
-
-.subjectHeadingMainContent {
-  margin: 0 auto;
-}
-
-// .subjectHeadingMainContent span {
-//   font-weight: 400;
-// }
-
-.subjectHeadingMainContent.index {
-  font-size: 0;
-  width: 80%;
-}
-
-// .subjectHeadingList {
-//   font-size: 0;
-//   padding-left: 0px;
-// }
 
 .subjectHeadingMainContent.show {
   display: grid;
@@ -451,12 +443,6 @@ span > .verticalEllipse {
 
   &:hover {
     text-decoration: none;
-  }
-}
-
-.sortButton {
-  select {
-    border: none;
   }
 }
 

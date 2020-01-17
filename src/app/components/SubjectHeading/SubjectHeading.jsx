@@ -247,7 +247,7 @@ class SubjectHeading extends React.Component {
           </td>
           <td className="subjectHeadingsTableCell subjectHeadingAttribute titles">{`${bib_count}`}</td>
           <td className="subjectHeadingsTableCell subjectHeadingAttribute narrower">{`${desc_count || '-'}`}</td>
-          <td className="subjectHeadingsTableCell subjectHeadingAttribute sortButton">
+          <td className="subjectHeadingsTableCell sortButton">
             { open && narrower.length > 1 && uuid.length > 0 && (container !== 'context')
               ? <SortButton sortBy={sortBy} handler={this.sortHandler} />
               : null
