@@ -16,7 +16,7 @@ const SccContainer = (props) => {
       />
     <div className="header-wrapper container-header">
         <div className="header-topWrapper filter-page">
-          <div className="nypl-row">
+          <div className="nypl-row container-row">
             <div className="nypl-column-full">
               <Breadcrumbs type={props.breadcrumbsType}/>
               { props.extraBannerElement }
@@ -33,7 +33,7 @@ const SccContainer = (props) => {
       { props.extraRow }
       <div className="header-wrapper">
         <div className="header-topWrapper">
-          <div className="nypl-row">
+          <div className="nypl-row container-row">
             <div className="nypl-column-full">
               { props.mainContent }
             </div>
