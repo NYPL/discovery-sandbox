@@ -4,7 +4,7 @@ const SubjectHeadingsTableHeader = () => (
   <thead>
     <tr>
       <th className="subjectHeadingsTableCell subjectHeadingLabel">
-        <div className="subjectHeadingToggle"></div>
+        <div className="subjectHeadingToggle" />
         <div className="subjectHeadingLabelInner">Subject Heading</div>
       </th>
       <th className="subjectHeadingsTableCell subjectHeadingAttribute titles">Titles</th>
