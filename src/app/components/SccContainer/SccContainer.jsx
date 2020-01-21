@@ -14,8 +14,8 @@ const SccContainer = (props) => {
         status={ Store.state.isLoading }
         title={ props.loadingLayerText }
       />
-      <div className="nypl-page-header">
-        <div className="nypl-full-width-wrapper filter-page">
+    <div className="header-wrapper">
+        <div className="header-topWrapper filter-page">
           <div className="nypl-row">
             <div className="nypl-column-full">
               <Breadcrumbs type={props.breadcrumbsType}/>
@@ -31,10 +31,12 @@ const SccContainer = (props) => {
         { props.secondaryExtraBannerElement }
       </div>
       { props.extraRow }
-      <div className="nypl-full-width-wrapper">
-        <div className="nypl-row">
-          <div className="nypl-column-full">
-            { props.mainContent }
+      <div className="header-wrapper">
+        <div className="header-topWrapper">
+          <div className="nypl-row">
+            <div className="nypl-column-full">
+              { props.mainContent }
+            </div>
           </div>
         </div>
       </div>
