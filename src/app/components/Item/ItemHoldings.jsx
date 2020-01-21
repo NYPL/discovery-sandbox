@@ -64,7 +64,7 @@ class ItemHoldings extends React.Component {
    */
   getRecord(e, bibId, itemId) {
     e.preventDefault();
-    this.props.updateIsLoadingState(true);
+    Actions.updateLoadingStatus(true);
 
     trackDiscovery('Item Request', 'Item Details');
     // Search for the bib? Just pass the data.
@@ -75,7 +75,7 @@ class ItemHoldings extends React.Component {
         Actions.updateDeliveryLocations(response.data.deliveryLocations);
         Actions.updateIsEddRequestable(response.data.isEddRequestable);
         setTimeout(() => {
-          this.props.updateIsLoadingState(false);
+          Actions.updateLoadingStatus(false);
           this.context.router.push(`${appConfig.baseUrl}/hold/request/${bibId}-${itemId}`);
         }, 500);
       })
@@ -83,7 +83,7 @@ class ItemHoldings extends React.Component {
         console.error('Error attemping to make an ajax Bib request in ItemHoldings', error);
 
         setTimeout(() => {
-          this.props.updateIsLoadingState(false);
+          Actions.updateLoadingStatus(false);
         }, 500);
       });
   }
