@@ -56,4 +56,8 @@ SubjectHeadings.propTypes = {
   i: PropTypes.integer,
 };
 
+SubjectHeadings.defaultProps = {
+  i: 0,
+};
+
 export default SubjectHeadings;
