@@ -12,7 +12,7 @@ const {
   displayTitle,
 } = appConfig;
 
-const Breadcrumbs = ({ query = '', type, bibUrl, itemUrl, edd, headingDetails }) => {
+const Breadcrumbs = ({ query, type, bibUrl, itemUrl, edd }) => {
   const defaultText = displayTitle;
   const onClick = pageTitle => trackDiscovery('Breadcrumbs', pageTitle);
   const homeLink = (
@@ -35,7 +35,7 @@ const Breadcrumbs = ({ query = '', type, bibUrl, itemUrl, edd, headingDetails })
     // Search Results page.
     const crumbs = [homeLink];
 
-    if (type === 'subjectHeading') {
+    if (type.startsWith('subjectHeading')) {
       crumbs.push(
         <li key="subjectHeading">
           <Link to={`${baseUrl}/subject_headings`}>
@@ -43,7 +43,7 @@ const Breadcrumbs = ({ query = '', type, bibUrl, itemUrl, edd, headingDetails })
           </Link>
         </li>
       );
-      if (headingDetails) {
+      if (type === 'subjectHeading') {
         crumbs.push(<li key="subjectHeadingDetails">Heading Details</li>);
       }
       return crumbs
@@ -126,5 +126,10 @@ Breadcrumbs.propTypes = {
   itemUrl: PropTypes.string,
   edd: PropTypes.bool,
 };
+
+Breadcrumbs.defaultProps = {
+  query: '',
+  type: '',
+}
 
 export default Breadcrumbs;

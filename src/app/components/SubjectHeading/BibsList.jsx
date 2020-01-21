@@ -10,6 +10,7 @@ import {
 } from 'underscore';
 import ItemTable from '../Item/ItemTable';
 import Pagination from '../Pagination/Pagination';
+import ResultsList from '../Results/ResultsList';
 
 class BibsList extends React.Component {
   constructor(props) {
@@ -24,91 +25,6 @@ class BibsList extends React.Component {
     this.updateBibPage = this.updateBibPage.bind(this);
   }
 
-  // from here down until render() is copied and only slightly modifed from '../Results/ResultsList'
-
-  getBibTitle(bib) {
-    if (!bib.titleDisplay || !bib.titleDisplay.length) {
-      const author = bib.creatorLiteral && bib.creatorLiteral.length ?
-        ` / ${bib.creatorLiteral[0]}` : '';
-      return bib.title && bib.title.length ? `${bib.title[0]}${author}` : '';
-    }
-    return bib.titleDisplay[0];
-  }
-
-  getYearDisplay(bib) {
-    if (_isEmpty(bib)) return null;
-
-    let dateStartYear = bib.dateStartYear;
-    let dateEndYear = bib.dateEndYear;
-
-    dateStartYear = dateStartYear === 999 ? 'unknown' : dateStartYear;
-    dateEndYear = dateEndYear === 9999 ? 'present' : dateEndYear;
-
-    if (dateStartYear && dateEndYear) {
-      return (<li className="nypl-results-date">{dateStartYear}-{dateEndYear}</li>);
-    } else if (dateStartYear) {
-      return (<li className="nypl-results-date">{dateStartYear}</li>);
-    }
-    return null;
-  }
-
-  generateBibLi(bib) {
-
-    // If bib was not successfully converted to a Discovery (json-ld) resource,
-    // display minimal properties from SHEP API:
-    if (!bib['@id']) {
-      return <li className="nypl-results-item not-in-discovery" key={bib.bnumber}>{bib.title} <br/> bib id: {bib.bnumber} <br/> [circ title; for proto only]</li>;
-    }
-
-    const result = bib;
-    const bibTitle = this.getBibTitle(result);
-    const bibId = result && result['@id'] ? result['@id'].substring(4) : '';
-    const materialType = result && result.materialType && result.materialType[0] ?
-      result.materialType[0].prefLabel : null;
-    const yearPublished = this.getYearDisplay(result);
-    const publicationStatement = result.publicationStatement && result.publicationStatement.length ?
-      result.publicationStatement[0] : '';
-    const items = LibraryItem.getItems(result);
-    const totalItems = items.length;
-    const hasRequestTable = items.length === 1;
-
-    return (
-      <li key={bibId} className={`nypl-results-item ${hasRequestTable ? 'has-request' : ''}`}>
-        <h3>
-          <Link
-            onClick={e => this.getBibRecord(e, bibId, bibTitle)}
-            to={`${appConfig.baseUrl}/bib/${bibId}?searchKeywords=${this.props.searchKeywords}`}
-            className="title"
-          >
-            {bibTitle}
-          </Link>
-        </h3>
-        <div className="nypl-results-item-description">
-          <ul>
-            <li className="nypl-results-media">{materialType}</li>
-            <li className="nypl-results-publication">{publicationStatement}</li>
-            {yearPublished}
-            <li className="nypl-results-info">
-              {totalItems} item{totalItems !== 1 ? 's' : ''}
-            </li>
-          </ul>
-        </div>
-        {
-          hasRequestTable &&
-            <ItemTable
-              items={items}
-              bibId={bibId}
-              getRecord={this.getItemRecord}
-              id={null}
-              searchKeywords={this.props.searchKeywords}
-            />
-        }
-      </li>
-    );
-  }
-
-
-
   updateBibPage(page, type) {
     const {
       bibs,
@@ -116,6 +32,8 @@ class BibsList extends React.Component {
       nextUrl,
       bibPage,
     } = this.state;
+
+    console.log(`going to ${type} shep show bibs`);
 
     if (type === 'Previous') {
       // FIXME: The following sometimes produces a bad `lastBib` value.
@@ -126,19 +44,12 @@ class BibsList extends React.Component {
       // which is not a valid range.
       if (lastBib > 9) this.setState({ lastBib: lastBib - 10, bibPage: bibPage - 1 });
     } else {
+      console.log("lastBib", lastBib, "bibs", bibs);
       if (lastBib + 10 < bibs.length) {
         this.setState({ lastBib: lastBib + 10, bibPage: bibPage + 1 });
       } else {
         this.setState({ loading: true }, () => {
-          axios({
-            method: 'GET',
-            url: nextUrl,
-            crossDomain: true,
-            headers: {
-              'Access-Control-Allow-Origin': '*',
-              'Content-Type': 'application/json',
-            },
-          })
+          axios(nextUrl)
             .then((res) => {
               const newNextUrl = res.data.next_url;
               const newBibs = this.state.bibs.concat(res.data.bibs);
@@ -149,7 +60,7 @@ class BibsList extends React.Component {
                 lastBib: newLast,
                 nextUrl: newNextUrl,
                 bibPage: this.state.bibPage + 1,
-              });
+              }, () => window.scrollTo(0,300));
             })
             .catch(
               (err) => {
@@ -162,12 +73,12 @@ class BibsList extends React.Component {
     }
   }
 
-
   render() {
     const {
       bibPage,
       lastBib,
       loading,
+      bibs
     } = this.state;
     const pagination = (
       <Pagination
@@ -186,15 +97,7 @@ class BibsList extends React.Component {
         <h4>Titles</h4>
         {
           !loading ?
-            <ul>
-              {
-                this.state.bibs.length > 0
-                ? this.state.bibs.slice(lastBib - 9, lastBib + 1).map(
-                  bib => this.generateBibLi(bib)
-                )
-                : null
-              }
-            </ul>
+            <ResultsList results={bibs.slice(lastBib - 9, lastBib + 1)}/>
           :
             <div className="subjectHeadingShowLoadingWrapper">
               <div className="loadingLayer-texts subjectHeadingShow">

@@ -44,8 +44,10 @@ class SubjectHeadingShow extends React.Component {
           mainHeading: {
             label: res.data.request.main_label,
           },
-          contextLoading: false
-        }, () => this.props.setBannerText(this.state.mainHeading.label));
+        }, () => {
+          this.props.setBannerText(this.state.mainHeading.label);
+          Actions.updateLoadingStatus(false);
+        });
       })
       .catch(
         (err) => {
@@ -155,11 +157,13 @@ class SubjectHeadingShow extends React.Component {
       return (<div>Not a subject heading</div>)
     }
     return (
-      <div className="subjectHeadingShow">
-        <LoadingLayer status={contextLoading} title={"Subject Heading"}/>
-        <div className="subjectHeadingMainContent show nypl-full-width-wrapper">
+      <React.Fragment>
+        <div className="subjectHeadingShow">
           {shepBibs.length > 0 ?
-            <BibsList shepBibs={shepBibs} nextUrl={bibsNextUrl} />
+            <BibsList
+              shepBibs={shepBibs}
+              nextUrl={bibsNextUrl}
+            />
             : null
           }
           <div
@@ -200,7 +204,7 @@ class SubjectHeadingShow extends React.Component {
             </Link>
           </div>
         </div>
-      </div>
+      </React.Fragment>
     )
   }
 }

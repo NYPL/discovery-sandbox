@@ -21,7 +21,6 @@ class SubjectHeadingsContainer extends React.Component {
       loading: true,
     };
     this.pagination = this.pagination.bind(this);
-    this.redirectTo = this.redirectTo.bind(this);
     this.updateSort = this.updateSort.bind(this);
     this.navigationLinks = this.navigationLinks.bind(this);
   }
@@ -52,16 +51,8 @@ class SubjectHeadingsContainer extends React.Component {
       .filter(pair => pair)
       .join('&');
 
-    axios({
-      method: 'GET',
-      url: `${appConfig.shepApi}/subject_headings?${apiParamString}`,
-      crossDomain: true,
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Content-Type': 'application/json',
-      },
-    },
-    ).then(
+    axios(`${appConfig.shepApi}/subject_headings?${apiParamString}`,)
+    .then(
       (res) => {
         this.setState({
           previousUrl: res.data.previous_url,
@@ -108,14 +99,6 @@ class SubjectHeadingsContainer extends React.Component {
     return `${path}?${paramString}`;
   }
 
-  redirectTo(url) {
-    const redirectFunction = function (e) {
-      e.preventDefault();
-      this.context.router.push(url);
-    };
-    return redirectFunction.bind(this);
-  }
-
   updateSort(e) {
     e.preventDefault();
     const {
@@ -144,7 +127,7 @@ class SubjectHeadingsContainer extends React.Component {
       <Pagination
         page={2}
         shepNavigation={this.navigationLinks()}
-        subjectShowPage
+        subjectIndexPage
       />
     );
   }
@@ -170,23 +153,16 @@ class SubjectHeadingsContainer extends React.Component {
         : null
     );
     return (
-      <div>
-        <LoadingLayer status={loading} title={"Subject Headings"}/>
-        <div className="subjectMainContentWrapper">
-          <div className="subjectHeadingMainContent index">
-            {this.pagination()}
-            <div className="tableHeadingsWrapper">
-            </div>
-            <SubjectHeadingsTable
-              subjectHeadings={subjectHeadings}
-              linked={linked}
-              location={location}
-              sortBy={sortBy}
-              sortButton={sortButton}
-            />
-            {this.pagination()}
-          </div>
-        </div>
+      <div className="nypl-column-full index">
+        {this.pagination()}
+        {sortButton}
+        <SubjectHeadingsTable
+          subjectHeadings={subjectHeadings}
+          linked={linked}
+          location={location}
+          sortBy={sortBy}
+        />
+        {this.pagination()}
       </div>
     );
   }

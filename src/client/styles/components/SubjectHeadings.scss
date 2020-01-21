@@ -73,6 +73,9 @@
     .subjectHeadingsTableCell {
       height: 100%;
       display: table-cell;
+      &.sortButton {
+        text-align: center;
+      }
       .subjectHeadingLabelInner {
         height: 100%;
         position: relative;
@@ -93,9 +96,6 @@
         }
       }
     }
-    .sortButton {
-      position: absolute;
-    }
   }
   .seeMoreButton {
     background-color: #E8E4E3;
@@ -112,10 +112,17 @@
 
   }
 
-  th > .subjectHeadingLabelInner {
-    text-align: initial;
-    padding-left: 5px;
+  th {
+    &> .subjectHeadingLabelInner {
+      text-align: initial;
+      padding-left: 5px;
+    }
+
+    &.sort {
+      text-align: center;
+    }
   }
+
 }
 
 
@@ -145,13 +152,6 @@
 
 .subjectHeadingInfo {
   display: flex;
-}
-
-.subjectMainContentWrapper {
-  position: relative;
-  .page-count {
-    display: none;
-  }
 }
 
 .subjectHeadingNav {
@@ -208,25 +208,7 @@
   }
 }
 
-.subjectHeadingMainContent {
-  margin: 0 auto;
-}
-
-// .subjectHeadingMainContent span {
-//   font-weight: 400;
-// }
-
-.subjectHeadingMainContent.index {
-  font-size: 0;
-  width: 80%;
-}
-
-// .subjectHeadingList {
-//   font-size: 0;
-//   padding-left: 0px;
-// }
-
-.subjectHeadingMainContent.show {
+.subjectHeadingShow {
   display: grid;
   grid-template-areas:
   'main main'
@@ -461,12 +443,6 @@ span > .verticalEllipse {
 
   &:hover {
     text-decoration: none;
-  }
-}
-
-.sortButton {
-  select {
-    border: none;
   }
 }
 

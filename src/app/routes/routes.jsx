@@ -7,13 +7,13 @@ import { IndexRoute, Route, Redirect } from 'react-router';
  */
 import SubjectHeadingsIndex from '../pages/SubjectHeadingsIndex';
 import SubjectHeadingShow from '../pages/SubjectHeadingShow';
+import SearchResults from '../pages/SearchResults';
 
 /*
  * Components
  */
 import Application from '../components/Application/Application';
 import Home from '../components/Home/Home';
-import SearchResultsPage from '../components/SearchResultsPage/SearchResultsPage';
 import BibPage from '../components/BibPage/BibPage';
 import HoldRequest from '../components/HoldRequest/HoldRequest';
 import HoldConfirmation from '../components/HoldConfirmation/HoldConfirmation';
@@ -27,7 +27,7 @@ const routes = history => ({
   server: (
     <Route path="/" component={Application} history={history}>
       <IndexRoute component={Home} />
-      <Route path="/search" component={SearchResultsPage} />
+      <Route path="/search" component={SearchResults} />
       <Route path="/bib/:bibId" component={BibPage} />
       <Route path="/bib/:bibId/all" component={BibPage} />
       <Route path="/hold/request/:bibId-:itemId" component={HoldRequest} />
@@ -43,7 +43,7 @@ const routes = history => ({
   client: (
     <Route path={`${baseUrl}/`} component={Application} history={history}>
       <IndexRoute component={Home} />
-      <Route path={`${baseUrl}/search`} component={SearchResultsPage} />
+      <Route path={`${baseUrl}/search`} component={SearchResults} />
       <Route path={`${baseUrl}/bib/:bibId`} component={BibPage} />
       <Route path={`${baseUrl}/bib/:bibId/all`} component={BibPage} />
       <Route path={`${baseUrl}/hold/request/:bibId-:itemId`} component={HoldRequest} />
