@@ -153,14 +153,14 @@ class SubjectHeadingsContainer extends React.Component {
         : null
     );
     return (
-      <div className="nypl-column-full subjectHeadingMainContent index">
+      <div className="nypl-column-full index">
         {this.pagination()}
+        {sortButton}
         <SubjectHeadingsTable
           subjectHeadings={subjectHeadings}
           linked={linked}
           location={location}
           sortBy={sortBy}
-          sortButton={sortButton}
         />
         {this.pagination()}
       </div>

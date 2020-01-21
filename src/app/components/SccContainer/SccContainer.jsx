@@ -18,19 +18,26 @@ const SccContainer = (props) => {
         <div className="nypl-full-width-wrapper filter-page">
           <div className="nypl-row">
             <div className="nypl-column-full">
-              <Breadcrumbs
-                type={props.breadcrumbsType}
-              />
-              <h1 aria-label={ props.bannerOptions.ariaLabel }>
+              <Breadcrumbs type={props.breadcrumbsType}/>
+              { props.extraBannerElement }
+              <h1
+                aria-label={props.bannerOptions.ariaLabel || props.bannerOptions.text}
+              >
                   { props.bannerOptions.text }
               </h1>
-              { props.extraBannerElement }
             </div>
           </div>
         </div>
         { props.secondaryExtraBannerElement }
       </div>
-      { props.mainContent }
+      { props.extraRow }
+      <div className="nypl-full-width-wrapper">
+        <div className="nypl-row">
+          <div className="nypl-column-full">
+            { props.mainContent }
+          </div>
+        </div>
+      </div>
     </main>
   )
 }

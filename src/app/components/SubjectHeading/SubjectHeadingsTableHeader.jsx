@@ -15,7 +15,7 @@ const SubjectHeadingsTableHeader = (props) => {
           </th>
           <th className="subjectHeadingsTableCell subjectHeadingAttribute titles">Titles</th>
           <th className="subjectHeadingsTableCell subjectHeadingAttribute narrower">Narrower</th>
-          {sortButton}
+          <th className="subjectHeadingsTableCell sort">Sort</th>
         </tr>
       </thead>
   );

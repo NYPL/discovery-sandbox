@@ -158,7 +158,7 @@ class SubjectHeadingShow extends React.Component {
     }
     return (
       <React.Fragment>
-        <div className="subjectHeadingMainContent show nypl-full-width-wrapper">
+        <div className="subjectHeadingShow">
           {shepBibs.length > 0 ?
             <BibsList
               shepBibs={shepBibs}

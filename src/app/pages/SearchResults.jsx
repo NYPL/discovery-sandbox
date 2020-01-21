@@ -8,6 +8,8 @@ import Search from '../components/Search/Search';
 import SearchResultsContainer from '../components/SearchResultsPage/SearchResultsPage'; // will change this file name after first merge for PR comparison purposes
 import FilterPopup from '../components/FilterPopup/FilterPopup';
 import SelectedFilters from '../components/Filters/SelectedFilters';
+import ResultsCount from '../components/ResultsCount/ResultsCount';
+import Sorter from '../components/Sorter/Sorter';
 
 import {
   basicQuery,
@@ -22,6 +24,7 @@ const SearchResults = (props) => {
     page,
     field,
     location,
+    sortBy,
   } = props;
 
   const [dropdownOpen, toggleDropdown] = useState(false);
@@ -104,6 +107,32 @@ const SearchResults = (props) => {
               </div>
             }
           </React.Fragment>
+        }
+        extraRow={
+          <div className="nypl-sorter-row">
+            <div className="nypl-full-width-wrapper">
+              <div className="nypl-row">
+                <div className="nypl-column-full">
+                  <ResultsCount
+                    count={totalResults}
+                    selectedFilters={selectedFilters}
+                    searchKeywords={searchKeywords}
+                    field={field}
+                    page={parseInt(page, 10)}
+                  />
+                  {
+                    !!(totalResults && totalResults !== 0) &&
+                    <Sorter
+                      sortBy={sortBy}
+                      page={page}
+                      searchKeywords={searchKeywords}
+                      createAPIQuery={createAPIQuery}
+                    />
+                  }
+                </div>
+              </div>
+            </div>
+          </div>
         }
         loadingLayerText="Searching"
         breadcrumbsType="search"
