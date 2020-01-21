@@ -20,7 +20,9 @@ const SccContainer = (props) => {
             <div className="nypl-column-full">
               <Breadcrumbs type="subjectHeading" headingDetails={false}/>
               { props.extraBannerElement }
-              <h1>
+              <h1
+                aria-label={props.bannerOptions.ariaLabel || props.bannerOptions.text}
+              >
                   { props.bannerOptions.text }
               </h1>
             </div>
@@ -28,6 +30,7 @@ const SccContainer = (props) => {
         </div>
         { props.secondaryExtraBannerElement }
       </div>
+      { props.extraRow }
       <div className="nypl-full-width-wrapper">
         <div className="nypl-row">
           <div className="nypl-column-full">
