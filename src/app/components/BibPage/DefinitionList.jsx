@@ -7,23 +7,18 @@ import SubjectHeadings from './SubjectHeadings';
  * Expects data in the form of [{ term: '', definition: '' }, {...}, ...].
  */
 const DefinitionList = ({ data, headings }) => {
-  const getDefinitions = (definitions) => {
+  const getDefinitions = definitions => definitions.map((item) => {
+    if (!item || (!item.term && !item.definition)) {
+      return null;
+    }
 
-    return definitions.map((item, i) => {
-      if (!item || (!item.term && !item.definition)) {
-        return null;
-      }
+    if (item.term === "Subject") return <SubjectHeadings key="subjects" headings={headings} />;
 
-      if (item.term === "Subject") {
-        return <SubjectHeadings key='subjects' headings={headings}/>
-      }
-
-      return ([
-        (<dt key={`term-${i}`}>{item.term}</dt>),
-        (<dd data={`definition-${i}`} key={`definition-${i}`}>{item.definition}</dd>),
-      ]);
-    });
-  };
+    return ([
+      (<dt key={`term-${item.term}`}>{item.term}</dt>),
+      (<dd data={`definition-${item.term}`} key={`definition-${item.term}`}>{item.definition}</dd>),
+    ]);
+  });
 
   if (!data || !data.length) {
     return null;
@@ -34,6 +29,7 @@ const DefinitionList = ({ data, headings }) => {
 
 DefinitionList.propTypes = {
   data: PropTypes.array,
+  headings: PropTypes.array,
 };
 
 export default DefinitionList;

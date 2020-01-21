@@ -1,7 +1,4 @@
-/* globals document */
 import React from 'react';
-import axios from 'axios';
-import { Link } from 'react-router';
 import PropTypes from 'prop-types';
 
 class AdditionalSubjectHeadingsButton extends React.Component {
@@ -21,21 +18,27 @@ class AdditionalSubjectHeadingsButton extends React.Component {
     } = this.props;
     const previous = this.props.button === 'previous';
 
+    const button = (
+      <button
+        onClick={this.onClick}
+        className="seeMoreButton"
+      >
+        {previous ? '↑' : '↓'} <em key="seeMoreText">See more</em>
+        {previous ? null : <br /> }
+        {previous ? null : <VerticalEllipse />}
+      </button>
+    );
+
+    const ellipse = previous ? null : <VerticalEllipse />;
+
     return (
       <tr className="subjectHeadingRow nestedSubjectHeading">
         <td colSpan="4">
-          <span style={{"paddingLeft":`${40*indentation}px`}}>
-          {
-            interactive ?
-            <button
-              onClick={this.onClick}
-              className='seeMoreButton'
-            >
-              {previous ? '↑' : '↓'} <em key='seeMoreText'>See more</em>
-              {previous ? null : <br /> }
-              {previous ? null : <VerticalEllipse />}
-            </button>
-            : previous ? null : <VerticalEllipse />
+          <span style={{ paddingLeft: `${40 * indentation}px` }}>
+            {
+              interactive ?
+              button
+              : ellipse
             }
           </span>
         </td>
@@ -44,20 +47,19 @@ class AdditionalSubjectHeadingsButton extends React.Component {
   }
 }
 
-const VerticalEllipse = () => {
-  return (
-    <div className="verticalEllipse">
-      <div>.</div>
-      <div>.</div>
-      <div>.</div>
-    </div>
-  )
-}
+const VerticalEllipse = () => (
+  <div className="verticalEllipse">
+    <div>.</div>
+    <div>.</div>
+    <div>.</div>
+  </div>
+);
 
 AdditionalSubjectHeadingsButton.propTypes = {
   updateParent: PropTypes.func,
   indentation: PropTypes.number,
   button: PropTypes.string,
+  interactive: PropTypes.bool,
 };
 
 export default AdditionalSubjectHeadingsButton;

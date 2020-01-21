@@ -1,8 +1,7 @@
-/* globals document */
 import React from 'react';
-import { Link } from 'react-router';
 import PropTypes from 'prop-types';
 import axios from 'axios';
+
 import SubjectHeading from './SubjectHeading';
 import AdditionalSubjectHeadingsButton from './AdditionalSubjectHeadingsButton';
 import Range from '../../models/Range';
@@ -18,7 +17,7 @@ class SubjectHeadingsTableBody extends React.Component {
       parentUuid,
     } = props;
     this.state = {
-      subjectHeadings: subjectHeadings,
+      subjectHeadings,
       range: this.initialRange(props),
       interactive: !(container === 'context') || location.pathname.includes(parentUuid),
     };
@@ -27,23 +26,16 @@ class SubjectHeadingsTableBody extends React.Component {
     this.listItemsInInterval = this.listItemsInInterval.bind(this);
   }
 
-  componentDidMount() {
-    window.lists = window.lists || [];
-    window.lists.push(this);
-  }
-
   componentDidUpdate() {
     if (!this.state.subjectHeadings && this.props.subjectHeadings) {
-      const newSubjectHeadings = this.props.subjectHeadings
+      const newSubjectHeadings = this.props.subjectHeadings;
       this.setState(
         { subjectHeadings: newSubjectHeadings,
           range: this.initialRange({ subjectHeadings: newSubjectHeadings }),
         }, () => {
           const { linked } = this.props;
           if (linked) {
-            axios({
-              url: `${appConfig.shepApi}/subject_headings/${linked}/context?type=relatives`
-            })
+            axios(`${appConfig.shepApi}/subject_headings/${linked}/context?type=relatives`)
               .then(
                 (res) => {
                   this.mergeSubjectHeadings(res.data.subject_headings, linked);
@@ -79,7 +71,6 @@ class SubjectHeadingsTableBody extends React.Component {
   listItemsInRange() {
     const {
       range,
-      subjectHeadings,
     } = this.state;
     return range.intervals.reduce((acc, el) =>
       acc.concat(this.listItemsInInterval(el))
@@ -95,14 +86,14 @@ class SubjectHeadingsTableBody extends React.Component {
       subjectHeadingsInInterval.unshift({
         button: 'previous',
         indentation,
-        updateParent: element => this.updateRange(range, interval, 'start', -10),
+        updateParent: () => this.updateRange(range, interval, 'start', -10),
       });
-    };
+    }
     if (end !== Infinity && subjectHeadings[end + 1]) {
       subjectHeadingsInInterval.push({
         button: 'next',
         indentation,
-        updateParent: element => this.updateRange(range, interval, 'end', 10),
+        updateParent: () => this.updateRange(range, interval, 'end', 10),
       });
     }
     return subjectHeadingsInInterval;
@@ -112,7 +103,6 @@ class SubjectHeadingsTableBody extends React.Component {
     const {
       indentation,
       nested,
-      related,
       location,
       container,
       sortBy,
@@ -134,12 +124,11 @@ class SubjectHeadingsTableBody extends React.Component {
             // A listItem will either be a subject heading or a place holder for a button
             // null
             <AdditionalSubjectHeadingsButton
-              indentation={listItem.indentation}
+              indentation={listItem.indentation || indentation}
               button={listItem.button}
               updateParent={listItem.updateParent}
               key={listItem.uuid || index}
               nested={nested}
-              indentation={indentation}
               interactive={interactive}
             />
             : <SubjectHeading
@@ -167,6 +156,8 @@ SubjectHeadingsTableBody.propTypes = {
   linked: PropTypes.string,
   location: PropTypes.object,
   sortBy: PropTypes.string,
+  container: PropTypes.string,
+  parentUuid: PropTypes.string,
 };
 
 export default SubjectHeadingsTableBody;
