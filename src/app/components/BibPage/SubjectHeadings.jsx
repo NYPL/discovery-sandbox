@@ -4,36 +4,38 @@ import { Link } from 'react-router';
 import appConfig from '../../data/appConfig';
 
 const constructSubjectHeading = (heading, i) => {
-  const { uuid, parent, label } = heading
+  const { uuid, parent, label } = heading;
   let subjectComponent;
-  if (label) subjectComponent = label.split(" -- ").pop()
-  if (!parent) return (
-    <Link
-      key={`${uuid} ${i}`}
-      to={`${appConfig.baseUrl}/subject_headings/${uuid}`}
-    >
-      {subjectComponent}
-    </Link>
-  );
+  if (label) subjectComponent = label.split(" -- ").pop();
+  if (!parent) {
+    return (
+      <Link
+        key={`${uuid} ${i}`}
+        to={`${appConfig.baseUrl}/subject_headings/${uuid}`}
+      >
+        {subjectComponent}
+      </Link>
+    );
+  }
 
-  return([
+  return ([
     constructSubjectHeading(parent),
-    <span key={`${uuid} ${i}`}> > </span>,
+    <span key={`${uuid} ${i}`}> {'>'} </span>,
     <Link
       key={uuid}
       to={`${appConfig.baseUrl}/subject_headings/${uuid}`}
     >
       {subjectComponent}
-    </Link>
-  ])
-}
+    </Link>,
+  ]);
+};
 
-const generateHeadingLi = (heading, i) => {
-  return <li key={heading.uuid}>{constructSubjectHeading(heading, i)}</li>
-}
+const generateHeadingLi = (heading, i) => (
+  <li key={heading.uuid}>{constructSubjectHeading(heading, i)}</li>
+);
 
 const SubjectHeadings = (props) => {
-  const { headings, i } = props
+  const { headings, i } = props;
 
   if (!headings) return null;
 
@@ -46,7 +48,12 @@ const SubjectHeadings = (props) => {
         </ul>
       </dd>
     </div>
-  )
-}
+  );
+};
+
+SubjectHeadings.propTypes = {
+  headings: PropTypes.array,
+  i: PropTypes.integer,
+};
 
 export default SubjectHeadings;

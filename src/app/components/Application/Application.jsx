@@ -89,6 +89,7 @@ class App extends React.Component {
 App.propTypes = {
   children: PropTypes.object,
   location: PropTypes.object,
+  route: PropTypes.object,
 };
 
 App.defaultProps = {

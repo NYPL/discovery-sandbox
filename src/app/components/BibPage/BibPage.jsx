@@ -1,4 +1,3 @@
-/* globals document */
 import React from 'react';
 import PropTypes from 'prop-types';
 import DocumentTitle from 'react-document-title';
@@ -17,7 +16,7 @@ import getOwner from '../../utils/getOwner';
 // Removed MarcRecord because the webpack MarcRecord is not working. Sep/28/2017
 // import MarcRecord from './MarcRecord';
 
-import Store from '../../stores/Store'
+import Store from '../../stores/Store';
 
 import {
   basicQuery,
@@ -27,7 +26,7 @@ import {
 const BibPage = (props) => {
   const {
     location,
-    searchKeywords
+    searchKeywords,
   } = props;
 
   const createAPIQuery = basicQuery(props);
@@ -68,7 +67,7 @@ const BibPage = (props) => {
     { label: 'Uniform Title', value: 'uniformTitle' },
     { label: 'Alternative Title', value: 'titleAlt' },
     { label: 'Former Title', value: 'formerTitle' },
-    { label: 'Subject', value: 'subjectHeadingData'},
+    { label: 'Subject', value: 'subjectHeadingData' },
     { label: 'Genre/Form', value: 'genreForm' },
     { label: 'Notes', value: 'React Component' },
     { label: 'Contents', value: 'tableOfContents' },
@@ -103,24 +102,22 @@ const BibPage = (props) => {
     />
   );
 
-  const additionalDetails = (<AdditionalDetailsViewer bib={bib}/>);
+  const additionalDetails = (<AdditionalDetailsViewer bib={bib} />);
 
 
   const otherLibraries = ['Princeton University Library', 'Columbia University Libraries'];
   const tabs = otherLibraries.includes(getOwner(bib)) ?
-    [{title: 'Details', content: bottomDetails}]
+    [{ title: 'Details', content: bottomDetails }]
     : [
-        {title: 'Details', content: bottomDetails},
-        {title: 'Full Description', content: additionalDetails}
-      ];
+      { title: 'Details', content: bottomDetails },
+      { title: 'Full Description', content: additionalDetails },
+    ];
 
-  const tabItems = (index) => {
-    if (index === 0) {
-      return (bottomDetails)
-    } else {
-      return (<AdditionalDetailsViewer bib={bib}/>)
-    }
-  }
+  const tabItems = tabIndex => (
+    tabIndex === 0 ?
+      bottomDetails
+      : <AdditionalDetailsViewer bib={bib} />
+  );
 
   return (
     <DocumentTitle title="Item Details | Shared Collection Catalog | NYPL">
@@ -165,7 +162,7 @@ const BibPage = (props) => {
                 <BibDetails
                   bib={bib}
                   fields={topFields}
-                  logging={true}
+                  logging
                   electronicResources={aggregatedElectronicResources}
                 />
 
@@ -184,13 +181,12 @@ const BibPage = (props) => {
       </main>
     </DocumentTitle>
   );
-}
+};
 
 BibPage.propTypes = {
   searchKeywords: PropTypes.string,
   location: PropTypes.object,
   bib: PropTypes.object,
-  isLoading: PropTypes.bool,
 };
 
 export default BibPage;

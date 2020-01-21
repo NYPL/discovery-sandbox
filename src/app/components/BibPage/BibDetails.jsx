@@ -18,7 +18,6 @@ import DefinitionList from './DefinitionList';
 import appConfig from '../../data/appConfig';
 import getOwner from '../../utils/getOwner';
 import LibraryItem from '../../utils/item';
-import axios from 'axios';
 
 class BibDetails extends React.Component {
   constructor(props) {
@@ -89,7 +88,7 @@ class BibDetails extends React.Component {
     return (
       <ul className="additionalDetails">
         {
-          bibValues.map((value, i) => {
+          bibValues.map((value) => {
             const url = `filters[${fieldValue}]=${value['@id']}`;
             let itemValue = fieldLinkable ?
               (
@@ -112,7 +111,7 @@ class BibDetails extends React.Component {
               );
             }
 
-            return (<li key={i}>{itemValue}</li>);
+            return (<li key={value.prefLabel}>{itemValue}</li>);
           })
         }
       </ul>
@@ -138,7 +137,7 @@ class BibDetails extends React.Component {
 
       return markup.length === 1
         ? markup.pop()
-        : (<ul>{markup.map((m, i) => (<li key={i}>{m}</li>))}</ul>);
+        : (<ul>{markup.map(m => (<li key={m}>{m}</li>))}</ul>);
     }
     return null;
   }
@@ -182,9 +181,22 @@ class BibDetails extends React.Component {
     return (
       <ul>
         {
-          bibValues.map((value, i) => {
+          bibValues.map((value) => {
             const url = `filters[${fieldValue}]=${value}`;
-            return <li key={`filter${i}`}>{this.getDefinitionOneItem(value, url, bibValues, fieldValue, fieldLinkable, fieldIdentifier, fieldSelfLinkable, fieldLabel)}</li>;
+            return (
+              <li key={`filter${fieldValue}`}>
+                {this.getDefinitionOneItem(
+                  value,
+                  url,
+                  bibValues,
+                  fieldValue,
+                  fieldLinkable,
+                  fieldIdentifier,
+                  fieldSelfLinkable,
+                  fieldLabel,
+                )}
+              </li>
+            );
           })
         }
       </ul>
@@ -258,7 +270,7 @@ class BibDetails extends React.Component {
       const fieldLinkable = field.linkable;
       const fieldSelfLinkable = field.selfLinkable;
       const fieldIdentifier = field.identifier;
-      let bibValues = bib[fieldValue];
+      const bibValues = bib[fieldValue];
 
       // skip absent fields
       if (bibValues && bibValues.length && _isArray(bibValues)) {
@@ -502,7 +514,7 @@ class BibDetails extends React.Component {
 
     const bibDetails = this.getDisplayFields(this.props.bib);
 
-    return (<DefinitionList data={bibDetails} headings={this.props.bib.subjectHeadingData}/>);
+    return (<DefinitionList data={bibDetails} headings={this.props.bib.subjectHeadingData} />);
   }
 }
 
