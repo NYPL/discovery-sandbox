@@ -81,7 +81,7 @@ class BibsList extends React.Component {
     );
     return (
       <div
-        className="bibs-list"
+        className="nypl-column-half bibs-list"
         tabIndex='0'
         aria-label="Titles related to this Subject Heading"
       >
