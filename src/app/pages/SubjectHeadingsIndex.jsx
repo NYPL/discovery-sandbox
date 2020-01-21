@@ -8,11 +8,14 @@ const SubjectHeadingsIndex = (props) => {
   const {
     location: {
       query,
+      search,
       query: {
         filter,
       },
     }
   } = props;
+
+  const componentKey = `subjectHeadingIndex${search}`
 
   return (
     <SccContainer
@@ -25,8 +28,9 @@ const SubjectHeadingsIndex = (props) => {
       extraBannerElement={<SubjectHeadingSearch />}
       loadingLayerText="Subject Headings"
       breadcrumbsType="subjectHeadings"
+      key={componentKey}
     />
-  )
-}
+);
+};
 
 export default SubjectHeadingsIndex
