@@ -14,7 +14,7 @@ const SccContainer = (props) => {
         status={ Store.state.isLoading }
         title={ props.loadingLayerText }
       />
-    <div className="header-wrapper">
+    <div className="header-wrapper container-header">
         <div className="header-topWrapper filter-page">
           <div className="nypl-row">
             <div className="nypl-column-full">
