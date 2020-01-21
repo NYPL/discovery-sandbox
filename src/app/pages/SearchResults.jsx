@@ -146,7 +146,7 @@ SearchResults.propTypes = {
   selectedFilters: PropTypes.object,
   page: PropTypes.string,
   location: PropTypes.object,
-  filters: PropTypes.array,
+  filters: PropTypes.object,
   field: PropTypes.string,
   sortBy: PropTypes.string,
 };

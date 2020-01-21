@@ -12,7 +12,7 @@ const DefinitionList = ({ data, headings }) => {
       return null;
     }
 
-    if (item.term === "Subject") return <SubjectHeadings key="subjects" headings={headings} />;
+    if (item.term === 'Subject') return <SubjectHeadings key="subjects" headings={headings} />;
 
     return ([
       (<dt key={`term-${item.term}`}>{item.term}</dt>),
