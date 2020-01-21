@@ -19,7 +19,6 @@ class SubjectHeadingShow extends React.Component {
         label: '',
       },
       shepBibs: [],
-      contextLoading: true,
     };
 
     this.generateFullContextUrl = this.generateFullContextUrl.bind(this);
