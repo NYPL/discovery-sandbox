@@ -10,7 +10,7 @@ import SubjectHeadingSearch from './Search/SubjectHeadingSearch'
 import SortButton from './SortButton';
 import appConfig from '../../data/appConfig';
 import LoadingLayer from '../LoadingLayer/LoadingLayer';
-import Pagination from '../Pagination/Pagination';
+import Pagination from '@Pagination';
 
 
 class SubjectHeadingsContainer extends React.Component {
@@ -159,16 +159,14 @@ class SubjectHeadingsContainer extends React.Component {
     );
 
     return (
-      <div
-        className="nypl-column-full subjectHeadingMainContent index"
-      >
+      <div className="nypl-column-full">
         {this.pagination()}
+        {sortButton}
         <SubjectHeadingsTable
           subjectHeadings={subjectHeadings}
           linked={linked}
           location={location}
           sortBy={sortBy}
-          sortButton={sortButton}
         />
         {this.pagination()}
       </div>

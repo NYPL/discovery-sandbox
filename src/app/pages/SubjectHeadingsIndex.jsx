@@ -25,7 +25,7 @@ const SubjectHeadingsIndex = (props) => {
           text: ['Subject Headings', filter ? <span key='bannerText'> containing <em>{filter}</em></span>: '']
         }
       }
-      bannerRightElement={<SubjectHeadingSearch />}
+      extraBannerElement={<SubjectHeadingSearch />}
       loadingLayerText="Subject Headings"
       breadcrumbsType="subjectHeadings"
       key={componentKey}

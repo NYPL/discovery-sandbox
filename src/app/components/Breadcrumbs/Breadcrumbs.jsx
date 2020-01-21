@@ -12,7 +12,7 @@ const {
   displayTitle,
 } = appConfig;
 
-const Breadcrumbs = ({ query, type, bibUrl, itemUrl, edd, headingDetails }) => {
+const Breadcrumbs = ({ query, type, bibUrl, itemUrl, edd }) => {
   const defaultText = displayTitle;
   const onClick = pageTitle => trackDiscovery('Breadcrumbs', pageTitle);
   const homeLink = (
