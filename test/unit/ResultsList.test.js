@@ -432,13 +432,12 @@ describe('ResultsList', () => {
 
   describe('Mocking ajax call for the bib', () => {
     describe('Good response', () => {
-      const updateIsLoadingState = () => {};
       let component;
       let mock;
 
       before(() => {
         component = mount(
-          <ResultsList results={resultsBibs} updateIsLoadingState={updateIsLoadingState} />,
+          <ResultsList results={resultsBibs} />,
           { context: { router: { createHref: () => {}, push: () => {}, replace: () => {} } } },
         );
         mock = new MockAdapter(axios);
@@ -463,13 +462,12 @@ describe('ResultsList', () => {
   });
 
   describe('Bad response', () => {
-    const updateIsLoadingState = () => {};
     let component;
     let mock;
 
     before(() => {
       component = mount(
-        <ResultsList results={resultsBibs} updateIsLoadingState={updateIsLoadingState} />,
+        <ResultsList results={resultsBibs} />,
         { context: { router: { createHref: () => {}, push: () => {} } } },
       );
       mock = new MockAdapter(axios);
@@ -575,7 +573,6 @@ describe('ResultsList', () => {
   });
 
   describe('ResultsList functions', () => {
-    const updateIsLoadingState = () => {};
     let component;
     let getBibRecordSpy;
     let axiosSpy;
@@ -584,7 +581,7 @@ describe('ResultsList', () => {
     before(() => {
       getBibRecordSpy = sinon.spy(ResultsList.prototype, 'getBibRecord');
       component = mount(
-        <ResultsList results={resultsBibs} updateIsLoadingState={updateIsLoadingState} />,
+        <ResultsList results={resultsBibs} />,
         { context: { router: { createHref: () => {}, push: () => {} } } },
       );
       mock = new MockAdapter(axios);

@@ -98,7 +98,7 @@ class Search extends React.Component {
     // the actual selection, creating much confusion for the visitor..
     const searchField = String(this.state.field);
 
-    this.props.updateIsLoadingState(true);
+    Actions.updateLoadingStatus(true);
 
     return new Promise((resolve, reject) => {
       ajaxCall(`${appConfig.baseUrl}/api?${apiQuery}`, (response) => {
@@ -126,7 +126,7 @@ class Search extends React.Component {
         Actions.updateSortBy('relevance');
         Actions.updatePage('1');
         setTimeout(() => {
-          this.props.updateIsLoadingState(false);
+          Actions.updateLoadingStatus(false);
           this.context.router.push(`${appConfig.baseUrl}/search?${apiQuery}`);
         }, 500);
         resolve();
@@ -193,14 +193,12 @@ Search.propTypes = {
   field: PropTypes.string,
   searchKeywords: PropTypes.string,
   createAPIQuery: PropTypes.func,
-  updateIsLoadingState: PropTypes.func,
   selectedFilters: PropTypes.object,
 };
 
 Search.defaultProps = {
   field: 'all',
   searchKeywords: '',
-  updateIsLoadingState: () => {},
   selectedFilters: {},
 };
 

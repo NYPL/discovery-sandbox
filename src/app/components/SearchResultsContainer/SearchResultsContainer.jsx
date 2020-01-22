@@ -9,8 +9,10 @@ import {
   trackDiscovery,
 } from '../../utils/utils';
 import Actions from '../../actions/Actions';
+import Store from '@Store'
 import appConfig from '../../data/appConfig';
 
+// Renders the ResultsList containing the search results and the Pagination component
 const SearchResultsContainer = (props) => {
   const {
     searchResults,
@@ -30,8 +32,8 @@ const SearchResultsContainer = (props) => {
       Actions.updateSearchResults(response.data.searchResults);
       Actions.updatePage(nextPage.toString());
       setTimeout(() => {
-        Actions.updateIsLoadingState(false);
-        this.context.router.push(`${appConfig.baseUrl}/search?${apiQuery}`);
+        Actions.updateLoadingStatus(false);
+        props.router.push(`${appConfig.baseUrl}/search?${apiQuery}`);
       }, 500);
     });
   };

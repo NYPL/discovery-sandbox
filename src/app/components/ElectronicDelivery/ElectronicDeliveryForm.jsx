@@ -115,7 +115,8 @@ class ElectronicDeliveryForm extends React.Component {
               <span>You may request a chapter, article or short excerpt.</span><br />
               <span>
                 <a href="https://www.nypl.org/help/request-research-materials#EDD">
-                Read more about this service</a>.
+                  Read more about this service
+                </a>.
               </span>
               <div className={`nypl-text-field ${errorClass.startPage}`}>
                 <label htmlFor="startPage" id="startPage-label">Starting Page Number
