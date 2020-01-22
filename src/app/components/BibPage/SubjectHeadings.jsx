@@ -53,7 +53,7 @@ const SubjectHeadings = (props) => {
 
 SubjectHeadings.propTypes = {
   headings: PropTypes.array,
-  i: PropTypes.integer,
+  i: PropTypes.number,
 };
 
 SubjectHeadings.defaultProps = {

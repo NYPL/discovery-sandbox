@@ -4,7 +4,7 @@ import DocumentTitle from 'react-document-title';
 
 import SccContainer from '../components/SccContainer/SccContainer';
 import Search from '../components/Search/Search';
-import SearchResultsContainer from '../components/SearchResultsPage/SearchResultsPage'; // will change this file name after first merge for PR comparison purposes
+import SearchResultsContainer from '@SearchResultsContainer';
 import FilterPopup from '../components/FilterPopup/FilterPopup';
 import SelectedFilters from '../components/Filters/SelectedFilters';
 import ResultsCount from '../components/ResultsCount/ResultsCount';

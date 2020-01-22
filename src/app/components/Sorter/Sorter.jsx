@@ -129,7 +129,6 @@ Sorter.propTypes = {
   field: PropTypes.string,
   page: PropTypes.string,
   createAPIQuery: PropTypes.func,
-  updateIsLoadingState: PropTypes.func,
 };
 
 Sorter.defaultProps = {

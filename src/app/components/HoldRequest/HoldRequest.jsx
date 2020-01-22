@@ -18,6 +18,9 @@ import LibraryItem from '../../utils/item';
 import LoadingLayer from '../LoadingLayer/LoadingLayer';
 import { trackDiscovery } from '../../utils/utils';
 
+import Actions from '@Actions'
+import Store from '@Store'
+
 class HoldRequest extends React.Component {
   constructor(props) {
     super(props);
@@ -43,7 +46,6 @@ class HoldRequest extends React.Component {
 
     this.state = _extend({
       delivery: defaultDelivery,
-      isLoading: true,
       checkedLocNum,
     }, { patron: PatronStore.getState() });
 
@@ -51,7 +53,6 @@ class HoldRequest extends React.Component {
     this.onChange = this.onChange.bind(this);
     this.onRadioSelect = this.onRadioSelect.bind(this);
     this.submitRequest = this.submitRequest.bind(this);
-    this.updateIsLoadingState = this.updateIsLoadingState.bind(this);
     this.checkEligibility = this.checkEligibility.bind(this);
     this.conditionallyRedirect = this.conditionallyRedirect.bind(this);
   }
@@ -64,7 +65,7 @@ class HoldRequest extends React.Component {
     if (title) {
       title.focus();
     }
-    this.timeoutId = setTimeout(() => { this.updateIsLoadingState(false); }, 5000);
+    this.timeoutId = setTimeout(() => { Actions.updateLoadingStatus(false); }, 5000);
   }
 
   onChange() {
@@ -132,21 +133,21 @@ class HoldRequest extends React.Component {
       return;
     }
 
-    this.updateIsLoadingState(true);
+    Actions.updateLoadingStatus(true);
     trackDiscovery(`Submit Request${partnerEvent}`, `${title} - ${itemId}`);
     axios
       .get(`${appConfig.baseUrl}/api/newHold?itemId=${itemId}&pickupLocation=` +
         `${this.state.delivery}&itemSource=${itemSource}`)
       .then((response) => {
         if (response.data.error && response.data.error.status !== 200) {
-          this.updateIsLoadingState(false);
+          Actions.updateLoadingStatus(false);
           this.context.router.push(
             `${path}?errorStatus=${response.data.error.status}` +
             `&errorMessage=${response.data.error.statusText}${searchKeywordsQueryPhysical}` +
             `${fromUrlQuery}`,
           );
         } else {
-          this.updateIsLoadingState(false);
+          Actions.updateLoadingStatus(false);
           this.context.router.push(
             `${path}?pickupLocation=${response.data.pickupLocation}&requestId=${response.data.id}` +
             `${searchKeywordsQueryPhysical}${fromUrlQuery}`,
@@ -156,7 +157,7 @@ class HoldRequest extends React.Component {
       .catch((error) => {
         console.error('Error attempting to make an ajax Hold Request in HoldRequest', error);
 
-        this.updateIsLoadingState(false);
+        Actions.updateLoadingStatus(false);
         this.context.router.push(
           `${path}?errorMessage=${error}${searchKeywordsQueryPhysical}${fromUrlQuery}`,
         );
@@ -178,16 +179,6 @@ class HoldRequest extends React.Component {
     window.location.replace(`${appConfig.loginUrl}?redirect_uri=${fullUrl}`);
 
     return false;
-  }
-
-  /**
-   * updateIsLoadingState(status)
-   * Update the state of the loading layer component.
-   *
-   * @param {Boolean} status
-   */
-  updateIsLoadingState(status) {
-    this.setState({ isLoading: status });
   }
 
   /**
@@ -223,7 +214,7 @@ class HoldRequest extends React.Component {
         const path = `${appConfig.baseUrl}/hold/confirmation/${bibId}-${itemId}`;
         return this.redirectWithErrors(path, 'eligibility', JSON.stringify(eligibility));
       }
-      this.updateIsLoadingState(false);
+      Actions.updateLoadingStatus(false);
     });
   }
   // checks whether a patron is eligible to place a hold. Uses cookie to get the patron's id
@@ -377,7 +368,7 @@ class HoldRequest extends React.Component {
       <DocumentTitle title="Item Request | Shared Collection Catalog | NYPL">
         <div id="mainContent">
           <LoadingLayer
-            status={this.state.isLoading}
+            status={Store.state.isLoading}
             title="Requesting"
           />
           <div className="nypl-request-page-header">
@@ -434,7 +425,6 @@ HoldRequest.propTypes = {
   params: PropTypes.object,
   deliveryLocations: PropTypes.array,
   isEddRequestable: PropTypes.bool,
-  isLoading: PropTypes.bool,
 };
 
 HoldRequest.defaultProps = {
@@ -444,7 +434,6 @@ HoldRequest.defaultProps = {
   params: {},
   deliveryLocations: [],
   isEddRequestable: false,
-  isLoading: false,
 };
 
 export default HoldRequest;

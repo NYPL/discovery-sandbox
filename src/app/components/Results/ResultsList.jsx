@@ -7,6 +7,7 @@ import {
 } from 'underscore';
 
 import Actions from '../../actions/Actions';
+import Store from '@Store'
 import LibraryItem from '../../utils/item';
 import {
   ajaxCall,
@@ -69,7 +70,7 @@ class ResultsList extends React.Component {
   getItemRecord(e, bibId, itemId) {
     e.preventDefault();
 
-    this.props.updateIsLoadingState(true);
+    Actions.updateLoadingStatus(true);
 
     trackDiscovery('Item Request', 'Search Results');
     ajaxCall(`${appConfig.baseUrl}/api/hold/request/${bibId}-${itemId}`,
@@ -78,13 +79,13 @@ class ResultsList extends React.Component {
         Actions.updateDeliveryLocations(response.data.deliveryLocations);
         Actions.updateIsEddRequestable(response.data.isEddRequestable);
         setTimeout(() => {
-          this.props.updateIsLoadingState(false);
+          Actions.updateLoadingStatus(false);
           this.routeHandler(`${appConfig.baseUrl}/hold/request/${bibId}-${itemId}`);
         }, 500);
       },
       (error) => {
         setTimeout(() => {
-          this.props.updateIsLoadingState(false);
+          Actions.updateLoadingStatus(false);
         }, 500);
 
         console.error(
@@ -190,7 +191,7 @@ class ResultsList extends React.Component {
     return (
       <ul
         id="nypl-results-list"
-        className={`nypl-results-list ${this.props.isLoading ? 'hide-results-list ' : ''}`}
+        className={`nypl-results-list ${Store.state.isLoading ? 'hide-results-list ' : ''}`}
       >
         {resultsElm}
       </ul>
@@ -200,9 +201,7 @@ class ResultsList extends React.Component {
 
 ResultsList.propTypes = {
   results: PropTypes.array,
-  isLoading: PropTypes.bool,
   searchKeywords: PropTypes.string,
-  updateIsLoadingState: PropTypes.func,
 };
 
 ResultsList.contextTypes = {

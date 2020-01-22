@@ -11,7 +11,7 @@ describe('Home', () => {
   let component;
 
   before(() => {
-    component = mount(<Home isLoading={false} />);
+    component = mount(<Home />);
   });
 
   it('should be wrapped in a .home class', () => {
@@ -52,13 +52,12 @@ describe('Home', () => {
     expect(imageBlocks.find('h3').length).to.equal(5);
   });
 
-  it('should have an initial loading state of false', () => {
-    expect(component.state('isLoading')).to.equal(false);
+  // the Store is handling loading now. TODO: How to test Store/Component interaction here?
+  xit('should have an initial loading state of false', () => {
+
   });
 
-  it('should have an isLoading state of true when updateIsLoadingState is called', () => {
-    expect(component.state('isLoading')).to.equal(false);
-    component.instance().updateIsLoadingState(true);
-    expect(component.state('isLoading')).to.equal(true);
+  xit('should have an isLoading state of true when updateIsLoadingState is called', () => {
+    
   });
 });

@@ -9,8 +9,10 @@ import {
   trackDiscovery,
 } from '../../utils/utils';
 import Actions from '../../actions/Actions';
+import Store from '@Store'
 import appConfig from '../../data/appConfig';
 
+// Renders the ResultsList containing the search results and the Pagination component
 const SearchResultsContainer = (props) => {
   const {
     searchResults,

@@ -450,7 +450,7 @@ class BibDetails extends React.Component {
    */
   newSearch(e, query, field, value, label) {
     e.preventDefault();
-    this.props.updateIsLoadingState(true);
+    Actions.updateLoadingStatus(true);
 
     trackDiscovery('Bib fields', `${label} - ${value}`);
     ajaxCall(`${appConfig.baseUrl}/api?${query}`, (response) => {
@@ -492,7 +492,7 @@ class BibDetails extends React.Component {
       Actions.updateSearchKeywords('');
       Actions.updatePage('1');
       setTimeout(
-        () => { this.props.updateIsLoadingState(false); },
+        () => { Actions.updateLoadingStatus(false); },
         500,
       );
       this.context.router.push(`${appConfig.baseUrl}/search?${query}`);
@@ -521,7 +521,6 @@ class BibDetails extends React.Component {
 BibDetails.propTypes = {
   bib: PropTypes.object.isRequired,
   fields: PropTypes.array.isRequired,
-  updateIsLoadingState: PropTypes.func,
   electronicResources: PropTypes.array,
 };
 
