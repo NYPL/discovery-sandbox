@@ -11,10 +11,10 @@ const SubjectHeadingsTableHeader = (props) => {
         <tr>
           <th className="subjectHeadingsTableCell subjectHeadingLabel">
             <div className="subjectHeadingToggle"></div>
-            <div className="subjectHeadingLabelInner">Subject Heading</div>
+            <div className="subjectHeadingLabelInner">Heading</div>
           </th>
-          <th className="subjectHeadingsTableCell subjectHeadingAttribute titles">Titles</th>
-          <th className="subjectHeadingsTableCell subjectHeadingAttribute narrower">Narrower</th>
+          <th className="subjectHeadingsTableCell subjectHeadingAttribute titles">Title Count</th>
+          <th className="subjectHeadingsTableCell subjectHeadingAttribute narrower">Subheading Count</th>
           <th className="subjectHeadingsTableCell sort">Sort</th>
         </tr>
       </thead>
