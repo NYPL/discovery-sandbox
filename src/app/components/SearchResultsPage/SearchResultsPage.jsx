@@ -31,7 +31,7 @@ const SearchResultsContainer = (props) => {
       Actions.updatePage(nextPage.toString());
       setTimeout(() => {
         Actions.updateLoadingStatus(false);
-        this.context.router.push(`${appConfig.baseUrl}/search?${apiQuery}`);
+        props.router.push(`${appConfig.baseUrl}/search?${apiQuery}`);
       }, 500);
     });
   };
