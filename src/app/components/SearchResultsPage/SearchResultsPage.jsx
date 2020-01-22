@@ -30,7 +30,7 @@ const SearchResultsContainer = (props) => {
       Actions.updateSearchResults(response.data.searchResults);
       Actions.updatePage(nextPage.toString());
       setTimeout(() => {
-        Actions.updateIsLoadingState(false);
+        Actions.updateLoadingStatus(false);
         this.context.router.push(`${appConfig.baseUrl}/search?${apiQuery}`);
       }, 500);
     });
