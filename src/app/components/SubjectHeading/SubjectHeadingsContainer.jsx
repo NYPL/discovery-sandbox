@@ -153,7 +153,7 @@ class SubjectHeadingsContainer extends React.Component {
     );
 
     return (
-      <div className="nypl-column-full">
+      <React.Fragment>
         {this.pagination()}
         {sortButton}
         <SubjectHeadingsTable
@@ -163,7 +163,7 @@ class SubjectHeadingsContainer extends React.Component {
           sortBy={sortBy}
         />
         {this.pagination()}
-      </div>
+      </React.Fragment>
     );
   }
 }

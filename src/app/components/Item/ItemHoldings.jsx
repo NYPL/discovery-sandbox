@@ -206,7 +206,6 @@ ItemHoldings.propTypes = {
   bibId: PropTypes.string,
   shortenItems: PropTypes.bool,
   searchKeywords: PropTypes.string,
-  updateIsLoadingState: PropTypes.func,
 };
 
 ItemHoldings.defaultProps = {

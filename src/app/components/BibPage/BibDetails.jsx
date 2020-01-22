@@ -130,8 +130,8 @@ class BibDetails extends React.Component {
     if (Array.isArray(entities) && entities.length > 0) {
       const markup = entities
         .map((ent) => {
-          const nodes = [(<span key={`${ent}`}>{ent['@value']}</span>)];
-          if (ent.identifierStatus) nodes.push(<span key={`${ent}`}> <em>({ent.identifierStatus})</em></span>);
+          const nodes = [(<span key={`${ent["@value"]}`}>{ent['@value']}</span>)];
+          if (ent.identifierStatus) nodes.push(<span key={`${ent["@value"]}`}> <em>({ent.identifierStatus})</em></span>);
           return nodes;
         });
 
@@ -181,10 +181,10 @@ class BibDetails extends React.Component {
     return (
       <ul>
         {
-          bibValues.map((value) => {
+          bibValues.map((value, i) => {
             const url = `filters[${fieldValue}]=${value}`;
             return (
-              <li key={`filter${fieldValue}`}>
+              <li key={`filter${fieldValue}${i}`}>
                 {this.getDefinitionOneItem(
                   value,
                   url,
@@ -450,7 +450,7 @@ class BibDetails extends React.Component {
    */
   newSearch(e, query, field, value, label) {
     e.preventDefault();
-    this.props.updateIsLoadingState(true);
+    Actions.updateLoadingStatus(true);
 
     trackDiscovery('Bib fields', `${label} - ${value}`);
     ajaxCall(`${appConfig.baseUrl}/api?${query}`, (response) => {
@@ -492,7 +492,7 @@ class BibDetails extends React.Component {
       Actions.updateSearchKeywords('');
       Actions.updatePage('1');
       setTimeout(
-        () => { this.props.updateIsLoadingState(false); },
+        () => { Actions.updateLoadingStatus(false); },
         500,
       );
       this.context.router.push(`${appConfig.baseUrl}/search?${query}`);
@@ -521,7 +521,6 @@ class BibDetails extends React.Component {
 BibDetails.propTypes = {
   bib: PropTypes.object.isRequired,
   fields: PropTypes.array.isRequired,
-  updateIsLoadingState: PropTypes.func,
   electronicResources: PropTypes.array,
 };
 

@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 
 const SortButton = props => (
   <select onChange={props.handler} defaultValue={props.sortBy}>
-    <option value="alphabetical">Alphabetical</option>
-    <option value="bibs">Titles</option>
-    <option value="descendants">Subheadings</option>
+    <option value="alphabetical">Alphabetically</option>
+    <option value="bibs">By title count</option>
+    <option value="descendants">By subheading count</option>
   </select>
 );
 

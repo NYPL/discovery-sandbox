@@ -91,7 +91,7 @@ describe('Search', () => {
       createAPIQuery = basicQuery({});
       onFieldChangeSpy = sinon.spy(Search.prototype, 'onFieldChange');
       component = mount(
-        <Search createAPIQuery={createAPIQuery} updateIsLoadingState={() => {}} />,
+        <Search createAPIQuery={createAPIQuery} />,
         { context: { router: { createHref: () => {}, push: () => {} } } },
       );
     });
@@ -125,7 +125,7 @@ describe('Search', () => {
       createAPIQuery = basicQuery({});
       inputChangeSpy = sinon.spy(Search.prototype, 'inputChange');
       component = mount(
-        <Search createAPIQuery={createAPIQuery} updateIsLoadingState={() => {}} />,
+        <Search createAPIQuery={createAPIQuery} />,
         { context: { router: { createHref: () => {}, push: () => {} } } },
       );
     });
@@ -156,7 +156,7 @@ describe('Search', () => {
       triggerSubmitSpy = sinon.spy(Search.prototype, 'triggerSubmit');
       submitSearchRequestSpy = sinon.spy(Search.prototype, 'submitSearchRequest');
       component = mount(
-        <Search createAPIQuery={createAPIQuery} updateIsLoadingState={() => {}} />,
+        <Search createAPIQuery={createAPIQuery} />,
         { context: { router: { createHref: () => {}, push: () => {} } } },
       );
 

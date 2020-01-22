@@ -1,17 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import {
-  isEmpty as _isEmpty,
-  mapObject as _mapObject,
-} from 'underscore';
+import Store from '@Store'
 
 class ResultsCount extends React.Component {
   // The `searchKeywords` prop gets updated before the `count` and we want to wait until both
   // are updated to be read to screen readers. Otherwise, it would read the previous `count`
   // number for the next `searchKeywords`.
-  shouldComponentUpdate(nextProps) {
-    return !this.props.isLoading;
+  shouldComponentUpdate() {
+    return !Store.state.isLoading;
   }
 
   /*
@@ -113,7 +110,6 @@ class ResultsCount extends React.Component {
   displayCount() {
     const {
       count,
-      isLoading,
       page,
     } = this.props;
     const countF = count ? count.toLocaleString() : '';
@@ -121,7 +117,7 @@ class ResultsCount extends React.Component {
     const end = (page) * 50 > count ? count : (page * 50);
     const currentResultDisplay = `${start}-${end}`;
 
-    if (isLoading) {
+    if (Store.state.isLoading) {
       return 'Loading...';
     }
 
@@ -158,7 +154,6 @@ class ResultsCount extends React.Component {
 ResultsCount.propTypes = {
   count: PropTypes.number,
   page: PropTypes.number,
-  isLoading: PropTypes.bool,
   selectedFilters: PropTypes.object,
   searchKeywords: PropTypes.string,
   field: PropTypes.string,
@@ -167,7 +162,6 @@ ResultsCount.propTypes = {
 ResultsCount.defaultProps = {
   searchKeywords: '',
   count: 0,
-  isLoading: false,
   page: 1,
   selectedFilters: {
     materialType: [],
