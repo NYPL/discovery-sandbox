@@ -151,7 +151,7 @@ class SubjectHeadingShow extends React.Component {
           />
           :
           <div
-            className="nypl-column-half bibs-list subjectHeadingContext subjectHeadingInfoBox"
+            className="nypl-column-half bibs-list"
             tabIndex='0'
             aria-label='Neighboring Subject Headings'
           />
