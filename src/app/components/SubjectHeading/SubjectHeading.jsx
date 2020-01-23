@@ -197,7 +197,7 @@ class SubjectHeading extends React.Component {
       return element;
     };
 
-    const positionStyle = { marginLeft: 30 * ((indentation || 0) + 1) };
+    const positionStyle = container === 'narrower' ? null : { marginLeft: 30 * ((indentation || 0) + 1) };
     const isMain = location.pathname.includes(uuid);
     // changes to HTML structure here will need to be replicated in ./SubjectHeadingTableHeader
     return (

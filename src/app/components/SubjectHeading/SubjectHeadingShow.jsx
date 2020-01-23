@@ -112,6 +112,16 @@ class SubjectHeadingShow extends React.Component {
     return onMainPath;
   }
 
+  // returns true or false depending on whether the heading has a descendant with the given uuid.
+  // If not, removes the children of that heading
+  removeChildrenOffMainPath(heading, uuid) {
+    const onMainPath =
+      heading.uuid === uuid ||
+      (heading.children && heading.children.some(child => this.removeChildrenOffMainPath(child, uuid)));
+    if (!onMainPath) heading.children = null;
+    return onMainPath;
+  }
+
   processContextHeadings(headings, uuid) {
     headings.forEach((heading) => {
       this.removeChildrenOffMainPath(heading, uuid);
@@ -151,47 +161,42 @@ class SubjectHeadingShow extends React.Component {
           />
           :
           <div
-            className="nypl-column-half bibs-list"
+            className="nypl-column-half bibs-list subjectHeadingContext subjectHeadingInfoBox"
             tabIndex='0'
-            aria-label="Titles related to this Subject Heading"
-          />
-        }
-        <div
-          className="nypl-column-half subjectHeadingRelated subjectHeadingInfoBox"
-          tabIndex='0'
-          aria-label="Related Subject Headings"
-        >
-          <div className="backgroundContainer">
-            <h4>Related Headings</h4>
-          </div>
-          <SubjectHeadingsTable
-            subjectHeadings={relatedHeadings}
-            location={location}
-            keyId="related"
-            container="narrower"
-          />
-        </div>
-        <div
-          className="nypl-column-half subjectHeadingContext subjectHeadingInfoBox"
-          tabIndex='0'
-          aria-label="Adjacent Subject Headings"
-        >
-          <div className="backgroundContainer">
-            <h4>Adjacent Headings</h4>
-          </div>
-          <SubjectHeadingsTable
-            subjectHeadings={contextHeadings}
-            location={location}
-            showId={uuid}
-            keyId="context"
-            container="context"
-          />
-          <Link
-            to={contextHeadings && contextHeadings.length ? this.generateFullContextUrl() : '#'}
-            className="link toIndex"
+            aria-label='Neighboring Subject Headings'
           >
-            See full context
-          </Link>
+            <div className="backgroundContainer">
+              <h4>Neighboring Subject Headings</h4>
+            </div>
+            <SubjectHeadingsTable
+              subjectHeadings={contextHeadings}
+              location={location}
+              showId={uuid}
+              keyId="context"
+              container="context"
+            />
+            <Link
+              to={contextHeadings && contextHeadings.length ? this.generateFullContextUrl() : '#'}
+              className="link toIndex"
+            >
+              Go to Subject Headings Index
+            </Link>
+          </div>
+          <div
+            className="nypl-column-half subjectHeadingRelated subjectHeadingInfoBox"
+            tabIndex='0'
+            aria-label='Related Subject Headings'
+          >
+            <div className="backgroundContainer">
+              <h4>Related Headings</h4>
+            </div>
+            <SubjectHeadingsTable
+              subjectHeadings={relatedHeadings}
+              location={location}
+              keyId="related"
+              container="narrower"
+            />
+          </div>
         </div>
       </React.Fragment>
     );
