@@ -80,15 +80,6 @@ class SubjectHeadingShow extends React.Component {
       );
   }
 
-  // hasUuid(headings) {
-  //   const uuid = this.props.params.subjectHeadingUuid;
-  //   if (!headings.reduce) return headings.uuid === uuid || this.hasUuid(headings.children || []);
-  //   return headings.reduce(
-  //     (acc, el) => el.uuid === uuid || this.hasUuid(el.children || []) || acc,
-  //     false,
-  //   );
-  // }
-
   hasUuid(headings) {
     const uuid = this.props.params.subjectHeadingUuid;
     if (Array.isArray(headings)) return headings.some(heading => this.hasUuid(heading));
