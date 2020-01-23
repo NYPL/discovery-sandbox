@@ -220,7 +220,7 @@ $darker-grey: lightgray;
   }
 }
 
-.subjectHeadingShow {
+.subjectHeadingInfoBox {
   .toIndex {
     font-size: 14px;
     font-style: italic;
@@ -264,12 +264,7 @@ $darker-grey: lightgray;
   border-color: black;
   justify-self: end;
 
-  .backgroundContainer {
-    background-color: $lighter-grey;
-  }
-
   h4 {
-    background-color: $lighter-grey;
     margin-bottom: 1%;
     margin-left: 1%;
   }
