@@ -60,7 +60,15 @@ const PreviewItem = (props) => {
 };
 
 Preview.propTypes = {
-  preview: PropTypes.array
+  topHeadings: PropTypes.array,
 };
 
-export { Preview }
+PreviewColumn.propTypes = {
+  column: PropTypes.array,
+};
+
+PreviewItem.propTypes = {
+  heading: PropTypes.object,
+};
+
+export default Preview;

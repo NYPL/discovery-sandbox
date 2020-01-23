@@ -1,17 +1,15 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import DocumentTitle from 'react-document-title';
 
-import SccContainer from '../components/SccContainer/SccContainer'
+import SccContainer from '../components/SccContainer/SccContainer';
 import SubjectHeadingShow from '../components/SubjectHeading/SubjectHeadingShow';
 import SubjectHeadingSearch from '../components/SubjectHeading/Search/SubjectHeadingSearch';
-import Breadcrumbs from '../components/Breadcrumbs/Breadcrumbs';
 
 const SubjectHeadingShowPage = (props) => {
   const {
     params: {
       subjectHeadingUuid,
-    }
+    },
   } = props;
 
   const [label, setLabel] = useState('');
@@ -25,10 +23,20 @@ const SubjectHeadingShowPage = (props) => {
           setBannerText={setLabel}
         />
       }
-      bannerText={label}
-      bannerRightElement={<SubjectHeadingSearch />}
+      bannerOptions={
+        {
+          text: label,
+        }
+      }
+      extraBannerElement={<SubjectHeadingSearch />}
+      loadingLayerText="Subject Heading"
+      breadcrumbsType="subjectHeading"
     />
-  )
+  );
+};
+
+SubjectHeadingShowPage.propTypes = {
+  params: PropTypes.object,
 };
 
 export default SubjectHeadingShowPage;

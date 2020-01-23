@@ -4,7 +4,7 @@ import { expect } from 'chai';
 import Enzyme, { mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 
-import SearchResultsPage from '../../src/app/components/SearchResultsPage/SearchResultsPage';
+import SearchResults from '../../src/app/pages/SearchResults';
 
 
 // Eventually, it would be nice to have mocked data in a different file and imported.
@@ -33,7 +33,7 @@ describe('SearchResultsPage', () => {
       // Added this empty prop so that the `componentWillMount` method will be skipped.
       // That lifecycle hook is tested later on.
       component = mount(
-        <SearchResultsPage
+        <SearchResults
           searchResults={{}}
           location={{ search: '' }}
         />,
@@ -85,7 +85,7 @@ describe('SearchResultsPage', () => {
 
     before(() => {
       component = mount(
-        <SearchResultsPage
+        <SearchResults
           searchKeywords="locofocos"
           searchResults={searchResults}
           location={{ search: '' }}
@@ -125,7 +125,7 @@ describe('SearchResultsPage', () => {
 
     before(() => {
       component = mount(
-        <SearchResultsPage
+        <SearchResults
           searchKeywords="locofocos"
           searchResults={searchResults}
           location={{ search: '' }}
@@ -138,7 +138,7 @@ describe('SearchResultsPage', () => {
       component.unmount();
     });
 
-    it('should an h1 with "Search Results"', () => {
+    it('should have an h1 with "Search Results"', () => {
       const h1 = component.find('h1');
       expect(h1).to.have.length(1);
       expect(h1.text()).to.equal('Search Results');

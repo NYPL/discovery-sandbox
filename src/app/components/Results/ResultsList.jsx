@@ -7,6 +7,7 @@ import {
 } from 'underscore';
 
 import Actions from '../../actions/Actions';
+import Store from '@Store'
 import LibraryItem from '../../utils/item';
 import {
   ajaxCall,
@@ -34,20 +35,20 @@ class ResultsList extends React.Component {
   getBibRecord(e, bibId, bibTitle) {
     e.preventDefault();
 
-    this.props.updateIsLoadingState(true);
+    Actions.updateLoadingStatus(true);
 
     trackDiscovery('Bib', bibTitle);
     ajaxCall(`${appConfig.baseUrl}/api/bib?bibId=${bibId}`,
       (response) => {
         Actions.updateBib(response.data);
         setTimeout(() => {
-          this.props.updateIsLoadingState(false);
+          Actions.updateLoadingStatus(false);
           this.routeHandler(`${appConfig.baseUrl}/bib/${bibId}`);
         }, 500);
       },
       (error) => {
         setTimeout(() => {
-          this.props.updateIsLoadingState(false);
+          Actions.updateLoadingStatus(false);
         }, 500);
 
         console.error(
@@ -69,7 +70,7 @@ class ResultsList extends React.Component {
   getItemRecord(e, bibId, itemId) {
     e.preventDefault();
 
-    this.props.updateIsLoadingState(true);
+    Actions.updateLoadingStatus(true);
 
     trackDiscovery('Item Request', 'Search Results');
     ajaxCall(`${appConfig.baseUrl}/api/hold/request/${bibId}-${itemId}`,
@@ -78,13 +79,13 @@ class ResultsList extends React.Component {
         Actions.updateDeliveryLocations(response.data.deliveryLocations);
         Actions.updateIsEddRequestable(response.data.isEddRequestable);
         setTimeout(() => {
-          this.props.updateIsLoadingState(false);
+          Actions.updateLoadingStatus(false);
           this.routeHandler(`${appConfig.baseUrl}/hold/request/${bibId}-${itemId}`);
         }, 500);
       },
       (error) => {
         setTimeout(() => {
-          this.props.updateIsLoadingState(false);
+          Actions.updateLoadingStatus(false);
         }, 500);
 
         console.error(
@@ -121,10 +122,12 @@ class ResultsList extends React.Component {
     return null;
   }
 
-  getBib(bib, i) {
-    if (!bib.result || _isEmpty(bib.result) || !bib.result.title) return null;
+  generateBibLi(bib, i) {
+    if (_isEmpty(bib) || bib.result && (_isEmpty(bib.result) || !bib.result.title)) {
+      return null
+    };
 
-    const result = bib.result;
+    const result = bib.result || bib;
     const bibTitle = this.getBibTitle(result);
     const bibId = result && result['@id'] ? result['@id'].substring(4) : '';
     const materialType = result && result.materialType && result.materialType[0] ?
@@ -159,13 +162,13 @@ class ResultsList extends React.Component {
         </div>
         {
           hasRequestTable &&
-            <ItemTable
-              items={items}
-              bibId={bibId}
-              getRecord={this.getItemRecord}
-              id={null}
-              searchKeywords={this.props.searchKeywords}
-            />
+          <ItemTable
+            items={items}
+            bibId={bibId}
+            getRecord={this.getItemRecord}
+            id={null}
+            searchKeywords={this.props.searchKeywords}
+          />
         }
       </li>
     );
@@ -183,12 +186,12 @@ class ResultsList extends React.Component {
       return null;
     }
 
-    resultsElm = results.map((bib, i) => this.getBib(bib, i));
+    resultsElm = results.map((bib, i) => this.generateBibLi(bib, i));
 
     return (
       <ul
         id="nypl-results-list"
-        className={`nypl-results-list ${this.props.isLoading ? 'hide-results-list ' : ''}`}
+        className={`nypl-results-list ${Store.state.isLoading ? 'hide-results-list ' : ''}`}
       >
         {resultsElm}
       </ul>
@@ -198,9 +201,7 @@ class ResultsList extends React.Component {
 
 ResultsList.propTypes = {
   results: PropTypes.array,
-  isLoading: PropTypes.bool,
   searchKeywords: PropTypes.string,
-  updateIsLoadingState: PropTypes.func,
 };
 
 ResultsList.contextTypes = {

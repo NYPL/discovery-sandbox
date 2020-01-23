@@ -1,16 +1,11 @@
-/* globals document */
 import React from 'react';
-import { Link } from 'react-router';
 import PropTypes from 'prop-types';
 import axios from 'axios';
-import SubjectHeadingsTable from './SubjectHeadingsTable'
-// import SubjectHeadingsList from './SubjectHeadingsList';
-import SubjectHeadingsTableHeader from './SubjectHeadingsTableHeader'
-import SubjectHeadingSearch from './Search/SubjectHeadingSearch'
+
+import Pagination from '@Pagination';
+import SubjectHeadingsTable from './SubjectHeadingsTable';
 import SortButton from './SortButton';
 import appConfig from '../../data/appConfig';
-import LoadingLayer from '../LoadingLayer/LoadingLayer';
-import Pagination from '@Pagination';
 
 
 class SubjectHeadingsContainer extends React.Component {
@@ -18,25 +13,27 @@ class SubjectHeadingsContainer extends React.Component {
     super(props);
     this.state = {
       error: false,
-      loading: true,
     };
     this.pagination = this.pagination.bind(this);
-    this.redirectTo = this.redirectTo.bind(this);
     this.updateSort = this.updateSort.bind(this);
     this.navigationLinks = this.navigationLinks.bind(this);
+    this.currentPage = this.currentPage.bind(this);
   }
 
   componentDidMount() {
     let {
       fromLabel,
       fromComparator,
+    } = this.props.location.query;
+
+    const {
       filter,
       sortBy,
       fromAttributeValue,
     } = this.props.location.query;
 
-    if (!fromComparator) fromComparator = filter ? null : "start"
-    if (!fromLabel) fromLabel = filter ? null : "Aac"
+    if (!fromComparator) fromComparator = filter ? null : "start";
+    if (!fromLabel) fromLabel = filter ? null : "Aac";
 
     const apiParamHash = {
       from_comparator: fromComparator,
@@ -52,42 +49,37 @@ class SubjectHeadingsContainer extends React.Component {
       .filter(pair => pair)
       .join('&');
 
-    axios({
-      method: 'GET',
-      url: `${appConfig.shepApi}/subject_headings?${apiParamString}`,
-      crossDomain: true,
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Content-Type': 'application/json',
-      },
-    },
-    ).then(
-      (res) => {
-        this.setState({
-          previousUrl: res.data.previous_url,
-          nextUrl: res.data.next_url,
-          subjectHeadings: res.data.subject_headings,
-          error: res.data.subject_headings.length === 0,
-          loading: false
-        });
-      },
-    ).catch(
-      (err) => {
-        console.log('error: ', err);
-        if (!this.state.subjectHeadings || this.state.subjectHeadings.length === 0) {
-          this.setState({ error: true });
-        }
-      },
-    );
+    axios(`${appConfig.shepApi}/subject_headings?${apiParamString}`)
+      .then(
+        (res) => {
+          this.setState({
+            previousUrl: res.data.previous_url,
+            nextUrl: res.data.next_url,
+            subjectHeadings: res.data.subject_headings,
+            error: res.data.subject_headings.length === 0,
+          });
+        },
+      ).catch(
+        (err) => {
+          console.log('error: ', err);
+          if (!this.state.subjectHeadings || this.state.subjectHeadings.length === 0) {
+            this.setState({ error: true });
+          }
+        },
+      );
+  }
+
+  currentPage() {
+    return parseInt(this.props.location.query.page || 2);
   }
 
   extractParam(paramName, url) {
-    const params = url.replace(/[^\?]*\?/, '');
+    const params = url.replace(/[^?]*\?/, '');
     const matchdata = params.match(new RegExp(`(^|&)${paramName}=([^&]*)`));
     return matchdata && matchdata[2];
   }
 
-  convertApiUrlToFrontendUrl(url) {
+  convertApiUrlToFrontendUrl(url, type) {
     if (!url) return null;
     const path = this.props.location.pathname;
     const paramHash = {
@@ -105,15 +97,7 @@ class SubjectHeadingsContainer extends React.Component {
       )
       .filter(pair => pair)
       .join('&');
-    return `${path}?${paramString}`;
-  }
-
-  redirectTo(url) {
-    const redirectFunction = function (e) {
-      e.preventDefault();
-      this.context.router.push(url);
-    };
-    return redirectFunction.bind(this);
+    return `${path}?${paramString}&page=${this.currentPage() + (type === 'next' ? 1 : -1)}`;
   }
 
   updateSort(e) {
@@ -133,35 +117,33 @@ class SubjectHeadingsContainer extends React.Component {
       previousUrl,
       nextUrl,
     } = this.state;
-    const urlForPrevious = this.convertApiUrlToFrontendUrl(previousUrl);
-    const urlForNext = this.convertApiUrlToFrontendUrl(nextUrl);
+    const urlForPrevious = this.convertApiUrlToFrontendUrl(previousUrl, 'previous');
+    const urlForNext = this.convertApiUrlToFrontendUrl(nextUrl, 'next');
 
-    return { previous: urlForPrevious, next: urlForNext }
+    return { previous: urlForPrevious, next: urlForNext };
   }
 
   pagination() {
     return (
       <Pagination
-        page={2}
+        page={this.currentPage()}
         shepNavigation={this.navigationLinks()}
-        subjectShowPage
+        subjectIndexPage
       />
     );
   }
 
   render() {
-    const { error, subjectHeadings, loading } = this.state;
+    const { error, subjectHeadings } = this.state;
     const location = this.props.location;
-    let { linked, sortBy, filter } = this.props.location.query;
-
-    if (!linked) linked = '';
+    const { linked, sortBy, filter } = this.props.location.query;
 
     if (error) {
       return (
         <div>
-            'No results found for that search'
+            No results found for that search.
         </div>
-      )
+      );
     }
 
     const sortButton = (
@@ -169,25 +151,19 @@ class SubjectHeadingsContainer extends React.Component {
         ? <SortButton sortBy={sortBy || 'alphabetical'} handler={this.updateSort} />
         : null
     );
+
     return (
-      <div>
-        <LoadingLayer status={loading} title={"Subject Headings"}/>
-        <div className="subjectMainContentWrapper">
-          <div className="subjectHeadingMainContent index">
-            {this.pagination()}
-            <div className="tableHeadingsWrapper">
-            </div>
-            <SubjectHeadingsTable
-              subjectHeadings={subjectHeadings}
-              linked={linked}
-              location={location}
-              sortBy={sortBy}
-              sortButton={sortButton}
-            />
-            {this.pagination()}
-          </div>
-        </div>
-      </div>
+      <React.Fragment>
+        {this.pagination()}
+        {sortButton}
+        <SubjectHeadingsTable
+          subjectHeadings={subjectHeadings}
+          linked={linked}
+          location={location}
+          sortBy={sortBy}
+        />
+        {this.pagination()}
+      </React.Fragment>
     );
   }
 }
@@ -198,6 +174,11 @@ SubjectHeadingsContainer.contextTypes = {
 
 SubjectHeadingsContainer.propTypes = {
   location: PropTypes.object,
+  linked: PropTypes.string,
+};
+
+SubjectHeadingsContainer.defaultProps = {
+  linked: '',
 };
 
 export default SubjectHeadingsContainer;

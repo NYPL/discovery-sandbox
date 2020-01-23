@@ -136,7 +136,6 @@ describe('Tabbed', () => {
     bib={sampleBib}
     fields={bottomFields}
     electronicResources={[]}
-    updateIsLoadingState={(arg)=>{}}
   />);
 
 

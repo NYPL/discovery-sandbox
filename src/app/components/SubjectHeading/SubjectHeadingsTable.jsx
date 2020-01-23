@@ -1,10 +1,11 @@
-/* globals document */
 import React from 'react';
+import PropTypes from 'prop-types';
+
 import SubjectHeadingsTableHeader from './SubjectHeadingsTableHeader';
 import SubjectHeadingsTableBody from './SubjectHeadingsTableBody';
 
 
-export default (props) => {
+const SubjectHeadingsTable = (props) => {
   const {
     subjectHeadings,
     linked,
@@ -18,7 +19,7 @@ export default (props) => {
 
   return (
     <table className="subjectHeadingsTable">
-      <SubjectHeadingsTableHeader sortButton={sortButton}/>
+      <SubjectHeadingsTableHeader sortButton={sortButton} />
       <tbody>
         <SubjectHeadingsTableBody
           subjectHeadings={subjectHeadings}
@@ -30,6 +31,19 @@ export default (props) => {
           container={container}
         />
       </tbody>
-  </table>
+    </table>
   );
 };
+
+SubjectHeadingsTable.propTypes = {
+  subjectHeadings: PropTypes.array,
+  linked: PropTypes.string,
+  location: PropTypes.object,
+  sortBy: PropTypes.string,
+  showId: PropTypes.string,
+  keyId: PropTypes.string,
+  container: PropTypes.string,
+  sortButton: PropTypes.element,
+};
+
+export default SubjectHeadingsTable;

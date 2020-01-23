@@ -2,8 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 
-import SubjectHeadingSearch from '../SubjectHeading/Search/SubjectHeadingSearch';
-
 import { trackDiscovery } from '../../utils/utils';
 import appConfig from '../../data/appConfig';
 
@@ -12,7 +10,7 @@ const {
   displayTitle,
 } = appConfig;
 
-const Breadcrumbs = ({ query = '', type, bibUrl, itemUrl, edd, headingDetails }) => {
+const Breadcrumbs = ({ query, type, bibUrl, itemUrl, edd }) => {
   const defaultText = displayTitle;
   const onClick = pageTitle => trackDiscovery('Breadcrumbs', pageTitle);
   const homeLink = (
@@ -35,18 +33,17 @@ const Breadcrumbs = ({ query = '', type, bibUrl, itemUrl, edd, headingDetails })
     // Search Results page.
     const crumbs = [homeLink];
 
-    if (type === 'subjectHeading') {
+    if (type.startsWith('subjectHeading')) {
       crumbs.push(
         <li key="subjectHeading">
           <Link to={`${baseUrl}/subject_headings`}>
             Subject Headings
           </Link>
-        </li>
-      );
-      if (headingDetails) {
+        </li>);
+      if (type === 'subjectHeading') {
         crumbs.push(<li key="subjectHeadingDetails">Heading Details</li>);
       }
-      return crumbs
+      return crumbs;
     }
 
     if (type === 'search') {
@@ -125,6 +122,11 @@ Breadcrumbs.propTypes = {
   bibUrl: PropTypes.string,
   itemUrl: PropTypes.string,
   edd: PropTypes.bool,
+};
+
+Breadcrumbs.defaultProps = {
+  query: '',
+  type: '',
 };
 
 export default Breadcrumbs;

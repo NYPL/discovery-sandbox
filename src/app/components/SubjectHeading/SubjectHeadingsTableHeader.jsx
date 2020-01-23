@@ -1,24 +1,19 @@
 import React from 'react';
-import { Link } from 'react-router';
-import PropTypes from 'prop-types';
 
-const SubjectHeadingsTableHeader = (props) => {
-  const {
-    sortButton
-  } = props;
+const SubjectHeadingsTableHeader = () => {
   return (
       <thead>
         <tr>
           <th className="subjectHeadingsTableCell subjectHeadingLabel">
             <div className="subjectHeadingToggle"></div>
-            <div className="subjectHeadingLabelInner">Subject Heading</div>
+            <div className="subjectHeadingLabelInner">Heading</div>
           </th>
-          <th className="subjectHeadingsTableCell subjectHeadingAttribute titles">Titles</th>
-          <th className="subjectHeadingsTableCell subjectHeadingAttribute narrower">Narrower</th>
-          {sortButton}
+          <th className="subjectHeadingsTableCell subjectHeadingAttribute titles">Title Count</th>
+          <th className="subjectHeadingsTableCell subjectHeadingAttribute narrower">Subheading Count</th>
+          <th className="subjectHeadingsTableCell sort">Sort</th>
         </tr>
       </thead>
   );
 };
 
-export default SubjectHeadingsTableHeader
+export default SubjectHeadingsTableHeader;

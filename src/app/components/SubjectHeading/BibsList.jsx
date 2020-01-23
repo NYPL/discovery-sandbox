@@ -1,113 +1,23 @@
+/* global window */
+
 import React from 'react';
-import { Link } from 'react-router';
 import PropTypes from 'prop-types';
-import LibraryItem from '../../utils/item';
 import axios from 'axios';
-import appConfig from '../../data/appConfig';
-import {
-  isEmpty as _isEmpty,
-  isArray as _isArray,
-} from 'underscore';
-import ItemTable from '../Item/ItemTable';
 import Pagination from '../Pagination/Pagination';
+import ResultsList from '../Results/ResultsList';
 
 class BibsList extends React.Component {
   constructor(props) {
-    super()
+    super();
     this.state = {
       bibs: props.shepBibs,
       loading: false,
       bibPage: 1,
       lastBib: props.shepBibs.length - 1,
       nextUrl: props.nextUrl,
-    }
+    };
     this.updateBibPage = this.updateBibPage.bind(this);
   }
-
-  // from here down until render() is copied and only slightly modifed from '../Results/ResultsList'
-
-  getBibTitle(bib) {
-    if (!bib.titleDisplay || !bib.titleDisplay.length) {
-      const author = bib.creatorLiteral && bib.creatorLiteral.length ?
-        ` / ${bib.creatorLiteral[0]}` : '';
-      return bib.title && bib.title.length ? `${bib.title[0]}${author}` : '';
-    }
-    return bib.titleDisplay[0];
-  }
-
-  getYearDisplay(bib) {
-    if (_isEmpty(bib)) return null;
-
-    let dateStartYear = bib.dateStartYear;
-    let dateEndYear = bib.dateEndYear;
-
-    dateStartYear = dateStartYear === 999 ? 'unknown' : dateStartYear;
-    dateEndYear = dateEndYear === 9999 ? 'present' : dateEndYear;
-
-    if (dateStartYear && dateEndYear) {
-      return (<li className="nypl-results-date">{dateStartYear}-{dateEndYear}</li>);
-    } else if (dateStartYear) {
-      return (<li className="nypl-results-date">{dateStartYear}</li>);
-    }
-    return null;
-  }
-
-  generateBibLi(bib) {
-
-    // If bib was not successfully converted to a Discovery (json-ld) resource,
-    // display minimal properties from SHEP API:
-    if (!bib['@id']) {
-      return <li className="nypl-results-item not-in-discovery" key={bib.bnumber}>{bib.title} <br/> bib id: {bib.bnumber} <br/> [circ title; for proto only]</li>;
-    }
-
-    const result = bib;
-    const bibTitle = this.getBibTitle(result);
-    const bibId = result && result['@id'] ? result['@id'].substring(4) : '';
-    const materialType = result && result.materialType && result.materialType[0] ?
-      result.materialType[0].prefLabel : null;
-    const yearPublished = this.getYearDisplay(result);
-    const publicationStatement = result.publicationStatement && result.publicationStatement.length ?
-      result.publicationStatement[0] : '';
-    const items = LibraryItem.getItems(result);
-    const totalItems = items.length;
-    const hasRequestTable = items.length === 1;
-
-    return (
-      <li key={bibId} className={`nypl-results-item ${hasRequestTable ? 'has-request' : ''}`}>
-        <h3>
-          <Link
-            onClick={e => this.getBibRecord(e, bibId, bibTitle)}
-            to={`${appConfig.baseUrl}/bib/${bibId}?searchKeywords=${this.props.searchKeywords}`}
-            className="title"
-          >
-            {bibTitle}
-          </Link>
-        </h3>
-        <div className="nypl-results-item-description">
-          <ul>
-            <li className="nypl-results-media">{materialType}</li>
-            <li className="nypl-results-publication">{publicationStatement}</li>
-            {yearPublished}
-            <li className="nypl-results-info">
-              {totalItems} item{totalItems !== 1 ? 's' : ''}
-            </li>
-          </ul>
-        </div>
-        {
-          hasRequestTable &&
-            <ItemTable
-              items={items}
-              bibId={bibId}
-              getRecord={this.getItemRecord}
-              id={null}
-              searchKeywords={this.props.searchKeywords}
-            />
-        }
-      </li>
-    );
-  }
-
-
 
   updateBibPage(page, type) {
     const {
@@ -130,15 +40,7 @@ class BibsList extends React.Component {
         this.setState({ lastBib: lastBib + 10, bibPage: bibPage + 1 });
       } else {
         this.setState({ loading: true }, () => {
-          axios({
-            method: 'GET',
-            url: nextUrl,
-            crossDomain: true,
-            headers: {
-              'Access-Control-Allow-Origin': '*',
-              'Content-Type': 'application/json',
-            },
-          })
+          axios(nextUrl)
             .then((res) => {
               const newNextUrl = res.data.next_url;
               const newBibs = this.state.bibs.concat(res.data.bibs);
@@ -149,11 +51,11 @@ class BibsList extends React.Component {
                 lastBib: newLast,
                 nextUrl: newNextUrl,
                 bibPage: this.state.bibPage + 1,
-              });
+              }, () => window.scrollTo(0, 300));
             })
             .catch(
               (err) => {
-                console.log('error: ', err);
+                console.error('error: ', err);
                 this.setState({ loading: false });
               },
             );
@@ -162,12 +64,12 @@ class BibsList extends React.Component {
     }
   }
 
-
   render() {
     const {
       bibPage,
       lastBib,
       loading,
+      bibs,
     } = this.state;
     const pagination = (
       <Pagination
@@ -179,26 +81,21 @@ class BibsList extends React.Component {
     );
     return (
       <div
-        className="bibs-list"
+        className="nypl-column-half bibs-list"
         tabIndex='0'
-        aria-label='Titles related to this Subject Heading'
+        aria-label="Titles related to this Subject Heading"
       >
         <h4>Titles</h4>
         {
           !loading ?
-            <ul>
-              {
-                this.state.bibs.length > 0
-                ? this.state.bibs.slice(lastBib - 9, lastBib + 1).map(
-                  bib => this.generateBibLi(bib)
-                )
-                : null
-              }
-            </ul>
+            <ResultsList results={bibs.slice(lastBib - 9, lastBib + 1)} />
           :
             <div className="subjectHeadingShowLoadingWrapper">
               <div className="loadingLayer-texts subjectHeadingShow">
-                <span id="loading-animation" className="loadingLayer-texts-loadingWord subjectHeadingShow">
+                <span
+                  id="loading-animation"
+                  className="loadingLayer-texts-loadingWord subjectHeadingShow"
+                >
                   Loading More Titles
                 </span>
                 <div className="loadingDots">
@@ -215,5 +112,10 @@ class BibsList extends React.Component {
     );
   }
 }
+
+BibsList.propTypes = {
+  shepBibs: PropTypes.array,
+  nextUrl: PropTypes.string,
+};
 
 export default BibsList;

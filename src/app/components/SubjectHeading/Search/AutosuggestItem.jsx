@@ -3,13 +3,15 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 
 const AutosuggestItem = (props) => {
-  const {item, activeSuggestion, onClick, path} = props
-  const subfield = item.class === 'subfield'
+  const { item, activeSuggestion, onClick, path } = props;
+  const subfield = item.class === 'subfield';
 
-  let className = "suggestion"
+  let className = "suggestion";
   if (activeSuggestion) {
-    className += "-active"
+    className += "-active";
   }
+
+  // const onKeyPress
 
   return (
     <li
@@ -22,21 +24,24 @@ const AutosuggestItem = (props) => {
       >
         {
           subfield ?
-          <div className="autosuggest component">
-            <span>{item.label}</span>
-          </div>
-          :
-          <div className="autosuggest subject">
-            <em>Subject:</em> <span>{item.label}</span>
-          </div>
+            <div className="autosuggest component">
+              <span>{item.label}</span>
+            </div>
+            :
+            <div className="autosuggest subject">
+              <em>Subject:</em> <span>{item.label}</span>
+            </div>
         }
       </Link>
     </li>
-  )
-}
+  );
+};
 
 AutosuggestItem.propTypes = {
-  location: PropTypes.object
+  item: PropTypes.object,
+  activeSuggestion: PropTypes.bool,
+  onClick: PropTypes.func,
+  path: PropTypes.string,
 };
 
 export default AutosuggestItem;

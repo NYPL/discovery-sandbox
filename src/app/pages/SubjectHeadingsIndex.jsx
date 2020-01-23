@@ -1,28 +1,40 @@
-import React from 'react'
+import React from 'react';
+import PropTypes from 'prop-types';
 
-import SccContainer from '../components/SccContainer/SccContainer'
+import SccContainer from '../components/SccContainer/SccContainer';
 import SubjectHeadingsContainer from '../components/SubjectHeading/SubjectHeadingsContainer';
-import SubjectHeadingSearch from '../components/SubjectHeading/Search/SubjectHeadingSearch'
+import SubjectHeadingSearch from '../components/SubjectHeading/Search/SubjectHeadingSearch';
 
 const SubjectHeadingsIndex = (props) => {
   const {
     location: {
-      query,
+      search,
       query: {
         filter,
       },
-    }
+    },
   } = props;
+
+  const componentKey = `subjectHeadingIndex${search}`;
 
   return (
     <SccContainer
-      mainContent={<SubjectHeadingsContainer {...props}/>}
-      bannerText={
-        ['Subject Headings', filter ? <span key='bannerText'> containing <em>{filter}</em></span>: '']
+      mainContent={<SubjectHeadingsContainer {...props} />}
+      bannerOptions={
+        {
+          text: ['Subject Headings', filter ? <span key="bannerText"> containing <em>{filter}</em></span> : ''],
+        }
       }
-      bannerRightElement={<SubjectHeadingSearch />}
+      extraBannerElement={<SubjectHeadingSearch />}
+      loadingLayerText="Subject Headings"
+      breadcrumbsType="subjectHeadings"
+      key={componentKey}
     />
-  )
-}
+  );
+};
 
-export default SubjectHeadingsIndex
+SubjectHeadingsIndex.propTypes = {
+  location: PropTypes.object,
+};
+
+export default SubjectHeadingsIndex;
