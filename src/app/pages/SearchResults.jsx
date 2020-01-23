@@ -1,11 +1,10 @@
-/* globals document */
-import React, { useState, } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import DocumentTitle from 'react-document-title';
 
 import SccContainer from '../components/SccContainer/SccContainer';
 import Search from '../components/Search/Search';
-import SearchResultsContainer from '../components/SearchResultsPage/SearchResultsPage'; // will change this file name after first merge for PR comparison purposes
+import SearchResultsContainer from '@SearchResultsContainer';
 import FilterPopup from '../components/FilterPopup/FilterPopup';
 import SelectedFilters from '../components/Filters/SelectedFilters';
 import ResultsCount from '../components/ResultsCount/ResultsCount';
@@ -35,7 +34,7 @@ const SearchResults = (props) => {
   const pageLabel = totalPages ? `page ${page} of ${totalPages}` : '';
   const headerLabel = `Search results ${searchKeywordsLabel} ${pageLabel}`;
 
-  let apiFilters = filters && filters.itemListElement && filters.itemListElement.length ?
+  const apiFilters = filters && filters.itemListElement && filters.itemListElement.length ?
     filters.itemListElement : [];
   const createAPIQuery = basicQuery(props);
   const dateFilterErrors = [];
@@ -60,18 +59,18 @@ const SearchResults = (props) => {
       }
     }
     return false;
-  }
+  };
 
   const selectedFiltersAvailable = checkForSelectedFilters();
 
   return (
     <DocumentTitle title="Search Results | Shared Collection Catalog | NYPL">
       <SccContainer
-        mainContent={<SearchResultsContainer {...props}/>}
+        mainContent={<SearchResultsContainer {...props} />}
         bannerOptions={
           {
             text: "Search Results",
-            ariaLabel: headerLabel
+            ariaLabel: headerLabel,
           }
         }
         extraBannerElement={
@@ -92,7 +91,7 @@ const SearchResults = (props) => {
               raisedErrors={dateFilterErrors}
               updateDropdownState={toggleDropdown}
               totalResults={totalResults}
-              />
+            />
             {
               selectedFiltersAvailable &&
               <div className="nypl-full-width-wrapper selected-filters">
@@ -139,7 +138,7 @@ const SearchResults = (props) => {
       />
     </DocumentTitle>
   );
-}
+};
 
 SearchResults.propTypes = {
   searchResults: PropTypes.object,
@@ -147,6 +146,9 @@ SearchResults.propTypes = {
   selectedFilters: PropTypes.object,
   page: PropTypes.string,
   location: PropTypes.object,
+  filters: PropTypes.object,
+  field: PropTypes.string,
+  sortBy: PropTypes.string,
 };
 
 SearchResults.defaultProps = {

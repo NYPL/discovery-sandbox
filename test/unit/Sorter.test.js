@@ -126,7 +126,7 @@ describe('Sorter', () => {
       before(() => {
         createAPIQuery = basicQuery({});
         component = mount(
-          <Sorter createAPIQuery={createAPIQuery} updateIsLoadingState={() => {}} />,
+          <Sorter createAPIQuery={createAPIQuery} />,
           { context: { router: { createHref: () => {}, push: () => {} } } },
         );
         mock = new MockAdapter(axios);
@@ -158,14 +158,13 @@ describe('Sorter', () => {
     let createAPIQuery;
     let sortResultsBySpy;
     let mock;
-    const updateIsLoadingState = () => {};
 
     before(() => {
       sortResultsBySpy = sinon.spy(Sorter.prototype, 'sortResultsBy');
       createAPIQuery = basicQuery({});
 
       component = mount(
-        <Sorter createAPIQuery={createAPIQuery} updateIsLoadingState={updateIsLoadingState} />,
+        <Sorter createAPIQuery={createAPIQuery} />,
         { context: { router: { createHref: () => {}, push: () => {} } } },
       );
       mock = new MockAdapter(axios);

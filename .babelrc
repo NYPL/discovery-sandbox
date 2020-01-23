@@ -81,7 +81,7 @@
           "@ResultsCount": "./src/app/components/ResultsCount/ResultsCount.jsx",
           "@SccContainer": "./src/app/components/SccContainer/SccContainer.jsx",
           "@Search": "./src/app/components/Search/Search.jsx",
-          "@SearchResultsPage": "./src/app/components/SearchResultsPage/SearchResultsPage.jsx",
+          "@SearchResultsContainer": "./src/app/components/SearchResultsContainer/SearchResultsContainer.jsx",
           "@Sorter": "./src/app/components/Sorter/Sorter.jsx",
           "@AdditionalSubjectHeadingsButton": "./src/app/components/SubjectHeading/AdditionalSubjectHeadingsButton.jsx",
           "@BibsList": "./src/app/components/SubjectHeading/BibsList.jsx",

@@ -57,7 +57,7 @@ class SelectedFilters extends React.Component {
     const apiQuery = this.props.createAPIQuery({ selectedFilters });
     trackDiscovery('Filters - Selected list', `Remove - ${filter.field} ${filter.label}`);
 
-    this.props.updateIsLoadingState(true);
+    Actions.updateLoadingStatus(true);
 
     Actions.updateSelectedFilters(selectedFilters);
     ajaxCall(`${appConfig.baseUrl}/api?${apiQuery}`, (response) => {
@@ -72,7 +72,7 @@ class SelectedFilters extends React.Component {
       Actions.updatePage('1');
 
       setTimeout(() => {
-        this.props.updateIsLoadingState(false);
+        Actions.updateLoadingStatus(false);
         this.context.router.push(`${appConfig.baseUrl}/search?${apiQuery}`);
       }, 500);
     });
@@ -82,7 +82,7 @@ class SelectedFilters extends React.Component {
     const apiQuery = this.props.createAPIQuery({ selectedFilters: {} });
 
     trackDiscovery('Filters - Selected list', 'Clear Filters');
-    this.props.updateIsLoadingState(true);
+    Actions.updateLoadingStatus(true);
     Actions.updateSelectedFilters({});
     ajaxCall(`${appConfig.baseUrl}/api?${apiQuery}`, (response) => {
       if (response.data.searchResults && response.data.filters) {
@@ -96,7 +96,7 @@ class SelectedFilters extends React.Component {
       Actions.updatePage('1');
 
       setTimeout(() => {
-        this.props.updateIsLoadingState(false);
+        Actions.updateLoadingStatus(false);
         this.context.router.push(`${appConfig.baseUrl}/search?${apiQuery}`);
       }, 500);
     });
@@ -298,7 +298,6 @@ class SelectedFilters extends React.Component {
 SelectedFilters.propTypes = {
   selectedFilters: PropTypes.object,
   createAPIQuery: PropTypes.func,
-  updateIsLoadingState: PropTypes.func,
   dropdownOpen: PropTypes.bool,
 };
 

@@ -1,27 +1,21 @@
+/* global window */
+
 import React from 'react';
-import { Link } from 'react-router';
 import PropTypes from 'prop-types';
-import LibraryItem from '../../utils/item';
 import axios from 'axios';
-import appConfig from '../../data/appConfig';
-import {
-  isEmpty as _isEmpty,
-  isArray as _isArray,
-} from 'underscore';
-import ItemTable from '../Item/ItemTable';
 import Pagination from '../Pagination/Pagination';
 import ResultsList from '../Results/ResultsList';
 
 class BibsList extends React.Component {
   constructor(props) {
-    super()
+    super();
     this.state = {
       bibs: props.shepBibs,
       loading: false,
       bibPage: 1,
       lastBib: props.shepBibs.length - 1,
       nextUrl: props.nextUrl,
-    }
+    };
     this.updateBibPage = this.updateBibPage.bind(this);
   }
 
@@ -33,8 +27,6 @@ class BibsList extends React.Component {
       bibPage,
     } = this.state;
 
-    console.log(`going to ${type} shep show bibs`);
-
     if (type === 'Previous') {
       // FIXME: The following sometimes produces a bad `lastBib` value.
       // e.g. If there are a total of 18 bibs, navigating to page "2" will
@@ -44,7 +36,6 @@ class BibsList extends React.Component {
       // which is not a valid range.
       if (lastBib > 9) this.setState({ lastBib: lastBib - 10, bibPage: bibPage - 1 });
     } else {
-      console.log("lastBib", lastBib, "bibs", bibs);
       if (lastBib + 10 < bibs.length) {
         this.setState({ lastBib: lastBib + 10, bibPage: bibPage + 1 });
       } else {
@@ -60,11 +51,11 @@ class BibsList extends React.Component {
                 lastBib: newLast,
                 nextUrl: newNextUrl,
                 bibPage: this.state.bibPage + 1,
-              }, () => window.scrollTo(0,300));
+              }, () => window.scrollTo(0, 300));
             })
             .catch(
               (err) => {
-                console.log('error: ', err);
+                console.error('error: ', err);
                 this.setState({ loading: false });
               },
             );
@@ -78,7 +69,7 @@ class BibsList extends React.Component {
       bibPage,
       lastBib,
       loading,
-      bibs
+      bibs,
     } = this.state;
     const pagination = (
       <Pagination
@@ -90,18 +81,21 @@ class BibsList extends React.Component {
     );
     return (
       <div
-        className="bibs-list"
+        className="nypl-column-half bibs-list"
         tabIndex='0'
-        aria-label='Titles related to this Subject Heading'
+        aria-label="Titles related to this Subject Heading"
       >
         <h4>Titles</h4>
         {
           !loading ?
-            <ResultsList results={bibs.slice(lastBib - 9, lastBib + 1)}/>
+            <ResultsList results={bibs.slice(lastBib - 9, lastBib + 1)} />
           :
             <div className="subjectHeadingShowLoadingWrapper">
               <div className="loadingLayer-texts subjectHeadingShow">
-                <span id="loading-animation" className="loadingLayer-texts-loadingWord subjectHeadingShow">
+                <span
+                  id="loading-animation"
+                  className="loadingLayer-texts-loadingWord subjectHeadingShow"
+                >
                   Loading More Titles
                 </span>
                 <div className="loadingDots">
@@ -118,5 +112,10 @@ class BibsList extends React.Component {
     );
   }
 }
+
+BibsList.propTypes = {
+  shepBibs: PropTypes.array,
+  nextUrl: PropTypes.string,
+};
 
 export default BibsList;

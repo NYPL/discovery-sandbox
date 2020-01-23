@@ -1,31 +1,23 @@
-/* globals document */
 import React from 'react';
 import PropTypes from 'prop-types';
-import DocumentTitle from 'react-document-title';
 
-import Breadcrumbs from '../Breadcrumbs/Breadcrumbs';
 import ResultList from '../Results/ResultsList';
-import Search from '../Search/Search';
 import Pagination from '../Pagination/Pagination';
-import LoadingLayer from '../LoadingLayer/LoadingLayer';
-import FilterPopup from '../FilterPopup/FilterPopup';
-import SelectedFilters from '../Filters/SelectedFilters';
 import {
   basicQuery,
   ajaxCall,
   trackDiscovery,
 } from '../../utils/utils';
-import subjectFilterUtil from '../../utils/subjectFilterUtils';
 import Actions from '../../actions/Actions';
+import Store from '@Store'
 import appConfig from '../../data/appConfig';
 
+// Renders the ResultsList containing the search results and the Pagination component
 const SearchResultsContainer = (props) => {
   const {
     searchResults,
     searchKeywords,
-    selectedFilters,
     page,
-    field,
   } = props;
 
   const totalResults = searchResults ? searchResults.totalResults : undefined;
@@ -40,8 +32,8 @@ const SearchResultsContainer = (props) => {
       Actions.updateSearchResults(response.data.searchResults);
       Actions.updatePage(nextPage.toString());
       setTimeout(() => {
-        Actions.updateIsLoadingState(false);
-        this.context.router.push(`${appConfig.baseUrl}/search?${apiQuery}`);
+        Actions.updateLoadingStatus(false);
+        props.router.push(`${appConfig.baseUrl}/search?${apiQuery}`);
       }, 500);
     });
   };
@@ -77,16 +69,12 @@ const SearchResultsContainer = (props) => {
       </div>
     </React.Fragment>
   );
-}
+};
 
 SearchResultsContainer.propTypes = {
   searchResults: PropTypes.object,
   searchKeywords: PropTypes.string,
-  selectedFilters: PropTypes.object,
   page: PropTypes.string,
-  location: PropTypes.object,
-  sortBy: PropTypes.string,
-  field: PropTypes.string,
 };
 
 SearchResultsContainer.defaultProps = {

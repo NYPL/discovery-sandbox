@@ -13,6 +13,8 @@ import {
 import DocumentTitle from 'react-document-title';
 
 import Breadcrumbs from '../Breadcrumbs/Breadcrumbs';
+import Actions from '@Actions'
+import Store from '../../stores/Store';
 import PatronStore from '../../stores/PatronStore';
 import appConfig from '../../data/appConfig';
 import ElectronicDeliveryForm from './ElectronicDeliveryForm';
@@ -39,13 +41,11 @@ class ElectronicDelivery extends React.Component {
       itemId,
       itemSource,
       raiseError,
-      isLoading: this.props.isLoading,
     }, { patron: PatronStore.getState() });
 
     this.requireUser = this.requireUser.bind(this);
     this.submitRequest = this.submitRequest.bind(this);
     this.raiseError = this.raiseError.bind(this);
-    this.updateIsLoadingState = this.updateIsLoadingState.bind(this);
   }
 
   componentDidMount() {
@@ -99,10 +99,6 @@ class ElectronicDelivery extends React.Component {
     return raisedErrors;
   }
 
-  updateIsLoadingState(status) {
-    this.setState({ isLoading: status });
-  }
-
   /**
    * submitRequest()
    * Client-side submit call.
@@ -134,20 +130,20 @@ class ElectronicDelivery extends React.Component {
 
     // This is to remove the error box on the top of the page on a successfull submission.
     this.setState({ raiseError: null });
-    this.updateIsLoadingState(true);
+    Actions.updateLoadingStatus(true);
     trackDiscovery(`Submit Request EDD${partnerEvent}`, `${title} - ${itemId}`);
 
     axios
       .post(`${appConfig.baseUrl}/api/newHold`, data)
       .then((response) => {
         if (response.data.error && response.data.error.status !== 200) {
-          this.updateIsLoadingState(false);
+          Actions.updateLoadingStatus(false);
           this.context.router.push(
             `${path}?errorStatus=${response.data.error.status}` +
             `&errorMessage=${response.data.error.statusText}${searchKeywordsQuery}${fromUrlQuery}`,
           );
         } else {
-          this.updateIsLoadingState(false);
+          Actions.updateLoadingStatus(false);
           this.context.router.push(
             `${path}?pickupLocation=edd&requestId=${response.data.id}` +
             `${searchKeywordsQuery}${fromUrlQuery}`,
@@ -160,7 +156,7 @@ class ElectronicDelivery extends React.Component {
           error,
         );
 
-        this.updateIsLoadingState(false);
+        Actions.updateLoadingStatus(false);
         this.context.router.push(
           `${path}?errorMessage=${error}${searchKeywordsQuery}${fromUrlQuery}`,
         );
@@ -215,7 +211,7 @@ class ElectronicDelivery extends React.Component {
       <DocumentTitle title="Electronic Delivery Request | Shared Collection Catalog | NYPL">
         <div id="mainContent">
           <LoadingLayer
-            status={this.state.isLoading}
+            status={Store.state.isLoading}
             title="Requesting"
           />
           <div className="nypl-request-page-header">
@@ -297,12 +293,10 @@ ElectronicDelivery.propTypes = {
   params: PropTypes.object,
   error: PropTypes.object,
   form: PropTypes.object,
-  isLoading: PropTypes.bool,
 };
 
 ElectronicDelivery.defaultProps = {
   searchKeywords: '',
-  isLoading: false,
 };
 
 

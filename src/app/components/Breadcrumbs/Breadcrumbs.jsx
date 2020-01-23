@@ -2,8 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 
-import SubjectHeadingSearch from '../SubjectHeading/Search/SubjectHeadingSearch';
-
 import { trackDiscovery } from '../../utils/utils';
 import appConfig from '../../data/appConfig';
 
@@ -41,12 +39,11 @@ const Breadcrumbs = ({ query, type, bibUrl, itemUrl, edd }) => {
           <Link to={`${baseUrl}/subject_headings`}>
             Subject Headings
           </Link>
-        </li>
-      );
+        </li>);
       if (type === 'subjectHeading') {
         crumbs.push(<li key="subjectHeadingDetails">Heading Details</li>);
       }
-      return crumbs
+      return crumbs;
     }
 
     if (type === 'search') {
@@ -130,6 +127,6 @@ Breadcrumbs.propTypes = {
 Breadcrumbs.defaultProps = {
   query: '',
   type: '',
-}
+};
 
 export default Breadcrumbs;

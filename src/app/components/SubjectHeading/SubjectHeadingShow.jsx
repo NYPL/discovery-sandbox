@@ -5,11 +5,8 @@ import { Link } from 'react-router';
 
 import SubjectHeadingsTable from './SubjectHeadingsTable';
 import BibsList from './BibsList';
-import ResultsList from '../Results/ResultsList';
-import SubjectHeadingsTableHeader from './SubjectHeadingsTableHeader';
 import Range from '../../models/Range';
 import appConfig from '../../data/appConfig';
-import LoadingLayer from '../LoadingLayer/LoadingLayer';
 import Actions from '../../actions/Actions';
 
 
@@ -22,8 +19,6 @@ class SubjectHeadingShow extends React.Component {
         label: '',
       },
       shepBibs: [],
-      bibs: [],
-      contextLoading: true
     };
 
     this.generateFullContextUrl = this.generateFullContextUrl.bind(this);
@@ -33,11 +28,9 @@ class SubjectHeadingShow extends React.Component {
   }
 
   componentDidMount() {
-    let { uuid } = this.state.mainHeading
+    const { uuid } = this.state.mainHeading;
 
-    axios({
-      url: `${appConfig.baseUrl}/api/subjectHeadings/subject_headings/${uuid}/context`,
-    })
+    axios(`${appConfig.baseUrl}/api/subjectHeadings/subject_headings/${uuid}/context`)
       .then((res) => {
         this.setState({
           contextHeadings: this.processContextHeadings(res.data.subject_headings, uuid),
@@ -67,7 +60,7 @@ class SubjectHeadingShow extends React.Component {
       })
       .catch(
         (err) => {
-          console.log('error: ', err);
+          console.error('error: ', err);
           this.setState({ error: true });
         },
       );
@@ -77,7 +70,7 @@ class SubjectHeadingShow extends React.Component {
     })
       .then((res) => {
         this.setState({
-          relatedHeadings: res.data.related_headings
+          relatedHeadings: res.data.related_headings,
         });
       })
       .catch(
@@ -96,7 +89,7 @@ class SubjectHeadingShow extends React.Component {
     );
   }
 
-  generateFullContextUrl(e) {
+  generateFullContextUrl() {
     const {
       contextHeadings,
     } = this.state;
@@ -104,7 +97,7 @@ class SubjectHeadingShow extends React.Component {
     const topLevelIndex = contextHeadings.findIndex(this.hasUuid);
     const linkLabel = contextHeadings[topLevelIndex && topLevelIndex - 1].label;
     const path = this.props.location.pathname.replace(/\/subject_headings.*/, '');
-    return `${path}/subject_headings?fromLabel=${linkLabel}&fromComparator=start&linked=${uuid}`
+    return `${path}/subject_headings?fromLabel=${linkLabel}&fromComparator=start&linked=${uuid}`;
   }
 
   // returns true or false depending on whether the heading has a descendant with the given uuid.
@@ -112,17 +105,9 @@ class SubjectHeadingShow extends React.Component {
   removeChildrenOffMainPath(heading, uuid) {
     const onMainPath =
       heading.uuid === uuid ||
-      (heading.children && heading.children.some(child => this.removeChildrenOffMainPath(child, uuid)));
-    if (!onMainPath) heading.children = null;
-    return onMainPath;
-  }
-
-  // returns true or false depending on whether the heading has a descendant with the given uuid.
-  // If not, removes the children of that heading
-  removeChildrenOffMainPath(heading, uuid) {
-    const onMainPath =
-      heading.uuid === uuid ||
-      (heading.children && heading.children.some(child => this.removeChildrenOffMainPath(child, uuid)));
+      (heading.children &&
+        heading.children.some(child => this.removeChildrenOffMainPath(child, uuid))
+      );
     if (!onMainPath) heading.children = null;
     return onMainPath;
   }
@@ -132,7 +117,9 @@ class SubjectHeadingShow extends React.Component {
       this.removeChildrenOffMainPath(heading, uuid);
       Range.addRangeData(heading, uuid, 'show');
     });
-    const mainHeadingIndex = headings.findIndex(heading => heading.children || heading.uuid === uuid);
+    const mainHeadingIndex = headings.findIndex(heading =>
+      heading.children || heading.uuid === uuid
+    );
     const startIndex = mainHeadingIndex > 0 ? mainHeadingIndex - 1 : 0;
     const endIndex = mainHeadingIndex + 2;
     return headings.slice(startIndex, endIndex);
@@ -146,74 +133,76 @@ class SubjectHeadingShow extends React.Component {
       bibsNextUrl,
       error,
       mainHeading,
-      contextLoading,
     } = this.state;
 
-    const { label, uuid } = mainHeading;
+    const { uuid } = mainHeading;
 
     const { location } = this.props;
 
     if (error) {
-      return (<div>Not a subject heading</div>)
+      return (<div>Not a subject heading</div>);
     }
     return (
       <React.Fragment>
-        <div className="subjectHeadingShow">
-          {shepBibs.length > 0 ?
-            <BibsList
-              shepBibs={shepBibs}
-              nextUrl={bibsNextUrl}
-            />
-            : null
-          }
+        {shepBibs.length > 0 ?
+          <BibsList
+            shepBibs={shepBibs}
+            nextUrl={bibsNextUrl}
+          />
+          :
           <div
-            className="subjectHeadingRelated subjectHeadingInfoBox"
+            className="nypl-column-half bibs-list"
             tabIndex='0'
-            aria-label='Related Subject Headings'
-          >
-            <div className="backgroundContainer">
-              <h4>Related Headings</h4>
-            </div>
-            <SubjectHeadingsTable
-              subjectHeadings={relatedHeadings}
-              location={location}
-              keyId="related"
-              container="narrower"
-            />
+            aria-label="Titles related to this Subject Heading"
+          />
+        }
+        <div
+          className="nypl-column-half subjectHeadingRelated subjectHeadingInfoBox"
+          tabIndex='0'
+          aria-label="Related Subject Headings"
+        >
+          <div className="backgroundContainer">
+            <h4>Related Headings</h4>
           </div>
-          <div
-            className="subjectHeadingContext subjectHeadingInfoBox"
-            tabIndex='0'
-            aria-label='Adjacent Subject Headings'
-          >
-            <div className="backgroundContainer">
-              <h4>Adjacent Headings</h4>
-            </div>
-            <SubjectHeadingsTable
-              subjectHeadings={contextHeadings}
-              location={location}
-              showId={uuid}
-              keyId="context"
-              container="context"
-            />
-            <Link
-              to={contextHeadings && contextHeadings.length ? this.generateFullContextUrl() : '#'}
-              className="link toIndex"
-            >
-              See full context
-            </Link>
+          <SubjectHeadingsTable
+            subjectHeadings={relatedHeadings}
+            location={location}
+            keyId="related"
+            container="narrower"
+          />
+        </div>
+        <div
+          className="nypl-column-half subjectHeadingContext subjectHeadingInfoBox"
+          tabIndex='0'
+          aria-label="Adjacent Subject Headings"
+        >
+          <div className="backgroundContainer">
+            <h4>Adjacent Headings</h4>
           </div>
+          <SubjectHeadingsTable
+            subjectHeadings={contextHeadings}
+            location={location}
+            showId={uuid}
+            keyId="context"
+            container="context"
+          />
+          <Link
+            to={contextHeadings && contextHeadings.length ? this.generateFullContextUrl() : '#'}
+            className="link toIndex"
+          >
+            See full context
+          </Link>
         </div>
       </React.Fragment>
-    )
+    );
   }
 }
 
-
 SubjectHeadingShow.propTypes = {
   location: PropTypes.object,
+  params: PropTypes.object,
+  setBannerText: PropTypes.func,
 };
-
 
 SubjectHeadingShow.contextTypes = {
   router: PropTypes.object,

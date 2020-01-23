@@ -256,7 +256,7 @@ class FilterPopup extends React.Component {
     }
 
     this.closeForm(e);
-    this.props.updateIsLoadingState(true);
+    Actions.updateLoadingStatus(true);
 
     Actions.updateSelectedFilters(filtersToApply);
     ajaxCall(`${appConfig.baseUrl}/api?${apiQuery}`, (response) => {
@@ -271,7 +271,7 @@ class FilterPopup extends React.Component {
       Actions.updatePage('1');
 
       setTimeout(() => {
-        this.props.updateIsLoadingState(false);
+        Actions.updateLoadingStatus(false);
         this.context.router.push(`${appConfig.baseUrl}/search?${apiQuery}`);
       }, 500);
     });
@@ -612,7 +612,6 @@ class FilterPopup extends React.Component {
 FilterPopup.propTypes = {
   filters: PropTypes.array,
   createAPIQuery: PropTypes.func,
-  updateIsLoadingState: PropTypes.func,
   selectedFilters: PropTypes.object,
   searchKeywords: PropTypes.string,
   raisedErrors: PropTypes.array,
@@ -623,7 +622,6 @@ FilterPopup.propTypes = {
 FilterPopup.defaultProps = {
   filters: [],
   createAPIQuery: () => {},
-  updateIsLoadingState: () => {},
   updateDropdownState: () => {},
   totalResults: 0,
   searchKeywords: '',

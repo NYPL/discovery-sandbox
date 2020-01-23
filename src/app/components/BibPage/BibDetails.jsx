@@ -18,7 +18,6 @@ import DefinitionList from './DefinitionList';
 import appConfig from '../../data/appConfig';
 import getOwner from '../../utils/getOwner';
 import LibraryItem from '../../utils/item';
-import axios from 'axios';
 
 class BibDetails extends React.Component {
   constructor(props) {
@@ -89,7 +88,7 @@ class BibDetails extends React.Component {
     return (
       <ul className="additionalDetails">
         {
-          bibValues.map((value, i) => {
+          bibValues.map((value) => {
             const url = `filters[${fieldValue}]=${value['@id']}`;
             let itemValue = fieldLinkable ?
               (
@@ -112,7 +111,7 @@ class BibDetails extends React.Component {
               );
             }
 
-            return (<li key={i}>{itemValue}</li>);
+            return (<li key={value.prefLabel}>{itemValue}</li>);
           })
         }
       </ul>
@@ -131,14 +130,14 @@ class BibDetails extends React.Component {
     if (Array.isArray(entities) && entities.length > 0) {
       const markup = entities
         .map((ent) => {
-          const nodes = [(<span key={`${ent}`}>{ent['@value']}</span>)];
-          if (ent.identifierStatus) nodes.push(<span key={`${ent}`}> <em>({ent.identifierStatus})</em></span>);
+          const nodes = [(<span key={`${ent["@value"]}`}>{ent['@value']}</span>)];
+          if (ent.identifierStatus) nodes.push(<span key={`${ent["@value"]}`}> <em>({ent.identifierStatus})</em></span>);
           return nodes;
         });
 
       return markup.length === 1
         ? markup.pop()
-        : (<ul>{markup.map((m, i) => (<li key={i}>{m}</li>))}</ul>);
+        : (<ul>{markup.map(m => (<li key={m}>{m}</li>))}</ul>);
     }
     return null;
   }
@@ -184,7 +183,20 @@ class BibDetails extends React.Component {
         {
           bibValues.map((value, i) => {
             const url = `filters[${fieldValue}]=${value}`;
-            return <li key={`filter${i}`}>{this.getDefinitionOneItem(value, url, bibValues, fieldValue, fieldLinkable, fieldIdentifier, fieldSelfLinkable, fieldLabel)}</li>;
+            return (
+              <li key={`filter${fieldValue}${i}`}>
+                {this.getDefinitionOneItem(
+                  value,
+                  url,
+                  bibValues,
+                  fieldValue,
+                  fieldLinkable,
+                  fieldIdentifier,
+                  fieldSelfLinkable,
+                  fieldLabel,
+                )}
+              </li>
+            );
           })
         }
       </ul>
@@ -258,7 +270,7 @@ class BibDetails extends React.Component {
       const fieldLinkable = field.linkable;
       const fieldSelfLinkable = field.selfLinkable;
       const fieldIdentifier = field.identifier;
-      let bibValues = bib[fieldValue];
+      const bibValues = bib[fieldValue];
 
       // skip absent fields
       if (bibValues && bibValues.length && _isArray(bibValues)) {
@@ -438,7 +450,7 @@ class BibDetails extends React.Component {
    */
   newSearch(e, query, field, value, label) {
     e.preventDefault();
-    this.props.updateIsLoadingState(true);
+    Actions.updateLoadingStatus(true);
 
     trackDiscovery('Bib fields', `${label} - ${value}`);
     ajaxCall(`${appConfig.baseUrl}/api?${query}`, (response) => {
@@ -480,7 +492,7 @@ class BibDetails extends React.Component {
       Actions.updateSearchKeywords('');
       Actions.updatePage('1');
       setTimeout(
-        () => { this.props.updateIsLoadingState(false); },
+        () => { Actions.updateLoadingStatus(false); },
         500,
       );
       this.context.router.push(`${appConfig.baseUrl}/search?${query}`);
@@ -502,14 +514,13 @@ class BibDetails extends React.Component {
 
     const bibDetails = this.getDisplayFields(this.props.bib);
 
-    return (<DefinitionList data={bibDetails} headings={this.props.bib.subjectHeadingData}/>);
+    return (<DefinitionList data={bibDetails} headings={this.props.bib.subjectHeadingData} />);
   }
 }
 
 BibDetails.propTypes = {
   bib: PropTypes.object.isRequired,
   fields: PropTypes.array.isRequired,
-  updateIsLoadingState: PropTypes.func,
   electronicResources: PropTypes.array,
 };
 

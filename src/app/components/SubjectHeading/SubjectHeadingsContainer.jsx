@@ -1,16 +1,11 @@
-/* globals document */
 import React from 'react';
-import { Link } from 'react-router';
 import PropTypes from 'prop-types';
 import axios from 'axios';
-import SubjectHeadingsTable from './SubjectHeadingsTable'
-// import SubjectHeadingsList from './SubjectHeadingsList';
-import SubjectHeadingsTableHeader from './SubjectHeadingsTableHeader'
-import SubjectHeadingSearch from './Search/SubjectHeadingSearch'
+
+import Pagination from '@Pagination';
+import SubjectHeadingsTable from './SubjectHeadingsTable';
 import SortButton from './SortButton';
 import appConfig from '../../data/appConfig';
-import LoadingLayer from '../LoadingLayer/LoadingLayer';
-import Pagination from '@Pagination';
 
 
 class SubjectHeadingsContainer extends React.Component {
@@ -18,7 +13,6 @@ class SubjectHeadingsContainer extends React.Component {
     super(props);
     this.state = {
       error: false,
-      loading: true,
     };
     this.pagination = this.pagination.bind(this);
     this.updateSort = this.updateSort.bind(this);
@@ -30,13 +24,16 @@ class SubjectHeadingsContainer extends React.Component {
     let {
       fromLabel,
       fromComparator,
+    } = this.props.location.query;
+
+    const {
       filter,
       sortBy,
       fromAttributeValue,
     } = this.props.location.query;
 
-    if (!fromComparator) fromComparator = filter ? null : "start"
-    if (!fromLabel) fromLabel = filter ? null : "Aac"
+    if (!fromComparator) fromComparator = filter ? null : "start";
+    if (!fromLabel) fromLabel = filter ? null : "Aac";
 
     const apiParamHash = {
       from_comparator: fromComparator,
@@ -52,25 +49,24 @@ class SubjectHeadingsContainer extends React.Component {
       .filter(pair => pair)
       .join('&');
 
-    axios(`${appConfig.shepApi}/subject_headings?${apiParamString}`,)
-    .then(
-      (res) => {
-        this.setState({
-          previousUrl: res.data.previous_url,
-          nextUrl: res.data.next_url,
-          subjectHeadings: res.data.subject_headings,
-          error: res.data.subject_headings.length === 0,
-          loading: false
-        });
-      },
-    ).catch(
-      (err) => {
-        console.log('error: ', err);
-        if (!this.state.subjectHeadings || this.state.subjectHeadings.length === 0) {
-          this.setState({ error: true });
-        }
-      },
-    );
+    axios(`${appConfig.shepApi}/subject_headings?${apiParamString}`)
+      .then(
+        (res) => {
+          this.setState({
+            previousUrl: res.data.previous_url,
+            nextUrl: res.data.next_url,
+            subjectHeadings: res.data.subject_headings,
+            error: res.data.subject_headings.length === 0,
+          });
+        },
+      ).catch(
+        (err) => {
+          console.log('error: ', err);
+          if (!this.state.subjectHeadings || this.state.subjectHeadings.length === 0) {
+            this.setState({ error: true });
+          }
+        },
+      );
   }
 
   currentPage() {
@@ -78,7 +74,7 @@ class SubjectHeadingsContainer extends React.Component {
   }
 
   extractParam(paramName, url) {
-    const params = url.replace(/[^\?]*\?/, '');
+    const params = url.replace(/[^?]*\?/, '');
     const matchdata = params.match(new RegExp(`(^|&)${paramName}=([^&]*)`));
     return matchdata && matchdata[2];
   }
@@ -124,7 +120,7 @@ class SubjectHeadingsContainer extends React.Component {
     const urlForPrevious = this.convertApiUrlToFrontendUrl(previousUrl, 'previous');
     const urlForNext = this.convertApiUrlToFrontendUrl(nextUrl, 'next');
 
-    return { previous: urlForPrevious, next: urlForNext }
+    return { previous: urlForPrevious, next: urlForNext };
   }
 
   pagination() {
@@ -138,18 +134,16 @@ class SubjectHeadingsContainer extends React.Component {
   }
 
   render() {
-    const { error, subjectHeadings, loading } = this.state;
+    const { error, subjectHeadings } = this.state;
     const location = this.props.location;
-    let { linked, sortBy, filter } = this.props.location.query;
-
-    if (!linked) linked = '';
+    const { linked, sortBy, filter } = this.props.location.query;
 
     if (error) {
       return (
         <div>
-            'No results found for that search'
+            No results found for that search.
         </div>
-      )
+      );
     }
 
     const sortButton = (
@@ -159,7 +153,7 @@ class SubjectHeadingsContainer extends React.Component {
     );
 
     return (
-      <div className="nypl-column-full">
+      <React.Fragment>
         {this.pagination()}
         {sortButton}
         <SubjectHeadingsTable
@@ -169,7 +163,7 @@ class SubjectHeadingsContainer extends React.Component {
           sortBy={sortBy}
         />
         {this.pagination()}
-      </div>
+      </React.Fragment>
     );
   }
 }
@@ -180,6 +174,11 @@ SubjectHeadingsContainer.contextTypes = {
 
 SubjectHeadingsContainer.propTypes = {
   location: PropTypes.object,
+  linked: PropTypes.string,
+};
+
+SubjectHeadingsContainer.defaultProps = {
+  linked: '',
 };
 
 export default SubjectHeadingsContainer;
