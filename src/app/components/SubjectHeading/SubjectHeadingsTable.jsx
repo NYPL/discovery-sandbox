@@ -17,11 +17,17 @@ const SubjectHeadingsTable = (props) => {
     sortButton,
   } = props;
 
+  // sort column occupies space on all index pages
+    // this relies on a boolean prop `index` originating in `SubjectHeadingsContainer`
+  // sort column heading is only shown if a sort button local to a sort button is shown
+    // exception would be a subject heading with 1 child or no children
+  const revealSortColum = true
+
   return (
     <table className="subjectHeadingsTable">
       <SubjectHeadingsTableHeader
         index={props.index}
-        sortButton={sortButton}
+
       />
       <tbody>
         <SubjectHeadingsTableBody
