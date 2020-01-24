@@ -23,6 +23,7 @@ class SubjectHeadingShow extends React.Component {
 
     this.generateFullContextUrl = this.generateFullContextUrl.bind(this);
     this.hasUuid = this.hasUuid.bind(this);
+    this.getTopLevelLabel = this.getTopLevelLabel.bind(this);
     this.processContextHeadings = this.processContextHeadings.bind(this);
     this.removeChildrenOffMainPath = this.removeChildrenOffMainPath.bind(this);
   }
@@ -80,6 +81,16 @@ class SubjectHeadingShow extends React.Component {
       );
   }
 
+
+  getTopLevelLabel() {
+    const {
+      contextHeadings,
+    } = this.state;
+    let indexOfTopLevelAncestor = contextHeadings.findIndex(this.hasUuid);
+    indexOfTopLevelAncestor = Math.max(indexOfTopLevelAncestor - 1, 0);
+    return contextHeadings[indexOfTopLevelAncestor].label;
+  }
+
   hasUuid(headings) {
     const uuid = this.props.params.subjectHeadingUuid;
     if (Array.isArray(headings)) return headings.some(heading => this.hasUuid(heading));
@@ -87,14 +98,10 @@ class SubjectHeadingShow extends React.Component {
   }
 
   generateFullContextUrl() {
-    const {
-      contextHeadings,
-    } = this.state;
     const uuid = this.props.params.subjectHeadingUuid;
-    const topLevelIndex = contextHeadings.findIndex(this.hasUuid);
-    const linkLabel = contextHeadings[topLevelIndex && topLevelIndex - 1].label;
+    const linkFromLabel = this.getTopLevelLabel();
     const path = this.props.location.pathname.replace(/\/subject_headings.*/, '');
-    return `${path}/subject_headings?fromLabel=${linkLabel}&fromComparator=start&linked=${uuid}`;
+    return `${path}/subject_headings?fromLabel=${linkFromLabel}&fromComparator=start&linked=${uuid}`;
   }
 
   // returns true or false depending on whether the heading has a descendant with the given uuid.
