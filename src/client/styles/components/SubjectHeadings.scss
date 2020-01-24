@@ -82,6 +82,7 @@ $darker-grey: lightgray;
         & > select {
           border-width: 1px;
           border-color: black;
+          font-size: 10px;
         }
       }
       .subjectHeadingLabelInner {
@@ -392,7 +393,7 @@ span > .verticalEllipse {
   font-size: 14px;
   margin-bottom: 3px;
   line-height: 5px;
-  padding: 1%;
+  padding: 4.5%;
 }
 
 .subjectHeadingInfoBox {
