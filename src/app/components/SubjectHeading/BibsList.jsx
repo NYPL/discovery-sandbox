@@ -35,15 +35,12 @@ class BibsList extends React.Component {
     return Math.max(0, 10 * (bibPage - 1));
   }
 
-  updateBibPage(page, type) {
+  updateBibPage(page) {
     const {
       bibs,
       nextUrl,
       bibPage,
     } = this.state;
-
-    console.log('updating ', page, type)
-
 
     if (page < bibPage || this.lastBib() + 10 < bibs.length) {
       this.setState({ bibPage: page });
