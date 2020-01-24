@@ -10,7 +10,9 @@ const SubjectHeadingsTableHeader = () => {
           </th>
           <th className="subjectHeadingsTableCell subjectHeadingAttribute titles">Title Count</th>
           <th className="subjectHeadingsTableCell subjectHeadingAttribute narrower">Subheading Count</th>
-          <th className="subjectHeadingsTableCell sort">Sort</th>
+          {
+              // <th className="subjectHeadingsTableCell sort">Sort</th>
+          }
         </tr>
       </thead>
   );

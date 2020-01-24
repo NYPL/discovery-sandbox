@@ -444,3 +444,10 @@ span > .verticalEllipse {
 .subjectHeadingLabel.mainLabel {
   font-style: italic;
 }
+
+.headingStyle {
+  font-weight: bold;
+  .emph {
+    color: black;
+  }
+}

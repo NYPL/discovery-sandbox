@@ -24,6 +24,8 @@ class SubjectHeadingsTableBody extends React.Component {
     this.updateRange = this.updateRange.bind(this);
     this.listItemsInRange = this.listItemsInRange.bind(this);
     this.listItemsInInterval = this.listItemsInInterval.bind(this);
+    this.subHeadingHeadings = this.subHeadingHeadings.bind(this);
+    window.tbody = this;
   }
 
   componentDidUpdate() {
@@ -68,13 +70,27 @@ class SubjectHeadingsTableBody extends React.Component {
     this.setState(prevState => prevState);
   }
 
+  subHeadingHeadings() {
+    return [
+      {
+        label: 'Heading',
+        uuid: 'blah',
+        bib_count: 'Title Count',
+        desc_count: 'Subheading Count',
+        api_url: '',
+        subject_heading_url: '',
+        heading_style: true,
+      },
+    ];
+  }
+
   listItemsInRange() {
     const {
       range,
     } = this.state;
-    return range.intervals.reduce((acc, el) =>
+    return this.subHeadingHeadings().concat(range.intervals.reduce((acc, el) =>
       acc.concat(this.listItemsInInterval(el))
-      , []);
+      , []));
   }
 
   listItemsInInterval(interval) {
