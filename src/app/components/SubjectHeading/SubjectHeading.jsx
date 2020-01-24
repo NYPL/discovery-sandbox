@@ -199,7 +199,6 @@ class SubjectHeading extends React.Component {
 
     const positionStyle = container === 'narrower' ? null : { marginLeft: 30 * ((indentation || 0) + 1) };
     const isMain = location.pathname.includes(uuid);
-    // changes to HTML structure here will need to be replicated in ./SubjectHeadingTableHeader
     return (
       <React.Fragment>
         {
