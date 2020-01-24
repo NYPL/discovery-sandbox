@@ -19,7 +19,10 @@ const SubjectHeadingsTable = (props) => {
 
   return (
     <table className="subjectHeadingsTable">
-      <SubjectHeadingsTableHeader sortButton={sortButton} />
+      <SubjectHeadingsTableHeader
+        index={props.index}
+        sortButton={sortButton}
+      />
       <tbody>
         <SubjectHeadingsTableBody
           subjectHeadings={subjectHeadings}
@@ -44,6 +47,11 @@ SubjectHeadingsTable.propTypes = {
   keyId: PropTypes.string,
   container: PropTypes.string,
   sortButton: PropTypes.element,
+  index: PropTypes.bool,
+};
+
+SubjectHeadingsTable.defaultProps = {
+  index: false,
 };
 
 export default SubjectHeadingsTable;

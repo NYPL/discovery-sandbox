@@ -1,6 +1,7 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
-const SubjectHeadingsTableHeader = () => {
+const SubjectHeadingsTableHeader = ({index, showSortColumnHeading}) => {
   return (
       <thead>
         <tr>
@@ -10,10 +11,25 @@ const SubjectHeadingsTableHeader = () => {
           </th>
           <th className="subjectHeadingsTableCell subjectHeadingAttribute titles">Title Count</th>
           <th className="subjectHeadingsTableCell subjectHeadingAttribute narrower">Subheading Count</th>
-          <th className="subjectHeadingsTableCell sort">Sort</th>
+          {index ? <th className="subjectHeadingsTableCell sort">
+            {showSortColumnHeading ? "Sort" : ""}
+          </th>
+          : null
+          }
         </tr>
       </thead>
   );
+};
+
+SubjectHeadingsTableHeader.propTypes = {
+  index: PropTypes.bool,
+  showSortColumnHeading: PropTypes.bool,
+};
+
+SubjectHeadingsTableHeader.defaultProps = {
+  // safer to not have an extra column or column heading
+  index: false,
+  showSortColumnHeading: false,
 };
 
 export default SubjectHeadingsTableHeader;

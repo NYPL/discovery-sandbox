@@ -157,6 +157,7 @@ class SubjectHeadingsContainer extends React.Component {
         {this.pagination()}
         {sortButton}
         <SubjectHeadingsTable
+          index
           subjectHeadings={subjectHeadings}
           linked={linked}
           location={location}
