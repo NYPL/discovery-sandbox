@@ -8,7 +8,6 @@ import SubjectHeadingsTableBody from './SubjectHeadingsTableBody';
 const SubjectHeadingsTable = (props) => {
   const {
     subjectHeadings,
-    linked,
     location,
     sortBy,
     showId,
@@ -21,13 +20,14 @@ const SubjectHeadingsTable = (props) => {
     // this relies on a boolean prop `index` originating in `SubjectHeadingsContainer`
   // sort column heading is only shown if a sort button local to a sort button is shown
     // exception would be a subject heading with 1 child or no children
-  const revealSortColum = true
+  // TODO show sort column when heading is toggled open
+  const revealSortColumn = location.query.linked
 
   return (
     <table className="subjectHeadingsTable">
       <SubjectHeadingsTableHeader
         index={props.index}
-
+        revealSortColumn={revealSortColumn}
       />
       <tbody>
         <SubjectHeadingsTableBody

@@ -19,6 +19,7 @@ class SubjectHeadingShow extends React.Component {
         label: '',
       },
       shepBibs: [],
+      bibsLoaded: false,
     };
 
     this.generateFullContextUrl = this.generateFullContextUrl.bind(this);
@@ -40,6 +41,7 @@ class SubjectHeadingShow extends React.Component {
         }, () => {
           this.props.setBannerText(this.state.mainHeading.label);
           Actions.updateLoadingStatus(false);
+          this.setState({bibsLoaded: true});
         });
       })
       .catch(
@@ -133,6 +135,7 @@ class SubjectHeadingShow extends React.Component {
       bibsNextUrl,
       error,
       mainHeading,
+      bibsLoaded
     } = this.state;
 
     const { uuid } = mainHeading;
@@ -144,17 +147,26 @@ class SubjectHeadingShow extends React.Component {
     }
     return (
       <React.Fragment>
-        {shepBibs.length > 0 ?
+        {bibsLoaded && shepBibs.length > 0 ?
           <BibsList
             shepBibs={shepBibs}
             nextUrl={bibsNextUrl}
           />
           :
-          <div
-            className="nypl-column-half bibs-list"
-            tabIndex='0'
-            aria-label='Neighboring Subject Headings'
-          />
+          <div className="nypl-column-half bibs-list subjectHeadingShowLoadingWrapper">
+            <span
+              id="loading-animation"
+              className="loadingLayer-texts-loadingWord"
+            >
+              Loading More Titles
+            </span>
+            <div className="loadingDots">
+              <span />
+              <span />
+              <span />
+              <span />
+            </div>
+          </div>
         }
         <div
           className="nypl-column-half subjectHeadingContext subjectHeadingInfoBox"

@@ -13,7 +13,6 @@ class SubjectHeadingsTableBody extends React.Component {
     const {
       subjectHeadings,
       container,
-      location,
       parentUuid,
     } = props;
     this.state = {
@@ -103,11 +102,12 @@ class SubjectHeadingsTableBody extends React.Component {
     const {
       indentation,
       nested,
-      location,
       container,
       sortBy,
       linked,
     } = this.props;
+
+    const { location } = this.context.router
 
     const {
       subjectHeadings,
@@ -154,10 +154,13 @@ SubjectHeadingsTableBody.propTypes = {
   subjectHeadings: PropTypes.array,
   indentation: PropTypes.number,
   linked: PropTypes.string,
-  location: PropTypes.object,
   sortBy: PropTypes.string,
   container: PropTypes.string,
   parentUuid: PropTypes.string,
+};
+
+SubjectHeadingsTableBody.contextTypes = {
+  router: PropTypes.object,
 };
 
 export default SubjectHeadingsTableBody;
