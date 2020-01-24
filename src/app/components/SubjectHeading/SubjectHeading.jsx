@@ -199,6 +199,8 @@ class SubjectHeading extends React.Component {
 
     const positionStyle = container === 'narrower' ? null : { marginLeft: 30 * ((indentation || 0) + 1) };
     const isMain = location.pathname.includes(uuid);
+    const showSortButton = open && narrower.length > 1 && uuid.length > 0;
+    
     return (
       <React.Fragment>
         {
@@ -231,8 +233,8 @@ class SubjectHeading extends React.Component {
           <td className="subjectHeadingsTableCell subjectHeadingAttribute narrower">{`${desc_count || '-'}`}</td>
           {container !== 'context' &&
           <td className="subjectHeadingsTableCell sortButton">
-            { open && narrower.length > 1 && uuid.length > 0 && container !== 'context'
-              ? <SortButton sortBy={sortBy} handler={this.sortHandler} />
+            { showSortButton?
+              <SortButton sortBy={sortBy} handler={this.sortHandler} />
               : null
             }
           </td>}

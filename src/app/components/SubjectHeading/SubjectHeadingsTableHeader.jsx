@@ -12,7 +12,7 @@ const SubjectHeadingsTableHeader = ({index, showSortColumnHeading}) => {
           <th className="subjectHeadingsTableCell subjectHeadingAttribute titles">Title Count</th>
           <th className="subjectHeadingsTableCell subjectHeadingAttribute narrower">Subheading Count</th>
           {index ? <th className="subjectHeadingsTableCell sort">
-            {showSortColumnHeading ? "Sort" : ""}
+            {showSortColumnHeading ? "Sort By:" : ""}
           </th>
           : null
           }
