@@ -148,6 +148,13 @@ class SubjectHeading extends React.Component {
       indentation,
       subjectHeading,
       location,
+      location: {
+        pathname,
+        search,
+      } = {
+        pathname: '',
+        search: '',
+      },
       container,
     } = this.props;
 
@@ -198,7 +205,7 @@ class SubjectHeading extends React.Component {
     };
 
     const positionStyle = container === 'narrower' ? null : { marginLeft: 30 * ((indentation || 0) + 1) };
-    const isMain = location.pathname.includes(uuid);
+    const isMain = (pathname + search).includes(uuid);
     // changes to HTML structure here will need to be replicated in ./SubjectHeadingTableHeader
     return (
       <React.Fragment>
@@ -215,7 +222,7 @@ class SubjectHeading extends React.Component {
           data={`${subjectHeading.uuid}, ${container}`}
           className={`
             subjectHeadingRow
-            ${(open || children) ? "openSubjectHeading" : ""}
+            ${(open || children || isMain) ? "openSubjectHeading" : ""}
             ${(indentation || 0) === 0 ? 'topLevel' : ''}
             ${(indentation || 0) !== 0 ? 'nestedSubjectHeading' : ''}
           `}
