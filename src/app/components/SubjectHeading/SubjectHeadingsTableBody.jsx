@@ -35,9 +35,7 @@ class SubjectHeadingsTableBody extends React.Component {
         }, () => {
           const { linked } = this.props;
           if (linked) {
-            // const url = `${appConfig.shepApi}/subject_headings/${linked}/context?type=relatives`
             const url = `${appConfig.baseUrl}/api/subjectHeadings/subject_headings/${linked}/context?type=relatives`;
-            console.log('makking call to ', url)
             axios(url)
               .then(
                 (res) => {
