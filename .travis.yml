@@ -46,7 +46,7 @@ deploy:
     # We've removed development EB, so skip deploy:
     condition: 1 == 0
 - provider: elasticbeanstalk
-  skip_cleanup: true
+  skip_cleanup: false
   access_key_id: "$AWS_ACCESS_KEY_ID_QA"
   secret_access_key: "$AWS_SECRET_ACCESS_KEY_QA"
   region: us-east-1
