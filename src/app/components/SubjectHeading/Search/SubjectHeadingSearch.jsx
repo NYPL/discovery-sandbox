@@ -34,7 +34,7 @@ class SubjectHeadingSearch extends React.Component {
     this.setState({
       userInput,
     }, () => {
-      axios(`${appConfig.shepApi}/autosuggest?query=${userInput}`)
+      axios(`${appConfig.baseUrl}/api/subjectHeadings/autosuggest?query=${userInput}`)
         .then((res) => {
           this.setState({
             suggestions: res.data.autosuggest,
@@ -73,9 +73,9 @@ class SubjectHeadingSearch extends React.Component {
     let path;
 
     if (subfield) {
-      path = `${base}/subjectHeadings/subject_headings?filter=${item.label}`;
+      path = `${base}/subject_headings?filter=${item.label}`;
     } else if (item.uuid) {
-      path = `${base}/subjectHeadings/subject_headings/${item.uuid}`;
+      path = `${base}/subject_headings/${item.uuid}`;
     }
 
     return path;
