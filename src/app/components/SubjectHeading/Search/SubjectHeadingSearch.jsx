@@ -73,9 +73,9 @@ class SubjectHeadingSearch extends React.Component {
     let path;
 
     if (subfield) {
-      path = `${base}/subject_headings?filter=${item.label}`;
+      path = `${base}/subjectHeadings/subject_headings?filter=${item.label}`;
     } else if (item.uuid) {
-      path = `${base}/subject_headings/${item.uuid}`;
+      path = `${base}/subjectHeadings/subject_headings/${item.uuid}`;
     }
 
     return path;

@@ -117,7 +117,9 @@ class SubjectHeading extends React.Component {
       sortBy,
     } = this.state;
     if (additionalParameters.sortBy) sortBy = additionalParameters.sortBy;
-    axios(`${appConfig.shepApi}/subject_headings/${uuid}/narrower?sort_by=${sortBy}`)
+    // old url `${appConfig.shepApi}/subject_headings/${uuid}/narrower?sort_by=${sortBy}`
+    const url = `${appConfig.baseUrl}/api/subjectHeadings/subject_headings/${uuid}/narrower?sort_by=${sortBy}`;
+    axios(url)
       .then(
         (resp) => {
           const {

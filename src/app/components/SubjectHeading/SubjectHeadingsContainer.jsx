@@ -49,7 +49,10 @@ class SubjectHeadingsContainer extends React.Component {
       .filter(pair => pair)
       .join('&');
 
-    axios(`${appConfig.shepApi}/subject_headings?${apiParamString}`)
+    // const url = `${appConfig.shepApi}/subject_headings?${apiParamString}`
+    const url = `${appConfig.baseUrl}/api/subjectHeadings/subject_headings?${apiParamString}`
+    console.log('subjectheadingcontainer', url)
+    axios(url)
       .then(
         (res) => {
           this.setState({
