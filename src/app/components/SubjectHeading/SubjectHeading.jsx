@@ -33,6 +33,9 @@ class SubjectHeading extends React.Component {
     this.updateSort = this.updateSort.bind(this);
     this.fetchInitial = this.fetchInitial.bind(this);
     this.sortHandler = this.sortHandler.bind(this);
+    this.labelSorter = this.labelSorter.bind(this);
+    this.bibSorter = this.bibSorter.bind(this);
+    this.descSorter = this.descSorter.bind(this);
   }
 
   componentDidUpdate() {
@@ -43,6 +46,11 @@ class SubjectHeading extends React.Component {
         range: this.props.subjectHeading.range,
       });
     }
+  }
+
+  componentDidMount() {
+    window.subjectHeadings = window.subjectHeadings || [];
+    window.subjectHeadings.push(this);
   }
 
   updateSubjectHeading(properties) {
@@ -108,6 +116,18 @@ class SubjectHeading extends React.Component {
     }
   }
 
+  descSorter() {
+    this.updateSort('descendants')
+  }
+
+  bibSorter() {
+    this.updateSort('bibs')
+  }
+
+  labelSorter() {
+    this.updateSort('alphabetical')
+  }
+
   fetchInitial(additionalParameters = {}) {
     const {
       uuid,
@@ -158,6 +178,9 @@ class SubjectHeading extends React.Component {
       desc_count,
       children,
       preview,
+      labelSorter,
+      bibSorter,
+      descSorter,
     } = subjectHeading;
 
     const {
@@ -224,13 +247,24 @@ class SubjectHeading extends React.Component {
           <td className="subjectHeadingsTableCell subjectHeadingLabel" >
             <div className="subjectHeadingLabelInner" style={positionStyle}>
               { toggle() }
+              {labelSorter ? <SortButton handler={labelSorter} /> : null }
               <Link to={this.generateUrl}>
                 <span className={`emph ${isMain ? 'mainHeading' : ''}`}>{rest === '' ? null : <span className="noEmph">{`${rest}\u0020--\u00a0`}</span>}{emph}</span>
               </Link>
             </div>
           </td>
-          <td className="subjectHeadingsTableCell subjectHeadingAttribute titles">{`${bib_count}`}</td>
-          <td className="subjectHeadingsTableCell subjectHeadingAttribute narrower">{`${desc_count || '-'}`}</td>
+          <td className="subjectHeadingsTableCell subjectHeadingAttribute titles">
+            <div  className="subjectHeadingAttributeInner">
+              { bibSorter ? <SortButton handler={bibSorter} /> : null }
+              {`${bib_count}`}
+            </div>
+          </td>
+          <td className="subjectHeadingsTableCell subjectHeadingAttribute narrower">
+            <div className="subjectHeadingAttributeInner">
+              { descSorter ? <SortButton handler={descSorter} /> : null }
+              {`${desc_count || '-'}`}
+            </div>
+          </td>
           {
             // <td className="subjectHeadingsTableCell sortButton">
             //   { open && narrower.length > 1 && uuid.length > 0 && (container !== 'context')
@@ -251,6 +285,9 @@ class SubjectHeading extends React.Component {
             parentUuid={uuid}
             sortBy={sortBy}
             key={`${uuid}-list-${sortBy}`}
+            labelSorter={this.labelSorter}
+            descSorter={this.descSorter}
+            bibSorter={this.bibSorter}
           />
           : null}
         {!open && preview ?

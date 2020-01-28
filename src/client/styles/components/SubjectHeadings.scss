@@ -84,6 +84,7 @@ $darker-grey: lightgray;
           border-color: black;
         }
       }
+
       .subjectHeadingLabelInner {
         height: 100%;
         position: relative;
@@ -446,8 +447,15 @@ span > .verticalEllipse {
 }
 
 .headingStyle {
-  font-weight: bold;
+  font-weight: 300;
   .emph {
     color: black;
+  }
+  .subjectHeadingLabelInner, .subjectHeadingAttributeInner {
+    display: inline-flex;
+    .subjectSortButton {
+      margin-right: 10px;
+      font-size: 15px;
+    }
   }
 }

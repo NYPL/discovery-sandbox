@@ -75,9 +75,12 @@ class SubjectHeadingsTableBody extends React.Component {
     return [
       {
         label: 'Heading',
+        labelSorter: this.props.labelSorter,
         uuid: 'blah',
         bib_count: 'Title Count',
+        bibSorter: this.props.bibSorter,
         desc_count: 'Subheading Count',
+        descSorter: this.props.descSorter,
         api_url: '',
         subject_heading_url: '',
         heading_style: true,
