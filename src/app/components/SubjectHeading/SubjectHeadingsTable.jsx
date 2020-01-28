@@ -29,6 +29,7 @@ const SubjectHeadingsTable = (props) => {
           showId={showId}
           keyId={keyId}
           container={container}
+          top
         />
       </tbody>
     </table>

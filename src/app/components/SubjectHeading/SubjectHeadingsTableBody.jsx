@@ -71,6 +71,7 @@ class SubjectHeadingsTableBody extends React.Component {
   }
 
   subHeadingHeadings() {
+    if (this.props.top) return [];
     return [
       {
         label: 'Heading',
@@ -174,6 +175,7 @@ SubjectHeadingsTableBody.propTypes = {
   sortBy: PropTypes.string,
   container: PropTypes.string,
   parentUuid: PropTypes.string,
+  top: PropTypes.bool,
 };
 
 export default SubjectHeadingsTableBody;
