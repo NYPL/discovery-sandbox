@@ -10,19 +10,19 @@ const SccContainer = (props) => {
   return (
     <main className="main-page">
       <LoadingLayer
-        status={ Store.state.isLoading }
-        title={ props.loadingLayerText }
+        status={Store.state.isLoading}
+        title={props.loadingLayerText}
       />
-    <div className="header-wrapper container-header">
+      <div className="header-wrapper container-header">
         <div className="header-topWrapper filter-page">
           <div className="nypl-row container-row">
             <div className="nypl-column-full">
-              <Breadcrumbs type={props.breadcrumbsType}/>
+              <Breadcrumbs type={props.breadcrumbsType} />
               { props.extraBannerElement }
               <h1
                 aria-label={props.bannerOptions.ariaLabel || props.bannerOptions.text}
               >
-                  { props.bannerOptions.text }
+                { props.bannerOptions.text }
               </h1>
             </div>
           </div>
@@ -40,13 +40,14 @@ const SccContainer = (props) => {
         </div>
       </div>
       { props.secondaryExtraBannerElement }
-    </div>
-    { props.extraRow }
-    <div className="nypl-full-width-wrapper">
-      { props.mainContent }
-    </div>
-  </main>
-);
+
+      { props.extraRow }
+      <div className="nypl-full-width-wrapper">
+        { props.mainContent }
+      </div>
+    </main>
+  );
+};
 
 SccContainer.propTypes = {
   mainContent: PropTypes.element,

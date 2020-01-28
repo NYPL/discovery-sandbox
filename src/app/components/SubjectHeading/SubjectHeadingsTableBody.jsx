@@ -25,10 +25,10 @@ class SubjectHeadingsTableBody extends React.Component {
     this.listItemsInRange = this.listItemsInRange.bind(this);
     this.listItemsInInterval = this.listItemsInInterval.bind(this);
     this.subHeadingHeadings = this.subHeadingHeadings.bind(this);
-    window.tbody = this;
   }
 
   componentDidUpdate() {
+    window.tbody = this;
     if (!this.state.subjectHeadings && this.props.subjectHeadings) {
       const newSubjectHeadings = this.props.subjectHeadings;
       this.setState(
