@@ -30,6 +30,7 @@ Import style rules from NYPL React module components
 @import "components/SelectedFilters.scss";
 @import "components/HoldConfirmation.scss";
 @import "components/SubjectHeadings.scss";
+@import "components/SccContainer.scss";
 
 @import "style-v2.scss";
 
@@ -194,5 +195,12 @@ select {
         margin: 5px;
       }
     }
+  }
+}
+
+.nypl-column-full {
+  margin-left: 150px;
+  @include media(1015px) {
+    margin-left: 25px;
   }
 }

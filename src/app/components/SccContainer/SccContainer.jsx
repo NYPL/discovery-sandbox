@@ -6,23 +6,36 @@ import LoadingLayer from '../LoadingLayer/LoadingLayer';
 
 import Store from '../../stores/Store';
 
-const SccContainer = props => (
-  <main className="main-page">
-    <LoadingLayer
-      status={Store.state.isLoading}
-      title={props.loadingLayerText}
-    />
-    <div className="nypl-page-header">
-      <div className="nypl-full-width-wrapper filter-page">
-        <div className="nypl-row">
-          <div className="nypl-column-full">
-            <Breadcrumbs type={props.breadcrumbsType} />
-            { props.extraBannerElement }
-            <h1
-              aria-label={props.bannerOptions.ariaLabel || props.bannerOptions.text}
-            >
-              { props.bannerOptions.text }
-            </h1>
+const SccContainer = (props) => {
+  return (
+    <main className="main-page">
+      <LoadingLayer
+        status={ Store.state.isLoading }
+        title={ props.loadingLayerText }
+      />
+    <div className="header-wrapper container-header">
+        <div className="header-topWrapper filter-page">
+          <div className="nypl-row container-row">
+            <div className="nypl-column-full">
+              <Breadcrumbs type={props.breadcrumbsType}/>
+              { props.extraBannerElement }
+              <h1
+                aria-label={props.bannerOptions.ariaLabel || props.bannerOptions.text}
+              >
+                  { props.bannerOptions.text }
+              </h1>
+            </div>
+          </div>
+        </div>
+        { props.secondaryExtraBannerElement }
+      </div>
+      { props.extraRow }
+      <div className="header-wrapper">
+        <div className="header-topWrapper">
+          <div className="nypl-row container-row">
+            <div className="nypl-column-full">
+              { props.mainContent }
+            </div>
           </div>
         </div>
       </div>

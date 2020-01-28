@@ -1,0 +1,24 @@
+.container-header {
+  background-color: rgb(239, 237, 235);
+  h1 {
+    font-size: 32px;
+    font-weight: 400;
+    font-family: Milo-Light;
+  }
+  .nypl-column-full {
+    margin-top: 10px;
+  }
+  border-bottom: none;
+  margin-bottom: 10px;
+  height: 145px;
+}
+
+.nypl-row.container-row {
+  padding-right: 10px;
+}
+
+.main-page {
+  .header-topWrapper {
+    display: block;
+  }
+}
