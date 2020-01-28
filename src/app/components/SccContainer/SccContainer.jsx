@@ -43,7 +43,7 @@ const SccContainer = (props) => {
 
       { props.extraRow }
       <div className="nypl-full-width-wrapper">
-        { props.mainContent }
+        { null && props.mainContent }
       </div>
     </main>
   );
