@@ -160,7 +160,7 @@ class SubjectHeadingShow extends React.Component {
           className="nypl-column-half subjectHeadingContext subjectHeadingInfoBox"
           tabIndex='0'
           aria-label='Neighboring Subject Headings'
-        >
+          >
           <div className="backgroundContainer">
             <h4>Neighboring Subject Headings</h4>
           </div>
@@ -170,11 +170,11 @@ class SubjectHeadingShow extends React.Component {
             showId={uuid}
             keyId="context"
             container="context"
-          />
+            />
           <Link
             to={contextHeadings && contextHeadings.length ? this.generateFullContextUrl() : '#'}
             className="link toIndex"
-          >
+            >
             Go to Subject Headings Index
           </Link>
         </div>
@@ -182,7 +182,7 @@ class SubjectHeadingShow extends React.Component {
           className="nypl-column-half subjectHeadingRelated subjectHeadingInfoBox"
           tabIndex='0'
           aria-label='Related Subject Headings'
-        >
+          >
           <div className="backgroundContainer">
             <h4>Related Headings</h4>
           </div>
@@ -191,7 +191,7 @@ class SubjectHeadingShow extends React.Component {
             location={location}
             keyId="related"
             container="narrower"
-          />
+            />
         </div>
       </React.Fragment>
     );
