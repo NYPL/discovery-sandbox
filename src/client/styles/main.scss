@@ -197,10 +197,3 @@ select {
     }
   }
 }
-
-.nypl-column-full {
-  margin-left: 150px;
-  @include media(1015px) {
-    margin-left: 25px;
-  }
-}

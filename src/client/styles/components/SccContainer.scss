@@ -13,12 +13,23 @@
   height: 145px;
 }
 
-.nypl-row.container-row {
-  padding-right: 10px;
-}
+.shepcontainer {
 
-.main-page {
-  .header-topWrapper {
-    display: block;
+  .nypl-row.container-row {
+    padding-right: 10px;
+  }
+
+  .main-page {
+    .header-topWrapper {
+      display: block;
+    }
+  }
+
+
+  .nypl-column-full {
+    margin-left: 150px;
+    @include media(1015px) {
+      margin-left: 25px;
+    }
   }
 }

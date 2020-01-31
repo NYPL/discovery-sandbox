@@ -18,18 +18,20 @@ const SubjectHeadingsIndex = (props) => {
   const componentKey = `subjectHeadingIndex${search}`;
 
   return (
-    <SccContainer
-      mainContent={<SubjectHeadingsContainer {...props} />}
-      bannerOptions={
-        {
-          text: ['Subject Headings', filter ? <span key="bannerText"> containing <em>{filter}</em></span> : ''],
+    <div className="shepcontainer">
+      <SccContainer
+        mainContent={<SubjectHeadingsContainer {...props} />}
+        bannerOptions={
+          {
+            text: ['Subject Headings', filter ? <span key="bannerText"> containing <em>{filter}</em></span> : ''],
+          }
         }
-      }
-      extraBannerElement={<SubjectHeadingSearch />}
-      loadingLayerText="Subject Headings"
-      breadcrumbsType="subjectHeadings"
-      key={componentKey}
-    />
+        extraBannerElement={<SubjectHeadingSearch />}
+        loadingLayerText="Subject Headings"
+        breadcrumbsType="subjectHeadings"
+        key={componentKey}
+      />
+    </div>
   );
 };
 

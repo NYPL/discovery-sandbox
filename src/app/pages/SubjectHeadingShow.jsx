@@ -15,23 +15,25 @@ const SubjectHeadingShowPage = (props) => {
   const [label, setLabel] = useState('');
 
   return (
-    <SccContainer
-      mainContent={
-        <SubjectHeadingShow
-          {...props}
-          key={subjectHeadingUuid}
-          setBannerText={setLabel}
-        />
-      }
-      bannerOptions={
-        {
-          text: label,
+    <div className="shepcontainer">
+      <SccContainer
+        mainContent={
+          <SubjectHeadingShow
+            {...props}
+            key={subjectHeadingUuid}
+            setBannerText={setLabel}
+          />
         }
-      }
-      extraBannerElement={<SubjectHeadingSearch />}
-      loadingLayerText="Subject Heading"
-      breadcrumbsType="subjectHeading"
-    />
+        bannerOptions={
+          {
+            text: label,
+          }
+        }
+        extraBannerElement={<SubjectHeadingSearch />}
+        loadingLayerText="Subject Heading"
+        breadcrumbsType="subjectHeading"
+      />
+    </div>
   );
 };
 
