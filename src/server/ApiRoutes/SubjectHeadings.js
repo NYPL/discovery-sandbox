@@ -54,7 +54,7 @@ const shepApiCall = (path, queryParams) => {
 
   return axios({
     method: 'GET',
-    url: `${appConfig.shepApi}/${path}`,
+    url: `${appConfig.shepApi}${path}`,
     params: queryParams,
   }).then((response) => {
     if (/\/bibs$/.test(path)) {
