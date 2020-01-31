@@ -14,11 +14,12 @@ class SubjectHeadingsTableBody extends React.Component {
       subjectHeadings,
       container,
       parentUuid,
+      pathname,
     } = props;
     this.state = {
       subjectHeadings,
       range: this.initialRange(props),
-      interactive: !(container === 'context') || location.pathname.includes(parentUuid),
+      interactive: !(container === 'context') || (pathname && pathname.includes(parentUuid)),
     };
     this.updateRange = this.updateRange.bind(this);
     this.listItemsInRange = this.listItemsInRange.bind(this);

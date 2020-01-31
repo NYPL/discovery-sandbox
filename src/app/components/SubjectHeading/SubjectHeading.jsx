@@ -241,6 +241,7 @@ class SubjectHeading extends React.Component {
         </tr>
         { open && narrower.length > 0 ?
           <SubjectHeadingsTableBody
+            pathname={location.pathname}
             subjectHeadings={narrower}
             nested="true"
             indentation={(indentation || 0) + 1}

@@ -138,8 +138,6 @@ class SubjectHeadingsContainer extends React.Component {
     const { location } = this.context.router;
     const { linked, sortBy, filter } = location.query;
 
-    console.log(this.context.router);
-
     if (error) {
       return (
         <div>
