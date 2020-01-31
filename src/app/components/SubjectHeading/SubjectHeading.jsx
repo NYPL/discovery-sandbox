@@ -33,9 +33,6 @@ class SubjectHeading extends React.Component {
     this.updateSort = this.updateSort.bind(this);
     this.fetchInitial = this.fetchInitial.bind(this);
     this.sortHandler = this.sortHandler.bind(this);
-    // this.labelSorter = this.labelSorter.bind(this);
-    // this.bibSorter = this.bibSorter.bind(this);
-    // this.descSorter = this.descSorter.bind(this);
   }
 
   componentDidUpdate() {
