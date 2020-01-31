@@ -13,54 +13,57 @@ class BibsList extends React.Component {
       bibs: props.shepBibs,
       loading: false,
       bibPage: 1,
-      lastBib: props.shepBibs.length - 1,
       nextUrl: props.nextUrl,
     };
     this.updateBibPage = this.updateBibPage.bind(this);
+    this.lastBib = this.lastBib.bind(this);
+    this.firstBib = this.firstBib.bind(this);
   }
 
-  updateBibPage(page, type) {
+  lastBib() {
+    const {
+      bibPage,
+      bibs,
+    } = this.state;
+    return Math.min(10 * bibPage, bibs.length);
+  }
+
+  firstBib() {
+    const {
+      bibPage,
+    } = this.state;
+    return Math.max(0, 10 * (bibPage - 1));
+  }
+
+  updateBibPage(page) {
     const {
       bibs,
-      lastBib,
       nextUrl,
       bibPage,
     } = this.state;
 
-    if (type === 'Previous') {
-      // FIXME: The following sometimes produces a bad `lastBib` value.
-      // e.g. If there are a total of 18 bibs, navigating to page "2" will
-      // set lastBib to 17. On clicking "Previous", lastBib will be set
-      // hereafter to 17-10=7. That will lead to the following call in render:
-      //   this.state.bibs.slice(7 - 9, 8)
-      // which is not a valid range.
-      if (lastBib > 9) this.setState({ lastBib: lastBib - 10, bibPage: bibPage - 1 });
+    if (page < bibPage || this.lastBib() + 10 < bibs.length) {
+      this.setState({ bibPage: page });
     } else {
-      if (lastBib + 10 < bibs.length) {
-        this.setState({ lastBib: lastBib + 10, bibPage: bibPage + 1 });
-      } else {
-        this.setState({ loading: true }, () => {
-          axios(nextUrl)
-            .then((res) => {
-              const newNextUrl = res.data.next_url;
-              const newBibs = this.state.bibs.concat(res.data.bibs);
-              const newLast = newBibs.length - 1;
-              this.setState({
-                bibs: newBibs,
-                loading: false,
-                lastBib: newLast,
-                nextUrl: newNextUrl,
-                bibPage: this.state.bibPage + 1,
-              }, () => window.scrollTo(0, 300));
-            })
-            .catch(
-              (err) => {
-                console.error('error: ', err);
-                this.setState({ loading: false });
-              },
-            );
-        });
-      }
+      this.setState({ loading: true }, () => {
+        axios(nextUrl)
+          .then((res) => {
+            const newNextUrl = res.data.next_url;
+            const newBibs = bibs.concat(res.data.bibs);
+            this.setState({
+              bibs: newBibs,
+              loading: false,
+              nextUrl: newNextUrl,
+              bibPage: page,
+            }, () => window.scrollTo(0, 300));
+          })
+          .catch(
+            (err) => {
+              console.error('error: ', err);
+              this.setState({ loading: false });
+            },
+          );
+      });
     }
   }
 
@@ -88,7 +91,7 @@ class BibsList extends React.Component {
         <h4>Titles</h4>
         {
           !loading ?
-            <ResultsList results={bibs.slice(lastBib - 9, lastBib + 1)} />
+            <ResultsList results={bibs.slice(this.firstBib(), this.lastBib())} />
           :
             <div className="subjectHeadingShowLoadingWrapper">
               <div className="loadingLayer-texts subjectHeadingShow">
