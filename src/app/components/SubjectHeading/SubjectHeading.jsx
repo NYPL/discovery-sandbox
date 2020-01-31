@@ -231,13 +231,6 @@ class SubjectHeading extends React.Component {
           </td>
           <td className="subjectHeadingsTableCell subjectHeadingAttribute titles">{`${bib_count}`}</td>
           <td className="subjectHeadingsTableCell subjectHeadingAttribute narrower">{`${desc_count || '-'}`}</td>
-          {container !== 'context' &&
-          <td className="subjectHeadingsTableCell sortButton">
-            { showSortButton?
-              <SortButton sortBy={sortBy} handler={this.sortHandler} />
-              : null
-            }
-          </td>}
         </tr>
         { open && narrower.length > 0 ?
           <SubjectHeadingsTableBody

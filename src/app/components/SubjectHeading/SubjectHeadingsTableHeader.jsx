@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const SubjectHeadingsTableHeader = ({index, revealSortColumn}) => {
+const SubjectHeadingsTableHeader = () => {
   return (
       <thead>
         <tr>
@@ -11,11 +11,6 @@ const SubjectHeadingsTableHeader = ({index, revealSortColumn}) => {
           </th>
           <th className="subjectHeadingsTableCell subjectHeadingAttribute titles">Title Count</th>
           <th className="subjectHeadingsTableCell subjectHeadingAttribute narrower">Subheading Count</th>
-          {(index) ? <th className="subjectHeadingsTableCell sort">
-            {revealSortColumn ? "Sort By:" : ""}
-          </th>
-          : null
-          }
         </tr>
       </thead>
   );
