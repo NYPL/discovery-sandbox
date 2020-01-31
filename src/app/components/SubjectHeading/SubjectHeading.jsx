@@ -222,7 +222,6 @@ class SubjectHeading extends React.Component {
 
     const positionStyle = container === 'narrower' ? null : { marginLeft: 30 * ((indentation || 0) + 1) };
     const isMain = location.pathname.includes(uuid);
-    const showSortButton = open && narrower.length > 1 && uuid.length > 0;
 
     return (
       <React.Fragment>
