@@ -239,7 +239,10 @@ $darker-grey: lightgray;
 
 .bibs-list {
   font-size: 14px;
-  height: 500px;
+
+  &.subjectHeadingShowLoadingWrapper {
+    height: 500px;
+  }
 
   &:focus {
     outline: none;
