@@ -49,7 +49,7 @@ const ShepContainer = (props) => {
   );
 };
 
-SccContainer.propTypes = {
+ShepContainer.propTypes = {
   mainContent: PropTypes.element,
   extraBannerElement: PropTypes.element,
   secondaryExtraBannerElement: PropTypes.element,
@@ -59,7 +59,7 @@ SccContainer.propTypes = {
   bannerOptions: PropTypes.object,
 };
 
-SccContainer.defaultProps = {
+ShepContainer.defaultProps = {
   mainContent: null,
   extraBannerElement: null,
   loadingLayerText: "Loading",
