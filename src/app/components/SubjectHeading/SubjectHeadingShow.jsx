@@ -41,7 +41,6 @@ class SubjectHeadingShow extends React.Component {
         }, () => {
           this.props.setBannerText(this.state.mainHeading.label);
           Actions.updateLoadingStatus(false);
-          this.setState({bibsLoaded: true});
         });
       })
       .catch(
@@ -51,13 +50,12 @@ class SubjectHeadingShow extends React.Component {
         },
       );
 
-    axios({
-      url: `${appConfig.baseUrl}/api/subjectHeadings/subject_headings/${uuid}/bibs`,
-    })
+    axios(`${appConfig.baseUrl}/api/subjectHeadings/subject_headings/${uuid}/bibs`)
       .then((res) => {
         this.setState({
           shepBibs: res.data.bibs,
           bibsNextUrl: res.data.next_url,
+          bibsLoaded: true,
         });
       })
       .catch(
@@ -147,7 +145,7 @@ class SubjectHeadingShow extends React.Component {
     }
     return (
       <React.Fragment>
-        {bibsLoaded && shepBibs.length > 0 ?
+        {bibsLoaded ?
           <BibsList
             shepBibs={shepBibs}
             nextUrl={bibsNextUrl}
