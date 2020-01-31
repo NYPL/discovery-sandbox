@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
-import SccContainer from '../components/SccContainer/SccContainer';
+import ShepContainer from '../components/ShepContainer/ShepContainer';
 import SubjectHeadingShow from '../components/SubjectHeading/SubjectHeadingShow';
 import SubjectHeadingSearch from '../components/SubjectHeading/Search/SubjectHeadingSearch';
 
@@ -15,25 +15,23 @@ const SubjectHeadingShowPage = (props) => {
   const [label, setLabel] = useState('');
 
   return (
-    <div className="shepcontainer">
-      <SccContainer
-        mainContent={
-          <SubjectHeadingShow
-            {...props}
-            key={subjectHeadingUuid}
-            setBannerText={setLabel}
-          />
+    <ShepContainer
+      mainContent={
+        <SubjectHeadingShow
+          {...props}
+          key={subjectHeadingUuid}
+          setBannerText={setLabel}
+        />
+      }
+      bannerOptions={
+        {
+          text: label,
         }
-        bannerOptions={
-          {
-            text: label,
-          }
-        }
-        extraBannerElement={<SubjectHeadingSearch />}
-        loadingLayerText="Subject Heading"
-        breadcrumbsType="subjectHeading"
-      />
-    </div>
+      }
+      extraBannerElement={<SubjectHeadingSearch />}
+      loadingLayerText="Subject Heading"
+      breadcrumbsType="subjectHeading"
+    />
   );
 };
 
