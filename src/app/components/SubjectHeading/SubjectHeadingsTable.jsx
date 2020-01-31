@@ -8,22 +8,20 @@ import SubjectHeadingsTableBody from './SubjectHeadingsTableBody';
 const SubjectHeadingsTable = (props) => {
   const {
     subjectHeadings,
-    linked,
     location,
     sortBy,
     showId,
     keyId,
     container,
-    sortButton,
   } = props;
 
   return (
     <table className="subjectHeadingsTable">
-      <SubjectHeadingsTableHeader sortButton={sortButton} />
+      <SubjectHeadingsTableHeader />
       <tbody>
         <SubjectHeadingsTableBody
           subjectHeadings={subjectHeadings}
-          linked={linked}
+          linked={location.query.linked}
           location={location}
           sortBy={sortBy}
           showId={showId}
@@ -44,7 +42,6 @@ SubjectHeadingsTable.propTypes = {
   showId: PropTypes.string,
   keyId: PropTypes.string,
   container: PropTypes.string,
-  sortButton: PropTypes.element,
 };
 
 export default SubjectHeadingsTable;
