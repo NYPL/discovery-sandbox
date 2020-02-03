@@ -42,7 +42,7 @@ const PreviewItem = (props) => {
 
   const displayLabel = heading.label.split(" -- ").slice(1).join(" -- ");
 
-  const path = `${appConfig.baseUrl}/subject_headings/${heading.uuid}`;
+  const path = `${appConfig.baseUrl}/subjectHeadings/subject_headings/${heading.uuid}`;
 
   return (
     <li>

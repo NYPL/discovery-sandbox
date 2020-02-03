@@ -34,7 +34,7 @@ class SubjectHeadingSearch extends React.Component {
     this.setState({
       userInput,
     }, () => {
-      axios(`${appConfig.shepApi}/autosuggest?query=${userInput}`)
+      axios(`${appConfig.baseUrl}/api/subjectHeadings/autosuggest?query=${userInput}`)
         .then((res) => {
           this.setState({
             suggestions: res.data.autosuggest,
