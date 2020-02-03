@@ -19,7 +19,7 @@ const SubjectHeadingsTable = (props) => {
 
   return (
     <table className="subjectHeadingsTable">
-      <SubjectHeadingsTableHeader updateSort={updateSort} />
+      <SubjectHeadingsTableHeader updateSort={updateSort} selected={sortBy} />
       <tbody>
         <SubjectHeadingsTableBody
           subjectHeadings={subjectHeadings}

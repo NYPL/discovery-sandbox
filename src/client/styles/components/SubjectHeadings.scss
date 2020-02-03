@@ -11,6 +11,9 @@ $darker-grey: lightgray;
   }
 
   thead {
+    .subjectHeadingsTableCell.selected {
+      color: #a83232,
+    }
     .subjectHeadingAttributeInner {
       display: inline-flex;
     }

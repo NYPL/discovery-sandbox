@@ -6,25 +6,26 @@ import SortButton from './SortButton';
 const SubjectHeadingsTableHeader = (props) => {
   const {
     updateSort,
+    selected,
   } = props;
 
   return (
     <thead>
       <tr>
-        <th className="subjectHeadingsTableCell subjectHeadingLabel">
+        <th className={`subjectHeadingsTableCell subjectHeadingLabel ${selected === 'alphabetical' ? 'selected' : ''}`}>
           <div className="subjectHeadingToggle" />
           <div className="subjectHeadingLabelInner">
             {<SortButton handler={updateSort} type="alphabetical" />}
             Heading
           </div>
         </th>
-        <th className="subjectHeadingsTableCell subjectHeadingAttribute titles">
+        <th className={`subjectHeadingsTableCell subjectHeadingAttribute titles ${selected === 'bibs' ? 'selected' : ''}`}>
           <div className="subjectHeadingAttributeInner">
             {<SortButton handler={updateSort} type="bibs" />}
           </div>
           Title Count
         </th>
-        <th className="subjectHeadingsTableCell subjectHeadingAttribute narrower">
+        <th className={`subjectHeadingsTableCell subjectHeadingAttribute narrower ${selected === 'descendants' ? 'selected' : ''}`}>
           <div className="subjectHeadingAttributeInner">
             {<SortButton handler={updateSort} type="descendants" />}
             Subheading Count
@@ -37,6 +38,7 @@ const SubjectHeadingsTableHeader = (props) => {
 
 SubjectHeadingsTableHeader.propTypes = {
   updateSort: PropTypes.func,
+  selected: PropTypes.String,
 };
 
 export default SubjectHeadingsTableHeader;
