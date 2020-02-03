@@ -100,14 +100,15 @@ class SubjectHeadingsContainer extends React.Component {
     return `${path}?${paramString}&page=${this.currentPage() + (type === 'next' ? 1 : -1)}`;
   }
 
-  updateSort(e) {
-    e.preventDefault();
+  updateSort(type) {
+    // e.preventDefault();
+    // console.log('e: ', e)
     const {
       pathname,
       query,
     } = this.props.location;
-    const paramString = `filter=${query.filter}&sortBy=${e.target.value}`;
-    if (e.target.value !== this.state.sortBy) {
+    const paramString = `filter=${query.filter}&sortBy=${type}`;
+    if (type !== this.state.sortBy) {
       this.context.router.push(`${pathname}?${paramString}`);
     }
   }
@@ -155,12 +156,12 @@ class SubjectHeadingsContainer extends React.Component {
     return (
       <React.Fragment>
         {this.pagination()}
-        {sortButton}
         <SubjectHeadingsTable
           subjectHeadings={subjectHeadings}
           linked={linked}
           location={location}
           sortBy={sortBy}
+          updateSort={this.updateSort}
         />
         {this.pagination()}
       </React.Fragment>
