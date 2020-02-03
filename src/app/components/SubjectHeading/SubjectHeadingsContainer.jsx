@@ -161,7 +161,7 @@ class SubjectHeadingsContainer extends React.Component {
           linked={linked}
           location={location}
           sortBy={sortBy}
-          updateSort={this.updateSort}
+          updateSort={filter ? this.updateSort : null}
         />
         {this.pagination()}
       </React.Fragment>
