@@ -60,7 +60,6 @@
     "eslint-plugin-import": "2.8.0",
     "eslint-plugin-jsx-a11y": "^6.2.3",
     "eslint-plugin-react": "7.5.1",
-    "friendly-errors-webpack-plugin": "^1.7.0",
     "jsdom": "9.0.0",
     "mocha": "4.0.1",
     "nightwatch": "^1.0.6",
