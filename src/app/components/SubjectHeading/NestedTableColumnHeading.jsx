@@ -59,7 +59,7 @@ const NestedTableColumnHeading = (props) => {
 };
 
 NestedTableColumnHeading.PropTypes = {
-  subjectHeadings: PropTypes.array,
+  subjectHeading: PropTypes.Object,
   indentation: PropTypes.number,
   sortBy: PropTypes.string,
   container: PropTypes.string,
