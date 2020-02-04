@@ -31,7 +31,7 @@ const PreviewColumn = (props) => {
   return (
     <li>
       <ul className="previewColumn">
-        {column.map(heading => <PreviewItem heading={heading} key={heading.uuid} />)}
+        {column.map(heading => heading && <PreviewItem heading={heading} key={heading.uuid} />)}
       </ul>
     </li>
   );

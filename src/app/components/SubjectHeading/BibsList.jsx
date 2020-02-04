@@ -68,7 +68,6 @@ class BibsList extends React.Component {
     const {
       bibPage,
       lastBib,
-      loading,
       bibs,
     } = this.state;
     const pagination = (
@@ -87,24 +86,11 @@ class BibsList extends React.Component {
       >
         <h4>Titles</h4>
         {
-          !loading ?
+          bibs.length > 0 ?
             <ResultsList results={bibs.slice(lastBib - 9, lastBib + 1)} />
           :
-            <div className="subjectHeadingShowLoadingWrapper">
-              <div className="loadingLayer-texts subjectHeadingShow">
-                <span
-                  id="loading-animation"
-                  className="loadingLayer-texts-loadingWord subjectHeadingShow"
-                >
-                  Loading More Titles
-                </span>
-                <div className="loadingDots">
-                  <span />
-                  <span />
-                  <span />
-                  <span />
-                </div>
-              </div>
+            <div className="nypl-column-half bibs-list">
+              There are no titles for this subject heading.
             </div>
         }
         {pagination}
