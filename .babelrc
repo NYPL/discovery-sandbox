@@ -49,7 +49,6 @@
           "@server": "./server.js",
           "@Actions": "./src/app/actions/Actions.js",
           "@alt": "./src/app/alt.js",
-          "@AlphabeticalPagination": "./src/app/components/SubjectHeading/AlphabeticalPagination.jsx",
           "@Application": "./src/app/components/Application/Application.jsx",
           "@AdditionalDetailsViewer": "./src/app/components/BibPage/AdditionalDetailsViewer.jsx",
           "@BackLink": "./src/app/components/BibPage/BackLink.jsx",
