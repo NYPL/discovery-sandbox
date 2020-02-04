@@ -13,13 +13,13 @@ class SubjectHeadingsTableBody extends React.Component {
     const {
       subjectHeadings,
       container,
-      location,
       parentUuid,
+      pathname,
     } = props;
     this.state = {
       subjectHeadings,
       range: this.initialRange(props),
-      interactive: !(container === 'context') || location.pathname.includes(parentUuid),
+      interactive: !(container === 'context') || (pathname && pathname.includes(parentUuid)),
     };
     this.updateRange = this.updateRange.bind(this);
     this.listItemsInRange = this.listItemsInRange.bind(this);
@@ -121,11 +121,12 @@ class SubjectHeadingsTableBody extends React.Component {
     const {
       indentation,
       nested,
-      location,
       container,
       sortBy,
       linked,
     } = this.props;
+
+    const { location } = this.context.router
 
     const {
       subjectHeadings,
@@ -172,11 +173,14 @@ SubjectHeadingsTableBody.propTypes = {
   subjectHeadings: PropTypes.array,
   indentation: PropTypes.number,
   linked: PropTypes.string,
-  location: PropTypes.object,
   sortBy: PropTypes.string,
   container: PropTypes.string,
   parentUuid: PropTypes.string,
   top: PropTypes.bool,
+};
+
+SubjectHeadingsTableBody.contextTypes = {
+  router: PropTypes.object,
 };
 
 export default SubjectHeadingsTableBody;
