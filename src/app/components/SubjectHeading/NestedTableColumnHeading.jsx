@@ -1,4 +1,6 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
 import SortButton from './SortButton';
 
 const NestedTableColumnHeading = (props) => {
@@ -22,7 +24,7 @@ const NestedTableColumnHeading = (props) => {
         subjectHeadingRow
         ${(indentation || 0) === 0 ? 'topLevel' : ''}
         ${(indentation || 0) !== 0 ? 'nestedSubjectHeading' : ''}
-        ${this.props.subjectHeading.heading_style ? 'headingStyle' : ''}
+        headingStyle
         `}
     >
       <td className={`subjectHeadingsTableCell subjectHeadingLabel ${sortBy === 'alphabetical' ? 'selected' : ''}`} >
@@ -54,6 +56,13 @@ const NestedTableColumnHeading = (props) => {
       </td>
     </tr>
   );
+};
+
+NestedTableColumnHeading.PropTypes = {
+  subjectHeadings: PropTypes.array,
+  indentation: PropTypes.number,
+  sortBy: PropTypes.string,
+  container: PropTypes.string,
 };
 
 export default NestedTableColumnHeading;
