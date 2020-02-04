@@ -103,8 +103,20 @@ class SubjectHeading extends React.Component {
   }
 
   generateUrl() {
-    const path = this.props.location.pathname.replace(/\/subject_headings.*/, '');
-    return `${path}/subject_headings/${this.props.subjectHeading.uuid}`;
+    const {
+      location: {
+        pathname,
+      },
+      subjectHeading: {
+        uuid,
+      },
+    } = this.props;
+    const path = pathname.replace(/\/subject_headings.*/, '');
+    return `${path}/subject_headings/${uuid}`;
+  }
+
+  generateLink() {
+
   }
 
   updateSort(sortType) {
