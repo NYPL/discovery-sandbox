@@ -179,7 +179,7 @@ class ResultsList extends React.Component {
   }
 
   render() {
-    const results = this.props.results.filter(result => result['@id']);
+    const results = this.props.results;
     let resultsElm = null;
 
     if (!results || !_isArray(results) || !results.length) {

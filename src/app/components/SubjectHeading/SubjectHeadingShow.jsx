@@ -54,8 +54,9 @@ class SubjectHeadingShow extends React.Component {
       url: `${appConfig.baseUrl}/api/subjectHeadings/subject_headings/${uuid}/bibs`,
     })
       .then((res) => {
+        console.log('show resp ', res.data.bibs)
         this.setState({
-          shepBibs: res.data.bibs,
+          shepBibs: res.data.bibs.filter(bib => bib['@id']),
           bibsNextUrl: res.data.next_url,
         });
       })
