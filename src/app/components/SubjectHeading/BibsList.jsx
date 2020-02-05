@@ -11,7 +11,6 @@ class BibsList extends React.Component {
     super();
     this.state = {
       bibs: props.shepBibs,
-      loading: false,
       bibPage: 1,
       nextUrl: props.nextUrl,
     };
@@ -45,14 +44,13 @@ class BibsList extends React.Component {
     if (page < bibPage || this.lastBib() + 10 < bibs.length) {
       this.setState({ bibPage: page });
     } else {
-      this.setState({ loading: true }, () => {
+      this.setState({}, () => {
         axios(nextUrl)
           .then((res) => {
             const newNextUrl = res.data.next_url;
             const newBibs = bibs.concat(res.data.bibs);
             this.setState({
               bibs: newBibs,
-              loading: false,
               nextUrl: newNextUrl,
               bibPage: page,
             }, () => window.scrollTo(0, 300));
@@ -60,7 +58,6 @@ class BibsList extends React.Component {
           .catch(
             (err) => {
               console.error('error: ', err);
-              this.setState({ loading: false });
             },
           );
       });
@@ -70,7 +67,6 @@ class BibsList extends React.Component {
   render() {
     const {
       bibPage,
-      lastBib,
       bibs,
     } = this.state;
     const pagination = (
