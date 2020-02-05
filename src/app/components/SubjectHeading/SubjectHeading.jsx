@@ -115,10 +115,6 @@ class SubjectHeading extends React.Component {
     return `${path}/subject_headings/${uuid}`;
   }
 
-  generateLink() {
-
-  }
-
   updateSort(sortType) {
     if (this.state.sortBy !== sortType) {
       this.fetchInitial({ sortBy: sortType, range: Range.default() });
