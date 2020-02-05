@@ -104,8 +104,8 @@ class SubjectHeadingsContainer extends React.Component {
     const {
       pathname,
       query,
-    }
-    
+    } = this.context.router.location;
+
     const paramString = `filter=${query.filter}&sortBy=${type}`;
 
     if (type !== this.state.sortBy) {
