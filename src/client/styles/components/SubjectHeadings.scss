@@ -77,6 +77,9 @@ $darker-grey: lightgray;
       display: table-cell;
       &.sortButton {
         text-align: center;
+        &.selected {
+          font-weight: bold;
+        }
         padding-left: 10px;
         width: 125px;
         box-sizing: border-box;
@@ -463,6 +466,9 @@ span > .verticalEllipse {
 
 .headingStyle {
   font-weight: 300;
+  .selected {
+    font-weight: bold;
+  }
   .emph {
     color: black;
   }

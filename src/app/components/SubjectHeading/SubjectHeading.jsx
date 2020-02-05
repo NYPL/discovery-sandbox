@@ -33,9 +33,6 @@ class SubjectHeading extends React.Component {
     this.updateSort = this.updateSort.bind(this);
     this.fetchInitial = this.fetchInitial.bind(this);
     this.sortHandler = this.sortHandler.bind(this);
-    this.labelSorter = this.labelSorter.bind(this);
-    this.bibSorter = this.bibSorter.bind(this);
-    this.descSorter = this.descSorter.bind(this);
   }
 
   componentDidUpdate() {
@@ -178,9 +175,7 @@ class SubjectHeading extends React.Component {
       desc_count,
       children,
       preview,
-      labelSorter,
-      bibSorter,
-      descSorter,
+      updateSort,
     } = subjectHeading;
 
     const {
@@ -244,24 +239,33 @@ class SubjectHeading extends React.Component {
             ${this.props.subjectHeading.heading_style ? 'headingStyle' : ''}
           `}
         >
-          <td className="subjectHeadingsTableCell subjectHeadingLabel" >
+          <td className={`subjectHeadingsTableCell subjectHeadingLabel ${sortBy === 'alphabetical' ? 'selected' : ''}`} >
             <div className="subjectHeadingLabelInner" style={positionStyle}>
               { toggle() }
-              {labelSorter ? <SortButton handler={labelSorter} /> : null }
+              { updateSort
+                ? <SortButton handler={updateSort} type="alphabetical" selected={sortBy} />
+                : null
+              }
               <Link to={this.generateUrl}>
                 <span className={`emph ${isMain ? 'mainHeading' : ''}`}>{rest === '' ? null : <span className="noEmph">{`${rest}\u0020--\u00a0`}</span>}{emph}</span>
               </Link>
             </div>
           </td>
-          <td className="subjectHeadingsTableCell subjectHeadingAttribute titles">
-            <div  className="subjectHeadingAttributeInner">
-              { bibSorter ? <SortButton handler={bibSorter} /> : null }
+          <td className={`subjectHeadingsTableCell subjectHeadingAttribute titles ${sortBy === 'bibs' ? 'selected' : ''}`}>
+            <div className="subjectHeadingAttributeInner">
+              { updateSort
+                   ? <SortButton handler={updateSort} type="bibs" />
+                   : null
+               }
               {`${bib_count}`}
             </div>
           </td>
-          <td className="subjectHeadingsTableCell subjectHeadingAttribute narrower">
+          <td className={`subjectHeadingsTableCell subjectHeadingAttribute narrower ${sortBy === 'descendants' ? 'selected' : ''}`}>
             <div className="subjectHeadingAttributeInner">
-              { descSorter ? <SortButton handler={descSorter} /> : null }
+              { updateSort
+                ? <SortButton handler={updateSort} type="descendants" />
+                : null
+              }
               {`${desc_count || '-'}`}
             </div>
           </td>
@@ -277,9 +281,7 @@ class SubjectHeading extends React.Component {
             parentUuid={uuid}
             sortBy={sortBy}
             key={`${uuid}-list-${sortBy}`}
-            labelSorter={this.labelSorter}
-            descSorter={this.descSorter}
-            bibSorter={this.bibSorter}
+            updateSort={this.updateSort}
           />
           : null}
         {!open && preview ?
