@@ -17,6 +17,7 @@ class BibsList extends React.Component {
     this.updateBibPage = this.updateBibPage.bind(this);
     this.lastBib = this.lastBib.bind(this);
     this.firstBib = this.firstBib.bind(this);
+    this.perPage = 6;
   }
 
   lastBib() {
@@ -24,14 +25,16 @@ class BibsList extends React.Component {
       bibPage,
       bibs,
     } = this.state;
-    return Math.min(10 * bibPage, bibs.length);
+    const perPage = this.perPage;
+    return Math.min(perPage * bibPage, bibs.length);
   }
 
   firstBib() {
     const {
       bibPage,
     } = this.state;
-    return Math.max(0, 10 * (bibPage - 1));
+    const perPage = this.perPage;
+    return Math.max(0, perPage * (bibPage - 1));
   }
 
   updateBibPage(page) {
@@ -41,7 +44,9 @@ class BibsList extends React.Component {
       bibPage,
     } = this.state;
 
-    if (page < bibPage || this.lastBib() + 10 < bibs.length) {
+    const perPage = this.perPage;
+
+    if (page < bibPage || this.lastBib() + perPage < bibs.length) {
       this.setState({ bibPage: page });
     } else {
       this.setState({}, () => {
