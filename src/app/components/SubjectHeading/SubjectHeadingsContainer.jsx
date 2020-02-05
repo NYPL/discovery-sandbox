@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import axios from 'axios';
 
 import Pagination from '@Pagination';
+import AlphabeticalPagination from '@AlphabeticalPagination';
 import SubjectHeadingsTable from './SubjectHeadingsTable';
 import SortButton from './SortButton';
 import appConfig from '../../data/appConfig';
@@ -156,6 +157,7 @@ class SubjectHeadingsContainer extends React.Component {
     return (
       <React.Fragment>
         {this.pagination()}
+        <AlphabeticalPagination />
         {sortButton}
         <SubjectHeadingsTable
           subjectHeadings={subjectHeadings}

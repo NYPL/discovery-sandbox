@@ -444,3 +444,29 @@ span > .verticalEllipse {
 .subjectHeadingLabel.mainLabel {
   font-style: italic;
 }
+
+.alphabeticalPagination {
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+  max-width: 100%;
+  text-align: center;
+
+  a {
+    border: 0.08333rem solid #d7d4d0;
+    border-right: 0;
+    font-weight: 400;
+    font-size: 15px;
+    text-align: center;
+    min-width: 2rem;
+    text-decoration: none;
+    cursor: pointer;
+    padding: 0 0.5rem;
+  }
+  a:last-child {
+    border-right: 0.08333rem solid #d7d4d0;
+    border-radius: 0 0.2rem 0.2rem 0;
+  }
+  a:first-child {
+    border-radius: 0.2rem 0 0 0.2rem;
+  }
+}
