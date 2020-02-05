@@ -23,7 +23,6 @@ class App extends React.Component {
       data: Store.getState(),
       patron: PatronStore.getState(),
     };
-    console.log('application ', this.props.route)
     this.onChange = this.onChange.bind(this);
   }
 
@@ -70,7 +69,6 @@ class App extends React.Component {
   }
 
   render() {
-    console.log('Application render: ', this.props.route)
     return (
       <DocumentTitle title="Shared Collection Catalog | NYPL">
         <div className="app-wrapper">
