@@ -1,7 +1,7 @@
 language: node_js
 node_js:
 - '10.17.0'
-install: npm install
+install: npm rebuild node-sass && npm install
 before_script: npm run dist
 script: npm test
 before_deploy: echo 'All unit tests passed; Successfull built distribution assets; Preparing to
@@ -46,14 +46,14 @@ deploy:
     # We've removed development EB, so skip deploy:
     condition: 1 == 0
 - provider: elasticbeanstalk
-  skip_cleanup: true
+  skip_cleanup: false
   access_key_id: "$AWS_ACCESS_KEY_ID_QA"
   secret_access_key: "$AWS_SECRET_ACCESS_KEY_QA"
   region: us-east-1
   app: discovery-ui
-  env: shep-discovery-ui
+  env: discovery-ui-shep
   bucket_name: elasticbeanstalk-us-east-1-946183545209
-  bucket_path: shep-discovery-ui
+  bucket_path: discovery-ui-shep
   on:
     repo: NYPL-discovery/discovery-front-end
     branch: shep-development

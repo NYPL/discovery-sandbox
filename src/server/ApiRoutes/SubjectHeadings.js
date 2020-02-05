@@ -4,8 +4,8 @@ import Bib from './Bib';
 import logger from '../../../logger';
 import appConfig from '../../app/data/appConfig';
 
-const convertShepBibsToDiscoveryBibs = (response) => {
-  return Promise.all(
+const convertShepBibsToDiscoveryBibs = response =>
+  Promise.all(
     response.data.bibs.map((bib) => {
       // Determine relevant id prefix
       const institutionCode = {
@@ -16,10 +16,10 @@ const convertShepBibsToDiscoveryBibs = (response) => {
       const prefixedIdentifier = [institutionCode, bib.bnumber].join('');
 
       return Bib.nyplApiClientCall(prefixedIdentifier)
-        .then((resp) => {
-          return resp.status === 404 ? bib : resp;
-        })
-    })
+        .then(resp =>
+          (resp.status === 404 ? bib : resp),
+        );
+    }),
   ).then((bibs) => {
     // Build "next" pagination URL based on SHEP API next_url..
     // SEP API next_url will be of form:
@@ -28,16 +28,15 @@ const convertShepBibsToDiscoveryBibs = (response) => {
     //   /[app base url]/api/subjectHeadings/subject_headings/[uuid]/bibs?[filter params]
     const nextUrl = response.data.next_url
       ? response.data.next_url.replace(/.*?subject_headings\//, `${appConfig.baseUrl}/api/subjectHeadings/subject_headings/`)
-      : null
+      : null;
 
     return {
       data: {
         bibs,
         next_url: nextUrl,
-      }
+      },
     };
-  })
-};
+  });
 
 /**
  *  This method handles all calls on the SHEP API
@@ -54,7 +53,7 @@ const shepApiCall = (path, queryParams) => {
 
   return axios({
     method: 'GET',
-    url: `${appConfig.shepApi}/${path}`,
+    url: `${appConfig.shepApi}${path}`,
     params: queryParams,
   }).then((response) => {
     if (/\/bibs$/.test(path)) {
@@ -63,17 +62,16 @@ const shepApiCall = (path, queryParams) => {
 
     return response;
   });
-
-}
+};
 
 /**
  *  This method proxies arbitrary calls to the SHEP API.
  */
 const proxyRequest = (req, res) => {
-  const shepApiPath = req.params[0]
+  const shepApiPath = req.params[0];
 
   shepApiCall(shepApiPath, req.query)
-    .then((response) => res.status(response.status || 200).json(response.data))
+    .then(response => res.status(response.status || 200).json(response.data))
     .catch((error) => {
       logger.error(`Handling error: for SHEP API path ${shepApiPath}:`, error);
 
@@ -87,10 +85,10 @@ const proxyRequest = (req, res) => {
 
       res.status(httpStatus)
         .json(payload);
-    })
-}
+    });
+};
 
 export default {
   proxyRequest,
-  shepApiCall
-}
+  shepApiCall,
+};

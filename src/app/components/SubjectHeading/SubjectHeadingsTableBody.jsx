@@ -37,7 +37,8 @@ class SubjectHeadingsTableBody extends React.Component {
         }, () => {
           const { linked } = this.props;
           if (linked) {
-            axios(`${appConfig.shepApi}/subject_headings/${linked}/context?type=relatives`)
+            const url = `${appConfig.baseUrl}/api/subjectHeadings/subject_headings/${linked}/context?type=relatives`;
+            axios(url)
               .then(
                 (res) => {
                   this.mergeSubjectHeadings(res.data.subject_headings, linked);

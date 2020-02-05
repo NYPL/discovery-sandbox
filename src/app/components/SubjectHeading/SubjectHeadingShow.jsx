@@ -24,6 +24,7 @@ class SubjectHeadingShow extends React.Component {
 
     this.generateFullContextUrl = this.generateFullContextUrl.bind(this);
     this.hasUuid = this.hasUuid.bind(this);
+    this.getTopLevelLabel = this.getTopLevelLabel.bind(this);
     this.processContextHeadings = this.processContextHeadings.bind(this);
     this.removeChildrenOffMainPath = this.removeChildrenOffMainPath.bind(this);
   }
@@ -53,7 +54,7 @@ class SubjectHeadingShow extends React.Component {
     axios(`${appConfig.baseUrl}/api/subjectHeadings/subject_headings/${uuid}/bibs`)
       .then((res) => {
         this.setState({
-          shepBibs: res.data.bibs,
+          shepBibs: res.data.bibs.filter(bib => bib['@id']),
           bibsNextUrl: res.data.next_url,
           bibsLoaded: true,
         });
@@ -80,24 +81,27 @@ class SubjectHeadingShow extends React.Component {
       );
   }
 
-  hasUuid(headings) {
-    const uuid = this.props.params.subjectHeadingUuid;
-    if (!headings.reduce) return headings.uuid === uuid || this.hasUuid(headings.children || []);
-    return headings.reduce(
-      (acc, el) => el.uuid === uuid || this.hasUuid(el.children || []) || acc,
-      false,
-    );
-  }
 
-  generateFullContextUrl() {
+  getTopLevelLabel() {
     const {
       contextHeadings,
     } = this.state;
+    let indexOfTopLevelAncestor = contextHeadings.findIndex(this.hasUuid);
+    indexOfTopLevelAncestor = Math.max(indexOfTopLevelAncestor - 1, 0);
+    return contextHeadings[indexOfTopLevelAncestor].label;
+  }
+
+  hasUuid(headings) {
     const uuid = this.props.params.subjectHeadingUuid;
-    const topLevelIndex = contextHeadings.findIndex(this.hasUuid);
-    const linkLabel = contextHeadings[topLevelIndex && topLevelIndex - 1].label;
+    if (Array.isArray(headings)) return headings.some(heading => this.hasUuid(heading));
+    return headings.uuid === uuid || this.hasUuid(headings.children || []);
+  }
+
+  generateFullContextUrl() {
+    const uuid = this.props.params.subjectHeadingUuid;
+    const linkFromLabel = this.getTopLevelLabel();
     const path = this.props.location.pathname.replace(/\/subject_headings.*/, '');
-    return `${path}/subject_headings?fromLabel=${linkLabel}&fromComparator=start&linked=${uuid}`;
+    return `${path}/subject_headings?fromLabel=${linkFromLabel}&fromComparator=start&linked=${uuid}`;
   }
 
   // returns true or false depending on whether the heading has a descendant with the given uuid.
