@@ -11,13 +11,13 @@ class BibsList extends React.Component {
     super();
     this.state = {
       bibs: props.shepBibs,
-      loading: false,
       bibPage: 1,
       nextUrl: props.nextUrl,
     };
     this.updateBibPage = this.updateBibPage.bind(this);
     this.lastBib = this.lastBib.bind(this);
     this.firstBib = this.firstBib.bind(this);
+    this.perPage = 6;
   }
 
   lastBib() {
@@ -25,14 +25,16 @@ class BibsList extends React.Component {
       bibPage,
       bibs,
     } = this.state;
-    return Math.min(10 * bibPage, bibs.length);
+    const perPage = this.perPage;
+    return Math.min(perPage * bibPage, bibs.length);
   }
 
   firstBib() {
     const {
       bibPage,
     } = this.state;
-    return Math.max(0, 10 * (bibPage - 1));
+    const perPage = this.perPage;
+    return Math.max(0, perPage * (bibPage - 1));
   }
 
   updateBibPage(page) {
@@ -42,17 +44,18 @@ class BibsList extends React.Component {
       bibPage,
     } = this.state;
 
-    if (page < bibPage || this.lastBib() + 10 < bibs.length) {
+    const perPage = this.perPage;
+
+    if (page < bibPage || this.lastBib() + perPage < bibs.length) {
       this.setState({ bibPage: page });
     } else {
-      this.setState({ loading: true }, () => {
+      this.setState({}, () => {
         axios(nextUrl)
           .then((res) => {
             const newNextUrl = res.data.next_url;
             const newBibs = bibs.concat(res.data.bibs);
             this.setState({
               bibs: newBibs,
-              loading: false,
               nextUrl: newNextUrl,
               bibPage: page,
             }, () => window.scrollTo(0, 300));
@@ -60,7 +63,6 @@ class BibsList extends React.Component {
           .catch(
             (err) => {
               console.error('error: ', err);
-              this.setState({ loading: false });
             },
           );
       });
@@ -70,8 +72,6 @@ class BibsList extends React.Component {
   render() {
     const {
       bibPage,
-      lastBib,
-      loading,
       bibs,
     } = this.state;
     const pagination = (
@@ -90,24 +90,11 @@ class BibsList extends React.Component {
       >
         <h4>Titles</h4>
         {
-          !loading ?
+          bibs.length > 0 ?
             <ResultsList results={bibs.slice(this.firstBib(), this.lastBib())} />
           :
-            <div className="subjectHeadingShowLoadingWrapper">
-              <div className="loadingLayer-texts subjectHeadingShow">
-                <span
-                  id="loading-animation"
-                  className="loadingLayer-texts-loadingWord subjectHeadingShow"
-                >
-                  Loading More Titles
-                </span>
-                <div className="loadingDots">
-                  <span />
-                  <span />
-                  <span />
-                  <span />
-                </div>
-              </div>
+            <div className="nypl-column-half bibs-list">
+              There are no titles for this subject heading.
             </div>
         }
         {pagination}
