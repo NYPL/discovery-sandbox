@@ -4,6 +4,7 @@ import axios from 'axios';
 
 import SubjectHeading from './SubjectHeading';
 import AdditionalSubjectHeadingsButton from './AdditionalSubjectHeadingsButton';
+import NestedTableColumnHeading from './NestedTableColumnHeading';
 import Range from '../../models/Range';
 import appConfig from '../../data/appConfig';
 
@@ -13,20 +14,23 @@ class SubjectHeadingsTableBody extends React.Component {
     const {
       subjectHeadings,
       container,
-      location,
       parentUuid,
+      pathname,
     } = props;
     this.state = {
       subjectHeadings,
       range: this.initialRange(props),
-      interactive: !(container === 'context') || location.pathname.includes(parentUuid),
+      interactive: !(container === 'context') || (pathname && pathname.includes(parentUuid)),
     };
     this.updateRange = this.updateRange.bind(this);
     this.listItemsInRange = this.listItemsInRange.bind(this);
     this.listItemsInInterval = this.listItemsInInterval.bind(this);
+    this.subHeadingHeadings = this.subHeadingHeadings.bind(this);
+    this.tableRow = this.tableRow.bind(this);
   }
 
   componentDidUpdate() {
+    window.tbody = this;
     if (!this.state.subjectHeadings && this.props.subjectHeadings) {
       const newSubjectHeadings = this.props.subjectHeadings;
       this.setState(
@@ -69,13 +73,23 @@ class SubjectHeadingsTableBody extends React.Component {
     this.setState(prevState => prevState);
   }
 
+  subHeadingHeadings() {
+    if (this.props.top) return [];
+    return [
+      {
+        columnHeading: true,
+        updateSort: this.props.updateSort,
+      },
+    ];
+  }
+
   listItemsInRange() {
     const {
       range,
     } = this.state;
-    return range.intervals.reduce((acc, el) =>
+    return this.subHeadingHeadings().concat(range.intervals.reduce((acc, el) =>
       acc.concat(this.listItemsInInterval(el))
-      , []);
+      , []));
   }
 
   listItemsInInterval(interval) {
@@ -100,49 +114,73 @@ class SubjectHeadingsTableBody extends React.Component {
     return subjectHeadingsInInterval;
   }
 
-  render() {
+  tableRow(listItem, index) {
     const {
       indentation,
       nested,
-      location,
       container,
       sortBy,
       linked,
     } = this.props;
 
+    const { location } = this.context.router;
+
     const {
-      subjectHeadings,
       interactive,
     } = this.state;
-    // className={nested ? 'subjectHeadingList nestedSubjectHeadingList' : 'subjectHeadingList'}
+
+    if (listItem.button) {
+      return (
+        <AdditionalSubjectHeadingsButton
+          indentation={listItem.indentation || indentation}
+          button={listItem.button}
+          updateParent={listItem.updateParent}
+          key={listItem.uuid || index}
+          nested={nested}
+          interactive={interactive}
+        />
+      );
+    }
+    if (listItem.columnHeading) {
+      return (
+        <NestedTableColumnHeading
+          subjectHeading={listItem}
+          key={listItem.uuid}
+          nested={nested}
+          indentation={indentation}
+          location={location}
+          container={container}
+          sortBy={sortBy}
+          linked={linked}
+        />
+      );
+    }
+
+    return (
+      <SubjectHeading
+        subjectHeading={listItem}
+        key={listItem.uuid}
+        nested={nested}
+        indentation={indentation}
+        location={location}
+        container={container}
+        sortBy={sortBy}
+        linked={linked}
+      />
+    );
+  }
+
+  render() {
+    const {
+      subjectHeadings,
+    } = this.state;
 
     return (
       <React.Fragment>
         {
           subjectHeadings ?
           this.listItemsInRange(subjectHeadings)
-          .map((listItem, index) => (listItem.button ?
-            // A listItem will either be a subject heading or a place holder for a button
-            // null
-            <AdditionalSubjectHeadingsButton
-              indentation={listItem.indentation || indentation}
-              button={listItem.button}
-              updateParent={listItem.updateParent}
-              key={listItem.uuid || index}
-              nested={nested}
-              interactive={interactive}
-            />
-            : <SubjectHeading
-              subjectHeading={listItem}
-              key={listItem.uuid}
-              nested={nested}
-              indentation={indentation}
-              location={location}
-              container={container}
-              sortBy={sortBy}
-              linked={linked}
-            />
-          )) :
+          .map(this.tableRow) :
           null
         }
       </React.Fragment>
@@ -155,10 +193,15 @@ SubjectHeadingsTableBody.propTypes = {
   subjectHeadings: PropTypes.array,
   indentation: PropTypes.number,
   linked: PropTypes.string,
-  location: PropTypes.object,
   sortBy: PropTypes.string,
   container: PropTypes.string,
   parentUuid: PropTypes.string,
+  top: PropTypes.bool,
+  updateSort: PropTypes.func,
+};
+
+SubjectHeadingsTableBody.contextTypes = {
+  router: PropTypes.object,
 };
 
 export default SubjectHeadingsTableBody;
