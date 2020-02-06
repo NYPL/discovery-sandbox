@@ -450,17 +450,18 @@ span > .verticalEllipse {
   margin-bottom: 1.5rem;
   max-width: 100%;
   text-align: center;
+  display: flex;
 
   a {
     border: 0.08333rem solid #d7d4d0;
     border-right: 0;
     font-weight: 400;
-    font-size: 15px;
+    font-size: 14px;
     text-align: center;
-    min-width: 2rem;
+    min-width: 24px;
     text-decoration: none;
     cursor: pointer;
-    padding: 0 0.5rem;
+    flex: 3%;
   }
   a:last-child {
     border-right: 0.08333rem solid #d7d4d0;
@@ -469,4 +470,31 @@ span > .verticalEllipse {
   a:first-child {
     border-radius: 0.2rem 0 0 0.2rem;
   }
+}
+
+@media screen and (max-width: 757px) {
+  .alphabeticalPagination {
+    flex-wrap: wrap;
+    a {
+      flex: 6.5%;
+      max-width: 45px;
+    }
+    a:first-child {
+      border-radius: 0.2rem 0 0 0;
+    }
+    a:last-child {
+      border-radius: 0 0 0.2rem 0;
+    }
+    a:nth-child(14) {
+      border-right: 0.08333rem solid #d7d4d0;
+      border-radius: 0 0.2rem 0 0;
+    }
+    a:nth-child(15) {
+      border-radius: 0 0 0 0.2rem;
+    }
+    a:nth-child(-n+14) {
+      border-bottom: unset;
+    }
+  }
+
 }
