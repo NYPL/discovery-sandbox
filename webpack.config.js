@@ -97,7 +97,6 @@ const commonSettings = {
 // module correctly.
 if (ENV === 'development') {
   // Load dev depencies:
-  console.log('webpack dev')
   const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
 
   module.exports = merge(commonSettings, {
