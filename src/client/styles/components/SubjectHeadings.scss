@@ -472,7 +472,7 @@ span > .verticalEllipse {
   }
 }
 
-@media screen and (max-width: 757px) {
+@media screen and (max-width: 757px) and (min-width: 420px) {
   .alphabeticalPagination {
     flex-wrap: wrap;
     a {
@@ -496,5 +496,35 @@ span > .verticalEllipse {
       border-bottom: unset;
     }
   }
+}
 
+@media screen and (max-width: 419px) {
+  .alphabeticalPagination {
+    flex-wrap: wrap;
+    a {
+      flex: 9.5%;
+      max-width: 34px;
+    }
+    a:first-child {
+      border-radius: 0.2rem 0 0 0;
+    }
+    a:last-child {
+      border-radius: 0 0 0.2rem 0;
+    }
+    a:nth-child(10n) {
+      border-right: 0.08333rem solid #d7d4d0;
+    }
+    a:nth-child(10){
+      border-radius: 0 0.2rem 0 0;
+    }
+    a:nth-child(21) {
+      border-radius: 0 0 0 0.2rem;
+    }
+    a:nth-child(-n+10) {
+      border-bottom: unset;
+    }
+    a:nth-child(n+21) {
+      border-top: unset;
+    }
+  }
 }
