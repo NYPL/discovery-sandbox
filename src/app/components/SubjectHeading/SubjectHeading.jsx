@@ -258,7 +258,7 @@ class SubjectHeading extends React.Component {
             key={`${uuid}-list-${sortBy}`}
           />
           : null}
-        {!open && preview ?
+        {!open && preview && preview.length >= 4 ?
           <Preview topHeadings={preview} />
           : null
         }
