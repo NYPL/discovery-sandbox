@@ -300,7 +300,7 @@ class SubjectHeading extends React.Component {
             updateSort={this.updateSort}
           />
           : null}
-        {!open && preview ?
+        {!open && preview && preview.length >= 4 ?
           <Preview topHeadings={preview} />
           : null
         }
