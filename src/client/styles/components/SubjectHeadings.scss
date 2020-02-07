@@ -472,11 +472,11 @@ span > .verticalEllipse {
   }
 }
 
-@media screen and (max-width: 757px) and (min-width: 420px) {
+@media screen and (max-width: 750px) and (min-width: 420px) {
   .alphabeticalPagination {
     flex-wrap: wrap;
     a {
-      flex: 6.5%;
+      flex: 6.6%;
       max-width: 45px;
     }
     a:first-child {
