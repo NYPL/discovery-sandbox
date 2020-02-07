@@ -19,6 +19,7 @@ class SubjectHeadingShow extends React.Component {
         label: '',
       },
       shepBibs: [],
+      bibsLoaded: false,
     };
 
     this.generateFullContextUrl = this.generateFullContextUrl.bind(this);
@@ -50,13 +51,12 @@ class SubjectHeadingShow extends React.Component {
         },
       );
 
-    axios({
-      url: `${appConfig.baseUrl}/api/subjectHeadings/subject_headings/${uuid}/bibs`,
-    })
+    axios(`${appConfig.baseUrl}/api/subjectHeadings/subject_headings/${uuid}/bibs`)
       .then((res) => {
         this.setState({
-          shepBibs: res.data.bibs,
+          shepBibs: res.data.bibs.filter(bib => bib['@id']),
           bibsNextUrl: res.data.next_url,
+          bibsLoaded: true,
         });
       })
       .catch(
@@ -137,6 +137,7 @@ class SubjectHeadingShow extends React.Component {
       bibsNextUrl,
       error,
       mainHeading,
+      bibsLoaded
     } = this.state;
 
     const { uuid } = mainHeading;
@@ -148,23 +149,32 @@ class SubjectHeadingShow extends React.Component {
     }
     return (
       <React.Fragment>
-        {shepBibs.length > 0 ?
+        {bibsLoaded ?
           <BibsList
             shepBibs={shepBibs}
             nextUrl={bibsNextUrl}
           />
           :
-          <div
-            className="nypl-column-half bibs-list"
-            tabIndex='0'
-            aria-label='Neighboring Subject Headings'
-          />
+          <div className="nypl-column-half bibs-list subjectHeadingShowLoadingWrapper">
+            <span
+              id="loading-animation"
+              className="loadingLayer-texts-loadingWord"
+            >
+              Loading More Titles
+            </span>
+            <div className="loadingDots">
+              <span />
+              <span />
+              <span />
+              <span />
+            </div>
+          </div>
         }
         <div
           className="nypl-column-half subjectHeadingContext subjectHeadingInfoBox"
           tabIndex='0'
           aria-label='Neighboring Subject Headings'
-        >
+          >
           <div className="backgroundContainer">
             <h4>Neighboring Subject Headings</h4>
           </div>
@@ -174,11 +184,11 @@ class SubjectHeadingShow extends React.Component {
             showId={uuid}
             keyId="context"
             container="context"
-          />
+            />
           <Link
             to={contextHeadings && contextHeadings.length ? this.generateFullContextUrl() : '#'}
             className="link toIndex"
-          >
+            >
             Go to Subject Headings Index
           </Link>
         </div>
@@ -186,7 +196,7 @@ class SubjectHeadingShow extends React.Component {
           className="nypl-column-half subjectHeadingRelated subjectHeadingInfoBox"
           tabIndex='0'
           aria-label='Related Subject Headings'
-        >
+          >
           <div className="backgroundContainer">
             <h4>Related Headings</h4>
           </div>
@@ -195,7 +205,7 @@ class SubjectHeadingShow extends React.Component {
             location={location}
             keyId="related"
             container="narrower"
-          />
+            />
         </div>
       </React.Fragment>
     );

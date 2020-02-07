@@ -45,6 +45,11 @@ class SubjectHeading extends React.Component {
     }
   }
 
+  componentDidMount() {
+    window.subjectHeadings = window.subjectHeadings || [];
+    window.subjectHeadings.push(this);
+  }
+
   updateSubjectHeading(properties) {
     this.setState(properties);
   }
@@ -98,14 +103,34 @@ class SubjectHeading extends React.Component {
   }
 
   generateUrl() {
-    const path = this.props.location.pathname.replace(/\/subject_headings.*/, '');
-    return `${path}/subject_headings/${this.props.subjectHeading.uuid}`;
+    const {
+      location: {
+        pathname,
+      },
+      subjectHeading: {
+        uuid,
+      },
+    } = this.props;
+    const path = pathname.replace(/\/subject_headings.*/, '');
+    return `${path}/subject_headings/${uuid}`;
   }
 
   updateSort(sortType) {
     if (this.state.sortBy !== sortType) {
       this.fetchInitial({ sortBy: sortType, range: Range.default() });
     }
+  }
+
+  descSorter() {
+    this.updateSort('descendants')
+  }
+
+  bibSorter() {
+    this.updateSort('bibs')
+  }
+
+  labelSorter() {
+    this.updateSort('alphabetical')
   }
 
   fetchInitial(additionalParameters = {}) {
@@ -166,6 +191,7 @@ class SubjectHeading extends React.Component {
       desc_count,
       children,
       preview,
+      updateSort,
     } = subjectHeading;
 
     const {
@@ -226,36 +252,52 @@ class SubjectHeading extends React.Component {
             ${(open || children || isMain) ? "openSubjectHeading" : ""}
             ${(indentation || 0) === 0 ? 'topLevel' : ''}
             ${(indentation || 0) !== 0 ? 'nestedSubjectHeading' : ''}
+            ${this.props.subjectHeading.heading_style ? 'headingStyle' : ''}
           `}
         >
-          <td className="subjectHeadingsTableCell subjectHeadingLabel" >
+          <td className={`subjectHeadingsTableCell subjectHeadingLabel ${sortBy === 'alphabetical' ? 'selected' : ''}`} >
             <div className="subjectHeadingLabelInner" style={positionStyle}>
               { toggle() }
+              { updateSort
+                ? <SortButton handler={updateSort} type="alphabetical" selected={sortBy} />
+                : null
+              }
               <Link to={this.generateUrl}>
                 <span className={`emph ${isMain ? 'mainHeading' : ''}`}>{rest === '' ? null : <span className="noEmph">{`${rest}\u0020--\u00a0`}</span>}{emph}</span>
               </Link>
             </div>
           </td>
-          <td className="subjectHeadingsTableCell subjectHeadingAttribute titles">{`${bib_count}`}</td>
-          <td className="subjectHeadingsTableCell subjectHeadingAttribute narrower">{`${desc_count || '-'}`}</td>
-          <td className="subjectHeadingsTableCell sortButton">
-            { open && narrower.length > 1 && uuid.length > 0 && (container !== 'context')
-              ? <SortButton sortBy={sortBy} handler={this.sortHandler} />
-              : null
-            }
+          <td className={`subjectHeadingsTableCell subjectHeadingAttribute titles ${sortBy === 'bibs' ? 'selected' : ''}`}>
+            <div className="subjectHeadingAttributeInner">
+              { updateSort
+                   ? <SortButton handler={updateSort} type="bibs" />
+                   : null
+               }
+              {`${bib_count}`}
+            </div>
+          </td>
+          <td className={`subjectHeadingsTableCell subjectHeadingAttribute narrower ${sortBy === 'descendants' ? 'selected' : ''}`}>
+            <div className="subjectHeadingAttributeInner">
+              { updateSort
+                ? <SortButton handler={updateSort} type="descendants" />
+                : null
+              }
+              {`${desc_count || '-'}`}
+            </div>
           </td>
         </tr>
         { open && narrower.length > 0 ?
           <SubjectHeadingsTableBody
+            pathname={location.pathname}
             subjectHeadings={narrower}
             nested="true"
             indentation={(indentation || 0) + 1}
-            location={location}
             range={range}
             container={container}
             parentUuid={uuid}
             sortBy={sortBy}
             key={`${uuid}-list-${sortBy}`}
+            updateSort={this.updateSort}
           />
           : null}
         {!open && preview && preview.length >= 4 ?
