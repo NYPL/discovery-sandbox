@@ -159,7 +159,6 @@ class SubjectHeadingsContainer extends React.Component {
       <React.Fragment>
         {this.pagination()}
         {filter ? null : <AlphabeticalPagination />}
-        {sortButton}
         <SubjectHeadingsTable
           index
           subjectHeadings={subjectHeadings}
