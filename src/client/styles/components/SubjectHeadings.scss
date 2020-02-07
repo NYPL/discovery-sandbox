@@ -275,6 +275,12 @@ $darker-grey: lightgray;
   }
 }
 
+@media (min-width: 966px) {
+  .bibs-list {
+    min-height: 22rem;
+  }
+}
+
 .subjectHeadingShow {
   h2 {
     max-width: 40rem;

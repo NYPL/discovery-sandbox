@@ -97,7 +97,7 @@ class BibsList extends React.Component {
               There are no titles for this subject heading.
             </div>
         }
-        {pagination}
+        {bibs.length > 0 ? pagination : null}
       </div>
     );
   }
