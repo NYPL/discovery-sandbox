@@ -1,5 +1,3 @@
-// Meaningless change # 2 to trigger travis rebuild...
-
 const fs = require('fs');
 
 const IGNORE = [

@@ -25,13 +25,13 @@ class SubjectHeadingsContainer extends React.Component {
     let {
       fromLabel,
       fromComparator,
-    } = this.props.location.query;
+    } = this.context.router.location.query;
 
     const {
       filter,
       sortBy,
       fromAttributeValue,
-    } = this.props.location.query;
+    } = this.context.router.location.query;
 
     if (!fromComparator) fromComparator = filter ? null : "start";
     if (!fromLabel) fromLabel = filter ? null : "Aac";
@@ -72,7 +72,7 @@ class SubjectHeadingsContainer extends React.Component {
   }
 
   currentPage() {
-    return parseInt(this.props.location.query.page || 2);
+    return parseInt(this.context.router.location.query.page || 2);
   }
 
   extractParam(paramName, url) {
@@ -83,7 +83,7 @@ class SubjectHeadingsContainer extends React.Component {
 
   convertApiUrlToFrontendUrl(url, type) {
     if (!url) return null;
-    const path = this.props.location.pathname;
+    const path = this.context.router.location.pathname;
     const paramHash = {
       fromLabel: 'from_label',
       fromComparator: 'from_comparator',
@@ -102,14 +102,15 @@ class SubjectHeadingsContainer extends React.Component {
     return `${path}?${paramString}&page=${this.currentPage() + (type === 'next' ? 1 : -1)}`;
   }
 
-  updateSort(e) {
-    e.preventDefault();
+  updateSort(type) {
     const {
       pathname,
       query,
-    } = this.props.location;
-    const paramString = `filter=${query.filter}&sortBy=${e.target.value}`;
-    if (e.target.value !== this.state.sortBy) {
+    } = this.context.router.location;
+
+    const paramString = `filter=${query.filter}&sortBy=${type}`;
+
+    if (type !== this.state.sortBy) {
       this.context.router.push(`${pathname}?${paramString}`);
     }
   }
@@ -137,8 +138,8 @@ class SubjectHeadingsContainer extends React.Component {
 
   render() {
     const { error, subjectHeadings } = this.state;
-    const location = this.props.location;
-    const { linked, sortBy, filter } = this.props.location.query;
+    const { location } = this.context.router;
+    const { linked, sortBy, filter } = location.query;
 
     if (error) {
       return (
@@ -160,10 +161,12 @@ class SubjectHeadingsContainer extends React.Component {
         {filter ? null : <AlphabeticalPagination />}
         {sortButton}
         <SubjectHeadingsTable
+          index
           subjectHeadings={subjectHeadings}
           linked={linked}
           location={location}
           sortBy={sortBy}
+          updateSort={filter ? this.updateSort : null}
         />
         {this.pagination()}
       </React.Fragment>
@@ -176,7 +179,6 @@ SubjectHeadingsContainer.contextTypes = {
 };
 
 SubjectHeadingsContainer.propTypes = {
-  location: PropTypes.object,
   linked: PropTypes.string,
 };
 

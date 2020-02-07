@@ -5,19 +5,19 @@ import appConfig from '../../data/appConfig';
 const AlphabeticalPagination = () => {
   const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
   const letterButtons = alphabet.map(character => (
-    <Link to={`${appConfig.baseUrl}/subject_headings?fromLabel=${character}`}>
+    <Link key={character} to={`${appConfig.baseUrl}/subject_headings?fromLabel=${character}`}>
       {character}
     </Link>
   ));
 
   const allButton = (
-    <Link to={`${appConfig.baseUrl}/subject_headings`}>
+    <Link key="all" to={`${appConfig.baseUrl}/subject_headings`}>
       All
     </Link>
   );
 
   const numericalButton = (
-    <Link to={`${appConfig.baseUrl}/subject_headings?fromLabel=0`}>
+    <Link key="numerical" to={`${appConfig.baseUrl}/subject_headings?fromLabel=0`}>
       0-9
     </Link>
   );
