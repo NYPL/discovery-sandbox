@@ -40,15 +40,16 @@ class SubjectHeadingSearch extends React.Component {
     const apiCall = () => {
       return axios(`${appConfig.baseUrl}/api/subjectHeadings/autosuggest?query=${userInput}`)
         .then((res) => {
-          this.setState({
+          if (res.data.request.query === this.state.userInput) this.setState({
             suggestions: res.data.autosuggest,
-          });
+            activeSuggestion: 0,
+          })
         });
-    }
+    };
 
     let timerId;
 
-    if (timerId) return;
+    if (timerId || userInput.length === 0) return;
     timerId = setTimeout(() => {
       apiCall();
       timerId = undefined;
