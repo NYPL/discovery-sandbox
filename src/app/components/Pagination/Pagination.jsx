@@ -70,7 +70,7 @@ class Pagination extends React.Component {
     } = this.props;
     const subjectHeadingPage = this.props.subjectShowPage || this.props.subjectIndexPage;
     let nextPage;
-    const prevPage = page > 1 ? this.getPage(page, 'Previous') : null;
+    const prevPage = page > 1 || subjectHeadingPage ? this.getPage(page, 'Previous') : null;
     let pageFactor;
     let totalPages;
     if (!subjectHeadingPage) {
@@ -95,13 +95,7 @@ class Pagination extends React.Component {
               Page {page} of {totalPages}
             </span>
           :
-            <span
-              className={`page-count ${page === 1 ? 'first' : ''}`}
-              aria-label={`Displaying page ${page}`}
-              tabIndex="0"
-            >
-              Page {page}
-            </span>
+            null
         }
         {nextPage}
       </nav>
