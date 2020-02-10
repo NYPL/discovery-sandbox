@@ -1,44 +1,65 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Actions from '@Actions';
-import bibSearchServer from '@Bib';
+import { ajaxCall } from '@utils';
+import appConfig from '@appConfig';
 
 class DataLoader extends React.Component {
   constructor(props) {
     super(props);
+    const { location } = this.props;
+    this.pathInstructions = [
+      {
+        expression: /\/research\/collections\/shared-collection-catalog\/bib\/(b\d*)/,
+        pathType: 'bib',
+      },
+    ];
+    this.pathType = null;
     this.routes = {
-      bibRoute: {
-        fetchFunction: bibSearchServer,
-        req: { params: { bibId: '' } },
+      bib: {
+        apiRoute: () => `${appConfig.baseUrl}/api/bib?bibId=${this.matchData[1]}`,
+        actions: [Actions.updateBib],
+        errorMessage: 'Error attempting to make an ajax request to fetch a bib record from ResultsList',
       },
     };
-    this.res = {};
-    this.actions = {
-      bib: Actions.updateBib,
-      searchKeywords: Actions.updateSearchKeywords,
-    };
-    this.next = () => {
-      const { Store } = this.res.locals.data;
-      Object.keys(Store).forEach((key) => {
-        this.actions[key](Store[key]);
-      });
-      Actions.updateLoadingStatus(false);
-    };
+    this.reducePathExpressions = this.reducePathExpressions.bind(this);
   }
 
   componentDidMount() {
-    this.res = {};
-    const { location } = this.context.router;
-    Object.keys(this.routes).forEach((route) => {
-      if (route.match(location)) {
-        Actions.updateLoadingStatus(true);
-        this.routes[route].fetchFunction(location)(
-          this.routes[route].req(location),
-          this.res,
-          this.next,
-        );
-      }
-    });
+    window.dataLoaderLocation = this.props.location;
+    this.matchData = this.pathInstructions
+      .reduce(this.reducePathExpressions, null);
+    console.log('mounting pathType ', this.pathType)
+    if (this.routes[this.pathType]) {
+      const {
+        apiRoute,
+        actions,
+        errorMessage,
+      } = this.routes[this.pathType];
+      Actions.updateLoadingStatus(true);
+      console.log('calling ajax with ', apiRoute())
+      ajaxCall(apiRoute(),
+        (response) => {
+          actions.forEach(action => action(response.data));
+          Actions.updateLoadingStatus(false);
+        },
+        (error) => {
+          Actions.updateLoadingStatus(false);
+          console.error(
+            errorMessage,
+            error,
+          );
+        },
+      );
+    }
+  }
+
+  reducePathExpressions(acc, instruction) {
+    const { location } = this.props;
+    console.log('pathname', location.pathname)
+    const matchData = location.pathname.match(instruction.expression);
+    if (matchData) this.pathType = instruction.pathType;
+    return matchData || acc;
   }
 
   render() {
@@ -47,10 +68,5 @@ class DataLoader extends React.Component {
     );
   }
 }
-
-
-DataLoader.contextTypes = {
-  router: PropTypes.object,
-};
 
 export default DataLoader;
