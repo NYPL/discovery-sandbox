@@ -218,9 +218,7 @@ class SubjectHeading extends React.Component {
     const positionStyle = container === 'narrower' ? null : { marginLeft: 30 * ((indentation || 0) + 1) };
     const isMain = (pathname + search).includes(uuid);
     // changes to HTML structure here will need to be replicated in ./SubjectHeadingTableHeader
-    // const alphabeticalDirection = this.calculateDirection('alphabetical');
-    // const bibsDirection = this.calculateDirection('bibs');
-    // const descendantsDirection = this.calculateDirection('descendants');
+
     return (
       <React.Fragment>
         {
