@@ -42,14 +42,10 @@ class DataLoader extends React.Component {
       ajaxCall(apiRoute(),
         (response) => {
           actions.forEach(action => action(response.data));
-          setTimeout(() => {
-            Actions.updateLoadingStatus(false);
-          }, 500);
+          Actions.updateLoadingStatus(false);
         },
         (error) => {
-          setTimeout(() => {
-            Actions.updateLoadingStatus(false);
-          }, 500);
+          Actions.updateLoadingStatus(false);
           console.error(
             errorMessage,
             error,
