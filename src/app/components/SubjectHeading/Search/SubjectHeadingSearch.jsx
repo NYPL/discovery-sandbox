@@ -84,11 +84,11 @@ class SubjectHeadingSearch extends React.Component {
   }
 
   generatePath(item) {
-    const subfield = item.class === 'subfield';
+    const subjectComponent = item.class === 'subject_component';
     const base = appConfig.baseUrl;
     let path;
 
-    if (subfield) {
+    if (subjectComponent) {
       path = `${base}/subject_headings?filter=${item.label}`;
     } else if (item.uuid) {
       path = `${base}/subject_headings/${item.uuid}`;

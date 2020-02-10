@@ -4,26 +4,24 @@ import { Link } from 'react-router';
 
 const AutosuggestItem = (props) => {
   const { item, activeSuggestion, onClick, path } = props;
-  const subfield = item.class === 'subfield';
+  const subjectComponent = item.class === 'subject_component';
 
   let className = "suggestion";
   if (activeSuggestion) {
     className += "-active";
   }
 
-  // const onKeyPress
-
   return (
     <li
       className={`${className} ${item.class}`}
-      data={subfield ? item.label : item.uuid}
+      data={subjectComponent ? item.label : item.uuid}
       onClick={onClick}
     >
       <Link
         to={path}
       >
         {
-          subfield ?
+          subjectComponent ?
             <div className="autosuggest component">
               <span>{item.label}</span>
             </div>
