@@ -26,7 +26,7 @@ const SubjectHeadingsIndex = (props) => {
         }
       }
       extraBannerElement={<SubjectHeadingSearch />}
-      loadingLayerText="Subject Headings"
+      loadingLayerText={`Subject Headings ${filter ? `containing ${filter}` : ''}`}
       breadcrumbsType="subjectHeadings"
       key={componentKey}
     />

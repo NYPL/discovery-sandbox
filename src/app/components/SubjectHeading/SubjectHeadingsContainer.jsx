@@ -3,10 +3,12 @@ import PropTypes from 'prop-types';
 import axios from 'axios';
 
 import Pagination from '@Pagination';
+import Actions from '@Actions';
 import AlphabeticalPagination from '@AlphabeticalPagination';
 import SubjectHeadingsTable from './SubjectHeadingsTable';
 import SortButton from './SortButton';
 import appConfig from '../../data/appConfig';
+import Store from '@Store';
 
 
 class SubjectHeadingsContainer extends React.Component {
@@ -50,21 +52,27 @@ class SubjectHeadingsContainer extends React.Component {
       .join('&');
 
     const url = `${appConfig.baseUrl}/api/subjectHeadings/subject_headings?${apiParamString}`;
+    console.log('container did mount ', filter)
+    if (filter) {
+      console.log('loading');
+      Actions.updateLoadingStatus(true);
+    }
     axios(url)
       .then(
         (res) => {
+          console.log('store is loading ', Store.state.isLoading);
           this.setState({
             previousUrl: res.data.previous_url,
             nextUrl: res.data.next_url,
             subjectHeadings: res.data.subject_headings,
             error: res.data.subject_headings.length === 0,
-          });
+          }, () => (filter ? Actions.updateLoadingStatus(false) : null));
         },
       ).catch(
         (err) => {
           console.error('error: ', err);
           if (!this.state.subjectHeadings || this.state.subjectHeadings.length === 0) {
-            this.setState({ error: true });
+            this.setState({ error: true }, (() => filter ? Actions.updateLoadingStatus(false) : null));
           }
         },
       );
