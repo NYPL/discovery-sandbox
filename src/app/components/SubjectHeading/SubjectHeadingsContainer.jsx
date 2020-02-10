@@ -18,7 +18,6 @@ class SubjectHeadingsContainer extends React.Component {
     this.pagination = this.pagination.bind(this);
     this.updateSort = this.updateSort.bind(this);
     this.navigationLinks = this.navigationLinks.bind(this);
-    this.currentPage = this.currentPage.bind(this);
   }
 
   componentDidMount() {
@@ -63,16 +62,12 @@ class SubjectHeadingsContainer extends React.Component {
         },
       ).catch(
         (err) => {
-          console.log('error: ', err);
+          console.error('error: ', err);
           if (!this.state.subjectHeadings || this.state.subjectHeadings.length === 0) {
             this.setState({ error: true });
           }
         },
       );
-  }
-
-  currentPage() {
-    return parseInt(this.context.router.location.query.page || 2);
   }
 
   extractParam(paramName, url) {
@@ -81,7 +76,7 @@ class SubjectHeadingsContainer extends React.Component {
     return matchdata && matchdata[2];
   }
 
-  convertApiUrlToFrontendUrl(url, type) {
+  convertApiUrlToFrontendUrl(url) {
     if (!url) return null;
     const path = this.context.router.location.pathname;
     const paramHash = {
@@ -99,7 +94,7 @@ class SubjectHeadingsContainer extends React.Component {
       )
       .filter(pair => pair)
       .join('&');
-    return `${path}?${paramString}&page=${this.currentPage() + (type === 'next' ? 1 : -1)}`;
+    return `${path}?${paramString}`;
   }
 
   updateSort(type) {
@@ -129,7 +124,6 @@ class SubjectHeadingsContainer extends React.Component {
   pagination() {
     return (
       <Pagination
-        page={this.currentPage()}
         shepNavigation={this.navigationLinks()}
         subjectIndexPage
       />
@@ -148,12 +142,6 @@ class SubjectHeadingsContainer extends React.Component {
         </div>
       );
     }
-
-    const sortButton = (
-      filter
-        ? <SortButton sortBy={sortBy || 'alphabetical'} handler={this.updateSort} />
-        : null
-    );
 
     return (
       <React.Fragment>
@@ -175,14 +163,6 @@ class SubjectHeadingsContainer extends React.Component {
 
 SubjectHeadingsContainer.contextTypes = {
   router: PropTypes.object,
-};
-
-SubjectHeadingsContainer.propTypes = {
-  linked: PropTypes.string,
-};
-
-SubjectHeadingsContainer.defaultProps = {
-  linked: '',
 };
 
 export default SubjectHeadingsContainer;
