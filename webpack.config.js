@@ -2,9 +2,8 @@ const path = require('path');
 const webpack = require('webpack');
 const merge = require('webpack-merge');
 const CleanBuild = require('clean-webpack-plugin');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const sassPaths = require('@nypl/design-toolkit').includePaths
-  .map(sassPath => sassPath).join('&');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const sassPaths = require('@nypl/design-toolkit').includePaths;
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 // References the applications root path
@@ -41,7 +40,9 @@ const commonSettings = {
     // Alternately, we can run rm -rf dist/ as
     // part of the package.json scripts.
     new CleanBuild(['dist']),
-    new ExtractTextPlugin('styles.css'),
+    new MiniCssExtractPlugin({
+      filename: 'styles.css',
+    }),
     new webpack.DefinePlugin({
       loadA11y: process.env.loadA11y || false,
       appEnv: JSON.stringify(appEnv),
@@ -100,6 +101,7 @@ if (ENV === 'development') {
   console.log('webpack dev')
 
   module.exports = merge(commonSettings, {
+    mode: 'development',
     devtool: 'eval',
     entry: {
       app: [
@@ -124,21 +126,23 @@ if (ENV === 'development') {
         {
           test: /\.jsx?$/,
           exclude: /(node_modules|bower_components)/,
-          use: [
-            {
-              loader: 'babel-loader',
-              options: {
-                presets: ['@babel/preset-env'],
-              },
+          use: {
+            loader: 'babel-loader',
+            options: {
+              presets: ['@babel/preset-env'],
             },
-          ],
+          },
         },
         {
           test: /\.scss?$/,
           use: [
             'style-loader',
             'css-loader',
-            `sass-loader?includePaths=${sassPaths}`,
+            { loader: 'sass-loader',
+              options: {
+                includePaths: sassPaths,
+              },
+            },
           ],
           include: path.resolve(ROOT_PATH, 'src'),
         },
@@ -156,47 +160,35 @@ if (ENV === 'development') {
  *
  */
 if (ENV === 'production') {
-  const loaders = [
-    {
-      loader: 'css-loader',
-      options: {
-        sourceMap: true,
-      },
-    },
-    {
-      loader: 'sass-loader',
-      options: {
-        sourceMap: true,
-        includePaths: sassPaths,
-      },
-    },
-  ];
   module.exports = merge(commonSettings, {
+    mode: 'production',
     devtool: 'source-map',
+    optimization: {
+      minimize: true,
+    },
     module: {
-      loaders: [
+      rules: [
         {
           test: /\.jsx?$/,
           exclude: /(node_modules|bower_components)/,
-          loader: 'babel-loader',
+          use: 'babel-loader',
         },
         {
           test: /\.scss$/,
           include: path.resolve(ROOT_PATH, 'src'),
-          use: ExtractTextPlugin.extract({
-            fallback: 'style-loader',
-            use: loaders,
-          }),
+          use: [MiniCssExtractPlugin.loader, 'css-loader',
+            {
+              loader: 'sass-loader',
+              options: {
+                sourceMap: true,
+                includePaths: sassPaths,
+              },
+            },
+          ],
         },
       ],
     },
     plugins: [
-      // Minification (Utilized in Production)
-      new webpack.optimize.UglifyJsPlugin({
-        compress: {
-          warnings: false,
-        },
-      }),
       new webpack.DefinePlugin({
         'process.env': {
           NODE_ENV: JSON.stringify('production'),
