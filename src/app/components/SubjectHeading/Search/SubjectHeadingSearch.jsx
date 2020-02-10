@@ -33,14 +33,31 @@ class SubjectHeadingSearch extends React.Component {
 
     this.setState({
       userInput,
-    }, () => {
-      axios(`${appConfig.baseUrl}/api/subjectHeadings/autosuggest?query=${userInput}`)
+    }, this.makeApiCallWithThrottle(this.state.timerId));
+  }
+
+  makeApiCallWithThrottle(timerId) {
+    const apiCall = () => {
+      if (this.state.userInput.length) return axios(`${appConfig.baseUrl}/api/subjectHeadings/autosuggest?query=${this.state.userInput}`)
         .then((res) => {
-          this.setState({
-            suggestions: res.data.autosuggest,
-          });
+          if (res.data.request.query === this.state.userInput) {
+            this.setState({
+              suggestions: res.data.autosuggest,
+              activeSuggestion: 0,
+            });
+          }
         });
-    });
+      // if this.state.userInput.length is falsey, reset suggestions
+      this.setState({ suggestions: [] });
+    };
+
+    if (timerId) return;
+
+    const newTimerId = setTimeout(() => {
+      this.setState({ timerId: undefined }, apiCall);
+    }, 500);
+
+    this.setState({ timerId: newTimerId });
   }
 
   changeActiveSuggestion(keyEvent) {

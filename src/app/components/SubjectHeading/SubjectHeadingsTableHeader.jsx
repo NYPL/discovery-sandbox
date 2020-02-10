@@ -38,7 +38,7 @@ const SubjectHeadingsTableHeader = (props) => {
 
 SubjectHeadingsTableHeader.propTypes = {
   updateSort: PropTypes.func,
-  selected: PropTypes.String,
+  selected: PropTypes.string,
 };
 
 export default SubjectHeadingsTableHeader;
