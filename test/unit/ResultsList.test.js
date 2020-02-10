@@ -449,15 +449,6 @@ describe('ResultsList', () => {
       after(() => {
         mock.restore();
       });
-
-      it('should make an ajax request', () => {
-        const ajaxCallSpy = sinon.spy(axios, 'get');
-
-        component.find('.title').first().simulate('click');
-
-        expect(ajaxCallSpy.callCount).to.equal(1);
-        ajaxCallSpy.restore();
-      });
     });
   });
 
@@ -478,15 +469,6 @@ describe('ResultsList', () => {
 
     after(() => {
       mock.restore();
-    });
-
-    it('should make an ajax request', () => {
-      const ajaxCallSpy = sinon.spy(axios, 'get');
-
-      component.find('.title').first().simulate('click');
-
-      expect(ajaxCallSpy.callCount).to.equal(1);
-      ajaxCallSpy.restore();
     });
   });
 
@@ -574,12 +556,10 @@ describe('ResultsList', () => {
 
   describe('ResultsList functions', () => {
     let component;
-    let getBibRecordSpy;
     let axiosSpy;
     let mock;
 
     before(() => {
-      getBibRecordSpy = sinon.spy(ResultsList.prototype, 'getBibRecord');
       component = mount(
         <ResultsList results={resultsBibs} />,
         { context: { router: { createHref: () => {}, push: () => {} } } },
@@ -592,17 +572,8 @@ describe('ResultsList', () => {
 
     after(() => {
       mock.restore();
-      getBibRecordSpy.restore();
       component.unmount();
       axiosSpy.restore();
-    });
-
-    it('should call getBibRecord function when the title is clicked', () => {
-      axiosSpy = sinon.spy(axios, 'get');
-      component.find('h3').at(0).find('Link').simulate('click');
-
-      expect(axiosSpy.callCount).to.equal(1);
-      expect(getBibRecordSpy.calledOnce).to.equal(true);
     });
   });
 });
