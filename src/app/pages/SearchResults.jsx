@@ -8,7 +8,7 @@ import SearchResultsContainer from '@SearchResultsContainer';
 import FilterPopup from '../components/FilterPopup/FilterPopup';
 import SelectedFilters from '../components/Filters/SelectedFilters';
 import ResultsCount from '../components/ResultsCount/ResultsCount';
-import Sorter from '../components/Sorter/Sorter';
+import SearchResultsSorter from '@SearchResultsSorter';
 
 import {
   basicQuery,
@@ -121,7 +121,7 @@ const SearchResults = (props) => {
                   />
                   {
                     !!(totalResults && totalResults !== 0) &&
-                    <Sorter
+                    <SearchResultsSorter
                       sortBy={sortBy}
                       page={page}
                       searchKeywords={searchKeywords}

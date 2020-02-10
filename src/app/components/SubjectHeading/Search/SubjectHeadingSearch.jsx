@@ -54,7 +54,8 @@ class SubjectHeadingSearch extends React.Component {
     if (timerId) return;
 
     const newTimerId = setTimeout(() => {
-      this.setState({ timerId: undefined }, apiCall);
+      apiCall();
+      this.setState({ timerId: undefined });
     }, 500);
 
     this.setState({ timerId: newTimerId });

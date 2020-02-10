@@ -51,21 +51,6 @@ class SubjectHeadingShow extends React.Component {
         },
       );
 
-    axios(`${appConfig.baseUrl}/api/subjectHeadings/subject_headings/${uuid}/bibs`)
-      .then((res) => {
-        this.setState({
-          shepBibs: res.data.bibs.filter(bib => bib['@id']),
-          bibsNextUrl: res.data.next_url,
-          bibsLoaded: true,
-        });
-      })
-      .catch(
-        (err) => {
-          console.error('error: ', err);
-          this.setState({ error: true });
-        },
-      );
-
     axios({
       url: `${appConfig.baseUrl}/api/subjectHeadings/subject_headings/${uuid}/related`,
     })
@@ -149,27 +134,7 @@ class SubjectHeadingShow extends React.Component {
     }
     return (
       <React.Fragment>
-        {bibsLoaded ?
-          <BibsList
-            shepBibs={shepBibs}
-            nextUrl={bibsNextUrl}
-          />
-          :
-          <div className="nypl-column-half bibs-list subjectHeadingShowLoadingWrapper">
-            <span
-              id="loading-animation"
-              className="loadingLayer-texts-loadingWord"
-            >
-              Loading More Titles
-            </span>
-            <div className="loadingDots">
-              <span />
-              <span />
-              <span />
-              <span />
-            </div>
-          </div>
-        }
+        <BibsList uuid={uuid} sortParams={this.context.router.location.query}/>
         <div
           className="nypl-column-half subjectHeadingContext subjectHeadingInfoBox"
           tabIndex='0'

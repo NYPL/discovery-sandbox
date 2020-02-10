@@ -5,19 +5,47 @@ import PropTypes from 'prop-types';
 import axios from 'axios';
 import Pagination from '../Pagination/Pagination';
 import ResultsList from '../Results/ResultsList';
+import Sorter from '@Sorter'
+import appConfig from '@appConfig';
 
 class BibsList extends React.Component {
   constructor(props) {
     super();
     this.state = {
-      bibs: props.shepBibs,
+      bibs: [],
       bibPage: 1,
       nextUrl: props.nextUrl,
+      loading: true,
+      sortParams: {
+        sort: props.sortParams.sort || 'title',
+        sort_direction: props.sortParams.sortDirection || 'asc',
+      }
     };
     this.updateBibPage = this.updateBibPage.bind(this);
     this.lastBib = this.lastBib.bind(this);
     this.firstBib = this.firstBib.bind(this);
     this.perPage = 6;
+    this.changeBibSorting = this.changeBibSorting.bind(this);
+  }
+
+  componentDidMount() {
+    const { sort, sortDirection } = this.state.sortParams;
+    const stringifySortParams = () => (sort && sortDirection ? `?sort=${sort}&sort_direction={sortDirection}` : '');
+
+    axios(`${appConfig.baseUrl}/api/subjectHeadings/subject_headings/${this.props.uuid}/bibs${stringifySortParams()}`)
+      .then((res) => {
+        this.setState({
+          bibs: res.data.bibs.filter(bib => bib['@id']),
+          bibsNextUrl: res.data.next_url,
+          loading: false,
+        });
+      })
+      .catch(
+        (err) => {
+          console.error('error: ', err);
+          this.setState({ error: true });
+        },
+      );
   }
 
   lastBib() {
@@ -69,6 +97,12 @@ class BibsList extends React.Component {
     }
   }
 
+  changeBibSorting({ sort, sortDirection }) {
+    const { router } = this.context;
+
+    router.push(`${router.location.pathname}?sort=${sort}&sort_direction=${sortDirection}`);
+  }
+
   render() {
     const {
       bibPage,
@@ -82,6 +116,24 @@ class BibsList extends React.Component {
         ariaControls="nypl-results-list"
       />
     );
+
+    if (this.state.loading) return (
+      <div className="nypl-column-half bibs-list subjectHeadingShowLoadingWrapper">
+        <span
+          id="loading-animation"
+          className="loadingLayer-texts-loadingWord"
+        >
+          Loading More Titles
+        </span>
+        <div className="loadingDots">
+          <span />
+          <span />
+          <span />
+          <span />
+        </div>
+      </div>
+    )
+
     return (
       <div
         className="nypl-column-half bibs-list"
@@ -89,6 +141,16 @@ class BibsList extends React.Component {
         aria-label="Titles related to this Subject Heading"
       >
         <h4>Titles</h4>
+        <Sorter
+          sortOptions={[
+            { val: 'title_asc', label: 'title (a - z)' },
+            { val: 'title_desc', label: 'title (z - a)' },
+            // { val: 'date_asc', label: 'date (old to new)' },
+            // { val: 'date_desc', label: 'date (new to old)' },
+          ]}
+          defaultSort="title_asc"
+          updateResults={this.changeBibSorting}
+        />
         {
           bibs.length > 0 ?
             <ResultsList results={bibs.slice(this.firstBib(), this.lastBib())} />
@@ -106,6 +168,10 @@ class BibsList extends React.Component {
 BibsList.propTypes = {
   shepBibs: PropTypes.array,
   nextUrl: PropTypes.string,
+};
+
+BibsList.contextTypes = {
+  router: PropTypes.object,
 };
 
 export default BibsList;
