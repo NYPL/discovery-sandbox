@@ -17,7 +17,6 @@ const NestedTableColumnHeading = (props) => {
   } = subjectHeading;
 
   const calculateDirection = (sortType) => {
-    console.log('calculating direction for ', sortType, sortBy, direction);
     if (sortType === sortBy) return (direction === 'ASC' ? 'DESC' : 'ASC');
     return {
       alphabetical: 'ASC',

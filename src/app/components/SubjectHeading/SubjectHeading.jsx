@@ -117,12 +117,10 @@ class SubjectHeading extends React.Component {
   }
 
   updateSort(sortType, direction) {
-    console.log('update dir ', direction)
     this.fetchInitial({ sortBy: sortType, direction, range: Range.default() });
   }
 
   fetchInitial(additionalParameters = {}) {
-    console.log('fetching ', additionalParameters)
     const {
       uuid,
       indentation,
