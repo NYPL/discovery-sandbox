@@ -32,6 +32,7 @@ class SubjectHeading extends React.Component {
     this.generateUrl = this.generateUrl.bind(this);
     this.updateSort = this.updateSort.bind(this);
     this.fetchInitial = this.fetchInitial.bind(this);
+    this.sortHandler = this.sortHandler.bind(this);
   }
 
   componentDidUpdate() {
@@ -50,7 +51,6 @@ class SubjectHeading extends React.Component {
   }
 
   updateSubjectHeading(properties) {
-    console.log('properties ', properties);
     this.setState(properties);
   }
 
@@ -115,13 +115,25 @@ class SubjectHeading extends React.Component {
     return `${path}/subject_headings/${uuid}`;
   }
 
-  updateSort(sortType, direction) {
-    const fetchParams = { sortBy: sortType, range: Range.default(), direction };
-    return this.fetchInitial(fetchParams);
+  updateSort(sortType) {
+    if (this.state.sortBy !== sortType) {
+      this.fetchInitial({ sortBy: sortType, range: Range.default() });
+    }
+  }
+
+  descSorter() {
+    this.updateSort('descendants')
+  }
+
+  bibSorter() {
+    this.updateSort('bibs')
+  }
+
+  labelSorter() {
+    this.updateSort('alphabetical')
   }
 
   fetchInitial(additionalParameters = {}) {
-    console.log('fetchInitial ', additionalParameters)
     const {
       uuid,
       indentation,
@@ -129,11 +141,9 @@ class SubjectHeading extends React.Component {
     let {
       sortBy,
     } = this.state;
-    let direction = null;
     if (additionalParameters.sortBy) sortBy = additionalParameters.sortBy;
-    if (additionalParameters.direction) direction = additionalParameters.direction;
-    const url = `${appConfig.baseUrl}/api/subjectHeadings/subject_headings/${uuid}/narrower?sort_by=${sortBy}${direction ? `&direction=${direction}` : ''}`;
-    return axios(url)
+    const url = `${appConfig.baseUrl}/api/subjectHeadings/subject_headings/${uuid}/narrower?sort_by=${sortBy}`;
+    axios(url)
       .then(
         (resp) => {
           const {
@@ -144,7 +154,6 @@ class SubjectHeading extends React.Component {
           if (next_url) {
             narrower[narrower.length - 1] = { button: 'next', updateParent: this.fetchAndUpdate(next_url), indentation: (indentation || 0) + 1 };
           }
-          console.log('updating with ', narrower);
           this.updateSubjectHeading(
             Object.assign(
               { narrower, open: true },
@@ -155,8 +164,12 @@ class SubjectHeading extends React.Component {
       ).catch(resp => console.log(resp));
   }
 
+  sortHandler(e) {
+    e.preventDefault();
+    this.updateSort(e.target.value);
+  }
+
   render() {
-    console.log('SubjectHeading state: ', this.state)
     const {
       indentation,
       subjectHeading,
@@ -185,7 +198,6 @@ class SubjectHeading extends React.Component {
       open,
       narrower,
       sortBy,
-      direction,
       range,
     } = this.state;
 
@@ -247,7 +259,7 @@ class SubjectHeading extends React.Component {
             <div className="subjectHeadingLabelInner" style={positionStyle}>
               { toggle() }
               { updateSort
-                ? <SortButton handler={updateSort} type="alphabetical" />
+                ? <SortButton handler={updateSort} type="alphabetical" selected={sortBy} />
                 : null
               }
               <Link to={this.generateUrl}>
@@ -284,7 +296,7 @@ class SubjectHeading extends React.Component {
             container={container}
             parentUuid={uuid}
             sortBy={sortBy}
-            key={`${uuid}-list-${sortBy}-${direction}`}
+            key={`${uuid}-list-${sortBy}`}
             updateSort={this.updateSort}
           />
           : null}

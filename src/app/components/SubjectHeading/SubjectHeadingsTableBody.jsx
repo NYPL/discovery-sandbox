@@ -29,12 +29,7 @@ class SubjectHeadingsTableBody extends React.Component {
     this.tableRow = this.tableRow.bind(this);
   }
 
-  componentDidMount() {
-    console.log('mounting tablebody')
-  }
-
   componentDidUpdate() {
-    console.log('updating tablebody', this.props.subjectHeadings)
     window.tbody = this;
     if (!this.state.subjectHeadings && this.props.subjectHeadings) {
       const newSubjectHeadings = this.props.subjectHeadings;
