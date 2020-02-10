@@ -33,12 +33,12 @@ class SubjectHeadingSearch extends React.Component {
 
     this.setState({
       userInput,
-    }, this.makeApiCallWithThrottle(userInput, this.state.timerId));
+    }, this.makeApiCallWithThrottle(this.state.timerId));
   }
 
-  makeApiCallWithThrottle(userInput, timerId) {
+  makeApiCallWithThrottle(timerId) {
     const apiCall = () => {
-      return axios(`${appConfig.baseUrl}/api/subjectHeadings/autosuggest?query=${userInput}`)
+      return axios(`${appConfig.baseUrl}/api/subjectHeadings/autosuggest?query=${this.state.userInput}`)
         .then((res) => {
           if (res.data.request.query === this.state.userInput) {
             this.setState({
@@ -49,7 +49,7 @@ class SubjectHeadingSearch extends React.Component {
         });
     };
 
-    if (timerId || userInput.length === 0) return;
+    if (timerId || this.state.userInput.length === 0) return;
 
     const newTimerId = setTimeout(() => {
       apiCall();
