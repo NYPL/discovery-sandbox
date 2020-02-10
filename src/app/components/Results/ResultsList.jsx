@@ -34,29 +34,29 @@ class ResultsList extends React.Component {
    */
   getBibRecord(e, bibId, bibTitle) {
     e.preventDefault();
-
-    Actions.updateLoadingStatus(true);
-
-    trackDiscovery('Bib', bibTitle);
-    ajaxCall(`${appConfig.baseUrl}/api/bib?bibId=${bibId}`,
-      (response) => {
-        Actions.updateBib(response.data);
-        setTimeout(() => {
-          Actions.updateLoadingStatus(false);
-          this.routeHandler(`${appConfig.baseUrl}/bib/${bibId}`);
-        }, 500);
-      },
-      (error) => {
-        setTimeout(() => {
-          Actions.updateLoadingStatus(false);
-        }, 500);
-
-        console.error(
-          'Error attempting to make an ajax request to fetch a bib record from ResultsList',
-          error,
-        );
-      },
-    );
+    //
+    // Actions.updateLoadingStatus(true);
+    //
+    // trackDiscovery('Bib', bibTitle);
+    // ajaxCall(`${appConfig.baseUrl}/api/bib?bibId=${bibId}`,
+    //   (response) => {
+    //     Actions.updateBib(response.data);
+    //     setTimeout(() => {
+    //       Actions.updateLoadingStatus(false);
+    //       this.routeHandler(`${appConfig.baseUrl}/bib/${bibId}`);
+    //     }, 500);
+    //   },
+    //   (error) => {
+    //     setTimeout(() => {
+    //       Actions.updateLoadingStatus(false);
+    //     }, 500);
+    //
+    //     console.error(
+    //       'Error attempting to make an ajax request to fetch a bib record from ResultsList',
+    //       error,
+    //     );
+    //   },
+    // );
   }
 
   /*
@@ -143,7 +143,6 @@ class ResultsList extends React.Component {
       <li key={i} className={`nypl-results-item ${hasRequestTable ? 'has-request' : ''}`}>
         <h3>
           <Link
-            onClick={e => this.getBibRecord(e, bibId, bibTitle)}
             to={`${appConfig.baseUrl}/bib/${bibId}?searchKeywords=${this.props.searchKeywords}`}
             className="title"
           >

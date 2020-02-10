@@ -36,15 +36,19 @@ class DataLoader extends React.Component {
         actions,
         errorMessage,
       } = this.routes[this.pathType];
-      Actions.updateLoadingStatus(true);
+      // Actions.updateLoadingStatus(true);
       console.log('calling ajax with ', apiRoute())
       ajaxCall(apiRoute(),
         (response) => {
           actions.forEach(action => action(response.data));
-          Actions.updateLoadingStatus(false);
+          setTimeout(() => {
+            Actions.updateLoadingStatus(false);
+          }, 500);
         },
         (error) => {
-          Actions.updateLoadingStatus(false);
+          setTimeout(() => {
+            Actions.updateLoadingStatus(false);
+          }, 500);
           console.error(
             errorMessage,
             error,
