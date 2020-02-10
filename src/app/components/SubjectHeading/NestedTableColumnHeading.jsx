@@ -9,11 +9,21 @@ const NestedTableColumnHeading = (props) => {
     indentation,
     container,
     sortBy,
+    direction,
   } = props;
 
   const {
     updateSort,
   } = subjectHeading;
+
+  const calculateDirection = (sortType) => {
+    if (sortType === sortBy) return (direction === 'ASC' ? 'DESC' : 'ASC');
+    return {
+      alphabetical: 'ASC',
+      bibs: 'DESC',
+      descendants: 'DESC',
+    }[sortType];
+  }
 
   const positionStyle = container === 'narrower' ? null : { marginLeft: 30 * ((indentation || 0) + 1) };
 
@@ -30,7 +40,7 @@ const NestedTableColumnHeading = (props) => {
       <td className={`subjectHeadingsTableCell subjectHeadingLabel ${sortBy === 'alphabetical' ? 'selected' : ''}`} >
         <div className="subjectHeadingLabelInner" style={positionStyle}>
           { updateSort
-            ? <SortButton handler={updateSort} type="alphabetical" selected={sortBy} />
+            ? <SortButton handler={updateSort} type="alphabetical" direction={calculateDirection('alphabetical')} />
             : null
           }
           <span className="emph"><span className="noEmph">Heading</span></span>
@@ -39,7 +49,7 @@ const NestedTableColumnHeading = (props) => {
       <td className={`subjectHeadingsTableCell subjectHeadingAttribute titles ${sortBy === 'bibs' ? 'selected' : ''}`}>
         <div className="subjectHeadingAttributeInner">
           { updateSort
-            ? <SortButton handler={updateSort} type="bibs" />
+            ? <SortButton handler={updateSort} type="bibs" direction={calculateDirection('bibs')} />
             : null
           }
         Title Count
@@ -48,7 +58,7 @@ const NestedTableColumnHeading = (props) => {
       <td className={`subjectHeadingsTableCell subjectHeadingAttribute narrower ${sortBy === 'descendants' ? 'selected' : ''}`}>
         <div className="subjectHeadingAttributeInner">
           { updateSort
-            ? <SortButton handler={updateSort} type="descendants" />
+            ? <SortButton handler={updateSort} type="descendants" direction={calculateDirection('descendants')} />
             : null
           }
       Subheading Count

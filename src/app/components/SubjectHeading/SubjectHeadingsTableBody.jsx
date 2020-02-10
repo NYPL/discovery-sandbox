@@ -121,6 +121,7 @@ class SubjectHeadingsTableBody extends React.Component {
       container,
       sortBy,
       linked,
+      direction,
     } = this.props;
 
     const { location } = this.context.router;
@@ -152,6 +153,7 @@ class SubjectHeadingsTableBody extends React.Component {
           container={container}
           sortBy={sortBy}
           linked={linked}
+          direction={direction}
         />
       );
     }

@@ -15,6 +15,7 @@ class SubjectHeading extends React.Component {
     const {
       subjectHeading,
       sortBy,
+      direction,
     } = this.props;
     const {
       children,
@@ -23,7 +24,8 @@ class SubjectHeading extends React.Component {
     this.state = {
       open: !!children || this.isMain(),
       narrower: (children || []),
-      sortBy: sortBy || "alphabetical",
+      sortBy: sortBy || 'alphabetical',
+      direction: direction || 'ASC',
       range: range || Range.default(),
     };
     this.toggleOpen = this.toggleOpen.bind(this);
@@ -32,7 +34,6 @@ class SubjectHeading extends React.Component {
     this.generateUrl = this.generateUrl.bind(this);
     this.updateSort = this.updateSort.bind(this);
     this.fetchInitial = this.fetchInitial.bind(this);
-    this.sortHandler = this.sortHandler.bind(this);
   }
 
   componentDidUpdate() {
@@ -115,22 +116,8 @@ class SubjectHeading extends React.Component {
     return `${path}/subject_headings/${uuid}`;
   }
 
-  updateSort(sortType) {
-    if (this.state.sortBy !== sortType) {
-      this.fetchInitial({ sortBy: sortType, range: Range.default() });
-    }
-  }
-
-  descSorter() {
-    this.updateSort('descendants')
-  }
-
-  bibSorter() {
-    this.updateSort('bibs')
-  }
-
-  labelSorter() {
-    this.updateSort('alphabetical')
+  updateSort(sortType, direction) {
+    this.fetchInitial({ sortBy: sortType, direction, range: Range.default() });
   }
 
   fetchInitial(additionalParameters = {}) {
@@ -141,8 +128,9 @@ class SubjectHeading extends React.Component {
     let {
       sortBy,
     } = this.state;
+    const direction = additionalParameters.direction;
     if (additionalParameters.sortBy) sortBy = additionalParameters.sortBy;
-    const url = `${appConfig.baseUrl}/api/subjectHeadings/subject_headings/${uuid}/narrower?sort_by=${sortBy}`;
+    const url = `${appConfig.baseUrl}/api/subjectHeadings/subject_headings/${uuid}/narrower?sort_by=${sortBy}${direction ? `&direction=${direction}` : ''}`;
     axios(url)
       .then(
         (resp) => {
@@ -162,11 +150,6 @@ class SubjectHeading extends React.Component {
           );
         },
       ).catch(resp => console.log(resp));
-  }
-
-  sortHandler(e) {
-    e.preventDefault();
-    this.updateSort(e.target.value);
   }
 
   render() {
@@ -198,6 +181,7 @@ class SubjectHeading extends React.Component {
       open,
       narrower,
       sortBy,
+      direction,
       range,
     } = this.state;
 
@@ -234,6 +218,7 @@ class SubjectHeading extends React.Component {
     const positionStyle = container === 'narrower' ? null : { marginLeft: 30 * ((indentation || 0) + 1) };
     const isMain = (pathname + search).includes(uuid);
     // changes to HTML structure here will need to be replicated in ./SubjectHeadingTableHeader
+
     return (
       <React.Fragment>
         {
@@ -259,7 +244,12 @@ class SubjectHeading extends React.Component {
             <div className="subjectHeadingLabelInner" style={positionStyle}>
               { toggle() }
               { updateSort
-                ? <SortButton handler={updateSort} type="alphabetical" selected={sortBy} />
+                ? (
+                  <SortButton
+                    handler={updateSort}
+                    type="alphabetical"
+                  />
+                  )
                 : null
               }
               <Link to={this.generateUrl}>
@@ -296,7 +286,8 @@ class SubjectHeading extends React.Component {
             container={container}
             parentUuid={uuid}
             sortBy={sortBy}
-            key={`${uuid}-list-${sortBy}`}
+            direction={direction}
+            key={`${uuid}-list-${sortBy}-${direction}`}
             updateSort={this.updateSort}
           />
           : null}
