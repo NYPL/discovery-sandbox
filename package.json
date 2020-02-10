@@ -125,7 +125,7 @@
     "style-loader": "0.13.0",
     "underscore": "1.8.3",
     "validator": "7.2.0",
-    "webpack": "2.7.0",
+    "webpack": "^3.12.0",
     "webpack-bundle-analyzer": "^2.13.1",
     "webpack-merge": "0.8.4",
     "winston": "2.3.1"
