@@ -26,6 +26,7 @@ class DataLoader extends React.Component {
   }
 
   componentDidMount() {
+    // Needs to add trackdiscovery actions
     window.dataLoaderLocation = window.dataLoaderLocation || [];
     window.dataLoaderLocation.push(this.props.location);
     this.matchData = this.pathInstructions
