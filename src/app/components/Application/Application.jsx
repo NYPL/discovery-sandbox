@@ -15,6 +15,7 @@ import {
 } from '../../utils/utils';
 import Actions from '../../actions/Actions';
 import appConfig from '../../data/appConfig';
+import DataLoader from '../DataLoader/DataLoader';
 
 class App extends React.Component {
   constructor(props) {
@@ -72,6 +73,7 @@ class App extends React.Component {
     return (
       <DocumentTitle title="Shared Collection Catalog | NYPL">
         <div className="app-wrapper">
+          <DataLoader key={JSON.stringify(this.context.router.location)} />
           <Header
             navData={navConfig.current}
             skipNav={{ target: 'mainContent' }}
