@@ -46,9 +46,6 @@ const commonSettings = {
     new webpack.DefinePlugin({
       loadA11y: process.env.loadA11y || false,
       appEnv: JSON.stringify(appEnv),
-      'process.env': {
-        SHEP_API: JSON.stringify(process.env.SHEP_API),
-      },
     }),
     // new BundleAnalyzerPlugin({
     //   // Can be `server`, `static` or `disabled`.
