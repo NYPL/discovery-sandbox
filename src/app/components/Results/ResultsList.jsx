@@ -21,42 +21,7 @@ class ResultsList extends React.Component {
     super(props);
 
     this.routeHandler = this.routeHandler.bind(this);
-    this.getBibRecord = this.getBibRecord.bind(this);
     this.getItemRecord = this.getItemRecord.bind(this);
-  }
-
-  /*
-   * getBibRecord(e, bibId)
-   * @description Get updated information for a bib and route the patron to the bib page.
-   * @param {object} e Event object.
-   * @param {string} bibId The bib's id.
-   * @param {string} bibTitle The bib's title.
-   */
-  getBibRecord(e, bibId, bibTitle) {
-    e.preventDefault();
-    //
-    // Actions.updateLoadingStatus(true);
-    //
-    // trackDiscovery('Bib', bibTitle);
-    // ajaxCall(`${appConfig.baseUrl}/api/bib?bibId=${bibId}`,
-    //   (response) => {
-    //     Actions.updateBib(response.data);
-    //     setTimeout(() => {
-    //       Actions.updateLoadingStatus(false);
-    //       this.routeHandler(`${appConfig.baseUrl}/bib/${bibId}`);
-    //     }, 500);
-    //   },
-    //   (error) => {
-    //     setTimeout(() => {
-    //       Actions.updateLoadingStatus(false);
-    //     }, 500);
-    //
-    //     console.error(
-    //       'Error attempting to make an ajax request to fetch a bib record from ResultsList',
-    //       error,
-    //     );
-    //   },
-    // );
   }
 
   /*

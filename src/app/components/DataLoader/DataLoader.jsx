@@ -26,7 +26,8 @@ class DataLoader extends React.Component {
   }
 
   componentDidMount() {
-    window.dataLoaderLocation = this.props.location;
+    window.dataLoaderLocation = window.dataLoaderLocation || [];
+    window.dataLoaderLocation.push(this.props.location);
     this.matchData = this.pathInstructions
       .reduce(this.reducePathExpressions, null);
     console.log('mounting pathType ', this.pathType)
@@ -36,7 +37,7 @@ class DataLoader extends React.Component {
         actions,
         errorMessage,
       } = this.routes[this.pathType];
-      // Actions.updateLoadingStatus(true);
+      Actions.updateLoadingStatus(true);
       console.log('calling ajax with ', apiRoute())
       ajaxCall(apiRoute(),
         (response) => {

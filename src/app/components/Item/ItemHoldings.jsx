@@ -49,9 +49,10 @@ class ItemHoldings extends React.Component {
       page: noItemPage ? 1 : this.state.page,
     });
 
-    if (noItemPage) {
-      this.context.router.replace(`${appConfig.baseUrl}/bib/${this.props.bibId}`);
-    }
+    // if (noItemPage) {
+    //   console.log('replacing')
+    //   this.context.router.replace(`${appConfig.baseUrl}/bib/${this.props.bibId}`);
+    // }
   }
 
   /*
