@@ -5,8 +5,6 @@ import Store from '@Store';
 import Breadcrumbs from '../Breadcrumbs/Breadcrumbs';
 import LoadingLayer from '../LoadingLayer/LoadingLayer';
 
-// import Store from '../../stores/Store';
-
 class ShepContainer extends React.Component {
   constructor(props) {
     super(props);
