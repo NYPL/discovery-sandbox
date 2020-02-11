@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import FocusTrap from 'focus-trap-react';
 
 const LoadingLayer = ({ status, title, focus }) => {
-  console.log('LoadingLayer status ', status, title)
   if (status === false) {
     return null;
   }
