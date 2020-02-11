@@ -1,53 +1,82 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import Store from '@Store';
 import Breadcrumbs from '../Breadcrumbs/Breadcrumbs';
 import LoadingLayer from '../LoadingLayer/LoadingLayer';
 
-import Store from '../../stores/Store';
+// import Store from '../../stores/Store';
 
-const ShepContainer = (props) => {
-  return (
-    <main className="main-page shepcontainer">
-      <LoadingLayer
-        status={Store.state.isLoading}
-        title={props.loadingLayerText}
-      />
-      <div className="header-wrapper container-header">
-        <div className="header-topWrapper filter-page">
-          <div className="nypl-row container-row">
-            <div className="nypl-column-full">
-              <Breadcrumbs type={props.breadcrumbsType} />
-              { props.extraBannerElement }
-              <h1
-                aria-label={props.bannerOptions.ariaLabel || props.bannerOptions.text}
-              >
-                { props.bannerOptions.text }
-              </h1>
+class ShepContainer extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isLoading: Store.state.isLoading,
+    };
+    this.onChange = this.onChange.bind(this);
+    Store.listen(this.onChange);
+  }
+
+  onChange() {
+    this.setState({ isLoading: Store.state.isLoading });
+  }
+
+  render() {
+    const {
+      mainContent,
+      extraBannerElement,
+      secondaryExtraBannerElement,
+      extraRow,
+      loadingLayerText,
+      breadcrumbsType,
+      bannerOptions,
+    } = this.props;
+    const {
+      isLoading,
+    } = this.state;
+
+    return (
+      <main className="main-page shepcontainer">
+        <LoadingLayer
+          status={isLoading}
+          title={loadingLayerText}
+        />
+        <div className="header-wrapper container-header">
+          <div className="header-topWrapper filter-page">
+            <div className="nypl-row container-row">
+              <div className="nypl-column-full">
+                <Breadcrumbs type={breadcrumbsType} />
+                { extraBannerElement }
+                <h1
+                  aria-label={bannerOptions.ariaLabel || bannerOptions.text}
+                >
+                  { bannerOptions.text }
+                </h1>
+              </div>
+            </div>
+          </div>
+          { secondaryExtraBannerElement }
+        </div>
+        { extraRow }
+        <div className="header-wrapper">
+          <div className="header-topWrapper">
+            <div className="nypl-row container-row">
+              <div className="nypl-column-full">
+                { mainContent }
+              </div>
             </div>
           </div>
         </div>
-        { props.secondaryExtraBannerElement }
-      </div>
-      { props.extraRow }
-      <div className="header-wrapper">
-        <div className="header-topWrapper">
-          <div className="nypl-row container-row">
-            <div className="nypl-column-full">
-              { props.mainContent }
-            </div>
-          </div>
-        </div>
-      </div>
-      { props.secondaryExtraBannerElement }
+        { secondaryExtraBannerElement }
 
-      { props.extraRow }
-      <div className="nypl-full-width-wrapper">
-        { null && props.mainContent }
-      </div>
-    </main>
-  );
-};
+        { extraRow }
+        <div className="nypl-full-width-wrapper">
+          { null && mainContent }
+        </div>
+      </main>
+    );
+  }
+}
 
 ShepContainer.propTypes = {
   mainContent: PropTypes.element,
@@ -62,7 +91,7 @@ ShepContainer.propTypes = {
 ShepContainer.defaultProps = {
   mainContent: null,
   extraBannerElement: null,
-  loadingLayerText: "Loading",
+  loadingLayerText: 'Loading',
 };
 
 export default ShepContainer;
