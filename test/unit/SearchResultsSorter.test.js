@@ -9,17 +9,17 @@ import axios from 'axios';
 import sinon from 'sinon';
 
 import { basicQuery } from '../../src/app/utils/utils';
-import Sorter from '../../src/app/components/Sorter/Sorter';
+import SearchResultsSorter from '@SearchResultsSorter';
 import appConfig from '../../src/app/data/appConfig';
 
 Enzyme.configure({ adapter: new Adapter() });
-describe('Sorter', () => {
+describe('SearchResultsSorter', () => {
   describe('Default - no javascript', () => {
     // Since this is a shallow render, the component itself is not mounted. The `js` flag
     // becomes true when the component is mounted on the client-side so we know that
     // javascript is enabled.
     it('should not render an input submit element', () => {
-      const component = shallow(<Sorter />, { disableLifecycleMethods: true });
+      const component = shallow(<SearchResultsSorter />, { disableLifecycleMethods: true });
 
       expect(component.state('js')).to.equal(false);
       expect(component.find('input').length).to.equal(1);
@@ -31,7 +31,7 @@ describe('Sorter', () => {
     let component;
 
     before(() => {
-      component = mount(<Sorter />);
+      component = mount(<SearchResultsSorter />);
     });
 
     it('should have default state', () => {
@@ -81,7 +81,7 @@ describe('Sorter', () => {
 
     before(() => {
       const sortBy = 'some_other_value';
-      component = mount(<Sorter sortBy={sortBy} />);
+      component = mount(<SearchResultsSorter sortBy={sortBy} />);
     });
 
     it('should not be able to find the sortBy prop but still render the default label', () => {
@@ -96,7 +96,7 @@ describe('Sorter', () => {
       const searchKeywords = 'harry potter';
       const sortBy = 'title_asc';
       const field = 'title';
-      component = mount(<Sorter sortBy={sortBy} searchKeywords={searchKeywords} field={field} />);
+      component = mount(<SearchResultsSorter sortBy={sortBy} searchKeywords={searchKeywords} field={field} />);
     });
 
     it('should have updated state based on sortBy prop', () => {
@@ -126,7 +126,7 @@ describe('Sorter', () => {
       before(() => {
         createAPIQuery = basicQuery({});
         component = mount(
-          <Sorter createAPIQuery={createAPIQuery} />,
+          <SearchResultsSorter createAPIQuery={createAPIQuery} />,
           { context: { router: { createHref: () => {}, push: () => {} } } },
         );
         mock = new MockAdapter(axios);
@@ -153,18 +153,18 @@ describe('Sorter', () => {
     });
   });
 
-  describe('Sorter functions', () => {
+  describe('SearchResultsSorter functions', () => {
     let component;
     let createAPIQuery;
     let sortResultsBySpy;
     let mock;
 
     before(() => {
-      sortResultsBySpy = sinon.spy(Sorter.prototype, 'sortResultsBy');
+      sortResultsBySpy = sinon.spy(SearchResultsSorter.prototype, 'sortResultsBy');
       createAPIQuery = basicQuery({});
 
       component = mount(
-        <Sorter createAPIQuery={createAPIQuery} />,
+        <SearchResultsSorter createAPIQuery={createAPIQuery} />,
         { context: { router: { createHref: () => {}, push: () => {} } } },
       );
       mock = new MockAdapter(axios);
