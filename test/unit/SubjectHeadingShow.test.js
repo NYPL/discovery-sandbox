@@ -13,7 +13,10 @@ describe('SubjectHeadingShow', () => {
     const params = {
       subjectHeadingUuid: 1,
     };
-    const wrapper = shallow(<SubjectHeadingShow params={params} />);
+    const wrapper = shallow(
+      <SubjectHeadingShow params={params} />,
+      { context: { router: { location: { search: '' } } } },
+    );
     const instance = wrapper.instance();
 
     it('should accept a list containing a subject heading with correct uuid', () => {
