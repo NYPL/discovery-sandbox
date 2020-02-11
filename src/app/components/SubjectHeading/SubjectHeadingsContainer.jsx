@@ -52,15 +52,12 @@ class SubjectHeadingsContainer extends React.Component {
       .join('&');
 
     const url = `${appConfig.baseUrl}/api/subjectHeadings/subject_headings?${apiParamString}`;
-    console.log('container did mount ', filter)
     if (filter) {
-      console.log('loading');
       Actions.updateLoadingStatus(true);
     }
     axios(url)
       .then(
         (res) => {
-          console.log('store is loading ', Store.state.isLoading);
           this.setState({
             previousUrl: res.data.previous_url,
             nextUrl: res.data.next_url,
