@@ -40,7 +40,7 @@ class SubjectHeadingSearch extends React.Component {
     const apiCall = () => {
       if (this.state.userInput.length) return axios(`${appConfig.baseUrl}/api/subjectHeadings/autosuggest?query=${this.state.userInput}`)
         .then((res) => {
-          if (res.data.request.query === this.state.userInput) {
+          if (res.data.request.query.trim() === this.state.userInput.trim()) {
             this.setState({
               suggestions: res.data.autosuggest,
               activeSuggestion: 0,
