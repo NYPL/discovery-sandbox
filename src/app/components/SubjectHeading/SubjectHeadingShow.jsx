@@ -118,11 +118,8 @@ class SubjectHeadingShow extends React.Component {
     const {
       contextHeadings,
       relatedHeadings,
-      shepBibs,
-      bibsNextUrl,
       error,
       mainHeading,
-      bibsLoaded
     } = this.state;
 
     const { uuid } = mainHeading;
@@ -132,9 +129,13 @@ class SubjectHeadingShow extends React.Component {
     if (error) {
       return (<div>Not a subject heading</div>);
     }
+
     return (
       <React.Fragment>
-        <BibsList uuid={uuid} sortParams={this.context.router.location.query}/>
+        <BibsList
+          uuid={uuid}
+          key={this.context.router.location.search}
+        />
         <div
           className="nypl-column-half subjectHeadingContext subjectHeadingInfoBox"
           tabIndex='0'

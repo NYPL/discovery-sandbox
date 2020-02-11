@@ -14,12 +14,7 @@ class BibsList extends React.Component {
     this.state = {
       bibs: [],
       bibPage: 1,
-      nextUrl: props.nextUrl,
       loading: true,
-      sortParams: {
-        sort: props.sortParams.sort || 'title',
-        sort_direction: props.sortParams.sortDirection || 'asc',
-      }
     };
     this.updateBibPage = this.updateBibPage.bind(this);
     this.lastBib = this.lastBib.bind(this);
@@ -29,14 +24,18 @@ class BibsList extends React.Component {
   }
 
   componentDidMount() {
-    const { sort, sortDirection } = this.state.sortParams;
-    const stringifySortParams = () => (sort && sortDirection ? `?sort=${sort}&sort_direction={sortDirection}` : '');
+    const sortParams = this.context.router.location.query;
 
-    axios(`${appConfig.baseUrl}/api/subjectHeadings/subject_headings/${this.props.uuid}/bibs${stringifySortParams()}`)
+    const sort = sortParams.sort;
+    const sortDirection = sortParams.sort_direction;
+
+    const stringifySortParams = () => (sort && sortDirection ? `?sort=${sort}&sort_direction=${sortDirection}` : '');
+
+    axios(`${appConfig.baseUrl}/api/subjectHeadings/subject_headings/${this.context.router.params.subjectHeadingUuid}/bibs${stringifySortParams()}`)
       .then((res) => {
         this.setState({
           bibs: res.data.bibs.filter(bib => bib['@id']),
-          bibsNextUrl: res.data.next_url,
+          nextUrl: res.data.next_url,
           loading: false,
         });
       })
@@ -108,6 +107,12 @@ class BibsList extends React.Component {
       bibPage,
       bibs,
     } = this.state;
+
+    const sortParams = this.context.router.location.query;
+
+    const sort = sortParams.sort;
+    const sortDirection = sortParams.sort_direction;
+
     const pagination = (
       <Pagination
         updatePage={this.updateBibPage}
@@ -142,13 +147,12 @@ class BibsList extends React.Component {
       >
         <h4>Titles</h4>
         <Sorter
+          page="shepBibs"
           sortOptions={[
             { val: 'title_asc', label: 'title (a - z)' },
             { val: 'title_desc', label: 'title (z - a)' },
-            // { val: 'date_asc', label: 'date (old to new)' },
-            // { val: 'date_desc', label: 'date (new to old)' },
           ]}
-          defaultSort="title_asc"
+          sortBy={`${sort}_${sortDirection}`}
           updateResults={this.changeBibSorting}
         />
         {
@@ -166,8 +170,8 @@ class BibsList extends React.Component {
 }
 
 BibsList.propTypes = {
-  shepBibs: PropTypes.array,
   nextUrl: PropTypes.string,
+  sortParams: PropTypes.object,
 };
 
 BibsList.contextTypes = {
