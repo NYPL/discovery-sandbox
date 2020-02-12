@@ -25,7 +25,6 @@ class DataLoader extends React.Component {
   }
 
   componentDidMount() {
-    // Needs to add trackdiscovery actions
     const matchData = this.pathInstructions
       .reduce(this.reducePathExpressions, null);
     if (this.routes[this.pathType]) {
