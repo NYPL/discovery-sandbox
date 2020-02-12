@@ -76,13 +76,14 @@ class App extends React.Component {
           <DataLoader
             key={JSON.stringify(this.context.router.location)}
             location={this.context.router.location}
-          />
+          >
+            {React.cloneElement(this.props.children, this.state.data)}
+          </DataLoader>
           <Header
             navData={navConfig.current}
             skipNav={{ target: 'mainContent' }}
             patron={this.state.patron}
           />
-          {React.cloneElement(this.props.children, this.state.data)}
           <Footer />
           <Feedback location={this.props.location} />
         </div>

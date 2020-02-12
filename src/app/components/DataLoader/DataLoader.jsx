@@ -16,7 +16,7 @@ class DataLoader extends React.Component {
     this.pathType = null;
     this.routes = {
       bib: {
-        apiRoute: () => `${appConfig.baseUrl}/api/bib?bibId=${this.matchData[1]}`,
+        apiRoute: matchData => `${appConfig.baseUrl}/api/bib?bibId=${matchData[1]}`,
         actions: [Actions.updateBib],
         errorMessage: 'Error attempting to make an ajax request to fetch a bib record from ResultsList',
       },
@@ -26,7 +26,7 @@ class DataLoader extends React.Component {
 
   componentDidMount() {
     // Needs to add trackdiscovery actions
-    this.matchData = this.pathInstructions
+    const matchData = this.pathInstructions
       .reduce(this.reducePathExpressions, null);
     if (this.routes[this.pathType]) {
       const {
@@ -35,7 +35,7 @@ class DataLoader extends React.Component {
         errorMessage,
       } = this.routes[this.pathType];
       Actions.updateLoadingStatus(true);
-      ajaxCall(apiRoute(),
+      ajaxCall(apiRoute(matchData),
         (response) => {
           actions.forEach(action => action(response.data));
           Actions.updateLoadingStatus(false);
@@ -60,7 +60,7 @@ class DataLoader extends React.Component {
 
   render() {
     return (
-      <div className="dataLoader" />
+      <React.Fragment>{this.props.children}</React.Fragment>
     );
   }
 }
