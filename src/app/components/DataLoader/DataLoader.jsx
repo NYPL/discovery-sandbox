@@ -7,7 +7,6 @@ import appConfig from '@appConfig';
 class DataLoader extends React.Component {
   constructor(props) {
     super(props);
-    const { location } = this.props;
     this.pathInstructions = [
       {
         expression: /\/research\/collections\/shared-collection-catalog\/bib\/(b\d*)/,
@@ -27,11 +26,8 @@ class DataLoader extends React.Component {
 
   componentDidMount() {
     // Needs to add trackdiscovery actions
-    window.dataLoaderLocation = window.dataLoaderLocation || [];
-    window.dataLoaderLocation.push(this.props.location);
     this.matchData = this.pathInstructions
       .reduce(this.reducePathExpressions, null);
-    console.log('mounting pathType ', this.pathType)
     if (this.routes[this.pathType]) {
       const {
         apiRoute,
@@ -39,7 +35,6 @@ class DataLoader extends React.Component {
         errorMessage,
       } = this.routes[this.pathType];
       Actions.updateLoadingStatus(true);
-      console.log('calling ajax with ', apiRoute())
       ajaxCall(apiRoute(),
         (response) => {
           actions.forEach(action => action(response.data));
@@ -58,7 +53,6 @@ class DataLoader extends React.Component {
 
   reducePathExpressions(acc, instruction) {
     const { location } = this.props;
-    console.log('pathname', location.pathname)
     const matchData = location.pathname.match(instruction.expression);
     if (matchData) this.pathType = instruction.pathType;
     return matchData || acc;
