@@ -14,7 +14,7 @@ class BibsList extends React.Component {
     this.state = {
       bibs: [],
       bibPage: 1,
-      loading: true,
+      componentLoading: true,
     };
     this.updateBibPage = this.updateBibPage.bind(this);
     this.lastBib = this.lastBib.bind(this);
@@ -36,7 +36,7 @@ class BibsList extends React.Component {
         this.setState({
           bibs: res.data.bibs.filter(bib => bib['@id']),
           nextUrl: res.data.next_url,
-          loading: false,
+          componentLoading: false,
         });
       })
       .catch(
@@ -122,7 +122,7 @@ class BibsList extends React.Component {
       />
     );
 
-    if (this.state.loading) return (
+    if (this.state.componentLoading) return (
       <div className="nypl-column-half bibs-list subjectHeadingShowLoadingWrapper">
         <span
           id="loading-animation"
