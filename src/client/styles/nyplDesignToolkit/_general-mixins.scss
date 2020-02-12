@@ -1,0 +1,123 @@
+@mixin clearfix() {
+  &::before,
+  &::after {
+    content: "";
+    display: table;
+  }
+
+  &::after {
+    clear: both;
+  }
+}
+
+$bullet-size: 0.5rem;
+
+@mixin custom-list-bullet(
+    $color: $nypl-light-gray,
+    $hides-on-mobile: true) {
+  list-style-type: none;
+  position: relative;
+
+  @if ($hides-on-mobile == true) {
+    @include media($mobile-breakpoint) {
+      margin-left: 0;
+    }
+  }
+}
+
+@mixin custom-list(
+    $color: $nypl-light-gray,
+    $hides-on-mobile: true) {
+  li {
+    @include custom-list-bullet(
+      $color: $nypl-light-gray,
+      $hides-on-mobile: true);
+  }
+}
+
+@mixin collapsible {
+  $collapsing-time: 0.5s;
+  $max-height: 40rem; // 640
+
+  @include transition(all, $collapsing-time, ease-out);
+
+  max-height: $max-height;
+  overflow: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+
+  &.collapsed {
+    max-height: 0;
+    visibility: hidden;
+  }
+}
+
+@mixin spinner-element {
+  $bar-color: transparentize($nypl-light-gray, 0.5);
+  $spinner-time: 1.5s;
+
+  @keyframes spinner-right {
+    0% {
+      right: -5rem;
+    }
+
+    100% {
+      right: -1rem;
+    }
+  }
+
+  overflow: hidden;
+  position: relative;
+
+  &.spinning {
+    &::after {
+      animation: spinner-right $spinner-time linear infinite;
+      background: -moz-repeating-linear-gradient(to right, $bar-color, $bar-color 1rem, transparent 1.1rem, transparent 2rem, $bar-color 2.1rem);
+      background: repeating-linear-gradient(to right, $bar-color, $bar-color 1rem, transparent 1.1rem, transparent 2rem, $bar-color 2.1rem);
+      content: "";
+      display: block;
+      height: 100%;
+      margin-top: 0;
+      position: absolute;
+      right: -50%;
+      top: 0;
+      transform: skewX(-30deg);
+      width: 200%;
+    }
+  }
+}
+
+@mixin screenreader-only {
+  // to hide something from view but make it visible to screen readers
+  // used on some table headers
+  // based on last.fm tables
+  position: absolute;
+  width: 0.1rem;
+  height: 0.1rem;
+  margin: -0.1rem;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
+$white: #fff; // for tint lint pass
+$black: #000; // for shade lint pass
+
+/// Slightly lighten a color
+/// @access public
+/// @param {Color} $color - color to tint
+/// @param {Number} $percentage - percentage of `$color` in returned color
+/// @return {Color}
+@function tint($color, $percentage) {
+  @return mix($white, $color, $percentage);
+}
+
+/// Slightly darken a color
+/// @access public
+/// @param {Color} $color - color to shade
+/// @param {Number} $percentage - percentage of `$color` in returned color
+/// @return {Color}
+@function shade($color, $percentage) {
+  @return mix($black, $color, $percentage);
+}

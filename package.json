@@ -76,7 +76,6 @@
     "@babel/preset-env": "^7.7.7",
     "@babel/preset-react": "^7.7.4",
     "@babel/register": "^7.7.7",
-    "@nypl/design-toolkit": "0.1.35",
     "@nypl/dgx-header-component": "git+https://git@github.com/NYPL/dgx-header-component#reactupdate",
     "@nypl/dgx-react-footer": "0.5.2",
     "@nypl/dgx-svg-icons": "0.2.5",

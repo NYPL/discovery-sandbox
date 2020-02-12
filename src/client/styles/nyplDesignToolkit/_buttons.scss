@@ -1,0 +1,412 @@
+@import "css3";
+@import "measurements";
+@import "colors";
+// Buttons stylings
+//TODO: move button style in _forms.scss to this partial
+//      add in styles for request button
+
+//@warn "use 'default' in default names (from colors.scss i suppose)";
+//@warn "some magic numbers";
+
+@mixin link-button {
+  background: none;
+  border: 0;
+  color: $link-color;
+  cursor: pointer;
+  font: inherit;
+  padding: 0;
+  text-decoration: underline;
+
+  &:hover {
+    text-decoration: none;
+  }
+}
+
+@mixin basic-button (
+  $background-color: $nypl-dark-gray,
+  $border-color: $nypl-dark-gray,
+  $border-radius: ($general-border-radius / 3),
+  $border-width: ($general-border-width / 3),
+  $button-icon: false,
+  $collapsible: false,
+  $disabled-color: $nypl-light-gray,
+  $font-size: 1rem,
+  $font-weight: normal,
+  $hover-text-color: $nypl-dark-gray,
+  $hover-background-color: $button-text-color,
+  $height: auto,
+  $letter-spacing: normal,
+  $padding-horizontal: 0.75rem,
+  $padding-vertical: 0.2rem,
+  $text-color: $button-text-color,
+  $text-transform: none) {
+  background-color: $background-color;
+  border: $border-width solid $border-color;
+  border-radius: $border-radius;
+  color: $text-color;
+  cursor: pointer;
+  display: inline-block;
+  font-size: $font-size;
+  font-weight: $font-weight;
+  height: $height;
+  letter-spacing: $letter-spacing;
+  padding: $padding-vertical $padding-horizontal;
+  text-decoration: none;
+  text-transform: $text-transform;
+  white-space: normal;
+  -webkit-appearance: none;
+  @content;
+
+  @include transition(all, $hover-time, ease-in);
+
+  @if ($collapsible == true) {
+    // has nypl-icon with down arrow
+    position: relative;
+    padding-right: 1.5rem;
+    text-align: left;
+
+    .nypl-icon {
+      @include transition(all, $hover-time, ease-in);
+      @include nypl-icon(
+        $fill: $text-color,
+        $background-color: $background-color);
+      height: 1rem;
+      position: absolute;
+      right: 0.25rem;
+      $top: 0.2rem;
+      @if ($padding-vertical != 0) {
+        $top: ($top + $padding-vertical);
+      }
+      top: $top;
+      width: 1rem;
+    }
+  } // /collapsible
+
+  // Button w/ Icon...
+  // TODO: Refactor $collapsible & $button-icon to be DRYer...
+  @if ($button-icon == true) {
+
+    .nypl-icon {
+      @include nypl-icon(
+      $fill: $text-color,
+      $background-color: $background-color);
+      @include transition(all, $hover-time, ease-in);
+    }
+  } // /button-icon
+
+  &:link,
+  &:visited {
+    color: $text-color;
+  }
+
+  $the-text-color: "";
+  $the-background-color: "";
+
+  @if $hover-background-color != $text-color {
+    // there's custom hover color
+    $the-background-color: $hover-background-color;
+  } @else {
+    $the-background-color: $text-color;
+  }
+
+  @if $hover-text-color != $background-color {
+    // there's custom hover color
+    $the-text-color: $hover-text-color;
+  } @else {
+    $the-text-color: $background-color;
+  }
+
+  &:hover,
+  &:hover:visited,
+  &.active {
+    border-color: $the-text-color;
+    background-color: $the-background-color;
+    color: $the-text-color;
+
+    @if $collapsible == true {
+      // has nypl-icon with down arrow
+      .nypl-icon {
+        @include nypl-icon(
+        $fill: $the-text-color,
+        $background-color: $the-background-color);
+      }
+    }
+
+    // button has an icon to the left or right:
+    @if $button-icon == true {
+      $custom-icon-height: "";
+      $custom-icon-width: "";
+
+      .nypl-icon {
+        @include nypl-icon(
+        $fill: $the-text-color,
+        $background-color: $the-background-color,
+        $height: $custom-icon-height,
+        $width: $custom-icon-width);
+      }
+    }
+  }
+
+  &.active {
+    @if $collapsible == true {
+      .nypl-icon {
+        transform: rotate(180deg);
+      }
+    }
+  }
+
+  &:focus {
+    @include box-shadow(inset 0 0 0 0.125rem $focus-color);
+    outline: none;
+  }
+
+  &.disabled,
+  &[disabled="disabled"],
+  &[disabled="true"],
+  &[disabled],
+  &[disabled=true] {
+
+    //@warn "set universal disabled style";
+    background-color: $disabled-color;
+    border-color: $the-background-color;
+    cursor: default;
+
+    &:hover {
+      background-color: $disabled-color;
+      border-color: $the-background-color;
+      color: $text-color;
+    }
+  }
+} // /"basic" button
+
+@mixin primary-button {
+  @include basic-button (
+  $text-color: $nypl-white,
+  $border-color: $nypl-blue,
+  $background-color: $nypl-blue,
+  $border-radius: 0.25rem);
+
+  &:hover {
+    background: $nypl-white;
+    border-color: $nypl-blue;
+    color: $nypl-blue;
+  }
+}
+
+//
+// Mixin for the requesting pattern
+//
+@mixin request-button {
+  @include basic-button (
+  $text-color: $nypl-white,
+  $border-color: $nypl-red,
+  $background-color: $nypl-red,
+  $border-radius: 0.25rem
+  );
+
+  &:hover {
+    background: $nypl-white;
+    border-color: $nypl-red;
+    color: $nypl-red;
+  }
+}
+
+
+@mixin results-button {
+  @include basic-button (
+    $text-color: $nypl-blue,
+    $border-color: $nypl-blue,
+    $background-color: $nypl-white,
+    $hover-text-color: $nypl-white,
+    $hover-background-color: $nypl-blue,
+    $border-radius: 0.25rem);
+  margin: 0.5rem 0;
+
+  span {
+    display: block;
+    font-size: 2rem;
+    line-height: 1;
+    margin-right: 0.25rem;
+  }
+}
+
+@mixin service-button(
+  $collapsible: false,
+  $text-color: $nypl-white,
+  $background-color: $nypl-red) {
+
+  @include basic-button(
+    $font-size: 0.8rem,
+    $text-color: $text-color,
+    $background-color:
+    $background-color,
+    $collapsible: $collapsible,
+    $border-width: 0,
+    $padding-vertical: 0,
+    $padding-horizontal: 0.5rem);
+  border-radius: 0;
+  display: block;
+  font-weight: bold;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@mixin login-button($collapsible: false) {
+  @include basic-button(
+    $font-size: 0.7rem,
+    $text-color: $nypl-white,
+    $background-color: $nypl-gray,
+    $padding-vertical: 0,
+    $padding-horizontal: 0.5rem,
+    $collapsible: $collapsible,
+    $border-width: 0);
+  border-radius: 0;
+  display: block;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+@mixin menu-button(
+    $attachment: "left",
+    $text-color: $button-text-color,
+    $background-color: $nypl-search-color-dark) {
+  display: inline-block;
+  position: relative;
+
+  .nypl-menu-button_button {
+    @include basic-button($collapsible: true);
+  }
+
+  .nypl-menu-button_menu {
+    background-color: $background-color;
+    border-radius: $general-border-radius;
+    color: $text-color;
+    min-width: 10rem;
+    padding: 1rem;
+    position: absolute;
+    z-index: 1;
+
+    @if ($attachment == "left") {
+      left: 0;
+    } @else {
+      right: 0;
+    }
+  }
+}
+
+@mixin navigation-button(
+  $text-color: $button-text-color,
+  $background-color: $nypl-search-color-dark) {
+  display: inline-block;
+  position: relative;
+
+  .nypl-navigation-button_button {
+    @include basic-button($collapsible: true);
+  }
+
+  .nypl-navigation-button_list {
+    background-color: $background-color;
+    border-radius: $general-border-radius;
+    color: $text-color;
+    left: 0;
+    list-style: none;
+    padding: 0;
+    position: absolute;
+    top: 0;
+    z-index: 1;
+
+    li {
+      margin: 0;
+      padding: 0;
+    }
+
+    a {
+      color: $text-color;
+      display: block;
+      min-width: 10rem;
+      padding: 0.5rem 1rem;
+    }
+  }
+}
+
+
+
+
+///
+/// TODO: A better method for combining buttons & icons needs to be developed.
+///       Probably undo this mixin mess and make button, buttons with text & icons and buttons with icons only...
+///
+@mixin basic-button-icon($button-icon: true) {
+  @include basic-button(
+  $background-color: $nypl-red,
+  $border-color: $nypl-red,
+  $border-radius: 0.25rem,
+  $button-icon: true,
+  $hover-text-color: $nypl-red,
+  $hover-background-color: $nypl-white,
+  $text-color: $nypl-white
+  );
+  // We set the icon's position here and not on the general mixin since we are using a specific icon [x]
+  .nypl-icon {
+    height: 1rem;
+    position: relative;
+    top: 0.15rem;
+    width: 1rem;
+  }
+} // /basic-button-icon
+
+
+
+///
+/// TODO: Hovering w/ different icons needs sorting out.
+///
+@mixin close-button($button-icon: true) {
+  @include basic-button(
+  $background-color: $nypl-white,
+  $border-width: 0,
+  $button-icon: true,
+  $hover-text-color: $nypl-red,
+  $text-color: $nypl-red
+  );
+
+  .nypl-icon {
+    width: 1.75rem;
+    height: 1.75rem;
+    position: relative;
+    top: 0.5rem;
+  }
+} // /close-button
+
+///
+/// A special case where we need to change dimensions of the button:
+/// A use case its the "Filter Results"
+@mixin short-button(
+  // hacky
+  $short-button-height: 2.1rem
+  ) {
+  @include basic-button(
+    $background-color: $nypl-white,
+    $border-color: $nypl-dark-gray,
+    $border-radius: 0.25rem,
+    $button-icon: true,
+    $font-size: 0.85rem,
+    $height: null,
+    $hover-text-color: $nypl-white,
+    $hover-background-color: $nypl-dark-gray,
+    $padding-vertical: 0,
+    $padding-horizontal: 1.5rem,
+    $text-color: $nypl-dark-gray) {
+    height: $short-button-height;
+    padding-right: 0.5rem;
+    -webkit-appearance: none !important;
+  }
+
+  .nypl-icon {
+    height: 1rem;
+    margin-left: 1.75rem;
+    position: relative;
+    top: 0.1rem;
+    width: 1rem;
+  }
+}

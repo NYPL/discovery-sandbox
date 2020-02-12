@@ -1,0 +1,226 @@
+@import "nypl-normalize";
+@import "toolkit";
+@import "header";
+@import "footer";
+
+.nypl-header {
+  @include header;
+}
+
+.nypl-footer {
+  @include footer;
+}
+
+#skip a {
+  background-color: $nypl-white;
+  border: 0;
+  color: $link-color;
+  display: block;
+  font-size: 13px;
+  height: 1px;
+  left: -10000px;
+  line-height: 2;
+  overflow: hidden;
+  padding: 5px 10px 3px;
+  position: absolute;
+  top: 7px;
+  width: 1px;
+  z-index: 1000;
+
+  &:focus {
+    border: 5px solid $link-color;
+    height: auto;
+    left: 7px;
+    outline: 0;
+    overflow: visible;
+    width: auto;
+  }
+}
+
+
+
+///
+/// Customized page header
+/// TODO: Make this a proper design pattern and create a set of mixins that make it easier to implement
+/// TODO: Get this out of the example SCSS
+///
+
+.nypl-page-header {
+  @include page-header(
+  $background-color: lighten($nypl-light-gray, 15%),
+  $font-weight: 100,
+  $type-color: $nypl-red);
+  border-bottom: $general-border-width / 1.5 solid darken($nypl-light-gray, 15%);
+  margin-bottom: 0;
+
+  .nypl-column-three-quarters {
+    margin-bottom: 0;
+  }
+}
+
+///
+/// item info / the full item record
+///
+
+.nypl-item-details {
+
+  h1 {
+    margin-bottom: 3rem;
+    line-height: 1.5625;
+  }
+
+  .nypl-item-info {
+    @include item-info ($border-width: 0);
+    padding-left: 0;
+  }
+
+  dl {
+    border-left: 0;
+    font-size: 0.95rem;
+    padding-left: 0;
+
+    dt {
+      color: $nypl-dark-gray;
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 0.04rem;
+      margin: 0 0.5rem 1rem 0;
+      width: 20%;
+
+      @include media($mobile-breakpoint) {
+        float: none;
+        margin-bottom: 0.75rem;
+        width: 100%;
+      }
+    }
+
+    dd {
+      //font-size: 0.95rem;
+      margin-bottom: 1rem;
+      width: 70%;
+
+      @include media($mobile-breakpoint) {
+        margin-bottom: 1.25rem;
+        width: 100%;
+      }
+
+      &.subject-listing a {
+        display: block;
+      }
+    }
+  }
+
+} // /.nypl-item-details
+
+dl dt.list-multi-control {
+  width: 100%;
+
+  h3 {
+    font-weight: 400;
+    margin: 0 0 1rem;
+    text-transform: none;
+    width: 100%;
+  }
+}
+
+//
+// numbered pager -approach 1:
+//
+.nypl-numbered-pager {
+  @include numbered-pager;
+} // .nypl-results-pagination
+
+//
+// numbered pager -approach 2:
+//
+.nypl-numbered-pager-2 {
+  @include numbered-pager;
+  position: relative;
+
+  @include media($mobile-breakpoint) {
+    padding: 0 0 3rem;
+  }
+
+  .pager {
+
+    .pages {
+      @include clearfix;
+      @include media($mobile-breakpoint) {
+        border-bottom: ($general-border-width / 1.5) solid $nypl-light-gray;
+        float: none;
+        padding: 2% 0;
+        width: 100%;
+      }
+
+      float: left;
+      padding: 0.5rem 0;
+      text-align: center;
+      width: 62%;
+
+      .pager-item {
+        @include media($mobile-breakpoint) {
+          margin-right: 5.5%;
+        }
+
+        margin-right: 6.5%;
+        padding: 0.25em 1.66667%;
+        text-align: center;
+        width: 10%;
+
+        &:last-child {
+          margin-right: 0;
+        }
+
+      } // /.pager-item
+
+      .current {
+        background-color: $nypl-blue-dark;
+        color: $nypl-white;
+        border-radius: $general-border-radius;
+      }
+  }
+
+    .previous,
+    .next {
+
+      @include media($mobile-breakpoint) {
+        float: none;
+        padding: 4% 2rem;
+        position: absolute;
+        // Keep the rule below for a mintue
+        // top: 3rem;
+        top: 47%;
+      }
+
+      float: left;
+      position: static;
+      width: 20%;
+
+    } // /.pager-previous / .pager-next
+    .previous {
+      @include media($mobile-breakpoint) {
+        border: 0;
+        padding: 2.75% 0 0 2rem;
+      }
+
+      border-right: ($general-border-width / 1.5) solid $nypl-light-gray;
+      margin-right: 1rem;
+      padding: 0.5rem 2rem;
+      width: 10%;
+    }
+
+    .next {
+      @include media($mobile-breakpoint) {
+        border: 0;
+        padding: 2.75% 6% 0 0;
+        right: 1rem;
+        text-align: right;
+      }
+
+      border-left: ($general-border-width / 1.5) solid $nypl-light-gray;
+      padding: 0.5rem 0;
+      text-align: right;
+      width: 10%;
+    } // /.pager-next
+  }
+} // /.nypl-numbered-pager-2

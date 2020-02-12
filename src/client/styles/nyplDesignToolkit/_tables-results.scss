@@ -1,0 +1,825 @@
+@import "measurements";
+@import "icons";
+@import "general-mixins";
+@import "microformats";
+@import "media-queries";
+
+//@warn "refactor mixins and remove magic numbers";
+
+$results-item-border-width: 0.0625rem;
+
+@mixin basic-table {
+  border-collapse: collapse;
+  display: table;
+  position: relative;
+  width: 100%;
+
+  tr {
+    border-bottom: 0.0625rem solid $nypl-light-gray;
+    display: table-row;
+  }
+
+  thead,
+  th {
+    border-bottom: 0.0625rem solid $page-color;
+    font-weight: bold;
+    text-align: left;
+  }
+
+  th,
+  td {
+    display: table-cell;
+    overflow: hidden;
+    padding: 0.125rem 0.25rem;
+    text-overflow: ellipsis;
+  }
+
+  td {
+    border-bottom: 1px solid $nypl-light-gray;
+    padding-bottom: 0.5rem;
+    vertical-align: top;
+  }
+}
+
+///
+/// Search Results have a summary this is it.
+///
+
+@mixin results-summary {
+  @include clearfix;
+  @include media($xtrasmall-breakpoint) {
+    float: none;
+    max-width: 100%;
+  }
+  display: inline-block;
+  flex-grow: 2;
+  //max-width: 65%;
+
+  h2 {
+    @include media($xtrasmall-breakpoint) {
+      margin-top: 1em;
+    }
+    font-size: 1rem;
+    font-weight: normal;
+    margin-bottom: 0;
+    margin-top: 0;
+    max-width: none;
+    min-height: 1rem;
+  }
+
+  .nypl-results-count {
+    //float: left;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1;
+    // margin-bottom: 0.25rem;
+    // margin-right: 0.5rem;
+    margin-top: 0.25em;
+  }
+
+  .nypl-facet {
+    background-color: $nypl-light-gray;
+    border-radius: $general-border-radius 2rem 2rem $general-border-radius;
+    display: inline-block;
+    margin-bottom: 0.25rem;
+    margin-left: 0.25rem;
+    padding: 0 0.25rem;
+
+    strong {
+      display: inline-block;
+      max-width: 15rem;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      vertical-align: bottom;
+      white-space: nowrap;
+
+      @include media($mobile-breakpoint) {
+        max-width: 7rem;
+      }
+    }
+
+    button {
+      // the button inside a facet
+      @include basic-button(
+      $background-color: none,
+      $border-radius: 2rem,
+      $padding-vertical: 0,
+      $padding-horizontal: 0,
+      $border-width: 0);
+      margin: 0.25rem 0 0.25rem 0.25rem;
+      vertical-align: bottom;
+
+      span {
+        @include screenreader-only;
+      }
+
+      .nypl-icon {
+        @include nypl-icon(
+        $fill: $nypl-search-color-dark,
+        $background-color: $nypl-light-gray,
+        $border-radius: 1rem,
+        $height: 1rem,
+        $width: 1rem);
+        display: block;
+        margin: 0;
+      }
+    }
+  } // /.facet
+
+  .nypl-clear-results {
+    clear: both;
+  }
+} // /results-summary
+
+
+
+///
+/// Basic Left / Right Arrowed Pagination
+///
+
+@mixin results-pagination {
+  font-size: 1.1rem;
+  margin-top: 1.5rem;
+  margin-bottom: 3rem;
+  @include clearfix;
+
+  .page-count,
+  a {
+    display: block;
+    float: left;
+    text-decoration: none;
+    width: 15%;
+    @include clearfix;
+  }
+
+  .page-count.first {
+    margin-left: 15%;
+  }
+
+  .page-count {
+    padding: ($general-padding * 0.75);
+    text-align: center;
+    width: 20%;
+
+    @include media($mobile-breakpoint) {
+      font-size: 1rem;
+      padding: 0 0.2rem;
+      padding-top: ($general-padding * 0.25);
+      width: 35%;
+    }
+  }
+
+  a:last-child {
+    text-align: center;
+  }
+
+  a:first-child svg {
+    float: left;
+  }
+
+  a {
+    border: ($general-border-width / 1.5) solid $nypl-light-gray;
+    border-radius: $general-border-radius;
+    font-weight: 500;
+    padding: ($general-padding * 0.75);
+    text-align: center;
+
+    svg {
+      @include nypl-icon(
+        $height: 1rem,
+        $width: 1rem);
+      display: block;
+      fill: $link-color;
+      float: right;
+      margin-top: 0.4rem;
+    } // /svg
+
+    @include media($mobile-breakpoint) {
+      font-size: 0.9rem;
+      padding: ($general-padding * 0.2);
+      width: 5rem;
+
+      &:first-child svg {
+        display: none;
+      }
+
+      &:last-child svg {
+        display: none;
+      }
+    } // /$mobile-breakpoint a
+  } // /a
+} // /results-pagination
+
+
+
+
+///
+/// Sorting controls
+///
+
+@mixin results-sorting-controls(
+  $background-color: $nypl-white,
+  $border: ($general-border-width * 2) solid $page-color,
+  $margin: 1rem) {
+
+  @include clearfix;
+  @include media($mobile-breakpoint) {
+    min-width: 13.75em;
+  }
+  @include media($xtrasmall-breakpoint) {
+    float: none;
+    width: 100%;
+  }
+
+  border: 0;
+  display: inline-block;
+  flex-grow: 1;
+  margin: $margin 0 0;
+}
+
+
+
+/// Do something less magic with this:
+$sorter-width: 11em;
+
+// In some cases we need to expose things to screen readers only:
+// TODO: Move this to the general mixins...
+
+@mixin submission($visibility) {
+  @if $visibility == visible {
+    @content; // put the visible stuff here:
+  } @else if $visibility == visually-hidden {
+    @content; // put the screenreader-only stuff here...
+  }
+}
+
+
+///
+///
+///
+
+@mixin results-sorter {
+  @include submission(visually-hidden) {
+    button.nypl-screenreader-only {
+      @include screenreader-only;
+    }
+  } // /submssion ~ visually-hidden
+  @include media($mobile-breakpoint) {}
+  @include media($xtrasmall-breakpoint) {
+    float: none;
+    width: 100%;
+  }
+
+  @include submission(visible) {
+    button {
+      @include basic-button(
+        $background-color: $nypl-white,
+        $border-color: lighten($nypl-gray-cool, 15%),
+        $border-width: ($general-border-width / 2),
+        $collapsible: true,
+        $font-size: 0.85rem,
+        $hover-background-color: $nypl-white,
+        $padding-vertical: ($general-padding * 0.4),
+        $text-color: $nypl-dark-gray);
+      padding-right: 1.75rem;
+
+      .nypl-icon {
+        right: 0.5rem;
+        transform: rotate(90deg)
+      }
+
+      &.active .nypl-icon {
+        transform: rotate(270deg)
+      }
+    } // /button
+  } // /submssion ~ visible
+
+  display: inline-block;
+  float: right;
+  position: relative;
+
+  ul {
+    background-color: $nypl-white;
+    border: ($general-border-width / 1.5) solid;
+    border-radius: 0;
+    box-shadow: 10px 5px 11px -8px rgba(0, 0, 0, 0.3);
+    list-style: none;
+    min-width: $sorter-width;
+    position: absolute;
+    left: 0;
+    width: 14rem;
+    z-index: 1;
+  }
+
+  li {
+    margin-left: 0;
+  }
+
+  a {
+    color: $page-color;
+    display: block;
+    padding: 0.25rem 0.5rem 0.25rem 1rem;
+    text-decoration: none;
+
+    &.active,
+    &:hover,
+    &:focus {
+      color: $page-color;
+      font-weight: bold;
+    }
+  }
+} // /resuts-sorter
+
+
+
+///
+/// Filter Button
+/// Activates the filter modal
+/// TODO: Remove the modal pattern all together
+///
+
+@mixin filter-button {
+  float: left;
+  position: relative;
+
+  @include media($xtrasmall-breakpoint) {
+    @include clearfix;
+  }
+}
+
+@mixin item-definition-list(
+  $item-margin-bottom: 0.5rem,
+  $dt-width: 7.6rem,
+  $dd-width: auto) {
+  dl {
+    @include clearfix;
+    margin-bottom: 1rem;
+    margin-top: 0;
+
+    ul {
+      margin-bottom: 1rem;
+    }
+
+    li {
+      list-style-type: none;
+      margin-left: 0;
+    }
+  }
+
+  dt,
+  dd {
+    float: left;
+    line-height: 1.5;
+    margin: 0 0 $item-margin-bottom;
+    width: $dd-width;
+  }
+
+  dt {
+    clear: left;
+    color: $nypl-gray;
+    width: $dt-width;
+
+    @include media($mobile-breakpoint) {
+      width: 45%;
+    }
+  }
+
+  dd {
+    margin: 0;
+
+    @include media($mobile-breakpoint) {
+      width: 55%;
+    }
+  }
+}
+
+
+
+///
+///
+///
+
+@mixin results-item(
+  $border-width: $results-item-border-width,
+  $border-color: $nypl-light-gray,
+  $margin-bottom: 2rem,
+  $padding-bottom: '') {
+  border-bottom: $border-width solid $border-color;
+  list-style-type: none;
+  margin-bottom: $margin-bottom;
+  margin-left: 0;
+  max-width: none;
+  padding-bottom: $padding-bottom;
+
+  h2,
+  h3 {
+    font-size: 1.2rem;
+    font-weight: normal;
+    margin-bottom: 0.5rem;
+    max-width: none;
+  }
+
+  @include item-definition-list;
+
+  p {
+    margin-bottom: 0;
+    max-width: none;
+  }
+}
+
+@mixin results-unavailable {
+  border-left: 0.5rem solid $highlight-color;
+  color: $highlight-color;
+  margin: 0.5rem 0;
+  padding-left: 0.5rem;
+}
+
+@mixin results-item-description($item-margin-bottom: 0.5rem) {
+  margin-bottom: $item-margin-bottom;
+}
+
+@mixin results-info($margin: 1rem) {
+  display: inline-block;
+  margin-right: $margin;
+}
+
+@mixin results-media(
+$color: $nypl-gray,
+$font-size: "",
+$font-weight: 400) {
+  @include results-info;
+  color: $color;
+  font-size: $font-size;
+  font-weight: $font-weight;
+}
+
+@mixin results-use {
+  color: $nypl-gray;
+  display: block;
+  font-size: 0.9rem;
+  font-style: italic;
+}
+
+@mixin item-info (
+  $border-width: 0.5rem,
+  $border-type: solid,
+  $border-color: $nypl-gray) {
+  border-left: $border-width $border-type $border-color;
+  padding-left: 0.5rem;
+  margin-bottom: 1rem;
+  max-width: none;
+
+  p {
+    margin: 0;
+    max-width: none;
+  }
+}
+
+@mixin item-media {
+  color: $nypl-gray;
+  font-weight: bold;
+}
+
+@mixin item-holdings {
+  $holdings-height: 40rem;
+
+  h2 {
+    font-size: 1rem;
+    line-height: 1.5;
+    margin: 0;
+  }
+
+  ul {
+    background: linear-gradient(to bottom, transparent 0, transparent ($holdings-height - 3), lighten($nypl-light-gray, 20%) ($holdings-height - 1), $nypl-light-gray $holdings-height);
+    max-height: 40rem;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+
+    @include media($mobile-breakpoint) {
+      background: transparent;
+      max-height: unset;
+      overflow-y: inherit;
+    }
+  }
+
+  li {
+    @include clearfix;
+    border-bottom: ($general-border-width * 0.5) solid $nypl-light-gray;
+    line-height: 1.5;
+    list-style-type: none;
+    margin: 1rem 0;
+
+    @include media($mobile-breakpoint) {
+      clear: left;
+      margin-left: 0;
+    }
+  }
+
+  a,
+  .nypl-item-unavailable {
+    display: block;
+    float: right;
+    margin: 0 0 1rem 1rem;
+    width: 7rem;
+  }
+
+  .nypl-item-unavailable {
+    color: $highlight-color;
+  }
+}
+
+@mixin item-details {
+  @include item-definition-list($item-margin-bottom: 0.5rem);
+
+  h2 {
+    font-size: 1.6rem;
+    font-weight: normal;
+  }
+
+  dl {
+    border-left: 0.25rem solid $nypl-dark-gray;
+    padding: 0 0.75rem;
+  }
+}
+
+@mixin item-external-links {
+  @include item-definition-list;
+
+  li {
+    margin-bottom: 1rem;
+  }
+}
+
+@mixin views-table {
+  //@warn "this mixin is not used";
+
+  display: table;
+  border-collapse: collapse;
+
+  tr,
+  .views-table-row {
+    border-bottom: 1px solid $nypl-light-gray;
+    display: table-row;
+  }
+
+  .views-table-row .views-table-header,
+  thead,
+  th {
+    border-bottom: 1px solid $page-color;
+    text-align: left;
+  }
+
+  td,
+  th,
+  .views-table-header,
+  .views-table-cell {
+    display: table-cell;
+  }
+
+  th,
+  .views-table-header {
+    font-weight: bold;
+  }
+
+  .views-table-header.event-time {
+    width: 20%;
+  }
+
+  .views-table-header.event-title {
+    width: 40%;
+  }
+
+  .views-table-header.event-location {
+    width: 20%;
+  }
+
+  .views-table-header.event-audience {
+    width: 20%;
+  }
+
+  .views-table-header.resource-availability {
+    width: 25%;
+  }
+
+  .views-table-header.resouce-description {
+    width: 65%;
+  }
+
+  td,
+  .views-table-cell {
+    border-bottom: 1px solid $nypl-light-gray;
+    padding: 0.5rem 0.5rem 3rem 0;
+    vertical-align: top;
+  }
+
+  .channel-title {
+    color: $highlight-color;
+  }
+
+  .signup-method {
+    color: $highlight-color;
+  }
+
+  .resource-title {
+    font-weight: bold;
+  }
+
+  &.collapses {
+    @include media($mobile-breakpoint) {
+      thead,
+      th,
+      .views-table-header,
+      .views-table-row:first-child {
+        display: none;
+      }
+
+      td,
+      .views-table-cell {
+        display: block;
+        float: left;
+        margin: 0;
+        padding: 1rem 0;
+      }
+
+      tr:first-child,
+      .views-table-row:first-child {
+        border-top: 1px solid $nypl-light-gray;
+      }
+
+      .event-time,
+      .event-audience,
+      .event-title {
+        border: 0;
+        display: block;
+      }
+
+      .event-time {
+        width: 20%;
+      }
+
+      .event-title,
+      .event-location,
+      .event-audience {
+        width: 30%;
+      }
+
+      .event-title {
+        margin-right: 5%;
+        width: 45%;
+        max-height: 12rem;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .event-location {
+        border-bottom: 0;
+        font-weight: bold;
+      }
+
+      .event-audience::before {
+        content: "For: ";
+      }
+
+      .resource-availability {
+        width: 25%;
+      }
+
+      .resouce-description {
+        width: 65%;
+      }
+    }
+  }
+
+}
+
+////
+// Styles for docs/discovery-search.html
+////
+.nypl-results-list {
+
+  // override the default spacing between items here:
+  .nypl-results-item-description {
+    @include results-item-description($item-margin-bottom: 0.25rem);
+  }
+
+  .nypl-results-item {
+    @include results-item(
+      $margin-bottom: 2em,
+      $padding-bottom: 2em);
+    //border-bottom: ($general-border-width / 1.25) solid lighten($nypl-light-gray, 15%);
+
+    h2,
+    h3 {
+      margin-bottom: 0;
+
+      a:link {
+        text-decoration: none;
+      }
+    }
+
+    // If there is a request table inline in the results, add the class
+    &.has-request {
+      margin-bottom: 3.25rem;
+    }
+
+    .nypl-results-media {
+      @include results-media(
+        $color: $nypl-dark-gray,
+        //$font-size: 0.85rem,
+        $font-weight: 400);
+
+        // &::before {
+        //   content: 'Format: ';
+        // }
+    } // /.nypl-results-media
+
+    //
+    // TODO: find a more elegant way of writing this:
+    // Posibly a for/in thing...
+
+    .nypl-results-room,
+    .nypl-results-place,
+    .nypl-results-publisher,
+    .nypl-results-date,
+    .nypl-results-info {
+      //font-size: 0.85rem;
+    } // /.nypl-results-room
+
+    // Special case where we need the the publisher & published date closer to one another:
+    .nypl-results-publisher {
+      margin-right: 0.25rem;
+    }
+  } // /.nypl-results-item
+}
+
+
+
+// This block styles the table set in the <dl>
+//
+// TODO: Combine this layout w/ the one above
+// TODO: refactor code below to address nested style depth being too deep.
+// TODO: refactor so the table is not dependent on being embedded in the <dl>
+
+dl dd.multi-item-list,
+.nypl-results-item {
+
+  .nypl-basic-table {
+    display: table;
+    width: 100%;
+
+   @include media($mobile-breakpoint) {
+     overflow: auto;
+     overflow-y: hidden;
+     overflow-x: auto;
+     display: block;
+   }
+
+    thead {
+      border: 0;
+    } // /thead
+
+    th {
+      border: 0;
+      font-size: 0.85rem;
+      padding-bottom: 0.5em;
+      width: 25%;
+    }
+
+    td {
+      border: 0;
+      padding-top: 0.25em;
+    }
+
+    tr {
+      border-bottom: 0;
+    }
+
+    tbody tr:first-child {
+      line-height: 1.2;
+    }
+
+    tbody tr:last-child {
+      border-bottom: 0;
+    }
+
+    button {
+      @include basic-button(
+        $text-color: $nypl-red,
+        $background-color: $nypl-white,
+        $border-color: $nypl-red,
+        $border-radius: ($general-border-radius / 1.5),
+        $border-width: ($general-border-width / 1.5),
+        $font-size: 0.8rem,
+        $height: 2.5rem,
+        $hover-text-color: $nypl-white,
+        $hover-background-color: $nypl-red,
+        $letter-spacing: 0.06rem);
+      margin-top: 0;
+      width: 8rem;
+
+      @include media($mobile-breakpoint) {
+        display: inline-block;
+      } // /$mobile-breakpoint
+    } // /button
+  } // /.nypl-basic-table
+}

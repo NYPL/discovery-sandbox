@@ -3,7 +3,7 @@ const webpack = require('webpack');
 const merge = require('webpack-merge');
 const CleanBuild = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const sassPaths = require('@nypl/design-toolkit').includePaths;
+// const sassPaths = require('@nypl/design-toolkit').includePaths;
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 // References the applications root path
@@ -139,9 +139,9 @@ if (ENV === 'development') {
             'style-loader',
             'css-loader',
             { loader: 'sass-loader',
-              options: {
-                includePaths: sassPaths,
-              },
+              // options: {
+              //   includePaths: sassPaths,
+              // },
             },
           ],
           include: path.resolve(ROOT_PATH, 'src'),

@@ -1,0 +1,1017 @@
+@import "buttons";
+/// @warn "omnisearch mixin is a the bottom of this file";
+/// overriding focus borders to make them stand out
+/// @warn "lots of magic numbers here";
+
+$form-padding: 0.5rem;
+
+@each $tag in a, input, select, button, textarea {
+  #{$tag} {
+    border-radius: 0;
+  }
+
+  #{$tag}:focus {
+    outline-color: $focus-color;
+    outline-style: solid;
+    outline-width: $focus-width;
+  }
+}
+
+@mixin label(
+  $display: block,
+  $font-weight: 400,
+  $margin-bottom: ($form-padding / 2)
+) {
+  color: $page-text-color;
+  display: $display;
+  font-weight: $font-weight;
+  margin-bottom: $margin-bottom;
+}
+
+
+
+///
+/// A basic Fieldset mixin
+///  Lots of arguments can be set to modify the end result based on it context
+///
+
+@mixin fieldset(
+    $border-width: 0,
+    $border-color: null,
+    $border-style: null,
+    $display: block,
+    $padding: 0) {
+  background-color: $page-background-color;
+  border: $border-width $border-color $border-style;
+  border-radius: $general-border-radius;
+  box-shadow: none;
+  display: $display;
+  margin: $general-padding 0;
+  padding: $padding;
+  position: relative;
+
+  fieldset {
+    border: $border-width $border-color $border-style;
+    box-shadow: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  label,
+  legend {
+    @include label;
+  }
+  /// Special Case where we have <h3-4> in a legend
+  legend h3 {
+    margin: 0;
+  }
+}
+
+
+
+//
+// Base input field
+// from which all others are constructed
+//
+
+@mixin input(
+    $background-color: $page-background-color,
+    $border-radius: ($general-border-radius * 1.25),
+    $font-size: 1rem,
+    $padding: 0) {
+  background-color: $background-color;
+  border: 0;
+  border-radius: $border-radius;
+  font-size: $font-size;
+  padding: $padding;
+}
+
+
+
+///
+/// Text styling for inputs
+///
+
+@mixin text {
+  @include input;
+  @include box-shadow(inset 0 0 0 1px $nypl-dark-gray);
+  height: 1.5rem;
+  padding: 0.5rem 0;
+  text-indent: $form-padding;
+  transition: all 0.2s ease-out;
+  width: 100%;
+  -webkit-appearance: none;
+
+  &.active {
+    width: 16rem;
+  }
+
+  &:focus {
+    @include box-shadow(inset 0 0 0 $focus-width $focus-color);
+    background-color: $nypl-white;
+    color: $page-color;
+    outline: none;
+  }
+}
+
+
+
+///
+/// Basic Text Area
+///
+
+@mixin text-area(
+  $border-radius: ($general-border-radius * 1.25),
+  $width: 100%,
+  $height: 12rem) {
+
+  textarea {
+    @include box-shadow(inset 0 0 0 1px $nypl-dark-gray);
+    border: 0;
+    border-radius: $border-radius;
+    box-sizing: border-box;
+    font-family: $sans-serif-stack;
+    height: $height;
+    padding: $general-padding;
+    width: $width;
+    }
+  }
+
+
+
+///
+/// Text Fields with labels
+///
+
+@mixin text-field-with-label {
+  label {
+    background-color: transparent;
+    color: $page-text-color;
+    display: inline-block;
+    font-weight: 400;
+  }
+
+  input {
+    &[type=text],
+    &[type=email],
+    &[type=date],
+    &[type=number] {
+      @include text;
+    }
+  }
+
+  .nypl-field-status {
+    background-color: $page-background-color;
+    color: $nypl-gray;
+    display: block;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    padding-top: $form-padding;
+  }
+}
+
+
+
+///
+/// Error states for input fields
+///
+
+@mixin field-error {
+  background: $page-background-color;
+
+  input[type=text],
+  textarea {
+    background-color: $nypl-red-error;
+    border: ($general-border-width / 2) $nypl-red-dark solid;
+    box-shadow: none;
+  }
+
+  .nypl-field-status {
+    background: $page-background-color;
+    color: $nypl-red;
+  }
+}
+
+
+
+///
+/// Success states for fields
+///
+
+@mixin field-success {
+  background: $page-background-color;
+
+  input[type=text],
+  textarea {
+    background-color: $nypl-green-tint;
+    border: ($general-border-width / 2) $nypl-green-bright solid;
+    box-shadow: none;
+  }
+}
+
+
+
+///
+/// Text Field
+///
+
+@mixin text-field {
+  @include fieldset;
+  @include text-field-with-label;
+}
+
+@mixin year-field {
+  @include fieldset;
+  @include text-field-with-label;
+}
+
+
+
+///
+/// Name Field(s)
+///
+
+@mixin name-field {
+  @include clearfix;
+  @include fieldset;
+  @include text-field-with-label;
+  background-color: $page-background-color;
+
+  > div {
+    display: block;
+    float: left;
+    margin-right: 0.125rem;
+    width: calc(50% - 0.125rem);
+
+    &:last-child {
+      margin-right: 0;
+    }
+
+    @include media($mobile-breakpoint) {
+      float: none;
+      margin-bottom: 1rem;
+      margin-right: 0;
+      width: auto;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+}
+
+
+
+///
+/// Basic Text Area Label & help / status text
+///
+
+@mixin text-area-with-label {
+  @include text-field-with-label;
+  @include text-area;
+}
+
+
+
+///
+/// Address Field
+///
+
+@mixin address-fieldset {
+  @include fieldset;
+  @include text-field-with-label;
+  background-color: $page-background-color;
+
+  div {
+    @include clearfix;
+    margin-bottom: $general-padding;
+  }
+
+  .nypl-simple-radiobutton {
+    background-color: $nypl-search-color-light;
+
+    label {
+      position: relative;
+    }
+  }
+}
+
+
+
+///
+/// Date Field(s)
+///
+
+@mixin date-field {
+  @include fieldset;
+  @include text-field-with-label;
+  min-width: 12rem;
+
+  input[type=date] {
+    -webkit-appearance: none; // to prevent iOS override
+  }
+}
+
+
+
+///
+/// Required Fields
+///
+
+@mixin required-field {
+  color: darken($highlight-color, 10%);
+  font-size: 0.9rem;
+  font-weight: 400;
+}
+
+
+
+///
+/// Select (Dropdowns)
+/// TODO: remove data svg and replace w/ inline
+///
+
+@mixin select (
+  $background-color: $nypl-search-color-light,
+  $border-color: none,
+  $height: 2em,
+  $padding-left: $form-padding,
+  $padding-right: 7%,
+  $width: 100%
+) {
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  appearance: none;
+  background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPCEtLSBHZW5lcmF0b3I6IEFkb2JlIElsbHVzdHJhdG9yIDIwLjAuMCwgU1ZHIEV4cG9ydCBQbHVnLUluIC4gU1ZHIFZlcnNpb246IDYuMDAgQnVpbGQgMCkgIC0tPgo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IgoJIHZpZXdCb3g9IjAgMCA0LjkgMTAiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDQuOSAxMDsiIHhtbDpzcGFjZT0icHJlc2VydmUiPgo8c3R5bGUgdHlwZT0idGV4dC9jc3MiPgoJLnN0MHtmaWxsOiM0NDQ0NDQ7fQo8L3N0eWxlPgo8dGl0bGU+YXJyb3dzPC90aXRsZT4KPHBvbHlnb24gY2xhc3M9InN0MCIgcG9pbnRzPSIxLjQsNC43IDIuNSwzLjIgMy41LDQuNyAiLz4KPHBvbHlnb24gY2xhc3M9InN0MCIgcG9pbnRzPSIzLjUsNS4zIDIuNSw2LjggMS40LDUuMyAiLz4KPC9zdmc+Cg==) no-repeat 99% $background-color;
+  border: 0;
+  border-color: $border-color;
+  border-radius: $general-border-radius;
+  height: $height;
+  padding-right: $padding-right;
+  padding-left: $padding-left;
+  width: $width;
+}
+
+
+
+///
+/// Select Field
+///
+
+@mixin select-field {
+
+  @include fieldset;
+
+  label { // now has arguments to be applied
+    @include label;
+    position: relative;
+  }
+
+  select {
+    @include select;
+  }
+}
+
+
+
+///
+/// Select Field results
+/// Drop down w/ option for sorting...
+/// ex: /discovery-search.html
+///
+
+@mixin select-field-results {
+
+  form {
+    display: inline-block;
+    font-size: 0.85rem;
+    padding: 0.4rem 0;
+  }
+
+  @include fieldset;
+
+  label { // now has arguments to be applied
+    @include label(
+    $display: inline-block);
+    font-size: 1rem;
+    margin: 0 0.25rem 0 0;
+  }
+
+  select {
+    @include select(
+      $background-color: $nypl-white,
+      $height: 3em,
+      $width: inherit);
+    border: ($general-border-width * 0.5) solid $nypl-dark-gray;
+    display: inline-block;
+    padding: 0 ($general-padding * 1.25) 0 ($general-padding * 0.75);
+  }
+
+  margin-top: 0;
+}
+
+@mixin form-error {
+  border-left: 1rem solid $highlight-color;
+  color: $highlight-color;
+  padding-left: 1rem;
+}
+
+
+
+///
+/// Sorting row pattern
+///
+
+@mixin sorter-row {
+  border-bottom: $general-border-width / 1.5 solid $nypl-dark-gray;
+  border-top: $general-border-width / 1.5 solid $nypl-dark-gray;
+
+  //
+  // Special case where we need to remove the padding on this module
+  //
+  .nypl-full-width-wrapper {
+    padding-bottom: 0;
+    padding-top: 0;
+
+    .nypl-column-full {
+      @include media($xtrasmall-breakpoint) {
+        display: block;
+      }
+      align-items: center;
+      display: flex;
+      margin-bottom: 0;
+    } // /.nypl-column-full
+  }
+}
+
+
+
+///
+/// replaces the error message / status w/ a generic mixin that can be styled for errors, success and inline alert state.
+///
+@mixin form-message(
+  $color: null) {
+  border-left: 1rem solid $color;
+  color: $color;
+  padding-left: 1rem;
+}
+
+
+
+///
+/// Simple Radiobutton
+/// Though, not so Simple
+///
+
+@mixin simple-radiobutton(
+    $background-color: $nypl-white,
+    $border-radius: 0,
+    $border-width: 0,
+    $border-color: $nypl-dark-gray,
+    $height: 4rem,
+    $margins: auto) {
+  border-radius: $border-radius;
+  @content;
+
+  span.nypl-label {
+    @include label;
+  }
+
+  label {
+    background-color: $background-color;
+    border-radius: 0;
+    font-weight: 400;
+    padding: 1rem 1rem 2rem 4rem;
+  }
+
+  input[type=radio],
+  input[type=checkbox] {
+    height: initial;
+    margin: 0 0.5rem;
+  }
+}
+
+
+
+///
+/// Special case to extend the default to the Item Holds screen
+///
+
+@mixin item-holds-radiobutton-field {
+  @include fieldset;
+  @include simple-radiobutton(
+    $background-color: $nypl-white,
+    $margins: 0) {
+
+    label {
+      border: $nypl-light-gray solid ($general-border-width / 2);
+      border-bottom: 0;
+      margin: 0;
+      padding: 1rem 1rem 2rem 4rem;
+
+      &:last-child {
+        border-bottom: $nypl-light-gray solid ($general-border-width / 2);
+      }
+
+      &.electronic-delivery {
+        border-bottom: $nypl-light-gray solid ($general-border-width / 2);
+        margin-bottom: 1rem;
+      }
+
+      input[type=radio] {
+        display: block;
+        position: relative;
+        top: 1.25rem;
+        left: -2.75rem;
+      }
+    } // /label
+  } // /simple-radiobutton
+} // /item-holds-radiobutton-field
+
+
+
+///
+/// radiobutton-field in action
+///
+@mixin radiobutton-field {
+  @include fieldset;
+  @include simple-radiobutton;
+
+  label {
+    border: ($general-border-width / 3) solid $nypl-light-gray;
+  }
+
+  input[type=radio] {
+    display: block;
+    position: relative;
+    top: 1.15rem;
+    left: -2.75rem;
+  }
+} // /radiobutton-field
+
+
+
+///
+/// Not So Generic Checkbox Style
+///
+
+@mixin generic-checkbox {
+
+  // If the the checkboxes are in <ul> remove the list stylings
+  // TODO: find a better ,more generic mixin argumenty way of doing this...
+  > li {
+    list-style: none;
+    margin: 0 0 0.35rem -1rem;
+    padding: 0.25rem 0;
+  }
+
+  input[type="checkbox"] {
+    opacity: 0;
+  }
+
+  label {
+    display: inline-block;
+    line-height: 1.2;
+    position: relative;
+    padding-left: 0.25rem;
+    padding-top: 0.27rem;
+    //width: 60%;
+  }
+
+  label::after,
+  label::before {
+    content: "";
+    display: inline-block;
+    position: absolute;
+  }
+
+  label::before {
+    border: $general-border-width solid;
+    height: 1rem;
+    left: -1.2em;
+    width: 1em;
+    top: 0.25rem;
+  }
+
+  label::after {
+    height: 0.375rem;
+    width: 0.5625rem;
+    border-left: $general-border-width solid;
+    border-bottom: $general-border-width solid;
+    -ms-transform: rotate(-45deg);
+    -moz-transform: rotate(-45deg);
+    -webkit-transform: rotate(-45deg);
+    transform: rotate(-45deg);
+    left: -0.90em;
+    top: 0.5em;
+  }
+// Hide the checkmark by default
+  input[type="checkbox"] + label::after {
+    content: none;
+  }
+
+  input[type="checkbox"]:checked + label::before {
+    background-color: lighten($nypl-green-tint, 35%);
+    border-width: $general-border-width;
+  }
+
+  input[type="checkbox"]:checked + label,
+  input[type="checkbox"]:checked + label::before {
+    border-color: darken($nypl-green-bright, 8%);
+    color: darken($nypl-green-bright, 8%);
+  }
+
+  input[type="checkbox"]:checked + label::after {
+    border-color: darken($nypl-green-bright, 8%);
+    color: darken($nypl-green-bright, 8%);
+    content: "";
+  }
+
+  // Adding focus styles on the outer-box of the fake checkbox
+  input[type="checkbox"]:focus + label::before {
+    outline: $nypl-orange auto 0.125rem;
+  }
+} // /generic-checkbox
+
+
+///
+/// The other Generic Checkbox pattern
+/// TODO: convert this checkbox to the pattern used above
+///
+
+@mixin terms-checkbox {
+  border-left: 0.5rem solid $nypl-gray;
+  margin-bottom: 1rem;
+  padding-left: 0.5rem;
+
+  label {
+    font-weight: 400;
+    padding: 0.1875rem 0;
+  }
+
+  input[type=checkbox] {
+    height: initial;
+    margin: 0 0.25rem 0 0;
+  }
+
+  &.checked {
+    border-left-color: $nypl-green-bright;
+  }
+} // /terms-checkbox
+
+
+
+///
+/// Facet toggling
+///
+
+@mixin facet-toggle {
+  background-color: $nypl-white;
+  border: 0;
+  color: $page-background-color;
+  cursor: pointer;
+  display: block;
+  font-weight: bold;
+  position: relative;
+  padding-bottom: 0.25rem;
+  padding-left: $form-padding;
+  padding-right: 1.5rem;
+  padding-top: 0.25rem;
+  text-align: left;
+  width: 100%;
+
+  h3 {
+    color: $page-text-color;
+    font-size: inherit;
+    margin: 0;
+    padding: 0;
+    pointer-events: none;
+  }
+
+  .nypl-icon {
+    @include nypl-icon(
+      $fill: $page-text-color,
+      $height: 0.75rem,
+      $background-color: $page-background-color,
+      $width: 0.75rem);
+    @include transition(all, $hover-time, ease-in);
+    position: absolute;
+    right: 0.5rem;
+    top: 0.65rem;
+    transform: rotate(-90deg);
+  }
+} // /facet-toggle
+
+
+
+///
+/// Collapsible fields
+///
+
+@mixin collapsible-field($is-searchable: false) {
+  @include fieldset;
+  border: $nypl-light-gray solid ($general-border-width / 2);
+  padding-bottom: $form-padding;
+  padding-top: $form-padding;
+
+  @if ($is-searchable == false) {
+    .nypl-collapsible {
+      background-color: $nypl-white;
+      padding-left: $form-padding;
+      padding-right: $form-padding;
+    }
+  }
+
+  &.collapsed {
+    .nypl-facet-toggle .nypl-icon {
+      transform: rotate(90deg);
+    }
+  }
+}
+
+
+
+///
+/// Searchable Field Module
+///
+
+@mixin searchable-field {
+  @include collapsible-field($is-searchable: true);
+  @include simple-radiobutton;
+
+  .nypl-facet-search {
+    @include text-field-with-label;
+    position: relative;
+
+    label {
+      font-weight: normal;
+    }
+  }
+
+  .nypl-facet-list {
+    width: 100%;
+
+    label {
+      @include clearfix;
+      border-radius: 0;
+      display: block;
+      font-size: 0.85rem;
+      margin-top: 0.2rem;
+    }
+
+    input[type="radio"],
+    input[type="checkbox"] {
+      box-sizing: border-box;
+      display: inline-block;
+    }
+
+    .nypl-facet-count {
+      color: $nypl-gray;
+      display: inline-block;
+      float: right;
+      margin: 0 0.25rem 0 1rem;
+      text-align: right;
+    }
+  }
+
+  .nypl-link-button {
+    margin: $form-padding $form-padding 0;
+  }
+
+  &.nosearch {
+    // when there are too few items to make search worthwhile
+
+    .nypl-facet-search {
+      display: none;
+    }
+
+  }
+}
+
+
+
+///
+/// Filter by Alpha
+///
+
+@mixin alphabetical-filter {
+  @include fieldset;
+
+  button {
+    @include basic-button(
+      $background-color: $nypl-search-color-light,
+      $text-color:$page-color,
+      $border-width: 0);
+    display: inline-block;
+    font-weight: normal;
+    margin: 0 0 0.5rem 0.5rem;
+    padding: 0.2rem 0.25rem;
+    width: 2rem;
+
+    &.nypl-long {
+      // because “any” has different lengths in different langs
+      min-width: 4.75rem;
+    }
+  }
+}
+
+
+
+///
+/// Mobile refine
+///
+
+@mixin mobile-refine {
+  display: none;
+
+  @include media($mobile-breakpoint) {
+    display: block;
+
+    &.hidden {
+      display: none;
+    }
+  }
+}
+
+
+
+///
+/// Left hand Search field.
+///
+
+@mixin search-form() {
+  // used for left-column searches
+  margin: 0 0 1rem;
+
+  @include media($mobile-breakpoint) {
+    display: none;
+
+    &.active {
+      display: block;
+    }
+  }
+}
+
+
+///
+/// Request form(s)
+/// Mixins for Discovery requests pages
+///
+
+@mixin request-item-summary {
+  background: $nypl-white;
+
+  h2 {
+    font-weight: 400;
+  }
+
+  .call-number {
+    margin: $general-padding 0;
+    font-size: 1rem;
+    font-weight: 400;
+  }
+}
+
+
+
+///
+/// Electronic Delivery
+///
+
+@mixin electronic-delivery-form {
+  fieldset {
+    border: 0;
+  }
+}
+
+
+
+///
+/// The Request page header
+///
+
+@mixin request-page-header {
+  @include page-header(
+  $background-color: lighten($nypl-light-gray, 15%),
+  $font-weight: 100,
+  $type-color: $nypl-red);
+  border-bottom: $general-border-width / 1.5 solid darken($nypl-light-gray, 15%);
+  margin-bottom: 0;
+
+  h2 {
+    margin-bottom: 0;
+  } // /h2
+
+  .search-control {
+    margin-top: 0;
+  } // /.search-control
+
+  .nypl-column-three-quarters {
+    margin-bottom: 0;
+  } // /.nypl-column-three-quarters
+} // /request-page-header
+
+
+
+// Need a title styling for forms so this might expand in the future
+// In this case the class is being used by an h2, but there is probably a
+// more Toolkity way of doing things:
+@mixin request-form-title(
+  $font-weight: 400,
+  $font-family: $sans-serif-stack) {
+  font-family: $font-family;
+  font-weight: $font-weight;
+}
+
+
+
+///
+/// Filtering Styles for Modals w/ complex filtering controls
+///
+
+@mixin modal-filter-form {
+
+  .inner {
+    border-bottom: $general-border-width solid $nypl-light-gray;
+    padding: 0 ($general-padding * 3.125);
+
+    &:nth-child(4),
+    &:nth-child(5) {
+      border-bottom: 0;
+    }
+
+    @include media($xtrasmall-breakpoint) {
+      padding-left: $general-padding;
+    }
+
+    legend {
+      font-size: 1.125rem;
+      margin-top: 0.75rem;
+    }
+
+    .nypl-filter-date-field {
+
+      > label {
+
+        @include media($xtrasmall-breakpoint) {
+          display: block;
+          max-width: 100%;
+          width: 100%;
+        }
+
+        display: inline-block;
+        max-width: calc(50% - 5.125rem);
+      }
+
+      > .nypl-icon {
+
+        @include media($xtrasmall-breakpoint) {
+          display: none;
+          height: 0;
+          opacity: 0;
+          visibility: hidden;
+          width: 0;
+        }
+
+        height: 2rem;
+        position: relative;
+        top: ($general-margin / 2);
+        width: 2rem;
+
+      }
+    }
+
+    .nypl-generic-columns {
+      @include generic-columns(3);
+      max-width: 100%;
+
+      @include media($mobile-breakpoint) {
+        @include generic-columns(2);
+      }
+
+      @include media($xtrasmall-breakpoint) {
+        @include generic-columns(1);
+       } // /$xtrasmall-breakpoint
+      } // /.nypl-generic-columns
+    } // /.inner
+
+
+  .nypl-filter-button {
+    @include basic-button-icon;
+    @include media($xtrasmall-breakpoint) {
+      @include clearfix;
+      clear: both;
+    }
+
+    margin-right: $general-margin;
+    margin-top: $general-margin;
+  }
+}
+
+
+
+///
+/// TODO: Move this to a more sensible location. Preferably at the top
+/// Could use a major refactor in general...
+///
+@import "omni-search";

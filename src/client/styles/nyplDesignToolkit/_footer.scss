@@ -1,0 +1,48 @@
+@import "measurements";
+@import "general-mixins";
+@import "microformats";
+@import "media-queries";
+
+//@warn "do footer";
+
+@mixin footer {
+  background-color: $nypl-footer-color;
+  color: $nypl-white;
+  font-size: 0.9rem;
+  margin-top: 5rem;
+  // font-weight: bold;
+  // @include Kievit-Bold;
+
+  ul {
+    list-style: none;
+    margin: 1rem 0;
+    padding: 0;
+    @include clearfix;
+  }
+
+  .copyright {
+    margin-top: 2rem;
+    margin-bottom: 5rem;
+
+    p {
+      padding-top: 1rem;
+    }
+  }
+
+  .footerLinks {
+
+    li {
+      margin-left: 0;
+    }
+
+    > li {
+      float: left;
+      width: 25%;
+
+      @include media($mobile-breakpoint) {
+        float: none;
+        width: auto;
+      }
+    }
+  }
+}
