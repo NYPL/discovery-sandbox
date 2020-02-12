@@ -258,29 +258,6 @@ $darker-grey: lightgray;
   }
 }
 
-.bibs-list {
-  font-size: 14px;
-
-  &.subjectHeadingShowLoadingWrapper {
-    height: 500px;
-  }
-
-  &:focus {
-    outline: none;
-    box-shadow: inset 0 0 0 4px lightBlue;
-  }
-
-  ul {
-    list-style: none;
-  }
-}
-
-@media (min-width: 966px) {
-  .bibs-list {
-    min-height: 22rem;
-  }
-}
-
 .subjectHeadingShow {
   h2 {
     max-width: 40rem;
@@ -576,7 +553,7 @@ $bottom-left-corner: 0 0 0 0.2rem;
     }
   }
 }
-  
+
 .headingStyle {
   font-weight: 300;
   .selected {

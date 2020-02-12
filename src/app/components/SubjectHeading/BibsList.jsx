@@ -123,7 +123,7 @@ class BibsList extends React.Component {
     );
 
     if (this.state.componentLoading) return (
-      <div className="nypl-column-half bibs-list subjectHeadingShowLoadingWrapper">
+      <div className="nypl-column-half bibsList subjectHeadingShowLoadingWrapper">
         <span
           id="loading-animation"
           className="loadingLayer-texts-loadingWord"
@@ -141,7 +141,7 @@ class BibsList extends React.Component {
 
     return (
       <div
-        className="nypl-column-half bibs-list"
+        className="nypl-column-half bibsList"
         tabIndex='0'
         aria-label="Titles related to this Subject Heading"
       >
@@ -159,7 +159,7 @@ class BibsList extends React.Component {
           bibs.length > 0 ?
             <ResultsList results={bibs.slice(this.firstBib(), this.lastBib())} />
           :
-            <div className="nypl-column-half bibs-list">
+            <div className="nypl-column-half bibsList">
               There are no titles for this subject heading.
             </div>
         }
