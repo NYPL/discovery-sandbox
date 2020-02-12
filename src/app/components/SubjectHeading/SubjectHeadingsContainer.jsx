@@ -7,7 +7,6 @@ import AlphabeticalPagination from '@AlphabeticalPagination';
 import SubjectHeadingsTable from './SubjectHeadingsTable';
 import SortButton from './SortButton';
 import appConfig from '../../data/appConfig';
-import Actions from '@Actions';
 
 
 class SubjectHeadingsContainer extends React.Component {
@@ -22,7 +21,6 @@ class SubjectHeadingsContainer extends React.Component {
   }
 
   componentDidMount() {
-    console.log(Actions);
     let {
       fromLabel,
       fromComparator,
