@@ -1,31 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import Actions from '../../actions/Actions';
-import {
-  ajaxCall,
-  trackDiscovery,
-} from '../../utils/utils';
-import appConfig from '../../data/appConfig';
-
-const sortingOpts = [
-  { val: 'relevance', label: 'relevance' },
-  { val: 'title_asc', label: 'title (a - z)' },
-  { val: 'title_desc', label: 'title (z - a)' },
-  { val: 'date_asc', label: 'date (old to new)' },
-  { val: 'date_desc', label: 'date (new to old)' },
-];
-
 class Sorter extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      sortValue: this.props.sortBy || 'relevance',
+      sortValue: props.sortBy,
       js: false,
     };
 
     this.updateSortValue = this.updateSortValue.bind(this);
+    this.generateSortOptions = this.generateSortOptions.bind(this);
   }
 
   componentDidMount() {
@@ -43,33 +29,13 @@ class Sorter extends React.Component {
    */
   updateSortValue(e) {
     e.preventDefault();
-    const value = e.target.value;
+    const sortValue = e.target.value;
 
-    this.setState(
-      { sortValue: value },
-      () => { this.sortResultsBy(value); },
-    );
-  }
+    const sortParams = sortValue.split("_")
+    sortParams.sort = sortParams[0]
+    sortParams.sortDirection = sortParams[1]
 
-  /**
-   * sortResultsBy(sortBy)
-   * The fuction that makes a new search based on the passed sort option.
-   *
-   * @param {String} sortBy
-   */
-  sortResultsBy(sortBy) {
-    const apiQuery = this.props.createAPIQuery({ sortBy, page: this.props.page });
-
-    trackDiscovery('Sort by', sortBy);
-    Actions.updateLoadingStatus(true);
-    ajaxCall(`${appConfig.baseUrl}/api?${apiQuery}`, (response) => {
-      Actions.updateSearchResults(response.data.searchResults);
-      Actions.updateSortBy(sortBy);
-      setTimeout(() => {
-        Actions.updateLoadingStatus(false);
-        this.context.router.push(`${appConfig.baseUrl}/search?${apiQuery}`);
-      }, 500);
-    });
+    this.setState({ sortValue }, this.props.updateResults(sortParams));
   }
 
   /**
@@ -78,8 +44,8 @@ class Sorter extends React.Component {
    *
    * @return {HTML Element}
    */
-  renderResultsSort() {
-    return sortingOpts.map(d => (
+  generateSortOptions() {
+    return this.props.sortOptions.map(d => (
       <option value={d.val} key={d.val}>
         {d.label}
       </option>
@@ -87,30 +53,23 @@ class Sorter extends React.Component {
   }
 
   render() {
-    const searchKeywords = this.props.searchKeywords;
-    const field = this.props.field;
+    const { sortValue } = this.state;
 
     return (
       <div className="nypl-results-sorting-controls">
-        <div className="nypl-results-sorter">
+        <div className={`nypl-results-sorter ${this.props.page}`}>
           <div className="nypl-select-field-results">
             <label htmlFor="sort-by-label">Sort by</label>
-            <form
-              action={
-                `${appConfig.baseUrl}/search${searchKeywords ? `?q=${searchKeywords}` : ''}` +
-                `${field ? `&search_scope=${field}` : ''}`
-              }
-              method="POST"
-            >
+            <form>
               <span className="nypl-omni-fields">
                 <strong>
                   <select
                     id="sort-by-label"
                     onChange={this.updateSortValue}
-                    value={this.state.sortValue}
+                    value={sortValue}
                     name="sort_scope"
                   >
-                    {this.renderResultsSort()}
+                    {this.generateSortOptions()}
                   </select>
                 </strong>
               </span>
@@ -125,15 +84,8 @@ class Sorter extends React.Component {
 
 Sorter.propTypes = {
   sortBy: PropTypes.string,
-  searchKeywords: PropTypes.string,
-  field: PropTypes.string,
   page: PropTypes.string,
-  createAPIQuery: PropTypes.func,
-};
-
-Sorter.defaultProps = {
-  searchKeywords: '',
-  field: '',
+  updateSortValue: PropTypes.func,
 };
 
 Sorter.contextTypes = {
