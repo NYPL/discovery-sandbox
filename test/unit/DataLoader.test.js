@@ -12,7 +12,7 @@ import appConfig from '@appConfig';
 
 Enzyme.configure({ adapter: new Adapter() });
 
-describe.only('DataLoader', () => {
+describe('DataLoader', () => {
   describe('Non-matching path', () => {
     let component;
     let loadingAction;
