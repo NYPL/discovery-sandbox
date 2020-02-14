@@ -309,6 +309,13 @@ $darker-grey: lightgray;
     width: 200px;
   }
 
+  &> input:focus {
+    outline-color: #ffb81d;
+    outline-style: solid;
+    outline-width: 0.125rem;
+    box-shadow: none;
+  }
+
   &:focus-within .suggestions {
     display: inherit;
   }
@@ -483,6 +490,7 @@ $light-border: 0.08333rem solid #d7d4d0;
     text-decoration: none;
     cursor: pointer;
     flex: 3%;
+    display: inline-block;
   }
   a:last-child {
     border-right: $light-border;
