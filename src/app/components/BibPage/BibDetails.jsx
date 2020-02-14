@@ -137,7 +137,7 @@ class BibDetails extends React.Component {
 
       return markup.length === 1
         ? markup.pop()
-        : (<ul>{markup.map(m => (<li key={m}>{m}</li>))}</ul>);
+        : (<ul>{markup.map(m => (<li key={m[0].key}>{m}</li>))}</ul>);
     }
     return null;
   }
