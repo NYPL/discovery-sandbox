@@ -82,6 +82,10 @@ const BibPage = (props) => {
     { label: 'Owning Institutions', value: '' },
   ];
 
+  if (!bib['subjectHeadingData']) bottomFields.push({
+    label: 'Subject', value: 'subjectLiteral', linkable: true
+  })
+
   const itemHoldings = items.length && !isElectronicResources ? (
     <ItemHoldings
       shortenItems={shortenItems}

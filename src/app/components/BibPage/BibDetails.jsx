@@ -270,7 +270,11 @@ class BibDetails extends React.Component {
       const fieldLinkable = field.linkable;
       const fieldSelfLinkable = field.selfLinkable;
       const fieldIdentifier = field.identifier;
-      const bibValues = bib[fieldValue];
+      let bibValues = bib[fieldValue];
+
+      if (fieldValue === 'subjectLiteral') {
+        bibValues = this.compressSubjectLiteral(bib[fieldValue]);
+      }
 
       // skip absent fields
       if (bibValues && bibValues.length && _isArray(bibValues)) {
@@ -399,6 +403,74 @@ class BibDetails extends React.Component {
     }); // End of the forEach loop
 
     return fieldsToRender;
+  }
+
+  /**
+   * compressSubjectLiteral(subjectLiteralArray)
+   * Updates the string structure of subject literals.
+   *
+   * @param {array} subjectLiteralArray
+   * @return {array}
+   */
+  compressSubjectLiteral(subjectLiteralArray) {
+    if (Array.isArray(subjectLiteralArray) && subjectLiteralArray.length) {
+      subjectLiteralArray = subjectLiteralArray.map(item =>
+        item.replace(/\.$/, '').replace(/--/g, '>'),
+      );
+    }
+
+    return subjectLiteralArray;
+  }
+
+
+  /**
+   * constructSubjectHeading(bibValue, url, fieldValue, fieldLabel)
+   * Constructs the link elements of subject headings.
+   *
+   * @param {string} bibValue - for constructing the texts of link elements
+   * @param {string} url - for constructing the query values of the URLs
+   * @param {string} fieldValue - offers the values of search keywords
+   * @param {string} fieldLabel - offers the type of search keywords
+   * @return {HTML element}
+   */
+  constructSubjectHeading(bibValue, url, fieldValue, fieldLabel) {
+    let currentArrayString = '';
+    const filterQueryForSubjectHeading = 'filters[subjectLiteral]=';
+    const singleSubjectHeadingArray = bibValue.split(' > ');
+    const returnArray = [];
+
+    const urlArray = url.replace(filterQueryForSubjectHeading, '').split(' > ')
+      .map((urlString, index) => {
+        const dashDivided = (index !== 0) ? ' -- ' : '';
+        currentArrayString = `${currentArrayString}${dashDivided}${urlString}`;
+
+        return currentArrayString;
+      });
+
+    singleSubjectHeadingArray.forEach((heading, index) => {
+      const urlWithFilterQuery = `${filterQueryForSubjectHeading}${urlArray[index]}`;
+
+      const subjectHeadingLink = (
+        <Link
+          onClick={
+            e => this.newSearch(e, urlWithFilterQuery, fieldValue, urlArray[index], fieldLabel)
+          }
+          to={`${appConfig.baseUrl}/search?${urlWithFilterQuery}`}
+          key={index}
+        >
+          {heading}
+        </Link>
+      );
+
+      returnArray.push(subjectHeadingLink);
+
+      // Push a divider in between the link elements
+      if (index < singleSubjectHeadingArray.length - 1) {
+        returnArray.push(<span key={`divider-${index}`}> &gt; </span>);
+      }
+    });
+
+    return returnArray;
   }
 
   /**
