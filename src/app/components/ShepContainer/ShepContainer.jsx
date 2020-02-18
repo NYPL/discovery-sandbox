@@ -9,14 +9,14 @@ class ShepContainer extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      isLoading: Store.state.isLoading,
+      isLoading: Store.getState().isLoading,
     };
     this.onChange = this.onChange.bind(this);
     Store.listen(this.onChange);
   }
 
   onChange() {
-    this.setState({ isLoading: Store.state.isLoading });
+    this.setState({ isLoading: Store.getState().isLoading });
   }
 
   render() {

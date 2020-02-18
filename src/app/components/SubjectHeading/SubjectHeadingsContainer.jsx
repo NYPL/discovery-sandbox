@@ -8,7 +8,6 @@ import AlphabeticalPagination from '@AlphabeticalPagination';
 import SubjectHeadingsTable from './SubjectHeadingsTable';
 import SortButton from './SortButton';
 import appConfig from '../../data/appConfig';
-import Store from '@Store';
 
 
 class SubjectHeadingsContainer extends React.Component {
