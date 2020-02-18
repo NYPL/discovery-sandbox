@@ -61,8 +61,8 @@ describe('SearchResultsPage', () => {
       expect(component.find('ResultsCount')).to.have.length(1);
     });
 
-    it('should not render a <Sorter /> components, since there are no results', () => {
-      expect(component.find('Sorter')).to.have.length(0);
+    it('should not render a <SearchResultsSorter /> components, since there are no results', () => {
+      expect(component.find('SearchResultsSorter')).to.have.length(0);
     });
 
     it('should not render a <ResultsList /> components, since there are no results', () => {
@@ -107,8 +107,8 @@ describe('SearchResultsPage', () => {
       expect(component.props().searchResults.itemListElement).to.have.length(2);
     });
 
-    it('should render a <Sorter /> components', () => {
-      expect(component.find('Sorter')).to.have.length(1);
+    it('should render a <SearchResultsSorter /> components', () => {
+      expect(component.find('SearchResultsSorter')).to.have.length(1);
     });
 
     it('should render a <ResultsList /> components', () => {

@@ -22,7 +22,7 @@ const convertShepBibsToDiscoveryBibs = response =>
     }),
   ).then((bibs) => {
     // Build "next" pagination URL based on SHEP API next_url..
-    // SEP API next_url will be of form:
+    // SHEP API next_url will be of form:
     //   http://[fqdn]/api/v0.1/subject_headings/[uuid]/bibs?[filter params]
     // We want to translate that into:
     //   /[app base url]/api/subjectHeadings/subject_headings/[uuid]/bibs?[filter params]
