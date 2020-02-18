@@ -26,6 +26,7 @@ describe('DataLoader', () => {
     before(() => {
       loadingAction = sinon.spy(Actions, 'updateLoadingStatus');
       bibAction = sinon.spy(Actions, 'updateBib');
+      component = shallow(<DataLoader location={location} children={[]} />);
 
       axiosStub = sinon.stub(axios, 'get').callsFake(args =>
         new Promise((resolve) => {
@@ -96,8 +97,16 @@ describe('DataLoader', () => {
         expect(loadingAction.secondCall.args).to.eql([false]);
       });
 
-      it('should make no further Action calls', () => {
-        expect(loadingAction.calledTwice);
+      it('should make no further loading calls', () => {
+        expect(loadingAction.calledTwice).to.be.true;
+      });
+
+      it('should update bibs with the data', () => {
+        expect(bibAction.firstCall.args).to.eql(['bib']);
+      });
+
+      it('should update bibs once', () => {
+        expect(bibAction.calledOnce);
       });
 
       it('should make no further axios calls', () => {
@@ -147,8 +156,12 @@ describe('DataLoader', () => {
         expect(loadingAction.secondCall.args).to.eql([false]);
       });
 
-      it('should make no further Action calls', () => {
-        expect(loadingAction.calledTwice);
+      it('should make no further loading calls', () => {
+        expect(loadingAction.calledTwice).to.be.true;
+      });
+
+      it('should not attempt to update bibs', () => {
+        expect(bibAction.called).to.be.false;
       });
 
       it('should make no further axios calls', () => {
