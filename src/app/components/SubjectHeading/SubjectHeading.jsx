@@ -149,7 +149,7 @@ class SubjectHeading extends React.Component {
             ),
           );
         },
-      ).catch(resp => console.log(resp));
+      ).catch(resp => console.error(resp));
   }
 
   render() {

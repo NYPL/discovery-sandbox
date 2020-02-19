@@ -50,7 +50,7 @@ function bibSearchServer(req, res, next) {
         return res.redirect(`${appConfig.baseUrl}/404`);
       }
 
-      if (data.subjectLiteral.length) {
+      if (data.subjectLiteral && data.subjectLiteral.length) {
         return SubjectHeadings.shepApiCall(`/bibs/${bibId}/subject_headings`)
           .then((shepRes) => {
             console.log(shepRes.data);
