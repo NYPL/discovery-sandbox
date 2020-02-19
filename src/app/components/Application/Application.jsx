@@ -15,6 +15,7 @@ import {
 } from '../../utils/utils';
 import Actions from '../../actions/Actions';
 import appConfig from '../../data/appConfig';
+import DataLoader from '../DataLoader/DataLoader';
 
 class App extends React.Component {
   constructor(props) {
@@ -77,7 +78,12 @@ class App extends React.Component {
             skipNav={{ target: 'mainContent' }}
             patron={this.state.patron}
           />
-          {React.cloneElement(this.props.children, this.state.data)}
+          <DataLoader
+            key={JSON.stringify(this.context.router.location)}
+            location={this.context.router.location}
+          >
+            {React.cloneElement(this.props.children, this.state.data)}
+          </DataLoader>
           <Footer />
           <Feedback location={this.props.location} />
         </div>
