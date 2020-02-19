@@ -36,6 +36,7 @@ class Pagination extends React.Component {
     let apiUrl;
     let localUrl;
     if (subjectHeadingPage && shepNavigation) {
+      if (!shepNavigation[type.toLowerCase()]) return null;
       url = type === 'Next' ? shepNavigation.next : shepNavigation.previous;
     } else {
       apiUrl = this.props.createAPIQuery({ page: pageNum });
