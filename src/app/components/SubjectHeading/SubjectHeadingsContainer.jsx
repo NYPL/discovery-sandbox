@@ -68,7 +68,7 @@ class SubjectHeadingsContainer extends React.Component {
           if (!this.state.subjectHeadings || this.state.subjectHeadings.length === 0) {
             this.setState({
               error: true,
-              componentLoading: false, 
+              componentLoading: false,
             });
           }
         },
@@ -149,7 +149,9 @@ class SubjectHeadingsContainer extends React.Component {
     }
 
     if (this.state.componentLoading) return (
-      <div className="subjectHeadingsTable subjectHeadingShowLoadingWrapper">
+      <div className="subjectHeadingShowLoadingWrapper">
+        {this.pagination()}
+        {filter ? null : <AlphabeticalPagination />}
         <span
           id="loading-animation"
           className="loadingLayer-texts-loadingWord"
