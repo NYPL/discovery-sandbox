@@ -21,7 +21,6 @@ function fetchBib(bibId, cb, errorcb) {
   return Promise.all([
     nyplApiClientCall(bibId),
     nyplApiClientCall(`${bibId}.annotated-marc`),
-    SubjectHeadings.shepApiCall(`/bibs/${bibId}/subject_headings`)
   ])
     .then((response) => {
       // First response is jsonld formatting:
@@ -30,7 +29,6 @@ function fetchBib(bibId, cb, errorcb) {
       data.annotatedMarc = response[1];
       // Make sure retrieved annotated-marc document is valid:
       if (!data.annotatedMarc || !data.annotatedMarc.bib) data.annotatedMarc = null;
-      data.subjectHeadingData = response[2].data.subject_headings
 
       return data;
     })
@@ -52,12 +50,28 @@ function bibSearchServer(req, res, next) {
         return res.redirect(`${appConfig.baseUrl}/404`);
       }
 
-      res.locals.data.Store = {
-        bib: data,
-        searchKeywords: req.query.searchKeywords || '',
-        error: {},
-      };
-      next();
+      if (data.subjectLiteral && data.subjectLiteral.length) {
+        return SubjectHeadings.shepApiCall(`/bibs/${bibId}/subject_headings`)
+          .then((shepRes) => {
+            console.log(shepRes.data);
+            data.subjectHeadingData = shepRes.data.subject_headings;
+            res.locals.data.Store = {
+              bib: data,
+              searchKeywords: req.query.searchKeywords || '',
+              error: {},
+            };
+            next();
+          })
+          .catch((error) => {
+            logger.error(`Error in shepApiCall API error, bib_id: ${bibId}`, error);
+            res.locals.data.Store = {
+              bib: data,
+              searchKeywords: req.query.searchKeywords || '',
+              error,
+            };
+            next();
+          });
+      }
     },
     (error) => {
       logger.error(`Error in bibSearchServer API error, id: ${bibId}`, error);
