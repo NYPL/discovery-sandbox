@@ -151,6 +151,8 @@ class BibsList extends React.Component {
           sortOptions={[
             { val: 'title_asc', label: 'title (a - z)' },
             { val: 'title_desc', label: 'title (z - a)' },
+            { val: 'date_asc', label: 'date (old to new)' },
+            { val: 'date_desc', label: 'date (new to old)' },
           ]}
           sortBy={`${sort}_${sortDirection}`}
           updateResults={this.changeBibSorting}

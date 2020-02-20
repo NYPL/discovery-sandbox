@@ -7,15 +7,7 @@ import SubjectHeadings from './SubjectHeadings';
 const nyplApiClientCall = query =>
   nyplApiClient().then(client => client.get(`/discovery/resources/${query}`, { cache: false }));
 
-const shepApiCall = bibId => axios({
-  method: 'GET',
-  url: `${appConfig.shepApi}/bibs/${bibId}/subject_headings`,
-  crossDomain: true,
-  headers: {
-    'Access-Control-Allow-Origin': '*',
-    'Content-Type': 'application/json',
-  },
-})
+const shepApiCall = bibId => axios(`${appConfig.shepApi}/bibs/${bibId}/subject_headings`)
 
 function fetchBib(bibId, cb, errorcb) {
   return Promise.all([
