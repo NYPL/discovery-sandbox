@@ -1,0 +1,26 @@
+.subjectHeadingsTable {
+  display: table;
+  font-size: 16px;
+  width: 100%;
+
+  a {
+    display: flex;
+    text-decoration: none;
+  }
+
+  th {
+    &> .subjectHeadingLabelInner {
+      text-align: initial;
+      padding-left: 5px;
+    }
+
+    &.sort {
+      text-align: center;
+    }
+
+    &.subjectHeadingAttribute {
+      text-align: right;
+    }
+  }
+
+}

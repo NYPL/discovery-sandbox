@@ -32,9 +32,9 @@ const NestedTableColumnHeading = (props) => {
       data={`${subjectHeading.uuid}, ${container}`}
       className={`
         subjectHeadingRow
+        selectedColumnStyle
         ${(indentation || 0) === 0 ? 'topLevel' : ''}
         ${(indentation || 0) !== 0 ? 'nestedSubjectHeading' : ''}
-        headingStyle
         `}
     >
       <td className={`subjectHeadingsTableCell subjectHeadingLabel ${sortBy === 'alphabetical' ? 'selected' : ''}`} >
