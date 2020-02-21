@@ -32,12 +32,12 @@ const NestedTableColumnHeading = (props) => {
       data={`${subjectHeading.uuid}, ${container}`}
       className={`
         subjectHeadingRow
-        selectedColumnStyle
+        nestedTable
         ${(indentation || 0) === 0 ? 'topLevel' : ''}
         ${(indentation || 0) !== 0 ? 'nestedSubjectHeading' : ''}
         `}
     >
-      <td className={`subjectHeadingsTableCell subjectHeadingLabel ${sortBy === 'alphabetical' ? 'selected' : ''}`} >
+      <th className={`subjectHeadingsTableCell subjectHeadingLabel ${sortBy === 'alphabetical' ? 'selected' : ''}`} >
         <div className="subjectHeadingLabelInner" style={positionStyle}>
           { updateSort
             ? <SortButton handler={updateSort} type="alphabetical" direction={calculateDirection('alphabetical')} />
@@ -45,8 +45,8 @@ const NestedTableColumnHeading = (props) => {
           }
           <span className="emph"><span className="noEmph">Heading</span></span>
         </div>
-      </td>
-      <td className={`subjectHeadingsTableCell subjectHeadingAttribute titles ${sortBy === 'bibs' ? 'selected' : ''}`}>
+      </th>
+      <th className={`subjectHeadingsTableCell subjectHeadingAttribute titles ${sortBy === 'bibs' ? 'selected' : ''}`}>
         <div className="subjectHeadingAttributeInner">
           { updateSort
             ? <SortButton handler={updateSort} type="bibs" direction={calculateDirection('bibs')} />
@@ -54,8 +54,8 @@ const NestedTableColumnHeading = (props) => {
           }
         Title Count
         </div>
-      </td>
-      <td className={`subjectHeadingsTableCell subjectHeadingAttribute narrower ${sortBy === 'descendants' ? 'selected' : ''}`}>
+      </th>
+      <th className={`subjectHeadingsTableCell subjectHeadingAttribute narrower ${sortBy === 'descendants' ? 'selected' : ''}`}>
         <div className="subjectHeadingAttributeInner">
           { updateSort
             ? <SortButton handler={updateSort} type="descendants" direction={calculateDirection('descendants')} />
@@ -63,7 +63,7 @@ const NestedTableColumnHeading = (props) => {
           }
       Subheading Count
         </div>
-      </td>
+      </th>
     </tr>
   );
 };

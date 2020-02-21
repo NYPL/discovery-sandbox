@@ -1,5 +1,8 @@
-.selectedColumnStyle {
-  font-weight: 300;
+.nestedTable {
+  th {
+    font-weight: normal;
+  }
+
   .selected {
     font-weight: bold;
   }
