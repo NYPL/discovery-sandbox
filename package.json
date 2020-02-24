@@ -67,7 +67,7 @@
     "nyc": "^13.0.0",
     "react-addons-test-utils": "15.6.0",
     "sinon": "4.0.1",
-    "webpack-cli": "^3.3.10",
+    "webpack-cli": "^3.3.11",
     "webpack-dev-server": "2.7.1"
   },
   "dependencies": {
