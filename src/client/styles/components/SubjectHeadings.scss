@@ -1,167 +1,6 @@
 $lighter-grey: #E8E4E3;
 $darker-grey: lightgray;
 
-.subjectHeadingsTable {
-  display: table;
-  width: 100%;
-  font-size: 16px;
-  a {
-    text-decoration: none;
-    display: flex;
-  }
-
-  thead {
-    .subjectHeadingsTableCell.selected {
-      color: #a83232,
-    }
-    .subjectHeadingAttributeInner {
-      display: inline-flex;
-    }
-
-    .subjectHeadingLabelInner {
-      display: flex;
-    }
-
-    .subjectSortButton {
-      padding-right: 10px;
-    }
-  }
-
-  tbody > .openSubjectHeading {
-    background-color: $lighter-grey;
-      &.topLevel {
-        background-color: $darker-grey;
-      }
-      .subjectHeadingLabelInner, .subjectHeadingAttribute, .sortButton {
-        background-color: $darker-grey;
-      }
-  }
-  .nestedSubjectHeading {
-    background-color: $lighter-grey;
-    .subjectHeadingsTableCell {
-      border-top: 1px solid $lighter-grey;
-    }
-  }
-  .subjectHeadingRow {
-    text-align: left;
-    display: table-row;
-    &.preview {
-      width: 100%;
-      .previewDiv {
-        width: 100%;
-        justify-content: center;
-        > em {
-          margin-left: 15%;
-        }
-        .previewInner {
-          width: 100%;
-          justify-content: center;
-          display: flex;
-        }
-        em {
-          color: #31806a;
-        }
-      }
-      .previewUl {
-        justify-content: space-around;
-        display: flex;
-        width: 100%;
-        margin-bottom: 0px;
-        list-style: none;
-        ul {
-          width: 100%;
-          justify-content: left;
-          li {
-            display: flex;
-            justify-content: left;
-            margin-bottom: 5px;
-            &.fullLabel {
-              font-size: .75rem;
-            }
-            &.bibCount {
-              color: #31806a;
-            }
-          }
-        }
-      }
-    }
-    .subjectHeadingAttribute {
-      padding-left: 10px;
-      text-align: right;
-    }
-    .subjectHeadingsTableCell {
-      height: 100%;
-      display: table-cell;
-      &.sortButton {
-        text-align: center;
-        &.selected {
-          font-weight: bold;
-        }
-        padding-left: 10px;
-        width: 125px;
-        box-sizing: border-box;
-
-        & > select {
-          border-width: 1px;
-          border-color: black;
-          font-size: 10px;
-        }
-      }
-
-      .subjectHeadingLabelInner {
-        height: 100%;
-        position: relative;
-        padding-left: 5px;
-        a:hover {
-          color: #176e91;
-          cursor: pointer;
-        }
-        .subjectHeadingToggle {
-          position: absolute;
-          left: -20px;
-
-          &:focus {
-            outline-color: #ffb81d;
-            outline-style: solid;
-            outline-width: 0.125rem;
-          }
-        }
-      }
-    }
-  }
-  .seeMoreButton {
-    background-color: $lighter-grey;
-    border: none;
-    background: none;
-    padding: 0;
-    text-align: inherit;
-
-    &:focus {
-      outline-color: #ffb81d;
-      outline-style: solid;
-      outline-width: 0.125rem;
-    }
-
-  }
-
-  th {
-    &> .subjectHeadingLabelInner {
-      text-align: initial;
-      padding-left: 5px;
-    }
-
-    &.sort {
-      text-align: center;
-    }
-
-    &.subjectHeadingAttribute {
-      text-align: right;
-    }
-  }
-
-}
-
-
 .emph {
   &.mainHeading {
     font-weight: bold;
@@ -226,21 +65,6 @@ $darker-grey: lightgray;
 
   em {
     font-style: italic;
-  }
-}
-
-.seeMoreButton {
-  color: #104d65;
-  font-size: 14px;
-  margin-left: 40px;
-  cursor: default;
-
-  em {
-    padding-left: 10px;
-  }
-
-  &:hover {
-    color: #1b7fa7;
   }
 }
 
@@ -467,10 +291,6 @@ span > .verticalEllipse {
   }
 }
 
-.subjectHeadingLabel.mainLabel {
-  font-style: italic;
-}
-
 $light-border: 0.08333rem solid #d7d4d0;
 
 .alphabeticalPagination {
@@ -558,23 +378,6 @@ $bottom-left-corner: 0 0 0 0.2rem;
     }
     a:nth-child(n+21) {
       border-top: unset;
-    }
-  }
-}
-
-.headingStyle {
-  font-weight: 300;
-  .selected {
-    font-weight: bold;
-  }
-  .emph {
-    color: black;
-  }
-  .subjectHeadingLabelInner, .subjectHeadingAttributeInner {
-    display: inline-flex;
-    .subjectSortButton {
-      margin-right: 10px;
-      font-size: 15px;
     }
   }
 }
