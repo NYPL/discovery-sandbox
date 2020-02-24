@@ -237,7 +237,6 @@ class SubjectHeading extends React.Component {
             ${(open || children || isMain) ? "openSubjectHeading" : ""}
             ${(indentation || 0) === 0 ? 'topLevel' : ''}
             ${(indentation || 0) !== 0 ? 'nestedSubjectHeading' : ''}
-            ${this.props.subjectHeading.heading_style ? 'headingStyle' : ''}
           `}
         >
           <td className={`subjectHeadingsTableCell subjectHeadingLabel ${sortBy === 'alphabetical' ? 'selected' : ''}`} >

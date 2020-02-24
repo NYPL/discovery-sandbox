@@ -1,0 +1,25 @@
+.seeMoreButton {
+  color: #104d65;
+  font-size: 14px;
+  margin-left: 40px;
+  cursor: default;
+  background-color: $lighter-grey;
+  border: 0;
+  background: none;
+  padding: 0;
+  text-align: inherit;
+
+  em {
+    padding-left: 10px;
+  }
+
+  &:focus {
+    outline-color: #ffb81d;
+    outline-style: solid;
+    outline-width: .125rem;
+  }
+
+  &:hover {
+    color: #1b7fa7;
+  }
+}
