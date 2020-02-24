@@ -14,8 +14,9 @@
 }
 
 .subjectHeadingRow {
-  text-align: left;
   display: table-row;
+  text-align: left;
+
   &.preview {
     width: 100%;
     .previewDiv {
@@ -56,10 +57,7 @@
       }
     }
   }
-  .subjectHeadingAttribute {
-    padding-left: 10px;
-    text-align: right;
-  }
+
   .subjectHeadingsTableCell {
     height: 100%;
     display: table-cell;
@@ -92,19 +90,7 @@
 }
 
 .nestedSubjectHeading {
-  background-color: $lighter-grey;
   .subjectHeadingsTableCell {
     border-top: 1px solid $lighter-grey;
   }
-}
-
-// styling for top level open heading
-tbody > .openSubjectHeading {
-  background-color: $lighter-grey;
-    &.topLevel {
-      background-color: $darker-grey;
-    }
-    .subjectHeadingLabelInner, .subjectHeadingAttribute, .sortButton {
-      background-color: $darker-grey;
-    }
 }

@@ -9,13 +9,14 @@
 
     &.subjectHeadingAttribute {
       text-align: right;
+      width: 75px;
     }
   }
 
   .subjectHeadingsTableCell.selected {
     font-weight: 600;
   }
-  
+
   .subjectHeadingAttributeInner {
     display: inline-flex;
   }
