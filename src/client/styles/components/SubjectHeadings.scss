@@ -17,9 +17,6 @@ $darker-grey: lightgray;
   }
 }
 
-
-/// ^^^^^^ this should probably be a separate file ^^^^^
-
 .subjectHeadingsBannerInner {
   display: inline-block;
   width: 100%;
@@ -119,73 +116,6 @@ $darker-grey: lightgray;
 
 }
 
-.autocomplete {
-  float: right;
-  font-size: 1rem;
-  width: 200px;
-  margin-left: 25px;
-}
-
-.autocomplete-field {
-  position: relative;
-  input {
-    border: 1px solid #999;
-    width: 200px;
-  }
-
-  &> input:focus {
-    outline-color: #ffb81d;
-    outline-style: solid;
-    outline-width: 0.125rem;
-    box-shadow: none;
-  }
-
-  &:focus-within .suggestions {
-    display: inherit;
-  }
-}
-
-.suggestions {
-  border: 1px solid #999;
-  list-style: none;
-  background-color: white;
-  position: absolute;
-  float: right;
-  z-index: 1;
-  right: -2%;
-  margin-top: -1.5%;
-  margin-bottom: 0px;
-  min-width: 202px;
-  width: max-content;
-  display: none;
-}
-
-.suggestion-active {
-  font-weight: bold;
-}
-
-.suggestion-active,
-.suggestions li {
-  cursor: pointer;
-  margin-bottom: 0;
-  font-size: .9rem;
-  line-height: .75;
-  height: 100%;
-
-  em {
-    color: #31806a;
-  }
-
-  a {
-    padding: 1% 1%;
-    display: block;
-  }
-}
-
-.suggestions li:not(:last-of-type) {
-  border-bottom: 1px solid #999;
-}
-
 .not-in-discovery {
   color: grey;
   font-style: italic;
@@ -198,18 +128,6 @@ $darker-grey: lightgray;
   white-space: nowrap;
   padding-top: 1%;
   font-size: .8em;
-}
-
-.autosuggest {
-  margin: 0 1%;
-  span {
-    line-height: initial;
-    width: fit-content;
-  }
-  &.component {
-    display: flex;
-    justify-content: space-between;
-  }
 }
 
 .nypl-results-pagination.showPage {
@@ -255,7 +173,6 @@ span > .verticalEllipse {
     padding-right: 1%;
   }
 }
-
 
 .relatedHeadingsBoundary {
   border-top: rgb(240, 240, 240);
