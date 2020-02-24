@@ -46,23 +46,19 @@ const NestedTableColumnHeading = (props) => {
           <span className="emph"><span className="noEmph">Heading</span></span>
         </div>
       </th>
-      <th className={`subjectHeadingsTableCell subjectHeadingAttribute titles ${sortBy === 'bibs' ? 'selected' : ''}`}>
-        <div className="subjectHeadingAttributeInner">
-          { updateSort
-            ? <SortButton handler={updateSort} type="bibs" direction={calculateDirection('bibs')} />
-            : null
-          }
-          Titles
-        </div>
-      </th>
       <th className={`subjectHeadingsTableCell subjectHeadingAttribute narrower ${sortBy === 'descendants' ? 'selected' : ''}`}>
-        <div className="subjectHeadingAttributeInner">
-          { updateSort
-            ? <SortButton handler={updateSort} type="descendants" direction={calculateDirection('descendants')} />
-            : null
-          }
-          Subheadings
-        </div>
+        { updateSort
+          ? <SortButton handler={updateSort} type="descendants" direction={calculateDirection('descendants')} />
+          : null
+        }
+        Subheadings
+      </th>
+      <th className={`subjectHeadingsTableCell subjectHeadingAttribute titles ${sortBy === 'bibs' ? 'selected' : ''}`}>
+        { updateSort
+          ? <SortButton handler={updateSort} type="bibs" direction={calculateDirection('bibs')} />
+          : null
+        }
+        Titles
       </th>
     </tr>
   );

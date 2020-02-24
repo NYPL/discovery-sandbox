@@ -12,5 +12,13 @@
   .subjectHeadingAttribute {
     padding: 0 10px;
     text-align: right;
+    min-width: 60px;
+    max-width: fit-content;
+  }
+
+  .subjectSortButton {
+    margin-right: 10px;
+    font-size: 15px;
+    @include removeDefaultButtonStyle;
   }
 }
