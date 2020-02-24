@@ -53,14 +53,16 @@ class SubjectHeadingsContainer extends React.Component {
     const url = `${appConfig.baseUrl}/api/subjectHeadings/subject_headings?${apiParamString}`;
     axios(url)
       .then(
+        // The callback `fetchNarrower` makes api calls to pre-open the narrower headings,
+        // if it is the filtered index and the filter returns a low heading count.
+        // it also has the responsibly of setting `componentLoading` at the appropriate point
         (res) => {
           this.setState({
             previousUrl: res.data.previous_url,
             nextUrl: res.data.next_url,
             subjectHeadings: res.data.subject_headings,
             error: res.data.subject_headings.length === 0,
-            componentLoading: false,
-          });
+          }, this.fetchNarrower);
         },
       ).catch(
         (err) => {
@@ -73,6 +75,27 @@ class SubjectHeadingsContainer extends React.Component {
           }
         },
       );
+  }
+
+  fetchNarrower() {
+    const { filter } = this.context.router.location.query;
+    const { subjectHeadings } = this.state;
+
+    if (
+      !filter || (subjectHeadings && subjectHeadings.length > 5)
+    ) return this.setState({ componentLoading: false });
+
+    let url, narrower;
+    subjectHeadings.forEach((subjectHeading) => {
+      console.log(subjectHeading);
+      url = `${appConfig.baseUrl}/api/subjectHeadings/subject_headings/${subjectHeading.uuid}/narrower`
+      axios(url)
+        .then((resp) => {
+          narrower = resp.narrower;
+          if (narrower) subjectHeading.children = narrower;
+        })
+    });
+    this.setState({ componentLoading: false });
   }
 
   extractParam(paramName, url) {

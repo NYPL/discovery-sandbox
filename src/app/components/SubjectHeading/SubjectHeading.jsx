@@ -46,11 +46,6 @@ class SubjectHeading extends React.Component {
     }
   }
 
-  componentDidMount() {
-    window.subjectHeadings = window.subjectHeadings || [];
-    window.subjectHeadings.push(this);
-  }
-
   updateSubjectHeading(properties) {
     this.setState(properties);
   }
