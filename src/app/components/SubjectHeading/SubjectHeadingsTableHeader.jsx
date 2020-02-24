@@ -12,23 +12,23 @@ const SubjectHeadingsTableHeader = (props) => {
   return (
     <thead>
       <tr>
-        <th className={`headingColumnHeader ${selected === 'alphabetical' ? 'selected' : ''}`}>
+        <th className={`headingColumnHeader ${selected === 'alphabetical' ? 'selectedColumn' : ''}`}>
           <div>
             {updateSort && <SortButton handler={updateSort} type="alphabetical" />}
             Heading
           </div>
         </th>
-        <th className={`subjectHeadingsTableCell subjectHeadingAttribute narrower ${selected === 'descendants' ? 'selected' : ''}`}>
-          <div className="subjectHeadingAttributeInner">
+        <th className={`subjectHeadingAttribute narrower ${selected === 'descendants' ? 'selectedColumn' : ''}`}>
+          <div>
             {updateSort && <SortButton handler={updateSort} type="descendants" />}
-            Subheading Count
+            Subheadings
           </div>
         </th>
-        <th className={`subjectHeadingsTableCell subjectHeadingAttribute titles ${selected === 'bibs' ? 'selected' : ''}`}>
-          <div className="subjectHeadingAttributeInner">
+        <th className={`subjectHeadingAttribute titles ${selected === 'bibs' ? 'selectedColumn' : ''}`}>
+          <div>
             {updateSort && <SortButton handler={updateSort} type="bibs" />}
           </div>
-          Title Count
+          Titles
         </th>
       </tr>
     </thead>

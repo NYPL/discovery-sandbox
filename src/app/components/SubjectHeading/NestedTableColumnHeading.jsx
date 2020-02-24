@@ -52,7 +52,7 @@ const NestedTableColumnHeading = (props) => {
             ? <SortButton handler={updateSort} type="bibs" direction={calculateDirection('bibs')} />
             : null
           }
-        Title Count
+          Titles
         </div>
       </th>
       <th className={`subjectHeadingsTableCell subjectHeadingAttribute narrower ${sortBy === 'descendants' ? 'selected' : ''}`}>
@@ -61,7 +61,7 @@ const NestedTableColumnHeading = (props) => {
             ? <SortButton handler={updateSort} type="descendants" direction={calculateDirection('descendants')} />
             : null
           }
-      Subheading Count
+          Subheadings
         </div>
       </th>
     </tr>

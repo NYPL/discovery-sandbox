@@ -2,7 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const SortButton = props => (
-  <div className='subjectSortButton' onClick={() => props.handler(props.type, props.direction)}>˄</div>
+  <button
+    className='subjectSortButton'
+    onClick={() => props.handler(props.type, props.direction)}
+  >
+    ˄
+  </button>
 );
 
 SortButton.propTypes = {

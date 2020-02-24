@@ -14,6 +14,7 @@
     .subjectSortButton {
       margin-right: 10px;
       font-size: 15px;
+      @include removeDefaultButtonStyle;
     }
   }
 }
