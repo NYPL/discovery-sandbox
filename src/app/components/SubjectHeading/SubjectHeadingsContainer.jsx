@@ -14,6 +14,7 @@ class SubjectHeadingsContainer extends React.Component {
     super(props);
     this.state = {
       error: false,
+      componentLoading: true,
     };
     this.pagination = this.pagination.bind(this);
     this.updateSort = this.updateSort.bind(this);
@@ -58,13 +59,17 @@ class SubjectHeadingsContainer extends React.Component {
             nextUrl: res.data.next_url,
             subjectHeadings: res.data.subject_headings,
             error: res.data.subject_headings.length === 0,
+            componentLoading: false,
           });
         },
       ).catch(
         (err) => {
           console.error('error: ', err);
           if (!this.state.subjectHeadings || this.state.subjectHeadings.length === 0) {
-            this.setState({ error: true });
+            this.setState({
+              error: true,
+              componentLoading: false,
+            });
           }
         },
       );
@@ -142,6 +147,25 @@ class SubjectHeadingsContainer extends React.Component {
         </div>
       );
     }
+
+    if (this.state.componentLoading) return (
+      <div className="subjectHeadingShowLoadingWrapper">
+        {this.pagination()}
+        {filter ? null : <AlphabeticalPagination />}
+        <span
+          id="loading-animation"
+          className="loadingLayer-texts-loadingWord"
+        >
+          Loading Subject Headings
+        </span>
+        <div className="loadingDots">
+          <span />
+          <span />
+          <span />
+          <span />
+        </div>
+      </div>
+    )
 
     return (
       <React.Fragment>
