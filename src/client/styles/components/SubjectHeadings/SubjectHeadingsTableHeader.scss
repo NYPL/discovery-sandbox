@@ -1,13 +1,28 @@
 .subjectHeadingsTable thead {
-  .subjectHeadingsTableCell.selected {
-    color: #a83232;
+  background-color: $subject-heading-table-header;
+
+  th {
+    font-weight: normal;
+    &.sort {
+      text-align: center;
+    }
+
+    &.subjectHeadingAttribute {
+      text-align: right;
+    }
   }
+
+  .subjectHeadingsTableCell.selected {
+    font-weight: 600;
+  }
+  
   .subjectHeadingAttributeInner {
     display: inline-flex;
   }
 
-  .subjectHeadingLabelInner {
+  .headingColumnHeader {
     display: flex;
+    padding-left: 35px;
   }
 
   .subjectSortButton {

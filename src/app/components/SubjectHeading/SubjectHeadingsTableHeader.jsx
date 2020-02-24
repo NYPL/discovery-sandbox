@@ -12,9 +12,8 @@ const SubjectHeadingsTableHeader = (props) => {
   return (
     <thead>
       <tr>
-        <th className={`subjectHeadingsTableCell subjectHeadingLabel ${selected === 'alphabetical' ? 'selected' : ''}`}>
-          <div className="subjectHeadingToggle" />
-          <div className="subjectHeadingLabelInner">
+        <th className={`headingColumnHeader ${selected === 'alphabetical' ? 'selected' : ''}`}>
+          <div>
             {updateSort && <SortButton handler={updateSort} type="alphabetical" />}
             Heading
           </div>

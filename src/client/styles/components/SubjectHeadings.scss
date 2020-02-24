@@ -1,6 +1,12 @@
 $lighter-grey: #E8E4E3;
 $darker-grey: lightgray;
 
+$subject-heading-table-header: rgb(226, 221, 217);
+$top-level-heading: rgb(240, 237,	235);
+$second-level: #e4e0dd;
+$thid-level: #efedeb;
+$subsequent-levels: #fafaf9;
+
 .emph {
   &.mainHeading {
     font-weight: bold;
@@ -16,9 +22,6 @@ $darker-grey: lightgray;
     text-align: left;
   }
 }
-
-
-/// ^^^^^^ this should probably be a separate file ^^^^^
 
 .subjectHeadingsBannerInner {
   display: inline-block;
