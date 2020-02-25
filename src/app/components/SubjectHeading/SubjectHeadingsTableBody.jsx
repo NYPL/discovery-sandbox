@@ -200,6 +200,7 @@ SubjectHeadingsTableBody.propTypes = {
   parentUuid: PropTypes.string,
   top: PropTypes.bool,
   updateSort: PropTypes.func,
+  pathname: PropTypes.string,
 };
 
 SubjectHeadingsTableBody.contextTypes = {

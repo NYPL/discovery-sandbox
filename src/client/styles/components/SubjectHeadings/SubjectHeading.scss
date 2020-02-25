@@ -8,6 +8,8 @@
   min-width: 32px;
   text-align: center;
 
+  @include removeDefaultButtonStyle;
+
   &:focus {
     outline-color: #ffb81d;
     outline-style: solid;
@@ -51,8 +53,11 @@
 
 .subjectHeadingRow {
   background-color: $second-level;
-  border-bottom: $table-row-border;
   line-height: 32px;
+
+  &.index, &.context {
+    border-bottom: $table-row-border;
+  }
 
   &.openSubjectHeading {
     border-bottom: none;
@@ -66,15 +71,21 @@
       font-weight: normal;
     }
   }
+
+  &.nestedSubjectHeading .emph {
+    font-weight: $emphasis-font-weight;
+
+    .noEmph {
+      font-weight: normal;
+    }
+  }
 }
 
-// styling for top level open heading
-tbody > .openSubjectHeading {
-  background-color: $lighter-grey;
-    &.topLevel {
-      background-color: $darker-grey;
-    }
-    .subjectHeadingLabelInner, .subjectHeadingAttribute, .sortButton {
-      background-color: $darker-grey;
-    }
+
+.emph {
+  color: black;
+
+  &:hover {
+    color: inherit;
+  }
 }

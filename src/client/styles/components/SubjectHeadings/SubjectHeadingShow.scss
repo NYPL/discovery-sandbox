@@ -1,0 +1,78 @@
+.subjectHeadingContext,
+.subjectHeadingRelated {
+  border-color: #000000;
+  border-style: solid;
+  border-width: thin;
+  justify-self: end;
+
+  h4 {
+    margin-bottom: 1%;
+    margin-left: 1%;
+  }
+}
+
+.subjectHeadingInfoBox {
+  .toIndex {
+    font-size: 14px;
+    font-style: italic;
+    text-decoration: none;
+    padding-left: 10px;
+  }
+
+  .toIndex:hover {
+    text-decoration: underline;
+    cursor: pointer;
+  }
+}
+
+.subjectHeadingRelated {
+  height: fit-content;
+
+  .emph {
+    color: inherit;
+  }
+
+  .subjectHeadingToggle {
+    display: none;
+  }
+}
+
+.subjectHeadingInfoBox {
+  min-width: 400px;
+  padding: 4px;
+  margin-bottom: 14px;
+  .subjectHeadingsTableCell {
+    font-size: 12px;
+
+    &.subjectHeadingLabel {
+      min-width: 270px;
+      width: 500px;
+    }
+  }
+  h4 {
+    font-size: 16px;
+    padding-bottom: 8px;
+  }
+  .subjectHeadingLabelContainer {
+    padding: 2px;
+  }
+  .subjectHeadingAttribute {
+    padding-right: 1%;
+  }
+
+  th {
+    min-width: 45px;
+  }
+}
+
+.relatedHeadingsBoundary {
+  border-top: rgb(240, 240, 240);
+  color: rgb(240, 240, 240);
+  width: 90%;
+  margin-top: 3px;
+  background-color: initial;
+
+  &:first-child {
+    display: none;
+  }
+}
