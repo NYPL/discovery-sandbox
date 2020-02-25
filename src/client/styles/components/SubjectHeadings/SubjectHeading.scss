@@ -17,47 +17,6 @@
   display: table-row;
   text-align: left;
 
-  &.preview {
-    width: 100%;
-    .previewDiv {
-      width: 100%;
-      justify-content: center;
-      > em {
-        margin-left: 15%;
-      }
-      .previewInner {
-        width: 100%;
-        justify-content: center;
-        display: flex;
-      }
-      em {
-        color: #31806a;
-      }
-    }
-    .previewUl {
-      justify-content: space-around;
-      display: flex;
-      width: 100%;
-      margin-bottom: 0px;
-      list-style: none;
-      ul {
-        width: 100%;
-        justify-content: left;
-        li {
-          display: flex;
-          justify-content: left;
-          margin-bottom: 5px;
-          &.fullLabel {
-            font-size: .75rem;
-          }
-          &.bibCount {
-            color: #31806a;
-          }
-        }
-      }
-    }
-  }
-
   .subjectHeadingsTableCell {
     height: 100%;
     display: table-cell;
@@ -91,6 +50,7 @@
 
 .nestedSubjectHeading {
   .subjectHeadingsTableCell {
-    border-top: 1px solid $lighter-grey;
+    border-bottom: $table-row-border;
+    background-color: $second-level;
   }
 }

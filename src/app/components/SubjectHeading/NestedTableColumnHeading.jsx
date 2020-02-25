@@ -23,7 +23,7 @@ const NestedTableColumnHeading = (props) => {
       bibs: 'DESC',
       descendants: 'DESC',
     }[sortType];
-  }
+  };
 
   const positionStyle = container === 'narrower' ? null : { marginLeft: 30 * ((indentation || 0) + 1) };
 
@@ -31,11 +31,9 @@ const NestedTableColumnHeading = (props) => {
     <tr
       data={`${subjectHeading.uuid}, ${container}`}
       className={`
-        subjectHeadingRow
         nestedTable
-        ${(indentation || 0) === 0 ? 'topLevel' : ''}
         ${(indentation || 0) !== 0 ? 'nestedSubjectHeading' : ''}
-        `}
+      `}
     >
       <th className={`subjectHeadingsTableCell subjectHeadingLabel ${sortBy === 'alphabetical' ? 'selected' : ''}`} >
         <div className="subjectHeadingLabelInner" style={positionStyle}>

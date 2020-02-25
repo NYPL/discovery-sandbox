@@ -2,10 +2,12 @@ $lighter-grey: #E8E4E3;
 $darker-grey: lightgray;
 
 $subject-heading-table-header: rgb(226, 221, 217);
-$top-level-heading: rgb(240, 237,	235);
-$second-level: #e4e0dd;
+$top-level-heading: hsl(24, 14%, 92%);
+$second-level: hsl(24, 14%, 95%);
 $thid-level: #efedeb;
 $subsequent-levels: #fafaf9;
+
+$table-row-border: 1px solid rgb(215, 210, 205);
 
 .emph {
   &.mainHeading {
