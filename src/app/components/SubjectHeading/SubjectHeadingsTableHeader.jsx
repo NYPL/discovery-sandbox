@@ -19,17 +19,17 @@ const SubjectHeadingsTableHeader = (props) => {
             Heading
           </div>
         </th>
-        <th className={`subjectHeadingsTableCell subjectHeadingAttribute titles ${selected === 'bibs' ? 'selected' : ''}`}>
-          <div className="subjectHeadingAttributeInner">
-            {updateSort && <SortButton handler={updateSort} type="bibs" />}
-          </div>
-          Title Count
-        </th>
         <th className={`subjectHeadingsTableCell subjectHeadingAttribute narrower ${selected === 'descendants' ? 'selected' : ''}`}>
           <div className="subjectHeadingAttributeInner">
             {updateSort && <SortButton handler={updateSort} type="descendants" />}
             Subheading Count
           </div>
+        </th>
+        <th className={`subjectHeadingsTableCell subjectHeadingAttribute titles ${selected === 'bibs' ? 'selected' : ''}`}>
+          <div className="subjectHeadingAttributeInner">
+            {updateSort && <SortButton handler={updateSort} type="bibs" />}
+          </div>
+          Title Count
         </th>
       </tr>
     </thead>
