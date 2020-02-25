@@ -206,13 +206,10 @@ class SubjectHeading extends React.Component {
       props.className = "subjectHeadingToggle";
 
       if (desc_count > 0) {
-        props.tabIndex = '0';
         props.onKeyDown = event => handleEnter(event);
       }
 
-      const element = React.createElement('div', props, innerText);
-
-      return element;
+      return <button {...props}>{symbol}</button>;
     };
 
     const positionStyle = container === 'narrower' ? null : { marginLeft: 30 * ((indentation || 0) + 1) };
