@@ -68,7 +68,6 @@
     "nyc": "^13.0.0",
     "react-addons-test-utils": "15.6.0",
     "sinon": "4.0.1",
-    "webpack-cli": "^3.3.11",
     "webpack-dev-server": "2.7.1"
   },
   "dependencies": {
@@ -131,6 +130,7 @@
     "validator": "7.2.0",
     "webpack": "^4.41.5",
     "webpack-bundle-analyzer": "^2.13.1",
+    "webpack-cli": "^3.3.11",
     "webpack-merge": "0.8.4",
     "winston": "2.3.1"
   }
