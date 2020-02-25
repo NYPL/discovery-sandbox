@@ -6,6 +6,12 @@
   position: absolute;
   left: -20px;
 
+  @include removeDefaultButtonStyle;
+
+  &.displayNone {
+    display: none;
+  }
+
   &:focus {
     outline-color: #ffb81d;
     outline-style: solid;
@@ -48,9 +54,29 @@
   }
 }
 
-.nestedSubjectHeading {
-  .subjectHeadingsTableCell {
-    border-bottom: $table-row-border;
-    background-color: $second-level;
+.subjectHeadingRow {
+  background-color: $second-level;
+  border-bottom: $table-row-border;
+
+  &.openSubjectHeading {
+    border-bottom: none;
+    font-weight: $emphasis-font-weight;
+  }
+
+  &.nestedSubjectHeading .emph {
+    font-weight: $emphasis-font-weight;
+
+    .noEmph {
+      font-weight: normal;
+    }
+  }
+}
+
+
+.emph {
+  color: black;
+
+  &:hover {
+    color: inherit;
   }
 }
