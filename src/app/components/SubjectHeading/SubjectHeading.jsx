@@ -256,15 +256,6 @@ class SubjectHeading extends React.Component {
               </Link>
             </div>
           </td>
-          <td className={`subjectHeadingsTableCell subjectHeadingAttribute titles ${sortBy === 'bibs' ? 'selected' : ''}`}>
-            <div className="subjectHeadingAttributeInner">
-              { updateSort
-                   ? <SortButton handler={updateSort} type="bibs" />
-                   : null
-               }
-              {`${bib_count}`}
-            </div>
-          </td>
           <td className={`subjectHeadingsTableCell subjectHeadingAttribute narrower ${sortBy === 'descendants' ? 'selected' : ''}`}>
             <div className="subjectHeadingAttributeInner">
               { updateSort
@@ -272,6 +263,15 @@ class SubjectHeading extends React.Component {
                 : null
               }
               {`${desc_count || '-'}`}
+            </div>
+          </td>
+          <td className={`subjectHeadingsTableCell subjectHeadingAttribute titles ${sortBy === 'bibs' ? 'selected' : ''}`}>
+            <div className="subjectHeadingAttributeInner">
+              { updateSort
+                   ? <SortButton handler={updateSort} type="bibs" />
+                   : null
+               }
+              {`${bib_count}`}
             </div>
           </td>
         </tr>
