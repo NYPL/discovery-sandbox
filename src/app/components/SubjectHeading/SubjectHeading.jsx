@@ -209,7 +209,7 @@ class SubjectHeading extends React.Component {
         props.onKeyDown = event => handleEnter(event);
       }
 
-      return <button {...props}>{symbol}</button>;
+      return <button {...props}>{innerText}</button>;
     };
 
     const hierarchicalBackgroundColor = () => {
