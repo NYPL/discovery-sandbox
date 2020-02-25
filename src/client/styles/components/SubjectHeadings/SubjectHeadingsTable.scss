@@ -1,26 +1,24 @@
 .subjectHeadingsTable {
   display: table;
-  font-size: 16px;
+  font-size: 15px;
   width: 100%;
+  background-color: $top-level-heading;
 
   a {
     display: flex;
     text-decoration: none;
   }
 
-  th {
-    &> .subjectHeadingLabelInner {
-      text-align: initial;
-      padding-left: 5px;
-    }
-
-    &.sort {
-      text-align: center;
-    }
-
-    &.subjectHeadingAttribute {
-      text-align: right;
-    }
+  .subjectHeadingAttribute {
+    padding: 0 10px;
+    text-align: right;
+    min-width: 60px;
+    max-width: fit-content;
   }
 
+  .subjectSortButton {
+    margin-right: 10px;
+    font-size: 15px;
+    @include removeDefaultButtonStyle;
+  }
 }

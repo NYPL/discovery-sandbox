@@ -1,21 +1,14 @@
 $lighter-grey: #E8E4E3;
 $darker-grey: lightgray;
 
-.emph {
-  &.mainHeading {
-    font-weight: bold;
-    span {
-      font-weight: bold;
-    }
-  }
-  &:not(:hover) {
-    color: #a83232;
-    .noEmph:not(:hover) {
-      color: black;
-    }
-    text-align: left;
-  }
-}
+$subject-heading-table-header: rgb(226, 221, 217);
+$top-level-heading: hsl(24, 14%, 92%);
+$second-level: hsl(24, 14%, 95%);
+$thid-level: #efedeb;
+$subsequent-levels: #fafaf9;
+$emphasis-font-weight: 500;
+
+$table-row-border: 1px solid rgb(215, 210, 205);
 
 .subjectHeadingsBannerInner {
   display: inline-block;
@@ -65,20 +58,6 @@ $darker-grey: lightgray;
   }
 }
 
-.subjectHeadingInfoBox {
-  .toIndex {
-    font-size: 14px;
-    font-style: italic;
-    text-decoration: none;
-    padding-left: 10px;
-  }
-
-  .toIndex:hover {
-    text-decoration: underline;
-    cursor: pointer;
-  }
-}
-
 .subjectHeadingShow {
   h2 {
     max-width: 40rem;
@@ -88,32 +67,6 @@ $darker-grey: lightgray;
   .nypl-results-item h2, .nypl-results-item h3 {
     font-size: 1rem;
   }
-}
-
-.subjectHeadingContext, .subjectHeadingRelated  {
-  border-style: solid;
-  border-width: thin;
-  border-color: black;
-  justify-self: end;
-
-  h4 {
-    margin-bottom: 1%;
-    margin-left: 1%;
-  }
-
-}
-
-.subjectHeadingRelated {
-  height: fit-content;
-
-  .emph {
-    color: inherit;
-  }
-
-  .subjectHeadingToggle {
-    display: none;
-  }
-
 }
 
 .not-in-discovery {
@@ -148,30 +101,6 @@ span > .verticalEllipse {
   margin-bottom: 3px;
   line-height: 5px;
   padding: 4.5%;
-}
-
-.subjectHeadingInfoBox {
-  min-width: 400px;
-  padding: 4px;
-  margin-bottom: 14px;
-  .subjectHeadingsTableCell {
-    font-size: 12px;
-
-    &.subjectHeadingLabel {
-      min-width: 270px;
-      width: 500px;
-    }
-  }
-  h4 {
-    font-size: 16px;
-    padding-bottom: 8px;
-  }
-  .subjectHeadingLabelContainer {
-    padding: 2px;
-  }
-  .subjectHeadingAttribute {
-    padding-right: 1%;
-  }
 }
 
 .relatedHeadingsBoundary {

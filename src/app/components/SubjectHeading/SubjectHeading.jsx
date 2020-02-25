@@ -215,6 +215,17 @@ class SubjectHeading extends React.Component {
       return element;
     };
 
+    const hierarchicalBackgroundColor = () => {
+      const level = indentation >= 3 ? 3 : indentation;
+      const backgroundColor = {
+        0: 'hsl(24, 14%, 100%)',
+        1: 'hsl(24, 14%, 97%)',
+        2: 'hsl(24, 14%, 94%)',
+        3: 'hsl(24, 14%, 91%)', // this is just white
+      }[level];
+      return { backgroundColor };
+    };
+
     const positionStyle = container === 'narrower' ? null : { marginLeft: 30 * ((indentation || 0) + 1) };
     const isMain = (pathname + search).includes(uuid);
     // changes to HTML structure here will need to be replicated in ./SubjectHeadingTableHeader
@@ -234,10 +245,11 @@ class SubjectHeading extends React.Component {
           data={`${subjectHeading.uuid}, ${container}`}
           className={`
             subjectHeadingRow
-            ${(open || children || isMain) ? "openSubjectHeading" : ""}
+            ${(open || children || isMain) ? 'openSubjectHeading' : ''}
             ${(indentation || 0) === 0 ? 'topLevel' : ''}
             ${(indentation || 0) !== 0 ? 'nestedSubjectHeading' : ''}
           `}
+          style={hierarchicalBackgroundColor()}
         >
           <td className={`subjectHeadingsTableCell subjectHeadingLabel ${sortBy === 'alphabetical' ? 'selected' : ''}`} >
             <div className="subjectHeadingLabelInner" style={positionStyle}>
@@ -306,7 +318,12 @@ SubjectHeading.propTypes = {
   linked: PropTypes.string,
   indentation: PropTypes.number,
   container: PropTypes.string,
+  direction: PropTypes.string,
 };
+
+SubjectHeading.defaultProps = {
+  indentation: 0,
+}
 
 SubjectHeading.contextTypes = {
   router: PropTypes.object,
