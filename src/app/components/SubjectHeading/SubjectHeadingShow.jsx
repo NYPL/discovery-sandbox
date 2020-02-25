@@ -150,7 +150,7 @@ class SubjectHeadingShow extends React.Component {
             showId={uuid}
             keyId="context"
             container="context"
-            />
+          />
           <Link
             to={contextHeadings && contextHeadings.length ? this.generateFullContextUrl() : '#'}
             className="link toIndex"
