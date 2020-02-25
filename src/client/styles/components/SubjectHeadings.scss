@@ -17,9 +17,6 @@ $darker-grey: lightgray;
   }
 }
 
-
-/// ^^^^^^ this should probably be a separate file ^^^^^
-
 .subjectHeadingsBannerInner {
   display: inline-block;
   width: 100%;
@@ -119,73 +116,6 @@ $darker-grey: lightgray;
 
 }
 
-.autocomplete {
-  float: right;
-  font-size: 1rem;
-  width: 200px;
-  margin-left: 25px;
-}
-
-.autocomplete-field {
-  position: relative;
-  input {
-    border: 1px solid #999;
-    width: 200px;
-  }
-
-  &> input:focus {
-    outline-color: #ffb81d;
-    outline-style: solid;
-    outline-width: 0.125rem;
-    box-shadow: none;
-  }
-
-  &:focus-within .suggestions {
-    display: inherit;
-  }
-}
-
-.suggestions {
-  border: 1px solid #999;
-  list-style: none;
-  background-color: white;
-  position: absolute;
-  float: right;
-  z-index: 1;
-  right: -2%;
-  margin-top: -1.5%;
-  margin-bottom: 0px;
-  min-width: 202px;
-  width: max-content;
-  display: none;
-}
-
-.suggestion-active {
-  font-weight: bold;
-}
-
-.suggestion-active,
-.suggestions li {
-  cursor: pointer;
-  margin-bottom: 0;
-  font-size: .9rem;
-  line-height: .75;
-  height: 100%;
-
-  em {
-    color: #31806a;
-  }
-
-  a {
-    padding: 1% 1%;
-    display: block;
-  }
-}
-
-.suggestions li:not(:last-of-type) {
-  border-bottom: 1px solid #999;
-}
-
 .not-in-discovery {
   color: grey;
   font-style: italic;
@@ -198,18 +128,6 @@ $darker-grey: lightgray;
   white-space: nowrap;
   padding-top: 1%;
   font-size: .8em;
-}
-
-.autosuggest {
-  margin: 0 1%;
-  span {
-    line-height: initial;
-    width: fit-content;
-  }
-  &.component {
-    display: flex;
-    justify-content: space-between;
-  }
 }
 
 .nypl-results-pagination.showPage {
@@ -256,7 +174,6 @@ span > .verticalEllipse {
   }
 }
 
-
 .relatedHeadingsBoundary {
   border-top: rgb(240, 240, 240);
   color: rgb(240, 240, 240);
@@ -288,97 +205,6 @@ span > .verticalEllipse {
   }
   ol {
     margin: 0 auto;
-  }
-}
-
-$light-border: 0.08333rem solid #d7d4d0;
-
-.alphabeticalPagination {
-  margin-top: 1.5rem;
-  margin-bottom: 1.5rem;
-  max-width: 100%;
-  text-align: center;
-  display: flex;
-
-  a {
-    border: $light-border;
-    border-right: 0;
-    font-weight: 400;
-    font-size: 14px;
-    text-align: center;
-    min-width: 24px;
-    text-decoration: none;
-    cursor: pointer;
-    flex: 3%;
-    display: inline-block;
-  }
-  a:last-child {
-    border-right: $light-border;
-    border-radius: 0 0.2rem 0.2rem 0;
-  }
-  a:first-child {
-    border-radius: 0.2rem 0 0 0.2rem;
-  }
-}
-
-$top-left-corner: 0.2rem 0 0 0;
-$top-right-corner: 0 0.2rem 0 0;
-$bottom-right-corner: 0 0 0.2rem 0;
-$bottom-left-corner: 0 0 0 0.2rem;
-
-@media screen and (max-width: 750px) {
-  .alphabeticalPagination {
-    flex-wrap: wrap;
-    a:first-child {
-      border-radius: $top-left-corner;
-    }
-    a:last-child {
-      border-radius: $bottom-right-corner;
-    }
-  }
-}
-
-@media screen and (max-width: 750px) and (min-width: 420px) {
-  .alphabeticalPagination {
-    a {
-      flex: 6.6%;
-      max-width: 45px;
-    }
-    a:nth-child(14) {
-      border-right: $light-border;
-      border-radius: $top-right-corner;
-    }
-    a:nth-child(15) {
-      border-radius: $bottom-left-corner;
-    }
-    a:nth-child(-n+14) {
-      border-bottom: unset;
-    }
-  }
-}
-
-
-@media screen and (max-width: 419px) {
-  .alphabeticalPagination {
-    a {
-      flex: 9.5%;
-      max-width: 34px;
-    }
-    a:nth-child(10n) {
-      border-right: $light-border;
-    }
-    a:nth-child(10){
-      border-radius: $top-right-corner;
-    }
-    a:nth-child(21) {
-      border-radius: $top-left-corner;
-    }
-    a:nth-child(-n+10) {
-      border-bottom: unset;
-    }
-    a:nth-child(n+21) {
-      border-top: unset;
-    }
   }
 }
 
