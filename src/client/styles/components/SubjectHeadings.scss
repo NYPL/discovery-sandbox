@@ -381,7 +381,7 @@ $darker-grey: lightgray;
     line-height: initial;
     width: fit-content;
   }
-  &.component {
+  &.component, &.subject {
     display: flex;
     justify-content: space-between;
   }
