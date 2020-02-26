@@ -23,7 +23,7 @@ const NestedTableColumnHeading = (props) => {
       bibs: 'DESC',
       descendants: 'DESC',
     }[sortType];
-  }
+  };
 
   const positionStyle = container === 'narrower' ? null : { marginLeft: 30 * ((indentation || 0) + 1) };
 
@@ -31,11 +31,9 @@ const NestedTableColumnHeading = (props) => {
     <tr
       data={`${subjectHeading.uuid}, ${container}`}
       className={`
-        subjectHeadingRow
         nestedTable
-        ${(indentation || 0) === 0 ? 'topLevel' : ''}
         ${(indentation || 0) !== 0 ? 'nestedSubjectHeading' : ''}
-        `}
+      `}
     >
       <th className={`subjectHeadingsTableCell subjectHeadingLabel ${sortBy === 'alphabetical' ? 'selected' : ''}`} >
         <div className="subjectHeadingLabelInner" style={positionStyle}>
@@ -47,22 +45,18 @@ const NestedTableColumnHeading = (props) => {
         </div>
       </th>
       <th className={`subjectHeadingsTableCell subjectHeadingAttribute narrower ${sortBy === 'descendants' ? 'selected' : ''}`}>
-        <div className="subjectHeadingAttributeInner">
-          { updateSort
-            ? <SortButton handler={updateSort} type="descendants" direction={calculateDirection('descendants')} />
-            : null
-          }
-          Subheading Count
-        </div>
+        { updateSort
+          ? <SortButton handler={updateSort} type="descendants" direction={calculateDirection('descendants')} />
+          : null
+        }
+        Subheadings
       </th>
       <th className={`subjectHeadingsTableCell subjectHeadingAttribute titles ${sortBy === 'bibs' ? 'selected' : ''}`}>
-        <div className="subjectHeadingAttributeInner">
-          { updateSort
-            ? <SortButton handler={updateSort} type="bibs" direction={calculateDirection('bibs')} />
-            : null
-          }
-        Title Count
-        </div>
+        { updateSort
+          ? <SortButton handler={updateSort} type="bibs" direction={calculateDirection('bibs')} />
+          : null
+        }
+        Titles
       </th>
     </tr>
   );

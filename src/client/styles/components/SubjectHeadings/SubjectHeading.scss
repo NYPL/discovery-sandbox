@@ -6,6 +6,12 @@
   position: absolute;
   left: -20px;
 
+  @include removeDefaultButtonStyle;
+
+  &.displayNone {
+    display: none;
+  }
+
   &:focus {
     outline-color: #ffb81d;
     outline-style: solid;
@@ -14,52 +20,9 @@
 }
 
 .subjectHeadingRow {
-  text-align: left;
   display: table-row;
-  &.preview {
-    width: 100%;
-    .previewDiv {
-      width: 100%;
-      justify-content: center;
-      > em {
-        margin-left: 15%;
-      }
-      .previewInner {
-        width: 100%;
-        justify-content: center;
-        display: flex;
-      }
-      em {
-        color: #31806a;
-      }
-    }
-    .previewUl {
-      justify-content: space-around;
-      display: flex;
-      width: 100%;
-      margin-bottom: 0px;
-      list-style: none;
-      ul {
-        width: 100%;
-        justify-content: left;
-        li {
-          display: flex;
-          justify-content: left;
-          margin-bottom: 5px;
-          &.fullLabel {
-            font-size: .75rem;
-          }
-          &.bibCount {
-            color: #31806a;
-          }
-        }
-      }
-    }
-  }
-  .subjectHeadingAttribute {
-    padding-left: 10px;
-    text-align: right;
-  }
+  text-align: left;
+
   .subjectHeadingsTableCell {
     height: 100%;
     display: table-cell;
@@ -91,20 +54,29 @@
   }
 }
 
-.nestedSubjectHeading {
-  background-color: $lighter-grey;
-  .subjectHeadingsTableCell {
-    border-top: 1px solid $lighter-grey;
+.subjectHeadingRow {
+  background-color: $second-level;
+  border-bottom: $table-row-border;
+
+  &.openSubjectHeading {
+    border-bottom: none;
+    font-weight: $emphasis-font-weight;
+  }
+
+  &.nestedSubjectHeading .emph {
+    font-weight: $emphasis-font-weight;
+
+    .noEmph {
+      font-weight: normal;
+    }
   }
 }
 
-// styling for top level open heading
-tbody > .openSubjectHeading {
-  background-color: $lighter-grey;
-    &.topLevel {
-      background-color: $darker-grey;
-    }
-    .subjectHeadingLabelInner, .subjectHeadingAttribute, .sortButton {
-      background-color: $darker-grey;
-    }
+
+.emph {
+  color: black;
+
+  &:hover {
+    color: inherit;
+  }
 }
