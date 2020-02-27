@@ -4,13 +4,11 @@
 
 .subjectHeadingToggle {
   position: absolute;
-  left: -20px;
+  left: -30px;
+  min-width: 32px;
+  text-align: center;
 
   @include removeDefaultButtonStyle;
-
-  &.displayNone {
-    display: none;
-  }
 
   &:focus {
     outline-color: #ffb81d;
@@ -21,7 +19,6 @@
 
 .subjectHeadingRow {
   display: table-row;
-  text-align: left;
 
   .subjectHeadingsTableCell {
     height: 100%;
@@ -56,11 +53,23 @@
 
 .subjectHeadingRow {
   background-color: $second-level;
-  border-bottom: $table-row-border;
+  line-height: 32px;
+
+  &.index, &.context {
+    border-bottom: $table-row-border;
+  }
 
   &.openSubjectHeading {
     border-bottom: none;
     font-weight: $emphasis-font-weight;
+  }
+
+  &.nestedSubjectHeading .emph {
+    font-weight: $emphasis-font-weight;
+
+    .noEmph {
+      font-weight: normal;
+    }
   }
 
   &.nestedSubjectHeading .emph {

@@ -2,7 +2,10 @@
   display: table;
   font-size: 15px;
   width: 100%;
-  background-color: $top-level-heading;
+
+  &.index, &.context {
+    background-color: $top-level-heading;
+  }
 
   a {
     display: flex;
@@ -10,9 +13,7 @@
   }
 
   .subjectHeadingAttribute {
-    padding: 0 10px;
     text-align: right;
-    min-width: 60px;
     max-width: fit-content;
   }
 
@@ -20,5 +21,13 @@
     margin-right: 10px;
     font-size: 15px;
     @include removeDefaultButtonStyle;
+  }
+
+  &.index {
+    min-width: 60px;
+
+    .subjectHeadingAttribute {
+      padding: 0 10px;
+    }
   }
 }
