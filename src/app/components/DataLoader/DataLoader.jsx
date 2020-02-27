@@ -9,7 +9,7 @@ class DataLoader extends React.Component {
     super(props);
     this.pathInstructions = [
       {
-        expression: /\/research\/collections\/shared-collection-catalog\/bib\/(b\d*)/,
+        expression: /\/research\/collections\/shared-collection-catalog\/bib\/([cp]?b\d*)/,
         pathType: 'bib',
       },
     ];
@@ -27,6 +27,7 @@ class DataLoader extends React.Component {
   componentDidMount() {
     const matchData = this.pathInstructions
       .reduce(this.reducePathExpressions, null);
+    console.log('dataloader mount ', this.props.location, matchData)
     if (this.routes[this.pathType]) {
       const {
         apiRoute,
