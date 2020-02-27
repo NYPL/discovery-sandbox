@@ -27,7 +27,7 @@ class DataLoader extends React.Component {
   componentDidMount() {
     const matchData = this.pathInstructions
       .reduce(this.reducePathExpressions, null);
-    console.log('dataloader mount ', this.props.location, matchData)
+
     if (this.routes[this.pathType]) {
       const {
         apiRoute,
