@@ -36,6 +36,7 @@
   margin-bottom: 0px;
   min-width: 202px;
   width: max-content;
+  // comment out the below line when developing on this component :)
   display: none;
 }
 
@@ -66,11 +67,17 @@
 }
 
 .autosuggest {
-  margin: 0 1%;
   display: flex;
   justify-content: space-between;
+  margin: 0 1%;
+
   span {
     line-height: initial;
     width: fit-content;
   }
+}
+
+.aggregateBibCount {
+  float: right;
+  margin-left: 5px;
 }
