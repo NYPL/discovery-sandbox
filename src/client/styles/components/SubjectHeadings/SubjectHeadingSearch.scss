@@ -36,8 +36,8 @@
   margin-bottom: 0px;
   min-width: 202px;
   width: max-content;
-  // comment out the below line when developing on this component :)
-  // display: none;
+  // comment out the below line when developing on this component
+  display: none;
 }
 
 .suggestion-active {
@@ -81,4 +81,6 @@
 .aggregateBibCount {
   float: right;
   margin-left: 5px;
+  min-width: 95px;
+  text-align: right;
 }
