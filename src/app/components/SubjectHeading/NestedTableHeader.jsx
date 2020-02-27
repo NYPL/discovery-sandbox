@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import SortButton from './SortButton';
 
-const NestedTableColumnHeading = (props) => {
+const NestedTableHeader = (props) => {
   const {
     subjectHeading,
     indentation,
@@ -62,11 +62,11 @@ const NestedTableColumnHeading = (props) => {
   );
 };
 
-NestedTableColumnHeading.propTypes = {
+NestedTableHeader.propTypes = {
   subjectHeading: PropTypes.object,
   indentation: PropTypes.number,
   sortBy: PropTypes.string,
   container: PropTypes.string,
 };
 
-export default NestedTableColumnHeading;
+export default NestedTableHeader;

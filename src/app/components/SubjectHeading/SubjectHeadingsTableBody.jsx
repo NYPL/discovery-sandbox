@@ -4,7 +4,7 @@ import axios from 'axios';
 
 import SubjectHeading from './SubjectHeading';
 import AdditionalSubjectHeadingsButton from './AdditionalSubjectHeadingsButton';
-import NestedTableColumnHeading from './NestedTableColumnHeading';
+import NestedTableHeader from './NestedTableHeader';
 import Range from '../../models/Range';
 import appConfig from '../../data/appConfig';
 
@@ -77,7 +77,7 @@ class SubjectHeadingsTableBody extends React.Component {
     if (this.props.top) return [];
     return [
       {
-        columnHeading: true,
+        nestedTableHeader: true,
         updateSort: this.props.updateSort,
       },
     ];
@@ -136,23 +136,20 @@ class SubjectHeadingsTableBody extends React.Component {
           indentation={listItem.indentation || indentation}
           button={listItem.button}
           updateParent={listItem.updateParent}
-          key={listItem.uuid || index}
+          key={indentation || index}
           nested={nested}
           interactive={interactive}
         />
       );
     }
-    if (listItem.columnHeading) {
+    if (listItem.nestedTableHeader) {
       return (
-        <NestedTableColumnHeading
+        <NestedTableHeader
           subjectHeading={listItem}
-          key={listItem.uuid}
-          nested={nested}
+          key={"nestedTableHeader"}
           indentation={indentation}
-          location={location}
           container={container}
           sortBy={sortBy}
-          linked={linked}
           direction={direction}
         />
       );
