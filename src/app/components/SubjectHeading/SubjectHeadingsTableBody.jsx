@@ -27,6 +27,7 @@ class SubjectHeadingsTableBody extends React.Component {
     this.listItemsInInterval = this.listItemsInInterval.bind(this);
     this.subHeadingHeadings = this.subHeadingHeadings.bind(this);
     this.tableRow = this.tableRow.bind(this);
+    this.backgroundColor = this.backgroundColor.bind(this);
   }
 
   componentDidUpdate() {
@@ -114,6 +115,20 @@ class SubjectHeadingsTableBody extends React.Component {
     return subjectHeadingsInInterval;
   }
 
+  backgroundColor() {
+    const indentation = this.props.indentation;
+    const level = indentation >= 3 ? 3 : indentation;
+
+    const backgroundColor = {
+      0: 'hsl(30, 14%, 92%)',
+      1: 'hsl(30, 13%, 94%)',
+      2: 'hsl(30, 12%, 97%)',
+      3: 'hsl(30, 11%, 99%)',
+    }[level];
+
+    return backgroundColor;
+  }
+
   tableRow(listItem, index) {
     const {
       indentation,
@@ -122,6 +137,7 @@ class SubjectHeadingsTableBody extends React.Component {
       sortBy,
       linked,
       direction,
+      backgroundColor,
     } = this.props;
 
     const { location } = this.context.router;
@@ -139,6 +155,7 @@ class SubjectHeadingsTableBody extends React.Component {
           key={indentation || index}
           nested={nested}
           interactive={interactive}
+          backgroundColor={this.backgroundColor()}
         />
       );
     }
@@ -146,11 +163,12 @@ class SubjectHeadingsTableBody extends React.Component {
       return (
         <NestedTableHeader
           subjectHeading={listItem}
-          key={"nestedTableHeader"}
+          key="nestedTableHeader"
           indentation={indentation}
           container={container}
           sortBy={sortBy}
           direction={direction}
+          backgroundColor={this.backgroundColor()}
         />
       );
     }
@@ -165,6 +183,7 @@ class SubjectHeadingsTableBody extends React.Component {
         container={container}
         sortBy={sortBy}
         linked={linked}
+        backgroundColor={this.backgroundColor()}
       />
     );
   }
@@ -198,7 +217,13 @@ SubjectHeadingsTableBody.propTypes = {
   top: PropTypes.bool,
   updateSort: PropTypes.func,
   pathname: PropTypes.string,
+  direction: PropTypes.string,
+  backgroundColor: PropTypes.string,
 };
+
+SubjectHeadingsTableBody.defaultProps = {
+  indentation: 0,
+}
 
 SubjectHeadingsTableBody.contextTypes = {
   router: PropTypes.object,

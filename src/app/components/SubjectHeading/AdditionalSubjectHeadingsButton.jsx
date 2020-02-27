@@ -32,7 +32,10 @@ class AdditionalSubjectHeadingsButton extends React.Component {
     const ellipse = previous ? null : <VerticalEllipse />;
 
     return (
-      <tr className="subjectHeadingRow nestedSubjectHeading">
+      <tr
+        className="subjectHeadingRow nestedSubjectHeading"
+        style={{ backgroundColor: this.props.backgroundColor }}
+      >
         <td colSpan="4">
           <span style={{ paddingLeft: `${40 * indentation}px` }}>
             {

@@ -34,6 +34,7 @@ const NestedTableHeader = (props) => {
         nestedTable
         ${(indentation || 0) !== 0 ? 'nestedSubjectHeading' : ''}
       `}
+      style={{ backgroundColor: props.backgroundColor }}
     >
       <th className={`subjectHeadingsTableCell subjectHeadingLabel ${sortBy === 'alphabetical' ? 'selected' : ''}`} >
         <div className="subjectHeadingLabelInner" style={positionStyle}>

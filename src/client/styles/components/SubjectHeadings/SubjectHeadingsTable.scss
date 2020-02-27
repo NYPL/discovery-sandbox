@@ -3,10 +3,6 @@
   font-size: 15px;
   width: 100%;
 
-  &.index, &.context {
-    background-color: $top-level-heading;
-  }
-
   a {
     display: flex;
     text-decoration: none;

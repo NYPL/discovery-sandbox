@@ -52,12 +52,8 @@
 }
 
 .subjectHeadingRow {
-  background-color: $second-level;
+  border-bottom: $table-row-border;
   line-height: 32px;
-
-  &.index, &.context {
-    border-bottom: $table-row-border;
-  }
 
   &.openSubjectHeading {
     border-bottom: none;
