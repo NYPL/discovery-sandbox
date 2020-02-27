@@ -37,7 +37,7 @@
   min-width: 202px;
   width: max-content;
   // comment out the below line when developing on this component :)
-  display: none;
+  // display: none;
 }
 
 .suggestion-active {
@@ -47,10 +47,11 @@
 .suggestion-active,
 .suggestions li {
   cursor: pointer;
-  margin-bottom: 0;
   font-size: .9rem;
   line-height: .75;
   height: 100%;
+  margin-bottom: 0;
+  min-height: 32px;
 
   em {
     color: #31806a;
