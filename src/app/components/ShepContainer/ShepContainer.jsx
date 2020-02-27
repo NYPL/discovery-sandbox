@@ -2,17 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import Breadcrumbs from '../Breadcrumbs/Breadcrumbs';
-import LoadingLayer from '../LoadingLayer/LoadingLayer';
-
-import Store from '../../stores/Store';
 
 const ShepContainer = (props) => {
   return (
     <main className="main-page shepcontainer">
-      <LoadingLayer
-        status={Store.state.isLoading}
-        title={props.loadingLayerText}
-      />
       <div className="header-wrapper container-header">
         <div className="header-topWrapper filter-page">
           <div className="nypl-row container-row">

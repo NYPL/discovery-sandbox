@@ -23,7 +23,7 @@ const NestedTableColumnHeading = (props) => {
       bibs: 'DESC',
       descendants: 'DESC',
     }[sortType];
-  }
+  };
 
   const positionStyle = container === 'narrower' ? null : { marginLeft: 30 * ((indentation || 0) + 1) };
 
@@ -31,13 +31,11 @@ const NestedTableColumnHeading = (props) => {
     <tr
       data={`${subjectHeading.uuid}, ${container}`}
       className={`
-        subjectHeadingRow
-        ${(indentation || 0) === 0 ? 'topLevel' : ''}
+        nestedTable
         ${(indentation || 0) !== 0 ? 'nestedSubjectHeading' : ''}
-        headingStyle
-        `}
+      `}
     >
-      <td className={`subjectHeadingsTableCell subjectHeadingLabel ${sortBy === 'alphabetical' ? 'selected' : ''}`} >
+      <th className={`subjectHeadingsTableCell subjectHeadingLabel ${sortBy === 'alphabetical' ? 'selected' : ''}`} >
         <div className="subjectHeadingLabelInner" style={positionStyle}>
           { updateSort
             ? <SortButton handler={updateSort} type="alphabetical" direction={calculateDirection('alphabetical')} />
@@ -45,25 +43,21 @@ const NestedTableColumnHeading = (props) => {
           }
           <span className="emph"><span className="noEmph">Heading</span></span>
         </div>
-      </td>
-      <td className={`subjectHeadingsTableCell subjectHeadingAttribute titles ${sortBy === 'bibs' ? 'selected' : ''}`}>
-        <div className="subjectHeadingAttributeInner">
-          { updateSort
-            ? <SortButton handler={updateSort} type="bibs" direction={calculateDirection('bibs')} />
-            : null
-          }
-        Title Count
-        </div>
-      </td>
-      <td className={`subjectHeadingsTableCell subjectHeadingAttribute narrower ${sortBy === 'descendants' ? 'selected' : ''}`}>
-        <div className="subjectHeadingAttributeInner">
-          { updateSort
-            ? <SortButton handler={updateSort} type="descendants" direction={calculateDirection('descendants')} />
-            : null
-          }
-      Subheading Count
-        </div>
-      </td>
+      </th>
+      <th className={`subjectHeadingsTableCell subjectHeadingAttribute narrower ${sortBy === 'descendants' ? 'selected' : ''}`}>
+        { updateSort
+          ? <SortButton handler={updateSort} type="descendants" direction={calculateDirection('descendants')} />
+          : null
+        }
+        Subheadings
+      </th>
+      <th className={`subjectHeadingsTableCell subjectHeadingAttribute titles ${sortBy === 'bibs' ? 'selected' : ''}`}>
+        { updateSort
+          ? <SortButton handler={updateSort} type="bibs" direction={calculateDirection('bibs')} />
+          : null
+        }
+        Titles
+      </th>
     </tr>
   );
 };

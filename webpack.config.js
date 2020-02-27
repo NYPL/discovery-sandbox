@@ -4,6 +4,7 @@ const merge = require('webpack-merge');
 const CleanBuild = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const sassPaths = require('@nypl/design-toolkit').includePaths;
+const globImporter = require('node-sass-glob-importer');
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 // References the applications root path
@@ -141,6 +142,7 @@ if (ENV === 'development') {
             { loader: 'sass-loader',
               options: {
                 includePaths: sassPaths,
+                importer: globImporter(),
               },
             },
           ],
@@ -182,6 +184,7 @@ if (ENV === 'production') {
               options: {
                 sourceMap: true,
                 includePaths: sassPaths,
+                importer: globImporter(),
               },
             },
           ],

@@ -1,0 +1,27 @@
+.subjectHeadingsTable thead {
+  background-color: $subject-heading-table-header;
+  border-bottom: 1.5px solid #000000;
+  line-height: 2.5;
+
+  th {
+    font-style: italic;
+    font-weight: normal;
+
+    &.sort {
+      text-align: center;
+    }
+  }
+
+  .selectedColumn {
+    font-weight: $emphasis-font-weight;
+  }
+
+  .headingColumnHeader {
+    display: flex;
+    padding-left: 35px;
+  }
+
+  .subjectSortButton {
+    padding-right: 10px;
+  }
+}

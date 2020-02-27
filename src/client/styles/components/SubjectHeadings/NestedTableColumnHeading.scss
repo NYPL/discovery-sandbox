@@ -1,0 +1,17 @@
+.nestedTable {
+  th {
+    font-style: italic;
+    font-weight: normal;
+    text-align: left;
+  }
+
+  .selected {
+    font-weight: $emphasis-font-weight;
+  }
+  .emph {
+    color: black;
+  }
+  .subjectHeadingLabelInner, .subjectHeadingAttributeInner {
+    display: inline-flex;
+  }
+}

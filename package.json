@@ -10,6 +10,7 @@
     "prod-api-start": "PLATFORM_API_BASE_URL=https://platform.nypl.org/api/v0.1 KMS_ENV=encrypted node index",
     "eb-start": "npm run dist && node index",
     "dist": "NODE_ENV=production webpack --config webpack.config.js",
+    "preinstall": "npm i webpack-cli",
     "postinstall": "npm run dist",
     "test": "NODE_ENV=test node_modules/.bin/mocha test/helpers/browser.js test/unit/*.test.js",
     "test-dev": "node_modules/.bin/mocha -w test/helpers/browser.js test/unit/*.test.js",
@@ -67,7 +68,6 @@
     "nyc": "^13.0.0",
     "react-addons-test-utils": "15.6.0",
     "sinon": "4.0.1",
-    "webpack-cli": "^3.3.10",
     "webpack-dev-server": "2.7.1"
   },
   "dependencies": {
@@ -106,7 +106,9 @@
     "history": "3.3.0",
     "iso": "5.2.0",
     "jsonwebtoken": "^8.3.0",
+    "mini-css-extract-plugin": "^0.9.0",
     "node-sass": "^4.9.0",
+    "node-sass-glob-importer": "^5.3.2",
     "prop-types": "15.5.10",
     "react": "^16.12.0",
     "react-a11y": "0.3.4",
@@ -128,6 +130,7 @@
     "validator": "7.2.0",
     "webpack": "^4.41.5",
     "webpack-bundle-analyzer": "^2.13.1",
+    "webpack-cli": "^3.3.11",
     "webpack-merge": "0.8.4",
     "winston": "2.3.1"
   }
