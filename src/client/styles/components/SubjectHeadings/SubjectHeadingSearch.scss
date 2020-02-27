@@ -36,6 +36,7 @@
   margin-bottom: 0px;
   min-width: 202px;
   width: max-content;
+  // comment out the below line when styling this component
   display: none;
 }
 
@@ -46,10 +47,11 @@
 .suggestion-active,
 .suggestions li {
   cursor: pointer;
-  margin-bottom: 0;
   font-size: .9rem;
   line-height: .75;
   height: 100%;
+  margin-bottom: 0;
+  min-height: 32px;
 
   em {
     color: #31806a;
@@ -66,11 +68,19 @@
 }
 
 .autosuggest {
-  margin: 0 1%;
   display: flex;
   justify-content: space-between;
+  margin: 0 1%;
+
   span {
     line-height: initial;
     width: fit-content;
   }
+}
+
+.aggregateBibCount {
+  float: right;
+  margin-left: 5px;
+  min-width: 95px;
+  text-align: right;
 }
