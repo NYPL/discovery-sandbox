@@ -17,7 +17,7 @@ const SortButton = (props) => {
     >
       <span className="emph">
         <span className="noEmph">{columnText()}
-          <span className="sortCharacter">^</span>
+          {props.handler ? <span className="sortCharacter">^</span> : null}
         </span>
       </span>
     </button>

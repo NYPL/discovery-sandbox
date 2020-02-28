@@ -13,16 +13,13 @@ const SubjectHeadingsTableHeader = (props) => {
     <thead>
       <tr>
         <th className={`headingColumnHeader ${selected === 'alphabetical' ? 'selectedColumn' : ''}`}>
-          {updateSort && <SortButton handler={updateSort} type="alphabetical" />}
-          Heading
+          <SortButton handler={updateSort} type="alphabetical" />
         </th>
         <th className={`subjectHeadingAttribute narrower ${selected === 'descendants' ? 'selectedColumn' : ''}`}>
-          {updateSort && <SortButton handler={updateSort} type="descendants" />}
-          Subheadings
+          <SortButton handler={updateSort} type="descendants" />
         </th>
         <th className={`subjectHeadingAttribute titles ${selected === 'bibs' ? 'selectedColumn' : ''}`}>
-          {updateSort && <SortButton handler={updateSort} type="bibs" />}
-          Titles
+          <SortButton handler={updateSort} type="bibs" />
         </th>
       </tr>
     </thead>
