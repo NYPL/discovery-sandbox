@@ -79,6 +79,7 @@ class SubjectHeadingsTableBody extends React.Component {
     return [
       {
         nestedTableHeader: true,
+        indentation: this.props.indentation,
         updateSort: this.props.updateSort,
       },
     ];
@@ -140,7 +141,6 @@ class SubjectHeadingsTableBody extends React.Component {
       sortBy,
       linked,
       direction,
-      backgroundColor,
     } = this.props;
 
     const { location } = this.context.router;
@@ -155,7 +155,7 @@ class SubjectHeadingsTableBody extends React.Component {
           indentation={listItem.indentation || indentation}
           button={listItem.button}
           updateParent={listItem.updateParent}
-          key={indentation || index}
+          key={`${listItem.button}${listItem.indentation}`}
           nested={nested}
           interactive={interactive}
           backgroundColor={this.backgroundColor()}
@@ -166,7 +166,7 @@ class SubjectHeadingsTableBody extends React.Component {
       return (
         <NestedTableHeader
           subjectHeading={listItem}
-          key="nestedTableHeader"
+          key={`nestedTableHeader${listItem.indentation}`}
           indentation={indentation}
           container={container}
           sortBy={sortBy}
@@ -221,7 +221,6 @@ SubjectHeadingsTableBody.propTypes = {
   updateSort: PropTypes.func,
   pathname: PropTypes.string,
   direction: PropTypes.string,
-  backgroundColor: PropTypes.string,
 };
 
 SubjectHeadingsTableBody.defaultProps = {
