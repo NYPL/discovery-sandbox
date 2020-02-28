@@ -85,8 +85,9 @@ $table-row-border: 1px solid rgb(215, 210, 205);
   }
 }
 
-span > .verticalEllipse {
+.moreSubjectsElement > .verticalEllipse {
   margin-left: 40px;
+  display: inline-block;
 }
 
 .verticalEllipse {

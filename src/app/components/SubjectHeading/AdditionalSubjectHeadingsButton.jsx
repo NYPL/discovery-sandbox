@@ -37,7 +37,7 @@ class AdditionalSubjectHeadingsButton extends React.Component {
         style={{ backgroundColor: this.props.backgroundColor }}
       >
         <td colSpan="4">
-          <span style={{ paddingLeft: `${40 * indentation}px` }}>
+          <span className="moreSubjectsElement" style={{ paddingLeft: `${40 * indentation}px` }}>
             {
               interactive ?
               button
