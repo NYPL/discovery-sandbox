@@ -35,26 +35,26 @@ const NestedTableHeader = (props) => {
     >
       <th className={`subjectHeadingsTableCell subjectHeadingLabel ${sortBy === 'alphabetical' ? 'selected' : ''}`} >
         <div className="subjectHeadingLabelInner" style={positionStyle}>
-          <span className="emph"><span className="noEmph">Heading</span></span>
-          { updateSort
-            ? <SortButton handler={updateSort} type="alphabetical" direction={calculateDirection('alphabetical')} />
-            : null
-          }
+          <SortButton
+            handler={updateSort}
+            type="alphabetical"
+            direction={calculateDirection('alphabetical')}
+          />
         </div>
       </th>
       <th className={`subjectHeadingsTableCell subjectHeadingAttribute narrower ${sortBy === 'descendants' ? 'selected' : ''}`}>
-        <span className="emph"><span className="noEmph">Subheadings</span></span>
-        { updateSort
-          ? <SortButton handler={updateSort} type="descendants" direction={calculateDirection('descendants')} />
-          : null
-        }
+        <SortButton
+          handler={updateSort}
+          type="descendants"
+          direction={calculateDirection('descendants')}
+        />
       </th>
       <th className={`subjectHeadingsTableCell subjectHeadingAttribute titles ${sortBy === 'bibs' ? 'selected' : ''}`}>
-        <span className="emph"><span className="noEmph">Titles</span></span>
-        { updateSort
-          ? <SortButton handler={updateSort} type="bibs" direction={calculateDirection('bibs')} />
-          : null
-        }
+        <SortButton
+          handler={updateSort}
+          type="bibs"
+          direction={calculateDirection('bibs')}
+        />
       </th>
     </tr>
   );

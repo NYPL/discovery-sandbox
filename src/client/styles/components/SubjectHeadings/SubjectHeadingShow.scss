@@ -36,11 +36,16 @@
   .subjectHeadingToggle {
     display: none;
   }
+
+  .subjectHeadingLabelInner {
+    margin-left: 1%;
+  }
 }
 
 .subjectHeadingInfoBox {
   margin-bottom: 14px;
   min-width: 400px;
+  padding: 0;
 
   .subjectHeadingsTableCell {
     font-size: 12px;
@@ -62,6 +67,7 @@
   }
 
   th {
+    font-size: 12px;
     min-width: 45px;
   }
 }
