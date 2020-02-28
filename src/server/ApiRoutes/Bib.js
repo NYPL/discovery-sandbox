@@ -52,15 +52,13 @@ function bibSearchServer(req, res, next) {
   fetchBib(
     bibId,
     (data) => {
-      console.log(data);
       if (data.status && data.status === 404) {
         return res.redirect(`${appConfig.baseUrl}/404`);
       }
-      
       const bibPageData = { bib: data };
       if (req.query.searchKeywords) bibPageData.searchKeywords = req.query.searchKeywords;
       res.locals.data.Store = {
-        bibPageData,
+        ...bibPageData,
         error: {},
       };
       next();
