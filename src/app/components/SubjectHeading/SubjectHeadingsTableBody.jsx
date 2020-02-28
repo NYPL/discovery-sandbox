@@ -119,8 +119,9 @@ class SubjectHeadingsTableBody extends React.Component {
     return subjectHeadingsInInterval;
   }
 
-  backgroundColor() {
-    const indentation = this.props.indentation;
+  backgroundColor(nestedTable = false) {
+    const indentation = nestedTable ? this.props.indentation - 1 : this.props.indentation;
+
     const level = indentation >= 3 ? 3 : indentation;
 
     const backgroundColor = {
@@ -133,7 +134,7 @@ class SubjectHeadingsTableBody extends React.Component {
     return backgroundColor;
   }
 
-  tableRow(listItem, index) {
+  tableRow(listItem) {
     const {
       indentation,
       nested,
@@ -171,7 +172,7 @@ class SubjectHeadingsTableBody extends React.Component {
           container={container}
           sortBy={sortBy}
           direction={direction}
-          backgroundColor={this.backgroundColor()}
+          backgroundColor={this.backgroundColor(true)}
         />
       );
     }
