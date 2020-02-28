@@ -2,12 +2,12 @@
 .subjectHeadingRelated {
   border-color: #000000;
   border-style: solid;
-  border-width: thin;
+  border-top-width: 3px;
   justify-self: end;
 
   h4 {
-    margin-bottom: 1%;
-    margin-left: 1%;
+    padding-left: 1%;
+    background-color: $subject-heading-table-header;
   }
 }
 
@@ -57,7 +57,6 @@
   }
   h4 {
     font-size: 16px;
-    padding-bottom: 8px;
   }
   .subjectHeadingLabelContainer {
     padding: 2px;

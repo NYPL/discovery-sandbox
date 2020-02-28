@@ -2,17 +2,15 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const SortButton = (props) => {
-  const columnText = () => {
-    return {
-      bibs: 'Titles',
-      descendants: 'Subheadings',
-      alphabetical: 'Heading',
-    }[props.type];
-  };
+  const columnText = () => ({
+    bibs: 'Titles',
+    descendants: 'Subheadings',
+    alphabetical: 'Heading',
+  }[props.type]);
 
   return (
     <button
-      className='subjectSortButton'
+      className="subjectSortButton"
       onClick={() => props.handler(props.type, props.direction)}
     >
       <span className="emph">
@@ -21,7 +19,7 @@ const SortButton = (props) => {
         </span>
       </span>
     </button>
-  )
+  );
 };
 
 SortButton.propTypes = {

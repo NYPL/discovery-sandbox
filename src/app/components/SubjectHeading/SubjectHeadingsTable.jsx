@@ -14,6 +14,7 @@ const SubjectHeadingsTable = (props) => {
     keyId,
     container,
     updateSort,
+    tfootContent,
   } = props;
 
   return (
@@ -31,6 +32,12 @@ const SubjectHeadingsTable = (props) => {
           top
         />
       </tbody>
+      { tfootContent ?
+        <tfoot>
+          {tfootContent}
+        </tfoot>
+        : null
+      }
     </table>
   );
 };
