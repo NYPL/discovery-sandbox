@@ -4,7 +4,6 @@ import axios from 'axios';
 import { Link } from 'react-router';
 
 import SubjectHeadingsTableBody from './SubjectHeadingsTableBody';
-import SortButton from './SortButton';
 import Range from '../../models/Range';
 import appConfig from '../../data/appConfig';
 import Preview from './PreviewComponents';
@@ -174,7 +173,6 @@ class SubjectHeading extends React.Component {
       desc_count,
       children,
       preview,
-      updateSort,
     } = subjectHeading;
 
     const {
@@ -231,15 +229,6 @@ class SubjectHeading extends React.Component {
           <td className={`subjectHeadingsTableCell subjectHeadingLabel ${sortBy === 'alphabetical' ? 'selected' : ''}`} >
             <div className="subjectHeadingLabelInner" style={positionStyle}>
               { toggle() }
-              { updateSort
-                ? (
-                  <SortButton
-                    handler={updateSort}
-                    type="alphabetical"
-                  />
-                  )
-                : null
-              }
               <Link to={this.generateUrl}>
                 <span className={`emph ${isMain ? 'mainHeading' : ''}`}>{rest === '' ? null : <span className="noEmph">{`${rest}\u0020--\u00a0`}</span>}{emph}</span>
               </Link>
@@ -247,19 +236,11 @@ class SubjectHeading extends React.Component {
           </td>
           <td className={`subjectHeadingsTableCell subjectHeadingAttribute narrower ${sortBy === 'descendants' ? 'selected' : ''}`}>
             <div className="subjectHeadingAttributeInner">
-              { updateSort
-                ? <SortButton handler={updateSort} type="descendants" />
-                : null
-              }
               {`${desc_count || '-'}`}
             </div>
           </td>
           <td className={`subjectHeadingsTableCell subjectHeadingAttribute titles ${sortBy === 'bibs' ? 'selected' : ''}`}>
             <div className="subjectHeadingAttributeInner">
-              { updateSort
-                   ? <SortButton handler={updateSort} type="bibs" />
-                   : null
-               }
               {`${bib_count}`}
             </div>
           </td>
