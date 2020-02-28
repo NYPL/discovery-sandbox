@@ -30,34 +30,31 @@ const NestedTableHeader = (props) => {
   return (
     <tr
       data={`${subjectHeading.uuid}, ${container}`}
-      className={`
-        nestedTable
-        ${(indentation || 0) !== 0 ? 'nestedSubjectHeading' : ''}
-      `}
       style={{ backgroundColor: props.backgroundColor }}
+      className="nestedTableHeader"
     >
       <th className={`subjectHeadingsTableCell subjectHeadingLabel ${sortBy === 'alphabetical' ? 'selected' : ''}`} >
         <div className="subjectHeadingLabelInner" style={positionStyle}>
+          <span className="emph"><span className="noEmph">Heading</span></span>
           { updateSort
             ? <SortButton handler={updateSort} type="alphabetical" direction={calculateDirection('alphabetical')} />
             : null
           }
-          <span className="emph"><span className="noEmph">Heading</span></span>
         </div>
       </th>
       <th className={`subjectHeadingsTableCell subjectHeadingAttribute narrower ${sortBy === 'descendants' ? 'selected' : ''}`}>
+        <span className="emph"><span className="noEmph">Subheadings</span></span>
         { updateSort
           ? <SortButton handler={updateSort} type="descendants" direction={calculateDirection('descendants')} />
           : null
         }
-        Subheadings
       </th>
       <th className={`subjectHeadingsTableCell subjectHeadingAttribute titles ${sortBy === 'bibs' ? 'selected' : ''}`}>
+        <span className="emph"><span className="noEmph">Titles</span></span>
         { updateSort
           ? <SortButton handler={updateSort} type="bibs" direction={calculateDirection('bibs')} />
           : null
         }
-        Titles
       </th>
     </tr>
   );
@@ -68,6 +65,8 @@ NestedTableHeader.propTypes = {
   indentation: PropTypes.number,
   sortBy: PropTypes.string,
   container: PropTypes.string,
+  direction: PropTypes.string,
+  backgroundColor: PropTypes.string,
 };
 
 export default NestedTableHeader;
