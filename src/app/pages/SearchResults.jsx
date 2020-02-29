@@ -64,6 +64,7 @@ const SearchResults = (props) => {
   };
 
   const selectedFiltersAvailable = checkForSelectedFilters();
+  console.log('TotalResults: ', totalResults);
 
   return (
     <DocumentTitle title="Search Results | Shared Collection Catalog | NYPL">

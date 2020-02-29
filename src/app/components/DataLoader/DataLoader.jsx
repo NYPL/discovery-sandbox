@@ -27,7 +27,7 @@ class DataLoader extends React.Component {
       },
       search: {
         apiRoute: matchData => `${props.next ? 'http://localhost:3001' : ''}${appConfig.baseUrl}/api?${matchData[1]}`,
-        actions: [Actions.updateSearchResults],
+        actions: [data => Actions.updateSearchResults(data.searchResults)],
         errorMessage: 'Error attempting to make an ajax request to search',
       },
     };
@@ -57,6 +57,7 @@ class DataLoader extends React.Component {
       Actions.updateLoadingStatus(true);
       return ajaxCall(apiRoute(matchData),
         (response) => {
+          // actions.forEach(action => action())
           actions.forEach(action => action(response.data));
           Actions.updateLoadingStatus(false);
         },
