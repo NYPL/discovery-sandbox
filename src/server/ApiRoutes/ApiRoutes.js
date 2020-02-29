@@ -50,13 +50,13 @@ router
   .route(`${appConfig.baseUrl}/hold/confirmation/:bibId-:itemId`)
   .get(Hold.confirmRequestServer);
 
-router
-  .route(`${appConfig.baseUrl}/bib/:bibId`)
-  .get(Bib.bibSearchServer);
-
-router
-  .route(`${appConfig.baseUrl}/bib/:bibId/all`)
-  .get(Bib.bibSearchServer);
+// router
+//   .route(`${appConfig.baseUrl}/bib/:bibId`)
+//   .get(Bib.bibSearchServer);
+//
+// router
+//   .route(`${appConfig.baseUrl}/bib/:bibId/all`)
+//   .get(Bib.bibSearchServer);
 
 router
   .route(`${appConfig.baseUrl}/edd`)

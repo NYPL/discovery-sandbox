@@ -15,6 +15,7 @@ function fetchBib(bibId, cb, errorcb) {
     nyplApiClientCall(`${bibId}.annotated-marc`),
   ])
     .then((response) => {
+      // console.log('nyplApiClientCall response', response);
       // First response is jsonld formatting:
       const data = response[0];
       // Assign second response (annotated-marc formatting) as property of bib:
@@ -28,10 +29,12 @@ function fetchBib(bibId, cb, errorcb) {
       if (data.subjectLiteral && data.subjectLiteral.length) {
         return shepApiCall(bibId)
           .then((shepRes) => {
+            // console.log('shepRes ', shepRes);
             data.subjectHeadingData = shepRes.data.subject_headings;
             return data;
           })
           .catch((error) => {
+            // console.log('shepError ', error);
             logger.error(`Error in shepApiCall API error, bib_id: ${bibId}`, error);
             return data;
           });
@@ -45,30 +48,30 @@ function fetchBib(bibId, cb, errorcb) {
       errorcb(error);
     }); /* end axios call */
 }
+//
+// function bibSearchServer(req, res, next) {
+//   const bibId = req.params.bibId || '';
+//
+//   fetchBib(
+//     bibId,
+//     (data) => {
+//       if (data.status && data.status === 404) {
+//         return res.redirect(`${appConfig.baseUrl}/404`);
+//       }
+//     },
+//     (error) => {
+//       logger.error(`Error in bibSearchServer API error, id: ${bibId}`, error);
+//       res.locals.data.Store = {
+//         bib: {},
+//         searchKeywords: req.query.searchKeywords || '',
+//         error,
+//       };
+//       next();
+//     },
+//   );
+// }
 
-function bibSearchServer(req, res, next) {
-  const bibId = req.params.bibId || '';
-
-  fetchBib(
-    bibId,
-    (data) => {
-      if (data.status && data.status === 404) {
-        return res.redirect(`${appConfig.baseUrl}/404`);
-      }
-    },
-    (error) => {
-      logger.error(`Error in bibSearchServer API error, id: ${bibId}`, error);
-      res.locals.data.Store = {
-        bib: {},
-        searchKeywords: req.query.searchKeywords || '',
-        error,
-      };
-      next();
-    },
-  );
-}
-
-function bibSearchAjax(req, res, next) {
+function bibSearchAjax(req, res) {
   const bibId = req.query.bibId || '';
 
   fetchBib(
@@ -79,7 +82,6 @@ function bibSearchAjax(req, res, next) {
 }
 
 export default {
-  bibSearchServer,
   bibSearchAjax,
   fetchBib,
   nyplApiClientCall,

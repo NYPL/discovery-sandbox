@@ -9,6 +9,7 @@ import Iso from 'iso';
 import webpack from 'webpack';
 import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
+import Store from '@Store';
 
 import alt from './src/app/alt';
 import appConfig from './src/app/data/appConfig';
@@ -28,6 +29,7 @@ const VIEWS_PATH = path.resolve(ROOT_PATH, 'src/views');
 const WEBPACK_DEV_PORT = appConfig.webpackDevServerPort || 3000;
 const isProduction = process.env.NODE_ENV === 'production';
 const app = express();
+let application;
 
 app.use(compress());
 
@@ -66,10 +68,8 @@ nyplApiClient();
 
 app.use('/*', initializePatronTokenAuth, getPatronData);
 app.use('/', apiRoutes);
-
-app.get('/*', (req, res) => {
-  alt.bootstrap(JSON.stringify(res.locals.data || {}));
-
+app.get('/*', (req, res, next) => {
+  Store.next = next;
   const appRoutes = (req.url).indexOf(appConfig.baseUrl) !== -1 ? routes().client : routes().server;
 
   match({ routes: appRoutes, location: req.url }, (error, redirectLocation, renderProps) => {
@@ -78,26 +78,33 @@ app.get('/*', (req, res) => {
     } else if (redirectLocation) {
       res.redirect(302, redirectLocation.pathname + redirectLocation.search);
     } else if (renderProps) {
-      const application = ReactDOMServer.renderToString(<RouterContext {...renderProps} />);
-      const title = DocumentTitle.rewind();
-      const iso = new Iso();
-
-      iso.add(application, alt.flush());
-      res
-        .status(200)
-        .render('index', {
-          application: iso.render(),
-          appTitle: title,
-          favicon: appConfig.favIconPath,
-          webpackPort: WEBPACK_DEV_PORT,
-          path: req.url,
-          isProduction,
-          baseUrl: appConfig.baseUrl,
-        });
+      console.log('Backend store ', Store.alt.stores.Store.state);
+      Store.next = next;
+      application = ReactDOMServer.renderToString(<RouterContext {...renderProps} />);
     } else {
       res.status(404).redirect(`${appConfig.baseUrl}/`);
     }
   });
+});
+
+app.get('/*', (req, res) => {
+  alt.bootstrap(JSON.stringify(res.locals.data || {}));
+  const title = DocumentTitle.rewind();
+  const iso = new Iso();
+  console.log('Next Store', Store.alt.stores.Store.state);
+
+  iso.add(application, alt.flush());
+  res
+    .status(200)
+    .render('index', {
+      application: iso.render(),
+      appTitle: title,
+      favicon: appConfig.favIconPath,
+      webpackPort: WEBPACK_DEV_PORT,
+      path: req.url,
+      isProduction,
+      baseUrl: appConfig.baseUrl,
+    });
 });
 
 const server = app.listen(app.get('port'), (error) => {

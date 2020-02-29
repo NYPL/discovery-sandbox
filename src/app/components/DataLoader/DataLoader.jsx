@@ -6,6 +6,7 @@ import appConfig from '@appConfig';
 
 class DataLoader extends React.Component {
   constructor(props) {
+    console.log('constructing data loader');
     super(props);
     this.pathInstructions = [
       {
@@ -16,15 +17,21 @@ class DataLoader extends React.Component {
     this.pathType = null;
     this.routes = {
       bib: {
-        apiRoute: matchData => `${appConfig.baseUrl}/api/bib?bibId=${matchData[1]}`,
+        apiRoute: matchData => `${props.next ? 'http://localhost:3001' : ''}${appConfig.baseUrl}/api/bib?bibId=${matchData[1]}`,
         actions: [Actions.updateBib],
         errorMessage: 'Error attempting to make an ajax request to fetch a bib record from ResultsList',
       },
     };
     this.reducePathExpressions = this.reducePathExpressions.bind(this);
+    this.loadDataForRoutes = this.loadDataForRoutes.bind(this);
+    this.loadDataForRoutes().then(() => props.next());
   }
 
   componentDidMount() {
+    console.log('mounting data loader');
+  }
+
+  loadDataForRoutes() {
     const matchData = this.pathInstructions
       .reduce(this.reducePathExpressions, null);
 
@@ -35,7 +42,7 @@ class DataLoader extends React.Component {
         errorMessage,
       } = this.routes[this.pathType];
       Actions.updateLoadingStatus(true);
-      ajaxCall(apiRoute(matchData),
+      return ajaxCall(apiRoute(matchData),
         (response) => {
           actions.forEach(action => action(response.data));
           Actions.updateLoadingStatus(false);
@@ -49,9 +56,12 @@ class DataLoader extends React.Component {
         },
       );
     }
+
+    return new Promise(resolve => resolve());
   }
 
   reducePathExpressions(acc, instruction) {
+    console.log('location: ', this.props.location);
     const { location } = this.props;
     const matchData = location.pathname.match(instruction.expression);
     if (matchData) this.pathType = instruction.pathType;

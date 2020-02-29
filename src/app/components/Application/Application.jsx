@@ -19,6 +19,7 @@ import DataLoader from '../DataLoader/DataLoader';
 
 class App extends React.Component {
   constructor(props) {
+    console.log('App Store', Store);
     super(props);
     this.state = {
       data: Store.getState(),
@@ -81,6 +82,7 @@ class App extends React.Component {
           <DataLoader
             key={JSON.stringify(this.context.router.location)}
             location={this.context.router.location}
+            next={Store.next}
           >
             {React.cloneElement(this.props.children, this.state.data)}
           </DataLoader>
