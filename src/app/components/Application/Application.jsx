@@ -47,19 +47,19 @@ class App extends React.Component {
         return null;
       });
 
-      if (action === 'POP' && search) {
-        ajaxCall(`${appConfig.baseUrl}/api${decodeURI(search)}`, (response) => {
-          const { data } = response;
-          if (data.filters && data.searchResults) {
-            const selectedFilters = destructureFilters(urlFilters, data.filters);
-            Actions.updateSelectedFilters(selectedFilters);
-            Actions.updateFilters(data.filters);
-            Actions.updateSearchResults(data.searchResults);
-            Actions.updatePage(query.page || '1');
-            if (qParameter) Actions.updateSearchKeywords(qParameter);
-          }
-        });
-      }
+      // if (action === 'POP' && search) {
+      //   ajaxCall(`${appConfig.baseUrl}/api${decodeURI(search)}`, (response) => {
+      //     const { data } = response;
+      //     if (data.filters && data.searchResults) {
+      //       const selectedFilters = destructureFilters(urlFilters, data.filters);
+      //       Actions.updateSelectedFilters(selectedFilters);
+      //       Actions.updateFilters(data.filters);
+      //       Actions.updateSearchResults(data.searchResults);
+      //       Actions.updatePage(query.page || '1');
+      //       if (qParameter) Actions.updateSearchKeywords(qParameter);
+      //     }
+      //   });
+      // }
     });
   }
 

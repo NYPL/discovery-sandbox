@@ -40,7 +40,7 @@ class DataLoader extends React.Component {
 
   componentDidMount() {
     console.log('mounting data loader', this.props.next);
-    // if (!this.props.next) this.loadDataForRoutes();
+    if (!this.props.next) this.loadDataForRoutes();
   }
 
   loadDataForRoutes() {
