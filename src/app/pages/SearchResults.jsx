@@ -26,6 +26,8 @@ const SearchResults = (props) => {
     sortBy,
   } = props;
 
+  console.log('SearchResultsProps ', props);
+
   const [dropdownOpen, toggleDropdown] = useState(false);
 
   const totalResults = searchResults ? searchResults.totalResults : undefined;

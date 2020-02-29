@@ -13,6 +13,10 @@ class DataLoader extends React.Component {
         expression: /\/research\/collections\/shared-collection-catalog\/bib\/([cp]?b\d*)/,
         pathType: 'bib',
       },
+      {
+        expression: /\/research\/collections\/shared-collection-catalog\/search\?(.*)/,
+        pathType: 'search',
+      }
     ];
     this.pathType = null;
     this.routes = {
@@ -20,6 +24,11 @@ class DataLoader extends React.Component {
         apiRoute: matchData => `${props.next ? 'http://localhost:3001' : ''}${appConfig.baseUrl}/api/bib?bibId=${matchData[1]}`,
         actions: [Actions.updateBib],
         errorMessage: 'Error attempting to make an ajax request to fetch a bib record from ResultsList',
+      },
+      search: {
+        apiRoute: matchData => `${props.next ? 'http://localhost:3001' : ''}${appConfig.baseUrl}/api?${matchData[1]}`,
+        actions: [Actions.updateSearchResults],
+        errorMessage: 'Error attempting to make an ajax request to search',
       },
     };
     this.reducePathExpressions = this.reducePathExpressions.bind(this);
@@ -67,7 +76,11 @@ class DataLoader extends React.Component {
   reducePathExpressions(acc, instruction) {
     console.log('location: ', this.props.location);
     const { location } = this.props;
-    const matchData = location.pathname.match(instruction.expression);
+    const {
+      pathname,
+      search,
+    } = location;
+    const matchData = (pathname + search).match(instruction.expression);
     if (matchData) this.pathType = instruction.pathType;
     return matchData || acc;
   }

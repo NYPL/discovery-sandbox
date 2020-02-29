@@ -25,14 +25,14 @@ function MainApp(req, res, next) {
   next();
 }
 
-router
-  .route(`${appConfig.baseUrl}/search`)
-  .get(Search.searchServer)
-  .post(Search.searchServerPost);
-
-router
-  .route(`${appConfig.baseUrl}/advanced`)
-  .get(Search.searchServer);
+// router
+//   .route(`${appConfig.baseUrl}/search`)
+//   .get(Search.searchServer)
+//   .post(Search.searchServerPost);
+//
+// router
+//   .route(`${appConfig.baseUrl}/advanced`)
+//   .get(Search.searchServer);
 
 router
   .route(`${appConfig.baseUrl}/hold/request/:bibId-:itemId`)

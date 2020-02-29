@@ -14,6 +14,7 @@ import appConfig from '../../data/appConfig';
 
 // Renders the ResultsList containing the search results and the Pagination component
 const SearchResultsContainer = (props) => {
+  console.log('SearchResultsContainer props', props);
   const {
     searchResults,
     searchKeywords,
