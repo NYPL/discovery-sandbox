@@ -126,11 +126,13 @@ const BibPage = (props) => {
       : <AdditionalDetailsViewer bib={bib} />
   );
 
+  console.log('Bib Store: ', Store.getState());
+
   return (
     <DocumentTitle title="Item Details | Shared Collection Catalog | NYPL">
       <main className="main-page">
         <LoadingLayer
-          status={Store.state.isLoading}
+          status={ Store.getState().isLoading}
           title="Searching"
         />
         <div className="nypl-page-header">
@@ -171,6 +173,7 @@ const BibPage = (props) => {
                   fields={topFields}
                   logging
                   electronicResources={aggregatedElectronicResources}
+                  store={Store}
                 />
 
                 {itemHoldings}

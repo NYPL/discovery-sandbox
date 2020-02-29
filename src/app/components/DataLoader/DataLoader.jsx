@@ -6,7 +6,7 @@ import appConfig from '@appConfig';
 
 class DataLoader extends React.Component {
   constructor(props) {
-    console.log('constructing data loader');
+    console.log('constructing data loader', props);
     super(props);
     this.pathInstructions = [
       {
@@ -30,10 +30,12 @@ class DataLoader extends React.Component {
   }
 
   componentDidMount() {
-    console.log('mounting data loader');
+    console.log('mounting data loader', this.props.next);
+    // if (!this.props.next) this.loadDataForRoutes();
   }
 
   loadDataForRoutes() {
+    console.log('loading data')
     const matchData = this.pathInstructions
       .reduce(this.reducePathExpressions, null);
 

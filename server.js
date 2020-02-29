@@ -29,6 +29,7 @@ const VIEWS_PATH = path.resolve(ROOT_PATH, 'src/views');
 const WEBPACK_DEV_PORT = appConfig.webpackDevServerPort || 3000;
 const isProduction = process.env.NODE_ENV === 'production';
 const app = express();
+
 let application;
 
 app.use(compress());
@@ -71,7 +72,6 @@ app.use('/', apiRoutes);
 app.get('/*', (req, res, next) => {
   Store.next = next;
   const appRoutes = (req.url).indexOf(appConfig.baseUrl) !== -1 ? routes().client : routes().server;
-
   match({ routes: appRoutes, location: req.url }, (error, redirectLocation, renderProps) => {
     if (error) {
       res.status(500).send(error.message);
@@ -93,20 +93,34 @@ app.get('/*', (req, res) => {
   const iso = new Iso();
   console.log('Next Store', Store.alt.stores.Store.state);
 
-  let flushed = alt.flush();
-  console.log('flushed: ', flushed);
-  iso.add(application, flushed);
-  res
-    .status(200)
-    .render('index', {
-      application: iso.render(),
-      appTitle: title,
-      favicon: appConfig.favIconPath,
-      webpackPort: WEBPACK_DEV_PORT,
-      path: req.url,
-      isProduction,
-      baseUrl: appConfig.baseUrl,
-    });
+  Store.next = null;
+  const appRoutes = (req.url).indexOf(appConfig.baseUrl) !== -1 ? routes().client : routes().server;
+  match({ routes: appRoutes, location: req.url }, (error, redirectLocation, renderProps) => {
+    if (error) {
+      res.status(500).send(error.message);
+    } else if (redirectLocation) {
+      res.redirect(302, redirectLocation.pathname + redirectLocation.search);
+    } else if (renderProps) {
+      console.log('Second Backend store ', Store.alt.stores.Store.state);
+      application = ReactDOMServer.renderToString(<RouterContext {...renderProps} />);
+      let flushed = alt.flush();
+      console.log('flushed: ', flushed);
+      iso.add(application, flushed);
+      res
+        .status(200)
+        .render('index', {
+          application: iso.render(),
+          appTitle: title,
+          favicon: appConfig.favIconPath,
+          webpackPort: WEBPACK_DEV_PORT,
+          path: req.url,
+          isProduction,
+          baseUrl: appConfig.baseUrl,
+        });
+    } else {
+      res.status(404).redirect(`${appConfig.baseUrl}/`);
+    }
+  });
 });
 
 const server = app.listen(app.get('port'), (error) => {

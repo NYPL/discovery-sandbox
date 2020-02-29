@@ -19,7 +19,7 @@ import DataLoader from '../DataLoader/DataLoader';
 
 class App extends React.Component {
   constructor(props) {
-    console.log('App Store', Store);
+    console.log('App Store', Store.getState());
     super(props);
     this.state = {
       data: Store.getState(),
@@ -29,6 +29,7 @@ class App extends React.Component {
   }
 
   componentDidMount() {
+    window.appStore = Store;
     Store.listen(this.onChange);
     // Listen to the browser's navigation buttons.
     this.props.route.history.listen((location = { action: '', search: '', query: {} }) => {
@@ -78,7 +79,7 @@ class App extends React.Component {
             navData={navConfig.current}
             skipNav={{ target: 'mainContent' }}
             patron={this.state.patron}
-          />
+            />
           <DataLoader
             key={JSON.stringify(this.context.router.location)}
             location={this.context.router.location}
