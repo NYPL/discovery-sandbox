@@ -24,7 +24,9 @@ class DataLoader extends React.Component {
     };
     this.reducePathExpressions = this.reducePathExpressions.bind(this);
     this.loadDataForRoutes = this.loadDataForRoutes.bind(this);
-    this.loadDataForRoutes().then(() => props.next());
+    if (props.next) {
+      this.loadDataForRoutes().then(() => props.next());
+    }
   }
 
   componentDidMount() {

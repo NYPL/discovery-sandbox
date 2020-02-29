@@ -88,12 +88,14 @@ app.get('/*', (req, res, next) => {
 });
 
 app.get('/*', (req, res) => {
-  alt.bootstrap(JSON.stringify(res.locals.data || {}));
+  alt.bootstrap(JSON.stringify(Store.alt.stores.Store.state));
   const title = DocumentTitle.rewind();
   const iso = new Iso();
   console.log('Next Store', Store.alt.stores.Store.state);
 
-  iso.add(application, alt.flush());
+  let flushed = alt.flush();
+  console.log('flushed: ', flushed);
+  iso.add(application, flushed);
   res
     .status(200)
     .render('index', {
