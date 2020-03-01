@@ -28,22 +28,6 @@ class App extends React.Component {
 
   componentDidMount() {
     Store.listen(this.onChange);
-    // Listen to the browser's navigation buttons.
-    this.props.route.history.listen((location = { action: '', search: '', query: {} }) => {
-      const {
-        action,
-        search,
-        query,
-      } = location;
-
-      const qParameter = query.q;
-      const urlFilters = _pick(query, (value, key) => {
-        if (key.indexOf('filter') !== -1) {
-          return value;
-        }
-        return null;
-      });
-    });
   }
 
   componentWillUnmount() {
