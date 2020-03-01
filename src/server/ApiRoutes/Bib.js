@@ -45,28 +45,6 @@ function fetchBib(bibId, cb, errorcb) {
       errorcb(error);
     }); /* end axios call */
 }
-//
-// function bibSearchServer(req, res, next) {
-//   const bibId = req.params.bibId || '';
-//
-//   fetchBib(
-//     bibId,
-//     (data) => {
-//       if (data.status && data.status === 404) {
-//         return res.redirect(`${appConfig.baseUrl}/404`);
-//       }
-//     },
-//     (error) => {
-//       logger.error(`Error in bibSearchServer API error, id: ${bibId}`, error);
-//       res.locals.data.Store = {
-//         bib: {},
-//         searchKeywords: req.query.searchKeywords || '',
-//         error,
-//       };
-//       next();
-//     },
-//   );
-// }
 
 function bibSearchAjax(req, res) {
   const bibId = req.query.bibId || '';

@@ -25,15 +25,6 @@ function MainApp(req, res, next) {
   next();
 }
 
-// router
-//   .route(`${appConfig.baseUrl}/search`)
-//   .get(Search.searchServer)
-//   .post(Search.searchServerPost);
-//
-// router
-//   .route(`${appConfig.baseUrl}/advanced`)
-//   .get(Search.searchServer);
-
 router
   .route(`${appConfig.baseUrl}/hold/request/:bibId-:itemId`)
   .get(Hold.newHoldRequestServer);
@@ -49,14 +40,6 @@ router
 router
   .route(`${appConfig.baseUrl}/hold/confirmation/:bibId-:itemId`)
   .get(Hold.confirmRequestServer);
-
-// router
-//   .route(`${appConfig.baseUrl}/bib/:bibId`)
-//   .get(Bib.bibSearchServer);
-//
-// router
-//   .route(`${appConfig.baseUrl}/bib/:bibId/all`)
-//   .get(Bib.bibSearchServer);
 
 router
   .route(`${appConfig.baseUrl}/edd`)
