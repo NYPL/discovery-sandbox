@@ -27,7 +27,6 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    window.appStore = Store.alt.stores.Store.state;
     Store.listen(this.onChange);
     // Listen to the browser's navigation buttons.
     this.props.route.history.listen((location = { action: '', search: '', query: {} }) => {

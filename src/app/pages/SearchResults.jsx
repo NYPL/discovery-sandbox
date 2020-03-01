@@ -26,8 +26,6 @@ const SearchResults = (props) => {
     sortBy,
   } = props;
 
-  console.log('SearchResultsProps ', props);
-
   const [dropdownOpen, toggleDropdown] = useState(false);
 
   const totalResults = searchResults ? searchResults.totalResults : undefined;
@@ -64,7 +62,6 @@ const SearchResults = (props) => {
   };
 
   const selectedFiltersAvailable = checkForSelectedFilters();
-  console.log('TotalResults: ', totalResults);
 
   return (
     <DocumentTitle title="Search Results | Shared Collection Catalog | NYPL">

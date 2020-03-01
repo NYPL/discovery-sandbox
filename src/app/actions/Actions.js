@@ -39,7 +39,6 @@ class Actions {
   }
 
   updateLoadingStatus(data) {
-    console.log('updating loading status to ', data);
     return data;
   }
 

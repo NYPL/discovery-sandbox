@@ -15,7 +15,6 @@ function fetchBib(bibId, cb, errorcb) {
     nyplApiClientCall(`${bibId}.annotated-marc`),
   ])
     .then((response) => {
-      // console.log('nyplApiClientCall response', response);
       // First response is jsonld formatting:
       const data = response[0];
       // Assign second response (annotated-marc formatting) as property of bib:
@@ -29,12 +28,10 @@ function fetchBib(bibId, cb, errorcb) {
       if (data.subjectLiteral && data.subjectLiteral.length) {
         return shepApiCall(bibId)
           .then((shepRes) => {
-            // console.log('shepRes ', shepRes);
             data.subjectHeadingData = shepRes.data.subject_headings;
             return data;
           })
           .catch((error) => {
-            // console.log('shepError ', error);
             logger.error(`Error in shepApiCall API error, bib_id: ${bibId}`, error);
             return data;
           });

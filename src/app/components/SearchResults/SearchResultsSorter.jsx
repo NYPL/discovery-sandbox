@@ -59,7 +59,6 @@ class SearchResultsSorter extends React.Component {
   sortResultsBy(sortBy) {
     // const apiQuery = this.props.createAPIQuery({ sortBy, page: this.props.page });
     const apiQuery = this.props.createAPIQuery({ sortBy });
-    console.log('apiQuery: ', apiQuery);
 
     trackDiscovery('Sort by', sortBy);
     this.context.router.push(`${appConfig.baseUrl}/search?${apiQuery}`);

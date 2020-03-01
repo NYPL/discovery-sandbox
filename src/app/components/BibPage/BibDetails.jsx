@@ -24,10 +24,6 @@ class BibDetails extends React.Component {
     this.owner = getOwner(this.props.bib);
   }
 
-  // componentDidMount() {
-  //   window.bibStore = this.props.store;
-  // }
-
   /**
    * Return note array or null.
    *
