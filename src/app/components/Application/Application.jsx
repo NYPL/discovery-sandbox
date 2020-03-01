@@ -13,13 +13,11 @@ import {
   ajaxCall,
   destructureFilters,
 } from '../../utils/utils';
-import Actions from '../../actions/Actions';
 import appConfig from '../../data/appConfig';
 import DataLoader from '../DataLoader/DataLoader';
 
 class App extends React.Component {
   constructor(props) {
-    console.log('App Store', Store.getState());
     super(props);
     this.state = {
       data: Store.getState(),
@@ -29,7 +27,7 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    window.appStore = Store;
+    window.appStore = Store.alt.stores.Store.state;
     Store.listen(this.onChange);
     // Listen to the browser's navigation buttons.
     this.props.route.history.listen((location = { action: '', search: '', query: {} }) => {
@@ -46,20 +44,6 @@ class App extends React.Component {
         }
         return null;
       });
-
-      // if (action === 'POP' && search) {
-      //   ajaxCall(`${appConfig.baseUrl}/api${decodeURI(search)}`, (response) => {
-      //     const { data } = response;
-      //     if (data.filters && data.searchResults) {
-      //       const selectedFilters = destructureFilters(urlFilters, data.filters);
-      //       Actions.updateSelectedFilters(selectedFilters);
-      //       Actions.updateFilters(data.filters);
-      //       Actions.updateSearchResults(data.searchResults);
-      //       Actions.updatePage(query.page || '1');
-      //       if (qParameter) Actions.updateSearchKeywords(qParameter);
-      //     }
-      //   });
-      // }
     });
   }
 

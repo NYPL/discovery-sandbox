@@ -6,7 +6,6 @@ import appConfig from '@appConfig';
 
 class DataLoader extends React.Component {
   constructor(props) {
-    console.log('constructing data loader', props);
     super(props);
     this.pathInstructions = [
       {
@@ -27,7 +26,19 @@ class DataLoader extends React.Component {
       },
       search: {
         apiRoute: matchData => `${props.next ? 'http://localhost:3001' : ''}${appConfig.baseUrl}/api?${matchData[1]}`,
-        actions: [data => Actions.updateSearchResults(data.searchResults)],
+        actions: [
+          data => Actions.updateSearchResults(data.searchResults),
+          () => Actions.updatePage(this.props.location.query.page || 1),
+          () => Actions.updateSearchKeywords(this.props.location.query.q),
+          data => Actions.updateFilters(data.filters),
+          () => {
+            const {
+              sort,
+              sort_direction,
+            } = this.props.location.query;
+            Actions.updateSortBy(`${sort}_${sort_direction}`);
+          },
+        ],
         errorMessage: 'Error attempting to make an ajax request to search',
       },
     };
@@ -39,12 +50,10 @@ class DataLoader extends React.Component {
   }
 
   componentDidMount() {
-    console.log('mounting data loader', this.props.next);
     if (!this.props.next) this.loadDataForRoutes();
   }
 
   loadDataForRoutes() {
-    console.log('loading data')
     const matchData = this.pathInstructions
       .reduce(this.reducePathExpressions, null);
 
@@ -75,7 +84,6 @@ class DataLoader extends React.Component {
   }
 
   reducePathExpressions(acc, instruction) {
-    console.log('location: ', this.props.location);
     const { location } = this.props;
     const {
       pathname,

@@ -59,6 +59,7 @@ function search(searchKeywords = '', page, sortBy, order, field, filters, cb, er
 
 function searchAjax(req, res) {
   const { page, q, sort, order, fieldQuery, filters } = getReqParams(req.query);
+  console.log('searchAjaxParams ', page, q, sort, order, fieldQuery, filters);
 
   search(
     q,

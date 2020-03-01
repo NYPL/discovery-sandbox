@@ -78,7 +78,6 @@ app.get('/*', (req, res, next) => {
     } else if (redirectLocation) {
       res.redirect(302, redirectLocation.pathname + redirectLocation.search);
     } else if (renderProps) {
-      console.log('Backend store ', Store.alt.stores.Store.state);
       Store.next = next;
       application = ReactDOMServer.renderToString(<RouterContext {...renderProps} />);
     } else {
@@ -91,7 +90,6 @@ app.get('/*', (req, res) => {
   alt.bootstrap(JSON.stringify(Store.alt.stores.Store.state));
   const title = DocumentTitle.rewind();
   const iso = new Iso();
-  console.log('Next Store', Store.alt.stores.Store.state);
 
   Store.next = null;
   const appRoutes = (req.url).indexOf(appConfig.baseUrl) !== -1 ? routes().client : routes().server;
@@ -101,10 +99,8 @@ app.get('/*', (req, res) => {
     } else if (redirectLocation) {
       res.redirect(302, redirectLocation.pathname + redirectLocation.search);
     } else if (renderProps) {
-      console.log('Second Backend store ', Store.alt.stores.Store.state);
       application = ReactDOMServer.renderToString(<RouterContext {...renderProps} />);
       let flushed = alt.flush();
-      console.log('flushed: ', flushed);
       iso.add(application, flushed);
       res
         .status(200)
