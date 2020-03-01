@@ -66,7 +66,6 @@ class DataLoader extends React.Component {
       Actions.updateLoadingStatus(true);
       return ajaxCall(apiRoute(matchData),
         (response) => {
-          // actions.forEach(action => action())
           actions.forEach(action => action(response.data));
           Actions.updateLoadingStatus(false);
         },
