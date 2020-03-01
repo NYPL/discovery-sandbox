@@ -29,6 +29,8 @@ const VIEWS_PATH = path.resolve(ROOT_PATH, 'src/views');
 const WEBPACK_DEV_PORT = appConfig.webpackDevServerPort || 3000;
 const isProduction = process.env.NODE_ENV === 'production';
 const app = express();
+const title = DocumentTitle.rewind();
+const iso = new Iso();
 
 let application;
 
@@ -67,10 +69,7 @@ app.use('/', (req, res, next) => {
 // Init the nypl data api client.
 nyplApiClient();
 
-app.use('/*', initializePatronTokenAuth, getPatronData);
-app.use('/', apiRoutes);
-app.get('/*', (req, res, next) => {
-  Store.next = next;
+function renderReact(req, res, renderPage = false) {
   const appRoutes = (req.url).indexOf(appConfig.baseUrl) !== -1 ? routes().client : routes().server;
   match({ routes: appRoutes, location: req.url }, (error, redirectLocation, renderProps) => {
     if (error) {
@@ -78,45 +77,40 @@ app.get('/*', (req, res, next) => {
     } else if (redirectLocation) {
       res.redirect(302, redirectLocation.pathname + redirectLocation.search);
     } else if (renderProps) {
-      Store.next = next;
       application = ReactDOMServer.renderToString(<RouterContext {...renderProps} />);
+      const flushed = alt.flush();
+      if (renderPage) {
+        iso.add(application, flushed);
+        res
+          .status(200)
+          .render('index', {
+            application: iso.render(),
+            appTitle: title,
+            favicon: appConfig.favIconPath,
+            webpackPort: WEBPACK_DEV_PORT,
+            path: req.url,
+            isProduction,
+            baseUrl: appConfig.baseUrl,
+          });
+      }
     } else {
       res.status(404).redirect(`${appConfig.baseUrl}/`);
     }
   });
+}
+
+app.use('/*', initializePatronTokenAuth, getPatronData);
+app.use('/', apiRoutes);
+
+app.get('/*', (req, res, next) => {
+  Store.next = next;
+  renderReact(req, res);
 });
 
 app.get('/*', (req, res) => {
   alt.bootstrap(JSON.stringify(Store.alt.stores.Store.state));
-  const title = DocumentTitle.rewind();
-  const iso = new Iso();
-
+  renderReact(req, res, true);
   Store.next = null;
-  const appRoutes = (req.url).indexOf(appConfig.baseUrl) !== -1 ? routes().client : routes().server;
-  match({ routes: appRoutes, location: req.url }, (error, redirectLocation, renderProps) => {
-    if (error) {
-      res.status(500).send(error.message);
-    } else if (redirectLocation) {
-      res.redirect(302, redirectLocation.pathname + redirectLocation.search);
-    } else if (renderProps) {
-      application = ReactDOMServer.renderToString(<RouterContext {...renderProps} />);
-      let flushed = alt.flush();
-      iso.add(application, flushed);
-      res
-        .status(200)
-        .render('index', {
-          application: iso.render(),
-          appTitle: title,
-          favicon: appConfig.favIconPath,
-          webpackPort: WEBPACK_DEV_PORT,
-          path: req.url,
-          isProduction,
-          baseUrl: appConfig.baseUrl,
-        });
-    } else {
-      res.status(404).redirect(`${appConfig.baseUrl}/`);
-    }
-  });
 });
 
 const server = app.listen(app.get('port'), (error) => {
