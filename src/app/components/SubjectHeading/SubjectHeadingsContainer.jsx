@@ -116,8 +116,6 @@ class SubjectHeadingsContainer extends React.Component {
       },
     } = this.context.router.location;
 
-    console.log('query: ', query);
-
     const updatedDirection = calculateDirection(sortBy, direction)(type);
 
     const paramString = `filter=${query.filter}&sortBy=${type}&direction=${updatedDirection}`;

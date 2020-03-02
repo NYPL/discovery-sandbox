@@ -198,9 +198,6 @@ class SubjectHeadingsTableBody extends React.Component {
       subjectHeadings,
     } = this.state;
 
-    window.tableBodies = window.tableBodies || [];
-    window.tableBodies.push(this);
-
     return (
       <React.Fragment>
         {
