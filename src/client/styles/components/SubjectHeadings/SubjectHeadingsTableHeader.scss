@@ -17,6 +17,12 @@
 
   .headingColumnHeader {
     display: flex;
+    padding-left: 5px;
+  }
+}
+
+.subjectHeadingsTable:not(.related) {
+  .headingColumnHeader {
     padding-left: 32px;
   }
 }

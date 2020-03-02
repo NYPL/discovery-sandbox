@@ -1,17 +1,14 @@
-.subjectHeadingContext,
-.subjectHeadingRelated {
+.subjectHeadingInfoBox {
   border-color: #000000;
   border-style: solid;
   border-top-width: 3px;
   justify-self: end;
 
   .backgroundContainer {
-    padding-left: 32px;
+    padding-left: 5px;
     background-color: $subject-heading-table-header;
   }
-}
 
-.subjectHeadingInfoBox {
   .toIndex {
     font-size: 14px;
     font-style: italic;
@@ -26,7 +23,7 @@
   }
 }
 
-.subjectHeadingRelated {
+.related {
   height: fit-content;
 
   .emph {
