@@ -235,17 +235,14 @@ SubjectHeadingsTableBody.propTypes = {
   top: PropTypes.bool,
   updateSort: PropTypes.func,
   pathname: PropTypes.string,
-<<<<<<< HEAD
   seeMoreText: PropTypes.string,
   seeMoreLinkUrl: PropTypes.string,
-=======
   direction: PropTypes.string,
->>>>>>> shep-development
 };
 
 SubjectHeadingsTableBody.defaultProps = {
   indentation: 0,
-}
+};
 
 SubjectHeadingsTableBody.contextTypes = {
   router: PropTypes.object,
