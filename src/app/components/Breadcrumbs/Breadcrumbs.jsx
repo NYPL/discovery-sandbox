@@ -51,7 +51,7 @@ const Breadcrumbs = ({ query, type, bibUrl, itemUrl, edd }) => {
       return crumbs;
     }
 
-    const stringifiedQuery = query.replace("q=", "")
+    const stringifiedQuery = query.replace(/^q=/, "")
 
     if (stringifiedQuery && stringifiedQuery !== "undefined") {
       crumbs.push(
