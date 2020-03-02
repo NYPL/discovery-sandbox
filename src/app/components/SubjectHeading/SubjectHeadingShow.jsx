@@ -151,12 +151,16 @@ class SubjectHeadingShow extends React.Component {
             keyId="context"
             container="context"
             tfootContent={
-              <Link
-                to={contextHeadings && contextHeadings.length ? this.generateFullContextUrl() : '#'}
-                className="toIndex"
-              >
-                Explore more in Subject Heading index
-              </Link>
+              <tr>
+                <td>
+                  <Link
+                    to={contextHeadings && contextHeadings.length ? this.generateFullContextUrl() : '#'}
+                    className="toIndex"
+                  >
+                    Explore more in Subject Heading index
+                  </Link>
+                </td>
+              </tr>
             }
           />
         </div>

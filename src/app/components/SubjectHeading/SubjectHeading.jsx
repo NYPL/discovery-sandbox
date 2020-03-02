@@ -195,7 +195,7 @@ class SubjectHeading extends React.Component {
       const innerText = desc_count > 0 ? symbol : "";
       const props = {};
 
-      props.onClick = container !== 'context' ? this.toggleOpen : () => {};
+      props.onClick = this.toggleOpen;
       props.className = "subjectHeadingToggle";
 
       if (desc_count > 0) {
