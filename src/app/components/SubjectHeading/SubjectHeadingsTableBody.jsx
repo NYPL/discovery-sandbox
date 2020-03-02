@@ -122,7 +122,14 @@ class SubjectHeadingsTableBody extends React.Component {
       sortBy,
       linked,
       direction,
+      seeMoreText,
+      seeMoreLinkUrl,
     } = this.props;
+
+    if (listItem.button) {
+      console.log('Table row: ', seeMoreText, seeMoreLinkUrl, this.props);
+    }
+
 
     const { location } = this.context.router;
 
@@ -139,6 +146,9 @@ class SubjectHeadingsTableBody extends React.Component {
           key={indentation || index}
           nested={nested}
           interactive={interactive}
+          container={container}
+          linkUrl={seeMoreLinkUrl}
+          text={seeMoreText}
         />
       );
     }
@@ -165,11 +175,20 @@ class SubjectHeadingsTableBody extends React.Component {
         container={container}
         sortBy={sortBy}
         linked={linked}
+        seeMoreText={seeMoreText}
+        seeMoreLinkUrl={seeMoreLinkUrl}
       />
     );
   }
 
   render() {
+    const {
+      container,
+      seeMoreText,
+      seeMoreLinkUrl,
+    } = this.props;
+
+    console.log('box ', container, seeMoreText, seeMoreLinkUrl, this.props);
     const {
       subjectHeadings,
     } = this.state;
@@ -198,6 +217,8 @@ SubjectHeadingsTableBody.propTypes = {
   top: PropTypes.bool,
   updateSort: PropTypes.func,
   pathname: PropTypes.string,
+  seeMoreText: PropTypes.string,
+  seeMoreLinkUrl: PropTypes.string,
 };
 
 SubjectHeadingsTableBody.contextTypes = {

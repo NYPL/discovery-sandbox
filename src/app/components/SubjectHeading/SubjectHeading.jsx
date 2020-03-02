@@ -165,6 +165,8 @@ class SubjectHeading extends React.Component {
         search: '',
       },
       container,
+      seeMoreText,
+      seeMoreLinkUrl,
     } = this.props;
 
     const {
@@ -297,6 +299,8 @@ class SubjectHeading extends React.Component {
             direction={direction}
             key={`${uuid}-list-${sortBy}-${direction}`}
             updateSort={this.updateSort}
+            seeMoreText={seeMoreText}
+            seeMoreLinkUrl={seeMoreLinkUrl}
           />
           : null}
         {!open && preview && preview.length >= 4 ?
@@ -316,6 +320,8 @@ SubjectHeading.propTypes = {
   indentation: PropTypes.number,
   container: PropTypes.string,
   direction: PropTypes.string,
+  seeMoreText: PropTypes.string,
+  seeMoreLinkUrl: PropTypes.string,
 };
 
 SubjectHeading.defaultProps = {

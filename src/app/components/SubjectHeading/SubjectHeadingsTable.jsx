@@ -14,12 +14,14 @@ const SubjectHeadingsTable = (props) => {
     keyId,
     container,
     updateSort,
+    seeMoreText,
+    seeMoreLinkUrl,
   } = props;
 
   return (
     <table className={`subjectHeadingsTable ${container}`}>
       <SubjectHeadingsTableHeader updateSort={updateSort} selected={sortBy} />
-      <tbody>
+      <tbody data={`${seeMoreText}-${seeMoreLinkUrl}`}>
         <SubjectHeadingsTableBody
           subjectHeadings={subjectHeadings}
           linked={location.query.linked}
@@ -28,6 +30,8 @@ const SubjectHeadingsTable = (props) => {
           showId={showId}
           keyId={keyId}
           container={container}
+          seeMoreText={seeMoreText}
+          seeMoreLinkUrl={seeMoreLinkUrl}
           top
         />
       </tbody>
@@ -44,6 +48,8 @@ SubjectHeadingsTable.propTypes = {
   keyId: PropTypes.string,
   container: PropTypes.string,
   updateSort: PropTypes.func,
+  seeMoreText: PropTypes.string,
+  seeMoreLinkUrl: PropTypes.string,
 };
 
 export default SubjectHeadingsTable;

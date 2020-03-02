@@ -125,6 +125,8 @@ class SubjectHeadingShow extends React.Component {
 
     const { location } = this.props;
 
+    const linkUrl = contextHeadings && contextHeadings.length ? this.generateFullContextUrl() : '#';
+
     if (error) {
       return (<div>Not a subject heading</div>);
     }
@@ -149,12 +151,14 @@ class SubjectHeadingShow extends React.Component {
             showId={uuid}
             keyId="context"
             container="context"
+            seeMoreLinkUrl={linkUrl}
+            seeMoreText="See more in Subject Headings Index"
           />
           <Link
-            to={contextHeadings && contextHeadings.length ? this.generateFullContextUrl() : '#'}
+            to={linkUrl}
             className="toIndex"
           >
-            Go to Subject Headings Index
+            Explore more in Subject Heading Index
           </Link>
         </div>
         <div

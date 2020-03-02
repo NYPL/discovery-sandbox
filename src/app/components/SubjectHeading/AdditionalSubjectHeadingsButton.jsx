@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router';
 
 class AdditionalSubjectHeadingsButton extends React.Component {
   constructor(props) {
@@ -15,24 +16,44 @@ class AdditionalSubjectHeadingsButton extends React.Component {
     const {
       indentation,
       interactive,
+      text,
+      linkUrl,
+      container,
     } = this.props;
+    console.log('AdditionalSubjectHeadingsButton: ', text, linkUrl, container);
     const previous = this.props.button === 'previous';
 
+    const seeMoreText = text || 'See more';
+
     const button = (
-      <button
-        onClick={this.onClick}
-        className="seeMoreButton"
-      >
-        {previous ? '↑' : '↓'} <em key="seeMoreText">See more</em>
-        {previous ? null : <br /> }
-        {previous ? null : <VerticalEllipse />}
-      </button>
+      linkUrl ?
+        (
+          <Link
+            to={linkUrl}
+            className="seeMoreButton toIndex"
+          >
+            {seeMoreText}
+          </Link>
+        )
+        :
+        (
+          <button
+            data={`${text}-${linkUrl}`}
+            onClick={this.onClick}
+            className="seeMoreButton"
+          >
+            {previous ? '↑' : '↓'} <em key="seeMoreText">{seeMoreText}</em>
+            {previous ? null : <br /> }
+            {previous ? null : <VerticalEllipse />}
+          </button>
+        )
+
     );
 
     const ellipse = previous ? null : <VerticalEllipse />;
 
     return (
-      <tr className="subjectHeadingRow nestedSubjectHeading">
+      <tr className="subjectHeadingRow nestedSubjectHeading" data={`${text}-${linkUrl}`}>
         <td colSpan="4">
           <span style={{ paddingLeft: `${40 * indentation}px` }}>
             {
@@ -60,6 +81,8 @@ AdditionalSubjectHeadingsButton.propTypes = {
   indentation: PropTypes.number,
   button: PropTypes.string,
   interactive: PropTypes.bool,
+  linkUrl: PropTypes.string,
+  text: PropTypes.string,
 };
 
 export default AdditionalSubjectHeadingsButton;
