@@ -178,6 +178,7 @@ class SubjectHeadingsTableBody extends React.Component {
         sortBy={sortBy}
         linked={linked}
         backgroundColor={this.backgroundColor()}
+        direction={direction}
       />
     );
   }

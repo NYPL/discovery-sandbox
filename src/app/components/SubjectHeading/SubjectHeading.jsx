@@ -121,9 +121,10 @@ class SubjectHeading extends React.Component {
     } = this.props.subjectHeading;
     let {
       sortBy,
+      direction,
     } = this.state;
-    const direction = additionalParameters.direction;
     if (additionalParameters.sortBy) sortBy = additionalParameters.sortBy;
+    if (additionalParameters.direction) direction = additionalParameters.direction;
     const url = `${appConfig.baseUrl}/api/subjectHeadings/subject_headings/${uuid}/narrower?sort_by=${sortBy}${direction ? `&direction=${direction}` : ''}`;
     axios(url)
       .then(
