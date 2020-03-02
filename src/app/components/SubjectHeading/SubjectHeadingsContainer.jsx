@@ -150,7 +150,7 @@ class SubjectHeadingsContainer extends React.Component {
   render() {
     const { error, subjectHeadings } = this.state;
     const { location } = this.context.router;
-    const { linked, sortBy, filter } = location.query;
+    const { linked, sortBy, filter, direction } = location.query;
 
     if (error) {
       return (
@@ -189,6 +189,7 @@ class SubjectHeadingsContainer extends React.Component {
           linked={linked}
           location={location}
           sortBy={sortBy}
+          direction={direction}
           updateSort={filter ? this.updateSort : null}
           container={"index"}
         />

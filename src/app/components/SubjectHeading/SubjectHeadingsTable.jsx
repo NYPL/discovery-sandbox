@@ -15,6 +15,7 @@ const SubjectHeadingsTable = (props) => {
     container,
     updateSort,
     tfootContent,
+    direction,
   } = props;
 
   return (
@@ -29,6 +30,7 @@ const SubjectHeadingsTable = (props) => {
           showId={showId}
           keyId={keyId}
           container={container}
+          direction={direction}
           top
         />
       </tbody>

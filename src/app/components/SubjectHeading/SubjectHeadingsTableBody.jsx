@@ -188,6 +188,7 @@ class SubjectHeadingsTableBody extends React.Component {
         sortBy={sortBy}
         linked={linked}
         backgroundColor={this.backgroundColor()}
+        direction={direction}
       />
     );
   }
@@ -196,6 +197,9 @@ class SubjectHeadingsTableBody extends React.Component {
     const {
       subjectHeadings,
     } = this.state;
+
+    window.tableBodies = window.tableBodies || [];
+    window.tableBodies.push(this);
 
     return (
       <React.Fragment>
