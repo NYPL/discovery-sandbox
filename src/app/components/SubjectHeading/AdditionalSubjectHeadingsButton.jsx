@@ -50,16 +50,25 @@ class AdditionalSubjectHeadingsButton extends React.Component {
 
     );
 
-    const ellipse = previous ? null : <VerticalEllipse />;
+    let content = null;
+
+    if (interactive) {
+      content = button;
+    } else if (!previous) {
+      content = <VerticalEllipse />;
+    }
+
+    if (!content) return null;
 
     return (
-      <tr className="subjectHeadingRow nestedSubjectHeading" data={`${text}-${linkUrl}`}>
+      <tr
+        className="subjectHeadingRow nestedSubjectHeading"
+        style={{ backgroundColor: this.props.backgroundColor }}
+      >
         <td colSpan="4">
-          <span style={{ paddingLeft: `${40 * indentation}px` }}>
+          <span className="moreSubjectsElement" style={{ paddingLeft: `${40 * indentation}px` }}>
             {
-              interactive ?
-              button
-              : ellipse
+              content
             }
           </span>
         </td>

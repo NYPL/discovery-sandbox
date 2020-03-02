@@ -15,13 +15,14 @@
   .toIndex {
     font-size: 14px;
     font-style: italic;
-    text-decoration: none;
+    min-height: 32px;
     padding-left: 10px;
+    text-decoration: none;
   }
 
   .toIndex:hover {
-    text-decoration: underline;
     cursor: pointer;
+    text-decoration: underline;
   }
 }
 
@@ -35,12 +36,17 @@
   .subjectHeadingToggle {
     display: none;
   }
+
+  .subjectHeadingLabelInner {
+    margin-left: 1%;
+  }
 }
 
 .subjectHeadingInfoBox {
-  min-width: 400px;
-  padding: 4px;
   margin-bottom: 14px;
+  min-width: 400px;
+  padding: 0;
+
   .subjectHeadingsTableCell {
     font-size: 12px;
 
@@ -61,14 +67,7 @@
   }
 
   th {
+    font-size: 12px;
     min-width: 45px;
   }
-}
-
-.relatedHeadingsBoundary {
-  border-top: rgb(240, 240, 240);
-  color: rgb(240, 240, 240);
-  width: 90%;
-  margin-top: 3px;
-  background-color: initial;
 }

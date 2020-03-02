@@ -4,7 +4,6 @@
   font-style: italic;
   margin-left: 40px;
   cursor: default;
-  background-color: $lighter-grey;
   @include removeDefaultButtonStyle;
 
   em {
