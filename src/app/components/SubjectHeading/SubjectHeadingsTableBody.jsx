@@ -27,6 +27,7 @@ class SubjectHeadingsTableBody extends React.Component {
     this.listItemsInInterval = this.listItemsInInterval.bind(this);
     this.subHeadingHeadings = this.subHeadingHeadings.bind(this);
     this.tableRow = this.tableRow.bind(this);
+    this.backgroundColor = this.backgroundColor.bind(this);
   }
 
   componentDidUpdate() {
@@ -78,6 +79,7 @@ class SubjectHeadingsTableBody extends React.Component {
     return [
       {
         nestedTableHeader: true,
+        indentation: this.props.indentation,
         updateSort: this.props.updateSort,
       },
     ];
@@ -87,6 +89,9 @@ class SubjectHeadingsTableBody extends React.Component {
     const {
       range,
     } = this.state;
+    console.log(this.subHeadingHeadings().concat(range.intervals.reduce((acc, el) =>
+      acc.concat(this.listItemsInInterval(el))
+      , [])));
     return this.subHeadingHeadings().concat(range.intervals.reduce((acc, el) =>
       acc.concat(this.listItemsInInterval(el))
       , []));
@@ -114,7 +119,22 @@ class SubjectHeadingsTableBody extends React.Component {
     return subjectHeadingsInInterval;
   }
 
-  tableRow(listItem, index) {
+  backgroundColor(nestedTable = false) {
+    const indentation = nestedTable ? this.props.indentation - 1 : this.props.indentation;
+
+    const level = indentation >= 3 ? 3 : indentation;
+
+    const backgroundColor = {
+      0: 'hsl(30, 14%, 92%)',
+      1: 'hsl(30, 13%, 94%)',
+      2: 'hsl(30, 12%, 97%)',
+      3: 'hsl(30, 11%, 99%)',
+    }[level];
+
+    return backgroundColor;
+  }
+
+  tableRow(listItem) {
     const {
       indentation,
       nested,
@@ -136,9 +156,10 @@ class SubjectHeadingsTableBody extends React.Component {
           indentation={listItem.indentation || indentation}
           button={listItem.button}
           updateParent={listItem.updateParent}
-          key={indentation || index}
+          key={`${listItem.button}${listItem.indentation}`}
           nested={nested}
           interactive={interactive}
+          backgroundColor={this.backgroundColor()}
         />
       );
     }
@@ -146,11 +167,12 @@ class SubjectHeadingsTableBody extends React.Component {
       return (
         <NestedTableHeader
           subjectHeading={listItem}
-          key={"nestedTableHeader"}
+          key={`nestedTableHeader${listItem.indentation}`}
           indentation={indentation}
           container={container}
           sortBy={sortBy}
           direction={direction}
+          backgroundColor={this.backgroundColor(true)}
         />
       );
     }
@@ -165,6 +187,7 @@ class SubjectHeadingsTableBody extends React.Component {
         container={container}
         sortBy={sortBy}
         linked={linked}
+        backgroundColor={this.backgroundColor()}
       />
     );
   }
@@ -198,7 +221,12 @@ SubjectHeadingsTableBody.propTypes = {
   top: PropTypes.bool,
   updateSort: PropTypes.func,
   pathname: PropTypes.string,
+  direction: PropTypes.string,
 };
+
+SubjectHeadingsTableBody.defaultProps = {
+  indentation: 0,
+}
 
 SubjectHeadingsTableBody.contextTypes = {
   router: PropTypes.object,

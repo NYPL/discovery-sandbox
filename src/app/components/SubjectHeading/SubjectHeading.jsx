@@ -4,7 +4,6 @@ import axios from 'axios';
 import { Link } from 'react-router';
 
 import SubjectHeadingsTableBody from './SubjectHeadingsTableBody';
-import SortButton from './SortButton';
 import Range from '../../models/Range';
 import appConfig from '../../data/appConfig';
 import Preview from './PreviewComponents';
@@ -174,7 +173,6 @@ class SubjectHeading extends React.Component {
       desc_count,
       children,
       preview,
-      updateSort,
     } = subjectHeading;
 
     const {
@@ -212,32 +210,12 @@ class SubjectHeading extends React.Component {
       return <button {...props}>{innerText}</button>;
     };
 
-    const hierarchicalBackgroundColor = () => {
-      const level = indentation >= 3 ? 3 : indentation;
-      const backgroundColor = {
-        0: 'hsl(24, 14%, 100%)',
-        1: 'hsl(24, 14%, 97%)',
-        2: 'hsl(24, 14%, 94%)',
-        3: 'hsl(24, 14%, 91%)', // this is just white
-      }[level];
-      return { backgroundColor };
-    };
-
     const positionStyle = container === 'narrower' ? null : { marginLeft: 30 * ((indentation || 0) + 1) };
     const isMain = (pathname + search).includes(uuid);
     // changes to HTML structure here will need to be replicated in ./SubjectHeadingTableHeader
 
     return (
       <React.Fragment>
-        {
-          container === 'narrower' ?
-            <tr>
-              <td colSpan="4">
-                <hr className="relatedHeadingsBoundary" />
-              </td>
-            </tr>
-          : null
-        }
         <tr
           data={`${subjectHeading.uuid}, ${container}`}
           className={`
@@ -246,20 +224,11 @@ class SubjectHeading extends React.Component {
             ${(indentation || 0) === 0 ? 'topLevel' : ''}
             ${(indentation || 0) !== 0 ? 'nestedSubjectHeading' : ''}
           `}
-          style={hierarchicalBackgroundColor()}
+          style={{ backgroundColor: this.props.backgroundColor }}
         >
           <td className={`subjectHeadingsTableCell subjectHeadingLabel ${sortBy === 'alphabetical' ? 'selected' : ''}`} >
             <div className="subjectHeadingLabelInner" style={positionStyle}>
               { toggle() }
-              { updateSort
-                ? (
-                  <SortButton
-                    handler={updateSort}
-                    type="alphabetical"
-                  />
-                  )
-                : null
-              }
               <Link to={this.generateUrl}>
                 <span className={`emph ${isMain ? 'mainHeading' : ''}`}>{rest === '' ? null : <span className="noEmph">{`${rest}\u0020--\u00a0`}</span>}{emph}</span>
               </Link>
@@ -267,19 +236,11 @@ class SubjectHeading extends React.Component {
           </td>
           <td className={`subjectHeadingsTableCell subjectHeadingAttribute narrower ${sortBy === 'descendants' ? 'selected' : ''}`}>
             <div className="subjectHeadingAttributeInner">
-              { updateSort
-                ? <SortButton handler={updateSort} type="descendants" />
-                : null
-              }
               {`${desc_count || '-'}`}
             </div>
           </td>
           <td className={`subjectHeadingsTableCell subjectHeadingAttribute titles ${sortBy === 'bibs' ? 'selected' : ''}`}>
             <div className="subjectHeadingAttributeInner">
-              { updateSort
-                   ? <SortButton handler={updateSort} type="bibs" />
-                   : null
-               }
               {`${bib_count}`}
             </div>
           </td>

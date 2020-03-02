@@ -3,7 +3,6 @@
   font-size: 14px;
   margin-left: 40px;
   cursor: default;
-  background-color: $lighter-grey;
   @include removeDefaultButtonStyle;
 
   em {
