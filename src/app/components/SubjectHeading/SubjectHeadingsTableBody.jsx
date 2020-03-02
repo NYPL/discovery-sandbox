@@ -146,10 +146,6 @@ class SubjectHeadingsTableBody extends React.Component {
       seeMoreLinkUrl,
     } = this.props;
 
-    if (listItem.button) {
-      console.log('Table row: ', seeMoreText, seeMoreLinkUrl, this.props);
-    }
-
 
     const { location } = this.context.router;
 
@@ -197,12 +193,9 @@ class SubjectHeadingsTableBody extends React.Component {
         container={container}
         sortBy={sortBy}
         linked={linked}
-<<<<<<< HEAD
         seeMoreText={seeMoreText}
         seeMoreLinkUrl={seeMoreLinkUrl}
-=======
         backgroundColor={this.backgroundColor()}
->>>>>>> shep-development
       />
     );
   }
@@ -214,7 +207,6 @@ class SubjectHeadingsTableBody extends React.Component {
       seeMoreLinkUrl,
     } = this.props;
 
-    console.log('box ', container, seeMoreText, seeMoreLinkUrl, this.props);
     const {
       subjectHeadings,
     } = this.state;

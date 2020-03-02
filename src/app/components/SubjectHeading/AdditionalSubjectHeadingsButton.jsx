@@ -18,9 +18,7 @@ class AdditionalSubjectHeadingsButton extends React.Component {
       interactive,
       text,
       linkUrl,
-      container,
     } = this.props;
-    console.log('AdditionalSubjectHeadingsButton: ', text, linkUrl, container);
     const previous = this.props.button === 'previous';
 
     const seeMoreText = text || 'See more';
