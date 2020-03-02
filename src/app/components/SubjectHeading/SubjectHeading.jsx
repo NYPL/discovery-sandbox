@@ -225,7 +225,16 @@ class SubjectHeading extends React.Component {
             <div className="subjectHeadingLabelInner" style={positionStyle}>
               { toggle() }
               <Link to={this.generateUrl}>
-                <span className={`emph ${isMain ? 'mainHeading' : ''}`}>{rest === '' ? null : <span className="noEmph">{`${rest}\u0020--\u00a0`}</span>}{emph}</span>
+                <span
+                  className={`emph ${isMain ? 'mainHeading' : ''}`}
+                >
+                  {rest === '' || container === 'context' ? null :
+                    <span className="noEmph">
+                      {`${rest}\u0020--\u00a0`}
+                    </span>
+                  }
+                  {emph}
+                </span>
               </Link>
             </div>
           </td>
