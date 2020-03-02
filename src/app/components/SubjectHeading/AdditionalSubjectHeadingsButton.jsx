@@ -29,7 +29,15 @@ class AdditionalSubjectHeadingsButton extends React.Component {
       </button>
     );
 
-    const ellipse = previous ? null : <VerticalEllipse />;
+    let content = null;
+
+    if (interactive) {
+      content = button;
+    } else if (!previous) {
+      content = <VerticalEllipse />;
+    }
+
+    if (!content) return null;
 
     return (
       <tr
@@ -39,9 +47,7 @@ class AdditionalSubjectHeadingsButton extends React.Component {
         <td colSpan="4">
           <span className="moreSubjectsElement" style={{ paddingLeft: `${40 * indentation}px` }}>
             {
-              interactive ?
-              button
-              : ellipse
+              content
             }
           </span>
         </td>
