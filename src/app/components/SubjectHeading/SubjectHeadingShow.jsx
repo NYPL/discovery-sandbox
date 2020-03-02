@@ -135,6 +135,7 @@ class SubjectHeadingShow extends React.Component {
           uuid={uuid}
           key={this.context.router.location.search}
         />
+      {contextHeadings ?
         <div
           className="nypl-column-half subjectHeadingContext subjectHeadingInfoBox"
           tabIndex='0'
@@ -158,8 +159,10 @@ class SubjectHeadingShow extends React.Component {
               </Link>
             }
           />
-
         </div>
+        : null
+      }
+      {relatedHeadings ?
         <div
           className="nypl-column-half subjectHeadingRelated subjectHeadingInfoBox"
           tabIndex='0'
@@ -172,9 +175,11 @@ class SubjectHeadingShow extends React.Component {
             subjectHeadings={relatedHeadings}
             location={location}
             keyId="related"
-            container="narrower"
+            container="related"
           />
         </div>
+        : null
+      }
       </React.Fragment>
     );
   }
