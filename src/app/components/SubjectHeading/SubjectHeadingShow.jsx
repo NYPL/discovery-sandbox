@@ -137,7 +137,7 @@ class SubjectHeadingShow extends React.Component {
         />
       {contextHeadings ?
         <div
-          className="nypl-column-half subjectHeadingContext subjectHeadingInfoBox"
+          className="nypl-column-half subjectHeadingInfoBox"
           tabIndex='0'
           aria-label='Neighboring Subject Headings'
           >
@@ -151,12 +151,16 @@ class SubjectHeadingShow extends React.Component {
             keyId="context"
             container="context"
             tfootContent={
-              <Link
-                to={contextHeadings && contextHeadings.length ? this.generateFullContextUrl() : '#'}
-                className="toIndex"
-              >
-                Explore more in Subject Heading index
-              </Link>
+              <tr>
+                <td>
+                  <Link
+                    to={contextHeadings && contextHeadings.length ? this.generateFullContextUrl() : '#'}
+                    className="toIndex"
+                  >
+                    Explore more in Subject Heading index
+                  </Link>
+                </td>
+              </tr>
             }
           />
         </div>
@@ -164,7 +168,7 @@ class SubjectHeadingShow extends React.Component {
       }
       {relatedHeadings ?
         <div
-          className="nypl-column-half subjectHeadingRelated subjectHeadingInfoBox"
+          className="nypl-column-half subjectHeadingInfoBox"
           tabIndex='0'
           aria-label='Related Subject Headings'
         >

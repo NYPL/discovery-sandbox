@@ -45,11 +45,6 @@ class SubjectHeading extends React.Component {
     }
   }
 
-  componentDidMount() {
-    window.subjectHeadings = window.subjectHeadings || [];
-    window.subjectHeadings.push(this);
-  }
-
   updateSubjectHeading(properties) {
     this.setState(properties);
   }
@@ -200,7 +195,7 @@ class SubjectHeading extends React.Component {
       const innerText = desc_count > 0 ? symbol : "";
       const props = {};
 
-      props.onClick = container !== 'context' ? this.toggleOpen : () => {};
+      props.onClick = this.toggleOpen;
       props.className = "subjectHeadingToggle";
 
       if (desc_count > 0) {
@@ -210,7 +205,7 @@ class SubjectHeading extends React.Component {
       return <button {...props}>{innerText}</button>;
     };
 
-    const positionStyle = container === 'narrower' ? null : { marginLeft: 30 * ((indentation || 0) + 1) };
+    const positionStyle = ["narrower", "related"].includes(container) ? null : { marginLeft: 30 * ((indentation || 0) + 1) };
     const isMain = (pathname + search).includes(uuid);
     // changes to HTML structure here will need to be replicated in ./SubjectHeadingTableHeader
 
@@ -230,7 +225,16 @@ class SubjectHeading extends React.Component {
             <div className="subjectHeadingLabelInner" style={positionStyle}>
               { toggle() }
               <Link to={this.generateUrl}>
-                <span className={`emph ${isMain ? 'mainHeading' : ''}`}>{rest === '' ? null : <span className="noEmph">{`${rest}\u0020--\u00a0`}</span>}{emph}</span>
+                <span
+                  className={`emph ${isMain ? 'mainHeading' : ''}`}
+                >
+                  {rest === '' || container === 'context' ? null :
+                    <span className="noEmph">
+                      {`${rest}\u0020--\u00a0`}
+                    </span>
+                  }
+                  {emph}
+                </span>
               </Link>
             </div>
           </td>
