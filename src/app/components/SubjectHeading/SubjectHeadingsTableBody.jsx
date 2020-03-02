@@ -30,26 +30,18 @@ class SubjectHeadingsTableBody extends React.Component {
     this.backgroundColor = this.backgroundColor.bind(this);
   }
 
-  componentDidUpdate() {
-    window.tbody = this;
-    if (!this.state.subjectHeadings && this.props.subjectHeadings) {
-      const newSubjectHeadings = this.props.subjectHeadings;
-      this.setState(
-        { subjectHeadings: newSubjectHeadings,
-          range: this.initialRange({ subjectHeadings: newSubjectHeadings }),
-        }, () => {
-          const { linked } = this.props;
-          if (linked) {
-            const url = `${appConfig.baseUrl}/api/subjectHeadings/subject_headings/${linked}/context?type=relatives`;
-            axios(url)
-              .then(
-                (res) => {
-                  this.mergeSubjectHeadings(res.data.subject_headings, linked);
-                },
-              );
-          }
-        });
-    }
+  componentDidMount() {
+    const { linked } = this.props
+
+    if (linked) {
+      const url = `${appConfig.baseUrl}/api/subjectHeadings/subject_headings/${linked}/context?type=relatives`;
+      axios(url)
+        .then(
+          (res) => {
+            this.mergeSubjectHeadings(res.data.subject_headings, linked);
+          },
+        );
+    };
   }
 
   mergeSubjectHeadings(subjectHeadings, linked) {

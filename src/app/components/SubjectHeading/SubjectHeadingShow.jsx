@@ -154,7 +154,7 @@ class SubjectHeadingShow extends React.Component {
                 to={contextHeadings && contextHeadings.length ? this.generateFullContextUrl() : '#'}
                 className="toIndex"
               >
-                Go to Subject Headings Index
+                Explore more in Subject Heading index
               </Link>
             }
           />
