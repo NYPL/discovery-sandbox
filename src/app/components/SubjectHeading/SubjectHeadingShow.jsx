@@ -149,13 +149,16 @@ class SubjectHeadingShow extends React.Component {
             showId={uuid}
             keyId="context"
             container="context"
+            tfootContent={
+              <Link
+                to={contextHeadings && contextHeadings.length ? this.generateFullContextUrl() : '#'}
+                className="toIndex"
+              >
+                Go to Subject Headings Index
+              </Link>
+            }
           />
-          <Link
-            to={contextHeadings && contextHeadings.length ? this.generateFullContextUrl() : '#'}
-            className="toIndex"
-          >
-            Go to Subject Headings Index
-          </Link>
+
         </div>
         <div
           className="nypl-column-half subjectHeadingRelated subjectHeadingInfoBox"
