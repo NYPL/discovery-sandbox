@@ -63,7 +63,7 @@ class AdditionalSubjectHeadingsButton extends React.Component {
         className="subjectHeadingRow nestedSubjectHeading"
         style={{ backgroundColor: this.props.backgroundColor }}
       >
-        <td className="subjectHeadingsTableCell">
+        <td className="subjectHeadingsTableCell" colSpan="4">
           <div className="subjectHeadingLabelInner" style={{ marginLeft: `${30 * indentation}px` }}>
             {
               content
