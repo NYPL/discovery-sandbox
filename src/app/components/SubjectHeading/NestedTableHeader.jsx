@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import calculateDirection from '@calculateDirection';
 
 import SortButton from './SortButton';
 
@@ -16,16 +17,8 @@ const NestedTableHeader = (props) => {
     updateSort,
   } = subjectHeading;
 
-  const calculateDirection = (sortType) => {
-    if (sortType === sortBy) return (direction === 'ASC' ? 'DESC' : 'ASC');
-    return {
-      alphabetical: 'ASC',
-      bibs: 'DESC',
-      descendants: 'DESC',
-    }[sortType];
-  };
-
   const positionStyle = container === 'narrower' ? null : { marginLeft: 30 * ((indentation || 0) + 1) };
+  const calculateDirectionForType = calculateDirection(sortBy, direction);
 
   return (
     <tr
@@ -38,7 +31,7 @@ const NestedTableHeader = (props) => {
           <SortButton
             handler={updateSort}
             type="alphabetical"
-            direction={calculateDirection('alphabetical')}
+            direction={calculateDirectionForType('alphabetical')}
           />
         </div>
       </th>
@@ -46,14 +39,14 @@ const NestedTableHeader = (props) => {
         <SortButton
           handler={updateSort}
           type="descendants"
-          direction={calculateDirection('descendants')}
+          direction={calculateDirectionForType('descendants')}
         />
       </th>
       <th className={`subjectHeadingsTableCell subjectHeadingAttribute titles ${sortBy === 'bibs' ? 'selected' : ''}`}>
         <SortButton
           handler={updateSort}
           type="bibs"
-          direction={calculateDirection('bibs')}
+          direction={calculateDirectionForType('bibs')}
         />
       </th>
     </tr>

@@ -4,6 +4,7 @@ import axios from 'axios';
 
 import Pagination from '@Pagination';
 import AlphabeticalPagination from '@AlphabeticalPagination';
+import calculateDirection from '@calculateDirection';
 import SubjectHeadingsTable from './SubjectHeadingsTable';
 import SortButton from './SortButton';
 import appConfig from '../../data/appConfig';
@@ -31,6 +32,7 @@ class SubjectHeadingsContainer extends React.Component {
       filter,
       sortBy,
       fromAttributeValue,
+      direction,
     } = this.context.router.location.query;
 
     if (!fromComparator) fromComparator = filter ? null : "start";
@@ -43,6 +45,8 @@ class SubjectHeadingsContainer extends React.Component {
       sort_by: sortBy,
       from_attribute_value: fromAttributeValue,
     };
+
+    if (direction) apiParamHash.direction = direction;
 
     const apiParamString = Object
       .entries(apiParamHash)
@@ -106,9 +110,17 @@ class SubjectHeadingsContainer extends React.Component {
     const {
       pathname,
       query,
+      query: {
+        sortBy,
+        direction,
+      },
     } = this.context.router.location;
 
-    const paramString = `filter=${query.filter}&sortBy=${type}`;
+    console.log('query: ', query);
+
+    const updatedDirection = calculateDirection(sortBy, direction)(type);
+
+    const paramString = `filter=${query.filter}&sortBy=${type}&direction=${updatedDirection}`;
 
     if (type !== this.state.sortBy) {
       this.context.router.push(`${pathname}?${paramString}`);
