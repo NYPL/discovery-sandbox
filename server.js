@@ -121,7 +121,6 @@ app.get('/*', (req, res, next) => {
 });
 
 app.get('/*', (req, res) => {
-  console.log('Store ', Store.getState())
   alt.bootstrap(JSON.stringify(Store.getState()));
   renderReact(req, res, true);
 });
