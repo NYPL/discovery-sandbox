@@ -4,7 +4,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import Pagination from '../Pagination/Pagination';
-import ResultsList from '../Results/ResultsList';
+import ResultsList from '../ResultsList/ResultsList';
 import Sorter from '@Sorter'
 import appConfig from '@appConfig';
 

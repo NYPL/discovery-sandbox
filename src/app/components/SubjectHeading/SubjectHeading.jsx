@@ -19,9 +19,10 @@ class SubjectHeading extends React.Component {
     const {
       children,
       range,
+      preview,
     } = subjectHeading;
     this.state = {
-      open: !!children || this.isMain(),
+      open: (!!children && !preview) || this.isMain(),
       narrower: (children || []),
       sortBy: sortBy || 'alphabetical',
       direction: direction || 'ASC',
@@ -62,6 +63,7 @@ class SubjectHeading extends React.Component {
     const {
       open,
     } = this.state;
+    console.log(open);
     if (!open) {
       this.fetchInitial();
     } else {
@@ -209,6 +211,9 @@ class SubjectHeading extends React.Component {
     const positionStyle = ["narrower", "related"].includes(container) ? null : { marginLeft: 30 * ((indentation || 0) + 1) };
     const isMain = (pathname + search).includes(uuid);
     // changes to HTML structure here will need to be replicated in ./SubjectHeadingTableHeader
+    const showPreview = !open && preview && preview.length >= 4;
+
+    console.log(subjectHeading, showPreview);
 
     return (
       <React.Fragment>
@@ -250,7 +255,7 @@ class SubjectHeading extends React.Component {
             </div>
           </td>
         </tr>
-        { open && narrower.length > 0 ?
+        { open && narrower.length > 0 && !showPreview ?
           <SubjectHeadingsTableBody
             pathname={location.pathname}
             subjectHeadings={narrower}
@@ -265,7 +270,7 @@ class SubjectHeading extends React.Component {
             updateSort={this.updateSort}
           />
           : null}
-        {!open && preview && preview.length >= 4 ?
+        {showPreview ?
           <Preview topHeadings={preview} />
           : null
         }

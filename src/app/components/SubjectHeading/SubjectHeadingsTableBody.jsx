@@ -81,7 +81,7 @@ class SubjectHeadingsTableBody extends React.Component {
     const {
       range,
     } = this.state;
-    
+
     return this.subHeadingHeadings().concat(range.intervals.reduce((acc, el) =>
       acc.concat(this.listItemsInInterval(el))
       , []));
@@ -187,6 +187,8 @@ class SubjectHeadingsTableBody extends React.Component {
     const {
       subjectHeadings,
     } = this.state;
+
+    console.log("from TableBody", subjectHeadings);
 
     return (
       <React.Fragment>

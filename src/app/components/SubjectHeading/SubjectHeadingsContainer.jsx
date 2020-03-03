@@ -59,7 +59,7 @@ class SubjectHeadingsContainer extends React.Component {
       .then(
         // The callback `fetchNarrower` makes api calls to pre-open the narrower headings,
         // if it is the filtered index and the filter returns a low heading count.
-        // it also has the responsibly of setting `componentLoading` at the appropriate point
+        // it also has the responsibility of setting `componentLoading` at the appropriate point
         (res) => {
           this.setState({
             previousUrl: res.data.previous_url,
@@ -86,20 +86,38 @@ class SubjectHeadingsContainer extends React.Component {
     const { subjectHeadings } = this.state;
 
     if (
-      !filter || (subjectHeadings && subjectHeadings.length > 5)
+      !filter || (subjectHeadings && subjectHeadings.length > 7)
     ) return this.setState({ componentLoading: false });
 
     let url, narrower;
-    subjectHeadings.forEach((subjectHeading) => {
-      console.log(subjectHeading);
-      url = `${appConfig.baseUrl}/api/subjectHeadings/subject_headings/${subjectHeading.uuid}/narrower`
-      axios(url)
-        .then((resp) => {
-          narrower = resp.narrower;
-          if (narrower) subjectHeading.children = narrower;
+    Promise.all(
+      subjectHeadings.map((subjectHeading) => {
+        if (subjectHeading.label === filter && subjectHeading.aggregate_bib_count >= 4) return;
+        url = `${appConfig.baseUrl}/api/subjectHeadings/subject_headings/${subjectHeading.uuid}/narrower`
+        return axios(url)
+      })
+    )
+      .then((resp) => {
+        this.setState((prevState) => {
+          resp.forEach((narrowerResp) => {
+            const { data } = narrowerResp
+            if (data.message) return;
+            if (data.narrower) {
+              prevState.subjectHeadings
+                .find(subjectHeading => subjectHeading.uuid === data.request.id)
+                .children = data.narrower
+            }
+          });
+
+          console.log(prevState.subjectHeadings);
+
+          return {
+            subjectHeadings: prevState.subjectHeadings,
+            componentLoading: false,
+          }
         })
-    });
-    this.setState({ componentLoading: false });
+      })
+      .catch(console.log)
   }
 
   extractParam(paramName, url) {
@@ -199,6 +217,8 @@ class SubjectHeadingsContainer extends React.Component {
         </div>
       </div>
     )
+
+    console.log("inside render", subjectHeadings);
 
     return (
       <React.Fragment>
