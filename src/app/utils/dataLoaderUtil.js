@@ -57,15 +57,12 @@ const reducePathExpressions = location => (acc, instruction) => {
 };
 
 function loadDataForRoutes(location, next) {
-  console.log('location: ', location);
   const routes = routesGenerator(location, next);
   const {
     matchData,
     pathType,
   } = pathInstructions
     .reduce(reducePathExpressions(location), { matchData: null, pathType: null });
-
-  console.log('matchData ', matchData, 'pathType ', pathType);
 
   if (routes[pathType]) {
     const {
