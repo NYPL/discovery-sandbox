@@ -3,11 +3,7 @@
   font-size: 14px;
   margin-left: 40px;
   cursor: default;
-  background-color: $lighter-grey;
-  border: 0;
-  background: none;
-  padding: 0;
-  text-align: inherit;
+  @include removeDefaultButtonStyle;
 
   em {
     padding-left: 10px;

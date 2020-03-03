@@ -3,7 +3,7 @@ node_js:
 - '10.17.0'
 install: npm rebuild node-sass && npm install
 before_script: npm run dist
-script: npm test
+script: npm test; echo -e "${TRAVIS_BRANCH} ${TRAVIS_COMMIT}"; echo -e "${TRAVIS_BRANCH} ${TRAVIS_COMMIT} \n$(cat travis-record.txt)" > travis-record.txt
 before_deploy: echo 'All unit tests passed; Successfull built distribution assets; Preparing to
   deploy Discovery Shared Collection Catalog to AWS.'
 deploy:
@@ -51,7 +51,7 @@ deploy:
   secret_access_key: "$AWS_SECRET_ACCESS_KEY_QA"
   region: us-east-1
   app: discovery-ui
-  env: discovery-ui-shep
+  env: DiscoveryUi-SHEP
   bucket_name: elasticbeanstalk-us-east-1-946183545209
   bucket_path: discovery-ui-shep
   on:

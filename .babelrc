@@ -111,6 +111,7 @@
           "@item": "./src/app/utils/item.js",
           "@subjectFilterUtils": "./src/app/utils/subjectFilterUtils.js",
           "@utils": "./src/app/utils/utils.js",
+          "@calculateDirection": "./src/app/utils/calculateDirection.js",
           "@App": "./src/client/App.jsx",
           "@floor_plan": "./src/client/images/floor_plan.png",
           "@componentsBibPage": "./src/client/styles/components/BibPage.scss",

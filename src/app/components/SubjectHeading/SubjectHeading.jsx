@@ -4,7 +4,6 @@ import axios from 'axios';
 import { Link } from 'react-router';
 
 import SubjectHeadingsTableBody from './SubjectHeadingsTableBody';
-import SortButton from './SortButton';
 import Range from '../../models/Range';
 import appConfig from '../../data/appConfig';
 import Preview from './PreviewComponents';
@@ -122,9 +121,10 @@ class SubjectHeading extends React.Component {
     } = this.props.subjectHeading;
     let {
       sortBy,
+      direction,
     } = this.state;
-    const direction = additionalParameters.direction;
     if (additionalParameters.sortBy) sortBy = additionalParameters.sortBy;
+    if (additionalParameters.direction) direction = additionalParameters.direction;
     const url = `${appConfig.baseUrl}/api/subjectHeadings/subject_headings/${uuid}/narrower?sort_by=${sortBy}${direction ? `&direction=${direction}` : ''}`;
     axios(url)
       .then(
@@ -169,7 +169,6 @@ class SubjectHeading extends React.Component {
       desc_count,
       children,
       preview,
-      updateSort,
     } = subjectHeading;
 
     const {
@@ -197,76 +196,57 @@ class SubjectHeading extends React.Component {
       const innerText = desc_count > 0 ? symbol : "";
       const props = {};
 
-      props.onClick = container !== 'context' ? this.toggleOpen : () => {};
+      props.onClick = this.toggleOpen;
       props.className = "subjectHeadingToggle";
 
       if (desc_count > 0) {
-        props.tabIndex = '0';
         props.onKeyDown = event => handleEnter(event);
       }
 
-      const element = React.createElement('div', props, innerText);
-
-      return element;
+      return <button {...props}>{innerText}</button>;
     };
 
-    const positionStyle = container === 'narrower' ? null : { marginLeft: 30 * ((indentation || 0) + 1) };
+    const positionStyle = ["narrower", "related"].includes(container) ? null : { marginLeft: 30 * ((indentation || 0) + 1) };
     const isMain = (pathname + search).includes(uuid);
     // changes to HTML structure here will need to be replicated in ./SubjectHeadingTableHeader
 
     return (
       <React.Fragment>
-        {
-          container === 'narrower' ?
-            <tr>
-              <td colSpan="4">
-                <hr className="relatedHeadingsBoundary" />
-              </td>
-            </tr>
-          : null
-        }
         <tr
           data={`${subjectHeading.uuid}, ${container}`}
           className={`
             subjectHeadingRow
-            ${(open || children || isMain) ? "openSubjectHeading" : ""}
+            ${(open || children || isMain) ? 'openSubjectHeading' : ''}
             ${(indentation || 0) === 0 ? 'topLevel' : ''}
             ${(indentation || 0) !== 0 ? 'nestedSubjectHeading' : ''}
           `}
+          style={{ backgroundColor: this.props.backgroundColor }}
         >
           <td className={`subjectHeadingsTableCell subjectHeadingLabel ${sortBy === 'alphabetical' ? 'selected' : ''}`} >
             <div className="subjectHeadingLabelInner" style={positionStyle}>
               { toggle() }
-              { updateSort
-                ? (
-                  <SortButton
-                    handler={updateSort}
-                    type="alphabetical"
-                  />
-                  )
-                : null
-              }
               <Link to={this.generateUrl}>
-                <span className={`emph ${isMain ? 'mainHeading' : ''}`}>{rest === '' ? null : <span className="noEmph">{`${rest}\u0020--\u00a0`}</span>}{emph}</span>
+                <span
+                  className={`emph ${isMain ? 'mainHeading' : ''}`}
+                >
+                  {rest === '' || container === 'context' ? null :
+                    <span className="noEmph">
+                      {`${rest}\u0020--\u00a0`}
+                    </span>
+                  }
+                  {emph}
+                </span>
               </Link>
-            </div>
-          </td>
-          <td className={`subjectHeadingsTableCell subjectHeadingAttribute titles ${sortBy === 'bibs' ? 'selected' : ''}`}>
-            <div className="subjectHeadingAttributeInner">
-              { updateSort
-                   ? <SortButton handler={updateSort} type="bibs" />
-                   : null
-               }
-              {`${bib_count}`}
             </div>
           </td>
           <td className={`subjectHeadingsTableCell subjectHeadingAttribute narrower ${sortBy === 'descendants' ? 'selected' : ''}`}>
             <div className="subjectHeadingAttributeInner">
-              { updateSort
-                ? <SortButton handler={updateSort} type="descendants" />
-                : null
-              }
               {`${desc_count || '-'}`}
+            </div>
+          </td>
+          <td className={`subjectHeadingsTableCell subjectHeadingAttribute titles ${sortBy === 'bibs' ? 'selected' : ''}`}>
+            <div className="subjectHeadingAttributeInner">
+              {`${bib_count}`}
             </div>
           </td>
         </tr>
@@ -301,7 +281,12 @@ SubjectHeading.propTypes = {
   linked: PropTypes.string,
   indentation: PropTypes.number,
   container: PropTypes.string,
+  direction: PropTypes.string,
 };
+
+SubjectHeading.defaultProps = {
+  indentation: 0,
+}
 
 SubjectHeading.contextTypes = {
   router: PropTypes.object,

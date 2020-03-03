@@ -1,0 +1,27 @@
+.nestedTableHeader {
+  border-bottom: $table-row-border;
+  line-height: 32px;
+
+  th {
+    font-style: italic;
+    font-weight: normal;
+    text-align: left;
+  }
+
+  .selected {
+    font-weight: $emphasis-font-weight;
+  }
+
+  .emph {
+    color: #000000;
+  }
+
+  .subjectHeadingLabelInner,
+  .subjectHeadingAttributeInner {
+    display: inline-flex;
+  }
+
+  .sortCharacter {
+    font-size: 15px;
+  }
+}

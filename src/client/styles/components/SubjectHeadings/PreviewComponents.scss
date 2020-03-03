@@ -1,0 +1,49 @@
+.preview {
+  width: 100%;
+
+  .previewDiv {
+    justify-content: center;
+    width: 100%;
+
+    > em {
+      margin-left: 15%;
+    }
+
+    .previewInner {
+      width: 100%;
+      justify-content: center;
+      display: flex;
+    }
+
+    em {
+      color: #31806a;
+    }
+  }
+
+  .previewUl {
+    display: flex;
+    justify-content: space-around;
+    list-style: none;
+    margin-bottom: 0px;
+    width: 100%;
+
+    ul {
+      justify-content: left;
+      width: 100%;
+    }
+  }
+
+  .previewUl li {
+    display: flex;
+    justify-content: left;
+    margin-bottom: 5px;
+
+    &.fullLabel {
+      font-size: .75rem;
+    }
+
+    &.bibCount {
+      color: #31806a;
+    }
+  }
+}

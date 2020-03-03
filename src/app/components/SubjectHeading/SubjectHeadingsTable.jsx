@@ -14,10 +14,12 @@ const SubjectHeadingsTable = (props) => {
     keyId,
     container,
     updateSort,
+    tfootContent,
+    direction,
   } = props;
 
   return (
-    <table className="subjectHeadingsTable">
+    <table className={`subjectHeadingsTable ${container}`}>
       <SubjectHeadingsTableHeader updateSort={updateSort} selected={sortBy} />
       <tbody>
         <SubjectHeadingsTableBody
@@ -28,9 +30,16 @@ const SubjectHeadingsTable = (props) => {
           showId={showId}
           keyId={keyId}
           container={container}
+          direction={direction}
           top
         />
       </tbody>
+      { tfootContent ?
+        <tfoot>
+          {tfootContent}
+        </tfoot>
+        : null
+      }
     </table>
   );
 };

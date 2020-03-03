@@ -12,24 +12,14 @@ const SubjectHeadingsTableHeader = (props) => {
   return (
     <thead>
       <tr>
-        <th className={`subjectHeadingsTableCell subjectHeadingLabel ${selected === 'alphabetical' ? 'selected' : ''}`}>
-          <div className="subjectHeadingToggle" />
-          <div className="subjectHeadingLabelInner">
-            {updateSort && <SortButton handler={updateSort} type="alphabetical" />}
-            Heading
-          </div>
+        <th className={`headingColumnHeader ${selected === 'alphabetical' ? 'selectedColumn' : ''}`}>
+          <SortButton handler={updateSort} type="alphabetical" />
         </th>
-        <th className={`subjectHeadingsTableCell subjectHeadingAttribute titles ${selected === 'bibs' ? 'selected' : ''}`}>
-          <div className="subjectHeadingAttributeInner">
-            {updateSort && <SortButton handler={updateSort} type="bibs" />}
-          </div>
-          Title Count
+        <th className={`subjectHeadingAttribute narrower ${selected === 'descendants' ? 'selectedColumn' : ''}`}>
+          <SortButton handler={updateSort} type="descendants" />
         </th>
-        <th className={`subjectHeadingsTableCell subjectHeadingAttribute narrower ${selected === 'descendants' ? 'selected' : ''}`}>
-          <div className="subjectHeadingAttributeInner">
-            {updateSort && <SortButton handler={updateSort} type="descendants" />}
-            Subheading Count
-          </div>
+        <th className={`subjectHeadingAttribute titles ${selected === 'bibs' ? 'selectedColumn' : ''}`}>
+          <SortButton handler={updateSort} type="bibs" />
         </th>
       </tr>
     </thead>

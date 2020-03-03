@@ -104,12 +104,17 @@ class ResultsList extends React.Component {
     const totalItems = items.length;
     const hasRequestTable = items.length === 1;
 
+    let bibUrl = `${appConfig.baseUrl}/bib/${bibId}`
+
+    if (this.props.searchKeywords) bibUrl += `?searchKeywords=${this.props.searchKeywords}`
+    else if (Store.state.searchKeywords) bibUrl += `?searchKeywords=${Store.state.searchKeywords}`
+
     return (
       <li key={i} className={`nypl-results-item ${hasRequestTable ? 'has-request' : ''}`}>
         <h3>
           <Link
             onClick={() => trackDiscovery('Bib', bibTitle)}
-            to={`${appConfig.baseUrl}/bib/${bibId}?searchKeywords=${this.props.searchKeywords}`}
+            to={bibUrl}
             className="title"
           >
             {bibTitle}

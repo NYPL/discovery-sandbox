@@ -1,24 +1,8 @@
-$lighter-grey: #E8E4E3;
-$darker-grey: lightgray;
+$subject-heading-table-header: rgb(224, 219, 214);
 
-.emph {
-  &.mainHeading {
-    font-weight: bold;
-    span {
-      font-weight: bold;
-    }
-  }
-  &:not(:hover) {
-    color: #a83232;
-    .noEmph:not(:hover) {
-      color: black;
-    }
-    text-align: left;
-  }
-}
+$emphasis-font-weight: 500;
 
-
-/// ^^^^^^ this should probably be a separate file ^^^^^
+$table-row-border: 1px solid rgb(215, 210, 205);
 
 .subjectHeadingsBannerInner {
   display: inline-block;
@@ -30,8 +14,8 @@ $darker-grey: lightgray;
 }
 
 .subjectHeadingNav {
-  text-align: center;
   margin-bottom: 50px;
+  text-align: center;
 }
 
 .subjectNavButton {
@@ -42,7 +26,6 @@ $darker-grey: lightgray;
 }
 
 .subjectHeadingsBanner {
-  background: $lighter-grey;
   padding: 1rem 1.5rem 1rem 8rem;
   position: relative; // from .nypl-full-width-wrapper
   margin: 0 auto 25px;
@@ -68,20 +51,6 @@ $darker-grey: lightgray;
   }
 }
 
-.subjectHeadingInfoBox {
-  .toIndex {
-    font-size: 14px;
-    font-style: italic;
-    text-decoration: none;
-    padding-left: 10px;
-  }
-
-  .toIndex:hover {
-    text-decoration: underline;
-    cursor: pointer;
-  }
-}
-
 .subjectHeadingShow {
   h2 {
     max-width: 40rem;
@@ -91,99 +60,6 @@ $darker-grey: lightgray;
   .nypl-results-item h2, .nypl-results-item h3 {
     font-size: 1rem;
   }
-}
-
-.subjectHeadingContext, .subjectHeadingRelated  {
-  border-style: solid;
-  border-width: thin;
-  border-color: black;
-  justify-self: end;
-
-  h4 {
-    margin-bottom: 1%;
-    margin-left: 1%;
-  }
-
-}
-
-.subjectHeadingRelated {
-  height: fit-content;
-
-  .emph {
-    color: inherit;
-  }
-
-  .subjectHeadingToggle {
-    display: none;
-  }
-
-}
-
-.autocomplete {
-  float: right;
-  font-size: 1rem;
-  width: 200px;
-  margin-left: 25px;
-}
-
-.autocomplete-field {
-  position: relative;
-  input {
-    border: 1px solid #999;
-    width: 200px;
-  }
-
-  &> input:focus {
-    outline-color: #ffb81d;
-    outline-style: solid;
-    outline-width: 0.125rem;
-    box-shadow: none;
-  }
-
-  &:focus-within .suggestions {
-    display: inherit;
-  }
-}
-
-.suggestions {
-  border: 1px solid #999;
-  list-style: none;
-  background-color: white;
-  position: absolute;
-  float: right;
-  z-index: 1;
-  right: -2%;
-  margin-top: -1.5%;
-  margin-bottom: 0px;
-  min-width: 202px;
-  width: max-content;
-  display: none;
-}
-
-.suggestion-active {
-  font-weight: bold;
-}
-
-.suggestion-active,
-.suggestions li {
-  cursor: pointer;
-  margin-bottom: 0;
-  font-size: .9rem;
-  line-height: .75;
-  height: 100%;
-
-  em {
-    color: #31806a;
-  }
-
-  a {
-    padding: 1% 1%;
-    display: block;
-  }
-}
-
-.suggestions li:not(:last-of-type) {
-  border-bottom: 1px solid #999;
 }
 
 .not-in-discovery {
@@ -200,18 +76,6 @@ $darker-grey: lightgray;
   font-size: .8em;
 }
 
-.autosuggest {
-  margin: 0 1%;
-  span {
-    line-height: initial;
-    width: fit-content;
-  }
-  &.component {
-    display: flex;
-    justify-content: space-between;
-  }
-}
-
 .nypl-results-pagination.showPage {
   display: flex;
   justify-content: space-between;
@@ -221,8 +85,9 @@ $darker-grey: lightgray;
   }
 }
 
-span > .verticalEllipse {
+.moreSubjectsElement > .verticalEllipse {
   margin-left: 40px;
+  display: inline-block;
 }
 
 .verticalEllipse {
@@ -230,38 +95,6 @@ span > .verticalEllipse {
   margin-bottom: 3px;
   line-height: 5px;
   padding: 4.5%;
-}
-
-.subjectHeadingInfoBox {
-  min-width: 400px;
-  padding: 4px;
-  margin-bottom: 14px;
-  .subjectHeadingsTableCell {
-    font-size: 12px;
-
-    &.subjectHeadingLabel {
-      min-width: 270px;
-      width: 500px;
-    }
-  }
-  h4 {
-    font-size: 16px;
-    padding-bottom: 8px;
-  }
-  .subjectHeadingLabelContainer {
-    padding: 2px;
-  }
-  .subjectHeadingAttribute {
-    padding-right: 1%;
-  }
-}
-
-
-.relatedHeadingsBoundary {
-  border-top: rgb(240, 240, 240);
-  color: rgb(240, 240, 240);
-  width: 90%;
-  margin-top: 3px;
 }
 
 .nypl-breadcrumbs {
@@ -288,97 +121,6 @@ span > .verticalEllipse {
   }
   ol {
     margin: 0 auto;
-  }
-}
-
-$light-border: 0.08333rem solid #d7d4d0;
-
-.alphabeticalPagination {
-  margin-top: 1.5rem;
-  margin-bottom: 1.5rem;
-  max-width: 100%;
-  text-align: center;
-  display: flex;
-
-  a {
-    border: $light-border;
-    border-right: 0;
-    font-weight: 400;
-    font-size: 14px;
-    text-align: center;
-    min-width: 24px;
-    text-decoration: none;
-    cursor: pointer;
-    flex: 3%;
-    display: inline-block;
-  }
-  a:last-child {
-    border-right: $light-border;
-    border-radius: 0 0.2rem 0.2rem 0;
-  }
-  a:first-child {
-    border-radius: 0.2rem 0 0 0.2rem;
-  }
-}
-
-$top-left-corner: 0.2rem 0 0 0;
-$top-right-corner: 0 0.2rem 0 0;
-$bottom-right-corner: 0 0 0.2rem 0;
-$bottom-left-corner: 0 0 0 0.2rem;
-
-@media screen and (max-width: 750px) {
-  .alphabeticalPagination {
-    flex-wrap: wrap;
-    a:first-child {
-      border-radius: $top-left-corner;
-    }
-    a:last-child {
-      border-radius: $bottom-right-corner;
-    }
-  }
-}
-
-@media screen and (max-width: 750px) and (min-width: 420px) {
-  .alphabeticalPagination {
-    a {
-      flex: 6.6%;
-      max-width: 45px;
-    }
-    a:nth-child(14) {
-      border-right: $light-border;
-      border-radius: $top-right-corner;
-    }
-    a:nth-child(15) {
-      border-radius: $bottom-left-corner;
-    }
-    a:nth-child(-n+14) {
-      border-bottom: unset;
-    }
-  }
-}
-
-
-@media screen and (max-width: 419px) {
-  .alphabeticalPagination {
-    a {
-      flex: 9.5%;
-      max-width: 34px;
-    }
-    a:nth-child(10n) {
-      border-right: $light-border;
-    }
-    a:nth-child(10){
-      border-radius: $top-right-corner;
-    }
-    a:nth-child(21) {
-      border-radius: $top-left-corner;
-    }
-    a:nth-child(-n+10) {
-      border-bottom: unset;
-    }
-    a:nth-child(n+21) {
-      border-top: unset;
-    }
   }
 }
 

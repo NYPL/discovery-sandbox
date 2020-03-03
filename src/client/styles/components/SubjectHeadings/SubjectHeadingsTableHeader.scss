@@ -1,16 +1,28 @@
 .subjectHeadingsTable thead {
-  .subjectHeadingsTableCell.selected {
-    color: #a83232;
-  }
-  .subjectHeadingAttributeInner {
-    display: inline-flex;
+  border-bottom: 1.5px solid #000000;
+  line-height: 2.5;
+
+  th {
+    font-style: italic;
+    font-weight: normal;
+
+    &.sort {
+      text-align: center;
+    }
   }
 
-  .subjectHeadingLabelInner {
+  .selectedColumn {
+    font-weight: $emphasis-font-weight;
+  }
+
+  .headingColumnHeader {
     display: flex;
+    padding-left: 5px;
   }
+}
 
-  .subjectSortButton {
-    padding-right: 10px;
+.subjectHeadingsTable:not(.related) {
+  .headingColumnHeader {
+    padding-left: 32px;
   }
 }
