@@ -1,96 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Actions from '@Actions';
-import { ajaxCall } from '@utils';
-import appConfig from '@appConfig';
+import loadDataForRoutes from '@dataLoaderUtil';
 
 class DataLoader extends React.Component {
-  constructor(props) {
-    super(props);
-    this.pathInstructions = [
-      {
-        expression: /\/research\/collections\/shared-collection-catalog\/bib\/([cp]?b\d*)/,
-        pathType: 'bib',
-      },
-      {
-        expression: /\/research\/collections\/shared-collection-catalog\/search\?(.*)/,
-        pathType: 'search',
-      }
-    ];
-    this.pathType = null;
-    this.routes = {
-      bib: {
-        apiRoute: matchData => `${props.next ? 'http://localhost:3001' : ''}${appConfig.baseUrl}/api/bib?bibId=${matchData[1]}`,
-        actions: [Actions.updateBib],
-        errorMessage: 'Error attempting to make an ajax request to fetch a bib record from ResultsList',
-      },
-      search: {
-        apiRoute: matchData => `${props.next ? 'http://localhost:3001' : ''}${appConfig.baseUrl}/api?${matchData[1]}`,
-        actions: [
-          data => Actions.updateSearchResults(data.searchResults),
-          () => Actions.updatePage(this.props.location.query.page || 1),
-          () => Actions.updateSearchKeywords(this.props.location.query.q),
-          data => Actions.updateFilters(data.filters),
-          () => {
-            const {
-              sort,
-              sort_direction,
-            } = this.props.location.query;
-            Actions.updateSortBy(`${sort}_${sort_direction}`);
-          },
-        ],
-        errorMessage: 'Error attempting to make an ajax request to search',
-      },
-    };
-    this.reducePathExpressions = this.reducePathExpressions.bind(this);
-    this.loadDataForRoutes = this.loadDataForRoutes.bind(this);
-    if (props.next) {
-      this.loadDataForRoutes().then(() => props.next());
-    }
-  }
 
   componentDidMount() {
-    if (!this.props.next) this.loadDataForRoutes();
-  }
-
-  loadDataForRoutes() {
-    const matchData = this.pathInstructions
-      .reduce(this.reducePathExpressions, null);
-
-    if (this.routes[this.pathType]) {
-      const {
-        apiRoute,
-        actions,
-        errorMessage,
-      } = this.routes[this.pathType];
-      Actions.updateLoadingStatus(true);
-      return ajaxCall(apiRoute(matchData),
-        (response) => {
-          actions.forEach(action => action(response.data));
-          Actions.updateLoadingStatus(false);
-        },
-        (error) => {
-          Actions.updateLoadingStatus(false);
-          console.error(
-            errorMessage,
-            error,
-          );
-        },
-      );
-    }
-
-    return new Promise(resolve => resolve());
-  }
-
-  reducePathExpressions(acc, instruction) {
-    const { location } = this.props;
-    const {
-      pathname,
-      search,
-    } = location;
-    const matchData = (pathname + search).match(instruction.expression);
-    if (matchData) this.pathType = instruction.pathType;
-    return matchData || acc;
+    loadDataForRoutes(this.props.location);
   }
 
   render() {

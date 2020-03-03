@@ -10,6 +10,7 @@ import webpack from 'webpack';
 import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
 import Store from '@Store';
+import loadDataForRoutes from '@dataLoaderUtil';
 
 import alt from './src/app/alt';
 import appConfig from './src/app/data/appConfig';
@@ -103,14 +104,25 @@ app.use('/*', initializePatronTokenAuth, getPatronData);
 app.use('/', apiRoutes);
 
 app.get('/*', (req, res, next) => {
-  Store.next = next;
-  renderReact(req, res);
+  const query = req
+    ._parsedUrl
+    .query
+    .split('&')
+    .map(pair => pair.split('='))
+    .reduce((acc, el) => ({ [el[0]]: el[1], ...acc }));
+
+  const location = {
+    pathname: req.originalUrl,
+    query,
+    search: '',
+  };
+
+  loadDataForRoutes(location, next).then(() => next());
 });
 
 app.get('/*', (req, res) => {
-  alt.bootstrap(JSON.stringify(Store.alt.stores.Store.state));
-  console.log('store: ', Store.getState());
-  Store.next = null;
+  console.log('Store ', Store.getState())
+  alt.bootstrap(JSON.stringify(Store.getState()));
   renderReact(req, res, true);
 });
 
