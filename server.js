@@ -109,8 +109,9 @@ app.get('/*', (req, res, next) => {
 
 app.get('/*', (req, res) => {
   alt.bootstrap(JSON.stringify(Store.alt.stores.Store.state));
-  renderReact(req, res, true);
+  console.log('store: ', Store.getState());
   Store.next = null;
+  renderReact(req, res, true);
 });
 
 const server = app.listen(app.get('port'), (error) => {

@@ -9,21 +9,9 @@ import SubjectHeadings from './SubjectHeadings';
 
 const router = express.Router();
 
-function MainApp(req, res, next) {
-  res.locals.data.Store = {
-    searchResults: {},
-    selectedFilters: {},
-    searchKeywords: '',
-    filters: {},
-    page: '1',
-    sortBy: 'relevance',
-    field: 'all',
-    error: {},
-    isLoading: false,
-  };
-
-  next();
-}
+router
+  .route(`${appConfig.baseUrl}/search`)
+  .post(Search.searchServerPost);
 
 router
   .route(`${appConfig.baseUrl}/hold/request/:bibId-:itemId`)
@@ -74,14 +62,6 @@ router
  */
 router
   .route(`${appConfig.baseUrl}/api/subjectHeadings*`)
-  .get(SubjectHeadings.proxyRequest)
-
-router
-  .route(appConfig.baseUrl)
-  .get(MainApp);
-
-router
-  .route('/')
-  .get(MainApp);
+  .get(SubjectHeadings.proxyRequest);
 
 export default router;
