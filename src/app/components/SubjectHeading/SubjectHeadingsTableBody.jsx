@@ -31,7 +31,7 @@ class SubjectHeadingsTableBody extends React.Component {
   }
 
   componentDidMount() {
-    const { linked } = this.props
+    const { linked } = this.props;
 
     if (linked) {
       const url = `${appConfig.baseUrl}/api/subjectHeadings/subject_headings/${linked}/context?type=relatives`;
@@ -41,7 +41,7 @@ class SubjectHeadingsTableBody extends React.Component {
             this.mergeSubjectHeadings(res.data.subject_headings, linked);
           },
         );
-    };
+    }
   }
 
   mergeSubjectHeadings(subjectHeadings, linked) {
@@ -61,6 +61,7 @@ class SubjectHeadingsTableBody extends React.Component {
   }
 
   updateRange(rangeElement, intervalElement, endpoint, increment) {
+    // eslint-disable-next-line no-param-reassign
     intervalElement[endpoint] += increment;
     rangeElement.normalize();
     this.setState(prevState => prevState);
@@ -187,8 +188,6 @@ class SubjectHeadingsTableBody extends React.Component {
     const {
       subjectHeadings,
     } = this.state;
-
-    console.log("from TableBody", subjectHeadings);
 
     return (
       <React.Fragment>

@@ -1,15 +1,16 @@
 /* global window */
-
 import React from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import Pagination from '../Pagination/Pagination';
 import ResultsList from '../ResultsList/ResultsList';
-import Sorter from '@Sorter'
+/* eslint-disable import/first, import/no-unresolved, import/extensions */
+import Sorter from '@Sorter';
 import appConfig from '@appConfig';
+/* eslint-enable import/first, import/no-unresolved, import/extensions */
 
 class BibsList extends React.Component {
-  constructor(props) {
+  constructor() {
     super();
     this.state = {
       bibs: [],
@@ -41,8 +42,11 @@ class BibsList extends React.Component {
       })
       .catch(
         (err) => {
+          // eslint-disable-next-line no-console
           console.error('error: ', err);
-          this.setState({ error: true });
+          this.setState({
+            componentLoading: false,
+          });
         },
       );
   }
@@ -89,6 +93,7 @@ class BibsList extends React.Component {
           })
           .catch(
             (err) => {
+              // eslint-disable-next-line no-console
               console.error('error: ', err);
             },
           );
@@ -122,22 +127,24 @@ class BibsList extends React.Component {
       />
     );
 
-    if (this.state.componentLoading) return (
-      <div className="nypl-column-half bibsList subjectHeadingShowLoadingWrapper">
-        <span
-          id="loading-animation"
-          className="loadingLayer-texts-loadingWord"
-        >
-          Loading More Titles
-        </span>
-        <div className="loadingDots">
-          <span />
-          <span />
-          <span />
-          <span />
+    if (this.state.componentLoading) {
+      return (
+        <div className="nypl-column-half bibsList subjectHeadingShowLoadingWrapper">
+          <span
+            id="loading-animation"
+            className="loadingLayer-texts-loadingWord"
+          >
+            Loading More Titles
+          </span>
+          <div className="loadingDots">
+            <span />
+            <span />
+            <span />
+            <span />
+          </div>
         </div>
-      </div>
-    )
+      );
+    }
 
     return (
       <div
@@ -170,11 +177,6 @@ class BibsList extends React.Component {
     );
   }
 }
-
-BibsList.propTypes = {
-  nextUrl: PropTypes.string,
-  sortParams: PropTypes.object,
-};
 
 BibsList.contextTypes = {
   router: PropTypes.object,
