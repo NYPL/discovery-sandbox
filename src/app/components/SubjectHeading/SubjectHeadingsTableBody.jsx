@@ -218,7 +218,7 @@ SubjectHeadingsTableBody.propTypes = {
 
 SubjectHeadingsTableBody.defaultProps = {
   indentation: 0,
-}
+};
 
 SubjectHeadingsTableBody.contextTypes = {
   router: PropTypes.object,

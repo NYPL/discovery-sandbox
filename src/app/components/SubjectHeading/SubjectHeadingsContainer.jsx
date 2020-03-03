@@ -2,11 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 
+/* eslint-disable import/first, import/no-unresolved, import/extensions */
 import Pagination from '@Pagination';
 import AlphabeticalPagination from '@AlphabeticalPagination';
 import calculateDirection from '@calculateDirection';
 import SubjectHeadingsTable from './SubjectHeadingsTable';
-import SortButton from './SortButton';
+/* eslint-enable import/first, import/no-unresolved, import/extensions */
 import appConfig from '../../data/appConfig';
 
 
@@ -35,8 +36,8 @@ class SubjectHeadingsContainer extends React.Component {
       direction,
     } = this.context.router.location.query;
 
-    if (!fromComparator) fromComparator = filter ? null : "start";
-    if (!fromLabel) fromLabel = filter ? null : "Aac";
+    if (!fromComparator) fromComparator = filter ? null : 'start';
+    if (!fromLabel) fromLabel = filter ? null : 'Aac';
 
     const apiParamHash = {
       from_comparator: fromComparator,
@@ -70,6 +71,7 @@ class SubjectHeadingsContainer extends React.Component {
         },
       ).catch(
         (err) => {
+          // eslint-disable-next-line no-console
           console.error('error: ', err);
           if (!this.state.subjectHeadings || this.state.subjectHeadings.length === 0) {
             this.setState({
@@ -89,35 +91,34 @@ class SubjectHeadingsContainer extends React.Component {
       !filter || (subjectHeadings && subjectHeadings.length > 7)
     ) return this.setState({ componentLoading: false });
 
-    let url, narrower;
+    let url;
+
     Promise.all(
       subjectHeadings.map((subjectHeading) => {
         if (subjectHeading.label === filter && subjectHeading.aggregate_bib_count >= 4) return;
-        url = `${appConfig.baseUrl}/api/subjectHeadings/subject_headings/${subjectHeading.uuid}/narrower`
-        return axios(url)
+        url = `${appConfig.baseUrl}/api/subjectHeadings/subject_headings/${subjectHeading.uuid}/narrower`;
+        return axios(url);
       })
     )
       .then((resp) => {
         this.setState((prevState) => {
           resp.forEach((narrowerResp) => {
-            const { data } = narrowerResp
+            const { data } = narrowerResp;
             if (data.message) return;
             if (data.narrower) {
               prevState.subjectHeadings
                 .find(subjectHeading => subjectHeading.uuid === data.request.id)
-                .children = data.narrower
+                .children = data.narrower;
             }
           });
-
-          console.log(prevState.subjectHeadings);
 
           return {
             subjectHeadings: prevState.subjectHeadings,
             componentLoading: false,
-          }
-        })
+          };
+        });
       })
-      .catch(console.log)
+      .catch(console.error)
   }
 
   extractParam(paramName, url) {
@@ -199,26 +200,26 @@ class SubjectHeadingsContainer extends React.Component {
       );
     }
 
-    if (this.state.componentLoading) return (
-      <div className="subjectHeadingShowLoadingWrapper">
-        {this.pagination()}
-        {filter ? null : <AlphabeticalPagination />}
-        <span
-          id="loading-animation"
-          className="loadingLayer-texts-loadingWord"
-        >
-          Loading Subject Headings
-        </span>
-        <div className="loadingDots">
-          <span />
-          <span />
-          <span />
-          <span />
+    if (this.state.componentLoading) {
+      return (
+        <div className="subjectHeadingShowLoadingWrapper">
+          {this.pagination()}
+          {filter ? null : <AlphabeticalPagination />}
+          <span
+            id="loading-animation"
+            className="loadingLayer-texts-loadingWord"
+          >
+            Loading Subject Headings
+          </span>
+          <div className="loadingDots">
+            <span />
+            <span />
+            <span />
+            <span />
+          </div>
         </div>
-      </div>
-    )
-
-    console.log("inside render", subjectHeadings);
+      );
+    }
 
     return (
       <React.Fragment>
@@ -232,7 +233,7 @@ class SubjectHeadingsContainer extends React.Component {
           sortBy={sortBy}
           direction={direction}
           updateSort={filter ? this.updateSort : null}
-          container={"index"}
+          container="index"
         />
         {this.pagination()}
       </React.Fragment>

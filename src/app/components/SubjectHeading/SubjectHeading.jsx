@@ -63,7 +63,6 @@ class SubjectHeading extends React.Component {
     const {
       open,
     } = this.state;
-    console.log(open);
     if (!open) {
       this.fetchInitial();
     } else {
@@ -212,8 +211,6 @@ class SubjectHeading extends React.Component {
     const isMain = (pathname + search).includes(uuid);
     // changes to HTML structure here will need to be replicated in ./SubjectHeadingTableHeader
     const showPreview = !open && preview && preview.length >= 4;
-
-    console.log(subjectHeading, showPreview);
 
     return (
       <React.Fragment>
