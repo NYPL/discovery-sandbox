@@ -59,13 +59,13 @@ class HoldRequest extends React.Component {
 
 
   componentDidMount() {
-    this.requireUser();
-    this.conditionallyRedirect();
+    // this.requireUser();
+    // this.conditionallyRedirect();
     const title = document.getElementById('item-title');
     if (title) {
       title.focus();
     }
-    this.timeoutId = setTimeout(() => { Actions.updateLoadingStatus(false); }, 5000);
+    // this.timeoutId = setTimeout(() => { Actions.updateLoadingStatus(false); }, 5000);
   }
 
   onChange() {
@@ -129,35 +129,10 @@ class HoldRequest extends React.Component {
       return;
     }
 
-    Actions.updateLoadingStatus(true);
     trackDiscovery(`Submit Request${partnerEvent}`, `${title} - ${itemId}`);
-    axios
-      .get(`${appConfig.baseUrl}/api/newHold?itemId=${itemId}&pickupLocation=` +
-        `${this.state.delivery}&itemSource=${itemSource}`)
-      .then((response) => {
-        if (response.data.error && response.data.error.status !== 200) {
-          Actions.updateLoadingStatus(false);
-          this.context.router.push(
-            `${path}?errorStatus=${response.data.error.status}` +
-            `&errorMessage=${response.data.error.statusText}${searchKeywordsQueryPhysical}` +
-            `${fromUrlQuery}`,
-          );
-        } else {
-          Actions.updateLoadingStatus(false);
-          this.context.router.push(
-            `${path}?pickupLocation=${response.data.pickupLocation}&requestId=${response.data.id}` +
-            `${searchKeywordsQueryPhysical}${fromUrlQuery}`,
-          );
-        }
-      })
-      .catch((error) => {
-        console.error('Error attempting to make an ajax Hold Request in HoldRequest', error);
-
-        Actions.updateLoadingStatus(false);
-        this.context.router.push(
-          `${path}?errorMessage=${error}${searchKeywordsQueryPhysical}${fromUrlQuery}`,
-        );
-      });
+    this.context.router.push(
+      `${path}?${searchKeywordsQueryPhysical}${fromUrlQuery}`,
+    );
   }
 
   /**
@@ -167,6 +142,7 @@ class HoldRequest extends React.Component {
    * @return {Boolean}
    */
   requireUser() {
+    console.log('patron', this.state.patron);
     if (this.state.patron && this.state.patron.id) {
       return true;
     }
@@ -201,6 +177,7 @@ class HoldRequest extends React.Component {
   conditionallyRedirect() {
     return this.checkEligibility().then((eligibility) => {
       clearTimeout(this.timeoutId);
+      console.log('eligibility', eligibility);
       if (!eligibility.eligibility) {
         const bib = (this.props.bib && !_isEmpty(this.props.bib)) ?
           this.props.bib : null;

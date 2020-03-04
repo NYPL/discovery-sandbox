@@ -35,30 +35,8 @@ class ResultsList extends React.Component {
   getItemRecord(e, bibId, itemId) {
     e.preventDefault();
 
-    Actions.updateLoadingStatus(true);
-
     trackDiscovery('Item Request', 'Search Results');
-    ajaxCall(`${appConfig.baseUrl}/api/hold/request/${bibId}-${itemId}`,
-      (response) => {
-        Actions.updateBib(response.data.bib);
-        Actions.updateDeliveryLocations(response.data.deliveryLocations);
-        Actions.updateIsEddRequestable(response.data.isEddRequestable);
-        setTimeout(() => {
-          Actions.updateLoadingStatus(false);
-          this.routeHandler(`${appConfig.baseUrl}/hold/request/${bibId}-${itemId}`);
-        }, 500);
-      },
-      (error) => {
-        setTimeout(() => {
-          Actions.updateLoadingStatus(false);
-        }, 500);
-
-        console.error(
-          'Error attemping to make an ajax request to fetch an item in ResultsList',
-          error,
-        );
-      },
-    );
+    this.routeHandler(`${appConfig.baseUrl}/hold/request/${bibId}-${itemId}`);
   }
 
   getBibTitle(bib) {
