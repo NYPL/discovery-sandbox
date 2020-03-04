@@ -137,8 +137,9 @@ class SubjectHeadingShow extends React.Component {
           uuid={uuid}
           key={this.context.router.location.search}
         />
+      {contextHeadings ?
         <div
-          className="nypl-column-half subjectHeadingContext subjectHeadingInfoBox"
+          className="nypl-column-half subjectHeadingInfoBox"
           tabIndex='0'
           aria-label='Neighboring Subject Headings'
           >
@@ -154,15 +155,25 @@ class SubjectHeadingShow extends React.Component {
             seeMoreLinkUrl={linkUrl}
             seeMoreText="See more in Subject Headings Index"
           />
-          <Link
-            to={linkUrl}
-            className="toIndex"
-          >
-            Explore more in Subject Heading Index
-          </Link>
+            tfootContent={
+              <tr>
+                <td>
+                  <Link
+                    to={contextHeadings && contextHeadings.length ? this.generateFullContextUrl() : '#'}
+                    className="toIndex"
+                  >
+                    Explore more in Subject Heading index
+                  </Link>
+                </td>
+              </tr>
+            }
+          />
         </div>
+        : null
+      }
+      {relatedHeadings ?
         <div
-          className="nypl-column-half subjectHeadingRelated subjectHeadingInfoBox"
+          className="nypl-column-half subjectHeadingInfoBox"
           tabIndex='0'
           aria-label='Related Subject Headings'
         >
@@ -173,9 +184,11 @@ class SubjectHeadingShow extends React.Component {
             subjectHeadings={relatedHeadings}
             location={location}
             keyId="related"
-            container="narrower"
+            container="related"
           />
         </div>
+        : null
+      }
       </React.Fragment>
     );
   }

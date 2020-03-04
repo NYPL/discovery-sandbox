@@ -16,6 +16,8 @@ const SubjectHeadingsTable = (props) => {
     updateSort,
     seeMoreText,
     seeMoreLinkUrl,
+    tfootContent,
+    direction,
   } = props;
 
   return (
@@ -32,9 +34,16 @@ const SubjectHeadingsTable = (props) => {
           container={container}
           seeMoreText={seeMoreText}
           seeMoreLinkUrl={seeMoreLinkUrl}
+          direction={direction}
           top
         />
       </tbody>
+      { tfootContent ?
+        <tfoot>
+          {tfootContent}
+        </tfoot>
+        : null
+      }
     </table>
   );
 };
