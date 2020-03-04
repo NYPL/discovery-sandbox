@@ -2,21 +2,28 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const SortButton = (props) => {
+  const {
+    type,
+    direction,
+    handler,
+    interactive,
+  } = props;
+
   const columnText = () => ({
     bibs: 'Titles',
     descendants: 'Subheadings',
     alphabetical: 'Heading',
-  }[props.type]);
+  }[type]);
 
   return (
     <button
       className="subjectSortButton"
-      onClick={() => props.handler(props.type, props.direction)}
-      disabled={!props.handler}
+      onClick={() => handler(type, direction)}
+      disabled={!handler || !interactive}
     >
       <span className="emph">
         <span className="noEmph">{columnText()}
-          {props.handler ? <span className="sortCharacter">^</span> : null}
+          {(handler && interactive) ? <span className="sortCharacter">^</span> : null}
         </span>
       </span>
     </button>
@@ -27,6 +34,7 @@ SortButton.propTypes = {
   handler: PropTypes.func,
   type: PropTypes.string,
   direction: PropTypes.string,
+  interactive: PropTypes.bool,
 };
 
 export default SortButton;
