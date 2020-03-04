@@ -70,17 +70,26 @@ class SubjectHeading extends React.Component {
   }
 
   addMore(element, data) {
-    const {
-      narrower,
-    } = this.state;
-    data.narrower.forEach(
-      (child) => { child.indentation = (this.props.subjectHeading.indentation || 0) + 1; }
-    );
-    narrower.splice(-1, 1, ...data.narrower);
-    if (data.next_url) {
-      narrower.splice(-1, 1, { button: 'next', updateParent: this.fetchAndUpdate(data.next_url), indentation: (this.props.subjectHeading.indentation || 0) + 1 });
-    }
-    this.setState(prevState => prevState);
+    this.setState((prevState) => {
+      const { narrower } = prevState;
+      data.narrower.forEach(
+        (child) => { child.indentation = (this.props.subjectHeading.indentation || 0) + 1; }
+      );
+
+      narrower.splice(-1, 1, ...data.narrower);
+
+      if (data.next_url) {
+        narrower.splice(-1, 1, {
+          button: 'next',
+          updateParent: this.fetchAndUpdate(data.next_url),
+          indentation: (this.props.subjectHeading.indentation || 0) + 1,
+        });
+      }
+
+      this.setState({
+        narrower,
+      });
+    });
   }
 
   fetchAndUpdate(url) {
