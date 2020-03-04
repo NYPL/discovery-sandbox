@@ -120,7 +120,11 @@ class SubjectHeading extends React.Component {
   }
 
   updateSort(sortType, direction) {
-    this.fetchInitial({ sortBy: sortType, direction, range: Range.default() });
+    this.fetchInitial({
+      sortBy: sortType,
+      direction,
+      range: Range.default(),
+    });
   }
 
   fetchInitial(additionalParameters = {}) {
@@ -132,9 +136,16 @@ class SubjectHeading extends React.Component {
       sortBy,
       direction,
     } = this.state;
+
+    const limit = this.state.narrower.length;
+
     if (additionalParameters.sortBy) sortBy = additionalParameters.sortBy;
     if (additionalParameters.direction) direction = additionalParameters.direction;
-    const url = `${appConfig.baseUrl}/api/subjectHeadings/subject_headings/${uuid}/narrower?sort_by=${sortBy}${direction ? `&direction=${direction}` : ''}`;
+    let url = `${appConfig.baseUrl}/api/subjectHeadings/subject_headings/${uuid}/narrower?sort_by=${sortBy}`;
+
+    if (direction) url += `&direction=${direction}`;
+    if (limit) url += `&limit=${limit}`;
+
     axios(url)
       .then(
         (resp) => {
@@ -296,6 +307,7 @@ SubjectHeading.propTypes = {
 
 SubjectHeading.defaultProps = {
   indentation: 0,
+  narrower: [],
 };
 
 SubjectHeading.contextTypes = {
