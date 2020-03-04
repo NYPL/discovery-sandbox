@@ -102,7 +102,7 @@ class SubjectHeading extends React.Component {
   }
 
   addEmphasis(string) {
-    const components = string.split(" -- ");
+    const components = string.split(' -- ');
     return { emph: components.slice(-1), rest: components.slice(0, -1).join(' -- ') };
   }
 
@@ -206,7 +206,7 @@ class SubjectHeading extends React.Component {
       const props = {};
 
       props.onClick = this.toggleOpen;
-      props.className = "subjectHeadingToggle";
+      props.className = 'subjectHeadingToggle';
 
       if (desc_count > 0) {
         props.onKeyDown = event => handleEnter(event);
@@ -215,7 +215,7 @@ class SubjectHeading extends React.Component {
       return <button {...props}>{innerText}</button>;
     };
 
-    const positionStyle = ["narrower", "related"].includes(container) ? null : { marginLeft: 30 * ((indentation || 0) + 1) };
+    const positionStyle = ['narrower', 'related'].includes(container) ? null : { marginLeft: 30 * ((indentation || 0) + 1) };
     const isMain = (pathname + search).includes(uuid);
     // changes to HTML structure here will need to be replicated in ./SubjectHeadingTableHeader
 
@@ -291,11 +291,12 @@ SubjectHeading.propTypes = {
   indentation: PropTypes.number,
   container: PropTypes.string,
   direction: PropTypes.string,
+  backgroundColor: PropTypes.string,
 };
 
 SubjectHeading.defaultProps = {
   indentation: 0,
-}
+};
 
 SubjectHeading.contextTypes = {
   router: PropTypes.object,

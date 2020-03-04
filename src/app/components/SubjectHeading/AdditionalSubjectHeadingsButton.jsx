@@ -69,6 +69,7 @@ AdditionalSubjectHeadingsButton.propTypes = {
   indentation: PropTypes.number,
   button: PropTypes.string,
   interactive: PropTypes.bool,
+  backgroundColor: PropTypes.string,
 };
 
 export default AdditionalSubjectHeadingsButton;
