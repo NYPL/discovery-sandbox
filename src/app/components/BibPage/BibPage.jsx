@@ -85,9 +85,11 @@ const BibPage = (props) => {
   // if the subject heading API call failed for some reason,
   // we will use the subjectLiteral property from the
   // Discovery API response instead
-  if (!bib['subjectHeadingData']) bottomFields.push({
-    label: 'Subject', value: 'subjectLiteral', linkable: true
-  })
+  if (!bib.subjectHeadingData) {
+    bottomFields.push({
+      label: 'Subject', value: 'subjectLiteral', linkable: true,
+    });
+  }
 
   const itemHoldings = items.length && !isElectronicResources ? (
     <ItemHoldings

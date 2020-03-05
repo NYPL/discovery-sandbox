@@ -88,15 +88,31 @@ class SubjectHeadingsContainer extends React.Component {
     const { filter } = this.context.router.location.query;
     const { subjectHeadings } = this.state;
 
-    if (
-      !filter || subjectHeadings.length > 7
-    ) return this.setState({ componentLoading: false });
-
     let url;
+
+    if (!subjectHeadings) return;
+    if (!filter || !subjectHeadings.length) return this.setState({ componentLoading: false });
+
+    if (subjectHeadings.length > 7) {
+      url = `${appConfig.baseUrl}/api/subjectHeadings/subject_headings/${subjectHeadings[0].uuid}/narrower`;
+      axios(url)
+        .then((resp) => {
+          this.setState((prevState) => {
+            const data = { resp };
+            prevState.subjectHeadings
+              .find(subjectHeading => subjectHeading.uuid === data.request.id)
+              .children = data.narrower;
+
+            return {
+              subjectHeadings: prevState.subjectHeadings,
+              componentLoading: false,
+            };
+          });
+        });
+    }
 
     Promise.all(
       subjectHeadings.map((subjectHeading) => {
-        if (subjectHeading.label === filter && subjectHeading.preview && subjectHeading.preview.length >= 4) return;
         url = `${appConfig.baseUrl}/api/subjectHeadings/subject_headings/${subjectHeading.uuid}/narrower`;
         return axios(url);
       })

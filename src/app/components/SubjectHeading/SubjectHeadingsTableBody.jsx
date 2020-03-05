@@ -25,7 +25,6 @@ class SubjectHeadingsTableBody extends React.Component {
     this.updateRange = this.updateRange.bind(this);
     this.listItemsInRange = this.listItemsInRange.bind(this);
     this.listItemsInInterval = this.listItemsInInterval.bind(this);
-    this.subHeadingHeadings = this.subHeadingHeadings.bind(this);
     this.tableRow = this.tableRow.bind(this);
     this.backgroundColor = this.backgroundColor.bind(this);
   }
@@ -67,25 +66,14 @@ class SubjectHeadingsTableBody extends React.Component {
     this.setState(prevState => prevState);
   }
 
-  subHeadingHeadings() {
-    if (this.props.top) return [];
-    return [
-      {
-        nestedTableHeader: true,
-        indentation: this.props.indentation,
-        updateSort: this.props.updateSort,
-      },
-    ];
-  }
-
   listItemsInRange() {
     const {
       range,
     } = this.state;
 
-    return this.subHeadingHeadings().concat(range.intervals.reduce((acc, el) =>
-      acc.concat(this.listItemsInInterval(el))
-      , []));
+    return range.intervals.reduce((acc, interval) =>
+      acc.concat(this.listItemsInInterval(interval))
+      , []);
   }
 
   listItemsInInterval(interval) {
@@ -154,19 +142,6 @@ class SubjectHeadingsTableBody extends React.Component {
         />
       );
     }
-    if (listItem.nestedTableHeader) {
-      return (
-        <NestedTableHeader
-          subjectHeading={listItem}
-          key={`nestedTableHeader${listItem.indentation}`}
-          indentation={indentation}
-          container={container}
-          sortBy={sortBy}
-          direction={direction}
-          backgroundColor={this.backgroundColor(true)}
-        />
-      );
-    }
 
     return (
       <SubjectHeading
@@ -189,8 +164,32 @@ class SubjectHeadingsTableBody extends React.Component {
       subjectHeadings,
     } = this.state;
 
+    const {
+      nested,
+      parentUuid,
+      indentation,
+      container,
+      sortBy,
+      direction,
+      updateSort,
+    } = this.props;
+
     return (
       <React.Fragment>
+        {nested && subjectHeadings ?
+          <NestedTableHeader
+            parentUuid={parentUuid}
+            key={`nestedTableHeader${indentation}`}
+            indentation={indentation}
+            container={container}
+            sortBy={sortBy}
+            direction={direction}
+            backgroundColor={this.backgroundColor(true)}
+            updateSort={updateSort}
+            interactive={subjectHeadings.length > 1}
+          />
+          : null
+        }
         {
           subjectHeadings ?
           this.listItemsInRange(subjectHeadings)
@@ -210,7 +209,6 @@ SubjectHeadingsTableBody.propTypes = {
   sortBy: PropTypes.string,
   container: PropTypes.string,
   parentUuid: PropTypes.string,
-  top: PropTypes.bool,
   updateSort: PropTypes.func,
   pathname: PropTypes.string,
   direction: PropTypes.string,

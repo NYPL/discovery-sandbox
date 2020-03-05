@@ -130,8 +130,8 @@ class BibDetails extends React.Component {
     if (Array.isArray(entities) && entities.length > 0) {
       const markup = entities
         .map((ent) => {
-          const nodes = [(<span key={`${ent["@value"]}`}>{ent['@value']}</span>)];
-          if (ent.identifierStatus) nodes.push(<span key={`${ent["@value"]}`}> <em>({ent.identifierStatus})</em></span>);
+          const nodes = [(<span key={`${ent['@value']}`}>{ent['@value']}</span>)];
+          if (ent.identifierStatus) nodes.push(<span key={`${ent['@value']}`}> <em>({ent.identifierStatus})</em></span>);
           return nodes;
         });
 
@@ -181,10 +181,10 @@ class BibDetails extends React.Component {
     return (
       <ul>
         {
-          bibValues.map((value, i) => {
+          bibValues.map((value) => {
             const url = `filters[${fieldValue}]=${value}`;
             return (
-              <li key={`filter${fieldValue}${i}`}>
+              <li key={`filter${fieldValue}`}>
                 {this.getDefinitionOneItem(
                   value,
                   url,
@@ -456,7 +456,7 @@ class BibDetails extends React.Component {
             e => this.newSearch(e, urlWithFilterQuery, fieldValue, urlArray[index], fieldLabel)
           }
           to={`${appConfig.baseUrl}/search?${urlWithFilterQuery}`}
-          key={index}
+          key={heading}
         >
           {heading}
         </Link>

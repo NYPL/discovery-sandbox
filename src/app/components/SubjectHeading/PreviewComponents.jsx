@@ -63,6 +63,10 @@ Preview.propTypes = {
   topHeadings: PropTypes.array,
 };
 
+Preview.defaultProps = {
+  topHeadings: [],
+}
+
 PreviewColumn.propTypes = {
   column: PropTypes.array,
 };
