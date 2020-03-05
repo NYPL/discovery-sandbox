@@ -252,7 +252,7 @@ class SubjectHeading extends React.Component {
             </div>
           </td>
         </tr>
-        { open && narrower.length > 0 && !showPreview ?
+        { narrower.length > 0 && !showPreview ?
           <SubjectHeadingsTableBody
             pathname={location.pathname}
             subjectHeadings={narrower}
