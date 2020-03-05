@@ -288,7 +288,7 @@ SubjectHeading.propTypes = {
 
 SubjectHeading.defaultProps = {
   indentation: 0,
-}
+};
 
 SubjectHeading.contextTypes = {
   router: PropTypes.object,

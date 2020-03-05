@@ -17,6 +17,7 @@ class SubjectHeadingsContainer extends React.Component {
     this.state = {
       error: false,
       componentLoading: true,
+      subjectHeadings: [],
     };
     this.pagination = this.pagination.bind(this);
     this.updateSort = this.updateSort.bind(this);
@@ -88,14 +89,14 @@ class SubjectHeadingsContainer extends React.Component {
     const { subjectHeadings } = this.state;
 
     if (
-      !filter || (subjectHeadings && subjectHeadings.length > 7)
+      !filter || subjectHeadings.length > 7
     ) return this.setState({ componentLoading: false });
 
     let url;
 
     Promise.all(
       subjectHeadings.map((subjectHeading) => {
-        if (subjectHeading.label === filter && subjectHeading.aggregate_bib_count >= 4) return;
+        if (subjectHeading.label === filter && subjectHeading.preview.length >= 4) return;
         url = `${appConfig.baseUrl}/api/subjectHeadings/subject_headings/${subjectHeading.uuid}/narrower`;
         return axios(url);
       })
@@ -103,6 +104,7 @@ class SubjectHeadingsContainer extends React.Component {
       .then((resp) => {
         this.setState((prevState) => {
           resp.forEach((narrowerResp) => {
+            if (!narrowerResp) return;
             const { data } = narrowerResp;
             if (data.message) return;
             if (data.narrower) {
