@@ -96,7 +96,7 @@ class SubjectHeadingsContainer extends React.Component {
 
     Promise.all(
       subjectHeadings.map((subjectHeading) => {
-        if (subjectHeading.label === filter && subjectHeading.preview.length >= 4) return;
+        if (subjectHeading.label === filter && subjectHeading.preview && subjectHeading.preview.length >= 4) return;
         url = `${appConfig.baseUrl}/api/subjectHeadings/subject_headings/${subjectHeading.uuid}/narrower`;
         return axios(url);
       })
