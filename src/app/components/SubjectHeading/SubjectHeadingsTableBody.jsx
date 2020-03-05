@@ -81,7 +81,7 @@ class SubjectHeadingsTableBody extends React.Component {
     const {
       range,
     } = this.state;
-    
+
     return this.subHeadingHeadings().concat(range.intervals.reduce((acc, el) =>
       acc.concat(this.listItemsInInterval(el))
       , []));
@@ -124,7 +124,7 @@ class SubjectHeadingsTableBody extends React.Component {
     return backgroundColor;
   }
 
-  tableRow(listItem) {
+  tableRow(listItem, index) {
     const {
       indentation,
       nested,
@@ -146,7 +146,7 @@ class SubjectHeadingsTableBody extends React.Component {
           indentation={listItem.indentation || indentation}
           button={listItem.button}
           updateParent={listItem.updateParent}
-          key={`${listItem.button}${listItem.indentation}`}
+          key={`${listItem.button}${listItem.indentation}${index}`}
           nested={nested}
           interactive={interactive}
           backgroundColor={this.backgroundColor()}
