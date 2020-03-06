@@ -70,9 +70,7 @@ class SubjectHeadingsTableBody extends React.Component {
       range,
     } = this.state;
 
-    return range.intervals.reduce((acc, interval) =>
-      acc.concat(this.listItemsInInterval(interval))
-      , []);
+    return range.intervals.map((interval => this.listItemsInInterval(interval)));
   }
 
   listItemsInInterval(interval) {
@@ -94,7 +92,11 @@ class SubjectHeadingsTableBody extends React.Component {
         updateParent: () => this.updateRange(range, interval, 'end', 10),
       });
     }
-    return subjectHeadingsInInterval;
+    return (
+      <React.Fragment>
+        { subjectHeadingsInInterval.map(item => this.tableRow(item)) }
+      </React.Fragment>
+    );
   }
 
   backgroundColor(nestedTable = false) {
@@ -112,7 +114,7 @@ class SubjectHeadingsTableBody extends React.Component {
     return backgroundColor;
   }
 
-  tableRow(listItem, index) {
+  tableRow(listItem) {
     const {
       indentation,
       nested,
@@ -134,7 +136,7 @@ class SubjectHeadingsTableBody extends React.Component {
           indentation={listItem.indentation || indentation}
           button={listItem.button}
           updateParent={listItem.updateParent}
-          key={`${listItem.button}${listItem.indentation}${index}`}
+          key={`${listItem.button}${listItem.indentation}${direction}`}
           nested={nested}
           interactive={interactive}
           backgroundColor={this.backgroundColor()}
@@ -191,8 +193,7 @@ class SubjectHeadingsTableBody extends React.Component {
         }
         {
           subjectHeadings ?
-          this.listItemsInRange(subjectHeadings)
-          .map(this.tableRow) :
+          this.listItemsInRange(subjectHeadings) :
           null
         }
       </React.Fragment>
