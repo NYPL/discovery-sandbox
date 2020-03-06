@@ -150,7 +150,7 @@ class ResultsList extends React.Component {
         <h3>
           <Link
             onClick={e => this.getBibRecord(e, bibId, bibTitle)}
-            to={`${appConfig.baseUrl}/bib/${bibId}?searchKeywords=${this.props.searchKeywords}`}
+            to={bibUrl}
             className="title"
           >
             {bibTitle}
