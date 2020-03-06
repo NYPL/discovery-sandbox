@@ -100,8 +100,8 @@ class HoldRequest extends React.Component {
     if (!holdRequestNotificationExpirationDate) return null;
 
     const expirationDate = holdRequestNotificationExpirationDate.split(",").map((numString) => {
-      return parseInt(numString)
-    })
+      return parseInt(numString, 10);
+    });
 
     const isAlertRelevant = new Date() <= new Date(
       expirationDate[0], // year
