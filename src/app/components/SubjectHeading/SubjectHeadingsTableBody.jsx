@@ -67,24 +67,24 @@ class SubjectHeadingsTableBody extends React.Component {
   }
 
   subHeadingHeadings() {
-    if (this.props.top) return [];
-    return [
+    if (this.props.top) return null;
+    return this.tableRow(
       {
         nestedTableHeader: true,
         indentation: this.props.indentation,
         updateSort: this.props.updateSort,
       },
-    ];
+    );
   }
 
   listItemsInRange() {
     const {
       range,
     } = this.state;
-    
-    return this.subHeadingHeadings().concat(range.intervals.reduce((acc, el) =>
-      acc.concat(this.listItemsInInterval(el))
-      , []));
+
+    return range.intervals.map(interval =>
+      this.listItemsInInterval(interval),
+    );
   }
 
   listItemsInInterval(interval) {
@@ -106,7 +106,11 @@ class SubjectHeadingsTableBody extends React.Component {
         updateParent: () => this.updateRange(range, interval, 'end', 10),
       });
     }
-    return subjectHeadingsInInterval;
+    return (
+      <React.Fragment>
+        {subjectHeadingsInInterval.map(item => this.tableRow(item))}
+      </React.Fragment>
+    );
   }
 
   backgroundColor(nestedTable = false) {
@@ -157,7 +161,7 @@ class SubjectHeadingsTableBody extends React.Component {
       return (
         <NestedTableHeader
           subjectHeading={listItem}
-          key={`nestedTableHeader${listItem.indentation}`}
+          key={`nestedTableHeader${listItem.indentation}${direction}`}
           indentation={indentation}
           container={container}
           sortBy={sortBy}
@@ -189,14 +193,12 @@ class SubjectHeadingsTableBody extends React.Component {
     } = this.state;
 
     return (
-      <React.Fragment>
-        {
-          subjectHeadings ?
-          this.listItemsInRange(subjectHeadings)
-          .map(this.tableRow) :
-          null
-        }
-      </React.Fragment>
+      subjectHeadings ?
+        <React.Fragment>
+          { this.subHeadingHeadings() }
+          { this.listItemsInRange(subjectHeadings) }
+        </React.Fragment> :
+        null
     );
   }
 }
