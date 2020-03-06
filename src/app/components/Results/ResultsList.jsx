@@ -6,6 +6,7 @@ import {
   isArray as _isArray,
 } from 'underscore';
 
+import Store from '../../stores/Store';
 import Actions from '../../actions/Actions';
 import LibraryItem from '../../utils/item';
 import {
@@ -135,6 +136,11 @@ class ResultsList extends React.Component {
     const items = LibraryItem.getItems(result);
     const totalItems = items.length;
     const hasRequestTable = items.length === 1;
+
+    let bibUrl = `${appConfig.baseUrl}/bib/${bibId}`
+
+    if (this.props.searchKeywords) bibUrl += `?searchKeywords=${this.props.searchKeywords}`;
+    else if (Store.state.searchKeywords) bibUrl += `?searchKeywords=${Store.state.searchKeywords}`;
 
     return (
       <li key={i} className={`nypl-results-item ${hasRequestTable ? 'has-request' : ''}`}>

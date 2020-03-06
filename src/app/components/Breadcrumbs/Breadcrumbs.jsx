@@ -38,12 +38,17 @@ const Breadcrumbs = ({ query = '', type, bibUrl, itemUrl, edd }) => {
       return crumbs;
     }
 
-    crumbs.push(
-      <li key="search">
-        <Link to={`${baseUrl}/search?${query}`} onClick={() => onClick('Search Results')}>
-          Search Results
-        </Link>
-      </li>);
+    const stringifiedQuery = query.replace(/^q=/, "");
+
+    if (stringifiedQuery && stringifiedQuery !== "undefined") {
+      crumbs.push(
+        <li key="search">
+          <Link to={`${baseUrl}/search?${query}`} onClick={() => onClick('Search Results')}>
+            Search Results
+          </Link>
+        </li>
+      );
+    }
 
     if (type === 'bib') {
       crumbs.push(<li key="bib">Item Details</li>);
