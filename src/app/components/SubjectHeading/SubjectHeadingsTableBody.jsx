@@ -114,7 +114,7 @@ class SubjectHeadingsTableBody extends React.Component {
     return backgroundColor;
   }
 
-  tableRow(listItem) {
+  tableRow(listItem, index) {
     const {
       indentation,
       nested,
