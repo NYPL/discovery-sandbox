@@ -86,6 +86,7 @@ AdditionalSubjectHeadingsButton.propTypes = {
   interactive: PropTypes.bool,
   linkUrl: PropTypes.string,
   text: PropTypes.string,
+  backgroundColor: PropTypes.string,
 };
 
 export default AdditionalSubjectHeadingsButton;

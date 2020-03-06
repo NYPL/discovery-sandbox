@@ -70,17 +70,26 @@ class SubjectHeading extends React.Component {
   }
 
   addMore(element, data) {
-    const {
-      narrower,
-    } = this.state;
-    data.narrower.forEach(
-      (child) => { child.indentation = (this.props.subjectHeading.indentation || 0) + 1; }
-    );
-    narrower.splice(-1, 1, ...data.narrower);
-    if (data.next_url) {
-      narrower.splice(-1, 1, { button: 'next', updateParent: this.fetchAndUpdate(data.next_url), indentation: (this.props.subjectHeading.indentation || 0) + 1 });
-    }
-    this.setState(prevState => prevState);
+    this.setState((prevState) => {
+      const { narrower } = prevState;
+      data.narrower.forEach(
+        (child) => { child.indentation = (this.props.subjectHeading.indentation || 0) + 1; }
+      );
+
+      narrower.splice(-1, 1, ...data.narrower);
+
+      if (data.next_url) {
+        narrower.splice(-1, 1, {
+          button: 'next',
+          updateParent: this.fetchAndUpdate(data.next_url),
+          indentation: (this.props.subjectHeading.indentation || 0) + 1,
+        });
+      }
+
+      this.setState({
+        narrower,
+      });
+    });
   }
 
   fetchAndUpdate(url) {
@@ -93,7 +102,7 @@ class SubjectHeading extends React.Component {
   }
 
   addEmphasis(string) {
-    const components = string.split(" -- ");
+    const components = string.split(' -- ');
     return { emph: components.slice(-1), rest: components.slice(0, -1).join(' -- ') };
   }
 
@@ -111,7 +120,11 @@ class SubjectHeading extends React.Component {
   }
 
   updateSort(sortType, direction) {
-    this.fetchInitial({ sortBy: sortType, direction, range: Range.default() });
+    this.fetchInitial({
+      sortBy: sortType,
+      direction,
+      range: Range.default(),
+    });
   }
 
   fetchInitial(additionalParameters = {}) {
@@ -123,9 +136,16 @@ class SubjectHeading extends React.Component {
       sortBy,
       direction,
     } = this.state;
+
+    const limit = this.state.narrower.length;
+
     if (additionalParameters.sortBy) sortBy = additionalParameters.sortBy;
     if (additionalParameters.direction) direction = additionalParameters.direction;
-    const url = `${appConfig.baseUrl}/api/subjectHeadings/subject_headings/${uuid}/narrower?sort_by=${sortBy}${direction ? `&direction=${direction}` : ''}`;
+    let url = `${appConfig.baseUrl}/api/subjectHeadings/subject_headings/${uuid}/narrower?sort_by=${sortBy}`;
+
+    if (direction) url += `&direction=${direction}`;
+    if (limit) url += `&limit=${limit}`;
+
     axios(url)
       .then(
         (resp) => {
@@ -199,7 +219,7 @@ class SubjectHeading extends React.Component {
       const props = {};
 
       props.onClick = this.toggleOpen;
-      props.className = "subjectHeadingToggle";
+      props.className = 'subjectHeadingToggle';
 
       if (desc_count > 0) {
         props.onKeyDown = event => handleEnter(event);
@@ -208,7 +228,7 @@ class SubjectHeading extends React.Component {
       return <button {...props}>{innerText}</button>;
     };
 
-    const positionStyle = ["narrower", "related"].includes(container) ? null : { marginLeft: 30 * ((indentation || 0) + 1) };
+    const positionStyle = ['narrower', 'related'].includes(container) ? null : { marginLeft: 30 * ((indentation || 0) + 1) };
     const isMain = (pathname + search).includes(uuid);
     // changes to HTML structure here will need to be replicated in ./SubjectHeadingTableHeader
 
@@ -288,11 +308,13 @@ SubjectHeading.propTypes = {
   direction: PropTypes.string,
   seeMoreText: PropTypes.string,
   seeMoreLinkUrl: PropTypes.string,
+  backgroundColor: PropTypes.string,
 };
 
 SubjectHeading.defaultProps = {
   indentation: 0,
-}
+  narrower: [],
+};
 
 SubjectHeading.contextTypes = {
   router: PropTypes.object,

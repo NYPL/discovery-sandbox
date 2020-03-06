@@ -6,23 +6,21 @@ import SortButton from './SortButton';
 
 const NestedTableHeader = (props) => {
   const {
-    subjectHeading,
     indentation,
     container,
     sortBy,
     direction,
-  } = props;
-
-  const {
+    parentUuid,
     updateSort,
-  } = subjectHeading;
+    interactive,
+  } = props;
 
   const positionStyle = container === 'narrower' ? null : { marginLeft: 30 * ((indentation || 0) + 1) };
   const calculateDirectionForType = calculateDirection(sortBy, direction);
 
   return (
     <tr
-      data={`${subjectHeading.uuid}, ${container}`}
+      data={`${parentUuid}, ${container}`}
       style={{ backgroundColor: props.backgroundColor }}
       className="nestedTableHeader"
     >
@@ -32,6 +30,7 @@ const NestedTableHeader = (props) => {
             handler={updateSort}
             type="alphabetical"
             direction={calculateDirectionForType('alphabetical')}
+            interactive={interactive}
           />
         </div>
       </th>
@@ -40,6 +39,7 @@ const NestedTableHeader = (props) => {
           handler={updateSort}
           type="descendants"
           direction={calculateDirectionForType('descendants')}
+          interactive={interactive}
         />
       </th>
       <th className={`subjectHeadingsTableCell subjectHeadingAttribute titles ${sortBy === 'bibs' ? 'selected' : ''}`}>
@@ -47,6 +47,7 @@ const NestedTableHeader = (props) => {
           handler={updateSort}
           type="bibs"
           direction={calculateDirectionForType('bibs')}
+          interactive={interactive}
         />
       </th>
     </tr>
@@ -54,12 +55,14 @@ const NestedTableHeader = (props) => {
 };
 
 NestedTableHeader.propTypes = {
-  subjectHeading: PropTypes.object,
   indentation: PropTypes.number,
   sortBy: PropTypes.string,
   container: PropTypes.string,
   direction: PropTypes.string,
   backgroundColor: PropTypes.string,
+  parentUuid: PropTypes.string,
+  updateSort: PropTypes.func,
+  interactive: PropTypes.bool,
 };
 
 export default NestedTableHeader;
