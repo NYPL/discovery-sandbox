@@ -140,7 +140,7 @@ class ResultsList extends React.Component {
     let bibUrl = `${appConfig.baseUrl}/bib/${bibId}`
 
     if (this.props.searchKeywords) bibUrl += `?searchKeywords=${this.props.searchKeywords}`;
-    else if (Store.state.searchKeywords) bibUrl += `?searchKeywords=${Store.state.searchKeywords}`;
+    else if (Store.getState().searchKeywords) bibUrl += `?searchKeywords=${Store.state.searchKeywords}`;
 
     return (
       <li key={i} className={`nypl-results-item ${hasRequestTable ? 'has-request' : ''}`}>
