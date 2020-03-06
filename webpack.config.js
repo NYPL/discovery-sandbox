@@ -46,6 +46,8 @@ const commonSettings = {
     new webpack.DefinePlugin({
       loadA11y: process.env.loadA11y || false,
       appEnv: JSON.stringify(appEnv),
+      holdRequestNotification: JSON.stringify(process.env.HOLD_REQUEST_NOTIFICATION) || "Shared Collection item deliveries are temporarily suspended.",
+      holdRequestNotificationExpirationDate: JSON.stringify(process.env.HOLD_REQUEST_NOTIFICATION_EXPIRATION_DATE) || "2020,3,30",
     }),
     // new BundleAnalyzerPlugin({
     //   // Can be `server`, `static` or `disabled`.

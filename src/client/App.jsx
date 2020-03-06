@@ -1,4 +1,4 @@
-/* global loadA11y, window */
+/* global loadA11y, window, holdRequestNotification, holdRequestNotificationExpirationDate */
 import 'babel-polyfill';
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -26,6 +26,9 @@ window.onload = () => {
 
     gaUtils.initialize(config.google.code(isProd), gaOpts);
   }
+
+  window.holdRequestNotification = holdRequestNotification;
+  window.holdRequestNotificationExpirationDate = holdRequestNotificationExpirationDate;
 
   // Render Isomorphically
   Iso.bootstrap((state, container) => {

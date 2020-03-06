@@ -29,4 +29,6 @@ export default {
     dateBefore: '',
     subjectLiteral: [],
   },
+  holdRequestNotificationExpirationDate: process.env.HOLD_REQUEST_NOTIFICATION_EXPIRATION_DATE,
+  holdRequestNotification: process.env.HOLD_REQUEST_NOTIFICATION,
 };

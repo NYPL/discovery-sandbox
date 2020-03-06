@@ -93,6 +93,8 @@ app.get('/*', (req, res) => {
           path: req.url,
           isProduction,
           baseUrl: appConfig.baseUrl,
+          holdRequestNotification: appConfig.holdRequestNotification,
+          holdRequestNotificationExpirationDate: appConfig.holdRequestNotificationExpirationDate,
         });
     } else {
       res.status(404).redirect(`${appConfig.baseUrl}/`);

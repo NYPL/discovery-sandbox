@@ -45,6 +45,8 @@ class HoldRequest extends React.Component {
       delivery: defaultDelivery,
       isLoading: true,
       checkedLocNum,
+      holdRequestNotification: "Shared Collection item deliveries are temporarily suspended.",
+      holdRequestNotificationExpirationDate: "2020,03,31",
     }, { patron: PatronStore.getState() });
 
     // change all the components :(
@@ -65,6 +67,10 @@ class HoldRequest extends React.Component {
       title.focus();
     }
     this.timeoutId = setTimeout(() => { this.updateIsLoadingState(false); }, 5000);
+    this.setState({
+      holdRequestNotification: window.holdRequestNotification,
+      holdRequestNotificationExpirationDate: window.holdRequestNotificationExpirationDate,
+    })
   }
 
   onChange() {
@@ -86,15 +92,28 @@ class HoldRequest extends React.Component {
    * @return {HTML Element}
    */
   getNotification() {
-    // Show holiday schedule warning if current date strictly less than
-    // the date the holiday hours end
-    const isAlertRelevant = new Date() <= new Date(2019, 11, 2)
+    const {
+      holdRequestNotification,
+      holdRequestNotificationExpirationDate
+    } = this.state;
+
+    const expirationDate = holdRequestNotificationExpirationDate.split(",").map((numString) => {
+      return parseInt(numString)
+    })
+
+    const isAlertRelevant = new Date() <= new Date(
+      expirationDate[0], // year
+      expirationDate[1] - 1, // month
+      expirationDate[2] + 1, // day
+    );
+
     if (isAlertRelevant) {
       return (
         <div className="nypl-banner-alert">
-          <p style={{ padding: '10px 20px 0px', margin: 0 }}>
-            Please note that due to the holiday schedule, requests for offsite material placed between 2:30pm on November 26 and 2:30pm on Monday, December 2 will be delivered on Tuesday, December 3.
+          <p style={{ padding: '0px 20px 0px', margin: 0 }}>
+            { holdRequestNotification }
           </p>
+          <p style={{ padding: '10px 20px 0px', margin: 0 }}>Please see www.nypl.org for the status of New York Public Library locations.</p>
         </div>
       );
     } else return null;
@@ -334,6 +353,14 @@ class HoldRequest extends React.Component {
         <h2 className="nypl-request-form-title">Choose a delivery option or location</h2>;
     let form = null;
 
+    // `shortName` options:
+    // "Schomburg Center"
+    // "Library for the Performing Arts"
+    // "Science, Industry and Business Library"
+    // "Schwarzman Building"
+    const closedLocations = [] // insert shortName of closed locations
+    const openLocations = this.props.deliveryLocations.filter(location => !closedLocations.includes(location.shortName));
+
     if (bib && selectedItemAvailable) {
       form = (
         <form
@@ -349,7 +376,7 @@ class HoldRequest extends React.Component {
                 Select a pickup location
               </legend>
               {(this.props.isEddRequestable) && this.renderEDD()}
-              {this.renderDeliveryLocation(this.props.deliveryLocations)}
+              {this.renderDeliveryLocation(openLocations)}
             </fieldset>
 
             <input type="hidden" name="pickupLocation" value="test" />
