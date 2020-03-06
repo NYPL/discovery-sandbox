@@ -48,13 +48,9 @@ class AdditionalSubjectHeadingsButton extends React.Component {
 
     );
 
-    let content = null;
+    if (previous && linkUrl) return null;
 
-    if (interactive) {
-      content = button;
-    } else if (!previous) {
-      content = <VerticalEllipse />;
-    }
+    const content = button;
 
     if (!content) return null;
 
@@ -77,9 +73,9 @@ class AdditionalSubjectHeadingsButton extends React.Component {
 
 const VerticalEllipse = () => (
   <div className="verticalEllipse">
-    <div>.</div>
-    <div>.</div>
-    <div>.</div>
+    <div className="dot">.</div>
+    <div className="dot">.</div>
+    <div className="dot">.</div>
   </div>
 );
 
