@@ -85,6 +85,7 @@ class SubjectHeadingsTableBody extends React.Component {
         button: 'previous',
         indentation,
         updateParent: () => this.updateRange(range, interval, 'start', -10),
+        key: `previous-${indentation}-${subjectHeadings[start - 1].uuid}`
       });
     }
     if (end !== Infinity && subjectHeadings[end + 1]) {
@@ -92,6 +93,7 @@ class SubjectHeadingsTableBody extends React.Component {
         button: 'next',
         indentation,
         updateParent: () => this.updateRange(range, interval, 'end', 10),
+        key: `next-${indentation}-${subjectHeadings[end + 1].uuid}`,
       });
     }
     return subjectHeadingsInInterval;
@@ -134,7 +136,7 @@ class SubjectHeadingsTableBody extends React.Component {
           indentation={listItem.indentation || indentation}
           button={listItem.button}
           updateParent={listItem.updateParent}
-          key={`${listItem.button}${listItem.indentation}`}
+          key={listItem.key}
           nested={nested}
           interactive={interactive}
           backgroundColor={this.backgroundColor()}
