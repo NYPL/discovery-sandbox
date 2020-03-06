@@ -97,6 +97,8 @@ class HoldRequest extends React.Component {
       holdRequestNotificationExpirationDate
     } = this.state;
 
+    if (!holdRequestNotificationExpirationDate) return null;
+
     const expirationDate = holdRequestNotificationExpirationDate.split(",").map((numString) => {
       return parseInt(numString)
     })
