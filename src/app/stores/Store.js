@@ -20,7 +20,6 @@ class Store {
       updateDeliveryLocations: Actions.updateDeliveryLocations,
       updateIsEddRequestable: Actions.updateIsEddRequestable,
       updateSubjectHeading: Actions.updateSubjectHeading,
-      updateLastLoadedPage: Actions.updateLastLoadedPage,
     });
 
     this.state = {
@@ -44,7 +43,6 @@ class Store {
       deliveryLocations: [],
       isEddRequestable: false,
       subjectHeading: null,
-      lastLoadedPage: null,
     };
   }
 
@@ -108,10 +106,6 @@ class Store {
 
   updateSubjectHeading(data) {
     this.setState({ subjectHeading: data });
-  }
-
-  updateLastLoadedPage(data) {
-    this.setState({ lastLoadedPage: data });
   }
 }
 

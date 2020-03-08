@@ -65,10 +65,28 @@ class ItemHoldings extends React.Component {
    */
   getRecord(e, bibId, itemId) {
     e.preventDefault();
+    Actions.updateLoadingStatus(true);
 
     trackDiscovery('Item Request', 'Item Details');
     // Search for the bib? Just pass the data.
-    this.context.router.push(`${appConfig.baseUrl}/hold/request/${bibId}-${itemId}`);
+    axios
+      .get(`${appConfig.baseUrl}/api/hold/request/${bibId}-${itemId}`)
+      .then((response) => {
+        Actions.updateBib(response.data.bib);
+        Actions.updateDeliveryLocations(response.data.deliveryLocations);
+        Actions.updateIsEddRequestable(response.data.isEddRequestable);
+        setTimeout(() => {
+          Actions.updateLoadingStatus(false);
+          this.context.router.push(`${appConfig.baseUrl}/hold/request/${bibId}-${itemId}`);
+        }, 500);
+      })
+      .catch((error) => {
+        console.error('Error attemping to make an ajax Bib request in ItemHoldings', error);
+
+        setTimeout(() => {
+          Actions.updateLoadingStatus(false);
+        }, 500);
+      });
   }
 
   /*

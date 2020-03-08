@@ -72,18 +72,12 @@ app.use('/*', initializePatronTokenAuth, getPatronData);
 app.use('/', apiRoutes);
 
 app.get('/*', (req, res, next) => {
-  let query = {}
-
-  const queryString = req
+  const query = req
     ._parsedUrl
     .query
-
-  if (queryString) {
-    query = queryString
-      .split('&')
-      .map(pair => pair.split('='))
-      .reduce((acc, el) => ({ [el[0]]: el[1], ...acc }));
-  }
+    .split('&')
+    .map(pair => pair.split('='))
+    .reduce((acc, el) => ({ [el[0]]: el[1], ...acc }));
 
   const location = {
     pathname: req.originalUrl,

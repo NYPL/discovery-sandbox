@@ -11,14 +11,6 @@ const pathInstructions = [
     expression: /\/research\/collections\/shared-collection-catalog\/search\?(.*)/,
     pathType: 'search',
   },
-  {
-    expression: /\/research\/collections\/shared-collection-catalog\/hold\/request\/([^-]+-[^-]+)[^\w]*$/,
-    pathType: 'hold-request',
-  },
-  {
-    expression: /\/research\/collections\/shared-collection-catalog\/hold\/confirmation\/(.*)$/,
-    pathType: 'hold-confirmation',
-  },
 ];
 
 const routesGenerator = (location, next) => ({
@@ -43,24 +35,6 @@ const routesGenerator = (location, next) => ({
       },
     ],
     errorMessage: 'Error attempting to make an ajax request to search',
-  },
-  'hold-request': {
-    apiRoute: matchData => `${next ? 'http://localhost:3001' : ''}${appConfig.baseUrl}/api/hold/request/${matchData[1]}`,
-    actions: [
-      data => console.log('data ', data),
-      data => Actions.updateBib(data.bib),
-      data => Actions.updateDeliveryLocations(data.deliveryLocations),
-      data => Actions.updateIsEddRequestable(data.isEddRequestable),
-    ],
-    errorMessage: 'Error attempting to make an ajax request for new hold request',
-  },
-  'hold-confirmation': {
-    apiRoute: matchData => `${next ? 'http://localhost:3001' : ''}${appConfig.baseUrl}/api/hold/request/${matchData[1]}`,
-    actions: [
-      data => Actions.updatePickupLocation(data.pickupLocation),
-      data => Actions.updateRequestId(data.id),
-    ],
-    errorMessage: 'Error attempting to make an ajax request for hold confirmation',
   },
 });
 
@@ -100,11 +74,9 @@ function loadDataForRoutes(location, next) {
     return ajaxCall(apiRoute(matchData),
       (response) => {
         actions.forEach(action => action(response.data));
-        Actions.updateLastLoadedPage(location.pathname);
         Actions.updateLoadingStatus(false);
       },
       (error) => {
-        Actions.updateLastLoadedPage(location.pathname);
         Actions.updateLoadingStatus(false);
         console.error(
           errorMessage,

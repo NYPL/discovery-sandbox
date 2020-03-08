@@ -46,7 +46,7 @@ class App extends React.Component {
             navData={navConfig.current}
             skipNav={{ target: 'mainContent' }}
             patron={this.state.patron}
-          />
+            />
           <DataLoader
             key={JSON.stringify(this.context.router.location)}
             location={this.context.router.location}

@@ -8,7 +8,6 @@ import {
   findWhere as _findWhere,
 } from 'underscore';
 import DocumentTitle from 'react-document-title';
-import Store from '@Store';
 
 import PatronStore from '../../stores/PatronStore';
 import appConfig from '../../data/appConfig';
@@ -25,7 +24,7 @@ class HoldConfirmation extends React.Component {
   }
 
   componentDidMount() {
-    // this.requireUser();
+    this.requireUser();
     document.getElementById('confirmation-title').focus();
   }
 
@@ -266,7 +265,7 @@ class HoldConfirmation extends React.Component {
     const bibId = (bib && bib['@id'] && typeof bib['@id'] === 'string') ?
       bib['@id'].substring(4) : '';
     const itemId = this.props.params.itemId;
-    const pickupLocation = Store.getState().pickupLocation;
+    const pickupLocation = this.props.location.query.pickupLocation;
     let deliveryLocation = null;
     let confirmationPageTitle = 'Submission Error';
     let confirmationInfo = (
