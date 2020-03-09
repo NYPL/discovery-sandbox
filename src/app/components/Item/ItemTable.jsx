@@ -8,7 +8,7 @@ const ItemTable = ({ items, bibId, getRecord, id, searchKeywords }) => {
   if (
     !_isArray(items) ||
     !items.length ||
-    !items.find(item => !item.isElectronicResource)
+    items.every(item => item.isElectronicResource)
   ) {
     return null;
   }
