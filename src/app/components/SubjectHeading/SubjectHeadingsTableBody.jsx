@@ -121,6 +121,7 @@ class SubjectHeadingsTableBody extends React.Component {
       sortBy,
       linked,
       direction,
+      preOpen,
     } = this.props;
 
     const { location } = this.context.router;
@@ -155,6 +156,7 @@ class SubjectHeadingsTableBody extends React.Component {
         linked={linked}
         backgroundColor={this.backgroundColor()}
         direction={direction}
+        preOpen={preOpen}
       />
     );
   }

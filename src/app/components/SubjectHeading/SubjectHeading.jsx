@@ -35,6 +35,16 @@ class SubjectHeading extends React.Component {
     this.fetchInitial = this.fetchInitial.bind(this);
   }
 
+  componentDidMount() {
+    const {
+      subjectHeading,
+      preOpen,
+    } = this.props;
+    if (preOpen || subjectHeading.preview) {
+      this.fetchInitial();
+    }
+  }
+
   componentDidUpdate() {
     if (this.state.narrower.length === 0 && this.props.subjectHeading.children) {
       this.setState({
@@ -271,7 +281,7 @@ class SubjectHeading extends React.Component {
             </div>
           </td>
         </tr>
-        { narrower.length > 0 ?
+        { open && narrower.length > 0 ?
           <SubjectHeadingsTableBody
             pathname={location.pathname}
             subjectHeadings={narrower}
@@ -284,6 +294,7 @@ class SubjectHeading extends React.Component {
             direction={direction}
             key={`${uuid}-list-${sortBy}-${direction}`}
             updateSort={this.updateSort}
+            preOpen={false}
           />
           : null}
       </React.Fragment>
@@ -300,10 +311,12 @@ SubjectHeading.propTypes = {
   container: PropTypes.string,
   direction: PropTypes.string,
   backgroundColor: PropTypes.string,
+  preOpen: PropTypes.bool,
 };
 
 SubjectHeading.defaultProps = {
   indentation: 0,
+  preOpen: false,
 };
 
 SubjectHeading.contextTypes = {

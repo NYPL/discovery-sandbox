@@ -68,7 +68,8 @@ class SubjectHeadingsContainer extends React.Component {
             nextUrl: res.data.next_url,
             subjectHeadings: res.data.subject_headings,
             error: res.data.subject_headings.length === 0,
-          }, this.fetchNarrower);
+            componentLoading: false,
+          });
         },
       ).catch(
         (err) => {
@@ -82,61 +83,6 @@ class SubjectHeadingsContainer extends React.Component {
           }
         },
       );
-  }
-
-  fetchNarrower() {
-    const { filter } = this.context.router.location.query;
-    const { subjectHeadings } = this.state;
-
-    let url;
-
-    if (!subjectHeadings) return;
-    if (!filter || !subjectHeadings.length) return this.setState({ componentLoading: false });
-
-    if (subjectHeadings.length > 7) {
-      url = `${appConfig.baseUrl}/api/subjectHeadings/subject_headings/${subjectHeadings[0].uuid}/narrower`;
-      axios(url)
-        .then((resp) => {
-          this.setState((prevState) => {
-            const data = { resp };
-            prevState.subjectHeadings
-              .find(subjectHeading => subjectHeading.uuid === data.request.id)
-              .children = data.narrower;
-
-            return {
-              subjectHeadings: prevState.subjectHeadings,
-              componentLoading: false,
-            };
-          });
-        });
-    }
-
-    Promise.all(
-      subjectHeadings.map((subjectHeading) => {
-        url = `${appConfig.baseUrl}/api/subjectHeadings/subject_headings/${subjectHeading.uuid}/narrower`;
-        return axios(url);
-      })
-    )
-      .then((resp) => {
-        this.setState((prevState) => {
-          resp.forEach((narrowerResp) => {
-            if (!narrowerResp) return;
-            const { data } = narrowerResp;
-            if (data.message) return;
-            if (data.narrower) {
-              prevState.subjectHeadings
-                .find(subjectHeading => subjectHeading.uuid === data.request.id)
-                .children = data.narrower;
-            }
-          });
-
-          return {
-            subjectHeadings: prevState.subjectHeadings,
-            componentLoading: false,
-          };
-        });
-      })
-      .catch(console.error)
   }
 
   extractParam(paramName, url) {
@@ -209,6 +155,7 @@ class SubjectHeadingsContainer extends React.Component {
     const { error, subjectHeadings } = this.state;
     const { location } = this.context.router;
     const { linked, sortBy, filter, direction } = location.query;
+    const preOpen = subjectHeadings.length <= 7;
 
     if (error) {
       return (
@@ -252,6 +199,7 @@ class SubjectHeadingsContainer extends React.Component {
           direction={direction}
           updateSort={filter ? this.updateSort : null}
           container="index"
+          preOpen={preOpen}
         />
         {this.pagination()}
       </React.Fragment>
