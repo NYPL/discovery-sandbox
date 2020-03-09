@@ -459,7 +459,6 @@ HoldRequest.propTypes = {
   params: PropTypes.object,
   deliveryLocations: PropTypes.array,
   isEddRequestable: PropTypes.bool,
-  isLoading: PropTypes.bool,
 };
 
 HoldRequest.defaultProps = {
@@ -469,7 +468,6 @@ HoldRequest.defaultProps = {
   params: {},
   deliveryLocations: [],
   isEddRequestable: false,
-  isLoading: false,
 };
 
 export default HoldRequest;
