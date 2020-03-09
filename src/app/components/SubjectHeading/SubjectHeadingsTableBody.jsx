@@ -168,12 +168,6 @@ class SubjectHeadingsTableBody extends React.Component {
 
   render() {
     const {
-      container,
-      seeMoreText,
-      seeMoreLinkUrl,
-    } = this.props;
-
-    const {
       subjectHeadings,
     } = this.state;
 
@@ -181,10 +175,10 @@ class SubjectHeadingsTableBody extends React.Component {
       nested,
       parentUuid,
       indentation,
-      container,
       sortBy,
       direction,
       updateSort,
+      container,
     } = this.props;
 
     return (
