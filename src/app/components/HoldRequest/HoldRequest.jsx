@@ -226,8 +226,7 @@ class HoldRequest extends React.Component {
      * @return {HTML Element}
      */
   renderDeliveryLocation(deliveryLocations = []) {
-    let { closedLocations } = AppConfigStore.getState();
-    closedLocations = JSON.parse(closedLocations);
+    const { closedLocations } = AppConfigStore.getState();
     console.log('closedLocations ', typeof closedLocations);
     return deliveryLocations.map((location, i) => {
       const displayName = this.modelDeliveryLocationName(location.prefLabel, location.shortName);

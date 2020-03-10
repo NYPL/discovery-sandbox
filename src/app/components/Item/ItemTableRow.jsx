@@ -4,6 +4,7 @@ import { Link } from 'react-router';
 import { isEmpty as _isEmpty } from 'underscore';
 
 import appConfig from '../../../../appConfig';
+import AppConfigStore from '../../stores/AppConfigStore';
 
 const ItemTableRow = ({ item, bibId, getRecord, searchKeywords }) => {
   if (_isEmpty(item)) {
@@ -18,7 +19,9 @@ const ItemTableRow = ({ item, bibId, getRecord, searchKeywords }) => {
   let itemRequestBtn = <span>{status}</span>;
   let itemCallNumber = ' ';
 
-  if (item.requestable) {
+  const { closedLocations } = AppConfigStore.getState();
+
+  if (item.requestable && !closedLocations.includes('')) {
     if (item.isRecap) {
       itemRequestBtn = item.available ?
         (<Link

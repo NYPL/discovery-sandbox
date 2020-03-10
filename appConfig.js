@@ -1,3 +1,5 @@
+console.log('closed locations ', process.env.CLOSED_LOCATIONS);
+
 export default {
   appTitle: 'NYPL | Discovery',
   appName: 'discovery',
@@ -29,7 +31,7 @@ export default {
     dateBefore: '',
     subjectLiteral: [],
   },
-  closedLocations: process.env.CLOSED_LOCATIONS,
+  closedLocations: JSON.parse(process.env.CLOSED_LOCATIONS || '[]'),
   holdRequestNotification: process.env.HOLD_REQUEST_NOTIFICATION,
   holdRequestNotificationExpirationDate: process.HOLD_REQUEST_NOTIFICATION_EXPIRATION_DATE,
 };
