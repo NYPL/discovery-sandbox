@@ -1,5 +1,3 @@
-console.log('closed locations ', process.env.CLOSED_LOCATIONS);
-
 export default {
   appTitle: 'NYPL | Discovery',
   appName: 'discovery',

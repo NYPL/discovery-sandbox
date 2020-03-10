@@ -83,7 +83,6 @@ app.get('/*', (req, res) => {
       const title = DocumentTitle.rewind();
       const iso = new Iso();
       const flushed = alt.flush();
-      console.log(flushed);
       iso.add(application, flushed);
       res
         .status(200)

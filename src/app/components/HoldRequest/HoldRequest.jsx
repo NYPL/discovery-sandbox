@@ -227,10 +227,8 @@ class HoldRequest extends React.Component {
      */
   renderDeliveryLocation(deliveryLocations = []) {
     const { closedLocations } = AppConfigStore.getState();
-    console.log('closedLocations ', typeof closedLocations);
     return deliveryLocations.map((location, i) => {
       const displayName = this.modelDeliveryLocationName(location.prefLabel, location.shortName);
-      console.log('displayName: ', displayName);
       const value = (location['@id'] && typeof location['@id'] === 'string') ?
         location['@id'].replace('loc:', '') : '';
 
@@ -316,7 +314,6 @@ class HoldRequest extends React.Component {
     const itemSource = selectedItem.itemSource;
     const deliveryLocations = this.props.deliveryLocations;
     const isEddRequestable = this.props.isEddRequestable;
-    console.log(closedLocations.includes(''));
     const deliveryLocationInstruction =
       ((!deliveryLocations.length && !isEddRequestable) || closedLocations.includes('')) ?
         (
