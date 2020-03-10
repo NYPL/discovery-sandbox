@@ -41,6 +41,9 @@ class Store {
       form: {},
       deliveryLocations: [],
       isEddRequestable: false,
+      holdRequestNotification: "",
+      holdRequestNotificationIsActive: false,
+      closedLocations: [],
     };
   }
 
@@ -100,6 +103,18 @@ class Store {
 
   updateIsEddRequestable(data) {
     this.setState({ isEddRequestable: data });
+  }
+
+  updateHoldRequestNotification(data) {
+    this.setState({ holdRequestNotification: data });
+  }
+
+  updateHoldRequestNotificationIsActive(data) {
+    this.setState({ holdRequestNotificationIsActive: data });
+  }
+
+  updateClosedLocations(data) {
+    this.setState({ closedLocations: data });
   }
 }
 

@@ -57,6 +57,18 @@ class Actions {
   updateIsEddRequestable(data) {
     return data;
   }
+
+  updateHoldRequestNotification(data) {
+    return data;
+  }
+
+  updateHoldRequestNotificationIsActive(data) {
+    return data;
+  }
+
+  updateClosedLocations(data) {
+    return data;
+  }
 }
 
 export default alt.createActions(Actions);

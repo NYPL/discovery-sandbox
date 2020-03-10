@@ -11,8 +11,10 @@ import {
 import DocumentTitle from 'react-document-title';
 
 import Breadcrumbs from '../Breadcrumbs/Breadcrumbs';
+import Notification from './Notification';
 
 import PatronStore from '../../stores/PatronStore';
+import Store from '../../stores/Store';
 import appConfig from '../../../../appConfig';
 import LibraryItem from '../../utils/item';
 import LoadingLayer from '../LoadingLayer/LoadingLayer';
@@ -77,27 +79,6 @@ class HoldRequest extends React.Component {
       delivery: e.target.value,
       checkedLocNum: i,
     });
-  }
-
-  /**
-   * getNotification()
-   * Renders notification text surrounded by a 'nypl-banner-alert' toolkit wrapper.
-   *
-   * @return {HTML Element}
-   */
-  getNotification() {
-    // Show holiday schedule warning if current date strictly less than
-    // the date the holiday hours end
-    const isAlertRelevant = new Date() <= new Date(2019, 11, 2)
-    if (isAlertRelevant) {
-      return (
-        <div className="nypl-banner-alert">
-          <p style={{ padding: '10px 20px 0px', margin: 0 }}>
-            Please note that due to the holiday schedule, requests for offsite material placed between 2:30pm on November 26 and 2:30pm on Monday, December 2 will be delivered on Tuesday, December 3.
-          </p>
-        </div>
-      );
-    } else return null;
   }
 
   /**
@@ -332,6 +313,7 @@ class HoldRequest extends React.Component {
           contact 917-ASK-NYPL (<a href="tel:917-275-6975">917-275-6975</a>).
         </h2>) :
         <h2 className="nypl-request-form-title">Choose a delivery option or location</h2>;
+    const { holdRequestNotificationIsActive } = Store.getState();
     let form = null;
 
     if (bib && selectedItemAvailable) {
@@ -403,7 +385,7 @@ class HoldRequest extends React.Component {
                           contact 917-ASK-NYPL (<a href="tel:917-275-6975">917-275-6975</a>).
                         </h2>
                     }
-                    {this.getNotification()}
+                    {holdRequestNotificationIsActive ? <Notification /> : null}
                     {bibLink}
                     {callNo}
                   </div>
