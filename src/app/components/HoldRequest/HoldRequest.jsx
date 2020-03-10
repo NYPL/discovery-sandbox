@@ -264,6 +264,8 @@ class HoldRequest extends React.Component {
   * @return {HTML Element}
   */
   renderEDD() {
+    const { closedLocations } = AppConfigStore.getState();
+    if (closedLocations) return null;
     return (
       <label
         className="electronic-delivery"
@@ -285,6 +287,7 @@ class HoldRequest extends React.Component {
   }
 
   render() {
+    const { closedLocations } = AppConfigStore.getState();
     const searchKeywords = this.props.searchKeywords || '';
     const bib = (this.props.bib && !_isEmpty(this.props.bib)) ?
       this.props.bib : null;
@@ -314,7 +317,7 @@ class HoldRequest extends React.Component {
     const deliveryLocations = this.props.deliveryLocations;
     const isEddRequestable = this.props.isEddRequestable;
     const deliveryLocationInstruction =
-      (!deliveryLocations.length && !isEddRequestable) ?
+      ((!deliveryLocations.length && !isEddRequestable) || closedLocations.includes('')) ?
         (
           <h2 className="nypl-request-form-title">
           Delivery options for this item are currently unavailable. Please try again later or
