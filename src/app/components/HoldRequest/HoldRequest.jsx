@@ -265,7 +265,7 @@ class HoldRequest extends React.Component {
   */
   renderEDD() {
     const { closedLocations } = AppConfigStore.getState();
-    if (closedLocations) return null;
+    if (closedLocations.includes('')) return null;
     return (
       <label
         className="electronic-delivery"
@@ -316,6 +316,7 @@ class HoldRequest extends React.Component {
     const itemSource = selectedItem.itemSource;
     const deliveryLocations = this.props.deliveryLocations;
     const isEddRequestable = this.props.isEddRequestable;
+    console.log(closedLocations.includes(''));
     const deliveryLocationInstruction =
       ((!deliveryLocations.length && !isEddRequestable) || closedLocations.includes('')) ?
         (
