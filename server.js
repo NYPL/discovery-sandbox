@@ -91,7 +91,11 @@ app.get('/*', (req, res, next) => {
 });
 
 app.get('/*', (req, res) => {
-  alt.bootstrap(JSON.stringify(Store.getState()));
+  alt.bootstrap(JSON.stringify({
+    PatronStore: res.locals.data.PatronStore,
+    Store: Store.getState(),
+  },
+  ));
 
   const appRoutes = (req.url).indexOf(appConfig.baseUrl) !== -1 ? routes().client : routes().server;
   const title = DocumentTitle.rewind();
