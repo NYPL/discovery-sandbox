@@ -6,9 +6,7 @@ const Notification = () => {
 
   return (
     <div className="nypl-banner-alert">
-      <p style={{ padding: '10px 20px 0px', margin: 0 }}>
-        { holdRequestNotification }
-      </p>
+      <p style={{ padding: '10px 20px 0px', margin: 0 }} dangerouslySetInnerHTML={{__html: holdRequestNotification }} />
     </div>
   );
 };
