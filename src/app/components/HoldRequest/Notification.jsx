@@ -1,8 +1,8 @@
 import React from 'react';
-import Store from '../../stores/Store';
+import AppConfigStore from '../../stores/AppConfigStore';
 
 const Notification = () => {
-  const { holdRequestNotification } = Store.getState();
+  const { holdRequestNotification } = AppConfigStore.getState();
 
   return (
     <div className="nypl-banner-alert">

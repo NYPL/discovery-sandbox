@@ -251,32 +251,6 @@ function confirmRequestServer(req, res, next) {
     });
 }
 
-// Used to retrieve environment variables for
-// the hold request notification information and closed locations.
-function setHoldRequestData(req, res, next) {
-  const expirationDateString = process.env.HOLD_REQUEST_NOTIFICATION_EXPIRATION_DATE;
-
-  const expirationDateArray = expirationDateString.split(',');
-
-  const expirationDate = new Date(
-    expirationDateArray[0],
-    expirationDateArray[1] - 1,
-    expirationDateArray[2] + 1,
-  );
-
-  const holdRequestNotificationIsActive = new Date() < expirationDate
-
-  console.log("holdRequestNotificationIsActive", expirationDate, holdRequestNotificationIsActive);
-
-  const closedLocations = JSON.stringify(process.env.CLOSED_LOCATIONS).split(';');
-
-  return {
-    holdRequestNotification: process.env.HOLD_REQUEST_NOTIFICATION,
-    holdRequestNotificationIsActive,
-    closedLocations,
-  };
-}
-
 /**
  * newHoldRequestServer(req, res, next)
  * The function to return the bib and item data with its delivery locations to hold request page.
@@ -297,12 +271,6 @@ function newHoldRequestServer(req, res, next) {
   const patronId = req.patronTokenResponse.decodedPatron.sub || '';
   let barcode;
 
-  const {
-    holdRequestNotification,
-    holdRequestNotificationIsActive,
-    closedLocations,
-  } = setHoldRequestData();
-
   // Retrieve item
   return Bib.fetchBib(
     bibId,
@@ -320,9 +288,6 @@ function newHoldRequestServer(req, res, next) {
             form,
             deliveryLocations,
             isEddRequestable,
-            holdRequestNotification,
-            holdRequestNotificationIsActive,
-            closedLocations,
           };
 
           next();
@@ -340,9 +305,6 @@ function newHoldRequestServer(req, res, next) {
             form,
             deliveryLocations: [],
             isEddRequestable: false,
-            holdRequestNotification,
-            holdRequestNotificationIsActive,
-            closedLocations,
           };
 
           next();
@@ -359,9 +321,6 @@ function newHoldRequestServer(req, res, next) {
         searchKeywords: req.query.searchKeywords || '',
         error,
         form,
-        holdRequestNotification,
-        holdRequestNotificationIsActive,
-        closedLocations,
       };
 
       next();
@@ -384,12 +343,6 @@ function newHoldRequestAjax(req, res) {
     req.patronTokenResponse.decodedPatron.sub : '';
   let barcode;
 
-  const {
-    holdRequestNotification,
-    holdRequestNotificationIsActive,
-    closedLocations,
-  } = setHoldRequestData();
-
   // Retrieve item
   return Bib.fetchBib(
     bibId,
@@ -404,9 +357,6 @@ function newHoldRequestAjax(req, res) {
             bib: bibResponseData,
             deliveryLocations,
             isEddRequestable,
-            holdRequestNotification,
-            holdRequestNotificationIsActive,
-            closedLocations,
           });
         },
         (deliveryLocationsError) => {
@@ -419,9 +369,6 @@ function newHoldRequestAjax(req, res) {
             bib: bibResponseData,
             deliveryLocations: [],
             isEddRequestable: false,
-            holdRequestNotification,
-            holdRequestNotificationIsActive,
-            closedLocations,
           });
         },
       );
@@ -460,9 +407,6 @@ function newHoldRequestServerEdd(req, res, next) {
         searchKeywords: req.query.searchKeywords || '',
         error,
         form,
-        holdRequestNotification,
-        holdRequestNotificationIsActive,
-        closedLocations,
       };
       next();
     },

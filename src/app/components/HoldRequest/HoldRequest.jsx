@@ -14,7 +14,7 @@ import Breadcrumbs from '../Breadcrumbs/Breadcrumbs';
 import Notification from './Notification';
 
 import PatronStore from '../../stores/PatronStore';
-import Store from '../../stores/Store';
+import AppConfigStore from '../../stores/AppConfigStore';
 import appConfig from '../../../../appConfig';
 import LibraryItem from '../../utils/item';
 import LoadingLayer from '../LoadingLayer/LoadingLayer';
@@ -226,10 +226,18 @@ class HoldRequest extends React.Component {
      * @return {HTML Element}
      */
   renderDeliveryLocation(deliveryLocations = []) {
+    let { closedLocations } = AppConfigStore.getState();
+    closedLocations = JSON.parse(closedLocations);
+    console.log('closedLocations ', typeof closedLocations);
     return deliveryLocations.map((location, i) => {
       const displayName = this.modelDeliveryLocationName(location.prefLabel, location.shortName);
+      console.log('displayName: ', displayName);
       const value = (location['@id'] && typeof location['@id'] === 'string') ?
         location['@id'].replace('loc:', '') : '';
+
+      if (closedLocations.some(closedLocation => displayName.startsWith(closedLocation))) {
+        return null;
+      }
 
       return (
         <label htmlFor={`location${i}`} id={`location${i}-label`} key={location['@id']}>
@@ -313,7 +321,7 @@ class HoldRequest extends React.Component {
           contact 917-ASK-NYPL (<a href="tel:917-275-6975">917-275-6975</a>).
         </h2>) :
         <h2 className="nypl-request-form-title">Choose a delivery option or location</h2>;
-    const { holdRequestNotificationIsActive } = Store.getState();
+    const { holdRequestNotificationIsActive } = AppConfigStore.getState();
     let form = null;
 
     if (bib && selectedItemAvailable) {

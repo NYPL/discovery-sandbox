@@ -29,4 +29,7 @@ export default {
     dateBefore: '',
     subjectLiteral: [],
   },
+  closedLocations: process.env.CLOSED_LOCATIONS,
+  holdRequestNotification: process.env.HOLD_REQUEST_NOTIFICATION,
+  holdRequestNotificationExpirationDate: process.HOLD_REQUEST_NOTIFICATION_EXPIRATION_DATE,
 };
