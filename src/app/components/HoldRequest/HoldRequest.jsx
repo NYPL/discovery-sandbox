@@ -314,7 +314,6 @@ class HoldRequest extends React.Component {
     const itemSource = selectedItem.itemSource;
     const deliveryLocations = this.props.deliveryLocations;
     const isEddRequestable = this.props.isEddRequestable;
-    console.log('closedLocations: ', closedLocations);
     const deliveryLocationInstruction =
       ((!deliveryLocations.length && !isEddRequestable) || closedLocations.includes('')) ?
         (
