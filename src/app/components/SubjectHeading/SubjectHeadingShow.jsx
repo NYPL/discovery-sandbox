@@ -135,55 +135,59 @@ class SubjectHeadingShow extends React.Component {
           uuid={uuid}
           key={this.context.router.location.search}
         />
-        {contextHeadings ?
-          <div
-            className="nypl-column-half subjectHeadingInfoBox"
-            tabIndex='0'
-            aria-label='Neighboring Subject Headings'
-          >
-            <div className="backgroundContainer">
-              <h4>Neighboring Subject Headings</h4>
+        <div
+          className="nypl-column-half subjectHeadingsSideBar"
+        >
+          {contextHeadings ?
+            <div
+              className="nypl-column-half subjectHeadingInfoBox"
+              tabIndex='0'
+              aria-label="Neighboring Subject Headings"
+            >
+              <div className="backgroundContainer">
+                <h4>Neighboring Subject Headings</h4>
+              </div>
+              <SubjectHeadingsTable
+                subjectHeadings={contextHeadings}
+                location={location}
+                showId={uuid}
+                keyId="context"
+                container="context"
+                tfootContent={
+                  <tr>
+                    <td>
+                      <Link
+                        to={contextHeadings && contextHeadings.length ? this.generateFullContextUrl() : '#'}
+                        className="toIndex"
+                        >
+                        Explore more in Subject Heading index
+                      </Link>
+                    </td>
+                  </tr>
+                }
+              />
             </div>
-            <SubjectHeadingsTable
-              subjectHeadings={contextHeadings}
-              location={location}
-              showId={uuid}
-              keyId="context"
-              container="context"
-              tfootContent={
-                <tr>
-                  <td>
-                    <Link
-                      to={contextHeadings && contextHeadings.length ? this.generateFullContextUrl() : '#'}
-                      className="toIndex"
-                    >
-                      Explore more in Subject Heading index
-                    </Link>
-                  </td>
-                </tr>
-              }
-            />
-          </div>
-          : null
-        }
-        {relatedHeadings ?
-          <div
-            className="nypl-column-half subjectHeadingInfoBox"
-            tabIndex='0'
-            aria-label='Related Subject Headings'
-          >
-            <div className="backgroundContainer">
-              <h4>Related Headings</h4>
+            : null
+          }
+          {relatedHeadings ?
+            <div
+              className="nypl-column-half subjectHeadingInfoBox"
+              tabIndex='0'
+              aria-label="Related Subject Headings"
+            >
+              <div className="backgroundContainer">
+                <h4>Related Headings</h4>
+              </div>
+              <SubjectHeadingsTable
+                subjectHeadings={relatedHeadings}
+                location={location}
+                keyId="related"
+                container="related"
+              />
             </div>
-            <SubjectHeadingsTable
-              subjectHeadings={relatedHeadings}
-              location={location}
-              keyId="related"
-              container="related"
-            />
-          </div>
-          : null
-        }
+            : null
+          }
+        </div>
       </React.Fragment>
     );
   }

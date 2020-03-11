@@ -113,7 +113,7 @@ class SubjectHeadingsTableBody extends React.Component {
     return backgroundColor;
   }
 
-  tableRow(listItem) {
+  tableRow(listItem, index) {
     const {
       indentation,
       nested,
@@ -136,7 +136,7 @@ class SubjectHeadingsTableBody extends React.Component {
           indentation={listItem.indentation || indentation}
           button={listItem.button}
           updateParent={listItem.updateParent}
-          key={`${listItem.button}${listItem.indentation}`}
+          key={`${listItem.button}${listItem.indentation}${index}`}
           nested={nested}
           interactive={interactive}
           backgroundColor={this.backgroundColor()}
