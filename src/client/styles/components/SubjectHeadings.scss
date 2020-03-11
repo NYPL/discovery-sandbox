@@ -94,7 +94,14 @@ $table-row-border: 1px solid rgb(215, 210, 205);
   font-size: 14px;
   margin-bottom: 3px;
   line-height: 5px;
-  padding: 4.5%;
+  padding-bottom: 4.5%;
+  padding-left: 3px;
+  .dot {
+    text-align: left;
+    display: block;
+  }
+  // padding: 4.5%;
+  // padding-left: 8%;
 }
 
 .nypl-breadcrumbs {

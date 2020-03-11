@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router';
 
 class AdditionalSubjectHeadingsButton extends React.Component {
   constructor(props) {
@@ -15,27 +16,41 @@ class AdditionalSubjectHeadingsButton extends React.Component {
     const {
       indentation,
       interactive,
+      text,
+      linkUrl,
     } = this.props;
     const previous = this.props.button === 'previous';
 
+    const seeMoreText = text || 'See more';
+
     const button = (
-      <button
-        onClick={this.onClick}
-        className="seeMoreButton"
-      >
-        {previous ? '↑' : '↓'} <em key="seeMoreText">See more</em>
-        {previous ? null : <br /> }
-        {previous ? null : <VerticalEllipse />}
-      </button>
+      linkUrl ?
+        (
+          <Link
+            to={linkUrl}
+            className="seeMoreButton toIndex"
+          >
+            {seeMoreText}
+          </Link>
+        )
+        :
+        (
+          <button
+            data={`${text}-${linkUrl}`}
+            onClick={this.onClick}
+            className="seeMoreButton"
+          >
+            {previous ? '↑' : '↓'} <em key="seeMoreText">{seeMoreText}</em>
+            {previous ? null : <br /> }
+            {previous ? null : <VerticalEllipse />}
+          </button>
+        )
+
     );
 
-    let content = null;
+    if (previous && linkUrl) return null;
 
-    if (interactive) {
-      content = button;
-    } else if (!previous) {
-      content = <VerticalEllipse />;
-    }
+    const content = button;
 
     if (!content) return null;
 
@@ -44,12 +59,12 @@ class AdditionalSubjectHeadingsButton extends React.Component {
         className="subjectHeadingRow nestedSubjectHeading"
         style={{ backgroundColor: this.props.backgroundColor }}
       >
-        <td colSpan="4">
-          <span className="moreSubjectsElement" style={{ paddingLeft: `${40 * indentation}px` }}>
+        <td className="subjectHeadingsTableCell" colSpan="4">
+          <div className="subjectHeadingLabelInner" style={{ marginLeft: `${30 * indentation}px` }}>
             {
               content
             }
-          </span>
+          </div>
         </td>
       </tr>
     );
@@ -58,9 +73,9 @@ class AdditionalSubjectHeadingsButton extends React.Component {
 
 const VerticalEllipse = () => (
   <div className="verticalEllipse">
-    <div>.</div>
-    <div>.</div>
-    <div>.</div>
+    <div className="dot">.</div>
+    <div className="dot">.</div>
+    <div className="dot">.</div>
   </div>
 );
 
@@ -69,6 +84,8 @@ AdditionalSubjectHeadingsButton.propTypes = {
   indentation: PropTypes.number,
   button: PropTypes.string,
   interactive: PropTypes.bool,
+  linkUrl: PropTypes.string,
+  text: PropTypes.string,
   backgroundColor: PropTypes.string,
 };
 

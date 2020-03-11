@@ -125,6 +125,8 @@ class SubjectHeadingShow extends React.Component {
 
     const { location } = this.props;
 
+    const linkUrl = contextHeadings && contextHeadings.length ? this.generateFullContextUrl() : '#';
+
     if (error) {
       return (<div>Not a subject heading</div>);
     }

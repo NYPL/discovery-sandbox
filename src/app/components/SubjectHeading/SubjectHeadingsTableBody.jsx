@@ -121,8 +121,11 @@ class SubjectHeadingsTableBody extends React.Component {
       sortBy,
       linked,
       direction,
+      seeMoreText,
+      seeMoreLinkUrl,
       preOpen,
     } = this.props;
+
 
     const { location } = this.context.router;
 
@@ -139,6 +142,9 @@ class SubjectHeadingsTableBody extends React.Component {
           key={`${listItem.button}${listItem.indentation}${index}`}
           nested={nested}
           interactive={interactive}
+          container={container}
+          linkUrl={seeMoreLinkUrl}
+          text={seeMoreText}
           backgroundColor={this.backgroundColor()}
         />
       );
@@ -154,6 +160,8 @@ class SubjectHeadingsTableBody extends React.Component {
         container={container}
         sortBy={sortBy}
         linked={linked}
+        seeMoreText={seeMoreText}
+        seeMoreLinkUrl={seeMoreLinkUrl}
         backgroundColor={this.backgroundColor()}
         direction={direction}
         preOpen={preOpen}
@@ -170,10 +178,10 @@ class SubjectHeadingsTableBody extends React.Component {
       nested,
       parentUuid,
       indentation,
-      container,
       sortBy,
       direction,
       updateSort,
+      container,
     } = this.props;
 
     return (
@@ -213,6 +221,8 @@ SubjectHeadingsTableBody.propTypes = {
   parentUuid: PropTypes.string,
   updateSort: PropTypes.func,
   pathname: PropTypes.string,
+  seeMoreText: PropTypes.string,
+  seeMoreLinkUrl: PropTypes.string,
   direction: PropTypes.string,
 };
 
