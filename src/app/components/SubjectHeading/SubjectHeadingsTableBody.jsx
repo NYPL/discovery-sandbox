@@ -60,6 +60,7 @@ class SubjectHeadingsTableBody extends React.Component {
   }
 
   updateRange(rangeElement, intervalElement, endpoint, increment) {
+    // eslint-disable-next-line no-param-reassign
     intervalElement[endpoint] += increment;
     rangeElement.normalize();
     this.setState(prevState => prevState);
@@ -120,6 +121,7 @@ class SubjectHeadingsTableBody extends React.Component {
       sortBy,
       linked,
       direction,
+      preOpen,
     } = this.props;
 
     const { location } = this.context.router;
@@ -154,6 +156,7 @@ class SubjectHeadingsTableBody extends React.Component {
         linked={linked}
         backgroundColor={this.backgroundColor()}
         direction={direction}
+        preOpen={preOpen}
       />
     );
   }

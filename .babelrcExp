@@ -73,7 +73,7 @@
           "@LoadingLayer": "./src/app/components/LoadingLayer/LoadingLayer.jsx",
           "@NotFound404": "./src/app/components/NotFound404/NotFound404.jsx",
           "@Pagination": "./src/app/components/Pagination/Pagination.jsx",
-          "@ResultsList": "./src/app/components/Results/ResultsList.jsx",
+          "@ResultsList": "./src/app/components/ResultsList/ResultsList.jsx",
           "@ResultsCount": "./src/app/components/ResultsCount/ResultsCount.jsx",
           "@SccContainer": "./src/app/components/SccContainer/SccContainer.jsx",
           "@Search": "./src/app/components/Search/Search.jsx",

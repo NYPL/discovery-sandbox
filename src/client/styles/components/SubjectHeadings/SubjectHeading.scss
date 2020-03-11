@@ -11,9 +11,13 @@
   @include removeDefaultButtonStyle;
 
   &:focus {
-    outline-color: #ffb81d;
-    outline-style: solid;
-    outline-width: 0.125rem;
+    // outline: -webkit-focus-ring-color auto 5px;
+    outline-color: #0f465c;
+    // outline-width: .125rem;
+    outline-offset: -6px;
+    background-color: inherit;
+    box-shadow: none;
+    // box-shadow: 1px 1px 1px 1px #082530;
   }
 }
 
@@ -70,4 +74,10 @@
   &:hover {
     color: inherit;
   }
+}
+
+
+
+a:focus {
+  background-color: inherit;
 }
