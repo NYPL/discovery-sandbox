@@ -6,23 +6,57 @@ import {
   isArray as _isArray,
 } from 'underscore';
 
+import Store from '../../stores/Store';
 import Actions from '../../actions/Actions';
-// eslint-disable-next-line import/first, import/no-unresolved, import/extensions
-import Store from '@Store';
 import LibraryItem from '../../utils/item';
 import {
   ajaxCall,
   trackDiscovery,
 } from '../../utils/utils';
 import ItemTable from '../Item/ItemTable';
-import appConfig from '../../data/appConfig';
+import appConfig from '../../../../appConfig';
 
 class ResultsList extends React.Component {
   constructor(props) {
     super(props);
 
     this.routeHandler = this.routeHandler.bind(this);
+    this.getBibRecord = this.getBibRecord.bind(this);
     this.getItemRecord = this.getItemRecord.bind(this);
+  }
+
+  /*
+   * getBibRecord(e, bibId)
+   * @description Get updated information for a bib and route the patron to the bib page.
+   * @param {object} e Event object.
+   * @param {string} bibId The bib's id.
+   * @param {string} bibTitle The bib's title.
+   */
+  getBibRecord(e, bibId, bibTitle) {
+    e.preventDefault();
+
+    this.props.updateIsLoadingState(true);
+
+    trackDiscovery('Bib', bibTitle);
+    ajaxCall(`${appConfig.baseUrl}/api/bib?bibId=${bibId}`,
+      (response) => {
+        Actions.updateBib(response.data);
+        setTimeout(() => {
+          this.props.updateIsLoadingState(false);
+          this.routeHandler(`${appConfig.baseUrl}/bib/${bibId}`);
+        }, 500);
+      },
+      (error) => {
+        setTimeout(() => {
+          this.props.updateIsLoadingState(false);
+        }, 500);
+
+        console.error(
+          'Error attempting to make an ajax request to fetch a bib record from ResultsList',
+          error,
+        );
+      },
+    );
   }
 
   /*
@@ -36,7 +70,7 @@ class ResultsList extends React.Component {
   getItemRecord(e, bibId, itemId) {
     e.preventDefault();
 
-    Actions.updateLoadingStatus(true);
+    this.props.updateIsLoadingState(true);
 
     trackDiscovery('Item Request', 'Search Results');
     ajaxCall(`${appConfig.baseUrl}/api/hold/request/${bibId}-${itemId}`,
@@ -45,16 +79,15 @@ class ResultsList extends React.Component {
         Actions.updateDeliveryLocations(response.data.deliveryLocations);
         Actions.updateIsEddRequestable(response.data.isEddRequestable);
         setTimeout(() => {
-          Actions.updateLoadingStatus(false);
+          this.props.updateIsLoadingState(false);
           this.routeHandler(`${appConfig.baseUrl}/hold/request/${bibId}-${itemId}`);
         }, 500);
       },
       (error) => {
         setTimeout(() => {
-          Actions.updateLoadingStatus(false);
+          this.props.updateIsLoadingState(false);
         }, 500);
 
-        // eslint-disable-next-line no-console
         console.error(
           'Error attemping to make an ajax request to fetch an item in ResultsList',
           error,
@@ -89,13 +122,10 @@ class ResultsList extends React.Component {
     return null;
   }
 
-  generateBibLi(bib, i) {
-    // eslint-disable-next-line no-mixed-operators
-    if (_isEmpty(bib) || bib.result && (_isEmpty(bib.result) || !bib.result.title)) {
-      return null;
-    }
+  getBib(bib, i) {
+    if (!bib.result || _isEmpty(bib.result) || !bib.result.title) return null;
 
-    const result = bib.result || bib;
+    const result = bib.result;
     const bibTitle = this.getBibTitle(result);
     const bibId = result && result['@id'] ? result['@id'].substring(4) : '';
     const materialType = result && result.materialType && result.materialType[0] ?
@@ -107,7 +137,7 @@ class ResultsList extends React.Component {
     const totalItems = items.length;
     const hasRequestTable = items.length === 1;
 
-    let bibUrl = `${appConfig.baseUrl}/bib/${bibId}`;
+    let bibUrl = `${appConfig.baseUrl}/bib/${bibId}`
 
     if (this.props.searchKeywords) bibUrl += `?searchKeywords=${this.props.searchKeywords}`;
     else if (Store.state.searchKeywords) bibUrl += `?searchKeywords=${Store.state.searchKeywords}`;
@@ -116,8 +146,8 @@ class ResultsList extends React.Component {
       <li key={i} className={`nypl-results-item ${hasRequestTable ? 'has-request' : ''}`}>
         <h3>
           <Link
-            onClick={() => trackDiscovery('Bib', bibTitle)}
-            to={bibUrl}
+            onClick={e => this.getBibRecord(e, bibId, bibTitle)}
+            to={`${appConfig.baseUrl}/bib/${bibId}?searchKeywords=${this.props.searchKeywords}`}
             className="title"
           >
             {bibTitle}
@@ -135,13 +165,13 @@ class ResultsList extends React.Component {
         </div>
         {
           hasRequestTable &&
-          <ItemTable
-            items={items}
-            bibId={bibId}
-            getRecord={this.getItemRecord}
-            id={null}
-            searchKeywords={this.props.searchKeywords}
-          />
+            <ItemTable
+              items={items}
+              bibId={bibId}
+              getRecord={this.getItemRecord}
+              id={null}
+              searchKeywords={this.props.searchKeywords}
+            />
         }
       </li>
     );
@@ -159,12 +189,12 @@ class ResultsList extends React.Component {
       return null;
     }
 
-    resultsElm = results.map((bib, i) => this.generateBibLi(bib, i));
+    resultsElm = results.map((bib, i) => this.getBib(bib, i));
 
     return (
       <ul
         id="nypl-results-list"
-        className={`nypl-results-list ${Store.state.isLoading ? 'hide-results-list ' : ''}`}
+        className={`nypl-results-list ${this.props.isLoading ? 'hide-results-list ' : ''}`}
       >
         {resultsElm}
       </ul>
@@ -174,7 +204,9 @@ class ResultsList extends React.Component {
 
 ResultsList.propTypes = {
   results: PropTypes.array,
+  isLoading: PropTypes.bool,
   searchKeywords: PropTypes.string,
+  updateIsLoadingState: PropTypes.func,
 };
 
 ResultsList.contextTypes = {
