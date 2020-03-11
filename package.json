@@ -11,7 +11,7 @@
     "eb-start": "npm run dist && node index",
     "dist": "NODE_ENV=production webpack --config webpack.config.js",
     "postinstall": "npm run dist",
-    "test": "NODE_ENV=test node_modules/.bin/mocha test/helpers/browser.js test/unit/*.test.js",
+    "test": "source test.env; node_modules/.bin/mocha test/helpers/browser.js test/unit/*.test.js",
     "test-dev": "node_modules/.bin/mocha -w test/helpers/browser.js test/unit/*.test.js",
     "test-file": "node_modules/.bin/mocha -w test/helpers/browser.js",
     "coverage": "BABEL_ENV=test node_modules/.bin/nyc --require mocha npm test",
@@ -75,13 +75,13 @@
     "webpack-dev-server": "2.7.1"
   },
   "dependencies": {
-    "@nypl/design-toolkit": "0.1.35",
+    "@nypl/design-toolkit": "^0.1.37",
     "@nypl/dgx-header-component": "2.6.0",
     "@nypl/dgx-react-footer": "0.5.2",
     "@nypl/dgx-svg-icons": "0.2.5",
     "@nypl/nypl-data-api-client": "0.2.5",
     "aws-sdk": "2.99.0",
-    "axios": "0.9.1",
+    "axios": "0.18.1",
     "babel-core": "6.26.0",
     "babel-loader": "6.4.1",
     "babel-plugin-istanbul": "3.0.0",
@@ -126,7 +126,7 @@
     "underscore": "1.8.3",
     "validator": "7.2.0",
     "webpack": "2.7.0",
-    "webpack-bundle-analyzer": "^2.13.1",
+    "webpack-bundle-analyzer": "^3.3.2",
     "webpack-merge": "0.8.4",
     "winston": "2.3.1"
   }
