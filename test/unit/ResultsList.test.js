@@ -8,7 +8,7 @@ import MockAdapter from 'axios-mock-adapter';
 import axios from 'axios';
 import sinon from 'sinon';
 
-import ResultsList from '../../src/app/components/Results/ResultsList';
+import ResultsList from '../../src/app/components/ResultsList/ResultsList';
 
 Enzyme.configure({ adapter: new Adapter() });
 const results = [{}, {}, {}];
