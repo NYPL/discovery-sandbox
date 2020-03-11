@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import ResultList from '../Results/ResultsList';
+import ResultList from '../ResultsList/ResultsList';
 import Pagination from '../Pagination/Pagination';
 import {
   basicQuery,
