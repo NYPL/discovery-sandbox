@@ -29,4 +29,6 @@ export default {
     dateBefore: '',
     subjectLiteral: [],
   },
+  closedLocations: JSON.parse(process.env.CLOSED_LOCATIONS || '[]'),
+  holdRequestNotification: process.env.HOLD_REQUEST_NOTIFICATION,
 };
