@@ -60,6 +60,7 @@ class SubjectHeadingsTableBody extends React.Component {
   }
 
   updateRange(rangeElement, intervalElement, endpoint, increment) {
+    // eslint-disable-next-line no-param-reassign
     intervalElement[endpoint] += increment;
     rangeElement.normalize();
     this.setState(prevState => prevState);
@@ -112,7 +113,7 @@ class SubjectHeadingsTableBody extends React.Component {
     return backgroundColor;
   }
 
-  tableRow(listItem) {
+  tableRow(listItem, index) {
     const {
       indentation,
       nested,
@@ -122,6 +123,7 @@ class SubjectHeadingsTableBody extends React.Component {
       direction,
       seeMoreText,
       seeMoreLinkUrl,
+      preOpen,
     } = this.props;
 
 
@@ -137,7 +139,7 @@ class SubjectHeadingsTableBody extends React.Component {
           indentation={listItem.indentation || indentation}
           button={listItem.button}
           updateParent={listItem.updateParent}
-          key={`${listItem.button}${listItem.indentation}`}
+          key={`${listItem.button}${listItem.indentation}${index}`}
           nested={nested}
           interactive={interactive}
           container={container}
@@ -162,6 +164,7 @@ class SubjectHeadingsTableBody extends React.Component {
         seeMoreLinkUrl={seeMoreLinkUrl}
         backgroundColor={this.backgroundColor()}
         direction={direction}
+        preOpen={preOpen}
       />
     );
   }

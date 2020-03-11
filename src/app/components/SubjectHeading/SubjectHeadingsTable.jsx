@@ -18,6 +18,7 @@ const SubjectHeadingsTable = (props) => {
     seeMoreLinkUrl,
     tfootContent,
     direction,
+    preOpen,
   } = props;
 
   return (
@@ -36,6 +37,7 @@ const SubjectHeadingsTable = (props) => {
           seeMoreLinkUrl={seeMoreLinkUrl}
           direction={direction}
           top
+          preOpen={preOpen}
         />
       </tbody>
       { tfootContent ?

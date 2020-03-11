@@ -6,7 +6,6 @@ import { Link } from 'react-router';
 import SubjectHeadingsTableBody from './SubjectHeadingsTableBody';
 import Range from '../../models/Range';
 import appConfig from '../../data/appConfig';
-import Preview from './PreviewComponents';
 
 class SubjectHeading extends React.Component {
   constructor(props) {
@@ -19,9 +18,10 @@ class SubjectHeading extends React.Component {
     const {
       children,
       range,
+      preview,
     } = subjectHeading;
     this.state = {
-      open: !!children || this.isMain(),
+      open: (!!children && !preview) || this.isMain(),
       narrower: (children || []),
       sortBy: sortBy || 'alphabetical',
       direction: direction || 'ASC',
@@ -33,6 +33,16 @@ class SubjectHeading extends React.Component {
     this.generateUrl = this.generateUrl.bind(this);
     this.updateSort = this.updateSort.bind(this);
     this.fetchInitial = this.fetchInitial.bind(this);
+  }
+
+  componentDidMount() {
+    const {
+      subjectHeading,
+      preOpen,
+    } = this.props;
+    if (preOpen || subjectHeading.preview) {
+      this.fetchInitial();
+    }
   }
 
   componentDidUpdate() {
@@ -190,7 +200,6 @@ class SubjectHeading extends React.Component {
       bib_count,
       desc_count,
       children,
-      preview,
     } = subjectHeading;
 
     const {
@@ -215,7 +224,7 @@ class SubjectHeading extends React.Component {
 
     const toggle = () => {
       const symbol = !open ? '+' : '-';
-      const innerText = desc_count > 0 ? symbol : "";
+      const innerText = desc_count > 0 ? symbol : '';
       const props = {};
 
       props.onClick = this.toggleOpen;
@@ -251,7 +260,9 @@ class SubjectHeading extends React.Component {
                 <span
                   className={`emph ${isMain ? 'mainHeading' : ''}`}
                 >
-                  {rest === '' || container === 'context' ? null :
+                  {
+                    rest === '' || container === 'context' ?
+                    null :
                     <span className="noEmph">
                       {`${rest}\u0020--\u00a0`}
                     </span>
@@ -268,7 +279,7 @@ class SubjectHeading extends React.Component {
           </td>
           <td className={`subjectHeadingsTableCell subjectHeadingAttribute titles ${sortBy === 'bibs' ? 'selected' : ''}`}>
             <div className="subjectHeadingAttributeInner">
-              {`${bib_count}`}
+              {bib_count}
             </div>
           </td>
         </tr>
@@ -287,12 +298,9 @@ class SubjectHeading extends React.Component {
             updateSort={this.updateSort}
             seeMoreText={seeMoreText}
             seeMoreLinkUrl={seeMoreLinkUrl}
+            preOpen={false}
           />
           : null}
-        {!open && preview && preview.length >= 4 ?
-          <Preview topHeadings={preview} />
-          : null
-        }
       </React.Fragment>
     );
   }
@@ -309,11 +317,12 @@ SubjectHeading.propTypes = {
   seeMoreText: PropTypes.string,
   seeMoreLinkUrl: PropTypes.string,
   backgroundColor: PropTypes.string,
+  preOpen: PropTypes.bool,
 };
 
 SubjectHeading.defaultProps = {
   indentation: 0,
-  narrower: [],
+  preOpen: false,
 };
 
 SubjectHeading.contextTypes = {

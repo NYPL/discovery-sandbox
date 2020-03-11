@@ -7,7 +7,8 @@ import {
 } from 'underscore';
 
 import Actions from '../../actions/Actions';
-import Store from '@Store'
+// eslint-disable-next-line import/first, import/no-unresolved, import/extensions
+import Store from '@Store';
 import LibraryItem from '../../utils/item';
 import {
   ajaxCall,
@@ -53,6 +54,7 @@ class ResultsList extends React.Component {
           Actions.updateLoadingStatus(false);
         }, 500);
 
+        // eslint-disable-next-line no-console
         console.error(
           'Error attemping to make an ajax request to fetch an item in ResultsList',
           error,
@@ -88,9 +90,10 @@ class ResultsList extends React.Component {
   }
 
   generateBibLi(bib, i) {
+    // eslint-disable-next-line no-mixed-operators
     if (_isEmpty(bib) || bib.result && (_isEmpty(bib.result) || !bib.result.title)) {
-      return null
-    };
+      return null;
+    }
 
     const result = bib.result || bib;
     const bibTitle = this.getBibTitle(result);
@@ -104,10 +107,10 @@ class ResultsList extends React.Component {
     const totalItems = items.length;
     const hasRequestTable = items.length === 1;
 
-    let bibUrl = `${appConfig.baseUrl}/bib/${bibId}`
+    let bibUrl = `${appConfig.baseUrl}/bib/${bibId}`;
 
-    if (this.props.searchKeywords) bibUrl += `?searchKeywords=${this.props.searchKeywords}`
-    else if (Store.state.searchKeywords) bibUrl += `?searchKeywords=${Store.state.searchKeywords}`
+    if (this.props.searchKeywords) bibUrl += `?searchKeywords=${this.props.searchKeywords}`;
+    else if (Store.state.searchKeywords) bibUrl += `?searchKeywords=${Store.state.searchKeywords}`;
 
     return (
       <li key={i} className={`nypl-results-item ${hasRequestTable ? 'has-request' : ''}`}>
