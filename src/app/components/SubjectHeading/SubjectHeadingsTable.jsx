@@ -16,6 +16,7 @@ const SubjectHeadingsTable = (props) => {
     updateSort,
     tfootContent,
     direction,
+    preOpen,
   } = props;
 
   return (
@@ -32,6 +33,7 @@ const SubjectHeadingsTable = (props) => {
           container={container}
           direction={direction}
           top
+          preOpen={preOpen}
         />
       </tbody>
       { tfootContent ?
