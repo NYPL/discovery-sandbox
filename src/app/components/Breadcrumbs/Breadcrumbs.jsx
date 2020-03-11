@@ -3,14 +3,14 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 
 import { trackDiscovery } from '../../utils/utils';
-import appConfig from '../../data/appConfig';
+import appConfig from '../../../../appConfig';
 
 const {
   baseUrl,
   displayTitle,
 } = appConfig;
 
-const Breadcrumbs = ({ query, type, bibUrl, itemUrl, edd }) => {
+const Breadcrumbs = ({ query = '', type, bibUrl, itemUrl, edd }) => {
   const defaultText = displayTitle;
   const onClick = pageTitle => trackDiscovery('Breadcrumbs', pageTitle);
   const homeLink = (
@@ -33,33 +33,21 @@ const Breadcrumbs = ({ query, type, bibUrl, itemUrl, edd }) => {
     // Search Results page.
     const crumbs = [homeLink];
 
-    if (type.startsWith('subjectHeading')) {
-      crumbs.push(
-        <li key="subjectHeading">
-          <Link to={`${baseUrl}/subject_headings`}>
-            Subject Headings
-          </Link>
-        </li>);
-      if (type === 'subjectHeading') {
-        crumbs.push(<li key="subjectHeadingDetails">Heading Details</li>);
-      }
-      return crumbs;
-    }
-
     if (type === 'search') {
       crumbs.push(<li key="search">Search Results</li>);
       return crumbs;
     }
 
-    const stringifiedQuery = query.replace(/^q=/, "")
+    const stringifiedQuery = query.replace(/^q=/, "");
 
     if (stringifiedQuery && stringifiedQuery !== "undefined") {
       crumbs.push(
-      <li key="search">
-        <Link to={`${baseUrl}/search?${query}`} onClick={() => onClick('Search Results')}>
-          Search Results
-        </Link>
-      </li>);
+        <li key="search">
+          <Link to={`${baseUrl}/search?${query}`} onClick={() => onClick('Search Results')}>
+            Search Results
+          </Link>
+        </li>
+      );
     }
 
     if (type === 'bib') {
@@ -70,8 +58,7 @@ const Breadcrumbs = ({ query, type, bibUrl, itemUrl, edd }) => {
     crumbs.push(
       <li key="bib">
         <Link to={`${baseUrl}${bibUrl}`} onClick={() => onClick('Item Details')}>Item Details</Link>
-      </li>
-    );
+      </li>);
 
     if (type === 'hold') {
       crumbs.push(<li key="hold">Item Request</li>);
@@ -103,7 +90,6 @@ const Breadcrumbs = ({ query, type, bibUrl, itemUrl, edd }) => {
 
     // The last possible point in the breadcrumbs will be the Confirmation page.
     crumbs.push(<li key="confirmation">Request Confirmation</li>);
-
     return crumbs;
   };
 
@@ -112,11 +98,9 @@ const Breadcrumbs = ({ query, type, bibUrl, itemUrl, edd }) => {
   return (
     <nav aria-label="Breadcrumbs" className="nypl-breadcrumbs">
       <span className="nypl-screenreader-only">You are here:</span>
-      <div className="breadcrumbs-and-search-wrapper">
-        <ol>
-          {crumbs}
-        </ol>
-      </div>
+      <ol>
+        {crumbs}
+      </ol>
     </nav>
   );
 };
@@ -127,11 +111,6 @@ Breadcrumbs.propTypes = {
   bibUrl: PropTypes.string,
   itemUrl: PropTypes.string,
   edd: PropTypes.bool,
-};
-
-Breadcrumbs.defaultProps = {
-  query: '',
-  type: '',
 };
 
 export default Breadcrumbs;

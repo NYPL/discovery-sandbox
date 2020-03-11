@@ -5,7 +5,11 @@ import { isArray as _isArray } from 'underscore';
 import ItemTableRow from './ItemTableRow';
 
 const ItemTable = ({ items, bibId, getRecord, id, searchKeywords }) => {
-  if (!_isArray(items) || !items.length) {
+  if (
+    !_isArray(items) ||
+    !items.length ||
+    items.every(item => item.isElectronicResource)
+  ) {
     return null;
   }
 
