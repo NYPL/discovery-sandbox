@@ -1,21 +1,17 @@
 /* eslint-env mocha */
 import React from 'react';
 import { expect } from 'chai';
-import Enzyme, { shallow } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
-
+import { shallow } from 'enzyme';
 
 import Breadcrumbs from './../../src/app/components/Breadcrumbs/Breadcrumbs';
-import appConfig from '../../src/app/data/appConfig';
-
-Enzyme.configure({ adapter: new Adapter() });
+import appConfig from '../../appConfig';
 
 const appTitle = appConfig.displayTitle;
 const baseUrl = `${appConfig.baseUrl}/`;
 
 // The current page is the last item in the breadcrumb and it is not linked.
 describe('Breadcrumbs', () => {
-  // Shared Collection Catalog > Search Results > Item Details > Item Request > Request Confirmation
+  // Shared Collection Catalog > Item Details > Item Request > Request Confirmation
   describe('Default rendering - all links', () => {
     let component;
 
@@ -29,17 +25,16 @@ describe('Breadcrumbs', () => {
     });
 
     it('should render five li\'s and four links', () => {
-      expect(component.find('li').length).to.equal(5);
-      expect(component.find('Link').length).to.equal(4);
+      expect(component.find('li').length).to.equal(4);
+      expect(component.find('Link').length).to.equal(3);
     });
 
     it('should render all the navigation', () => {
       const li = component.find('li');
       expect(li.at(0).render().text()).to.equal(appTitle);
-      expect(li.at(1).render().text()).to.equal('Search Results');
-      expect(li.at(2).render().text()).to.equal('Item Details');
-      expect(li.at(3).render().text()).to.equal('Item Request');
-      expect(li.at(4).render().text()).to.equal('Request Confirmation');
+      expect(li.at(1).render().text()).to.equal('Item Details');
+      expect(li.at(2).render().text()).to.equal('Item Request');
+      expect(li.at(3).render().text()).to.equal('Request Confirmation');
     });
   });
 
@@ -68,8 +63,8 @@ describe('Breadcrumbs', () => {
     });
   });
 
-  // Shared Collection Catalog > Search Results > Item Details
   describe('On the Bib page', () => {
+    // Shared Collection Catalog > Item Details
     describe('No search keyword', () => {
       let component;
 
@@ -78,17 +73,17 @@ describe('Breadcrumbs', () => {
       });
 
       it('should contain two Link elements', () => {
-        expect(component.find('Link')).to.have.length(2);
+        expect(component.find('Link')).to.have.length(1);
       });
 
-      it('should link back to the regular search results page', () => {
+      xit('should link back to the regular search results page', () => {
         const searchLink = component.find('Link').at(1);
         expect(searchLink.children().text()).to.equal('Search Results');
         expect(searchLink.prop('to')).to.equal(`${baseUrl}search?`);
       });
 
       it('should display the current page with the item title', () => {
-        expect(component.find('li').at(2).text()).to.equal('Item Details');
+        expect(component.find('li').at(1).text()).to.equal('Item Details');
       });
     });
 
@@ -147,7 +142,7 @@ describe('Breadcrumbs', () => {
     });
   });
 
-  // Shared Collection Catalog > Search Results > Item Details > Item Request
+  // Shared Collection Catalog > Item Details > Item Request
   //  > Electronic Delivery Request
   describe('On the Electronic Delivery Request page', () => {
     const bibId = 'b123456789';
@@ -165,16 +160,16 @@ describe('Breadcrumbs', () => {
     });
 
     it('should contain four Link elements', () => {
-      expect(component.find('Link')).to.have.length(4);
+      expect(component.find('Link')).to.have.length(3);
     });
 
     it('should link back to the item request page as the fouth link', () => {
-      const searchLink = component.find('Link').at(3);
+      const searchLink = component.find('Link').at(2);
       expect(searchLink.prop('to')).to.equal(`${baseUrl}hold/request/${bibId}-${itemId}`);
     });
 
     it('should display "Electronic Delivery Request" on the current page', () => {
-      expect(component.find('li').at(4).text()).to.equal('Electronic Delivery Request');
+      expect(component.find('li').at(3).text()).to.equal('Electronic Delivery Request');
     });
   });
 
@@ -182,8 +177,7 @@ describe('Breadcrumbs', () => {
     const bibId = 'b123456789';
     const itemId = 'i987654321';
 
-    // Shared Collection Catalog > Search Results > Item Details > Item Request
-    //  > Request Confirmation
+    // Shared Collection Catalog > Item Details > Item Request > Request Confirmation
     describe('From a physical Hold Request', () => {
       const fromEdd = false;
       let component;
@@ -200,21 +194,20 @@ describe('Breadcrumbs', () => {
       });
 
       it('should contain four Link elements', () => {
-        expect(component.find('Link')).to.have.length(4);
+        expect(component.find('Link')).to.have.length(3);
       });
 
       it('should link back to the item request page as the fouth link', () => {
-        const searchLink = component.find('Link').at(3);
+        const searchLink = component.find('Link').at(2);
         expect(searchLink.prop('to')).to.equal(`${baseUrl}hold/request/${bibId}-${itemId}`);
       });
 
       it('should display "Request Confirmation" on the current page', () => {
-        expect(component.find('li').at(4).text()).to.equal('Request Confirmation');
+        expect(component.find('li').at(3).text()).to.equal('Request Confirmation');
       });
     });
 
-    // Shared Collection Catalog > Search Results > Item Details > Item Request
-    //  > Electronic Delivery Request > Request Confirmation
+    // Shared Collection Catalog > Item Details > Item Request > Electronic Delivery Request > Request Confirmation
     describe('From the Electronic Delivery Request page', () => {
       const fromEdd = true;
       let component;
@@ -231,16 +224,16 @@ describe('Breadcrumbs', () => {
       });
 
       it('should contain five Link elements', () => {
-        expect(component.find('Link')).to.have.length(5);
+        expect(component.find('Link')).to.have.length(4);
       });
 
       it('should link back to the Electronic Delivery Request page as the fifth link', () => {
-        const searchLink = component.find('Link').at(4);
+        const searchLink = component.find('Link').at(3);
         expect(searchLink.prop('to')).to.equal(`${baseUrl}hold/request/${bibId}-${itemId}/edd`);
       });
 
       it('should display "Request Confirmation" on the current page', () => {
-        expect(component.find('li').at(5).text()).to.equal('Request Confirmation');
+        expect(component.find('li').at(4).text()).to.equal('Request Confirmation');
       });
     });
   });
