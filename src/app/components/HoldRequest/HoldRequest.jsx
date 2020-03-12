@@ -286,7 +286,7 @@ class HoldRequest extends React.Component {
   }
 
   render() {
-    const { closedLocations } = AppConfigStore.getState();
+    const { closedLocations, holdRequestNotification } = AppConfigStore.getState();
     const searchKeywords = this.props.searchKeywords || '';
     const bib = (this.props.bib && !_isEmpty(this.props.bib)) ?
       this.props.bib : null;
@@ -395,7 +395,7 @@ class HoldRequest extends React.Component {
                         </h2>
                     }
                     {
-                      closedLocations.length !== 0
+                      holdRequestNotification
                       ? <Notification />
                       : null
                     }
