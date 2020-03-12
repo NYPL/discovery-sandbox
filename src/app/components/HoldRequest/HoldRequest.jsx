@@ -285,7 +285,7 @@ class HoldRequest extends React.Component {
   }
 
   render() {
-    const { closedLocations } = AppConfigStore.getState();
+    const { closedLocations, holdRequestNotification } = AppConfigStore.getState();
     const searchKeywords = this.props.searchKeywords || '';
     const bib = (this.props.bib && !_isEmpty(this.props.bib)) ?
       this.props.bib : null;
@@ -393,7 +393,11 @@ class HoldRequest extends React.Component {
                           contact 917-ASK-NYPL (<a href="tel:917-275-6975">917-275-6975</a>).
                         </h2>
                     }
-                    <Notification />
+                    {
+                      holdRequestNotification
+                      ? <Notification />
+                      : null
+                    }
                     {bibLink}
                     {callNo}
                   </div>
