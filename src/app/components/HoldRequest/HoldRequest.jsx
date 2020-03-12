@@ -227,6 +227,7 @@ class HoldRequest extends React.Component {
      */
   renderDeliveryLocation(deliveryLocations = []) {
     const { closedLocations } = AppConfigStore.getState();
+    console.log('closed locations: ', closedLocations);
     return deliveryLocations.map((location, i) => {
       const displayName = this.modelDeliveryLocationName(location.prefLabel, location.shortName);
       const value = (location['@id'] && typeof location['@id'] === 'string') ?
@@ -393,7 +394,11 @@ class HoldRequest extends React.Component {
                           contact 917-ASK-NYPL (<a href="tel:917-275-6975">917-275-6975</a>).
                         </h2>
                     }
-                    <Notification />
+                    {
+                      closedLocations.length !== 0
+                      ? <Notification />
+                      : null
+                    }
                     {bibLink}
                     {callNo}
                   </div>

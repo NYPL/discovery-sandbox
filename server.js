@@ -69,6 +69,7 @@ app.use('/*', initializePatronTokenAuth, getPatronData);
 app.use('/', apiRoutes);
 
 app.get('/*', (req, res) => {
+  console.log('AppConfigStore ', AppConfigStore.getState())
   alt.bootstrap(JSON.stringify(res.locals.data || {}));
 
   const appRoutes = (req.url).indexOf(appConfig.baseUrl) !== -1 ? routes().client : routes().server;
