@@ -60,8 +60,8 @@ class HoldRequest extends React.Component {
 
 
   componentDidMount() {
-    // this.requireUser();
-    // this.conditionallyRedirect();
+    this.requireUser();
+    this.conditionallyRedirect();
     const title = document.getElementById('item-title');
     if (title) {
       title.focus();
@@ -227,7 +227,6 @@ class HoldRequest extends React.Component {
      */
   renderDeliveryLocation(deliveryLocations = []) {
     const { closedLocations } = AppConfigStore.getState();
-    console.log('closed locations: ', closedLocations);
     return deliveryLocations.map((location, i) => {
       const displayName = this.modelDeliveryLocationName(location.prefLabel, location.shortName);
       const value = (location['@id'] && typeof location['@id'] === 'string') ?
