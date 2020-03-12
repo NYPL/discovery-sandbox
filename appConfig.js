@@ -29,6 +29,6 @@ export default {
     dateBefore: '',
     subjectLiteral: [],
   },
-  closedLocations: process.env.CLOSED_LOCATIONS.split(';') || [],
+  closedLocations: (process.env.CLOSED_LOCATIONS.split(';') || []).map(location => (location === 'all' ? '' : location)),
   holdRequestNotification: process.env.HOLD_REQUEST_NOTIFICATION,
 };
