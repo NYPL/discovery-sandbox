@@ -15,6 +15,7 @@ import appConfig from './appConfig';
 import webpackConfig from './webpack.config';
 import apiRoutes from './src/server/ApiRoutes/ApiRoutes';
 import routes from './src/app/routes/routes';
+import AppConfigStore from './src/app/stores/AppConfigStore';
 
 import initializePatronTokenAuth from './src/server/routes/auth';
 import { getPatronData } from './src/server/routes/api';
@@ -81,8 +82,8 @@ app.get('/*', (req, res) => {
       const application = ReactDOMServer.renderToString(<RouterContext {...renderProps} />);
       const title = DocumentTitle.rewind();
       const iso = new Iso();
-
-      iso.add(application, alt.flush());
+      const flushed = alt.flush();
+      iso.add(application, flushed);
       res
         .status(200)
         .render('index', {
