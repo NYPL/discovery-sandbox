@@ -196,7 +196,6 @@ class ElectronicDeliveryForm extends React.Component {
                 >
                   {
                     errorClass.chapterTitle ? this.state.error.chapterTitle : ''
-                    // 'Enter "none" if you are requesting an entire item.'
                   }
                 </span>
               </div>
