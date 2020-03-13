@@ -113,8 +113,8 @@ function validate(form, cb) {
     },
     chapterTitle: {
       validate: val => !!(val.trim().length),
-      errorMsg: 'Indicate the title of the chapter or article you are requesting. ' +
-        'Enter "none" if you are requesting an entire item.',
+      errorMsg: 'Indicate the title of the chapter or article you are requesting. ',// +
+        // 'Enter "none" if you are requesting an entire item.',
     },
     startPage: {
       validate: val => !!(val.trim().length),
