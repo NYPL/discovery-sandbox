@@ -106,7 +106,14 @@ class SubjectHeading extends React.Component {
     return (element) => {
       axios(url)
         .then(
-          resp => this.addMore(element, resp.data),
+          (resp) => {
+            if (resp.data.narrower) {
+              this.addMore(element, resp.data);
+            } else {
+              console.log(this.state);
+              element.hide();
+            }
+          },
         ).catch((resp) => { console.error(resp); });
     };
   }

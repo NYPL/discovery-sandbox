@@ -5,11 +5,17 @@ import { Link } from 'react-router';
 class AdditionalSubjectHeadingsButton extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {};
     this.onClick = this.onClick.bind(this);
+    this.hide = this.hide.bind(this);
   }
 
   onClick() {
     if (this.props.interactive) this.props.updateParent(this);
+  }
+
+  hide() {
+    this.setState({ hidden: true });
   }
 
   render() {
@@ -19,6 +25,9 @@ class AdditionalSubjectHeadingsButton extends React.Component {
       text,
       linkUrl,
     } = this.props;
+
+    if (this.state.hidden) return null;
+
     const previous = this.props.button === 'previous';
 
     const seeMoreText = text || 'See more';
