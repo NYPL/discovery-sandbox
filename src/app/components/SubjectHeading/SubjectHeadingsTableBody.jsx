@@ -27,7 +27,6 @@ class SubjectHeadingsTableBody extends React.Component {
     this.listItemsInInterval = this.listItemsInInterval.bind(this);
     this.tableRow = this.tableRow.bind(this);
     this.backgroundColor = this.backgroundColor.bind(this);
-    this.numberOpen = this.numberOpen.bind(this);
   }
 
   componentDidMount() {
@@ -114,10 +113,6 @@ class SubjectHeadingsTableBody extends React.Component {
     return backgroundColor;
   }
 
-  numberOpen() {
-    return this.state.range.intervals.reduce((acc, interval) => acc + (interval.end - interval.start), 0);
-  }
-
   tableRow(listItem, index) {
     const {
       indentation,
@@ -189,7 +184,9 @@ class SubjectHeadingsTableBody extends React.Component {
       container,
     } = this.props;
 
-    const numberOpen = this.numberOpen();
+    const inRange = this.listItemsInRange(subjectHeadings);
+
+    const numberOpen = inRange.filter(item => !item.button).length;
 
     if (nested) { console.log('tbody ', this.state, numberOpen); }
 
@@ -212,8 +209,7 @@ class SubjectHeadingsTableBody extends React.Component {
         }
         {
           subjectHeadings ?
-          this.listItemsInRange(subjectHeadings)
-          .map(this.tableRow) :
+          inRange.map(this.tableRow) :
           null
         }
       </React.Fragment>
