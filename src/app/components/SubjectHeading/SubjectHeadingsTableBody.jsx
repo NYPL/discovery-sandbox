@@ -184,6 +184,12 @@ class SubjectHeadingsTableBody extends React.Component {
       container,
     } = this.props;
 
+    const inRange = this.listItemsInRange(subjectHeadings);
+
+    const numberOpen = inRange.filter(item => !item.button).length;
+
+    if (nested) { console.log('tbody ', this.state, numberOpen); }
+
     return (
       <React.Fragment>
         {nested && subjectHeadings ?
@@ -197,13 +203,13 @@ class SubjectHeadingsTableBody extends React.Component {
             backgroundColor={this.backgroundColor(true)}
             updateSort={updateSort}
             interactive={subjectHeadings.length > 1}
+            numberOpen={numberOpen}
           />
           : null
         }
         {
           subjectHeadings ?
-          this.listItemsInRange(subjectHeadings)
-          .map(this.tableRow) :
+          inRange.map(this.tableRow) :
           null
         }
       </React.Fragment>

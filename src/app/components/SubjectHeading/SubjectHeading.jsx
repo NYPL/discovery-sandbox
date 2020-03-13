@@ -136,11 +136,12 @@ class SubjectHeading extends React.Component {
     return `${path}/subject_headings/${uuid}`;
   }
 
-  updateSort(sortType, direction) {
+  updateSort(sortType, direction, numberOpen) {
     this.fetchInitial({
       sortBy: sortType,
       direction,
       range: Range.default(),
+      numberOpen,
     });
   }
 
@@ -154,10 +155,11 @@ class SubjectHeading extends React.Component {
       direction,
     } = this.state;
 
-    const limit = this.state.narrower.length;
+    let limit;
 
     if (additionalParameters.sortBy) sortBy = additionalParameters.sortBy;
     if (additionalParameters.direction) direction = additionalParameters.direction;
+    if (additionalParameters.numberOpen) limit = additionalParameters.numberOpen;
     let url = `${appConfig.baseUrl}/api/subjectHeadings/subject_headings/${uuid}/narrower?sort_by=${sortBy}`;
 
     if (direction) url += `&direction=${direction}`;
