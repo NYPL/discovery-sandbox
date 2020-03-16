@@ -12,6 +12,7 @@ import Pagination from '../Pagination/Pagination';
 import LoadingLayer from '../LoadingLayer/LoadingLayer';
 import FilterPopup from '../FilterPopup/FilterPopup';
 import SelectedFilters from '../Filters/SelectedFilters';
+import Notification from '../Notification/Notification';
 import {
   basicQuery,
   ajaxCall,
@@ -143,6 +144,7 @@ class SearchResultsPage extends React.Component {
               <div className="nypl-row">
                 <div className="nypl-column-full">
                   <Breadcrumbs query={searchKeywords} type="search" />
+                  <Notification notificationType="searchResultsNotification" />
                   <h1 aria-label={headerLabel}>
                     Search Results
                   </h1>
