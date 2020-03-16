@@ -13,7 +13,7 @@ const Notification = (props) => {
 
   return (
     <div className="nypl-banner-alert">
-      <p style={{ padding: '10px 20px 0px', margin: 0 }} dangerouslySetInnerHTML={{__html: notification }} />
+      <p style={{ padding: '0px 20px 0px', margin: 0 }} dangerouslySetInnerHTML={{__html: notification }} />
     </div>
   );
 };
