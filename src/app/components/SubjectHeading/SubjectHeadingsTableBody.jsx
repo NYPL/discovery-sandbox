@@ -71,12 +71,14 @@ class SubjectHeadingsTableBody extends React.Component {
       range,
     } = this.state;
 
-    return range.intervals.reduce((acc, interval) =>
-      acc.concat(this.listItemsInInterval(interval))
+    const lastIndex = range.intervals.length - 1;
+
+    return range.intervals.reduce((acc, interval, index) =>
+      acc.concat(this.listItemsInInterval(interval, index, lastIndex))
       , []);
   }
 
-  listItemsInInterval(interval) {
+  listItemsInInterval(interval, index, lastIndex) {
     const { indentation } = this.props;
     const { subjectHeadings, range } = this.state;
     const { start, end } = interval;
@@ -92,6 +94,7 @@ class SubjectHeadingsTableBody extends React.Component {
       subjectHeadingsInInterval.push({
         button: 'next',
         indentation,
+        noEllipse: index === lastIndex,
         updateParent: () => this.updateRange(range, interval, 'end', 10),
       });
     }
@@ -146,6 +149,7 @@ class SubjectHeadingsTableBody extends React.Component {
           linkUrl={seeMoreLinkUrl}
           text={seeMoreText}
           backgroundColor={this.backgroundColor()}
+          noEllipse={listItem.noEllipse}
         />
       );
     }

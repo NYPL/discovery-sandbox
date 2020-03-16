@@ -155,13 +155,15 @@ class SubjectHeadingShow extends React.Component {
                 showId={uuid}
                 keyId="context"
                 container="context"
+                seeMoreLinkUrl={linkUrl}
+                seeMoreText="See More in Subject Headings Index"
                 tfootContent={
                   <tr>
                     <td>
                       <Link
-                        to={contextHeadings && contextHeadings.length ? this.generateFullContextUrl() : '#'}
+                        to={linkUrl}
                         className="toIndex"
-                        >
+                      >
                         Explore more in Subject Heading index
                       </Link>
                     </td>
