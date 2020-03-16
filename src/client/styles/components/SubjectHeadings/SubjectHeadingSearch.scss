@@ -58,7 +58,9 @@
   }
 
   a:hover {
-    text-decoration: underline;
+    .itemLabel, .aggregateBibCount {
+      text-decoration: underline;
+    }
   }
 
   em {

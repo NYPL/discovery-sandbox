@@ -22,7 +22,7 @@ const AutosuggestItem = (props) => {
       >
         {
           <div className={`autosuggest ${subjectComponent ? 'component' : 'subject'}`}>
-            <span>{subjectComponent ? null : (<em>Subject: </em>) }{item.label}</span>
+            <span>{subjectComponent ? null : (<em>Subject: </em>) }<span className="itemLabel">{item.label}</span></span>
             <div className="aggregateBibCount">{item.aggregate_bib_count} title{item.aggregate_bib_count > 1 ? 's' : ''}</div>
           </div>
         }
