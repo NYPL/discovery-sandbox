@@ -21,17 +21,21 @@ const AutosuggestItem = (props) => {
         to={path}
       >
         {
-          subjectComponent ?
-            <div className="autosuggest component">
-              <span>{item.label}</span>
-              <span className="aggregateBibCount">{item.aggregate_bib_count} titles</span>
-            </div>
-            :
-            <div className="autosuggest subject">
-
-              <span><em>Subject:</em> {item.label}</span>
-              <div className="aggregateBibCount">{item.aggregate_bib_count} titles</div>
-            </div>
+          <div className={`autosuggest ${subjectComponent ? 'component' : 'subject'}`}>
+            <span>{subjectComponent ? null : (<em>Subject: </em>) }{item.label}</span>
+            <div className="aggregateBibCount">{item.aggregate_bib_count} title{item.aggregate_bib_count > 1 ? 's' : ''}</div>
+          </div>
+          // subjectComponent ?
+          //   <div className="autosuggest component">
+          //     <span>{item.label}</span>
+          //     <span className="aggregateBibCount">{item.aggregate_bib_count} titles</span>
+          //   </div>
+          //   :
+          //   <div className="autosuggest subject">
+          //
+          //     <span><em>Subject:</em> {item.label}</span>
+          //     <div className="aggregateBibCount">{item.aggregate_bib_count} titles</div>
+          //   </div>
         }
       </Link>
     </li>
