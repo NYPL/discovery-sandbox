@@ -49,7 +49,7 @@ class ElectronicDelivery extends React.Component {
   }
 
   componentDidMount() {
-    this.requireUser();
+    // this.requireUser();
 
     document.getElementById('edd-request-title').focus();
   }
