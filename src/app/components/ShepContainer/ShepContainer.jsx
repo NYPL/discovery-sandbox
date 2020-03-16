@@ -10,9 +10,7 @@ const ShepContainer = (props) => {
         <div className="header-topWrapper filter-page">
           <div className="nypl-row container-row">
             <div className="nypl-column-full">
-              <Breadcrumbs
-                type={props.breadcrumbsType}
-              />
+              <Breadcrumbs type={props.breadcrumbsType} />
               { props.extraBannerElement }
               <h1
                 aria-label={props.bannerOptions.ariaLabel || props.bannerOptions.text}

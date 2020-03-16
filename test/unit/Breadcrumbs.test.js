@@ -81,7 +81,7 @@ describe('Breadcrumbs', () => {
         expect(component.find('Link')).to.have.length(2);
       });
 
-      xit('should link back to the regular search results page', () => {
+      it('should link back to the regular search results page', () => {
         const searchLink = component.find('Link').at(1);
         expect(searchLink.children().text()).to.equal('Search Results');
         expect(searchLink.prop('to')).to.equal(`${baseUrl}search?`);
