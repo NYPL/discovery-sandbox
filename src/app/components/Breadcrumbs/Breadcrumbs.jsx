@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 
+import Store from '@Store';
 import { trackDiscovery } from '../../utils/utils';
 import appConfig from '../../data/appConfig';
 
@@ -32,14 +33,27 @@ const Breadcrumbs = ({ query, type, bibUrl, itemUrl, edd }) => {
     // The first link is the homepage and it will being appearing starting from the
     // Search Results page.
     const crumbs = [homeLink];
+    const { searchKeywords } = Store.getState();
+
+    const searchKeywordsCrumb = searchKeywords ? (
+      <li key="search">
+        <Link to={`${baseUrl}/search?q=${searchKeywords}`} onClick={() => onClick('Search Results')}>
+          Search Results
+        </Link>
+      </li>
+    ) : null;
 
     if (type.startsWith('subjectHeading')) {
+      if (searchKeywordsCrumb) {
+        crumbs.push(searchKeywordsCrumb);
+      }
       crumbs.push(
         <li key="subjectHeading">
           <Link to={`${baseUrl}/subject_headings`}>
             Subject Headings
           </Link>
-        </li>);
+        </li>
+      );
       if (type === 'subjectHeading') {
         crumbs.push(<li key="subjectHeadingDetails">Heading Details</li>);
       }
@@ -51,15 +65,16 @@ const Breadcrumbs = ({ query, type, bibUrl, itemUrl, edd }) => {
       return crumbs;
     }
 
-    const stringifiedQuery = query.replace(/^q=/, "")
-
-    if (stringifiedQuery && stringifiedQuery !== "undefined") {
+    if (query) {
       crumbs.push(
-      <li key="search">
-        <Link to={`${baseUrl}/search?${query}`} onClick={() => onClick('Search Results')}>
-          Search Results
-        </Link>
-      </li>);
+        <li key="search">
+          <Link to={`${baseUrl}/search?${query}`} onClick={() => onClick('Search Results')}>
+            Search Results
+          </Link>
+        </li>
+      );
+    } else if (searchKeywordsCrumb) {
+      crumbs.push(searchKeywordsCrumb);
     }
 
     if (type === 'bib') {
