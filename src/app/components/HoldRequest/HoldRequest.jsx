@@ -11,7 +11,7 @@ import {
 import DocumentTitle from 'react-document-title';
 
 import Breadcrumbs from '../Breadcrumbs/Breadcrumbs';
-import Notification from './Notification';
+import Notification from '../Notification/Notification';
 
 import PatronStore from '../../stores/PatronStore';
 import AppConfigStore from '../../stores/AppConfigStore';
@@ -395,7 +395,7 @@ class HoldRequest extends React.Component {
                     }
                     {
                       holdRequestNotification
-                      ? <Notification />
+                      ? <Notification notificationType="holdRequestNotification" />
                       : null
                     }
                     {bibLink}

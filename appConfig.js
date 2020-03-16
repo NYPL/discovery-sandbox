@@ -35,4 +35,5 @@ export default {
       : []
   ).map(location => (location === 'all' ? '' : location)),
   holdRequestNotification: process.env.HOLD_REQUEST_NOTIFICATION,
+  searchResultsNotification: process.env.SEARCH_RESULTS_NOTIFICATION,
 };
