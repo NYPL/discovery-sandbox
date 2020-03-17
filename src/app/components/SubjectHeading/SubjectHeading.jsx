@@ -86,7 +86,6 @@ class SubjectHeading extends React.Component {
         (child) => { child.indentation = (this.props.subjectHeading.indentation || 0) + 1; }
       );
 
-      console.log('adding to : ', narrower);
       narrower.splice(-1, 1, ...data.narrower);
 
       if (data.next_url) {

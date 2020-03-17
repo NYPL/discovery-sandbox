@@ -188,8 +188,6 @@ class SubjectHeadingsTableBody extends React.Component {
 
     const numberOpen = inRange.filter(item => !item.button).length;
 
-    if (nested) { console.log('tbody ', this.state, numberOpen); }
-
     return (
       <React.Fragment>
         {nested && subjectHeadings ?
