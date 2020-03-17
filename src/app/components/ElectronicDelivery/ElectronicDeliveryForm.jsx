@@ -195,8 +195,7 @@ class ElectronicDeliveryForm extends React.Component {
                   aria-atomic="true"
                 >
                   {
-                    errorClass.chapterTitle ? this.state.error.chapterTitle :
-                    'Enter "none" if you are requesting an entire item.'
+                    errorClass.chapterTitle ? this.state.error.chapterTitle : ''
                   }
                 </span>
               </div>
