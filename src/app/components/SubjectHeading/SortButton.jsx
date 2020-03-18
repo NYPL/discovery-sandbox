@@ -7,6 +7,7 @@ const SortButton = (props) => {
     direction,
     handler,
     interactive,
+    numberOpen,
   } = props;
 
   const columnText = () => ({
@@ -18,8 +19,8 @@ const SortButton = (props) => {
   return (
     <button
       className="subjectSortButton"
-      onClick={() => handler(type, direction)}
-      disabled={!handler || !interactive}
+      onClick={() => handler(type, direction, numberOpen)}
+      disabled={!handler || !interactive || numberOpen < 2}
     >
       <span className="emph">
         <span className="noEmph">{columnText()}

@@ -13,6 +13,7 @@ const NestedTableHeader = (props) => {
     parentUuid,
     updateSort,
     interactive,
+    numberOpen,
   } = props;
 
   const positionStyle = container === 'narrower' ? null : { marginLeft: 30 * ((indentation || 0) + 1) };
@@ -31,6 +32,7 @@ const NestedTableHeader = (props) => {
             type="alphabetical"
             direction={calculateDirectionForType('alphabetical')}
             interactive={interactive}
+            numberOpen={numberOpen}
           />
         </div>
       </th>
@@ -40,6 +42,7 @@ const NestedTableHeader = (props) => {
           type="descendants"
           direction={calculateDirectionForType('descendants')}
           interactive={interactive}
+          numberOpen={numberOpen}
         />
       </th>
       <th className={`subjectHeadingsTableCell subjectHeadingAttribute titles ${sortBy === 'bibs' ? 'selected' : ''}`}>
@@ -48,6 +51,7 @@ const NestedTableHeader = (props) => {
           type="bibs"
           direction={calculateDirectionForType('bibs')}
           interactive={interactive}
+          numberOpen={numberOpen}
         />
       </th>
     </tr>
