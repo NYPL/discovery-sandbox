@@ -16,6 +16,12 @@ const AlphabeticalPagination = () => {
     </Link>
   );
 
+  const punctuationButton = (
+    <Link key="punctuation" to={`${appConfig.baseUrl}/subject_headings?fromLabel=!`}>
+      !"*,-./
+    </Link>
+  );
+
   const numericalButton = (
     <Link key="numerical" to={`${appConfig.baseUrl}/subject_headings?fromLabel=0`}>
       0-9
@@ -23,7 +29,7 @@ const AlphabeticalPagination = () => {
   );
 
   const buttons = [allButton].concat(letterButtons);
-  buttons.push(numericalButton);
+  buttons.push(punctuationButton, numericalButton);
 
   return (
     <div className="alphabeticalPagination">
