@@ -1,4 +1,4 @@
-$light-border: 0.08333rem solid #d7d4d0;
+$light-border: 1px solid #d7d4d0;
 
 .alphabeticalPagination {
   border: $light-border;
@@ -24,6 +24,7 @@ $light-border: 0.08333rem solid #d7d4d0;
     text-align: center;
     text-decoration: none;
     min-width: 32px;
-    margin: 0 0 1px 1px;
+    border: 1px solid #d7d4d0;
+    border-radius: 1px;
   }
 }
