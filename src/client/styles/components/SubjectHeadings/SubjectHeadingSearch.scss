@@ -53,8 +53,18 @@
   margin-bottom: 0;
   min-height: 32px;
 
+  a {
+    text-decoration: none;
+  }
+
+  a:hover {
+    .itemLabel, .aggregateBibCount {
+      text-decoration: underline;
+    }
+  }
+
   em {
-    color: #31806a;
+    color: black;
   }
 
   a {
