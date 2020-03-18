@@ -16,7 +16,6 @@ $light-border: 1px solid #d7d4d0;
   a {
     box-sizing: border-box;
     background-color: #ffffff;
-    cursor: pointer;
     display: inline-block;
     flex: auto;
     font-size: 14px;
@@ -26,5 +25,9 @@ $light-border: 1px solid #d7d4d0;
     min-width: 32px;
     border: 1px solid #d7d4d0;
     border-radius: 1px;
+
+    &:focus {
+      z-index: 1;
+    }
   }
 }
