@@ -93,6 +93,7 @@ class SubjectHeading extends React.Component {
           button: 'next',
           updateParent: this.fetchAndUpdate(data.next_url),
           indentation: (this.props.subjectHeading.indentation || 0) + 1,
+          noEllipse: true,
         });
       }
 
@@ -173,7 +174,12 @@ class SubjectHeading extends React.Component {
           } = resp.data;
           narrower.forEach((child) => { child.indentation = (indentation || 0) + 1; });
           if (next_url) {
-            narrower.push({ button: 'next', updateParent: this.fetchAndUpdate(next_url), indentation: (indentation || 0) + 1 });
+            narrower.push({
+              button: 'next',
+              updateParent: this.fetchAndUpdate(next_url),
+              indentation: (indentation || 0) + 1,
+              noEllipse: true,
+            });
           }
           this.updateSubjectHeading(
             Object.assign(
