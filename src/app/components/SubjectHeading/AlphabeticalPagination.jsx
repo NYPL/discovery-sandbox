@@ -18,7 +18,7 @@ const AlphabeticalPagination = () => {
 
   const punctuationButton = (
     <Link key="punctuation" to={`${appConfig.baseUrl}/subject_headings?fromLabel=!`}>
-      !"*,-./
+      !"*,-
     </Link>
   );
 
