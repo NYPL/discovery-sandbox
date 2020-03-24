@@ -225,9 +225,7 @@ const basicQuery = (props = {}) => {
 
     const completeQuery = `${searchKeywordsQuery}${filterQuery}${sortQuery}${fieldQuery}${pageQuery}`;
 
-    if (!completeQuery) return null;
-
-    return `q=${searchKeywordsQuery}${filterQuery}${sortQuery}${fieldQuery}${pageQuery}`;
+    return completeQuery ? `q=${completeQuery}` : null;
   };
 };
 
