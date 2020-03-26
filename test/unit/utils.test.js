@@ -344,16 +344,15 @@ describe('basicQuery', () => {
       expect(basicQuery(defaultQueryObj)).to.be.a('function');
     });
 
-    // Why was this behavior originally implemented?
-    xit('should take empty objects as input and return default string when invoked', () => {
+    it('should return null when the input is an empty object', () => {
       const createAPIQuery = basicQuery({});
 
-      expect(createAPIQuery({})).to.equal('q=');
+      expect(createAPIQuery({})).to.equal(null);
     });
 
-    xit('should still return the default string even with the default object', () => {
+    it('should return null with the default object', () => {
       const createAPIQuery = basicQuery(defaultQueryObj);
-      expect(createAPIQuery({})).to.equal('q=');
+      expect(createAPIQuery({})).to.equal(null);
     });
   });
 
