@@ -223,7 +223,9 @@ const basicQuery = (props = {}) => {
     pageQuery = page && page !== '1' ? `&page=${page}` : pageQuery;
     pageQuery = page === '1' ? '' : pageQuery;
 
-    return `q=${searchKeywordsQuery}${filterQuery}${sortQuery}${fieldQuery}${pageQuery}`;
+    const completeQuery = `${searchKeywordsQuery}${filterQuery}${sortQuery}${fieldQuery}${pageQuery}`;
+
+    return completeQuery ? `q=${completeQuery}` : null;
   };
 };
 
