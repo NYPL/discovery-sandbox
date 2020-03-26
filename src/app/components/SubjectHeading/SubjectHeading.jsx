@@ -97,9 +97,7 @@ class SubjectHeading extends React.Component {
         });
       }
 
-      this.setState({
-        narrower,
-      });
+      return { narrower };
     });
   }
 

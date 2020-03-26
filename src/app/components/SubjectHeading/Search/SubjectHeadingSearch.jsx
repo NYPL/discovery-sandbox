@@ -38,7 +38,7 @@ class SubjectHeadingSearch extends React.Component {
 
   makeApiCallWithThrottle(timerId) {
     const apiCall = () => {
-      if (this.state.userInput.length) return axios(`${appConfig.baseUrl}/api/subjectHeadings/autosuggest?query=${this.state.userInput}`)
+      if (this.state.userInput) return axios(`${appConfig.baseUrl}/api/subjectHeadings/autosuggest?query=${this.state.userInput}`)
         .then((res) => {
           if (res.data.request.query.trim() === this.state.userInput.trim()) {
             this.setState({
@@ -46,7 +46,8 @@ class SubjectHeadingSearch extends React.Component {
               activeSuggestion: 0,
             });
           }
-        });
+        })
+        .catch(console.error);
       // if this.state.userInput.length is falsey, reset suggestions
       this.setState({ suggestions: [] });
     };
