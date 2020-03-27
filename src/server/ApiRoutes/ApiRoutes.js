@@ -15,7 +15,7 @@ router
 
 router
   .route(`${appConfig.baseUrl}/hold/request/:bibId-:itemId`)
-  .get(Hold.newHoldRequestServer);
+  .get(Hold.newHoldRequestServer); // BAD
 
 router
   .route(`${appConfig.baseUrl}/hold/request/:bibId-:itemId-:itemSource`)
@@ -23,14 +23,14 @@ router
 
 router
   .route(`${appConfig.baseUrl}/hold/request/:bibId-:itemId/edd`)
-  .get(Hold.newHoldRequestServerEdd);
+  .get(Hold.newHoldRequestServerEdd); // BAD
 
 router
   .route(`${appConfig.baseUrl}/hold/confirmation/:bibId-:itemId`)
-  .get(Hold.confirmRequestServer);
+  .get(Hold.confirmRequestServer);   // BAD
 
 router
-  .route(`${appConfig.baseUrl}/edd`)
+  .route(`${appConfig.baseUrl}/edd`)   // BAD
   .post(Hold.eddServer);
 
 router
