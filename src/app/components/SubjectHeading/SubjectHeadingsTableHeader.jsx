@@ -1,7 +1,8 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import PropTypes from 'prop-types';
 
 import SortButton from './SortButton';
+import TableContainerContext from './TableContainerContext';
 
 const SubjectHeadingsTableHeader = (props) => {
   const {

@@ -13,14 +13,13 @@ class SubjectHeadingsTableBody extends React.Component {
     super(props);
     const {
       subjectHeadings,
-      container,
       parentUuid,
       pathname,
     } = props;
+
     this.state = {
       subjectHeadings,
       range: this.initialRange(props),
-      interactive: !(container === 'context') || (pathname && pathname.includes(parentUuid)),
     };
     this.updateRange = this.updateRange.bind(this);
     this.listItemsInRange = this.listItemsInRange.bind(this);
@@ -120,7 +119,6 @@ class SubjectHeadingsTableBody extends React.Component {
     const {
       indentation,
       nested,
-      container,
       sortBy,
       linked,
       direction,
@@ -132,10 +130,6 @@ class SubjectHeadingsTableBody extends React.Component {
 
     const { location } = this.context.router;
 
-    const {
-      interactive,
-    } = this.state;
-
     if (listItem.button) {
       return (
         <AdditionalSubjectHeadingsButton
@@ -144,8 +138,6 @@ class SubjectHeadingsTableBody extends React.Component {
           updateParent={listItem.updateParent}
           key={`${listItem.button}${listItem.indentation}${index}`}
           nested={nested}
-          interactive={interactive}
-          container={container}
           linkUrl={seeMoreLinkUrl}
           text={seeMoreText}
           backgroundColor={this.backgroundColor()}
@@ -161,7 +153,6 @@ class SubjectHeadingsTableBody extends React.Component {
         nested={nested}
         indentation={indentation}
         location={location}
-        container={container}
         sortBy={sortBy}
         linked={linked}
         seeMoreText={seeMoreText}
@@ -185,7 +176,6 @@ class SubjectHeadingsTableBody extends React.Component {
       sortBy,
       direction,
       updateSort,
-      container,
     } = this.props;
 
     const inRange = this.listItemsInRange(subjectHeadings);
@@ -199,7 +189,6 @@ class SubjectHeadingsTableBody extends React.Component {
             parentUuid={parentUuid}
             key={`nestedTableHeader${indentation}`}
             indentation={indentation}
-            container={container}
             sortBy={sortBy}
             direction={direction}
             backgroundColor={this.backgroundColor(true)}
@@ -225,7 +214,6 @@ SubjectHeadingsTableBody.propTypes = {
   indentation: PropTypes.number,
   linked: PropTypes.string,
   sortBy: PropTypes.string,
-  container: PropTypes.string,
   parentUuid: PropTypes.string,
   updateSort: PropTypes.func,
   pathname: PropTypes.string,

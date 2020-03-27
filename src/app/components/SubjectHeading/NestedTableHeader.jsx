@@ -7,21 +7,19 @@ import SortButton from './SortButton';
 const NestedTableHeader = (props) => {
   const {
     indentation,
-    container,
     sortBy,
     direction,
     parentUuid,
     updateSort,
-    interactive,
     numberOpen,
+    interactive
   } = props;
 
-  const positionStyle = container === 'narrower' ? null : { marginLeft: 30 * ((indentation || 0) + 1) };
+  const positionStyle = { marginLeft: 30 * ((indentation || 0) + 1) };
   const calculateDirectionForType = calculateDirection(sortBy, direction);
 
   return (
     <tr
-      data={`${parentUuid}, ${container}`}
       style={{ backgroundColor: props.backgroundColor }}
       className="nestedTableHeader"
     >
@@ -61,7 +59,6 @@ const NestedTableHeader = (props) => {
 NestedTableHeader.propTypes = {
   indentation: PropTypes.number,
   sortBy: PropTypes.string,
-  container: PropTypes.string,
   direction: PropTypes.string,
   backgroundColor: PropTypes.string,
   parentUuid: PropTypes.string,

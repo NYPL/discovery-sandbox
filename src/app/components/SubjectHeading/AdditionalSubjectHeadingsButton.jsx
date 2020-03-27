@@ -11,7 +11,7 @@ class AdditionalSubjectHeadingsButton extends React.Component {
   }
 
   onClick() {
-    if (this.props.interactive) this.props.updateParent(this);
+    this.props.updateParent(this);
   }
 
   hide() {
@@ -21,7 +21,6 @@ class AdditionalSubjectHeadingsButton extends React.Component {
   render() {
     const {
       indentation,
-      interactive,
       text,
       linkUrl,
       noEllipse,
@@ -93,7 +92,6 @@ AdditionalSubjectHeadingsButton.propTypes = {
   updateParent: PropTypes.func,
   indentation: PropTypes.number,
   button: PropTypes.string,
-  interactive: PropTypes.bool,
   linkUrl: PropTypes.string,
   text: PropTypes.string,
   backgroundColor: PropTypes.string,
