@@ -21,7 +21,6 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    console.log('PatronStore: ', PatronStore.getState());
     Store.listen(this.onChange);
   }
 
