@@ -139,6 +139,17 @@ describe('SearchResultsSorter', () => {
         mock.restore();
         axiosSpy.restore();
       });
+
+      it('should make an ajax request and update the state', () => {
+        axiosSpy = sinon.spy(axios, 'get');
+
+        expect(component.state('sortValue')).to.equal('relevance');
+
+        component.find('select').simulate('change', { target: { value: 'title_desc' } });
+
+        expect(axiosSpy.callCount).to.equal(1);
+        expect(component.state('sortValue')).to.equal('title_desc');
+      });
     });
   });
 

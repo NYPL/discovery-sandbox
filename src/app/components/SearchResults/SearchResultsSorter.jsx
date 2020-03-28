@@ -1,7 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import Actions from '../../actions/Actions';
 import {
+  ajaxCall,
   trackDiscovery,
 } from '../../utils/utils';
 import appConfig from '../../data/appConfig';
@@ -56,11 +58,16 @@ class SearchResultsSorter extends React.Component {
    * @param {String} sortBy
    */
   sortResultsBy(sortBy) {
-    // const apiQuery = this.props.createAPIQuery({ sortBy, page: this.props.page });
-    const apiQuery = this.props.createAPIQuery({ sortBy });
+    const apiQuery = this.props.createAPIQuery({ sortBy, page: this.props.page });
 
     trackDiscovery('Sort by', sortBy);
-    this.context.router.push(`${appConfig.baseUrl}/search?${apiQuery}`);
+    Actions.updateLoadingStatus(true);
+    ajaxCall(`${appConfig.baseUrl}/api?${apiQuery}`, (response) => {
+      Actions.updateSearchResults(response.data.searchResults);
+      Actions.updateSortBy(sortBy);
+      Actions.updateLoadingStatus(false);
+      this.context.router.push(`${appConfig.baseUrl}/search?${apiQuery}`);
+    });
   }
 
   /**

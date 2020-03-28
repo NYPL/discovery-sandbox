@@ -5,9 +5,13 @@ import {
   isArray as _isArray,
   isObject as _isObject,
   isEmpty as _isEmpty,
+  findWhere as _findWhere,
+  findIndex as _findIndex,
 } from 'underscore';
 
+import Actions from '../../actions/Actions';
 import {
+  ajaxCall,
   trackDiscovery,
 } from '../../utils/utils';
 import DefinitionList from './DefinitionList';
@@ -518,9 +522,53 @@ class BibDetails extends React.Component {
    */
   newSearch(e, query, field, value, label) {
     e.preventDefault();
+    Actions.updateLoadingStatus(true);
 
     trackDiscovery('Bib fields', `${label} - ${value}`);
-    this.context.router.push(`${appConfig.baseUrl}/search?${query}`);
+    ajaxCall(`${appConfig.baseUrl}/api?${query}`, (response) => {
+      let index = 0;
+
+      if (response.data.facet) {
+        // Find the index where the field exists in the list of filters from the API
+        index = _findIndex(response.data.filters.itemListElement, { field });
+      }
+
+      // If the index exists, try to find the filter value from the API
+      if (response.data.filters && response.data.filters.itemListElement
+        && response.data.filters.itemListElement[index]) {
+        const filter = _findWhere(response.data.filters.itemListElement[index].values, { value });
+
+        // The API may return a list of filters in the selected field, but the wanted
+        // filter may still not appear. If that's the case, return the clicked filter value.
+        Actions.updateSelectedFilters({
+          [field]: [{
+            value: filter ? filter.value : value,
+            label: filter ? (filter.label || filter.value) : value,
+          }],
+        });
+        Actions.updateFilters(response.data.filters ? response.data.filters : {});
+      } else {
+        // Otherwise, the field wasn't found in the API. Returning this highlights the
+        // filter in the selected filter region, but not in the filter sidebar.
+        Actions.updateSelectedFilters({
+          [field]: [{
+            label: value,
+            value,
+          }],
+        });
+        Actions.updateFilters(response.data.filters ? response.data.filters : {});
+      }
+      if (response.data.searchResults) {
+        Actions.updateSearchResults(response.data.searchResults);
+      }
+      Actions.updateSearchKeywords('');
+      Actions.updatePage('1');
+      setTimeout(
+        () => { Actions.updateLoadingStatus(false); },
+        500,
+      );
+      this.context.router.push(`${appConfig.baseUrl}/search?${query}`);
+    });
   }
 
   render() {

@@ -15,6 +15,7 @@ import { CheckSoloIcon } from '@nypl/dgx-svg-icons';
 
 import {
   trackDiscovery,
+  ajaxCall,
 } from '../../utils/utils';
 
 import appConfig from '../../data/appConfig';
@@ -255,10 +256,26 @@ class FilterPopup extends React.Component {
     }
 
     this.closeForm(e);
+    Actions.updateLoadingStatus(true);
 
     Actions.updateSelectedFilters(filtersToApply);
-    console.log('router ', this.context, JSON.stringify(this.context));
-    this.context.router.push(`${appConfig.baseUrl}/search?${apiQuery}`);
+    ajaxCall(`${appConfig.baseUrl}/api?${apiQuery}`, (response) => {
+      if (response.data.searchResults && response.data.filters) {
+        Actions.updateSearchResults(response.data.searchResults);
+        Actions.updateFilters(response.data.filters);
+      } else {
+        Actions.updateSearchResults({});
+        Actions.updateFilters({});
+      }
+      Actions.updateSortBy('relevance');
+      Actions.updatePage('1');
+
+      setTimeout(() => {
+        Actions.updateLoadingStatus(false);
+        this.context.router.push(`${appConfig.baseUrl}/search?${apiQuery}`);
+      }, 500);
+    });
+
     return true;
   }
 

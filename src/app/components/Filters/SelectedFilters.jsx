@@ -17,6 +17,7 @@ import {
 import Actions from '../../actions/Actions';
 import appConfig from '../../data/appConfig';
 import {
+  ajaxCall,
   trackDiscovery,
 } from '../../utils/utils';
 
@@ -56,17 +57,49 @@ class SelectedFilters extends React.Component {
     const apiQuery = this.props.createAPIQuery({ selectedFilters });
     trackDiscovery('Filters - Selected list', `Remove - ${filter.field} ${filter.label}`);
 
+    Actions.updateLoadingStatus(true);
 
     Actions.updateSelectedFilters(selectedFilters);
-    this.context.router.push(`${appConfig.baseUrl}/search?${apiQuery}`);
+    ajaxCall(`${appConfig.baseUrl}/api?${apiQuery}`, (response) => {
+      if (response.data.searchResults && response.data.filters) {
+        Actions.updateSearchResults(response.data.searchResults);
+        Actions.updateFilters(response.data.filters);
+      } else {
+        Actions.updateSearchResults({});
+        Actions.updateFilters({});
+      }
+      Actions.updateSortBy('relevance');
+      Actions.updatePage('1');
+
+      setTimeout(() => {
+        Actions.updateLoadingStatus(false);
+        this.context.router.push(`${appConfig.baseUrl}/search?${apiQuery}`);
+      }, 500);
+    });
   }
 
   clearFilters() {
     const apiQuery = this.props.createAPIQuery({ selectedFilters: {} });
 
     trackDiscovery('Filters - Selected list', 'Clear Filters');
+    Actions.updateLoadingStatus(true);
     Actions.updateSelectedFilters({});
-    this.context.router.push(`${appConfig.baseUrl}/search?${apiQuery}`);
+    ajaxCall(`${appConfig.baseUrl}/api?${apiQuery}`, (response) => {
+      if (response.data.searchResults && response.data.filters) {
+        Actions.updateSearchResults(response.data.searchResults);
+        Actions.updateFilters(response.data.filters);
+      } else {
+        Actions.updateSearchResults({});
+        Actions.updateFilters({});
+      }
+      Actions.updateSortBy('relevance');
+      Actions.updatePage('1');
+
+      setTimeout(() => {
+        Actions.updateLoadingStatus(false);
+        this.context.router.push(`${appConfig.baseUrl}/search?${apiQuery}`);
+      }, 500);
+    });
   }
 
   render() {
