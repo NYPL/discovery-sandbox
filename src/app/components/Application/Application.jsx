@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import DocumentTitle from 'react-document-title';
-import { pick as _pick } from 'underscore';
 
 import { Header, navConfig } from '@nypl/dgx-header-component';
 import Footer from '@nypl/dgx-react-footer';
@@ -9,11 +8,6 @@ import Footer from '@nypl/dgx-react-footer';
 import Feedback from '../Feedback/Feedback';
 import Store from '../../stores/Store';
 import PatronStore from '../../stores/PatronStore';
-import {
-  ajaxCall,
-  destructureFilters,
-} from '../../utils/utils';
-import appConfig from '../../data/appConfig';
 import DataLoader from '../DataLoader/DataLoader';
 
 class App extends React.Component {

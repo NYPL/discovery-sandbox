@@ -15,7 +15,6 @@ import { CheckSoloIcon } from '@nypl/dgx-svg-icons';
 
 import {
   trackDiscovery,
-  ajaxCall,
 } from '../../utils/utils';
 
 import appConfig from '../../data/appConfig';

@@ -5,7 +5,6 @@ import ResultList from '../Results/ResultsList';
 import Pagination from '../Pagination/Pagination';
 import {
   basicQuery,
-  ajaxCall,
   trackDiscovery,
 } from '../../utils/utils';
 import Store from '@Store'

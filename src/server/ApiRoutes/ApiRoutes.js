@@ -13,21 +13,17 @@ router
   .route(`${appConfig.baseUrl}/search`)
   .post(Search.searchServerPost);
 
-// router
-//   .route(`${appConfig.baseUrl}/hold/request/:bibId-:itemId`)
-//   .get(Hold.newHoldRequestServer); // BAD
-
 router
   .route(`${appConfig.baseUrl}/hold/request/:bibId-:itemId-:itemSource`)
   .post(Hold.createHoldRequestServer);
 
 router
   .route(`${appConfig.baseUrl}/hold/request/:bibId-:itemId/edd`)
-  .get(Hold.newHoldRequestServerEdd); // BAD
+  .get(Hold.newHoldRequestServerEdd);
 
 router
   .route(`${appConfig.baseUrl}/hold/confirmation/:bibId-:itemId`)
-  .get(Hold.confirmRequestServer);   // BAD
+  .get(Hold.confirmRequestServer);
 
 router
   .route(`${appConfig.baseUrl}/edd`)

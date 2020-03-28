@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import {
-  ajaxCall,
   trackDiscovery,
 } from '../../utils/utils';
 import appConfig from '../../data/appConfig';

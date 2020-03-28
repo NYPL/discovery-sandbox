@@ -1,10 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
-import axios from 'axios';
 import { isArray as _isArray } from 'underscore';
-
-import Actions from '../../actions/Actions';
 import Pagination from '../Pagination/Pagination';
 import ItemTable from './ItemTable';
 import appConfig from '../../data/appConfig';
@@ -67,27 +64,6 @@ class ItemHoldings extends React.Component {
     e.preventDefault();
     trackDiscovery('Item Request', 'Item Details');
     this.context.router.push(`${appConfig.baseUrl}/hold/request/${bibId}-${itemId}`);
-    // Actions.updateLoadingStatus(true);
-    //
-    // // Search for the bib? Just pass the data.
-    // axios
-    //   .get(`${appConfig.baseUrl}/api/hold/request/${bibId}-${itemId}`)
-    //   .then((response) => {
-    //     Actions.updateBib(response.data.bib);
-    //     Actions.updateDeliveryLocations(response.data.deliveryLocations);
-    //     Actions.updateIsEddRequestable(response.data.isEddRequestable);
-    //     setTimeout(() => {
-    //       Actions.updateLoadingStatus(false);
-    //       this.context.router.push(`${appConfig.baseUrl}/hold/request/${bibId}-${itemId}`);
-    //     }, 500);
-    //   })
-    //   .catch((error) => {
-    //     console.error('Error attemping to make an ajax Bib request in ItemHoldings', error);
-    //
-    //     setTimeout(() => {
-    //       Actions.updateLoadingStatus(false);
-    //     }, 500);
-    //   });
   }
 
   /*

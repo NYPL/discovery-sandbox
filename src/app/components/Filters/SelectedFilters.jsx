@@ -17,7 +17,6 @@ import {
 import Actions from '../../actions/Actions';
 import appConfig from '../../data/appConfig';
 import {
-  ajaxCall,
   trackDiscovery,
 } from '../../utils/utils';
 

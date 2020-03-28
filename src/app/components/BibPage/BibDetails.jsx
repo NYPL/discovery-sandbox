@@ -5,12 +5,9 @@ import {
   isArray as _isArray,
   isObject as _isObject,
   isEmpty as _isEmpty,
-  findWhere as _findWhere,
-  findIndex as _findIndex,
 } from 'underscore';
 
 import {
-  ajaxCall,
   trackDiscovery,
 } from '../../utils/utils';
 import DefinitionList from './DefinitionList';

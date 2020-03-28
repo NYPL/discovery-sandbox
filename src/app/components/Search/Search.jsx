@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import SearchButton from '../Buttons/SearchButton';
 import {
   trackDiscovery,
-  ajaxCall,
 } from '../../utils/utils';
 import appConfig from '../../data/appConfig';
 
