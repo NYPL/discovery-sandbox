@@ -13,9 +13,9 @@ router
   .route(`${appConfig.baseUrl}/search`)
   .post(Search.searchServerPost);
 
-router
-  .route(`${appConfig.baseUrl}/hold/request/:bibId-:itemId`)
-  .get(Hold.newHoldRequestServer); // BAD
+// router
+//   .route(`${appConfig.baseUrl}/hold/request/:bibId-:itemId`)
+//   .get(Hold.newHoldRequestServer); // BAD
 
 router
   .route(`${appConfig.baseUrl}/hold/request/:bibId-:itemId-:itemSource`)
@@ -30,7 +30,7 @@ router
   .get(Hold.confirmRequestServer);   // BAD
 
 router
-  .route(`${appConfig.baseUrl}/edd`)   // BAD
+  .route(`${appConfig.baseUrl}/edd`)
   .post(Hold.eddServer);
 
 router

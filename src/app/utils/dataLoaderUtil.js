@@ -11,6 +11,10 @@ const pathInstructions = [
     expression: /\/research\/collections\/shared-collection-catalog\/search\?(.*)/,
     pathType: 'search',
   },
+  {
+    expression: /\/research\/collections\/shared-collection-catalog\/hold\/request\/(.*)/,
+    pathType: 'holdRequest',
+  },
 ];
 
 const routesGenerator = (location, next) => ({
@@ -35,6 +39,15 @@ const routesGenerator = (location, next) => ({
       },
     ],
     errorMessage: 'Error attempting to make an ajax request to search',
+  },
+  holdRequest: {
+    apiRoute: matchData => `${next ? 'http://localhost:3001' : ''}${appConfig.baseUrl}/api/hold/request/${matchData[1]}`,
+    actions: [
+      data => Actions.updateBib(data.bib),
+      data => Actions.updateDeliveryLocations(data.deliveryLocations),
+      data => Actions.updateIsEddRequestable(data.isEddRequestable),
+    ],
+    errorMessage: 'Error attempting to make ajax request for hold request',
   },
 });
 
