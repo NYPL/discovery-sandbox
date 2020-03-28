@@ -1,4 +1,5 @@
 .nestedTableHeader {
+  border-bottom: $table-row-border;
   line-height: 32px;
 
   th {
@@ -18,5 +19,9 @@
   .subjectHeadingLabelInner,
   .subjectHeadingAttributeInner {
     display: inline-flex;
+  }
+
+  .sortCharacter {
+    font-size: 15px;
   }
 }

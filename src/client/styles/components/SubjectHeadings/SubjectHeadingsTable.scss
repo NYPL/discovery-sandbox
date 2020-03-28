@@ -2,10 +2,7 @@
   display: table;
   font-size: 15px;
   width: 100%;
-
-  &.index, &.context {
-    background-color: $top-level-heading;
-  }
+  background-color: $subject-heading-table-header;
 
   a {
     display: flex;
@@ -18,16 +15,14 @@
   }
 
   .subjectSortButton {
-    font-size: 15px;
-    margin-left: 5px;
     @include removeDefaultButtonStyle;
   }
 
   &.index {
     min-width: 60px;
+  }
 
-    .subjectHeadingAttribute {
-      padding: 0 10px;
-    }
+  .titles {
+    padding-right: 10px;
   }
 }

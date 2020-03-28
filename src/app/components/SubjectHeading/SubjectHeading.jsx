@@ -4,10 +4,8 @@ import axios from 'axios';
 import { Link } from 'react-router';
 
 import SubjectHeadingsTableBody from './SubjectHeadingsTableBody';
-import SortButton from './SortButton';
 import Range from '../../models/Range';
 import appConfig from '../../data/appConfig';
-import Preview from './PreviewComponents';
 
 class SubjectHeading extends React.Component {
   constructor(props) {
@@ -20,9 +18,10 @@ class SubjectHeading extends React.Component {
     const {
       children,
       range,
+      preview,
     } = subjectHeading;
     this.state = {
-      open: !!children || this.isMain(),
+      open: (!!children && !preview) || this.isMain(),
       narrower: (children || []),
       sortBy: sortBy || 'alphabetical',
       direction: direction || 'ASC',
@@ -36,6 +35,16 @@ class SubjectHeading extends React.Component {
     this.fetchInitial = this.fetchInitial.bind(this);
   }
 
+  componentDidMount() {
+    const {
+      subjectHeading,
+      preOpen,
+    } = this.props;
+    if (preOpen || subjectHeading.preview) {
+      this.fetchInitial();
+    }
+  }
+
   componentDidUpdate() {
     if (this.state.narrower.length === 0 && this.props.subjectHeading.children) {
       this.setState({
@@ -44,11 +53,6 @@ class SubjectHeading extends React.Component {
         range: this.props.subjectHeading.range,
       });
     }
-  }
-
-  componentDidMount() {
-    window.subjectHeadings = window.subjectHeadings || [];
-    window.subjectHeadings.push(this);
   }
 
   updateSubjectHeading(properties) {
@@ -76,30 +80,46 @@ class SubjectHeading extends React.Component {
   }
 
   addMore(element, data) {
-    const {
-      narrower,
-    } = this.state;
-    data.narrower.forEach(
-      (child) => { child.indentation = (this.props.subjectHeading.indentation || 0) + 1; }
-    );
-    narrower.splice(-1, 1, ...data.narrower);
-    if (data.next_url) {
-      narrower.splice(-1, 1, { button: 'next', updateParent: this.fetchAndUpdate(data.next_url), indentation: (this.props.subjectHeading.indentation || 0) + 1 });
-    }
-    this.setState(prevState => prevState);
+    this.setState((prevState) => {
+      const { narrower } = prevState;
+      data.narrower.forEach(
+        (child) => { child.indentation = (this.props.subjectHeading.indentation || 0) + 1; }
+      );
+
+      narrower.splice(-1, 1, ...data.narrower);
+
+      if (data.next_url) {
+        narrower.splice(narrower.length, 1, {
+          button: 'next',
+          updateParent: this.fetchAndUpdate(data.next_url),
+          indentation: (this.props.subjectHeading.indentation || 0) + 1,
+          noEllipse: true,
+        });
+      }
+
+      this.setState({
+        narrower,
+      });
+    });
   }
 
   fetchAndUpdate(url) {
     return (element) => {
       axios(url)
         .then(
-          resp => this.addMore(element, resp.data),
+          (resp) => {
+            if (resp.data.narrower) {
+              this.addMore(element, resp.data);
+            } else {
+              element.hide();
+            }
+          },
         ).catch((resp) => { console.error(resp); });
     };
   }
 
   addEmphasis(string) {
-    const components = string.split(" -- ");
+    const components = string.split(' -- ');
     return { emph: components.slice(-1), rest: components.slice(0, -1).join(' -- ') };
   }
 
@@ -116,8 +136,13 @@ class SubjectHeading extends React.Component {
     return `${path}/subject_headings/${uuid}`;
   }
 
-  updateSort(sortType, direction) {
-    this.fetchInitial({ sortBy: sortType, direction, range: Range.default() });
+  updateSort(sortType, direction, numberOpen) {
+    this.fetchInitial({
+      sortBy: sortType,
+      direction,
+      range: Range.default(),
+      numberOpen,
+    });
   }
 
   fetchInitial(additionalParameters = {}) {
@@ -127,10 +152,19 @@ class SubjectHeading extends React.Component {
     } = this.props.subjectHeading;
     let {
       sortBy,
+      direction,
     } = this.state;
-    const direction = additionalParameters.direction;
+
+    let limit;
+
     if (additionalParameters.sortBy) sortBy = additionalParameters.sortBy;
-    const url = `${appConfig.baseUrl}/api/subjectHeadings/subject_headings/${uuid}/narrower?sort_by=${sortBy}${direction ? `&direction=${direction}` : ''}`;
+    if (additionalParameters.direction) direction = additionalParameters.direction;
+    if (additionalParameters.numberOpen) limit = additionalParameters.numberOpen;
+    let url = `${appConfig.baseUrl}/api/subjectHeadings/subject_headings/${uuid}/narrower?sort_by=${sortBy}`;
+
+    if (direction) url += `&direction=${direction}`;
+    if (limit) url += `&limit=${limit}`;
+
     axios(url)
       .then(
         (resp) => {
@@ -140,7 +174,12 @@ class SubjectHeading extends React.Component {
           } = resp.data;
           narrower.forEach((child) => { child.indentation = (indentation || 0) + 1; });
           if (next_url) {
-            narrower[narrower.length - 1] = { button: 'next', updateParent: this.fetchAndUpdate(next_url), indentation: (indentation || 0) + 1 };
+            narrower.push({
+              button: 'next',
+              updateParent: this.fetchAndUpdate(next_url),
+              indentation: (indentation || 0) + 1,
+              noEllipse: true,
+            });
           }
           this.updateSubjectHeading(
             Object.assign(
@@ -165,6 +204,8 @@ class SubjectHeading extends React.Component {
         search: '',
       },
       container,
+      seeMoreText,
+      seeMoreLinkUrl,
     } = this.props;
 
     const {
@@ -173,8 +214,6 @@ class SubjectHeading extends React.Component {
       bib_count,
       desc_count,
       children,
-      preview,
-      updateSort,
     } = subjectHeading;
 
     const {
@@ -199,11 +238,11 @@ class SubjectHeading extends React.Component {
 
     const toggle = () => {
       const symbol = !open ? '+' : '-';
-      const innerText = desc_count > 0 ? symbol : "";
+      const innerText = desc_count > 0 ? symbol : '';
       const props = {};
 
-      props.onClick = container !== 'context' ? this.toggleOpen : () => {};
-      props.className = "subjectHeadingToggle";
+      props.onClick = this.toggleOpen;
+      props.className = 'subjectHeadingToggle';
 
       if (desc_count > 0) {
         props.onKeyDown = event => handleEnter(event);
@@ -212,32 +251,12 @@ class SubjectHeading extends React.Component {
       return <button {...props}>{innerText}</button>;
     };
 
-    const hierarchicalBackgroundColor = () => {
-      const level = indentation >= 3 ? 3 : indentation;
-      const backgroundColor = {
-        0: 'hsl(24, 14%, 100%)',
-        1: 'hsl(24, 14%, 97%)',
-        2: 'hsl(24, 14%, 94%)',
-        3: 'hsl(24, 14%, 91%)', // this is just white
-      }[level];
-      return { backgroundColor };
-    };
-
-    const positionStyle = container === 'narrower' ? null : { marginLeft: 30 * ((indentation || 0) + 1) };
+    const positionStyle = ['narrower', 'related'].includes(container) ? null : { marginLeft: 30 * ((indentation || 0) + 1) };
     const isMain = (pathname + search).includes(uuid);
     // changes to HTML structure here will need to be replicated in ./SubjectHeadingTableHeader
 
     return (
       <React.Fragment>
-        {
-          container === 'narrower' ?
-            <tr>
-              <td colSpan="4">
-                <hr className="relatedHeadingsBoundary" />
-              </td>
-            </tr>
-          : null
-        }
         <tr
           data={`${subjectHeading.uuid}, ${container}`}
           className={`
@@ -246,41 +265,35 @@ class SubjectHeading extends React.Component {
             ${(indentation || 0) === 0 ? 'topLevel' : ''}
             ${(indentation || 0) !== 0 ? 'nestedSubjectHeading' : ''}
           `}
-          style={hierarchicalBackgroundColor()}
+          style={{ backgroundColor: this.props.backgroundColor }}
         >
           <td className={`subjectHeadingsTableCell subjectHeadingLabel ${sortBy === 'alphabetical' ? 'selected' : ''}`} >
             <div className="subjectHeadingLabelInner" style={positionStyle}>
               { toggle() }
-              { updateSort
-                ? (
-                  <SortButton
-                    handler={updateSort}
-                    type="alphabetical"
-                  />
-                  )
-                : null
-              }
               <Link to={this.generateUrl}>
-                <span className={`emph ${isMain ? 'mainHeading' : ''}`}>{rest === '' ? null : <span className="noEmph">{`${rest}\u0020--\u00a0`}</span>}{emph}</span>
+                <span
+                  className={`emph ${isMain ? 'mainHeading' : ''}`}
+                >
+                  {
+                    rest === '' || container === 'context' ?
+                    null :
+                    <span className="noEmph">
+                      {`${rest}\u0020--\u00a0`}
+                    </span>
+                  }
+                  {emph}
+                </span>
               </Link>
             </div>
           </td>
           <td className={`subjectHeadingsTableCell subjectHeadingAttribute narrower ${sortBy === 'descendants' ? 'selected' : ''}`}>
             <div className="subjectHeadingAttributeInner">
-              { updateSort
-                ? <SortButton handler={updateSort} type="descendants" />
-                : null
-              }
               {`${desc_count || '-'}`}
             </div>
           </td>
           <td className={`subjectHeadingsTableCell subjectHeadingAttribute titles ${sortBy === 'bibs' ? 'selected' : ''}`}>
             <div className="subjectHeadingAttributeInner">
-              { updateSort
-                   ? <SortButton handler={updateSort} type="bibs" />
-                   : null
-               }
-              {`${bib_count}`}
+              {bib_count}
             </div>
           </td>
         </tr>
@@ -297,12 +310,11 @@ class SubjectHeading extends React.Component {
             direction={direction}
             key={`${uuid}-list-${sortBy}-${direction}`}
             updateSort={this.updateSort}
+            seeMoreText={seeMoreText}
+            seeMoreLinkUrl={seeMoreLinkUrl}
+            preOpen={false}
           />
           : null}
-        {!open && preview && preview.length >= 4 ?
-          <Preview topHeadings={preview} />
-          : null
-        }
       </React.Fragment>
     );
   }
@@ -316,11 +328,16 @@ SubjectHeading.propTypes = {
   indentation: PropTypes.number,
   container: PropTypes.string,
   direction: PropTypes.string,
+  seeMoreText: PropTypes.string,
+  seeMoreLinkUrl: PropTypes.string,
+  backgroundColor: PropTypes.string,
+  preOpen: PropTypes.bool,
 };
 
 SubjectHeading.defaultProps = {
   indentation: 0,
-}
+  preOpen: false,
+};
 
 SubjectHeading.contextTypes = {
   router: PropTypes.object,

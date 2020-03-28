@@ -25,29 +25,21 @@ class SubjectHeadingsTableBody extends React.Component {
     this.updateRange = this.updateRange.bind(this);
     this.listItemsInRange = this.listItemsInRange.bind(this);
     this.listItemsInInterval = this.listItemsInInterval.bind(this);
-    this.subHeadingHeadings = this.subHeadingHeadings.bind(this);
     this.tableRow = this.tableRow.bind(this);
+    this.backgroundColor = this.backgroundColor.bind(this);
   }
 
-  componentDidUpdate() {
-    window.tbody = this;
-    if (!this.state.subjectHeadings && this.props.subjectHeadings) {
-      const newSubjectHeadings = this.props.subjectHeadings;
-      this.setState(
-        { subjectHeadings: newSubjectHeadings,
-          range: this.initialRange({ subjectHeadings: newSubjectHeadings }),
-        }, () => {
-          const { linked } = this.props;
-          if (linked) {
-            const url = `${appConfig.baseUrl}/api/subjectHeadings/subject_headings/${linked}/context?type=relatives`;
-            axios(url)
-              .then(
-                (res) => {
-                  this.mergeSubjectHeadings(res.data.subject_headings, linked);
-                },
-              );
-          }
-        });
+  componentDidMount() {
+    const { linked } = this.props;
+
+    if (linked) {
+      const url = `${appConfig.baseUrl}/api/subjectHeadings/subject_headings/${linked}/context?type=relatives`;
+      axios(url)
+        .then(
+          (res) => {
+            this.mergeSubjectHeadings(res.data.subject_headings, linked);
+          },
+        );
     }
   }
 
@@ -68,31 +60,25 @@ class SubjectHeadingsTableBody extends React.Component {
   }
 
   updateRange(rangeElement, intervalElement, endpoint, increment) {
+    // eslint-disable-next-line no-param-reassign
     intervalElement[endpoint] += increment;
     rangeElement.normalize();
     this.setState(prevState => prevState);
-  }
-
-  subHeadingHeadings() {
-    if (this.props.top) return [];
-    return [
-      {
-        nestedTableHeader: true,
-        updateSort: this.props.updateSort,
-      },
-    ];
   }
 
   listItemsInRange() {
     const {
       range,
     } = this.state;
-    return this.subHeadingHeadings().concat(range.intervals.reduce((acc, el) =>
-      acc.concat(this.listItemsInInterval(el))
-      , []));
+
+    const lastIndex = range.intervals.length - 1;
+
+    return range.intervals.reduce((acc, interval, index) =>
+      acc.concat(this.listItemsInInterval(interval, index, lastIndex))
+      , []);
   }
 
-  listItemsInInterval(interval) {
+  listItemsInInterval(interval, index, lastIndex) {
     const { indentation } = this.props;
     const { subjectHeadings, range } = this.state;
     const { start, end } = interval;
@@ -108,10 +94,26 @@ class SubjectHeadingsTableBody extends React.Component {
       subjectHeadingsInInterval.push({
         button: 'next',
         indentation,
+        noEllipse: index === lastIndex,
         updateParent: () => this.updateRange(range, interval, 'end', 10),
       });
     }
     return subjectHeadingsInInterval;
+  }
+
+  backgroundColor(nestedTable = false) {
+    const indentation = nestedTable ? this.props.indentation - 1 : this.props.indentation;
+
+    const level = indentation >= 3 ? 3 : indentation;
+
+    const backgroundColor = {
+      0: 'hsl(30, 14%, 92%)',
+      1: 'hsl(30, 13%, 94%)',
+      2: 'hsl(30, 12%, 97%)',
+      3: 'hsl(30, 11%, 99%)',
+    }[level];
+
+    return backgroundColor;
   }
 
   tableRow(listItem, index) {
@@ -122,7 +124,11 @@ class SubjectHeadingsTableBody extends React.Component {
       sortBy,
       linked,
       direction,
+      seeMoreText,
+      seeMoreLinkUrl,
+      preOpen,
     } = this.props;
+
 
     const { location } = this.context.router;
 
@@ -136,21 +142,14 @@ class SubjectHeadingsTableBody extends React.Component {
           indentation={listItem.indentation || indentation}
           button={listItem.button}
           updateParent={listItem.updateParent}
-          key={indentation || index}
+          key={`${listItem.button}${listItem.indentation}${index}`}
           nested={nested}
           interactive={interactive}
-        />
-      );
-    }
-    if (listItem.nestedTableHeader) {
-      return (
-        <NestedTableHeader
-          subjectHeading={listItem}
-          key={"nestedTableHeader"}
-          indentation={indentation}
           container={container}
-          sortBy={sortBy}
-          direction={direction}
+          linkUrl={seeMoreLinkUrl}
+          text={seeMoreText}
+          backgroundColor={this.backgroundColor()}
+          noEllipse={listItem.noEllipse}
         />
       );
     }
@@ -165,6 +164,11 @@ class SubjectHeadingsTableBody extends React.Component {
         container={container}
         sortBy={sortBy}
         linked={linked}
+        seeMoreText={seeMoreText}
+        seeMoreLinkUrl={seeMoreLinkUrl}
+        backgroundColor={this.backgroundColor()}
+        direction={direction}
+        preOpen={preOpen}
       />
     );
   }
@@ -174,12 +178,40 @@ class SubjectHeadingsTableBody extends React.Component {
       subjectHeadings,
     } = this.state;
 
+    const {
+      nested,
+      parentUuid,
+      indentation,
+      sortBy,
+      direction,
+      updateSort,
+      container,
+    } = this.props;
+
+    const inRange = this.listItemsInRange(subjectHeadings);
+
+    const numberOpen = inRange.filter(item => !item.button).length;
+
     return (
       <React.Fragment>
+        {nested && subjectHeadings ?
+          <NestedTableHeader
+            parentUuid={parentUuid}
+            key={`nestedTableHeader${indentation}`}
+            indentation={indentation}
+            container={container}
+            sortBy={sortBy}
+            direction={direction}
+            backgroundColor={this.backgroundColor(true)}
+            updateSort={updateSort}
+            interactive={subjectHeadings.length > 1}
+            numberOpen={numberOpen}
+          />
+          : null
+        }
         {
           subjectHeadings ?
-          this.listItemsInRange(subjectHeadings)
-          .map(this.tableRow) :
+          inRange.map(this.tableRow) :
           null
         }
       </React.Fragment>
@@ -195,9 +227,15 @@ SubjectHeadingsTableBody.propTypes = {
   sortBy: PropTypes.string,
   container: PropTypes.string,
   parentUuid: PropTypes.string,
-  top: PropTypes.bool,
   updateSort: PropTypes.func,
   pathname: PropTypes.string,
+  seeMoreText: PropTypes.string,
+  seeMoreLinkUrl: PropTypes.string,
+  direction: PropTypes.string,
+};
+
+SubjectHeadingsTableBody.defaultProps = {
+  indentation: 0,
 };
 
 SubjectHeadingsTableBody.contextTypes = {

@@ -2,10 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 
+/* eslint-disable import/first, import/no-unresolved, import/extensions */
 import Pagination from '@Pagination';
 import AlphabeticalPagination from '@AlphabeticalPagination';
+import calculateDirection from '@calculateDirection';
 import SubjectHeadingsTable from './SubjectHeadingsTable';
-import SortButton from './SortButton';
+/* eslint-enable import/first, import/no-unresolved, import/extensions */
 import appConfig from '../../data/appConfig';
 
 
@@ -15,6 +17,7 @@ class SubjectHeadingsContainer extends React.Component {
     this.state = {
       error: false,
       componentLoading: true,
+      subjectHeadings: [],
     };
     this.pagination = this.pagination.bind(this);
     this.updateSort = this.updateSort.bind(this);
@@ -31,10 +34,11 @@ class SubjectHeadingsContainer extends React.Component {
       filter,
       sortBy,
       fromAttributeValue,
+      direction,
     } = this.context.router.location.query;
 
-    if (!fromComparator) fromComparator = filter ? null : "start";
-    if (!fromLabel) fromLabel = filter ? null : "Aac";
+    if (!fromComparator) fromComparator = filter ? null : 'start';
+    if (!fromLabel) fromLabel = filter ? null : 'Aac';
 
     const apiParamHash = {
       from_comparator: fromComparator,
@@ -43,6 +47,8 @@ class SubjectHeadingsContainer extends React.Component {
       sort_by: sortBy,
       from_attribute_value: fromAttributeValue,
     };
+
+    if (direction) apiParamHash.direction = direction;
 
     const apiParamString = Object
       .entries(apiParamHash)
@@ -53,6 +59,9 @@ class SubjectHeadingsContainer extends React.Component {
     const url = `${appConfig.baseUrl}/api/subjectHeadings/subject_headings?${apiParamString}`;
     axios(url)
       .then(
+        // The callback `fetchNarrower` makes api calls to pre-open the narrower headings,
+        // if it is the filtered index and the filter returns a low heading count.
+        // it also has the responsibility of setting `componentLoading` at the appropriate point
         (res) => {
           this.setState({
             previousUrl: res.data.previous_url,
@@ -64,6 +73,7 @@ class SubjectHeadingsContainer extends React.Component {
         },
       ).catch(
         (err) => {
+          // eslint-disable-next-line no-console
           console.error('error: ', err);
           if (!this.state.subjectHeadings || this.state.subjectHeadings.length === 0) {
             this.setState({
@@ -106,9 +116,15 @@ class SubjectHeadingsContainer extends React.Component {
     const {
       pathname,
       query,
+      query: {
+        sortBy,
+        direction,
+      },
     } = this.context.router.location;
 
-    const paramString = `filter=${query.filter}&sortBy=${type}`;
+    const updatedDirection = calculateDirection(sortBy, direction)(type);
+
+    const paramString = `filter=${query.filter}&sortBy=${type}&direction=${updatedDirection}`;
 
     if (type !== this.state.sortBy) {
       this.context.router.push(`${pathname}?${paramString}`);
@@ -138,7 +154,8 @@ class SubjectHeadingsContainer extends React.Component {
   render() {
     const { error, subjectHeadings } = this.state;
     const { location } = this.context.router;
-    const { linked, sortBy, filter } = location.query;
+    const { linked, sortBy, filter, direction } = location.query;
+    const preOpen = subjectHeadings.length <= 7;
 
     if (error) {
       return (
@@ -148,24 +165,26 @@ class SubjectHeadingsContainer extends React.Component {
       );
     }
 
-    if (this.state.componentLoading) return (
-      <div className="subjectHeadingShowLoadingWrapper">
-        {this.pagination()}
-        {filter ? null : <AlphabeticalPagination />}
-        <span
-          id="loading-animation"
-          className="loadingLayer-texts-loadingWord"
-        >
-          Loading Subject Headings
-        </span>
-        <div className="loadingDots">
-          <span />
-          <span />
-          <span />
-          <span />
+    if (this.state.componentLoading) {
+      return (
+        <div className="subjectHeadingShowLoadingWrapper">
+          {this.pagination()}
+          {filter ? null : <AlphabeticalPagination />}
+          <span
+            id="loading-animation"
+            className="loadingLayer-texts-loadingWord"
+          >
+            Loading Subject Headings
+          </span>
+          <div className="loadingDots">
+            <span />
+            <span />
+            <span />
+            <span />
+          </div>
         </div>
-      </div>
-    )
+      );
+    }
 
     return (
       <React.Fragment>
@@ -177,8 +196,10 @@ class SubjectHeadingsContainer extends React.Component {
           linked={linked}
           location={location}
           sortBy={sortBy}
+          direction={direction}
           updateSort={filter ? this.updateSort : null}
-          container={"index"}
+          container="index"
+          preOpen={preOpen}
         />
         {this.pagination()}
       </React.Fragment>

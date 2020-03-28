@@ -1,9 +1,4 @@
-$lighter-grey: #E8E4E3;
-$darker-grey: lightgray;
-
-$subject-heading-table-header: rgb(226, 221, 217);
-$top-level-heading: hsl(24, 14%, 92%);
-$second-level: hsl(24, 14%, 95%);
+$subject-heading-table-header: rgb(224, 219, 214);
 
 $emphasis-font-weight: 500;
 
@@ -31,7 +26,6 @@ $table-row-border: 1px solid rgb(215, 210, 205);
 }
 
 .subjectHeadingsBanner {
-  background: $lighter-grey;
   padding: 1rem 1.5rem 1rem 8rem;
   position: relative; // from .nypl-full-width-wrapper
   margin: 0 auto 25px;
@@ -54,17 +48,6 @@ $table-row-border: 1px solid rgb(215, 210, 205);
 
   em {
     font-style: italic;
-  }
-}
-
-.subjectHeadingShow {
-  h2 {
-    max-width: 40rem;
-    padding-left: 1.5%;
-  }
-
-  .nypl-results-item h2, .nypl-results-item h3 {
-    font-size: 1rem;
   }
 }
 
@@ -91,15 +74,23 @@ $table-row-border: 1px solid rgb(215, 210, 205);
   }
 }
 
-span > .verticalEllipse {
+.moreSubjectsElement > .verticalEllipse {
   margin-left: 40px;
+  display: inline-block;
 }
 
 .verticalEllipse {
   font-size: 14px;
   margin-bottom: 3px;
   line-height: 5px;
-  padding: 4.5%;
+  padding-bottom: 4.5%;
+  padding-left: 3px;
+  .dot {
+    text-align: left;
+    display: block;
+  }
+  // padding: 4.5%;
+  // padding-left: 8%;
 }
 
 .nypl-breadcrumbs {
