@@ -5,10 +5,8 @@ import ResultList from '../ResultsList/ResultsList';
 import Pagination from '../Pagination/Pagination';
 import {
   basicQuery,
-  ajaxCall,
   trackDiscovery,
 } from '../../utils/utils';
-import Actions from '../../actions/Actions';
 import Store from '@Store'
 import appConfig from '../../data/appConfig';
 
@@ -24,18 +22,10 @@ const SearchResultsContainer = (props) => {
   const results = searchResults ? searchResults.itemListElement : [];
   const createAPIQuery = basicQuery(props);
   const updatePage = (nextPage, pageType) => {
-    Actions.updateLoadingStatus(true);
     const apiQuery = createAPIQuery({ page: nextPage });
 
     trackDiscovery('Pagination - Search Results', `${pageType} - page ${nextPage}`);
-    ajaxCall(`${appConfig.baseUrl}/api?${apiQuery}`, (response) => {
-      Actions.updateSearchResults(response.data.searchResults);
-      Actions.updatePage(nextPage.toString());
-      setTimeout(() => {
-        Actions.updateLoadingStatus(false);
-        props.router.push(`${appConfig.baseUrl}/search?${apiQuery}`);
-      }, 500);
-    });
+    props.router.push(`${appConfig.baseUrl}/search?${apiQuery}`);
   };
 
   return (

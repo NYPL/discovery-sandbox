@@ -200,15 +200,5 @@ describe('Search', () => {
       component.find('button').at(0).simulate('click');
       expect(store.state.searchKeywords).not.to.equal('Watts');
     });
-
-
-    it('should update the searchKeywords after it submits the request', (done) => {
-      component.find('input').at(0).simulate('change', { target: { value: 'Blindsight' } });
-      component.find('button').at(0).simulate('click');
-      setTimeout(() => {
-        expect(store.state.searchKeywords).to.equal('Blindsight');
-        done();
-      }, 1000);
-    });
   });
 });
