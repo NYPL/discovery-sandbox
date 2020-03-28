@@ -106,6 +106,7 @@
           "@routes": "./src/app/routes/routes.jsx",
           "@PatronStore": "./src/app/stores/PatronStore.js",
           "@Store": "./src/app/stores/Store.js",
+          "@dataLoaderUtil": "./src/app/utils/dataLoaderUtil.js",
           "@formValidationUtils": "./src/app/utils/formValidationUtils.js",
           "@getOwner": "./src/app/utils/getOwner.js",
           "@item": "./src/app/utils/item.js",

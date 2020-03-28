@@ -6,12 +6,11 @@ import {
   isArray as _isArray,
 } from 'underscore';
 
-import Actions from '../../actions/Actions';
+
 // eslint-disable-next-line import/first, import/no-unresolved, import/extensions
-import Store from '@Store';
+import Store from '@Store'
 import LibraryItem from '../../utils/item';
 import {
-  ajaxCall,
   trackDiscovery,
 } from '../../utils/utils';
 import ItemTable from '../Item/ItemTable';
@@ -21,7 +20,6 @@ class ResultsList extends React.Component {
   constructor(props) {
     super(props);
 
-    this.routeHandler = this.routeHandler.bind(this);
     this.getItemRecord = this.getItemRecord.bind(this);
   }
 
@@ -35,32 +33,8 @@ class ResultsList extends React.Component {
    */
   getItemRecord(e, bibId, itemId) {
     e.preventDefault();
-
-    Actions.updateLoadingStatus(true);
-
+    this.context.router.push(`${appConfig.baseUrl}/hold/request/${bibId}-${itemId}`);
     trackDiscovery('Item Request', 'Search Results');
-    ajaxCall(`${appConfig.baseUrl}/api/hold/request/${bibId}-${itemId}`,
-      (response) => {
-        Actions.updateBib(response.data.bib);
-        Actions.updateDeliveryLocations(response.data.deliveryLocations);
-        Actions.updateIsEddRequestable(response.data.isEddRequestable);
-        setTimeout(() => {
-          Actions.updateLoadingStatus(false);
-          this.routeHandler(`${appConfig.baseUrl}/hold/request/${bibId}-${itemId}`);
-        }, 500);
-      },
-      (error) => {
-        setTimeout(() => {
-          Actions.updateLoadingStatus(false);
-        }, 500);
-
-        // eslint-disable-next-line no-console
-        console.error(
-          'Error attemping to make an ajax request to fetch an item in ResultsList',
-          error,
-        );
-      },
-    );
   }
 
   getBibTitle(bib) {
@@ -145,10 +119,6 @@ class ResultsList extends React.Component {
         }
       </li>
     );
-  }
-
-  routeHandler(route) {
-    this.context.router.push(route);
   }
 
   render() {
