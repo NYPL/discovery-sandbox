@@ -35,22 +35,24 @@ class SubjectHeadingsTableBody extends React.Component {
     if (linked) {
       const url = `${appConfig.baseUrl}/api/subjectHeadings/subject_headings/${linked}/context?type=relatives`;
       axios(url)
-        .then(
-          (res) => {
-            this.mergeSubjectHeadings(res.data.subject_headings, linked);
-          },
-        );
+        .then((res) => {
+          this.mergeSubjectHeadings(res.data.subject_headings, linked);
+        })
+        .catch(console.error);
     }
   }
 
-  mergeSubjectHeadings(subjectHeadings, linked) {
-    const responseSubjectHeading = subjectHeadings[0];
+  mergeSubjectHeadings(incomingSubjectHeadings, linked) {
+    const responseSubjectHeading = incomingSubjectHeadings[0];
     Range.addRangeData(responseSubjectHeading, linked);
-    const existingSubjectHeadingIndex = this.state.subjectHeadings.findIndex(
-      heading => heading.uuid === responseSubjectHeading.uuid,
-    );
-    this.state.subjectHeadings[existingSubjectHeadingIndex] = responseSubjectHeading;
-    this.setState(prevState => prevState);
+    this.setState((prevState) => {
+      const { subjectHeadings } = prevState;
+      const existingSubjectHeadingIndex = subjectHeadings.findIndex(
+        heading => heading.uuid === responseSubjectHeading.uuid,
+      );
+      subjectHeadings[existingSubjectHeadingIndex] = responseSubjectHeading;
+      return { subjectHeadings };
+    });
   }
 
   initialRange(props) {
