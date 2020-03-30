@@ -201,10 +201,11 @@ class SubjectHeading extends React.Component {
         pathname: '',
         search: '',
       },
-      container,
       seeMoreText,
       seeMoreLinkUrl,
     } = this.props;
+
+    const { container } = this.context;
 
     const {
       label,
@@ -249,14 +250,13 @@ class SubjectHeading extends React.Component {
       return <button {...props}>{innerText}</button>;
     };
 
-    const positionStyle = ['narrower', 'related'].includes(container) ? null : { marginLeft: 30 * ((indentation || 0) + 1) };
+    const positionStyle = container === 'related' ? null : { marginLeft: 30 * ((indentation || 0) + 1) };
     const isMain = (pathname + search).includes(uuid);
     // changes to HTML structure here will need to be replicated in ./SubjectHeadingTableHeader
 
     return (
       <React.Fragment>
         <tr
-          data={`${subjectHeading.uuid}, ${container}`}
           className={`
             subjectHeadingRow
             ${(open || children || isMain) ? 'openSubjectHeading' : ''}
@@ -302,7 +302,6 @@ class SubjectHeading extends React.Component {
             nested="true"
             indentation={(indentation || 0) + 1}
             range={range}
-            container={container}
             parentUuid={uuid}
             sortBy={sortBy}
             direction={direction}
@@ -324,7 +323,6 @@ SubjectHeading.propTypes = {
   sortBy: PropTypes.string,
   linked: PropTypes.string,
   indentation: PropTypes.number,
-  container: PropTypes.string,
   direction: PropTypes.string,
   seeMoreText: PropTypes.string,
   seeMoreLinkUrl: PropTypes.string,
@@ -339,6 +337,7 @@ SubjectHeading.defaultProps = {
 
 SubjectHeading.contextTypes = {
   router: PropTypes.object,
+  container: PropTypes.string,
 };
 
 export default SubjectHeading;
