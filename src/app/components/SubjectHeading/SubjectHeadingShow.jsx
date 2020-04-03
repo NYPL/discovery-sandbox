@@ -5,6 +5,7 @@ import { Link } from 'react-router';
 
 import SubjectHeadingsTable from './SubjectHeadingsTable';
 import BibsList from './BibsList';
+import LocalLoadingLayer from './LocalLoadingLayer';
 import Range from '../../models/Range';
 import appConfig from '../../data/appConfig';
 import Actions from '../../actions/Actions';
@@ -171,7 +172,7 @@ class SubjectHeadingShow extends React.Component {
                 }
               />
             </div>
-            : null
+            : <LocalLoadingLayer message="Loading More Subject Headings" />
           }
           {relatedHeadings ?
             <div
