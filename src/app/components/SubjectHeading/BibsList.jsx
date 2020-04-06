@@ -129,7 +129,12 @@ class BibsList extends React.Component {
     );
 
     if (this.state.componentLoading) {
-      return (<LocalLoadingLayer message="Loading More Titles" />);
+      return (
+        <LocalLoadingLayer
+          message="Loading More Titles"
+          classNames="bibsList"
+        />
+      );
     }
 
     return (

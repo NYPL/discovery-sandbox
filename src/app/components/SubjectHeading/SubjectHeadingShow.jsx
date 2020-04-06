@@ -48,7 +48,10 @@ class SubjectHeadingShow extends React.Component {
       .catch(
         (err) => {
           console.error('error: ', err);
-          this.setState({ error: true });
+          this.setState({
+            error: true,
+            contextHeadings: [],
+          });
         },
       );
 
@@ -102,6 +105,7 @@ class SubjectHeadingShow extends React.Component {
   }
 
   processContextHeadings(headings, uuid) {
+    if (!headings) return [];
     headings.forEach((heading) => {
       this.removeChildrenOffMainPath(heading, uuid);
       Range.addRangeData(heading, uuid, 'show');

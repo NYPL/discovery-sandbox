@@ -1,7 +1,8 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
-export default props => (
-  <div className="nypl-column-half bibsList subjectHeadingShowLoadingWrapper">
+const LocalLoadingLayer = props => (
+  <div className={`nypl-column-half ${props.classNames} subjectHeadingShowLoadingWrapper`}>
     <span
       id="loading-animation"
       className="loadingLayer-texts-loadingWord"
@@ -16,3 +17,15 @@ export default props => (
     </div>
   </div>
 );
+
+LocalLoadingLayer.propTypes = {
+  message: PropTypes.string,
+  classNames: PropTypes.string,
+};
+
+LocalLoadingLayer.defaultProps = {
+  message: '',
+  classNames: '',
+};
+
+export default LocalLoadingLayer;
