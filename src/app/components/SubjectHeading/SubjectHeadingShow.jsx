@@ -40,6 +40,7 @@ class SubjectHeadingShow extends React.Component {
           mainHeading: {
             label: res.data.request.main_label,
           },
+          contextIsLoading: false,
         }, () => {
           this.props.setBannerText(this.state.mainHeading.label);
           Actions.updateLoadingStatus(false);
@@ -49,7 +50,8 @@ class SubjectHeadingShow extends React.Component {
         (err) => {
           console.error('error: ', err);
           this.setState({
-            error: true,
+            contextIsLoading: false,
+            contextError: true,
             contextHeadings: [],
           });
         },
