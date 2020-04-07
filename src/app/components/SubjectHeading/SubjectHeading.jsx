@@ -213,6 +213,7 @@ class SubjectHeading extends React.Component {
       bib_count,
       desc_count,
       children,
+      onMainPath,
     } = subjectHeading;
 
     const {
@@ -254,18 +255,19 @@ class SubjectHeading extends React.Component {
     const isMain = (pathname + search).includes(uuid);
     // changes to HTML structure here will need to be replicated in ./SubjectHeadingTableHeader
 
+
     return (
       <React.Fragment>
         <tr
           className={`
             subjectHeadingRow
-            ${(open || children || isMain) ? 'openSubjectHeading' : ''}
-            ${(indentation || 0) === 0 ? 'topLevel' : ''}
-            ${(indentation || 0) !== 0 ? 'nestedSubjectHeading' : ''}
+            ${open && children ? 'openSubjectHeading' : ''}
+            ${indentation === 0 ? 'topLevel' : ''}
+            ${indentation !== 0 ? 'nestedSubjectHeading' : ''}
           `}
           style={{ backgroundColor: this.props.backgroundColor }}
         >
-          <td className={`subjectHeadingsTableCell subjectHeadingLabel ${sortBy === 'alphabetical' ? 'selected' : ''}`} >
+          <td className={`subjectHeadingsTableCell subjectHeadingLabel ${onMainPath ? 'selected' : ''}`} >
             <div className="subjectHeadingLabelInner" style={positionStyle}>
               { toggle() }
               <Link to={this.generateUrl}>

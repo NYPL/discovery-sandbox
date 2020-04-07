@@ -45,25 +45,21 @@
   border-bottom: $table-row-border;
   line-height: 32px;
 
+  .selected .emph {
+    font-weight: 700;
+  }
+
   &.openSubjectHeading {
     border-bottom: 0;
     font-weight: $emphasis-font-weight;
   }
+}
 
-  &.nestedSubjectHeading .emph {
-    font-weight: $emphasis-font-weight;
+.index .nestedSubjectHeading .emph {
+  font-weight: $emphasis-font-weight;
 
-    .noEmph {
-      font-weight: normal;
-    }
-  }
-
-  &.nestedSubjectHeading .emph {
-    font-weight: $emphasis-font-weight;
-
-    .noEmph {
-      font-weight: normal;
-    }
+  .noEmph {
+    font-weight: normal;
   }
 }
 
