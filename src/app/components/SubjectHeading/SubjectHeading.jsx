@@ -215,7 +215,6 @@ class SubjectHeading extends React.Component {
       uuid,
       bib_count,
       desc_count,
-      children,
       onMainPath,
     } = subjectHeading;
 
