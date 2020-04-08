@@ -181,7 +181,10 @@ class SubjectHeading extends React.Component {
           }
           this.updateSubjectHeading(
             Object.assign(
-              { narrower, open: true },
+              {
+                narrower,
+                open: true,
+              },
               additionalParameters,
             ),
           );
@@ -253,15 +256,14 @@ class SubjectHeading extends React.Component {
 
     const positionStyle = container === 'related' ? null : { marginLeft: 30 * ((indentation || 0) + 1) };
     const isMain = (pathname + search).includes(uuid);
+
     // changes to HTML structure here will need to be replicated in ./SubjectHeadingTableHeader
-
-
     return (
       <React.Fragment>
         <tr
           className={`
             subjectHeadingRow
-            ${open && children ? 'openSubjectHeading' : ''}
+            ${open && narrower.length ? 'openSubjectHeading' : ''}
             ${indentation === 0 ? 'topLevel' : ''}
             ${indentation !== 0 ? 'nestedSubjectHeading' : ''}
           `}
