@@ -4,6 +4,7 @@ import axios from 'axios';
 import { Link } from 'react-router';
 
 import SubjectHeadingsTable from './SubjectHeadingsTable';
+import NeighboringHeadingsBox from './NeighboringHeadingsBox';
 import BibsList from './BibsList';
 import LocalLoadingLayer from './LocalLoadingLayer';
 import Range from '../../models/Range';
@@ -21,6 +22,9 @@ class SubjectHeadingShow extends React.Component {
       },
       shepBibs: [],
       bibsLoaded: false,
+      contextError: null,
+      contextIsLoading: true,
+      contextHeadings: [],
     };
 
     this.generateFullContextUrl = this.generateFullContextUrl.bind(this);
@@ -123,6 +127,8 @@ class SubjectHeadingShow extends React.Component {
   render() {
     const {
       contextHeadings,
+      contextError,
+      contextIsLoading,
       relatedHeadings,
       error,
       mainHeading,
@@ -147,39 +153,14 @@ class SubjectHeadingShow extends React.Component {
         <div
           className="nypl-column-half subjectHeadingsSideBar"
         >
-          {contextHeadings ?
-            <div
-              className="nypl-column-half subjectHeadingInfoBox"
-              tabIndex='0'
-              aria-label="Neighboring Subject Headings"
-            >
-              <div className="backgroundContainer">
-                <h4>Neighboring Subject Headings</h4>
-              </div>
-              <SubjectHeadingsTable
-                subjectHeadings={contextHeadings}
-                location={location}
-                showId={uuid}
-                keyId="context"
-                container="context"
-                seeMoreLinkUrl={linkUrl}
-                seeMoreText="See More in Subject Headings Index"
-                tfootContent={
-                  <tr>
-                    <td>
-                      <Link
-                        to={linkUrl}
-                        className="toIndex"
-                      >
-                        Explore more in Subject Heading index
-                      </Link>
-                    </td>
-                  </tr>
-                }
-              />
-            </div>
-            : <LocalLoadingLayer message="Loading More Subject Headings" />
-          }
+          <NeighboringHeadingsBox
+            contextHeadings={contextHeadings}
+            contextIsLoading={contextIsLoading}
+            location={location}
+            uuid={uuid}
+            linkUrl={linkUrl}
+            contextError={contextError}
+          />
           {relatedHeadings ?
             <div
               className="nypl-column-half subjectHeadingInfoBox"
