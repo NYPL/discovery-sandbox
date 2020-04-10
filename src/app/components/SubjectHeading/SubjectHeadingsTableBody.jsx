@@ -184,8 +184,6 @@ class SubjectHeadingsTableBody extends React.Component {
       container,
     } = this.context;
 
-    console.log('container: ', container);
-
     const inRange = this.listItemsInRange(subjectHeadings);
 
     const numberOpen = inRange.filter(item => !item.button).length;
