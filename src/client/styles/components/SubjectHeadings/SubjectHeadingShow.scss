@@ -54,6 +54,10 @@
     &.subjectHeadingLabel {
       min-width: 270px;
       width: 500px;
+
+      &.selected {
+        width: 700px;
+      }
     }
   }
   h4 {

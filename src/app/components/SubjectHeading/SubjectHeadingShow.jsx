@@ -97,6 +97,7 @@ class SubjectHeadingShow extends React.Component {
         heading.children.some(child => this.removeChildrenOffMainPath(child, uuid))
       );
     if (!onMainPath) heading.children = null;
+    if (onMainPath) heading.onMainPath = true;
     return onMainPath;
   }
 
@@ -106,7 +107,7 @@ class SubjectHeadingShow extends React.Component {
       Range.addRangeData(heading, uuid, 'show');
     });
     const mainHeadingIndex = headings.findIndex(heading =>
-      heading.children || heading.uuid === uuid
+      heading.children || heading.uuid === uuid,
     );
     const startIndex = mainHeadingIndex > 0 ? mainHeadingIndex - 1 : 0;
     const endIndex = mainHeadingIndex + 2;
