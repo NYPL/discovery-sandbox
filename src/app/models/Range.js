@@ -35,12 +35,12 @@ Range.fromSubjectHeading = (subjectHeading, linked, show = null) => {
     const intervals = [
       { start: 0, end: 0 },
     ];
-    if (mid > -1) intervals.push({ start: mid - 1, end: mid + 4 });
+    if (mid > -1) intervals.push({ start: mid - 1, end: mid + 1 });
     range = new Range(0, children.length, intervals);
   } else if (children && uuid === linked && !show) {
     range = new Range(0, children.length, [{ start: 0, end: 4 }]);
   } else if (children && uuid === linked && show) {
-    range = new Range(0, children.length, [{ start: 0, end: 0 }]);
+    range = new Range(0, children.length, [{ start: 0, end: 2 }]);
   } else {
     range = new Range(0, Infinity, [{ start: 0, end: Infinity }]);
   }
