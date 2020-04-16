@@ -4,7 +4,9 @@ import axios from 'axios';
 import { Link } from 'react-router';
 
 import SubjectHeadingsTable from './SubjectHeadingsTable';
+import NeighboringHeadingsBox from './NeighboringHeadingsBox';
 import BibsList from './BibsList';
+import LocalLoadingLayer from './LocalLoadingLayer';
 import Range from '../../models/Range';
 import appConfig from '../../data/appConfig';
 import Actions from '../../actions/Actions';
@@ -20,6 +22,9 @@ class SubjectHeadingShow extends React.Component {
       },
       shepBibs: [],
       bibsLoaded: false,
+      contextError: null,
+      contextIsLoading: true,
+      contextHeadings: [],
     };
 
     this.generateFullContextUrl = this.generateFullContextUrl.bind(this);
@@ -39,6 +44,7 @@ class SubjectHeadingShow extends React.Component {
           mainHeading: {
             label: res.data.request.main_label,
           },
+          contextIsLoading: false,
         }, () => {
           this.props.setBannerText(this.state.mainHeading.label);
           Actions.updateLoadingStatus(false);
@@ -47,7 +53,11 @@ class SubjectHeadingShow extends React.Component {
       .catch(
         (err) => {
           console.error('error: ', err);
-          this.setState({ error: true });
+          this.setState({
+            contextIsLoading: false,
+            contextError: true,
+            contextHeadings: [],
+          });
         },
       );
 
@@ -102,6 +112,7 @@ class SubjectHeadingShow extends React.Component {
   }
 
   processContextHeadings(headings, uuid) {
+    if (!headings) return [];
     headings.forEach((heading) => {
       this.removeChildrenOffMainPath(heading, uuid);
       Range.addRangeData(heading, uuid, 'show');
@@ -117,6 +128,8 @@ class SubjectHeadingShow extends React.Component {
   render() {
     const {
       contextHeadings,
+      contextError,
+      contextIsLoading,
       relatedHeadings,
       error,
       mainHeading,
@@ -141,39 +154,14 @@ class SubjectHeadingShow extends React.Component {
         <div
           className="nypl-column-half subjectHeadingsSideBar"
         >
-          {contextHeadings ?
-            <div
-              className="nypl-column-half subjectHeadingInfoBox"
-              tabIndex='0'
-              aria-label="Neighboring Subject Headings"
-            >
-              <div className="backgroundContainer">
-                <h4>Neighboring Subject Headings</h4>
-              </div>
-              <SubjectHeadingsTable
-                subjectHeadings={contextHeadings}
-                location={location}
-                showId={uuid}
-                keyId="context"
-                container="context"
-                seeMoreLinkUrl={linkUrl}
-                seeMoreText="See More in Subject Headings Index"
-                tfootContent={
-                  <tr>
-                    <td>
-                      <Link
-                        to={linkUrl}
-                        className="toIndex"
-                      >
-                        Explore more in Subject Heading index
-                      </Link>
-                    </td>
-                  </tr>
-                }
-              />
-            </div>
-            : null
-          }
+          <NeighboringHeadingsBox
+            contextHeadings={contextHeadings}
+            contextIsLoading={contextIsLoading}
+            location={location}
+            uuid={uuid}
+            linkUrl={linkUrl}
+            contextError={contextError}
+          />
           {relatedHeadings ?
             <div
               className="nypl-column-half subjectHeadingInfoBox"

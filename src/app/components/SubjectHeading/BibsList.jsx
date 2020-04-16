@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import axios from 'axios';
 import Pagination from '../Pagination/Pagination';
 import ResultsList from '../ResultsList/ResultsList';
+import LocalLoadingLayer from './LocalLoadingLayer';
 /* eslint-disable import/first, import/no-unresolved, import/extensions */
 import Sorter from '@Sorter';
 import appConfig from '@appConfig';
@@ -129,20 +130,10 @@ class BibsList extends React.Component {
 
     if (this.state.componentLoading) {
       return (
-        <div className="nypl-column-half bibsList subjectHeadingShowLoadingWrapper">
-          <span
-            id="loading-animation"
-            className="loadingLayer-texts-loadingWord"
-          >
-            Loading More Titles
-          </span>
-          <div className="loadingDots">
-            <span />
-            <span />
-            <span />
-            <span />
-          </div>
-        </div>
+        <LocalLoadingLayer
+          message="Loading More Titles"
+          classNames="bibsList"
+        />
       );
     }
 

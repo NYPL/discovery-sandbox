@@ -53,7 +53,7 @@ class SubjectHeadingsTable extends React.Component {
       </table>
     );
   }
-};
+}
 
 SubjectHeadingsTable.propTypes = {
   subjectHeadings: PropTypes.array,
