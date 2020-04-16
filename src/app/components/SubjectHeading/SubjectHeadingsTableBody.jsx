@@ -180,13 +180,17 @@ class SubjectHeadingsTableBody extends React.Component {
       updateSort,
     } = this.props;
 
+    const {
+      container,
+    } = this.context;
+
     const inRange = this.listItemsInRange(subjectHeadings);
 
     const numberOpen = inRange.filter(item => !item.button).length;
 
     return (
       <React.Fragment>
-        {nested && subjectHeadings ?
+        {nested && subjectHeadings && container !== 'context' ?
           <NestedTableHeader
             parentUuid={parentUuid}
             key={`nestedTableHeader${indentation}`}
@@ -230,6 +234,7 @@ SubjectHeadingsTableBody.defaultProps = {
 
 SubjectHeadingsTableBody.contextTypes = {
   router: PropTypes.object,
+  container: PropTypes.string,
 };
 
 export default SubjectHeadingsTableBody;

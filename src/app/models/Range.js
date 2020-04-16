@@ -31,16 +31,20 @@ Range.fromSubjectHeading = (subjectHeading, linked, show = null) => {
   } = subjectHeading;
   let range;
   if (children && uuid !== linked) {
+    // on the show page, this is the case for a heading above the main heading
     const mid = children.findIndex(heading => heading.children || heading.uuid === linked);
     const intervals = [
-      { start: 0, end: 0 },
+      { start: 0, end: 0 }, // show one child of a heading above the main heading
     ];
-    if (mid > -1) intervals.push({ start: mid - 1, end: mid + 4 });
+    // also show one before and after a heading above the main heading
+    if (mid > -1) intervals.push({ start: mid - 1, end: mid + 1 });
     range = new Range(0, children.length, intervals);
   } else if (children && uuid === linked && !show) {
     range = new Range(0, children.length, [{ start: 0, end: 4 }]);
   } else if (children && uuid === linked && show) {
-    range = new Range(0, children.length, [{ start: 0, end: 0 }]);
+    // this is the case of the main heading on the show page
+    // we show 3 children of the main heading on the show page
+    range = new Range(0, children.length, [{ start: 0, end: 2 }]);
   } else {
     range = new Range(0, Infinity, [{ start: 0, end: Infinity }]);
   }
