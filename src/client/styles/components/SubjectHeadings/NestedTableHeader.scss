@@ -1,6 +1,9 @@
+@import "utils/colors.scss";
+
 .nestedTableHeader {
   border-bottom: $table-row-border;
   line-height: 32px;
+  background-color: $subjectHeadingHeaderBackground;
 
   th {
     font-style: italic;

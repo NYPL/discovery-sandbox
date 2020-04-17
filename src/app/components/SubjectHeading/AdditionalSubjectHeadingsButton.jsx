@@ -66,7 +66,6 @@ class AdditionalSubjectHeadingsButton extends React.Component {
     return (
       <tr
         className="subjectHeadingRow nestedSubjectHeading"
-        style={{ backgroundColor: this.props.backgroundColor }}
       >
         <td className="subjectHeadingsTableCell" colSpan="4">
           <div className="subjectHeadingLabelInner" style={{ marginLeft: `${30 * indentation}px` }}>
@@ -94,7 +93,6 @@ AdditionalSubjectHeadingsButton.propTypes = {
   button: PropTypes.string,
   linkUrl: PropTypes.string,
   text: PropTypes.string,
-  backgroundColor: PropTypes.string,
 };
 
 export default AdditionalSubjectHeadingsButton;

@@ -266,7 +266,6 @@ class SubjectHeading extends React.Component {
             ${indentation === 0 ? 'topLevel' : ''}
             ${indentation !== 0 ? 'nestedSubjectHeading' : ''}
           `}
-          style={{ backgroundColor: this.props.backgroundColor }}
         >
           <td className={`subjectHeadingsTableCell subjectHeadingLabel ${onMainPath ? 'selected' : ''}`} >
             <div className="subjectHeadingLabelInner" style={positionStyle}>
@@ -329,7 +328,6 @@ SubjectHeading.propTypes = {
   direction: PropTypes.string,
   seeMoreText: PropTypes.string,
   seeMoreLinkUrl: PropTypes.string,
-  backgroundColor: PropTypes.string,
   preOpen: PropTypes.bool,
 };
 

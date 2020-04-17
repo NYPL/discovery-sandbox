@@ -1,3 +1,5 @@
+@import "utils/colors.scss";
+
 .subjectHeadingLabel.mainLabel {
   font-style: italic;
 }
@@ -44,6 +46,7 @@
 .subjectHeadingRow {
   border-bottom: $table-row-border;
   line-height: 32px;
+  background-color: $subjectHeadingBackground;
 
   .selected .emph {
     font-weight: 700;
