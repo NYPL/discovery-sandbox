@@ -15,9 +15,11 @@ import DocumentTitle from 'react-document-title';
 import Breadcrumbs from '../Breadcrumbs/Breadcrumbs';
 import PatronStore from '../../stores/PatronStore';
 import appConfig from '../../../../appConfig';
+import AppConfigStore from '../../stores/AppConfigStore';
 import ElectronicDeliveryForm from './ElectronicDeliveryForm';
 import LibraryItem from '../../utils/item';
 import LoadingLayer from '../LoadingLayer/LoadingLayer';
+import Notification from '../Notification/Notification';
 import { trackDiscovery } from '../../utils/utils';
 
 class ElectronicDelivery extends React.Component {
@@ -210,6 +212,9 @@ class ElectronicDelivery extends React.Component {
       && this.state.patron.emails.length
     ) ? this.state.patron.emails[0] : '';
     const searchKeywords = this.props.searchKeywords;
+    const {
+      closedLocations, holdRequestNotification,
+    } = AppConfigStore.getState();
 
     return (
       <DocumentTitle title="Electronic Delivery Request | Shared Collection Catalog | NYPL">
@@ -228,6 +233,11 @@ class ElectronicDelivery extends React.Component {
                   itemUrl={`/hold/request/${bibId}-${itemId}`}
                 />
                 <h1 id="edd-request-title" tabIndex="0">Electronic Delivery Request</h1>
+                {
+                  holdRequestNotification ?
+                    <Notification notificationType="holdRequestNotification" />
+                    : null
+                }
               </div>
             </div>
           </div>
@@ -267,17 +277,21 @@ class ElectronicDelivery extends React.Component {
                   </div>
                 )
               }
-              <ElectronicDeliveryForm
-                bibId={bibId}
-                itemId={itemId}
-                itemSource={this.state.itemSource}
-                submitRequest={this.submitRequest}
-                raiseError={this.raiseError}
-                error={error}
-                form={form}
-                defaultEmail={patronEmail}
-                searchKeywords={searchKeywords}
-              />
+              {
+                !closedLocations.includes('') ?
+                  <ElectronicDeliveryForm
+                    bibId={bibId}
+                    itemId={itemId}
+                    itemSource={this.state.itemSource}
+                    submitRequest={this.submitRequest}
+                    raiseError={this.raiseError}
+                    error={error}
+                    form={form}
+                    defaultEmail={patronEmail}
+                    searchKeywords={searchKeywords}
+                  />
+                  : null
+              }
             </div>
           </div>
         </div>

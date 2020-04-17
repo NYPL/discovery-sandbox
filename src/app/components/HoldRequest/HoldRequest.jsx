@@ -314,8 +314,9 @@ class HoldRequest extends React.Component {
     const itemSource = selectedItem.itemSource;
     const deliveryLocations = this.props.deliveryLocations;
     const isEddRequestable = this.props.isEddRequestable;
+    const allClosed = closedLocations.includes('');
     const deliveryLocationInstruction =
-      ((!deliveryLocations.length && !isEddRequestable) || closedLocations.includes('')) ?
+      ((!deliveryLocations.length && !isEddRequestable) || allClosed) ?
         (
           <h2 className="nypl-request-form-title">
           Delivery options for this item are currently unavailable. Please try again later or
@@ -324,7 +325,7 @@ class HoldRequest extends React.Component {
           <h2 className="nypl-request-form-title">Choose a delivery option or location</h2>;
     let form = null;
 
-    if (bib && selectedItemAvailable) {
+    if (bib && selectedItemAvailable && !allClosed) {
       form = (
         <form
           className="place-hold-form form"
