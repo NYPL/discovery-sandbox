@@ -1,4 +1,10 @@
+@import "utils/colors.scss";
+
 .shepcontainer {
+  *:focus {
+    outline: 3px solid $shepfocuscolor;
+  }
+
   .header-topWrapper {
     display: block;
   }
