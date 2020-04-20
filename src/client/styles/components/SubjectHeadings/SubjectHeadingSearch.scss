@@ -15,7 +15,7 @@
   }
 
   &> input:focus {
-    outline-color: $shepfocuscolor;
+    outline-color: $focuscolor;
     outline-style: solid;
     outline-width: 0.125rem;
     box-shadow: none;
