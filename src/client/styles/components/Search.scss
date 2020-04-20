@@ -1,4 +1,7 @@
 .nypl-omnisearch-form {
+  &:focus {
+    outline: none;
+  }
   // Larger screen collapsed version of search form elements.
   .nypl-omnisearch {
     .nypl-omni-fields-text {
@@ -16,7 +19,6 @@
   .nypl-text-field {
     background-color: #fff;
     border-radius: 0.2rem;
-    box-shadow: none;
     display: block;
     margin: 0;
     padding: 0;
@@ -31,14 +33,6 @@
       margin: 0 1%;
       text-indent: 0.5rem;
       top: 0.1rem;
-      -webkit-box-shadow: none;
-      box-shadow: none;
-
-      &:focus {
-        -webkit-box-shadow: inset 0 0 0 0.125rem #ffb81d;
-        -moz-box-shadow: inset 0 0 0 0.125rem #ffb81d;
-        box-shadow: inset 0 0 0 0.125rem #ffb81d;
-      }
     }
   }
 
