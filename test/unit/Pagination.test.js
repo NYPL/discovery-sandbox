@@ -161,6 +161,12 @@ describe('Pagination', () => {
       expect(nextPage.props.className).to.equal('previous-link');
       expect(nextPage.props.children[2]).to.equal('Previous');
     });
+
+    it('should return null for the next button if on a Subject Show Page and there is no next url', () => {
+      component = shallow(<Pagination subjectShowPage hasNext={false} />);
+
+      expect(component.instance().getPage(1)).to.equal(null);
+    });
   });
 
   describe('Start on the first page and go to the second page', () => {
