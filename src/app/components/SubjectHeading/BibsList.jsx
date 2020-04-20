@@ -39,6 +39,7 @@ class BibsList extends React.Component {
           bibs: res.data.bibs.filter(bib => bib['@id']),
           nextUrl: res.data.next_url,
           componentLoading: false,
+          hasNext: !!res.data.next_url,
         });
       })
       .catch(
@@ -79,7 +80,10 @@ class BibsList extends React.Component {
     const perPage = this.perPage;
 
     if (page < bibPage || this.lastBib() + perPage < bibs.length) {
-      this.setState({ bibPage: page });
+      this.setState({
+        bibPage: page,
+        hasNext: true,
+      });
     } else {
       this.setState({}, () => {
         axios(nextUrl)
@@ -90,6 +94,7 @@ class BibsList extends React.Component {
               bibs: newBibs,
               nextUrl: newNextUrl,
               bibPage: page,
+              hasNext: !!newNextUrl,
             }, () => window.scrollTo(0, 300));
           })
           .catch(
@@ -112,7 +117,7 @@ class BibsList extends React.Component {
     const {
       bibPage,
       bibs,
-      nextUrl,
+      hasNext,
     } = this.state;
 
     const sortParams = this.context.router.location.query;
@@ -126,7 +131,7 @@ class BibsList extends React.Component {
         page={bibPage}
         subjectShowPage
         ariaControls="nypl-results-list"
-        hasNext={!!nextUrl}
+        hasNext={hasNext}
       />
     );
 
