@@ -112,6 +112,7 @@ class BibsList extends React.Component {
     const {
       bibPage,
       bibs,
+      nextUrl,
     } = this.state;
 
     const sortParams = this.context.router.location.query;
@@ -125,6 +126,7 @@ class BibsList extends React.Component {
         page={bibPage}
         subjectShowPage
         ariaControls="nypl-results-list"
+        hasNext={!!nextUrl}
       />
     );
 

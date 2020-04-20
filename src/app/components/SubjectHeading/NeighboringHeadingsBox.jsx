@@ -71,7 +71,7 @@ NeighboringHeadingsBox.propTypes = {
   location: PropTypes.object,
   uuid: PropTypes.string,
   linkUrl: PropTypes.string,
-  contextHeadings: PropTypes.object,
+  contextHeadings: PropTypes.array,
   contextIsLoading: PropTypes.bool,
   contextError: PropTypes.bool,
 };
