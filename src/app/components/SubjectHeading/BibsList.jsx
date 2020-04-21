@@ -70,7 +70,7 @@ class BibsList extends React.Component {
     return Math.max(0, perPage * (bibPage - 1));
   }
 
-  updateBibPage(page) {
+  updateBibPage(newPage) {
     const {
       bibs,
       nextUrl,
@@ -79,10 +79,10 @@ class BibsList extends React.Component {
 
     const perPage = this.perPage;
 
-    if (page < bibPage || this.lastBib() + perPage < bibs.length) {
+    if (newPage < bibPage || this.lastBib() < bibs.length) {
       this.setState({
-        bibPage: page,
-        hasNext: true,
+        bibPage: newPage,
+        hasNext: newPage < bibPage,
       });
     } else {
       this.setState({}, () => {
@@ -93,7 +93,7 @@ class BibsList extends React.Component {
             this.setState({
               bibs: newBibs,
               nextUrl: newNextUrl,
-              bibPage: page,
+              bibPage: newPage,
               hasNext: !!newNextUrl,
             }, () => window.scrollTo(0, 300));
           })
