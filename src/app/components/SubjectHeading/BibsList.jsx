@@ -70,6 +70,10 @@ class BibsList extends React.Component {
     return Math.max(0, perPage * (bibPage - 1));
   }
 
+  /*
+  * updatePage()
+  * @param {integer} newPage the page number of the page being rendered
+  */
   updateBibPage(newPage) {
     const {
       bibs,
@@ -79,10 +83,12 @@ class BibsList extends React.Component {
 
     const perPage = this.perPage;
 
+    // conditionals for a bib page that has already been visited
+    // therefore, no new API call
     if (newPage < bibPage || this.lastBib() < bibs.length) {
       this.setState({
         bibPage: newPage,
-        hasNext: newPage < bibPage,
+        hasNext: newPage < bibPage || this.lastBib() + perPage < bibs.length,
       });
     } else {
       this.setState({}, () => {
