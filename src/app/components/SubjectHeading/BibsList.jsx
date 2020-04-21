@@ -39,7 +39,6 @@ class BibsList extends React.Component {
           bibs: res.data.bibs.filter(bib => bib['@id']),
           nextUrl: res.data.next_url,
           componentLoading: false,
-          hasNext: !!res.data.next_url,
         });
       })
       .catch(
@@ -81,15 +80,10 @@ class BibsList extends React.Component {
       bibPage,
     } = this.state;
 
-    const perPage = this.perPage;
-
-    // conditionals for a bib page that has already been visited
+    // conditions for a bib page that has already been visited
     // therefore, no new API call
     if (newPage < bibPage || this.lastBib() < bibs.length) {
-      this.setState({
-        bibPage: newPage,
-        hasNext: newPage < bibPage || this.lastBib() + perPage < bibs.length,
-      });
+      this.setState({ bibPage: newPage });
     } else {
       this.setState({}, () => {
         axios(nextUrl)
@@ -100,7 +94,6 @@ class BibsList extends React.Component {
               bibs: newBibs,
               nextUrl: newNextUrl,
               bibPage: newPage,
-              hasNext: !!newNextUrl,
             }, () => window.scrollTo(0, 300));
           })
           .catch(
@@ -123,7 +116,7 @@ class BibsList extends React.Component {
     const {
       bibPage,
       bibs,
-      hasNext,
+      nextUrl,
     } = this.state;
 
     const sortParams = this.context.router.location.query;
@@ -131,13 +124,15 @@ class BibsList extends React.Component {
     const sort = sortParams.sort;
     const sortDirection = sortParams.sort_direction;
 
+    const lastPage = Math.ceil(bibs.length / this.perPage);
+
     const pagination = (
       <Pagination
         updatePage={this.updateBibPage}
         page={bibPage}
         subjectShowPage
         ariaControls="nypl-results-list"
-        hasNext={hasNext}
+        hasNext={bibPage < lastPage || nextUrl}
       />
     );
 
