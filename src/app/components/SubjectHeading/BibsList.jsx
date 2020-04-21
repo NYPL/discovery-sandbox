@@ -143,14 +143,14 @@ class BibsList extends React.Component {
         tabIndex='0'
         aria-label="Titles related to this Subject Heading"
       >
-        <h4>Titles</h4>
+        <h4 id="titles">Titles</h4>
         <Sorter
           page="shepBibs"
           sortOptions={[
+            { val: 'date_desc', label: 'date (new to old)' },
+            { val: 'date_asc', label: 'date (old to new)' },
             { val: 'title_asc', label: 'title (a - z)' },
             { val: 'title_desc', label: 'title (z - a)' },
-            { val: 'date_asc', label: 'date (old to new)' },
-            { val: 'date_desc', label: 'date (new to old)' },
           ]}
           sortBy={`${sort}_${sortDirection}`}
           updateResults={this.changeBibSorting}
