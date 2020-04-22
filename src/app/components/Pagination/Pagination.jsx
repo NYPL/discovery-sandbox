@@ -25,12 +25,18 @@ class Pagination extends React.Component {
    * @param {string} type Either 'Next' or 'Previous' to indication link label.
    */
   getPage(page, type = 'Next') {
+    const {
+      hasNext,
+      subjectShowPage,
+      shepNavigation,
+      subjectIndexPage,
+    } = this.props;
     if (!page) return null;
+    if (type == 'Next' && subjectShowPage && !hasNext) return null;
     const intPage = parseInt(page, 10);
     const pageNum = type === 'Next' ? intPage + 1 : intPage - 1;
     const svg = type === 'Next' ? <RightWedgeIcon /> : <LeftWedgeIcon />;
-    const { shepNavigation } = this.props;
-    const subjectHeadingPage = this.props.subjectShowPage || this.props.subjectIndexPage;
+    const subjectHeadingPage = subjectShowPage || subjectIndexPage;
 
     let url;
     let apiUrl;
@@ -51,7 +57,7 @@ class Pagination extends React.Component {
     linkProps.rel = type.toLowerCase();
     linkProps.className = `${type.toLowerCase()}-link`;
 
-    if (!this.props.subjectIndexPage) linkProps.onClick = e => this.onClick(e, pageNum);
+    if (!subjectIndexPage) linkProps.onClick = e => this.onClick(e, pageNum);
 
     return (
       <Link
