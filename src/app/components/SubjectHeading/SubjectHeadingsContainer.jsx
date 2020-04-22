@@ -59,9 +59,6 @@ class SubjectHeadingsContainer extends React.Component {
     const url = `${appConfig.baseUrl}/api/subjectHeadings/subject_headings?${apiParamString}`;
     axios(url)
       .then(
-        // The callback `fetchNarrower` makes api calls to pre-open the narrower headings,
-        // if it is the filtered index and the filter returns a low heading count.
-        // it also has the responsibility of setting `componentLoading` at the appropriate point
         (res) => {
           this.setState({
             previousUrl: res.data.previous_url,
