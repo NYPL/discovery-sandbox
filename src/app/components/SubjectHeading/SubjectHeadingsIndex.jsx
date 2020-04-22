@@ -11,7 +11,7 @@ import SubjectHeadingsTable from './SubjectHeadingsTable';
 import appConfig from '../../data/appConfig';
 
 
-class SubjectHeadingsContainer extends React.Component {
+class SubjectHeadingsIndex extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -204,8 +204,8 @@ class SubjectHeadingsContainer extends React.Component {
   }
 }
 
-SubjectHeadingsContainer.contextTypes = {
+SubjectHeadingsIndex.contextTypes = {
   router: PropTypes.object,
 };
 
-export default SubjectHeadingsContainer;
+export default SubjectHeadingsIndex;

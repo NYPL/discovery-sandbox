@@ -2,10 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import ShepContainer from '../components/ShepContainer/ShepContainer';
-import SubjectHeadingsContainer from '../components/SubjectHeading/SubjectHeadingsContainer';
+import SubjectHeadingsIndex from '../components/SubjectHeading/SubjectHeadingsIndex';
 import SubjectHeadingSearch from '../components/SubjectHeading/Search/SubjectHeadingSearch';
 
-const SubjectHeadingsIndex = (props) => {
+const SubjectHeadingsIndexPage = (props) => {
   const {
     location: {
       search,
@@ -19,7 +19,7 @@ const SubjectHeadingsIndex = (props) => {
 
   return (
     <ShepContainer
-      mainContent={<SubjectHeadingsContainer {...props} />}
+      mainContent={<SubjectHeadingsIndex {...props} />}
       bannerOptions={
         {
           text: ['Subject Headings', filter ? <span key="bannerText"> containing <em>{filter}</em></span> : ''],
@@ -33,8 +33,8 @@ const SubjectHeadingsIndex = (props) => {
   );
 };
 
-SubjectHeadingsIndex.propTypes = {
+SubjectHeadingsIndexPage.propTypes = {
   location: PropTypes.object,
 };
 
-export default SubjectHeadingsIndex;
+export default SubjectHeadingsIndexPage;
