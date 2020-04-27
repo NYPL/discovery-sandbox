@@ -13,8 +13,6 @@ class SubjectHeadingsTableBody extends React.Component {
     super(props);
     const {
       subjectHeadings,
-      parentUuid,
-      pathname,
     } = props;
 
     this.state = {
@@ -26,19 +24,6 @@ class SubjectHeadingsTableBody extends React.Component {
     this.listItemsInInterval = this.listItemsInInterval.bind(this);
     this.tableRow = this.tableRow.bind(this);
     this.backgroundColor = this.backgroundColor.bind(this);
-  }
-
-  componentDidMount() {
-    const { linked } = this.props;
-
-    if (linked) {
-      const url = `${appConfig.baseUrl}/api/subjectHeadings/subject_headings/${linked}/context?type=relatives`;
-      axios(url)
-        .then((res) => {
-          this.mergeSubjectHeadings(res.data.subject_headings, linked);
-        })
-        .catch(console.error);
-    }
   }
 
   mergeSubjectHeadings(incomingSubjectHeadings, linked) {

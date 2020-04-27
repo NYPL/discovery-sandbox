@@ -35,6 +35,7 @@ class SubjectHeadingsIndex extends React.Component {
       sortBy,
       fromAttributeValue,
       direction,
+      linked,
     } = this.context.router.location.query;
 
     if (!fromComparator) fromComparator = filter ? null : 'start';
@@ -46,6 +47,7 @@ class SubjectHeadingsIndex extends React.Component {
       filter,
       sort_by: sortBy,
       from_attribute_value: fromAttributeValue,
+      linked,
     };
 
     if (direction) apiParamHash.direction = direction;
@@ -57,6 +59,7 @@ class SubjectHeadingsIndex extends React.Component {
       .join('&');
 
     const url = `${appConfig.baseUrl}/api/subjectHeadings/subject_headings?${apiParamString}`;
+
     axios(url)
       .then(
         (res) => {
