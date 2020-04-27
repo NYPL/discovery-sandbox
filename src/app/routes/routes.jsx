@@ -5,8 +5,8 @@ import { IndexRoute, Route, Redirect } from 'react-router';
 /*
  * Pages
  */
-import SubjectHeadingsIndex from '../pages/SubjectHeadingsIndex';
-import SubjectHeadingShow from '../pages/SubjectHeadingShow';
+import SubjectHeadingsIndexPage from '../pages/SubjectHeadingsIndexPage';
+import SubjectHeadingShowPage from '../pages/SubjectHeadingShowPage';
 import SearchResults from '../pages/SearchResults';
 
 /*
@@ -33,8 +33,8 @@ const routes = history => ({
       <Route path="/hold/request/:bibId-:itemId" component={HoldRequest} />
       <Route path="/hold/request/:bibId-:itemId/edd" component={ElectronicDelivery} />
       <Route path="/hold/confirmation/:bibId-:itemId" component={HoldConfirmation} />
-      <Route path="/subject_headings/:subjectHeadingUuid" component={SubjectHeadingShow} />
-      <Route path="/subject_headings" component={SubjectHeadingsIndex} />
+      <Route path="/subject_headings/:subjectHeadingUuid" component={SubjectHeadingShowPage} />
+      <Route path="/subject_headings" component={SubjectHeadingsIndexPage} />
       <Route path="/404" component={NotFound404} />
       <Redirect from="*" to="/404" />
     </Route>
@@ -49,8 +49,8 @@ const routes = history => ({
       <Route path={`${baseUrl}/hold/request/:bibId-:itemId`} component={HoldRequest} />
       <Route path={`${baseUrl}/hold/request/:bibId-:itemId/edd`} component={ElectronicDelivery} />
       <Route path={`${baseUrl}/hold/confirmation/:bibId-:itemId`} component={HoldConfirmation} />
-      <Route path={`${baseUrl}/subject_headings/:subjectHeadingUuid`} component={SubjectHeadingShow} />
-      <Route path={`${baseUrl}/subject_headings`} component={SubjectHeadingsIndex} />
+      <Route path={`${baseUrl}/subject_headings/:subjectHeadingUuid`} component={SubjectHeadingShowPage} />
+      <Route path={`${baseUrl}/subject_headings`} component={SubjectHeadingsIndexPage} />
       <Route path={`${baseUrl}/404`} component={NotFound404} />
       <Redirect from="*" to={`${baseUrl}/404`} />
     </Route>
