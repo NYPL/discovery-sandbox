@@ -31,6 +31,7 @@ const NestedTableHeader = (props) => {
             direction={calculateDirectionForType('alphabetical')}
             interactive={interactive}
             numberOpen={numberOpen}
+            active={sortBy === 'alphabetical'}
           />
         </div>
       </th>
@@ -41,6 +42,7 @@ const NestedTableHeader = (props) => {
           direction={calculateDirectionForType('descendants')}
           interactive={interactive}
           numberOpen={numberOpen}
+          active={sortBy === 'descendants'}
         />
       </th>
       <th className={`subjectHeadingsTableCell subjectHeadingAttribute titles ${sortBy === 'bibs' ? 'selected' : ''}`}>
@@ -50,6 +52,7 @@ const NestedTableHeader = (props) => {
           direction={calculateDirectionForType('bibs')}
           interactive={interactive}
           numberOpen={numberOpen}
+          active={sortBy === 'bibs'}
         />
       </th>
     </tr>

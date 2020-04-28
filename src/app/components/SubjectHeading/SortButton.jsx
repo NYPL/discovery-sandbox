@@ -1,6 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import AscendingIcon from '../../../client/assets/Ascending';
+import DescendingIcon from '../../../client/assets/Descending';
+import DefaultIcon from '../../../client/assets/Default';
+
 const SortButton = (props) => {
   const {
     type,
@@ -8,6 +12,7 @@ const SortButton = (props) => {
     handler,
     interactive,
     numberOpen,
+    active,
   } = props;
 
   const columnText = () => ({
@@ -15,6 +20,12 @@ const SortButton = (props) => {
     descendants: 'Subheadings',
     alphabetical: 'Heading',
   }[type]);
+
+  const icon = () => {
+    if (!active) return <DefaultIcon />;
+    else if (direction === 'ASC') return <AscendingIcon />;
+    return <DescendingIcon />;
+  };
 
   return (
     <button
@@ -24,7 +35,7 @@ const SortButton = (props) => {
     >
       <span className="emph">
         <span className="noEmph">{columnText()}
-          {(handler && interactive) ? <span className="sortCharacter">^</span> : null}
+          {(handler && interactive) ? <span className="sortCharacter">{ icon() }</span> : null}
         </span>
       </span>
     </button>
