@@ -23,8 +23,8 @@ const SortButton = (props) => {
 
   const icon = () => {
     if (!active) return <DefaultIcon />;
-    else if (direction === 'ASC') return <AscendingIcon />;
-    return <DescendingIcon />;
+    else if (direction === 'ASC') return <DescendingIcon />;
+    return <AscendingIcon />;
   };
 
   return (
