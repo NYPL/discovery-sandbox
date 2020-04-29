@@ -28,7 +28,7 @@ const NestedTableHeader = (props) => {
           <SortButton
             handler={updateSort}
             type="alphabetical"
-            direction={calculateDirectionForType('alphabetical')}
+            calculateDirection={calculateDirectionForType}
             interactive={interactive}
             numberOpen={numberOpen}
             active={sortBy === 'alphabetical'}
@@ -39,7 +39,7 @@ const NestedTableHeader = (props) => {
         <SortButton
           handler={updateSort}
           type="descendants"
-          direction={calculateDirectionForType('descendants')}
+          calculateDirection={calculateDirectionForType}
           interactive={interactive}
           numberOpen={numberOpen}
           active={sortBy === 'descendants'}
@@ -49,7 +49,7 @@ const NestedTableHeader = (props) => {
         <SortButton
           handler={updateSort}
           type="bibs"
-          direction={calculateDirectionForType('bibs')}
+          calculateDirection={calculateDirectionForType}
           interactive={interactive}
           numberOpen={numberOpen}
           active={sortBy === 'bibs'}
