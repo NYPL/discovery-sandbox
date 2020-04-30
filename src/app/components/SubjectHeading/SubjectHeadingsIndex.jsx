@@ -9,6 +9,7 @@ import calculateDirection from '@calculateDirection';
 import SubjectHeadingsTable from './SubjectHeadingsTable';
 /* eslint-enable import/first, import/no-unresolved, import/extensions */
 import appConfig from '../../data/appConfig';
+import Range from '../../models/Range';
 
 
 class SubjectHeadingsIndex extends React.Component {
@@ -63,6 +64,10 @@ class SubjectHeadingsIndex extends React.Component {
     axios(url)
       .then(
         (res) => {
+          if (linked) {
+            const topLevelAncestor = res.data.subject_headings.find(subjectHeading => subjectHeading.children);
+            if (topLevelAncestor) Range.addRangeData(topLevelAncestor, linked);
+          }
           this.setState({
             previousUrl: res.data.previous_url,
             nextUrl: res.data.next_url,
