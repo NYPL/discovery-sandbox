@@ -18,38 +18,35 @@ const NestedTableHeader = (props) => {
   const positionStyle = { marginLeft: 30 * ((indentation || 0) + 1) };
   const calculateDirectionForType = calculateDirection(sortBy, direction);
 
+  const sortButtons = {};
+  ['alphabetical', 'descendants', 'bibs'].forEach((type) => {
+    sortButtons[type] = (
+      <SortButton
+        handler={updateSort}
+        type={type}
+        calculateDirection={calculateDirectionForType}
+        interactive={interactive}
+        numberOpen={numberOpen}
+        active={sortBy === type}
+      />
+    );
+  });
+
+
   return (
     <tr
       className="nestedTableHeader"
     >
       <th className={`subjectHeadingsTableCell subjectHeadingLabel ${sortBy === 'alphabetical' ? 'selected' : ''}`} >
         <div className="subjectHeadingLabelInner" style={positionStyle}>
-          <SortButton
-            handler={updateSort}
-            type="alphabetical"
-            direction={calculateDirectionForType('alphabetical')}
-            interactive={interactive}
-            numberOpen={numberOpen}
-          />
+          {sortButtons.alphabetical}
         </div>
       </th>
       <th className={`subjectHeadingsTableCell subjectHeadingAttribute narrower ${sortBy === 'descendants' ? 'selected' : ''}`}>
-        <SortButton
-          handler={updateSort}
-          type="descendants"
-          direction={calculateDirectionForType('descendants')}
-          interactive={interactive}
-          numberOpen={numberOpen}
-        />
+        {sortButtons.descendants}
       </th>
       <th className={`subjectHeadingsTableCell subjectHeadingAttribute titles ${sortBy === 'bibs' ? 'selected' : ''}`}>
-        <SortButton
-          handler={updateSort}
-          type="bibs"
-          direction={calculateDirectionForType('bibs')}
-          interactive={interactive}
-          numberOpen={numberOpen}
-        />
+        {sortButtons.bibs}
       </th>
     </tr>
   );
