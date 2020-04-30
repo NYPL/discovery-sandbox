@@ -95,7 +95,7 @@ class SubjectHeadingShow extends React.Component {
     const uuid = this.props.params.subjectHeadingUuid;
     const linkFromLabel = this.getTopLevelLabel();
     const path = this.props.location.pathname.replace(/\/subject_headings.*/, '');
-    return `${path}/subject_headings?fromLabel=${linkFromLabel}&fromComparator=start&linked=${uuid}`;
+    return `${path}/subject_headings?linked=${uuid}`;
   }
 
   // returns true or false depending on whether the heading has a descendant with the given uuid.
