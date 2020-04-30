@@ -25,7 +25,6 @@ class SubjectHeadingsTableBody extends React.Component {
     this.listItemsInRange = this.listItemsInRange.bind(this);
     this.listItemsInInterval = this.listItemsInInterval.bind(this);
     this.tableRow = this.tableRow.bind(this);
-    this.backgroundColor = this.backgroundColor.bind(this);
   }
 
   componentDidMount() {
@@ -102,21 +101,6 @@ class SubjectHeadingsTableBody extends React.Component {
     return subjectHeadingsInInterval;
   }
 
-  backgroundColor(nestedTable = false) {
-    const indentation = nestedTable ? this.props.indentation - 1 : this.props.indentation;
-
-    const level = indentation >= 3 ? 3 : indentation;
-
-    const backgroundColor = {
-      0: 'hsl(30, 14%, 92%)',
-      1: 'hsl(30, 13%, 94%)',
-      2: 'hsl(30, 12%, 97%)',
-      3: 'hsl(30, 11%, 99%)',
-    }[level];
-
-    return backgroundColor;
-  }
-
   tableRow(listItem, index) {
     const {
       indentation,
@@ -142,7 +126,6 @@ class SubjectHeadingsTableBody extends React.Component {
           nested={nested}
           linkUrl={seeMoreLinkUrl}
           text={seeMoreText}
-          backgroundColor={this.backgroundColor()}
           noEllipse={listItem.noEllipse}
         />
       );
@@ -159,7 +142,6 @@ class SubjectHeadingsTableBody extends React.Component {
         linked={linked}
         seeMoreText={seeMoreText}
         seeMoreLinkUrl={seeMoreLinkUrl}
-        backgroundColor={this.backgroundColor()}
         direction={direction}
         preOpen={preOpen}
       />
@@ -197,7 +179,6 @@ class SubjectHeadingsTableBody extends React.Component {
             indentation={indentation}
             sortBy={sortBy}
             direction={direction}
-            backgroundColor={this.backgroundColor(true)}
             updateSort={updateSort}
             interactive={subjectHeadings.length > 1}
             numberOpen={numberOpen}

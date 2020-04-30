@@ -20,7 +20,6 @@ const NestedTableHeader = (props) => {
 
   return (
     <tr
-      style={{ backgroundColor: props.backgroundColor }}
       className="nestedTableHeader"
     >
       <th className={`subjectHeadingsTableCell subjectHeadingLabel ${sortBy === 'alphabetical' ? 'selected' : ''}`} >
@@ -60,7 +59,6 @@ NestedTableHeader.propTypes = {
   indentation: PropTypes.number,
   sortBy: PropTypes.string,
   direction: PropTypes.string,
-  backgroundColor: PropTypes.string,
   parentUuid: PropTypes.string,
   updateSort: PropTypes.func,
   interactive: PropTypes.bool,

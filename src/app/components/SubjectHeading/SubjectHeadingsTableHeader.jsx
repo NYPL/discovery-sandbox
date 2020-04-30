@@ -10,7 +10,7 @@ const SubjectHeadingsTableHeader = (props) => {
   } = props;
 
   return (
-    <thead>
+    <thead className="SubjectHeadingTableHeader">
       <tr>
         <th className={`headingColumnHeader ${selected === 'alphabetical' ? 'selectedColumn' : ''}`}>
           <SortButton handler={updateSort} type="alphabetical" />
