@@ -18,6 +18,21 @@ const NestedTableHeader = (props) => {
   const positionStyle = { marginLeft: 30 * ((indentation || 0) + 1) };
   const calculateDirectionForType = calculateDirection(sortBy, direction);
 
+  const sortButtons = {};
+  ['alphabetical', 'descendants', 'bibs'].forEach((type) => {
+    sortButtons[type] = (
+      <SortButton
+        handler={updateSort}
+        type={type}
+        calculateDirection={calculateDirectionForType}
+        interactive={interactive}
+        numberOpen={numberOpen}
+        active={sortBy === type}
+      />
+    );
+  });
+
+
   return (
     <tr
       style={{ backgroundColor: props.backgroundColor }}
@@ -25,35 +40,14 @@ const NestedTableHeader = (props) => {
     >
       <th className={`subjectHeadingsTableCell subjectHeadingLabel ${sortBy === 'alphabetical' ? 'selected' : ''}`} >
         <div className="subjectHeadingLabelInner" style={positionStyle}>
-          <SortButton
-            handler={updateSort}
-            type="alphabetical"
-            calculateDirection={calculateDirectionForType}
-            interactive={interactive}
-            numberOpen={numberOpen}
-            active={sortBy === 'alphabetical'}
-          />
+          {sortButtons.alphabetical}
         </div>
       </th>
       <th className={`subjectHeadingsTableCell subjectHeadingAttribute narrower ${sortBy === 'descendants' ? 'selected' : ''}`}>
-        <SortButton
-          handler={updateSort}
-          type="descendants"
-          calculateDirection={calculateDirectionForType}
-          interactive={interactive}
-          numberOpen={numberOpen}
-          active={sortBy === 'descendants'}
-        />
+        {sortButtons.descendants}
       </th>
       <th className={`subjectHeadingsTableCell subjectHeadingAttribute titles ${sortBy === 'bibs' ? 'selected' : ''}`}>
-        <SortButton
-          handler={updateSort}
-          type="bibs"
-          calculateDirection={calculateDirectionForType}
-          interactive={interactive}
-          numberOpen={numberOpen}
-          active={sortBy === 'bibs'}
-        />
+        {sortButtons.bibs}
       </th>
     </tr>
   );
