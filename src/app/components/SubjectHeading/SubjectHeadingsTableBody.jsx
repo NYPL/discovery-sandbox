@@ -26,19 +26,6 @@ class SubjectHeadingsTableBody extends React.Component {
     this.backgroundColor = this.backgroundColor.bind(this);
   }
 
-  mergeSubjectHeadings(incomingSubjectHeadings, linked) {
-    const responseSubjectHeading = incomingSubjectHeadings[0];
-    Range.addRangeData(responseSubjectHeading, linked);
-    this.setState((prevState) => {
-      const { subjectHeadings } = prevState;
-      const existingSubjectHeadingIndex = subjectHeadings.findIndex(
-        heading => heading.uuid === responseSubjectHeading.uuid,
-      );
-      subjectHeadings[existingSubjectHeadingIndex] = responseSubjectHeading;
-      return { subjectHeadings };
-    });
-  }
-
   initialRange(props) {
     if (props.range) return props.range;
     if (props.subjectHeadings) return new Range(0, Infinity, [{ start: 0, end: Infinity }]);
