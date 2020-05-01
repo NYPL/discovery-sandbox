@@ -16,11 +16,12 @@ class Tabbed extends React.Component {
   // componentDidMount will set the initial tab, either 1 or the number fetched from the
   // url hash (to accommodate deep linking)
   componentDidMount() {
+    console.log('mounting tabbed ', this.props, this.state, window.location);
     let hashNumber = 1;
     if (this.props.hash) {
       let hash = this.props.hash;
       hashNumber = this.props.hash.match(/[^\d]*(\d)/)[1];
-      window.location.replace(window.location.href + hash);
+      window.location.replace(window.location.href.replace(/#.*/, '') + hash);
       let tab = this.links[hashNumber];
       tab.focus();
     }
@@ -68,6 +69,7 @@ class Tabbed extends React.Component {
 
 
   render() {
+    console.log('rendering tabbed ', this.props, this.state);
     return (
       <div className="tabbed">
         <ul role='tablist'>
