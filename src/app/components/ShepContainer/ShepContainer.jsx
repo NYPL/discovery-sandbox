@@ -8,7 +8,7 @@ const ShepContainer = (props) => {
     <main className="main-page shepcontainer">
       <div className="header-wrapper container-header">
         <div className="header-topWrapper filter-page">
-          <div className="nypl-row container-row">
+          <div className="nypl-row container-row" id="mainContent">
             <div className="nypl-column-full">
               <Breadcrumbs
                 type={props.breadcrumbsType}
