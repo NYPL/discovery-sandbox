@@ -34,12 +34,6 @@ const ShepContainer = (props) => {
           </div>
         </div>
       </div>
-      { props.secondaryExtraBannerElement }
-
-      { props.extraRow }
-      <div className="nypl-full-width-wrapper">
-        { null && props.mainContent }
-      </div>
     </main>
   );
 };
