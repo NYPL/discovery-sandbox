@@ -186,7 +186,7 @@ describe('HoldConfirmation', () => {
       expect(pageHeader.find('h1')).to.have.length(1);
       expect(pageHeader.find('h1').text()).to.equal('Request Confirmation');
       expect(
-        pageHeader.contains(<h1 id="confirmation-title" tabIndex="0">Request Confirmation</h1>)
+        pageHeader.contains(<h1 id="mainContent" tabIndex="0">Request Confirmation</h1>)
       ).to.equal(true);
     });
 

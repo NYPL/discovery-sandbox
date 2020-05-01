@@ -140,7 +140,7 @@ const BibPage = (props) => {
             <div className="nypl-row">
               <div className="nypl-column-three-quarters">
                 <Breadcrumbs type="bib" query={searchURL} />
-                <h1>{title}</h1>
+                <h1 id="mainContent">{title}</h1>
                 {
                   searchKeywords && (
                     <div className="nypl-row search-control">
@@ -165,7 +165,6 @@ const BibPage = (props) => {
             <div
               className="nypl-column-three-quarters"
               role="region"
-              id="mainContent"
             >
               <div className="nypl-item-details">
                 <BibDetails
