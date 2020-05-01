@@ -240,7 +240,6 @@ class SubjectHeading extends React.Component {
 
     const toggle = () => {
       const symbol = !open ? '+' : '-';
-      const innerText = desc_count > 0 ? symbol : '';
       const props = {};
 
       props.onClick = this.toggleOpen;
@@ -250,7 +249,7 @@ class SubjectHeading extends React.Component {
         props.onKeyDown = event => handleEnter(event);
       }
 
-      return <button {...props}>{innerText}</button>;
+      return <button {...props}>{symbol}</button>;
     };
 
     const positionStyle = container === 'related' ? null : { marginLeft: 30 * ((indentation || 0) + 1) };
@@ -269,7 +268,7 @@ class SubjectHeading extends React.Component {
         >
           <td className={`subjectHeadingsTableCell subjectHeadingLabel ${onMainPath ? 'selected' : ''}`} >
             <div className="subjectHeadingLabelInner" style={positionStyle}>
-              { toggle() }
+              { desc_count > 0 && toggle() }
               <Link to={this.generateUrl}>
                 <span
                   className={`emph ${isMain ? 'mainHeading' : ''}`}
