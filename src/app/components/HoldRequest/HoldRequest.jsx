@@ -362,7 +362,7 @@ class HoldRequest extends React.Component {
 
     return (
       <DocumentTitle title="Item Request | Shared Collection Catalog | NYPL">
-        <div id="mainContent">
+        <div>
           <LoadingLayer
             status={Store.state.isLoading}
             title="Requesting"
@@ -376,7 +376,7 @@ class HoldRequest extends React.Component {
                     bibUrl={`/bib/${bibId}`}
                     type="hold"
                   />
-                  <h1 id="item-title" tabIndex="0">Item Request</h1>
+                  <h1 id="item-title" tabIndex="0" id="mainContent">Item Request</h1>
                 </div>
               </div>
             </div>

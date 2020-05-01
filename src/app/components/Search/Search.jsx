@@ -137,6 +137,7 @@ class Search extends React.Component {
   render() {
     return (
       <form
+        id="mainContent"
         onSubmit={this.triggerSubmit}
         onKeyPress={this.triggerSubmit}
         action={`${appConfig.baseUrl}/search`}

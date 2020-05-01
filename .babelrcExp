@@ -55,7 +55,6 @@
           "@Breadcrumbs": "./src/app/components/Breadcrumbs/Breadcrumbs.jsx",
           "@SearchButton": "./src/app/components/Buttons/SearchButton.jsx",
           "@SearchIconReversed": "./src/app/components/Buttons/SearchIconReversed.jsx",
-          "@Content": "./src/app/components/Content/Content.jsx",
           "@DataLoader": "./src/app/components/DataLoader/DataLoader.jsx",
           "@ElectronicDelivery": "./src/app/components/ElectronicDelivery/ElectronicDelivery.jsx",
           "@ElectronicDeliveryForm": "./src/app/components/ElectronicDelivery/ElectronicDeliveryForm.jsx",
