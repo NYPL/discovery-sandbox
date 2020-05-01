@@ -25,7 +25,6 @@ class DataLoader extends React.Component {
   }
 
   componentDidMount() {
-    console.log('mounting dataloader ', this.props);
     const matchData = this.pathInstructions
       .reduce(this.reducePathExpressions, null);
 

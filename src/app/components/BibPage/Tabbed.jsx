@@ -16,7 +16,6 @@ class Tabbed extends React.Component {
   // componentDidMount will set the initial tab, either 1 or the number fetched from the
   // url hash (to accommodate deep linking)
   componentDidMount() {
-    console.log('mounting tabbed ', this.props, this.state, window.location);
     let hashNumber = 1;
     if (this.props.hash) {
       let hash = this.props.hash;
