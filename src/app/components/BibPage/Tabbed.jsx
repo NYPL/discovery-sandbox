@@ -69,7 +69,6 @@ class Tabbed extends React.Component {
 
 
   render() {
-    console.log('rendering tabbed ', this.props, this.state);
     return (
       <div className="tabbed">
         <ul role='tablist'>
