@@ -138,6 +138,7 @@ class SubjectHeadingSearch extends React.Component {
         autoComplete="off"
         onSubmit={onSubmit}
         onKeyDown={changeActiveSuggestion}
+        id="mainContent"
       >
         <div className="autocomplete-field">
           <label htmlFor="autosuggest">Subject Heading Search:</label>
