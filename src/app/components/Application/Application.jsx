@@ -70,6 +70,16 @@ class App extends React.Component {
   }
 
   render() {
+    const dataLocation = Object.assign(
+      {},
+      this.context.router.location,
+      {
+        hash: null,
+        action: null,
+        key: null,
+      },
+    );
+
     return (
       <DocumentTitle title="Shared Collection Catalog | NYPL">
         <div className="app-wrapper">
@@ -79,8 +89,8 @@ class App extends React.Component {
             patron={this.state.patron}
           />
           <DataLoader
-            key={JSON.stringify(this.context.router.location)}
-            location={this.context.router.location}
+            key={JSON.stringify(dataLocation)}
+            location={dataLocation}
           >
             {React.cloneElement(this.props.children, this.state.data)}
           </DataLoader>
