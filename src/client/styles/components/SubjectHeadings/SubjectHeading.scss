@@ -44,6 +44,10 @@
   line-height: 32px;
   background-color: $subjectHeadingBackground;
 
+  &.ellipse {
+    border-bottom: none;
+  }
+
   .selected .emph {
     font-weight: 700;
   }
