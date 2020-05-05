@@ -129,12 +129,13 @@ class SubjectHeadingSearch extends React.Component {
         suggestions,
         activeSuggestion,
         userInput,
+        hidden,
       },
     } = this;
 
-    let suggestionsListComponent;
+    let suggestionsListComponent = null;
 
-    if (userInput && suggestions.length) {
+    if (userInput && suggestions.length && !hidden) {
       suggestionsListComponent = (
         <ul className="suggestions">
           {suggestions.map((suggestion, index) => (
@@ -144,7 +145,6 @@ class SubjectHeadingSearch extends React.Component {
               activeSuggestion={index === activeSuggestion}
               key={suggestion.uuid || suggestion.label}
               onClick={this.resetAutosuggest}
-              hidden={this.state.hidden}
             />
           ))}
         </ul>
