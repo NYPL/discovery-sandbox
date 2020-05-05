@@ -3,13 +3,15 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 
 const AutosuggestItem = (props) => {
-  const { item, activeSuggestion, onClick, path } = props;
+  const { item, activeSuggestion, onClick, path, hidden } = props;
   const subjectComponent = item.class === 'subject_component';
 
   let className = "suggestion";
   if (activeSuggestion) {
     className += "-active";
   }
+
+  if (hidden) return null;
 
   return (
     <li

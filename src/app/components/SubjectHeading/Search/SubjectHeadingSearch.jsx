@@ -19,6 +19,20 @@ class SubjectHeadingSearch extends React.Component {
     this.onSubmit = this.onSubmit.bind(this);
     this.resetAutosuggest = this.resetAutosuggest.bind(this);
     this.changeActiveSuggestion = this.changeActiveSuggestion.bind(this);
+    this.onFocus = this.onFocus.bind(this);
+  }
+
+  componentDidMount() {
+    const hasParentAutosuggest = (element) => {
+      if (element.id === 'autosuggest') return true;
+      if (element.parentElement) return hasParentAutosuggest(element.parentElement);
+      return false;
+    };
+
+    document.addEventListener('click', (e) => {
+      console.log('document clicked ', e.target, e.currentTarget);
+      if (!hasParentAutosuggest(e.target)) this.setState({ hidden: true });
+    });
   }
 
   onSubmit(submitEvent) {
@@ -34,6 +48,10 @@ class SubjectHeadingSearch extends React.Component {
     this.setState({
       userInput,
     }, this.makeApiCallWithThrottle(this.state.timerId));
+  }
+
+  onFocus() {
+    this.setState({ hidden: false });
   }
 
   makeApiCallWithThrottle(timerId) {
@@ -126,6 +144,7 @@ class SubjectHeadingSearch extends React.Component {
               activeSuggestion={index === activeSuggestion}
               key={suggestion.uuid || suggestion.label}
               onClick={this.resetAutosuggest}
+              hidden={this.state.hidden}
             />
           ))}
         </ul>
@@ -138,6 +157,7 @@ class SubjectHeadingSearch extends React.Component {
         autoComplete="off"
         onSubmit={onSubmit}
         onKeyDown={changeActiveSuggestion}
+        onFocus={this.onFocus}
         id="mainContent"
       >
         <div className="autocomplete-field">
