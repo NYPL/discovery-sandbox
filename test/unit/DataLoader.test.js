@@ -3,7 +3,7 @@ import React from 'react';
 import sinon from 'sinon';
 import axios from 'axios';
 import { expect } from 'chai';
-import Enzyme, { shallow } from 'enzyme';
+import Enzyme, { mount, shallow } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 
 import DataLoader from './../../src/app/components/DataLoader/DataLoader';
@@ -19,14 +19,20 @@ describe('DataLoader', () => {
     let bibAction;
     let axiosStub;
     const axiosCalls = [];
-    const location = {
-      pathname: '/research/collections/shared-collection-catalog/nonMatchingPath',
-    };
 
     before(() => {
       loadingAction = sinon.spy(Actions, 'updateLoadingStatus');
       bibAction = sinon.spy(Actions, 'updateBib');
-      component = shallow(<DataLoader location={location} children={[]} />);
+      component = mount(
+        <DataLoader children={[]} />,
+        { context:
+          { router:
+            { location: {
+              pathname: '/research/collections/shared-collection-catalog/nonMatchingPath',
+            } },
+          },
+        },
+      );
 
       axiosStub = sinon.stub(axios, 'get').callsFake(args =>
         new Promise((resolve) => {
@@ -54,15 +60,11 @@ describe('DataLoader', () => {
   });
 
   describe('Matching path', () => {
-    const location = {
-      pathname: '/research/collections/shared-collection-catalog/bib/b1234',
-    };
-
     describe('OK Bib response', () => {
-      let component;
       let loadingAction;
       let bibAction;
       let axiosStub;
+      let component;
       const axiosCalls = [];
 
       before(() => {
@@ -76,7 +78,16 @@ describe('DataLoader', () => {
           }),
         );
 
-        component = shallow(<DataLoader location={location} children={[]} />);
+        component = mount(
+          <DataLoader children={[]} />,
+          { context:
+            { router:
+              { location: {
+                pathname: '/research/collections/shared-collection-catalog/bib/b1234',
+              } },
+            },
+          },
+        );
       });
 
       after(() => {
@@ -134,7 +145,14 @@ describe('DataLoader', () => {
           }),
         );
 
-        component = shallow(<DataLoader location={location} children={[]} />);
+        component = mount(
+          <DataLoader children={[]}/>,
+          { context:
+            { router:
+              { location: { pathname: '/research/collections/shared-collection-catalog/bib/b1234' } },
+            },
+          },
+        );
       });
 
       after(() => {

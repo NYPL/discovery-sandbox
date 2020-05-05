@@ -113,7 +113,7 @@ class HoldRequest extends React.Component {
       'recap-cul': 'Columbia',
     };
     const searchKeywordsQuery =
-      (this.props.searchKeywords) ? `searchKeywords=${this.props.searchKeywords}` : '';
+      (this.props.searchKeywords) ? `q=${this.props.searchKeywords}` : '';
     const searchKeywordsQueryPhysical = searchKeywordsQuery ? `&${searchKeywordsQuery}` : '';
     const fromUrlQuery = this.props.location.query && this.props.location.query.fromUrl ?
       `&fromUrl=${encodeURIComponent(this.props.location.query.fromUrl)}` : '';

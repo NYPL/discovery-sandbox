@@ -23,7 +23,7 @@ const ItemTableRow = ({ item, bibId, getRecord, searchKeywords }) => {
       itemRequestBtn = item.available ?
         (<Link
           to={
-            `${appConfig.baseUrl}/hold/request/${bibId}-${item.id}?searchKeywords=${searchKeywords}`
+            `${appConfig.baseUrl}/hold/request/${bibId}-${item.id}?q=${searchKeywords}`
           }
           onClick={e => getRecord(e, bibId, item.id)}
           tabIndex="0"

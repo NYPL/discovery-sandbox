@@ -556,7 +556,7 @@ function eddServer(req, res) {
     itemId,
     searchKeywords,
   } = req.body;
-  const searchKeywordsQuery = (searchKeywords) ? `&searchKeywords=${searchKeywords}` : '';
+  const searchKeywordsQuery = (searchKeywords) ? `&q=${searchKeywords}` : '';
 
   let serverErrors = {};
 
