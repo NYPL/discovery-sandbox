@@ -151,7 +151,7 @@ class BibsList extends React.Component {
         tabIndex='0'
         aria-label="Titles related to this Subject Heading"
       >
-        <h4 id="titles">Titles</h4>
+        <h2 id="titles">Titles</h2>
         <Sorter
           page="shepBibs"
           sortOptions={[
