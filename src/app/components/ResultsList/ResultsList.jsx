@@ -152,7 +152,7 @@ class ResultsList extends React.Component {
   }
 
   render() {
-    const results = this.props.results;
+    const { results } = this.props;
     let resultsElm = null;
 
     if (!results || !_isArray(results) || !results.length) {
