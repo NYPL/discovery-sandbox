@@ -92,7 +92,6 @@ class App extends React.Component {
           />
           <DataLoader
             key={JSON.stringify(dataLocation)}
-            location={dataLocation}
           >
             {React.cloneElement(this.props.children, this.state.data)}
           </DataLoader>
