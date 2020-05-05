@@ -118,7 +118,7 @@ class ElectronicDelivery extends React.Component {
       itemSource,
     }, fields);
     const searchKeywords = this.props.searchKeywords;
-    const searchKeywordsQuery = (searchKeywords) ? `&searchKeywords=${searchKeywords}` : '';
+    const searchKeywordsQuery = (searchKeywords) ? `&q=${searchKeywords}` : '';
     const fromUrlQuery = this.props.location.query && this.props.location.query.fromUrl ?
       `&fromUrl=${encodeURIComponent(this.props.location.query.fromUrl)}` : '';
     const itemSourceMapping = {
