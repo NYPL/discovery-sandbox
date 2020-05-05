@@ -119,6 +119,11 @@ class BibsList extends React.Component {
       nextUrl,
     } = this.state;
 
+    const {
+      total,
+      label,
+    } = this.props;
+
     const sortParams = this.context.router.location.query;
 
     const sort = sortParams.sort;
@@ -145,13 +150,15 @@ class BibsList extends React.Component {
       );
     }
 
+    const h2Text = `Viewing ${this.firstBib()} - ${this.lastBib()} of ${total || ''} items for Heading "${label}"`;
+
     return (
       <div
         className="nypl-column-half bibsList"
         tabIndex='0'
         aria-label="Titles related to this Subject Heading"
       >
-        <h2 id="titles">Titles</h2>
+        <h2 id="titles">{h2Text}</h2>
         <Sorter
           page="shepBibs"
           sortOptions={[

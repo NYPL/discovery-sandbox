@@ -25,6 +25,7 @@ class SubjectHeadingShow extends React.Component {
       contextError: null,
       contextIsLoading: true,
       contextHeadings: [],
+      totalBibs: null,
     };
 
     this.generateFullContextUrl = this.generateFullContextUrl.bind(this);
@@ -111,12 +112,22 @@ class SubjectHeadingShow extends React.Component {
     return onMainPath;
   }
 
+  findBibCount(headings, uuid) {
+    return headings.reduce((acc, el) => (
+      acc ||
+      (el.uuid === uuid && el.bib_count) ||
+      (el.children && el.children.length && this.findBibCount(el.children, uuid))
+    ), null);
+  }
+
   processContextHeadings(headings, uuid) {
     if (!headings) return [];
     headings.forEach((heading) => {
       this.removeChildrenOffMainPath(heading, uuid);
       Range.addRangeData(heading, uuid, 'show');
     });
+    console.log('bib count: ', this.findBibCount(headings, uuid), headings, uuid);
+    this.setState({ totalBibs: this.findBibCount(headings, uuid) });
     const mainHeadingIndex = headings.findIndex(heading =>
       heading.children || heading.uuid === uuid,
     );
@@ -133,9 +144,12 @@ class SubjectHeadingShow extends React.Component {
       relatedHeadings,
       error,
       mainHeading,
+      totalBibs,
     } = this.state;
 
-    const { uuid } = mainHeading;
+    const { uuid, label } = mainHeading;
+
+    console.log('mainHeading: ', mainHeading, relatedHeadings, totalBibs);
 
     const { location } = this.props;
 
@@ -150,6 +164,8 @@ class SubjectHeadingShow extends React.Component {
         <BibsList
           uuid={uuid}
           key={this.context.router.location.search}
+          total={totalBibs}
+          label={label}
         />
         <div
           className="nypl-column-half subjectHeadingsSideBar"
