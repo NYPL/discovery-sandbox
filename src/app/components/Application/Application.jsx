@@ -46,6 +46,7 @@ class App extends React.Component {
       });
 
       if (action === 'POP' && search && query.q !== Store.getState().searchKeywords) {
+        Actions.updateLoadingStatus(true);
         ajaxCall(`${appConfig.baseUrl}/api${decodeURI(search)}`, (response) => {
           const { data } = response;
           if (data.filters && data.searchResults) {
@@ -55,6 +56,7 @@ class App extends React.Component {
             Actions.updateSearchResults(data.searchResults);
             Actions.updatePage(query.page || '1');
             if (qParameter) Actions.updateSearchKeywords(qParameter);
+            Actions.updateLoadingStatus(false);
           }
         });
       }
