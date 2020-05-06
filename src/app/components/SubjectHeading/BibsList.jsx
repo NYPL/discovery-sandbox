@@ -150,7 +150,7 @@ class BibsList extends React.Component {
       );
     }
 
-    const h2Text = `Viewing ${this.firstBib()} - ${this.lastBib()} of ${total || ''} items for Heading "${label}"`;
+    const h2Text = `Viewing ${this.firstBib() + 1} - ${this.lastBib()} of ${total || ''} items for Heading "${label}"`;
 
     return (
       <div
