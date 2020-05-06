@@ -126,7 +126,6 @@ class SubjectHeadingShow extends React.Component {
       this.removeChildrenOffMainPath(heading, uuid);
       Range.addRangeData(heading, uuid, 'show');
     });
-    console.log('bib count: ', this.findBibCount(headings, uuid), headings, uuid);
     this.setState({ totalBibs: this.findBibCount(headings, uuid) });
     const mainHeadingIndex = headings.findIndex(heading =>
       heading.children || heading.uuid === uuid,
@@ -148,8 +147,6 @@ class SubjectHeadingShow extends React.Component {
     } = this.state;
 
     const { uuid, label } = mainHeading;
-
-    console.log('mainHeading: ', mainHeading, relatedHeadings, totalBibs);
 
     const { location } = this.props;
 
