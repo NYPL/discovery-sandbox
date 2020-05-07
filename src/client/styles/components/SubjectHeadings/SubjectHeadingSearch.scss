@@ -1,24 +1,42 @@
 @import "utils/colors.scss";
 
+.autosuggestInput {
+  display: flex;
+
+  button {
+    @include removeDefaultButtonStyle;
+    background: black;
+    display: inline;
+    line-height: 18px;
+    padding: 2px;
+
+    svg {
+      display: inline;
+      padding: 5px;
+    }
+  }
+}
+
 .autocomplete {
   float: right;
-  font-size: 1rem;
-  width: 200px;
-  margin-left: 25px;
+  display: inline-block;
 }
 
 .autocomplete-field {
   position: relative;
+
   input {
     border: 1px solid #999;
-    width: 200px;
+    line-height: 32px;
+    padding: 0;
+    text-indent: 5px;
   }
 
   &> input:focus {
+    box-shadow: none;
     outline-color: $focuscolor;
     outline-style: solid;
     outline-width: 0.125rem;
-    box-shadow: none;
   }
 
   &:focus-within .suggestions {
@@ -31,12 +49,11 @@
   list-style: none;
   background-color: white;
   position: absolute;
-  float: right;
   z-index: 1;
-  right: -2%;
+  right: 0;
   margin-top: -1.5%;
   margin-bottom: 0px;
-  min-width: 202px;
+  min-width: 199px;
   width: max-content;
   // comment out the below line when styling this component
   display: none;
@@ -50,8 +67,8 @@
 .suggestions li {
   cursor: pointer;
   font-size: .9rem;
-  line-height: .75;
   height: 100%;
+  line-height: 32px;
   margin-bottom: 0;
   min-height: 32px;
 
