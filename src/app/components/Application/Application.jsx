@@ -31,8 +31,12 @@ class App extends React.Component {
 
   componentDidMount() {
     Store.listen(this.onChange);
+    console.log(this.context);
     // Listen to the browser's navigation buttons.
     this.context.router.listen((location = { action: '', search: '', query: {} }) => {
+      console.log(this.context.router.listen());
+      console.log("listening");
+      console.log(location);
       const {
         action,
         search,
