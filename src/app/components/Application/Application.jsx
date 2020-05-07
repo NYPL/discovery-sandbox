@@ -2,9 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import DocumentTitle from 'react-document-title';
 import { pick as _pick } from 'underscore';
+import { withRouter } from "react-router";
 
 import { Header, navConfig } from '@nypl/dgx-header-component';
 import Footer from '@nypl/dgx-react-footer';
+import alt from '@alt';
 
 import Feedback from '../Feedback/Feedback';
 import Store from '../../stores/Store';
@@ -33,7 +35,7 @@ class App extends React.Component {
     Store.listen(this.onChange);
     console.log(this.context);
     // Listen to the browser's navigation buttons.
-    this.context.router.listen((location = { action: '', search: '', query: {} }) => {
+    this.context.router.listen((location) => {
       console.log(this.context.router.listen());
       console.log("listening");
       console.log(location);
@@ -128,4 +130,4 @@ App.contextTypes = {
 };
 
 
-export default App;
+export default withRouter(App);

@@ -1,11 +1,6 @@
 import { gaUtils } from 'dgx-react-ga';
 import axios from 'axios';
 import {
-  createHistory,
-  useQueries,
-  createMemoryHistory,
-} from 'history';
-import {
   mapObject as _mapObject,
   findWhere as _findWhere,
   forEach as _forEach,
@@ -45,18 +40,6 @@ const ajaxCall = (
  * @return {object}
  */
 const getDefaultFilters = () => _extend({}, appConfig.defaultFilters);
-
-/**
- * createAppHistory
- * Create a history in the browser or server that coincides with react-router.
- */
-const createAppHistory = () => {
-  if (typeof window !== 'undefined') {
-    return useQueries(createHistory)();
-  }
-
-  return useQueries(createMemoryHistory)();
-};
 
 /**
  * destructureFilters
@@ -374,7 +357,6 @@ export {
   trackDiscovery,
   ajaxCall,
   getSortQuery,
-  createAppHistory,
   getFieldParam,
   getFilterParam,
   destructureFilters,
