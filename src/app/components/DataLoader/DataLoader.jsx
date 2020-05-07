@@ -52,7 +52,7 @@ class DataLoader extends React.Component {
   }
 
   reducePathExpressions(acc, instruction) {
-    const { location } = this.props;
+    const { location } = this.context.router;
     const matchData = location.pathname.match(instruction.expression);
     if (matchData) this.pathType = instruction.pathType;
     return matchData || acc;
@@ -64,5 +64,9 @@ class DataLoader extends React.Component {
     );
   }
 }
+
+DataLoader.contextTypes = {
+  router: PropTypes.object,
+};
 
 export default DataLoader;

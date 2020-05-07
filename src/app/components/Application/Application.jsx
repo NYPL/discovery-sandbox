@@ -12,6 +12,7 @@ import PatronStore from '../../stores/PatronStore';
 import {
   ajaxCall,
   destructureFilters,
+  basicQuery,
 } from '../../utils/utils';
 import Actions from '../../actions/Actions';
 import appConfig from '../../data/appConfig';
@@ -25,12 +26,13 @@ class App extends React.Component {
       patron: PatronStore.getState(),
     };
     this.onChange = this.onChange.bind(this);
+    this.shouldStoreUpdate = this.shouldStoreUpdate.bind(this);
   }
 
   componentDidMount() {
     Store.listen(this.onChange);
     // Listen to the browser's navigation buttons.
-    this.props.route.history.listen((location = { action: '', search: '', query: {} }) => {
+    this.context.router.listen((location = { action: '', search: '', query: {} }) => {
       const {
         action,
         search,
@@ -45,7 +47,8 @@ class App extends React.Component {
         return null;
       });
 
-      if (action === 'POP' && search) {
+      if (action === 'POP' && search && this.shouldStoreUpdate()) {
+        Actions.updateLoadingStatus(true);
         ajaxCall(`${appConfig.baseUrl}/api${decodeURI(search)}`, (response) => {
           const { data } = response;
           if (data.filters && data.searchResults) {
@@ -55,10 +58,15 @@ class App extends React.Component {
             Actions.updateSearchResults(data.searchResults);
             Actions.updatePage(query.page || '1');
             if (qParameter) Actions.updateSearchKeywords(qParameter);
+            Actions.updateLoadingStatus(false);
           }
         });
       }
     });
+  }
+
+  shouldStoreUpdate() {
+    return `?${basicQuery({})(Store.getState())}` !== this.context.router.location.search;
   }
 
   componentWillUnmount() {
@@ -90,7 +98,6 @@ class App extends React.Component {
           />
           <DataLoader
             key={JSON.stringify(dataLocation)}
-            location={dataLocation}
           >
             {React.cloneElement(this.props.children, this.state.data)}
           </DataLoader>
@@ -105,7 +112,6 @@ class App extends React.Component {
 App.propTypes = {
   children: PropTypes.object,
   location: PropTypes.object,
-  route: PropTypes.object,
 };
 
 App.defaultProps = {
