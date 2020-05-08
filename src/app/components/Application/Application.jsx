@@ -2,11 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import DocumentTitle from 'react-document-title';
 import { pick as _pick } from 'underscore';
-import { withRouter } from "react-router";
+import { withRouter } from 'react-router';
 
 import { Header, navConfig } from '@nypl/dgx-header-component';
 import Footer from '@nypl/dgx-react-footer';
-import alt from '@alt';
 
 import Feedback from '../Feedback/Feedback';
 import Store from '../../stores/Store';
