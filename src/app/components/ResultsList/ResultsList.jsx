@@ -107,7 +107,7 @@ class ResultsList extends React.Component {
     const totalItems = items.length;
     const hasRequestTable = items.length === 1;
 
-    const bibUrl = _isArray(bib.title) ? `${appConfig.baseUrl}/bib/${bibId}` : '';
+    const bibUrl = _isArray(result.title) ? `${appConfig.baseUrl}/bib/${bibId}` : '';
 
     return (
       <li key={i} className={`nypl-results-item ${hasRequestTable ? 'has-request' : ''}`}>
