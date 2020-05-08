@@ -57,6 +57,19 @@
   }
 }
 
+@media (min-width: $xtrasmall-breakpoint) {
+  .suggestions {
+    width: max-content;
+  }
+}
+
+@media (max-width: $xtrasmall-breakpoint) {
+  .suggestions {
+    width: auto;
+    left: 5px;
+  }
+}
+
 .suggestions {
   border: 1px solid #999;
   list-style: none;
@@ -66,8 +79,6 @@
   margin-top: -1px;
   margin-bottom: 0px;
   min-width: 199px;
-  width: auto;
-  left: 5px;
   right: 5px;
 }
 
