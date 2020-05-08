@@ -5,9 +5,8 @@ import "regenerator-runtime/runtime";
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Router, browserHistory } from 'react-router';
-// import createBrowserHistory from 'history/lib/createBrowserHistory';
-// import useScroll from 'scroll-behavior/lib/useSimpleScroll';
+import { Router, browserHistory, applyRouterMiddleware } from 'react-router';
+import { useScroll } from 'react-router-scroll';
 import { config, gaUtils } from 'dgx-react-ga';
 import a11y from 'react-a11y';
 import Iso from 'iso';
@@ -34,10 +33,13 @@ window.onload = () => {
   Iso.bootstrap((state, container) => {
     alt.bootstrap(state);
 
-    // const appHistory = useScroll(useRouterHistory(createBrowserHistory))();
-
     ReactDOM.render(
-      <Router history={browserHistory}>{routes.client}</Router>,
+      <Router
+        history={browserHistory}
+        render={applyRouterMiddleware(useScroll())}
+      >
+        {routes.client}
+      </Router>,
       container,
     );
     gaUtils.trackPageview(window.location.pathname);
