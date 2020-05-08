@@ -36,7 +36,7 @@ class BibsList extends React.Component {
     axios(`${appConfig.baseUrl}/api/subjectHeadings/subject_headings/${this.context.router.params.subjectHeadingUuid}/bibs${stringifySortParams()}`)
       .then((res) => {
         this.setState({
-          bibs: res.data.bibs.filter(bib => bib['@id']),
+          bibs: res.data.bibs,
           nextUrl: res.data.next_url,
           componentLoading: false,
         });

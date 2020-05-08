@@ -96,7 +96,7 @@ class ResultsList extends React.Component {
     }
 
     const result = bib.result || bib;
-    const bibTitle = this.getBibTitle(result);
+    const bibTitle = bib.title ? bib.title : this.getBibTitle(result);
     const bibId = result && result['@id'] ? result['@id'].substring(4) : '';
     const materialType = result && result.materialType && result.materialType[0] ?
       result.materialType[0].prefLabel : null;
@@ -107,10 +107,7 @@ class ResultsList extends React.Component {
     const totalItems = items.length;
     const hasRequestTable = items.length === 1;
 
-    let bibUrl = `${appConfig.baseUrl}/bib/${bibId}`;
-
-    const searchKeywords = this.props.searchKeywords || Store.getState().searchKeywords;
-    if (searchKeywords) bibUrl += `?searchKeywords=${searchKeywords}`;
+    const bibUrl = bib.title ? '' : `${appConfig.baseUrl}/bib/${bibId}`;
 
     return (
       <li key={i} className={`nypl-results-item ${hasRequestTable ? 'has-request' : ''}`}>
