@@ -96,7 +96,7 @@ class ResultsList extends React.Component {
     }
 
     const result = bib.result || bib;
-    const bibTitle = _isArray(bib.title) ? this.getBibTitle(result) : bib.title;
+    const bibTitle = _isArray(result.title) ? this.getBibTitle(result) : result.title;
     const bibId = result && result['@id'] ? result['@id'].substring(4) : '';
     const materialType = result && result.materialType && result.materialType[0] ?
       result.materialType[0].prefLabel : null;
