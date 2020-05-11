@@ -135,6 +135,8 @@ class BibsList extends React.Component {
       <Pagination
         updatePage={this.updateBibPage}
         page={bibPage}
+        total={total}
+        perPage={this.perPage}
         subjectShowPage
         ariaControls="nypl-results-list"
         hasNext={bibPage < lastPage || nextUrl}

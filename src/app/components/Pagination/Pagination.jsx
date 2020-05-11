@@ -87,13 +87,14 @@ class Pagination extends React.Component {
       nextPage = (total < perPage || pageFactor > total) ? null : this.getPage(page, 'Next');
       totalPages = Math.floor(total / perPage) + 1;
     } else {
+      if (total && perPage) totalPages = Math.ceil(total / perPage);
       nextPage = this.getPage(page, 'Next');
     }
 
     return (
       <nav className="nypl-results-pagination showPage" aria-label="More results">
         {prevPage}
-        {!subjectHeadingPage
+        {page && totalPages
           ?
             <span
               className={`page-count ${page === 1 ? 'first' : ''}`}
