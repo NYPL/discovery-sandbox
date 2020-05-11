@@ -55,7 +55,6 @@ class NeighboringHeadingsBox extends React.Component {
     return (
       <div
         className="nypl-column-half subjectHeadingInfoBox"
-        tabIndex='0'
         aria-label="Neighboring Subject Headings"
       >
         <div className="backgroundContainer">
