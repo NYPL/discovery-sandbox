@@ -16,7 +16,10 @@ import PatronStore from '../../stores/PatronStore';
 import appConfig from '../../data/appConfig';
 import LibraryItem from '../../utils/item';
 import LoadingLayer from '../LoadingLayer/LoadingLayer';
-import { trackDiscovery } from '../../utils/utils';
+import {
+  trackDiscovery,
+  basicQuery,
+} from '../../utils/utils';
 
 import Actions from '@Actions'
 import Store from '@Store'
@@ -360,6 +363,8 @@ class HoldRequest extends React.Component {
       );
     }
 
+    const searchUrl = basicQuery(this.props)({});
+
     return (
       <DocumentTitle title="Item Request | Shared Collection Catalog | NYPL">
         <div>
@@ -372,7 +377,7 @@ class HoldRequest extends React.Component {
               <div className="row">
                 <div className="nypl-column-full">
                   <Breadcrumbs
-                    query={searchKeywords ? `q=${searchKeywords}` : null}
+                    searchUrl={searchUrl}
                     bibUrl={`/bib/${bibId}`}
                     type="hold"
                   />

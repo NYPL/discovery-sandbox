@@ -20,7 +20,10 @@ import appConfig from '../../data/appConfig';
 import ElectronicDeliveryForm from './ElectronicDeliveryForm';
 import LibraryItem from '../../utils/item';
 import LoadingLayer from '../LoadingLayer/LoadingLayer';
-import { trackDiscovery } from '../../utils/utils';
+import {
+  trackDiscovery,
+  basicQuery,
+} from '../../utils/utils';
 
 class ElectronicDelivery extends React.Component {
   constructor(props) {
@@ -118,7 +121,7 @@ class ElectronicDelivery extends React.Component {
       itemSource,
     }, fields);
     const searchKeywords = this.props.searchKeywords;
-    const searchKeywordsQuery = (searchKeywords) ? `&searchKeywords=${searchKeywords}` : '';
+    const searchKeywordsQuery = searchKeywords ? `&q=${searchKeywords}` : '';
     const fromUrlQuery = this.props.location.query && this.props.location.query.fromUrl ?
       `&fromUrl=${encodeURIComponent(this.props.location.query.fromUrl)}` : '';
     const itemSourceMapping = {
@@ -205,7 +208,9 @@ class ElectronicDelivery extends React.Component {
       this.state.patron.emails && _isArray(this.state.patron.emails)
       && this.state.patron.emails.length
     ) ? this.state.patron.emails[0] : '';
-    const searchKeywords = this.props.searchKeywords;
+
+    const createAPIQuery = basicQuery(this.props);
+    const searchUrl = createAPIQuery({});
 
     return (
       <DocumentTitle title="Electronic Delivery Request | Shared Collection Catalog | NYPL">
@@ -218,7 +223,7 @@ class ElectronicDelivery extends React.Component {
             <div className="row">
               <div className="content-wrapper">
                 <Breadcrumbs
-                  query={searchKeywords}
+                  searchUrl={searchUrl}
                   type="edd"
                   bibUrl={`/bib/${bibId}`}
                   itemUrl={`/hold/request/${bibId}-${itemId}`}
@@ -272,7 +277,7 @@ class ElectronicDelivery extends React.Component {
                 error={error}
                 form={form}
                 defaultEmail={patronEmail}
-                searchKeywords={searchKeywords}
+                searchKeywords={this.props.searchKeywords}
               />
             </div>
           </div>

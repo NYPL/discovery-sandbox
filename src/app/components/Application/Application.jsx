@@ -66,7 +66,7 @@ class App extends React.Component {
   }
 
   shouldStoreUpdate() {
-    return `?${basicQuery({})(Store.getState())}` !== this.context.router.location.search;
+    return `${basicQuery({})(Store.getState())}` !== this.context.router.location.search;
   }
 
   componentWillUnmount() {

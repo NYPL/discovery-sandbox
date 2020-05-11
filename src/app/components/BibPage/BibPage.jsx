@@ -29,7 +29,6 @@ const BibPage = (props) => {
     searchKeywords,
   } = props;
 
-  const createAPIQuery = basicQuery(props);
   const bib = props.bib ? props.bib : {};
   const bibId = bib && bib['@id'] ? bib['@id'].substring(4) : '';
   const title = bib.title && bib.title.length ? bib.title[0] : '';
@@ -128,8 +127,7 @@ const BibPage = (props) => {
   );
 
   const createAPIQuery = basicQuery(props);
-  const searchURL = createAPIQuery({});
-  console.log(searchURL);
+  const searchUrl = createAPIQuery({});
 
   return (
     <DocumentTitle title="Item Details | Shared Collection Catalog | NYPL">
@@ -142,7 +140,7 @@ const BibPage = (props) => {
           <div className="nypl-full-width-wrapper">
             <div className="nypl-row">
               <div className="nypl-column-three-quarters">
-                <Breadcrumbs type="bib" query={searchURL} />
+                <Breadcrumbs type="bib" searchUrl={searchUrl} />
                 <h1 id="mainContent">{title}</h1>
                 {
                   searchKeywords && (
@@ -152,7 +150,7 @@ const BibPage = (props) => {
                         title="Back to Results"
                       />
                       <BackLink
-                        searchURL={searchURL}
+                        searchUrl={searchUrl}
                         searchKeywords={searchKeywords}
                       />
                     </div>

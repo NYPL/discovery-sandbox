@@ -218,7 +218,7 @@ const basicQuery = (props = {}) => {
     const filterQuery = getFilterParam(selectedFilters || props.selectedFilters);
     // `searchKeywords` can be an empty string, so check if it's undefined instead.
     const query = searchKeywords !== undefined ? searchKeywords : props.searchKeywords;
-    const searchKeywordsQuery = query ? encodeURIComponent(query) : '';
+    const searchKeywordsQuery = query ? `${encodeURIComponent(query)}` : '';
     let pageQuery = props.page && props.page !== '1' ? `&page=${props.page}` : '';
     pageQuery = page && page !== '1' ? `&page=${page}` : pageQuery;
     pageQuery = page === '1' ? '' : pageQuery;

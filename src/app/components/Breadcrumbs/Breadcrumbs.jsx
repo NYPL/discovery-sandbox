@@ -11,7 +11,7 @@ const {
   displayTitle,
 } = appConfig;
 
-const Breadcrumbs = ({ query, type, bibUrl, itemUrl, edd }) => {
+const Breadcrumbs = ({ searchUrl, type, bibUrl, itemUrl, edd }) => {
   const defaultText = displayTitle;
   const onClick = pageTitle => trackDiscovery('Breadcrumbs', pageTitle);
   const homeLink = (
@@ -33,27 +33,29 @@ const Breadcrumbs = ({ query, type, bibUrl, itemUrl, edd }) => {
     // The first link is the homepage and it will being appearing starting from the
     // Search Results page.
     const crumbs = [homeLink];
-    const { searchKeywords } = Store.getState();
 
-    const searchKeywordsCrumb = searchKeywords ? (
+    const searchCrumb = searchUrl ? (
       <li key="search">
-        <Link to={`${baseUrl}/search?q=${searchKeywords}`} onClick={() => onClick('Search Results')}>
+        <Link to={`${baseUrl}/search?${searchUrl}`} onClick={() => onClick('Search Results')}>
           Search Results
         </Link>
-      </li>
-    ) : null;
+      </li>)
+      : null;
+
+    const bibCrumb = (
+      <li key="bib">
+        <Link to={`${baseUrl}${bibUrl}`} onClick={() => onClick('Item Details')}>Item Details</Link>
+      </li>);
 
     if (type.startsWith('subjectHeading')) {
-      if (searchKeywordsCrumb) {
-        crumbs.push(searchKeywordsCrumb);
-      }
+      if (searchCrumb) crumbs.push(searchCrumb);
+      if (bibUrl) crumbs.push(bibCrumb);
       crumbs.push(
         <li key="subjectHeading">
           <Link to={`${baseUrl}/subject_headings`}>
             Subject Headings
           </Link>
-        </li>
-      );
+        </li>);
       if (type === 'subjectHeading') {
         crumbs.push(<li key="subjectHeadingDetails">Heading Details</li>);
       }
@@ -65,16 +67,8 @@ const Breadcrumbs = ({ query, type, bibUrl, itemUrl, edd }) => {
       return crumbs;
     }
 
-    if (query) {
-      crumbs.push(
-        <li key="search">
-          <Link to={`${baseUrl}/search?${query}`} onClick={() => onClick('Search Results')}>
-            Search Results
-          </Link>
-        </li>
-      );
-    } else if (searchKeywordsCrumb) {
-      crumbs.push(searchKeywordsCrumb);
+    if (searchCrumb) {
+      crumbs.push(searchCrumb);
     }
 
     if (type === 'bib') {
@@ -82,11 +76,7 @@ const Breadcrumbs = ({ query, type, bibUrl, itemUrl, edd }) => {
       return crumbs;
     }
 
-    crumbs.push(
-      <li key="bib">
-        <Link to={`${baseUrl}${bibUrl}`} onClick={() => onClick('Item Details')}>Item Details</Link>
-      </li>
-    );
+    crumbs.push(bibCrumb);
 
     if (type === 'hold') {
       crumbs.push(<li key="hold">Item Request</li>);
@@ -137,7 +127,7 @@ const Breadcrumbs = ({ query, type, bibUrl, itemUrl, edd }) => {
 };
 
 Breadcrumbs.propTypes = {
-  query: PropTypes.string,
+  searchUrl: PropTypes.string,
   type: PropTypes.string,
   bibUrl: PropTypes.string,
   itemUrl: PropTypes.string,
@@ -145,7 +135,6 @@ Breadcrumbs.propTypes = {
 };
 
 Breadcrumbs.defaultProps = {
-  query: '',
   type: '',
 };
 
