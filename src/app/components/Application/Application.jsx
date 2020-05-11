@@ -17,6 +17,7 @@ import {
 import Actions from '../../actions/Actions';
 import appConfig from '../../data/appConfig';
 import DataLoader from '../DataLoader/DataLoader';
+import style from '../../../client/styles/main.scss';
 
 class App extends React.Component {
   constructor(props) {
@@ -70,9 +71,10 @@ class App extends React.Component {
       }
     });
 
-    const mediaMatcher = window.matchMedia('(max-width: 700px)');
+    const mediaMatcher = window.matchMedia(`(max-width: ${style.mobileBreakPoint})`);
     this.checkMedia(mediaMatcher);
     mediaMatcher.addListener(this.checkMedia);
+    console.log('mobileBreakPoint: ', `(max-width: ${style.mobileBreakPoint})`);
   }
 
 
@@ -88,8 +90,8 @@ class App extends React.Component {
     this.setState({ data: Store.getState() });
   }
 
-  checkMedia(x) {
-    if (x.matches) {
+  checkMedia(media) {
+    if (media.matches) {
       this.setState({ media: 'mobile' });
     } else {
       this.setState({ media: 'desktop' });
