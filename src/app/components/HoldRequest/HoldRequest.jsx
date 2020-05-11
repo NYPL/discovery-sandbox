@@ -113,7 +113,7 @@ class HoldRequest extends React.Component {
       'recap-cul': 'Columbia',
     };
     const searchKeywordsQuery =
-      (this.props.searchKeywords) ? `searchKeywords=${this.props.searchKeywords}` : '';
+      (this.props.searchKeywords) ? `q=${this.props.searchKeywords}` : '';
     const searchKeywordsQueryPhysical = searchKeywordsQuery ? `&${searchKeywordsQuery}` : '';
     const fromUrlQuery = this.props.location.query && this.props.location.query.fromUrl ?
       `&fromUrl=${encodeURIComponent(this.props.location.query.fromUrl)}` : '';
@@ -288,7 +288,7 @@ class HoldRequest extends React.Component {
   }
 
   render() {
-    const searchKeywords = this.props.searchKeywords || '';
+    const searchKeywords = this.props.searchKeywords;
     const bib = (this.props.bib && !_isEmpty(this.props.bib)) ?
       this.props.bib : null;
     const title = (bib && _isArray(bib.title) && bib.title.length) ?
@@ -372,7 +372,7 @@ class HoldRequest extends React.Component {
               <div className="row">
                 <div className="nypl-column-full">
                   <Breadcrumbs
-                    query={`q=${searchKeywords}`}
+                    query={searchKeywords ? `q=${searchKeywords}` : null}
                     bibUrl={`/bib/${bibId}`}
                     type="hold"
                   />
@@ -426,7 +426,6 @@ HoldRequest.propTypes = {
 HoldRequest.defaultProps = {
   location: {},
   bib: {},
-  searchKeywords: '',
   params: {},
   deliveryLocations: [],
   isEddRequestable: false,

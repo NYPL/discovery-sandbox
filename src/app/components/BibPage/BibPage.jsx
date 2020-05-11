@@ -38,7 +38,6 @@ const BibPage = (props) => {
   // Related to removing MarcRecord because the webpack MarcRecord is not working. Sep/28/2017
   // const isNYPLReCAP = LibraryItem.isNYPLReCAP(bib['@id']);
   // const bNumber = bib && bib.idBnum ? bib.idBnum : '';
-  const searchURL = createAPIQuery({});
   const itemPage = location.search;
   const aggregatedElectronicResources = getAggregatedElectronicResources(items);
   let shortenItems = true;
@@ -127,6 +126,10 @@ const BibPage = (props) => {
       bottomDetails
       : <AdditionalDetailsViewer bib={bib} />
   );
+
+  const createAPIQuery = basicQuery(props);
+  const searchURL = createAPIQuery({});
+  console.log(searchURL);
 
   return (
     <DocumentTitle title="Item Details | Shared Collection Catalog | NYPL">
