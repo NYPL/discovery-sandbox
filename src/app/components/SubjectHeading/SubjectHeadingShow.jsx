@@ -45,6 +45,7 @@ class SubjectHeadingShow extends React.Component {
           mainHeading: {
             label: res.data.request.main_label,
           },
+          totalBibs: res.data.request.main_bib_count,
           contextIsLoading: false,
         }, () => {
           this.props.setBannerText(this.state.mainHeading.label);
@@ -112,21 +113,12 @@ class SubjectHeadingShow extends React.Component {
     return onMainPath;
   }
 
-  findBibCount(headings, uuid) {
-    return headings.reduce((acc, el) => (
-      acc ||
-      (el.uuid === uuid && el.bib_count) ||
-      (el.children && el.children.length && this.findBibCount(el.children, uuid))
-    ), null);
-  }
-
   processContextHeadings(headings, uuid) {
     if (!headings) return [];
     headings.forEach((heading) => {
       this.removeChildrenOffMainPath(heading, uuid);
       Range.addRangeData(heading, uuid, 'show');
     });
-    this.setState({ totalBibs: this.findBibCount(headings, uuid) });
     const mainHeadingIndex = headings.findIndex(heading =>
       heading.children || heading.uuid === uuid,
     );
