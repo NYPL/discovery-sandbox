@@ -194,7 +194,6 @@ class SubjectHeading extends React.Component {
 
   render() {
     const {
-      indentation,
       subjectHeading,
       location,
       location: {
@@ -208,7 +207,13 @@ class SubjectHeading extends React.Component {
       seeMoreLinkUrl,
     } = this.props;
 
-    const { container } = this.context;
+    let {
+      indentation,
+    } = this.props;
+
+    const { container, media } = this.context;
+
+    console.log(media);
 
     const {
       label,
@@ -251,6 +256,8 @@ class SubjectHeading extends React.Component {
 
       return <button {...props}>{symbol}</button>;
     };
+
+    if (media === 'mobile') indentation = 0;
 
     const positionStyle = container === 'related' ? null : { marginLeft: 30 * ((indentation || 0) + 1) };
     const isMain = (pathname + search).includes(uuid);
@@ -338,6 +345,7 @@ SubjectHeading.defaultProps = {
 SubjectHeading.contextTypes = {
   router: PropTypes.object,
   container: PropTypes.string,
+  media: PropTypes.string,
 };
 
 export default SubjectHeading;

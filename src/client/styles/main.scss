@@ -192,3 +192,7 @@ div {
     outline-offset: 0;
   }
 }
+
+:export {
+  mobileBreakPoint: $mobile-breakpoint;
+}
