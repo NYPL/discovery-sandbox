@@ -132,6 +132,7 @@ class SubjectHeadingsTableBody extends React.Component {
       sortBy,
       direction,
       updateSort,
+      marginSize,
     } = this.props;
 
     const {
@@ -154,6 +155,7 @@ class SubjectHeadingsTableBody extends React.Component {
             updateSort={updateSort}
             interactive={subjectHeadings.length > 1}
             numberOpen={numberOpen}
+            marginSize={marginSize}
           />
           : null
         }

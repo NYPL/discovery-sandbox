@@ -41,5 +41,15 @@
     @include media(1025px) {
       margin-left: 25px;
     }
+    @include media($mobile-breakpoint) {
+      margin-left: 0px;
+    }
+  }
+
+  .nypl-row.container-row {
+    @include media($mobile-breakpoint) {
+      padding-right: 0px;
+      padding-left: 10px;
+    }
   }
 }

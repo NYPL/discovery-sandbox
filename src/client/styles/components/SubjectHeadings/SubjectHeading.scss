@@ -36,6 +36,12 @@
         cursor: pointer;
       }
     }
+
+  }
+  .subjectHeadingAttribute {
+    @include media($mobile-breakpoint) {
+      vertical-align: top;
+    }
   }
 }
 
