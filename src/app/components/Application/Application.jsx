@@ -17,7 +17,7 @@ import {
 import Actions from '../../actions/Actions';
 import appConfig from '../../data/appConfig';
 import DataLoader from '../DataLoader/DataLoader';
-import style from '../../../client/styles/main.scss';
+// import style from '../../../client/styles/main.scss';
 
 class App extends React.Component {
   constructor(props) {
@@ -70,13 +70,14 @@ class App extends React.Component {
         });
       }
     });
-
+    const style = {
+      mobileBreakPoint: '965px',
+    };
     const mediaMatcher = window.matchMedia(`(max-width: ${style.mobileBreakPoint})`);
     this.checkMedia(mediaMatcher);
     mediaMatcher.addListener(this.checkMedia);
     console.log('mobileBreakPoint: ', `(max-width: ${style.mobileBreakPoint})`);
   }
-
 
   shouldStoreUpdate() {
     return `?${basicQuery({})(Store.getState())}` !== this.context.router.location.search;
