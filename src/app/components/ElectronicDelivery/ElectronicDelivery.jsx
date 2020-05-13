@@ -209,8 +209,7 @@ class ElectronicDelivery extends React.Component {
       && this.state.patron.emails.length
     ) ? this.state.patron.emails[0] : '';
 
-    const createAPIQuery = basicQuery(this.props);
-    const searchUrl = createAPIQuery({});
+    const searchUrl = basicQuery(this.props)({});
 
     return (
       <DocumentTitle title="Electronic Delivery Request | Shared Collection Catalog | NYPL">
