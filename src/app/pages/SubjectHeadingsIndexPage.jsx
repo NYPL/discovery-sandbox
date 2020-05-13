@@ -17,12 +17,15 @@ const SubjectHeadingsIndexPage = (props) => {
 
   const componentKey = `subjectHeadingIndex${search}`;
 
+  const bannerInnerHtml = filter ? <span key="bannerText">Subject Headings containing <em>{filter}</em></span> : <span key="bannerText">Subject Headings</span>
+
   return (
     <ShepContainer
       mainContent={<SubjectHeadingsIndex {...props} />}
       bannerOptions={
         {
-          text: ['Subject Headings', filter ? <span key="bannerText"> containing <em>{filter}</em></span> : ''],
+          text: bannerInnerHtml,
+          ariaLabel: filter ? `Subject Headings containing ${filter}` : 'Subject Headings'
         }
       }
       extraBannerElement={<SubjectHeadingSearch />}

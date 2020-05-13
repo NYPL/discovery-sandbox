@@ -21,19 +21,15 @@ class SubjectHeadingSearch extends React.Component {
     this.resetAutosuggest = this.resetAutosuggest.bind(this);
     this.changeActiveSuggestion = this.changeActiveSuggestion.bind(this);
     this.onFocus = this.onFocus.bind(this);
+    this.blurClickHandler = this.blurClickHandler.bind(this);
   }
 
   componentDidMount() {
-    const hasParentAutosuggest = (element) => {
-      if (element.id === 'autosuggest') return true;
-      if (element.parentElement) return hasParentAutosuggest(element.parentElement);
-      return false;
-    };
+    document.addEventListener('click', this.blurClickHandler);
+  }
 
-    document.addEventListener('click', (e) => {
-      console.log('document clicked ', e.target, e.currentTarget);
-      if (!hasParentAutosuggest(e.target)) this.setState({ hidden: true });
-    });
+  componentWillUnmount() {
+    document.removeEventListener('click', this.blurClickHandler);
   }
 
   onSubmit(submitEvent) {
@@ -53,6 +49,15 @@ class SubjectHeadingSearch extends React.Component {
 
   onFocus() {
     this.setState({ hidden: false });
+  }
+
+  blurClickHandler(e) {
+    const hasParentAutosuggest = (element) => {
+      if (element.id === 'autosuggest') return true;
+      if (element.parentElement) return hasParentAutosuggest(element.parentElement);
+      return false;
+    };
+    if (!hasParentAutosuggest(e.target)) this.setState({ hidden: true });
   }
 
   makeApiCallWithThrottle(timerId) {
