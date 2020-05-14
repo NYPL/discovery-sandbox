@@ -4,8 +4,7 @@ import PropTypes from 'prop-types';
 const LocalLoadingLayer = props => (
   <div className={`nypl-column-half ${props.classNames} subjectHeadingShowLoadingWrapper`}>
     <span
-      id="loading-animation"
-      className="loadingLayer-texts-loadingWord"
+      className="loading-animation loadingLayer-texts-loadingWord"
     >
       { props.message }
     </span>

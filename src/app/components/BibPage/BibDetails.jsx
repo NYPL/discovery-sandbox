@@ -184,7 +184,7 @@ class BibDetails extends React.Component {
           bibValues.map((value) => {
             const url = `filters[${fieldValue}]=${value}`;
             return (
-              <li key={`filter${fieldValue}${value}`}>
+              <li key={`filter${fieldValue}${value.label}`}>
                 {this.getDefinitionOneItem(
                   value,
                   url,
