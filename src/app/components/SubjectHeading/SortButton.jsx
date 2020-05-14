@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import AscendingIcon from '../../../client/assets/Ascending';
-import DescendingIcon from '../../../client/assets/Descending';
-import DefaultIcon from '../../../client/assets/Default';
+import AscendingIcon from '../../../client/icons/Ascending';
+import DescendingIcon from '../../../client/icons/Descending';
+import DefaultIcon from '../../../client/icons/DefaultSort';
 
 const SortButton = (props) => {
   const {

@@ -13,12 +13,12 @@ const ShepContainer = (props) => {
               <Breadcrumbs
                 type={props.breadcrumbsType}
               />
-              { props.extraBannerElement }
               <h1
                 aria-label={props.bannerOptions.ariaLabel || props.bannerOptions.text}
               >
                 { props.bannerOptions.text }
               </h1>
+              { props.extraBannerElement }
             </div>
           </div>
         </div>

@@ -170,7 +170,8 @@ class SubjectHeading extends React.Component {
             narrower,
             next_url,
           } = resp.data;
-          narrower.forEach((child) => { child.indentation = (indentation || 0) + 1; });
+          if (!narrower) return;
+          narrower.forEach((child) => {child.indentation = (indentation || 0) + 1; });
           if (next_url) {
             narrower.push({
               button: 'next',

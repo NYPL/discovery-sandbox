@@ -4,6 +4,7 @@ import axios from 'axios';
 import appConfig from '../../../data/appConfig';
 
 import AutosuggestItem from './AutosuggestItem';
+import SearchIcon from '../../../../client/icons/SearchIcon';
 
 class SubjectHeadingSearch extends React.Component {
   constructor(props) {
@@ -161,14 +162,22 @@ class SubjectHeadingSearch extends React.Component {
         id="mainContent"
       >
         <div className="autocomplete-field">
-          <label htmlFor="autosuggest">Subject Heading Search:</label>
-          <input
-            id="autosuggest"
-            type="text"
-            onChange={onChange}
-            value={userInput}
-            placeholder="Subject"
-          />
+          <label htmlFor="autosuggest">Subject Heading Search</label>
+          <div className="autosuggestInput">
+            <input
+              id="autosuggest"
+              type="text"
+              onChange={onChange}
+              value={userInput}
+              placeholder="Subject"
+            />
+            <button
+              onSubmit={onSubmit}
+              type="submit"
+            >
+              <SearchIcon />
+            </button>
+          </div>
           {suggestionsListComponent}
         </div>
       </form>

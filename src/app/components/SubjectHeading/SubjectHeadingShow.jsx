@@ -165,7 +165,6 @@ class SubjectHeadingShow extends React.Component {
           {relatedHeadings ?
             <div
               className="nypl-column-half subjectHeadingInfoBox"
-              tabIndex='0'
               aria-label="Related Subject Headings"
             >
               <div className="backgroundContainer">
