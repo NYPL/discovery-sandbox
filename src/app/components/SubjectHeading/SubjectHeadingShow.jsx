@@ -25,6 +25,7 @@ class SubjectHeadingShow extends React.Component {
       contextError: null,
       contextIsLoading: true,
       contextHeadings: [],
+      totalBibs: null,
     };
 
     this.generateFullContextUrl = this.generateFullContextUrl.bind(this);
@@ -39,11 +40,22 @@ class SubjectHeadingShow extends React.Component {
 
     axios(`${appConfig.baseUrl}/api/subjectHeadings/subject_headings/${uuid}/context`)
       .then((res) => {
-        this.setState({
-          contextHeadings: this.processContextHeadings(res.data.subject_headings, uuid),
-          mainHeading: {
-            label: res.data.request.main_label,
+        const {
+          data: {
+            subject_headings,
+            main_heading: {
+              label,
+              bib_count,
+            },
           },
+        } = res;
+
+        this.setState({
+          contextHeadings: this.processContextHeadings(subject_headings, uuid),
+          mainHeading: {
+            label,
+          },
+          totalBibs: bib_count,
           contextIsLoading: false,
         }, () => {
           this.props.setBannerText(this.state.mainHeading.label);
@@ -133,9 +145,10 @@ class SubjectHeadingShow extends React.Component {
       relatedHeadings,
       error,
       mainHeading,
+      totalBibs,
     } = this.state;
 
-    const { uuid } = mainHeading;
+    const { uuid, label } = mainHeading;
 
     const { location } = this.props;
 
@@ -150,6 +163,8 @@ class SubjectHeadingShow extends React.Component {
         <BibsList
           uuid={uuid}
           key={this.context.router.location.search}
+          total={totalBibs}
+          label={label}
         />
         <div
           className="nypl-column-half subjectHeadingsSideBar"
