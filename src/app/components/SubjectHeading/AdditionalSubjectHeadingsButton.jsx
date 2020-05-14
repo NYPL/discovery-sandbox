@@ -66,7 +66,7 @@ class AdditionalSubjectHeadingsButton extends React.Component {
 
     return (
       <tr
-        className={`subjectHeadingRow ${previous || noEllipse ? '' : 'ellipse'}`}
+        className={`subjectHeadingRow seeMore ${previous || noEllipse ? '' : 'ellipse'}`}
       >
         <td className="subjectHeadingsTableCell" colSpan="4">
           <div className="subjectHeadingLabelInner" style={{ marginLeft: `${marginSize * indentation}px` }}>
