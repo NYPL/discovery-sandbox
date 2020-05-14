@@ -83,6 +83,7 @@ class SubjectHeadingsTableBody extends React.Component {
       seeMoreText,
       seeMoreLinkUrl,
       preOpen,
+      marginSize
     } = this.props;
 
 
@@ -99,6 +100,7 @@ class SubjectHeadingsTableBody extends React.Component {
           linkUrl={seeMoreLinkUrl}
           text={seeMoreText}
           noEllipse={listItem.noEllipse}
+          marginSize={marginSize}
         />
       );
     }

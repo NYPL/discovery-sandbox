@@ -24,6 +24,7 @@ class AdditionalSubjectHeadingsButton extends React.Component {
       text,
       linkUrl,
       noEllipse,
+      marginSize,
     } = this.props;
 
     if (this.state.hidden) return null;
@@ -68,7 +69,7 @@ class AdditionalSubjectHeadingsButton extends React.Component {
         className={`subjectHeadingRow ${previous || noEllipse ? '' : 'ellipse'}`}
       >
         <td className="subjectHeadingsTableCell" colSpan="4">
-          <div className="subjectHeadingLabelInner" style={{ marginLeft: `${30 * indentation}px` }}>
+          <div className="subjectHeadingLabelInner" style={{ marginLeft: `${marginSize * indentation}px` }}>
             {
               content
             }

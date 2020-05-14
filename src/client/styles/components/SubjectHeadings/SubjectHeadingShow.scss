@@ -35,7 +35,7 @@
   }
 
   .subjectHeadingToggle {
-    display: none;
+    display: none !important;
   }
 
   .subjectHeadingLabelInner {
@@ -60,12 +60,15 @@
       }
     }
   }
+
   h4 {
     font-size: 16px;
   }
+
   .subjectHeadingLabelContainer {
     padding: 2px;
   }
+
   .subjectHeadingAttribute {
     padding-right: 1%;
   }
@@ -73,5 +76,15 @@
   th {
     font-size: 12px;
     min-width: 45px;
+  }
+}
+
+@include media($mobile-breakpoint) {
+  .subjectHeadingsSideBar {
+    float: inherit;
+  }
+
+  .subjectHeadingInfoBox {
+    min-width: auto;
   }
 }

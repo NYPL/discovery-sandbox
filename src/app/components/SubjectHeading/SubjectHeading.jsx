@@ -196,25 +196,22 @@ class SubjectHeading extends React.Component {
   render() {
     const {
       subjectHeading,
-      location,
-      location: {
-        pathname,
-        search,
-      } = {
-        pathname: '',
-        search: '',
-      },
       seeMoreText,
       seeMoreLinkUrl,
-    } = this.props;
-
-    let {
       indentation,
     } = this.props;
 
-    const { container, media } = this.context;
+    const {
+      location: {
+        pathname,
+        search,
+        query: {
+          filter,
+        },
+      },
+    } = this.context.router;
 
-    console.log(media);
+    const { container, media } = this.context;
 
     const {
       label,
@@ -258,11 +255,22 @@ class SubjectHeading extends React.Component {
       return <button {...props}>{symbol}</button>;
     };
 
-    // if (media === 'mobile') indentation = 0;
     const marginSize = media === 'mobile' ? 10 : 30;
 
     const positionStyle = container === 'related' ? null : { marginLeft: marginSize * ((indentation || 0) + 1) };
     const isMain = (pathname + search).includes(uuid);
+
+    const topLevel = indentation === 0;
+
+    const showRest = (
+      rest !== '' &&
+      container !== 'context' &&
+      (
+        media !== 'mobile' &&
+        (!filter ||
+        (filter && topLevel))
+      )
+    );
 
     // changes to HTML structure here will need to be replicated in ./SubjectHeadingTableHeader
     return (
@@ -271,8 +279,7 @@ class SubjectHeading extends React.Component {
           className={`
             subjectHeadingRow
             ${open && narrower.length ? 'openSubjectHeading' : ''}
-            ${indentation === 0 ? 'topLevel' : ''}
-            ${indentation !== 0 ? 'nestedSubjectHeading' : ''}
+            ${topLevel ? 'topLevel' : 'nestedSubjectHeading'}
           `}
         >
           <td className={`subjectHeadingsTableCell subjectHeadingLabel ${onMainPath ? 'selected' : ''}`} >
@@ -283,11 +290,11 @@ class SubjectHeading extends React.Component {
                   className={`emph ${isMain ? 'mainHeading' : ''}`}
                 >
                   {
-                    rest === '' || container === 'context' || media === 'mobile' ?
-                    null :
-                    <span className="noEmph">
-                      {`${rest}\u0020--\u00a0`}
-                    </span>
+                    showRest ?
+                      <span className="noEmph">
+                        {`${rest}\u0020--\u00a0`}
+                      </span> :
+                      null
                   }
                   {emph}
                 </span>

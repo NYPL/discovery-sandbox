@@ -83,3 +83,24 @@
 a:focus {
   background-color: inherit;
 }
+
+@include media($mobile-breakpoint) {
+  .subjectHeadingsTable {
+    th {
+      min-width: 30px;
+    }
+  }
+
+  .subjectHeadingsTableCell.subjectHeadingLabel {
+    min-width: unset;
+    width: auto;
+  }
+
+  .subjectHeadingsTable:not(.related) .subjectHeadingsTableCell.subjectHeadingLabel{
+    padding-left: 22px;
+  }
+
+  .ellipse .subjectHeadingsTableCell {
+    padding-left: 22px;
+  }
+}

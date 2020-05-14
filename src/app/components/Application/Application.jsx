@@ -1,3 +1,4 @@
+/* global window */
 import React from 'react';
 import PropTypes from 'prop-types';
 import DocumentTitle from 'react-document-title';
@@ -17,7 +18,6 @@ import {
 import Actions from '../../actions/Actions';
 import appConfig from '../../data/appConfig';
 import DataLoader from '../DataLoader/DataLoader';
-// import style from '../../../client/styles/main.scss';
 
 class App extends React.Component {
   constructor(props) {
@@ -76,7 +76,6 @@ class App extends React.Component {
     const mediaMatcher = window.matchMedia(`(max-width: ${style.mobileBreakPoint})`);
     this.checkMedia(mediaMatcher);
     mediaMatcher.addListener(this.checkMedia);
-    console.log('mobileBreakPoint: ', `(max-width: ${style.mobileBreakPoint})`);
   }
 
   shouldStoreUpdate() {
@@ -148,6 +147,5 @@ App.contextTypes = {
 App.childContextTypes = {
   media: PropTypes.string,
 };
-
 
 export default App;

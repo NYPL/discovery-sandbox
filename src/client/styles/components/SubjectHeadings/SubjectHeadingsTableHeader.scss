@@ -25,4 +25,10 @@
   .headingColumnHeader {
     padding-left: 32px;
   }
+
+  @include media($mobile-breakpoint) {
+    .headingColumnHeader {
+      padding-left: 12px;
+    }
+  }
 }
