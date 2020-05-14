@@ -3,7 +3,7 @@ import React from 'react';
 import sinon from 'sinon';
 import axios from 'axios';
 import { expect } from 'chai';
-import Enzyme, { shallow, mount } from 'enzyme';
+import Enzyme, { mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 
 import DataLoader from './../../src/app/components/DataLoader/DataLoader';
@@ -19,9 +19,6 @@ describe('DataLoader', () => {
     let bibAction;
     let axiosStub;
     const axiosCalls = [];
-    const location = {
-      pathname: '/research/collections/shared-collection-catalog/nonMatchingPath',
-    };
 
     before(() => {
       loadingAction = sinon.spy(Actions, 'updateLoadingStatus');

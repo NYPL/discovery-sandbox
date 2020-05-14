@@ -18,7 +18,7 @@ import Actions from '../../actions/Actions';
 import appConfig from '../../data/appConfig';
 import DataLoader from '../DataLoader/DataLoader';
 
-class App extends React.Component {
+class Application extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -109,19 +109,19 @@ class App extends React.Component {
   }
 }
 
-App.propTypes = {
+Application.propTypes = {
   children: PropTypes.object,
   location: PropTypes.object,
 };
 
-App.defaultProps = {
+Application.defaultProps = {
   children: {},
   location: {},
 };
 
-App.contextTypes = {
+Application.contextTypes = {
   router: PropTypes.object,
 };
 
 
-export default App;
+export default Application;

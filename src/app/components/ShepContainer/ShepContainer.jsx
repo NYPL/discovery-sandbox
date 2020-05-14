@@ -11,7 +11,8 @@ const ShepContainer = (props) => {
           <div className="nypl-row container-row">
             <div className="nypl-column-full">
               <Breadcrumbs
-                type={props.breadcrumbsType}
+                type={props.breadcrumbProps.type}
+                {...props.breadcrumbProps.urls}
               />
               <h1
                 aria-label={props.bannerOptions.ariaLabel || props.bannerOptions.text}
@@ -44,7 +45,7 @@ ShepContainer.propTypes = {
   secondaryExtraBannerElement: PropTypes.element,
   extraRow: PropTypes.element,
   loadingLayerText: PropTypes.string,
-  breadcrumbsType: PropTypes.string,
+  breadcrumbProps: PropTypes.object,
   bannerOptions: PropTypes.object,
 };
 
@@ -52,6 +53,10 @@ ShepContainer.defaultProps = {
   mainContent: null,
   extraBannerElement: null,
   loadingLayerText: "Loading",
+  breadcrumbProps: {
+    type: '',
+    breadcrumbUrls: {},
+  },
 };
 
 export default ShepContainer;

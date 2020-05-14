@@ -12,7 +12,10 @@ import DocumentTitle from 'react-document-title';
 import PatronStore from '../../stores/PatronStore';
 import appConfig from '../../data/appConfig';
 import Breadcrumbs from '../Breadcrumbs/Breadcrumbs';
-import { trackDiscovery } from '../../utils/utils';
+import {
+  trackDiscovery,
+  basicQuery,
+} from '../../utils/utils';
 
 class HoldConfirmation extends React.Component {
   constructor(props) {
@@ -341,6 +344,8 @@ class HoldConfirmation extends React.Component {
       trackDiscovery('Error', 'Hold Confirmation');
     }
 
+    const searchUrl = basicQuery(this.props)({});
+
     return (
       <DocumentTitle title={`${confirmationPageTitle} | Shared Collection Catalog | NYPL`}>
         <main className="main-page">
@@ -349,7 +354,7 @@ class HoldConfirmation extends React.Component {
               <div className="nypl-full-width-wrapper">
                 <div className="nypl-column-full">
                   <Breadcrumbs
-                    query={this.props.location.query.searchKeywords}
+                    searchUrl={searchUrl}
                     type="confirmation"
                     bibUrl={`/bib/${bibId}`}
                     itemUrl={`/hold/request/${bibId}-${itemId}`}

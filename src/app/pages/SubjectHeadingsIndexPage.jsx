@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import ShepContainer from '../components/ShepContainer/ShepContainer';
 import SubjectHeadingsIndex from '../components/SubjectHeading/SubjectHeadingsIndex';
 import SubjectHeadingSearch from '../components/SubjectHeading/Search/SubjectHeadingSearch';
+import { basicQuery } from '../utils/utils';
 
 const SubjectHeadingsIndexPage = (props) => {
   const {
@@ -16,6 +17,10 @@ const SubjectHeadingsIndexPage = (props) => {
   } = props;
 
   const componentKey = `subjectHeadingIndex${search}`;
+  const breadcrumbUrls = {}
+  const searchUrl = basicQuery(props)({});
+  if (searchUrl) breadcrumbUrls.searchUrl = searchUrl;
+  if (props.bib.uri) breadcrumbUrls.bibUrl = `/bib/${props.bib.uri}`;
 
   const bannerInnerHtml = filter ? <span key="bannerText">Subject Headings containing <em>{filter}</em></span> : <span key="bannerText">Subject Headings</span>
 
@@ -30,7 +35,10 @@ const SubjectHeadingsIndexPage = (props) => {
       }
       extraBannerElement={<SubjectHeadingSearch />}
       loadingLayerText="Subject Headings"
-      breadcrumbsType="subjectHeadings"
+      breadcrumbProps={{
+        type: 'subjectHeadings',
+        urls: breadcrumbUrls,
+      }}
       key={componentKey}
     />
   );

@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import ShepContainer from '../components/ShepContainer/ShepContainer';
 import SubjectHeadingShow from '../components/SubjectHeading/SubjectHeadingShow';
 import SubjectHeadingSearch from '../components/SubjectHeading/Search/SubjectHeadingSearch';
+import { basicQuery } from '../utils/utils';
 
 const SubjectHeadingShowPage = (props) => {
   const {
@@ -13,6 +14,10 @@ const SubjectHeadingShowPage = (props) => {
   } = props;
 
   const [label, setLabel] = useState('');
+  const breadcrumbUrls = {};
+  const searchUrl = basicQuery(props)({});
+  if (searchUrl) breadcrumbUrls.searchUrl = searchUrl;
+  if (props.bib.uri) breadcrumbUrls.bibUrl = `/bib/${props.bib.uri}`;
 
   return (
     <ShepContainer
@@ -30,13 +35,21 @@ const SubjectHeadingShowPage = (props) => {
       }
       extraBannerElement={<SubjectHeadingSearch />}
       loadingLayerText="Subject Heading"
-      breadcrumbsType="subjectHeading"
+      breadcrumbProps={{
+        type: 'subjectHeading',
+        urls: breadcrumbUrls,
+      }}
     />
   );
 };
 
 SubjectHeadingShowPage.propTypes = {
   params: PropTypes.object,
+  bib: PropTypes.object,
+};
+
+SubjectHeadingShowPage.defaultProps = {
+  bib: {},
 };
 
 export default SubjectHeadingShowPage;

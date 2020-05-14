@@ -5,8 +5,8 @@ import { Link } from 'react-router';
 import { trackDiscovery } from '../../utils/utils';
 import appConfig from '../../data/appConfig';
 
-const BibPage = ({ searchURL, searchKeywords = '' }) => {
-  if (!searchURL) {
+const BackLink = ({ searchUrl, searchKeywords = '' }) => {
+  if (!searchUrl) {
     return null;
   }
 
@@ -15,16 +15,16 @@ const BibPage = ({ searchURL, searchKeywords = '' }) => {
       title={`Go back to search results ${searchKeywords ? `for ${searchKeywords}` : ''}`}
       className="nypl-back-link"
       onClick={() => trackDiscovery('Back', 'Back to Search')}
-      to={`${appConfig.baseUrl}/search?${searchURL}`}
+      to={`${appConfig.baseUrl}/search?${searchUrl}`}
     >
       Back to Results
     </Link>
   );
 };
 
-BibPage.propTypes = {
+BackLink.propTypes = {
   searchKeywords: PropTypes.string,
-  searchURL: PropTypes.string,
+  searchUrl: PropTypes.string,
 };
 
-export default BibPage;
+export default BackLink;
