@@ -50,10 +50,6 @@
   line-height: 32px;
   background-color: $subjectHeadingBackground;
 
-  &.ellipse {
-    border-bottom: none;
-  }
-
   .selected .emph {
     font-weight: 700;
   }
@@ -61,6 +57,10 @@
   &.openSubjectHeading {
     border-bottom: 0;
   }
+}
+
+.index .ellipse {
+  border-bottom: none;
 }
 
 .index .nestedSubjectHeading .emph {
@@ -101,7 +101,7 @@ a:focus {
   }
 
   .seeMore .subjectHeadingsTableCell {
-    padding-left: 12px;
+    padding-left: 3px;
   }
 
   .subjectHeadingToggle {
