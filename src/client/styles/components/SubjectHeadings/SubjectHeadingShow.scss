@@ -81,7 +81,7 @@
 
 @include media($mobile-breakpoint) {
   .subjectHeadingsSideBar {
-    float: inherit;
+    float: left;
   }
 
   .subjectHeadingInfoBox {
