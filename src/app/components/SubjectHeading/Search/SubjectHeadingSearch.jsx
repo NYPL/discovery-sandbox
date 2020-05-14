@@ -1,3 +1,4 @@
+/* global document */
 import React from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
@@ -31,7 +32,6 @@ class SubjectHeadingSearch extends React.Component {
     };
 
     document.addEventListener('click', (e) => {
-      console.log('document clicked ', e.target, e.currentTarget);
       if (!hasParentAutosuggest(e.target)) this.setState({ hidden: true });
     });
   }
