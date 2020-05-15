@@ -45,7 +45,7 @@
   }
 }
 
-.subjectHeadingRow {
+tbody .subjectHeadingRow {
   border-bottom: $table-row-border;
   line-height: 32px;
   background-color: $subjectHeadingBackground;
@@ -53,10 +53,10 @@
   .selected .emph {
     font-weight: 700;
   }
+}
 
-  &.openSubjectHeading {
-    border-bottom: 0;
-  }
+.index .openSubjectHeading {
+  border-bottom: 0;
 }
 
 .index .ellipse {
@@ -87,7 +87,7 @@ a:focus {
 @include media($mobile-breakpoint) {
   .subjectHeadingsTable {
     th {
-      min-width: 30px;
+      min-width: 32px;
     }
   }
 
@@ -96,12 +96,10 @@ a:focus {
     width: auto;
   }
 
-  .subjectHeadingsTable:not(.related) .subjectHeadingsTableCell.subjectHeadingLabel{
+  .subjectHeadingsTable:not(.related) .subjectHeadingsTableCell.subjectHeadingLabel,
+  .seeMore .subjectHeadingsTableCell
+  {
     padding-left: 22px;
-  }
-
-  .seeMore .subjectHeadingsTableCell {
-    padding-left: 3px;
   }
 
   .subjectHeadingToggle {

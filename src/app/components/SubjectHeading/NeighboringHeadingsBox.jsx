@@ -20,48 +20,34 @@ class NeighboringHeadingsBox extends React.Component {
       contextError,
     } = this.props;
 
-    let content;
-
     if (contextError) {
-      content = (<div>Error loading neighboring headings</div>);
+      return (<div>Error loading neighboring headings</div>);
     } else if (contextIsLoading) {
-      content = (<LocalLoadingLayer message="Loading More Subject Headings" />);
-    } else {
-      content = (
-        <SubjectHeadingsTable
-          subjectHeadings={contextHeadings}
-          location={location}
-          showId={uuid}
-          keyId="context"
-          container="context"
-          seeMoreLinkUrl={linkUrl}
-          seeMoreText="See More in Subject Headings Index"
-          tfootContent={
-            <tr>
-              <td>
-                <Link
-                  to={linkUrl}
-                  className="toIndex"
-                >
-                  Explore more in Subject Heading index
-                </Link>
-              </td>
-            </tr>
-          }
-        />
-      );
+      return (<LocalLoadingLayer message="Loading More Subject Headings" />);
     }
-
     return (
-      <div
-        className="nypl-column-half subjectHeadingInfoBox"
-        aria-label="Neighboring Subject Headings"
-      >
-        <div className="backgroundContainer">
-          <h4>Neighboring Subject Headings</h4>
-        </div>
-        {content}
-      </div>
+      <SubjectHeadingsTable
+        subjectHeadings={contextHeadings}
+        location={location}
+        showId={uuid}
+        keyId="context"
+        container="context"
+        seeMoreLinkUrl={linkUrl}
+        seeMoreText="See More in Subject Headings Index"
+        tableHeaderText="Neighboring Subject Headings"
+        tfootContent={
+          <tr>
+            <td>
+              <Link
+                to={linkUrl}
+                className="toIndex"
+              >
+                Explore more in Subject Heading index
+              </Link>
+            </td>
+          </tr>
+        }
+      />
     );
   }
 }

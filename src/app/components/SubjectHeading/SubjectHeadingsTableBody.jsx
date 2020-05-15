@@ -92,7 +92,7 @@ class SubjectHeadingsTableBody extends React.Component {
     if (listItem.button) {
       return (
         <AdditionalSubjectHeadingsButton
-          indentation={listItem.indentation || indentation}
+          indentation={listItem.indentation + 1 || indentation + 1}
           button={listItem.button}
           updateParent={listItem.updateParent}
           key={`${listItem.button}${listItem.indentation}${index}`}

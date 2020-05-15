@@ -163,20 +163,13 @@ class SubjectHeadingShow extends React.Component {
             contextError={contextError}
           />
           {relatedHeadings ?
-            <div
-              className="nypl-column-half subjectHeadingInfoBox"
-              aria-label="Related Subject Headings"
-            >
-              <div className="backgroundContainer">
-                <h4>Related Headings</h4>
-              </div>
-              <SubjectHeadingsTable
-                subjectHeadings={relatedHeadings}
-                location={location}
-                keyId="related"
-                container="related"
-              />
-            </div>
+            <SubjectHeadingsTable
+              subjectHeadings={relatedHeadings}
+              location={location}
+              keyId="related"
+              container="related"
+              tableHeaderText="Related Headings"
+            />
             : null
           }
         </div>

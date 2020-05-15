@@ -7,11 +7,26 @@ const SubjectHeadingsTableHeader = (props) => {
   const {
     updateSort,
     selected,
+    container,
+    tableHeaderText,
   } = props;
 
   return (
-    <thead className="SubjectHeadingTableHeader">
-      <tr>
+    <thead>
+      {
+        ['related', 'context'].includes(container) ?
+          <tr
+            className="subjectHeadingRow"
+          >
+            <td className="subjectHeadingsTableCell" colSpan="4">
+              <h4 className="sideBarContentHeading">
+                {tableHeaderText}
+              </h4>
+            </td>
+          </tr>
+          : null
+      }
+      <tr className="subjectHeadingRow">
         <th className={`headingColumnHeader ${selected === 'alphabetical' ? 'selectedColumn' : ''}`}>
           <SortButton handler={updateSort} type="alphabetical" />
         </th>

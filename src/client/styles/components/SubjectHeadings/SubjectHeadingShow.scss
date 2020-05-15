@@ -1,7 +1,12 @@
 .subjectHeadingsSideBar {
   display: flex;
   flex-direction: column;
+
+  .subjectHeadingsTable {
+    width: fit-content;
+  }
 }
+
 .subjectHeadingInfoBox {
   border-color: #000000;
   border-style: solid;
@@ -9,7 +14,7 @@
   justify-self: end;
   width: 100%;
 
-  .backgroundContainer {
+  .sideBarContentHeading {
     padding-left: 5px;
     background-color: $subject-heading-table-header;
   }
@@ -17,7 +22,6 @@
   .toIndex {
     font-size: 14px;
     min-height: 32px;
-    padding-left: 10px;
     text-decoration: none;
   }
 
@@ -50,15 +54,6 @@
 
   .subjectHeadingsTableCell {
     font-size: 12px;
-
-    &.subjectHeadingLabel {
-      min-width: 270px;
-      width: 500px;
-
-      &.selected {
-        width: 700px;
-      }
-    }
   }
 
   h4 {
@@ -82,6 +77,11 @@
 @include media($mobile-breakpoint) {
   .subjectHeadingsSideBar {
     float: left;
+    width: 100%;
+
+    .subjectHeadingsTable {
+      width: 100%;
+    }
   }
 
   .subjectHeadingInfoBox {

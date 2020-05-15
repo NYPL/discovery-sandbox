@@ -1,5 +1,4 @@
 .subjectHeadingsTable thead {
-  border-bottom: 1.5px solid #000000;
   line-height: 2.5;
 
   th {
@@ -19,6 +18,10 @@
     display: flex;
     padding-left: 5px;
   }
+}
+
+.index thead {
+  border-bottom: 1.5px solid #000000;
 }
 
 .subjectHeadingsTable:not(.related) {
