@@ -96,13 +96,15 @@ a:focus {
     width: auto;
   }
 
+  .subjectHeadingToggle {
+    left: -32px;
+  }
+}
+
+@include media($xtrasmall-breakpoint) {
   .subjectHeadingsTable:not(.related) .subjectHeadingsTableCell.subjectHeadingLabel,
   .seeMore .subjectHeadingsTableCell
   {
     padding-left: 22px;
-  }
-
-  .subjectHeadingToggle {
-    left: -32px;
   }
 }

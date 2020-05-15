@@ -71,9 +71,9 @@ class App extends React.Component {
       }
     });
     const style = {
-      mobileBreakPoint: '965px',
+      xtrasmallBreakPoint: '483px',
     };
-    const mediaMatcher = window.matchMedia(`(max-width: ${style.mobileBreakPoint})`);
+    const mediaMatcher = window.matchMedia(`(max-width: ${style.xtrasmallBreakPoint})`);
     this.checkMedia(mediaMatcher);
     mediaMatcher.addListener(this.checkMedia);
   }
