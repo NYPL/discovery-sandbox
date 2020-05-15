@@ -3,59 +3,115 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 import { isEmpty as _isEmpty } from 'underscore';
 
+import {
+  trackDiscovery,
+  ajaxCall,
+} from '../../utils/utils';
+import Actions from '@Actions';
+
 import appConfig from '../../data/appConfig';
 
-const ItemTableRow = ({ item, bibId, getRecord, searchKeywords }) => {
-  if (_isEmpty(item)) {
-    return null;
+class ItemTableRow extends React.PureComponent {
+  constructor(props) {
+    super(props);
+    this.getItemRecord = this.getItemRecord.bind(this);
   }
 
-  if (item.isElectronicResource) {
-    return null;
+  getItemRecord(e) {
+    e.preventDefault();
+    const {
+      bibId,
+      item,
+    } = this.props;
+
+    Actions.updateLoadingStatus(true);
+
+    trackDiscovery('Item Request', 'Search Results');
+    ajaxCall(`${appConfig.baseUrl}/api/hold/request/${bibId}-${item.id}`,
+      (response) => {
+        Actions.updateBib(response.data.bib);
+        Actions.updateDeliveryLocations(response.data.deliveryLocations);
+        Actions.updateIsEddRequestable(response.data.isEddRequestable);
+        setTimeout(() => {
+          Actions.updateLoadingStatus(false);
+          this.context.router.push(`${appConfig.baseUrl}/hold/request/${bibId}-${item.id}`);
+        }, 500);
+      },
+      (error) => {
+        setTimeout(() => {
+          Actions.updateLoadingStatus(false);
+        }, 500);
+
+        // eslint-disable-next-line no-console
+        console.error(
+          'Error attemping to make an ajax request to fetch an item in ResultsList',
+          error,
+        );
+      },
+    );
   }
 
-  const status = item.status && item.status.prefLabel ? item.status.prefLabel : ' ';
-  let itemRequestBtn = <span>{status}</span>;
-  let itemCallNumber = ' ';
+  render() {
+    const {
+      item,
+      bibId,
+      searchKeywords,
+    } = this.props;
 
-  if (item.requestable) {
-    if (item.isRecap) {
-      itemRequestBtn = item.available ?
-        (<Link
-          to={
-            `${appConfig.baseUrl}/hold/request/${bibId}-${item.id}?searchKeywords=${searchKeywords}`
-          }
-          onClick={e => getRecord(e, bibId, item.id)}
-          tabIndex="0"
-        >
-          Request
-        </Link>) :
-        <span>In Use</span>;
-    } else if (item.nonRecapNYPL) {
-      // Not in ReCAP
-      itemRequestBtn = <span>{status}</span>;
+    if (_isEmpty(item)) {
+      return null;
     }
-  }
 
-  if (item.callNumber) {
-    itemCallNumber = item.callNumber;
-  }
+    if (item.isElectronicResource) {
+      return null;
+    }
 
-  return (
-    <tr className={item.availability}>
-      <td>{item.location || ' '}</td>
-      <td>{itemCallNumber}</td>
-      <td>{itemRequestBtn}</td>
-      <td>{item.accessMessage.prefLabel || ' '}</td>
-    </tr>
-  );
-};
+    const status = item.status && item.status.prefLabel ? item.status.prefLabel : ' ';
+    let itemRequestBtn = <span>{status}</span>;
+    let itemCallNumber = ' ';
+
+    if (item.requestable) {
+      if (item.isRecap) {
+        itemRequestBtn = item.available ?
+          (<Link
+            to={
+              `${appConfig.baseUrl}/hold/request/${bibId}-${item.id}?searchKeywords=${searchKeywords}`
+            }
+            onClick={e => this.getItemRecord(e)}
+            tabIndex="0"
+          >
+            Request
+          </Link>) :
+          <span>In Use</span>;
+      } else if (item.nonRecapNYPL) {
+        // Not in ReCAP
+        itemRequestBtn = <span>{status}</span>;
+      }
+    }
+
+    if (item.callNumber) {
+      itemCallNumber = item.callNumber;
+    }
+
+    return (
+      <tr className={item.availability}>
+        <td>{item.location || ' '}</td>
+        <td>{itemCallNumber}</td>
+        <td>{itemRequestBtn}</td>
+        <td>{item.accessMessage.prefLabel || ' '}</td>
+      </tr>
+    );
+  }
+}
 
 ItemTableRow.propTypes = {
   item: PropTypes.object,
   bibId: PropTypes.string,
   searchKeywords: PropTypes.string,
-  getRecord: PropTypes.func,
+};
+
+ItemTableRow.contextTypes = {
+  router: PropTypes.object,
 };
 
 export default ItemTableRow;

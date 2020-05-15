@@ -6,7 +6,6 @@ import Adapter from 'enzyme-adapter-react-16';
 
 // Import the component that is going to be tested
 import BibDetails from './../../src/app/components/BibPage/BibDetails';
-import DefinitionList from './../../src/app/components/BibPage/DefinitionList';
 
 Enzyme.configure({ adapter: new Adapter() });
 const bibs = [

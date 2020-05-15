@@ -3,6 +3,7 @@ import React from 'react';
 import { expect } from 'chai';
 import Enzyme, { shallow } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
+import sinon from 'sinon';
 
 // Import the component that is going to be tested
 import ItemTableRow from './../../src/app/components/Item/ItemTableRow';
@@ -252,17 +253,13 @@ describe('ItemTableRow', () => {
 
     describe('Requestable ReCAP available item', () => {
       const data = item.requestable_ReCAP_available;
-      let dummyBibId;
-      let dummyItemId;
       let component;
-      const getRecord = (e, bibId, itemId) => {
-        dummyBibId = bibId;
-        dummyItemId = itemId;
-      };
+      let getItemRecord;
 
       before(() => {
+        getItemRecord = sinon.spy(ItemTableRow.prototype, 'getItemRecord');
         component =
-          shallow(<ItemTableRow item={data} getRecord={getRecord} bibId="b12345" />);
+          shallow(<ItemTableRow item={data} bibId="b12345" />);
       });
 
       it('should render the Request button the third <td> column data', () => {
@@ -270,14 +267,10 @@ describe('ItemTableRow', () => {
         expect(component.find('td').find('Link').length).to.equal(1);
       });
 
-      it('should call the getRecord prop function when the Request button is clicked', () => {
+      it('should call the getItemRecord function when the Request button is clicked', () => {
         const link = component.find('td').find('Link');
-
-        expect(dummyBibId).to.equal(undefined);
-        expect(dummyItemId).to.equal(undefined);
-        link.simulate('click');
-        expect(dummyBibId).to.equal('b12345');
-        expect(dummyItemId).to.equal('i17326129');
+        link.simulate('click', { preventDefault: () => {} });
+        expect(getItemRecord.calledOnce).to.equal(true);
       });
     });
 
