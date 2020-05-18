@@ -1,9 +1,10 @@
 /* eslint-env mocha */
 import React from 'react';
 import { expect } from 'chai';
-import Enzyme, { shallow } from 'enzyme';
+import Enzyme, { shallow, mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import sinon from 'sinon';
+import { mockRouterContext } from '../helpers/routing';
 
 // Import the component that is going to be tested
 import ItemTableRow from './../../src/app/components/Item/ItemTableRow';
@@ -137,6 +138,8 @@ const item = {
   },
 };
 
+const context = mockRouterContext();
+
 describe('ItemTableRow', () => {
   describe('No rendered row', () => {
     it('should return null with no props passed', () => {
@@ -259,7 +262,7 @@ describe('ItemTableRow', () => {
       before(() => {
         getItemRecord = sinon.spy(ItemTableRow.prototype, 'getItemRecord');
         component =
-          shallow(<ItemTableRow item={data} bibId="b12345" />);
+          mount(<ItemTableRow item={data} bibId="b12345" />, { context });
       });
 
       it('should render the Request button the third <td> column data', () => {

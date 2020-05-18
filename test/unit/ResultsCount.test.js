@@ -1,6 +1,7 @@
 /* eslint-env mocha */
 import React from 'react';
 import { expect } from 'chai';
+import alt from '@alt';
 import Enzyme, { shallow, mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 
@@ -35,6 +36,7 @@ describe('ResultsCount', () => {
       let component;
 
       before(() => {
+        alt.flush();
         component = shallow(<ResultsCount />);
       });
 
