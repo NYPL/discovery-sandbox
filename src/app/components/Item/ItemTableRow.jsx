@@ -32,6 +32,7 @@ class ItemTableRow extends React.PureComponent {
     let gaLabel = 'Item Holding';
     if (page === 'SearchResults') gaLabel = 'Search Results';
     if (page === 'BibPage') gaLabel = 'Item Details';
+    if (page === 'SubjectHeadingShowPage') gaLabel = 'Subject Heading Details';
 
     Actions.updateLoadingStatus(true);
 
