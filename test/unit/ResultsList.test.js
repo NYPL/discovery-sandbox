@@ -1,16 +1,13 @@
 /* eslint-env mocha */
 import React from 'react';
 import { expect } from 'chai';
-import Enzyme, { shallow, mount } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
+import { shallow, mount } from 'enzyme';
 
 import MockAdapter from 'axios-mock-adapter';
 import axios from 'axios';
-import sinon from 'sinon';
 
 import ResultsList from '../../src/app/components/ResultsList/ResultsList';
 
-Enzyme.configure({ adapter: new Adapter() });
 const results = [{}, {}, {}];
 const singleBibNoTitleDisplay = {
   result: {

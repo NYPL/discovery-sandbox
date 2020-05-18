@@ -3,8 +3,7 @@ import axios from 'axios';
 import React from 'react';
 import MockAdapter from 'axios-mock-adapter';
 import { expect } from 'chai';
-import Enzyme, { mount } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
+import { mount } from 'enzyme';
 
 import sinon from 'sinon';
 import Search from '../../src/app/components/Search/Search';
@@ -12,7 +11,6 @@ import { basicQuery } from '../../src/app/utils/utils';
 import appConfig from '../../src/app/data/appConfig';
 import store from '../../src/app/stores/Store';
 
-Enzyme.configure({ adapter: new Adapter() });
 describe('Search', () => {
   describe('Default render', () => {
     let component;
