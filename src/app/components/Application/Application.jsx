@@ -144,7 +144,7 @@ Application.contextTypes = {
   router: PropTypes.object,
 };
 
-App.childContextTypes = {
+Application.childContextTypes = {
   media: PropTypes.string,
 };
 
