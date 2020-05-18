@@ -1,3 +1,4 @@
+/* global window */
 import React from 'react';
 import PropTypes from 'prop-types';
 import DocumentTitle from 'react-document-title';
@@ -24,9 +25,15 @@ class Application extends React.Component {
     this.state = {
       data: Store.getState(),
       patron: PatronStore.getState(),
+      media: 'desktop',
     };
     this.onChange = this.onChange.bind(this);
     this.shouldStoreUpdate = this.shouldStoreUpdate.bind(this);
+    this.checkMedia = this.checkMedia.bind(this);
+  }
+
+  getChildContext() {
+    return { media: this.state.media };
   }
 
   componentDidMount() {
@@ -63,6 +70,12 @@ class Application extends React.Component {
         });
       }
     });
+    const style = {
+      xtrasmallBreakPoint: '483px',
+    };
+    const mediaMatcher = window.matchMedia(`(max-width: ${style.xtrasmallBreakPoint})`);
+    this.checkMedia(mediaMatcher);
+    mediaMatcher.addListener(this.checkMedia);
   }
 
   shouldStoreUpdate() {
@@ -75,6 +88,14 @@ class Application extends React.Component {
 
   onChange() {
     this.setState({ data: Store.getState() });
+  }
+
+  checkMedia(media) {
+    if (media.matches) {
+      this.setState({ media: 'mobile' });
+    } else {
+      this.setState({ media: 'desktop' });
+    }
   }
 
   render() {
@@ -123,5 +144,8 @@ Application.contextTypes = {
   router: PropTypes.object,
 };
 
+App.childContextTypes = {
+  media: PropTypes.string,
+};
 
 export default Application;
