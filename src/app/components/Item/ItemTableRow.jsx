@@ -24,9 +24,18 @@ class ItemTableRow extends React.PureComponent {
       item,
     } = this.props;
 
+    const {
+      routes,
+    } = this.context.router;
+
+    const page = routes[routes.length - 1].component.name;
+    let gaLabel = 'Item Holding';
+    if (page === 'SearchResults') gaLabel = 'Search Results';
+    if (page === 'BibPage') gaLabel = 'Item Details';
+
     Actions.updateLoadingStatus(true);
 
-    trackDiscovery('Item Request', 'Search Results');
+    trackDiscovery('Item Request', gaLabel);
     ajaxCall(`${appConfig.baseUrl}/api/hold/request/${bibId}-${item.id}`,
       (response) => {
         Actions.updateBib(response.data.bib);
@@ -44,7 +53,7 @@ class ItemTableRow extends React.PureComponent {
 
         // eslint-disable-next-line no-console
         console.error(
-          'Error attemping to make an ajax request to fetch an item in ResultsList',
+          `Error attemping to make an ajax request to fetch an item on ${page}`,
           error,
         );
       },
