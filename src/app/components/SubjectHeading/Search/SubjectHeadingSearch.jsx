@@ -168,7 +168,7 @@ class SubjectHeadingSearch extends React.Component {
         id="mainContent"
       >
         <div className="autocomplete-field">
-          <label htmlFor="autosuggest">Subject Heading Search</label>
+          <label htmlFor="autosuggest">Subject Heading Lookup</label>
           <div className="autosuggestInput">
             <input
               id="autosuggest"
