@@ -1,14 +1,10 @@
 /* eslint-env mocha */
 import React from 'react';
 import { expect } from 'chai';
-import Enzyme, { shallow } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
-
+import { shallow } from 'enzyme';
 
 import Breadcrumbs from './../../src/app/components/Breadcrumbs/Breadcrumbs';
 import appConfig from '../../src/app/data/appConfig';
-
-Enzyme.configure({ adapter: new Adapter() });
 
 const appTitle = appConfig.displayTitle;
 const baseUrl = `${appConfig.baseUrl}/`;

@@ -1,12 +1,10 @@
 /* eslint-env mocha */
 import React from 'react';
 import { expect } from 'chai';
-import Enzyme, { mount } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
+import { mount } from 'enzyme';
 
 import Home from '../../src/app/components/Home/Home';
 
-Enzyme.configure({ adapter: new Adapter() });
 describe('Home', () => {
   let component;
 
@@ -58,6 +56,6 @@ describe('Home', () => {
   });
 
   xit('should have an isLoading state of true when updateIsLoadingState is called', () => {
-    
+
   });
 });
