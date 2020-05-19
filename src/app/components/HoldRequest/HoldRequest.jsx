@@ -21,8 +21,8 @@ import {
   basicQuery,
 } from '../../utils/utils';
 
-import Actions from '@Actions'
-import Store from '@Store'
+import Actions from '@Actions';
+import Store from '@Store';
 
 class HoldRequest extends React.Component {
   constructor(props) {
@@ -316,7 +316,6 @@ class HoldRequest extends React.Component {
         (<div className="call-number">
           <span>Call number:</span><br />{selectedItem.callNumber}
         </div>) : null;
-    const itemSource = selectedItem.itemSource;
     const deliveryLocations = this.props.deliveryLocations;
     const isEddRequestable = this.props.isEddRequestable;
     const deliveryLocationInstruction =
@@ -329,6 +328,7 @@ class HoldRequest extends React.Component {
     let form = null;
 
     if (bib && selectedItemAvailable) {
+      const itemSource = selectedItem.itemSource;
       form = (
         <form
           className="place-hold-form form"

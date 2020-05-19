@@ -6,63 +6,14 @@ import {
   isArray as _isArray,
 } from 'underscore';
 
-import Actions from '../../actions/Actions';
 // eslint-disable-next-line import/first, import/no-unresolved, import/extensions
 import Store from '@Store';
 import LibraryItem from '../../utils/item';
-import {
-  ajaxCall,
-  trackDiscovery,
-} from '../../utils/utils';
+import { trackDiscovery } from '../../utils/utils';
 import ItemTable from '../Item/ItemTable';
 import appConfig from '../../data/appConfig';
 
 class ResultsList extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.routeHandler = this.routeHandler.bind(this);
-    this.getItemRecord = this.getItemRecord.bind(this);
-  }
-
-  /*
-   * getItemRecord(e, bibId, itemId)
-   * @description Get updated information for an item along with its delivery locations.
-   * And then route the patron to the hold request page.
-   * @param {object} e Event object.
-   * @param {string} bibId The bib's id.
-   * @param {string} itemId The item's id.
-   */
-  getItemRecord(e, bibId, itemId) {
-    e.preventDefault();
-
-    Actions.updateLoadingStatus(true);
-
-    trackDiscovery('Item Request', 'Search Results');
-    ajaxCall(`${appConfig.baseUrl}/api/hold/request/${bibId}-${itemId}`,
-      (response) => {
-        Actions.updateBib(response.data.bib);
-        Actions.updateDeliveryLocations(response.data.deliveryLocations);
-        Actions.updateIsEddRequestable(response.data.isEddRequestable);
-        setTimeout(() => {
-          Actions.updateLoadingStatus(false);
-          this.routeHandler(`${appConfig.baseUrl}/hold/request/${bibId}-${itemId}`);
-        }, 500);
-      },
-      (error) => {
-        setTimeout(() => {
-          Actions.updateLoadingStatus(false);
-        }, 500);
-
-        // eslint-disable-next-line no-console
-        console.error(
-          'Error attemping to make an ajax request to fetch an item in ResultsList',
-          error,
-        );
-      },
-    );
-  }
-
   getBibTitle(bib) {
     if (!bib.titleDisplay || !bib.titleDisplay.length) {
       const author = bib.creatorLiteral && bib.creatorLiteral.length ?
@@ -135,17 +86,12 @@ class ResultsList extends React.Component {
           <ItemTable
             items={items}
             bibId={bibId}
-            getRecord={this.getItemRecord}
             id={null}
             searchKeywords={this.props.searchKeywords}
           />
         }
       </li>
     );
-  }
-
-  routeHandler(route) {
-    this.context.router.push(route);
   }
 
   render() {
@@ -161,7 +107,7 @@ class ResultsList extends React.Component {
     return (
       <ul
         id="nypl-results-list"
-        className={`nypl-results-list ${Store.state.isLoading ? 'hide-results-list ' : ''}`}
+        className={`nypl-results-list ${Store.getState().isLoading ? 'hide-results-list ' : ''}`}
       >
         {resultsElm}
       </ul>

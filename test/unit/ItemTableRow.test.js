@@ -1,7 +1,9 @@
 /* eslint-env mocha */
 import React from 'react';
 import { expect } from 'chai';
-import { shallow } from 'enzyme';
+import sinon from 'sinon';
+import { mockRouterContext } from '../helpers/routing';
+import { shallow, mount } from 'enzyme';
 
 // Import the component that is going to be tested
 import ItemTableRow from './../../src/app/components/Item/ItemTableRow';
@@ -134,6 +136,8 @@ const item = {
   },
 };
 
+const context = mockRouterContext();
+
 describe('ItemTableRow', () => {
   describe('No rendered row', () => {
     it('should return null with no props passed', () => {
@@ -250,17 +254,13 @@ describe('ItemTableRow', () => {
 
     describe('Requestable ReCAP available item', () => {
       const data = item.requestable_ReCAP_available;
-      let dummyBibId;
-      let dummyItemId;
       let component;
-      const getRecord = (e, bibId, itemId) => {
-        dummyBibId = bibId;
-        dummyItemId = itemId;
-      };
+      let getItemRecord;
 
       before(() => {
+        getItemRecord = sinon.spy(ItemTableRow.prototype, 'getItemRecord');
         component =
-          shallow(<ItemTableRow item={data} getRecord={getRecord} bibId="b12345" />);
+          mount(<ItemTableRow item={data} bibId="b12345" />, { context });
       });
 
       it('should render the Request button the third <td> column data', () => {
@@ -268,14 +268,10 @@ describe('ItemTableRow', () => {
         expect(component.find('td').find('Link').length).to.equal(1);
       });
 
-      it('should call the getRecord prop function when the Request button is clicked', () => {
+      it('should call the getItemRecord function when the Request button is clicked', () => {
         const link = component.find('td').find('Link');
-
-        expect(dummyBibId).to.equal(undefined);
-        expect(dummyItemId).to.equal(undefined);
-        link.simulate('click');
-        expect(dummyBibId).to.equal('b12345');
-        expect(dummyItemId).to.equal('i17326129');
+        link.simulate('click', { preventDefault: () => {} });
+        expect(getItemRecord.calledOnce).to.equal(true);
       });
     });
 

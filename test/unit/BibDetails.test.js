@@ -5,7 +5,6 @@ import { shallow, mount } from 'enzyme';
 
 // Import the component that is going to be tested
 import BibDetails from './../../src/app/components/BibPage/BibDetails';
-import DefinitionList from './../../src/app/components/BibPage/DefinitionList';
 
 const bibs = [
   {
