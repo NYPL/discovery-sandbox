@@ -83,6 +83,7 @@ class SubjectHeadingsTableBody extends React.Component {
       seeMoreText,
       seeMoreLinkUrl,
       preOpen,
+      marginSize
     } = this.props;
 
 
@@ -91,7 +92,7 @@ class SubjectHeadingsTableBody extends React.Component {
     if (listItem.button) {
       return (
         <AdditionalSubjectHeadingsButton
-          indentation={listItem.indentation || indentation}
+          indentation={listItem.indentation + 1 || indentation + 1}
           button={listItem.button}
           updateParent={listItem.updateParent}
           key={`${listItem.button}${listItem.indentation}${index}`}
@@ -99,6 +100,7 @@ class SubjectHeadingsTableBody extends React.Component {
           linkUrl={seeMoreLinkUrl}
           text={seeMoreText}
           noEllipse={listItem.noEllipse}
+          marginSize={marginSize}
         />
       );
     }
@@ -132,6 +134,7 @@ class SubjectHeadingsTableBody extends React.Component {
       sortBy,
       direction,
       updateSort,
+      marginSize,
     } = this.props;
 
     const {
@@ -154,6 +157,7 @@ class SubjectHeadingsTableBody extends React.Component {
             updateSort={updateSort}
             interactive={subjectHeadings.length > 1}
             numberOpen={numberOpen}
+            marginSize={marginSize}
           />
           : null
         }

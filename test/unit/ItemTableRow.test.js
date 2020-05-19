@@ -1,15 +1,13 @@
 /* eslint-env mocha */
 import React from 'react';
 import { expect } from 'chai';
-import Enzyme, { shallow, mount } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
 import sinon from 'sinon';
 import { mockRouterContext } from '../helpers/routing';
+import { shallow, mount } from 'enzyme';
 
 // Import the component that is going to be tested
 import ItemTableRow from './../../src/app/components/Item/ItemTableRow';
 
-Enzyme.configure({ adapter: new Adapter() });
 const item = {
   full: {
     accessMessage: {

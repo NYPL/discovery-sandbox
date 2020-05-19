@@ -1,12 +1,10 @@
 /* eslint-env mocha */
 import React from 'react';
 import { expect } from 'chai';
-import Enzyme, { shallow, mount } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
+import { shallow, mount } from 'enzyme';
 
 import ItemHoldings from './../../src/app/components/Item/ItemHoldings';
 
-Enzyme.configure({ adapter: new Adapter() });
 const items = [
   {
     accessMessage: {
@@ -222,7 +220,8 @@ describe('ItemHoldings', () => {
     // NOTE: This is the initial rendering so we are only doing shallow. The chunking process
     // gets done in componentDidMount which is called when the component actually mounts.
     it('should have an empty chunkedItems state', () => {
-      const component = shallow(<ItemHoldings items={longListItems} />, { disableLifecycleMethods: true });
+      const component = shallow(
+        <ItemHoldings items={longListItems} />, { disableLifecycleMethods: true });
       expect(component.state('chunkedItems')).to.eql([]);
     });
 

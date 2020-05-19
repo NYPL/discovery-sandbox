@@ -2,15 +2,12 @@
 import React from 'react';
 import sinon from 'sinon';
 import { expect } from 'chai';
-import Enzyme, { mount } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
-
+import { mount } from 'enzyme';
 import axios from 'axios';
 // Import the component that is going to be tested
 import HoldRequest from './../../src/app/components/HoldRequest/HoldRequest';
 import Actions from './../../src/app/actions/Actions';
 
-Enzyme.configure({ adapter: new Adapter() });
 const mockedItems = [
   {
     "@id": "res:i10000003",
@@ -78,47 +75,37 @@ describe('HoldRequest', () => {
     beforeEach(() => {
       component = mount(<HoldRequest />, { attachTo: document.body });
       instance = component.instance();
-      redirect = sinon.stub(instance, 'redirectWithErrors').callsFake(() => {
-        return true;
-      });
-    })
+      redirect = sinon.stub(instance, 'redirectWithErrors').callsFake(() => true);
+    });
     afterEach(() => {
       axios.get.restore();
       component.unmount();
     });
     it('should redirect for ineligible patrons', () => {
-      router = sinon.stub(axios, 'get').callsFake(() => {
-        return new Promise((resolve, reject) => {
-          resolve({ data: { eligibility: false } });
-        });
-      });
-      return new Promise((resolve, reject) => {
+      router = sinon.stub(axios, 'get').callsFake(() => new Promise((resolve) => {
+        resolve({ data: { eligibility: false } });
+      }));
+      return new Promise((resolve) => {
         instance.setState({ patron: { id: 1 } });
         resolve();
       })
-        .then(() => {
-          return instance.conditionallyRedirect()
-            .then(() => {
-              expect(redirect.called).to.equal(true);
-            })
-        });
+        .then(() => instance.conditionallyRedirect()
+          .then(() => {
+            expect(redirect.called).to.equal(true);
+          }));
     });
     it('should not redirect for eligible patrons', () => {
-      router = sinon.stub(axios, 'get').callsFake(() => {
-        return new Promise((resolve, reject) => {
-          resolve({ data: { eligibility: true } });
-        });
-      });
-      return new Promise((resolve, reject) => {
+      router = sinon.stub(axios, 'get').callsFake(() => new Promise((resolve) => {
+        resolve({ data: { eligibility: true } });
+      }));
+      return new Promise((resolve) => {
         instance.setState({ patron: { id: 2 } });
         resolve();
       })
-        .then(() => {
-          return instance.conditionallyRedirect()
-            .then(() => {
-              expect(redirect.called).to.equal(false);
-            })
-        })
+        .then(() => instance.conditionallyRedirect()
+          .then(() => {
+            expect(redirect.called).to.equal(false);
+          }));
     });
   });
 
@@ -193,8 +180,7 @@ describe('HoldRequest', () => {
           <h2>
             This item cannot be requested at this time. Please try again later or
             contact 917-ASK-NYPL (<a href="tel:917-275-6975">917-275-6975</a>).
-          </h2>)
-        ).to.equal(true);
+          </h2>)).to.equal(true);
       });
     },
   );
@@ -231,8 +217,7 @@ describe('HoldRequest', () => {
         <h2 className="nypl-request-form-title">
           Delivery options for this item are currently unavailable. Please try again later or
           contact 917-ASK-NYPL (<a href="tel:917-275-6975">917-275-6975</a>).
-        </h2>
-      )).to.equal(true);
+        </h2>)).to.equal(true);
     });
   });
 
@@ -287,8 +272,9 @@ describe('HoldRequest', () => {
 
       expect(form.find('h2')).to.have.length(1);
       expect(form.contains(
-        <h2 className="nypl-request-form-title">Choose a delivery option or location</h2>
-      )).to.equal(true);
+        <h2 className="nypl-request-form-title">
+          Choose a delivery option or location
+        </h2>)).to.equal(true);
     });
 
     it('should display the form of the display locations.', () => {

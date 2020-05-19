@@ -195,21 +195,23 @@ class SubjectHeading extends React.Component {
 
   render() {
     const {
-      indentation,
       subjectHeading,
-      location,
+      seeMoreText,
+      seeMoreLinkUrl,
+      indentation,
+    } = this.props;
+
+    const {
       location: {
         pathname,
         search,
-      } = {
-        pathname: '',
-        search: '',
+        query: {
+          filter,
+        },
       },
-      seeMoreText,
-      seeMoreLinkUrl,
-    } = this.props;
+    } = this.context.router;
 
-    const { container } = this.context;
+    const { container, media } = this.context;
 
     const {
       label,
@@ -253,8 +255,22 @@ class SubjectHeading extends React.Component {
       return <button {...props}>{symbol}</button>;
     };
 
-    const positionStyle = container === 'related' ? null : { marginLeft: 30 * ((indentation || 0) + 1) };
+    const marginSize = media === 'mobile' ? 10 : 30;
+
+    const positionStyle = container === 'related' ? null : { marginLeft: marginSize * ((indentation || 0) + 1) };
     const isMain = (pathname + search).includes(uuid);
+
+    const topLevel = indentation === 0;
+
+    const showRest = (
+      rest !== '' &&
+      container !== 'context' &&
+      (
+        media !== 'mobile' &&
+        (!filter ||
+        (filter && topLevel))
+      )
+    );
 
     // changes to HTML structure here will need to be replicated in ./SubjectHeadingTableHeader
     return (
@@ -263,8 +279,7 @@ class SubjectHeading extends React.Component {
           className={`
             subjectHeadingRow
             ${open && narrower.length ? 'openSubjectHeading' : ''}
-            ${indentation === 0 ? 'topLevel' : ''}
-            ${indentation !== 0 ? 'nestedSubjectHeading' : ''}
+            ${topLevel ? 'topLevel' : 'nestedSubjectHeading'}
           `}
         >
           <td className={`subjectHeadingsTableCell subjectHeadingLabel ${onMainPath ? 'selected' : ''}`} >
@@ -275,11 +290,11 @@ class SubjectHeading extends React.Component {
                   className={`emph ${isMain ? 'mainHeading' : ''}`}
                 >
                   {
-                    rest === '' || container === 'context' ?
-                    null :
-                    <span className="noEmph">
-                      {`${rest}\u0020--\u00a0`}
-                    </span>
+                    showRest ?
+                      <span className="noEmph">
+                        {`${rest}\u0020--\u00a0`}
+                      </span> :
+                      null
                   }
                   {emph}
                 </span>
@@ -312,6 +327,7 @@ class SubjectHeading extends React.Component {
             seeMoreText={seeMoreText}
             seeMoreLinkUrl={seeMoreLinkUrl}
             preOpen={false}
+            marginSize={marginSize}
           />
           : null}
       </React.Fragment>
@@ -339,6 +355,7 @@ SubjectHeading.defaultProps = {
 SubjectHeading.contextTypes = {
   router: PropTypes.object,
   container: PropTypes.string,
+  media: PropTypes.string,
 };
 
 export default SubjectHeading;

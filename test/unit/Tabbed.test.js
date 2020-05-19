@@ -1,14 +1,12 @@
 /* eslint-env mocha */
 import React from 'react';
 import { expect } from 'chai';
-import Enzyme, { shallow, mount } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
+import { mount } from 'enzyme';
 
 import BibDetails from './../../src/app/components/BibPage/BibDetails';
 import AdditionalDetailsViewer from './../../src/app/components/BibPage/AdditionalDetailsViewer';
 import Tabbed from './../../src/app/components/BibPage/Tabbed';
 
-Enzyme.configure({ adapter: new Adapter() });
 describe('Tabbed', () => {
   const sampleBib =
   {
@@ -106,8 +104,6 @@ describe('Tabbed', () => {
   }
 };
 
-  const ReactDOM = require('react-dom');
-
   const bottomFields = [
     { label: 'Publication', value: 'publicationStatement' },
     { label: 'Publication Date', value: 'serialPublicationDates' },
@@ -138,11 +134,13 @@ describe('Tabbed', () => {
   />);
 
 
-  const additionalDetails = (<AdditionalDetailsViewer bib={sampleBib}/>);
+  const additionalDetails = (<AdditionalDetailsViewer bib={sampleBib} />);
 
-  let component = mount(<Tabbed tabs={[{title: 'Details', content: bibDetails}, {title: 'Full Description', content: additionalDetails}]} />);
+  let component = mount(<Tabbed tabs={[{ title: 'Details', content: bibDetails }, { title: 'Full Description', content: additionalDetails }]} />);
   let details = component.find('a').at(0);
   let fullDescription = component.find('a').at(1);
+  let focused;
+  let section;
 
   describe('Initial Rendering', () => {
     it('should focus on Details', () => {
@@ -152,43 +150,41 @@ describe('Tabbed', () => {
     });
 
     it('should have a tab for Full Description', () => {
-      expect(component.find('a').at(1).text()).to.equal("Full Description");
-    })
-  })
+      expect(component.find('a').at(1).text()).to.equal('Full Description');
+    });
+  });
 
   describe('Navigating with Click', () => {
-
     it('should focus on Full Description on click', () => {
       fullDescription.simulate('click');
-      let focused = document.activeElement;
+      focused = document.activeElement;
       expect(fullDescription.getDOMNode()).to.equal(focused);
     });
 
     it('should focus on Details when clicked back', () => {
       details.simulate('click');
-      let focused = document.activeElement;
+      focused = document.activeElement;
       expect(details.getDOMNode()).to.equal(focused);
     });
   })
 
   describe('Navigating with Key Press', () => {
-
     it('should focus on Full Description on Right Arrow Press', () => {
       details.simulate('keydown', { keyCode: 39, which: 39 });
-      let focused = document.activeElement;
+      focused = document.activeElement;
       expect(fullDescription.getDOMNode()).to.equal(focused);
     });
 
     it('should focus on Details on Left Arrow Press', () => {
-      fullDescription.simulate('keydown', {keycode: 37, which: 37});
-      let focused = document.activeElement;
+      fullDescription.simulate('keydown', { keycode: 37, which: 37 });
+      focused = document.activeElement;
       expect(details.getDOMNode()).to.equal(focused);
     });
 
     it('should focus on panel on Down Arrow Press', () => {
-      details.simulate('keydown', {keycode: 40, which: 40});
-      let focused = document.activeElement;
-      let section = component.find('section').at(0);
+      details.simulate('keydown', { keycode: 40, which: 40 });
+      focused = document.activeElement;
+      section = component.find('section').at(0);
       expect(section.getDOMNode()).to.equal(focused);
     });
 
@@ -197,17 +193,17 @@ describe('Tabbed', () => {
   describe('Displaying Correct Tab on Click', () => {
     it('should display Full Description when clicked', () => {
       fullDescription.simulate('click');
-      fullDescription.simulate('keydown', {keycode: 40, which: 40});
-      let focused = document.activeElement;
-      let section = component.find('section').at(1);
+      fullDescription.simulate('keydown', { keycode: 40, which: 40 });
+      focused = document.activeElement;
+      section = component.find('section').at(1);
       expect(section.getDOMNode()).to.equal(focused);
     });
 
     it('should display Details when clicked', () => {
       details.simulate('click');
-      details.simulate('keydown', {keycode: 40, which: 40});
-      let focused = document.activeElement;
-      let section = component.find('section').at(0);
+      details.simulate('keydown', { keycode: 40, which: 40 });
+      focused = document.activeElement;
+      section = component.find('section').at(0);
       expect(section.getDOMNode()).to.equal(focused);
     });
   });

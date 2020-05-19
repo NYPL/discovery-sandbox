@@ -1,13 +1,11 @@
 /* eslint-env mocha */
 import React from 'react';
 import { expect } from 'chai';
-import Enzyme, { shallow, mount } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
+import { shallow, mount } from 'enzyme';
 
 // Import the component that is going to be tested
 import BibDetails from './../../src/app/components/BibPage/BibDetails';
 
-Enzyme.configure({ adapter: new Adapter() });
 const bibs = [
   {
     '@type': ['nypl:Item', 'nypl:Resource'],

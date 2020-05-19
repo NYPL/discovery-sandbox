@@ -1,14 +1,11 @@
 /* eslint-env mocha */
 import React from 'react';
 import { expect } from 'chai';
-import Enzyme, { mount } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
+import { mount } from 'enzyme';
 
 import SearchResults from '../../src/app/pages/SearchResults';
 
-
 // Eventually, it would be nice to have mocked data in a different file and imported.
-Enzyme.configure({ adapter: new Adapter() });
 const searchResults = {
   '@context': 'http://api.data.nypl.org/api/v1/context_all.jsonld',
   '@type': 'itemList',
