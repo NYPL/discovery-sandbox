@@ -11,7 +11,7 @@ import Actions from '@Actions';
 
 import appConfig from '../../data/appConfig';
 
-class ItemTableRow extends React.PureComponent {
+class ItemTableRow extends React.Component {
   constructor(props) {
     super(props);
     this.getItemRecord = this.getItemRecord.bind(this);
