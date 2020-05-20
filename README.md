@@ -170,6 +170,10 @@ This will output warnings in the browser's console for elements that do not meet
 Starting up from a [Node/React boilerplate](https://bitbucket.org/NYPL/dgx-nypl-react-boilerplate).
 
 ## Deployment
+We have CI/CD configured through travis for the following branches:
+* `shep-development` deploying to `discovery-ui-development`
+* `shep-qa` deploying to `DiscoveryUi-10-17-qa`
+* `shep-production` deploying to `DiscoveryUi-production`
 
 ### Elastic Beanstalk
 We are using AWS EB to deploy our app. Check the [deployment file](DEPLOYMENT.md) for more information.
