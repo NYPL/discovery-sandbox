@@ -10,6 +10,8 @@ import {
 import Actions from '@Actions';
 
 import appConfig from '../../data/appConfig';
+import AppConfigStore from '../../stores/AppConfigStore';
+
 
 class ItemTableRow extends React.Component {
   constructor(props) {
@@ -80,14 +82,16 @@ class ItemTableRow extends React.Component {
     let itemRequestBtn = <span>{status}</span>;
     let itemCallNumber = ' ';
 
-    if (item.requestable) {
+    const { closedLocations } = AppConfigStore.getState();
+
+    if (item.requestable && !closedLocations.includes('')) {
       if (item.isRecap) {
-        itemRequestBtn = item.available ?
-          (<Link
+        itemRequestBtn = item.available ? (
+          <Link
             to={
               `${appConfig.baseUrl}/hold/request/${bibId}-${item.id}?searchKeywords=${searchKeywords}`
             }
-            onClick={e => this.getItemRecord(e)}
+            onClick={e => this.getItemRecord(e, bibId, item.id)}
             tabIndex="0"
           >
             Request
