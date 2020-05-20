@@ -265,11 +265,7 @@ class SubjectHeading extends React.Component {
     const showRest = (
       rest !== '' &&
       container !== 'context' &&
-      (
-        media !== 'mobile' &&
-        (!filter ||
-        (filter && topLevel))
-      )
+      (media !== 'mobile' || (filter && topLevel))
     );
 
     // changes to HTML structure here will need to be replicated in ./SubjectHeadingTableHeader

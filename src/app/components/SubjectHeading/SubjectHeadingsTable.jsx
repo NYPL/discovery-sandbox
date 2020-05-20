@@ -30,7 +30,7 @@ class SubjectHeadingsTable extends React.Component {
       <table className={
         `subjectHeadingsTable
         ${container}
-        ${['context', 'related'].includes(container) ? ' nypl-column-half subjectHeadingInfoBox' : null}`}
+        ${['context', 'related'].includes(container) ? ' nypl-column-half subjectHeadingInfoBox' : ''}`}
       >
         <SubjectHeadingsTableHeader
           updateSort={updateSort}
