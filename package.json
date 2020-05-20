@@ -12,7 +12,7 @@
     "dist": "NODE_ENV=production webpack --config webpack.config.js",
     "preinstall": "npm i webpack-cli",
     "postinstall": "npm run dist",
-    "test": "source test.env; node_modules/.bin/mocha test/helpers/browser.js test/unit/*.test.js",
+    "test": "NODE_ENV=test node_modules/.bin/mocha test/helpers/browser.js test/unit/*.test.js",
     "test-dev": "node_modules/.bin/mocha -w test/helpers/browser.js test/unit/*.test.js",
     "test-file": "node_modules/.bin/mocha -w test/helpers/browser.js",
     "coverage": "BABEL_ENV=test node_modules/.bin/nyc --require mocha npm test",
