@@ -2,16 +2,28 @@
 import React from 'react';
 import { expect } from 'chai';
 import { shallow } from 'enzyme';
+import { stub, spy } from 'sinon';
 
 import Application from '@Application';
 import { Header, navConfig } from '@nypl/dgx-header-component';
-import { mockRouterContext } from '../helpers/routing'
+import { mockRouterContext } from '../helpers/routing';
 
 describe('Application', () => {
   let component;
+  const context = mockRouterContext();
 
   before(() => {
-    component = shallow(<Application children={{}} />, mockRouterContext);
+    window.matchMedia = () => ({ addListener: () => {} });
+    window.matchMedia().addListener = stub();
+    component = shallow(
+      <Application
+        children={{}}
+        route={{
+          history: { listen: stub() },
+        }}
+      />, { context });
+
+    component.setState({ patron: {} });
   });
 
   it('should be wrapped in a .app-wrapper class', () => {
@@ -25,8 +37,11 @@ describe('Application', () => {
 
   it('should have the skip navigation link enabled,', () => {
     expect(component.contains(
-      <Header navData={navConfig.current} skipNav={{ target: 'mainContent' }} />
-    )).to.equal(true);
+      <Header
+        navData={navConfig.current}
+        skipNav={{ target: 'mainContent' }}
+        patron={component.state.patron}
+      />)).to.equal(true);
   });
 
   it('should render a <Footer /> components', () => {
