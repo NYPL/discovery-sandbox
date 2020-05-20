@@ -11,9 +11,11 @@ import {
 import DocumentTitle from 'react-document-title';
 
 import Breadcrumbs from '../Breadcrumbs/Breadcrumbs';
+import Notification from '../Notification/Notification';
 
 import PatronStore from '../../stores/PatronStore';
 import appConfig from '../../data/appConfig';
+import AppConfigStore from '../../stores/AppConfigStore';
 import LibraryItem from '../../utils/item';
 import LoadingLayer from '../LoadingLayer/LoadingLayer';
 import {
@@ -81,27 +83,6 @@ class HoldRequest extends React.Component {
       delivery: e.target.value,
       checkedLocNum: i,
     });
-  }
-
-  /**
-   * getNotification()
-   * Renders notification text surrounded by a 'nypl-banner-alert' toolkit wrapper.
-   *
-   * @return {HTML Element}
-   */
-  getNotification() {
-    // Show holiday schedule warning if current date strictly less than
-    // the date the holiday hours end
-    const isAlertRelevant = new Date() <= new Date(2019, 11, 2)
-    if (isAlertRelevant) {
-      return (
-        <div className="nypl-banner-alert">
-          <p style={{ padding: '10px 20px 0px', margin: 0 }}>
-            Please note that due to the holiday schedule, requests for offsite material placed between 2:30pm on November 26 and 2:30pm on Monday, December 2 will be delivered on Tuesday, December 3.
-          </p>
-        </div>
-      );
-    } else return null;
   }
 
   /**
@@ -239,10 +220,15 @@ class HoldRequest extends React.Component {
      * @return {HTML Element}
      */
   renderDeliveryLocation(deliveryLocations = []) {
+    const { closedLocations } = AppConfigStore.getState();
     return deliveryLocations.map((location, i) => {
       const displayName = this.modelDeliveryLocationName(location.prefLabel, location.shortName);
       const value = (location['@id'] && typeof location['@id'] === 'string') ?
         location['@id'].replace('loc:', '') : '';
+
+      if (closedLocations.some(closedLocation => displayName.startsWith(closedLocation))) {
+        return null;
+      }
 
       return (
         <label htmlFor={`location${i}`} id={`location${i}-label`} key={location['@id']}>
@@ -270,6 +256,8 @@ class HoldRequest extends React.Component {
   * @return {HTML Element}
   */
   renderEDD() {
+    const { closedLocations } = AppConfigStore.getState();
+    if (closedLocations.includes('')) return null;
     return (
       <label
         className="electronic-delivery"
@@ -291,6 +279,7 @@ class HoldRequest extends React.Component {
   }
 
   render() {
+    const { closedLocations, holdRequestNotification } = AppConfigStore.getState();
     const searchKeywords = this.props.searchKeywords;
     const bib = (this.props.bib && !_isEmpty(this.props.bib)) ?
       this.props.bib : null;
@@ -318,16 +307,18 @@ class HoldRequest extends React.Component {
         </div>) : null;
     const deliveryLocations = this.props.deliveryLocations;
     const isEddRequestable = this.props.isEddRequestable;
+    const allClosed = closedLocations.includes('');
     const deliveryLocationInstruction =
-      (!deliveryLocations.length && !isEddRequestable) ?
-        (<h2 className="nypl-request-form-title">
+      ((!deliveryLocations.length && !isEddRequestable) || allClosed) ?
+        (
+          <h2 className="nypl-request-form-title">
           Delivery options for this item are currently unavailable. Please try again later or
           contact 917-ASK-NYPL (<a href="tel:917-275-6975">917-275-6975</a>).
-        </h2>) :
-        <h2 className="nypl-request-form-title">Choose a delivery option or location</h2>;
+          </h2>) :
+          <h2 className="nypl-request-form-title">Choose a delivery option or location</h2>;
     let form = null;
 
-    if (bib && selectedItemAvailable) {
+    if (bib && selectedItemAvailable && !allClosed) {
       const itemSource = selectedItem.itemSource;
       form = (
         <form
@@ -399,7 +390,11 @@ class HoldRequest extends React.Component {
                           contact 917-ASK-NYPL (<a href="tel:917-275-6975">917-275-6975</a>).
                         </h2>
                     }
-                    {this.getNotification()}
+                    {
+                      holdRequestNotification
+                      ? <Notification notificationType="holdRequestNotification" />
+                      : null
+                    }
                     {bibLink}
                     {callNo}
                   </div>

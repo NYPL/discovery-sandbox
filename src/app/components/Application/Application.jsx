@@ -91,7 +91,7 @@ class Application extends React.Component {
   }
 
   checkMedia(media) {
-    if (media.matches) {
+    if (media && media.matches) {
       this.setState({ media: 'mobile' });
     } else {
       this.setState({ media: 'desktop' });
