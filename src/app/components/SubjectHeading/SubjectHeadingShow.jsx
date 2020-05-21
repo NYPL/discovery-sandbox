@@ -18,7 +18,6 @@ class SubjectHeadingShow extends React.Component {
     this.state = {
       mainHeading: {
         uuid: this.props.params.subjectHeadingUuid,
-        label: '',
       },
       shepBibs: [],
       bibsLoaded: false,
@@ -160,12 +159,15 @@ class SubjectHeadingShow extends React.Component {
 
     return (
       <React.Fragment>
-        <BibsList
-          uuid={uuid}
-          key={this.context.router.location.search}
-          total={totalBibs}
-          label={label}
-        />
+        {
+          label &&
+          <BibsList
+            uuid={uuid}
+            key={this.context.router.location.search}
+            total={totalBibs}
+            label={label}
+          />
+        }
         <div
           className="nypl-column-half subjectHeadingsSideBar"
         >
