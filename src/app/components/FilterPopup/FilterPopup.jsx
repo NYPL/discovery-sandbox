@@ -488,17 +488,20 @@ class FilterPopup extends React.Component {
 
     return (
       <div className="filter-container">
-        <div className="nypl-full-width-wrapper">
-          <div className="nypl-row">
-            <div className="nypl-column-full">
-              <div className="filter-text">
-                <h2 id="filter-title" ref={this.filterTitle} tabIndex="0">Refine your search</h2>
-                <p>Toggle filters to narrow and define your search</p>
+        {(!showForm && !!(totalResults && totalResults !== 0)) && (
+            <div className="nypl-full-width-wrapper">
+              <div className="nypl-row">
+                <div className="nypl-column-full">
+                  <div className="filter-text">
+                    <h2 id="filter-title" ref={this.filterTitle} tabIndex="0">Refine your search</h2>
+                    <p>Toggle filters to narrow and define your search</p>
+                  </div>
+                  {openPopupButton}
+                </div>
               </div>
-              {(!showForm && !!(totalResults && totalResults !== 0)) && openPopupButton}
             </div>
-          </div>
-        </div>
+          )
+        }
         {
           showForm && (
             <div

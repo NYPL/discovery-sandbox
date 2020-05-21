@@ -54,8 +54,9 @@ describe('SearchResultsPage', () => {
       expect(component.find('Search')).to.have.length(1);
     });
 
-    it('should render a <ResultsCount /> components', () => {
-      expect(component.find('ResultsCount')).to.have.length(1);
+    it('should not render a <ResultsCount /> components', () => {
+      // Without a valid search, the ResultsCount component is not included
+      expect(component.find('ResultsCount')).to.have.length(0);
     });
 
     it('should not render a <SearchResultsSorter /> components, since there are no results', () => {
@@ -114,6 +115,10 @@ describe('SearchResultsPage', () => {
 
     it('should render a <Pagination /> components', () => {
       expect(component.find('Pagination')).to.have.length(1);
+    });
+
+    it('should render a <ResultsCount /> components', () => {
+      expect(component.find('ResultsCount')).to.have.length(1);
     });
   });
 

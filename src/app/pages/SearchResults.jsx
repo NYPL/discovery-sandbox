@@ -12,6 +12,7 @@ import SearchResultsSorter from '@SearchResultsSorter';
 
 import {
   basicQuery,
+  hasValidFilters,
 } from '../utils/utils';
 
 const SearchResults = (props) => {
@@ -45,23 +46,11 @@ const SearchResults = (props) => {
       value: 'Date',
     });
   }
-  const checkForSelectedFilters = () => {
-    if (selectedFilters &&
-      (selectedFilters.dateBefore !== '' ||
-        selectedFilters.dateAfter !== '' ||
-        (selectedFilters.language && selectedFilters.language.length) ||
-        (selectedFilters.materialType && selectedFilters.materialType.length) ||
-        (selectedFilters.subjectLiteral && selectedFilters.subjectLiteral.length)
-      )
-    ) {
-      if (!dropdownOpen) {
-        return true;
-      }
-    }
-    return false;
-  };
 
-  const selectedFiltersAvailable = checkForSelectedFilters();
+  // This determines whether or not to show selectedfilters:
+  const selectedFiltersAvailable = hasValidFilters(selectedFilters) && !dropdownOpen;
+  // Is there an active keyword or filter?
+  const hasValidSearch = !!(searchKeywords || hasValidFilters(selectedFilters));
 
   return (
     <DocumentTitle title="Search Results | Shared Collection Catalog | NYPL">
@@ -105,33 +94,45 @@ const SearchResults = (props) => {
                 </div>
               </div>
             }
+            { !hasValidSearch &&
+              <div className="nypl-full-width-wrapper">
+                <div className="nypl-row">
+                  <div className="nypl-column-full">
+                    <div className="nypl-results-summary">
+                      Please enter a search term
+                    </div>
+                  </div>
+                </div>
+              </div>
+            }
           </React.Fragment>
         }
         extraRow={
-          <div className="nypl-sorter-row">
-            <div className="nypl-full-width-wrapper">
-              <div className="nypl-row">
-                <div className="nypl-column-full">
-                  <ResultsCount
-                    count={totalResults}
-                    selectedFilters={selectedFilters}
-                    searchKeywords={searchKeywords}
-                    field={field}
-                    page={parseInt(page, 10)}
-                  />
-                  {
-                    !!(totalResults && totalResults !== 0) &&
-                    <SearchResultsSorter
-                      sortBy={sortBy}
-                      page={page}
+          hasValidSearch &&
+            <div className="nypl-sorter-row">
+              <div className="nypl-full-width-wrapper">
+                <div className="nypl-row">
+                  <div className="nypl-column-full">
+                    <ResultsCount
+                      count={totalResults}
+                      selectedFilters={selectedFilters}
                       searchKeywords={searchKeywords}
-                      createAPIQuery={createAPIQuery}
+                      field={field}
+                      page={parseInt(page, 10)}
                     />
-                  }
+                    {
+                      !!(totalResults && totalResults !== 0) &&
+                      <SearchResultsSorter
+                        sortBy={sortBy}
+                        page={page}
+                        searchKeywords={searchKeywords}
+                        createAPIQuery={createAPIQuery}
+                      />
+                    }
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
         }
         loadingLayerText="Searching"
         breadcrumbsType="search"

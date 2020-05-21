@@ -6,6 +6,7 @@ import SearchButton from '../Buttons/SearchButton';
 import {
   trackDiscovery,
   ajaxCall,
+  hasValidFilters,
 } from '../../utils/utils';
 import appConfig from '../../data/appConfig';
 
@@ -127,7 +128,7 @@ class Search extends React.Component {
         Actions.updatePage('1');
         setTimeout(() => {
           Actions.updateLoadingStatus(false);
-          this.context.router.push(`${appConfig.baseUrl}/search?${apiQuery}`);
+          this.context.router.push(`${appConfig.baseUrl}/search?${apiQuery || ''}`);
         }, 500);
         resolve();
       }, reject);
@@ -173,6 +174,7 @@ class Search extends React.Component {
                 id="search-query"
                 aria-labelledby="search-input-label"
                 aria-controls="results-description"
+                aria-required={!hasValidFilters(this.props.selectedFilters)}
                 placeholder="Keyword, title, or author/contributor"
                 onChange={this.inputChange}
                 value={this.state.searchKeywords}

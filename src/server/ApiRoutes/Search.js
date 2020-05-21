@@ -11,6 +11,7 @@ import {
   getReqParams,
   basicQuery,
   parseServerSelectedFilters,
+  hasValidFilters,
 } from '../../app/utils/utils';
 import nyplApiClient from '../routes/nyplApiClient';
 import logger from '../../../logger';
@@ -41,6 +42,11 @@ function search(searchKeywords = '', page, sortBy, order, field, filters, cb, er
     selectedFilters: filters,
     field,
   });
+  // If no keyword or filter used, don't execute search:
+  if (!searchKeywords && !hasValidFilters(filters || {})) {
+    logger.info('Skipping empty search', searchKeywords, filters);
+    cb();
+  }
 
   const aggregationQuery = `/aggregations?${encodedAggregationsQueryString}`;
   const resultsQuery = `?${encodedResultsQueryString}&per_page=50`;
