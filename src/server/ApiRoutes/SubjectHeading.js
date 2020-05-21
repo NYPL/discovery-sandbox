@@ -1,8 +1,68 @@
 import axios from 'axios';
 
 import Bib from './Bib';
+import { search } from './Search';
 import logger from '../../../logger';
 import appConfig from '../../app/data/appConfig';
+import {
+  getReqParams,
+  basicQuery,
+  // parseServerSelectedFilters,
+} from '../../app/utils/utils';
+
+const bibsServer = (req, res, next) => {
+  const { page, sort, order, filters } = getReqParams(req.query);
+
+  search(
+    page,
+    sort,
+    order,
+    filters,
+    (apiFilters, data, pageQuery) => {
+      const selectedFilters = {
+        subjectLiteral: [],
+      };
+
+      if (!_isEmpty(filters)) {
+        _mapObject(filters, (value, key) => {
+          let filterObj;
+          if (key === 'subjectLiteral') {
+            const subjectLiteralValues = _isArray(value) ? value : [value];
+            subjectLiteralValues.forEach((subjectLiteralValue) => {
+              selectedFilters[key].push({
+                selected: true,
+                value: subjectLiteralValue,
+                label: subjectLiteralValue,
+              });
+            });
+          }
+        });
+      }
+
+      res.locals.data.ShepStore = {
+        bibResults: data,
+        subjectLiteral: selectedFilters.subjectLiteral,
+        page: pageQuery,
+        sortBy: sort ? `${sort}_${order}` : 'date_desc',
+        error: {},
+      };
+
+      next();
+    },
+    (error) => {
+      logger.error('Error retrieving search data in searchServer', error);
+      res.locals.data.ShepStore = {
+        searchResults: {},
+        subjectLiteral: '',
+        page: '1',
+        sortBy: 'date_desc',
+        error,
+      };
+
+      next();
+    },
+  );
+};
 
 const convertShepBibsToDiscoveryBibs = response =>
   Promise.all(
@@ -91,4 +151,5 @@ const proxyRequest = (req, res) => {
 export default {
   proxyRequest,
   shepApiCall,
+  bibsServer,
 };
