@@ -32,7 +32,7 @@ class BibsList extends React.Component {
     const sort = sortParams.sort || 'date';
     const sortDirection = sortParams.sort_direction || 'desc';
 
-    const stringifiedSortParams = sort && sortDirection ? `sort=${sort}&sort_direction=${sortDirection}` : '';
+    const stringifiedSortParams = sort && sortDirection ? `sort=${sort}&sort_direction=${sortDirection}&per_page=${this.perPage}` : '';
 
     this.discoveryApiBibsCall(stringifiedSortParams);
   }
@@ -40,13 +40,14 @@ class BibsList extends React.Component {
   discoveryApiBibsCall(stringifiedSortParams) {
     const { label } = this.props;
 
-    return axios(`${appConfig.baseUrl}/api?filters[subjectLiteral][0]=${encodeURIComponent(label)}&${stringifiedSortParams}`)
+    return axios(`${appConfig.baseUrl}/api/subjectHeading/${encodeURIComponent(label)}?&${stringifiedSortParams}`)
       .then((res) => {
-        this.setState({
-          results: res.data,
-          componentLoading: false,
-          bibsSource: 'discoveryApi',
-        });
+        console.log(res);
+        // this.setState({
+        //   results: res.data,
+        //   componentLoading: false,
+        //   bibsSource: 'discoveryApi',
+        // });
       })
       .catch(
         (err) => {

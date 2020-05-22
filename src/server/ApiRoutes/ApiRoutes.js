@@ -6,6 +6,7 @@ import Hold from './Hold';
 import Search from './Search';
 import appConfig from '../../app/data/appConfig';
 import SubjectHeading from './SubjectHeading';
+import SubjectHeadings from './SubjectHeadings';
 
 const router = express.Router();
 
@@ -84,8 +85,8 @@ router
   .post(Hold.createHoldRequestEdd);
 
 router
-  .route(`${appConfig.baseUrl}/subject_headings/:subjectHeadingUuid/`)
-  .get(SubjectHeading.bibsServer);
+  .route(`${appConfig.baseUrl}/api/subjectHeading/:subjectLiteral/`)
+  .get(SubjectHeading.bibsAjax);
 /**
  * This wildcard route proxies the following SHEP API routes:
  *  * /api/subjectHeadings/{UUID}/context => /api/v0.1/subject_headings/{UUID}/context
@@ -95,7 +96,7 @@ router
 
 router
   .route(`${appConfig.baseUrl}/api/subjectHeadings*`)
-  .get(SubjectHeading.proxyRequest);
+  .get(SubjectHeadings.proxyRequest);
 
 router
   .route(appConfig.baseUrl)
