@@ -33,30 +33,39 @@ class AdditionalSubjectHeadingsButton extends React.Component {
 
     const seeMoreText = text || 'See more';
 
-    const button = (
-      linkUrl ?
-        (
-          <Link
-            to={linkUrl}
-            className="seeMoreButton toIndex"
-          >
-            {seeMoreText}
-          </Link>
-        )
-        :
-        (
-          <button
-            data={`${text}-${linkUrl}`}
-            onClick={this.onClick}
-            className="seeMoreButton"
-          >
-            {previous ? '↑' : '↓'} <em key="seeMoreText">{seeMoreText}</em>
-            {previous ? null : <br /> }
-            {previous || noEllipse ? null : <VerticalEllipse />}
-          </button>
-        )
+    let button;
 
-    );
+    if (linkUrl) {
+      button = (
+        <Link
+          to={linkUrl}
+          className="seeMoreButton toIndex"
+        >
+          {seeMoreText}
+        </Link>
+      );
+    } else if (this.props.button === 'contextMore') {
+      button = (
+        <span
+          data={`${text}-${linkUrl}`}
+          className="contextMore"
+        >
+          {seeMoreText}
+        </span>
+      );
+    } else {
+      button = (
+        <button
+          data={`${text}-${linkUrl}`}
+          onClick={this.onClick}
+          className="seeMoreButton"
+        >
+          {previous ? '↑' : '↓'} <em key="seeMoreText">{seeMoreText}</em>
+          {previous ? null : <br /> }
+          {previous || noEllipse ? null : <VerticalEllipse />}
+        </button>
+      );
+    }
 
     if (previous && linkUrl) return null;
 
