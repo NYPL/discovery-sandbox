@@ -6,8 +6,7 @@ import logger from '../../../logger';
 
 const nyplApiClientCall = query => nyplApiClient()
   .then((client) => {
-    console.log(`/discovery/resources${query}`);
-    client.get(`/discovery/resources${query}`, { cache: false });
+    return client.get(`/discovery/resources${query}`, { cache: false });
   })
   .catch(console.error);
 

@@ -43,11 +43,11 @@ class BibsList extends React.Component {
     return axios(`${appConfig.baseUrl}/api/subjectHeading/${encodeURIComponent(label)}?&${stringifiedSortParams}`)
       .then((res) => {
         console.log(res);
-        // this.setState({
-        //   results: res.data,
-        //   componentLoading: false,
-        //   bibsSource: 'discoveryApi',
-        // });
+        this.setState({
+          results: res.data,
+          componentLoading: false,
+          bibsSource: 'discoveryApi',
+        });
       })
       .catch(
         (err) => {
