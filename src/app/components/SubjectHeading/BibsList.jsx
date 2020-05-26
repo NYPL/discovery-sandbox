@@ -46,6 +46,7 @@ class BibsList extends React.Component {
           results: res.data,
           componentLoading: false,
           bibsSource: 'discoveryApi',
+          bibPage: res.data.page,
         }, cb);
       })
       .catch(
