@@ -37,7 +37,7 @@ class BibsList extends React.Component {
     this.discoveryApiBibsCall(stringifiedSortParams);
   }
 
-  discoveryApiBibsCall(stringifiedSortParams) {
+  discoveryApiBibsCall(stringifiedSortParams, cb = () => {}) {
     const { label } = this;
 
     return axios(`${appConfig.baseUrl}/api/subjectHeading/${encodeURIComponent(label)}?&${stringifiedSortParams}`)
@@ -46,7 +46,7 @@ class BibsList extends React.Component {
           results: res.data,
           componentLoading: false,
           bibsSource: 'discoveryApi',
-        });
+        }, cb);
       })
       .catch(
         (err) => {
@@ -107,18 +107,13 @@ class BibsList extends React.Component {
   }
 
   updateDiscoveryBibPage(newPage) {
-    const { label } = this;
-
     const stringifiedSortParams = `sort=${this.sort}&sort_direction=${this.sortDirection}&page=${newPage}&per_page=${this.perPage}`;
 
-    this.setState({ componentLoading: true }, () => {
-      axios(`${appConfig.baseUrl}/api/subjectHeading/${encodeURIComponent(label)}?&${stringifiedSortParams}`)
-        .then(res => this.setState({
-          results: res.data,
-          componentLoading: false,
-          bibsSource: 'discoveryApi',
-        }, () => window.scrollTo(0, 300)));
-    });
+    this.setState({
+      componentLoading: true,
+    }, () => this.discoveryApiBibsCall(
+      stringifiedSortParams,
+      () => window.scrollTo(0, 300)));
   }
 
   /*
@@ -265,7 +260,7 @@ class BibsList extends React.Component {
 }
 
 BibsList.propTypes = {
-
+  label: PropTypes.string,
 };
 
 BibsList.defaultProps = {
