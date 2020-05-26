@@ -3,11 +3,6 @@ import axios from 'axios';
 import Bib from './Bib';
 import logger from '../../../logger';
 import appConfig from '../../app/data/appConfig';
-import {
-  getReqParams,
-  basicQuery,
-  // parseServerSelectedFilters,
-} from '../../app/utils/utils';
 
 const convertShepBibsToDiscoveryBibs = response =>
   Promise.all(
