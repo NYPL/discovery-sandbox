@@ -53,6 +53,7 @@ class SubjectHeadingShow extends React.Component {
           contextHeadings: this.processContextHeadings(subject_headings, uuid),
           mainHeading: {
             label,
+            uuid,
           },
           totalBibs: bib_count,
           contextIsLoading: false,

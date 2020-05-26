@@ -56,7 +56,7 @@ const shepApiCall = (path, queryParams) => {
     url: `${appConfig.shepApi}${path}`,
     params: queryParams,
   }).then((response) => {
-    if (/\/bibs$/.test(path)) {
+    if (/\/bibs/.test(path)) {
       return convertShepBibsToDiscoveryBibs(response);
     }
 

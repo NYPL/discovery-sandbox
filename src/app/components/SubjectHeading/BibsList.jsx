@@ -33,7 +33,7 @@ class BibsList extends React.Component {
   }
 
   componentDidMount() {
-    const stringifiedSortParams = `sort=${this.sort}&sort_direction=${this.sortDirection}&per_page=${this.perPage}&shep_bib_count=${this.props.shepBibCount}`;
+    const stringifiedSortParams = `sort=${this.sort}&sort_direction=${this.sortDirection}&per_page=${this.perPage}&shep_bib_count=${this.props.shepBibCount}&shep_uuid=${this.props.uuid}`;
 
     this.fetchBibs(stringifiedSortParams, () => console.log(this.state));
   }
@@ -52,16 +52,16 @@ class BibsList extends React.Component {
         const newState = {
           bibsSource,
           bibPage: page,
-          totalResults,
           componentLoading: false,
         };
         if (bibsSource === 'discoveryApi') {
           newState.results = results;
           this.setState(newState, cb);
         } else if (bibsSource === 'shepApi') {
+          newState.nextUrl = res.data.next_url;
+          newState.totalResults = this.props.shepBibCount;
           this.setState((prevState) => {
-            newState.results = prevState.results.concat(results);
-            newState.nextUrl = res.data.next_url;
+            newState.results = prevState.results.concat(res.data.newResults);
             return newState;
           }, cb);
         }
@@ -95,6 +95,11 @@ class BibsList extends React.Component {
   }
 
   updateBibPage(newPage) {
+    if (this.state.bibsSource === 'shepApi') {
+      this.updateShepBibPage(newPage);
+      return;
+    }
+
     const stringifiedSortParams = `sort=${this.sort}&sort_direction=${this.sortDirection}&page=${newPage}&per_page=${this.perPage}&source=${this.state.bibsSource}`;
 
     this.setState({
@@ -102,6 +107,31 @@ class BibsList extends React.Component {
     }, () => this.fetchBibs(
       stringifiedSortParams,
       () => window.scrollTo(0, 300)));
+  }
+
+  updateShepBibPage(newPage) {
+    const { nextUrl } = this.state;
+
+    return axios(nextUrl)
+      .then((res) => {
+        const results = this.state.results.concat(res.data.bibs);
+        this.setState({
+          results,
+          nextUrl: res.data.next_url,
+          componentLoading: false,
+          bibsSource: 'shepApi',
+          bibPage: newPage,
+        }, () => window.scrollTo(0, 300));
+      })
+      .catch(
+        (err) => {
+          // eslint-disable-next-line no-console
+          console.error('error: ', err);
+          this.setState({
+            componentLoading: false,
+          });
+        },
+      );
   }
 
   changeBibSorting({ sort, sortDirection }) {

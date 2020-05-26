@@ -5,7 +5,8 @@ import {
 } from '../../app/utils/utils';
 import nyplApiClient from '../routes/nyplApiClient';
 import logger from '../../../logger';
-import appConfig from '@appConfig'
+import appConfig from '../../app/data/appConfig';
+import SubjectHeadings from './SubjectHeadings';
 
 const nyplApiClientCall = query => nyplApiClient()
   .then((client) => {
@@ -39,16 +40,17 @@ const bibsAjax = (req, res) => {
 
   const shepApiBibsCall = () => {
     const stringifiedSortParams = `sort=${sort}&sort_direction=${order}`;
-    const queryUrl = `${appConfig.baseUrl}/api/subjectHeadings/subject_headings/${subjectLiteral}/bibs?${stringifiedSortParams}`;
+    const queryUrl = `/subject_headings/${req.query.shep_uuid}/bibs?${stringifiedSortParams}`;
 
-    return axios(queryUrl)
+    return SubjectHeadings.shepApiCall(queryUrl)
       .then((response) => {
-        const newResults = response.data.bibs;
-        return response.json({
+        const newResults = response.data.results;
+        return res.json({
           newResults,
           nextUrl: response.data.next_url,
           bibsSource: 'shepApi',
-          bibPage: page,
+          page,
+          totalResults: shepApiBibCount,
         });
       })
       .catch(
@@ -68,7 +70,6 @@ const bibsAjax = (req, res) => {
   };
 
   const processData = (data) => {
-    console.log(data);
     const { totalResults } = data;
     if (bibsSource === 'discoveryApi' || useDiscoveryResults(totalResults)) {
       return res.json({
@@ -78,7 +79,7 @@ const bibsAjax = (req, res) => {
         bibsSource: 'discoveryApi'
       });
     }
-    console.log("making shep api call");
+
     return shepApiBibsCall();
   };
 
