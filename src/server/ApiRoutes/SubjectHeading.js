@@ -35,7 +35,7 @@ const bibsAjax = (req, res) => {
     sort,
     order,
     subjectLiteral,
-    data => res.json(data),
+    data => res.json({ ...data, page }),
     error => res.json(error),
   );
 };

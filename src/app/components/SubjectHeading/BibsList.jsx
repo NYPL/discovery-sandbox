@@ -11,38 +11,37 @@ import appConfig from '@appConfig';
 /* eslint-enable import/first, import/no-unresolved, import/extensions */
 
 class BibsList extends React.Component {
-  constructor() {
+  constructor(props, context) {
     super();
     this.state = {
       bibs: [],
       bibPage: 1,
       componentLoading: true,
     };
+    this.label = props.label;
+    this.sort = context.router.location.query.sort || 'date';
+    this.sortDirection = context.router.location.query.sort_direction || 'desc';
     this.updateShepBibPage = this.updateShepBibPage.bind(this);
+    this.updateDiscoveryBibPage = this.updateDiscoveryBibPage.bind(this);
     this.lastBib = this.lastBib.bind(this);
     this.firstBib = this.firstBib.bind(this);
     this.perPage = 6;
     this.changeBibSorting = this.changeBibSorting.bind(this);
     this.discoveryApiBibsCall = this.discoveryApiBibsCall.bind(this);
+    this.pagination = this.pagination.bind(this);
   }
 
   componentDidMount() {
-    const sortParams = this.context.router.location.query;
-
-    const sort = sortParams.sort || 'date';
-    const sortDirection = sortParams.sort_direction || 'desc';
-
-    const stringifiedSortParams = sort && sortDirection ? `sort=${sort}&sort_direction=${sortDirection}&per_page=${this.perPage}` : '';
+    const stringifiedSortParams = `sort=${this.sort}&sort_direction=${this.sortDirection}&per_page=${this.perPage}`;
 
     this.discoveryApiBibsCall(stringifiedSortParams);
   }
 
   discoveryApiBibsCall(stringifiedSortParams) {
-    const { label } = this.props;
+    const { label } = this;
 
     return axios(`${appConfig.baseUrl}/api/subjectHeading/${encodeURIComponent(label)}?&${stringifiedSortParams}`)
       .then((res) => {
-        console.log(res);
         this.setState({
           results: res.data,
           componentLoading: false,
@@ -81,13 +80,22 @@ class BibsList extends React.Component {
       );
   }
 
+  total() {
+    const {
+      bibsSource,
+      results,
+    } = this.state;
+    const { totalBibs } = this.props;
+
+    return bibsSource === 'discoveryApi' ? results.totalResults : totalBibs;
+  }
+
   lastBib() {
     const {
       bibPage,
-      bibs,
     } = this.state;
     const perPage = this.perPage;
-    return Math.min(perPage * bibPage, bibs.length);
+    return Math.min(perPage * bibPage, this.total());
   }
 
   firstBib() {
@@ -96,6 +104,21 @@ class BibsList extends React.Component {
     } = this.state;
     const perPage = this.perPage;
     return Math.max(0, perPage * (bibPage - 1));
+  }
+
+  updateDiscoveryBibPage(newPage) {
+    const { label } = this;
+
+    const stringifiedSortParams = `sort=${this.sort}&sort_direction=${this.sortDirection}&page=${newPage}&per_page=${this.perPage}`;
+
+    this.setState({ componentLoading: true }, () => {
+      axios(`${appConfig.baseUrl}/api/subjectHeading/${encodeURIComponent(label)}?&${stringifiedSortParams}`)
+        .then(res => this.setState({
+          results: res.data,
+          componentLoading: false,
+          bibsSource: 'discoveryApi',
+        }, () => window.scrollTo(0, 300)));
+    });
   }
 
   /*
@@ -114,7 +137,7 @@ class BibsList extends React.Component {
     if (newPage < bibPage || this.lastBib() < bibs.length) {
       this.setState({ bibPage: newPage });
     } else {
-      this.setState({}, () => {
+      this.setState({ componentLoading: true }, () => {
         axios(nextUrl)
           .then((res) => {
             const newNextUrl = res.data.next_url;
@@ -141,10 +164,44 @@ class BibsList extends React.Component {
     router.push(`${router.location.pathname}?sort=${sort}&sort_direction=${sortDirection}`);
   }
 
+  pagination() {
+    const {
+      bibsSource,
+      bibPage,
+    } = this.state;
+
+    const paginationProps = {
+      perPage: this.perPage,
+      ariaControls: 'nypl-results-list',
+    };
+
+    if (bibsSource === 'discoveryApi') {
+      const {
+        totalResults,
+        page,
+      } = this.state.results;
+      paginationProps.total = totalResults;
+      paginationProps.page = parseInt(page, 10);
+      paginationProps.updatePage = this.updateDiscoveryBibPage;
+      // paginationProps.createAPIQuery = createAPIQuery
+      // paginationProps.updatePage = updatePage
+    } else if (bibsSource === 'shepApi') {
+      const lastPage = Math.ceil(bibResults.length / this.perPage);
+      paginationProps.total = this.props.totalBibs;
+      paginationProps.updatePage = this.updateShepBibPage;
+      paginationProps.hasNext = (bibPage < lastPage || nextUrl);
+      paginationProps.page = parseInt(bibPage, 10);
+      paginationProps.shepBibs = true;
+    }
+
+    return (
+      <Pagination
+        {...paginationProps}
+      />
+    );
+  };
+
   render() {
-    console.log("rendering BibsList");
-    console.log("props", this.props);
-    console.log("state", this.state);
     const {
       bibPage,
       results,
@@ -153,50 +210,17 @@ class BibsList extends React.Component {
     } = this.state;
 
     const {
-      total,
-      label,
+      totalBibs,
     } = this.props;
 
-    const sortParams = this.context.router.location.query;
-
-    const sort = sortParams.sort;
-    const sortDirection = sortParams.sort_direction;
+    const {
+      label,
+      sort,
+      sortDirection,
+    } = this;
 
     let bibResults = {};
-    bibResults = bibsSource === 'discoveryApi' ? results.searchResults.itemListElement : results;
-
-    const pagination = () => {
-      const paginationProps = {
-        perPage: this.perPage,
-        ariaControls: 'nypl-results-list'
-      };
-
-      if (bibsSource === 'discoveryApi') {
-        const {
-          totalResults,
-          pageQuery,
-        } = this.state.results;
-        paginationProps.total = totalResults
-        paginationProps.perPage = 50
-        paginationProps.page = parseInt(pageQuery, 10)
-        // paginationProps.createAPIQuery = createAPIQuery
-        // paginationProps.updatePage = updatePage
-      } else if (bibsSource === 'shepApi') {
-        const lastPage = Math.ceil(bibResults.length / this.perPage);
-
-        paginationProps.updatePage = this.updateShepBibPage;
-        paginationProps.hasNext = (bibPage < lastPage || nextUrl)
-      }
-
-      return (
-        <Pagination
-          page={bibPage}
-          total={total}
-          subjectShowPage
-          {...paginationProps}
-        />
-      );
-    };
+    bibResults = bibsSource === 'discoveryApi' ? results.itemListElement : results;
 
     if (this.state.componentLoading) {
       return (
@@ -207,7 +231,7 @@ class BibsList extends React.Component {
       );
     }
 
-    const h2Text = `Viewing ${this.firstBib() + 1} - ${this.lastBib()} of ${total || ''} items for Heading "${label}"`;
+    const h2Text = `Viewing ${this.firstBib() + 1} - ${this.lastBib()} of ${this.total() || ''} items for Heading "${label}"`;
 
     return (
       <div
@@ -234,7 +258,7 @@ class BibsList extends React.Component {
               There are no titles for this subject heading.
             </div>
         }
-        {bibResults.length > 0 ? pagination() : null}
+        {bibResults.length > 0 ? this.pagination() : null}
       </div>
     );
   }

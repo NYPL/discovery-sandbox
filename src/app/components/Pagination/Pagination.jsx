@@ -74,7 +74,7 @@ class Pagination extends React.Component {
       total,
       page,
       perPage,
-      subjectIndexPage
+      subjectIndexPage,
     } = this.props;
     const subjectHeadingPage = this.props.subjectShowPage || subjectIndexPage;
     let nextPage;

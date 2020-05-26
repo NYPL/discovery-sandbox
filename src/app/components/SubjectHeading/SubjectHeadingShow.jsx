@@ -164,7 +164,7 @@ class SubjectHeadingShow extends React.Component {
           <BibsList
             uuid={uuid}
             key={this.context.router.location.search}
-            total={totalBibs}
+            totalBibs={totalBibs}
             label={label}
           />
         }
