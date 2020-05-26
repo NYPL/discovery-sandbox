@@ -32,7 +32,7 @@ class BibsList extends React.Component {
   }
 
   componentDidMount() {
-    const stringifiedSortParams = `sort=${this.sort}&sort_direction=${this.sortDirection}&per_page=${this.perPage}`;
+    const stringifiedSortParams = `sort=${this.sort}&sort_direction=${this.sortDirection}&per_page=${this.perPage}&shep_bib_count=${this.props.totalBibs}`;
 
     this.discoveryApiBibsCall(stringifiedSortParams);
   }
@@ -254,7 +254,7 @@ class BibsList extends React.Component {
               There are no titles for this subject heading.
             </div>
         }
-        {bibResults.length > 0 ? this.pagination() : null}
+        {bibResults && bibResults.length > 0 ? this.pagination() : null}
       </div>
     );
   }
@@ -262,6 +262,7 @@ class BibsList extends React.Component {
 
 BibsList.propTypes = {
   label: PropTypes.string,
+  totalBibs: PropTypes.number,
 };
 
 BibsList.defaultProps = {

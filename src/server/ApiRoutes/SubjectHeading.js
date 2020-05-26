@@ -10,14 +10,17 @@ const nyplApiClientCall = query => nyplApiClient()
   })
   .catch(console.error);
 
-function fetchBibs(page, perPage, sortBy, order, subjectLiteral, cb, errorcb) {
+function fetchBibs(page, perPage, sortBy, order, subjectLiteral, shepApiBibCount, cb, errorcb) {
   const bibResultsQuery = `?filters[subjectLiteral]=${encodeURIComponent(subjectLiteral)}&sort=${sortBy}&sort_direction=${order}&page=${page}&per_page=${perPage}`;
 
   return nyplApiClientCall(bibResultsQuery)
     .then((response) => {
-      console.log("response", response);
       const results = response;
-      cb(results, page);
+      if (shepApiBibCount !== results.totalResults) {
+        logger.warning(
+          `SHEP/Discovery bib count discrepancy for subject heading ${subjectLiteral}: SHEP API- ${shepApiBibCount}, Discovery API- ${results.totalResults}`);
+      }
+      cb(results);
     })
     .catch((error) => {
       logger.error('Error making ajax SubjectHeading bibs call in fetchBibs function', error);
@@ -28,6 +31,7 @@ function fetchBibs(page, perPage, sortBy, order, subjectLiteral, cb, errorcb) {
 const bibsAjax = (req, res) => {
   const { subjectLiteral } = req.params;
   const { page, perPage, sort, order } = getReqParams(req.query);
+  const shepApiBibCount = req.query.shep_bib_count;
 
   fetchBibs(
     page,
@@ -35,6 +39,7 @@ const bibsAjax = (req, res) => {
     sort,
     order,
     subjectLiteral,
+    shepApiBibCount,
     data => res.json({ ...data, page }),
     error => res.json(error),
   );
