@@ -28,6 +28,7 @@ class BibsList extends React.Component {
     this.perPage = 6;
     this.changeBibSorting = this.changeBibSorting.bind(this);
     this.discoveryApiBibsCall = this.discoveryApiBibsCall.bind(this);
+    this.shepApiBibsCall = this.shepApiBibsCall.bind(this);
     this.pagination = this.pagination.bind(this);
     this.permittedMargin = 0.2;
     this.useDiscoveryResults = this.useDiscoveryResults.bind(this);
@@ -48,13 +49,14 @@ class BibsList extends React.Component {
     return discrepancy < (shepBibCount * this.permittedMargin);
   }
 
-  discoveryApiBibsCall(stringifiedSortParams, initial, cb = () => {}) {
+  discoveryApiBibsCall(stringifiedSortParams, cb = () => {}) {
     const { label } = this.props;
+    const { bibsSource } = this.state;
 
     return axios(`${appConfig.baseUrl}/api/subjectHeading/${encodeURIComponent(label)}?&${stringifiedSortParams}`)
       .then((res) => {
         const totalResults = res.data.totalResults;
-        if (this.useDiscoveryResults(totalResults)) {
+        if (this.bibsSource === 'discoveryApi' || this.useDiscoveryResults(totalResults)) {
           this.setState({
             results: res.data,
             componentLoading: false,

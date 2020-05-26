@@ -16,7 +16,7 @@ function fetchBibs(page, perPage, sortBy, order, subjectLiteral, shepApiBibCount
   return nyplApiClientCall(bibResultsQuery)
     .then((response) => {
       const results = response;
-      if (shepApiBibCount !== results.totalResults) {
+      if (page === '1' && parseInt(shepApiBibCount, 10) !== results.totalResults) {
         logger.warning(
           `SHEP/Discovery bib count discrepancy for subject heading ${subjectLiteral}: SHEP API- ${shepApiBibCount}, Discovery API- ${results.totalResults}`);
       }
