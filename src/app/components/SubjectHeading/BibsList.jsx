@@ -45,7 +45,7 @@ class BibsList extends React.Component {
     if (discoveryApiBibCount === 0) return false;
     const discrepancy = Math.abs(shepBibCount - discoveryApiBibCount);
 
-    return discrepancy > (shepBibCount * this.permittedMargin);
+    return discrepancy < (shepBibCount * this.permittedMargin);
   }
 
   discoveryApiBibsCall(stringifiedSortParams, initial, cb = () => {}) {
