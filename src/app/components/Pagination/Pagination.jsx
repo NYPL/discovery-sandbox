@@ -32,16 +32,15 @@ class Pagination extends React.Component {
       subjectIndexPage,
     } = this.props;
     if (!page) return null;
-    if (type == 'Next' && subjectShowPage && !hasNext) return null;
+    if (type === 'Next' && subjectShowPage && !hasNext) return null;
     const intPage = parseInt(page, 10);
     const pageNum = type === 'Next' ? intPage + 1 : intPage - 1;
     const svg = type === 'Next' ? <RightWedgeIcon /> : <LeftWedgeIcon />;
-    const subjectHeadingPage = subjectShowPage || subjectIndexPage;
 
     let url;
     let apiUrl;
     let localUrl;
-    if (subjectHeadingPage && shepNavigation) {
+    if (shepNavigation) {
       if (!shepNavigation[type.toLowerCase()]) return null;
       url = type === 'Next' ? shepNavigation.next : shepNavigation.previous;
     } else {

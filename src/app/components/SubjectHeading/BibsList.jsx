@@ -47,19 +47,19 @@ class BibsList extends React.Component {
           results,
           bibsSource,
           page,
-          totalResults,
         } = res.data;
+        const totalResults = res.data.totalResults || this.state.totalResults;
         const newState = {
           bibsSource,
-          bibPage: page,
+          bibPage: parseInt(page, 10),
           componentLoading: false,
+          totalResults,
         };
         if (bibsSource === 'discoveryApi') {
           newState.results = results;
           this.setState(newState, cb);
         } else if (bibsSource === 'shepApi') {
           newState.nextUrl = res.data.next_url;
-          newState.totalResults = this.props.shepBibCount;
           this.setState((prevState) => {
             newState.results = prevState.results.concat(res.data.newResults);
             return newState;
@@ -120,7 +120,7 @@ class BibsList extends React.Component {
           nextUrl: res.data.next_url,
           componentLoading: false,
           bibsSource: 'shepApi',
-          bibPage: newPage,
+          bibPage: parseInt(newPage, 10),
         }, () => window.scrollTo(0, 300));
       })
       .catch(
@@ -144,28 +144,21 @@ class BibsList extends React.Component {
     const {
       bibsSource,
       bibPage,
-      results,
       nextUrl,
       totalResults,
     } = this.state;
 
+    const lastPage = Math.ceil(totalResults / this.perPage);
+
     const paginationProps = {
       perPage: this.perPage,
       ariaControls: 'nypl-results-list',
+      updatePage: this.updateBibPage,
+      total: parseInt(totalResults, 10),
+      page: bibPage,
+      hasNext: (bibPage < lastPage || nextUrl),
+      subjectShowPage: true,
     };
-
-    if (bibsSource === 'discoveryApi') {
-      paginationProps.total = totalResults;
-      paginationProps.page = parseInt(bibPage, 10);
-      paginationProps.updatePage = this.updateBibPage;
-    } else if (bibsSource === 'shepApi') {
-      const lastPage = Math.ceil(results.length / this.perPage);
-      paginationProps.total = this.props.shepBibCount;
-      paginationProps.updatePage = this.updateShepBibPage;
-      paginationProps.hasNext = (bibPage < lastPage || nextUrl);
-      paginationProps.page = parseInt(bibPage, 10);
-      paginationProps.shepBibs = true;
-    }
 
     return (
       <Pagination
