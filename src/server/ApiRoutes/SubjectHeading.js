@@ -1,17 +1,12 @@
-import axios from 'axios';
-
 import {
   getReqParams,
 } from '../../app/utils/utils';
 import nyplApiClient from '../routes/nyplApiClient';
 import logger from '../../../logger';
-import appConfig from '../../app/data/appConfig';
 import SubjectHeadings from './SubjectHeadings';
 
 const nyplApiClientCall = query => nyplApiClient()
-  .then((client) => {
-    return client.get(`/discovery/resources${query}`, { cache: false });
-  })
+  .then(client => client.get(`/discovery/resources${query}`, { cache: false }))
   .catch(console.error);
 
 function fetchBibs(page, perPage, sortBy, order, subjectLiteral, shepApiBibCount, cb, errorcb) {
@@ -76,7 +71,7 @@ const bibsAjax = (req, res) => {
         results: data.itemListElement,
         page,
         totalResults,
-        bibsSource: 'discoveryApi'
+        bibsSource: 'discoveryApi',
       });
     }
 

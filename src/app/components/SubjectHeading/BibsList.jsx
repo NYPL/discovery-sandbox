@@ -29,7 +29,6 @@ class BibsList extends React.Component {
     this.changeBibSorting = this.changeBibSorting.bind(this);
     this.fetchBibs = this.fetchBibs.bind(this);
     this.pagination = this.pagination.bind(this);
-    this.permittedMargin = 0.2;
   }
 
   componentDidMount() {
@@ -141,7 +140,6 @@ class BibsList extends React.Component {
 
   pagination() {
     const {
-      bibsSource,
       bibPage,
       nextUrl,
       totalResults,
@@ -168,9 +166,7 @@ class BibsList extends React.Component {
 
   render() {
     const {
-      bibPage,
       results,
-      nextUrl,
       bibsSource,
       totalResults,
     } = this.state;
@@ -230,6 +226,7 @@ class BibsList extends React.Component {
 BibsList.propTypes = {
   label: PropTypes.string,
   shepBibCount: PropTypes.number,
+  uuid: PropTypes.string,
 };
 
 BibsList.contextTypes = {

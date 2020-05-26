@@ -122,6 +122,7 @@ Pagination.propTypes = {
   subjectShowPage: PropTypes.bool,
   shepNavigation: PropTypes.object,
   subjectIndexPage: PropTypes.bool,
+  hasNext: PropTypes.bool,
 };
 
 Pagination.defaultProps = {
