@@ -29,6 +29,7 @@ export default {
     dateAfter: '',
     dateBefore: '',
     subjectLiteral: [],
+    creatorLiteral: [],
   },
   closedLocations: (
     process.env.CLOSED_LOCATIONS

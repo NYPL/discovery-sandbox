@@ -122,6 +122,7 @@ describe('getDefaultFilters', () => {
       dateAfter: '',
       dateBefore: '',
       subjectLiteral: [],
+      creatorLiteral: [],
     });
   });
 });
