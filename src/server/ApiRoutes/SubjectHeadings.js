@@ -32,7 +32,7 @@ const convertShepBibsToDiscoveryBibs = response =>
 
     return {
       data: {
-        bibs,
+        results: bibs,
         next_url: nextUrl,
       },
     };
