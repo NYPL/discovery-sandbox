@@ -47,7 +47,7 @@ const bibsAjax = (req, res) => {
         const newResults = response.data.results;
         return res.json({
           newResults,
-          nextUrl: response.data.next_url,
+          next_url: response.data.next_url,
           bibsSource: 'shepApi',
           page,
           totalResults: shepApiBibCount,

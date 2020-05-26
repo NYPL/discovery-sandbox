@@ -114,13 +114,12 @@ class BibsList extends React.Component {
 
     return axios(nextUrl)
       .then((res) => {
-        const results = this.state.results.concat(res.data.bibs);
+        const results = this.state.results.concat(res.data.results);
         this.setState({
           results,
           nextUrl: res.data.next_url,
           componentLoading: false,
-          bibsSource: 'shepApi',
-          bibPage: parseInt(newPage, 10),
+          bibPage: newPage,
         }, () => window.scrollTo(0, 300));
       })
       .catch(
