@@ -168,6 +168,8 @@ class BibsList extends React.Component {
     const {
       bibsSource,
       bibPage,
+      bibs,
+      nextUrl,
     } = this.state;
 
     const paginationProps = {
@@ -183,10 +185,8 @@ class BibsList extends React.Component {
       paginationProps.total = totalResults;
       paginationProps.page = parseInt(page, 10);
       paginationProps.updatePage = this.updateDiscoveryBibPage;
-      // paginationProps.createAPIQuery = createAPIQuery
-      // paginationProps.updatePage = updatePage
     } else if (bibsSource === 'shepApi') {
-      const lastPage = Math.ceil(bibResults.length / this.perPage);
+      const lastPage = Math.ceil(bibs.length / this.perPage);
       paginationProps.total = this.props.totalBibs;
       paginationProps.updatePage = this.updateShepBibPage;
       paginationProps.hasNext = (bibPage < lastPage || nextUrl);
@@ -199,7 +199,7 @@ class BibsList extends React.Component {
         {...paginationProps}
       />
     );
-  };
+  }
 
   render() {
     const {
