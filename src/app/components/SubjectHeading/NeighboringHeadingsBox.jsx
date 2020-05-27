@@ -32,8 +32,7 @@ class NeighboringHeadingsBox extends React.Component {
         showId={uuid}
         keyId="context"
         container="context"
-        seeMoreLinkUrl={linkUrl}
-        seeMoreText="See More in Subject Headings Index"
+        seeMoreText="More..."
         tableHeaderText="Neighboring Subject Headings"
         tfootContent={
           <tr>

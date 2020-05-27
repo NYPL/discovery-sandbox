@@ -53,9 +53,11 @@ class SubjectHeadingsTableBody extends React.Component {
   listItemsInInterval(interval, index, lastIndex) {
     const { indentation } = this.props;
     const { subjectHeadings, range } = this.state;
+    const { container } = this.context;
     const { start, end } = interval;
     const subjectHeadingsInInterval = subjectHeadings.filter((el, i) => i >= start && i <= end);
-    if (subjectHeadings[start - 1]) {
+    const isContext = container === 'context';
+    if (subjectHeadings[start - 1] && !isContext) {
       subjectHeadingsInInterval.unshift({
         button: 'previous',
         indentation,
@@ -64,7 +66,7 @@ class SubjectHeadingsTableBody extends React.Component {
     }
     if (end !== Infinity && subjectHeadings[end + 1]) {
       subjectHeadingsInInterval.push({
-        button: 'next',
+        button: isContext ? 'contextMore' : 'next',
         indentation,
         noEllipse: index === lastIndex,
         updateParent: () => this.updateRange(range, interval, 'end', 10),
@@ -97,7 +99,6 @@ class SubjectHeadingsTableBody extends React.Component {
           updateParent={listItem.updateParent}
           key={`${listItem.button}${listItem.indentation}${index}`}
           nested={nested}
-          linkUrl={seeMoreLinkUrl}
           text={seeMoreText}
           noEllipse={listItem.noEllipse}
           marginSize={marginSize}
