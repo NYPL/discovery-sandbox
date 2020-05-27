@@ -432,6 +432,7 @@ describe('getReqParams', () => {
         sortQuery: '',
         fieldQuery: '',
         filters: {},
+        perPage: '50',
       });
     });
   });
@@ -447,6 +448,7 @@ describe('getReqParams', () => {
         sortQuery: '',
         fieldQuery: '',
         filters: {},
+        perPage: '50',
       });
     });
 
@@ -460,6 +462,7 @@ describe('getReqParams', () => {
         sortQuery: '',
         fieldQuery: '',
         filters: {},
+        perPage: '50',
       });
     });
 
@@ -473,6 +476,7 @@ describe('getReqParams', () => {
         sortQuery: '',
         fieldQuery: '',
         filters: {},
+        perPage: '50',
       });
     });
 
@@ -486,6 +490,7 @@ describe('getReqParams', () => {
         sortQuery: '',
         fieldQuery: 'author',
         filters: {},
+        perPage: '50',
       });
     });
 
@@ -499,6 +504,7 @@ describe('getReqParams', () => {
         sortQuery: 'title_asc',
         fieldQuery: '',
         filters: {},
+        perPage: '50',
       });
     });
 
@@ -512,6 +518,7 @@ describe('getReqParams', () => {
         sortQuery: '',
         fieldQuery: '',
         filters: 'filters[owner]=orgs%3A1000',
+        perPage: '50',
       });
     });
   });

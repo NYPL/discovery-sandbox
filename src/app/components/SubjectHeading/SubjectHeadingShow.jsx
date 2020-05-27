@@ -1,12 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
-import { Link } from 'react-router';
 
 import SubjectHeadingsTable from './SubjectHeadingsTable';
 import NeighboringHeadingsBox from './NeighboringHeadingsBox';
 import BibsList from './BibsList';
-import LocalLoadingLayer from './LocalLoadingLayer';
 import Range from '../../models/Range';
 import appConfig from '../../data/appConfig';
 import Actions from '../../actions/Actions';
@@ -19,8 +17,6 @@ class SubjectHeadingShow extends React.Component {
       mainHeading: {
         uuid: this.props.params.subjectHeadingUuid,
       },
-      shepBibs: [],
-      bibsLoaded: false,
       contextError: null,
       contextIsLoading: true,
       contextHeadings: [],
@@ -53,6 +49,7 @@ class SubjectHeadingShow extends React.Component {
           contextHeadings: this.processContextHeadings(subject_headings, uuid),
           mainHeading: {
             label,
+            uuid,
           },
           totalBibs: bib_count,
           contextIsLoading: false,
@@ -104,7 +101,6 @@ class SubjectHeadingShow extends React.Component {
 
   generateFullContextUrl() {
     const uuid = this.props.params.subjectHeadingUuid;
-    const linkFromLabel = this.getTopLevelLabel();
     const path = this.props.location.pathname.replace(/\/subject_headings.*/, '');
     return `${path}/subject_headings?linked=${uuid}`;
   }
