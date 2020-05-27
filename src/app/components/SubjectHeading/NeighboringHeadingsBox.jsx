@@ -37,7 +37,7 @@ class NeighboringHeadingsBox extends React.Component {
         tableHeaderText="Neighboring Subject Headings"
         tfootContent={
           <tr>
-            <td>
+            <td colSpan="4">
               <Link
                 to={linkUrl}
                 className="toIndex"
