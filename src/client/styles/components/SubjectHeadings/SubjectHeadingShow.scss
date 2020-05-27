@@ -1,6 +1,7 @@
 .subjectHeadingsSideBar {
   display: flex;
   flex-direction: column;
+  float: right;
 
   .subjectHeadingsTable {
     min-width: 100%;
@@ -21,9 +22,10 @@
   }
 
   .toIndex {
-    font-size: 14px;
+    font-size: 16px;
     min-height: 32px;
     text-decoration: none;
+    font-weight: 500;
   }
 
   .toIndex:hover {
@@ -59,6 +61,7 @@
 
   h4 {
     font-size: 16px;
+    font-weight: 500;
   }
 
   .subjectHeadingLabelContainer {
