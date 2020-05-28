@@ -150,7 +150,7 @@ function confirmRequestServer(req, res, next) {
   const bibId = req.params.bibId || '';
   const loggedIn = User.requireUser(req, res);
   const requestId = req.query.requestId || '';
-  const searchKeywords = req.query.searchKeywords || '';
+  const searchKeywords = req.query.q || '';
   const errorStatus = req.query.errorStatus ? req.query.errorStatus : null;
   const errorMessage = req.query.errorMessage ? req.query.errorMessage : null;
   const error = _extend({}, { errorStatus, errorMessage });
@@ -358,7 +358,7 @@ function createHoldRequestServer(req, res, pickedUpBibId = '', pickedUpItemId = 
   const pickupLocation = req.body['delivery-location'];
   const docDeliveryData = (req.body.form && pickupLocation === 'edd') ? req.body.form : null;
   const searchKeywordsQuery = (req.body['search-keywords']) ?
-    `&searchKeywords=${req.body['search-keywords']}` : '';
+    `&q=${req.body['search-keywords']}` : '';
 
   if (!bibId || !itemId) {
     // Dummy redirect for now
@@ -367,7 +367,7 @@ function createHoldRequestServer(req, res, pickedUpBibId = '', pickedUpItemId = 
 
   if (pickupLocation === 'edd') {
     const eddSearchKeywordsQuery = (req.body['search-keywords']) ?
-      `?searchKeywords=${req.body['search-keywords']}` : '';
+      `?q=${req.body['search-keywords']}` : '';
 
     return res.redirect(
       `${appConfig.baseUrl}/hold/request/${bibId}-${itemId}/edd${eddSearchKeywordsQuery}`,
@@ -479,7 +479,7 @@ function eddServer(req, res) {
     itemId,
     searchKeywords,
   } = req.body;
-  const searchKeywordsQuery = (searchKeywords) ? `&searchKeywords=${searchKeywords}` : '';
+  const searchKeywordsQuery = (searchKeywords) ? `&q=${searchKeywords}` : '';
 
   let serverErrors = {};
 

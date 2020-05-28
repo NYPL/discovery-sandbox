@@ -1,8 +1,8 @@
 import NyplApiClient from '@nypl/nypl-data-api-client';
 import aws from 'aws-sdk';
 
-import config from '../../../app/data/appConfig.js';
-import logger from '../../../../logger.js';
+import config from '../../../app/data/appConfig';
+import logger from '../../../../logger';
 
 const appEnvironment = process.env.APP_ENV || 'production';
 const kmsEnvironment = process.env.KMS_ENV || 'encrypted';

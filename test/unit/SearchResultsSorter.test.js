@@ -2,8 +2,7 @@
 import React from 'react';
 import MockAdapter from 'axios-mock-adapter';
 import { expect } from 'chai';
-import Enzyme, { shallow, mount } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
+import { shallow, mount } from 'enzyme';
 
 import axios from 'axios';
 import sinon from 'sinon';
@@ -12,7 +11,6 @@ import { basicQuery } from '../../src/app/utils/utils';
 import SearchResultsSorter from '@SearchResultsSorter';
 import appConfig from '../../src/app/data/appConfig';
 
-Enzyme.configure({ adapter: new Adapter() });
 describe('SearchResultsSorter', () => {
   describe('Default - no javascript', () => {
     // Since this is a shallow render, the component itself is not mounted. The `js` flag
@@ -96,7 +94,8 @@ describe('SearchResultsSorter', () => {
       const searchKeywords = 'harry potter';
       const sortBy = 'title_asc';
       const field = 'title';
-      component = mount(<SearchResultsSorter sortBy={sortBy} searchKeywords={searchKeywords} field={field} />);
+      component = mount(
+        <SearchResultsSorter sortBy={sortBy} searchKeywords={searchKeywords} field={field} />);
     });
 
     it('should have updated state based on sortBy prop', () => {

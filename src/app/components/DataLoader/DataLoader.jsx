@@ -15,4 +15,8 @@ class DataLoader extends React.Component {
   }
 }
 
+DataLoader.contextTypes = {
+  router: PropTypes.object,
+};
+
 export default DataLoader;

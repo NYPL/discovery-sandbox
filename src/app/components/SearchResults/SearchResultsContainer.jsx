@@ -34,7 +34,6 @@ const SearchResultsContainer = (props) => {
         <div
           className="nypl-column-full"
           role="region"
-          id="mainContent"
           aria-describedby="results-description"
         >
           {

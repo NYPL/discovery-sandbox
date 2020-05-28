@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
-import { Link } from 'react-router';
 
 import SubjectHeadingsTable from './SubjectHeadingsTable';
+import NeighboringHeadingsBox from './NeighboringHeadingsBox';
 import BibsList from './BibsList';
 import Range from '../../models/Range';
 import appConfig from '../../data/appConfig';
@@ -16,10 +16,11 @@ class SubjectHeadingShow extends React.Component {
     this.state = {
       mainHeading: {
         uuid: this.props.params.subjectHeadingUuid,
-        label: '',
       },
-      shepBibs: [],
-      bibsLoaded: false,
+      contextError: null,
+      contextIsLoading: true,
+      contextHeadings: [],
+      totalBibs: null,
     };
 
     this.generateFullContextUrl = this.generateFullContextUrl.bind(this);
@@ -34,11 +35,24 @@ class SubjectHeadingShow extends React.Component {
 
     axios(`${appConfig.baseUrl}/api/subjectHeadings/subject_headings/${uuid}/context`)
       .then((res) => {
-        this.setState({
-          contextHeadings: this.processContextHeadings(res.data.subject_headings, uuid),
-          mainHeading: {
-            label: res.data.request.main_label,
+        const {
+          data: {
+            subject_headings,
+            main_heading: {
+              label,
+              bib_count,
+            },
           },
+        } = res;
+
+        this.setState({
+          contextHeadings: this.processContextHeadings(subject_headings, uuid),
+          mainHeading: {
+            label,
+            uuid,
+          },
+          totalBibs: bib_count,
+          contextIsLoading: false,
         }, () => {
           this.props.setBannerText(this.state.mainHeading.label);
           Actions.updateLoadingStatus(false);
@@ -47,7 +61,11 @@ class SubjectHeadingShow extends React.Component {
       .catch(
         (err) => {
           console.error('error: ', err);
-          this.setState({ error: true });
+          this.setState({
+            contextIsLoading: false,
+            contextError: true,
+            contextHeadings: [],
+          });
         },
       );
 
@@ -83,9 +101,8 @@ class SubjectHeadingShow extends React.Component {
 
   generateFullContextUrl() {
     const uuid = this.props.params.subjectHeadingUuid;
-    const linkFromLabel = this.getTopLevelLabel();
     const path = this.props.location.pathname.replace(/\/subject_headings.*/, '');
-    return `${path}/subject_headings?fromLabel=${linkFromLabel}&fromComparator=start&linked=${uuid}`;
+    return `${path}/subject_headings?linked=${uuid}`;
   }
 
   // returns true or false depending on whether the heading has a descendant with the given uuid.
@@ -97,16 +114,18 @@ class SubjectHeadingShow extends React.Component {
         heading.children.some(child => this.removeChildrenOffMainPath(child, uuid))
       );
     if (!onMainPath) heading.children = null;
+    if (onMainPath) heading.onMainPath = true;
     return onMainPath;
   }
 
   processContextHeadings(headings, uuid) {
+    if (!headings) return [];
     headings.forEach((heading) => {
       this.removeChildrenOffMainPath(heading, uuid);
       Range.addRangeData(heading, uuid, 'show');
     });
     const mainHeadingIndex = headings.findIndex(heading =>
-      heading.children || heading.uuid === uuid
+      heading.children || heading.uuid === uuid,
     );
     const startIndex = mainHeadingIndex > 0 ? mainHeadingIndex - 1 : 0;
     const endIndex = mainHeadingIndex + 2;
@@ -116,12 +135,15 @@ class SubjectHeadingShow extends React.Component {
   render() {
     const {
       contextHeadings,
+      contextError,
+      contextIsLoading,
       relatedHeadings,
       error,
       mainHeading,
+      totalBibs,
     } = this.state;
 
-    const { uuid } = mainHeading;
+    const { uuid, label } = mainHeading;
 
     const { location } = this.props;
 
@@ -133,62 +155,34 @@ class SubjectHeadingShow extends React.Component {
 
     return (
       <React.Fragment>
-        <BibsList
-          uuid={uuid}
-          key={this.context.router.location.search}
-        />
+        {
+          label &&
+          <BibsList
+            uuid={uuid}
+            key={this.context.router.location.search}
+            shepBibCount={totalBibs}
+            label={label}
+          />
+        }
         <div
           className="nypl-column-half subjectHeadingsSideBar"
         >
-          {contextHeadings ?
-            <div
-              className="nypl-column-half subjectHeadingInfoBox"
-              tabIndex='0'
-              aria-label="Neighboring Subject Headings"
-            >
-              <div className="backgroundContainer">
-                <h4>Neighboring Subject Headings</h4>
-              </div>
-              <SubjectHeadingsTable
-                subjectHeadings={contextHeadings}
-                location={location}
-                showId={uuid}
-                keyId="context"
-                container="context"
-                seeMoreLinkUrl={linkUrl}
-                seeMoreText="See More in Subject Headings Index"
-                tfootContent={
-                  <tr>
-                    <td>
-                      <Link
-                        to={linkUrl}
-                        className="toIndex"
-                      >
-                        Explore more in Subject Heading index
-                      </Link>
-                    </td>
-                  </tr>
-                }
-              />
-            </div>
-            : null
-          }
+          <NeighboringHeadingsBox
+            contextHeadings={contextHeadings}
+            contextIsLoading={contextIsLoading}
+            location={location}
+            uuid={uuid}
+            linkUrl={linkUrl}
+            contextError={contextError}
+          />
           {relatedHeadings ?
-            <div
-              className="nypl-column-half subjectHeadingInfoBox"
-              tabIndex='0'
-              aria-label="Related Subject Headings"
-            >
-              <div className="backgroundContainer">
-                <h4>Related Headings</h4>
-              </div>
-              <SubjectHeadingsTable
-                subjectHeadings={relatedHeadings}
-                location={location}
-                keyId="related"
-                container="related"
-              />
-            </div>
+            <SubjectHeadingsTable
+              subjectHeadings={relatedHeadings}
+              location={location}
+              keyId="related"
+              container="related"
+              tableHeaderText="Related Headings"
+            />
             : null
           }
         </div>

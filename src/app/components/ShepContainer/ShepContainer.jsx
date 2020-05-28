@@ -2,23 +2,30 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import Breadcrumbs from '../Breadcrumbs/Breadcrumbs';
+import LoadingLayer from '@LoadingLayer';
+import Store from '@Store';
 
 const ShepContainer = (props) => {
   return (
     <main className="main-page shepcontainer">
+      <LoadingLayer
+        status={Store.getState().isLoading}
+        title="Loading"
+      />
       <div className="header-wrapper container-header">
         <div className="header-topWrapper filter-page">
           <div className="nypl-row container-row">
             <div className="nypl-column-full">
               <Breadcrumbs
-                type={props.breadcrumbsType}
+                type={props.breadcrumbProps.type}
+                {...props.breadcrumbProps.urls}
               />
-              { props.extraBannerElement }
               <h1
                 aria-label={props.bannerOptions.ariaLabel || props.bannerOptions.text}
               >
                 { props.bannerOptions.text }
               </h1>
+              { props.extraBannerElement }
             </div>
           </div>
         </div>
@@ -34,12 +41,6 @@ const ShepContainer = (props) => {
           </div>
         </div>
       </div>
-      { props.secondaryExtraBannerElement }
-
-      { props.extraRow }
-      <div className="nypl-full-width-wrapper">
-        { null && props.mainContent }
-      </div>
     </main>
   );
 };
@@ -50,7 +51,7 @@ ShepContainer.propTypes = {
   secondaryExtraBannerElement: PropTypes.element,
   extraRow: PropTypes.element,
   loadingLayerText: PropTypes.string,
-  breadcrumbsType: PropTypes.string,
+  breadcrumbProps: PropTypes.object,
   bannerOptions: PropTypes.object,
 };
 
@@ -58,6 +59,10 @@ ShepContainer.defaultProps = {
   mainContent: null,
   extraBannerElement: null,
   loadingLayerText: "Loading",
+  breadcrumbProps: {
+    type: '',
+    breadcrumbUrls: {},
+  },
 };
 
 export default ShepContainer;

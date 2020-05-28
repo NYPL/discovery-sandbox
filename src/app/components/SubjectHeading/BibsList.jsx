@@ -4,41 +4,66 @@ import PropTypes from 'prop-types';
 import axios from 'axios';
 import Pagination from '../Pagination/Pagination';
 import ResultsList from '../ResultsList/ResultsList';
+import LocalLoadingLayer from './LocalLoadingLayer';
 /* eslint-disable import/first, import/no-unresolved, import/extensions */
 import Sorter from '@Sorter';
 import appConfig from '@appConfig';
 /* eslint-enable import/first, import/no-unresolved, import/extensions */
 
 class BibsList extends React.Component {
-  constructor() {
+  constructor(props, context) {
     super();
     this.state = {
-      bibs: [],
+      results: [],
       bibPage: 1,
       componentLoading: true,
+      bibsSource: null,
     };
+    this.sort = context.router.location.query.sort || 'date';
+    this.sortDirection = context.router.location.query.sort_direction || 'desc';
+    this.updateShepBibPage = this.updateShepBibPage.bind(this);
     this.updateBibPage = this.updateBibPage.bind(this);
     this.lastBib = this.lastBib.bind(this);
     this.firstBib = this.firstBib.bind(this);
     this.perPage = 6;
     this.changeBibSorting = this.changeBibSorting.bind(this);
+    this.fetchBibs = this.fetchBibs.bind(this);
+    this.pagination = this.pagination.bind(this);
   }
 
   componentDidMount() {
-    const sortParams = this.context.router.location.query;
+    const stringifiedSortParams = `sort=${this.sort}&sort_direction=${this.sortDirection}&per_page=${this.perPage}&shep_bib_count=${this.props.shepBibCount}&shep_uuid=${this.props.uuid}`;
 
-    const sort = sortParams.sort;
-    const sortDirection = sortParams.sort_direction;
+    this.fetchBibs(stringifiedSortParams, () => console.log(this.state));
+  }
 
-    const stringifySortParams = () => (sort && sortDirection ? `?sort=${sort}&sort_direction=${sortDirection}` : '');
+  fetchBibs(stringifiedSortParams, cb = () => {}) {
+    const { label } = this.props;
 
-    axios(`${appConfig.baseUrl}/api/subjectHeadings/subject_headings/${this.context.router.params.subjectHeadingUuid}/bibs${stringifySortParams()}`)
+    return axios(`${appConfig.baseUrl}/api/subjectHeading/${encodeURIComponent(label)}?&${stringifiedSortParams}`)
       .then((res) => {
-        this.setState({
-          bibs: res.data.bibs.filter(bib => bib['@id']),
-          nextUrl: res.data.next_url,
+        const {
+          results,
+          bibsSource,
+          page,
+        } = res.data;
+        const totalResults = res.data.totalResults || this.state.totalResults;
+        const newState = {
+          bibsSource,
+          bibPage: parseInt(page, 10),
           componentLoading: false,
-        });
+          totalResults,
+        };
+        if (bibsSource === 'discoveryApi') {
+          newState.results = results;
+          this.setState(newState, cb);
+        } else if (bibsSource === 'shepApi') {
+          newState.nextUrl = res.data.next_url;
+          this.setState((prevState) => {
+            newState.results = prevState.results.concat(res.data.newResults);
+            return newState;
+          }, cb);
+        }
       })
       .catch(
         (err) => {
@@ -54,10 +79,10 @@ class BibsList extends React.Component {
   lastBib() {
     const {
       bibPage,
-      bibs,
+      totalResults,
     } = this.state;
     const perPage = this.perPage;
-    return Math.min(perPage * bibPage, bibs.length);
+    return Math.min(perPage * bibPage, totalResults);
   }
 
   firstBib() {
@@ -68,37 +93,43 @@ class BibsList extends React.Component {
     return Math.max(0, perPage * (bibPage - 1));
   }
 
-  updateBibPage(page) {
-    const {
-      bibs,
-      nextUrl,
-      bibPage,
-    } = this.state;
-
-    const perPage = this.perPage;
-
-    if (page < bibPage || this.lastBib() + perPage < bibs.length) {
-      this.setState({ bibPage: page });
-    } else {
-      this.setState({}, () => {
-        axios(nextUrl)
-          .then((res) => {
-            const newNextUrl = res.data.next_url;
-            const newBibs = bibs.concat(res.data.bibs);
-            this.setState({
-              bibs: newBibs,
-              nextUrl: newNextUrl,
-              bibPage: page,
-            }, () => window.scrollTo(0, 300));
-          })
-          .catch(
-            (err) => {
-              // eslint-disable-next-line no-console
-              console.error('error: ', err);
-            },
-          );
-      });
+  updateBibPage(newPage) {
+    if (this.state.bibsSource === 'shepApi') {
+      this.updateShepBibPage(newPage);
+      return;
     }
+
+    const stringifiedSortParams = `sort=${this.sort}&sort_direction=${this.sortDirection}&page=${newPage}&per_page=${this.perPage}&source=${this.state.bibsSource}`;
+
+    this.setState({
+      componentLoading: true,
+    }, () => this.fetchBibs(
+      stringifiedSortParams,
+      () => window.scrollTo(0, 300)));
+  }
+
+  updateShepBibPage(newPage) {
+    const { nextUrl } = this.state;
+
+    return axios(nextUrl)
+      .then((res) => {
+        const results = this.state.results.concat(res.data.results);
+        this.setState({
+          results,
+          nextUrl: res.data.next_url,
+          componentLoading: false,
+          bibPage: newPage,
+        }, () => window.scrollTo(0, 300));
+      })
+      .catch(
+        (err) => {
+          // eslint-disable-next-line no-console
+          console.error('error: ', err);
+          this.setState({
+            componentLoading: false,
+          });
+        },
+      );
   }
 
   changeBibSorting({ sort, sortDirection }) {
@@ -107,76 +138,96 @@ class BibsList extends React.Component {
     router.push(`${router.location.pathname}?sort=${sort}&sort_direction=${sortDirection}`);
   }
 
-  render() {
+  pagination() {
     const {
       bibPage,
-      bibs,
+      nextUrl,
+      totalResults,
     } = this.state;
 
-    const sortParams = this.context.router.location.query;
+    const lastPage = Math.ceil(totalResults / this.perPage);
 
-    const sort = sortParams.sort;
-    const sortDirection = sortParams.sort_direction;
+    const paginationProps = {
+      perPage: this.perPage,
+      ariaControls: 'nypl-results-list',
+      updatePage: this.updateBibPage,
+      total: parseInt(totalResults, 10),
+      page: bibPage,
+      hasNext: (bibPage < lastPage || nextUrl),
+      subjectShowPage: true,
+    };
 
-    const pagination = (
+    return (
       <Pagination
-        updatePage={this.updateBibPage}
-        page={bibPage}
-        subjectShowPage
-        ariaControls="nypl-results-list"
+        {...paginationProps}
       />
     );
+  }
+
+  render() {
+    const {
+      results,
+      bibsSource,
+      totalResults,
+    } = this.state;
+
+    const {
+      label,
+    } = this.props;
+
+    const {
+      sort,
+      sortDirection,
+    } = this;
 
     if (this.state.componentLoading) {
       return (
-        <div className="nypl-column-half bibsList subjectHeadingShowLoadingWrapper">
-          <span
-            id="loading-animation"
-            className="loadingLayer-texts-loadingWord"
-          >
-            Loading More Titles
-          </span>
-          <div className="loadingDots">
-            <span />
-            <span />
-            <span />
-            <span />
-          </div>
-        </div>
+        <LocalLoadingLayer
+          message="Loading More Titles"
+          classNames="bibsList"
+        />
       );
     }
+    const bibResults = bibsSource === 'discoveryApi' ? results : results.slice(this.firstBib(), this.lastBib());
+
+    const h2Text = `Viewing ${this.firstBib() + 1} - ${this.lastBib()} of ${totalResults || ''} items for Heading "${label}"`;
 
     return (
       <div
         className="nypl-column-half bibsList"
-        tabIndex='0'
         aria-label="Titles related to this Subject Heading"
       >
-        <h4>Titles</h4>
+        <h2 id="titles">{h2Text}</h2>
         <Sorter
           page="shepBibs"
           sortOptions={[
+            { val: 'date_desc', label: 'date (new to old)' },
+            { val: 'date_asc', label: 'date (old to new)' },
             { val: 'title_asc', label: 'title (a - z)' },
             { val: 'title_desc', label: 'title (z - a)' },
-            { val: 'date_asc', label: 'date (old to new)' },
-            { val: 'date_desc', label: 'date (new to old)' },
           ]}
           sortBy={`${sort}_${sortDirection}`}
           updateResults={this.changeBibSorting}
         />
         {
-          bibs.length > 0 ?
-            <ResultsList results={bibs.slice(this.firstBib(), this.lastBib())} />
+          bibResults ?
+            <ResultsList results={bibResults} />
           :
             <div className="nypl-column-half bibsList">
               There are no titles for this subject heading.
             </div>
         }
-        {bibs.length > 0 ? pagination : null}
+        {bibResults && bibResults.length > 0 ? this.pagination() : null}
       </div>
     );
   }
 }
+
+BibsList.propTypes = {
+  label: PropTypes.string,
+  shepBibCount: PropTypes.number,
+  uuid: PropTypes.string,
+};
 
 BibsList.contextTypes = {
   router: PropTypes.object,

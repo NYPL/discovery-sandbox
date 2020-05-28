@@ -12,7 +12,7 @@ const AlphabeticalPagination = () => {
 
   const allButton = (
     <Link key="all" to={`${appConfig.baseUrl}/subject_headings`}>
-      All
+      Home
     </Link>
   );
 

@@ -34,3 +34,13 @@ $light-border: 1px solid #d7d4d0;
     }
   }
 }
+
+@include media($xtrasmall-breakpoint) {
+  .alphabeticalPagination {
+    line-height: 35px;
+
+    a {
+      min-width: 35px;
+    }
+  }
+}

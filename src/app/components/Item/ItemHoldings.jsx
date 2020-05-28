@@ -18,7 +18,6 @@ class ItemHoldings extends React.Component {
       page: parseInt(this.props.itemPage.substring(10), 10) || 1,
     };
 
-    this.getRecord = this.getRecord.bind(this);
     this.updatePage = this.updatePage.bind(this);
     this.chunk = this.chunk.bind(this);
     this.showAll = this.showAll.bind(this);
@@ -53,20 +52,6 @@ class ItemHoldings extends React.Component {
   }
 
   /*
-   * getRecord(e, bibId, itemId)
-   * @description Get updated information for an item along with its delivery locations,
-   * and the route to the correct page.
-   * @param {object} e Event object.
-   * @param {string} bibId The bib's id.
-   * @param {string} itemId The item's id.
-   */
-  getRecord(e, bibId, itemId) {
-    e.preventDefault();
-    trackDiscovery('Item Request', 'Item Details');
-    this.context.router.push(`${appConfig.baseUrl}/hold/request/${bibId}-${itemId}`);
-  }
-
-  /*
    * getTable(items, shortenItems, showAll)
    * @description Display an HTML table with item data.
    * @param {array} items The array of items.
@@ -84,7 +69,6 @@ class ItemHoldings extends React.Component {
         <ItemTable
           items={itemsToDisplay}
           bibId={bibId}
-          getRecord={this.getRecord}
           id="bib-item-table"
           searchKeywords={this.props.searchKeywords}
         /> : null

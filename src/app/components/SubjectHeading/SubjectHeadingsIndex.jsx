@@ -9,9 +9,10 @@ import calculateDirection from '@calculateDirection';
 import SubjectHeadingsTable from './SubjectHeadingsTable';
 /* eslint-enable import/first, import/no-unresolved, import/extensions */
 import appConfig from '../../data/appConfig';
+import Range from '../../models/Range';
 
 
-class SubjectHeadingsContainer extends React.Component {
+class SubjectHeadingsIndex extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -35,6 +36,7 @@ class SubjectHeadingsContainer extends React.Component {
       sortBy,
       fromAttributeValue,
       direction,
+      linked,
     } = this.context.router.location.query;
 
     if (!fromComparator) fromComparator = filter ? null : 'start';
@@ -46,6 +48,7 @@ class SubjectHeadingsContainer extends React.Component {
       filter,
       sort_by: sortBy,
       from_attribute_value: fromAttributeValue,
+      linked,
     };
 
     if (direction) apiParamHash.direction = direction;
@@ -57,12 +60,14 @@ class SubjectHeadingsContainer extends React.Component {
       .join('&');
 
     const url = `${appConfig.baseUrl}/api/subjectHeadings/subject_headings?${apiParamString}`;
+
     axios(url)
       .then(
-        // The callback `fetchNarrower` makes api calls to pre-open the narrower headings,
-        // if it is the filtered index and the filter returns a low heading count.
-        // it also has the responsibility of setting `componentLoading` at the appropriate point
         (res) => {
+          if (linked) {
+            const topLevelAncestor = res.data.subject_headings.find(subjectHeading => subjectHeading.children);
+            if (topLevelAncestor) Range.addRangeData(topLevelAncestor, linked);
+          }
           this.setState({
             previousUrl: res.data.previous_url,
             nextUrl: res.data.next_url,
@@ -207,8 +212,8 @@ class SubjectHeadingsContainer extends React.Component {
   }
 }
 
-SubjectHeadingsContainer.contextTypes = {
+SubjectHeadingsIndex.contextTypes = {
   router: PropTypes.object,
 };
 
-export default SubjectHeadingsContainer;
+export default SubjectHeadingsIndex;

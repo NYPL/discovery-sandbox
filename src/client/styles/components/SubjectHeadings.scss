@@ -1,8 +1,14 @@
+@import "utils/colors.scss";
+
 $subject-heading-table-header: rgb(224, 219, 214);
 
 $emphasis-font-weight: 500;
 
 $table-row-border: 1px solid rgb(215, 210, 205);
+
+thead .subjectHeadingRow {
+  background-color: unset;
+}
 
 .subjectHeadingsBannerInner {
   display: inline-block;
@@ -89,14 +95,26 @@ $table-row-border: 1px solid rgb(215, 210, 205);
     text-align: left;
     display: block;
   }
-  // padding: 4.5%;
-  // padding-left: 8%;
 }
 
 .nypl-breadcrumbs {
   .breadcrumbs-and-search-wrapper {
     display: flex;
     justify-content: space-between;
+
+    @include media($mobile-breakpoint) {
+      ol {
+        margin-left: 10px;
+
+        li:not(:nth-last-child(2)) {
+          display: none;
+        }
+
+        li:nth-last-child(2)::before {
+          content: " < ";
+        }
+      }
+    }
   }
 }
 
@@ -127,4 +145,8 @@ $table-row-border: 1px solid rgb(215, 210, 205);
 .nypl-results-sorter.shepBibs {
   float: left;
   margin-bottom: 0;
+}
+
+#sort-by-label {
+  width: 160px;
 }

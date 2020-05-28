@@ -11,15 +11,20 @@ import {
 import DocumentTitle from 'react-document-title';
 
 import Breadcrumbs from '../Breadcrumbs/Breadcrumbs';
+import Notification from '../Notification/Notification';
 
 import PatronStore from '../../stores/PatronStore';
 import appConfig from '../../data/appConfig';
+import AppConfigStore from '../../stores/AppConfigStore';
 import LibraryItem from '../../utils/item';
 import LoadingLayer from '../LoadingLayer/LoadingLayer';
-import { trackDiscovery } from '../../utils/utils';
+import {
+  trackDiscovery,
+  basicQuery,
+} from '../../utils/utils';
 
-import Actions from '@Actions'
-import Store from '@Store'
+import Actions from '@Actions';
+import Store from '@Store';
 
 class HoldRequest extends React.Component {
   constructor(props) {
@@ -81,27 +86,6 @@ class HoldRequest extends React.Component {
   }
 
   /**
-   * getNotification()
-   * Renders notification text surrounded by a 'nypl-banner-alert' toolkit wrapper.
-   *
-   * @return {HTML Element}
-   */
-  getNotification() {
-    // Show holiday schedule warning if current date strictly less than
-    // the date the holiday hours end
-    const isAlertRelevant = new Date() <= new Date(2019, 11, 2)
-    if (isAlertRelevant) {
-      return (
-        <div className="nypl-banner-alert">
-          <p style={{ padding: '10px 20px 0px', margin: 0 }}>
-            Please note that due to the holiday schedule, requests for offsite material placed between 2:30pm on November 26 and 2:30pm on Monday, December 2 will be delivered on Tuesday, December 3.
-          </p>
-        </div>
-      );
-    } else return null;
-  }
-
-  /**
    * submitRequest()
    * Client-side submit call.
    */
@@ -113,7 +97,7 @@ class HoldRequest extends React.Component {
       'recap-cul': 'Columbia',
     };
     const searchKeywordsQuery =
-      (this.props.searchKeywords) ? `searchKeywords=${this.props.searchKeywords}` : '';
+      (this.props.searchKeywords) ? `q=${this.props.searchKeywords}` : '';
     const searchKeywordsQueryPhysical = searchKeywordsQuery ? `&${searchKeywordsQuery}` : '';
     const fromUrlQuery = this.props.location.query && this.props.location.query.fromUrl ?
       `&fromUrl=${encodeURIComponent(this.props.location.query.fromUrl)}` : '';
@@ -236,10 +220,15 @@ class HoldRequest extends React.Component {
      * @return {HTML Element}
      */
   renderDeliveryLocation(deliveryLocations = []) {
+    const { closedLocations } = AppConfigStore.getState();
     return deliveryLocations.map((location, i) => {
       const displayName = this.modelDeliveryLocationName(location.prefLabel, location.shortName);
       const value = (location['@id'] && typeof location['@id'] === 'string') ?
         location['@id'].replace('loc:', '') : '';
+
+      if (closedLocations.some(closedLocation => displayName.startsWith(closedLocation))) {
+        return null;
+      }
 
       return (
         <label htmlFor={`location${i}`} id={`location${i}-label`} key={location['@id']}>
@@ -267,6 +256,8 @@ class HoldRequest extends React.Component {
   * @return {HTML Element}
   */
   renderEDD() {
+    const { closedLocations } = AppConfigStore.getState();
+    if (closedLocations.includes('')) return null;
     return (
       <label
         className="electronic-delivery"
@@ -288,7 +279,8 @@ class HoldRequest extends React.Component {
   }
 
   render() {
-    const searchKeywords = this.props.searchKeywords || '';
+    const { closedLocations, holdRequestNotification } = AppConfigStore.getState();
+    const searchKeywords = this.props.searchKeywords;
     const bib = (this.props.bib && !_isEmpty(this.props.bib)) ?
       this.props.bib : null;
     const title = (bib && _isArray(bib.title) && bib.title.length) ?
@@ -313,19 +305,21 @@ class HoldRequest extends React.Component {
         (<div className="call-number">
           <span>Call number:</span><br />{selectedItem.callNumber}
         </div>) : null;
-    const itemSource = selectedItem.itemSource;
     const deliveryLocations = this.props.deliveryLocations;
     const isEddRequestable = this.props.isEddRequestable;
+    const allClosed = closedLocations.includes('');
     const deliveryLocationInstruction =
-      (!deliveryLocations.length && !isEddRequestable) ?
-        (<h2 className="nypl-request-form-title">
+      ((!deliveryLocations.length && !isEddRequestable) || allClosed) ?
+        (
+          <h2 className="nypl-request-form-title">
           Delivery options for this item are currently unavailable. Please try again later or
           contact 917-ASK-NYPL (<a href="tel:917-275-6975">917-275-6975</a>).
-        </h2>) :
-        <h2 className="nypl-request-form-title">Choose a delivery option or location</h2>;
+          </h2>) :
+          <h2 className="nypl-request-form-title">Choose a delivery option or location</h2>;
     let form = null;
 
-    if (bib && selectedItemAvailable) {
+    if (bib && selectedItemAvailable && !allClosed) {
+      const itemSource = selectedItem.itemSource;
       form = (
         <form
           className="place-hold-form form"
@@ -360,9 +354,11 @@ class HoldRequest extends React.Component {
       );
     }
 
+    const searchUrl = basicQuery(this.props)({});
+
     return (
       <DocumentTitle title="Item Request | Shared Collection Catalog | NYPL">
-        <div id="mainContent">
+        <div>
           <LoadingLayer
             status={Store.state.isLoading}
             title="Requesting"
@@ -372,11 +368,11 @@ class HoldRequest extends React.Component {
               <div className="row">
                 <div className="nypl-column-full">
                   <Breadcrumbs
-                    query={`q=${searchKeywords}`}
+                    searchUrl={searchUrl}
                     bibUrl={`/bib/${bibId}`}
                     type="hold"
                   />
-                  <h1 id="item-title" tabIndex="0">Item Request</h1>
+                  <h1 id="item-title" tabIndex="0" id="mainContent">Item Request</h1>
                 </div>
               </div>
             </div>
@@ -394,7 +390,11 @@ class HoldRequest extends React.Component {
                           contact 917-ASK-NYPL (<a href="tel:917-275-6975">917-275-6975</a>).
                         </h2>
                     }
-                    {this.getNotification()}
+                    {
+                      holdRequestNotification
+                      ? <Notification notificationType="holdRequestNotification" />
+                      : null
+                    }
                     {bibLink}
                     {callNo}
                   </div>
@@ -426,7 +426,6 @@ HoldRequest.propTypes = {
 HoldRequest.defaultProps = {
   location: {},
   bib: {},
-  searchKeywords: '',
   params: {},
   deliveryLocations: [],
   isEddRequestable: false,

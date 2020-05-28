@@ -218,7 +218,7 @@ const basicQuery = (props = {}) => {
     const filterQuery = getFilterParam(selectedFilters || props.selectedFilters);
     // `searchKeywords` can be an empty string, so check if it's undefined instead.
     const query = searchKeywords !== undefined ? searchKeywords : props.searchKeywords;
-    const searchKeywordsQuery = query ? encodeURIComponent(query) : '';
+    const searchKeywordsQuery = query ? `${encodeURIComponent(query)}` : '';
     let pageQuery = props.page && props.page !== '1' ? `&page=${props.page}` : '';
     pageQuery = page && page !== '1' ? `&page=${page}` : pageQuery;
     pageQuery = page === '1' ? '' : pageQuery;
@@ -238,6 +238,7 @@ const basicQuery = (props = {}) => {
  */
 function getReqParams(query = {}) {
   const page = query.page || '1';
+  const perPage = query.per_page || '50';
   const q = query.q || '';
   const sort = query.sort || '';
   const order = query.sort_direction || '';
@@ -245,7 +246,7 @@ function getReqParams(query = {}) {
   const fieldQuery = query.search_scope || '';
   const filters = query.filters || {};
 
-  return { page, q, sort, order, sortQuery, fieldQuery, filters };
+  return { page, perPage, q, sort, order, sortQuery, fieldQuery, filters };
 }
 
 /*

@@ -1,22 +1,18 @@
 /* eslint-env mocha */
 import React from 'react';
 import { expect } from 'chai';
-import Enzyme, { shallow } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
-
+import { shallow } from 'enzyme';
 
 import Breadcrumbs from './../../src/app/components/Breadcrumbs/Breadcrumbs';
 import appConfig from '../../src/app/data/appConfig';
-
-Enzyme.configure({ adapter: new Adapter() });
 
 const appTitle = appConfig.displayTitle;
 const baseUrl = `${appConfig.baseUrl}/`;
 
 // The current page is the last item in the breadcrumb and it is not linked.
 describe('Breadcrumbs', () => {
-  // Shared Collection Catalog > Search Results > Item Details > Item Request > Request Confirmation
-  describe('Default rendering - all links', () => {
+  // Shared Collection Catalog > Item Details > Item Request > Request Confirmation
+  describe('Default rendering - links for "Request Confirmation"', () => {
     let component;
 
     before(() => {
@@ -28,18 +24,17 @@ describe('Breadcrumbs', () => {
       expect(component.find('ol').length).to.equal(1);
     });
 
-    it('should render five li\'s and four links', () => {
-      expect(component.find('li').length).to.equal(5);
-      expect(component.find('Link').length).to.equal(4);
+    it('should render four li\'s and three links', () => {
+      expect(component.find('li').length).to.equal(4);
+      expect(component.find('Link').length).to.equal(3);
     });
 
     it('should render all the navigation', () => {
       const li = component.find('li');
       expect(li.at(0).render().text()).to.equal(appTitle);
-      expect(li.at(1).render().text()).to.equal('Search Results');
-      expect(li.at(2).render().text()).to.equal('Item Details');
-      expect(li.at(3).render().text()).to.equal('Item Request');
-      expect(li.at(4).render().text()).to.equal('Request Confirmation');
+      expect(li.at(1).render().text()).to.equal('Item Details');
+      expect(li.at(2).render().text()).to.equal('Item Request');
+      expect(li.at(3).render().text()).to.equal('Request Confirmation');
     });
   });
 
@@ -77,18 +72,12 @@ describe('Breadcrumbs', () => {
         component = shallow(<Breadcrumbs type="bib" />);
       });
 
-      it('should contain two Link elements', () => {
-        expect(component.find('Link')).to.have.length(2);
-      });
-
-      xit('should link back to the regular search results page', () => {
-        const searchLink = component.find('Link').at(1);
-        expect(searchLink.children().text()).to.equal('Search Results');
-        expect(searchLink.prop('to')).to.equal(`${baseUrl}search?`);
+      it('should contain one Link elements', () => {
+        expect(component.find('Link')).to.have.length(1);
       });
 
       it('should display the current page with the item title', () => {
-        expect(component.find('li').at(2).text()).to.equal('Item Details');
+        expect(component.find('li').at(1).text()).to.equal('Item Details');
       });
     });
 
@@ -96,7 +85,7 @@ describe('Breadcrumbs', () => {
       let component;
 
       before(() => {
-        component = shallow(<Breadcrumbs type="bib" query="q=locofocos" />);
+        component = shallow(<Breadcrumbs type="bib" searchUrl="q=locofocos" />);
       });
 
       it('should contain two Link elements', () => {
@@ -118,32 +107,59 @@ describe('Breadcrumbs', () => {
   // The search keyword/no search keyword scenarios were tested above and won't be
   // tested again in the following tests.
 
-  // Shared Collection Catalog > Search Results > Item Details > Item Request
   describe('On the Hold Request page', () => {
     const bibId = 'b123456789';
     let component;
 
-    before(() => {
-      component = shallow(
-        <Breadcrumbs
-          query="q=hamlet"
+    // Shared Collection Catalog > Item Details > Item Request
+    describe('No search keyword', () => {
+      before(() => {
+        component = shallow(
+          <Breadcrumbs
           bibUrl={`/bib/${bibId}`}
           type="hold"
-        />,
-      );
+          />,
+        );
+      });
+
+      it('should contain two Link elements', () => {
+        expect(component.find('Link')).to.have.length(2);
+      });
+
+      it('should link back to the bib page as the second link', () => {
+        const searchLink = component.find('Link').at(1);
+        expect(searchLink.prop('to')).to.equal(`${baseUrl}bib/${bibId}`);
+      });
+
+      it('should display "Item Request" on the current page', () => {
+        expect(component.find('li').at(2).text()).to.equal('Item Request');
+      });
     });
 
-    it('should contain three Link elements', () => {
-      expect(component.find('Link')).to.have.length(3);
-    });
+    // Shared Collection Catalog > Search Results > Item Details > Item Request
+    describe('With a search keyword', () => {
+      before(() => {
+        component = shallow(
+          <Breadcrumbs
+            bibUrl={`/bib/${bibId}`}
+            searchUrl="q=locofocos"
+            type="hold"
+          />,
+        );
+      });
 
-    it('should link back to the bib page as the third link', () => {
-      const searchLink = component.find('Link').at(2);
-      expect(searchLink.prop('to')).to.equal(`${baseUrl}bib/${bibId}`);
-    });
+      it('should contain three Link elements', () => {
+        expect(component.find('Link')).to.have.length(3);
+      });
 
-    it('should display "Item Request" on the current page', () => {
-      expect(component.find('li').at(3).text()).to.equal('Item Request');
+      it('should link back to the bib page as the third link', () => {
+        const searchLink = component.find('Link').at(2);
+        expect(searchLink.prop('to')).to.equal(`${baseUrl}bib/${bibId}`);
+      });
+
+      it('should display "Item Request" on the current page', () => {
+        expect(component.find('li').at(3).text()).to.equal('Item Request');
+      });
     });
   });
 
@@ -160,6 +176,7 @@ describe('Breadcrumbs', () => {
           type="edd"
           bibUrl={`/bib/${bibId}`}
           itemUrl={`/hold/request/${bibId}-${itemId}`}
+          searchUrl="q=locofocos"
         />,
       );
     });
@@ -195,6 +212,7 @@ describe('Breadcrumbs', () => {
             bibUrl={`/bib/${bibId}`}
             itemUrl={`/hold/request/${bibId}-${itemId}`}
             edd={fromEdd}
+            searchUrl="q=locofocos"
           />,
         );
       });
@@ -226,6 +244,7 @@ describe('Breadcrumbs', () => {
             bibUrl={`/bib/${bibId}`}
             itemUrl={`/hold/request/${bibId}-${itemId}`}
             edd={fromEdd}
+            searchUrl="q=locofocos"
           />,
         );
       });

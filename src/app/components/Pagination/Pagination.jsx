@@ -25,17 +25,22 @@ class Pagination extends React.Component {
    * @param {string} type Either 'Next' or 'Previous' to indication link label.
    */
   getPage(page, type = 'Next') {
+    const {
+      hasNext,
+      subjectShowPage,
+      shepNavigation,
+      subjectIndexPage,
+    } = this.props;
     if (!page) return null;
+    if (type === 'Next' && subjectShowPage && !hasNext) return null;
     const intPage = parseInt(page, 10);
     const pageNum = type === 'Next' ? intPage + 1 : intPage - 1;
     const svg = type === 'Next' ? <RightWedgeIcon /> : <LeftWedgeIcon />;
-    const { shepNavigation } = this.props;
-    const subjectHeadingPage = this.props.subjectShowPage || this.props.subjectIndexPage;
 
     let url;
     let apiUrl;
     let localUrl;
-    if (subjectHeadingPage && shepNavigation) {
+    if (shepNavigation) {
       if (!shepNavigation[type.toLowerCase()]) return null;
       url = type === 'Next' ? shepNavigation.next : shepNavigation.previous;
     } else {
@@ -51,7 +56,7 @@ class Pagination extends React.Component {
     linkProps.rel = type.toLowerCase();
     linkProps.className = `${type.toLowerCase()}-link`;
 
-    if (!this.props.subjectIndexPage) linkProps.onClick = e => this.onClick(e, pageNum);
+    if (!subjectIndexPage) linkProps.onClick = e => this.onClick(e, pageNum);
 
     return (
       <Link
@@ -68,7 +73,7 @@ class Pagination extends React.Component {
       total,
       page,
       perPage,
-      subjectIndexPage
+      subjectIndexPage,
     } = this.props;
     const subjectHeadingPage = this.props.subjectShowPage || subjectIndexPage;
     let nextPage;
@@ -81,13 +86,14 @@ class Pagination extends React.Component {
       nextPage = (total < perPage || pageFactor > total) ? null : this.getPage(page, 'Next');
       totalPages = Math.floor(total / perPage) + 1;
     } else {
+      if (total && perPage) totalPages = Math.ceil(total / perPage);
       nextPage = this.getPage(page, 'Next');
     }
 
     return (
       <nav className="nypl-results-pagination showPage" aria-label="More results">
         {prevPage}
-        {!subjectHeadingPage
+        {page && totalPages
           ?
             <span
               className={`page-count ${page === 1 ? 'first' : ''}`}
@@ -116,6 +122,7 @@ Pagination.propTypes = {
   subjectShowPage: PropTypes.bool,
   shepNavigation: PropTypes.object,
   subjectIndexPage: PropTypes.bool,
+  hasNext: PropTypes.bool,
 };
 
 Pagination.defaultProps = {

@@ -17,26 +17,6 @@ import ItemTable from '../Item/ItemTable';
 import appConfig from '../../data/appConfig';
 
 class ResultsList extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.getItemRecord = this.getItemRecord.bind(this);
-  }
-
-  /*
-   * getItemRecord(e, bibId, itemId)
-   * @description Get updated information for an item along with its delivery locations.
-   * And then route the patron to the hold request page.
-   * @param {object} e Event object.
-   * @param {string} bibId The bib's id.
-   * @param {string} itemId The item's id.
-   */
-  getItemRecord(e, bibId, itemId) {
-    e.preventDefault();
-    this.context.router.push(`${appConfig.baseUrl}/hold/request/${bibId}-${itemId}`);
-    trackDiscovery('Item Request', 'Search Results');
-  }
-
   getBibTitle(bib) {
     if (!bib.titleDisplay || !bib.titleDisplay.length) {
       const author = bib.creatorLiteral && bib.creatorLiteral.length ?
@@ -83,9 +63,6 @@ class ResultsList extends React.Component {
 
     let bibUrl = `${appConfig.baseUrl}/bib/${bibId}`;
 
-    const searchKeywords = this.props.searchKeywords || Store.getState().searchKeywords;
-    if (searchKeywords) bibUrl += `?searchKeywords=${searchKeywords}`;
-
     return (
       <li key={i} className={`nypl-results-item ${hasRequestTable ? 'has-request' : ''}`}>
         <h3>
@@ -112,7 +89,6 @@ class ResultsList extends React.Component {
           <ItemTable
             items={items}
             bibId={bibId}
-            getRecord={this.getItemRecord}
             id={null}
             searchKeywords={this.props.searchKeywords}
           />
@@ -134,7 +110,7 @@ class ResultsList extends React.Component {
     return (
       <ul
         id="nypl-results-list"
-        className={`nypl-results-list ${Store.state.isLoading ? 'hide-results-list ' : ''}`}
+        className={`nypl-results-list ${Store.getState().isLoading ? 'hide-results-list ' : ''}`}
       >
         {resultsElm}
       </ul>

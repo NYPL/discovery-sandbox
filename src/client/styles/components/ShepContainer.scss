@@ -1,6 +1,13 @@
+@import "utils/colors.scss";
+
 .shepcontainer {
+
   .header-topWrapper {
     display: block;
+  }
+
+  .header-wrapper {
+    border-bottom: none;
   }
 
   .container-header {
@@ -9,6 +16,7 @@
       font-size: 32px;
       font-weight: 400;
       font-family: Milo-Light;
+      display: inline-block;
     }
     .nypl-column-full {
       margin-top: 10px;
@@ -33,6 +41,16 @@
     margin-left: 150px;
     @include media(1025px) {
       margin-left: 25px;
+    }
+    @include media($mobile-breakpoint) {
+      margin-left: 0px;
+    }
+  }
+
+  .nypl-row.container-row {
+    @include media($mobile-breakpoint) {
+      padding-right: 0px;
+      padding-left: 10px;
     }
   }
 }

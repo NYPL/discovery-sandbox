@@ -19,8 +19,9 @@ class Tabbed extends React.Component {
     let hashNumber = 1;
     if (this.props.hash) {
       let hash = this.props.hash;
-      hashNumber = this.props.hash.match(/[^\d]*(\d)/)[1];
-      window.location.replace(window.location.href + hash);
+      const hashMatch = this.props.hash.match(/[^\d]*(\d)/);
+      if (hashMatch) hashNumber = hashMatch[1];
+      window.location.replace(window.location.href.replace(/#.*/, '') + hash);
       let tab = this.links[hashNumber];
       tab.focus();
     }

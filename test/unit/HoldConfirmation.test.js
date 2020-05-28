@@ -2,15 +2,13 @@
 import React from 'react';
 import sinon from 'sinon';
 import { expect } from 'chai';
-import Enzyme, { mount } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
+import { mount } from 'enzyme';
 
 // Import the component that is going to be tested
 import HoldConfirmation from './../../src/app/components/HoldConfirmation/HoldConfirmation';
 import Actions from './../../src/app/actions/Actions';
 import appConfig from '../../src/app/data/appConfig';
 
-Enzyme.configure({ adapter: new Adapter() });
 describe('HoldConfirmation', () => {
   describe('After being rendered, <HoldConfirmation>', () => {
     let component;
@@ -99,10 +97,9 @@ describe('HoldConfirmation', () => {
       it('should render the error message.', () => {
         const main = component.find('main');
         const expectedHTML = new RegExp(
-          '<p>(.*)We could not process your request at this time\.' +
+          '<p>(.*)We could not process your request at this time.' +
           '(.*)Please try again or contact 917-ASK-NYPL(.*)' +
-          '((.*)<a href="tel:19172756975">917-275-6975<\/a>(.*))\.(.*)<\/p>'
-        );
+          '((.*)<a href="tel:19172756975">917-275-6975</a>(.*)).(.*)</p>');
         expect(
           expectedHTML
             .test(main.html()))
@@ -186,8 +183,8 @@ describe('HoldConfirmation', () => {
       expect(pageHeader.find('h1')).to.have.length(1);
       expect(pageHeader.find('h1').text()).to.equal('Request Confirmation');
       expect(
-        pageHeader.contains(<h1 id="confirmation-title" tabIndex="0">Request Confirmation</h1>)
-      ).to.equal(true);
+        pageHeader.contains(
+          <h1 id="mainContent" tabIndex="0">Request Confirmation</h1>)).to.equal(true);
     });
 
     it('should display the layout of request confirmation page\'s contents.', () => {
@@ -631,18 +628,20 @@ describe('HoldConfirmation', () => {
   describe('If there are eligibility errors', () => {
     it('should render an error message with specific errors when available', () => {
       const location = { query: { errorStatus: 'eligibility', errorMessage: '{"expired":true,"blocked":true,"moneyOwed":true}' } };
-      const component = mount(<HoldConfirmation location={location} />, { attachTo: document.body });
+      const component = mount(
+        <HoldConfirmation location={location} />, { attachTo: document.body });
       const text = component.text();
-      component.unmount()
+      component.unmount();
       expect(text.includes('Your account has expired')).to.equal(true);
       expect(text.includes('There is a problem with your library account')).to.equal(true);
       expect(text.includes('Your fines have exceeded the limit')).to.equal(true);
     });
     it('should render a default error message when no specific errors are available', () => {
       const location = { query: { errorStatus: 'eligibility', errorMessage: '{}' } };
-      const component = mount(<HoldConfirmation location={location} />, { attachTo: document.body });
+      const component = mount(
+        <HoldConfirmation location={location} />, { attachTo: document.body });
       const text = component.text();
-      component.unmount()
+      component.unmount();
       expect(text.includes('There is a problem with your library account.')).to.equal(true);
     });
   });

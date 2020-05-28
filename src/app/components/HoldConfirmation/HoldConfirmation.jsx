@@ -12,7 +12,10 @@ import DocumentTitle from 'react-document-title';
 import PatronStore from '../../stores/PatronStore';
 import appConfig from '../../data/appConfig';
 import Breadcrumbs from '../Breadcrumbs/Breadcrumbs';
-import { trackDiscovery } from '../../utils/utils';
+import {
+  trackDiscovery,
+  basicQuery,
+} from '../../utils/utils';
 
 class HoldConfirmation extends React.Component {
   constructor(props) {
@@ -25,7 +28,7 @@ class HoldConfirmation extends React.Component {
 
   componentDidMount() {
     this.requireUser();
-    document.getElementById('confirmation-title').focus();
+    document.getElementById('mainContent').focus();
   }
 
 
@@ -74,7 +77,7 @@ class HoldConfirmation extends React.Component {
 
   defaultErrorText() {
     return (
-      <div>Please try again or contact 917-ASK-NYPL(<a href="tel:19172756975">917-275-6975</a>)</div>
+      <span>Please try again or contact 917-ASK-NYPL(<a href="tel:19172756975">917-275-6975</a>)</span>
     );
   }
 
@@ -341,21 +344,23 @@ class HoldConfirmation extends React.Component {
       trackDiscovery('Error', 'Hold Confirmation');
     }
 
+    const searchUrl = basicQuery(this.props)({});
+
     return (
       <DocumentTitle title={`${confirmationPageTitle} | Shared Collection Catalog | NYPL`}>
-        <main id="mainContent" className="main-page">
+        <main className="main-page">
           <div className="nypl-request-page-header">
             <div className="row">
               <div className="nypl-full-width-wrapper">
                 <div className="nypl-column-full">
                   <Breadcrumbs
-                    query={this.props.location.query.searchKeywords}
+                    searchUrl={searchUrl}
                     type="confirmation"
                     bibUrl={`/bib/${bibId}`}
                     itemUrl={`/hold/request/${bibId}-${itemId}`}
                     edd={pickupLocation === 'edd'}
                   />
-                  <h1 id="confirmation-title" tabIndex="0">{confirmationPageTitle}</h1>
+                  <h1 id="mainContent" tabIndex="0">{confirmationPageTitle}</h1>
                 </div>
               </div>
             </div>

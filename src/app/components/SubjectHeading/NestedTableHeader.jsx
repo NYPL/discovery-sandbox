@@ -7,52 +7,47 @@ import SortButton from './SortButton';
 const NestedTableHeader = (props) => {
   const {
     indentation,
-    container,
     sortBy,
     direction,
     parentUuid,
     updateSort,
-    interactive,
     numberOpen,
+    interactive,
+    marginSize,
   } = props;
 
-  const positionStyle = container === 'narrower' ? null : { marginLeft: 30 * ((indentation || 0) + 1) };
+  const positionStyle = { marginLeft: marginSize * ((indentation || 0) + 1) };
   const calculateDirectionForType = calculateDirection(sortBy, direction);
+
+  const sortButtons = {};
+  ['alphabetical', 'descendants', 'bibs'].forEach((type) => {
+    sortButtons[type] = (
+      <SortButton
+        handler={updateSort}
+        type={type}
+        calculateDirection={calculateDirectionForType}
+        interactive={interactive}
+        numberOpen={numberOpen}
+        active={sortBy === type}
+      />
+    );
+  });
+
 
   return (
     <tr
-      data={`${parentUuid}, ${container}`}
-      style={{ backgroundColor: props.backgroundColor }}
       className="nestedTableHeader"
     >
       <th className={`subjectHeadingsTableCell subjectHeadingLabel ${sortBy === 'alphabetical' ? 'selected' : ''}`} >
         <div className="subjectHeadingLabelInner" style={positionStyle}>
-          <SortButton
-            handler={updateSort}
-            type="alphabetical"
-            direction={calculateDirectionForType('alphabetical')}
-            interactive={interactive}
-            numberOpen={numberOpen}
-          />
+          {sortButtons.alphabetical}
         </div>
       </th>
       <th className={`subjectHeadingsTableCell subjectHeadingAttribute narrower ${sortBy === 'descendants' ? 'selected' : ''}`}>
-        <SortButton
-          handler={updateSort}
-          type="descendants"
-          direction={calculateDirectionForType('descendants')}
-          interactive={interactive}
-          numberOpen={numberOpen}
-        />
+        {sortButtons.descendants}
       </th>
       <th className={`subjectHeadingsTableCell subjectHeadingAttribute titles ${sortBy === 'bibs' ? 'selected' : ''}`}>
-        <SortButton
-          handler={updateSort}
-          type="bibs"
-          direction={calculateDirectionForType('bibs')}
-          interactive={interactive}
-          numberOpen={numberOpen}
-        />
+        {sortButtons.bibs}
       </th>
     </tr>
   );
@@ -61,9 +56,7 @@ const NestedTableHeader = (props) => {
 NestedTableHeader.propTypes = {
   indentation: PropTypes.number,
   sortBy: PropTypes.string,
-  container: PropTypes.string,
   direction: PropTypes.string,
-  backgroundColor: PropTypes.string,
   parentUuid: PropTypes.string,
   updateSort: PropTypes.func,
   interactive: PropTypes.bool,

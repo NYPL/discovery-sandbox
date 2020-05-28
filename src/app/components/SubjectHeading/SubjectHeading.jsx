@@ -97,9 +97,7 @@ class SubjectHeading extends React.Component {
         });
       }
 
-      this.setState({
-        narrower,
-      });
+      return { narrower };
     });
   }
 
@@ -172,7 +170,8 @@ class SubjectHeading extends React.Component {
             narrower,
             next_url,
           } = resp.data;
-          narrower.forEach((child) => { child.indentation = (indentation || 0) + 1; });
+          if (!narrower) return;
+          narrower.forEach((child) => {child.indentation = (indentation || 0) + 1; });
           if (next_url) {
             narrower.push({
               button: 'next',
@@ -183,7 +182,10 @@ class SubjectHeading extends React.Component {
           }
           this.updateSubjectHeading(
             Object.assign(
-              { narrower, open: true },
+              {
+                narrower,
+                open: true,
+              },
               additionalParameters,
             ),
           );
@@ -193,27 +195,30 @@ class SubjectHeading extends React.Component {
 
   render() {
     const {
-      indentation,
       subjectHeading,
-      location,
+      seeMoreText,
+      seeMoreLinkUrl,
+      indentation,
+    } = this.props;
+
+    const {
       location: {
         pathname,
         search,
-      } = {
-        pathname: '',
-        search: '',
+        query: {
+          filter,
+        },
       },
-      container,
-      seeMoreText,
-      seeMoreLinkUrl,
-    } = this.props;
+    } = this.context.router;
+
+    const { container, media } = this.context;
 
     const {
       label,
       uuid,
       bib_count,
       desc_count,
-      children,
+      onMainPath,
     } = subjectHeading;
 
     const {
@@ -238,7 +243,6 @@ class SubjectHeading extends React.Component {
 
     const toggle = () => {
       const symbol = !open ? '+' : '-';
-      const innerText = desc_count > 0 ? symbol : '';
       const props = {};
 
       props.onClick = this.toggleOpen;
@@ -248,38 +252,45 @@ class SubjectHeading extends React.Component {
         props.onKeyDown = event => handleEnter(event);
       }
 
-      return <button {...props}>{innerText}</button>;
+      return <button {...props}>{symbol}</button>;
     };
 
-    const positionStyle = ['narrower', 'related'].includes(container) ? null : { marginLeft: 30 * ((indentation || 0) + 1) };
-    const isMain = (pathname + search).includes(uuid);
-    // changes to HTML structure here will need to be replicated in ./SubjectHeadingTableHeader
+    const marginSize = media === 'mobile' ? 10 : 30;
 
+    const positionStyle = container === 'related' ? null : { marginLeft: marginSize * ((indentation || 0) + 1) };
+    const isMain = (pathname + search).includes(uuid);
+
+    const topLevel = indentation === 0;
+
+    const showRest = (
+      rest !== '' &&
+      container !== 'context' &&
+      (media !== 'mobile' || (filter && topLevel))
+    );
+
+    // changes to HTML structure here will need to be replicated in ./SubjectHeadingTableHeader
     return (
       <React.Fragment>
         <tr
-          data={`${subjectHeading.uuid}, ${container}`}
           className={`
             subjectHeadingRow
-            ${(open || children || isMain) ? 'openSubjectHeading' : ''}
-            ${(indentation || 0) === 0 ? 'topLevel' : ''}
-            ${(indentation || 0) !== 0 ? 'nestedSubjectHeading' : ''}
+            ${open && narrower.length ? 'openSubjectHeading' : ''}
+            ${topLevel ? 'topLevel' : 'nestedSubjectHeading'}
           `}
-          style={{ backgroundColor: this.props.backgroundColor }}
         >
-          <td className={`subjectHeadingsTableCell subjectHeadingLabel ${sortBy === 'alphabetical' ? 'selected' : ''}`} >
+          <td className={`subjectHeadingsTableCell subjectHeadingLabel ${onMainPath ? 'selected' : ''}`} >
             <div className="subjectHeadingLabelInner" style={positionStyle}>
-              { toggle() }
+              { desc_count > 0 && toggle() }
               <Link to={this.generateUrl}>
                 <span
                   className={`emph ${isMain ? 'mainHeading' : ''}`}
                 >
                   {
-                    rest === '' || container === 'context' ?
-                    null :
-                    <span className="noEmph">
-                      {`${rest}\u0020--\u00a0`}
-                    </span>
+                    showRest ?
+                      <span className="noEmph">
+                        {`${rest}\u0020--\u00a0`}
+                      </span> :
+                      null
                   }
                   {emph}
                 </span>
@@ -304,7 +315,6 @@ class SubjectHeading extends React.Component {
             nested="true"
             indentation={(indentation || 0) + 1}
             range={range}
-            container={container}
             parentUuid={uuid}
             sortBy={sortBy}
             direction={direction}
@@ -313,6 +323,7 @@ class SubjectHeading extends React.Component {
             seeMoreText={seeMoreText}
             seeMoreLinkUrl={seeMoreLinkUrl}
             preOpen={false}
+            marginSize={marginSize}
           />
           : null}
       </React.Fragment>
@@ -326,11 +337,9 @@ SubjectHeading.propTypes = {
   sortBy: PropTypes.string,
   linked: PropTypes.string,
   indentation: PropTypes.number,
-  container: PropTypes.string,
   direction: PropTypes.string,
   seeMoreText: PropTypes.string,
   seeMoreLinkUrl: PropTypes.string,
-  backgroundColor: PropTypes.string,
   preOpen: PropTypes.bool,
 };
 
@@ -341,6 +350,8 @@ SubjectHeading.defaultProps = {
 
 SubjectHeading.contextTypes = {
   router: PropTypes.object,
+  container: PropTypes.string,
+  media: PropTypes.string,
 };
 
 export default SubjectHeading;

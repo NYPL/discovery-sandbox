@@ -133,7 +133,6 @@ input[type=submit] {
   -moz-appearance: button;
 }
 input[type=submit]:focus {
-  outline-color: #ffb81d;
   outline-style: solid;
   outline-width: 3px;
 }
@@ -184,5 +183,12 @@ select {
         margin: 5px;
       }
     }
+  }
+}
+
+div {
+  *:focus {
+    outline: .25rem solid $focuscolor;
+    outline-offset: 0;
   }
 }

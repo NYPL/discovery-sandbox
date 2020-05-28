@@ -11,7 +11,7 @@ class AdditionalSubjectHeadingsButton extends React.Component {
   }
 
   onClick() {
-    if (this.props.interactive) this.props.updateParent(this);
+    this.props.updateParent(this);
   }
 
   hide() {
@@ -21,10 +21,10 @@ class AdditionalSubjectHeadingsButton extends React.Component {
   render() {
     const {
       indentation,
-      interactive,
       text,
       linkUrl,
       noEllipse,
+      marginSize,
     } = this.props;
 
     if (this.state.hidden) return null;
@@ -33,30 +33,39 @@ class AdditionalSubjectHeadingsButton extends React.Component {
 
     const seeMoreText = text || 'See more';
 
-    const button = (
-      linkUrl ?
-        (
-          <Link
-            to={linkUrl}
-            className="seeMoreButton toIndex"
-          >
-            {seeMoreText}
-          </Link>
-        )
-        :
-        (
-          <button
-            data={`${text}-${linkUrl}`}
-            onClick={this.onClick}
-            className="seeMoreButton"
-          >
-            {previous ? '↑' : '↓'} <em key="seeMoreText">{seeMoreText}</em>
-            {previous ? null : <br /> }
-            {previous || noEllipse ? null : <VerticalEllipse />}
-          </button>
-        )
+    let button;
 
-    );
+    if (linkUrl) {
+      button = (
+        <Link
+          to={linkUrl}
+          className="seeMoreButton toIndex"
+        >
+          {seeMoreText}
+        </Link>
+      );
+    } else if (this.props.button === 'contextMore') {
+      button = (
+        <span
+          data={`${text}-${linkUrl}`}
+          className="contextMore"
+        >
+          {seeMoreText}
+        </span>
+      );
+    } else {
+      button = (
+        <button
+          data={`${text}-${linkUrl}`}
+          onClick={this.onClick}
+          className="seeMoreButton"
+        >
+          {previous ? '↑' : '↓'} <em key="seeMoreText">{seeMoreText}</em>
+          {previous ? null : <br /> }
+          {previous || noEllipse ? null : <VerticalEllipse />}
+        </button>
+      );
+    }
 
     if (previous && linkUrl) return null;
 
@@ -66,11 +75,10 @@ class AdditionalSubjectHeadingsButton extends React.Component {
 
     return (
       <tr
-        className="subjectHeadingRow nestedSubjectHeading"
-        style={{ backgroundColor: this.props.backgroundColor }}
+        className={`subjectHeadingRow seeMore ${previous || noEllipse ? '' : 'ellipse'}`}
       >
         <td className="subjectHeadingsTableCell" colSpan="4">
-          <div className="subjectHeadingLabelInner" style={{ marginLeft: `${30 * indentation}px` }}>
+          <div className="subjectHeadingLabelInner" style={{ marginLeft: `${marginSize * indentation}px` }}>
             {
               content
             }
@@ -93,10 +101,8 @@ AdditionalSubjectHeadingsButton.propTypes = {
   updateParent: PropTypes.func,
   indentation: PropTypes.number,
   button: PropTypes.string,
-  interactive: PropTypes.bool,
   linkUrl: PropTypes.string,
   text: PropTypes.string,
-  backgroundColor: PropTypes.string,
 };
 
 export default AdditionalSubjectHeadingsButton;

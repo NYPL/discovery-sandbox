@@ -1,15 +1,13 @@
 /* eslint-env mocha */
 import React from 'react';
 import { expect } from 'chai';
-import Enzyme, { shallow, mount } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
+import { shallow, mount } from 'enzyme';
 
 import Pagination from '../../src/app/components/Pagination/Pagination';
 
 // The Pagination component displays the items currently being displayed. If there are more
 // than 50 items then the "next" link gets rendered. If the page prop is greater than 1,
 // the "previous" link gets rendered.
-Enzyme.configure({ adapter: new Adapter() });
 describe('Pagination', () => {
   describe('Default component', () => {
     let component;
@@ -160,6 +158,12 @@ describe('Pagination', () => {
       expect(nextPage.props.rel).to.equal('previous');
       expect(nextPage.props.className).to.equal('previous-link');
       expect(nextPage.props.children[2]).to.equal('Previous');
+    });
+
+    it('should return null for the next button if on a Subject Show Page and there is no next url', () => {
+      component = shallow(<Pagination subjectShowPage hasNext={false} />);
+
+      expect(component.instance().getPage(1)).to.equal(null);
     });
   });
 

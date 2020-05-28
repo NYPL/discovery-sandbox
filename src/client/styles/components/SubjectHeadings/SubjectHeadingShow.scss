@@ -1,7 +1,14 @@
 .subjectHeadingsSideBar {
   display: flex;
   flex-direction: column;
+  float: right;
+
+  .subjectHeadingsTable {
+    min-width: 100%;
+    width: fit-content;
+  }
 }
+
 .subjectHeadingInfoBox {
   border-color: #000000;
   border-style: solid;
@@ -9,21 +16,27 @@
   justify-self: end;
   width: 100%;
 
-  .backgroundContainer {
+  .sideBarContentHeading {
     padding-left: 5px;
     background-color: $subject-heading-table-header;
   }
 
   .toIndex {
-    font-size: 14px;
+    font-size: 16px;
     min-height: 32px;
-    padding-left: 10px;
     text-decoration: none;
+    font-weight: 500;
   }
 
   .toIndex:hover {
     cursor: pointer;
     text-decoration: underline;
+  }
+}
+
+.context {
+  .contextMore {
+    color: gray;
   }
 }
 
@@ -35,7 +48,7 @@
   }
 
   .subjectHeadingToggle {
-    display: none;
+    display: none !important;
   }
 
   .subjectHeadingLabelInner {
@@ -50,18 +63,17 @@
 
   .subjectHeadingsTableCell {
     font-size: 12px;
-
-    &.subjectHeadingLabel {
-      min-width: 270px;
-      width: 500px;
-    }
   }
+
   h4 {
     font-size: 16px;
+    font-weight: 500;
   }
+
   .subjectHeadingLabelContainer {
     padding: 2px;
   }
+
   .subjectHeadingAttribute {
     padding-right: 1%;
   }
@@ -69,5 +81,20 @@
   th {
     font-size: 12px;
     min-width: 45px;
+  }
+}
+
+@include media($mobile-breakpoint) {
+  .subjectHeadingsSideBar {
+    float: left;
+    width: 100%;
+
+    .subjectHeadingsTable {
+      width: 100%;
+    }
+  }
+
+  .subjectHeadingInfoBox {
+    min-width: auto;
   }
 }

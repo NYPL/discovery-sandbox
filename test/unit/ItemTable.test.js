@@ -1,13 +1,11 @@
 /* eslint-env mocha */
 import React from 'react';
 import { expect } from 'chai';
-import Enzyme, { shallow } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
+import { shallow } from 'enzyme';
 
 // Import the component that is going to be tested
 import ItemTable from './../../src/app/components/Item/ItemTable';
 
-Enzyme.configure({ adapter: new Adapter() });
 describe('ItemTable', () => {
   describe('No rendered table', () => {
     it('should return null with no props passed', () => {

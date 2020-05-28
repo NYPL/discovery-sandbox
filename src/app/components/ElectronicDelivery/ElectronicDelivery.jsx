@@ -17,10 +17,15 @@ import Actions from '@Actions'
 import Store from '../../stores/Store';
 import PatronStore from '../../stores/PatronStore';
 import appConfig from '../../data/appConfig';
+import AppConfigStore from '../../stores/AppConfigStore';
 import ElectronicDeliveryForm from './ElectronicDeliveryForm';
 import LibraryItem from '../../utils/item';
 import LoadingLayer from '../LoadingLayer/LoadingLayer';
-import { trackDiscovery } from '../../utils/utils';
+import Notification from '../Notification/Notification';
+import {
+  trackDiscovery,
+  basicQuery,
+} from '../../utils/utils';
 
 class ElectronicDelivery extends React.Component {
   constructor(props) {
@@ -118,7 +123,7 @@ class ElectronicDelivery extends React.Component {
       itemSource,
     }, fields);
     const searchKeywords = this.props.searchKeywords;
-    const searchKeywordsQuery = (searchKeywords) ? `&searchKeywords=${searchKeywords}` : '';
+    const searchKeywordsQuery = searchKeywords ? `&q=${searchKeywords}` : '';
     const fromUrlQuery = this.props.location.query && this.props.location.query.fromUrl ?
       `&fromUrl=${encodeURIComponent(this.props.location.query.fromUrl)}` : '';
     const itemSourceMapping = {
@@ -206,6 +211,11 @@ class ElectronicDelivery extends React.Component {
       && this.state.patron.emails.length
     ) ? this.state.patron.emails[0] : '';
     const searchKeywords = this.props.searchKeywords;
+    const {
+      closedLocations, holdRequestNotification,
+    } = AppConfigStore.getState();
+
+    const searchUrl = basicQuery(this.props)({});
 
     return (
       <DocumentTitle title="Electronic Delivery Request | Shared Collection Catalog | NYPL">
@@ -218,12 +228,17 @@ class ElectronicDelivery extends React.Component {
             <div className="row">
               <div className="content-wrapper">
                 <Breadcrumbs
-                  query={searchKeywords}
+                  searchUrl={searchUrl}
                   type="edd"
                   bibUrl={`/bib/${bibId}`}
                   itemUrl={`/hold/request/${bibId}-${itemId}`}
                 />
                 <h1 id="edd-request-title" tabIndex="0">Electronic Delivery Request</h1>
+                {
+                  holdRequestNotification ?
+                    <Notification notificationType="holdRequestNotification" />
+                    : null
+                }
               </div>
             </div>
           </div>
@@ -263,17 +278,21 @@ class ElectronicDelivery extends React.Component {
                   </div>
                 )
               }
-              <ElectronicDeliveryForm
-                bibId={bibId}
-                itemId={itemId}
-                itemSource={this.state.itemSource}
-                submitRequest={this.submitRequest}
-                raiseError={this.raiseError}
-                error={error}
-                form={form}
-                defaultEmail={patronEmail}
-                searchKeywords={searchKeywords}
-              />
+              {
+                !closedLocations.includes('') ?
+                  <ElectronicDeliveryForm
+                    bibId={bibId}
+                    itemId={itemId}
+                    itemSource={this.state.itemSource}
+                    submitRequest={this.submitRequest}
+                    raiseError={this.raiseError}
+                    error={error}
+                    form={form}
+                    defaultEmail={patronEmail}
+                    searchKeywords={searchKeywords}
+                  />
+                  : null
+              }
             </div>
           </div>
         </div>

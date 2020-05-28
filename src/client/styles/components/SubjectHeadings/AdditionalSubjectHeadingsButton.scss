@@ -1,18 +1,11 @@
 .seeMoreButton {
   color: #104d65;
   font-size: 14px;
-  margin-left: 20px;
   cursor: default;
   @include removeDefaultButtonStyle;
 
   em {
     padding-left: 10px;
-  }
-
-  &:focus {
-    outline-color: #ffb81d;
-    outline-style: solid;
-    outline-width: .125rem;
   }
 
   &:hover {

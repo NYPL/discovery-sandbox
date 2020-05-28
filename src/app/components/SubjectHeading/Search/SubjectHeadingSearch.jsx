@@ -1,9 +1,11 @@
+/* global document */
 import React from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import appConfig from '../../../data/appConfig';
 
 import AutosuggestItem from './AutosuggestItem';
+import SearchIcon from '../../../../client/icons/SearchIcon';
 
 class SubjectHeadingSearch extends React.Component {
   constructor(props) {
@@ -19,6 +21,16 @@ class SubjectHeadingSearch extends React.Component {
     this.onSubmit = this.onSubmit.bind(this);
     this.resetAutosuggest = this.resetAutosuggest.bind(this);
     this.changeActiveSuggestion = this.changeActiveSuggestion.bind(this);
+    this.onFocus = this.onFocus.bind(this);
+    this.blurClickHandler = this.blurClickHandler.bind(this);
+  }
+
+  componentDidMount() {
+    document.addEventListener('click', this.blurClickHandler);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('click', this.blurClickHandler);
   }
 
   onSubmit(submitEvent) {
@@ -36,19 +48,35 @@ class SubjectHeadingSearch extends React.Component {
     }, this.makeApiCallWithThrottle(this.state.timerId));
   }
 
+  onFocus() {
+    this.setState({ hidden: false });
+  }
+
+  blurClickHandler(e) {
+    const hasParentAutosuggest = (element) => {
+      if (element.id === 'autosuggest') return true;
+      if (element.parentElement) return hasParentAutosuggest(element.parentElement);
+      return false;
+    };
+    if (!hasParentAutosuggest(e.target)) this.setState({ hidden: true });
+  }
+
   makeApiCallWithThrottle(timerId) {
     const apiCall = () => {
-      if (this.state.userInput.length) return axios(`${appConfig.baseUrl}/api/subjectHeadings/autosuggest?query=${this.state.userInput}`)
-        .then((res) => {
-          if (res.data.request.query.trim() === this.state.userInput.trim()) {
-            this.setState({
-              suggestions: res.data.autosuggest,
-              activeSuggestion: 0,
-            });
-          }
-        });
+      if (this.state.userInput) {
+        return axios(`${appConfig.baseUrl}/api/subjectHeadings/autosuggest?query=${this.state.userInput}`)
+          .then((res) => {
+            if (res.data.request.query.trim() === this.state.userInput.trim()) {
+              this.setState({
+                suggestions: res.data.autosuggest,
+                activeSuggestion: 0,
+              });
+            }
+          })
+          .catch(console.error);
+      }
       // if this.state.userInput.length is falsey, reset suggestions
-      this.setState({ suggestions: [] });
+      return this.setState({ suggestions: [] });
     };
 
     if (timerId) return;
@@ -108,12 +136,13 @@ class SubjectHeadingSearch extends React.Component {
         suggestions,
         activeSuggestion,
         userInput,
+        hidden,
       },
     } = this;
 
-    let suggestionsListComponent;
+    let suggestionsListComponent = null;
 
-    if (userInput && suggestions.length) {
+    if (userInput && suggestions.length && !hidden) {
       suggestionsListComponent = (
         <ul className="suggestions">
           {suggestions.map((suggestion, index) => (
@@ -135,16 +164,26 @@ class SubjectHeadingSearch extends React.Component {
         autoComplete="off"
         onSubmit={onSubmit}
         onKeyDown={changeActiveSuggestion}
+        onFocus={this.onFocus}
+        id="mainContent"
       >
         <div className="autocomplete-field">
-          <label htmlFor="autosuggest">Subject Heading Search:</label>
-          <input
-            id="autosuggest"
-            type="text"
-            onChange={onChange}
-            value={userInput}
-            placeholder="Subject"
-          />
+          <label htmlFor="autosuggest">Subject Heading Lookup</label>
+          <div className="autosuggestInput">
+            <input
+              id="autosuggest"
+              type="text"
+              onChange={onChange}
+              value={userInput}
+              placeholder="Subject"
+            />
+            <button
+              onSubmit={onSubmit}
+              type="submit"
+            >
+              <SearchIcon />
+            </button>
+          </div>
           {suggestionsListComponent}
         </div>
       </form>
