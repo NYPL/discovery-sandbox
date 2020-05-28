@@ -72,6 +72,28 @@ class ItemTableRow extends React.Component {
 
     if (_isEmpty(item)) {
       return null;
+  const status = item.status && item.status.prefLabel ? item.status.prefLabel : ' ';
+  let itemRequestBtn = <span>{status}</span>;
+  let itemCallNumber = ' ';
+
+  const { closedLocations } = AppConfigStore.getState();
+
+  if (item.requestable && !closedLocations.includes('')) {
+    if (item.isRecap) {
+      itemRequestBtn = item.available ?
+        (<Link
+          to={
+            `${appConfig.baseUrl}/hold/request/${bibId}-${item.id}?searchKeywords=${searchKeywords}`
+          }
+          onClick={e => getRecord(e, bibId, item.id)}
+          tabIndex="0"
+        >
+          Request
+        </Link>) :
+        <span>In Use</span>;
+    } else if (item.nonRecapNYPL) {
+      // Not in ReCAP
+      itemRequestBtn = <span>{status}</span>;
     }
 
     if (item.isElectronicResource) {
