@@ -1,12 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
-import { Link } from 'react-router';
 
 import SubjectHeadingsTable from './SubjectHeadingsTable';
 import NeighboringHeadingsBox from './NeighboringHeadingsBox';
 import BibsList from './BibsList';
-import LocalLoadingLayer from './LocalLoadingLayer';
 import Range from '../../models/Range';
 import appConfig from '../../data/appConfig';
 import Actions from '../../actions/Actions';
@@ -18,10 +16,7 @@ class SubjectHeadingShow extends React.Component {
     this.state = {
       mainHeading: {
         uuid: this.props.params.subjectHeadingUuid,
-        label: '',
       },
-      shepBibs: [],
-      bibsLoaded: false,
       contextError: null,
       contextIsLoading: true,
       contextHeadings: [],
@@ -54,6 +49,7 @@ class SubjectHeadingShow extends React.Component {
           contextHeadings: this.processContextHeadings(subject_headings, uuid),
           mainHeading: {
             label,
+            uuid,
           },
           totalBibs: bib_count,
           contextIsLoading: false,
@@ -105,7 +101,6 @@ class SubjectHeadingShow extends React.Component {
 
   generateFullContextUrl() {
     const uuid = this.props.params.subjectHeadingUuid;
-    const linkFromLabel = this.getTopLevelLabel();
     const path = this.props.location.pathname.replace(/\/subject_headings.*/, '');
     return `${path}/subject_headings?linked=${uuid}`;
   }
@@ -160,12 +155,15 @@ class SubjectHeadingShow extends React.Component {
 
     return (
       <React.Fragment>
-        <BibsList
-          uuid={uuid}
-          key={this.context.router.location.search}
-          total={totalBibs}
-          label={label}
-        />
+        {
+          label &&
+          <BibsList
+            uuid={uuid}
+            key={this.context.router.location.search}
+            shepBibCount={totalBibs}
+            label={label}
+          />
+        }
         <div
           className="nypl-column-half subjectHeadingsSideBar"
         >
@@ -178,20 +176,13 @@ class SubjectHeadingShow extends React.Component {
             contextError={contextError}
           />
           {relatedHeadings ?
-            <div
-              className="nypl-column-half subjectHeadingInfoBox"
-              aria-label="Related Subject Headings"
-            >
-              <div className="backgroundContainer">
-                <h4>Related Headings</h4>
-              </div>
-              <SubjectHeadingsTable
-                subjectHeadings={relatedHeadings}
-                location={location}
-                keyId="related"
-                container="related"
-              />
-            </div>
+            <SubjectHeadingsTable
+              subjectHeadings={relatedHeadings}
+              location={location}
+              keyId="related"
+              container="related"
+              tableHeaderText="Related Headings"
+            />
             : null
           }
         </div>

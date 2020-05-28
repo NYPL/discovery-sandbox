@@ -3,14 +3,11 @@ import React from 'react';
 import sinon from 'sinon';
 import axios from 'axios';
 import { expect } from 'chai';
-import Enzyme, { mount } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
+import { mount } from 'enzyme';
 
 import DataLoader from './../../src/app/components/DataLoader/DataLoader';
 import Actions from './../../src/app/actions/Actions';
 import appConfig from '@appConfig';
-
-Enzyme.configure({ adapter: new Adapter() });
 
 describe('DataLoader', () => {
   describe('Non-matching path', () => {

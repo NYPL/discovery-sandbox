@@ -36,25 +36,31 @@
         cursor: pointer;
       }
     }
+
+  }
+  .subjectHeadingAttribute {
+    @include media($mobile-breakpoint) {
+      vertical-align: top;
+    }
   }
 }
 
-.subjectHeadingRow {
+tbody .subjectHeadingRow {
   border-bottom: $table-row-border;
   line-height: 32px;
   background-color: $subjectHeadingBackground;
 
-  &.ellipse {
-    border-bottom: none;
-  }
-
   .selected .emph {
     font-weight: 700;
   }
+}
 
-  &.openSubjectHeading {
-    border-bottom: 0;
-  }
+.index .openSubjectHeading {
+  border-bottom: 0;
+}
+
+.index .ellipse {
+  border-bottom: none;
 }
 
 .index .nestedSubjectHeading .emph {
@@ -68,6 +74,8 @@
 
 .emph {
   color: black;
+  font-size: 14px;
+  font-style: initial;
 
   &:hover {
     color: inherit;
@@ -76,4 +84,29 @@
 
 a:focus {
   background-color: inherit;
+}
+
+@include media($mobile-breakpoint) {
+  .subjectHeadingsTable {
+    th {
+      min-width: 32px;
+    }
+  }
+
+  .subjectHeadingsTableCell.subjectHeadingLabel {
+    min-width: unset;
+    width: auto;
+  }
+
+  .subjectHeadingToggle {
+    left: -32px;
+  }
+}
+
+@include media($xtrasmall-breakpoint) {
+  .subjectHeadingsTable:not(.related) .subjectHeadingsTableCell.subjectHeadingLabel,
+  .seeMore .subjectHeadingsTableCell
+  {
+    padding-left: 22px;
+  }
 }
