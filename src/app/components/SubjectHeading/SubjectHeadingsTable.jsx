@@ -27,8 +27,17 @@ class SubjectHeadingsTable extends React.Component {
     } = this.props;
 
     return (
-      <table className={`subjectHeadingsTable ${container}`}>
-        <SubjectHeadingsTableHeader updateSort={updateSort} selected={sortBy} />
+      <table className={
+        `subjectHeadingsTable
+        ${container}
+        ${['context', 'related'].includes(container) ? ' nypl-column-half subjectHeadingInfoBox' : ''}`}
+      >
+        <SubjectHeadingsTableHeader
+          updateSort={updateSort}
+          selected={sortBy}
+          container={container}
+          tableHeaderText={this.props.tableHeaderText}
+        />
         <tbody data={`${seeMoreText}-${seeMoreLinkUrl}`}>
           <SubjectHeadingsTableBody
             subjectHeadings={subjectHeadings}

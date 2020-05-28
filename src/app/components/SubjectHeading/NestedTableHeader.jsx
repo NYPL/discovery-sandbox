@@ -12,10 +12,11 @@ const NestedTableHeader = (props) => {
     parentUuid,
     updateSort,
     numberOpen,
-    interactive
+    interactive,
+    marginSize,
   } = props;
 
-  const positionStyle = { marginLeft: 30 * ((indentation || 0) + 1) };
+  const positionStyle = { marginLeft: marginSize * ((indentation || 0) + 1) };
   const calculateDirectionForType = calculateDirection(sortBy, direction);
 
   const sortButtons = {};

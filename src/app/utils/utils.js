@@ -238,6 +238,7 @@ const basicQuery = (props = {}) => {
  */
 function getReqParams(query = {}) {
   const page = query.page || '1';
+  const perPage = query.per_page || '50';
   const q = query.q || '';
   const sort = query.sort || '';
   const order = query.sort_direction || '';
@@ -245,7 +246,7 @@ function getReqParams(query = {}) {
   const fieldQuery = query.search_scope || '';
   const filters = query.filters || {};
 
-  return { page, q, sort, order, sortQuery, fieldQuery, filters };
+  return { page, perPage, q, sort, order, sortQuery, fieldQuery, filters };
 }
 
 /*

@@ -1,15 +1,12 @@
 /* eslint-env mocha */
 import React from 'react';
 import { expect } from 'chai';
-import Enzyme, { shallow, mount } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
-
+import { shallow, mount } from 'enzyme';
 
 import SelectedFilters from '../../src/app/components/Filters/SelectedFilters';
 
 const listItemAt = (component, n) => component.find('li').at(n);
 
-Enzyme.configure({ adapter: new Adapter() });
 describe('SelectedFilters', () => {
   describe('Default', () => {
     it('should not render a div', () => {
@@ -34,7 +31,8 @@ describe('SelectedFilters', () => {
     let component;
 
     before(() => {
-      component = shallow(<SelectedFilters selectedFilters={selectedFilters} />, { disableLifecycleMethods: true });
+      component = shallow(
+        <SelectedFilters selectedFilters={selectedFilters} />, { disableLifecycleMethods: true });
     });
 
     it('should render a ul', () => {

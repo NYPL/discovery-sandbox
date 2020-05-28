@@ -1,5 +1,4 @@
 .subjectHeadingsTable thead {
-  border-bottom: 1.5px solid #000000;
   line-height: 2.5;
 
   th {
@@ -21,8 +20,18 @@
   }
 }
 
+.index thead {
+  border-bottom: 1.5px solid #000000;
+}
+
 .subjectHeadingsTable:not(.related) {
   .headingColumnHeader {
     padding-left: 32px;
+  }
+
+  @include media($mobile-breakpoint) {
+    .headingColumnHeader {
+      padding-left: 12px;
+    }
   }
 }

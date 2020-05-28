@@ -1,14 +1,13 @@
 /* eslint-env mocha */
 import React from 'react';
 import { expect } from 'chai';
-import Enzyme, { shallow, mount } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
+import alt from '@alt';
+import { shallow, mount } from 'enzyme';
 
 import sinon from 'sinon';
 
 import ResultsCount from '../../src/app/components/ResultsCount/ResultsCount';
 
-Enzyme.configure({ adapter: new Adapter() });
 const filters = {
   subjectLiteral: {
     owner: [{}],
@@ -35,6 +34,7 @@ describe('ResultsCount', () => {
       let component;
 
       before(() => {
+        alt.flush();
         component = shallow(<ResultsCount />);
       });
 
@@ -103,7 +103,6 @@ describe('ResultsCount', () => {
   });
 
   describe('Loading display', () => {
-    const isLoading = true;
     let component;
 
     before(() => {
