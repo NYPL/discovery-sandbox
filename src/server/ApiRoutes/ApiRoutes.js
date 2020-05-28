@@ -65,12 +65,4 @@ router
   .route(`${appConfig.baseUrl}/api/subjectHeadings*`)
   .get(SubjectHeadings.proxyRequest);
 
-router
-  .route(appConfig.baseUrl)
-  .get(MainApp);
-
-router
-  .route('/')
-  .get(MainApp);
-
 export default router;
