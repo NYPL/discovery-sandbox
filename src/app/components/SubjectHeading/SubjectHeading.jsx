@@ -29,10 +29,8 @@ class SubjectHeading extends React.Component {
     };
     this.toggleOpen = this.toggleOpen.bind(this);
     this.updateSubjectHeading = this.updateSubjectHeading.bind(this);
-    this.addMore = this.addMore.bind(this);
     this.generateUrl = this.generateUrl.bind(this);
     this.updateSort = this.updateSort.bind(this);
-    this.fetchInitial = this.fetchInitial.bind(this);
   }
 
   componentDidMount() {
@@ -77,43 +75,6 @@ class SubjectHeading extends React.Component {
     } else {
       this.updateSubjectHeading({ open: false });
     }
-  }
-
-  addMore(element, data) {
-    this.setState((prevState) => {
-      const { narrower } = prevState;
-      data.narrower.forEach(
-        (child) => { child.indentation = (this.props.subjectHeading.indentation || 0) + 1; }
-      );
-
-      narrower.splice(-1, 1, ...data.narrower);
-
-      if (data.next_url) {
-        narrower.splice(narrower.length, 1, {
-          button: 'next',
-          updateParent: this.fetchAndUpdate(data.next_url),
-          indentation: (this.props.subjectHeading.indentation || 0) + 1,
-          noEllipse: true,
-        });
-      }
-
-      return { narrower };
-    });
-  }
-
-  fetchAndUpdate(url) {
-    return (element) => {
-      axios(url)
-        .then(
-          (resp) => {
-            if (resp.data.narrower) {
-              this.addMore(element, resp.data);
-            } else {
-              element.hide();
-            }
-          },
-        ).catch((resp) => { console.error(resp); });
-    };
   }
 
   addEmphasis(string) {
@@ -173,12 +134,7 @@ class SubjectHeading extends React.Component {
           if (!narrower) return;
           narrower.forEach((child) => {child.indentation = (indentation || 0) + 1; });
           if (next_url) {
-            narrower.push({
-              button: 'next',
-              updateParent: this.fetchAndUpdate(next_url),
-              indentation: (indentation || 0) + 1,
-              noEllipse: true,
-            });
+            this.setState({ nextUrl: next_url });
           }
           this.updateSubjectHeading(
             Object.assign(
@@ -227,6 +183,7 @@ class SubjectHeading extends React.Component {
       sortBy,
       direction,
       range,
+      nextUrl,
     } = this.state;
 
     const {
@@ -324,6 +281,7 @@ class SubjectHeading extends React.Component {
             seeMoreLinkUrl={seeMoreLinkUrl}
             preOpen={false}
             marginSize={marginSize}
+            nextUrl={nextUrl}
           />
           : null}
       </React.Fragment>
