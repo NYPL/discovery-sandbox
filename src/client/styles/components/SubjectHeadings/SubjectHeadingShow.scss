@@ -98,3 +98,10 @@
     min-width: auto;
   }
 }
+
+@include media($xtrasmall-breakpoint) {
+  .subjectHeadingsSideBar {
+    float: left;
+    width: unset;
+  }
+}

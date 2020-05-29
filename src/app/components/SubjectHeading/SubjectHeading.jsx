@@ -103,7 +103,8 @@ class SubjectHeading extends React.Component {
 
   fetchAndUpdate(url) {
     return (element) => {
-      axios(url)
+      const apiUrl = url.replace(/.*\/api\/v0\.1/, `${appConfig.baseUrl}/api/subjectHeadings`);
+      axios(apiUrl)
         .then(
           (resp) => {
             if (resp.data.narrower) {
