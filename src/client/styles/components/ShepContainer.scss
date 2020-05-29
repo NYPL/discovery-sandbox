@@ -47,10 +47,18 @@
     }
   }
 
-  .nypl-row.container-row {
-    @include media($mobile-breakpoint) {
-      padding-right: 0px;
-      padding-left: 10px;
+  .nypl-row {
+    margin: 0;
+
+    &.container-row {
+      @include media($mobile-breakpoint) {
+        padding-left: 10px;
+        padding-right: 0;
+      }
+
+      @include media(770px) {
+        padding: 2%;
+      }
     }
   }
 }
