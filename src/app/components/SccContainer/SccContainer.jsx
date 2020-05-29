@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 import Breadcrumbs from '../Breadcrumbs/Breadcrumbs';
 import LoadingLayer from '../LoadingLayer/LoadingLayer';
+import Notification from '../Notification/Notification';
 
 import Store from '../../stores/Store';
 
@@ -17,6 +18,7 @@ const SccContainer = props => (
         <div className="nypl-row">
           <div className="nypl-column-full">
             <Breadcrumbs type={props.breadcrumbsType} />
+            <Notification notificationType="searchResultsNotification" />
             <h1
               aria-label={props.bannerOptions.ariaLabel || props.bannerOptions.text}
             >
