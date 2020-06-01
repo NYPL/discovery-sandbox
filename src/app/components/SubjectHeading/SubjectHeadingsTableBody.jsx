@@ -13,16 +13,19 @@ class SubjectHeadingsTableBody extends React.Component {
     super(props);
     const {
       subjectHeadings,
+      nextUrl,
     } = props;
 
     this.state = {
       subjectHeadings,
       range: this.initialRange(props),
+      nextUrl,
     };
     this.updateRange = this.updateRange.bind(this);
     this.listItemsInRange = this.listItemsInRange.bind(this);
     this.listItemsInInterval = this.listItemsInInterval.bind(this);
     this.tableRow = this.tableRow.bind(this);
+    this.fetchAndUpdate = this.fetchAndUpdate.bind(this);
   }
 
   initialRange(props) {
@@ -36,6 +39,33 @@ class SubjectHeadingsTableBody extends React.Component {
     intervalElement[endpoint] += increment;
     rangeElement.normalize();
     this.setState(prevState => prevState);
+  }
+
+  fetchAndUpdate() {
+    const {
+      nextUrl,
+      subjectHeadings,
+    } = this.state;
+    const apiUrl = nextUrl.replace(/.*\/api\/v0\.1/, `${appConfig.baseUrl}/api/subjectHeadings`);
+    axios(apiUrl)
+      .then(
+        (resp) => {
+          const {
+            data: {
+              narrower,
+              next_url,
+            },
+          } = resp;
+          if (narrower) {
+            this.setState({
+              subjectHeadings: subjectHeadings.concat(narrower),
+              nextUrl: next_url,
+            });
+          } else {
+            this.setState({ nextUrl: false });
+          }
+        },
+      ).catch((resp) => { console.error(resp); });
   }
 
   listItemsInRange() {
@@ -52,7 +82,7 @@ class SubjectHeadingsTableBody extends React.Component {
 
   listItemsInInterval(interval, index, lastIndex) {
     const { indentation } = this.props;
-    const { subjectHeadings, range } = this.state;
+    const { subjectHeadings, range, nextUrl } = this.state;
     const { container } = this.context;
     const { start, end } = interval;
     const subjectHeadingsInInterval = subjectHeadings.filter((el, i) => i >= start && i <= end);
@@ -70,6 +100,14 @@ class SubjectHeadingsTableBody extends React.Component {
         indentation,
         noEllipse: index === lastIndex,
         updateParent: () => this.updateRange(range, interval, 'end', 10),
+      });
+    }
+    if (end === Infinity && nextUrl) {
+      subjectHeadingsInInterval.push({
+        button: isContext ? 'contextMore' : 'next',
+        indentation,
+        noEllipse: true,
+        updateParent: this.fetchAndUpdate,
       });
     }
     return subjectHeadingsInInterval;
