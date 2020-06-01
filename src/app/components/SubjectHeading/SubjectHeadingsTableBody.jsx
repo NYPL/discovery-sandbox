@@ -46,7 +46,8 @@ class SubjectHeadingsTableBody extends React.Component {
       nextUrl,
       subjectHeadings,
     } = this.state;
-    axios(nextUrl)
+    const apiUrl = nextUrl.replace(/.*\/api\/v0\.1/, `${appConfig.baseUrl}/api/subjectHeadings`);
+    axios(apiUrl)
       .then(
         (resp) => {
           const {
