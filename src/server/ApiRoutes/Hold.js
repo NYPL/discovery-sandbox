@@ -348,7 +348,7 @@ function newHoldRequestServerEdd(req, res, next) {
  */
 function createHoldRequestServer(req, res, pickedUpBibId = '', pickedUpItemId = '') {
   // Ensure user is logged in
-  const loggedIn = User.requireUser(req);
+  const loggedIn = User.requireUser(req, res);
   if (!loggedIn) return false;
 
   // NOTE: pickedUpItemId and pickedUpBibId are coming from the EDD form function below:
