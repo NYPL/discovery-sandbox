@@ -34,11 +34,11 @@
 * `years`
  * This should be formatted as {"start": year, "end": year}.
 
-<style>
+<!-- <style>
   table ul {
     list-style: none;
   }
-</style>
+</style> -->
 
 ## API Parameters Comparison
 This table lists, in the first column, the frontend features related to searching and search filters available from the frontend. The 2nd and 3rd column list out the Discovery API and ResearchNow API parameters that correlate to that frontend functionality.
