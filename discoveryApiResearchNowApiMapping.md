@@ -7,32 +7,32 @@
 * `page` string
 * `per_page` integer
 * `sort` integer
- * 'relevance', 'title', 'creator', 'date'
+  * "relevance", "title", "creator", "date"
 * `sort_direction` string
- * 'asc', 'desc'
- * title defaults to asc, date defaults to desc, creator defaults to asc, relevance is fixed desc
+  * "asc", "desc"
+  * title defaults to asc, date defaults to desc, creator defaults to asc, relevance is fixed desc
 * `search_scope` string
- * 'all', 'title', 'contributor', 'subject', 'series', 'callnumber', 'standard_number'
+  * "all", "title", "contributor", "subject", "series", "callnumber", "standard_number"
 * `filters` string
- * 'owner’, 'subjectLiteral’, 'holdingLocation’, 'deliveryLocation’, 'language', 'materialType', 'mediaType’, 'carrierType’, 'publisher’, 'contributor’, 'creator’, 'issuance’, 'createdYear’, 'dateAfter', or 'dateBefore'
- * Specify a hash of filters to apply, where keys are from terms above
+  * "owner", "subjectLiteral", "holdingLocation", "deliveryLocation", "language", "materialType", "mediaType", "carrierType", "publisher", "contributor", "creator", "issuance", "createdYear", "dateAfte"', or "dateBefore"
+  * Specify a hash of filters to apply, where keys are from terms above
 
 ## ResearchNow API
 [Github](https://github.com/NYPL/sfr-ingest-pipeline/tree/development/app/sfr-search-api#searching)
 ### Parameters
 [GET `/v0.1/research-now/v3/search-api`](https://dev-platformdocs.nypl.org/#/research-now/get_v0_1_research_now_v3_search_api)
 * **`field`** (required) string
- * Keyword, Title, Author, StandardNumber(ISBN, ISSN, LCCN and OCLC) and Subject
- * Defaults to Keyword
+  * "keyword", "title", "author", "standard_number" (ISBN, ISSN, LCCN and OCLC) and "subject"
+  * Defaults to "keyword"
 * **`query`** (required) string
 * `recordType`
- * Internal record type to return with the work. Either instances or editions.
+  * Internal record type to return with the work. Either instances or editions.
 * `page` integer
 * `per_page` integer
 * `sort`
 * `language`
 * `years`
- * This should be formatted as {"start": year, "end": year}.
+  * This should be formatted as {"start": year, "end": year}.
 
 <!-- <style>
   table ul {
