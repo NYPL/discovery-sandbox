@@ -22,7 +22,7 @@
 ### Parameters
 [GET `/v0.1/research-now/v3/search-api`](https://dev-platformdocs.nypl.org/#/research-now/get_v0_1_research_now_v3_search_api)
 * **`field`** (required) string
-  * "keyword", "title", "author", "standard_number" (ISBN, ISSN, LCCN and OCLC) and "subject"
+  * "keyword", "title", "author", "standardNumber" (ISBN, ISSN, LCCN and OCLC) and "subject"
   * Defaults to "keyword"
 * **`query`** (required) string
 * `recordType`
@@ -47,14 +47,14 @@ Single quotes (') are used for frontend terminology. Italics are used to describ
 
 |Discovery front end|Discovery API |ResearchNow API|
 |-------------------|--------------|---------------|
-|_Search field_     |`q`           |`query`        |
+|_Search field_ |`q`           |`query`        |
 |_Search field dropdown_|`search_scope`|`field`|
 |<ul>'All Fields'   |<ul>"all"     |<ul>"keyword"|
-|<ul>'Title'            |<ul>"title"        |<ul>"title"       |
-|<ul>'Author/Contributor'|<ul>"contributor" |<ul>"author"      |
+|<ul>'Title'       |<ul>"title"  |<ul>"title"       |
+|<ul>'Author/Contributor'|<ul>"contributor" |<ul>"author"|
 |<ul>'Standard Number'|<ul>"standard_number"|<ul> "standard_number"|
-|_Search page filters_|`filters`     |      |
-|<ul>'Format'       |<ul>`filters[materialType]`|<ul>N/A|
+|_Search page filters_|`filters`     ||
+|<ul>'Format'       |<ul>`filters[materialType]`|<ul>N/A*|
 |<ul>'Date':<ul><li>'Start Year'<li>'End Year'| <ul><br>`filters[dateAfter]`<br>`filters[dateBefore]` |<br><ul>`years[start]`<br>`years[end]`|
 |<ul>'Language'|<ul>`filters[language]`|<ul>`language`|
 |_Filters linked to from a bib page_|
@@ -65,6 +65,8 @@ Single quotes (') are used for frontend terminology. Italics are used to describ
 |                   |`per_page`|`per_page`|
 |_Sorting_            |`sort`        |`sort[field]` |
 |                   |`sort_direction`|`sort[direction]`  |
+
+\* ResearchNow's `format` parameter does not correspond to the `materialType` in Discovery API. The former relates to digital formats (pdf, epub, and html). The latter to physical material type.
 
 ## API Response Structure
 ### Discovery API
