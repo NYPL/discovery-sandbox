@@ -40,7 +40,11 @@
   }
 </style>
 
-## Comparison
+## API Parameters Comparison
+This table lists, in the first column, the frontend features related to searching and search filters available from the frontend. The 2nd and 3rd column list out the Discovery API and ResearchNow API parameters that correlate to that frontend functionality.
+
+Single quotes (') are used for frontend terminology. Italics used to describe frontend feature. Code styling is used for parameters the respective APIs except. Doubles quotes are used for keys in Parameters that take an object. (")
+
 |Discovery front end|Discovery API |ResearchNow API|
 |-------------------|--------------|---------------|
 |_Search field_     |`q`           |`query`        |
@@ -54,10 +58,379 @@
 |<ul><li>'Date':<ul><li>'Start Year'<li>'End Year'| <ul><br>"dateAfter"<br>"dateBefore" |`years`:<ul>"start"<br>"end"|
 |<ul>'Language'|<ul>"language"|<ul>`language`|
 |_Filters linked to from a bib page_|
-|<ul>'Author'|<ul>"creatorLiteral"|<ul>use `field` 'author'|
-|<ul>'Additional Authors'|<ul>"creatorLiteral"|<ul>use `field` 'author'|
-|<ul>'Subject'    |<ul>"subjectLiteral"|<ul>use `field` 'subject'|
+|<ul>'Author'|<ul>"creatorLiteral"|<ul>use `field` "author"|
+|<ul>'Additional Authors'|<ul>"creatorLiteral"|<ul>use `field` "author"|
+|<ul>'Subject'    |<ul>"subjectLiteral"|<ul>use `field` "subject"|
 |_Pagination_     |`page`      | `page`        |
 |                   |`per_page`|`per_page`|
 |Sorting            |`sort`        |`sort` "field" |
 |                   |`sort_direction`|"direction"  |
+
+## API Response Structure
+### Discovery API
+``` json
+{
+  "@context": "string",
+  "@type": "itemList",
+  "itemListElement": [
+    {
+      "@type": "searchResult",
+      "result": {
+        "@type": [
+          "string"
+        ],
+        "@id": "string",
+        "carrierType": [
+          {
+            "@type": "string",
+            "@id": "string",
+            "prefLabel": "string"
+          }
+        ],
+        "creatorLiteral": [
+          "string"
+        ],
+        "contributorLiteral": [
+          "string"
+        ],
+        "created": "string",
+        "createdYear": 0,
+        "dateStartYear": 0,
+        "depiction": "string",
+        "description": "string",
+        "endYear": 0,
+        "extent": [
+          "string"
+        ],
+        "holdingCount": 0,
+        "issuance": [
+          {
+            "@type": "string",
+            "@id": "string",
+            "prefLabel": "string"
+          }
+        ],
+        "items": [
+          {
+            "@id": "string",
+            "accessMessage": [
+              {
+                "@type": "string",
+                "@id": "string",
+                "prefLabel": "string"
+              }
+            ],
+            "deliveryLocation": [
+              {
+                "@type": "string",
+                "@id": "string",
+                "prefLabel": "string"
+              }
+            ],
+            "holdingLocation": [
+              {
+                "@type": "string",
+                "@id": "string",
+                "prefLabel": "string"
+              }
+            ],
+            "idBarcode": "string",
+            "identifier": [
+              "string"
+            ],
+            "owner": [
+              {
+                "@type": "string",
+                "@id": "string",
+                "prefLabel": "string"
+              }
+            ],
+            "requestable": [
+              true
+            ],
+            "eddRequestable": true,
+            "shelfMark": [
+              "string"
+            ],
+            "status": [
+              {
+                "@type": "string",
+                "@id": "string",
+                "prefLabel": "string"
+              }
+            ],
+            "uri": "string"
+          }
+        ],
+        "^id": "string",
+        "language": [
+          {
+            "@type": "string",
+            "@id": "string",
+            "prefLabel": "string"
+          }
+        ],
+        "materialType": [
+          {
+            "@type": "string",
+            "@id": "string",
+            "prefLabel": "string"
+          }
+        ],
+        "mediaType": [
+          {
+            "@type": "string",
+            "@id": "string",
+            "prefLabel": "string"
+          }
+        ],
+        "note": [
+          {
+            "@type": "bf:Note",
+            "noteType": "string",
+            "label": "string"
+          }
+        ],
+        "numAvailable": 0,
+        "placeOfPublication": [
+          "string"
+        ],
+        "prefLabel": [
+          "string"
+        ],
+        "roles:ROLE": [
+          "string"
+        ],
+        "startYear": 0,
+        "subject": [
+          {
+            "@type": "string",
+            "@id": "string",
+            "prefLabel": "string"
+          }
+        ],
+        "suppressed": true,
+        "title": [
+          "string"
+        ],
+        "titleDisplay": [
+          "string"
+        ],
+        "type": [
+          "nypl:Item"
+        ],
+        "uri": "string"
+      }
+    }
+  ]
+}
+```
+
+### ResearchNow API
+``` json
+{
+  "status": 0,
+  "timestamp": "2020-06-01T20:30:37.458Z",
+  "responseType": "string",
+  "data": {
+    "totalWorks": 0,
+    "facets": {
+      "facet": [
+        {
+          "value": "string",
+          "count": 0
+        }
+      ]
+    },
+    "paging": {
+      "prev_page_sort": [
+        "string"
+      ],
+      "next_page_sort": [
+        "string"
+      ]
+    },
+    "works": [
+      {
+        "date_modified": "2020-06-01T20:30:37.458Z",
+        "date_created": "2020-06-01T20:30:37.458Z",
+        "id": 0,
+        "uuid": "string",
+        "title": "string",
+        "sort_title": "string",
+        "sub_title": [
+          "string"
+        ],
+        "medium": "string",
+        "series": "string",
+        "series_position": 0,
+        "edition_count": 0,
+        "edition_range": "string",
+        "sort": [
+          "string"
+        ],
+        "agents": [
+          {
+            "name": "string",
+            "sort_name": "string",
+            "viaf": "string",
+            "lcnaf": "string",
+            "role": "string",
+            "birth_date_display": "string",
+            "death_date_display": "string"
+          }
+        ],
+        "alt_titles": [
+          "string"
+        ],
+        "instances": [
+          {
+            "date_modified": "2020-06-01T20:30:37.458Z",
+            "date_created": "2020-06-01T20:30:37.458Z",
+            "id": 0,
+            "title": "string",
+            "sort_title": "string",
+            "sub_title": "string",
+            "pub_place": "string",
+            "edition": "string",
+            "edition_statement": "string",
+            "volume": "string",
+            "table_of_contents": "string",
+            "copyright_date": "string",
+            "extent": "string",
+            "summary": "string",
+            "work_id": 0,
+            "edition_id": 0,
+            "agents": [
+              {
+                "name": "string",
+                "sort_name": "string",
+                "viaf": "string",
+                "lcnaf": "string",
+                "role": "string",
+                "birth_date_display": "string",
+                "death_date_display": "string"
+              }
+            ],
+            "items": [
+              {
+                "source": "string",
+                "content_type": "string",
+                "modified": "2020-06-01T20:30:37.458Z",
+                "drm": "string",
+                "links": [
+                  {
+                    "url": "string",
+                    "media_type": "string",
+                    "content": "string",
+                    "thumbnail": "string",
+                    "local": true,
+                    "download": true,
+                    "images": true,
+                    "ebook": true
+                  }
+                ]
+              }
+            ],
+            "languages": [
+              {
+                "language": "string",
+                "iso_2": "string",
+                "iso_3": "string"
+              }
+            ],
+            "identifiers": [
+              {
+                "id_type": "string",
+                "identifier": "string"
+              }
+            ]
+          }
+        ],
+        "languages": [
+          {
+            "language": "string",
+            "iso_2": "string",
+            "iso_3": "string"
+          }
+        ],
+        "editions": [
+          {
+            "date_modified": "2020-06-01T20:30:37.460Z",
+            "date_created": "2020-06-01T20:30:37.460Z",
+            "id": 0,
+            "publication_place": "string",
+            "publication_date": "string",
+            "edition": "string",
+            "edition_statement": "string",
+            "volume": "string",
+            "table_of_contents": "string",
+            "extent": "string",
+            "summary": "string",
+            "work_id": 0,
+            "agents": [
+              {
+                "name": "string",
+                "sort_name": "string",
+                "viaf": "string",
+                "lcnaf": "string",
+                "role": "string",
+                "birth_date_display": "string",
+                "death_date_display": "string"
+              }
+            ],
+            "items": [
+              {
+                "source": "string",
+                "content_type": "string",
+                "modified": "2020-06-01T20:30:37.461Z",
+                "drm": "string",
+                "links": [
+                  {
+                    "url": "string",
+                    "media_type": "string",
+                    "content": "string",
+                    "thumbnail": "string",
+                    "local": true,
+                    "download": true,
+                    "images": true,
+                    "ebook": true
+                  }
+                ]
+              }
+            ],
+            "languages": [
+              {
+                "language": "string",
+                "iso_2": "string",
+                "iso_3": "string"
+              }
+            ]
+          }
+        ],
+        "identifiers": [
+          {
+            "id_type": "string",
+            "identifier": "string"
+          }
+        ],
+        "subjects": [
+          {
+            "subject": "string",
+            "authority": "string",
+            "uri": "string"
+          }
+        ],
+        "measurements": [
+          {
+            "quantity": "string",
+            "value": 0,
+            "weight": 0,
+            "taken_at": "2020-06-01T20:30:37.461Z"
+          }
+        ]
+      }
+    ]
+  }
+}
+```
