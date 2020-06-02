@@ -115,12 +115,6 @@ li, p {
   max-width: 100%;
 }
 
-@media only screen and (min-width: 768px) {
-  .footer {
-    padding: 15px 0 30px !important;
-  }
-}
-
 // Override for the omnisearch div to work as a fieldset and
 // allow focus on the search button.
 div.nypl-omnisearch {
