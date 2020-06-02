@@ -43,7 +43,7 @@
 ## API Parameters Comparison
 This table lists, in the first column, the frontend features related to searching and search filters available from the frontend. The 2nd and 3rd column list out the Discovery API and ResearchNow API parameters that correlate to that frontend functionality.
 
-Single quotes (') are used for frontend terminology. Italics used to describe frontend feature. Code styling is used for parameters the respective APIs except. Doubles quotes are used for keys in Parameters that take an object. (")
+Single quotes (') are used for frontend terminology. Italics are used to describe frontend features. Code styling (e.g. `filters`) is used for the parameters the respective APIs except.
 
 |Discovery front end|Discovery API |ResearchNow API|
 |-------------------|--------------|---------------|
@@ -52,19 +52,19 @@ Single quotes (') are used for frontend terminology. Italics used to describe fr
 |<ul>'All Fields'   |<ul>"all"     |<ul>"keyword"|
 |<ul>'Title'            |<ul>"title"        |<ul>"title"       |
 |<ul>'Author/Contributor'|<ul>"contributor" |<ul>"author"      |
-|<ul>'Standard Number'|<ul>"standard_number"|<ul> 'standard_number'|
-|_Search page filters_|`filters`     |`filters`      |
-|<ul>'Format'       |<ul>"materialType"|<ul>_N/A_|
-|<ul><li>'Date':<ul><li>'Start Year'<li>'End Year'| <ul><br>"dateAfter"<br>"dateBefore" |`years`:<ul>"start"<br>"end"|
-|<ul>'Language'|<ul>"language"|<ul>`language`|
+|<ul>'Standard Number'|<ul>"standard_number"|<ul> "standard_number"|
+|_Search page filters_|`filters`     |      |
+|<ul>'Format'       |<ul>`filters[materialType]`|<ul>N/A|
+|<ul>'Date':<ul><li>'Start Year'<li>'End Year'| <ul><br>`filters[dateAfter]`<br>`filters[dateBefore]` |<br><ul>`years[start]`<br>`years[end]`|
+|<ul>'Language'|<ul>`filters[language]`|<ul>`language`|
 |_Filters linked to from a bib page_|
-|<ul>'Author'|<ul>"creatorLiteral"|<ul>use `field` "author"|
-|<ul>'Additional Authors'|<ul>"creatorLiteral"|<ul>use `field` "author"|
-|<ul>'Subject'    |<ul>"subjectLiteral"|<ul>use `field` "subject"|
+|<ul>'Author'|<ul>`filters[creatorLiteral]`|<ul>`field[author]`|
+|<ul>'Additional Authors'|<ul>`filters[creatorLiteral]`|<ul>`field[author]`|
+|<ul>'Subject'    |<ul>`filters[subjectLiteral]`|<ul> `field[subject]`|
 |_Pagination_     |`page`      | `page`        |
 |                   |`per_page`|`per_page`|
-|Sorting            |`sort`        |`sort` "field" |
-|                   |`sort_direction`|"direction"  |
+|_Sorting_            |`sort`        |`sort[field]` |
+|                   |`sort_direction`|`sort[direction]`  |
 
 ## API Response Structure
 ### Discovery API
