@@ -1,5 +1,8 @@
 ## CHANGE LOG
 
+### 1.6.6
+- Updating @nypl/dgx-react-footer to 0.5.6.
+
 ### 1.6.5
 - Updating @nypl/dgx-react-footer to 0.5.5.
 
