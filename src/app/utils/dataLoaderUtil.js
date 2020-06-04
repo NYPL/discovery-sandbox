@@ -1,6 +1,7 @@
 import Actions from '@Actions';
 import { ajaxCall } from '@utils';
 import appConfig from '@appConfig';
+import Store from '@Store';
 
 const pathInstructions = [
   {
@@ -12,7 +13,7 @@ const pathInstructions = [
     pathType: 'search',
   },
   {
-    expression: /\/research\/collections\/shared-collection-catalog\/hold\/request\/(.*)/,
+    expression: /\/research\/collections\/shared-collection-catalog\/hold\/request\/([^/]*)/,
     pathType: 'holdRequest',
   },
 ];
@@ -84,9 +85,12 @@ function loadDataForRoutes(location, next) {
       errorMessage,
     } = routes[pathType];
     Actions.updateLoadingStatus(true);
+    console.log('ajaxCall: ', apiRoute(matchData));
     return ajaxCall(apiRoute(matchData),
       (response) => {
+        console.log('api response: ', typeof response.data === 'object' ? response.data : typeof response.data);
         actions.forEach(action => action(response.data));
+        console.log('Store: ', Store.getState());
         Actions.updateLoadingStatus(false);
       },
       (error) => {
