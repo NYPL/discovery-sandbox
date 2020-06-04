@@ -38,17 +38,22 @@ const clientSecret = process.env.clientSecret || process.env.PLATFORM_API_CLIENT
 const keys = [clientId, clientSecret];
 const CACHE = {};
 
-function nyplApiClient() {
-  if (CACHE.nyplApiClient) {
+function nyplApiClient(options = {}) {
+  const { isDrbb } = options;
+  if (CACHE.nyplApiClient && !isDrbb) {
     return Promise.resolve(CACHE.nyplApiClient);
+  } else if (CACHE.researchNowApiClient && isDrbb) {
+    return Promise.resolve(CACHE.researchNowApiClient);
   }
+
+  const baseUrl = isDrbb ? config.api.drbb[appEnvironment] : apiBase;
 
   if (kmsEnvironment === 'encrypted') {
     return new Promise((resolve, reject) => {
       Promise.all(keys.map(decryptKMS))
         .then(([decryptedClientId, decryptedClientSecret]) => {
           const nyplApiClient = new NyplApiClient({
-            base_url: apiBase,
+            base_url: baseUrl,
             oauth_key: decryptedClientId,
             oauth_secret: decryptedClientSecret,
             oauth_url: config.tokenUrl,
@@ -56,11 +61,12 @@ function nyplApiClient() {
 
           CACHE.clientId = decryptedClientId;
           CACHE.clientSecret = decryptedClientSecret;
-          CACHE.nyplApiClient = nyplApiClient;
+          if (isDrbb) CACHE.researchNowApiClient = nyplApiClient;
+          else CACHE.nyplApiClient = nyplApiClient;
 
           resolve(nyplApiClient);
         })
-        .catch(error => {
+        .catch((error) => {
           logger.error('ERROR trying to decrypt using KMS.', error);
           reject('ERROR trying to decrypt using KMS.', error);
         });
@@ -68,7 +74,7 @@ function nyplApiClient() {
   }
 
   const nyplApiClient = new NyplApiClient({
-    base_url: apiBase,
+    base_url: baseUrl,
     oauth_key: clientId,
     oauth_secret: clientSecret,
     oauth_url: config.tokenUrl,
@@ -76,7 +82,8 @@ function nyplApiClient() {
 
   CACHE.clientId = clientId;
   CACHE.clientSecret = clientSecret;
-  CACHE.nyplApiClient = nyplApiClient;
+  if (isDrbb) CACHE.researchNowApiClient = nyplApiClient;
+  else CACHE.nyplApiClient = nyplApiClient;
 
   return Promise.resolve(nyplApiClient);
 }

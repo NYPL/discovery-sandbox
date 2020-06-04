@@ -9,6 +9,10 @@ export default {
   api: {
     development: process.env.PLATFORM_API_BASE_URL || 'https://dev-platform.nypl.org/api/v0.1',
     production: process.env.PLATFORM_API_BASE_URL || 'https://platform.nypl.org/api/v0.1',
+    drbb: {
+      development: 'https://dev-platform.nypl.org/api/v0.1/research-now/v3/search-api',
+      production: 'https://platform.nypl.org/api/v0.1/research-now/v3/search-api',
+    },
   },
   shepApi: process.env.SHEP_API,
   loginUrl: 'https://login.nypl.org/auth/login',
@@ -37,4 +41,5 @@ export default {
   ).map(location => (location === 'all' ? '' : location)),
   holdRequestNotification: process.env.HOLD_REQUEST_NOTIFICATION,
   searchResultsNotification: process.env.SEARCH_RESULTS_NOTIFICATION,
+  drbbFrontEnd: 'https://digital-research-books-beta.nypl.org/',
 };

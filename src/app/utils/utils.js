@@ -371,6 +371,33 @@ const getUpdatedFilterValues = (props) => {
   return updatedFilterValues;
 };
 
+const createResearchNowQuery = (params) => {
+  const {
+    q,
+    sort,
+    sort_direction,
+    filters,
+    page,
+    search_scope,
+  } = params;
+  const query = q || '*';
+  const searchKeywordsQuery = `query=${encodeURIComponent(query)}`;
+  let sortQuery = `&sort[field]=${sort}`;
+  if (sort_direction) sortQuery += `&sort[dir]=${sort_direction}`;
+
+  const filterQuery = getFilterParam(filters);
+  console.log("filterQuery", filterQuery);
+
+  let pageQuery = page && page !== '1' ? `&page=${page}` : '';
+  pageQuery += '&per_page=4';
+
+  const fieldQuery = search_scope ? `&field=${search_scope}` : '&field=keyword';
+
+  const completeQuery = `${searchKeywordsQuery}${sortQuery}${fieldQuery}${pageQuery}`;
+
+  return completeQuery;
+};
+
 export {
   trackDiscovery,
   ajaxCall,
@@ -385,4 +412,5 @@ export {
   parseServerSelectedFilters,
   getAggregatedElectronicResources,
   getUpdatedFilterValues,
+  createResearchNowQuery,
 };
