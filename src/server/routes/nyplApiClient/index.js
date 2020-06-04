@@ -6,7 +6,7 @@ import logger from '../../../../logger';
 
 const appEnvironment = process.env.APP_ENV || 'production';
 const kmsEnvironment = process.env.KMS_ENV || 'encrypted';
-const discoveryApiBase = config.api[appEnvironment];
+const platformApiBase = config.api[appEnvironment];
 let decryptKMS;
 let kms;
 
@@ -46,7 +46,7 @@ function nyplApiClient(options = {}) {
     return Promise.resolve(CACHE[apiBaseUrl]);
   }
 
-  const baseUrl = apiBaseUrl || discoveryApiBase;
+  const baseUrl = apiBaseUrl || platformApiBase;
 
   if (kmsEnvironment === 'encrypted') {
     return new Promise((resolve, reject) => {
