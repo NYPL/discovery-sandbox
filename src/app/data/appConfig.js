@@ -41,5 +41,5 @@ export default {
   ).map(location => (location === 'all' ? '' : location)),
   holdRequestNotification: process.env.HOLD_REQUEST_NOTIFICATION,
   searchResultsNotification: process.env.SEARCH_RESULTS_NOTIFICATION,
-  drbbFrontEnd: 'https://digital-research-books-beta.nypl.org/',
+  drbbFrontEnd: 'http://sfr-front-end-development.us-east-1.elasticbeanstalk.com/',
 };

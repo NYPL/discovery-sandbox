@@ -1,0 +1,75 @@
+// $drbb-default-padding: 0 5px;
+
+.drbb-container {
+  border: 1px solid #d7d4d0;
+  border-radius: 8px;
+  float: right;
+  margin: auto;
+  margin-left: 15px;
+  padding: 10px;
+  padding-bottom: 25px;
+  width: 30%;
+
+  .loadingLayer-texts-loadingWord {
+    margin-bottom: unset;
+    text-transform: initial;
+  }
+
+  .loadingDots {
+    margin-top: unset;
+  }
+}
+
+.drbb-main-header {
+  font-size: 1.4375rem;
+  margin: 0 0 10px;
+}
+
+.drbb-main-header,
+.drbb-description {
+  padding: 0 5px;
+}
+
+// .nypl-results-item {
+//   display: flow-root;
+// }
+
+.nypl-results-list {
+  display: inline-block;
+  width: 65%;
+}
+
+.drbb-description {
+  font-size: 12px;
+
+  a, {
+    display: inline-block;
+  }
+}
+
+.drbb-item {
+  background-color: #f9f8f7;
+  border-radius: 4px;
+  font-size: 14px;
+  margin: 20px 0;
+  padding: 5px 10px;
+
+  a {
+    display: inline;
+  }
+}
+
+.drbb-list {
+  list-style: none;
+}
+
+.drr-loading-layer {
+  height: 135px;
+  padding-top: 35px;
+  text-align: center;
+}
+
+.nypl-full-width-wrapper.drbb-integration {
+  padding-left: 30px;
+  padding-right: 30px;
+}

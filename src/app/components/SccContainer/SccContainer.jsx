@@ -31,7 +31,7 @@ const SccContainer = props => (
       { props.secondaryExtraBannerElement }
     </div>
     { props.extraRow }
-    <div className="nypl-full-width-wrapper">
+    <div className="nypl-full-width-wrapper drbb-integration">
       { props.mainContent }
     </div>
   </main>
