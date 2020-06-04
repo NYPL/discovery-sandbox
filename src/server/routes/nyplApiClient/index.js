@@ -6,7 +6,7 @@ import logger from '../../../../logger';
 
 const appEnvironment = process.env.APP_ENV || 'production';
 const kmsEnvironment = process.env.KMS_ENV || 'encrypted';
-const apiBase = config.api[appEnvironment];
+const discoveryApiBase = config.api[appEnvironment];
 let decryptKMS;
 let kms;
 
@@ -39,14 +39,14 @@ const keys = [clientId, clientSecret];
 const CACHE = {};
 
 function nyplApiClient(options = {}) {
-  const { isDrbb } = options;
-  if (CACHE.nyplApiClient && !isDrbb) {
+  const { apiBaseUrl } = options;
+  if (CACHE.nyplApiClient && !apiBaseUrl) {
     return Promise.resolve(CACHE.nyplApiClient);
-  } else if (CACHE.researchNowApiClient && isDrbb) {
-    return Promise.resolve(CACHE.researchNowApiClient);
+  } else if (apiBaseUrl && CACHE[apiBaseUrl]) {
+    return Promise.resolve(CACHE[apiBaseUrl]);
   }
 
-  const baseUrl = isDrbb ? config.api.drbb[appEnvironment] : apiBase;
+  const baseUrl = apiBaseUrl || discoveryApiBase;
 
   if (kmsEnvironment === 'encrypted') {
     return new Promise((resolve, reject) => {
@@ -61,7 +61,7 @@ function nyplApiClient(options = {}) {
 
           CACHE.clientId = decryptedClientId;
           CACHE.clientSecret = decryptedClientSecret;
-          if (isDrbb) CACHE.researchNowApiClient = nyplApiClient;
+          if (apiBaseUrl) CACHE[apiBaseUrl] = nyplApiClient;
           else CACHE.nyplApiClient = nyplApiClient;
 
           resolve(nyplApiClient);
@@ -82,7 +82,7 @@ function nyplApiClient(options = {}) {
 
   CACHE.clientId = clientId;
   CACHE.clientSecret = clientSecret;
-  if (isDrbb) CACHE.researchNowApiClient = nyplApiClient;
+  if (apiBaseUrl) CACHE[apiBaseUrl] = nyplApiClient;
   else CACHE.nyplApiClient = nyplApiClient;
 
   return Promise.resolve(nyplApiClient);

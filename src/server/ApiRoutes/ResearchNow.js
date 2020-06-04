@@ -2,21 +2,21 @@ import nyplApiClient from '../routes/nyplApiClient';
 import {
   createResearchNowQuery,
 } from '../../app/utils/utils';
+import appConfig from '../../app/data/appConfig';
 
-const nyplApiClientCall = query => nyplApiClient({ isDrbb: true })
-  .then(client => client.get(`${query}`, { cache: false }))
+const appEnvironment = process.env.APP_ENV || 'production';
+
+const nyplApiClientCall = query => nyplApiClient({ apiBaseUrl: appConfig.api.drbb[appEnvironment] })
+  .then(client => client.get(`/research-now/v3/search-api?${query}`, { cache: false }))
   .catch(console.error);
 
 const searchAjax = (req, res) => {
   const queryString = createResearchNowQuery(req.query);
-  const researchNowQuery = `?${queryString}`;
-  return nyplApiClientCall(researchNowQuery)
-    .then((resp) => {
-      return res.json({
-        works: resp.works,
-        totalWorks: resp.totalWorks,
-      });
-    });
+  return nyplApiClientCall(queryString)
+    .then(resp => res.json({
+      works: resp.works,
+      totalWorks: resp.totalWorks,
+    }));
 };
 
 export default {
