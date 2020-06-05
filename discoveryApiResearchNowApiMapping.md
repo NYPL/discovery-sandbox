@@ -52,7 +52,7 @@ Single quotes (') are used for frontend terminology. Italics are used to describ
 |<ul>'All Fields'   |<ul>"all"     |<ul>"keyword"|
 |<ul>'Title'       |<ul>"title"  |<ul>"title"       |
 |<ul>'Author/Contributor'|<ul>"contributor" |<ul>"author"|
-|<ul>'Standard Number'|<ul>"standard_number"|<ul> "standard_number"|
+|<ul>'Standard Number'|<ul>"standard_number"|<ul> "standardNumber"|
 |_Search page filters_|`filters`     ||
 |<ul>'Format'       |<ul>`filters[materialType]`|<ul>N/A*|
 |<ul>'Date':<ul><li>'Start Year'<li>'End Year'| <ul><br>`filters[dateAfter]`<br>`filters[dateBefore]` |<br><ul>`years[start]`<br>`years[end]`|
