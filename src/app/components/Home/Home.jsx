@@ -8,6 +8,7 @@ import {
   trackDiscovery,
 } from '../../utils/utils';
 import appConfig from '../../data/appConfig';
+import Notification from '../Notification/Notification';
 import Store from '@Store'
 
 const Home = props => (
@@ -23,6 +24,7 @@ const Home = props => (
             <div className="nypl-row">
               <div className="nypl-column-full">
                 <h1>{appConfig.displayTitle}</h1>
+                <Notification notificationType="searchResultsNotification" />
               </div>
             </div>
 
