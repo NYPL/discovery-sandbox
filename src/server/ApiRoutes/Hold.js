@@ -347,6 +347,8 @@ function newHoldRequestServerEdd(req, res, next) {
  * @return {function}
  */
 function createHoldRequestServer(req, res, pickedUpBibId = '', pickedUpItemId = '') {
+  console.log('creaetHoldRequestServer', req.params, req.body, req.patronTokenResponse, req.body.redirect, req.body.redirect === false);
+  res.respond = req.body.redirect === false ? res.json : res.redirect;
   // Ensure user is logged in
   const loggedIn = User.requireUser(req, res);
   if (!loggedIn) return false;
@@ -362,14 +364,14 @@ function createHoldRequestServer(req, res, pickedUpBibId = '', pickedUpItemId = 
 
   if (!bibId || !itemId) {
     // Dummy redirect for now
-    return res.redirect(`${appConfig.baseUrl}/someErrorPage`);
+    return res.respond(`${appConfig.baseUrl}/someErrorPage`);
   }
 
   if (pickupLocation === 'edd') {
     const eddSearchKeywordsQuery = (req.body['search-keywords']) ?
       `?q=${req.body['search-keywords']}` : '';
 
-    return res.redirect(
+    return res.respond(
       `${appConfig.baseUrl}/hold/request/${bibId}-${itemId}/edd${eddSearchKeywordsQuery}`,
     );
   }
@@ -382,7 +384,7 @@ function createHoldRequestServer(req, res, pickedUpBibId = '', pickedUpItemId = 
     itemSource,
     (response) => {
       const data = JSON.parse(response).data;
-      res.redirect(
+      res.respond(
         `${appConfig.baseUrl}/hold/confirmation/${bibId}-${itemId}?pickupLocation=` +
         `${pickupLocation}&requestId=${data.id}${searchKeywordsQuery}`,
       );
@@ -392,7 +394,7 @@ function createHoldRequestServer(req, res, pickedUpBibId = '', pickedUpItemId = 
         `Error calling postHoldAPI in createHoldRequestServer, bibId: {bibId}, itemId: ${itemId}`,
         error.data.message,
       );
-      res.redirect(
+      res.respond(
         `${appConfig.baseUrl}/hold/confirmation/${bibId}-${itemId}?pickupLocation=` +
         `${pickupLocation}&errorStatus=${error.status}` +
         `&errorMessage=${error.statusText}${searchKeywordsQuery}`,

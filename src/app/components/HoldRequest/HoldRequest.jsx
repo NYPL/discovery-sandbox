@@ -52,6 +52,7 @@ class HoldRequest extends React.Component {
     this.state = _extend({
       delivery: defaultDelivery,
       checkedLocNum,
+      redirect: true,
     }, { patron: PatronStore.getState() });
 
     // change all the components :(
@@ -70,6 +71,7 @@ class HoldRequest extends React.Component {
     if (title) {
       title.focus();
     }
+    if (this.state.redirect) this.setState({ redirect: false });
     this.timeoutId = setTimeout(() => { Actions.updateLoadingStatus(false); }, 5000);
   }
 
@@ -115,33 +117,45 @@ class HoldRequest extends React.Component {
 
     Actions.updateLoadingStatus(true);
     trackDiscovery(`Submit Request${partnerEvent}`, `${title} - ${itemId}`);
-    axios
-      .get(`${appConfig.baseUrl}/api/newHold?itemId=${itemId}&pickupLocation=` +
-        `${this.state.delivery}&itemSource=${itemSource}`)
+    console.log('placing request: ', `${appConfig.baseUrl}/hold/request/${bibId}-${itemId}-${itemSource}`, new FormData(document.getElementById('place-hold-form')));
+    const formData = new FormData(document.getElementById('place-hold-form'));
+    console.log(Object.fromEntries(formData.entries()));
+    axios.post(
+      `${appConfig.baseUrl}/hold/request/${bibId}-${itemId}-${itemSource}`,
+      Object.fromEntries(formData.entries()),
+    )
       .then((response) => {
-        if (response.data.error && response.data.error.status !== 200) {
-          Actions.updateLoadingStatus(false);
-          this.context.router.push(
-            `${path}?errorStatus=${response.data.error.status}` +
-            `&errorMessage=${response.data.error.statusText}${searchKeywordsQueryPhysical}` +
-            `${fromUrlQuery}`,
-          );
-        } else {
-          Actions.updateLoadingStatus(false);
-          this.context.router.push(
-            `${path}?pickupLocation=${response.data.pickupLocation}&requestId=${response.data.id}` +
-            `${searchKeywordsQueryPhysical}${fromUrlQuery}`,
-          );
-        }
-      })
-      .catch((error) => {
-        console.error('Error attempting to make an ajax Hold Request in HoldRequest', error);
-
+        console.log('response: ', response);
+        this.context.router.push(response);
         Actions.updateLoadingStatus(false);
-        this.context.router.push(
-          `${path}?errorMessage=${error}${searchKeywordsQueryPhysical}${fromUrlQuery}`,
-        );
       });
+    // axios
+    //   .get(`${appConfig.baseUrl}/api/newHold?itemId=${itemId}&pickupLocation=` +
+    //     `${this.state.delivery}&itemSource=${itemSource}`)
+    //   .then((response) => {
+    //     if (response.data.error && response.data.error.status !== 200) {
+    //       Actions.updateLoadingStatus(false);
+    //       this.context.router.push(
+    //         `${path}?errorStatus=${response.data.error.status}` +
+    //         `&errorMessage=${response.data.error.statusText}${searchKeywordsQueryPhysical}` +
+    //         `${fromUrlQuery}`,
+    //       );
+    //     } else {
+    //       Actions.updateLoadingStatus(false);
+    //       this.context.router.push(
+    //         `${path}?pickupLocation=${response.data.pickupLocation}&requestId=${response.data.id}` +
+    //         `${searchKeywordsQueryPhysical}${fromUrlQuery}`,
+    //       );
+    //     }
+    //   })
+    //   .catch((error) => {
+    //     console.error('Error attempting to make an ajax Hold Request in HoldRequest', error);
+    //
+    //     Actions.updateLoadingStatus(false);
+    //     this.context.router.push(
+    //       `${path}?errorMessage=${error}${searchKeywordsQueryPhysical}${fromUrlQuery}`,
+    //     );
+    //   });
   }
 
   /**
@@ -280,6 +294,7 @@ class HoldRequest extends React.Component {
 
   render() {
     const { closedLocations, holdRequestNotification } = AppConfigStore.getState();
+    const { redirect } = this.state;
     const searchKeywords = this.props.searchKeywords;
     const bib = (this.props.bib && !_isEmpty(this.props.bib)) ?
       this.props.bib : null;
@@ -322,6 +337,7 @@ class HoldRequest extends React.Component {
       const itemSource = selectedItem.itemSource;
       form = (
         <form
+          id="place-hold-form"
           className="place-hold-form form"
           action={`${appConfig.baseUrl}/hold/request/${bibId}-${itemId}-${itemSource}`}
           method="POST"
@@ -349,6 +365,11 @@ class HoldRequest extends React.Component {
             type="hidden"
             name="search-keywords"
             value={searchKeywords}
+          />
+          <input
+            type="hidden"
+            name="redirect"
+            value={redirect}
           />
         </form>
       );
