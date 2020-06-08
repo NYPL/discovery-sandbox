@@ -10,7 +10,7 @@ import webpack from 'webpack';
 import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
 import Store from '@Store';
-import loadDataForRoutes from '@dataLoaderUtil';
+import { loadDataForRoutes } from '@dataLoaderUtil';
 
 import alt from './src/app/alt';
 import appConfig from './src/app/data/appConfig';
@@ -89,10 +89,11 @@ app.get('/*', (req, res, next) => {
     search: '',
   };
 
-  loadDataForRoutes(location, next).then(() => next());
+  loadDataForRoutes(location, req).then(() => next());
 });
 
 app.get('/*', (req, res) => {
+  console.log('get slash: ', Store.getState());
   alt.bootstrap(JSON.stringify({
     PatronStore: res.locals.data.PatronStore,
     Store: Store.getState(),

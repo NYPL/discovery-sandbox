@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import loadDataForRoutes from '@dataLoaderUtil';
+import { loadDataForRoutes } from '@dataLoaderUtil';
 
 class DataLoader extends React.Component {
 

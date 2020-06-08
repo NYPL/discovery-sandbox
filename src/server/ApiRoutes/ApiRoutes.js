@@ -1,12 +1,12 @@
 import express from 'express';
 
-import Bib from './Bib';
 import User from './User';
 import Hold from './Hold';
 import Search from './Search';
 import appConfig from '../../app/data/appConfig';
 import SubjectHeading from './SubjectHeading';
 import SubjectHeadings from './SubjectHeadings';
+import { routeConfig } from '../../app/utils/dataLoaderUtil';
 
 const router = express.Router();
 
@@ -30,17 +30,16 @@ router
   .route(`${appConfig.baseUrl}/edd`)
   .post(Hold.eddServer);
 
-router
-  .route(`${appConfig.baseUrl}/api`)
-  .get(Search.searchAjax);
-
-router
-  .route(`${appConfig.baseUrl}/api/bib`)
-  .get(Bib.bibSearchAjax);
-
-router
-  .route(`${appConfig.baseUrl}/api/hold/request/:bibId-:itemId`)
-  .get(Hold.newHoldRequestAjax);
+console.log('routeConfig: ', routeConfig);
+Object.values(routeConfig).forEach((routeData) => {
+  const {
+    route,
+    method,
+  } = routeData;
+  router
+    .route(route)
+    .get(method);
+});
 
 router
   .route(`${appConfig.baseUrl}/api/patronEligibility`)

@@ -1,6 +1,9 @@
 import Actions from '@Actions';
 import { ajaxCall } from '@utils';
 import appConfig from '@appConfig';
+import Bib from '../../server/ApiRoutes/Bib';
+import Hold from '../../server/ApiRoutes/Hold';
+import Search from '../../server/ApiRoutes/Search';
 import Store from '@Store';
 
 const pathInstructions = [
@@ -18,14 +21,29 @@ const pathInstructions = [
   },
 ];
 
-const routesGenerator = (location, next) => ({
+const routeConfig = {
   bib: {
-    apiRoute: matchData => `${next ? 'http://localhost:3001' : ''}${appConfig.baseUrl}/api/bib?bibId=${matchData[1]}`,
+    route: `${appConfig.baseUrl}/api/bib`,
+    method: Bib.bibSearchAjax,
+  },
+  search: {
+    route: `${appConfig.baseUrl}/api`,
+    method: Search.searchAjax,
+  },
+  holdRequest: {
+    route: `${appConfig.baseUrl}/api/hold/request/:bibId-:itemId`,
+    method: Hold.newHoldRequestAjax,
+  },
+};
+
+const routesGenerator = location => ({
+  bib: {
+    apiRoute: (matchData, route) => `${route}?bibId=${matchData[1]}`,
     actions: [Actions.updateBib],
     errorMessage: 'Error attempting to make an ajax request to fetch a bib record from ResultsList',
   },
   search: {
-    apiRoute: matchData => `${next ? 'http://localhost:3001' : ''}${appConfig.baseUrl}/api?${matchData[1]}`,
+    apiRoute: (matchData, route) => `${route}?${matchData[1]}`,
     actions: [
       data => Actions.updateSearchResults(data.searchResults),
       () => Actions.updatePage(location.query.page || 1),
@@ -42,7 +60,7 @@ const routesGenerator = (location, next) => ({
     errorMessage: 'Error attempting to make an ajax request to search',
   },
   holdRequest: {
-    apiRoute: matchData => `${next ? 'http://localhost:3001' : ''}${appConfig.baseUrl}/api/hold/request/${matchData[1]}`,
+    apiRoute: (matchData, route) => route.replace(':bibId-itemId', matchData[1]),
     actions: [
       data => Actions.updateBib(data.bib),
       data => Actions.updateDeliveryLocations(data.deliveryLocations),
@@ -70,8 +88,8 @@ const reducePathExpressions = location => (acc, instruction) => {
   };
 };
 
-function loadDataForRoutes(location, next) {
-  const routes = routesGenerator(location, next);
+function loadDataForRoutes(location, req) {
+  const routes = routesGenerator(location);
   const {
     matchData,
     pathType,
@@ -84,26 +102,46 @@ function loadDataForRoutes(location, next) {
       actions,
       errorMessage,
     } = routes[pathType];
+    const {
+      route,
+      method,
+    } = routeConfig[pathType];
     Actions.updateLoadingStatus(true);
-    console.log('ajaxCall: ', apiRoute(matchData));
-    return ajaxCall(apiRoute(matchData),
-      (response) => {
-        console.log('api response: ', typeof response.data === 'object' ? response.data : typeof response.data);
-        actions.forEach(action => action(response.data));
-        console.log('Store: ', Store.getState());
-        Actions.updateLoadingStatus(false);
-      },
-      (error) => {
-        Actions.updateLoadingStatus(false);
-        console.error(
-          errorMessage,
-          error,
-        );
-      },
-    );
+    console.log('ajaxCall: ', pathType, apiRoute(matchData, route));
+    const successCb = (response) => {
+      console.log('api response: ', typeof response.data === 'object' ? response.data : typeof response.data);
+      actions.forEach(action => action(response.data));
+      console.log('Store: ', Store.getState());
+      Actions.updateLoadingStatus(false);
+    };
+    const errorCb = (error) => {
+      Actions.updateLoadingStatus(false);
+      console.error(
+        errorMessage,
+        error,
+      );
+    };
+    if (req) {
+      return new Promise((resolve) => {
+        const res = {
+          json: (data) => {
+            resolve({ data });
+          },
+        };
+        method(req, res);
+      })
+        .then(successCb)
+        .catch(errorCb);
+    }
+    return ajaxCall(apiRoute(matchData, route), successCb, errorCb);
   }
 
   return new Promise(resolve => resolve());
 }
 
-export default loadDataForRoutes;
+console.log('dataLoader routeConfig: ', routeConfig);
+
+export {
+  loadDataForRoutes,
+  routeConfig,
+};
