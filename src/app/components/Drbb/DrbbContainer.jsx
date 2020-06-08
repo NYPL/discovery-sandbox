@@ -2,13 +2,13 @@ import React from 'react';
 import axios from 'axios';
 import PropTypes from 'prop-types';
 
-import appConfig from '@appConfig';
+import appConfig from '../../data/appConfig';
 import DrbbItem from './DrbbItem';
 
 class DrbbContainer extends React.Component {
   constructor(props, context) {
     super();
-    this.search = context.router.location.search || {};
+    this.search = context.router.location.search || '';
     this.state = {
       works: [],
       drbbResultsLoading: true,
@@ -21,11 +21,17 @@ class DrbbContainer extends React.Component {
 
   fetchResearchNowResults() {
     axios(`${appConfig.baseUrl}/api/research-now${this.search}`)
-      .then(resp => this.setState({
-        works: resp.data.works,
-        totalWorks: resp.data.totalWorks,
-        drbbResultsLoading: false,
-      }))
+      .then((resp) => {
+        if (!resp.data || !resp.data.works) {
+          this.setState({ drbbResultsLoading: false });
+          return;
+        }
+        this.setState({
+          works: resp.data.works,
+          totalWorks: resp.data.totalWorks,
+          drbbResultsLoading: false,
+        });
+      })
       .catch(console.error);
   }
 
