@@ -30,10 +30,6 @@
   padding: 0 5px;
 }
 
-// .nypl-results-item {
-//   display: flow-root;
-// }
-
 .nypl-results-list {
   display: inline-block;
   width: 65%;
@@ -53,10 +49,6 @@
   font-size: 14px;
   margin: 20px 0;
   padding: 5px 10px;
-
-  a {
-    display: inline;
-  }
 }
 
 .drbb-list {
@@ -72,4 +64,18 @@
 .nypl-full-width-wrapper.drbb-integration {
   padding-left: 30px;
   padding-right: 30px;
+}
+
+.drbb-read-online {
+  background-color: #fff;
+  border: 0.08333rem solid #d0343a;
+  border-radius: 0.13333rem;
+  color: #d0343a;
+  cursor: pointer;
+  display: inline-block;
+  font-size: 0.8rem;
+  font-weight: normal;
+  letter-spacing: 0.06rem;
+  padding: 0.7rem 1.8rem;
+  text-decoration: none;
 }
