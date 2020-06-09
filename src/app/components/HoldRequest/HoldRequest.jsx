@@ -125,8 +125,8 @@ class HoldRequest extends React.Component {
       Object.fromEntries(formData.entries()),
     )
       .then((response) => {
-        console.log('response: ', response);
-        this.context.router.push(response);
+        console.log('response: ', response.data);
+        this.context.router.push(response.data);
         Actions.updateLoadingStatus(false);
       });
     // axios
