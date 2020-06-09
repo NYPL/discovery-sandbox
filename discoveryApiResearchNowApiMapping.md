@@ -35,7 +35,7 @@
 * `per_page` integer
 * `sort` array of objects
   * Objects are formatted as `{"field": field, "dir": dir}`
-* `language`
+* `language` array of languages
 * `years`
   * This should be formatted as `{"start": year, "end": year}`.
 
@@ -63,11 +63,11 @@ Single quotes (') are used for frontend terminology. Italics are used to describ
 |_Search page filters_|`filters`     ||
 |<ul>'Format'       |<ul>`filters[materialType]`|<ul>N/A*|
 |<ul>'Date':<ul><li>'Start Year'<li>'End Year'| <ul><br>`filters[dateAfter]`<br>`filters[dateBefore]` |`filters`<br><ul>`years[start]`<br>`years[end]`|
-|<ul>'Language'|<ul>`filters[language]`|<ul>`language`|
+|<ul>'Language'|<ul>`filters[language]`|<ul>`filters` `language`|
 |_Filters linked to from a bib page_|
-|<ul>'Author'|<ul>`filters[creatorLiteral]`|<ul>`field[author]`|
-|<ul>'Additional Authors'|<ul>`filters[creatorLiteral]`|<ul>`field[author]`|
-|<ul>'Subject'    |<ul>`filters[subjectLiteral]`|<ul> `field[subject]`|
+|<ul>'Author'|<ul>`filters[creatorLiteral]`|<ul>`queries` `"field":"author"`|
+|<ul>'Additional Authors'|<ul>`filters[creatorLiteral]`|<ul>`queries` `"field":"author"`|
+|<ul>'Subject'    |<ul>`filters[subjectLiteral]`|<ul>`queries` `"field":"subject"`|
 |_Pagination_     |`page`      | `page`        |
 |                   |`per_page`|`per_page`|
 |_Sorting_            |`sort`        |`sort[field]` |
