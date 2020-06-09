@@ -3,10 +3,12 @@ import express from 'express';
 import User from './User';
 import Hold from './Hold';
 import Search from './Search';
+import Bib from './Bib';
 import appConfig from '../../app/data/appConfig';
 import SubjectHeading from './SubjectHeading';
 import SubjectHeadings from './SubjectHeadings';
-import { routeConfig } from '../../app/utils/dataLoaderUtil';
+import { routePaths } from '../../app/utils/dataLoaderUtil';
+import RouteMethods from './RouteMethods';
 
 const router = express.Router();
 
@@ -30,15 +32,11 @@ router
   .route(`${appConfig.baseUrl}/edd`)
   .post(Hold.eddServer);
 
-console.log('routeConfig: ', routeConfig);
-Object.values(routeConfig).forEach((routeData) => {
-  const {
-    route,
-    method,
-  } = routeData;
+console.log('routeConfig: ', routePaths);
+Object.keys(routePaths).forEach((routeName) => {
   router
-    .route(route)
-    .get(method);
+    .route(routePaths[routeName])
+    .get(RouteMethods[routeName]);
 });
 
 router

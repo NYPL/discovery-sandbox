@@ -1,9 +1,6 @@
 import Actions from '@Actions';
 import { ajaxCall } from '@utils';
 import appConfig from '@appConfig';
-import Bib from '../../server/ApiRoutes/Bib';
-import Hold from '../../server/ApiRoutes/Hold';
-import Search from '../../server/ApiRoutes/Search';
 import Store from '@Store';
 
 const pathInstructions = [
@@ -21,19 +18,10 @@ const pathInstructions = [
   },
 ];
 
-const routeConfig = {
-  bib: {
-    route: `${appConfig.baseUrl}/api/bib`,
-    method: Bib.bibSearchAjax,
-  },
-  search: {
-    route: `${appConfig.baseUrl}/api`,
-    method: Search.searchAjax,
-  },
-  holdRequest: {
-    route: `${appConfig.baseUrl}/api/hold/request/:bibId-:itemId`,
-    method: Hold.newHoldRequestAjax,
-  },
+const routePaths = {
+  bib: `${appConfig.baseUrl}/api/bib`,
+  search: `${appConfig.baseUrl}/api`,
+  holdRequest: `${appConfig.baseUrl}/api/hold/request/:bibId-:itemId`,
 };
 
 const routesGenerator = location => ({
@@ -88,7 +76,7 @@ const reducePathExpressions = location => (acc, instruction) => {
   };
 };
 
-function loadDataForRoutes(location, req) {
+function loadDataForRoutes(location, req, RouteMethods) {
   const routes = routesGenerator(location);
   const {
     matchData,
@@ -102,10 +90,7 @@ function loadDataForRoutes(location, req) {
       actions,
       errorMessage,
     } = routes[pathType];
-    const {
-      route,
-      method,
-    } = routeConfig[pathType];
+    const route = routePaths[pathType];
     Actions.updateLoadingStatus(true);
     console.log('ajaxCall: ', pathType, apiRoute(matchData, route));
     const successCb = (response) => {
@@ -128,7 +113,7 @@ function loadDataForRoutes(location, req) {
             resolve({ data });
           },
         };
-        method(req, res);
+        RouteMethods[pathType](req, res);
       })
         .then(successCb)
         .catch(errorCb);
@@ -139,9 +124,9 @@ function loadDataForRoutes(location, req) {
   return new Promise(resolve => resolve());
 }
 
-console.log('dataLoader routeConfig: ', routeConfig);
+console.log('dataLoader routeConfig: ', routePaths);
 
 export {
   loadDataForRoutes,
-  routeConfig,
+  routePaths,
 };
