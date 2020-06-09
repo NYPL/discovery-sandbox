@@ -406,46 +406,6 @@ function createHoldRequestServer(req, res, pickedUpBibId = '', pickedUpItemId = 
   );
 }
 
-/**
- * createHoldRequestAjax(req, res)
- * The function to make a client side hold request call.
- *
- * @param {req}
- * @param {res}
- * @return {function}
- */
-function createHoldRequestAjax(req, res) {
-  // Ensure user is logged in
-  const loggedIn = User.requireUser(req);
-  if (!loggedIn) return false;
-
-  return postHoldAPI(
-    req,
-    req.query.itemId,
-    req.query.pickupLocation,
-    null,
-    req.query.itemSource,
-    (response) => {
-      const data = JSON.parse(response).data;
-      res.json({
-        id: data.id,
-        jobId: data.jobId,
-        pickupLocation: data.pickupLocation,
-      });
-    },
-    (error) => {
-      logger.error(
-        `Error calling postHoldAPI in createHoldRequestAjax, itemId: ${req.query.itemId}`,
-        error,
-      );
-      res.json({
-        status: error.status,
-        error,
-      });
-    },
-  );
-}
-
 function createHoldRequestEdd(req, res) {
   // Ensure user is logged in
   const loggedIn = User.requireUser(req);
@@ -539,7 +499,6 @@ export default {
   newHoldRequestAjax,
   newHoldRequestServerEdd,
   createHoldRequestServer,
-  createHoldRequestAjax,
   createHoldRequestEdd,
   eddServer,
 };

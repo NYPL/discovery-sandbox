@@ -129,33 +129,6 @@ class HoldRequest extends React.Component {
         this.context.router.push(response.data);
         Actions.updateLoadingStatus(false);
       });
-    // axios
-    //   .get(`${appConfig.baseUrl}/api/newHold?itemId=${itemId}&pickupLocation=` +
-    //     `${this.state.delivery}&itemSource=${itemSource}`)
-    //   .then((response) => {
-    //     if (response.data.error && response.data.error.status !== 200) {
-    //       Actions.updateLoadingStatus(false);
-    //       this.context.router.push(
-    //         `${path}?errorStatus=${response.data.error.status}` +
-    //         `&errorMessage=${response.data.error.statusText}${searchKeywordsQueryPhysical}` +
-    //         `${fromUrlQuery}`,
-    //       );
-    //     } else {
-    //       Actions.updateLoadingStatus(false);
-    //       this.context.router.push(
-    //         `${path}?pickupLocation=${response.data.pickupLocation}&requestId=${response.data.id}` +
-    //         `${searchKeywordsQueryPhysical}${fromUrlQuery}`,
-    //       );
-    //     }
-    //   })
-    //   .catch((error) => {
-    //     console.error('Error attempting to make an ajax Hold Request in HoldRequest', error);
-    //
-    //     Actions.updateLoadingStatus(false);
-    //     this.context.router.push(
-    //       `${path}?errorMessage=${error}${searchKeywordsQueryPhysical}${fromUrlQuery}`,
-    //     );
-    //   });
   }
 
   /**

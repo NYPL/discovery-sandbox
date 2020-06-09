@@ -48,7 +48,6 @@ router
 
 router
   .route(`${appConfig.baseUrl}/api/newHold`)
-  .get(Hold.createHoldRequestAjax)
   .post(Hold.createHoldRequestEdd);
 
 router
