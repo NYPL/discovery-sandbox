@@ -32,7 +32,6 @@ router
   .route(`${appConfig.baseUrl}/edd`)
   .post(Hold.eddServer);
 
-console.log('routeConfig: ', routePaths);
 Object.keys(routePaths).forEach((routeName) => {
   router
     .route(routePaths[routeName])

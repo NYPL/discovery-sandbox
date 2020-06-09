@@ -92,11 +92,8 @@ function loadDataForRoutes(location, req, RouteMethods) {
     } = routes[pathType];
     const route = routePaths[pathType];
     Actions.updateLoadingStatus(true);
-    console.log('ajaxCall: ', pathType, apiRoute(matchData, route));
     const successCb = (response) => {
-      console.log('api response: ', typeof response.data === 'object' ? response.data : typeof response.data);
       actions.forEach(action => action(response.data));
-      console.log('Store: ', Store.getState());
       Actions.updateLoadingStatus(false);
     };
     const errorCb = (error) => {
@@ -123,8 +120,6 @@ function loadDataForRoutes(location, req, RouteMethods) {
 
   return new Promise(resolve => resolve());
 }
-
-console.log('dataLoader routeConfig: ', routePaths);
 
 export {
   loadDataForRoutes,
