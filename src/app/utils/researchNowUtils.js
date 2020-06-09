@@ -83,9 +83,29 @@ const createResearchNowQuery = (params) => {
   return query;
 };
 
-const authorUrl = author => encodeURIComponent(JSON.stringify({ queries: [queryObj('author', author)] }));
+const getAuthorIdentifier = author => (author.viaf && ['viaf', 'viaf']) || (author.lcnaf && ['lcnaf', 'lcnaf']) || ['name', 'author'];
+
+const authorQuery = author => ({
+  queries: JSON.stringify([{
+    query: author[getAuthorIdentifier(author)[0]],
+    field: getAuthorIdentifier(author)[1],
+  }]),
+  showQueries: JSON.stringify([{ query: author.name, field: 'author' }]),
+});
+
+const generateStreamedReaderUrl = (url, eReaderUrl, editionId) => {
+  const base64BookUrl = Buffer.from(url).toString('base64');
+  const encodedBookUrl = encodeURIComponent(`${base64BookUrl}`);
+  let combined = `${eReaderUrl}/readerNYPL/?url=${eReaderUrl}/pub/${encodedBookUrl}/manifest.json`;
+  combined += `#/edition?editionId=${editionId}`;
+  return combined;
+};
+
+const formatUrl = link => (link.startsWith('http') ? link : `https://${link}`);
 
 export {
   createResearchNowQuery,
-  authorUrl,
+  authorQuery,
+  generateStreamedReaderUrl,
+  formatUrl,
 };

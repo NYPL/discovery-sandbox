@@ -6,6 +6,7 @@ export default {
   favIconPath: '//d2znry4lg8s0tq.cloudfront.net/images/favicon.ico',
   port: 3001,
   webpackDevServerPort: 3000,
+  environment: process.env.APP_ENV || 'production',
   api: {
     discovery: {
       development: process.env.PLATFORM_API_BASE_URL || 'https://qa-platform.nypl.org/api/v0.1',
@@ -43,5 +44,12 @@ export default {
   ).map(location => (location === 'all' ? '' : location)),
   holdRequestNotification: process.env.HOLD_REQUEST_NOTIFICATION,
   searchResultsNotification: process.env.SEARCH_RESULTS_NOTIFICATION,
-  drbbFrontEnd: 'https://digital-research-books-beta.nypl.org/',
+  drbbFrontEnd: {
+    development: 'http://sfr-front-end-development.us-east-1.elasticbeanstalk.com',
+    production: 'https://digital-research-books-beta.nypl.org',
+  },
+  drbbEreader: {
+    development: 'https://researchnow-reader.nypl.org',
+    production: 'https://digital-research-books-reader.nypl.org',
+  },
 };
