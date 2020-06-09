@@ -1,11 +1,8 @@
 import nyplApiClient from '../routes/nyplApiClient';
 import { createResearchNowQuery } from '../../app/utils/researchNowUtils';
-import appConfig from '../../app/data/appConfig';
 import logger from '../../../logger';
 
-const appEnvironment = process.env.APP_ENV || 'production';
-
-const nyplApiClientCall = query => nyplApiClient({ apiBaseUrl: appConfig.api.drbb[appEnvironment] })
+const nyplApiClientCall = query => nyplApiClient({ apiName: 'drbb' })
   .then(client => client.post('/research-now/v3/search-api', JSON.stringify(query)))
   .catch(console.error);
 

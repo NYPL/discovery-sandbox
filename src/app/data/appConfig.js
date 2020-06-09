@@ -7,8 +7,10 @@ export default {
   port: 3001,
   webpackDevServerPort: 3000,
   api: {
-    development: process.env.PLATFORM_API_BASE_URL || 'https://dev-platform.nypl.org/api/v0.1',
-    production: process.env.PLATFORM_API_BASE_URL || 'https://platform.nypl.org/api/v0.1',
+    discovery: {
+      development: process.env.PLATFORM_API_BASE_URL || 'https://qa-platform.nypl.org/api/v0.1',
+      production: process.env.PLATFORM_API_BASE_URL || 'https://platform.nypl.org/api/v0.1'
+    },
     drbb: {
       development: 'https://dev-platform.nypl.org/api/v0.1',
       production: 'https://digital-research-books-api.nypl.org',
