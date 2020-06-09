@@ -14,25 +14,32 @@
 * `search_scope` string
   * "all", "title", "contributor", "subject", "series", "callnumber", "standard_number"
 * `filters` string
-  * "owner", "subjectLiteral", "holdingLocation", "deliveryLocation", "language", "materialType", "mediaType", "carrierType", "publisher", "contributor", "creator", "issuance", "createdYear", "dateAfte"', or "dateBefore"
+  * "owner", "subjectLiteral", "holdingLocation", "deliveryLocation", "language", "materialType", "mediaType", "carrierType", "publisher", "contributor", "creator", "issuance", "createdYear", "dateAfter"', or "dateBefore"
   * Specify a hash of filters to apply, where keys are from terms above
 
 ## ResearchNow API
 [Github](https://github.com/NYPL/sfr-ingest-pipeline/tree/development/app/sfr-search-api#searching)
-### Parameters
 [GET `/v0.1/research-now/v3/search-api`](https://dev-platformdocs.nypl.org/#/research-now/get_v0_1_research_now_v3_search_api)
-* **`field`** (required) string
+[POST `/v0.1/research-now/v3/search-api`](https://dev-platformdocs.nypl.org/#/research-now/post_v0_1_research_now_v3_search_api)
+### Parameters
+* `queries` array of objects
+  * Objects for the queries are formatted as `{"field": filter, "value": value}`
+* `filters` array of objects
+  * Objects for the filters are formatted as `{"filter": filter, "value": value}`
+* `field` string
   * "keyword", "title", "author", "standardNumber" (ISBN, ISSN, LCCN and OCLC) and "subject"
-  * Defaults to "keyword"
-* **`query`** (required) string
+* `query` string
 * `recordType`
   * Internal record type to return with the work. Either instances or editions.
 * `page` integer
 * `per_page` integer
-* `sort`
+* `sort` array of objects
+  * Objects are formatted as `{"field": field, "dir": dir}`
 * `language`
 * `years`
-  * This should be formatted as {"start": year, "end": year}.
+  * This should be formatted as `{"start": year, "end": year}`.
+
+For the DRBB/SCC integration, the DRBB data is fetched using a POST request with a body containing `page`, `per_page`, `filters` (years, languages), and `queries` (author/contributor, subject).
 
 <!-- <style>
   table ul {
@@ -47,15 +54,15 @@ Single quotes (') are used for frontend terminology. Italics are used to describ
 
 |Discovery front end|Discovery API |ResearchNow API|
 |-------------------|--------------|---------------|
-|_Search field_ |`q`           |`query`        |
-|_Search field dropdown_|`search_scope`|`field`|
+|_Search field_ |`q`           |`queries`, "value"       |
+|_Search field dropdown_|`search_scope`|`queries`, "field"|
 |<ul>'All Fields'   |<ul>"all"     |<ul>"keyword"|
 |<ul>'Title'       |<ul>"title"  |<ul>"title"       |
 |<ul>'Author/Contributor'|<ul>"contributor" |<ul>"author"|
 |<ul>'Standard Number'|<ul>"standard_number"|<ul> "standardNumber"|
 |_Search page filters_|`filters`     ||
 |<ul>'Format'       |<ul>`filters[materialType]`|<ul>N/A*|
-|<ul>'Date':<ul><li>'Start Year'<li>'End Year'| <ul><br>`filters[dateAfter]`<br>`filters[dateBefore]` |<br><ul>`years[start]`<br>`years[end]`|
+|<ul>'Date':<ul><li>'Start Year'<li>'End Year'| <ul><br>`filters[dateAfter]`<br>`filters[dateBefore]` |`filters`<br><ul>`years[start]`<br>`years[end]`|
 |<ul>'Language'|<ul>`filters[language]`|<ul>`language`|
 |_Filters linked to from a bib page_|
 |<ul>'Author'|<ul>`filters[creatorLiteral]`|<ul>`field[author]`|
