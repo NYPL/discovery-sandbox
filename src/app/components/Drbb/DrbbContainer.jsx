@@ -64,7 +64,6 @@ class DrbbContainer extends React.Component {
     }
 
     if (works && works.length) {
-      console.log(createResearchNowQuery(this.query));
       return ([
         <ul key="drbb-scc-results-list" className="drbb-list">
           { works.map(work => <DrbbItem key={work.id} work={work} />) }
@@ -91,7 +90,11 @@ class DrbbContainer extends React.Component {
           Results from Digital Research Books Beta
         </h3>
         <p className="drbb-description">
-          Find millions of digital books for research from multiple sources world-wide--all free to read, download, and keep. No library card required. This is an early beta test, so we want your feedback! <a className="link" href="/about">Read more about the project</a>.
+          Find millions of digital books for research from multiple sources world-wide--all free to read, download, and keep. No library card required. This is an early beta test, so we want your feedback!
+          <a
+            className="link"
+            target="_blanks"  href={`${appConfig.drbbFrontEnd[appConfig.environment]}/about`}
+          >Read more about the project</a>.
         </p>
         { this.content() }
       </div>

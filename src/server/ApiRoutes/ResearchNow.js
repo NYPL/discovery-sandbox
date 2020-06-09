@@ -6,7 +6,7 @@ import logger from '../../../logger';
 const appEnvironment = process.env.APP_ENV || 'production';
 
 const nyplApiClientCall = query => nyplApiClient({ apiBaseUrl: appConfig.api.drbb[appEnvironment] })
-  .then(client => client.post('/research-now/v3/search-api', JSON.stringify(query)))
+  .then(client => client.post('', JSON.stringify(query)))
   .catch(console.error);
 
 const searchAjax = (req, res) => {
