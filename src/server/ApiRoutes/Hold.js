@@ -347,7 +347,6 @@ function newHoldRequestServerEdd(req, res, next) {
  * @return {function}
  */
 function createHoldRequestServer(req, res, pickedUpBibId = '', pickedUpItemId = '') {
-  console.log('creaetHoldRequestServer', req.params, req.body, req.patronTokenResponse, req.body.redirect === 'false');
   res.respond = req.body.redirect === 'false' ? res.json : res.redirect;
   // Ensure user is logged in
   const loggedIn = User.requireUser(req, res);
@@ -364,12 +363,10 @@ function createHoldRequestServer(req, res, pickedUpBibId = '', pickedUpItemId = 
 
   if (!bibId || !itemId) {
     // Dummy redirect for now
-    console.log('responding !bibId')
     return res.respond(`${appConfig.baseUrl}/someErrorPage`);
   }
 
   if (pickupLocation === 'edd') {
-    console.log('responding edd')
     const eddSearchKeywordsQuery = (req.body['search-keywords']) ?
       `?q=${req.body['search-keywords']}` : '';
 
@@ -386,7 +383,6 @@ function createHoldRequestServer(req, res, pickedUpBibId = '', pickedUpItemId = 
     itemSource,
     (response) => {
       const data = JSON.parse(response).data;
-      console.log('responding success', res.respond === res.json);
       res.respond(
         `${appConfig.baseUrl}/hold/confirmation/${bibId}-${itemId}?pickupLocation=` +
         `${pickupLocation}&requestId=${data.id}${searchKeywordsQuery}`,

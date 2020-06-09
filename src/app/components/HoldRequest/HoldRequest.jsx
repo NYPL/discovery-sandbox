@@ -117,15 +117,12 @@ class HoldRequest extends React.Component {
 
     Actions.updateLoadingStatus(true);
     trackDiscovery(`Submit Request${partnerEvent}`, `${title} - ${itemId}`);
-    console.log('placing request: ', `${appConfig.baseUrl}/hold/request/${bibId}-${itemId}-${itemSource}`, new FormData(document.getElementById('place-hold-form')));
     const formData = new FormData(document.getElementById('place-hold-form'));
-    console.log(Object.fromEntries(formData.entries()));
     axios.post(
       `${appConfig.baseUrl}/hold/request/${bibId}-${itemId}-${itemSource}`,
       Object.fromEntries(formData.entries()),
     )
       .then((response) => {
-        console.log('response: ', response.data);
         this.context.router.push(response.data);
         Actions.updateLoadingStatus(false);
       });
