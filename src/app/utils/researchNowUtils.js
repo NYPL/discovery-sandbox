@@ -93,13 +93,11 @@ const authorQuery = author => ({
   showQueries: JSON.stringify([{ query: author.name, field: 'author' }]),
 });
 
-const generateStreamedReaderUrl = (url, eReaderUrl, referrer) => {
+const generateStreamedReaderUrl = (url, eReaderUrl, editionId) => {
   const base64BookUrl = Buffer.from(url).toString('base64');
   const encodedBookUrl = encodeURIComponent(`${base64BookUrl}`);
   let combined = `${eReaderUrl}/readerNYPL/?url=${eReaderUrl}/pub/${encodedBookUrl}/manifest.json`;
-  if (referrer) {
-    combined += `#${referrer}`;
-  }
+  combined += `#/edition?editionId=${editionId}`;
   return combined;
 };
 

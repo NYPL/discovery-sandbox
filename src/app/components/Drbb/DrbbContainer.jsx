@@ -1,14 +1,17 @@
 import React from 'react';
 import axios from 'axios';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router';
 
 import appConfig from '../../data/appConfig';
 import DrbbItem from './DrbbItem';
+import { createResearchNowQuery } from '../../utils/researchNowUtils';
 
 class DrbbContainer extends React.Component {
   constructor(props, context) {
     super();
     this.search = context.router.location.search || '';
+    this.query = context.router.location.query || {};
     this.state = {
       works: [],
       drbbResultsLoading: true,
@@ -39,7 +42,9 @@ class DrbbContainer extends React.Component {
     const {
       works,
       drbbResultsLoading,
+      totalWorks,
     } = this.state;
+
     if (drbbResultsLoading) {
       return (
         <div className="drr-loading-layer">
@@ -57,15 +62,29 @@ class DrbbContainer extends React.Component {
         </div>
       );
     }
-    if (works && works.length) return works.map(work => <DrbbItem key={work.id} work={work} />);
+
+    if (works && works.length) {
+      console.log(createResearchNowQuery(this.query));
+      return ([
+        <ul key="drbb-scc-results-list" className="drbb-list">
+          { works.map(work => <DrbbItem key={work.id} work={work} />) }
+        </ul>,
+        <Link
+          className="drbb-description"
+          to={{
+            pathname: `${appConfig.drbbFrontEnd[appConfig.environment]}/search?`,
+            search: JSON.stringify(createResearchNowQuery(this.query)),
+          }}
+          target="_blank"
+          key="drbb-results-list-link"
+        >
+          See {totalWorks} results from Digital Research Books Beta
+        </Link>]);
+    }
     return null;
   }
 
   render() {
-    const {
-      totalWorks,
-    } = this.state;
-
     return (
       <div className="drbb-container">
         <h3 className="drbb-main-header">
@@ -74,12 +93,7 @@ class DrbbContainer extends React.Component {
         <p className="drbb-description">
           Find millions of digital books for research from multiple sources world-wide--all free to read, download, and keep. No library card required. This is an early beta test, so we want your feedback! <a className="link" href="/about">Read more about the project</a>.
         </p>
-        <ul className="drbb-list">
-          { this.content() }
-        </ul>
-        <a className="drbb-description" href={appConfig.drbbFrontEnd} target="_blank">
-          See {totalWorks} results from Digital Research Books Beta
-        </a>
+        { this.content() }
       </div>
     );
   }

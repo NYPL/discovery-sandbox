@@ -38,7 +38,7 @@
 .drbb-description {
   font-size: 12px;
 
-  a, {
+  a {
     display: inline-block;
   }
 }
@@ -66,6 +66,14 @@
   padding-right: 30px;
 }
 
+.drbb-result-author {
+  display: inline;
+}
+
+.drbb-result-title {
+  display: block;
+}
+
 a.drbb-read-online {
   background-color: #fff;
   border: 0.08333rem solid #d0343a;
@@ -77,15 +85,20 @@ a.drbb-read-online {
   font-weight: normal;
   letter-spacing: 0.06rem;
   text-decoration: none;
+  padding: 2% 3%;
 }
 
 a.drbb-download-pdf {
   float: right;
   color: #000000;
   fill: currentColor;
+  padding: 2% 0;
+
+  svg {
+    padding-left: 5px;
+  }
 }
 
 .drbb-read-online, .drbb-download-pdf {
-  margin: 2% 1%;
-  padding: 2% 3%;
+  margin: 2% 0;
 }

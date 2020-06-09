@@ -44,7 +44,7 @@ export default {
   searchResultsNotification: process.env.SEARCH_RESULTS_NOTIFICATION,
   drbbFrontEnd: {
     development: 'http://sfr-front-end-development.us-east-1.elasticbeanstalk.com',
-    production: 'https://digital-research-books-beta.nypl.org/',
+    production: 'https://digital-research-books-beta.nypl.org',
   },
   drbbEreader: {
     development: 'https://researchnow-reader.nypl.org',
