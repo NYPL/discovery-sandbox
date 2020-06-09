@@ -6,12 +6,13 @@ export default {
   favIconPath: '//d2znry4lg8s0tq.cloudfront.net/images/favicon.ico',
   port: 3001,
   webpackDevServerPort: 3000,
+  environment: process.env.APP_ENV || 'production',
   api: {
     development: process.env.PLATFORM_API_BASE_URL || 'https://dev-platform.nypl.org/api/v0.1',
     production: process.env.PLATFORM_API_BASE_URL || 'https://platform.nypl.org/api/v0.1',
     drbb: {
       development: 'https://dev-platform.nypl.org/api/v0.1',
-      production: 'https://digital-research-books-api.nypl.org/v3/sfr',
+      production: 'https://digital-research-books-api.nypl.org',
     },
   },
   shepApi: process.env.SHEP_API,
@@ -41,5 +42,12 @@ export default {
   ).map(location => (location === 'all' ? '' : location)),
   holdRequestNotification: process.env.HOLD_REQUEST_NOTIFICATION,
   searchResultsNotification: process.env.SEARCH_RESULTS_NOTIFICATION,
-  drbbFrontEnd: 'http://sfr-front-end-development.us-east-1.elasticbeanstalk.com/',
+  drbbFrontEnd: {
+    development: 'http://sfr-front-end-development.us-east-1.elasticbeanstalk.com',
+    production: 'https://digital-research-books-beta.nypl.org/',
+  },
+  drbbEreader: {
+    development: 'https://researchnow-reader.nypl.org',
+    production: 'https://digital-research-books-reader.nypl.org',
+  },
 };

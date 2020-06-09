@@ -1,27 +1,45 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router';
 
 import appConfig from '../../data/appConfig';
-import { authorUrl } from '../../utils/researchNowUtils';
+import {
+  authorQuery,
+  generateStreamedReaderUrl,
+  formatUrl,
+} from '../../utils/researchNowUtils';
 
 const DrbbItem = (props) => {
   const { work } = props;
   const {
     agents,
     title,
+    editions,
   } = work;
-  console.log(agents);
-  console.log(authorUrl(agents[0].name));
+
+  const {
+    environment,
+  } = appConfig;
+
+  const drbbFrontEnd = appConfig.drbbFrontEnd[environment];
+
+  const edition = editions[0];
+  const item = edition.items[0];
 
   const authorship = () => {
     const authors = agents.map((agent, i) => [
       (i > 0 ? ', ' : null),
-      <a
-        key={agent.name}
-
+      <Link
+        to={{
+          pathname: `${drbbFrontEnd}/search`,
+          query: authorQuery(agent),
+        }}
+        className="link"
+        key={agent.viaf ? `author-${agent.viaf}` : `author-${agent.name}`}
+        target="_blank"
       >
         {agent.name}
-      </a>]);
+      </Link>]);
 
     return (
       <div>
@@ -30,25 +48,50 @@ const DrbbItem = (props) => {
     );
   };
 
-  return (
-    <li className="drbb-item">
-      <a
+  const readOnlineLink = () => {
+    const eReaderUrl = appConfig.drbbEreader[environment];
+    const editionWithTitle = edition;
+    editionWithTitle.title = edition.title || work.title;
+
+    const selectedLink = item.links.find(link => (
+      (!link.local && !link.download) || (link.local && link.download)
+    ));
+    if (!selectedLink || !selectedLink.url) return null;
+    if (selectedLink.local) {
+      const encodedUrl = generateStreamedReaderUrl(selectedLink.url, eReaderUrl);
+      return (
+        <Link
+          to={{ pathname: '/read-online', search: `?url=${encodeURI(encodedUrl)}`, state: { edition: editionWithTitle } }}
+        >
+          Read Online
+        </Link>
+      );
+    }
+
+    return (
+      <Link
         target="_blank"
-        href={`${appConfig.drbbFrontEnd}work?recordType=editions&workId=${work.uuid}`}
-      >
-        {title}
-      </a>
-      {agents && agents.length ? authorship() : null}
-      <a
-        target="_blank"
-        href={`${appConfig.drbbFrontEnd}work?recordType=editions&workId=${work.uuid}`}
+        to={{ pathname: `${drbbFrontEnd}/read-online`, search: `?url=${formatUrl(selectedLink.url)}`, state: { edition: editionWithTitle } }}
         className="drbb-read-online"
       >
         Read Online
-      </a>
-      <a
+      </Link>
+    );
+  };
+
+  return (
+    <li className="drbb-item">
+      <Link
         target="_blank"
-        href={`${appConfig.drbbFrontEnd}work?recordType=editions&workId=${work.uuid}`}
+        to={`${drbbFrontEnd}/work?recordType=editions&workId=${work.uuid}`}
+      >
+        {title}
+      </Link>
+      {agents && agents.length ? authorship() : null}
+      { readOnlineLink() }
+      <Link
+        target="_blank"
+        to={`${drbbFrontEnd}/work?recordType=editions&workId=${work.uuid}`}
         className="drbb-download-pdf"
       >
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
@@ -56,7 +99,7 @@ const DrbbItem = (props) => {
           <path d="M11.3 8.2c-.2-.2-.5-.2-.7 0l-2.2 2.2V4.5h-.9v5.9L5.3 8.2c-.1-.2-.4-.2-.6 0s-.2.5 0 .7l3 3c.2.2.5.2.7 0l3-3c.1-.2.1-.5-.1-.7z" />
         </svg>
         Download PDF
-      </a>
+      </Link>
     </li>
   );
 };
