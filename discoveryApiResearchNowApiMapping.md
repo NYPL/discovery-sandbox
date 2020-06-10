@@ -44,7 +44,7 @@ For the DRBB/SCC integration, the DRBB data is fetched using a POST request with
 ## Example Translation
 A GET request to the Discovery API endpoint detailed above with this query
 ```
-?q=hello&filters[subjectLiteral][0]=United%20States&sort=title&sort_direction=asc&search_scope=title&page=1
+?q=hello&filters[subjectLiteral][0]=United%20States&sort=title&sort_direction=asc&search_scope=title&page=1&filters[language][0]=lang%3Aeng&filters[language][1]=lang%3Ager&filters[dateAfter]=1993&filters[dateBefore]=2020
 ```
 would translate to a POST request with this body for ResearchNow's search endpoint:
 ``` json
@@ -54,7 +54,15 @@ would translate to a POST request with this body for ResearchNow's search endpoi
 		{"field":"subject","query":"United States"}
 	],
 	"page":0,
-	"sort":[{"field":"title","dir":"asc"}]
+	"sort":[{"field":"title","dir":"asc"}],
+  "filters":[
+    {"field":"language","value":"eng"},
+    {"field":"language","value":"ger"},
+    {"field":"years","value":{
+      "start": 1993,
+      "end": 2020,
+    }},
+  ]}
 }
 ```
 
@@ -71,10 +79,10 @@ Single quotes (') are used for frontend terminology. Italics are used to describ
 
 |Discovery front end|Discovery API |ResearchNow API|
 |-------------------|--------------|---------------|
-|_Search field_ |`q`           |`queries`, "value"       |
+|_Search field_     |`q`           |`queries`, "value"|
 |_Search field dropdown_|`search_scope`|`queries`, "field"|
-|<ul>'All Fields'   |<ul>"all"     |<ul>"keyword"|
-|<ul>'Title'       |<ul>"title"  |<ul>"title"       |
+|<ul>'All Fields'   |<ul>"all"     |<ul>"keyword"  |
+|<ul>'Title'        |<ul>"title"   |<ul>"title"    |
 |<ul>'Author/Contributor'|<ul>"contributor" |<ul>"author"|
 |<ul>'Standard Number'|<ul>"standard_number"|<ul> "standardNumber"|
 |_Search page filters_|`filters`     ||
