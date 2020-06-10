@@ -31,7 +31,7 @@
 * `query` string
 * `recordType`
   * Internal record type to return with the work. Either instances or editions.
-* `page` integer
+* `page` integer (0 indexed)
 * `per_page` integer
 * `sort` array of objects
   * Objects are formatted as `{"field": field, "dir": dir}`
@@ -40,6 +40,23 @@
   * This should be formatted as `{"start": year, "end": year}`.
 
 For the DRBB/SCC integration, the DRBB data is fetched using a POST request with a body containing `page`, `per_page`, `filters` (years, languages), and `queries` (author/contributor, subject).
+
+## Example Translation
+A GET request to the Discovery API endpoint detailed above with this query
+```
+?q=hello&filters[subjectLiteral][0]=United%20States&sort=title&sort_direction=asc&search_scope=title&page=1
+```
+would translate to a POST request with this body for ResearchNow's search endpoint:
+``` json
+{
+	"queries":[
+		{"field":"title","query":"hello"},
+		{"field":"subject","query":"United States"}
+	],
+	"page":0,
+	"sort":[{"field":"title","dir":"asc"}]
+}
+```
 
 <!-- <style>
   table ul {
