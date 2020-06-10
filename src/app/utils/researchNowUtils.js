@@ -103,9 +103,28 @@ const generateStreamedReaderUrl = (url, eReaderUrl, editionId) => {
 
 const formatUrl = link => (link.startsWith('http') ? link : `https://${link}`);
 
+const getQueryString = (initialQuery, cb = input => input) => {
+  const query = cb(initialQuery)
+  return (query && Object.keys(query)
+    .map(key => [key, query[key]]
+      .map((o) => {
+        let ret = o;
+        if (typeof o === 'object') {
+          ret = JSON.stringify(o);
+        }
+        return encodeURIComponent(ret);
+      })
+      .join('='))
+    .join('&')
+  );
+};
+
+const getResearchNowQueryString = query => getQueryString(query, createResearchNowQuery);
+
 export {
   createResearchNowQuery,
   authorQuery,
   generateStreamedReaderUrl,
   formatUrl,
+  getResearchNowQueryString,
 };

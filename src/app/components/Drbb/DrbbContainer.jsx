@@ -5,7 +5,7 @@ import { Link } from 'react-router';
 
 import appConfig from '../../data/appConfig';
 import DrbbItem from './DrbbItem';
-import { createResearchNowQuery } from '../../utils/researchNowUtils';
+import { getResearchNowQueryString } from '../../utils/researchNowUtils';
 
 class DrbbContainer extends React.Component {
   constructor(props, context) {
@@ -72,7 +72,7 @@ class DrbbContainer extends React.Component {
           className="drbb-description"
           to={{
             pathname: `${appConfig.drbbFrontEnd[appConfig.environment]}/search?`,
-            search: JSON.stringify(createResearchNowQuery(this.query)),
+            search: getResearchNowQueryString(this.query),
           }}
           target="_blank"
           key="drbb-results-list-link"
