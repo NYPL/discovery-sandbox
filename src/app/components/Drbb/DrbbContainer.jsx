@@ -5,7 +5,6 @@ import { Link } from 'react-router';
 
 import appConfig from '../../data/appConfig';
 import DrbbItem from './DrbbItem';
-import { getResearchNowQueryString } from '../../utils/researchNowUtils';
 
 class DrbbContainer extends React.Component {
   constructor(props, context) {
