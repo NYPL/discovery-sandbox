@@ -2,8 +2,10 @@
 import React from 'react';
 import { expect } from 'chai';
 import { mount } from 'enzyme';
+import PropTypes from 'prop-types';
 
 import SearchResults from '../../src/app/pages/SearchResults';
+import { mockRouterContext } from '../helpers/routing';
 
 // Eventually, it would be nice to have mocked data in a different file and imported.
 const searchResults = {
@@ -22,6 +24,11 @@ const searchResults = {
   totalResults: 2,
 };
 
+const context = mockRouterContext();
+const childContextTypes = {
+  router: PropTypes.object,
+};
+
 describe('SearchResultsPage', () => {
   describe('Component properties', () => {
     let component;
@@ -34,7 +41,10 @@ describe('SearchResultsPage', () => {
           searchResults={{}}
           location={{ search: '' }}
         />,
-        { attachTo: document.body }
+        { attachTo: document.body,
+          context,
+          childContextTypes,
+        },
       );
     });
 
@@ -87,7 +97,7 @@ describe('SearchResultsPage', () => {
           searchResults={searchResults}
           location={{ search: '' }}
         />,
-        { attachTo: document.body }
+        { attachTo: document.body, context, childContextTypes }
       );
     });
 
@@ -127,7 +137,7 @@ describe('SearchResultsPage', () => {
           searchResults={searchResults}
           location={{ search: '' }}
         />,
-        { attachTo: document.body }
+        { attachTo: document.body, context, childContextTypes }
       );
     });
 

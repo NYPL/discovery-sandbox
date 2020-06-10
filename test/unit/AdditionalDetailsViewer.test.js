@@ -1,7 +1,6 @@
 import React from 'react';
 import { expect } from 'chai';
-import Enzyme, { mount } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
+import { mount } from 'enzyme';
 
 // Import the component that is going to be tested
 import AdditionalDetailsViewer from './../../src/app/components/BibPage/AdditionalDetailsViewer';
