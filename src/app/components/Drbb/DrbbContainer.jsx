@@ -15,6 +15,7 @@ class DrbbContainer extends React.Component {
     this.state = {
       works: [],
       drbbResultsLoading: true,
+      researchNowQueryString: '',
     };
   }
 
@@ -33,6 +34,7 @@ class DrbbContainer extends React.Component {
           works: resp.data.works,
           totalWorks: resp.data.totalWorks,
           drbbResultsLoading: false,
+          researchNowQueryString: resp.data.researchNowQueryString,
         });
       })
       .catch(console.error);
@@ -43,6 +45,7 @@ class DrbbContainer extends React.Component {
       works,
       drbbResultsLoading,
       totalWorks,
+      researchNowQueryString,
     } = this.state;
 
     if (drbbResultsLoading) {
@@ -72,7 +75,7 @@ class DrbbContainer extends React.Component {
           className="drbb-description"
           to={{
             pathname: `${appConfig.drbbFrontEnd[appConfig.environment]}/search?`,
-            search: getResearchNowQueryString(this.query),
+            search: researchNowQueryString,
           }}
           target="_blank"
           key="drbb-results-list-link"
@@ -80,7 +83,18 @@ class DrbbContainer extends React.Component {
           See {totalWorks} results from Digital Research Books Beta
         </Link>]);
     }
-    return null;
+    return (
+      <Link
+        className="drbb-description"
+        to={{
+          pathname: `${appConfig.drbbFrontEnd[appConfig.environment]}/search?`,
+        }}
+        target="_blank"
+        key="drbb-link"
+      >
+        See results from Digital Research Books Beta
+      </Link>
+    );
   }
 
   render() {
@@ -90,10 +104,10 @@ class DrbbContainer extends React.Component {
           Results from Digital Research Books Beta
         </h3>
         <p className="drbb-description">
-          Find millions of digital books for research from multiple sources world-wide--all free to read, download, and keep. No library card required. This is an early beta test, so we want your feedback!
-          <a
+          Find millions of digital books for research from multiple sources world-wide--all free to read, download, and keep. No library card required. This is an early beta test, so we want your feedback! <a
             className="link"
-            target="_blanks"  href={`${appConfig.drbbFrontEnd[appConfig.environment]}/about`}
+            target="_blanks"
+            href={`${appConfig.drbbFrontEnd[appConfig.environment]}/about`}
           >Read more about the project</a>.
         </p>
         { this.content() }

@@ -1,5 +1,8 @@
 import nyplApiClient from '../routes/nyplApiClient';
-import { createResearchNowQuery } from '../../app/utils/researchNowUtils';
+import {
+  createResearchNowQuery,
+  getResearchNowQueryString,
+} from '../../app/utils/researchNowUtils';
 import appConfig from '../../app/data/appConfig';
 import logger from '../../../logger';
 
@@ -10,7 +13,8 @@ const nyplApiClientCall = query => nyplApiClient({ apiBaseUrl: appConfig.api.drb
   .catch(console.error);
 
 const searchAjax = (req, res) => {
-  const query = createResearchNowQuery(req.query);
+  const query = createResearchNowQuery(Object.assign({ per_page: 3 }, req.query));
+  const researchNowQueryString = getResearchNowQueryString(req.query);
   return nyplApiClientCall(query)
     .then((resp) => {
       const data = JSON.parse(resp).data;
@@ -21,6 +25,7 @@ const searchAjax = (req, res) => {
       return res.json({
         works: data.works,
         totalWorks: data.totalWorks,
+        researchNowQueryString,
       });
     })
     .catch(console.error);

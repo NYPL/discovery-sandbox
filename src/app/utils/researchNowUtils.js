@@ -39,8 +39,8 @@ const createResearchNowQuery = (params) => {
     sort,
     sort_direction,
     filters,
-    page,
     search_scope,
+    per_page,
   } = params;
 
   const mainQuery = queryObj(
@@ -49,14 +49,15 @@ const createResearchNowQuery = (params) => {
 
   const query = {
     queries: [mainQuery],
-    per_page: 3,
-    page: (page - 1) || 0,
+    page: 0,
   };
 
   if (sort) {
     query.sort = [{ field: sort }];
     if (sort_direction) query.sort[0].dir = sort_direction;
   }
+
+  if (per_page) query.per_page = per_page;
 
   console.log('researchNowQuery', query);
 
