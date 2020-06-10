@@ -1,13 +1,21 @@
 import nyplApiClient from '../routes/nyplApiClient';
-import { createResearchNowQuery } from '../../app/utils/researchNowUtils';
+
+import {
+  createResearchNowQuery,
+  getResearchNowQueryString,
+} from '../../app/utils/researchNowUtils';
+import appConfig from '../../app/data/appConfig';
 import logger from '../../../logger';
 
+const appEnvironment = process.env.APP_ENV || 'production';
+
 const nyplApiClientCall = query => nyplApiClient({ apiName: 'drbb' })
-  .then(client => client.post('/research-now/v3/search-api', JSON.stringify(query)))
+  .then(client => client.post('', JSON.stringify(query)))
   .catch(console.error);
 
 const searchAjax = (req, res) => {
-  const query = createResearchNowQuery(req.query);
+  const query = createResearchNowQuery(Object.assign({ per_page: 3 }, req.query));
+  const researchNowQueryString = getResearchNowQueryString(req.query);
   return nyplApiClientCall(query)
     .then((resp) => {
       const data = JSON.parse(resp).data;
@@ -18,6 +26,7 @@ const searchAjax = (req, res) => {
       return res.json({
         works: data.works,
         totalWorks: data.totalWorks,
+        researchNowQueryString,
       });
     })
     .catch(console.error);

@@ -13,8 +13,8 @@ export default {
       production: process.env.PLATFORM_API_BASE_URL || 'https://platform.nypl.org/api/v0.1'
     },
     drbb: {
-      development: 'https://dev-platform.nypl.org/api/v0.1',
-      production: 'https://digital-research-books-api.nypl.org',
+      development: 'https://dev-platform.nypl.org/api/v0.1/research-now/v3/search-api',
+      production: 'https://digital-research-books-api.nypl.org/v3/sfr/search',
     },
   },
   shepApi: process.env.SHEP_API,
