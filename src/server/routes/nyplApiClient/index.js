@@ -6,7 +6,6 @@ import logger from '../../../../logger';
 
 const appEnvironment = process.env.APP_ENV || 'production';
 const kmsEnvironment = process.env.KMS_ENV || 'encrypted';
-const platformApiBase = config.api[appEnvironment];
 let decryptKMS;
 let kms;
 
@@ -36,17 +35,15 @@ const clientId = process.env.clientId || process.env.PLATFORM_API_CLIENT_ID;
 const clientSecret = process.env.clientSecret || process.env.PLATFORM_API_CLIENT_SECRET;
 
 const keys = [clientId, clientSecret];
-const CACHE = {};
+const CACHE = { clients: [] };
 
-function nyplApiClient(options = {}) {
-  const { apiBaseUrl } = options;
-  if (CACHE.nyplApiClient && !apiBaseUrl) {
-    return Promise.resolve(CACHE.nyplApiClient);
-  } else if (apiBaseUrl && CACHE[apiBaseUrl]) {
-    return Promise.resolve(CACHE[apiBaseUrl]);
+function nyplApiClient(options = { apiName: 'discovery' }) {
+  const { apiName } = options;
+  if (CACHE.clients[apiName]) {
+    return Promise.resolve(CACHE.clients[apiName]);
   }
 
-  const baseUrl = apiBaseUrl || platformApiBase;
+  const baseUrl = config.api[apiName][appEnvironment];
 
   if (kmsEnvironment === 'encrypted') {
     return new Promise((resolve, reject) => {
@@ -59,10 +56,9 @@ function nyplApiClient(options = {}) {
             oauth_url: config.tokenUrl,
           });
 
-          CACHE.clientId = decryptedClientId;
-          CACHE.clientSecret = decryptedClientSecret;
-          if (apiBaseUrl) CACHE[apiBaseUrl] = nyplApiClient;
-          else CACHE.nyplApiClient = nyplApiClient;
+          CACHE.clientId = clientId;
+          CACHE.clientSecret = clientSecret;
+          CACHE.clients[apiName] = nyplApiClient;
 
           resolve(nyplApiClient);
         })
@@ -82,8 +78,7 @@ function nyplApiClient(options = {}) {
 
   CACHE.clientId = clientId;
   CACHE.clientSecret = clientSecret;
-  if (apiBaseUrl) CACHE[apiBaseUrl] = nyplApiClient;
-  else CACHE.nyplApiClient = nyplApiClient;
+  CACHE.clients[apiName] = nyplApiClient;
 
   return Promise.resolve(nyplApiClient);
 }

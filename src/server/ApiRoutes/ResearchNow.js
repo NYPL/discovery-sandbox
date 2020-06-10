@@ -1,4 +1,5 @@
 import nyplApiClient from '../routes/nyplApiClient';
+
 import {
   createResearchNowQuery,
   getResearchNowQueryString,
@@ -8,7 +9,7 @@ import logger from '../../../logger';
 
 const appEnvironment = process.env.APP_ENV || 'production';
 
-const nyplApiClientCall = query => nyplApiClient({ apiBaseUrl: appConfig.api.drbb[appEnvironment] })
+const nyplApiClientCall = query => nyplApiClient({ apiName: 'drbb' })
   .then(client => client.post('', JSON.stringify(query)))
   .catch(console.error);
 
