@@ -22,9 +22,6 @@ const DrbbItem = (props) => {
 
   const drbbFrontEnd = appConfig.drbbFrontEnd[environment];
 
-  const edition = editions[0];
-  const item = edition.items[0];
-
   const authorship = () => {
     const authors = agents.map((agent, i) => [
       (i > 0 ? ', ' : null),
@@ -47,14 +44,28 @@ const DrbbItem = (props) => {
     );
   };
 
+  let downloadLink;
+
+  const selectEdition = () => (editions.find(workEdition => (
+    workEdition.items.find(editionItem => editionItem.links.find((link) => {
+      downloadLink = link;
+      return link.download;
+    }))
+  )) || editions[0]);
+
+  const edition = selectEdition();
+
   const readOnlineLink = () => {
     const editionWithTitle = edition;
     editionWithTitle.title = edition.title || work.title;
 
-    const selectedLink = item.links.find(link => (
-      (!link.local && !link.download) || (link.local && link.download)
-    ));
-    if (!selectedLink || !selectedLink.url) return null;
+    let selectedLink;
+    const selectedItem = edition.items.find(item => item.links.find((link) => {
+      selectedLink = link;
+      return (!link.local && !link.download) || (link.local && link.download);
+    }));
+
+    if (!selectedItem || !selectedLink || !selectedLink.url) return null;
 
     return (
       <Link
@@ -69,17 +80,6 @@ const DrbbItem = (props) => {
       </Link>
     );
   };
-  let downloadLink;
-  let downloadItem;
-  const downloadableEdition = editions.find(workEdition => (
-    workEdition.items.find((editionItem) => {
-      downloadItem = editionItem;
-      return editionItem.links.find((link) => {
-        downloadLink = link;
-        return link.download;
-      });
-    })
-  ));
 
   const downloadLinkElement = () => {
     if (!downloadLink) return null;
@@ -109,8 +109,10 @@ const DrbbItem = (props) => {
         {title}
       </Link>
       {agents && agents.length ? authorship() : null}
-      { readOnlineLink() }
-      { downloadLinkElement() }
+      <div className="drbb-item-links">
+        { readOnlineLink() }
+        { downloadLinkElement() }
+      </div>
     </li>
   );
 };
