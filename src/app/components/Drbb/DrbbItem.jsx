@@ -109,10 +109,8 @@ const DrbbItem = (props) => {
         {title}
       </Link>
       {agents && agents.length ? authorship() : null}
-      <div className="drbb-item-links">
-        { readOnlineLink() }
-        { downloadLinkElement() }
-      </div>
+      { readOnlineLink() }
+      { downloadLinkElement() }
     </li>
   );
 };

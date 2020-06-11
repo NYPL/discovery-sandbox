@@ -6,8 +6,7 @@
   float: right;
   margin: auto;
   margin-left: 15px;
-  padding: 10px;
-  padding-bottom: 25px;
+  padding: 2.5%;
   width: 30%;
 
   .loadingLayer-texts-loadingWord {
@@ -30,9 +29,10 @@
   padding: 0 5px;
 }
 
-.nypl-results-list {
+.nypl-results-list.drbb-integration {
   display: inline-block;
-  width: 65%;
+  width: 60%;
+  padding-right: 5%;
 }
 
 .drbb-description {
@@ -49,7 +49,7 @@
   border-radius: 4px;
   font-size: 14px;
   margin: 20px 0;
-  padding: 5% 8%;
+  padding: 5% 7%;
 }
 
 .drbb-list {
@@ -63,8 +63,9 @@
 }
 
 .nypl-full-width-wrapper.drbb-integration {
-  padding-left: 30px;
-  padding-right: 30px;
+  margin: unset;
+  max-width: unset;
+  padding: 0 4%;
 }
 
 .drbb-result-author {
@@ -79,27 +80,42 @@ a.drbb-read-online {
   background-color: #fff;
   border: 0.08333rem solid #d0343a;
   border-radius: 0.13333rem;
+  box-sizing: border-box;
   color: #d0343a;
-  cursor: pointer;
-  display: inline-block;
   font-size: 0.8rem;
   font-weight: normal;
+  height: 33px;
   letter-spacing: 0.06rem;
-  text-decoration: none;
+  margin-right: 4%;
   padding: 2% 3%;
+  text-decoration: none;
 }
 
 a.drbb-download-pdf {
-  float: right;
   color: #000000;
   fill: currentColor;
   padding: 2% 0;
+  font-size: 0.8rem;
+  font-weight: normal;
+  letter-spacing: 0.06rem;
 
   svg {
-    padding-left: 5px;
+    padding-right: 5px;
+    margin-bottom: -3px;
   }
 }
 
 .drbb-read-online, .drbb-download-pdf {
+  display: inline-block;
+  font-size: .8rem;
   margin: 2% 0;
+}
+
+.drbb-item-links {
+  height: 33px;
+}
+
+.nypl-results-list.drbb-integration {
+  padding-right: 10%;
+  box-sizing: border-box;
 }
