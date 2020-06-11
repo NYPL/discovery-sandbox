@@ -83,6 +83,7 @@ const DrbbItem = (props) => {
 
   const downloadLinkElement = () => {
     if (!downloadLink) return null;
+    if (!downloadLink.download) return null;
 
     return (
       <Link
