@@ -29,14 +29,9 @@
   padding: 0 5px;
 }
 
-.nypl-results-list.drbb-integration {
-  display: inline-block;
-  width: 60%;
-  padding-right: 5%;
-}
-
 .drbb-description {
   font-size: 12px;
+  display: block;
 
   a {
     display: inline-block;
@@ -56,16 +51,10 @@
   list-style: none;
 }
 
-.drr-loading-layer {
+.drbb-loading-layer {
   height: 135px;
   padding-top: 35px;
   text-align: center;
-}
-
-.nypl-full-width-wrapper.drbb-integration {
-  margin: unset;
-  max-width: unset;
-  padding: 0 4.5%;
 }
 
 .drbb-result-author {
@@ -77,18 +66,23 @@
 }
 
 a.drbb-read-online {
-  background-color: #fff;
-  border: 0.08333rem solid #d0343a;
+  background-color: $results-list-item-button;
+  border: 0.08333rem solid $results-list-item-button;
   border-radius: 0.13333rem;
-  box-sizing: border-box;
-  color: #d0343a;
-  font-size: 0.8rem;
+  color: #fff;
+  cursor: pointer;
+  display: inline-block;
+  font-size: 12px;
   font-weight: normal;
   height: 33px;
   letter-spacing: 0.06rem;
-  margin-right: 4%;
-  padding: 2% 3%;
   text-decoration: none;
+  padding: 4px 13px;
+
+  &:hover {
+    background-color: #fff;
+    color: $results-list-item-button;
+  }
 }
 
 a.drbb-download-pdf {
@@ -115,7 +109,26 @@ a.drbb-download-pdf {
   height: 33px;
 }
 
+.nypl-full-width-wrapper.drbb-integration {
+  margin: unset;
+  max-width: unset;
+  padding: 0 4%;
+}
+
 .nypl-results-list.drbb-integration {
+  display: inline-block;
+  width: 60%;
   padding-right: 10%;
   box-sizing: border-box;
+}
+
+.drbb-promo {
+  width: 100%;
+  text-align: center;
+  height: 250px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f9f8f7;
+  border-radius: 4px;
 }
