@@ -44,14 +44,9 @@ const DrbbItem = (props) => {
     );
   };
 
-  let downloadLink;
-
-  const selectEdition = () => (editions.find(workEdition => (
-    workEdition.items.find(editionItem => editionItem.links.find((link) => {
-      downloadLink = link;
-      return link.download;
-    }))
-  )) || editions[0]);
+  const selectEdition = () => (editions.find(edition => (
+    edition && edition.items[0].links && edition.items[0].links.length
+  )));
 
   const edition = selectEdition();
 
@@ -82,10 +77,15 @@ const DrbbItem = (props) => {
   };
 
   const downloadLinkElement = () => {
-    if (!downloadLink) return null;
-    if (!downloadLink.download) return null;
+    let downloadLink;
+    edition.items.find(item => item.links.find((link) => {
+      downloadLink = link;
+      return link.download;
+    }));
 
-    const mediaType = downloadLink.media_type.replace('application/', '').toUpperCase()
+    if (!downloadLink) return null;
+
+    const mediaType = downloadLink.media_type.replace('application/', '').toUpperCase();
 
     return (
       <Link
