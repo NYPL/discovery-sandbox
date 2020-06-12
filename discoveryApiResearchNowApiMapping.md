@@ -19,7 +19,9 @@
 
 ## ResearchNow API
 [Github](https://github.com/NYPL/sfr-ingest-pipeline/tree/development/app/sfr-search-api#searching)
+
 [GET `/v0.1/research-now/v3/search-api`](https://dev-platformdocs.nypl.org/#/research-now/get_v0_1_research_now_v3_search_api)
+
 [POST `/v0.1/research-now/v3/search-api`](https://dev-platformdocs.nypl.org/#/research-now/post_v0_1_research_now_v3_search_api)
 ### Parameters
 * `queries` array of objects

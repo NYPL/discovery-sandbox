@@ -10,7 +10,7 @@ import {
   formatUrl,
 } from '../../utils/researchNowUtils';
 
-const DrbbItem = (props) => {
+const DrbbResult = (props) => {
   const { work } = props;
   const {
     agents,
@@ -85,9 +85,9 @@ const DrbbItem = (props) => {
       return link.download;
     }));
 
-    if (!downloadLink) return null;
+    if (!downloadLink || !downloadLink.download) return null;
 
-    const mediaType = downloadLink.media_type.replace('application/', '').toUpperCase();
+    const mediaType = downloadLink.media_type.replace(/(application|text)\/|\+zip/gi, '').toUpperCase();
 
     return (
       <Link
@@ -117,8 +117,8 @@ const DrbbItem = (props) => {
   );
 };
 
-DrbbItem.propTypes = {
+DrbbResult.propTypes = {
   work: PropTypes.object,
 };
 
-export default DrbbItem;
+export default DrbbResult;
