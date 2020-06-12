@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 
 import appConfig from '../../data/appConfig';
-import DrbbResult from './DrbbItem';
+import DrbbResult from './DrbbResult';
 
 class DrbbContainer extends React.Component {
   constructor(props, context) {
