@@ -104,14 +104,12 @@ class ResultsList extends React.Component {
     }
 
     resultsElm = results.map((bib, i) => this.generateBibLi(bib, i));
-    const includeDrbb = true;
 
     return (
       <ul
         id="nypl-results-list"
-        className={`nypl-results-list ${Store.getState().isLoading ? 'hide-results-list ' : ''}`}
+        className={`nypl-results-list ${Store.getState().isLoading ? 'hide-results-list ' : 'drbb-integration'}`}
       >
-        {/* includeDrbb ? <DrbbContainer /> : null */}
         {resultsElm}
       </ul>
     );

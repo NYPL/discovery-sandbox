@@ -488,7 +488,7 @@ class FilterPopup extends React.Component {
 
     return (
       <div className="filter-container">
-        <div className="nypl-full-width-wrapper">
+        <div className="nypl-full-width-wrapper drbb-integration">
           <div className="nypl-row">
             <div className="nypl-column-full">
               <div className="filter-text">

@@ -14,7 +14,7 @@ const SccContainer = props => (
       title={props.loadingLayerText}
     />
     <div className="nypl-page-header">
-      <div className="nypl-full-width-wrapper filter-page">
+      <div className="nypl-full-width-wrapper drbb-integration filter-page">
         <div className="nypl-row">
           <div className="nypl-column-full">
             <Breadcrumbs type={props.breadcrumbsType} />
