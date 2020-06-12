@@ -82,6 +82,7 @@ class DrbbContainer extends React.Component {
           See {totalWorks} results from Digital Research Books Beta
         </Link>]);
     }
+
     return (
       <Link
         className="drbb-description"
@@ -91,6 +92,12 @@ class DrbbContainer extends React.Component {
         target="_blank"
         key="drbb-link"
       >
+        <div className="drbb-promo">
+          <img
+            alt="digital-research-book"
+            src={require('../../../client/assets/drbb_promo.png').default}
+          />
+        </div>
         See results from Digital Research Books Beta
       </Link>
     );
