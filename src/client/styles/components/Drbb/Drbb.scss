@@ -76,17 +76,22 @@
 }
 
 a.drbb-read-online {
-  background-color: #fff;
-  border: 0.08333rem solid #d0343a;
+  background-color: $results-list-item-button;
+  border: 0.08333rem solid $results-list-item-button;
   border-radius: 0.13333rem;
-  color: #d0343a;
+  color: #fff;
   cursor: pointer;
   display: inline-block;
-  font-size: 0.8rem;
+  font-size: 12px;
   font-weight: normal;
   letter-spacing: 0.06rem;
   text-decoration: none;
-  padding: 2% 3%;
+  padding: 4px 13px;
+
+  &:hover {
+    background-color: #fff;
+    color: $results-list-item-button;
+  }
 }
 
 a.drbb-download-pdf {
