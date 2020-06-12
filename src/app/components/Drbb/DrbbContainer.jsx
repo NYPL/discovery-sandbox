@@ -4,13 +4,12 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 
 import appConfig from '../../data/appConfig';
-import DrbbItem from './DrbbItem';
+import DrbbResult from './DrbbItem';
 
 class DrbbContainer extends React.Component {
   constructor(props, context) {
     super();
     this.search = context.router.location.search || '';
-    this.query = context.router.location.query || {};
     this.state = {
       works: [],
       drbbResultsLoading: true,
@@ -36,7 +35,12 @@ class DrbbContainer extends React.Component {
           researchNowQueryString: resp.data.researchNowQueryString,
         });
       })
-      .catch(console.error);
+      .catch((resp) => {
+        console.error(resp);
+        this.setState({
+          drbbResultsLoading: false,
+        });
+      });
   }
 
   content() {
@@ -49,7 +53,7 @@ class DrbbContainer extends React.Component {
 
     if (drbbResultsLoading) {
       return (
-        <div className="drr-loading-layer">
+        <div className="drbb-loading-layer">
           <span
             className="loading-animation loadingLayer-texts-loadingWord"
           >
@@ -68,7 +72,7 @@ class DrbbContainer extends React.Component {
     if (works && works.length) {
       return ([
         <ul key="drbb-scc-results-list" className="drbb-list">
-          { works.map(work => <DrbbItem key={work.id} work={work} />) }
+          { works.map(work => <DrbbResult key={work.id} work={work} />) }
         </ul>,
         <Link
           className="drbb-description"
@@ -103,7 +107,9 @@ class DrbbContainer extends React.Component {
           Results from Digital Research Books Beta
         </h3>
         <p className="drbb-description">
-          Find millions of digital books for research from multiple sources world-wide--all free to read, download, and keep. No library card required. This is an early beta test, so we want your feedback! <a
+          Find millions of digital books for research from multiple sources world-wide--
+          all free to read, download, and keep.
+          No library card required. This is an early beta test, so we want your feedback! <a
             className="link"
             target="_blanks"
             href={`${appConfig.drbbFrontEnd[appConfig.environment]}/about`}
