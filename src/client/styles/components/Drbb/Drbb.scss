@@ -37,6 +37,7 @@
 
 .drbb-description {
   font-size: 12px;
+  display: block;
 
   a {
     display: inline-block;
@@ -118,4 +119,15 @@ a.drbb-download-pdf {
 .nypl-results-list.drbb-integration {
   padding-right: 10%;
   box-sizing: border-box;
+}
+
+.drbb-promo {
+  width: 100%;
+  text-align: center;
+  height: 300px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f9f8f7;
+  border-radius: 4px;
 }
