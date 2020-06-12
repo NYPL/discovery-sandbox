@@ -87,6 +87,8 @@ const DrbbItem = (props) => {
     if (!downloadLink) return null;
     if (!downloadLink.download) return null;
 
+    const mediaType = downloadLink.media_type.replace('application/', '').toUpperCase()
+
     return (
       <Link
         target="_blank"
@@ -94,7 +96,7 @@ const DrbbItem = (props) => {
         className="drbb-download-pdf"
       >
         <DownloadIcon />
-        Download PDF
+        Download{mediaType ? ` ${mediaType}` : ''}
       </Link>
     );
   };
