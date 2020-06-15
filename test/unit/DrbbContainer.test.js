@@ -2,7 +2,7 @@
 import React from 'react';
 import { expect } from 'chai';
 import { shallow } from 'enzyme';
-import { spy } from 'sinon';
+import { spy, stub } from 'sinon';
 import MockAdapter from 'axios-mock-adapter';
 import axios from 'axios';
 
@@ -36,9 +36,9 @@ describe('DrbbContainer', () => {
     });
   });
 
+  let fetchResearchNowResults;
+  let mock;
   describe('with search params', () => {
-    let fetchResearchNowResults;
-    let mock;
     before(() => {
       context.router.location.search = '?q=dogs';
       fetchResearchNowResults = spy(DrbbContainer.prototype, 'fetchResearchNowResults');
@@ -70,6 +70,44 @@ describe('DrbbContainer', () => {
       expect(component.state('works')).to.be.an('array').that.includes('work');
       expect(component.state('totalWorks')).to.equal(1);
       expect(component.state('researchNowQueryString')).to.equal('query=dogs');
+    });
+  });
+
+  describe('no ResearchNow results', () => {
+    before(() => {
+      context.router.location.search = '?q=noresults';
+      stub(DrbbContainer.prototype, 'promo');
+      mock = new MockAdapter(axios);
+      mock
+        .onGet('/research/collections/shared-collection-catalog/api/research-now?q=noresults')
+        .reply(200, { works: [] });
+      component = shallow(<DrbbContainer />, { context });
+    });
+
+    after(() => {
+      mock.restore();
+    });
+    it('should display the drbb promo', () => {
+      expect(component.find('.drbb-promo')).to.be.defined;
+    });
+  });
+
+  describe('bad results response', () => {
+    before(() => {
+      context.router.location.search = '?q=badresults';
+      mock = new MockAdapter(axios);
+      mock
+        .onGet('/research/collections/shared-collection-catalog/api/research-now?q=badresults')
+        .reply(200, { notWhatIExpected: 'whatever' });
+      component = shallow(<DrbbContainer />, { context });
+    });
+
+    after(() => {
+      mock.restore();
+    });
+
+    it('should display the drbb promo', () => {
+      expect(component.find('.drbb-promo')).to.be.defined;
     });
   });
 });

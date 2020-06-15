@@ -77,7 +77,6 @@ const createResearchNowQuery = (params) => {
   if (language || dateAfter || dateBefore) {
     query.filters = mapFilters({ dateAfter, dateBefore, language });
   }
-  console.log(query);
 
   return query;
 };
@@ -103,7 +102,8 @@ const generateStreamedReaderUrl = (url, eReaderUrl, editionId) => {
 const formatUrl = link => (link.startsWith('http') ? link : `https://${link}`);
 
 const getQueryString = (initialQuery, cb = input => input) => {
-  const query = cb(initialQuery)
+  const query = cb(initialQuery);
+
   return (query && Object.keys(query)
     .map(key => [key, query[key]]
       .map((o) => {
