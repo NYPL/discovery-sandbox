@@ -2,17 +2,12 @@
 import React from 'react';
 import { expect } from 'chai';
 import { shallow } from 'enzyme';
-import { spy } from 'sinon';
-import MockAdapter from 'axios-mock-adapter';
-import axios from 'axios';
 
 import DrbbResult from './../../src/app/components/Drbb/DrbbResult';
-import { mockRouterContext } from '../helpers/routing';
 import workData from '../fixtures/work-detail.json';
 
 describe('DrbbResult', () => {
   let component;
-  const context = mockRouterContext();
 
   describe('with work prop', () => {
     const authors = workData.data.agents.filter(agent => agent.roles.includes('author'));
@@ -21,8 +16,8 @@ describe('DrbbResult', () => {
     });
 
     it('should be wrapped in a .drbb-item class', () => {
-      expect(component.find('.drbb-item')).to.be.defined;
-      expect(component.find('.drbb-item')).to.have.length(1);
+      expect(component.find('.drbb-result')).to.be.defined;
+      expect(component.find('.drbb-result')).to.have.length(1);
     });
 
     it('should have a link with .drbb-result-title class', () => {
