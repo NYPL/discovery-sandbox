@@ -5,7 +5,7 @@
   margin: auto;
   margin-left: 15px;
   padding: 2.5%;
-  width: 30%;
+  width: 25%;
 
   .loadingLayer-texts-loadingWord {
     margin-bottom: unset;
@@ -30,6 +30,7 @@
 .drbb-description {
   font-size: 12px;
   display: block;
+  font-weight: 450;
 
   a {
     display: inline-block;
@@ -37,9 +38,9 @@
   }
 }
 
-.drbb-item {
+.drbb-result {
   background-color: #f9f8f7;
-  border-radius: 4px;
+  border-radius: 6px;
   font-size: 14px;
   margin: 20px 0;
   padding: 5% 7%;
@@ -112,6 +113,21 @@ a.drbb-download-pdf {
   height: 33px;
 }
 
+.drbb-promo {
+  width: 100%;
+  text-align: center;
+  height: 250px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f9f8f7;
+  border-radius: 4px;
+}
+
+.drbb-authorship {
+  margin: 7px 0;
+}
+
 .nypl-full-width-wrapper.drbb-integration {
   margin: unset;
   max-width: unset;
@@ -123,15 +139,21 @@ a.drbb-download-pdf {
   width: 60%;
   padding-right: 10%;
   box-sizing: border-box;
+
+  h3 {
+    margin-top: 0;
+    font-size: 20px;
+  }
 }
 
-.drbb-promo {
-  width: 100%;
-  text-align: center;
-  height: 250px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #f9f8f7;
-  border-radius: 4px;
+.nypl-select-field-results {
+  margin: 39px 0 32px 0;
+}
+
+.nypl-results-sorting-controls {
+  margin: 0;
+}
+
+.nypl-results-summary h2 {
+  font-size: 22px;
 }

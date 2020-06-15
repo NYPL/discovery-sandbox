@@ -45,7 +45,7 @@ const DrbbResult = (props) => {
       </Link>]);
 
     return (
-      <div>
+      <div className='drbb-authorship'>
         By {authorLinks}
       </div>
     );
@@ -107,7 +107,7 @@ const DrbbResult = (props) => {
   };
 
   return (
-    <li className="drbb-item">
+    <li className="drbb-result">
       <Link
         target="_blank"
         to={`${drbbFrontEnd}/work?recordType=editions&workId=${work.uuid}`}
