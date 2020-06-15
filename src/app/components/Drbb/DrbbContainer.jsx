@@ -114,13 +114,11 @@ class DrbbContainer extends React.Component {
           Results from Digital Research Books Beta
         </h3>
         <p className="drbb-description">
-          Find millions of digital books for research from multiple sources world-wide--
-          all free to read, download, and keep.
-          No library card required. This is an early beta test, so we want your feedback! <a
+          Digital books for research from multiple sources world wide- all free to read, download, and keep. No Library Card is Required. <span><a
             className="link"
             target="_blanks"
             href={`${appConfig.drbbFrontEnd[appConfig.environment]}/about`}
-          >Read more about the project</a>.
+          >Read more about the project</a>.</span>
         </p>
         { this.content() }
       </div>

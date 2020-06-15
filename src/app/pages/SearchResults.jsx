@@ -94,7 +94,7 @@ const SearchResults = (props) => {
             />
             {
               selectedFiltersAvailable &&
-              <div className="nypl-full-width-wrapper selected-filters">
+              <div className="nypl-full-width-wrapper selected-filters drbb-integration">
                 <div className="nypl-row">
                   <div className="nypl-column-full">
                     <SelectedFilters

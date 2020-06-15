@@ -59,8 +59,6 @@ const createResearchNowQuery = (params) => {
 
   if (per_page) query.per_page = per_page;
 
-  console.log('researchNowQuery', query);
-
   if (!filters) return query;
 
   const {
