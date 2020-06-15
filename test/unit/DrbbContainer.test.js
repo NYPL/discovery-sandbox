@@ -22,13 +22,11 @@ describe('DrbbContainer', () => {
     });
 
     it('should render the loading component', () => {
-      expect(component.find('.drbb-loading-layer')).to.be.defined;
-      expect(component.find('.drbb-container')).to.have.length(1);
+      expect(component.find('.drbb-loading-layer')).to.have.length(1);
     });
 
-    it('should be wrapped in a .drbb-container class', () => {
-      expect(component.find('.drbb-container')).to.be.defined;
-      expect(component.find('.drbb-container')).to.have.length(1);
+    it('should render three divs', () => {
+      expect(component.find('div')).to.have.length(3);
     });
 
     it('should have initial loading state', () => {
@@ -45,7 +43,7 @@ describe('DrbbContainer', () => {
       mock = new MockAdapter(axios);
       mock
         .onGet('/research/collections/shared-collection-catalog/api/research-now?q=dogs')
-        .reply(200, { works: ['work'], totalWorks: 1, researchNowQueryString: 'query=dogs' });
+        .reply(200, { works: [{ title: 'work' }], totalWorks: 1, researchNowQueryString: 'query=dogs' });
       component = shallow(<DrbbContainer />, { context });
     });
 
@@ -67,16 +65,21 @@ describe('DrbbContainer', () => {
     });
 
     it('should set state with the fetched results', () => {
-      expect(component.state('works')).to.be.an('array').that.includes('work');
+      expect(component.state('works')).to.be.an('array');
+      expect(component.state('works')).to.have.length(1);
       expect(component.state('totalWorks')).to.equal(1);
       expect(component.state('researchNowQueryString')).to.equal('query=dogs');
     });
+
+    it('should render DrbbResult', () => {
+      expect(component.find('DrbbResult').exists()).to.equal(true);
+    });
   });
 
+  const promoStub = stub(DrbbContainer.prototype, 'promo');
   describe('no ResearchNow results', () => {
     before(() => {
       context.router.location.search = '?q=noresults';
-      stub(DrbbContainer.prototype, 'promo');
       mock = new MockAdapter(axios);
       mock
         .onGet('/research/collections/shared-collection-catalog/api/research-now?q=noresults')
@@ -88,7 +91,7 @@ describe('DrbbContainer', () => {
       mock.restore();
     });
     it('should display the drbb promo', () => {
-      expect(component.find('.drbb-promo')).to.be.defined;
+      expect(component.find('.drbb-promo')).to.have.length(1);
     });
   });
 
@@ -107,7 +110,9 @@ describe('DrbbContainer', () => {
     });
 
     it('should display the drbb promo', () => {
-      expect(component.find('.drbb-promo')).to.be.defined;
+      expect(component.find('.drbb-promo')).to.have.length(1);
     });
   });
+
+  after(() => { promoStub.restore(); });
 });

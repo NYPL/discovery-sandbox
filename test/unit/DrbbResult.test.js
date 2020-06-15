@@ -15,18 +15,15 @@ describe('DrbbResult', () => {
       component = shallow(<DrbbResult work={workData.data}/>);
     });
 
-    it('should be wrapped in a .drbb-item class', () => {
-      expect(component.find('.drbb-result')).to.be.defined;
-      expect(component.find('.drbb-result')).to.have.length(1);
+    it('Should render an `li`', () => {
+      expect(component.find('li')).to.have.length(1);
     });
 
     it('should have a link with .drbb-result-title class', () => {
-      expect(component.find('.drbb-result-title')).to.be.defined;
-      expect(component.find('.drbb-result-title')).to.have.length(1);
+      expect(component.findWhere(n => n.text() === 'The Blithedale romance, by Nathaniel Hawthorne.')).to.have.length(1);
     });
 
     it('should have links to authors', () => {
-      expect(component.find('.drbb-result-author')).to.be.defined;
       expect(component.find('.drbb-result-author')).to.have.length(authors.length);
     });
   });
