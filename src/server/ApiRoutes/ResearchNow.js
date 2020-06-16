@@ -23,6 +23,7 @@ const searchAjax = (req, res) => {
         logger.error(resp);
         return res.json(data);
       }
+
       return res.json({
         works: data.works,
         totalWorks: data.totalWorks,
