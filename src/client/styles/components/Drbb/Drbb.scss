@@ -128,6 +128,10 @@ a.drbb-download-pdf {
   margin: 7px 0;
 }
 
+.drbb-frontend-link {
+  font-size: 14px;
+}
+
 .nypl-full-width-wrapper.drbb-integration {
   margin: unset;
   max-width: unset;
@@ -158,7 +162,7 @@ a.drbb-download-pdf {
   font-size: 22px;
 }
 
-@media(max-width: 800px) {
+@media(max-width: 870px) {
   .nypl-results-list.drbb-integration {
     width: 100%;
     padding-right: 0;

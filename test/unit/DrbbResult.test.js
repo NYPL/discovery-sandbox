@@ -20,7 +20,7 @@ describe('DrbbResult', () => {
     });
 
     it('should have a link with .drbb-result-title class', () => {
-      expect(component.findWhere(n => n.text() === 'The Blithedale romance, by Nathaniel Hawthorne.')).to.have.length(1);
+      expect(component.find('a'))
     });
 
     it('should have links to authors', () => {

@@ -73,7 +73,7 @@ class SearchResultsContainer extends React.Component {
                 updatePage={this.updatePage}
               />
             }
-            { this.includeDrbb && media === 'tablet' ? <DrbbContainer /> : null}
+            { this.includeDrbb && ['tablet', 'mobile'].includes(media) ? <DrbbContainer /> : null}
           </div>
         </div>
       </React.Fragment>
