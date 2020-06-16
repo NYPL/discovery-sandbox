@@ -1,16 +1,16 @@
 dl dd.multi-item-list .nypl-basic-table a,
 .nypl-results-item .nypl-basic-table a {
-  background-color: #fff;
-  border: 0.08333rem solid #d0343a;
+  background-color: $results-list-item-button;
+  border: 0.08333rem solid $results-list-item-button;
   border-radius: 0.13333rem;
-  color: #d0343a;
+  color: #fff;
   cursor: pointer;
   display: inline-block;
-  font-size: 0.8rem;
+  font-size: 12px;
   font-weight: normal;
   letter-spacing: 0.06rem;
-  padding: 0.7rem 1.8rem;
   text-decoration: none;
+  padding: 8px 28px;
   white-space: nowrap;
   -webkit-transition: all, 0.1s, ease-in;
   -moz-transition: all, 0.1s, ease-in;
@@ -20,8 +20,12 @@ dl dd.multi-item-list .nypl-basic-table a,
   margin-top: 0;
 
   &:hover {
-    border-color: #fff;
-    background-color: #d0343a;
-    color: #fff;
+    background-color: #fff;
+    color: $results-list-item-button;
+  }
+
+  &:focus {
+    background-color: #fff;
+    color: $results-list-item-button;
   }
 }

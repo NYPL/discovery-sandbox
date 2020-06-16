@@ -1,0 +1,159 @@
+.drbb-container {
+  border: 1px solid #d7d4d0;
+  border-radius: 8px;
+  float: right;
+  margin: auto;
+  margin-left: 15px;
+  padding: 2.5%;
+  width: 25%;
+
+  .loadingLayer-texts-loadingWord {
+    margin-bottom: unset;
+    text-transform: initial;
+  }
+
+  .loadingDots {
+    margin-top: unset;
+  }
+}
+
+.drbb-main-header {
+  font-size: 1.4375rem;
+  margin: 0 0 10px;
+}
+
+.drbb-main-header,
+.drbb-description {
+  padding: 0 5px;
+}
+
+.drbb-description {
+  font-size: 12px;
+  display: block;
+  font-weight: 450;
+
+  a {
+    display: inline-block;
+    padding: 0;
+  }
+}
+
+.drbb-result {
+  background-color: #f9f8f7;
+  border-radius: 6px;
+  font-size: 14px;
+  margin: 20px 0;
+  padding: 5% 7%;
+}
+
+.drbb-list {
+  list-style: none;
+}
+
+.drbb-loading-layer {
+  height: 135px;
+  padding-top: 35px;
+  text-align: center;
+}
+
+.drbb-result-author {
+  display: inline;
+}
+
+.drbb-result-title {
+  display: block;
+}
+
+a.drbb-read-online {
+  background-color: $results-list-item-button;
+  border: 0.08333rem solid $results-list-item-button;
+  border-radius: 0.13333rem;
+  color: #fff;
+  cursor: pointer;
+  display: inline-block;
+  font-size: 12px;
+  font-weight: normal;
+  letter-spacing: 0.06rem;
+  text-decoration: none;
+  padding: 4px 13px;
+  margin-right: 6px;
+
+  &:hover {
+    background-color: #fff;
+    color: $results-list-item-button;
+  }
+
+  &:focus {
+    color: $results-list-item-button;
+    background-color: #fff;
+  }
+}
+
+a.drbb-download-pdf {
+  color: #000000;
+  fill: currentColor;
+  padding: 2% 0;
+  font-size: 0.8rem;
+  font-weight: normal;
+  letter-spacing: 0.06rem;
+
+  svg {
+    padding-right: 5px;
+    margin-bottom: -3px;
+  }
+}
+
+.drbb-read-online, .drbb-download-pdf {
+  display: inline-block;
+  font-size: .8rem;
+  margin: 2% 0;
+}
+
+.drbb-item-links {
+  height: 33px;
+}
+
+.drbb-promo {
+  width: 100%;
+  text-align: center;
+  height: 250px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f9f8f7;
+  border-radius: 4px;
+}
+
+.drbb-authorship {
+  margin: 7px 0;
+}
+
+.nypl-full-width-wrapper.drbb-integration {
+  margin: unset;
+  max-width: unset;
+  padding: 0 4%;
+}
+
+.nypl-results-list.drbb-integration {
+  display: inline-block;
+  width: 60%;
+  padding-right: 10%;
+  box-sizing: border-box;
+
+  h3 {
+    margin-top: 0;
+    font-size: 20px;
+  }
+}
+
+.nypl-select-field-results {
+  margin: 39px 0 32px 0;
+}
+
+.nypl-results-sorting-controls {
+  margin: 0;
+}
+
+.nypl-results-summary h2 {
+  font-size: 22px;
+}

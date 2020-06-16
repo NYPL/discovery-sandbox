@@ -11,6 +11,7 @@ import Store from '@Store';
 import LibraryItem from '../../utils/item';
 import { trackDiscovery } from '../../utils/utils';
 import ItemTable from '../Item/ItemTable';
+// import DrbbContainer from '../Drbb/DrbbContainer';
 import appConfig from '../../data/appConfig';
 
 class ResultsList extends React.Component {
@@ -107,7 +108,7 @@ class ResultsList extends React.Component {
     return (
       <ul
         id="nypl-results-list"
-        className={`nypl-results-list ${Store.getState().isLoading ? 'hide-results-list ' : ''}`}
+        className={`nypl-results-list ${Store.getState().isLoading ? 'hide-results-list ' : 'drbb-integration'}`}
       >
         {resultsElm}
       </ul>

@@ -3,13 +3,13 @@ import PropTypes from 'prop-types';
 
 import ResultList from '../ResultsList/ResultsList';
 import Pagination from '../Pagination/Pagination';
+import DrbbContainer from '../Drbb/DrbbContainer';
 import {
   basicQuery,
   ajaxCall,
   trackDiscovery,
 } from '../../utils/utils';
 import Actions from '../../actions/Actions';
-import Store from '@Store'
 import appConfig from '../../data/appConfig';
 
 // Renders the ResultsList containing the search results and the Pagination component
@@ -38,6 +38,8 @@ const SearchResultsContainer = (props) => {
     });
   };
 
+  const includeDrbb = true;
+
   return (
     <React.Fragment>
       <div className="nypl-row">
@@ -53,6 +55,7 @@ const SearchResultsContainer = (props) => {
               searchKeywords={searchKeywords}
             />
           }
+          {includeDrbb ? <DrbbContainer /> : null}
           {
             !!(totalResults && totalResults !== 0) &&
             <Pagination

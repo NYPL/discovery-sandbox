@@ -1,0 +1,129 @@
+import React from 'react';
+import PropTypes from 'prop-types';
+import { Link } from 'react-router';
+
+import DownloadIcon from '../../../client/icons/Download';
+
+import appConfig from '../../data/appConfig';
+import {
+  authorQuery,
+  formatUrl,
+} from '../../utils/researchNowUtils';
+
+const DrbbResult = (props) => {
+  const { work } = props;
+  if (!work || !work.uuid || !work.title) return null;
+
+  const {
+    agents,
+    title,
+    editions,
+  } = work;
+
+  const {
+    environment,
+  } = appConfig;
+
+  const drbbFrontEnd = appConfig.drbbFrontEnd[environment];
+
+  const authorship = () => {
+    const authors = agents.filter(agent => agent.roles.includes('author'));
+
+    if (!authors) return null;
+    const authorLinks = authors.map((agent, i) => [
+      (i > 0 ? ', ' : null),
+      <Link
+        to={{
+          pathname: `${drbbFrontEnd}/search`,
+          query: authorQuery(agent),
+        }}
+        className="drbb-result-author"
+        key={agent.viaf ? `author-${agent.viaf}` : `author-${agent.name}`}
+        target="_blank"
+      >
+        {agent.name}
+      </Link>]);
+
+    return (
+      <div className='drbb-authorship'>
+        By {authorLinks}
+      </div>
+    );
+  };
+
+  const selectEdition = () => (editions.find(edition => (
+    edition && edition.items && edition.items[0].links && edition.items[0].links.length
+  )));
+
+  const edition = selectEdition();
+
+  const readOnlineLink = () => {
+    const editionWithTitle = edition;
+    editionWithTitle.title = edition.title || work.title;
+
+    let selectedLink;
+    const selectedItem = edition.items.find(item => item.links.find((link) => {
+      selectedLink = link;
+      return (!link.local && !link.download) || (link.local && link.download);
+    }));
+
+    if (!selectedItem || !selectedLink || !selectedLink.url) return null;
+
+    return (
+      <Link
+        target="_blank"
+        to={{
+          pathname: `${drbbFrontEnd}/read-online`,
+          search: `?url=${formatUrl(selectedLink.url)}#/edition?editionId=${edition.id}`,
+        }}
+        className="drbb-read-online"
+      >
+        Read Online
+      </Link>
+    );
+  };
+
+  const downloadLinkElement = () => {
+    let downloadLink;
+    edition.items.find(item => item.links.find((link) => {
+      downloadLink = link;
+      return link.download;
+    }));
+
+    if (!downloadLink || !downloadLink.download) return null;
+
+    const mediaType = downloadLink.media_type.replace(/(application|text)\/|\+zip/gi, '').toUpperCase();
+
+    return (
+      <Link
+        target="_blank"
+        to={formatUrl(downloadLink.url)}
+        className="drbb-download-pdf"
+      >
+        <DownloadIcon />
+        Download{mediaType ? ` ${mediaType}` : ''}
+      </Link>
+    );
+  };
+
+  return (
+    <li className="drbb-result">
+      <Link
+        target="_blank"
+        to={`${drbbFrontEnd}/work?recordType=editions&workId=${work.uuid}`}
+        className="drbb-result-title"
+      >
+        {title}
+      </Link>
+      {agents && agents.length ? authorship() : null}
+      { readOnlineLink() }
+      { downloadLinkElement() }
+    </li>
+  );
+};
+
+DrbbResult.propTypes = {
+  work: PropTypes.object,
+};
+
+export default DrbbResult;
