@@ -33,7 +33,7 @@
   font-weight: 450;
 
   a {
-    display: inline-block;
+    display: contents;
     padding: 0;
   }
 }
@@ -135,10 +135,10 @@ a.drbb-download-pdf {
 }
 
 .nypl-results-list.drbb-integration {
-  display: inline-block;
-  width: 60%;
-  padding-right: 10%;
   box-sizing: border-box;
+  display: inline-block;
+  padding-right: 10%;
+  width: 65%;
 
   h3 {
     margin-top: 0;
@@ -156,4 +156,16 @@ a.drbb-download-pdf {
 
 .nypl-results-summary h2 {
   font-size: 22px;
+}
+
+@media(max-width: 800px) {
+  .nypl-results-list.drbb-integration {
+    width: 100%;
+    padding-right: 0;
+  }
+
+  .drbb-container {
+    width: unset;
+    margin-left: 0;
+  }
 }
