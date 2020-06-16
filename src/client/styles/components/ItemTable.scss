@@ -23,4 +23,9 @@ dl dd.multi-item-list .nypl-basic-table a,
     background-color: #fff;
     color: $results-list-item-button;
   }
+
+  &:focus {
+    background-color: #fff;
+    color: $results-list-item-button;
+  }
 }

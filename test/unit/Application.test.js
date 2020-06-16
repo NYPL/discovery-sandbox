@@ -2,7 +2,7 @@
 import React from 'react';
 import { expect } from 'chai';
 import { shallow } from 'enzyme';
-import { stub, spy } from 'sinon';
+import { stub } from 'sinon';
 
 import Application from '@Application';
 import { Header, navConfig } from '@nypl/dgx-header-component';

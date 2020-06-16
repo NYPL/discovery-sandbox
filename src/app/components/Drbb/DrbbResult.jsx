@@ -12,6 +12,8 @@ import {
 
 const DrbbResult = (props) => {
   const { work } = props;
+  if (!work || !work.uuid || !work.title) return null;
+
   const {
     agents,
     title,
@@ -25,7 +27,10 @@ const DrbbResult = (props) => {
   const drbbFrontEnd = appConfig.drbbFrontEnd[environment];
 
   const authorship = () => {
-    const authors = agents.map((agent, i) => [
+    const authors = agents.filter(agent => agent.roles.includes('author'));
+
+    if (!authors) return null;
+    const authorLinks = authors.map((agent, i) => [
       (i > 0 ? ', ' : null),
       <Link
         to={{
@@ -40,14 +45,14 @@ const DrbbResult = (props) => {
       </Link>]);
 
     return (
-      <div>
-        By {authors}
+      <div className='drbb-authorship'>
+        By {authorLinks}
       </div>
     );
   };
 
   const selectEdition = () => (editions.find(edition => (
-    edition && edition.items[0].links && edition.items[0].links.length
+    edition && edition.items && edition.items[0].links && edition.items[0].links.length
   )));
 
   const edition = selectEdition();
@@ -102,7 +107,7 @@ const DrbbResult = (props) => {
   };
 
   return (
-    <li className="drbb-item">
+    <li className="drbb-result">
       <Link
         target="_blank"
         to={`${drbbFrontEnd}/work?recordType=editions&workId=${work.uuid}`}

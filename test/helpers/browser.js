@@ -10,6 +10,7 @@ const jsdom = require('jsdom').jsdom;
 const exposedProperties = ['window', 'navigator', 'document'];
 
 global.document = jsdom('');
+const { document } = global;
 global.window = document.defaultView;
 Object.keys(document.defaultView).forEach((property) => {
   if (typeof global[property] === 'undefined') {
@@ -21,5 +22,3 @@ Object.keys(document.defaultView).forEach((property) => {
 global.navigator = {
   userAgent: 'node.js',
 };
-
-documentRef = document;
