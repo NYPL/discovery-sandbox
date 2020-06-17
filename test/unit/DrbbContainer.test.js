@@ -76,7 +76,6 @@ describe('DrbbContainer', () => {
     });
   });
 
-  const promoStub = stub(DrbbContainer.prototype, 'promo');
   describe('no ResearchNow results', () => {
     before(() => {
       context.router.location.search = '?q=noresults';
@@ -91,7 +90,7 @@ describe('DrbbContainer', () => {
       mock.restore();
     });
     it('should display the drbb promo', () => {
-      expect(component.find('.drbb-promo')).to.have.length(1);
+      expect(component.find('img')).to.have.length(1);
     });
   });
 
@@ -110,9 +109,7 @@ describe('DrbbContainer', () => {
     });
 
     it('should display the drbb promo', () => {
-      expect(component.find('.drbb-promo')).to.have.length(1);
+      expect(component.find('img')).to.have.length(1);
     });
   });
-
-  after(() => { promoStub.restore(); });
 });
