@@ -8,6 +8,7 @@ import appConfig from '../../data/appConfig';
 import {
   authorQuery,
   formatUrl,
+  generateStreamedReaderUrl,
 } from '../../utils/researchNowUtils';
 
 const DrbbResult = (props) => {
@@ -25,6 +26,7 @@ const DrbbResult = (props) => {
   } = appConfig;
 
   const drbbFrontEnd = appConfig.drbbFrontEnd[environment];
+  const eReader = appConfig.drbbEreader[environment];
 
   const authorship = () => {
     const authors = agents.filter(agent => agent.roles.includes('author'));
@@ -45,7 +47,7 @@ const DrbbResult = (props) => {
       </Link>]);
 
     return (
-      <div className='drbb-authorship'>
+      <div className="drbb-authorship">
         By {authorLinks}
       </div>
     );
@@ -57,7 +59,7 @@ const DrbbResult = (props) => {
 
   const edition = selectEdition();
 
-  const readOnlineLink = () => {
+  const readOnlineLinkElement = () => {
     const editionWithTitle = edition;
     editionWithTitle.title = edition.title || work.title;
 
@@ -69,12 +71,15 @@ const DrbbResult = (props) => {
 
     if (!selectedItem || !selectedLink || !selectedLink.url) return null;
 
+    const eReaderUrl = selectedLink.local ?
+      generateStreamedReaderUrl(selectedLink.url, eReader) : formatUrl(selectedLink.url);
+
     return (
       <Link
         target="_blank"
         to={{
           pathname: `${drbbFrontEnd}/read-online`,
-          search: `?url=${formatUrl(selectedLink.url)}#/edition?editionId=${edition.id}`,
+          search: `?url=${eReaderUrl}`,
         }}
         className="drbb-read-online"
       >
@@ -116,7 +121,7 @@ const DrbbResult = (props) => {
         {title}
       </Link>
       {agents && agents.length ? authorship() : null}
-      { readOnlineLink() }
+      { readOnlineLinkElement() }
       { downloadLinkElement() }
     </li>
   );
