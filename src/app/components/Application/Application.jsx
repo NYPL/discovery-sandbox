@@ -17,6 +17,7 @@ import {
 } from '../../utils/utils';
 import Actions from '../../actions/Actions';
 import appConfig from '../../data/appConfig';
+import { breakpoints } from '../../data/constants';
 import DataLoader from '../DataLoader/DataLoader';
 
 class Application extends React.Component {
@@ -84,15 +85,15 @@ class Application extends React.Component {
 
   onWindowResize() {
     const { media } = this.state;
-    const style = {
-      xtrasmallBreakPoint: 483,
-      tablet: 870,
-    };
     const { innerWidth } = window;
+    const {
+      xtrasmall,
+      tablet,
+    } = breakpoints;
 
-    if (innerWidth <= style.xtrasmallBreakPoint) {
+    if (innerWidth <= xtrasmall) {
       if (media !== 'mobile') this.setState({ media: 'mobile' });
-    } else if (innerWidth <= style.tablet) {
+    } else if (innerWidth <= tablet) {
       if (media !== 'tablet') this.setState({ media: 'tablet' });
     } else {
       if (media !== 'desktop') this.setState({ media: 'desktop' });

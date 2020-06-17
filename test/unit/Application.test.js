@@ -7,6 +7,7 @@ import { stub } from 'sinon';
 import Application from '@Application';
 import { Header, navConfig } from '@nypl/dgx-header-component';
 import { mockRouterContext } from '../helpers/routing';
+import { breakpoints } from '../../src/app/data/constants';
 
 const resizeWindow = (x) => {
   window.innerWidth = x;
@@ -54,18 +55,23 @@ describe('Application', () => {
   });
 
   describe('should set media type in context', () => {
-    it('should set media as "desktop" for screenwidths above 871px', () => {
-      resizeWindow('871');
+    const {
+      tablet,
+      xtrasmall,
+    } = breakpoints;
+
+    it(`should set media as "desktop" for screenwidths above ${tablet}px`, () => {
+      resizeWindow(tablet + 1);
       expect(component.state().media).to.eql('desktop');
     });
-    it('should set media as "tablet" for screenwidths 484-870px', () => {
-      resizeWindow('484');
+    it(`should set media as "tablet" for screenwidths ${xtrasmall + 1}-${tablet}px`, () => {
+      resizeWindow(xtrasmall + 1);
       expect(component.state().media).to.eql('tablet');
-      resizeWindow('870');
+      resizeWindow(tablet);
       expect(component.state().media).to.eql('tablet');
     });
-    it('should set media as "mobile" for screenwidths below 484px', () => {
-      resizeWindow('483');
+    it(`should set media as "mobile" for screenwidths below ${xtrasmall}`, () => {
+      resizeWindow(xtrasmall);
       expect(component.state().media).to.eql('mobile');
     });
   });
