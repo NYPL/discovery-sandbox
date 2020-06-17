@@ -91,15 +91,15 @@ const authorQuery = author => ({
   showQueries: JSON.stringify([{ query: author.name, field: 'author' }]),
 });
 
-const generateStreamedReaderUrl = (url, eReaderUrl, editionId) => {
-  const base64BookUrl = Buffer.from(url).toString('base64');
+const formatUrl = link => (link.startsWith('http') ? link : `https://${link}`);
+
+const generateStreamedReaderUrl = (url, eReaderUrl) => {
+  const base64BookUrl = Buffer.from(formatUrl(url)).toString('base64');
   const encodedBookUrl = encodeURIComponent(`${base64BookUrl}`);
-  let combined = `${eReaderUrl}/readerNYPL/?url=${eReaderUrl}/pub/${encodedBookUrl}/manifest.json`;
-  combined += `#/edition?editionId=${editionId}`;
-  return combined;
+
+  return encodeURI(`${eReaderUrl}/readerNYPL/?url=${eReaderUrl}/pub/${encodedBookUrl}/manifest.json`);
 };
 
-const formatUrl = link => (link.startsWith('http') ? link : `https://${link}`);
 
 const getQueryString = (initialQuery, cb = input => input) => {
   const query = cb(initialQuery);
