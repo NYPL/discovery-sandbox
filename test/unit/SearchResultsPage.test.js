@@ -32,9 +32,9 @@ const childContextTypes = {
 };
 
 describe('SearchResultsPage', () => {
-  let component;
-
   describe('Component properties', () => {
+    let component;
+
     before(() => {
       // Added this empty prop so that the `componentWillMount` method will be skipped.
       // That lifecycle hook is tested later on.
@@ -90,6 +90,8 @@ describe('SearchResultsPage', () => {
   });
 
   describe('With passed search results prop', () => {
+    let component;
+
     before(() => {
       component = mount(
         <SearchResults
@@ -128,6 +130,8 @@ describe('SearchResultsPage', () => {
   });
 
   describe('DOM structure', () => {
+    let component;
+
     before(() => {
       component = mount(
         <SearchResults
@@ -160,6 +164,8 @@ describe('SearchResultsPage', () => {
   });
 
   describe('with DRBB integration', () => {
+    let component;
+
     before(() => {
       context.media = 'desktop';
       component = mount(
@@ -168,8 +174,7 @@ describe('SearchResultsPage', () => {
           searchResults={searchResults}
           location={{ search: '' }}
         />,
-        { context }
-      );
+        { context });
     });
 
     it('should render a <DrbbContainer /> component', () => {
