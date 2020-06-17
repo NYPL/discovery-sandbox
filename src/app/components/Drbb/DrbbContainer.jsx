@@ -43,15 +43,6 @@ class DrbbContainer extends React.Component {
       });
   }
 
-  promo() {
-    return (
-      <img
-        alt="digital-research-book"
-        src={require('../../../client/assets/drbb_promo.png').default}
-      />
-    );
-  }
-
   content() {
     const {
       works,
@@ -84,7 +75,7 @@ class DrbbContainer extends React.Component {
           { works.map(work => <DrbbResult key={work.id} work={work} />) }
         </ul>,
         <Link
-          className="drbb-description"
+          className="drbb-description drbb-frontend-link"
           to={{
             pathname: `${appConfig.drbbFrontEnd[appConfig.environment]}/search?`,
             search: researchNowQueryString,
@@ -106,7 +97,10 @@ class DrbbContainer extends React.Component {
         key="drbb-link"
       >
         <div className="drbb-promo">
-          { this.promo() }
+          <img
+            alt="digital-research-book"
+            src={require('../../../client/assets/drbb_promo.png').default}
+          />
         </div>
         See results from Digital Research Books Beta
       </Link>
