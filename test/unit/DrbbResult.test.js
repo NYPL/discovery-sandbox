@@ -26,6 +26,20 @@ describe('DrbbResult', () => {
     it('should have links to authors', () => {
       expect(component.find('.drbb-result-author')).to.have.length(authors.length);
     });
+
+    describe('edition with no items', () => {
+      before(() => {
+        const workWithItemsNull = workData.data;
+        let { editions } = workWithItemsNull;
+        editions = [editions[0]];
+        editions[0].items = null;
+
+        component = shallow(<DrbbResult work={workWithItemsNull} />);
+      });
+      it('should still render', () => {
+        expect(component.find('li')).to.have.length(1);
+      });
+    });
   });
 
   describe('without work prop', () => {
@@ -35,6 +49,6 @@ describe('DrbbResult', () => {
 
     it('should return `null`', () => {
       expect(component.type()).to.be.null;
-    })
+    });
   });
 });
