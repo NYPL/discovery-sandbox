@@ -14,7 +14,18 @@ import appConfig from '../../data/appConfig';
 
 // Renders the ResultsList containing the search results and the Pagination component
 const SearchResultsContainer = (props, context) => {
-  const includeDrbb = true;
+  const {
+    searchResults,
+    searchKeywords,
+    page,
+  } = props;
+  const {
+    media,
+    includeDrbb,
+  } = context;
+
+  const totalResults = searchResults ? searchResults.totalResults : undefined;
+  const results = searchResults ? searchResults.itemListElement : [];
   const createAPIQuery = basicQuery(props);
 
   const updatePage = (nextPage, pageType) => {
@@ -31,16 +42,6 @@ const SearchResultsContainer = (props, context) => {
       }, 500);
     });
   };
-
-  const {
-    searchResults,
-    searchKeywords,
-    page,
-  } = props;
-  const { media } = context;
-
-  const totalResults = searchResults ? searchResults.totalResults : undefined;
-  const results = searchResults ? searchResults.itemListElement : [];
 
   return (
     <React.Fragment>
@@ -89,6 +90,7 @@ SearchResultsContainer.defaultProps = {
 SearchResultsContainer.contextTypes = {
   router: PropTypes.object,
   media: PropTypes.string,
+  includeDrbb: PropTypes.bool,
 };
 
 export default SearchResultsContainer;

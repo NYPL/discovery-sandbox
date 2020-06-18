@@ -359,6 +359,7 @@ class FilterPopup extends React.Component {
       dateAfter: selectedFilters.dateAfter,
       dateBefore: selectedFilters.dateBefore,
     };
+    const { includeDrbb } = this.context;
 
     const applyButton = (position = '') => (
       <button
@@ -469,7 +470,7 @@ class FilterPopup extends React.Component {
       dateBefore: dateBeforeFilterValue,
     };
     const errorMessageBlock = (
-      <div className="nypl-full-width-wrapper drbb-integration">
+      <div className={`nypl-full-width-wrapper${includeDrbb ? ' drbb-integration' : ''}`}>
         <div
           className="nypl-form-error filter-error-box"
           ref={this.nyplFilterError}
@@ -488,7 +489,7 @@ class FilterPopup extends React.Component {
 
     return (
       <div className="filter-container">
-        <div className="nypl-full-width-wrapper drbb-integration">
+        <div className={`nypl-full-width-wrapper${includeDrbb ? ' drbb-integration' : ''}`}>
           <div className="nypl-row">
             <div className="nypl-column-full">
               <div className="filter-text">
@@ -503,8 +504,8 @@ class FilterPopup extends React.Component {
           showForm && (
             <div
               className={
-                'nypl-basic-modal-container nypl-popup-container popup-container ' +
-                `${showForm ? 'active' : ''}`
+                'nypl-basic-modal-container nypl-popup-container popup-container' +
+                `${showForm ? ' active' : ''}`
               }
               id={js ? '' : 'popup-no-js'}
               role="dialog"
@@ -528,7 +529,7 @@ class FilterPopup extends React.Component {
                   onSubmit={() => this.submitForm('Form submission')}
                 >
                   <div className="form-full-width">
-                    <div className="nypl-full-width-wrapper drbb-integration">
+                    <div className={`nypl-full-width-wrapper${includeDrbb ? ' drbb-integration' : ''}`}>
                       <div className="nypl-row">
                         <div className="nypl-column-full">
                           <ul
@@ -545,7 +546,7 @@ class FilterPopup extends React.Component {
                   </div>
 
                   <fieldset className="nypl-fieldset">
-                    <div className="nypl-full-width-wrapper drbb-integration">
+                    <div className={`nypl-full-width-wrapper${includeDrbb ? ' drbb-integration' : ''}`}>
                       <div className="nypl-row">
                         <div className="nypl-column-full">
                           <FieldsetList
@@ -583,7 +584,7 @@ class FilterPopup extends React.Component {
                     </div>
 
                     <div className="bottom-action-row form-full-width">
-                      <div className="nypl-full-width-wrapper drbb-integration">
+                      <div className={`nypl-full-width-wrapper${includeDrbb ? ' drbb-integration' : ''}`}>
                         <div className="nypl-row">
                           <div className="nypl-column-full">
                             <ul
@@ -629,6 +630,7 @@ FilterPopup.defaultProps = {
 
 FilterPopup.contextTypes = {
   router: PropTypes.object,
+  includeDrbb: PropTypes.bool,
 };
 
 export default FilterPopup;

@@ -231,4 +231,54 @@ describe('FilterPopup', () => {
       expect(component.find('.nypl-form-error').length).to.equal(1);
     });
   });
+
+  describe('DRBB integration', () => {
+    let component;
+    const context = {};
+    const selectedFilters = {
+      dateAfter: '2000',
+      language: [
+        {
+          count: 4,
+          label: 'German',
+          selected: true,
+          value: 'lang:ger',
+        },
+        {
+          count: 8,
+          label: 'Spainish',
+          selected: true,
+          value: 'lang:sp',
+        },
+      ],
+      materialType: {
+        count: 5,
+        label: 'Text',
+        selected: true,
+        value: 'resourcetypes:txt',
+      },
+    };
+
+    describe('without integration', () => {
+      before(() => {
+        context.includeDrbb = false;
+        component = mount(<FilterPopup selectedFilters={selectedFilters} />, context);
+      });
+
+      it('should not have any components with .drbb-integration class', () => {
+        expect(component.find('.drbb-integration')).to.have.length(0);
+      });
+    });
+
+    describe('with integration', () => {
+      before(() => {
+        context.includeDrbb = true;
+        component = mount(<FilterPopup selectedFilters={selectedFilters} />, { context });
+      });
+
+      it('should have components with .drbb-integration class', () => {
+        expect(component.find('.drbb-integration')).to.have.length(1);
+      });
+    });
+  });
 });

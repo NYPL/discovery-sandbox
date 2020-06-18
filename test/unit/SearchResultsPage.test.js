@@ -29,6 +29,7 @@ const context = mockRouterContext();
 const childContextTypes = {
   router: PropTypes.object,
   media: PropTypes.string,
+  includeDrbb: PropTypes.bool,
 };
 
 describe('SearchResultsPage', () => {
@@ -163,11 +164,31 @@ describe('SearchResultsPage', () => {
     });
   });
 
+  describe('without DRBB integration', () => {
+    let component;
+
+    before(() => {
+      context.includeDrbb = false;
+      component = mount(
+        <SearchResults
+          searchKeywords="locofocos"
+          searchResults={searchResults}
+          location={{ search: '' }}
+        />,
+        { context, childContextTypes });
+    });
+
+    it('should not have any components with .drbb-integration class', () => {
+      expect(component.find('.drbb-integration')).to.have.length(0);
+    });
+  });
+
   describe('with DRBB integration', () => {
     let component;
 
     before(() => {
       context.media = 'desktop';
+      context.includeDrbb = true;
       component = mount(
         <SearchResultsContainer
           searchKeywords="locofocos"
@@ -190,6 +211,7 @@ describe('SearchResultsPage', () => {
     describe('tablet/mobile view', () => {
       before(() => {
         context.media = 'tablet';
+        context.includeDrbb = true;
         component = mount(
           <SearchResultsContainer
             searchKeywords="locofocos"
