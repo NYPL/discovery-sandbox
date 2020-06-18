@@ -1,5 +1,6 @@
 import Actions from '@Actions';
-import { ajaxCall } from '@utils';
+import { ajaxCall, destructureFilters } from '@utils';
+import { pick as _pick } from 'underscore';
 import appConfig from '@appConfig';
 import Store from '@Store';
 
@@ -37,6 +38,17 @@ const routesGenerator = location => ({
       () => Actions.updatePage(location.query.page || 1),
       () => Actions.updateSearchKeywords(location.query.q),
       data => Actions.updateFilters(data.filters),
+      (data) => {
+        if (data.filters && data.searchResults) {
+          const urlFilters = _pick(location.query, (value, key) => {
+            if (key.indexOf('filter') !== -1) {
+              return value;
+            }
+            return null;
+          });
+          Actions.updateSelectedFilters(destructureFilters(urlFilters, data.filters));
+        }
+      },
       () => {
         const {
           sort,
