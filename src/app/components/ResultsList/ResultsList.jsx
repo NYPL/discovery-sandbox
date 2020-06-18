@@ -11,7 +11,6 @@ import Store from '@Store';
 import LibraryItem from '../../utils/item';
 import { trackDiscovery } from '../../utils/utils';
 import ItemTable from '../Item/ItemTable';
-// import DrbbContainer from '../Drbb/DrbbContainer';
 import appConfig from '../../data/appConfig';
 
 class ResultsList extends React.Component {

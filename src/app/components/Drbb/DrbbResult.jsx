@@ -55,16 +55,19 @@ const DrbbResult = (props) => {
 
   const selectEdition = () => (editions.find(edition => (
     edition && edition.items && edition.items[0].links && edition.items[0].links.length
-  )));
+  ))) || editions[0];
 
   const edition = selectEdition();
+  const { items } = edition;
 
   const readOnlineLinkElement = () => {
+    if (!items) return null;
+
     const editionWithTitle = edition;
     editionWithTitle.title = edition.title || work.title;
 
     let selectedLink;
-    const selectedItem = edition.items.find(item => item.links.find((link) => {
+    const selectedItem = items.find(item => item.links.find((link) => {
       selectedLink = link;
       return (!link.local && !link.download) || (link.local && link.download);
     }));
@@ -89,6 +92,8 @@ const DrbbResult = (props) => {
   };
 
   const downloadLinkElement = () => {
+    if (!items) return null;
+
     let downloadLink;
     edition.items.find(item => item.links.find((link) => {
       downloadLink = link;
