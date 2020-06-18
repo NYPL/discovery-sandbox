@@ -34,7 +34,7 @@ class BibsList extends React.Component {
   componentDidMount() {
     const stringifiedSortParams = `sort=${this.sort}&sort_direction=${this.sortDirection}&per_page=${this.perPage}&shep_bib_count=${this.props.shepBibCount}&shep_uuid=${this.props.uuid}`;
 
-    this.fetchBibs(stringifiedSortParams, () => console.log(this.state));
+    this.fetchBibs(stringifiedSortParams);
   }
 
   fetchBibs(stringifiedSortParams, cb = () => {}) {
