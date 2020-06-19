@@ -152,7 +152,7 @@ SearchResults.propTypes = {
   filters: PropTypes.object,
   field: PropTypes.string,
   sortBy: PropTypes.string,
-  drbbResults: PropTypes.string,
+  drbbResults: PropTypes.object,
 };
 
 SearchResults.defaultProps = {
