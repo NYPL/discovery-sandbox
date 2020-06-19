@@ -75,22 +75,37 @@ const routesGenerator = location => ({
   },
 });
 
-const reducePathExpressions = location => (acc, instruction) => {
+// const reducePathExpressions = location => (acc, instruction) => {
+//   const {
+//     pathname,
+//     search,
+//   } = location;
+//
+//   const {
+//     matchData,
+//     pathType,
+//   } = acc;
+//
+//   const newMatchData = (pathname + search).match(instruction.expression);
+//   return {
+//     matchData: matchData || newMatchData,
+//     pathType: pathType || (newMatchData ? instruction.pathType : null),
+//   };
+// };
+
+const matchingPathData = (location) => {
   const {
     pathname,
     search,
   } = location;
 
-  const {
-    matchData,
-    pathType,
-  } = acc;
-
-  const newMatchData = (pathname + search).match(instruction.expression);
-  return {
-    matchData: matchData || newMatchData,
-    pathType: pathType || (newMatchData ? instruction.pathType : null),
-  };
+  return pathInstructions
+    .map(instruction => ({
+      matchData: (pathname + search).match(instruction.expression),
+      pathType: instruction.pathType,
+    }))
+    .find(pair => pair.matchData)
+    || { matchData: null, pathType: null };
 };
 
 function loadDataForRoutes(location, req, routeMethods) {
@@ -98,8 +113,7 @@ function loadDataForRoutes(location, req, routeMethods) {
   const {
     matchData,
     pathType,
-  } = pathInstructions
-    .reduce(reducePathExpressions(location), { matchData: null, pathType: null });
+  } = matchingPathData(location);
 
   if (routes[pathType]) {
     const {
