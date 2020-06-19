@@ -40,7 +40,12 @@ const routesGenerator = location => ({
       data => Actions.updateFilters(data.filters),
       (data) => {
         if (data.filters && data.searchResults) {
-          const urlFilters = _pick(location.query, (value, key) => {
+          const unescapedQuery = Object.assign(
+            {},
+            ...Object.keys(location.query)
+              .map(k => ({ [decodeURIComponent(k)]: decodeURIComponent(location.query[k]) })),
+          );
+          const urlFilters = _pick(unescapedQuery, (value, key) => {
             if (key.indexOf('filter') !== -1) {
               return value;
             }
