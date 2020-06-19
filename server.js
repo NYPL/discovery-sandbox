@@ -16,7 +16,7 @@ import alt from './src/app/alt';
 import appConfig from './src/app/data/appConfig';
 import webpackConfig from './webpack.config';
 import apiRoutes from './src/server/ApiRoutes/ApiRoutes';
-import RouteMethods from './src/server/ApiRoutes/RouteMethods';
+import routeMethods from './src/server/ApiRoutes/RouteMethods';
 import routes from './src/app/routes/routes';
 import AppConfigStore from './src/app/stores/AppConfigStore';
 
@@ -89,7 +89,7 @@ app.get('/*', (req, res, next) => {
     search: '',
   };
 
-  loadDataForRoutes(location, req, RouteMethods).then(() => next());
+  loadDataForRoutes(location, req, routeMethods).then(() => next());
 });
 
 app.get('/*', (req, res) => {

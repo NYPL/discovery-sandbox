@@ -93,7 +93,7 @@ const reducePathExpressions = location => (acc, instruction) => {
   };
 };
 
-function loadDataForRoutes(location, req, RouteMethods) {
+function loadDataForRoutes(location, req, routeMethods) {
   const routes = routesGenerator(location);
   const {
     matchData,
@@ -127,7 +127,7 @@ function loadDataForRoutes(location, req, RouteMethods) {
             resolve({ data });
           },
         };
-        RouteMethods[pathType](req, res);
+        routeMethods[pathType](req, res);
       })
         .then(successCb)
         .catch(errorCb);

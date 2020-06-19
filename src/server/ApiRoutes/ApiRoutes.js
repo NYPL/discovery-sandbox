@@ -8,7 +8,7 @@ import appConfig from '../../app/data/appConfig';
 import SubjectHeading from './SubjectHeading';
 import SubjectHeadings from './SubjectHeadings';
 import { routePaths } from '../../app/utils/dataLoaderUtil';
-import RouteMethods from './RouteMethods';
+import routeMethods from './RouteMethods';
 
 const router = express.Router();
 
@@ -35,7 +35,7 @@ router
 Object.keys(routePaths).forEach((routeName) => {
   router
     .route(routePaths[routeName])
-    .get(RouteMethods[routeName]);
+    .get(routeMethods[routeName]);
 });
 
 router
