@@ -4,7 +4,7 @@ import Search from './Search';
 import Hold from './Hold';
 
 export default {
-  bib: Bib.bibSearchAjax,
+  bib: Bib.bibSearch,
   search: Search.searchAjax,
-  holdRequest: Hold.newHoldRequestAjax,
+  holdRequest: Hold.newHoldRequest,
 };

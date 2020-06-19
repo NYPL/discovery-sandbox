@@ -252,7 +252,7 @@ function confirmRequestServer(req, res, next) {
 }
 
 /**
- * newHoldRequestAjax(req, res, next)
+ * newHoldRequest(req, res, next)
  * The function to return the bib and item data with its delivery locations to the
  * hold request route.
  *
@@ -260,7 +260,7 @@ function confirmRequestServer(req, res, next) {
  * @param {res}
  * @return {function}
  */
-function newHoldRequestAjax(req, res) {
+function newHoldRequest(req, res) {
   const bibId = req.params.bibId || '';
   const patronId = req.patronTokenResponse.decodedPatron ?
     req.patronTokenResponse.decodedPatron.sub : '';
@@ -284,7 +284,7 @@ function newHoldRequestAjax(req, res) {
         },
         (deliveryLocationsError) => {
           logger.error(
-            `Error retrieving serverside delivery locations in newHoldRequestAjax, bibId: ${bibId}`,
+            `Error retrieving serverside delivery locations in newHoldRequest, bibId: ${bibId}`,
             deliveryLocationsError,
           );
 
@@ -531,7 +531,7 @@ function eddServer(req, res) {
 export default {
   getDeliveryLocations,
   confirmRequestServer,
-  newHoldRequestAjax,
+  newHoldRequest,
   newHoldRequestServerEdd,
   createHoldRequestServer,
   createHoldRequestAjax,

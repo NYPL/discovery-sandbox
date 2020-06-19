@@ -46,10 +46,8 @@ function fetchBib(bibId, cb, errorcb) {
     }); /* end axios call */
 }
 
-function bibSearchAjax(req, res) {
+function bibSearch(req, res) {
   const bibId = req.query.bibId || '';
-
-  console.log("bibSearchAjax");
 
   fetchBib(
     bibId,
@@ -59,7 +57,7 @@ function bibSearchAjax(req, res) {
 }
 
 export default {
-  bibSearchAjax,
+  bibSearch,
   fetchBib,
   nyplApiClientCall,
 };
