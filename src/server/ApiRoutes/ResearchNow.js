@@ -24,11 +24,11 @@ const searchAjax = (req, res) => {
         return res.json(data);
       }
 
-      return res.json({
+      return {
         works: data.works,
         totalWorks: data.totalWorks,
         researchNowQueryString,
-      });
+      };
     })
     .catch(console.error);
 };

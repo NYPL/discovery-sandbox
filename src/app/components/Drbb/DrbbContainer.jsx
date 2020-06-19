@@ -5,42 +5,27 @@ import { Link } from 'react-router';
 
 import appConfig from '../../data/appConfig';
 import DrbbResult from './DrbbResult';
+import Store from '../../stores/Store';
+import { getResearchNowQueryString } from '../../utils/researchNowUtils';
 
 class DrbbContainer extends React.Component {
   constructor(props, context) {
     super();
     this.search = context.router.location.search || '';
+    const {
+      works,
+      totalWorks,
+      researchNowQueryString
+    } = Store.getState().drbbResults;
     this.state = {
-      works: [],
-      drbbResultsLoading: true,
-      researchNowQueryString: '',
+      works,
+      researchNowQueryString,
+      totalWorks,
     };
   }
 
-  componentDidMount() {
-    this.fetchResearchNowResults();
-  }
-
-  fetchResearchNowResults() {
-    axios(`${appConfig.baseUrl}/api/research-now${this.search}`)
-      .then((resp) => {
-        if (!resp.data || !resp.data.works) {
-          this.setState({ drbbResultsLoading: false });
-          return;
-        }
-        this.setState({
-          works: resp.data.works,
-          totalWorks: resp.data.totalWorks,
-          drbbResultsLoading: false,
-          researchNowQueryString: resp.data.researchNowQueryString,
-        });
-      })
-      .catch((resp) => {
-        console.error(resp);
-        this.setState({
-          drbbResultsLoading: false,
-        });
-      });
+  componentDidUpdate() {
+    return getResearchNowQueryString(this.search) !== this.state.researchNowQueryString;
   }
 
   content() {

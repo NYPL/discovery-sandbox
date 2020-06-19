@@ -14,7 +14,7 @@ import {
   basicQuery,
 } from '../utils/utils';
 
-const SearchResults = (props) => {
+const SearchResults = (props, context) => {
   const {
     searchResults,
     searchKeywords,
@@ -25,6 +25,8 @@ const SearchResults = (props) => {
     location,
     sortBy,
   } = props;
+
+  const { includeDrbb } = context;
 
   const [dropdownOpen, toggleDropdown] = useState(false);
 
@@ -120,13 +122,14 @@ const SearchResults = (props) => {
                     page={parseInt(page, 10)}
                   />
                   {
-                    !!(totalResults && totalResults !== 0) &&
-                    <SearchResultsSorter
-                      sortBy={sortBy}
-                      page={page}
-                      searchKeywords={searchKeywords}
-                      createAPIQuery={createAPIQuery}
-                    />
+                    (totalResults && totalResults !== 0) || (includeDrbb && drbbResults.totalWorks > 0) ?
+                      <SearchResultsSorter
+                        sortBy={sortBy}
+                        page={page}
+                        searchKeywords={searchKeywords}
+                        createAPIQuery={createAPIQuery}
+                      />
+                      : null
                   }
                 </div>
               </div>
@@ -149,10 +152,16 @@ SearchResults.propTypes = {
   filters: PropTypes.object,
   field: PropTypes.string,
   sortBy: PropTypes.string,
+  drbbResults: PropTypes.string,
 };
 
 SearchResults.defaultProps = {
   page: '1',
+  drbbResults: { totalWorks: 0 },
+};
+
+SearchResults.contextTypes = {
+  includeDrbb: PropTypes.bool,
 };
 
 export default SearchResults;

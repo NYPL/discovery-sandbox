@@ -116,9 +116,11 @@ class Search extends React.Component {
         if (response.data.searchResults && response.data.filters) {
           Actions.updateSearchResults(response.data.searchResults);
           Actions.updateFilters(response.data.filters);
+          if (response.data.drbbResults) Actions.updateDrbbResults(response.data.drbbResults);
         } else {
           Actions.updateSearchResults({});
           Actions.updateFilters({});
+          if (response.data.drbbResults) Actions.updateDrbbResults(response.data.drbbResults);
         }
         Actions.updateSearchKeywords(userSearchKeywords);
         Actions.updateField(searchField);
