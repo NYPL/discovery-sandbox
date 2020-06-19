@@ -152,7 +152,7 @@ function loadDataForRoutes(location, req, routeMethods) {
   return new Promise(resolve => resolve());
 }
 
-export {
+export default {
   loadDataForRoutes,
   routePaths,
 };
