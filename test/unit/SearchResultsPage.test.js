@@ -2,8 +2,11 @@
 import React from 'react';
 import { expect } from 'chai';
 import { mount } from 'enzyme';
+import PropTypes from 'prop-types';
 
 import SearchResults from '../../src/app/pages/SearchResults';
+import SearchResultsContainer from '../../src/app/components/SearchResults/SearchResultsContainer';
+import { mockRouterContext } from '../helpers/routing';
 
 // Eventually, it would be nice to have mocked data in a different file and imported.
 const searchResults = {
@@ -22,6 +25,12 @@ const searchResults = {
   totalResults: 2,
 };
 
+const context = mockRouterContext();
+const childContextTypes = {
+  router: PropTypes.object,
+  media: PropTypes.string,
+};
+
 describe('SearchResultsPage', () => {
   describe('Component properties', () => {
     let component;
@@ -34,7 +43,10 @@ describe('SearchResultsPage', () => {
           searchResults={{}}
           location={{ search: '' }}
         />,
-        { attachTo: document.body }
+        { attachTo: document.body,
+          context,
+          childContextTypes,
+        },
       );
     });
 
@@ -87,7 +99,7 @@ describe('SearchResultsPage', () => {
           searchResults={searchResults}
           location={{ search: '' }}
         />,
-        { attachTo: document.body }
+        { attachTo: document.body, context, childContextTypes }
       );
     });
 
@@ -127,7 +139,7 @@ describe('SearchResultsPage', () => {
           searchResults={searchResults}
           location={{ search: '' }}
         />,
-        { attachTo: document.body }
+        { attachTo: document.body, context, childContextTypes }
       );
     });
 
@@ -148,6 +160,47 @@ describe('SearchResultsPage', () => {
 
     it('should have four .nypl-full-width-wrapper elements', () => {
       expect(component.find('.nypl-full-width-wrapper')).to.have.length(4);
+    });
+  });
+
+  describe('with DRBB integration', () => {
+    let component;
+
+    before(() => {
+      context.media = 'desktop';
+      component = mount(
+        <SearchResultsContainer
+          searchKeywords="locofocos"
+          searchResults={searchResults}
+          location={{ search: '' }}
+        />,
+        { context });
+    });
+
+    it('should render a <DrbbContainer /> component', () => {
+      expect(component.find('DrbbContainer')).to.have.length(1);
+    });
+
+    describe('desktop view', () => {
+      it('should have the DrbbContainer above Pagination', () => {
+        expect(component.find('.nypl-column-full').childAt(1).is('DrbbContainer')).to.eql(true);
+      });
+    });
+
+    describe('tablet/mobile view', () => {
+      before(() => {
+        context.media = 'tablet';
+        component = mount(
+          <SearchResultsContainer
+            searchKeywords="locofocos"
+            searchResults={searchResults}
+            location={{ search: '' }}
+          />,
+          { context });
+      });
+      it('should have the Pagination above the DrbbContainer', () => {
+        expect(component.find('.nypl-column-full').childAt(1).is('Pagination')).to.eql(true);
+      });
     });
   });
 });

@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import ResultList from '../ResultsList/ResultsList';
+import ResultsList from '../ResultsList/ResultsList';
 import Pagination from '../Pagination/Pagination';
+import DrbbContainer from '../Drbb/DrbbContainer';
 import {
   basicQuery,
   trackDiscovery,
@@ -11,22 +12,26 @@ import Store from '@Store'
 import appConfig from '../../data/appConfig';
 
 // Renders the ResultsList containing the search results and the Pagination component
-const SearchResultsContainer = (props) => {
-  const {
-    searchResults,
-    searchKeywords,
-    page,
-  } = props;
-
-  const totalResults = searchResults ? searchResults.totalResults : undefined;
-  const results = searchResults ? searchResults.itemListElement : [];
+const SearchResultsContainer = (props, context) => {
+  const includeDrbb = true;
   const createAPIQuery = basicQuery(props);
+
   const updatePage = (nextPage, pageType) => {
     const apiQuery = createAPIQuery({ page: nextPage });
 
     trackDiscovery('Pagination - Search Results', `${pageType} - page ${nextPage}`);
     props.router.push(`${appConfig.baseUrl}/search?${apiQuery}`);
   };
+
+  const {
+    searchResults,
+    searchKeywords,
+    page,
+  } = props;
+  const { media } = context;
+
+  const totalResults = searchResults ? searchResults.totalResults : undefined;
+  const results = searchResults ? searchResults.itemListElement : [];
 
   return (
     <React.Fragment>
@@ -38,11 +43,12 @@ const SearchResultsContainer = (props) => {
         >
           {
             !!(results && results.length !== 0) &&
-            <ResultList
+            <ResultsList
               results={results}
               searchKeywords={searchKeywords}
             />
           }
+          { includeDrbb && media === 'desktop' ? <DrbbContainer /> : null}
           {
             !!(totalResults && totalResults !== 0) &&
             <Pagination
@@ -54,6 +60,7 @@ const SearchResultsContainer = (props) => {
               updatePage={updatePage}
             />
           }
+          { includeDrbb && ['tablet', 'mobile'].includes(media) ? <DrbbContainer /> : null}
         </div>
       </div>
     </React.Fragment>
@@ -72,6 +79,7 @@ SearchResultsContainer.defaultProps = {
 
 SearchResultsContainer.contextTypes = {
   router: PropTypes.object,
+  media: PropTypes.string,
 };
 
 export default SearchResultsContainer;

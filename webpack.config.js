@@ -148,6 +148,14 @@ if (ENV === 'development') {
           ],
           include: path.resolve(ROOT_PATH, 'src'),
         },
+        {
+          test: /\.(png|jpe?g|gif)$/i,
+          use: [
+            {
+              loader: 'file-loader',
+            },
+          ],
+        },
       ],
     },
   });
@@ -186,6 +194,15 @@ if (ENV === 'production') {
                 includePaths: sassPaths,
                 importer: globImporter(),
               },
+            },
+          ],
+        },
+        {
+          test: /\.(png|jpe?g|gif)$/i,
+          include: path.resolve(ROOT_PATH, 'src'),
+          use: [
+            {
+              loader: 'file-loader',
             },
           ],
         },

@@ -110,7 +110,7 @@ class ResultsList extends React.Component {
     return (
       <ul
         id="nypl-results-list"
-        className={`nypl-results-list ${Store.getState().isLoading ? 'hide-results-list ' : ''}`}
+        className={`nypl-results-list ${Store.getState().isLoading ? 'hide-results-list ' : 'drbb-integration'}`}
       >
         {resultsElm}
       </ul>

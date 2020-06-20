@@ -12,6 +12,8 @@ import PatronStore from '../../stores/PatronStore';
 import {
   basicQuery,
 } from '../../utils/utils';
+
+import { breakpoints } from '../../data/constants';
 import DataLoader from '../DataLoader/DataLoader';
 
 class Application extends React.Component {
@@ -24,7 +26,6 @@ class Application extends React.Component {
     };
     this.onChange = this.onChange.bind(this);
     this.shouldStoreUpdate = this.shouldStoreUpdate.bind(this);
-    this.checkMedia = this.checkMedia.bind(this);
   }
 
   getChildContext() {
@@ -34,12 +35,9 @@ class Application extends React.Component {
   componentDidMount() {
     Store.listen(this.onChange);
 
-    const style = {
-      xtrasmallBreakPoint: '483px',
-    };
-    const mediaMatcher = window.matchMedia(`(max-width: ${style.xtrasmallBreakPoint})`);
-    this.checkMedia(mediaMatcher);
-    mediaMatcher.addListener(this.checkMedia);
+
+    window.addEventListener('resize', this.onWindowResize.bind(this));
+    this.onWindowResize();
   }
 
   shouldStoreUpdate() {
@@ -50,16 +48,25 @@ class Application extends React.Component {
     Store.unlisten(this.onChange);
   }
 
-  onChange() {
-    this.setState({ data: Store.getState() });
+  onWindowResize() {
+    const { media } = this.state;
+    const { innerWidth } = window;
+    const {
+      xtrasmall,
+      tablet,
+    } = breakpoints;
+
+    if (innerWidth <= xtrasmall) {
+      if (media !== 'mobile') this.setState({ media: 'mobile' });
+    } else if (innerWidth <= tablet) {
+      if (media !== 'tablet') this.setState({ media: 'tablet' });
+    } else {
+      if (media !== 'desktop') this.setState({ media: 'desktop' });
+    }
   }
 
-  checkMedia(media) {
-    if (media && media.matches) {
-      this.setState({ media: 'mobile' });
-    } else {
-      this.setState({ media: 'desktop' });
-    }
+  onChange() {
+    this.setState({ data: Store.getState() });
   }
 
   render() {

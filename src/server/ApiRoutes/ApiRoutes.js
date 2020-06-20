@@ -4,6 +4,7 @@ import User from './User';
 import Hold from './Hold';
 import Search from './Search';
 import Bib from './Bib';
+import ResearchNow from './ResearchNow';
 import appConfig from '../../app/data/appConfig';
 import SubjectHeading from './SubjectHeading';
 import SubjectHeadings from './SubjectHeadings';
@@ -38,6 +39,13 @@ Object.keys(routePaths).forEach((routeName) => {
     .route(routePaths[routeName])
     .get(routeMethods[routeName]);
 });
+
+
+router
+  .route(`${appConfig.baseUrl}/api/research-now`)
+  .get(ResearchNow.searchAjax);
+
+
 
 router
   .route(`${appConfig.baseUrl}/api/patronEligibility`)
