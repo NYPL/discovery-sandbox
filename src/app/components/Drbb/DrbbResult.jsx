@@ -8,6 +8,7 @@ import appConfig from '../../data/appConfig';
 import {
   authorQuery,
   formatUrl,
+  generateStreamedReaderUrl,
 } from '../../utils/researchNowUtils';
 
 const DrbbResult = (props) => {
@@ -25,6 +26,7 @@ const DrbbResult = (props) => {
   } = appConfig;
 
   const drbbFrontEnd = appConfig.drbbFrontEnd[environment];
+  const eReader = appConfig.drbbEreader[environment];
 
   const authorship = () => {
     const authors = agents.filter(agent => agent.roles.includes('author'));
@@ -45,7 +47,7 @@ const DrbbResult = (props) => {
       </Link>]);
 
     return (
-      <div className='drbb-authorship'>
+      <div className="drbb-authorship">
         By {authorLinks}
       </div>
     );
@@ -53,28 +55,34 @@ const DrbbResult = (props) => {
 
   const selectEdition = () => (editions.find(edition => (
     edition && edition.items && edition.items[0].links && edition.items[0].links.length
-  )));
+  ))) || editions[0];
 
   const edition = selectEdition();
+  const { items } = edition;
 
-  const readOnlineLink = () => {
+  const readOnlineLinkElement = () => {
+    if (!items) return null;
+
     const editionWithTitle = edition;
     editionWithTitle.title = edition.title || work.title;
 
     let selectedLink;
-    const selectedItem = edition.items.find(item => item.links.find((link) => {
+    const selectedItem = items.find(item => item.links.find((link) => {
       selectedLink = link;
       return (!link.local && !link.download) || (link.local && link.download);
     }));
 
     if (!selectedItem || !selectedLink || !selectedLink.url) return null;
 
+    const eReaderUrl = selectedLink.local ?
+      generateStreamedReaderUrl(selectedLink.url, eReader) : formatUrl(selectedLink.url);
+
     return (
       <Link
         target="_blank"
         to={{
           pathname: `${drbbFrontEnd}/read-online`,
-          search: `?url=${formatUrl(selectedLink.url)}#/edition?editionId=${edition.id}`,
+          search: `?url=${eReaderUrl}`,
         }}
         className="drbb-read-online"
       >
@@ -84,6 +92,8 @@ const DrbbResult = (props) => {
   };
 
   const downloadLinkElement = () => {
+    if (!items) return null;
+
     let downloadLink;
     edition.items.find(item => item.links.find((link) => {
       downloadLink = link;
@@ -116,7 +126,7 @@ const DrbbResult = (props) => {
         {title}
       </Link>
       {agents && agents.length ? authorship() : null}
-      { readOnlineLink() }
+      { readOnlineLinkElement() }
       { downloadLinkElement() }
     </li>
   );
