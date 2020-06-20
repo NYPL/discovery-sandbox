@@ -8,11 +8,7 @@ import {
   basicQuery,
   trackDiscovery,
 } from '../../utils/utils';
-<<<<<<< HEAD
 import Store from '@Store'
-=======
-import Actions from '../../actions/Actions';
->>>>>>> origin/shep-development
 import appConfig from '../../data/appConfig';
 
 // Renders the ResultsList containing the search results and the Pagination component
@@ -24,18 +20,7 @@ const SearchResultsContainer = (props, context) => {
     const apiQuery = createAPIQuery({ page: nextPage });
 
     trackDiscovery('Pagination - Search Results', `${pageType} - page ${nextPage}`);
-<<<<<<< HEAD
     props.router.push(`${appConfig.baseUrl}/search?${apiQuery}`);
-=======
-    ajaxCall(`${appConfig.baseUrl}/api?${apiQuery}`, (response) => {
-      Actions.updateSearchResults(response.data.searchResults);
-      Actions.updatePage(nextPage.toString());
-      setTimeout(() => {
-        Actions.updateLoadingStatus(false);
-        context.router.push(`${appConfig.baseUrl}/search?${apiQuery}`);
-      }, 500);
-    });
->>>>>>> origin/shep-development
   };
 
   const {

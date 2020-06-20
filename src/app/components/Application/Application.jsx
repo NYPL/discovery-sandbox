@@ -12,12 +12,8 @@ import PatronStore from '../../stores/PatronStore';
 import {
   basicQuery,
 } from '../../utils/utils';
-<<<<<<< HEAD
-=======
-import Actions from '../../actions/Actions';
-import appConfig from '../../data/appConfig';
+
 import { breakpoints } from '../../data/constants';
->>>>>>> origin/shep-development
 import DataLoader from '../DataLoader/DataLoader';
 
 class Application extends React.Component {
@@ -38,51 +34,10 @@ class Application extends React.Component {
 
   componentDidMount() {
     Store.listen(this.onChange);
-<<<<<<< HEAD
 
-    const style = {
-      xtrasmallBreakPoint: '483px',
-    };
-    const mediaMatcher = window.matchMedia(`(max-width: ${style.xtrasmallBreakPoint})`);
-    this.checkMedia(mediaMatcher);
-    mediaMatcher.addListener(this.checkMedia);
-=======
-    // Listen to the browser's navigation buttons.
-    this.props.route.history.listen((location = { action: '', search: '', query: {} }) => {
-      const {
-        action,
-        search,
-        query,
-      } = location;
-
-      const qParameter = query.q;
-      const urlFilters = _pick(query, (value, key) => {
-        if (key.indexOf('filter') !== -1) {
-          return value;
-        }
-        return null;
-      });
-
-      if (action === 'POP' && search && this.shouldStoreUpdate()) {
-        Actions.updateLoadingStatus(true);
-        ajaxCall(`${appConfig.baseUrl}/api${decodeURI(search)}`, (response) => {
-          const { data } = response;
-          if (data.filters && data.searchResults) {
-            const selectedFilters = destructureFilters(urlFilters, data.filters);
-            Actions.updateSelectedFilters(selectedFilters);
-            Actions.updateFilters(data.filters);
-            Actions.updateSearchResults(data.searchResults);
-            Actions.updatePage(query.page || '1');
-            if (qParameter) Actions.updateSearchKeywords(qParameter);
-            Actions.updateLoadingStatus(false);
-          }
-        });
-      }
-    });
 
     window.addEventListener('resize', this.onWindowResize.bind(this));
     this.onWindowResize();
->>>>>>> origin/shep-development
   }
 
   shouldStoreUpdate() {
