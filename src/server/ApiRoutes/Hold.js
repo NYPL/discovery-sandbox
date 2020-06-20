@@ -98,6 +98,24 @@ function mapLocationDetails(locations) {
 }
 
 /**
+ * modelDeliveryLocationName(prefLabel, shortName)
+ * Renders the names of the radio input fields of delivery locations except EDD.
+ *
+ * @param {String} prefLabel
+ * @param {String} shortName
+ * @return {String}
+ */
+function modelDeliveryLocationName(prefLabel, shortName) {
+  if (prefLabel && typeof prefLabel === 'string' && shortName) {
+    const deliveryRoom = (prefLabel.split(' - ')[1]) ? ` - ${prefLabel.split(' - ')[1]}` : '';
+
+    return `${shortName}${deliveryRoom}`;
+  }
+
+  return '';
+}
+
+/**
  * getDeliveryLocations(barcode, patronId, cb, errorCb)
  * The function to make a request to get delivery locations of an item.
  *
@@ -117,10 +135,18 @@ function getDeliveryLocations(barcode, patronId, cb, errorCb) {
         barcodeAPIresponse.itemListElement.length &&
         barcodeAPIresponse.itemListElement[0].eddRequestable) ?
         barcodeAPIresponse.itemListElement[0].eddRequestable : false;
-      const deliveryLocationWithAddress = (barcodeAPIresponse &&
+      let deliveryLocationWithAddress = (barcodeAPIresponse &&
           barcodeAPIresponse.itemListElement && barcodeAPIresponse.itemListElement.length &&
           barcodeAPIresponse.itemListElement[0].deliveryLocation) ?
         mapLocationDetails(barcodeAPIresponse.itemListElement[0].deliveryLocation) : [];
+
+      const { closedLocations } = appConfig;
+      deliveryLocationWithAddress = deliveryLocationWithAddress.filter(location =>
+        !closedLocations.some(closedLocation =>
+          modelDeliveryLocationName(location.prefLabel, location.shortName)
+            .startsWith(closedLocation),
+        ),
+      );
 
       cb(
         deliveryLocationWithAddress,

@@ -451,7 +451,7 @@ class FilterPopup extends React.Component {
       dateBefore: dateBeforeFilterValue,
     };
     const errorMessageBlock = (
-      <div className="nypl-full-width-wrapper">
+      <div className="nypl-full-width-wrapper drbb-integration">
         <div
           className="nypl-form-error filter-error-box"
           ref={this.nyplFilterError}
@@ -470,7 +470,7 @@ class FilterPopup extends React.Component {
 
     return (
       <div className="filter-container">
-        <div className="nypl-full-width-wrapper">
+        <div className="nypl-full-width-wrapper drbb-integration">
           <div className="nypl-row">
             <div className="nypl-column-full">
               <div className="filter-text">
@@ -510,7 +510,7 @@ class FilterPopup extends React.Component {
                   onSubmit={() => this.submitForm('Form submission')}
                 >
                   <div className="form-full-width">
-                    <div className="nypl-full-width-wrapper">
+                    <div className="nypl-full-width-wrapper drbb-integration">
                       <div className="nypl-row">
                         <div className="nypl-column-full">
                           <ul
@@ -527,7 +527,7 @@ class FilterPopup extends React.Component {
                   </div>
 
                   <fieldset className="nypl-fieldset">
-                    <div className="nypl-full-width-wrapper">
+                    <div className="nypl-full-width-wrapper drbb-integration">
                       <div className="nypl-row">
                         <div className="nypl-column-full">
                           <FieldsetList
@@ -565,7 +565,7 @@ class FilterPopup extends React.Component {
                     </div>
 
                     <div className="bottom-action-row form-full-width">
-                      <div className="nypl-full-width-wrapper">
+                      <div className="nypl-full-width-wrapper drbb-integration">
                         <div className="nypl-row">
                           <div className="nypl-column-full">
                             <ul

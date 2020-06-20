@@ -1,7 +1,7 @@
 ## Discovery
 
 ### Version
-> 1.6.5
+> 1.6.6
 
 ### Shared Collection Catalog
 [![GitHub version](https://badge.fury.io/gh/nypl-discovery%2Fdiscovery-front-end.svg)](https://badge.fury.io/gh/nypl-discovery%2Fdiscovery-front-end)

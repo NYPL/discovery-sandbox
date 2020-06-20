@@ -3,7 +3,11 @@ import express from 'express';
 import User from './User';
 import Hold from './Hold';
 import Search from './Search';
+<<<<<<< HEAD
 import Bib from './Bib';
+=======
+import ResearchNow from './ResearchNow';
+>>>>>>> origin/shep-development
 import appConfig from '../../app/data/appConfig';
 import SubjectHeading from './SubjectHeading';
 import SubjectHeadings from './SubjectHeadings';
@@ -33,11 +37,29 @@ router
   .route(`${appConfig.baseUrl}/edd`)
   .post(Hold.eddServer);
 
+<<<<<<< HEAD
 Object.keys(routePaths).forEach((routeName) => {
   router
     .route(routePaths[routeName])
     .get(routeMethods[routeName]);
 });
+=======
+router
+  .route(`${appConfig.baseUrl}/api`)
+  .get(Search.searchAjax);
+
+router
+  .route(`${appConfig.baseUrl}/api/research-now`)
+  .get(ResearchNow.searchAjax);
+
+router
+  .route(`${appConfig.baseUrl}/api/bib`)
+  .get(Bib.bibSearchAjax);
+
+router
+  .route(`${appConfig.baseUrl}/api/hold/request/:bibId-:itemId`)
+  .get(Hold.newHoldRequestAjax);
+>>>>>>> origin/shep-development
 
 router
   .route(`${appConfig.baseUrl}/api/patronEligibility`)
