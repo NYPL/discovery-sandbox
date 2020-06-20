@@ -65,7 +65,7 @@ const routesGenerator = location => ({
     errorMessage: 'Error attempting to make an ajax request to search',
   },
   holdRequest: {
-    apiRoute: (matchData, route) => route.replace(':bibId-itemId', matchData[1]),
+    apiRoute: (matchData, route) => route.replace(':bibId-:itemId', matchData[1]),
     actions: [
       data => Actions.updateBib(data.bib),
       data => Actions.updateDeliveryLocations(data.deliveryLocations),
@@ -152,7 +152,7 @@ function loadDataForRoutes(location, req, routeMethods) {
   return new Promise(resolve => resolve());
 }
 
-export {
+export default {
   loadDataForRoutes,
   routePaths,
 };

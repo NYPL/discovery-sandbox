@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { loadDataForRoutes } from '@dataLoaderUtil';
+import dataLoaderUtil from '@dataLoaderUtil';
 
 class DataLoader extends React.Component {
 
   componentDidMount() {
-    loadDataForRoutes(this.props.location);
+    dataLoaderUtil.loadDataForRoutes(this.props.location);
   }
 
   render() {

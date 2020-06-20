@@ -7,10 +7,11 @@ import Bib from './Bib';
 import appConfig from '../../app/data/appConfig';
 import SubjectHeading from './SubjectHeading';
 import SubjectHeadings from './SubjectHeadings';
-import { routePaths } from '../../app/utils/dataLoaderUtil';
+import dataLoaderUtil from '../../app/utils/dataLoaderUtil';
 import routeMethods from './RouteMethods';
 
 const router = express.Router();
+const routePaths = dataLoaderUtil.routePaths;
 
 router
   .route(`${appConfig.baseUrl}/search`)

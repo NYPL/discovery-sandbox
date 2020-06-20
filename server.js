@@ -10,7 +10,7 @@ import webpack from 'webpack';
 import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
 import Store from '@Store';
-import { loadDataForRoutes } from '@dataLoaderUtil';
+import dataLoaderUtil from '@dataLoaderUtil';
 
 import alt from './src/app/alt';
 import appConfig from './src/app/data/appConfig';
@@ -89,7 +89,7 @@ app.get('/*', (req, res, next) => {
     search: '',
   };
 
-  loadDataForRoutes(location, req, routeMethods).then(() => next());
+  dataLoaderUtil.loadDataForRoutes(location, req, routeMethods).then(() => next());
 });
 
 app.get('/*', (req, res) => {
