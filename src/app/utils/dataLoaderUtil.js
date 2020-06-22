@@ -76,24 +76,6 @@ const routesGenerator = location => ({
   },
 });
 
-// const reducePathExpressions = location => (acc, instruction) => {
-//   const {
-//     pathname,
-//     search,
-//   } = location;
-//
-//   const {
-//     matchData,
-//     pathType,
-//   } = acc;
-//
-//   const newMatchData = (pathname + search).match(instruction.expression);
-//   return {
-//     matchData: matchData || newMatchData,
-//     pathType: pathType || (newMatchData ? instruction.pathType : null),
-//   };
-// };
-
 const matchingPathData = (location) => {
   const {
     pathname,
