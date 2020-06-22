@@ -371,6 +371,16 @@ const getUpdatedFilterValues = (props) => {
   return updatedFilterValues;
 };
 
+// This function is used in `ResultsCount`, primarily.
+/*
+   * displayContext({ searchKeywords, selectedFilters, field, count })
+   * @param {object} takes keys `searchKeywords` {string}, `selectedFilters` {object}, `field` {string}, `count` {integer}.
+   * Displays where the results are coming from. This currently only allows for one
+   * option at a time due to constraints on the front end not allowing for multiple
+   * selections to occur.
+   *
+   * @returns {string} A phrase like "for (keyword|title|author) TERM"
+   */
 function displayContext({ searchKeywords, selectedFilters, field, count }) {
   const keyMapping = {
     // Currently from links on the bib page:

@@ -36,9 +36,7 @@ class ResultsCount extends React.Component {
       selectedFilters,
       field,
     } = this.props;
-    const {
-      includeDrbb
-    } = this.context;
+
     const countF = count ? count.toLocaleString() : '';
     const start = ((page - 1) * 50) + 1;
     const end = (page) * 50 > count ? count : (page * 50);
