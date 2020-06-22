@@ -59,7 +59,8 @@ const routesGenerator = location => ({
           sort,
           sort_direction,
         } = location.query;
-        Actions.updateSortBy(`${sort}_${sort_direction}`);
+
+        Actions.updateSortBy([sort, sort_direction].filter(field => field).join('_'));
       },
     ],
     errorMessage: 'Error attempting to make an ajax request to search',
