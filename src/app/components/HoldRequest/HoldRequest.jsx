@@ -125,6 +125,13 @@ class HoldRequest extends React.Component {
       .then((response) => {
         this.context.router.push(response.data);
         Actions.updateLoadingStatus(false);
+      })
+      .catch((error) => {
+        console.error('Error attempting to make an ajax Hold Request in HoldRequest', error);
+        Actions.updateLoadingStatus(false);
+        this.context.router.push(
+          `${path}?errorMessage=${error}${searchKeywordsQueryPhysical}${fromUrlQuery}`,
+        );
       });
   }
 
