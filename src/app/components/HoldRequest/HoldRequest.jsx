@@ -52,7 +52,7 @@ class HoldRequest extends React.Component {
     this.state = _extend({
       delivery: defaultDelivery,
       checkedLocNum,
-      redirect: true,
+      serverRedirect: true,
     }, { patron: PatronStore.getState() });
 
     // change all the components :(
@@ -71,7 +71,7 @@ class HoldRequest extends React.Component {
     if (title) {
       title.focus();
     }
-    if (this.state.redirect) this.setState({ redirect: false });
+    if (this.state.serverRedirect) this.setState({ serverRedirect: false });
     this.timeoutId = setTimeout(() => { Actions.updateLoadingStatus(false); }, 5000);
   }
 
@@ -271,7 +271,7 @@ class HoldRequest extends React.Component {
 
   render() {
     const { closedLocations, holdRequestNotification } = AppConfigStore.getState();
-    const { redirect } = this.state;
+    const { serverRedirect } = this.state;
     const searchKeywords = this.props.searchKeywords;
     const bib = (this.props.bib && !_isEmpty(this.props.bib)) ?
       this.props.bib : null;
@@ -345,8 +345,8 @@ class HoldRequest extends React.Component {
           />
           <input
             type="hidden"
-            name="redirect"
-            value={redirect}
+            name="serverRedirect"
+            value={serverRedirect}
           />
         </form>
       );

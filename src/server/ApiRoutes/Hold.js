@@ -347,7 +347,7 @@ function newHoldRequestServerEdd(req, res, next) {
  * @return {function}
  */
 function createHoldRequestServer(req, res, pickedUpBibId = '', pickedUpItemId = '') {
-  res.respond = req.body.redirect === 'false' ? res.json : res.redirect;
+  res.respond = req.body.serverRedirect === 'false' ? res.json : res.redirect;
   // Ensure user is logged in
   const loggedIn = User.requireUser(req, res);
   if (!loggedIn) return false;
