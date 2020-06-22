@@ -44,7 +44,7 @@ const DrbbContainer = () => {
         <div className="drbb-promo">
           <img
             alt="digital-research-book"
-            src={require('../../../client/assets/drbb_promo.png').default}
+            src="/src/client/assets/drbb_promo.png"
           />
         </div>
         See results from Digital Research Books Beta

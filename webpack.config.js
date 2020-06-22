@@ -125,6 +125,16 @@ if (ENV === 'development') {
     module: {
       rules: [
         {
+          test: /\.(png|jpe?g|gif)$/i,
+          use: [
+            {
+              loader: 'file-loader',
+            },
+          ],
+          include: path.resolve(ROOT_PATH, 'src'),
+          exclude: /node_modules/,
+        },
+        {
           test: /\.jsx?$/,
           exclude: /(node_modules|bower_components)/,
           use: {
@@ -147,16 +157,6 @@ if (ENV === 'development') {
             },
           ],
           include: path.resolve(ROOT_PATH, 'src'),
-        },
-        {
-          test: /\.(png|jpe?g|gif)$/i,
-          use: [
-            {
-              loader: 'file-loader',
-            },
-          ],
-          include: path.resolve(ROOT_PATH, 'src'),
-          exclude: /node_modules/,
         },
       ],
     },
@@ -181,6 +181,15 @@ if (ENV === 'production') {
     module: {
       rules: [
         {
+          test: /\.(png|jpe?g|gif)$/i,
+          include: path.resolve(ROOT_PATH, 'src'),
+          use: [
+            {
+              loader: 'file-loader',
+            },
+          ],
+        },
+        {
           test: /\.jsx?$/,
           exclude: /(node_modules|bower_components)/,
           use: 'babel-loader',
@@ -196,15 +205,6 @@ if (ENV === 'production') {
                 includePaths: sassPaths,
                 importer: globImporter(),
               },
-            },
-          ],
-        },
-        {
-          test: /\.(png|jpe?g|gif)$/i,
-          include: path.resolve(ROOT_PATH, 'src'),
-          use: [
-            {
-              loader: 'file-loader',
             },
           ],
         },
