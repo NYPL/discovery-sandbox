@@ -2,12 +2,13 @@
 import React from 'react';
 import { expect } from 'chai';
 import { shallow, mount } from 'enzyme';
-
+import { mock } from 'sinon';
 import MockAdapter from 'axios-mock-adapter';
 import axios from 'axios';
 
 import ResultsList from '../../src/app/components/ResultsList/ResultsList';
 import resultsBibs from '../fixtures/resultsBibs';
+import appConfig from '../../src/app/data/appConfig';
 
 const results = [{}, {}, {}];
 const singleBibNoTitleDisplay = {
@@ -337,10 +338,15 @@ describe('ResultsList', () => {
   describe('DRBB integration', () => {
     let component;
     const context = {};
+    let appConfigMock;
+
+    before(() => {
+      appConfigMock = mock(appConfig);
+    });
 
     describe('without integration', () => {
       before(() => {
-        context.includeDrbb = false;
+        appConfig.includeDrbb = false;
         component = mount(<ResultsList results={resultsBibs} />, context);
       });
 
@@ -351,13 +357,17 @@ describe('ResultsList', () => {
 
     describe('with integration', () => {
       before(() => {
-        context.includeDrbb = true;
+        appConfig.includeDrbb = true;
         component = mount(<ResultsList results={resultsBibs} />, { context });
       });
 
       it('should have components with .drbb-integration class', () => {
         expect(component.find('.drbb-integration')).to.have.length(1);
       });
+    });
+
+    after(() => {
+      appConfigMock.restore();
     });
   });
 });

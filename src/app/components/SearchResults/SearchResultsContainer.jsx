@@ -45,6 +45,8 @@ const SearchResultsContainer = (props, context) => {
     });
   };
 
+  const hasResults = !!(results && results.length !== 0);
+
   return (
     <React.Fragment>
       <div className="nypl-row">
@@ -54,7 +56,7 @@ const SearchResultsContainer = (props, context) => {
           aria-describedby="results-description"
         >
           {
-            !!(results && results.length !== 0) &&
+            hasResults &&
             <ResultsList
               results={results}
               searchKeywords={searchKeywords}
@@ -62,7 +64,7 @@ const SearchResultsContainer = (props, context) => {
           }
           { includeDrbb && media === 'desktop' ? <DrbbContainer /> : null}
           {
-            !!(totalResults && totalResults !== 0) &&
+            hasResults &&
             <Pagination
               ariaControls="nypl-results-list"
               total={totalResults}
