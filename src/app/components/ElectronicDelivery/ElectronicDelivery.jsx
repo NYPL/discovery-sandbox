@@ -129,20 +129,20 @@ class ElectronicDelivery extends React.Component {
    */
   submitRequest() {
     const {
-      // bibId,
+      bibId,
       itemId,
       itemSource,
       title,
     } = this.state;
-    // const path = `${appConfig.baseUrl}/hold/confirmation/${bibId}-${itemId}`;
+    const path = `${appConfig.baseUrl}/hold/confirmation/${bibId}-${itemId}`;
     // const data = _extend({
     //   bibId,
     //   itemId,
     //   pickupLocation: 'edd',
     //   itemSource,
     // }, fields);
-    // const searchKeywords = this.props.searchKeywords;
-    // const searchKeywordsQuery = searchKeywords ? `&q=${searchKeywords}` : '';
+    const searchKeywords = this.props.searchKeywords;
+    const searchKeywordsQuery = searchKeywords ? `&q=${searchKeywords}` : '';
     const itemSourceMapping = {
       'recap-pul': 'Princeton',
       'recap-cul': 'Columbia',
@@ -163,6 +163,17 @@ class ElectronicDelivery extends React.Component {
       .then((response) => {
         this.context.router.push(response.data);
         Actions.updateLoadingStatus(false);
+      })
+      .catch((error) => {
+        console.error(
+          'Error attempting to submit an ajax EDD request at ElectronicDelivery',
+          error,
+        );
+
+        Actions.updateLoadingStatus(false);
+        this.context.router.push(
+          `${path}?errorMessage=${error}${searchKeywordsQuery}${this.fromUrl()}`,
+        );
       });
     // axios
     //   .post(`${appConfig.baseUrl}/api/newHold`, data)
