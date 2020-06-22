@@ -8,9 +8,11 @@ import {
   basicQuery,
   ajaxCall,
   trackDiscovery,
+  displayContext,
 } from '../../utils/utils';
 import Actions from '../../actions/Actions';
 import appConfig from '../../data/appConfig';
+import Store from '../../stores/Store';
 
 // Renders the ResultsList containing the search results and the Pagination component
 const SearchResultsContainer = (props, context) => {
@@ -43,6 +45,17 @@ const SearchResultsContainer = (props, context) => {
     });
   };
 
+  const noResultElementForDrbbIntegration = includeDrbb ?
+    (
+      <div
+        className={
+          `nypl-results-summary no-scc-results drbb-integration ${Store.getState().isLoading ? ' hide-results-list' : ''
+        }`}
+      >
+        There are no results {displayContext(props)} from Shared Collection Catalog.
+      </div>) : null;
+
+
   return (
     <React.Fragment>
       <div className="nypl-row">
@@ -52,11 +65,12 @@ const SearchResultsContainer = (props, context) => {
           aria-describedby="results-description"
         >
           {
-            !!(results && results.length !== 0) &&
-            <ResultsList
-              results={results}
-              searchKeywords={searchKeywords}
-            />
+            results && results.length !== 0 ?
+              <ResultsList
+                results={results}
+                searchKeywords={searchKeywords}
+              /> :
+              noResultElementForDrbbIntegration
           }
           { includeDrbb && media === 'desktop' ? <DrbbContainer /> : null}
           {
