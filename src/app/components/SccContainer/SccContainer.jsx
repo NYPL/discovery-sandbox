@@ -6,9 +6,10 @@ import LoadingLayer from '../LoadingLayer/LoadingLayer';
 import Notification from '../Notification/Notification';
 
 import Store from '../../stores/Store';
+import appConfig from '../../data/appConfig';
 
-const SccContainer = (props, context) => {
-  const { includeDrbb } = context;
+const SccContainer = (props) => {
+  const { includeDrbb } = appConfig;
   return (
     <main className="main-page">
       <LoadingLayer
@@ -58,7 +59,6 @@ SccContainer.defaultProps = {
 
 SccContainer.contextTypes = {
   router: PropTypes.object,
-  includeDrbb: PropTypes.bool,
 };
 
 export default SccContainer;

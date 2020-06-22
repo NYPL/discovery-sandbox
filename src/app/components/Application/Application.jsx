@@ -35,7 +35,6 @@ class Application extends React.Component {
   getChildContext() {
     return {
       media: this.state.media,
-      includeDrbb: appConfig.includeDrbb,
     };
   }
 

@@ -21,8 +21,10 @@ const SearchResultsContainer = (props, context) => {
   } = props;
   const {
     media,
-    includeDrbb,
   } = context;
+  const {
+    includeDrbb,
+  } = appConfig;
 
   const totalResults = searchResults ? searchResults.totalResults : undefined;
   const results = searchResults ? searchResults.itemListElement : [];
@@ -90,7 +92,6 @@ SearchResultsContainer.defaultProps = {
 SearchResultsContainer.contextTypes = {
   router: PropTypes.object,
   media: PropTypes.string,
-  includeDrbb: PropTypes.bool,
 };
 
 export default SearchResultsContainer;
