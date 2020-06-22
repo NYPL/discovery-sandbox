@@ -49,14 +49,14 @@ class ResultsCount extends React.Component {
     }
 
     if (count !== 0) {
-      return `Displaying ${currentResultDisplay} of ${countF} results ${displayContextString}. Try a different search or different filters.`;
+      return `Displaying ${currentResultDisplay} of ${countF} results ${displayContextString}`;
     }
 
     if (this.checkSelectedFilters()) {
       return `No results ${displayContextString} with the chosen filters. Try a different search or different filters.`;
     }
 
-    return `No results ${displayContextString}. Try a different search or different filters.`;
+    return `No results ${displayContextString}. Try a different search.`;
   }
 
   render() {
