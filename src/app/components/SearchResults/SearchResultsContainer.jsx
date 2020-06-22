@@ -26,8 +26,8 @@ const SearchResultsContainer = (props, context) => {
     includeDrbb,
   } = appConfig;
 
-  const totalResults = searchResults ? searchResults.totalResults : undefined;
   const results = searchResults ? searchResults.itemListElement : [];
+  const totalResults = searchResults ? searchResults.totalResults : results.length;
   const createAPIQuery = basicQuery(props);
 
   const updatePage = (nextPage, pageType) => {
@@ -45,7 +45,7 @@ const SearchResultsContainer = (props, context) => {
     });
   };
 
-  const hasResults = !!(results && results.length !== 0);
+  const hasResults = results && totalResults;
 
   return (
     <React.Fragment>
