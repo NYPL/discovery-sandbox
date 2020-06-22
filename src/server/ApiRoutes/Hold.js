@@ -402,44 +402,51 @@ function createHoldRequestServer(req, res, pickedUpBibId = '', pickedUpItemId = 
   );
 }
 
-function createHoldRequestEdd(req, res) {
-  // Ensure user is logged in
-  const loggedIn = User.requireUser(req);
-  if (!loggedIn) return false;
-
-  return postHoldAPI(
-    req,
-    req.body.itemId,
-    req.body.pickupLocation,
-    req.body.form,
-    req.body.itemSource,
-    (response) => {
-      const data = JSON.parse(response).data;
-      res.json({
-        id: data.id,
-        jobId: data.jobId,
-        pickupLocation: data.pickupLocation,
-      });
-    },
-    (error) => {
-      logger.error(
-        `Error calling postHoldAPI in createHoldRequestEdd, itemId: ${req.body.itemId}`,
-        error,
-      );
-      res.json({
-        status: error.status,
-        error,
-      });
-    },
-  );
-}
+// function createHoldRequestEdd(req, res) {
+//   // Ensure user is logged in
+//   const loggedIn = User.requireUser(req);
+//   if (!loggedIn) return false;
+//
+//   return postHoldAPI(
+//     req,
+//     req.body.itemId,
+//     req.body.pickupLocation,
+//     req.body.form,
+//     req.body.itemSource,
+//     (response) => {
+//       const data = JSON.parse(response).data;
+//       res.json({
+//         id: data.id,
+//         jobId: data.jobId,
+//         pickupLocation: data.pickupLocation,
+//       });
+//     },
+//     (error) => {
+//       logger.error(
+//         `Error calling postHoldAPI in createHoldRequestEdd, itemId: ${req.body.itemId}`,
+//         error,
+//       );
+//       res.json({
+//         status: error.status,
+//         error,
+//       });
+//     },
+//   );
+// }
 
 function eddServer(req, res) {
   const {
     bibId,
     itemId,
     searchKeywords,
+    serverRedirect,
   } = req.body;
+
+  let { fromUrl } = req.body;
+  fromUrl = fromUrl ? `&fromUrl=${fromUrl}` : '';
+
+  res.respond = serverRedirect === false ? res.redirect : res.json;
+
   const searchKeywordsQuery = (searchKeywords) ? `&q=${searchKeywords}` : '';
 
   let serverErrors = {};
@@ -451,9 +458,9 @@ function eddServer(req, res) {
     // Very ugly but passing all the error and patron data through the url param.
     // TODO: think of a better way to pass data. For now, this works, but make sure that
     // the data is being passed and picked up by the `ElectronicDelivery` component.
-    return res.redirect(`${appConfig.baseUrl}/hold/request/${bibId}-${itemId}/edd?` +
+    return res.respond(`${appConfig.baseUrl}/hold/request/${bibId}-${itemId}/edd?` +
       `error=${JSON.stringify(serverErrors)}` +
-      `&form=${JSON.stringify(req.body)}`);
+      `&form=${JSON.stringify(req.body)}${fromUrl}`);
   }
 
   // Ensure user is logged in
@@ -470,9 +477,9 @@ function eddServer(req, res) {
     (response) => {
       const data = JSON.parse(response).data;
 
-      res.redirect(
+      res.respond(
         `${appConfig.baseUrl}/hold/confirmation/${bibId}-${itemId}` +
-        `?pickupLocation=${req.body.pickupLocation}&requestId=${data.id}${searchKeywordsQuery}`,
+        `?pickupLocation=${req.body.pickupLocation}&requestId=${data.id}${searchKeywordsQuery}${fromUrl}`,
       );
     },
     (error) => {
@@ -480,10 +487,10 @@ function eddServer(req, res) {
         `Error calling postHoldAPI in eddServer, bibID: ${bibId}, itemId: ${itemId}`,
         error,
       );
-      res.redirect(
+      res.respond(
         `${appConfig.baseUrl}/hold/confirmation/${bibId}-${itemId}?pickupLocation=edd` +
         `&errorStatus=${error.status}` +
-        `&errorMessage=${error.statusText}${searchKeywordsQuery}`,
+        `&errorMessage=${error.statusText}${searchKeywordsQuery}${fromUrl}`,
       );
     },
   );
@@ -495,6 +502,6 @@ export default {
   newHoldRequestAjax,
   newHoldRequestServerEdd,
   createHoldRequestServer,
-  createHoldRequestEdd,
+  // createHoldRequestEdd,
   eddServer,
 };
