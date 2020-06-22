@@ -27,10 +27,6 @@ describe('DrbbContainer', () => {
     after(() => {
       mock.restore();
     });
-
-    it('should have `search` property', () => {
-      expect(component.instance().search).to.equal('?q=dogs');
-    });
   });
 
   describe('no ResearchNow results', () => {

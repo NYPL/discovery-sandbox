@@ -20,6 +20,7 @@ class Store {
       updateDeliveryLocations: Actions.updateDeliveryLocations,
       updateIsEddRequestable: Actions.updateIsEddRequestable,
       updateSubjectHeading: Actions.updateSubjectHeading,
+      updateDrbbResults: Actions.updateDrbbResults,
     });
 
     this.state = {

@@ -45,13 +45,13 @@ function search(searchKeywords = '', page, sortBy, order, field, filters, cb, er
 
   const aggregationQuery = `/aggregations?${encodedAggregationsQueryString}`;
   const resultsQuery = `?${encodedResultsQueryString}&per_page=50`;
-  const queryObj = { query: { searchKeywords, sortBy, order, field, filters } };
+  const queryObj = { query: { q: searchKeywords, sortBy, order, field, filters } };
 
   // Need to get both results and aggregations before proceeding.
   Promise.all([
     nyplApiClientCall(resultsQuery),
     nyplApiClientCall(aggregationQuery)])
-    .then(response => ResearchNow.searchAjax(queryObj)
+    .then(response => ResearchNow.search(queryObj)
       .then((drbbResults) => {
         response.push(drbbResults);
         return response;

@@ -114,9 +114,9 @@ class Search extends React.Component {
         // (which would be promoted to the Alt store when results are received
         // below).
         if (response.data.searchResults && response.data.filters) {
+          if (response.data.drbbResults) Actions.updateDrbbResults(response.data.drbbResults);
           Actions.updateSearchResults(response.data.searchResults);
           Actions.updateFilters(response.data.filters);
-          if (response.data.drbbResults) Actions.updateDrbbResults(response.data.drbbResults);
         } else {
           Actions.updateSearchResults({});
           Actions.updateFilters({});

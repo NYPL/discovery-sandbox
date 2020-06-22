@@ -7,13 +7,11 @@ import {
 import appConfig from '../../app/data/appConfig';
 import logger from '../../../logger';
 
-const appEnvironment = process.env.APP_ENV || 'production';
-
 const nyplApiClientCall = query => nyplApiClient({ apiName: 'drbb' })
   .then(client => client.post('', JSON.stringify(query)))
   .catch(console.error);
 
-const searchAjax = (req, res) => {
+const search = (req) => {
   const query = createResearchNowQuery(Object.assign({ per_page: 3 }, req.query));
   const researchNowQueryString = getResearchNowQueryString(req.query);
   return nyplApiClientCall(query)
@@ -21,7 +19,7 @@ const searchAjax = (req, res) => {
       const data = JSON.parse(resp).data;
       if (!data || !data.works) {
         logger.error(resp);
-        return res.json(data);
+        return data;
       }
 
       return {
@@ -34,5 +32,5 @@ const searchAjax = (req, res) => {
 };
 
 export default {
-  searchAjax,
+  search,
 };

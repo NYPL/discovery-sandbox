@@ -261,9 +261,11 @@ class FilterPopup extends React.Component {
     Actions.updateSelectedFilters(filtersToApply);
     ajaxCall(`${appConfig.baseUrl}/api?${apiQuery}`, (response) => {
       if (response.data.searchResults && response.data.filters) {
+        if (response.data.drbbResults) Actions.updateDrbbResults(response.data.drbbResults);
         Actions.updateSearchResults(response.data.searchResults);
         Actions.updateFilters(response.data.filters);
       } else {
+        if (response.data.drbbResults) Actions.updateDrbbResults(response.data.drbbResults);
         Actions.updateSearchResults({});
         Actions.updateFilters({});
       }

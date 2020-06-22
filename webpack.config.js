@@ -120,7 +120,7 @@ if (ENV === 'development') {
       modules: [
         'node_modules',
       ],
-      extensions: ['.js', '.jsx', '.scss'],
+      extensions: ['.js', '.jsx', '.scss', '.png'],
     },
     module: {
       rules: [
@@ -155,6 +155,8 @@ if (ENV === 'development') {
               loader: 'file-loader',
             },
           ],
+          include: path.resolve(ROOT_PATH, 'src'),
+          exclude: /node_modules/,
         },
       ],
     },

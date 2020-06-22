@@ -1,59 +1,19 @@
 import React from 'react';
-import axios from 'axios';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 
 import appConfig from '../../data/appConfig';
 import DrbbResult from './DrbbResult';
 import Store from '../../stores/Store';
-import { getResearchNowQueryString } from '../../utils/researchNowUtils';
 
-class DrbbContainer extends React.Component {
-  constructor(props, context) {
-    super();
-    this.search = context.router.location.search || '';
-    const {
-      works,
-      totalWorks,
-      researchNowQueryString
-    } = Store.getState().drbbResults;
-    this.state = {
-      works,
-      researchNowQueryString,
-      totalWorks,
-    };
-  }
+const DrbbContainer = () => {
+  const {
+    works,
+    totalWorks,
+    researchNowQueryString,
+  } = Store.getState().drbbResults;
 
-  componentDidUpdate() {
-    return getResearchNowQueryString(this.search) !== this.state.researchNowQueryString;
-  }
-
-  content() {
-    const {
-      works,
-      drbbResultsLoading,
-      totalWorks,
-      researchNowQueryString,
-    } = this.state;
-
-    if (drbbResultsLoading) {
-      return (
-        <div className="drbb-loading-layer">
-          <span
-            className="loading-animation loadingLayer-texts-loadingWord"
-          >
-            Loading results
-          </span>
-          <div className="loadingDots">
-            <span />
-            <span />
-            <span />
-            <span />
-          </div>
-        </div>
-      );
-    }
-
+  const content = () => {
     if (works && works.length) {
       return ([
         <ul key="drbb-scc-results-list" className="drbb-list">
@@ -90,26 +50,28 @@ class DrbbContainer extends React.Component {
         See results from Digital Research Books Beta
       </Link>
     );
-  }
+  };
 
-  render() {
-    return (
-      <div className="drbb-container">
-        <h3 className="drbb-main-header">
-          Results from Digital Research Books Beta
-        </h3>
-        <p className="drbb-description">
-          Digital books for research from multiple sources world wide- all free to read, download, and keep. No Library Card is Required. <span><a
+  return (
+    <div className="drbb-container">
+      <h3 className="drbb-main-header">
+        Results from Digital Research Books Beta
+      </h3>
+      <p className="drbb-description">
+        Digital books for research from multiple sources world wide-
+        all free to read, download, and keep. No Library Card is Required. <span>
+          <a
             className="link"
             target="_blanks"
             href={`${appConfig.drbbFrontEnd[appConfig.environment]}/about`}
-          >Read more about the project</a>.</span>
-        </p>
-        { this.content() }
-      </div>
-    );
-  }
-}
+          >Read more about the project
+          </a>.
+        </span>
+      </p>
+      { content() }
+    </div>
+  );
+};
 
 DrbbContainer.contextTypes = {
   router: PropTypes.object,
