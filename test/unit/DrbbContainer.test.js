@@ -43,7 +43,7 @@ describe('DrbbContainer', () => {
       mock = new MockAdapter(axios);
       mock
         .onGet('/research/collections/shared-collection-catalog/api/research-now?q=dogs')
-        .reply(200, { works: [{ title: 'work' }], totalWorks: 1, researchNowQueryString: 'query=dogs' });
+        .reply(200, { works: [{ title: 'work' }], totalWorks: 1000, researchNowQueryString: 'query=dogs' });
       component = shallow(<DrbbContainer />, { context });
     });
 
@@ -67,8 +67,12 @@ describe('DrbbContainer', () => {
     it('should set state with the fetched results', () => {
       expect(component.state('works')).to.be.an('array');
       expect(component.state('works')).to.have.length(1);
-      expect(component.state('totalWorks')).to.equal(1);
+      expect(component.state('totalWorks')).to.equal(1000);
       expect(component.state('researchNowQueryString')).to.equal('query=dogs');
+    });
+
+    it('should display total results with thousands separator', () => {
+      expect(component.find('Link').render().text()).to.include('1,000');
     });
 
     it('should render DrbbResult', () => {
