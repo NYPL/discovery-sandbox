@@ -77,15 +77,15 @@ const SearchResultsContainer = (props, context) => {
           }
           { includeDrbb && media === 'desktop' ? <DrbbContainer /> : null}
           {
-            hasResults &&
-            <Pagination
-              ariaControls="nypl-results-list"
-              total={totalResults}
-              perPage={50}
-              page={parseInt(page, 10)}
-              createAPIQuery={createAPIQuery}
-              updatePage={updatePage}
-            />
+            hasResults ?
+              <Pagination
+                ariaControls="nypl-results-list"
+                total={totalResults}
+                perPage={50}
+                page={parseInt(page, 10)}
+                createAPIQuery={createAPIQuery}
+                updatePage={updatePage}
+              /> : null
           }
           { includeDrbb && ['tablet', 'mobile'].includes(media) ? <DrbbContainer /> : null}
         </div>

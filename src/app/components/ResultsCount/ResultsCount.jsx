@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 import Store from '@Store';
 import { displayContext } from '../../utils/utils';
+import appConfig from '../../data/appConfig';
 
 class ResultsCount extends React.Component {
   // The `searchKeywords` prop gets updated before the `count` and we want to wait until both
@@ -44,7 +45,7 @@ class ResultsCount extends React.Component {
 
     const displayContextString = displayContext({ searchKeywords, selectedFilters, field, count });
 
-    if (Store.state.isLoading) {
+    if (Store.getState().isLoading) {
       return 'Loading...';
     }
 
@@ -62,7 +63,7 @@ class ResultsCount extends React.Component {
   render() {
     const results = this.displayCount();
     const { count } = this.props;
-    const { includeDrbb } = this.context;
+    const { includeDrbb } = appConfig;
     if (includeDrbb && count === 0) return null;
 
     return (
