@@ -402,38 +402,6 @@ function createHoldRequestServer(req, res, pickedUpBibId = '', pickedUpItemId = 
   );
 }
 
-// function createHoldRequestEdd(req, res) {
-//   // Ensure user is logged in
-//   const loggedIn = User.requireUser(req);
-//   if (!loggedIn) return false;
-//
-//   return postHoldAPI(
-//     req,
-//     req.body.itemId,
-//     req.body.pickupLocation,
-//     req.body.form,
-//     req.body.itemSource,
-//     (response) => {
-//       const data = JSON.parse(response).data;
-//       res.json({
-//         id: data.id,
-//         jobId: data.jobId,
-//         pickupLocation: data.pickupLocation,
-//       });
-//     },
-//     (error) => {
-//       logger.error(
-//         `Error calling postHoldAPI in createHoldRequestEdd, itemId: ${req.body.itemId}`,
-//         error,
-//       );
-//       res.json({
-//         status: error.status,
-//         error,
-//       });
-//     },
-//   );
-// }
-
 function eddServer(req, res) {
   const {
     bibId,
@@ -502,6 +470,5 @@ export default {
   newHoldRequestAjax,
   newHoldRequestServerEdd,
   createHoldRequestServer,
-  // createHoldRequestEdd,
   eddServer,
 };

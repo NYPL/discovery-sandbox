@@ -135,12 +135,6 @@ class ElectronicDelivery extends React.Component {
       title,
     } = this.state;
     const path = `${appConfig.baseUrl}/hold/confirmation/${bibId}-${itemId}`;
-    // const data = _extend({
-    //   bibId,
-    //   itemId,
-    //   pickupLocation: 'edd',
-    //   itemSource,
-    // }, fields);
     const searchKeywords = this.props.searchKeywords;
     const searchKeywordsQuery = searchKeywords ? `&q=${searchKeywords}` : '';
     const itemSourceMapping = {
@@ -175,34 +169,6 @@ class ElectronicDelivery extends React.Component {
           `${path}?errorMessage=${error}${searchKeywordsQuery}${this.fromUrl()}`,
         );
       });
-    // axios
-    //   .post(`${appConfig.baseUrl}/api/newHold`, data)
-    //   .then((response) => {
-    //     if (response.data.error && response.data.error.status !== 200) {
-    //       Actions.updateLoadingStatus(false);
-    //       this.context.router.push(
-    //         `${path}?errorStatus=${response.data.error.status}` +
-    //         `&errorMessage=${response.data.error.statusText}${searchKeywordsQuery}${fromUrlQuery}`,
-    //       );
-    //     } else {
-    //       Actions.updateLoadingStatus(false);
-    //       this.context.router.push(
-    //         `${path}?pickupLocation=edd&requestId=${response.data.id}` +
-    //         `${searchKeywordsQuery}${fromUrlQuery}`,
-    //       );
-    //     }
-    //   })
-    //   .catch((error) => {
-    //     console.error(
-    //       'Error attempting to submit an ajax EDD request at ElectronicDelivery',
-    //       error,
-    //     );
-    //
-    //     Actions.updateLoadingStatus(false);
-    //     this.context.router.push(
-    //       `${path}?errorMessage=${error}${searchKeywordsQuery}${fromUrlQuery}`,
-    //     );
-    //   });
   }
 
   /*

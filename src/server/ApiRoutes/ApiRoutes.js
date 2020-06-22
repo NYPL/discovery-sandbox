@@ -46,10 +46,6 @@ router
   .route(`${appConfig.baseUrl}/api/patronEligibility`)
   .get(User.eligibility);
 
-// router
-//   .route(`${appConfig.baseUrl}/api/newHold`)
-//   .post(Hold.createHoldRequestEdd);
-
 router
   .route(`${appConfig.baseUrl}/api/subjectHeading/:subjectLiteral/`)
   .get(SubjectHeading.bibsAjax);
