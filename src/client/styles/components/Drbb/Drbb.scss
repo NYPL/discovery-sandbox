@@ -122,6 +122,10 @@ a.drbb-download-pdf {
   align-items: center;
   background-color: #f9f8f7;
   border-radius: 4px;
+
+  img {
+    max-width: 80%;
+  }
 }
 
 .drbb-authorship {
