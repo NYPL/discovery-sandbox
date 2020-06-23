@@ -29,7 +29,9 @@ class Application extends React.Component {
   }
 
   getChildContext() {
-    return { media: this.state.media };
+    return {
+      media: this.state.media,
+    };
   }
 
   componentDidMount() {
@@ -119,6 +121,7 @@ Application.contextTypes = {
 
 Application.childContextTypes = {
   media: PropTypes.string,
+  includeDrbb: PropTypes.bool,
 };
 
 export default Application;

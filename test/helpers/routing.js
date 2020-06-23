@@ -10,7 +10,10 @@ const mockRouter = push => ({
   goForward: stub(),
   setRouteLeaveHook: stub(),
   isActive: stub(),
-  location: { query: {} },
+  location: {
+    query: {},
+    pathname: '',
+  },
   routes: [
     { component: { name: 'default' } },
   ],

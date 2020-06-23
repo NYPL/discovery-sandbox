@@ -7,13 +7,28 @@ import DrbbContainer from '../Drbb/DrbbContainer';
 import {
   basicQuery,
   trackDiscovery,
+  displayContext,
 } from '../../utils/utils';
 import Store from '@Store'
 import appConfig from '../../data/appConfig';
+import Store from '../../stores/Store';
 
 // Renders the ResultsList containing the search results and the Pagination component
 const SearchResultsContainer = (props, context) => {
-  const includeDrbb = true;
+  const {
+    searchResults,
+    searchKeywords,
+    page,
+  } = props;
+  const {
+    media,
+  } = context;
+  const {
+    includeDrbb,
+  } = appConfig;
+
+  const results = searchResults ? searchResults.itemListElement : [];
+  const totalResults = searchResults ? searchResults.totalResults : results.length;
   const createAPIQuery = basicQuery(props);
 
   const updatePage = (nextPage, pageType) => {
@@ -23,15 +38,17 @@ const SearchResultsContainer = (props, context) => {
     props.router.push(`${appConfig.baseUrl}/search?${apiQuery}`);
   };
 
-  const {
-    searchResults,
-    searchKeywords,
-    page,
-  } = props;
-  const { media } = context;
+  const noResultElementForDrbbIntegration = includeDrbb ?
+    (
+      <div
+        className={
+          `nypl-results-summary no-scc-results drbb-integration ${Store.getState().isLoading ? ' hide-results-list' : ''
+        }`}
+      >
+        There are no results {displayContext(props)} from Shared Collection Catalog.
+      </div>) : null;
 
-  const totalResults = searchResults ? searchResults.totalResults : undefined;
-  const results = searchResults ? searchResults.itemListElement : [];
+  const hasResults = results && totalResults;
 
   return (
     <React.Fragment>
@@ -42,23 +59,24 @@ const SearchResultsContainer = (props, context) => {
           aria-describedby="results-description"
         >
           {
-            !!(results && results.length !== 0) &&
-            <ResultsList
-              results={results}
-              searchKeywords={searchKeywords}
-            />
+            hasResults ?
+              <ResultsList
+                results={results}
+                searchKeywords={searchKeywords}
+              /> :
+              noResultElementForDrbbIntegration
           }
           { includeDrbb && media === 'desktop' ? <DrbbContainer /> : null}
           {
-            !!(totalResults && totalResults !== 0) &&
-            <Pagination
-              ariaControls="nypl-results-list"
-              total={totalResults}
-              perPage={50}
-              page={parseInt(page, 10)}
-              createAPIQuery={createAPIQuery}
-              updatePage={updatePage}
-            />
+            hasResults ?
+              <Pagination
+                ariaControls="nypl-results-list"
+                total={totalResults}
+                perPage={50}
+                page={parseInt(page, 10)}
+                createAPIQuery={createAPIQuery}
+                updatePage={updatePage}
+              /> : null
           }
           { includeDrbb && ['tablet', 'mobile'].includes(media) ? <DrbbContainer /> : null}
         </div>

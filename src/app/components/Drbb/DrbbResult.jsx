@@ -31,7 +31,7 @@ const DrbbResult = (props) => {
   const authorship = () => {
     const authors = agents.filter(agent => agent.roles.includes('author'));
 
-    if (!authors) return null;
+    if (!authors || !authors.length) return null;
     const authorLinks = authors.map((agent, i) => [
       (i > 0 ? ', ' : null),
       <Link
