@@ -23,11 +23,13 @@ const SearchResultsContainer = (props, context) => {
   } = props;
   const {
     media,
-    includeDrbb,
   } = context;
+  const {
+    includeDrbb,
+  } = appConfig;
 
-  const totalResults = searchResults ? searchResults.totalResults : undefined;
   const results = searchResults ? searchResults.itemListElement : [];
+  const totalResults = searchResults ? searchResults.totalResults : results.length;
   const createAPIQuery = basicQuery(props);
 
   const updatePage = (nextPage, pageType) => {
@@ -55,6 +57,7 @@ const SearchResultsContainer = (props, context) => {
         There are no results {displayContext(props)} from Shared Collection Catalog.
       </div>) : null;
 
+  const hasResults = results && totalResults;
 
   return (
     <React.Fragment>
@@ -65,7 +68,7 @@ const SearchResultsContainer = (props, context) => {
           aria-describedby="results-description"
         >
           {
-            results && results.length !== 0 ?
+            hasResults !== 0 ?
               <ResultsList
                 results={results}
                 searchKeywords={searchKeywords}
@@ -74,7 +77,7 @@ const SearchResultsContainer = (props, context) => {
           }
           { includeDrbb && media === 'desktop' ? <DrbbContainer /> : null}
           {
-            !!(totalResults && totalResults !== 0) &&
+            hasResults &&
             <Pagination
               ariaControls="nypl-results-list"
               total={totalResults}
@@ -104,7 +107,6 @@ SearchResultsContainer.defaultProps = {
 SearchResultsContainer.contextTypes = {
   router: PropTypes.object,
   media: PropTypes.string,
-  includeDrbb: PropTypes.bool,
 };
 
 export default SearchResultsContainer;

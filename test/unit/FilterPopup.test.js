@@ -2,8 +2,10 @@
 import React from 'react';
 import { expect } from 'chai';
 import { shallow, mount } from 'enzyme';
+import { mock } from 'sinon';
 
 import FilterPopup from '../../src/app/components/FilterPopup/FilterPopup';
+import appConfig from '../../src/app/data/appConfig';
 
 describe('FilterPopup', () => {
   describe('Default - no javascript', () => {
@@ -234,7 +236,7 @@ describe('FilterPopup', () => {
 
   describe('DRBB integration', () => {
     let component;
-    const context = {};
+    let appConfigMock;
     const selectedFilters = {
       dateAfter: '2000',
       language: [
@@ -259,10 +261,18 @@ describe('FilterPopup', () => {
       },
     };
 
+    before(() => {
+      appConfigMock = mock(appConfig);
+    });
+
+    after(() => {
+      appConfigMock.restore();
+    });
+
     describe('without integration', () => {
       before(() => {
-        context.includeDrbb = false;
-        component = mount(<FilterPopup selectedFilters={selectedFilters} />, context);
+        appConfig.includeDrbb = false;
+        component = mount(<FilterPopup selectedFilters={selectedFilters} />);
       });
 
       it('should not have any components with .drbb-integration class', () => {
@@ -272,8 +282,8 @@ describe('FilterPopup', () => {
 
     describe('with integration', () => {
       before(() => {
-        context.includeDrbb = true;
-        component = mount(<FilterPopup selectedFilters={selectedFilters} />, { context });
+        appConfig.includeDrbb = true;
+        component = mount(<FilterPopup selectedFilters={selectedFilters} />);
       });
 
       it('should have components with .drbb-integration class', () => {

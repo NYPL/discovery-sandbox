@@ -359,7 +359,7 @@ class FilterPopup extends React.Component {
       dateAfter: selectedFilters.dateAfter,
       dateBefore: selectedFilters.dateBefore,
     };
-    const { includeDrbb } = this.context;
+    const { includeDrbb } = appConfig;
 
     const applyButton = (position = '') => (
       <button
@@ -630,7 +630,6 @@ FilterPopup.defaultProps = {
 
 FilterPopup.contextTypes = {
   router: PropTypes.object,
-  includeDrbb: PropTypes.bool,
 };
 
 export default FilterPopup;

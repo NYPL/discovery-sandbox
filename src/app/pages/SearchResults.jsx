@@ -13,6 +13,7 @@ import SearchResultsSorter from '@SearchResultsSorter';
 import {
   basicQuery,
 } from '../utils/utils';
+import appConfig from '../data/appConfig';
 
 const SearchResults = (props, context) => {
   const {
@@ -26,9 +27,11 @@ const SearchResults = (props, context) => {
   } = props;
 
   const {
-    includeDrbb,
     router,
   } = context;
+
+  const { includeDrbb } = appConfig;
+  console.log("includeDrbb", includeDrbb);
 
   const { location } = router;
 
@@ -161,7 +164,6 @@ SearchResults.defaultProps = {
 };
 
 SearchResults.contextTypes = {
-  includeDrbb: PropTypes.bool,
   router: PropTypes.obj,
 };
 

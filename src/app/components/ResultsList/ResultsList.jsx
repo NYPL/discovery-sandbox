@@ -97,7 +97,7 @@ class ResultsList extends React.Component {
   render() {
     const results = this.props.results;
     let resultsElm = null;
-    const { includeDrbb } = this.context;
+    const { includeDrbb } = appConfig;
 
     if (!results || !_isArray(results) || !results.length) {
       return null;
@@ -125,7 +125,6 @@ ResultsList.propTypes = {
 
 ResultsList.contextTypes = {
   router: PropTypes.object,
-  includeDrbb: PropTypes.bool,
 };
 
 export default ResultsList;
