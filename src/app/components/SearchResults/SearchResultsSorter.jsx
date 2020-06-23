@@ -63,6 +63,7 @@ class SearchResultsSorter extends React.Component {
     trackDiscovery('Sort by', sortBy);
     Actions.updateLoadingStatus(true);
     ajaxCall(`${appConfig.baseUrl}/api?${apiQuery}`, (response) => {
+      if (response.data.drbbResults) Actions.updateDrbbResults(response.data.drbbResults);
       Actions.updateSearchResults(response.data.searchResults);
       Actions.updateSortBy(sortBy);
       Actions.updateLoadingStatus(false);

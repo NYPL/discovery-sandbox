@@ -20,6 +20,7 @@ class Store {
       updateDeliveryLocations: Actions.updateDeliveryLocations,
       updateIsEddRequestable: Actions.updateIsEddRequestable,
       updateSubjectHeading: Actions.updateSubjectHeading,
+      updateDrbbResults: Actions.updateDrbbResults,
     });
 
     this.state = {
@@ -43,6 +44,7 @@ class Store {
       deliveryLocations: [],
       isEddRequestable: false,
       subjectHeading: null,
+      drbbResults: {},
     };
   }
 
@@ -106,6 +108,10 @@ class Store {
 
   updateSubjectHeading(data) {
     this.setState({ subjectHeading: data });
+  }
+
+  updateDrbbResults(data) {
+    this.setState({ drbbResults: data });
   }
 }
 

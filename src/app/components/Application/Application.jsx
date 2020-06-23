@@ -64,6 +64,7 @@ class Application extends React.Component {
             const selectedFilters = destructureFilters(urlFilters, data.filters);
             Actions.updateSelectedFilters(selectedFilters);
             Actions.updateFilters(data.filters);
+            if (data.drbbResults) Actions.updateDrbbResults(data.drbbResults);
             Actions.updateSearchResults(data.searchResults);
             Actions.updatePage(query.page || '1');
             if (qParameter) Actions.updateSearchKeywords(qParameter);
