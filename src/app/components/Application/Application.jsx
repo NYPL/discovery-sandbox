@@ -61,8 +61,7 @@ class Application extends React.Component {
         ajaxCall(`${appConfig.baseUrl}/api${decodeURI(search)}`, (response) => {
           const { data } = response;
           if (data.filters && data.searchResults) {
-            const selectedFilters = destructureFilters(urlFilters, data.filters);
-            Actions.updateSelectedFilters(selectedFilters);
+            Actions.updateSelectedFilters(data.filters);
             Actions.updateFilters(data.filters);
             if (data.drbbResults) Actions.updateDrbbResults(data.drbbResults);
             Actions.updateSearchResults(data.searchResults);
@@ -79,7 +78,9 @@ class Application extends React.Component {
   }
 
   shouldStoreUpdate() {
-    return `?${basicQuery({})(Store.getState())}` !== this.context.router.location.search;
+    const { search } = this.context.router.location;
+
+    return `?${basicQuery({})(Store.getState())}` !== search;
   }
 
   componentWillUnmount() {

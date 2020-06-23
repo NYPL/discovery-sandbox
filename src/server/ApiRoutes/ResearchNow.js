@@ -1,10 +1,8 @@
 import nyplApiClient from '../routes/nyplApiClient';
-
 import {
   createResearchNowQuery,
   getResearchNowQueryString,
 } from '../../app/utils/researchNowUtils';
-import appConfig from '../../app/data/appConfig';
 import logger from '../../../logger';
 
 const nyplApiClientCall = query => nyplApiClient({ apiName: 'drbb' })
