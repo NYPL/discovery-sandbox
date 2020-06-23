@@ -371,6 +371,83 @@ const getUpdatedFilterValues = (props) => {
   return updatedFilterValues;
 };
 
+// This function is used in `ResultsCount`, primarily.
+/*
+   * displayContext({ searchKeywords, selectedFilters, field, count })
+   * @param {object} takes keys `searchKeywords` {string}, `selectedFilters` {object}, `field` {string}, `count` {integer}.
+   * Displays where the results are coming from. This currently only allows for one
+   * option at a time due to constraints on the front end not allowing for multiple
+   * selections to occur.
+   *
+   * @returns {string} A phrase like "for (keyword|title|author) TERM"
+   */
+function displayContext({ searchKeywords, selectedFilters, field, count }) {
+  const keyMapping = {
+    // Currently from links on the bib page:
+    creatorLiteral: 'author',
+    contributorLiteral: 'author',
+    subjectLiteral: 'subject',
+    titleDisplay: 'title',
+    // From the search field dropdown:
+    contributor: 'author/contributor',
+    title: 'title',
+    standard_number: 'standard number',
+  };
+
+  // Build up an array of human-readable "clauses" representing the query:
+  const clauses = [];
+
+  // Build a hash of active, non-empty filters:
+  const activeFilters = Object.keys((selectedFilters || {}))
+    .reduce((map, key) => {
+      const label = keyMapping[key];
+      const filter = selectedFilters[key];
+      if (label
+        && Array.isArray(filter)
+        && filter[0]
+        && filter[0].value
+      ) {
+        return Object.assign({ [label]: selectedFilters[key][0].value }, map);
+      }
+      return map;
+    }, {});
+
+  // Are there any filters at work?
+  const hasActiveFilters = Object.keys(activeFilters).length > 0;
+
+  // If there are filters, build a clause like 'author "Shakespeare", title "Hamlet"'
+  if (hasActiveFilters) {
+    clauses.push(
+      Object.keys(activeFilters)
+        .map(label => `${label} "${activeFilters[label]}"`)
+        .join(', '),
+    );
+  }
+
+  // Mention keywords if keywords used (or no results):
+  if (searchKeywords || count === 0) {
+    // We call `q` something different depending on search_scope (i.e.
+    // "field") and the number of results.
+
+    // By default, call it 'keywords':
+    const plural = /\s/.test(searchKeywords) ? 's' : '';
+    let fieldLabel = `keyword${plural}`;
+    // Special case 1: If 0 results, call it "the keywords":
+    if (count === 0) {
+      fieldLabel = `the ${fieldLabel}`;
+    }
+    // Special case 2: if a search_scope used, use a friendly name for that:
+    if (field && field !== 'all') {
+      fieldLabel = keyMapping[field];
+    }
+    clauses.push(`${fieldLabel} "${searchKeywords}"`);
+  }
+
+  // Now join the accumlated (0-2) "clauses" together into a phrase like:
+  // 'for author "Shakespeare" and keywords "romeo and juliet"'
+  return clauses.length ? `for ${clauses.join(' and ')}` : '';
+}
+
 export {
   trackDiscovery,
   ajaxCall,
@@ -385,4 +462,5 @@ export {
   parseServerSelectedFilters,
   getAggregatedElectronicResources,
   getUpdatedFilterValues,
+  displayContext,
 };

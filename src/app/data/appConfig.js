@@ -10,7 +10,7 @@ export default {
   api: {
     discovery: {
       development: process.env.PLATFORM_API_BASE_URL || 'https://qa-platform.nypl.org/api/v0.1',
-      production: process.env.PLATFORM_API_BASE_URL || 'https://platform.nypl.org/api/v0.1'
+      production: process.env.PLATFORM_API_BASE_URL || 'https://platform.nypl.org/api/v0.1',
     },
     drbb: {
       development: 'https://dev-platform.nypl.org/api/v0.1/research-now/v3/search-api',
@@ -52,4 +52,5 @@ export default {
     development: 'https://researchnow-reader.nypl.org',
     production: 'https://digital-research-books-reader.nypl.org',
   },
+  includeDrbb: /true/i.test(process.env.INCLUDE_DRBB),
 };
