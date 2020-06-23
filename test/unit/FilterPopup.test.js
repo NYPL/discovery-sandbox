@@ -2,8 +2,10 @@
 import React from 'react';
 import { expect } from 'chai';
 import { shallow, mount } from 'enzyme';
+import { mock } from 'sinon';
 
 import FilterPopup from '../../src/app/components/FilterPopup/FilterPopup';
+import appConfig from '../../src/app/data/appConfig';
 
 describe('FilterPopup', () => {
   describe('Default - no javascript', () => {
@@ -234,6 +236,64 @@ describe('FilterPopup', () => {
 
       submitFormButton.simulate('click');
       expect(component.find('.nypl-form-error').length).to.equal(1);
+    });
+  });
+
+  describe('DRBB integration', () => {
+    let component;
+    let appConfigMock;
+    const selectedFilters = {
+      dateAfter: '2000',
+      language: [
+        {
+          count: 4,
+          label: 'German',
+          selected: true,
+          value: 'lang:ger',
+        },
+        {
+          count: 8,
+          label: 'Spainish',
+          selected: true,
+          value: 'lang:sp',
+        },
+      ],
+      materialType: {
+        count: 5,
+        label: 'Text',
+        selected: true,
+        value: 'resourcetypes:txt',
+      },
+    };
+
+    before(() => {
+      appConfigMock = mock(appConfig);
+    });
+
+    after(() => {
+      appConfigMock.restore();
+    });
+
+    describe('without integration', () => {
+      before(() => {
+        appConfig.includeDrbb = false;
+        component = mount(<FilterPopup selectedFilters={selectedFilters} />);
+      });
+
+      it('should not have any components with .drbb-integration class', () => {
+        expect(component.find('.drbb-integration')).to.have.length(0);
+      });
+    });
+
+    describe('with integration', () => {
+      before(() => {
+        appConfig.includeDrbb = true;
+        component = mount(<FilterPopup selectedFilters={selectedFilters} />);
+      });
+
+      it('should have components with .drbb-integration class', () => {
+        expect(component.find('.drbb-integration')).to.have.length(1);
+      });
     });
   });
 });

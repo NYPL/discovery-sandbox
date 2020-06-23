@@ -100,6 +100,7 @@ class ResultsList extends React.Component {
   render() {
     const results = this.props.results;
     let resultsElm = null;
+    const { includeDrbb } = appConfig;
 
     if (!results || !_isArray(results) || !results.length) {
       return null;
@@ -110,7 +111,9 @@ class ResultsList extends React.Component {
     return (
       <ul
         id="nypl-results-list"
-        className={`nypl-results-list ${Store.getState().isLoading ? 'hide-results-list ' : 'drbb-integration'}`}
+        className={
+          `nypl-results-list${Store.getState().isLoading ? ' hide-results-list' : ''}${includeDrbb ? ' drbb-integration' : ''}`
+        }
       >
         {resultsElm}
       </ul>
