@@ -8,9 +8,11 @@ import {
   basicQuery,
   ajaxCall,
   trackDiscovery,
+  displayContext,
 } from '../../utils/utils';
 import Actions from '../../actions/Actions';
 import appConfig from '../../data/appConfig';
+import Store from '../../stores/Store';
 
 // Renders the ResultsList containing the search results and the Pagination component
 const SearchResultsContainer = (props, context) => {
@@ -45,6 +47,16 @@ const SearchResultsContainer = (props, context) => {
     });
   };
 
+  const noResultElementForDrbbIntegration = includeDrbb ?
+    (
+      <div
+        className={
+          `nypl-results-summary no-scc-results drbb-integration ${Store.getState().isLoading ? ' hide-results-list' : ''
+        }`}
+      >
+        There are no results {displayContext(props)} from Shared Collection Catalog.
+      </div>) : null;
+
   const hasResults = results && totalResults;
 
   return (
@@ -56,23 +68,24 @@ const SearchResultsContainer = (props, context) => {
           aria-describedby="results-description"
         >
           {
-            hasResults &&
-            <ResultsList
-              results={results}
-              searchKeywords={searchKeywords}
-            />
+            hasResults !== 0 ?
+              <ResultsList
+                results={results}
+                searchKeywords={searchKeywords}
+              /> :
+              noResultElementForDrbbIntegration
           }
           { includeDrbb && media === 'desktop' ? <DrbbContainer /> : null}
           {
-            hasResults &&
-            <Pagination
-              ariaControls="nypl-results-list"
-              total={totalResults}
-              perPage={50}
-              page={parseInt(page, 10)}
-              createAPIQuery={createAPIQuery}
-              updatePage={updatePage}
-            />
+            hasResults ?
+              <Pagination
+                ariaControls="nypl-results-list"
+                total={totalResults}
+                perPage={50}
+                page={parseInt(page, 10)}
+                createAPIQuery={createAPIQuery}
+                updatePage={updatePage}
+              /> : null
           }
           { includeDrbb && ['tablet', 'mobile'].includes(media) ? <DrbbContainer /> : null}
         </div>
