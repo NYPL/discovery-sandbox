@@ -2,7 +2,7 @@
 import React from 'react';
 import { expect } from 'chai';
 import { shallow } from 'enzyme';
-import { spy, stub } from 'sinon';
+import { spy } from 'sinon';
 import MockAdapter from 'axios-mock-adapter';
 import axios from 'axios';
 
@@ -13,33 +13,10 @@ describe('DrbbContainer', () => {
   let component;
   const context = mockRouterContext();
 
-  describe('initial render', () => {
-    before(() => {
-      component = shallow(<DrbbContainer />, {
-        context,
-        disableLifecycleMethods: true,
-      });
-    });
-
-    it('should render the loading component', () => {
-      expect(component.find('.drbb-loading-layer')).to.have.length(1);
-    });
-
-    it('should render three divs', () => {
-      expect(component.find('div')).to.have.length(3);
-    });
-
-    it('should have initial loading state', () => {
-      expect(component.state('drbbResultsLoading')).to.equal(true);
-    });
-  });
-
-  let fetchResearchNowResults;
   let mock;
   describe('with search params', () => {
     before(() => {
       context.router.location.search = '?q=dogs';
-      fetchResearchNowResults = spy(DrbbContainer.prototype, 'fetchResearchNowResults');
       mock = new MockAdapter(axios);
       mock
         .onGet('/research/collections/shared-collection-catalog/api/research-now?q=dogs')
@@ -49,34 +26,6 @@ describe('DrbbContainer', () => {
 
     after(() => {
       mock.restore();
-    });
-
-    it('should have `search` property', () => {
-      expect(component.instance().search).to.equal('?q=dogs');
-    });
-
-    it('should call `fetchResearchNowResults`', () => {
-      expect(fetchResearchNowResults.calledOnce).to.equal(true);
-    });
-
-    it('should not be loading', () => {
-      expect(component.state('drbbResultsLoading')).to.equal(false);
-      expect(component.find('.drbb-loading-layer')).to.not.be.defined;
-    });
-
-    it('should set state with the fetched results', () => {
-      expect(component.state('works')).to.be.an('array');
-      expect(component.state('works')).to.have.length(1);
-      expect(component.state('totalWorks')).to.equal(1000);
-      expect(component.state('researchNowQueryString')).to.equal('query=dogs');
-    });
-
-    it('should display total results with thousands separator', () => {
-      expect(component.find('Link').render().text()).to.include('1,000');
-    });
-
-    it('should render DrbbResult', () => {
-      expect(component.find('DrbbResult').exists()).to.equal(true);
     });
   });
 
