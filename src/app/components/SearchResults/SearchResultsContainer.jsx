@@ -14,7 +14,20 @@ import appConfig from '../../data/appConfig';
 
 // Renders the ResultsList containing the search results and the Pagination component
 const SearchResultsContainer = (props, context) => {
-  const includeDrbb = true;
+  const {
+    searchResults,
+    searchKeywords,
+    page,
+  } = props;
+  const {
+    media,
+  } = context;
+  const {
+    includeDrbb,
+  } = appConfig;
+
+  const results = searchResults ? searchResults.itemListElement : [];
+  const totalResults = searchResults ? searchResults.totalResults : results.length;
   const createAPIQuery = basicQuery(props);
 
   const updatePage = (nextPage, pageType) => {
@@ -32,15 +45,7 @@ const SearchResultsContainer = (props, context) => {
     });
   };
 
-  const {
-    searchResults,
-    searchKeywords,
-    page,
-  } = props;
-  const { media } = context;
-
-  const totalResults = searchResults ? searchResults.totalResults : undefined;
-  const results = searchResults ? searchResults.itemListElement : [];
+  const hasResults = results && totalResults;
 
   return (
     <React.Fragment>
@@ -51,7 +56,7 @@ const SearchResultsContainer = (props, context) => {
           aria-describedby="results-description"
         >
           {
-            !!(results && results.length !== 0) &&
+            hasResults &&
             <ResultsList
               results={results}
               searchKeywords={searchKeywords}
@@ -59,7 +64,7 @@ const SearchResultsContainer = (props, context) => {
           }
           { includeDrbb && media === 'desktop' ? <DrbbContainer /> : null}
           {
-            !!(totalResults && totalResults !== 0) &&
+            hasResults &&
             <Pagination
               ariaControls="nypl-results-list"
               total={totalResults}

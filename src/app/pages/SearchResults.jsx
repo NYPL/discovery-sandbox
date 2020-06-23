@@ -13,6 +13,7 @@ import SearchResultsSorter from '@SearchResultsSorter';
 import {
   basicQuery,
 } from '../utils/utils';
+import appConfig from '../data/appConfig';
 
 const SearchResults = (props, context) => {
   const {
@@ -22,11 +23,16 @@ const SearchResults = (props, context) => {
     filters,
     page,
     field,
-    location,
     sortBy,
   } = props;
 
-  const { includeDrbb } = context;
+  const {
+    router,
+  } = context;
+
+  const { includeDrbb } = appConfig;
+
+  const { location } = router;
 
   const [dropdownOpen, toggleDropdown] = useState(false);
 
@@ -71,7 +77,7 @@ const SearchResults = (props, context) => {
         mainContent={<SearchResultsContainer {...props} />}
         bannerOptions={
           {
-            text: "Search Results",
+            text: 'Search Results',
             ariaLabel: headerLabel,
           }
         }
@@ -96,7 +102,7 @@ const SearchResults = (props, context) => {
             />
             {
               selectedFiltersAvailable &&
-              <div className="nypl-full-width-wrapper selected-filters drbb-integration">
+              <div className={`nypl-full-width-wrapper selected-filters${includeDrbb ? ' drbb-integration' : ''}`}>
                 <div className="nypl-row">
                   <div className="nypl-column-full">
                     <SelectedFilters
@@ -111,7 +117,7 @@ const SearchResults = (props, context) => {
         }
         extraRow={
           <div className="nypl-sorter-row">
-            <div className="nypl-full-width-wrapper drbb-integration">
+            <div className={`nypl-full-width-wrapper selected-filters${includeDrbb ? ' drbb-integration' : ''}`}>
               <div className="nypl-row">
                 <div className="nypl-column-full">
                   <ResultsCount
@@ -148,7 +154,6 @@ SearchResults.propTypes = {
   searchKeywords: PropTypes.string,
   selectedFilters: PropTypes.object,
   page: PropTypes.string,
-  location: PropTypes.object,
   filters: PropTypes.object,
   field: PropTypes.string,
   sortBy: PropTypes.string,
@@ -162,6 +167,10 @@ SearchResults.defaultProps = {
 
 SearchResults.contextTypes = {
   includeDrbb: PropTypes.bool,
+};
+
+SearchResults.contextTypes = {
+  router: PropTypes.obj,
 };
 
 export default SearchResults;
