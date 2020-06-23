@@ -28,7 +28,7 @@ const DrbbContainer = () => {
           target="_blank"
           key="drbb-results-list-link"
         >
-          See {totalWorks} results from Digital Research Books Beta
+          See {totalWorks.toLocaleString()} results from Digital Research Books Beta
         </Link>]);
     }
 
