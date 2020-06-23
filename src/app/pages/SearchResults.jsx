@@ -24,6 +24,7 @@ const SearchResults = (props, context) => {
     page,
     field,
     sortBy,
+    drbbResults,
   } = props;
 
   const {
@@ -70,6 +71,7 @@ const SearchResults = (props, context) => {
   };
 
   const selectedFiltersAvailable = checkForSelectedFilters();
+  const hasResults = searchResults && totalResults;
 
   return (
     <DocumentTitle title="Search Results | Shared Collection Catalog | NYPL">
@@ -128,7 +130,7 @@ const SearchResults = (props, context) => {
                     page={parseInt(page, 10)}
                   />
                   {
-                    (totalResults && totalResults !== 0) || (includeDrbb && drbbResults.totalWorks > 0) ?
+                    hasResults ?
                       <SearchResultsSorter
                         sortBy={sortBy}
                         page={page}

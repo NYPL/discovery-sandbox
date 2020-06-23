@@ -68,7 +68,7 @@ const SearchResultsContainer = (props, context) => {
           aria-describedby="results-description"
         >
           {
-            hasResults !== 0 ?
+            hasResults ?
               <ResultsList
                 results={results}
                 searchKeywords={searchKeywords}
