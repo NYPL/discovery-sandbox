@@ -24,7 +24,6 @@ const SearchResults = (props, context) => {
     page,
     field,
     sortBy,
-    drbbResults,
   } = props;
 
   const {

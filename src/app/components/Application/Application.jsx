@@ -156,7 +156,6 @@ Application.contextTypes = {
 
 Application.childContextTypes = {
   media: PropTypes.string,
-  includeDrbb: PropTypes.bool,
 };
 
 export default Application;
