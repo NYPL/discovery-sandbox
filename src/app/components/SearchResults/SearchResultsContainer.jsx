@@ -11,7 +11,6 @@ import {
 } from '../../utils/utils';
 import Store from '@Store'
 import appConfig from '../../data/appConfig';
-import Store from '../../stores/Store';
 
 // Renders the ResultsList containing the search results and the Pagination component
 const SearchResultsContainer = (props, context) => {
