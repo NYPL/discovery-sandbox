@@ -62,9 +62,11 @@ class SelectedFilters extends React.Component {
     Actions.updateSelectedFilters(selectedFilters);
     ajaxCall(`${appConfig.baseUrl}/api?${apiQuery}`, (response) => {
       if (response.data.searchResults && response.data.filters) {
+        if (response.data.drbbResults) Actions.updateDrbbResults(response.data.drbbResults);
         Actions.updateSearchResults(response.data.searchResults);
         Actions.updateFilters(response.data.filters);
       } else {
+        if (response.data.drbbResults) Actions.updateDrbbResults(response.data.drbbResults);
         Actions.updateSearchResults({});
         Actions.updateFilters({});
       }
@@ -86,9 +88,11 @@ class SelectedFilters extends React.Component {
     Actions.updateSelectedFilters({});
     ajaxCall(`${appConfig.baseUrl}/api?${apiQuery}`, (response) => {
       if (response.data.searchResults && response.data.filters) {
+        if (response.data.drbbResults) Actions.updateDrbbResults(response.data.drbbResults);
         Actions.updateSearchResults(response.data.searchResults);
         Actions.updateFilters(response.data.filters);
       } else {
+        if (response.data.drbbResults) Actions.updateDrbbResults(response.data.drbbResults);
         Actions.updateSearchResults({});
         Actions.updateFilters({});
       }
