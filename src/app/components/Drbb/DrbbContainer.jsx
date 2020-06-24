@@ -13,8 +13,10 @@ const DrbbContainer = () => {
     researchNowQueryString,
   } = Store.getState().drbbResults;
 
+  const hasWorks = works && works.length;
+
   const content = () => {
-    if (works && works.length) {
+    if (hasWorks) {
       return ([
         <ul key="drbb-scc-results-list" className="drbb-list">
           { works.map(work => <DrbbResult key={work.id} work={work} />) }
@@ -47,7 +49,7 @@ const DrbbContainer = () => {
             src="/src/client/assets/drbb_promo.png"
           />
         </div>
-        See results from Digital Research Books Beta
+        Explore Digital Research Books Beta
       </Link>
     );
   };
@@ -55,7 +57,7 @@ const DrbbContainer = () => {
   return (
     <div className="drbb-container">
       <h3 className="drbb-main-header">
-        Results from Digital Research Books Beta
+        {hasWorks ? 'Results from ' : 'No results found from '} Digital Research Books Beta
       </h3>
       <p className="drbb-description">
         Digital books for research from multiple sources world wide-
