@@ -35,6 +35,7 @@ router
   .post(Hold.eddServer);
 
 Object.keys(routePaths).forEach((routeName) => {
+  console.log('route: ', routePaths[routeName]);
   router
     .route(routePaths[routeName])
     .get(routeMethods[routeName]);
@@ -44,7 +45,6 @@ Object.keys(routePaths).forEach((routeName) => {
 router
   .route(`${appConfig.baseUrl}/api/research-now`)
   .get(ResearchNow.searchAjax);
-
 
 
 router

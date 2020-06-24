@@ -28,6 +28,7 @@ const routePaths = {
 const routesGenerator = location => ({
   bib: {
     apiRoute: (matchData, route) => `${route}?bibId=${matchData[1]}`,
+    serverParams: (matchData, req) => { req.query.bibId = matchData[1]; },
     actions: [Actions.updateBib],
     errorMessage: 'Error attempting to make an ajax request to fetch a bib record from ResultsList',
   },
@@ -67,6 +68,11 @@ const routesGenerator = location => ({
   },
   holdRequest: {
     apiRoute: (matchData, route) => route.replace(':bibId-:itemId', matchData[1]),
+    serverParams: (matchData, req) => {
+      const params = matchData[1].split(/[-?]/);
+      if (params[0]) req.params.bibId = params[0];
+      if (params[1]) req.params.itemId = params[1];
+    },
     actions: [
       data => Actions.updateBib(data.bib),
       data => Actions.updateDeliveryLocations(data.deliveryLocations),
@@ -103,6 +109,7 @@ function loadDataForRoutes(location, req, routeMethods) {
       apiRoute,
       actions,
       errorMessage,
+      serverParams,
     } = routes[pathType];
     const route = routePaths[pathType];
     Actions.updateLoadingStatus(true);
@@ -118,6 +125,7 @@ function loadDataForRoutes(location, req, routeMethods) {
       );
     };
     if (req) {
+      if (serverParams) serverParams(matchData, req);
       return new Promise((resolve) => {
         const res = {
           json: (data) => {
