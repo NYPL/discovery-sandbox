@@ -57,7 +57,7 @@ const DrbbContainer = () => {
   return (
     <div className="drbb-container">
       <h3 className="drbb-main-header">
-        {hasWorks ? 'Results from ' : 'Not results found from '} Digital Research Books Beta
+        {hasWorks ? 'Results from ' : 'No results found from '} Digital Research Books Beta
       </h3>
       <p className="drbb-description">
         Digital books for research from multiple sources world wide-
