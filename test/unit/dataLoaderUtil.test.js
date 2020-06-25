@@ -17,6 +17,7 @@ describe('dataLoaderUtil', () => {
       let actionsSpy;
       let sandbox;
       let mockRouteMethods;
+      let mockReq = [];
       before(() => {
         sandbox = sinon.createSandbox();
         axiosSpy = sandbox.spy(axios, 'get');
@@ -35,8 +36,7 @@ describe('dataLoaderUtil', () => {
           pathname: '',
           search: '',
         };
-        const req = true;
-        dataLoaderUtil.loadDataForRoutes(location, req, mockRouteMethods);
+        dataLoaderUtil.loadDataForRoutes(location, mockReq, mockRouteMethods);
       });
       after(() => {
         sandbox.restore();
@@ -84,7 +84,7 @@ describe('dataLoaderUtil', () => {
           pathname: '/research/collections/shared-collection-catalog/bib/b000000',
           search: '',
         };
-        mockReq = [];
+        mockReq = { query: {} };
         dataLoaderUtil.loadDataForRoutes(location, mockReq, mockRouteMethods);
       });
       after(() => {
@@ -266,7 +266,7 @@ describe('dataLoaderUtil', () => {
       let location;
       let mockReq;
       before(() => {
-        mockReq = [];
+        mockReq = { params: {} };
         holdRequestResponse = {
           bib: [],
           deliveryLocations: [],
