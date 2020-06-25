@@ -3,10 +3,13 @@ import React from 'react';
 import { expect } from 'chai';
 import { mount } from 'enzyme';
 import PropTypes from 'prop-types';
+import { mock } from 'sinon';
 
 import SearchResults from '../../src/app/pages/SearchResults';
 import SearchResultsContainer from '../../src/app/components/SearchResults/SearchResultsContainer';
 import { mockRouterContext } from '../helpers/routing';
+import appConfig from '../../src/app/data/appConfig';
+
 
 // Eventually, it would be nice to have mocked data in a different file and imported.
 const searchResults = {
@@ -163,10 +166,40 @@ describe('SearchResultsPage', () => {
     });
   });
 
-  describe('with DRBB integration', () => {
+  describe('without DRBB integration', () => {
     let component;
+    let appConfigMock;
 
     before(() => {
+      appConfigMock = mock(appConfig);
+      appConfig.includeDrbb = false;
+
+      component = mount(
+        <SearchResults
+          searchKeywords="locofocos"
+          searchResults={searchResults}
+          location={{ search: '' }}
+        />,
+        { context, childContextTypes });
+    });
+
+    after(() => {
+      appConfigMock.restore();
+    });
+
+    it('should not have any components with .drbb-integration class', () => {
+      expect(component.find('.drbb-integration')).to.have.length(0);
+    });
+  });
+
+  describe('with DRBB integration', () => {
+    let component;
+    let appConfigMock;
+
+    before(() => {
+      appConfigMock = mock(appConfig);
+      appConfig.includeDrbb = true;
+
       context.media = 'desktop';
       component = mount(
         <SearchResultsContainer
@@ -175,6 +208,10 @@ describe('SearchResultsPage', () => {
           location={{ search: '' }}
         />,
         { context });
+    });
+
+    after(() => {
+      appConfigMock.restore();
     });
 
     it('should render a <DrbbContainer /> component', () => {
@@ -188,8 +225,12 @@ describe('SearchResultsPage', () => {
     });
 
     describe('tablet/mobile view', () => {
+      let appConfigMock;
+
       before(() => {
         context.media = 'tablet';
+        appConfigMock = mock(appConfig);
+        appConfig.includeDrbb = true;
         component = mount(
           <SearchResultsContainer
             searchKeywords="locofocos"
@@ -198,6 +239,11 @@ describe('SearchResultsPage', () => {
           />,
           { context });
       });
+
+      after(() => {
+        appConfigMock.restore();
+      })
+
       it('should have the Pagination above the DrbbContainer', () => {
         expect(component.find('.nypl-column-full').childAt(1).is('Pagination')).to.eql(true);
       });

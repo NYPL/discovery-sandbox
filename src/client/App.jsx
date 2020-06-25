@@ -1,7 +1,7 @@
 /* global loadA11y, window */
 // lines 2 and 3 replace deprecated "babel-polyfill"
-import "core-js/stable";
-import "regenerator-runtime/runtime";
+import 'core-js/stable';
+import 'regenerator-runtime/runtime';
 
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -15,6 +15,7 @@ import Iso from 'iso';
 import alt from '../app/alt';
 
 import './styles/main.scss';
+import './assets/drbb_promo.png';
 
 import routes from '../app/routes/routes';
 
