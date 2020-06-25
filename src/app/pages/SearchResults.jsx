@@ -13,8 +13,9 @@ import SearchResultsSorter from '@SearchResultsSorter';
 import {
   basicQuery,
 } from '../utils/utils';
+import appConfig from '../data/appConfig';
 
-const SearchResults = (props) => {
+const SearchResults = (props, context) => {
   const {
     searchResults,
     searchKeywords,
@@ -22,9 +23,17 @@ const SearchResults = (props) => {
     filters,
     page,
     field,
-    location,
     sortBy,
+    drbbResults,
   } = props;
+
+  const {
+    router,
+  } = context;
+
+  const { includeDrbb } = appConfig;
+
+  const { location } = router;
 
   const [dropdownOpen, toggleDropdown] = useState(false);
 
@@ -62,6 +71,7 @@ const SearchResults = (props) => {
   };
 
   const selectedFiltersAvailable = checkForSelectedFilters();
+  const hasResults = searchResults && totalResults;
 
   return (
     <DocumentTitle title="Search Results | Shared Collection Catalog | NYPL">
@@ -69,7 +79,7 @@ const SearchResults = (props) => {
         mainContent={<SearchResultsContainer {...props} />}
         bannerOptions={
           {
-            text: "Search Results",
+            text: 'Search Results',
             ariaLabel: headerLabel,
           }
         }
@@ -94,7 +104,7 @@ const SearchResults = (props) => {
             />
             {
               selectedFiltersAvailable &&
-              <div className="nypl-full-width-wrapper selected-filters">
+              <div className={`nypl-full-width-wrapper selected-filters${includeDrbb ? ' drbb-integration' : ''}`}>
                 <div className="nypl-row">
                   <div className="nypl-column-full">
                     <SelectedFilters
@@ -109,7 +119,7 @@ const SearchResults = (props) => {
         }
         extraRow={
           <div className="nypl-sorter-row">
-            <div className="nypl-full-width-wrapper">
+            <div className={`nypl-full-width-wrapper selected-filters${includeDrbb ? ' drbb-integration' : ''}`}>
               <div className="nypl-row">
                 <div className="nypl-column-full">
                   <ResultsCount
@@ -120,13 +130,14 @@ const SearchResults = (props) => {
                     page={parseInt(page, 10)}
                   />
                   {
-                    !!(totalResults && totalResults !== 0) &&
-                    <SearchResultsSorter
-                      sortBy={sortBy}
-                      page={page}
-                      searchKeywords={searchKeywords}
-                      createAPIQuery={createAPIQuery}
-                    />
+                    hasResults ?
+                      <SearchResultsSorter
+                        sortBy={sortBy}
+                        page={page}
+                        searchKeywords={searchKeywords}
+                        createAPIQuery={createAPIQuery}
+                      />
+                      : null
                   }
                 </div>
               </div>
@@ -145,14 +156,23 @@ SearchResults.propTypes = {
   searchKeywords: PropTypes.string,
   selectedFilters: PropTypes.object,
   page: PropTypes.string,
-  location: PropTypes.object,
   filters: PropTypes.object,
   field: PropTypes.string,
   sortBy: PropTypes.string,
+  drbbResults: PropTypes.object,
 };
 
 SearchResults.defaultProps = {
   page: '1',
+  drbbResults: { totalWorks: 0 },
+};
+
+SearchResults.contextTypes = {
+  includeDrbb: PropTypes.bool,
+};
+
+SearchResults.contextTypes = {
+  router: PropTypes.obj,
 };
 
 export default SearchResults;

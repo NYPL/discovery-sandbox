@@ -14,6 +14,7 @@ import {
 } from '../../app/utils/utils';
 import nyplApiClient from '../routes/nyplApiClient';
 import logger from '../../../logger';
+import ResearchNow from './ResearchNow';
 
 const createAPIQuery = basicQuery({
   searchKeywords: '',
@@ -44,12 +45,21 @@ function search(searchKeywords = '', page, sortBy, order, field, filters, cb, er
 
   const aggregationQuery = `/aggregations?${encodedAggregationsQueryString}`;
   const resultsQuery = `?${encodedResultsQueryString}&per_page=50`;
+  const queryObj = { query: { q: searchKeywords, sortBy, order, field, filters } };
 
   // Need to get both results and aggregations before proceeding.
-  Promise.all([nyplApiClientCall(resultsQuery), nyplApiClientCall(aggregationQuery)])
+  Promise.all([
+    nyplApiClientCall(resultsQuery),
+    nyplApiClientCall(aggregationQuery)])
+    .then(response => ResearchNow.search(queryObj)
+      .then((drbbResults) => {
+        response.push(drbbResults);
+        return response;
+      })
+      .catch(console.error))
     .then((response) => {
-      const [results, aggregations] = response;
-      cb(aggregations, results, page);
+      const [results, aggregations, drbbResults] = response;
+      cb(aggregations, results, page, drbbResults);
     })
     .catch((error) => {
       logger.error('Error making server search call in search function', error);
@@ -67,10 +77,11 @@ function searchAjax(req, res) {
     order,
     fieldQuery,
     filters,
-    (apiFilters, searchResults, pageQuery) => res.json({
+    (apiFilters, searchResults, pageQuery, drbbResults) => res.json({
       filters: apiFilters,
       searchResults,
       pageQuery,
+      drbbResults,
     }),
     error => res.json(error),
   );
@@ -126,7 +137,7 @@ function searchServer(req, res, next) {
     order,
     fieldQuery,
     filters,
-    (apiFilters, data, pageQuery) => {
+    (apiFilters, data, pageQuery, drbbResults) => {
       const selectedFilters = {
         materialType: [],
         language: [],
@@ -209,6 +220,7 @@ function searchServer(req, res, next) {
         sortBy: sort ? `${sort}_${order}` : 'relevance',
         field: fieldQuery,
         error: {},
+        drbbResults,
       };
 
       next();
@@ -229,6 +241,7 @@ function searchServer(req, res, next) {
         sortBy: 'relevance',
         field: 'all',
         error,
+        drbbResults: {},
       };
 
       next();

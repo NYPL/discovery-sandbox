@@ -17,6 +17,7 @@ import {
 } from '../../utils/utils';
 import Actions from '../../actions/Actions';
 import appConfig from '../../data/appConfig';
+import { breakpoints } from '../../data/constants';
 import DataLoader from '../DataLoader/DataLoader';
 
 class Application extends React.Component {
@@ -29,11 +30,12 @@ class Application extends React.Component {
     };
     this.onChange = this.onChange.bind(this);
     this.shouldStoreUpdate = this.shouldStoreUpdate.bind(this);
-    this.checkMedia = this.checkMedia.bind(this);
   }
 
   getChildContext() {
-    return { media: this.state.media };
+    return {
+      media: this.state.media,
+    };
   }
 
   componentDidMount() {
@@ -62,6 +64,7 @@ class Application extends React.Component {
             const selectedFilters = destructureFilters(urlFilters, data.filters);
             Actions.updateSelectedFilters(selectedFilters);
             Actions.updateFilters(data.filters);
+            if (data.drbbResults) Actions.updateDrbbResults(data.drbbResults);
             Actions.updateSearchResults(data.searchResults);
             Actions.updatePage(query.page || '1');
             if (qParameter) Actions.updateSearchKeywords(qParameter);
@@ -70,12 +73,9 @@ class Application extends React.Component {
         });
       }
     });
-    const style = {
-      xtrasmallBreakPoint: '483px',
-    };
-    const mediaMatcher = window.matchMedia(`(max-width: ${style.xtrasmallBreakPoint})`);
-    this.checkMedia(mediaMatcher);
-    mediaMatcher.addListener(this.checkMedia);
+
+    window.addEventListener('resize', this.onWindowResize.bind(this));
+    this.onWindowResize();
   }
 
   shouldStoreUpdate() {
@@ -86,16 +86,25 @@ class Application extends React.Component {
     Store.unlisten(this.onChange);
   }
 
-  onChange() {
-    this.setState({ data: Store.getState() });
+  onWindowResize() {
+    const { media } = this.state;
+    const { innerWidth } = window;
+    const {
+      xtrasmall,
+      tablet,
+    } = breakpoints;
+
+    if (innerWidth <= xtrasmall) {
+      if (media !== 'mobile') this.setState({ media: 'mobile' });
+    } else if (innerWidth <= tablet) {
+      if (media !== 'tablet') this.setState({ media: 'tablet' });
+    } else {
+      if (media !== 'desktop') this.setState({ media: 'desktop' });
+    }
   }
 
-  checkMedia(media) {
-    if (media && media.matches) {
-      this.setState({ media: 'mobile' });
-    } else {
-      this.setState({ media: 'desktop' });
-    }
+  onChange() {
+    this.setState({ data: Store.getState() });
   }
 
   render() {
@@ -146,6 +155,7 @@ Application.contextTypes = {
 
 Application.childContextTypes = {
   media: PropTypes.string,
+  includeDrbb: PropTypes.bool,
 };
 
 export default Application;
