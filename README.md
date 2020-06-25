@@ -171,9 +171,9 @@ Starting up from a [Node/React boilerplate](https://bitbucket.org/NYPL/dgx-nypl-
 
 ## Deployment
 We have CI/CD configured through travis for the following branches:
-* `shep-development` deploying to `discovery-ui-development`
-* `shep-qa` deploying to `DiscoveryUi-10-17-qa`
-* `shep-production` deploying to `DiscoveryUi-production`
+* `development` deploying to `discovery-ui-development`
+* `qa` deploying to `DiscoveryUi-10-17-qa`
+* `production` deploying to `DiscoveryUi-production`
 
 ### Elastic Beanstalk
 We are using AWS EB to deploy our app. Check the [deployment file](DEPLOYMENT.md) for more information.
