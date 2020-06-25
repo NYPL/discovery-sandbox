@@ -34,16 +34,17 @@ router
   .route(`${appConfig.baseUrl}/edd`)
   .post(Hold.eddServer);
 
-Object.keys(pathInstructions).forEach(({ expression, pathType }) => {
+pathInstructions.forEach(({ expression, pathType }) => {
+  console.log('instruction: ', expression, pathType, routeMethods[pathType]);
   router
     .route(`${appConfig.baseUrl}/api/${expression}`)
     .get(routeMethods[pathType]);
 });
 
 
-router
-  .route(`${appConfig.baseUrl}/api/research-now`)
-  .get(ResearchNow.searchAjax);
+// router
+//   .route(`${appConfig.baseUrl}/api/research-now`)
+//   .get(ResearchNow.searchAjax);
 
 
 router

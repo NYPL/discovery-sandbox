@@ -47,7 +47,7 @@ function fetchBib(bibId, cb, errorcb) {
 }
 
 function bibSearch(req, res) {
-  const bibId = req.query.bibId || '';
+  const bibId = req.params.bibId || '';
 
   fetchBib(
     bibId,
