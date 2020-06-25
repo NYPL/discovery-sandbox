@@ -46,39 +46,8 @@ function fetchBib(bibId, cb, errorcb) {
     }); /* end axios call */
 }
 
-function bibSearchServer(req, res, next) {
-  const bibId = req.params.bibId || '';
-
-  fetchBib(
-    bibId,
-    (data) => {
-      if (data.status && data.status === 404) {
-        return res.redirect(`${appConfig.baseUrl}/404`);
-      }
-      const bibPageData = { bib: data };
-      if (req.query.searchKeywords) bibPageData.searchKeywords = req.query.searchKeywords;
-      res.locals.data.Store = {
-        ...bibPageData,
-        error: {},
-      };
-      next();
-    },
-    (error) => {
-      logger.error(`Error in bibSearchServer API error, id: ${bibId}`, error);
-      res.locals.data.Store = {
-        bib: {},
-        searchKeywords: req.query.searchKeywords || '',
-        error,
-      };
-      next();
-    },
-  );
-}
-
-function bibSearchAjax(req, res) {
+function bibSearch(req, res) {
   const bibId = req.query.bibId || '';
-
-  console.log("bibSearchAjax");
 
   fetchBib(
     bibId,
@@ -88,8 +57,7 @@ function bibSearchAjax(req, res) {
 }
 
 export default {
-  bibSearchServer,
-  bibSearchAjax,
+  bibSearch,
   fetchBib,
   nyplApiClientCall,
 };
