@@ -69,7 +69,8 @@ const routesGenerator = location => ({
   holdRequest: {
     apiRoute: (matchData, route) => route.replace(':bibId-:itemId', matchData[1]),
     serverParams: (matchData, req) => {
-      const params = matchData[1].split(/[-?]/);
+      const params = matchData[1].match(/\w+/g);
+      console.log('params: ', params[0], params[1]);
       if (params[0]) req.params.bibId = params[0];
       if (params[1]) req.params.itemId = params[1];
     },
