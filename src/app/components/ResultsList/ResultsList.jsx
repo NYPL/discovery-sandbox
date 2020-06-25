@@ -6,10 +6,13 @@ import {
   isArray as _isArray,
 } from 'underscore';
 
+
 // eslint-disable-next-line import/first, import/no-unresolved, import/extensions
-import Store from '@Store';
+import Store from '@Store'
 import LibraryItem from '../../utils/item';
-import { trackDiscovery } from '../../utils/utils';
+import {
+  trackDiscovery,
+} from '../../utils/utils';
 import ItemTable from '../Item/ItemTable';
 import appConfig from '../../data/appConfig';
 
@@ -95,7 +98,10 @@ class ResultsList extends React.Component {
   }
 
   render() {
-    const results = this.props.results;
+    const {
+      results,
+      subjectHeadingShow,
+    } = this.props;
     let resultsElm = null;
     const { includeDrbb } = appConfig;
 
@@ -109,7 +115,7 @@ class ResultsList extends React.Component {
       <ul
         id="nypl-results-list"
         className={
-          `nypl-results-list${Store.getState().isLoading ? ' hide-results-list' : ''}${includeDrbb ? ' drbb-integration' : ''}`
+          `nypl-results-list${Store.getState().isLoading ? ' hide-results-list' : ''}${includeDrbb && !subjectHeadingShow ? ' drbb-integration' : ''}`
         }
       >
         {resultsElm}
@@ -121,6 +127,7 @@ class ResultsList extends React.Component {
 ResultsList.propTypes = {
   results: PropTypes.array,
   searchKeywords: PropTypes.string,
+  subjectHeadingShow: PropTypes.bool,
 };
 
 ResultsList.contextTypes = {

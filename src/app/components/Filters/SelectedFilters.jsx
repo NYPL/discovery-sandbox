@@ -17,7 +17,6 @@ import {
 import Actions from '../../actions/Actions';
 import appConfig from '../../data/appConfig';
 import {
-  ajaxCall,
   trackDiscovery,
 } from '../../utils/utils';
 
@@ -57,53 +56,17 @@ class SelectedFilters extends React.Component {
     const apiQuery = this.props.createAPIQuery({ selectedFilters });
     trackDiscovery('Filters - Selected list', `Remove - ${filter.field} ${filter.label}`);
 
-    Actions.updateLoadingStatus(true);
 
     Actions.updateSelectedFilters(selectedFilters);
-    ajaxCall(`${appConfig.baseUrl}/api?${apiQuery}`, (response) => {
-      if (response.data.searchResults && response.data.filters) {
-        if (response.data.drbbResults) Actions.updateDrbbResults(response.data.drbbResults);
-        Actions.updateSearchResults(response.data.searchResults);
-        Actions.updateFilters(response.data.filters);
-      } else {
-        if (response.data.drbbResults) Actions.updateDrbbResults(response.data.drbbResults);
-        Actions.updateSearchResults({});
-        Actions.updateFilters({});
-      }
-      Actions.updateSortBy('relevance');
-      Actions.updatePage('1');
-
-      setTimeout(() => {
-        Actions.updateLoadingStatus(false);
-        this.context.router.push(`${appConfig.baseUrl}/search?${apiQuery}`);
-      }, 500);
-    });
+    this.context.router.push(`${appConfig.baseUrl}/search?${apiQuery}`);
   }
 
   clearFilters() {
     const apiQuery = this.props.createAPIQuery({ selectedFilters: {} });
 
     trackDiscovery('Filters - Selected list', 'Clear Filters');
-    Actions.updateLoadingStatus(true);
     Actions.updateSelectedFilters({});
-    ajaxCall(`${appConfig.baseUrl}/api?${apiQuery}`, (response) => {
-      if (response.data.searchResults && response.data.filters) {
-        if (response.data.drbbResults) Actions.updateDrbbResults(response.data.drbbResults);
-        Actions.updateSearchResults(response.data.searchResults);
-        Actions.updateFilters(response.data.filters);
-      } else {
-        if (response.data.drbbResults) Actions.updateDrbbResults(response.data.drbbResults);
-        Actions.updateSearchResults({});
-        Actions.updateFilters({});
-      }
-      Actions.updateSortBy('relevance');
-      Actions.updatePage('1');
-
-      setTimeout(() => {
-        Actions.updateLoadingStatus(false);
-        this.context.router.push(`${appConfig.baseUrl}/search?${apiQuery}`);
-      }, 500);
-    });
+    this.context.router.push(`${appConfig.baseUrl}/search?${apiQuery}`);
   }
 
   render() {

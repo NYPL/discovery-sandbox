@@ -278,84 +278,7 @@ function confirmRequestServer(req, res, next) {
 }
 
 /**
- * newHoldRequestServer(req, res, next)
- * The function to return the bib and item data with its delivery locations to hold request page.
- *
- * @param {req}
- * @param {res}
- * @param {next}
- * @return {function}
- */
-function newHoldRequestServer(req, res, next) {
-  const bibId = req.params.bibId || '';
-  const loggedIn = User.requireUser(req, res);
-  const error = req.query.error ? JSON.parse(req.query.error) : {};
-  const form = req.query.form ? JSON.parse(req.query.form) : {};
-
-  if (!loggedIn) return false;
-
-  const patronId = req.patronTokenResponse.decodedPatron.sub || '';
-  let barcode;
-
-  // Retrieve item
-  return Bib.fetchBib(
-    bibId,
-    (bibResponseData) => {
-      barcode = LibraryItem.getItem(bibResponseData, req.params.itemId).barcode;
-
-      getDeliveryLocations(
-        barcode,
-        patronId,
-        (deliveryLocations, isEddRequestable) => {
-          res.locals.data.Store = {
-            bib: bibResponseData,
-            searchKeywords: req.query.searchKeywords || '',
-            error,
-            form,
-            deliveryLocations,
-            isEddRequestable,
-          };
-
-          next();
-        },
-        (deliveryError) => {
-          logger.error(
-            `Error retrieving server side delivery locations in newHoldRequestServer, id: ${bibId}`,
-            deliveryError,
-          );
-
-          res.locals.data.Store = {
-            bib: bibResponseData,
-            searchKeywords: req.query.searchKeywords || '',
-            error,
-            form,
-            deliveryLocations: [],
-            isEddRequestable: false,
-          };
-
-          next();
-        },
-      );
-    },
-    (bibResponseError) => {
-      logger.error(
-        `Error retrieving server side bib record in newHoldRequestServer, id: ${bibId}`,
-        bibResponseError,
-      );
-      res.locals.data.Store = {
-        bib: {},
-        searchKeywords: req.query.searchKeywords || '',
-        error,
-        form,
-      };
-
-      next();
-    },
-  );
-}
-
-/**
- * newHoldRequestAjax(req, res, next)
+ * newHoldRequest(req, res, next)
  * The function to return the bib and item data with its delivery locations to the
  * hold request route.
  *
@@ -363,7 +286,7 @@ function newHoldRequestServer(req, res, next) {
  * @param {res}
  * @return {function}
  */
-function newHoldRequestAjax(req, res) {
+function newHoldRequest(req, res) {
   const bibId = req.params.bibId || '';
   const patronId = req.patronTokenResponse.decodedPatron ?
     req.patronTokenResponse.decodedPatron.sub : '';
@@ -387,7 +310,7 @@ function newHoldRequestAjax(req, res) {
         },
         (deliveryLocationsError) => {
           logger.error(
-            `Error retrieving serverside delivery locations in newHoldRequestAjax, bibId: ${bibId}`,
+            `Error retrieving serverside delivery locations in newHoldRequest, bibId: ${bibId}`,
             deliveryLocationsError,
           );
 
@@ -451,7 +374,7 @@ function newHoldRequestServerEdd(req, res, next) {
  */
 function createHoldRequestServer(req, res, pickedUpBibId = '', pickedUpItemId = '') {
   // Ensure user is logged in
-  const loggedIn = User.requireUser(req);
+  const loggedIn = User.requireUser(req, res);
   if (!loggedIn) return false;
 
   // NOTE: pickedUpItemId and pickedUpBibId are coming from the EDD form function below:
@@ -634,8 +557,7 @@ function eddServer(req, res) {
 export default {
   getDeliveryLocations,
   confirmRequestServer,
-  newHoldRequestServer,
-  newHoldRequestAjax,
+  newHoldRequest,
   newHoldRequestServerEdd,
   createHoldRequestServer,
   createHoldRequestAjax,
