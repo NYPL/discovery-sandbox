@@ -95,7 +95,10 @@ class ResultsList extends React.Component {
   }
 
   render() {
-    const results = this.props.results;
+    const {
+      results,
+      subjectHeadingShow,
+    } = this.props;
     let resultsElm = null;
     const { includeDrbb } = appConfig;
 
@@ -109,7 +112,7 @@ class ResultsList extends React.Component {
       <ul
         id="nypl-results-list"
         className={
-          `nypl-results-list${Store.getState().isLoading ? ' hide-results-list' : ''}${includeDrbb ? ' drbb-integration' : ''}`
+          `nypl-results-list${Store.getState().isLoading ? ' hide-results-list' : ''}${includeDrbb && !subjectHeadingShow ? ' drbb-integration' : ''}`
         }
       >
         {resultsElm}
@@ -121,6 +124,7 @@ class ResultsList extends React.Component {
 ResultsList.propTypes = {
   results: PropTypes.array,
   searchKeywords: PropTypes.string,
+  subjectHeadingShow: PropTypes.bool,
 };
 
 ResultsList.contextTypes = {

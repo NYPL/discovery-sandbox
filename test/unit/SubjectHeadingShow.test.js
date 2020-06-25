@@ -6,16 +6,15 @@ import { shallow } from 'enzyme';
 import SubjectHeadingShow from '@SubjectHeadingShow';
 
 describe('SubjectHeadingShow', () => {
+  const params = {
+    subjectHeadingUuid: '1',
+  };
+  const wrapper = shallow(
+    <SubjectHeadingShow params={params} />,
+    { context: { router: { location: { search: '' } } } },
+  );
+  const instance = wrapper.instance();
   describe('finding uuid', () => {
-    const params = {
-      subjectHeadingUuid: '1',
-    };
-    const wrapper = shallow(
-      <SubjectHeadingShow params={params} />,
-      { context: { router: { location: { search: '' } } } },
-    );
-    const instance = wrapper.instance();
-
     it('should accept a list containing a subject heading with correct uuid', () => {
       const headings = [
         { uuid: '2' }, { uuid: '1' }, { uuid: '3' },
@@ -50,6 +49,12 @@ describe('SubjectHeadingShow', () => {
         { uuid: '2' }, { uuid: '4' }, { uuid: '3', children: [{ uuid: '5' }] },
       ];
       expect(instance.hasUuid(headings)).to.equal(false);
+    });
+  });
+
+  describe('should not have .drbb-integration classes', () => {
+    it('should not have any components with .drbb-integration class', () => {
+      expect(wrapper.find('.drbb-integration')).to.have.length(0);
     });
   });
 });
