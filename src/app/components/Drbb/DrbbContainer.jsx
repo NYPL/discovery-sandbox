@@ -46,7 +46,7 @@ const DrbbContainer = () => {
         <div className="drbb-promo">
           <img
             alt="digital-research-book"
-            src="/src/client/assets/drbb_promo.png"
+            src="./src/client/assets/drbb_promo.png"
           />
         </div>
         Explore Digital Research Books Beta
