@@ -3,6 +3,8 @@ import express from 'express';
 import User from './User';
 import Hold from './Hold';
 import Search from './Search';
+import Bib from './Bib';
+import ResearchNow from './ResearchNow';
 import appConfig from '../../app/data/appConfig';
 import SubjectHeading from './SubjectHeading';
 import SubjectHeadings from './SubjectHeadings';
@@ -10,7 +12,7 @@ import dataLoaderUtil from '../../app/utils/dataLoaderUtil';
 import routeMethods from './RouteMethods';
 
 const router = express.Router();
-const routePaths = dataLoaderUtil.routePaths;
+const pathInstructions = dataLoaderUtil.pathInstructions;
 
 router
   .route(`${appConfig.baseUrl}/search`)
@@ -32,14 +34,16 @@ router
   .route(`${appConfig.baseUrl}/edd`)
   .post(Hold.eddServer);
 
-Object.keys(routePaths).forEach((routeName) => {
+Object.keys(pathInstructions).forEach(({ expression, pathType }) => {
   router
-    .route(routePaths[routeName])
-    .get(routeMethods[routeName]);
+    .route(`${appConfig.baseUrl}/api/${expression}`)
+    .get(routeMethods[pathType]);
 });
 
 
 router
+  .route(`${appConfig.baseUrl}/api/research-now`)
+  .get(ResearchNow.searchAjax);
 
 
 router
