@@ -56,7 +56,7 @@ deploy:
   bucket_path: discovery-ui-development
   on:
     repo: NYPL-discovery/discovery-front-end
-    branch: shep-development
+    branch: development
 - provider: elasticbeanstalk
   skip_cleanup: false
   access_key_id: "$AWS_ACCESS_KEY_ID_QA"
@@ -68,7 +68,7 @@ deploy:
   bucket_path: discovery-ui-shep
   on:
     repo: NYPL-discovery/discovery-front-end
-    branch: shep-production
+    branch: production
 - provider: elasticbeanstalk
   skip_cleanup: false
   access_key_id: "$AWS_ACCESS_KEY_ID_QA"
@@ -80,7 +80,7 @@ deploy:
   bucket_path: discovery-ui-shep
   on:
     repo: NYPL-discovery/discovery-front-end
-    branch: shep-qa
+    branch: qa
 after_deploy: echo 'Successfully executed deploy trigger for Discovery Shared Collection
   Catalog on AWS'
 env:
