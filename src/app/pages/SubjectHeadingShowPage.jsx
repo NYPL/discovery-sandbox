@@ -13,7 +13,9 @@ const SubjectHeadingShowPage = (props) => {
     },
   } = props;
 
-  const [label, setLabel] = useState('');
+  let [label, setLabel] = useState('');
+  console.log('label: ', label);
+  label = label || props.location.query.label || '';
   const breadcrumbUrls = {};
   const searchUrl = basicQuery(props)({});
   if (searchUrl) breadcrumbUrls.searchUrl = searchUrl;
@@ -50,6 +52,10 @@ SubjectHeadingShowPage.propTypes = {
 
 SubjectHeadingShowPage.defaultProps = {
   bib: {},
+};
+
+SubjectHeadingShowPage.contextTypes = {
+  router: PropTypes.object,
 };
 
 export default SubjectHeadingShowPage;
