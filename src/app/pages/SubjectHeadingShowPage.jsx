@@ -14,7 +14,6 @@ const SubjectHeadingShowPage = (props) => {
   } = props;
 
   let [label, setLabel] = useState('');
-  console.log('label: ', label);
   label = label || decodeURIComponent(props.location.query.label) || '';
   const breadcrumbUrls = {};
   const searchUrl = basicQuery(props)({});
