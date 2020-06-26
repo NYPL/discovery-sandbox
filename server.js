@@ -92,6 +92,7 @@ app.get('/*', (req, res, next) => {
 });
 
 app.get('/*', (req, res) => {
+  console.log('store: ', Store.getState());
   alt.bootstrap(JSON.stringify({
     PatronStore: res.locals.data.PatronStore,
     Store: Store.getState(),

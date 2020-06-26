@@ -80,18 +80,21 @@ function loadDataForRoutes(location, req, routeMethods) {
   } = location;
   const routes = routesGenerator(location);
   const fullPath = pathname + search;
-  pathExpressions.forEach(({ expression, pathType }) => {
+  const promises = pathExpressions.map(({ expression, pathType }) => {
     if (fullPath.match(expression)) {
+      console.log('loading for ', pathType);
       const {
         actions,
       } = routes[pathType];
-      Actions.updateLoadingStatus(true);
+      console.log('updated loading status true');
       const successCb = (response) => {
         actions.forEach(action => action(response.data));
+        console.log('updating loading status false')
         Actions.updateLoadingStatus(false);
       };
       const errorCb = (error) => {
         Actions.updateLoadingStatus(false);
+        console.log('updating loading status false error')
         console.error(
           `Error fetching data for ${pathType}`,
           error,
@@ -109,15 +112,18 @@ function loadDataForRoutes(location, req, routeMethods) {
           .then(successCb)
           .catch(errorCb);
       }
-      return ajaxCall(
+      return new Promise((resolve) => {
+        Actions.updateLoadingStatus(true);
+        resolve();
+      }).then(() => ajaxCall(
         fullPath.replace(`${appConfig.baseUrl}`, `${appConfig.baseUrl}/api`),
         successCb,
         errorCb,
-      );
+      ));
     }
   });
 
-  return new Promise(resolve => resolve());
+  return Promise.all(promises);
 }
 
 export default {
