@@ -101,6 +101,7 @@ function loadDataForRoutes(location, req, routeMethods) {
         );
       };
       if (req) {
+        req.params = Object.assign({}, req.prevParams, req.params);
         return new Promise((resolve) => {
           const res = {
             json: (data) => {

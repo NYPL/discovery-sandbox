@@ -37,6 +37,13 @@ pathInstructions.forEach(({ expression, pathType }) => {
   router
     .route(`${appConfig.baseUrl}/api/${expression}`)
     .get(routeMethods[pathType]);
+
+  router
+    .route(`${appConfig.baseUrl}/${expression}`)
+    .get((req, res, next) => {
+      req.prevParams = req.params;
+      next();
+    });
 });
 
 router
