@@ -63,6 +63,39 @@ class ItemTableRow extends React.Component {
     );
   }
 
+  message() {
+    const { item } = this.props;
+    if (item.holdingLocationCode && item.nonRecapNYPL) {
+      let holdingLocationEmail;
+      const { libAnswersEmails } = AppConfigStore.getState();
+      switch (item.holdingLocationCode.substring(4, 6)) {
+        case 'ma':
+          holdingLocationEmail = libAnswersEmails.sasb;
+          break;
+        case 'my':
+          holdingLocationEmail = libAnswersEmails.lpa;
+          break;
+        case 'sc':
+          holdingLocationEmail = libAnswersEmails.sc;
+          break;
+        default:
+          holdingLocationEmail = null;
+      }
+      if (holdingLocationEmail) {
+        const emailText = `Inquiry about item ${item.id} ${item.callNumber}`;
+        return (
+          <a
+            href={`mailto:${holdingLocationEmail}?subject=${emailText}&body=${emailText}`}
+            target="_blank"
+          >
+            Email for access options
+          </a>
+        );
+      }
+    }
+    return item.accessMessage.prefLabel;
+  }
+
   render() {
     const {
       item,
@@ -112,7 +145,7 @@ class ItemTableRow extends React.Component {
         <td>{item.location || ' '}</td>
         <td>{itemCallNumber}</td>
         <td>{itemRequestBtn}</td>
-        <td>{item.accessMessage.prefLabel || ' '}</td>
+        <td>{this.message()}</td>
       </tr>
     );
   }
