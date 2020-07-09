@@ -93,7 +93,7 @@ class ItemTableRow extends React.Component {
         );
       }
     }
-    return item.accessMessage.prefLabel;
+    return item.accessMessage.prefLabel || ' ';
   }
 
   render() {
