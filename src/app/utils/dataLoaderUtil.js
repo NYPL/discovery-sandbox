@@ -101,7 +101,7 @@ const matchingPathData = (location) => {
     || { matchData: null, pathType: null };
 };
 
-function loadDataForRoutes(location, req, routeMethods) {
+function loadDataForRoutes(location, req, routeMethods, realRes) {
   const routes = routesGenerator(location);
   const {
     matchData,
@@ -132,6 +132,7 @@ function loadDataForRoutes(location, req, routeMethods) {
       if (serverParams) serverParams(matchData, req);
       return new Promise((resolve) => {
         const res = {
+          redirect: url => realRes.redirect(url),
           json: (data) => {
             resolve({ data });
           },
