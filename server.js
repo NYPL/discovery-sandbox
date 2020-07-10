@@ -88,7 +88,7 @@ app.get('/*', (req, res, next) => {
     search: '',
   };
 
-  dataLoaderUtil.loadDataForRoutes(location, req, routeMethods).then(() => next());
+  dataLoaderUtil.loadDataForRoutes(location, req, routeMethods, res).then(() => next());
 });
 
 app.get('/*', (req, res) => {

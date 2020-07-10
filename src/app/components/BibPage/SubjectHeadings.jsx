@@ -11,7 +11,7 @@ const constructSubjectHeading = (heading, i) => {
     return (
       <Link
         key={`${uuid} ${i}`}
-        to={`${appConfig.baseUrl}/subject_headings/${uuid}`}
+        to={`${appConfig.baseUrl}/subject_headings/${uuid}?label=${encodeURIComponent(label)}`}
       >
         {subjectComponent}
       </Link>
@@ -23,7 +23,7 @@ const constructSubjectHeading = (heading, i) => {
     <span key={`${uuid} ${i}`}> {'>'} </span>,
     <Link
       key={uuid}
-      to={`${appConfig.baseUrl}/subject_headings/${uuid}`}
+      to={`${appConfig.baseUrl}/subject_headings/${uuid}?label=${encodeURIComponent(label)}`}
     >
       {subjectComponent}
     </Link>,

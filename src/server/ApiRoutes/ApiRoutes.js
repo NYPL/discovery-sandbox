@@ -38,10 +38,6 @@ Object.keys(routePaths).forEach((routeName) => {
     .get(routeMethods[routeName]);
 });
 
-
-router
-
-
 router
   .route(`${appConfig.baseUrl}/api/patronEligibility`)
   .get(User.eligibility);

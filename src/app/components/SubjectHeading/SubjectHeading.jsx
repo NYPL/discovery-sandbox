@@ -89,10 +89,11 @@ class SubjectHeading extends React.Component {
       },
       subjectHeading: {
         uuid,
+        label,
       },
     } = this.props;
     const path = pathname.replace(/\/subject_headings.*/, '');
-    return `${path}/subject_headings/${uuid}`;
+    return `${path}/subject_headings/${uuid}?label=${encodeURIComponent(label)}`;
   }
 
   updateSort(sortType, direction, numberOpen) {
