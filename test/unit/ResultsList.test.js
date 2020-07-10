@@ -118,13 +118,12 @@ describe('ResultsList', () => {
       expect(component.find('li').length).to.equal(15);
     });
 
-    // Only renders the table if the bib has only ONE item:
-    it('should render one table for each single-item bib (2)', () => {
-      expect(component.find('table').length).to.equal(2);
+    it('should render one table for each bib', () => {
+      expect(component.find('table').length).to.equal(3);
     });
   });
 
-  describe('Rendering with one bib and two items', () => {
+  describe('Rendering with one bib and four items', () => {
     const bib = resultsBibs[0];
     let component;
 
@@ -161,11 +160,15 @@ describe('ResultsList', () => {
     it('should have a total items description', () => {
       const yearPublished = component.find('.nypl-results-info');
       expect(yearPublished.length).to.equal(1);
-      expect(yearPublished.text()).to.equal('2 items');
+      expect(yearPublished.text()).to.equal('4 items');
     });
 
-    it('should not have a table', () => {
-      expect(component.find('table').length).to.equal(0);
+    it('should have a table', () => {
+      expect(component.find('table').length).to.equal(1);
+    });
+
+    it('table should only render three rows', () => {
+      expect(component.find('table').find('ItemTableRow').length).to.equal(3);
     });
   });
 
