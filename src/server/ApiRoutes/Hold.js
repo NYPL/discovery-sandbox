@@ -287,6 +287,7 @@ function confirmRequestServer(req, res, next) {
  * @return {function}
  */
 function newHoldRequest(req, res) {
+  const loggedIn = User.requireUser(req, res);
   const bibId = req.params.bibId || '';
   const patronId = req.patronTokenResponse.decodedPatron ?
     req.patronTokenResponse.decodedPatron.sub : '';
