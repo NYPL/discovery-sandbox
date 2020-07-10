@@ -70,4 +70,17 @@ describe('DrbbResult', () => {
       expect(component.type()).to.be.null;
     });
   });
+
+  describe('work with long title', () => {
+    let component;
+    before(() => {
+      const longTitleWork = workData.data;
+      longTitleWork.title = 'Life in India; or, Madras, the Neilgherries, and Calcutta. Written for the American Sunday-School Union.';
+      component = shallow(<DrbbResult work={longTitleWork} />);
+    });
+
+    it('should truncate the title', () => {
+      expect(component.find('Link').first().render().text()).to.equal('Life in India; or, Madras, the Neilgherries, and Calcutta. Written for the American...');
+    });
+  });
 });
