@@ -2,7 +2,7 @@
 import React from 'react';
 import { expect } from 'chai';
 import { shallow, mount } from 'enzyme';
-import { mock } from 'sinon';
+import { mock as sinonMock } from 'sinon';
 import MockAdapter from 'axios-mock-adapter';
 import axios from 'axios';
 
@@ -344,7 +344,7 @@ describe('ResultsList', () => {
     let appConfigMock;
 
     before(() => {
-      appConfigMock = mock(appConfig);
+      appConfigMock = sinonMock(appConfig);
     });
 
     describe('without integration', () => {
