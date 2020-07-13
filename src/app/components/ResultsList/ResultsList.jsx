@@ -17,6 +17,11 @@ import ItemTable from '../Item/ItemTable';
 import appConfig from '../../data/appConfig';
 
 class ResultsList extends React.Component {
+  constructor() {
+    super();
+    this.itemTableLimit = 3;
+  }
+
   getBibTitle(bib) {
     if (!bib.titleDisplay || !bib.titleDisplay.length) {
       const author = bib.creatorLiteral && bib.creatorLiteral.length ?
@@ -59,9 +64,9 @@ class ResultsList extends React.Component {
       result.publicationStatement[0] : '';
     const items = LibraryItem.getItems(result);
     const totalItems = items.length;
-    const hasRequestTable = items.length === 1;
+    const hasRequestTable = items.length > 0;
 
-    let bibUrl = `${appConfig.baseUrl}/bib/${bibId}`;
+    const bibUrl = `${appConfig.baseUrl}/bib/${bibId}`;
 
     return (
       <li key={i} className={`nypl-results-item ${hasRequestTable ? 'has-request' : ''}`}>
@@ -87,7 +92,7 @@ class ResultsList extends React.Component {
         {
           hasRequestTable &&
           <ItemTable
-            items={items}
+            items={items.slice(0, this.itemTableLimit)}
             bibId={bibId}
             id={null}
             searchKeywords={this.props.searchKeywords}
