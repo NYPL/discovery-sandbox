@@ -275,6 +275,18 @@ class ElectronicDeliveryForm extends React.Component {
                   onChange={e => this.handleUpdate(e, 'requestNotes')}
                 />
               </div>
+              <div className="edd-copyright-notice">
+                <h3>Notice Warning Concerning Copyright Restrictions</h3>
+                <p>
+                  The copyright law of the United States (title 17, United States Code) governs the making of photocopies or other reproductions of copyrighted material.
+                </p>
+                <p>
+                  Under certain conditions specified in the law, libraries and archives are authorized to furnish a photocopy or other reproduction. One of these specific conditions is that the photocopy or reproduction is not to be “used for any purpose other than private study, scholarship, or research.” If a user makes a request for, or later uses, a photocopy or reproduction for purposes in excess of “fair use,” that user may be liable for copyright infringement.
+                </p>
+                <p>
+                  This institution reserves the right to refuse to accept a copying order if, in its judgment, fulfillment of the order would involve violation of copyright law.
+                </p>
+              </div>
             </div>
           </div>
         </fieldset>
