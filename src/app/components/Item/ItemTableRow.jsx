@@ -83,14 +83,16 @@ class ItemTableRow extends React.Component {
       }
       if (holdingLocationEmail) {
         const emailText = `Inquiry about item ${item.id} ${item.callNumber}`;
-        return (
+        return ([
+          'Email ',
           <a
             href={`mailto:${holdingLocationEmail}?subject=${emailText}&body=${emailText}`}
             target="_blank"
+            className="item-email-inquiry"
           >
-            Email for access options
-          </a>
-        );
+            { holdingLocationEmail }
+          </a>,
+          ' for more information.']);
       }
     }
     return item.accessMessage.prefLabel || ' ';

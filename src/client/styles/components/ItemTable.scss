@@ -29,3 +29,40 @@ dl dd.multi-item-list .nypl-basic-table a,
     color: $results-list-item-button;
   }
 }
+
+.nypl-results-item .nypl-basic-table a.item-email-inquiry {
+  background-color: unset;
+  border: unset;
+  font-size: 16px;
+  padding: 0 1px;
+  text-decoration: underline;
+
+  &:link {
+    color: $link-color;
+  }
+
+  &:visited {
+    color: $link-visited-color;
+  }
+
+  &:hover,
+  &:visited:hover {
+    color: $link-hover-color;
+    text-decoration: none;
+  }
+
+  &.inverted {
+    &:link {
+      color: $inverted-link-color;
+    }
+
+    &:visited {
+      color: $inverted-link-visited-color;
+    }
+
+    &:hover,
+    &:visited:hover {
+      color: $inverted-link-color;
+    }
+  }
+}
