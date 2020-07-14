@@ -120,10 +120,20 @@ if (ENV === 'development') {
       modules: [
         'node_modules',
       ],
-      extensions: ['.js', '.jsx', '.scss'],
+      extensions: ['.js', '.jsx', '.scss', '.png'],
     },
     module: {
       rules: [
+        {
+          test: /\.(png|jpe?g|gif)$/i,
+          use: [
+            {
+              loader: 'file-loader',
+            },
+          ],
+          include: path.resolve(ROOT_PATH, 'src'),
+          exclude: /node_modules/,
+        },
         {
           test: /\.jsx?$/,
           exclude: /(node_modules|bower_components)/,
@@ -170,6 +180,15 @@ if (ENV === 'production') {
     },
     module: {
       rules: [
+        {
+          test: /\.(png|jpe?g|gif)$/i,
+          include: path.resolve(ROOT_PATH, 'src'),
+          use: [
+            {
+              loader: 'file-loader',
+            },
+          ],
+        },
         {
           test: /\.jsx?$/,
           exclude: /(node_modules|bower_components)/,

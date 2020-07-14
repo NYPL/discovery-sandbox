@@ -211,7 +211,7 @@ class BibsList extends React.Component {
         />
         {
           bibResults ?
-            <ResultsList results={bibResults} />
+            <ResultsList results={bibResults} subjectHeadingShow />
           :
             <div className="nypl-column-half bibsList">
               There are no titles for this subject heading.

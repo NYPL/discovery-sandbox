@@ -98,6 +98,24 @@ function mapLocationDetails(locations) {
 }
 
 /**
+ * modelDeliveryLocationName(prefLabel, shortName)
+ * Renders the names of the radio input fields of delivery locations except EDD.
+ *
+ * @param {String} prefLabel
+ * @param {String} shortName
+ * @return {String}
+ */
+function modelDeliveryLocationName(prefLabel, shortName) {
+  if (prefLabel && typeof prefLabel === 'string' && shortName) {
+    const deliveryRoom = (prefLabel.split(' - ')[1]) ? ` - ${prefLabel.split(' - ')[1]}` : '';
+
+    return `${shortName}${deliveryRoom}`;
+  }
+
+  return '';
+}
+
+/**
  * getDeliveryLocations(barcode, patronId, cb, errorCb)
  * The function to make a request to get delivery locations of an item.
  *
@@ -117,10 +135,18 @@ function getDeliveryLocations(barcode, patronId, cb, errorCb) {
         barcodeAPIresponse.itemListElement.length &&
         barcodeAPIresponse.itemListElement[0].eddRequestable) ?
         barcodeAPIresponse.itemListElement[0].eddRequestable : false;
-      const deliveryLocationWithAddress = (barcodeAPIresponse &&
+      let deliveryLocationWithAddress = (barcodeAPIresponse &&
           barcodeAPIresponse.itemListElement && barcodeAPIresponse.itemListElement.length &&
           barcodeAPIresponse.itemListElement[0].deliveryLocation) ?
         mapLocationDetails(barcodeAPIresponse.itemListElement[0].deliveryLocation) : [];
+
+      const { closedLocations } = appConfig;
+      deliveryLocationWithAddress = deliveryLocationWithAddress.filter(location =>
+        !closedLocations.some(closedLocation =>
+          modelDeliveryLocationName(location.prefLabel, location.shortName)
+            .startsWith(closedLocation),
+        ),
+      );
 
       cb(
         deliveryLocationWithAddress,
@@ -252,7 +278,7 @@ function confirmRequestServer(req, res, next) {
 }
 
 /**
- * newHoldRequestAjax(req, res, next)
+ * newHoldRequest(req, res, next)
  * The function to return the bib and item data with its delivery locations to the
  * hold request route.
  *
@@ -260,7 +286,10 @@ function confirmRequestServer(req, res, next) {
  * @param {res}
  * @return {function}
  */
-function newHoldRequestAjax(req, res) {
+function newHoldRequest(req, res) {
+  const loggedIn = User.requireUser(req, res);
+  if (!loggedIn) return false;
+
   const bibId = req.params.bibId || '';
   const patronId = req.patronTokenResponse.decodedPatron ?
     req.patronTokenResponse.decodedPatron.sub : '';
@@ -284,7 +313,7 @@ function newHoldRequestAjax(req, res) {
         },
         (deliveryLocationsError) => {
           logger.error(
-            `Error retrieving serverside delivery locations in newHoldRequestAjax, bibId: ${bibId}`,
+            `Error retrieving serverside delivery locations in newHoldRequest, bibId: ${bibId}`,
             deliveryLocationsError,
           );
 
@@ -471,7 +500,7 @@ function eddServer(req, res) {
 export default {
   getDeliveryLocations,
   confirmRequestServer,
-  newHoldRequestAjax,
+  newHoldRequest,
   newHoldRequestServerEdd,
   createHoldRequestServer,
   eddServer,

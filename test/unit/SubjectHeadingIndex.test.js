@@ -1,7 +1,7 @@
 /* eslint-env mocha */
 import React from 'react';
 import { expect } from 'chai';
-import { shallow, mount } from 'enzyme';
+import { mount } from 'enzyme';
 
 import SubjectHeadingsIndex from '@SubjectHeadingsIndex';
 import { mockRouterContext } from '../helpers/routing';
