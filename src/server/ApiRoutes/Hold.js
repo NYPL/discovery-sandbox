@@ -393,10 +393,13 @@ function createHoldRequestServer(req, res, pickedUpBibId = '', pickedUpItemId = 
         `Error calling postHoldAPI in createHoldRequestServer, bibId: {bibId}, itemId: ${itemId}`,
         error.data.message,
       );
+      const errorStatus = error.status ? `&errorStatus=${error.status}` : '';
+      const errorMessage = error.statusText || searchKeywordsQuery
+        ? `&errorMessage=${error.statusText}${searchKeywordsQuery}`
+        : '';
       res.respond(
         `${appConfig.baseUrl}/hold/confirmation/${bibId}-${itemId}?pickupLocation=` +
-        `${pickupLocation}&errorStatus=${error.status}` +
-        `&errorMessage=${error.statusText}${searchKeywordsQuery}`,
+        `${pickupLocation}${errorStatus}${errorMessage}`,
       );
     },
   );
@@ -455,11 +458,12 @@ function eddServer(req, res) {
         `Error calling postHoldAPI in eddServer, bibID: ${bibId}, itemId: ${itemId}`,
         error,
       );
+      const errorStatus = error.status ? `&errorStatus=${error.status}` : '';
+      const errorMessage = error.statusText || searchKeywordsQuery || fromUrl
+        ? `&errorMessage=${error.statusText}${searchKeywordsQuery}${fromUrl}`
+        : '';
       res.respond(
-        `${appConfig.baseUrl}/hold/confirmation/${bibId}-${itemId}?pickupLocation=edd` +
-        `&errorStatus=${error.status}` +
-        `&errorMessage=${error.statusText}${searchKeywordsQuery}${fromUrl}`,
-      );
+        `${appConfig.baseUrl}/hold/confirmation/${bibId}-${itemId}?pickupLocation=edd${errorStatus}${errorMessage}`);
     },
   );
 }
