@@ -43,11 +43,6 @@ router
   .get(User.eligibility);
 
 router
-  .route(`${appConfig.baseUrl}/api/newHold`)
-  .get(Hold.createHoldRequestAjax)
-  .post(Hold.createHoldRequestEdd);
-
-router
   .route(`${appConfig.baseUrl}/api/subjectHeading/:subjectLiteral/`)
   .get(SubjectHeading.bibsAjax);
 /**
