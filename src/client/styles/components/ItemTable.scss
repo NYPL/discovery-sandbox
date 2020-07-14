@@ -31,15 +31,16 @@ dl dd.multi-item-list .nypl-basic-table a,
 }
 
 .nypl-results-item .nypl-basic-table .item-email-inquiry {
-  font-size: 14px;
+  font-size: 12px;
   padding-top: 5px;
 
   & > a {
     background-color: unset;
     border: unset;
-    font-size: 14px;
+    font-size: 12px;
     padding: 0;
     text-decoration: underline;
+    letter-spacing: unset;
 
     &:link {
       color: $link-color;
