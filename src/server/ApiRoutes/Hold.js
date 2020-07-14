@@ -376,6 +376,7 @@ function newHoldRequestServerEdd(req, res, next) {
  * @return {function}
  */
 function createHoldRequestServer(req, res, pickedUpBibId = '', pickedUpItemId = '') {
+  res.respond = req.body.serverRedirect === 'false' ? res.json : res.redirect;
   // Ensure user is logged in
   const loggedIn = User.requireUser(req, res);
   if (!loggedIn) return false;
@@ -391,14 +392,14 @@ function createHoldRequestServer(req, res, pickedUpBibId = '', pickedUpItemId = 
 
   if (!bibId || !itemId) {
     // Dummy redirect for now
-    return res.redirect(`${appConfig.baseUrl}/someErrorPage`);
+    return res.respond(`${appConfig.baseUrl}/someErrorPage`);
   }
 
   if (pickupLocation === 'edd') {
     const eddSearchKeywordsQuery = (req.body['search-keywords']) ?
       `?q=${req.body['search-keywords']}` : '';
 
-    return res.redirect(
+    return res.respond(
       `${appConfig.baseUrl}/hold/request/${bibId}-${itemId}/edd${eddSearchKeywordsQuery}`,
     );
   }
@@ -411,7 +412,7 @@ function createHoldRequestServer(req, res, pickedUpBibId = '', pickedUpItemId = 
     itemSource,
     (response) => {
       const data = JSON.parse(response).data;
-      res.redirect(
+      res.respond(
         `${appConfig.baseUrl}/hold/confirmation/${bibId}-${itemId}?pickupLocation=` +
         `${pickupLocation}&requestId=${data.id}${searchKeywordsQuery}`,
       );
@@ -421,51 +422,11 @@ function createHoldRequestServer(req, res, pickedUpBibId = '', pickedUpItemId = 
         `Error calling postHoldAPI in createHoldRequestServer, bibId: {bibId}, itemId: ${itemId}`,
         error.data.message,
       );
-      res.redirect(
+      res.respond(
         `${appConfig.baseUrl}/hold/confirmation/${bibId}-${itemId}?pickupLocation=` +
         `${pickupLocation}&errorStatus=${error.status}` +
         `&errorMessage=${error.statusText}${searchKeywordsQuery}`,
       );
-    },
-  );
-}
-
-/**
- * createHoldRequestAjax(req, res)
- * The function to make a client side hold request call.
- *
- * @param {req}
- * @param {res}
- * @return {function}
- */
-function createHoldRequestAjax(req, res) {
-  // Ensure user is logged in
-  const loggedIn = User.requireUser(req);
-  if (!loggedIn) return false;
-
-  return postHoldAPI(
-    req,
-    req.query.itemId,
-    req.query.pickupLocation,
-    null,
-    req.query.itemSource,
-    (response) => {
-      const data = JSON.parse(response).data;
-      res.json({
-        id: data.id,
-        jobId: data.jobId,
-        pickupLocation: data.pickupLocation,
-      });
-    },
-    (error) => {
-      logger.error(
-        `Error calling postHoldAPI in createHoldRequestAjax, itemId: ${req.query.itemId}`,
-        error,
-      );
-      res.json({
-        status: error.status,
-        error,
-      });
     },
   );
 }
@@ -563,7 +524,6 @@ export default {
   newHoldRequest,
   newHoldRequestServerEdd,
   createHoldRequestServer,
-  createHoldRequestAjax,
   createHoldRequestEdd,
   eddServer,
 };
