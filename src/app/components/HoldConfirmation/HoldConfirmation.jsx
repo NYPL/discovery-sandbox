@@ -223,19 +223,9 @@ class HoldConfirmation extends React.Component {
       return false;
     }
 
-    let checkFromUrl;
-    const reg = /\.nypl\.org(:\d*)?$/;
+    const reg = /\.nypl\.org$/;
     const hrefToCheck = `http://${this.props.location.query.fromUrl}`;
-    if (typeof document !== 'undefined') {
-      checkFromUrl = document.createElement('a');
-      checkFromUrl.href = hrefToCheck;
-      console.log('client matching: ', hrefToCheck, !checkFromUrl.host.match(reg))
-      if (!checkFromUrl.host.match(reg)) return false;
-    } else {
-      checkFromUrl = new URL(hrefToCheck);
-      console.log('server matching: ', hrefToCheck, !checkFromUrl.hostname.match(reg))
-      if (!checkFromUrl.hostname.match(reg)) return false;
-    }
+    if (!(new Url(hrefToCheck).hostname).match(reg)) return false;
 
     return (
       <span id="go-back-catalog">
