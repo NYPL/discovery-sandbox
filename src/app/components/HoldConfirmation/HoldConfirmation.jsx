@@ -223,8 +223,10 @@ class HoldConfirmation extends React.Component {
       return false;
     }
 
+    const fromUrl = this.props.location.query.fromUrl;
+
     const reg = /\.nypl\.org$/;
-    const hrefToCheck = `http://${this.props.location.query.fromUrl}`;
+    const hrefToCheck = fromUrl.startsWith('http') ? fromUrl : `http://${fromUrl}`;
     if (!(new Url(hrefToCheck).hostname).match(reg)) return false;
 
     return (
