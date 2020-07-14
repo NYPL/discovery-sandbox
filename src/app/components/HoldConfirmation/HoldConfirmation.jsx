@@ -8,6 +8,7 @@ import {
   findWhere as _findWhere,
 } from 'underscore';
 import DocumentTitle from 'react-document-title';
+import Url from 'url-parse';
 
 import PatronStore from '../../stores/PatronStore';
 import appConfig from '../../data/appConfig';
@@ -222,9 +223,19 @@ class HoldConfirmation extends React.Component {
       return false;
     }
 
-    const checkFromUrl = document.createElement('a');
-    checkFromUrl.href = this.props.location.query.fromUrl;
-    if (!checkFromUrl.host.match(/\.nypl\.org(:\d*)?$/)) return false;
+    let checkFromUrl;
+    const reg = /\.nypl\.org(:\d*)?$/;
+    const hrefToCheck = `http://${this.props.location.query.fromUrl}`;
+    if (typeof document !== 'undefined') {
+      checkFromUrl = document.createElement('a');
+      checkFromUrl.href = hrefToCheck;
+      console.log('client matching: ', hrefToCheck, !checkFromUrl.host.match(reg))
+      if (!checkFromUrl.host.match(reg)) return false;
+    } else {
+      checkFromUrl = new URL(hrefToCheck);
+      console.log('server matching: ', hrefToCheck, !checkFromUrl.hostname.match(reg))
+      if (!checkFromUrl.hostname.match(reg)) return false;
+    }
 
     return (
       <span id="go-back-catalog">
