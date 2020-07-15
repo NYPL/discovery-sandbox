@@ -53,9 +53,5 @@ export default {
     production: 'https://digital-research-books-reader.nypl.org',
   },
   includeDrbb: /true/i.test(process.env.INCLUDE_DRBB),
-  libAnswersEmails: {
-    sasb: process.env.LIB_ANSWERS_EMAIL_SASB,
-    lpa: process.env.LIB_ANSWERS_EMAIL_LPA,
-    sc: process.env.LIB_ANSWERS_EMAIL_SC,
-  },
+  generalResearchEmail: process.env.GENERAL_RESEARCH_EMAIL,
 };
