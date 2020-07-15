@@ -10,6 +10,9 @@ import {
   formatUrl,
   generateStreamedReaderUrl,
 } from '../../utils/researchNowUtils';
+import {
+  truncateStringOnWhitespace,
+} from '../../utils/utils';
 
 const DrbbResult = (props) => {
   const { work } = props;
@@ -123,7 +126,7 @@ const DrbbResult = (props) => {
         to={`${drbbFrontEnd}/work?recordType=editions&workId=${work.uuid}`}
         className="drbb-result-title"
       >
-        {title}
+        {truncateStringOnWhitespace(title, 92)}
       </Link>
       {agents && agents.length ? authorship() : null}
       { readOnlineLinkElement() }
