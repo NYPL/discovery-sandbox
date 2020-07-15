@@ -54,4 +54,5 @@ export default {
   },
   includeDrbb: /true/i.test(process.env.INCLUDE_DRBB),
   generalResearchEmail: process.env.GENERAL_RESEARCH_EMAIL,
+  includeOnSiteEdd: /true/i.test(process.env.INCLUDE_ON_SITE_EDD),
 };
