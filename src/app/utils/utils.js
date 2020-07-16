@@ -448,6 +448,11 @@ function displayContext({ searchKeywords, selectedFilters, field, count }) {
   return clauses.length ? `for ${clauses.join(' and ')}` : '';
 }
 
+/**
+ * extractFeatures
+ * Takes comma-delimited list of values as a string and returns array of strings.
+ * @param {string} featuresString The comma-delimited list of features.
+ */
 const extractFeatures = (featuresString) => {
   if (typeof featuresString !== 'string') return [];
   return featuresString.split(',').reduce((features, feature) => {
