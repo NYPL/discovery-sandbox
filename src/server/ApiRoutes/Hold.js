@@ -200,7 +200,7 @@ function confirmRequestServer(req, res, next) {
 
   return nyplApiClientGet(`/hold-requests/${requestId}`)
     .then((response) => {
-      const patronIdFromHoldRequest = response.patron;
+      const patronIdFromHoldRequest = response.data.patron;
 
       // The patron who is seeing the confirmation made the Hold Request
       if (patronIdFromHoldRequest === patronId) {

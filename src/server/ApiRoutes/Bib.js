@@ -5,7 +5,7 @@ import axios from 'axios';
 import SubjectHeadings from './SubjectHeadings';
 
 const nyplApiClientCall = query =>
-  nyplApiClient().then(client => client.get(`/discovery/resources/${query}`, { cache: false }));
+  nyplApiClient().then(client => client.get(`/discovery/resources/${query}`, { headers: { 'X-Features': 'on-site-edd' } }));
 
 const shepApiCall = bibId => axios(`${appConfig.shepApi}/bibs/${bibId}/subject_headings`)
 
