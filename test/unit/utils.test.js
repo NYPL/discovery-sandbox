@@ -17,6 +17,7 @@ import {
   getReqParams,
   getAggregatedElectronicResources,
   truncateStringOnWhitespace,
+  extractFeatures,
 } from '../../src/app/utils/utils';
 
 /**
@@ -668,5 +669,30 @@ describe('truncateStringOnWhitespace()', () => {
     const truncStr = truncateStringOnWhitespace('ThisIsAOneWordTitleWhichCouldExistOutThere', 25);
     expect(truncStr).to.equal('ThisIsAOneWordTitleWhi...');
     expect(truncStr.length).to.be.lessThan(26);
+  });
+});
+
+/**
+ * extractFeatures()
+ */
+describe(('extractFeatures'), () => {
+  it('handles non-string parameters', () => {
+    expect(extractFeatures()).to.deep.equal([]);
+    expect(extractFeatures(undefined)).to.deep.equal([]);
+    expect(extractFeatures(null)).to.deep.equal([]);
+    expect(extractFeatures(-1)).to.deep.equal([]);
+    expect(extractFeatures(Math.PI)).to.deep.equal([]);
+  });
+
+  it('handles malformed features String', () => {
+    expect(extractFeatures(',,dasdfksdjfdsf,,').length).to.deep.equal(1);
+  });
+
+  it('returns array of values', () => {
+    expect(extractFeatures('several,other,features')).to.deep.equal(['several', 'other', 'features']);
+  });
+
+  it('strips whitespace', () => {
+    expect(extractFeatures('several ,other  , foo  , features')).to.deep.equal(['several', 'other', 'foo', 'features']);
   });
 });
