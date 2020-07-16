@@ -448,6 +448,14 @@ function displayContext({ searchKeywords, selectedFilters, field, count }) {
   return clauses.length ? `for ${clauses.join(' and ')}` : '';
 }
 
+const extractFeatures = (featuresString) => {
+  if (typeof featuresString !== 'string') return [];
+  return featuresString.split(',').reduce((features, feature) => {
+    if (feature.length) features.push(feature.trim());
+    return features;
+  }, []);
+};
+
 export {
   trackDiscovery,
   ajaxCall,
@@ -463,4 +471,5 @@ export {
   getAggregatedElectronicResources,
   getUpdatedFilterValues,
   displayContext,
+  extractFeatures,
 };

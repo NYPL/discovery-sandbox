@@ -1,3 +1,5 @@
+import { extractFeatures } from '../utils/utils';
+
 export default {
   appTitle: 'NYPL | Discovery',
   appName: 'discovery',
@@ -52,6 +54,7 @@ export default {
     development: 'https://researchnow-reader.nypl.org',
     production: 'https://digital-research-books-reader.nypl.org',
   },
+  features: extractFeatures(process.env.FEATURES),
   includeDrbb: /true/i.test(process.env.INCLUDE_DRBB),
   libAnswersEmails: {
     sasb: process.env.LIB_ANSWERS_EMAIL_SASB,
