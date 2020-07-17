@@ -56,9 +56,6 @@ export default {
   },
   features: extractFeatures(process.env.FEATURES),
   includeDrbb: /true/i.test(process.env.INCLUDE_DRBB),
-  libAnswersEmails: {
-    sasb: process.env.LIB_ANSWERS_EMAIL_SASB,
-    lpa: process.env.LIB_ANSWERS_EMAIL_LPA,
-    sc: process.env.LIB_ANSWERS_EMAIL_SC,
-  },
+  generalResearchEmail: process.env.GENERAL_RESEARCH_EMAIL,
+  includeOnSiteEdd: /true/i.test(process.env.INCLUDE_ON_SITE_EDD),
 };
