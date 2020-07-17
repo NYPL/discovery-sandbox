@@ -30,10 +30,10 @@ export function getPatronData(req, res, next) {
               // Data exists for the Patron
               res.locals.data = {
                 PatronStore: {
-                  id: response.data.id,
-                  names: response.data.names,
-                  barcodes: response.data.barCodes,
-                  emails: response.data.emails,
+                  id: response.id,
+                  names: response.names,
+                  barcodes: response.barCodes,
+                  emails: response.emails,
                   loggedIn: true,
                 },
               };

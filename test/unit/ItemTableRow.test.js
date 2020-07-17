@@ -118,13 +118,8 @@ describe('ItemTableRow', () => {
       });
 
       it('should have a status as the third <td> column data and not a button', () => {
-        // TODO: test against scenario where feature flag 'on-site-edd' is enabled and not
-        // This is the expectation when on-site-edd is not enabled:
-        // expect(component.find('td').at(2).text()).to.equal('Available');
-        // expect(component.find('td').at(2).render().find('Link').length).to.equal(0);
-        // This is the expectation when on-site-edd is enabled:
-        expect(component.find('td').at(2).render().text()).to.equal('Request');
-        expect(component.find('td').find('Link').length).to.equal(1);
+        expect(component.find('td').at(2).text()).to.equal('Available');
+        expect(component.find('td').at(2).render().find('Link').length).to.equal(0);
       });
 
       it('should have an access message as the fourth <td> column data', () => {
