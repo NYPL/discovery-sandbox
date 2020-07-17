@@ -1,16 +1,13 @@
-import axios from 'axios';
-
 import nyplApiClient from '../routes/nyplApiClient';
 import logger from '../../../logger';
 import appConfig from '../../app/data/appConfig';
-
-const { features } = appConfig;
-const featuresString = features.join(',');
+import axios from 'axios';
+import SubjectHeadings from './SubjectHeadings';
 
 const nyplApiClientCall = query =>
-  nyplApiClient().then(client => client.get(`/discovery/resources/${query}`, { headers: { 'X-Features': featuresString } }));
+  nyplApiClient().then(client => client.get(`/discovery/resources/${query}`, { headers: { 'X-Features': 'on-site-edd' } }));
 
-const shepApiCall = bibId => axios(`${appConfig.shepApi}/bibs/${bibId}/subject_headings`);
+const shepApiCall = bibId => axios(`${appConfig.shepApi}/bibs/${bibId}/subject_headings`)
 
 function fetchBib(bibId, cb, errorcb) {
   return Promise.all([
