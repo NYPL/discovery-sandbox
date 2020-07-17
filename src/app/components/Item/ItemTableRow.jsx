@@ -66,11 +66,11 @@ class ItemTableRow extends React.Component {
   message() {
     const { item } = this.props;
     const {
-      includeOnSiteEdd,
+      features,
       generalResearchEmail,
     } = AppConfigStore.getState();
-    if (item.holdingLocationCode && item.nonRecapNYPL && includeOnSiteEdd) {
-
+    const onSiteEddEnabled = features.includes('on-site-edd');
+    if (item.holdingLocationCode && item.nonRecapNYPL && onSiteEddEnabled) {
       if (generalResearchEmail && generalResearchEmail.length) {
         const emailText = `Inquiry about item ${item.id} ${item.callNumber}`;
         return ([
