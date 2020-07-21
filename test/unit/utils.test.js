@@ -16,6 +16,7 @@ import {
   basicQuery,
   getReqParams,
   getAggregatedElectronicResources,
+  truncateStringOnWhitespace,
   extractFeatures,
 } from '../../src/app/utils/utils';
 
@@ -644,6 +645,30 @@ describe('getAggregatedElectronicResources', () => {
           },
         ]);
     });
+  });
+});
+
+describe('truncateStringOnWhitespace()', () => {
+  it('Should return a short title as-is', () => {
+    expect(truncateStringOnWhitespace('Test Title', 25)).to.equal('Test Title');
+  });
+
+  it('Should truncate a long title when break lands in the middle of a word', () => {
+    const truncStr = truncateStringOnWhitespace('Longer Title Here To Become Shorter', 25);
+    expect(truncStr).to.equal('Longer Title Here To...');
+    expect(truncStr.length).to.be.lessThan(26);
+  });
+
+  it('Should truncate a long title when break lands on a whitespace', () => {
+    const truncStr = truncateStringOnWhitespace('Longer Title Break On Whitespace', 25);
+    expect(truncStr).to.equal('Longer Title Break On...');
+    expect(truncStr.length).to.be.lessThan(26);
+  });
+
+  it('Should truncate single word title regardless of whitespace', () => {
+    const truncStr = truncateStringOnWhitespace('ThisIsAOneWordTitleWhichCouldExistOutThere', 25);
+    expect(truncStr).to.equal('ThisIsAOneWordTitleWhi...');
+    expect(truncStr.length).to.be.lessThan(26);
   });
 });
 

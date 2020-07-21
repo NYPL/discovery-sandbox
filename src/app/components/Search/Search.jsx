@@ -1,11 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import Actions from '../../actions/Actions';
 import SearchButton from '../Buttons/SearchButton';
 import {
   trackDiscovery,
-  ajaxCall,
 } from '../../utils/utils';
 import appConfig from '../../data/appConfig';
 
@@ -92,48 +90,8 @@ class Search extends React.Component {
       searchKeywords,
       page: '1',
     });
-    // Need to save a copy of the present value of this.state.field because
-    // it's going to be overwritten by this.props.field at least once before
-    // the ajax call returns, causing this.state.field to be mismatched with
-    // the actual selection, creating much confusion for the visitor..
-    const searchField = String(this.state.field);
 
-    Actions.updateLoadingStatus(true);
-
-    return new Promise((resolve, reject) => {
-      ajaxCall(`${appConfig.baseUrl}/api?${apiQuery}`, (response) => {
-        // TODO Might it be helpful to have a "SearchQuery" model that
-        // stores all of the distinct properties that represent a search
-        // (i.e. keyword, filters, page, sort, search_scope, etc.)
-        // so that the store has only one thing to hold onto. The following
-        // series of Actions calls should be atomic.
-        // We'd maintain one instance of a SearchQuery in the Alt store,
-        // representing the "current" query associated with the current
-        // results. This Search component would own it's own instance of that
-        // model in state, representing the more transient state of the form
-        // (which would be promoted to the Alt store when results are received
-        // below).
-        if (response.data.searchResults && response.data.filters) {
-          if (response.data.drbbResults) Actions.updateDrbbResults(response.data.drbbResults);
-          Actions.updateSearchResults(response.data.searchResults);
-          Actions.updateFilters(response.data.filters);
-        } else {
-          Actions.updateSearchResults({});
-          Actions.updateFilters({});
-          if (response.data.drbbResults) Actions.updateDrbbResults(response.data.drbbResults);
-        }
-        Actions.updateSearchKeywords(userSearchKeywords);
-        Actions.updateField(searchField);
-        Actions.updateSelectedFilters(this.props.selectedFilters);
-        Actions.updateSortBy('relevance');
-        Actions.updatePage('1');
-        setTimeout(() => {
-          Actions.updateLoadingStatus(false);
-          this.context.router.push(`${appConfig.baseUrl}/search?${apiQuery}`);
-        }, 500);
-        resolve();
-      }, reject);
-    });
+    this.context.router.push(`${appConfig.baseUrl}/search?${apiQuery}`);
   }
 
   render() {

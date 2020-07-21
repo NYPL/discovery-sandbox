@@ -449,6 +449,23 @@ function displayContext({ searchKeywords, selectedFilters, field, count }) {
 }
 
 /**
+ * truncateStringOnWhitespace(str, maxLength)
+ * Return a version of the string shortened to the provided maxLength param. This includes
+ * the three characters for the ellipsis that is appended. If the string is shorter than the
+ * max length it is returned as is. If the string contains no whitespace before the max
+ * length it is truncated at that point regardless of word breaks.
+ * @param {string} str - The string to be shortened (or returned without change)
+ * @param {int} maxLength - The maximum length of the returned string to be applied
+ */
+const truncateStringOnWhitespace = (str, maxLength) => {
+  if (str.length < maxLength) { return str; }
+  const truncStr = str.substr(0, maxLength - 3);
+  const truncArray = truncStr.split(/\s+/).slice(0, -1);
+  if (truncArray.length === 0) { return `${truncStr}...`; }
+  return `${truncArray.join(' ')}...`;
+};
+
+/**
  * extractFeatures
  * Takes comma-delimited list of values as a string and returns array of strings.
  * @param {string} featuresString The comma-delimited list of features.
@@ -476,5 +493,6 @@ export {
   getAggregatedElectronicResources,
   getUpdatedFilterValues,
   displayContext,
+  truncateStringOnWhitespace,
   extractFeatures,
 };

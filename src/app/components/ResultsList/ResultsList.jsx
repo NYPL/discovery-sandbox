@@ -6,10 +6,13 @@ import {
   isArray as _isArray,
 } from 'underscore';
 
+
 // eslint-disable-next-line import/first, import/no-unresolved, import/extensions
-import Store from '@Store';
+import Store from '@Store'
 import LibraryItem from '../../utils/item';
-import { trackDiscovery } from '../../utils/utils';
+import {
+  trackDiscovery,
+} from '../../utils/utils';
 import ItemTable from '../Item/ItemTable';
 import appConfig from '../../data/appConfig';
 

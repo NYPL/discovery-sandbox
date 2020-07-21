@@ -129,9 +129,10 @@
     "scroll-behavior": "0.4.0",
     "style-loader": "0.13.0",
     "underscore": "1.8.3",
+    "url-parse": "^1.4.7",
     "validator": "7.2.0",
     "webpack": "^4.41.5",
-    "webpack-cli": "^3.3.11",
+    "webpack-cli": "^3.3.12",
     "webpack-merge": "^0.20.0",
     "winston": "2.3.1"
   }

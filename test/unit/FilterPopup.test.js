@@ -159,10 +159,15 @@ describe('FilterPopup', () => {
       dateAfter: '',
       dateBefore: '',
     };
+
+    const context = {
+      router: [],
+    };
+
     let component;
 
     before(() => {
-      component = mount(<FilterPopup selectedFilters={selectedFilters} />);
+      component = mount(<FilterPopup selectedFilters={selectedFilters} />, { context });
     });
 
     after(() => {

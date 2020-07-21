@@ -9,11 +9,14 @@ import Iso from 'iso';
 import webpack from 'webpack';
 import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
+import Store from '@Store';
+import dataLoaderUtil from '@dataLoaderUtil';
 
 import alt from './src/app/alt';
 import appConfig from './src/app/data/appConfig';
 import webpackConfig from './webpack.config';
 import apiRoutes from './src/server/ApiRoutes/ApiRoutes';
+import routeMethods from './src/server/ApiRoutes/RouteMethods';
 import routes from './src/app/routes/routes';
 
 import initializePatronTokenAuth from './src/server/routes/auth';
@@ -28,6 +31,8 @@ const VIEWS_PATH = path.resolve(ROOT_PATH, 'src/views');
 const WEBPACK_DEV_PORT = appConfig.webpackDevServerPort || 3000;
 const isProduction = process.env.NODE_ENV === 'production';
 const app = express();
+
+let application;
 
 app.use(compress());
 
@@ -67,10 +72,35 @@ nyplApiClient();
 app.use('/*', initializePatronTokenAuth, getPatronData);
 app.use('/', apiRoutes);
 
+app.get('/*', (req, res, next) => {
+  const queryString = req._parsedUrl.query;
+  let query = {};
+  if (queryString) {
+    query = queryString
+      .split('&')
+      .map(pair => pair.split('='))
+      .reduce((acc, el) => ({ [el[0]]: el[1], ...acc }));
+  }
+
+  const location = {
+    pathname: req.originalUrl,
+    query,
+    search: '',
+  };
+
+  dataLoaderUtil.loadDataForRoutes(location, req, routeMethods, res).then(() => next());
+});
+
 app.get('/*', (req, res) => {
-  alt.bootstrap(JSON.stringify(res.locals.data || {}));
+  alt.bootstrap(JSON.stringify({
+    PatronStore: res.locals.data.PatronStore,
+    Store: Store.getState(),
+  },
+  ));
 
   const appRoutes = (req.url).indexOf(appConfig.baseUrl) !== -1 ? routes().client : routes().server;
+  const title = DocumentTitle.rewind();
+  const iso = new Iso();
 
   match({ routes: appRoutes, location: req.url }, (error, redirectLocation, renderProps) => {
     if (error) {
@@ -78,9 +108,7 @@ app.get('/*', (req, res) => {
     } else if (redirectLocation) {
       res.redirect(302, redirectLocation.pathname + redirectLocation.search);
     } else if (renderProps) {
-      const application = ReactDOMServer.renderToString(<RouterContext {...renderProps} />);
-      const title = DocumentTitle.rewind();
-      const iso = new Iso();
+      application = ReactDOMServer.renderToString(<RouterContext {...renderProps} />);
       const flushed = alt.flush();
       iso.add(application, flushed);
       res

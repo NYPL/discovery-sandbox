@@ -5,7 +5,6 @@ import { isEmpty as _isEmpty } from 'underscore';
 
 import {
   trackDiscovery,
-  ajaxCall,
 } from '../../utils/utils';
 import Actions from '@Actions';
 
@@ -39,28 +38,7 @@ class ItemTableRow extends React.Component {
     Actions.updateLoadingStatus(true);
 
     trackDiscovery('Item Request', gaLabel);
-    ajaxCall(`${appConfig.baseUrl}/api/hold/request/${bibId}-${item.id}`,
-      (response) => {
-        Actions.updateBib(response.data.bib);
-        Actions.updateDeliveryLocations(response.data.deliveryLocations);
-        Actions.updateIsEddRequestable(response.data.isEddRequestable);
-        setTimeout(() => {
-          Actions.updateLoadingStatus(false);
-          this.context.router.push(`${appConfig.baseUrl}/hold/request/${bibId}-${item.id}`);
-        }, 500);
-      },
-      (error) => {
-        setTimeout(() => {
-          Actions.updateLoadingStatus(false);
-        }, 500);
-
-        // eslint-disable-next-line no-console
-        console.error(
-          `Error attemping to make an ajax request to fetch an item on ${page}`,
-          error,
-        );
-      },
-    );
+    this.context.router.push(`${appConfig.baseUrl}/hold/request/${bibId}-${item.id}`);
   }
 
   message() {
