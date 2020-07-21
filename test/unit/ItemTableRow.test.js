@@ -178,7 +178,7 @@ describe('ItemTableRow', () => {
       before(() => {
         appConfigStoreStub = stub(AppConfigStore, 'getState').returns({
           generalResearchEmail,
-          includeOnSiteEdd: true,
+          features: ['on-site-edd'],
         });
         component = shallow(<ItemTableRow item={data} bibId="b12345" />);
       });
