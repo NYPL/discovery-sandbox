@@ -4,8 +4,11 @@ import appConfig from '../../app/data/appConfig';
 import axios from 'axios';
 import SubjectHeadings from './SubjectHeadings';
 
-const nyplApiClientCall = query =>
-  nyplApiClient().then(client => client.get(`/discovery/resources/${query}`, { headers: { 'X-Features': 'on-site-edd' } }));
+const nyplApiClientCall = (query) => {
+  // If on-site-edd feature enabled in front-end, enable it in discovery-api:
+  const requestOptions = appConfig.features.includes('on-site-edd') ? { headers: { 'X-Features': 'on-site-edd' } } : {};
+  return nyplApiClient().then(client => client.get(`/discovery/resources/${query}`, { headers: { 'X-Features': 'on-site-edd' } }));
+}
 
 const shepApiCall = bibId => axios(`${appConfig.shepApi}/bibs/${bibId}/subject_headings`)
 
