@@ -1,140 +1,15 @@
 /* eslint-env mocha */
+/* eslint-disable react/jsx-filename-extension */
 import React from 'react';
 import { expect } from 'chai';
-import sinon from 'sinon';
-import { mockRouterContext } from '../helpers/routing';
+import { spy, stub } from 'sinon';
 import { shallow, mount } from 'enzyme';
+import { mockRouterContext } from '../helpers/routing';
+import item from '../fixtures/item';
+import AppConfigStore from '../../src/app/stores/AppConfigStore';
 
 // Import the component that is going to be tested
 import ItemTableRow from './../../src/app/components/Item/ItemTableRow';
-
-const item = {
-  full: {
-    accessMessage: {
-      '@id': 'accessMessage:1',
-      prefLabel: 'USE IN LIBRARY',
-    },
-    availability: 'available',
-    available: true,
-    barcode: '33433078478272',
-    callNumber: 'JFE 07-5007 ---',
-    id: 'i17326129',
-    isElectronicResource: false,
-    isOffsite: false,
-    isRecap: false,
-    itemSource: 'sierra-nypl',
-    location: 'SASB M1 - General Research - Room 315',
-    nonRecapNYPL: true,
-    requestable: false,
-    status: {
-      '@id': 'status:a',
-      prefLabel: 'Available',
-    },
-    suppressed: false,
-    url: 'http://www.questionpoint.org/crs/servlet/org.oclc.admin.BuildForm?' +
-      '&institution=13777&type=1&language=1',
-  },
-  missingData: {
-    accessMessage: {
-      '@id': 'accessMessage:1',
-      prefLabel: '',
-    },
-    availability: 'available',
-    available: true,
-    barcode: '33433078478272',
-    callNumber: '',
-    id: 'i17326129',
-    isElectronicResource: false,
-    isOffsite: false,
-    isRecap: false,
-    itemSource: 'sierra-nypl',
-    location: '',
-    nonRecapNYPL: true,
-    requestable: false,
-    status: {
-      '@id': 'status:a',
-      prefLabel: '',
-    },
-    suppressed: false,
-    url: 'http://www.questionpoint.org/crs/servlet/org.oclc.admin.BuildForm?' +
-      '&institution=13777&type=1&language=1',
-  },
-  requestable_ReCAP_available: {
-    accessMessage: {
-      '@id': 'accessMessage:1',
-      prefLabel: 'USE IN LIBRARY',
-    },
-    availability: 'available',
-    available: true,
-    barcode: '33433078478272',
-    callNumber: 'JFE 07-5007 ---',
-    id: 'i17326129',
-    isElectronicResource: false,
-    isOffsite: false,
-    isRecap: true,
-    itemSource: 'sierra-nypl',
-    location: 'SASB M1 - General Research - Room 315',
-    nonRecapNYPL: false,
-    requestable: true,
-    status: {
-      '@id': 'status:a',
-      prefLabel: 'Available',
-    },
-    suppressed: false,
-    url: 'http://www.questionpoint.org/crs/servlet/org.oclc.admin.BuildForm?' +
-      '&institution=13777&type=1&language=1',
-  },
-  requestable_ReCAP_not_available: {
-    accessMessage: {
-      '@id': 'accessMessage:1',
-      prefLabel: 'USE IN LIBRARY',
-    },
-    availability: 'available',
-    available: false,
-    barcode: '33433078478272',
-    callNumber: 'JFE 07-5007 ---',
-    id: 'i17326129',
-    isElectronicResource: false,
-    isOffsite: false,
-    isRecap: true,
-    itemSource: 'sierra-nypl',
-    location: 'SASB M1 - General Research - Room 315',
-    nonRecapNYPL: false,
-    requestable: true,
-    status: {
-      '@id': 'status:a',
-      prefLabel: 'Available',
-    },
-    suppressed: false,
-    url: 'http://www.questionpoint.org/crs/servlet/org.oclc.admin.BuildForm?' +
-      '&institution=13777&type=1&language=1',
-  },
-  requestable_nonReCAP_NYPL: {
-    accessMessage: {
-      '@id': 'accessMessage:1',
-      prefLabel: 'USE IN LIBRARY',
-    },
-    availability: 'available',
-    available: true,
-    barcode: '33433078478272',
-    callNumber: 'JFE 07-5007 ---',
-    id: 'i17326129',
-    isElectronicResource: false,
-    isOffsite: false,
-    isRecap: false,
-    itemSource: 'sierra-nypl',
-    location: 'SASB M1 - General Research - Room 315',
-    nonRecapNYPL: true,
-    requestable: true,
-    status: {
-      '@id': 'status:a',
-      prefLabel: 'Available',
-    },
-    suppressed: false,
-    url: 'http://www.questionpoint.org/crs/servlet/org.oclc.admin.BuildForm?' +
-      '&institution=13777&type=1&language=1',
-  },
-};
 
 const context = mockRouterContext();
 
@@ -258,7 +133,7 @@ describe('ItemTableRow', () => {
       let getItemRecord;
 
       before(() => {
-        getItemRecord = sinon.spy(ItemTableRow.prototype, 'getItemRecord');
+        getItemRecord = spy(ItemTableRow.prototype, 'getItemRecord');
         component =
           mount(<ItemTableRow item={data} bibId="b12345" />, { context });
       });
@@ -289,6 +164,32 @@ describe('ItemTableRow', () => {
 
       it('should render "In Use" as the request label', () => {
         expect(component.find('td').at(2).text()).to.equal('In Use');
+      });
+    });
+
+    describe('Unrequestable NYPL item', () => {
+      const data = item.full;
+      // SASB location
+      data.holdingLocationCode = 'loc:mal82';
+      let component;
+      let appConfigStoreStub;
+      const generalResearchEmail = 'example@nypl.com';
+
+      before(() => {
+        appConfigStoreStub = stub(AppConfigStore, 'getState').returns({
+          generalResearchEmail,
+          features: ['on-site-edd'],
+        });
+        component = shallow(<ItemTableRow item={data} bibId="b12345" />);
+      });
+      after(() => {
+        appConfigStoreStub.restore();
+      });
+
+      it('should render `Email for access options` link in the fourth <td> column data', () => {
+        expect(component.find('td').find('a').length).to.equal(1);
+        expect(component.find('td').find('a').text()).to.equal(generalResearchEmail);
+        expect(component.find('td').find('a').props().href).to.include(generalResearchEmail);
       });
     });
   });
