@@ -9,11 +9,11 @@ import Iso from 'iso';
 import webpack from 'webpack';
 import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
-import Store from '@Store';
-import dataLoaderUtil from '@dataLoaderUtil';
 
 import alt from './src/app/alt';
 import appConfig from './src/app/data/appConfig';
+import Store from '@Store';
+import dataLoaderUtil from '@dataLoaderUtil';
 import webpackConfig from './webpack.config';
 import apiRoutes from './src/server/ApiRoutes/ApiRoutes';
 import routeMethods from './src/server/ApiRoutes/RouteMethods';
