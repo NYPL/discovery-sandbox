@@ -465,19 +465,6 @@ const truncateStringOnWhitespace = (str, maxLength) => {
   return `${truncArray.join(' ')}...`;
 };
 
-/**
- * extractFeatures
- * Takes comma-delimited list of values as a string and returns array of strings.
- * @param {string} featuresString The comma-delimited list of features.
- */
-const extractFeatures = (featuresString) => {
-  if (typeof featuresString !== 'string') return [];
-  return featuresString.split(',').reduce((features, feature) => {
-    if (feature.length) features.push(feature.trim());
-    return features;
-  }, []);
-};
-
 export {
   trackDiscovery,
   ajaxCall,
@@ -494,5 +481,4 @@ export {
   getUpdatedFilterValues,
   displayContext,
   truncateStringOnWhitespace,
-  extractFeatures,
 };
