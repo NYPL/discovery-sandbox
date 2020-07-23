@@ -56,4 +56,5 @@ export default {
   },
   features: extractFeatures(process.env.FEATURES),
   includeDrbb: /true/i.test(process.env.INCLUDE_DRBB),
+  generalResearchEmail: process.env.GENERAL_RESEARCH_EMAIL,
 };
