@@ -118,6 +118,32 @@ describe('ItemTableRow', () => {
       });
 
       it('should have a status as the third <td> column data and not a button', () => {
+        expect(component.find('td').at(2).render().text()).to.equal('Request');
+        expect(component.find('td').find('Link').length).to.equal(1);
+      });
+
+      it('should have an access message as the fourth <td> column data', () => {
+        expect(component.find('td').at(3).text()).to.equal('USE IN LIBRARY');
+      });
+    });
+
+    describe('Non-Requestable non-ReCAP NYPL item', () => {
+      const data = item.nonrequestable_nonReCAP_NYPL;
+      let component;
+
+      before(() => {
+        component = shallow(<ItemTableRow item={data} />);
+      });
+
+      it('should a location as the first <td> column data', () => {
+        expect(component.find('td').at(0).text()).to.equal('SASB M1 - General Research - Room 315');
+      });
+
+      it('should have a call number as the second <td> column data', () => {
+        expect(component.find('td').at(1).text()).to.equal('JFE 07-5007 ---');
+      });
+
+      it('should have a status as the third <td> column data and not a button', () => {
         expect(component.find('td').at(2).text()).to.equal('Available');
         expect(component.find('td').at(2).render().find('Link').length).to.equal(0);
       });
