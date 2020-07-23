@@ -124,6 +124,31 @@ const item = {
     url: 'http://www.questionpoint.org/crs/servlet/org.oclc.admin.BuildForm?' +
       '&institution=13777&type=1&language=1',
   },
+  nonrequestable_nonReCAP_NYPL: {
+    accessMessage: {
+      '@id': 'accessMessage:1',
+      prefLabel: 'USE IN LIBRARY',
+    },
+    availability: 'available',
+    available: true,
+    barcode: '33433078478272',
+    callNumber: 'JFE 07-5007 ---',
+    id: 'i17326129',
+    isElectronicResource: false,
+    isOffsite: false,
+    isRecap: false,
+    itemSource: 'sierra-nypl',
+    location: 'SASB M1 - General Research - Room 315',
+    nonRecapNYPL: true,
+    requestable: false,
+    status: {
+      '@id': 'status:a',
+      prefLabel: 'Available',
+    },
+    suppressed: false,
+    url: 'http://www.questionpoint.org/crs/servlet/org.oclc.admin.BuildForm?' +
+      '&institution=13777&type=1&language=1',
+  },
 };
 
 export default item;
