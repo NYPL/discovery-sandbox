@@ -27,19 +27,20 @@ class Feedback extends React.Component {
       }, initialFields),
     };
 
+    this.commentText = React.createRef();
+
     this.onSubmitForm = this.onSubmitForm.bind(this);
     this.toggleForm = this.toggleForm.bind(this);
     this.deactivateForm = this.deactivateForm.bind(this);
   }
 
   onSubmitForm(e) {
+    e.preventDefault();
     const { fields } = this.state;
     if (!fields.Feedback && !fields.Feedback.length) {
       this.commentText.current.focus();
     } else {
-      e.preventDefault();
       this.postForm();
-
       this.setState({
         showForm: false,
         fields: Object.assign({ URL: this.currentURL }, initialFields),
@@ -93,6 +94,15 @@ class Feedback extends React.Component {
 
     return (
       <div className="feedback">
+        <button
+          className="feedback-button"
+          onClick={() => this.toggleForm()}
+          aria-haspopup="true"
+          aria-expanded={showForm}
+          aria-controls="feedback-menu"
+        >
+        Feedback
+        </button>
         <FocusTrap
           focusTrapOptions={{
             onDeactivate: this.deactivateForm,
@@ -100,15 +110,6 @@ class Feedback extends React.Component {
           }}
           active={showForm}
         >
-          <button
-            className="feedback-button"
-            onClick={() => this.toggleForm()}
-            aria-haspopup="true"
-            aria-expanded={showForm}
-            aria-controls="feedback-menu"
-          >
-            Feedback
-          </button>
           <div
             role="menu"
             className={`feedback-form-container${showForm ? ' active' : ''}`}
@@ -127,6 +128,7 @@ class Feedback extends React.Component {
                   id="feedback-textarea-comment"
                   name="Feedback"
                   value={fields.Feedback}
+                  ref={this.commentText}
                   rows="5"
                   aria-required="true"
                   tabIndex="0"
