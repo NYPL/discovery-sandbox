@@ -7,27 +7,28 @@ import axios from 'axios';
 import { trackDiscovery } from '../../utils/utils';
 import appConfig from '../../data/appConfig';
 
+const initialFields = {
+  Email: '',
+  Feedback: '',
+};
+
 class Feedback extends React.Component {
   constructor(props) {
     super(props);
 
-    this.initialFields = {
-      URL: (this.props.location.pathname +
-      this.props.location.hash +
-      this.props.location.search),
-      Feedback: '',
-      Email: '',
-    };
+    this.currentURL = (this.props.location.pathname +
+    this.props.location.hash +
+    this.props.location.search);
 
     this.state = {
       showForm: false,
-      fields: this.initialFields,
+      fields: Object.assign({
+        URL: this.currentURL,
+      }, initialFields),
     };
-    this.commentText = React.createRef();
 
     this.onSubmitForm = this.onSubmitForm.bind(this);
-    this.openForm = this.openForm.bind(this);
-    this.closeForm = this.closeForm.bind(this);
+    this.toggleForm = this.toggleForm.bind(this);
     this.deactivateForm = this.deactivateForm.bind(this);
   }
 
@@ -37,39 +38,35 @@ class Feedback extends React.Component {
       this.commentText.current.focus();
     } else {
       e.preventDefault();
-      axios({
-        method: 'POST',
-        url: appConfig.feedbackFormUrl,
-        data: {
-          fields,
-        },
-        headers: {
-          Authorization: `Bearer ${appConfig.airtableApiKey}`,
-          'Content-Type': 'application/json',
-        },
-      })
-        .then(
-          () => {
-            this.setState({
-              fields: this.initialFields,
-            });
-            // eslint-disable-next-line no-alert
-            alert('Thank you, your feedback has been submitted.');
-          })
-        .catch(console.error);
-      this.setState({ showForm: false });
+      this.postForm();
+
+      this.setState({
+        showForm: false,
+        fields: Object.assign({ URL: this.currentURL }, initialFields),
+      });
       trackDiscovery('Feedback', 'Submit');
     }
   }
 
-  openForm() {
-    trackDiscovery('Feedback', 'Open');
-    this.setState({ showForm: true });
+  postForm() {
+    const { fields } = this.state;
+    axios({
+      method: 'POST',
+      url: appConfig.feedbackFormUrl,
+      data: {
+        fields,
+      },
+      headers: {
+        Authorization: `Bearer ${appConfig.airtableApiKey}`,
+        'Content-Type': 'application/json',
+      },
+      // eslint-disable-next-line no-alert
+    }).then(() => alert('Thank you, your feedback has been submitted.')).catch(console.error);
   }
 
-  closeForm(e) {
-    e.preventDefault();
-    this.deactivateForm();
+  toggleForm() {
+    trackDiscovery('Feedback', 'Open');
+    this.setState(prevState => ({ showForm: !prevState.showForm }));
   }
 
   deactivateForm() {
@@ -96,15 +93,6 @@ class Feedback extends React.Component {
 
     return (
       <div className="feedback">
-        <button
-          className="feedback-button"
-          onClick={() => this.openForm()}
-          aria-haspopup="true"
-          aria-expanded={showForm}
-          aria-controls="feedback-menu"
-        >
-          Feedback
-        </button>
         <FocusTrap
           focusTrapOptions={{
             onDeactivate: this.deactivateForm,
@@ -112,6 +100,15 @@ class Feedback extends React.Component {
           }}
           active={showForm}
         >
+          <button
+            className="feedback-button"
+            onClick={() => this.toggleForm()}
+            aria-haspopup="true"
+            aria-expanded={showForm}
+            aria-controls="feedback-menu"
+          >
+            Feedback
+          </button>
           <div
             role="menu"
             className={`feedback-form-container${showForm ? ' active' : ''}`}
@@ -129,9 +126,8 @@ class Feedback extends React.Component {
                 <textarea
                   id="feedback-textarea-comment"
                   name="Feedback"
-                  value={fields.feedback}
+                  value={fields.Feedback}
                   rows="5"
-                  ref={this.commentText}
                   aria-required="true"
                   tabIndex="0"
                   onChange={e => this.handleInputChange(e)}
@@ -143,7 +139,7 @@ class Feedback extends React.Component {
                   id="feedback-input-email"
                   name="Email"
                   type="email"
-                  value={fields.email}
+                  value={fields.Email}
                   onChange={e => this.handleInputChange(e)}
                 />
               </div>
@@ -166,7 +162,6 @@ class Feedback extends React.Component {
 
               <button type="submit" className="large">Submit</button>
             </form>
-            <iframe name="hidden_feedback_iframe" title="NYPL Discovery Feedback Form" />
           </div>
         </FocusTrap>
       </div>
