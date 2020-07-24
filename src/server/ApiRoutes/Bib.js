@@ -1,16 +1,16 @@
+import axios from 'axios';
+
 import nyplApiClient from '../routes/nyplApiClient';
 import logger from '../../../logger';
 import appConfig from '../../app/data/appConfig';
-import axios from 'axios';
-import SubjectHeadings from './SubjectHeadings';
 
 const nyplApiClientCall = (query) => {
   // If on-site-edd feature enabled in front-end, enable it in discovery-api:
   const requestOptions = appConfig.features.includes('on-site-edd') ? { headers: { 'X-Features': 'on-site-edd' } } : {};
-  return nyplApiClient().then(client => client.get(`/discovery/resources/${query}`, { headers: { 'X-Features': 'on-site-edd' } }));
-}
+  return nyplApiClient().then(client => client.get(`/discovery/resources/${query}`, requestOptions));
+};
 
-const shepApiCall = bibId => axios(`${appConfig.shepApi}/bibs/${bibId}/subject_headings`)
+const shepApiCall = bibId => axios(`${appConfig.shepApi}/bibs/${bibId}/subject_headings`);
 
 function fetchBib(bibId, cb, errorcb) {
   return Promise.all([
@@ -39,7 +39,7 @@ function fetchBib(bibId, cb, errorcb) {
             return data;
           });
       }
-      return data
+      return data;
     })
     .then(response => cb(response))
     .catch((error) => {
