@@ -294,7 +294,6 @@ class ElectronicDeliveryForm extends React.Component {
 
         <input type="hidden" name="bibId" value={this.props.bibId} />
         <input type="hidden" name="itemId" value={this.props.itemId} />
-        <input type="hidden" name="pickupLocation" value="edd" />
         <input type="hidden" name="itemSource" value={this.props.itemSource} />
         <input
           type="hidden"
