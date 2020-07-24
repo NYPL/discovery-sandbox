@@ -193,29 +193,44 @@ describe('ItemTableRow', () => {
       });
     });
 
-    describe('Unrequestable NYPL item', () => {
-      const data = item.full;
-      // SASB location
-      data.holdingLocationCode = 'loc:mal82';
+    describe('with "on-site-edd" feature flag', () => {
       let component;
       let appConfigStoreStub;
       const generalResearchEmail = 'example@nypl.com';
-
       before(() => {
         appConfigStoreStub = stub(AppConfigStore, 'getState').returns({
           generalResearchEmail,
           features: ['on-site-edd'],
+          closedLocations: [],
         });
-        component = shallow(<ItemTableRow item={data} bibId="b12345" />);
       });
       after(() => {
         appConfigStoreStub.restore();
       });
 
-      it('should render `Email for access options` link in the fourth <td> column data', () => {
-        expect(component.find('td').find('a').length).to.equal(1);
-        expect(component.find('td').find('a').text()).to.equal(generalResearchEmail);
-        expect(component.find('td').find('a').props().href).to.include(generalResearchEmail);
+      describe('unrequestable NYPL item', () => {
+        before(() => {
+          const data = item.full;
+          data.holdingLocationCode = 'loc:mal82';
+          component = shallow(<ItemTableRow item={data} bibId="b12345" />);
+        });
+        it('should render `Email for access options` and mailto link in the fourth <td> column data', () => {
+          expect(component.find('td').find('a').length).to.equal(1);
+          expect(component.find('td').find('a').text()).to.equal(generalResearchEmail);
+          expect(component.find('td').find('a').props().href).to.include(generalResearchEmail);
+        });
+      });
+
+      describe('requestable NYPL item', () => {
+        before(() => {
+          const data = item.requestable_nonReCAP_NYPL;
+          data.holdingLocationCode = 'loc:mal82';
+          component = shallow(<ItemTableRow item={data} bibId="b12345" />);
+        });
+        it('should render `Email for access options` and mailto link in the fourth <td> column data', () => {
+          expect(component.find('td').find('div').length).to.equal(0);
+          expect(component.find('td').find('a').length).to.equal(0);
+        });
       });
     });
   });

@@ -30,4 +30,29 @@ describe('AppConfigStore', () => {
       expect(getFeatures()).to.deep.equal(['several', 'other', 'features']);
     });
   });
+
+  /**
+   * extractFeatures()
+   */
+  describe(('extractFeatures'), () => {
+    it('handles non-string parameters', () => {
+      expect(appConfig.extractFeatures()).to.deep.equal([]);
+      expect(appConfig.extractFeatures(undefined)).to.deep.equal([]);
+      expect(appConfig.extractFeatures(null)).to.deep.equal([]);
+      expect(appConfig.extractFeatures(-1)).to.deep.equal([]);
+      expect(appConfig.extractFeatures(Math.PI)).to.deep.equal([]);
+    });
+
+    it('handles malformed features String', () => {
+      expect(appConfig.extractFeatures(',,dasdfksdjfdsf,,').length).to.deep.equal(1);
+    });
+
+    it('returns array of values', () => {
+      expect(appConfig.extractFeatures('several,other,features')).to.deep.equal(['several', 'other', 'features']);
+    });
+
+    it('strips whitespace', () => {
+      expect(appConfig.extractFeatures('several ,other  , foo  , features')).to.deep.equal(['several', 'other', 'foo', 'features']);
+    });
+  });
 });
