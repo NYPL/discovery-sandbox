@@ -445,7 +445,7 @@ function eddServer(req, res) {
   let { fromUrl } = req.body;
   fromUrl = fromUrl ? `&fromUrl=${fromUrl}` : '';
 
-  res.respond = serverRedirect === false ? res.json : res.redirect;
+  res.respond = serverRedirect === 'false' ? res.json : res.redirect;
 
   const searchKeywordsQuery = (searchKeywords) ? `&q=${searchKeywords}` : '';
 
