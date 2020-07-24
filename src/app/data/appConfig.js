@@ -1,6 +1,12 @@
-import { extractFeatures } from '../utils/utils';
+const extractFeatures = (featuresString) => {
+  if (typeof featuresString !== 'string') return [];
+  return featuresString.split(',').reduce((features, feature) => {
+    if (feature.length) features.push(feature.trim());
+    return features;
+  }, []);
+};
 
-export default {
+const appConfig = {
   appTitle: 'NYPL | Discovery',
   appName: 'discovery',
   displayTitle: 'Shared Collection Catalog',
@@ -57,4 +63,9 @@ export default {
   features: extractFeatures(process.env.FEATURES),
   includeDrbb: /true/i.test(process.env.INCLUDE_DRBB),
   generalResearchEmail: process.env.GENERAL_RESEARCH_EMAIL,
+};
+
+export default {
+  extractFeatures,
+  ...appConfig,
 };
