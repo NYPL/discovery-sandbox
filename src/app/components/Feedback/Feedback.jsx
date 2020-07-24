@@ -8,21 +8,27 @@ class Feedback extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = { showForm: false };
+    this.state = {
+      showForm: false,
+      feedback: '',
+    };
     this.commentText = React.createRef();
 
     this.onSubmitForm = this.onSubmitForm.bind(this);
     this.openForm = this.openForm.bind(this);
     this.closeForm = this.closeForm.bind(this);
     this.deactivateForm = this.deactivateForm.bind(this);
-
+    this.handleFeedbackInput = this.handleFeedbackInput.bind(this);
   }
 
-  onSubmitForm(e) {
-    if (!this.commentText.value) {
+  onSubmitForm() {
+    if (!this.state.feedback.length) {
       this.commentText.current.focus();
     } else {
-      this.setState({ showForm: false });
+      this.setState({
+        showForm: false,
+        feedback: '',
+      });
       trackDiscovery('Feedback', 'Submit');
       alert('Thank you, your feedback has been submitted.');
     }
@@ -43,9 +49,18 @@ class Feedback extends React.Component {
     this.setState({ showForm: false });
   }
 
+  handleFeedbackInput(e) {
+    const target = e.target;
+    const value = target.value;
+
+    this.setState({ feedback: value });
+  }
+
   render() {
     const showForm = this.state.showForm;
-    const currentURL = this.props.location.pathname + this.props.location.hash + this.props.location.search;
+    const currentURL = (
+      this.props.location.pathname + this.props.location.hash + this.props.location.search
+    );
 
     return (
       <div className="feedback">
@@ -89,6 +104,8 @@ class Feedback extends React.Component {
                   ref={this.commentText}
                   aria-required="true"
                   tabIndex="0"
+                  value={this.state.feedback}
+                  onChange={e => this.handleFeedbackInput(e)}
                 />
               </div>
               <div>
