@@ -1,30 +1,64 @@
+/* global alert */
 import React from 'react';
 import PropTypes from 'prop-types';
 import FocusTrap from 'focus-trap-react';
+import axios from 'axios';
 
 import { trackDiscovery } from '../../utils/utils';
+import appConfig from '../../data/appConfig';
 
 class Feedback extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = { showForm: false };
+    this.initialFields = {
+      URL: (this.props.location.pathname +
+      this.props.location.hash +
+      this.props.location.search),
+      Feedback: '',
+      Email: '',
+    };
+
+    this.state = {
+      showForm: false,
+      fields: this.initialFields,
+    };
     this.commentText = React.createRef();
 
     this.onSubmitForm = this.onSubmitForm.bind(this);
     this.openForm = this.openForm.bind(this);
     this.closeForm = this.closeForm.bind(this);
     this.deactivateForm = this.deactivateForm.bind(this);
-
   }
 
   onSubmitForm(e) {
-    if (!this.commentText.value) {
+    const { fields } = this.state;
+    if (!fields.Feedback && !fields.Feedback.length) {
       this.commentText.current.focus();
     } else {
+      e.preventDefault();
+      axios({
+        method: 'POST',
+        url: appConfig.feedbackFormUrl,
+        data: {
+          fields,
+        },
+        headers: {
+          Authorization: `Bearer ${appConfig.airtableApiKey}`,
+          'Content-Type': 'application/json',
+        },
+      })
+        .then(
+          () => {
+            this.setState({
+              fields: this.initialFields,
+            });
+            // eslint-disable-next-line no-alert
+            alert('Thank you, your feedback has been submitted.');
+          })
+        .catch(console.error);
       this.setState({ showForm: false });
       trackDiscovery('Feedback', 'Submit');
-      alert('Thank you, your feedback has been submitted.');
     }
   }
 
@@ -43,9 +77,22 @@ class Feedback extends React.Component {
     this.setState({ showForm: false });
   }
 
+  handleInputChange(e) {
+    const target = e.target;
+    const value = target.value;
+    const name = target.name;
+
+    this.setState(prevState => ({
+      fields: Object.assign(prevState.fields, { [name]: value }),
+    }));
+  }
+
   render() {
-    const showForm = this.state.showForm;
-    const currentURL = this.props.location.pathname + this.props.location.hash + this.props.location.search;
+    const {
+      showForm,
+      fields,
+    } = this.state;
+    const currentURL = fields.URL;
 
     return (
       <div className="feedback">
@@ -71,11 +118,8 @@ class Feedback extends React.Component {
             id="feedback-menu"
           >
             <form
-              action={'https://docs.google.com/forms/d/e/1FAIpQLSc7PuMbOB6S0_cqqeZ6sIImw058r' +
-                '_ebzhSGy34tnfAtuWKdVA/formResponse'}
               target="hidden_feedback_iframe"
-              method="POST"
-              onSubmit={(e) => this.onSubmitForm(e)}
+              onSubmit={e => this.onSubmitForm(e)}
             >
               <div>
                 <label htmlFor="feedback-textarea-comment">
@@ -84,16 +128,24 @@ class Feedback extends React.Component {
                 </label>
                 <textarea
                   id="feedback-textarea-comment"
-                  name="entry.148983317"
+                  name="Feedback"
+                  value={fields.feedback}
                   rows="5"
                   ref={this.commentText}
                   aria-required="true"
                   tabIndex="0"
+                  onChange={e => this.handleInputChange(e)}
                 />
               </div>
               <div>
                 <label htmlFor="feedback-input-email">Email Address</label>
-                <input id="feedback-input-email" name="entry.503620384" type="email" />
+                <input
+                  id="feedback-input-email"
+                  name="Email"
+                  type="email"
+                  value={fields.email}
+                  onChange={e => this.handleInputChange(e)}
+                />
               </div>
               <input
                 id="feedback-input-url"
