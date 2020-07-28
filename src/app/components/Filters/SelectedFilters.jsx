@@ -74,7 +74,6 @@ class SelectedFilters extends React.Component {
       selectedFilters,
     } = this.props;
 
-
     if (_isEmpty(selectedFilters)) {
       return null;
     }
@@ -136,7 +135,6 @@ class SelectedFilters extends React.Component {
         }
       }
     });
-
 
     if (!filtersToRender.length && !datesToRender.length) {
       return null;
