@@ -76,10 +76,7 @@ function destructureFilters(filters, apiFilters) {
       key.substring(8, key.length - 1) : key.substring(8, key.length - 4);
 
     if (id === 'dateAfter' || id === 'dateBefore') {
-      selectedFilters[id] = {
-        label: value,
-        value,
-      };
+      selectedFilters[id] = value;
     } else if (_isArray(value) && value.length) {
       if (!selectedFilters[id]) {
         selectedFilters[id] = [];
@@ -111,15 +108,7 @@ function destructureFilters(filters, apiFilters) {
         }
       }
     }
-    if (key.includes('filters[subjectLiteral]')) {
-      selectedFilters.subjectLiteral = selectedFilters.subjectLiteral || [];
-      selectedFilters.subjectLiteral.push({
-        value: value,
-        label: value,
-      })
-    }
   });
-
   return selectedFilters;
 }
 
