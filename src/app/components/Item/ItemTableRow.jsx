@@ -41,6 +41,31 @@ class ItemTableRow extends React.Component {
     this.context.router.push(`${appConfig.baseUrl}/hold/request/${bibId}-${item.id}`);
   }
 
+  message() {
+    const { item } = this.props;
+    const {
+      features,
+      generalResearchEmail,
+    } = AppConfigStore.getState();
+    const onSiteEddEnabled = features.includes('on-site-edd');
+    if (item.holdingLocationCode && item.nonRecapNYPL && !item.requestable && onSiteEddEnabled) {
+      if (generalResearchEmail && generalResearchEmail.length) {
+        const emailText = `Inquiry about item ${item.id} ${item.callNumber}`;
+        return ([
+          item.accessMessage.prefLabel,
+          <div className="item-email-inquiry">
+            Email <a
+              href={`mailto:${generalResearchEmail}?subject=${emailText}&body=${emailText}`}
+              target="_blank"
+            >
+              { generalResearchEmail }
+            </a> for more information.
+          </div>]);
+      }
+    }
+    return item.accessMessage.prefLabel || ' ';
+  }
+
   render() {
     const {
       item,
@@ -63,22 +88,17 @@ class ItemTableRow extends React.Component {
     const { closedLocations } = AppConfigStore.getState();
 
     if (item.requestable && !closedLocations.includes('')) {
-      if (item.isRecap) {
-        itemRequestBtn = item.available ? (
-          <Link
-            to={
-              `${appConfig.baseUrl}/hold/request/${bibId}-${item.id}?searchKeywords=${searchKeywords}`
-            }
-            onClick={e => this.getItemRecord(e, bibId, item.id)}
-            tabIndex="0"
-          >
-            Request
-          </Link>) :
-          <span>In Use</span>;
-      } else if (item.nonRecapNYPL) {
-        // Not in ReCAP
-        itemRequestBtn = <span>{status}</span>;
-      }
+      itemRequestBtn = item.available ? (
+        <Link
+          to={
+            `${appConfig.baseUrl}/hold/request/${bibId}-${item.id}?searchKeywords=${searchKeywords}`
+          }
+          onClick={e => this.getItemRecord(e, bibId, item.id)}
+          tabIndex="0"
+        >
+          Request
+        </Link>) :
+        <span>In Use</span>;
     }
 
     if (item.callNumber) {
@@ -90,7 +110,7 @@ class ItemTableRow extends React.Component {
         <td>{item.location || ' '}</td>
         <td>{itemCallNumber}</td>
         <td>{itemRequestBtn}</td>
-        <td>{item.accessMessage.prefLabel || ' '}</td>
+        <td>{this.message()}</td>
       </tr>
     );
   }

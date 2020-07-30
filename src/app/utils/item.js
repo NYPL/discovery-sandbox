@@ -226,6 +226,7 @@ function LibraryItem() {
       isElectronicResource,
       electronicResources,
       location: holdingLocation.prefLabel,
+      holdingLocationCode: holdingLocation['@id'],
       callNumber,
       url,
       requestable,

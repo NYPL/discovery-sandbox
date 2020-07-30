@@ -174,6 +174,7 @@ We have CI/CD configured through travis for the following branches:
 * `development` deploying to `discovery-ui-development`
 * `qa` deploying to `DiscoveryUi-10-17-qa`
 * `production` deploying to `DiscoveryUi-production`
+* `on-site-edd-development` to `DiscoveryUi-edd-training`
 
 ### Elastic Beanstalk
 We are using AWS EB to deploy our app. Check the [deployment file](DEPLOYMENT.md) for more information.

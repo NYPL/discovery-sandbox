@@ -8,7 +8,7 @@ import appConfig from '../../app/data/appConfig';
 import logger from '../../../logger';
 
 const nyplApiClientCall = query => nyplApiClient({ apiName: 'drbb' })
-  .then(client => client.post('', JSON.stringify(query)))
+  .then(client => client.post('', query))
   .catch(console.error);
 
 const search = (req) => {
@@ -16,7 +16,7 @@ const search = (req) => {
   const researchNowQueryString = getResearchNowQueryString(req.query);
   return nyplApiClientCall(query)
     .then((resp) => {
-      const data = JSON.parse(resp).data;
+      const data = resp.data;
       if (!data || !data.works) {
         logger.error(resp);
         return data;

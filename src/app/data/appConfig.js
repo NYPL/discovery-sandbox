@@ -1,4 +1,12 @@
-export default {
+const extractFeatures = (featuresString) => {
+  if (typeof featuresString !== 'string') return [];
+  return featuresString.split(',').reduce((features, feature) => {
+    if (feature.length) features.push(feature.trim());
+    return features;
+  }, []);
+};
+
+const appConfig = {
   appTitle: 'NYPL | Discovery',
   appName: 'discovery',
   displayTitle: 'Shared Collection Catalog',
@@ -52,5 +60,12 @@ export default {
     development: 'https://researchnow-reader.nypl.org',
     production: 'https://digital-research-books-reader.nypl.org',
   },
+  features: extractFeatures(process.env.FEATURES),
   includeDrbb: /true/i.test(process.env.INCLUDE_DRBB),
+  generalResearchEmail: process.env.GENERAL_RESEARCH_EMAIL,
+};
+
+export default {
+  extractFeatures,
+  ...appConfig,
 };
