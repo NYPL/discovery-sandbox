@@ -48,13 +48,9 @@ class Feedback extends React.Component {
     fields.URL = url;
     axios({
       method: 'POST',
-      url: appConfig.feedbackFormUrl,
+      url: `${appConfig.baseUrl}/api/feedback`,
       data: {
         fields,
-      },
-      headers: {
-        Authorization: `Bearer ${appConfig.airtableApiKey}`,
-        'Content-Type': 'application/json',
       },
       // eslint-disable-next-line no-alert
     }).then(() => alert('Thank you, your feedback has been submitted.')).catch(console.error);
@@ -144,7 +140,7 @@ class Feedback extends React.Component {
 
               <button
                 className={`cancel-button ${!showForm ? 'hidden' : ''}`}
-                onClick={e => this.closeForm(e)}
+                onClick={e => this.deactivateForm(e)}
                 aria-expanded={!showForm}
                 aria-controls="feedback-menu"
               >
