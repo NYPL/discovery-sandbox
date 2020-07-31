@@ -3,6 +3,7 @@ import express from 'express';
 import User from './User';
 import Hold from './Hold';
 import Search from './Search';
+import Feedback from './Feedback';
 import appConfig from '../../app/data/appConfig';
 import SubjectHeading from './SubjectHeading';
 import SubjectHeadings from './SubjectHeadings';
@@ -45,15 +46,19 @@ router
 router
   .route(`${appConfig.baseUrl}/api/subjectHeading/:subjectLiteral/`)
   .get(SubjectHeading.bibsAjax);
+
 /**
  * This wildcard route proxies the following SHEP API routes:
  *  * /api/subjectHeadings/{UUID}/context => /api/v0.1/subject_headings/{UUID}/context
  *  * /api/subjectHeadings/{UUID}/bibs => /api/v0.1/subject_headings/{UUID}/bibs
  *  * /api/subjectHeadings/{UUID}/related => /api/v0.1/subject_headings/{UUID}/related
  */
-
 router
   .route(`${appConfig.baseUrl}/api/subjectHeadings*`)
   .get(SubjectHeadings.proxyRequest);
+
+router
+  .route(`${appConfig.baseUrl}/api/feedback*`)
+  .post(Feedback.post);
 
 export default router;
