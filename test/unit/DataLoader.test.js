@@ -8,7 +8,7 @@ import DataLoader from './../../src/app/components/DataLoader/DataLoader';
 import Content from './../../src/app/components/Content/Content';
 import dataLoaderUtil from '@dataLoaderUtil';
 
-describe.only('DataLoader', () => {
+describe('DataLoader', () => {
   let dataLoaderUtilSpy;
   const location = { pathname: '', search: '' };
   let wrapper;
