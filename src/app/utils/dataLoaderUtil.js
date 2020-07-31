@@ -86,10 +86,11 @@ const routesGenerator = location => ({
     },
     actions: [
       (data) => {
-        console.dir(`new action data: ${data}`);
+        console.dir(`new action data: ${encodeURIComponent(data)}`);
         if (typeof data === 'string' && data.includes('redirect_uri')) {
           globalState.updateState = false;
-          window.location.replace(encodeURIComponent(data));
+          const fullUrl = encodeURIComponent(window.location.href);
+          window.location.replace(`${appConfig.loginUrl}?redirect_uri=${fullUrl}`);
         }
       },
       data => Actions.updateBib(data.bib),
