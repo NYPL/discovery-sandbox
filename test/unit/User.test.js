@@ -23,14 +23,25 @@ const renderMockReq = data => ({
   originalUrl: '/hold/request/b11995345-i14211097',
   patronTokenResponse: data,
 });
+
+const renderMockReqClient = data => ({
+  get: n => n,
+  protocol: 'http',
+  originalUrl: '/hold/request/b11995345-i14211097?clientRedirect=true',
+  patronTokenResponse: data,
+  query: { clientRedirect: true },
+});
+
 const mockRes = { redirect: () => {} };
 
 describe('If requireUser does not receive valid value from "req.patronTokenResponse"', () => {
   let requireUser;
+  let jsonArg;
 
   before(() => {
     requireUser = sinon.spy(User, 'requireUser');
     mockPatronTokenResponse = {};
+    mockRes.json = (arg) => { jsonArg = arg; };
   });
 
   after(() => {
@@ -55,15 +66,23 @@ describe('If requireUser does not receive valid value from "req.patronTokenRespo
 
     expect(requireUser.returnValues[0]).to.equal(false);
   });
+
+  it('should call res.json for client side redirect', () => {
+    requireUser(renderMockReqClient(mockPatronTokenResponse), mockRes);
+
+    expect(typeof jsonArg).to.equal('string');
+  });
 });
 
 describe('If requireUser does not receive valid value from "req.patronTokenResponse.isTokenValid"',
   () => {
     let requireUser;
+    let jsonArg;
 
     before(() => {
       requireUser = sinon.spy(User, 'requireUser');
       mockPatronTokenResponse.isTokenValid = false;
+      mockRes.json = (arg) => { jsonArg = arg; };
     });
 
     after(() => {
@@ -76,16 +95,24 @@ describe('If requireUser does not receive valid value from "req.patronTokenRespo
 
       expect(requireUser.returnValues[0]).to.equal(false);
     });
+
+    it('should call res.json for client side redirect', () => {
+      requireUser(renderMockReqClient(mockPatronTokenResponse), mockRes);
+
+      expect(typeof jsonArg).to.equal('string');
+    });
   },
 );
 
 describe('If requireUser does not receive valid value from "req.patronTokenResponse.decodedPatron"',
   () => {
     let requireUser;
+    let jsonArg;
 
     before(() => {
       requireUser = sinon.spy(User, 'requireUser');
       mockPatronTokenResponse.decodedPatron = undefined;
+      mockRes.json = (arg) => { jsonArg = arg; };
     });
 
     after(() => {
@@ -109,16 +136,24 @@ describe('If requireUser does not receive valid value from "req.patronTokenRespo
 
       expect(requireUser.returnValues[0]).to.equal(false);
     });
+
+    it('should call json for client side redirect', () => {
+      requireUser(renderMockReqClient(mockPatronTokenResponse), mockRes);
+
+      expect(typeof jsonArg).to.equal('string');
+    });
   },
 );
 
 describe('If requireUser does not receive valid value from "req.patronTokenResponse.' +
   'decodedPatron.sub"', () => {
   let requireUser;
+  let jsonArg;
 
   before(() => {
     requireUser = sinon.spy(User, 'requireUser');
     mockPatronTokenResponse.decodedPatron.sub = undefined;
+    mockRes.json = (arg) => { jsonArg = arg; };
   });
 
   after(() => {
@@ -130,6 +165,12 @@ describe('If requireUser does not receive valid value from "req.patronTokenRespo
     requireUser(renderMockReq(mockPatronTokenResponse), mockRes);
 
     expect(requireUser.returnValues[0]).to.equal(false);
+  });
+
+  it('should call json in case of client side redirect', () => {
+    requireUser(renderMockReqClient(mockPatronTokenResponse), mockRes);
+
+    expect(typeof jsonArg).to.equal('string');
   });
 });
 
