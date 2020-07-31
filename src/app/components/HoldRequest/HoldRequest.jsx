@@ -65,7 +65,7 @@ class HoldRequest extends React.Component {
 
 
   componentDidMount() {
-    this.requireUser();
+    // this.requireUser();
     this.conditionallyRedirect();
     const title = document.getElementById('item-title');
     if (title) {
@@ -147,6 +147,7 @@ class HoldRequest extends React.Component {
     }
 
     const fullUrl = encodeURIComponent(window.location.href);
+    console.log('Hold request: ', `${appConfig.loginUrl}?redirect_uri=${fullUrl}`);
     window.location.replace(`${appConfig.loginUrl}?redirect_uri=${fullUrl}`);
 
     return false;

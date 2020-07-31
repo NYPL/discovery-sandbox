@@ -3,6 +3,11 @@ import { ajaxCall, destructureFilters } from '@utils';
 import { pick as _pick } from 'underscore';
 import appConfig from '@appConfig';
 import Store from '@Store';
+import PatronStore from '../stores/PatronStore';
+
+const globalState = {
+  updateState: true,
+};
 
 const pathInstructions = [
   {
@@ -70,13 +75,23 @@ const routesGenerator = location => ({
     errorMessage: 'Error attempting to make an ajax request to search',
   },
   holdRequest: {
-    apiRoute: (matchData, route) => route.replace(':bibId-:itemId', matchData[1]),
+    apiRoute: (matchData, route) => {
+      const fullUrl = encodeURIComponent(window.location.href);
+      return route.replace(':bibId-:itemId', matchData[1]) + `?clientRedirect=${fullUrl}`;
+    },
     serverParams: (matchData, req) => {
       const params = matchData[1].match(/\w+/g);
       if (params[0]) req.params.bibId = params[0];
       if (params[1]) req.params.itemId = params[1];
     },
     actions: [
+      (data) => {
+        console.dir(`new action data: ${data}`);
+        if (typeof data === 'string' && data.includes('redirect_uri')) {
+          globalState.updateState = false;
+          window.location.replace(encodeURIComponent(data));
+        }
+      },
       data => Actions.updateBib(data.bib),
       data => Actions.updateDeliveryLocations(data.deliveryLocations),
       data => Actions.updateIsEddRequestable(data.isEddRequestable),
@@ -100,7 +115,7 @@ const matchingPathData = (location) => {
     || { matchData: null, pathType: null };
 };
 
-function loadDataForRoutes(location, req, routeMethods, realRes) {
+function loadDataForRoutes(location, req, routeMethods, realRes, updateState) {
   const routes = routesGenerator(location);
   const {
     matchData,
@@ -119,9 +134,12 @@ function loadDataForRoutes(location, req, routeMethods, realRes) {
     const successCb = (response) => {
       actions.forEach(action => action(response.data));
       Actions.updateLoadingStatus(false);
+      if (updateState && globalState.updateState) updateState(location);
+      globalState.updateState = true;
     };
     const errorCb = (error) => {
       Actions.updateLoadingStatus(false);
+      if (updateState) updateState(location);
       console.error(
         errorMessage,
         error,
@@ -141,6 +159,7 @@ function loadDataForRoutes(location, req, routeMethods, realRes) {
         .then(successCb)
         .catch(errorCb);
     }
+    console.log('apiRoute: ', apiRoute(matchData, route));
     return ajaxCall(apiRoute(matchData, route), successCb, errorCb);
   }
 
