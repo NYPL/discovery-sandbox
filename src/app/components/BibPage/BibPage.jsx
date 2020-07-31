@@ -178,7 +178,7 @@ const BibPage = (props) => {
 
                 {itemHoldings}
 
-                <h2>{tabs.map(tab => tab.title).join(" and ")}</h2>
+                <h2>{tabs.map(tab => tab.title).join(' and ')}</h2>
                 <Tabbed
                   tabItems={tabItems}
                   tabs={tabs}
