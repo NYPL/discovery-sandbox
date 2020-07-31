@@ -145,7 +145,7 @@ describe('If requireUser receives all valid values from "req"', () => {
   });
 
   it('should return true', () => {
-    requireUser({ patronTokenResponse: mockPatronTokenResponse }, mockRes);
+    requireUser({ patronTokenResponse: mockPatronTokenResponse, originalUrl: '' }, mockRes);
 
     expect(requireUser.returnValues[0]).to.equal(true);
   });

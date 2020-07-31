@@ -109,49 +109,6 @@ describe('HoldRequest', () => {
     });
   });
 
-  describe('After being rendered, <HoldRequest>', () => {
-    let component;
-    let requireUser;
-
-    before(() => {
-      requireUser = sinon.spy(HoldRequest.prototype, 'requireUser');
-      component = mount(<HoldRequest />, { attachTo: document.body });
-      component.setState({ redirect: false });
-    });
-
-    after(() => {
-      requireUser.restore();
-      component.unmount();
-    });
-
-    // TODO: This should check the state and not that the function was called.
-    it('should check if the patron is logged in.', () => {
-      expect(requireUser.calledOnce).to.equal(true);
-    });
-  });
-
-  describe('If the patron is not logged in, <HoldRequest>', () => {
-    let component;
-    let requireUser;
-
-    before(() => {
-      Actions.updatePatronData({});
-      requireUser = sinon.spy(HoldRequest.prototype, 'requireUser');
-      component = mount(<HoldRequest />, { attachTo: document.body });
-      component.setState({ redirect: false });
-    });
-
-    after(() => {
-      requireUser.restore();
-      component.unmount();
-    });
-
-    it('should redirect the patron to OAuth log in page.', () => {
-      component.setState({ patron: {} });
-      expect(requireUser.returnValues[0]).to.equal(false);
-    });
-  });
-
   describe('If the patron is logged in and the App receives invalid item data, <HoldRequest>',
     () => {
       let component;

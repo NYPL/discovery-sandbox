@@ -713,6 +713,8 @@ describe('dataLoaderUtil', () => {
         let sandbox;
         let location;
         before(() => {
+          global.savedWindow = global.window;
+          global.window = { location: { href: ' fakefakefake' } };
           holdRequestResponse = {
             bib: [],
             deliveryLocations: [],
@@ -737,12 +739,13 @@ describe('dataLoaderUtil', () => {
           dataLoaderUtil.loadDataForRoutes(location);
         });
         after(() => {
+          global.window = global.savedWindow;
           sandbox.restore();
         });
         it('should make api call to /api/hold/request with the correct parameters', () => {
           expect(axiosSpy.calledOnce).to.equal(true);
           expect(axiosSpy.firstCall.args).to.have.lengthOf(1);
-          expect(axiosSpy.firstCall.args[0]).to.equal('/research/collections/shared-collection-catalog/api/hold/request/b1000-i1000');
+          expect(axiosSpy.firstCall.args[0]).to.equal('/research/collections/shared-collection-catalog/api/hold/request/b1000-i1000?clientRedirect=%20fakefakefake');
         });
         it('should update bib in the Store', () => {
           expect(actionsSpy.updateBib.calledOnce).to.equal(true);
@@ -799,6 +802,8 @@ describe('dataLoaderUtil', () => {
         let location;
         let consoleSpy;
         before(() => {
+          global.savedWindow = global.window;
+          global.window = { location: { href: ' fakefakefake' } };
           holdRequestResponse = {
             bib: [],
             deliveryLocations: [],
@@ -824,12 +829,13 @@ describe('dataLoaderUtil', () => {
           dataLoaderUtil.loadDataForRoutes(location);
         });
         after(() => {
+          global.window = global.savedWindow;
           sandbox.restore();
         });
         it('should make api call to /api/hold/request with the correct parameters', () => {
           expect(axiosSpy.calledOnce).to.equal(true);
           expect(axiosSpy.firstCall.args).to.have.lengthOf(1);
-          expect(axiosSpy.firstCall.args[0]).to.equal('/research/collections/shared-collection-catalog/api/hold/request/b1000-i1000');
+          expect(axiosSpy.firstCall.args[0]).to.equal('/research/collections/shared-collection-catalog/api/hold/request/b1000-i1000?clientRedirect=%20fakefakefake');
         });
         it('should log an error', () => {
           expect(consoleSpy.calledOnce).to.equal(true);
