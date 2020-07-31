@@ -276,7 +276,7 @@ describe('FilterPopup', () => {
 
     describe('without integration', () => {
       before(() => {
-        appConfig.includeDrbb = false;
+        appConfig.features = [];
         component = mount(<FilterPopup selectedFilters={selectedFilters} />);
       });
 
@@ -287,7 +287,7 @@ describe('FilterPopup', () => {
 
     describe('with integration', () => {
       before(() => {
-        appConfig.includeDrbb = true;
+        appConfig.features = ['drb-integration'];
         component = mount(<FilterPopup selectedFilters={selectedFilters} />);
       });
 

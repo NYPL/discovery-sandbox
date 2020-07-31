@@ -349,7 +349,7 @@ describe('ResultsList', () => {
 
     describe('without integration', () => {
       before(() => {
-        appConfig.includeDrbb = false;
+        appConfig.features = [];
         component = mount(<ResultsList results={resultsBibs} />, context);
       });
 
@@ -360,7 +360,7 @@ describe('ResultsList', () => {
 
     describe('with integration', () => {
       before(() => {
-        appConfig.includeDrbb = true;
+        appConfig.features = ['drb-integration'];
         component = mount(<ResultsList results={resultsBibs} />, { context });
       });
 
