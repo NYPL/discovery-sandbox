@@ -32,6 +32,7 @@ class Feedback extends React.Component {
     this.onSubmitForm = this.onSubmitForm.bind(this);
     this.toggleForm = this.toggleForm.bind(this);
     this.deactivateForm = this.deactivateForm.bind(this);
+    this.handleInputChange = this.handleInputChange.bind(this);
   }
 
   onSubmitForm(e) {
@@ -117,7 +118,7 @@ class Feedback extends React.Component {
           >
             <form
               target="hidden_feedback_iframe"
-              onSubmit={e => this.onSubmitForm(e)}
+              onSubmit={this.onSubmitForm}
             >
               <div>
                 <label htmlFor="feedback-textarea-comment">
@@ -132,7 +133,7 @@ class Feedback extends React.Component {
                   rows="5"
                   aria-required="true"
                   tabIndex="0"
-                  onChange={e => this.handleInputChange(e)}
+                  onChange={this.handleInputChange}
                 />
               </div>
               <div>
@@ -142,7 +143,7 @@ class Feedback extends React.Component {
                   name="Email"
                   type="email"
                   value={fields.Email}
-                  onChange={e => this.handleInputChange(e)}
+                  onChange={this.handleInputChange}
                 />
               </div>
               <input
