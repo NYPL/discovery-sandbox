@@ -26,6 +26,7 @@ class Application extends React.Component {
     };
     this.onChange = this.onChange.bind(this);
     this.shouldStoreUpdate = this.shouldStoreUpdate.bind(this);
+    this.submitFeedback = this.submitFeedback.bind(this);
   }
 
   getChildContext() {
@@ -71,6 +72,14 @@ class Application extends React.Component {
     this.setState({ data: Store.getState() });
   }
 
+  submitFeedback(callback, e) {
+    e.preventDefault();
+    const { pathname, hash, search } = this.context.router.location;
+    const currentURL = `${pathname}${hash}${search}`;
+
+    callback(currentURL);
+  }
+
   render() {
     const dataLocation = Object.assign(
       {},
@@ -98,7 +107,7 @@ class Application extends React.Component {
             {React.cloneElement(this.props.children, this.state.data)}
           </DataLoader>
           <Footer />
-          <Feedback location={this.props.location} />
+          <Feedback submit={this.submitFeedback} />
         </div>
       </DocumentTitle>
     );
