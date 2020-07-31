@@ -7,24 +7,18 @@ import axios from 'axios';
 import { trackDiscovery } from '../../utils/utils';
 import appConfig from '../../data/appConfig';
 
-const initialFields = {
+const initialFields = () => ({
   Email: '',
   Feedback: '',
-};
+});
 
 class Feedback extends React.Component {
   constructor(props) {
     super(props);
 
-    this.currentURL = (this.props.location.pathname +
-    this.props.location.hash +
-    this.props.location.search);
-
     this.state = {
       showForm: false,
-      fields: Object.assign({
-        URL: this.currentURL,
-      }, initialFields),
+      fields: initialFields(),
     };
 
     this.commentText = React.createRef();
@@ -35,23 +29,23 @@ class Feedback extends React.Component {
     this.handleInputChange = this.handleInputChange.bind(this);
   }
 
-  onSubmitForm(e) {
-    e.preventDefault();
+  onSubmitForm(url) {
     const { fields } = this.state;
     if (!fields.Feedback && !fields.Feedback.length) {
       this.commentText.current.focus();
     } else {
-      this.postForm();
+      this.postForm(url);
       this.setState({
         showForm: false,
-        fields: Object.assign({ URL: this.currentURL }, initialFields),
+        fields: initialFields(),
       });
       trackDiscovery('Feedback', 'Submit');
     }
   }
 
-  postForm() {
+  postForm(url) {
     const { fields } = this.state;
+    fields.URL = url;
     axios({
       method: 'POST',
       url: appConfig.feedbackFormUrl,
@@ -91,7 +85,7 @@ class Feedback extends React.Component {
       showForm,
       fields,
     } = this.state;
-    const currentURL = fields.URL;
+    const { submit } = this.props;
 
     return (
       <div className="feedback">
@@ -102,7 +96,7 @@ class Feedback extends React.Component {
           aria-expanded={showForm}
           aria-controls="feedback-menu"
         >
-        Feedback
+          Feedback
         </button>
         <FocusTrap
           focusTrapOptions={{
@@ -118,7 +112,7 @@ class Feedback extends React.Component {
           >
             <form
               target="hidden_feedback_iframe"
-              onSubmit={this.onSubmitForm}
+              onSubmit={e => submit(this.onSubmitForm, e)}
             >
               <div>
                 <label htmlFor="feedback-textarea-comment">
@@ -146,12 +140,6 @@ class Feedback extends React.Component {
                   onChange={this.handleInputChange}
                 />
               </div>
-              <input
-                id="feedback-input-url"
-                name="entry.1973652282"
-                value={currentURL}
-                type="hidden"
-              />
               <input name="fvv" value="1" type="hidden" />
 
               <button
@@ -173,7 +161,7 @@ class Feedback extends React.Component {
 }
 
 Feedback.propTypes = {
-  location: PropTypes.object,
+  submit: PropTypes.func,
 };
 
 export default Feedback;
