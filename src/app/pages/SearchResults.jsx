@@ -2,18 +2,20 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import DocumentTitle from 'react-document-title';
 
+/* eslint-disable import/no-unresolved, import/extensions */
+import SearchResultsSorter from '@SearchResultsSorter';
+import SearchResultsContainer from '@SearchResultsContainer';
+/* eslint-enable */
 import SccContainer from '../components/SccContainer/SccContainer';
 import Search from '../components/Search/Search';
-import SearchResultsContainer from '@SearchResultsContainer';
 import FilterPopup from '../components/FilterPopup/FilterPopup';
 import SelectedFilters from '../components/Filters/SelectedFilters';
 import ResultsCount from '../components/ResultsCount/ResultsCount';
-import SearchResultsSorter from '@SearchResultsSorter';
 
 import {
   basicQuery,
 } from '../utils/utils';
-import appConfig from '../data/appConfig';
+import AppConfigStore from '../stores/AppConfigStore';
 
 const SearchResults = (props, context) => {
   const {
@@ -24,14 +26,14 @@ const SearchResults = (props, context) => {
     page,
     field,
     sortBy,
-    drbbResults,
   } = props;
 
   const {
     router,
   } = context;
 
-  const { includeDrbb } = appConfig;
+  const { features } = AppConfigStore.getState();
+  const includeDrbb = features.includes('drb-integration');
 
   const { location } = router;
 
@@ -165,10 +167,6 @@ SearchResults.propTypes = {
 SearchResults.defaultProps = {
   page: '1',
   drbbResults: { totalWorks: 0 },
-};
-
-SearchResults.contextTypes = {
-  includeDrbb: PropTypes.bool,
 };
 
 SearchResults.contextTypes = {
