@@ -35,10 +35,6 @@ class Feedback extends React.Component {
       this.commentText.current.focus();
     } else {
       this.postForm(url);
-      this.setState({
-        showForm: false,
-        fields: initialFields(),
-      });
       trackDiscovery('Feedback', 'Submit');
     }
   }
@@ -52,8 +48,13 @@ class Feedback extends React.Component {
       data: {
         fields,
       },
+    }).then(() => {
+      this.setState({
+        showForm: false,
+        fields: initialFields(),
       // eslint-disable-next-line no-alert
-    }).then(() => alert('Thank you, your feedback has been submitted.')).catch(console.error);
+      }, alert('Thank you, your feedback has been submitted.'));
+    }).catch(console.error);
   }
 
   toggleForm() {
