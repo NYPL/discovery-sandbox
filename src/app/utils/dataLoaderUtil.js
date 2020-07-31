@@ -86,7 +86,6 @@ const routesGenerator = location => ({
     },
     actions: [
       (data) => {
-        console.dir(`new action data: ${encodeURIComponent(data)}`);
         if (typeof data === 'string' && data.includes('redirect_uri')) {
           globalState.updateState = false;
           const fullUrl = encodeURIComponent(window.location.href);
@@ -160,7 +159,6 @@ function loadDataForRoutes(location, req, routeMethods, realRes, updateState) {
         .then(successCb)
         .catch(errorCb);
     }
-    console.log('apiRoute: ', apiRoute(matchData, route));
     return ajaxCall(apiRoute(matchData, route), successCb, errorCb);
   }
 

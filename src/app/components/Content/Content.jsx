@@ -6,7 +6,6 @@ class Content extends React.Component {
       location,
       loaded,
     } = nextProps;
-    console.log('Content: ', location, loaded, location === loaded);
     return location === loaded;
   }
   render() {

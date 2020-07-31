@@ -65,7 +65,6 @@ class HoldRequest extends React.Component {
 
 
   componentDidMount() {
-    // this.requireUser();
     this.conditionallyRedirect();
     const title = document.getElementById('item-title');
     if (title) {
@@ -133,24 +132,6 @@ class HoldRequest extends React.Component {
           `${path}?errorMessage=${error}${searchKeywordsQueryPhysical}${fromUrlQuery}`,
         );
       });
-  }
-
-  /**
-   * requireUser()
-   * Redirects the patron to OAuth log in page if he/she hasn't been logged in yet.
-   *
-   * @return {Boolean}
-   */
-  requireUser() {
-    if (this.state.patron && this.state.patron.id) {
-      return true;
-    }
-
-    const fullUrl = encodeURIComponent(window.location.href);
-    console.log('Hold request: ', `${appConfig.loginUrl}?redirect_uri=${fullUrl}`);
-    window.location.replace(`${appConfig.loginUrl}?redirect_uri=${fullUrl}`);
-
-    return false;
   }
 
   /**

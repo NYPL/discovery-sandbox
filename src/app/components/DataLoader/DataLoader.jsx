@@ -23,7 +23,6 @@ class DataLoader extends React.Component {
   }
 
   render() {
-    console.log('updated: ', this.state, 'location: ', this.props.location, this.props.location === this.state.loaded);
     return (
       <Content
         location={this.props.location}
