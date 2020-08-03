@@ -43,49 +43,19 @@ class ItemTableRow extends React.Component {
 
   message() {
     const { item } = this.props;
-    const {
-      features,
-      generalResearchEmail,
-    } = AppConfigStore.getState();
-    const onSiteEddEnabled = features.includes('on-site-edd');
-    if (item.holdingLocationCode && item.nonRecapNYPL && !item.requestable && onSiteEddEnabled) {
-      if (generalResearchEmail && generalResearchEmail.length) {
-        const emailText = `Inquiry about item ${item.id} ${item.callNumber}`;
-        return ([
-          item.accessMessage.prefLabel,
-          <div className="item-email-inquiry">
-            Email <a
-              href={`mailto:${generalResearchEmail}?subject=${emailText}&body=${emailText}`}
-              target="_blank"
-            >
-              { generalResearchEmail }
-            </a> for more information.
-          </div>]);
-      }
-    }
+
     return item.accessMessage.prefLabel || ' ';
   }
 
-  render() {
+  requestButton() {
     const {
       item,
       bibId,
       searchKeywords,
     } = this.props;
-
-    if (_isEmpty(item)) {
-      return null;
-    }
-
-    if (item.isElectronicResource) {
-      return null;
-    }
-
+    const { closedLocations } = AppConfigStore.getState();
     const status = item.status && item.status.prefLabel ? item.status.prefLabel : ' ';
     let itemRequestBtn = <span>{status}</span>;
-    let itemCallNumber = ' ';
-
-    const { closedLocations } = AppConfigStore.getState();
 
     if (item.requestable && !closedLocations.includes('')) {
       itemRequestBtn = item.available ? (
@@ -100,7 +70,23 @@ class ItemTableRow extends React.Component {
         </Link>) :
         <span>In Use</span>;
     }
+    return itemRequestBtn;
+  }
 
+  render() {
+    const {
+      item,
+    } = this.props;
+
+    if (_isEmpty(item)) {
+      return null;
+    }
+
+    if (item.isElectronicResource) {
+      return null;
+    }
+
+    let itemCallNumber = ' ';
     if (item.callNumber) {
       itemCallNumber = item.callNumber;
     }
@@ -109,7 +95,7 @@ class ItemTableRow extends React.Component {
       <tr className={item.availability}>
         <td>{item.location || ' '}</td>
         <td>{itemCallNumber}</td>
-        <td>{itemRequestBtn}</td>
+        <td>{this.requestButton()}</td>
         <td>{this.message()}</td>
       </tr>
     );

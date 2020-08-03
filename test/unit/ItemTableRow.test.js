@@ -214,11 +214,6 @@ describe('ItemTableRow', () => {
           data.holdingLocationCode = 'loc:mal82';
           component = shallow(<ItemTableRow item={data} bibId="b12345" />);
         });
-        it('should render `Email for access options` and mailto link in the fourth <td> column data', () => {
-          expect(component.find('td').find('a').length).to.equal(1);
-          expect(component.find('td').find('a').text()).to.equal(generalResearchEmail);
-          expect(component.find('td').find('a').props().href).to.include(generalResearchEmail);
-        });
       });
 
       describe('requestable NYPL item', () => {
