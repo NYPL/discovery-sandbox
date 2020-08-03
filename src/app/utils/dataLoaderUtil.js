@@ -115,7 +115,7 @@ const matchingPathData = (location) => {
     || { matchData: null, pathType: null };
 };
 
-function loadDataForRoutes(location, req, routeMethods, realRes, updateState) {
+function loadDataForRoutes(location, req, routeMethods, realRes) {
   const routes = routesGenerator(location);
   const {
     matchData,
@@ -134,12 +134,12 @@ function loadDataForRoutes(location, req, routeMethods, realRes, updateState) {
     const successCb = (response) => {
       actions.forEach(action => action(response.data));
       Actions.updateLoadingStatus(false);
-      if (updateState && globalState.updateState) updateState(location);
+      if (globalState.updateState) Actions.updateLastLoaded(location);
       globalState.updateState = true;
     };
     const errorCb = (error) => {
       Actions.updateLoadingStatus(false);
-      if (updateState) updateState(location);
+      Actions.updateLastLoaded(location);
       console.error(
         errorMessage,
         error,
@@ -161,6 +161,7 @@ function loadDataForRoutes(location, req, routeMethods, realRes, updateState) {
     }
     return ajaxCall(apiRoute(matchData, route), successCb, errorCb);
   }
+  Actions.updateLastLoaded(location);
 
   return new Promise(resolve => resolve());
 }

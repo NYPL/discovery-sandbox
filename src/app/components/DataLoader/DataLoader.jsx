@@ -2,34 +2,23 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import dataLoaderUtil from '@dataLoaderUtil';
 import Content from '../Content/Content';
+import Store from '../../stores/Store';
 
 class DataLoader extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      loaded: null,
-    };
-    this.updateState = this.updateState.bind(this);
-  }
-
   componentDidMount() {
-    dataLoaderUtil.loadDataForRoutes(this.props.location, null, null, null, this.updateState);
-  }
-
-  updateState(loaded) {
-    this.setState({
-      loaded,
-    });
+    const lastLoaded = Store.getState().lastLoaded;
+    const { location } = this.props;
+    const relevantFields = ['pathname', 'query', 'search'];
+    if (relevantFields.some(field =>
+      JSON.stringify(lastLoaded[field]) !== JSON.stringify(location[field]))
+    ) {
+      dataLoaderUtil.loadDataForRoutes(location);
+    }
   }
 
   render() {
     return (
-      <Content
-        location={this.props.location}
-        loaded={this.state.loaded}
-      >
-        <React.Fragment>{this.props.children}</React.Fragment>
-      </Content>
+      <React.Fragment>{this.props.children}</React.Fragment>
     );
   }
 }

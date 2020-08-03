@@ -15,6 +15,7 @@ import {
 
 import { breakpoints } from '../../data/constants';
 import DataLoader from '../DataLoader/DataLoader';
+import Content from '../Content/Content';
 
 class Application extends React.Component {
   constructor(props) {
@@ -95,7 +96,11 @@ class Application extends React.Component {
             next={Store.next}
             key={JSON.stringify(dataLocation)}
           >
-            {React.cloneElement(this.props.children, this.state.data)}
+            <Content
+              location={this.context.router.location}
+            >
+              {React.cloneElement(this.props.children, this.state.data)}
+            </Content>
           </DataLoader>
           <Footer />
           <Feedback location={this.props.location} />
