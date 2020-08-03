@@ -9,7 +9,7 @@ class DataLoader extends React.Component {
     const lastLoaded = Store.getState().lastLoaded;
     const { location } = this.props;
     const relevantFields = ['pathname', 'query', 'search'];
-    if (relevantFields.some(field =>
+    if (!lastLoaded || relevantFields.some(field =>
       JSON.stringify(lastLoaded[field]) !== JSON.stringify(location[field]))
     ) {
       dataLoaderUtil.loadDataForRoutes(location);

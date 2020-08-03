@@ -22,16 +22,14 @@ describe('Content', () => {
   });
 
   it('should not update if loaded prop doesn\'t match location', () => {
-    expect(shouldComponentUpdate({
-      location: 1,
-      loaded: 2,
-    })).to.equal(false);
+    expect(
+      shouldComponentUpdate({ location: 1 }, { lastLoaded: 2 }),
+    ).to.equal(false);
   });
 
   it('should update when loaded prop matches location', () => {
-    expect(shouldComponentUpdate({
-      location: 1,
-      loaded: 1,
-    })).to.equal(true);
+    expect(
+      shouldComponentUpdate({ location: 1 }, { loaded: 1 }),
+    ).to.equal(true);
   });
 });
