@@ -55,6 +55,8 @@ class HoldRequest extends React.Component {
       serverRedirect: true,
     }, { patron: PatronStore.getState() });
 
+    this.userLoggedIn = this.state.patron && this.state.patron.id;
+
     // change all the components :(
     this.onChange = this.onChange.bind(this);
     this.onRadioSelect = this.onRadioSelect.bind(this);
@@ -142,7 +144,7 @@ class HoldRequest extends React.Component {
    * @return {Boolean}
    */
   requireUser() {
-    if (this.state.patron && this.state.patron.id) {
+    if (this.userLoggedIn) {
       return true;
     }
 
@@ -270,6 +272,10 @@ class HoldRequest extends React.Component {
   }
 
   render() {
+    if (!this.userLoggedIn) return (
+      <LoadingLayer status />
+    );
+
     const { closedLocations, holdRequestNotification } = AppConfigStore.getState();
     const { serverRedirect } = this.state;
     const searchKeywords = this.props.searchKeywords;
