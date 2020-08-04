@@ -53,7 +53,7 @@ class HoldRequest extends React.Component {
       delivery: defaultDelivery,
       checkedLocNum,
       serverRedirect: true,
-      isLoading: !Store.getState().lastLoaded.pathname.includes('hold'),
+      isLoading: this.isLoading(),
     }, { patron: PatronStore.getState() });
 
     // change all the components :(
@@ -62,6 +62,8 @@ class HoldRequest extends React.Component {
     this.submitRequest = this.submitRequest.bind(this);
     this.checkEligibility = this.checkEligibility.bind(this);
     this.conditionallyRedirect = this.conditionallyRedirect.bind(this);
+    this.isLoading = this.isLoading.bind(this);
+    this.requireUser = this.requireUser.bind(this);
   }
 
 
@@ -74,7 +76,6 @@ class HoldRequest extends React.Component {
       title.focus();
     }
     if (this.state.serverRedirect) this.setState({ serverRedirect: false });
-    this.timeoutId = setTimeout(() => { Actions.updateLoadingStatus(false); }, 5000);
   }
 
   componentWillUnmount() {
@@ -82,7 +83,7 @@ class HoldRequest extends React.Component {
   }
 
   onChange() {
-    this.setState({ patron: PatronStore.getState(), isLoading: !Store.getState().lastLoaded.pathname.includes('hold') });
+    this.setState({ patron: PatronStore.getState(), isLoading: this.isLoading() });
   }
 
   onRadioSelect(e, i) {
@@ -91,6 +92,11 @@ class HoldRequest extends React.Component {
       delivery: e.target.value,
       checkedLocNum: i,
     });
+  }
+
+  isLoading() {
+    const patron = PatronStore.getState();
+    return !patron || !patron.id || !Store.getState().lastLoaded.pathname.includes(this.props.location.pathname);
   }
 
   /**
@@ -181,7 +187,6 @@ class HoldRequest extends React.Component {
 
   conditionallyRedirect() {
     return this.checkEligibility().then((eligibility) => {
-      clearTimeout(this.timeoutId);
       if (!eligibility.eligibility) {
         const bib = (this.props.bib && !_isEmpty(this.props.bib)) ?
           this.props.bib : null;
