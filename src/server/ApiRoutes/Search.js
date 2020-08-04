@@ -23,11 +23,14 @@ const createAPIQuery = basicQuery({
   selectedFilters: {},
 });
 
-const nyplApiClientCall = query =>
-  nyplApiClient()
+const nyplApiClientCall = (query) => {
+  const requestOptions = appConfig.features.includes('on-site-edd') ? { headers: { 'X-Features': 'on-site-edd' } } : {};
+
+  return nyplApiClient()
     .then(client =>
-      client.get(`/discovery/resources${query}`, { cache: false }),
+      client.get(`/discovery/resources${query}`, requestOptions),
     );
+};
 
 function search(searchKeywords = '', page, sortBy, order, field, filters, cb, errorcb) {
   const encodedResultsQueryString = createAPIQuery({

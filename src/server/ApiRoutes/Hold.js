@@ -484,7 +484,7 @@ function createHoldRequestServer(req, res, pickedUpBibId = '', pickedUpItemId = 
     docDeliveryData,
     itemSource,
     (response) => {
-      const data = JSON.parse(response).data;
+      const data = response.data;
       res.redirect(
         `${appConfig.baseUrl}/hold/confirmation/${bibId}-${itemId}?pickupLocation=` +
         `${pickupLocation}&requestId=${data.id}${searchKeywordsQuery}`,
@@ -524,7 +524,7 @@ function createHoldRequestAjax(req, res) {
     null,
     req.query.itemSource,
     (response) => {
-      const data = JSON.parse(response).data;
+      const data = response.data;
       res.json({
         id: data.id,
         jobId: data.jobId,
@@ -556,7 +556,7 @@ function createHoldRequestEdd(req, res) {
     req.body.form,
     req.body.itemSource,
     (response) => {
-      const data = JSON.parse(response).data;
+      const data = response.data;
       res.json({
         id: data.id,
         jobId: data.jobId,
