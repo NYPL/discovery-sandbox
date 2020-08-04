@@ -263,7 +263,7 @@ class ElectronicDeliveryForm extends React.Component {
               <div className="nypl-text-area-with-label">
                 <label htmlFor="requestNotes" id="requestNotes-label">Notes</label>
                 <p>
-                  Provide additional instructions here. For more information on placing an electronic delivery request, please see <a href="https://www.nypl.org/help/request-research-materials">Requesting Research Materials</a>.
+                  Provide additional instructions here. For more information on placing an electronic delivery request, please see <span><a href="https://www.nypl.org/help/request-research-materials">Requesting Research Materials</a>.</span>
                 </p>
                 <textarea
                   className="nypl-text-area"

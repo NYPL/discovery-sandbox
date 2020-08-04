@@ -30,23 +30,21 @@ const DrbbContainer = () => {
           target="_blank"
           key="drbb-results-list-link"
         >
-          See {totalWorks.toLocaleString()} results from Digital Research Books Beta
+          See {totalWorks.toLocaleString()} result{totalWorks === 1 ? '' : 's'} from Digital Research Books Beta
         </Link>]);
     }
 
     return (
       <Link
         className="drbb-description"
-        to={{
-          pathname: `${appConfig.drbbFrontEnd[appConfig.environment]}/search?`,
-        }}
+        to={appConfig.drbbFrontEnd[appConfig.environment]}
         target="_blank"
         key="drbb-link"
       >
         <div className="drbb-promo">
           <img
             alt="digital-research-book"
-            src="/src/client/assets/drbb_promo.png"
+            src="./src/client/assets/drbb_promo.png"
           />
         </div>
         Explore Digital Research Books Beta
@@ -61,10 +59,11 @@ const DrbbContainer = () => {
       </h3>
       <p className="drbb-description">
         Digital books for research from multiple sources world wide-
-        all free to read, download, and keep. No Library Card is Required. <span>
+        all free to read, download, and keep. No Library Card is Required.&nbsp;
+        <span>
           <a
             className="link"
-            target="_blanks"
+            target="_blank"
             href={`${appConfig.drbbFrontEnd[appConfig.environment]}/about`}
           >Read more about the project
           </a>.
@@ -73,10 +72,6 @@ const DrbbContainer = () => {
       { content() }
     </div>
   );
-};
-
-DrbbContainer.contextTypes = {
-  router: PropTypes.object,
 };
 
 export default DrbbContainer;
