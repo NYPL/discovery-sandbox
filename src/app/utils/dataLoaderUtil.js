@@ -118,9 +118,11 @@ function loadDataForRoutes(location, req, routeMethods, realRes) {
     Actions.updateLoadingStatus(true);
     const successCb = (response) => {
       actions.forEach(action => action(response.data));
+      Actions.updateLastLoaded(location);
       Actions.updateLoadingStatus(false);
     };
     const errorCb = (error) => {
+      Actions.updateLastLoaded(location);
       Actions.updateLoadingStatus(false);
       console.error(
         errorMessage,
@@ -144,6 +146,7 @@ function loadDataForRoutes(location, req, routeMethods, realRes) {
     return ajaxCall(apiRoute(matchData, route), successCb, errorCb);
   }
 
+  Actions.updateLastLoaded(location);
   return new Promise(resolve => resolve());
 }
 

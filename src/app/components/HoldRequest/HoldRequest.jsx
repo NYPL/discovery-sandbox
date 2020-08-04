@@ -53,6 +53,7 @@ class HoldRequest extends React.Component {
       delivery: defaultDelivery,
       checkedLocNum,
       serverRedirect: true,
+      isLoading: !Store.getState().lastLoaded.pathname.includes('hold'),
     }, { patron: PatronStore.getState() });
 
     // change all the components :(
@@ -67,6 +68,7 @@ class HoldRequest extends React.Component {
   componentDidMount() {
     this.requireUser();
     this.conditionallyRedirect();
+    Store.listen(this.onChange);
     const title = document.getElementById('item-title');
     if (title) {
       title.focus();
@@ -75,8 +77,12 @@ class HoldRequest extends React.Component {
     this.timeoutId = setTimeout(() => { Actions.updateLoadingStatus(false); }, 5000);
   }
 
+  componentWillUnmount() {
+    Store.unlisten(this.onChange);
+  }
+
   onChange() {
-    this.setState({ patron: PatronStore.getState() });
+    this.setState({ patron: PatronStore.getState(), isLoading: !Store.getState().lastLoaded.pathname.includes('hold') });
   }
 
   onRadioSelect(e, i) {
@@ -358,7 +364,7 @@ class HoldRequest extends React.Component {
       <DocumentTitle title="Item Request | Shared Collection Catalog | NYPL">
         <div>
           <LoadingLayer
-            status={Store.state.isLoading}
+            status={this.state.isLoading}
             title="Requesting"
           />
           <div className="nypl-request-page-header">
