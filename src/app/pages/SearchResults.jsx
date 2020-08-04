@@ -168,10 +168,6 @@ SearchResults.defaultProps = {
 };
 
 SearchResults.contextTypes = {
-  includeDrbb: PropTypes.bool,
-};
-
-SearchResults.contextTypes = {
   router: PropTypes.obj,
 };
 

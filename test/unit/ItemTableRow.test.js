@@ -191,12 +191,6 @@ describe('ItemTableRow', () => {
       after(() => {
         appConfigStoreStub.restore();
       });
-
-      it('should render `Email for access options` link in the fourth <td> column data', () => {
-        expect(component.find('td').find('a').length).to.equal(1);
-        expect(component.find('td').find('a').text()).to.equal('Email for access options');
-        expect(component.find('td').find('a').props().href).to.include(libAnswersEmails.sasb);
-      });
     });
   });
 });

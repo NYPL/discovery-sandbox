@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 
 import appConfig from '../../data/appConfig';
@@ -55,7 +54,7 @@ const DrbbContainer = () => {
   return (
     <div className="drbb-container">
       <h3 className="drbb-main-header">
-        {hasWorks ? 'Results from ' : 'No results found from '} Digital Research Books Beta
+        {hasWorks ? 'Results from' : 'No results found from'} Digital Research Books Beta
       </h3>
       <p className="drbb-description">
         Digital books for research from multiple sources world wide-
@@ -65,7 +64,8 @@ const DrbbContainer = () => {
             className="link"
             target="_blank"
             href={`${appConfig.drbbFrontEnd[appConfig.environment]}/about`}
-          >Read more about the project
+          >
+            Read more about the project
           </a>.
         </span>
       </p>

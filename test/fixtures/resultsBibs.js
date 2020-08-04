@@ -60,6 +60,24 @@ const resultsBibs = [
             '@value': 21106086,
           },
         },
+        {
+          '@id': 'res:i21106099',
+          uri: 'i21106086',
+          identifier: ['urn:SierraNypl:21106086'],
+          idNyplSourceId: {
+            '@type': 'SierraNypl',
+            '@value': 21106086,
+          },
+        },
+        {
+          '@id': 'res:i21106025',
+          uri: 'i21106086',
+          identifier: ['urn:SierraNypl:21106086'],
+          idNyplSourceId: {
+            '@type': 'SierraNypl',
+            '@value': 21106086,
+          },
+        },
       ],
     },
   },

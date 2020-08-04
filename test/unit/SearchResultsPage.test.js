@@ -242,7 +242,7 @@ describe('SearchResultsPage', () => {
 
       after(() => {
         appConfigMock.restore();
-      })
+      });
 
       it('should have the Pagination above the DrbbContainer', () => {
         expect(component.find('.nypl-column-full').childAt(1).is('Pagination')).to.eql(true);
