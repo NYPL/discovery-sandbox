@@ -63,7 +63,7 @@ function postHoldAPI(
   };
   logger.info('Making hold request in postHoldAPI', data);
 
-  return nyplApiClientPost(holdRequestEndpoint, JSON.stringify(data))
+  return nyplApiClientPost(holdRequestEndpoint, data)
     .then(cb)
     .catch(errorCb);
 }
@@ -200,7 +200,7 @@ function confirmRequestServer(req, res, next) {
 
   return nyplApiClientGet(`/hold-requests/${requestId}`)
     .then((response) => {
-      const patronIdFromHoldRequest = response.patron;
+      const patronIdFromHoldRequest = response.data.patron;
 
       // The patron who is seeing the confirmation made the Hold Request
       if (patronIdFromHoldRequest === patronId) {
@@ -610,7 +610,7 @@ function eddServer(req, res) {
     req.body,
     req.body.itemSource,
     (response) => {
-      const data = JSON.parse(response).data;
+      const data = response.data;
 
       res.redirect(
         `${appConfig.baseUrl}/hold/confirmation/${bibId}-${itemId}` +

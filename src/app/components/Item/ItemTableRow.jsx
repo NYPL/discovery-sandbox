@@ -85,22 +85,17 @@ class ItemTableRow extends React.Component {
     const { closedLocations } = AppConfigStore.getState();
 
     if (item.requestable && !closedLocations.includes('')) {
-      if (item.isRecap) {
-        itemRequestBtn = item.available ? (
-          <Link
-            to={
-              `${appConfig.baseUrl}/hold/request/${bibId}-${item.id}?searchKeywords=${searchKeywords}`
-            }
-            onClick={e => this.getItemRecord(e, bibId, item.id)}
-            tabIndex="0"
-          >
-            Request
-          </Link>) :
-          <span>In Use</span>;
-      } else if (item.nonRecapNYPL) {
-        // Not in ReCAP
-        itemRequestBtn = <span>{status}</span>;
-      }
+      itemRequestBtn = item.available ? (
+        <Link
+          to={
+            `${appConfig.baseUrl}/hold/request/${bibId}-${item.id}?searchKeywords=${searchKeywords}`
+          }
+          onClick={e => this.getItemRecord(e, bibId, item.id)}
+          tabIndex="0"
+        >
+          Request
+        </Link>) :
+        <span>In Use</span>;
     }
 
     if (item.callNumber) {
