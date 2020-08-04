@@ -464,7 +464,7 @@ function eddServer(req, res) {
   }
 
   // Ensure user is logged in
-  const loggedIn = User.requireUser(req);
+  const loggedIn = User.requireUser(req, res);
 
   if (!loggedIn) return false;
 

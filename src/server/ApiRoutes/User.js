@@ -2,7 +2,7 @@ import appConfig from '../../app/data/appConfig';
 import nyplApiClient from '../../server/routes/nyplApiClient';
 
 function requireUser(req, res) {
-  res.respond = req.originalUrl.includes('clientRedirect') ? res.json : res.redirect;
+  const respond = req.originalUrl.includes('clientRedirect') ? res.json : res.redirect;
   if (!req.patronTokenResponse || !req.patronTokenResponse.isTokenValid ||
     !req.patronTokenResponse.decodedPatron || !req.patronTokenResponse.decodedPatron.sub) {
     // redirect to login
@@ -12,7 +12,7 @@ function requireUser(req, res) {
     } else {
       fullUrl = req.query.clientRedirect;
     }
-    res.respond(`${appConfig.loginUrl}?redirect_uri=${fullUrl}`);
+    respond(`${appConfig.loginUrl}?redirect_uri=${fullUrl}`);
     return false;
   }
   return true;
