@@ -333,15 +333,8 @@ describe('HoldConfirmation', () => {
       const main = component.find('main');
 
       expect(main.find('#delivery-location')).to.have.length(1);
-      expect(main.contains(
-        <p id="delivery-location">
-          The item will be delivered to: <span>
-            please <a href="https://gethelp.nypl.org/customer/portal/emails/new">email us</a> or
-            call 917-ASK-NYPL (<a href="tel:19172756975">917-275-6975</a>) for your delivery
-            location.
-          </span>
-        </p>
-      )).to.equal(true);
+      expect(main.find('#delivery-location').text()).to.equal('The item will be delivered to: please email us or call 917-ASK-NYPL (917-275-6975) for your delivery location.');
+      expect(main.find('#delivery-location').find('a').length).to.equal(2);
     });
   });
 
@@ -378,15 +371,8 @@ describe('HoldConfirmation', () => {
       const main = component.find('main');
 
       expect(main.find('#delivery-location')).to.have.length(1);
-      expect(main.contains(
-        <p id="delivery-location">
-          The item will be delivered to: <span>
-            please <a href="https://gethelp.nypl.org/customer/portal/emails/new">email us</a> or
-            call 917-ASK-NYPL (<a href="tel:19172756975">917-275-6975</a>) for your delivery
-            location.
-          </span>
-        </p>
-      )).to.equal(true);
+      expect(main.find('#delivery-location').text()).to.equal('The item will be delivered to: please email us or call 917-ASK-NYPL (917-275-6975) for your delivery location.');
+      expect(main.find('#delivery-location').find('a').length).to.equal(2);
     });
   });
 
@@ -451,7 +437,7 @@ describe('HoldConfirmation', () => {
 
       expect(main.find('#delivery-location')).to.have.length(1);
       expect(main.find('#delivery-location').text())
-        .to.equal('The item will be delivered to: n/a (electronic delivery)');
+        .to.equal('The item will be delivered to the email address you provided.');
     });
   });
 

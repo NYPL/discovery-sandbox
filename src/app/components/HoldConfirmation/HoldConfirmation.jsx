@@ -313,7 +313,7 @@ class HoldConfirmation extends React.Component {
             for <Link id="item-link" to={`${appConfig.baseUrl}/bib/${bibId}`}>{title}</Link>
           </p>
           <p id="delivery-location">
-            The item will be delivered to{pickupLocation === 'edd' ? ' the email address you provided.' : `: ${this.renderLocationInfo(deliveryLocation)}`}
+            The item will be delivered to{pickupLocation === 'edd' ? ' the email address you provided.' : [': ', this.renderLocationInfo(deliveryLocation)]}
           </p>
 
           <h3 id="physical-delivery">Physical Delivery</h3>
