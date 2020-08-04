@@ -60,7 +60,7 @@ class HoldConfirmation extends React.Component {
       const blocked = errors.blocked ? this.blockedMessage() : null;
       const moneyOwed = errors.moneyOwed ? this.moneyOwedMessage() : null;
       const ptypeDisallowsHolds = errors.ptypeDisallowsHolds ? this.ptypeDisallowsHolds() : null;
-      const defaultText = expired || blocked || moneyOwed || ptypeDisallowsHolds  ? null : 'There is a problem with your library account.';
+      const defaultText = expired || blocked || moneyOwed || ptypeDisallowsHolds ? null : 'There is a problem with your library account.';
       return (
         <p> This is because:
           <ul>
@@ -313,7 +313,7 @@ class HoldConfirmation extends React.Component {
             for <Link id="item-link" to={`${appConfig.baseUrl}/bib/${bibId}`}>{title}</Link>
           </p>
           <p id="delivery-location">
-            The item will be delivered to: {this.renderLocationInfo(deliveryLocation)}
+            The item will be delivered to{pickupLocation === 'edd' ? ' the email address you provided.' : `: ${this.renderLocationInfo(deliveryLocation)}`}
           </p>
 
           <h3 id="physical-delivery">Physical Delivery</h3>
