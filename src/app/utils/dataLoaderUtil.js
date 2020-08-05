@@ -133,8 +133,10 @@ function loadDataForRoutes(location, req, routeMethods, realRes) {
     Actions.updateLoadingStatus(true);
     const successCb = (response) => {
       actions.forEach(action => action(response.data));
-      Actions.updateLoadingStatus(false);
-      if (globalState.updateState) Actions.updateLastLoaded(location);
+      if (globalState.updateState) {
+        Actions.updateLastLoaded(location);
+        Actions.updateLoadingStatus(false);
+      }
       globalState.updateState = true;
     };
     const errorCb = (error) => {
