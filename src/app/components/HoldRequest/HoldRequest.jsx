@@ -339,10 +339,6 @@ class HoldRequest extends React.Component {
     return (
       <DocumentTitle title="Item Request | Shared Collection Catalog | NYPL">
         <div>
-          <LoadingLayer
-            status={Store.state.isLoading}
-            title="Requesting"
-          />
           <div className="nypl-request-page-header">
             <div className="nypl-full-width-wrapper">
               <div className="row">

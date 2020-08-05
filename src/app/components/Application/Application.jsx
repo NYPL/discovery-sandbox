@@ -75,8 +75,8 @@ class Application extends React.Component {
 
   loadingLayerText() {
     const pathname = this.context.router.location.pathname;
-    if (pathname.includes('search')) return 'Searching';
-    if (pathname.includes('request')) return 'Requesting';
+    if (pathname.includes('/search')) return 'Searching';
+    if (pathname.includes('/request')) return 'Requesting';
     return 'Loading';
   }
 
@@ -107,6 +107,7 @@ class Application extends React.Component {
           <LoadingLayer
             status={Store.getState().isLoading}
             title={this.loadingLayerText()}
+            key={this.loadingLayerText()}
           />
           <Content
             location={this.context.router.location}

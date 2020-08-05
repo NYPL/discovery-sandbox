@@ -12,10 +12,6 @@ const SccContainer = (props) => {
   const { includeDrbb } = appConfig;
   return (
     <main className="main-page">
-      <LoadingLayer
-        status={Store.getState().isLoading}
-        title={props.loadingLayerText}
-      />
       <div className="nypl-page-header">
         <div className={`nypl-full-width-wrapper filter-page${includeDrbb ? ' drbb-integration' : ''}`}>
           <div className="nypl-row">
