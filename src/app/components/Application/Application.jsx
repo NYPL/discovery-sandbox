@@ -16,6 +16,7 @@ import {
 import { breakpoints } from '../../data/constants';
 import DataLoader from '../DataLoader/DataLoader';
 import Content from '../Content/Content';
+import LoadingLayer from '../LoadingLayer/LoadingLayer';
 
 class Application extends React.Component {
   constructor(props) {
@@ -72,6 +73,13 @@ class Application extends React.Component {
     this.setState({ data: Store.getState() });
   }
 
+  loadingLayerText() {
+    const pathname = this.context.router.location.pathname;
+    if (pathname.includes('search')) return 'Searching';
+    if (pathname.includes('request')) return 'Requesting';
+    return 'Loading';
+  }
+
   render() {
     const dataLocation = Object.assign(
       {},
@@ -95,13 +103,16 @@ class Application extends React.Component {
             location={this.context.router.location}
             next={Store.next}
             key={JSON.stringify(dataLocation)}
+          />
+          <LoadingLayer
+            status={Store.getState().isLoading}
+            title={this.loadingLayerText()}
+          />
+          <Content
+            location={this.context.router.location}
           >
-            <Content
-              location={this.context.router.location}
-            >
-              {React.cloneElement(this.props.children, this.state.data)}
-            </Content>
-          </DataLoader>
+            {React.cloneElement(this.props.children, this.state.data)}
+          </Content>
           <Footer />
           <Feedback location={this.props.location} />
         </div>
