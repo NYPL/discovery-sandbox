@@ -53,7 +53,6 @@ class HoldRequest extends React.Component {
       delivery: defaultDelivery,
       checkedLocNum,
       serverRedirect: true,
-      isLoading: this.isLoading(),
     }, { patron: PatronStore.getState() });
 
     // change all the components :(
@@ -70,7 +69,6 @@ class HoldRequest extends React.Component {
   componentDidMount() {
     this.requireUser();
     this.conditionallyRedirect();
-    Store.listen(this.onChange);
     const title = document.getElementById('item-title');
     if (title) {
       title.focus();
@@ -78,12 +76,8 @@ class HoldRequest extends React.Component {
     if (this.state.serverRedirect) this.setState({ serverRedirect: false });
   }
 
-  componentWillUnmount() {
-    Store.unlisten(this.onChange);
-  }
-
   onChange() {
-    this.setState({ patron: PatronStore.getState(), isLoading: this.isLoading() });
+    this.setState({ patron: PatronStore.getState() });
   }
 
   onRadioSelect(e, i) {
@@ -365,10 +359,10 @@ class HoldRequest extends React.Component {
 
     const searchUrl = basicQuery(this.props)({});
 
-    if (this.state.isLoading) {
+    if (this.isLoading()) {
       return (
         <LoadingLayer
-          status={this.state.isLoading}
+          status={this.isLoading()}
           title="Requesting"
         />
       );
