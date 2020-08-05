@@ -172,7 +172,7 @@ describe('SearchResultsPage', () => {
 
     before(() => {
       appConfigMock = mock(appConfig);
-      appConfig.includeDrbb = false;
+      appConfig.features = [];
 
       component = mount(
         <SearchResults
@@ -198,7 +198,7 @@ describe('SearchResultsPage', () => {
 
     before(() => {
       appConfigMock = mock(appConfig);
-      appConfig.includeDrbb = true;
+      appConfig.features = ['drb-integration'];
 
       context.media = 'desktop';
       component = mount(
@@ -225,12 +225,10 @@ describe('SearchResultsPage', () => {
     });
 
     describe('tablet/mobile view', () => {
-      let appConfigMock;
-
       before(() => {
         context.media = 'tablet';
         appConfigMock = mock(appConfig);
-        appConfig.includeDrbb = true;
+        appConfig.features = ['drb-integration'];
         component = mount(
           <SearchResultsContainer
             searchKeywords="locofocos"
