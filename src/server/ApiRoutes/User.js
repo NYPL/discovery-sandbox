@@ -15,11 +15,11 @@ function requireUser(req, res) {
 function eligibility(req, res) {
   if (!req.patronTokenResponse || !req.patronTokenResponse.decodedPatron
      || !req.patronTokenResponse.decodedPatron.sub) {
-    res.send(JSON.stringify({ eligibility: true }));
+    return res.send(JSON.stringify({ eligibility: true }));
   }
   const id = req.patronTokenResponse.decodedPatron.sub;
-  nyplApiClient().then(client => client.get(`/patrons/${id}/hold-request-eligibility`, { cache: false }))
-    .then((response) => { res.send(JSON.stringify(response)); });
+  return nyplApiClient().then(client => client.get(`/patrons/${id}/hold-request-eligibility`, { cache: false }))
+    .then(response => res.send(JSON.stringify(response)));
 }
 
 export default { eligibility, requireUser };
