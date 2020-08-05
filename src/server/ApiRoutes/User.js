@@ -2,7 +2,7 @@ import appConfig from '../../app/data/appConfig';
 import nyplApiClient from '../../server/routes/nyplApiClient';
 
 function requireUser(req, res) {
-  const respond = req.originalUrl.includes('clientRedirect') ? res.json : res.redirect;
+  const respond = (req.originalUrl.includes('clientRedirect') ? res.json : res.redirect).bind(res);
   if (!req.patronTokenResponse || !req.patronTokenResponse.isTokenValid ||
     !req.patronTokenResponse.decodedPatron || !req.patronTokenResponse.decodedPatron.sub) {
     // redirect to login
