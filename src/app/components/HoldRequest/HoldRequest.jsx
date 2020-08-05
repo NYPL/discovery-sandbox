@@ -365,13 +365,18 @@ class HoldRequest extends React.Component {
 
     const searchUrl = basicQuery(this.props)({});
 
+    if (this.state.isLoading) {
+      return (
+        <LoadingLayer
+          status={this.state.isLoading}
+          title="Requesting"
+        />
+      );
+    }
+
     return (
       <DocumentTitle title="Item Request | Shared Collection Catalog | NYPL">
         <div>
-          <LoadingLayer
-            status={this.state.isLoading}
-            title="Requesting"
-          />
           <div className="nypl-request-page-header">
             <div className="nypl-full-width-wrapper">
               <div className="row">
