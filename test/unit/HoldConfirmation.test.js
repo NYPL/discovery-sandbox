@@ -200,10 +200,7 @@ describe('HoldConfirmation', () => {
 
     it('should render the message for the physical delivery location.', () => {
       const main = component.find('main');
-
-      expect(modelDeliveryLocationName.returnValues[0])
-        .to.equal('Schwarzman Building - Allen Scholar Room');
-
+      expect(modelDeliveryLocationName.returnValues[0]).to.equal('Schwarzman Building - Allen Scholar Room');
       expect(main.find('#delivery-location')).to.have.length(1);
       expect(main.find('#delivery-location').text())
         .to.equal('The item will be delivered to: Schwarzman Building - Allen Scholar Room');

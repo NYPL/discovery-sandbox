@@ -1,5 +1,5 @@
 /* global window document */
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 import {
@@ -150,30 +150,29 @@ class HoldConfirmation extends React.Component {
    * @param {Object} loc
    * @return {HTML Element}
    */
-  renderLocationInfo(loc) {
+  deliveryLocationInfo(loc) {
+    if (loc.id === 'edd') return 'The item will be delivered to the email address you provided.';
+
+    let content;
     if (!loc || _isEmpty(loc)) {
-      return (
-        <span>
+      content = (
+        <Fragment>
           please <a href="https://gethelp.nypl.org/customer/portal/emails/new">email us</a> or
           call 917-ASK-NYPL (<a href="tel:19172756975">917-275-6975</a>) for your delivery location.
-        </span>
+        </Fragment>
       );
     }
 
-    if (loc.shortName === 'n/a') {
-      return (
-        <span>
-          {loc.prefLabel}
-        </span>
-      );
-    }
+    if (loc.shortName === 'n/a') content = loc.prefLabel;
 
-    const prefLabel = this.modelDeliveryLocationName(loc.prefLabel, loc.shortName);
+    if (!content) {
+      content = this.modelDeliveryLocationName(loc.prefLabel, loc.shortName);
+    }
 
     return (
-      <span>
-        {prefLabel}
-      </span>
+      <Fragment>
+        The item will be delivered to: <span>{content}</span>
+      </Fragment>
     );
   }
 
@@ -268,20 +267,29 @@ class HoldConfirmation extends React.Component {
 
 
   render() {
-    // Need to better clarify variable names later.
-    const bib = this.props.bib;
+    const {
+      bib,
+      params: {
+        itemId,
+      },
+      location: {
+        query: {
+          pickupLocation,
+        },
+      },
+    } = this.props;
     const title = (bib && _isArray(bib.title) && bib.title.length > 0) ?
       bib.title[0] : '';
     const bibId = (bib && bib['@id'] && typeof bib['@id'] === 'string') ?
       bib['@id'].substring(4) : '';
-    const itemId = this.props.params.itemId;
-    const pickupLocation = this.props.location.query.pickupLocation;
-    let deliveryLocation = null;
+
     let confirmationPageTitle = 'Submission Error';
     let confirmationInfo = (
       <div className="item">
         <p>
-          We could not process your request at this time. {this.eligibilityErrorText() || this.defaultErrorText()}
+          We could not process your request at this time. {
+            this.eligibilityErrorText() || this.defaultErrorText()
+          }
         </p>
         {this.renderBackToClassicLink()}
         {this.renderBackToSearchLink()}
@@ -289,18 +297,19 @@ class HoldConfirmation extends React.Component {
       </div>
     );
 
-    if (this.props.deliveryLocations && this.props.deliveryLocations.length) {
-      if (pickupLocation !== 'edd') {
+    let deliveryLocation = {};
+    if (pickupLocation === 'edd') {
+      deliveryLocation = {
+        id: 'edd',
+        address: null,
+        prefLabel: 'n/a (electronic delivery)',
+        shortName: 'n/a',
+      };
+    } else {
+      if (this.props.deliveryLocations && this.props.deliveryLocations.length) {
         deliveryLocation = _findWhere(
           this.props.deliveryLocations, { '@id': `loc:${pickupLocation}` },
-        );
-      } else {
-        deliveryLocation = {
-          id: null,
-          address: null,
-          prefLabel: 'n/a (electronic delivery)',
-          shortName: 'n/a',
-        };
+        ) || {};
       }
     }
 
@@ -313,9 +322,8 @@ class HoldConfirmation extends React.Component {
             for <Link id="item-link" to={`${appConfig.baseUrl}/bib/${bibId}`}>{title}</Link>
           </p>
           <p id="delivery-location">
-            The item will be delivered to{pickupLocation === 'edd' ? ' the email address you provided.' : [': ', this.renderLocationInfo(deliveryLocation)]}
+            {this.deliveryLocationInfo(deliveryLocation)}
           </p>
-
           <h3 id="physical-delivery">Physical Delivery</h3>
           <p>
             Please log into your library account to check for updates. The item will be
