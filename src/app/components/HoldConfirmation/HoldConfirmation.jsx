@@ -269,12 +269,15 @@ class HoldConfirmation extends React.Component {
   render() {
     const {
       bib,
+      deliveryLocations,
       params: {
         itemId,
       },
       location: {
         query: {
           pickupLocation,
+          errorStatus,
+          errorMessage,
         },
       },
     } = this.props;
@@ -306,14 +309,14 @@ class HoldConfirmation extends React.Component {
         shortName: 'n/a',
       };
     } else {
-      if (this.props.deliveryLocations && this.props.deliveryLocations.length) {
+      if (deliveryLocations && deliveryLocations.length) {
         deliveryLocation = _findWhere(
           this.props.deliveryLocations, { '@id': `loc:${pickupLocation}` },
         ) || {};
       }
     }
 
-    if (!this.props.location.query.errorStatus && !this.props.location.query.errorMessage) {
+    if (!errorStatus && !errorMessage) {
       confirmationPageTitle = 'Request Confirmation';
       confirmationInfo = (
         <div className="item">
@@ -355,7 +358,7 @@ class HoldConfirmation extends React.Component {
     }
 
     // If running client-side, generate GA event
-    if ((typeof window !== 'undefined') && this.props.location.query.errorStatus && this.props.location.query.errorMessage) {
+    if ((typeof window !== 'undefined') && errorStatus && errorMessage) {
       trackDiscovery('Error', 'Hold Confirmation');
     }
 
