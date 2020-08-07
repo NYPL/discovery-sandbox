@@ -21,6 +21,7 @@ import appConfig from '../../data/appConfig';
 import FieldsetDate from '../Filters/FieldsetDate';
 import FieldsetList from '../Filters/FieldsetList';
 import Actions from '../../actions/Actions';
+import AppConfigStore from '../../stores/AppConfigStore';
 
 const FilterResetIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" width="57.69298" height="71.85359" viewBox="0 0 57.69298 71.85359">
@@ -341,7 +342,8 @@ class FilterPopup extends React.Component {
       dateAfter: selectedFilters.dateAfter,
       dateBefore: selectedFilters.dateBefore,
     };
-    const { includeDrbb } = appConfig;
+    const { features } = AppConfigStore.getState();
+    const includeDrbb = features.includes('drb-integration');
 
     const applyButton = (position = '') => (
       <button

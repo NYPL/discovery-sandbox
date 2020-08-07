@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import Store from '@Store';
 import { displayContext } from '../../utils/utils';
-import appConfig from '../../data/appConfig';
+import AppConfigStore from '../../stores/AppConfigStore';
 
 class ResultsCount extends React.Component {
   // The `searchKeywords` prop gets updated before the `count` and we want to wait until both
@@ -63,7 +63,8 @@ class ResultsCount extends React.Component {
   render() {
     const results = this.displayCount();
     const { count } = this.props;
-    const { includeDrbb } = appConfig;
+    const { features } = AppConfigStore.getState();
+    const includeDrbb = features.includes('drb-integration');
     if (includeDrbb && count === 0) return null;
 
     return (
@@ -101,10 +102,6 @@ ResultsCount.defaultProps = {
     dateAfter: {},
     dateBefore: {},
   },
-};
-
-ResultsCount.contextTypes = {
-  includeDrbb: PropTypes.object,
 };
 
 export default ResultsCount;

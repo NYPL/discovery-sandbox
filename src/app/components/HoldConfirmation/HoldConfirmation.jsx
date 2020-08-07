@@ -327,6 +327,11 @@ class HoldConfirmation extends React.Component {
           <p id="delivery-location">
             {this.deliveryLocationInfo(deliveryLocation)}
           </p>
+          <h3 id="electronic-delivery">Electronic Delivery</h3>
+          <p>
+            If you selected electronic delivery,
+            you will receive an email when the item is available to download.
+          </p>
           <h3 id="physical-delivery">Physical Delivery</h3>
           <p>
             Please log into your library account to check for updates. The item will be
@@ -345,11 +350,6 @@ class HoldConfirmation extends React.Component {
             call 917-ASK-NYPL (<a href="tel:19172756975">917-275-6975</a>).
           </p>
 
-          <h3 id="electronic-delivery">Electronic Delivery</h3>
-          <p>
-            If you selected electronic delivery, you will receive an email when the item is
-            available to download.
-          </p>
           {this.renderBackToClassicLink()}
           {this.renderBackToSearchLink()}
           {this.renderStartOverLink()}

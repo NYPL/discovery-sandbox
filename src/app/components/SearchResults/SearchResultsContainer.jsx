@@ -9,8 +9,9 @@ import {
   trackDiscovery,
   displayContext,
 } from '../../utils/utils';
-import Store from '@Store'
+import Store from '@Store';
 import appConfig from '../../data/appConfig';
+import AppConfigStore from '../../stores/AppConfigStore';
 
 // Renders the ResultsList containing the search results and the Pagination component
 const SearchResultsContainer = (props, context) => {
@@ -22,9 +23,8 @@ const SearchResultsContainer = (props, context) => {
   const {
     media,
   } = context;
-  const {
-    includeDrbb,
-  } = appConfig;
+  const { features } = AppConfigStore.getState();
+  const includeDrbb = features.includes('drb-integration');
 
   const results = searchResults ? searchResults.itemListElement : [];
   const totalResults = searchResults ? searchResults.totalResults : results.length;
