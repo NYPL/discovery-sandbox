@@ -5,14 +5,11 @@ import DocumentTitle from 'react-document-title';
 import React from 'react';
 import ReactDOMServer from 'react-dom/server';
 import { match, RouterContext } from 'react-router';
-import Iso from 'iso';
 import webpack from 'webpack';
 import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
 
-import alt from './src/app/alt';
 import appConfig from './src/app/data/appConfig';
-import Store from '@Store';
 import dataLoaderUtil from '@dataLoaderUtil';
 import webpackConfig from './webpack.config';
 import apiRoutes from './src/server/ApiRoutes/ApiRoutes';
@@ -31,8 +28,6 @@ const VIEWS_PATH = path.resolve(ROOT_PATH, 'src/views');
 const WEBPACK_DEV_PORT = appConfig.webpackDevServerPort || 3000;
 const isProduction = process.env.NODE_ENV === 'production';
 const app = express();
-
-let application;
 
 app.use(compress());
 
@@ -92,15 +87,8 @@ app.get('/*', (req, res, next) => {
 });
 
 app.get('/*', (req, res) => {
-  alt.bootstrap(JSON.stringify({
-    PatronStore: res.locals.data.PatronStore,
-    Store: Store.getState(),
-  },
-  ));
-
   const appRoutes = (req.url).indexOf(appConfig.baseUrl) !== -1 ? routes().client : routes().server;
   const title = DocumentTitle.rewind();
-  const iso = new Iso();
 
   match({ routes: appRoutes, location: req.url }, (error, redirectLocation, renderProps) => {
     if (error) {
@@ -108,13 +96,9 @@ app.get('/*', (req, res) => {
     } else if (redirectLocation) {
       res.redirect(302, redirectLocation.pathname + redirectLocation.search);
     } else if (renderProps) {
-      application = ReactDOMServer.renderToString(<RouterContext {...renderProps} />);
-      const flushed = alt.flush();
-      iso.add(application, flushed);
       res
         .status(200)
         .render('index', {
-          application: iso.render(),
           appTitle: title,
           favicon: appConfig.favIconPath,
           webpackPort: WEBPACK_DEV_PORT,
