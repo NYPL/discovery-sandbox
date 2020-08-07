@@ -21,6 +21,7 @@ class Store {
       updateIsEddRequestable: Actions.updateIsEddRequestable,
       updateSubjectHeading: Actions.updateSubjectHeading,
       updateDrbbResults: Actions.updateDrbbResults,
+      updateLastLoaded: Actions.updateLastLoaded,
     });
 
     this.state = {
@@ -45,6 +46,7 @@ class Store {
       isEddRequestable: false,
       subjectHeading: null,
       drbbResults: {},
+      lastLoaded: '',
     };
   }
 
@@ -112,6 +114,10 @@ class Store {
 
   updateDrbbResults(data) {
     this.setState({ drbbResults: data });
+  }
+
+  updateLastLoaded(data) {
+    this.setState({ lastLoaded: data });
   }
 }
 

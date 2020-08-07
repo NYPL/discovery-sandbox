@@ -65,6 +65,10 @@ class Actions {
   updateDrbbResults(data) {
     return data;
   }
+
+  updateLastLoaded(data) {
+    return data;
+  }
 }
 
 export default alt.createActions(Actions);
