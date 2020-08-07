@@ -16,6 +16,7 @@ function eligibility(req, res) {
   if (!req.patronTokenResponse || !req.patronTokenResponse.decodedPatron
      || !req.patronTokenResponse.decodedPatron.sub) {
     res.send(JSON.stringify({ eligibility: true }));
+    return;
   }
   const id = req.patronTokenResponse.decodedPatron.sub;
   nyplApiClient().then(client => client.get(`/patrons/${id}/hold-request-eligibility`, { cache: false }))
