@@ -275,6 +275,37 @@ class HoldRequest extends React.Component {
   }
 
   render() {
+    if (this.isLoading()) {
+      return (
+        <React.Fragment>
+          <LoadingLayer
+            status={this.isLoading()}
+            title="Requesting"
+          />
+          <div>
+            <div className="nypl-request-page-header">
+              <div className="nypl-full-width-wrapper">
+                <div className="row">
+                  <div className="nypl-column-full">
+                    <Breadcrumbs
+                      type="hold"
+                    />
+                    <h1 id="item-title" tabIndex="0" id="mainContent">Item Request</h1>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="nypl-full-width-wrapper">
+              <div className="row">
+                <div className="nypl-column-three-quarters" />
+              </div>
+            </div>
+          </div>
+        </React.Fragment>
+      );
+    }
+
     const { closedLocations, holdRequestNotification } = AppConfigStore.getState();
     const { serverRedirect } = this.state;
     const searchKeywords = this.props.searchKeywords;
@@ -358,15 +389,6 @@ class HoldRequest extends React.Component {
     }
 
     const searchUrl = basicQuery(this.props)({});
-
-    if (this.isLoading()) {
-      return (
-        <LoadingLayer
-          status={this.isLoading()}
-          title="Requesting"
-        />
-      );
-    }
 
     return (
       <DocumentTitle title="Item Request | Shared Collection Catalog | NYPL">
