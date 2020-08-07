@@ -8,13 +8,14 @@ import {
 
 
 // eslint-disable-next-line import/first, import/no-unresolved, import/extensions
-import Store from '@Store'
+import Store from '@Store';
 import LibraryItem from '../../utils/item';
 import {
   trackDiscovery,
 } from '../../utils/utils';
 import ItemTable from '../Item/ItemTable';
 import appConfig from '../../data/appConfig';
+import AppConfigStore from '../../stores/AppConfigStore';
 
 class ResultsList extends React.Component {
   constructor() {
@@ -108,7 +109,8 @@ class ResultsList extends React.Component {
       subjectHeadingShow,
     } = this.props;
     let resultsElm = null;
-    const { includeDrbb } = appConfig;
+    const { features } = AppConfigStore.getState();
+    const includeDrbb = features.includes('drb-integration');
 
     if (!results || !_isArray(results) || !results.length) {
       return null;

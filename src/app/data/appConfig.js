@@ -61,8 +61,9 @@ const appConfig = {
     production: 'https://digital-research-books-reader.nypl.org',
   },
   features: extractFeatures(process.env.FEATURES),
-  includeDrbb: /true/i.test(process.env.INCLUDE_DRBB),
   generalResearchEmail: process.env.GENERAL_RESEARCH_EMAIL,
+  airtableApiKey: process.env.AIRTABLE_API_KEY,
+  feedbackFormUrl: process.env.FEEDBACK_FORM_URL,
 };
 
 export default {
