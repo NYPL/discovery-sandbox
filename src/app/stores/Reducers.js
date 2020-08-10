@@ -1,6 +1,5 @@
 import { combineReducers } from 'redux';
 import { Actions } from '../actions/Actions';
-import initialState from './InitialState';
 
 import appConfigData from '../data/appConfig';
 
@@ -41,10 +40,7 @@ const appReducer = combineReducers({
 });
 
 export const rootReducer = (state, action) => {
-  if (action.type === Actions.RESET_SEARCH) {
-    // Reset everything except total books
-    return initialState;
-  }
+  console.log("STATE", state, "ACTION", action);
   return appReducer(state, action);
 };
 

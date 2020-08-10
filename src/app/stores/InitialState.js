@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import appConfig from '../data/appConfig';
 
-
 export const initialSelectedFiltersState = {
   materialType: [],
   language: [],

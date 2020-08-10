@@ -7,6 +7,7 @@ import {
   trackDiscovery,
 } from '../../utils/utils';
 import appConfig from '../../data/appConfig';
+import { updateSearchResults } from '../../actions/Actions';
 
 /**
  * The main container for the top Search section.
@@ -169,10 +170,7 @@ Search.contextTypes = {
 };
 
 const mapDispatchToProps = dispatch => ({
-  updateSearchResults: query => dispatch({
-    type: 'UPDATE_SEARCH_RESULTS',
-    payload: searchResults,
-  })
-})
+  updateSearchResults: query => dispatch(updateSearchResults(query)),
+});
 
-export default connect(mapStateToProps, mapDispatchToProps)(Search);
+export default connect(null, mapDispatchToProps)(Search);

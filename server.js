@@ -17,6 +17,7 @@ import apiRoutes from './src/server/ApiRoutes/ApiRoutes';
 import routeMethods from './src/server/ApiRoutes/RouteMethods';
 import routes from './src/app/routes/routes';
 import configureStore from './src/app/stores/configureStore';
+import initialState from './src/app/stores/InitialState';
 
 import initializePatronTokenAuth from './src/server/routes/auth';
 import { getPatronData } from './src/server/routes/api';
@@ -99,7 +100,7 @@ app.get('/*', (req, res) => {
       res.redirect(302, redirectLocation.pathname + redirectLocation.search);
     } else if (renderProps) {
       if (!res.data) {
-        res.data = {};
+        res.data = initialState;
       }
       const store = configureStore(res.data);
 
