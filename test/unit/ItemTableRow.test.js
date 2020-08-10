@@ -6,7 +6,6 @@ import { spy, stub } from 'sinon';
 import { shallow, mount } from 'enzyme';
 import { mockRouterContext } from '../helpers/routing';
 import item from '../fixtures/item';
-import AppConfigStore from '../../src/app/stores/AppConfigStore';
 
 // Import the component that is going to be tested
 import ItemTableRow from './../../src/app/components/Item/ItemTableRow';
@@ -198,14 +197,14 @@ describe('ItemTableRow', () => {
       let appConfigStoreStub;
       const generalResearchEmail = 'example@nypl.com';
       before(() => {
-        appConfigStoreStub = stub(AppConfigStore, 'getState').returns({
-          generalResearchEmail,
-          features: ['on-site-edd'],
-          closedLocations: [],
-        });
+        // appConfigStoreStub = stub(AppConfigStore, 'getState').returns({
+        //   generalResearchEmail,
+        //   features: ['on-site-edd'],
+        //   closedLocations: [],
+        // });
       });
       after(() => {
-        appConfigStoreStub.restore();
+        // appConfigStoreStub.restore();
       });
 
       describe('unrequestable NYPL item', () => {

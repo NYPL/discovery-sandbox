@@ -57,6 +57,7 @@ function search(searchKeywords = '', page, sortBy, order, field, filters, cb, er
       })
       .catch(console.error))
     .then((response) => {
+      console.log('RESPONSE', response);
       const [results, aggregations, drbbResults] = response;
       cb(aggregations, results, page, drbbResults);
     })
@@ -68,6 +69,7 @@ function search(searchKeywords = '', page, sortBy, order, field, filters, cb, er
 
 function searchAjax(req, res) {
   const { page, q, sort, order, fieldQuery, filters } = getReqParams(req.query);
+  console.log("searchAjax", page, q, sort, order, fieldQuery, filters);
 
   search(
     q,
@@ -87,6 +89,7 @@ function searchAjax(req, res) {
 }
 
 function searchServerPost(req, res) {
+  console.log("searchServerPost");
   const { fieldQuery, q, filters, sortQuery } = getReqParams(req.body);
   const { dateAfter, dateBefore } = req.body;
   // The filters from req.body may be an array of selected filters, or just an object

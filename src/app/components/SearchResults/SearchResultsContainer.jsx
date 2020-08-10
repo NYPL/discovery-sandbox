@@ -9,9 +9,7 @@ import {
   trackDiscovery,
   displayContext,
 } from '../../utils/utils';
-import Store from '@Store';
 import appConfig from '../../data/appConfig';
-import AppConfigStore from '../../stores/AppConfigStore';
 
 // Renders the ResultsList containing the search results and the Pagination component
 const SearchResultsContainer = (props, context) => {
@@ -23,7 +21,7 @@ const SearchResultsContainer = (props, context) => {
   const {
     media,
   } = context;
-  const { features } = AppConfigStore.getState();
+  const { features } = appConfig;
   const includeDrbb = features.includes('drb-integration');
 
   const results = searchResults ? searchResults.itemListElement : [];
@@ -41,8 +39,7 @@ const SearchResultsContainer = (props, context) => {
     (
       <div
         className={
-          `nypl-results-summary no-scc-results drbb-integration ${Store.getState().isLoading ? ' hide-results-list' : ''
-        }`}
+          `nypl-results-summary no-scc-results drbb-integration`}
       >
         There are no results {displayContext(props)} from Shared Collection Catalog.
       </div>) : null;

@@ -9,8 +9,6 @@ import {
 import Actions from '@Actions';
 
 import appConfig from '../../data/appConfig';
-import AppConfigStore from '../../stores/AppConfigStore';
-
 
 class ItemTableRow extends React.Component {
   constructor(props) {
@@ -53,7 +51,7 @@ class ItemTableRow extends React.Component {
       bibId,
       searchKeywords,
     } = this.props;
-    const { closedLocations } = AppConfigStore.getState();
+    const { closedLocations } = appConfig;
     const status = item.status && item.status.prefLabel ? item.status.prefLabel : ' ';
     let itemRequestBtn = <span>{status}</span>;
 

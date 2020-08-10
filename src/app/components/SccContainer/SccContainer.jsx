@@ -6,10 +6,10 @@ import LoadingLayer from '../LoadingLayer/LoadingLayer';
 import Notification from '../Notification/Notification';
 
 import Store from '../../stores/Store';
-import AppConfigStore from '../../stores/AppConfigStore';
+import appConfig from '../../data/appConfig';
 
 const SccContainer = (props) => {
-  const { features } = AppConfigStore.getState();
+  const { features } = appConfig;
   const includeDrbb = features.includes('drb-integration');
   return (
     <main className="main-page">

@@ -13,9 +13,7 @@ import DocumentTitle from 'react-document-title';
 import Breadcrumbs from '../Breadcrumbs/Breadcrumbs';
 import Notification from '../Notification/Notification';
 
-import PatronStore from '../../stores/PatronStore';
 import appConfig from '../../data/appConfig';
-import AppConfigStore from '../../stores/AppConfigStore';
 import LibraryItem from '../../utils/item';
 import LoadingLayer from '../LoadingLayer/LoadingLayer';
 import {
@@ -29,32 +27,6 @@ import Store from '@Store';
 class HoldRequest extends React.Component {
   constructor(props) {
     super(props);
-
-    const deliveryLocationsFromAPI = this.props.deliveryLocations;
-    const isEddRequestable = this.props.isEddRequestable;
-    const firstLocationValue = (
-      deliveryLocationsFromAPI.length &&
-      deliveryLocationsFromAPI[0]['@id'] &&
-      typeof deliveryLocationsFromAPI[0]['@id'] === 'string') ?
-      deliveryLocationsFromAPI[0]['@id'].replace('loc:', '') : '';
-    let defaultDelivery = 'edd';
-    let checkedLocNum = -1;
-
-    // Sets EDD as the default delivery location and the selected option as "-1" to indicate it.
-    // If there's no EDD, set the default delivery location as the first one from the location list,
-    // and set the selected option as "0".
-    // If neither EDD or physical locations available, we will show an error message on the page.
-    if (!isEddRequestable && deliveryLocationsFromAPI.length) {
-      defaultDelivery = firstLocationValue;
-      checkedLocNum = 0;
-    }
-
-    this.state = _extend({
-      delivery: defaultDelivery,
-      checkedLocNum,
-      serverRedirect: true,
-    }, { patron: PatronStore.getState() });
-
     // change all the components :(
     this.onChange = this.onChange.bind(this);
     this.onRadioSelect = this.onRadioSelect.bind(this);
@@ -65,18 +37,13 @@ class HoldRequest extends React.Component {
 
 
   componentDidMount() {
-    this.requireUser();
+    // this.requireUser();
     this.conditionallyRedirect();
     const title = document.getElementById('item-title');
     if (title) {
       title.focus();
     }
-    if (this.state.serverRedirect) this.setState({ serverRedirect: false });
     this.timeoutId = setTimeout(() => { Actions.updateLoadingStatus(false); }, 5000);
-  }
-
-  onChange() {
-    this.setState({ patron: PatronStore.getState() });
   }
 
   onRadioSelect(e, i) {
@@ -115,7 +82,6 @@ class HoldRequest extends React.Component {
       return;
     }
 
-    Actions.updateLoadingStatus(true);
     trackDiscovery(`Submit Request${partnerEvent}`, `${title} - ${itemId}`);
     const formData = new FormData(document.getElementById('place-hold-form'));
     axios.post(
@@ -185,7 +151,6 @@ class HoldRequest extends React.Component {
         const path = `${appConfig.baseUrl}/hold/confirmation/${bibId}-${itemId}`;
         return this.redirectWithErrors(path, 'eligibility', JSON.stringify(eligibility));
       }
-      Actions.updateLoadingStatus(false);
     });
   }
   // checks whether a patron is eligible to place a hold. Uses cookie to get the patron's id
@@ -211,7 +176,7 @@ class HoldRequest extends React.Component {
      * @return {HTML Element}
      */
   renderDeliveryLocation(deliveryLocations = []) {
-    const { closedLocations } = AppConfigStore.getState();
+    const { closedLocations } = appConfig;
     return deliveryLocations.map((location, i) => {
       const displayName = this.modelDeliveryLocationName(location.prefLabel, location.shortName);
       const value = (location['@id'] && typeof location['@id'] === 'string') ?
@@ -247,7 +212,7 @@ class HoldRequest extends React.Component {
   * @return {HTML Element}
   */
   renderEDD() {
-    const { closedLocations } = AppConfigStore.getState();
+    const { closedLocations } = appConfig;
     if (closedLocations.includes('')) return null;
     return (
       <label
@@ -270,7 +235,7 @@ class HoldRequest extends React.Component {
   }
 
   render() {
-    const { closedLocations, holdRequestNotification } = AppConfigStore.getState();
+    const { closedLocations, holdRequestNotification } = appConfig;
     const { serverRedirect } = this.state;
     const searchKeywords = this.props.searchKeywords;
     const bib = (this.props.bib && !_isEmpty(this.props.bib)) ?

@@ -15,7 +15,7 @@ import ResultsCount from '../components/ResultsCount/ResultsCount';
 import {
   basicQuery,
 } from '../utils/utils';
-import AppConfigStore from '../stores/AppConfigStore';
+import appConfig from '../data/appConfig';
 
 const SearchResults = (props, context) => {
   const {
@@ -32,7 +32,7 @@ const SearchResults = (props, context) => {
     router,
   } = context;
 
-  const { features } = AppConfigStore.getState();
+  const { features } = appConfig;
   const includeDrbb = features.includes('drb-integration');
 
   const { location } = router;

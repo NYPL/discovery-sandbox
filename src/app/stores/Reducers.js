@@ -4,16 +4,16 @@ import initialState from './InitialState';
 
 import appConfigData from '../data/appConfig';
 
-export const loading = (state = null, action) => {
+const loading = (state = null, action) => {
   switch (action.type) {
-    case Actions.LOADING:
+    case Actions.UPDATE_LOADING_STATUS:
       return action.loading;
     default:
       return state;
   }
 };
 
-export const appConfig = (state = appConfigData, action) => {
+const appConfig = (state = appConfigData, action) => {
   switch (action.type) {
     case Actions.APP_CONFIG:
       return action.appConfig;
@@ -22,29 +22,19 @@ export const appConfig = (state = appConfigData, action) => {
   }
 };
 
-export const searchResults = (state = null, action) => {
+const searchResults = (state = null, action) => {
   switch (action.type) {
-    case Actions.SEARCH:
-      return {
-        data: action.results,
-      };
+    case Actions.UPDATE_SEARCH_RESULTS:
+      return action.searchResults;
     default:
       return state;
   }
 };
 
-export const searchQuery = (state = null, action) => {
-  if (action.type === Actions.SET_QUERY) {
-    return action.searchQuery;
-  }
-  return state;
-};
-
-export const sort = (state = null, action) => (action.sort ? action.sort : state);
+const sort = (state = null, action) => (action.sort ? action.sort : state);
 
 const appReducer = combineReducers({
   searchResults,
-  searchQuery,
   sort,
   loading,
   appConfig,
@@ -53,9 +43,7 @@ const appReducer = combineReducers({
 export const rootReducer = (state, action) => {
   if (action.type === Actions.RESET_SEARCH) {
     // Reset everything except total books
-    return Object.assign({}, initialState, {
-      totalWorks: state.totalWorks,
-    });
+    return initialState;
   }
   return appReducer(state, action);
 };

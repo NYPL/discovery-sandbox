@@ -1,9 +1,41 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import FocusTrap from 'focus-trap-react';
+import axios from 'axios';
 
-const LoadingLayer = ({ status, title, focus }) => {
-  if (status === false) {
+import store from '../../stores/Store';
+import { updateLoadingStatus } from '../../actions/Actions';
+
+const { dispatch } = store;
+
+// intercepts all http request to update the status of loading in the Store
+axios.interceptors.request.use(
+  (config) => {
+    dispatch(updateLoadingStatus(true));
+    return config;
+  },
+  (error) => {
+    dispatch(updateLoadingStatus(false));
+    return Promise.reject(error);
+  },
+);
+
+axios.interceptors.response.use(
+  (response) => {
+    dispatch(updateLoadingStatus(false));
+    return response;
+  },
+  (error) => {
+    setTimeout(() => {
+      dispatch(updateLoadingStatus(false));
+    }, 5000);
+    return Promise.reject(error);
+  },
+);
+
+const LoadingLayer = ({ loading, title, focus }) => {
+  if (loading === false) {
     return null;
   }
 
@@ -45,13 +77,15 @@ const LoadingLayer = ({ status, title, focus }) => {
 };
 
 LoadingLayer.propTypes = {
-  status: PropTypes.bool,
+  loading: PropTypes.bool,
   title: PropTypes.string,
   focus: PropTypes.func,
 };
 
 LoadingLayer.defaultProps = {
-  status: false,
+  loading: false,
 };
 
-export default LoadingLayer;
+const mapStateToProps = state => ({ loading: state.loading });
+
+export default connect(mapStateToProps)(LoadingLayer);

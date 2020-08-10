@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
 import SearchButton from '../Buttons/SearchButton';
 import {
@@ -167,4 +168,11 @@ Search.contextTypes = {
   router: PropTypes.object,
 };
 
-export default Search;
+const mapDispatchToProps = dispatch => ({
+  updateSearchResults: query => dispatch({
+    type: 'UPDATE_SEARCH_RESULTS',
+    payload: searchResults,
+  })
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Search);

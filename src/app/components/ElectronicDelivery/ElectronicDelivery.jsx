@@ -15,9 +15,7 @@ import DocumentTitle from 'react-document-title';
 import Breadcrumbs from '../Breadcrumbs/Breadcrumbs';
 import Actions from '@Actions'
 import Store from '../../stores/Store';
-import PatronStore from '../../stores/PatronStore';
-import appConfig from '../../data/appConfig';
-import AppConfigStore from '../../stores/AppConfigStore';
+import appConfig from '../../data/appConfig'
 import ElectronicDeliveryForm from './ElectronicDeliveryForm';
 import LibraryItem from '../../utils/item';
 import LoadingLayer from '../LoadingLayer/LoadingLayer';
@@ -48,7 +46,7 @@ class ElectronicDelivery extends React.Component {
       itemSource,
       raiseError,
       serverRedirect,
-    }, { patron: PatronStore.getState() });
+    });
 
     this.requireUser = this.requireUser.bind(this);
     this.submitRequest = this.submitRequest.bind(this);
@@ -217,7 +215,7 @@ class ElectronicDelivery extends React.Component {
     const searchKeywords = this.props.searchKeywords;
     const {
       closedLocations, holdRequestNotification,
-    } = AppConfigStore.getState();
+    } = appConfig;
 
     const searchUrl = basicQuery(this.props)({});
 

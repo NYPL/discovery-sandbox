@@ -15,7 +15,6 @@ import {
 } from '../../utils/utils';
 import ItemTable from '../Item/ItemTable';
 import appConfig from '../../data/appConfig';
-import AppConfigStore from '../../stores/AppConfigStore';
 
 class ResultsList extends React.Component {
   constructor() {
@@ -109,7 +108,7 @@ class ResultsList extends React.Component {
       subjectHeadingShow,
     } = this.props;
     let resultsElm = null;
-    const { features } = AppConfigStore.getState();
+    const { features } = appConfig;
     const includeDrbb = features.includes('drb-integration');
 
     if (!results || !_isArray(results) || !results.length) {

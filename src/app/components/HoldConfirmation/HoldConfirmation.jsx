@@ -10,7 +10,6 @@ import {
 import DocumentTitle from 'react-document-title';
 import Url from 'url-parse';
 
-import PatronStore from '../../stores/PatronStore';
 import appConfig from '../../data/appConfig';
 import Breadcrumbs from '../Breadcrumbs/Breadcrumbs';
 import {
@@ -21,14 +20,10 @@ import {
 class HoldConfirmation extends React.Component {
   constructor(props) {
     super(props);
-
-    this.state = {
-      patron: PatronStore.getState(),
-    };
   }
 
   componentDidMount() {
-    this.requireUser();
+    // this.requireUser();
     document.getElementById('mainContent').focus();
   }
 
