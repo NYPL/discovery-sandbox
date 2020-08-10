@@ -1,70 +1,13 @@
 /* eslint-env mocha */
 import React from 'react';
-import sinon from 'sinon';
+import { stub, spy } from 'sinon';
 import { expect } from 'chai';
 import { mount } from 'enzyme';
 import axios from 'axios';
 // Import the component that is going to be tested
 import HoldRequest from './../../src/app/components/HoldRequest/HoldRequest';
 import Actions from './../../src/app/actions/Actions';
-
-const mockedItems = [
-  {
-    "@id": "res:i10000003",
-    "uri": "i10000003",
-    "status": [
-      {
-        "@id": "status:a",
-        "prefLabel": "Available"
-      }
-    ],
-    "owner": [
-      {
-        "@id": "orgs:1000",
-        "prefLabel": "Stephen A. Schwarzman Building"
-      }
-    ],
-    "catalogItemType": [
-      {
-        "@id": "catalogItemType:55",
-        "prefLabel": "book, limited circ, MaRLI"
-      },
-      {
-        "@id": "catalogItemType:55",
-        "prefLabel": "book, limited circ, MaRLI"
-      }
-    ],
-    "identifier": [
-      "urn:barcode:33433014514719",
-      "urn:SierraNypl:10000003"
-    ],
-    "holdingLocation": [
-      {
-        "@id": "loc:rcma2",
-        "prefLabel": "Offsite"
-      }
-    ],
-    "requestable": [
-      true
-    ],
-    "accessMessage": [
-      {
-        "@id": "accessMessage:2",
-        "prefLabel": "Request in advance"
-      }
-    ],
-    "shelfMark": [
-      "*OFS 84-1997"
-    ],
-    "idBarcode": [
-      "33433014514719"
-    ],
-    "idNyplSourceId": {
-      "@type": "SierraNypl",
-      "@value": "10000003"
-    },
-  }
-];
+import mockedItem from '../fixtures/mocked-item';
 
 describe('HoldRequest', () => {
   describe('When component did mount', () => {
@@ -75,14 +18,14 @@ describe('HoldRequest', () => {
     beforeEach(() => {
       component = mount(<HoldRequest />, { attachTo: document.body });
       instance = component.instance();
-      redirect = sinon.stub(instance, 'redirectWithErrors').callsFake(() => true);
+      redirect = stub(instance, 'redirectWithErrors').callsFake(() => true);
     });
     afterEach(() => {
       axios.get.restore();
       component.unmount();
     });
     it('should redirect for ineligible patrons', () => {
-      router = sinon.stub(axios, 'get').callsFake(() => new Promise((resolve) => {
+      router = stub(axios, 'get').callsFake(() => new Promise((resolve) => {
         resolve({ data: { eligibility: false } });
       }));
       return new Promise((resolve) => {
@@ -95,7 +38,7 @@ describe('HoldRequest', () => {
           }));
     });
     it('should not redirect for eligible patrons', () => {
-      router = sinon.stub(axios, 'get').callsFake(() => new Promise((resolve) => {
+      router = stub(axios, 'get').callsFake(() => new Promise((resolve) => {
         resolve({ data: { eligibility: true } });
       }));
       return new Promise((resolve) => {
@@ -114,7 +57,7 @@ describe('HoldRequest', () => {
     let requireUser;
 
     before(() => {
-      requireUser = sinon.spy(HoldRequest.prototype, 'requireUser');
+      requireUser = spy(HoldRequest.prototype, 'requireUser');
       component = mount(<HoldRequest />, { attachTo: document.body });
       component.setState({ redirect: false });
     });
@@ -136,7 +79,7 @@ describe('HoldRequest', () => {
 
     before(() => {
       Actions.updatePatronData({});
-      requireUser = sinon.spy(HoldRequest.prototype, 'requireUser');
+      requireUser = spy(HoldRequest.prototype, 'requireUser');
       component = mount(<HoldRequest />, { attachTo: document.body });
       component.setState({ redirect: false });
     });
@@ -155,14 +98,17 @@ describe('HoldRequest', () => {
   describe('If the patron is logged in and the App receives invalid item data, <HoldRequest>',
     () => {
       let component;
+      let isLoadingStub;
 
       before(() => {
+        isLoadingStub = stub(HoldRequest.prototype, 'isLoading').callsFake(() => false);
         component = mount(<HoldRequest />, { attachTo: document.body });
         component.setState({ redirect: false });
       });
 
       after(() => {
         component.unmount();
+        isLoadingStub.restore();
       });
 
       it('should display the page title, "Item Request".', () => {
@@ -191,15 +137,18 @@ describe('HoldRequest', () => {
     const bib = {
       title: ['Harry Potter'],
       '@id': 'res:b17688688',
-      items: mockedItems,
+      items: mockedItem,
     };
+    let isLoadingStub;
 
     before(() => {
+      isLoadingStub = stub(HoldRequest.prototype, 'isLoading').callsFake(() => false)
       component = mount(<HoldRequest bib={bib} params={{ itemId: 'i10000003' }} />, { attachTo: document.body });
       component.setState({ redirect: false });
     });
 
     after(() => {
+      isLoadingStub.restore();
       component.unmount();
     });
 
@@ -227,7 +176,7 @@ describe('HoldRequest', () => {
     const bib = {
       title: ['Harry Potter'],
       '@id': 'res:b17688688',
-      items: mockedItems,
+      items: mockedItem,
     };
 
     const deliveryLocations = [
@@ -251,7 +200,10 @@ describe('HoldRequest', () => {
       },
     ];
 
+    let isLoadingStub;
+
     before(() => {
+      isLoadingStub = stub(HoldRequest.prototype, 'isLoading').callsFake(() => false);
       component = mount(
         <HoldRequest
           bib={bib}
@@ -265,6 +217,7 @@ describe('HoldRequest', () => {
 
     after(() => {
       component.unmount();
+      isLoadingStub.restore();
     });
 
     it('should display the sentence "Choose a delivery option or location".', () => {
@@ -334,7 +287,7 @@ describe('HoldRequest', () => {
     const bib = {
       title: ['Harry Potter'],
       '@id': 'res:b17688688',
-      items: mockedItems,
+      items: mockedItem,
     };
 
     const deliveryLocations = [
@@ -357,8 +310,10 @@ describe('HoldRequest', () => {
         shortName: 'Schwarzman Building',
       },
     ];
+    let isLoadingStub;
 
     before(() => {
+      isLoadingStub = stub(HoldRequest.prototype, 'isLoading').callsFake(() => false);
       component = mount(
         <HoldRequest
           bib={bib}
@@ -373,6 +328,7 @@ describe('HoldRequest', () => {
 
     after(() => {
       component.unmount();
+      isLoadingStub.restore();
     });
 
     it('should display the EDD option.', () => {
