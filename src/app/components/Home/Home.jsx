@@ -2,23 +2,17 @@ import React from 'react';
 import DocumentTitle from 'react-document-title';
 
 import Search from '../Search/Search';
-import LoadingLayer from '../LoadingLayer/LoadingLayer';
 import {
   basicQuery,
   trackDiscovery,
 } from '../../utils/utils';
 import appConfig from '../../data/appConfig';
 import Notification from '../Notification/Notification';
-import Store from '@Store'
 
 const Home = props => (
   <DocumentTitle title="Shared Collection Catalog | NYPL">
     <main>
       <div className="home" id="mainContent">
-        <LoadingLayer
-          status={Store.state.isLoading}
-          title="Searching"
-        />
         <div className="nypl-homepage-hero">
           <div className="nypl-full-width-wrapper">
             <div className="nypl-row">

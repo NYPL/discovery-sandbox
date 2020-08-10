@@ -1,70 +1,12 @@
-// ACTIONS
-import alt from '../alt';
+export const Actions = {
+  APP_CONFIG: 'APP_CONFIG',
+};
 
-class Actions {
-  updateSearchResults(data) {
-    return data;
-  }
+export const setAppConfig = data => ({
+  type: Actions.APP_CONFIG,
+  appConfig: data,
+});
 
-  updateSearchKeywords(data) {
-    return data;
-  }
-
-  updateBib(data) {
-    return data;
-  }
-
-  updateFilters(data) {
-    return data;
-  }
-
-  updateSelectedFilters(data) {
-    return data;
-  }
-
-  updatePatronData(data) {
-    return data;
-  }
-
-  removeFilter(filterKey, valueId) {
-    return { filterKey, valueId };
-  }
-
-  updatePage(page) {
-    return page;
-  }
-
-  updateSortBy(sort) {
-    return sort;
-  }
-
-  updateLoadingStatus(data) {
-    return data;
-  }
-
-  updateField(data) {
-    return data;
-  }
-
-  updateForm(data) {
-    return data;
-  }
-
-  updateDeliveryLocations(data) {
-    return data;
-  }
-
-  updateIsEddRequestable(data) {
-    return data;
-  }
-
-  updateSubjectHeading(data) {
-    return data;
-  }
-
-  updateDrbbResults(data) {
-    return data;
-  }
-}
-
-export default alt.createActions(Actions);
+export default {
+  setAppConfig,
+};

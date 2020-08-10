@@ -5,15 +5,14 @@ import 'regenerator-runtime/runtime';
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Router, useRouterHistory } from 'react-router';
+import { Router, browserHistory } from 'react-router';
 import createBrowserHistory from 'history/lib/createBrowserHistory';
 import useScroll from 'scroll-behavior/lib/useSimpleScroll';
 import { config, gaUtils } from 'dgx-react-ga';
 import a11y from 'react-a11y';
-import Iso from 'iso';
+import { Provider } from 'react-redux';
 
-import alt from '../app/alt';
-
+import store from '../app/stores/Store';
 import './styles/main.scss';
 import './assets/drbb_promo.png';
 
@@ -30,17 +29,14 @@ window.onload = () => {
 
     gaUtils.initialize(config.google.code(isProd), gaOpts);
   }
-
-  // Render Isomorphically
-  Iso.bootstrap((state, container) => {
-    alt.bootstrap(state);
-
-    const appHistory = useScroll(useRouterHistory(createBrowserHistory))();
-
-    ReactDOM.render(
-      <Router history={appHistory}>{routes(appHistory).client}</Router>,
-      container,
-    );
-    gaUtils.trackPageview(window.location.pathname);
-  });
+  const appElement = global.document.getElementById('app');
+  ReactDOM.render(
+    <Provider store={store}>
+      <Router history={browserHistory}>
+        {routes.client}
+      </Router>
+    </Provider>,
+    appElement,
+  );
+  gaUtils.trackPageview(window.location.pathname);
 };

@@ -8,6 +8,7 @@ import { match, RouterContext } from 'react-router';
 import webpack from 'webpack';
 import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
+import { Provider } from 'react-redux';
 
 import appConfig from './src/app/data/appConfig';
 import dataLoaderUtil from '@dataLoaderUtil';
@@ -15,6 +16,7 @@ import webpackConfig from './webpack.config';
 import apiRoutes from './src/server/ApiRoutes/ApiRoutes';
 import routeMethods from './src/server/ApiRoutes/RouteMethods';
 import routes from './src/app/routes/routes';
+import configureStore from './src/app/stores/configureStore';
 
 import initializePatronTokenAuth from './src/server/routes/auth';
 import { getPatronData } from './src/server/routes/api';
@@ -87,7 +89,7 @@ app.get('/*', (req, res, next) => {
 });
 
 app.get('/*', (req, res) => {
-  const appRoutes = (req.url).indexOf(appConfig.baseUrl) !== -1 ? routes().client : routes().server;
+  const appRoutes = (req.url).indexOf(appConfig.baseUrl) !== -1 ? routes.client : routes.server;
   const title = DocumentTitle.rewind();
 
   match({ routes: appRoutes, location: req.url }, (error, redirectLocation, renderProps) => {
@@ -96,9 +98,24 @@ app.get('/*', (req, res) => {
     } else if (redirectLocation) {
       res.redirect(302, redirectLocation.pathname + redirectLocation.search);
     } else if (renderProps) {
+      if (!res.data) {
+        res.data = {};
+      }
+      const store = configureStore(res.data);
+
+      const application = ReactDOMServer.renderToString(
+        <Provider store={store}>
+          <RouterContext {...renderProps} />
+        </Provider>,
+      );
+
+      const appData = { ...res.data, appConfig };
+
       res
         .status(200)
         .render('index', {
+          application,
+          appData: JSON.stringify(appData).replace(/</g, '\\u003c'),
           appTitle: title,
           favicon: appConfig.favIconPath,
           webpackPort: WEBPACK_DEV_PORT,

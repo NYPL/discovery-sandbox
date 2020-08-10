@@ -1,17 +1,13 @@
 /* global window */
 import React from 'react';
 import PropTypes from 'prop-types';
+import { withRouter } from 'react-router';
 import DocumentTitle from 'react-document-title';
-
 import { Header, navConfig } from '@nypl/dgx-header-component';
 import Footer from '@nypl/dgx-react-footer';
 
 import Feedback from '../Feedback/Feedback';
-import Store from '../../stores/Store';
-import PatronStore from '../../stores/PatronStore';
-import {
-  basicQuery,
-} from '../../utils/utils';
+import LoadingLayer from '../LoadingLayer/LoadingLayer';
 
 import { breakpoints } from '../../data/constants';
 import DataLoader from '../DataLoader/DataLoader';
@@ -20,12 +16,8 @@ class Application extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      data: Store.getState(),
-      patron: PatronStore.getState(),
       media: 'desktop',
     };
-    this.onChange = this.onChange.bind(this);
-    this.shouldStoreUpdate = this.shouldStoreUpdate.bind(this);
     this.submitFeedback = this.submitFeedback.bind(this);
   }
 
@@ -36,19 +28,8 @@ class Application extends React.Component {
   }
 
   componentDidMount() {
-    Store.listen(this.onChange);
-
-
     window.addEventListener('resize', this.onWindowResize.bind(this));
     this.onWindowResize();
-  }
-
-  shouldStoreUpdate() {
-    return `?${basicQuery({})(Store.getState())}` !== this.context.router.location.search;
-  }
-
-  componentWillUnmount() {
-    Store.unlisten(this.onChange);
   }
 
   onWindowResize() {
@@ -66,10 +47,6 @@ class Application extends React.Component {
     } else {
       if (media !== 'desktop') this.setState({ media: 'desktop' });
     }
-  }
-
-  onChange() {
-    this.setState({ data: Store.getState() });
   }
 
   submitFeedback(callback, e) {
@@ -97,14 +74,13 @@ class Application extends React.Component {
           <Header
             navData={navConfig.current}
             skipNav={{ target: 'mainContent' }}
-            patron={this.state.patron}
           />
+          <LoadingLayer title="Searching" />
           <DataLoader
             location={this.context.router.location}
-            next={Store.next}
             key={JSON.stringify(dataLocation)}
           >
-            {React.cloneElement(this.props.children, this.state.data)}
+            {React.cloneElement(this.props.children, this.props)}
           </DataLoader>
           <Footer />
           <Feedback submit={this.submitFeedback} />
@@ -116,12 +92,10 @@ class Application extends React.Component {
 
 Application.propTypes = {
   children: PropTypes.object,
-  location: PropTypes.object,
 };
 
 Application.defaultProps = {
   children: {},
-  location: {},
 };
 
 Application.contextTypes = {
@@ -132,4 +106,4 @@ Application.childContextTypes = {
   media: PropTypes.string,
 };
 
-export default Application;
+export default withRouter(Application);

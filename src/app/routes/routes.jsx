@@ -21,11 +21,11 @@ import ElectronicDelivery from '../components/ElectronicDelivery/ElectronicDeliv
 import NotFound404 from '../components/NotFound404/NotFound404';
 import appConfig from '../data/appConfig';
 
-const baseUrl = appConfig.baseUrl;
-const routes = history => ({
+const { baseUrl } = appConfig;
+const routes = {
   // Routes used in the Express server:
   server: (
-    <Route path="/" component={Application} history={history}>
+    <Route path="/" component={Application}>
       <IndexRoute component={Home} />
       <Route path="/search" component={SearchResults} />
       <Route path="/bib/:bibId" component={BibPage} />
@@ -41,7 +41,7 @@ const routes = history => ({
   ),
   // Routes used in the client-side React-Router:
   client: (
-    <Route path={`${baseUrl}/`} component={Application} history={history}>
+    <Route path={`${baseUrl}/`} component={Application}>
       <IndexRoute component={Home} />
       <Route path={`${baseUrl}/search`} component={SearchResults} />
       <Route path={`${baseUrl}/bib/:bibId`} component={BibPage} />
@@ -55,6 +55,6 @@ const routes = history => ({
       <Redirect from="*" to={`${baseUrl}/404`} />
     </Route>
   ),
-});
+};
 
 export default routes;
