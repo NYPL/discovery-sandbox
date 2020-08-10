@@ -18,6 +18,7 @@ describe('dataLoaderUtil', () => {
       let sandbox;
       let mockRouteMethods;
       let mockReq = [];
+      let location;
       before(() => {
         sandbox = sinon.createSandbox();
         axiosSpy = sandbox.spy(axios, 'get');
@@ -26,13 +27,13 @@ describe('dataLoaderUtil', () => {
           search: sandbox.spy(),
           hold: sandbox.spy(),
         };
-        actionsSpy = [];
+        actionsSpy = {};
         Object.keys(Actions).forEach((key) => {
           if (typeof Actions[key] === 'function') {
-            actionsSpy.push(sandbox.spy(Actions, key));
+            actionsSpy[key] = sandbox.spy(Actions, key);
           }
         });
-        const location = {
+        location = {
           pathname: '',
           search: '',
         };
@@ -41,7 +42,7 @@ describe('dataLoaderUtil', () => {
       after(() => {
         sandbox.restore();
       });
-      it('should not call any function', () => {
+      it('should not call any function except to update last loaded', () => {
         const {
           bib,
           search,
@@ -51,9 +52,15 @@ describe('dataLoaderUtil', () => {
         expect(bib.getCalls()).to.have.lengthOf(0);
         expect(search.getCalls()).to.have.lengthOf(0);
         expect(hold.getCalls()).to.have.lengthOf(0);
-        actionsSpy.forEach((spy) => {
-          expect(spy.getCalls()).to.have.lengthOf(0);
+        Object.keys(actionsSpy).forEach((key) => {
+          expect(actionsSpy[key].getCalls()).to.have.lengthOf(key === 'updateLastLoaded' ? 1 : 0);
         });
+      });
+
+      it('should update last loaded with the location', () => {
+        expect(actionsSpy.updateLastLoaded.getCalls()).to.have.lengthOf(1);
+        expect(actionsSpy.updateLastLoaded.getCalls()[0].args).to.have.lengthOf(1);
+        expect(actionsSpy.updateLastLoaded.getCalls()[0].args[0]).to.equal(location);
       });
     });
     describe('bib path', () => {
@@ -64,6 +71,7 @@ describe('dataLoaderUtil', () => {
       let sandbox;
       let axiosSpy;
       let mockReq;
+      let location;
       before(() => {
         bibResponse = [];
         mockRouteMethods = {
@@ -80,7 +88,7 @@ describe('dataLoaderUtil', () => {
             actionsSpy[key] = sandbox.spy(Actions, key);
           }
         });
-        const location = {
+        location = {
           pathname: '/research/collections/shared-collection-catalog/bib/b000000',
           search: '',
         };
@@ -112,9 +120,14 @@ describe('dataLoaderUtil', () => {
           ),
         ).to.equal(true);
       });
+      it('should update last loaded', () => {
+        expect(actionsSpy.updateLastLoaded.getCalls()).to.have.lengthOf(1);
+        expect(actionsSpy.updateLastLoaded.getCalls()[0].args).to.have.lengthOf(1);
+        expect(actionsSpy.updateLastLoaded.getCalls()[0].args[0]).to.equal(location);
+      });
       it('should not update any other field in the Store', () => {
         Object.keys(actionsSpy).forEach((key) => {
-          if (key !== 'updateBib' && key !== 'updateLoadingStatus') {
+          if (key !== 'updateBib' && key !== 'updateLoadingStatus' && key !== 'updateLastLoaded') {
             expect(actionsSpy[key].getCalls()).to.have.lengthOf(0);
           }
         });
@@ -239,6 +252,11 @@ describe('dataLoaderUtil', () => {
           ),
         ).to.equal(true);
       });
+      it('should update last loaded', () => {
+        expect(actionsSpy.updateLastLoaded.getCalls()).to.have.lengthOf(1);
+        expect(actionsSpy.updateLastLoaded.getCalls()[0].args).to.have.lengthOf(1);
+        expect(actionsSpy.updateLastLoaded.getCalls()[0].args[0]).to.equal(location);
+      });
       it('should not update any other fields in the Store', () => {
         Object.keys(actionsSpy).forEach((key) => {
           if (![
@@ -249,6 +267,7 @@ describe('dataLoaderUtil', () => {
             'updateSearchResults',
             'updateSelectedFilters',
             'updateSortBy',
+            'updateLastLoaded',
           ]
             .includes(key)) {
             expect(actionsSpy[key].getCalls()).to.have.lengthOf(0);
@@ -334,6 +353,11 @@ describe('dataLoaderUtil', () => {
           ),
         ).to.equal(true);
       });
+      it('should update last loaded', () => {
+        expect(actionsSpy.updateLastLoaded.getCalls()).to.have.lengthOf(1);
+        expect(actionsSpy.updateLastLoaded.getCalls()[0].args).to.have.lengthOf(1);
+        expect(actionsSpy.updateLastLoaded.getCalls()[0].args[0]).to.equal(location);
+      });
       it('should not update any other fields', () => {
         Object.keys(actionsSpy).forEach((key) => {
           if (![
@@ -341,6 +365,7 @@ describe('dataLoaderUtil', () => {
             'updateIsEddRequestable',
             'updateBib',
             'updateDeliveryLocations',
+            'updateLastLoaded',
           ]
             .includes(key)) {
             expect(actionsSpy[key].getCalls()).to.have.lengthOf(0);
@@ -354,16 +379,17 @@ describe('dataLoaderUtil', () => {
       let axiosSpy;
       let actionsSpy;
       let sandbox;
+      let location;
       before(() => {
         sandbox = sinon.createSandbox();
         axiosSpy = sandbox.spy(axios, 'get');
         actionsSpy = [];
         Object.keys(Actions).forEach((key) => {
           if (typeof Actions[key] === 'function') {
-            actionsSpy.push(sandbox.spy(Actions, key));
+            actionsSpy[key] = sandbox.spy(Actions, key);
           }
         });
-        const location = {
+        location = {
           pathname: '',
           search: '',
         };
@@ -372,11 +398,17 @@ describe('dataLoaderUtil', () => {
       after(() => {
         sandbox.restore();
       });
-      it('should not call any function', () => {
+      it('should not call any function except to update last loaded', () => {
         expect(axiosSpy.getCalls()).to.have.lengthOf(0);
-        actionsSpy.forEach((spy) => {
-          expect(spy.getCalls()).to.have.lengthOf(0);
+        Object.keys(actionsSpy).forEach((key) => {
+          const spy = actionsSpy[key];
+          expect(spy.getCalls()).to.have.lengthOf(key === 'updateLastLoaded' ? 1 : 0);
         });
+      });
+      it('should update last loaded', () => {
+        expect(actionsSpy.updateLastLoaded.getCalls()).to.have.lengthOf(1);
+        expect(actionsSpy.updateLastLoaded.getCalls()[0].args).to.have.lengthOf(1);
+        expect(actionsSpy.updateLastLoaded.getCalls()[0].args[0]).to.equal(location);
       });
     });
     describe('bib path', () => {
@@ -386,6 +418,7 @@ describe('dataLoaderUtil', () => {
         let bibResponse;
         let actionsSpy;
         let sandbox;
+        let location;
         before(() => {
           bibResponse = [];
           mock = new MockAdapter(axios);
@@ -400,7 +433,7 @@ describe('dataLoaderUtil', () => {
               actionsSpy[key] = sandbox.spy(Actions, key);
             }
           });
-          const location = {
+          location = {
             pathname: '/research/collections/shared-collection-catalog/bib/b000000',
             search: '',
           };
@@ -427,12 +460,18 @@ describe('dataLoaderUtil', () => {
           expect(actionsSpy.updateLoadingStatus.secondCall.args).to.have.lengthOf(1);
           expect(actionsSpy.updateLoadingStatus.secondCall.args[0]).to.equal(false);
         });
+        it('should update last loaded', () => {
+          expect(actionsSpy.updateLastLoaded.getCalls()).to.have.lengthOf(1);
+          expect(actionsSpy.updateLastLoaded.getCalls()[0].args).to.have.lengthOf(1);
+          expect(actionsSpy.updateLastLoaded.getCalls()[0].args[0]).to.equal(location);
+        });
         it('should make no other updates to the Store', () => {
           expect(actionsSpy.updateLoadingStatus.calledTwice).to.equal(true);
           Object.keys(actionsSpy).forEach((key) => {
             if (![
               'updateLoadingStatus',
               'updateBib',
+              'updateLastLoaded',
             ]
               .includes(key)) {
               expect(actionsSpy[key].getCalls()).to.have.lengthOf(0);
@@ -447,6 +486,7 @@ describe('dataLoaderUtil', () => {
         let actionsSpy;
         let sandbox;
         let consoleSpy;
+        let location;
         before(() => {
           bibResponse = [];
           mock = new MockAdapter(axios);
@@ -462,7 +502,7 @@ describe('dataLoaderUtil', () => {
               actionsSpy[key] = sandbox.spy(Actions, key);
             }
           });
-          const location = {
+          location = {
             pathname: '/research/collections/shared-collection-catalog/bib/b000000',
             search: '',
           };
@@ -492,11 +532,17 @@ describe('dataLoaderUtil', () => {
           expect(actionsSpy.updateLoadingStatus.secondCall.args).to.have.lengthOf(1);
           expect(actionsSpy.updateLoadingStatus.secondCall.args[0]).to.equal(false);
         });
+        it('should update last loaded', () => {
+          expect(actionsSpy.updateLastLoaded.getCalls()).to.have.lengthOf(1);
+          expect(actionsSpy.updateLastLoaded.getCalls()[0].args).to.have.lengthOf(1);
+          expect(actionsSpy.updateLastLoaded.getCalls()[0].args[0]).to.equal(location);
+        });
         it('should make no other updates', () => {
           expect(actionsSpy.updateLoadingStatus.calledTwice).to.equal(true);
           Object.keys(actionsSpy).forEach((key) => {
             if (![
               'updateLoadingStatus',
+              'updateLastLoaded',
             ]
               .includes(key)) {
               expect(actionsSpy[key].getCalls()).to.have.lengthOf(0);
@@ -613,6 +659,11 @@ describe('dataLoaderUtil', () => {
           expect(actionsSpy.updateLoadingStatus.secondCall.args).to.have.lengthOf(1);
           expect(actionsSpy.updateLoadingStatus.secondCall.args[0]).to.equal(false);
         });
+        it('should update last loaded', () => {
+          expect(actionsSpy.updateLastLoaded.getCalls()).to.have.lengthOf(1);
+          expect(actionsSpy.updateLastLoaded.getCalls()[0].args).to.have.lengthOf(1);
+          expect(actionsSpy.updateLastLoaded.getCalls()[0].args[0]).to.equal(location);
+        });
         it('should make no other updates to the Store', () => {
           expect(actionsSpy.updateLoadingStatus.calledTwice).to.equal(true);
           Object.keys(actionsSpy).forEach((key) => {
@@ -624,6 +675,7 @@ describe('dataLoaderUtil', () => {
               'updateSearchResults',
               'updateSelectedFilters',
               'updateSortBy',
+              'updateLastLoaded',
             ]
               .includes(key)) {
               expect(actionsSpy[key].getCalls()).to.have.lengthOf(0);
@@ -691,11 +743,17 @@ describe('dataLoaderUtil', () => {
           expect(actionsSpy.updateLoadingStatus.secondCall.args).to.have.lengthOf(1);
           expect(actionsSpy.updateLoadingStatus.secondCall.args[0]).to.equal(false);
         });
+        it('should update last loaded', () => {
+          expect(actionsSpy.updateLastLoaded.getCalls()).to.have.lengthOf(1);
+          expect(actionsSpy.updateLastLoaded.getCalls()[0].args).to.have.lengthOf(1);
+          expect(actionsSpy.updateLastLoaded.getCalls()[0].args[0]).to.equal(location);
+        });
         it('should make no other updates', () => {
           expect(actionsSpy.updateLoadingStatus.calledTwice).to.equal(true);
           Object.keys(actionsSpy).forEach((key) => {
             if (![
               'updateLoadingStatus',
+              'updateLastLoaded',
             ]
               .includes(key)) {
               expect(actionsSpy[key].getCalls()).to.have.lengthOf(0);
@@ -713,6 +771,8 @@ describe('dataLoaderUtil', () => {
         let sandbox;
         let location;
         before(() => {
+          global.savedWindow = global.window;
+          global.window = { location: { href: ' fakefakefake' } };
           holdRequestResponse = {
             bib: [],
             deliveryLocations: [],
@@ -737,6 +797,7 @@ describe('dataLoaderUtil', () => {
           dataLoaderUtil.loadDataForRoutes(location);
         });
         after(() => {
+          global.window = global.savedWindow;
           sandbox.restore();
         });
         it('should make api call to /api/hold/request with the correct parameters', () => {
@@ -775,6 +836,11 @@ describe('dataLoaderUtil', () => {
           expect(actionsSpy.updateLoadingStatus.secondCall.args).to.have.lengthOf(1);
           expect(actionsSpy.updateLoadingStatus.secondCall.args[0]).to.equal(false);
         });
+        it('should update last loaded', () => {
+          expect(actionsSpy.updateLastLoaded.getCalls()).to.have.lengthOf(1);
+          expect(actionsSpy.updateLastLoaded.getCalls()[0].args).to.have.lengthOf(1);
+          expect(actionsSpy.updateLastLoaded.getCalls()[0].args[0]).to.equal(location);
+        });
         it('should make no other updates', () => {
           expect(actionsSpy.updateLoadingStatus.calledTwice).to.equal(true);
           Object.keys(actionsSpy).forEach((key) => {
@@ -783,6 +849,7 @@ describe('dataLoaderUtil', () => {
               'updateDeliveryLocations',
               'updateIsEddRequestable',
               'updateBib',
+              'updateLastLoaded',
             ]
               .includes(key)) {
               expect(actionsSpy[key].getCalls()).to.have.lengthOf(0);
@@ -799,6 +866,8 @@ describe('dataLoaderUtil', () => {
         let location;
         let consoleSpy;
         before(() => {
+          global.savedWindow = global.window;
+          global.window = { location: { href: ' fakefakefake' } };
           holdRequestResponse = {
             bib: [],
             deliveryLocations: [],
@@ -824,6 +893,7 @@ describe('dataLoaderUtil', () => {
           dataLoaderUtil.loadDataForRoutes(location);
         });
         after(() => {
+          global.window = global.savedWindow;
           sandbox.restore();
         });
         it('should make api call to /api/hold/request with the correct parameters', () => {
@@ -847,11 +917,17 @@ describe('dataLoaderUtil', () => {
           expect(actionsSpy.updateLoadingStatus.secondCall.args).to.have.lengthOf(1);
           expect(actionsSpy.updateLoadingStatus.secondCall.args[0]).to.equal(false);
         });
+        it('should update last loaded', () => {
+          expect(actionsSpy.updateLastLoaded.getCalls()).to.have.lengthOf(1);
+          expect(actionsSpy.updateLastLoaded.getCalls()[0].args).to.have.lengthOf(1);
+          expect(actionsSpy.updateLastLoaded.getCalls()[0].args[0]).to.equal(location);
+        });
         it('should make no other updates', () => {
           expect(actionsSpy.updateLoadingStatus.calledTwice).to.equal(true);
           Object.keys(actionsSpy).forEach((key) => {
             if (![
               'updateLoadingStatus',
+              'updateLastLoaded',
             ]
               .includes(key)) {
               expect(actionsSpy[key].getCalls()).to.have.lengthOf(0);
