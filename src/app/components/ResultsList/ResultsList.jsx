@@ -6,14 +6,23 @@ import {
   isArray as _isArray,
 } from 'underscore';
 
+
 // eslint-disable-next-line import/first, import/no-unresolved, import/extensions
 import Store from '@Store';
 import LibraryItem from '../../utils/item';
-import { trackDiscovery } from '../../utils/utils';
+import {
+  trackDiscovery,
+} from '../../utils/utils';
 import ItemTable from '../Item/ItemTable';
 import appConfig from '../../data/appConfig';
+import AppConfigStore from '../../stores/AppConfigStore';
 
 class ResultsList extends React.Component {
+  constructor() {
+    super();
+    this.itemTableLimit = 3;
+  }
+
   getBibTitle(bib) {
     if (!bib.titleDisplay || !bib.titleDisplay.length) {
       const author = bib.creatorLiteral && bib.creatorLiteral.length ?
@@ -56,9 +65,9 @@ class ResultsList extends React.Component {
       result.publicationStatement[0] : '';
     const items = LibraryItem.getItems(result);
     const totalItems = items.length;
-    const hasRequestTable = items.length === 1;
+    const hasRequestTable = items.length > 0;
 
-    let bibUrl = `${appConfig.baseUrl}/bib/${bibId}`;
+    const bibUrl = `${appConfig.baseUrl}/bib/${bibId}`;
 
     return (
       <li key={i} className={`nypl-results-item ${hasRequestTable ? 'has-request' : ''}`}>
@@ -84,7 +93,7 @@ class ResultsList extends React.Component {
         {
           hasRequestTable &&
           <ItemTable
-            items={items}
+            items={items.slice(0, this.itemTableLimit)}
             bibId={bibId}
             id={null}
             searchKeywords={this.props.searchKeywords}
@@ -100,7 +109,8 @@ class ResultsList extends React.Component {
       subjectHeadingShow,
     } = this.props;
     let resultsElm = null;
-    const { includeDrbb } = appConfig;
+    const { features } = AppConfigStore.getState();
+    const includeDrbb = features.includes('drb-integration');
 
     if (!results || !_isArray(results) || !results.length) {
       return null;

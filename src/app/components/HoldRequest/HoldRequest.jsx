@@ -52,6 +52,7 @@ class HoldRequest extends React.Component {
     this.state = _extend({
       delivery: defaultDelivery,
       checkedLocNum,
+      serverRedirect: true,
     }, { patron: PatronStore.getState() });
 
     // change all the components :(
@@ -60,6 +61,8 @@ class HoldRequest extends React.Component {
     this.submitRequest = this.submitRequest.bind(this);
     this.checkEligibility = this.checkEligibility.bind(this);
     this.conditionallyRedirect = this.conditionallyRedirect.bind(this);
+    this.isLoading = this.isLoading.bind(this);
+    this.requireUser = this.requireUser.bind(this);
   }
 
 
@@ -70,7 +73,7 @@ class HoldRequest extends React.Component {
     if (title) {
       title.focus();
     }
-    this.timeoutId = setTimeout(() => { Actions.updateLoadingStatus(false); }, 5000);
+    if (this.state.serverRedirect) this.setState({ serverRedirect: false });
   }
 
   onChange() {
@@ -83,6 +86,11 @@ class HoldRequest extends React.Component {
       delivery: e.target.value,
       checkedLocNum: i,
     });
+  }
+
+  isLoading() {
+    const patron = PatronStore.getState();
+    return !patron || !patron.id || !Store.getState().lastLoaded.pathname.includes(this.props.location.pathname);
   }
 
   /**
@@ -115,28 +123,17 @@ class HoldRequest extends React.Component {
 
     Actions.updateLoadingStatus(true);
     trackDiscovery(`Submit Request${partnerEvent}`, `${title} - ${itemId}`);
-    axios
-      .get(`${appConfig.baseUrl}/api/newHold?itemId=${itemId}&pickupLocation=` +
-        `${this.state.delivery}&itemSource=${itemSource}`)
+    const formData = new FormData(document.getElementById('place-hold-form'));
+    axios.post(
+      `${appConfig.baseUrl}/hold/request/${bibId}-${itemId}-${itemSource}`,
+      Object.fromEntries(formData.entries()),
+    )
       .then((response) => {
-        if (response.data.error && response.data.error.status !== 200) {
-          Actions.updateLoadingStatus(false);
-          this.context.router.push(
-            `${path}?errorStatus=${response.data.error.status}` +
-            `&errorMessage=${response.data.error.statusText}${searchKeywordsQueryPhysical}` +
-            `${fromUrlQuery}`,
-          );
-        } else {
-          Actions.updateLoadingStatus(false);
-          this.context.router.push(
-            `${path}?pickupLocation=${response.data.pickupLocation}&requestId=${response.data.id}` +
-            `${searchKeywordsQueryPhysical}${fromUrlQuery}`,
-          );
-        }
+        this.context.router.push(response.data);
+        Actions.updateLoadingStatus(false);
       })
       .catch((error) => {
         console.error('Error attempting to make an ajax Hold Request in HoldRequest', error);
-
         Actions.updateLoadingStatus(false);
         this.context.router.push(
           `${path}?errorMessage=${error}${searchKeywordsQueryPhysical}${fromUrlQuery}`,
@@ -184,7 +181,6 @@ class HoldRequest extends React.Component {
 
   conditionallyRedirect() {
     return this.checkEligibility().then((eligibility) => {
-      clearTimeout(this.timeoutId);
       if (!eligibility.eligibility) {
         const bib = (this.props.bib && !_isEmpty(this.props.bib)) ?
           this.props.bib : null;
@@ -279,7 +275,39 @@ class HoldRequest extends React.Component {
   }
 
   render() {
+    if (this.isLoading()) {
+      return (
+        <React.Fragment>
+          <LoadingLayer
+            status={this.isLoading()}
+            title="Requesting"
+          />
+          <div>
+            <div className="nypl-request-page-header">
+              <div className="nypl-full-width-wrapper">
+                <div className="row">
+                  <div className="nypl-column-full">
+                    <Breadcrumbs
+                      type="hold"
+                    />
+                    <h1 id="item-title" tabIndex="0" id="mainContent">Item Request</h1>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="nypl-full-width-wrapper">
+              <div className="row">
+                <div className="nypl-column-three-quarters" />
+              </div>
+            </div>
+          </div>
+        </React.Fragment>
+      );
+    }
+
     const { closedLocations, holdRequestNotification } = AppConfigStore.getState();
+    const { serverRedirect } = this.state;
     const searchKeywords = this.props.searchKeywords;
     const bib = (this.props.bib && !_isEmpty(this.props.bib)) ?
       this.props.bib : null;
@@ -322,6 +350,7 @@ class HoldRequest extends React.Component {
       const itemSource = selectedItem.itemSource;
       form = (
         <form
+          id="place-hold-form"
           className="place-hold-form form"
           action={`${appConfig.baseUrl}/hold/request/${bibId}-${itemId}-${itemSource}`}
           method="POST"
@@ -350,6 +379,11 @@ class HoldRequest extends React.Component {
             name="search-keywords"
             value={searchKeywords}
           />
+          <input
+            type="hidden"
+            name="serverRedirect"
+            value={serverRedirect}
+          />
         </form>
       );
     }
@@ -359,10 +393,6 @@ class HoldRequest extends React.Component {
     return (
       <DocumentTitle title="Item Request | Shared Collection Catalog | NYPL">
         <div>
-          <LoadingLayer
-            status={Store.state.isLoading}
-            title="Requesting"
-          />
           <div className="nypl-request-page-header">
             <div className="nypl-full-width-wrapper">
               <div className="row">

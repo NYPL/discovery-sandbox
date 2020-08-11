@@ -159,10 +159,15 @@ describe('FilterPopup', () => {
       dateAfter: '',
       dateBefore: '',
     };
+
+    const context = {
+      router: [],
+    };
+
     let component;
 
     before(() => {
-      component = mount(<FilterPopup selectedFilters={selectedFilters} />);
+      component = mount(<FilterPopup selectedFilters={selectedFilters} />, { context });
     });
 
     after(() => {
@@ -271,7 +276,7 @@ describe('FilterPopup', () => {
 
     describe('without integration', () => {
       before(() => {
-        appConfig.includeDrbb = false;
+        appConfig.features = [];
         component = mount(<FilterPopup selectedFilters={selectedFilters} />);
       });
 
@@ -282,7 +287,7 @@ describe('FilterPopup', () => {
 
     describe('with integration', () => {
       before(() => {
-        appConfig.includeDrbb = true;
+        appConfig.features = ['drb-integration'];
         component = mount(<FilterPopup selectedFilters={selectedFilters} />);
       });
 

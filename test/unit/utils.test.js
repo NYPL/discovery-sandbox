@@ -16,6 +16,7 @@ import {
   basicQuery,
   getReqParams,
   getAggregatedElectronicResources,
+  truncateStringOnWhitespace,
 } from '../../src/app/utils/utils';
 
 /**
@@ -147,6 +148,30 @@ describe('createAppHistory', () => {
  * destructureFilters
  */
 describe('destructureFilters', () => {
+  const apiFilters = { '@context':
+   'http://discovery-api-qa.us-east-1.elasticbeanstalk.com/api/v0.1/discovery/context_all.jsonld',
+  '@type': 'itemList',
+  itemListElement:
+   [
+     { '@type': 'nypl:Aggregation',
+       '@id': 'res:subjectLiteral',
+       id: 'subjectLiteral',
+       field: 'subjectLiteral',
+       values: [
+         {
+           count: 130,
+           label: 'Animals -- Fiction.',
+           value: 'Animals -- Fiction.',
+         },
+         {
+           count: 89,
+           label: 'Awards.',
+           value: 'Awards.',
+         },
+       ],
+     },
+   ],
+  totalResults: 665 };
   describe('Default call', () => {
     it('should return an empty object', () => {
       const filters = destructureFilters();
@@ -154,12 +179,46 @@ describe('destructureFilters', () => {
     });
   });
 
-  // describe('No filters from the API', () => {
-  // it('should return an empty object', () => {
-  //   const filters = destructureFilters();
-  //   expect(filters).to.eql({});
-  // });
-  // });
+  describe('No filters from the API', () => {
+    it('should return an empty object for aggregations with no values', () => {
+      const filters = { 'filters[subjectLiteral][0]': 'Animals -- Fiction.', 'filters[subjectLiteral][1]': 'Awards.' };
+      expect(destructureFilters(filters, {})).to.eql({});
+    });
+  });
+
+  describe('Date filters', () => {
+    const filters = { 'filters[dateBefore]': '2000', 'filters[dateAfter]': '1900' };
+    const expectedReturnValue = { dateBefore: '2000', dateAfter: '1900' };
+    it('should return object with dateBefore and dateAfter when they are passed', () => {
+      expect(destructureFilters(filters, apiFilters)).to.eql(expectedReturnValue);
+    });
+  });
+
+  describe('Filters with value of type array', () => {
+    const filters = { 'filters[subjectLiteral][0]': ['Animals -- Fiction.', 'Awards.'] };
+    const expectedReturnValue = {
+      subjectLiteral: [
+        { value: 'Animals -- Fiction.', label: 'Animals -- Fiction.' },
+        { value: 'Awards.', label: 'Awards.' },
+      ],
+    };
+    it('should return value/label pairs in an array under the appropriate key', () => {
+      expect(destructureFilters(filters, apiFilters)).to.eql(expectedReturnValue);
+    });
+  });
+
+  describe('Filters with value of type string', () => {
+    const filters = { 'filters[subjectLiteral][0]': 'Animals -- Fiction.', 'filters[subjectLiteral][1]': 'Awards.' };
+    const expectedReturnValue = {
+      subjectLiteral: [
+        { value: 'Animals -- Fiction.', label: 'Animals -- Fiction.' },
+        { value: 'Awards.', label: 'Awards.' },
+      ],
+    };
+    it('should return value/label pairs in an array under the appropriate key', () => {
+      expect(destructureFilters(filters, apiFilters)).to.eql(expectedReturnValue);
+    });
+  });
 });
 
 /**
@@ -643,5 +702,29 @@ describe('getAggregatedElectronicResources', () => {
           },
         ]);
     });
+  });
+});
+
+describe('truncateStringOnWhitespace()', () => {
+  it('Should return a short title as-is', () => {
+    expect(truncateStringOnWhitespace('Test Title', 25)).to.equal('Test Title');
+  });
+
+  it('Should truncate a long title when break lands in the middle of a word', () => {
+    const truncStr = truncateStringOnWhitespace('Longer Title Here To Become Shorter', 25);
+    expect(truncStr).to.equal('Longer Title Here To...');
+    expect(truncStr.length).to.be.lessThan(26);
+  });
+
+  it('Should truncate a long title when break lands on a whitespace', () => {
+    const truncStr = truncateStringOnWhitespace('Longer Title Break On Whitespace', 25);
+    expect(truncStr).to.equal('Longer Title Break On...');
+    expect(truncStr.length).to.be.lessThan(26);
+  });
+
+  it('Should truncate single word title regardless of whitespace', () => {
+    const truncStr = truncateStringOnWhitespace('ThisIsAOneWordTitleWhichCouldExistOutThere', 25);
+    expect(truncStr).to.equal('ThisIsAOneWordTitleWhi...');
+    expect(truncStr.length).to.be.lessThan(26);
   });
 });

@@ -6,13 +6,12 @@ import Pagination from '../Pagination/Pagination';
 import DrbbContainer from '../Drbb/DrbbContainer';
 import {
   basicQuery,
-  ajaxCall,
   trackDiscovery,
   displayContext,
 } from '../../utils/utils';
-import Actions from '../../actions/Actions';
+import Store from '@Store';
 import appConfig from '../../data/appConfig';
-import Store from '../../stores/Store';
+import AppConfigStore from '../../stores/AppConfigStore';
 
 // Renders the ResultsList containing the search results and the Pagination component
 const SearchResultsContainer = (props, context) => {
@@ -24,27 +23,18 @@ const SearchResultsContainer = (props, context) => {
   const {
     media,
   } = context;
-  const {
-    includeDrbb,
-  } = appConfig;
+  const { features } = AppConfigStore.getState();
+  const includeDrbb = features.includes('drb-integration');
 
   const results = searchResults ? searchResults.itemListElement : [];
   const totalResults = searchResults ? searchResults.totalResults : results.length;
   const createAPIQuery = basicQuery(props);
 
   const updatePage = (nextPage, pageType) => {
-    Actions.updateLoadingStatus(true);
     const apiQuery = createAPIQuery({ page: nextPage });
 
     trackDiscovery('Pagination - Search Results', `${pageType} - page ${nextPage}`);
-    ajaxCall(`${appConfig.baseUrl}/api?${apiQuery}`, (response) => {
-      Actions.updateSearchResults(response.data.searchResults);
-      Actions.updatePage(nextPage.toString());
-      setTimeout(() => {
-        Actions.updateLoadingStatus(false);
-        context.router.push(`${appConfig.baseUrl}/search?${apiQuery}`);
-      }, 500);
-    });
+    props.router.push(`${appConfig.baseUrl}/search?${apiQuery}`);
   };
 
   const noResultElementForDrbbIntegration = includeDrbb ?

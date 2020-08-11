@@ -133,7 +133,7 @@ const BibPage = (props) => {
     <DocumentTitle title="Item Details | Shared Collection Catalog | NYPL">
       <main className="main-page">
         <LoadingLayer
-          status={Store.state.isLoading}
+          status={ Store.getState().isLoading}
           title="Searching"
         />
         <div className="nypl-page-header">
@@ -173,11 +173,12 @@ const BibPage = (props) => {
                   fields={topFields}
                   logging
                   electronicResources={aggregatedElectronicResources}
+                  store={Store}
                 />
 
                 {itemHoldings}
 
-                <h2>{tabs.map(tab => tab.title).join(" and ")}</h2>
+                <h2>{tabs.map(tab => tab.title).join(' and ')}</h2>
                 <Tabbed
                   tabItems={tabItems}
                   tabs={tabs}

@@ -1,15 +1,18 @@
+import axios from 'axios';
+
 import nyplApiClient from '../routes/nyplApiClient';
 import logger from '../../../logger';
 import appConfig from '../../app/data/appConfig';
-import axios from 'axios';
-import SubjectHeadings from './SubjectHeadings';
 
-const nyplApiClientCall = query =>
-  nyplApiClient().then(client => client.get(`/discovery/resources/${query}`, { cache: false }));
+const nyplApiClientCall = (query) => {
+  // If on-site-edd feature enabled in front-end, enable it in discovery-api:
+  const requestOptions = appConfig.features.includes('on-site-edd') ? { headers: { 'X-Features': 'on-site-edd' } } : {};
+  return nyplApiClient().then(client => client.get(`/discovery/resources/${query}`, requestOptions));
+};
 
-const shepApiCall = bibId => axios(`${appConfig.shepApi}/bibs/${bibId}/subject_headings`)
+const shepApiCall = bibId => axios(`${appConfig.shepApi}/bibs/${bibId}/subject_headings`);
 
-function fetchBib(bibId, cb, errorcb) {
+function fetchBib(bibId, cb, errorcb, options = { fetchSubjectHeadingData: true }) {
   return Promise.all([
     nyplApiClientCall(bibId),
     nyplApiClientCall(`${bibId}.annotated-marc`),
@@ -25,7 +28,7 @@ function fetchBib(bibId, cb, errorcb) {
       return data;
     })
     .then((data) => {
-      if (data.subjectLiteral && data.subjectLiteral.length) {
+      if (options.fetchSubjectHeadingData && data.subjectLiteral && data.subjectLiteral.length) {
         return shepApiCall(bibId)
           .then((shepRes) => {
             data.subjectHeadingData = shepRes.data.subject_headings;
@@ -36,7 +39,7 @@ function fetchBib(bibId, cb, errorcb) {
             return data;
           });
       }
-      return data
+      return data;
     })
     .then(response => cb(response))
     .catch((error) => {
@@ -46,39 +49,8 @@ function fetchBib(bibId, cb, errorcb) {
     }); /* end axios call */
 }
 
-function bibSearchServer(req, res, next) {
-  const bibId = req.params.bibId || '';
-
-  fetchBib(
-    bibId,
-    (data) => {
-      if (data.status && data.status === 404) {
-        return res.redirect(`${appConfig.baseUrl}/404`);
-      }
-      const bibPageData = { bib: data };
-      if (req.query.searchKeywords) bibPageData.searchKeywords = req.query.searchKeywords;
-      res.locals.data.Store = {
-        ...bibPageData,
-        error: {},
-      };
-      next();
-    },
-    (error) => {
-      logger.error(`Error in bibSearchServer API error, id: ${bibId}`, error);
-      res.locals.data.Store = {
-        bib: {},
-        searchKeywords: req.query.searchKeywords || '',
-        error,
-      };
-      next();
-    },
-  );
-}
-
-function bibSearchAjax(req, res) {
+function bibSearch(req, res) {
   const bibId = req.query.bibId || '';
-
-  console.log("bibSearchAjax");
 
   fetchBib(
     bibId,
@@ -88,8 +60,7 @@ function bibSearchAjax(req, res) {
 }
 
 export default {
-  bibSearchServer,
-  bibSearchAjax,
+  bibSearch,
   fetchBib,
   nyplApiClientCall,
 };

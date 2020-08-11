@@ -1,5 +1,5 @@
 /* global window document */
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 import {
@@ -8,6 +8,7 @@ import {
   findWhere as _findWhere,
 } from 'underscore';
 import DocumentTitle from 'react-document-title';
+import Url from 'url-parse';
 
 import PatronStore from '../../stores/PatronStore';
 import appConfig from '../../data/appConfig';
@@ -59,7 +60,7 @@ class HoldConfirmation extends React.Component {
       const blocked = errors.blocked ? this.blockedMessage() : null;
       const moneyOwed = errors.moneyOwed ? this.moneyOwedMessage() : null;
       const ptypeDisallowsHolds = errors.ptypeDisallowsHolds ? this.ptypeDisallowsHolds() : null;
-      const defaultText = expired || blocked || moneyOwed || ptypeDisallowsHolds  ? null : 'There is a problem with your library account.';
+      const defaultText = expired || blocked || moneyOwed || ptypeDisallowsHolds ? null : 'There is a problem with your library account.';
       return (
         <p> This is because:
           <ul>
@@ -149,30 +150,29 @@ class HoldConfirmation extends React.Component {
    * @param {Object} loc
    * @return {HTML Element}
    */
-  renderLocationInfo(loc) {
+  deliveryLocationInfo(loc) {
+    if (loc.id === 'edd') return 'The item will be delivered to the email address you provided.';
+
+    let content;
     if (!loc || _isEmpty(loc)) {
-      return (
-        <span>
+      content = (
+        <Fragment>
           please <a href="https://gethelp.nypl.org/customer/portal/emails/new">email us</a> or
           call 917-ASK-NYPL (<a href="tel:19172756975">917-275-6975</a>) for your delivery location.
-        </span>
+        </Fragment>
       );
     }
 
-    if (loc.shortName === 'n/a') {
-      return (
-        <span>
-          {loc.prefLabel}
-        </span>
-      );
-    }
+    if (loc.shortName === 'n/a') content = loc.prefLabel;
 
-    const prefLabel = this.modelDeliveryLocationName(loc.prefLabel, loc.shortName);
+    if (!content) {
+      content = this.modelDeliveryLocationName(loc.prefLabel, loc.shortName);
+    }
 
     return (
-      <span>
-        {prefLabel}
-      </span>
+      <Fragment>
+        The item will be delivered to: <span>{content}</span>
+      </Fragment>
     );
   }
 
@@ -222,6 +222,12 @@ class HoldConfirmation extends React.Component {
       return false;
     }
 
+    const fromUrl = decodeURIComponent(this.props.location.query.fromUrl);
+
+    const reg = /\.nypl\.org$/;
+    const hrefToCheck = fromUrl.startsWith('http') ? fromUrl : `http://${fromUrl}`;
+    if (!(new Url(hrefToCheck).hostname).match(reg)) return false;
+
     return (
       <span id="go-back-catalog">
         <a
@@ -261,20 +267,32 @@ class HoldConfirmation extends React.Component {
 
 
   render() {
-    // Need to better clarify variable names later.
-    const bib = this.props.bib;
+    const {
+      bib,
+      deliveryLocations,
+      params: {
+        itemId,
+      },
+      location: {
+        query: {
+          pickupLocation,
+          errorStatus,
+          errorMessage,
+        },
+      },
+    } = this.props;
     const title = (bib && _isArray(bib.title) && bib.title.length > 0) ?
       bib.title[0] : '';
     const bibId = (bib && bib['@id'] && typeof bib['@id'] === 'string') ?
       bib['@id'].substring(4) : '';
-    const itemId = this.props.params.itemId;
-    const pickupLocation = this.props.location.query.pickupLocation;
-    let deliveryLocation = null;
+
     let confirmationPageTitle = 'Submission Error';
     let confirmationInfo = (
       <div className="item">
         <p>
-          We could not process your request at this time. {this.eligibilityErrorText() || this.defaultErrorText()}
+          We could not process your request at this time. {
+            this.eligibilityErrorText() || this.defaultErrorText()
+          }
         </p>
         {this.renderBackToClassicLink()}
         {this.renderBackToSearchLink()}
@@ -282,22 +300,23 @@ class HoldConfirmation extends React.Component {
       </div>
     );
 
-    if (this.props.deliveryLocations && this.props.deliveryLocations.length) {
-      if (pickupLocation !== 'edd') {
+    let deliveryLocation = {};
+    if (pickupLocation === 'edd') {
+      deliveryLocation = {
+        id: 'edd',
+        address: null,
+        prefLabel: 'n/a (electronic delivery)',
+        shortName: 'n/a',
+      };
+    } else {
+      if (deliveryLocations && deliveryLocations.length) {
         deliveryLocation = _findWhere(
           this.props.deliveryLocations, { '@id': `loc:${pickupLocation}` },
-        );
-      } else {
-        deliveryLocation = {
-          id: null,
-          address: null,
-          prefLabel: 'n/a (electronic delivery)',
-          shortName: 'n/a',
-        };
+        ) || {};
       }
     }
 
-    if (!this.props.location.query.errorStatus && !this.props.location.query.errorMessage) {
+    if (!errorStatus && !errorMessage) {
       confirmationPageTitle = 'Request Confirmation';
       confirmationInfo = (
         <div className="item">
@@ -306,9 +325,13 @@ class HoldConfirmation extends React.Component {
             for <Link id="item-link" to={`${appConfig.baseUrl}/bib/${bibId}`}>{title}</Link>
           </p>
           <p id="delivery-location">
-            The item will be delivered to: {this.renderLocationInfo(deliveryLocation)}
+            {this.deliveryLocationInfo(deliveryLocation)}
           </p>
-
+          <h3 id="electronic-delivery">Electronic Delivery</h3>
+          <p>
+            If you selected electronic delivery,
+            you will receive an email when the item is available to download.
+          </p>
           <h3 id="physical-delivery">Physical Delivery</h3>
           <p>
             Please log into your library account to check for updates. The item will be
@@ -327,11 +350,6 @@ class HoldConfirmation extends React.Component {
             call 917-ASK-NYPL (<a href="tel:19172756975">917-275-6975</a>).
           </p>
 
-          <h3 id="electronic-delivery">Electronic Delivery</h3>
-          <p>
-            If you selected electronic delivery, you will receive an email when the item is
-            available to download.
-          </p>
           {this.renderBackToClassicLink()}
           {this.renderBackToSearchLink()}
           {this.renderStartOverLink()}
@@ -340,7 +358,7 @@ class HoldConfirmation extends React.Component {
     }
 
     // If running client-side, generate GA event
-    if ((typeof window !== 'undefined') && this.props.location.query.errorStatus && this.props.location.query.errorMessage) {
+    if ((typeof window !== 'undefined') && errorStatus && errorMessage) {
       trackDiscovery('Error', 'Hold Confirmation');
     }
 

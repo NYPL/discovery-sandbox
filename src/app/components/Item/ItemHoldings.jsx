@@ -1,10 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
-import axios from 'axios';
 import { isArray as _isArray } from 'underscore';
-
-import Actions from '../../actions/Actions';
 import Pagination from '../Pagination/Pagination';
 import ItemTable from './ItemTable';
 import appConfig from '../../data/appConfig';

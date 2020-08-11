@@ -5,7 +5,6 @@ import { isEmpty as _isEmpty } from 'underscore';
 
 import {
   trackDiscovery,
-  ajaxCall,
 } from '../../utils/utils';
 import Actions from '@Actions';
 
@@ -39,35 +38,44 @@ class ItemTableRow extends React.Component {
     Actions.updateLoadingStatus(true);
 
     trackDiscovery('Item Request', gaLabel);
-    ajaxCall(`${appConfig.baseUrl}/api/hold/request/${bibId}-${item.id}`,
-      (response) => {
-        Actions.updateBib(response.data.bib);
-        Actions.updateDeliveryLocations(response.data.deliveryLocations);
-        Actions.updateIsEddRequestable(response.data.isEddRequestable);
-        setTimeout(() => {
-          Actions.updateLoadingStatus(false);
-          this.context.router.push(`${appConfig.baseUrl}/hold/request/${bibId}-${item.id}`);
-        }, 500);
-      },
-      (error) => {
-        setTimeout(() => {
-          Actions.updateLoadingStatus(false);
-        }, 500);
+    this.context.router.push(`${appConfig.baseUrl}/hold/request/${bibId}-${item.id}`);
+  }
 
-        // eslint-disable-next-line no-console
-        console.error(
-          `Error attemping to make an ajax request to fetch an item on ${page}`,
-          error,
-        );
-      },
-    );
+  message() {
+    const { item } = this.props;
+
+    return item.accessMessage.prefLabel || ' ';
+  }
+
+  requestButton() {
+    const {
+      item,
+      bibId,
+      searchKeywords,
+    } = this.props;
+    const { closedLocations } = AppConfigStore.getState();
+    const status = item.status && item.status.prefLabel ? item.status.prefLabel : ' ';
+    let itemRequestBtn = <span>{status}</span>;
+
+    if (item.requestable && !closedLocations.includes('')) {
+      itemRequestBtn = item.available ? (
+        <Link
+          to={
+            `${appConfig.baseUrl}/hold/request/${bibId}-${item.id}?searchKeywords=${searchKeywords}`
+          }
+          onClick={e => this.getItemRecord(e, bibId, item.id)}
+          tabIndex="0"
+        >
+          Request
+        </Link>) :
+        <span>In Use</span>;
+    }
+    return itemRequestBtn;
   }
 
   render() {
     const {
       item,
-      bibId,
-      searchKeywords,
     } = this.props;
 
     if (_isEmpty(item)) {
@@ -78,31 +86,7 @@ class ItemTableRow extends React.Component {
       return null;
     }
 
-    const status = item.status && item.status.prefLabel ? item.status.prefLabel : ' ';
-    let itemRequestBtn = <span>{status}</span>;
     let itemCallNumber = ' ';
-
-    const { closedLocations } = AppConfigStore.getState();
-
-    if (item.requestable && !closedLocations.includes('')) {
-      if (item.isRecap) {
-        itemRequestBtn = item.available ? (
-          <Link
-            to={
-              `${appConfig.baseUrl}/hold/request/${bibId}-${item.id}?searchKeywords=${searchKeywords}`
-            }
-            onClick={e => this.getItemRecord(e, bibId, item.id)}
-            tabIndex="0"
-          >
-            Request
-          </Link>) :
-          <span>In Use</span>;
-      } else if (item.nonRecapNYPL) {
-        // Not in ReCAP
-        itemRequestBtn = <span>{status}</span>;
-      }
-    }
-
     if (item.callNumber) {
       itemCallNumber = item.callNumber;
     }
@@ -111,8 +95,8 @@ class ItemTableRow extends React.Component {
       <tr className={item.availability}>
         <td>{item.location || ' '}</td>
         <td>{itemCallNumber}</td>
-        <td>{itemRequestBtn}</td>
-        <td>{item.accessMessage.prefLabel || ' '}</td>
+        <td>{this.requestButton()}</td>
+        <td>{this.message()}</td>
       </tr>
     );
   }

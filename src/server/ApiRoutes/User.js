@@ -6,7 +6,6 @@ function requireUser(req, res) {
     !req.patronTokenResponse.decodedPatron || !req.patronTokenResponse.decodedPatron.sub) {
     // redirect to login
     const fullUrl = encodeURIComponent(`${req.protocol}://${req.get('host')}${req.originalUrl}`);
-
     res.redirect(`${appConfig.loginUrl}?redirect_uri=${fullUrl}`);
     return false;
   }
@@ -17,6 +16,7 @@ function eligibility(req, res) {
   if (!req.patronTokenResponse || !req.patronTokenResponse.decodedPatron
      || !req.patronTokenResponse.decodedPatron.sub) {
     res.send(JSON.stringify({ eligibility: true }));
+    return;
   }
   const id = req.patronTokenResponse.decodedPatron.sub;
   nyplApiClient().then(client => client.get(`/patrons/${id}/hold-request-eligibility`, { cache: false }))

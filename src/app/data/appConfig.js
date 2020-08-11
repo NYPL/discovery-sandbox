@@ -1,4 +1,12 @@
-export default {
+const extractFeatures = (featuresString) => {
+  if (typeof featuresString !== 'string') return [];
+  return featuresString.split(',').reduce((features, feature) => {
+    if (feature.length) features.push(feature.trim());
+    return features;
+  }, []);
+};
+
+const appConfig = {
   appTitle: 'NYPL | Discovery',
   appName: 'discovery',
   displayTitle: 'Shared Collection Catalog',
@@ -52,5 +60,13 @@ export default {
     development: 'https://researchnow-reader.nypl.org',
     production: 'https://digital-research-books-reader.nypl.org',
   },
-  includeDrbb: /true/i.test(process.env.INCLUDE_DRBB),
+  features: extractFeatures(process.env.FEATURES),
+  generalResearchEmail: process.env.GENERAL_RESEARCH_EMAIL,
+  airtableApiKey: process.env.AIRTABLE_API_KEY,
+  feedbackFormUrl: process.env.FEEDBACK_FORM_URL,
+};
+
+export default {
+  extractFeatures,
+  ...appConfig,
 };
