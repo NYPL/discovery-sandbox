@@ -19,7 +19,7 @@ describe('After Clicking on Button', () => {
 
   // These tests should be changed to be more informative
   it('should display Abbreviated Title', () => {
-    expect(component.find('div').someWhere(item => item.text() === "Abrev. title -- 210 ")).to.equal(false);
+    expect(component.find('div').someWhere(item => item.text() === "Abrev. title -- 210 ")).to.equal(true);
   });
 
   it('should display url fields', () => {
