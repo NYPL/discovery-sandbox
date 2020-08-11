@@ -7,7 +7,7 @@ import {
   trackDiscovery,
 } from '../../utils/utils';
 import appConfig from '../../data/appConfig';
-import { updateSearchResults } from '../../actions/Actions';
+import { fetchSearchResults } from '../../actions/Actions';
 
 /**
  * The main container for the top Search section.
@@ -93,7 +93,8 @@ class Search extends React.Component {
       page: '1',
     });
 
-    this.context.router.push(`${appConfig.baseUrl}/search?${apiQuery}`);
+    this.props.fetchSearchResults(apiQuery)
+      .then(() => this.context.router.push(`${appConfig.baseUrl}/search?${apiQuery}`));
   }
 
   render() {
@@ -157,6 +158,7 @@ Search.propTypes = {
   searchKeywords: PropTypes.string,
   createAPIQuery: PropTypes.func,
   selectedFilters: PropTypes.object,
+  fetchSearchResults: PropTypes.func,
 };
 
 Search.defaultProps = {
@@ -170,7 +172,7 @@ Search.contextTypes = {
 };
 
 const mapDispatchToProps = dispatch => ({
-  updateSearchResults: query => dispatch(updateSearchResults(query)),
+  fetchSearchResults: query => dispatch(fetchSearchResults(query)),
 });
 
 export default connect(null, mapDispatchToProps)(Search);

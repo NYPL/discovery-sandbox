@@ -89,6 +89,4 @@ LoadingLayer.defaultProps = {
   loading: false,
 };
 
-const mapStateToProps = state => ({ loading: state.loading });
-
-export default connect(mapStateToProps)(LoadingLayer);
+export default connect(({ loading }) => ({ loading }))(LoadingLayer);

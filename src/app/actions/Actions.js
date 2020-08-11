@@ -24,24 +24,31 @@ export const setAppConfig = data => ({
   appConfig: data,
 });
 
-export const updateSearchResults = searchResults => ({
-  type: Actions.UPDATE_SEARCH_RESULTS,
-  searchResults,
-});
+export const updateSearchResults = searchResults => {
+  console.log("SearchResults", searchResults);
+  return ({
+    type: Actions.UPDATE_SEARCH_RESULTS,
+    searchResults,
+  })
+};
 
 const searchUrl = query => `${appConfig.baseUrl}/api?${query}`;
 
 export const fetchSearchResults = (query) => {
   console.log('QUERY', query);
+  // update selectedFilters
   return dispatch => axios
     .get(searchUrl(query))
     .then((resp) => {
       if (resp.data) {
-        dispatch(updateSearchResults(resp.data));
+        const { searchResults, filters, drbbResults } = resp.data;
+        if (searchResults) dispatch(updateSearchResults(resp.data.searchResults));
+        // if (filters) dispatch(updateFilters(filters));
+        // if (drbbResults)
       }
     })
     .catch((error) => {
-      console.log('An error occurred during searchPost', error.message);
+      console.error('An error occurred during searchPost', error.message);
       throw new Error('An error occurred during searchPost', error.message);
     });
 };

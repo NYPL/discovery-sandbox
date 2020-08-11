@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
 import ResultsList from '../ResultsList/ResultsList';
 import Pagination from '../Pagination/Pagination';
@@ -96,4 +97,6 @@ SearchResultsContainer.contextTypes = {
   media: PropTypes.string,
 };
 
-export default SearchResultsContainer;
+const mapStateToProps = state => ({ searchResults: state.searchResults });
+
+export default connect(mapStateToProps)(SearchResultsContainer);

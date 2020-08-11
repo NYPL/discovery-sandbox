@@ -1,7 +1,6 @@
 /* global window */
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withRouter } from 'react-router';
 import DocumentTitle from 'react-document-title';
 import { Header, navConfig } from '@nypl/dgx-header-component';
 import Footer from '@nypl/dgx-react-footer';
@@ -10,7 +9,6 @@ import Feedback from '../Feedback/Feedback';
 import LoadingLayer from '../LoadingLayer/LoadingLayer';
 
 import { breakpoints } from '../../data/constants';
-import DataLoader from '../DataLoader/DataLoader';
 
 class Application extends React.Component {
   constructor(props) {
@@ -76,12 +74,7 @@ class Application extends React.Component {
             skipNav={{ target: 'mainContent' }}
           />
           <LoadingLayer title="Searching" />
-          <DataLoader
-            location={this.context.router.location}
-            key={JSON.stringify(dataLocation)}
-          >
-            {React.cloneElement(this.props.children, this.props)}
-          </DataLoader>
+          {React.cloneElement(this.props.children, this.props)}
           <Footer />
           <Feedback submit={this.submitFeedback} />
         </div>
@@ -106,4 +99,4 @@ Application.childContextTypes = {
   media: PropTypes.string,
 };
 
-export default withRouter(Application);
+export default Application;

@@ -78,7 +78,7 @@ const SearchResults = (props, context) => {
   return (
     <DocumentTitle title="Search Results | Shared Collection Catalog | NYPL">
       <SccContainer
-        mainContent={<SearchResultsContainer {...props} />}
+        mainContent={<SearchResultsContainer />}
         bannerOptions={
           {
             text: 'Search Results',
