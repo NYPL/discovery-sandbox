@@ -15,18 +15,29 @@ import {
 
 import { breakpoints } from '../../data/constants';
 import DataLoader from '../DataLoader/DataLoader';
+import appConfig from '../../data/appConfig';
 
 class Application extends React.Component {
-  constructor(props) {
-    super(props);
+  constructor(props, context) {
+    super(props, context);
+    const {
+      query,
+    } = context.router.location;
     this.state = {
       data: Store.getState(),
       patron: PatronStore.getState(),
       media: 'desktop',
     };
     this.onChange = this.onChange.bind(this);
-    this.shouldStoreUpdate = this.shouldStoreUpdate.bind(this);
     this.submitFeedback = this.submitFeedback.bind(this);
+
+    const urlEnabledFeatures = query.features ? query.features.split(',') : null;
+    if (urlEnabledFeatures) {
+      const urlFeaturesString = urlEnabledFeatures.filter(
+        urlFeat => !appConfig.features.includes(urlFeat))
+        .join(',');
+      if (urlFeaturesString) this.state.urlEnabledFeatures = urlFeaturesString;
+    }
   }
 
   getChildContext() {
@@ -37,14 +48,23 @@ class Application extends React.Component {
 
   componentDidMount() {
     Store.listen(this.onChange);
-
-
     window.addEventListener('resize', this.onWindowResize.bind(this));
     this.onWindowResize();
-  }
-
-  shouldStoreUpdate() {
-    return `?${basicQuery({})(Store.getState())}` !== this.context.router.location.search;
+    const { router } = this.context;
+    if (this.state.urlEnabledFeatures) {
+      router.listen(() => {
+        const {
+          pathname,
+          query,
+        } = router.location;
+        if (query.features !== this.state.urlEnabledFeatures) {
+          router.replace({
+            pathname,
+            query: Object.assign(query, { features: this.state.urlEnabledFeatures }),
+          });
+        }
+      });
+    }
   }
 
   componentWillUnmount() {
@@ -116,12 +136,10 @@ class Application extends React.Component {
 
 Application.propTypes = {
   children: PropTypes.object,
-  location: PropTypes.object,
 };
 
 Application.defaultProps = {
   children: {},
-  location: {},
 };
 
 Application.contextTypes = {
@@ -130,6 +148,7 @@ Application.contextTypes = {
 
 Application.childContextTypes = {
   media: PropTypes.string,
+  urlEnabledFeatures: PropTypes.string,
 };
 
 export default Application;

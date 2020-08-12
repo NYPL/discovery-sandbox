@@ -3,19 +3,24 @@ import axios from 'axios';
 import nyplApiClient from '../routes/nyplApiClient';
 import logger from '../../../logger';
 import appConfig from '../../app/data/appConfig';
+import extractFeatures from '../../app/utils/extractFeatures';
 
-const nyplApiClientCall = (query) => {
+const nyplApiClientCall = (query, urlEnabledFeatures) => {
   // If on-site-edd feature enabled in front-end, enable it in discovery-api:
-  const requestOptions = appConfig.features.includes('on-site-edd') ? { headers: { 'X-Features': 'on-site-edd' } } : {};
+  const requestOptions = appConfig.features.includes('on-site-edd') || urlEnabledFeatures.includes('on-site-edd') ? { headers: { 'X-Features': 'on-site-edd' } } : {};
   return nyplApiClient().then(client => client.get(`/discovery/resources/${query}`, requestOptions));
 };
 
 const shepApiCall = bibId => axios(`${appConfig.shepApi}/bibs/${bibId}/subject_headings`);
 
-function fetchBib(bibId, cb, errorcb, options = { fetchSubjectHeadingData: true }) {
+function fetchBib(bibId, cb, errorcb, reqOptions) {
+  const options = Object.assign({
+    fetchSubjectHeadingData: true,
+    features: [],
+  }, reqOptions);
   return Promise.all([
-    nyplApiClientCall(bibId),
-    nyplApiClientCall(`${bibId}.annotated-marc`),
+    nyplApiClientCall(bibId, options.features),
+    nyplApiClientCall(`${bibId}.annotated-marc`, options.features),
   ])
     .then((response) => {
       // First response is jsonld formatting:
@@ -51,11 +56,17 @@ function fetchBib(bibId, cb, errorcb, options = { fetchSubjectHeadingData: true 
 
 function bibSearch(req, res) {
   const bibId = req.query.bibId || '';
+  const { features } = req.query;
+  const urlEnabledFeatures = extractFeatures(features);
 
   fetchBib(
     bibId,
     data => res.json(data),
     error => res.json(error),
+    {
+      features: urlEnabledFeatures,
+      fetchSubjectHeadingData: true,
+    },
   );
 }
 

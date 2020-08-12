@@ -8,6 +8,7 @@ import {
   basicQuery,
   parseServerSelectedFilters,
 } from '../../app/utils/utils';
+import extractFeatures from '../../app/utils/extractFeatures';
 import nyplApiClient from '../routes/nyplApiClient';
 import logger from '../../../logger';
 import ResearchNow from './ResearchNow';
@@ -19,8 +20,8 @@ const createAPIQuery = basicQuery({
   selectedFilters: {},
 });
 
-const nyplApiClientCall = (query) => {
-  const requestOptions = appConfig.features.includes('on-site-edd') ? { headers: { 'X-Features': 'on-site-edd' } } : {};
+const nyplApiClientCall = (query, urlEnabledFeatures = []) => {
+  const requestOptions = appConfig.features.includes('on-site-edd') || urlEnabledFeatures.includes('on-site-edd') ? { headers: { 'X-Features': 'on-site-edd' } } : {};
 
   return nyplApiClient()
     .then(client =>
@@ -28,7 +29,7 @@ const nyplApiClientCall = (query) => {
     );
 };
 
-function search(searchKeywords = '', page, sortBy, order, field, filters, cb, errorcb) {
+function search(searchKeywords = '', page, sortBy, order, field, filters, cb, errorcb, features) {
   const encodedResultsQueryString = createAPIQuery({
     searchKeywords,
     sortBy: sortBy ? `${sortBy}_${order}` : '',
@@ -48,8 +49,8 @@ function search(searchKeywords = '', page, sortBy, order, field, filters, cb, er
 
   // Need to get both results and aggregations before proceeding.
   Promise.all([
-    nyplApiClientCall(resultsQuery),
-    nyplApiClientCall(aggregationQuery)])
+    nyplApiClientCall(resultsQuery, features),
+    nyplApiClientCall(aggregationQuery, features)])
     .then(response => ResearchNow.search(queryObj)
       .then((drbbResults) => {
         response.push(drbbResults);
@@ -68,7 +69,7 @@ function search(searchKeywords = '', page, sortBy, order, field, filters, cb, er
 
 function searchAjax(req, res) {
   const { page, q, sort, order, fieldQuery, filters } = getReqParams(req.query);
-
+  const urlEnabledFeatures = extractFeatures(req.query.features);
   search(
     q,
     page,
@@ -83,6 +84,7 @@ function searchAjax(req, res) {
       drbbResults,
     }),
     error => res.json(error),
+    urlEnabledFeatures,
   );
 }
 
