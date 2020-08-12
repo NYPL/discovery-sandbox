@@ -88,11 +88,7 @@ app.get('/*', (req, res, next) => {
     search: '',
   };
 
-  console.log("loadDataForRoutes");
-  const loadDataResp = dataLoaderUtil.loadDataForRoutes(location, req);
-  console.log("loadDataResp", loadDataResp);
-
-  // dataLoaderUtil.loadDataForRoutes(location, req).then(() => next());
+  dataLoaderUtil.loadDataForRoutes(location, req, routeMethods, res).then(() => next());
 });
 
 app.get('/*', (req, res) => {

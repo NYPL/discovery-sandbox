@@ -1,7 +1,5 @@
 import axios from 'axios';
 
-import appConfig from '../data/appConfig';
-
 export const Actions = {
   SET_APP_CONFIG: 'SET_APP_CONFIG',
   UPDATE_SEARCH_RESULTS: 'UPDATE_SEARCH_RESULTS',
@@ -19,39 +17,39 @@ export const Actions = {
   UPDATE_DRBB_RESULTS: 'UPDATE_DRBB_RESULTS',
 };
 
-export const setAppConfig = data => ({
+export const setAppConfig = appConfig => ({
   type: Actions.SET_APP_CONFIG,
-  appConfig: data,
+  payload: appConfig,
 });
 
 export const updateSearchResults = searchResults => ({
   type: Actions.UPDATE_SEARCH_RESULTS,
-  searchResults,
+  payload: searchResults,
 });
 
 export const updateDrbbResults = drbbResults => ({
   type: Actions.UPDATE_DRBB_RESULTS,
-  drbbResults,
+  payload: drbbResults,
 });
 
 export const updateFilters = filters => ({
   type: Actions.UPDATE_FILTERS,
-  filters,
+  payload: filters,
 });
 
 export const updateBib = bib => ({
-  type: Actions.UPDATE_DRBB_RESULTS,
-  bib,
+  type: Actions.UPDATE_BIB,
+  payload: bib,
 });
 
 export const updateDeliveryLocations = deliveryLocations => ({
   type: Actions.UPDATE_DELIVERY_LOCATIONS,
-  deliveryLocations,
+  payload: deliveryLocations,
 });
 
 export const updateIsEddRequestable = isEddRequestable => ({
   type: Actions.UPDATE_IS_EDD_REQUESTABLE,
-  isEddRequestable,
+  payload: isEddRequestable,
 });
 
 /* `updateSearchResultsPage` fetches data and performs:
@@ -63,26 +61,12 @@ export const updateIsEddRequestable = isEddRequestable => ({
     * updateSortBy
     * updateDrbbResults
 */
-export const updateSearchResultsPage = (apiUrl) => {
-  console.log("updateSearchResults", apiUrl);
-  return (
-    dispatch => axios
-      .get(apiUrl)
-      .then((resp) => {
-        console.log("search results resp", resp);
-        if (resp.data) {
-          const { searchResults, filters, drbbResults } = resp.data;
-          dispatch(updateSearchResults(searchResults));
-          dispatch(updateDrbbResults(drbbResults));
-          dispatch(updateFilters(filters));
-        }
-      })
-      .catch((error) => {
-        console.error('An error occurred during updateSearchResultsPage', error.message);
-        throw new Error('An error occurred during updateSearchResultsPage', error.message);
-      })
-  );
-};
+export const updateSearchResultsPage = data => dispatch => new Promise(() => {
+  const { searchResults, filters, drbbResults } = data;
+  dispatch(updateSearchResults(searchResults));
+  dispatch(updateDrbbResults(drbbResults));
+  dispatch(updateFilters(filters));
+});
 
 export const updateBibPage = apiUrl => (
   dispatch => axios
@@ -122,5 +106,5 @@ export const updateHoldRequestPage = apiUrl => (
 
 export const updateLoadingStatus = loading => ({
   type: Actions.UPDATE_LOADING_STATUS,
-  loading,
+  payload: loading,
 });

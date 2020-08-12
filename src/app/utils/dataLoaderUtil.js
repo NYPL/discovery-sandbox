@@ -1,3 +1,4 @@
+import { ajaxCall } from '@utils';
 import {
   updateBibPage,
   updateSearchResultsPage,
@@ -74,23 +75,8 @@ const matchingPathData = (location) => {
     || { matchData: null, pathType: null };
 };
 
-const dispatchForPageLoading = (action, apiRoute, errorMessage) => {
-  dispatch(updateLoadingStatus(true));
-  dispatch(action(apiRoute))
-    .then(() => dispatch(updateLoadingStatus(false)))
-    .catch((error) => {
-      dispatch(updateLoadingStatus(false));
-      console.error(
-        errorMessage,
-        error,
-      );
-    });
-}
-
-function loadDataForRoutes(location, req) {
-  console.log("location", location);
+function loadDataForRoutes(location, req, routeMethods, realRes) {
   const routes = routesGenerator(location);
-  console.log('routes', routes);
   const {
     matchData,
     pathType,
@@ -104,16 +90,38 @@ function loadDataForRoutes(location, req) {
       serverParams,
     } = routes[pathType];
     const route = routePaths[pathType];
-
-    const apiUrl = apiRoute(matchData, route);
-
+    console.log('apiRoute', apiRoute(matchData, route));
+    dispatch(updateLoadingStatus(true));
+    const successCb = (response) => {
+      dispatch(action(response.data))
+        .then(() => dispatch(updateLoadingStatus(false)))
+    };
+    const errorCb = (error) => {
+      dispatch(updateLoadingStatus(false));
+      console.error(
+        errorMessage,
+        error,
+      );
+    };
     if (req) {
       if (serverParams) serverParams(matchData, req);
-
-      return dispatchForPageLoading(action, apiUrl, errorMessage);
+      return new Promise((resolve) => {
+        const res = {
+          redirect: url => realRes.redirect(url),
+          json: (data) => {
+            resolve({ data });
+          },
+        };
+        routeMethods[pathType](req, res);
+      })
+        .then(({ data }) => {
+          realRes.data = { ...data }
+          return realRes;
+        })
+        .catch(errorCb);
     }
+    return ajaxCall(apiRoute(matchData, route), successCb, errorCb);
   }
-  return new Promise(resolve => resolve());
 }
 
 export default {

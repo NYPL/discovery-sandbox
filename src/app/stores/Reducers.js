@@ -6,7 +6,7 @@ import appConfigData from '../data/appConfig';
 const loading = (state = null, action) => {
   switch (action.type) {
     case Actions.UPDATE_LOADING_STATUS:
-      return action.loading;
+      return action.payload;
     default:
       return state;
   }
@@ -24,7 +24,7 @@ const appConfig = (state = appConfigData, action) => {
 const searchResults = (state = null, action) => {
   switch (action.type) {
     case Actions.UPDATE_SEARCH_RESULTS:
-      return action.searchResults;
+      return action.payload;
     default:
       return state;
   }
@@ -32,8 +32,8 @@ const searchResults = (state = null, action) => {
 
 const drbbResults = (state = null, action) => {
   switch (action.type) {
-    case Actions.UPDATE_SEARCH_RESULTS:
-      return action.searchResults;
+    case Actions.UPDATE_DRBB_RESULTS:
+      return action.payload;
     default:
       return state;
   }
