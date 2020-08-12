@@ -35,21 +35,83 @@ export const updateDrbbResults = drbbResults => ({
 });
 
 export const updateFilters = filters => ({
-  type: Actions.UPDATE_DRBB_RESULTS,
+  type: Actions.UPDATE_FILTERS,
   filters,
 });
 
-const searchUrl = query => `${appConfig.baseUrl}/api?${query}`;
+export const updateBib = bib => ({
+  type: Actions.UPDATE_DRBB_RESULTS,
+  bib,
+});
 
-export const fetchSearchResults = query => (
+export const updateDeliveryLocations = deliveryLocations => ({
+  type: Actions.UPDATE_DELIVERY_LOCATIONS,
+  deliveryLocations,
+});
+
+export const updateIsEddRequestable = isEddRequestable => ({
+  type: Actions.UPDATE_IS_EDD_REQUESTABLE,
+  isEddRequestable,
+});
+
+/* `updateSearchResultsPage` fetches data and performs:
+    * updateSearchResults
+    * updatePage
+    * updateSearchKeywords
+    * updateFilters
+    * updateSelectedFilters
+    * updateSortBy
+    * updateDrbbResults
+*/
+export const updateSearchResultsPage = (apiUrl) => {
+  console.log("updateSearchResults", apiUrl);
+  return (
+    dispatch => axios
+      .get(apiUrl)
+      .then((resp) => {
+        console.log("search results resp", resp);
+        if (resp.data) {
+          const { searchResults, filters, drbbResults } = resp.data;
+          dispatch(updateSearchResults(searchResults));
+          dispatch(updateDrbbResults(drbbResults));
+          dispatch(updateFilters(filters));
+        }
+      })
+      .catch((error) => {
+        console.error('An error occurred during updateSearchResultsPage', error.message);
+        throw new Error('An error occurred during updateSearchResultsPage', error.message);
+      })
+  );
+};
+
+export const updateBibPage = apiUrl => (
   dispatch => axios
-    .get(searchUrl(query))
+    .get(apiUrl)
     .then((resp) => {
       if (resp.data) {
-        const { searchResults, filters, drbbResults } = resp.data;
-        dispatch(updateSearchResults(searchResults));
-        dispatch(updateDrbbResults(drbbResults));
-        dispatch(updateFilters(filters));
+        const { bib } = resp.data;
+        dispatch(updateBib(bib));
+      }
+    })
+    .catch((error) => {
+      console.error('An error occurred during fetchSearchResults', error.message);
+      throw new Error('An error occurred during fetchSearchResults', error.message);
+    })
+);
+
+export const updateHoldRequestPage = apiUrl => (
+  dispatch => axios
+    .get(apiUrl)
+    .then((resp) => {
+      if (resp.data) {
+        const {
+          bib,
+          deliveryLocations,
+          isEddRequestable,
+        } = resp.data;
+        dispatch(updateBib(bib));
+        dispatch(updateDeliveryLocations(deliveryLocations));
+        dispatch(updateIsEddRequestable(isEddRequestable));
       }
     })
     .catch((error) => {

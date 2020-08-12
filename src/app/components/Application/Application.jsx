@@ -6,9 +6,9 @@ import { Header, navConfig } from '@nypl/dgx-header-component';
 import Footer from '@nypl/dgx-react-footer';
 import { withRouter } from 'react-router';
 
-// import DataLoader from '../DataLoader/DataLoader';
 import Feedback from '../Feedback/Feedback';
 import LoadingLayer from '../LoadingLayer/LoadingLayer';
+import DataLoader from '../DataLoader/DataLoader';
 
 import { breakpoints } from '../../data/constants';
 
@@ -58,6 +58,16 @@ class Application extends React.Component {
   }
 
   render() {
+    const dataLocation = Object.assign(
+      {},
+      this.context.router.location,
+      {
+        hash: null,
+        action: null,
+        key: null,
+      },
+    );
+
     return (
       <DocumentTitle title="Shared Collection Catalog | NYPL">
         <div className="app-wrapper">
@@ -66,7 +76,12 @@ class Application extends React.Component {
             skipNav={{ target: 'mainContent' }}
           />
           <LoadingLayer title="Searching" />
-          {React.cloneElement(this.props.children, this.props)}
+          <DataLoader
+            location={this.context.router.location}
+            key={JSON.stringify(dataLocation)}
+          >
+            {React.cloneElement(this.props.children, this.props)}
+          </DataLoader>
           <Footer />
           <Feedback submit={this.submitFeedback} />
         </div>

@@ -1,6 +1,13 @@
-import { ajaxCall, destructureFilters } from '@utils';
-import { pick as _pick } from 'underscore';
+import {
+  updateBibPage,
+  updateSearchResultsPage,
+  updateHoldRequestPage,
+  updateLoadingStatus,
+} from '@Actions';
 import appConfig from '@appConfig';
+import store from '../stores/Store';
+
+const { dispatch } = store;
 
 const pathInstructions = [
   {
@@ -23,16 +30,16 @@ const routePaths = {
   holdRequest: `${appConfig.baseUrl}/api/hold/request/:bibId-:itemId`,
 };
 
-const routesGenerator = location => ({
+const routesGenerator = () => ({
   bib: {
     apiRoute: (matchData, route) => `${route}?bibId=${matchData[1]}`,
     serverParams: (matchData, req) => { req.query.bibId = matchData[1]; },
-    actions: [],
+    action: updateBibPage,
     errorMessage: 'Error attempting to make an ajax request to fetch a bib record from ResultsList',
   },
   search: {
     apiRoute: (matchData, route) => `${route}?${matchData[1]}`,
-    actions: [],
+    action: updateSearchResultsPage,
     errorMessage: 'Error attempting to make an ajax request to search',
   },
   holdRequest: {
@@ -42,7 +49,12 @@ const routesGenerator = location => ({
       if (params[0]) req.params.bibId = params[0];
       if (params[1]) req.params.itemId = params[1];
     },
-    actions: [],
+    action: data => updateHoldRequestPage(data),
+    // [
+    //   data => Actions.updateBib(data.bib),
+    //   data => Actions.updateDeliveryLocations(data.deliveryLocations),
+    //   data => Actions.updateIsEddRequestable(data.isEddRequestable),
+    // ],
     errorMessage: 'Error attempting to make ajax request for hold request',
   },
 });
@@ -62,9 +74,23 @@ const matchingPathData = (location) => {
     || { matchData: null, pathType: null };
 };
 
-function loadDataForRoutes(location, req, routeMethods, realRes, next) {
-  console.log("loadDataForRoutes");
+const dispatchForPageLoading = (action, apiRoute, errorMessage) => {
+  dispatch(updateLoadingStatus(true));
+  dispatch(action(apiRoute))
+    .then(() => dispatch(updateLoadingStatus(false)))
+    .catch((error) => {
+      dispatch(updateLoadingStatus(false));
+      console.error(
+        errorMessage,
+        error,
+      );
+    });
+}
+
+function loadDataForRoutes(location, req) {
+  console.log("location", location);
   const routes = routesGenerator(location);
+  console.log('routes', routes);
   const {
     matchData,
     pathType,
@@ -73,36 +99,21 @@ function loadDataForRoutes(location, req, routeMethods, realRes, next) {
   if (routes[pathType]) {
     const {
       apiRoute,
-      actions,
+      action,
       errorMessage,
       serverParams,
     } = routes[pathType];
     const route = routePaths[pathType];
-    const successCb = (response) => {
-      actions.forEach(action => action(response.data));
-    };
-    const errorCb = (error) => {
-      console.error(
-        errorMessage,
-        error,
-      );
-    };
+
+    const apiUrl = apiRoute(matchData, route);
+
     if (req) {
       if (serverParams) serverParams(matchData, req);
-      return new Promise((resolve) => {
-        const res = {
-          redirect: url => realRes.redirect(url),
-          json: (data) => {
-            resolve({ data });
-          },
-        };
-        routeMethods[pathType](req, res, next);
-      })
-        .then(successCb)
-        .catch(errorCb);
+
+      return dispatchForPageLoading(action, apiUrl, errorMessage);
     }
-    return ajaxCall(apiRoute(matchData, route), successCb, errorCb);
   }
+  return new Promise(resolve => resolve());
 }
 
 export default {

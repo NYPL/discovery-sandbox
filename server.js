@@ -10,12 +10,14 @@ import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
 import { Provider } from 'react-redux';
 
-import appConfig from './src/app/data/appConfig';
-import webpackConfig from './webpack.config';
-import apiRoutes from './src/server/ApiRoutes/ApiRoutes';
-import routes from './src/app/routes/routes';
 import configureStore from './src/app/stores/configureStore';
 import initialState from './src/app/stores/InitialState';
+import appConfig from './src/app/data/appConfig';
+import dataLoaderUtil from '@dataLoaderUtil';
+import webpackConfig from './webpack.config';
+import apiRoutes from './src/server/ApiRoutes/ApiRoutes';
+import routeMethods from './src/server/ApiRoutes/RouteMethods';
+import routes from './src/app/routes/routes';
 
 import initializePatronTokenAuth from './src/server/routes/auth';
 import { getPatronData } from './src/server/routes/api';
@@ -29,6 +31,8 @@ const VIEWS_PATH = path.resolve(ROOT_PATH, 'src/views');
 const WEBPACK_DEV_PORT = appConfig.webpackDevServerPort || 3000;
 const isProduction = process.env.NODE_ENV === 'production';
 const app = express();
+
+let application;
 
 app.use(compress());
 
@@ -68,6 +72,29 @@ nyplApiClient();
 app.use('/*', initializePatronTokenAuth, getPatronData);
 app.use('/', apiRoutes);
 
+app.get('/*', (req, res, next) => {
+  const queryString = req._parsedUrl.query;
+  let query = {};
+  if (queryString) {
+    query = queryString
+      .split('&')
+      .map(pair => pair.split('='))
+      .reduce((acc, el) => ({ [el[0]]: el[1], ...acc }));
+  }
+
+  const location = {
+    pathname: req.originalUrl,
+    query,
+    search: '',
+  };
+
+  console.log("loadDataForRoutes");
+  const loadDataResp = dataLoaderUtil.loadDataForRoutes(location, req);
+  console.log("loadDataResp", loadDataResp);
+
+  // dataLoaderUtil.loadDataForRoutes(location, req).then(() => next());
+});
+
 app.get('/*', (req, res) => {
   const appRoutes = (req.url).indexOf(appConfig.baseUrl) !== -1 ? routes.client : routes.server;
 
@@ -81,16 +108,14 @@ app.get('/*', (req, res) => {
         res.data = initialState;
       }
       const store = configureStore(res.data);
-
-      const application = ReactDOMServer.renderToString(
+      application = ReactDOMServer.renderToString(
         <Provider store={store}>
           <RouterContext {...renderProps} />
         </Provider>,
       );
-
+      const appData = { ...res.data, appConfig };
       const title = DocumentTitle.rewind();
 
-      const appData = { ...res.data, appConfig };
       res
         .status(200)
         .render('index', {

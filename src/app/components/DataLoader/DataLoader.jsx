@@ -3,13 +3,16 @@ import PropTypes from 'prop-types';
 import dataLoaderUtil from '@dataLoaderUtil';
 
 class DataLoader extends React.Component {
+
   componentDidMount() {
-    dataLoaderUtil.loadDataForRoutes(this.context.router.location);
+    dataLoaderUtil.loadDataForRoutes(this.props.location);
   }
 
   render() {
     return (
-      <React.Fragment>{this.props.children}</React.Fragment>
+      <React.Fragment>
+        {this.props.children}
+      </React.Fragment>
     );
   }
 }

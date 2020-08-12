@@ -6,7 +6,6 @@ import {
   getReqParams,
   basicQuery,
   parseServerSelectedFilters,
-  createSelectedFiltersHash,
 } from '../../app/utils/utils';
 import nyplApiClient from '../routes/nyplApiClient';
 import logger from '../../../logger';
@@ -88,58 +87,6 @@ function searchAjax(req, res) {
   );
 }
 
-function searchServer(req, res, next) {
-  console.log('searchServer');
-  const { page, q, sort, order, fieldQuery, filters } = getReqParams(req.query);
-
-  search(
-    q,
-    page,
-    sort,
-    order,
-    fieldQuery,
-    filters,
-    (apiFilters, data, pageQuery, drbbResults) => {
-      const selectedFilters = createSelectedFiltersHash(apiFilters, filters);
-
-      res.data = {
-        searchResults: data,
-        drbbResults,
-        selectedFilters,
-        searchKeywords: q,
-        filters: apiFilters,
-        page: pageQuery,
-        sortBy: sort ? `${sort}_${order}` : 'relevance',
-        field: fieldQuery,
-        error: {},
-        loading: false,
-      };
-
-      next();
-    },
-    (error) => {
-      logger.error('Error retrieving search data in searchServer', error);
-      res.data = {
-        searchResults: {},
-        selectedFilters: {
-          materialType: [],
-          language: [],
-          dateAfter: '',
-          dateBefore: '',
-        },
-        searchKeywords: '',
-        filters: {},
-        page: '1',
-        sortBy: 'relevance',
-        field: 'all',
-        error,
-      };
-
-      next();
-    },
-  );
-}
-
 function searchServerPost(req, res) {
   const { fieldQuery, q, filters, sortQuery } = getReqParams(req.body);
   const { dateAfter, dateBefore } = req.body;
@@ -184,5 +131,4 @@ export default {
   searchServerPost,
   searchAjax,
   search,
-  searchServer,
 };
