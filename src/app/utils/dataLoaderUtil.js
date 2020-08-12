@@ -87,7 +87,7 @@ function loadDataForRoutes(location, req, routeMethods, realRes) {
     const route = routePaths[pathType];
     dispatch(updateLoadingStatus(true));
     const successCb = (response) => {
-      dispatch(action(response.data))
+      dispatch(action(response.data, location))
         .then(() => dispatch(updateLoadingStatus(false)));
     };
     const errorCb = (error) => {
@@ -109,6 +109,7 @@ function loadDataForRoutes(location, req, routeMethods, realRes) {
         routeMethods[pathType](req, res);
       })
         .then(({ data }) => {
+          console.log("dataLoader", data, "req.query", req.query);
           realRes.data = { ...data, loading: false }
           return realRes;
         })

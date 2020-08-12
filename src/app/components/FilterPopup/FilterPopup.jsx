@@ -325,12 +325,13 @@ class FilterPopup extends React.Component {
       totalResults,
       searchKeywords,
       features,
+      filters,
     } = this.props;
+    console.log('FilterPopup filters', filters, this.state.filters);
     const {
       showForm,
       js,
       selectedFilters,
-      filters,
       provisionalSelectedFilters,
     } = this.state;
     const filtersToShow = {
@@ -617,6 +618,7 @@ FilterPopup.contextTypes = {
 
 const mapStateToProps = state => ({
   features: state.appConfig.features,
+  filters: state.filters,
 });
 
 const mapDispatchToProps = dispatch => ({

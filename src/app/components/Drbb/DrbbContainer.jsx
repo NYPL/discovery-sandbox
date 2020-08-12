@@ -7,7 +7,6 @@ import appConfig from '../../data/appConfig';
 import DrbbResult from './DrbbResult';
 
 const DrbbContainer = ({ drbbResults }) => {
-  console.log("DrbbContainer", drbbResults);
   const {
     works,
     totalWorks,

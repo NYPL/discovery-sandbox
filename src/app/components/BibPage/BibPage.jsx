@@ -8,7 +8,6 @@ import { withRouter } from 'react-router';
 
 import Breadcrumbs from '../Breadcrumbs/Breadcrumbs';
 import ItemHoldings from '../Item/ItemHoldings';
-import LoadingLayer from '../LoadingLayer/LoadingLayer';
 import BibDetails from './BibDetails';
 import LibraryItem from '../../utils/item';
 import BackLink from './BackLink';
@@ -134,10 +133,6 @@ const BibPage = (props) => {
   return (
     <DocumentTitle title="Item Details | Shared Collection Catalog | NYPL">
       <main className="main-page">
-        <LoadingLayer
-          status={ Store.getState().isLoading}
-          title="Searching"
-        />
         <div className="nypl-page-header">
           <div className="nypl-full-width-wrapper">
             <div className="nypl-row">

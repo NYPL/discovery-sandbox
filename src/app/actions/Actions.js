@@ -1,4 +1,6 @@
 import axios from 'axios';
+import { pick as _pick } from 'underscore';
+import { destructureFilters } from '@utils';
 
 export const Actions = {
   SET_APP_CONFIG: 'SET_APP_CONFIG',
@@ -32,9 +34,22 @@ export const updateDrbbResults = drbbResults => ({
   payload: drbbResults,
 });
 
-export const updateFilters = filters => ({
+export const updateFilters = (filters) => {
+  const apiFilters = (
+    filters &&
+    filters.itemListElement &&
+    filters.itemListElement.length
+  ) ? filters.itemListElement : [];
+
+  return ({
+    type: Actions.UPDATE_FILTERS,
+    payload: apiFilters,
+  });
+};
+
+export const updateSelectedFilters = selectedFilters => ({
   type: Actions.UPDATE_FILTERS,
-  payload: filters,
+  payload: selectedFilters,
 });
 
 export const updateBib = bib => ({
@@ -61,11 +76,27 @@ export const updateIsEddRequestable = isEddRequestable => ({
     * updateSortBy
     * updateDrbbResults
 */
-export const updateSearchResultsPage = data => dispatch => new Promise(() => {
+export const updateSearchResultsPage = (data, location) => dispatch => new Promise(() => {
+  console.log('searchResults', data);
   const { searchResults, filters, drbbResults } = data;
+
+  const unescapedQuery = Object.assign(
+    {},
+    ...Object.keys(location.query)
+      .map(k => ({ [decodeURIComponent(k)]: decodeURIComponent(location.query[k]) })),
+  );
+  const urlFilters = _pick(unescapedQuery, (value, key) => {
+    if (key.indexOf('filter') !== -1) {
+      return value;
+    }
+    return null;
+  });
+  const selectedFilters = destructureFilters(urlFilters, filters);
+
   dispatch(updateSearchResults(searchResults));
   dispatch(updateDrbbResults(drbbResults));
   dispatch(updateFilters(filters));
+  dispatch(updateSelectedFilters(selectedFilters));
 });
 
 export const updateBibPage = ({ bib }) => dispatch => new Promise(() => dispatch(updateBib(bib)));

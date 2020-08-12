@@ -13,7 +13,7 @@ const initialState = {
   searchResults: {},
   bib: {},
   searchKeywords: '',
-  filters: {},
+  filters: [],
   page: '1',
   sortBy: 'relevance',
   loading: false,

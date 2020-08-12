@@ -45,8 +45,6 @@ const SearchResults = (props, context) => {
   const pageLabel = totalPages ? `page ${page} of ${totalPages}` : '';
   const headerLabel = `Search results ${searchKeywordsLabel} ${pageLabel}`;
 
-  const apiFilters = filters && filters.itemListElement && filters.itemListElement.length ?
-    filters.itemListElement : [];
   const createAPIQuery = basicQuery(props);
   const dateFilterErrors = [];
   const searchError = location.query && location.query.error ? location.query.error : '';
@@ -96,7 +94,6 @@ const SearchResults = (props, context) => {
         secondaryExtraBannerElement={
           <React.Fragment>
             <FilterPopup
-              filters={apiFilters}
               createAPIQuery={createAPIQuery}
               selectedFilters={selectedFilters}
               searchKeywords={searchKeywords}

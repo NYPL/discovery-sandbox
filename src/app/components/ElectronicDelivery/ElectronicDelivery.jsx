@@ -18,7 +18,6 @@ import Store from '../../stores/Store';
 import appConfig from '../../data/appConfig'
 import ElectronicDeliveryForm from './ElectronicDeliveryForm';
 import LibraryItem from '../../utils/item';
-import LoadingLayer from '../LoadingLayer/LoadingLayer';
 import Notification from '../Notification/Notification';
 import {
   trackDiscovery,
@@ -222,10 +221,6 @@ class ElectronicDelivery extends React.Component {
     return (
       <DocumentTitle title="Electronic Delivery Request | Shared Collection Catalog | NYPL">
         <div id="mainContent">
-          <LoadingLayer
-            status={Store.state.isLoading}
-            title="Requesting"
-          />
           <div className="nypl-request-page-header">
             <div className="row">
               <div className="content-wrapper">

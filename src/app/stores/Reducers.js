@@ -48,12 +48,22 @@ const bib = (state = null, action) => {
   }
 };
 
+const filters = (state = null, action) => {
+  switch (action.type) {
+    case Actions.UPDATE_FILTERS:
+      return action.payload;
+    default:
+      return state;
+  }
+};
+
 const appReducer = combineReducers({
   searchResults,
   loading,
   appConfig,
   drbbResults,
   bib,
+  filters,
 });
 
 export const rootReducer = (state, action) => appReducer(state, action);
