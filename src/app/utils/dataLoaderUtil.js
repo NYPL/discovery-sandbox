@@ -62,7 +62,8 @@ const matchingPathData = (location) => {
     || { matchData: null, pathType: null };
 };
 
-function loadDataForRoutes(location, req, routeMethods, realRes) {
+function loadDataForRoutes(location, req, routeMethods, realRes, next) {
+  console.log("loadDataForRoutes");
   const routes = routesGenerator(location);
   const {
     matchData,
@@ -95,15 +96,13 @@ function loadDataForRoutes(location, req, routeMethods, realRes) {
             resolve({ data });
           },
         };
-        routeMethods[pathType](req, res);
+        routeMethods[pathType](req, res, next);
       })
         .then(successCb)
         .catch(errorCb);
     }
     return ajaxCall(apiRoute(matchData, route), successCb, errorCb);
   }
-
-  return new Promise(resolve => resolve());
 }
 
 export default {

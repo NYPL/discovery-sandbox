@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import {
   findWhere as _findWhere,
   reject as _reject,
@@ -13,14 +14,13 @@ import {
 } from 'underscore';
 import { CheckSoloIcon } from '@nypl/dgx-svg-icons';
 
+import { updateSelectedFilters } from '../../actions/Actions';
 import {
   trackDiscovery,
 } from '../../utils/utils';
 
-import appConfig from '../../data/appConfig';
 import FieldsetDate from '../Filters/FieldsetDate';
 import FieldsetList from '../Filters/FieldsetList';
-import Actions from '../../actions/Actions';
 
 const FilterResetIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" width="57.69298" height="71.85359" viewBox="0 0 57.69298 71.85359">
@@ -256,9 +256,8 @@ class FilterPopup extends React.Component {
 
     this.closeForm(e);
 
-    Actions.updateSelectedFilters(filtersToApply);
-    this.context.router.push(`${appConfig.baseUrl}/search?${apiQuery}`);
-    return true;
+    this.props.updateSelectedFilters(filtersToApply)
+      .then(() => this.context.router.push(`${appConfig.baseUrl}/search?${apiQuery}`));
   }
 
   /**
@@ -325,6 +324,7 @@ class FilterPopup extends React.Component {
     const {
       totalResults,
       searchKeywords,
+      features,
     } = this.props;
     const {
       showForm,
@@ -341,7 +341,6 @@ class FilterPopup extends React.Component {
       dateAfter: selectedFilters.dateAfter,
       dateBefore: selectedFilters.dateBefore,
     };
-    const { features } = appConfig;
     const includeDrbb = features.includes('drb-integration');
 
     const applyButton = (position = '') => (
@@ -601,6 +600,7 @@ FilterPopup.propTypes = {
   raisedErrors: PropTypes.array,
   updateDropdownState: PropTypes.func,
   totalResults: PropTypes.number,
+  features: PropTypes.array,
 };
 
 FilterPopup.defaultProps = {
@@ -615,4 +615,12 @@ FilterPopup.contextTypes = {
   router: PropTypes.object,
 };
 
-export default FilterPopup;
+const mapStateToProps = state => ({
+  features: state.appConfig.features,
+});
+
+const mapDispatchToProps = dispatch => ({
+  updateSelectedFilters: selectedFilters => dispatch(updateSelectedFilters(selectedFilters)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(FilterPopup);

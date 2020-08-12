@@ -4,7 +4,9 @@ import PropTypes from 'prop-types';
 import DocumentTitle from 'react-document-title';
 import { Header, navConfig } from '@nypl/dgx-header-component';
 import Footer from '@nypl/dgx-react-footer';
+import { withRouter } from 'react-router';
 
+// import DataLoader from '../DataLoader/DataLoader';
 import Feedback from '../Feedback/Feedback';
 import LoadingLayer from '../LoadingLayer/LoadingLayer';
 
@@ -56,16 +58,6 @@ class Application extends React.Component {
   }
 
   render() {
-    const dataLocation = Object.assign(
-      {},
-      this.context.router.location,
-      {
-        hash: null,
-        action: null,
-        key: null,
-      },
-    );
-
     return (
       <DocumentTitle title="Shared Collection Catalog | NYPL">
         <div className="app-wrapper">
@@ -99,4 +91,4 @@ Application.childContextTypes = {
   media: PropTypes.string,
 };
 
-export default Application;
+export default withRouter(Application);

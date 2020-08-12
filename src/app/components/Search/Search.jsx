@@ -93,8 +93,7 @@ class Search extends React.Component {
       page: '1',
     });
 
-    this.props.fetchSearchResults(apiQuery)
-      .then(() => this.context.router.push(`${appConfig.baseUrl}/search?${apiQuery}`));
+    this.context.router.push(`${appConfig.baseUrl}/search?${apiQuery}`);
   }
 
   render() {

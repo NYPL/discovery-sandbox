@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router';
 
 import ResultsList from '../ResultsList/ResultsList';
 import Pagination from '../Pagination/Pagination';
@@ -10,7 +11,6 @@ import {
   trackDiscovery,
   displayContext,
 } from '../../utils/utils';
-import appConfig from '../../data/appConfig';
 
 // Renders the ResultsList containing the search results and the Pagination component
 const SearchResultsContainer = (props, context) => {
@@ -18,11 +18,11 @@ const SearchResultsContainer = (props, context) => {
     searchResults,
     searchKeywords,
     page,
+    features,
   } = props;
   const {
     media,
   } = context;
-  const { features } = appConfig;
   const includeDrbb = features.includes('drb-integration');
 
   const results = searchResults ? searchResults.itemListElement : [];
@@ -86,6 +86,7 @@ SearchResultsContainer.propTypes = {
   searchResults: PropTypes.object,
   searchKeywords: PropTypes.string,
   page: PropTypes.string,
+  features: PropTypes.array,
 };
 
 SearchResultsContainer.defaultProps = {
@@ -97,6 +98,9 @@ SearchResultsContainer.contextTypes = {
   media: PropTypes.string,
 };
 
-const mapStateToProps = state => ({ searchResults: state.searchResults });
+const mapStateToProps = state => ({
+  searchResults: state.searchResults,
+  features: state.appConfig.features,
+});
 
-export default connect(mapStateToProps)(SearchResultsContainer);
+export default withRouter(connect(mapStateToProps)(SearchResultsContainer));

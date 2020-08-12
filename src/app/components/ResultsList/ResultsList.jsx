@@ -5,6 +5,7 @@ import {
   isEmpty as _isEmpty,
   isArray as _isArray,
 } from 'underscore';
+import { connect } from 'react-redux';
 
 
 // eslint-disable-next-line import/first, import/no-unresolved, import/extensions
@@ -14,7 +15,7 @@ import {
   trackDiscovery,
 } from '../../utils/utils';
 import ItemTable from '../Item/ItemTable';
-import appConfig from '../../data/appConfig';
+import { baseUrl } from '../../data/appConfig';
 
 class ResultsList extends React.Component {
   constructor() {
@@ -66,7 +67,7 @@ class ResultsList extends React.Component {
     const totalItems = items.length;
     const hasRequestTable = items.length > 0;
 
-    const bibUrl = `${appConfig.baseUrl}/bib/${bibId}`;
+    const bibUrl = `${baseUrl}/bib/${bibId}`;
 
     return (
       <li key={i} className={`nypl-results-item ${hasRequestTable ? 'has-request' : ''}`}>
@@ -106,9 +107,9 @@ class ResultsList extends React.Component {
     const {
       results,
       subjectHeadingShow,
+      features,
     } = this.props;
     let resultsElm = null;
-    const { features } = appConfig;
     const includeDrbb = features.includes('drb-integration');
 
     if (!results || !_isArray(results) || !results.length) {
@@ -140,4 +141,4 @@ ResultsList.contextTypes = {
   router: PropTypes.object,
 };
 
-export default ResultsList;
+export default connect(({ appConfig }) => ({ features: appConfig.features }))(ResultsList);

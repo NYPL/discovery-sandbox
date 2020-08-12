@@ -1,12 +1,12 @@
 import {
   isArray as _isArray,
 } from 'underscore';
-
 import appConfig from '../../app/data/appConfig';
 import {
   getReqParams,
   basicQuery,
   parseServerSelectedFilters,
+  createSelectedFiltersHash,
 } from '../../app/utils/utils';
 import nyplApiClient from '../routes/nyplApiClient';
 import logger from '../../../logger';
@@ -68,8 +68,8 @@ function search(searchKeywords = '', page, sortBy, order, field, filters, cb, er
 }
 
 function searchAjax(req, res) {
+  console.log('searchAjax');
   const { page, q, sort, order, fieldQuery, filters } = getReqParams(req.query);
-  console.log("searchAjax", page, q, sort, order, fieldQuery, filters);
 
   search(
     q,
@@ -88,8 +88,59 @@ function searchAjax(req, res) {
   );
 }
 
+function searchServer(req, res, next) {
+  console.log('searchServer');
+  const { page, q, sort, order, fieldQuery, filters } = getReqParams(req.query);
+
+  search(
+    q,
+    page,
+    sort,
+    order,
+    fieldQuery,
+    filters,
+    (apiFilters, data, pageQuery, drbbResults) => {
+      const selectedFilters = createSelectedFiltersHash(apiFilters, filters);
+
+      res.data = {
+        searchResults: data,
+        drbbResults,
+        selectedFilters,
+        searchKeywords: q,
+        filters: apiFilters,
+        page: pageQuery,
+        sortBy: sort ? `${sort}_${order}` : 'relevance',
+        field: fieldQuery,
+        error: {},
+        loading: false,
+      };
+
+      next();
+    },
+    (error) => {
+      logger.error('Error retrieving search data in searchServer', error);
+      res.data = {
+        searchResults: {},
+        selectedFilters: {
+          materialType: [],
+          language: [],
+          dateAfter: '',
+          dateBefore: '',
+        },
+        searchKeywords: '',
+        filters: {},
+        page: '1',
+        sortBy: 'relevance',
+        field: 'all',
+        error,
+      };
+
+      next();
+    },
+  );
+}
+
 function searchServerPost(req, res) {
-  console.log("searchServerPost");
   const { fieldQuery, q, filters, sortQuery } = getReqParams(req.body);
   const { dateAfter, dateBefore } = req.body;
   // The filters from req.body may be an array of selected filters, or just an object
@@ -133,4 +184,5 @@ export default {
   searchServerPost,
   searchAjax,
   search,
+  searchServer,
 };

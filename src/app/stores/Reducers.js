@@ -30,18 +30,22 @@ const searchResults = (state = null, action) => {
   }
 };
 
-const sort = (state = null, action) => (action.sort ? action.sort : state);
+const drbbResults = (state = null, action) => {
+  switch (action.type) {
+    case Actions.UPDATE_SEARCH_RESULTS:
+      return action.searchResults;
+    default:
+      return state;
+  }
+};
 
 const appReducer = combineReducers({
   searchResults,
-  sort,
   loading,
   appConfig,
+  drbbResults,
 });
 
-export const rootReducer = (state, action) => {
-  console.log("STATE", state, "ACTION", action);
-  return appReducer(state, action);
-};
+export const rootReducer = (state, action) => appReducer(state, action);
 
 export default rootReducer;

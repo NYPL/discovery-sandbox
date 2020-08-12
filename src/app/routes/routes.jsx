@@ -21,6 +21,11 @@ import ElectronicDelivery from '../components/ElectronicDelivery/ElectronicDeliv
 import NotFound404 from '../components/NotFound404/NotFound404';
 import appConfig from '../data/appConfig';
 
+import store from '../stores/Store';
+import { fetchSearchResults } from '../actions/Actions';
+
+const { dispatch } = store;
+
 const { baseUrl } = appConfig;
 const routes = {
   // Routes used in the Express server:

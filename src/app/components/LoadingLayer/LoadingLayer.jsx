@@ -12,7 +12,6 @@ const { dispatch } = store;
 // intercepts all http request to update the status of loading in the Store
 axios.interceptors.request.use(
   (config) => {
-    console.log("config", config);
     dispatch(updateLoadingStatus(true));
     return config;
   },
@@ -24,7 +23,6 @@ axios.interceptors.request.use(
 
 axios.interceptors.response.use(
   (response) => {
-    console.log("response", response);
     dispatch(updateLoadingStatus(false));
     return response;
   },
@@ -37,7 +35,6 @@ axios.interceptors.response.use(
 );
 
 const LoadingLayer = ({ loading, title, focus }) => {
-  console.log("LOADING", loading);
   if (loading === false) {
     return null;
   }

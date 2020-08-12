@@ -1,17 +1,18 @@
 import React from 'react';
 import { Link } from 'react-router';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
 import appConfig from '../../data/appConfig';
 import DrbbResult from './DrbbResult';
-import Store from '../../stores/Store';
 
-const DrbbContainer = () => {
+const DrbbContainer = ({ drbbResults }) => {
+  console.log("DrbbContainer", drbbResults);
   const {
     works,
     totalWorks,
     researchNowQueryString,
-  } = Store.getState().drbbResults;
-
+  } = drbbResults;
   const hasWorks = works && works.length;
 
   const content = () => {
@@ -74,4 +75,18 @@ const DrbbContainer = () => {
   );
 };
 
-export default DrbbContainer;
+DrbbContainer.propTypes = {
+  drbbResults: PropTypes.object,
+};
+
+DrbbContainer.defaultProps = {
+  drbbResults: {
+    works: [],
+    totalWorks: 0,
+    researchNowQueryString: '',
+  },
+};
+
+const mapStateToProps = ({ drbbResults }) => ({ drbbResults });
+
+export default connect(mapStateToProps)(DrbbContainer);

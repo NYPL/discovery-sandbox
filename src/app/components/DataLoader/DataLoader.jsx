@@ -3,9 +3,8 @@ import PropTypes from 'prop-types';
 import dataLoaderUtil from '@dataLoaderUtil';
 
 class DataLoader extends React.Component {
-
   componentDidMount() {
-    dataLoaderUtil.loadDataForRoutes(this.props.location);
+    dataLoaderUtil.loadDataForRoutes(this.context.router.location);
   }
 
   render() {

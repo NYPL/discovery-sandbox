@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 const Notification = ({ appConfig, notificationType }) => {
   const notification = appConfig[notificationType];
 
-  console.log(notification, notificationType);
   if (!notification) return null;
 
   return (

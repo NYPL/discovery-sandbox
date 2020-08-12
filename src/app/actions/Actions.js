@@ -24,40 +24,41 @@ export const setAppConfig = data => ({
   appConfig: data,
 });
 
-export const updateSearchResults = searchResults => {
-  console.log("SearchResults", searchResults);
-  return ({
-    type: Actions.UPDATE_SEARCH_RESULTS,
-    searchResults,
-  })
-};
+export const updateSearchResults = searchResults => ({
+  type: Actions.UPDATE_SEARCH_RESULTS,
+  searchResults,
+});
+
+export const updateDrbbResults = drbbResults => ({
+  type: Actions.UPDATE_DRBB_RESULTS,
+  drbbResults,
+});
+
+export const updateFilters = filters => ({
+  type: Actions.UPDATE_DRBB_RESULTS,
+  filters,
+});
 
 const searchUrl = query => `${appConfig.baseUrl}/api?${query}`;
 
-export const fetchSearchResults = (query) => {
-  console.log('QUERY', query);
-  // update selectedFilters
-  return dispatch => axios
+export const fetchSearchResults = query => (
+  dispatch => axios
     .get(searchUrl(query))
     .then((resp) => {
       if (resp.data) {
         const { searchResults, filters, drbbResults } = resp.data;
-        if (searchResults) dispatch(updateSearchResults(resp.data.searchResults));
-        // if (filters) dispatch(updateFilters(filters));
-        // if (drbbResults)
+        dispatch(updateSearchResults(searchResults));
+        dispatch(updateDrbbResults(drbbResults));
+        dispatch(updateFilters(filters));
       }
     })
     .catch((error) => {
-      console.error('An error occurred during searchPost', error.message);
-      throw new Error('An error occurred during searchPost', error.message);
-    });
-};
+      console.error('An error occurred during fetchSearchResults', error.message);
+      throw new Error('An error occurred during fetchSearchResults', error.message);
+    })
+);
 
 export const updateLoadingStatus = loading => ({
   type: Actions.UPDATE_LOADING_STATUS,
   loading,
 });
-
-export default {
-  setAppConfig,
-};

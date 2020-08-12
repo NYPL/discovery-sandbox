@@ -15,6 +15,7 @@ const routePaths = dataLoaderUtil.routePaths;
 
 router
   .route(`${appConfig.baseUrl}/search`)
+  .get(Search.searchServer)
   .post(Search.searchServerPost);
 
 router

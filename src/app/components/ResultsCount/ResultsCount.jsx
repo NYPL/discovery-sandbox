@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
 import { displayContext } from '../../utils/utils';
-import appConfig from '../../data/appConfig';
 
 class ResultsCount extends React.Component {
   /*
@@ -50,8 +50,10 @@ class ResultsCount extends React.Component {
 
   render() {
     const results = this.displayCount();
-    const { count } = this.props;
-    const { features } = appConfig;
+    const {
+      count,
+      features,
+    } = this.props;
     const includeDrbb = features.includes('drb-integration');
     if (includeDrbb && count === 0) return null;
 
@@ -78,6 +80,7 @@ ResultsCount.propTypes = {
   selectedFilters: PropTypes.object,
   searchKeywords: PropTypes.string,
   field: PropTypes.string,
+  features: PropTypes.array,
 };
 
 ResultsCount.defaultProps = {
@@ -92,4 +95,4 @@ ResultsCount.defaultProps = {
   },
 };
 
-export default ResultsCount;
+export default connect(({ appConfig }) => ({ features: appConfig.features }))(ResultsCount);

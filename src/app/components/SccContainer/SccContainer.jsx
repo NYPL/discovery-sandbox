@@ -1,22 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
 import Breadcrumbs from '../Breadcrumbs/Breadcrumbs';
-import LoadingLayer from '../LoadingLayer/LoadingLayer';
 import Notification from '../Notification/Notification';
 
-import Store from '../../stores/Store';
-import appConfig from '../../data/appConfig';
-
 const SccContainer = (props) => {
-  const { features } = appConfig;
+  const { features } = props;
   const includeDrbb = features.includes('drb-integration');
   return (
     <main className="main-page">
-      <LoadingLayer
-        status={Store.getState().isLoading}
-        title={props.loadingLayerText}
-      />
       <div className="nypl-page-header">
         <div className={`nypl-full-width-wrapper filter-page${includeDrbb ? ' drbb-integration' : ''}`}>
           <div className="nypl-row">
@@ -47,19 +40,18 @@ SccContainer.propTypes = {
   extraBannerElement: PropTypes.element,
   secondaryExtraBannerElement: PropTypes.element,
   extraRow: PropTypes.element,
-  loadingLayerText: PropTypes.string,
   breadcrumbsType: PropTypes.string,
   bannerOptions: PropTypes.object,
+  features: PropTypes.array,
 };
 
 SccContainer.defaultProps = {
   mainContent: null,
   extraBannerElement: null,
-  loadingLayerText: 'Loading',
 };
 
 SccContainer.contextTypes = {
   router: PropTypes.object,
 };
 
-export default SccContainer;
+export default connect(({ appConfig }) => ({ features: appConfig.features }))(SccContainer);
