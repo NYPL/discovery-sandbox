@@ -39,11 +39,21 @@ const drbbResults = (state = null, action) => {
   }
 };
 
+const bib = (state = null, action) => {
+  switch (action.type) {
+    case Actions.UPDATE_BIB:
+      return action.payload;
+    default:
+      return state;
+  }
+};
+
 const appReducer = combineReducers({
   searchResults,
   loading,
   appConfig,
   drbbResults,
+  bib,
 });
 
 export const rootReducer = (state, action) => appReducer(state, action);

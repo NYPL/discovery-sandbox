@@ -27,7 +27,7 @@ const nyplApiClientCall = (query) => {
     );
 };
 
-function search(searchKeywords = '', page, sortBy, order, field, filters, cb, errorcb) {
+function fetchResults(searchKeywords = '', page, sortBy, order, field, filters, cb, errorcb) {
   const encodedResultsQueryString = createAPIQuery({
     searchKeywords,
     sortBy: sortBy ? `${sortBy}_${order}` : '',
@@ -56,7 +56,6 @@ function search(searchKeywords = '', page, sortBy, order, field, filters, cb, er
       })
       .catch(console.error))
     .then((response) => {
-      console.log('RESPONSE', response);
       const [results, aggregations, drbbResults] = response;
       cb(aggregations, results, page, drbbResults);
     })
@@ -66,11 +65,11 @@ function search(searchKeywords = '', page, sortBy, order, field, filters, cb, er
     });
 }
 
-function searchAjax(req, res) {
+function search(req, res) {
   console.log('searchAjax');
   const { page, q, sort, order, fieldQuery, filters } = getReqParams(req.query);
 
-  search(
+  fetchResults(
     q,
     page,
     sort,
@@ -129,6 +128,5 @@ function searchServerPost(req, res) {
 
 export default {
   searchServerPost,
-  searchAjax,
   search,
 };

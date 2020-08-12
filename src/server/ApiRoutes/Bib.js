@@ -27,23 +27,23 @@ function fetchBib(bibId, cb, errorcb) {
 
       return data;
     })
-    .then((data) => {
-      if (data.subjectLiteral && data.subjectLiteral.length) {
+    .then((bib) => {
+      if (bib.subjectLiteral && bib.subjectLiteral.length) {
         return shepApiCall(bibId)
           .then((shepRes) => {
-            data.subjectHeadingData = shepRes.data.subject_headings;
-            return data;
+            bib.subjectHeadingData = shepRes.bib.subject_headings;
+            return { bib };
           })
           .catch((error) => {
             logger.error(`Error in shepApiCall API error, bib_id: ${bibId}`, error);
-            return data;
+            return { bib };
           });
       }
-      return data;
+      return { bib };
     })
-    .then(response => cb(response))
+    .then(bib => cb(bib))
     .catch((error) => {
-      logger.error(`Error attemping to fetch a Bib server side in fetchBib, id: ${bibId}`, error);
+      logger.error(`Error attemping to fetch a Bib in fetchBib, id: ${bibId}`, error);
 
       errorcb(error);
     }); /* end axios call */

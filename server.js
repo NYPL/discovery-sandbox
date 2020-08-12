@@ -101,15 +101,15 @@ app.get('/*', (req, res) => {
       res.redirect(302, redirectLocation.pathname + redirectLocation.search);
     } else if (renderProps) {
       if (!res.data) {
-        res.data = initialState;
+        res.data = {};
       }
-      const store = configureStore(res.data);
+      const appData = Object.assign(initialState, res.data);
+      const store = configureStore(appData);
       application = ReactDOMServer.renderToString(
         <Provider store={store}>
           <RouterContext {...renderProps} />
         </Provider>,
       );
-      const appData = { ...res.data, appConfig };
       const title = DocumentTitle.rewind();
 
       res

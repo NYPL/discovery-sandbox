@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import DocumentTitle from 'react-document-title';
 import { every as _every } from 'underscore';
 import { LeftWedgeIcon } from '@nypl/dgx-svg-icons';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router';
 
 import Breadcrumbs from '../Breadcrumbs/Breadcrumbs';
 import ItemHoldings from '../Item/ItemHoldings';
@@ -199,4 +201,4 @@ BibPage.propTypes = {
   bib: PropTypes.object,
 };
 
-export default BibPage;
+export default withRouter(connect(({ bib }) => ({ bib }))(BibPage));

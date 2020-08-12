@@ -70,7 +70,8 @@ const createResearchNowQuery = (params) => {
   } = filters;
 
   if (subjectLiteral) {
-    subjectLiteral.forEach(subject => query.queries.push(queryObj('subject', subject)));
+    if (Array.isArray(subjectLiteral)) subjectLiteral.forEach(subject => query.queries.push(queryObj('subject', subject)));
+    else if (typeof subjectLiteral === 'string') query.queries.push(queryObj('subject', subjectLiteral));
   }
   if (contributorLiteral) query.queries.push(queryObj('author', contributorLiteral));
 

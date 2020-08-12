@@ -51,11 +51,6 @@ const routesGenerator = () => ({
       if (params[1]) req.params.itemId = params[1];
     },
     action: data => updateHoldRequestPage(data),
-    // [
-    //   data => Actions.updateBib(data.bib),
-    //   data => Actions.updateDeliveryLocations(data.deliveryLocations),
-    //   data => Actions.updateIsEddRequestable(data.isEddRequestable),
-    // ],
     errorMessage: 'Error attempting to make ajax request for hold request',
   },
 });
@@ -90,11 +85,10 @@ function loadDataForRoutes(location, req, routeMethods, realRes) {
       serverParams,
     } = routes[pathType];
     const route = routePaths[pathType];
-    console.log('apiRoute', apiRoute(matchData, route));
     dispatch(updateLoadingStatus(true));
     const successCb = (response) => {
       dispatch(action(response.data))
-        .then(() => dispatch(updateLoadingStatus(false)))
+        .then(() => dispatch(updateLoadingStatus(false)));
     };
     const errorCb = (error) => {
       dispatch(updateLoadingStatus(false));
@@ -115,13 +109,14 @@ function loadDataForRoutes(location, req, routeMethods, realRes) {
         routeMethods[pathType](req, res);
       })
         .then(({ data }) => {
-          realRes.data = { ...data }
+          realRes.data = { ...data, loading: false }
           return realRes;
         })
         .catch(errorCb);
     }
     return ajaxCall(apiRoute(matchData, route), successCb, errorCb);
   }
+  return new Promise(resolve => resolve());
 }
 
 export default {

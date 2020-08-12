@@ -6,7 +6,6 @@ import { isEmpty as _isEmpty } from 'underscore';
 import {
   trackDiscovery,
 } from '../../utils/utils';
-import Actions from '@Actions';
 
 import appConfig from '../../data/appConfig';
 
@@ -32,8 +31,6 @@ class ItemTableRow extends React.Component {
     if (page === 'SearchResults') gaLabel = 'Search Results';
     if (page === 'BibPage') gaLabel = 'Item Details';
     if (page === 'SubjectHeadingShowPage') gaLabel = 'Subject Heading Details';
-
-    Actions.updateLoadingStatus(true);
 
     trackDiscovery('Item Request', gaLabel);
     this.context.router.push(`${appConfig.baseUrl}/hold/request/${bibId}-${item.id}`);

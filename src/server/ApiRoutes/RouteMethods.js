@@ -5,6 +5,6 @@ import Hold from './Hold';
 
 export default {
   bib: Bib.bibSearch,
-  search: Search.searchAjax,
+  search: Search.search,
   holdRequest: Hold.newHoldRequest,
 };

@@ -68,20 +68,7 @@ export const updateSearchResultsPage = data => dispatch => new Promise(() => {
   dispatch(updateFilters(filters));
 });
 
-export const updateBibPage = apiUrl => (
-  dispatch => axios
-    .get(apiUrl)
-    .then((resp) => {
-      if (resp.data) {
-        const { bib } = resp.data;
-        dispatch(updateBib(bib));
-      }
-    })
-    .catch((error) => {
-      console.error('An error occurred during fetchSearchResults', error.message);
-      throw new Error('An error occurred during fetchSearchResults', error.message);
-    })
-);
+export const updateBibPage = ({ bib }) => dispatch => new Promise(() => dispatch(updateBib(bib)));
 
 export const updateHoldRequestPage = apiUrl => (
   dispatch => axios

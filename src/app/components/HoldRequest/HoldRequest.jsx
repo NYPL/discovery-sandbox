@@ -6,7 +6,6 @@ import axios from 'axios';
 import {
   isArray as _isArray,
   isEmpty as _isEmpty,
-  extend as _extend,
 } from 'underscore';
 import DocumentTitle from 'react-document-title';
 
@@ -21,14 +20,9 @@ import {
   basicQuery,
 } from '../../utils/utils';
 
-import Actions from '@Actions';
-import Store from '@Store';
-
 class HoldRequest extends React.Component {
   constructor(props) {
     super(props);
-    // change all the components :(
-    this.onChange = this.onChange.bind(this);
     this.onRadioSelect = this.onRadioSelect.bind(this);
     this.submitRequest = this.submitRequest.bind(this);
     this.checkEligibility = this.checkEligibility.bind(this);
@@ -43,7 +37,6 @@ class HoldRequest extends React.Component {
     if (title) {
       title.focus();
     }
-    this.timeoutId = setTimeout(() => { Actions.updateLoadingStatus(false); }, 5000);
   }
 
   onRadioSelect(e, i) {
@@ -90,11 +83,9 @@ class HoldRequest extends React.Component {
     )
       .then((response) => {
         this.context.router.push(response.data);
-        Actions.updateLoadingStatus(false);
       })
       .catch((error) => {
         console.error('Error attempting to make an ajax Hold Request in HoldRequest', error);
-        Actions.updateLoadingStatus(false);
         this.context.router.push(
           `${path}?errorMessage=${error}${searchKeywordsQueryPhysical}${fromUrlQuery}`,
         );

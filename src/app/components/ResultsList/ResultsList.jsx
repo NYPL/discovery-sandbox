@@ -15,7 +15,7 @@ import {
   trackDiscovery,
 } from '../../utils/utils';
 import ItemTable from '../Item/ItemTable';
-import { baseUrl } from '../../data/appConfig';
+import appConfig from '../../data/appConfig';
 
 class ResultsList extends React.Component {
   constructor() {
@@ -66,7 +66,7 @@ class ResultsList extends React.Component {
     const items = LibraryItem.getItems(result);
     const totalItems = items.length;
     const hasRequestTable = items.length > 0;
-
+    const { baseUrl } = appConfig;
     const bibUrl = `${baseUrl}/bib/${bibId}`;
 
     return (
@@ -109,14 +109,13 @@ class ResultsList extends React.Component {
       subjectHeadingShow,
       features,
     } = this.props;
-    let resultsElm = null;
     const includeDrbb = features.includes('drb-integration');
 
     if (!results || !_isArray(results) || !results.length) {
       return null;
     }
 
-    resultsElm = results.map((bib, i) => this.generateBibLi(bib, i));
+    const resultsElm = results.map((bib, i) => this.generateBibLi(bib, i));
 
     return (
       <ul
@@ -141,4 +140,4 @@ ResultsList.contextTypes = {
   router: PropTypes.object,
 };
 
-export default connect(({ appConfig }) => ({ features: appConfig.features }))(ResultsList);
+export default connect(state => ({ features: state.appConfig.features }))(ResultsList);
