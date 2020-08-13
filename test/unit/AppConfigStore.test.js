@@ -11,7 +11,7 @@ describe('AppConfigStore', () => {
   before(() => {
     appConfigMock = mock(appConfig);
   });
-  before(() => {
+  after(() => {
     appConfigMock.restore();
   });
 
