@@ -1,11 +1,13 @@
 import {
   isArray as _isArray,
+  pick as _pick,
 } from 'underscore';
 import appConfig from '../../app/data/appConfig';
 import {
   getReqParams,
   basicQuery,
   parseServerSelectedFilters,
+  destructureFilters,
 } from '../../app/utils/utils';
 import nyplApiClient from '../routes/nyplApiClient';
 import logger from '../../../logger';
@@ -66,8 +68,20 @@ function fetchResults(searchKeywords = '', page, sortBy, order, field, filters, 
 }
 
 function search(req, res) {
-  console.log('searchAjax');
   const { page, q, sort, order, fieldQuery, filters } = getReqParams(req.query);
+
+  const unescapedQuery = Object.assign(
+    {},
+    ...Object.keys(req.query)
+      .map(k => ({ [decodeURIComponent(k)]: decodeURIComponent(req.query[k]) })),
+  );
+  const urlFilters = _pick(unescapedQuery, (value, key) => {
+    if (key.indexOf('filter') !== -1) {
+      return value;
+    }
+    return null;
+  });
+  const selectedFilters = destructureFilters(urlFilters, filters);
 
   fetchResults(
     q,
@@ -81,6 +95,7 @@ function search(req, res) {
       searchResults,
       pageQuery,
       drbbResults,
+      selectedFilters,
     }),
     error => res.json(error),
   );

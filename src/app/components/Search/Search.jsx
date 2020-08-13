@@ -7,7 +7,6 @@ import {
   trackDiscovery,
 } from '../../utils/utils';
 import appConfig from '../../data/appConfig';
-import { fetchSearchResults } from '../../actions/Actions';
 
 /**
  * The main container for the top Search section.
@@ -157,7 +156,6 @@ Search.propTypes = {
   searchKeywords: PropTypes.string,
   createAPIQuery: PropTypes.func,
   selectedFilters: PropTypes.object,
-  fetchSearchResults: PropTypes.func,
 };
 
 Search.defaultProps = {
@@ -170,8 +168,4 @@ Search.contextTypes = {
   router: PropTypes.object,
 };
 
-const mapDispatchToProps = dispatch => ({
-  fetchSearchResults: query => dispatch(fetchSearchResults(query)),
-});
-
-export default connect(null, mapDispatchToProps)(Search);
+export default connect(null)(Search);

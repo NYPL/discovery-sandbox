@@ -109,8 +109,7 @@ function loadDataForRoutes(location, req, routeMethods, realRes) {
         routeMethods[pathType](req, res);
       })
         .then(({ data }) => {
-          console.log("dataLoader", data, "req.query", req.query);
-          realRes.data = { ...data, loading: false }
+          realRes.data = { ...data };
           return realRes;
         })
         .catch(errorCb);

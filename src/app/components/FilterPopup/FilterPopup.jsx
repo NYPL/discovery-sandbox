@@ -18,6 +18,7 @@ import { updateSelectedFilters } from '../../actions/Actions';
 import {
   trackDiscovery,
 } from '../../utils/utils';
+import appConfig from '@appConfig';
 
 import FieldsetDate from '../Filters/FieldsetDate';
 import FieldsetList from '../Filters/FieldsetList';
@@ -327,7 +328,6 @@ class FilterPopup extends React.Component {
       features,
       filters,
     } = this.props;
-    console.log('FilterPopup filters', filters, this.state.filters);
     const {
       showForm,
       js,
@@ -430,20 +430,21 @@ class FilterPopup extends React.Component {
       >
         Refine Search
       </button>) :
-      (<a
-        className="popup-btn-open nypl-primary-button"
-        href="#popup-no-js"
-        aria-haspopup="true"
-        aria-expanded={false}
-        aria-controls="filter-popup-menu"
-        role="button"
-      >
-        Refine Search
-       </a>);
+      (
+        <a
+          className="popup-btn-open nypl-primary-button"
+          href="#popup-no-js"
+          aria-haspopup="true"
+          aria-expanded={false}
+          aria-controls="filter-popup-menu"
+          role="button"
+        >
+          Refine Search
+        </a>);
 
     const materialTypeFilters = _findWhere(filters, { id: 'materialType' });
     const languageFilters = _findWhere(filters, { id: 'language' });
-    const subjectLiteralFilters = _findWhere(filters, {id: 'subjectLiteral'});
+    const subjectLiteralFilters = _findWhere(filters, { id: 'subjectLiteral' });
     const dateAfterFilterValue =
       filtersToShow.dateAfter ? Number(filtersToShow.dateAfter) : null;
     const dateBeforeFilterValue =
@@ -616,10 +617,27 @@ FilterPopup.contextTypes = {
   router: PropTypes.object,
 };
 
-const mapStateToProps = state => ({
-  features: state.appConfig.features,
-  filters: state.filters,
-});
+const mapStateToProps = (state) => {
+  const {
+    filters,
+    appConfig: {
+      features,
+    },
+    searchResults,
+  } = state;
+
+  const apiFilters = (
+    filters &&
+    filters.itemListElement &&
+    filters.itemListElement.length
+  ) ? filters.itemListElement : [];
+
+  return ({
+    features,
+    filters: apiFilters,
+    totalResults: searchResults.totalResults,
+  });
+};
 
 const mapDispatchToProps = dispatch => ({
   updateSelectedFilters: selectedFilters => dispatch(updateSelectedFilters(selectedFilters)),

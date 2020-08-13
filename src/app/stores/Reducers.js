@@ -57,6 +57,15 @@ const filters = (state = null, action) => {
   }
 };
 
+const selectedFilters = (state = null, action) => {
+  switch (action.type) {
+    case Actions.UPDATE_SELECTED_FILTERS:
+      return action.payload;
+    default:
+      return state;
+  }
+};
+
 const appReducer = combineReducers({
   searchResults,
   loading,
@@ -64,6 +73,7 @@ const appReducer = combineReducers({
   drbbResults,
   bib,
   filters,
+  selectedFilters,
 });
 
 export const rootReducer = (state, action) => appReducer(state, action);
