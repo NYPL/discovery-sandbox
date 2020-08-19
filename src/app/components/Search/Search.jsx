@@ -168,4 +168,6 @@ Search.contextTypes = {
   router: PropTypes.object,
 };
 
-export default connect(null)(Search);
+const mapStateToProps = ({ searchKeywords }) => ({ searchKeywords });
+
+export default connect(mapStateToProps)(Search);

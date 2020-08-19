@@ -96,6 +96,7 @@ function search(req, res) {
       pageQuery,
       drbbResults,
       selectedFilters,
+      searchKeywords: q,
     }),
     error => res.json(error),
   );

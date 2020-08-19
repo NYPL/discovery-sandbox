@@ -14,7 +14,6 @@ import {
 } from 'underscore';
 import { CheckSoloIcon } from '@nypl/dgx-svg-icons';
 
-import { updateSelectedFilters } from '../../actions/Actions';
 import {
   trackDiscovery,
 } from '../../utils/utils';
@@ -257,8 +256,7 @@ class FilterPopup extends React.Component {
 
     this.closeForm(e);
 
-    this.props.updateSelectedFilters(filtersToApply)
-      .then(() => this.context.router.push(`${appConfig.baseUrl}/search?${apiQuery}`));
+    return this.context.router.push(`${appConfig.baseUrl}/search?${apiQuery}`);
   }
 
   /**
@@ -326,12 +324,12 @@ class FilterPopup extends React.Component {
       totalResults,
       searchKeywords,
       features,
-      filters,
     } = this.props;
     const {
       showForm,
       js,
       selectedFilters,
+      filters,
       provisionalSelectedFilters,
     } = this.state;
     const filtersToShow = {
@@ -603,6 +601,7 @@ FilterPopup.propTypes = {
   updateDropdownState: PropTypes.func,
   totalResults: PropTypes.number,
   features: PropTypes.array,
+  updateSelectedFilters: PropTypes.func,
 };
 
 FilterPopup.defaultProps = {
@@ -624,6 +623,7 @@ const mapStateToProps = (state) => {
       features,
     },
     searchResults,
+    searchKeywords,
   } = state;
 
   const apiFilters = (
@@ -636,11 +636,8 @@ const mapStateToProps = (state) => {
     features,
     filters: apiFilters,
     totalResults: searchResults.totalResults,
+    searchKeywords,
   });
 };
 
-const mapDispatchToProps = dispatch => ({
-  updateSelectedFilters: selectedFilters => dispatch(updateSelectedFilters(selectedFilters)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(FilterPopup);
+export default connect(mapStateToProps)(FilterPopup);

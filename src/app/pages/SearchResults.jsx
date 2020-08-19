@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import DocumentTitle from 'react-document-title';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router';
 
 /* eslint-disable import/no-unresolved, import/extensions */
 import SearchResultsSorter from '@SearchResultsSorter';
@@ -15,24 +17,22 @@ import ResultsCount from '../components/ResultsCount/ResultsCount';
 import {
   basicQuery,
 } from '../utils/utils';
-import appConfig from '../data/appConfig';
 
 const SearchResults = (props, context) => {
   const {
     searchResults,
     searchKeywords,
     selectedFilters,
-    filters,
     page,
     field,
     sortBy,
+    features,
   } = props;
 
   const {
     router,
   } = context;
 
-  const { features } = appConfig;
   const includeDrbb = features.includes('drb-integration');
 
   const { location } = router;
@@ -45,7 +45,13 @@ const SearchResults = (props, context) => {
   const pageLabel = totalPages ? `page ${page} of ${totalPages}` : '';
   const headerLabel = `Search results ${searchKeywordsLabel} ${pageLabel}`;
 
-  const createAPIQuery = basicQuery(props);
+  const createAPIQuery = basicQuery({
+    searchKeywords,
+    page,
+    sortBy,
+    selectedFilters,
+    field,
+  });
   const dateFilterErrors = [];
   const searchError = location.query && location.query.error ? location.query.error : '';
   if (searchError === 'dateFilterError') {
@@ -155,19 +161,23 @@ SearchResults.propTypes = {
   searchKeywords: PropTypes.string,
   selectedFilters: PropTypes.object,
   page: PropTypes.string,
-  filters: PropTypes.object,
   field: PropTypes.string,
   sortBy: PropTypes.string,
-  drbbResults: PropTypes.object,
+  features: PropTypes.array,
 };
 
 SearchResults.defaultProps = {
   page: '1',
-  drbbResults: { totalWorks: 0 },
 };
 
 SearchResults.contextTypes = {
   router: PropTypes.obj,
 };
 
-export default SearchResults;
+const mapStateToProps = state => ({
+  searchResults: state.searchResults,
+  features: state.appConfig.features,
+  searchKeywords: state.searchKeywords,
+});
+
+export default withRouter(connect(mapStateToProps)(SearchResults));

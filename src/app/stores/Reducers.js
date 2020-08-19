@@ -66,6 +66,15 @@ const selectedFilters = (state = null, action) => {
   }
 };
 
+const searchKeywords = (state = null, action) => {
+  switch (action.type) {
+    case Actions.UPDATE_SEARCH_KEYWORDS:
+      return action.payload;
+    default:
+      return state;
+  }
+};
+
 const appReducer = combineReducers({
   searchResults,
   loading,
@@ -74,6 +83,7 @@ const appReducer = combineReducers({
   bib,
   filters,
   selectedFilters,
+  searchKeywords,
 });
 
 export const rootReducer = (state, action) => appReducer(state, action);

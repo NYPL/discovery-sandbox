@@ -32,6 +32,11 @@ export const updateDrbbResults = drbbResults => ({
   payload: drbbResults,
 });
 
+export const updateSearchKeywords = searchKeywords => ({
+  type: Actions.UPDATE_SEARCH_KEYWORDS,
+  payload: searchKeywords,
+});
+
 export const updateFilters = filters => ({
   type: Actions.UPDATE_FILTERS,
   payload: filters,
@@ -57,7 +62,7 @@ export const updateIsEddRequestable = isEddRequestable => ({
   payload: isEddRequestable,
 });
 
-/* `updateSearchResultsPage` fetches data and performs:
+/* `updateSearchResultsPage` performs:
     * updateSearchResults
     * updatePage
     * updateSearchKeywords
@@ -67,12 +72,13 @@ export const updateIsEddRequestable = isEddRequestable => ({
     * updateDrbbResults
 */
 export const updateSearchResultsPage = data => dispatch => new Promise(() => {
-  const { searchResults, filters, drbbResults, selectedFilters } = data;
+  const { searchResults, filters, drbbResults, selectedFilters, searchKeywords } = data;
 
   dispatch(updateSearchResults(searchResults));
   dispatch(updateDrbbResults(drbbResults));
   dispatch(updateFilters(filters));
   dispatch(updateSelectedFilters(selectedFilters));
+  dispatch(updateSearchKeywords(searchKeywords));
 });
 
 export const updateBibPage = ({ bib }) => dispatch => new Promise(() => dispatch(updateBib(bib)));
