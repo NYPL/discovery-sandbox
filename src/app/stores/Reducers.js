@@ -75,7 +75,7 @@ const searchKeywords = (state = null, action) => {
   }
 };
 
-const updatePatronData = (state = null, action) => {
+const patron = (state = null, action) => {
   switch (action.type) {
     case Actions.UPDATE_PATRON_DATA:
       return action.payload;
@@ -93,7 +93,7 @@ const appReducer = combineReducers({
   filters,
   selectedFilters,
   searchKeywords,
-  updatePatronData,
+  patron,
 });
 
 export const rootReducer = (state, action) => appReducer(state, action);
