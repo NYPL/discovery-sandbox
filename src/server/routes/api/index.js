@@ -17,8 +17,8 @@ export function getPatronData(req, res, next) {
           .then((response) => {
             if (_isEmpty(response)) {
               // Data is empty for the Patron
-              res.locals.data = {
-                PatronStore: {
+              res.data = {
+                patron: {
                   id: '',
                   names: [],
                   barcodes: [],
@@ -28,8 +28,8 @@ export function getPatronData(req, res, next) {
               };
             } else {
               // Data exists for the Patron
-              res.locals.data = {
-                PatronStore: {
+              res.data = {
+                patron: {
                   id: response.data.id,
                   names: response.data.names,
                   barcodes: response.data.barCodes,
@@ -48,8 +48,8 @@ export function getPatronData(req, res, next) {
               `, /patrons/${userId}`,
               error
             );
-            res.locals.data = {
-              PatronStore: {
+            res.data = {
+              patron: {
                 id: '',
                 names: [],
                 barcodes: [],
@@ -63,8 +63,8 @@ export function getPatronData(req, res, next) {
       );
   }
 
-  res.locals.data = {
-    PatronStore: {
+  res.data = {
+    patron: {
       id: '',
       names: [],
       barcodes: [],

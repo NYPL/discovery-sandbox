@@ -12,7 +12,7 @@ const nyplApiClientCall = (query) => {
 
 const shepApiCall = bibId => axios(`${appConfig.shepApi}/bibs/${bibId}/subject_headings`);
 
-function fetchBib(bibId, cb, errorcb) {
+function fetchBib(bibId, cb, errorcb, options = { fetchSubjectHeadingData: true }) {
   return Promise.all([
     nyplApiClientCall(bibId),
     nyplApiClientCall(`${bibId}.annotated-marc`),
@@ -28,7 +28,7 @@ function fetchBib(bibId, cb, errorcb) {
       return data;
     })
     .then((bib) => {
-      if (bib.subjectLiteral && bib.subjectLiteral.length) {
+      if (options.fetchSubjectHeadingData && bib.subjectLiteral && bib.subjectLiteral.length) {
         return shepApiCall(bibId)
           .then((shepRes) => {
             bib.subjectHeadingData = shepRes.bib.subject_headings;

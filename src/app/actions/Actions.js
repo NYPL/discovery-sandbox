@@ -15,6 +15,7 @@ export const Actions = {
   UPDATE_IS_EDD_REQUESTABLE: 'UPDATE_IS_EDD_REQUESTABLE',
   UPDATE_SUBJECT_HEADING: 'UPDATE_SUBJECT_HEADING',
   UPDATE_DRBB_RESULTS: 'UPDATE_DRBB_RESULTS',
+  UPDATE_PATRON_DATA: 'UPDATE_PATRON_DATA',
 };
 
 export const setAppConfig = appConfig => ({
@@ -60,6 +61,11 @@ export const updateDeliveryLocations = deliveryLocations => ({
 export const updateIsEddRequestable = isEddRequestable => ({
   type: Actions.UPDATE_IS_EDD_REQUESTABLE,
   payload: isEddRequestable,
+});
+
+export const updatePatronData = patronData => ({
+  type: Actions.UPDATE_PATRON_DATA,
+  payload: patronData,
 });
 
 /* `updateSearchResultsPage` performs:

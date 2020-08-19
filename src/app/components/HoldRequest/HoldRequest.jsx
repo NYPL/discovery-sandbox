@@ -56,6 +56,7 @@ class HoldRequest extends React.Component {
     this.submitRequest = this.submitRequest.bind(this);
     this.checkEligibility = this.checkEligibility.bind(this);
     this.conditionallyRedirect = this.conditionallyRedirect.bind(this);
+    this.requireUser = this.requireUser.bind(this);
   }
 
 
@@ -67,6 +68,10 @@ class HoldRequest extends React.Component {
       title.focus();
     }
     if (this.state.serverRedirect) this.setState({ serverRedirect: false });
+  }
+
+  onChange() {
+    this.setState({ patron: PatronStore.getState() });
   }
 
   onRadioSelect(e, i) {
@@ -162,7 +167,6 @@ class HoldRequest extends React.Component {
 
   conditionallyRedirect() {
     return this.checkEligibility().then((eligibility) => {
-      clearTimeout(this.timeoutId);
       if (!eligibility.eligibility) {
         const bib = (this.props.bib && !_isEmpty(this.props.bib)) ?
           this.props.bib : null;

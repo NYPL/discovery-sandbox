@@ -254,6 +254,7 @@ function confirmRequestServer(req, res, next) {
             };
             next();
           },
+          { fetchSubjectHeadingData: false },
         );
       }
 
@@ -326,6 +327,7 @@ function newHoldRequest(req, res) {
       );
     },
     bibResponseError => res.json(bibResponseError),
+    { fetchSubjectHeadingData: false },
   );
 }
 
@@ -362,6 +364,7 @@ function newHoldRequestServerEdd(req, res, next) {
       };
       next();
     },
+    { fetchSubjectHeadingData: false },
   );
 }
 
