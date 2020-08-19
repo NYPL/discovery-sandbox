@@ -70,10 +70,6 @@ class HoldRequest extends React.Component {
     if (this.state.serverRedirect) this.setState({ serverRedirect: false });
   }
 
-  onChange() {
-    this.setState({ patron: PatronStore.getState() });
-  }
-
   onRadioSelect(e, i) {
     trackDiscovery('Delivery Location', e.target.value);
     this.setState({
@@ -261,7 +257,6 @@ class HoldRequest extends React.Component {
 
   render() {
     const { closedLocations, holdRequestNotification } = this.props.appConfig;
-    console.log('state', this.state);
     const { serverRedirect } = this.state;
     const searchKeywords = this.props.searchKeywords;
     const bib = (this.props.bib && !_isEmpty(this.props.bib)) ?
@@ -423,6 +418,7 @@ const mapStateToProps = state => ({
   deliveryLocations: state.deliveryLocations,
   isEddRequestable: state.isEddRequestable,
   patron: state.patron,
+  bib: state.bib,
 });
 
 export default withRouter(connect(mapStateToProps)(HoldRequest));

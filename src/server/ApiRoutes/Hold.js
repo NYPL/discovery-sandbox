@@ -184,7 +184,7 @@ function confirmRequestServer(req, res, next) {
   if (!loggedIn) return false;
 
   if (!requestId) {
-    res.locals.data.Store = {
+    res.data = {
       bib: {},
       searchKeywords,
       error,
@@ -208,14 +208,15 @@ function confirmRequestServer(req, res, next) {
         return Bib.fetchBib(
           bibId,
           (bibResponseData) => {
-            barcode = LibraryItem.getItem(bibResponseData, req.params.itemId).barcode;
+            const { bib } = bibResponseData;
+            barcode = LibraryItem.getItem(bib, req.params.itemId).barcode;
 
             getDeliveryLocations(
               barcode,
               patronId,
               (deliveryLocations, isEddRequestable) => {
-                res.locals.data.Store = {
-                  bib: bibResponseData,
+                res.data = {
+                  bib,
                   searchKeywords,
                   error,
                   deliveryLocations,
@@ -230,8 +231,8 @@ function confirmRequestServer(req, res, next) {
                   deliveryLocationError,
                 );
 
-                res.locals.data.Store = {
-                  bib: bibResponseData,
+                res.data = {
+                  bib,
                   searchKeywords,
                   error,
                   deliveryLocations: [],
@@ -246,7 +247,7 @@ function confirmRequestServer(req, res, next) {
               `Error retrieving server side bib record in confirmRequestServer, id: ${bibId}`,
               bibResponseError,
             );
-            res.locals.data.Store = {
+            res.data = {
               bib: {},
               searchKeywords,
               error,
@@ -266,7 +267,7 @@ function confirmRequestServer(req, res, next) {
         requestIdError,
       );
 
-      res.locals.data.Store = {
+      res.data = {
         bib: {},
         searchKeywords,
         error,
@@ -300,14 +301,16 @@ function newHoldRequest(req, res) {
   return Bib.fetchBib(
     bibId,
     (bibResponseData) => {
-      barcode = LibraryItem.getItem(bibResponseData, req.params.itemId).barcode;
+      const { bib } = bibResponseData;
+      console.log('bib', bib, 'req.params.itemId', req.params.itemId);
+      barcode = LibraryItem.getItem(bib, req.params.itemId).barcode;
 
       getDeliveryLocations(
         barcode,
         patronId,
         (deliveryLocations, isEddRequestable) => {
           res.json({
-            bib: bibResponseData,
+            bib,
             deliveryLocations,
             isEddRequestable,
           });
@@ -319,7 +322,7 @@ function newHoldRequest(req, res) {
           );
 
           res.json({
-            bib: bibResponseData,
+            bib,
             deliveryLocations: [],
             isEddRequestable: false,
           });
@@ -343,8 +346,8 @@ function newHoldRequestServerEdd(req, res, next) {
   return Bib.fetchBib(
     bibId,
     (data) => {
-      res.locals.data.Store = {
-        bib: data,
+      res.data = {
+        bib: data.bib,
         searchKeywords: req.query.searchKeywords || '',
         error,
         form,
@@ -356,7 +359,7 @@ function newHoldRequestServerEdd(req, res, next) {
         `Error retrieving server side bib record in newHoldRequestServerEdd, id: ${bibId}`,
         bibResponseError,
       );
-      res.locals.data.Store = {
+      res.data = {
         bib: {},
         searchKeywords: req.query.searchKeywords || '',
         error,
