@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import DocumentTitle from 'react-document-title';
 import { Header, navConfig } from '@nypl/dgx-header-component';
 import Footer from '@nypl/dgx-react-footer';
+import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 
 import Feedback from '../Feedback/Feedback';
@@ -73,6 +74,7 @@ class Application extends React.Component {
         <div className="app-wrapper">
           <Header
             navData={navConfig.current}
+            patron={this.props.patron}
             skipNav={{ target: 'mainContent' }}
           />
           <LoadingLayer title="Searching" />
@@ -80,7 +82,7 @@ class Application extends React.Component {
             location={this.context.router.location}
             key={JSON.stringify(dataLocation)}
           >
-            {React.cloneElement(this.props.children, this.props)}
+            {React.cloneElement(this.props.children)}
           </DataLoader>
           <Footer />
           <Feedback submit={this.submitFeedback} />
@@ -92,6 +94,7 @@ class Application extends React.Component {
 
 Application.propTypes = {
   children: PropTypes.object,
+  patron: PropTypes.object,
 };
 
 Application.defaultProps = {
@@ -106,4 +109,4 @@ Application.childContextTypes = {
   media: PropTypes.string,
 };
 
-export default withRouter(Application);
+export default withRouter(connect(({ patron }) => ({ patron }))(Application));

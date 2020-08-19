@@ -1,13 +1,18 @@
 /* globals window document */
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router';
+import {
+  Link,
+  withRouter,
+} from 'react-router';
 import axios from 'axios';
 import {
   isArray as _isArray,
   isEmpty as _isEmpty,
+  extend as _extend,
 } from 'underscore';
 import DocumentTitle from 'react-document-title';
+import { connect } from 'react-redux';
 
 import Breadcrumbs from '../Breadcrumbs/Breadcrumbs';
 import Notification from '../Notification/Notification';
@@ -22,6 +27,31 @@ import {
 class HoldRequest extends React.Component {
   constructor(props) {
     super(props);
+    const deliveryLocationsFromAPI = this.props.deliveryLocations;
+    const isEddRequestable = this.props.isEddRequestable;
+    const firstLocationValue = (
+      deliveryLocationsFromAPI.length &&
+      deliveryLocationsFromAPI[0]['@id'] &&
+      typeof deliveryLocationsFromAPI[0]['@id'] === 'string') ?
+      deliveryLocationsFromAPI[0]['@id'].replace('loc:', '') : '';
+    let defaultDelivery = 'edd';
+    let checkedLocNum = -1;
+
+    // Sets EDD as the default delivery location and the selected option as "-1" to indicate it.
+    // If there's no EDD, set the default delivery location as the first one from the location list,
+    // and set the selected option as "0".
+    // If neither EDD or physical locations available, we will show an error message on the page.
+    if (!isEddRequestable && deliveryLocationsFromAPI.length) {
+      defaultDelivery = firstLocationValue;
+      checkedLocNum = 0;
+    }
+
+    this.state = _extend({
+      delivery: defaultDelivery,
+      checkedLocNum,
+      serverRedirect: true,
+    }, { patron: props.patron });
+
     this.onRadioSelect = this.onRadioSelect.bind(this);
     this.submitRequest = this.submitRequest.bind(this);
     this.checkEligibility = this.checkEligibility.bind(this);
@@ -30,12 +60,13 @@ class HoldRequest extends React.Component {
 
 
   componentDidMount() {
-    // this.requireUser();
+    this.requireUser();
     this.conditionallyRedirect();
     const title = document.getElementById('item-title');
     if (title) {
       title.focus();
     }
+    if (this.state.serverRedirect) this.setState({ serverRedirect: false });
   }
 
   onRadioSelect(e, i) {
@@ -166,7 +197,7 @@ class HoldRequest extends React.Component {
      * @return {HTML Element}
      */
   renderDeliveryLocation(deliveryLocations = []) {
-    const { closedLocations } = appConfig;
+    const { closedLocations } = this.props.appConfig;
     return deliveryLocations.map((location, i) => {
       const displayName = this.modelDeliveryLocationName(location.prefLabel, location.shortName);
       const value = (location['@id'] && typeof location['@id'] === 'string') ?
@@ -202,7 +233,7 @@ class HoldRequest extends React.Component {
   * @return {HTML Element}
   */
   renderEDD() {
-    const { closedLocations } = appConfig;
+    const { closedLocations } = this.props.appConfig;
     if (closedLocations.includes('')) return null;
     return (
       <label
@@ -225,7 +256,8 @@ class HoldRequest extends React.Component {
   }
 
   render() {
-    const { closedLocations, holdRequestNotification } = appConfig;
+    const { closedLocations, holdRequestNotification } = this.props.appConfig;
+    console.log('state', this.state);
     const { serverRedirect } = this.state;
     const searchKeywords = this.props.searchKeywords;
     const bib = (this.props.bib && !_isEmpty(this.props.bib)) ?
@@ -370,6 +402,8 @@ HoldRequest.propTypes = {
   params: PropTypes.object,
   deliveryLocations: PropTypes.array,
   isEddRequestable: PropTypes.bool,
+  appConfig: PropTypes.object,
+  patron: PropTypes.object,
 };
 
 HoldRequest.defaultProps = {
@@ -380,4 +414,11 @@ HoldRequest.defaultProps = {
   isEddRequestable: false,
 };
 
-export default HoldRequest;
+const mapStateToProps = state => ({
+  appConfig: state.appConfig,
+  deliveryLocations: state.deliveryLocations,
+  isEddRequestable: state.isEddRequestable,
+  patron: state.patron,
+});
+
+export default withRouter(connect(mapStateToProps)(HoldRequest));
