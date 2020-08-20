@@ -68,7 +68,7 @@ function fetchResults(searchKeywords = '', page, sortBy, order, field, filters, 
 }
 
 function search(req, res) {
-  const { page, q, sort, order, fieldQuery, filters } = getReqParams(req.query);
+  const { page, q, sort, order, fieldQuery, filters, sortQuery } = getReqParams(req.query);
 
   const unescapedQuery = Object.assign(
     {},
@@ -82,7 +82,9 @@ function search(req, res) {
     return null;
   });
   const selectedFilters = destructureFilters(urlFilters, filters);
-  const sortBy = [sort, order].filter(field => field).join('_');
+
+  const sortBy = sort.length ? [sort, order].filter(field => field.length).join('_') : 'relevance';
+
   fetchResults(
     q,
     page,

@@ -193,4 +193,12 @@ BibPage.propTypes = {
   bib: PropTypes.object,
 };
 
-export default withRouter(connect(({ bib }) => ({ bib }))(BibPage));
+const mapStateToProps = ({
+  bib,
+  searchKeywords,
+}) => ({
+  bib,
+  searchKeywords,
+});
+
+export default withRouter(connect(mapStateToProps)(BibPage));

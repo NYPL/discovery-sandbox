@@ -5,18 +5,17 @@ import { shallow } from 'enzyme';
 import { stub } from 'sinon';
 
 import DrbbContainer from './../../src/app/components/Drbb/DrbbContainer';
-import Store from './../../src/app/stores/Store';
 import appConfig from '../../src/app/data/appConfig';
 
 describe('DrbbContainer', () => {
   let component;
   let storeStub;
   before(() => {
-    storeStub = stub(Store, 'getState').returns({ drbbResults: {} });
+
   });
 
   afterEach(() => {
-    storeStub.restore();
+
   });
 
   describe('all renderings', () => {
@@ -42,13 +41,13 @@ describe('DrbbContainer', () => {
 
   describe('with one result', () => {
     before(() => {
-      storeStub = stub(Store, 'getState').returns({
-        drbbResults:
-          {
-            works: [{ title: 'work', id: 10 }],
-            totalWorks: 1,
-            researchNowQueryString: 'query=onework',
-          } });
+      // storeStub = stub(Store, 'getState').returns({
+      //   drbbResults:
+      //     {
+      //       works: [{ title: 'work', id: 10 }],
+      //       totalWorks: 1,
+      //       researchNowQueryString: 'query=onework',
+      //     } });
       component = shallow(<DrbbContainer />);
     });
 
@@ -73,13 +72,13 @@ describe('DrbbContainer', () => {
 
   describe('with multiple works', () => {
     before(() => {
-      storeStub = stub(Store, 'getState').returns({
-        drbbResults:
-          {
-            works: [{ title: 'work', id: 10 }, { title: 'work', id: 11 }],
-            totalWorks: 1000,
-            researchNowQueryString: 'query=multipleworks',
-          } });
+      // storeStub = stub(Store, 'getState').returns({
+      //   drbbResults:
+      //     {
+      //       works: [{ title: 'work', id: 10 }, { title: 'work', id: 11 }],
+      //       totalWorks: 1000,
+      //       researchNowQueryString: 'query=multipleworks',
+      //     } });
       component = shallow(<DrbbContainer />);
     });
 
@@ -90,13 +89,13 @@ describe('DrbbContainer', () => {
 
   describe('no ResearchNow results', () => {
     before(() => {
-      storeStub = stub(Store, 'getState').returns({
-        drbbResults:
-          {
-            works: [],
-            totalWorks: 0,
-            researchNowQueryString: 'query=noworks',
-          } });
+      // storeStub = stub(Store, 'getState').returns({
+      //   drbbResults:
+      //     {
+      //       works: [],
+      //       totalWorks: 0,
+      //       researchNowQueryString: 'query=noworks',
+      //     } });
       component = shallow(<DrbbContainer />, { context });
     });
 

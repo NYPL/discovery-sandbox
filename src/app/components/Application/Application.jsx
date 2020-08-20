@@ -18,6 +18,7 @@ class Application extends React.Component {
     super(props);
     this.state = {
       media: 'desktop',
+      patron: props.patron,
     };
     this.submitFeedback = this.submitFeedback.bind(this);
   }
@@ -74,7 +75,7 @@ class Application extends React.Component {
         <div className="app-wrapper">
           <Header
             navData={navConfig.current}
-            patron={this.props.patron}
+            patron={this.state.patron}
             skipNav={{ target: 'mainContent' }}
           />
           <LoadingLayer title="Searching" />

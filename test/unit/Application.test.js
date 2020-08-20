@@ -27,7 +27,7 @@ describe('Application', () => {
         route={{
           history: { listen: stub() },
         }}
-      />, { context });
+      />, { context }).dive().dive();
 
     component.setState({ patron: {} });
   });
