@@ -50,7 +50,7 @@ const routesGenerator = () => ({
       if (params[0]) req.params.bibId = params[0];
       if (params[1]) req.params.itemId = params[1];
     },
-    action: data => updateHoldRequestPage(data),
+    action: updateHoldRequestPage,
     errorMessage: 'Error attempting to make ajax request for hold request',
   },
 });

@@ -75,6 +75,24 @@ const searchKeywords = (state = null, action) => {
   }
 };
 
+const deliveryLocations = (state = null, action) => {
+  switch (action.type) {
+    case Actions.UPDATE_DELIVERY_LOCATIONS:
+      return action.payload;
+    default:
+      return state;
+  }
+};
+
+const isEddRequestable = (state = null, action) => {
+  switch (action.type) {
+    case Actions.UPDATE_IS_EDD_REQUESTABLE:
+      return action.payload;
+    default:
+      return state;
+  }
+};
+
 const patron = (state = null, action) => {
   switch (action.type) {
     case Actions.UPDATE_PATRON_DATA:
@@ -94,6 +112,8 @@ const appReducer = combineReducers({
   selectedFilters,
   searchKeywords,
   patron,
+  deliveryLocations,
+  isEddRequestable,
 });
 
 export const rootReducer = (state, action) => appReducer(state, action);

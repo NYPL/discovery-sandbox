@@ -105,8 +105,8 @@ export const updateHoldRequestPage = apiUrl => (
       }
     })
     .catch((error) => {
-      console.error('An error occurred during fetchSearchResults', error.message);
-      throw new Error('An error occurred during fetchSearchResults', error.message);
+      console.error('An error occurred during updateHoldRequestPage', error.message);
+      throw new Error('An error occurred during updateHoldRequestPage', error.message);
     })
 );
 
