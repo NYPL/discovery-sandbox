@@ -75,6 +75,24 @@ const searchKeywords = (state = null, action) => {
   }
 };
 
+const sortBy = (state = null, action) => {
+  switch (action.type) {
+    case Actions.UPDATE_SORT_BY:
+      return action.payload;
+    default:
+      return state;
+  }
+};
+
+const page = (state = null, action) => {
+  switch (action.type) {
+    case Actions.UPDATE_PAGE:
+      return action.payload;
+    default:
+      return state;
+  }
+};
+
 const deliveryLocations = (state = null, action) => {
   switch (action.type) {
     case Actions.UPDATE_DELIVERY_LOCATIONS:
@@ -114,6 +132,8 @@ const appReducer = combineReducers({
   patron,
   deliveryLocations,
   isEddRequestable,
+  sortBy,
+  page,
 });
 
 export const rootReducer = (state, action) => appReducer(state, action);

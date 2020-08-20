@@ -137,10 +137,9 @@ const SearchResults = (props, context) => {
                   {
                     hasResults ?
                       <SearchResultsSorter
-                        sortBy={sortBy}
-                        page={page}
                         searchKeywords={searchKeywords}
                         createAPIQuery={createAPIQuery}
+                        key={sortBy}
                       />
                       : null
                   }
@@ -178,6 +177,7 @@ const mapStateToProps = state => ({
   searchResults: state.searchResults,
   features: state.appConfig.features,
   searchKeywords: state.searchKeywords,
+  sortBy: state.sortBy,
 });
 
 export default withRouter(connect(mapStateToProps)(SearchResults));

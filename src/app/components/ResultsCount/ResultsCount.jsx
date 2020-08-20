@@ -95,9 +95,10 @@ ResultsCount.defaultProps = {
   },
 };
 
-const mapStateToProps = ({ appConfig, searchKeywords }) => ({
+const mapStateToProps = ({ appConfig, searchKeywords, page }) => ({
   features: appConfig.features,
   searchKeywords,
+  page,
 });
 
 export default connect(mapStateToProps)(ResultsCount);

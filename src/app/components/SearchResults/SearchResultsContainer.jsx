@@ -11,6 +11,7 @@ import {
   trackDiscovery,
   displayContext,
 } from '../../utils/utils';
+import appConfig from '../../data/appConfig';
 
 // Renders the ResultsList containing the search results and the Pagination component
 const SearchResultsContainer = (props, context) => {
@@ -101,6 +102,8 @@ SearchResultsContainer.contextTypes = {
 const mapStateToProps = state => ({
   searchResults: state.searchResults,
   features: state.appConfig.features,
+  searchKeywords: state.searchKeywords,
+  page: state.page,
 });
 
 export default withRouter(connect(mapStateToProps)(SearchResultsContainer));

@@ -15,7 +15,7 @@ import ResearchNow from './ResearchNow';
 
 const createAPIQuery = basicQuery({
   searchKeywords: '',
-  sortBy: '',
+  sortBy: 'relevance',
   field: '',
   selectedFilters: {},
 });
@@ -82,7 +82,7 @@ function search(req, res) {
     return null;
   });
   const selectedFilters = destructureFilters(urlFilters, filters);
-
+  const sortBy = [sort, order].filter(field => field).join('_');
   fetchResults(
     q,
     page,
@@ -93,10 +93,11 @@ function search(req, res) {
     (apiFilters, searchResults, pageQuery, drbbResults) => res.json({
       filters: apiFilters,
       searchResults,
-      pageQuery,
+      page: pageQuery,
       drbbResults,
       selectedFilters,
       searchKeywords: q,
+      sortBy,
     }),
     error => res.json(error),
   );

@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
 import {
   trackDiscovery,
@@ -27,9 +28,11 @@ class SearchResultsSorter extends React.Component {
   }
 
   componentDidMount() {
-    this.setState({
-      js: true,
-    });
+    if (!this.state.js) {
+      this.setState({
+        js: true,
+      });
+    }
   }
 
   /**
@@ -43,10 +46,7 @@ class SearchResultsSorter extends React.Component {
     e.preventDefault();
     const value = e.target.value;
 
-    this.setState(
-      { sortValue: value },
-      () => { this.sortResultsBy(value); },
-    );
+    this.setState({ sortValue: value }, () => this.sortResultsBy(this.state.sortValue));
   }
 
   /**
@@ -58,14 +58,13 @@ class SearchResultsSorter extends React.Component {
   sortResultsBy(sortBy) {
     // const apiQuery = this.props.createAPIQuery({ sortBy, page: this.props.page });
     const apiQuery = this.props.createAPIQuery({ sortBy });
-
     trackDiscovery('Sort by', sortBy);
     this.context.router.push(`${appConfig.baseUrl}/search?${apiQuery}`);
   }
 
   /**
    * renderResultsSort()
-   * The fuction that makes renders the sort options.
+   * The fuction that renders the sort options.
    *
    * @return {HTML Element}
    */
@@ -78,8 +77,13 @@ class SearchResultsSorter extends React.Component {
   }
 
   render() {
-    const searchKeywords = this.props.searchKeywords;
-    const field = this.props.field;
+    const {
+      searchKeywords,
+      field,
+    } = this.props;
+    const {
+      sortValue,
+    } = this.state;
 
     return (
       <div className="nypl-results-sorting-controls">
@@ -98,7 +102,7 @@ class SearchResultsSorter extends React.Component {
                   <select
                     id="sort-by-label"
                     onChange={this.updateSortValue}
-                    value={this.state.sortValue}
+                    value={sortValue}
                     name="sort_scope"
                   >
                     {this.renderResultsSort()}
@@ -118,7 +122,6 @@ SearchResultsSorter.propTypes = {
   sortBy: PropTypes.string,
   searchKeywords: PropTypes.string,
   field: PropTypes.string,
-  page: PropTypes.string,
   createAPIQuery: PropTypes.func,
 };
 
@@ -131,4 +134,10 @@ SearchResultsSorter.contextTypes = {
   router: PropTypes.object,
 };
 
-export default SearchResultsSorter;
+const mapStateToProps = state => ({
+  sortBy: state.sortBy,
+  searchKeywords: state.searchKeywords,
+  field: state.field,
+});
+
+export default connect(mapStateToProps)(SearchResultsSorter);

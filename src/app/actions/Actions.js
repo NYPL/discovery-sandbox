@@ -48,6 +48,16 @@ export const updateSelectedFilters = selectedFilters => ({
   payload: selectedFilters,
 });
 
+export const updatePage = page => ({
+  type: Actions.UPDATE_PAGE,
+  payload: page,
+});
+
+export const updateSortBy = sortBy => ({
+  type: Actions.UPDATE_SORT_BY,
+  payload: sortBy,
+});
+
 export const updateBib = bib => ({
   type: Actions.UPDATE_BIB,
   payload: bib,
@@ -78,13 +88,23 @@ export const updatePatronData = patronData => ({
     * updateDrbbResults
 */
 export const updateSearchResultsPage = data => dispatch => new Promise(() => {
-  const { searchResults, filters, drbbResults, selectedFilters, searchKeywords } = data;
+  const {
+    searchResults,
+    filters,
+    drbbResults,
+    selectedFilters,
+    searchKeywords,
+    page,
+    sortBy,
+  } = data;
 
   dispatch(updateSearchResults(searchResults));
   dispatch(updateDrbbResults(drbbResults));
   dispatch(updateFilters(filters));
   dispatch(updateSelectedFilters(selectedFilters));
   dispatch(updateSearchKeywords(searchKeywords));
+  if (page) dispatch(updatePage(page));
+  if (sortBy) dispatch(updateSortBy(sortBy));
 });
 
 export const updateBibPage = ({ bib }) => dispatch => new Promise(() => dispatch(updateBib(bib)));
