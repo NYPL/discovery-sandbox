@@ -14,7 +14,6 @@ import {
   XIcon,
 } from '@nypl/dgx-svg-icons';
 
-import Actions from '../../actions/Actions';
 import appConfig from '../../data/appConfig';
 import {
   trackDiscovery,
@@ -56,8 +55,6 @@ class SelectedFilters extends React.Component {
     const apiQuery = this.props.createAPIQuery({ selectedFilters });
     trackDiscovery('Filters - Selected list', `Remove - ${filter.field} ${filter.label}`);
 
-
-    Actions.updateSelectedFilters(selectedFilters);
     this.context.router.push(`${appConfig.baseUrl}/search?${apiQuery}`);
   }
 
@@ -65,7 +62,7 @@ class SelectedFilters extends React.Component {
     const apiQuery = this.props.createAPIQuery({ selectedFilters: {} });
 
     trackDiscovery('Filters - Selected list', 'Clear Filters');
-    Actions.updateSelectedFilters({});
+
     this.context.router.push(`${appConfig.baseUrl}/search?${apiQuery}`);
   }
 

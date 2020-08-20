@@ -7,9 +7,6 @@ import {
 } from 'underscore';
 import { connect } from 'react-redux';
 
-
-// eslint-disable-next-line import/first, import/no-unresolved, import/extensions
-import Store from '@Store';
 import LibraryItem from '../../utils/item';
 import {
   trackDiscovery,
@@ -108,6 +105,7 @@ class ResultsList extends React.Component {
       results,
       subjectHeadingShow,
       features,
+      loading,
     } = this.props;
     const includeDrbb = features.includes('drb-integration');
 
@@ -121,7 +119,7 @@ class ResultsList extends React.Component {
       <ul
         id="nypl-results-list"
         className={
-          `nypl-results-list${Store.getState().isLoading ? ' hide-results-list' : ''}${includeDrbb && !subjectHeadingShow ? ' drbb-integration' : ''}`
+          `nypl-results-list${loading ? ' hide-results-list' : ''}${includeDrbb && !subjectHeadingShow ? ' drbb-integration' : ''}`
         }
       >
         {resultsElm}
@@ -134,10 +132,15 @@ ResultsList.propTypes = {
   results: PropTypes.array,
   searchKeywords: PropTypes.string,
   subjectHeadingShow: PropTypes.bool,
+  loading: PropTypes.bool,
+  features: PropTypes.array,
 };
 
 ResultsList.contextTypes = {
   router: PropTypes.object,
 };
 
-export default connect(state => ({ features: state.appConfig.features }))(ResultsList);
+export default connect(state => ({
+  features: state.appConfig.features,
+  loading: state.loading,
+}))(ResultsList);

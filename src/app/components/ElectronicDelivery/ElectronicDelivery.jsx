@@ -13,9 +13,7 @@ import {
 import DocumentTitle from 'react-document-title';
 
 import Breadcrumbs from '../Breadcrumbs/Breadcrumbs';
-import Actions from '@Actions'
-import Store from '../../stores/Store';
-import appConfig from '../../data/appConfig'
+import appConfig from '../../data/appConfig';
 import ElectronicDeliveryForm from './ElectronicDeliveryForm';
 import LibraryItem from '../../utils/item';
 import Notification from '../Notification/Notification';
@@ -143,7 +141,6 @@ class ElectronicDelivery extends React.Component {
 
     // This is to remove the error box on the top of the page on a successfull submission.
     this.setState({ raiseError: null });
-    Actions.updateLoadingStatus(true);
     trackDiscovery(`Submit Request EDD${partnerEvent}`, `${title} - ${itemId}`);
 
     const formData = new FormData(document.getElementById('place-edd-hold-form'));
@@ -153,7 +150,6 @@ class ElectronicDelivery extends React.Component {
     )
       .then((response) => {
         this.context.router.push(response.data);
-        Actions.updateLoadingStatus(false);
       })
       .catch((error) => {
         console.error(
@@ -161,7 +157,6 @@ class ElectronicDelivery extends React.Component {
           error,
         );
 
-        Actions.updateLoadingStatus(false);
         this.context.router.push(
           `${path}?errorMessage=${error}${searchKeywordsQuery}${this.fromUrl()}`,
         );

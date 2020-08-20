@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import Breadcrumbs from '../Breadcrumbs/Breadcrumbs';
-import Store from '@Store';
 
 const ShepContainer = (props) => {
   return (

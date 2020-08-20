@@ -17,8 +17,6 @@ import getOwner from '../../utils/getOwner';
 // Removed MarcRecord because the webpack MarcRecord is not working. Sep/28/2017
 // import MarcRecord from './MarcRecord';
 
-import Store from '../../stores/Store';
-
 import {
   basicQuery,
   getAggregatedElectronicResources,
@@ -170,7 +168,6 @@ const BibPage = (props) => {
                   fields={topFields}
                   logging
                   electronicResources={aggregatedElectronicResources}
-                  store={Store}
                 />
 
                 {itemHoldings}
