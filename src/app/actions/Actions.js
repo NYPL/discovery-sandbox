@@ -6,6 +6,7 @@ export const Actions = {
   UPDATE_SEARCH_KEYWORDS: 'UPDATE_SEARCH_KEYWORDS',
   UPDATE_BIB: 'UPDATE_BIB',
   UPDATE_FILTERS: 'UPDATE_FILTERS',
+  UPDATE_FIELD: 'UPDATE_FIELD',
   UPDATE_SELECTED_FILTERS: 'UPDATE_SELECTED_FILTERS',
   REMOVE_FILTER: 'REMOVE_FILTER',
   UPDATE_PAGE: 'UPDATE_PAGE',
@@ -36,6 +37,11 @@ export const updateDrbbResults = drbbResults => ({
 export const updateSearchKeywords = searchKeywords => ({
   type: Actions.UPDATE_SEARCH_KEYWORDS,
   payload: searchKeywords,
+});
+
+export const updateField = field => ({
+  type: Actions.UPDATE_FIELD,
+  payload: field,
 });
 
 export const updateFilters = filters => ({
@@ -96,12 +102,14 @@ export const updateSearchResultsPage = data => dispatch => new Promise(() => {
     searchKeywords,
     page,
     sortBy,
+    field,
   } = data;
 
   dispatch(updateSearchResults(searchResults));
   dispatch(updateDrbbResults(drbbResults));
   dispatch(updateFilters(filters));
   dispatch(updateSelectedFilters(selectedFilters));
+  dispatch(updateField(field));
   dispatch(updateSearchKeywords(searchKeywords));
   if (page) dispatch(updatePage(page));
   if (sortBy) dispatch(updateSortBy(sortBy));

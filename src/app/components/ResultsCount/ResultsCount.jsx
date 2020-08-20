@@ -76,7 +76,7 @@ class ResultsCount extends React.Component {
 
 ResultsCount.propTypes = {
   count: PropTypes.number,
-  page: PropTypes.number,
+  page: PropTypes.string,
   selectedFilters: PropTypes.object,
   searchKeywords: PropTypes.string,
   field: PropTypes.string,
@@ -86,7 +86,7 @@ ResultsCount.propTypes = {
 ResultsCount.defaultProps = {
   searchKeywords: '',
   count: 0,
-  page: 1,
+  page: '1',
   selectedFilters: {
     materialType: [],
     language: [],

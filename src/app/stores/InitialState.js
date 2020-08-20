@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import appConfig from '../data/appConfig';
 
 export const initialSelectedFiltersState = {
@@ -18,8 +17,6 @@ const initialState = {
   sortBy: 'relevance',
   loading: false,
   field: 'all',
-  error: {},
-  form: {},
   deliveryLocations: [],
   isEddRequestable: false,
   subjectHeading: null,

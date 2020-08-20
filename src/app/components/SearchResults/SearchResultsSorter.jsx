@@ -127,7 +127,7 @@ SearchResultsSorter.propTypes = {
 
 SearchResultsSorter.defaultProps = {
   searchKeywords: '',
-  field: '',
+  field: 'all',
 };
 
 SearchResultsSorter.contextTypes = {

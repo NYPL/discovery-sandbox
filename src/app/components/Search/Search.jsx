@@ -7,12 +7,14 @@ import {
   trackDiscovery,
 } from '../../utils/utils';
 import appConfig from '../../data/appConfig';
+import { updateField } from '../../actions/Actions';
 
 /**
  * The main container for the top Search section.
  */
 class Search extends React.Component {
   constructor(props) {
+    console.log('updateField', updateField);
     super(props);
 
     this.state = {
@@ -42,7 +44,7 @@ class Search extends React.Component {
    */
   onFieldChange() {
     const newFieldVal = this.searchByFieldRef.value;
-    this.setState({ field: newFieldVal });
+    this.setState({ field: newFieldVal }, () => this.props.updateField(newFieldVal));
   }
 
   /**
@@ -96,6 +98,7 @@ class Search extends React.Component {
   }
 
   render() {
+    console.log('Search', 'state', this.state, 'props', this.props);
     return (
       <form
         id="mainContent"
@@ -156,6 +159,7 @@ Search.propTypes = {
   searchKeywords: PropTypes.string,
   createAPIQuery: PropTypes.func,
   selectedFilters: PropTypes.object,
+  updateField: PropTypes.func,
 };
 
 Search.defaultProps = {
@@ -168,6 +172,13 @@ Search.contextTypes = {
   router: PropTypes.object,
 };
 
-const mapStateToProps = ({ searchKeywords }) => ({ searchKeywords });
+const mapStateToProps = ({
+  searchKeywords,
+  field,
+  selectedFilters,
+}) => ({ searchKeywords, field, selectedFilters });
 
-export default connect(mapStateToProps)(Search);
+
+const mapDispatchToProps = dispatch => ({ updateField: field => dispatch(updateField(field)) });
+
+export default connect(mapStateToProps, mapDispatchToProps)(Search);

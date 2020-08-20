@@ -91,10 +91,7 @@ const SearchResults = (props, context) => {
         }
         extraBannerElement={
           <Search
-            searchKeywords={searchKeywords}
-            field={field}
             createAPIQuery={createAPIQuery}
-            selectedFilters={selectedFilters}
           />
         }
         secondaryExtraBannerElement={
@@ -178,6 +175,7 @@ const mapStateToProps = state => ({
   features: state.appConfig.features,
   searchKeywords: state.searchKeywords,
   sortBy: state.sortBy,
+  field: state.field,
 });
 
 export default withRouter(connect(mapStateToProps)(SearchResults));

@@ -16,7 +16,7 @@ import ResearchNow from './ResearchNow';
 const createAPIQuery = basicQuery({
   searchKeywords: '',
   sortBy: 'relevance',
-  field: '',
+  field: 'all',
   selectedFilters: {},
 });
 
@@ -98,6 +98,7 @@ function search(req, res) {
       selectedFilters,
       searchKeywords: q,
       sortBy,
+      field: fieldQuery,
     }),
     error => res.json(error),
   );

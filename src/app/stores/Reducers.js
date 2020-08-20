@@ -75,6 +75,15 @@ const searchKeywords = (state = null, action) => {
   }
 };
 
+const field = (state = null, action) => {
+  switch (action.type) {
+    case Actions.UPDATE_FIELD:
+      return action.payload;
+    default:
+      return state;
+  }
+};
+
 const sortBy = (state = null, action) => {
   switch (action.type) {
     case Actions.UPDATE_SORT_BY:
@@ -134,6 +143,7 @@ const appReducer = combineReducers({
   isEddRequestable,
   sortBy,
   page,
+  field,
 });
 
 export const rootReducer = (state, action) => appReducer(state, action);
