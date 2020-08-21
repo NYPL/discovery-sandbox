@@ -167,7 +167,7 @@ SearchResults.defaultProps = {
 };
 
 SearchResults.contextTypes = {
-  router: PropTypes.obj,
+  router: PropTypes.any,
 };
 
 const mapStateToProps = state => ({

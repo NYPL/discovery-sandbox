@@ -71,6 +71,8 @@ const matchingPathData = (location) => {
 };
 
 function loadDataForRoutes(location, req, routeMethods, realRes) {
+  console.log('loadDataForRoutes');
+  dispatch(updateLoadingStatus(true));
   const routes = routesGenerator(location);
   const {
     matchData,
@@ -95,7 +97,6 @@ function loadDataForRoutes(location, req, routeMethods, realRes) {
       );
     };
     if (req) {
-      console.log('making server side call');
       if (serverParams) serverParams(matchData, req);
       return new Promise((resolve) => {
         const res = {
@@ -112,9 +113,9 @@ function loadDataForRoutes(location, req, routeMethods, realRes) {
         })
         .catch(errorCb);
     }
-    console.log('making ajaxCall');
     return ajaxCall(apiRoute(matchData, route), successCb, errorCb);
   }
+  dispatch(updateLoadingStatus(false));
   return new Promise(resolve => resolve());
 }
 

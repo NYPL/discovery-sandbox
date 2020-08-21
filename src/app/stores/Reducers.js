@@ -1,5 +1,5 @@
 import { Actions } from '../actions/Actions';
-import { initialState } from './InitialState';
+import initialState from './InitialState';
 import appConfig from '../data/appConfig';
 
 function appReducer(state = initialState, action) {
