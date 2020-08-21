@@ -92,7 +92,6 @@ app.get('/*', (req, res, next) => {
 });
 
 app.get('/*', (req, res) => {
-  console.log('res.data', res.data);
   const appRoutes = (req.url).indexOf(appConfig.baseUrl) !== -1 ? routes.client : routes.server;
 
   match({ routes: appRoutes, location: req.url }, (error, redirectLocation, renderProps) => {
