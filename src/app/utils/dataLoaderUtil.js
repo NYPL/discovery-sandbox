@@ -91,6 +91,7 @@ function loadDataForRoutes(location, req, routeMethods, realRes) {
         .then(() => dispatch(updateLoadingStatus(false)));
     };
     const errorCb = (error) => {
+      console.log("ERROR in dataLoaderUtil");
       dispatch(updateLoadingStatus(false));
       console.error(
         errorMessage,
@@ -98,6 +99,7 @@ function loadDataForRoutes(location, req, routeMethods, realRes) {
       );
     };
     if (req) {
+      console.log('making server side call');
       if (serverParams) serverParams(matchData, req);
       return new Promise((resolve) => {
         const res = {
@@ -105,8 +107,9 @@ function loadDataForRoutes(location, req, routeMethods, realRes) {
           json: (data) => {
             resolve({ data });
           },
+          data: realRes.data,
         };
-        routeMethods[pathType](req, res);
+        return routeMethods[pathType](req, res);
       })
         .then(({ data }) => {
           realRes.data = { ...data };
@@ -114,6 +117,7 @@ function loadDataForRoutes(location, req, routeMethods, realRes) {
         })
         .catch(errorCb);
     }
+    console.log('making ajaxCall');
     return ajaxCall(apiRoute(matchData, route), successCb, errorCb);
   }
   return new Promise(resolve => resolve());

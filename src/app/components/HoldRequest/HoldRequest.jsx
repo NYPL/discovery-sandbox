@@ -46,11 +46,11 @@ class HoldRequest extends React.Component {
       checkedLocNum = 0;
     }
 
-    this.state = _extend({
+    this.state = {
       delivery: defaultDelivery,
       checkedLocNum,
       serverRedirect: true,
-    }, { patron: props.patron });
+    };
 
     this.onRadioSelect = this.onRadioSelect.bind(this);
     this.submitRequest = this.submitRequest.bind(this);
@@ -61,8 +61,8 @@ class HoldRequest extends React.Component {
 
 
   componentDidMount() {
-    this.requireUser();
-    this.conditionallyRedirect();
+    // this.requireUser();
+    // this.conditionallyRedirect();
     const title = document.getElementById('item-title');
     if (title) {
       title.focus();
@@ -130,7 +130,7 @@ class HoldRequest extends React.Component {
    * @return {Boolean}
    */
   requireUser() {
-    if (this.state.patron && this.state.patron.id) {
+    if (this.props.patron && this.props.patron.id) {
       return true;
     }
 
@@ -160,7 +160,6 @@ class HoldRequest extends React.Component {
 
   // Redirects to HoldConfirmation if patron is ineligible to place holds. We are particularly
   // checking for manual blocks, expired cards, and excessive fines.
-
   conditionallyRedirect() {
     return this.checkEligibility().then((eligibility) => {
       if (!eligibility.eligibility) {
@@ -172,6 +171,7 @@ class HoldRequest extends React.Component {
         const path = `${appConfig.baseUrl}/hold/confirmation/${bibId}-${itemId}`;
         return this.redirectWithErrors(path, 'eligibility', JSON.stringify(eligibility));
       }
+      return true;
     });
   }
   // checks whether a patron is eligible to place a hold. Uses cookie to get the patron's id
@@ -197,7 +197,7 @@ class HoldRequest extends React.Component {
      * @return {HTML Element}
      */
   renderDeliveryLocation(deliveryLocations = []) {
-    const { closedLocations } = this.props.appConfig;
+    const { closedLocations } = this.props;
     return deliveryLocations.map((location, i) => {
       const displayName = this.modelDeliveryLocationName(location.prefLabel, location.shortName);
       const value = (location['@id'] && typeof location['@id'] === 'string') ?
@@ -233,7 +233,7 @@ class HoldRequest extends React.Component {
   * @return {HTML Element}
   */
   renderEDD() {
-    const { closedLocations } = this.props.appConfig;
+    const { closedLocations } = this.props;
     if (closedLocations.includes('')) return null;
     return (
       <label
@@ -256,8 +256,8 @@ class HoldRequest extends React.Component {
   }
 
   render() {
-    const { closedLocations, holdRequestNotification } = this.props.appConfig;
-    const { serverRedirect } = this.state;
+    console.log('HoldRequest patron', this.props.patron);
+    const { closedLocations, holdRequestNotification } = this.props;
     const searchKeywords = this.props.searchKeywords;
     const bib = (this.props.bib && !_isEmpty(this.props.bib)) ?
       this.props.bib : null;
@@ -329,11 +329,6 @@ class HoldRequest extends React.Component {
             name="search-keywords"
             value={searchKeywords}
           />
-          <input
-            type="hidden"
-            name="serverRedirect"
-            value={serverRedirect}
-          />
         </form>
       );
     }
@@ -401,8 +396,9 @@ HoldRequest.propTypes = {
   params: PropTypes.object,
   deliveryLocations: PropTypes.array,
   isEddRequestable: PropTypes.bool,
-  appConfig: PropTypes.object,
   patron: PropTypes.object,
+  closedLocations: PropTypes.array,
+  holdRequestNotification: PropTypes.string,
 };
 
 HoldRequest.defaultProps = {
@@ -414,7 +410,8 @@ HoldRequest.defaultProps = {
 };
 
 const mapStateToProps = state => ({
-  appConfig: state.appConfig,
+  closedLocations: state.appConfig.closedLocations,
+  holdRequestNotification: state.appConfig.holdRequestNotification,
   deliveryLocations: state.deliveryLocations,
   isEddRequestable: state.isEddRequestable,
   patron: state.patron,

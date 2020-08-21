@@ -289,20 +289,24 @@ function confirmRequestServer(req, res, next) {
  * @return {function}
  */
 function newHoldRequest(req, res) {
+  console.log('req.patronTokenResponse', req.patronTokenResponse);
   const loggedIn = User.requireUser(req, res);
+  console.log('loggedIn', loggedIn);
   if (!loggedIn) return false;
 
   const bibId = req.params.bibId || '';
   const patronId = req.patronTokenResponse.decodedPatron ?
     req.patronTokenResponse.decodedPatron.sub : '';
   let barcode;
+  console.log('bibId', bibId);
+  if (typeof bibId === 'object') console.log('bibId OBJECT', Object.keys(bibId));
 
   // Retrieve item
   return Bib.fetchBib(
     bibId,
     (bibResponseData) => {
+      console.log('bibResponseData', bibResponseData);
       const { bib } = bibResponseData;
-      console.log('bib', bib, 'req.params.itemId', req.params.itemId);
       barcode = LibraryItem.getItem(bib, req.params.itemId).barcode;
 
       getDeliveryLocations(
@@ -313,6 +317,7 @@ function newHoldRequest(req, res) {
             bib,
             deliveryLocations,
             isEddRequestable,
+            patron: res.data.patron,
           });
         },
         (deliveryLocationsError) => {
@@ -336,6 +341,7 @@ function newHoldRequest(req, res) {
 
 function newHoldRequestServerEdd(req, res, next) {
   const loggedIn = User.requireUser(req, res);
+  console.log('loggedIn?', loggedIn);
   const error = req.query.error ? JSON.parse(req.query.error) : {};
   const form = req.query.form ? JSON.parse(req.query.form) : {};
   const bibId = req.params.bibId || '';
@@ -382,6 +388,7 @@ function newHoldRequestServerEdd(req, res, next) {
  * @return {function}
  */
 function createHoldRequestServer(req, res, pickedUpBibId = '', pickedUpItemId = '') {
+  console.log('req.body.serverRedirect', req.body.serverRedirect);
   res.respond = req.body.serverRedirect === 'false' ? res.json : res.redirect;
   // Ensure user is logged in
   const loggedIn = User.requireUser(req, res);
