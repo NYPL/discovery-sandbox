@@ -117,26 +117,12 @@ export const updateSearchResultsPage = data => dispatch => new Promise(() => {
 
 export const updateBibPage = ({ bib }) => dispatch => new Promise(() => dispatch(updateBib(bib)));
 
-export const updateHoldRequestPage = apiUrl => (
-  dispatch => axios
-    .get(apiUrl)
-    .then((resp) => {
-      if (resp.data) {
-        const {
-          bib,
-          deliveryLocations,
-          isEddRequestable,
-        } = resp.data;
-        dispatch(updateBib(bib));
-        dispatch(updateDeliveryLocations(deliveryLocations));
-        dispatch(updateIsEddRequestable(isEddRequestable));
-      }
-    })
-    .catch((error) => {
-      console.error('An error occurred during updateHoldRequestPage', error.message);
-      throw new Error('An error occurred during updateHoldRequestPage', error.message);
-    })
-);
+export const updateHoldRequestPage = data => dispatch => new Promise(() => {
+  const { bib, deliveryLocations, isEddRequestable } = data;
+  dispatch(updateBib(bib));
+  dispatch(updateDeliveryLocations(deliveryLocations));
+  dispatch(updateIsEddRequestable(isEddRequestable));
+});
 
 export const updateLoadingStatus = loading => ({
   type: Actions.UPDATE_LOADING_STATUS,

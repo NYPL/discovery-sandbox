@@ -85,14 +85,10 @@ function loadDataForRoutes(location, req, routeMethods, realRes) {
       serverParams,
     } = routes[pathType];
     const route = routePaths[pathType];
-    dispatch(updateLoadingStatus(true));
     const successCb = (response) => {
-      dispatch(action(response.data, location))
-        .then(() => dispatch(updateLoadingStatus(false)));
+      dispatch(action(response.data, location));
     };
     const errorCb = (error) => {
-      console.log("ERROR in dataLoaderUtil");
-      dispatch(updateLoadingStatus(false));
       console.error(
         errorMessage,
         error,
