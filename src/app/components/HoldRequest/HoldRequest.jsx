@@ -24,8 +24,6 @@ import {
   basicQuery,
 } from '../../utils/utils';
 
-import store from '../../stores/Store';
-
 class HoldRequest extends React.Component {
   constructor(props) {
     super(props);

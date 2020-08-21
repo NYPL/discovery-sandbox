@@ -12,7 +12,6 @@ import LoadingLayer from '../LoadingLayer/LoadingLayer';
 import DataLoader from '../DataLoader/DataLoader';
 
 import { breakpoints } from '../../data/constants';
-import store from '../../stores/Store';
 
 class Application extends React.Component {
   constructor(props) {
@@ -33,7 +32,6 @@ class Application extends React.Component {
   componentDidMount() {
     window.addEventListener('resize', this.onWindowResize.bind(this));
     this.onWindowResize();
-    window.store = store; // this is just useful for debugging, but we'd get rid of it in production
   }
 
   onWindowResize() {
