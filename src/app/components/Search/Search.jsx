@@ -14,7 +14,6 @@ import { updateField } from '../../actions/Actions';
  */
 class Search extends React.Component {
   constructor(props) {
-    console.log('updateField', updateField);
     super(props);
 
     this.state = {
@@ -98,7 +97,6 @@ class Search extends React.Component {
   }
 
   render() {
-    console.log('Search', 'state', this.state, 'props', this.props);
     return (
       <form
         id="mainContent"

@@ -9,30 +9,30 @@ import { updateLoadingStatus } from '../../actions/Actions';
 
 const { dispatch } = store;
 
-// // intercepts all http request to update the status of loading in the Store
-// axios.interceptors.request.use(
-//   (config) => {
-//     dispatch(updateLoadingStatus(true));
-//     return config;
-//   },
-//   (error) => {
-//     dispatch(updateLoadingStatus(false));
-//     return Promise.reject(error);
-//   },
-// );
-//
-// axios.interceptors.response.use(
-//   (response) => {
-//     dispatch(updateLoadingStatus(false));
-//     return response;
-//   },
-//   (error) => {
-//     setTimeout(() => {
-//       dispatch(updateLoadingStatus(false));
-//     }, 5000);
-//     return Promise.reject(error);
-//   },
-// );
+// intercepts all http request to update the status of loading in the Store
+axios.interceptors.request.use(
+  (config) => {
+    dispatch(updateLoadingStatus(true));
+    return config;
+  },
+  (error) => {
+    dispatch(updateLoadingStatus(false));
+    return Promise.reject(error);
+  },
+);
+
+axios.interceptors.response.use(
+  (response) => {
+    dispatch(updateLoadingStatus(false));
+    return response;
+  },
+  (error) => {
+    setTimeout(() => {
+      dispatch(updateLoadingStatus(false));
+    }, 5000);
+    return Promise.reject(error);
+  },
+);
 
 const LoadingLayer = ({ loading, title, focus }) => {
   if (loading === false) {

@@ -107,12 +107,11 @@ function loadDataForRoutes(location, req, routeMethods, realRes) {
           json: (data) => {
             resolve({ data });
           },
-          data: realRes.data,
         };
         return routeMethods[pathType](req, res);
       })
         .then(({ data }) => {
-          realRes.data = { ...data };
+          realRes.data = { ...realRes.data, ...data };
           return realRes;
         })
         .catch(errorCb);

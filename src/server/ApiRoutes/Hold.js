@@ -317,7 +317,6 @@ function newHoldRequest(req, res) {
             bib,
             deliveryLocations,
             isEddRequestable,
-            patron: res.data.patron,
           });
         },
         (deliveryLocationsError) => {
