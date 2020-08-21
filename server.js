@@ -10,8 +10,6 @@ import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
 import { Provider } from 'react-redux';
 
-import configureStore from './src/app/stores/configureStore';
-import initialState from './src/app/stores/InitialState';
 import appConfig from './src/app/data/appConfig';
 import dataLoaderUtil from '@dataLoaderUtil';
 import webpackConfig from './webpack.config';
@@ -23,6 +21,7 @@ import initializePatronTokenAuth from './src/server/routes/auth';
 import { getPatronData } from './src/server/routes/api';
 import nyplApiClient from './src/server/routes/nyplApiClient';
 import logger from './logger';
+import store from './src/app/stores/Store';
 
 const ROOT_PATH = __dirname;
 const INDEX_PATH = path.resolve(ROOT_PATH, 'src/client');
@@ -92,7 +91,6 @@ app.get('/*', (req, res, next) => {
 });
 
 app.get('/*', (req, res) => {
-  console.log('res.data', res.data);
   const appRoutes = (req.url).indexOf(appConfig.baseUrl) !== -1 ? routes.client : routes.server;
 
   match({ routes: appRoutes, location: req.url }, (error, redirectLocation, renderProps) => {
@@ -104,8 +102,6 @@ app.get('/*', (req, res) => {
       if (!res.data) {
         res.data = {};
       }
-      const appData = Object.assign(initialState, res.data);
-      const store = configureStore(appData);
       application = ReactDOMServer.renderToString(
         <Provider store={store}>
           <RouterContext {...renderProps} />
@@ -117,7 +113,7 @@ app.get('/*', (req, res) => {
         .status(200)
         .render('index', {
           application,
-          appData: JSON.stringify(appData).replace(/</g, '\\u003c'),
+          appData: JSON.stringify(store.getState()).replace(/</g, '\\u003c'),
           appTitle: title,
           favicon: appConfig.favIconPath,
           webpackPort: WEBPACK_DEV_PORT,

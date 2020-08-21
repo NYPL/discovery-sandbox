@@ -106,10 +106,7 @@ function loadDataForRoutes(location, req, routeMethods, realRes) {
         };
         return routeMethods[pathType](req, res);
       })
-        .then(({ data }) => {
-          realRes.data = { ...realRes.data, ...data };
-          return realRes;
-        })
+        .then(successCb)
         .catch(errorCb);
     }
     console.log('making ajaxCall');

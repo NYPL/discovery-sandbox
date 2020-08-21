@@ -24,6 +24,8 @@ import {
   basicQuery,
 } from '../../utils/utils';
 
+import store from '../../stores/Store';
+
 class HoldRequest extends React.Component {
   constructor(props) {
     super(props);
@@ -61,8 +63,8 @@ class HoldRequest extends React.Component {
 
 
   componentDidMount() {
-    // this.requireUser();
-    // this.conditionallyRedirect();
+    this.requireUser();
+    this.conditionallyRedirect();
     const title = document.getElementById('item-title');
     if (title) {
       title.focus();
@@ -256,7 +258,6 @@ class HoldRequest extends React.Component {
   }
 
   render() {
-    console.log('HoldRequest patron', this.props.patron);
     const { closedLocations, holdRequestNotification } = this.props;
     const searchKeywords = this.props.searchKeywords;
     const bib = (this.props.bib && !_isEmpty(this.props.bib)) ?
