@@ -226,7 +226,7 @@ const basicQuery = (props = {}) => {
  * @param {object} query The request query object from Express.
  */
 function getReqParams(query = {}) {
-  console.log('query: ', query);
+  // console.log('query: ', query);
   const page = query.page || '1';
   const perPage = query.per_page || '50';
   const q = query.q || '';
