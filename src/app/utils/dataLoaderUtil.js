@@ -54,7 +54,11 @@ function loadDataForRoutes(location) {
     );
   };
 
-  return ajaxCall(location.pathname.replace(baseUrl, `${baseUrl}/api`) + location.search, successCb(pathType), errorCb);
+  return ajaxCall(
+    location.pathname.replace(baseUrl, `${baseUrl}/api`) + location.search,
+    successCb(pathType),
+    errorCb,
+  );
 }
 
 export default {
