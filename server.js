@@ -11,10 +11,8 @@ import bodyParser from 'body-parser';
 import { Provider } from 'react-redux';
 
 import appConfig from './src/app/data/appConfig';
-import dataLoaderUtil from '@dataLoaderUtil';
 import webpackConfig from './webpack.config';
 import apiRoutes from './src/server/ApiRoutes/ApiRoutes';
-import routeMethods from './src/server/ApiRoutes/RouteMethods';
 import routes from './src/app/routes/routes';
 
 import initializePatronTokenAuth from './src/server/routes/auth';
@@ -70,25 +68,6 @@ nyplApiClient();
 
 app.use('/*', initializePatronTokenAuth, getPatronData);
 app.use('/', apiRoutes);
-
-app.get('/*', (req, res, next) => {
-  const queryString = req._parsedUrl.query;
-  let query = {};
-  if (queryString) {
-    query = queryString
-      .split('&')
-      .map(pair => pair.split('='))
-      .reduce((acc, el) => ({ [el[0]]: el[1], ...acc }));
-  }
-
-  const location = {
-    pathname: req.originalUrl,
-    query,
-    search: '',
-  };
-
-  dataLoaderUtil.loadDataForRoutes(location, req, routeMethods, res).then(() => next());
-});
 
 app.get('/*', (req, res) => {
   const appRoutes = (req.url).indexOf(appConfig.baseUrl) !== -1 ? routes.client : routes.server;

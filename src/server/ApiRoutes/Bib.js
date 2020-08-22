@@ -49,14 +49,15 @@ function fetchBib(bibId, cb, errorcb, options = { fetchSubjectHeadingData: true 
     }); /* end axios call */
 }
 
-function bibSearch(req, res) {
+function bibSearch(req, res, resolve) {
+  console.log('resolve: ', resolve);
   const bibId = req.params.bibId;
 
 
   fetchBib(
     bibId,
-    data => res.json(data),
-    error => res.json(error),
+    data => resolve(data),
+    error => resolve(error),
   );
 }
 

@@ -12,6 +12,7 @@ import routeMethods from './RouteMethods';
 
 const router = express.Router();
 const routes = dataLoaderUtil.routes;
+const successCb = dataLoaderUtil.successCb;
 
 router
   .route(`${appConfig.baseUrl}/search`)
@@ -37,13 +38,21 @@ Object.keys(routes).forEach((routeName) => {
   const { path, params } = routes[routeName];
   router
     .route(`${appConfig.baseUrl}/api/${path}${params}`)
-    .get(routeMethods[routeName]);
+    .get((req, res) => new Promise(
+      resolve => routeMethods[routeName](req, res, resolve),
+    )
+      .then(data => res.json(data)),
+    );
 
   router
     .route(`${appConfig.baseUrl}/${path}${params}`)
     .get((req, res, next) => {
-      req.serverParams = req.params;
-      next();
+      const method = routeMethods[routeName];
+      return new Promise(
+        resolve => method(req, res, resolve),
+      )
+        .then(data => successCb(routeName)({ data }))
+        .then(() => next());
     });
 });
 

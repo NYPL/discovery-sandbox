@@ -31,25 +31,21 @@ const routes = {
   },
 };
 
-function loadDataForRoutes(location, req, routeMethods, realRes) {
+const successCb = pathType => (response) => {
+  dispatch(routes[pathType].action(response.data));
+};
+
+function loadDataForRoutes(location) {
   const { pathname } = location;
 
-  let pathType;
-  let matchingAction;
-
-  Object.entries(routes).forEach(([pathKey, pathValue]) => {
-    const { action, path } = pathValue;
-    if (pathname.match(`${baseUrl}/${path}`)) {
-      pathType = pathKey;
-      matchingAction = action;
-    }
+  const matchingPath = Object.entries(routes).find(([pathKey, pathValue]) => {
+    const { path } = pathValue;
+    return pathname.match(`${baseUrl}/${path}`);
   });
 
-  if (!pathType) return new Promise(resolve => resolve());
+  if (!matchingPath) return null;
 
-  const successCb = (response) => {
-    dispatch(matchingAction(response.data, location));
-  };
+  const pathType = matchingPath[0];
 
   const errorCb = (error) => {
     console.error(
@@ -58,27 +54,11 @@ function loadDataForRoutes(location, req, routeMethods, realRes) {
     );
   };
 
-  if (req) {
-    console.log('making server side call', routes[pathType], req.params, req.serverParams);
-    req.params = Object.assign(req.serverParams, req.params);
-    const res = resolve => ({
-      redirect: url => realRes.redirect(url),
-      json: (data) => {
-        resolve({ data });
-      },
-    });
-
-    return new Promise(resolve =>
-      routeMethods[pathType](req, res(resolve)),
-    )
-      .then(successCb)
-      .catch(errorCb);
-  }
-
-  return ajaxCall(location.pathname.replace(baseUrl, `${baseUrl}/api`) + location.search, successCb, errorCb);
+  return ajaxCall(location.pathname.replace(baseUrl, `${baseUrl}/api`) + location.search, successCb(pathType), errorCb);
 }
 
 export default {
   loadDataForRoutes,
   routes,
+  successCb,
 };
