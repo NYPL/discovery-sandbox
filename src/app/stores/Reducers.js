@@ -4,6 +4,8 @@ import appConfig from '../data/appConfig';
 
 function appReducer(state = initialState, action) {
   switch (action.type) {
+    case Actions.RESET_STATE:
+      return { ...initialState };
     case Actions.UPDATE_LOADING_STATUS:
       return { ...state, loading: action.payload };
     case Actions.UPDATE_SEARCH_RESULTS:

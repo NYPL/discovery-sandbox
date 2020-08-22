@@ -20,6 +20,7 @@ import { getPatronData } from './src/server/routes/api';
 import nyplApiClient from './src/server/routes/nyplApiClient';
 import logger from './logger';
 import store from './src/app/stores/Store';
+import { resetState } from './src/app/actions/Actions';
 
 const ROOT_PATH = __dirname;
 const INDEX_PATH = path.resolve(ROOT_PATH, 'src/client');
@@ -61,6 +62,11 @@ app.use('/', (req, res, next) => {
     return res.redirect(`${appConfig.baseUrl}/`);
   }
   return next();
+});
+
+app.use('/*', (req, res, next) => {
+  resetState();
+  next();
 });
 
 // Init the nypl data api client.

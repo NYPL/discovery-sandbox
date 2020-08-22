@@ -1,6 +1,7 @@
 import axios from 'axios';
 
 export const Actions = {
+  RESET_STATE: 'RESET_STATE',
   SET_APP_CONFIG: 'SET_APP_CONFIG',
   UPDATE_SEARCH_RESULTS: 'UPDATE_SEARCH_RESULTS',
   UPDATE_SEARCH_KEYWORDS: 'UPDATE_SEARCH_KEYWORDS',
@@ -18,6 +19,11 @@ export const Actions = {
   UPDATE_DRBB_RESULTS: 'UPDATE_DRBB_RESULTS',
   UPDATE_PATRON_DATA: 'UPDATE_PATRON_DATA',
 };
+
+export const resetState = () => ({
+  type: Actions.RESET_STATE,
+  payload: null,
+});
 
 export const setAppConfig = appConfig => ({
   type: Actions.SET_APP_CONFIG,
