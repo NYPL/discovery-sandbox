@@ -37,6 +37,13 @@ Object.keys(routePaths).forEach((routeName) => {
   router
     .route(routePaths[routeName])
     .get(routeMethods[routeName]);
+
+  router
+    .route(routePaths[routeName].replace('/api', ''))
+    .get((req, res, next) => {
+      req.serverParams = req.params;
+      next();
+    });
 });
 
 router

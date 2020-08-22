@@ -10,48 +10,21 @@ import store from '../stores/Store';
 
 const { dispatch } = store;
 
-const pathInstructions = [
-  {
-    expression: /\/research\/collections\/shared-collection-catalog\/bib\/([cp]?b\d*)/,
-    pathType: 'bib',
-  },
-  {
-    expression: /\/research\/collections\/shared-collection-catalog\/search\?(.*)/,
-    pathType: 'search',
-  },
-  {
-    expression: /\/research\/collections\/shared-collection-catalog\/hold\/request\/([^/]*)/,
-    pathType: 'holdRequest',
-  },
-];
-
 const routePaths = {
-  bib: `${appConfig.baseUrl}/api/bib`,
-  search: `${appConfig.baseUrl}/api`,
+  bib: `${appConfig.baseUrl}/api/bib/:bibId`,
+  search: `${appConfig.baseUrl}/api/search`,
   holdRequest: `${appConfig.baseUrl}/api/hold/request/:bibId-:itemId`,
 };
 
 const routesGenerator = () => ({
   bib: {
-    apiRoute: (matchData, route) => `${route}?bibId=${matchData[1]}`,
-    serverParams: (matchData, req) => { req.query.bibId = matchData[1]; },
     action: updateBibPage,
-    errorMessage: 'Error attempting to make an ajax request to fetch a bib record from ResultsList',
   },
   search: {
-    apiRoute: (matchData, route) => `${route}?${matchData[1]}`,
     action: updateSearchResultsPage,
-    errorMessage: 'Error attempting to make an ajax request to search',
   },
   holdRequest: {
-    apiRoute: (matchData, route) => route.replace(':bibId-:itemId', matchData[1]),
-    serverParams: (matchData, req) => {
-      const params = matchData[1].match(/\w+/g);
-      if (params[0]) req.params.bibId = params[0];
-      if (params[1]) req.params.itemId = params[1];
-    },
     action: updateHoldRequestPage,
-    errorMessage: 'Error attempting to make ajax request for hold request',
   },
 });
 
@@ -61,11 +34,15 @@ const matchingPathData = (location) => {
     search,
   } = location;
 
-  return pathInstructions
-    .map(instruction => ({
-      matchData: (pathname + search).match(instruction.expression),
-      pathType: instruction.pathType,
-    }))
+  console.log('entries: ', Object.entries(routePaths));
+  return Object.entries(routePaths)
+    .map(([pathType, path]) => {
+      console.log(pathType, path, typeof path);
+      return {
+        matchData: (pathname + search).match(new RegExp(path.replace(/:.*/, '').replace(/\/api/, ''))),
+        pathType,
+      };
+    })
     .find(pair => pair.matchData)
     || { matchData: null, pathType: null };
 };
@@ -73,30 +50,25 @@ const matchingPathData = (location) => {
 function loadDataForRoutes(location, req, routeMethods, realRes) {
   const routes = routesGenerator(location);
   const {
-    matchData,
     pathType,
   } = matchingPathData(location);
 
   if (routes[pathType]) {
     const {
-      apiRoute,
       action,
-      errorMessage,
-      serverParams,
     } = routes[pathType];
-    const route = routePaths[pathType];
     const successCb = (response) => {
       dispatch(action(response.data, location));
     };
     const errorCb = (error) => {
       console.error(
-        errorMessage,
+        `Error attempting to make ajax request for ${routes[pathType]}`,
         error,
       );
     };
     if (req) {
-      console.log('making server side call');
-      if (serverParams) serverParams(matchData, req);
+      console.log('making server side call', routes[pathType], req.params, req.serverParams);
+      req.params = Object.assign(req.serverParams, req.params);
       return new Promise((resolve) => {
         const res = {
           redirect: url => realRes.redirect(url),
@@ -109,8 +81,10 @@ function loadDataForRoutes(location, req, routeMethods, realRes) {
         .then(successCb)
         .catch(errorCb);
     }
-    console.log('making ajaxCall');
-    return ajaxCall(apiRoute(matchData, route), successCb, errorCb);
+    const baseUrl = appConfig.baseUrl;
+    // console.log('making ajaxCall', location, 'route ', location.pathname.replace(baseUrl, `${baseUrl}/api`));
+    // return ajaxCall(apiRoute(matchData, route), successCb, errorCb);
+    return ajaxCall(location.pathname.replace(baseUrl, `${baseUrl}/api`) + location.search, successCb, errorCb);
   }
   return new Promise(resolve => resolve());
 }

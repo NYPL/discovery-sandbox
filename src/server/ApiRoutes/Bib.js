@@ -50,7 +50,8 @@ function fetchBib(bibId, cb, errorcb, options = { fetchSubjectHeadingData: true 
 }
 
 function bibSearch(req, res) {
-  const bibId = req.query.bibId || '';
+  const bibId = req.params.bibId;
+
 
   fetchBib(
     bibId,
