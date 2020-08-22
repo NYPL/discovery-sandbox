@@ -9,7 +9,6 @@ import { updatePatronData } from '../../../app/actions/Actions';
 
 export function getPatronData(req, res, next) {
   const { dispatch } = global.store;
-  console.log('patron: ', store.getState().patron);
   if (req.patronTokenResponse.isTokenValid
     && req.patronTokenResponse.decodedPatron
     && req.patronTokenResponse.decodedPatron.sub
