@@ -35,24 +35,17 @@ router
 
 Object.keys(routes).forEach((routeName) => {
   const { path, params } = routes[routeName];
-  router
-    .route(`${appConfig.baseUrl}/api/${path}${params}`)
-    .get((req, res) => new Promise(
-      resolve => routeMethods[routeName](req, res, resolve),
-    )
-      .then(data => res.json(data)),
-    );
-
-  router
-    .route(`${appConfig.baseUrl}/${path}${params}`)
-    .get((req, res, next) => {
-      const method = routeMethods[routeName];
-      return new Promise(
-        resolve => method(req, res, resolve),
+  ['/', '/api/'].forEach((pathType) => {
+    const api = pathType === '/api/';
+    router
+      .route(`${appConfig.baseUrl}${pathType}${path}${params}`)
+      .get((req, res, next) => new Promise(
+        resolve => routeMethods[routeName](req, res, resolve),
       )
-        .then(data => successCb(routeName)({ data }))
-        .then(() => next());
-    });
+        .then(data => (api ? res.json(data) : successCb(routeName)({ data })))
+        .then(() => (api ? null : next())),
+      );
+  });
 });
 
 router
