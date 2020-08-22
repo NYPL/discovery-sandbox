@@ -289,7 +289,6 @@ function confirmRequestServer(req, res, next) {
  * @return {function}
  */
 function newHoldRequest(req, res, resolve) {
-  // console.log('req.patronTokenResponse', req.patronTokenResponse);
   const loggedIn = User.requireUser(req, res);
   console.log('loggedIn', loggedIn);
   if (!loggedIn) return false;
@@ -298,14 +297,11 @@ function newHoldRequest(req, res, resolve) {
   const patronId = req.patronTokenResponse.decodedPatron ?
     req.patronTokenResponse.decodedPatron.sub : '';
   let barcode;
-  // console.log('bibId', bibId);
-  // if (typeof bibId === 'object') console.log('bibId OBJECT', Object.keys(bibId));
 
   // Retrieve item
   return Bib.fetchBib(
     bibId,
     (bibResponseData) => {
-      // console.log('bibResponseData', bibResponseData);
       const { bib } = bibResponseData;
       barcode = LibraryItem.getItem(bib, req.params.itemId).barcode;
 
@@ -387,7 +383,6 @@ function newHoldRequestServerEdd(req, res, next) {
  * @return {function}
  */
 function createHoldRequestServer(req, res, pickedUpBibId = '', pickedUpItemId = '') {
-  // console.log('req.body.serverRedirect', req.body.serverRedirect);
   res.respond = req.body.serverRedirect === 'false' ? res.json : res.redirect;
   // Ensure user is logged in
   const loggedIn = User.requireUser(req, res);
