@@ -11,7 +11,7 @@ import dataLoaderUtil from '../../app/utils/dataLoaderUtil';
 import routeMethods from './RouteMethods';
 
 const router = express.Router();
-const routePaths = dataLoaderUtil.routePaths;
+const routes = dataLoaderUtil.routes;
 
 router
   .route(`${appConfig.baseUrl}/search`)
@@ -33,13 +33,14 @@ router
   .route(`${appConfig.baseUrl}/edd`)
   .post(Hold.eddServer);
 
-Object.keys(routePaths).forEach((routeName) => {
+Object.keys(routes).forEach((routeName) => {
+  const { path, params } = routes[routeName];
   router
-    .route(routePaths[routeName])
+    .route(`${appConfig.baseUrl}/api/${path}${params}`)
     .get(routeMethods[routeName]);
 
   router
-    .route(routePaths[routeName].replace('/api', ''))
+    .route(`${appConfig.baseUrl}/${path}${params}`)
     .get((req, res, next) => {
       req.serverParams = req.params;
       next();
