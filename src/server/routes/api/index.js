@@ -68,14 +68,14 @@ export function getPatronData(req, res, next) {
       );
   }
 
-  res.data = {
-    patron: {
-      id: '',
-      names: [],
-      barcodes: [],
-      emails: [],
-      loggedIn: false,
-    },
+  const patron = {
+    id: '',
+    names: [],
+    barcodes: [],
+    emails: [],
+    loggedIn: false,
   };
+
+  dispatch(updatePatronData(patron));
   return next();
 }
