@@ -7,12 +7,10 @@ import Feedback from './Feedback';
 import appConfig from '../../app/data/appConfig';
 import SubjectHeading from './SubjectHeading';
 import SubjectHeadings from './SubjectHeadings';
-import dataLoaderUtil from '../../app/utils/dataLoaderUtil';
+import { routes, successCb } from '../../app/utils/dataLoaderUtil';
 import routeMethods from './RouteMethods';
 
 const router = express.Router();
-const routes = dataLoaderUtil.routes;
-const successCb = dataLoaderUtil.successCb;
 
 router
   .route(`${appConfig.baseUrl}/search`)

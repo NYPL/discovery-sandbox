@@ -3,7 +3,6 @@ import {
   updateBibPage,
   updateSearchResultsPage,
   updateHoldRequestPage,
-  updateLoadingStatus,
 } from '@Actions';
 import appConfig from '@appConfig';
 import store from '../stores/Store';
