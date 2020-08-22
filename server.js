@@ -19,8 +19,8 @@ import initializePatronTokenAuth from './src/server/routes/auth';
 import { getPatronData } from './src/server/routes/api';
 import nyplApiClient from './src/server/routes/nyplApiClient';
 import logger from './logger';
-import store from './src/app/stores/Store';
-import { resetState } from './src/app/actions/Actions';
+import configureStore from './src/app/stores/configureStore';
+import initialState from './src/app/stores/InitialState';
 
 const ROOT_PATH = __dirname;
 const INDEX_PATH = path.resolve(ROOT_PATH, 'src/client');
@@ -65,7 +65,7 @@ app.use('/', (req, res, next) => {
 });
 
 app.use('/*', (req, res, next) => {
-  resetState();
+  global.store = configureStore(initialState);
   next();
 });
 
@@ -77,6 +77,7 @@ app.use('/', apiRoutes);
 
 app.get('/*', (req, res) => {
   const appRoutes = (req.url).indexOf(appConfig.baseUrl) !== -1 ? routes.client : routes.server;
+  const store = global.store;
 
   match({ routes: appRoutes, location: req.url }, (error, redirectLocation, renderProps) => {
     if (error) {

@@ -42,7 +42,7 @@ Object.keys(routes).forEach((routeName) => {
       .get((req, res, next) => new Promise(
         resolve => routeMethods[routeName](req, res, resolve),
       )
-        .then(data => (api ? res.json(data) : successCb(routeName)({ data })))
+        .then(data => (api ? res.json(data) : successCb(routeName, global.store.dispatch)({ data })))
         .then(() => (api ? null : next())),
       );
   });

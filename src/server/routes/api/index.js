@@ -4,12 +4,12 @@ import { isEmpty as _isEmpty } from 'underscore';
 import nyplApiClient from '../nyplApiClient';
 import logger from '../../../../logger';
 
-import store from '../../../app/stores/Store';
 import { updatePatronData } from '../../../app/actions/Actions';
 
-const { dispatch } = store;
 
 export function getPatronData(req, res, next) {
+  const { dispatch } = global.store;
+  console.log('patron: ', store.getState().patron);
   if (req.patronTokenResponse.isTokenValid
     && req.patronTokenResponse.decodedPatron
     && req.patronTokenResponse.decodedPatron.sub

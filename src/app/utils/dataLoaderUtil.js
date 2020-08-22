@@ -5,10 +5,6 @@ import {
   updateHoldRequestPage,
 } from '@Actions';
 import appConfig from '@appConfig';
-import store from '../stores/Store';
-
-const { dispatch } = store;
-
 
 const baseUrl = appConfig.baseUrl;
 
@@ -30,11 +26,11 @@ const routes = {
   },
 };
 
-const successCb = pathType => (response) => {
+const successCb = (pathType, dispatch) => (response) => {
   dispatch(routes[pathType].action(response.data));
 };
 
-function loadDataForRoutes(location) {
+function loadDataForRoutes(location, dispatch) {
   const { pathname } = location;
 
   const matchingPath = Object.entries(routes).find(([pathKey, pathValue]) => {
@@ -55,7 +51,7 @@ function loadDataForRoutes(location) {
 
   return ajaxCall(
     location.pathname.replace(baseUrl, `${baseUrl}/api`) + location.search,
-    successCb(pathType),
+    successCb(pathType, dispatch),
     errorCb,
   );
 }
