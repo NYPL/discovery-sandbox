@@ -1,5 +1,3 @@
-import axios from 'axios';
-
 export const Actions = {
   SET_APP_CONFIG: 'SET_APP_CONFIG',
   UPDATE_SEARCH_RESULTS: 'UPDATE_SEARCH_RESULTS',
@@ -84,6 +82,11 @@ export const updatePatronData = patronData => ({
   payload: patronData,
 });
 
+export const updateLoadingStatus = loading => ({
+  type: Actions.UPDATE_LOADING_STATUS,
+  payload: loading,
+});
+
 /* `updateSearchResultsPage` performs:
     * updateSearchResults
     * updatePage
@@ -122,9 +125,4 @@ export const updateHoldRequestPage = data => dispatch => new Promise(() => {
   dispatch(updateBib(bib));
   dispatch(updateDeliveryLocations(deliveryLocations));
   dispatch(updateIsEddRequestable(isEddRequestable));
-});
-
-export const updateLoadingStatus = loading => ({
-  type: Actions.UPDATE_LOADING_STATUS,
-  payload: loading,
 });

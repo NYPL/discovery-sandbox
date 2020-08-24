@@ -78,7 +78,10 @@ class Application extends React.Component {
             patron={this.state.patron}
             skipNav={{ target: 'mainContent' }}
           />
-          <LoadingLayer title="Searching" />
+          <LoadingLayer
+            title="Loading"
+            loading={this.props.loading}
+          />
           <DataLoader
             location={this.context.router.location}
             key={JSON.stringify(dataLocation)}
@@ -96,6 +99,7 @@ class Application extends React.Component {
 Application.propTypes = {
   children: PropTypes.object,
   patron: PropTypes.object,
+  loading: PropTypes.bool,
 };
 
 Application.defaultProps = {
@@ -110,4 +114,4 @@ Application.childContextTypes = {
   media: PropTypes.string,
 };
 
-export default withRouter(connect(({ patron }) => ({ patron }))(Application));
+export default withRouter(connect(({ patron, loading }) => ({ patron, loading }))(Application));

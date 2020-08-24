@@ -14,6 +14,7 @@ import {
 import DocumentTitle from 'react-document-title';
 import { connect } from 'react-redux';
 
+import LoadingLayer from '../LoadingLayer/LoadingLayer';
 import Breadcrumbs from '../Breadcrumbs/Breadcrumbs';
 import Notification from '../Notification/Notification';
 
@@ -333,10 +334,18 @@ class HoldRequest extends React.Component {
     }
 
     const searchUrl = basicQuery(this.props)({});
+    const userLoggedIn = this.props.patron && this.props.patron.loggedIn;
+    // include extra LoadingLayer here, since this one depends on the patron login status
 
     return (
       <DocumentTitle title="Item Request | Shared Collection Catalog | NYPL">
         <div>
+          {
+            !userLoggedIn ? <LoadingLayer
+              title="Loading"
+              loading
+            /> : null
+          }
           <div className="nypl-request-page-header">
             <div className="nypl-full-width-wrapper">
               <div className="row">
@@ -358,7 +367,7 @@ class HoldRequest extends React.Component {
                 <div className="nypl-request-item-summary">
                   <div className="item">
                     {
-                      (!bib || !selectedItemAvailable) &&
+                      (userLoggedIn && (!bib || !selectedItemAvailable)) &&
                         <h2>
                           This item cannot be requested at this time. Please try again later or
                           contact 917-ASK-NYPL (<a href="tel:917-275-6975">917-275-6975</a>).

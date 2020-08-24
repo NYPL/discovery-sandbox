@@ -3,7 +3,10 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import axios from 'axios';
-import { Link } from 'react-router';
+import {
+  Link,
+  withRouter,
+} from 'react-router';
 import {
   isArray as _isArray,
   isEmpty as _isEmpty,
@@ -11,6 +14,7 @@ import {
   mapObject as _mapObject,
 } from 'underscore';
 import DocumentTitle from 'react-document-title';
+import { connect } from 'react-redux';
 
 import Breadcrumbs from '../Breadcrumbs/Breadcrumbs';
 import appConfig from '../../data/appConfig';
@@ -181,7 +185,7 @@ class ElectronicDelivery extends React.Component {
    * @return {Boolean}
    */
   requireUser() {
-    if (this.state.patron && this.state.patron.id) {
+    if (this.props.patron && this.props.patron.id) {
       return true;
     }
 
@@ -203,9 +207,9 @@ class ElectronicDelivery extends React.Component {
     const callNo = bib && bib.shelfMark && bib.shelfMark.length ? bib.shelfMark[0] : null;
     const { error, form } = this.props;
     const patronEmail = (
-      this.state.patron.emails && _isArray(this.state.patron.emails)
-      && this.state.patron.emails.length
-    ) ? this.state.patron.emails[0] : '';
+      this.props.patron.emails && _isArray(this.props.patron.emails)
+      && this.props.patron.emails.length
+    ) ? this.props.patron.emails[0] : '';
     const searchKeywords = this.props.searchKeywords;
     const {
       closedLocations, holdRequestNotification,
@@ -306,6 +310,7 @@ ElectronicDelivery.propTypes = {
   params: PropTypes.object,
   error: PropTypes.object,
   form: PropTypes.object,
+  patron: PropTypes.object,
 };
 
 ElectronicDelivery.defaultProps = {
@@ -313,4 +318,4 @@ ElectronicDelivery.defaultProps = {
 };
 
 
-export default ElectronicDelivery;
+export default withRouter(connect(({ patron }) => ({ patron }))(ElectronicDelivery));
