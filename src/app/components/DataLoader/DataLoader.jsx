@@ -1,11 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import dataLoaderUtil from '@dataLoaderUtil';
 
-class DataLoader extends React.Component {
 
+// The sole responsibility of the DataLoader is to trigger a data reload whenever
+// the location changes.
+
+class DataLoader extends React.Component {
   componentDidMount() {
-    dataLoaderUtil.loadDataForRoutes(this.props.location);
+    const { location, dispatch } = this.props;
+    dataLoaderUtil.loadDataForRoutes(location, dispatch);
   }
 
   render() {
@@ -21,4 +26,4 @@ DataLoader.contextTypes = {
   router: PropTypes.object,
 };
 
-export default DataLoader;
+export default connect()(DataLoader);

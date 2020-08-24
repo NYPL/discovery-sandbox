@@ -11,7 +11,7 @@ import dataLoaderUtil from '../../app/utils/dataLoaderUtil';
 import routeMethods from './RouteMethods';
 
 const router = express.Router();
-const routePaths = dataLoaderUtil.routePaths;
+const { routes, successCb } = dataLoaderUtil;
 
 router
   .route(`${appConfig.baseUrl}/search`)
@@ -33,10 +33,25 @@ router
   .route(`${appConfig.baseUrl}/edd`)
   .post(Hold.eddServer);
 
-Object.keys(routePaths).forEach((routeName) => {
-  router
-    .route(routePaths[routeName])
-    .get(routeMethods[routeName]);
+// Add the paths configured in dataLoaderUtil and RouteMethods. This covers two scenarios:
+// 1. Server side navigation, the / path is hit, we directly call the relevant method
+// (which is routeMethods[routeName]), load the data into the store and go to next()
+// 2. Api calls, the /api/ path is hit, we simply return the data to the client (res.json)
+// Then client side the dataLoaderUtil will load the response into the store
+
+Object.keys(routes).forEach((routeName) => {
+  const { path, params } = routes[routeName];
+  ['/', '/api/'].forEach((pathType) => {
+    const api = pathType === '/api/';
+    router
+      .route(`${appConfig.baseUrl}${pathType}${path}${params}`)
+      .get((req, res, next) => new Promise(
+        resolve => routeMethods[routeName](req, res, resolve),
+      )
+        .then(data => (api ? res.json(data) : successCb(routeName, global.store.dispatch)({ data })))
+        .then(() => (api ? null : next())),
+      );
+  });
 });
 
 router

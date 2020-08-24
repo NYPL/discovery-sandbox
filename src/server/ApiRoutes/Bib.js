@@ -49,13 +49,14 @@ function fetchBib(bibId, cb, errorcb, options = { fetchSubjectHeadingData: true 
     }); /* end axios call */
 }
 
-function bibSearch(req, res) {
-  const bibId = req.query.bibId || '';
+function bibSearch(req, res, resolve) {
+  const bibId = req.params.bibId;
+
 
   fetchBib(
     bibId,
-    data => res.json(data),
-    error => res.json(error),
+    data => resolve(data),
+    error => resolve(error),
   );
 }
 

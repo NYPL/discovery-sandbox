@@ -10,19 +10,17 @@ import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
 import { Provider } from 'react-redux';
 
-import configureStore from './src/app/stores/configureStore';
-import initialState from './src/app/stores/InitialState';
 import appConfig from './src/app/data/appConfig';
-import dataLoaderUtil from '@dataLoaderUtil';
 import webpackConfig from './webpack.config';
 import apiRoutes from './src/server/ApiRoutes/ApiRoutes';
-import routeMethods from './src/server/ApiRoutes/RouteMethods';
 import routes from './src/app/routes/routes';
 
 import initializePatronTokenAuth from './src/server/routes/auth';
 import { getPatronData } from './src/server/routes/api';
 import nyplApiClient from './src/server/routes/nyplApiClient';
 import logger from './logger';
+import configureStore from './src/app/stores/configureStore';
+import initialState from './src/app/stores/InitialState';
 
 const ROOT_PATH = __dirname;
 const INDEX_PATH = path.resolve(ROOT_PATH, 'src/client');
@@ -66,34 +64,20 @@ app.use('/', (req, res, next) => {
   return next();
 });
 
+app.use('/*', (req, res, next) => {
+  global.store = configureStore(initialState);
+  next();
+});
+
 // Init the nypl data api client.
 nyplApiClient();
 
 app.use('/*', initializePatronTokenAuth, getPatronData);
 app.use('/', apiRoutes);
 
-app.get('/*', (req, res, next) => {
-  const queryString = req._parsedUrl.query;
-  let query = {};
-  if (queryString) {
-    query = queryString
-      .split('&')
-      .map(pair => pair.split('='))
-      .reduce((acc, el) => ({ [el[0]]: el[1], ...acc }));
-  }
-
-  const location = {
-    pathname: req.originalUrl,
-    query,
-    search: '',
-  };
-
-  dataLoaderUtil.loadDataForRoutes(location, req, routeMethods, res).then(() => next());
-});
-
 app.get('/*', (req, res) => {
-  console.log('res.data', res.data);
   const appRoutes = (req.url).indexOf(appConfig.baseUrl) !== -1 ? routes.client : routes.server;
+  const store = global.store;
 
   match({ routes: appRoutes, location: req.url }, (error, redirectLocation, renderProps) => {
     if (error) {
@@ -104,8 +88,6 @@ app.get('/*', (req, res) => {
       if (!res.data) {
         res.data = {};
       }
-      const appData = Object.assign(initialState, res.data);
-      const store = configureStore(appData);
       application = ReactDOMServer.renderToString(
         <Provider store={store}>
           <RouterContext {...renderProps} />
@@ -117,7 +99,7 @@ app.get('/*', (req, res) => {
         .status(200)
         .render('index', {
           application,
-          appData: JSON.stringify(appData).replace(/</g, '\\u003c'),
+          appData: JSON.stringify(store.getState()).replace(/</g, '\\u003c'),
           appTitle: title,
           favicon: appConfig.favIconPath,
           webpackPort: WEBPACK_DEV_PORT,
