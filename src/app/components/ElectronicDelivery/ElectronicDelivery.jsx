@@ -317,5 +317,10 @@ ElectronicDelivery.defaultProps = {
   searchKeywords: '',
 };
 
+const mapStateToProps = ({ patron, bib, searchKeywords }) => ({
+  patron,
+  bib,
+  searchKeywords,
+});
 
-export default withRouter(connect(({ patron }) => ({ patron }))(ElectronicDelivery));
+export default withRouter(connect(mapStateToProps)(ElectronicDelivery));

@@ -13,6 +13,7 @@ import LibraryItem from './../../app/utils/item';
 import { validate } from '../../app/utils/formValidationUtils';
 import nyplApiClient from '../routes/nyplApiClient';
 import logger from '../../../logger';
+import { updateBib, updateSearchKeywords } from '../../app/actions/Actions';
 
 const nyplApiClientGet = endpoint =>
   nyplApiClient().then(client => client.get(endpoint, { cache: false }));
@@ -334,6 +335,7 @@ function newHoldRequest(req, res, resolve) {
 }
 
 function newHoldRequestServerEdd(req, res, next) {
+  const { dispatch } = global.store;
   const loggedIn = User.requireUser(req, res);
   const error = req.query.error ? JSON.parse(req.query.error) : {};
   const form = req.query.form ? JSON.parse(req.query.form) : {};
@@ -345,9 +347,9 @@ function newHoldRequestServerEdd(req, res, next) {
   return Bib.fetchBib(
     bibId,
     (data) => {
+      dispatch(updateBib(data.bib));
+      dispatch(updateSearchKeywords(req.query.searchKeywords));
       res.data = {
-        bib: data.bib,
-        searchKeywords: req.query.searchKeywords || '',
         error,
         form,
       };
