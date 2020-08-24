@@ -5,6 +5,7 @@ import {
   updateHoldRequestPage,
 } from '@Actions';
 import appConfig from '@appConfig';
+import { updateLoadingStatus } from '../actions/Actions';
 
 const baseUrl = appConfig.baseUrl;
 
@@ -40,7 +41,7 @@ const successCb = (pathType, dispatch) => (response) => {
 };
 
 
-// This function is now called only on the front end, by the DataLoader, when a location changes.
+// This function is called only on the front end, by the DataLoader, when a location changes.
 // Its sole responsibility is to check if any of the configured paths match
 // the current location, and if so, make an api call and pass the resulting data
 // on. Note that it makes use of the fact that now for every frontend route, the
@@ -54,7 +55,7 @@ function loadDataForRoutes(location, dispatch) {
     return pathname.match(`${baseUrl}/${path}`);
   });
 
-  if (!matchingPath) return null;
+  if (!matchingPath) return new Promise(resolve => resolve());
 
   const pathType = matchingPath[0];
 
@@ -64,6 +65,7 @@ function loadDataForRoutes(location, dispatch) {
       error,
     );
   };
+  dispatch(updateLoadingStatus(true));
 
   return ajaxCall(
     location.pathname.replace(baseUrl, `${baseUrl}/api`) + location.search,

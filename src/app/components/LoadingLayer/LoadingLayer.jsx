@@ -21,19 +21,6 @@ axios.interceptors.request.use(
   },
 );
 
-axios.interceptors.response.use(
-  (response) => {
-    dispatch(updateLoadingStatus(false));
-    return response;
-  },
-  (error) => {
-    setTimeout(() => {
-      dispatch(updateLoadingStatus(false));
-    }, 5000);
-    return Promise.reject(error);
-  },
-);
-
 const LoadingLayer = ({ loading, title, focus }) => {
   if (loading === false) {
     return null;

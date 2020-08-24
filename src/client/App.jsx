@@ -5,10 +5,11 @@ import 'regenerator-runtime/runtime';
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Router, browserHistory } from 'react-router';
+import { Router, browserHistory, applyRouterMiddleware } from 'react-router';
 import { config, gaUtils } from 'dgx-react-ga';
 import a11y from 'react-a11y';
 import { Provider } from 'react-redux';
+import useScroll from 'react-router-scroll/lib/useScroll';
 
 import store from '../app/stores/Store';
 import './styles/main.scss';
@@ -30,7 +31,10 @@ window.onload = () => {
   const appElement = global.document.getElementById('app');
   ReactDOM.render(
     <Provider store={store}>
-      <Router history={browserHistory}>
+      <Router
+        history={browserHistory}
+        render={applyRouterMiddleware(useScroll())}
+      >
         {routes.client}
       </Router>
     </Provider>,

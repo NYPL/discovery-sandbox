@@ -257,15 +257,20 @@ class HoldRequest extends React.Component {
   }
 
   render() {
-    const { closedLocations, holdRequestNotification } = this.props;
-    const searchKeywords = this.props.searchKeywords;
+    const {
+      closedLocations,
+      holdRequestNotification,
+      searchKeywords,
+      loading,
+      params,
+    } = this.props;
     const bib = (this.props.bib && !_isEmpty(this.props.bib)) ?
       this.props.bib : null;
     const title = (bib && _isArray(bib.title) && bib.title.length) ?
       bib.title[0] : '';
     const bibId = (bib && bib['@id'] && typeof bib['@id'] === 'string') ?
       bib['@id'].substring(4) : '';
-    const itemId = (this.props.params && this.props.params.itemId) ? this.props.params.itemId : '';
+    const itemId = (params && params.itemId) ? params.itemId : '';
     const selectedItem = (bib && itemId) ? LibraryItem.getItem(bib, itemId) : {};
     const selectedItemAvailable = selectedItem ? selectedItem.available : false;
     const bibLink = (bibId && title) ?
@@ -367,7 +372,7 @@ class HoldRequest extends React.Component {
                 <div className="nypl-request-item-summary">
                   <div className="item">
                     {
-                      (userLoggedIn && (!bib || !selectedItemAvailable)) &&
+                      (userLoggedIn && !loading && (!bib || !selectedItemAvailable)) &&
                         <h2>
                           This item cannot be requested at this time. Please try again later or
                           contact 917-ASK-NYPL (<a href="tel:917-275-6975">917-275-6975</a>).
@@ -407,6 +412,7 @@ HoldRequest.propTypes = {
   patron: PropTypes.object,
   closedLocations: PropTypes.array,
   holdRequestNotification: PropTypes.string,
+  loading: PropTypes.bool,
 };
 
 HoldRequest.defaultProps = {
@@ -424,6 +430,7 @@ const mapStateToProps = state => ({
   isEddRequestable: state.isEddRequestable,
   patron: state.patron,
   bib: state.bib,
+  loading: state.loading,
 });
 
 export default withRouter(connect(mapStateToProps)(HoldRequest));

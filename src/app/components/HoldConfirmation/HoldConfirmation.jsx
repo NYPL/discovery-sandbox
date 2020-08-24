@@ -1,7 +1,7 @@
 /* global window document */
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router';
+import { Link, withRouter } from 'react-router';
 import {
   isArray as _isArray,
   isEmpty as _isEmpty,
@@ -9,6 +9,7 @@ import {
 } from 'underscore';
 import DocumentTitle from 'react-document-title';
 import Url from 'url-parse';
+import { connect } from 'react-redux';
 
 import appConfig from '../../data/appConfig';
 import Breadcrumbs from '../Breadcrumbs/Breadcrumbs';
@@ -18,10 +19,6 @@ import {
 } from '../../utils/utils';
 
 class HoldConfirmation extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   componentDidMount() {
     // this.requireUser();
     document.getElementById('mainContent').focus();
@@ -278,8 +275,10 @@ class HoldConfirmation extends React.Component {
     } = this.props;
     const title = (bib && _isArray(bib.title) && bib.title.length > 0) ?
       bib.title[0] : '';
-    const bibId = (bib && bib['@id'] && typeof bib['@id'] === 'string') ?
-      bib['@id'].substring(4) : '';
+    const bibId = this.props.params.bibId || (
+      (bib && bib['@id'] && typeof bib['@id'] === 'string') ?
+        bib['@id'].substring(4) : ''
+    );
 
     let confirmationPageTitle = 'Submission Error';
     let confirmationInfo = (
@@ -413,4 +412,10 @@ HoldConfirmation.contextTypes = {
   router: PropTypes.object,
 };
 
-export default HoldConfirmation;
+const mapStateToProps = ({ bib, searchKeywords, deliveryLocations }) => ({
+  bib,
+  searchKeywords,
+  deliveryLocations,
+});
+
+export default withRouter(connect(mapStateToProps)(HoldConfirmation));

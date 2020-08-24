@@ -32,8 +32,12 @@ class ElectronicDelivery extends React.Component {
 
     const bib = (this.props.bib && !_isEmpty(this.props.bib)) ? this.props.bib : null;
     const title = (bib && _isArray(bib.title) && bib.title.length) ? bib.title[0] : '';
-    const bibId = (bib && bib['@id'] && typeof bib['@id'] === 'string') ?
-      bib['@id'].substring(4) : '';
+    let bibId;
+    if (this.props.params.bibId) {
+      bibId = this.props.params.bibId;
+    } else if (bib && bib['@id']) {
+      bibId = bib['@id'].substring(4);
+    }
     const itemId = (this.props.params && this.props.params.itemId) ? this.props.params.itemId : '';
     const selectedItem = (bib && itemId) ? LibraryItem.getItem(bib, itemId) : {};
     const itemSource = (selectedItem && selectedItem.itemSource) ? selectedItem.itemSource : null;
@@ -134,7 +138,7 @@ class ElectronicDelivery extends React.Component {
       title,
     } = this.state;
     const path = `${appConfig.baseUrl}/hold/confirmation/${bibId}-${itemId}`;
-    const searchKeywords = this.props.searchKeywords;
+    const { searchKeywords } = this.props;
     const searchKeywordsQuery = searchKeywords ? `&q=${searchKeywords}` : '';
     const itemSourceMapping = {
       'recap-pul': 'Princeton',
