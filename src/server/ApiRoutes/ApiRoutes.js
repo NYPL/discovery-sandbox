@@ -33,6 +33,12 @@ router
   .route(`${appConfig.baseUrl}/edd`)
   .post(Hold.eddServer);
 
+// Add the paths configured in dataLoaderUtil and RouteMethods. This covers two scenarios:
+// 1. Server side navigation, the / path is hit, we directly call the relevant method
+// (which is routeMethods[routeName]), load the data into the store and go to next()
+// 2. Api calls, the /api/ path is hit, we simply return the data to the client (res.json)
+// Then client side the dataLoaderUtil will load the response into the store
+
 Object.keys(routes).forEach((routeName) => {
   const { path, params } = routes[routeName];
   ['/', '/api/'].forEach((pathType) => {

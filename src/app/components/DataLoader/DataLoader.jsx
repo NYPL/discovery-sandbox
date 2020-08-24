@@ -3,6 +3,10 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import dataLoaderUtil from '@dataLoaderUtil';
 
+
+// The sole responsibility of the DataLoader is to trigger a data reload whenever
+// the location changes.
+
 class DataLoader extends React.Component {
   componentDidMount() {
     const { location, dispatch } = this.props;

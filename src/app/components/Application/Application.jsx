@@ -60,6 +60,9 @@ class Application extends React.Component {
   }
 
   render() {
+
+    // dataLocation is passed as a key to DataLoader to ensure it reloads
+    // whenever the location changes.
     const dataLocation = Object.assign(
       {},
       this.context.router.location,
