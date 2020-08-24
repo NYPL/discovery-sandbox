@@ -4,6 +4,8 @@ import appConfig from '../data/appConfig';
 
 function appReducer(state = initialState, action) {
   switch (action.type) {
+    case Actions.RESET_STATE:
+      return { ...initialState };
     case Actions.UPDATE_LOADING_STATUS:
       return { ...state, loading: action.payload };
     case Actions.UPDATE_SEARCH_RESULTS:
@@ -29,7 +31,7 @@ function appReducer(state = initialState, action) {
     case Actions.UPDATE_PATRON_DATA:
       return { ...state, patron: action.payload };
     case Actions.UPDATE_DELIVERY_LOCATIONS:
-      return { ...state, deliveryLocation: action.payload };
+      return { ...state, deliveryLocations: action.payload };
     case Actions.SET_APP_CONFIG:
       return { ...state, appConfig };
     default:

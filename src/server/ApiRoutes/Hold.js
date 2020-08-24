@@ -288,7 +288,7 @@ function confirmRequestServer(req, res, next) {
  * @param {res}
  * @return {function}
  */
-function newHoldRequest(req, res) {
+function newHoldRequest(req, res, resolve) {
   const loggedIn = User.requireUser(req, res);
   if (!loggedIn) return false;
 
@@ -308,7 +308,7 @@ function newHoldRequest(req, res) {
         barcode,
         patronId,
         (deliveryLocations, isEddRequestable) => {
-          res.json({
+          resolve({
             bib,
             deliveryLocations,
             isEddRequestable,
@@ -320,7 +320,7 @@ function newHoldRequest(req, res) {
             deliveryLocationsError,
           );
 
-          res.json({
+          resolve({
             bib,
             deliveryLocations: [],
             isEddRequestable: false,
@@ -328,7 +328,7 @@ function newHoldRequest(req, res) {
         },
       );
     },
-    bibResponseError => res.json(bibResponseError),
+    bibResponseError => resolve(bibResponseError),
     { fetchSubjectHeadingData: false },
   );
 }

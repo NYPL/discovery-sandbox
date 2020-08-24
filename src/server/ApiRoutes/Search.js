@@ -67,7 +67,7 @@ function fetchResults(searchKeywords = '', page, sortBy, order, field, filters, 
     });
 }
 
-function search(req, res) {
+function search(req, res, resolve) {
   const { page, q, sort, order, fieldQuery, filters, sortQuery } = getReqParams(req.query);
 
   const unescapedQuery = Object.assign(
@@ -92,7 +92,7 @@ function search(req, res) {
     order,
     fieldQuery,
     filters,
-    (apiFilters, searchResults, pageQuery, drbbResults) => res.json({
+    (apiFilters, searchResults, pageQuery, drbbResults) => resolve({
       filters: apiFilters,
       searchResults,
       page: pageQuery,
@@ -102,7 +102,7 @@ function search(req, res) {
       sortBy,
       field: fieldQuery,
     }),
-    error => res.json(error),
+    error => resolve(error),
   );
 }
 
