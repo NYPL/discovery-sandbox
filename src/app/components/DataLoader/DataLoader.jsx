@@ -9,17 +9,19 @@ import {
 
 // The sole responsibility of the DataLoader is to trigger a data reload whenever
 // the location changes.
-
-class DataLoader extends React.Component {
+export class DataLoader extends React.Component {
   componentDidMount() {
     const { location, dispatch, lastLoaded } = this.props;
     const {
       search,
       pathname,
     } = location;
-    if (lastLoaded === `${pathname}${search}`) return dispatch(updateLoadingStatus(false));
+    if (lastLoaded === `${pathname}${search}`) {
+      dispatch(updateLoadingStatus(false));
+      return;
+    }
 
-    return dataLoaderUtil.loadDataForRoutes(location, dispatch)
+    dataLoaderUtil.loadDataForRoutes(location, dispatch)
       .then(() => {
         dispatch(updateLastLoaded(`${pathname}${search}`));
         dispatch(updateLoadingStatus(false));
