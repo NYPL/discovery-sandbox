@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-filename-extension */
 /* eslint-env mocha */
 import React from 'react';
 import sinon from 'sinon';
@@ -6,7 +7,6 @@ import { mount } from 'enzyme';
 
 // Import the component that is going to be tested
 import WrappedHoldConfirmation, { HoldConfirmation } from './../../src/app/components/HoldConfirmation/HoldConfirmation';
-import Actions from './../../src/app/actions/Actions';
 import appConfig from '../../src/app/data/appConfig';
 
 describe('HoldConfirmation', () => {
