@@ -9,7 +9,6 @@ import axios from 'axios';
 import {
   isArray as _isArray,
   isEmpty as _isEmpty,
-  extend as _extend,
 } from 'underscore';
 import DocumentTitle from 'react-document-title';
 import { connect } from 'react-redux';
@@ -24,6 +23,7 @@ import {
   trackDiscovery,
   basicQuery,
 } from '../../utils/utils';
+import { updateLoadingStatus } from '../../actions/Actions';
 
 class HoldRequest extends React.Component {
   constructor(props) {
@@ -85,7 +85,6 @@ class HoldRequest extends React.Component {
    */
   submitRequest(e, bibId, itemId, itemSource, title) {
     e.preventDefault();
-
     const itemSourceMapping = {
       'recap-pul': 'Princeton',
       'recap-cul': 'Columbia',
@@ -109,6 +108,7 @@ class HoldRequest extends React.Component {
 
     trackDiscovery(`Submit Request${partnerEvent}`, `${title} - ${itemId}`);
     const formData = new FormData(document.getElementById('place-hold-form'));
+    this.props.updateLoadingStatus(true);
     axios.post(
       `${appConfig.baseUrl}/hold/request/${bibId}-${itemId}-${itemSource}`,
       Object.fromEntries(formData.entries()),
@@ -419,6 +419,7 @@ HoldRequest.propTypes = {
   closedLocations: PropTypes.array,
   holdRequestNotification: PropTypes.string,
   loading: PropTypes.bool,
+  updateLoadingStatus: PropTypes.func,
 };
 
 HoldRequest.defaultProps = {
@@ -439,4 +440,8 @@ const mapStateToProps = state => ({
   loading: state.loading,
 });
 
-export default withRouter(connect(mapStateToProps)(HoldRequest));
+const mapDispatchToProps = dispatch => ({
+  updateLoadingStatus: status => dispatch(updateLoadingStatus(status)),
+});
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(HoldRequest));

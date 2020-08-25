@@ -5,7 +5,6 @@ import appConfig from '../data/appConfig';
 function appReducer(state = initialState, action) {
   switch (action.type) {
     case Actions.RESET_STATE:
-      console.log(state.appConfig);
       // Reset state except appConfig and patron
       return { ...initialState, appConfig: state.appConfig, patron: state.patron };
     case Actions.UPDATE_LOADING_STATUS:

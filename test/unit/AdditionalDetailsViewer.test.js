@@ -12,7 +12,6 @@ describe('After Clicking on Button', () => {
   let link;
 
   before(() => {
-    console.log(sampleBib);
     component = mount(<AdditionalDetailsViewer bib={sampleBib}/>);
     link = component.find('a');
   });

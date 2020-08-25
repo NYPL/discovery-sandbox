@@ -25,6 +25,7 @@ import {
   trackDiscovery,
   basicQuery,
 } from '../../utils/utils';
+import { updateLoadingStatus } from '../../actions/Actions';
 
 class ElectronicDelivery extends React.Component {
   constructor(props) {
@@ -131,6 +132,7 @@ class ElectronicDelivery extends React.Component {
    * Client-side submit call.
    */
   submitRequest() {
+    this.props.updateLoadingStatus(true);
     const {
       bibId,
       itemId,
@@ -315,6 +317,7 @@ ElectronicDelivery.propTypes = {
   error: PropTypes.object,
   form: PropTypes.object,
   patron: PropTypes.object,
+  updateLoadingStatus: PropTypes.func,
 };
 
 ElectronicDelivery.defaultProps = {
@@ -327,4 +330,8 @@ const mapStateToProps = ({ patron, bib, searchKeywords }) => ({
   searchKeywords,
 });
 
-export default withRouter(connect(mapStateToProps)(ElectronicDelivery));
+const mapDispatchToProps = dispatch => ({
+  updateLoadingStatus: status => dispatch(updateLoadingStatus(status)),
+});
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ElectronicDelivery));

@@ -1,25 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import FocusTrap from 'focus-trap-react';
-import axios from 'axios';
-
-import store from '../../stores/Store';
-import { updateLoadingStatus } from '../../actions/Actions';
-
-const { dispatch } = store;
-
-// intercepts all http request to update the status of loading in the Store
-axios.interceptors.request.use(
-  (config) => {
-    dispatch(updateLoadingStatus(true));
-    return config;
-  },
-  (error) => {
-    dispatch(updateLoadingStatus(false));
-    return Promise.reject(error);
-  },
-);
 
 const LoadingLayer = ({ loading, title, focus }) => {
   if (loading === false) {
@@ -73,4 +54,4 @@ LoadingLayer.defaultProps = {
   loading: false,
 };
 
-export default connect(({ loading }) => ({ loading }))(LoadingLayer);
+export default LoadingLayer;

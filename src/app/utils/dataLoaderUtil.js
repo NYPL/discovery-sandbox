@@ -40,7 +40,6 @@ const routes = {
 
 // A simple function for loading data into the store. The only reason it is broken
 // out separately is because it is used front-end and back-end
-
 const successCb = (pathType, dispatch) => (response) => {
   dispatch(routes[pathType].action(response.data));
 };
@@ -70,6 +69,8 @@ function loadDataForRoutes(location, dispatch) {
       error,
     );
   };
+  if (pathType === 'home') successCb(pathType, dispatch);
+
   dispatch(updateLoadingStatus(true));
 
   return ajaxCall(
