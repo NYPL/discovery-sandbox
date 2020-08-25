@@ -1,5 +1,6 @@
 export const Actions = {
   RESET_STATE: 'RESET_STATE',
+  UPDATE_LAST_LOADED: 'UPDATE_LAST_LOADED',
   SET_APP_CONFIG: 'SET_APP_CONFIG',
   UPDATE_SEARCH_RESULTS: 'UPDATE_SEARCH_RESULTS',
   UPDATE_SEARCH_KEYWORDS: 'UPDATE_SEARCH_KEYWORDS',
@@ -21,6 +22,11 @@ export const Actions = {
 export const resetState = () => ({
   type: Actions.RESET_STATE,
   payload: null,
+});
+
+export const updateLastLoaded = lastLoaded => ({
+  type: Actions.UPDATE_LAST_LOADED,
+  payload: lastLoaded,
 });
 
 export const setAppConfig = appConfig => ({

@@ -29,6 +29,7 @@ const initialState = {
     loggedIn: false,
   },
   appConfig,
+  lastLoaded: appConfig.baseUrl,
 };
 
 export default initialState;

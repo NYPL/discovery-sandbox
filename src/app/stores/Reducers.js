@@ -22,6 +22,8 @@ function appReducer(state = initialState, action) {
       return { ...state, selectedFilters: action.payload };
     case Actions.UPDATE_SEARCH_KEYWORDS:
       return { ...state, searchKeywords: action.payload };
+    case Actions.UPDATE_LAST_LOADED:
+      return { ...state, lastLoaded: action.payload };
     case Actions.UPDATE_FIELD:
       return { ...state, field: action.payload };
     case Actions.UPDATE_SORT_BY:
