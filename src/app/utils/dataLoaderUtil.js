@@ -3,6 +3,7 @@ import {
   updateBibPage,
   updateSearchResultsPage,
   updateHoldRequestPage,
+  resetState,
 } from '@Actions';
 import appConfig from '@appConfig';
 import { updateLoadingStatus } from '../actions/Actions';
@@ -30,6 +31,10 @@ const routes = {
     action: updateHoldRequestPage,
     path: 'hold/request',
     params: '/:bibId-:itemId',
+  },
+  home: {
+    action: resetState,
+    path: '',
   },
 };
 

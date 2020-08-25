@@ -264,6 +264,7 @@ class HoldRequest extends React.Component {
       loading,
       params,
     } = this.props;
+    const { serverRedirect } = this.state;
     const bib = (this.props.bib && !_isEmpty(this.props.bib)) ?
       this.props.bib : null;
     const title = (bib && _isArray(bib.title) && bib.title.length) ?
@@ -334,6 +335,11 @@ class HoldRequest extends React.Component {
             name="search-keywords"
             value={searchKeywords}
           />
+          <input
+            type="hidden"
+            name="serverRedirect"
+            value={serverRedirect}
+          />
         </form>
       );
     }
@@ -346,7 +352,7 @@ class HoldRequest extends React.Component {
       <DocumentTitle title="Item Request | Shared Collection Catalog | NYPL">
         <div>
           {
-            !userLoggedIn ? <LoadingLayer
+            !userLoggedIn || loading ? <LoadingLayer
               title="Loading"
               loading
             /> : null

@@ -176,6 +176,7 @@ const mapStateToProps = state => ({
   searchKeywords: state.searchKeywords,
   sortBy: state.sortBy,
   field: state.field,
+  selectedFilters: state.selectedFilters,
 });
 
 export default withRouter(connect(mapStateToProps)(SearchResults));

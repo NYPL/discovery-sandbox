@@ -68,20 +68,7 @@ function fetchResults(searchKeywords = '', page, sortBy, order, field, filters, 
 }
 
 function search(req, res, resolve) {
-  const { page, q, sort, order, fieldQuery, filters, sortQuery } = getReqParams(req.query);
-
-  const unescapedQuery = Object.assign(
-    {},
-    ...Object.keys(req.query)
-      .map(k => ({ [decodeURIComponent(k)]: decodeURIComponent(req.query[k]) })),
-  );
-  const urlFilters = _pick(unescapedQuery, (value, key) => {
-    if (key.indexOf('filter') !== -1) {
-      return value;
-    }
-    return null;
-  });
-  const selectedFilters = destructureFilters(urlFilters, filters);
+  const { page, q, sort, order, fieldQuery, filters } = getReqParams(req.query);
 
   const sortBy = sort.length ? [sort, order].filter(field => field.length).join('_') : 'relevance';
 
@@ -97,7 +84,7 @@ function search(req, res, resolve) {
       searchResults,
       page: pageQuery,
       drbbResults,
-      selectedFilters,
+      selectedFilters: filters,
       searchKeywords: q,
       sortBy,
       field: fieldQuery,
