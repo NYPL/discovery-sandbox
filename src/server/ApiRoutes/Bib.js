@@ -31,7 +31,7 @@ function fetchBib(bibId, cb, errorcb, options = { fetchSubjectHeadingData: true 
       if (options.fetchSubjectHeadingData && bib.subjectLiteral && bib.subjectLiteral.length) {
         return shepApiCall(bibId)
           .then((shepRes) => {
-            bib.subjectHeadingData = shepRes.bib.subject_headings;
+            bib.subjectHeadingData = shepRes.data.subject_headings;
             return { bib };
           })
           .catch((error) => {

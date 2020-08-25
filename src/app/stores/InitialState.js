@@ -15,7 +15,7 @@ const initialState = {
   filters: [],
   page: '1',
   sortBy: 'relevance',
-  loading: false,
+  loading: true,
   field: 'all',
   deliveryLocations: [],
   isEddRequestable: false,
