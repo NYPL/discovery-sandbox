@@ -18,12 +18,11 @@ import {
   basicQuery,
 } from '../../utils/utils';
 
-class HoldConfirmation extends React.Component {
+export class HoldConfirmation extends React.Component {
   componentDidMount() {
-    // this.requireUser();
+    this.requireUser();
     document.getElementById('mainContent').focus();
   }
-
 
   expiredMessage() {
     return (<li className="errorItem">Your account has expired -- Please see <a href="https://www.nypl.org/help/library-card/terms-conditions#renew">Library Terms and Conditions -- Renewing or Validating Your Library Card</a> about renewing your card</li>);
@@ -81,7 +80,7 @@ class HoldConfirmation extends React.Component {
    * @return {Boolean}
    */
   requireUser() {
-    if (this.state.patron && this.state.patron.id) {
+    if (this.props.patron && this.props.patron.id) {
       return true;
     }
 
@@ -398,6 +397,7 @@ HoldConfirmation.propTypes = {
   searchKeywords: PropTypes.string,
   params: PropTypes.object,
   deliveryLocations: PropTypes.array,
+  patron: PropTypes.object,
 };
 
 HoldConfirmation.defaultProps = {
@@ -412,10 +412,11 @@ HoldConfirmation.contextTypes = {
   router: PropTypes.object,
 };
 
-const mapStateToProps = ({ bib, searchKeywords, deliveryLocations }) => ({
+const mapStateToProps = ({ bib, searchKeywords, deliveryLocations, patron }) => ({
   bib,
   searchKeywords,
   deliveryLocations,
+  patron,
 });
 
 export default withRouter(connect(mapStateToProps)(HoldConfirmation));
