@@ -12,6 +12,7 @@ import {
 import nyplApiClient from '../routes/nyplApiClient';
 import logger from '../../../logger';
 import ResearchNow from './ResearchNow';
+import createSelectedFiltersHash from '../../app/utils/createSelectedFiltersHash';
 
 const createAPIQuery = basicQuery({
   searchKeywords: '',
@@ -84,7 +85,7 @@ function search(req, res, resolve) {
       searchResults,
       page: pageQuery,
       drbbResults,
-      selectedFilters: filters,
+      selectedFilters: createSelectedFiltersHash(filters, apiFilters),
       searchKeywords: q,
       sortBy,
       field: fieldQuery,

@@ -20,6 +20,7 @@ const SearchResultsContainer = (props, context) => {
     searchKeywords,
     page,
     features,
+    createAPIQuery,
   } = props;
   const {
     media,
@@ -28,7 +29,6 @@ const SearchResultsContainer = (props, context) => {
 
   const results = searchResults ? searchResults.itemListElement : [];
   const totalResults = searchResults ? searchResults.totalResults : results.length;
-  const createAPIQuery = basicQuery(props);
 
   const updatePage = (nextPage, pageType) => {
     const apiQuery = createAPIQuery({ page: nextPage });
@@ -88,6 +88,7 @@ SearchResultsContainer.propTypes = {
   searchKeywords: PropTypes.string,
   page: PropTypes.string,
   features: PropTypes.array,
+  createAPIQuery: PropTypes.func,
 };
 
 SearchResultsContainer.defaultProps = {

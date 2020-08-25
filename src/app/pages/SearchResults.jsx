@@ -82,7 +82,7 @@ const SearchResults = (props, context) => {
   return (
     <DocumentTitle title="Search Results | Shared Collection Catalog | NYPL">
       <SccContainer
-        mainContent={<SearchResultsContainer />}
+        mainContent={<SearchResultsContainer createAPIQuery={createAPIQuery}/>}
         bannerOptions={
           {
             text: 'Search Results',
@@ -177,6 +177,7 @@ const mapStateToProps = state => ({
   sortBy: state.sortBy,
   field: state.field,
   selectedFilters: state.selectedFilters,
+  page: state.page,
 });
 
 export default withRouter(connect(mapStateToProps)(SearchResults));
