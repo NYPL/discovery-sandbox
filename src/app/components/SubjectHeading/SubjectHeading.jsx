@@ -6,6 +6,7 @@ import { Link } from 'react-router';
 import SubjectHeadingsTableBody from './SubjectHeadingsTableBody';
 import Range from '../../models/Range';
 import appConfig from '../../data/appConfig';
+import { MediaContext } from '../Application/Application';
 
 class SubjectHeading extends React.Component {
   constructor(props) {
@@ -156,19 +157,19 @@ class SubjectHeading extends React.Component {
       seeMoreText,
       seeMoreLinkUrl,
       indentation,
+      container,
+      location,
     } = this.props;
 
     const {
-      location: {
-        pathname,
-        search,
-        query: {
-          filter,
-        },
+      pathname,
+      search,
+      query: {
+        filter,
       },
-    } = this.context.router;
+    } = location;
 
-    const { container, media } = this.context;
+    const { media } = this.context;
 
     const {
       label,
@@ -300,6 +301,7 @@ SubjectHeading.propTypes = {
   seeMoreText: PropTypes.string,
   seeMoreLinkUrl: PropTypes.string,
   preOpen: PropTypes.bool,
+  container: PropTypes.string,
 };
 
 SubjectHeading.defaultProps = {
@@ -307,10 +309,7 @@ SubjectHeading.defaultProps = {
   preOpen: false,
 };
 
-SubjectHeading.contextTypes = {
-  router: PropTypes.object,
-  container: PropTypes.string,
-  media: PropTypes.string,
-};
+// with new context API, class components may only subscribe to one context
+SubjectHeading.contextType = MediaContext;
 
 export default SubjectHeading;

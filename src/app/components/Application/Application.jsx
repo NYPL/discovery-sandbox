@@ -13,7 +13,9 @@ import DataLoader from '../DataLoader/DataLoader';
 
 import { breakpoints } from '../../data/constants';
 
-class Application extends React.Component {
+export const MediaContext = React.createContext('desktop');
+
+export class Application extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -21,12 +23,6 @@ class Application extends React.Component {
       patron: props.patron,
     };
     this.submitFeedback = this.submitFeedback.bind(this);
-  }
-
-  getChildContext() {
-    return {
-      media: this.state.media,
-    };
   }
 
   componentDidMount() {
@@ -73,27 +69,29 @@ class Application extends React.Component {
     );
 
     return (
-      <DocumentTitle title="Shared Collection Catalog | NYPL">
-        <div className="app-wrapper">
-          <Header
-            navData={navConfig.current}
-            patron={this.state.patron}
-            skipNav={{ target: 'mainContent' }}
-          />
-          <LoadingLayer
-            title="Loading"
-            loading={this.props.loading}
-          />
-          <DataLoader
-            location={this.context.router.location}
-            key={JSON.stringify(dataLocation)}
-          >
-            {React.cloneElement(this.props.children)}
-          </DataLoader>
-          <Footer />
-          <Feedback submit={this.submitFeedback} />
-        </div>
-      </DocumentTitle>
+      <MediaContext.Provider value={this.state.media}>
+        <DocumentTitle title="Shared Collection Catalog | NYPL">
+          <div className="app-wrapper">
+            <Header
+              navData={navConfig.current}
+              patron={this.state.patron}
+              skipNav={{ target: 'mainContent' }}
+            />
+            <LoadingLayer
+              title="Loading"
+              loading={this.props.loading}
+            />
+            <DataLoader
+              location={this.context.router.location}
+              key={JSON.stringify(dataLocation)}
+            >
+              {React.cloneElement(this.props.children)}
+            </DataLoader>
+            <Footer />
+            <Feedback submit={this.submitFeedback} />
+          </div>
+        </DocumentTitle>
+      </MediaContext.Provider>
     );
   }
 }
@@ -110,10 +108,6 @@ Application.defaultProps = {
 
 Application.contextTypes = {
   router: PropTypes.object,
-};
-
-Application.childContextTypes = {
-  media: PropTypes.string,
 };
 
 export default withRouter(connect(({ patron, loading }) => ({ patron, loading }))(Application));
