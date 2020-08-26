@@ -30,7 +30,7 @@ const SearchResults = (props, context) => {
   } = useSelector(state => ({
     searchResults: state.searchResults,
     appConfig: state.appConfig,
-    searchKeywords: state.searchResults,
+    searchKeywords: state.searchKeywords,
     sortBy: state.sortBy,
     field: state.field,
     page: state.page,

@@ -31,7 +31,7 @@ export const mountTestRender = (ui, { store, ...otherOpts }) => testRender(
 
 export function makeTestStore(opts = initialState) {
   const mockStore = configureStore([thunk]);
-  const store = mockStore(opts);
+  const store = mockStore({ ...initialState, ...opts });
   store.dispatch = stub(store, 'dispatch');
   return store;
 }
