@@ -93,7 +93,7 @@ class Search extends React.Component {
       page: '1',
     });
 
-    this.context.router.push(`${appConfig.baseUrl}/search?${apiQuery}`);
+    this.props.router.push(`${appConfig.baseUrl}/search?${apiQuery}`);
   }
 
   render() {
@@ -158,16 +158,13 @@ Search.propTypes = {
   createAPIQuery: PropTypes.func,
   selectedFilters: PropTypes.object,
   updateField: PropTypes.func,
+  router: PropTypes.object,
 };
 
 Search.defaultProps = {
   field: 'all',
   searchKeywords: '',
   selectedFilters: {},
-};
-
-Search.contextTypes = {
-  router: PropTypes.object,
 };
 
 const mapStateToProps = ({

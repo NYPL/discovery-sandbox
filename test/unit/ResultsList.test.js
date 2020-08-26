@@ -2,12 +2,11 @@
 /* eslint-env mocha */
 import React from 'react';
 import { expect } from 'chai';
-import { shallow, mount } from 'enzyme';
+import { mount } from 'enzyme';
 import { mock as sinonMock } from 'sinon';
 import MockAdapter from 'axios-mock-adapter';
 import axios from 'axios';
-import { useSelector } from 'react-redux';
-import { mountTestRender, shallowTestRender, makeTestStore } from '../helpers/store';
+import { mountTestRender, makeTestStore } from '../helpers/store';
 
 import ResultsList, { getBibTitle, getYearDisplay } from '../../src/app/components/ResultsList/ResultsList';
 import resultsBibs from '../fixtures/resultsBibs';

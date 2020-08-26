@@ -1,5 +1,6 @@
 import React from 'react';
 import DocumentTitle from 'react-document-title';
+import PropTypes from 'prop-types';
 
 import Search from '../Search/Search';
 import {
@@ -9,7 +10,7 @@ import {
 import appConfig from '../../data/appConfig';
 import Notification from '../Notification/Notification';
 
-const Home = props => (
+const Home = (props, context) => (
   <DocumentTitle title="Shared Collection Catalog | NYPL">
     <main>
       <div className="home" id="mainContent">
@@ -26,6 +27,7 @@ const Home = props => (
               <div className="nypl-column-full">
                 <Search
                   createAPIQuery={basicQuery(props)}
+                  router={context.router}
                 />
               </div>
             </div>
@@ -120,5 +122,9 @@ const Home = props => (
     </main>
   </DocumentTitle>
 );
+
+Home.contextTypes = {
+  router: PropTypes.object,
+};
 
 export default Home;

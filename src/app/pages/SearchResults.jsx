@@ -82,7 +82,7 @@ const SearchResults = (props, context) => {
   return (
     <DocumentTitle title="Search Results | Shared Collection Catalog | NYPL">
       <SccContainer
-        mainContent={<SearchResultsContainer createAPIQuery={createAPIQuery}/>}
+        mainContent={<SearchResultsContainer createAPIQuery={createAPIQuery} />}
         bannerOptions={
           {
             text: 'Search Results',
@@ -92,6 +92,7 @@ const SearchResults = (props, context) => {
         extraBannerElement={
           <Search
             createAPIQuery={createAPIQuery}
+            router={router}
           />
         }
         secondaryExtraBannerElement={
