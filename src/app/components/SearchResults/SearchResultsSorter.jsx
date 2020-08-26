@@ -15,7 +15,7 @@ const sortingOpts = [
   { val: 'date_desc', label: 'date (new to old)' },
 ];
 
-class SearchResultsSorter extends React.Component {
+export class SearchResultsSorter extends React.Component {
   constructor(props) {
     super(props);
 
@@ -127,7 +127,6 @@ SearchResultsSorter.propTypes = {
 
 SearchResultsSorter.defaultProps = {
   searchKeywords: '',
-  field: 'all',
 };
 
 SearchResultsSorter.contextTypes = {

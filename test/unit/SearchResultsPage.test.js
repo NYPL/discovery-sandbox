@@ -1,15 +1,13 @@
+/* eslint-disable react/jsx-filename-extension */
 /* eslint-env mocha */
 import React from 'react';
 import { expect } from 'chai';
-import { mount } from 'enzyme';
 import PropTypes from 'prop-types';
-import sinon, { mock, stub } from 'sinon';
 
 import SearchResults from '../../src/app/pages/SearchResults';
 import SearchResultsContainer from '../../src/app/components/SearchResults/SearchResultsContainer';
 import { mockRouterContext } from '../helpers/routing';
 import { mountTestRender, makeTestStore, shallowTestRender } from '../helpers/store';
-import { MediaContext } from '../../src/app/components/Application/Application';
 
 
 // Eventually, it would be nice to have mocked data in a different file and imported.
