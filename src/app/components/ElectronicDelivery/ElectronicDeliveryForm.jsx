@@ -115,7 +115,9 @@ class ElectronicDeliveryForm extends React.Component {
               </div>
               <span>You may request a chapter, article or short excerpt.</span><br />
               <span>
-                <a href="https://www.nypl.org/help/request-research-materials#EDD">
+                <a
+                  href="https://www.nypl.org/research/scan-and-deliver"
+                >
                   Read more about this service
                 </a>.
               </span>
