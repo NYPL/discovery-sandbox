@@ -80,6 +80,12 @@ const routesGenerator = location => ({
       data => Actions.updateBib(data.bib),
       data => Actions.updateDeliveryLocations(data.deliveryLocations),
       data => Actions.updateIsEddRequestable(data.isEddRequestable),
+      (data) => {
+        if (data.redirect) {
+          const fullUrl = encodeURIComponent(window.location.href);
+          window.location.replace(`${appConfig.loginUrl}?redirect_uri=${fullUrl}`);
+        }
+      },
     ],
     errorMessage: 'Error attempting to make ajax request for hold request',
   },
