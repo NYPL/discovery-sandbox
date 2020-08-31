@@ -6,7 +6,7 @@ function requireUser(req, res) {
     !req.patronTokenResponse.decodedPatron || !req.patronTokenResponse.decodedPatron.sub) {
     // redirect to login
     const fullUrl = encodeURIComponent(`${req.protocol}://${req.get('host')}${req.originalUrl}`);
-    if (fullUrl.includes('api')) {
+    if (fullUrl.includes('%2Fapi%2F')) {
       res.json({ redirect: true });
     } else {
       res.redirect(`${appConfig.loginUrl}?redirect_uri=${fullUrl}`);
