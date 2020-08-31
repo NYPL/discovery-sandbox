@@ -77,9 +77,15 @@ const routesGenerator = location => ({
       if (params[1]) req.params.itemId = params[1];
     },
     actions: [
-      data => Actions.updateBib(data.bib),
-      data => Actions.updateDeliveryLocations(data.deliveryLocations),
-      data => Actions.updateIsEddRequestable(data.isEddRequestable),
+      (data) => {
+        if (data.redirect) {
+          const fullUrl = encodeURIComponent(window.location.href);
+          window.location.replace(`${appConfig.loginUrl}?redirect_uri=${fullUrl}`);
+        }
+      },
+      data => (data.redirect ? null : Actions.updateBib(data.bib)),
+      data => (data.redirect ? null : Actions.updateDeliveryLocations(data.deliveryLocations)),
+      data => (data.redirect ? null : Actions.updateIsEddRequestable(data.isEddRequestable)),
     ],
     errorMessage: 'Error attempting to make ajax request for hold request',
   },
@@ -118,7 +124,9 @@ function loadDataForRoutes(location, req, routeMethods, realRes) {
     Actions.updateLoadingStatus(true);
     const successCb = (response) => {
       actions.forEach(action => action(response.data));
-      Actions.updateLastLoaded(location);
+      if (!response.data.redirect) {
+        Actions.updateLastLoaded(location);
+      }
       Actions.updateLoadingStatus(false);
     };
     const errorCb = (error) => {
