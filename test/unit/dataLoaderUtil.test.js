@@ -67,9 +67,9 @@ describe('dataLoaderUtil', () => {
         expect(axiosSpy.firstCall.args[0]).to.equal(`${appConfig.baseUrl}/api/search?q=mockSearch`);
       });
       it('should call dispatch with the search action and the response', () => {
-        expect(mockDispatch.getCalls()).to.have.lengthOf(1);
-        expect(mockDispatch.firstCall.args).to.have.lengthOf(1);
-        expect(mockDispatch.firstCall.args[0]).to.equal('mockSearchAction response');
+        expect(mockDispatch.getCalls()).to.have.lengthOf(2);
+        expect(mockDispatch.secondCall.args).to.have.lengthOf(1);
+        expect(mockDispatch.secondCall.args[0]).to.equal('mockSearchAction response');
         expect(mockSearchArgs).to.have.lengthOf(1);
         expect(mockSearchArgs[0]).to.equal(mockResponse);
       });
@@ -140,9 +140,9 @@ describe('dataLoaderUtil', () => {
         expect(axiosSpy.firstCall.args[0]).to.equal(`${appConfig.baseUrl}/api/bib/1`);
       });
       it('should call dispatch with the search action and the response', () => {
-        expect(mockDispatch.getCalls()).to.have.lengthOf(1);
-        expect(mockDispatch.firstCall.args).to.have.lengthOf(1);
-        expect(mockDispatch.firstCall.args[0]).to.equal('mockBibAction response');
+        expect(mockDispatch.getCalls()).to.have.lengthOf(2);
+        expect(mockDispatch.secondCall.args).to.have.lengthOf(1);
+        expect(mockDispatch.secondCall.args[0]).to.equal('mockBibAction response');
         expect(mockBibArgs).to.have.lengthOf(1);
         expect(mockBibArgs[0]).to.equal(mockResponse);
       });
@@ -213,9 +213,9 @@ describe('dataLoaderUtil', () => {
         expect(axiosSpy.firstCall.args[0]).to.equal(`${appConfig.baseUrl}/api/hold/request/1`);
       });
       it('should call dispatch with the search action and the response', () => {
-        expect(mockDispatch.getCalls()).to.have.lengthOf(1);
-        expect(mockDispatch.firstCall.args).to.have.lengthOf(1);
-        expect(mockDispatch.firstCall.args[0]).to.equal('mockHoldRequestAction response');
+        expect(mockDispatch.getCalls()).to.have.lengthOf(2);
+        expect(mockDispatch.secondCall.args).to.have.lengthOf(1);
+        expect(mockDispatch.secondCall.args[0]).to.equal('mockHoldRequestAction response');
         expect(mockHoldRequestArgs).to.have.lengthOf(1);
         expect(mockHoldRequestArgs[0]).to.equal(mockResponse);
       });
