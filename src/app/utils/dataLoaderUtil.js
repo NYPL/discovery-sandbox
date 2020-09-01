@@ -80,7 +80,8 @@ const routesGenerator = location => ({
       (data) => {
         if (data.redirect) {
           const fullUrl = encodeURIComponent(window.location.href);
-          window.location.replace(`${appConfig.loginUrl}?redirect_uri=${fullUrl}`);
+          console.error('API response indicates we should redirect to login page, but front-end disagrees.')
+          // window.location.replace(`${appConfig.loginUrl}?redirect_uri=${fullUrl}`);
         }
       },
       data => (data.redirect ? null : Actions.updateBib(data.bib)),
