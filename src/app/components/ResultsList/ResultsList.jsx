@@ -27,6 +27,9 @@ export const getBibTitle = (bib) => {
 export const getYearDisplay = (bib) => {
   if (_isEmpty(bib)) return null;
 
+  let dateStartYear = bib.dateStartYear;
+  let dateEndYear = bib.dateEndYear;
+
   dateStartYear = dateStartYear === 999 ? 'unknown' : dateStartYear;
   dateEndYear = dateEndYear === 9999 ? 'present' : dateEndYear;
 
