@@ -294,6 +294,7 @@ class ElectronicDelivery extends React.Component {
                     searchKeywords={searchKeywords}
                     serverRedirect={serverRedirect}
                     fromUrl={this.fromUrl()}
+                    onSiteEddEnabled={this.props.features.includes('on-site-edd')}
                   />
                   : null
               }
@@ -318,16 +319,18 @@ ElectronicDelivery.propTypes = {
   form: PropTypes.object,
   patron: PropTypes.object,
   updateLoadingStatus: PropTypes.func,
+  features: PropTypes.array,
 };
 
 ElectronicDelivery.defaultProps = {
   searchKeywords: '',
 };
 
-const mapStateToProps = ({ patron, bib, searchKeywords }) => ({
+const mapStateToProps = ({ patron, bib, searchKeywords, appConfig, }) => ({
   patron,
   bib,
   searchKeywords,
+  features: appConfig.features,
 });
 
 const mapDispatchToProps = dispatch => ({
