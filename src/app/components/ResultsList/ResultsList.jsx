@@ -14,6 +14,7 @@ import {
 import ItemTable from '../Item/ItemTable';
 import appConfig from '../../data/appConfig';
 
+
 export const getBibTitle = (bib) => {
   if (!bib.titleDisplay || !bib.titleDisplay.length) {
     const author = bib.creatorLiteral && bib.creatorLiteral.length ?
@@ -25,9 +26,6 @@ export const getBibTitle = (bib) => {
 
 export const getYearDisplay = (bib) => {
   if (_isEmpty(bib)) return null;
-
-  let dateStartYear = bib.dateStartYear;
-  let dateEndYear = bib.dateEndYear;
 
   dateStartYear = dateStartYear === 999 ? 'unknown' : dateStartYear;
   dateEndYear = dateEndYear === 9999 ? 'present' : dateEndYear;
@@ -52,7 +50,7 @@ const ResultsList = ({
 
   if (!results || !_isArray(results) || !results.length) {
     return null;
-  }
+  };
 
   const generateBibLi = (bib, i) => {
     // eslint-disable-next-line no-mixed-operators
@@ -109,6 +107,7 @@ const ResultsList = ({
   };
 
   const resultsElm = results.map((bib, i) => generateBibLi(bib, i));
+
   return (
     <ul
       id="nypl-results-list"

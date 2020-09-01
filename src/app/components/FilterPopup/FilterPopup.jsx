@@ -623,6 +623,7 @@ const mapStateToProps = (state) => {
     },
     searchResults,
     searchKeywords,
+    selectedFilters,
   } = state;
 
   const apiFilters = (
@@ -636,6 +637,7 @@ const mapStateToProps = (state) => {
     filters: apiFilters,
     totalResults: searchResults.totalResults,
     searchKeywords,
+    selectedFilters,
   });
 };
 

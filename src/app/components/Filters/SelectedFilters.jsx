@@ -260,7 +260,6 @@ class SelectedFilters extends React.Component {
 SelectedFilters.propTypes = {
   selectedFilters: PropTypes.object,
   createAPIQuery: PropTypes.func,
-  dropdownOpen: PropTypes.bool,
 };
 
 SelectedFilters.defaultProps = {
