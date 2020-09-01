@@ -68,7 +68,6 @@ function loadDataForRoutes(location, dispatch) {
       error,
     );
   };
-  if (pathType === 'home') successCb(pathType, dispatch);
   dispatch(updateLoadingStatus(true));
 
   return ajaxCall(
