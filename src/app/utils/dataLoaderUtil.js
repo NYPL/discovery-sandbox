@@ -38,7 +38,14 @@ const routes = {
 // A simple function for loading data into the store. The only reason it is broken
 // out separately is because it is used front-end and back-end
 const successCb = (pathType, dispatch) => (response) => {
-  dispatch(routes[pathType].action(response.data));
+  const { data } = response;
+  if (data && data.redirect) {
+    const fullUrl = encodeURIComponent(window.location.href);
+    window.location.replace(`${appConfig.loginUrl}?redirect_uri=${fullUrl}`);
+    return { redirect: true }
+  };
+  dispatch(routes[pathType].action(data));
+  return data;
 };
 
 
@@ -59,7 +66,7 @@ function loadDataForRoutes(location, dispatch) {
     return pathname.match(`${baseUrl}/${path}`);
   });
 
-  if (!matchingPath || pathname.match('edd')) return new Promise(resolve => resolve());
+  if (!matchingPath || pathname.match('edd')) return new Promise(() => dispatch(updateLoadingStatus(false)));
   const pathType = matchingPath[0];
 
   const errorCb = (error) => {
@@ -77,9 +84,10 @@ function loadDataForRoutes(location, dispatch) {
     location.pathname.replace(baseUrl, `${baseUrl}/api`) + location.search,
     successCb(pathType, dispatch),
     errorCb,
-  ).then(() => {
-    dispatch(updateLastLoaded(path));
+  ).then((resp) => {
+    if (!resp.redirect) dispatch(updateLastLoaded(path));
     dispatch(updateLoadingStatus(false));
+    return resp;
   });
 }
 

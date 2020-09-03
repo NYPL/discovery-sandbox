@@ -290,8 +290,8 @@ function confirmRequestServer(req, res, next) {
  * @return {function}
  */
 function newHoldRequest(req, res, resolve) {
-  const loggedIn = User.requireUser(req, res);
-  if (!loggedIn) return false;
+  const redirect = User.requireUser(req, res).redirect;
+  if (redirect) return resolve({ redirect });
 
   const bibId = req.params.bibId || '';
   const patronId = req.patronTokenResponse.decodedPatron ?
