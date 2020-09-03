@@ -27,11 +27,7 @@ const routePaths = {
 
 const routesGenerator = location => ({
   bib: {
-    apiRoute: (matchData, route) => `${route}${
-      (
-        location.search && location.search.length
-      ) ? `${location.search}&` : '?'
-    }bibId=${matchData[1]}`,
+    apiRoute: (matchData, route) => `${route}?bibId=${matchData[1]}${location.query.features ? `&features=${location.query.features}` : ''}`,
     serverParams: (matchData, req) => { req.query.bibId = matchData[1]; },
     actions: [Actions.updateBib],
     errorMessage: 'Error attempting to make an ajax request to fetch a bib record from ResultsList',
