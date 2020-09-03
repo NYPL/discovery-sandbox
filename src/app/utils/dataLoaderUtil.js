@@ -32,10 +32,6 @@ const routes = {
     path: 'hold/request',
     params: '/:bibId-:itemId',
   },
-  home: {
-    action: resetState,
-    path: '',
-  },
 };
 
 // A simple function for loading data into the store. The only reason it is broken
@@ -53,6 +49,9 @@ const successCb = (pathType, dispatch) => (response) => {
 
 function loadDataForRoutes(location, dispatch) {
   const { pathname } = location;
+  if (pathname === `${baseUrl}/`) {
+    dispatch(resetState());
+  }
 
   const matchingPath = Object.entries(routes).find(([pathKey, pathValue]) => {
     const { path } = pathValue;
@@ -69,7 +68,6 @@ function loadDataForRoutes(location, dispatch) {
       error,
     );
   };
-  if (pathType === 'home') successCb(pathType, dispatch);
 
   dispatch(updateLoadingStatus(true));
 
