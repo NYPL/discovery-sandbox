@@ -20,7 +20,7 @@ import {
 
 class HoldConfirmation extends React.Component {
   componentDidMount() {
-    // this.requireUser();
+    this.requireUser();
     document.getElementById('mainContent').focus();
   }
 
