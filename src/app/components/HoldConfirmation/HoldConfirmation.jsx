@@ -81,7 +81,7 @@ class HoldConfirmation extends React.Component {
    * @return {Boolean}
    */
   requireUser() {
-    if (this.state.patron && this.state.patron.id) {
+    if (this.props.patron && this.props.patron.id && this.props.patron.loggedIn) {
       return true;
     }
 
@@ -398,6 +398,7 @@ HoldConfirmation.propTypes = {
   searchKeywords: PropTypes.string,
   params: PropTypes.object,
   deliveryLocations: PropTypes.array,
+  patron: PropTypes.object,
 };
 
 HoldConfirmation.defaultProps = {
@@ -412,10 +413,11 @@ HoldConfirmation.contextTypes = {
   router: PropTypes.object,
 };
 
-const mapStateToProps = ({ bib, searchKeywords, deliveryLocations }) => ({
+const mapStateToProps = ({ bib, searchKeywords, deliveryLocations, patron }) => ({
   bib,
   searchKeywords,
   deliveryLocations,
+  patron,
 });
 
 export default withRouter(connect(mapStateToProps)(HoldConfirmation));

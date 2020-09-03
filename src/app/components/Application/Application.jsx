@@ -20,7 +20,6 @@ export class Application extends React.Component {
     super(props);
     this.state = {
       media: 'desktop',
-      patron: props.patron,
     };
     this.submitFeedback = this.submitFeedback.bind(this);
   }
@@ -74,7 +73,7 @@ export class Application extends React.Component {
           <div className="app-wrapper">
             <Header
               navData={navConfig.current}
-              patron={this.state.patron}
+              patron={this.props.patron}
               skipNav={{ target: 'mainContent' }}
             />
             <LoadingLayer
