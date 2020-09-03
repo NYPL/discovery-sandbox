@@ -19,11 +19,7 @@ class DataLoader extends React.Component {
     } = location;
     if (lastLoaded === `${pathname}${search}`) return dispatch(updateLoadingStatus(false));
 
-    return dataLoaderUtil.loadDataForRoutes(location, dispatch)
-      .then(() => {
-        dispatch(updateLastLoaded(`${pathname}${search}`));
-        dispatch(updateLoadingStatus(false));
-      });
+    return dataLoaderUtil.loadDataForRoutes(location, dispatch);
   }
 
   render() {

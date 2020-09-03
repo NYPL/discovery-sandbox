@@ -4,6 +4,7 @@ import {
   updateSearchResultsPage,
   updateHoldRequestPage,
   resetState,
+  updateLastLoaded,
 } from '@Actions';
 import appConfig from '@appConfig';
 import { updateLoadingStatus } from '../actions/Actions';
@@ -48,7 +49,7 @@ const successCb = (pathType, dispatch) => (response) => {
 // corresponding api route can be found simply by adding /api/
 
 function loadDataForRoutes(location, dispatch) {
-  const { pathname } = location;
+  const { pathname, search } = location;
   if (pathname === `${baseUrl}/`) {
     dispatch(resetState());
   }
@@ -70,11 +71,16 @@ function loadDataForRoutes(location, dispatch) {
 
   dispatch(updateLoadingStatus(true));
 
+  const path = `${pathname}${search}`;
+
   return ajaxCall(
     location.pathname.replace(baseUrl, `${baseUrl}/api`) + location.search,
     successCb(pathType, dispatch),
     errorCb,
-  );
+  ).then(() => {
+    dispatch(updateLastLoaded(path));
+    dispatch(updateLoadingStatus(false));
+  });
 }
 
 export default {
