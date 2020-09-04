@@ -114,6 +114,12 @@ class HoldRequest extends React.Component {
       Object.fromEntries(formData.entries()),
     )
       .then((response) => {
+        const { data } = response;
+        if (data.redirect) {
+          const fullUrl = encodeURIComponent(window.location.href);
+          window.location.replace(`${appConfig.loginUrl}?redirect_uri=${fullUrl}`);
+          return;
+        };
         this.context.router.push(response.data);
       })
       .catch((error) => {

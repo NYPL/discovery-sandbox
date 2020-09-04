@@ -175,14 +175,15 @@ function getDeliveryLocations(barcode, patronId, cb, errorCb) {
  */
 function confirmRequestServer(req, res, next) {
   const bibId = req.params.bibId || '';
-  const loggedIn = User.requireUser(req, res);
+  const requireUser = User.requireUser(req, res);
+  const { redirect } = requireUser;
   const requestId = req.query.requestId || '';
   const searchKeywords = req.query.q || '';
   const errorStatus = req.query.errorStatus ? req.query.errorStatus : null;
   const errorMessage = req.query.errorMessage ? req.query.errorMessage : null;
   const error = _extend({}, { errorStatus, errorMessage });
 
-  if (!loggedIn) return false;
+  if (redirect) return false;
 
   if (!requestId) {
     res.data = {
@@ -290,7 +291,8 @@ function confirmRequestServer(req, res, next) {
  * @return {function}
  */
 function newHoldRequest(req, res, resolve) {
-  const redirect = User.requireUser(req, res).redirect;
+  const requireUser = User.requireUser(req, res);
+  const { redirect } = requireUser;
   if (redirect) return resolve({ redirect });
 
   const bibId = req.params.bibId || '';
@@ -336,12 +338,13 @@ function newHoldRequest(req, res, resolve) {
 
 function newHoldRequestServerEdd(req, res, next) {
   const { dispatch } = global.store;
-  const loggedIn = User.requireUser(req, res);
+  const requireUser = User.requireUser(req, res);
+  const { redirect } = requireUser;
   const error = req.query.error ? JSON.parse(req.query.error) : {};
   const form = req.query.form ? JSON.parse(req.query.form) : {};
   const bibId = req.params.bibId || '';
 
-  if (!loggedIn) return false;
+  if (redirect) return false;
 
   // Retrieve item
   return Bib.fetchBib(
@@ -385,8 +388,9 @@ function newHoldRequestServerEdd(req, res, next) {
 function createHoldRequestServer(req, res, pickedUpBibId = '', pickedUpItemId = '') {
   res.respond = req.body.serverRedirect === 'false' ? res.json : res.redirect;
   // Ensure user is logged in
-  const loggedIn = User.requireUser(req, res);
-  if (!loggedIn) return false;
+  const requireUser = User.requireUser(req, res);
+  const { redirect } = requireUser;
+  if (redirect) return res.json({ redirect: true });
 
   // NOTE: pickedUpItemId and pickedUpBibId are coming from the EDD form function below:
   const itemId = req.params.itemId || pickedUpItemId;
@@ -471,9 +475,10 @@ function eddServer(req, res) {
   }
 
   // Ensure user is logged in
-  const loggedIn = User.requireUser(req);
+  const requireUser = User.requireUser(req, res);
+  const { redirect } = requireUser;
 
-  if (!loggedIn) return false;
+  if (redirect) return false;
 
   return postHoldAPI(
     req,
