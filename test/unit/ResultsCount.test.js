@@ -5,7 +5,7 @@ import { shallow, mount } from 'enzyme';
 
 import sinon from 'sinon';
 
-import ResultsCount from '../../src/app/components/ResultsCount/ResultsCount';
+import WrappedResultsCount, { ResultsCount } from '../../src/app/components/ResultsCount/ResultsCount';
 
 const filters = {
   subjectLiteral: {

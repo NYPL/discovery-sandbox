@@ -4,7 +4,7 @@ import { expect } from 'chai';
 import { shallow } from 'enzyme';
 import { stub } from 'sinon';
 
-import Application from '@Application';
+import WrappedApplication, { Application } from '@Application';
 import { Header, navConfig } from '@nypl/dgx-header-component';
 import { mockRouterContext } from '../helpers/routing';
 import { breakpoints } from '../../src/app/data/constants';
@@ -27,7 +27,7 @@ describe('Application', () => {
         route={{
           history: { listen: stub() },
         }}
-      />, { context }).dive().dive();
+      />, { context });
 
     component.setState({ patron: {} });
   });

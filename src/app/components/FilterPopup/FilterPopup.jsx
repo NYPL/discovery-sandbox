@@ -33,7 +33,7 @@ const FilterResetIcon = () => (
   </svg>
 );
 
-class FilterPopup extends React.Component {
+export class FilterPopup extends React.Component {
   constructor(props) {
     super(props);
 
@@ -601,7 +601,6 @@ FilterPopup.propTypes = {
   updateDropdownState: PropTypes.func,
   totalResults: PropTypes.number,
   features: PropTypes.array,
-  updateSelectedFilters: PropTypes.func,
 };
 
 FilterPopup.defaultProps = {

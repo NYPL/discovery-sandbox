@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 import { displayContext } from '../../utils/utils';
 
-class ResultsCount extends React.Component {
+export class ResultsCount extends React.Component {
   /*
    * checkSelectedFilters()
    * Returns true if there are any selected format or language filters. TODO: add Date.
@@ -93,6 +93,7 @@ ResultsCount.defaultProps = {
     dateAfter: {},
     dateBefore: {},
   },
+  features: [],
 };
 
 const mapStateToProps = ({ appConfig, searchKeywords, page }) => ({

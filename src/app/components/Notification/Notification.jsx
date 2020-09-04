@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 
-const Notification = ({ appConfig, notificationType }) => {
-  const notification = appConfig[notificationType];
+const Notification = ({ notificationType }) => {
+  const notification = useSelector(state => state.appConfig[notificationType])
 
   if (!notification) return null;
 
@@ -19,9 +19,6 @@ const Notification = ({ appConfig, notificationType }) => {
 
 Notification.propTypes = {
   notificationType: PropTypes.string,
-  appConfig: PropTypes.object,
 };
 
-const mapStateToProps = state => ({ appConfig: state.appConfig });
-
-export default connect(mapStateToProps)(Notification);
+export default Notification;

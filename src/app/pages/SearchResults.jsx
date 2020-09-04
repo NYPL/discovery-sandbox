@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import DocumentTitle from 'react-document-title';
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { withRouter } from 'react-router';
 
 /* eslint-disable import/no-unresolved, import/extensions */
@@ -21,13 +21,25 @@ import {
 const SearchResults = (props, context) => {
   const {
     searchResults,
+    appConfig,
     searchKeywords,
-    selectedFilters,
-    page,
-    field,
     sortBy,
+    field,
+    page,
+    selectedFilters,
+  } = useSelector(state => ({
+    searchResults: state.searchResults,
+    appConfig: state.appConfig,
+    searchKeywords: state.searchKeywords,
+    sortBy: state.sortBy,
+    field: state.field,
+    page: state.page,
+    selectedFilters: state.selectedFilters,
+  }));
+
+  const {
     features,
-  } = props;
+  } = appConfig;
 
   const {
     router,
@@ -82,7 +94,7 @@ const SearchResults = (props, context) => {
   return (
     <DocumentTitle title="Search Results | Shared Collection Catalog | NYPL">
       <SccContainer
-        mainContent={<SearchResultsContainer createAPIQuery={createAPIQuery}/>}
+        mainContent={<SearchResultsContainer createAPIQuery={createAPIQuery} />}
         bannerOptions={
           {
             text: 'Search Results',
@@ -92,17 +104,15 @@ const SearchResults = (props, context) => {
         extraBannerElement={
           <Search
             createAPIQuery={createAPIQuery}
+            router={router}
           />
         }
         secondaryExtraBannerElement={
           <React.Fragment>
             <FilterPopup
               createAPIQuery={createAPIQuery}
-              selectedFilters={selectedFilters}
-              searchKeywords={searchKeywords}
               raisedErrors={dateFilterErrors}
               updateDropdownState={toggleDropdown}
-              totalResults={totalResults}
             />
             {
               selectedFiltersAvailable &&
@@ -127,14 +137,11 @@ const SearchResults = (props, context) => {
                   <ResultsCount
                     count={totalResults}
                     selectedFilters={selectedFilters}
-                    searchKeywords={searchKeywords}
                     field={field}
-                    page={parseInt(page, 10)}
                   />
                   {
                     hasResults ?
                       <SearchResultsSorter
-                        searchKeywords={searchKeywords}
                         createAPIQuery={createAPIQuery}
                         key={sortBy}
                       />
@@ -152,32 +159,8 @@ const SearchResults = (props, context) => {
   );
 };
 
-SearchResults.propTypes = {
-  searchResults: PropTypes.object,
-  searchKeywords: PropTypes.string,
-  selectedFilters: PropTypes.object,
-  page: PropTypes.string,
-  field: PropTypes.string,
-  sortBy: PropTypes.string,
-  features: PropTypes.array,
-};
-
-SearchResults.defaultProps = {
-  page: '1',
-};
-
 SearchResults.contextTypes = {
   router: PropTypes.any,
 };
 
-const mapStateToProps = state => ({
-  searchResults: state.searchResults,
-  features: state.appConfig.features,
-  searchKeywords: state.searchKeywords,
-  sortBy: state.sortBy,
-  field: state.field,
-  selectedFilters: state.selectedFilters,
-  page: state.page,
-});
-
-export default withRouter(connect(mapStateToProps)(SearchResults));
+export default SearchResults;

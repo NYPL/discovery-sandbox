@@ -1,7 +1,8 @@
+/* eslint-disable react/jsx-filename-extension */
 /* eslint-env mocha */
 import React from 'react';
 import { expect } from 'chai';
-import { mount } from 'enzyme';
+import { shallow } from 'enzyme';
 
 import Home from '../../src/app/components/Home/Home';
 
@@ -9,7 +10,7 @@ describe('Home', () => {
   let component;
 
   before(() => {
-    component = mount(<Home />);
+    component = shallow(<Home />);
   });
 
   it('should be wrapped in a .home class', () => {
@@ -26,7 +27,7 @@ describe('Home', () => {
     expect(pageHeader.contains(<h1>Shared Collection Catalog</h1>)).to.equal(true);
   });
 
-  it('should contains a Search component in the banner', () => {
+  xit('should contains a Search component in the banner', () => {
     const pageHeader = component.find('.nypl-homepage-hero');
     expect(pageHeader.find('Search')).to.have.length(1);
   });
@@ -48,14 +49,5 @@ describe('Home', () => {
     const imageBlocks = component.find('div.nypl-quarter-image');
 
     expect(imageBlocks.find('h3').length).to.equal(5);
-  });
-
-  // the Store is handling loading now. TODO: How to test Store/Component interaction here?
-  xit('should have an initial loading state of false', () => {
-
-  });
-
-  xit('should have an isLoading state of true when updateIsLoadingState is called', () => {
-
   });
 });

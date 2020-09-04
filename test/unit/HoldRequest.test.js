@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-filename-extension */
 /* eslint-env mocha */
 import React from 'react';
 import { stub, spy } from 'sinon';
@@ -5,8 +6,7 @@ import { expect } from 'chai';
 import { mount } from 'enzyme';
 import axios from 'axios';
 // Import the component that is going to be tested
-import HoldRequest from './../../src/app/components/HoldRequest/HoldRequest';
-import Actions from './../../src/app/actions/Actions';
+import WrappedHoldRequest, { HoldRequest } from './../../src/app/components/HoldRequest/HoldRequest';
 import mockedItem from '../fixtures/mocked-item';
 
 describe('HoldRequest', () => {
@@ -78,9 +78,8 @@ describe('HoldRequest', () => {
     let requireUser;
 
     before(() => {
-      Actions.updatePatronData({});
       requireUser = spy(HoldRequest.prototype, 'requireUser');
-      component = mount(<HoldRequest />, { attachTo: document.body });
+      component = mount(<HoldRequest patron={{}}/>, { attachTo: document.body });
       component.setState({ redirect: false });
     });
 
@@ -98,17 +97,15 @@ describe('HoldRequest', () => {
   describe('If the patron is logged in and the App receives invalid item data, <HoldRequest>',
     () => {
       let component;
-      let isLoadingStub;
 
       before(() => {
-        isLoadingStub = stub(HoldRequest.prototype, 'isLoading').callsFake(() => false);
-        component = mount(<HoldRequest />, { attachTo: document.body });
+        component = mount(
+          <HoldRequest loading={false} patron={{ loggedIn: true }} />, { attachTo: document.body });
         component.setState({ redirect: false });
       });
 
       after(() => {
         component.unmount();
-        isLoadingStub.restore();
       });
 
       it('should display the page title, "Item Request".', () => {
@@ -139,16 +136,13 @@ describe('HoldRequest', () => {
       '@id': 'res:b17688688',
       items: mockedItem,
     };
-    let isLoadingStub;
 
     before(() => {
-      isLoadingStub = stub(HoldRequest.prototype, 'isLoading').callsFake(() => false)
       component = mount(<HoldRequest bib={bib} params={{ itemId: 'i10000003' }} />, { attachTo: document.body });
       component.setState({ redirect: false });
     });
 
     after(() => {
-      isLoadingStub.restore();
       component.unmount();
     });
 
@@ -200,10 +194,7 @@ describe('HoldRequest', () => {
       },
     ];
 
-    let isLoadingStub;
-
     before(() => {
-      isLoadingStub = stub(HoldRequest.prototype, 'isLoading').callsFake(() => false);
       component = mount(
         <HoldRequest
           bib={bib}
@@ -217,7 +208,6 @@ describe('HoldRequest', () => {
 
     after(() => {
       component.unmount();
-      isLoadingStub.restore();
     });
 
     it('should display the sentence "Choose a delivery option or location".', () => {
@@ -310,10 +300,8 @@ describe('HoldRequest', () => {
         shortName: 'Schwarzman Building',
       },
     ];
-    let isLoadingStub;
 
     before(() => {
-      isLoadingStub = stub(HoldRequest.prototype, 'isLoading').callsFake(() => false);
       component = mount(
         <HoldRequest
           bib={bib}
@@ -328,7 +316,6 @@ describe('HoldRequest', () => {
 
     after(() => {
       component.unmount();
-      isLoadingStub.restore();
     });
 
     it('should display the EDD option.', () => {

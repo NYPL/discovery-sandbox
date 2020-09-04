@@ -14,6 +14,33 @@ import {
 import ItemTable from '../Item/ItemTable';
 import appConfig from '../../data/appConfig';
 
+
+export const getBibTitle = (bib) => {
+  if (!bib.titleDisplay || !bib.titleDisplay.length) {
+    const author = bib.creatorLiteral && bib.creatorLiteral.length ?
+      ` / ${bib.creatorLiteral[0]}` : '';
+    return bib.title && bib.title.length ? `${bib.title[0]}${author}` : '';
+  }
+  return bib.titleDisplay[0];
+};
+
+export const getYearDisplay = (bib) => {
+  if (_isEmpty(bib)) return null;
+
+  let dateStartYear = bib.dateStartYear;
+  let dateEndYear = bib.dateEndYear;
+
+  dateStartYear = dateStartYear === 999 ? 'unknown' : dateStartYear;
+  dateEndYear = dateEndYear === 9999 ? 'present' : dateEndYear;
+
+  if (dateStartYear && dateEndYear) {
+    return (<li className="nypl-results-date">{dateStartYear}-{dateEndYear}</li>);
+  } else if (dateStartYear) {
+    return (<li className="nypl-results-date">{dateStartYear}</li>);
+  }
+  return null;
+};
+
 const ResultsList = ({
   results,
   subjectHeadingShow,
@@ -25,32 +52,6 @@ const ResultsList = ({
   const includeDrbb = features.includes('drb-integration');
 
   if (!results || !_isArray(results) || !results.length) {
-    return null;
-  }
-
-  const getBibTitle = (bib) => {
-    if (!bib.titleDisplay || !bib.titleDisplay.length) {
-      const author = bib.creatorLiteral && bib.creatorLiteral.length ?
-        ` / ${bib.creatorLiteral[0]}` : '';
-      return bib.title && bib.title.length ? `${bib.title[0]}${author}` : '';
-    }
-    return bib.titleDisplay[0];
-  };
-
-  const getYearDisplay = (bib) => {
-    if (_isEmpty(bib)) return null;
-
-    let dateStartYear = bib.dateStartYear;
-    let dateEndYear = bib.dateEndYear;
-
-    dateStartYear = dateStartYear === 999 ? 'unknown' : dateStartYear;
-    dateEndYear = dateEndYear === 9999 ? 'present' : dateEndYear;
-
-    if (dateStartYear && dateEndYear) {
-      return (<li className="nypl-results-date">{dateStartYear}-{dateEndYear}</li>);
-    } else if (dateStartYear) {
-      return (<li className="nypl-results-date">{dateStartYear}</li>);
-    }
     return null;
   };
 
