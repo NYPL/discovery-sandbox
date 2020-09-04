@@ -80,6 +80,7 @@ describe('HoldConfirmation', () => {
           id: '6677200',
           names: ['Leonard, Mike'],
           barcodes: ['162402680435300'],
+          loggedIn: true,
         };
         requireUser = sinon.spy(HoldConfirmation.prototype, 'requireUser');
         component = mount(
