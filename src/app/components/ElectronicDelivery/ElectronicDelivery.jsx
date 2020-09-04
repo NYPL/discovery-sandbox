@@ -326,11 +326,11 @@ ElectronicDelivery.defaultProps = {
   searchKeywords: '',
 };
 
-const mapStateToProps = ({ patron, bib, searchKeywords, appConfig, }) => ({
-  patron,
-  bib,
-  searchKeywords,
-  features: appConfig.features,
+const mapStateToProps = state => ({
+  patron: state.patron,
+  bib: state.bib,
+  searchKeywords: state.searchKeywords,
+  features: state.appConfig.features,
 });
 
 const mapDispatchToProps = dispatch => ({

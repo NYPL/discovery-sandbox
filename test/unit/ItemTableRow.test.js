@@ -194,18 +194,6 @@ describe('ItemTableRow', () => {
 
     describe('with "on-site-edd" feature flag', () => {
       let component;
-      let appConfigStoreStub;
-      const generalResearchEmail = 'example@nypl.com';
-      before(() => {
-        // appConfigStoreStub = stub(AppConfigStore, 'getState').returns({
-        //   generalResearchEmail,
-        //   features: ['on-site-edd'],
-        //   closedLocations: [],
-        // });
-      });
-      after(() => {
-        // appConfigStoreStub.restore();
-      });
 
       describe('unrequestable NYPL item', () => {
         before(() => {
