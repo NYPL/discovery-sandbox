@@ -4,7 +4,7 @@ import { expect } from 'chai';
 import { shallow, mount } from 'enzyme';
 import { mock } from 'sinon';
 
-import FilterPopup from '../../src/app/components/FilterPopup/FilterPopup';
+import WrappedFilterPopup, { FilterPopup } from '../../src/app/components/FilterPopup/FilterPopup';
 import appConfig from '../../src/app/data/appConfig';
 
 describe('FilterPopup', () => {
@@ -12,9 +12,9 @@ describe('FilterPopup', () => {
     // Since this is a shallow render, the component itself is not mounted. The `js` flag
     // becomes true when the component is mounted on the client-side so we know that
     // javascript is enabled.
-    it('should not render an open button but an <a> instead', () => {
+    it('should render an an <a> instead instead of an open button', () => {
       const component = shallow(
-        <FilterPopup totalResults={1} />, { disableLifecycleMethods: true }
+        <FilterPopup totalResults={1} features={[]}/>, { disableLifecycleMethods: true }
       );
 
       expect(component.state('js')).to.equal(false);
@@ -25,7 +25,7 @@ describe('FilterPopup', () => {
     });
 
     it('should not have specific "no-js" id and class', () => {
-      const component = shallow(<FilterPopup />, { disableLifecycleMethods: true });
+      const component = shallow(<FilterPopup features={[]} />, { disableLifecycleMethods: true });
 
       expect(component.state('js')).to.equal(false);
       expect(component.find('#popup-no-js').length).to.equal(0);
@@ -33,7 +33,7 @@ describe('FilterPopup', () => {
     });
 
     it('should have specific "no-js" id and class', () => {
-      const component = shallow(<FilterPopup />, { disableLifecycleMethods: true });
+      const component = shallow(<FilterPopup features={[]} />, { disableLifecycleMethods: true });
       component.setState({ showForm: true });
 
       expect(component.state('js')).to.equal(false);
@@ -46,7 +46,7 @@ describe('FilterPopup', () => {
     let component;
 
     before(() => {
-      component = mount(<FilterPopup totalResults={1} />);
+      component = mount(<FilterPopup totalResults={1} features={[]} />);
     });
 
     it('should have a .filter-container class for the wrapper', () => {
@@ -106,7 +106,7 @@ describe('FilterPopup', () => {
     let component;
 
     before(() => {
-      component = mount(<FilterPopup />);
+      component = mount(<FilterPopup features={[]} />);
     });
 
     it('should not be rendered at first', () => {
@@ -167,7 +167,8 @@ describe('FilterPopup', () => {
     let component;
 
     before(() => {
-      component = mount(<FilterPopup selectedFilters={selectedFilters} />, { context });
+      component = mount(
+        <FilterPopup selectedFilters={selectedFilters} features={[]} />, { context });
     });
 
     after(() => {
@@ -211,7 +212,7 @@ describe('FilterPopup', () => {
     let component;
 
     beforeEach(() => {
-      component = mount(<FilterPopup selectedFilters={selectedFilters} />);
+      component = mount(<FilterPopup selectedFilters={selectedFilters} features={[]} />);
       component.setState({ showForm: true });
     });
 
@@ -277,7 +278,7 @@ describe('FilterPopup', () => {
     describe('without integration', () => {
       before(() => {
         appConfig.features = [];
-        component = mount(<FilterPopup selectedFilters={selectedFilters} />);
+        component = mount(<FilterPopup selectedFilters={selectedFilters} features={[]} />);
       });
 
       it('should not have any components with .drbb-integration class', () => {
@@ -288,7 +289,7 @@ describe('FilterPopup', () => {
     describe('with integration', () => {
       before(() => {
         appConfig.features = ['drb-integration'];
-        component = mount(<FilterPopup selectedFilters={selectedFilters} />);
+        component = mount(<FilterPopup selectedFilters={selectedFilters} features={['drb-integration']} />);
       });
 
       it('should have components with .drbb-integration class', () => {

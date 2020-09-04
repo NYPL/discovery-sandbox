@@ -25,7 +25,7 @@ import {
 } from '../../utils/utils';
 import { updateLoadingStatus } from '../../actions/Actions';
 
-class HoldRequest extends React.Component {
+export class HoldRequest extends React.Component {
   constructor(props) {
     super(props);
     const deliveryLocationsFromAPI = this.props.deliveryLocations;
@@ -434,6 +434,7 @@ HoldRequest.defaultProps = {
   params: {},
   deliveryLocations: [],
   isEddRequestable: false,
+  closedLocations: [],
 };
 
 const mapStateToProps = state => ({

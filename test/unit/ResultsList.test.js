@@ -1,12 +1,14 @@
+/* eslint-disable react/jsx-filename-extension */
 /* eslint-env mocha */
 import React from 'react';
 import { expect } from 'chai';
-import { shallow, mount } from 'enzyme';
+import { mount } from 'enzyme';
 import { mock as sinonMock } from 'sinon';
 import MockAdapter from 'axios-mock-adapter';
 import axios from 'axios';
+import { mountTestRender, makeTestStore } from '../helpers/store';
 
-import ResultsList from '../../src/app/components/ResultsList/ResultsList';
+import ResultsList, { getBibTitle, getYearDisplay } from '../../src/app/components/ResultsList/ResultsList';
 import resultsBibs from '../fixtures/resultsBibs';
 import appConfig from '../../src/app/data/appConfig';
 
@@ -61,10 +63,17 @@ const endYear9999Bib = {
 
 
 describe('ResultsList', () => {
+  let mockStore;
+  before(() => {
+    mockStore = makeTestStore({ loading: false, appConfig: { features: [] } });
+  });
   describe('Default rendering', () => {
+    let component;
+    before(() => {
+      component = mountTestRender(<ResultsList />, { store: mockStore });
+    });
     it('should return null if no results were passed', () => {
-      const component = shallow(<ResultsList />);
-      expect(component.type()).to.equal(null);
+      expect(component.find('ResultsList').isEmptyRender()).to.equal(true);
     });
   });
 
@@ -72,11 +81,11 @@ describe('ResultsList', () => {
     let component;
 
     before(() => {
-      component = shallow(<ResultsList results={results} />);
+      component = mountTestRender(<ResultsList results={results} />, { store: mockStore }).find('ResultsList');
     });
 
     it('should have a ul wrapper', () => {
-      expect(component.first().type()).to.equal('ul');
+      expect(component.find('ul').length).to.equal(1);
       expect(component.find('.nypl-results-list').length).to.equal(1);
     });
 
@@ -93,7 +102,7 @@ describe('ResultsList', () => {
     let component;
 
     before(() => {
-      component = mount(<ResultsList results={resultsBibs} />);
+      component = mountTestRender(<ResultsList results={resultsBibs} />, { store: mockStore }).find('ResultsList');
     });
 
     it('should render two bib li items', () => {
@@ -128,7 +137,7 @@ describe('ResultsList', () => {
     let component;
 
     before(() => {
-      component = mount(<ResultsList results={[bib]} />);
+      component = mountTestRender(<ResultsList results={[bib]} />, { store: mockStore }).find('ResultsList');
     });
 
     it('should render one main li', () => {
@@ -177,7 +186,7 @@ describe('ResultsList', () => {
     let component;
 
     before(() => {
-      component = mount(<ResultsList results={[bib]} />);
+      component = mountTestRender(<ResultsList results={[bib]} />, { store: mockStore }).find('ResultsList');
     });
 
     it('should have a total items description', () => {
@@ -236,81 +245,70 @@ describe('ResultsList', () => {
   describe('Misc functions', () => {
     describe('getBibTitle', () => {
       it('should display titleDisplay', () => {
-        const component = mount(<ResultsList results={resultsBibs} />);
-        const getBibTitle = component.instance().getBibTitle(resultsBibs[0].result);
+        const bibTitle = getBibTitle(resultsBibs[0].result);
 
-        expect(getBibTitle).to.equal('Hamlet without Hamlet / Margreta De Grazia.');
+        expect(bibTitle).to.equal('Hamlet without Hamlet / Margreta De Grazia.');
       });
 
       it('should display `title` with `creatorLiteral` if there\'s no `titleDisplay`', () => {
-        const component = mount(<ResultsList results={[singleBibNoTitleDisplay]} />);
-        const getBibTitle = component.instance().getBibTitle(singleBibNoTitleDisplay.result);
+        const bibTitle = getBibTitle(singleBibNoTitleDisplay.result);
 
         // The result combines `title` with `creatorLiteral`:
-        expect(getBibTitle).to.equal('Hamlet without Hamlet / De Grazia, Margreta.');
+        expect(bibTitle).to.equal('Hamlet without Hamlet / De Grazia, Margreta.');
       });
 
       it('should display just `title` if there\'s no `titleDisplay` or `creatorLiteral`', () => {
-        const component = mount(<ResultsList results={[singleBibNoTitleDisplayOrCreator]} />);
-        const getBibTitle =
-          component.instance().getBibTitle(singleBibNoTitleDisplayOrCreator.result);
+        const bibTitle = getBibTitle(singleBibNoTitleDisplayOrCreator.result);
 
-        expect(getBibTitle).to.equal('Hamlet without Hamlet');
+        expect(bibTitle).to.equal('Hamlet without Hamlet');
       });
 
       it('should return an empty string', () => {
-        const component = mount(<ResultsList results={[emptyBib]} />);
-        const getBibTitle = component.instance().getBibTitle(emptyBib.result);
+        const bibTitle = getBibTitle(emptyBib.result);
 
-        expect(getBibTitle).to.equal('');
+        expect(bibTitle).to.equal('');
       });
     });
 
     describe('getYearDisplay', () => {
       it('should return null with no bib', () => {
-        const component = mount(<ResultsList results={[emptyBib]} />);
-        const getYearDisplay = component.instance().getYearDisplay(emptyBib.result);
+        const yearDisplay = getYearDisplay(emptyBib.result);
 
-        expect(getYearDisplay).to.equal(null);
+        expect(yearDisplay).to.equal(null);
       });
 
       it('should return null with a bib but no dates', () => {
-        const component = mount(<ResultsList results={singleBibNoTitleDisplay} />);
-        const getYearDisplay = component.instance().getYearDisplay(singleBibNoTitleDisplay.result);
+        const yearDisplay = getYearDisplay(singleBibNoTitleDisplay.result);
 
-        expect(getYearDisplay).to.equal(null);
+        expect(yearDisplay).to.equal(null);
       });
 
       it('should return just the start date', () => {
-        const component = mount(<ResultsList results={onlyStartYearBib} />);
-        const getYearDisplay = component.instance().getYearDisplay(onlyStartYearBib.result);
+        const yearDisplay = getYearDisplay(onlyStartYearBib.result);
 
-        expect(getYearDisplay.type).to.equal('li');
-        expect(getYearDisplay.props.children).to.equal(2007);
+        expect(yearDisplay.type).to.equal('li');
+        expect(yearDisplay.props.children).to.equal(2007);
       });
 
       it('should return the start and end date', () => {
-        const component = mount(<ResultsList results={startEndYearBib} />);
-        const getYearDisplay = component.instance().getYearDisplay(startEndYearBib.result);
+        const yearDisplay = getYearDisplay(startEndYearBib.result);
 
-        expect(getYearDisplay.type).to.equal('li');
-        expect(getYearDisplay.props.children.join('')).to.equal('1999-2007');
+        expect(yearDisplay.type).to.equal('li');
+        expect(yearDisplay.props.children.join('')).to.equal('1999-2007');
       });
 
       it('should return the start unknown and end date', () => {
-        const component = mount(<ResultsList results={startYear999Bib} />);
-        const getYearDisplay = component.instance().getYearDisplay(startYear999Bib.result);
+        const yearDisplay = getYearDisplay(startYear999Bib.result);
 
-        expect(getYearDisplay.type).to.equal('li');
-        expect(getYearDisplay.props.children.join('')).to.equal('unknown-2007');
+        expect(yearDisplay.type).to.equal('li');
+        expect(yearDisplay.props.children.join('')).to.equal('unknown-2007');
       });
 
       it('should return the start date and end present', () => {
-        const component = mount(<ResultsList results={endYear9999Bib} />);
-        const getYearDisplay = component.instance().getYearDisplay(endYear9999Bib.result);
+        const yearDisplay = getYearDisplay(endYear9999Bib.result);
 
-        expect(getYearDisplay.type).to.equal('li');
-        expect(getYearDisplay.props.children.join('')).to.equal('1999-present');
+        expect(yearDisplay.type).to.equal('li');
+        expect(yearDisplay.props.children.join('')).to.equal('1999-present');
       });
     });
   });
@@ -349,8 +347,7 @@ describe('ResultsList', () => {
 
     describe('without integration', () => {
       before(() => {
-        appConfig.features = [];
-        component = mount(<ResultsList results={resultsBibs} />, context);
+        component = mountTestRender(<ResultsList results={resultsBibs} />, { store: mockStore }).find('ResultsList');
       });
 
       it('should not have any components with .drbb-integration class', () => {
@@ -360,8 +357,11 @@ describe('ResultsList', () => {
 
     describe('with integration', () => {
       before(() => {
-        appConfig.features = ['drb-integration'];
-        component = mount(<ResultsList results={resultsBibs} />, { context });
+        const mockDrbFeatureStore = makeTestStore({
+          loading: false,
+          appConfig: { features: ['drb-integration'] },
+        });
+        component = mountTestRender(<ResultsList results={resultsBibs} />, { store: mockDrbFeatureStore });
       });
 
       it('should have components with .drbb-integration class', () => {

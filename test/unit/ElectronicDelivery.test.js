@@ -4,8 +4,10 @@ import React from 'react';
 import { expect } from 'chai';
 import { shallow } from 'enzyme';
 import { mock } from 'sinon';
+import { mountTestRender, makeTestStore } from '../helpers/store';
 
 import ElectronicDeliveryForm from './../../src/app/components/ElectronicDelivery/ElectronicDeliveryForm';
+import ElectronicDelivery from './../../src/app/components/ElectronicDelivery/ElectronicDelivery';
 import appConfig from './../../src/app/data/appConfig';
 
 describe('ElectronicDeliveryForm', () => {
@@ -31,20 +33,30 @@ describe('ElectronicDeliveryForm', () => {
     });
   });
   describe('with "on-site-edd" feature flag', () => {
+    let wrapper;
     let component;
     let appConfigMock;
     before(() => {
       appConfigMock = mock(appConfig);
       appConfig.features = ['on-site-edd'];
       appConfig.eddAboutUrl.onSiteEdd = 'example.com/scan-and-deliver';
-      component = shallow(
-        <ElectronicDeliveryForm fromUrl="example.com" />,
+      const store = makeTestStore({ appConfig });
+      wrapper = mountTestRender(
+        <ElectronicDelivery
+          params={{ bibId: 'book1' }}
+          location={{
+            query: '',
+          }}
+        />,
+        { store, attachTo: document.body },
       );
     });
     after(() => {
       appConfigMock.restore();
+      wrapper.unmount();
     });
     it('should have "Scan & Deliver" EDD about URL', () => {
+      component = wrapper.find('ElectronicDeliveryForm');
       expect(component.find('a').first().prop('href')).to.equal('example.com/scan-and-deliver');
     });
   });
