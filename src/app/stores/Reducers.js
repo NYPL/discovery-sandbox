@@ -6,7 +6,7 @@ function appReducer(state = initialState, action) {
   switch (action.type) {
     case Actions.RESET_STATE:
       // Reset state except appConfig and patron
-      return { ...initialState, appConfig: state.appConfig, patron: state.patron };
+      return { ...initialState, appConfig: state.appConfig, patron: state.patron, loading: false };
     case Actions.UPDATE_LOADING_STATUS:
       return { ...state, loading: action.payload };
     case Actions.UPDATE_SEARCH_RESULTS:
