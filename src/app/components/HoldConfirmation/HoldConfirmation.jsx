@@ -80,7 +80,7 @@ export class HoldConfirmation extends React.Component {
    * @return {Boolean}
    */
   requireUser() {
-    if (this.props.patron && this.props.patron.id) {
+    if (this.props.patron && this.props.patron.id && this.props.patron.loggedIn) {
       return true;
     }
 

@@ -21,11 +21,7 @@ export class DataLoader extends React.Component {
       return;
     }
 
-    dataLoaderUtil.loadDataForRoutes(location, dispatch)
-      .then(() => {
-        dispatch(updateLastLoaded(`${pathname}${search}`));
-        dispatch(updateLoadingStatus(false));
-      });
+    return dataLoaderUtil.loadDataForRoutes(location, dispatch);
   }
 
   render() {
