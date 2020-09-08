@@ -36,6 +36,7 @@ describe('dataLoaderUtil', () => {
         location = {
           pathname: '',
           search: '',
+          query: {},
         };
         dataLoaderUtil.loadDataForRoutes(location, mockReq, mockRouteMethods);
       });
@@ -91,6 +92,7 @@ describe('dataLoaderUtil', () => {
         location = {
           pathname: '/research/collections/shared-collection-catalog/bib/b000000',
           search: '',
+          query: {},
         };
         mockReq = { query: {} };
         dataLoaderUtil.loadDataForRoutes(location, mockReq, mockRouteMethods);
@@ -307,6 +309,7 @@ describe('dataLoaderUtil', () => {
         });
         location = {
           pathname: '/research/collections/shared-collection-catalog/hold/request/',
+          query: {},
         };
         dataLoaderUtil.loadDataForRoutes(location, mockReq, mockRouteMethods);
       });
@@ -392,6 +395,7 @@ describe('dataLoaderUtil', () => {
         location = {
           pathname: '',
           search: '',
+          query: {},
         };
         dataLoaderUtil.loadDataForRoutes(location);
       });
@@ -436,6 +440,7 @@ describe('dataLoaderUtil', () => {
           location = {
             pathname: '/research/collections/shared-collection-catalog/bib/b000000',
             search: '',
+            query: {},
           };
           dataLoaderUtil.loadDataForRoutes(location);
         });
@@ -505,6 +510,7 @@ describe('dataLoaderUtil', () => {
           location = {
             pathname: '/research/collections/shared-collection-catalog/bib/b000000',
             search: '',
+            query: {},
           };
           dataLoaderUtil.loadDataForRoutes(location);
         });
@@ -793,6 +799,7 @@ describe('dataLoaderUtil', () => {
           location = {
             pathname: '/research/collections/shared-collection-catalog/hold/request/b1000-i1000',
             search: '',
+            query: {},
           };
           dataLoaderUtil.loadDataForRoutes(location);
         });
@@ -889,6 +896,7 @@ describe('dataLoaderUtil', () => {
           location = {
             pathname: '/research/collections/shared-collection-catalog/hold/request/b1000-i1000',
             search: '',
+            query: {},
           };
           dataLoaderUtil.loadDataForRoutes(location);
         });
