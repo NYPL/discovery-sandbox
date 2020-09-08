@@ -65,7 +65,7 @@ app.use('/', (req, res, next) => {
 });
 
 app.use('/*', (req, res, next) => {
-  const initialStore = { initialState, lastLoaded: req._parsedUrl.path };
+  const initialStore = { ...initialState, lastLoaded: req._parsedUrl.path };
   global.store = configureStore(initialStore);
   next();
 });
