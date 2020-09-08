@@ -2,8 +2,7 @@
 /* eslint-disable react/jsx-filename-extension */
 import React from 'react';
 import { expect } from 'chai';
-import { shallow, mount } from 'enzyme';
-import { stub } from 'sinon';
+import { mount } from 'enzyme';
 
 import DrbbContainer from './../../src/app/components/Drbb/DrbbContainer';
 import appConfig from '../../src/app/data/appConfig';
@@ -12,13 +11,6 @@ import initialState from '../../src/app/stores/InitialState';
 
 describe('DrbbContainer', () => {
   let component;
-  before(() => {
-
-  });
-
-  afterEach(() => {
-
-  });
 
   describe('all renderings', () => {
     const store = configureStore(initialState);

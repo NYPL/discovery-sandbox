@@ -65,7 +65,7 @@ app.use('/', (req, res, next) => {
 });
 
 app.use('/*', (req, res, next) => {
-  const initialStore = Object.assign(initialState, { lastLoaded: req._parsedUrl.path });
+  const initialStore = { ...initialState, lastLoaded: req._parsedUrl.path };
   global.store = configureStore(initialStore);
   next();
 });
@@ -86,9 +86,6 @@ app.get('/*', (req, res) => {
     } else if (redirectLocation) {
       res.redirect(302, redirectLocation.pathname + redirectLocation.search);
     } else if (renderProps) {
-      if (!res.data) {
-        res.data = {};
-      }
       application = ReactDOMServer.renderToString(
         <Provider store={store}>
           <RouterContext {...renderProps} />

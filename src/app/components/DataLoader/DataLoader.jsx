@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import dataLoaderUtil from '@dataLoaderUtil';
 import {
   updateLoadingStatus,
-  updateLastLoaded,
 } from '../../actions/Actions';
 
 // The sole responsibility of the DataLoader is to trigger a data reload whenever
@@ -21,7 +20,7 @@ export class DataLoader extends React.Component {
       return;
     }
 
-    return dataLoaderUtil.loadDataForRoutes(location, dispatch);
+    dataLoaderUtil.loadDataForRoutes(location, dispatch);
   }
 
   render() {

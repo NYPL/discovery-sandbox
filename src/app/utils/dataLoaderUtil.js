@@ -67,6 +67,7 @@ function loadDataForRoutes(location, dispatch) {
   });
 
   if (!matchingPath || pathname.match('edd')) return new Promise(() => dispatch(updateLoadingStatus(false)));
+
   const pathType = matchingPath[0];
 
   const errorCb = (error) => {

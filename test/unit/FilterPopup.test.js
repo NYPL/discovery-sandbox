@@ -12,7 +12,7 @@ describe('FilterPopup', () => {
     // Since this is a shallow render, the component itself is not mounted. The `js` flag
     // becomes true when the component is mounted on the client-side so we know that
     // javascript is enabled.
-    it('should render an an <a> instead instead of an open button', () => {
+    it('should render an <a> instead instead of an open button', () => {
       const component = shallow(
         <FilterPopup totalResults={1} features={[]}/>, { disableLifecycleMethods: true }
       );
