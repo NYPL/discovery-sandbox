@@ -148,13 +148,12 @@ describe('Search', () => {
     let triggerSubmitSpy;
     let submitSearchRequestSpy;
     let mock;
-    let contextRoutesPushed;
+    let contextRoutesPushed = [];
 
-    beforeEach(() => {
+    before(() => {
       createAPIQuery = basicQuery({});
       triggerSubmitSpy = sinon.spy(Search.prototype, 'triggerSubmit');
       submitSearchRequestSpy = sinon.spy(Search.prototype, 'submitSearchRequest');
-      contextRoutesPushed = [];
 
       component = mount(
         <Search createAPIQuery={createAPIQuery} />,
@@ -172,10 +171,15 @@ describe('Search', () => {
         .reply(500);
     });
 
-    afterEach(() => {
+    after(() => {
       mock.restore();
       triggerSubmitSpy.restore();
       submitSearchRequestSpy.restore();
+    });
+
+    afterEach(() => {
+      contextRoutesPushed = [];
+      submitSearchRequestSpy.reset();
     });
 
     it('should submit the input entered when clicking the submit button', (done) => {
