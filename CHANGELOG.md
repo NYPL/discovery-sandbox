@@ -1,5 +1,8 @@
 ## CHANGE LOG
 
+### 1.6.7
+- Adding `Journal Title` as option in search dropdown
+
 ### 1.6.6
 - Updating @nypl/dgx-react-footer to 0.5.6.
 

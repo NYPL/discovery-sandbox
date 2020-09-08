@@ -48,8 +48,8 @@ describe('Search', () => {
       expect(component.find('#search-by-field').length).to.equal(1);
     });
 
-    it('should render three option elements', () => {
-      expect(component.find('option').length).to.equal(4);
+    it('should render four option elements', () => {
+      expect(component.find('option').length).to.equal(5);
     });
 
     it('should have relevance as the default selected option', () => {
@@ -197,6 +197,19 @@ describe('Search', () => {
       component.find('input').at(0).simulate('change', { target: { value: 'Watts' } });
       component.find('button').at(0).simulate('click');
       expect(store.state.searchKeywords).not.to.equal('Watts');
+    });
+
+    it('should make a search request with issuance filter set for journal title searches', () => {
+      component.find('select').getDOMNode().value = 'journal title';
+      component.find('select').simulate('change');
+
+      mock = new MockAdapter(axios);
+      mock
+        .onGet(`${appConfig.baseUrl}/api?q=Dune&filters[issuance][0]]=urn:biblevel:s&search_scope=title`)
+        .reply(200, { searcResults: [] });
+
+      component.find('button').at(0).simulate('keyPress');
+      expect(triggerSubmitSpy.callCount).to.equal(2);
     });
   });
 });
