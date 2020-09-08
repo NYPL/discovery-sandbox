@@ -148,14 +148,20 @@ describe('Search', () => {
     let triggerSubmitSpy;
     let submitSearchRequestSpy;
     let mock;
+    let contextRoutesPushed;
 
-    before(() => {
+    beforeEach(() => {
       createAPIQuery = basicQuery({});
       triggerSubmitSpy = sinon.spy(Search.prototype, 'triggerSubmit');
       submitSearchRequestSpy = sinon.spy(Search.prototype, 'submitSearchRequest');
+      contextRoutesPushed = [];
+
       component = mount(
         <Search createAPIQuery={createAPIQuery} />,
-        { context: { router: { createHref: () => {}, push: () => {} } } },
+        { context: { router: {
+          createHref: () => {},
+          push: (route) => { contextRoutesPushed.push(route); },
+        } } },
       );
 
       mock = new MockAdapter(axios);
@@ -166,7 +172,7 @@ describe('Search', () => {
         .reply(500);
     });
 
-    after(() => {
+    afterEach(() => {
       mock.restore();
       triggerSubmitSpy.restore();
       submitSearchRequestSpy.restore();
@@ -185,6 +191,7 @@ describe('Search', () => {
     });
 
     it('should submit the input entered when pressing enter', () => {
+      component.find('input').at(0).simulate('change', { target: { value: 'Dune' } });
       expect(component.state('searchKeywords')).to.equal('Dune');
       component.find('input').at(0).simulate('change', { target: { value: 'Harry Potter' } });
       component.find('button').at(0).simulate('keyPress');
@@ -199,17 +206,19 @@ describe('Search', () => {
       expect(store.state.searchKeywords).not.to.equal('Watts');
     });
 
-    it('should make a search request with issuance filter set for journal title searches', () => {
+    it('should make a search request with issuance filter set for journal title searches', (done) => {
       component.find('select').getDOMNode().value = 'journal title';
       component.find('select').simulate('change');
 
-      mock = new MockAdapter(axios);
-      mock
-        .onGet(`${appConfig.baseUrl}/api?q=Dune&filters[issuance][0]]=urn:biblevel:s&search_scope=title`)
-        .reply(200, { searcResults: [] });
+      component.find('input').at(0).simulate('change', { target: { value: 'Time' } });
+      component.find('button').at(0).simulate('click');
 
-      component.find('button').at(0).simulate('keyPress');
-      expect(triggerSubmitSpy.callCount).to.equal(2);
+      setTimeout(() => {
+        expect(submitSearchRequestSpy.callCount).to.equal(1);
+        expect(contextRoutesPushed[0])
+          .to.equal('/research/collections/shared-collection-catalog/search?q=Time&filters[issuance][0]=urn%3Abiblevel%3As&search_scope=title');
+        done();
+      }, 1000);
     });
   });
 });
