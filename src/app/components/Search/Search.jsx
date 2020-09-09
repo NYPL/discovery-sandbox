@@ -83,10 +83,21 @@ class Search extends React.Component {
       trackDiscovery('Search', `Field - ${this.state.field}`);
     }
 
+    // Set var for field querying so it can be overridden if necessary
+    let queryField = this.state.field;
+
+    // If user is making a search for periodicals switch from field to standard
+    // Title search with an issuance filter on the serial field
+    const additionalFilters = {};
+    if (this.state.field === 'journal title') {
+      additionalFilters.issuance = ['urn:biblevel:s'];
+      queryField = 'title';
+    }
+
     const searchKeywords = userSearchKeywords === '*' ? '' : userSearchKeywords;
     const apiQuery = this.props.createAPIQuery({
-      field: this.state.field,
-      selectedFilters: this.props.selectedFilters,
+      field: queryField,
+      selectedFilters: { ...this.props.selectedFilters, ...additionalFilters },
       searchKeywords,
       page: '1',
     });
@@ -118,6 +129,7 @@ class Search extends React.Component {
               >
                 <option value="all">All fields</option>
                 <option value="title">Title</option>
+                <option value="journal title">Journal Title</option>
                 <option value="contributor">Author/Contributor</option>
                 <option value="standard_number">Standard Numbers</option>
               </select>
@@ -133,7 +145,7 @@ class Search extends React.Component {
                 id="search-query"
                 aria-labelledby="search-input-label"
                 aria-controls="results-description"
-                placeholder="Keyword, title, or author/contributor"
+                placeholder="Keyword, title, journal title, or author/contributor"
                 onChange={this.inputChange}
                 value={this.state.searchKeywords}
                 name="q"

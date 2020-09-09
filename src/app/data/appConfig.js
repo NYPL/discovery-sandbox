@@ -64,6 +64,10 @@ const appConfig = {
   generalResearchEmail: process.env.GENERAL_RESEARCH_EMAIL,
   airtableApiKey: process.env.AIRTABLE_API_KEY,
   feedbackFormUrl: process.env.FEEDBACK_FORM_URL,
+  eddAboutUrl: {
+    onSiteEdd: 'https://www.nypl.org/research/scan-and-deliver',
+    default: 'https://www.nypl.org/help/request-research-materials#EDD',
+  },
 };
 
 export default {
