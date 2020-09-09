@@ -52,8 +52,8 @@ describe('Search', () => {
       expect(component.find('#search-by-field').length).to.equal(1);
     });
 
-    it('should render three option elements', () => {
-      expect(component.find('option').length).to.equal(4);
+    it('should render four option elements', () => {
+      expect(component.find('option').length).to.equal(5);
     });
 
     it('should have relevance as the default selected option', () => {
@@ -156,13 +156,17 @@ describe('Search', () => {
     let triggerSubmitSpy;
     let submitSearchRequestSpy;
     let mock;
+    let contextRoutesPushed = [];
 
     before(() => {
       createAPIQuery = basicQuery({});
       triggerSubmitSpy = sinon.spy(Search.WrappedComponent.prototype, 'triggerSubmit');
       submitSearchRequestSpy = sinon.spy(Search.WrappedComponent.prototype, 'submitSearchRequest');
       component = mountTestRender(
-        <Search createAPIQuery={createAPIQuery} router={{ push: () => {} }} />,
+        <Search
+          createAPIQuery={createAPIQuery}
+          router={{ push: route => contextRoutesPushed.push(route) }}
+        />,
         { store: mockStore }).find('Search');
 
       mock = new MockAdapter(axios);
@@ -179,6 +183,11 @@ describe('Search', () => {
       submitSearchRequestSpy.restore();
     });
 
+    afterEach(() => {
+      contextRoutesPushed = [];
+      submitSearchRequestSpy.reset();
+    });
+
     it('should submit the input entered when clicking the submit button', (done) => {
       expect(component.state('searchKeywords')).to.equal('');
 
@@ -192,6 +201,7 @@ describe('Search', () => {
     });
 
     it('should submit the input entered when pressing enter', () => {
+      component.find('input').at(0).simulate('change', { target: { value: 'Dune' } });
       expect(component.state('searchKeywords')).to.equal('Dune');
       component.find('input').at(0).simulate('change', { target: { value: 'Harry Potter' } });
       component.find('button').at(0).simulate('keyPress');
@@ -204,6 +214,21 @@ describe('Search', () => {
       component.find('input').at(0).simulate('change', { target: { value: 'Watts' } });
       component.find('button').at(0).simulate('click');
       expect(mockStore.getState().searchKeywords).not.to.equal('Watts');
+    });
+
+    it('should make a search request with issuance filter set for journal title searches', (done) => {
+      component.find('select').getDOMNode().value = 'journal title';
+      component.find('select').simulate('change');
+
+      component.find('input').at(0).simulate('change', { target: { value: 'Time' } });
+      component.find('button').at(0).simulate('click');
+
+      setTimeout(() => {
+        expect(submitSearchRequestSpy.callCount).to.equal(1);
+        expect(contextRoutesPushed[0])
+          .to.equal('/research/collections/shared-collection-catalog/search?q=Time&filters[issuance][0]=urn%3Abiblevel%3As&search_scope=title');
+        done();
+      }, 1000);
     });
   });
 });
