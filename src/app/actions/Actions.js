@@ -128,6 +128,7 @@ export const updateSearchResultsPage = data => dispatch => new Promise(() => {
   dispatch(updateSearchKeywords(searchKeywords));
   if (page) dispatch(updatePage(page));
   if (sortBy) dispatch(updateSortBy(sortBy));
+  return data;
 });
 
 export const updateBibPage = ({ bib }) => dispatch => new Promise(() => dispatch(updateBib(bib)));
@@ -137,4 +138,5 @@ export const updateHoldRequestPage = data => dispatch => new Promise(() => {
   dispatch(updateBib(bib));
   dispatch(updateDeliveryLocations(deliveryLocations));
   dispatch(updateIsEddRequestable(isEddRequestable));
+  return data;
 });
