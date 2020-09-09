@@ -168,13 +168,15 @@ export class HoldRequest extends React.Component {
   // Redirects to HoldConfirmation if patron is ineligible to place holds. We are particularly
   // checking for manual blocks, expired cards, and excessive fines.
   conditionallyRedirect() {
+    const { params } = this.props;
     return this.checkEligibility().then((eligibility) => {
       if (!eligibility.eligibility) {
         const bib = (this.props.bib && !_isEmpty(this.props.bib)) ?
           this.props.bib : null;
-        const bibId = (bib && bib['@id'] && typeof bib['@id'] === 'string') ?
+        let bibId = (bib && bib['@id'] && typeof bib['@id'] === 'string') ?
           bib['@id'].substring(4) : '';
-        const itemId = (this.props.params && this.props.params.itemId) ? this.props.params.itemId : '';
+        if (!bibId) bibId = (params && params.bibId) ? params.bibId : '';
+        const itemId = (params && params.itemId) ? params.itemId : '';
         const path = `${appConfig.baseUrl}/hold/confirmation/${bibId}-${itemId}`;
         return this.redirectWithErrors(path, 'eligibility', JSON.stringify(eligibility));
       }
