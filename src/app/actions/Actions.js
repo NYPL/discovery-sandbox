@@ -134,9 +134,10 @@ export const updateSearchResultsPage = data => dispatch => new Promise(() => {
 export const updateBibPage = ({ bib }) => dispatch => new Promise(() => dispatch(updateBib(bib)));
 
 export const updateHoldRequestPage = data => dispatch => new Promise(() => {
-  const { bib, deliveryLocations, isEddRequestable } = data;
+  const { bib, deliveryLocations, isEddRequestable, searchKeywords } = data;
   dispatch(updateBib(bib));
   dispatch(updateDeliveryLocations(deliveryLocations));
   dispatch(updateIsEddRequestable(isEddRequestable));
+  if (searchKeywords) dispatch(updateSearchKeywords(searchKeywords));
   return data;
 });

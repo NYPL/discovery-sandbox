@@ -13,7 +13,11 @@ import LibraryItem from './../../app/utils/item';
 import { validate } from '../../app/utils/formValidationUtils';
 import nyplApiClient from '../routes/nyplApiClient';
 import logger from '../../../logger';
-import { updateBib, updateSearchKeywords } from '../../app/actions/Actions';
+import {
+  updateBib,
+  updateSearchKeywords,
+  updateHoldRequestPage,
+} from '../../app/actions/Actions';
 
 const nyplApiClientGet = endpoint =>
   nyplApiClient().then(client => client.get(endpoint, { cache: false }));
@@ -185,14 +189,14 @@ function confirmRequestServer(req, res, next) {
 
   if (redirect) return false;
 
+  const { dispatch } = global.store;
   if (!requestId) {
-    res.data = {
+    dispatch(updateHoldRequestPage({
       bib: {},
       searchKeywords,
       error,
       deliveryLocations: [],
-    };
-
+    }));
     next();
     return false;
   }
@@ -212,18 +216,16 @@ function confirmRequestServer(req, res, next) {
           (bibResponseData) => {
             const { bib } = bibResponseData;
             barcode = LibraryItem.getItem(bib, req.params.itemId).barcode;
-
             getDeliveryLocations(
               barcode,
               patronId,
               (deliveryLocations, isEddRequestable) => {
-                res.data = {
+                dispatch(updateHoldRequestPage({
                   bib,
-                  searchKeywords,
-                  error,
                   deliveryLocations,
                   isEddRequestable,
-                };
+                  searchKeywords,
+                }));
                 next();
               },
               (deliveryLocationError) => {
@@ -233,13 +235,13 @@ function confirmRequestServer(req, res, next) {
                   deliveryLocationError,
                 );
 
-                res.data = {
+                dispatch(updateHoldRequestPage({
                   bib,
                   searchKeywords,
                   error,
                   deliveryLocations: [],
                   isEddRequestable: false,
-                };
+                }));
                 next();
               },
             );
@@ -249,12 +251,12 @@ function confirmRequestServer(req, res, next) {
               `Error retrieving server side bib record in confirmRequestServer, id: ${bibId}`,
               bibResponseError,
             );
-            res.data = {
+            dispatch(updateHoldRequestPage({
               bib: {},
               searchKeywords,
               error,
               deliveryLocations: [],
-            };
+            }));
             next();
           },
           { fetchSubjectHeadingData: false },
@@ -269,12 +271,12 @@ function confirmRequestServer(req, res, next) {
         requestIdError,
       );
 
-      res.data = {
+      dispatch(updateHoldRequestPage({
         bib: {},
         searchKeywords,
         error,
         deliveryLocations: [],
-      };
+      }));
       next();
 
       return false;
@@ -352,10 +354,6 @@ function newHoldRequestServerEdd(req, res, next) {
     (data) => {
       dispatch(updateBib(data.bib));
       dispatch(updateSearchKeywords(req.query.searchKeywords));
-      res.data = {
-        error,
-        form,
-      };
       next();
     },
     (bibResponseError) => {
@@ -363,12 +361,12 @@ function newHoldRequestServerEdd(req, res, next) {
         `Error retrieving server side bib record in newHoldRequestServerEdd, id: ${bibId}`,
         bibResponseError,
       );
-      res.data = {
+      dispatch(updateHoldRequestPage({
         bib: {},
         searchKeywords: req.query.searchKeywords || '',
         error,
         form,
-      };
+      }));
       next();
     },
     { fetchSubjectHeadingData: false },
