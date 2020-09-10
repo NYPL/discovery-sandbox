@@ -21,6 +21,7 @@ import nyplApiClient from './src/server/routes/nyplApiClient';
 import logger from './logger';
 import configureStore from './src/app/stores/configureStore';
 import initialState from './src/app/stores/InitialState';
+import { updateLoadingStatus } from './src/app/actions/Actions';
 
 const ROOT_PATH = __dirname;
 const INDEX_PATH = path.resolve(ROOT_PATH, 'src/client');
@@ -86,6 +87,7 @@ app.get('/*', (req, res) => {
     } else if (redirectLocation) {
       res.redirect(302, redirectLocation.pathname + redirectLocation.search);
     } else if (renderProps) {
+      store.dispatch(updateLoadingStatus(false));
       application = ReactDOMServer.renderToString(
         <Provider store={store}>
           <RouterContext {...renderProps} />
