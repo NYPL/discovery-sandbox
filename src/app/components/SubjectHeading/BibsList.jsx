@@ -21,7 +21,7 @@ class BibsList extends React.Component {
     };
     this.sort = context.router.location.query.sort || 'date';
     this.sortDirection = context.router.location.query.sort_direction || 'desc';
-    this.updateShepBibPage = this.updateShepBibPage.bind(this);
+    this.fetchBibsFromShep = this.fetchBibsFromShep.bind(this);
     this.updateBibPage = this.updateBibPage.bind(this);
     this.lastBib = this.lastBib.bind(this);
     this.firstBib = this.firstBib.bind(this);
@@ -94,13 +94,27 @@ class BibsList extends React.Component {
   }
 
   updateBibPage(newPage) {
-    if (this.state.bibsSource === 'shepApi') {
-      this.updateShepBibPage(newPage);
+    const {
+      bibsSource,
+      results,
+      totalResults,
+    } = this.state;
+    const { perPage } = this;
+    const fetchedBibsLength = results.length;
+    if (bibsSource === 'shepApi') {
+      if (
+        fetchedBibsLength < totalResults &&
+        newPage * perPage > fetchedBibsLength
+      ) this.fetchBibsFromShep(newPage);
+      else {
+        this.setState({
+          bibPage: newPage,
+        }, () => window.scrollTo(0, 300));
+      }
       return;
     }
 
     const stringifiedSortParams = `sort=${this.sort}&sort_direction=${this.sortDirection}&page=${newPage}&per_page=${this.perPage}&source=${this.state.bibsSource}`;
-
     this.setState({
       componentLoading: true,
     }, () => this.fetchBibs(
@@ -108,7 +122,7 @@ class BibsList extends React.Component {
       () => window.scrollTo(0, 300)));
   }
 
-  updateShepBibPage(newPage) {
+  fetchBibsFromShep(newPage) {
     const { nextUrl } = this.state;
 
     return axios(nextUrl)
