@@ -64,8 +64,8 @@ export class HoldConfirmation extends React.Component {
             {expired}
             {blocked}
             {ptypeDisallowsHolds}
-            {defaultText}
             {reachedHoldLimit}
+            {defaultText}
           </ul>
           Please see a librarian or contact 917-ASK-NYPL (<a href="tel:19172756975">917-275-6975</a>) if you require assistance.
         </p>);
