@@ -40,6 +40,10 @@ export class HoldConfirmation extends React.Component {
     return (<li className="errorItem">Your card does not permit placing holds on ReCAP materials.</li>);
   }
 
+  reachedHoldLimit() {
+    return (<li className="errorItem">You have reached the allowed number of holds.</li>);
+  }
+
   /**
    * eligibilityErrorText supplies the appropriate text when a patron is ineligible to place holds.
    * @return {HTML Element}
@@ -51,7 +55,8 @@ export class HoldConfirmation extends React.Component {
       const blocked = errors.blocked ? this.blockedMessage() : null;
       const moneyOwed = errors.moneyOwed ? this.moneyOwedMessage() : null;
       const ptypeDisallowsHolds = errors.ptypeDisallowsHolds ? this.ptypeDisallowsHolds() : null;
-      const defaultText = expired || blocked || moneyOwed || ptypeDisallowsHolds ? null : 'There is a problem with your library account.';
+      const reachedHoldLimit = errors.reachedHoldLimit ? this.reachedHoldLimit() : null;
+      const defaultText = expired || blocked || moneyOwed || ptypeDisallowsHolds || reachedHoldLimit ? null : 'There is a problem with your library account.';
       return (
         <p> This is because:
           <ul>
@@ -59,6 +64,7 @@ export class HoldConfirmation extends React.Component {
             {expired}
             {blocked}
             {ptypeDisallowsHolds}
+            {reachedHoldLimit}
             {defaultText}
           </ul>
           Please see a librarian or contact 917-ASK-NYPL (<a href="tel:19172756975">917-275-6975</a>) if you require assistance.
