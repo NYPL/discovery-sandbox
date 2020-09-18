@@ -113,7 +113,7 @@ const BibPage = (props) => {
 
   const otherLibraries = ['Princeton University Library', 'Columbia University Libraries'];
   const tabs = [{ title: 'Details', content: bottomDetails }];
-  if (itemHoldings) tabs.unshift({ title: 'Availibility', content: itemHoldings });
+  if (itemHoldings) tabs.unshift({ title: 'Availability', content: itemHoldings });
   if (!otherLibraries.includes(getOwner(bib))) tabs.push({ title: 'Full Description', content: additionalDetails });
 
   const createAPIQuery = basicQuery(props);
