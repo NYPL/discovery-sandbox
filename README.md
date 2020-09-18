@@ -16,7 +16,7 @@ Front-end app for searching, discovering, and placing a hold on research items f
 ## Technology
 
 * Universal React
-* [Alt](http://alt.js.org/)/Iso as the Flux implementation
+* Redux
 * Webpack & Webpack Dev Server
 * ES6 and Babel
 * ESLint with [Airbnb's config](https://github.com/airbnb/javascript/tree/master/packages/eslint-config-airbnb)
