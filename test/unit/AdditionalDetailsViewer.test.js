@@ -5,7 +5,7 @@ import { mount } from 'enzyme';
 
 // Import the component that is going to be tested
 import AdditionalDetailsViewer from './../../src/app/components/BibPage/AdditionalDetailsViewer';
-import sampleBib from '../fixtures/bib.json'
+import sampleBib from '../fixtures/bib.json';
 
 describe('After Clicking on Button', () => {
   let component;
