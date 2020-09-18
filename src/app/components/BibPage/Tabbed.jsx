@@ -90,7 +90,6 @@ class Tabbed extends React.Component {
       if (parseInt(this.state.tabNumber, 10) === j) return null;
       return -1;
     };
-    console.log('Tabbed props and state', this.props, this.state);
     return (
       <div className="tabbed">
         <ul role="tablist">
