@@ -127,30 +127,49 @@ describe('Tabbed', () => {
     { label: 'Owning Institutions', value: '' },
   ];
 
+  // importing ItemHoldings component causes a memory issue
+  // mock a simple component for test
+  const mockItemHoldings = (
+    <div>
+      <ul>
+        <li>item</li>
+      </ul>
+    </div>
+  )
+
   const bibDetails = (<BibDetails
     bib={sampleBib}
     fields={bottomFields}
     electronicResources={[]}
   />);
 
-
   const additionalDetails = (<AdditionalDetailsViewer bib={sampleBib} />);
 
-  let component = mount(<Tabbed tabs={[{ title: 'Details', content: bibDetails }, { title: 'Full Description', content: additionalDetails }]} />);
-  let details = component.find('a').at(0);
-  let fullDescription = component.find('a').at(1);
+  let component = mount(
+    <Tabbed tabs={[
+      {title: 'Availability', content: mockItemHoldings},
+      { title: 'Details', content: bibDetails },
+      { title: 'Full Description', content: additionalDetails }]}
+    />
+  );
+  const details = component.find('a').at(0);
+  const fullDescription = component.find('a').at(1);
   let focused;
   let section;
 
   describe('Initial Rendering', () => {
-    it('should focus on Details', () => {
-      expect(component.find('a').length).to.be.at.least(2);
+    it('should focus on Availability', () => {
+      expect(component.find('a').length).to.be.at.least(3);
       expect(component.find('a').at(0).prop('aria-selected')).to.equal(true);
-      expect(component.find('a').at(0).text()).to.equal('Details');
+      expect(component.find('a').at(0).text()).to.equal('Availability');
     });
 
     it('should have a tab for Full Description', () => {
-      expect(component.find('a').at(1).text()).to.equal('Full Description');
+      expect(component.find('a').at(1).text()).to.equal('Details');
+    });
+
+    it('should have a tab for Full Description', () => {
+      expect(component.find('a').at(2).text()).to.equal('Full Description');
     });
   });
 

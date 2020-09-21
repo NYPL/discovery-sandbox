@@ -44,11 +44,6 @@ class ItemHoldings extends React.Component {
       chunkedItems,
       page: noItemPage ? 1 : this.state.page,
     });
-
-    // if (noItemPage) {
-    //   console.log('replacing')
-    //   this.context.router.replace(`${appConfig.baseUrl}/bib/${this.props.bibId}`);
-    // }
   }
 
   /*

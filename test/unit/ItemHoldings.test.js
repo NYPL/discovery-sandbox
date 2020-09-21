@@ -83,7 +83,7 @@ describe('ItemHoldings', () => {
 
     it('should have an ItemTable component, which renders a table', () => {
       expect(component.find('ItemTable').length).to.equal(1);
-      // Need to render the componet to actually find what gets rendered.
+      // Need to render the component to actually find what gets rendered.
       expect(component.find('ItemTable').render().is('table')).to.equal(true);
       // One heading and 2 item rows
       expect(component.find('ItemTable').render().find('tr').length).to.equal(3);
@@ -112,7 +112,7 @@ describe('ItemHoldings', () => {
 
     it('should have an ItemTable component, which renders a table', () => {
       expect(component.find('ItemTable').length).to.equal(1);
-      // Need to render the componet to actually find what gets rendered.
+      // Need to render the component to actually find what gets rendered.
       expect(component.find('ItemTable').render().is('table')).to.equal(true);
       // One heading and 20 item rows since only 20 get displayed at a time by default
       expect(component.find('ItemTable').render().find('tr').length).to.equal(21);

@@ -112,18 +112,20 @@ const BibPage = (props) => {
 
 
   const otherLibraries = ['Princeton University Library', 'Columbia University Libraries'];
-  const tabs = otherLibraries.includes(getOwner(bib)) ?
-    [{ title: 'Details', content: bottomDetails }]
-    : [
-      { title: 'Details', content: bottomDetails },
-      { title: 'Full Description', content: additionalDetails },
-    ];
-
-  const tabItems = tabIndex => (
-    tabIndex === 0 ?
-      bottomDetails
-      : <AdditionalDetailsViewer bib={bib} />
-  );
+  const tabs = [
+    itemHoldings ? {
+      title: 'Availability',
+      content: itemHoldings,
+    } : null,
+    {
+      title: 'Details',
+      content: bottomDetails,
+    },
+    !otherLibraries.includes(getOwner(bib)) ? {
+      title: 'Full Description',
+      content: additionalDetails,
+    } : null,
+  ].filter(tab => tab);
 
   const createAPIQuery = basicQuery(props);
   const searchUrl = createAPIQuery({});
@@ -169,12 +171,7 @@ const BibPage = (props) => {
                   logging
                   electronicResources={aggregatedElectronicResources}
                 />
-
-                {itemHoldings}
-
-                <h2>{tabs.map(tab => tab.title).join(' and ')}</h2>
                 <Tabbed
-                  tabItems={tabItems}
                   tabs={tabs}
                   hash={location.hash}
                 />
