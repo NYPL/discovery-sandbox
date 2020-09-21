@@ -72,11 +72,6 @@ describe('ItemHoldings', () => {
       expect(component.first().prop('className')).to.equal('nypl-results-item');
     });
 
-    it('should have an h2', () => {
-      expect(component.find('h2').length).to.equal(1);
-      expect(component.find('h2').text()).to.equal('Availability');
-    });
-
     it('should its "js" state set to false by default', () => {
       expect(component.state('js')).to.equal(false);
     });
@@ -103,11 +98,6 @@ describe('ItemHoldings', () => {
 
     before(() => {
       component = mount(<ItemHoldings items={longListItems} />);
-    });
-
-    it('should have an h2', () => {
-      expect(component.find('h2').length).to.equal(1);
-      expect(component.find('h2').text()).to.equal('Availability');
     });
 
     it('should have an ItemTable component, which renders a table', () => {
