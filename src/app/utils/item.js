@@ -211,7 +211,7 @@ function LibraryItem() {
     const mappedItemSource = itemSourceMappings[itemSource];
     const isOffsite = this.isOffsite(holdingLocation.prefLabel.toLowerCase());
     let url = null;
-    const isSerial = bib.issuance[0]['@id'] === 'urn:biblevel:s';
+    const isSerial = bib && bib.issuance && bib.issuance[0]['@id'] === 'urn:biblevel:s';
     const materialType = bib && bib.materialType && bib.materialType[0] ?
       bib.materialType[0].prefLabel : null;
     const format = item.holdings && item.holdings.format ? item.holdings.format : materialType;
@@ -259,7 +259,7 @@ function LibraryItem() {
       // Will return undefined if not found.
       const item = _findWhere(items, { '@id': `res:${itemId}` });
       if (item) {
-        return this.mapItem(item);
+        return this.mapItem(item, bib);
       }
     }
 

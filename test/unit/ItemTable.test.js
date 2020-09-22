@@ -55,15 +55,16 @@ describe('ItemTable', () => {
       expect(component.find('tbody').length).to.equal(1);
     });
 
-    it('should have a <tr> with four headings <th> in the >thead>', () => {
+    it('should have a <tr> with five headings <th> in the <thead>', () => {
       const header = component.find('thead');
 
       expect(header.find('tr').length).to.equal(1);
-      expect(header.find('th').length).to.equal(4);
-      expect(header.find('th').at(0).text()).to.equal('Location');
-      expect(header.find('th').at(1).text()).to.equal('Call Number');
+      expect(header.find('th').length).to.equal(5);
+      expect(header.find('th').at(0).text()).to.equal('Format');
+      expect(header.find('th').at(1).text()).to.equal('Access');
       expect(header.find('th').at(2).text()).to.equal('Status');
-      expect(header.find('th').at(3).text()).to.equal('Message');
+      expect(header.find('th').at(3).text()).to.equal('Call Number');
+      expect(header.find('th').at(4).text()).to.equal('Location');
     });
 
     it('should have the same number <tr> elements in its <tbody> as the item length.', () => {
