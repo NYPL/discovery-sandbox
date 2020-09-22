@@ -71,6 +71,8 @@ class ItemTableRow extends React.Component {
   render() {
     const {
       item,
+      includeVolColumn,
+      page,
     } = this.props;
 
     if (_isEmpty(item)) {
@@ -88,10 +90,12 @@ class ItemTableRow extends React.Component {
 
     return (
       <tr className={item.availability}>
-        <td>{item.location || ' '}</td>
-        <td>{itemCallNumber}</td>
-        <td>{this.requestButton()}</td>
+        {includeVolColumn ? <td>{item.volume || ''}</td> : null}
+        {page !== 'SearchResults' ? <td>{item.format}</td> : null}
         <td>{this.message()}</td>
+        <td>{this.requestButton()}</td>
+        <td>{itemCallNumber}</td>
+        <td>{item.location || ' '}</td>
       </tr>
     );
   }
