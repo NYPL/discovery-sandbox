@@ -13,6 +13,7 @@ import LibraryItem from '../../utils/item';
 import BackLink from './BackLink';
 import AdditionalDetailsViewer from './AdditionalDetailsViewer';
 import Tabbed from './Tabbed';
+import LibraryHoldings from './LibraryHoldings';
 import getOwner from '../../utils/getOwner';
 // Removed MarcRecord because the webpack MarcRecord is not working. Sep/28/2017
 // import MarcRecord from './MarcRecord';
@@ -110,8 +111,8 @@ const BibPage = (props) => {
 
   const additionalDetails = (<AdditionalDetailsViewer bib={bib} />);
 
-
   const otherLibraries = ['Princeton University Library', 'Columbia University Libraries'];
+
   const tabs = [
     itemHoldings ? {
       title: 'Availability',
@@ -121,9 +122,13 @@ const BibPage = (props) => {
       title: 'Details',
       content: bottomDetails,
     },
-    !otherLibraries.includes(getOwner(bib)) ? {
+    !otherLibraries.includes(getOwner(bib)) && bib.annotatedMarc ? {
       title: 'Full Description',
       content: additionalDetails,
+    } : null,
+    bib.holdings ? {
+      title: 'Library Holdings',
+      content: <LibraryHoldings />,
     } : null,
   ].filter(tab => tab);
 
