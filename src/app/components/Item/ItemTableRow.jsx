@@ -91,7 +91,7 @@ class ItemTableRow extends React.Component {
     return (
       <tr className={item.availability}>
         {includeVolColumn ? <td>{item.volume || ''}</td> : null}
-        {page !== 'SearchResults' ? <td>{item.format}</td> : null}
+        {page !== 'SearchResults' ? <td>{item.format || ' '}</td> : null}
         <td>{this.message()}</td>
         <td>{this.requestButton()}</td>
         <td>{itemCallNumber}</td>

@@ -8,6 +8,7 @@ const item = {
     available: true,
     barcode: '33433078478272',
     callNumber: 'JFE 07-5007 ---',
+    format: 'Text',
     id: 'i17326129',
     isElectronicResource: false,
     isOffsite: false,
