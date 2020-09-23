@@ -7,11 +7,13 @@ import { mountTestRender, makeTestStore } from '../helpers/store';
 // Import the component that is going to be tested
 import BibPage from './../../src/app/components/BibPage/BibPage';
 import bibs from '../fixtures/bibs';
+import annotatedMarc from '../fixtures/annotatedMarc.json';
 
 describe('BibPage', () => {
   let component;
   before(() => {
-    const mockStore = makeTestStore({ bib: bibs[0] });
+    const bib = { ...bibs[0], ...annotatedMarc };
+    const mockStore = makeTestStore({ bib });
     component = mountTestRender(<BibPage location={{ search: 'search', pathname: '' }} />, { store: mockStore });
   });
   it('has Tabbed component with three tabs', () => {
