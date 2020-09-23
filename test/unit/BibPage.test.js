@@ -19,9 +19,26 @@ describe('BibPage', () => {
   it('has Tabbed component with three tabs', () => {
     const tabbed = component.find('Tabbed');
     const tabs = tabbed.props().tabs;
-    const titles = tabs.map(tab => tab.title);
+    const tabTitles = tabs.map(tab => tab.title);
     expect(tabbed.length).to.equal(1);
     expect(tabs.length).to.equal(3);
-    expect(titles).to.deep.equal(['Availability', 'Details', 'Full Description']);
+    expect(tabTitles).to.deep.equal(['Availability', 'Details', 'Full Description']);
+  });
+
+  describe('serial', () => {
+    before(() => {
+      const bib = { ...bibs[0], ...annotatedMarc, holdings: { holding_string: 'holdings data' } };
+      const mockStore = makeTestStore({ bib });
+      component = mountTestRender(<BibPage location={{ search: 'search', pathname: '' }} />, { store: mockStore });
+    });
+
+    it('has Tabbed component with four tabs', () => {
+      const tabbed = component.find('Tabbed');
+      const tabs = tabbed.props().tabs;
+      const tabTitles = tabs.map(tab => tab.title);
+      expect(tabbed.length).to.equal(1);
+      expect(tabs.length).to.equal(4);
+      expect(tabTitles).to.deep.equal(['Availability', 'Details', 'Full Description', 'Library Holdings']);
+    });
   });
 });
