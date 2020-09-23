@@ -7,7 +7,6 @@ import {
   getReqParams,
   basicQuery,
   parseServerSelectedFilters,
-  destructureFilters,
 } from '../../app/utils/utils';
 import nyplApiClient from '../routes/nyplApiClient';
 import logger from '../../../logger';
@@ -31,12 +30,11 @@ const nyplApiClientCall = (query) => {
 };
 
 function fetchResults(searchKeywords = '', page, sortBy, order, field, filters, cb, errorcb) {
-  const apiQueryField = field === 'journal_title' ? 'title' : field;
   const encodedResultsQueryString = createAPIQuery({
     searchKeywords,
     sortBy: sortBy ? `${sortBy}_${order}` : '',
     selectedFilters: filters,
-    field: apiQueryField,
+    field,
     page,
   });
   const encodedAggregationsQueryString = createAPIQuery({
@@ -47,7 +45,9 @@ function fetchResults(searchKeywords = '', page, sortBy, order, field, filters, 
 
   const aggregationQuery = `/aggregations?${encodedAggregationsQueryString}`;
   const resultsQuery = `?${encodedResultsQueryString}&per_page=50`;
-  const queryObj = { query: { q: searchKeywords, sortBy, order, field, filters } };
+  const queryObj = {
+    query: { q: searchKeywords, sortBy, order, field, filters },
+  };
 
   // Need to get both results and aggregations before proceeding.
   Promise.all([
@@ -74,13 +74,24 @@ function search(req, res, resolve) {
 
   const sortBy = sort.length ? [sort, order].filter(field => field.length).join('_') : 'relevance';
 
+  // If user is making a search for periodicals,
+  // add an issuance filter on the serial field and
+  // switch field from 'journal_title' to 'title'
+  let apiQueryField = fieldQuery;
+  const additionalFilters = {};
+  if (fieldQuery === 'journal_title') {
+    additionalFilters.issuance = ['urn:biblevel:s'];
+    apiQueryField = 'title';
+  }
+  const apiQueryFilters = { ...filters, ...additionalFilters };
+
   fetchResults(
     q,
     page,
     sort,
     order,
-    fieldQuery,
-    filters,
+    apiQueryField,
+    apiQueryFilters,
     (apiFilters, searchResults, pageQuery, drbbResults) => resolve({
       filters: apiFilters,
       searchResults,

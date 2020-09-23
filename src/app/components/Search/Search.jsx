@@ -46,7 +46,7 @@ class Search extends React.Component {
    */
   onFieldChange() {
     const newFieldVal = this.searchByFieldRef.value;
-    this.setState({ field: newFieldVal }, () => this.props.updateField(newFieldVal));
+    this.setState({ field: newFieldVal });
   }
 
   /**
@@ -71,7 +71,7 @@ class Search extends React.Component {
    * as FireFox doesn't accept event as a global variable.
    */
   inputChange(event) {
-    this.props.updateSearchKeywords(event.target.value);
+    this.setState({ searchKeywords: event.target.value });
   }
 
   /**
@@ -88,21 +88,10 @@ class Search extends React.Component {
       trackDiscovery('Search', `Field - ${this.state.field}`);
     }
 
-    // Set var for field querying so it can be overridden if necessary
-    let queryField = this.state.field;
-
-    // If user is making a search for periodicals switch from field to standard
-    // Title search with an issuance filter on the serial field
-    const additionalFilters = {};
-    if (this.state.field === 'journal_title') {
-      additionalFilters.issuance = ['urn:biblevel:s'];
-      queryField = 'journal_title';
-    }
-
     const searchKeywords = userSearchKeywords === '*' ? '' : userSearchKeywords;
     const apiQuery = this.props.createAPIQuery({
-      field: queryField,
-      selectedFilters: { ...this.props.selectedFilters, ...additionalFilters },
+      field: this.state.field,
+      selectedFilters: this.props.selectedFilters,
       searchKeywords,
       page: '1',
     });

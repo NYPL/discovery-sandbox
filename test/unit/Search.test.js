@@ -146,6 +146,7 @@ describe('Search', () => {
       component.find('input').at(0).simulate('change', { target: { value: 'Dune' } });
 
       expect(inputChangeSpy.callCount).to.equal(1);
+      expect(component.state('searchKeywords')).to.equal('Dune');
     });
   });
 
@@ -194,13 +195,17 @@ describe('Search', () => {
       component.find('button').at(0).simulate('click');
       setTimeout(() => {
         expect(submitSearchRequestSpy.callCount).to.equal(1);
+        expect(component.state('searchKeywords')).to.equal('Dune');
         done();
       }, 1000);
     });
 
     it('should submit the input entered when pressing enter', () => {
       component.find('input').at(0).simulate('change', { target: { value: 'Dune' } });
+      expect(component.state('searchKeywords')).to.equal('Dune');
+      component.find('input').at(0).simulate('change', { target: { value: 'Harry Potter' } });
       component.find('button').at(0).simulate('keyPress');
+      expect(component.state('searchKeywords')).to.equal('Harry Potter');
       expect(triggerSubmitSpy.callCount).to.equal(1);
     });
 
@@ -208,19 +213,6 @@ describe('Search', () => {
       component.find('input').at(0).simulate('change', { target: { value: 'Watts' } });
       component.find('button').at(0).simulate('click');
       expect(mockStore.getState().searchKeywords).not.to.equal('Watts');
-    });
-
-    it('should make a search request with issuance filter set for journal title searches', (done) => {
-      component.find('select').getDOMNode().value = 'journal_title';
-      component.find('select').simulate('change');
-
-      component.find('input').at(0).simulate('change', { target: { value: 'Time' } });
-      component.find('button').at(0).simulate('click');
-
-      setTimeout(() => {
-        expect(submitSearchRequestSpy.callCount).to.equal(1);
-        done();
-      }, 1000);
     });
   });
 });
