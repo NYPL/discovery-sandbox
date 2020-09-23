@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 import { isArray as _isArray } from 'underscore';
+import { Accordion, List } from '@nypl/design-system-react-components';
+
 import Pagination from '../Pagination/Pagination';
 import ItemTable from './ItemTable';
 import appConfig from '../../data/appConfig';
@@ -133,6 +135,21 @@ class ItemHoldings extends React.Component {
 
     return (
       <div className="nypl-results-item">
+        <div className="item-table-filters">
+          <span className="scc-filter-accordion">
+            <Accordion accordionLabel="Location">
+              <ul>
+                {items.map(item => <li>{item.location}</li>)}
+              </ul>
+            </Accordion>
+          </span>
+          <span className="scc-filter-accordion">
+            <Accordion accordionLabel="Format" />
+          </span>
+          <span className="scc-filter-accordion">
+            <Accordion accordionLabel="Status" />
+          </span>
+        </div>
         {itemTable}
         {
           !!(shortenItems && items.length >= 20 && !this.state.showAll) &&
