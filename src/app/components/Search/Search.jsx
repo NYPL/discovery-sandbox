@@ -7,10 +7,6 @@ import {
   trackDiscovery,
 } from '../../utils/utils';
 import appConfig from '../../data/appConfig';
-import {
-  updateField,
-  updateSearchKeywords,
-} from '../../actions/Actions';
 
 /**
  * The main container for the top Search section.
@@ -161,8 +157,6 @@ Search.propTypes = {
   searchKeywords: PropTypes.string,
   createAPIQuery: PropTypes.func,
   selectedFilters: PropTypes.object,
-  updateField: PropTypes.func,
-  updateSearchKeywords: PropTypes.func,
   router: PropTypes.object,
 };
 
@@ -178,10 +172,4 @@ const mapStateToProps = ({
   selectedFilters,
 }) => ({ searchKeywords, field, selectedFilters });
 
-
-const mapDispatchToProps = dispatch => ({
-  updateField: field => dispatch(updateField(field)),
-  updateSearchKeywords: searchKeywords => dispatch(updateSearchKeywords(searchKeywords)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(Search);
+export default connect(mapStateToProps)(Search);
