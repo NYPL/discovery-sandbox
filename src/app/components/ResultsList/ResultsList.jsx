@@ -53,7 +53,7 @@ const ResultsList = ({
 
   if (!results || !_isArray(results) || !results.length) {
     return null;
-  };
+  }
 
   const generateBibLi = (bib, i) => {
     // eslint-disable-next-line no-mixed-operators
@@ -103,6 +103,7 @@ const ResultsList = ({
             bibId={bibId}
             id={null}
             searchKeywords={searchKeywords}
+            page="SearchResults"
           />
         }
       </li>

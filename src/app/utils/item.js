@@ -176,7 +176,7 @@ function LibraryItem() {
    * @param {object} item The item to update the data for.
    * @return {object}
    */
-  this.mapItem = (item = {}) => {
+  this.mapItem = (item = {}, bib) => {
     const id = item && item['@id'] ? item['@id'].substring(4) : '';
     const itemSource = item.idNyplSourceId ? item.idNyplSourceId['@type'] : undefined;
     // Taking the first object in the accessMessage array.
@@ -211,6 +211,10 @@ function LibraryItem() {
     const mappedItemSource = itemSourceMappings[itemSource];
     const isOffsite = this.isOffsite(holdingLocation.prefLabel.toLowerCase());
     let url = null;
+    const isSerial = bib && bib.issuance && bib.issuance[0]['@id'] === 'urn:biblevel:s';
+    const materialType = bib && bib.materialType && bib.materialType[0] ?
+      bib.materialType[0].prefLabel : null;
+    const format = bib.holdings && bib.holdings.format ? bib.holdings.format : materialType;
 
     if (availability === 'available') {
       // For all items that we want to send to the Hold Request Form.
@@ -236,6 +240,8 @@ function LibraryItem() {
       isRecap,
       nonRecapNYPL,
       isOffsite,
+      isSerial,
+      format,
     };
   };
 
@@ -253,7 +259,7 @@ function LibraryItem() {
       // Will return undefined if not found.
       const item = _findWhere(items, { '@id': `res:${itemId}` });
       if (item) {
-        return this.mapItem(item);
+        return this.mapItem(item, bib);
       }
     }
 
@@ -269,7 +275,7 @@ function LibraryItem() {
   this.getItems = (bib) => {
     // filter out anything without a status or location
     const bibItems = bib && bib.items && bib.items.length ? bib.items : [];
-    const finalItems = bibItems.map(item => this.mapItem(item));
+    const finalItems = bibItems.map(item => this.mapItem(item, bib));
 
     return finalItems;
   };
