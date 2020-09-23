@@ -214,7 +214,7 @@ function LibraryItem() {
     const isSerial = bib && bib.issuance && bib.issuance[0]['@id'] === 'urn:biblevel:s';
     const materialType = bib && bib.materialType && bib.materialType[0] ?
       bib.materialType[0].prefLabel : null;
-    const format = item.holdings && item.holdings.format ? item.holdings.format : materialType;
+    const format = bib.holdings && bib.holdings.format ? bib.holdings.format : materialType;
 
     if (availability === 'available') {
       // For all items that we want to send to the Hold Request Form.
