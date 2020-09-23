@@ -381,6 +381,7 @@ function displayContext({ searchKeywords, selectedFilters, field, count }) {
     contributor: 'author/contributor',
     title: 'title',
     standard_number: 'standard number',
+    journal_title: 'journal title'
   };
 
   // Build up an array of human-readable "clauses" representing the query:

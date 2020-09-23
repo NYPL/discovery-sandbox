@@ -7,7 +7,10 @@ import {
   trackDiscovery,
 } from '../../utils/utils';
 import appConfig from '../../data/appConfig';
-import { updateField } from '../../actions/Actions';
+import {
+  updateField,
+  updateSearchKeywords,
+} from '../../actions/Actions';
 
 /**
  * The main container for the top Search section.
@@ -68,7 +71,7 @@ class Search extends React.Component {
    * as FireFox doesn't accept event as a global variable.
    */
   inputChange(event) {
-    this.setState({ searchKeywords: event.target.value });
+    this.props.updateSearchKeywords(event.target.value);
   }
 
   /**
@@ -91,9 +94,9 @@ class Search extends React.Component {
     // If user is making a search for periodicals switch from field to standard
     // Title search with an issuance filter on the serial field
     const additionalFilters = {};
-    if (this.state.field === 'journal title') {
+    if (this.state.field === 'journal_title') {
       additionalFilters.issuance = ['urn:biblevel:s'];
-      queryField = 'title';
+      queryField = 'journal_title';
     }
 
     const searchKeywords = userSearchKeywords === '*' ? '' : userSearchKeywords;
@@ -131,7 +134,7 @@ class Search extends React.Component {
               >
                 <option value="all">All fields</option>
                 <option value="title">Title</option>
-                <option value="journal title">Journal Title</option>
+                <option value="journal_title">Journal Title</option>
                 <option value="contributor">Author/Contributor</option>
                 <option value="standard_number">Standard Numbers</option>
               </select>
@@ -170,6 +173,7 @@ Search.propTypes = {
   createAPIQuery: PropTypes.func,
   selectedFilters: PropTypes.object,
   updateField: PropTypes.func,
+  updateSearchKeywords: PropTypes.func,
   router: PropTypes.object,
 };
 
@@ -186,6 +190,9 @@ const mapStateToProps = ({
 }) => ({ searchKeywords, field, selectedFilters });
 
 
-const mapDispatchToProps = dispatch => ({ updateField: field => dispatch(updateField(field)) });
+const mapDispatchToProps = dispatch => ({
+  updateField: field => dispatch(updateField(field)),
+  updateSearchKeywords: searchKeywords => dispatch(updateSearchKeywords(searchKeywords)),
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(Search);

@@ -31,11 +31,12 @@ const nyplApiClientCall = (query) => {
 };
 
 function fetchResults(searchKeywords = '', page, sortBy, order, field, filters, cb, errorcb) {
+  const apiQueryField = field === 'journal_title' ? 'title' : field;
   const encodedResultsQueryString = createAPIQuery({
     searchKeywords,
     sortBy: sortBy ? `${sortBy}_${order}` : '',
     selectedFilters: filters,
-    field,
+    field: apiQueryField,
     page,
   });
   const encodedAggregationsQueryString = createAPIQuery({
