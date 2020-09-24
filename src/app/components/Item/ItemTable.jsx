@@ -24,7 +24,7 @@ const ItemTable = ({ items, bibId, id, searchKeywords, page }) => {
       <thead>
         <tr>
           {includeVolColumn ? <th scope="col">Vol/Date</th> : null}
-          {page !== 'SearchResults' ? <th scope="col">Format</th> : ''}
+          {page !== 'SearchResults' ? <th scope="col">Format</th> : null}
           <th scope="col">Access</th>
           <th scope="col">Status</th>
           <th scope="col">Call Number</th>

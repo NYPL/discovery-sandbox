@@ -2,10 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 import { isArray as _isArray } from 'underscore';
-import { Accordion, List } from '@nypl/design-system-react-components';
 
 import Pagination from '../Pagination/Pagination';
 import ItemTable from './ItemTable';
+import ItemFilters from './ItemFilters';
 import appConfig from '../../data/appConfig';
 import { trackDiscovery } from '../../utils/utils';
 
@@ -133,44 +133,9 @@ class ItemHoldings extends React.Component {
       return null;
     }
 
-    const distinctLocations = [...new Set(items.map(item => item.location))];
-    const distinctFormats = [...new Set(items.map(item => item.format))];
-    const distinctStatuses = [...new Set(items.map(item => item.status.prefLabel))]
-
     return (
       <div className="nypl-results-item">
-        <div className="item-table-filters">
-          <span className="scc-filter-accordion-wrapper">
-            <Accordion
-              accordionLabel="Location"
-              className="scc-filter-accordion"
-            >
-              <ul>
-                {distinctLocations.map(location => <li>{location}</li>)}
-              </ul>
-            </Accordion>
-          </span>
-          <span className="scc-filter-accordion-wrapper">
-            <Accordion
-              accordionLabel="Format"
-              className="scc-filter-accordion"
-            >
-              <ul>
-                {distinctFormats.map(format => <li>{format}</li>)}
-              </ul>
-            </Accordion>
-          </span>
-          <span className="scc-filter-accordion-wrapper">
-            <Accordion
-              accordionLabel="Status"
-              className="scc-filter-accordion"
-            >
-            <ul>
-              {distinctStatuses.map(format => <li>{format}</li>)}
-            </ul>
-            </Accordion>
-          </span>
-        </div>
+        <ItemFilters items={items} />
         {itemTable}
         {
           !!(shortenItems && items.length >= 20 && !this.state.showAll) &&

@@ -6,13 +6,20 @@
   ul {
     list-style: none;
   }
+
+  .accordion__content {
+    background: white;
+    border: 1px solid var(--ui-gray-medium);
+    box-sizing: border-box;
+    padding: var(--space-xs) var(--space-s);
+    position: absolute;
+    width: 200px;
+    z-index: 1;
+  }
 }
 
-.accordion__content {
-  position: absolute;
-  z-index: 1;
-  background: white;
-  box-sizing: border-box;
-  border: 1px solid var(--ui-gray-medium);
-  width: 200px;
+.item-table-filters {
+  background-color: #efedeb;
+  margin-bottom: 20px;
+  padding: 10px;
 }
