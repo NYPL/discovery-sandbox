@@ -7,6 +7,10 @@
     list-style: none;
   }
 
+  li {
+    margin-bottom: 0;
+  }
+
   .accordion__content {
     background: white;
     border: 1px solid var(--ui-gray-medium);

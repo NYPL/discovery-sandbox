@@ -3,7 +3,13 @@ import PropTypes from 'prop-types';
 import { Accordion, Checkbox } from '@nypl/design-system-react-components';
 
 const FilterAccordion = ({ filterOptions, filterLabel }) => {
-  const distinctOptions = [...new Set(filterOptions)];
+  const distinctOptions = Array.from(new Set(
+    // eslint-disable-next-line comma-dangle
+    filterOptions.map(option => option.id))
+  ).map(id => ({
+    id,
+    label: filterOptions.find(option => option.id === id).label,
+  }));
   return (
     <span className="scc-filter-accordion-wrapper">
       <Accordion
@@ -11,12 +17,12 @@ const FilterAccordion = ({ filterOptions, filterLabel }) => {
         className="scc-filter-accordion"
       >
         <ul>
-          {distinctOptions.map(location => (
+          {distinctOptions.map(option => (
             <li>
               <Checkbox
                 labelOptions={{
-                  id: location,
-                  labelContent: location,
+                  id: option.id,
+                  labelContent: option.label,
                 }}
                 onChange={() => {}}
               />

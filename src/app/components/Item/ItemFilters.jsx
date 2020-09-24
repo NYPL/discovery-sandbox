@@ -8,15 +8,24 @@ const ItemFilters = ({ items }) => {
     <div className="item-table-filters">
       <FilterAccordion
         filterLabel="Location"
-        filterOptions={items.map(item => item.location)}
+        filterOptions={items.map(item => ({
+          label: item.location,
+          id: item.holdingLocationCode,
+        }))}
       />
       <FilterAccordion
         filterLabel="Format"
-        filterOptions={items.map(item => item.format)}
+        filterOptions={items.map(item => ({
+          label: item.format,
+          id: item.materialType['@id'],
+        }))}
       />
       <FilterAccordion
         filterLabel="Status"
-        filterOptions={items.map(item => item.status.prefLabel)}
+        filterOptions={items.map(item => ({
+          label: item.status.prefLabel,
+          id: item.status['@id'],
+        }))}
       />
     </div>
   );
