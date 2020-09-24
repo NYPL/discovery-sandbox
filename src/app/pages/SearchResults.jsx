@@ -94,7 +94,12 @@ const SearchResults = (props, context) => {
   return (
     <DocumentTitle title="Search Results | Shared Collection Catalog | NYPL">
       <SccContainer
-        mainContent={<SearchResultsContainer createAPIQuery={createAPIQuery} />}
+        mainContent={
+          <SearchResultsContainer
+            router={router}
+            createAPIQuery={createAPIQuery}
+          />
+        }
         bannerOptions={
           {
             text: 'Search Results',
