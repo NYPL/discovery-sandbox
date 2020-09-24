@@ -1,3 +1,18 @@
+.scc-filter-accordion-wrapper {
+  width: 200px;
+}
+
 .scc-filter-accordion {
+  ul {
+    list-style: none;
+  }
+}
+
+.accordion__content {
+  position: absolute;
+  z-index: 1;
+  background: white;
+  box-sizing: border-box;
+  border: 1px solid var(--ui-gray-medium);
   width: 200px;
 }
