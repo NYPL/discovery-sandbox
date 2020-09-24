@@ -194,8 +194,8 @@ describe('Search', () => {
       component.find('input').at(0).simulate('change', { target: { value: 'Dune' } });
       component.find('button').at(0).simulate('click');
       setTimeout(() => {
-        expect(component.state('searchKeywords')).to.equal('Dune');
         expect(submitSearchRequestSpy.callCount).to.equal(1);
+        expect(component.state('searchKeywords')).to.equal('Dune');
         done();
       }, 1000);
     });
@@ -205,7 +205,6 @@ describe('Search', () => {
       expect(component.state('searchKeywords')).to.equal('Dune');
       component.find('input').at(0).simulate('change', { target: { value: 'Harry Potter' } });
       component.find('button').at(0).simulate('keyPress');
-
       expect(component.state('searchKeywords')).to.equal('Harry Potter');
       expect(triggerSubmitSpy.callCount).to.equal(1);
     });
@@ -214,21 +213,6 @@ describe('Search', () => {
       component.find('input').at(0).simulate('change', { target: { value: 'Watts' } });
       component.find('button').at(0).simulate('click');
       expect(mockStore.getState().searchKeywords).not.to.equal('Watts');
-    });
-
-    it('should make a search request with issuance filter set for journal title searches', (done) => {
-      component.find('select').getDOMNode().value = 'journal title';
-      component.find('select').simulate('change');
-
-      component.find('input').at(0).simulate('change', { target: { value: 'Time' } });
-      component.find('button').at(0).simulate('click');
-
-      setTimeout(() => {
-        expect(submitSearchRequestSpy.callCount).to.equal(1);
-        expect(contextRoutesPushed[0])
-          .to.equal('/research/collections/shared-collection-catalog/search?q=Time&filters[issuance][0]=urn%3Abiblevel%3As&search_scope=title');
-        done();
-      }, 1000);
     });
   });
 });
