@@ -1,27 +1,21 @@
 /* eslint-env mocha */
+/* eslint-disable react/jsx-filename-extension */
 import React from 'react';
 import { expect } from 'chai';
-import { shallow } from 'enzyme';
-import { stub } from 'sinon';
+import { mount } from 'enzyme';
 
 import DrbbContainer from './../../src/app/components/Drbb/DrbbContainer';
-import Store from './../../src/app/stores/Store';
 import appConfig from '../../src/app/data/appConfig';
+import configureStore from '../../src/app/stores/configureStore';
+import initialState from '../../src/app/stores/InitialState';
 
 describe('DrbbContainer', () => {
   let component;
-  let storeStub;
-  before(() => {
-    storeStub = stub(Store, 'getState').returns({ drbbResults: {} });
-  });
-
-  afterEach(() => {
-    storeStub.restore();
-  });
 
   describe('all renderings', () => {
+    const store = configureStore(initialState);
     before(() => {
-      component = shallow(<DrbbContainer />);
+      component = mount(<DrbbContainer store={store} />);
     });
 
     it('should have an h3', () => {
@@ -42,14 +36,13 @@ describe('DrbbContainer', () => {
 
   describe('with one result', () => {
     before(() => {
-      storeStub = stub(Store, 'getState').returns({
-        drbbResults:
-          {
-            works: [{ title: 'work', id: 10 }],
-            totalWorks: 1,
-            researchNowQueryString: 'query=onework',
-          } });
-      component = shallow(<DrbbContainer />);
+      const drbbResults = {
+        works: [{ title: 'work', id: 10 }],
+        totalWorks: 1,
+        researchNowQueryString: 'query=onework',
+      };
+      const store = configureStore({ ...initialState, drbbResults });
+      component = mount(<DrbbContainer store={store} />);
     });
 
     it('h3 text should be "Results from Digital Research Books Beta"', () => {
@@ -73,14 +66,13 @@ describe('DrbbContainer', () => {
 
   describe('with multiple works', () => {
     before(() => {
-      storeStub = stub(Store, 'getState').returns({
-        drbbResults:
-          {
-            works: [{ title: 'work', id: 10 }, { title: 'work', id: 11 }],
-            totalWorks: 1000,
-            researchNowQueryString: 'query=multipleworks',
-          } });
-      component = shallow(<DrbbContainer />);
+      const drbbResults = {
+        works: [{ title: 'work', id: 10 }, { title: 'work', id: 11 }],
+        totalWorks: 1000,
+        researchNowQueryString: 'query=multipleworks',
+      };
+      const store = configureStore({ ...initialState, drbbResults });
+      component = mount(<DrbbContainer store={store} />);
     });
 
     it('link text should have results plural and correct thousands separators', () => {
@@ -90,14 +82,13 @@ describe('DrbbContainer', () => {
 
   describe('no ResearchNow results', () => {
     before(() => {
-      storeStub = stub(Store, 'getState').returns({
-        drbbResults:
-          {
-            works: [],
-            totalWorks: 0,
-            researchNowQueryString: 'query=noworks',
-          } });
-      component = shallow(<DrbbContainer />, { context });
+      const drbbResults = {
+        works: [],
+        totalWorks: 0,
+        researchNowQueryString: 'query=noworks',
+      };
+      const store = configureStore({ ...initialState, drbbResults });
+      component = mount(<DrbbContainer store={store} />);
     });
 
     it('should display the drbb promo', () => {

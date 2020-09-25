@@ -1,7 +1,7 @@
 import {
   isArray as _isArray,
+  pick as _pick,
 } from 'underscore';
-
 import appConfig from '../../app/data/appConfig';
 import {
   getReqParams,
@@ -11,11 +11,12 @@ import {
 import nyplApiClient from '../routes/nyplApiClient';
 import logger from '../../../logger';
 import ResearchNow from './ResearchNow';
+import createSelectedFiltersHash from '../../app/utils/createSelectedFiltersHash';
 
 const createAPIQuery = basicQuery({
   searchKeywords: '',
-  sortBy: '',
-  field: '',
+  sortBy: 'relevance',
+  field: 'all',
   selectedFilters: {},
 });
 
@@ -28,7 +29,7 @@ const nyplApiClientCall = (query) => {
     );
 };
 
-function search(searchKeywords = '', page, sortBy, order, field, filters, cb, errorcb) {
+function fetchResults(searchKeywords = '', page, sortBy, order, field, filters, cb, errorcb) {
   const encodedResultsQueryString = createAPIQuery({
     searchKeywords,
     sortBy: sortBy ? `${sortBy}_${order}` : '',
@@ -44,7 +45,9 @@ function search(searchKeywords = '', page, sortBy, order, field, filters, cb, er
 
   const aggregationQuery = `/aggregations?${encodedAggregationsQueryString}`;
   const resultsQuery = `?${encodedResultsQueryString}&per_page=50`;
-  const queryObj = { query: { q: searchKeywords, sortBy, order, field, filters } };
+  const queryObj = {
+    query: { q: searchKeywords, sortBy, order, field, filters },
+  };
 
   // Need to get both results and aggregations before proceeding.
   Promise.all([
@@ -66,23 +69,40 @@ function search(searchKeywords = '', page, sortBy, order, field, filters, cb, er
     });
 }
 
-function searchAjax(req, res) {
+function search(req, res, resolve) {
   const { page, q, sort, order, fieldQuery, filters } = getReqParams(req.query);
 
-  search(
+  const sortBy = sort.length ? [sort, order].filter(field => field.length).join('_') : 'relevance';
+
+  // If user is making a search for periodicals,
+  // add an issuance filter on the serial field and
+  // switch field from 'journal_title' to 'title'
+  let apiQueryField = fieldQuery;
+  const additionalFilters = {};
+  if (fieldQuery === 'journal_title') {
+    additionalFilters.issuance = ['urn:biblevel:s'];
+    apiQueryField = 'title';
+  }
+  const apiQueryFilters = { ...filters, ...additionalFilters };
+
+  fetchResults(
     q,
     page,
     sort,
     order,
-    fieldQuery,
-    filters,
-    (apiFilters, searchResults, pageQuery, drbbResults) => res.json({
+    apiQueryField,
+    apiQueryFilters,
+    (apiFilters, searchResults, pageQuery, drbbResults) => resolve({
       filters: apiFilters,
       searchResults,
-      pageQuery,
+      page: pageQuery,
       drbbResults,
+      selectedFilters: createSelectedFiltersHash(filters, apiFilters),
+      searchKeywords: q,
+      sortBy,
+      field: fieldQuery,
     }),
-    error => res.json(error),
+    error => resolve(error),
   );
 }
 
@@ -128,6 +148,5 @@ function searchServerPost(req, res) {
 
 export default {
   searchServerPost,
-  searchAjax,
   search,
 };

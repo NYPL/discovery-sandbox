@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-filename-extension */
 /* eslint-env mocha */
 import React from 'react';
 import sinon from 'sinon';
@@ -5,8 +6,7 @@ import { expect } from 'chai';
 import { mount } from 'enzyme';
 
 // Import the component that is going to be tested
-import HoldConfirmation from './../../src/app/components/HoldConfirmation/HoldConfirmation';
-import Actions from './../../src/app/actions/Actions';
+import WrappedHoldConfirmation, { HoldConfirmation } from './../../src/app/components/HoldConfirmation/HoldConfirmation';
 import appConfig from '../../src/app/data/appConfig';
 
 describe('HoldConfirmation', () => {
@@ -46,9 +46,9 @@ describe('HoldConfirmation', () => {
     };
 
     before(() => {
-      Actions.updatePatronData({});
       requireUser = sinon.spy(HoldConfirmation.prototype, 'requireUser');
-      component = mount(<HoldConfirmation location={location} />, { attachTo: document.body });
+      component = mount(
+        <HoldConfirmation location={location} patron={{}} />, { attachTo: document.body });
     });
 
     after(() => {
@@ -76,13 +76,15 @@ describe('HoldConfirmation', () => {
       let requireUser;
 
       before(() => {
-        Actions.updatePatronData({
+        const patron = {
           id: '6677200',
           names: ['Leonard, Mike'],
           barcodes: ['162402680435300'],
-        });
+          loggedIn: true,
+        };
         requireUser = sinon.spy(HoldConfirmation.prototype, 'requireUser');
-        component = mount(<HoldConfirmation location={location} />, { attachTo: document.body });
+        component = mount(
+          <HoldConfirmation location={location} patron={patron} />, { attachTo: document.body });
       });
 
       after(() => {
@@ -144,11 +146,11 @@ describe('HoldConfirmation', () => {
     let pushSpy;
 
     before(() => {
-      Actions.updatePatronData({
+      const patron = {
         id: '6677200',
         names: ['Leonard, Mike'],
         barcodes: ['162402680435300'],
-      });
+      };
       requireUser = sinon.spy(HoldConfirmation.prototype, 'requireUser');
       modelDeliveryLocationName = sinon.spy(
         HoldConfirmation.prototype,
@@ -160,6 +162,7 @@ describe('HoldConfirmation', () => {
           location={location}
           bib={bib}
           deliveryLocations={deliveryLocations}
+          patron={patron}
         />,
         {
           context: { router: { createHref: () => {}, push: pushSpy } },
@@ -246,17 +249,21 @@ describe('HoldConfirmation', () => {
     let modelDeliveryLocationName;
 
     before(() => {
-      Actions.updatePatronData({
+      const patron = {
         id: '6677200',
         names: ['Leonard, Mike'],
         barcodes: ['162402680435300'],
-      });
+      };
       modelDeliveryLocationName = sinon.spy(
         HoldConfirmation.prototype,
         'modelDeliveryLocationName',
       );
       component = mount(
-        <HoldConfirmation location={location} deliveryLocations={deliveryLocations} />,
+        <HoldConfirmation
+          location={location}
+          deliveryLocations={deliveryLocations}
+          patron={patron}
+        />,
         { attachTo: document.body }
       );
     });
@@ -306,17 +313,18 @@ describe('HoldConfirmation', () => {
     ];
 
     before(() => {
-      Actions.updatePatronData({
+      const patron = {
         id: '6677200',
         names: ['Leonard, Mike'],
         barcodes: ['162402680435300'],
-      });
+      };
       requireUser = sinon.spy(HoldConfirmation.prototype, 'requireUser');
       component = mount(
         <HoldConfirmation
           location={location}
           bib={bib}
           deliveryLocations={deliveryLocations}
+          patron={patron}
         />,
         { attachTo: document.body });
     });
@@ -349,14 +357,19 @@ describe('HoldConfirmation', () => {
     };
 
     before(() => {
-      Actions.updatePatronData({
+      const patron = {
         id: '6677200',
         names: ['Leonard, Mike'],
         barcodes: ['162402680435300'],
-      });
+      };
       requireUser = sinon.spy(HoldConfirmation.prototype, 'requireUser');
       component =
-        mount(<HoldConfirmation location={location} bib={bib} />, { attachTo: document.body });
+        mount(
+          <HoldConfirmation
+            location={location}
+            bib={bib}
+            patron={patron}
+          />, { attachTo: document.body });
     });
 
     after(() => {
@@ -408,17 +421,18 @@ describe('HoldConfirmation', () => {
     };
 
     before(() => {
-      Actions.updatePatronData({
+      const patron = {
         id: '6677200',
         names: ['Leonard, Mike'],
         barcodes: ['162402680435300'],
-      });
+      };
       requireUser = sinon.spy(HoldConfirmation.prototype, 'requireUser');
       component = mount(
         <HoldConfirmation
           location={location}
           bib={bib}
           deliveryLocations={deliveryLocations}
+          patron={patron}
         />,
         { attachTo: document.body }
       );

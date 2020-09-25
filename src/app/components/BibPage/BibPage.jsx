@@ -3,10 +3,11 @@ import PropTypes from 'prop-types';
 import DocumentTitle from 'react-document-title';
 import { every as _every } from 'underscore';
 import { LeftWedgeIcon } from '@nypl/dgx-svg-icons';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router';
 
 import Breadcrumbs from '../Breadcrumbs/Breadcrumbs';
 import ItemHoldings from '../Item/ItemHoldings';
-import LoadingLayer from '../LoadingLayer/LoadingLayer';
 import BibDetails from './BibDetails';
 import LibraryItem from '../../utils/item';
 import BackLink from './BackLink';
@@ -15,8 +16,6 @@ import Tabbed from './Tabbed';
 import getOwner from '../../utils/getOwner';
 // Removed MarcRecord because the webpack MarcRecord is not working. Sep/28/2017
 // import MarcRecord from './MarcRecord';
-
-import Store from '../../stores/Store';
 
 import {
   basicQuery,
@@ -113,18 +112,20 @@ const BibPage = (props) => {
 
 
   const otherLibraries = ['Princeton University Library', 'Columbia University Libraries'];
-  const tabs = otherLibraries.includes(getOwner(bib)) ?
-    [{ title: 'Details', content: bottomDetails }]
-    : [
-      { title: 'Details', content: bottomDetails },
-      { title: 'Full Description', content: additionalDetails },
-    ];
-
-  const tabItems = tabIndex => (
-    tabIndex === 0 ?
-      bottomDetails
-      : <AdditionalDetailsViewer bib={bib} />
-  );
+  const tabs = [
+    itemHoldings ? {
+      title: 'Availability',
+      content: itemHoldings,
+    } : null,
+    {
+      title: 'Details',
+      content: bottomDetails,
+    },
+    !otherLibraries.includes(getOwner(bib)) ? {
+      title: 'Full Description',
+      content: additionalDetails,
+    } : null,
+  ].filter(tab => tab);
 
   const createAPIQuery = basicQuery(props);
   const searchUrl = createAPIQuery({});
@@ -132,10 +133,6 @@ const BibPage = (props) => {
   return (
     <DocumentTitle title="Item Details | Shared Collection Catalog | NYPL">
       <main className="main-page">
-        <LoadingLayer
-          status={ Store.getState().isLoading}
-          title="Searching"
-        />
         <div className="nypl-page-header">
           <div className="nypl-full-width-wrapper">
             <div className="nypl-row">
@@ -173,14 +170,8 @@ const BibPage = (props) => {
                   fields={topFields}
                   logging
                   electronicResources={aggregatedElectronicResources}
-                  store={Store}
                 />
-
-                {itemHoldings}
-
-                <h2>{tabs.map(tab => tab.title).join(' and ')}</h2>
                 <Tabbed
-                  tabItems={tabItems}
                   tabs={tabs}
                   hash={location.hash}
                 />
@@ -199,4 +190,12 @@ BibPage.propTypes = {
   bib: PropTypes.object,
 };
 
-export default BibPage;
+const mapStateToProps = ({
+  bib,
+  searchKeywords,
+}) => ({
+  bib,
+  searchKeywords,
+});
+
+export default withRouter(connect(mapStateToProps)(BibPage));

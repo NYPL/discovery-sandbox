@@ -5,69 +5,75 @@ import {
   isEmpty as _isEmpty,
   isArray as _isArray,
 } from 'underscore';
+import { useSelector } from 'react-redux';
 
-
-// eslint-disable-next-line import/first, import/no-unresolved, import/extensions
-import Store from '@Store';
 import LibraryItem from '../../utils/item';
 import {
   trackDiscovery,
 } from '../../utils/utils';
 import ItemTable from '../Item/ItemTable';
 import appConfig from '../../data/appConfig';
-import AppConfigStore from '../../stores/AppConfigStore';
 
-class ResultsList extends React.Component {
-  constructor() {
-    super();
-    this.itemTableLimit = 3;
+
+export const getBibTitle = (bib) => {
+  if (!bib.titleDisplay || !bib.titleDisplay.length) {
+    const author = bib.creatorLiteral && bib.creatorLiteral.length ?
+      ` / ${bib.creatorLiteral[0]}` : '';
+    return bib.title && bib.title.length ? `${bib.title[0]}${author}` : '';
   }
+  return bib.titleDisplay[0];
+};
 
-  getBibTitle(bib) {
-    if (!bib.titleDisplay || !bib.titleDisplay.length) {
-      const author = bib.creatorLiteral && bib.creatorLiteral.length ?
-        ` / ${bib.creatorLiteral[0]}` : '';
-      return bib.title && bib.title.length ? `${bib.title[0]}${author}` : '';
-    }
-    return bib.titleDisplay[0];
+export const getYearDisplay = (bib) => {
+  if (_isEmpty(bib)) return null;
+
+  let dateStartYear = bib.dateStartYear;
+  let dateEndYear = bib.dateEndYear;
+
+  dateStartYear = dateStartYear === 999 ? 'unknown' : dateStartYear;
+  dateEndYear = dateEndYear === 9999 ? 'present' : dateEndYear;
+
+  if (dateStartYear && dateEndYear) {
+    return (<li className="nypl-results-date">{dateStartYear}-{dateEndYear}</li>);
+  } else if (dateStartYear) {
+    return (<li className="nypl-results-date">{dateStartYear}</li>);
   }
+  return null;
+};
 
-  getYearDisplay(bib) {
-    if (_isEmpty(bib)) return null;
+const ResultsList = ({
+  results,
+  subjectHeadingShow,
+  searchKeywords,
+}) => {
+  const itemTableLimit = 3;
+  const features = useSelector(state => state.appConfig.features);
+  const loading = useSelector(state => state.loading);
+  const includeDrbb = features.includes('drb-integration');
 
-    let dateStartYear = bib.dateStartYear;
-    let dateEndYear = bib.dateEndYear;
-
-    dateStartYear = dateStartYear === 999 ? 'unknown' : dateStartYear;
-    dateEndYear = dateEndYear === 9999 ? 'present' : dateEndYear;
-
-    if (dateStartYear && dateEndYear) {
-      return (<li className="nypl-results-date">{dateStartYear}-{dateEndYear}</li>);
-    } else if (dateStartYear) {
-      return (<li className="nypl-results-date">{dateStartYear}</li>);
-    }
+  if (!results || !_isArray(results) || !results.length) {
     return null;
-  }
+  };
 
-  generateBibLi(bib, i) {
+  const generateBibLi = (bib, i) => {
     // eslint-disable-next-line no-mixed-operators
     if (_isEmpty(bib) || bib.result && (_isEmpty(bib.result) || !bib.result.title)) {
       return null;
     }
 
     const result = bib.result || bib;
-    const bibTitle = this.getBibTitle(result);
+    const bibTitle = getBibTitle(result);
     const bibId = result && result['@id'] ? result['@id'].substring(4) : '';
     const materialType = result && result.materialType && result.materialType[0] ?
       result.materialType[0].prefLabel : null;
-    const yearPublished = this.getYearDisplay(result);
+    const yearPublished = getYearDisplay(result);
     const publicationStatement = result.publicationStatement && result.publicationStatement.length ?
       result.publicationStatement[0] : '';
     const items = LibraryItem.getItems(result);
     const totalItems = items.length;
     const hasRequestTable = items.length > 0;
-
-    const bibUrl = `${appConfig.baseUrl}/bib/${bibId}`;
+    const { baseUrl } = appConfig;
+    const bibUrl = `${baseUrl}/bib/${bibId}`;
 
     return (
       <li key={i} className={`nypl-results-item ${hasRequestTable ? 'has-request' : ''}`}>
@@ -93,43 +99,29 @@ class ResultsList extends React.Component {
         {
           hasRequestTable &&
           <ItemTable
-            items={items.slice(0, this.itemTableLimit)}
+            items={items.slice(0, itemTableLimit)}
             bibId={bibId}
             id={null}
-            searchKeywords={this.props.searchKeywords}
+            searchKeywords={searchKeywords}
           />
         }
       </li>
     );
-  }
+  };
 
-  render() {
-    const {
-      results,
-      subjectHeadingShow,
-    } = this.props;
-    let resultsElm = null;
-    const { features } = AppConfigStore.getState();
-    const includeDrbb = features.includes('drb-integration');
+  const resultsElm = results.map((bib, i) => generateBibLi(bib, i));
 
-    if (!results || !_isArray(results) || !results.length) {
-      return null;
-    }
-
-    resultsElm = results.map((bib, i) => this.generateBibLi(bib, i));
-
-    return (
-      <ul
-        id="nypl-results-list"
-        className={
-          `nypl-results-list${Store.getState().isLoading ? ' hide-results-list' : ''}${includeDrbb && !subjectHeadingShow ? ' drbb-integration' : ''}`
-        }
-      >
-        {resultsElm}
-      </ul>
-    );
-  }
-}
+  return (
+    <ul
+      id="nypl-results-list"
+      className={
+        `nypl-results-list${loading ? ' hide-results-list' : ''}${includeDrbb && !subjectHeadingShow ? ' drbb-integration' : ''}`
+      }
+    >
+      {resultsElm}
+    </ul>
+  );
+};
 
 ResultsList.propTypes = {
   results: PropTypes.array,

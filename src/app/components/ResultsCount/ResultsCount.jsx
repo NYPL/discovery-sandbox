@@ -1,18 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
-import Store from '@Store';
 import { displayContext } from '../../utils/utils';
-import AppConfigStore from '../../stores/AppConfigStore';
 
-class ResultsCount extends React.Component {
-  // The `searchKeywords` prop gets updated before the `count` and we want to wait until both
-  // are updated to be read to screen readers. Otherwise, it would read the previous `count`
-  // number for the next `searchKeywords`.
-  shouldComponentUpdate() {
-    return !Store.state.isLoading;
-  }
-
+export class ResultsCount extends React.Component {
   /*
    * checkSelectedFilters()
    * Returns true if there are any selected format or language filters. TODO: add Date.
@@ -45,10 +37,6 @@ class ResultsCount extends React.Component {
 
     const displayContextString = displayContext({ searchKeywords, selectedFilters, field, count });
 
-    if (Store.getState().isLoading) {
-      return 'Loading...';
-    }
-
     if (count !== 0) {
       return `Displaying ${currentResultDisplay} of ${countF} results ${displayContextString}`;
     }
@@ -62,8 +50,10 @@ class ResultsCount extends React.Component {
 
   render() {
     const results = this.displayCount();
-    const { count } = this.props;
-    const { features } = AppConfigStore.getState();
+    const {
+      count,
+      features,
+    } = this.props;
     const includeDrbb = features.includes('drb-integration');
     if (includeDrbb && count === 0) return null;
 
@@ -86,22 +76,30 @@ class ResultsCount extends React.Component {
 
 ResultsCount.propTypes = {
   count: PropTypes.number,
-  page: PropTypes.number,
+  page: PropTypes.string,
   selectedFilters: PropTypes.object,
   searchKeywords: PropTypes.string,
   field: PropTypes.string,
+  features: PropTypes.array,
 };
 
 ResultsCount.defaultProps = {
   searchKeywords: '',
   count: 0,
-  page: 1,
+  page: '1',
   selectedFilters: {
     materialType: [],
     language: [],
     dateAfter: {},
     dateBefore: {},
   },
+  features: [],
 };
 
-export default ResultsCount;
+const mapStateToProps = ({ appConfig, searchKeywords, page }) => ({
+  features: appConfig.features,
+  searchKeywords,
+  page,
+});
+
+export default connect(mapStateToProps)(ResultsCount);

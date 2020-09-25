@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import FocusTrap from 'focus-trap-react';
 
-const LoadingLayer = ({ status, title, focus }) => {
-  if (status === false) {
+const LoadingLayer = ({ loading, title, focus }) => {
+  if (loading === false) {
     return null;
   }
 
@@ -45,13 +45,13 @@ const LoadingLayer = ({ status, title, focus }) => {
 };
 
 LoadingLayer.propTypes = {
-  status: PropTypes.bool,
+  loading: PropTypes.bool,
   title: PropTypes.string,
   focus: PropTypes.func,
 };
 
 LoadingLayer.defaultProps = {
-  status: false,
+  loading: false,
 };
 
 export default LoadingLayer;

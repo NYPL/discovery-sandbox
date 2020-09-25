@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import DocumentTitle from 'react-document-title';
+import { useSelector } from 'react-redux';
+import { withRouter } from 'react-router';
 
 /* eslint-disable import/no-unresolved, import/extensions */
 import SearchResultsSorter from '@SearchResultsSorter';
@@ -15,24 +17,34 @@ import ResultsCount from '../components/ResultsCount/ResultsCount';
 import {
   basicQuery,
 } from '../utils/utils';
-import AppConfigStore from '../stores/AppConfigStore';
 
 const SearchResults = (props, context) => {
   const {
     searchResults,
+    appConfig,
     searchKeywords,
-    selectedFilters,
-    filters,
-    page,
-    field,
     sortBy,
-  } = props;
+    field,
+    page,
+    selectedFilters,
+  } = useSelector(state => ({
+    searchResults: state.searchResults,
+    appConfig: state.appConfig,
+    searchKeywords: state.searchKeywords,
+    sortBy: state.sortBy,
+    field: state.field,
+    page: state.page,
+    selectedFilters: state.selectedFilters,
+  }));
+
+  const {
+    features,
+  } = appConfig;
 
   const {
     router,
   } = context;
 
-  const { features } = AppConfigStore.getState();
   const includeDrbb = features.includes('drb-integration');
 
   const { location } = router;
@@ -45,9 +57,13 @@ const SearchResults = (props, context) => {
   const pageLabel = totalPages ? `page ${page} of ${totalPages}` : '';
   const headerLabel = `Search results ${searchKeywordsLabel} ${pageLabel}`;
 
-  const apiFilters = filters && filters.itemListElement && filters.itemListElement.length ?
-    filters.itemListElement : [];
-  const createAPIQuery = basicQuery(props);
+  const createAPIQuery = basicQuery({
+    searchKeywords,
+    page,
+    sortBy,
+    selectedFilters,
+    field,
+  });
   const dateFilterErrors = [];
   const searchError = location.query && location.query.error ? location.query.error : '';
   if (searchError === 'dateFilterError') {
@@ -78,7 +94,12 @@ const SearchResults = (props, context) => {
   return (
     <DocumentTitle title="Search Results | Shared Collection Catalog | NYPL">
       <SccContainer
-        mainContent={<SearchResultsContainer {...props} />}
+        mainContent={
+          <SearchResultsContainer
+            router={router}
+            createAPIQuery={createAPIQuery}
+          />
+        }
         bannerOptions={
           {
             text: 'Search Results',
@@ -87,22 +108,16 @@ const SearchResults = (props, context) => {
         }
         extraBannerElement={
           <Search
-            searchKeywords={searchKeywords}
-            field={field}
             createAPIQuery={createAPIQuery}
-            selectedFilters={selectedFilters}
+            router={router}
           />
         }
         secondaryExtraBannerElement={
           <React.Fragment>
             <FilterPopup
-              filters={apiFilters}
               createAPIQuery={createAPIQuery}
-              selectedFilters={selectedFilters}
-              searchKeywords={searchKeywords}
               raisedErrors={dateFilterErrors}
               updateDropdownState={toggleDropdown}
-              totalResults={totalResults}
             />
             {
               selectedFiltersAvailable &&
@@ -127,17 +142,13 @@ const SearchResults = (props, context) => {
                   <ResultsCount
                     count={totalResults}
                     selectedFilters={selectedFilters}
-                    searchKeywords={searchKeywords}
                     field={field}
-                    page={parseInt(page, 10)}
                   />
                   {
                     hasResults ?
                       <SearchResultsSorter
-                        sortBy={sortBy}
-                        page={page}
-                        searchKeywords={searchKeywords}
                         createAPIQuery={createAPIQuery}
+                        key={sortBy}
                       />
                       : null
                   }
@@ -153,24 +164,8 @@ const SearchResults = (props, context) => {
   );
 };
 
-SearchResults.propTypes = {
-  searchResults: PropTypes.object,
-  searchKeywords: PropTypes.string,
-  selectedFilters: PropTypes.object,
-  page: PropTypes.string,
-  filters: PropTypes.object,
-  field: PropTypes.string,
-  sortBy: PropTypes.string,
-  drbbResults: PropTypes.object,
-};
-
-SearchResults.defaultProps = {
-  page: '1',
-  drbbResults: { totalWorks: 0 },
-};
-
 SearchResults.contextTypes = {
-  router: PropTypes.obj,
+  router: PropTypes.any,
 };
 
 export default SearchResults;

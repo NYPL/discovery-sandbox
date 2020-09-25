@@ -1,165 +1,99 @@
-import Actions from '@Actions';
-import { ajaxCall, destructureFilters } from '@utils';
-import { pick as _pick } from 'underscore';
+import { ajaxCall } from '@utils';
+import {
+  updateBibPage,
+  updateSearchResultsPage,
+  updateHoldRequestPage,
+  resetState,
+  updateLastLoaded,
+} from '@Actions';
 import appConfig from '@appConfig';
-import Store from '@Store';
+import { updateLoadingStatus } from '../actions/Actions';
 
-const pathInstructions = [
-  {
-    expression: /\/research\/collections\/shared-collection-catalog\/bib\/([cp]?b\d*)/,
-    pathType: 'bib',
-  },
-  {
-    expression: /\/research\/collections\/shared-collection-catalog\/search\?(.*)/,
-    pathType: 'search',
-  },
-  {
-    expression: /\/research\/collections\/shared-collection-catalog\/hold\/request\/([^/]*)/,
-    pathType: 'holdRequest',
-  },
-];
+const baseUrl = appConfig.baseUrl;
 
-const routePaths = {
-  bib: `${appConfig.baseUrl}/api/bib`,
-  search: `${appConfig.baseUrl}/api`,
-  holdRequest: `${appConfig.baseUrl}/api/hold/request/:bibId-:itemId`,
-};
+// For each named route type, we need to know what path corresponds to that route,
+// which action to use to load that data when it is received, and which params
+// are required in the relevant routes.
+// Note that the path is used in two places: 1. Frontend routes and 2. ApiRoutes, and
+// the only difference is the addition of /api/ in the route.
 
-const routesGenerator = location => ({
+const routes = {
   bib: {
-    apiRoute: (matchData, route) => `${route}?bibId=${matchData[1]}`,
-    serverParams: (matchData, req) => { req.query.bibId = matchData[1]; },
-    actions: [Actions.updateBib],
-    errorMessage: 'Error attempting to make an ajax request to fetch a bib record from ResultsList',
+    action: updateBibPage,
+    path: 'bib',
+    params: '/:bibId',
   },
   search: {
-    apiRoute: (matchData, route) => `${route}?${matchData[1]}`,
-    actions: [
-      data => Actions.updateSearchResults(data.searchResults),
-      () => Actions.updatePage(location.query.page || 1),
-      () => Actions.updateSearchKeywords(location.query.q),
-      data => Actions.updateFilters(data.filters),
-      (data) => {
-        if (data.filters && data.searchResults) {
-          const unescapedQuery = Object.assign(
-            {},
-            ...Object.keys(location.query)
-              .map(k => ({ [decodeURIComponent(k)]: decodeURIComponent(location.query[k]) })),
-          );
-          const urlFilters = _pick(unescapedQuery, (value, key) => {
-            if (key.indexOf('filter') !== -1) {
-              return value;
-            }
-            return null;
-          });
-          Actions.updateSelectedFilters(destructureFilters(urlFilters, data.filters));
-        }
-      },
-      () => {
-        const {
-          sort,
-          sort_direction,
-        } = location.query;
-
-        Actions.updateSortBy([sort, sort_direction].filter(field => field).join('_'));
-      },
-      (data) => {
-        if (data.drbbResults) Actions.updateDrbbResults(data.drbbResults);
-      },
-    ],
-    errorMessage: 'Error attempting to make an ajax request to search',
+    action: updateSearchResultsPage,
+    path: 'search',
+    params: '',
   },
   holdRequest: {
-    apiRoute: (matchData, route) => route.replace(':bibId-:itemId', matchData[1]),
-    serverParams: (matchData, req) => {
-      const params = matchData[1].match(/\w+/g);
-      if (params[0]) req.params.bibId = params[0];
-      if (params[1]) req.params.itemId = params[1];
-    },
-    actions: [
-      (data) => {
-        if (data.redirect) {
-          const fullUrl = encodeURIComponent(window.location.href);
-          console.error('API response indicates we should redirect to login page, but front-end disagrees.')
-          // window.location.replace(`${appConfig.loginUrl}?redirect_uri=${fullUrl}`);
-        }
-      },
-      data => (data.redirect ? null : Actions.updateBib(data.bib)),
-      data => (data.redirect ? null : Actions.updateDeliveryLocations(data.deliveryLocations)),
-      data => (data.redirect ? null : Actions.updateIsEddRequestable(data.isEddRequestable)),
-    ],
-    errorMessage: 'Error attempting to make ajax request for hold request',
+    action: updateHoldRequestPage,
+    path: 'hold/request',
+    params: '/:bibId-:itemId',
   },
-});
-
-const matchingPathData = (location) => {
-  const {
-    pathname,
-    search,
-  } = location;
-
-  return pathInstructions
-    .map(instruction => ({
-      matchData: (pathname + search).match(instruction.expression),
-      pathType: instruction.pathType,
-    }))
-    .find(pair => pair.matchData)
-    || { matchData: null, pathType: null };
 };
 
-function loadDataForRoutes(location, req, routeMethods, realRes) {
-  const routes = routesGenerator(location);
-  const {
-    matchData,
-    pathType,
-  } = matchingPathData(location);
+// A simple function for loading data into the store. The only reason it is broken
+// out separately is because it is used front-end and back-end
+const successCb = (pathType, dispatch) => (response) => {
+  const { data } = response;
+  if (data && data.redirect) {
+    const fullUrl = encodeURIComponent(window.location.href);
+    window.location.replace(`${appConfig.loginUrl}?redirect_uri=${fullUrl}`);
+    return { redirect: true }
+  };
+  dispatch(routes[pathType].action(data));
+  return data;
+};
 
-  if (routes[pathType]) {
-    const {
-      apiRoute,
-      actions,
-      errorMessage,
-      serverParams,
-    } = routes[pathType];
-    const route = routePaths[pathType];
-    Actions.updateLoadingStatus(true);
-    const successCb = (response) => {
-      actions.forEach(action => action(response.data));
-      if (!response.data.redirect) {
-        Actions.updateLastLoaded(location);
-      }
-      Actions.updateLoadingStatus(false);
-    };
-    const errorCb = (error) => {
-      Actions.updateLastLoaded(location);
-      Actions.updateLoadingStatus(false);
-      console.error(
-        errorMessage,
-        error,
-      );
-    };
-    if (req) {
-      if (serverParams) serverParams(matchData, req);
-      return new Promise((resolve) => {
-        const res = {
-          redirect: url => realRes.redirect(url),
-          json: (data) => {
-            resolve({ data });
-          },
-        };
-        routeMethods[pathType](req, res);
-      })
-        .then(successCb)
-        .catch(errorCb);
-    }
-    return ajaxCall(apiRoute(matchData, route), successCb, errorCb);
+
+// This function is called only on the front end, by the DataLoader, when a location changes.
+// Its sole responsibility is to check if any of the configured paths match
+// the current location, and if so, make an api call and pass the resulting data
+// on. Note that it makes use of the fact that now for every frontend route, the
+// corresponding api route can be found simply by adding /api/
+
+function loadDataForRoutes(location, dispatch) {
+  const { pathname, search } = location;
+  if (pathname === `${baseUrl}/`) {
+    dispatch(resetState());
   }
 
-  Actions.updateLastLoaded(location);
-  return new Promise(resolve => resolve());
+  const matchingPath = Object.entries(routes).find(([pathKey, pathValue]) => {
+    const { path } = pathValue;
+    return pathname.match(`${baseUrl}/${path}`);
+  });
+
+  if (!matchingPath || pathname.match('edd')) return new Promise(() => dispatch(updateLoadingStatus(false)));
+
+  const pathType = matchingPath[0];
+
+  const errorCb = (error) => {
+    console.error(
+      `Error attempting to make ajax request for ${pathType}`,
+      error,
+    );
+  };
+
+  dispatch(updateLoadingStatus(true));
+
+  const path = `${pathname}${search}`;
+
+  return ajaxCall(
+    location.pathname.replace(baseUrl, `${baseUrl}/api`) + location.search,
+    successCb(pathType, dispatch),
+    errorCb,
+  ).then((resp) => {
+    if (!resp.redirect) dispatch(updateLastLoaded(path));
+    dispatch(updateLoadingStatus(false));
+    return resp;
+  });
 }
 
 export default {
   loadDataForRoutes,
-  routePaths,
+  routes,
+  successCb,
 };

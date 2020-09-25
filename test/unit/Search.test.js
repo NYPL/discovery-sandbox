@@ -1,22 +1,26 @@
+/* eslint-disable react/jsx-filename-extension */
 /* eslint-env mocha */
 import axios from 'axios';
 import React from 'react';
 import MockAdapter from 'axios-mock-adapter';
 import { expect } from 'chai';
-import { mount } from 'enzyme';
 
 import sinon from 'sinon';
 import Search from '../../src/app/components/Search/Search';
 import { basicQuery } from '../../src/app/utils/utils';
 import appConfig from '../../src/app/data/appConfig';
-import store from '../../src/app/stores/Store';
+import { mountTestRender, makeTestStore } from '../helpers/store';
 
 describe('Search', () => {
+  let mockStore;
+  before(() => {
+    mockStore = makeTestStore();
+  });
   describe('Default render', () => {
     let component;
 
     before(() => {
-      component = mount(<Search />);
+      component = mountTestRender(<Search />, { store: mockStore }).find('Search');
     });
 
     it('should have default state', () => {
@@ -71,7 +75,11 @@ describe('Search', () => {
     let component;
 
     before(() => {
-      component = mount(<Search field="title" searchKeywords="Dune" />);
+      component = mountTestRender(<Search />, {
+        store: makeTestStore({
+          field: 'title', searchKeywords: 'Dune',
+        }),
+      }).find('Search');
     });
 
     it('should update the initial state with the props', () => {
@@ -87,11 +95,11 @@ describe('Search', () => {
 
     before(() => {
       createAPIQuery = basicQuery({});
-      onFieldChangeSpy = sinon.spy(Search.prototype, 'onFieldChange');
-      component = mount(
-        <Search createAPIQuery={createAPIQuery} />,
-        { context: { router: { createHref: () => {}, push: () => {} } } },
-      );
+      onFieldChangeSpy = sinon.spy(Search.WrappedComponent.prototype, 'onFieldChange');
+      component = mountTestRender(<Search createAPIQuery={createAPIQuery} />, {
+        store: mockStore,
+        context: { router: { createHref: () => {}, push: () => {} } },
+      }).find('Search');
     });
 
     after(() => {
@@ -121,11 +129,11 @@ describe('Search', () => {
 
     before(() => {
       createAPIQuery = basicQuery({});
-      inputChangeSpy = sinon.spy(Search.prototype, 'inputChange');
-      component = mount(
-        <Search createAPIQuery={createAPIQuery} />,
-        { context: { router: { createHref: () => {}, push: () => {} } } },
-      );
+      inputChangeSpy = sinon.spy(Search.WrappedComponent.prototype, 'inputChange');
+      component = mountTestRender(<Search createAPIQuery={createAPIQuery} />, {
+        store: mockStore,
+        context: { router: { createHref: () => {}, push: () => {} } },
+      }).find('Search');
     });
 
     after(() => {
@@ -152,16 +160,14 @@ describe('Search', () => {
 
     before(() => {
       createAPIQuery = basicQuery({});
-      triggerSubmitSpy = sinon.spy(Search.prototype, 'triggerSubmit');
-      submitSearchRequestSpy = sinon.spy(Search.prototype, 'submitSearchRequest');
-
-      component = mount(
-        <Search createAPIQuery={createAPIQuery} />,
-        { context: { router: {
-          createHref: () => {},
-          push: (route) => { contextRoutesPushed.push(route); },
-        } } },
-      );
+      triggerSubmitSpy = sinon.spy(Search.WrappedComponent.prototype, 'triggerSubmit');
+      submitSearchRequestSpy = sinon.spy(Search.WrappedComponent.prototype, 'submitSearchRequest');
+      component = mountTestRender(
+        <Search
+          createAPIQuery={createAPIQuery}
+          router={{ push: route => contextRoutesPushed.push(route) }}
+        />,
+        { store: mockStore }).find('Search');
 
       mock = new MockAdapter(axios);
       mock
@@ -188,8 +194,8 @@ describe('Search', () => {
       component.find('input').at(0).simulate('change', { target: { value: 'Dune' } });
       component.find('button').at(0).simulate('click');
       setTimeout(() => {
-        expect(component.state('searchKeywords')).to.equal('Dune');
         expect(submitSearchRequestSpy.callCount).to.equal(1);
+        expect(component.state('searchKeywords')).to.equal('Dune');
         done();
       }, 1000);
     });
@@ -199,7 +205,6 @@ describe('Search', () => {
       expect(component.state('searchKeywords')).to.equal('Dune');
       component.find('input').at(0).simulate('change', { target: { value: 'Harry Potter' } });
       component.find('button').at(0).simulate('keyPress');
-
       expect(component.state('searchKeywords')).to.equal('Harry Potter');
       expect(triggerSubmitSpy.callCount).to.equal(1);
     });
@@ -207,22 +212,7 @@ describe('Search', () => {
     it('should not update the searchKeywords before it submits the request', () => {
       component.find('input').at(0).simulate('change', { target: { value: 'Watts' } });
       component.find('button').at(0).simulate('click');
-      expect(store.state.searchKeywords).not.to.equal('Watts');
-    });
-
-    it('should make a search request with issuance filter set for journal title searches', (done) => {
-      component.find('select').getDOMNode().value = 'journal title';
-      component.find('select').simulate('change');
-
-      component.find('input').at(0).simulate('change', { target: { value: 'Time' } });
-      component.find('button').at(0).simulate('click');
-
-      setTimeout(() => {
-        expect(submitSearchRequestSpy.callCount).to.equal(1);
-        expect(contextRoutesPushed[0])
-          .to.equal('/research/collections/shared-collection-catalog/search?q=Time&filters[issuance][0]=urn%3Abiblevel%3As&search_scope=title');
-        done();
-      }, 1000);
+      expect(mockStore.getState().searchKeywords).not.to.equal('Watts');
     });
   });
 });

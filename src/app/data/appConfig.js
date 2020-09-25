@@ -26,7 +26,7 @@ const appConfig = {
     },
   },
   shepApi: process.env.SHEP_API,
-  loginUrl: 'https://login.nypl.org/auth/login',
+  loginUrl: process.env.LOGIN_URL || 'https://login.nypl.org/auth/login',
   tokenUrl: 'https://isso.nypl.org/',
   publicKey:
     '-----BEGIN PUBLIC KEY-----\n' +

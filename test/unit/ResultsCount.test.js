@@ -1,12 +1,11 @@
 /* eslint-env mocha */
 import React from 'react';
 import { expect } from 'chai';
-import alt from '@alt';
 import { shallow, mount } from 'enzyme';
 
 import sinon from 'sinon';
 
-import ResultsCount from '../../src/app/components/ResultsCount/ResultsCount';
+import WrappedResultsCount, { ResultsCount } from '../../src/app/components/ResultsCount/ResultsCount';
 
 const filters = {
   subjectLiteral: {
@@ -34,7 +33,6 @@ describe('ResultsCount', () => {
       let component;
 
       before(() => {
-        alt.flush();
         component = shallow(<ResultsCount />);
       });
 
