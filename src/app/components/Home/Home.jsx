@@ -1,24 +1,19 @@
 import React from 'react';
 import DocumentTitle from 'react-document-title';
+import PropTypes from 'prop-types';
 
 import Search from '../Search/Search';
-import LoadingLayer from '../LoadingLayer/LoadingLayer';
 import {
   basicQuery,
   trackDiscovery,
 } from '../../utils/utils';
 import appConfig from '../../data/appConfig';
 import Notification from '../Notification/Notification';
-import Store from '@Store'
 
-const Home = props => (
+const Home = (props, context) => (
   <DocumentTitle title="Shared Collection Catalog | NYPL">
     <main>
       <div className="home" id="mainContent">
-        <LoadingLayer
-          status={Store.state.isLoading}
-          title="Searching"
-        />
         <div className="nypl-homepage-hero">
           <div className="nypl-full-width-wrapper">
             <div className="nypl-row">
@@ -32,6 +27,7 @@ const Home = props => (
               <div className="nypl-column-full">
                 <Search
                   createAPIQuery={basicQuery(props)}
+                  router={context.router}
                 />
               </div>
             </div>
@@ -126,5 +122,9 @@ const Home = props => (
     </main>
   </DocumentTitle>
 );
+
+Home.contextTypes = {
+  router: PropTypes.object,
+};
 
 export default Home;

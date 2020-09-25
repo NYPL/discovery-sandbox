@@ -7,8 +7,6 @@ import NeighboringHeadingsBox from './NeighboringHeadingsBox';
 import BibsList from './BibsList';
 import Range from '../../models/Range';
 import appConfig from '../../data/appConfig';
-import Actions from '../../actions/Actions';
-
 
 class SubjectHeadingShow extends React.Component {
   constructor(props) {
@@ -55,7 +53,6 @@ class SubjectHeadingShow extends React.Component {
           contextIsLoading: false,
         }, () => {
           this.props.setBannerText(this.state.mainHeading.label);
-          Actions.updateLoadingStatus(false);
         });
       })
       .catch(

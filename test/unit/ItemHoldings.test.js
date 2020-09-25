@@ -72,18 +72,13 @@ describe('ItemHoldings', () => {
       expect(component.first().prop('className')).to.equal('nypl-results-item');
     });
 
-    it('should have an h2', () => {
-      expect(component.find('h2').length).to.equal(1);
-      expect(component.find('h2').text()).to.equal('Availability');
-    });
-
     it('should its "js" state set to false by default', () => {
       expect(component.state('js')).to.equal(false);
     });
 
     it('should have an ItemTable component, which renders a table', () => {
       expect(component.find('ItemTable').length).to.equal(1);
-      // Need to render the componet to actually find what gets rendered.
+      // Need to render the component to actually find what gets rendered.
       expect(component.find('ItemTable').render().is('table')).to.equal(true);
       // One heading and 2 item rows
       expect(component.find('ItemTable').render().find('tr').length).to.equal(3);
@@ -105,14 +100,9 @@ describe('ItemHoldings', () => {
       component = mount(<ItemHoldings items={longListItems} />);
     });
 
-    it('should have an h2', () => {
-      expect(component.find('h2').length).to.equal(1);
-      expect(component.find('h2').text()).to.equal('Availability');
-    });
-
     it('should have an ItemTable component, which renders a table', () => {
       expect(component.find('ItemTable').length).to.equal(1);
-      // Need to render the componet to actually find what gets rendered.
+      // Need to render the component to actually find what gets rendered.
       expect(component.find('ItemTable').render().is('table')).to.equal(true);
       // One heading and 20 item rows since only 20 get displayed at a time by default
       expect(component.find('ItemTable').render().find('tr').length).to.equal(21);

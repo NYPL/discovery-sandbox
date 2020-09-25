@@ -8,7 +8,6 @@ import {
 
 import { validate } from '../../utils/formValidationUtils';
 import appConfig from '../../data/appConfig';
-import AppConfigStore from '../../stores/AppConfigStore';
 
 class ElectronicDeliveryForm extends React.Component {
   constructor(props) {
@@ -72,12 +71,9 @@ class ElectronicDeliveryForm extends React.Component {
     });
 
     // determine which `eddAboutUrl` to use based on 'on-site-edd' feature flag
-    const {
-      features,
-      eddAboutUrl,
-    } = AppConfigStore.getState();
+    const { eddAboutUrl } = appConfig;
 
-    const whichUrl = features.includes('on-site-edd') ? 'onSiteEdd' : 'default';
+    const whichUrl = this.props.onSiteEddEnabled ? 'onSiteEdd' : 'default';
     const aboutUrl = eddAboutUrl[whichUrl];
 
     // A lot of this can be refactored to be in a loop but that's a later and
@@ -339,6 +335,7 @@ ElectronicDeliveryForm.propTypes = {
   searchKeywords: PropTypes.string,
   serverRedirect: PropTypes.bool,
   fromUrl: PropTypes.string,
+  onSiteEddEnabled: PropTypes.bool,
 };
 
 ElectronicDeliveryForm.defaultProps = {

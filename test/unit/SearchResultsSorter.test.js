@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-filename-extension */
 /* eslint-env mocha */
 import React from 'react';
 import MockAdapter from 'axios-mock-adapter';
@@ -8,8 +9,9 @@ import axios from 'axios';
 import sinon from 'sinon';
 
 import { basicQuery } from '../../src/app/utils/utils';
-import SearchResultsSorter from '@SearchResultsSorter';
+import { SearchResultsSorter } from '@SearchResultsSorter';
 import appConfig from '../../src/app/data/appConfig';
+import { makeTestStore, shallowTestRender } from '../helpers/store';
 
 describe('SearchResultsSorter', () => {
   describe('Default - no javascript', () => {

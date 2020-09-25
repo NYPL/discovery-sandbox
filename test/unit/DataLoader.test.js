@@ -4,7 +4,7 @@ import sinon from 'sinon';
 import { expect } from 'chai';
 import { shallow } from 'enzyme';
 
-import DataLoader from './../../src/app/components/DataLoader/DataLoader';
+import WrappedDataLoader, { DataLoader } from './../../src/app/components/DataLoader/DataLoader';
 import dataLoaderUtil from '@dataLoaderUtil';
 
 describe('DataLoader', () => {
@@ -14,7 +14,7 @@ describe('DataLoader', () => {
   before(() => {
     const children = (<div />);
     dataLoaderUtilSpy = sinon.spy(dataLoaderUtil, 'loadDataForRoutes');
-    wrapper = shallow(<DataLoader location={location} children={children} />);
+    wrapper = shallow(<DataLoader location={location} children={children} dispatch={() => {}}/>);
   });
   after(() => {
     dataLoaderUtilSpy.restore();

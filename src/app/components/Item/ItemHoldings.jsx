@@ -44,11 +44,6 @@ class ItemHoldings extends React.Component {
       chunkedItems,
       page: noItemPage ? 1 : this.state.page,
     });
-
-    // if (noItemPage) {
-    //   console.log('replacing')
-    //   this.context.router.replace(`${appConfig.baseUrl}/bib/${this.props.bibId}`);
-    // }
   }
 
   /*
@@ -138,7 +133,6 @@ class ItemHoldings extends React.Component {
 
     return (
       <div className="nypl-results-item">
-        <h2>Availability</h2>
         {itemTable}
         {
           !!(shortenItems && items.length >= 20 && !this.state.showAll) &&
