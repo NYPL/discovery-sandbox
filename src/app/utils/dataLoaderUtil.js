@@ -43,7 +43,7 @@ const successCb = (pathType, dispatch) => (response) => {
     const fullUrl = encodeURIComponent(window.location.href);
     window.location.replace(`${appConfig.loginUrl}?redirect_uri=${fullUrl}`);
     return { redirect: true }
-  };
+  }
   dispatch(routes[pathType].action(data));
   return data;
 };

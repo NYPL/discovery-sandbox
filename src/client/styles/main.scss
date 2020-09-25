@@ -186,3 +186,9 @@ div {
     outline-offset: 0;
   }
 }
+
+@media (max-width: $mobile-breakpoint) {
+  .nypl-full-width-wrapper {
+    padding-left: 1rem;
+  }
+}
