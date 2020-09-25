@@ -167,7 +167,6 @@ const BibPage = (props) => {
                 tabs={tabs}
                 hash={location.hash}
               />
-              <h2>Availability</h2>
               {itemHoldings}
             </div>
           </div>
