@@ -160,22 +160,17 @@ const BibPage = (props) => {
 
         <div className="nypl-full-width-wrapper">
           <div className="nypl-row">
-            <div
-              className="nypl-column-three-quarters"
-              role="region"
-            >
-              <div className="nypl-item-details">
-                <BibDetails
-                  bib={bib}
-                  fields={topFields}
-                  logging
-                  electronicResources={aggregatedElectronicResources}
-                />
-                <Tabbed
-                  tabs={tabs}
-                  hash={location.hash}
-                />
-              </div>
+            <div className="nypl-item-details">
+              <BibDetails
+                bib={bib}
+                fields={topFields}
+                logging
+                electronicResources={aggregatedElectronicResources}
+              />
+              <Tabbed
+                tabs={tabs}
+                hash={location.hash}
+              />
             </div>
           </div>
         </div>
