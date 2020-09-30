@@ -135,6 +135,7 @@ class ItemHoldings extends React.Component {
 
     return (
       <div className="nypl-results-item">
+        <h2>Availability</h2>
         <ItemFilters items={items} />
         {itemTable}
         {

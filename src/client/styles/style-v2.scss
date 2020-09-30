@@ -1,6 +1,10 @@
 // discovery-item.v2.html
 // item info / the full item record
 .nypl-item-details {
+  dl:first-of-type {
+    padding-bottom: 7px;
+  }
+
   dl {
     border-left: 0;
     font-size: 0.95rem;
