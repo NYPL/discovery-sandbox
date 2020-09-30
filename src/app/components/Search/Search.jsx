@@ -7,7 +7,6 @@ import {
   trackDiscovery,
 } from '../../utils/utils';
 import appConfig from '../../data/appConfig';
-import { updateField } from '../../actions/Actions';
 
 /**
  * The main container for the top Search section.
@@ -43,7 +42,7 @@ class Search extends React.Component {
    */
   onFieldChange() {
     const newFieldVal = this.searchByFieldRef.value;
-    this.setState({ field: newFieldVal }, () => this.props.updateField(newFieldVal));
+    this.setState({ field: newFieldVal });
   }
 
   /**
@@ -85,21 +84,10 @@ class Search extends React.Component {
       trackDiscovery('Search', `Field - ${this.state.field}`);
     }
 
-    // Set var for field querying so it can be overridden if necessary
-    let queryField = this.state.field;
-
-    // If user is making a search for periodicals switch from field to standard
-    // Title search with an issuance filter on the serial field
-    const additionalFilters = {};
-    if (this.state.field === 'journal title') {
-      additionalFilters.issuance = ['urn:biblevel:s'];
-      queryField = 'title';
-    }
-
     const searchKeywords = userSearchKeywords === '*' ? '' : userSearchKeywords;
     const apiQuery = this.props.createAPIQuery({
-      field: queryField,
-      selectedFilters: { ...this.props.selectedFilters, ...additionalFilters },
+      field: this.state.field,
+      selectedFilters: this.props.selectedFilters,
       searchKeywords,
       page: '1',
     });
@@ -131,7 +119,7 @@ class Search extends React.Component {
               >
                 <option value="all">All fields</option>
                 <option value="title">Title</option>
-                <option value="journal title">Journal Title</option>
+                <option value="journal_title">Journal Title</option>
                 <option value="contributor">Author/Contributor</option>
                 <option value="standard_number">Standard Numbers</option>
               </select>
@@ -169,7 +157,6 @@ Search.propTypes = {
   searchKeywords: PropTypes.string,
   createAPIQuery: PropTypes.func,
   selectedFilters: PropTypes.object,
-  updateField: PropTypes.func,
   router: PropTypes.object,
 };
 
@@ -185,7 +172,4 @@ const mapStateToProps = ({
   selectedFilters,
 }) => ({ searchKeywords, field, selectedFilters });
 
-
-const mapDispatchToProps = dispatch => ({ updateField: field => dispatch(updateField(field)) });
-
-export default connect(mapStateToProps, mapDispatchToProps)(Search);
+export default connect(mapStateToProps)(Search);
