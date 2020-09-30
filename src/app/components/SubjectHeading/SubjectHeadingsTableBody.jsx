@@ -125,8 +125,7 @@ class SubjectHeadingsTableBody extends React.Component {
       preOpen,
       marginSize
     } = this.props;
-
-
+    const { container, router } = this.context;
     const { location } = this.context.router;
 
     if (listItem.button) {
@@ -157,6 +156,8 @@ class SubjectHeadingsTableBody extends React.Component {
         seeMoreLinkUrl={seeMoreLinkUrl}
         direction={direction}
         preOpen={preOpen}
+        container={container}
+        router={router}
       />
     );
   }

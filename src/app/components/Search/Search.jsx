@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
 import SearchButton from '../Buttons/SearchButton';
 import {
@@ -91,7 +92,7 @@ class Search extends React.Component {
       page: '1',
     });
 
-    this.context.router.push(`${appConfig.baseUrl}/search?${apiQuery}`);
+    this.props.router.push(`${appConfig.baseUrl}/search?${apiQuery}`);
   }
 
   render() {
@@ -118,6 +119,7 @@ class Search extends React.Component {
               >
                 <option value="all">All fields</option>
                 <option value="title">Title</option>
+                <option value="journal_title">Journal Title</option>
                 <option value="contributor">Author/Contributor</option>
                 <option value="standard_number">Standard Numbers</option>
               </select>
@@ -133,7 +135,7 @@ class Search extends React.Component {
                 id="search-query"
                 aria-labelledby="search-input-label"
                 aria-controls="results-description"
-                placeholder="Keyword, title, or author/contributor"
+                placeholder="Keyword, title, journal title, or author/contributor"
                 onChange={this.inputChange}
                 value={this.state.searchKeywords}
                 name="q"
@@ -155,6 +157,7 @@ Search.propTypes = {
   searchKeywords: PropTypes.string,
   createAPIQuery: PropTypes.func,
   selectedFilters: PropTypes.object,
+  router: PropTypes.object,
 };
 
 Search.defaultProps = {
@@ -163,8 +166,10 @@ Search.defaultProps = {
   selectedFilters: {},
 };
 
-Search.contextTypes = {
-  router: PropTypes.object,
-};
+const mapStateToProps = ({
+  searchKeywords,
+  field,
+  selectedFilters,
+}) => ({ searchKeywords, field, selectedFilters });
 
-export default Search;
+export default connect(mapStateToProps)(Search);

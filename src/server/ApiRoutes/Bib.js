@@ -27,35 +27,36 @@ function fetchBib(bibId, cb, errorcb, options = { fetchSubjectHeadingData: true 
 
       return data;
     })
-    .then((data) => {
-      if (options.fetchSubjectHeadingData && data.subjectLiteral && data.subjectLiteral.length) {
+    .then((bib) => {
+      if (options.fetchSubjectHeadingData && bib.subjectLiteral && bib.subjectLiteral.length) {
         return shepApiCall(bibId)
           .then((shepRes) => {
-            data.subjectHeadingData = shepRes.data.subject_headings;
-            return data;
+            bib.subjectHeadingData = shepRes.data.subject_headings;
+            return { bib };
           })
           .catch((error) => {
             logger.error(`Error in shepApiCall API error, bib_id: ${bibId}`, error);
-            return data;
+            return { bib };
           });
       }
-      return data;
+      return { bib };
     })
-    .then(response => cb(response))
+    .then(bib => cb(bib))
     .catch((error) => {
-      logger.error(`Error attemping to fetch a Bib server side in fetchBib, id: ${bibId}`, error);
+      logger.error(`Error attemping to fetch a Bib in fetchBib, id: ${bibId}`, error);
 
       errorcb(error);
     }); /* end axios call */
 }
 
-function bibSearch(req, res) {
-  const bibId = req.query.bibId || '';
+function bibSearch(req, res, resolve) {
+  const bibId = req.params.bibId;
+
 
   fetchBib(
     bibId,
-    data => res.json(data),
-    error => res.json(error),
+    data => resolve(data),
+    error => resolve(error),
   );
 }
 

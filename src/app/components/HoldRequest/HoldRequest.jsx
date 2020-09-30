@@ -1,35 +1,33 @@
 /* globals window document */
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router';
+import {
+  Link,
+  withRouter,
+} from 'react-router';
 import axios from 'axios';
 import {
   isArray as _isArray,
   isEmpty as _isEmpty,
-  extend as _extend,
 } from 'underscore';
 import DocumentTitle from 'react-document-title';
+import { connect } from 'react-redux';
 
+import LoadingLayer from '../LoadingLayer/LoadingLayer';
 import Breadcrumbs from '../Breadcrumbs/Breadcrumbs';
 import Notification from '../Notification/Notification';
 
-import PatronStore from '../../stores/PatronStore';
 import appConfig from '../../data/appConfig';
-import AppConfigStore from '../../stores/AppConfigStore';
 import LibraryItem from '../../utils/item';
-import LoadingLayer from '../LoadingLayer/LoadingLayer';
 import {
   trackDiscovery,
   basicQuery,
 } from '../../utils/utils';
+import { updateLoadingStatus } from '../../actions/Actions';
 
-import Actions from '@Actions';
-import Store from '@Store';
-
-class HoldRequest extends React.Component {
+export class HoldRequest extends React.Component {
   constructor(props) {
     super(props);
-
     const deliveryLocationsFromAPI = this.props.deliveryLocations;
     const isEddRequestable = this.props.isEddRequestable;
     const firstLocationValue = (
@@ -49,19 +47,16 @@ class HoldRequest extends React.Component {
       checkedLocNum = 0;
     }
 
-    this.state = _extend({
+    this.state = {
       delivery: defaultDelivery,
       checkedLocNum,
       serverRedirect: true,
-    }, { patron: PatronStore.getState() });
+    };
 
-    // change all the components :(
-    this.onChange = this.onChange.bind(this);
     this.onRadioSelect = this.onRadioSelect.bind(this);
     this.submitRequest = this.submitRequest.bind(this);
     this.checkEligibility = this.checkEligibility.bind(this);
     this.conditionallyRedirect = this.conditionallyRedirect.bind(this);
-    this.isLoading = this.isLoading.bind(this);
     this.requireUser = this.requireUser.bind(this);
   }
 
@@ -76,10 +71,6 @@ class HoldRequest extends React.Component {
     if (this.state.serverRedirect) this.setState({ serverRedirect: false });
   }
 
-  onChange() {
-    this.setState({ patron: PatronStore.getState() });
-  }
-
   onRadioSelect(e, i) {
     trackDiscovery('Delivery Location', e.target.value);
     this.setState({
@@ -88,18 +79,12 @@ class HoldRequest extends React.Component {
     });
   }
 
-  isLoading() {
-    const patron = PatronStore.getState();
-    return !patron || !patron.id || !Store.getState().lastLoaded.pathname.includes(this.props.location.pathname);
-  }
-
   /**
    * submitRequest()
    * Client-side submit call.
    */
   submitRequest(e, bibId, itemId, itemSource, title) {
     e.preventDefault();
-
     const itemSourceMapping = {
       'recap-pul': 'Princeton',
       'recap-cul': 'Columbia',
@@ -121,20 +106,24 @@ class HoldRequest extends React.Component {
       return;
     }
 
-    Actions.updateLoadingStatus(true);
     trackDiscovery(`Submit Request${partnerEvent}`, `${title} - ${itemId}`);
     const formData = new FormData(document.getElementById('place-hold-form'));
+    this.props.updateLoadingStatus(true);
     axios.post(
       `${appConfig.baseUrl}/hold/request/${bibId}-${itemId}-${itemSource}`,
       Object.fromEntries(formData.entries()),
     )
       .then((response) => {
+        const { data } = response;
+        if (data.redirect) {
+          const fullUrl = encodeURIComponent(window.location.href);
+          window.location.replace(`${appConfig.loginUrl}?redirect_uri=${fullUrl}`);
+          return;
+        };
         this.context.router.push(response.data);
-        Actions.updateLoadingStatus(false);
       })
       .catch((error) => {
         console.error('Error attempting to make an ajax Hold Request in HoldRequest', error);
-        Actions.updateLoadingStatus(false);
         this.context.router.push(
           `${path}?errorMessage=${error}${searchKeywordsQueryPhysical}${fromUrlQuery}`,
         );
@@ -148,7 +137,7 @@ class HoldRequest extends React.Component {
    * @return {Boolean}
    */
   requireUser() {
-    if (this.state.patron && this.state.patron.id) {
+    if (this.props.patron && this.props.patron.id) {
       return true;
     }
 
@@ -178,19 +167,20 @@ class HoldRequest extends React.Component {
 
   // Redirects to HoldConfirmation if patron is ineligible to place holds. We are particularly
   // checking for manual blocks, expired cards, and excessive fines.
-
   conditionallyRedirect() {
+    const { params } = this.props;
     return this.checkEligibility().then((eligibility) => {
       if (!eligibility.eligibility) {
         const bib = (this.props.bib && !_isEmpty(this.props.bib)) ?
           this.props.bib : null;
-        const bibId = (bib && bib['@id'] && typeof bib['@id'] === 'string') ?
+        let bibId = (bib && bib['@id'] && typeof bib['@id'] === 'string') ?
           bib['@id'].substring(4) : '';
-        const itemId = (this.props.params && this.props.params.itemId) ? this.props.params.itemId : '';
+        if (!bibId) bibId = (params && params.bibId) ? params.bibId : '';
+        const itemId = (params && params.itemId) ? params.itemId : '';
         const path = `${appConfig.baseUrl}/hold/confirmation/${bibId}-${itemId}`;
         return this.redirectWithErrors(path, 'eligibility', JSON.stringify(eligibility));
       }
-      Actions.updateLoadingStatus(false);
+      return true;
     });
   }
   // checks whether a patron is eligible to place a hold. Uses cookie to get the patron's id
@@ -216,7 +206,7 @@ class HoldRequest extends React.Component {
      * @return {HTML Element}
      */
   renderDeliveryLocation(deliveryLocations = []) {
-    const { closedLocations } = AppConfigStore.getState();
+    const { closedLocations } = this.props;
     return deliveryLocations.map((location, i) => {
       const displayName = this.modelDeliveryLocationName(location.prefLabel, location.shortName);
       const value = (location['@id'] && typeof location['@id'] === 'string') ?
@@ -252,7 +242,7 @@ class HoldRequest extends React.Component {
   * @return {HTML Element}
   */
   renderEDD() {
-    const { closedLocations } = AppConfigStore.getState();
+    const { closedLocations } = this.props;
     if (closedLocations.includes('')) return null;
     return (
       <label
@@ -275,47 +265,21 @@ class HoldRequest extends React.Component {
   }
 
   render() {
-    if (this.isLoading()) {
-      return (
-        <React.Fragment>
-          <LoadingLayer
-            status={this.isLoading()}
-            title="Requesting"
-          />
-          <div>
-            <div className="nypl-request-page-header">
-              <div className="nypl-full-width-wrapper">
-                <div className="row">
-                  <div className="nypl-column-full">
-                    <Breadcrumbs
-                      type="hold"
-                    />
-                    <h1 id="item-title" tabIndex="0" id="mainContent">Item Request</h1>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="nypl-full-width-wrapper">
-              <div className="row">
-                <div className="nypl-column-three-quarters" />
-              </div>
-            </div>
-          </div>
-        </React.Fragment>
-      );
-    }
-
-    const { closedLocations, holdRequestNotification } = AppConfigStore.getState();
+    const {
+      closedLocations,
+      holdRequestNotification,
+      searchKeywords,
+      loading,
+      params,
+    } = this.props;
     const { serverRedirect } = this.state;
-    const searchKeywords = this.props.searchKeywords;
     const bib = (this.props.bib && !_isEmpty(this.props.bib)) ?
       this.props.bib : null;
     const title = (bib && _isArray(bib.title) && bib.title.length) ?
       bib.title[0] : '';
     const bibId = (bib && bib['@id'] && typeof bib['@id'] === 'string') ?
       bib['@id'].substring(4) : '';
-    const itemId = (this.props.params && this.props.params.itemId) ? this.props.params.itemId : '';
+    const itemId = (params && params.itemId) ? params.itemId : '';
     const selectedItem = (bib && itemId) ? LibraryItem.getItem(bib, itemId) : {};
     const selectedItemAvailable = selectedItem ? selectedItem.available : false;
     const bibLink = (bibId && title) ?
@@ -389,10 +353,18 @@ class HoldRequest extends React.Component {
     }
 
     const searchUrl = basicQuery(this.props)({});
+    const userLoggedIn = this.props.patron && this.props.patron.loggedIn;
+    // include extra LoadingLayer here, since this one depends on the patron login status
 
     return (
       <DocumentTitle title="Item Request | Shared Collection Catalog | NYPL">
         <div>
+          {
+            !userLoggedIn || loading ? <LoadingLayer
+              title="Loading"
+              loading
+            /> : null
+          }
           <div className="nypl-request-page-header">
             <div className="nypl-full-width-wrapper">
               <div className="row">
@@ -414,7 +386,7 @@ class HoldRequest extends React.Component {
                 <div className="nypl-request-item-summary">
                   <div className="item">
                     {
-                      (!bib || !selectedItemAvailable) &&
+                      (userLoggedIn && !loading && (!bib || !selectedItemAvailable)) &&
                         <h2>
                           This item cannot be requested at this time. Please try again later or
                           contact 917-ASK-NYPL (<a href="tel:917-275-6975">917-275-6975</a>).
@@ -451,6 +423,11 @@ HoldRequest.propTypes = {
   params: PropTypes.object,
   deliveryLocations: PropTypes.array,
   isEddRequestable: PropTypes.bool,
+  patron: PropTypes.object,
+  closedLocations: PropTypes.array,
+  holdRequestNotification: PropTypes.string,
+  loading: PropTypes.bool,
+  updateLoadingStatus: PropTypes.func,
 };
 
 HoldRequest.defaultProps = {
@@ -459,6 +436,21 @@ HoldRequest.defaultProps = {
   params: {},
   deliveryLocations: [],
   isEddRequestable: false,
+  closedLocations: [],
 };
 
-export default HoldRequest;
+const mapStateToProps = state => ({
+  closedLocations: state.appConfig.closedLocations,
+  holdRequestNotification: state.appConfig.holdRequestNotification,
+  deliveryLocations: state.deliveryLocations,
+  isEddRequestable: state.isEddRequestable,
+  patron: state.patron,
+  bib: state.bib,
+  loading: state.loading,
+});
+
+const mapDispatchToProps = dispatch => ({
+  updateLoadingStatus: status => dispatch(updateLoadingStatus(status)),
+});
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(HoldRequest));

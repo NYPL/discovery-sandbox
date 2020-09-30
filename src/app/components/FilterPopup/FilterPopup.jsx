@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import {
   findWhere as _findWhere,
   reject as _reject,
@@ -16,12 +17,10 @@ import { CheckSoloIcon } from '@nypl/dgx-svg-icons';
 import {
   trackDiscovery,
 } from '../../utils/utils';
+import appConfig from '@appConfig';
 
-import appConfig from '../../data/appConfig';
 import FieldsetDate from '../Filters/FieldsetDate';
 import FieldsetList from '../Filters/FieldsetList';
-import Actions from '../../actions/Actions';
-import AppConfigStore from '../../stores/AppConfigStore';
 
 const FilterResetIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" width="57.69298" height="71.85359" viewBox="0 0 57.69298 71.85359">
@@ -34,7 +33,7 @@ const FilterResetIcon = () => (
   </svg>
 );
 
-class FilterPopup extends React.Component {
+export class FilterPopup extends React.Component {
   constructor(props) {
     super(props);
 
@@ -257,9 +256,7 @@ class FilterPopup extends React.Component {
 
     this.closeForm(e);
 
-    Actions.updateSelectedFilters(filtersToApply);
-    this.context.router.push(`${appConfig.baseUrl}/search?${apiQuery}`);
-    return true;
+    return this.context.router.push(`${appConfig.baseUrl}/search?${apiQuery}`);
   }
 
   /**
@@ -326,6 +323,7 @@ class FilterPopup extends React.Component {
     const {
       totalResults,
       searchKeywords,
+      features,
     } = this.props;
     const {
       showForm,
@@ -342,7 +340,6 @@ class FilterPopup extends React.Component {
       dateAfter: selectedFilters.dateAfter,
       dateBefore: selectedFilters.dateBefore,
     };
-    const { features } = AppConfigStore.getState();
     const includeDrbb = features.includes('drb-integration');
 
     const applyButton = (position = '') => (
@@ -431,20 +428,21 @@ class FilterPopup extends React.Component {
       >
         Refine Search
       </button>) :
-      (<a
-        className="popup-btn-open nypl-primary-button"
-        href="#popup-no-js"
-        aria-haspopup="true"
-        aria-expanded={false}
-        aria-controls="filter-popup-menu"
-        role="button"
-      >
-        Refine Search
-       </a>);
+      (
+        <a
+          className="popup-btn-open nypl-primary-button"
+          href="#popup-no-js"
+          aria-haspopup="true"
+          aria-expanded={false}
+          aria-controls="filter-popup-menu"
+          role="button"
+        >
+          Refine Search
+        </a>);
 
     const materialTypeFilters = _findWhere(filters, { id: 'materialType' });
     const languageFilters = _findWhere(filters, { id: 'language' });
-    const subjectLiteralFilters = _findWhere(filters, {id: 'subjectLiteral'});
+    const subjectLiteralFilters = _findWhere(filters, { id: 'subjectLiteral' });
     const dateAfterFilterValue =
       filtersToShow.dateAfter ? Number(filtersToShow.dateAfter) : null;
     const dateBeforeFilterValue =
@@ -602,6 +600,7 @@ FilterPopup.propTypes = {
   raisedErrors: PropTypes.array,
   updateDropdownState: PropTypes.func,
   totalResults: PropTypes.number,
+  features: PropTypes.array,
 };
 
 FilterPopup.defaultProps = {
@@ -616,4 +615,30 @@ FilterPopup.contextTypes = {
   router: PropTypes.object,
 };
 
-export default FilterPopup;
+const mapStateToProps = (state) => {
+  const {
+    filters,
+    appConfig: {
+      features,
+    },
+    searchResults,
+    searchKeywords,
+    selectedFilters,
+  } = state;
+
+  const apiFilters = (
+    filters &&
+    filters.itemListElement &&
+    filters.itemListElement.length
+  ) ? filters.itemListElement : [];
+
+  return ({
+    features,
+    filters: apiFilters,
+    totalResults: searchResults.totalResults,
+    searchKeywords,
+    selectedFilters,
+  });
+};
+
+export default connect(mapStateToProps)(FilterPopup);

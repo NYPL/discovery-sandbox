@@ -1,7 +1,7 @@
 /* global window document */
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router';
+import { Link, withRouter } from 'react-router';
 import {
   isArray as _isArray,
   isEmpty as _isEmpty,
@@ -9,8 +9,8 @@ import {
 } from 'underscore';
 import DocumentTitle from 'react-document-title';
 import Url from 'url-parse';
+import { connect } from 'react-redux';
 
-import PatronStore from '../../stores/PatronStore';
 import appConfig from '../../data/appConfig';
 import Breadcrumbs from '../Breadcrumbs/Breadcrumbs';
 import {
@@ -18,20 +18,11 @@ import {
   basicQuery,
 } from '../../utils/utils';
 
-class HoldConfirmation extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      patron: PatronStore.getState(),
-    };
-  }
-
+export class HoldConfirmation extends React.Component {
   componentDidMount() {
     this.requireUser();
     document.getElementById('mainContent').focus();
   }
-
 
   expiredMessage() {
     return (<li className="errorItem">Your account has expired -- Please see <a href="https://www.nypl.org/help/library-card/terms-conditions#renew">Library Terms and Conditions -- Renewing or Validating Your Library Card</a> about renewing your card</li>);
@@ -49,6 +40,10 @@ class HoldConfirmation extends React.Component {
     return (<li className="errorItem">Your card does not permit placing holds on ReCAP materials.</li>);
   }
 
+  reachedHoldLimit() {
+    return (<li className="errorItem">You have reached the allowed number of holds.</li>);
+  }
+
   /**
    * eligibilityErrorText supplies the appropriate text when a patron is ineligible to place holds.
    * @return {HTML Element}
@@ -60,7 +55,8 @@ class HoldConfirmation extends React.Component {
       const blocked = errors.blocked ? this.blockedMessage() : null;
       const moneyOwed = errors.moneyOwed ? this.moneyOwedMessage() : null;
       const ptypeDisallowsHolds = errors.ptypeDisallowsHolds ? this.ptypeDisallowsHolds() : null;
-      const defaultText = expired || blocked || moneyOwed || ptypeDisallowsHolds ? null : 'There is a problem with your library account.';
+      const reachedHoldLimit = errors.reachedHoldLimit ? this.reachedHoldLimit() : null;
+      const defaultText = expired || blocked || moneyOwed || ptypeDisallowsHolds || reachedHoldLimit ? null : 'There is a problem with your library account.';
       return (
         <p> This is because:
           <ul>
@@ -68,6 +64,7 @@ class HoldConfirmation extends React.Component {
             {expired}
             {blocked}
             {ptypeDisallowsHolds}
+            {reachedHoldLimit}
             {defaultText}
           </ul>
           Please see a librarian or contact 917-ASK-NYPL (<a href="tel:19172756975">917-275-6975</a>) if you require assistance.
@@ -89,7 +86,7 @@ class HoldConfirmation extends React.Component {
    * @return {Boolean}
    */
   requireUser() {
-    if (this.state.patron && this.state.patron.id) {
+    if (this.props.patron && this.props.patron.id && this.props.patron.loggedIn) {
       return true;
     }
 
@@ -283,8 +280,10 @@ class HoldConfirmation extends React.Component {
     } = this.props;
     const title = (bib && _isArray(bib.title) && bib.title.length > 0) ?
       bib.title[0] : '';
-    const bibId = (bib && bib['@id'] && typeof bib['@id'] === 'string') ?
-      bib['@id'].substring(4) : '';
+    const bibId = this.props.params.bibId || (
+      (bib && bib['@id'] && typeof bib['@id'] === 'string') ?
+        bib['@id'].substring(4) : ''
+    );
 
     let confirmationPageTitle = 'Submission Error';
     let confirmationInfo = (
@@ -404,6 +403,7 @@ HoldConfirmation.propTypes = {
   searchKeywords: PropTypes.string,
   params: PropTypes.object,
   deliveryLocations: PropTypes.array,
+  patron: PropTypes.object,
 };
 
 HoldConfirmation.defaultProps = {
@@ -418,4 +418,11 @@ HoldConfirmation.contextTypes = {
   router: PropTypes.object,
 };
 
-export default HoldConfirmation;
+const mapStateToProps = ({ bib, searchKeywords, deliveryLocations, patron }) => ({
+  bib,
+  searchKeywords,
+  deliveryLocations,
+  patron,
+});
+
+export default withRouter(connect(mapStateToProps)(HoldConfirmation));

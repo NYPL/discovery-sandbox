@@ -6,11 +6,8 @@ import { isEmpty as _isEmpty } from 'underscore';
 import {
   trackDiscovery,
 } from '../../utils/utils';
-import Actions from '@Actions';
 
 import appConfig from '../../data/appConfig';
-import AppConfigStore from '../../stores/AppConfigStore';
-
 
 class ItemTableRow extends React.Component {
   constructor(props) {
@@ -35,8 +32,6 @@ class ItemTableRow extends React.Component {
     if (page === 'BibPage') gaLabel = 'Item Details';
     if (page === 'SubjectHeadingShowPage') gaLabel = 'Subject Heading Details';
 
-    Actions.updateLoadingStatus(true);
-
     trackDiscovery('Item Request', gaLabel);
     this.context.router.push(`${appConfig.baseUrl}/hold/request/${bibId}-${item.id}`);
   }
@@ -53,7 +48,7 @@ class ItemTableRow extends React.Component {
       bibId,
       searchKeywords,
     } = this.props;
-    const { closedLocations } = AppConfigStore.getState();
+    const { closedLocations } = appConfig;
     const status = item.status && item.status.prefLabel ? item.status.prefLabel : ' ';
     let itemRequestBtn = <span>{status}</span>;
 

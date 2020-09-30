@@ -3,7 +3,10 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import axios from 'axios';
-import { Link } from 'react-router';
+import {
+  Link,
+  withRouter,
+} from 'react-router';
 import {
   isArray as _isArray,
   isEmpty as _isEmpty,
@@ -11,21 +14,18 @@ import {
   mapObject as _mapObject,
 } from 'underscore';
 import DocumentTitle from 'react-document-title';
+import { connect } from 'react-redux';
 
 import Breadcrumbs from '../Breadcrumbs/Breadcrumbs';
-import Actions from '@Actions'
-import Store from '../../stores/Store';
-import PatronStore from '../../stores/PatronStore';
 import appConfig from '../../data/appConfig';
-import AppConfigStore from '../../stores/AppConfigStore';
 import ElectronicDeliveryForm from './ElectronicDeliveryForm';
 import LibraryItem from '../../utils/item';
-import LoadingLayer from '../LoadingLayer/LoadingLayer';
 import Notification from '../Notification/Notification';
 import {
   trackDiscovery,
   basicQuery,
 } from '../../utils/utils';
+import { updateLoadingStatus } from '../../actions/Actions';
 
 class ElectronicDelivery extends React.Component {
   constructor(props) {
@@ -33,8 +33,12 @@ class ElectronicDelivery extends React.Component {
 
     const bib = (this.props.bib && !_isEmpty(this.props.bib)) ? this.props.bib : null;
     const title = (bib && _isArray(bib.title) && bib.title.length) ? bib.title[0] : '';
-    const bibId = (bib && bib['@id'] && typeof bib['@id'] === 'string') ?
-      bib['@id'].substring(4) : '';
+    let bibId;
+    if (this.props.params.bibId) {
+      bibId = this.props.params.bibId;
+    } else if (bib && bib['@id']) {
+      bibId = bib['@id'].substring(4);
+    }
     const itemId = (this.props.params && this.props.params.itemId) ? this.props.params.itemId : '';
     const selectedItem = (bib && itemId) ? LibraryItem.getItem(bib, itemId) : {};
     const itemSource = (selectedItem && selectedItem.itemSource) ? selectedItem.itemSource : null;
@@ -48,7 +52,7 @@ class ElectronicDelivery extends React.Component {
       itemSource,
       raiseError,
       serverRedirect,
-    }, { patron: PatronStore.getState() });
+    });
 
     this.requireUser = this.requireUser.bind(this);
     this.submitRequest = this.submitRequest.bind(this);
@@ -128,6 +132,7 @@ class ElectronicDelivery extends React.Component {
    * Client-side submit call.
    */
   submitRequest() {
+    this.props.updateLoadingStatus(true);
     const {
       bibId,
       itemId,
@@ -135,7 +140,7 @@ class ElectronicDelivery extends React.Component {
       title,
     } = this.state;
     const path = `${appConfig.baseUrl}/hold/confirmation/${bibId}-${itemId}`;
-    const searchKeywords = this.props.searchKeywords;
+    const { searchKeywords } = this.props;
     const searchKeywordsQuery = searchKeywords ? `&q=${searchKeywords}` : '';
     const itemSourceMapping = {
       'recap-pul': 'Princeton',
@@ -146,7 +151,6 @@ class ElectronicDelivery extends React.Component {
 
     // This is to remove the error box on the top of the page on a successfull submission.
     this.setState({ raiseError: null });
-    Actions.updateLoadingStatus(true);
     trackDiscovery(`Submit Request EDD${partnerEvent}`, `${title} - ${itemId}`);
 
     const formData = new FormData(document.getElementById('place-edd-hold-form'));
@@ -156,7 +160,6 @@ class ElectronicDelivery extends React.Component {
     )
       .then((response) => {
         this.context.router.push(response.data);
-        Actions.updateLoadingStatus(false);
       })
       .catch((error) => {
         console.error(
@@ -164,7 +167,6 @@ class ElectronicDelivery extends React.Component {
           error,
         );
 
-        Actions.updateLoadingStatus(false);
         this.context.router.push(
           `${path}?errorMessage=${error}${searchKeywordsQuery}${this.fromUrl()}`,
         );
@@ -189,7 +191,7 @@ class ElectronicDelivery extends React.Component {
    * @return {Boolean}
    */
   requireUser() {
-    if (this.state.patron && this.state.patron.id) {
+    if (this.props.patron && this.props.patron.id) {
       return true;
     }
 
@@ -211,23 +213,19 @@ class ElectronicDelivery extends React.Component {
     const callNo = bib && bib.shelfMark && bib.shelfMark.length ? bib.shelfMark[0] : null;
     const { error, form } = this.props;
     const patronEmail = (
-      this.state.patron.emails && _isArray(this.state.patron.emails)
-      && this.state.patron.emails.length
-    ) ? this.state.patron.emails[0] : '';
+      this.props.patron.emails && _isArray(this.props.patron.emails)
+      && this.props.patron.emails.length
+    ) ? this.props.patron.emails[0] : '';
     const searchKeywords = this.props.searchKeywords;
     const {
       closedLocations, holdRequestNotification,
-    } = AppConfigStore.getState();
+    } = appConfig;
 
     const searchUrl = basicQuery(this.props)({});
 
     return (
       <DocumentTitle title="Electronic Delivery Request | Shared Collection Catalog | NYPL">
         <div id="mainContent">
-          <LoadingLayer
-            status={Store.state.isLoading}
-            title="Requesting"
-          />
           <div className="nypl-request-page-header">
             <div className="row">
               <div className="content-wrapper">
@@ -296,6 +294,7 @@ class ElectronicDelivery extends React.Component {
                     searchKeywords={searchKeywords}
                     serverRedirect={serverRedirect}
                     fromUrl={this.fromUrl()}
+                    onSiteEddEnabled={this.props.features.includes('on-site-edd')}
                   />
                   : null
               }
@@ -318,11 +317,24 @@ ElectronicDelivery.propTypes = {
   params: PropTypes.object,
   error: PropTypes.object,
   form: PropTypes.object,
+  patron: PropTypes.object,
+  updateLoadingStatus: PropTypes.func,
+  features: PropTypes.array,
 };
 
 ElectronicDelivery.defaultProps = {
   searchKeywords: '',
 };
 
+const mapStateToProps = state => ({
+  patron: state.patron,
+  bib: state.bib,
+  searchKeywords: state.searchKeywords,
+  features: state.appConfig.features,
+});
 
-export default ElectronicDelivery;
+const mapDispatchToProps = dispatch => ({
+  updateLoadingStatus: status => dispatch(updateLoadingStatus(status)),
+});
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ElectronicDelivery));

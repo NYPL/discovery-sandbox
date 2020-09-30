@@ -1,4 +1,7 @@
+/* global window */
 import React from 'react';
+import PropTypes from 'prop-types';
+
 import { trackDiscovery } from '../../utils/utils';
 
 class Tabbed extends React.Component {
@@ -17,105 +20,127 @@ class Tabbed extends React.Component {
   // url hash (to accommodate deep linking)
   componentDidMount() {
     let hashNumber = 1;
-    if (this.props.hash) {
-      let hash = this.props.hash;
-      const hashMatch = this.props.hash.match(/[^\d]*(\d)/);
+    const { hash } = this.props;
+    if (hash) {
+      const hashMatch = hash.match(/[^\d]*(\d)/);
       if (hashMatch) hashNumber = hashMatch[1];
       window.location.replace(window.location.href.replace(/#.*/, '') + hash);
-      let tab = this.links[hashNumber];
+      const tab = this.links[hashNumber];
       tab.focus();
     }
     this.setState({ tabNumber: hashNumber.toString() });
   }
 
   focusTab(newTabIndex) {
-    let newTab = this.links[newTabIndex];
+    const newTab = this.links[newTabIndex];
     newTab.focus();
   }
 
-  //switches tabs by updating state and href
+  // switches tabs by updating state and href
   switchTab(newTabIndex) {
     if (newTabIndex !== this.state.tabNumber) {
-      const tabChoices = ['Details Tab1', 'Full Description Tab2'];
+      const tabChoices = ['Availability Tab1', 'Details Tab2', 'Full Description Tab3'];
       trackDiscovery('BibPage Tabs Switch', tabChoices[newTabIndex - 1]);
     }
     this.setState({ tabNumber: newTabIndex.toString() });
-    let newTab = this.links[newTabIndex];
-    window.location.replace(window.location.href.split('#')[0] + `#tab${newTabIndex}`);
+    const newTab = this.links[newTabIndex];
+    window.location.replace(`${window.location.href.split('#')[0]}#tab${newTabIndex}`);
     newTab.focus();
   }
 
   clickHandler(e) {
     e.preventDefault();
-    let clickedTab = e.currentTarget;
-    let index = clickedTab.getAttribute('data');
+    const clickedTab = e.currentTarget;
+    const index = clickedTab.getAttribute('data');
     this.switchTab(index);
   }
 
-  //enables navigation with arrow keys
+  // enables navigation with arrow keys
   keyDownHandler(e) {
-    let panel = window.location.href.split("#")[1] ? this.sections[this.state.tabNumber] : this.default;
-    const index = parseInt(e.currentTarget.getAttribute('data'));
-    let dir = e.which === 37 ? index - 1 : e.which === 39 ? index + 1 : e.which === 40 ? 'down' : null;
+    const panel = window.location.href.split('#')[1] ? this.sections[this.state.tabNumber] : this.default;
+    const index = parseInt(e.currentTarget.getAttribute('data'), 10);
+    const getDir = () => {
+      switch (e.which) {
+        case 37:
+          return index - 1;
+        case 39:
+          return index + 1;
+        case 40:
+          return 'down';
+        default:
+          return null;
+      }
+    };
+    const dir = getDir();
     if (e.which === 32) {
       e.preventDefault();
       this.clickHandler(e);
     }
     if (dir !== null) {
       e.preventDefault();
-      dir === 'down' ? panel.focus() : dir <= this.state.numberOfTabs && 0 <= dir ? this.focusTab(dir) : void 0;
+      if (dir === 'down') panel.focus();
+      else if (dir <= this.state.numberOfTabs && dir >= 0) this.focusTab(dir);
     }
   }
 
 
   render() {
+    const getTabIndex = (j) => {
+      if (!this.state.tabNumber) return '0';
+      if (parseInt(this.state.tabNumber, 10) === j) return null;
+      return -1;
+    };
     return (
       <div className="tabbed">
-        <ul role='tablist'>
+        <ul role="tablist">
           { this.props.tabs.map((tab, i) => {
-            let j = i + 1;
+            const j = i + 1;
             return (
-              <li id={`tab${j}`} key={`tab${j}`} className={(parseInt(this.state.tabNumber) === j ? 'activeTab' : null) } role='presentation'>
-                <a href={`#tab${j}`}
+              <li id={`tab${j}`} key={`tab${j}`} className={(parseInt(this.state.tabNumber, 10) === j ? 'activeTab' : null)} role="presentation">
+                <a
+                  href={`#tab${j}`}
                   id={`link${j}`}
-                  tabIndex={!this.state.tabNumber ?  '0' : parseInt(this.state.tabNumber) === j ? null : -1}
-                  aria-selected={this.state.tabNumber && j === parseInt(this.state.tabNumber) ? true: false}
-                  role='tab'
+                  tabIndex={getTabIndex(j)}
+                  aria-selected={
+                    this.state.tabNumber && j === parseInt(this.state.tabNumber, 10)
+                  }
+                  role="tab"
                   data={`${j}`}
                   onClick={this.clickHandler}
                   onKeyDown={this.keyDownHandler}
-                  ref={(input) => {this.links[`${j}`] = input;}}
+                  ref={(input) => { this.links[`${j}`] = input; }}
                 >{tab.title}
                 </a>
               </li>
-             )
+            );
            })
           }
-          <li className={"blank"} role='presentation'>      </li>
+          <li className="blank" role="presentation" />
           {
             this.props.tabs.map((tab, i) => {
-              let j = i+1;
+              const j = i + 1;
               return (
-                <section id={`section${j}`}
+                <section
+                  id={`section${j}`}
                   key={`section${j}`}
-                  className={this.state.tabNumber ? 'non-default' : 'non-default'}
-                  tabIndex={!this.state.tabNumber ? '0' : '0'}
-                  ref={(input) => {this.sections[`${j}`] = input;}}
+                  className="non-default"
+                  tabIndex="0"
+                  ref={(input) => { this.sections[`${j}`] = input; }}
                   aria-labelledby={`link${j}`}
                 >
-                <br/>
+                  <br />
                   {this.props.tabs[i].content}
                 </section>
-              )
+              );
             })
           }
           <section
-            className='default'
-            tabIndex='0'
-            ref={(input) => {this.default = input;}}
-            aria-labelledby={'link1'}
+            className="default"
+            tabIndex="0"
+            ref={(input) => { this.default = input; }}
+            aria-labelledby="link1"
           >
-            <br/>
+            <br />
             {this.props.tabs[0].content}
           </section>
         </ul>
@@ -123,5 +148,10 @@ class Tabbed extends React.Component {
     );
   }
 }
+
+Tabbed.propTypes = {
+  tabs: PropTypes.array,
+  hash: PropTypes.string,
+};
 
 export default Tabbed;

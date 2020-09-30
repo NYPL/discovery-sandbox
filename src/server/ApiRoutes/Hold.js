@@ -13,6 +13,11 @@ import LibraryItem from './../../app/utils/item';
 import { validate } from '../../app/utils/formValidationUtils';
 import nyplApiClient from '../routes/nyplApiClient';
 import logger from '../../../logger';
+import {
+  updateBib,
+  updateSearchKeywords,
+  updateHoldRequestPage,
+} from '../../app/actions/Actions';
 
 const nyplApiClientGet = endpoint =>
   nyplApiClient().then(client => client.get(endpoint, { cache: false }));
@@ -174,23 +179,24 @@ function getDeliveryLocations(barcode, patronId, cb, errorCb) {
  */
 function confirmRequestServer(req, res, next) {
   const bibId = req.params.bibId || '';
-  const loggedIn = User.requireUser(req, res);
+  const requireUser = User.requireUser(req, res);
+  const { redirect } = requireUser;
   const requestId = req.query.requestId || '';
   const searchKeywords = req.query.q || '';
   const errorStatus = req.query.errorStatus ? req.query.errorStatus : null;
   const errorMessage = req.query.errorMessage ? req.query.errorMessage : null;
   const error = _extend({}, { errorStatus, errorMessage });
 
-  if (!loggedIn) return false;
+  if (redirect) return false;
 
+  const { dispatch } = global.store;
   if (!requestId) {
-    res.locals.data.Store = {
+    dispatch(updateHoldRequestPage({
       bib: {},
       searchKeywords,
       error,
       deliveryLocations: [],
-    };
-
+    }));
     next();
     return false;
   }
@@ -208,19 +214,18 @@ function confirmRequestServer(req, res, next) {
         return Bib.fetchBib(
           bibId,
           (bibResponseData) => {
-            barcode = LibraryItem.getItem(bibResponseData, req.params.itemId).barcode;
-
+            const { bib } = bibResponseData;
+            barcode = LibraryItem.getItem(bib, req.params.itemId).barcode;
             getDeliveryLocations(
               barcode,
               patronId,
               (deliveryLocations, isEddRequestable) => {
-                res.locals.data.Store = {
-                  bib: bibResponseData,
-                  searchKeywords,
-                  error,
+                dispatch(updateHoldRequestPage({
+                  bib,
                   deliveryLocations,
                   isEddRequestable,
-                };
+                  searchKeywords,
+                }));
                 next();
               },
               (deliveryLocationError) => {
@@ -230,13 +235,13 @@ function confirmRequestServer(req, res, next) {
                   deliveryLocationError,
                 );
 
-                res.locals.data.Store = {
-                  bib: bibResponseData,
+                dispatch(updateHoldRequestPage({
+                  bib,
                   searchKeywords,
                   error,
                   deliveryLocations: [],
                   isEddRequestable: false,
-                };
+                }));
                 next();
               },
             );
@@ -246,12 +251,12 @@ function confirmRequestServer(req, res, next) {
               `Error retrieving server side bib record in confirmRequestServer, id: ${bibId}`,
               bibResponseError,
             );
-            res.locals.data.Store = {
+            dispatch(updateHoldRequestPage({
               bib: {},
               searchKeywords,
               error,
               deliveryLocations: [],
-            };
+            }));
             next();
           },
           { fetchSubjectHeadingData: false },
@@ -266,12 +271,12 @@ function confirmRequestServer(req, res, next) {
         requestIdError,
       );
 
-      res.locals.data.Store = {
+      dispatch(updateHoldRequestPage({
         bib: {},
         searchKeywords,
         error,
         deliveryLocations: [],
-      };
+      }));
       next();
 
       return false;
@@ -287,9 +292,10 @@ function confirmRequestServer(req, res, next) {
  * @param {res}
  * @return {function}
  */
-function newHoldRequest(req, res) {
-  const loggedIn = User.requireUser(req, res);
-  if (!loggedIn) return false;
+function newHoldRequest(req, res, resolve) {
+  const requireUser = User.requireUser(req, res);
+  const { redirect } = requireUser;
+  if (redirect) return resolve({ redirect });
 
   const bibId = req.params.bibId || '';
   const patronId = req.patronTokenResponse.decodedPatron ?
@@ -300,14 +306,15 @@ function newHoldRequest(req, res) {
   return Bib.fetchBib(
     bibId,
     (bibResponseData) => {
-      barcode = LibraryItem.getItem(bibResponseData, req.params.itemId).barcode;
+      const { bib } = bibResponseData;
+      barcode = LibraryItem.getItem(bib, req.params.itemId).barcode;
 
       getDeliveryLocations(
         barcode,
         patronId,
         (deliveryLocations, isEddRequestable) => {
-          res.json({
-            bib: bibResponseData,
+          resolve({
+            bib,
             deliveryLocations,
             isEddRequestable,
           });
@@ -318,37 +325,35 @@ function newHoldRequest(req, res) {
             deliveryLocationsError,
           );
 
-          res.json({
-            bib: bibResponseData,
+          resolve({
+            bib,
             deliveryLocations: [],
             isEddRequestable: false,
           });
         },
       );
     },
-    bibResponseError => res.json(bibResponseError),
+    bibResponseError => resolve(bibResponseError),
     { fetchSubjectHeadingData: false },
   );
 }
 
 function newHoldRequestServerEdd(req, res, next) {
-  const loggedIn = User.requireUser(req, res);
+  const { dispatch } = global.store;
+  const requireUser = User.requireUser(req, res);
+  const { redirect } = requireUser;
   const error = req.query.error ? JSON.parse(req.query.error) : {};
   const form = req.query.form ? JSON.parse(req.query.form) : {};
   const bibId = req.params.bibId || '';
 
-  if (!loggedIn) return false;
+  if (redirect) return false;
 
   // Retrieve item
   return Bib.fetchBib(
     bibId,
     (data) => {
-      res.locals.data.Store = {
-        bib: data,
-        searchKeywords: req.query.searchKeywords || '',
-        error,
-        form,
-      };
+      dispatch(updateBib(data.bib));
+      dispatch(updateSearchKeywords(req.query.searchKeywords));
       next();
     },
     (bibResponseError) => {
@@ -356,12 +361,12 @@ function newHoldRequestServerEdd(req, res, next) {
         `Error retrieving server side bib record in newHoldRequestServerEdd, id: ${bibId}`,
         bibResponseError,
       );
-      res.locals.data.Store = {
+      dispatch(updateHoldRequestPage({
         bib: {},
         searchKeywords: req.query.searchKeywords || '',
         error,
         form,
-      };
+      }));
       next();
     },
     { fetchSubjectHeadingData: false },
@@ -381,8 +386,9 @@ function newHoldRequestServerEdd(req, res, next) {
 function createHoldRequestServer(req, res, pickedUpBibId = '', pickedUpItemId = '') {
   res.respond = req.body.serverRedirect === 'false' ? res.json : res.redirect;
   // Ensure user is logged in
-  const loggedIn = User.requireUser(req, res);
-  if (!loggedIn) return false;
+  const requireUser = User.requireUser(req, res);
+  const { redirect } = requireUser;
+  if (redirect) return res.json({ redirect: true });
 
   // NOTE: pickedUpItemId and pickedUpBibId are coming from the EDD form function below:
   const itemId = req.params.itemId || pickedUpItemId;
@@ -467,9 +473,10 @@ function eddServer(req, res) {
   }
 
   // Ensure user is logged in
-  const loggedIn = User.requireUser(req);
+  const requireUser = User.requireUser(req, res);
+  const { redirect } = requireUser;
 
-  if (!loggedIn) return false;
+  if (redirect) return false;
 
   return postHoldAPI(
     req,

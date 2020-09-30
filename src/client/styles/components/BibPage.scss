@@ -14,8 +14,7 @@
 }
 
 div .tabbed {
-
-  ul[role="tablist"]{
+  ul[role="tablist"] {
     margin: 0;
     margin-bottom: 20px;
     padding-left: 0px;
@@ -39,9 +38,7 @@ div .tabbed {
 
   ul[role="tablist"] > li > a {
     color: $nypl-gray-brown;
-    padding: 20px;
-    padding-left: 30px;
-    padding-right: 30px;
+    padding: 5px 8px;
     display: table-cell;
     font-weight: 500;
     text-decoration: none;
@@ -53,9 +50,7 @@ div .tabbed {
   }
 
   ul[role="tablist"] > li > a[aria-selected='true'] {
-    padding: 20px;
-    padding-left: 30px;
-    padding-right: 30px;
+    padding: 5px 8px;
     display: table-cell;
     font-weight: 500;
     text-decoration: none;
@@ -66,10 +61,20 @@ div .tabbed {
 
   .blank {
     border-bottom: 1px solid black;
-     color: white;
-     //padding: 10px;
-     content: "";
-     width: 50%;
+    color: white;
+    content: '';
+    width: 100%;
+  }
+
+  ul[role="tablist"] {
+    li:target ~ .default {
+      display: none;
+    }
+
+    li:target {
+      border: 1px solid black;
+      border-bottom: 0;
+    }
   }
 }
 
@@ -77,32 +82,11 @@ div .tabbed {
   display: block;
 }
 
-div .tabbed {
-  ul[role="tablist"] {
-
-  li:target ~ .default {
-    display: none;
-  }
-
-  li:target {
-    border: 1px solid black;
-    border-bottom: none;
-  }
-
-  // li:target:after {
-  //   position: absolute;
-  //   background-color: blue;
-  //   content: 'selected'
-  // }
-
-}
-}
-
 .non-default {
   display: none;
 }
 
-@for $i from 1 through 2 {
+@for $i from 1 through 3 {
   #tab#{$i}:target ~ #section#{$i} {
     display: block;
   }

@@ -50,10 +50,10 @@ describe('If requireUser does not receive valid value from "req.patronTokenRespo
     requireUser.restore();
   });
 
-  it('should return false', () => {
+  it('should return { redirect: true }', () => {
     requireUser(renderMockReq(mockPatronTokenResponse), mockRes);
 
-    expect(requireUser.returnValues[0]).to.equal(false);
+    expect(requireUser.returnValues[0].redirect).to.equal(true);
   });
 });
 
@@ -71,10 +71,10 @@ describe('If requireUser does not receive valid value from "req.patronTokenRespo
       requireUser.restore();
     });
 
-    it('should return false', () => {
+    it('should return { redirect: true }', () => {
       requireUser(renderMockReq(mockPatronTokenResponse), mockRes);
 
-      expect(requireUser.returnValues[0]).to.equal(false);
+      expect(requireUser.returnValues[0].redirect).to.equal(true);
     });
   },
 );
@@ -104,10 +104,10 @@ describe('If requireUser does not receive valid value from "req.patronTokenRespo
       requireUser.restore();
     });
 
-    it('should return false', () => {
+    it('should return { redirect: true }', () => {
       requireUser(renderMockReq(mockPatronTokenResponse), mockRes);
 
-      expect(requireUser.returnValues[0]).to.equal(false);
+      expect(requireUser.returnValues[0].redirect).to.equal(true);
     });
   },
 );
@@ -126,10 +126,10 @@ describe('If requireUser does not receive valid value from "req.patronTokenRespo
     requireUser.restore();
   });
 
-  it('should return false', () => {
+  it('should return { redirect: true }', () => {
     requireUser(renderMockReq(mockPatronTokenResponse), mockRes);
 
-    expect(requireUser.returnValues[0]).to.equal(false);
+    expect(requireUser.returnValues[0].redirect).to.equal(true);
   });
 });
 
@@ -144,9 +144,9 @@ describe('If requireUser receives all valid values from "req"', () => {
     requireUser.restore();
   });
 
-  it('should return true', () => {
-    requireUser({ patronTokenResponse: mockPatronTokenResponse }, mockRes);
+  it('should return { redirect: false }', () => {
+    requireUser(renderMockReq(mockPatronTokenResponse), mockRes);
 
-    expect(requireUser.returnValues[0]).to.equal(true);
+    expect(requireUser.returnValues[0].redirect).to.equal(false);
   });
 });

@@ -1,5 +1,11 @@
 ## CHANGE LOG
 
+### 1.7.0
+- Replace Alt with Redux for state management
+
+### 1.6.7
+- Adding `Journal Title` as option in search dropdown
+
 ### 1.6.6
 - Updating @nypl/dgx-react-footer to 0.5.6.
 
