@@ -55,7 +55,7 @@ const BibPage = (props) => {
     { label: 'Supplementary Content', value: 'supplementaryContent', selfLinkable: true },
   ];
 
-  const bottomFields = [
+  const tabFields = [
     { label: 'Additional Authors', value: 'contributorLiteral', linkable: true },
     { label: 'Found In', value: 'partOf' },
     { label: 'Publication Date', value: 'serialPublicationDates' },
@@ -83,7 +83,7 @@ const BibPage = (props) => {
   // we will use the subjectLiteral property from the
   // Discovery API response instead
   if (!bib.subjectHeadingData) {
-    bottomFields.push({
+    tabFields.push({
       label: 'Subject', value: 'subjectLiteral', linkable: true,
     });
   }
@@ -100,10 +100,10 @@ const BibPage = (props) => {
   // Related to removing MarcRecord because the webpack MarcRecord is not working. Sep/28/2017
   // const marcRecord = isNYPLReCAP ? <MarcRecord bNumber={bNumber[0]} /> : null;
 
-  const bottomDetails = (
+  const tabDetails = (
     <BibDetails
       bib={bib}
-      fields={bottomFields}
+      fields={tabFields}
       electronicResources={aggregatedElectronicResources}
     />
   );
@@ -113,13 +113,9 @@ const BibPage = (props) => {
 
   const otherLibraries = ['Princeton University Library', 'Columbia University Libraries'];
   const tabs = [
-    itemHoldings ? {
-      title: 'Availability',
-      content: itemHoldings,
-    } : null,
     {
       title: 'Details',
-      content: bottomDetails,
+      content: tabDetails,
     },
     !otherLibraries.includes(getOwner(bib)) ? {
       title: 'Full Description',
@@ -171,6 +167,7 @@ const BibPage = (props) => {
                 tabs={tabs}
                 hash={location.hash}
               />
+              {itemHoldings}
             </div>
           </div>
         </div>
