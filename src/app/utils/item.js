@@ -211,6 +211,10 @@ function LibraryItem() {
     const mappedItemSource = itemSourceMappings[itemSource];
     const isOffsite = this.isOffsite(holdingLocation.prefLabel.toLowerCase());
     let url = null;
+    const isSerial = bib && bib.issuance && bib.issuance[0]['@id'] === 'urn:biblevel:s';
+    const materialType = bib && bib.materialType && bib.materialType[0] ?
+      bib.materialType[0].prefLabel : null;
+    const format = bib.holdings && bib.holdings.format ? bib.holdings.format : materialType;
 
     if (availability === 'available') {
       // For all items that we want to send to the Hold Request Form.
