@@ -21,7 +21,7 @@ describe('BibPage', () => {
     const tabs = tabbed.props().tabs;
     const titles = tabs.map(tab => tab.title);
     expect(tabbed.length).to.equal(1);
-    expect(tabs.length).to.equal(3);
-    expect(titles).to.deep.equal(['Availability', 'Details', 'Full Description']);
+    expect(tabs.length).to.equal(2);
+    expect(titles).to.deep.equal(['Details', 'Full Description']);
   });
 });
