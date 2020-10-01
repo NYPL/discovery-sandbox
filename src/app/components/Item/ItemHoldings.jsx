@@ -133,6 +133,7 @@ class ItemHoldings extends React.Component {
 
     return (
       <div className="nypl-results-item">
+        <h2>Availability</h2>
         {itemTable}
         {
           !!(shortenItems && items.length >= 20 && !this.state.showAll) &&

@@ -38,9 +38,7 @@ div .tabbed {
 
   ul[role="tablist"] > li > a {
     color: $nypl-gray-brown;
-    padding: 20px;
-    padding-left: 30px;
-    padding-right: 30px;
+    padding: 5px 8px;
     display: table-cell;
     font-weight: 500;
     text-decoration: none;
@@ -52,9 +50,7 @@ div .tabbed {
   }
 
   ul[role="tablist"] > li > a[aria-selected='true'] {
-    padding: 20px;
-    padding-left: 30px;
-    padding-right: 30px;
+    padding: 5px 8px;
     display: table-cell;
     font-weight: 500;
     text-decoration: none;
@@ -65,10 +61,9 @@ div .tabbed {
 
   .blank {
     border-bottom: 1px solid black;
-     color: white;
-     //padding: 10px;
-     content: "";
-     width: 50%;
+    color: white;
+    content: '';
+    width: 100%;
   }
 
   ul[role="tablist"] {

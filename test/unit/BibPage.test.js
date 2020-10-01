@@ -16,13 +16,13 @@ describe('BibPage', () => {
     const mockStore = makeTestStore({ bib });
     component = mountTestRender(<BibPage location={{ search: 'search', pathname: '' }} />, { store: mockStore });
   });
-  it('has Tabbed component with three tabs', () => {
+  it('has Tabbed component with two tabs', () => {
     const tabbed = component.find('Tabbed');
     const tabs = tabbed.props().tabs;
     const tabTitles = tabs.map(tab => tab.title);
     expect(tabbed.length).to.equal(1);
-    expect(tabs.length).to.equal(3);
-    expect(tabTitles).to.deep.equal(['Availability', 'Details', 'Full Description']);
+    expect(tabs.length).to.equal(2);
+    expect(tabTitles).to.deep.equal(['Details', 'Full Description']);
   });
 
   describe('serial', () => {
@@ -32,13 +32,13 @@ describe('BibPage', () => {
       component = mountTestRender(<BibPage location={{ search: 'search', pathname: '' }} />, { store: mockStore });
     });
 
-    it('has Tabbed component with four tabs', () => {
+    it('has Tabbed component with three tabs', () => {
       const tabbed = component.find('Tabbed');
       const tabs = tabbed.props().tabs;
       const tabTitles = tabs.map(tab => tab.title);
       expect(tabbed.length).to.equal(1);
-      expect(tabs.length).to.equal(4);
-      expect(tabTitles).to.deep.equal(['Availability', 'Details', 'Full Description', 'Library Holdings']);
+      expect(tabs.length).to.equal(3);
+      expect(tabTitles).to.deep.equal(['Details', 'Full Description', 'Library Holdings']);
     });
   });
 });
