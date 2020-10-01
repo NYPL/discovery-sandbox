@@ -136,9 +136,4 @@ Application.contextTypes = {
   router: PropTypes.object,
 };
 
-Application.childContextTypes = {
-  media: PropTypes.string,
-  urlEnabledFeatures: PropTypes.string,
-};
-
 export default withRouter(connect(({ patron, loading }) => ({ patron, loading }))(Application));

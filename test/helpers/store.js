@@ -2,7 +2,6 @@
 import React from 'react';
 import { mount, shallow } from 'enzyme';
 import { Provider } from 'react-redux';
-import { stub } from 'sinon';
 import configureStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 

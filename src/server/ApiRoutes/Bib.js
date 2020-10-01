@@ -54,15 +54,15 @@ function fetchBib(bibId, cb, errorcb, reqOptions) {
     }); /* end axios call */
 }
 
-function bibSearch(req, res) {
+function bibSearch(req, res, resolve) {
   const bibId = req.params.bibId;
   const { features } = req.query;
   const urlEnabledFeatures = extractFeatures(features);
 
   fetchBib(
     bibId,
-    data => res.json(data),
-    error => res.json(error),
+    data => resolve(data),
+    error => resolve(error),
     {
       features: urlEnabledFeatures,
       fetchSubjectHeadingData: true,
