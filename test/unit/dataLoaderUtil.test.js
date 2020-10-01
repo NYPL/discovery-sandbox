@@ -200,6 +200,7 @@ describe('dataLoaderUtil', () => {
         const mockLocation = {
           pathname: `${appConfig.baseUrl}/hold/request/1`,
           search: '',
+          query: {},
         };
         mockDispatch = sandbox.spy(x => x);
         routes.holdRequest.action = mockHoldRequestAction;
