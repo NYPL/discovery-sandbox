@@ -1,28 +1,27 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
 import FilterAccordion from './FilterAccordion';
 
-const ItemFilters = ({ items }, context) => {
-  const { query } = context.router.location;
+const ItemFilters = ({ items }) => {
   return (
     <div id="item-filters" className="item-table-filters">
       <FilterAccordion
-        filterLabel="Location"
+        filterLabel="location"
         filterOptions={items.map(item => ({
           label: item.location,
           id: item.holdingLocationCode,
         }))}
       />
       <FilterAccordion
-        filterLabel="Format"
+        filterLabel="format"
         filterOptions={items.map(item => ({
           label: item.format,
           id: item.materialType['@id'],
         }))}
       />
       <FilterAccordion
-        filterLabel="Status"
+        filterLabel="status"
         filterOptions={items.map(item => ({
           label: item.requestable ? 'Request' : item.status.prefLabel,
           id: item.status['@id'],

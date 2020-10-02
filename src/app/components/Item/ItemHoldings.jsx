@@ -13,8 +13,8 @@ import { itemFilters } from '../../data/constants';
 const filterOptions = Object.keys(itemFilters);
 
 class ItemHoldings extends React.Component {
-  constructor(props) {
-    super(props);
+  constructor(props, context) {
+    super(props, context);
 
     this.state = {
       chunkedItems: [],
@@ -28,6 +28,7 @@ class ItemHoldings extends React.Component {
     this.updatePage = this.updatePage.bind(this);
     this.chunk = this.chunk.bind(this);
     this.showAll = this.showAll.bind(this);
+    this.filterItems = this.filterItems.bind(this);
   }
 
   componentDidMount() {

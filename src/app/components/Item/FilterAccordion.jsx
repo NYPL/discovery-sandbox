@@ -1,10 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Accordion, Checkbox } from '@nypl/design-system-react-components';
+import { Accordion, Checkbox, Button } from '@nypl/design-system-react-components';
 
 import { isOptionSelected } from '../../utils/utils';
 
 const FilterAccordion = ({ filterOptions, filterLabel }, context) => {
+  const { router } = context;
+  const { location, createHref } = router;
+  const initialFilters = location.query || {};
+  const [selectedFilters, updateSelectedFilters] = useState(initialFilters);
   const distinctOptions = Array.from(new Set(
     // eslint-disable-next-line comma-dangle
     filterOptions.map(option => option.id))
@@ -13,17 +17,27 @@ const FilterAccordion = ({ filterOptions, filterLabel }, context) => {
     label: filterOptions.find(option => option.id === id).label,
   }));
 
-  const applyFilter = (option) => {
-    const { push, location, createHref } = context.router;
+  const selectFilter = (filter, value) => {
+    const updatedSelectedFilters = selectedFilters;
+    const previousSelection = selectedFilters[filter];
+    if (!previousSelection) updatedSelectedFilters[filter] = [value];
+    else {
+      updatedSelectedFilters[filter] = previousSelection.push ?
+        previousSelection.push(value) : [previousSelection, value];
+    }
+    updateSelectedFilters(updatedSelectedFilters);
+  };
+
+  const submitFilterSelections = (option) => {
     const newQuery = {};
     const param = filterLabel.toLowerCase();
     newQuery[param] = [option.id];
     if (location.query[param]) {
       newQuery[param].push(location.query[param]);
     }
-    const href = createHref({ ...location, ...{ query: newQuery, hash: '#item-filters', search: '' } });
+    const href = createHref({ ...location, ...{ query: selectedFilters, hash: '#item-filters', search: '' } });
 
-    push(href);
+    router.push(href);
   };
 
   const isSelected = (option) => {
@@ -48,13 +62,15 @@ const FilterAccordion = ({ filterOptions, filterLabel }, context) => {
                   id: option.id,
                   labelContent: option.label,
                 }}
-                onChange={() => applyFilter(option)}
+                onChange={() => selectFilter(filterLabel, option.id)}
                 key={option.id || i}
                 isSelected={isSelected(option)}
               />
             </li>
           ))}
         </ul>
+        <Button buttonType="link">Clear</Button>
+        <Button onClick={submitFilterSelections}>Save</Button>
       </Accordion>
     </span>
   );

@@ -29,6 +29,10 @@
     width: 200px;
     z-index: 1;
   }
+
+  .accordion__button {
+    text-transform: capitalize;
+  }
 }
 
 .item-table-filters {
