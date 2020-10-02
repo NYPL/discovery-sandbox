@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Accordion, Checkbox } from '@nypl/design-system-react-components';
 
+import { isOptionSelected } from '../../utils/utils';
+
 const FilterAccordion = ({ filterOptions, filterLabel }, context) => {
   const distinctOptions = Array.from(new Set(
     // eslint-disable-next-line comma-dangle
@@ -19,8 +21,17 @@ const FilterAccordion = ({ filterOptions, filterLabel }, context) => {
     if (location.query[param]) {
       newQuery[param].push(location.query[param]);
     }
-    const href = createHref({ ...location, ...{ query: newQuery } });
-    push(`${href}#item-filters`);
+    const href = createHref({ ...location, ...{ query: newQuery, hash: '#item-filters', search: '' } });
+
+    push(href);
+  };
+
+  const isSelected = (option) => {
+    const { query } = context.router.location;
+    if (!query) return false;
+    const result = isOptionSelected(query[filterLabel.toLowerCase()], option.id);
+
+    return result;
   };
 
   return (
@@ -30,7 +41,7 @@ const FilterAccordion = ({ filterOptions, filterLabel }, context) => {
         className="scc-filter-accordion"
       >
         <ul>
-          {distinctOptions.map(option => (
+          {distinctOptions.map((option, i) => (
             <li>
               <Checkbox
                 labelOptions={{
@@ -38,7 +49,8 @@ const FilterAccordion = ({ filterOptions, filterLabel }, context) => {
                   labelContent: option.label,
                 }}
                 onChange={() => applyFilter(option)}
-                key={option.id}
+                key={option.id || i}
+                isSelected={isSelected(option)}
               />
             </li>
           ))}

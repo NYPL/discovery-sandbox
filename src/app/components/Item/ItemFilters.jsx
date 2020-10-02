@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 
 import FilterAccordion from './FilterAccordion';
 
-const ItemFilters = ({ items }) => {
+const ItemFilters = ({ items }, context) => {
+  const { query } = context.router.location;
   return (
     <div id="item-filters" className="item-table-filters">
       <FilterAccordion
@@ -33,6 +34,10 @@ const ItemFilters = ({ items }) => {
 
 ItemFilters.propTypes = {
   items: PropTypes.array,
+};
+
+ItemFilters.contextTypes = {
+  router: PropTypes.object,
 };
 
 export default ItemFilters;

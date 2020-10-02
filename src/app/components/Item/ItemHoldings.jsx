@@ -7,7 +7,7 @@ import Pagination from '../Pagination/Pagination';
 import ItemTable from './ItemTable';
 import ItemFilters from './ItemFilters';
 import appConfig from '../../data/appConfig';
-import { trackDiscovery } from '../../utils/utils';
+import { trackDiscovery, isOptionSelected } from '../../utils/utils';
 import { itemFilters } from '../../data/constants';
 
 const filterOptions = Object.keys(itemFilters);
@@ -90,11 +90,7 @@ class ItemHoldings extends React.Component {
         const filterOption = itemFilters[param];
         const itemValue = filterOption.extractItemValue(item);
         if (!filterValue) return true;
-        if (typeof filterValue === 'string') return filterValue === itemValue;
-        if (Array.isArray(filterValue)) {
-          return filterValue.includes(itemValue);
-        }
-        return false;
+        return isOptionSelected(filterValue, itemValue);
       });
       return showItem;
     });
