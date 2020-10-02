@@ -1,0 +1,38 @@
+.scc-filter-accordion-wrapper {
+  width: 200px;
+}
+
+.scc-filter-accordion {
+  display: inline-block;
+  width: 200px;
+  margin: var(--space-xs) var(--space-s);
+
+  ul {
+    list-style: none;
+    margin-bottom: 0;
+  }
+
+  li {
+    margin-bottom: 0;
+  }
+
+  label {
+    margin-bottom: 0;
+  }
+
+  .accordion__content {
+    background: white;
+    border: 1px solid var(--ui-gray-medium);
+    box-sizing: border-box;
+    padding: var(--space-xs) var(--space-s);
+    position: absolute;
+    width: 200px;
+    z-index: 1;
+  }
+}
+
+.item-table-filters {
+  background-color: #efedeb;
+  margin-bottom: 20px;
+  padding: 10px;
+}

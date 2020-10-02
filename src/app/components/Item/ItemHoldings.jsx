@@ -2,10 +2,15 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 import { isArray as _isArray } from 'underscore';
+
 import Pagination from '../Pagination/Pagination';
 import ItemTable from './ItemTable';
+import ItemFilters from './ItemFilters';
 import appConfig from '../../data/appConfig';
-import { trackDiscovery } from '../../utils/utils';
+import { trackDiscovery, isOptionSelected } from '../../utils/utils';
+import { itemFilters } from '../../data/constants';
+
+const filterOptions = Object.keys(itemFilters);
 
 class ItemHoldings extends React.Component {
   constructor(props) {
@@ -54,9 +59,17 @@ class ItemHoldings extends React.Component {
    * @param {bool} showAll Whether all items should be shown on the client side.
    */
   getTable(items, shortenItems = false, showAll) {
+    const { query } = this.context.router.location;
+    let tableItems = items;
+
+    const hasFilter = Object.keys(query).some(param => filterOptions.includes(param));
+    if (hasFilter) {
+      tableItems = this.filterItems(items, query);
+    }
     // If there are more than 20 items and we need to shorten it to 20 AND we are not
     // showing all items.
-    const itemsToDisplay = items && shortenItems && !showAll ? items.slice(0, 20) : items;
+    const itemsToDisplay = tableItems && shortenItems && !showAll ?
+      tableItems.slice(0, 20) : tableItems;
     const bibId = this.props.bibId;
 
     return (
@@ -68,6 +81,19 @@ class ItemHoldings extends React.Component {
           searchKeywords={this.props.searchKeywords}
         /> : null
     );
+  }
+
+  filterItems(items, query) {
+    return items.filter((item) => {
+      const showItem = filterOptions.every((param) => {
+        const filterValue = query[param];
+        const filterOption = itemFilters[param];
+        const itemValue = filterOption.extractItemValue(item);
+        if (!filterValue) return true;
+        return isOptionSelected(filterValue, itemValue);
+      });
+      return showItem;
+    });
   }
 
   /*
@@ -134,6 +160,7 @@ class ItemHoldings extends React.Component {
     return (
       <div className="nypl-results-item">
         <h2>Availability</h2>
+        <ItemFilters items={items} />
         {itemTable}
         {
           !!(shortenItems && items.length >= 20 && !this.state.showAll) &&
