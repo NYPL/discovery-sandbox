@@ -23,6 +23,8 @@ class ItemHoldings extends React.Component {
       page: parseInt(this.props.itemPage.substring(10), 10) || 1,
     };
 
+    this.filteredItems = this.filterItems(this.props.items);
+
     this.updatePage = this.updatePage.bind(this);
     this.chunk = this.chunk.bind(this);
     this.showAll = this.showAll.bind(this);
@@ -30,7 +32,7 @@ class ItemHoldings extends React.Component {
 
   componentDidMount() {
     // Mostly things we want to do on the client-side only:
-    const items = this.props.items;
+    const items = this.filteredItems;
     let chunkedItems = [];
     let noItemPage = false;
 
@@ -59,17 +61,10 @@ class ItemHoldings extends React.Component {
    * @param {bool} showAll Whether all items should be shown on the client side.
    */
   getTable(items, shortenItems = false, showAll) {
-    const { query } = this.context.router.location;
-    let tableItems = items;
-
-    const hasFilter = Object.keys(query).some(param => filterOptions.includes(param));
-    if (hasFilter) {
-      tableItems = this.filterItems(items, query);
-    }
     // If there are more than 20 items and we need to shorten it to 20 AND we are not
     // showing all items.
-    const itemsToDisplay = tableItems && shortenItems && !showAll ?
-      tableItems.slice(0, 20) : tableItems;
+    const itemsToDisplay = items && shortenItems && !showAll ?
+      items.slice(0, 20) : items;
     const bibId = this.props.bibId;
 
     return (
@@ -83,7 +78,11 @@ class ItemHoldings extends React.Component {
     );
   }
 
-  filterItems(items, query) {
+  filterItems(items) {
+    const { query } = this.context.router.location;
+    const hasFilter = Object.keys(query).some(param => filterOptions.includes(param));
+    if (!hasFilter) return items;
+
     return items.filter((item) => {
       const showItem = filterOptions.every((param) => {
         const filterValue = query[param];
@@ -132,14 +131,15 @@ class ItemHoldings extends React.Component {
 
   render() {
     const bibId = this.props.bibId;
-    let items = this.props.items;
+    const { items } = this.props;
     const shortenItems = !this.props.shortenItems;
     let pagination = null;
 
-    if (this.state.js && items && items.length >= 20 && !this.state.showAll) {
+    let itemsToDisplay = this.filteredItems;
+    if (this.state.js && itemsToDisplay && itemsToDisplay.length >= 20 && !this.state.showAll) {
       pagination = (
         <Pagination
-          total={items.length}
+          total={itemsToDisplay.length}
           perPage={20}
           page={this.state.page}
           updatePage={this.updatePage}
@@ -148,12 +148,12 @@ class ItemHoldings extends React.Component {
         />
       );
 
-      items = this.state.chunkedItems[this.state.page - 1];
+      itemsToDisplay = this.state.chunkedItems[this.state.page - 1];
     }
 
-    const itemTable = this.getTable(items, shortenItems, this.state.showAll);
+    const itemTable = this.getTable(itemsToDisplay, shortenItems, this.state.showAll);
 
-    if (!items || !items.length) {
+    if (!itemsToDisplay || !itemsToDisplay.length) {
       return null;
     }
 
