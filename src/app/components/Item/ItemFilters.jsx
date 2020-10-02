@@ -5,7 +5,7 @@ import FilterAccordion from './FilterAccordion';
 
 const ItemFilters = ({ items }) => {
   return (
-    <div className="item-table-filters">
+    <div id="item-filters" className="item-table-filters">
       <FilterAccordion
         filterLabel="Location"
         filterOptions={items.map(item => ({
@@ -23,7 +23,7 @@ const ItemFilters = ({ items }) => {
       <FilterAccordion
         filterLabel="Status"
         filterOptions={items.map(item => ({
-          label: item.status.prefLabel,
+          label: item.requestable ? 'Request' : item.status.prefLabel,
           id: item.status['@id'],
         }))}
       />
