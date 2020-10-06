@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import ItemFilter from './ItemFilter';
 
 const ItemFilters = ({ items }) => {
+  if (!items || !items.length) return null;
   const [openFilter, changeOpenFilter] = useState('none');
 
   const manageFilterDisplay = (filterType) => {

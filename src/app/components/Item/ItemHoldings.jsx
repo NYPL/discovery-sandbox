@@ -23,7 +23,7 @@ class ItemHoldings extends React.Component {
       page: parseInt(this.props.itemPage.substring(10), 10) || 1,
     };
 
-    this.filteredItems = this.filterItems(this.props.items);
+    this.filteredItems = this.filterItems(this.props.items) || [];
 
     this.updatePage = this.updatePage.bind(this);
     this.chunk = this.chunk.bind(this);
@@ -81,6 +81,7 @@ class ItemHoldings extends React.Component {
 
   filterItems(items) {
     const { query } = this.context.router.location;
+    if (!query || !items || !items.length) return [];
     const hasFilter = Object.keys(query).some(param => filterTypes.includes(param));
     if (!hasFilter) return items;
 
@@ -137,6 +138,7 @@ class ItemHoldings extends React.Component {
   render() {
     const bibId = this.props.bibId;
     const { items } = this.props;
+    if (!items) return null;
     const shortenItems = !this.props.shortenItems;
     let pagination = null;
 

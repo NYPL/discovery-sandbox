@@ -14,7 +14,10 @@ const TestProvider = ({
 }) => <Provider store={store}>{children}</Provider>;
 
 function testRender(ui, renderFunc, { store, ...otherOpts }) {
-  return renderFunc(<TestProvider store={store}>{ui}</TestProvider>, otherOpts);
+  return renderFunc(<TestProvider store={store}>{ui}</TestProvider>, {
+    ...otherOpts,
+    context: {},
+  });
 }
 
 export const shallowTestRender = (ui, { store, ...otherOpts }) => testRender(

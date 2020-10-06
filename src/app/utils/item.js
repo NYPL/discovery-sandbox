@@ -149,13 +149,14 @@ function LibraryItem() {
    *
    * @return {object}
    */
-  this.getIdentifiers = (identifiersArray, neededTagsArray) => (
-    neededTagsArray.reduce((identifierMap, neededTag) => {
+  this.getIdentifiers = (identifiersArray, neededTagsArray) => {
+    if (!Array.isArray(identifiersArray)) return {};
+    return neededTagsArray.reduce((identifierMap, neededTag) => {
       const matches = this.getIdentifierEntitiesByType(identifiersArray, neededTag.value);
       if (matches && matches.length > 0) return Object.assign(identifierMap, { [neededTag.name]: matches[0]['@value'] });
       return identifierMap;
-    }, {})
-  );
+    }, {});
+  };
 
   /**
    * getElectronicResources(item)
@@ -178,7 +179,7 @@ function LibraryItem() {
    */
   this.mapItem = (item = {}, bib) => {
     const id = item && item['@id'] ? item['@id'].substring(4) : '';
-    const itemSource = item.idNyplSourceId ? item.idNyplSourceId['@type'] : undefined;
+    const itemSource = item.idNyplSourceId ? item.idNyplSourceId['@type'] : '';
     // Taking the first object in the accessMessage array.
     const accessMessage = item.accessMessage && item.accessMessage.length ?
       item.accessMessage[0] : {};
@@ -213,7 +214,7 @@ function LibraryItem() {
     let url = null;
     const isSerial = bib && bib.issuance && bib.issuance[0]['@id'] === 'urn:biblevel:s';
     const materialType = bib && bib.materialType && bib.materialType[0] ?
-      bib.materialType[0] : null;
+      bib.materialType[0] : {};
     const format = bib.holdings && bib.holdings.format ?
       bib.holdings.format : materialType.prefLabel;
 

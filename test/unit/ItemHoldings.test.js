@@ -1,9 +1,11 @@
+/* eslint-disable react/jsx-filename-extension */
 /* eslint-env mocha */
 import React from 'react';
 import { expect } from 'chai';
 import { shallow, mount } from 'enzyme';
 
 import ItemHoldings from './../../src/app/components/Item/ItemHoldings';
+import LibraryItem from './../../src/app/utils/item';
 
 const items = [
   {
@@ -24,7 +26,8 @@ const items = [
     available: true,
     barcode: '33433078478272',
   },
-];
+].map(LibraryItem.mapItem);
+
 const longListItems = [
   { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
   { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
@@ -50,12 +53,19 @@ const longListItems = [
   { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
   { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
   { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-];
+].map(LibraryItem.mapItem);
 
 describe('ItemHoldings', () => {
   describe('Default rendering', () => {
     it('should return null with no props passed', () => {
-      const component = shallow(<ItemHoldings />, { disableLifecycleMethods: true });
+      const component = shallow(<ItemHoldings />, {
+        disableLifecycleMethods: true,
+        context: {
+          router: {
+            location: { query: {} },
+          },
+        },
+      });
       expect(component.type()).to.equal(null);
     });
   });
@@ -64,7 +74,14 @@ describe('ItemHoldings', () => {
     let component;
 
     before(() => {
-      component = shallow(<ItemHoldings items={items} />, { disableLifecycleMethods: true });
+      component = shallow(<ItemHoldings items={items} />, {
+        disableLifecycleMethods: true,
+        context: {
+          router: {
+            location: { query: {} },
+          },
+        },
+      });
     });
 
     it('should be wrapped in a .nypl-results-item div', () => {
@@ -97,7 +114,9 @@ describe('ItemHoldings', () => {
     let component;
 
     before(() => {
-      component = mount(<ItemHoldings items={longListItems} />);
+      component = mount(<ItemHoldings items={longListItems} />, {
+        context: { router: { location: {} } },
+      });
     });
 
     it('should have an ItemTable component, which renders a table', () => {
@@ -121,7 +140,9 @@ describe('ItemHoldings', () => {
     let component;
 
     before(() => {
-      component = mount(<ItemHoldings items={longListItems} shortenItems={false} />);
+      component = mount(<ItemHoldings items={longListItems} shortenItems={false} />, {
+        context: { router: { location: {} } },
+      });
     });
 
     it('should render a "View All Items" link', () => {
@@ -150,7 +171,11 @@ describe('ItemHoldings', () => {
     before(() => {
       component = mount(
         <ItemHoldings items={longListItems} shortenItems={false} />,
-        { context: { router: { createHref: () => {}, push: () => {} } } },
+        { context: { router: {
+          createHref: () => {},
+          push: () => {},
+          location: {},
+        } } },
       );
     });
 
@@ -196,7 +221,18 @@ describe('ItemHoldings', () => {
     before(() => {
       component = mount(
         <ItemHoldings items={longListItems} shortenItems={false} page="4" />,
-        { context: { router: { createHref: () => {}, push: () => {} } } },
+        {
+          context:
+          {
+            router: {
+              createHref: () => {},
+              push: () => {},
+              location: {
+                query: {},
+              },
+            },
+          },
+        },
       );
     });
 
@@ -211,7 +247,10 @@ describe('ItemHoldings', () => {
     // gets done in componentDidMount which is called when the component actually mounts.
     it('should have an empty chunkedItems state', () => {
       const component = shallow(
-        <ItemHoldings items={longListItems} />, { disableLifecycleMethods: true });
+        <ItemHoldings items={longListItems} />, {
+          disableLifecycleMethods: true,
+          context: { router: { location: {} } },
+        });
       expect(component.state('chunkedItems')).to.eql([]);
     });
 
@@ -219,7 +258,9 @@ describe('ItemHoldings', () => {
     // gets done in componentDidMount which is called when the component actually mounts.
     it('should have two arrays of in the chunkedItems state,' +
       'the first array with 20 items and the second with 4', () => {
-      const component = mount(<ItemHoldings items={longListItems} />);
+      const component = mount(<ItemHoldings items={longListItems} />, {
+        context: { router: { location: {} } },
+      });
       expect(component.state('chunkedItems')).to.eql(
         [
           [

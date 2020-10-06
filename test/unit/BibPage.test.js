@@ -2,7 +2,7 @@
 /* eslint-env mocha */
 import React from 'react';
 import { expect } from 'chai';
-import { mountTestRender, makeTestStore } from '../helpers/store';
+import { mountTestRender, makeTestStore, shallowTestRender } from '../helpers/store';
 
 // Import the component that is going to be tested
 import BibPage from './../../src/app/components/BibPage/BibPage';
@@ -14,7 +14,8 @@ describe('BibPage', () => {
   before(() => {
     const bib = { ...bibs[0], ...annotatedMarc };
     const mockStore = makeTestStore({ bib });
-    component = mountTestRender(<BibPage location={{ search: 'search', pathname: '' }} />, { store: mockStore });
+    component = shallowTestRender(<BibPage location={{ search: 'search', pathname: '' }} />, { store: mockStore });
+    component.setContext({ router: { location: {} } });
   });
   it('has Tabbed component with three tabs', () => {
     const tabbed = component.find('Tabbed');
@@ -29,7 +30,8 @@ describe('BibPage', () => {
     before(() => {
       const bib = { ...bibs[0], ...annotatedMarc, holdings: { holding_string: 'holdings data' } };
       const mockStore = makeTestStore({ bib });
-      component = mountTestRender(<BibPage location={{ search: 'search', pathname: '' }} />, { store: mockStore });
+      component = shallowTestRender(<BibPage location={{ search: 'search', pathname: '' }} />, { store: mockStore });
+      component.setContext({ router: { location: {} } });
     });
 
     it('has Tabbed component with four tabs', () => {

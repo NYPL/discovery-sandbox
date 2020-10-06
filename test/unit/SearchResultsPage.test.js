@@ -42,7 +42,7 @@ describe('SearchResultsPage', () => {
     before(() => {
       // Added this empty prop so that the `componentWillMount` method will be skipped.
       // That lifecycle hook is tested later on.
-      wrapper = mountTestRender(
+      wrapper = shallowTestRender(
         <SearchResults
           searchResults={{}}
           location={{ search: '' }}
@@ -53,6 +53,7 @@ describe('SearchResultsPage', () => {
           store: mockStore,
         },
       );
+      wrapper.setContext({ router: {} });
       component = wrapper.find('SearchResults');
     });
 

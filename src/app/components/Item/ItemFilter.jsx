@@ -109,7 +109,7 @@ const ItemFilter = ({ filter, options, open, manageFilterDisplay }, context) => 
             </ul>
             <div className="item-filter-buttons">
               <Button buttonType="link">Clear</Button>
-              <Button onClick={submitFilterSelections}>Save</Button>
+              <Button onClick={submitFilterSelections}>Apply</Button>
             </div>
           </div>
         ) : null}
