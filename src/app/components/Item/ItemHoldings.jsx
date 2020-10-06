@@ -90,6 +90,8 @@ class ItemHoldings extends React.Component {
         const filterType = itemFilters[type];
         const isRequestable = filterType.type === 'status' && filterValue === 'requestable';
         if (isRequestable) return item.requestable;
+        const isOffsite = filterType.type === 'location' && filterValue === 'offsite';
+        if (isOffsite) return item.isOffsite;
         const itemProperty = filterType.extractItemProperty(item);
         if (!filterValue) return true;
         return isOptionSelected(filterValue, itemProperty);

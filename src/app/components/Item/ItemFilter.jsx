@@ -63,6 +63,7 @@ const ItemFilter = ({ filter, options, open, manageFilterDisplay }, context) => 
   return (
     <div
       className="item-filter"
+      onBlur={() => manageFilterDisplay('none')}
     >
       <Button
         className="item-filter-button"
