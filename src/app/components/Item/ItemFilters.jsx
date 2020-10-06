@@ -1,32 +1,48 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
-import FilterAccordion from './FilterAccordion';
+import ItemFilter from './ItemFilter';
 
 const ItemFilters = ({ items }) => {
+  const [openFilter, changeOpenFilter] = useState('none');
+
+  const filters = [
+    {
+      type: 'location',
+      options: items.map(item => ({
+        label: item.location,
+        id: item.holdingLocationCode.startsWith('rc') ? 'offsite' : item.holdingLocationCode,
+      })),
+    },
+    {
+      type: 'format',
+      options: items.map(item => ({
+        label: item.format,
+        id: item.materialType['@id'],
+      })),
+    },
+    {
+      type: 'status',
+      options: items.map(item => ({
+        label: item.requestable ? 'Requestable' : item.status.prefLabel,
+        id: item.requestable ? 'requestable' : item.status['@id'],
+      })),
+    },
+  ]
+
   return (
     <div id="item-filters" className="item-table-filters">
-      <FilterAccordion
-        filterLabel="location"
-        filterOptions={items.map(item => ({
-          label: item.location,
-          id: item.holdingLocationCode,
-        }))}
-      />
-      <FilterAccordion
-        filterLabel="format"
-        filterOptions={items.map(item => ({
-          label: item.format,
-          id: item.materialType['@id'],
-        }))}
-      />
-      <FilterAccordion
-        filterLabel="status"
-        filterOptions={items.map(item => ({
-          label: item.requestable ? 'Request' : item.status.prefLabel,
-          id: item.status['@id'],
-        }))}
-      />
+      {
+        filters.map(filter => (
+          <ItemFilter
+            filter={filter.type}
+            options={filter.options}
+            open={openFilter === filter.type}
+            changeOpenFilter={changeOpenFilter}
+            key={filter.type}
+          />
+        ))
+      }
     </div>
   );
 };

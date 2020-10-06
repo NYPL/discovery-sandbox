@@ -1,14 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { Accordion, Checkbox, Button } from '@nypl/design-system-react-components';
+import { Checkbox, Button, Icon } from '@nypl/design-system-react-components';
 
 import { isOptionSelected } from '../../utils/utils';
 
-const FilterAccordion = ({ filterOptions, filterLabel }, context) => {
+const ItemFilter = ({ filter, options, open }, context) => {
   const { router } = context;
   const { location, createHref } = router;
   const initialFilters = location.query || {};
   const [selectedFilters, updateSelectedFilters] = useState(initialFilters);
+
   const distinctOptions = Array.from(new Set(
     // eslint-disable-next-line comma-dangle
     filterOptions.map(option => option.id))
@@ -28,14 +29,14 @@ const FilterAccordion = ({ filterOptions, filterLabel }, context) => {
     updateSelectedFilters(updatedSelectedFilters);
   };
 
-  const submitFilterSelections = (option) => {
+  const submitFilterSelections = () => {
     const newQuery = {};
     const param = filterLabel.toLowerCase();
-    newQuery[param] = [option.id];
     if (location.query[param]) {
       newQuery[param].push(location.query[param]);
     }
     const href = createHref({ ...location, ...{ query: selectedFilters, hash: '#item-filters', search: '' } });
+    console.log('href', href);
 
     router.push(href);
   };
@@ -49,40 +50,53 @@ const FilterAccordion = ({ filterOptions, filterLabel }, context) => {
   };
 
   return (
-    <span className="scc-filter-accordion-wrapper">
-      <Accordion
-        accordionLabel={filterLabel}
-        className="scc-filter-accordion"
+    <div
+      className="item-filter"
+    >
+      <Button
+        className="item-filter-button"
+        buttonType="outline"
+        onClick={() => toggleFilterDisplayState(!filterOpen)}
+        type="button"
       >
-        <ul>
-          {distinctOptions.map((option, i) => (
-            <li>
-              <Checkbox
-                labelOptions={{
-                  id: option.id,
-                  labelContent: option.label,
-                }}
-                onChange={() => selectFilter(filterLabel, option.id)}
-                key={option.id || i}
-                isSelected={isSelected(option)}
-              />
-            </li>
-          ))}
-        </ul>
-        <Button buttonType="link">Clear</Button>
-        <Button onClick={submitFilterSelections}>Save</Button>
-      </Accordion>
-    </span>
+        {filterLabel} <Icon name={filterOpen ? 'minus' : 'plus'} />
+      </Button>
+      {filterOpen ? (
+        <div className="item-filter-content">
+          <ul>
+            {distinctOptions.map((option, i) => (
+              <li>
+                <Checkbox
+                  labelOptions={{
+                    id: option.id,
+                    labelContent: option.label,
+                  }}
+                  onChange={() => selectFilter(filterLabel, option.id)}
+                  key={option.id || i}
+                  isSelected={isSelected(option)}
+                />
+              </li>
+            ))}
+          </ul>
+          <div className="item-filter-buttons">
+            <Button buttonType="link">Clear</Button>
+            <Button onClick={submitFilterSelections}>Save</Button>
+          </div>
+        </div>
+      ) : null}
+    </div>
   );
 };
 
-FilterAccordion.propTypes = {
-  filterOptions: PropTypes.array,
-  filterLabel: PropTypes.string,
+ItemFilter.propTypes = {
+  filter: PropTypes.array,
+  options: PropTypes.string,
+  open: PropTypes.bool,
+  changeOpenFilter: PropTypes.func,
 };
 
-FilterAccordion.contextTypes = {
+ItemFilter.contextTypes = {
   router: PropTypes.object,
 };
 
-export default FilterAccordion;
+export default ItemFilter;

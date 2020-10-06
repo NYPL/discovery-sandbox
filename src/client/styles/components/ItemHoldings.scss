@@ -1,15 +1,14 @@
-.scc-filter-accordion-wrapper {
-  width: 200px;
-}
-
-.scc-filter-accordion {
+.item-filter {
+  width: 250px;
   display: inline-block;
-  width: 200px;
-  margin: var(--space-xs) var(--space-s);
 
   ul {
     list-style: none;
     margin-bottom: 0;
+
+    .closed {
+      display: none;
+    }
   }
 
   li {
@@ -19,24 +18,38 @@
   label {
     margin-bottom: 0;
   }
+}
 
-  .accordion__content {
-    background: white;
-    border: 1px solid var(--ui-gray-medium);
-    box-sizing: border-box;
-    padding: var(--space-xs) var(--space-s);
-    position: absolute;
-    width: 200px;
-    z-index: 1;
-  }
+.item-filter-content {
+  background-color: white;
+  box-sizing: border-box;
+  border: 1px solid var(--ui-gray-medium);
+  padding: var(--space-xs) var(--space-s);
+  position: absolute;
+  width: 200px;
+  z-index: 1;
+}
 
-  .accordion__button {
-    text-transform: capitalize;
-  }
+.item-filter-button {
+  text-transform: capitalize;
+  width: 200px;
+  justify-content: space-between;
 }
 
 .item-table-filters {
   background-color: #efedeb;
   margin-bottom: 20px;
   padding: 10px;
+}
+
+.item-filter-buttons {
+  float: right;
+
+  .button {
+    display: initial;
+
+    .button-icon {
+      float: right;
+    }
+  }
 }
