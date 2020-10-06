@@ -10,7 +10,7 @@ import appConfig from '../../data/appConfig';
 import { trackDiscovery, isOptionSelected } from '../../utils/utils';
 import { itemFilters } from '../../data/constants';
 
-const filterOptions = Object.keys(itemFilters);
+const filterTypes = Object.keys(itemFilters);
 
 class ItemHoldings extends React.Component {
   constructor(props, context) {
@@ -81,16 +81,18 @@ class ItemHoldings extends React.Component {
 
   filterItems(items) {
     const { query } = this.context.router.location;
-    const hasFilter = Object.keys(query).some(param => filterOptions.includes(param));
+    const hasFilter = Object.keys(query).some(param => filterTypes.includes(param));
     if (!hasFilter) return items;
 
     return items.filter((item) => {
-      const showItem = filterOptions.every((param) => {
-        const filterValue = query[param];
-        const filterOption = itemFilters[param];
-        const itemValue = filterOption.extractItemValue(item);
+      const showItem = filterTypes.every((type) => {
+        const filterValue = query[type];
+        const filterType = itemFilters[type];
+        const isRequestable = filterType.type === 'status' && filterValue === 'requestable';
+        if (isRequestable) return item.requestable;
+        const itemProperty = filterType.extractItemProperty(item);
         if (!filterValue) return true;
-        return isOptionSelected(filterValue, itemValue);
+        return isOptionSelected(filterValue, itemProperty);
       });
       return showItem;
     });
@@ -154,17 +156,13 @@ class ItemHoldings extends React.Component {
 
     const itemTable = this.getTable(itemsToDisplay, shortenItems, this.state.showAll);
 
-    if (!itemsToDisplay || !itemsToDisplay.length) {
-      return null;
-    }
-
     return (
       <div className="nypl-results-item">
         <h2>Availability</h2>
         <ItemFilters items={items} />
-        {itemTable}
+        {itemsToDisplay && itemsToDisplay.length ? itemTable : null}
         {
-          !!(shortenItems && items.length >= 20 && !this.state.showAll) &&
+          !!(shortenItems && this.filteredItems.length >= 20 && !this.state.showAll) &&
             (<div className="view-all-items-container">
               {
                 this.state.js ?

@@ -6,12 +6,17 @@ import ItemFilter from './ItemFilter';
 const ItemFilters = ({ items }) => {
   const [openFilter, changeOpenFilter] = useState('none');
 
+  const manageFilterDisplay = (filterType) => {
+    if (filterType === openFilter) changeOpenFilter('none');
+    else changeOpenFilter(filterType);
+  };
+
   const filters = [
     {
       type: 'location',
       options: items.map(item => ({
         label: item.location,
-        id: item.holdingLocationCode.startsWith('rc') ? 'offsite' : item.holdingLocationCode,
+        id: item.holdingLocationCode.startsWith('loc:rc') ? 'offsite' : item.holdingLocationCode,
       })),
     },
     {
@@ -28,7 +33,7 @@ const ItemFilters = ({ items }) => {
         id: item.requestable ? 'requestable' : item.status['@id'],
       })),
     },
-  ]
+  ];
 
   return (
     <div id="item-filters" className="item-table-filters">
@@ -38,7 +43,7 @@ const ItemFilters = ({ items }) => {
             filter={filter.type}
             options={filter.options}
             open={openFilter === filter.type}
-            changeOpenFilter={changeOpenFilter}
+            manageFilterDisplay={manageFilterDisplay}
             key={filter.type}
           />
         ))

@@ -5,16 +5,16 @@ const breakpoints = {
 
 const itemFilters = {
   location: {
-    label: 'Location',
-    extractItemValue: item => item.holdingLocationCode,
+    type: 'location',
+    extractItemProperty: item => item.holdingLocationCode,
   },
   format: {
-    label: 'Format',
-    extractItemValue: item => item.materialType['@id'],
+    type: 'format',
+    extractItemProperty: item => item.materialType['@id'],
   },
   status: {
-    label: 'Status',
-    extractItemValue: item => item.status['@id'],
+    type: 'status',
+    extractItemProperty: item => item.status['@id'],
   },
 };
 
