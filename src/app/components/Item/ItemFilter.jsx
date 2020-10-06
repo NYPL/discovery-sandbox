@@ -4,18 +4,19 @@ import { Checkbox, Button, Icon } from '@nypl/design-system-react-components';
 
 import { isOptionSelected } from '../../utils/utils';
 
-const ItemFilter = ({ filter, options, open }, context) => {
+const ItemFilter = ({ filter, options, open, changeOpenFilter }, context) => {
   const { router } = context;
   const { location, createHref } = router;
   const initialFilters = location.query || {};
   const [selectedFilters, updateSelectedFilters] = useState(initialFilters);
 
-  const distinctOptions = Array.from(new Set(
-    // eslint-disable-next-line comma-dangle
-    filterOptions.map(option => option.id))
-  ).map(id => ({
+  const distinctOptions = Array.from(new Set(options.reduce((optionIds, option) => {
+    if (option.id) optionIds.push(option.id)
+    return optionIds
+  }, [])))
+  .map(id => ({
     id,
-    label: filterOptions.find(option => option.id === id).label,
+    label: options.find(option => option.id === id).label,
   }));
 
   const selectFilter = (filter, value) => {
@@ -36,7 +37,6 @@ const ItemFilter = ({ filter, options, open }, context) => {
       newQuery[param].push(location.query[param]);
     }
     const href = createHref({ ...location, ...{ query: selectedFilters, hash: '#item-filters', search: '' } });
-    console.log('href', href);
 
     router.push(href);
   };
@@ -44,7 +44,7 @@ const ItemFilter = ({ filter, options, open }, context) => {
   const isSelected = (option) => {
     const { query } = context.router.location;
     if (!query) return false;
-    const result = isOptionSelected(query[filterLabel.toLowerCase()], option.id);
+    const result = isOptionSelected(query[filter], option.id);
 
     return result;
   };
@@ -56,22 +56,22 @@ const ItemFilter = ({ filter, options, open }, context) => {
       <Button
         className="item-filter-button"
         buttonType="outline"
-        onClick={() => toggleFilterDisplayState(!filterOpen)}
+        onClick={() => changeOpenFilter(filter)}
         type="button"
       >
-        {filterLabel} <Icon name={filterOpen ? 'minus' : 'plus'} />
+        {filter} <Icon name={open ? 'minus' : 'plus'} />
       </Button>
-      {filterOpen ? (
+      {open ? (
         <div className="item-filter-content">
           <ul>
             {distinctOptions.map((option, i) => (
-              <li>
+              <li key={option.id || i}>
                 <Checkbox
                   labelOptions={{
                     id: option.id,
                     labelContent: option.label,
                   }}
-                  onChange={() => selectFilter(filterLabel, option.id)}
+                  onChange={() => changeOpenFilter(filterLabel, option.id)}
                   key={option.id || i}
                   isSelected={isSelected(option)}
                 />
@@ -89,8 +89,8 @@ const ItemFilter = ({ filter, options, open }, context) => {
 };
 
 ItemFilter.propTypes = {
-  filter: PropTypes.array,
-  options: PropTypes.string,
+  filter: PropTypes.string,
+  options: PropTypes.array,
   open: PropTypes.bool,
   changeOpenFilter: PropTypes.func,
 };
