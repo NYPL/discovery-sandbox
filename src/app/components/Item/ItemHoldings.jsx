@@ -90,13 +90,16 @@ class ItemHoldings extends React.Component {
       const showItem = filterTypes.every((type) => {
         const filterValue = query[type];
         const filterType = itemFilters[type];
-        const isRequestable = filterType.type === 'status' && filterValue === 'requestable';
-        if (isRequestable) return item.requestable;
-        const isOffsite = filterType.type === 'location' && filterValue === 'offsite';
-        if (isOffsite) return item.isOffsite;
-        const itemProperty = filterType.extractItemProperty(item);
         if (!filterValue) return true;
-        return isOptionSelected(filterValue, itemProperty);
+        const selections = typeof filterValue === 'string' ? [filterValue] : filterValue;
+        return selections.some((selection) => {
+          const isRequestable = filterType.type === 'status' && selection === 'requestable';
+          if (isRequestable) return item.requestable;
+          const isOffsite = filterType.type === 'location' && selection === 'offsite';
+          if (isOffsite) return item.isOffsite;
+          const itemProperty = filterType.extractItemProperty(item);
+          return isOptionSelected(selection, itemProperty);
+        });
       });
       return showItem;
     });

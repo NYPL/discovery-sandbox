@@ -20,6 +20,7 @@ const ItemFilter = ({ filter, options, open, manageFilterDisplay }, context) => 
   const { router } = context;
   const { location, createHref } = router;
   const initialFilters = location.query || {};
+  const [selectionMade, setSelectionMade] = useState(false);
   const [selectedFilters, updateSelectedFilters] = useState(initialFilters);
 
   const selectFilter = (value) => {
@@ -37,12 +38,13 @@ const ItemFilter = ({ filter, options, open, manageFilterDisplay }, context) => 
     const updatedSelectedFilters = selectedFilters;
     const previousSelection = selectedFilters[filter];
     updatedSelectedFilters[filter] = Array.isArray(previousSelection) ?
-      previousSelection.filter(prevSelection => prevSelection.id !== value.id)
+      previousSelection.filter(prevSelection => prevSelection !== value.id)
       : [];
     updateSelectedFilters(updatedSelectedFilters);
   };
 
   const handleCheckbox = (option) => {
+    if (!selectionMade) setSelectionMade(true);
     const currentSelection = selectedFilters[filter];
     if (currentSelection && currentSelection.includes(option.id)) {
       deselectFilter(option);
@@ -92,7 +94,7 @@ const ItemFilter = ({ filter, options, open, manageFilterDisplay }, context) => 
           onClick={() => manageFilterDisplay(filter)}
           type="button"
         >
-          {filter} <Icon name={open ? 'minus' : 'plus'} />
+          {filter} {thisFilterSelections ? `(${numOfSelections()})` : null} <Icon name={open ? 'minus' : 'plus'} />
         </Button>
         {open ? (
           <div
@@ -114,8 +116,15 @@ const ItemFilter = ({ filter, options, open, manageFilterDisplay }, context) => 
               ))}
             </ul>
             <div className="item-filter-buttons">
-              <Button buttonType="link">Clear</Button>
-              <Button onClick={submitFilterSelections}>Apply</Button>
+              <Button
+                buttonType="link"
+                onClick={() => manageFilterDisplay('none')}
+              >Clear
+              </Button>
+              <Button
+                onClick={submitFilterSelections}
+                disabled={!selectionMade}
+              >Apply</Button>
             </div>
           </div>
         ) : null}
