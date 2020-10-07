@@ -19,8 +19,9 @@ export const parseDistinctOptions = options => Array.from(
 const ItemFilter = ({ filter, options, open, manageFilterDisplay }, context) => {
   const { router } = context;
   const { location, createHref } = router;
-  const initialFilters = location.query || {};
-  const [selectionMade, setSelectionMade] = useState(false);
+  const { query } = location;
+  const initialFilters = location.query ? location.query : {};
+  const [selectionMade, setSelectionMade] = useState(query);
   const [selectedFilters, updateSelectedFilters] = useState(initialFilters);
 
   const selectFilter = (value) => {
@@ -66,7 +67,6 @@ const ItemFilter = ({ filter, options, open, manageFilterDisplay }, context) => 
   };
 
   const isSelected = (option) => {
-    const { query } = location;
     if (!query) return false;
     const result = isOptionSelected(query[filter], option.id);
 
@@ -75,7 +75,11 @@ const ItemFilter = ({ filter, options, open, manageFilterDisplay }, context) => 
 
   const distinctOptions = parseDistinctOptions(options);
   const thisFilterSelections = initialFilters[filter];
-  const numOfSelections = () => (typeof thisFilterSelections === 'string' ? 1 : thisFilterSelections.length);
+  const determineNumOfSelections = () => {
+    if (!thisFilterSelections) return null;
+    return typeof thisFilterSelections === 'string' ? 1 : thisFilterSelections.length;
+  };
+  const numOfSelections = determineNumOfSelections();
 
   return (
     <div
@@ -94,7 +98,7 @@ const ItemFilter = ({ filter, options, open, manageFilterDisplay }, context) => 
           onClick={() => manageFilterDisplay(filter)}
           type="button"
         >
-          {filter} {thisFilterSelections ? `(${numOfSelections()})` : null} <Icon name={open ? 'minus' : 'plus'} />
+          {filter}{numOfSelections ? ` (${numOfSelections})` : null} <Icon name={open ? 'minus' : 'plus'} />
         </Button>
         {open ? (
           <div
