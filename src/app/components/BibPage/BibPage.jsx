@@ -23,7 +23,7 @@ import {
   getAggregatedElectronicResources,
 } from '../../utils/utils';
 
-const BibPage = (props) => {
+export const BibPage = (props) => {
   const {
     location,
     searchKeywords,

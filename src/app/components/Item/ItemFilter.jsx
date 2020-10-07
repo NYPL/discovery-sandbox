@@ -5,6 +5,17 @@ import FocusTrap from 'focus-trap-react';
 
 import { isOptionSelected } from '../../utils/utils';
 
+// export for testing purposes
+export const parseDistinctOptions = options => Array.from(
+  new Set(options.reduce((optionIds, option) => {
+    if (option.id && option.id.length) optionIds.push(option.id);
+    return optionIds;
+  }, [])))
+  .map(id => ({
+    id,
+    label: options.find(option => (option.id === id && option.label.length)).label,
+  }));
+
 const ItemFilter = ({ filter, options, open, manageFilterDisplay }, context) => {
   const { router } = context;
   const { location, createHref } = router;
@@ -60,14 +71,9 @@ const ItemFilter = ({ filter, options, open, manageFilterDisplay }, context) => 
     return result;
   };
 
-  const distinctOptions = Array.from(new Set(options.reduce((optionIds, option) => {
-    if (option.id) optionIds.push(option.id);
-    return optionIds;
-  }, [])))
-    .map(id => ({
-      id,
-      label: options.find(option => option.id === id).label,
-    }));
+  const distinctOptions = parseDistinctOptions(options);
+  const thisFilterSelections = initialFilters[filter];
+  const numOfSelections = () => (typeof thisFilterSelections === 'string' ? 1 : thisFilterSelections.length);
 
   return (
     <div

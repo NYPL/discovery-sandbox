@@ -81,7 +81,8 @@ class ItemHoldings extends React.Component {
 
   filterItems(items) {
     const { query } = this.context.router.location;
-    if (!query || !items || !items.length) return [];
+    if (!items || !items.length) return [];
+    if (!query) return items;
     const hasFilter = Object.keys(query).some(param => filterTypes.includes(param));
     if (!hasFilter) return items;
 

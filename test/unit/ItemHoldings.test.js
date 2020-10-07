@@ -55,16 +55,20 @@ const longListItems = [
   { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
 ].map(LibraryItem.mapItem);
 
+const context = {
+  router: {
+    location: { query: {} },
+    createHref: () => {},
+    push: () => {},
+  },
+};
+
 describe('ItemHoldings', () => {
   describe('Default rendering', () => {
     it('should return null with no props passed', () => {
       const component = shallow(<ItemHoldings />, {
         disableLifecycleMethods: true,
-        context: {
-          router: {
-            location: { query: {} },
-          },
-        },
+        context,
       });
       expect(component.type()).to.equal(null);
     });
@@ -76,11 +80,7 @@ describe('ItemHoldings', () => {
     before(() => {
       component = shallow(<ItemHoldings items={items} />, {
         disableLifecycleMethods: true,
-        context: {
-          router: {
-            location: { query: {} },
-          },
-        },
+        context,
       });
     });
 
@@ -114,9 +114,7 @@ describe('ItemHoldings', () => {
     let component;
 
     before(() => {
-      component = mount(<ItemHoldings items={longListItems} />, {
-        context: { router: { location: {} } },
-      });
+      component = mount(<ItemHoldings items={longListItems} />, { context });
     });
 
     it('should have an ItemTable component, which renders a table', () => {
@@ -140,9 +138,7 @@ describe('ItemHoldings', () => {
     let component;
 
     before(() => {
-      component = mount(<ItemHoldings items={longListItems} shortenItems={false} />, {
-        context: { router: { location: {} } },
-      });
+      component = mount(<ItemHoldings items={longListItems} shortenItems={false} />, { context });
     });
 
     it('should render a "View All Items" link', () => {
@@ -171,11 +167,7 @@ describe('ItemHoldings', () => {
     before(() => {
       component = mount(
         <ItemHoldings items={longListItems} shortenItems={false} />,
-        { context: { router: {
-          createHref: () => {},
-          push: () => {},
-          location: {},
-        } } },
+        { context },
       );
     });
 
@@ -221,18 +213,7 @@ describe('ItemHoldings', () => {
     before(() => {
       component = mount(
         <ItemHoldings items={longListItems} shortenItems={false} page="4" />,
-        {
-          context:
-          {
-            router: {
-              createHref: () => {},
-              push: () => {},
-              location: {
-                query: {},
-              },
-            },
-          },
-        },
+        { context },
       );
     });
 
@@ -249,7 +230,7 @@ describe('ItemHoldings', () => {
       const component = shallow(
         <ItemHoldings items={longListItems} />, {
           disableLifecycleMethods: true,
-          context: { router: { location: {} } },
+          context,
         });
       expect(component.state('chunkedItems')).to.eql([]);
     });
@@ -258,9 +239,7 @@ describe('ItemHoldings', () => {
     // gets done in componentDidMount which is called when the component actually mounts.
     it('should have two arrays of in the chunkedItems state,' +
       'the first array with 20 items and the second with 4', () => {
-      const component = mount(<ItemHoldings items={longListItems} />, {
-        context: { router: { location: {} } },
-      });
+      const component = mount(<ItemHoldings items={longListItems} />, { context });
       expect(component.state('chunkedItems')).to.eql(
         [
           [
@@ -284,13 +263,13 @@ describe('ItemHoldings', () => {
             { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
             { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
             { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-          ],
+          ].map(LibraryItem.mapItem),
           [
             { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
             { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
             { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
             { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-          ],
+          ].map(LibraryItem.mapItem),
         ],
       );
 

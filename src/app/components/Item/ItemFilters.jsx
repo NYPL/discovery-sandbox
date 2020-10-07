@@ -23,8 +23,8 @@ const ItemFilters = ({ items }) => {
     {
       type: 'format',
       options: items.map(item => ({
-        label: item.format,
-        id: item.materialType['@id'],
+        label: item.format || '',
+        id: item.materialType ? item.materialType['@id'] : '',
       })),
     },
     {
@@ -55,10 +55,6 @@ const ItemFilters = ({ items }) => {
 
 ItemFilters.propTypes = {
   items: PropTypes.array,
-};
-
-ItemFilters.contextTypes = {
-  router: PropTypes.object,
 };
 
 export default ItemFilters;
