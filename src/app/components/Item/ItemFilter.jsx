@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Checkbox, Button, Icon } from '@nypl/design-system-react-components';
 import FocusTrap from 'focus-trap-react';
 
-import { isOptionSelected } from '../../utils/utils';
+import { isOptionSelected, trackDiscovery } from '../../utils/utils';
 
 // export for testing purposes
 export const parseDistinctOptions = options => Array.from(
@@ -62,6 +62,7 @@ const ItemFilter = ({ filter, options, open, manageFilterDisplay }, context) => 
       },
     });
     manageFilterDisplay('none');
+    trackDiscovery('Search Filters', `Apply Filter - ${selectedFilters}`);
 
     router.push(href);
   };

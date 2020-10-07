@@ -2,14 +2,23 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
 import ItemFilter from './ItemFilter';
+import { trackDiscovery } from '../../utils/utils';
 
 const ItemFilters = ({ items }) => {
   if (!items || !items.length) return null;
   const [openFilter, changeOpenFilter] = useState('none');
 
   const manageFilterDisplay = (filterType) => {
-    if (filterType === openFilter) changeOpenFilter('none');
-    else changeOpenFilter(filterType);
+    if (filterType === openFilter) {
+      trackDiscovery('Search Filters', `Close Filter - ${filterType}`);
+      changeOpenFilter('none');
+    } else {
+      if (filterType === 'none') trackDiscovery('Search Filters', `Close Filter - ${openFilter}`);
+      else {
+        trackDiscovery('Search Filters', `Open Filter - ${openFilter}`);
+      }
+      changeOpenFilter(filterType);
+    }
   };
 
   const filters = [
