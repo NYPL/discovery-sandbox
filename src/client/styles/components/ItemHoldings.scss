@@ -38,7 +38,6 @@
 
 .item-table-filters {
   background-color: #efedeb;
-  margin-bottom: 20px;
   padding: 10px;
 }
 
@@ -51,5 +50,18 @@
     .button-icon {
       float: right;
     }
+  }
+}
+
+.item-filter-info {
+  h3 {
+    display: inline-block;
+    padding-right: 10px;
+    margin-bottom: 20px;
+  }
+
+  button {
+    color: rgb(195, 76, 61);
+    display: inline-block;
   }
 }

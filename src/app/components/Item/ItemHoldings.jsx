@@ -22,6 +22,9 @@ class ItemHoldings extends React.Component {
     };
 
     this.filteredItems = this.filterItems(this.props.items) || [];
+    this.query = context.router.location.query;
+    this.hasFilter = Object.keys(this.query).some(param => (
+      itemFilters.map(filter => filter.type).includes(param)));
 
     this.updatePage = this.updatePage.bind(this);
     this.chunk = this.chunk.bind(this);
@@ -78,11 +81,10 @@ class ItemHoldings extends React.Component {
   }
 
   filterItems(items) {
-    const { query } = this.context.router.location;
     if (!items || !items.length) return [];
+    const { query } = this;
     if (!query) return items;
-    const hasFilter = Object.keys(query).some(param => itemFilters.map(filter => filter.type).includes(param));
-    if (!hasFilter) return items;
+    if (!this.hasFilter) return items;
 
     return items.filter((item) => {
       const showItem = itemFilters.every((filter) => {
@@ -164,8 +166,12 @@ class ItemHoldings extends React.Component {
 
     return (
       <div className="nypl-results-item">
-        <h2>Availability</h2>
-        <ItemFilters items={items} />
+        <h2>Items in the Library & Offsite</h2>
+        <ItemFilters
+          items={items}
+          hasFilterApplied={this.hasFilter}
+          query={this.query}
+        />
         {itemsToDisplay && itemsToDisplay.length ? itemTable : null}
         {
           !!(shortenItems && this.filteredItems.length >= 20 && !this.state.showAll) &&
