@@ -10,8 +10,6 @@ import appConfig from '../../data/appConfig';
 import { trackDiscovery, isOptionSelected } from '../../utils/utils';
 import { itemFilters } from '../../data/constants';
 
-const filterTypes = Object.keys(itemFilters);
-
 class ItemHoldings extends React.Component {
   constructor(props, context) {
     super(props, context);
@@ -83,21 +81,21 @@ class ItemHoldings extends React.Component {
     const { query } = this.context.router.location;
     if (!items || !items.length) return [];
     if (!query) return items;
-    const hasFilter = Object.keys(query).some(param => filterTypes.includes(param));
+    const hasFilter = Object.keys(query).some(param => itemFilters.map(filter => filter.type).includes(param));
     if (!hasFilter) return items;
 
     return items.filter((item) => {
-      const showItem = filterTypes.every((type) => {
-        const filterValue = query[type];
-        const filterType = itemFilters[type];
+      const showItem = itemFilters.every((filter) => {
+        const filterType = filter.type;
+        const filterValue = query[filterType];
         if (!filterValue) return true;
         const selections = typeof filterValue === 'string' ? [filterValue] : filterValue;
         return selections.some((selection) => {
-          const isRequestable = filterType.type === 'status' && selection === 'requestable';
+          const isRequestable = filterType === 'status' && selection === 'requestable';
           if (isRequestable) return item.requestable;
-          const isOffsite = filterType.type === 'location' && selection === 'offsite';
+          const isOffsite = filterType === 'location' && selection === 'offsite';
           if (isOffsite) return item.isOffsite;
-          const itemProperty = filterType.extractItemProperty(item);
+          const itemProperty = filter.extractItemProperty(item);
           return isOptionSelected(selection, itemProperty);
         });
       });

@@ -61,9 +61,7 @@ const ItemFilter = ({ filter, options, open, manageFilterDisplay }, context) => 
         search: '',
       },
     });
-    manageFilterDisplay('none');
-    trackDiscovery('Search Filters', `Apply Filter - ${selectedFilters}`);
-
+    trackDiscovery('Search Filters', `Apply Filter - ${JSON.stringify(selectedFilters)}`);
     router.push(href);
   };
 
@@ -129,7 +127,8 @@ const ItemFilter = ({ filter, options, open, manageFilterDisplay }, context) => 
               <Button
                 onClick={submitFilterSelections}
                 disabled={!selectionMade}
-              >Apply</Button>
+              >Apply
+              </Button>
             </div>
           </div>
         ) : null}

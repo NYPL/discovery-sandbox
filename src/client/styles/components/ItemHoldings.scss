@@ -1,6 +1,6 @@
 .item-filter {
-  width: 250px;
   display: inline-block;
+  width: 250px;
 
   ul {
     list-style: none;
@@ -22,18 +22,18 @@
 
 .item-filter-content {
   background-color: white;
-  box-sizing: border-box;
   border: 1px solid var(--ui-gray-medium);
+  box-sizing: border-box;
   padding: var(--space-xs) var(--space-s);
   position: absolute;
-  width: 200px;
+  width: 280px;
   z-index: 1;
 }
 
 .item-filter-button {
+  justify-content: space-between;
   text-transform: capitalize;
   width: 200px;
-  justify-content: space-between;
 }
 
 .item-table-filters {
