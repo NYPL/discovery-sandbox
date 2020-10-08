@@ -8,18 +8,24 @@ import ItemFilters from './../../src/app/components/Item/ItemFilters';
 import item from '../fixtures/libraryItems';
 import { locationFilters, statusFilters } from '../fixtures/itemFilterOptions';
 
+const context = {
+  router: {
+    location: {},
+  },
+};
+
 describe('ItemFilters', () => {
   describe('default rendering', () => {
     let component;
     it('should not render without an `items` prop', () => {
-      component = shallow(<ItemFilters />);
+      component = shallow(<ItemFilters />, { context });
       expect(component.type()).to.equal(null);
     });
   });
   describe('no `items`', () => {
     let component;
     it('should not render with empty `items` prop', () => {
-      component = shallow(<ItemFilters items={[]} />);
+      component = shallow(<ItemFilters items={[]} />, { context });
       expect(component.type()).to.equal(null);
     });
   });
@@ -35,7 +41,7 @@ describe('ItemFilters', () => {
           item.requestable_ReCAP_not_available,
           item.requestable_nonReCAP_NYPL,
         ]}
-      />, { childContext: { router: {} } });
+      />, { context, childContext: { router: {} } });
       itemFilters = component.find('ItemFilter');
     });
 
