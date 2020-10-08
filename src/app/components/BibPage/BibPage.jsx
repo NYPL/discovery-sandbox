@@ -114,6 +114,10 @@ const BibPage = (props) => {
   const otherLibraries = ['Princeton University Library', 'Columbia University Libraries'];
 
   const tabs = [
+    itemHoldings ? {
+      title: 'Availability',
+      content: itemHoldings,
+    } : null,
     {
       title: 'Details',
       content: tabDetails,
@@ -172,7 +176,6 @@ const BibPage = (props) => {
                 tabs={tabs}
                 hash={location.hash}
               />
-              {itemHoldings}
             </div>
           </div>
         </div>
