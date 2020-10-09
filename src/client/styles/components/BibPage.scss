@@ -89,8 +89,7 @@ div .tabbed {
 @for $i from 1 through 3 {
   #tab#{$i}:target ~ #section#{$i} {
     display: block;
-    margin-top: 1rem;
-    padding: 0 1%;
+    padding: 1rem 1% 0;
   }
 }
 
