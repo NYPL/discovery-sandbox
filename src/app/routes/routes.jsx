@@ -15,6 +15,7 @@ import SearchResults from '../pages/SearchResults';
 import Application from '../components/Application/Application';
 import Home from '../components/Home/Home';
 import BibPage from '../components/BibPage/BibPage';
+import AccountPage from '../components/AccountPage/AccountPage';
 import HoldRequest from '../components/HoldRequest/HoldRequest';
 import HoldConfirmation from '../components/HoldConfirmation/HoldConfirmation';
 import ElectronicDelivery from '../components/ElectronicDelivery/ElectronicDelivery';
@@ -25,34 +26,40 @@ const { baseUrl } = appConfig;
 const routes = {
   // Routes used in the Express server:
   server: (
-    <Route path="/" component={Application}>
-      <IndexRoute component={Home} />
-      <Route path="/search" component={SearchResults} />
-      <Route path="/bib/:bibId" component={BibPage} />
-      <Route path="/bib/:bibId/all" component={BibPage} />
-      <Route path="/hold/request/:bibId-:itemId" component={HoldRequest} />
-      <Route path="/hold/request/:bibId-:itemId/edd" component={ElectronicDelivery} />
-      <Route path="/hold/confirmation/:bibId-:itemId" component={HoldConfirmation} />
-      <Route path="/subject_headings/:subjectHeadingUuid" component={SubjectHeadingShowPage} />
-      <Route path="/subject_headings" component={SubjectHeadingsIndexPage} />
-      <Route path="/404" component={NotFound404} />
-      <Redirect from="*" to="/404" />
+    <Route>
+      <Route path="/account/:patronId" component={AccountPage} />
+      <Route path="/" component={Application}>
+        <IndexRoute component={Home} />
+        <Route path="/search" component={SearchResults} />
+        <Route path="/bib/:bibId" component={BibPage} />
+        <Route path="/bib/:bibId/all" component={BibPage} />
+        <Route path="/hold/request/:bibId-:itemId" component={HoldRequest} />
+        <Route path="/hold/request/:bibId-:itemId/edd" component={ElectronicDelivery} />
+        <Route path="/hold/confirmation/:bibId-:itemId" component={HoldConfirmation} />
+        <Route path="/subject_headings/:subjectHeadingUuid" component={SubjectHeadingShowPage} />
+        <Route path="/subject_headings" component={SubjectHeadingsIndexPage} />
+        <Route path="/404" component={NotFound404} />
+        <Redirect from="*" to="/404" />
+      </Route>
     </Route>
   ),
   // Routes used in the client-side React-Router:
   client: (
-    <Route path={`${baseUrl}/`} component={Application}>
-      <IndexRoute component={Home} />
-      <Route path={`${baseUrl}/search`} component={SearchResults} />
-      <Route path={`${baseUrl}/bib/:bibId`} component={BibPage} />
-      <Route path={`${baseUrl}/bib/:bibId/all`} component={BibPage} />
-      <Route path={`${baseUrl}/hold/request/:bibId-:itemId`} component={HoldRequest} />
-      <Route path={`${baseUrl}/hold/request/:bibId-:itemId/edd`} component={ElectronicDelivery} />
-      <Route path={`${baseUrl}/hold/confirmation/:bibId-:itemId`} component={HoldConfirmation} />
-      <Route path={`${baseUrl}/subject_headings/:subjectHeadingUuid`} component={SubjectHeadingShowPage} />
-      <Route path={`${baseUrl}/subject_headings`} component={SubjectHeadingsIndexPage} />
-      <Route path={`${baseUrl}/404`} component={NotFound404} />
-      <Redirect from="*" to={`${baseUrl}/404`} />
+    <Route>
+      <Route path={`${baseUrl}/account/:patronId`} component={AccountPage} />
+      <Route path={`${baseUrl}/`} component={Application}>
+        <IndexRoute component={Home} />
+        <Route path={`${baseUrl}/search`} component={SearchResults} />
+        <Route path={`${baseUrl}/bib/:bibId`} component={BibPage} />
+        <Route path={`${baseUrl}/bib/:bibId/all`} component={BibPage} />
+        <Route path={`${baseUrl}/hold/request/:bibId-:itemId`} component={HoldRequest} />
+        <Route path={`${baseUrl}/hold/request/:bibId-:itemId/edd`} component={ElectronicDelivery} />
+        <Route path={`${baseUrl}/hold/confirmation/:bibId-:itemId`} component={HoldConfirmation} />
+        <Route path={`${baseUrl}/subject_headings/:subjectHeadingUuid`} component={SubjectHeadingShowPage} />
+        <Route path={`${baseUrl}/subject_headings`} component={SubjectHeadingsIndexPage} />
+        <Route path={`${baseUrl}/404`} component={NotFound404} />
+        <Redirect from="*" to={`${baseUrl}/404`} />
+      </Route>
     </Route>
   ),
 };
