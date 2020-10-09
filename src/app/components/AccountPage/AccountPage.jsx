@@ -12,7 +12,7 @@ const AccountPage = () => {
       id="accountContentIframe"
       style={{
         height: window.innerHeight,
-        height: window.innerWidth,
+        width: window.innerWidth,
       }}
     />
   );
