@@ -124,6 +124,7 @@ describe('getDefaultFilters', () => {
       dateBefore: '',
       subjectLiteral: [],
       creatorLiteral: [],
+      contributorLiteral: [],
     });
   });
 });
