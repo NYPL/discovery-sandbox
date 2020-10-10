@@ -17,6 +17,7 @@ import {
   getReqParams,
   getAggregatedElectronicResources,
   truncateStringOnWhitespace,
+  hasValidFilters,
 } from '../../src/app/utils/utils';
 
 /**
@@ -122,6 +123,7 @@ describe('getDefaultFilters', () => {
       dateAfter: '',
       dateBefore: '',
       subjectLiteral: [],
+      creatorLiteral: [],
     });
   });
 });
@@ -726,5 +728,46 @@ describe('truncateStringOnWhitespace()', () => {
     const truncStr = truncateStringOnWhitespace('ThisIsAOneWordTitleWhichCouldExistOutThere', 25);
     expect(truncStr).to.equal('ThisIsAOneWordTitleWhi...');
     expect(truncStr.length).to.be.lessThan(26);
+  });
+});
+
+/**
+ * hasValidFilters
+ */
+describe('hasValidFilters', () => {
+  it('should return false for falsey filters', () => {
+    expect(hasValidFilters()).to.equal(false);
+    expect(hasValidFilters(undefined)).to.equal(false);
+  });
+
+  it('should return false if no filters have values', () => {
+    const filters = {
+      materialType: [],
+      language: [],
+      dateAfter: '',
+      dateBefore: '',
+      subjectLiteral: []
+    };
+    expect(hasValidFilters(filters)).to.equal(false);
+  });
+
+  it('should return true if dateAfter is any number', () => {
+    expect(hasValidFilters({ dateAfter: '0' })).to.equal(true);
+    expect(hasValidFilters({ dateAfter: '-1' })).to.equal(true);
+    expect(hasValidFilters({ dateAfter: '20201' })).to.equal(true);
+  });
+
+  it('should return true if a materialType filter is present', () => {
+    const filters = {
+      materialType: [
+        {
+          selected: true,
+          value: 'resourcetypes:aud',
+          label: 'Audio',
+          count: 400314
+        }
+      ]
+    };
+    expect(hasValidFilters(filters)).to.equal(true);
   });
 });
