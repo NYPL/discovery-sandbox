@@ -36,21 +36,46 @@ const holdingsMappings = {
 };
 
 const addHoldingDefinition = (holding) => {
-  holding.holdingDefinition = Object.entries(holdingsMappings)
-    .map((mappingsKey, mappingsValue) =>
-      (Array.isArray(holding[mappingsKey])
-        ?
-        holding[mappingsKey].map(value => (
-          {
-            term: mappingsValue.to,
-            definition: mappingsValue.mapping(value),
-          }
-        ))
-        :
-        holding[mappingsKey]
-      ),
-    ).reduce((acc, el) => acc.concat(el), []);
+  holding.holdingDefinition = [
+    {
+      term: 'Location',
+      definition: holding.location.map(location => location.label),
+    },
+    {
+      term: 'Format',
+      definition: holding.format,
+    },
+    {
+      term: 'Call Number',
+      definition: holding.shelfMark,
+    },
+    {
+      term: 'Library Has',
+      definition: holding.holdingStatement,
+    },
+    {
+      term: 'Note',
+      definition: holding.note,
+    },
+  ].filter(data => data.definition);
 };
+
+// const addHoldingDefinition = (holding) => {
+//   holding.holdingDefinition = Object.entries(holdingsMappings)
+//     .map((mappingsKey, mappingsValue) =>
+//       (Array.isArray(holding[mappingsKey])
+//         ?
+//         holding[mappingsKey].map(value => (
+//           {
+//             term: mappingsValue.to,
+//             definition: mappingsValue.mapping(value),
+//           }
+//         ))
+//         :
+//         holding[mappingsKey]
+//       ),
+//     ).reduce((acc, el) => acc.concat(el), []);
+// };
 
 function fetchBib(bibId, cb, errorcb, options = { fetchSubjectHeadingData: true }) {
   return Promise.all([

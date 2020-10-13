@@ -7,6 +7,21 @@ const LibraryHoldings = ({ holdings }) => {
     return null;
   }
 
+  const htmlDefinitions = holding => holding
+    .holdingDefinition
+    .map(definition => (
+      {
+        term: definition.term,
+        definition: (
+          <ul>
+            {
+              definition.definition.map(el => <li>{el}</li>)
+            }
+          </ul>
+        ),
+      }
+    ));
+
   return (
     <React.Fragment>
       {
@@ -15,7 +30,7 @@ const LibraryHoldings = ({ holdings }) => {
           (
             <React.Fragment>
               <DefinitionList
-                data={holding.holdingDefinition}
+                data={htmlDefinitions(holding)}
               />
               <br />
             </React.Fragment>
