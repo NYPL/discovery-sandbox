@@ -12,6 +12,46 @@ const nyplApiClientCall = (query) => {
 
 const shepApiCall = bibId => axios(`${appConfig.shepApi}/bibs/${bibId}/subject_headings`);
 
+const holdingsMappings = {
+  location: {
+    to: 'Location',
+    mapping: location => location.label,
+  },
+  format: {
+    to: 'Format',
+    mapping: x => x,
+  },
+  shelfMark: {
+    to: 'Call Number',
+    mapping: x => x,
+  },
+  holdingStatement: {
+    to: 'Library Has',
+    mapping: x => x,
+  },
+  note: {
+    to: 'Note',
+    mapping: x => x,
+  },
+};
+
+const addHoldingDefinition = (holding) => {
+  holding.holdingDefinition = Object.entries(holdingsMappings)
+    .map((mappingsKey, mappingsValue) =>
+      (Array.isArray(holding[mappingsKey])
+        ?
+        holding[mappingsKey].map(value => (
+          {
+            term: mappingsValue.to,
+            definition: mappingsValue.mapping(value),
+          }
+        ))
+        :
+        holding[mappingsKey]
+      ),
+    ).reduce((acc, el) => acc.concat(el), []);
+};
+
 function fetchBib(bibId, cb, errorcb, options = { fetchSubjectHeadingData: true }) {
   return Promise.all([
     nyplApiClientCall(bibId),
@@ -28,6 +68,18 @@ function fetchBib(bibId, cb, errorcb, options = { fetchSubjectHeadingData: true 
       return data;
     })
     .then((bib) => {
+      bib.holdings.forEach((holding) => {
+        Object.keys(holding).forEach((key) => {
+          if (Array.isArray(holding[key])) {
+            holding[key] = holding[key].concat(holding[key])
+          }
+        },
+        );
+      });
+      console.log('bib: ', JSON.stringify(bib.holdings, null, 2));
+      if (bib.holdings) {
+        bib.holdings.forEach(holding => addHoldingDefinition(holding));
+      }
       if (options.fetchSubjectHeadingData && bib.subjectLiteral && bib.subjectLiteral.length) {
         return shepApiCall(bibId)
           .then((shepRes) => {

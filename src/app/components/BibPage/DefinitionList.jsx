@@ -7,6 +7,7 @@ import SubjectHeadings from './SubjectHeadings';
  * Expects data in the form of [{ term: '', definition: '' }, {...}, ...].
  */
 const DefinitionList = ({ data, headings }) => {
+  console.log('DefinitionList: ', data);
   const getDefinitions = definitions => definitions.map((item) => {
     if (!item || (!item.term && !item.definition)) {
       return null;
