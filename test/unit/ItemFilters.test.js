@@ -46,7 +46,7 @@ describe('ItemFilters', () => {
     });
 
     it('should have an `item-filters` id', () => {
-      expect(component.find('div').length).to.equal(1);
+      expect(component.find('#item-filters').length).to.equal(1);
     });
     it('should have three `ItemFilter` components', () => {
       expect(itemFilters.length).to.equal(3);

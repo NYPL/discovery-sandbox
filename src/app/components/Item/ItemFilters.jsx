@@ -7,7 +7,7 @@ import { trackDiscovery } from '../../utils/utils';
 import { itemFilters } from '../../data/constants';
 
 
-const ItemFilters = ({ items, hasFilterApplied, query }, { router }) => {
+const ItemFilters = ({ items, hasFilterApplied }, { router }) => {
   if (!items || !items.length) return null;
   const [openFilter, changeOpenFilter] = useState('none');
 
@@ -24,11 +24,13 @@ const ItemFilters = ({ items, hasFilterApplied, query }, { router }) => {
     }
   };
 
+  const { query } = router.location;
+
   const numOfItems = items.length;
-  const filterSelections = itemFilters.map(
-    filter => query[filter.type]).filter(selections => selections);
   // join filter selections and add single quotes
   const parsedFilterSelections = () => {
+    const filterSelections = itemFilters.map(
+      filter => query[filter.type]).filter(selections => selections);
     const joinedText = filterSelections.join("', '");
     return `'${joinedText}'`;
   };
