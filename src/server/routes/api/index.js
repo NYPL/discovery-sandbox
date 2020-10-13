@@ -38,6 +38,8 @@ export function getPatronData(req, res, next) {
                 barcodes: response.data.barCodes,
                 emails: response.data.emails,
                 loggedIn: true,
+                moneyOwed: response.data.moneyOwed,
+                homeLibraryCode:response.data.homeLibraryCode,
               };
 
               dispatch(updatePatronData(patron));
