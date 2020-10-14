@@ -60,22 +60,12 @@ const addHoldingDefinition = (holding) => {
   ].filter(data => data.definition);
 };
 
-// const addHoldingDefinition = (holding) => {
-//   holding.holdingDefinition = Object.entries(holdingsMappings)
-//     .map((mappingsKey, mappingsValue) =>
-//       (Array.isArray(holding[mappingsKey])
-//         ?
-//         holding[mappingsKey].map(value => (
-//           {
-//             term: mappingsValue.to,
-//             definition: mappingsValue.mapping(value),
-//           }
-//         ))
-//         :
-//         holding[mappingsKey]
-//       ),
-//     ).reduce((acc, el) => acc.concat(el), []);
-// };
+const findUrl = (location, urls) => {
+  const matches = urls[location.code];
+  const longestMatch = matches.reduce(
+    (acc, el) => (el.code.length > acc.code.length ? el : acc), matches[0]);
+  return longestMatch.url;
+};
 
 function fetchBib(bibId, cb, errorcb, options = { fetchSubjectHeadingData: true }) {
   return Promise.all([
@@ -93,14 +83,31 @@ function fetchBib(bibId, cb, errorcb, options = { fetchSubjectHeadingData: true 
       return data;
     })
     .then((bib) => {
-      bib.holdings.forEach((holding) => {
-        Object.keys(holding).forEach((key) => {
-          if (Array.isArray(holding[key])) {
-            holding[key] = holding[key].concat(holding[key])
-          }
-        },
-        );
-      });
+      if (bib.holdings) {
+        const codes = bib
+          .holdings
+          .map(holding => holding.location.reduce((acc, el) => acc.concat([el.code]), []))
+          .reduce((acc, el) => acc.concat(el), [])
+          .join(',');
+
+        console.log('locations request: ', codes);
+
+        return nyplApiClient()
+          .then(client => client.get(`/locations?location_codes=${codes}`))
+          .then((resp) => {
+            console.log('locations resp: ', resp);
+            bib.holdings.forEach((holding) => {
+              holding.location.forEach((location) => {
+                console.log('found url: ', findUrl(location, resp));
+                location.url = findUrl(location, resp);
+              });
+            });
+            return bib;
+          });
+      }
+      return bib;
+    })
+    .then((bib) => {
       console.log('bib: ', JSON.stringify(bib.holdings, null, 2));
       if (bib.holdings) {
         bib.holdings.forEach(holding => addHoldingDefinition(holding));
