@@ -4,7 +4,7 @@ import { isArray as _isArray } from 'underscore';
 
 import ItemTableRow from './ItemTableRow';
 
-const ItemTable = ({ items, bibId, id, searchKeywords, page }) => {
+const ItemTable = ({ items, holdings, bibId, id, searchKeywords, page }) => {
   if (
     !_isArray(items) ||
     !items.length ||
@@ -15,7 +15,7 @@ const ItemTable = ({ items, bibId, id, searchKeywords, page }) => {
 
   const includeVolColumn = (
     items.some(item => item.isSerial)
-    && items.some(item => item.volume)
+    && holdings && holdings.some(holding => holding.checkInBoxes.some(checkInBox => checkInBox.coverage))
   );
 
   return (
@@ -54,6 +54,8 @@ ItemTable.propTypes = {
   bibId: PropTypes.string,
   id: PropTypes.string,
   searchKeywords: PropTypes.string,
+  holdings: PropTypes.array,
+  page: PropTypes.string,
 };
 
 ItemTable.defaultProps = {

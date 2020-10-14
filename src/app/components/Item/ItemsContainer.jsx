@@ -7,7 +7,7 @@ import ItemTable from './ItemTable';
 import appConfig from '../../data/appConfig';
 import { trackDiscovery } from '../../utils/utils';
 
-class ItemHoldings extends React.Component {
+class ItemsContainer extends React.Component {
   constructor(props) {
     super(props);
 
@@ -66,6 +66,7 @@ class ItemHoldings extends React.Component {
           bibId={bibId}
           id="bib-item-table"
           searchKeywords={this.props.searchKeywords}
+          holdings={this.props.holdings}
         /> : null
     );
   }
@@ -157,22 +158,23 @@ class ItemHoldings extends React.Component {
   }
 }
 
-ItemHoldings.propTypes = {
+ItemsContainer.propTypes = {
   items: PropTypes.array,
   itemPage: PropTypes.string,
   bibId: PropTypes.string,
   shortenItems: PropTypes.bool,
   searchKeywords: PropTypes.string,
+  holdings: PropTypes.object,
 };
 
-ItemHoldings.defaultProps = {
+ItemsContainer.defaultProps = {
   shortenItems: false,
   searchKeywords: '',
   itemPage: '0',
 };
 
-ItemHoldings.contextTypes = {
+ItemsContainer.contextTypes = {
   router: PropTypes.object,
 };
 
-export default ItemHoldings;
+export default ItemsContainer;
