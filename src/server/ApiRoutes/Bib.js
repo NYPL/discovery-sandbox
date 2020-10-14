@@ -34,7 +34,6 @@ const findUrl = (location, urls) => {
   return longestMatch.url;
 };
 
-function fetchBib(bibId, cb, errorcb, options = { fetchSubjectHeadingData: true }) {
 function fetchBib(bibId, cb, errorcb, reqOptions) {
   const options = Object.assign({
     fetchSubjectHeadingData: true,
