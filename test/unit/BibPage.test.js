@@ -27,7 +27,7 @@ describe('BibPage', () => {
 
   describe('serial', () => {
     before(() => {
-      const bib = { ...bibs[0], ...annotatedMarc, holdings: { holding_string: 'holdings data' } };
+      const bib = { ...bibs[0], ...annotatedMarc, holdings: [{ holdingDefinition: [{ term: 'mock', definition: [''] }] }] };
       const mockStore = makeTestStore({ bib });
       component = mountTestRender(<BibPage location={{ search: 'search', pathname: '' }} />, { store: mockStore });
     });

@@ -128,7 +128,7 @@ const BibPage = (props) => {
     } : null,
     bib.holdings ? {
       title: 'Library Holdings',
-      content: <LibraryHoldings />,
+      content: <LibraryHoldings holdings={bib.holdings} />,
     } : null,
   ].filter(tab => tab);
 
