@@ -44,6 +44,8 @@ const appConfig = {
     dateAfter: '',
     dateBefore: '',
     subjectLiteral: [],
+    creatorLiteral: [],
+    contributorLiteral: [],
   },
   closedLocations: (
     process.env.CLOSED_LOCATIONS
