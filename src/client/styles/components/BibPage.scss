@@ -86,7 +86,7 @@ div .tabbed {
   display: none;
 }
 
-@for $i from 1 through 3 {
+@for $i from 1 through 4 {
   #tab#{$i}:target ~ #section#{$i} {
     display: block;
     padding: 1rem 1% 0;
