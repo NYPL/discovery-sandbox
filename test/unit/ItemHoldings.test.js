@@ -3,7 +3,7 @@ import React from 'react';
 import { expect } from 'chai';
 import { shallow, mount } from 'enzyme';
 
-import ItemHoldings from './../../src/app/components/Item/ItemHoldings';
+import ItemsContainer from './../../src/app/components/Item/ItemsContainer';
 
 const items = [
   {
@@ -52,10 +52,10 @@ const longListItems = [
   { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
 ];
 
-describe('ItemHoldings', () => {
+describe('ItemsContainer', () => {
   describe('Default rendering', () => {
     it('should return null with no props passed', () => {
-      const component = shallow(<ItemHoldings />, { disableLifecycleMethods: true });
+      const component = shallow(<ItemsContainer />, { disableLifecycleMethods: true });
       expect(component.type()).to.equal(null);
     });
   });
@@ -64,7 +64,7 @@ describe('ItemHoldings', () => {
     let component;
 
     before(() => {
-      component = shallow(<ItemHoldings items={items} />, { disableLifecycleMethods: true });
+      component = shallow(<ItemsContainer items={items} />, { disableLifecycleMethods: true });
     });
 
     it('should be wrapped in a .nypl-results-item div', () => {
@@ -97,7 +97,7 @@ describe('ItemHoldings', () => {
     let component;
 
     before(() => {
-      component = mount(<ItemHoldings items={longListItems} />);
+      component = mount(<ItemsContainer items={longListItems} />);
     });
 
     it('should have an ItemTable component, which renders a table', () => {
@@ -121,7 +121,7 @@ describe('ItemHoldings', () => {
     let component;
 
     before(() => {
-      component = mount(<ItemHoldings items={longListItems} shortenItems={false} />);
+      component = mount(<ItemsContainer items={longListItems} shortenItems={false} />);
     });
 
     it('should render a "View All Items" link', () => {
@@ -149,7 +149,7 @@ describe('ItemHoldings', () => {
 
     before(() => {
       component = mount(
-        <ItemHoldings items={longListItems} shortenItems={false} />,
+        <ItemsContainer items={longListItems} shortenItems={false} />,
         { context: { router: { createHref: () => {}, push: () => {} } } },
       );
     });
@@ -195,7 +195,7 @@ describe('ItemHoldings', () => {
 
     before(() => {
       component = mount(
-        <ItemHoldings items={longListItems} shortenItems={false} page="4" />,
+        <ItemsContainer items={longListItems} shortenItems={false} page="4" />,
         { context: { router: { createHref: () => {}, push: () => {} } } },
       );
     });
@@ -211,7 +211,7 @@ describe('ItemHoldings', () => {
     // gets done in componentDidMount which is called when the component actually mounts.
     it('should have an empty chunkedItems state', () => {
       const component = shallow(
-        <ItemHoldings items={longListItems} />, { disableLifecycleMethods: true });
+        <ItemsContainer items={longListItems} />, { disableLifecycleMethods: true });
       expect(component.state('chunkedItems')).to.eql([]);
     });
 
@@ -219,7 +219,7 @@ describe('ItemHoldings', () => {
     // gets done in componentDidMount which is called when the component actually mounts.
     it('should have two arrays of in the chunkedItems state,' +
       'the first array with 20 items and the second with 4', () => {
-      const component = mount(<ItemHoldings items={longListItems} />);
+      const component = mount(<ItemsContainer items={longListItems} />);
       expect(component.state('chunkedItems')).to.eql(
         [
           [

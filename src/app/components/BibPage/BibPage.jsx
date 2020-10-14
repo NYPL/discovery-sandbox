@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 
 import Breadcrumbs from '../Breadcrumbs/Breadcrumbs';
-import ItemHoldings from '../Item/ItemHoldings';
+import ItemsContainer from '../Item/ItemsContainer';
 import BibDetails from './BibDetails';
 import LibraryItem from '../../utils/item';
 import BackLink from './BackLink';
@@ -89,13 +89,14 @@ const BibPage = (props) => {
     });
   }
 
-  const itemHoldings = items.length && !isElectronicResources ? (
-    <ItemHoldings
+  const itemsContainer = items.length && !isElectronicResources ? (
+    <ItemsContainer
       shortenItems={shortenItems}
       items={items}
       bibId={bibId}
       itemPage={itemPage}
       searchKeywords={searchKeywords}
+      holdings={bib.holdings}
     />
   ) : null;
   // Related to removing MarcRecord because the webpack MarcRecord is not working. Sep/28/2017
@@ -114,9 +115,9 @@ const BibPage = (props) => {
   const otherLibraries = ['Princeton University Library', 'Columbia University Libraries'];
 
   const tabs = [
-    itemHoldings ? {
+    itemsContainer ? {
       title: 'Availability',
-      content: itemHoldings,
+      content: itemsContainer,
     } : null,
     {
       title: 'Details',
