@@ -10,23 +10,50 @@ import { withRouter } from 'react-router';
 import Feedback from '../Feedback/Feedback';
 import LoadingLayer from '../LoadingLayer/LoadingLayer';
 import DataLoader from '../DataLoader/DataLoader';
+import appConfig from '../../data/appConfig';
 
 import { breakpoints } from '../../data/constants';
 
 export const MediaContext = React.createContext('desktop');
 
 export class Application extends React.Component {
-  constructor(props) {
-    super(props);
+  constructor(props, context) {
+    super(props, context);
+    const {
+      query,
+    } = context.router.location;
     this.state = {
       media: 'desktop',
     };
     this.submitFeedback = this.submitFeedback.bind(this);
+
+    const urlEnabledFeatures = query.features ? query.features.split(',') : null;
+    if (urlEnabledFeatures) {
+      const urlFeaturesString = urlEnabledFeatures.filter(
+        urlFeat => !appConfig.features.includes(urlFeat))
+        .join(',');
+      if (urlFeaturesString) this.state.urlEnabledFeatures = urlFeaturesString;
+    }
   }
 
   componentDidMount() {
     window.addEventListener('resize', this.onWindowResize.bind(this));
     this.onWindowResize();
+    const { router } = this.context;
+    if (this.state.urlEnabledFeatures) {
+      router.listen(() => {
+        const {
+          pathname,
+          query,
+        } = router.location;
+        if (query.features !== this.state.urlEnabledFeatures) {
+          router.replace({
+            pathname,
+            query: Object.assign(query, { features: this.state.urlEnabledFeatures }),
+          });
+        }
+      });
+    }
   }
 
   onWindowResize() {

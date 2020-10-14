@@ -23,8 +23,8 @@ describe('BibPage', () => {
       const tabs = tabbed.props().tabs;
       const tabTitles = tabs.map(tab => tab.title);
       expect(tabbed.length).to.equal(1);
-      expect(tabs.length).to.equal(2);
-      expect(tabTitles).to.deep.equal(['Details', 'Full Description']);
+      expect(tabs.length).to.equal(3);
+      expect(tabTitles).to.deep.equal(['Availability', 'Details', 'Full Description']);
     });
   });
 
@@ -42,8 +42,8 @@ describe('BibPage', () => {
       const tabs = tabbed.props().tabs;
       const tabTitles = tabs.map(tab => tab.title);
       expect(tabbed.length).to.equal(1);
-      expect(tabs.length).to.equal(3);
-      expect(tabTitles).to.deep.equal(['Details', 'Full Description', 'Library Holdings']);
+      expect(tabs.length).to.equal(4);
+      expect(tabTitles).to.deep.equal(['Availability', 'Details', 'Full Description', 'Library Holdings']);
     });
 
     it('has item table with volume column', () => {
