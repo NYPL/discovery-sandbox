@@ -1,6 +1,11 @@
 // discovery-item.v2.html
 // item info / the full item record
 .nypl-item-details {
+
+  h2 {
+    margin-top: 0;
+  }
+
   dl:first-of-type {
     padding-bottom: 7px;
   }
@@ -42,3 +47,9 @@
   }
 
 } // /.nypl-item-details
+
+@media (max-width: 600px) {
+  .nypl-full-width-wrapper {
+
+  }
+}
