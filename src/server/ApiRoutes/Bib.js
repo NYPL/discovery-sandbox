@@ -13,51 +13,17 @@ const nyplApiClientCall = (query) => {
 const shepApiCall = bibId => axios(`${appConfig.shepApi}/bibs/${bibId}/subject_headings`);
 
 const holdingsMappings = {
-  location: {
-    to: 'Location',
-    mapping: location => location.label,
-  },
-  format: {
-    to: 'Format',
-    mapping: x => x,
-  },
-  shelfMark: {
-    to: 'Call Number',
-    mapping: x => x,
-  },
-  holdingStatement: {
-    to: 'Library Has',
-    mapping: x => x,
-  },
-  note: {
-    to: 'Note',
-    mapping: x => x,
-  },
+  Location: 'location',
+  Format: 'format',
+  'Call Number': 'shelfMark',
+  'Library Has': 'holdingStatement',
+  Note: 'note',
 };
 
 const addHoldingDefinition = (holding) => {
-  holding.holdingDefinition = [
-    {
-      term: 'Location',
-      definition: holding.location.map(location => location.label),
-    },
-    {
-      term: 'Format',
-      definition: holding.format,
-    },
-    {
-      term: 'Call Number',
-      definition: holding.shelfMark,
-    },
-    {
-      term: 'Library Has',
-      definition: holding.holdingStatement,
-    },
-    {
-      term: 'Note',
-      definition: holding.note,
-    },
-  ].filter(data => data.definition);
+  holding.holdingDefinition = Object.entries(holdingsMappings)
+    .map(([key, value]) => ({ term: key, definition: holding[value] }))
+    .filter(data => data.definition);
 };
 
 const findUrl = (location, urls) => {
@@ -90,15 +56,11 @@ function fetchBib(bibId, cb, errorcb, options = { fetchSubjectHeadingData: true 
           .reduce((acc, el) => acc.concat(el), [])
           .join(',');
 
-        console.log('locations request: ', codes);
-
         return nyplApiClient()
           .then(client => client.get(`/locations?location_codes=${codes}`))
           .then((resp) => {
-            console.log('locations resp: ', resp);
             bib.holdings.forEach((holding) => {
               holding.location.forEach((location) => {
-                console.log('found url: ', findUrl(location, resp));
                 location.url = findUrl(location, resp);
               });
             });
@@ -108,7 +70,6 @@ function fetchBib(bibId, cb, errorcb, options = { fetchSubjectHeadingData: true 
       return bib;
     })
     .then((bib) => {
-      console.log('bib: ', JSON.stringify(bib.holdings, null, 2));
       if (bib.holdings) {
         bib.holdings.forEach(holding => addHoldingDefinition(holding));
       }

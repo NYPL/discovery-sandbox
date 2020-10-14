@@ -15,7 +15,21 @@ const LibraryHoldings = ({ holdings }) => {
         definition: (
           <ul>
             {
-              definition.definition.map(el => <li key={el}>{el}</li>)
+              definition.definition.map(el =>
+                (
+                  <li key={el}>
+                    {
+                      typeof el === 'string'
+                      ?
+                      el
+                      :
+                      <a href={el.url}>
+                        { el.label }
+                      </a>
+                    }
+                  </li>
+                ),
+              )
             }
           </ul>
         ),
@@ -28,7 +42,7 @@ const LibraryHoldings = ({ holdings }) => {
         holdings
         .map(holding =>
           (
-            <React.Fragment>
+            <React.Fragment key={holding.holdingDefinition}>
               <DefinitionList
                 data={htmlDefinitions(holding)}
               />
