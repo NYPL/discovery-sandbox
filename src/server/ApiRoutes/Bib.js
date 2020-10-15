@@ -65,7 +65,7 @@ const addCheckInItems = (bib) => {
     .map(holding => checkInItemsForHolding(holding))
     .reduce((acc, el) => acc.concat(el), [])
     .filter(box => !['Expected', 'Late', 'Removed'].includes(box.status.prefLabel))
-    .sort(box => box.position);
+    .sort((box1, box2) => box2.position - box1.position);
 };
 
 function fetchBib(bibId, cb, errorcb, reqOptions) {
@@ -151,6 +151,7 @@ function bibSearch(req, res, resolve) {
 }
 
 export default {
+  addCheckInItems,
   bibSearch,
   fetchBib,
   nyplApiClientCall,
