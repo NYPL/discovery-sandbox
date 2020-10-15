@@ -23,12 +23,21 @@ import configureStore from './src/app/stores/configureStore';
 import initialState from './src/app/stores/InitialState';
 import { updateLoadingStatus } from './src/app/actions/Actions';
 
+const fs = require('fs');
+const http = require('http');
+const https = require('https');
+
+const privateKey = fs.readFileSync('./server.key', 'utf8');
+const certificate = fs.readFileSync('./server.cert', 'utf8');
+
 const ROOT_PATH = __dirname;
 const INDEX_PATH = path.resolve(ROOT_PATH, 'src/client');
 const DIST_PATH = path.resolve(ROOT_PATH, 'dist');
 const VIEWS_PATH = path.resolve(ROOT_PATH, 'src/views');
 const WEBPACK_DEV_PORT = appConfig.webpackDevServerPort || 3000;
 const isProduction = process.env.NODE_ENV === 'production';
+
+const credentials = { key: privateKey, cert: certificate };
 const app = express();
 
 let application;
@@ -43,7 +52,9 @@ app.disable('x-powered-by');
 app.set('view engine', 'ejs');
 app.set('views', VIEWS_PATH);
 
-app.set('port', process.env.PORT || appConfig.port || 3001);
+const httpsServer = https.createServer(credentials, app);
+
+httpsServer.listen(process.env.PORT || appConfig.port || 3001);
 
 app.use(cookieParser());
 // to support JSON-encoded bodies
