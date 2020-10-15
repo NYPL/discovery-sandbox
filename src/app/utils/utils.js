@@ -460,6 +460,52 @@ const isOptionSelected = (filterValue, itemValue) => {
   if (Array.isArray(filterValue)) {
     return filterValue.includes(itemValue);
   }
+
+/**
+ * hasValidFilters (filters)
+ *
+ * Returns true if the hash of filters contains at least one valid filter value.
+ *
+ * @example
+ * // The following returns false:
+ * hasValidFilters({
+ *   materialType: [],
+ *   language: [],
+ *   dateAfter: '',
+ *   dateBefore: '',
+ *   subjectLiteral: []
+ * })
+ *
+ * @example
+ * // The following returns true:
+ * hasValidFilters({
+ *   language: [],
+ *   dateAfter: '0',
+ *   dateBefore: '',
+ *   subjectLiteral: []
+ * })
+ *
+ * @example
+ * // The following returns true:
+ * hasValidFilters({
+ *   materialType: [
+ *     { selected: true,
+ *       value: 'resourcetypes:aud',
+ *       label: 'Audio',
+ *       count: 400314
+ *     }
+ *   ],
+ *   language: [],
+ *   dateAfter: '',
+ *   dateBefore: '',
+ *   subjectLiteral: []
+ * })
+ *
+ * @param {object} filters - A hash of filter names mapped to filter values
+ * @return {boolean}
+ */
+const hasValidFilters = (selectedFilters) => {
+  return Object.values(selectedFilters || {}).some((v) => Array.isArray(v) ? v.length > 0 : v );
 };
 
 export {
@@ -479,4 +525,5 @@ export {
   displayContext,
   truncateStringOnWhitespace,
   isOptionSelected,
+  hasValidFilters,
 };

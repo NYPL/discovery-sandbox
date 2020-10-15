@@ -195,7 +195,7 @@ function LibraryItem() {
     const status = item.status && item.status.length ? item.status[0] : {};
     const availability = !_isEmpty(status) && status.prefLabel ?
       status.prefLabel.replace(/\W/g, '').toLowerCase() : '';
-    const available = availability === 'available';
+    const available = ['available', 'useinlibrary'].includes(availability);
     // non-NYPL ReCAP
     const nonNyplRecap = itemSource.indexOf('Recap') !== -1;
     const holdingLocation = this.getHoldingLocation(item, nonNyplRecap);
