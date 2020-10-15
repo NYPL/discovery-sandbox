@@ -35,19 +35,23 @@ const findUrl = (location, urls) => {
 };
 
 const checkInItemsForHolding = (holding) => {
-  const holdingLocationCode = holding.location[0].code;
-  const location = holding.location[0].label;
-  const format = holding.format;
+  let location = '';
+  let holdingLocationCode = '';
+  if (holding.location.length) {
+    holdingLocationCode = holding.location[0].code;
+    location = holding.location[0].label;
+  }
+  const format = holding.format || '';
   return holding.checkInBoxes.map(box => (
     {
       location,
       holdingLocationCode,
       format,
-      position: box.position,
-      status: { prefLabel: box.status },
+      position: box.position || 0,
+      status: { prefLabel: box.status || '' },
       accessMessage: { '@id': 'accessMessage: 1', prefLabel: 'Use in library' },
-      volume: box.coverage,
-      callNumber: box.shelfMark,
+      volume: box.coverage || '',
+      callNumber: box.shelfMark || '',
       available: true,
       isSerial: true,
       requestable: false,
