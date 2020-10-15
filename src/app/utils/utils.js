@@ -455,11 +455,18 @@ const truncateStringOnWhitespace = (str, maxLength) => {
   return `${truncArray.join(' ')}...`;
 };
 
+/**
+  this is used for the item Filters
+  @param {array | string} filterValue
+  @param {string} itemValue
+  @return {boolean}
+*/
 const isOptionSelected = (filterValue, itemValue) => {
   if (typeof filterValue === 'string') return filterValue === itemValue;
   if (Array.isArray(filterValue)) {
     return filterValue.includes(itemValue);
   }
+};
 
 /**
  * hasValidFilters (filters)

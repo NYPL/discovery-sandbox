@@ -215,7 +215,7 @@ function LibraryItem() {
     const isSerial = !!(bib && bib.issuance && bib.issuance[0]['@id'] === 'urn:biblevel:s');
     const materialType = bib && bib.materialType && bib.materialType[0] ?
       bib.materialType[0] : {};
-    const format = bib.holdings && bib.holdings.format ?
+    const format = bib && bib.holdings && bib.holdings.format ?
       bib.holdings.format : materialType.prefLabel;
 
     if (availability === 'available') {
