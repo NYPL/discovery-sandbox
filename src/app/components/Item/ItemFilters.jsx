@@ -28,8 +28,9 @@ const ItemFilters = ({ items, hasFilterApplied, numOfFilteredItems }, { router }
   const options = {};
   const mapFilterIdsToLabel = {};
   itemFilters.forEach((filter) => {
-    const filterOptions = filter.options(items);
-    options[filter.type] = filterOptions;
+    const optionsObjEntry = options[filter.type];
+    const filterOptions = optionsObjEntry || filter.options(items);
+    if (!optionsObjEntry) options[filter.type] = filterOptions;
     filterOptions.forEach((option) => {
       mapFilterIdsToLabel[option.id] = option.label;
     });
@@ -37,12 +38,13 @@ const ItemFilters = ({ items, hasFilterApplied, numOfFilteredItems }, { router }
 
   // join filter selections and add single quotes
   const parsedFilterSelections = () => {
-    const filterSelections = itemFilters.map(
+    let filterSelections = itemFilters.map(
       (filter) => {
         const selection = query[filter.type];
         if (Array.isArray(selection)) return selection.map(id => mapFilterIdsToLabel[id]);
         return mapFilterIdsToLabel[selection];
       }).filter(selections => selections);
+    if (filterSelections.flat) filterSelections = filterSelections.flat();
     const joinedText = filterSelections.join("', '");
     return `'${joinedText}'`;
   };
