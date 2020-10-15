@@ -168,6 +168,11 @@ class ItemsContainer extends React.Component {
     return (
       <div className="nypl-results-item">
         <h2>Items in the Library & Offsite</h2>
+        <ItemFilters
+          items={items}
+          hasFilterApplied={this.hasFilter}
+          query={this.query}
+        />
         {itemTable}
         {
           !!(shortenItems && this.filteredItems.length >= 20 && !this.state.showAll) &&
