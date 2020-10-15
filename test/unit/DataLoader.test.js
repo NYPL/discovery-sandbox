@@ -14,7 +14,7 @@ describe('DataLoader', () => {
   before(() => {
     const children = (<div />);
     dataLoaderUtilSpy = sinon.spy(dataLoaderUtil, 'loadDataForRoutes');
-    wrapper = shallow(<DataLoader location={location} children={children} dispatch={() => {}}/>);
+    wrapper = shallow(<DataLoader lastLoaded="/pathname" location={location} children={children} dispatch={() => {}}/>);
   });
   after(() => {
     dataLoaderUtilSpy.restore();

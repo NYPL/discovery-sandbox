@@ -8,7 +8,6 @@ import workData from '../fixtures/work-detail.json';
 
 describe('DrbbResult', () => {
   describe('with work prop', () => {
-
     describe('work with all data', () => {
       let component;
       const authors = workData.data.agents.filter(agent => agent.roles.includes('author'));
