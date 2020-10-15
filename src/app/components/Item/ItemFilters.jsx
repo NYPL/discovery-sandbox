@@ -7,7 +7,7 @@ import { trackDiscovery } from '../../utils/utils';
 import { itemFilters } from '../../data/constants';
 
 
-const ItemFilters = ({ items, hasFilterApplied }, { router }) => {
+const ItemFilters = ({ items, hasFilterApplied, numOfFilteredItems }, { router }) => {
   if (!items || !items.length) return null;
   const [openFilter, changeOpenFilter] = useState('none');
 
@@ -35,7 +35,6 @@ const ItemFilters = ({ items, hasFilterApplied }, { router }) => {
     });
   });
 
-  const numOfItems = items.length;
   // join filter selections and add single quotes
   const parsedFilterSelections = () => {
     const filterSelections = itemFilters.map(
@@ -44,7 +43,7 @@ const ItemFilters = ({ items, hasFilterApplied }, { router }) => {
         if (Array.isArray(selection)) return selection.map(id => mapFilterIdsToLabel[id]);
         return mapFilterIdsToLabel[selection];
       }).filter(selections => selections);
-    const joinedText = filterSelections.flat().join("', '");
+    const joinedText = filterSelections.join("', '");
     return `'${joinedText}'`;
   };
 
@@ -72,7 +71,7 @@ const ItemFilters = ({ items, hasFilterApplied }, { router }) => {
         }
       </div>
       <div className="item-filter-info">
-        <h3>{numOfItems} Result{numOfItems > 1 ? 's' : null} Found</h3>
+        <h3>{numOfFilteredItems} Result{numOfFilteredItems > 1 ? 's' : null} Found</h3>
         {hasFilterApplied ? <span>Filtered by {parsedFilterSelections()}</span> : null}
         {
           hasFilterApplied ? (
@@ -91,7 +90,7 @@ const ItemFilters = ({ items, hasFilterApplied }, { router }) => {
 ItemFilters.propTypes = {
   items: PropTypes.array,
   hasFilterApplied: PropTypes.bool,
-  query: PropTypes.object,
+  numOfFilteredItems: PropTypes.integer,
 };
 
 ItemFilters.contextTypes = {

@@ -21,10 +21,10 @@ class ItemsContainer extends React.Component {
       page: parseInt(this.props.itemPage.substring(10), 10) || 1,
     };
 
-    this.filteredItems = this.filterItems(this.props.items) || [];
     this.query = context.router.location.query;
     this.hasFilter = Object.keys(this.query).some(param => (
       itemFilters.map(filter => filter.type).includes(param)));
+    this.filteredItems = this.filterItems(this.props.items) || [];
 
     this.updatePage = this.updatePage.bind(this);
     this.chunk = this.chunk.bind(this);
@@ -172,6 +172,7 @@ class ItemsContainer extends React.Component {
           items={items}
           hasFilterApplied={this.hasFilter}
           query={this.query}
+          numOfFilteredItems={this.filteredItems.length}
         />
         {itemTable}
         {
