@@ -10,7 +10,7 @@ import appConfig from '../../data/appConfig';
 import { trackDiscovery, isOptionSelected } from '../../utils/utils';
 import { itemFilters } from '../../data/constants';
 
-class ItemHoldings extends React.Component {
+class ItemsContainer extends React.Component {
   constructor(props, context) {
     super(props, context);
 
@@ -76,6 +76,7 @@ class ItemHoldings extends React.Component {
           bibId={bibId}
           id="bib-item-table"
           searchKeywords={this.props.searchKeywords}
+          holdings={this.props.holdings}
         /> : null
     );
   }
@@ -167,12 +168,7 @@ class ItemHoldings extends React.Component {
     return (
       <div className="nypl-results-item">
         <h2>Items in the Library & Offsite</h2>
-        <ItemFilters
-          items={items}
-          hasFilterApplied={this.hasFilter}
-          query={this.query}
-        />
-        {itemsToDisplay && itemsToDisplay.length ? itemTable : null}
+        {itemTable}
         {
           !!(shortenItems && this.filteredItems.length >= 20 && !this.state.showAll) &&
             (<div className="view-all-items-container">
@@ -195,22 +191,23 @@ class ItemHoldings extends React.Component {
   }
 }
 
-ItemHoldings.propTypes = {
+ItemsContainer.propTypes = {
   items: PropTypes.array,
   itemPage: PropTypes.string,
   bibId: PropTypes.string,
   shortenItems: PropTypes.bool,
   searchKeywords: PropTypes.string,
+  holdings: PropTypes.object,
 };
 
-ItemHoldings.defaultProps = {
+ItemsContainer.defaultProps = {
   shortenItems: false,
   searchKeywords: '',
   itemPage: '0',
 };
 
-ItemHoldings.contextTypes = {
+ItemsContainer.contextTypes = {
   router: PropTypes.object,
 };
 
-export default ItemHoldings;
+export default ItemsContainer;

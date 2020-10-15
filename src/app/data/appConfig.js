@@ -1,10 +1,4 @@
-const extractFeatures = (featuresString) => {
-  if (typeof featuresString !== 'string') return [];
-  return featuresString.split(',').reduce((features, feature) => {
-    if (feature.length) features.push(feature.trim());
-    return features;
-  }, []);
-};
+import extractFeatures from '../utils/extractFeatures';
 
 const appConfig = {
   appTitle: 'NYPL | Discovery',
@@ -70,7 +64,4 @@ const appConfig = {
   },
 };
 
-export default {
-  extractFeatures,
-  ...appConfig,
-};
+export default appConfig;
