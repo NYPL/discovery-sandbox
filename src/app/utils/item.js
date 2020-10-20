@@ -195,7 +195,7 @@ function LibraryItem() {
     const status = item.status && item.status.length ? item.status[0] : {};
     const availability = !_isEmpty(status) && status.prefLabel ?
       status.prefLabel.replace(/\W/g, '').toLowerCase() : '';
-    const available = availability === 'available';
+    const available = ['available', 'useinlibrary'].includes(availability);
     // non-NYPL ReCAP
     const nonNyplRecap = itemSource.indexOf('Recap') !== -1;
     const holdingLocation = this.getHoldingLocation(item, nonNyplRecap);
@@ -215,7 +215,7 @@ function LibraryItem() {
     const isSerial = !!(bib && bib.issuance && bib.issuance[0]['@id'] === 'urn:biblevel:s');
     const materialType = bib && bib.materialType && bib.materialType[0] ?
       bib.materialType[0] : {};
-    const format = bib.holdings && bib.holdings.format ?
+    const format = bib && bib.holdings && bib.holdings.format ?
       bib.holdings.format : materialType.prefLabel;
 
     if (availability === 'available') {
