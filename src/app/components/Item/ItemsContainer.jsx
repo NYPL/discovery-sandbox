@@ -203,7 +203,7 @@ ItemsContainer.propTypes = {
   bibId: PropTypes.string,
   shortenItems: PropTypes.bool,
   searchKeywords: PropTypes.string,
-  holdings: PropTypes.object,
+  holdings: PropTypes.array,
 };
 
 ItemsContainer.defaultProps = {

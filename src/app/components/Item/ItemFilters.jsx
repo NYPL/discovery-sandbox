@@ -92,7 +92,7 @@ const ItemFilters = ({ items, hasFilterApplied, numOfFilteredItems }, { router }
 ItemFilters.propTypes = {
   items: PropTypes.array,
   hasFilterApplied: PropTypes.bool,
-  numOfFilteredItems: PropTypes.integer,
+  numOfFilteredItems: PropTypes.number,
 };
 
 ItemFilters.contextTypes = {

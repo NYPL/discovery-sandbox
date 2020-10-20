@@ -1,6 +1,10 @@
 .item-filter {
   display: inline-block;
-  width: 250px;
+  width: 30%;
+
+  .item-filter-button {
+    border: 1px solid var(--ui-gray-medium);
+  }
 
   ul {
     list-style: none;
@@ -33,7 +37,7 @@
 .item-filter-button {
   justify-content: space-between;
   text-transform: capitalize;
-  width: 200px;
+  width: 90%;
 }
 
 .item-table-filters {
@@ -63,5 +67,27 @@
   button {
     color: rgb(195, 76, 61);
     display: inline-block;
+  }
+}
+
+// this is the minimum width at which the `Status` options will not go beyond the screenwidth
+@media (max-width: 750px) {
+  .item-filter {
+    display: block;
+    width: 100%;
+  }
+
+  .item-filter-button {
+    width: 100%;
+  }
+
+  .item-filter-content {
+    position: unset;
+    width: 100%;
+    float: left;
+  }
+
+  .item-filter-button {
+    border-bottom: none;
   }
 }
