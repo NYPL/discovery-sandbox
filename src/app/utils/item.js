@@ -149,13 +149,14 @@ function LibraryItem() {
    *
    * @return {object}
    */
-  this.getIdentifiers = (identifiersArray, neededTagsArray) => (
-    neededTagsArray.reduce((identifierMap, neededTag) => {
+  this.getIdentifiers = (identifiersArray, neededTagsArray) => {
+    if (!Array.isArray(identifiersArray)) return {};
+    return neededTagsArray.reduce((identifierMap, neededTag) => {
       const matches = this.getIdentifierEntitiesByType(identifiersArray, neededTag.value);
       if (matches && matches.length > 0) return Object.assign(identifierMap, { [neededTag.name]: matches[0]['@value'] });
       return identifierMap;
-    }, {})
-  );
+    }, {});
+  };
 
   /**
    * getElectronicResources(item)
@@ -176,9 +177,9 @@ function LibraryItem() {
    * @param {object} item The item to update the data for.
    * @return {object}
    */
-  this.mapItem = (item = {}) => {
+  this.mapItem = (item = {}, bib) => {
     const id = item && item['@id'] ? item['@id'].substring(4) : '';
-    const itemSource = item.idNyplSourceId ? item.idNyplSourceId['@type'] : undefined;
+    const itemSource = item.idNyplSourceId ? item.idNyplSourceId['@type'] : '';
     // Taking the first object in the accessMessage array.
     const accessMessage = item.accessMessage && item.accessMessage.length ?
       item.accessMessage[0] : {};
@@ -211,6 +212,11 @@ function LibraryItem() {
     const mappedItemSource = itemSourceMappings[itemSource];
     const isOffsite = this.isOffsite(holdingLocation.prefLabel.toLowerCase());
     let url = null;
+    const isSerial = !!(bib && bib.issuance && bib.issuance[0]['@id'] === 'urn:biblevel:s');
+    const materialType = bib && bib.materialType && bib.materialType[0] ?
+      bib.materialType[0] : {};
+    const format = bib && bib.holdings && bib.holdings.format ?
+      bib.holdings.format : materialType.prefLabel;
 
     if (availability === 'available') {
       // For all items that we want to send to the Hold Request Form.
@@ -226,7 +232,7 @@ function LibraryItem() {
       isElectronicResource,
       electronicResources,
       location: holdingLocation.prefLabel,
-      holdingLocationCode: holdingLocation['@id'],
+      holdingLocationCode: holdingLocation['@id'] || '',
       callNumber,
       url,
       requestable,
@@ -236,6 +242,9 @@ function LibraryItem() {
       isRecap,
       nonRecapNYPL,
       isOffsite,
+      isSerial,
+      format,
+      materialType,
     };
   };
 
@@ -253,7 +262,7 @@ function LibraryItem() {
       // Will return undefined if not found.
       const item = _findWhere(items, { '@id': `res:${itemId}` });
       if (item) {
-        return this.mapItem(item);
+        return this.mapItem(item, bib);
       }
     }
 
@@ -269,7 +278,7 @@ function LibraryItem() {
   this.getItems = (bib) => {
     // filter out anything without a status or location
     const bibItems = bib && bib.items && bib.items.length ? bib.items : [];
-    const finalItems = bibItems.map(item => this.mapItem(item));
+    const finalItems = bibItems.map(item => this.mapItem(item, bib));
 
     return finalItems;
   };

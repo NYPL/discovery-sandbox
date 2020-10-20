@@ -2,14 +2,17 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 import { isArray as _isArray } from 'underscore';
+
 import Pagination from '../Pagination/Pagination';
 import ItemTable from './ItemTable';
+import ItemFilters from './ItemFilters';
 import appConfig from '../../data/appConfig';
-import { trackDiscovery } from '../../utils/utils';
+import { trackDiscovery, isOptionSelected } from '../../utils/utils';
+import { itemFilters } from '../../data/constants';
 
-class ItemHoldings extends React.Component {
-  constructor(props) {
-    super(props);
+class ItemsContainer extends React.Component {
+  constructor(props, context) {
+    super(props, context);
 
     this.state = {
       chunkedItems: [],
@@ -18,14 +21,20 @@ class ItemHoldings extends React.Component {
       page: parseInt(this.props.itemPage.substring(10), 10) || 1,
     };
 
+    this.query = context.router.location.query;
+    this.hasFilter = Object.keys(this.query).some(param => (
+      itemFilters.map(filter => filter.type).includes(param)));
+    this.filteredItems = this.filterItems(this.props.items) || [];
+
     this.updatePage = this.updatePage.bind(this);
     this.chunk = this.chunk.bind(this);
     this.showAll = this.showAll.bind(this);
+    this.filterItems = this.filterItems.bind(this);
   }
 
   componentDidMount() {
     // Mostly things we want to do on the client-side only:
-    const items = this.props.items;
+    const items = this.filteredItems;
     let chunkedItems = [];
     let noItemPage = false;
 
@@ -56,7 +65,8 @@ class ItemHoldings extends React.Component {
   getTable(items, shortenItems = false, showAll) {
     // If there are more than 20 items and we need to shorten it to 20 AND we are not
     // showing all items.
-    const itemsToDisplay = items && shortenItems && !showAll ? items.slice(0, 20) : items;
+    const itemsToDisplay = items && shortenItems && !showAll ?
+      items.slice(0, 20) : items;
     const bibId = this.props.bibId;
 
     return (
@@ -66,8 +76,34 @@ class ItemHoldings extends React.Component {
           bibId={bibId}
           id="bib-item-table"
           searchKeywords={this.props.searchKeywords}
+          holdings={this.props.holdings}
         /> : null
     );
+  }
+
+  filterItems(items) {
+    if (!items || !items.length) return [];
+    const { query } = this;
+    if (!query) return items;
+    if (!this.hasFilter) return items;
+
+    return items.filter((item) => {
+      const showItem = itemFilters.every((filter) => {
+        const filterType = filter.type;
+        const filterValue = query[filterType];
+        if (!filterValue) return true;
+        const selections = typeof filterValue === 'string' ? [filterValue] : filterValue;
+        return selections.some((selection) => {
+          const isRequestable = filterType === 'status' && selection === 'requestable';
+          if (isRequestable) return item.requestable;
+          const isOffsite = filterType === 'location' && selection === 'offsite';
+          if (isOffsite) return item.isOffsite;
+          const itemProperty = filter.extractItemProperty(item);
+          return isOptionSelected(selection, itemProperty);
+        });
+      });
+      return showItem;
+    });
   }
 
   /*
@@ -106,14 +142,16 @@ class ItemHoldings extends React.Component {
 
   render() {
     const bibId = this.props.bibId;
-    let items = this.props.items;
+    const { items } = this.props;
+    if (!items) return null;
     const shortenItems = !this.props.shortenItems;
     let pagination = null;
 
-    if (this.state.js && items && items.length >= 20 && !this.state.showAll) {
+    let itemsToDisplay = this.filteredItems;
+    if (this.state.js && itemsToDisplay && itemsToDisplay.length >= 20 && !this.state.showAll) {
       pagination = (
         <Pagination
-          total={items.length}
+          total={itemsToDisplay.length}
           perPage={20}
           page={this.state.page}
           updatePage={this.updatePage}
@@ -122,21 +160,23 @@ class ItemHoldings extends React.Component {
         />
       );
 
-      items = this.state.chunkedItems[this.state.page - 1];
+      itemsToDisplay = this.state.chunkedItems[this.state.page - 1];
     }
 
-    const itemTable = this.getTable(items, shortenItems, this.state.showAll);
-
-    if (!items || !items.length) {
-      return null;
-    }
+    const itemTable = this.getTable(itemsToDisplay, shortenItems, this.state.showAll);
 
     return (
       <div className="nypl-results-item">
-        <h2>Availability</h2>
+        <h2>Items in the Library & Offsite</h2>
+        <ItemFilters
+          items={items}
+          hasFilterApplied={this.hasFilter}
+          query={this.query}
+          numOfFilteredItems={this.filteredItems.length}
+        />
         {itemTable}
         {
-          !!(shortenItems && items.length >= 20 && !this.state.showAll) &&
+          !!(shortenItems && this.filteredItems.length >= 20 && !this.state.showAll) &&
             (<div className="view-all-items-container">
               {
                 this.state.js ?
@@ -157,22 +197,23 @@ class ItemHoldings extends React.Component {
   }
 }
 
-ItemHoldings.propTypes = {
+ItemsContainer.propTypes = {
   items: PropTypes.array,
   itemPage: PropTypes.string,
   bibId: PropTypes.string,
   shortenItems: PropTypes.bool,
   searchKeywords: PropTypes.string,
+  holdings: PropTypes.object,
 };
 
-ItemHoldings.defaultProps = {
+ItemsContainer.defaultProps = {
   shortenItems: false,
   searchKeywords: '',
   itemPage: '0',
 };
 
-ItemHoldings.contextTypes = {
+ItemsContainer.contextTypes = {
   router: PropTypes.object,
 };
 
-export default ItemHoldings;
+export default ItemsContainer;

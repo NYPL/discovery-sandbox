@@ -128,7 +128,6 @@ class Tabbed extends React.Component {
                   ref={(input) => { this.sections[`${j}`] = input; }}
                   aria-labelledby={`link${j}`}
                 >
-                  <br />
                   {this.props.tabs[i].content}
                 </section>
               );
@@ -140,7 +139,6 @@ class Tabbed extends React.Component {
             ref={(input) => { this.default = input; }}
             aria-labelledby="link1"
           >
-            <br />
             {this.props.tabs[0].content}
           </section>
         </ul>

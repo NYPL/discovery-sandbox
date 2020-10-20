@@ -2,10 +2,10 @@
 /* eslint-disable react/jsx-filename-extension */
 import React from 'react';
 import { expect } from 'chai';
-import { spy, stub } from 'sinon';
+import { spy } from 'sinon';
 import { shallow, mount } from 'enzyme';
 import { mockRouterContext } from '../helpers/routing';
-import item from '../fixtures/item';
+import item from '../fixtures/libraryItems';
 
 // Import the component that is going to be tested
 import ItemTableRow from './../../src/app/components/Item/ItemTableRow';
@@ -45,15 +45,15 @@ describe('ItemTableRow', () => {
         expect(component.prop('className')).to.equal('available');
       });
 
-      it('should return four <td>', () => {
-        expect(component.find('td').length).to.equal(4);
+      it('should return five <td>', () => {
+        expect(component.find('td').length).to.equal(5);
       });
 
-      it('should not have a location as the first <td> column data', () => {
+      it('should not have a format as the first <td> column data', () => {
         expect(component.find('td').at(0).text()).to.equal(' ');
       });
 
-      it('should not have a call number as the second <td> column data', () => {
+      it('should not have an access message as the second <td> column data', () => {
         expect(component.find('td').at(1).text()).to.equal(' ');
       });
 
@@ -61,8 +61,12 @@ describe('ItemTableRow', () => {
         expect(component.find('td').at(2).text()).to.equal(' ');
       });
 
-      it('should not have an access message as the fourth <td> column data', () => {
+      it('should not have a call number as the fourth <td> column data', () => {
         expect(component.find('td').at(3).text()).to.equal(' ');
+      });
+
+      it('should not have a location as the fifth <td> column data', () => {
+        expect(component.find('td').at(4).text()).to.equal(' ');
       });
     });
 
@@ -79,24 +83,28 @@ describe('ItemTableRow', () => {
         expect(component.prop('className')).to.equal('available');
       });
 
-      it('should return four <td>', () => {
-        expect(component.find('td').length).to.equal(4);
+      it('should return five <td>', () => {
+        expect(component.find('td').length).to.equal(5);
       });
 
-      it('should a location as the first <td> column data', () => {
-        expect(component.find('td').at(0).text()).to.equal('SASB M1 - General Research - Room 315');
+      it('should have a format as the first <td> column data', () => {
+        expect(component.find('td').at(0).text()).to.equal('Text');
       });
 
-      it('should have a call number as the second <td> column data', () => {
-        expect(component.find('td').at(1).text()).to.equal('JFE 07-5007 ---');
+      it('should have an access message as the second <td> column data', () => {
+        expect(component.find('td').at(1).text()).to.equal('USE IN LIBRARY');
       });
 
       it('should have a status as the third <td> column data', () => {
         expect(component.find('td').at(2).text()).to.equal('Available');
       });
 
-      it('should have an access message as the fourth <td> column data', () => {
-        expect(component.find('td').at(3).text()).to.equal('USE IN LIBRARY');
+      it('should have a call number as the fourth <td> column data', () => {
+        expect(component.find('td').at(3).text()).to.equal('JFE 07-5007 ---');
+      });
+
+      it('should have a location as the fifth <td> column data', () => {
+        expect(component.find('td').at(4).text()).to.equal('SASB M1 - General Research - Room 315');
       });
     });
 
@@ -108,12 +116,8 @@ describe('ItemTableRow', () => {
         component = shallow(<ItemTableRow item={data} />);
       });
 
-      it('should a location as the first <td> column data', () => {
-        expect(component.find('td').at(0).text()).to.equal('SASB M1 - General Research - Room 315');
-      });
-
-      it('should have a call number as the second <td> column data', () => {
-        expect(component.find('td').at(1).text()).to.equal('JFE 07-5007 ---');
+      it('should have an access message as the second <td> column data', () => {
+        expect(component.find('td').at(1).text()).to.equal('USE IN LIBRARY');
       });
 
       it('should have a status as the third <td> column data and not a button', () => {
@@ -121,8 +125,12 @@ describe('ItemTableRow', () => {
         expect(component.find('td').find('Link').length).to.equal(1);
       });
 
-      it('should have an access message as the fourth <td> column data', () => {
-        expect(component.find('td').at(3).text()).to.equal('USE IN LIBRARY');
+      it('should have a call number as the fourth <td> column data', () => {
+        expect(component.find('td').at(3).text()).to.equal('JFE 07-5007 ---');
+      });
+
+      it('should have a location as the fifth <td> column data', () => {
+        expect(component.find('td').at(4).text()).to.equal('SASB M1 - General Research - Room 315');
       });
     });
 
@@ -134,12 +142,12 @@ describe('ItemTableRow', () => {
         component = shallow(<ItemTableRow item={data} />);
       });
 
-      it('should a location as the first <td> column data', () => {
-        expect(component.find('td').at(0).text()).to.equal('SASB M1 - General Research - Room 315');
+      it('should have an access message as the second <td> column data', () => {
+        expect(component.find('td').at(1).text()).to.equal('USE IN LIBRARY');
       });
 
-      it('should have a call number as the second <td> column data', () => {
-        expect(component.find('td').at(1).text()).to.equal('JFE 07-5007 ---');
+      it('should have a call number as the fourth <td> column data', () => {
+        expect(component.find('td').at(3).text()).to.equal('JFE 07-5007 ---');
       });
 
       it('should have a status as the third <td> column data and not a button', () => {
@@ -147,8 +155,8 @@ describe('ItemTableRow', () => {
         expect(component.find('td').at(2).render().find('Link').length).to.equal(0);
       });
 
-      it('should have an access message as the fourth <td> column data', () => {
-        expect(component.find('td').at(3).text()).to.equal('USE IN LIBRARY');
+      it('should have a location as the fifth <td> column data', () => {
+        expect(component.find('td').at(4).text()).to.equal('SASB M1 - General Research - Room 315');
       });
     });
 
@@ -163,7 +171,7 @@ describe('ItemTableRow', () => {
           mount(<ItemTableRow item={data} bibId="b12345" />, { context });
       });
 
-      it('should render the Request button the third <td> column data', () => {
+      it('should render the Request button in the third <td> column', () => {
         expect(component.find('td').at(2).render().text()).to.equal('Request');
         expect(component.find('td').find('Link').length).to.equal(1);
       });

@@ -1,0 +1,3335 @@
+{
+  "@context": "http://discovery-api-production.us-east-1.elasticbeanstalk.com/api/v0.1/discovery/context_all.jsonld",
+  "@type": [
+    "nypl:Item",
+    "nypl:Resource"
+  ],
+  "@id": "res:b11254422",
+  "carrierType": [
+    {
+      "@id": "carriertypes:nc",
+      "prefLabel": "volume"
+    }
+  ],
+  "createdString": [
+    "1981"
+  ],
+  "createdYear": 1981,
+  "dateEndString": [
+    "9999"
+  ],
+  "dateEndYear": 9999,
+  "dateStartYear": 1981,
+  "dateString": [
+    "1981"
+  ],
+  "dimensions": [
+    "30 cm."
+  ],
+  "extent": [
+    "v. : ill. ;"
+  ],
+  "idIssn": [
+    "0720-5260"
+  ],
+  "idLccn": [
+    "82645711"
+  ],
+  "identifier": [
+    {
+      "@type": "bf:ShelfMark",
+      "@value": "MFWA+ 89-1277"
+    },
+    {
+      "@type": "nypl:Bnumber",
+      "@value": "11254422"
+    },
+    {
+      "@type": "bf:Issn",
+      "@value": "0720-5260"
+    },
+    {
+      "@type": "bf:Lccn",
+      "@value": "82645711"
+    },
+    {
+      "@type": "bf:Identifier",
+      "@value": "(WaOLN)nyp1262092"
+    }
+  ],
+  "issuance": [
+    {
+      "@id": "urn:biblevel:s",
+      "prefLabel": "serial"
+    }
+  ],
+  "items": [
+    {
+      "@id": "res:i36549722",
+      "accessMessage": [
+        {
+          "@id": "accessMessage:2",
+          "prefLabel": "Request in advance"
+        }
+      ],
+      "catalogItemType": [
+        {
+          "@id": "catalogItemType:4",
+          "prefLabel": "serial, loose"
+        }
+      ],
+      "holdingLocation": [
+        {
+          "@id": "loc:rc2ma",
+          "prefLabel": "Offsite"
+        }
+      ],
+      "idBarcode": [
+        "33433121036879"
+      ],
+      "identifier": [
+        {
+          "@type": "bf:ShelfMark",
+          "@value": "MFWA+ 89-1277 v, 31, no. 121 (2011)"
+        },
+        {
+          "@type": "bf:Barcode",
+          "@value": "33433121036879"
+        }
+      ],
+      "owner": [
+        {
+          "@id": "orgs:1000",
+          "prefLabel": "Stephen A. Schwarzman Building"
+        }
+      ],
+      "requestable": [
+        true
+      ],
+      "shelfMark": [
+        "MFWA+ 89-1277 v, 31, no. 121 (2011)"
+      ],
+      "status": [
+        {
+          "@id": "status:a",
+          "prefLabel": "Available"
+        }
+      ],
+      "uri": "i36549722",
+      "idNyplSourceId": {
+        "@type": "SierraNypl",
+        "@value": "36549722"
+      }
+    },
+    {
+      "@id": "res:i25062226",
+      "accessMessage": [
+        {
+          "@id": "accessMessage:1",
+          "prefLabel": "Use in library"
+        }
+      ],
+      "catalogItemType": [
+        {
+          "@id": "catalogItemType:3",
+          "prefLabel": "serial"
+        }
+      ],
+      "holdingLocation": [
+        {
+          "@id": "loc:mas82",
+          "prefLabel": "Schwarzman Building - Art & Architecture Room 300"
+        }
+      ],
+      "idBarcode": [
+        "33433077646812"
+      ],
+      "identifier": [
+        {
+          "@type": "bf:ShelfMark",
+          "@value": "MFWA+ 89-1277 v. 8 (1988)"
+        },
+        {
+          "@type": "bf:Barcode",
+          "@value": "33433077646812"
+        }
+      ],
+      "owner": [
+        {
+          "@id": "orgs:1110",
+          "prefLabel": "The Miriam and Ira D. Wallach Division of Art, Prints and Photographs: Art & Architecture Collection"
+        }
+      ],
+      "requestable": [
+        false
+      ],
+      "shelfMark": [
+        "MFWA+ 89-1277 v. 8 (1988)"
+      ],
+      "status": [
+        {
+          "@id": "status:a",
+          "prefLabel": "Available"
+        }
+      ],
+      "uri": "i25062226",
+      "idNyplSourceId": {
+        "@type": "SierraNypl",
+        "@value": "25062226"
+      }
+    },
+    {
+      "@id": "res:i25062228",
+      "accessMessage": [
+        {
+          "@id": "accessMessage:1",
+          "prefLabel": "Use in library"
+        }
+      ],
+      "catalogItemType": [
+        {
+          "@id": "catalogItemType:3",
+          "prefLabel": "serial"
+        }
+      ],
+      "holdingLocation": [
+        {
+          "@id": "loc:mas82",
+          "prefLabel": "Schwarzman Building - Art & Architecture Room 300"
+        }
+      ],
+      "idBarcode": [
+        "33433084097306"
+      ],
+      "identifier": [
+        {
+          "@type": "bf:ShelfMark",
+          "@value": "MFWA+ 89-1277 v. 9 (1989) "
+        },
+        {
+          "@type": "bf:Barcode",
+          "@value": "33433084097306"
+        }
+      ],
+      "owner": [
+        {
+          "@id": "orgs:1110",
+          "prefLabel": "The Miriam and Ira D. Wallach Division of Art, Prints and Photographs: Art & Architecture Collection"
+        }
+      ],
+      "requestable": [
+        false
+      ],
+      "shelfMark": [
+        "MFWA+ 89-1277 v. 9 (1989) "
+      ],
+      "status": [
+        {
+          "@id": "status:a",
+          "prefLabel": "Available"
+        }
+      ],
+      "uri": "i25062228",
+      "idNyplSourceId": {
+        "@type": "SierraNypl",
+        "@value": "25062228"
+      }
+    },
+    {
+      "@id": "res:i25062229",
+      "accessMessage": [
+        {
+          "@id": "accessMessage:1",
+          "prefLabel": "Use in library"
+        }
+      ],
+      "catalogItemType": [
+        {
+          "@id": "catalogItemType:3",
+          "prefLabel": "serial"
+        }
+      ],
+      "holdingLocation": [
+        {
+          "@id": "loc:mas82",
+          "prefLabel": "Schwarzman Building - Art & Architecture Room 300"
+        }
+      ],
+      "idBarcode": [
+        "33433077646820"
+      ],
+      "identifier": [
+        {
+          "@type": "bf:ShelfMark",
+          "@value": "MFWA+ 89-1277 v. 10 (1990)(Cum. Index 1-10)(1981-90)"
+        },
+        {
+          "@type": "bf:Barcode",
+          "@value": "33433077646820"
+        }
+      ],
+      "owner": [
+        {
+          "@id": "orgs:1110",
+          "prefLabel": "The Miriam and Ira D. Wallach Division of Art, Prints and Photographs: Art & Architecture Collection"
+        }
+      ],
+      "requestable": [
+        false
+      ],
+      "shelfMark": [
+        "MFWA+ 89-1277 v. 10 (1990)(Cum. Index 1-10)(1981-90)"
+      ],
+      "status": [
+        {
+          "@id": "status:a",
+          "prefLabel": "Available"
+        }
+      ],
+      "uri": "i25062229",
+      "idNyplSourceId": {
+        "@type": "SierraNypl",
+        "@value": "25062229"
+      }
+    },
+    {
+      "@id": "res:i25062233",
+      "accessMessage": [
+        {
+          "@id": "accessMessage:1",
+          "prefLabel": "Use in library"
+        }
+      ],
+      "catalogItemType": [
+        {
+          "@id": "catalogItemType:3",
+          "prefLabel": "serial"
+        }
+      ],
+      "holdingLocation": [
+        {
+          "@id": "loc:mas82",
+          "prefLabel": "Schwarzman Building - Art & Architecture Room 300"
+        }
+      ],
+      "idBarcode": [
+        "33433077646838"
+      ],
+      "identifier": [
+        {
+          "@type": "bf:ShelfMark",
+          "@value": "MFWA+ 89-1277 v. 11 (1991)"
+        },
+        {
+          "@type": "bf:Barcode",
+          "@value": "33433077646838"
+        }
+      ],
+      "owner": [
+        {
+          "@id": "orgs:1110",
+          "prefLabel": "The Miriam and Ira D. Wallach Division of Art, Prints and Photographs: Art & Architecture Collection"
+        }
+      ],
+      "requestable": [
+        false
+      ],
+      "shelfMark": [
+        "MFWA+ 89-1277 v. 11 (1991)"
+      ],
+      "status": [
+        {
+          "@id": "status:a",
+          "prefLabel": "Available"
+        }
+      ],
+      "uri": "i25062233",
+      "idNyplSourceId": {
+        "@type": "SierraNypl",
+        "@value": "25062233"
+      }
+    },
+    {
+      "@id": "res:i25062236",
+      "accessMessage": [
+        {
+          "@id": "accessMessage:1",
+          "prefLabel": "Use in library"
+        }
+      ],
+      "catalogItemType": [
+        {
+          "@id": "catalogItemType:3",
+          "prefLabel": "serial"
+        }
+      ],
+      "holdingLocation": [
+        {
+          "@id": "loc:mas82",
+          "prefLabel": "Schwarzman Building - Art & Architecture Room 300"
+        }
+      ],
+      "idBarcode": [
+        "33433077646846"
+      ],
+      "identifier": [
+        {
+          "@type": "bf:ShelfMark",
+          "@value": "MFWA+ 89-1277 v. 12 no. 43-46 (1992)"
+        },
+        {
+          "@type": "bf:Barcode",
+          "@value": "33433077646846"
+        }
+      ],
+      "owner": [
+        {
+          "@id": "orgs:1110",
+          "prefLabel": "The Miriam and Ira D. Wallach Division of Art, Prints and Photographs: Art & Architecture Collection"
+        }
+      ],
+      "requestable": [
+        false
+      ],
+      "shelfMark": [
+        "MFWA+ 89-1277 v. 12 no. 43-46 (1992)"
+      ],
+      "status": [
+        {
+          "@id": "status:a",
+          "prefLabel": "Available"
+        }
+      ],
+      "uri": "i25062236",
+      "idNyplSourceId": {
+        "@type": "SierraNypl",
+        "@value": "25062236"
+      }
+    },
+    {
+      "@id": "res:i25062237",
+      "accessMessage": [
+        {
+          "@id": "accessMessage:1",
+          "prefLabel": "Use in library"
+        }
+      ],
+      "catalogItemType": [
+        {
+          "@id": "catalogItemType:3",
+          "prefLabel": "serial"
+        }
+      ],
+      "holdingLocation": [
+        {
+          "@id": "loc:mas82",
+          "prefLabel": "Schwarzman Building - Art & Architecture Room 300"
+        }
+      ],
+      "idBarcode": [
+        "33433077646853"
+      ],
+      "identifier": [
+        {
+          "@type": "bf:ShelfMark",
+          "@value": "MFWA+ 89-1277 v. 13 no. 47-50 (1993)"
+        },
+        {
+          "@type": "bf:Barcode",
+          "@value": "33433077646853"
+        }
+      ],
+      "owner": [
+        {
+          "@id": "orgs:1110",
+          "prefLabel": "The Miriam and Ira D. Wallach Division of Art, Prints and Photographs: Art & Architecture Collection"
+        }
+      ],
+      "requestable": [
+        false
+      ],
+      "shelfMark": [
+        "MFWA+ 89-1277 v. 13 no. 47-50 (1993)"
+      ],
+      "status": [
+        {
+          "@id": "status:a",
+          "prefLabel": "Available"
+        }
+      ],
+      "uri": "i25062237",
+      "idNyplSourceId": {
+        "@type": "SierraNypl",
+        "@value": "25062237"
+      }
+    },
+    {
+      "@id": "res:i25062239",
+      "accessMessage": [
+        {
+          "@id": "accessMessage:1",
+          "prefLabel": "Use in library"
+        }
+      ],
+      "catalogItemType": [
+        {
+          "@id": "catalogItemType:3",
+          "prefLabel": "serial"
+        }
+      ],
+      "holdingLocation": [
+        {
+          "@id": "loc:mas82",
+          "prefLabel": "Schwarzman Building - Art & Architecture Room 300"
+        }
+      ],
+      "idBarcode": [
+        "33433077646861"
+      ],
+      "identifier": [
+        {
+          "@type": "bf:ShelfMark",
+          "@value": "MFWA+ 89-1277 v. 14 no. 51-54 (1994)"
+        },
+        {
+          "@type": "bf:Barcode",
+          "@value": "33433077646861"
+        }
+      ],
+      "owner": [
+        {
+          "@id": "orgs:1110",
+          "prefLabel": "The Miriam and Ira D. Wallach Division of Art, Prints and Photographs: Art & Architecture Collection"
+        }
+      ],
+      "requestable": [
+        false
+      ],
+      "shelfMark": [
+        "MFWA+ 89-1277 v. 14 no. 51-54 (1994)"
+      ],
+      "status": [
+        {
+          "@id": "status:a",
+          "prefLabel": "Available"
+        }
+      ],
+      "uri": "i25062239",
+      "idNyplSourceId": {
+        "@type": "SierraNypl",
+        "@value": "25062239"
+      }
+    },
+    {
+      "@id": "res:i25062241",
+      "accessMessage": [
+        {
+          "@id": "accessMessage:1",
+          "prefLabel": "Use in library"
+        }
+      ],
+      "catalogItemType": [
+        {
+          "@id": "catalogItemType:3",
+          "prefLabel": "serial"
+        }
+      ],
+      "holdingLocation": [
+        {
+          "@id": "loc:mas82",
+          "prefLabel": "Schwarzman Building - Art & Architecture Room 300"
+        }
+      ],
+      "idBarcode": [
+        "33433077646879"
+      ],
+      "identifier": [
+        {
+          "@type": "bf:ShelfMark",
+          "@value": "MFWA+ 89-1277 v. 15 no. 55-58 (1995)"
+        },
+        {
+          "@type": "bf:Barcode",
+          "@value": "33433077646879"
+        }
+      ],
+      "owner": [
+        {
+          "@id": "orgs:1110",
+          "prefLabel": "The Miriam and Ira D. Wallach Division of Art, Prints and Photographs: Art & Architecture Collection"
+        }
+      ],
+      "requestable": [
+        false
+      ],
+      "shelfMark": [
+        "MFWA+ 89-1277 v. 15 no. 55-58 (1995)"
+      ],
+      "status": [
+        {
+          "@id": "status:a",
+          "prefLabel": "Available"
+        }
+      ],
+      "uri": "i25062241",
+      "idNyplSourceId": {
+        "@type": "SierraNypl",
+        "@value": "25062241"
+      }
+    },
+    {
+      "@id": "res:i25062246",
+      "accessMessage": [
+        {
+          "@id": "accessMessage:1",
+          "prefLabel": "Use in library"
+        }
+      ],
+      "catalogItemType": [
+        {
+          "@id": "catalogItemType:3",
+          "prefLabel": "serial"
+        }
+      ],
+      "holdingLocation": [
+        {
+          "@id": "loc:mas82",
+          "prefLabel": "Schwarzman Building - Art & Architecture Room 300"
+        }
+      ],
+      "idBarcode": [
+        "33433077646887"
+      ],
+      "identifier": [
+        {
+          "@type": "bf:ShelfMark",
+          "@value": "MFWA+ 89-1277 v. 16-17 no. 59-66 (1996-97)"
+        },
+        {
+          "@type": "bf:Barcode",
+          "@value": "33433077646887"
+        }
+      ],
+      "owner": [
+        {
+          "@id": "orgs:1110",
+          "prefLabel": "The Miriam and Ira D. Wallach Division of Art, Prints and Photographs: Art & Architecture Collection"
+        }
+      ],
+      "requestable": [
+        false
+      ],
+      "shelfMark": [
+        "MFWA+ 89-1277 v. 16-17 no. 59-66 (1996-97)"
+      ],
+      "status": [
+        {
+          "@id": "status:a",
+          "prefLabel": "Available"
+        }
+      ],
+      "uri": "i25062246",
+      "idNyplSourceId": {
+        "@type": "SierraNypl",
+        "@value": "25062246"
+      }
+    },
+    {
+      "@id": "res:i25079275",
+      "accessMessage": [
+        {
+          "@id": "accessMessage:1",
+          "prefLabel": "Use in library"
+        }
+      ],
+      "catalogItemType": [
+        {
+          "@id": "catalogItemType:3",
+          "prefLabel": "serial"
+        }
+      ],
+      "holdingLocation": [
+        {
+          "@id": "loc:mas82",
+          "prefLabel": "Schwarzman Building - Art & Architecture Room 300"
+        }
+      ],
+      "idBarcode": [
+        "33433077646895"
+      ],
+      "identifier": [
+        {
+          "@type": "bf:ShelfMark",
+          "@value": "MFWA+ 89-1277 v. 18-19 no. 67-71 (1998)"
+        },
+        {
+          "@type": "bf:Barcode",
+          "@value": "33433077646895"
+        }
+      ],
+      "owner": [
+        {
+          "@id": "orgs:1110",
+          "prefLabel": "The Miriam and Ira D. Wallach Division of Art, Prints and Photographs: Art & Architecture Collection"
+        }
+      ],
+      "requestable": [
+        false
+      ],
+      "shelfMark": [
+        "MFWA+ 89-1277 v. 18-19 no. 67-71 (1998)"
+      ],
+      "status": [
+        {
+          "@id": "status:a",
+          "prefLabel": "Available"
+        }
+      ],
+      "uri": "i25079275",
+      "idNyplSourceId": {
+        "@type": "SierraNypl",
+        "@value": "25079275"
+      }
+    },
+    {
+      "@id": "res:i25079276",
+      "accessMessage": [
+        {
+          "@id": "accessMessage:1",
+          "prefLabel": "Use in library"
+        }
+      ],
+      "catalogItemType": [
+        {
+          "@id": "catalogItemType:3",
+          "prefLabel": "serial"
+        }
+      ],
+      "holdingLocation": [
+        {
+          "@id": "loc:mas82",
+          "prefLabel": "Schwarzman Building - Art & Architecture Room 300"
+        }
+      ],
+      "idBarcode": [
+        "33433077646903"
+      ],
+      "identifier": [
+        {
+          "@type": "bf:ShelfMark",
+          "@value": "MFWA+ 89-1277 v. 19-20 no. 72-78 (1999-2000)"
+        },
+        {
+          "@type": "bf:Barcode",
+          "@value": "33433077646903"
+        }
+      ],
+      "owner": [
+        {
+          "@id": "orgs:1110",
+          "prefLabel": "The Miriam and Ira D. Wallach Division of Art, Prints and Photographs: Art & Architecture Collection"
+        }
+      ],
+      "requestable": [
+        false
+      ],
+      "shelfMark": [
+        "MFWA+ 89-1277 v. 19-20 no. 72-78 (1999-2000)"
+      ],
+      "status": [
+        {
+          "@id": "status:a",
+          "prefLabel": "Available"
+        }
+      ],
+      "uri": "i25079276",
+      "idNyplSourceId": {
+        "@type": "SierraNypl",
+        "@value": "25079276"
+      }
+    },
+    {
+      "@id": "res:i25079277",
+      "accessMessage": [
+        {
+          "@id": "accessMessage:1",
+          "prefLabel": "Use in library"
+        }
+      ],
+      "catalogItemType": [
+        {
+          "@id": "catalogItemType:3",
+          "prefLabel": "serial"
+        }
+      ],
+      "holdingLocation": [
+        {
+          "@id": "loc:mas82",
+          "prefLabel": "Schwarzman Building - Art & Architecture Room 300"
+        }
+      ],
+      "idBarcode": [
+        "33433077646911"
+      ],
+      "identifier": [
+        {
+          "@type": "bf:ShelfMark",
+          "@value": "MFWA+ 89-1277 v. 21-22 no. 79-85 (2001-02)"
+        },
+        {
+          "@type": "bf:Barcode",
+          "@value": "33433077646911"
+        }
+      ],
+      "owner": [
+        {
+          "@id": "orgs:1110",
+          "prefLabel": "The Miriam and Ira D. Wallach Division of Art, Prints and Photographs: Art & Architecture Collection"
+        }
+      ],
+      "requestable": [
+        false
+      ],
+      "shelfMark": [
+        "MFWA+ 89-1277 v. 21-22 no. 79-85 (2001-02)"
+      ],
+      "status": [
+        {
+          "@id": "status:a",
+          "prefLabel": "Available"
+        }
+      ],
+      "uri": "i25079277",
+      "idNyplSourceId": {
+        "@type": "SierraNypl",
+        "@value": "25079277"
+      }
+    },
+    {
+      "@id": "res:i28127344",
+      "accessMessage": [
+        {
+          "@id": "accessMessage:1",
+          "prefLabel": "Use in library"
+        }
+      ],
+      "catalogItemType": [
+        {
+          "@id": "catalogItemType:3",
+          "prefLabel": "serial"
+        }
+      ],
+      "holdingLocation": [
+        {
+          "@id": "loc:mas82",
+          "prefLabel": "Schwarzman Building - Art & Architecture Room 300"
+        }
+      ],
+      "idBarcode": [
+        "33433086728833"
+      ],
+      "identifier": [
+        {
+          "@type": "bf:ShelfMark",
+          "@value": "MFWA+ 89-1277 v. 23-24 no. 87-94 (2003-2004)"
+        },
+        {
+          "@type": "bf:Barcode",
+          "@value": "33433086728833"
+        }
+      ],
+      "owner": [
+        {
+          "@id": "orgs:1110",
+          "prefLabel": "The Miriam and Ira D. Wallach Division of Art, Prints and Photographs: Art & Architecture Collection"
+        }
+      ],
+      "requestable": [
+        false
+      ],
+      "shelfMark": [
+        "MFWA+ 89-1277 v. 23-24 no. 87-94 (2003-2004)"
+      ],
+      "status": [
+        {
+          "@id": "status:a",
+          "prefLabel": "Available"
+        }
+      ],
+      "uri": "i28127344",
+      "idNyplSourceId": {
+        "@type": "SierraNypl",
+        "@value": "28127344"
+      }
+    },
+    {
+      "@id": "res:i28127469",
+      "accessMessage": [
+        {
+          "@id": "accessMessage:1",
+          "prefLabel": "Use in library"
+        }
+      ],
+      "catalogItemType": [
+        {
+          "@id": "catalogItemType:3",
+          "prefLabel": "serial"
+        }
+      ],
+      "holdingLocation": [
+        {
+          "@id": "loc:mas82",
+          "prefLabel": "Schwarzman Building - Art & Architecture Room 300"
+        }
+      ],
+      "idBarcode": [
+        "33433086728841"
+      ],
+      "identifier": [
+        {
+          "@type": "bf:ShelfMark",
+          "@value": "MFWA+ 89-1277 v. 25-26 no. 95-102 (2005-06)"
+        },
+        {
+          "@type": "bf:Barcode",
+          "@value": "33433086728841"
+        }
+      ],
+      "owner": [
+        {
+          "@id": "orgs:1110",
+          "prefLabel": "The Miriam and Ira D. Wallach Division of Art, Prints and Photographs: Art & Architecture Collection"
+        }
+      ],
+      "requestable": [
+        false
+      ],
+      "shelfMark": [
+        "MFWA+ 89-1277 v. 25-26 no. 95-102 (2005-06)"
+      ],
+      "status": [
+        {
+          "@id": "status:a",
+          "prefLabel": "Available"
+        }
+      ],
+      "uri": "i28127469",
+      "idNyplSourceId": {
+        "@type": "SierraNypl",
+        "@value": "28127469"
+      }
+    },
+    {
+      "@id": "res:i28127471",
+      "accessMessage": [
+        {
+          "@id": "accessMessage:1",
+          "prefLabel": "Use in library"
+        }
+      ],
+      "catalogItemType": [
+        {
+          "@id": "catalogItemType:3",
+          "prefLabel": "serial"
+        }
+      ],
+      "holdingLocation": [
+        {
+          "@id": "loc:mas82",
+          "prefLabel": "Schwarzman Building - Art & Architecture Room 300"
+        }
+      ],
+      "idBarcode": [
+        "33433086728858"
+      ],
+      "identifier": [
+        {
+          "@type": "bf:ShelfMark",
+          "@value": "MFWA+ 89-1277 v. 27-28 no. 103-110 (2007-08)"
+        },
+        {
+          "@type": "bf:Barcode",
+          "@value": "33433086728858"
+        }
+      ],
+      "owner": [
+        {
+          "@id": "orgs:1110",
+          "prefLabel": "The Miriam and Ira D. Wallach Division of Art, Prints and Photographs: Art & Architecture Collection"
+        }
+      ],
+      "requestable": [
+        false
+      ],
+      "shelfMark": [
+        "MFWA+ 89-1277 v. 27-28 no. 103-110 (2007-08)"
+      ],
+      "status": [
+        {
+          "@id": "status:a",
+          "prefLabel": "Available"
+        }
+      ],
+      "uri": "i28127471",
+      "idNyplSourceId": {
+        "@type": "SierraNypl",
+        "@value": "28127471"
+      }
+    },
+    {
+      "@id": "res:i28127475",
+      "accessMessage": [
+        {
+          "@id": "accessMessage:1",
+          "prefLabel": "Use in library"
+        }
+      ],
+      "catalogItemType": [
+        {
+          "@id": "catalogItemType:3",
+          "prefLabel": "serial"
+        }
+      ],
+      "holdingLocation": [
+        {
+          "@id": "loc:mas82",
+          "prefLabel": "Schwarzman Building - Art & Architecture Room 300"
+        }
+      ],
+      "idBarcode": [
+        "33433086728866"
+      ],
+      "identifier": [
+        {
+          "@type": "bf:ShelfMark",
+          "@value": "MFWA+ 89-1277 v. 29-630 no. 111-118 (2009-10)"
+        },
+        {
+          "@type": "bf:Barcode",
+          "@value": "33433086728866"
+        }
+      ],
+      "owner": [
+        {
+          "@id": "orgs:1110",
+          "prefLabel": "The Miriam and Ira D. Wallach Division of Art, Prints and Photographs: Art & Architecture Collection"
+        }
+      ],
+      "requestable": [
+        false
+      ],
+      "shelfMark": [
+        "MFWA+ 89-1277 v. 29-630 no. 111-118 (2009-10)"
+      ],
+      "status": [
+        {
+          "@id": "status:a",
+          "prefLabel": "Available"
+        }
+      ],
+      "uri": "i28127475",
+      "idNyplSourceId": {
+        "@type": "SierraNypl",
+        "@value": "28127475"
+      }
+    },
+    {
+      "@id": "res:i36549705",
+      "accessMessage": [
+        {
+          "@id": "accessMessage:2",
+          "prefLabel": "Request in advance"
+        }
+      ],
+      "catalogItemType": [
+        {
+          "@id": "catalogItemType:4",
+          "prefLabel": "serial, loose"
+        }
+      ],
+      "holdingLocation": [
+        {
+          "@id": "loc:rc2ma",
+          "prefLabel": "Offsite"
+        }
+      ],
+      "idBarcode": [
+        "33433121036895"
+      ],
+      "identifier": [
+        {
+          "@type": "bf:ShelfMark",
+          "@value": "MFWA+ 89-1277 v. 31, no. 119 (2011)"
+        },
+        {
+          "@type": "bf:Barcode",
+          "@value": "33433121036895"
+        }
+      ],
+      "owner": [
+        {
+          "@id": "orgs:1000",
+          "prefLabel": "Stephen A. Schwarzman Building"
+        }
+      ],
+      "requestable": [
+        true
+      ],
+      "shelfMark": [
+        "MFWA+ 89-1277 v. 31, no. 119 (2011)"
+      ],
+      "status": [
+        {
+          "@id": "status:a",
+          "prefLabel": "Available"
+        }
+      ],
+      "uri": "i36549705",
+      "idNyplSourceId": {
+        "@type": "SierraNypl",
+        "@value": "36549705"
+      }
+    },
+    {
+      "@id": "res:i36549716",
+      "accessMessage": [
+        {
+          "@id": "accessMessage:2",
+          "prefLabel": "Request in advance"
+        }
+      ],
+      "catalogItemType": [
+        {
+          "@id": "catalogItemType:4",
+          "prefLabel": "serial, loose"
+        }
+      ],
+      "holdingLocation": [
+        {
+          "@id": "loc:rc2ma",
+          "prefLabel": "Offsite"
+        }
+      ],
+      "idBarcode": [
+        "33433121036887"
+      ],
+      "identifier": [
+        {
+          "@type": "bf:ShelfMark",
+          "@value": "MFWA+ 89-1277 v. 31, no. 120 (2011)"
+        },
+        {
+          "@type": "bf:Barcode",
+          "@value": "33433121036887"
+        }
+      ],
+      "owner": [
+        {
+          "@id": "orgs:1000",
+          "prefLabel": "Stephen A. Schwarzman Building"
+        }
+      ],
+      "requestable": [
+        true
+      ],
+      "shelfMark": [
+        "MFWA+ 89-1277 v. 31, no. 120 (2011)"
+      ],
+      "status": [
+        {
+          "@id": "status:a",
+          "prefLabel": "Available"
+        }
+      ],
+      "uri": "i36549716",
+      "idNyplSourceId": {
+        "@type": "SierraNypl",
+        "@value": "36549716"
+      }
+    },
+    {
+      "@id": "res:i36549740",
+      "accessMessage": [
+        {
+          "@id": "accessMessage:2",
+          "prefLabel": "Request in advance"
+        }
+      ],
+      "catalogItemType": [
+        {
+          "@id": "catalogItemType:4",
+          "prefLabel": "serial, loose"
+        }
+      ],
+      "holdingLocation": [
+        {
+          "@id": "loc:rc2ma",
+          "prefLabel": "Offsite"
+        }
+      ],
+      "idBarcode": [
+        "33433121036861"
+      ],
+      "identifier": [
+        {
+          "@type": "bf:ShelfMark",
+          "@value": "MFWA+ 89-1277 v. 31, no. 122 (2011) "
+        },
+        {
+          "@type": "bf:Barcode",
+          "@value": "33433121036861"
+        }
+      ],
+      "owner": [
+        {
+          "@id": "orgs:1000",
+          "prefLabel": "Stephen A. Schwarzman Building"
+        }
+      ],
+      "requestable": [
+        true
+      ],
+      "shelfMark": [
+        "MFWA+ 89-1277 v. 31, no. 122 (2011) "
+      ],
+      "status": [
+        {
+          "@id": "status:a",
+          "prefLabel": "Available"
+        }
+      ],
+      "uri": "i36549740",
+      "idNyplSourceId": {
+        "@type": "SierraNypl",
+        "@value": "36549740"
+      }
+    },
+    {
+      "@id": "res:i36549743",
+      "accessMessage": [
+        {
+          "@id": "accessMessage:2",
+          "prefLabel": "Request in advance"
+        }
+      ],
+      "catalogItemType": [
+        {
+          "@id": "catalogItemType:4",
+          "prefLabel": "serial, loose"
+        }
+      ],
+      "holdingLocation": [
+        {
+          "@id": "loc:rc2ma",
+          "prefLabel": "Offsite"
+        }
+      ],
+      "idBarcode": [
+        "33433121036853"
+      ],
+      "identifier": [
+        {
+          "@type": "bf:ShelfMark",
+          "@value": "MFWA+ 89-1277 v. 32, no. 123 (2012)"
+        },
+        {
+          "@type": "bf:Barcode",
+          "@value": "33433121036853"
+        }
+      ],
+      "owner": [
+        {
+          "@id": "orgs:1000",
+          "prefLabel": "Stephen A. Schwarzman Building"
+        }
+      ],
+      "requestable": [
+        true
+      ],
+      "shelfMark": [
+        "MFWA+ 89-1277 v. 32, no. 123 (2012)"
+      ],
+      "status": [
+        {
+          "@id": "status:a",
+          "prefLabel": "Available"
+        }
+      ],
+      "uri": "i36549743",
+      "idNyplSourceId": {
+        "@type": "SierraNypl",
+        "@value": "36549743"
+      }
+    },
+    {
+      "@id": "res:i36549745",
+      "accessMessage": [
+        {
+          "@id": "accessMessage:2",
+          "prefLabel": "Request in advance"
+        }
+      ],
+      "catalogItemType": [
+        {
+          "@id": "catalogItemType:4",
+          "prefLabel": "serial, loose"
+        }
+      ],
+      "holdingLocation": [
+        {
+          "@id": "loc:rc2ma",
+          "prefLabel": "Offsite"
+        }
+      ],
+      "idBarcode": [
+        "33433121036846"
+      ],
+      "identifier": [
+        {
+          "@type": "bf:ShelfMark",
+          "@value": "MFWA+ 89-1277 v. 32, no. 124 (2012)"
+        },
+        {
+          "@type": "bf:Barcode",
+          "@value": "33433121036846"
+        }
+      ],
+      "owner": [
+        {
+          "@id": "orgs:1000",
+          "prefLabel": "Stephen A. Schwarzman Building"
+        }
+      ],
+      "requestable": [
+        true
+      ],
+      "shelfMark": [
+        "MFWA+ 89-1277 v. 32, no. 124 (2012)"
+      ],
+      "status": [
+        {
+          "@id": "status:a",
+          "prefLabel": "Available"
+        }
+      ],
+      "uri": "i36549745",
+      "idNyplSourceId": {
+        "@type": "SierraNypl",
+        "@value": "36549745"
+      }
+    },
+    {
+      "@id": "res:i36549749",
+      "accessMessage": [
+        {
+          "@id": "accessMessage:2",
+          "prefLabel": "Request in advance"
+        }
+      ],
+      "catalogItemType": [
+        {
+          "@id": "catalogItemType:4",
+          "prefLabel": "serial, loose"
+        }
+      ],
+      "holdingLocation": [
+        {
+          "@id": "loc:rc2ma",
+          "prefLabel": "Offsite"
+        }
+      ],
+      "idBarcode": [
+        "33433121036838"
+      ],
+      "identifier": [
+        {
+          "@type": "bf:ShelfMark",
+          "@value": "MFWA+ 89-1277 v. 32, no. 125 (2012)"
+        },
+        {
+          "@type": "bf:Barcode",
+          "@value": "33433121036838"
+        }
+      ],
+      "owner": [
+        {
+          "@id": "orgs:1000",
+          "prefLabel": "Stephen A. Schwarzman Building"
+        }
+      ],
+      "requestable": [
+        true
+      ],
+      "shelfMark": [
+        "MFWA+ 89-1277 v. 32, no. 125 (2012)"
+      ],
+      "status": [
+        {
+          "@id": "status:a",
+          "prefLabel": "Available"
+        }
+      ],
+      "uri": "i36549749",
+      "idNyplSourceId": {
+        "@type": "SierraNypl",
+        "@value": "36549749"
+      }
+    },
+    {
+      "@id": "res:i36549751",
+      "accessMessage": [
+        {
+          "@id": "accessMessage:2",
+          "prefLabel": "Request in advance"
+        }
+      ],
+      "catalogItemType": [
+        {
+          "@id": "catalogItemType:4",
+          "prefLabel": "serial, loose"
+        }
+      ],
+      "holdingLocation": [
+        {
+          "@id": "loc:rc2ma",
+          "prefLabel": "Offsite"
+        }
+      ],
+      "idBarcode": [
+        "33433121036820"
+      ],
+      "identifier": [
+        {
+          "@type": "bf:ShelfMark",
+          "@value": "MFWA+ 89-1277 v. 32, no. 126 (2012)"
+        },
+        {
+          "@type": "bf:Barcode",
+          "@value": "33433121036820"
+        }
+      ],
+      "owner": [
+        {
+          "@id": "orgs:1000",
+          "prefLabel": "Stephen A. Schwarzman Building"
+        }
+      ],
+      "requestable": [
+        true
+      ],
+      "shelfMark": [
+        "MFWA+ 89-1277 v. 32, no. 126 (2012)"
+      ],
+      "status": [
+        {
+          "@id": "status:a",
+          "prefLabel": "Available"
+        }
+      ],
+      "uri": "i36549751",
+      "idNyplSourceId": {
+        "@type": "SierraNypl",
+        "@value": "36549751"
+      }
+    },
+    {
+      "@id": "res:i36549754",
+      "accessMessage": [
+        {
+          "@id": "accessMessage:2",
+          "prefLabel": "Request in advance"
+        }
+      ],
+      "catalogItemType": [
+        {
+          "@id": "catalogItemType:4",
+          "prefLabel": "serial, loose"
+        }
+      ],
+      "holdingLocation": [
+        {
+          "@id": "loc:rc2ma",
+          "prefLabel": "Offsite"
+        }
+      ],
+      "idBarcode": [
+        "33433121036812"
+      ],
+      "identifier": [
+        {
+          "@type": "bf:ShelfMark",
+          "@value": "MFWA+ 89-1277 v. 33, no. 127 (2013)"
+        },
+        {
+          "@type": "bf:Barcode",
+          "@value": "33433121036812"
+        }
+      ],
+      "owner": [
+        {
+          "@id": "orgs:1000",
+          "prefLabel": "Stephen A. Schwarzman Building"
+        }
+      ],
+      "requestable": [
+        true
+      ],
+      "shelfMark": [
+        "MFWA+ 89-1277 v. 33, no. 127 (2013)"
+      ],
+      "status": [
+        {
+          "@id": "status:a",
+          "prefLabel": "Available"
+        }
+      ],
+      "uri": "i36549754",
+      "idNyplSourceId": {
+        "@type": "SierraNypl",
+        "@value": "36549754"
+      }
+    },
+    {
+      "@id": "res:i36549758",
+      "accessMessage": [
+        {
+          "@id": "accessMessage:2",
+          "prefLabel": "Request in advance"
+        }
+      ],
+      "catalogItemType": [
+        {
+          "@id": "catalogItemType:4",
+          "prefLabel": "serial, loose"
+        }
+      ],
+      "holdingLocation": [
+        {
+          "@id": "loc:rc2ma",
+          "prefLabel": "Offsite"
+        }
+      ],
+      "idBarcode": [
+        "33433121036804"
+      ],
+      "identifier": [
+        {
+          "@type": "bf:ShelfMark",
+          "@value": "MFWA+ 89-1277 v. 33, no. 128 (2013)"
+        },
+        {
+          "@type": "bf:Barcode",
+          "@value": "33433121036804"
+        }
+      ],
+      "owner": [
+        {
+          "@id": "orgs:1000",
+          "prefLabel": "Stephen A. Schwarzman Building"
+        }
+      ],
+      "requestable": [
+        true
+      ],
+      "shelfMark": [
+        "MFWA+ 89-1277 v. 33, no. 128 (2013)"
+      ],
+      "status": [
+        {
+          "@id": "status:a",
+          "prefLabel": "Available"
+        }
+      ],
+      "uri": "i36549758",
+      "idNyplSourceId": {
+        "@type": "SierraNypl",
+        "@value": "36549758"
+      }
+    },
+    {
+      "@id": "res:i36549759",
+      "accessMessage": [
+        {
+          "@id": "accessMessage:2",
+          "prefLabel": "Request in advance"
+        }
+      ],
+      "catalogItemType": [
+        {
+          "@id": "catalogItemType:4",
+          "prefLabel": "serial, loose"
+        }
+      ],
+      "holdingLocation": [
+        {
+          "@id": "loc:rc2ma",
+          "prefLabel": "Offsite"
+        }
+      ],
+      "idBarcode": [
+        "33433121036796"
+      ],
+      "identifier": [
+        {
+          "@type": "bf:ShelfMark",
+          "@value": "MFWA+ 89-1277 v. 33, no. 129 (2013)"
+        },
+        {
+          "@type": "bf:Barcode",
+          "@value": "33433121036796"
+        }
+      ],
+      "owner": [
+        {
+          "@id": "orgs:1000",
+          "prefLabel": "Stephen A. Schwarzman Building"
+        }
+      ],
+      "requestable": [
+        true
+      ],
+      "shelfMark": [
+        "MFWA+ 89-1277 v. 33, no. 129 (2013)"
+      ],
+      "status": [
+        {
+          "@id": "status:a",
+          "prefLabel": "Available"
+        }
+      ],
+      "uri": "i36549759",
+      "idNyplSourceId": {
+        "@type": "SierraNypl",
+        "@value": "36549759"
+      }
+    },
+    {
+      "@id": "res:i36549760",
+      "accessMessage": [
+        {
+          "@id": "accessMessage:2",
+          "prefLabel": "Request in advance"
+        }
+      ],
+      "catalogItemType": [
+        {
+          "@id": "catalogItemType:4",
+          "prefLabel": "serial, loose"
+        }
+      ],
+      "holdingLocation": [
+        {
+          "@id": "loc:rc2ma",
+          "prefLabel": "Offsite"
+        }
+      ],
+      "idBarcode": [
+        "33433121036788"
+      ],
+      "identifier": [
+        {
+          "@type": "bf:ShelfMark",
+          "@value": "MFWA+ 89-1277 v. 33, no. 130 (2013)"
+        },
+        {
+          "@type": "bf:Barcode",
+          "@value": "33433121036788"
+        }
+      ],
+      "owner": [
+        {
+          "@id": "orgs:1000",
+          "prefLabel": "Stephen A. Schwarzman Building"
+        }
+      ],
+      "requestable": [
+        true
+      ],
+      "shelfMark": [
+        "MFWA+ 89-1277 v. 33, no. 130 (2013)"
+      ],
+      "status": [
+        {
+          "@id": "status:a",
+          "prefLabel": "Available"
+        }
+      ],
+      "uri": "i36549760",
+      "idNyplSourceId": {
+        "@type": "SierraNypl",
+        "@value": "36549760"
+      }
+    },
+    {
+      "@id": "res:i36549788",
+      "accessMessage": [
+        {
+          "@id": "accessMessage:2",
+          "prefLabel": "Request in advance"
+        }
+      ],
+      "catalogItemType": [
+        {
+          "@id": "catalogItemType:4",
+          "prefLabel": "serial, loose"
+        }
+      ],
+      "holdingLocation": [
+        {
+          "@id": "loc:rc2ma",
+          "prefLabel": "Offsite"
+        }
+      ],
+      "idBarcode": [
+        "33433121036770"
+      ],
+      "identifier": [
+        {
+          "@type": "bf:ShelfMark",
+          "@value": "MFWA+ 89-1277 v. 34, no. 131 (2014)"
+        },
+        {
+          "@type": "bf:Barcode",
+          "@value": "33433121036770"
+        }
+      ],
+      "owner": [
+        {
+          "@id": "orgs:1000",
+          "prefLabel": "Stephen A. Schwarzman Building"
+        }
+      ],
+      "requestable": [
+        true
+      ],
+      "shelfMark": [
+        "MFWA+ 89-1277 v. 34, no. 131 (2014)"
+      ],
+      "status": [
+        {
+          "@id": "status:a",
+          "prefLabel": "Available"
+        }
+      ],
+      "uri": "i36549788",
+      "idNyplSourceId": {
+        "@type": "SierraNypl",
+        "@value": "36549788"
+      }
+    },
+    {
+      "@id": "res:i36549808",
+      "accessMessage": [
+        {
+          "@id": "accessMessage:2",
+          "prefLabel": "Request in advance"
+        }
+      ],
+      "catalogItemType": [
+        {
+          "@id": "catalogItemType:4",
+          "prefLabel": "serial, loose"
+        }
+      ],
+      "holdingLocation": [
+        {
+          "@id": "loc:rc2ma",
+          "prefLabel": "Offsite"
+        }
+      ],
+      "idBarcode": [
+        "33433121036762"
+      ],
+      "identifier": [
+        {
+          "@type": "bf:ShelfMark",
+          "@value": "MFWA+ 89-1277 v. 34, no. 132 (2014)"
+        },
+        {
+          "@type": "bf:Barcode",
+          "@value": "33433121036762"
+        }
+      ],
+      "owner": [
+        {
+          "@id": "orgs:1000",
+          "prefLabel": "Stephen A. Schwarzman Building"
+        }
+      ],
+      "requestable": [
+        true
+      ],
+      "shelfMark": [
+        "MFWA+ 89-1277 v. 34, no. 132 (2014)"
+      ],
+      "status": [
+        {
+          "@id": "status:a",
+          "prefLabel": "Available"
+        }
+      ],
+      "uri": "i36549808",
+      "idNyplSourceId": {
+        "@type": "SierraNypl",
+        "@value": "36549808"
+      }
+    },
+    {
+      "@id": "res:i36549809",
+      "accessMessage": [
+        {
+          "@id": "accessMessage:2",
+          "prefLabel": "Request in advance"
+        }
+      ],
+      "catalogItemType": [
+        {
+          "@id": "catalogItemType:4",
+          "prefLabel": "serial, loose"
+        }
+      ],
+      "holdingLocation": [
+        {
+          "@id": "loc:rc2ma",
+          "prefLabel": "Offsite"
+        }
+      ],
+      "idBarcode": [
+        "33433121037059"
+      ],
+      "identifier": [
+        {
+          "@type": "bf:ShelfMark",
+          "@value": "MFWA+ 89-1277 v. 34, no. 133 (2014)"
+        },
+        {
+          "@type": "bf:Barcode",
+          "@value": "33433121037059"
+        }
+      ],
+      "owner": [
+        {
+          "@id": "orgs:1000",
+          "prefLabel": "Stephen A. Schwarzman Building"
+        }
+      ],
+      "requestable": [
+        true
+      ],
+      "shelfMark": [
+        "MFWA+ 89-1277 v. 34, no. 133 (2014)"
+      ],
+      "status": [
+        {
+          "@id": "status:a",
+          "prefLabel": "Available"
+        }
+      ],
+      "uri": "i36549809",
+      "idNyplSourceId": {
+        "@type": "SierraNypl",
+        "@value": "36549809"
+      }
+    },
+    {
+      "@id": "res:i36549816",
+      "accessMessage": [
+        {
+          "@id": "accessMessage:2",
+          "prefLabel": "Request in advance"
+        }
+      ],
+      "catalogItemType": [
+        {
+          "@id": "catalogItemType:4",
+          "prefLabel": "serial, loose"
+        }
+      ],
+      "holdingLocation": [
+        {
+          "@id": "loc:rc2ma",
+          "prefLabel": "Offsite"
+        }
+      ],
+      "idBarcode": [
+        "33433121037042"
+      ],
+      "identifier": [
+        {
+          "@type": "bf:ShelfMark",
+          "@value": "MFWA+ 89-1277 v. 34, no. 134 (2014)"
+        },
+        {
+          "@type": "bf:Barcode",
+          "@value": "33433121037042"
+        }
+      ],
+      "owner": [
+        {
+          "@id": "orgs:1000",
+          "prefLabel": "Stephen A. Schwarzman Building"
+        }
+      ],
+      "requestable": [
+        true
+      ],
+      "shelfMark": [
+        "MFWA+ 89-1277 v. 34, no. 134 (2014)"
+      ],
+      "status": [
+        {
+          "@id": "status:a",
+          "prefLabel": "Available"
+        }
+      ],
+      "uri": "i36549816",
+      "idNyplSourceId": {
+        "@type": "SierraNypl",
+        "@value": "36549816"
+      }
+    },
+    {
+      "@id": "res:i36549818",
+      "accessMessage": [
+        {
+          "@id": "accessMessage:2",
+          "prefLabel": "Request in advance"
+        }
+      ],
+      "catalogItemType": [
+        {
+          "@id": "catalogItemType:4",
+          "prefLabel": "serial, loose"
+        }
+      ],
+      "holdingLocation": [
+        {
+          "@id": "loc:rc2ma",
+          "prefLabel": "Offsite"
+        }
+      ],
+      "idBarcode": [
+        "33433121037034"
+      ],
+      "identifier": [
+        {
+          "@type": "bf:ShelfMark",
+          "@value": "MFWA+ 89-1277 v. 35, no. 135 (2015)"
+        },
+        {
+          "@type": "bf:Barcode",
+          "@value": "33433121037034"
+        }
+      ],
+      "owner": [
+        {
+          "@id": "orgs:1000",
+          "prefLabel": "Stephen A. Schwarzman Building"
+        }
+      ],
+      "requestable": [
+        true
+      ],
+      "shelfMark": [
+        "MFWA+ 89-1277 v. 35, no. 135 (2015)"
+      ],
+      "status": [
+        {
+          "@id": "status:a",
+          "prefLabel": "Available"
+        }
+      ],
+      "uri": "i36549818",
+      "idNyplSourceId": {
+        "@type": "SierraNypl",
+        "@value": "36549818"
+      }
+    },
+    {
+      "@id": "res:i36549819",
+      "accessMessage": [
+        {
+          "@id": "accessMessage:2",
+          "prefLabel": "Request in advance"
+        }
+      ],
+      "catalogItemType": [
+        {
+          "@id": "catalogItemType:4",
+          "prefLabel": "serial, loose"
+        }
+      ],
+      "holdingLocation": [
+        {
+          "@id": "loc:rc2ma",
+          "prefLabel": "Offsite"
+        }
+      ],
+      "idBarcode": [
+        "33433121037026"
+      ],
+      "identifier": [
+        {
+          "@type": "bf:ShelfMark",
+          "@value": "MFWA+ 89-1277 v. 35, no. 136 (2015)"
+        },
+        {
+          "@type": "bf:Barcode",
+          "@value": "33433121037026"
+        }
+      ],
+      "owner": [
+        {
+          "@id": "orgs:1000",
+          "prefLabel": "Stephen A. Schwarzman Building"
+        }
+      ],
+      "requestable": [
+        true
+      ],
+      "shelfMark": [
+        "MFWA+ 89-1277 v. 35, no. 136 (2015)"
+      ],
+      "status": [
+        {
+          "@id": "status:a",
+          "prefLabel": "Available"
+        }
+      ],
+      "uri": "i36549819",
+      "idNyplSourceId": {
+        "@type": "SierraNypl",
+        "@value": "36549819"
+      }
+    },
+    {
+      "@id": "res:i36549867",
+      "accessMessage": [
+        {
+          "@id": "accessMessage:2",
+          "prefLabel": "Request in advance"
+        }
+      ],
+      "catalogItemType": [
+        {
+          "@id": "catalogItemType:4",
+          "prefLabel": "serial, loose"
+        }
+      ],
+      "holdingLocation": [
+        {
+          "@id": "loc:rc2ma",
+          "prefLabel": "Offsite"
+        }
+      ],
+      "idBarcode": [
+        "33433121037018"
+      ],
+      "identifier": [
+        {
+          "@type": "bf:ShelfMark",
+          "@value": "MFWA+ 89-1277 v. 35, no. 137 (2015)"
+        },
+        {
+          "@type": "bf:Barcode",
+          "@value": "33433121037018"
+        }
+      ],
+      "owner": [
+        {
+          "@id": "orgs:1000",
+          "prefLabel": "Stephen A. Schwarzman Building"
+        }
+      ],
+      "requestable": [
+        true
+      ],
+      "shelfMark": [
+        "MFWA+ 89-1277 v. 35, no. 137 (2015)"
+      ],
+      "status": [
+        {
+          "@id": "status:a",
+          "prefLabel": "Available"
+        }
+      ],
+      "uri": "i36549867",
+      "idNyplSourceId": {
+        "@type": "SierraNypl",
+        "@value": "36549867"
+      }
+    },
+    {
+      "@id": "res:i36549872",
+      "accessMessage": [
+        {
+          "@id": "accessMessage:2",
+          "prefLabel": "Request in advance"
+        }
+      ],
+      "catalogItemType": [
+        {
+          "@id": "catalogItemType:4",
+          "prefLabel": "serial, loose"
+        }
+      ],
+      "holdingLocation": [
+        {
+          "@id": "loc:rc2ma",
+          "prefLabel": "Offsite"
+        }
+      ],
+      "idBarcode": [
+        "33433121037000"
+      ],
+      "identifier": [
+        {
+          "@type": "bf:ShelfMark",
+          "@value": "MFWA+ 89-1277 v. 35, no. 138 (2015)"
+        },
+        {
+          "@type": "bf:Barcode",
+          "@value": "33433121037000"
+        }
+      ],
+      "owner": [
+        {
+          "@id": "orgs:1000",
+          "prefLabel": "Stephen A. Schwarzman Building"
+        }
+      ],
+      "requestable": [
+        true
+      ],
+      "shelfMark": [
+        "MFWA+ 89-1277 v. 35, no. 138 (2015)"
+      ],
+      "status": [
+        {
+          "@id": "status:a",
+          "prefLabel": "Available"
+        }
+      ],
+      "uri": "i36549872",
+      "idNyplSourceId": {
+        "@type": "SierraNypl",
+        "@value": "36549872"
+      }
+    },
+    {
+      "@id": "res:i36549880",
+      "accessMessage": [
+        {
+          "@id": "accessMessage:2",
+          "prefLabel": "Request in advance"
+        }
+      ],
+      "catalogItemType": [
+        {
+          "@id": "catalogItemType:4",
+          "prefLabel": "serial, loose"
+        }
+      ],
+      "holdingLocation": [
+        {
+          "@id": "loc:rc2ma",
+          "prefLabel": "Offsite"
+        }
+      ],
+      "idBarcode": [
+        "33433121036994"
+      ],
+      "identifier": [
+        {
+          "@type": "bf:ShelfMark",
+          "@value": "MFWA+ 89-1277 v. 36, no. 139 (2016)"
+        },
+        {
+          "@type": "bf:Barcode",
+          "@value": "33433121036994"
+        }
+      ],
+      "owner": [
+        {
+          "@id": "orgs:1000",
+          "prefLabel": "Stephen A. Schwarzman Building"
+        }
+      ],
+      "requestable": [
+        true
+      ],
+      "shelfMark": [
+        "MFWA+ 89-1277 v. 36, no. 139 (2016)"
+      ],
+      "status": [
+        {
+          "@id": "status:a",
+          "prefLabel": "Available"
+        }
+      ],
+      "uri": "i36549880",
+      "idNyplSourceId": {
+        "@type": "SierraNypl",
+        "@value": "36549880"
+      }
+    },
+    {
+      "@id": "res:i36549883",
+      "accessMessage": [
+        {
+          "@id": "accessMessage:2",
+          "prefLabel": "Request in advance"
+        }
+      ],
+      "catalogItemType": [
+        {
+          "@id": "catalogItemType:4",
+          "prefLabel": "serial, loose"
+        }
+      ],
+      "holdingLocation": [
+        {
+          "@id": "loc:rc2ma",
+          "prefLabel": "Offsite"
+        }
+      ],
+      "idBarcode": [
+        "33433121036986"
+      ],
+      "identifier": [
+        {
+          "@type": "bf:ShelfMark",
+          "@value": "MFWA+ 89-1277 v. 36, no. 140 (2016)"
+        },
+        {
+          "@type": "bf:Barcode",
+          "@value": "33433121036986"
+        }
+      ],
+      "owner": [
+        {
+          "@id": "orgs:1000",
+          "prefLabel": "Stephen A. Schwarzman Building"
+        }
+      ],
+      "requestable": [
+        true
+      ],
+      "shelfMark": [
+        "MFWA+ 89-1277 v. 36, no. 140 (2016)"
+      ],
+      "status": [
+        {
+          "@id": "status:a",
+          "prefLabel": "Available"
+        }
+      ],
+      "uri": "i36549883",
+      "idNyplSourceId": {
+        "@type": "SierraNypl",
+        "@value": "36549883"
+      }
+    },
+    {
+      "@id": "res:i36549901",
+      "accessMessage": [
+        {
+          "@id": "accessMessage:2",
+          "prefLabel": "Request in advance"
+        }
+      ],
+      "catalogItemType": [
+        {
+          "@id": "catalogItemType:4",
+          "prefLabel": "serial, loose"
+        }
+      ],
+      "holdingLocation": [
+        {
+          "@id": "loc:rc2ma",
+          "prefLabel": "Offsite"
+        }
+      ],
+      "idBarcode": [
+        "33433121036978"
+      ],
+      "identifier": [
+        {
+          "@type": "bf:ShelfMark",
+          "@value": "MFWA+ 89-1277 v. 36, no. 141 (2016)"
+        },
+        {
+          "@type": "bf:Barcode",
+          "@value": "33433121036978"
+        }
+      ],
+      "owner": [
+        {
+          "@id": "orgs:1000",
+          "prefLabel": "Stephen A. Schwarzman Building"
+        }
+      ],
+      "requestable": [
+        true
+      ],
+      "shelfMark": [
+        "MFWA+ 89-1277 v. 36, no. 141 (2016)"
+      ],
+      "status": [
+        {
+          "@id": "status:a",
+          "prefLabel": "Available"
+        }
+      ],
+      "uri": "i36549901",
+      "idNyplSourceId": {
+        "@type": "SierraNypl",
+        "@value": "36549901"
+      }
+    },
+    {
+      "@id": "res:i36549906",
+      "accessMessage": [
+        {
+          "@id": "accessMessage:2",
+          "prefLabel": "Request in advance"
+        }
+      ],
+      "catalogItemType": [
+        {
+          "@id": "catalogItemType:4",
+          "prefLabel": "serial, loose"
+        }
+      ],
+      "holdingLocation": [
+        {
+          "@id": "loc:rc2ma",
+          "prefLabel": "Offsite"
+        }
+      ],
+      "idBarcode": [
+        "33433121036960"
+      ],
+      "identifier": [
+        {
+          "@type": "bf:ShelfMark",
+          "@value": "MFWA+ 89-1277 v. 36, no. 142 (2016)"
+        },
+        {
+          "@type": "bf:Barcode",
+          "@value": "33433121036960"
+        }
+      ],
+      "owner": [
+        {
+          "@id": "orgs:1000",
+          "prefLabel": "Stephen A. Schwarzman Building"
+        }
+      ],
+      "requestable": [
+        true
+      ],
+      "shelfMark": [
+        "MFWA+ 89-1277 v. 36, no. 142 (2016)"
+      ],
+      "status": [
+        {
+          "@id": "status:a",
+          "prefLabel": "Available"
+        }
+      ],
+      "uri": "i36549906",
+      "idNyplSourceId": {
+        "@type": "SierraNypl",
+        "@value": "36549906"
+      }
+    },
+    {
+      "@id": "res:i36549911",
+      "accessMessage": [
+        {
+          "@id": "accessMessage:2",
+          "prefLabel": "Request in advance"
+        }
+      ],
+      "catalogItemType": [
+        {
+          "@id": "catalogItemType:4",
+          "prefLabel": "serial, loose"
+        }
+      ],
+      "holdingLocation": [
+        {
+          "@id": "loc:rc2ma",
+          "prefLabel": "Offsite"
+        }
+      ],
+      "idBarcode": [
+        "33433121036952"
+      ],
+      "identifier": [
+        {
+          "@type": "bf:ShelfMark",
+          "@value": "MFWA+ 89-1277 v. 37, no. 143 (2017)"
+        },
+        {
+          "@type": "bf:Barcode",
+          "@value": "33433121036952"
+        }
+      ],
+      "owner": [
+        {
+          "@id": "orgs:1000",
+          "prefLabel": "Stephen A. Schwarzman Building"
+        }
+      ],
+      "requestable": [
+        true
+      ],
+      "shelfMark": [
+        "MFWA+ 89-1277 v. 37, no. 143 (2017)"
+      ],
+      "status": [
+        {
+          "@id": "status:a",
+          "prefLabel": "Available"
+        }
+      ],
+      "uri": "i36549911",
+      "idNyplSourceId": {
+        "@type": "SierraNypl",
+        "@value": "36549911"
+      }
+    },
+    {
+      "@id": "res:i36549915",
+      "accessMessage": [
+        {
+          "@id": "accessMessage:2",
+          "prefLabel": "Request in advance"
+        }
+      ],
+      "catalogItemType": [
+        {
+          "@id": "catalogItemType:4",
+          "prefLabel": "serial, loose"
+        }
+      ],
+      "holdingLocation": [
+        {
+          "@id": "loc:rc2ma",
+          "prefLabel": "Offsite"
+        }
+      ],
+      "idBarcode": [
+        "33433121036945"
+      ],
+      "identifier": [
+        {
+          "@type": "bf:ShelfMark",
+          "@value": "MFWA+ 89-1277 v. 37, no. 144 (2017)"
+        },
+        {
+          "@type": "bf:Barcode",
+          "@value": "33433121036945"
+        }
+      ],
+      "owner": [
+        {
+          "@id": "orgs:1000",
+          "prefLabel": "Stephen A. Schwarzman Building"
+        }
+      ],
+      "requestable": [
+        true
+      ],
+      "shelfMark": [
+        "MFWA+ 89-1277 v. 37, no. 144 (2017)"
+      ],
+      "status": [
+        {
+          "@id": "status:a",
+          "prefLabel": "Available"
+        }
+      ],
+      "uri": "i36549915",
+      "idNyplSourceId": {
+        "@type": "SierraNypl",
+        "@value": "36549915"
+      }
+    },
+    {
+      "@id": "res:i36549917",
+      "accessMessage": [
+        {
+          "@id": "accessMessage:2",
+          "prefLabel": "Request in advance"
+        }
+      ],
+      "catalogItemType": [
+        {
+          "@id": "catalogItemType:4",
+          "prefLabel": "serial, loose"
+        }
+      ],
+      "holdingLocation": [
+        {
+          "@id": "loc:rc2ma",
+          "prefLabel": "Offsite"
+        }
+      ],
+      "idBarcode": [
+        "33433121036937"
+      ],
+      "identifier": [
+        {
+          "@type": "bf:ShelfMark",
+          "@value": "MFWA+ 89-1277 v. 37, no. 145 (2017)"
+        },
+        {
+          "@type": "bf:Barcode",
+          "@value": "33433121036937"
+        }
+      ],
+      "owner": [
+        {
+          "@id": "orgs:1000",
+          "prefLabel": "Stephen A. Schwarzman Building"
+        }
+      ],
+      "requestable": [
+        true
+      ],
+      "shelfMark": [
+        "MFWA+ 89-1277 v. 37, no. 145 (2017)"
+      ],
+      "status": [
+        {
+          "@id": "status:a",
+          "prefLabel": "Available"
+        }
+      ],
+      "uri": "i36549917",
+      "idNyplSourceId": {
+        "@type": "SierraNypl",
+        "@value": "36549917"
+      }
+    },
+    {
+      "@id": "res:i36549919",
+      "accessMessage": [
+        {
+          "@id": "accessMessage:2",
+          "prefLabel": "Request in advance"
+        }
+      ],
+      "catalogItemType": [
+        {
+          "@id": "catalogItemType:4",
+          "prefLabel": "serial, loose"
+        }
+      ],
+      "holdingLocation": [
+        {
+          "@id": "loc:rc2ma",
+          "prefLabel": "Offsite"
+        }
+      ],
+      "idBarcode": [
+        "33433121036929"
+      ],
+      "identifier": [
+        {
+          "@type": "bf:ShelfMark",
+          "@value": "MFWA+ 89-1277 v. 37, no. 146 (2017)"
+        },
+        {
+          "@type": "bf:Barcode",
+          "@value": "33433121036929"
+        }
+      ],
+      "owner": [
+        {
+          "@id": "orgs:1000",
+          "prefLabel": "Stephen A. Schwarzman Building"
+        }
+      ],
+      "requestable": [
+        true
+      ],
+      "shelfMark": [
+        "MFWA+ 89-1277 v. 37, no. 146 (2017)"
+      ],
+      "status": [
+        {
+          "@id": "status:a",
+          "prefLabel": "Available"
+        }
+      ],
+      "uri": "i36549919",
+      "idNyplSourceId": {
+        "@type": "SierraNypl",
+        "@value": "36549919"
+      }
+    },
+    {
+      "@id": "res:i36790152",
+      "accessMessage": [
+        {
+          "@id": "accessMessage:2",
+          "prefLabel": "Request in advance"
+        }
+      ],
+      "catalogItemType": [
+        {
+          "@id": "catalogItemType:3",
+          "prefLabel": "serial"
+        }
+      ],
+      "holdingLocation": [
+        {
+          "@id": "loc:rc2ma",
+          "prefLabel": "Offsite"
+        }
+      ],
+      "idBarcode": [
+        "33433121696284"
+      ],
+      "identifier": [
+        {
+          "@type": "bf:ShelfMark",
+          "@value": "MFWA+ 89-1277 v. 38 no. 150 (2018)"
+        },
+        {
+          "@type": "bf:Barcode",
+          "@value": "33433121696284"
+        }
+      ],
+      "owner": [
+        {
+          "@id": "orgs:1000",
+          "prefLabel": "Stephen A. Schwarzman Building"
+        }
+      ],
+      "requestable": [
+        true
+      ],
+      "shelfMark": [
+        "MFWA+ 89-1277 v. 38 no. 150 (2018)"
+      ],
+      "status": [
+        {
+          "@id": "status:a",
+          "prefLabel": "Available"
+        }
+      ],
+      "uri": "i36790152",
+      "idNyplSourceId": {
+        "@type": "SierraNypl",
+        "@value": "36790152"
+      }
+    },
+    {
+      "@id": "res:i36549924",
+      "accessMessage": [
+        {
+          "@id": "accessMessage:2",
+          "prefLabel": "Request in advance"
+        }
+      ],
+      "catalogItemType": [
+        {
+          "@id": "catalogItemType:4",
+          "prefLabel": "serial, loose"
+        }
+      ],
+      "holdingLocation": [
+        {
+          "@id": "loc:rc2ma",
+          "prefLabel": "Offsite"
+        }
+      ],
+      "idBarcode": [
+        "33433121036911"
+      ],
+      "identifier": [
+        {
+          "@type": "bf:ShelfMark",
+          "@value": "MFWA+ 89-1277 v. 38, no. 147 (2018)"
+        },
+        {
+          "@type": "bf:Barcode",
+          "@value": "33433121036911"
+        }
+      ],
+      "owner": [
+        {
+          "@id": "orgs:1000",
+          "prefLabel": "Stephen A. Schwarzman Building"
+        }
+      ],
+      "requestable": [
+        true
+      ],
+      "shelfMark": [
+        "MFWA+ 89-1277 v. 38, no. 147 (2018)"
+      ],
+      "status": [
+        {
+          "@id": "status:a",
+          "prefLabel": "Available"
+        }
+      ],
+      "uri": "i36549924",
+      "idNyplSourceId": {
+        "@type": "SierraNypl",
+        "@value": "36549924"
+      }
+    },
+    {
+      "@id": "res:i36549941",
+      "accessMessage": [
+        {
+          "@id": "accessMessage:2",
+          "prefLabel": "Request in advance"
+        }
+      ],
+      "catalogItemType": [
+        {
+          "@id": "catalogItemType:4",
+          "prefLabel": "serial, loose"
+        }
+      ],
+      "holdingLocation": [
+        {
+          "@id": "loc:rc2ma",
+          "prefLabel": "Offsite"
+        }
+      ],
+      "idBarcode": [
+        "33433121037208"
+      ],
+      "identifier": [
+        {
+          "@type": "bf:ShelfMark",
+          "@value": "MFWA+ 89-1277 v. 38, no. 148 (2018)"
+        },
+        {
+          "@type": "bf:Barcode",
+          "@value": "33433121037208"
+        }
+      ],
+      "owner": [
+        {
+          "@id": "orgs:1000",
+          "prefLabel": "Stephen A. Schwarzman Building"
+        }
+      ],
+      "requestable": [
+        true
+      ],
+      "shelfMark": [
+        "MFWA+ 89-1277 v. 38, no. 148 (2018)"
+      ],
+      "status": [
+        {
+          "@id": "status:a",
+          "prefLabel": "Available"
+        }
+      ],
+      "uri": "i36549941",
+      "idNyplSourceId": {
+        "@type": "SierraNypl",
+        "@value": "36549941"
+      }
+    },
+    {
+      "@id": "res:i36575586",
+      "accessMessage": [
+        {
+          "@id": "accessMessage:2",
+          "prefLabel": "Request in advance"
+        }
+      ],
+      "catalogItemType": [
+        {
+          "@id": "catalogItemType:4",
+          "prefLabel": "serial, loose"
+        }
+      ],
+      "holdingLocation": [
+        {
+          "@id": "loc:rc2ma",
+          "prefLabel": "Offsite"
+        }
+      ],
+      "idBarcode": [
+        "33433121036184"
+      ],
+      "identifier": [
+        {
+          "@type": "bf:ShelfMark",
+          "@value": "MFWA+ 89-1277 v. 38, no. 149 (2018)"
+        },
+        {
+          "@type": "bf:Barcode",
+          "@value": "33433121036184"
+        }
+      ],
+      "owner": [
+        {
+          "@id": "orgs:1000",
+          "prefLabel": "Stephen A. Schwarzman Building"
+        }
+      ],
+      "requestable": [
+        true
+      ],
+      "shelfMark": [
+        "MFWA+ 89-1277 v. 38, no. 149 (2018)"
+      ],
+      "status": [
+        {
+          "@id": "status:a",
+          "prefLabel": "Available"
+        }
+      ],
+      "uri": "i36575586",
+      "idNyplSourceId": {
+        "@type": "SierraNypl",
+        "@value": "36575586"
+      }
+    },
+    {
+      "@id": "res:i37054151",
+      "accessMessage": [
+        {
+          "@id": "accessMessage:2",
+          "prefLabel": "Request in advance"
+        }
+      ],
+      "catalogItemType": [
+        {
+          "@id": "catalogItemType:3",
+          "prefLabel": "serial"
+        }
+      ],
+      "holdingLocation": [
+        {
+          "@id": "loc:rc2ma",
+          "prefLabel": "Offsite"
+        }
+      ],
+      "idBarcode": [
+        "33433121713188"
+      ],
+      "identifier": [
+        {
+          "@type": "bf:ShelfMark",
+          "@value": "MFWA+ 89-1277 v. 39 no. 151 (2019)"
+        },
+        {
+          "@type": "bf:Barcode",
+          "@value": "33433121713188"
+        }
+      ],
+      "owner": [
+        {
+          "@id": "orgs:1000",
+          "prefLabel": "Stephen A. Schwarzman Building"
+        }
+      ],
+      "requestable": [
+        true
+      ],
+      "shelfMark": [
+        "MFWA+ 89-1277 v. 39 no. 151 (2019)"
+      ],
+      "status": [
+        {
+          "@id": "status:a",
+          "prefLabel": "Available"
+        }
+      ],
+      "uri": "i37054151",
+      "idNyplSourceId": {
+        "@type": "SierraNypl",
+        "@value": "37054151"
+      }
+    },
+    {
+      "@id": "res:i37481663",
+      "accessMessage": [
+        {
+          "@id": "accessMessage:2",
+          "prefLabel": "Request in advance"
+        }
+      ],
+      "catalogItemType": [
+        {
+          "@id": "catalogItemType:3",
+          "prefLabel": "serial"
+        }
+      ],
+      "holdingLocation": [
+        {
+          "@id": "loc:rc2ma",
+          "prefLabel": "Offsite"
+        }
+      ],
+      "idBarcode": [
+        "33433121734713"
+      ],
+      "identifier": [
+        {
+          "@type": "bf:ShelfMark",
+          "@value": "MFWA+ 89-1277 v. 39 no. 152 (2019)"
+        },
+        {
+          "@type": "bf:Barcode",
+          "@value": "33433121734713"
+        }
+      ],
+      "owner": [
+        {
+          "@id": "orgs:1000",
+          "prefLabel": "Stephen A. Schwarzman Building"
+        }
+      ],
+      "requestable": [
+        true
+      ],
+      "shelfMark": [
+        "MFWA+ 89-1277 v. 39 no. 152 (2019)"
+      ],
+      "status": [
+        {
+          "@id": "status:a",
+          "prefLabel": "Available"
+        }
+      ],
+      "uri": "i37481663",
+      "idNyplSourceId": {
+        "@type": "SierraNypl",
+        "@value": "37481663"
+      }
+    },
+    {
+      "@id": "res:i37453319",
+      "accessMessage": [
+        {
+          "@id": "accessMessage:2",
+          "prefLabel": "Request in advance"
+        }
+      ],
+      "catalogItemType": [
+        {
+          "@id": "catalogItemType:4",
+          "prefLabel": "serial, loose"
+        }
+      ],
+      "holdingLocation": [
+        {
+          "@id": "loc:rc2ma",
+          "prefLabel": "Offsite"
+        }
+      ],
+      "idBarcode": [
+        "33433128531633"
+      ],
+      "identifier": [
+        {
+          "@type": "bf:ShelfMark",
+          "@value": "MFWA+ 89-1277 v. 39, no. 153 (2019)"
+        },
+        {
+          "@type": "bf:Barcode",
+          "@value": "33433128531633"
+        }
+      ],
+      "owner": [
+        {
+          "@id": "orgs:1000",
+          "prefLabel": "Stephen A. Schwarzman Building"
+        }
+      ],
+      "requestable": [
+        false
+      ],
+      "shelfMark": [
+        "MFWA+ 89-1277 v. 39, no. 153 (2019)"
+      ],
+      "status": [
+        {
+          "@id": "status:b",
+          "prefLabel": "New-in process"
+        }
+      ],
+      "uri": "i37453319",
+      "idNyplSourceId": {
+        "@type": "SierraNypl",
+        "@value": "37453319"
+      }
+    },
+    {
+      "@id": "res:i37815051",
+      "accessMessage": [
+        {
+          "@id": "accessMessage:2",
+          "prefLabel": "Request in advance"
+        }
+      ],
+      "catalogItemType": [
+        {
+          "@id": "catalogItemType:4",
+          "prefLabel": "serial, loose"
+        }
+      ],
+      "holdingLocation": [
+        {
+          "@id": "loc:rc2ma",
+          "prefLabel": "Offsite"
+        }
+      ],
+      "idBarcode": [
+        "33433128613357"
+      ],
+      "identifier": [
+        {
+          "@type": "bf:ShelfMark",
+          "@value": "MFWA+ 89-1277 v. 39, no. 154 (2019)"
+        },
+        {
+          "@type": "bf:Barcode",
+          "@value": "33433128613357"
+        }
+      ],
+      "owner": [
+        {
+          "@id": "orgs:1000",
+          "prefLabel": "Stephen A. Schwarzman Building"
+        }
+      ],
+      "requestable": [
+        false
+      ],
+      "shelfMark": [
+        "MFWA+ 89-1277 v. 39, no. 154 (2019)"
+      ],
+      "status": [
+        {
+          "@id": "status:b",
+          "prefLabel": "New-in process"
+        }
+      ],
+      "uri": "i37815051",
+      "idNyplSourceId": {
+        "@type": "SierraNypl",
+        "@value": "37815051"
+      }
+    },
+    {
+      "@id": "res:i38050983",
+      "accessMessage": [
+        {
+          "@id": "accessMessage:2",
+          "prefLabel": "Request in advance"
+        }
+      ],
+      "catalogItemType": [
+        {
+          "@id": "catalogItemType:4",
+          "prefLabel": "serial, loose"
+        }
+      ],
+      "holdingLocation": [
+        {
+          "@id": "loc:rc2ma",
+          "prefLabel": "Offsite"
+        }
+      ],
+      "idBarcode": [
+        "33433128605148"
+      ],
+      "identifier": [
+        {
+          "@type": "bf:ShelfMark",
+          "@value": "MFWA+ 89-1277 v. 40, no. 156 (2020)"
+        },
+        {
+          "@type": "bf:Barcode",
+          "@value": "33433128605148"
+        }
+      ],
+      "owner": [
+        {
+          "@id": "orgs:1000",
+          "prefLabel": "Stephen A. Schwarzman Building"
+        }
+      ],
+      "requestable": [
+        false
+      ],
+      "shelfMark": [
+        "MFWA+ 89-1277 v. 40, no. 156 (2020)"
+      ],
+      "status": [
+        {
+          "@id": "status:a",
+          "prefLabel": "Available"
+        }
+      ],
+      "uri": "i38050983",
+      "idNyplSourceId": {
+        "@type": "SierraNypl",
+        "@value": "38050983"
+      }
+    }
+  ],
+  "holdings": [
+    {
+      "@id": "res:h1000993",
+      "format": [
+        "PRINT"
+      ],
+      "physicalLocation": [
+        "MFWA+ 89-1277"
+      ],
+      "holdingStatement": [
+        "27(1988)-40:156(2020)-",
+        "no. 3840 (2018/2020)"
+      ],
+      "shelfMark": [
+        "MFWA+ 89-1277"
+      ],
+      "identifierV2": [
+        {
+          "@value": "MFWA+ 89-1277",
+          "@type": "bf:shelfMark"
+        }
+      ],
+      "location": [
+        {
+          "label": "Offsite",
+          "code": "loc:rc2ma"
+        }
+      ],
+      "checkInBoxes": [
+        {
+          "@type": "nypl:CheckInBox",
+          "coverage": "37:143 (2017)",
+          "status": "Arrived",
+          "copies": null,
+          "position": "1",
+          "shelfMark": [
+            "MFWA+ 89-1277"
+          ]
+        },
+        {
+          "@type": "nypl:CheckInBox",
+          "coverage": "37:144 (2017)",
+          "status": "Arrived",
+          "copies": null,
+          "position": "2",
+          "shelfMark": [
+            "MFWA+ 89-1277"
+          ]
+        },
+        {
+          "@type": "nypl:CheckInBox",
+          "coverage": "37:145 (2017)",
+          "status": "Arrived",
+          "copies": null,
+          "position": "3",
+          "shelfMark": [
+            "MFWA+ 89-1277"
+          ]
+        },
+        {
+          "@type": "nypl:CheckInBox",
+          "coverage": "37:146 (2017)",
+          "status": "Arrived",
+          "copies": null,
+          "position": "4",
+          "shelfMark": [
+            "MFWA+ 89-1277"
+          ]
+        },
+        {
+          "@type": "nypl:CheckInBox",
+          "coverage": "38:147 (2018)",
+          "status": "Arrived",
+          "copies": null,
+          "position": "5",
+          "shelfMark": [
+            "MFWA+ 89-1277"
+          ]
+        },
+        {
+          "@type": "nypl:CheckInBox",
+          "coverage": "38:148 (2018)",
+          "status": "Arrived",
+          "copies": null,
+          "position": "6",
+          "shelfMark": [
+            "MFWA+ 89-1277"
+          ]
+        },
+        {
+          "@type": "nypl:CheckInBox",
+          "coverage": "38:149 (2018)",
+          "status": "Arrived",
+          "copies": null,
+          "position": "7",
+          "shelfMark": [
+            "MFWA+ 89-1277"
+          ]
+        },
+        {
+          "@type": "nypl:CheckInBox",
+          "coverage": "38:150 (2018)",
+          "status": "Arrived",
+          "copies": null,
+          "position": "8",
+          "shelfMark": [
+            "MFWA+ 89-1277"
+          ]
+        },
+        {
+          "@type": "nypl:CheckInBox",
+          "coverage": "39:151 (2019)",
+          "status": "Arrived",
+          "copies": null,
+          "position": "9",
+          "shelfMark": [
+            "MFWA+ 89-1277"
+          ]
+        },
+        {
+          "@type": "nypl:CheckInBox",
+          "coverage": "39:152 (2019)",
+          "status": "Arrived",
+          "copies": null,
+          "position": "10",
+          "shelfMark": [
+            "MFWA+ 89-1277"
+          ]
+        },
+        {
+          "@type": "nypl:CheckInBox",
+          "coverage": "39:153 (2019)",
+          "status": "Arrived",
+          "copies": null,
+          "position": "11",
+          "shelfMark": [
+            "MFWA+ 89-1277"
+          ]
+        },
+        {
+          "@type": "nypl:CheckInBox",
+          "coverage": "39:154 (2019)",
+          "status": "Arrived",
+          "copies": null,
+          "position": "12",
+          "shelfMark": [
+            "MFWA+ 89-1277"
+          ]
+        },
+        {
+          "@type": "nypl:CheckInBox",
+          "coverage": "40:155 (2020)",
+          "status": "Arrived",
+          "copies": null,
+          "position": "13",
+          "shelfMark": [
+            "MFWA+ 89-1277"
+          ]
+        },
+        {
+          "@type": "nypl:CheckInBox",
+          "coverage": "40:156 (2020)",
+          "status": "Arrived",
+          "copies": null,
+          "position": "14",
+          "shelfMark": [
+            "MFWA+ 89-1277"
+          ]
+        },
+        {
+          "@type": "nypl:CheckInBox",
+          "coverage": "40:157 (2020)",
+          "status": "Expected",
+          "copies": null,
+          "position": "15",
+          "shelfMark": [
+            "MFWA+ 89-1277"
+          ]
+        }
+      ]
+    }
+  ],
+  "language": [
+    {
+      "@id": "lang:ger",
+      "prefLabel": "German"
+    }
+  ],
+  "lccClassification": [
+    "TR15 .F67"
+  ],
+  "materialType": [
+    {
+      "@id": "resourcetypes:txt",
+      "prefLabel": "Text"
+    }
+  ],
+  "mediaType": [
+    {
+      "@id": "mediatypes:n",
+      "prefLabel": "unmediated"
+    }
+  ],
+  "note": [
+    {
+      "noteType": "Note",
+      "@type": "bf:Note",
+      "prefLabel": "Cover title."
+    }
+  ],
+  "numAvailable": 51,
+  "numItems": 53,
+  "placeOfPublication": [
+    "Frankfurt am Main :"
+  ],
+  "publicationStatement": [
+    "Frankfurt am Main : T. Starl, 1981-"
+  ],
+  "publisherLiteral": [
+    "T. Starl,"
+  ],
+  "serialPublicationDates": [
+    "Jahrg. 1, Heft 1-"
+  ],
+  "shelfMark": [
+    "MFWA+ 89-1277"
+  ],
+  "subjectLiteral": [
+    "Photography -- History -- Periodicals.",
+    "Photography, Artistic -- Periodicals."
+  ],
+  "title": [
+    "Fotogeschichte."
+  ],
+  "titleAlt": [
+    "Fotogeschichte"
+  ],
+  "titleDisplay": [
+    "Fotogeschichte."
+  ],
+  "type": [
+    "nypl:Item"
+  ],
+  "updatedAt": 1601341295043,
+  "uri": "b11254422",
+  "suppressed": false
+}
