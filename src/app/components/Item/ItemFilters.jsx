@@ -3,8 +3,11 @@ import PropTypes from 'prop-types';
 
 import { Button } from '@nypl/design-system-react-components';
 import ItemFilter from './ItemFilter';
+import ItemFiltersMobile from './ItemFiltersMobile';
 import { trackDiscovery } from '../../utils/utils';
 import { itemFilters } from '../../data/constants';
+
+import { MediaContext } from '../Application/Application';
 
 
 const ItemFilters = ({ items, hasFilterApplied, numOfFilteredItems }, { router }) => {
@@ -59,19 +62,32 @@ const ItemFilters = ({ items, hasFilterApplied, numOfFilteredItems }, { router }
 
   return (
     <Fragment>
-      <div id="item-filters" className="item-table-filters">
+      <MediaContext.Consumer>
         {
-          itemFilters.map(filter => (
-            <ItemFilter
-              filter={filter.type}
-              options={options[filter.type]}
-              open={openFilter === filter.type}
-              manageFilterDisplay={manageFilterDisplay}
-              key={filter.type}
-            />
-          ))
+          media =>
+          <Fragment>
+            {
+              ['mobile', 'tabletPortrait'].includes(media) ?
+              <ItemFiltersMobile /> :
+              (
+                <div id="item-filters" className="item-table-filters">
+                  {
+                    itemFilters.map(filter => (
+                      <ItemFilter
+                        filter={filter.type}
+                        options={options[filter.type]}
+                        open={openFilter === filter.type}
+                        manageFilterDisplay={manageFilterDisplay}
+                        key={filter.type}
+                        />
+                    ))
+                  }
+                </div>
+              )
+            }
+          </Fragment>
         }
-      </div>
+      </MediaContext.Consumer>
       <div className="item-filter-info">
         <h3>{numOfFilteredItems} Result{numOfFilteredItems > 1 ? 's' : null} Found</h3>
         {hasFilterApplied ? <span>Filtered by {parsedFilterSelections()}</span> : null}
