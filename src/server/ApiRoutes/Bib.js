@@ -34,6 +34,40 @@ const findUrl = (location, urls) => {
   return longestMatch.url;
 };
 
+const checkInItemsForHolding = (holding) => {
+  let location = '';
+  let holdingLocationCode = '';
+  if (holding.location.length) {
+    holdingLocationCode = holding.location[0].code;
+    location = holding.location[0].label;
+  }
+  const format = holding.format || '';
+  return holding.checkInBoxes.map(box => (
+    {
+      location,
+      holdingLocationCode,
+      format,
+      position: box.position || 0,
+      status: { prefLabel: box.status || '' },
+      accessMessage: { '@id': 'accessMessage: 1', prefLabel: 'Use in library' },
+      volume: box.coverage || '',
+      callNumber: box.shelfMark || '',
+      available: true,
+      isSerial: true,
+      requestable: false,
+    }
+  ));
+};
+
+const addCheckInItems = (bib) => {
+  bib.checkInItems = bib
+    .holdings
+    .map(holding => checkInItemsForHolding(holding))
+    .reduce((acc, el) => acc.concat(el), [])
+    .filter(box => !['Expected', 'Late', 'Removed'].includes(box.status.prefLabel))
+    .sort((box1, box2) => box2.position - box1.position);
+};
+
 function fetchBib(bibId, cb, errorcb, reqOptions) {
   const options = Object.assign({
     fetchSubjectHeadingData: true,
@@ -55,6 +89,7 @@ function fetchBib(bibId, cb, errorcb, reqOptions) {
     })
     .then((bib) => {
       if (bib.holdings) {
+        addCheckInItems(bib);
         const codes = bib
           .holdings
           .map(holding => holding.location.reduce((acc, el) => acc.concat([el.code]), []))
@@ -116,6 +151,8 @@ function bibSearch(req, res, resolve) {
 }
 
 export default {
+  addHoldingDefinition,
+  addCheckInItems,
   bibSearch,
   fetchBib,
   nyplApiClientCall,
