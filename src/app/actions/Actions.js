@@ -17,6 +17,7 @@ export const Actions = {
   UPDATE_SUBJECT_HEADING: 'UPDATE_SUBJECT_HEADING',
   UPDATE_DRBB_RESULTS: 'UPDATE_DRBB_RESULTS',
   UPDATE_PATRON_DATA: 'UPDATE_PATRON_DATA',
+  ADD_FEATURES: 'ADD_FEATURES',
 };
 
 export const resetState = () => ({
@@ -97,6 +98,11 @@ export const updatePatronData = patronData => ({
 export const updateLoadingStatus = loading => ({
   type: Actions.UPDATE_LOADING_STATUS,
   payload: loading,
+});
+
+export const addFeatures = features => ({
+  type: Actions.ADD_FEATURES,
+  payload: features,
 });
 
 /* `updateSearchResultsPage` performs:
