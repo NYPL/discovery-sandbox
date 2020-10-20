@@ -2,7 +2,12 @@
 /* eslint-env mocha */
 import React from 'react';
 import { expect } from 'chai';
-import { shallow } from 'enzyme';
+import { shallow, mount } from 'enzyme';
+import PropTypes from 'prop-types';
+
+// Import Bib for pre-processing
+
+import Bib from './../../src/server/ApiRoutes/Bib';
 
 // Import the unwrapped component that is going to be tested
 import { BibPage } from './../../src/app/components/BibPage/BibPage';
@@ -34,13 +39,19 @@ describe('BibPage', () => {
   describe('Serial', () => {
     let itemTable;
     before(() => {
+      mockBibWithHolding.holdings.forEach(holding => Bib.addHoldingDefinition(holding));
+      Bib.addCheckInItems(mockBibWithHolding);
       const bib = { ...mockBibWithHolding, ...annotatedMarc };
-      component = shallow(<BibPage
+      component = mount(<BibPage
         location={{ search: 'search', pathname: '' }}
         bib={bib}
-      />, { context: {
-        router: { location: {} },
-      } });
+      />, {
+        context: {
+          router: { location: { query: {} }, createHref: () => {} },
+        },
+        childContextTypes: { router: PropTypes.object },
+      });
+      itemTable = component.find('ItemTable');
     });
 
     it('has Tabbed component with four tabs', () => {
@@ -53,13 +64,14 @@ describe('BibPage', () => {
     });
 
     // not implemented yet
-    xit('has item table with volume column', () => {
+    it('has item table with volume column', () => {
       expect(itemTable.find('th').at(0).text()).to.equal('Vol/Date');
     });
 
     // not implemented yet
-    xit('gets the format from holdings statement', () => {
-      expect(itemTable.find('td').at(0).text()).to.equal('PRINT');
+    it('gets the format from holdings statement', () => {
+      // console.log('itemTable find: ', itemTable.html());
+      expect(itemTable.find('td').at(1).text()).to.equal('PRINT');
     });
   });
 });

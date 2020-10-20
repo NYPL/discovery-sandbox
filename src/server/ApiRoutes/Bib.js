@@ -151,6 +151,7 @@ function bibSearch(req, res, resolve) {
 }
 
 export default {
+  addHoldingDefinition,
   addCheckInItems,
   bibSearch,
   fetchBib,

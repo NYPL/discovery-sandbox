@@ -3110,8 +3110,8 @@
       ],
       "location": [
         {
-          "prefLabel": "Offsite",
-          "@id": "loc:rc2ma"
+          "label": "Offsite",
+          "code": "loc:rc2ma"
         }
       ],
       "checkInBoxes": [
