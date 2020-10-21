@@ -16,9 +16,9 @@ const itemFilters = [
     type: 'format',
     options: items => items.map(item => ({
       label: item.format || '',
-      id: item.materialType ? item.materialType['@id'] : '',
+      id: item.format || '',
     })),
-    extractItemProperty: item => item.materialType['@id'],
+    extractItemProperty: item => item.format,
   },
   {
     type: 'status',

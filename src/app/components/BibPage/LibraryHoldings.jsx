@@ -7,6 +7,16 @@ const LibraryHoldings = ({ holdings }) => {
     return null;
   }
 
+  const liForEl = (el) => {
+    if (typeof el === 'string') return el;
+    if (!el.url) return el.label;
+    return (
+      <a href={el.url}>
+        { el.label }
+      </a>
+    );
+  };
+
   const htmlDefinitions = holding => holding
     .holdingDefinition
     .map(definition => (
@@ -15,21 +25,7 @@ const LibraryHoldings = ({ holdings }) => {
         definition: (
           <ul>
             {
-              definition.definition.map(el =>
-                (
-                  <li key={el}>
-                    {
-                      typeof el === 'string'
-                      ?
-                      el
-                      :
-                      <a href={el.url}>
-                        { el.label }
-                      </a>
-                    }
-                  </li>
-                ),
-              )
+              definition.definition.map(el => liForEl(el))
             }
           </ul>
         ),

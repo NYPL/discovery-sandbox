@@ -31,6 +31,7 @@ const findUrl = (location, urls) => {
   const matches = urls[location.code];
   const longestMatch = matches.reduce(
     (acc, el) => (el.code.length > acc.code.length ? el : acc), matches[0]);
+  if (!longestMatch || !longestMatch.url) return undefined;
   return longestMatch.url;
 };
 
@@ -42,6 +43,7 @@ const checkInItemsForHolding = (holding) => {
     location = holding.location[0].label;
   }
   const format = holding.format || '';
+  if (!holding.checkInBoxes) return [];
   return holding.checkInBoxes.map(box => (
     {
       location,
