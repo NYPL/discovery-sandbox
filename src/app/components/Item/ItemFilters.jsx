@@ -68,7 +68,11 @@ const ItemFilters = ({ items, hasFilterApplied, numOfFilteredItems }, { router }
           <Fragment>
             {
               ['mobile', 'tabletPortrait'].includes(media) ?
-              <ItemFiltersMobile /> :
+              <ItemFiltersMobile
+                options={options}
+                openFilter={openFilter}
+                manageFilterDisplay={manageFilterDisplay}
+              /> :
               (
                 <div id="item-filters" className="item-table-filters">
                   {
@@ -79,7 +83,7 @@ const ItemFilters = ({ items, hasFilterApplied, numOfFilteredItems }, { router }
                         open={openFilter === filter.type}
                         manageFilterDisplay={manageFilterDisplay}
                         key={filter.type}
-                        />
+                      />
                     ))
                   }
                 </div>

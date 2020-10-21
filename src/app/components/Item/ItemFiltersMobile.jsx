@@ -8,10 +8,14 @@ import { trackDiscovery } from '../../utils/utils';
 import { itemFilters } from '../../data/constants';
 
 
-const ItemFiltersMobile = (props, context) => {
+const ItemFiltersMobile = ({ options, openFilter, manageFilterDisplay }, context) => {
   const [displayFilters, toggleFilters] = useState(false);
-
-  if (!displayFilters) return <Button>Filters</Button>;
+  if (!displayFilters) return (
+    <Button
+      onClick={() => toggleFilters(true)}
+      buttonType="outline"
+    >Filters</Button>
+  );
 
   return (
     <div id="item-filters" className="item-table-filters">
