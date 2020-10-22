@@ -6,15 +6,31 @@ import FocusTrap from 'focus-trap-react';
 import { isOptionSelected, trackDiscovery } from '../../utils/utils';
 
 // export for testing purposes
-export const parseDistinctOptions = options => Array.from(
-  new Set(options.reduce((optionIds, option) => {
-    if (option.id && option.id.length) optionIds.push(option.id);
-    return optionIds;
-  }, [])))
-  .map(id => ({
-    id,
-    label: options.find(option => (option.id === id && option.label.length)).label,
-  }));
+// export const parseDistinctOptions = (options) => {
+//   console.log('parseDistinctOptions: ', options);
+//   return Array.from(
+//     new Set(options.reduce((optionIds, option) => {
+//       if (option.id && option.id.length) optionIds.push(option.id.toString());
+//       return optionIds;
+//     }, [])))
+//     .map(id => ({
+//       id,
+//       label: options.find(option => (option.id.toString() === id && option.label.length)).label,
+//     }));
+// };
+export const parseDistinctOptions = (options) => {
+  console.log('parseDistinctOptions: ', options);
+  return Array.from(
+    new Set(options.reduce((optionIds, option) => {
+      if (Array.isArray(option.label)) return optionIds.concat(option.label);
+      return optionIds.concat([option.label]);
+    }, [])),
+  )
+    .map(label => ({
+      id: label,
+      label,
+    }));
+};
 
 const ItemFilter = ({ filter, options, open, manageFilterDisplay }, context) => {
   const { router } = context;

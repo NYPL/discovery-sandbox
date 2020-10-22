@@ -29,7 +29,7 @@ const ItemFilters = ({ items, hasFilterApplied, numOfFilteredItems }, { router }
   const mapFilterIdsToLabel = {};
   itemFilters.forEach((filter) => {
     const optionsObjEntry = options[filter.type];
-    const filterOptions = optionsObjEntry || filter.options(items);
+    const filterOptions = optionsObjEntry || items.map(item => filter.options(item));
     if (!optionsObjEntry) options[filter.type] = filterOptions;
     filterOptions.forEach((option) => {
       mapFilterIdsToLabel[option.id] = option.label;
