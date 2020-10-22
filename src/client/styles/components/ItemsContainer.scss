@@ -4,9 +4,13 @@
 
   .item-filter-button {
     border: 1px solid var(--ui-gray-medium);
+    &.open {
+      border-bottom: none;
+    }
   }
 
-  ul {
+  fieldset {
+    border: none;
     list-style: none;
     margin-bottom: 0;
 
@@ -75,6 +79,7 @@
   .item-filter {
     display: block;
     width: 100%;
+    margin: 10px 0;
   }
 
   .item-filter-button {
@@ -85,9 +90,30 @@
     position: unset;
     width: 100%;
     float: left;
+    margin-bottom: 10px;
   }
 
   .item-filter-button {
     border-bottom: none;
   }
+}
+
+.modal.scc-item-filters {
+  background-color: white;
+
+  .item-table-filters {
+    background-color: white;
+  }
+}
+
+.no-scroll {
+  position: inherit;
+}
+
+.go-back-button {
+  display: inline-block;
+}
+
+.show-results-button {
+  float: right;
 }

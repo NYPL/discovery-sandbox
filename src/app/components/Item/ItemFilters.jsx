@@ -13,6 +13,9 @@ import { MediaContext } from '../Application/Application';
 const ItemFilters = ({ items, hasFilterApplied, numOfFilteredItems }, { router }) => {
   if (!items || !items.length) return null;
   const [openFilter, changeOpenFilter] = useState('none');
+  const { location, createHref } = router;
+  const initialFilters = location.query ? location.query : {};
+  const [selectedFilters, updateSelectedFilters] = useState(initialFilters);
 
   const manageFilterDisplay = (filterType) => {
     if (filterType === openFilter) {
@@ -27,7 +30,6 @@ const ItemFilters = ({ items, hasFilterApplied, numOfFilteredItems }, { router }
     }
   };
 
-  const { query } = router.location;
   const options = {};
   const mapFilterIdsToLabel = {};
   itemFilters.forEach((filter) => {
@@ -43,7 +45,7 @@ const ItemFilters = ({ items, hasFilterApplied, numOfFilteredItems }, { router }
   const parsedFilterSelections = () => {
     let filterSelections = itemFilters.map(
       (filter) => {
-        const selection = query[filter.type];
+        const selection = location.query[filter.type];
         if (Array.isArray(selection)) return selection.map(id => mapFilterIdsToLabel[id]);
         return mapFilterIdsToLabel[selection];
       }).filter(selections => selections);
@@ -60,6 +62,27 @@ const ItemFilters = ({ items, hasFilterApplied, numOfFilteredItems }, { router }
     router.push(href);
   };
 
+  const submitFilterSelections = selectedFilters => {
+    const href = createHref({
+      ...location,
+      ...{
+        query: selectedFilters,
+        hash: '#item-filters',
+        search: '',
+      },
+    });
+    trackDiscovery('Search Filters', `Apply Filter - ${JSON.stringify(selectedFilters)}`);
+    router.push(href);
+  };
+
+  const itemFilterComponentProps = {
+    openFilter,
+    selectedFilters,
+    manageFilterDisplay,
+    updateSelectedFilters,
+    submitFilterSelections,
+  }
+
   return (
     <Fragment>
       <MediaContext.Consumer>
@@ -70,8 +93,7 @@ const ItemFilters = ({ items, hasFilterApplied, numOfFilteredItems }, { router }
               ['mobile', 'tabletPortrait'].includes(media) ?
               <ItemFiltersMobile
                 options={options}
-                openFilter={openFilter}
-                manageFilterDisplay={manageFilterDisplay}
+                {...itemFilterComponentProps}
               /> :
               (
                 <div id="item-filters" className="item-table-filters">
@@ -79,10 +101,9 @@ const ItemFilters = ({ items, hasFilterApplied, numOfFilteredItems }, { router }
                     itemFilters.map(filter => (
                       <ItemFilter
                         filter={filter.type}
-                        options={options[filter.type]}
-                        open={openFilter === filter.type}
-                        manageFilterDisplay={manageFilterDisplay}
                         key={filter.type}
+                        options={options[filter.type]}
+                        {...itemFilterComponentProps}
                       />
                     ))
                   }
