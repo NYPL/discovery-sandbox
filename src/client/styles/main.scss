@@ -5,6 +5,11 @@ Import style rules from NYPL Design Toolkit
 @import "toolkit";
 
 /*
+Import style rules from NYPL Design System
+*/
+@import '~@nypl/design-system-react-components/dist/styles.css';
+
+/*
 App-specific utilities and defaults
 */
 @import "utils/mixins.scss";

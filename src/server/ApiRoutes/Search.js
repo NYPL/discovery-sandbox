@@ -8,6 +8,7 @@ import {
   basicQuery,
   parseServerSelectedFilters,
 } from '../../app/utils/utils';
+import extractFeatures from '../../app/utils/extractFeatures';
 import nyplApiClient from '../routes/nyplApiClient';
 import logger from '../../../logger';
 import ResearchNow from './ResearchNow';
@@ -20,8 +21,8 @@ const createAPIQuery = basicQuery({
   selectedFilters: {},
 });
 
-const nyplApiClientCall = (query) => {
-  const requestOptions = appConfig.features.includes('on-site-edd') ? { headers: { 'X-Features': 'on-site-edd' } } : {};
+const nyplApiClientCall = (query, urlEnabledFeatures = []) => {
+  const requestOptions = appConfig.features.includes('on-site-edd') || urlEnabledFeatures.includes('on-site-edd') ? { headers: { 'X-Features': 'on-site-edd' } } : {};
 
   return nyplApiClient()
     .then(client =>
@@ -29,7 +30,7 @@ const nyplApiClientCall = (query) => {
     );
 };
 
-function fetchResults(searchKeywords = '', page, sortBy, order, field, filters, cb, errorcb) {
+function fetchResults(searchKeywords = '', page, sortBy, order, field, filters, cb, errorcb, features) {
   const encodedResultsQueryString = createAPIQuery({
     searchKeywords,
     sortBy: sortBy ? `${sortBy}_${order}` : '',
@@ -51,8 +52,8 @@ function fetchResults(searchKeywords = '', page, sortBy, order, field, filters, 
 
   // Need to get both results and aggregations before proceeding.
   Promise.all([
-    nyplApiClientCall(resultsQuery),
-    nyplApiClientCall(aggregationQuery)])
+    nyplApiClientCall(resultsQuery, features),
+    nyplApiClientCall(aggregationQuery, features)])
     .then(response => ResearchNow.search(queryObj)
       .then((drbbResults) => {
         response.push(drbbResults);
@@ -84,6 +85,7 @@ function search(req, res, resolve) {
     apiQueryField = 'title';
   }
   const apiQueryFilters = { ...filters, ...additionalFilters };
+  const urlEnabledFeatures = extractFeatures(req.query.features);
 
   fetchResults(
     q,
@@ -103,6 +105,7 @@ function search(req, res, resolve) {
       field: fieldQuery,
     }),
     error => resolve(error),
+    urlEnabledFeatures,
   );
 }
 

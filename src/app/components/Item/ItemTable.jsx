@@ -4,7 +4,7 @@ import { isArray as _isArray } from 'underscore';
 
 import ItemTableRow from './ItemTableRow';
 
-const ItemTable = ({ items, bibId, id, searchKeywords }) => {
+const ItemTable = ({ items, holdings, bibId, id, searchKeywords, page }) => {
   if (
     !_isArray(items) ||
     !items.length ||
@@ -13,15 +13,22 @@ const ItemTable = ({ items, bibId, id, searchKeywords }) => {
     return null;
   }
 
+  const includeVolColumn = (
+    items.some(item => item.isSerial)
+    && holdings && holdings.some(holding => holding.checkInBoxes && holding.checkInBoxes.some(checkInBox => checkInBox.coverage))
+  );
+
   return (
     <table className="nypl-basic-table" id={id}>
       <caption className="hidden">Item details</caption>
       <thead>
         <tr>
-          <th scope="col">Location</th>
-          <th scope="col">Call Number</th>
+          {includeVolColumn ? <th scope="col">Vol/Date</th> : null}
+          {page !== 'SearchResults' ? <th scope="col">Format</th> : null}
+          <th scope="col">Access</th>
           <th scope="col">Status</th>
-          <th scope="col">Message</th>
+          <th scope="col">Call Number</th>
+          <th scope="col">Location</th>
         </tr>
       </thead>
       <tbody>
@@ -32,6 +39,8 @@ const ItemTable = ({ items, bibId, id, searchKeywords }) => {
               item={item}
               bibId={bibId}
               searchKeywords={searchKeywords}
+              includeVolColumn={includeVolColumn}
+              page={page}
             />),
           )
         }
@@ -45,6 +54,8 @@ ItemTable.propTypes = {
   bibId: PropTypes.string,
   id: PropTypes.string,
   searchKeywords: PropTypes.string,
+  holdings: PropTypes.array,
+  page: PropTypes.string,
 };
 
 ItemTable.defaultProps = {

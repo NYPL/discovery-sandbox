@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-filename-extension */
 /* eslint-env mocha */
 import React from 'react';
 import { expect } from 'chai';
@@ -73,6 +74,31 @@ describe('Application', () => {
     it(`should set media as "mobile" for screenwidths below ${xtrasmall}`, () => {
       resizeWindow(xtrasmall);
       expect(component.state().media).to.eql('mobile');
+    });
+  });
+
+  describe('url-enabled feature flag', () => {
+    let content;
+    before(() => {
+      window.matchMedia = () => ({ addListener: () => {} });
+      window.matchMedia().addListener = stub();
+      context.router = {
+        location: { query: {
+          features: 'on-site-edd',
+        } },
+        listen: stub(),
+      };
+      component = shallow(
+        <Application
+          children={{}}
+          router={context.router}
+        >
+          <a href='/subject_headings'>link</a>
+        </Application>, { context });
+    });
+
+    it('sets `urlEnabledFeatures` state from `router.location.query.features`', () => {
+      expect(component.state().urlEnabledFeatures).to.equal('on-site-edd');
     });
   });
 });
