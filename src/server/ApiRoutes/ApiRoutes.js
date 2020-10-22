@@ -7,6 +7,7 @@ import Feedback from './Feedback';
 import appConfig from '../../app/data/appConfig';
 import SubjectHeading from './SubjectHeading';
 import SubjectHeadings from './SubjectHeadings';
+import Account from './Account';
 import dataLoaderUtil from '../../app/utils/dataLoaderUtil';
 import routeMethods from './RouteMethods';
 
@@ -75,5 +76,9 @@ router
 router
   .route(`${appConfig.baseUrl}/api/feedback*`)
   .post(Feedback.post);
+
+router
+  .route(`${appConfig.baseUrl}/account/:patronId`)
+  .get(Account.fetchAccountPage)
 
 export default router;
