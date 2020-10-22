@@ -10,7 +10,6 @@ const itemFilters = [
       label: item.location,
       id: item.holdingLocationCode.startsWith('loc:rc') ? 'offsite' : item.holdingLocationCode,
     }),
-    extractItemProperty: item => item.holdingLocationCode,
   },
   {
     type: 'format',
@@ -18,7 +17,6 @@ const itemFilters = [
       label: item.format || '',
       id: item.format || '',
     }),
-    extractItemProperty: item => item.format,
   },
   {
     type: 'status',
@@ -26,7 +24,6 @@ const itemFilters = [
       label: item.requestable ? 'Requestable' : item.status.prefLabel,
       id: item.requestable ? 'requestable' : item.status['@id'],
     }),
-    extractItemProperty: item => item.status.prefLabel,
   },
 ];
 

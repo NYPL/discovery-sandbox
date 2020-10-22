@@ -86,7 +86,6 @@ class ItemsContainer extends React.Component {
     const { query } = this;
     if (!query) return items;
     if (!this.hasFilter) return items;
-    // console.log('filtering items:', items, 'query: ', query, 'ItemFilters: ', ItemFilters);
 
     return items.filter((item) => {
       const showItem = itemFilters.every((filter) => {
@@ -94,17 +93,14 @@ class ItemsContainer extends React.Component {
         const filterValue = query[filterType];
         if (!filterValue) return true;
         const selections = typeof filterValue === 'string' ? [filterValue] : filterValue;
-        console.log('filtering: ', item, selections);
         const accept = selections.some((selection) => {
           const isRequestable = filterType === 'status' && selection === 'requestable';
           if (isRequestable) return item.requestable;
           const isOffsite = filterType === 'location' && selection === 'offsite';
           if (isOffsite) return item.isOffsite;
-          // const itemProperty = filter.extractItemProperty(item);
           const itemProperty = filter.options(item).label;
           return isOptionSelected(selection, itemProperty, true);
         });
-        console.log('accept: ', accept);
         return accept;
       });
       return showItem;

@@ -36,18 +36,6 @@ const ItemFilters = ({ items, hasFilterApplied, numOfFilteredItems }, { router }
     });
   });
 
-  // join filter selections and add single quotes
-  // const parsedFilterSelections = () => {
-  //   let filterSelections = itemFilters.map(
-  //     (filter) => {
-  //       const selection = query[filter.type];
-  //       if (Array.isArray(selection)) return selection.map(id => mapFilterIdsToLabel[id]);
-  //       return mapFilterIdsToLabel[selection];
-  //     }).filter(selections => selections);
-  //   if (filterSelections.flat) filterSelections = filterSelections.flat();
-  //   const joinedText = filterSelections.join("', '");
-  //   return `'${joinedText}'`;
-  // };
   const parsedFilterSelections = () => itemFilters
     .map(filter => query[filter.type] && `${filter.type}: ${query[filter.type]}`)
     .filter(selected => selected)
