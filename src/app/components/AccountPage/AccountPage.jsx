@@ -13,9 +13,10 @@ const AccountPage = (props, { router }) => {
       const fullUrl = encodeURIComponent(window.location.href);
       window.location.replace(`${appConfig.loginUrl}?redirect_uri=${fullUrl}`);
     }
-  });
+  })
 
   const patronInfoToDisplay = router.location.hash.substring(1) || 'items';
+  const { baseUrl } = appConfig;
 
   return (
     <div className="nypl-full-width-wrapper nypl-patron-page">
@@ -25,11 +26,11 @@ const AccountPage = (props, { router }) => {
           Email: {patron.emails[0]}
       </div>
       <ul>
-        <li><a href='#items'>Checkouts</a></li>
-        <li><a href='#holds'>Holds</a></li>
-        <li><a href='#mylists'>My Lists</a></li>
-        <li><a href='#overdues'>Fines{`${patron.moneyOwed ? ` ($${patron.moneyOwed.toFixed(2)})` : null}`}</a></li>
-        <li><a href='#msg'>Messages</a></li>
+        <li><a href={`${baseUrl}/account/${patron.id}-items`}>Checkouts</a></li>
+        <li><a href={`${baseUrl}/account/${patron.id}-holds`}>Holds</a></li>
+        <li><a href={`${baseUrl}/account/${patron.id}-mylists`}>My Lists</a></li>
+        <li><a href={`${baseUrl}/account/${patron.id}-overdues`}>Fines{`${patron.moneyOwed ? ` ($${patron.moneyOwed.toFixed(2)})` : null}`}</a></li>
+        <li><a href={`${baseUrl}/msg`}>Messages</a></li>
       </ul>
       <a
         id="modInfoPopupWindowLinkComponent"

@@ -2,22 +2,21 @@ import axios from 'axios';
 
 import { updateAccountHtml } from '../../app/actions/Actions';
 
-function fetchAccountPage(req, res, next) {
+function fetchAccountPage(req, res, resolve) {
   const { patronId } = req.params;
+  const content = req.params.content || 'items';
   const { dispatch } = global.store;
-  const nyplIdentityCookieString = req.cookies.nyplIdentityPatron;
-  const encodedNyplIdentityCookie = Buffer.from(nyplIdentityCookieString).toString("base64");
 
-  axios.get(`https://ilsstaff.nypl.org:443/dp/patroninfo*eng~Sdefault/${patronId}/items`, {
+  axios.get(`https://ilsstaff.nypl.org:443/dp/patroninfo*eng~Sdefault/${patronId}/${content}`, {
     headers: {
-      Cookie: `nyplIdentityPatron=${encodedNyplIdentityCookie}`,
+      Cookie: req.headers.cookie,
     },
+    // withCredentials: true,
   })
     .then(resp => {
-      dispatch(updateAccountHtml(resp.data));
-      next();
+      resolve(resp.data);
     })
-    .catch(console.log)
+    .catch(console.log);
 }
 
 export default { fetchAccountPage };

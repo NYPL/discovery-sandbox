@@ -5,6 +5,7 @@ import {
   updateHoldRequestPage,
   resetState,
   updateLastLoaded,
+  updateAccountHtml,
 } from '@Actions';
 import appConfig from '@appConfig';
 import { updateLoadingStatus } from '../actions/Actions';
@@ -33,6 +34,11 @@ const routes = {
     path: 'hold/request',
     params: '/:bibId-:itemId',
   },
+  account: {
+    action: updateAccountHtml,
+    path: 'account',
+    params: '/:patronId',
+  }
 };
 
 // A simple function for loading data into the store. The only reason it is broken
