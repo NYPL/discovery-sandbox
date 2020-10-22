@@ -94,7 +94,7 @@ const ItemFilter = ({
           onClick={() => manageFilterDisplay(filter)}
           type="button"
         >
-          {filter}{numOfSelections ? ` (${numOfSelections})` : null} <Icon name={open ? 'minus' : 'plus'} />
+          {filter}{numOfSelections ? ` (${numOfSelections})` : null} <Icon name={isOpen ? 'minus' : 'plus'} />
         </Button>
         {isOpen ? (
           <div
