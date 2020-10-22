@@ -93,7 +93,7 @@ class ItemsContainer extends React.Component {
         const filterValue = query[filterType];
         if (!filterValue) return true;
         const selections = typeof filterValue === 'string' ? [filterValue] : filterValue;
-        const accept = selections.some((selection) => {
+        return selections.some((selection) => {
           const isRequestable = filterType === 'status' && selection === 'requestable';
           if (isRequestable) return item.requestable;
           const isOffsite = filterType === 'location' && selection === 'offsite';
@@ -101,7 +101,6 @@ class ItemsContainer extends React.Component {
           const itemProperty = filter.options(item).label;
           return isOptionSelected(selection, itemProperty, true);
         });
-        return accept;
       });
       return showItem;
     });
