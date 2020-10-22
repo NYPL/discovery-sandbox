@@ -25,7 +25,7 @@ const LibraryHoldings = ({ holdings }) => {
         definition: (
           <ul>
             {
-              definition.definition.map(el => liForEl(el))
+              definition.definition.map(el => <li>{liForEl(el)}</li>)
             }
           </ul>
         ),
