@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Checkbox, Button, Icon } from '@nypl/design-system-react-components';
 import FocusTrap from 'focus-trap-react';
 
-import { isOptionSelected, trackDiscovery } from '../../utils/utils';
+import { isOptionSelected } from '../../utils/utils';
 
 // export for testing purposes
 export const parseDistinctOptions = options => Array.from(
@@ -89,7 +89,8 @@ const ItemFilter = ({
         active={isOpen}
       >
         <Button
-          className={`item-filter-button ${isOpen ? ' open': ''}`}
+          className={`item-filter-button ${
+            isOpen ? ' open' : ''}`}
           buttonType="outline"
           onClick={() => manageFilterDisplay(filter)}
           type="button"
@@ -142,6 +143,10 @@ ItemFilter.propTypes = {
   options: PropTypes.array,
   openFilter: PropTypes.string,
   manageFilterDisplay: PropTypes.func,
+  mobile: PropTypes.bool,
+  selectedFilters: PropTypes.object,
+  submitFilterSelections: PropTypes.func,
+  updateSelectedFilters: PropTypes.func,
 };
 
 ItemFilter.contextTypes = {

@@ -1,4 +1,4 @@
-import React, { useState, Fragment } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
 import { Button, Modal, Icon } from '@nypl/design-system-react-components';
@@ -14,16 +14,19 @@ const ItemFiltersMobile = ({
   manageFilterDisplay,
   selectedFilters,
   updateSelectedFilters,
-}, context) => {
+  submitFilterSelections,
+}) => {
   const [displayFilters, toggleFilterDisplay] = useState(false);
-  const initialFilters = location.query ? location.query : {};
 
-  if (!displayFilters) return (
-    <Button
-      onClick={() => toggleFilterDisplay(true)}
-      buttonType="outline"
-    >Filters</Button>
-  )
+  if (!displayFilters) {
+    return (
+      <Button
+        onClick={() => toggleFilterDisplay(true)}
+        buttonType="outline"
+      >Filters
+      </Button>
+    );
+  }
 
   return (
     <Modal
@@ -51,12 +54,13 @@ const ItemFiltersMobile = ({
             <ItemFilter
               filter={filter.type}
               options={options[filter.type]}
-              open={openFilter === filter.type}
+              openFilter={openFilter}
               manageFilterDisplay={manageFilterDisplay}
               key={filter.type}
               mobile
               selectedFilters={selectedFilters}
               updateSelectedFilters={updateSelectedFilters}
+              submitFilterSelections={submitFilterSelections}
             />
           ))
         }
@@ -66,9 +70,12 @@ const ItemFiltersMobile = ({
 };
 
 ItemFiltersMobile.propTypes = {
-  items: PropTypes.array,
-  hasFilterApplied: PropTypes.bool,
-  numOfFilteredItems: PropTypes.number,
+  options: PropTypes.object,
+  openFilter: PropTypes.string,
+  manageFilterDisplay: PropTypes.func,
+  selectedFilters: PropTypes.object,
+  updateSelectedFilters: PropTypes.func,
+  submitFilterSelections: PropTypes.func,
 };
 
 ItemFiltersMobile.contextTypes = {

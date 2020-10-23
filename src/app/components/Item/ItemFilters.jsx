@@ -62,16 +62,16 @@ const ItemFilters = ({ items, hasFilterApplied, numOfFilteredItems }, { router }
     router.push(href);
   };
 
-  const submitFilterSelections = selectedFilters => {
+  const submitFilterSelections = (filters) => {
     const href = createHref({
       ...location,
       ...{
-        query: selectedFilters,
+        query: filters,
         hash: '#item-filters',
         search: '',
       },
     });
-    trackDiscovery('Search Filters', `Apply Filter - ${JSON.stringify(selectedFilters)}`);
+    trackDiscovery('Search Filters', `Apply Filter - ${JSON.stringify(filters)}`);
     router.push(href);
   };
 
@@ -81,20 +81,21 @@ const ItemFilters = ({ items, hasFilterApplied, numOfFilteredItems }, { router }
     manageFilterDisplay,
     updateSelectedFilters,
     submitFilterSelections,
-  }
+  };
 
   return (
     <Fragment>
       <MediaContext.Consumer>
         {
           media =>
-          <Fragment>
-            {
+          (
+            <Fragment>
+              {
               ['mobile', 'tabletPortrait'].includes(media) ?
-              <ItemFiltersMobile
+              (<ItemFiltersMobile
                 options={options}
                 {...itemFilterComponentProps}
-              /> :
+              />) :
               (
                 <div id="item-filters" className="item-table-filters">
                   {
@@ -110,7 +111,8 @@ const ItemFilters = ({ items, hasFilterApplied, numOfFilteredItems }, { router }
                 </div>
               )
             }
-          </Fragment>
+            </Fragment>
+          )
         }
       </MediaContext.Consumer>
       <div className="item-filter-info">

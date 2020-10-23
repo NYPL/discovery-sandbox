@@ -5,12 +5,12 @@
   .item-filter-button {
     border: 1px solid var(--ui-gray-medium);
     &.open {
-      border-bottom: none;
+      border-bottom: 0;
     }
   }
 
   fieldset {
-    border: none;
+    border: 0;
     list-style: none;
     margin-bottom: 0;
 
