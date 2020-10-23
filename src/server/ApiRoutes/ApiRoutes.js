@@ -77,8 +77,4 @@ router
   .route(`${appConfig.baseUrl}/api/feedback*`)
   .post(Feedback.post);
 
-router
-  .route(`${appConfig.baseUrl}/api/account/:patronId-:content`)
-  .get(Account.fetchAccountPage)
-
 export default router;

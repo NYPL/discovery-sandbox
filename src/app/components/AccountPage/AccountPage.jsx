@@ -26,11 +26,11 @@ const AccountPage = (props, { router }) => {
           Email: {patron.emails[0]}
       </div>
       <ul>
-        <li><a href={`${baseUrl}/account/${patron.id}-items`}>Checkouts</a></li>
-        <li><a href={`${baseUrl}/account/${patron.id}-holds`}>Holds</a></li>
-        <li><a href={`${baseUrl}/account/${patron.id}-mylists`}>My Lists</a></li>
-        <li><a href={`${baseUrl}/account/${patron.id}-overdues`}>Fines{`${patron.moneyOwed ? ` ($${patron.moneyOwed.toFixed(2)})` : null}`}</a></li>
-        <li><a href={`${baseUrl}/msg`}>Messages</a></li>
+        <li><a href={`${baseUrl}/account/${patron.id}/items`}>Checkouts</a></li>
+        <li><a href={`${baseUrl}/account/${patron.id}/holds`}>Holds</a></li>
+        <li><a href={`${baseUrl}/account/${patron.id}/mylists`}>My Lists</a></li>
+        <li><a href={`${baseUrl}/account/${patron.id}/overdues`}>Fines{`${patron.moneyOwed ? ` ($${patron.moneyOwed.toFixed(2)})` : null}`}</a></li>
+        <li><a href={`${baseUrl}/account/${patron.id}/msg`}>Messages</a></li>
       </ul>
       <a
         id="modInfoPopupWindowLinkComponent"
@@ -39,6 +39,7 @@ const AccountPage = (props, { router }) => {
       >
 				My Settings
       </a>
+      <hr />
       <div dangerouslySetInnerHTML={{ __html: accountHtml }} />
     </div>
   );

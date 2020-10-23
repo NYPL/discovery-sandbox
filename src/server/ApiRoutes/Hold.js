@@ -181,13 +181,13 @@ function confirmRequestServer(req, res, next) {
   const bibId = req.params.bibId || '';
   const requireUser = User.requireUser(req, res);
   const { redirect } = requireUser;
+  if (redirect) return false;
   const requestId = req.query.requestId || '';
   const searchKeywords = req.query.q || '';
   const errorStatus = req.query.errorStatus ? req.query.errorStatus : null;
   const errorMessage = req.query.errorMessage ? req.query.errorMessage : null;
   const error = _extend({}, { errorStatus, errorMessage });
 
-  if (redirect) return false;
 
   const { dispatch } = global.store;
   if (!requestId) {
