@@ -34,11 +34,16 @@ const AccountPage = (props, { router }) => {
         <li><Link to={`${baseUrl}/account/${patron.id}/msg`}>Messages</Link></li>
       </ul>
       <a
-        id="modInfoPopupWindowLinkComponent"
         href={`https://ilsstaff.nypl.org:443/patroninfo*eng~Sdefault/${patron.id}/modpinfo`}
         target="_blank"
       >
 				My Settings
+      </a>
+      <a
+        href={`https://ilsstaff.nypl.org:443/patroninfo*eng~Sdefault/${patron.id}/newpin`}
+        target="_blank"
+      >
+				Change Pin
       </a>
       <hr />
       <div dangerouslySetInnerHTML={{ __html: accountHtml }} />
