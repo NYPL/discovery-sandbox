@@ -2,6 +2,7 @@
 import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router';
 
 import appConfig from '../../data/appConfig';
 
@@ -26,11 +27,11 @@ const AccountPage = (props, { router }) => {
           Email: {patron.emails[0]}
       </div>
       <ul>
-        <li><a href={`${baseUrl}/account/${patron.id}/items`}>Checkouts</a></li>
-        <li><a href={`${baseUrl}/account/${patron.id}/holds`}>Holds</a></li>
-        <li><a href={`${baseUrl}/account/${patron.id}/mylists`}>My Lists</a></li>
-        <li><a href={`${baseUrl}/account/${patron.id}/overdues`}>Fines{`${patron.moneyOwed ? ` ($${patron.moneyOwed.toFixed(2)})` : null}`}</a></li>
-        <li><a href={`${baseUrl}/account/${patron.id}/msg`}>Messages</a></li>
+        <li><Link to={`${baseUrl}/account/${patron.id}/items`}>Checkouts</Link></li>
+        <li><Link to={`${baseUrl}/account/${patron.id}/holds`}>Holds</Link></li>
+        <li><Link to={`${baseUrl}/account/${patron.id}/mylists`}>My Lists</Link></li>
+        <li><Link to={`${baseUrl}/account/${patron.id}/overdues`}>Fines{`${patron.moneyOwed ? ` ($${patron.moneyOwed.toFixed(2)})` : null}`}</Link></li>
+        <li><Link to={`${baseUrl}/account/${patron.id}/msg`}>Messages</Link></li>
       </ul>
       <a
         id="modInfoPopupWindowLinkComponent"
