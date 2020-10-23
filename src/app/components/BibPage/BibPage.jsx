@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 
 import Breadcrumbs from '../Breadcrumbs/Breadcrumbs';
-import ItemHoldings from '../Item/ItemHoldings';
+import ItemsContainer from '../Item/ItemsContainer';
 import BibDetails from './BibDetails';
 import LibraryItem from '../../utils/item';
 import BackLink from './BackLink';
@@ -23,7 +23,7 @@ import {
   getAggregatedElectronicResources,
 } from '../../utils/utils';
 
-const BibPage = (props) => {
+export const BibPage = (props) => {
   const {
     location,
     searchKeywords,
@@ -32,7 +32,7 @@ const BibPage = (props) => {
   const bib = props.bib ? props.bib : {};
   const bibId = bib && bib['@id'] ? bib['@id'].substring(4) : '';
   const title = bib.title && bib.title.length ? bib.title[0] : '';
-  const items = LibraryItem.getItems(bib);
+  const items = (bib.checkInItems || []).concat(LibraryItem.getItems(bib));
   const isElectronicResources = _every(items, i => i.isElectronicResource);
   // Related to removing MarcRecord because the webpack MarcRecord is not working. Sep/28/2017
   // const isNYPLReCAP = LibraryItem.isNYPLReCAP(bib['@id']);
@@ -89,13 +89,14 @@ const BibPage = (props) => {
     });
   }
 
-  const itemHoldings = items.length && !isElectronicResources ? (
-    <ItemHoldings
+  const itemsContainer = items.length && !isElectronicResources ? (
+    <ItemsContainer
       shortenItems={shortenItems}
       items={items}
       bibId={bibId}
       itemPage={itemPage}
       searchKeywords={searchKeywords}
+      holdings={bib.holdings}
     />
   ) : null;
   // Related to removing MarcRecord because the webpack MarcRecord is not working. Sep/28/2017
@@ -114,6 +115,10 @@ const BibPage = (props) => {
   const otherLibraries = ['Princeton University Library', 'Columbia University Libraries'];
 
   const tabs = [
+    itemsContainer ? {
+      title: 'Availability',
+      content: itemsContainer,
+    } : null,
     {
       title: 'Details',
       content: tabDetails,
@@ -124,7 +129,7 @@ const BibPage = (props) => {
     } : null,
     bib.holdings ? {
       title: 'Library Holdings',
-      content: <LibraryHoldings />,
+      content: <LibraryHoldings holdings={bib.holdings} />,
     } : null,
   ].filter(tab => tab);
 
@@ -172,7 +177,6 @@ const BibPage = (props) => {
                 tabs={tabs}
                 hash={location.hash}
               />
-              {itemHoldings}
             </div>
           </div>
         </div>

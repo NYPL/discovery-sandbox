@@ -149,13 +149,14 @@ function LibraryItem() {
    *
    * @return {object}
    */
-  this.getIdentifiers = (identifiersArray, neededTagsArray) => (
-    neededTagsArray.reduce((identifierMap, neededTag) => {
+  this.getIdentifiers = (identifiersArray, neededTagsArray) => {
+    if (!Array.isArray(identifiersArray)) return {};
+    return neededTagsArray.reduce((identifierMap, neededTag) => {
       const matches = this.getIdentifierEntitiesByType(identifiersArray, neededTag.value);
       if (matches && matches.length > 0) return Object.assign(identifierMap, { [neededTag.name]: matches[0]['@value'] });
       return identifierMap;
-    }, {})
-  );
+    }, {});
+  };
 
   /**
    * getElectronicResources(item)
@@ -178,7 +179,7 @@ function LibraryItem() {
    */
   this.mapItem = (item = {}, bib) => {
     const id = item && item['@id'] ? item['@id'].substring(4) : '';
-    const itemSource = item.idNyplSourceId ? item.idNyplSourceId['@type'] : undefined;
+    const itemSource = item.idNyplSourceId ? item.idNyplSourceId['@type'] : '';
     // Taking the first object in the accessMessage array.
     const accessMessage = item.accessMessage && item.accessMessage.length ?
       item.accessMessage[0] : {};
@@ -194,7 +195,7 @@ function LibraryItem() {
     const status = item.status && item.status.length ? item.status[0] : {};
     const availability = !_isEmpty(status) && status.prefLabel ?
       status.prefLabel.replace(/\W/g, '').toLowerCase() : '';
-    const available = availability === 'available';
+    const available = ['available', 'useinlibrary'].includes(availability);
     // non-NYPL ReCAP
     const nonNyplRecap = itemSource.indexOf('Recap') !== -1;
     const holdingLocation = this.getHoldingLocation(item, nonNyplRecap);
@@ -211,10 +212,11 @@ function LibraryItem() {
     const mappedItemSource = itemSourceMappings[itemSource];
     const isOffsite = this.isOffsite(holdingLocation.prefLabel.toLowerCase());
     let url = null;
-    const isSerial = bib && bib.issuance && bib.issuance[0]['@id'] === 'urn:biblevel:s';
+    const isSerial = !!(bib && bib.issuance && bib.issuance[0]['@id'] === 'urn:biblevel:s');
     const materialType = bib && bib.materialType && bib.materialType[0] ?
-      bib.materialType[0].prefLabel : null;
-    const format = bib.holdings && bib.holdings.format ? bib.holdings.format : materialType;
+      bib.materialType[0] : {};
+    const format = bib && bib.holdings && bib.holdings.format ?
+      bib.holdings.format : materialType.prefLabel;
 
     if (availability === 'available') {
       // For all items that we want to send to the Hold Request Form.
@@ -230,7 +232,7 @@ function LibraryItem() {
       isElectronicResource,
       electronicResources,
       location: holdingLocation.prefLabel,
-      holdingLocationCode: holdingLocation['@id'],
+      holdingLocationCode: holdingLocation['@id'] || '',
       callNumber,
       url,
       requestable,
@@ -242,6 +244,7 @@ function LibraryItem() {
       isOffsite,
       isSerial,
       format,
+      materialType,
     };
   };
 

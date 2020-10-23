@@ -86,9 +86,10 @@ div .tabbed {
   display: none;
 }
 
-@for $i from 1 through 3 {
+@for $i from 1 through 4 {
   #tab#{$i}:target ~ #section#{$i} {
     display: block;
+    padding: 1rem 1% 0;
   }
 }
 
@@ -186,62 +187,10 @@ div .tabbed {
   }
 }
 
-// end styles for hierarchical subjects
-
-// #tab0:target ~ #section0 {
-//   display: block;
-// }
-//
-// #tab1:target ~ #section1 {
-//   display: block;
-// }
-// .non-default {
-//   display: none;
-// }
-//
-// .default {
-//   display: block;
-// }
-//
-// .non-default:target {
-//   display: block;
-// }
-//
-// .non-default:target ~ .default {
-//   display: none
-// }
-//
-// section {
-//   display: none;
-// }
-// .default {
-//   display: block;
-// }
-// .untargeted:target ~ #section0 {
-//   display: none;
-// }
-//
-// @for $i from 0 through 1 {
-//   #ind#{$i}:target ~ #section#{$i} {
-//     display: block;
-//   }
-//   #ind#{$i}:target ~ #section#{$i} {
-//     display: block;
-//   }
-// }
-//
-// .activeTab {
-//   display: block;
-// }
-//
-// .inactiveTab {
-//   display: none;
-// }
-
 @media (max-width: 1120px) {
   .additionalDetails {
-  dt {
-    float: none;
+    dt {
+      float: none;
+    }
   }
-}
 }

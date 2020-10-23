@@ -15,6 +15,7 @@ import ResultsCount from '../components/ResultsCount/ResultsCount';
 
 import {
   basicQuery,
+  hasValidFilters,
 } from '../utils/utils';
 
 const SearchResults = (props, context) => {
@@ -87,7 +88,7 @@ const SearchResults = (props, context) => {
     return false;
   };
 
-  const selectedFiltersAvailable = checkForSelectedFilters();
+  const selectedFiltersAvailable = hasValidFilters(selectedFilters) && !dropdownOpen;
   const hasResults = searchResults && totalResults;
 
   return (
