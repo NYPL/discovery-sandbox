@@ -29,7 +29,7 @@ const ItemFiltersMobile = ({
     <Modal
       onClick={() => toggleFilters(true)}
       buttonType="outline"
-      className="scc-item-filters"
+      className="scc-item-filters nypl-ds"
     >
       <Button
         buttonType="link"
