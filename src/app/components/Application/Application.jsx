@@ -86,6 +86,7 @@ export class Application extends React.Component {
   }
 
   render() {
+    console.log('from Application, appConfig.features', appConfig.features);
     // dataLocation is passed as a key to DataLoader to ensure it reloads
     // whenever the location changes.
     const dataLocation = Object.assign(
