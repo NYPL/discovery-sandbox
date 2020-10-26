@@ -137,7 +137,7 @@ export const BibPage = (props) => {
 
   const classicLink = (
     bibId.startsWith('b') && features.includes('catalog-link') ?
-      <a href={`https://catalog.nypl.org/record=${bibId}~S1`}>View in Classic</a>
+      <a href={`https://catalog.nypl.org/record=${bibId}~S1`}>View in Catalog</a>
       :
       null
   );
