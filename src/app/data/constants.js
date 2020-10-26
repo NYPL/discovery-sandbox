@@ -6,21 +6,21 @@ const breakpoints = {
 const itemFilters = [
   {
     type: 'location',
-    options: item => ({
+    retrieveOption: item => ({
       label: item.location,
       id: item.holdingLocationCode.startsWith('loc:rc') ? 'offsite' : item.holdingLocationCode,
     }),
   },
   {
     type: 'format',
-    options: item => ({
+    retrieveOption: item => ({
       label: item.format || '',
       id: item.format || '',
     }),
   },
   {
     type: 'status',
-    options: item => ({
+    retrieveOption: item => ({
       label: item.requestable ? 'Requestable' : item.status.prefLabel,
       id: item.requestable ? 'requestable' : item.status['@id'],
     }),

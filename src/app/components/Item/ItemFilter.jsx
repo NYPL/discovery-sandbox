@@ -7,9 +7,9 @@ import { isOptionSelected, trackDiscovery } from '../../utils/utils';
 
 export const parseDistinctOptions = options =>
   Array.from(
-    new Set(options.reduce((optionIds, option) => {
-      if (Array.isArray(option.label)) return optionIds.concat(option.label);
-      return optionIds.concat([option.label]);
+    new Set(options.reduce((optionLabels, option) => {
+      if (Array.isArray(option.label)) return optionLabels.concat(option.label);
+      return optionLabels.concat([option.label]);
     }, [])),
   )
     .map(label => ({
