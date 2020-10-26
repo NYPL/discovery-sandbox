@@ -132,6 +132,7 @@ Application.propTypes = {
   children: PropTypes.object,
   patron: PropTypes.object,
   loading: PropTypes.bool,
+  features: PropTypes.array,
 };
 
 Application.defaultProps = {
