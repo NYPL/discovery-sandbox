@@ -47,7 +47,7 @@ const ResultsList = ({
   searchKeywords,
 }) => {
   const itemTableLimit = 3;
-  const features = useSelector(state => state.appConfig.features);
+  const features = useSelector(state => state.features);
   const loading = useSelector(state => state.loading);
   const includeDrbb = features.includes('drb-integration');
 
