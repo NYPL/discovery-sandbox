@@ -1,8 +1,18 @@
-const breakpoints = {
-  xtrasmall: 490,
-  tabletPortrait: 750,
-  tablet: 870,
-};
+// breakpoints ordered by `maxValue` ascending 
+const breakpoints = [
+  {
+    maxValue: 490,
+    media: 'mobile',
+  },
+  {
+    maxValue: 750,
+    media: 'tabletPortrait',
+  },
+  {
+    maxValue: 870,
+    media: 'tablet',
+  }
+];
 
 const itemFilters = [
   {
