@@ -223,6 +223,8 @@ class ElectronicDelivery extends React.Component {
 
     const searchUrl = basicQuery(this.props)({});
 
+    console.log('this.props.features', this.props.features);
+
     return (
       <DocumentTitle title="Electronic Delivery Request | Shared Collection Catalog | NYPL">
         <div id="mainContent">
