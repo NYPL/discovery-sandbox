@@ -618,9 +618,7 @@ FilterPopup.contextTypes = {
 const mapStateToProps = (state) => {
   const {
     filters,
-    appConfig: {
-      features,
-    },
+    features,
     searchResults,
     searchKeywords,
     selectedFilters,

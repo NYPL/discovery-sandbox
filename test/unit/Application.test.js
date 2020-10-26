@@ -28,6 +28,7 @@ describe('Application', () => {
         route={{
           history: { listen: stub() },
         }}
+        addFeatures={() => {}}
       />, { context });
 
     component.setState({ patron: {} });
@@ -92,6 +93,7 @@ describe('Application', () => {
         <Application
           children={{}}
           router={context.router}
+          addFeatures={() => {}}
         >
           <a href='/subject_headings'>link</a>
         </Application>, { context });

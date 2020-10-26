@@ -54,4 +54,4 @@ SccContainer.contextTypes = {
   router: PropTypes.object,
 };
 
-export default connect(({ appConfig }) => ({ features: appConfig.features }))(SccContainer);
+export default connect(({ features }) => ({ features }))(SccContainer);
