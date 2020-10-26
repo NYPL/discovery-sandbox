@@ -12,7 +12,7 @@ import LoadingLayer from '../LoadingLayer/LoadingLayer';
 import DataLoader from '../DataLoader/DataLoader';
 import appConfig from '../../data/appConfig';
 
-import { addFeatures } from '../../actions/Actions';
+import { updateFeatures } from '../../actions/Actions';
 
 import { breakpoints } from '../../data/constants';
 
@@ -35,7 +35,10 @@ export class Application extends React.Component {
         urlFeat => !appConfig.features.includes(urlFeat));
       const urlFeaturesString = urlFeatures.join(',');
       if (urlFeaturesString) this.state.urlEnabledFeatures = urlFeaturesString;
-      if (urlFeatures) this.props.addFeatures(urlFeatures);
+      if (urlFeatures.some(urlFeat => !this.props.features.includes(urlFeat))) {
+        const allFeatures = Array.from(new Set(...this.props.features, ...urlFeatures));
+        this.props.updateFeatures(allFeatures);
+      };
     }
   }
 
@@ -43,7 +46,6 @@ export class Application extends React.Component {
     window.addEventListener('resize', this.onWindowResize.bind(this));
     this.onWindowResize();
     const { router } = this.context;
-    console.log('this.state.urlEnabledFeatures', this.state.urlEnabledFeatures);
     if (this.state.urlEnabledFeatures) {
       router.listen(() => {
         const {
@@ -86,7 +88,6 @@ export class Application extends React.Component {
   }
 
   render() {
-    console.log('from Application, appConfig.features', appConfig.features);
     // dataLocation is passed as a key to DataLoader to ensure it reloads
     // whenever the location changes.
     const dataLocation = Object.assign(
@@ -144,7 +145,7 @@ Application.contextTypes = {
 const mapStateToProps = ({ patron, loading, features }) => ({ patron, loading, features });
 
 const mapDispatchToProps = dispatch => ({
-  addFeatures: features => dispatch(addFeatures(features)),
+  updateFeatures: features => dispatch(updateFeatures(features)),
 });
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Application));
