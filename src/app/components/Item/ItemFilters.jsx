@@ -34,7 +34,7 @@ const ItemFilters = ({ items, hasFilterApplied, numOfFilteredItems }, { router }
   const mapFilterIdsToLabel = {};
   itemFilters.forEach((filter) => {
     const optionsObjEntry = options[filter.type];
-    const filterOptions = optionsObjEntry || filter.options(items);
+    const filterOptions = optionsObjEntry || items.map(item => filter.retrieveOption(item));
     if (!optionsObjEntry) options[filter.type] = filterOptions;
     filterOptions.forEach((option) => {
       mapFilterIdsToLabel[option.id] = option.label;
@@ -42,17 +42,10 @@ const ItemFilters = ({ items, hasFilterApplied, numOfFilteredItems }, { router }
   });
 
   // join filter selections and add single quotes
-  const parsedFilterSelections = () => {
-    let filterSelections = itemFilters.map(
-      (filter) => {
-        const selection = location.query[filter.type];
-        if (Array.isArray(selection)) return selection.map(id => mapFilterIdsToLabel[id]);
-        return mapFilterIdsToLabel[selection];
-      }).filter(selections => selections);
-    if (filterSelections.flat) filterSelections = filterSelections.flat();
-    const joinedText = filterSelections.join("', '");
-    return `'${joinedText}'`;
-  };
+  const parsedFilterSelections = () => itemFilters
+    .map(filter => location.query[filter.type] && `${filter.type}: ${location.query[filter.type]}`)
+    .filter(selected => selected)
+    .join(', ');
 
   const resetFilters = () => {
     const href = router.createHref({

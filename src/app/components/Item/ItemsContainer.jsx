@@ -98,7 +98,7 @@ class ItemsContainer extends React.Component {
           if (isRequestable) return item.requestable;
           const isOffsite = filterType === 'location' && selection === 'offsite';
           if (isOffsite) return item.isOffsite;
-          const itemProperty = filter.extractItemProperty(item);
+          const itemProperty = filter.retrieveOption(item).label;
           return isOptionSelected(selection, itemProperty, true);
         });
       });
