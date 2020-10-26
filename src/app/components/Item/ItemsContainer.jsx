@@ -99,7 +99,7 @@ class ItemsContainer extends React.Component {
           const isOffsite = filterType === 'location' && selection === 'offsite';
           if (isOffsite) return item.isOffsite;
           const itemProperty = filter.extractItemProperty(item);
-          return isOptionSelected(selection, itemProperty);
+          return isOptionSelected(selection, itemProperty, true);
         });
       });
       return showItem;
