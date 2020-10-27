@@ -90,12 +90,29 @@ class ItemTableRow extends React.Component {
 
     return (
       <tr className={item.availability}>
-        {includeVolColumn ? <td className='vol-date-col'><span className="mobile">Vol/Date</span> {item.volume || ''}</td> : null}
-        {page !== 'SearchResults' ? <td><span className="mobile">Format</span>{item.format || ' '}</td> : null}
-        <td><span className="mobile">Message</span>{this.message()}</td>
-        <td><span className="mobile">Status</span>{this.requestButton()}</td>
-        <td><span className="mobile">Call Number</span>{itemCallNumber}</td>
-        <td><span className="mobile">Location</span>{item.location || ' '}</td>
+        {includeVolColumn ? (
+          <td className='vol-date-col'>
+            <span aria-hidden="true" className="mobile">Vol/Date</span>
+            {item.volume || ''}
+          </td>
+        ) : null}
+        {page !== 'SearchResults' ? (
+          <td>
+            <span className="mobile">Format</span>{item.format || ' '}
+          </td>
+        ) : null}
+        <td>
+          <span aria-hidden="true" className="mobile">Message</span>{this.message()}
+        </td>
+        <td>
+          <span aria-hidden="true" className="mobile">Status</span>{this.requestButton()}
+        </td>
+        <td>
+          <span aria-hidden="true" className="mobile">Call Number</span>{itemCallNumber}
+        </td>
+        <td>
+          <span aria-hidden="true" className="mobile">Location</span>{item.location || ' '}
+        </td>
       </tr>
     );
   }
