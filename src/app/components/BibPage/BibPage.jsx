@@ -199,6 +199,11 @@ BibPage.propTypes = {
   searchKeywords: PropTypes.string,
   location: PropTypes.object,
   bib: PropTypes.object,
+  features: PropTypes.object,
+};
+
+BibPage.defaultProps = {
+  features: [],
 };
 
 const mapStateToProps = ({
