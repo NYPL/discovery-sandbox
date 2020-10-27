@@ -30,6 +30,7 @@ const initialState = {
   },
   appConfig,
   lastLoaded: appConfig.baseUrl,
+  features: appConfig.features || [],
 };
 
 export default initialState;

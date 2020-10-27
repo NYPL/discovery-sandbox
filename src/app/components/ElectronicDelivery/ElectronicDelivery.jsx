@@ -330,7 +330,7 @@ const mapStateToProps = state => ({
   patron: state.patron,
   bib: state.bib,
   searchKeywords: state.searchKeywords,
-  features: state.appConfig.features,
+  features: state.features,
 });
 
 const mapDispatchToProps = dispatch => ({

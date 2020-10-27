@@ -12,6 +12,8 @@ import LoadingLayer from '../LoadingLayer/LoadingLayer';
 import DataLoader from '../DataLoader/DataLoader';
 import appConfig from '../../data/appConfig';
 
+import { addFeatures } from '../../actions/Actions';
+
 import { breakpoints } from '../../data/constants';
 
 export const MediaContext = React.createContext('desktop');
@@ -29,10 +31,11 @@ export class Application extends React.Component {
 
     const urlEnabledFeatures = query.features ? query.features.split(',') : null;
     if (urlEnabledFeatures) {
-      const urlFeaturesString = urlEnabledFeatures.filter(
-        urlFeat => !appConfig.features.includes(urlFeat))
-        .join(',');
+      const urlFeatures = urlEnabledFeatures.filter(
+        urlFeat => !appConfig.features.includes(urlFeat));
+      const urlFeaturesString = urlFeatures.join(',');
       if (urlFeaturesString) this.state.urlEnabledFeatures = urlFeaturesString;
+      if (urlFeatures) this.props.addFeatures(urlFeatures);
     }
   }
 
@@ -61,11 +64,14 @@ export class Application extends React.Component {
     const { innerWidth } = window;
     const {
       xtrasmall,
+      tabletPortrait,
       tablet,
     } = breakpoints;
 
     if (innerWidth <= xtrasmall) {
       if (media !== 'mobile') this.setState({ media: 'mobile' });
+    } else if (innerWidth <= tabletPortrait) {
+      if (media !== 'tabletPortrait') this.setState({ media: 'tabletPortrait' });
     } else if (innerWidth <= tablet) {
       if (media !== 'tablet') this.setState({ media: 'tablet' });
     } else {
@@ -136,4 +142,10 @@ Application.contextTypes = {
   router: PropTypes.object,
 };
 
-export default withRouter(connect(({ patron, loading }) => ({ patron, loading }))(Application));
+const mapStateToProps = ({ patron, loading, features }) => ({ patron, loading, features });
+
+const mapDispatchToProps = dispatch => ({
+  addFeatures: features => dispatch(addFeatures(features)),
+});
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Application));

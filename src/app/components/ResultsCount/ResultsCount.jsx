@@ -96,8 +96,8 @@ ResultsCount.defaultProps = {
   features: [],
 };
 
-const mapStateToProps = ({ appConfig, searchKeywords, page }) => ({
-  features: appConfig.features,
+const mapStateToProps = ({ searchKeywords, page, features }) => ({
+  features,
   searchKeywords,
   page,
 });
