@@ -72,3 +72,39 @@ dl dd.multi-item-list .nypl-basic-table a,
     }
   }
 }
+
+@media (max-width: 490px) {
+  thead {
+    display: none;
+  }
+
+  tr, .nypl-results-item .nypl-basic-table tbody tr:last-child {
+    border: 1px solid var(--ui-gray-light);
+  }
+
+  .nypl-basic-table, .nypl-results-item .nypl-basic-table {
+    display: revert;
+
+    td {
+      display: block;
+      text-align: right;
+
+      &.vol-date-col {
+        background-color: var(--ui-gray-light);
+      }
+    }
+  }
+  .nypl-results-list .nypl-results-item.has-request {
+    border-bottom: none;
+    margin-bottom: 0;
+  }
+
+  td[data-th]:before  {
+    content: attr(data-th);
+    display: inline-block;
+    width: 22%;
+    float: left;
+    text-align: left;
+    font-weight: 500;
+  }
+}

@@ -63,15 +63,12 @@ describe('BibPage', () => {
       expect(tabTitles).to.deep.equal(['Availability', 'Details', 'Full Description', 'Library Holdings']);
     });
 
-    // not implemented yet
     it('has item table with volume column', () => {
       expect(itemTable.find('th').at(0).text()).to.equal('Vol/Date');
     });
 
-    // not implemented yet
     it('gets the format from holdings statement', () => {
-      // console.log('itemTable find: ', itemTable.html());
-      expect(itemTable.find('td').at(1).text()).to.equal('PRINT');
+      expect(itemTable.find('td').at(1).childAt(1).text()).to.equal('PRINT');
     });
   });
 });

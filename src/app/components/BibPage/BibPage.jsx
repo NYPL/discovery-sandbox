@@ -150,31 +150,29 @@ export const BibPage = (props) => {
     <DocumentTitle title="Item Details | Shared Collection Catalog | NYPL">
       <main className="main-page">
         <div className="nypl-page-header">
-          <div className="nypl-full-width-wrapper">
+          <div className="nypl-full-width-wrapper drbb-integration">
             <div className="nypl-row">
-              <div className="nypl-column-three-quarters">
-                <Breadcrumbs type="bib" searchUrl={searchUrl} />
-                <h1 id="mainContent">{title}</h1>
-                {
-                  searchKeywords && (
-                    <div className="nypl-row search-control">
-                      <LeftWedgeIcon
-                        preserveAspectRatio="xMidYMid meet"
-                        title="Back to Results"
-                      />
-                      <BackLink
-                        searchUrl={searchUrl}
-                        searchKeywords={searchKeywords}
-                      />
-                    </div>
-                  )
-                }
-              </div>
+              <Breadcrumbs type="bib" searchUrl={searchUrl} />
+              <h1 id="mainContent">{title}</h1>
+              {
+                searchKeywords && (
+                  <div className="nypl-row search-control">
+                    <LeftWedgeIcon
+                      preserveAspectRatio="xMidYMid meet"
+                      title="Back to Results"
+                    />
+                    <BackLink
+                      searchUrl={searchUrl}
+                      searchKeywords={searchKeywords}
+                    />
+                  </div>
+                )
+              }
             </div>
           </div>
         </div>
 
-        <div className="nypl-full-width-wrapper">
+        <div className="nypl-full-width-wrapper drbb-integration">
           <div className="nypl-row">
             <div className="nypl-item-details">
               <BibDetails

@@ -65,35 +65,13 @@
     display: inline-block;
     padding-right: 10px;
     margin-bottom: 20px;
+    font-size: 1rem;
+    font-weight: 600;
   }
 
   button {
     color: rgb(195, 76, 61);
     display: inline-block;
-  }
-}
-
-// this is the minimum width at which the `Status` options will not go beyond the screenwidth
-@media (max-width: 750px) {
-  .item-filter {
-    display: block;
-    width: 100%;
-    margin: 10px 0;
-  }
-
-  .item-filter-button {
-    width: 100%;
-  }
-
-  .item-filter-content {
-    position: unset;
-    width: 100%;
-    float: left;
-    margin-bottom: 10px;
-  }
-
-  .item-filter-button {
-    border-bottom: none;
   }
 }
 
@@ -122,4 +100,42 @@
 .show-results-button {
   float: right;
   padding-right: 10px;
+}
+
+.nypl-results-item .nypl-basic-table#bib-item-table {
+  thead > tr {
+    border-bottom: 1px solid var(--ui-gray-light);
+
+    th {
+      width: auto;
+    }
+  }
+
+  tbody tr, tbody tr:last-child {
+    border-bottom: 1px solid var(--ui-gray-light);
+  }
+}
+
+// this is the minimum width at which the `Status` options will not go beyond the screenwidth
+@media (max-width: 750px) {
+  .item-filter {
+    display: block;
+    width: 100%;
+    margin: 10px 0;
+  }
+
+  .item-filter-button {
+    width: 100%;
+  }
+
+  .item-filter-content {
+    position: unset;
+    width: 100%;
+    float: left;
+    margin-bottom: 10px;
+  }
+
+  .item-filter-button {
+    border-bottom: none;
+  }
 }

@@ -90,12 +90,20 @@ class ItemTableRow extends React.Component {
 
     return (
       <tr className={item.availability}>
-        {includeVolColumn ? <td>{item.volume || ''}</td> : null}
-        {page !== 'SearchResults' ? <td>{item.format || ' '}</td> : null}
-        <td>{this.message()}</td>
-        <td>{this.requestButton()}</td>
-        <td>{itemCallNumber}</td>
-        <td>{item.location || ' '}</td>
+        {includeVolColumn ? (
+          <td className='vol-date-col' data-th="Vol/Date">
+            {item.volume || ''}
+          </td>
+        ) : null}
+        {page !== 'SearchResults' ? (
+          <td data-th="Format">
+            {item.format || ' '}
+          </td>
+        ) : null}
+        <td data-th="Message">{this.message()}</td>
+        <td data-th="Status">{this.requestButton()}</td>
+        <td data-th="Call Number">{itemCallNumber}</td>
+        <td data-th="Location">{item.location || ' '}</td>
       </tr>
     );
   }
