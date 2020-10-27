@@ -461,11 +461,10 @@ const truncateStringOnWhitespace = (str, maxLength) => {
   @param {string} itemValue
   @return {boolean}
 */
-const isOptionSelected = (filterValue, itemValue, allowMany = false) => {
-  if (typeof filterValue === 'string') return filterValue === itemValue || (allowMany && itemValue.includes && itemValue.includes(filterValue));
-  if (Array.isArray(filterValue)) {
-    return filterValue.includes(itemValue);
-  }
+const isOptionSelected = (filterValue, itemValue) => {
+  const itemValues = Array.isArray(itemValue) ? itemValue : [itemValue];
+  const filterValues = Array.isArray(filterValue) ? filterValue : [filterValue];
+  return filterValues.some(filter => itemValues.includes(filter));
 };
 
 /**

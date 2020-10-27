@@ -18,6 +18,7 @@ import {
   updateSearchKeywords,
   updateHoldRequestPage,
 } from '../../app/actions/Actions';
+import extractFeatures from '../../app/utils/extractFeatures';
 
 const nyplApiClientGet = endpoint =>
   nyplApiClient().then(client => client.get(endpoint, { cache: false }));
@@ -187,6 +188,8 @@ function confirmRequestServer(req, res, next) {
   const errorStatus = req.query.errorStatus ? req.query.errorStatus : null;
   const errorMessage = req.query.errorMessage ? req.query.errorMessage : null;
   const error = _extend({}, { errorStatus, errorMessage });
+  const { features } = req.query;
+  const urlEnabledFeatures = extractFeatures(features);
 
 
   const { dispatch } = global.store;
@@ -259,7 +262,10 @@ function confirmRequestServer(req, res, next) {
             }));
             next();
           },
-          { fetchSubjectHeadingData: false },
+          {
+            fetchSubjectHeadingData: false,
+            features: urlEnabledFeatures,
+          },
         );
       }
 
@@ -301,6 +307,8 @@ function newHoldRequest(req, res, resolve) {
   const patronId = req.patronTokenResponse.decodedPatron ?
     req.patronTokenResponse.decodedPatron.sub : '';
   let barcode;
+  const { features } = req.query;
+  const urlEnabledFeatures = extractFeatures(features);
 
   // Retrieve item
   return Bib.fetchBib(
@@ -330,11 +338,14 @@ function newHoldRequest(req, res, resolve) {
             deliveryLocations: [],
             isEddRequestable: false,
           });
-        },
+        }
       );
     },
     bibResponseError => resolve(bibResponseError),
-    { fetchSubjectHeadingData: false },
+    {
+      fetchSubjectHeadingData: false,
+      features: urlEnabledFeatures,
+    },
   );
 }
 
@@ -345,6 +356,8 @@ function newHoldRequestServerEdd(req, res, next) {
   const error = req.query.error ? JSON.parse(req.query.error) : {};
   const form = req.query.form ? JSON.parse(req.query.form) : {};
   const bibId = req.params.bibId || '';
+  const { features } = req.query;
+  const urlEnabledFeatures = extractFeatures(features);
 
   if (redirect) return false;
 
@@ -369,7 +382,10 @@ function newHoldRequestServerEdd(req, res, next) {
       }));
       next();
     },
-    { fetchSubjectHeadingData: false },
+    {
+      fetchSubjectHeadingData: false,
+      features: urlEnabledFeatures,
+    },
   );
 }
 

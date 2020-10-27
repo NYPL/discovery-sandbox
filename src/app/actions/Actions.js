@@ -18,6 +18,7 @@ export const Actions = {
   UPDATE_DRBB_RESULTS: 'UPDATE_DRBB_RESULTS',
   UPDATE_PATRON_DATA: 'UPDATE_PATRON_DATA',
   UPDATE_ACCOUNT_HTML: 'UPDATE_ACCOUNT_HTML',
+  UPDATE_FEATURES: 'UPDATE_FEATURES',
 };
 
 export const resetState = () => ({
@@ -103,6 +104,11 @@ export const updateLoadingStatus = loading => ({
 export const updateAccountHtml = html => ({
   type: Actions.UPDATE_ACCOUNT_HTML,
   payload: html,
+});
+
+export const updateFeatures = features => ({
+  type: Actions.UPDATE_FEATURES,
+  payload: features,
 });
 
 /* `updateSearchResultsPage` performs:

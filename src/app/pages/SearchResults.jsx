@@ -21,25 +21,21 @@ import {
 const SearchResults = (props, context) => {
   const {
     searchResults,
-    appConfig,
     searchKeywords,
     sortBy,
     field,
     page,
     selectedFilters,
+    features,
   } = useSelector(state => ({
     searchResults: state.searchResults,
-    appConfig: state.appConfig,
+    features: state.features,
     searchKeywords: state.searchKeywords,
     sortBy: state.sortBy,
     field: state.field,
     page: state.page,
     selectedFilters: state.selectedFilters,
   }));
-
-  const {
-    features,
-  } = appConfig;
 
   const {
     router,

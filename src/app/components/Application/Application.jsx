@@ -6,11 +6,14 @@ import { Header, navConfig } from '@nypl/dgx-header-component';
 import Footer from '@nypl/dgx-react-footer';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
+import { union as _union } from 'underscore';
 
 import Feedback from '../Feedback/Feedback';
 import LoadingLayer from '../LoadingLayer/LoadingLayer';
 import DataLoader from '../DataLoader/DataLoader';
 import appConfig from '../../data/appConfig';
+
+import { updateFeatures } from '../../actions/Actions';
 
 import { breakpoints } from '../../data/constants';
 
@@ -29,10 +32,14 @@ export class Application extends React.Component {
 
     const urlEnabledFeatures = query.features ? query.features.split(',') : null;
     if (urlEnabledFeatures) {
-      const urlFeaturesString = urlEnabledFeatures.filter(
-        urlFeat => !appConfig.features.includes(urlFeat))
-        .join(',');
+      const urlFeatures = urlEnabledFeatures.filter(
+        urlFeat => !appConfig.features.includes(urlFeat));
+      const urlFeaturesString = urlFeatures.join(',');
       if (urlFeaturesString) this.state.urlEnabledFeatures = urlFeaturesString;
+      if (urlFeatures.some(urlFeat => !this.props.features.includes(urlFeat))) {
+        const allFeatures = _union(this.props.features, urlFeatures);
+        this.props.updateFeatures(allFeatures);
+      };
     }
   }
 
@@ -61,11 +68,14 @@ export class Application extends React.Component {
     const { innerWidth } = window;
     const {
       xtrasmall,
+      tabletPortrait,
       tablet,
     } = breakpoints;
 
     if (innerWidth <= xtrasmall) {
       if (media !== 'mobile') this.setState({ media: 'mobile' });
+    } else if (innerWidth <= tabletPortrait) {
+      if (media !== 'tabletPortrait') this.setState({ media: 'tabletPortrait' });
     } else if (innerWidth <= tablet) {
       if (media !== 'tablet') this.setState({ media: 'tablet' });
     } else {
@@ -126,6 +136,7 @@ Application.propTypes = {
   children: PropTypes.object,
   patron: PropTypes.object,
   loading: PropTypes.bool,
+  features: PropTypes.array,
 };
 
 Application.defaultProps = {
@@ -136,4 +147,10 @@ Application.contextTypes = {
   router: PropTypes.object,
 };
 
-export default withRouter(connect(({ patron, loading }) => ({ patron, loading }))(Application));
+const mapStateToProps = ({ patron, loading, features }) => ({ patron, loading, features });
+
+const mapDispatchToProps = dispatch => ({
+  updateFeatures: features => dispatch(updateFeatures(features)),
+});
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Application));
