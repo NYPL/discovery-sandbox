@@ -91,6 +91,7 @@ export const BibPage = (props) => {
 
   const itemsContainer = items.length && !isElectronicResources ? (
     <ItemsContainer
+      key={bibId}
       shortenItems={shortenItems}
       items={items}
       bibId={bibId}
