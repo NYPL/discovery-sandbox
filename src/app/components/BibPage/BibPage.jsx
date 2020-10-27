@@ -15,6 +15,7 @@ import AdditionalDetailsViewer from './AdditionalDetailsViewer';
 import Tabbed from './Tabbed';
 import LibraryHoldings from './LibraryHoldings';
 import getOwner from '../../utils/getOwner';
+import appConfig from '../../data/appConfig';
 // Removed MarcRecord because the webpack MarcRecord is not working. Sep/28/2017
 // import MarcRecord from './MarcRecord';
 
@@ -137,7 +138,7 @@ export const BibPage = (props) => {
 
   const classicLink = (
     bibId.startsWith('b') && features.includes('catalog-link') ?
-      <a href={`https://catalog.nypl.org/record=${bibId}~S1`}>View in Catalog</a>
+      <a href={`${appConfig.classicCatalog}/record=${bibId}~S1`}>View in Catalog</a>
       :
       null
   );
