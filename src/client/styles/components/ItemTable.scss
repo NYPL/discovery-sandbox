@@ -73,10 +73,6 @@ dl dd.multi-item-list .nypl-basic-table a,
   }
 }
 
-.nypl-basic-table td span.mobile {
-  display: none;
-}
-
 @media (max-width: 490px) {
   thead {
     display: none;
@@ -98,17 +94,17 @@ dl dd.multi-item-list .nypl-basic-table a,
       }
     }
   }
+  .nypl-results-list .nypl-results-item.has-request {
+    border-bottom: none;
+    margin-bottom: 0;
+  }
 
-  .nypl-basic-table td span.mobile {
+  td[data-th]:before  {
+    content: attr(data-th);
     display: inline-block;
     width: 22%;
     float: left;
     text-align: left;
     font-weight: 500;
-  }
-
-  .nypl-results-list .nypl-results-item.has-request {
-    border-bottom: none;
-    margin-bottom: 0;
   }
 }
