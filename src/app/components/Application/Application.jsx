@@ -6,6 +6,7 @@ import { Header, navConfig } from '@nypl/dgx-header-component';
 import Footer from '@nypl/dgx-react-footer';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
+import { union as _union } from 'underscore';
 
 import Feedback from '../Feedback/Feedback';
 import LoadingLayer from '../LoadingLayer/LoadingLayer';
@@ -36,7 +37,7 @@ export class Application extends React.Component {
       const urlFeaturesString = urlFeatures.join(',');
       if (urlFeaturesString) this.state.urlEnabledFeatures = urlFeaturesString;
       if (urlFeatures.some(urlFeat => !this.props.features.includes(urlFeat))) {
-        const allFeatures = Array.from(new Set(...this.props.features, ...urlFeatures));
+        const allFeatures = _union(this.props.features, urlFeatures);
         this.props.updateFeatures(allFeatures);
       };
     }
