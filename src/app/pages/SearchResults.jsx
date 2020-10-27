@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import DocumentTitle from 'react-document-title';
 import { useSelector } from 'react-redux';
-import { withRouter } from 'react-router';
 
 /* eslint-disable import/no-unresolved, import/extensions */
 import SearchResultsSorter from '@SearchResultsSorter';

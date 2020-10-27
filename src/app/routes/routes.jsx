@@ -15,6 +15,7 @@ import SearchResults from '../pages/SearchResults';
 import Application from '../components/Application/Application';
 import Home from '../components/Home/Home';
 import BibPage from '../components/BibPage/BibPage';
+import AccountPage from '../components/AccountPage/AccountPage';
 import HoldRequest from '../components/HoldRequest/HoldRequest';
 import HoldConfirmation from '../components/HoldConfirmation/HoldConfirmation';
 import ElectronicDelivery from '../components/ElectronicDelivery/ElectronicDelivery';
@@ -35,6 +36,7 @@ const routes = {
       <Route path="/hold/confirmation/:bibId-:itemId" component={HoldConfirmation} />
       <Route path="/subject_headings/:subjectHeadingUuid" component={SubjectHeadingShowPage} />
       <Route path="/subject_headings" component={SubjectHeadingsIndexPage} />
+      <Route path="/account/:patronId(/:content)" component={AccountPage} />
       <Route path="/404" component={NotFound404} />
       <Redirect from="*" to="/404" />
     </Route>
@@ -51,6 +53,7 @@ const routes = {
       <Route path={`${baseUrl}/hold/confirmation/:bibId-:itemId`} component={HoldConfirmation} />
       <Route path={`${baseUrl}/subject_headings/:subjectHeadingUuid`} component={SubjectHeadingShowPage} />
       <Route path={`${baseUrl}/subject_headings`} component={SubjectHeadingsIndexPage} />
+      <Route path={`${baseUrl}/account/:patronId(/:content)`} component={AccountPage} />
       <Route path={`${baseUrl}/404`} component={NotFound404} />
       <Redirect from="*" to={`${baseUrl}/404`} />
     </Route>

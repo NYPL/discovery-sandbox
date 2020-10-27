@@ -182,6 +182,7 @@ function confirmRequestServer(req, res, next) {
   const bibId = req.params.bibId || '';
   const requireUser = User.requireUser(req, res);
   const { redirect } = requireUser;
+  if (redirect) return false;
   const requestId = req.query.requestId || '';
   const searchKeywords = req.query.q || '';
   const errorStatus = req.query.errorStatus ? req.query.errorStatus : null;
@@ -190,7 +191,6 @@ function confirmRequestServer(req, res, next) {
   const { features } = req.query;
   const urlEnabledFeatures = extractFeatures(features);
 
-  if (redirect) return false;
 
   const { dispatch } = global.store;
   if (!requestId) {
