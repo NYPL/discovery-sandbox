@@ -6,7 +6,7 @@ import { updateAccountHtml } from '../../app/actions/Actions';
 function fetchAccountPage(req, res, resolve) {
   const requireUser = User.requireUser(req, res);
   const { redirect } = requireUser;
-  if (redirect) return false;
+  if (redirect) resolve({ redirect });
 
   const { patronId } = req.params;
   const content = req.params.content || 'items';
@@ -16,7 +16,6 @@ function fetchAccountPage(req, res, resolve) {
     headers: {
       Cookie: req.headers.cookie,
     },
-    // withCredentials: true,
   })
     .then(resp => {
       resolve(resp.data);
