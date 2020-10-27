@@ -185,3 +185,22 @@ div .tabbed {
     }
   }
 }
+
+@media (max-width: 490px) {
+  div .tabbed {
+    ul[role="tablist"] >  li, ul[role="tablist"] > li.activeTab {
+      border: 1px solid black;
+      border-bottom: none;
+      display: block;
+      width: 100%;
+    }
+
+    ul[role="tablist"] > li > a {
+      display: block;
+
+      &[aria-selected='true'] {
+        font-weight: 600;
+      }
+    }
+  }
+}
