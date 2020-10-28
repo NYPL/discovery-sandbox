@@ -50,23 +50,23 @@ describe('ItemTableRow', () => {
       });
 
       it('should not have a format as the first <td> column data', () => {
-        expect(component.find('td').at(0).childAt(1).text()).to.equal(' ');
+        expect(component.find('td').at(0).text()).to.equal(' ');
       });
 
       it('should not have an access message as the second <td> column data', () => {
-        expect(component.find('td').at(1).childAt(1).text()).to.equal(' ');
+        expect(component.find('td').at(1).text()).to.equal(' ');
       });
 
       it('should not have a status as the third <td> column data', () => {
-        expect(component.find('td').at(2).childAt(1).text()).to.equal(' ');
+        expect(component.find('td').at(2).text()).to.equal(' ');
       });
 
       it('should not have a call number as the fourth <td> column data', () => {
-        expect(component.find('td').at(3).childAt(1).text()).to.equal(' ');
+        expect(component.find('td').at(3).text()).to.equal(' ');
       });
 
       it('should not have a location as the fifth <td> column data', () => {
-        expect(component.find('td').at(4).childAt(1).text()).to.equal(' ');
+        expect(component.find('td').at(4).text()).to.equal(' ');
       });
     });
 
@@ -88,23 +88,23 @@ describe('ItemTableRow', () => {
       });
 
       it('should have a format as the first <td> column data', () => {
-        expect(component.find('td').at(0).childAt(1).text()).to.equal('Text');
+        expect(component.find('td').at(0).text()).to.equal('Text');
       });
 
       it('should have an access message as the second <td> column data', () => {
-        expect(component.find('td').at(1).childAt(1).text()).to.equal('USE IN LIBRARY');
+        expect(component.find('td').at(1).text()).to.equal('USE IN LIBRARY');
       });
 
       it('should have a status as the third <td> column data', () => {
-        expect(component.find('td').at(2).childAt(1).text()).to.equal('Available');
+        expect(component.find('td').at(2).text()).to.equal('Available');
       });
 
       it('should have a call number as the fourth <td> column data', () => {
-        expect(component.find('td').at(3).childAt(1).text()).to.equal('JFE 07-5007 ---');
+        expect(component.find('td').at(3).text()).to.equal('JFE 07-5007 ---');
       });
 
       it('should have a location as the fifth <td> column data', () => {
-        expect(component.find('td').at(4).childAt(1).text()).to.equal('SASB M1 - General Research - Room 315');
+        expect(component.find('td').at(4).text()).to.equal('SASB M1 - General Research - Room 315');
       });
     });
 
@@ -117,20 +117,20 @@ describe('ItemTableRow', () => {
       });
 
       it('should have an access message as the second <td> column data', () => {
-        expect(component.find('td').at(1).childAt(1).text()).to.equal('USE IN LIBRARY');
+        expect(component.find('td').at(1).text()).to.equal('USE IN LIBRARY');
       });
 
       it('should have a status as the third <td> column data and not a button', () => {
-        expect(component.find('td').at(2).childAt(1).render().text()).to.equal('Request');
+        expect(component.find('td').at(2).render().text()).to.equal('Request');
         expect(component.find('td').find('Link').length).to.equal(1);
       });
 
       it('should have a call number as the fourth <td> column data', () => {
-        expect(component.find('td').at(3).childAt(1).text()).to.equal('JFE 07-5007 ---');
+        expect(component.find('td').at(3).text()).to.equal('JFE 07-5007 ---');
       });
 
       it('should have a location as the fifth <td> column data', () => {
-        expect(component.find('td').at(4).childAt(1).text()).to.equal('SASB M1 - General Research - Room 315');
+        expect(component.find('td').at(4).text()).to.equal('SASB M1 - General Research - Room 315');
       });
     });
 
@@ -143,20 +143,20 @@ describe('ItemTableRow', () => {
       });
 
       it('should have an access message as the second <td> column data', () => {
-        expect(component.find('td').at(1).childAt(1).text()).to.equal('USE IN LIBRARY');
+        expect(component.find('td').at(1).text()).to.equal('USE IN LIBRARY');
       });
 
       it('should have a call number as the fourth <td> column data', () => {
-        expect(component.find('td').at(3).childAt(1).text()).to.equal('JFE 07-5007 ---');
+        expect(component.find('td').at(3).text()).to.equal('JFE 07-5007 ---');
       });
 
       it('should have a status as the third <td> column data and not a button', () => {
-        expect(component.find('td').at(2).childAt(1).text()).to.equal('Available');
+        expect(component.find('td').at(2).text()).to.equal('Available');
         expect(component.find('td').at(2).render().find('Link').length).to.equal(0);
       });
 
       it('should have a location as the fifth <td> column data', () => {
-        expect(component.find('td').at(4).childAt(1).text()).to.equal('SASB M1 - General Research - Room 315');
+        expect(component.find('td').at(4).text()).to.equal('SASB M1 - General Research - Room 315');
       });
     });
 
@@ -172,7 +172,7 @@ describe('ItemTableRow', () => {
       });
 
       it('should render the Request button in the third <td> column', () => {
-        expect(component.find('td').at(2).childAt(1).render().text()).to.equal('Request');
+        expect(component.find('td').at(2).render().text()).to.equal('Request');
         expect(component.find('td').find('Link').length).to.equal(1);
       });
 
@@ -196,7 +196,7 @@ describe('ItemTableRow', () => {
       });
 
       it('should render "In Use" as the request label', () => {
-        expect(component.find('td').at(2).childAt(1).text()).to.equal('In Use');
+        expect(component.find('td').at(2).text()).to.equal('In Use');
       });
     });
 
