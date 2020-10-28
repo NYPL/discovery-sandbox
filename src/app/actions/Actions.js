@@ -17,7 +17,7 @@ export const Actions = {
   UPDATE_SUBJECT_HEADING: 'UPDATE_SUBJECT_HEADING',
   UPDATE_DRBB_RESULTS: 'UPDATE_DRBB_RESULTS',
   UPDATE_PATRON_DATA: 'UPDATE_PATRON_DATA',
-  ADD_FEATURES: 'ADD_FEATURES',
+  UPDATE_FEATURES: 'UPDATE_FEATURES',
 };
 
 export const resetState = () => ({
@@ -100,8 +100,8 @@ export const updateLoadingStatus = loading => ({
   payload: loading,
 });
 
-export const addFeatures = features => ({
-  type: Actions.ADD_FEATURES,
+export const updateFeatures = features => ({
+  type: Actions.UPDATE_FEATURES,
   payload: features,
 });
 

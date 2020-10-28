@@ -98,7 +98,8 @@ describe('Application', () => {
         <Application
           children={{}}
           router={context.router}
-          addFeatures={() => {}}
+          updateFeatures={() => {}}
+          features={[]}
         >
           <a href='/subject_headings'>link</a>
         </Application>, { context });
