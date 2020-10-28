@@ -15,6 +15,7 @@ import AdditionalDetailsViewer from './AdditionalDetailsViewer';
 import Tabbed from './Tabbed';
 import LibraryHoldings from './LibraryHoldings';
 import getOwner from '../../utils/getOwner';
+import appConfig from '../../data/appConfig';
 // Removed MarcRecord because the webpack MarcRecord is not working. Sep/28/2017
 // import MarcRecord from './MarcRecord';
 
@@ -27,6 +28,7 @@ export const BibPage = (props) => {
   const {
     location,
     searchKeywords,
+    features,
   } = props;
 
   const bib = props.bib ? props.bib : {};
@@ -134,6 +136,13 @@ export const BibPage = (props) => {
     } : null,
   ].filter(tab => tab);
 
+  const classicLink = (
+    bibId.startsWith('b') && features.includes('catalog-link') ?
+      <a href={`${appConfig.classicCatalog}/record=${bibId}~S1`}>View in Catalog</a>
+      :
+      null
+  );
+
   const createAPIQuery = basicQuery(props);
   const searchUrl = createAPIQuery({});
 
@@ -141,31 +150,29 @@ export const BibPage = (props) => {
     <DocumentTitle title="Item Details | Shared Collection Catalog | NYPL">
       <main className="main-page">
         <div className="nypl-page-header">
-          <div className="nypl-full-width-wrapper">
+          <div className="nypl-full-width-wrapper drbb-integration">
             <div className="nypl-row">
-              <div className="nypl-column-three-quarters">
-                <Breadcrumbs type="bib" searchUrl={searchUrl} />
-                <h1 id="mainContent">{title}</h1>
-                {
-                  searchKeywords && (
-                    <div className="nypl-row search-control">
-                      <LeftWedgeIcon
-                        preserveAspectRatio="xMidYMid meet"
-                        title="Back to Results"
-                      />
-                      <BackLink
-                        searchUrl={searchUrl}
-                        searchKeywords={searchKeywords}
-                      />
-                    </div>
-                  )
-                }
-              </div>
+              <Breadcrumbs type="bib" searchUrl={searchUrl} />
+              <h1 id="mainContent">{title}</h1>
+              {
+                searchKeywords && (
+                  <div className="nypl-row search-control">
+                    <LeftWedgeIcon
+                      preserveAspectRatio="xMidYMid meet"
+                      title="Back to Results"
+                    />
+                    <BackLink
+                      searchUrl={searchUrl}
+                      searchKeywords={searchKeywords}
+                    />
+                  </div>
+                )
+              }
             </div>
           </div>
         </div>
 
-        <div className="nypl-full-width-wrapper">
+        <div className="nypl-full-width-wrapper drbb-integration">
           <div className="nypl-row">
             <div className="nypl-item-details">
               <BibDetails
@@ -178,6 +185,7 @@ export const BibPage = (props) => {
                 tabs={tabs}
                 hash={location.hash}
               />
+              { classicLink }
             </div>
           </div>
         </div>
@@ -190,14 +198,21 @@ BibPage.propTypes = {
   searchKeywords: PropTypes.string,
   location: PropTypes.object,
   bib: PropTypes.object,
+  features: PropTypes.object,
+};
+
+BibPage.defaultProps = {
+  features: [],
 };
 
 const mapStateToProps = ({
   bib,
   searchKeywords,
+  features,
 }) => ({
   bib,
   searchKeywords,
+  features,
 });
 
 export default withRouter(connect(mapStateToProps)(BibPage));

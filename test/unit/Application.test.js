@@ -57,11 +57,9 @@ describe('Application', () => {
   });
 
   describe('should set media type in context', () => {
-    const {
-      tablet,
-      tabletPortrait,
-      xtrasmall,
-    } = breakpoints;
+    const breakpointObj = {};
+    breakpoints.forEach(breakpoint => breakpointObj[breakpoint.media] = breakpoint.maxValue);
+    const { tablet, tabletPortrait, mobile} = breakpointObj;
 
     it(`should set media as "desktop" for screenwidths above ${tablet}px`, () => {
       resizeWindow(tablet + 1);
@@ -73,14 +71,14 @@ describe('Application', () => {
       resizeWindow(tablet);
       expect(component.state().media).to.eql('tablet');
     });
-    it(`should set media as "tabletPortrait" for screenwidths ${xtrasmall + 1}-${tabletPortrait}px`, () => {
-      resizeWindow(xtrasmall + 1);
+    it(`should set media as "tabletPortrait" for screenwidths ${mobile + 1}-${tabletPortrait}px`, () => {
+      resizeWindow(mobile + 1);
       expect(component.state().media).to.eql('tabletPortrait');
       resizeWindow(tabletPortrait);
       expect(component.state().media).to.eql('tabletPortrait');
     });
-    it(`should set media as "mobile" for screenwidths below ${xtrasmall}`, () => {
-      resizeWindow(xtrasmall);
+    it(`should set media as "mobile" for screenwidths below ${mobile}`, () => {
+      resizeWindow(mobile);
       expect(component.state().media).to.eql('mobile');
     });
   });
@@ -100,7 +98,8 @@ describe('Application', () => {
         <Application
           children={{}}
           router={context.router}
-          addFeatures={() => {}}
+          updateFeatures={() => {}}
+          features={[]}
         >
           <a href='/subject_headings'>link</a>
         </Application>, { context });

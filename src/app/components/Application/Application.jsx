@@ -6,13 +6,14 @@ import { Header, navConfig } from '@nypl/dgx-header-component';
 import Footer from '@nypl/dgx-react-footer';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
+import { union as _union } from 'underscore';
 
 import Feedback from '../Feedback/Feedback';
 import LoadingLayer from '../LoadingLayer/LoadingLayer';
 import DataLoader from '../DataLoader/DataLoader';
 import appConfig from '../../data/appConfig';
 
-import { addFeatures } from '../../actions/Actions';
+import { updateFeatures } from '../../actions/Actions';
 
 import { breakpoints } from '../../data/constants';
 
@@ -35,7 +36,10 @@ export class Application extends React.Component {
         urlFeat => !appConfig.features.includes(urlFeat));
       const urlFeaturesString = urlFeatures.join(',');
       if (urlFeaturesString) this.state.urlEnabledFeatures = urlFeaturesString;
-      if (urlFeatures) this.props.addFeatures(urlFeatures);
+      if (urlFeatures.some(urlFeat => !this.props.features.includes(urlFeat))) {
+        const allFeatures = _union(this.props.features, urlFeatures);
+        this.props.updateFeatures(allFeatures);
+      };
     }
   }
 
@@ -62,21 +66,10 @@ export class Application extends React.Component {
   onWindowResize() {
     const { media } = this.state;
     const { innerWidth } = window;
-    const {
-      xtrasmall,
-      tabletPortrait,
-      tablet,
-    } = breakpoints;
 
-    if (innerWidth <= xtrasmall) {
-      if (media !== 'mobile') this.setState({ media: 'mobile' });
-    } else if (innerWidth <= tabletPortrait) {
-      if (media !== 'tabletPortrait') this.setState({ media: 'tabletPortrait' });
-    } else if (innerWidth <= tablet) {
-      if (media !== 'tablet') this.setState({ media: 'tablet' });
-    } else {
-      if (media !== 'desktop') this.setState({ media: 'desktop' });
-    }
+    const breakpoint = breakpoints.find(breakpoint => innerWidth <= breakpoint.maxValue);
+    const newMedia = breakpoint && breakpoint.media ? breakpoint.media : 'desktop';
+    if (media !== newMedia) this.setState({ media: newMedia });
   }
 
   submitFeedback(callback, e) {
@@ -132,6 +125,7 @@ Application.propTypes = {
   children: PropTypes.object,
   patron: PropTypes.object,
   loading: PropTypes.bool,
+  features: PropTypes.array,
 };
 
 Application.defaultProps = {
@@ -145,7 +139,7 @@ Application.contextTypes = {
 const mapStateToProps = ({ patron, loading, features }) => ({ patron, loading, features });
 
 const mapDispatchToProps = dispatch => ({
-  addFeatures: features => dispatch(addFeatures(features)),
+  updateFeatures: features => dispatch(updateFeatures(features)),
 });
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Application));
