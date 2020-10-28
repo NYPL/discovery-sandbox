@@ -35,12 +35,8 @@ function appReducer(state = initialState, action) {
       return { ...state, patron: action.payload };
     case Actions.UPDATE_DELIVERY_LOCATIONS:
       return { ...state, deliveryLocations: action.payload };
-    case Actions.ADD_FEATURES:
-      const allFeatures = state.features;
-      action.payload.forEach(incomingFeat => {
-        if (!allFeatures.includes(incomingFeat)) allFeatures.push(incomingFeat);
-      });
-      return { ...state, features: allFeatures };
+    case Actions.UPDATE_FEATURES:
+      return { ...state, features: action.payload };
     case Actions.SET_APP_CONFIG:
       return { ...state, appConfig };
     default:
