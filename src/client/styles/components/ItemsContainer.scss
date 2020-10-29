@@ -116,6 +116,10 @@
   }
 }
 
+.nypl-results-item {
+  border-bottom: 0;
+}
+
 // this is the minimum width at which the `Status` options will not go beyond the screenwidth
 @media (max-width: 750px) {
   .item-filter {
