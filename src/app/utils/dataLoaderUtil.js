@@ -37,7 +37,7 @@ const routes = {
   account: {
     action: updateAccountHtml,
     path: 'account',
-    params: '/:patronId/:content?',
+    params: '/:content?',
   }
 };
 

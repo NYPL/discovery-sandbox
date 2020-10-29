@@ -27,11 +27,11 @@ const AccountPage = (props, { router }) => {
           Email: {patron.emails[0]}
       </div>
       <ul>
-        <li><Link to={`${baseUrl}/account/${patron.id}/items`}>Checkouts</Link></li>
-        <li><Link to={`${baseUrl}/account/${patron.id}/holds`}>Holds</Link></li>
-        <li><Link to={`${baseUrl}/account/${patron.id}/mylists`}>My Lists</Link></li>
-        <li><Link to={`${baseUrl}/account/${patron.id}/overdues`}>Fines{`${patron.moneyOwed ? ` ($${patron.moneyOwed.toFixed(2)})` : null}`}</Link></li>
-        <li><Link to={`${baseUrl}/account/${patron.id}/msg`}>Messages</Link></li>
+        <li><Link to={`${baseUrl}/account/items`}>Checkouts</Link></li>
+        <li><Link to={`${baseUrl}/account/holds`}>Holds</Link></li>
+        <li><Link to={`${baseUrl}/account/mylists`}>My Lists</Link></li>
+        <li><Link to={`${baseUrl}/account/overdues`}>Fines{`${patron.moneyOwed ? ` ($${patron.moneyOwed.toFixed(2)})` : null}`}</Link></li>
+        <li><Link to={`${baseUrl}/account/msg`}>Messages</Link></li>
       </ul>
       <a
         href={`https://ilsstaff.nypl.org:443/patroninfo*eng~Sdefault/${patron.id}/modpinfo`}
