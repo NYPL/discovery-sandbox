@@ -76,6 +76,10 @@ class Search extends React.Component {
   submitSearchRequest(e) {
     e.preventDefault();
     // Store the data that the user entered
+    const {
+      field,
+    } = this.state;
+
     const userSearchKeywords = this.state.searchKeywords.trim();
 
     // Track the submitted keyword search.
@@ -85,8 +89,14 @@ class Search extends React.Component {
     }
 
     const searchKeywords = userSearchKeywords === '*' ? '' : userSearchKeywords;
+
+    if (field === 'subject') {
+      this.props.router.push(`${appConfig.baseUrl}/subject_headings?filter=${searchKeywords.charAt(0).toUpperCase() + searchKeywords.slice(1)}`);
+      return;
+    }
+
     const apiQuery = this.props.createAPIQuery({
-      field: this.state.field,
+      field,
       selectedFilters: this.props.selectedFilters,
       searchKeywords,
       page: '1',
@@ -122,6 +132,7 @@ class Search extends React.Component {
                 <option value="journal_title">Journal Title</option>
                 <option value="contributor">Author/Contributor</option>
                 <option value="standard_number">Standard Numbers</option>
+                <option value="subject">Subject</option>
               </select>
             </span>
           </div>
