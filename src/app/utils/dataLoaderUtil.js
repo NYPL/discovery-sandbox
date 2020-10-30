@@ -38,7 +38,7 @@ const routes = {
     action: updateAccountHtml,
     path: 'account',
     params: '/:content?',
-  }
+  },
 };
 
 // A simple function for loading data into the store. The only reason it is broken

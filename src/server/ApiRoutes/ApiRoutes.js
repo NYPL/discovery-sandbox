@@ -56,6 +56,10 @@ Object.keys(routes).forEach((routeName) => {
 });
 
 router
+  .route(`${appConfig.baseUrl}/api/account/:content?`)
+  .post(Account.postToAccountPage);
+
+router
   .route(`${appConfig.baseUrl}/api/patronEligibility`)
   .get(User.eligibility);
 
