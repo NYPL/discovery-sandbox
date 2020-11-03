@@ -71,9 +71,9 @@ const AccountPage = (props, { router }) => {
   return (
     <div className="nypl-full-width-wrapper nypl-patron-page">
       <div className="nypl-patron-details">
-          {patron.names[0]}
+          {patron.names ? `Name: ${patron.names[0]}` : null}
           <br />
-          Email: {patron.emails[0]}
+          {patron.emails ? `Email: ${patron.emails[0]}` : null}
       </div>
       <ul>
         <li><Link to={`${baseUrl}/account/items`}>Checkouts</Link></li>
