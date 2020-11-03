@@ -54,3 +54,13 @@
   font-weight: 300;
   font-size: 32px;
 }
+
+.nypl-results-item {
+  border-bottom: 0;
+}
+
+@media (max-width: 965px) {
+  .nypl-results-item .nypl-basic-table#bib-item-table {
+    display: table;
+  }
+}

@@ -13,7 +13,7 @@ const ItemFiltersMobile = ({
   openFilter,
   manageFilterDisplay,
   selectedFilters,
-  updateSelectedFilters,
+  setSelectedFilters,
   submitFilterSelections,
 }) => {
   const [displayFilters, toggleFilterDisplay] = useState(false);
@@ -59,7 +59,7 @@ const ItemFiltersMobile = ({
               key={filter.type}
               mobile
               selectedFilters={selectedFilters}
-              updateSelectedFilters={updateSelectedFilters}
+              setSelectedFilters={setSelectedFilters}
               submitFilterSelections={submitFilterSelections}
             />
           ))
@@ -74,7 +74,7 @@ ItemFiltersMobile.propTypes = {
   openFilter: PropTypes.string,
   manageFilterDisplay: PropTypes.func,
   selectedFilters: PropTypes.object,
-  updateSelectedFilters: PropTypes.func,
+  setSelectedFilters: PropTypes.func,
   submitFilterSelections: PropTypes.func,
 };
 
