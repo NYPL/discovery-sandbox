@@ -12,6 +12,8 @@ const AccountPage = (props, { router }) => {
     patron: state.patron,
     accountHtml: state.accountHtml,
   }));
+
+  const content = props.params.content || 'items';
   const dispatch = useDispatch();
   const updateAccountHtml = newContent => dispatch({
     type: 'UPDATE_ACCOUNT_HTML',
@@ -62,6 +64,7 @@ const AccountPage = (props, { router }) => {
       updateErrorMessage,
       patron.id,
       selectedItems,
+      content,
     );
   });
 

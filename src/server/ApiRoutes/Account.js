@@ -2,6 +2,32 @@ import axios from 'axios';
 
 import User from './User';
 
+function myLists(req, res) {
+  const requireUser = User.requireUser(req, res);
+  const { redirect } = requireUser;
+  if (redirect) res.json({ redirect });
+
+  const patronId = req.patronTokenResponse.decodedPatron.sub;
+  const content = req.params.content || 'items';
+
+  const listNumQuery = req.body.listNum ? `listNum=${req.body.listNum}` : '';
+
+  const query = `${listNumQuery}`;
+
+  axios.get(`https://ilsstaff.nypl.org/dp/patroninfo*eng~Sdefault/${patronId}/mylists${query ? `?${query}` : ''}`, {
+    headers: {
+      Cookie: req.headers.cookie,
+    },
+  })
+    .then(resp => {
+      res.json(resp.data);
+    })
+    .catch((resp) => {
+      const { statusText } = resp.response;
+      return res.json({ error: statusText })
+    });
+}
+
 function fetchAccountPage(req, res, resolve) {
   const requireUser = User.requireUser(req, res);
   const { redirect } = requireUser;
@@ -16,7 +42,10 @@ function fetchAccountPage(req, res, resolve) {
     },
   })
     .then(resp => resolve(resp.data))
-    .catch(console.log);
+    .catch((resp) => {
+      const { statusText } = resp.response;
+      return res.json({ error: statusText })
+    });
 }
 
 function postToAccountPage(req, res) {
@@ -40,4 +69,5 @@ function postToAccountPage(req, res) {
 export default {
   fetchAccountPage,
   postToAccountPage,
+  myLists,
 };

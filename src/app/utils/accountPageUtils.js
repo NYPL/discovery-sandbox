@@ -3,8 +3,15 @@ import axios from 'axios';
 
 import appConfig from '../data/appConfig';
 
-const makePostRequest = (updateAccountHtml, updateErrorMessage, patronId, body) => {
-  axios.post(`${appConfig.baseUrl}/api/account/items`, body)
+const makeRequest = (
+  updateAccountHtml,
+  updateErrorMessage,
+  patronId,
+  body,
+  content,
+) => {
+  const url = `${appConfig.baseUrl}/api/account/${content}`;
+  axios.post(url, body)
     .then((res) => {
       const { data } = res;
       if (data.redirect) {
@@ -24,12 +31,14 @@ const addEventListenersToAccountLinks = (
   updateErrorMessage,
   patronId,
   selectedItems,
+  content,
 ) => {
-  const eventListenerCb = body => makePostRequest(
+  const eventListenerCb = (body) => makeRequest(
     updateAccountHtml,
     updateErrorMessage,
     patronId,
     body,
+    content,
   );
   links.forEach((link) => {
     switch (link.textContent) {
@@ -46,6 +55,12 @@ const addEventListenersToAccountLinks = (
         link.addEventListener('click', () => eventListenerCb({ renewsome: 'YES', ...selectedItems }));
         break;
       default:
+        if (link.href && link.href.includes('/mylists?listNum=')) link.addEventListener('click', e => {
+          e.preventDefault();
+          const splitLink = link.href.split('/mylists?listNum=') || [];
+          const listNum = splitLink[1];
+          eventListenerCb({ listNum });
+        });
         break;
     }
   });
