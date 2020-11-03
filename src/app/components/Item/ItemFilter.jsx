@@ -20,12 +20,12 @@ export const parseDistinctOptions = options =>
 const ItemFilter = ({
   filter,
   options,
-  openFilter,
   manageFilterDisplay,
   mobile,
   selectedFilters,
   submitFilterSelections,
   updateSelectedFilters,
+  isOpen,
 }, { router }) => {
   const { location } = router;
   const { query } = location;
@@ -75,7 +75,11 @@ const ItemFilter = ({
   };
   const numOfSelections = determineNumOfSelections();
 
-  const isOpen = openFilter === filter;
+  const [mobileIsOpen, manageMobileFilter] = useState(false);
+
+  const clickHandler = () => mobile ? manageMobileFilter(prevState => !prevState) : manageFilterDisplay(filter);
+  const open = mobile ? mobileIsOpen : isOpen;
+  console.log('open?', open);
 
   return (
     <div
@@ -84,7 +88,7 @@ const ItemFilter = ({
       <FocusTrap
         focusTrapOptions={{
           clickOutsideDeactivates: true,
-          onDeactivate: () => manageFilterDisplay('none'),
+          onDeactivate: () => { if (!mobile) manageFilterDisplay('none') },
           returnFocusOnDeactivate: false,
         }}
         active={isOpen}
@@ -93,12 +97,12 @@ const ItemFilter = ({
           className={`item-filter-button ${
             isOpen ? ' open' : ''}`}
           buttonType="outline"
-          onClick={() => manageFilterDisplay(filter)}
+          onClick={clickHandler}
           type="button"
         >
           {filter}{numOfSelections ? ` (${numOfSelections})` : null} <Icon name={isOpen ? 'minus' : 'plus'} />
         </Button>
-        {isOpen ? (
+        {open ? (
           <div
             className="item-filter-content"
           >
@@ -142,7 +146,7 @@ const ItemFilter = ({
 ItemFilter.propTypes = {
   filter: PropTypes.string,
   options: PropTypes.array,
-  openFilter: PropTypes.string,
+  isOpen: PropTypes.bool,
   manageFilterDisplay: PropTypes.func,
   mobile: PropTypes.bool,
   selectedFilters: PropTypes.object,

@@ -97,6 +97,7 @@ const ItemFilters = ({ items, hasFilterApplied, numOfFilteredItems }, { router }
                         filter={filter.type}
                         key={filter.type}
                         options={options[filter.type]}
+                        isOpen={openFilter === filter.type}
                         {...itemFilterComponentProps}
                       />
                     ))
