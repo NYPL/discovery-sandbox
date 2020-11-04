@@ -198,7 +198,7 @@ BibPage.propTypes = {
   searchKeywords: PropTypes.string,
   location: PropTypes.object,
   bib: PropTypes.object,
-  features: PropTypes.object,
+  features: PropTypes.array,
 };
 
 BibPage.defaultProps = {

@@ -14,10 +14,11 @@ const ItemFilters = ({ items, hasFilterApplied, numOfFilteredItems }, { router }
   if (!items || !items.length) return null;
   const [openFilter, changeOpenFilter] = useState('none');
   const { location, createHref } = router;
-  const initialFilters = location.query ? location.query : {};
-  const [selectedFilters, updateSelectedFilters] = useState(initialFilters);
+  const initialFilters = location.query ? Object.assign({}, location.query) : {};
+  const [selectedFilters, setSelectedFilters] = useState(initialFilters);
 
   const manageFilterDisplay = (filterType) => {
+    setSelectedFilters(location.query);
     if (filterType === openFilter) {
       trackDiscovery('Search Filters', `Close Filter - ${filterType}`);
       changeOpenFilter('none');
@@ -72,7 +73,7 @@ const ItemFilters = ({ items, hasFilterApplied, numOfFilteredItems }, { router }
     openFilter,
     selectedFilters,
     manageFilterDisplay,
-    updateSelectedFilters,
+    setSelectedFilters,
     submitFilterSelections,
   };
 
@@ -97,6 +98,7 @@ const ItemFilters = ({ items, hasFilterApplied, numOfFilteredItems }, { router }
                         filter={filter.type}
                         key={filter.type}
                         options={options[filter.type]}
+                        isOpen={openFilter === filter.type}
                         {...itemFilterComponentProps}
                       />
                     ))

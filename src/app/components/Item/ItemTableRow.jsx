@@ -50,7 +50,7 @@ class ItemTableRow extends React.Component {
     } = this.props;
     const { closedLocations } = appConfig;
     const status = item.status && item.status.prefLabel ? item.status.prefLabel : ' ';
-    let itemRequestBtn = <span>{status}</span>;
+    let itemRequestBtn = status;
 
     if (item.requestable && !closedLocations.includes('')) {
       itemRequestBtn = item.available ? (
@@ -63,7 +63,7 @@ class ItemTableRow extends React.Component {
         >
           Request
         </Link>) :
-        <span>In Use</span>;
+        'In Use';
     }
     return itemRequestBtn;
   }
@@ -92,18 +92,18 @@ class ItemTableRow extends React.Component {
       <tr className={item.availability}>
         {includeVolColumn ? (
           <td className='vol-date-col' data-th="Vol/Date">
-            {item.volume || ''}
+            <span>{item.volume || ''}</span>
           </td>
         ) : null}
         {page !== 'SearchResults' ? (
           <td data-th="Format">
-            {item.format || ' '}
+            <span>{item.format || ' '}</span>
           </td>
         ) : null}
-        <td data-th="Message">{this.message()}</td>
-        <td data-th="Status">{this.requestButton()}</td>
-        <td data-th="Call Number">{itemCallNumber}</td>
-        <td data-th="Location">{item.location || ' '}</td>
+        <td data-th="Message"><span>{this.message()}</span></td>
+        <td data-th="Status"><span>{this.requestButton()}</span></td>
+        <td data-th="Call Number"><span>{itemCallNumber}</span></td>
+        <td data-th="Location"><span>{item.location || ' '}</span></td>
       </tr>
     );
   }
