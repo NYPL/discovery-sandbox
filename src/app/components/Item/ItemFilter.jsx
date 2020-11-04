@@ -51,6 +51,7 @@ const ItemFilter = ({
       updatedSelectedFilters[filter] = Array.isArray(previousSelection) ?
         previousSelection.filter(prevSelection => prevSelection !== value.id)
         : [];
+      return updatedSelectedFilters;
     });
   };
 
