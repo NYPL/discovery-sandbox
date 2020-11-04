@@ -2,13 +2,14 @@ import axios from 'axios';
 
 import User from './User';
 
+import appConfig from '../../app/data/appConfig';
+
 function myLists(req, res) {
   const requireUser = User.requireUser(req, res);
   const { redirect } = requireUser;
   if (redirect) res.json({ redirect });
 
   const patronId = req.patronTokenResponse.decodedPatron.sub;
-  const content = req.params.content || 'items';
 
   const listNumQuery = req.body.listNum ? `listNum=${req.body.listNum}` : '';
 
@@ -19,12 +20,10 @@ function myLists(req, res) {
       Cookie: req.headers.cookie,
     },
   })
-    .then(resp => {
-      res.json(resp.data);
-    })
+    .then(resp => res.json(resp.data))
     .catch((resp) => {
       const { statusText } = resp.response;
-      return res.json({ error: statusText })
+      return res.json({ error: statusText });
     });
 }
 
@@ -41,10 +40,16 @@ function fetchAccountPage(req, res, resolve) {
       Cookie: req.headers.cookie,
     },
   })
-    .then(resp => resolve(resp.data))
+    .then((resp) => {
+      if (resp.request.path.includes('/login?')) {
+        // need to implement
+        console.log('need to redirect');
+      }
+      resolve(resp.data);
+    })
     .catch((resp) => {
       const { statusText } = resp.response;
-      return res.json({ error: statusText })
+      return res.json({ error: statusText });
     });
 }
 
@@ -62,7 +67,28 @@ function postToAccountPage(req, res) {
     .then(resp => res.json(resp.data))
     .catch((resp) => {
       const { statusText } = resp.response;
-      return res.json({ error: statusText })
+      return res.json({ error: statusText });
+    });
+}
+
+function manageHolds(req, res) {
+  const requireUser = User.requireUser(req, res);
+  const { redirect } = requireUser;
+  if (redirect) res.json({ redirect });
+  const patronId = req.patronTokenResponse.decodedPatron.sub;
+  axios.post(`https://ilsstaff.nypl.org/dp/patroninfo*eng~Sdefault/${patronId}/holds`, req.body, {
+    headers: {
+      Cookie: req.headers.cookie,
+    },
+  })
+    .then((resp) => {
+      // global.store.dispatch(updateAccountHtml(resp.data));
+      res.redirect(`${appConfig.baseUrl}/account/holds`);
+    })
+    .catch((resp) => {
+      console.log('ERROR', resp);
+      const { statusText } = resp.response;
+      return res.json({ error: statusText });
     });
 }
 
@@ -70,4 +96,5 @@ export default {
   fetchAccountPage,
   postToAccountPage,
   myLists,
+  manageHolds,
 };

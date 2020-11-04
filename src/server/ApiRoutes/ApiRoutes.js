@@ -35,6 +35,10 @@ router
   .post(Hold.eddServer);
 
 router
+  .route(`${appConfig.baseUrl}/account/holds`)
+  .post(Account.manageHolds);
+
+router
   .route(`${appConfig.baseUrl}/api/account/mylists`)
   .post(Account.myLists);
 

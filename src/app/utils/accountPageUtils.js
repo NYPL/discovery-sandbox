@@ -33,7 +33,7 @@ const addEventListenersToAccountLinks = (
   selectedItems,
   content,
 ) => {
-  const eventListenerCb = (body) => makeRequest(
+  const eventListenerCb = body => makeRequest(
     updateAccountHtml,
     updateErrorMessage,
     patronId,
@@ -55,7 +55,7 @@ const addEventListenersToAccountLinks = (
         link.addEventListener('click', () => eventListenerCb({ renewsome: 'YES', ...selectedItems }));
         break;
       default:
-        if (link.href && link.href.includes('/mylists?listNum=')) link.addEventListener('click', e => {
+        if (link.href && link.href.includes('/mylists?listNum=')) link.addEventListener('click', (e) => {
           e.preventDefault();
           const splitLink = link.href.split('/mylists?listNum=') || [];
           const listNum = splitLink[1];

@@ -36,6 +36,11 @@ const AccountPage = (props, { router }) => {
     const links = accountPageContent.getElementsByTagName('A');
     const checkboxes = accountPageContent.querySelectorAll('input[type=checkbox]');
     const errorMessageEls = accountPageContent.getElementsByClassName('errormessage');
+    accountPageContent.getElementsByTagName('th').forEach((th) => {
+      if (th.textContent.includes('Ratings')) th.style.display = 'none';
+    });
+    accountPageContent.getElementsByClassName('patFuncRating').forEach((el) => { el.style.display = 'none'; });
+
     if (errorMessageEls.length) {
       errorMessageEls[0].style.display = 'block';
     }
