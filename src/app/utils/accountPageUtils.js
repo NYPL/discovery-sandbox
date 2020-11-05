@@ -29,14 +29,14 @@ const addEventListenersToAccountLinks = (
   links,
   updateAccountHtml,
   updateErrorMessage,
-  patronId,
+  patron,
   selectedItems,
   content,
 ) => {
   const eventListenerCb = body => makeRequest(
     updateAccountHtml,
     updateErrorMessage,
-    patronId,
+    patron.id,
     body,
     content,
   );
@@ -55,13 +55,20 @@ const addEventListenersToAccountLinks = (
         link.addEventListener('click', () => eventListenerCb({ renewsome: 'YES', ...selectedItems }));
         break;
       default:
-        if (link.href && link.href.includes('/mylists?listNum=')) link.addEventListener('click', (e) => {
-          e.preventDefault();
-          const splitLink = link.href.split('/mylists?listNum=') || [];
-          const listNum = splitLink[1];
-          eventListenerCb({ listNum });
-        });
-        break;
+        if (link.href && link.href.includes('/mylists?listNum=')) {
+          link.addEventListener('click', (e) => {
+            e.preventDefault();
+            const splitLink = link.href.split('/mylists?listNum=') || [];
+            const listNum = splitLink[1];
+            eventListenerCb({ listNum });
+          });
+          break;
+        }
+        if (link.textContent.includes('Pay Online')) {
+          link.href = `https://ilsstaff.nypl.org/webapp/iii/ecom/pay.do?lang=eng&scope=1&ptype=${patron.patronType}&tty=800`;
+          link.target = '_blank';
+          break;
+        }
     }
   });
 };

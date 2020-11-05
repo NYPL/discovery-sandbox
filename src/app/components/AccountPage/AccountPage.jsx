@@ -67,7 +67,7 @@ const AccountPage = (props, { router }) => {
       links,
       updateAccountHtml,
       updateErrorMessage,
-      patron.id,
+      patron,
       selectedItems,
       content,
     );

@@ -40,6 +40,7 @@ export function getPatronData(req, res, next) {
                 loggedIn: true,
                 moneyOwed: response.data.moneyOwed,
                 homeLibraryCode: response.data.homeLibraryCode,
+                patronType: response.data.patronType,
               };
 
               dispatch(updatePatronData(patron));
