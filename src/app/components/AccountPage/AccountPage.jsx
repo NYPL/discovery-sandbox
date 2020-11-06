@@ -73,15 +73,14 @@ const AccountPage = (props, { router }) => {
     );
   });
 
-  const patronInfoToDisplay = router.location.hash.substring(1) || 'items';
   const { baseUrl } = appConfig;
 
   return (
     <div className="nypl-full-width-wrapper nypl-patron-page">
       <div className="nypl-patron-details">
-          {patron.names ? `Name: ${patron.names[0]}` : null}
-          <br />
-          {patron.emails ? `Email: ${patron.emails[0]}` : null}
+        {patron.names ? `Name: ${patron.names[0]}` : null}
+        <br />
+        {patron.emails ? `Email: ${patron.emails[0]}` : null}
       </div>
       <ul>
         <li><Link to={`${baseUrl}/account/items`}>Checkouts</Link></li>
@@ -103,10 +102,14 @@ const AccountPage = (props, { router }) => {
 				Change Pin
       </a>
       <hr />
-      <div
-        dangerouslySetInnerHTML={{ __html: accountHtml }}
-        id="account-page-content"
-      />
+      {
+        typeof accountHtml === 'string' ? (
+          <div
+            dangerouslySetInnerHTML={{ __html: accountHtml }}
+            id="account-page-content"
+          />
+        ) : ''
+      }
     </div>
   );
 };
