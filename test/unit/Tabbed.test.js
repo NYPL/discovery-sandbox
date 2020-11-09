@@ -147,7 +147,7 @@ describe('Tabbed', () => {
 
   let component = mount(
     <Tabbed tabs={[
-      {title: 'Availability', content: mockItemsContainer},
+      { title: 'Availability', content: mockItemsContainer },
       { title: 'Details', content: bibDetails },
       { title: 'Full Description', content: additionalDetails }]}
     />

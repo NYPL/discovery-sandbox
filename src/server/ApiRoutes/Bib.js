@@ -18,7 +18,7 @@ const holdingsMappings = {
   Format: 'format',
   'Call Number': 'shelfMark',
   'Library Has': 'holdingStatement',
-  Note: 'note',
+  Notes: 'notes',
 };
 
 const addHoldingDefinition = (holding) => {
