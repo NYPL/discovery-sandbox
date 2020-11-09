@@ -70,6 +70,35 @@ const addCheckInItems = (bib) => {
     .sort((box1, box2) => box2.position - box1.position);
 };
 
+const addLocationUrls = (bib) => {
+  const holdingCodes = bib
+    .holdings
+    .map(holding => holding.location.reduce((acc, el) => acc.concat([el.code]), []))
+    .reduce((acc, el) => acc.concat(el), []);
+
+  const itemCodes = bib.items.map(item =>
+    item.holdingLocation.map(location => location['@id'])
+  ).reduce((acc, el) => acc.concat(el), []);
+
+  const codes = holdingCodes.concat(itemCodes).join(',');
+
+  // get locations data by codes
+  return nyplApiClient()
+    .then(client => client.get(`/locations?location_codes=${codes}`))
+    .then((resp) => {
+      // add location urls for holdings
+      bib.holdings.forEach((holding) => {
+        holding.location.forEach((location) => {
+          location.url = findUrl(location, resp);
+        });
+      });
+      // add checkin location urls
+      // add item location urls;
+      return bib;
+    });
+
+};
+
 function fetchBib(bibId, cb, errorcb, reqOptions) {
   const options = Object.assign({
     fetchSubjectHeadingData: true,
@@ -112,6 +141,7 @@ function fetchBib(bibId, cb, errorcb, reqOptions) {
       return bib;
     })
     .then((bib) => {
+      console.log('bib: ', JSON.stringify(bib, null, 2));
       if (bib.holdings) {
         bib.holdings.forEach(holding => addHoldingDefinition(holding));
       }
