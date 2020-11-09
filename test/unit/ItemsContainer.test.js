@@ -6,6 +6,7 @@ import { shallow, mount } from 'enzyme';
 
 import ItemsContainer from './../../src/app/components/Item/ItemsContainer';
 import LibraryItem from './../../src/app/utils/item';
+import { itemsListPageLimit } from './../../src/app/data/constants';
 
 const items = [
   {
@@ -301,7 +302,7 @@ describe('ItemsContainer', () => {
     });
   });
 
-  describe('Exactly 20 items', () => {
+  describe(`Exactly ${itemsListPageLimit} items`, () => {
     let component;
     before(() => {
       component = mount(
@@ -310,7 +311,7 @@ describe('ItemsContainer', () => {
       );
     });
 
-    it('should not render a Pagination component since there are 20 items', () => {
+    it(`should not render a Pagination component since there are ${itemsListPageLimit} items`, () => {
       expect(component.find('Pagination').length).to.equal(0);
     });
 
