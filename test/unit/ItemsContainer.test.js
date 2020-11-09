@@ -55,6 +55,29 @@ const longListItems = [
   { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
 ].map(LibraryItem.mapItem);
 
+const twentyItems = [
+  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
+  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
+  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
+  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
+  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
+  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
+  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
+  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
+  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
+  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
+  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
+  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
+  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
+  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
+  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
+  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
+  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
+  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
+  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
+  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
+].map(LibraryItem.mapItem);
+
 const context = {
   router: {
     location: { query: {} },
@@ -275,6 +298,24 @@ describe('ItemsContainer', () => {
 
       expect(component.state('chunkedItems')[0].length).to.equal(20);
       expect(component.state('chunkedItems')[1].length).to.equal(4);
+    });
+  });
+
+  describe('Exactly 20 items', () => {
+    let component;
+    before(() => {
+      component = mount(
+        <ItemsContainer items={twentyItems} shortenItems={false} page="4" />,
+        { context },
+      );
+    });
+
+    it('should not render a Pagination component since there are 20 items', () => {
+      expect(component.find('Pagination').length).to.equal(0);
+    });
+
+    it('should not render a "View All Items" link', () => {
+      expect(component.find('.view-all-items-container').length).to.equal(0);
     });
   });
 });
