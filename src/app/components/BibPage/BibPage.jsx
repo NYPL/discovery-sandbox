@@ -29,6 +29,10 @@ export const BibPage = (props) => {
     location,
     searchKeywords,
     features,
+    field,
+    selectedFilters,
+    page,
+    sortBy,
   } = props;
 
   const bib = props.bib ? props.bib : {};
@@ -143,7 +147,13 @@ export const BibPage = (props) => {
       null
   );
 
-  const createAPIQuery = basicQuery(props);
+  const createAPIQuery = basicQuery({
+    searchKeywords,
+    field,
+    selectedFilters,
+    page,
+    sortBy,
+  });
   const searchUrl = createAPIQuery({});
 
   return (
@@ -199,6 +209,10 @@ BibPage.propTypes = {
   location: PropTypes.object,
   bib: PropTypes.object,
   features: PropTypes.array,
+  field: PropTypes.string,
+  selectedFilters: PropTypes.object,
+  page: PropTypes.string,
+  sortBy: PropTypes.string,
 };
 
 BibPage.defaultProps = {
@@ -209,10 +223,18 @@ const mapStateToProps = ({
   bib,
   searchKeywords,
   features,
+  field,
+  selectedFilters,
+  page,
+  sortBy,
 }) => ({
   bib,
   searchKeywords,
   features,
+  field,
+  selectedFilters,
+  page,
+  sortBy,
 });
 
 export default withRouter(connect(mapStateToProps)(BibPage));
