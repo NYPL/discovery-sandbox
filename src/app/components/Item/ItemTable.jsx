@@ -14,8 +14,7 @@ const ItemTable = ({ items, holdings, bibId, id, searchKeywords, page }) => {
   }
 
   const includeVolColumn = (
-    items.some(item => item.isSerial)
-    && holdings && holdings.some(holding => holding.checkInBoxes && holding.checkInBoxes.some(checkInBox => checkInBox.coverage))
+    items.some(item => item.volume && item.volume.length)
   );
 
   return (
