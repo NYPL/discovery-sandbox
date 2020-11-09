@@ -38,7 +38,7 @@ class ItemsContainer extends React.Component {
     let chunkedItems = [];
     let noItemPage = false;
 
-    if (items && items.length >= 20) {
+    if (items && items.length > 20) {
       chunkedItems = this.chunk(items, 20);
     }
 
@@ -148,7 +148,7 @@ class ItemsContainer extends React.Component {
     let pagination = null;
 
     let itemsToDisplay = this.filteredItems;
-    if (this.state.js && itemsToDisplay && itemsToDisplay.length >= 20 && !this.state.showAll) {
+    if (this.state.js && itemsToDisplay && itemsToDisplay.length > 20 && !this.state.showAll) {
       pagination = (
         <Pagination
           total={itemsToDisplay.length}
@@ -176,7 +176,7 @@ class ItemsContainer extends React.Component {
         />
         {itemTable}
         {
-          !!(shortenItems && this.filteredItems.length >= 20 && !this.state.showAll) &&
+          !!(shortenItems && this.filteredItems.length > 20 && !this.state.showAll) &&
             (
               <div className="view-all-items-container">
                 {
