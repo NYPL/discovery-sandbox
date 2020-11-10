@@ -3114,6 +3114,9 @@
           "code": "loc:rc2ma"
         }
       ],
+      "notes": [
+        "FAKE NOTE"
+      ],
       "checkInBoxes": [
         {
           "@type": "nypl:CheckInBox",
