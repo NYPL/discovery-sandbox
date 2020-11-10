@@ -193,6 +193,8 @@ function LibraryItem() {
     const electronicResources = isElectronicResource ? this.getElectronicResources(item) : null;
     // Taking the first status object in the array.
     const status = item.status && item.status.length ? item.status[0] : {};
+    const volume = item.enumerationChronology && item.enumerationChronology.length ?
+      item.enumerationChronology[0] : '';
     const availability = !_isEmpty(status) && status.prefLabel ?
       status.prefLabel.replace(/\W/g, '').toLowerCase() : '';
     const available = ['available', 'useinlibrary'].includes(availability);
@@ -245,6 +247,7 @@ function LibraryItem() {
       isSerial,
       format,
       materialType,
+      volume,
     };
   };
 

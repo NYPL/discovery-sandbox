@@ -1,4 +1,4 @@
-// breakpoints ordered by `maxValue` ascending 
+// breakpoints ordered by `maxValue` ascending
 const breakpoints = [
   {
     maxValue: 490,
@@ -38,7 +38,10 @@ const itemFilters = [
   },
 ];
 
+const itemsListPageLimit = 20;
+
 export {
   breakpoints,
   itemFilters,
+  itemsListPageLimit,
 };
