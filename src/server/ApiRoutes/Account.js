@@ -76,7 +76,21 @@ function manageHolds(req, res) {
   const { redirect } = requireUser;
   if (redirect) res.json({ redirect });
   const patronId = req.patronTokenResponse.decodedPatron.sub;
-  axios.post(`https://ilsstaff.nypl.org/dp/patroninfo*eng~Sdefault/${patronId}/holds`, req.body, {
+  const reqBody = req.body || {};
+  if (reqBody.requestUpdateHoldsSome) {
+    delete reqBody.requestUpdateHoldsSome;
+    req.body.updateholdssome = 'YES';
+  }
+  Object.keys(reqBody).forEach(key => {
+    if (key.includes('locb')) {
+      reqBody[key] = req.body[key].replace(/\+/g, '').trim();
+      const freezeKey = key.replace('loc', 'freeze');
+      reqBody[freezeKey] = 'off';
+    }
+  });
+  const reqBodyString = Object.keys(reqBody).map(key => `${key}=${reqBody[key]}`).join('&');
+
+  axios.post(`https://ilsstaff.nypl.org/dp/patroninfo*eng~Sdefault/${patronId}/holds`, reqBodyString, {
     headers: {
       Cookie: req.headers.cookie,
     },
