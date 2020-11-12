@@ -65,6 +65,7 @@ describe('addCheckInItems', () => {
         holdingLocationCode: 'fake:fake',
         isSerial: true,
         location: 'fake',
+        locationUrl: undefined,
         position: 3,
         requestable: false,
         status: {
@@ -82,6 +83,7 @@ describe('addCheckInItems', () => {
         format: 'AV',
         isSerial: true,
         location: 'mock',
+        locationUrl: undefined,
         holdingLocationCode: 'mock:mock',
         position: 2,
         requestable: false,
@@ -101,6 +103,7 @@ describe('addCheckInItems', () => {
         holdingLocationCode: 'fake:fake',
         isSerial: true,
         location: 'fake',
+        locationUrl: undefined,
         position: 1,
         requestable: false,
         status: {
