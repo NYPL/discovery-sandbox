@@ -28,7 +28,7 @@ const addHoldingDefinition = (holding) => {
 };
 
 const findUrl = (location, urls) => {
-  const matches = urls[location.code];
+  const matches = urls[location.code] || [];
   const longestMatch = matches.reduce(
     (acc, el) => (el.code.length > acc.code.length ? el : acc), matches[0]);
   if (!longestMatch || !longestMatch.url) return undefined;
@@ -38,15 +38,18 @@ const findUrl = (location, urls) => {
 const checkInItemsForHolding = (holding) => {
   let location = '';
   let holdingLocationCode = '';
+  let locationUrl;
   if (holding.location.length) {
     holdingLocationCode = holding.location[0].code;
     location = holding.location[0].label;
+    locationUrl = holding.location[0].url;
   }
   const format = holding.format || '';
   if (!holding.checkInBoxes) return [];
   return holding.checkInBoxes.map(box => (
     {
       location,
+      locationUrl,
       holdingLocationCode,
       format,
       position: box.position || 0,
@@ -70,6 +73,51 @@ const addCheckInItems = (bib) => {
     .sort((box1, box2) => box2.position - box1.position);
 };
 
+const addLocationUrls = (bib) => {
+  const holdingCodes = bib.holdings ?
+    bib
+      .holdings
+      .map(holding => holding.location.reduce((acc, el) => acc.concat([el.code]), []))
+      .reduce((acc, el) => acc.concat(el), [])
+    : [];
+
+  const itemCodes = bib.items ?
+    bib.items.map(item =>
+      (item.holdingLocation || []).map(location => location['@id']),
+    ).reduce((acc, el) => acc.concat(el), [])
+    : [];
+
+  const codes = holdingCodes.concat(itemCodes).join(',');
+
+  // get locations data by codes
+  return nyplApiClient()
+    .then(client => client.get(`/locations?location_codes=${codes}`))
+    .then((resp) => {
+      // add location urls for holdings
+      if (Array.isArray(bib.holdings)) {
+        bib.holdings.forEach((holding) => {
+          holding.location.forEach((location) => {
+            location.url = findUrl(location, resp);
+          });
+        });
+      }
+      // add item location urls;
+      if (Array.isArray(bib.items)) {
+        bib.items.forEach((item) => {
+          if (item.holdingLocation) {
+            item.holdingLocation.forEach((holdingLocation) => {
+              if (holdingLocation['@id']) {
+                holdingLocation.url = findUrl({ code: holdingLocation['@id'] }, resp);
+              }
+            });
+          }
+        });
+      }
+      return bib;
+    })
+    .catch((err) => { console.log('catching nypl client ', err); });
+};
+
 function fetchBib(bibId, cb, errorcb, reqOptions) {
   const options = Object.assign({
     fetchSubjectHeadingData: true,
@@ -89,25 +137,10 @@ function fetchBib(bibId, cb, errorcb, reqOptions) {
 
       return data;
     })
+    .then(bib => addLocationUrls(bib))
     .then((bib) => {
       if (bib.holdings) {
         addCheckInItems(bib);
-        const codes = bib
-          .holdings
-          .map(holding => holding.location.reduce((acc, el) => acc.concat([el.code]), []))
-          .reduce((acc, el) => acc.concat(el), [])
-          .join(',');
-
-        return nyplApiClient()
-          .then(client => client.get(`/locations?location_codes=${codes}`))
-          .then((resp) => {
-            bib.holdings.forEach((holding) => {
-              holding.location.forEach((location) => {
-                location.url = findUrl(location, resp);
-              });
-            });
-            return bib;
-          });
       }
       return bib;
     })
