@@ -223,8 +223,6 @@ function LibraryItem() {
       url = this.getLocationHoldUrl(holdingLocation);
     }
 
-    console.log('mapping item: ', item);
-
     return {
       id,
       status,

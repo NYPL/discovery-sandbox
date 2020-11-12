@@ -100,8 +100,6 @@ class ItemTableRow extends React.Component {
       itemLocation = ' ';
     }
 
-    console.log('location url: ', item.locationUrl, item);
-
     return (
       <tr className={item.availability}>
         {includeVolColumn ? (

@@ -74,7 +74,6 @@ const addCheckInItems = (bib) => {
 };
 
 const addLocationUrls = (bib) => {
-  console.log('adding location urls');
   const holdingCodes = bib.holdings ?
     bib
       .holdings
@@ -87,8 +86,6 @@ const addLocationUrls = (bib) => {
   ).reduce((acc, el) => acc.concat(el), []);
 
   const codes = holdingCodes.concat(itemCodes).join(',');
-
-  console.log('codes: ', codes);
 
   // get locations data by codes
   return nyplApiClient()
@@ -106,18 +103,15 @@ const addLocationUrls = (bib) => {
       bib.items.forEach((item) => {
         if (item.holdingLocation) {
           item.holdingLocation.forEach((holdingLocation) => {
-            console.log('finding for holding location: ', holdingLocation);
             if (holdingLocation['@id']) {
-              console.log('found: ', holdingLocation['@id'], findUrl({ code: holdingLocation['@id'] }, resp));
               holdingLocation.url = findUrl({ code: holdingLocation['@id'] }, resp);
             }
           });
         }
       });
-      console.log('addLocationUrls bib: ', JSON.stringify(bib, null, 2));
       return bib;
     })
-    .catch((err) => { console.log('catching nypl client ', err)});
+    .catch((err) => { console.log('catching nypl client ', err); });
 };
 
 function fetchBib(bibId, cb, errorcb, reqOptions) {
@@ -143,30 +137,10 @@ function fetchBib(bibId, cb, errorcb, reqOptions) {
     .then((bib) => {
       if (bib.holdings) {
         addCheckInItems(bib);
-        // addLocationUrls(bib);
-        console.log('bib: ', JSON.stringify(bib, null, 2));
-        // const codes = bib
-        //   .holdings
-        //   .map(holding => holding.location.reduce((acc, el) => acc.concat([el.code]), []))
-        //   .reduce((acc, el) => acc.concat(el), [])
-        //   .join(',');
-        //
-        // return nyplApiClient()
-        //   .then(client => client.get(`/locations?location_codes=${codes}`))
-        //   .then((resp) => {
-        //     bib.holdings.forEach((holding) => {
-        //       holding.location.forEach((location) => {
-        //         location.url = findUrl(location, resp);
-        //         console.log('holdings: ', JSON.stringify(bib.holdings, null, 2), 'items: ', JSON.stringify(bib.items, null, 2), 'resp: ', resp);
-        //       });
-        //     });
-        //     return bib;
-        //   });
       }
       return bib;
     })
     .then((bib) => {
-      // console.log('bib: ', JSON.stringify(bib, null, 2));
       if (bib.holdings) {
         bib.holdings.forEach(holding => addHoldingDefinition(holding));
       }
