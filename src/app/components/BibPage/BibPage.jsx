@@ -36,6 +36,7 @@ export const BibPage = (props) => {
   } = props;
 
   const bib = props.bib ? props.bib : {};
+  console.log('bib: ', bib);
   const bibId = bib && bib['@id'] ? bib['@id'].substring(4) : '';
   const title = bib.title && bib.title.length ? bib.title[0] : '';
   const items = (bib.checkInItems || []).concat(LibraryItem.getItems(bib));

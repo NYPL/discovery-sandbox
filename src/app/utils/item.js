@@ -223,6 +223,8 @@ function LibraryItem() {
       url = this.getLocationHoldUrl(holdingLocation);
     }
 
+    console.log('mapping item: ', item);
+
     return {
       id,
       status,
@@ -232,6 +234,7 @@ function LibraryItem() {
       isElectronicResource,
       electronicResources,
       location: holdingLocation.prefLabel,
+      locationUrl: holdingLocation.url,
       holdingLocationCode: holdingLocation['@id'] || '',
       callNumber,
       url,

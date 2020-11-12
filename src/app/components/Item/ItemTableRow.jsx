@@ -88,6 +88,20 @@ class ItemTableRow extends React.Component {
       itemCallNumber = item.callNumber;
     }
 
+    let itemLocation;
+
+    if (item.location && item.locationUrl) {
+      itemLocation = (
+        <a href={item.locationUrl} className="itemLocationLink">{item.location}</a>
+      );
+    } else if (item.location) {
+      itemLocation = item.location;
+    } else {
+      itemLocation = ' ';
+    }
+
+    console.log('location url: ', item.locationUrl, item);
+
     return (
       <tr className={item.availability}>
         {includeVolColumn ? (
@@ -103,7 +117,7 @@ class ItemTableRow extends React.Component {
         <td data-th="Message"><span>{this.message()}</span></td>
         <td data-th="Status"><span>{this.requestButton()}</span></td>
         <td data-th="Call Number"><span>{itemCallNumber}</span></td>
-        <td data-th="Location"><span>{item.location || ' '}</span></td>
+        <td data-th="Location"><span>{itemLocation}</span></td>
       </tr>
     );
   }
