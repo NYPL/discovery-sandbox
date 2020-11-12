@@ -81,9 +81,11 @@ const addLocationUrls = (bib) => {
       .reduce((acc, el) => acc.concat(el), [])
     : [];
 
-  const itemCodes = bib.items.map(item =>
-    item.holdingLocation.map(location => location['@id'])
-  ).reduce((acc, el) => acc.concat(el), []);
+  const itemCodes = bib.items ?
+    bib.items.map(item =>
+      (item.holdingLocation || []).map(location => location['@id']),
+    ).reduce((acc, el) => acc.concat(el), [])
+    : [];
 
   const codes = holdingCodes.concat(itemCodes).join(',');
 
@@ -92,7 +94,7 @@ const addLocationUrls = (bib) => {
     .then(client => client.get(`/locations?location_codes=${codes}`))
     .then((resp) => {
       // add location urls for holdings
-      if (bib.holdings) {
+      if (Array.isArray(bib.holdings)) {
         bib.holdings.forEach((holding) => {
           holding.location.forEach((location) => {
             location.url = findUrl(location, resp);
@@ -100,15 +102,17 @@ const addLocationUrls = (bib) => {
         });
       }
       // add item location urls;
-      bib.items.forEach((item) => {
-        if (item.holdingLocation) {
-          item.holdingLocation.forEach((holdingLocation) => {
-            if (holdingLocation['@id']) {
-              holdingLocation.url = findUrl({ code: holdingLocation['@id'] }, resp);
-            }
-          });
-        }
-      });
+      if (Array.isArray(bib.items)) {
+        bib.items.forEach((item) => {
+          if (item.holdingLocation) {
+            item.holdingLocation.forEach((holdingLocation) => {
+              if (holdingLocation['@id']) {
+                holdingLocation.url = findUrl({ code: holdingLocation['@id'] }, resp);
+              }
+            });
+          }
+        });
+      }
       return bib;
     })
     .catch((err) => { console.log('catching nypl client ', err); });
