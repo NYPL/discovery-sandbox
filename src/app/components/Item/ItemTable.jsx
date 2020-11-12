@@ -14,7 +14,7 @@ const ItemTable = ({ items, holdings, bibId, id, searchKeywords, page }) => {
   }
 
   const includeVolColumn = (
-    items.some(item => item.volume && item.volume.length)
+    items.some(item => item.volume && item.volume.length) && page !== 'SearchResults'
   );
 
   return (
