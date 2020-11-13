@@ -21,7 +21,7 @@ const holdingsMappings = {
   Notes: 'notes',
 };
 
-const addHoldingDefinition = (holding) => {
+export const addHoldingDefinition = (holding) => {
   holding.holdingDefinition = Object.entries(holdingsMappings)
     .map(([key, value]) => ({ term: key, definition: holding[value] }))
     .filter(data => data.definition);
@@ -64,7 +64,7 @@ const checkInItemsForHolding = (holding) => {
   ));
 };
 
-const addCheckInItems = (bib) => {
+export const addCheckInItems = (bib) => {
   bib.checkInItems = bib
     .holdings
     .map(holding => checkInItemsForHolding(holding))
@@ -73,7 +73,7 @@ const addCheckInItems = (bib) => {
     .sort((box1, box2) => box2.position - box1.position);
 };
 
-const addLocationUrls = (bib) => {
+export const addLocationUrls = (bib) => {
   const holdingCodes = bib.holdings ?
     bib
       .holdings

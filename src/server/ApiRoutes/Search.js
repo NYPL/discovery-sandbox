@@ -13,6 +13,12 @@ import nyplApiClient from '../routes/nyplApiClient';
 import logger from '../../../logger';
 import ResearchNow from './ResearchNow';
 import createSelectedFiltersHash from '../../app/utils/createSelectedFiltersHash';
+import { searchResultItemsListLimit as itemTableLimit } from '../../app/data/constants';
+import {
+  addHoldingDefinition,
+  addCheckInItems,
+  addLocationUrls,
+} from './Bib';
 
 const createAPIQuery = basicQuery({
   searchKeywords: '',
@@ -62,6 +68,34 @@ function fetchResults(searchKeywords = '', page, sortBy, order, field, filters, 
       .catch(console.error))
     .then((response) => {
       const [results, aggregations, drbbResults] = response;
+      return Promise.all(results.itemListElement.map((resultObj) => {
+        const { result } = resultObj;
+        if (!result.holdings) return resultObj;
+        return addLocationUrls(result).then((updatedResult) => {
+          const { holdings } = updatedResult;
+          if (holdings) {
+            addCheckInItems(result);
+            holdings.slice(0, itemTableLimit).forEach(
+              holding => addHoldingDefinition(holding));
+          }
+          return { ...resultObj, result };
+        });
+      })).then((processedItems) => {
+        console.log('processedItems', processedItems);
+        console.log('aggregations', aggregations);
+        return ({
+          aggregations,
+          results: {
+            ...results,
+            itemListElement: processedItems,
+          },
+          drbbResults,
+        });
+      });
+    })
+    .then((combinedResults) => {
+      console.log('combinedResults', combinedResults);
+      const { aggregations, results, drbbResults } = combinedResults;
       cb(aggregations, results, page, drbbResults);
     })
     .catch((error) => {
@@ -94,16 +128,18 @@ function search(req, res, resolve) {
     order,
     apiQueryField,
     apiQueryFilters,
-    (apiFilters, searchResults, pageQuery, drbbResults) => resolve({
-      filters: apiFilters,
-      searchResults,
-      page: pageQuery,
-      drbbResults,
-      selectedFilters: createSelectedFiltersHash(filters, apiFilters),
-      searchKeywords: q,
-      sortBy,
-      field: fieldQuery,
-    }),
+    (apiFilters, searchResults, pageQuery, drbbResults) => {
+      resolve({
+        filters: apiFilters,
+        searchResults,
+        page: pageQuery,
+        drbbResults,
+        selectedFilters: createSelectedFiltersHash(filters, apiFilters),
+        searchKeywords: q,
+        sortBy,
+        field: fieldQuery,
+      });
+    },
     error => resolve(error),
     urlEnabledFeatures,
   );

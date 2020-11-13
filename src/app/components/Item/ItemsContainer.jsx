@@ -8,7 +8,7 @@ import ItemTable from './ItemTable';
 import ItemFilters from './ItemFilters';
 import appConfig from '../../data/appConfig';
 import { trackDiscovery, isOptionSelected } from '../../utils/utils';
-import { itemFilters, itemsListPageLimit } from '../../data/constants';
+import { itemFilters, bibPageItemsListLimit as itemsListPageLimit } from '../../data/constants';
 
 class ItemsContainer extends React.Component {
   constructor(props, context) {

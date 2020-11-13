@@ -11,7 +11,7 @@ const breakpoints = [
   {
     maxValue: 870,
     media: 'tablet',
-  }
+  },
 ];
 
 const itemFilters = [
@@ -38,10 +38,13 @@ const itemFilters = [
   },
 ];
 
-const itemsListPageLimit = 20;
+const bibPageItemsListLimit = 20;
+const searchResultItemsListLimit = 3;
+
 
 export {
   breakpoints,
   itemFilters,
-  itemsListPageLimit,
+  bibPageItemsListLimit,
+  searchResultItemsListLimit,
 };
