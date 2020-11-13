@@ -123,18 +123,16 @@ function search(req, res, resolve) {
     order,
     apiQueryField,
     apiQueryFilters,
-    (apiFilters, searchResults, pageQuery, drbbResults) => {
-      resolve({
-        filters: apiFilters,
-        searchResults,
-        page: pageQuery,
-        drbbResults,
-        selectedFilters: createSelectedFiltersHash(filters, apiFilters),
-        searchKeywords: q,
-        sortBy,
-        field: fieldQuery,
-      });
-    },
+    (apiFilters, searchResults, pageQuery, drbbResults) => resolve({
+      filters: apiFilters,
+      searchResults,
+      page: pageQuery,
+      drbbResults,
+      selectedFilters: createSelectedFiltersHash(filters, apiFilters),
+      searchKeywords: q,
+      sortBy,
+      field: fieldQuery,
+    }),
     error => resolve(error),
     urlEnabledFeatures,
   );
