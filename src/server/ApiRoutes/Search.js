@@ -70,19 +70,15 @@ function fetchResults(searchKeywords = '', page, sortBy, order, field, filters, 
       const [results, aggregations, drbbResults] = response;
       return Promise.all(results.itemListElement.map((resultObj) => {
         const { result } = resultObj;
-        if (!result.holdings) return resultObj;
         return addLocationUrls(result).then((updatedResult) => {
           const { holdings } = updatedResult;
-          if (holdings) {
-            addCheckInItems(result);
-            holdings.slice(0, itemTableLimit).forEach(
-              holding => addHoldingDefinition(holding));
-          }
-          return { ...resultObj, result };
+          if (!holdings) return { ...resultObj, updatedResult };
+          addCheckInItems(updatedResult);
+          holdings.slice(0, itemTableLimit).forEach(
+            holding => addHoldingDefinition(holding));
+          return { ...resultObj, updatedResult };
         });
       })).then((processedItems) => {
-        console.log('processedItems', processedItems);
-        console.log('aggregations', aggregations);
         return ({
           aggregations,
           results: {
@@ -94,7 +90,6 @@ function fetchResults(searchKeywords = '', page, sortBy, order, field, filters, 
       });
     })
     .then((combinedResults) => {
-      console.log('combinedResults', combinedResults);
       const { aggregations, results, drbbResults } = combinedResults;
       cb(aggregations, results, page, drbbResults);
     })
