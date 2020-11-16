@@ -6,7 +6,7 @@ import { shallow, mount } from 'enzyme';
 
 import ItemsContainer from './../../src/app/components/Item/ItemsContainer';
 import LibraryItem from './../../src/app/utils/item';
-import { itemsListPageLimit } from './../../src/app/data/constants';
+import { bibPageItemsListLimit as itemsListPageLimit } from './../../src/app/data/constants';
 
 const items = [
   {

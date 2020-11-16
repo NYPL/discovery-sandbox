@@ -13,6 +13,7 @@ import {
 } from '../../utils/utils';
 import ItemTable from '../Item/ItemTable';
 import appConfig from '../../data/appConfig';
+import { searchResultItemsListLimit as itemTableLimit } from '../../data/constants';
 
 
 export const getBibTitle = (bib) => {
@@ -46,7 +47,6 @@ const ResultsList = ({
   subjectHeadingShow,
   searchKeywords,
 }) => {
-  const itemTableLimit = 3;
   const features = useSelector(state => state.features);
   const loading = useSelector(state => state.loading);
   const includeDrbb = features.includes('drb-integration');
@@ -69,17 +69,8 @@ const ResultsList = ({
     const yearPublished = getYearDisplay(result);
     const publicationStatement = result.publicationStatement && result.publicationStatement.length ?
       result.publicationStatement[0] : '';
-    const items = LibraryItem.getItems(result);
-    const totalCheckInBoxes = result.holdings && result.holdings.length ?
-      result.holdings.reduce(
-        (acc, holding) =>
-          acc + (
-            holding.checkInBoxes && holding.checkInBoxes.length ?
-              holding.checkInBoxes.length : 0
-          ),
-        0)
-      : 0;
-    const totalItems = items.length + totalCheckInBoxes;
+    const items = (result.checkInItems || []).concat(LibraryItem.getItems(result));
+    const totalItems = items.length;
     const hasRequestTable = items.length > 0;
     const { baseUrl } = appConfig;
     const bibUrl = `${baseUrl}/bib/${bibId}`;
