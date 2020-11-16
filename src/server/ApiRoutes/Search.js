@@ -71,7 +71,7 @@ function fetchResults(searchKeywords = '', page, sortBy, order, field, filters, 
       const [results, aggregations, drbbResults] = response;
       const locationCodes = new Set();
       const { itemListElement } = results;
-      const processedItems = itemListElement.forEach((resultObj) => {
+      itemListElement.forEach((resultObj) => {
         let numItemsProcessed = 0;
         const { result } = resultObj;
         const { holdings } = resultObj.result;
@@ -97,7 +97,7 @@ function fetchResults(searchKeywords = '', page, sortBy, order, field, filters, 
           const items = (result.checkInItems || []).concat(result.items);
           items.slice(0, itemTableLimit).forEach((item) => {
             if (item.holdingLocation) item.holdingLocation[0].url = findUrl({ code: item.holdingLocation[0]['@id'] }, resp);
-            if (item.location) item.locationUrl = findUrl(item.location, resp);
+            if (item.location) item.locationUrl = findUrl({code: item.holdingLocationCode }, resp);
           });
         });
         return results;
