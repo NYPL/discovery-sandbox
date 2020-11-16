@@ -17,7 +17,8 @@ import { searchResultItemsListLimit as itemTableLimit } from '../../app/data/con
 import {
   addHoldingDefinition,
   addCheckInItems,
-  addLocationUrls,
+  fetchLocationUrls,
+  findUrl,
 } from './Bib';
 
 const createAPIQuery = basicQuery({
@@ -68,34 +69,48 @@ function fetchResults(searchKeywords = '', page, sortBy, order, field, filters, 
       .catch(console.error))
     .then((response) => {
       const [results, aggregations, drbbResults] = response;
-      return Promise.all(results.itemListElement.map((resultObj) => {
+      const locationCodes = new Set();
+      const { itemListElement } = results;
+      itemListElement.forEach((resultObj) => {
+        let numItemsProcessed = 0;
         const { result } = resultObj;
-        return addLocationUrls(result).then((updatedResult) => {
-          const { holdings } = updatedResult;
-          if (!holdings) return { ...resultObj, updatedResult };
-          addCheckInItems(updatedResult);
-          holdings.slice(0, itemTableLimit).forEach(
-            holding => addHoldingDefinition(holding));
-          return { ...resultObj, updatedResult };
+        const { holdings } = resultObj.result;
+        if (holdings) {
+          addCheckInItems(result);
+          holdings.slice(0, itemTableLimit).forEach((holding) => {
+            addHoldingDefinition(holding);
+            if (numItemsProcessed < 0 && holding.location) {
+              locationCodes.add(holding.location[0].code);
+              numItemsProcessed += 1;
+            }
+          });
+        }
+        if (numItemsProcessed < itemTableLimit) {
+          result.items.slice(0, itemTableLimit - numItemsProcessed).forEach(
+            item => item.holdingLocation[0]['@id']);
+        }
+      });
+      return fetchLocationUrls(locationCodes).then((resp) => {
+        itemListElement.forEach((resultObj) => {
+          const { result } = resultObj;
+          const items = (result.checkInItems || []).concat(result.items);
+          items.slice(0, itemTableLimit).forEach((item) => {
+            if (item.holdingLocation) item.holdingLocation.url = findUrl({ code: item.holdingLocation['@id'] }, resp);
+            if (item.location) item.locationUrl = findUrl(item.location, resp);
+          });
         });
-      })).then((processedItems) => {
-        return ({
+      })
+        .then(processedItems => cb(
           aggregations,
-          results: {
+          {
             ...results,
             itemListElement: processedItems,
           },
-          drbbResults,
+          drbbResults))
+        .catch((error) => {
+          logger.error('Error making server search call in search function', error);
+          errorcb(error);
         });
-      });
-    })
-    .then((combinedResults) => {
-      const { aggregations, results, drbbResults } = combinedResults;
-      cb(aggregations, results, page, drbbResults);
-    })
-    .catch((error) => {
-      logger.error('Error making server search call in search function', error);
-      errorcb(error);
     });
 }
 

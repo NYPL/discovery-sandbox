@@ -27,7 +27,7 @@ export const addHoldingDefinition = (holding) => {
     .filter(data => data.definition);
 };
 
-const findUrl = (location, urls) => {
+export const findUrl = (location, urls) => {
   const matches = urls[location.code] || [];
   const longestMatch = matches.reduce(
     (acc, el) => (el.code.length > acc.code.length ? el : acc), matches[0]);
@@ -73,7 +73,10 @@ export const addCheckInItems = (bib) => {
     .sort((box1, box2) => box2.position - box1.position);
 };
 
-export const addLocationUrls = (bib) => {
+export const fetchLocationUrls = codes => nyplApiClient()
+  .then(client => client.get(`/locations?location_codes=${codes}`));
+
+const addLocationUrls = (bib) => {
   const holdingCodes = bib.holdings ?
     bib
       .holdings
@@ -90,8 +93,7 @@ export const addLocationUrls = (bib) => {
   const codes = holdingCodes.concat(itemCodes).join(',');
 
   // get locations data by codes
-  return nyplApiClient()
-    .then(client => client.get(`/locations?location_codes=${codes}`))
+  return fetchLocationUrls(codes)
     .then((resp) => {
       // add location urls for holdings
       if (Array.isArray(bib.holdings)) {
