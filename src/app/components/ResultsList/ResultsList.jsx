@@ -70,16 +70,7 @@ const ResultsList = ({
     const publicationStatement = result.publicationStatement && result.publicationStatement.length ?
       result.publicationStatement[0] : '';
     const items = (result.checkInItems || []).concat(LibraryItem.getItems(result));
-    const totalCheckInBoxes = result.holdings && result.holdings.length ?
-      result.holdings.reduce(
-        (acc, holding) =>
-          acc + (
-            holding.checkInBoxes && holding.checkInBoxes.length ?
-              holding.checkInBoxes.length : 0
-          ),
-        0)
-      : 0;
-    const totalItems = items.length + totalCheckInBoxes;
+    const totalItems = items.length;
     const hasRequestTable = items.length > 0;
     const { baseUrl } = appConfig;
     const bibUrl = `${baseUrl}/bib/${bibId}`;
