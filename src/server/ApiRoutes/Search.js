@@ -72,21 +72,17 @@ function fetchResults(searchKeywords = '', page, sortBy, order, field, filters, 
       const locationCodes = new Set();
       const { itemListElement } = results;
       itemListElement.forEach((resultObj) => {
-        let numItemsProcessed = 0;
         const { result } = resultObj;
         const { holdings } = resultObj.result;
         if (holdings) {
           addCheckInItems(result);
           holdings.slice(0, itemTableLimit).forEach((holding) => {
             addHoldingDefinition(holding);
-            if (numItemsProcessed < itemTableLimit && holding.location) {
-              locationCodes.add(holding.location[0].code);
-              numItemsProcessed += 1;
-            }
+            locationCodes.add(holding.location[0].code);
           });
         }
-        if (numItemsProcessed < itemTableLimit) {
-          result.items.slice(0, itemTableLimit - numItemsProcessed).forEach(
+        if (holdings.length < itemTableLimit) {
+          result.items.slice(0, itemTableLimit - holdings.length).forEach(
             item => locationCodes.add(item.holdingLocation[0]['@id']));
         }
       });
