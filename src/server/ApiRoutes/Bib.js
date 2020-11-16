@@ -21,13 +21,13 @@ const holdingsMappings = {
   Notes: 'notes',
 };
 
-const addHoldingDefinition = (holding) => {
+export const addHoldingDefinition = (holding) => {
   holding.holdingDefinition = Object.entries(holdingsMappings)
     .map(([key, value]) => ({ term: key, definition: holding[value] }))
     .filter(data => data.definition);
 };
 
-const findUrl = (location, urls) => {
+export const findUrl = (location, urls) => {
   const matches = urls[location.code] || [];
   const longestMatch = matches.reduce(
     (acc, el) => (el.code.length > acc.code.length ? el : acc), matches[0]);
@@ -64,7 +64,7 @@ const checkInItemsForHolding = (holding) => {
   ));
 };
 
-const addCheckInItems = (bib) => {
+export const addCheckInItems = (bib) => {
   bib.checkInItems = bib
     .holdings
     .map(holding => checkInItemsForHolding(holding))
@@ -72,6 +72,9 @@ const addCheckInItems = (bib) => {
     .filter(box => !['Expected', 'Late', 'Removed'].includes(box.status.prefLabel))
     .sort((box1, box2) => box2.position - box1.position);
 };
+
+export const fetchLocationUrls = codes => nyplApiClient()
+  .then(client => client.get(`/locations?location_codes=${codes}`));
 
 const addLocationUrls = (bib) => {
   const holdingCodes = bib.holdings ?
@@ -90,8 +93,7 @@ const addLocationUrls = (bib) => {
   const codes = holdingCodes.concat(itemCodes).join(',');
 
   // get locations data by codes
-  return nyplApiClient()
-    .then(client => client.get(`/locations?location_codes=${codes}`))
+  return fetchLocationUrls(codes)
     .then((resp) => {
       // add location urls for holdings
       if (Array.isArray(bib.holdings)) {
