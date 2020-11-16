@@ -118,7 +118,13 @@ class ItemsContainer extends React.Component {
   updatePage(page, type) {
     this.setState({ page });
     trackDiscovery('Pagination', `${type} - page ${page}`);
-    this.context.router.push(`${appConfig.baseUrl}/bib/${this.props.bibId}?itemPage=${page}`);
+    this.context.router.push({
+      pathname: `${appConfig.baseUrl}/bib/${this.props.bibId}`,
+      query: {
+        ...this.query,
+        itemPage: page,
+      },
+    });
   }
 
   /*
