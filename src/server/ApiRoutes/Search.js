@@ -71,7 +71,7 @@ function fetchResults(searchKeywords = '', page, sortBy, order, field, filters, 
       const [results, aggregations, drbbResults] = response;
       const locationCodes = new Set();
       const { itemListElement } = results;
-      itemListElement.forEach((resultObj) => {
+      const processedItems = itemListElement.forEach((resultObj) => {
         let numItemsProcessed = 0;
         const { result } = resultObj;
         const { holdings } = resultObj.result;
@@ -87,25 +87,25 @@ function fetchResults(searchKeywords = '', page, sortBy, order, field, filters, 
         }
         if (numItemsProcessed < itemTableLimit) {
           result.items.slice(0, itemTableLimit - numItemsProcessed).forEach(
-            item => item.holdingLocation[0]['@id']);
+            item => locationCodes.add(item.holdingLocation[0]['@id']));
         }
       });
-      return fetchLocationUrls(locationCodes).then((resp) => {
+      const codes = Array.from(locationCodes).join(',');
+      return fetchLocationUrls(codes).then((resp) => {
         itemListElement.forEach((resultObj) => {
           const { result } = resultObj;
           const items = (result.checkInItems || []).concat(result.items);
           items.slice(0, itemTableLimit).forEach((item) => {
-            if (item.holdingLocation) item.holdingLocation.url = findUrl({ code: item.holdingLocation['@id'] }, resp);
+            if (item.holdingLocation) item.holdingLocation[0].url = findUrl({ code: item.holdingLocation[0]['@id'] }, resp);
             if (item.location) item.locationUrl = findUrl(item.location, resp);
           });
         });
+        return results;
       })
-        .then(processedItems => cb(
+        .then(processedResults => cb(
           aggregations,
-          {
-            ...results,
-            itemListElement: processedItems,
-          },
+          processedResults,
+          page,
           drbbResults))
         .catch((error) => {
           logger.error('Error making server search call in search function', error);
