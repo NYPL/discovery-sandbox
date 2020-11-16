@@ -79,7 +79,7 @@ function fetchResults(searchKeywords = '', page, sortBy, order, field, filters, 
           addCheckInItems(result);
           holdings.slice(0, itemTableLimit).forEach((holding) => {
             addHoldingDefinition(holding);
-            if (numItemsProcessed < 0 && holding.location) {
+            if (numItemsProcessed < itemTableLimit && holding.location) {
               locationCodes.add(holding.location[0].code);
               numItemsProcessed += 1;
             }
