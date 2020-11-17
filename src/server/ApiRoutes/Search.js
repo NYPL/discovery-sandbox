@@ -82,8 +82,9 @@ function fetchResults(searchKeywords = '', page, sortBy, order, field, filters, 
             locationCodes.add(holding.location[0].code);
           });
           if (holdings.length < itemTableLimit) {
-            result.items.slice(0, itemTableLimit - holdings.length).forEach(
-              item => locationCodes.add(item.holdingLocation[0]['@id']));
+            result.items.slice(0, itemTableLimit - holdings.length).forEach((item) => {
+              if (item.holdingLocation) locationCodes.add(item.holdingLocation[0]['@id']);
+            });
           }
         } else if (result.items) {
           result.items.slice(0, itemTableLimit).forEach((item) => {
