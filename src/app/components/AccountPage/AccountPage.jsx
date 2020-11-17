@@ -1,4 +1,4 @@
-/* global window */
+/* global window, document */
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -7,7 +7,7 @@ import { Link } from 'react-router';
 import appConfig from '../../data/appConfig';
 import { addEventListenersToAccountLinks } from '../../utils/accountPageUtils';
 
-const AccountPage = (props, { router }) => {
+const AccountPage = (props) => {
   const { patron, accountHtml } = useSelector(state => ({
     patron: state.patron,
     accountHtml: state.accountHtml,
@@ -23,6 +23,7 @@ const AccountPage = (props, { router }) => {
   // Build object in the format used by Legacy Catalog
   // [input[name]]: input[value]
   const [selectedItems, updateSelectedItems] = useState({});
+
   const [errorMessage, updateErrorMessage] = useState(null);
 
   useEffect(() => {
@@ -35,13 +36,16 @@ const AccountPage = (props, { router }) => {
     if (!accountPageContent) return;
     const links = accountPageContent.getElementsByTagName('A');
     const checkboxes = accountPageContent.querySelectorAll('input[type=checkbox]');
-    const errorMessageEls = accountPageContent.getElementsByClassName('errormessage');
+
+    // this "Ratings" feature is in the html, but is not in use
     accountPageContent.getElementsByTagName('th').forEach((th) => {
       if (th.textContent.includes('Ratings')) th.style.display = 'none';
     });
     accountPageContent.getElementsByClassName('patFuncRating').forEach((el) => { el.style.display = 'none'; });
 
+    const errorMessageEls = accountPageContent.getElementsByClassName('errormessage');
     if (errorMessageEls.length) {
+      // in original HTML this is `hidden`
       errorMessageEls[0].style.display = 'block';
     }
 
@@ -50,17 +54,13 @@ const AccountPage = (props, { router }) => {
         const { checked, name, value } = e.target;
         updateSelectedItems((prevSelectedItems) => {
           if (checked) {
-            prevSelectedItems[name] = value
+            prevSelectedItems[name] = value;
             return prevSelectedItems;
           }
           delete prevSelectedItems[name];
           return prevSelectedItems;
         });
       });
-    });
-
-    links.forEach(link => {
-      console.log(link.textContent);
     });
 
     addEventListenersToAccountLinks(
@@ -92,14 +92,12 @@ const AccountPage = (props, { router }) => {
       <a
         href={`https://ilsstaff.nypl.org:443/patroninfo*eng~Sdefault/${patron.id}/modpinfo`}
         target="_blank"
-      >
-				My Settings
+      >My Settings
       </a>
       <a
         href={`https://ilsstaff.nypl.org:443/patroninfo*eng~Sdefault/${patron.id}/newpin`}
         target="_blank"
-      >
-				Change Pin
+      >Change Pin
       </a>
       <hr />
       {
@@ -112,6 +110,10 @@ const AccountPage = (props, { router }) => {
       }
     </div>
   );
+};
+
+AccountPage.propTypes = {
+  params: PropTypes.object,
 };
 
 AccountPage.contextTypes = {
