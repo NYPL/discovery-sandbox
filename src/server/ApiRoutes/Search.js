@@ -74,16 +74,21 @@ function fetchResults(searchKeywords = '', page, sortBy, order, field, filters, 
       itemListElement.forEach((resultObj) => {
         const { result } = resultObj;
         const { holdings } = resultObj.result;
+        if (!result.items || !result.holdings) return;
         if (holdings) {
           addCheckInItems(result);
           holdings.slice(0, itemTableLimit).forEach((holding) => {
             addHoldingDefinition(holding);
             locationCodes.add(holding.location[0].code);
           });
-        }
-        if (holdings.length < itemTableLimit) {
-          result.items.slice(0, itemTableLimit - holdings.length).forEach(
-            item => locationCodes.add(item.holdingLocation[0]['@id']));
+          if (holdings.length < itemTableLimit) {
+            result.items.slice(0, itemTableLimit - holdings.length).forEach(
+              item => locationCodes.add(item.holdingLocation[0]['@id']));
+          }
+        } else if (result.items) {
+          result.items.slice(0, itemTableLimit).forEach((item) => {
+            if (item.holdingLocation) locationCodes.add(item.holdingLocation[0]['@id']);
+          });
         }
       });
       const codes = Array.from(locationCodes).join(',');
@@ -92,6 +97,7 @@ function fetchResults(searchKeywords = '', page, sortBy, order, field, filters, 
           const { result } = resultObj;
           const items = (result.checkInItems || []).concat(result.items);
           items.slice(0, itemTableLimit).forEach((item) => {
+            if (!item) return;
             if (item.holdingLocation) item.holdingLocation[0].url = findUrl({ code: item.holdingLocation[0]['@id'] }, resp);
             if (item.location) item.locationUrl = findUrl({code: item.holdingLocationCode }, resp);
           });
