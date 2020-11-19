@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import { Button, Modal, Icon } from '@nypl/design-system-react-components';
 import ItemFilter from './ItemFilter';
 
-import { trackDiscovery } from '../../utils/utils';
 import { itemFilters } from '../../data/constants';
 
 
