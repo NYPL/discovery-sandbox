@@ -32,8 +32,8 @@ const ItemFilter = ({
   const [selectionMade, setSelectionMade] = useState(false);
 
   const selectFilter = (value) => {
-    setSelectedFilters(prevSelectedFilters => {
-      const updatedSelectedFilters = {...prevSelectedFilters};
+    setSelectedFilters((prevSelectedFilters) => {
+      const updatedSelectedFilters = { ...prevSelectedFilters };
       const prevSelection = prevSelectedFilters[filter];
       if (!prevSelection || !prevSelection.length) updatedSelectedFilters[filter] = [value.id];
       else {
@@ -45,8 +45,8 @@ const ItemFilter = ({
   };
 
   const deselectFilter = (value) => {
-    setSelectedFilters(prevSelectedFilters => {
-      const updatedSelectedFilters = {...prevSelectedFilters};
+    setSelectedFilters((prevSelectedFilters) => {
+      const updatedSelectedFilters = { ...prevSelectedFilters };
       const previousSelection = updatedSelectedFilters[filter];
       updatedSelectedFilters[filter] = Array.isArray(previousSelection) ?
         previousSelection.filter(prevSelection => prevSelection !== value.id)
