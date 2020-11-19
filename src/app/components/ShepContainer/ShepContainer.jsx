@@ -44,7 +44,6 @@ ShepContainer.propTypes = {
   extraBannerElement: PropTypes.element,
   secondaryExtraBannerElement: PropTypes.element,
   extraRow: PropTypes.element,
-  loadingLayerText: PropTypes.string,
   breadcrumbProps: PropTypes.object,
   bannerOptions: PropTypes.object,
 };
@@ -52,7 +51,6 @@ ShepContainer.propTypes = {
 ShepContainer.defaultProps = {
   mainContent: null,
   extraBannerElement: null,
-  loadingLayerText: "Loading",
   breadcrumbProps: {
     type: '',
     breadcrumbUrls: {},
