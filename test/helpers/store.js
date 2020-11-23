@@ -2,7 +2,6 @@
 import React from 'react';
 import { mount, shallow } from 'enzyme';
 import { Provider } from 'react-redux';
-import { stub } from 'sinon';
 import configureStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
@@ -14,7 +13,10 @@ const TestProvider = ({
 }) => <Provider store={store}>{children}</Provider>;
 
 function testRender(ui, renderFunc, { store, ...otherOpts }) {
-  return renderFunc(<TestProvider store={store}>{ui}</TestProvider>, otherOpts);
+  return renderFunc(<TestProvider store={store}>{ui}</TestProvider>, {
+    ...otherOpts,
+    context: { router: { location: {}, createHref: () => {} } },
+  });
 }
 
 export const shallowTestRender = (ui, { store, ...otherOpts }) => testRender(
@@ -31,6 +33,6 @@ export const mountTestRender = (ui, { store, ...otherOpts }) => testRender(
 
 export function makeTestStore(opts = initialState) {
   const mockStore = configureStore([thunk]);
-  const store = mockStore({ ...initialState, ...opts });
+  const store = mockStore({ ...initialState, ...opts, features: (opts.appConfig ? opts.appConfig.features : []) });
   return store;
 }

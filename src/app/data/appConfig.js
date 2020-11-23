@@ -1,10 +1,4 @@
-const extractFeatures = (featuresString) => {
-  if (typeof featuresString !== 'string') return [];
-  return featuresString.split(',').reduce((features, feature) => {
-    if (feature.length) features.push(feature.trim());
-    return features;
-  }, []);
-};
+import extractFeatures from '../utils/extractFeatures';
 
 const appConfig = {
   appTitle: 'NYPL | Discovery',
@@ -25,6 +19,7 @@ const appConfig = {
       production: 'https://digital-research-books-api.nypl.org/v3/sfr/search',
     },
   },
+  classicCatalog: process.env.CLASSIC_CATALOG,
   shepApi: process.env.SHEP_API,
   loginUrl: process.env.LOGIN_URL || 'https://login.nypl.org/auth/login',
   tokenUrl: 'https://isso.nypl.org/',
@@ -44,6 +39,8 @@ const appConfig = {
     dateAfter: '',
     dateBefore: '',
     subjectLiteral: [],
+    creatorLiteral: [],
+    contributorLiteral: [],
   },
   closedLocations: (
     process.env.CLOSED_LOCATIONS
@@ -70,7 +67,4 @@ const appConfig = {
   },
 };
 
-export default {
-  extractFeatures,
-  ...appConfig,
-};
+export default appConfig;

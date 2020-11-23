@@ -1,3 +1,4 @@
+// reflects item object after being parsed by `LibraryItem.mapItem`
 const item = {
   full: {
     accessMessage: {
@@ -8,12 +9,18 @@ const item = {
     available: true,
     barcode: '33433078478272',
     callNumber: 'JFE 07-5007 ---',
+    format: 'Text',
+    holdingLocationCode: 'loc:maj03',
     id: 'i17326129',
     isElectronicResource: false,
     isOffsite: false,
     isRecap: false,
     itemSource: 'sierra-nypl',
     location: 'SASB M1 - General Research - Room 315',
+    materialType: {
+      '@id': 'resourcetypes:txt',
+      prefLabel: 'Text',
+    },
     nonRecapNYPL: true,
     requestable: false,
     status: {
@@ -33,6 +40,7 @@ const item = {
     available: true,
     barcode: '33433078478272',
     callNumber: '',
+    holdingLocationCode: '',
     id: 'i17326129',
     isElectronicResource: false,
     isOffsite: false,
@@ -58,12 +66,13 @@ const item = {
     available: true,
     barcode: '33433078478272',
     callNumber: 'JFE 07-5007 ---',
+    holdingLocationCode: 'loc:rcaj03',
     id: 'i17326129',
     isElectronicResource: false,
     isOffsite: false,
     isRecap: true,
     itemSource: 'sierra-nypl',
-    location: 'SASB M1 - General Research - Room 315',
+    location: 'Offsite',
     nonRecapNYPL: false,
     requestable: true,
     status: {
@@ -83,12 +92,13 @@ const item = {
     available: false,
     barcode: '33433078478272',
     callNumber: 'JFE 07-5007 ---',
+    holdingLocationCode: 'loc:rc2ma',
     id: 'i17326129',
     isElectronicResource: false,
     isOffsite: false,
     isRecap: true,
     itemSource: 'sierra-nypl',
-    location: 'SASB M1 - General Research - Room 315',
+    location: 'Offsite',
     nonRecapNYPL: false,
     requestable: true,
     status: {
@@ -108,6 +118,7 @@ const item = {
     available: true,
     barcode: '33433078478272',
     callNumber: 'JFE 07-5007 ---',
+    holdingLocationCode: 'loc:maj03',
     id: 'i17326129',
     isElectronicResource: false,
     isOffsite: false,
@@ -133,6 +144,7 @@ const item = {
     available: true,
     barcode: '33433078478272',
     callNumber: 'JFE 07-5007 ---',
+    holdingLocationCode: 'loc:maj03',
     id: 'i17326129',
     isElectronicResource: false,
     isOffsite: false,

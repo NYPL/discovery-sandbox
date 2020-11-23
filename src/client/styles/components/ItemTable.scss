@@ -1,5 +1,5 @@
 dl dd.multi-item-list .nypl-basic-table a,
-.nypl-results-item .nypl-basic-table a {
+.nypl-results-item .nypl-basic-table a:not(.itemLocationLink) {
   background-color: $results-list-item-button;
   border: 0.08333rem solid $results-list-item-button;
   border-radius: 0.13333rem;
@@ -69,6 +69,49 @@ dl dd.multi-item-list .nypl-basic-table a,
       &:visited:hover {
         color: $inverted-link-color;
       }
+    }
+  }
+}
+
+@media (max-width: 490px) {
+  .tabbed {
+    thead {
+      display: none;
+    }
+
+    tr, .nypl-results-item .nypl-basic-table tbody tr:last-child {
+      border: 1px solid var(--ui-gray-light);
+    }
+
+    .nypl-basic-table, .nypl-results-item .nypl-basic-table {
+      display: revert;
+
+      td {
+        display: block;
+
+        &.vol-date-col {
+          background-color: var(--ui-gray-light);
+        }
+      }
+
+      span {
+        display: inline-block;
+        padding-left: 5px;
+        min-width: 50%;
+        max-width: 67%;
+      }
+    }
+    .nypl-results-list .nypl-results-item.has-request {
+      border-bottom: none;
+      margin-bottom: 0;
+    }
+
+    td[data-th]:before  {
+      content: attr(data-th);
+      display: inline-block;
+      font-weight: 500;
+      min-width: 27%;
+      max-width: 30%;
     }
   }
 }

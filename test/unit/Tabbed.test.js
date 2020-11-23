@@ -127,9 +127,9 @@ describe('Tabbed', () => {
     { label: 'Owning Institutions', value: '' },
   ];
 
-  // importing ItemHoldings component causes a memory issue
+  // importing ItemsContainer component causes a memory issue
   // mock a simple component for test
-  const mockItemHoldings = (
+  const mockItemsContainer = (
     <div>
       <ul>
         <li>item</li>
@@ -147,7 +147,7 @@ describe('Tabbed', () => {
 
   let component = mount(
     <Tabbed tabs={[
-      {title: 'Availability', content: mockItemHoldings},
+      { title: 'Availability', content: mockItemsContainer },
       { title: 'Details', content: bibDetails },
       { title: 'Full Description', content: additionalDetails }]}
     />

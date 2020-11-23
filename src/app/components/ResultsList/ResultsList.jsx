@@ -13,6 +13,7 @@ import {
 } from '../../utils/utils';
 import ItemTable from '../Item/ItemTable';
 import appConfig from '../../data/appConfig';
+import { searchResultItemsListLimit as itemTableLimit } from '../../data/constants';
 
 
 export const getBibTitle = (bib) => {
@@ -46,14 +47,13 @@ const ResultsList = ({
   subjectHeadingShow,
   searchKeywords,
 }) => {
-  const itemTableLimit = 3;
-  const features = useSelector(state => state.appConfig.features);
+  const features = useSelector(state => state.features);
   const loading = useSelector(state => state.loading);
   const includeDrbb = features.includes('drb-integration');
 
   if (!results || !_isArray(results) || !results.length) {
     return null;
-  };
+  }
 
   const generateBibLi = (bib, i) => {
     // eslint-disable-next-line no-mixed-operators
@@ -69,7 +69,7 @@ const ResultsList = ({
     const yearPublished = getYearDisplay(result);
     const publicationStatement = result.publicationStatement && result.publicationStatement.length ?
       result.publicationStatement[0] : '';
-    const items = LibraryItem.getItems(result);
+    const items = (result.checkInItems || []).concat(LibraryItem.getItems(result));
     const totalItems = items.length;
     const hasRequestTable = items.length > 0;
     const { baseUrl } = appConfig;
@@ -103,6 +103,7 @@ const ResultsList = ({
             bibId={bibId}
             id={null}
             searchKeywords={searchKeywords}
+            page="SearchResults"
           />
         }
       </li>

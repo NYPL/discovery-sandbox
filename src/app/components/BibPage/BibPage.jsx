@@ -7,13 +7,15 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 
 import Breadcrumbs from '../Breadcrumbs/Breadcrumbs';
-import ItemHoldings from '../Item/ItemHoldings';
+import ItemsContainer from '../Item/ItemsContainer';
 import BibDetails from './BibDetails';
 import LibraryItem from '../../utils/item';
 import BackLink from './BackLink';
 import AdditionalDetailsViewer from './AdditionalDetailsViewer';
 import Tabbed from './Tabbed';
+import LibraryHoldings from './LibraryHoldings';
 import getOwner from '../../utils/getOwner';
+import appConfig from '../../data/appConfig';
 // Removed MarcRecord because the webpack MarcRecord is not working. Sep/28/2017
 // import MarcRecord from './MarcRecord';
 
@@ -22,16 +24,21 @@ import {
   getAggregatedElectronicResources,
 } from '../../utils/utils';
 
-const BibPage = (props) => {
+export const BibPage = (props) => {
   const {
     location,
     searchKeywords,
+    features,
+    field,
+    selectedFilters,
+    page,
+    sortBy,
   } = props;
 
   const bib = props.bib ? props.bib : {};
   const bibId = bib && bib['@id'] ? bib['@id'].substring(4) : '';
   const title = bib.title && bib.title.length ? bib.title[0] : '';
-  const items = LibraryItem.getItems(bib);
+  const items = (bib.checkInItems || []).concat(LibraryItem.getItems(bib));
   const isElectronicResources = _every(items, i => i.isElectronicResource);
   // Related to removing MarcRecord because the webpack MarcRecord is not working. Sep/28/2017
   // const isNYPLReCAP = LibraryItem.isNYPLReCAP(bib['@id']);
@@ -88,13 +95,15 @@ const BibPage = (props) => {
     });
   }
 
-  const itemHoldings = items.length && !isElectronicResources ? (
-    <ItemHoldings
+  const itemsContainer = items.length && !isElectronicResources ? (
+    <ItemsContainer
+      key={bibId}
       shortenItems={shortenItems}
       items={items}
       bibId={bibId}
       itemPage={itemPage}
       searchKeywords={searchKeywords}
+      holdings={bib.holdings}
     />
   ) : null;
   // Related to removing MarcRecord because the webpack MarcRecord is not working. Sep/28/2017
@@ -110,51 +119,70 @@ const BibPage = (props) => {
 
   const additionalDetails = (<AdditionalDetailsViewer bib={bib} />);
 
-
   const otherLibraries = ['Princeton University Library', 'Columbia University Libraries'];
+
   const tabs = [
+    itemsContainer ? {
+      title: 'Availability',
+      content: itemsContainer,
+    } : null,
     {
       title: 'Details',
       content: tabDetails,
     },
-    !otherLibraries.includes(getOwner(bib)) ? {
+    !otherLibraries.includes(getOwner(bib)) && bib.annotatedMarc ? {
       title: 'Full Description',
       content: additionalDetails,
     } : null,
+    bib.holdings ? {
+      title: 'Library Holdings',
+      content: <LibraryHoldings holdings={bib.holdings} />,
+    } : null,
   ].filter(tab => tab);
 
-  const createAPIQuery = basicQuery(props);
+  const classicLink = (
+    bibId.startsWith('b') && features.includes('catalog-link') ?
+      <a href={`${appConfig.classicCatalog}/record=${bibId}~S1`}>View in Legacy Catalog</a>
+      :
+      null
+  );
+
+  const createAPIQuery = basicQuery({
+    searchKeywords,
+    field,
+    selectedFilters,
+    page,
+    sortBy,
+  });
   const searchUrl = createAPIQuery({});
 
   return (
     <DocumentTitle title="Item Details | Shared Collection Catalog | NYPL">
       <main className="main-page">
         <div className="nypl-page-header">
-          <div className="nypl-full-width-wrapper">
+          <div className="nypl-full-width-wrapper drbb-integration">
             <div className="nypl-row">
-              <div className="nypl-column-three-quarters">
-                <Breadcrumbs type="bib" searchUrl={searchUrl} />
-                <h1 id="mainContent">{title}</h1>
-                {
-                  searchKeywords && (
-                    <div className="nypl-row search-control">
-                      <LeftWedgeIcon
-                        preserveAspectRatio="xMidYMid meet"
-                        title="Back to Results"
-                      />
-                      <BackLink
-                        searchUrl={searchUrl}
-                        searchKeywords={searchKeywords}
-                      />
-                    </div>
-                  )
-                }
-              </div>
+              <Breadcrumbs type="bib" searchUrl={searchUrl} />
+              <h1 id="mainContent">{title}</h1>
+              {
+                searchKeywords && (
+                  <div className="nypl-row search-control">
+                    <LeftWedgeIcon
+                      preserveAspectRatio="xMidYMid meet"
+                      title="Back to Results"
+                    />
+                    <BackLink
+                      searchUrl={searchUrl}
+                      searchKeywords={searchKeywords}
+                    />
+                  </div>
+                )
+              }
             </div>
           </div>
         </div>
 
-        <div className="nypl-full-width-wrapper">
+        <div className="nypl-full-width-wrapper drbb-integration">
           <div className="nypl-row">
             <div className="nypl-item-details">
               <BibDetails
@@ -167,7 +195,7 @@ const BibPage = (props) => {
                 tabs={tabs}
                 hash={location.hash}
               />
-              {itemHoldings}
+              { classicLink }
             </div>
           </div>
         </div>
@@ -180,14 +208,33 @@ BibPage.propTypes = {
   searchKeywords: PropTypes.string,
   location: PropTypes.object,
   bib: PropTypes.object,
+  features: PropTypes.array,
+  field: PropTypes.string,
+  selectedFilters: PropTypes.object,
+  page: PropTypes.string,
+  sortBy: PropTypes.string,
+};
+
+BibPage.defaultProps = {
+  features: [],
 };
 
 const mapStateToProps = ({
   bib,
   searchKeywords,
+  features,
+  field,
+  selectedFilters,
+  page,
+  sortBy,
 }) => ({
   bib,
   searchKeywords,
+  features,
+  field,
+  selectedFilters,
+  page,
+  sortBy,
 });
 
 export default withRouter(connect(mapStateToProps)(BibPage));

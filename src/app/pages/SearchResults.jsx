@@ -16,30 +16,27 @@ import ResultsCount from '../components/ResultsCount/ResultsCount';
 
 import {
   basicQuery,
+  hasValidFilters,
 } from '../utils/utils';
 
 const SearchResults = (props, context) => {
   const {
     searchResults,
-    appConfig,
     searchKeywords,
     sortBy,
     field,
     page,
     selectedFilters,
+    features,
   } = useSelector(state => ({
     searchResults: state.searchResults,
-    appConfig: state.appConfig,
+    features: state.features,
     searchKeywords: state.searchKeywords,
     sortBy: state.sortBy,
     field: state.field,
     page: state.page,
     selectedFilters: state.selectedFilters,
   }));
-
-  const {
-    features,
-  } = appConfig;
 
   const {
     router,
@@ -88,7 +85,7 @@ const SearchResults = (props, context) => {
     return false;
   };
 
-  const selectedFiltersAvailable = checkForSelectedFilters();
+  const selectedFiltersAvailable = hasValidFilters(selectedFilters) && !dropdownOpen;
   const hasResults = searchResults && totalResults;
 
   return (

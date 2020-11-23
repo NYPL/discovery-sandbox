@@ -1,6 +1,12 @@
 // discovery-item.v2.html
 // item info / the full item record
 .nypl-item-details {
+
+  h2 {
+    padding-top: 10px;
+    margin-top: 0;
+  }
+
   dl:first-of-type {
     padding-bottom: 7px;
   }
@@ -42,3 +48,19 @@
   }
 
 } // /.nypl-item-details
+
+.nypl-homepage-hero h1, .nypl-page-header h1 {
+  font-family: inherit;
+  font-weight: 300;
+  font-size: 32px;
+}
+
+.nypl-results-item {
+  border-bottom: 0;
+}
+
+@media (max-width: 965px) {
+  .nypl-results-item .nypl-basic-table#bib-item-table {
+    display: table;
+  }
+}

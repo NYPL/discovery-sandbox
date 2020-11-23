@@ -455,6 +455,65 @@ const truncateStringOnWhitespace = (str, maxLength) => {
   return `${truncArray.join(' ')}...`;
 };
 
+/**
+  this is used for the item Filters
+  @param {array | string} filterValue
+  @param {string} itemValue
+  @return {boolean}
+*/
+const isOptionSelected = (filterValue, itemValue) => {
+  const itemValues = Array.isArray(itemValue) ? itemValue : [itemValue];
+  const filterValues = Array.isArray(filterValue) ? filterValue : [filterValue];
+  return filterValues.some(filter => itemValues.includes(filter));
+};
+
+/**
+ * hasValidFilters (filters)
+ *
+ * Returns true if the hash of filters contains at least one valid filter value.
+ *
+ * @example
+ * // The following returns false:
+ * hasValidFilters({
+ *   materialType: [],
+ *   language: [],
+ *   dateAfter: '',
+ *   dateBefore: '',
+ *   subjectLiteral: []
+ * })
+ *
+ * @example
+ * // The following returns true:
+ * hasValidFilters({
+ *   language: [],
+ *   dateAfter: '0',
+ *   dateBefore: '',
+ *   subjectLiteral: []
+ * })
+ *
+ * @example
+ * // The following returns true:
+ * hasValidFilters({
+ *   materialType: [
+ *     { selected: true,
+ *       value: 'resourcetypes:aud',
+ *       label: 'Audio',
+ *       count: 400314
+ *     }
+ *   ],
+ *   language: [],
+ *   dateAfter: '',
+ *   dateBefore: '',
+ *   subjectLiteral: []
+ * })
+ *
+ * @param {object} filters - A hash of filter names mapped to filter values
+ * @return {boolean}
+ */
+const hasValidFilters = (selectedFilters) => {
+  return Object.values(selectedFilters || {}).some((v) => Array.isArray(v) ? v.length > 0 : v );
+};
+
 export {
   trackDiscovery,
   ajaxCall,
@@ -471,4 +530,6 @@ export {
   getUpdatedFilterValues,
   displayContext,
   truncateStringOnWhitespace,
+  isOptionSelected,
+  hasValidFilters,
 };

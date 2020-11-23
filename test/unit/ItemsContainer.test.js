@@ -1,9 +1,12 @@
+/* eslint-disable react/jsx-filename-extension */
 /* eslint-env mocha */
 import React from 'react';
 import { expect } from 'chai';
 import { shallow, mount } from 'enzyme';
 
-import ItemHoldings from './../../src/app/components/Item/ItemHoldings';
+import ItemsContainer from './../../src/app/components/Item/ItemsContainer';
+import LibraryItem from './../../src/app/utils/item';
+import { bibPageItemsListLimit as itemsListPageLimit } from './../../src/app/data/constants';
 
 const items = [
   {
@@ -24,7 +27,8 @@ const items = [
     available: true,
     barcode: '33433078478272',
   },
-];
+].map(LibraryItem.mapItem);
+
 const longListItems = [
   { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
   { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
@@ -50,12 +54,46 @@ const longListItems = [
   { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
   { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
   { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-];
+].map(LibraryItem.mapItem);
 
-describe('ItemHoldings', () => {
+const twentyItems = [
+  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
+  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
+  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
+  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
+  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
+  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
+  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
+  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
+  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
+  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
+  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
+  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
+  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
+  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
+  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
+  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
+  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
+  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
+  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
+  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
+].map(LibraryItem.mapItem);
+
+const context = {
+  router: {
+    location: { query: {} },
+    createHref: () => {},
+    push: () => {},
+  },
+};
+
+describe('ItemsContainer', () => {
   describe('Default rendering', () => {
     it('should return null with no props passed', () => {
-      const component = shallow(<ItemHoldings />, { disableLifecycleMethods: true });
+      const component = shallow(<ItemsContainer />, {
+        disableLifecycleMethods: true,
+        context,
+      });
       expect(component.type()).to.equal(null);
     });
   });
@@ -64,7 +102,10 @@ describe('ItemHoldings', () => {
     let component;
 
     before(() => {
-      component = shallow(<ItemHoldings items={items} />, { disableLifecycleMethods: true });
+      component = shallow(<ItemsContainer items={items} />, {
+        disableLifecycleMethods: true,
+        context,
+      });
     });
 
     it('should be wrapped in a .nypl-results-item div', () => {
@@ -97,7 +138,7 @@ describe('ItemHoldings', () => {
     let component;
 
     before(() => {
-      component = mount(<ItemHoldings items={longListItems} />);
+      component = mount(<ItemsContainer items={longListItems} />, { context });
     });
 
     it('should have an ItemTable component, which renders a table', () => {
@@ -121,7 +162,7 @@ describe('ItemHoldings', () => {
     let component;
 
     before(() => {
-      component = mount(<ItemHoldings items={longListItems} shortenItems={false} />);
+      component = mount(<ItemsContainer items={longListItems} shortenItems={false} />, { context });
     });
 
     it('should render a "View All Items" link', () => {
@@ -149,8 +190,8 @@ describe('ItemHoldings', () => {
 
     before(() => {
       component = mount(
-        <ItemHoldings items={longListItems} shortenItems={false} />,
-        { context: { router: { createHref: () => {}, push: () => {} } } },
+        <ItemsContainer items={longListItems} shortenItems={false} />,
+        { context },
       );
     });
 
@@ -195,8 +236,8 @@ describe('ItemHoldings', () => {
 
     before(() => {
       component = mount(
-        <ItemHoldings items={longListItems} shortenItems={false} page="4" />,
-        { context: { router: { createHref: () => {}, push: () => {} } } },
+        <ItemsContainer items={longListItems} shortenItems={false} page="4" />,
+        { context },
       );
     });
 
@@ -211,7 +252,10 @@ describe('ItemHoldings', () => {
     // gets done in componentDidMount which is called when the component actually mounts.
     it('should have an empty chunkedItems state', () => {
       const component = shallow(
-        <ItemHoldings items={longListItems} />, { disableLifecycleMethods: true });
+        <ItemsContainer items={longListItems} />, {
+          disableLifecycleMethods: true,
+          context,
+        });
       expect(component.state('chunkedItems')).to.eql([]);
     });
 
@@ -219,7 +263,7 @@ describe('ItemHoldings', () => {
     // gets done in componentDidMount which is called when the component actually mounts.
     it('should have two arrays of in the chunkedItems state,' +
       'the first array with 20 items and the second with 4', () => {
-      const component = mount(<ItemHoldings items={longListItems} />);
+      const component = mount(<ItemsContainer items={longListItems} />, { context });
       expect(component.state('chunkedItems')).to.eql(
         [
           [
@@ -243,18 +287,36 @@ describe('ItemHoldings', () => {
             { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
             { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
             { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-          ],
+          ].map(LibraryItem.mapItem),
           [
             { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
             { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
             { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
             { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-          ],
+          ].map(LibraryItem.mapItem),
         ],
       );
 
       expect(component.state('chunkedItems')[0].length).to.equal(20);
       expect(component.state('chunkedItems')[1].length).to.equal(4);
+    });
+  });
+
+  describe(`Exactly ${itemsListPageLimit} items`, () => {
+    let component;
+    before(() => {
+      component = mount(
+        <ItemsContainer items={twentyItems} shortenItems={false} page="4" />,
+        { context },
+      );
+    });
+
+    it(`should not render a Pagination component since there are ${itemsListPageLimit} items`, () => {
+      expect(component.find('Pagination').length).to.equal(0);
+    });
+
+    it('should not render a "View All Items" link', () => {
+      expect(component.find('.view-all-items-container').length).to.equal(0);
     });
   });
 });

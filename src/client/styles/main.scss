@@ -5,6 +5,11 @@ Import style rules from NYPL Design Toolkit
 @import "toolkit";
 
 /*
+Import style rules from NYPL Design System
+*/
+@import '~@nypl/design-system-react-components/dist/styles.css';
+
+/*
 App-specific utilities and defaults
 */
 @import "utils/mixins.scss";
@@ -156,7 +161,6 @@ select {
 .nypl-basic-table {
   td span {
     color: #000;
-    background: #fff;
   }
 }
 
