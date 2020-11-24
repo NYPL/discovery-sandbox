@@ -96,7 +96,7 @@ class Pagination extends React.Component {
         {page && totalPages
           ?
             <span
-              className={`page-count ${page === 1 ? 'first' : ''}`}
+              className={`page-count${page === 1 ? ' first' : ''}${!nextPage ? ' no-next-page' : ''}`}
               aria-label={`Displaying page ${page} out of ${totalPages} total pages.`}
               tabIndex="0"
             >
