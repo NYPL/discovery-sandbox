@@ -44,7 +44,7 @@ const ItemFilters = ({ items, hasFilterApplied, numOfFilteredItems }, { router }
 
   // join filter selections and add single quotes
   const parsedFilterSelections = () => itemFilters
-    .map(filter => location.query[filter.type] && `${filter.type}: ${location.query[filter.type]}`)
+    .map(filter => location.query[filter.type] && `${filter.type}: ${location.query[filter.type].join(', ')}`)
     .filter(selected => selected)
     .join(', ');
 
@@ -112,7 +112,7 @@ const ItemFilters = ({ items, hasFilterApplied, numOfFilteredItems }, { router }
       </MediaContext.Consumer>
       <div className="item-filter-info">
         <h3>{numOfFilteredItems} Result{numOfFilteredItems > 1 ? 's' : null} Found</h3>
-        {hasFilterApplied ? <span>Filtered by {parsedFilterSelections()}</span> : null}
+        {hasFilterApplied ? <span>Filtered by {parsedFilterSelections()} </span> : null}
         {
           hasFilterApplied ? (
             <Button

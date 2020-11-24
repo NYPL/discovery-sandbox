@@ -50,9 +50,16 @@
 }
 
 .item-table-filters {
-  background-color: #efedeb;
   margin: 15px 0;
+}
+
+div.item-table-filters {
+  background-color: #efedeb;
   padding: 10px;
+}
+
+button.item-table-filters {
+  padding: 5px 25px;
 }
 
 .item-filter-buttons {
@@ -78,8 +85,13 @@
   }
 
   button {
-    color: rgb(195, 76, 61);
+    color: #d0343a;
     display: inline-block;
+    padding-left: 0;
+
+    &:hover {
+      color: #0071ce;
+    }
   }
 }
 
@@ -130,8 +142,9 @@
 @media (max-width: 600px) {
   .item-filter {
     display: block;
-    width: 100%;
     margin: 10px 0;
+    max-width: none;
+    width: 100%;
   }
 
   .item-filter-button {

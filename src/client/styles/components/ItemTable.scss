@@ -89,10 +89,14 @@ dl dd.multi-item-list .nypl-basic-table a,
       td {
         display: block;
         width: auto;
+      }
 
-        &.vol-date-col {
-          background-color: var(--ui-gray-light);
-        }
+      td:last-of-type {
+        padding-bottom: 15px;
+      }
+
+      td.vol-date-col {
+        background-color: var(--ui-gray-light);
       }
 
       span {
