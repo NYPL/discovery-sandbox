@@ -22,6 +22,7 @@ const ItemFiltersMobile = ({
       <Button
         onClick={() => toggleFilterDisplay(true)}
         buttonType="outline"
+        className="item-table-filters"
       >Filters
       </Button>
     );

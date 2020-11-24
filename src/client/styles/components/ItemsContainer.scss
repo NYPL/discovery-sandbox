@@ -1,6 +1,12 @@
 .item-filter {
   display: inline-block;
   width: 30%;
+  max-width: 200px;
+  margin-right: 3%;
+
+  &:last-of-type {
+    margin-right: 0;
+  }
 
   .item-filter-button {
     border: 1px solid var(--ui-gray-medium);
@@ -33,7 +39,7 @@
   border: 1px solid var(--ui-gray-medium);
   padding: var(--space-xs) var(--space-s);
   position: absolute;
-  width: 280px;
+  width: 230px;
   z-index: 1;
 }
 
@@ -45,6 +51,7 @@
 
 .item-table-filters {
   background-color: #efedeb;
+  margin: 15px 0;
   padding: 10px;
 }
 
@@ -63,10 +70,11 @@
 .item-filter-info {
   h3 {
     display: inline-block;
-    padding-right: 10px;
-    margin-bottom: 20px;
     font-size: 1rem;
     font-weight: 600;
+    margin-bottom: 20px;
+    margin-top: 0;
+    padding-right: 10px;
   }
 
   button {
@@ -104,6 +112,7 @@
     border-bottom: 1px solid var(--ui-gray-light);
 
     th {
+      padding-top: 0;
       width: auto;
     }
   }
@@ -118,7 +127,7 @@
 }
 
 // this is the minimum width at which the `Status` options will not go beyond the screenwidth
-@media (max-width: 750px) {
+@media (max-width: 600px) {
   .item-filter {
     display: block;
     width: 100%;

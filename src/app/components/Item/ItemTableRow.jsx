@@ -103,7 +103,7 @@ class ItemTableRow extends React.Component {
     return (
       <tr className={item.availability}>
         { includeVolColumn ? (
-          <td className='vol-date-col' data-th="Vol/Date">
+          <td className="vol-date-col" data-th="Vol/Date">
             <span>{item.volume || ''}</span>
           </td>
         ) : null}

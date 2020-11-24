@@ -159,6 +159,14 @@ select {
 }
 
 .nypl-basic-table {
+  th, td {
+    padding-right: 15px;
+    width: 16%;
+
+    &:last-of-type {
+      padding-right: 0;
+    }
+  }
   td span {
     color: #000;
   }
