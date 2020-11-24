@@ -111,8 +111,9 @@ dl dd.multi-item-list .nypl-basic-table a,
       content: attr(data-th);
       display: inline-block;
       font-weight: 500;
-      min-width: 27%;
       max-width: 30%;
+      min-width: 27%;
+      vertical-align: top;
     }
   }
 }
