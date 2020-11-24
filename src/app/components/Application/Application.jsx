@@ -103,7 +103,6 @@ export class Application extends React.Component {
               skipNav={{ target: 'mainContent' }}
             />
             <LoadingLayer
-              title="Loading"
               loading={this.props.loading}
             />
             <DataLoader

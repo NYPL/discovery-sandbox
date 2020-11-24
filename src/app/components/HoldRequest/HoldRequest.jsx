@@ -360,10 +360,7 @@ export class HoldRequest extends React.Component {
       <DocumentTitle title="Item Request | Shared Collection Catalog | NYPL">
         <div>
           {
-            !userLoggedIn || loading ? <LoadingLayer
-              title="Loading"
-              loading
-            /> : null
+            !userLoggedIn || loading ? <LoadingLayer loading /> : null
           }
           <div className="nypl-request-page-header">
             <div className="nypl-full-width-wrapper">
