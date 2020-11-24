@@ -83,8 +83,8 @@ class Pagination extends React.Component {
     if (!subjectHeadingPage) {
       if (!total) return null;
       pageFactor = parseInt(page, 10) * perPage;
-      nextPage = (total < perPage || pageFactor > total) ? null : this.getPage(page, 'Next');
-      totalPages = Math.floor(total / perPage) + 1;
+      nextPage = (pageFactor >= total) ? null : this.getPage(page, 'Next');
+      totalPages = Math.ceil(total / perPage);
     } else {
       if (total && perPage) totalPages = Math.ceil(total / perPage);
       nextPage = this.getPage(page, 'Next');
