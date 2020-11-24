@@ -159,6 +159,16 @@ select {
 }
 
 .nypl-basic-table {
+  margin-top: 20px;
+
+  th, td {
+    padding-right: 15px;
+    width: 16%;
+
+    &:last-of-type {
+      padding-right: 0;
+    }
+  }
   td span {
     color: #000;
   }
@@ -189,4 +199,9 @@ div {
     outline: .25rem solid $focuscolor;
     outline-offset: 0;
   }
+}
+
+.nypl-results-pagination .page-count.last-page {
+  margin-left: 0;
+  margin-right: 25%;
 }
