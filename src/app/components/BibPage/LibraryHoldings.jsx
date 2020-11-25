@@ -40,12 +40,10 @@ const LibraryHoldings = ({ holdings }) => {
         holdings
         .map(holding =>
           (
-            <React.Fragment key={holding.holdingDefinition}>
-              <DefinitionList
-                data={htmlDefinitions(holding)}
-              />
-              <hr />
-            </React.Fragment>
+            <DefinitionList
+              data={htmlDefinitions(holding)}
+              key={holding.holdingDefinition}
+            />
           ),
         )
       }
