@@ -70,12 +70,12 @@ describe('Pagination', () => {
     });
 
     it('should display what page you are on', () => {
-      expect(component.find('span').text()).to.equal('Page 1 of 9');
+      expect(component.find('span').text()).to.equal('Page 1 of 8');
     });
 
     it('should have a descriptive aria-label', () => {
       expect(component.find('span').prop('aria-label'))
-        .to.equal('Displaying page 1 out of 9 total pages.');
+        .to.equal('Displaying page 1 out of 8 total pages.');
     });
   });
 
@@ -97,12 +97,12 @@ describe('Pagination', () => {
     });
 
     it('should display what page you are on', () => {
-      expect(component.find('span').text()).to.equal('Page 2 of 9');
+      expect(component.find('span').text()).to.equal('Page 2 of 8');
     });
 
     it('should have a description aria-label', () => {
       expect(component.find('span').prop('aria-label'))
-        .to.equal('Displaying page 2 out of 9 total pages.');
+        .to.equal('Displaying page 2 out of 8 total pages.');
     });
   });
 
@@ -120,12 +120,12 @@ describe('Pagination', () => {
     });
 
     it('should display what page you are on', () => {
-      expect(component.find('span').text()).to.equal('Page 3 of 81');
+      expect(component.find('span').text()).to.equal('Page 3 of 80');
     });
 
     it('should have a description aria-label', () => {
       expect(component.find('span').prop('aria-label'))
-        .to.equal('Displaying page 3 out of 81 total pages.');
+        .to.equal('Displaying page 3 out of 80 total pages.');
     });
   });
 
