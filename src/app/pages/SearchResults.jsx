@@ -153,7 +153,6 @@ const SearchResults = (props, context) => {
             </div>
           </div>
         }
-        loadingLayerText="Searching"
         breadcrumbsType="search"
       />
     </DocumentTitle>

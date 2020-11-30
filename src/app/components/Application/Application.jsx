@@ -66,21 +66,10 @@ export class Application extends React.Component {
   onWindowResize() {
     const { media } = this.state;
     const { innerWidth } = window;
-    const {
-      xtrasmall,
-      tabletPortrait,
-      tablet,
-    } = breakpoints;
 
-    if (innerWidth <= xtrasmall) {
-      if (media !== 'mobile') this.setState({ media: 'mobile' });
-    } else if (innerWidth <= tabletPortrait) {
-      if (media !== 'tabletPortrait') this.setState({ media: 'tabletPortrait' });
-    } else if (innerWidth <= tablet) {
-      if (media !== 'tablet') this.setState({ media: 'tablet' });
-    } else {
-      if (media !== 'desktop') this.setState({ media: 'desktop' });
-    }
+    const breakpoint = breakpoints.find(breakpoint => innerWidth <= breakpoint.maxValue);
+    const newMedia = breakpoint && breakpoint.media ? breakpoint.media : 'desktop';
+    if (media !== newMedia) this.setState({ media: newMedia });
   }
 
   submitFeedback(callback, e) {
@@ -114,7 +103,6 @@ export class Application extends React.Component {
               skipNav={{ target: 'mainContent' }}
             />
             <LoadingLayer
-              title="Loading"
               loading={this.props.loading}
             />
             <DataLoader

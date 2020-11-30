@@ -29,9 +29,6 @@ const LoadingLayer = ({ loading, title, focus }) => {
           <span id="loading-animation" className="loadingLayer-texts-loadingWord">
             Loading...
           </span>
-          <span id="loading-description" className="loadingLayer-texts-title">
-            {title}
-          </span>
           <div className="loadingDots">
             <span />
             <span />

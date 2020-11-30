@@ -20,35 +20,39 @@ export const parseDistinctOptions = options =>
 const ItemFilter = ({
   filter,
   options,
-  openFilter,
   manageFilterDisplay,
   mobile,
   selectedFilters,
   submitFilterSelections,
-  updateSelectedFilters,
+  setSelectedFilters,
+  isOpen,
 }, { router }) => {
   const { location } = router;
   const { query } = location;
   const [selectionMade, setSelectionMade] = useState(false);
 
   const selectFilter = (value) => {
-    const updatedSelectedFilters = selectedFilters;
-    const prevSelection = selectedFilters[filter];
-    if (!prevSelection || !prevSelection.length) updatedSelectedFilters[filter] = [value.id];
-    else {
-      updatedSelectedFilters[filter] = Array.isArray(prevSelection) ?
+    setSelectedFilters((prevSelectedFilters) => {
+      const updatedSelectedFilters = { ...prevSelectedFilters };
+      const prevSelection = prevSelectedFilters[filter];
+      if (!prevSelection || !prevSelection.length) updatedSelectedFilters[filter] = [value.id];
+      else {
+        updatedSelectedFilters[filter] = Array.isArray(prevSelection) ?
         [...prevSelection, value.id] : [prevSelection, value.id];
-    }
-    updateSelectedFilters(updatedSelectedFilters);
+      }
+      return updatedSelectedFilters;
+    });
   };
 
   const deselectFilter = (value) => {
-    const updatedSelectedFilters = selectedFilters;
-    const previousSelection = selectedFilters[filter];
-    updatedSelectedFilters[filter] = Array.isArray(previousSelection) ?
-      previousSelection.filter(prevSelection => prevSelection !== value.id)
-      : [];
-    updateSelectedFilters(updatedSelectedFilters);
+    setSelectedFilters((prevSelectedFilters) => {
+      const updatedSelectedFilters = { ...prevSelectedFilters };
+      const previousSelection = updatedSelectedFilters[filter];
+      updatedSelectedFilters[filter] = Array.isArray(previousSelection) ?
+        previousSelection.filter(prevSelection => prevSelection !== value.id)
+        : [];
+      return updatedSelectedFilters;
+    });
   };
 
   const handleCheckbox = (option) => {
@@ -75,7 +79,10 @@ const ItemFilter = ({
   };
   const numOfSelections = determineNumOfSelections();
 
-  const isOpen = openFilter === filter;
+  const [mobileIsOpen, manageMobileFilter] = useState(false);
+
+  const clickHandler = () => mobile ? manageMobileFilter(prevState => !prevState) : manageFilterDisplay(filter);
+  const open = mobile ? mobileIsOpen : isOpen;
 
   return (
     <div
@@ -84,7 +91,7 @@ const ItemFilter = ({
       <FocusTrap
         focusTrapOptions={{
           clickOutsideDeactivates: true,
-          onDeactivate: () => manageFilterDisplay('none'),
+          onDeactivate: () => { if (!mobile) manageFilterDisplay('none') },
           returnFocusOnDeactivate: false,
         }}
         active={isOpen}
@@ -93,12 +100,12 @@ const ItemFilter = ({
           className={`item-filter-button ${
             isOpen ? ' open' : ''}`}
           buttonType="outline"
-          onClick={() => manageFilterDisplay(filter)}
+          onClick={clickHandler}
           type="button"
         >
           {filter}{numOfSelections ? ` (${numOfSelections})` : null} <Icon name={isOpen ? 'minus' : 'plus'} />
         </Button>
-        {isOpen ? (
+        {open ? (
           <div
             className="item-filter-content"
           >
@@ -142,12 +149,12 @@ const ItemFilter = ({
 ItemFilter.propTypes = {
   filter: PropTypes.string,
   options: PropTypes.array,
-  openFilter: PropTypes.string,
+  isOpen: PropTypes.bool,
   manageFilterDisplay: PropTypes.func,
   mobile: PropTypes.bool,
   selectedFilters: PropTypes.object,
   submitFilterSelections: PropTypes.func,
-  updateSelectedFilters: PropTypes.func,
+  setSelectedFilters: PropTypes.func,
 };
 
 ItemFilter.contextTypes = {

@@ -1,8 +1,18 @@
-const breakpoints = {
-  xtrasmall: 490,
-  tabletPortrait: 750,
-  tablet: 870,
-};
+// breakpoints ordered by `maxValue` ascending
+const breakpoints = [
+  {
+    maxValue: 490,
+    media: 'mobile',
+  },
+  {
+    maxValue: 600,
+    media: 'tabletPortrait',
+  },
+  {
+    maxValue: 870,
+    media: 'tablet',
+  },
+];
 
 const itemFilters = [
   {
@@ -28,7 +38,13 @@ const itemFilters = [
   },
 ];
 
+const bibPageItemsListLimit = 20;
+const searchResultItemsListLimit = 3;
+
+
 export {
   breakpoints,
   itemFilters,
+  bibPageItemsListLimit,
+  searchResultItemsListLimit,
 };

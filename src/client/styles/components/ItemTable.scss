@@ -1,5 +1,5 @@
 dl dd.multi-item-list .nypl-basic-table a,
-.nypl-results-item .nypl-basic-table a {
+.nypl-results-item .nypl-basic-table a:not(.itemLocationLink) {
   background-color: $results-list-item-button;
   border: 0.08333rem solid $results-list-item-button;
   border-radius: 0.13333rem;
@@ -69,6 +69,55 @@ dl dd.multi-item-list .nypl-basic-table a,
       &:visited:hover {
         color: $inverted-link-color;
       }
+    }
+  }
+}
+
+@media (max-width: 600px) {
+  .tabbed {
+    thead {
+      display: none;
+    }
+
+    tr, .nypl-results-item .nypl-basic-table tbody tr:last-child {
+      border: 1px solid var(--ui-gray-light);
+    }
+
+    .nypl-basic-table, .nypl-results-item .nypl-basic-table {
+      display: revert;
+
+      td {
+        display: block;
+        width: auto;
+      }
+
+      td:last-of-type {
+        padding-bottom: 15px;
+      }
+
+      td.vol-date-col {
+        background-color: var(--ui-gray-light);
+      }
+
+      span {
+        display: inline-block;
+        max-width: 67%;
+        min-width: 50%;
+        padding-left: 5px;
+      }
+    }
+    .nypl-results-list .nypl-results-item.has-request {
+      border-bottom: none;
+      margin-bottom: 0;
+    }
+
+    td[data-th]:before  {
+      content: attr(data-th);
+      display: inline-block;
+      font-weight: 500;
+      max-width: 30%;
+      min-width: 27%;
+      vertical-align: top;
     }
   }
 }

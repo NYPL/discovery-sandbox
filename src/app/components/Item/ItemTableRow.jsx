@@ -50,7 +50,7 @@ class ItemTableRow extends React.Component {
     } = this.props;
     const { closedLocations } = appConfig;
     const status = item.status && item.status.prefLabel ? item.status.prefLabel : ' ';
-    let itemRequestBtn = <span>{status}</span>;
+    let itemRequestBtn = status;
 
     if (item.requestable && !closedLocations.includes('')) {
       itemRequestBtn = item.available ? (
@@ -63,7 +63,7 @@ class ItemTableRow extends React.Component {
         >
           Request
         </Link>) :
-        <span>In Use</span>;
+        'In Use';
     }
     return itemRequestBtn;
   }
@@ -88,14 +88,34 @@ class ItemTableRow extends React.Component {
       itemCallNumber = item.callNumber;
     }
 
+    let itemLocation;
+
+    if (item.location && item.locationUrl) {
+      itemLocation = (
+        <a href={item.locationUrl} className="itemLocationLink">{item.location}</a>
+      );
+    } else if (item.location) {
+      itemLocation = item.location;
+    } else {
+      itemLocation = ' ';
+    }
+
     return (
       <tr className={item.availability}>
-        {includeVolColumn ? <td>{item.volume || ''}</td> : null}
-        {page !== 'SearchResults' ? <td>{item.format || ' '}</td> : null}
-        <td>{this.message()}</td>
-        <td>{this.requestButton()}</td>
-        <td>{itemCallNumber}</td>
-        <td>{item.location || ' '}</td>
+        { includeVolColumn ? (
+          <td className="vol-date-col" data-th="Vol/Date">
+            <span>{item.volume || ''}</span>
+          </td>
+        ) : null}
+        {page !== 'SearchResults' ? (
+          <td data-th="Format">
+            <span>{item.format || ' '}</span>
+          </td>
+        ) : null}
+        <td data-th="Message"><span>{this.message()}</span></td>
+        <td data-th="Status"><span>{this.requestButton()}</span></td>
+        <td data-th="Call Number"><span>{itemCallNumber}</span></td>
+        <td data-th="Location"><span>{itemLocation}</span></td>
       </tr>
     );
   }

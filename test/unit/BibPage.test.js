@@ -38,6 +38,7 @@ describe('BibPage', () => {
 
   describe('Serial', () => {
     let itemTable;
+    let holdingsTab;
     before(() => {
       mockBibWithHolding.holdings.forEach(holding => Bib.addHoldingDefinition(holding));
       Bib.addCheckInItems(mockBibWithHolding);
@@ -63,15 +64,16 @@ describe('BibPage', () => {
       expect(tabTitles).to.deep.equal(['Availability', 'Details', 'Full Description', 'Library Holdings']);
     });
 
-    // not implemented yet
     it('has item table with volume column', () => {
       expect(itemTable.find('th').at(0).text()).to.equal('Vol/Date');
     });
 
-    // not implemented yet
     it('gets the format from holdings statement', () => {
-      // console.log('itemTable find: ', itemTable.html());
       expect(itemTable.find('td').at(1).text()).to.equal('PRINT');
+    });
+
+    it('displays any notes in the "Library Holdings" tab', () => {
+      expect(component.find('dt').findWhere(n => n.type() === 'dt' && n.text() === 'Notes').length).to.equal(1);
     });
   });
 });

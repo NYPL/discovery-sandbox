@@ -6,6 +6,7 @@ import { shallow, mount } from 'enzyme';
 
 import ItemsContainer from './../../src/app/components/Item/ItemsContainer';
 import LibraryItem from './../../src/app/utils/item';
+import { bibPageItemsListLimit as itemsListPageLimit } from './../../src/app/data/constants';
 
 const items = [
   {
@@ -33,6 +34,29 @@ const longListItems = [
   { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
   { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
   { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
+  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
+  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
+  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
+  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
+  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
+  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
+  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
+  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
+  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
+  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
+  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
+  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
+  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
+  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
+  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
+  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
+  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
+  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
+  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
+  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
+].map(LibraryItem.mapItem);
+
+const twentyItems = [
   { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
   { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
   { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
@@ -275,6 +299,24 @@ describe('ItemsContainer', () => {
 
       expect(component.state('chunkedItems')[0].length).to.equal(20);
       expect(component.state('chunkedItems')[1].length).to.equal(4);
+    });
+  });
+
+  describe(`Exactly ${itemsListPageLimit} items`, () => {
+    let component;
+    before(() => {
+      component = mount(
+        <ItemsContainer items={twentyItems} shortenItems={false} page="4" />,
+        { context },
+      );
+    });
+
+    it(`should not render a Pagination component since there are ${itemsListPageLimit} items`, () => {
+      expect(component.find('Pagination').length).to.equal(0);
+    });
+
+    it('should not render a "View All Items" link', () => {
+      expect(component.find('.view-all-items-container').length).to.equal(0);
     });
   });
 });

@@ -32,8 +32,6 @@ div .tabbed {
   ul[role="tablist"] > li.activeTab {
     border: 1px solid black;
     border-bottom: none;
-    display: table-cell;
-    margin-bottom: 0;
   }
 
   ul[role="tablist"] > li > a {
@@ -42,7 +40,6 @@ div .tabbed {
     display: table-cell;
     font-weight: 500;
     text-decoration: none;
-    // border-bottom: 1px solid black;
   }
 
   ul[role="tablist"] > li:target > a {
@@ -50,12 +47,6 @@ div .tabbed {
   }
 
   ul[role="tablist"] > li > a[aria-selected='true'] {
-    padding: 5px 8px;
-    display: table-cell;
-    font-weight: 500;
-    text-decoration: none;
-    // border: 1px solid black;
-    // border-bottom: none;
     color: black;
   }
 
@@ -89,7 +80,7 @@ div .tabbed {
 @for $i from 1 through 4 {
   #tab#{$i}:target ~ #section#{$i} {
     display: block;
-    padding: 1rem 1% 0;
+    padding: 15px 1% 0;
   }
 }
 
@@ -105,12 +96,6 @@ div .tabbed {
 
 .tabbed a {
   display: inline-block;
-}
-
-.tabbed span {
-  display: inline-block;
-  padding-left: 5px;
-  padding-right: 5px;
 }
 
 // If there is a single hierarchical string of subjects,
@@ -191,6 +176,25 @@ div .tabbed {
   .additionalDetails {
     dt {
       float: none;
+    }
+  }
+}
+
+@media (max-width: 600px) {
+  div .tabbed {
+    ul[role="tablist"] >  li, ul[role="tablist"] > li.activeTab {
+      border: 1px solid black;
+      border-bottom: none;
+      display: block;
+      width: 100%;
+    }
+
+    ul[role="tablist"] > li > a {
+      display: block;
+
+      &[aria-selected='true'] {
+        font-weight: 600;
+      }
     }
   }
 }

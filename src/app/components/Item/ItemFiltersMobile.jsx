@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import { Button, Modal, Icon } from '@nypl/design-system-react-components';
 import ItemFilter from './ItemFilter';
 
-import { trackDiscovery } from '../../utils/utils';
 import { itemFilters } from '../../data/constants';
 
 
@@ -13,7 +12,7 @@ const ItemFiltersMobile = ({
   openFilter,
   manageFilterDisplay,
   selectedFilters,
-  updateSelectedFilters,
+  setSelectedFilters,
   submitFilterSelections,
 }) => {
   const [displayFilters, toggleFilterDisplay] = useState(false);
@@ -23,6 +22,7 @@ const ItemFiltersMobile = ({
       <Button
         onClick={() => toggleFilterDisplay(true)}
         buttonType="outline"
+        className="item-table-filters"
       >Filters
       </Button>
     );
@@ -59,7 +59,7 @@ const ItemFiltersMobile = ({
               key={filter.type}
               mobile
               selectedFilters={selectedFilters}
-              updateSelectedFilters={updateSelectedFilters}
+              setSelectedFilters={setSelectedFilters}
               submitFilterSelections={submitFilterSelections}
             />
           ))
@@ -74,7 +74,7 @@ ItemFiltersMobile.propTypes = {
   openFilter: PropTypes.string,
   manageFilterDisplay: PropTypes.func,
   selectedFilters: PropTypes.object,
-  updateSelectedFilters: PropTypes.func,
+  setSelectedFilters: PropTypes.func,
   submitFilterSelections: PropTypes.func,
 };
 

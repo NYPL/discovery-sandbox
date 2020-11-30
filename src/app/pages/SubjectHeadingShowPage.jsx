@@ -35,7 +35,6 @@ const SubjectHeadingShowPage = (props) => {
         }
       }
       extraBannerElement={<SubjectHeadingSearch />}
-      loadingLayerText="Subject Heading"
       breadcrumbProps={{
         type: 'subjectHeading',
         urls: breadcrumbUrls,

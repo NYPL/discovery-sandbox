@@ -3,7 +3,8 @@
 .nypl-item-details {
 
   h2 {
-    margin-top: 0;
+    margin: 0;
+    padding-top: 20px;
   }
 
   dl:first-of-type {
@@ -23,7 +24,7 @@
       margin: 0 0.5rem 1rem 0;
       width: 20%;
 
-      @include media($mobile-breakpoint) {
+      @media (max-width: 600px) {
         float: none;
         margin-bottom: 0.75rem;
         width: 100%;
@@ -34,8 +35,9 @@
       //font-size: 0.95rem;
       margin-bottom: 1rem;
       width: 70%;
+      max-width: 70%;
 
-      @include media($mobile-breakpoint) {
+      @media (max-width: 600px) {
         margin-bottom: 1.25rem;
         width: 100%;
       }
@@ -48,8 +50,29 @@
 
 } // /.nypl-item-details
 
-@media (max-width: 600px) {
-  .nypl-full-width-wrapper {
+.tabbed dl {
+  border-bottom: 1px solid var(--ui-gray-light);
+  padding-top: 15px;
+  &:first-of-type {
+    padding-top: 0px;
+  }
+  &:last-of-type {
+    border-bottom: 0;
+  }
+}
 
+.nypl-homepage-hero h1, .nypl-page-header h1 {
+  font-family: inherit;
+  font-weight: 300;
+  font-size: 32px;
+}
+
+.nypl-results-item {
+  border-bottom: 0;
+}
+
+@media (max-width: 965px) {
+  .nypl-results-item .nypl-basic-table#bib-item-table {
+    display: table;
   }
 }
