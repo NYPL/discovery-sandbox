@@ -2,7 +2,8 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router';
+
+import { Hero, Heading, Breadcrumb, Link } from '@nypl/design-system-react-components';
 
 import appConfig from '../../data/appConfig';
 import { addEventListenersToAccountLinks } from '../../utils/accountPageUtils';
@@ -76,18 +77,24 @@ const AccountPage = (props) => {
   const { baseUrl } = appConfig;
 
   return (
-    <div className="nypl-full-width-wrapper nypl-patron-page">
+    <div className="nypl-patron-page nypl-ds nypl--research">
+      <Hero
+        heading={
+          <Heading level={1} text="Research Catalog" />
+        }
+        heroType="SECONDARY"
+      />
       <div className="nypl-patron-details">
         {patron.names ? `Name: ${patron.names[0]}` : null}
         <br />
         {patron.emails ? `Email: ${patron.emails[0]}` : null}
       </div>
       <ul>
-        <li><Link to={`${baseUrl}/account/items`}>Checkouts</Link></li>
-        <li><Link to={`${baseUrl}/account/holds`}>Holds</Link></li>
-        <li><Link to={`${baseUrl}/account/mylists`}>My Lists</Link></li>
-        <li><Link to={`${baseUrl}/account/overdues`}>Fines{`${patron.moneyOwed ? ` ($${patron.moneyOwed.toFixed(2)})` : ''}`}</Link></li>
-        <li><Link to={`${baseUrl}/account/msg`}>Messages</Link></li>
+        <li><Link href={`${baseUrl}/account/items`}>Checkouts</Link></li>
+        <li><Link href={`${baseUrl}/account/holds`}>Holds</Link></li>
+        <li><Link href={`${baseUrl}/account/mylists`}>My Lists</Link></li>
+        <li><Link href={`${baseUrl}/account/overdues`}>Fines{`${patron.moneyOwed ? ` ($${patron.moneyOwed.toFixed(2)})` : ''}`}</Link></li>
+        <li><Link href={`${baseUrl}/account/msg`}>Messages</Link></li>
       </ul>
       <a
         href={`https://ilsstaff.nypl.org:443/patroninfo*eng~Sdefault/${patron.id}/modpinfo`}
