@@ -78,6 +78,12 @@ const AccountPage = (props) => {
 
   return (
     <div className="nypl-patron-page nypl-ds nypl--research">
+      <Breadcrumb
+        breadcrumbs={[{
+          url: '#',
+          text: 'Home',
+        }]}
+      />
       <Hero
         heading={
           <Heading level={1} text="Research Catalog" />
