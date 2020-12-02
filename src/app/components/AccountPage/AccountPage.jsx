@@ -37,11 +37,37 @@ const AccountPage = (props) => {
     const links = accountPageContent.getElementsByTagName('A');
     const checkboxes = accountPageContent.querySelectorAll('input[type=checkbox]');
 
-    // this "Ratings" feature is in the html, but is not in use
+    const items = accountPageContent.getElementsByClassName('patFuncEntry') || [];
     accountPageContent.getElementsByTagName('th').forEach((th) => {
-      if (th.textContent.includes('Ratings')) th.style.display = 'none';
+      // this "Ratings" feature is in the html, but is not in use
+      if (th.textContent.includes('Ratings') || th.textContent.includes('RENEW')) {
+        th.remove();
+        return;
+      }
+      th.textContent = th.textContent.toLowerCase();
+      if (th.textContent.includes('checked')) {
+        const length = items.length;
+        th.textContent = `Checkouts - ${length} item${length !== 1 ? 's' : ''}`;
+      }
     });
-    accountPageContent.getElementsByClassName('patFuncRating').forEach((el) => { el.style.display = 'none'; });
+    const patFuncEntries = accountPageContent.querySelectorAll('.patFuncEntry');
+    patFuncEntries.forEach((el) => {
+      // get name and value from checkbox
+      const inputs = el.querySelectorAll('input');
+      const buttons = [];
+      inputs.forEach((input) => {
+        const button = document.createElement('button');
+        button.name = input.name;
+        button.value = input.value;
+        button.textContent = 'Renew';
+        button.className = 'button button--filled';
+        buttons.push(button);
+      });
+      el.querySelectorAll('.patFuncMark').forEach(mark => mark.remove());
+      buttons.forEach(button => el.appendChild(button));
+    });
+    accountPageContent.querySelectorAll('.patFuncRating').forEach(el => el.remove());
+
 
     const errorMessageEls = accountPageContent.getElementsByClassName('errormessage');
     if (errorMessageEls.length) {
@@ -76,7 +102,7 @@ const AccountPage = (props) => {
   const { baseUrl } = appConfig;
 
   return (
-    <div className="nypl-full-width-wrapper nypl-patron-page">
+    <div className="nypl-full-width-wrapper drbb-integration nypl-patron-page">
       <div className="nypl-patron-details">
         {patron.names ? `Name: ${patron.names[0]}` : null}
         <br />
