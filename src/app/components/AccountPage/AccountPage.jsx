@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 
 import appConfig from '../../data/appConfig';
-import { addEventListenersToAccountLinks, makeRequest } from '../../utils/accountPageUtils';
+import { addEventListenersToAccountLinks, makeRequest, buildReqBody } from '../../utils/accountPageUtils';
 
 const AccountPage = (props) => {
   const { patron, accountHtml } = useSelector(state => ({
@@ -76,10 +76,7 @@ const AccountPage = (props) => {
             updateAccountHtml,
             updateErrorMessage,
             patron.id,
-            {
-              renewsome: 'YES',
-              [input.name]: input.value,
-            },
+            buildReqBody(content, { [input.name]: input.value }),
             content,
           );
         });

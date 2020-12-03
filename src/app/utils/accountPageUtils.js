@@ -73,7 +73,19 @@ const addEventListenersToAccountLinks = (
   });
 };
 
+const buildReqBody = (content, itemObj) => {
+  switch (content) {
+    case 'items':
+      return Object.assign(itemObj, { renewsome: 'YES' });
+    case 'holds':
+      return Object.assign(itemObj, { updateholdssome: 'YES' });
+    default:
+      return itemObj;
+  }
+};
+
 export {
   addEventListenersToAccountLinks,
   makeRequest,
+  buildReqBody,
 };
