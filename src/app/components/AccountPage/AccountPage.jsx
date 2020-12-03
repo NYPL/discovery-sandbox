@@ -26,6 +26,14 @@ const AccountPage = (props) => {
 
   const [errorMessage, updateErrorMessage] = useState(null);
 
+  const removeTd = (element) => {
+    if (element.tagName === 'TD') {
+      element.remove();
+    } else {
+      removeTd(element.parentElement);
+    }
+  };
+
   useEffect(() => {
     if (!patron.id) {
       const fullUrl = encodeURIComponent(window.location.href);
@@ -40,7 +48,8 @@ const AccountPage = (props) => {
     const items = accountPageContent.getElementsByClassName('patFuncEntry') || [];
     accountPageContent.getElementsByTagName('th').forEach((th) => {
       // this "Ratings" feature is in the html, but is not in use
-      if (th.textContent.includes('Ratings') || th.textContent.includes('RENEW')) {
+      const { textContent } = th;
+      if (textContent.trim() === 'CANCEL' || ['Ratings', 'RENEW', 'FREEZE'].find(text => textContent.includes(text))) {
         th.remove();
         return;
       }
@@ -59,7 +68,7 @@ const AccountPage = (props) => {
         const button = document.createElement('button');
         button.name = input.name;
         button.value = input.value;
-        button.textContent = 'Renew';
+        button.textContent = ['Renew', 'Freeze', 'Cancel'].find(text => input.name.includes(text.toLowerCase()));
         button.className = 'button button--filled';
         button.addEventListener('click', (e) => {
           e.preventDefault();
@@ -75,12 +84,15 @@ const AccountPage = (props) => {
           );
         });
         buttons.push(button);
+        removeTd(input);
       });
-      el.querySelectorAll('.patFuncMark').forEach(mark => mark.remove());
-      buttons.forEach(button => el.appendChild(button));
+      buttons.forEach((button) => {
+        const td = document.createElement('td');
+        td.appendChild(button);
+        el.appendChild(td);
+      });
     });
     accountPageContent.querySelectorAll('.patFuncRating').forEach(el => el.remove());
-
 
     const errorMessageEls = accountPageContent.getElementsByClassName('errormessage');
     if (errorMessageEls.length) {
