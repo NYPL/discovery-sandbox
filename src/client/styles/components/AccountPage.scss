@@ -7,8 +7,20 @@
     text-transform: capitalize;
   }
 
-  th, td {
-    width: 16%;
+  td > span {
+    display: block;
+  }
+
+  .holds {
+    th, td {
+      width: 16%;
+    }
+  }
+
+  .items {
+    th, td {
+      width: 20%;
+    }
   }
 }
 

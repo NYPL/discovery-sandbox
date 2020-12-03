@@ -1,4 +1,4 @@
-/* global window */
+/* global window, document */
 import axios from 'axios';
 
 import appConfig from '../data/appConfig';
@@ -40,19 +40,32 @@ const addEventListenersToAccountLinks = (
     body,
     content,
   );
+  let isFirstRenewAll = true;
   links.forEach((link) => {
     switch (link.textContent) {
       case 'Sort by Checkout':
-        link.addEventListener('click', () => eventListenerCb({ sortByCheckoutDate: 'bycheckoutdate' }));
+        link.remove();
         break;
       case 'Sort by Due Date':
-        link.addEventListener('click', () => eventListenerCb({ sortByDueDate: 'byduedate' }));
+        link.remove();
         break;
       case 'Renew All':
-        link.addEventListener('click', () => eventListenerCb({ renewall: 'YES' }));
+        if (isFirstRenewAll) {
+          isFirstRenewAll = false;
+          const button = document.createElement('button');
+          button.textContent = 'Renew All';
+          button.addEventListener('click', (e) => {
+            e.preventDefault();
+            eventListenerCb({ renewall: 'YES' });
+          });
+          button.className = 'button button--filled';
+          link.parentElement.replaceChild(button, link);
+        } else {
+          link.remove();
+        }
         break;
       case 'Renew Marked':
-        link.addEventListener('click', () => eventListenerCb({ renewsome: 'YES', ...selectedItems }));
+        link.remove();
         break;
       default:
         if (link.href && link.href.includes('/mylists?listNum=')) {

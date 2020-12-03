@@ -42,7 +42,7 @@ const AccountPage = (props) => {
     const accountPageContent = document.getElementById('account-page-content');
 
     if (!accountPageContent) return;
-    const links = accountPageContent.getElementsByTagName('A');
+    const links = accountPageContent.querySelectorAll('a');
     const checkboxes = accountPageContent.querySelectorAll('input[type=checkbox]');
 
     const items = accountPageContent.getElementsByClassName('patFuncEntry') || [];
@@ -133,7 +133,6 @@ const AccountPage = (props) => {
       <ul>
         <li><Link to={`${baseUrl}/account/items`}>Checkouts</Link></li>
         <li><Link to={`${baseUrl}/account/holds`}>Holds</Link></li>
-        <li><Link to={`${baseUrl}/account/mylists`}>My Lists</Link></li>
         <li><Link to={`${baseUrl}/account/overdues`}>Fines{`${patron.moneyOwed ? ` ($${patron.moneyOwed.toFixed(2)})` : ''}`}</Link></li>
         <li><Link to={`${baseUrl}/account/msg`}>Messages</Link></li>
       </ul>
@@ -153,6 +152,7 @@ const AccountPage = (props) => {
           <div
             dangerouslySetInnerHTML={{ __html: accountHtml }}
             id="account-page-content"
+            className={content}
           />
         ) : ''
       }
