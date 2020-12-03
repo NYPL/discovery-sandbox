@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import { Hero, Heading, Breadcrumb, Link } from '@nypl/design-system-react-components';
+import { Hero, Heading, Breadcrumbs, Link } from '@nypl/design-system-react-components';
 
 import appConfig from '../../data/appConfig';
 import { addEventListenersToAccountLinks } from '../../utils/accountPageUtils';
@@ -78,9 +78,9 @@ const AccountPage = (props) => {
 
   return (
     <div className="nypl-patron-page nypl-ds nypl--research">
-      <Breadcrumb
+      <Breadcrumbs
         breadcrumbs={[{
-          url: '#',
+          url: appConfig.baseUrl,
           text: 'Home',
         }]}
       />
