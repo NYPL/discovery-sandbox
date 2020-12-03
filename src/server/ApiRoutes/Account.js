@@ -59,7 +59,8 @@ function postToAccountPage(req, res) {
   if (redirect) res.json({ redirect });
   const patronId = req.patronTokenResponse.decodedPatron.sub;
   const content = req.params.content || 'items';
-  axios.post(`https://ilsstaff.nypl.org:443/dp/patroninfo*eng~Sdefault/${patronId}/${content}`, req.body, {
+  const reqBodyString = Object.keys(req.body).map(key => `${key}=${req.body[key]}`).join('&');
+  axios.post(`https://ilsstaff.nypl.org:443/dp/patroninfo*eng~Sdefault/${patronId}/${content}`, reqBodyString, {
     headers: {
       Cookie: req.headers.cookie,
     },

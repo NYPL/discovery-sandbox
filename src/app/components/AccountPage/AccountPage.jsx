@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 
 import appConfig from '../../data/appConfig';
-import { addEventListenersToAccountLinks } from '../../utils/accountPageUtils';
+import { addEventListenersToAccountLinks, makeRequest } from '../../utils/accountPageUtils';
 
 const AccountPage = (props) => {
   const { patron, accountHtml } = useSelector(state => ({
@@ -61,6 +61,19 @@ const AccountPage = (props) => {
         button.value = input.value;
         button.textContent = 'Renew';
         button.className = 'button button--filled';
+        button.addEventListener('click', (e) => {
+          e.preventDefault();
+          makeRequest(
+            updateAccountHtml,
+            updateErrorMessage,
+            patron.id,
+            {
+              renewsome: 'YES',
+              [input.name]: input.value,
+            },
+            content,
+          );
+        });
         buttons.push(button);
       });
       el.querySelectorAll('.patFuncMark').forEach(mark => mark.remove());

@@ -75,4 +75,5 @@ const addEventListenersToAccountLinks = (
 
 export {
   addEventListenersToAccountLinks,
+  makeRequest,
 };
