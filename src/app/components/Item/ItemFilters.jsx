@@ -44,9 +44,19 @@ const ItemFilters = ({ items, hasFilterApplied, numOfFilteredItems }, { router }
 
   // join filter selections and add single quotes
   const parsedFilterSelections = () => itemFilters
-    .map(filter => location.query[filter.type] && `${filter.type}: ${location.query[filter.type].join(', ')}`)
-    .filter(selected => selected)
-    .join(', ');
+    .map((filter) => {
+      if (location.query[filter.type]) {
+        let filtersString;
+        const filters = location.query[filter.type];
+        if (Array.isArray(filters)) {
+          filtersString = filters.join(', ');
+        } else {
+          filtersString = filters;
+        }
+        return `${filter.type}: ${filtersString}`;
+      }
+      return null;
+    }).filter(selected => selected).join(', ');
 
   const resetFilters = () => {
     const href = router.createHref({
