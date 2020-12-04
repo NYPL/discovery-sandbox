@@ -46,10 +46,12 @@ Object.keys(routes).forEach((routeName) => {
     router
       .route(`${appConfig.baseUrl}${pathType}${path}${params}`)
       .get((req, res, next) => new Promise(
-        resolve => routeMethods[routeName](req, res, resolve),
+        resolve => routeMethods[routeName](req, res, resolve)
       )
-        .then(data => (api ? res.json(data) : successCb(routeName, global.store.dispatch)({ data })))
-        .then(() => (api ? null : next())),
+        .then(data => (
+          api ? res.json(data) : successCb(routeName, global.store.dispatch)({ data })))
+        .then(() => (api ? null : next()))
+        .catch(console.error)
       );
   });
 });
