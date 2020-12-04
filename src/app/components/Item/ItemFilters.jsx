@@ -56,7 +56,7 @@ const ItemFilters = ({ items, hasFilterApplied, numOfFilteredItems }, { router }
         return `${filter.type}: '${filtersString}'`;
       }
       return null;
-    }).filter(selected => selected).join(', ').trim();
+    }).filter(selected => selected).join(', ');
 
   const resetFilters = () => {
     const href = router.createHref({
