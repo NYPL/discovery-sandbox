@@ -156,7 +156,7 @@ describe('ItemFilters', () => {
       expect(itemFilterInfo.find('span').text()).to.equal("Filtered by format: 'PRINT', status: 'Requestable'");
     });
     it('should display "0 Results Found"', () => {
-      expect(component.find('h3').text()).to.equal('0 Results Found');
+      expect(component.find('h3').text()).to.equal('No Results Found');
     });
   });
 });
