@@ -44,6 +44,11 @@ function fetchAccountPage(req, res, resolve) {
       if (resp.request.path.includes('/login?')) {
         // need to implement
         console.log('need to redirect');
+        // redirect to login
+        const fullUrl = encodeURIComponent(`${req.protocol}://${req.get('host')}${req.originalUrl}`);
+        if (!fullUrl.includes('%2Fapi%2F')) {
+          res.redirect(`${appConfig.loginUrl}?redirect_uri=${fullUrl}`);
+        }
       }
       resolve(resp.data);
     })
@@ -85,8 +90,6 @@ function manageHolds(req, res) {
   Object.keys(reqBody).forEach(key => {
     if (key.includes('locb')) {
       reqBody[key] = req.body[key].replace(/\+/g, '').trim();
-      const freezeKey = key.replace('loc', 'freeze');
-      reqBody[freezeKey] = 'off';
     }
   });
   const reqBodyString = Object.keys(reqBody).map(key => `${key}=${reqBody[key]}`).join('&');

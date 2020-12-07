@@ -45,6 +45,9 @@ const AccountPage = (props) => {
     const links = accountPageContent.querySelectorAll('a');
     const checkboxes = accountPageContent.querySelectorAll('input[type=checkbox]');
 
+    const submits = accountPageContent.querySelectorAll('input[type=submit]');
+    submits.forEach(submit => submit.remove());
+
     const items = accountPageContent.getElementsByClassName('patFuncEntry') || [];
     accountPageContent.getElementsByTagName('th').forEach((th) => {
       // this "Ratings" feature is in the html, but is not in use
@@ -61,6 +64,15 @@ const AccountPage = (props) => {
     });
     const patFuncEntries = accountPageContent.querySelectorAll('.patFuncEntry');
     patFuncEntries.forEach((el) => {
+      const locationSelect = el.getElementsByTagName('select')[0];
+      const locationProp = locationSelect ? locationSelect.name : '';
+      let locationValue;
+      el.querySelectorAll('option').forEach((option) => {
+        if (option.selected) locationValue = `${option.value}+++`;
+      });
+      const locationData = {
+        [locationProp]: locationValue,
+      };
       // get name and value from checkbox
       const inputs = el.querySelectorAll('input');
       const buttons = [];
@@ -69,6 +81,10 @@ const AccountPage = (props) => {
         button.name = input.name;
         button.value = input.value;
         button.textContent = ['Renew', 'Freeze', 'Cancel'].find(text => input.name.includes(text.toLowerCase()));
+        if (input.checked && button.textContent === 'Freeze') {
+          button.textContent = 'Unfreeze';
+          input.value = 'off';
+        }
         button.className = 'button button--filled';
         button.addEventListener('click', (e) => {
           e.preventDefault();
@@ -76,7 +92,7 @@ const AccountPage = (props) => {
             updateAccountHtml,
             updateErrorMessage,
             patron.id,
-            buildReqBody(content, { [input.name]: input.value }),
+            buildReqBody(content, { [input.name]: input.value }, locationData),
             content,
           );
         });

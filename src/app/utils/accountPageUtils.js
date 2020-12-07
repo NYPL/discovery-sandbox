@@ -49,6 +49,9 @@ const addEventListenersToAccountLinks = (
       case 'Sort by Due Date':
         link.remove();
         break;
+      case 'Cancel All':
+        link.remove();
+        break;
       case 'Renew All':
         if (isFirstRenewAll) {
           isFirstRenewAll = false;
@@ -68,15 +71,6 @@ const addEventListenersToAccountLinks = (
         link.remove();
         break;
       default:
-        if (link.href && link.href.includes('/mylists?listNum=')) {
-          link.addEventListener('click', (e) => {
-            e.preventDefault();
-            const splitLink = link.href.split('/mylists?listNum=') || [];
-            const listNum = splitLink[1];
-            eventListenerCb({ listNum });
-          });
-          break;
-        }
         if (link.textContent.includes('Pay Online')) {
           link.href = `https://ilsstaff.nypl.org/webapp/iii/ecom/pay.do?lang=eng&scope=1&ptype=${patron.patronType}&tty=800`;
           link.target = '_blank';
@@ -86,12 +80,12 @@ const addEventListenersToAccountLinks = (
   });
 };
 
-const buildReqBody = (content, itemObj) => {
+const buildReqBody = (content, itemObj, locationData) => {
   switch (content) {
     case 'items':
       return Object.assign(itemObj, { renewsome: 'YES' });
     case 'holds':
-      return Object.assign(itemObj, { updateholdssome: 'YES' });
+      return Object.assign(itemObj, { updateholdssome: 'YES' }, locationData);
     default:
       return itemObj;
   }
