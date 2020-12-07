@@ -41,9 +41,11 @@ function fetchAccountPage(req, res, resolve) {
     },
   })
     .then((resp) => {
+      // If Header thinks patron is logged in,
+      // but patron is not actually logged in, the case below is hit
       if (resp.request.path.includes('/login?')) {
         // need to implement
-        console.log('need to redirect');
+        console.log('need to redirect, might be buggy?');
         // redirect to login
         const fullUrl = encodeURIComponent(`${req.protocol}://${req.get('host')}${req.originalUrl}`);
         if (!fullUrl.includes('%2Fapi%2F')) {

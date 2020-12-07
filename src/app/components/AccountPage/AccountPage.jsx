@@ -68,7 +68,7 @@ const AccountPage = (props) => {
       const locationProp = locationSelect ? locationSelect.name : '';
       let locationValue;
       el.querySelectorAll('option').forEach((option) => {
-        if (option.selected) locationValue = `${option.value}+++`;
+        if (option.selected) locationValue = `${option.value.trim()}+++`;
       });
       const locationData = {
         [locationProp]: locationValue,
