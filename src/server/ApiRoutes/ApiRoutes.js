@@ -34,10 +34,6 @@ router
   .route(`${appConfig.baseUrl}/edd`)
   .post(Hold.eddServer);
 
-router
-  .route(`${appConfig.baseUrl}/api/account/mylists`)
-  .post(Account.myLists);
-
 // Add the paths configured in dataLoaderUtil and RouteMethods. This covers two scenarios:
 // 1. Server side navigation, the / path is hit, we directly call the relevant method
 // (which is routeMethods[routeName]), load the data into the store and go to next()
