@@ -59,6 +59,4 @@ function postToAccountPage(req, res) {
 export default {
   fetchAccountPage,
   postToAccountPage,
-  myLists,
-  manageHolds,
 };
