@@ -39,7 +39,7 @@ const checkInItemsForHolding = (holding) => {
   let location = '';
   let holdingLocationCode = '';
   let locationUrl;
-  if (holding.location.length) {
+  if (holding.location && holding.location.length) {
     holdingLocationCode = holding.location[0].code;
     location = holding.location[0].label;
     locationUrl = holding.location[0].url;
