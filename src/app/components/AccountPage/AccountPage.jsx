@@ -23,8 +23,8 @@ const AccountPage = (props) => {
     payload: newContent,
   });
 
-  const [errorMessage, updateErrorMessage] = useState(null);
-  const [isLoading, toggleLoadingState] = useState(true);
+  const [errorMessage, setErrorMessage] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     if (errorMessage) console.error(errorMessage);
@@ -34,14 +34,14 @@ const AccountPage = (props) => {
     }
     const accountPageContent = document.getElementById('account-page-content');
 
-    if (accountPageContent && isLoading) {
+    if (accountPageContent) {
       manipulateAccountPage(
         accountPageContent,
         updateAccountHtml,
-        updateErrorMessage,
+        setErrorMessage,
         patron,
         content,
-        toggleLoadingState,
+        setIsLoading,
       );
     }
   });

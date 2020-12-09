@@ -12,7 +12,7 @@ function fetchAccountPage(req, res, resolve) {
   const patronId = req.patronTokenResponse.decodedPatron.sub;
   const content = req.params.content || 'items';
 
-  axios.get(`https://ilsstaff.nypl.org/dp/patroninfo*eng~Sdefault/${patronId}/${content}`, {
+  axios.get(`${appConfig.legacyCatalog}/dp/patroninfo*eng~Sdefault/${patronId}/${content}`, {
     headers: {
       Cookie: req.headers.cookie,
     },
@@ -44,15 +44,14 @@ function postToAccountPage(req, res) {
   const patronId = req.patronTokenResponse.decodedPatron.sub;
   const content = req.params.content || 'items';
   const reqBodyString = Object.keys(req.body).map(key => `${key}=${req.body[key]}`).join('&');
-  axios.post(`https://ilsstaff.nypl.org:443/dp/patroninfo*eng~Sdefault/${patronId}/${content}`, reqBodyString, {
+  axios.post(`${appConfig.legacyCatalog}/dp/patroninfo*eng~Sdefault/${patronId}/${content}`, reqBodyString, {
     headers: {
       Cookie: req.headers.cookie,
     },
   })
     .then(resp => res.json(resp.data))
     .catch((resp) => {
-      const { statusText } = resp.response;
-      return res.json({ error: statusText });
+      return res.json({ error: resp });
     });
 }
 
