@@ -25,10 +25,8 @@ const AccountPage = (props) => {
 
   const [errorMessage, updateErrorMessage] = useState(null);
   const [isLoading, toggleLoadingState] = useState(true);
-  console.log('isLoading', isLoading);
 
   useEffect(() => {
-    console.log('useEffect isLoading', isLoading);
     if (!patron.id) {
       const fullUrl = encodeURIComponent(window.location.href);
       window.location.replace(`${appConfig.loginUrl}?redirect_uri=${fullUrl}`);
