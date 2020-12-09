@@ -7,7 +7,7 @@ import { Link } from 'react-router';
 import { SkeletonLoader } from '@nypl/design-system-react-components';
 
 import appConfig from '../../data/appConfig';
-import { manipulateAccountPage, makeRequest, buildReqBody } from '../../utils/accountPageUtils';
+import { manipulateAccountPage } from '../../utils/accountPageUtils';
 
 
 const AccountPage = (props) => {
@@ -25,10 +25,9 @@ const AccountPage = (props) => {
 
   const [errorMessage, updateErrorMessage] = useState(null);
   const [isLoading, toggleLoadingState] = useState(true);
-  console.log('isLoading', isLoading);
 
   useEffect(() => {
-    console.log('useEffect isLoading', isLoading);
+    if (errorMessage) console.error(errorMessage);
     if (!patron.id) {
       const fullUrl = encodeURIComponent(window.location.href);
       window.location.replace(`${appConfig.loginUrl}?redirect_uri=${fullUrl}`);
