@@ -1,3 +1,4 @@
+/* global window */
 import { ajaxCall } from '@utils';
 import {
   updateBibPage,
@@ -46,10 +47,12 @@ const routes = {
 const successCb = (pathType, dispatch) => (response) => {
   const { data } = response;
   if (data && data.redirect) {
-    const fullUrl = encodeURIComponent(window.location.href);
-    window.location.replace(`${appConfig.loginUrl}?redirect_uri=${fullUrl}`);
-    return { redirect: true }
-  };
+    if (window) {
+      const fullUrl = encodeURIComponent(window.location.href);
+      window.location.replace(`${appConfig.loginUrl}?redirect_uri=${fullUrl}`);
+    }
+    return { redirect: true };
+  }
   dispatch(routes[pathType].action(data));
   return data;
 };
@@ -92,9 +95,12 @@ function loadDataForRoutes(location, dispatch) {
     successCb(pathType, dispatch),
     errorCb,
   ).then((resp) => {
-    if (!resp.redirect) dispatch(updateLastLoaded(path));
+    if (resp && !resp.redirect) dispatch(updateLastLoaded(path));
     dispatch(updateLoadingStatus(false));
     return resp;
+  }).catch((error) => {
+    console.error(error);
+    dispatch(updateLoadingStatus(false));
   });
 }
 
