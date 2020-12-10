@@ -71,6 +71,13 @@ function fetchResults(searchKeywords = '', page, sortBy, order, field, filters, 
       const [results, aggregations, drbbResults] = response;
       const locationCodes = new Set();
       const { itemListElement } = results;
+      if (!itemListElement) {
+        return cb(
+          aggregations,
+          results,
+          page,
+          drbbResults);
+      }
       itemListElement.forEach((resultObj) => {
         const { result } = resultObj;
         const { holdings } = resultObj.result;
@@ -114,7 +121,8 @@ function fetchResults(searchKeywords = '', page, sortBy, order, field, filters, 
           logger.error('Error making server search call in search function', error);
           errorcb(error);
         });
-    });
+    })
+    .catch(console.error);
 }
 
 function search(req, res, resolve) {

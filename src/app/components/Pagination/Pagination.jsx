@@ -83,8 +83,8 @@ class Pagination extends React.Component {
     if (!subjectHeadingPage) {
       if (!total) return null;
       pageFactor = parseInt(page, 10) * perPage;
-      nextPage = (total < perPage || pageFactor > total) ? null : this.getPage(page, 'Next');
-      totalPages = Math.floor(total / perPage) + 1;
+      nextPage = (pageFactor >= total) ? null : this.getPage(page, 'Next');
+      totalPages = Math.ceil(total / perPage);
     } else {
       if (total && perPage) totalPages = Math.ceil(total / perPage);
       nextPage = this.getPage(page, 'Next');
@@ -96,7 +96,7 @@ class Pagination extends React.Component {
         {page && totalPages
           ?
             <span
-              className={`page-count ${page === 1 ? 'first' : ''}`}
+              className={`page-count${page === 1 ? ' first' : ''}${!nextPage ? ' last-page' : ''}`}
               aria-label={`Displaying page ${page} out of ${totalPages} total pages.`}
               tabIndex="0"
             >

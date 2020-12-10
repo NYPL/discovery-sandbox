@@ -91,9 +91,13 @@ const ResultsList = ({
             <li className="nypl-results-media">{materialType}</li>
             <li className="nypl-results-publication">{publicationStatement}</li>
             {yearPublished}
-            <li className="nypl-results-info">
-              {totalItems} item{totalItems !== 1 ? 's' : ''}
-            </li>
+            {
+              totalItems > 0 ?
+                <li className="nypl-results-info">
+                  {totalItems} item{totalItems !== 1 ? 's' : ''}
+                </li>
+                : ''
+            }
           </ul>
         </div>
         {

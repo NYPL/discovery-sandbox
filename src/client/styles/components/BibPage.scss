@@ -80,7 +80,7 @@ div .tabbed {
 @for $i from 1 through 4 {
   #tab#{$i}:target ~ #section#{$i} {
     display: block;
-    padding: 1rem 1% 0;
+    padding: 15px 1% 0;
   }
 }
 
@@ -180,7 +180,7 @@ div .tabbed {
   }
 }
 
-@media (max-width: 490px) {
+@media (max-width: 600px) {
   div .tabbed {
     ul[role="tablist"] >  li, ul[role="tablist"] > li.activeTab {
       border: 1px solid black;

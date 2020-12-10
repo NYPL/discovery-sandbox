@@ -10,7 +10,9 @@ import { locationFilters, statusFilters } from '../fixtures/itemFilterOptions';
 
 const context = {
   router: {
-    location: {},
+    location: {
+      query: {},
+    },
   },
 };
 
@@ -29,7 +31,7 @@ describe('ItemFilters', () => {
       expect(component.type()).to.equal(null);
     });
   });
-  describe('with valid `items`', () => {
+  describe('with valid `items`, no filters', () => {
     let component;
     let itemFilters;
     before(() => {
@@ -41,7 +43,8 @@ describe('ItemFilters', () => {
           item.requestable_ReCAP_not_available,
           item.requestable_nonReCAP_NYPL,
         ]}
-      />, { context, childContext: { router: {} } });
+        numOfFilteredItems={5}
+      />, { context });
       itemFilters = component.find('ItemFilter');
     });
 
@@ -70,6 +73,90 @@ describe('ItemFilters', () => {
       expect(options).to.deep.equal(statusFilters);
       // There are three requestable items
       expect(options.filter(option => option.id === 'requestable').length).to.equal(3);
+    });
+  });
+  // one filter will be a string in the router context
+  describe('with valid items, one filter', () => {
+    let component;
+    before(() => {
+      const contextWithOneFilter = context;
+      contextWithOneFilter.router.location.query = { format: 'Text' };
+      component = mount(<ItemFilters
+        items={[
+          item.full,
+          item.missingData,
+          item.requestable_ReCAP_available,
+          item.requestable_ReCAP_not_available,
+          item.requestable_nonReCAP_NYPL,
+        ]}
+        numOfFilteredItems={5}
+        hasFilterApplied
+      />, { context: contextWithOneFilter });
+    });
+    it('should have description of filters', () => {
+      const itemFilterInfo = component.find('.item-filter-info');
+      expect(itemFilterInfo.find('span').length).to.equal(1);
+      expect(component.find('.item-filter-info').find('span').text()).to.equal("Filtered by format: 'Text'");
+    });
+    it('should display "5 Results Found"', () => {
+      expect(component.find('h3').text()).to.equal('5 Results Found');
+    });
+  });
+  // multiple filters will be an array in the router context
+  describe('with valid Bib items, two filters, one item result', () => {
+    let component;
+    before(() => {
+      const contextWithMultipleFilters = context;
+      contextWithMultipleFilters.router.location.query = { format: ['Text', 'PRINT'] };
+      component = mount(<ItemFilters
+        items={[
+          item.full,
+          item.missingData,
+          item.requestable_ReCAP_available,
+          item.requestable_ReCAP_not_available,
+          item.requestable_nonReCAP_NYPL,
+        ]}
+        numOfFilteredItems={1}
+        hasFilterApplied
+      />, { context: contextWithMultipleFilters });
+    });
+    it('should have description of filters', () => {
+      const itemFilterInfo = component.find('.item-filter-info');
+      expect(itemFilterInfo.find('span').length).to.equal(1);
+      expect(itemFilterInfo.find('span').text()).to.equal("Filtered by format: 'Text', 'PRINT'");
+    });
+    it('should display "1 Result Found"', () => {
+      expect(component.find('h3').text()).to.equal('1 Result Found');
+    });
+  });
+
+  describe('with valid Bib items, multiple filters, no filtered results', () => {
+    let component;
+    before(() => {
+      const contextWithMultipleFilters = context;
+      contextWithMultipleFilters.router.location.query = {
+        format: 'PRINT',
+        status: 'Requestable',
+      };
+      component = mount(<ItemFilters
+        items={[
+          item.full,
+          item.missingData,
+          item.requestable_ReCAP_available,
+          item.requestable_ReCAP_not_available,
+          item.requestable_nonReCAP_NYPL,
+        ]}
+        numOfFilteredItems={0}
+        hasFilterApplied
+      />, { context: contextWithMultipleFilters });
+    });
+    it('should display correct description', () => {
+      const itemFilterInfo = component.find('.item-filter-info');
+      expect(itemFilterInfo.find('span').length).to.equal(1);
+      expect(itemFilterInfo.find('span').text()).to.equal("Filtered by format: 'PRINT', status: 'Requestable'");
+    });
+    it('should display "0 Results Found"', () => {
+      expect(component.find('h3').text()).to.equal('No Results Found');
     });
   });
 });

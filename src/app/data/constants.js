@@ -5,7 +5,7 @@ const breakpoints = [
     media: 'mobile',
   },
   {
-    maxValue: 750,
+    maxValue: 600,
     media: 'tabletPortrait',
   },
   {
