@@ -51,6 +51,7 @@ const commonSettings = {
         SHEP_API: JSON.stringify(process.env.SHEP_API),
         LOGIN_URL: JSON.stringify(process.env.LOGIN_URL),
         CLASSIC_CATALOG: JSON.stringify(process.env.CLASSIC_CATALOG),
+        CLOSED_LOCATIONS: JSON.stringify(process.env.CLOSED_LOCATIONS),
       },
     }),
     // new BundleAnalyzerPlugin({
@@ -220,6 +221,7 @@ if (ENV === 'production') {
           SHEP_API: process.env.SHEP_API,
           LOGIN_URL: process.env.LOGIN_URL,
           CLASSIC_CATALOG: process.env.CLASSIC_CATALOG,
+          CLOSED_LOCATIONS: process.env.CLOSED_LOCATIONS,
         },
       }),
     ],
