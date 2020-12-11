@@ -86,11 +86,13 @@ function fetchResults(searchKeywords = '', page, sortBy, order, field, filters, 
           addCheckInItems(result);
           holdings.slice(0, itemTableLimit).forEach((holding) => {
             addHoldingDefinition(holding);
-            locationCodes.add(holding.location[0].code);
+            if (holding.location) locationCodes.add(holding.location[0].code);
           });
           if (holdings.length < itemTableLimit) {
             result.items.slice(0, itemTableLimit - holdings.length).forEach((item) => {
-              if (item.holdingLocation) locationCodes.add(item.holdingLocation[0]['@id']);
+              if (item.holdingLocation) item.holdingLocation.forEach((holdingLocation) => {
+                locationCodes.add(holdingLocation['@id']);
+              });
             });
           }
         } else if (result.items) {
