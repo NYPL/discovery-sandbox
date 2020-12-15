@@ -124,7 +124,7 @@ class Tabbed extends React.Component {
                   id={`section${j}`}
                   key={`section${j}`}
                   className="non-default"
-                  tabIndex="0"
+                  tabIndex="-1"
                   ref={(input) => { this.sections[`${j}`] = input; }}
                   aria-labelledby={`link${j}`}
                 >
@@ -135,7 +135,7 @@ class Tabbed extends React.Component {
           }
           <section
             className="default"
-            tabIndex="0"
+            tabIndex="-1"
             ref={(input) => { this.default = input; }}
             aria-labelledby="link1"
           >
