@@ -31,7 +31,7 @@ const makeRequest = (
 const buildReqBody = (content, itemObj, locationData) => {
   switch (content) {
     case 'items':
-      return Object.assign(itemObj, { renewsome: 'YES' });
+      return { ...itemObj, renewsome: 'YES' };
     case 'holds':
       return Object.assign(itemObj, { updateholdssome: 'YES' }, locationData);
     default:
