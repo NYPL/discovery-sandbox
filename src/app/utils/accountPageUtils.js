@@ -9,11 +9,11 @@ const makeRequest = (
   patronId,
   body,
   content,
-  toggleLoadingState,
+  setIsLoading,
 ) => {
   const url = `${appConfig.baseUrl}/api/account/${content}`;
-  toggleLoadingState(true);
-  axios.post(url, body)
+  setIsLoading(true);
+  return axios.post(url, body)
     .then((res) => {
       const { data } = res;
       if (data.redirect) {
@@ -24,7 +24,8 @@ const makeRequest = (
       if (data.error) updateErrorMessage(data.error);
       return updateAccountHtml(data);
     })
-    .catch(res => console.error('ERROR', res));
+    .catch(res => console.error('ERROR', res))
+    .finally(() => setIsLoading(false));
 };
 
 const buildReqBody = (content, itemObj, locationData) => {
@@ -44,7 +45,7 @@ const manipulateAccountPage = (
   updateErrorMessage,
   patron,
   content,
-  toggleLoadingState,
+  setIsLoading,
 ) => {
   // all <inputs> of type 'submit' are removed
   const submits = accountPageContent.querySelectorAll('input[type=submit]');
@@ -106,7 +107,7 @@ const manipulateAccountPage = (
           patron.id,
           buildReqBody(content, { [input.name]: input.value }, locationData),
           content,
-          toggleLoadingState,
+          setIsLoading,
         );
       });
       buttons.push(button);
@@ -132,6 +133,7 @@ const manipulateAccountPage = (
     patron.id,
     body,
     content,
+    setIsLoading,
   );
 
   // there are two "Renew All" buttons
@@ -175,7 +177,7 @@ const manipulateAccountPage = (
         }
     }
   });
-  toggleLoadingState(false);
+  setIsLoading(false);
 };
 
 export {

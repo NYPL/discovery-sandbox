@@ -44,15 +44,15 @@ function postToAccountPage(req, res) {
   const patronId = req.patronTokenResponse.decodedPatron.sub;
   const content = req.params.content || 'items';
   const reqBodyString = Object.keys(req.body).map(key => `${key}=${req.body[key]}`).join('&');
-  axios.post(`${appConfig.legacyCatalog}/dp/patroninfo*eng~Sdefault/${patronId}/${content}`, reqBodyString, {
-    headers: {
-      Cookie: req.headers.cookie,
-    },
-  })
+  axios.post(
+    `${appConfig.legacyCatalog}/dp/patroninfo*eng~Sdefault/${patronId}/${content}`,
+    `currentsortorder=current_pickup&${reqBodyString}`, {
+      headers: {
+        Cookie: req.headers.cookie,
+      },
+    })
     .then(resp => res.json(resp.data))
-    .catch((resp) => {
-      return res.json({ error: resp });
-    });
+    .catch(resp => res.json({ error: resp }));
 }
 
 export default {

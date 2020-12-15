@@ -44,7 +44,9 @@ const AccountPage = (props) => {
         setIsLoading,
       );
     }
-  });
+    // TO-DO clean up event listeners
+    return () => {};
+  }, [patron, accountHtml]);
 
   const { baseUrl } = appConfig;
 
