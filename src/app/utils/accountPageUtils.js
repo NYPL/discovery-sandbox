@@ -45,6 +45,7 @@ const manipulateAccountPage = (
   content,
   setIsLoading,
 ) => {
+  const eventListeners = [];
   // all <inputs> of type 'submit' are removed
   const submits = accountPageContent.querySelectorAll('input[type=submit]');
   submits.forEach(submit => submit.remove());
@@ -97,7 +98,7 @@ const manipulateAccountPage = (
         input.value = 'off';
       }
       button.className = 'button button--filled';
-      button.addEventListener('click', (e) => {
+      const eventCb = (e) => {
         e.preventDefault();
         makeRequest(
           updateAccountHtml,
@@ -106,9 +107,11 @@ const manipulateAccountPage = (
           content,
           setIsLoading,
         );
-      });
+      };
+      button.addEventListener('click', eventCb);
       buttons.push(button);
       removeTd(input);
+      eventListeners.push({ element: button, cb: eventCb });
     });
     buttons.forEach((button) => {
       const td = document.createElement('td');
@@ -152,12 +155,14 @@ const manipulateAccountPage = (
           isFirstRenewAll = false;
           const button = document.createElement('button');
           button.textContent = 'Renew All';
-          button.addEventListener('click', (e) => {
+          const renewAllCb = (e) => {
             e.preventDefault();
             eventListenerCb({ renewall: 'YES' });
-          });
+          };
+          button.addEventListener('click', renewAllCb);
           button.className = 'button button--filled';
           link.parentElement.replaceChild(button, link);
+          eventListeners.push({ element: button, cb: button });
         } else {
           link.remove();
         }
@@ -174,6 +179,7 @@ const manipulateAccountPage = (
     }
   });
   setIsLoading(false);
+  return eventListeners;
 };
 
 export {

@@ -36,16 +36,22 @@ const AccountPage = (props) => {
     const accountPageContent = document.getElementById('account-page-content');
 
     if (accountPageContent) {
-      manipulateAccountPage(
+      const eventListeners = manipulateAccountPage(
         accountPageContent,
         updateAccountHtml,
         patron,
         content,
         setIsLoading,
       );
+
+      return () => {
+        if (eventListeners) {
+          eventListeners.forEach(({ element, cb }) => {
+            element.removeEventListener('click', cb);
+          });
+        }
+      };
     }
-    // TO-DO clean up event listeners
-    return () => {};
   }, [accountHtml]);
 
   const { baseUrl } = appConfig;
