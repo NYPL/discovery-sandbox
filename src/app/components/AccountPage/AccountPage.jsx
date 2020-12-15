@@ -23,22 +23,22 @@ const AccountPage = (props) => {
     payload: newContent,
   });
 
-  const [errorMessage, setErrorMessage] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    if (errorMessage) console.error(errorMessage);
     if (!patron.id) {
       const fullUrl = encodeURIComponent(window.location.href);
       window.location.replace(`${appConfig.loginUrl}?redirect_uri=${fullUrl}`);
     }
+  }, [patron]);
+
+  useEffect(() => {
     const accountPageContent = document.getElementById('account-page-content');
 
     if (accountPageContent) {
       manipulateAccountPage(
         accountPageContent,
         updateAccountHtml,
-        setErrorMessage,
         patron,
         content,
         setIsLoading,
@@ -46,7 +46,7 @@ const AccountPage = (props) => {
     }
     // TO-DO clean up event listeners
     return () => {};
-  }, [patron, accountHtml]);
+  }, [accountHtml]);
 
   const { baseUrl } = appConfig;
 

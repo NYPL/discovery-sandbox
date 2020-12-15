@@ -5,7 +5,6 @@ import appConfig from '../data/appConfig';
 
 const makeRequest = (
   updateAccountHtml,
-  updateErrorMessage,
   patronId,
   body,
   content,
@@ -21,7 +20,7 @@ const makeRequest = (
         window.location.replace(`${appConfig.loginUrl}?redirect_uri=${fullUrl}`);
         return { redirect: true };
       }
-      if (data.error) updateErrorMessage(data.error);
+      if (data.error) console.error(data.error);
       return updateAccountHtml(data);
     })
     .catch(res => console.error('ERROR', res))
@@ -42,7 +41,6 @@ const buildReqBody = (content, itemObj, locationData) => {
 const manipulateAccountPage = (
   accountPageContent,
   updateAccountHtml,
-  updateErrorMessage,
   patron,
   content,
   setIsLoading,
@@ -103,7 +101,6 @@ const manipulateAccountPage = (
         e.preventDefault();
         makeRequest(
           updateAccountHtml,
-          updateErrorMessage,
           patron.id,
           buildReqBody(content, { [input.name]: input.value }, locationData),
           content,
@@ -129,7 +126,6 @@ const manipulateAccountPage = (
 
   const eventListenerCb = body => makeRequest(
     updateAccountHtml,
-    updateErrorMessage,
     patron.id,
     body,
     content,
