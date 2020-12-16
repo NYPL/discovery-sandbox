@@ -7,10 +7,10 @@ const makeRequest = (
   updateAccountHtml,
   patronId,
   body,
-  content,
+  contentType,
   setIsLoading,
 ) => {
-  const url = `${appConfig.baseUrl}/api/account/${content}`;
+  const url = `${appConfig.baseUrl}/api/account/${contentType}`;
   setIsLoading(true);
   return axios.post(url, body)
     .then((res) => {
@@ -42,7 +42,7 @@ const manipulateAccountPage = (
   accountPageContent,
   updateAccountHtml,
   patron,
-  content,
+  contentType,
   setIsLoading,
 ) => {
   const eventListeners = [];
@@ -69,15 +69,29 @@ const manipulateAccountPage = (
   });
 
   items.forEach((el) => {
-    const locationSelect = el.getElementsByTagName('select')[0];
-    const locationProp = locationSelect ? locationSelect.name : '';
-    let locationValue;
-    el.querySelectorAll('option').forEach((option) => {
-      if (option.selected) locationValue = `${option.value.trim()}+++`;
-    });
-    const locationData = {
-      [locationProp]: locationValue,
-    };
+    const locationData = {};
+    if (contentType === 'holds') {
+      const locationSelect = el.getElementsByTagName('select')[0];
+      if (!locationSelect) return;
+      const locationProp = locationSelect.name;
+      let locationValue;
+      el.querySelectorAll('option').forEach((option) => {
+        if (option.selected) locationValue = `${option.value.trim()}+++`;
+      });
+      locationData[locationProp] = locationValue;
+      if (locationSelect) {
+        locationSelect.addEventListener('change', (e) => {
+          locationData[locationProp] = e.target.value.replace('+++', '');
+          makeRequest(
+            updateAccountHtml,
+            patron.id,
+            buildReqBody(contentType, {}, locationData),
+            contentType,
+            setIsLoading,
+          );
+        });
+      }
+    }
     // get name and value from checkbox
     const inputs = el.querySelectorAll('input');
     const buttons = [];
@@ -103,8 +117,8 @@ const manipulateAccountPage = (
         makeRequest(
           updateAccountHtml,
           patron.id,
-          buildReqBody(content, { [input.name]: input.value }, locationData),
-          content,
+          buildReqBody(contentType, { [input.name]: input.value }, locationData),
+          contentType,
           setIsLoading,
         );
       };
@@ -131,7 +145,7 @@ const manipulateAccountPage = (
     updateAccountHtml,
     patron.id,
     body,
-    content,
+    contentType,
     setIsLoading,
   );
 
