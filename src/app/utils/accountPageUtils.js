@@ -180,8 +180,4 @@ const manipulateAccountPage = (
   return eventListeners;
 };
 
-export {
-  manipulateAccountPage,
-  makeRequest,
-  buildReqBody,
-};
+export default manipulateAccountPage;
