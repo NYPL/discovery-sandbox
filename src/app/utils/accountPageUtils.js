@@ -80,7 +80,7 @@ const manipulateAccountPage = (
       });
       locationData[locationProp] = locationValue;
       if (locationSelect) {
-        locationSelect.addEventListener('change', (e) => {
+        const locationChangeCb = (e) => {
           locationData[locationProp] = e.target.value.replace('+++', '');
           makeRequest(
             updateAccountHtml,
@@ -89,7 +89,9 @@ const manipulateAccountPage = (
             contentType,
             setIsLoading,
           );
-        });
+        };
+        locationSelect.addEventListener('change', locationChangeCb);
+        eventListeners.push({ element: locationSelect, cb: locationChangeCb })
       }
     }
     // get name and value from checkbox
