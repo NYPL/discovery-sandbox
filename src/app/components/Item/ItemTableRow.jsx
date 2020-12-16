@@ -7,6 +7,8 @@ import {
   trackDiscovery,
 } from '../../utils/utils';
 
+import LibraryItem from '../../utils/item';
+
 import appConfig from '../../data/appConfig';
 
 class ItemTableRow extends React.Component {
@@ -48,11 +50,13 @@ class ItemTableRow extends React.Component {
       bibId,
       searchKeywords,
     } = this.props;
-    const { closedLocations } = appConfig;
+    const { closedLocations, recapClosedLocations, nonRecapClosedLocations } = appConfig;
+    const isRecap = LibraryItem.mapItem(item).isRecap;
+    const allClosed = closedLocations.concat((isRecap ? recapClosedLocations : nonRecapClosedLocations)).includes[''];
     const status = item.status && item.status.prefLabel ? item.status.prefLabel : ' ';
     let itemRequestBtn = status;
 
-    if (item.requestable && !closedLocations.includes('')) {
+    if (item.requestable && !allClosed) {
       itemRequestBtn = item.available ? (
         <Link
           to={
@@ -74,6 +78,7 @@ class ItemTableRow extends React.Component {
       includeVolColumn,
       page,
     } = this.props;
+    console.log('item: ', item);
 
     if (_isEmpty(item)) {
       return null;

@@ -1,4 +1,5 @@
 import extractFeatures from '../utils/extractFeatures';
+import mapLocations from '../utils/mapLocations';
 
 const appConfig = {
   appTitle: 'NYPL | Discovery',
@@ -42,11 +43,9 @@ const appConfig = {
     creatorLiteral: [],
     contributorLiteral: [],
   },
-  closedLocations: (
-    process.env.CLOSED_LOCATIONS
-      ? process.env.CLOSED_LOCATIONS.split(';')
-      : []
-  ).map(location => (location === 'all' ? '' : location)),
+  closedLocations: mapLocations(process.env.CLOSED_LOCATIONS),
+  recapClosedLocations: mapLocations(process.env.RECAP_CLOSED_LOCATIONS),
+  nonRecapClosedLocations: mapLocations(process.env.NON_RECAP_CLOSED_LOCATIONS),
   holdRequestNotification: process.env.HOLD_REQUEST_NOTIFICATION,
   searchResultsNotification: process.env.SEARCH_RESULTS_NOTIFICATION,
   drbbFrontEnd: {

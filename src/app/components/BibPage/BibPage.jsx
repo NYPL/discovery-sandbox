@@ -25,6 +25,7 @@ import {
 } from '../../utils/utils';
 
 export const BibPage = (props) => {
+  console.log('props: ', props);
   const {
     location,
     searchKeywords,
