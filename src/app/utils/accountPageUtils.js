@@ -45,6 +45,14 @@ const manipulateAccountPage = (
   content,
   setIsLoading,
 ) => {
+  const eventListenerCb = body => makeRequest(
+    updateAccountHtml,
+    patron.id,
+    body,
+    content,
+    setIsLoading,
+  );
+
   const eventListeners = [];
   // all <inputs> of type 'submit' are removed
   const submits = accountPageContent.querySelectorAll('input[type=submit]');
@@ -100,13 +108,11 @@ const manipulateAccountPage = (
       button.className = 'button button--filled';
       const eventCb = (e) => {
         e.preventDefault();
-        makeRequest(
-          updateAccountHtml,
-          patron.id,
-          buildReqBody(content, { [input.name]: input.value }, locationData),
+        eventListenerCb(buildReqBody(
           content,
-          setIsLoading,
-        );
+          { [input.name]: input.value },
+          locationData
+        ));
       };
       button.addEventListener('click', eventCb);
       buttons.push(button);
@@ -126,14 +132,6 @@ const manipulateAccountPage = (
     // in original HTML this is `hidden`
     errorMessageEls[0].style.display = 'block';
   }
-
-  const eventListenerCb = body => makeRequest(
-    updateAccountHtml,
-    patron.id,
-    body,
-    content,
-    setIsLoading,
-  );
 
   // there are two "Renew All" buttons
   // we just want the first one
