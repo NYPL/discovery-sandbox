@@ -65,8 +65,6 @@ class Tabbed extends React.Component {
           return index - 1;
         case 39:
           return index + 1;
-        case 40:
-          return 'down';
         default:
           return null;
       }
@@ -78,8 +76,7 @@ class Tabbed extends React.Component {
     }
     if (dir !== null) {
       e.preventDefault();
-      if (dir === 'down') panel.focus();
-      else if (dir <= this.state.numberOfTabs && dir >= 0) this.focusTab(dir);
+      if (dir <= this.state.numberOfTabs && dir >= 0) this.focusTab(dir);
     }
   }
 
