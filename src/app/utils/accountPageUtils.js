@@ -82,13 +82,7 @@ const manipulateAccountPage = (
       if (locationSelect) {
         const locationChangeCb = (e) => {
           locationData[locationProp] = e.target.value.replace('+++', '');
-          makeRequest(
-            updateAccountHtml,
-            patron.id,
-            buildReqBody(contentType, {}, locationData),
-            contentType,
-            setIsLoading,
-          );
+          eventListenerCb(buildReqBody(contentType, {}, locationData));
         };
         locationSelect.addEventListener('change', locationChangeCb);
         eventListeners.push({ element: locationSelect, cb: locationChangeCb })
