@@ -98,12 +98,12 @@ const ItemFilter = ({
       >
         <Button
           className={`item-filter-button ${
-            isOpen ? ' open' : ''}`}
+            open ? ' open' : ''}`}
           buttonType="outline"
           onClick={clickHandler}
           type="button"
         >
-          {filter}{numOfSelections ? ` (${numOfSelections})` : null} <Icon name={isOpen ? 'minus' : 'plus'} />
+          {filter}{numOfSelections ? ` (${numOfSelections})` : null} <Icon name={open ? 'minus' : 'plus'} />
         </Button>
         {open ? (
           <div

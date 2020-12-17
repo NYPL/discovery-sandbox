@@ -145,7 +145,7 @@ describe('Tabbed', () => {
 
   const additionalDetails = (<AdditionalDetailsViewer bib={sampleBib} />);
 
-  let component = mount(
+  const component = mount(
     <Tabbed tabs={[
       { title: 'Availability', content: mockItemsContainer },
       { title: 'Details', content: bibDetails },
@@ -198,32 +198,6 @@ describe('Tabbed', () => {
       fullDescription.simulate('keydown', { keycode: 37, which: 37 });
       focused = document.activeElement;
       expect(details.getDOMNode()).to.equal(focused);
-    });
-
-    it('should focus on panel on Down Arrow Press', () => {
-      details.simulate('keydown', { keycode: 40, which: 40 });
-      focused = document.activeElement;
-      section = component.find('section').at(0);
-      expect(section.getDOMNode()).to.equal(focused);
-    });
-
-  });
-
-  describe('Displaying Correct Tab on Click', () => {
-    it('should display Full Description when clicked', () => {
-      fullDescription.simulate('click');
-      fullDescription.simulate('keydown', { keycode: 40, which: 40 });
-      focused = document.activeElement;
-      section = component.find('section').at(1);
-      expect(section.getDOMNode()).to.equal(focused);
-    });
-
-    it('should display Details when clicked', () => {
-      details.simulate('click');
-      details.simulate('keydown', { keycode: 40, which: 40 });
-      focused = document.activeElement;
-      section = component.find('section').at(0);
-      expect(section.getDOMNode()).to.equal(focused);
     });
   });
 });
