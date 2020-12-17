@@ -7,7 +7,7 @@ import { Link } from 'react-router';
 import { SkeletonLoader } from '@nypl/design-system-react-components';
 
 import appConfig from '../../data/appConfig';
-import { manipulateAccountPage } from '../../utils/accountPageUtils';
+import manipulateAccountPage from '../../utils/accountPageUtils';
 
 
 const AccountPage = (props) => {
