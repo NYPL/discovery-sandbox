@@ -66,4 +66,6 @@ const appConfig = {
   },
 };
 
+console.log('appConfig: ', appConfig);
+
 export default appConfig;

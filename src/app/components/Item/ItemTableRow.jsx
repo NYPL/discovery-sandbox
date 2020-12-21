@@ -51,8 +51,10 @@ class ItemTableRow extends React.Component {
       searchKeywords,
     } = this.props;
     const { closedLocations, recapClosedLocations, nonRecapClosedLocations } = appConfig;
-    const isRecap = LibraryItem.mapItem(item).isRecap;
-    const allClosed = closedLocations.concat((isRecap ? recapClosedLocations : nonRecapClosedLocations)).includes[''];
+    // const isRecap = LibraryItem.mapItem(item).isRecap;
+    const isRecap = item.isRecap;
+    const allClosed = closedLocations.concat((isRecap ? recapClosedLocations : nonRecapClosedLocations)).includes('');
+    console.log('recapClosedLocations: ', recapClosedLocations, 'isRecap: ', isRecap, 'allClosed: ', allClosed, 'item: ', item);
     const status = item.status && item.status.prefLabel ? item.status.prefLabel : ' ';
     let itemRequestBtn = status;
 
@@ -78,7 +80,7 @@ class ItemTableRow extends React.Component {
       includeVolColumn,
       page,
     } = this.props;
-    console.log('item: ', item);
+    // console.log('item: ', item);
 
     if (_isEmpty(item)) {
       return null;

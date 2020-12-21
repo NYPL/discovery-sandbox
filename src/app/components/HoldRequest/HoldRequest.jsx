@@ -28,7 +28,7 @@ import { updateLoadingStatus } from '../../actions/Actions';
 export class HoldRequest extends React.Component {
   constructor(props) {
     super(props);
-    console.log('props: ', props);
+    // console.log('props: ', props);
     const deliveryLocationsFromAPI = this.props.deliveryLocations;
     const isEddRequestable = this.props.isEddRequestable;
     const firstLocationValue = (
@@ -309,7 +309,7 @@ export class HoldRequest extends React.Component {
         deliveryLocation.shortName && deliveryLocation.shortName.includes(closedLocation),
       ),
     );
-    console.log('deliveryLocations: ', deliveryLocations);
+    // console.log('deliveryLocations: ', deliveryLocations);
     const isEddRequestable = this.props.isEddRequestable && !itemClosedLocations.includes('edd');
     const allClosed = itemClosedLocations.includes('');
     const deliveryLocationInstruction =
@@ -434,6 +434,8 @@ HoldRequest.propTypes = {
   isEddRequestable: PropTypes.bool,
   patron: PropTypes.object,
   closedLocations: PropTypes.array,
+  recapClosedLocations: PropTypes.array,
+  nonRecapClosedLocations: PropTypes.array,
   holdRequestNotification: PropTypes.string,
   loading: PropTypes.bool,
   updateLoadingStatus: PropTypes.func,
@@ -446,10 +448,14 @@ HoldRequest.defaultProps = {
   deliveryLocations: [],
   isEddRequestable: false,
   closedLocations: [],
+  recapClosedLocations: [],
+  nonRecapClosedLocations: [],
 };
 
 const mapStateToProps = state => ({
   closedLocations: state.appConfig.closedLocations,
+  recapClosedLocations: state.appConfig.recapClosedLocations,
+  nonRecapClosedLocations: state.appConfig.nonRecapClosedLocations,
   holdRequestNotification: state.appConfig.holdRequestNotification,
   deliveryLocations: state.deliveryLocations,
   isEddRequestable: state.isEddRequestable,
