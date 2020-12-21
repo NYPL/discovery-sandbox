@@ -8,7 +8,6 @@ import extractFeatures from '../../app/utils/extractFeatures';
 const nyplApiClientCall = (query, urlEnabledFeatures) => {
   // If on-site-edd feature enabled in front-end, enable it in discovery-api:
   const requestOptions = appConfig.features.includes('on-site-edd') || urlEnabledFeatures.includes('on-site-edd') ? { headers: { 'X-Features': 'on-site-edd' } } : {};
-  // console.log('bib: ', query);
   return nyplApiClient().then(client => client.get(`/discovery/resources/${query}`, requestOptions));
 };
 

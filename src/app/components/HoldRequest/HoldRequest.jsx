@@ -28,7 +28,6 @@ import { updateLoadingStatus } from '../../actions/Actions';
 export class HoldRequest extends React.Component {
   constructor(props) {
     super(props);
-    // console.log('props: ', props);
     const deliveryLocationsFromAPI = this.props.deliveryLocations;
     const isEddRequestable = this.props.isEddRequestable;
     const firstLocationValue = (
@@ -303,13 +302,11 @@ export class HoldRequest extends React.Component {
     let itemClosedLocations = closedLocations;
     if ('isRecap' in selectedItem && selectedItem.isRecap) itemClosedLocations = itemClosedLocations.concat(recapClosedLocations);
     if ('isRecap' in selectedItem && !selectedItem.isRecap) itemClosedLocations = itemClosedLocations.concat(nonRecapClosedLocations);
-    // const deliveryLocations = this.props.deliveryLocations;
     const deliveryLocations = this.props.deliveryLocations.filter(
       deliveryLocation => !itemClosedLocations.some(closedLocation =>
         deliveryLocation.shortName && deliveryLocation.shortName.includes(closedLocation),
       ),
     );
-    // console.log('deliveryLocations: ', deliveryLocations);
     const isEddRequestable = this.props.isEddRequestable && !itemClosedLocations.includes('edd');
     const allClosed = itemClosedLocations.includes('');
     const deliveryLocationInstruction =
