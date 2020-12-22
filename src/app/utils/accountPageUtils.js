@@ -32,7 +32,10 @@ const buildReqBody = (content, itemObj, locationData) => {
     case 'items':
       return { ...itemObj, renewsome: 'YES' };
     case 'holds':
-      return Object.assign(itemObj, { updateholdssome: 'YES' }, locationData);
+      return Object.assign(itemObj, {
+        updateholdssome: 'YES',
+        currentsortorder: 'current_pickup',
+      }, locationData);
     default:
       return itemObj;
   }
@@ -49,7 +52,7 @@ const manipulateAccountPage = (
     updateAccountHtml,
     patron.id,
     body,
-    content,
+    contentType,
     setIsLoading,
   );
 
@@ -87,14 +90,12 @@ const manipulateAccountPage = (
         if (option.selected) locationValue = `${option.value.trim()}+++`;
       });
       locationData[locationProp] = locationValue;
-      if (locationSelect) {
-        const locationChangeCb = (e) => {
-          locationData[locationProp] = e.target.value.replace('+++', '');
-          eventListenerCb(buildReqBody(contentType, {}, locationData));
-        };
-        locationSelect.addEventListener('change', locationChangeCb);
-        eventListeners.push({ element: locationSelect, cb: locationChangeCb })
-      }
+      const locationChangeCb = (e) => {
+        locationData[locationProp] = e.target.value.replace('+++', '');
+        eventListenerCb(buildReqBody(contentType, {}, locationData));
+      };
+      locationSelect.addEventListener('change', locationChangeCb);
+      eventListeners.push({ element: locationSelect, cb: locationChangeCb });
     }
     // get name and value from checkbox
     const inputs = el.querySelectorAll('input');
@@ -119,9 +120,9 @@ const manipulateAccountPage = (
       const eventCb = (e) => {
         e.preventDefault();
         eventListenerCb(buildReqBody(
-          content,
+          contentType,
           { [input.name]: input.value },
-          locationData
+          locationData,
         ));
       };
       button.addEventListener('click', eventCb);

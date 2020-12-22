@@ -46,7 +46,7 @@ function postToAccountPage(req, res) {
   const reqBodyString = Object.keys(req.body).map(key => `${key}=${req.body[key]}`).join('&');
   axios.post(
     `${appConfig.legacyCatalog}/dp/patroninfo*eng~Sdefault/${patronId}/${content}`,
-    `currentsortorder=current_pickup&${reqBodyString}`, {
+    reqBodyString, {
       headers: {
         Cookie: req.headers.cookie,
       },
