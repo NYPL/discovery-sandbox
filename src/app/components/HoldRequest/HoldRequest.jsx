@@ -300,8 +300,11 @@ export class HoldRequest extends React.Component {
           <span>Call number:</span><br />{selectedItem.callNumber}
         </div>) : null;
     let itemClosedLocations = closedLocations;
-    if ('isRecap' in selectedItem && selectedItem.isRecap) itemClosedLocations = itemClosedLocations.concat(recapClosedLocations);
-    if ('isRecap' in selectedItem && !selectedItem.isRecap) itemClosedLocations = itemClosedLocations.concat(nonRecapClosedLocations);
+    if (selectedItem.isRecap) {
+      itemClosedLocations = itemClosedLocations.concat(recapClosedLocations);
+    } else {
+      itemClosedLocations = itemClosedLocations.concat(nonRecapClosedLocations);
+    }
     const deliveryLocations = this.props.deliveryLocations.filter(
       deliveryLocation => !itemClosedLocations.some(closedLocation =>
         deliveryLocation.shortName && deliveryLocation.shortName.includes(closedLocation),

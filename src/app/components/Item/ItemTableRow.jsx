@@ -7,8 +7,6 @@ import {
   trackDiscovery,
 } from '../../utils/utils';
 
-import LibraryItem from '../../utils/item';
-
 import appConfig from '../../data/appConfig';
 
 class ItemTableRow extends React.Component {
@@ -51,7 +49,6 @@ class ItemTableRow extends React.Component {
       searchKeywords,
     } = this.props;
     const { closedLocations, recapClosedLocations, nonRecapClosedLocations } = appConfig;
-    // const isRecap = LibraryItem.mapItem(item).isRecap;
     const isRecap = item.isRecap;
     const allClosed = closedLocations.concat((isRecap ? recapClosedLocations : nonRecapClosedLocations)).includes('');
     const status = item.status && item.status.prefLabel ? item.status.prefLabel : ' ';
