@@ -51,6 +51,7 @@ class ItemTableRow extends React.Component {
     const { closedLocations, recapClosedLocations, nonRecapClosedLocations } = appConfig;
     const isRecap = item.isRecap;
     const allClosed = closedLocations.concat((isRecap ? recapClosedLocations : nonRecapClosedLocations)).includes('');
+    console.log('closedLocations: ', closedLocations, allClosed);
     const status = item.status && item.status.prefLabel ? item.status.prefLabel : ' ';
     let itemRequestBtn = status;
 
