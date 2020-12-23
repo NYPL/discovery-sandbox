@@ -331,4 +331,225 @@ describe('HoldRequest', () => {
         .to.equal('Have a small portion scanned and sent to you via electronic mail.');
     });
   });
+
+  describe('If the delivery location has the EDD option but edd is closed, <HoldRequest>', () => {
+    let component;
+    const bib = {
+      title: ['Harry Potter'],
+      '@id': 'res:b17688688',
+      items: mockedItem,
+    };
+
+    const deliveryLocations = [
+      {
+        '@id': 'loc:myr',
+        address: '40 Lincoln Center Plaza',
+        prefLabel: 'Performing Arts Research Collections',
+        shortName: 'Library for the Performing Arts',
+      },
+      {
+        '@id': 'loc:sc',
+        prefLabel: 'Schomburg Center',
+        address: '515 Malcolm X Boulevard',
+        shortName: 'Schomburg Center',
+      },
+      {
+        '@id': 'loc:mala',
+        prefLabel: 'Schwarzman Building - Allen Scholar Room',
+        address: '476 Fifth Avenue (42nd St and Fifth Ave)',
+        shortName: 'Schwarzman Building',
+      },
+    ];
+
+    before(() => {
+      component = mount(
+        <HoldRequest
+          bib={bib}
+          deliveryLocations={deliveryLocations}
+          isEddRequestable
+          params={{ itemId: 'i10000003' }}
+          closedLocations={['edd']}
+        />,
+        { attachTo: document.body }
+      );
+      component.setState({ redirect: false });
+    });
+
+    after(() => {
+      component.unmount();
+    });
+
+    it('should not display the EDD option.', () => {
+      const form = component.find('form');
+      const fieldset = component.find('fieldset');
+
+      expect(form.find('fieldset')).to.have.length(1);
+      expect(fieldset.find('label')).to.have.length(3);
+      expect(fieldset.find('legend')).to.have.length(1);
+    });
+  });
+
+  describe('Closure scenarios: ', () => {
+    describe('when everything is closed', () => {
+      let component;
+      const bib = {
+        title: ['Harry Potter'],
+        '@id': 'res:b17688688',
+        items: mockedItem,
+      };
+
+      const deliveryLocations = [
+        {
+          '@id': 'loc:myr',
+          address: '40 Lincoln Center Plaza',
+          prefLabel: 'Performing Arts Research Collections',
+          shortName: 'Library for the Performing Arts',
+        },
+        {
+          '@id': 'loc:sc',
+          prefLabel: 'Schomburg Center',
+          address: '515 Malcolm X Boulevard',
+          shortName: 'Schomburg Center',
+        },
+        {
+          '@id': 'loc:mala',
+          prefLabel: 'Schwarzman Building - Allen Scholar Room',
+          address: '476 Fifth Avenue (42nd St and Fifth Ave)',
+          shortName: 'Schwarzman Building',
+        },
+      ];
+
+      before(() => {
+        component = mount(
+          <HoldRequest
+            bib={bib}
+            deliveryLocations={deliveryLocations}
+            isEddRequestable
+            params={{ itemId: 'i10000003' }}
+            closedLocations={['']}
+          />,
+          { attachTo: document.body }
+        );
+        component.setState({ redirect: false });
+      });
+
+      after(() => {
+        component.unmount();
+      });
+
+
+      it('should display nothing ', () => {
+        const form = component.find('form');
+        expect(form.find('fieldset')).to.have.length(0);
+      });
+    });
+
+    describe('for a recap item when recap is closed', () => {
+      let component;
+      const bib = {
+        title: ['Harry Potter'],
+        '@id': 'res:b17688688',
+        items: mockedItem,
+      };
+
+      const deliveryLocations = [
+        {
+          '@id': 'loc:myr',
+          address: '40 Lincoln Center Plaza',
+          prefLabel: 'Performing Arts Research Collections',
+          shortName: 'Library for the Performing Arts',
+        },
+        {
+          '@id': 'loc:sc',
+          prefLabel: 'Schomburg Center',
+          address: '515 Malcolm X Boulevard',
+          shortName: 'Schomburg Center',
+        },
+        {
+          '@id': 'loc:mala',
+          prefLabel: 'Schwarzman Building - Allen Scholar Room',
+          address: '476 Fifth Avenue (42nd St and Fifth Ave)',
+          shortName: 'Schwarzman Building',
+        },
+      ];
+
+      before(() => {
+        component = mount(
+          <HoldRequest
+            bib={bib}
+            deliveryLocations={deliveryLocations}
+            isEddRequestable
+            params={{ itemId: 'i10000003' }}
+            recapClosedLocations={['']}
+          />,
+          { attachTo: document.body }
+        );
+        component.setState({ redirect: false });
+      });
+
+      after(() => {
+        component.unmount();
+      });
+
+      it('should display nothing ', () => {
+        const form = component.find('form');
+
+        expect(form.find('fieldset')).to.have.length(0);
+      });
+    });
+
+    describe('for a recap item when non-recap is closed', () => {
+      let component;
+      const bib = {
+        title: ['Harry Potter'],
+        '@id': 'res:b17688688',
+        items: mockedItem,
+      };
+
+      const deliveryLocations = [
+        {
+          '@id': 'loc:myr',
+          address: '40 Lincoln Center Plaza',
+          prefLabel: 'Performing Arts Research Collections',
+          shortName: 'Library for the Performing Arts',
+        },
+        {
+          '@id': 'loc:sc',
+          prefLabel: 'Schomburg Center',
+          address: '515 Malcolm X Boulevard',
+          shortName: 'Schomburg Center',
+        },
+        {
+          '@id': 'loc:mala',
+          prefLabel: 'Schwarzman Building - Allen Scholar Room',
+          address: '476 Fifth Avenue (42nd St and Fifth Ave)',
+          shortName: 'Schwarzman Building',
+        },
+      ];
+
+      before(() => {
+        component = mount(
+          <HoldRequest
+            bib={bib}
+            deliveryLocations={deliveryLocations}
+            isEddRequestable
+            params={{ itemId: 'i10000003' }}
+            nonRecapClosedLocations={['edd']}
+          />,
+          { attachTo: document.body }
+        );
+        component.setState({ redirect: false });
+      });
+
+      after(() => {
+        component.unmount();
+      });
+
+      it('should display everything', () => {
+        const form = component.find('form');
+
+        expect(form.find('fieldset')).to.have.length(1);
+      });
+    });
+  });
 });
