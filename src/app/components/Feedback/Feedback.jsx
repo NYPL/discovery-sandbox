@@ -54,7 +54,7 @@ class Feedback extends React.Component {
         showForm: false,
         fields: initialFields(),
       // eslint-disable-next-line no-alert
-      }, alert('Thank you, your feedback has been submitted.'));
+      });
     }).catch(console.error);
   }
 
