@@ -3,13 +3,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import FocusTrap from 'focus-trap-react';
 import axios from 'axios';
+import { Button, Input } from '@nypl/design-system-react-components';
 
 import { trackDiscovery } from '../../utils/utils';
 import appConfig from '../../data/appConfig';
 
 const initialFields = () => ({
-  Email: '',
-  Feedback: '',
+  email: '',
+  feedback: '',
 });
 
 class Feedback extends React.Component {
@@ -31,7 +32,7 @@ class Feedback extends React.Component {
 
   onSubmitForm(url) {
     const { fields } = this.state;
-    if (!fields.Feedback && !fields.Feedback.length) {
+    if (!fields.feedback && !fields.feedback.length) {
       this.commentText.current.focus();
     } else {
       this.postForm(url);
@@ -85,16 +86,18 @@ class Feedback extends React.Component {
     const { submit } = this.props;
 
     return (
-      <div className="feedback">
-        <button
+      <div className="feedback nypl-ds">
+        <Button
           className="feedback-button"
           onClick={() => this.toggleForm()}
-          aria-haspopup="true"
-          aria-expanded={showForm}
-          aria-controls="feedback-menu"
+          attributes={{
+            'aria-haspopup': 'true',
+            'aria-expanded': showForm,
+            'aria-controls': 'feedback-menu',
+          }}
         >
-          Feedback
-        </button>
+          Help & Feedback
+        </Button>
         <FocusTrap
           focusTrapOptions={{
             onDeactivate: this.deactivateForm,
@@ -118,8 +121,8 @@ class Feedback extends React.Component {
                 </label>
                 <textarea
                   id="feedback-textarea-comment"
-                  name="Feedback"
-                  value={fields.Feedback}
+                  name="feedback"
+                  value={fields.feedback}
                   ref={this.commentText}
                   rows="5"
                   aria-required="true"
@@ -129,11 +132,13 @@ class Feedback extends React.Component {
               </div>
               <div>
                 <label htmlFor="feedback-input-email">Email Address</label>
-                <input
+                <Input
+                  attributes={{
+                    name: 'email',
+                  }}
                   id="feedback-input-email"
-                  name="Email"
                   type="email"
-                  value={fields.Email}
+                  value={fields.email}
                   onChange={this.handleInputChange}
                 />
               </div>

@@ -4,7 +4,7 @@
   right: 0;
   z-index: 100;
   text-align: right;
-  background: #54514A;
+  background: #FFF;
   color: #000;
 
   @include min-screen($tablet-portrait) {
@@ -15,21 +15,19 @@
 }
 
 .feedback-button {
-  background: #d0343a;
-  display: inline-block;
-  color: #FFF;
-  cursor: pointer;
+  background: $dsresearchprimary;
+  border: 1px solid $dsresearchprimary;
   box-sizing: border-box;
-  padding: 0.5rem 1rem;
-  border: 1px solid #d0343a;
-  text-align: center;
+  color: #FFF;
+  display: inline-block;
   font-size: 1rem;
+  padding: 0.5rem 1rem;
   position: relative;
+  text-align: center;
 
   &:hover {
     background: #FFF;
-    border: 0.04167rem solid #d0343a;
-    color: #d0343a;
+    color: $dsresearchprimary;
   }
 }
 
@@ -86,7 +84,6 @@
     display: block;
     width: 100%;
     background-color: $page-background-color;
-    border: 0;
     font-size: 1rem;
     line-height: 1.2;
     box-sizing: border-box;
