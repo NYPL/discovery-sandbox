@@ -3,7 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import FocusTrap from 'focus-trap-react';
 import axios from 'axios';
-import { Button, Input } from '@nypl/design-system-react-components';
+import { Button, Input, ButtonTypes } from '@nypl/design-system-react-components';
 
 import { trackDiscovery } from '../../utils/utils';
 import appConfig from '../../data/appConfig';
@@ -42,7 +42,7 @@ class Feedback extends React.Component {
 
   postForm(url) {
     const { fields } = this.state;
-    fields.URL = url;
+    fields.url = url;
     axios({
       method: 'POST',
       url: `${appConfig.baseUrl}/api/feedback`,
@@ -95,6 +95,7 @@ class Feedback extends React.Component {
             'aria-expanded': showForm,
             'aria-controls': 'feedback-menu',
           }}
+          buttonType={ButtonTypes.Secondary}
         >
           Help & Feedback
         </Button>
@@ -132,10 +133,8 @@ class Feedback extends React.Component {
               </div>
               <div>
                 <label htmlFor="feedback-input-email">Email Address</label>
-                <Input
-                  attributes={{
-                    name: 'email',
-                  }}
+                <input
+                  name="email"
                   id="feedback-input-email"
                   type="email"
                   value={fields.email}
@@ -144,16 +143,23 @@ class Feedback extends React.Component {
               </div>
               <input name="fvv" value="1" type="hidden" />
 
-              <button
+              <Button
                 className={`cancel-button ${!showForm ? 'hidden' : ''}`}
                 onClick={e => this.deactivateForm(e)}
-                aria-expanded={!showForm}
-                aria-controls="feedback-menu"
+                attributes={{
+                  'aria-expanded': !showForm,
+                  'aria-controls': 'feedback-menu',
+                }}
+                buttonType={ButtonTypes.Secondary}
               >
                 Cancel
-              </button>
+              </Button>
 
-              <button type="submit" className="large">Submit</button>
+              <Button
+                type="submit"
+                buttonType={ButtonTypes.Primary}
+              >Submit
+              </Button>
             </form>
           </div>
         </FocusTrap>

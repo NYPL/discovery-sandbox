@@ -32,15 +32,9 @@
 }
 
 .cancel-button {
-  background: #d0343a;
-  display: inline-block;
-  color: #FFF;
-  cursor: pointer;
-  box-sizing: border-box;
-  border: 1px solid #d0343a;
+  border: 1px solid inherit;
   text-align: center;
   font-size: 1rem;
-  position: relative;
   margin-right: 15px;
 }
 
@@ -87,6 +81,7 @@
     font-size: 1rem;
     line-height: 1.2;
     box-sizing: border-box;
+    border: 1px solid var(--ui-gray-medium);
   }
 
   input {
@@ -96,6 +91,7 @@
   button {
     font-size: 1rem;
     margin-top: 1rem;
+    display: inline;
   }
 
   iframe {
