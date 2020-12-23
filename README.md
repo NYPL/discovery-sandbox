@@ -226,6 +226,8 @@ There are variables available in .env to configure the requestable locations.
 
 `CLOSED_LOCATIONS` is a semicolon-delimited list of strings. Include quotes around the string. All locations beginning with any string in this list will be removed from the list of request options. `.env-sample` contains an example of this.
 
+Currently used physical locations: Schwarzman;Science;Library for the Performing Arts;Schomburg
+
 To close all locations, add `all`. This will also remove EDD as a request option, and the 'Request' buttons, and also disable the hold request/edd forms. If `all` is not present, EDD and 'Request' buttons will still be available.
 
 `HOLD_REQUEST_NOTIFICATION`: This can be any string, not including html, which will be added as a notification to the HoldRequest landing page, and the EDD page.

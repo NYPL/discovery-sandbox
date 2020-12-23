@@ -6,6 +6,7 @@ import { spy } from 'sinon';
 import { shallow, mount } from 'enzyme';
 import { mockRouterContext } from '../helpers/routing';
 import item from '../fixtures/libraryItems';
+import appConfig from '../../src/app/data/appConfig'
 
 // Import the component that is going to be tested
 import ItemTableRow from './../../src/app/components/Item/ItemTableRow';
@@ -220,6 +221,61 @@ describe('ItemTableRow', () => {
         it('should render `Email for access options` and mailto link in the fourth <td> column data', () => {
           expect(component.find('td').find('div').length).to.equal(0);
           expect(component.find('td').find('a').length).to.equal(0);
+        });
+      });
+    });
+
+    describe('closure scenarios', () => {
+      it('should not show request button for recap if recap is closed', () => {
+        const data = item.requestable_ReCAP_available;
+        let component;
+        appConfig.recapClosedLocations = [''];
+
+        after(() => appConfig.recapClosedLocations = []);
+
+        before(() => {
+          component =
+            mount(<ItemTableRow item={data} bibId="b12345" />, { context });
+        });
+
+        it('should render the Request button in the third <td> column', () => {
+          expect(component.find('td').at(2).render().text()).to.equal('Request');
+          expect(component.find('td').find('Link').length).to.equal(1);
+        });
+      });
+
+      it('should show request button for recap if non-recap is closed', () => {
+        const data = item.requestable_ReCAP_available;
+        let component;
+        appConfig.recapClosedLocations = [];
+
+        before(() => {
+          component =
+            mount(<ItemTableRow item={data} bibId="b12345" />, { context });
+        });
+
+        it('should render the Request button in the third <td> column', () => {
+          expect(component.find('td').at(2).render().text()).to.equal('Request');
+          expect(component.find('td').find('Link').length).to.equal(1);
+        });
+      });
+
+      it('should not show request button for recap if everything is closed', () => {
+        const data = item.requestable_ReCAP_available;
+        let component;
+        appConfig.closedLocations = [];
+
+        before(() => {
+          component =
+            mount(<ItemTableRow item={data} bibId="b12345" />, { context });
+        });
+
+
+        after(() => appConfig.closedLocations = []);
+
+        it('should render the Request button in the third <td> column', () => {
+          expect(component.find('td').at(2).render().text()).to.equal('Request');
+          expect(component.find('td').find('Link').length).to.equal(1);
         });
       });
     });
