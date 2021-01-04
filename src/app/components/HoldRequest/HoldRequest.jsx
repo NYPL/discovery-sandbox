@@ -267,6 +267,8 @@ export class HoldRequest extends React.Component {
   render() {
     const {
       closedLocations,
+      recapClosedLocations,
+      nonRecapClosedLocations,
       holdRequestNotification,
       searchKeywords,
       loading,
@@ -297,9 +299,19 @@ export class HoldRequest extends React.Component {
         (<div className="call-number">
           <span>Call number:</span><br />{selectedItem.callNumber}
         </div>) : null;
-    const deliveryLocations = this.props.deliveryLocations;
-    const isEddRequestable = this.props.isEddRequestable;
-    const allClosed = closedLocations.includes('');
+    let itemClosedLocations = closedLocations;
+    if (selectedItem.isRecap) {
+      itemClosedLocations = itemClosedLocations.concat(recapClosedLocations);
+    } else {
+      itemClosedLocations = itemClosedLocations.concat(nonRecapClosedLocations);
+    }
+    const deliveryLocations = this.props.deliveryLocations.filter(
+      deliveryLocation => !itemClosedLocations.some(closedLocation =>
+        deliveryLocation.shortName && deliveryLocation.shortName.includes(closedLocation),
+      ),
+    );
+    const isEddRequestable = this.props.isEddRequestable && !itemClosedLocations.includes('edd');
+    const allClosed = itemClosedLocations.includes('');
     const deliveryLocationInstruction =
       ((!deliveryLocations.length && !isEddRequestable) || allClosed) ?
         (
@@ -326,8 +338,8 @@ export class HoldRequest extends React.Component {
               <legend className="visuallyHidden" id="radiobutton-group1">
                 Select a pickup location
               </legend>
-              {(this.props.isEddRequestable) && this.renderEDD()}
-              {this.renderDeliveryLocation(this.props.deliveryLocations)}
+              {(isEddRequestable) && this.renderEDD()}
+              {this.renderDeliveryLocation(deliveryLocations)}
             </fieldset>
 
             <input type="hidden" name="pickupLocation" value="test" />
@@ -422,6 +434,8 @@ HoldRequest.propTypes = {
   isEddRequestable: PropTypes.bool,
   patron: PropTypes.object,
   closedLocations: PropTypes.array,
+  recapClosedLocations: PropTypes.array,
+  nonRecapClosedLocations: PropTypes.array,
   holdRequestNotification: PropTypes.string,
   loading: PropTypes.bool,
   updateLoadingStatus: PropTypes.func,
@@ -434,10 +448,14 @@ HoldRequest.defaultProps = {
   deliveryLocations: [],
   isEddRequestable: false,
   closedLocations: [],
+  recapClosedLocations: [],
+  nonRecapClosedLocations: [],
 };
 
 const mapStateToProps = state => ({
   closedLocations: state.appConfig.closedLocations,
+  recapClosedLocations: state.appConfig.recapClosedLocations,
+  nonRecapClosedLocations: state.appConfig.nonRecapClosedLocations,
   holdRequestNotification: state.appConfig.holdRequestNotification,
   deliveryLocations: state.deliveryLocations,
   isEddRequestable: state.isEddRequestable,

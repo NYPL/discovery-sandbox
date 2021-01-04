@@ -142,7 +142,7 @@ export const BibPage = (props) => {
 
   const classicLink = (
     bibId.startsWith('b') && features.includes('catalog-link') ?
-      <a href={`${appConfig.classicCatalog}/record=${bibId}~S1`}>View in Legacy Catalog</a>
+      <a href={`${appConfig.classicCatalog}/record=${bibId}~S1`} id="legacy-catalog-link">View in Legacy Catalog</a>
       :
       null
   );

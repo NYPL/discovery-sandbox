@@ -5,7 +5,7 @@
 
 ### Shared Collection Catalog
 [![GitHub version](https://badge.fury.io/gh/nypl-discovery%2Fdiscovery-front-end.svg)](https://badge.fury.io/gh/nypl-discovery%2Fdiscovery-front-end)
-[![Build Status](https://travis-ci.org/NYPL-discovery/discovery-front-end.svg?branch=master)](https://travis-ci.org/NYPL-discovery/discovery-front-end)
+[![Build Status](https://travis-ci.org/NYPL/discovery-front-end.svg?branch=master)](https://travis-ci.org/NYPL/discovery-front-end)
 [![Dependencies Status](https://david-dm.org/nypl-discovery/discovery-front-end/status.svg)](https://david-dm.org/nypl-discovery/discovery-front-end)
 [![devDependencies Status](https://david-dm.org/nypl-discovery/discovery-front-end/dev-status.svg)](https://david-dm.org/nypl-discovery/discovery-front-end?type=dev)
 
@@ -83,7 +83,7 @@ Unit tests are currently written in the [Mocha](https://mochajs.org/) testing fr
 
 We are also integrating [Travis](https://travis-ci.org/) for better test work flow. After every push to the github repo, Travis will help us build and test the code.
 
-You can see the current build result at [here](https://travis-ci.org/NYPL-discovery/discovery-front-end).
+You can see the current build result at [here](https://travis-ci.org/NYPL/discovery-front-end).
 
 The tests can be found in the `test` folder.
 
@@ -225,6 +225,8 @@ Less frequently, when an NYPL location address changes, we should change the cor
 There are variables available in .env to configure the requestable locations.
 
 `CLOSED_LOCATIONS` is a semicolon-delimited list of strings. Include quotes around the string. All locations beginning with any string in this list will be removed from the list of request options. `.env-sample` contains an example of this.
+
+Currently used physical locations: Schwarzman;Science;Library for the Performing Arts;Schomburg
 
 To close all locations, add `all`. This will also remove EDD as a request option, and the 'Request' buttons, and also disable the hold request/edd forms. If `all` is not present, EDD and 'Request' buttons will still be available.
 
