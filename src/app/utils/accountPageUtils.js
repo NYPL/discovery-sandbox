@@ -7,10 +7,10 @@ const makeRequest = (
   updateAccountHtml,
   patronId,
   body,
-  content,
+  contentType,
   setIsLoading,
 ) => {
-  const url = `${appConfig.baseUrl}/api/account/${content}`;
+  const url = `${appConfig.baseUrl}/api/account/${contentType}`;
   setIsLoading(true);
   return axios.post(url, body)
     .then((res) => {
@@ -32,7 +32,10 @@ const buildReqBody = (content, itemObj, locationData) => {
     case 'items':
       return { ...itemObj, renewsome: 'YES' };
     case 'holds':
-      return Object.assign(itemObj, { updateholdssome: 'YES' }, locationData);
+      return Object.assign(itemObj, {
+        updateholdssome: 'YES',
+        currentsortorder: 'current_pickup',
+      }, locationData);
     default:
       return itemObj;
   }
@@ -42,14 +45,14 @@ const manipulateAccountPage = (
   accountPageContent,
   updateAccountHtml,
   patron,
-  content,
+  contentType,
   setIsLoading,
 ) => {
   const eventListenerCb = body => makeRequest(
     updateAccountHtml,
     patron.id,
     body,
-    content,
+    contentType,
     setIsLoading,
   );
 
@@ -77,15 +80,23 @@ const manipulateAccountPage = (
   });
 
   items.forEach((el) => {
-    const locationSelect = el.getElementsByTagName('select')[0];
-    const locationProp = locationSelect ? locationSelect.name : '';
-    let locationValue;
-    el.querySelectorAll('option').forEach((option) => {
-      if (option.selected) locationValue = `${option.value.trim()}+++`;
-    });
-    const locationData = {
-      [locationProp]: locationValue,
-    };
+    const locationData = {};
+    if (contentType === 'holds') {
+      const locationSelect = el.getElementsByTagName('select')[0];
+      if (!locationSelect) return;
+      const locationProp = locationSelect.name;
+      let locationValue;
+      el.querySelectorAll('option').forEach((option) => {
+        if (option.selected) locationValue = `${option.value.trim()}+++`;
+      });
+      locationData[locationProp] = locationValue;
+      const locationChangeCb = (e) => {
+        locationData[locationProp] = e.target.value.replace('+++', '');
+        eventListenerCb(buildReqBody(contentType, {}, locationData));
+      };
+      locationSelect.addEventListener('change', locationChangeCb);
+      eventListeners.push({ element: locationSelect, cb: locationChangeCb });
+    }
     // get name and value from checkbox
     const inputs = el.querySelectorAll('input');
     const buttons = [];
@@ -109,9 +120,9 @@ const manipulateAccountPage = (
       const eventCb = (e) => {
         e.preventDefault();
         eventListenerCb(buildReqBody(
-          content,
+          contentType,
           { [input.name]: input.value },
-          locationData
+          locationData,
         ));
       };
       button.addEventListener('click', eventCb);
