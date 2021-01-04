@@ -83,21 +83,21 @@ const manipulateAccountPage = (
     const locationData = {};
     if (contentType === 'holds') {
       const locationSelect = el.getElementsByTagName('select')[0];
-      if (!locationSelect) return;
-      const locationProp = locationSelect.name;
-      let locationValue;
-      el.querySelectorAll('option').forEach((option) => {
-        if (option.selected) locationValue = `${option.value.trim()}+++`;
-      });
-      locationData[locationProp] = locationValue;
-      const locationChangeCb = (e) => {
-        locationData[locationProp] = e.target.value.replace('+++', '');
-        eventListenerCb(buildReqBody(contentType, {}, locationData));
-      };
-      locationSelect.addEventListener('change', locationChangeCb);
-      eventListeners.push({ element: locationSelect, cb: locationChangeCb });
+      if (locationSelect) {
+        const locationProp = locationSelect.name;
+        let locationValue;
+        el.querySelectorAll('option').forEach((option) => {
+          if (option.selected) locationValue = `${option.value.trim()}+++`;
+        });
+        locationData[locationProp] = locationValue;
+        const locationChangeCb = (e) => {
+          locationData[locationProp] = e.target.value.replace('+++', '');
+          eventListenerCb(buildReqBody(contentType, {}, locationData));
+        };
+        locationSelect.addEventListener('change', locationChangeCb);
+        eventListeners.push({ element: locationSelect, cb: locationChangeCb });
+      }
     }
-    // get name and value from checkbox
     const inputs = el.querySelectorAll('input');
     const buttons = [];
     const removeTd = (element) => {
@@ -135,6 +135,9 @@ const manipulateAccountPage = (
       td.appendChild(button);
       el.appendChild(td);
     });
+    const freezeCells = el.querySelectorAll('.patFuncFreeze');
+    if (freezeCells) freezeCells.forEach(cell => cell.remove());
+
   });
   accountPageContent.querySelectorAll('.patFuncRating').forEach(el => el.remove());
 
