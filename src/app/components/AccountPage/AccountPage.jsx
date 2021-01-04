@@ -6,6 +6,8 @@ import { Link } from 'react-router';
 
 import { SkeletonLoader } from '@nypl/design-system-react-components';
 
+import LinkTabSet from './LinkTabSet';
+
 import appConfig from '../../data/appConfig';
 import manipulateAccountPage from '../../utils/accountPageUtils';
 
@@ -63,12 +65,26 @@ const AccountPage = (props) => {
         <br />
         {patron.emails ? `Email: ${patron.emails[0]}` : null}
       </div>
-      <ul>
-        <li><Link to={`${baseUrl}/account/items`}>Checkouts</Link></li>
-        <li><Link to={`${baseUrl}/account/holds`}>Holds</Link></li>
-        <li><Link to={`${baseUrl}/account/overdues`}>Fines{`${patron.moneyOwed ? ` ($${patron.moneyOwed.toFixed(2)})` : ''}`}</Link></li>
-        <li><Link to={`${baseUrl}/account/msg`}>Messages</Link></li>
-      </ul>
+      <LinkTabSet
+        tabs={[
+          {
+            label: 'Checkouts',
+            link: `${baseUrl}/account/items`,
+          },
+          {
+            label: 'Holds',
+            link: `${baseUrl}/account/holds`,
+          },
+          {
+            label: `Fines${patron.moneyOwed ? ` ($${patron.moneyOwed.toFixed(2)})` : ''}`,
+            link: `${baseUrl}/account/overdues`,
+          },
+          {
+            label: 'Messages',
+            link: `${baseUrl}/account/msg`,
+          },
+        ]}
+      />
       <a
         href={`https://ilsstaff.nypl.org:443/patroninfo*eng~Sdefault/${patron.id}/modpinfo`}
         target="_blank"
