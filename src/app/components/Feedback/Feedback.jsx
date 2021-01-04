@@ -1,9 +1,8 @@
-/* global alert */
 import React from 'react';
 import PropTypes from 'prop-types';
 import FocusTrap from 'focus-trap-react';
 import axios from 'axios';
-import { Button, Input, ButtonTypes } from '@nypl/design-system-react-components';
+import { Button, ButtonTypes } from '@nypl/design-system-react-components';
 
 import { trackDiscovery } from '../../utils/utils';
 import appConfig from '../../data/appConfig';
@@ -167,7 +166,9 @@ class Feedback extends React.Component {
             )}
             {success && (
               <p>
-                Thank you for submitting your comments, if you requested a response, our service staff will get back to you as soon as possible.
+                Thank you for submitting your comments,
+                if you requested a response, our service staff
+                will get back to you as soon as possible.
               </p>
             )}
           </div>
