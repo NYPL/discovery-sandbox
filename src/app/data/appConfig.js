@@ -64,6 +64,7 @@ const appConfig = {
     onSiteEdd: 'https://www.nypl.org/research/scan-and-deliver',
     default: 'https://www.nypl.org/help/request-research-materials#EDD',
   },
+  legacyCatalog: process.env.LEGACY_CATALOG_BASE_URL,
 };
 
 export default appConfig;

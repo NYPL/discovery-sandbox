@@ -1,0 +1,29 @@
+.nypl-patron-page {
+  ul {
+    list-style: none;
+  }
+
+  th {
+    text-transform: capitalize;
+  }
+
+  td > span {
+    display: block;
+  }
+
+  .holds {
+    th, td {
+      width: 16%;
+    }
+  }
+
+  .items {
+    th, td {
+      width: 20%;
+    }
+  }
+}
+
+.loading#account-page-content {
+  display: none;
+}

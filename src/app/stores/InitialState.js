@@ -30,6 +30,7 @@ const initialState = {
   },
   appConfig,
   lastLoaded: appConfig.baseUrl,
+  accountHtml: '',
   features: appConfig.features || [],
 };
 
