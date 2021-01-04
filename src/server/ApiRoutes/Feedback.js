@@ -43,7 +43,7 @@ export default {
     const sendPromise = new aws.SES({ apiVersion: '2010-12-01' }).sendEmail(params).promise();
 
     return sendPromise
-      .then(data => console.log(data))
+      .then(data => res.json(data))
       .catch(err => console.error(err, err.stack));
   },
 };

@@ -20,6 +20,7 @@ class Feedback extends React.Component {
     this.state = {
       showForm: false,
       fields: initialFields(),
+      success: false,
     };
 
     this.commentText = React.createRef();
@@ -51,8 +52,8 @@ class Feedback extends React.Component {
       },
     }).then(() => {
       this.setState({
-        showForm: false,
         fields: initialFields(),
+        success: true,
       // eslint-disable-next-line no-alert
       });
     }).catch(console.error);
@@ -82,6 +83,7 @@ class Feedback extends React.Component {
     const {
       showForm,
       fields,
+      success,
     } = this.state;
     const { submit } = this.props;
 
@@ -111,56 +113,63 @@ class Feedback extends React.Component {
             className={`feedback-form-container${showForm ? ' active' : ''}`}
             id="feedback-menu"
           >
-            <form
-              target="hidden_feedback_iframe"
-              onSubmit={e => submit(this.onSubmitForm, e)}
-            >
-              <div>
-                <label htmlFor="feedback-textarea-comment">
-                  Please provide your feedback about this page in the field below.
-                  <span className="nypl-required-field">&nbsp;Required</span>
-                </label>
-                <textarea
-                  id="feedback-textarea-comment"
-                  name="feedback"
-                  value={fields.feedback}
-                  ref={this.commentText}
-                  rows="5"
-                  aria-required="true"
-                  tabIndex="0"
-                  onChange={this.handleInputChange}
-                />
-              </div>
-              <div>
-                <label htmlFor="feedback-input-email">Email Address</label>
-                <input
-                  name="email"
-                  id="feedback-input-email"
-                  type="email"
-                  value={fields.email}
-                  onChange={this.handleInputChange}
-                />
-              </div>
-              <input name="fvv" value="1" type="hidden" />
-
-              <Button
-                className={`cancel-button ${!showForm ? 'hidden' : ''}`}
-                onClick={e => this.deactivateForm(e)}
-                attributes={{
-                  'aria-expanded': !showForm,
-                  'aria-controls': 'feedback-menu',
-                }}
-                buttonType={ButtonTypes.Secondary}
+            {!success && (
+              <form
+                target="hidden_feedback_iframe"
+                onSubmit={e => submit(this.onSubmitForm, e)}
               >
-                Cancel
-              </Button>
+                <div>
+                  <label htmlFor="feedback-textarea-comment">
+                    Please provide your feedback about this page in the field below.
+                    <span className="nypl-required-field">&nbsp;Required</span>
+                  </label>
+                  <textarea
+                    id="feedback-textarea-comment"
+                    name="feedback"
+                    value={fields.feedback}
+                    ref={this.commentText}
+                    rows="5"
+                    aria-required="true"
+                    tabIndex="0"
+                    onChange={this.handleInputChange}
+                  />
+                </div>
+                <div>
+                  <label htmlFor="feedback-input-email">Email Address</label>
+                  <input
+                    name="email"
+                    id="feedback-input-email"
+                    type="email"
+                    value={fields.email}
+                    onChange={this.handleInputChange}
+                  />
+                </div>
+                <input name="fvv" value="1" type="hidden" />
 
-              <Button
-                type="submit"
-                buttonType={ButtonTypes.Primary}
-              >Submit
-              </Button>
-            </form>
+                <Button
+                  className={`cancel-button ${!showForm ? 'hidden' : ''}`}
+                  onClick={e => this.deactivateForm(e)}
+                  attributes={{
+                    'aria-expanded': !showForm,
+                    'aria-controls': 'feedback-menu',
+                  }}
+                  buttonType={ButtonTypes.Secondary}
+                >
+                  Cancel
+                </Button>
+
+                <Button
+                  type="submit"
+                  buttonType={ButtonTypes.Primary}
+                >Submit
+                </Button>
+              </form>
+            )}
+            {success && (
+              <p>
+                Thank you for submitting your comments, if you requested a response, our service staff will get back to you as soon as possible.
+              </p>
+            )}
           </div>
         </FocusTrap>
       </div>
