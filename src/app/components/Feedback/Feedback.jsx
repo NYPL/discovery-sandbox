@@ -108,7 +108,7 @@ class Feedback extends React.Component {
         >
           <div
             role="menu"
-            className={`feedback-form-container${showForm ? ' active' : ''}`}
+            className={showForm ? ' active' : ''}
             id="feedback-menu"
           >
             {!success && (
