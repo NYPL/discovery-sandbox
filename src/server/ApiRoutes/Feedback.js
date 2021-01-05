@@ -10,9 +10,13 @@ export default {
     const { fields } = req.body;
 
     aws.config.update({ region: 'us-east-1' });
+    const submissionText = Object.entries(fields).map(([field, value]) => `${field}: ${value}`).join(', ');
+    const emailText = `Question/Feedback from Research Catalog (SCC): ${submissionText}`;
 
-    const emailText = Object.entries(fields).map(([field, value]) => `${field}: ${value}`).join(', ');
-    const emailHtml = `<div>${Object.entries(fields).map(([field, value]) => `<p>${field}: ${value}</p>`).join('')}</div>`;
+    const emailHtml = `<div>
+    <h1>Question/Feedback from Research Catalog (SCC):</h1>
+    ${Object.entries(fields).map(([field, value]) => `<p>${field}: ${value}</p>`).join('')}
+    </div>`;
 
     // Create sendEmail params
     const params = {
@@ -32,7 +36,7 @@ export default {
         },
         Subject: {
           Charset: 'UTF-8',
-          Data: 'Test email',
+          Data: 'SCC Feedback',
         },
       },
       Source: appConfig.sourceEmail, /* required */

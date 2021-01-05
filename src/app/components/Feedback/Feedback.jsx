@@ -53,7 +53,6 @@ class Feedback extends React.Component {
       this.setState({
         fields: initialFields(),
         success: true,
-      // eslint-disable-next-line no-alert
       });
     }).catch(console.error);
   }
