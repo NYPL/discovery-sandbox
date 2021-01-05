@@ -23,6 +23,7 @@ class Feedback extends React.Component {
     };
 
     this.commentText = React.createRef();
+    this.emailInput = React.createRef();
 
     this.onSubmitForm = this.onSubmitForm.bind(this);
     this.toggleForm = this.toggleForm.bind(this);
@@ -34,6 +35,8 @@ class Feedback extends React.Component {
     const { fields } = this.state;
     if (!fields.feedback && !fields.feedback.length) {
       this.commentText.current.focus();
+    } else if (!fields.email && !fields.email.length) {
+      this.emailInput.current.focus();
     } else {
       this.postForm(url);
       trackDiscovery('Feedback', 'Submit');
@@ -64,7 +67,7 @@ class Feedback extends React.Component {
 
   deactivateForm() {
     trackDiscovery('Feedback', 'Close');
-    this.setState({ showForm: false });
+    this.setState({ showForm: false, success: false });
   }
 
   handleInputChange(e) {
@@ -108,7 +111,7 @@ class Feedback extends React.Component {
         >
           <div
             role="menu"
-            className={showForm ? ' active' : ''}
+            className={showForm ? 'active' : ''}
             id="feedback-menu"
           >
             {!success && (
@@ -118,7 +121,7 @@ class Feedback extends React.Component {
               >
                 <div>
                   <label htmlFor="feedback-textarea-comment">
-                    Please provide your feedback about this page in the field below.
+                    Comments
                     <span className="nypl-required-field">&nbsp;Required</span>
                   </label>
                   <textarea
@@ -133,17 +136,26 @@ class Feedback extends React.Component {
                   />
                 </div>
                 <div>
-                  <label htmlFor="feedback-input-email">Email Address</label>
+                  <label htmlFor="feedback-input-email">
+                    Email Address
+                    <span className="nypl-required-field">&nbsp;Required</span>
+                  </label>
                   <input
                     name="email"
                     id="feedback-input-email"
                     type="email"
                     value={fields.email}
                     onChange={this.handleInputChange}
+                    ref={this.emailInput}
                   />
                 </div>
                 <input name="fvv" value="1" type="hidden" />
-
+                <a
+                  href="https://www.nypl.org/help/about-nypl/legal-notices/privacy-policy"
+                  className="privacy-policy"
+                  target="_blank"
+                >Privacy Policy
+                </a>
                 <Button
                   className={`cancel-button ${!showForm ? 'hidden' : ''}`}
                   onClick={e => this.deactivateForm(e)}
@@ -159,6 +171,7 @@ class Feedback extends React.Component {
                 <Button
                   type="submit"
                   buttonType={ButtonTypes.Primary}
+                  className="submit-button"
                 >Submit
                 </Button>
               </form>
