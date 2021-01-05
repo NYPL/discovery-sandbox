@@ -7,9 +7,10 @@ export default {
     if (!req.body) return res.status(400).json({ error: 'Malformed request' });
     if (!req.body.fields) return res.status(400).json({ error: 'Request body missing `field` key' });
 
+    aws.config.update({ region: 'us-east-1' });
+
     const { fields } = req.body;
 
-    aws.config.update({ region: 'us-east-1' });
     const submissionText = Object.entries(fields).map(([field, value]) => `${field}: ${value}`).join(', ');
     const emailText = `Question/Feedback from Research Catalog (SCC): ${submissionText}`;
 
