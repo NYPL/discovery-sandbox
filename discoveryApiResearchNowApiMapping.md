@@ -1,6 +1,6 @@
 # Discovery API - ResearchNow API mapping
 ## Discovery API
-[Github](https://github.com/NYPL-discovery/discovery-api/blob/master/README.md#searching)
+[Github](https://github.com/NYPL/discovery-api/blob/master/README.md#searching)
 ### Parameters
 [GET `/v0.1/discovery/resources`](https://platformdocs.nypl.org/#/discovery/get_v0_1_discovery_resources)
 * `q` string
