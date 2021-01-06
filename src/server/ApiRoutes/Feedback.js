@@ -1,6 +1,7 @@
 import aws from 'aws-sdk';
 
 import appConfig from '../../app/data/appConfig';
+import { encodeHTML } from '../../app/utils/utils';
 
 export default {
   post: (req, res) => {
@@ -11,12 +12,12 @@ export default {
 
     const { fields } = req.body;
 
-    const submissionText = Object.entries(fields).map(([field, value]) => `${field}: ${value}`).join(', ');
+    const submissionText = Object.entries(fields).map(([field, value]) => `${field}: ${encodeHTML(value)}`).join(', ');
     const emailText = `Question/Feedback from Research Catalog (SCC): ${submissionText}`;
 
     const emailHtml = `<div>
     <h1>Question/Feedback from Research Catalog (SCC):</h1>
-    ${Object.entries(fields).map(([field, value]) => `<p>${field}: ${value}</p>`).join('')}
+    ${Object.entries(fields).map(([field, value]) => `<p>${field}: ${encodeHTML(value).replace(/\\n/g, '<br/>')}</p>`).join('')}
     </div>`;
 
     // Create sendEmail params
