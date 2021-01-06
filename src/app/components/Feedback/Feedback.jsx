@@ -114,6 +114,7 @@ class Feedback extends React.Component {
             className={showForm ? 'active' : ''}
             id="feedback-menu"
           >
+            <h1>We are here to help!</h1>
             {!success && (
               <form
                 target="hidden_feedback_iframe"
