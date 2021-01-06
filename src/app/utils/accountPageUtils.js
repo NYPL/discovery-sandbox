@@ -64,7 +64,7 @@ const manipulateAccountPage = (
   // use 'patFuncEntry' class to access items (checkouts or holds)
   const items = accountPageContent.querySelectorAll('.patFuncEntry') || [];
 
-  accountPageContent.getElementsByTagName('th').forEach((th) => {
+  accountPageContent.querySelectorAll('th').forEach((th) => {
     const { textContent } = th;
     // this "Ratings" feature is in the html, but is not in use
     if (textContent.trim() === 'CANCEL' || ['Ratings', 'RENEW', 'FREEZE'].find(text => textContent.includes(text))) {
