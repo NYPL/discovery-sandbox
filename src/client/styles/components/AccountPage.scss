@@ -22,8 +22,30 @@
       width: 20%;
     }
   }
-}
 
-.loading#account-page-content {
-  display: none;
+  select {
+    width: 215px;
+  }
+
+  td.patFuncTitle {
+    width: 29%;
+  }
+
+  .loading#account-page-content {
+    display: none;
+  }
+
+  th.patFuncTitle {
+    font-weight: 600;
+  }
+
+  .patFuncHeaders {
+    text-align: left;
+    font-weight: 600;
+  }
+
+  button {
+    display: inline-block;
+    margin: 0 var(--space-xxs);
+  }
 }
