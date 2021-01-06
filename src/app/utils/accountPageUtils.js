@@ -64,6 +64,9 @@ const manipulateAccountPage = (
   // use 'patFuncEntry' class to access items (checkouts or holds)
   const items = accountPageContent.querySelectorAll('.patFuncEntry') || [];
 
+  const buttonTh = document.createElement('th');
+  accountPageContent.querySelectorAll('tr.patFuncHeaders')[0].appendChild(buttonTh);
+
   accountPageContent.querySelectorAll('th').forEach((th) => {
     const { textContent } = th;
     // this "Ratings" feature is in the html, but is not in use
@@ -116,7 +119,7 @@ const manipulateAccountPage = (
         button.textContent = 'Unfreeze';
         input.value = 'off';
       }
-      button.className = 'button button--filled';
+      button.className = 'button button--outline';
       const eventCb = (e) => {
         e.preventDefault();
         eventListenerCb(buildReqBody(
@@ -171,7 +174,7 @@ const manipulateAccountPage = (
             eventListenerCb({ renewall: 'YES' });
           };
           button.addEventListener('click', renewAllCb);
-          button.className = 'button button--filled';
+          button.className = 'button button--outline';
           link.parentElement.replaceChild(button, link);
           eventListeners.push({ element: button, cb: button });
         } else {

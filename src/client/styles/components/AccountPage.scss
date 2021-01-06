@@ -46,6 +46,12 @@
 
   button {
     display: inline-block;
+    font-size: 14px;
     margin: 0 var(--space-xxs);
+  }
+
+  tr.patFuncHeaders {
+    background-color: #F5F5F5;
+    width: 100%;
   }
 }
