@@ -6,7 +6,7 @@ const LinkTabSet = ({ tabs, activeTab }) => {
     <div className="tabbed">
       <ul role="tablist">
         { tabs.map((tab) => {
-          const isActiveTab = tab.label === activeTab;
+          const isActiveTab = tab.content === activeTab;
           return (
             <li id={`tab-${tab.label}`} key={`tab-${tab.label}`} className={isActiveTab ? 'activeTab' : null} role="presentation">
               <a

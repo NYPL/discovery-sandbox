@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router';
 
 import { SkeletonLoader } from '@nypl/design-system-react-components';
 
@@ -19,6 +18,7 @@ const AccountPage = (props) => {
   }));
 
   const content = props.params.content || 'items';
+
   const dispatch = useDispatch();
   const updateAccountHtml = newContent => dispatch({
     type: 'UPDATE_ACCOUNT_HTML',
@@ -35,6 +35,10 @@ const AccountPage = (props) => {
   }, [patron]);
 
   useEffect(() => {
+    if (content === 'settings') {
+      setIsLoading(false);
+      return;
+    };
     const accountPageContent = document.getElementById('account-page-content');
 
     if (accountPageContent) {
@@ -60,42 +64,40 @@ const AccountPage = (props) => {
 
   return (
     <div className="nypl-full-width-wrapper drbb-integration nypl-patron-page">
+      <h2>My Account</h2>
       <div className="nypl-patron-details">
-        {patron.names ? `Name: ${patron.names[0]}` : null}
-        <br />
-        {patron.emails ? `Email: ${patron.emails[0]}` : null}
+        {patron.names ? patron.names[0] : null}
       </div>
       <LinkTabSet
+        activeTab={content}
         tabs={[
           {
             label: 'Checkouts',
             link: `${baseUrl}/account/items`,
+            content: 'items'
           },
           {
             label: 'Holds',
             link: `${baseUrl}/account/holds`,
+            content: 'holds',
           },
           {
             label: `Fines${patron.moneyOwed ? ` ($${patron.moneyOwed.toFixed(2)})` : ''}`,
             link: `${baseUrl}/account/overdues`,
+            content: 'overdues',
           },
           {
             label: 'Messages',
             link: `${baseUrl}/account/msg`,
+            content: 'msg',
+          },
+          {
+            label: 'Account Settings',
+            link: `${baseUrl}/account/settings`,
+            content: 'settings',
           },
         ]}
       />
-      <a
-        href={`https://ilsstaff.nypl.org:443/patroninfo*eng~Sdefault/${patron.id}/modpinfo`}
-        target="_blank"
-      >My Settings
-      </a>
-      <a
-        href={`https://ilsstaff.nypl.org:443/patroninfo*eng~Sdefault/${patron.id}/newpin`}
-        target="_blank"
-      >Change Pin
-      </a>
-      <hr />
       {isLoading ? <SkeletonLoader /> : ''}
       {
         typeof accountHtml === 'string' ? (
@@ -105,6 +107,22 @@ const AccountPage = (props) => {
             className={`${content} ${isLoading ? 'loading' : ''}`}
           />
         ) : ''
+      }
+      {
+        content === 'settings' ? (
+          <>
+            <a
+              href={`https://ilsstaff.nypl.org:443/patroninfo*eng~Sdefault/${patron.id}/modpinfo`}
+              target="_blank"
+            >My Settings
+            </a>
+            <a
+              href={`https://ilsstaff.nypl.org:443/patroninfo*eng~Sdefault/${patron.id}/newpin`}
+              target="_blank"
+            >Change Pin
+            </a>
+          </>
+        ) : null
       }
     </div>
   );
