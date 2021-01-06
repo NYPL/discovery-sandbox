@@ -130,14 +130,13 @@ const manipulateAccountPage = (
       removeTd(input);
       eventListeners.push({ element: button, cb: eventCb });
     });
+    const td = document.createElement('td');
     buttons.forEach((button) => {
-      const td = document.createElement('td');
       td.appendChild(button);
-      el.appendChild(td);
     });
+    el.appendChild(td);
     const freezeCells = el.querySelectorAll('.patFuncFreeze');
     if (freezeCells) freezeCells.forEach(cell => cell.remove());
-
   });
   accountPageContent.querySelectorAll('.patFuncRating').forEach(el => el.remove());
 
