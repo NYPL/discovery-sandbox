@@ -16,8 +16,13 @@ export default {
     const emailText = `Question/Feedback from Research Catalog (SCC): ${submissionText}`;
 
     const emailHtml = `<div>
-    <h1>Question/Feedback from Research Catalog (SCC):</h1>
-    ${Object.entries(fields).map(([field, value]) => `<p>${field}: ${encodeHTML(value).replace(/\\n/g, '<br/>')}</p>`).join('')}
+      <h1>Question/Feedback from Research Catalog (SCC):</h1>
+      <dl>
+        ${Object.entries(fields).map(([field, value]) => `
+          <dt>${field}:</dt>
+          <dd>${encodeHTML(value).replace(/\\n/g, '<br/>')}</dd>
+        `).join('')}
+      </dl>
     </div>`;
 
     // Create sendEmail params
