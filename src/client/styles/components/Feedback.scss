@@ -100,12 +100,15 @@
     border: 1px solid var(--ui-gray-medium);
   }
 
+  textarea {
+    height: 8em;
+  }
+
   input {
     padding: 0.3rem 0.4rem;
   }
 
   button {
-    margin-top: 21px;
     font-size: 1rem;
     display: inline;
     width: 164px;
@@ -120,12 +123,44 @@
   }
 }
 
-a.privacy-policy {
-  color: var(--ui-link-primary);
-  float: right;
-  font-size: .75rem;
+.privacy-policy {
+  display: flow-root;
+  a {
+    color: var(--ui-link-primary);
+    float: right;
+    font-size: .75rem;
+  }
 }
 
 .nypl-required-field {
   float: right;
+}
+
+@media (max-width: 768px) {
+  #feedback-menu {
+    height: 400px;
+    padding: 34px;
+
+    h1 {
+      font-size: 1rem;
+      margin-bottom: 7px;
+    }
+
+    label {
+      margin-bottom: 4px;
+    }
+
+    textarea {
+      height: 6em;
+    }
+
+    button {
+      margin-top: 13px;
+      width: 98px;
+      height: 25px;
+      font-size: .875rem;
+      padding: 0;
+    }
+  }
+
 }

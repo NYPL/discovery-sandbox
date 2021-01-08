@@ -158,12 +158,13 @@ class Feedback extends React.Component {
                       value={fields.email}
                     />
                   </div>
-                  <Link
-                    href="https://www.nypl.org/help/about-nypl/legal-notices/privacy-policy"
-                    className="privacy-policy"
-                    target="_blank"
-                  >Privacy Policy
-                  </Link>
+                  <div className="privacy-policy">
+                    <Link
+                      href="https://www.nypl.org/help/about-nypl/legal-notices/privacy-policy"
+                      target="_blank"
+                    >Privacy Policy
+                    </Link>
+                  </div>
                   <Button
                     className={`cancel-button ${!showForm ? 'hidden' : ''}`}
                     onClick={e => this.deactivateForm(e)}
