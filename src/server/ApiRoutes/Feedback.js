@@ -11,19 +11,24 @@ export default {
     aws.config.update({ region: 'us-east-1' });
 
     const { fields } = req.body;
+    const fullUrl = `${req.protocol}://${req.get('host')}${req.originalUrl}`;
 
-    const submissionText = ['email', 'feedback', 'url'].map(label => `${label}: ${encodeHTML(fields[label])}`).join(', ');
-    const emailText = `Question/Feedback from Research Catalog (SCC): ${submissionText}`;
+    const submissionText = ['Email', 'Feedback'].map(label => `${label}: ${encodeHTML(fields[label.toLowerCase()])}`).join(', ');
+    const emailText = `Question/Feedback from Research Catalog (SCC): ${submissionText} URL: ${fullUrl}`;
 
-    const emailHtml = `<div>
-      <h1>Question/Feedback from Research Catalog (SCC):</h1>
-      <dl>
-        ${Object.entries(fields).map(([field, value]) => `
-          <dt>${field}:</dt>
-          <dd>${encodeHTML(value).replace(/\\n/g, '<br/>')}</dd>
-        `).join('')}
-      </dl>
-    </div>`;
+    const emailHtml = `
+      <div>
+        <h1>Question/Feedback from Research Catalog (SCC):</h1>
+        <dl>
+          ${['Email', 'Feedback'].map(label => `
+            <dt>${label}:</dt>
+            <dd>${encodeHTML(fields[label.toLowerCase()]).replace(/\\n/g, '<br/>')}</dd>
+          `).join('')}
+          <dt>URL:</dt>
+          <dd>${fullUrl}</dd>
+        </dl>
+      </div>
+    `;
 
     // Create sendEmail params
     const params = {

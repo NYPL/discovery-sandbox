@@ -32,19 +32,19 @@ class Feedback extends React.Component {
     this.handleInputChange = this.handleInputChange.bind(this);
   }
 
-  onSubmitForm(url) {
+  onSubmitForm(e) {
+    e.preventDefault();
     const { fields } = this.state;
     if (!fields.feedback && !fields.feedback.length) {
       this.setState({ commentInputError: true }, () => this.commentText.current.focus())
     } else {
-      this.postForm(url);
+      this.postForm();
       trackDiscovery('Feedback', 'Submit');
     }
   }
 
-  postForm(url) {
+  postForm() {
     const { fields } = this.state;
-    fields.url = url;
     axios({
       method: 'POST',
       url: `${appConfig.baseUrl}/api/feedback`,
@@ -119,7 +119,7 @@ class Feedback extends React.Component {
                 <h1>We are here to help!</h1>
                 <form
                   target="hidden_feedback_iframe"
-                  onSubmit={e => submit(this.onSubmitForm, e)}
+                  onSubmit={this.onSubmitForm}
                 >
                   <div>
                     <Label htmlFor="feedback-textarea-comment">
