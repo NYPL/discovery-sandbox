@@ -10,8 +10,8 @@
   @include min-screen($tablet-portrait) {
     position: fixed;
     background: inherit;
-    max-width: 400px;
-    min-width: 400px;
+    max-width: 571px;
+    min-width: 571px;
   }
 }
 
@@ -22,7 +22,7 @@
   color: #FFF;
   display: inline-block;
   font-size: 1rem;
-  padding: 0.5rem 1rem;
+  padding: .5rem 1rem;
   position: relative;
   text-align: center;
 
@@ -34,9 +34,9 @@
 
 .cancel-button {
   border: 1px solid #E0E0E0;
-  text-align: center;
   font-size: 1rem;
   margin-right: 15px;
+  text-align: center;
 }
 
 
@@ -45,17 +45,17 @@
   background: #FFF;
   border: 1px solid $border-color;
   box-shadow: -1px 0 1px 0 rgba(0,0,0,0.3);
-  padding: 15px 25px;
+  padding: 50px 42px;
   text-align: left;
-  height: 300px;
+  height: 472px;
 
   h1 {
-    font-size: 1.125rem;
+    font-size: 1.5rem;
     font-weight: 500;
     line-height: 26px;
     letter-spacing: 0px;
     text-align: left;
-    margin: 0;
+    margin: 0 0 14px 0;
   }
 
   &.active {
@@ -69,16 +69,23 @@
 
   label {
     display: block;
-    font-size: 14px;
-    margin: var(--space-xs) 0;
+    font-size: .875rem;
+    margin-bottom: 6px;
 
     small {
       line-height: 1;
     }
+
+    span {
+      font-size: .75rem;
+      font-weight: 300;
+    }
   }
 
   p {
-    margin: 65px 40px;
+    margin: 107px 40px;
+    font-size: 20px;
+    font-weight: 500;
   }
 
   input,
@@ -98,18 +105,25 @@
   }
 
   button {
+    margin-top: 21px;
     font-size: 1rem;
-    margin-top: 1rem;
     display: inline;
+    width: 164px;
   }
 
   iframe {
     display: none;
   }
+
+  .helper-text {
+    height: 21px;
+  }
 }
 
-.privacy-policy {
+a.privacy-policy {
+  color: var(--ui-link-primary);
   float: right;
+  font-size: .75rem;
 }
 
 .nypl-required-field {

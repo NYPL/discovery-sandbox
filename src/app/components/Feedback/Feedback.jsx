@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import FocusTrap from 'focus-trap-react';
 import axios from 'axios';
-import { Button, ButtonTypes, Input, Label, HelperErrorText } from '@nypl/design-system-react-components';
+import { Button, ButtonTypes, Input, Label, HelperErrorText, Link } from '@nypl/design-system-react-components';
 
 import { trackDiscovery } from '../../utils/utils';
 import appConfig from '../../data/appConfig';
@@ -35,7 +35,7 @@ class Feedback extends React.Component {
   onSubmitForm(url) {
     const { fields } = this.state;
     if (!fields.feedback && !fields.feedback.length) {
-      this.setState({ commentInputError: true })
+      this.setState({ commentInputError: true }, () => this.commentText.current.focus())
     } else {
       this.postForm(url);
       trackDiscovery('Feedback', 'Submit');
@@ -130,18 +130,21 @@ class Feedback extends React.Component {
                       name="feedback"
                       value={fields.feedback}
                       ref={this.commentText}
-                      rows="4"
+                      rows="8"
                       aria-required="true"
                       tabIndex="0"
                       onChange={this.handleInputChange}
                     />
-                    <HelperErrorText id="helperText" isError={commentInputError}>
+                    <HelperErrorText
+                      id="helper-text"
+                      isError={commentInputError}
+                    >
                       {commentInputError ? 'Please fill out this field' : ''}
                     </HelperErrorText>
                   </div>
                   <div>
                     <Label htmlFor="feedback-input-email">
-                      Email (If you need a response from us)
+                      Email <span>(If you need a response from us)</span>
                     </Label>
                     <Input
                       required
@@ -155,12 +158,12 @@ class Feedback extends React.Component {
                       value={fields.email}
                     />
                   </div>
-                  <a
+                  <Link
                     href="https://www.nypl.org/help/about-nypl/legal-notices/privacy-policy"
                     className="privacy-policy"
                     target="_blank"
                   >Privacy Policy
-                  </a>
+                  </Link>
                   <Button
                     className={`cancel-button ${!showForm ? 'hidden' : ''}`}
                     onClick={e => this.deactivateForm(e)}

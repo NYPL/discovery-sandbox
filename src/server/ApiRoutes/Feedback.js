@@ -12,7 +12,7 @@ export default {
 
     const { fields } = req.body;
 
-    const submissionText = Object.entries(fields).map(([field, value]) => `${field}: ${encodeHTML(value)}`).join(', ');
+    const submissionText = ['email', 'feedback', 'url'].map(label => `${label}: ${encodeHTML(fields[label])}`).join(', ');
     const emailText = `Question/Feedback from Research Catalog (SCC): ${submissionText}`;
 
     const emailHtml = `<div>
