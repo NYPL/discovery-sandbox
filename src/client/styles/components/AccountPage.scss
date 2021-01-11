@@ -22,6 +22,27 @@
       width: 20%;
     }
   }
+
+  .tabbed {
+    a {
+      width: 165px;
+      text-align: center;
+    }
+  }
+
+  .tabbed ul[role="tablist"] {
+    &> li {
+      border-color: #0576D3;
+    }
+
+    &> li > a[aria-selected='true'] {
+      color: #0576D3;
+    }
+
+    &> li.activeTab {
+      border-color: #0576D3;
+    }
+  }
 }
 
 .loading#account-page-content {
