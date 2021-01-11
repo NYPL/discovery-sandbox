@@ -7,14 +7,16 @@
     text-transform: capitalize;
   }
 
-  td > span {
-    display: block;
+  td {
+    padding-right: 35px;
   }
 
-  .holds {
-    th, td {
-      width: 16%;
-    }
+  td.account-table-buttons {
+    padding-right: 0;
+  }
+
+  td > span {
+    display: block;
   }
 
   .items {
@@ -29,6 +31,7 @@
 
   td.patFuncTitle {
     width: 29%;
+    padding-left: 10px;
   }
 
   .loading#account-page-content {
@@ -42,6 +45,14 @@
   .patFuncHeaders {
     text-align: left;
     font-weight: 600;
+
+    th:nth-child(4) {
+      max-width: 130px;
+    }
+
+    th:nth-child(1) {
+      padding-left: 10px;
+    }
   }
 
   button {

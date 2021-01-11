@@ -65,6 +65,8 @@ const manipulateAccountPage = (
   const items = accountPageContent.querySelectorAll('.patFuncEntry') || [];
 
   const buttonTh = document.createElement('th');
+  buttonTh.classList.add('patFuncHeaders');
+  if (contentType === 'holds') buttonTh.textContent = 'Cancel/Freeze';
   accountPageContent.querySelectorAll('tr.patFuncHeaders')[0].appendChild(buttonTh);
 
   accountPageContent.querySelectorAll('th').forEach((th) => {
@@ -79,6 +81,11 @@ const manipulateAccountPage = (
     if (th.textContent.includes('checked')) {
       const length = items.length;
       th.textContent = `Checkouts - ${length || 'No'} item${length !== 1 ? 's' : ''}`;
+    }
+
+    if (th.textContent.includes('holds')) {
+      const length = items.length;
+      th.textContent = `Holds - ${length || 'No'} item${length !== 1 ? 's' : ''}`;
     }
   });
 
@@ -133,7 +140,10 @@ const manipulateAccountPage = (
       removeTd(input);
       eventListeners.push({ element: button, cb: eventCb });
     });
+
+    // add new TD with account page button(s)
     const td = document.createElement('td');
+    td.classList.add('account-table-buttons');
     buttons.forEach((button) => {
       td.appendChild(button);
     });
