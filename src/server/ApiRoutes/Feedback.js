@@ -52,7 +52,7 @@ export default {
         },
       },
       Source: appConfig.sourceEmail, /* required */
-      ReplyToAddresses: [fields.email],
+      ReplyToAddresses: [fields.email || appConfig.sourceEmail],
     };
 
     // Create the promise and SES service object
