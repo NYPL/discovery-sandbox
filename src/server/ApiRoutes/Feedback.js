@@ -11,7 +11,7 @@ export default {
     aws.config.update({ region: 'us-east-1' });
 
     const { fields } = req.body;
-    const fullUrl = `${req.protocol}://${req.get('host')}${req.originalUrl}`;
+    const fullUrl = encodeHTML(req.headers.referer);
 
     const submissionText = ['Email', 'Feedback'].map(label => `${label}: ${encodeHTML(fields[label.toLowerCase()])}`).join(', ');
     const emailText = `Question/Feedback from Research Catalog (SCC): ${submissionText} URL: ${fullUrl}`;
