@@ -32,8 +32,7 @@ function fetchAccountPage(req, res, resolve) {
       resolve(resp.data);
     })
     .catch((resp) => {
-      const { statusText } = resp.response;
-      return res.json({ error: statusText });
+      res.json({ error: resp });
     });
 }
 
