@@ -72,7 +72,8 @@ export const manipulateAccountPage = (
     const buttonTh = document.createElement('th');
     buttonTh.classList.add('patFuncHeaders');
     if (contentType === 'holds') buttonTh.textContent = 'Cancel/Freeze';
-    accountPageContent.querySelectorAll('tr.patFuncHeaders')[0].appendChild(buttonTh);
+    const patFuncHeaderTrs = accountPageContent.querySelectorAll('tr.patFuncHeaders');
+    if (patFuncHeaderTrs && patFuncHeaderTrs.length) patFuncHeaderTrs[0].appendChild(buttonTh);
 
     accountPageContent.querySelectorAll('th').forEach((th) => {
       const { textContent } = th;
