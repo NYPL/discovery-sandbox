@@ -3,7 +3,7 @@ import axios from 'axios';
 
 import appConfig from '../data/appConfig';
 
-const makeRequest = (
+export const makeRequest = (
   updateAccountHtml,
   patronId,
   body,
@@ -12,6 +12,7 @@ const makeRequest = (
 ) => {
   const url = `${appConfig.baseUrl}/api/account/${contentType}`;
   setIsLoading(true);
+
   return axios.post(url, body)
     .then((res) => {
       const { data } = res;
@@ -27,21 +28,23 @@ const makeRequest = (
     .finally(() => setIsLoading(false));
 };
 
-const buildReqBody = (content, itemObj, locationData) => {
+export const buildReqBody = (content, itemObj, locationData = {}) => {
   switch (content) {
     case 'items':
       return { ...itemObj, renewsome: 'YES' };
     case 'holds':
-      return Object.assign(itemObj, {
+      return {
+        ...itemObj,
         updateholdssome: 'YES',
         currentsortorder: 'current_pickup',
-      }, locationData);
+        ...locationData,
+      };
     default:
       return itemObj;
   }
 };
 
-const manipulateAccountPage = (
+export const manipulateAccountPage = (
   accountPageContent,
   updateAccountHtml,
   patron,
@@ -137,7 +140,6 @@ const manipulateAccountPage = (
         ));
       };
       if (button.textContent === 'Cancel') {
-        console.log('Cancel button');
         const title = el.querySelectorAll('.patFuncTitleMain')[0].textContent;
         button.addEventListener('click', (e) => {
           e.preventDefault();
@@ -219,5 +221,3 @@ const manipulateAccountPage = (
   setIsLoading(false);
   return eventListeners;
 };
-
-export default manipulateAccountPage;
