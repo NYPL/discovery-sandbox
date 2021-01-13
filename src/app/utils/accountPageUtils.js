@@ -61,118 +61,120 @@ export const manipulateAccountPage = (
   );
 
   const eventListeners = [];
-  // all <inputs> of type 'submit' are removed
-  const submits = accountPageContent.querySelectorAll('input[type=submit]');
-  submits.forEach(submit => submit.remove());
+  if (['items', 'holds'].includes(contentType)) {
+    // all <inputs> of type 'submit' are removed
+    const submits = accountPageContent.querySelectorAll('input[type=submit]');
+    submits.forEach(submit => submit.remove());
 
-  // use 'patFuncEntry' class to access items (checkouts or holds)
-  const items = accountPageContent.querySelectorAll('.patFuncEntry') || [];
+    // use 'patFuncEntry' class to access items (checkouts or holds)
+    const items = accountPageContent.querySelectorAll('.patFuncEntry') || [];
 
-  const buttonTh = document.createElement('th');
-  buttonTh.classList.add('patFuncHeaders');
-  if (contentType === 'holds') buttonTh.textContent = 'Cancel/Freeze';
-  accountPageContent.querySelectorAll('tr.patFuncHeaders')[0].appendChild(buttonTh);
+    const buttonTh = document.createElement('th');
+    buttonTh.classList.add('patFuncHeaders');
+    if (contentType === 'holds') buttonTh.textContent = 'Cancel/Freeze';
+    accountPageContent.querySelectorAll('tr.patFuncHeaders')[0].appendChild(buttonTh);
 
-  accountPageContent.querySelectorAll('th').forEach((th) => {
-    const { textContent } = th;
-    // this "Ratings" feature is in the html, but is not in use
-    if (textContent.trim() === 'CANCEL' || ['Ratings', 'RENEW', 'FREEZE'].find(text => textContent.includes(text))) {
-      th.remove();
-      return;
-    }
-    th.textContent = th.textContent.toLowerCase();
-    // change th that originally says '{x} ITEMS CHECKED OUT'
-    if (th.textContent.includes('checked')) {
-      const length = items.length;
-      th.textContent = `Checkouts - ${length || 'No'} item${length !== 1 ? 's' : ''}`;
-    }
-
-    if (th.textContent.includes('holds')) {
-      const length = items.length;
-      th.textContent = `Holds - ${length || 'No'} item${length !== 1 ? 's' : ''}`;
-    }
-  });
-
-  items.forEach((el) => {
-    const locationData = {};
-    if (contentType === 'holds') {
-      const locationSelect = el.getElementsByTagName('select')[0];
-      if (locationSelect) {
-        const locationProp = locationSelect.name;
-        let locationValue;
-        el.querySelectorAll('option').forEach((option) => {
-          if (option.selected) locationValue = `${option.value.trim()}+++`;
-        });
-        locationData[locationProp] = locationValue;
-        const locationChangeCb = (e) => {
-          locationData[locationProp] = e.target.value.replace('+++', '');
-          eventListenerCb(buildReqBody(contentType, {}, locationData));
-        };
-        locationSelect.addEventListener('change', locationChangeCb);
-        eventListeners.push({ element: locationSelect, cb: locationChangeCb });
+    accountPageContent.querySelectorAll('th').forEach((th) => {
+      const { textContent } = th;
+      // this "Ratings" feature is in the html, but is not in use
+      if (textContent.trim() === 'CANCEL' || ['Ratings', 'RENEW', 'FREEZE'].find(text => textContent.includes(text))) {
+        th.remove();
+        return;
       }
-    }
-    const inputs = el.querySelectorAll('input');
-    const buttons = [];
-    const removeTd = (element) => {
-      if (element.tagName === 'TD') {
-        element.remove();
-      } else {
-        removeTd(element.parentElement);
+      th.textContent = th.textContent.toLowerCase();
+      // change th that originally says '{x} ITEMS CHECKED OUT'
+      if (th.textContent.includes('checked')) {
+        const length = items.length;
+        th.textContent = `Checkouts - ${length || 'No'} item${length !== 1 ? 's' : ''}`;
       }
-    };
-    inputs.forEach((input) => {
-      const button = document.createElement('button');
-      button.name = input.name;
-      button.value = input.value;
-      button.textContent = ['Renew', 'Freeze', 'Cancel'].find(text => input.name.includes(text.toLowerCase()));
-      if (input.checked && button.textContent === 'Freeze') {
-        button.textContent = 'Unfreeze';
-        input.value = 'off';
+
+      if (th.textContent.includes('holds')) {
+        const length = items.length;
+        th.textContent = `Holds - ${length || 'No'} item${length !== 1 ? 's' : ''}`;
       }
-      button.className = 'button button--outline';
-      const eventCb = (e) => {
-        e.preventDefault();
-        eventListenerCb(buildReqBody(
-          contentType,
-          { [input.name]: input.value },
-          locationData,
-        ));
-      };
-      if (button.textContent === 'Cancel') {
-        const title = el.querySelectorAll('.patFuncTitleMain')[0].textContent;
-        button.addEventListener('click', (e) => {
-          e.preventDefault();
-          setItemToCancel({
-            name: input.name,
-            value: input.value,
-            title,
+    });
+
+    items.forEach((el) => {
+      const locationData = {};
+      if (contentType === 'holds') {
+        const locationSelect = el.getElementsByTagName('select')[0];
+        if (locationSelect) {
+          const locationProp = locationSelect.name;
+          let locationValue;
+          el.querySelectorAll('option').forEach((option) => {
+            if (option.selected) locationValue = `${option.value.trim()}+++`;
           });
-        });
-      } else {
-        button.addEventListener('click', eventCb);
+          locationData[locationProp] = locationValue;
+          const locationChangeCb = (e) => {
+            locationData[locationProp] = e.target.value.replace('+++', '');
+            eventListenerCb(buildReqBody(contentType, {}, locationData));
+          };
+          locationSelect.addEventListener('change', locationChangeCb);
+          eventListeners.push({ element: locationSelect, cb: locationChangeCb });
+        }
       }
-      buttons.push(button);
-      removeTd(input);
-      eventListeners.push({ element: button, cb: eventCb });
-    });
+      const inputs = el.querySelectorAll('input');
+      const buttons = [];
+      const removeTd = (element) => {
+        if (element.tagName === 'TD') {
+          element.remove();
+        } else {
+          removeTd(element.parentElement);
+        }
+      };
+      inputs.forEach((input) => {
+        const button = document.createElement('button');
+        button.name = input.name;
+        button.value = input.value;
+        button.textContent = ['Renew', 'Freeze', 'Cancel'].find(text => input.name.includes(text.toLowerCase()));
+        if (input.checked && button.textContent === 'Freeze') {
+          button.textContent = 'Unfreeze';
+          input.value = 'off';
+        }
+        button.className = 'button button--outline';
+        const eventCb = (e) => {
+          e.preventDefault();
+          eventListenerCb(buildReqBody(
+            contentType,
+            { [input.name]: input.value },
+            locationData,
+          ));
+        };
+        if (button.textContent === 'Cancel') {
+          const title = el.querySelectorAll('.patFuncTitleMain')[0].textContent;
+          button.addEventListener('click', (e) => {
+            e.preventDefault();
+            setItemToCancel({
+              name: input.name,
+              value: input.value,
+              title,
+            });
+          });
+        } else {
+          button.addEventListener('click', eventCb);
+        }
+        buttons.push(button);
+        removeTd(input);
+        eventListeners.push({ element: button, cb: eventCb });
+      });
 
-    // add new TD with account page button(s)
-    const td = document.createElement('td');
-    td.classList.add('account-table-buttons');
-    buttons.forEach((button) => {
-      td.appendChild(button);
+      // add new TD with account page button(s)
+      const td = document.createElement('td');
+      td.classList.add('account-table-buttons');
+      buttons.forEach((button) => {
+        td.appendChild(button);
+      });
+      el.appendChild(td);
+      const freezeCells = el.querySelectorAll('.patFuncFreeze');
+      if (freezeCells) freezeCells.forEach(cell => cell.remove());
     });
-    el.appendChild(td);
-    const freezeCells = el.querySelectorAll('.patFuncFreeze');
-    if (freezeCells) freezeCells.forEach(cell => cell.remove());
-  });
-  accountPageContent.querySelectorAll('.patFuncRating').forEach(el => el.remove());
+    accountPageContent.querySelectorAll('.patFuncRating').forEach(el => el.remove());
 
-  const errorMessageEls = accountPageContent.getElementsByClassName('errormessage');
-  if (errorMessageEls.length) {
-    // in original HTML this is `hidden`
-    errorMessageEls[0].style.display = 'block';
+    const errorMessageEls = accountPageContent.getElementsByClassName('errormessage');
+    if (errorMessageEls.length) {
+      // in original HTML this is `hidden`
+      errorMessageEls[0].style.display = 'block';
+    }
   }
 
   // there are two "Renew All" buttons
