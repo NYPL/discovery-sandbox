@@ -47,6 +47,7 @@ const manipulateAccountPage = (
   patron,
   contentType,
   setIsLoading,
+  setItemToCancel,
 ) => {
   const eventListenerCb = body => makeRequest(
     updateAccountHtml,
@@ -135,7 +136,20 @@ const manipulateAccountPage = (
           locationData,
         ));
       };
-      button.addEventListener('click', eventCb);
+      if (button.textContent === 'Cancel') {
+        console.log('Cancel button');
+        const title = el.querySelectorAll('.patFuncTitleMain')[0].textContent;
+        button.addEventListener('click', (e) => {
+          e.preventDefault();
+          setItemToCancel({
+            name: input.name,
+            value: input.value,
+            title,
+          });
+        });
+      } else {
+        button.addEventListener('click', eventCb);
+      }
       buttons.push(button);
       removeTd(input);
       eventListeners.push({ element: button, cb: eventCb });

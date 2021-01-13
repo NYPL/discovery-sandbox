@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 
-import { SkeletonLoader } from '@nypl/design-system-react-components';
+import { SkeletonLoader, Modal, Button, ButtonTypes } from '@nypl/design-system-react-components';
 
 import appConfig from '../../data/appConfig';
 import manipulateAccountPage from '../../utils/accountPageUtils';
@@ -24,6 +24,7 @@ const AccountPage = (props) => {
   });
 
   const [isLoading, setIsLoading] = useState(true);
+  const [itemToCancel, setItemToCancel] = useState(null);
 
   useEffect(() => {
     if (!patron.id) {
@@ -42,6 +43,7 @@ const AccountPage = (props) => {
         patron,
         content,
         setIsLoading,
+        setItemToCancel,
       );
 
       return () => {
@@ -55,6 +57,10 @@ const AccountPage = (props) => {
   }, [accountHtml]);
 
   const { baseUrl } = appConfig;
+
+  const cancelItem = () => {
+    
+  }
 
   return (
     <div className="nypl-full-width-wrapper drbb-integration nypl-patron-page nypl-ds">
@@ -80,6 +86,22 @@ const AccountPage = (props) => {
       >Change Pin
       </a>
       <hr />
+      {itemToCancel ? (
+        <Modal>
+          <div>
+            <p>You requested <span>canceling</span> of following item:</p>
+            <p>{itemToCancel.title}</p>
+            <Button
+              buttonType={ButtonTypes.Secondary}
+              onClick={() => setItemToCancel(null)}
+            >Back</Button>
+            <Button
+              buttonType={ButtonTypes.Primary}
+              onClick{cancelItem}
+            >Confirm</Button>
+          </div>
+        </Modal>
+      ) : null}
       {isLoading ? <SkeletonLoader /> : ''}
       {
         typeof accountHtml === 'string' ? (

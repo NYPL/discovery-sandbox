@@ -65,4 +65,26 @@
     background-color: #F5F5F5;
     width: 100%;
   }
+
+  .modal {
+    background-color: rgba(153, 153, 153, 0.8);;
+
+    div {
+      background-color: #F9F8F7;
+      height: 219px;
+      margin: auto;
+      opacity: 100%;
+      padding: 71px 54px 0;
+      text-align: center;
+      width: 472px;
+    }
+
+    span {
+      font-weight: 700;
+    }
+
+    p:nth-child(2) {
+      font-weight: 500;
+    }
+  }
 }
