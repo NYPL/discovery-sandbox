@@ -64,7 +64,12 @@ const manipulateAccountPage = (
   // use 'patFuncEntry' class to access items (checkouts or holds)
   const items = accountPageContent.querySelectorAll('.patFuncEntry') || [];
 
-  accountPageContent.getElementsByTagName('th').forEach((th) => {
+  const buttonTh = document.createElement('th');
+  buttonTh.classList.add('patFuncHeaders');
+  if (contentType === 'holds') buttonTh.textContent = 'Cancel/Freeze';
+  accountPageContent.querySelectorAll('tr.patFuncHeaders')[0].appendChild(buttonTh);
+
+  accountPageContent.querySelectorAll('th').forEach((th) => {
     const { textContent } = th;
     // this "Ratings" feature is in the html, but is not in use
     if (textContent.trim() === 'CANCEL' || ['Ratings', 'RENEW', 'FREEZE'].find(text => textContent.includes(text))) {
@@ -77,27 +82,32 @@ const manipulateAccountPage = (
       const length = items.length;
       th.textContent = `Checkouts - ${length || 'No'} item${length !== 1 ? 's' : ''}`;
     }
+
+    if (th.textContent.includes('holds')) {
+      const length = items.length;
+      th.textContent = `Holds - ${length || 'No'} item${length !== 1 ? 's' : ''}`;
+    }
   });
 
   items.forEach((el) => {
     const locationData = {};
     if (contentType === 'holds') {
       const locationSelect = el.getElementsByTagName('select')[0];
-      if (!locationSelect) return;
-      const locationProp = locationSelect.name;
-      let locationValue;
-      el.querySelectorAll('option').forEach((option) => {
-        if (option.selected) locationValue = `${option.value.trim()}+++`;
-      });
-      locationData[locationProp] = locationValue;
-      const locationChangeCb = (e) => {
-        locationData[locationProp] = e.target.value.replace('+++', '');
-        eventListenerCb(buildReqBody(contentType, {}, locationData));
-      };
-      locationSelect.addEventListener('change', locationChangeCb);
-      eventListeners.push({ element: locationSelect, cb: locationChangeCb });
+      if (locationSelect) {
+        const locationProp = locationSelect.name;
+        let locationValue;
+        el.querySelectorAll('option').forEach((option) => {
+          if (option.selected) locationValue = `${option.value.trim()}+++`;
+        });
+        locationData[locationProp] = locationValue;
+        const locationChangeCb = (e) => {
+          locationData[locationProp] = e.target.value.replace('+++', '');
+          eventListenerCb(buildReqBody(contentType, {}, locationData));
+        };
+        locationSelect.addEventListener('change', locationChangeCb);
+        eventListeners.push({ element: locationSelect, cb: locationChangeCb });
+      }
     }
-    // get name and value from checkbox
     const inputs = el.querySelectorAll('input');
     const buttons = [];
     const removeTd = (element) => {
@@ -116,7 +126,7 @@ const manipulateAccountPage = (
         button.textContent = 'Unfreeze';
         input.value = 'off';
       }
-      button.className = 'button button--filled';
+      button.className = 'button button--outline';
       const eventCb = (e) => {
         e.preventDefault();
         eventListenerCb(buildReqBody(
@@ -130,11 +140,16 @@ const manipulateAccountPage = (
       removeTd(input);
       eventListeners.push({ element: button, cb: eventCb });
     });
+
+    // add new TD with account page button(s)
+    const td = document.createElement('td');
+    td.classList.add('account-table-buttons');
     buttons.forEach((button) => {
-      const td = document.createElement('td');
       td.appendChild(button);
-      el.appendChild(td);
     });
+    el.appendChild(td);
+    const freezeCells = el.querySelectorAll('.patFuncFreeze');
+    if (freezeCells) freezeCells.forEach(cell => cell.remove());
   });
   accountPageContent.querySelectorAll('.patFuncRating').forEach(el => el.remove());
 
@@ -169,7 +184,7 @@ const manipulateAccountPage = (
             eventListenerCb({ renewall: 'YES' });
           };
           button.addEventListener('click', renewAllCb);
-          button.className = 'button button--filled';
+          button.className = 'button button--outline';
           link.parentElement.replaceChild(button, link);
           eventListeners.push({ element: button, cb: button });
         } else {

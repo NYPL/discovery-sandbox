@@ -63,7 +63,7 @@ const AccountPage = (props) => {
   const { baseUrl } = appConfig;
 
   return (
-    <div className="nypl-full-width-wrapper drbb-integration nypl-patron-page">
+    <div className="nypl-full-width-wrapper drbb-integration nypl-patron-page nypl-ds">
       <h2>My Account</h2>
       <div className="nypl-patron-details">
         {patron.names ? patron.names[0] : null}
