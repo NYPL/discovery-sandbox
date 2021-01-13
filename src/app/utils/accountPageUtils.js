@@ -32,10 +32,12 @@ const buildReqBody = (content, itemObj, locationData) => {
     case 'items':
       return { ...itemObj, renewsome: 'YES' };
     case 'holds':
-      return Object.assign(itemObj, {
-        updateholdssome: 'YES',
+      return {
         currentsortorder: 'current_pickup',
-      }, locationData);
+        updateholdssome: 'YES',
+        ...itemObj,
+        ...locationData,
+      };
     default:
       return itemObj;
   }

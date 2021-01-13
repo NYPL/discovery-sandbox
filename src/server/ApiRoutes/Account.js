@@ -43,9 +43,11 @@ function postToAccountPage(req, res) {
   const patronId = req.patronTokenResponse.decodedPatron.sub;
   const content = req.params.content || 'items';
   const reqBodyString = Object.keys(req.body).map(key => `${key}=${req.body[key]}`).join('&');
+
   axios.post(
     `${appConfig.legacyCatalog}/dp/patroninfo*eng~Sdefault/${patronId}/${content}`,
-    reqBodyString, {
+    reqBodyString,
+    {
       headers: {
         Cookie: req.headers.cookie,
       },
