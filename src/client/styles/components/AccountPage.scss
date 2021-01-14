@@ -75,7 +75,6 @@
       border-color: #0576D3;
     }
   }
-}
 
   button {
     display: inline-block;
@@ -87,4 +86,8 @@
     background-color: #F5F5F5;
     width: 100%;
   }
+}
+
+.loading#account-page-content {
+  display: none;
 }
