@@ -38,7 +38,7 @@ div .tabbed {
     color: $nypl-gray-brown;
     padding: 5px 8px;
     display: table-cell;
-    font-weight: 500;
+    font-weight: 300;
     text-decoration: none;
   }
 
@@ -48,6 +48,7 @@ div .tabbed {
 
   ul[role="tablist"] > li > a[aria-selected='true'] {
     color: black;
+    font-weight: 500;
   }
 
   .blank {
