@@ -6,9 +6,8 @@ import { Heading, Link, LinkTypes } from '@nypl/design-system-react-components';
 import appConfig from '../../data/appConfig';
 
 const AccountSettings = ({ patron }) => {
-  console.log('appConfig', appConfig);
   const { legacyCatalog } = appConfig;
-  console.log('patron', patron);
+
   return (
     <div className="account-settings">
       <div>
@@ -27,7 +26,7 @@ const AccountSettings = ({ patron }) => {
       <hr />
       <dl>
         <dt>Telephone</dt>
-        <dd>{patron.phones[0].number}</dd>
+        <dd>{patron.phones ? patron.phones[0].number : null}</dd>
         <dt>Email</dt>
         <dd>{patron.emails[0]}</dd>
         <dt>Preferred Pick Up Location</dt>
