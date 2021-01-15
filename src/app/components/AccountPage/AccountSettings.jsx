@@ -16,7 +16,7 @@ const AccountSettings = ({ patron }) => {
         <Link
           href={`${legacyCatalog}/patroninfo*eng~Sdefault/${patron.id}/modpinfo`}
           type={LinkTypes.Default}
-          className="edit-link"
+          className="edit-link settings"
           attributes={{
             target: '_blank',
           }}
@@ -34,11 +34,23 @@ const AccountSettings = ({ patron }) => {
         <dd>{patron.homeLibraryCode}</dd>
       </dl>
       <hr />
-      <a
-        href={`https://ilsstaff.nypl.org:443/patroninfo*eng~Sdefault/${patron.id}/newpin`}
-        target="_blank"
-      >Change Pin
-      </a>
+      <div className="pin">
+        <dl>
+          <dt>Pin</dt>
+          <dd><span>&middot;&middot;&middot;&middot;</span></dd>
+          <Link
+            href={`${legacyCatalog}/patroninfo*eng~Sdefault/${patron.id}/newpin`}
+            type={LinkTypes.Default}
+            className="edit-link"
+            attributes={{
+              target: '_blank',
+            }}
+          >
+            Edit
+          </Link>
+        </dl>
+      </div>
+      <hr />
     </div>
   );
 };

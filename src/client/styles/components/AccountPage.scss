@@ -94,9 +94,45 @@
   }
 
   .edit-link {
+    color: #0071CE;
     float: right;
-    line-height: 28px;
-    margin-top: 24px;
+    font-size: 20px;
+    font-weight: 600;
+    text-decoration: none;
+
+    &.settings {
+      line-height: 28px;
+      margin-top: 24px;
+    }
+  }
+
+  dl {
+    overflow: hidden;
+    width: 100%;
+  }
+
+  dt {
+    float: left;
+    font-weight: 600;
+    margin: 0;
+    width: 30%;
+  }
+
+  dd {
+    float: left;
+    width: 50%;
+  }
+
+  .pin {
+    dt {
+      font-size: 20px;
+    }
+
+    dd > span {
+      font-size: 29px;
+      font-weight: 600;
+      line-height: 30px;
+    }
   }
 }
 
