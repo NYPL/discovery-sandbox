@@ -88,6 +88,31 @@
   }
 }
 
+.account-settings {
+  h3 {
+    display: inline-block;
+  }
+
+  .edit-link {
+    float: right;
+    line-height: 28px;
+    margin-top: 24px;
+  }
+}
+
 .loading#account-page-content {
   display: none;
+}
+
+
+@media (max-width: 600px) {
+  .nypl-patron-page .tabbed ul[role="tablist"] {
+    &> li:last-of-type {
+      border-bottom: 1px solid #0576D3;
+    }
+
+    a {
+      text-align: initial;
+    }
+  }
 }
