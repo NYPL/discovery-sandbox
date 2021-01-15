@@ -74,6 +74,14 @@ describe('ItemFilters', () => {
       // There are three requestable items
       expect(options.filter(option => option.id === 'requestable').length).to.equal(3);
     });
+    it('should have working checkboxes', () => {
+      const itemFilter = component.find('ItemFilter').first();
+      itemFilter.find('button').simulate('click');
+      const checkbox = component.find('Checkbox').first().find('input');
+      expect(checkbox.html()).to.equal('<input class="checkbox__input" type="checkbox" aria-checked="false">');
+      checkbox.simulate('change');
+      expect(checkbox.html()).to.equal('<input class="checkbox__input" type="checkbox" aria-checked="true">');
+    });
   });
   // one filter will be a string in the router context
   describe('with valid items, one filter', () => {
