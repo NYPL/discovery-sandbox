@@ -67,7 +67,9 @@ const AccountPage = (props) => {
     <div className="nypl-full-width-wrapper drbb-integration nypl-patron-page nypl-ds">
       <Heading level={2} text="My Account" />
       <div className="nypl-patron-details">
-        {patron.names ? patron.names[0] : null}
+        <div className="name">{patron.names ? patron.names[0] : null}</div>
+        <div>{patron.barcodes ? patron.barcodes[0] : null}</div>
+        <div>Expiration Date: {patron.expirationDate}</div>
       </div>
       <LinkTabSet
         activeTab={content}
