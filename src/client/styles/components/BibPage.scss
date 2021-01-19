@@ -75,6 +75,7 @@ div .tabbed {
 
 .default {
   display: block;
+  padding-top: 15px;
 }
 
 .non-default {
@@ -84,7 +85,7 @@ div .tabbed {
 @for $i from 1 through 4 {
   #tab#{$i}:target ~ #section#{$i} {
     display: block;
-    padding: 15px 1% 0;
+    padding: 15px 0;
   }
 }
 
