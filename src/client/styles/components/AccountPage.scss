@@ -7,10 +7,6 @@
     text-transform: capitalize;
   }
 
-  td {
-    padding-right: 35px;
-  }
-
   td.account-table-buttons {
     padding-right: 0;
   }
@@ -85,6 +81,27 @@
   tr.patFuncHeaders {
     background-color: #F5F5F5;
     width: 100%;
+  }
+
+  #account-page-content:not(.overdues) {
+    td {
+      padding-right: 35px;
+    }
+  }
+
+  .patFuncFinesDetailType {
+    font-style: italic;
+    font-weight: 600;
+  }
+
+  .patFuncFinesDetailDateLabel {
+    font-weight: 600;
+  }
+
+  .patFuncFinesEntryDetail, .patFuncFinesDetailDate {
+    td:first-of-type {
+      display: none;
+    }
   }
 }
 
