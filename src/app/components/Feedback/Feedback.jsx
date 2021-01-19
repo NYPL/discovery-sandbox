@@ -51,12 +51,16 @@ class Feedback extends React.Component {
       data: {
         fields,
       },
-    }).then(() => {
+    }).then((res) => {
+      if (res.data.error) {
+        console.error(res.data.error);
+        return;
+      };
       this.setState({
         fields: initialFields(),
         success: true,
       });
-    }).catch(console.error);
+    }).catch(error => console.log('Feedback error', error));
   }
 
   toggleForm() {
