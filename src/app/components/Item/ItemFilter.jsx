@@ -121,6 +121,7 @@ const ItemFilter = ({
                   }}
                   onChange={() => handleCheckbox(option)}
                   key={option.id || i}
+                  checkboxId={option.id}
                   checked={isSelected(option)}
                 />
               ))}
