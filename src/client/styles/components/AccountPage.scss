@@ -55,6 +55,27 @@
     }
   }
 
+  .tabbed {
+    a {
+      width: 165px;
+      text-align: center;
+    }
+  }
+
+  .tabbed ul[role="tablist"] {
+    &> li {
+      border-color: #0576D3;
+    }
+
+    &> li > a[aria-selected='true'] {
+      color: #0576D3;
+    }
+
+    &> li.activeTab {
+      border-color: #0576D3;
+    }
+  }
+
   button {
     display: inline-block;
     font-size: 14px;
@@ -99,4 +120,7 @@
   button {
     width: 153px;
   }
+
+.loading#account-page-content {
+  display: none;
 }
