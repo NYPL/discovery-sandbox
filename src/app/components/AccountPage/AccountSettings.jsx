@@ -26,11 +26,11 @@ const AccountSettings = ({ patron }) => {
       <hr />
       <dl>
         <dt>Telephone</dt>
-        <dd>{patron.phones ? patron.phones[0].number : null}</dd>
+        <dd>{!patron.phones ? patron.phones[0].number : <>&nbsp;</>}</dd>
         <dt>Email</dt>
-        <dd>{patron.emails[0]}</dd>
+        <dd>{patron.emails ? patron.emails[0] : <>&nbsp;</>}</dd>
         <dt>Preferred Pick Up Location</dt>
-        <dd>{patron.homeLibraryCode}</dd>
+        <dd>{patron.homeLibraryCode || <>&nbsp;</>}</dd>
       </dl>
       <hr />
       <div className="pin">
