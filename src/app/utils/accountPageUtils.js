@@ -178,6 +178,15 @@ export const manipulateAccountPage = (
     }
   }
 
+  if (contentType === 'overdues') {
+    accountPageContent.querySelectorAll('td').forEach((td) => {
+      if (td.hasAttribute('colspan')) td.removeAttribute('colspan');
+      if (td.classList.contains('patFuncFinesEntryTitle')) {
+        td.setAttribute('colspan', 2);
+      }
+    });
+  }
+
   // there are two "Renew All" buttons
   // we just want the first one
   let isFirstRenewAll = true;

@@ -103,6 +103,36 @@
       display: none;
     }
   }
+
+  tr.patFuncFinesEntryTitle {
+    border-top: solid 1px #C4C4C4;
+  }
+
+  td.patFuncFinesEntryTitle {
+    padding-right: 50%;
+  }
+
+  .patFuncFinesDetailDate {
+    text-align: right;
+  }
+
+  .patFuncFinesDetailDateLabel {
+    text-align: left;
+  }
+
+  @media (min-width: 920px) {
+    .overdues {
+      table {
+        min-width: 846px;
+      }
+    }
+  }
+
+  .overdues {
+    th {
+      padding-bottom: var(--space-l);
+    }
+  }
 }
 
 .scc-modal {
