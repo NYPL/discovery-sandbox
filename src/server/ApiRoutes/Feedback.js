@@ -60,6 +60,6 @@ export default {
 
     return sendPromise
       .then(data => res.json(data))
-      .catch(err => console.error(err, err.stack));
+      .catch(error => res.json({ error }));
   },
 };
