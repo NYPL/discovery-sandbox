@@ -3,12 +3,12 @@ import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import { SkeletonLoader } from '@nypl/design-system-react-components';
+import { SkeletonLoader, Button, ButtonTypes } from '@nypl/design-system-react-components';
 
 import LinkTabSet from './LinkTabSet';
 
 import appConfig from '../../data/appConfig';
-import manipulateAccountPage from '../../utils/accountPageUtils';
+import { manipulateAccountPage, makeRequest, buildReqBody } from '../../utils/accountPageUtils';
 
 
 const AccountPage = (props) => {
@@ -26,6 +26,7 @@ const AccountPage = (props) => {
   });
 
   const [isLoading, setIsLoading] = useState(true);
+  const [itemToCancel, setItemToCancel] = useState(null);
 
   useEffect(() => {
     if (!patron.id) {
@@ -48,6 +49,7 @@ const AccountPage = (props) => {
         patron,
         content,
         setIsLoading,
+        setItemToCancel,
       );
 
       return () => {
@@ -62,12 +64,48 @@ const AccountPage = (props) => {
 
   const { baseUrl } = appConfig;
 
+  const cancelItem = () => {
+    const body = buildReqBody(content, {
+      currentsortorder: 'current_pickup',
+      updateholdssome: 'YES',
+      [itemToCancel.name]: itemToCancel.value,
+    });
+
+    makeRequest(
+      updateAccountHtml,
+      patron.id,
+      body,
+      content,
+      setIsLoading,
+    );
+
+    setItemToCancel(null);
+  };
+
   return (
     <div className="nypl-full-width-wrapper drbb-integration nypl-patron-page nypl-ds">
       <h2>My Account</h2>
       <div className="nypl-patron-details">
         {patron.names ? patron.names[0] : null}
       </div>
+      {itemToCancel ? (
+        <div className="scc-modal">
+          <div>
+            <p>You requested <span>canceling</span> of following item:</p>
+            <p>{itemToCancel.title}</p>
+            <Button
+              buttonType={ButtonTypes.Secondary}
+              onClick={() => setItemToCancel(null)}
+            >Back
+            </Button>
+            <Button
+              buttonType={ButtonTypes.Primary}
+              onClick={cancelItem}
+            >Confirm
+            </Button>
+          </div>
+        </div>
+      ) : null}
       <LinkTabSet
         activeTab={content}
         tabs={[
