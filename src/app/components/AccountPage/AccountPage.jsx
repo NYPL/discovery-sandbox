@@ -11,6 +11,7 @@ import {
   Hero,
   HeroTypes,
   Heading,
+  Link,
 } from '@nypl/design-system-react-components';
 
 import LinkTabSet from './LinkTabSet';
@@ -103,18 +104,16 @@ const AccountPage = (props) => {
         heroType={HeroTypes.Secondary}
         heading={(
           <>
-            <div>
-              <Heading
-                level={1}
-                id={"1"}
-                text="Research Catalog"
-              />
-            </div>
-            <div className="sub-nav">
-              <a>Search</a>|
-              <a>Subject Heading Explorer</a>|
-              <a>My Account</a>
-            </div>
+            <Heading
+              level={1}
+              id={"1"}
+              text="Research Catalog"
+            />
+            <nav className="sub-nav">
+              <Link href="#">Search</Link>|
+              <Link href="#">Subject Heading Explorer</Link>|
+              <Link href="#">My Account</Link>
+            </nav>
           </>
         )}
         section="nypl--research"
