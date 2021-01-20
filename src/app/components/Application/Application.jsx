@@ -28,7 +28,6 @@ export class Application extends React.Component {
     this.state = {
       media: 'desktop',
     };
-    this.submitFeedback = this.submitFeedback.bind(this);
 
     const urlEnabledFeatures = query.features ? query.features.split(',') : null;
     if (urlEnabledFeatures) {
@@ -72,14 +71,6 @@ export class Application extends React.Component {
     if (media !== newMedia) this.setState({ media: newMedia });
   }
 
-  submitFeedback(callback, e) {
-    e.preventDefault();
-    const { pathname, hash, search } = this.context.router.location;
-    const currentURL = `${pathname}${hash}${search}`;
-
-    callback(currentURL);
-  }
-
   render() {
     // dataLocation is passed as a key to DataLoader to ensure it reloads
     // whenever the location changes.
@@ -112,7 +103,7 @@ export class Application extends React.Component {
               {React.cloneElement(this.props.children)}
             </DataLoader>
             <Footer />
-            <Feedback submit={this.submitFeedback} />
+            <Feedback />
           </div>
         </DocumentTitle>
       </MediaContext.Provider>

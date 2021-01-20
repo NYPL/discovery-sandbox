@@ -58,13 +58,13 @@ const appConfig = {
   },
   features: extractFeatures(process.env.FEATURES),
   generalResearchEmail: process.env.GENERAL_RESEARCH_EMAIL,
-  airtableApiKey: process.env.AIRTABLE_API_KEY,
-  feedbackFormUrl: process.env.FEEDBACK_FORM_URL,
   eddAboutUrl: {
     onSiteEdd: 'https://www.nypl.org/research/scan-and-deliver',
     default: 'https://www.nypl.org/help/request-research-materials#EDD',
   },
   legacyCatalog: process.env.LEGACY_CATALOG_BASE_URL,
+  sourceEmail: process.env.SOURCE_EMAIL,
+  libAnswersEmail: process.env.LIB_ANSWERS_EMAIL,
 };
 
 export default appConfig;
