@@ -128,11 +128,6 @@ const AccountPage = (props) => {
             content: 'overdues',
           },
           {
-            label: 'Messages',
-            link: `${baseUrl}/account/msg`,
-            content: 'msg',
-          },
-          {
             label: 'Account Settings',
             link: `${baseUrl}/account/settings`,
             content: 'settings',

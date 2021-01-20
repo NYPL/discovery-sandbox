@@ -514,6 +514,16 @@ const hasValidFilters = (selectedFilters) => {
   return Object.values(selectedFilters || {}).some((v) => Array.isArray(v) ? v.length > 0 : v );
 };
 
+
+/**
+ * encodeHTML(str, maxLength)
+ * Return a version of the string sanitized to protect against XSS.
+ * @param {string} str - The string to be sanitized
+ */
+function encodeHTML(str) {
+  return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;');
+}
+
 export {
   trackDiscovery,
   ajaxCall,
@@ -532,4 +542,5 @@ export {
   truncateStringOnWhitespace,
   isOptionSelected,
   hasValidFilters,
+  encodeHTML,
 };
