@@ -110,6 +110,7 @@
 
   td.patFuncFinesEntryTitle {
     padding-right: 50%;
+    padding-top: var(--space-m);
   }
 
   .patFuncFinesDetailDate {
@@ -118,6 +119,12 @@
 
   .patFuncFinesDetailDateLabel {
     text-align: left;
+  }
+
+  tr:nth-of-type(5n + 7) {
+    .patFuncFinesDetailDateLabel, .patFuncFinesDetailDate {
+      padding-bottom: var(--space-m);
+    }
   }
 
   @media (min-width: 920px) {
@@ -131,6 +138,10 @@
   .overdues {
     th {
       padding-bottom: var(--space-l);
+    }
+
+    br {
+      display: none;
     }
   }
 }
