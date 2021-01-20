@@ -108,6 +108,10 @@
     border-top: solid 1px #C4C4C4;
   }
 
+  td {
+    padding-top: var(--space-xs);
+  }
+
   td.patFuncFinesEntryTitle {
     padding-right: 50%;
     padding-top: var(--space-m);
@@ -115,6 +119,11 @@
 
   .patFuncFinesDetailDate {
     text-align: right;
+    padding-right: 24%;
+  }
+
+  .patFuncFinesDetailAmt {
+    padding-right: 9%;
   }
 
   .patFuncFinesDetailDateLabel {
@@ -125,6 +134,10 @@
     .patFuncFinesDetailDateLabel, .patFuncFinesDetailDate {
       padding-bottom: var(--space-m);
     }
+  }
+
+  tr:nth-last-of-type(2), tr:nth-last-of-type(3) {
+    border-bottom: solid 1px #C4C4C4;
   }
 
   @media (min-width: 920px) {
