@@ -7,7 +7,10 @@ import appConfig from '../../app/data/appConfig';
 function fetchAccountPage(req, res, resolve) {
   const requireUser = User.requireUser(req, res);
   const { redirect } = requireUser;
-  if (redirect) resolve({ redirect });
+  if (redirect) {
+    resolve({ redirect });
+    return;
+  }
 
   const patronId = req.patronTokenResponse.decodedPatron.sub;
   const content = req.params.content || 'items';
