@@ -10,10 +10,6 @@
     text-transform: capitalize;
   }
 
-  td {
-    padding-right: 35px;
-  }
-
   td.account-table-buttons {
     padding-right: 0;
   }
@@ -144,6 +140,81 @@
       font-size: 29px;
       font-weight: 600;
       line-height: 30px;
+    }
+  }
+
+  #account-page-content:not(.overdues) {
+    td {
+      padding-right: 35px;
+    }
+  }
+
+  .patFuncFinesDetailType {
+    font-style: italic;
+    font-weight: 600;
+  }
+
+  .patFuncFinesDetailDateLabel {
+    font-weight: 600;
+  }
+
+  .patFuncFinesEntryDetail, .patFuncFinesDetailDate {
+    td:first-of-type {
+      display: none;
+    }
+  }
+
+  tr.patFuncFinesEntryTitle {
+    border-top: solid 1px #C4C4C4;
+  }
+
+  td {
+    padding-top: var(--space-xs);
+  }
+
+  td.patFuncFinesEntryTitle {
+    padding-right: 50%;
+    padding-top: var(--space-m);
+  }
+
+  .patFuncFinesDetailDate {
+    text-align: right;
+    padding-right: 24%;
+  }
+
+  .patFuncFinesDetailAmt {
+    padding-right: 9%;
+  }
+
+  .patFuncFinesDetailDateLabel {
+    text-align: left;
+  }
+
+  tr:nth-of-type(5n + 7) {
+    .patFuncFinesDetailDateLabel, .patFuncFinesDetailDate {
+      padding-bottom: var(--space-m);
+    }
+  }
+
+  tr:nth-last-of-type(2), tr:nth-last-of-type(3) {
+    border-bottom: solid 1px #C4C4C4;
+  }
+
+  @media (min-width: 920px) {
+    .overdues {
+      table {
+        min-width: 846px;
+      }
+    }
+  }
+
+  .overdues {
+    th {
+      padding-bottom: var(--space-l);
+    }
+
+    br {
+      display: none;
     }
   }
 }
