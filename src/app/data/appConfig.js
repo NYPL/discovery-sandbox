@@ -22,6 +22,7 @@ const appConfig = {
   },
   classicCatalog: process.env.CLASSIC_CATALOG,
   shepApi: process.env.SHEP_API,
+  legacyCatalog: process.env.LEGACY_CATALOG_BASE_URL || 'https://ilsstaff.nypl.org:443',
   loginUrl: process.env.LOGIN_URL || 'https://login.nypl.org/auth/login',
   tokenUrl: 'https://isso.nypl.org/',
   publicKey:

@@ -31,16 +31,29 @@ export function getPatronData(req, res, next) {
 
               dispatch(updatePatronData(patron));
             } else {
+              const {
+                id,
+                names,
+                emails,
+                moneyOwed,
+                homeLibraryCode,
+                patronType,
+                expirationDate,
+                phones,
+              } = response.data;
+              const barcodes = response.data.barCodes;
               // Data exists for the Patron
               const patron = {
-                id: response.data.id,
-                names: response.data.names,
-                barcodes: response.data.barCodes,
-                emails: response.data.emails,
+                id,
+                names,
+                barcodes,
+                emails,
                 loggedIn: true,
-                moneyOwed: response.data.moneyOwed,
-                homeLibraryCode: response.data.homeLibraryCode,
-                patronType: response.data.patronType,
+                moneyOwed,
+                homeLibraryCode,
+                patronType,
+                expirationDate,
+                phones,
               };
 
               dispatch(updatePatronData(patron));

@@ -3,9 +3,10 @@ import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import { SkeletonLoader, Button, ButtonTypes } from '@nypl/design-system-react-components';
+import { SkeletonLoader, Heading, Button, ButtonTypes } from '@nypl/design-system-react-components';
 
 import LinkTabSet from './LinkTabSet';
+import AccountSettings from './AccountSettings';
 
 import appConfig from '../../data/appConfig';
 import { manipulateAccountPage, makeRequest, buildReqBody } from '../../utils/accountPageUtils';
@@ -39,7 +40,7 @@ const AccountPage = (props) => {
     if (content === 'settings') {
       setIsLoading(false);
       return;
-    };
+    }
     const accountPageContent = document.getElementById('account-page-content');
 
     if (accountPageContent) {
@@ -84,9 +85,11 @@ const AccountPage = (props) => {
 
   return (
     <div className="nypl-full-width-wrapper drbb-integration nypl-patron-page nypl-ds">
-      <h2>My Account</h2>
+      <Heading level={2} text="My Account" />
       <div className="nypl-patron-details">
-        {patron.names ? patron.names[0] : null}
+        <div className="name">{patron.names ? patron.names[0] : null}</div>
+        <div>{patron.barcodes ? patron.barcodes[0] : null}</div>
+        <div>Expiration Date: {patron.expirationDate}</div>
       </div>
       {itemToCancel ? (
         <div className="scc-modal">
@@ -133,7 +136,7 @@ const AccountPage = (props) => {
       />
       {isLoading ? <SkeletonLoader /> : ''}
       {
-        typeof accountHtml === 'string' ? (
+        typeof accountHtml === 'string' && content !== 'settings' ? (
           <div
             dangerouslySetInnerHTML={{ __html: accountHtml }}
             id="account-page-content"
@@ -143,18 +146,7 @@ const AccountPage = (props) => {
       }
       {
         content === 'settings' ? (
-          <>
-            <a
-              href={`https://ilsstaff.nypl.org:443/patroninfo*eng~Sdefault/${patron.id}/modpinfo`}
-              target="_blank"
-            >My Settings
-            </a>
-            <a
-              href={`https://ilsstaff.nypl.org:443/patroninfo*eng~Sdefault/${patron.id}/newpin`}
-              target="_blank"
-            >Change Pin
-            </a>
-          </>
+          <AccountSettings patron={patron} />
         ) : null
       }
     </div>
