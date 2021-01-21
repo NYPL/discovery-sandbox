@@ -8,14 +8,14 @@ import { SkeletonLoader, Heading, Button, ButtonTypes } from '@nypl/design-syste
 import LinkTabSet from './LinkTabSet';
 import AccountSettings from './AccountSettings';
 
-import appConfig from '../../data/appConfig';
 import { manipulateAccountPage, makeRequest, buildReqBody } from '../../utils/accountPageUtils';
 
 
 const AccountPage = (props) => {
-  const { patron, accountHtml } = useSelector(state => ({
+  const { patron, accountHtml, appConfig } = useSelector(state => ({
     patron: state.patron,
     accountHtml: state.accountHtml,
+    appConfig: state.appConfig,
   }));
 
   const content = props.params.content || 'items';
@@ -134,7 +134,7 @@ const AccountPage = (props) => {
           },
         ]}
       />
-      {isLoading ? <SkeletonLoader /> : ''}
+      {isLoading && content !== 'settings' ? <SkeletonLoader /> : ''}
       {
         typeof accountHtml === 'string' && content !== 'settings' ? (
           <div
@@ -146,7 +146,10 @@ const AccountPage = (props) => {
       }
       {
         content === 'settings' ? (
-          <AccountSettings patron={patron} />
+          <AccountSettings
+            patron={patron}
+            legacyCatalog={appConfig.legacyCatalog}
+          />
         ) : null
       }
     </div>
