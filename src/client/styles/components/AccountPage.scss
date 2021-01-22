@@ -1,14 +1,13 @@
 .nypl-patron-page {
+  h2 {
+    font-size: var(--font-size-3)
+  }
   ul {
     list-style: none;
   }
 
   th {
     text-transform: capitalize;
-  }
-
-  td {
-    padding-right: 35px;
   }
 
   td.account-table-buttons {
@@ -56,6 +55,8 @@
   }
 
   .tabbed {
+    padding-top: var(--space-xl);
+
     a {
       width: 165px;
       text-align: center;
@@ -85,6 +86,141 @@
   tr.patFuncHeaders {
     background-color: #F5F5F5;
     width: 100%;
+  }
+
+  .nypl-patron-details {
+    font-size: var(--font-size-2);
+    &> .name {
+      font-size: 1.625rem;
+    }
+  }
+
+  #account-page-content:not(.overdues) {
+    td {
+      padding-right: 35px;
+    }
+  }
+
+  .patFuncFinesDetailType {
+    font-style: italic;
+    font-weight: 600;
+  }
+
+  .patFuncFinesDetailDateLabel {
+    font-weight: 600;
+  }
+
+  .patFuncFinesEntryDetail, .patFuncFinesDetailDate {
+    td:first-of-type {
+      display: none;
+    }
+  }
+
+  tr.patFuncFinesEntryTitle {
+    border-top: solid 1px #C4C4C4;
+  }
+
+  td {
+    padding-top: var(--space-xs);
+  }
+
+  td.patFuncFinesEntryTitle {
+    padding-right: 50%;
+    padding-top: var(--space-m);
+  }
+
+  .patFuncFinesDetailDate {
+    text-align: right;
+    padding-right: 24%;
+  }
+
+  .patFuncFinesDetailAmt {
+    padding-right: 9%;
+  }
+
+  .patFuncFinesDetailDateLabel {
+    text-align: left;
+  }
+
+  tr:nth-of-type(5n + 7) {
+    .patFuncFinesDetailDateLabel, .patFuncFinesDetailDate {
+      padding-bottom: var(--space-m);
+    }
+  }
+
+  @media (min-width: 920px) {
+    .overdues {
+      table {
+        min-width: 846px;
+      }
+    }
+  }
+
+  .overdues {
+    th {
+      padding-bottom: var(--space-l);
+    }
+
+    br {
+      display: none;
+    }
+
+    tr:nth-last-of-type(2), tr:nth-last-of-type(3) {
+      border-bottom: solid 1px #C4C4C4;
+    }
+  }
+
+  .items, .holds {
+    tr {
+      border-bottom: solid 1px #C4C4C4;
+    }
+  }
+}
+
+.account-settings {
+  h3 {
+    display: inline-block;
+  }
+
+  .edit-link {
+    color: #0071CE;
+    float: right;
+    font-size: 20px;
+    font-weight: 600;
+    text-decoration: none;
+
+    &.settings {
+      line-height: 28px;
+    }
+  }
+
+  dl {
+    overflow: hidden;
+    width: 100%;
+  }
+
+  dt {
+    float: left;
+    font-weight: 600;
+    margin: 0;
+    width: 30%;
+  }
+
+  dd {
+    float: left;
+    width: 50%;
+  }
+
+  .pin {
+    dt {
+      font-size: 20px;
+    }
+
+    dd > span {
+      font-size: 29px;
+      font-weight: 600;
+      line-height: 30px;
+    }
   }
 }
 
@@ -124,4 +260,17 @@
 
 .loading#account-page-content {
   display: none;
+}
+
+
+@media (max-width: 600px) {
+  .nypl-patron-page .tabbed ul[role="tablist"] {
+    &> li:last-of-type {
+      border-bottom: 1px solid #0576D3;
+    }
+
+    a {
+      text-align: initial;
+    }
+  }
 }

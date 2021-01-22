@@ -22,6 +22,7 @@ const appConfig = {
   },
   classicCatalog: process.env.CLASSIC_CATALOG,
   shepApi: process.env.SHEP_API,
+  legacyCatalog: process.env.LEGACY_CATALOG_BASE_URL,
   loginUrl: process.env.LOGIN_URL || 'https://login.nypl.org/auth/login',
   tokenUrl: 'https://isso.nypl.org/',
   publicKey:
@@ -62,7 +63,6 @@ const appConfig = {
     onSiteEdd: 'https://www.nypl.org/research/scan-and-deliver',
     default: 'https://www.nypl.org/help/request-research-materials#EDD',
   },
-  legacyCatalog: process.env.LEGACY_CATALOG_BASE_URL,
   sourceEmail: process.env.SOURCE_EMAIL,
   libAnswersEmail: process.env.LIB_ANSWERS_EMAIL,
 };

@@ -8,14 +8,14 @@ const LinkTabSet = ({ tabs, activeTab }) => (
         const isActiveTab = tab.content === activeTab;
         return (
           <li
-            id={`tab-${tab.label}`}
-            key={`tab-${tab.label}`}
+            id={`tab-${tab.content}`}
+            key={`tab-${tab.content}`}
             className={isActiveTab ? 'activeTab' : null}
             role="presentation"
           >
             <a
               href={tab.link}
-              id={`link-${tab.label}`}
+              id={`link-${tab.content}`}
               aria-selected={isActiveTab}
               role="tab"
             >{tab.label}

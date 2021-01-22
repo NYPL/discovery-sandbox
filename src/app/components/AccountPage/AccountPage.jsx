@@ -15,15 +15,16 @@ import {
 } from '@nypl/design-system-react-components';
 
 import LinkTabSet from './LinkTabSet';
+import AccountSettings from './AccountSettings';
 
-import appConfig from '../../data/appConfig';
 import { manipulateAccountPage, makeRequest, buildReqBody } from '../../utils/accountPageUtils';
 
 
 const AccountPage = (props) => {
-  const { patron, accountHtml } = useSelector(state => ({
+  const { patron, accountHtml, appConfig } = useSelector(state => ({
     patron: state.patron,
     accountHtml: state.accountHtml,
+    appConfig: state.appConfig,
   }));
 
   const content = props.params.content || 'items';
@@ -48,7 +49,7 @@ const AccountPage = (props) => {
     if (content === 'settings') {
       setIsLoading(false);
       return;
-    };
+    }
     const accountPageContent = document.getElementById('account-page-content');
 
     if (accountPageContent) {
@@ -184,18 +185,10 @@ const AccountPage = (props) => {
         }
         {
           content === 'settings' ? (
-            <>
-              <a
-                href={`https://ilsstaff.nypl.org:443/patroninfo*eng~Sdefault/${patron.id}/modpinfo`}
-                target="_blank"
-              >My Settings
-              </a>
-              <a
-                href={`https://ilsstaff.nypl.org:443/patroninfo*eng~Sdefault/${patron.id}/newpin`}
-                target="_blank"
-              >Change Pin
-              </a>
-            </>
+            <AccountSettings
+              patron={patron}
+              legacyCatalog={appConfig.legacyCatalog}
+            />
           ) : null
         }
       </div>
