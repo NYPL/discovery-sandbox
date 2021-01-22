@@ -1,11 +1,5 @@
-.nypl-patron-page {
-  h2 {
-    font-size: var(--font-size-3)
-  }
-  ul {
-    list-style: none;
-  }
-
+// scope all styles applied to fetched HTML
+#account-page-content {
   th {
     text-transform: capitalize;
   }
@@ -18,23 +12,13 @@
     display: block;
   }
 
-  .items {
-    th, td {
-      width: 20%;
-    }
-  }
-
   select {
     width: 215px;
   }
 
   td.patFuncTitle {
+    padding-left: var(--space-xxs);
     width: 29%;
-    padding-left: 10px;
-  }
-
-  .loading#account-page-content {
-    display: none;
   }
 
   th.patFuncTitle {
@@ -42,62 +26,15 @@
   }
 
   .patFuncHeaders {
-    text-align: left;
     font-weight: 600;
+    text-align: left;
 
     th:nth-child(4) {
       max-width: 130px;
     }
 
     th:nth-child(1) {
-      padding-left: 10px;
-    }
-  }
-
-  .tabbed {
-    padding-top: var(--space-xl);
-
-    a {
-      width: 165px;
-      text-align: center;
-    }
-  }
-
-  .tabbed ul[role="tablist"] {
-    &> li {
-      border-color: #0576D3;
-    }
-
-    &> li > a[aria-selected='true'] {
-      color: #0576D3;
-    }
-
-    &> li.activeTab {
-      border-color: #0576D3;
-    }
-  }
-
-  button {
-    display: inline-block;
-    font-size: 14px;
-    margin: 0 var(--space-xxs);
-  }
-
-  tr.patFuncHeaders {
-    background-color: #F5F5F5;
-    width: 100%;
-  }
-
-  .nypl-patron-details {
-    font-size: var(--font-size-2);
-    &> .name {
-      font-size: 1.625rem;
-    }
-  }
-
-  #account-page-content:not(.overdues) {
-    td {
-      padding-right: 35px;
+      padding-left: var(--space-xxs);
     }
   }
 
@@ -145,6 +82,65 @@
   tr:nth-of-type(5n + 7) {
     .patFuncFinesDetailDateLabel, .patFuncFinesDetailDate {
       padding-bottom: var(--space-m);
+    }
+  }
+
+  &.items {
+    th, td {
+      width: 20%;
+    }
+  }
+
+  &:not(.overdues) {
+    td {
+      padding-right: var(--space-l);
+    }
+  }
+}
+
+#account-page-content.loading {
+  display: none;
+}
+
+.nypl-patron-page {
+  .tabbed {
+    padding-top: var(--space-xl);
+
+    a {
+      text-align: center;
+      width: 165px;
+    }
+  }
+
+  .tabbed ul[role="tablist"] {
+    &> li {
+      border-color: var(--ui-focus);
+    }
+
+    &> li > a[aria-selected='true'] {
+      color: var(--ui-focus);
+    }
+
+    &> li.activeTab {
+      border-color: var(--ui-focus);
+    }
+  }
+
+  button {
+    display: inline-block;
+    font-size: 14px;
+    margin: 0 var(--space-xxs);
+  }
+
+  tr.patFuncHeaders {
+    background-color: var(--ui-gray-xlight);
+    width: 100%;
+  }
+
+  .nypl-patron-details {
+    font-size: var(--font-size-2);
+    &> .name {
+      font-size: var(--font-size-3);
     }
   }
 
@@ -224,23 +220,23 @@
   }
 }
 
-.scc-modal {
+.rc-modal {
   background-color: rgba(153, 153, 153, 0.8);
   height: 100vh;
   left: 0;
   overflow-y: auto;
+  padding-top: 10%;
   position: absolute;
   top: 0;
   width: 100vw;
   z-index: 999;
-  padding-top: 10%;
 
   div {
-    background-color: #F9F8F7;
+    background-color: var(--ui-gray-warm-xlight);
     height: 219px;
     margin: auto;
     opacity: 100%;
-    padding: 54px 71px 0;
+    padding: var(--space-xl) var(--space-xxl) 0;
     text-align: center;
     width: 472px;
   }
@@ -266,7 +262,7 @@
 @media (max-width: 600px) {
   .nypl-patron-page .tabbed ul[role="tablist"] {
     &> li:last-of-type {
-      border-bottom: 1px solid #0576D3;
+      border-bottom: 1px solid var(--ui-focus);
     }
 
     a {

@@ -2,38 +2,25 @@
 Build out global styles for Research Catalog
 */
 
-.layout {
-  padding: 0 var(--space-xxl);
-  .apply-brand-styles {
-    background: var(--section-research-primary);
+.apply-brand-styles {
+  background: var(--section-research-primary);
 
-    .heading {
+  .heading {
+    color: var(--ui-white);
+  }
+
+  .sub-nav {
+    color: var(--ui-white);
+    padding-bottom: var(--space-xs);
+
+    .link:not(:hover) {
       color: var(--ui-white);
-    }
-
-    .sub-nav {
-      color: var(--ui-white);
-      padding-bottom: var(--space-xs);
-
-      .link:not(:hover) {
-        color: var(--ui-white);
-        text-decoration: none;
-      }
+      text-decoration: none;
     }
   }
+}
 
-  .rc-breadcrumbs {
-    padding-left: 5%;
-    padding-right: 5%;
-  }
-
-  .rc-hero {
-    padding-left: 5%;
-    padding-right: 5%;
-  }
-
-  .page-content {
-    flex: 1 0 100%;
-    padding: var(--space-l) var(--space);
-  }
+.page-content {
+  padding-bottom: var(--space-l);
+  padding-top: var(--space-l);
 }
