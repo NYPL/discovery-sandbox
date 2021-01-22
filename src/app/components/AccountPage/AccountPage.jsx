@@ -99,7 +99,7 @@ const AccountPage = (props) => {
           { url: "https://www.nypl.org/research", text: "Research" },
           { url: appConfig.baseUrl, text: "Research Catalog" },
         ]}
-        className="breadcrumbs"
+        className="rc-breadcrumbs"
       />
       <Hero
         heroType={HeroTypes.Secondary}
@@ -112,12 +112,12 @@ const AccountPage = (props) => {
             />
             <nav className="sub-nav apply-brand-styles">
               <Link href="#">Search</Link> |&nbsp;
-              <Link href="#">Subject Heading Explorer</Link> |&nbsp; 
+              <Link href="#">Subject Heading Explorer</Link> |&nbsp;
               <Link href="#">My Account</Link>
             </nav>
           </>
         )}
-        className="apply-brand-styles hero"
+        className="apply-brand-styles rc-hero"
       />
       <div className="page-content nypl-patron-page">
         <Heading

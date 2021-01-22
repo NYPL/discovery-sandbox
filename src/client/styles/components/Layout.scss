@@ -12,6 +12,7 @@ Build out global styles for Research Catalog
     }
 
     .sub-nav {
+      color: var(--ui-white);
       padding-bottom: var(--space-xs);
 
       .link:not(:hover) {
@@ -21,18 +22,14 @@ Build out global styles for Research Catalog
     }
   }
 
-  .breadcrumbs {
+  .rc-breadcrumbs {
     padding-left: 5%;
     padding-right: 5%;
   }
 
-  .hero {
+  .rc-hero {
     padding-left: 5%;
     padding-right: 5%;
-  }
-
-  .sub-nav {
-    color: white;
   }
 
   .page-content {
