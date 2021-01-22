@@ -92,6 +92,29 @@ const AccountPage = (props) => {
     setItemToCancel(null);
   };
 
+  const tabs = [
+    {
+      label: 'Checkouts',
+      link: `${baseUrl}/account/items`,
+      content: 'items'
+    },
+    {
+      label: 'Holds',
+      link: `${baseUrl}/account/holds`,
+      content: 'holds',
+    },
+    {
+      label: `Fines${patron.moneyOwed ? ` ($${patron.moneyOwed.toFixed(2)})` : ''}`,
+      link: `${baseUrl}/account/overdues`,
+      content: 'overdues',
+    },
+    {
+      label: 'Account Settings',
+      link: `${baseUrl}/account/settings`,
+      content: 'settings',
+    },
+  ];
+
   return (
       <div className="nypl-ds nypl--research layout-container">
         <main className="main" id="mainContent">
@@ -164,33 +187,15 @@ const AccountPage = (props) => {
             ) : null}
             <LinkTabSet
               activeTab={content}
-              tabs={[
-                {
-                  label: 'Checkouts',
-                  link: `${baseUrl}/account/items`,
-                  content: 'items'
-                },
-                {
-                  label: 'Holds',
-                  link: `${baseUrl}/account/holds`,
-                  content: 'holds',
-                },
-                {
-                  label: `Fines${patron.moneyOwed ? ` ($${patron.moneyOwed.toFixed(2)})` : ''}`,
-                  link: `${baseUrl}/account/overdues`,
-                  content: 'overdues',
-                },
-                {
-                  label: 'Account Settings',
-                  link: `${baseUrl}/account/settings`,
-                  content: 'settings',
-                },
-              ]}
+              tabs={tabs}
               className="breadcrumbs"
             />
-            {isLoading ? <SkeletonLoader /> : ''}
             {
-              typeof accountHtml === 'string' ? (
+              isLoading && content !== 'settings' ?
+              <SkeletonLoader /> : ''
+            }
+            {
+              typeof accountHtml === 'string' && content !== 'settings' ? (
                 <div
                   dangerouslySetInnerHTML={{ __html: accountHtml }}
                   id="account-page-content"

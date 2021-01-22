@@ -1,6 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import { Link as RouterLink } from 'react-router';
+import { Link, LinkTypes } from '@nypl/design-system-react-components';
+
 const LinkTabSet = ({ tabs, activeTab }) => (
   <div className="tabbed">
     <ul role="tablist">
@@ -13,13 +16,15 @@ const LinkTabSet = ({ tabs, activeTab }) => (
             className={isActiveTab ? 'activeTab' : null}
             role="presentation"
           >
-            <a
-              href={tab.link}
-              id={`link-${tab.content}`}
-              aria-selected={isActiveTab}
-              role="tab"
-            >{tab.label}
-            </a>
+            <Link>
+              <RouterLink
+                href={tab.link}
+                id={`link-${tab.content}`}
+                aria-selected={isActiveTab}
+                role="tab"
+              >{tab.label}
+              </RouterLink>
+            </Link>
           </li>
         );
       })}
