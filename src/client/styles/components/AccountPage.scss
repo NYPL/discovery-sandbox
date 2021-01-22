@@ -148,10 +148,6 @@
     }
   }
 
-  tr:nth-last-of-type(2), tr:nth-last-of-type(3) {
-    border-bottom: solid 1px #C4C4C4;
-  }
-
   @media (min-width: 920px) {
     .overdues {
       table {
@@ -167,6 +163,16 @@
 
     br {
       display: none;
+    }
+
+    tr:nth-last-of-type(2), tr:nth-last-of-type(3) {
+      border-bottom: solid 1px #C4C4C4;
+    }
+  }
+
+  .items, .holds {
+    tr {
+      border-bottom: solid 1px #C4C4C4;
     }
   }
 }
