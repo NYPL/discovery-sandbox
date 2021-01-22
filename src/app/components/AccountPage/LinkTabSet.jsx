@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { Link as RouterLink } from 'react-router';
-import { Link, LinkTypes } from '@nypl/design-system-react-components';
+import { Link } from '@nypl/design-system-react-components';
 
 const LinkTabSet = ({ tabs, activeTab }) => (
   <div className="tabbed">

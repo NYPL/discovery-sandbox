@@ -16,11 +16,6 @@
     width: 215px;
   }
 
-  td.patFuncTitle {
-    padding-left: var(--space-xxs);
-    width: 29%;
-  }
-
   th.patFuncTitle {
     font-weight: 600;
   }
@@ -54,7 +49,7 @@
   }
 
   tr.patFuncFinesEntryTitle {
-    border-top: solid 1px #C4C4C4;
+    border-top: solid 1px var(--ui-gray-medium);
   }
 
   td {
@@ -67,8 +62,8 @@
   }
 
   .patFuncFinesDetailDate {
-    text-align: right;
     padding-right: 24%;
+    text-align: right;
   }
 
   .patFuncFinesDetailAmt {
@@ -94,6 +89,31 @@
   &:not(.overdues) {
     td {
       padding-right: var(--space-l);
+    }
+  }
+
+  td.patFuncTitle {
+    padding-left: var(--space-xxs);
+    width: 29%;
+  }
+
+  &.overdues {
+    th {
+      padding-bottom: var(--space-l);
+    }
+
+    br {
+      display: none;
+    }
+
+    tr:nth-last-of-type(2), tr:nth-last-of-type(3) {
+      border-bottom: solid 1px var(--ui-gray-medium);
+    }
+  }
+
+  &.items, &.holds {
+    tr {
+      border-bottom: solid 1px var(--ui-gray-medium);
     }
   }
 }
@@ -128,7 +148,7 @@
 
   button {
     display: inline-block;
-    font-size: 14px;
+    font-size: var(--font-size--1);
     margin: 0 var(--space-xxs);
   }
 
@@ -151,26 +171,6 @@
       }
     }
   }
-
-  .overdues {
-    th {
-      padding-bottom: var(--space-l);
-    }
-
-    br {
-      display: none;
-    }
-
-    tr:nth-last-of-type(2), tr:nth-last-of-type(3) {
-      border-bottom: solid 1px #C4C4C4;
-    }
-  }
-
-  .items, .holds {
-    tr {
-      border-bottom: solid 1px #C4C4C4;
-    }
-  }
 }
 
 .account-settings {
@@ -179,9 +179,9 @@
   }
 
   .edit-link {
-    color: #0071CE;
+    color: var(--ui-focus);
     float: right;
-    font-size: 20px;
+    font-size: var(--font-size-1);
     font-weight: 600;
     text-decoration: none;
 
@@ -209,11 +209,11 @@
 
   .pin {
     dt {
-      font-size: 20px;
+      font-size: var(--font-size-1);
     }
 
     dd > span {
-      font-size: 29px;
+      font-size: var(--font-size-3);
       font-weight: 600;
       line-height: 30px;
     }
@@ -267,6 +267,7 @@
 
     a {
       text-align: initial;
+      width: 100%;
     }
   }
 }
