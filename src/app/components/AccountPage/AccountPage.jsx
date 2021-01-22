@@ -92,13 +92,14 @@ const AccountPage = (props) => {
   };
 
   return (
-    <div className="nypl-ds nypl--research">
+    <div className="nypl-ds nypl--research layout">
       <Breadcrumbs
         breadcrumbs={[
           { url: "htttps://www.nypl.org", text: "Home" },
           { url: "https://www.nypl.org/research", text: "Research" },
           { url: appConfig.baseUrl, text: "Research Catalog" },
         ]}
+        className="breadcrumbs"
       />
       <Hero
         heroType={HeroTypes.Secondary}
@@ -109,17 +110,22 @@ const AccountPage = (props) => {
               id={"1"}
               text="Research Catalog"
             />
-            <nav className="sub-nav">
-              <Link href="#">Search</Link>|
-              <Link href="#">Subject Heading Explorer</Link>|
+            <nav className="sub-nav apply-brand-styles">
+              <Link href="#">Search</Link> |&nbsp;
+              <Link href="#">Subject Heading Explorer</Link> |&nbsp; 
               <Link href="#">My Account</Link>
             </nav>
           </>
         )}
-        section="nypl--research"
+        className="apply-brand-styles hero"
       />
-      <div className="nypl-full-width-wrapper drbb-integration nypl-patron-page">
-        <h2>My Account</h2>
+      <div className="page-content nypl-patron-page">
+        <Heading
+          level={2}
+          id="2"
+          text="My Account"
+          className="section-title"
+        />
         <div className="nypl-patron-details">
           {patron.names ? patron.names[0] : null}
         </div>
