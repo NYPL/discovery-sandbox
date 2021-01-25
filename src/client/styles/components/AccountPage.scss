@@ -95,10 +95,8 @@
     }
   }
 
-  #account-page-content:not(.overdues) {
-    td {
-      padding-right: 35px;
-    }
+  td {
+    padding-right: 35px;
   }
 
   .patFuncFinesDetailType {
@@ -276,6 +274,80 @@
 
     a {
       text-align: initial;
+    }
+  }
+}
+
+@media (max-width: 650px) {
+  .items {
+    td:nth-of-type(1):before {
+      content: "Title";
+    }
+    td:nth-of-type(2):before {
+      content: "Barcode";
+    }
+    td:nth-of-type(3):before {
+      content: "Status";
+    }
+    td:nth-of-type(4):before {
+      content: "Call Number";
+    }
+  }
+
+  .holds {
+    td:nth-of-type(1):before {
+      content: "Title";
+    }
+    td:nth-of-type(2):before {
+      content: "Status";
+    }
+    td:nth-of-type(3):before {
+      content: "Pickup Location";
+    }
+    td:nth-of-type(4):before {
+      content: "Cancle If Not Filled By ";
+    }
+  }
+
+  #account-page-content {
+    table {
+      width: 100%;
+    }
+
+    tr.patFuncHeaders {
+      display: none;
+    }
+
+    td {
+      border-left: 1px solid #C4C4C4;
+      border-right: 1px solid #C4C4C4;
+      display: block;
+      padding-left: 40%;
+      width: auto;
+    }
+
+    td:before {
+      display: inline-block;
+      font-weight: 700;
+      left: 6%;
+      max-width: 30%;
+      position: absolute;
+      vertical-align: top;
+    }
+
+    .account-table-buttons {
+      display: flex;
+      justify-content: center;
+      padding: var(--space-m) 0;
+
+      button {
+        width: 85%;
+      }
+    }
+
+    .patFuncEntry {
+      // border: 1px solid #C4C4C4;
+      margin-bottom: var(--space-s);
     }
   }
 }
