@@ -24,7 +24,7 @@ const appConfig = {
   shepApi: process.env.SHEP_API,
   legacyCatalog: process.env.LEGACY_CATALOG_BASE_URL,
   loginUrl: process.env.LOGIN_URL || 'https://login.nypl.org/auth/login',
-  logoutUrl: process.env.LOGOUT_URL,
+  logoutUrl: process.env.LOGOUT_URL || 'https://login.nypl.org/auth/logout',
   tokenUrl: 'https://isso.nypl.org/',
   publicKey:
     '-----BEGIN PUBLIC KEY-----\n' +

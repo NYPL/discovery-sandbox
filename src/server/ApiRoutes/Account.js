@@ -15,6 +15,8 @@ function fetchAccountPage(req, res, resolve) {
   const patronId = req.patronTokenResponse.decodedPatron.sub;
   const content = req.params.content || 'items';
 
+  const fullUrl = encodeURIComponent(`${req.protocol}://${req.get('host')}${req.originalUrl}`);
+
   axios.get(`${appConfig.legacyCatalog}/dp/patroninfo*eng~Sdefault/${patronId}/${content}`, {
     headers: {
       Cookie: req.headers.cookie,
@@ -25,9 +27,8 @@ function fetchAccountPage(req, res, resolve) {
       // but patron is not actually logged in, the case below is hit
       if (resp.request.path.includes('/login?')) {
         // This will hit the login redirect infinite loop. Let's log the user out properly.
+        console.warn('Hit infinite login redirect. Logging user out');
         if (!fullUrl.includes('%2Fapi%2F')) {
-          console.warn('Hit infinite login redirect. Logging user out');
-          const fullUrl = encodeURIComponent(`${req.protocol}://${req.get('host')}${req.originalUrl}`);
           res.redirect(`${appConfig.logoutUrl}?redirect_uri=${fullUrl}`);
           return;
         }
@@ -35,6 +36,13 @@ function fetchAccountPage(req, res, resolve) {
       resolve(resp.data);
     })
     .catch((resp) => {
+      if (resp.status === 429) {
+        console.warn('Hit infinite login redirect. Logging user out');
+        if (!fullUrl.includes('%2Fapi%2F')) {
+          res.redirect(`${appConfig.logoutUrl}?redirect_uri=${fullUrl}`);
+          return;
+        }
+      }
       res.json({ error: resp });
     });
 }
