@@ -181,6 +181,11 @@
   &__heading-3 {
     display: flex;
     justify-content: space-between;
+    margin-top: 24px;
+
+    h3 {
+      margin-top: 0;
+    }
   }
 
   .edit-link {
