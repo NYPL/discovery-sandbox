@@ -24,12 +24,12 @@ function fetchAccountPage(req, res, resolve) {
       // If Header thinks patron is logged in,
       // but patron is not actually logged in, the case below is hit
       if (resp.request.path.includes('/login?')) {
-        // need to implement
-        console.log('need to redirect, might be buggy?');
-        // redirect to login
-        const fullUrl = encodeURIComponent(`${req.protocol}://${req.get('host')}${req.originalUrl}`);
+        // This will hit the login redirect infinite loop. Let's log the user out properly.
         if (!fullUrl.includes('%2Fapi%2F')) {
-          res.redirect(`${appConfig.loginUrl}?redirect_uri=${fullUrl}`);
+          console.warn('Hit infinite login redirect. Logging user out');
+          const fullUrl = encodeURIComponent(`${req.protocol}://${req.get('host')}${req.originalUrl}`);
+          res.redirect(`${appConfig.logoutUrl}?redirect_uri=${fullUrl}`);
+          return;
         }
       }
       resolve(resp.data);
