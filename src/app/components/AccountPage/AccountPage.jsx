@@ -100,7 +100,7 @@ const AccountPage = (props) => {
             breadcrumbs={[
               { url: "htttps://www.nypl.org", text: "Home" },
               { url: "https://www.nypl.org/research", text: "Research" },
-              { url: appConfig.baseUrl, text: "Research Catalog" },
+              { url: baseUrl, text: "Research Catalog" },
             ]}
             className="breadcrumbs"
           />
@@ -117,9 +117,23 @@ const AccountPage = (props) => {
                   className="sub-nav apply-brand-styles"
                   aria-label="sub-nav"
                 >
-                  <Link href="#">Search</Link> |&nbsp;
-                  <Link href="#">Subject Heading Explorer</Link> |&nbsp;
-                  <Link href="#">My Account</Link>
+                  <Link
+                    className="sub-nav__link"
+                    href={baseUrl}
+                  >
+                    Search
+                  </Link> |&nbsp;
+                  <Link
+                    className="sub-nav__link"
+                    href={`${baseUrl}/subject_headings`}
+                  >
+                    Subject Heading Explorer
+                  </Link> |&nbsp;
+                  <span
+                    className="sub-nav__active-section"
+                  >
+                    My Account
+                  </span>
                 </nav>
               </>
             )}
