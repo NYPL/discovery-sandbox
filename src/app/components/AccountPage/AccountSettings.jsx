@@ -5,7 +5,7 @@ import { Heading, Link, LinkTypes } from '@nypl/design-system-react-components';
 
 const AccountSettings = ({ patron, legacyCatalog }) => (
   <div className="account-settings">
-    <div>
+    <div className="account-settings__heading-3">
       <Heading level={3} text="Personal Information" />
       <Link
         href={`${legacyCatalog}/patroninfo*eng~Sdefault/${patron.id}/modpinfo`}
