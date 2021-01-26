@@ -1,0 +1,36 @@
+/*
+Build out global styles for Research Catalog
+*/
+
+.apply-brand-styles {
+  background: var(--section-research-primary);
+
+  .heading {
+    color: var(--ui-white);
+  }
+
+  .sub-nav {
+    color: var(--ui-white);
+    padding-bottom: var(--space-xs);
+
+    .link:not(:hover) {
+      color: var(--ui-white);
+      text-decoration: none;
+    }
+  }
+}
+
+.page-content {
+  padding-bottom: var(--space-l);
+  padding-top: var(--space-l);
+}
+
+.sub-nav {
+  width: 100%;
+  &__link {
+    font-weight: 400;
+  }
+  &__active-section {
+    font-weight: 600;
+  }
+}
