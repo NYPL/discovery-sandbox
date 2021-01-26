@@ -9,9 +9,12 @@ import Feedback from './../../src/app/components/Feedback/Feedback';
 
 describe('Feedback', () => {
   let component;
-  let onSubmitFormSpy = spy(Feedback.prototype, 'onSubmitForm');
+  const onSubmitFormSpy = spy(Feedback.prototype, 'onSubmitForm');
   before(() => {
     component = mount(<Feedback />);
+  });
+  after(() => {
+    onSubmitFormSpy.restore();
   });
 
   it('should render a <div> with class .feedback', () => {
@@ -44,7 +47,7 @@ describe('Feedback', () => {
     expect(cancelButton.props().type).to.equal('reset');
   });
 
-  it('should have a "Cancel" button', () => {
+  it('should deactivate form when "Cancel" button is clicked', () => {
     const cancelButton = component.find('Button').at(1).find('button').first();
     cancelButton.simulate('click');
     expect(onSubmitFormSpy.notCalled).to.equal(true);
@@ -56,7 +59,7 @@ describe('Feedback', () => {
     expect(submitButton.props().type).to.equal('submit');
   });
 
-  it('should have a "Submit" button', () => {
+  it('should call `onSubmitForm` when form is submitted', () => {
     const submitButton = component.find('Button').at(2).find('button');
     submitButton.simulate('submit');
     expect(onSubmitFormSpy.calledOnce).to.equal(true);
