@@ -25,7 +25,7 @@
   }
 
   select {
-    width: 215px;
+    max-width: 215px;
   }
 
   td.patFuncTitle {
@@ -274,11 +274,25 @@
 
     a {
       text-align: initial;
+      width: 100%;
     }
   }
 }
 
 @media (max-width: 650px) {
+  .nypl-patron-page {
+    select {
+      width: 100%;
+    }
+    td {
+      border-left: 1px solid #C4C4C4;
+      border-right: 1px solid #C4C4C4;
+      display: block;
+      padding-right: 1%;
+      width: auto;
+    }
+  }
+
   .items {
     td:nth-of-type(1):before {
       content: "Title";
@@ -309,6 +323,35 @@
     }
   }
 
+  .items, .holds {
+    table {
+      border-collapse: separate;
+      border-spacing: 0 var(--space-m);
+    }
+
+    td, td.patFuncTitle {
+      padding-left: 40%;
+    }
+
+    td.patFuncTitle {
+      border-top: 1px solid #C4C4C4;
+      border-top-left-radius: 5px;
+      border-top-right-radius: 5px;
+    }
+  }
+
+  .overdues {
+    tr:first-of-type {
+      td {
+        border: 0;
+      }
+    }
+
+    td.patFuncFinesEntryTitle {
+      padding-right: 0;
+    }
+  }
+
   #account-page-content {
     table {
       width: 100%;
@@ -316,14 +359,6 @@
 
     tr.patFuncHeaders {
       display: none;
-    }
-
-    td {
-      border-left: 1px solid #C4C4C4;
-      border-right: 1px solid #C4C4C4;
-      display: block;
-      padding-left: 40%;
-      width: auto;
     }
 
     td:before {
@@ -336,9 +371,12 @@
     }
 
     .account-table-buttons {
+      border-bottom: 1px solid #c4c4c4;
+      border-bottom-left-radius: 5px;
+      border-bottom-right-radius: 5px;
       display: flex;
       justify-content: center;
-      padding: var(--space-m) 0;
+      padding: var(--space-m) 1%;
 
       button {
         width: 85%;
