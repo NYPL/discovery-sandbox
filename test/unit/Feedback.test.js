@@ -26,7 +26,7 @@ describe('Feedback', () => {
     expect(component.find('Button').first().text()).to.equal('Help & Feedback');
   });
 
-  it('closed state does not have .active on #feedback-menu', () => {
+  it('in closed state does not have .active on #feedback-menu', () => {
     expect(component.find('#feedback-menu').hasClass('active')).to.equal(false);
   });
 
@@ -34,6 +34,18 @@ describe('Feedback', () => {
     component.find('Button').first().simulate('click');
     expect(component.state().showForm).to.equal(true);
     expect(component.find('#feedback-menu').hasClass('active')).to.equal(true);
+  });
+
+  it('should have a "Cancel" button', () => {
+    const cancelButton = component.find('Button').at(1);
+    expect(cancelButton.text()).to.equal('Cancel');
+    expect(cancelButton.props().type).to.equal('reset');
+  });
+
+  it('should have a "Submit" button', () => {
+    const submitButton = component.find('Button').at(2);
+    expect(submitButton.text()).to.equal('Submit');
+    expect(submitButton.props().type).to.equal('submit');
   });
 
   describe('success screen', () => {
