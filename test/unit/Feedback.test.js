@@ -3,11 +3,13 @@
 import React from 'react';
 import { expect } from 'chai';
 import { mount } from 'enzyme';
+import { spy } from 'sinon';
 
 import Feedback from './../../src/app/components/Feedback/Feedback';
 
 describe('Feedback', () => {
   let component;
+  let onSubmitFormSpy = spy(Feedback.prototype, 'onSubmitForm');
   before(() => {
     component = mount(<Feedback />);
   });
@@ -42,10 +44,22 @@ describe('Feedback', () => {
     expect(cancelButton.props().type).to.equal('reset');
   });
 
+  it('should have a "Cancel" button', () => {
+    const cancelButton = component.find('Button').at(1).find('button').first();
+    cancelButton.simulate('click');
+    expect(onSubmitFormSpy.notCalled).to.equal(true);
+  });
+
   it('should have a "Submit" button', () => {
     const submitButton = component.find('Button').at(2);
     expect(submitButton.text()).to.equal('Submit');
     expect(submitButton.props().type).to.equal('submit');
+  });
+
+  it('should have a "Submit" button', () => {
+    const submitButton = component.find('Button').at(2).find('button');
+    submitButton.simulate('submit');
+    expect(onSubmitFormSpy.calledOnce).to.equal(true);
   });
 
   describe('success screen', () => {
