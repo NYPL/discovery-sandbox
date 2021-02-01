@@ -170,6 +170,7 @@ class Feedback extends React.Component {
                     </Link>
                   </div>
                   <Button
+                    type="reset"
                     className={`cancel-button ${!showForm ? 'hidden' : ''}`}
                     onClick={e => this.deactivateForm(e)}
                     attributes={{
