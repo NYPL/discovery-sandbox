@@ -16,7 +16,10 @@ export class DataLoader extends React.Component {
       pathname,
     } = location;
     const nextPage = `${pathname}${search}`;
-    const isItemFiltering = pathname === lastLoaded.split('?')[0] && pathname.includes('/bib/');
+
+    const isItemFiltering = pathname === lastLoaded.split('?')[0]
+      && pathname.includes('/bib/')
+      && (new URLSearchParams(search).get('itemPage') === new URLSearchParams(lastLoaded.split('?')[1]).get('itemPage'));
     if (lastLoaded === nextPage || isItemFiltering) {
       dispatch(updateLoadingStatus(false));
       return;
