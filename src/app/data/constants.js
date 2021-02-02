@@ -41,10 +41,17 @@ const itemFilters = [
 const bibPageItemsListLimit = 20;
 const searchResultItemsListLimit = 3;
 
+const noticePreferenceMapping = {
+  'z': 'Email',
+  'p': 'Telephone',
+  '-': 'None',
+};
+
 
 export {
   breakpoints,
   itemFilters,
   bibPageItemsListLimit,
   searchResultItemsListLimit,
+  noticePreferenceMapping,
 };

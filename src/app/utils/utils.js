@@ -18,6 +18,7 @@ import {
 } from 'underscore';
 
 import appConfig from '../data/appConfig';
+import { noticePreferenceMapping } from '../data/constants';
 
 /**
  * ajaxCall
@@ -524,6 +525,13 @@ function encodeHTML(str) {
   return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;');
 }
 
+function extractNoticePreference(fixedFields) {
+  if (!fixedFields) return 'None';
+  const noticePreferenceField = fixedFields['268'];
+  if (!noticePreferenceField || !noticePreferenceField.value) return 'None';
+  return noticePreferenceMapping[noticePreferenceField.value];
+}
+
 export {
   trackDiscovery,
   ajaxCall,
@@ -543,4 +551,5 @@ export {
   isOptionSelected,
   hasValidFilters,
   encodeHTML,
+  extractNoticePreference,
 };

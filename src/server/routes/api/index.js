@@ -5,6 +5,7 @@ import nyplApiClient from '../nyplApiClient';
 import logger from '../../../../logger';
 
 import { updatePatronData } from '../../../app/actions/Actions';
+import { extractNoticePreference } from '../../../app/utils/utils';
 
 
 export function getPatronData(req, res, next) {
@@ -42,6 +43,7 @@ export function getPatronData(req, res, next) {
                 phones,
               } = response.data;
               const barcodes = response.data.barCodes;
+              const noticePreference = extractNoticePreference(response.data.fixedFields);
               // Data exists for the Patron
               const patron = {
                 id,
@@ -54,6 +56,7 @@ export function getPatronData(req, res, next) {
                 patronType,
                 expirationDate,
                 phones,
+                noticePreference,
               };
 
               dispatch(updatePatronData(patron));
