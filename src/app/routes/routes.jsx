@@ -20,6 +20,7 @@ import HoldRequest from '../components/HoldRequest/HoldRequest';
 import HoldConfirmation from '../components/HoldConfirmation/HoldConfirmation';
 import ElectronicDelivery from '../components/ElectronicDelivery/ElectronicDelivery';
 import NotFound404 from '../components/NotFound404/NotFound404';
+import Logout from '../components/Logout/Logout';
 import appConfig from '../data/appConfig';
 
 const { baseUrl } = appConfig;
@@ -38,6 +39,7 @@ const routes = {
       <Route path="/subject_headings" component={SubjectHeadingsIndexPage} />
       <Route path="/account(/:content)" component={AccountPage} />
       <Route path="/404" component={NotFound404} />
+      <Route path="/logout" component={Logout} />
       <Redirect from="*" to="/404" />
     </Route>
   ),
@@ -55,6 +57,7 @@ const routes = {
       <Route path={`${baseUrl}/subject_headings`} component={SubjectHeadingsIndexPage} />
       <Route path={`${baseUrl}/account(/:content)`} component={AccountPage} />
       <Route path={`${baseUrl}/404`} component={NotFound404} />
+      <Route path={`${baseUrl}/logout`} component={Logout} />
       <Redirect from="*" to={`${baseUrl}/404`} />
     </Route>
   ),

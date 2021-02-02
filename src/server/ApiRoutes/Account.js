@@ -34,7 +34,7 @@ function fetchAccountPage(req, res, resolve) {
           },
         })
           .then(resp => {
-            res.redirect('https://www.nypl.org/research/collections/shared-collection-catalog/');
+            res.redirect(`${appConfig.baseUrl}/logout`);
           });
         return;
       }
