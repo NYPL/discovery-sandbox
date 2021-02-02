@@ -73,7 +73,7 @@ describe('Feedback', () => {
     it('should render a <p>', () => {
       const successP = component.find('p');
       expect(successP).to.have.length(1);
-      expect(successP.text()).to.equal('Thank you for submitting your comments, if you requested a response, our service staff will get back to you as soon as possible.');
+      expect(successP.text()).to.equal('Thank you for submitting your comments. If you requested a response, our service staff will get back to you as soon as possible.');
     });
   });
 });
