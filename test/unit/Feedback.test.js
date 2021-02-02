@@ -3,13 +3,18 @@
 import React from 'react';
 import { expect } from 'chai';
 import { mount } from 'enzyme';
+import { spy } from 'sinon';
 
 import Feedback from './../../src/app/components/Feedback/Feedback';
 
 describe('Feedback', () => {
   let component;
+  const onSubmitFormSpy = spy(Feedback.prototype, 'onSubmitForm');
   before(() => {
     component = mount(<Feedback />);
+  });
+  after(() => {
+    onSubmitFormSpy.restore();
   });
 
   it('should render a <div> with class .feedback', () => {
@@ -26,7 +31,7 @@ describe('Feedback', () => {
     expect(component.find('Button').first().text()).to.equal('Help & Feedback');
   });
 
-  it('closed state does not have .active on #feedback-menu', () => {
+  it('in closed state does not have .active on #feedback-menu', () => {
     expect(component.find('#feedback-menu').hasClass('active')).to.equal(false);
   });
 
@@ -34,6 +39,30 @@ describe('Feedback', () => {
     component.find('Button').first().simulate('click');
     expect(component.state().showForm).to.equal(true);
     expect(component.find('#feedback-menu').hasClass('active')).to.equal(true);
+  });
+
+  it('should have a "Cancel" button', () => {
+    const cancelButton = component.find('Button').at(1);
+    expect(cancelButton.text()).to.equal('Cancel');
+    expect(cancelButton.props().type).to.equal('reset');
+  });
+
+  it('should deactivate form when "Cancel" button is clicked', () => {
+    const cancelButton = component.find('Button').at(1).find('button').first();
+    cancelButton.simulate('click');
+    expect(onSubmitFormSpy.notCalled).to.equal(true);
+  });
+
+  it('should have a "Submit" button', () => {
+    const submitButton = component.find('Button').at(2);
+    expect(submitButton.text()).to.equal('Submit');
+    expect(submitButton.props().type).to.equal('submit');
+  });
+
+  it('should call `onSubmitForm` when form is submitted', () => {
+    const submitButton = component.find('Button').at(2).find('button');
+    submitButton.simulate('submit');
+    expect(onSubmitFormSpy.calledOnce).to.equal(true);
   });
 
   describe('success screen', () => {
@@ -44,7 +73,7 @@ describe('Feedback', () => {
     it('should render a <p>', () => {
       const successP = component.find('p');
       expect(successP).to.have.length(1);
-      expect(successP.text()).to.equal('Thank you for submitting your comments, if you requested a response, our service staff will get back to you as soon as possible.');
+      expect(successP.text()).to.equal('Thank you for submitting your comments. If you requested a response, our service staff will get back to you as soon as possible.');
     });
   });
 });
