@@ -148,7 +148,7 @@ class Feedback extends React.Component {
                   </div>
                   <div>
                     <Label htmlFor="feedback-input-email">
-                      Email <span>(required if you would like a response from us)</span>
+                      Email <span>(If you need a response from us)</span>
                     </Label>
                     <Input
                       required
@@ -170,7 +170,6 @@ class Feedback extends React.Component {
                     </Link>
                   </div>
                   <Button
-                    type="reset"
                     className={`cancel-button ${!showForm ? 'hidden' : ''}`}
                     onClick={e => this.deactivateForm(e)}
                     attributes={{
@@ -193,8 +192,8 @@ class Feedback extends React.Component {
             )}
             {success && (
               <p>
-                Thank you for submitting your comments.
-                If you requested a response, our service staff
+                Thank you for submitting your comments,
+                if you requested a response, our service staff
                 will get back to you as soon as possible.
               </p>
             )}

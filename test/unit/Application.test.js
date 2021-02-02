@@ -39,8 +39,8 @@ describe('Application', () => {
     expect(component.find('.app-wrapper')).to.have.length(1);
   });
 
-  it('should render the NYPL header', () => {
-    expect(component.find('#nyplHeader')).to.have.length(1);
+  it('should render a <Header /> components', () => {
+    expect(component.find('Header')).to.have.length(1);
   });
 
   it('should have the skip navigation link enabled,', () => {
