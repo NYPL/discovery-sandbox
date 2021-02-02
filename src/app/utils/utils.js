@@ -525,6 +525,11 @@ function encodeHTML(str) {
   return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;');
 }
 
+/**
+ * extractNoticePreference(fixedFields)
+ * Returns 'None', 'Email', or 'Telephone'.
+ * @param {string} fixedFields - Object coming from patron object `fixedFields` property
+ */
 function extractNoticePreference(fixedFields) {
   if (!fixedFields) return 'None';
   const noticePreferenceField = fixedFields['268'];
