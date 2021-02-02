@@ -26,12 +26,17 @@ function fetchAccountPage(req, res, resolve) {
       // If Header thinks patron is logged in,
       // but patron is not actually logged in, the case below is hit
       if (resp.request.path.includes('/login?')) {
+        console.warn('Hit login mismatch. Logging user out.');
         // This will hit the login redirect infinite loop. Let's log the user out properly.
-        console.warn('Hit infinite login redirect. Logging user out');
-        if (!fullUrl.includes('%2Fapi%2F')) {
-          res.redirect(`${appConfig.logoutUrl}?redirect_uri=${fullUrl}`);
-          return;
-        }
+        axios.get(`${appConfig.logoutUrl}`, {
+          headers: {
+            Cookie: req.headers.cookie,
+          },
+        })
+          .then(resp => {
+            res.redirect('https://www.nypl.org/research/collections/shared-collection-catalog/');
+          });
+        return;
       }
       resolve(resp.data);
     })
