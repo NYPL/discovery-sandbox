@@ -178,7 +178,7 @@
 }
 
 .account-settings {
-  &__heading-3 {
+  &__heading-3, .pin {
     display: flex;
     justify-content: space-between;
     margin-top: 24px;
@@ -214,7 +214,7 @@
 
   dd {
     float: left;
-    width: 50%;
+    width: 49%;
   }
 
   .pin {
@@ -276,6 +276,119 @@
 
     a {
       text-align: initial;
+      width: 100%;
+    }
+  }
+}
+
+@media (max-width: 650px) {
+  .nypl-patron-page {
+    select {
+      width: 100%;
+    }
+
+    .items, .holds {
+      td {
+        border-left: 1px solid #C4C4C4;
+        border-right: 1px solid #C4C4C4;
+        display: block;
+        padding-right: 1%;
+        width: auto;
+        padding-left: 40%;
+      }
+
+      table {
+        border-collapse: separate;
+        border-spacing: 0 var(--space-m);
+      }
+
+      td.patFuncTitle {
+        border-top: 1px solid #C4C4C4;
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+      }
+    }
+
+    .patFuncFinesDetailDate, .patFuncFinesDetailAmt {
+      padding-right: 0%;
+    }
+  }
+
+  .items {
+    td:nth-of-type(1):before {
+      content: 'Title';
+    }
+    td:nth-of-type(2):before {
+      content: 'Barcode';
+    }
+    td:nth-of-type(3):before {
+      content: 'Status';
+    }
+    td:nth-of-type(4):before {
+      content: "Call Number";
+    }
+  }
+
+  .holds {
+    td:nth-of-type(1):before {
+      content: "Title";
+    }
+    td:nth-of-type(2):before {
+      content: "Status";
+    }
+    td:nth-of-type(3):before {
+      content: "Pickup Location";
+    }
+    td:nth-of-type(4):before {
+      content: "Cancle If Not Filled By ";
+    }
+  }
+
+  .overdues {
+    tr:first-of-type {
+      td {
+        border: 0;
+      }
+    }
+
+    td.patFuncFinesEntryTitle {
+      padding-right: 0;
+    }
+  }
+
+  #account-page-content {
+    table {
+      width: 100%;
+    }
+
+    tr.patFuncHeaders {
+      display: none;
+    }
+
+    td:before {
+      display: inline-block;
+      font-weight: 700;
+      left: 6%;
+      max-width: 30%;
+      position: absolute;
+      vertical-align: top;
+    }
+
+    .account-table-buttons {
+      border-bottom: 1px solid #c4c4c4;
+      border-bottom-left-radius: 5px;
+      border-bottom-right-radius: 5px;
+      display: flex;
+      justify-content: center;
+      padding: var(--space-m) 1%;
+
+      button {
+        width: 85%;
+      }
+    }
+
+    .patFuncEntry {
+      margin-bottom: var(--space-s);
     }
   }
 }
