@@ -4,10 +4,11 @@ import nyplApiClient from '../routes/nyplApiClient';
 import logger from '../../../logger';
 import appConfig from '../../app/data/appConfig';
 import extractFeatures from '../../app/utils/extractFeatures';
+import { itemBatchSize } from '../../app/data/constants';
 
-const nyplApiClientCall = (query, urlEnabledFeatures, itemPage) => {
+const nyplApiClientCall = (query, urlEnabledFeatures, itemFrom) => {
   // If on-site-edd feature enabled in front-end, enable it in discovery-api:
-  const queryItemPage = itemPage ? `?items_size=50&items_from=${parseInt(itemPage, 10) * 50}` : '';
+  const queryItemPage = itemFrom ? `?items_size=${itemBatchSize}&items_from=${itemFrom}` : '';
   const requestOptions = appConfig.features.includes('on-site-edd') || urlEnabledFeatures.includes('on-site-edd') ? { headers: { 'X-Features': 'on-site-edd' } } : {};
   return nyplApiClient().then(client => client.get(`/discovery/resources/${query}${queryItemPage}`, requestOptions));
 };
@@ -127,7 +128,7 @@ function fetchBib(bibId, cb, errorcb, reqOptions) {
     features: [],
   }, reqOptions);
   return Promise.all([
-    nyplApiClientCall(bibId, options.features, reqOptions.itemPage),
+    nyplApiClientCall(bibId, options.features, reqOptions.itemFrom),
     nyplApiClientCall(`${bibId}.annotated-marc`, options.features),
   ])
     .then((response) => {
@@ -174,7 +175,7 @@ function fetchBib(bibId, cb, errorcb, reqOptions) {
 
 function bibSearch(req, res, resolve) {
   const bibId = req.params.bibId;
-  const { features, itemPage } = req.query;
+  const { features, itemFrom } = req.query;
   const urlEnabledFeatures = extractFeatures(features);
 
   fetchBib(
@@ -184,7 +185,7 @@ function bibSearch(req, res, resolve) {
     {
       features: urlEnabledFeatures,
       fetchSubjectHeadingData: true,
-      itemPage,
+      itemFrom,
     },
   );
 }

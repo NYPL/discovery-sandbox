@@ -23,6 +23,7 @@ const routes = {
     action: updateBibPage,
     path: 'bib',
     params: '/:bibId',
+    managesLoading: true,
   },
   search: {
     action: updateSearchResultsPage,
@@ -40,6 +41,7 @@ const routes = {
 // out separately is because it is used front-end and back-end
 const successCb = (pathType, dispatch) => (response) => {
   const { data } = response;
+  console.log('data: ', data);
   if (data && data.redirect) {
     if (window) {
       const fullUrl = encodeURIComponent(window.location.href);
@@ -90,7 +92,7 @@ function loadDataForRoutes(location, dispatch) {
     errorCb,
   ).then((resp) => {
     if (resp && !resp.redirect) dispatch(updateLastLoaded(path));
-    dispatch(updateLoadingStatus(false));
+    if (!routes[pathType].managesLoading) dispatch(updateLoadingStatus(false));
     return resp;
   }).catch((error) => {
     console.error(error);
