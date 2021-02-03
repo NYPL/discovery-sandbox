@@ -239,19 +239,20 @@
   height: 100%;
   left: 0;
   overflow-y: auto;
-  position: absolute;
+  position: fixed;
   top: 0;
   width: 100vw;
   z-index: 999;
-  padding-top: 10%;
+  padding-top: 20%;
 
   div {
     background-color: #F9F8F7;
     margin: auto;
     opacity: 100%;
-    padding: 54px 71px;
+    padding: 54px 5%;
     text-align: center;
     width: 472px;
+    max-width: 100%;
   }
 
   span {
