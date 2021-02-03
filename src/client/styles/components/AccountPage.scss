@@ -325,22 +325,22 @@
       content: 'Status';
     }
     td:nth-of-type(4):before {
-      content: "Call Number";
+      content: 'Call Number';
     }
   }
 
   .holds {
     td:nth-of-type(1):before {
-      content: "Title";
+      content: 'Title';
     }
     td:nth-of-type(2):before {
-      content: "Status";
+      content: 'Status';
     }
     td:nth-of-type(3):before {
-      content: "Pickup Location";
+      content: 'Pickup Location';
     }
     td:nth-of-type(4):before {
-      content: "Cancle If Not Filled By ";
+      content: 'Cancle If Not Filled By';
     }
   }
 
