@@ -18,11 +18,47 @@ import getOwner from '../../utils/getOwner';
 import appConfig from '../../data/appConfig';
 // Removed MarcRecord because the webpack MarcRecord is not working. Sep/28/2017
 // import MarcRecord from './MarcRecord';
+import { ajaxCall } from '@utils';
+import { updateBibPage, updateLoadingStatus } from '@Actions';
+import { itemBatchSize } from '../data/constants';
 
 import {
   basicQuery,
   getAggregatedElectronicResources,
 } from '../../utils/utils';
+
+const checkForMoreItems = (bib, dispatch, itemFrom = itemBatchSize, items = []) => {
+  console.log('bib items: ', bib.items.length);
+  const baseUrl = appConfig.baseUrl;
+  const bibApi = `${encodeURIComponent(window.location.href.replace(baseUrl, `${baseUrl}/api`))}?itemFrom=${itemFrom}`;
+  console.log('bibApi: ', bibApi);
+  return ajaxCall(
+    bibApi,
+    ({ bibResp }) => {
+      if (!(bibResp && bibResp.items && bibResp.items.length)) {
+        // done
+        dispatch(updateLoadingStatus(false));
+      } else if (!(bibResp.items.length < itemBatchSize)) {
+        // load remaining items, then done
+        dispatch(updateBibPage(
+          { bib:
+            Object.assign(
+              bib,
+              { items: bib.items.concat(items).concat(bibResp.items) },
+            ),
+          }));
+        dispatch(updateLoadingStatus(false));
+      } else {
+        // need to continue loading
+        checkForMoreItems(bib, dispatch, itemFrom + itemBatchSize, items.concat(bibResp.items));
+      }
+    },
+    (error) => {
+      console.error(error);
+      dispatch(updateLoadingStatus(false));
+    },
+  );
+};
 
 export const BibPage = (props) => {
   const {
@@ -33,9 +69,11 @@ export const BibPage = (props) => {
     selectedFilters,
     page,
     sortBy,
+    dispatch,
   } = props;
 
   const bib = props.bib ? props.bib : {};
+  if (typeof window !== 'undefined') checkForMoreItems(bib, dispatch);
   const bibId = bib && bib['@id'] ? bib['@id'].substring(4) : '';
   const title = bib.title && bib.title.length ? bib.title[0] : '';
   const items = (bib.checkInItems || []).concat(LibraryItem.getItems(bib));
