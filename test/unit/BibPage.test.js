@@ -47,6 +47,7 @@ describe('BibPage', () => {
       component = mount(<BibPage
         location={{ search: 'search', pathname: '' }}
         bib={bib}
+        dispatch={() => {}}
       />, {
         context: {
           router: { location: { query: {} }, createHref: () => {} },
