@@ -41,7 +41,6 @@ const routes = {
 // out separately is because it is used front-end and back-end
 const successCb = (pathType, dispatch) => (response) => {
   const { data } = response;
-  console.log('data: ', data);
   if (data && data.redirect) {
     if (window) {
       const fullUrl = encodeURIComponent(window.location.href);

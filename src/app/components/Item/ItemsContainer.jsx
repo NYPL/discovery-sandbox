@@ -33,7 +33,6 @@ class ItemsContainer extends React.Component {
   }
 
   componentDidMount() {
-    console.log('Mounting ItemsContainer')
     // Mostly things we want to do on the client-side only:
     this.filteredItems = this.filterItems(this.props.items) || [];
     const items = this.filteredItems;

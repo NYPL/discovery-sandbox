@@ -28,18 +28,14 @@ import {
 } from '../../utils/utils';
 
 const checkForMoreItems = (bib, dispatch, itemFrom = itemBatchSize, items = []) => {
-  console.log('bib items: ', bib.items && bib.items.length);
   const baseUrl = appConfig.baseUrl;
   const bibApi = `${window.location.pathname.replace(baseUrl, `${baseUrl}/api`)}?itemFrom=${itemFrom}`;
-  console.log('bibApi: ', bibApi);
   return ajaxCall(
     bibApi,
     (resp) => {
-      console.log('bib response: ', resp);
       const bibResp = resp.data.bib;
       if (!(bibResp && bibResp.items && bibResp.items.length) || bibResp.items.length < itemBatchSize) {
         // done
-        console.log('finsihed bibResp: ', bibResp);
         dispatch(updateBibPage({
           bib:
           Object.assign(
@@ -52,7 +48,6 @@ const checkForMoreItems = (bib, dispatch, itemFrom = itemBatchSize, items = []) 
         dispatch(updateLoadingStatus(false));
       } else {
         // need to continue loading
-        console.log('checking for more items');
         checkForMoreItems(bib, dispatch, itemFrom + itemBatchSize, items.concat(bibResp.items));
       }
     },
@@ -75,7 +70,6 @@ export const BibPage = (props) => {
     dispatch,
   } = props;
 
-  console.log('rendering BibPage', props.bib && props.bib.items && props.bib.items.length);
   const bib = props.bib ? props.bib : {};
   if (typeof window !== 'undefined' && bib && bib.items && !(bib.items.length < itemBatchSize) && !bib.done) {
     checkForMoreItems(bib, dispatch);

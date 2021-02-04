@@ -87,7 +87,6 @@ app.get('/*', (req, res) => {
     } else if (redirectLocation) {
       res.redirect(302, redirectLocation.pathname + redirectLocation.search);
     } else if (renderProps) {
-      console.log('store loading: ', store.getState());
       if (!store.managesLoading) store.dispatch(updateLoadingStatus(false));
       application = ReactDOMServer.renderToString(
         <Provider store={store}>
