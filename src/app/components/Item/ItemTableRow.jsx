@@ -48,11 +48,14 @@ class ItemTableRow extends React.Component {
       bibId,
       searchKeywords,
     } = this.props;
-    const { closedLocations } = appConfig;
+    const { closedLocations, recapClosedLocations, nonRecapClosedLocations } = appConfig;
+    const isRecap = item.isRecap;
+    const allClosed = closedLocations.concat((isRecap ? recapClosedLocations : nonRecapClosedLocations)).includes('');
+    console.log('closedLocations: ', closedLocations, allClosed);
     const status = item.status && item.status.prefLabel ? item.status.prefLabel : ' ';
     let itemRequestBtn = status;
 
-    if (item.requestable && !closedLocations.includes('')) {
+    if (item.requestable && !allClosed) {
       itemRequestBtn = item.available ? (
         <Link
           to={

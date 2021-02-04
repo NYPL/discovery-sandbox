@@ -123,6 +123,7 @@ const ItemFilters = ({ items, hasFilterApplied, numOfFilteredItems }, { router }
       <div className="item-filter-info">
         <h3>{numOfFilteredItems > 0 ? numOfFilteredItems : 'No'} Result{numOfFilteredItems !== 1 ? 's' : null} Found</h3>
         {hasFilterApplied ? <span>Filtered by {parsedFilterSelections()}</span> : null}
+        &nbsp;
         {
           hasFilterApplied ? (
             <Button

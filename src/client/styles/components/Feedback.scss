@@ -4,65 +4,62 @@
   right: 0;
   z-index: 100;
   text-align: right;
-  background: #54514A;
+  background: #FFF;
   color: #000;
 
   @include min-screen($tablet-portrait) {
     position: fixed;
     background: inherit;
-    max-width: 400px;
+    max-width: 571px;
+    min-width: 571px;
   }
 }
 
 .feedback-button {
-  background: #d0343a;
-  display: inline-block;
-  color: #FFF;
-  cursor: pointer;
+  background: $dsresearchprimary;
+  border: 1px solid $dsresearchprimary;
   box-sizing: border-box;
-  padding: 0.5rem 1rem;
-  border: 1px solid #d0343a;
-  text-align: center;
+  color: #FFF;
+  display: inline-block;
   font-size: 1rem;
+  padding: .5rem 1rem;
   position: relative;
+  text-align: center;
 
   &:hover {
     background: #FFF;
-    border: 0.04167rem solid #d0343a;
-    color: #d0343a;
+    color: $dsresearchprimary;
   }
 }
 
 .cancel-button {
-  background: #d0343a;
-  display: inline-block;
-  color: #FFF;
-  cursor: pointer;
-  box-sizing: border-box;
-  border: 1px solid #d0343a;
-  text-align: center;
+  border: 1px solid #E0E0E0;
   font-size: 1rem;
-  position: relative;
   margin-right: 15px;
+  text-align: center;
 }
 
 
-.feedback-form-container {
+#feedback-menu {
   display: none;
-  background: $page-color-light;
+  background: #FFF;
   border: 1px solid $border-color;
   box-shadow: -1px 0 1px 0 rgba(0,0,0,0.3);
-  padding: 0.35rem 0.5rem;
+  padding: 50px 42px;
   text-align: left;
+  height: 472px;
+
+  h1 {
+    font-size: 1.5rem;
+    font-weight: 500;
+    line-height: 26px;
+    letter-spacing: 0px;
+    text-align: left;
+    margin: 0 0 14px 0;
+  }
 
   &.active {
     display: block;
-  }
-
-  p {
-    border-bottom: 1px solid $border-color;
-    margin-bottom: 0.35rem;
-    padding-bottom: 0.35rem;
   }
 
   form {
@@ -72,12 +69,23 @@
 
   label {
     display: block;
-    margin: 0.8rem 0 0.2rem;
-    font-size: 0.9rem;
+    font-size: .875rem;
+    margin-bottom: 6px;
 
     small {
       line-height: 1;
     }
+
+    span {
+      font-size: .75rem;
+      font-weight: 300;
+    }
+  }
+
+  p {
+    margin: 107px 40px;
+    font-size: 20px;
+    font-weight: 500;
   }
 
   input,
@@ -86,10 +94,14 @@
     display: block;
     width: 100%;
     background-color: $page-background-color;
-    border: 0;
     font-size: 1rem;
     line-height: 1.2;
     box-sizing: border-box;
+    border: 1px solid var(--ui-gray-medium);
+  }
+
+  textarea {
+    height: 8em;
   }
 
   input {
@@ -98,10 +110,57 @@
 
   button {
     font-size: 1rem;
-    margin-top: 1rem;
+    display: inline;
+    width: 164px;
   }
 
   iframe {
     display: none;
   }
+
+  .helper-text {
+    height: 21px;
+  }
+}
+
+.privacy-policy {
+  display: flow-root;
+  a {
+    color: var(--ui-link-primary);
+    float: right;
+    font-size: .75rem;
+  }
+}
+
+.nypl-required-field {
+  float: right;
+}
+
+@media (max-width: 768px) {
+  #feedback-menu {
+    height: 400px;
+    padding: 34px;
+
+    h1 {
+      font-size: 1rem;
+      margin-bottom: 7px;
+    }
+
+    label {
+      margin-bottom: 4px;
+    }
+
+    textarea {
+      height: 6em;
+    }
+
+    button {
+      margin-top: 13px;
+      width: 98px;
+      height: 25px;
+      font-size: .875rem;
+      padding: 0;
+    }
+  }
+
 }

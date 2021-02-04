@@ -38,8 +38,9 @@ const ItemFilter = ({
       if (!prevSelection || !prevSelection.length) updatedSelectedFilters[filter] = [value.id];
       else {
         updatedSelectedFilters[filter] = Array.isArray(prevSelection) ?
-        [...prevSelection, value.id] : [prevSelection, value.id];
+          [...prevSelection, value.id] : [prevSelection, value.id];
       }
+
       return updatedSelectedFilters;
     });
   };
@@ -65,7 +66,7 @@ const ItemFilter = ({
 
   const isSelected = (option) => {
     if (!query) return false;
-    const result = isOptionSelected(query[filter], option.id);
+    const result = isOptionSelected(selectedFilters[filter], option.id);
 
     return result;
   };
@@ -81,7 +82,9 @@ const ItemFilter = ({
 
   const [mobileIsOpen, manageMobileFilter] = useState(false);
 
-  const clickHandler = () => mobile ? manageMobileFilter(prevState => !prevState) : manageFilterDisplay(filter);
+  const clickHandler = () => (
+    mobile ? manageMobileFilter(prevState => !prevState) : manageFilterDisplay(filter)
+  );
   const open = mobile ? mobileIsOpen : isOpen;
 
   return (
@@ -98,12 +101,12 @@ const ItemFilter = ({
       >
         <Button
           className={`item-filter-button ${
-            isOpen ? ' open' : ''}`}
+            open ? ' open' : ''}`}
           buttonType="outline"
           onClick={clickHandler}
           type="button"
         >
-          {filter}{numOfSelections ? ` (${numOfSelections})` : null} <Icon name={isOpen ? 'minus' : 'plus'} />
+          {filter}{numOfSelections ? ` (${numOfSelections})` : null} <Icon name={open ? 'minus' : 'plus'} />
         </Button>
         {open ? (
           <div
@@ -118,7 +121,8 @@ const ItemFilter = ({
                   }}
                   onChange={() => handleCheckbox(option)}
                   key={option.id || i}
-                  isSelected={isSelected(option)}
+                  checkboxId={option.id}
+                  checked={isSelected(option)}
                 />
               ))}
             </fieldset>
