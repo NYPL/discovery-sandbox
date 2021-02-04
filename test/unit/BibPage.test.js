@@ -23,6 +23,7 @@ describe('BibPage', () => {
       component = shallow(<BibPage
         location={{ search: 'search', pathname: '' }}
         bib={bib}
+        dispatch={() => {}}
       />, { context: {
         router: { location: {} } } });
     });
