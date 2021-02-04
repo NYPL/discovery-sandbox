@@ -14,6 +14,7 @@ import {
 import ItemTable from '../Item/ItemTable';
 import appConfig from '../../data/appConfig';
 import { searchResultItemsListLimit as itemTableLimit } from '../../data/constants';
+import ItemSorter from '../../utils/itemSorter';
 
 
 export const getBibTitle = (bib) => {
@@ -69,8 +70,9 @@ const ResultsList = ({
     const yearPublished = getYearDisplay(result);
     const publicationStatement = result.publicationStatement && result.publicationStatement.length ?
       result.publicationStatement[0] : '';
+    console.log('result: ', result);
     const items = (result.checkInItems || []).concat(LibraryItem.getItems(result));
-    const totalItems = items.length;
+    const totalItems = (result.checkInItems || []).length + result.numItems; // should this be numAvailable ?
     const hasRequestTable = items.length > 0;
     const { baseUrl } = appConfig;
     const bibUrl = `${baseUrl}/bib/${bibId}`;
@@ -103,7 +105,7 @@ const ResultsList = ({
         {
           hasRequestTable &&
           <ItemTable
-            items={items.slice(0, itemTableLimit)}
+            items={ItemSorter.sortItems(items.slice(0, itemTableLimit))}
             bibId={bibId}
             id={null}
             searchKeywords={searchKeywords}
