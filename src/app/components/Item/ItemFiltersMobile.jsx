@@ -14,6 +14,7 @@ const ItemFiltersMobile = ({
   selectedFilters,
   setSelectedFilters,
   submitFilterSelections,
+  initialFilters,
 }) => {
   const [displayFilters, toggleFilterDisplay] = useState(false);
 
@@ -28,22 +29,31 @@ const ItemFiltersMobile = ({
     );
   }
 
+  const showResultsAction = () => {
+    toggleFilterDisplay(false);
+    submitFilterSelections(selectedFilters);
+  };
+
+  const goBackAction = () => {
+    toggleFilterDisplay(false);
+    setSelectedFilters(initialFilters);
+  };
+
   return (
     <Modal
-      onClick={() => toggleFilters(true)}
       buttonType="outline"
       className="scc-item-filters nypl-ds"
     >
       <Button
         buttonType="link"
-        onClick={() => toggleFilterDisplay(false)}
+        onClick={goBackAction}
         className="go-back-button"
       >
         <Icon name="arrow" iconRotation="rotate-90" />Go back
       </Button>
       <Button
         className="show-results-button"
-        onClick={() => submitFilterSelections(selectedFilters)}
+        onClick={showResultsAction}
       >
         Show Results
       </Button>
@@ -76,6 +86,7 @@ ItemFiltersMobile.propTypes = {
   selectedFilters: PropTypes.object,
   setSelectedFilters: PropTypes.func,
   submitFilterSelections: PropTypes.func,
+  initialFilters: PropTypes.object,
 };
 
 ItemFiltersMobile.contextTypes = {
