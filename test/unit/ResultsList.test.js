@@ -169,7 +169,7 @@ describe('ResultsList', () => {
     it('should have a total items description', () => {
       const yearPublished = component.find('.nypl-results-info');
       expect(yearPublished.length).to.equal(1);
-      expect(yearPublished.text()).to.equal('4 items');
+      expect(yearPublished.text()).to.equal(`${bib.result.numItems} items`);
     });
 
     it('should have a table', () => {
@@ -183,6 +183,7 @@ describe('ResultsList', () => {
 
   describe('Rendering with one bib and one item', () => {
     const bib = resultsBibs[1];
+
     let component;
 
     before(() => {
@@ -192,7 +193,7 @@ describe('ResultsList', () => {
     it('should have a total items description', () => {
       const yearPublished = component.find('.nypl-results-info');
       expect(yearPublished.length).to.equal(1);
-      expect(yearPublished.text()).to.equal('1 item');
+      expect(yearPublished.text()).to.equal(`${bib.result.numItems} items`);
     });
 
     it('should have one table', () => {
