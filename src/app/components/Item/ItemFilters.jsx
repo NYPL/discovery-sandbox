@@ -11,6 +11,7 @@ import { MediaContext } from '../Application/Application';
 
 
 const ItemFilters = ({ items, hasFilterApplied, numOfFilteredItems }, { router }) => {
+  console.log('rendering itemfilters: ', numOfFilteredItems);
   if (!items || !items.length) return null;
   const [openFilter, changeOpenFilter] = useState('none');
   const { location, createHref } = router;

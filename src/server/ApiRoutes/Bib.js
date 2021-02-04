@@ -8,7 +8,8 @@ import { itemBatchSize } from '../../app/data/constants';
 
 const nyplApiClientCall = (query, urlEnabledFeatures, itemFrom) => {
   // If on-site-edd feature enabled in front-end, enable it in discovery-api:
-  const queryItemPage = itemFrom ? `?items_size=${itemBatchSize}&items_from=${itemFrom}` : '';
+  const queryItemPage = typeof itemFrom !== 'undefined' ? `?items_size=${itemBatchSize}&items_from=${itemFrom}` : '';
+  console.log('calling: ', `/discovery/resources/${query}${queryItemPage}`);
   const requestOptions = appConfig.features.includes('on-site-edd') || urlEnabledFeatures.includes('on-site-edd') ? { headers: { 'X-Features': 'on-site-edd' } } : {};
   return nyplApiClient().then(client => client.get(`/discovery/resources/${query}${queryItemPage}`, requestOptions));
 };
@@ -128,11 +129,12 @@ function fetchBib(bibId, cb, errorcb, reqOptions) {
     features: [],
   }, reqOptions);
   return Promise.all([
-    nyplApiClientCall(bibId, options.features, reqOptions.itemFrom),
+    nyplApiClientCall(bibId, options.features, reqOptions.itemFrom || 0),
     nyplApiClientCall(`${bibId}.annotated-marc`, options.features),
   ])
     .then((response) => {
       // First response is jsonld formatting:
+      console.log('response: ', !!response);
       const data = response[0];
       // Assign second response (annotated-marc formatting) as property of bib:
       data.annotatedMarc = response[1];

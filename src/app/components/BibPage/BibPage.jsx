@@ -20,7 +20,7 @@ import appConfig from '../../data/appConfig';
 // import MarcRecord from './MarcRecord';
 import { ajaxCall } from '@utils';
 import { updateBibPage, updateLoadingStatus } from '@Actions';
-import { itemBatchSize } from '../data/constants';
+import { itemBatchSize } from '../../data/constants';
 
 import {
   basicQuery,
@@ -28,23 +28,29 @@ import {
 } from '../../utils/utils';
 
 const checkForMoreItems = (bib, dispatch, itemFrom = itemBatchSize, items = []) => {
-  console.log('bib items: ', bib.items.length);
+  console.log('bib items: ', bib.items && bib.items.length);
   const baseUrl = appConfig.baseUrl;
-  const bibApi = `${encodeURIComponent(window.location.href.replace(baseUrl, `${baseUrl}/api`))}?itemFrom=${itemFrom}`;
+  const bibApi = `${window.location.pathname.replace(baseUrl, `${baseUrl}/api`)}?itemFrom=${itemFrom}`;
   console.log('bibApi: ', bibApi);
   return ajaxCall(
     bibApi,
-    ({ bibResp }) => {
+    (resp) => {
+      console.log('bib response: ', resp);
+      const bibResp = resp.data.bib;
       if (!(bibResp && bibResp.items && bibResp.items.length)) {
         // done
+        console.log('bibResp: ', bibResp);
         dispatch(updateLoadingStatus(false));
-      } else if (!(bibResp.items.length < itemBatchSize)) {
+      } else if ((bibResp.items.length < itemBatchSize)) {
         // load remaining items, then done
+        console.log('done');
         dispatch(updateBibPage(
           { bib:
             Object.assign(
+              {},
               bib,
               { items: bib.items.concat(items).concat(bibResp.items) },
+              { done: true },
             ),
           }));
         dispatch(updateLoadingStatus(false));
@@ -72,8 +78,9 @@ export const BibPage = (props) => {
     dispatch,
   } = props;
 
+  console.log('rendering BibPage', props.bib && props.bib.items && props.bib.items.length);
   const bib = props.bib ? props.bib : {};
-  if (typeof window !== 'undefined') checkForMoreItems(bib, dispatch);
+  if (typeof window !== 'undefined' && bib && bib.items && !(bib.items.length < itemBatchSize) && !bib.done) checkForMoreItems(bib, dispatch);
   const bibId = bib && bib['@id'] ? bib['@id'].substring(4) : '';
   const title = bib.title && bib.title.length ? bib.title[0] : '';
   const items = (bib.checkInItems || []).concat(LibraryItem.getItems(bib));

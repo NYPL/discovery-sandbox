@@ -138,6 +138,7 @@ export const updateSearchResultsPage = data => dispatch => new Promise(() => {
 });
 
 export const updateBibPage = ({ bib }) => dispatch => new Promise(() => {
+  console.log('updating Bib page');
   dispatch(updateBib(bib));
   dispatch(updateLoadingStatus(true));
   return { bib };

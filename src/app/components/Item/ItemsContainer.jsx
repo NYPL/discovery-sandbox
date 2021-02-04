@@ -33,7 +33,9 @@ class ItemsContainer extends React.Component {
   }
 
   componentDidMount() {
+    console.log('Mounting ItemsContainer')
     // Mostly things we want to do on the client-side only:
+    this.filteredItems = this.filterItems(this.props.items) || [];
     const items = this.filteredItems;
     let chunkedItems = [];
     let noItemPage = false;
@@ -156,7 +158,9 @@ class ItemsContainer extends React.Component {
     const shortenItems = !this.props.shortenItems;
     let pagination = null;
 
-    let itemsToDisplay = this.filteredItems;
+    // let itemsToDisplay = this.filteredItems;
+    let allItemsToDisplay = this.filterItems(this.props.items) || [];
+    let itemsToDisplay = allItemsToDisplay;
     if (this.state.js && itemsToDisplay && itemsToDisplay.length > itemsListPageLimit && !this.state.showAll) {
       pagination = (
         <Pagination
@@ -181,11 +185,11 @@ class ItemsContainer extends React.Component {
           items={items}
           hasFilterApplied={this.hasFilter}
           query={this.query}
-          numOfFilteredItems={this.filteredItems.length}
+          numOfFilteredItems={allItemsToDisplay.length}
         />
         {itemTable}
         {
-          !!(shortenItems && this.filteredItems.length > itemsListPageLimit && !this.state.showAll) &&
+          !!(shortenItems && allItemsToDisplay.length > itemsListPageLimit && !this.state.showAll) &&
             (
               <div className="view-all-items-container">
                 {
