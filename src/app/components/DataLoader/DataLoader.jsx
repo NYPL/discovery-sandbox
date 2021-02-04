@@ -19,7 +19,6 @@ export class DataLoader extends React.Component {
 
     const isItemFiltering = pathname === lastLoaded.split('?')[0] && pathname.includes('/bib/');
     if (lastLoaded === nextPage || isItemFiltering) {
-      // dispatch(updateLoadingStatus(false));
       return;
     }
 
