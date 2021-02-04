@@ -70,9 +70,8 @@ const ResultsList = ({
     const yearPublished = getYearDisplay(result);
     const publicationStatement = result.publicationStatement && result.publicationStatement.length ?
       result.publicationStatement[0] : '';
-    console.log('result: ', result);
     const items = (result.checkInItems || []).concat(LibraryItem.getItems(result));
-    const totalItems = (result.checkInItems || []).length + result.numItems; // should this be numAvailable ?
+    const totalItems = (result.checkInItems || []).length + result.numItems;
     const hasRequestTable = items.length > 0;
     const { baseUrl } = appConfig;
     const bibUrl = `${baseUrl}/bib/${bibId}`;
