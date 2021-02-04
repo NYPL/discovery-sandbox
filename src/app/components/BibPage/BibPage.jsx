@@ -37,25 +37,22 @@ const checkForMoreItems = (bib, dispatch, itemFrom = itemBatchSize, items = []) 
     (resp) => {
       console.log('bib response: ', resp);
       const bibResp = resp.data.bib;
-      if (!(bibResp && bibResp.items && bibResp.items.length)) {
+      if (!(bibResp && bibResp.items && bibResp.items.length) || bibResp.items.length < itemBatchSize) {
         // done
-        console.log('bibResp: ', bibResp);
-        dispatch(updateLoadingStatus(false));
-      } else if ((bibResp.items.length < itemBatchSize)) {
-        // load remaining items, then done
-        console.log('done');
-        dispatch(updateBibPage(
-          { bib:
-            Object.assign(
-              {},
-              bib,
-              { items: bib.items.concat(items).concat(bibResp.items) },
-              { done: true },
-            ),
-          }));
+        console.log('finsihed bibResp: ', bibResp);
+        dispatch(updateBibPage({
+          bib:
+          Object.assign(
+            {},
+            bib,
+            { items: bib.items.concat(items).concat((bibResp && bibResp.items) || []) },
+            { done: true },
+          ),
+        }));
         dispatch(updateLoadingStatus(false));
       } else {
         // need to continue loading
+        console.log('checking for more items');
         checkForMoreItems(bib, dispatch, itemFrom + itemBatchSize, items.concat(bibResp.items));
       }
     },
@@ -80,7 +77,11 @@ export const BibPage = (props) => {
 
   console.log('rendering BibPage', props.bib && props.bib.items && props.bib.items.length);
   const bib = props.bib ? props.bib : {};
-  if (typeof window !== 'undefined' && bib && bib.items && !(bib.items.length < itemBatchSize) && !bib.done) checkForMoreItems(bib, dispatch);
+  if (typeof window !== 'undefined' && bib && bib.items && !(bib.items.length < itemBatchSize) && !bib.done) {
+    checkForMoreItems(bib, dispatch);
+  } else if (typeof window !== 'undefined' && bib && bib.items && bib.items.length < itemBatchSize) {
+    dispatch(updateLoadingStatus(false));
+  }
   const bibId = bib && bib['@id'] ? bib['@id'].substring(4) : '';
   const title = bib.title && bib.title.length ? bib.title[0] : '';
   const items = (bib.checkInItems || []).concat(LibraryItem.getItems(bib));

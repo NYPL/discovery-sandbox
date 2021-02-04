@@ -40,7 +40,8 @@ const itemFilters = [
 
 const bibPageItemsListLimit = 20;
 const searchResultItemsListLimit = 3;
-const itemBatchSize = 1000;
+const itemBatchSize = 2;
+// const itemBatchSize = 1000;
 
 
 export {
