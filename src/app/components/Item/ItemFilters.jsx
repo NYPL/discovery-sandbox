@@ -14,12 +14,12 @@ const ItemFilters = ({ items, hasFilterApplied, numOfFilteredItems }, { router }
   if (!items || !items.length) return null;
   const [openFilter, changeOpenFilter] = useState('none');
   const { createHref } = router;
-  const { query } = router.location;
-  const initialFilters = query ? {
+  const query = router.location.query || {};
+  const initialFilters = {
     location: query.location || [],
     format: query.format || [],
     status: query.status || [],
-  } : {};
+  };
 
   const [selectedFilters, setSelectedFilters] = useState(initialFilters);
 
