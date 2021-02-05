@@ -37,11 +37,18 @@ describe('ItemFiltersMobile', () => {
   describe('with props', () => {
     let component;
     before(() => {
+      const initialFilters = {
+        format: [],
+        status: [],
+        location: [],
+      };
       component = mount(
         <ItemFiltersMobile
           options={formatOptions}
           setSelectedFilters={() => {}}
           submitFilterSelections={() => {}}
+          initialFilters={initialFilters}
+          selectedFilters={initialFilters}
         />,
       );
     });
@@ -65,31 +72,39 @@ describe('ItemFiltersMobile', () => {
       it('should render a `Modal` from Design System', () => {
         expect(component.find('Modal').length).to.equal(1);
       });
-      it('should render a "Go Back" button', () => {
-        goBackButton = component.find('button').at(0);
-        expect(goBackButton.text()).to.equal('Go Back');
-      });
+
       it('should render `ItemFilter` for option types passed', () => {
-        expect(component.find('ItemFilter').length).to.be.at.least(1);
+        expect(component.find('.item-filter').length).to.equal(1);
       });
-      it('should close when "Go Back" is clicked', () => {
-        goBackButton.simulate('click');
-        closedStateButton = component.find('button');
-        expect(component.find('Modal').length).to.equal(0);
-        expect(closedStateButton.length).to.equal(1);
-        expect(closedStateButton.find('button').text()).to.equal('Filters');
+
+      describe('"Go Back" button', () => {
+        it('should render a "Go Back" button', () => {
+          goBackButton = component.find('button').at(0);
+          expect(goBackButton.text()).to.equal('Go Back');
+        });
+        it('should close when "Go Back" is clicked', () => {
+          goBackButton.simulate('click');
+          closedStateButton = component.find('button');
+          expect(component.find('Modal').length).to.equal(0);
+          expect(closedStateButton.length).to.equal(1);
+          expect(closedStateButton.find('button').text()).to.equal('Filters');
+        });
       });
-      it('should render a "Show Results" button', () => {
-        // re-open modal
-        closedStateButton.simulate('click');
-        showResultsButton = component.find('button').at(1);
-        expect(showResultsButton.text()).to.equal('Show Results');
-      });
-      it('should close when "Show Results" is clicked', () => {
-        showResultsButton.simulate('click');
-        expect(closedStateButton.length).to.equal(1);
-        expect(component.find('Modal').length).to.equal(0);
-        expect(closedStateButton.find('button').text()).to.equal('Filters');
+
+      describe('"Show Results" button', () => {
+        it('should render a "Show Results" button', () => {
+          // re-open modal
+          closedStateButton = component.find('button');
+          closedStateButton.simulate('click');
+          showResultsButton = component.find('button').at(1);
+          expect(showResultsButton.text()).to.equal('Show Results');
+        });
+        it('should close when "Show Results" is clicked', () => {
+          showResultsButton.simulate('click');
+          expect(closedStateButton.length).to.equal(1);
+          expect(component.find('Modal').length).to.equal(0);
+          expect(closedStateButton.find('button').text()).to.equal('Filters');
+        });
       });
     });
   });
