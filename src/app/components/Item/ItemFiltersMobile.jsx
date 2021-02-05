@@ -50,7 +50,7 @@ const ItemFiltersMobile = ({
         className="go-back-button"
         type="reset"
       >
-        <Icon name="arrow" iconRotation="rotate-90" />Go back
+        <Icon name="arrow" iconRotation="rotate-90" />Go Back
       </Button>
       <Button
         className="show-results-button"
