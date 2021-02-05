@@ -18,11 +18,45 @@ import getOwner from '../../utils/getOwner';
 import appConfig from '../../data/appConfig';
 // Removed MarcRecord because the webpack MarcRecord is not working. Sep/28/2017
 // import MarcRecord from './MarcRecord';
+import { ajaxCall } from '@utils';
+import { updateBibPage, updateLoadingStatus } from '@Actions';
+import { itemBatchSize } from '../../data/constants';
 
 import {
   basicQuery,
   getAggregatedElectronicResources,
 } from '../../utils/utils';
+
+const checkForMoreItems = (bib, dispatch, itemFrom = itemBatchSize, items = []) => {
+  const baseUrl = appConfig.baseUrl;
+  const bibApi = `${window.location.pathname.replace(baseUrl, `${baseUrl}/api`)}?itemFrom=${itemFrom}`;
+  return ajaxCall(
+    bibApi,
+    (resp) => {
+      const bibResp = resp.data.bib;
+      if (!(bibResp && bibResp.items && bibResp.items.length) || bibResp.items.length < itemBatchSize) {
+        // done
+        dispatch(updateBibPage({
+          bib:
+          Object.assign(
+            {},
+            bib,
+            { items: bib.items.concat(items).concat((bibResp && bibResp.items) || []) },
+            { done: true },
+          ),
+        }));
+        dispatch(updateLoadingStatus(false));
+      } else {
+        // need to continue loading
+        checkForMoreItems(bib, dispatch, itemFrom + itemBatchSize, items.concat(bibResp.items));
+      }
+    },
+    (error) => {
+      console.error(error);
+      dispatch(updateLoadingStatus(false));
+    },
+  );
+};
 
 export const BibPage = (props) => {
   const {
@@ -33,9 +67,15 @@ export const BibPage = (props) => {
     selectedFilters,
     page,
     sortBy,
+    dispatch,
   } = props;
 
   const bib = props.bib ? props.bib : {};
+  if (typeof window !== 'undefined' && bib && bib.items && !(bib.items.length < itemBatchSize) && !bib.done) {
+    checkForMoreItems(bib, dispatch);
+  } else if (typeof window !== 'undefined' && bib && bib.items && bib.items.length < itemBatchSize) {
+    dispatch(updateLoadingStatus(false));
+  }
   const bibId = bib && bib['@id'] ? bib['@id'].substring(4) : '';
   const title = bib.title && bib.title.length ? bib.title[0] : '';
   const items = (bib.checkInItems || []).concat(LibraryItem.getItems(bib));
