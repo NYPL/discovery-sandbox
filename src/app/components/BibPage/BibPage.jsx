@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 
 import Breadcrumbs from '../Breadcrumbs/Breadcrumbs';
-import ItemsContainer from '../Item/ItemsContainer';
+import itemsContainer from '../Item/ItemsContainer';
 import BibDetails from './BibDetails';
 import LibraryItem from '../../utils/item';
 import BackLink from './BackLink';
@@ -26,6 +26,8 @@ import {
   basicQuery,
   getAggregatedElectronicResources,
 } from '../../utils/utils';
+
+const ItemsContainer = itemsContainer.ItemsContainer;
 
 const checkForMoreItems = (bib, dispatch) => {
   console.log('bib: ', bib);

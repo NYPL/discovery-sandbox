@@ -264,4 +264,9 @@ const mapStateToProps = state => ({
   bib: state.bib,
 });
 
-export default connect(mapStateToProps)(ItemsContainer);
+export default {
+  ItemsContainer: connect(mapStateToProps)(ItemsContainer),
+  unwrappedItemsContainer: ItemsContainer,
+};
+
+// export default connect(mapStateToProps)(ItemsContainer);

@@ -4,10 +4,11 @@ import React from 'react';
 import { expect } from 'chai';
 import { shallow, mount } from 'enzyme';
 
-import ItemsContainer from './../../src/app/components/Item/ItemsContainer';
+import itemContainerExport from './../../src/app/components/Item/ItemsContainer';
 import LibraryItem from './../../src/app/utils/item';
 import { bibPageItemsListLimit as itemsListPageLimit } from './../../src/app/data/constants';
 
+const ItemsContainer = itemContainerExport.unwrappedItemsContainer;
 const items = [
   {
     accessMessage: {
@@ -87,10 +88,16 @@ const context = {
   },
 };
 
+const testBib = {
+  done: true,
+  numItems: 0,
+};
+
 describe('ItemsContainer', () => {
+  // console.log('ItemsContainer: ', ItemsContainer);
   describe('Default rendering', () => {
     it('should return null with no props passed', () => {
-      const component = shallow(<ItemsContainer />, {
+      const component = shallow(<ItemsContainer bib={testBib} />, {
         disableLifecycleMethods: true,
         context,
       });
@@ -102,7 +109,7 @@ describe('ItemsContainer', () => {
     let component;
 
     before(() => {
-      component = shallow(<ItemsContainer items={items} />, {
+      component = shallow(<ItemsContainer items={items} bib={testBib} />, {
         disableLifecycleMethods: true,
         context,
       });
@@ -138,7 +145,7 @@ describe('ItemsContainer', () => {
     let component;
 
     before(() => {
-      component = mount(<ItemsContainer items={longListItems} />, { context });
+      component = mount(<ItemsContainer items={longListItems} bib={testBib} />, { context });
     });
 
     it('should have an ItemTable component, which renders a table', () => {
@@ -162,7 +169,7 @@ describe('ItemsContainer', () => {
     let component;
 
     before(() => {
-      component = mount(<ItemsContainer items={longListItems} shortenItems={false} />, { context });
+      component = mount(<ItemsContainer items={longListItems} shortenItems={false} bib={testBib} />, { context });
     });
 
     it('should render a "View All Items" link', () => {
@@ -190,7 +197,7 @@ describe('ItemsContainer', () => {
 
     before(() => {
       component = mount(
-        <ItemsContainer items={longListItems} shortenItems={false} />,
+        <ItemsContainer items={longListItems} shortenItems={false} bib={testBib} />,
         { context },
       );
     });
@@ -236,7 +243,7 @@ describe('ItemsContainer', () => {
 
     before(() => {
       component = mount(
-        <ItemsContainer items={longListItems} shortenItems={false} page="4" />,
+        <ItemsContainer items={longListItems} shortenItems={false} page="4" bib={testBib} />,
         { context },
       );
     });
@@ -252,7 +259,7 @@ describe('ItemsContainer', () => {
     // gets done in componentDidMount which is called when the component actually mounts.
     it('should have an empty chunkedItems state', () => {
       const component = shallow(
-        <ItemsContainer items={longListItems} />, {
+        <ItemsContainer items={longListItems} bib={testBib} />, {
           disableLifecycleMethods: true,
           context,
         });
@@ -263,7 +270,7 @@ describe('ItemsContainer', () => {
     // gets done in componentDidMount which is called when the component actually mounts.
     it('should have two arrays of in the chunkedItems state,' +
       'the first array with 20 items and the second with 4', () => {
-      const component = mount(<ItemsContainer items={longListItems} />, { context });
+      const component = mount(<ItemsContainer items={longListItems} bib={testBib} />, { context });
       expect(component.state('chunkedItems')).to.eql(
         [
           [
@@ -306,7 +313,7 @@ describe('ItemsContainer', () => {
     let component;
     before(() => {
       component = mount(
-        <ItemsContainer items={twentyItems} shortenItems={false} page="4" />,
+        <ItemsContainer items={twentyItems} shortenItems={false} page="4" bib={testBib} />,
         { context },
       );
     });
