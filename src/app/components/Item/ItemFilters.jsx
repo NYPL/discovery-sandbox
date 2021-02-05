@@ -86,11 +86,11 @@ const ItemFilters = ({ items, hasFilterApplied, numOfFilteredItems }, { router }
   };
 
   const itemFilterComponentProps = {
-    openFilter,
     selectedFilters,
     manageFilterDisplay,
     setSelectedFilters,
     submitFilterSelections,
+    initialFilters,
   };
 
   return (
@@ -104,7 +104,6 @@ const ItemFilters = ({ items, hasFilterApplied, numOfFilteredItems }, { router }
               ['mobile', 'tabletPortrait'].includes(media) ?
               (<ItemFiltersMobile
                 options={options}
-                initialFilters={initialFilters}
                 {...itemFilterComponentProps}
               />) :
               (
