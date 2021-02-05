@@ -27,15 +27,20 @@ import {
   getAggregatedElectronicResources,
 } from '../../utils/utils';
 
-const checkForMoreItems = (bib, dispatch, itemFrom = itemBatchSize) => {
+const checkForMoreItems = (bib, dispatch) => {
+  console.log('bib: ', bib);
   if (!bib || !bib.items || !bib.items.length || (bib && bib.done)) {
     // nothing to do
+    console.log('nothing to do');
   } else if (bib && bib.items.length < itemBatchSize) {
     // done
+    console.log('done');
     dispatch(updateBibPage({ bib: Object.assign({}, bib, { done: true }) }));
   } else {
     // need to fetch more items
+    console.log('need to fetch more items');
     const baseUrl = appConfig.baseUrl;
+    const itemFrom = bib.itemFrom || itemBatchSize;
     const bibApi = `${window.location.pathname.replace(baseUrl, `${baseUrl}/api`)}?itemFrom=${itemFrom}`;
     ajaxCall(
       bibApi,
@@ -48,12 +53,14 @@ const checkForMoreItems = (bib, dispatch, itemFrom = itemBatchSize) => {
             Object.assign(
               {},
               bib,
-              { items: bib.items.concat((bibResp && bibResp.items) || []) },
-              { done },
+              { items: bib.items.concat((bibResp && bibResp.items) || []),
+                done,
+                itemFrom: itemFrom + itemBatchSize,
+              },
             ),
         }));
         // keep fetching if not done
-        if (!done) checkForMoreItems(bib, dispatch, itemFrom + itemBatchSize);
+        // if (!done) checkForMoreItems(bib, dispatch);
       },
       (error) => { console.error(error); },
     );
@@ -135,6 +142,7 @@ export const BibPage = (props) => {
     });
   }
 
+  console.log('items: ', items);
   const itemsContainer = items.length && !isElectronicResources ? (
     <ItemsContainer
       key={bibId}
