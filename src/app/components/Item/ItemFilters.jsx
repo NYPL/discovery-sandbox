@@ -12,7 +12,7 @@ import { MediaContext } from '../Application/Application';
 
 const ItemFilters = ({ items, hasFilterApplied, numOfFilteredItems }, { router }) => {
   if (!items || !items.length) return null;
-  const [openFilter, changeOpenFilter] = useState('none');
+  const [openFilter, setOpenFilter] = useState('none');
   const { createHref } = router;
   const query = router.location.query || {};
   const initialFilters = {
@@ -24,16 +24,17 @@ const ItemFilters = ({ items, hasFilterApplied, numOfFilteredItems }, { router }
   const [selectedFilters, setSelectedFilters] = useState(initialFilters);
 
   const manageFilterDisplay = (filterType) => {
-    setSelectedFilters(query);
+    // reset `selectFilters` to `initialFilters` any time `openFilter` changes
+    setSelectedFilters(initialFilters);
     if (filterType === openFilter) {
       trackDiscovery('Search Filters', `Close Filter - ${filterType}`);
-      changeOpenFilter('none');
+      setOpenFilter('none');
     } else {
       if (filterType === 'none') trackDiscovery('Search Filters', `Close Filter - ${openFilter}`);
       else {
         trackDiscovery('Search Filters', `Open Filter - ${openFilter}`);
       }
-      changeOpenFilter(filterType);
+      setOpenFilter(filterType);
     }
   };
 
@@ -51,9 +52,9 @@ const ItemFilters = ({ items, hasFilterApplied, numOfFilteredItems }, { router }
   // join filter selections and add single quotes
   const parsedFilterSelections = () => itemFilters
     .map((filter) => {
-      if (query[filter.type]) {
+      const filters = initialFilters[filter.type];
+      if (filters.length) {
         let filtersString;
-        const filters = query[filter.type];
         if (Array.isArray(filters)) {
           filtersString = filters.join("', '");
         } else {
