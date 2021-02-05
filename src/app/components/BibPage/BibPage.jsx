@@ -27,35 +27,37 @@ import {
   getAggregatedElectronicResources,
 } from '../../utils/utils';
 
-const checkForMoreItems = (bib, dispatch, itemFrom = itemBatchSize, items = []) => {
-  const baseUrl = appConfig.baseUrl;
-  const bibApi = `${window.location.pathname.replace(baseUrl, `${baseUrl}/api`)}?itemFrom=${itemFrom}`;
-  return ajaxCall(
-    bibApi,
-    (resp) => {
-      const bibResp = resp.data.bib;
-      if (!(bibResp && bibResp.items && bibResp.items.length) || bibResp.items.length < itemBatchSize) {
-        // done
+const checkForMoreItems = (bib, dispatch, itemFrom = itemBatchSize) => {
+  if (!bib || !bib.items || !bib.items.length || (bib && bib.done)) {
+    // nothing to do
+  } else if (bib && bib.items.length < itemBatchSize) {
+    // done
+    dispatch(updateBibPage({ bib: Object.assign({}, bib, { done: true }) }));
+  } else {
+    // need to fetch more items
+    const baseUrl = appConfig.baseUrl;
+    const bibApi = `${window.location.pathname.replace(baseUrl, `${baseUrl}/api`)}?itemFrom=${itemFrom}`;
+    ajaxCall(
+      bibApi,
+      (resp) => {
+        // put items in
+        const bibResp = resp.data.bib;
+        const done = !bibResp || !bibResp.items || bibResp.items.length < itemBatchSize;
         dispatch(updateBibPage({
           bib:
-          Object.assign(
-            {},
-            bib,
-            { items: bib.items.concat(items).concat((bibResp && bibResp.items) || []) },
-            { done: true },
-          ),
+            Object.assign(
+              {},
+              bib,
+              { items: bib.items.concat((bibResp && bibResp.items) || []) },
+              { done },
+            ),
         }));
-        dispatch(updateLoadingStatus(false));
-      } else {
-        // need to continue loading
-        checkForMoreItems(bib, dispatch, itemFrom + itemBatchSize, items.concat(bibResp.items));
-      }
-    },
-    (error) => {
-      console.error(error);
-      dispatch(updateLoadingStatus(false));
-    },
-  );
+        // keep fetching if not done
+        if (!done) checkForMoreItems(bib, dispatch, itemFrom + itemBatchSize);
+      },
+      (error) => { console.error(error); },
+    );
+  }
 };
 
 export const BibPage = (props) => {
@@ -71,10 +73,8 @@ export const BibPage = (props) => {
   } = props;
 
   const bib = props.bib ? props.bib : {};
-  if (typeof window !== 'undefined' && bib && bib.items && !(bib.items.length < itemBatchSize) && !bib.done) {
+  if (typeof window !== 'undefined') {
     checkForMoreItems(bib, dispatch);
-  } else if (typeof window !== 'undefined' && bib && bib.items && bib.items.length < itemBatchSize) {
-    dispatch(updateLoadingStatus(false));
   }
   const bibId = bib && bib['@id'] ? bib['@id'].substring(4) : '';
   const title = bib.title && bib.title.length ? bib.title[0] : '';
