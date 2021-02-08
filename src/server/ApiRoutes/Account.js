@@ -20,6 +20,7 @@ function fetchAccountPage(req, res, resolve) {
 
   if (!['items', 'holds', 'overdues'].includes(content)) {
     res.redirect(`${appConfig.baseUrl}/account`);
+    return;
   }
 
   axios.get(`${appConfig.legacyCatalog}/dp/patroninfo*eng~Sdefault/${patronId}/${content}`, {
