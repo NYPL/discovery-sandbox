@@ -37,7 +37,6 @@ class ItemsContainer extends React.Component {
   }
 
   componentDidMount() {
-    console.log('component did mount itemsContainer');
     // Mostly things we want to do on the client-side only:
     const items = this.filteredItems;
     let chunkedItems = [];
@@ -162,7 +161,6 @@ class ItemsContainer extends React.Component {
     const bibDone = this.props.bib && this.props.bib.done;
     // const bibDone = false;
     const { items } = this.props;
-    console.log('items container items: ', items);
     if (!items) return null;
     const shortenItems = !this.props.shortenItems;
     let pagination = null;

@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 
 import Breadcrumbs from '../Breadcrumbs/Breadcrumbs';
-import itemsContainer from '../Item/ItemsContainer';
+import itemsContainerModule from '../Item/ItemsContainer';
 import BibDetails from './BibDetails';
 import LibraryItem from '../../utils/item';
 import BackLink from './BackLink';
@@ -27,20 +27,16 @@ import {
   getAggregatedElectronicResources,
 } from '../../utils/utils';
 
-const ItemsContainer = itemsContainer.ItemsContainer;
+const ItemsContainer = itemsContainerModule.ItemsContainer;
 
 const checkForMoreItems = (bib, dispatch) => {
-  console.log('bib: ', bib);
   if (!bib || !bib.items || !bib.items.length || (bib && bib.done)) {
     // nothing to do
-    console.log('nothing to do');
   } else if (bib && bib.items.length < itemBatchSize) {
     // done
-    console.log('done');
     dispatch(updateBibPage({ bib: Object.assign({}, bib, { done: true }) }));
   } else {
     // need to fetch more items
-    console.log('need to fetch more items');
     const baseUrl = appConfig.baseUrl;
     const itemFrom = bib.itemFrom || itemBatchSize;
     const bibApi = `${window.location.pathname.replace(baseUrl, `${baseUrl}/api`)}?itemFrom=${itemFrom}`;
@@ -144,7 +140,6 @@ export const BibPage = (props) => {
     });
   }
 
-  console.log('items: ', items);
   const itemsContainer = items.length && !isElectronicResources ? (
     <ItemsContainer
       key={bibId}
