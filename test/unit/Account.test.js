@@ -93,7 +93,6 @@ describe('`fetchAccountPage`', () => {
   describe('content to get from Webpac', () => {
     it('should make axios request', () => {
       fetchAccountPage(renderMockReq('holds'), mockRes, mockResolve);
-      console.log('axiosGet', axiosGet.calledOnce);
 
       expect(axiosGet.calledOnce).to.equal(true);
       expect(axiosGet.firstCall.args[0]).to.equal(`${appConfig.legacyCatalog}/dp/patroninfo*eng~Sdefault/6677666/holds`);
