@@ -7,7 +7,7 @@ import Account from './../../src/server/ApiRoutes/Account';
 import User from './../../src/server/ApiRoutes/User';
 import appConfig from './../../src/app/data/appConfig';
 
-let mockPatronTokenResponse = {
+const validMockPatronTokenResponse = {
   isTokenValid: true,
   decodedPatron: {
     iss: 'https://www.nypl.org',
@@ -20,7 +20,8 @@ let mockPatronTokenResponse = {
   },
   errorCode: null,
 };
-const renderMockReq = content => ({
+
+const renderMockReq = (content, mockPatronTokenResponse=validMockPatronTokenResponse) => ({
   params: { content },
   get: n => n,
   patronTokenResponse: mockPatronTokenResponse,
@@ -28,7 +29,9 @@ const renderMockReq = content => ({
     cookie: '',
   },
 });
+
 let urlToTest = '';
+
 const mockRes = {
   redirect: (url) => {
     urlToTest = url;
@@ -44,7 +47,9 @@ describe('`fetchAccountPage`', () => {
 
   before(() => {
     fetchAccountPage = sinon.spy(Account, 'fetchAccountPage');
-    requireUser = sinon.stub(User, 'requireUser').callsFake(() => ({ redirect: false }));
+    requireUser = sinon.stub(User, 'requireUser').callsFake((req, res) => {
+      return ({ redirect: !req.patronTokenResponse.isTokenValid })
+    });
     axiosGet = sinon.spy(axios, 'get');
   });
 
@@ -57,6 +62,13 @@ describe('`fetchAccountPage`', () => {
   beforeEach(() => {
     axiosGet.reset();
   })
+
+  describe('patron not logged in', () => {
+    it('should not make axios request', () => {
+      fetchAccountPage(renderMockReq('items', { isTokenValid: false }), mockRes, mockResolve);
+      expect(axiosGet.notCalled).to.equal(true);
+    });
+  });
 
   describe('does not receive valid value from "req.params.content"', () => {
     it('should redirect', () => {
