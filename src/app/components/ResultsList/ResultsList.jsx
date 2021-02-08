@@ -70,7 +70,7 @@ const ResultsList = ({
     const yearPublished = getYearDisplay(result);
     const publicationStatement = result.publicationStatement && result.publicationStatement.length ?
       result.publicationStatement[0] : '';
-    const items = (result.checkInItems || []).concat(LibraryItem.getItems(result));
+    const items = (result.checkInItems || []).concat(ItemSorter.sortItems(LibraryItem.getItems(result)));
     const totalItems = (result.checkInItems || []).length + result.numItems;
     const hasRequestTable = items.length > 0;
     const { baseUrl } = appConfig;
@@ -104,7 +104,7 @@ const ResultsList = ({
         {
           hasRequestTable &&
           <ItemTable
-            items={ItemSorter.sortItems(items.slice(0, itemTableLimit))}
+            items={items.slice(0, itemTableLimit)}
             bibId={bibId}
             id={null}
             searchKeywords={searchKeywords}
