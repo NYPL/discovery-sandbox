@@ -2,7 +2,6 @@
 import sinon from 'sinon';
 import { expect } from 'chai';
 import axios from 'axios';
-// import MockAdapter from 'axios-mock-adapter';
 
 import Account from './../../src/server/ApiRoutes/Account';
 import User from './../../src/server/ApiRoutes/User';
