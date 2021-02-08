@@ -534,7 +534,7 @@ function extractNoticePreference(fixedFields) {
   if (!fixedFields) return 'None';
   const noticePreferenceField = fixedFields['268'];
   if (!noticePreferenceField || !noticePreferenceField.value) return 'None';
-  return noticePreferenceMapping[noticePreferenceField.value];
+  return noticePreferenceMapping[noticePreferenceField.value] || 'None';
 }
 
 export {
