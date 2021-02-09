@@ -57,8 +57,6 @@ const checkForMoreItems = (bib, dispatch) => {
               },
             ),
         }));
-        // keep fetching if not done
-        // if (!done) checkForMoreItems(bib, dispatch);
       },
       (error) => { console.error(error); },
     );
@@ -78,6 +76,9 @@ export const BibPage = (props) => {
   } = props;
 
   const bib = props.bib ? props.bib : {};
+  // check whether this is a server side or client side render
+  // by whether 'window' is defined. After the first render on the client side
+  // check for more items
   if (typeof window !== 'undefined') {
     checkForMoreItems(bib, dispatch);
   }

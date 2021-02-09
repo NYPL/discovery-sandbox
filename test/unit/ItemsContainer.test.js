@@ -4,11 +4,11 @@ import React from 'react';
 import { expect } from 'chai';
 import { shallow, mount } from 'enzyme';
 
-import itemContainerExport from './../../src/app/components/Item/ItemsContainer';
+import itemsContainerModule from './../../src/app/components/Item/ItemsContainer';
 import LibraryItem from './../../src/app/utils/item';
 import { bibPageItemsListLimit as itemsListPageLimit } from './../../src/app/data/constants';
 
-const ItemsContainer = itemContainerExport.unwrappedItemsContainer;
+const ItemsContainer = itemsContainerModule.unwrappedItemsContainer;
 const items = [
   {
     accessMessage: {
@@ -94,7 +94,6 @@ const testBib = {
 };
 
 describe('ItemsContainer', () => {
-  // console.log('ItemsContainer: ', ItemsContainer);
   describe('Default rendering', () => {
     it('should return null with no props passed', () => {
       const component = shallow(<ItemsContainer bib={testBib} />, {

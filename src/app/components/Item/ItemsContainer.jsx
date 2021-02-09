@@ -159,7 +159,6 @@ class ItemsContainer extends React.Component {
       : (this.props.items || []);
     const bibId = this.props.bibId;
     const bibDone = this.props.bib && this.props.bib.done;
-    // const bibDone = false;
     const { items } = this.props;
     if (!items) return null;
     const shortenItems = !this.props.shortenItems;
