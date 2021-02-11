@@ -188,7 +188,10 @@ export const manipulateAccountPage = (
       }
     });
 
-    accountPageContent.querySelectorAll('th')[0].textContent = `Fine/Fee - ${patFuncFinesEntries || 'No'} item${patFuncFinesEntries === 1 ? '' : 's'}`
+    const overduesTh = accountPageContent.querySelectorAll('th');
+    if (overduesTh && overduesTh.length) {
+      overduesTh[0].textContent = `Fine/Fee - ${patFuncFinesEntries || 'No'} item${patFuncFinesEntries === 1 ? '' : 's'}`;
+    }
   }
 
   // there are two "Renew All" buttons

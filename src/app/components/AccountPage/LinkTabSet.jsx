@@ -1,5 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router';
+import { Link as DSLink} from '@nypl/design-system-react-components';
 
 const LinkTabSet = ({ tabs, activeTab }) => (
   <div className="tabbed">
@@ -13,13 +15,17 @@ const LinkTabSet = ({ tabs, activeTab }) => (
             className={isActiveTab ? 'activeTab' : null}
             role="presentation"
           >
-            <a
-              href={tab.link}
+            <DSLink
               id={`link-${tab.content}`}
               aria-selected={isActiveTab}
               role="tab"
-            >{tab.label}
-            </a>
+            >
+              <Link
+                to={tab.link}
+              >
+                {tab.label}
+              </Link>
+            </DSLink>
           </li>
         );
       })}
