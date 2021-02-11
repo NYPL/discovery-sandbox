@@ -9,12 +9,13 @@ import { itemFilters } from '../../data/constants';
 
 const ItemFiltersMobile = ({
   options,
-  openFilter,
   manageFilterDisplay,
   selectedFilters,
   setSelectedFilters,
   submitFilterSelections,
+  initialFilters,
 }) => {
+  if (!options) return null;
   const [displayFilters, toggleFilterDisplay] = useState(false);
 
   if (!displayFilters) {
@@ -28,22 +29,32 @@ const ItemFiltersMobile = ({
     );
   }
 
+  const showResultsAction = () => {
+    toggleFilterDisplay(false);
+    submitFilterSelections(selectedFilters);
+  };
+
+  const goBackAction = () => {
+    toggleFilterDisplay(false);
+    setSelectedFilters(initialFilters);
+  };
+
   return (
     <Modal
-      onClick={() => toggleFilters(true)}
       buttonType="outline"
       className="scc-item-filters nypl-ds"
     >
       <Button
         buttonType="link"
-        onClick={() => toggleFilterDisplay(false)}
+        onClick={goBackAction}
         className="go-back-button"
+        type="reset"
       >
-        <Icon name="arrow" iconRotation="rotate-90" />Go back
+        <Icon name="arrow" iconRotation="rotate-90" />Go Back
       </Button>
       <Button
         className="show-results-button"
-        onClick={() => submitFilterSelections(selectedFilters)}
+        onClick={showResultsAction}
       >
         Show Results
       </Button>
@@ -54,13 +65,13 @@ const ItemFiltersMobile = ({
             <ItemFilter
               filter={filter.type}
               options={options[filter.type]}
-              openFilter={openFilter}
               manageFilterDisplay={manageFilterDisplay}
               key={filter.type}
               mobile
               selectedFilters={selectedFilters}
               setSelectedFilters={setSelectedFilters}
               submitFilterSelections={submitFilterSelections}
+              initialFilters={initialFilters}
             />
           ))
         }
@@ -71,11 +82,11 @@ const ItemFiltersMobile = ({
 
 ItemFiltersMobile.propTypes = {
   options: PropTypes.object,
-  openFilter: PropTypes.string,
   manageFilterDisplay: PropTypes.func,
   selectedFilters: PropTypes.object,
   setSelectedFilters: PropTypes.func,
   submitFilterSelections: PropTypes.func,
+  initialFilters: PropTypes.object,
 };
 
 ItemFiltersMobile.contextTypes = {

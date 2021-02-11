@@ -12,22 +12,29 @@ import { MediaContext } from '../Application/Application';
 
 const ItemFilters = ({ items, hasFilterApplied, numOfFilteredItems }, { router }) => {
   if (!items || !items.length) return null;
-  const [openFilter, changeOpenFilter] = useState('none');
-  const { location, createHref } = router;
-  const initialFilters = location.query ? Object.assign({}, location.query) : {};
+  const [openFilter, setOpenFilter] = useState('none');
+  const { createHref } = router;
+  const query = router.location.query || {};
+  const initialFilters = {
+    location: query.location || [],
+    format: query.format || [],
+    status: query.status || [],
+  };
+
   const [selectedFilters, setSelectedFilters] = useState(initialFilters);
 
   const manageFilterDisplay = (filterType) => {
-    setSelectedFilters(location.query);
+    // reset `selectFilters` to `initialFilters` any time `openFilter` changes
+    setSelectedFilters(initialFilters);
     if (filterType === openFilter) {
       trackDiscovery('Search Filters', `Close Filter - ${filterType}`);
-      changeOpenFilter('none');
+      setOpenFilter('none');
     } else {
       if (filterType === 'none') trackDiscovery('Search Filters', `Close Filter - ${openFilter}`);
       else {
         trackDiscovery('Search Filters', `Open Filter - ${openFilter}`);
       }
-      changeOpenFilter(filterType);
+      setOpenFilter(filterType);
     }
   };
 
@@ -45,9 +52,9 @@ const ItemFilters = ({ items, hasFilterApplied, numOfFilteredItems }, { router }
   // join filter selections and add single quotes
   const parsedFilterSelections = () => itemFilters
     .map((filter) => {
-      if (location.query[filter.type]) {
+      const filters = initialFilters[filter.type];
+      if (filters.length) {
         let filtersString;
-        const filters = location.query[filter.type];
         if (Array.isArray(filters)) {
           filtersString = filters.join("', '");
         } else {
@@ -68,7 +75,7 @@ const ItemFilters = ({ items, hasFilterApplied, numOfFilteredItems }, { router }
 
   const submitFilterSelections = (filters) => {
     const href = createHref({
-      ...location,
+      ...router.location,
       ...{
         query: filters,
         hash: '#item-filters',
@@ -80,11 +87,11 @@ const ItemFilters = ({ items, hasFilterApplied, numOfFilteredItems }, { router }
   };
 
   const itemFilterComponentProps = {
-    openFilter,
     selectedFilters,
     manageFilterDisplay,
     setSelectedFilters,
     submitFilterSelections,
+    initialFilters,
   };
 
   return (
