@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 
 import Breadcrumbs from '../Breadcrumbs/Breadcrumbs';
-import ItemsContainer from '../Item/ItemsContainer';
+import itemsContainerModule from '../Item/ItemsContainer';
 import BibDetails from './BibDetails';
 import LibraryItem from '../../utils/item';
 import BackLink from './BackLink';
@@ -18,11 +18,50 @@ import getOwner from '../../utils/getOwner';
 import appConfig from '../../data/appConfig';
 // Removed MarcRecord because the webpack MarcRecord is not working. Sep/28/2017
 // import MarcRecord from './MarcRecord';
+import { ajaxCall } from '@utils';
+import { updateBibPage, updateLoadingStatus } from '@Actions';
+import { itemBatchSize } from '../../data/constants';
 
 import {
   basicQuery,
   getAggregatedElectronicResources,
 } from '../../utils/utils';
+
+const ItemsContainer = itemsContainerModule.ItemsContainer;
+
+const checkForMoreItems = (bib, dispatch) => {
+  if (!bib || !bib.items || !bib.items.length || (bib && bib.done)) {
+    // nothing to do
+  } else if (bib && bib.items.length < itemBatchSize) {
+    // done
+    dispatch(updateBibPage({ bib: Object.assign({}, bib, { done: true }) }));
+  } else {
+    // need to fetch more items
+    const baseUrl = appConfig.baseUrl;
+    const itemFrom = bib.itemFrom || itemBatchSize;
+    const bibApi = `${window.location.pathname.replace(baseUrl, `${baseUrl}/api`)}?itemFrom=${itemFrom}`;
+    ajaxCall(
+      bibApi,
+      (resp) => {
+        // put items in
+        const bibResp = resp.data.bib;
+        const done = !bibResp || !bibResp.items || bibResp.items.length < itemBatchSize;
+        dispatch(updateBibPage({
+          bib:
+            Object.assign(
+              {},
+              bib,
+              { items: bib.items.concat((bibResp && bibResp.items) || []),
+                done,
+                itemFrom: itemFrom + itemBatchSize,
+              },
+            ),
+        }));
+      },
+      (error) => { console.error(error); },
+    );
+  }
+};
 
 export const BibPage = (props) => {
   const {
@@ -33,9 +72,16 @@ export const BibPage = (props) => {
     selectedFilters,
     page,
     sortBy,
+    dispatch,
   } = props;
 
   const bib = props.bib ? props.bib : {};
+  // check whether this is a server side or client side render
+  // by whether 'window' is defined. After the first render on the client side
+  // check for more items
+  if (typeof window !== 'undefined') {
+    checkForMoreItems(bib, dispatch);
+  }
   const bibId = bib && bib['@id'] ? bib['@id'].substring(4) : '';
   const title = bib.title && bib.title.length ? bib.title[0] : '';
   const items = (bib.checkInItems || []).concat(LibraryItem.getItems(bib));

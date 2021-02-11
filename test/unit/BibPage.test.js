@@ -4,6 +4,7 @@ import React from 'react';
 import { expect } from 'chai';
 import { shallow, mount } from 'enzyme';
 import PropTypes from 'prop-types';
+import { Provider } from 'react-redux';
 
 // Import Bib for pre-processing
 
@@ -23,6 +24,7 @@ describe('BibPage', () => {
       component = shallow(<BibPage
         location={{ search: 'search', pathname: '' }}
         bib={bib}
+        dispatch={() => {}}
       />, { context: {
         router: { location: {} } } });
     });
@@ -43,15 +45,29 @@ describe('BibPage', () => {
       mockBibWithHolding.holdings.forEach(holding => Bib.addHoldingDefinition(holding));
       Bib.addCheckInItems(mockBibWithHolding);
       const bib = { ...mockBibWithHolding, ...annotatedMarc };
-      component = mount(<BibPage
-        location={{ search: 'search', pathname: '' }}
-        bib={bib}
-      />, {
-        context: {
-          router: { location: { query: {} }, createHref: () => {} },
+      const testStore = {
+        bib: {
+          done: true,
+          numItems: 0,
         },
-        childContextTypes: { router: PropTypes.object },
-      });
+        getState: () => testStore,
+        subscribe: () => {},
+      };
+
+      component = mount(
+        <Provider store={testStore}>
+          <BibPage
+            location={{ search: 'search', pathname: '' }}
+            bib={bib}
+            dispatch={() => {}}
+          />
+        </Provider>
+        , {
+          context: {
+            router: { location: { query: {} }, createHref: () => {} },
+          },
+          childContextTypes: { router: PropTypes.object },
+        });
       itemTable = component.find('ItemTable');
     });
 
