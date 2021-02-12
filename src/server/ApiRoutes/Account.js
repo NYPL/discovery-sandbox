@@ -15,6 +15,14 @@ function fetchAccountPage(req, res, resolve) {
   const patronId = req.patronTokenResponse.decodedPatron.sub;
   const content = req.params.content || 'items';
 
+  // no need to fetch from Webpac for this tab
+  if (content === 'settings') return resolve('');
+
+  if (!['items', 'holds', 'overdues'].includes(content)) {
+    res.redirect(`${appConfig.baseUrl}/account`);
+    return;
+  }
+
   axios.get(`${appConfig.legacyCatalog}/dp/patroninfo*eng~Sdefault/${patronId}/${content}`, {
     headers: {
       Cookie: req.headers.cookie,
