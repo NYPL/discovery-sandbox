@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
-
 import {
   SkeletonLoader,
   Heading,
@@ -13,6 +12,7 @@ import {
   HeroTypes,
   Link,
 } from '@nypl/design-system-react-components';
+import moment from 'moment'
 
 import LinkTabSet from './LinkTabSet';
 import AccountSettings from './AccountSettings';
@@ -92,6 +92,8 @@ const AccountPage = (props) => {
     setItemToCancel(null);
   };
 
+  const formattedExpirationDate = patron.expirationDate ?  moment(patron.expirationDate).format("MM-DD-YYYY") : '';
+
   return (
     <div className="nypl-ds nypl--research layout-container">
       <main className="main" id="mainContent">
@@ -149,7 +151,7 @@ const AccountPage = (props) => {
           <div className="nypl-patron-details">
             <div className="name">{patron.names ? patron.names[0] : null}</div>
             <div>{patron.barcodes ? patron.barcodes[0] : null}</div>
-            <div>Expiration Date: {patron.expirationDate}</div>
+            <div>Expiration Date: {formattedExpirationDate}</div>
           </div>
           {itemToCancel ? (
             <div className="scc-modal">
