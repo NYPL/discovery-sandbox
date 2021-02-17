@@ -95,7 +95,7 @@ function loadDataForRoutes(location, dispatch) {
     successCb(pathType, dispatch),
     errorCb,
   ).then((resp) => {
-    if (resp && !resp.redirect) dispatch(updateLastLoaded(path));
+    if (!resp || (resp && !resp.redirect)) dispatch(updateLastLoaded(path));
     dispatch(updateLoadingStatus(false));
     return resp;
   }).catch((error) => {
