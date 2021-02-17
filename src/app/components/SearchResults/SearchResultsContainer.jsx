@@ -59,7 +59,7 @@ const SearchResultsContainer = (props) => {
                   /> :
                   noResultElementForDrbbIntegration
               }
-              { includeDrbb && media === 'desktop' ? <DrbbContainer /> : null}
+              {includeDrbb && media === 'desktop' ? <DrbbContainer /> : null}
               {
                 hasResults ?
                   <Pagination
@@ -71,7 +71,7 @@ const SearchResultsContainer = (props) => {
                     updatePage={updatePage}
                   /> : null
               }
-              { includeDrbb && ['tablet', 'mobile'].includes(media) ? <DrbbContainer /> : null}
+              {includeDrbb && media !== 'desktop' ? <DrbbContainer /> : null}
             </div>
           </div>
         </React.Fragment>
