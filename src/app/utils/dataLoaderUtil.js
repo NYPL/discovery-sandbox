@@ -6,7 +6,7 @@ import {
   updateHoldRequestPage,
   resetState,
   updateLastLoaded,
-  updateAccountHtml,
+  updateAccountPage,
 } from '@Actions';
 import appConfig from '@appConfig';
 import { updateLoadingStatus } from '../actions/Actions';
@@ -36,7 +36,7 @@ const routes = {
     params: '/:bibId-:itemId',
   },
   account: {
-    action: updateAccountHtml,
+    action: updateAccountPage,
     path: 'account',
     params: '/:content?',
   },

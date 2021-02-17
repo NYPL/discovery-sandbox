@@ -51,12 +51,18 @@ describe('`fetchAccountPage`', () => {
       return ({ redirect: !req.patronTokenResponse.isTokenValid })
     });
     axiosGet = sinon.spy(axios, 'get');
+    global.store = {
+      getState: () => ({
+        patron: {},
+      }),
+    };
   });
 
   after(() => {
     fetchAccountPage.restore();
     requireUser.restore();
     axiosGet.restore();
+    global.store = undefined;
   });
 
   beforeEach(() => {
