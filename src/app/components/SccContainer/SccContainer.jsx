@@ -12,11 +12,12 @@ import {
 
 import Notification from '../Notification/Notification';
 import LoadingLayer from '../LoadingLayer/LoadingLayer';
+import SubNav from '../SubNav/SubNav';
 import appConfig from '../../data/appConfig';
 
 const SccContainer = (props) => {
   const { features, useLoadingLayer, children } = props;
-  console.log('children', children);
+
   const { baseUrl } = appConfig;
   const includeDrbb = features.includes('drb-integration');
   return (
@@ -41,38 +42,17 @@ const SccContainer = (props) => {
           <Hero
             heroType={HeroTypes.Secondary}
             heading={(
-              <>
-                <Heading
-                  level={1}
-                  id={"1"}
-                  text="Research Catalog"
-                />
-                <nav
-                  className="sub-nav apply-brand-styles"
-                  aria-label="sub-nav"
-                >
-                  <Link
-                    className="sub-nav__link"
-                    href={appConfig.baseUrl}
-                  >
-                    Search
-                  </Link> |&nbsp;
-                  <Link
-                    className="sub-nav__link"
-                    href={`${baseUrl}/subject_headings`}
-                  >
-                    Subject Heading Explorer
-                  </Link> |&nbsp;
-                  <span
-                    className="sub-nav__active-section"
-                  >
-                    My Account
-                  </span>
-                </nav>
-              </>
+              <Heading
+                level={1}
+                id={"1"}
+                blockName={"hero"}
+              >
+                Research Catalog
+              </Heading>
             )}
             className="apply-brand-styles hero"
           />
+          <SubNav activeSection="search" />
         </div>
         <div className="content-primary">
           {children}

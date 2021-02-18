@@ -1,0 +1,77 @@
+$break-breadcrumbs-mobile: max-width 599px;
+
+.sub-nav {
+  background-color: var(--ui-black);
+  margin-left: calc(-50vw + 50%);
+  margin-right: calc(-50vw + 50%);
+  padding-bottom: var(--space-xs);
+  padding-top: var(--space-xs);
+
+  &__item {
+    // @include space-inline-xxs;
+
+    align-items: center;
+    display: inline;
+    font-size: var(--font-size--1);
+    line-height: 1.5;
+    margin-right: var(--space-xxs);
+    position: relative;
+    word-break: break-word;
+
+    &:not(:last-child) {
+      &::after {
+        content: "/";
+        padding-left: var(--space-xxs);
+      }
+
+      // @include breakpoint($break-breadcrumbs-mobile) {
+      //   display: none;
+      // }
+    }
+
+    &:last-child {
+      // @include breakpoint($break-breadcrumbs-mobile) {
+      //   padding-left: var(--space-m);
+      // }
+    }
+  }
+
+  &__icon {
+    // @include icon;
+
+    left: 0;
+    position: absolute;
+    top: 50%;
+    transform: rotate(90deg) translateX(-50%);
+
+    // @include breakpoint($breakpoint-medium) {
+    //   display: none;
+    // }
+  }
+
+  &__link,
+  &__link:link,
+  &__link:visited,
+  &__link:focus {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  &__link:hover {
+    text-decoration: underline;
+  }
+
+  &__list {
+    // @include list-reset;
+    margin: 0 auto;
+    max-width: 1280px;
+    padding: 0 var(--space);
+    width: 100%;
+
+    color: var(--ui-white);
+  }
+
+  .nypl--research & {
+    background-color: var(--section-research-primary);
+  }
+}
