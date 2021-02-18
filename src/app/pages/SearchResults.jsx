@@ -90,72 +90,52 @@ const SearchResults = (props, context) => {
 
   return (
     <DocumentTitle title="Search Results | Shared Collection Catalog | NYPL">
-      <SccContainer
-        mainContent={
-          <SearchResultsContainer
-            router={router}
-            createAPIQuery={createAPIQuery}
-          />
-        }
-        bannerOptions={
-          {
-            text: 'Search Results',
-            ariaLabel: headerLabel,
-          }
-        }
-        extraBannerElement={
-          <Search
-            createAPIQuery={createAPIQuery}
-            router={router}
-          />
-        }
-        secondaryExtraBannerElement={
-          <React.Fragment>
-            <FilterPopup
-              createAPIQuery={createAPIQuery}
-              raisedErrors={dateFilterErrors}
-              updateDropdownState={toggleDropdown}
-            />
-            {
-              selectedFiltersAvailable &&
-              <div className={`nypl-full-width-wrapper selected-filters${includeDrbb ? ' drbb-integration' : ''}`}>
-                <div className="nypl-row">
-                  <div className="nypl-column-full">
-                    <SelectedFilters
-                      selectedFilters={selectedFilters}
+      <SccContainer>
+        <Search
+          createAPIQuery={createAPIQuery}
+          router={router}
+        />
+        <FilterPopup
+          createAPIQuery={createAPIQuery}
+          raisedErrors={dateFilterErrors}
+          updateDropdownState={toggleDropdown}
+        />
+        <div className={`nypl-full-width-wrapper selected-filters${includeDrbb ? ' drbb-integration' : ''}`}>
+          <div className="nypl-row">
+            <div className="nypl-column-full">
+              <SelectedFilters
+                selectedFilters={selectedFilters}
+                createAPIQuery={createAPIQuery}
+              />
+            </div>
+          </div>
+        </div>
+        <div className="nypl-sorter-row">
+          <div className={`nypl-full-width-wrapper selected-filters${includeDrbb ? ' drbb-integration' : ''}`}>
+            <div className="nypl-row">
+              <div className="nypl-column-full">
+                <ResultsCount
+                  count={totalResults}
+                  selectedFilters={selectedFilters}
+                  field={field}
+                />
+                {
+                  hasResults ?
+                    <SearchResultsSorter
                       createAPIQuery={createAPIQuery}
+                      key={sortBy}
                     />
-                  </div>
-                </div>
-              </div>
-            }
-          </React.Fragment>
-        }
-        extraRow={
-          <div className="nypl-sorter-row">
-            <div className={`nypl-full-width-wrapper selected-filters${includeDrbb ? ' drbb-integration' : ''}`}>
-              <div className="nypl-row">
-                <div className="nypl-column-full">
-                  <ResultsCount
-                    count={totalResults}
-                    selectedFilters={selectedFilters}
-                    field={field}
-                  />
-                  {
-                    hasResults ?
-                      <SearchResultsSorter
-                        createAPIQuery={createAPIQuery}
-                        key={sortBy}
-                      />
-                      : null
-                  }
-                </div>
+                    : null
+                }
               </div>
             </div>
           </div>
-        }
-        breadcrumbsType="search"
-      />
+        </div>
+        <SearchResultsContainer
+          router={router}
+          createAPIQuery={createAPIQuery}
+        />
+      </SccContainer>
     </DocumentTitle>
   );
 };
