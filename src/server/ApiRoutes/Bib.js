@@ -122,7 +122,7 @@ const addLocationUrls = (bib) => {
     .catch((err) => { console.log('catching nypl client ', err); });
 };
 
-function fetchBib(bibId, cb, errorcb, reqOptions) {
+function fetchBib(bibId, cb, errorcb, reqOptions, res) {
   const options = Object.assign({
     fetchSubjectHeadingData: true,
     features: [],
@@ -140,6 +140,11 @@ function fetchBib(bibId, cb, errorcb, reqOptions) {
       if (!data.annotatedMarc || !data.annotatedMarc.bib) data.annotatedMarc = null;
 
       return data;
+    })
+    .then((bib) => {
+      const status = (!bib || !bib.uri || bib.uri !== bibId) ? '404' : '200';
+      if (status === '404') res.nyplStatus = 404;
+      return Object.assign({ status }, bib);
     })
     .then(bib => addLocationUrls(bib))
     .then((bib) => {
@@ -187,6 +192,7 @@ function bibSearch(req, res, resolve) {
       fetchSubjectHeadingData: true,
       itemFrom,
     },
+    res,
   );
 }
 
