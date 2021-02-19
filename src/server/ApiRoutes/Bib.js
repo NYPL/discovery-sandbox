@@ -143,7 +143,7 @@ function fetchBib(bibId, cb, errorcb, reqOptions, res) {
     })
     .then((bib) => {
       const status = (!bib || !bib.uri || bib.uri !== bibId) ? '404' : '200';
-      if (status === '404') res.nyplStatus = 404;
+      if (status === '404') res.status(404);
       return Object.assign({ status }, bib);
     })
     .then(bib => addLocationUrls(bib))
