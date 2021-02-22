@@ -103,18 +103,24 @@ describe('`fetchAccountPage`', () => {
   });
 
   describe('"settings" content', () => {
+    let getHomeLibrarySpy;
     before(() => {
       global.store = {
         getState: () => ({
           patron,
         }),
       };
+      getHomeLibrarySpy = sinon.spy(Account, 'getHomeLibrary');
     });
 
     it('should not make axios request', () => {
       Account.fetchAccountPage(renderMockReq('settings'), mockRes, mockResolve);
       expect(axiosGet.notCalled).to.equal(true);
     });
+    xit('should call getHomeLibrary', () => {
+      // not working :/
+      expect(getHomeLibrarySpy.called).to.equal(true);
+    })
   });
 
   describe('content to get from Webpac', () => {

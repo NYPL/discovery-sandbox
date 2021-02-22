@@ -113,4 +113,5 @@ function postToAccountPage(req, res) {
 export default {
   fetchAccountPage,
   postToAccountPage,
+  getHomeLibrary,
 };
