@@ -1,0 +1,22 @@
+.redirect404 {
+  display: inline-block;
+  text-align: left;
+  padding-left: 2em;
+  border: 1px solid gray;
+  margin: 3px;
+  width: 100%;
+
+  .redirect404text {
+      display: inline-block;
+      text-align: left;
+      p {
+        padding-left: 2em;
+      }
+
+      .originalUrlText {
+        width: 100%;
+        display: inline-block;
+        text-align: center;
+      }
+  }
+}
