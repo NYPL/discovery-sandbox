@@ -2,6 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
+import {
+  Input,
+  SearchBar,
+  Select,
+} from '@nypl/design-system-react-components';
+
 import SearchButton from '../Buttons/SearchButton';
 import {
   trackDiscovery,
@@ -40,8 +46,8 @@ class Search extends React.Component {
    * onFieldChange(e)
    * Listen to the select dropdown for field searching.
    */
-  onFieldChange() {
-    const newFieldVal = this.searchByFieldRef.value;
+  onFieldChange(e) {
+    const newFieldVal = e.target.value;
     this.setState({ field: newFieldVal });
   }
 
@@ -107,58 +113,40 @@ class Search extends React.Component {
 
   render() {
     return (
-      <form
+      <SearchBar
         id="mainContent"
         onSubmit={this.triggerSubmit}
-        onKeyPress={this.triggerSubmit}
         action={`${appConfig.baseUrl}/search`}
         method="POST"
-        className="nypl-omnisearch-form"
-        aria-controls="results-description"
+        className="content-primary"
       >
-        <div className="nypl-omnisearch">
-          <div className="nypl-text-field">
-            <span className="nypl-omni-fields">
-              <label htmlFor="search-by-field">Search in</label>
-              <select
-                ref={this.setSearchByFieldRef}
-                id="search-by-field"
-                onChange={this.onFieldChange}
-                value={this.state.field}
-                name="search_scope"
-              >
-                <option value="all">All fields</option>
-                <option value="title">Title</option>
-                <option value="journal_title">Journal Title</option>
-                <option value="contributor">Author/Contributor</option>
-                <option value="standard_number">Standard Numbers</option>
-                <option value="subject">Subject</option>
-              </select>
-            </span>
-          </div>
-          <div className="nypl-text-field">
-            <span className="nypl-omni-fields-text">
-              <label htmlFor="search-query" id="search-input-label" className="visuallyhidden">
-                Search Shared Collection Catalog for
-              </label>
-              <input
-                type="text"
-                id="search-query"
-                aria-labelledby="search-input-label"
-                aria-controls="results-description"
-                placeholder="Keyword, title, journal title, or author/contributor"
-                onChange={this.inputChange}
-                value={this.state.searchKeywords}
-                name="q"
-              />
-            </span>
-          </div>
-          <SearchButton
-            className="nypl-omnisearch-button nypl-primary-button"
-            onClick={this.submitSearchRequest}
-          />
-        </div>
-      </form>
+        <Select
+          id="search-by-field"
+          onChange={this.onFieldChange}
+          selectedOption={this.state.field}
+          name="search_scope"
+        >
+          <option value="all">All fields</option>
+          <option value="title">Title</option>
+          <option value="journal_title">Journal Title</option>
+          <option value="contributor">Author/Contributor</option>
+          <option value="standard_number">Standard Numbers</option>
+          <option value="subject">Subject</option>
+        </Select>
+        <Input
+          type="text"
+          id="search-query"
+          aria-labelledby="search-input-label"
+          aria-controls="results-description"
+          placeholder="Keyword, title, journal title, or author/contributor"
+          onChange={this.inputChange}
+          value={this.state.searchKeywords}
+          name="q"
+        />
+        <SearchButton
+          onClick={this.submitSearchRequest}
+        />
+      </SearchBar>
     );
   }
 }

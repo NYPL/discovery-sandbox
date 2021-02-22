@@ -70,15 +70,19 @@ const SearchResults = (props, context) => {
         useLoadingLayer
         activeSection="search"
       >
-        <Search
-          createAPIQuery={createAPIQuery}
-          router={router}
-        />
-        <FilterPopup
-          createAPIQuery={createAPIQuery}
-          raisedErrors={dateFilterErrors}
-          updateDropdownState={toggleDropdown}
-        />
+        <div className="content-header advanced-search">
+          <div className="advanced-search__inner-content">
+            <Search
+              createAPIQuery={createAPIQuery}
+              router={router}
+            />
+            <FilterPopup
+              createAPIQuery={createAPIQuery}
+              raisedErrors={dateFilterErrors}
+              updateDropdownState={toggleDropdown}
+            />
+          </div>
+        </div>
         {
           selectedFiltersAvailable ? (
             <SelectedFilters

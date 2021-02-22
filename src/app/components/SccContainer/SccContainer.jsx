@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import {
-  Heading,
   Breadcrumbs,
+  Heading,
   Hero,
   HeroTypes,
 } from '@nypl/design-system-react-components';

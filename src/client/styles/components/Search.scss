@@ -1,3 +1,21 @@
+.advanced-search {
+  background-color: var(--ui-gray-xlight);
+  margin-left: calc(-50vw + 50%);
+  margin-right: calc(-50vw + 50%);
+  padding: var(--space-l) 0;
+
+  &__inner-content {
+    margin: 0 auto;
+    max-width: 1280px;
+    padding: 0 var(--space);
+    width: 100%;
+
+    form {
+      width: 85%;
+    }
+  }
+}
+
 .nypl-omnisearch-form {
   &:focus {
     outline: none;
@@ -110,7 +128,7 @@
 }
 
 .nypl-sorter-row {
-  border-bottom: 0;
+  border: 0;
   display: flex;
   align-items: center;
 }

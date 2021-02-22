@@ -1,23 +1,30 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+
+import {
+  Button,
+  ButtonTypes,
+  Icon,
+  IconNames,
+} from '@nypl/design-system-react-components';
+
 import SearchIconReversed from './SearchIconReversed';
 
 const SearchButton = ({
   id,
-  className,
   onClick,
   value,
 }) => (
-  <button
+  <Button
     id={id}
-    className={`${className}`}
+    buttonType={ButtonTypes.Primary}
     onClick={onClick}
     type="submit"
     aria-controls="results-description"
   >
+    <Icon name={IconNames.search} decorative={true} />
     {value}
-    <SearchIconReversed />
-  </button>
+  </Button>
 );
 
 SearchButton.propTypes = {
