@@ -66,7 +66,10 @@ const SearchResults = (props, context) => {
 
   return (
     <DocumentTitle title="Search Results | Shared Collection Catalog | NYPL">
-      <SccContainer useLoadingLayer>
+      <SccContainer
+        useLoadingLayer
+        activeSection="search"
+      >
         <Search
           createAPIQuery={createAPIQuery}
           router={router}

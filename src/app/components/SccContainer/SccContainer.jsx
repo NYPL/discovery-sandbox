@@ -13,7 +13,7 @@ import SubNav from '../SubNav/SubNav';
 import appConfig from '../../data/appConfig';
 
 const SccContainer = (props) => {
-  const { useLoadingLayer, children } = props;
+  const { useLoadingLayer, children, activeSection } = props;
 
   return (
     <div className="nypl-ds nypl--research layout-container">
@@ -42,12 +42,12 @@ const SccContainer = (props) => {
                 id="1"
                 blockName="hero"
               >
-                Shared Collection Catalog
+                {appConfig.displayTitle}
               </Heading>
             )}
             className="apply-brand-styles hero"
           />
-          <SubNav activeSection="search" />
+          <SubNav activeSection={activeSection} />
         </div>
         <div className="content-primary">
           {children}
@@ -60,6 +60,7 @@ const SccContainer = (props) => {
 SccContainer.propTypes = {
   children: PropTypes.array,
   useLoadingLayer: PropTypes.bool,
+  activeSection: PropTypes.string,
 };
 
 SccContainer.defaultProps = {

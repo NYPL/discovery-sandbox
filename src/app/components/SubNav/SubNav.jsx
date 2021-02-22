@@ -1,17 +1,20 @@
 import React from 'react';
 import { Link } from 'react-router';
-import { Link as DSLink} from '@nypl/design-system-react-components';
+import { Link as DSLink } from '@nypl/design-system-react-components';
+import PropTypes from 'prop-types';
 
 import appConfig from '../../data/appConfig';
 
 const SubNavLink = ({ type, activeSection, href, children }) => {
-  if (type === activeSection) return (
-    <span
-      className="sub-nav__link__active-section"
-    >
-      {children}
-    </span>
-  )
+  if (type === activeSection) {
+    return (
+      <span
+        className="sub-nav__link__active-section"
+      >
+        {children}
+      </span>
+    );
+  }
 
   return (
     <DSLink
@@ -19,12 +22,19 @@ const SubNavLink = ({ type, activeSection, href, children }) => {
     >
       <Link to={href}>{children}</Link>
     </DSLink>
-  )
-}
+  );
+};
 
-const SubNav = props => {
+SubNavLink.propTypes = {
+  type: PropTypes.string,
+  activeSection: PropTypes.string,
+  href: PropTypes.string,
+  children: PropTypes.string,
+};
+
+const SubNav = (props) => {
   const { baseUrl } = appConfig;
-  return(
+  return (
     <nav
       className="sub-nav apply-brand-styles"
       aria-label="sub-nav"
@@ -33,27 +43,27 @@ const SubNav = props => {
         <SubNavLink
           type="search"
           href={appConfig.baseUrl}
-          { ...props }
-          >
+          {...props}
+        >
           Search
         </SubNavLink> |&nbsp;
         <SubNavLink
           type="shep"
           href={`${baseUrl}/subject_headings`}
-          { ...props }
-          >
+          {...props}
+        >
           Subject Heading Explorer
         </SubNavLink> |&nbsp;
         <SubNavLink
           type="account"
           href={`${baseUrl}/account`}
-          { ...props }
-          >
+          {...props}
+        >
           My Account
         </SubNavLink>
       </ul>
     </nav>
-  )
-}
+  );
+};
 
 export default SubNav;
