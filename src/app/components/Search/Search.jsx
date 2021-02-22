@@ -116,9 +116,11 @@ class Search extends React.Component {
       <SearchBar
         id="mainContent"
         onSubmit={this.triggerSubmit}
-        action={`${appConfig.baseUrl}/search`}
-        method="POST"
         className="content-primary"
+        attributes={{
+          method: 'POST',
+          action: `${appConfig.baseUrl}/search`,
+        }}
       >
         <Select
           id="search-by-field"

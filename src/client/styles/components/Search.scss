@@ -20,19 +20,6 @@
   &:focus {
     outline: none;
   }
-  // Larger screen collapsed version of search form elements.
-  .nypl-omnisearch {
-    .nypl-omni-fields-text {
-      font-size: 0.9rem;
-      margin-left: 0.15rem;
-      padding-right: 0.25rem;
-      float: left;
-      top: 0.4rem;
-      width: 50%;
-      position: relative;
-      background-color: #fff;
-    }
-  }
 
   .nypl-text-field {
     background-color: #fff;
@@ -87,12 +74,6 @@
 
   // Small screen stacked version of search form elements.
   @media (max-width: $xtrasmall-breakpoint) {
-    .nypl-omnisearch {
-      display: block;
-      background-color: transparent;
-      border: 0;
-    }
-
     .nypl-omnisearch-button {
       border: solid 0.0625rem #080807;
       border-radius: 0.2rem;
@@ -117,12 +98,6 @@
       input[type=text] {
         width: 100%;
       }
-    }
-  }
-
-  @media (max-width: $mobile-breakpoint) {
-    .nypl-omnisearch {
-      width: 100%;
     }
   }
 }

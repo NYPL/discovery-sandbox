@@ -8,8 +8,6 @@ import {
   IconNames,
 } from '@nypl/design-system-react-components';
 
-import SearchIconReversed from './SearchIconReversed';
-
 const SearchButton = ({
   id,
   onClick,
@@ -18,11 +16,11 @@ const SearchButton = ({
   <Button
     id={id}
     buttonType={ButtonTypes.Primary}
-    onClick={onClick}
     type="submit"
     aria-controls="results-description"
+    onClick={onClick}
   >
-    <Icon name={IconNames.search} decorative={true} />
+    <Icon name={IconNames.search} decorative />
     {value}
   </Button>
 );

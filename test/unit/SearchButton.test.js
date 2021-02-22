@@ -1,7 +1,8 @@
 /* eslint-env mocha */
+/* eslint-disable react/jsx-filename-extension */
 import React from 'react';
 import { expect } from 'chai';
-import { shallow } from 'enzyme';
+import { mount, shallow } from 'enzyme';
 
 import SearchButton from './../../src/app/components/Buttons/SearchButton';
 
@@ -10,11 +11,11 @@ describe('SearchButton', () => {
     let component;
 
     before(() => {
-      component = shallow(<SearchButton />);
+      component = mount(<SearchButton />);
     });
 
     it('should be wrapped in a #nypl-omni-button', () => {
-      expect(component.find('#nypl-omni-button').length).to.equal(1);
+      expect(component.find('#nypl-omni-button').hostNodes().length).to.equal(1);
     });
 
     it('should have a button element', () => {
@@ -46,10 +47,6 @@ describe('SearchButton', () => {
 
     it('should be wrapped in a #discoverySearch', () => {
       expect(component.find('#discoverySearch').length).to.equal(1);
-    });
-
-    it('should have a "Search Discovery" value', () => {
-      expect(component.find('button').text()).to.include('Search').and.include('Discovery');
     });
 
     it('should perform the passed function when it is clicked', () => {
