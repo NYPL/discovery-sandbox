@@ -9,7 +9,7 @@ const SubNavLink = ({ type, activeSection, href, children }) => {
   if (type === activeSection) {
     return (
       <span
-        className="sub-nav__link__active-section"
+        className="sub-nav__active-section"
       >
         {children}
       </span>
