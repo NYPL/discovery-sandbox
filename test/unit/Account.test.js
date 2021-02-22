@@ -23,7 +23,7 @@ const validMockPatronTokenResponse = {
   errorCode: null,
 };
 
-const renderMockReq = (content, mockPatronTokenResponse=validMockPatronTokenResponse) => ({
+const renderMockReq = (content, mockPatronTokenResponse = validMockPatronTokenResponse) => ({
   params: { content },
   get: n => n,
   patronTokenResponse: mockPatronTokenResponse,
@@ -103,7 +103,6 @@ describe('`fetchAccountPage`', () => {
   });
 
   describe('"settings" content', () => {
-    let nyplApiClientStub;
     before(() => {
       global.store = {
         getState: () => ({
