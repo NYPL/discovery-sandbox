@@ -13,6 +13,7 @@ import LibraryItem from '../../utils/item';
 import BackLink from './BackLink';
 import AdditionalDetailsViewer from './AdditionalDetailsViewer';
 import Tabbed from './Tabbed';
+import NotFound404 from '../NotFound404/NotFound404';
 import LibraryHoldings from './LibraryHoldings';
 import getOwner from '../../utils/getOwner';
 import appConfig from '../../data/appConfig';
@@ -75,6 +76,7 @@ export const BibPage = (props) => {
     dispatch,
   } = props;
 
+  if (!props.bib || props.bib.status === '404') return (<NotFound404 />);
   const bib = props.bib ? props.bib : {};
   // check whether this is a server side or client side render
   // by whether 'window' is defined. After the first render on the client side
