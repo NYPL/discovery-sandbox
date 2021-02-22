@@ -1,25 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 
 import {
   Heading,
   Breadcrumbs,
   Hero,
   HeroTypes,
-  Link,
 } from '@nypl/design-system-react-components';
 
-import Notification from '../Notification/Notification';
 import LoadingLayer from '../LoadingLayer/LoadingLayer';
 import SubNav from '../SubNav/SubNav';
 import appConfig from '../../data/appConfig';
 
 const SccContainer = (props) => {
-  const { features, useLoadingLayer, children } = props;
+  const { useLoadingLayer, children } = props;
 
-  const { baseUrl } = appConfig;
-  const includeDrbb = features.includes('drb-integration');
   return (
     <div className="nypl-ds nypl--research layout-container">
       {
@@ -29,13 +24,13 @@ const SccContainer = (props) => {
           />
         ) : null
       }
-      <main className="main">
+      <main className="main main-page">
         <div className="content-header">
           <Breadcrumbs
             breadcrumbs={[
-              { url: "htttps://www.nypl.org", text: "Home" },
-              { url: "https://www.nypl.org/research", text: "Research" },
-              { url: appConfig.baseUrl, text: "Research Catalog" },
+              { url: 'htttps://www.nypl.org', text: 'Home' },
+              { url: 'https://www.nypl.org/research', text: 'Research' },
+              { url: appConfig.baseUrl, text: 'Research Catalog' },
             ]}
             className="breadcrumbs"
           />
@@ -44,10 +39,10 @@ const SccContainer = (props) => {
             heading={(
               <Heading
                 level={1}
-                id={"1"}
-                blockName={"hero"}
+                id="1"
+                blockName="hero"
               >
-                Research Catalog
+                Shared Collection Catalog
               </Heading>
             )}
             className="apply-brand-styles hero"
@@ -63,9 +58,8 @@ const SccContainer = (props) => {
 };
 
 SccContainer.propTypes = {
-  children: PropTypes.object,
+  children: PropTypes.array,
   useLoadingLayer: PropTypes.bool,
-  features: PropTypes.array,
 };
 
 SccContainer.defaultProps = {
@@ -76,4 +70,4 @@ SccContainer.contextTypes = {
   router: PropTypes.object,
 };
 
-export default connect(({ features }) => ({ features }))(SccContainer);
+export default SccContainer;

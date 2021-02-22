@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 import SearchResults from '../../src/app/pages/SearchResults';
 import SearchResultsContainer from '../../src/app/components/SearchResults/SearchResultsContainer';
 import { mockRouterContext } from '../helpers/routing';
-import { mountTestRender, makeTestStore, shallowTestRender } from '../helpers/store';
+import { mountTestRender, makeTestStore } from '../helpers/store';
 
 
 // Eventually, it would be nice to have mocked data in a different file and imported.
@@ -172,14 +172,6 @@ describe('SearchResultsPage', () => {
       expect(h1).to.have.length(1);
       expect(h1.text()).to.equal('Search Results');
       expect(h1.prop('aria-label')).to.equal('Search results for locofocos page 1 of 1');
-    });
-
-    it('should a .nypl-page-header', () => {
-      expect(component.find('.nypl-page-header')).to.have.length(1);
-    });
-
-    it('should have four .nypl-full-width-wrapper elements', () => {
-      expect(component.find('.nypl-full-width-wrapper')).to.have.length(4);
     });
   });
 
