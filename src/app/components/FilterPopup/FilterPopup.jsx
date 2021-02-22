@@ -426,10 +426,12 @@ export class FilterPopup extends React.Component {
     const openPopupButton = js ? (
       <Button
         onClick={() => this.openForm()}
-        aria-haspopup="true"
-        aria-expanded={showForm || null}
-        aria-controls="filter-popup-menu"
         buttonType={ButtonTypes.Secondary}
+        attributes={{
+          'aria-haspopup': 'true',
+          'aria-expanded': showForm || null,
+          'aria-controls': 'filter-popup-menu',
+        }}
       >
         Refine Search
       </Button>) :
