@@ -13,6 +13,7 @@ import {
   trackDiscovery,
 } from '../../utils/utils';
 import appConfig from '../../data/appConfig';
+import { updateSearchKeywords } from '../../actions/Actions';
 
 /**
  * The main container for the top Search section.
@@ -108,6 +109,8 @@ class Search extends React.Component {
       page: '1',
     });
 
+    this.props.updateSearchKeywords(searchKeywords);
+
     this.props.router.push(`${appConfig.baseUrl}/search?${apiQuery}`);
   }
 
@@ -159,6 +162,7 @@ Search.propTypes = {
   createAPIQuery: PropTypes.func,
   selectedFilters: PropTypes.object,
   router: PropTypes.object,
+  updateSearchKeywords: PropTypes.func,
 };
 
 Search.defaultProps = {
@@ -173,4 +177,8 @@ const mapStateToProps = ({
   selectedFilters,
 }) => ({ searchKeywords, field, selectedFilters });
 
-export default connect(mapStateToProps)(Search);
+const mapDispatchToProps = dispatch => ({
+  updateSearchKeywords: features => dispatch(updateSearchKeywords(features)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Search);
