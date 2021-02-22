@@ -4,8 +4,36 @@ import nyplApiClient from '../routes/nyplApiClient';
 import User from './User';
 import appConfig from '../../app/data/appConfig';
 
-const nyplApiClientGet = endpoint =>
-  nyplApiClient().then(client => client.get(endpoint, { cache: false }));
+const nyplApiClientGet = endpoint => (
+  nyplApiClient()
+    .then(client => client.get(endpoint, { cache: false }))
+);
+
+function getHomeLibrary(code) {
+  return nyplApiClientGet(`/locations?location_codes=${code}`)
+    .then((resp) => {
+      if (!resp || !resp[code] || !resp[code][0].label) return { code };
+      return {
+        code,
+        label: resp[code][0].label,
+      };
+    })
+    .catch((error) => {
+      console.error(error);
+      return { code };
+    });
+}
+
+function getAccountPage(res, req) {
+  const patronId = req.patronTokenResponse.decodedPatron.sub;
+  const content = req.params.content || 'items';
+
+  return axios.get(`${appConfig.legacyCatalog}/dp/patroninfo*eng~Sdefault/${patronId}/${content}`, {
+    headers: {
+      Cookie: req.headers.cookie,
+    },
+  });
+}
 
 function fetchAccountPage(req, res, resolve) {
   const requireUser = User.requireUser(req, res);
@@ -20,10 +48,8 @@ function fetchAccountPage(req, res, resolve) {
   if (content === 'settings') {
     const patron = global.store.getState().patron;
     if (patron.homeLibraryCode && !patron.homeLibraryName) {
-      console.log('getting home library name');
       getHomeLibrary(patron.homeLibraryCode)
-        .then(resp => {
-          console.log('home library resp', resp);
+        .then((resp) => {
           resolve({
             patron: {
               ...patron,
@@ -36,7 +62,7 @@ function fetchAccountPage(req, res, resolve) {
     resolve({ patron, accountHtml: '' });
 
     return;
-  };
+  }
 
   if (!['items', 'holds', 'overdues'].includes(content)) {
     res.redirect(`${appConfig.baseUrl}/account`);
@@ -48,7 +74,7 @@ function fetchAccountPage(req, res, resolve) {
     .then((resp) => {
       // If Header thinks patron is logged in,
       // but patron is not actually logged in, the case below is hit
-      if (resp.request.path.includes('/login?')) {
+      if (resp.request && resp.request.path.includes('/login?')) {
         // need to implement
         console.log('need to redirect, might be buggy?');
         // redirect to login
@@ -64,17 +90,6 @@ function fetchAccountPage(req, res, resolve) {
       console.error(resp);
       res.json({ error: resp });
     });
-}
-
-function getAccountPage(res, req) {
-  const patronId = req.patronTokenResponse.decodedPatron.sub;
-  const content = req.params.content || 'items';
-
-  return axios.get(`${appConfig.legacyCatalog}/dp/patroninfo*eng~Sdefault/${patronId}/${content}`, {
-    headers: {
-      Cookie: req.headers.cookie,
-    },
-  })
 }
 
 function postToAccountPage(req, res) {
@@ -93,22 +108,6 @@ function postToAccountPage(req, res) {
     })
     .then(resp => res.json(resp.data))
     .catch(resp => res.json({ error: resp }));
-}
-
-function getHomeLibrary(code) {
-  return nyplApiClientGet(`/locations?location_codes=${code}`)
-    .then(resp => {
-      console.log('locations resp', resp);
-      if (!resp || !resp[code] || !resp[code][0].label) return { code };
-      return {
-        code: code,
-        label: resp[code][0].label,
-      };
-    })
-    .catch(error => {
-      console.error(error);
-      return { code };
-    });
 }
 
 export default {

@@ -2,10 +2,12 @@
 import sinon from 'sinon';
 import { expect } from 'chai';
 import axios from 'axios';
+import MockAdapter from 'axios-mock-adapter';
 
 import Account from './../../src/server/ApiRoutes/Account';
 import User from './../../src/server/ApiRoutes/User';
 import appConfig from './../../src/app/data/appConfig';
+import patron from '../fixtures/patron';
 
 const validMockPatronTokenResponse = {
   isTokenValid: true,
@@ -36,21 +38,25 @@ const mockRes = {
   redirect: (url) => {
     urlToTest = url;
   },
-  json: (resp) => {resp},
+  json: resp => ({ resp }),
 };
 const mockResolve = resp => resp;
 
 describe('`fetchAccountPage`', () => {
-  let fetchAccountPage;
   let requireUser;
   let axiosGet;
+  let mock;
 
   before(() => {
-    fetchAccountPage = sinon.spy(Account, 'fetchAccountPage');
-    requireUser = sinon.stub(User, 'requireUser').callsFake((req, res) => {
-      return ({ redirect: !req.patronTokenResponse.isTokenValid })
-    });
+    requireUser = sinon.stub(User, 'requireUser').callsFake(req => ({ redirect: !req.patronTokenResponse.isTokenValid }));
     axiosGet = sinon.spy(axios, 'get');
+    mock = new MockAdapter(axios);
+    mock
+      .onGet(`${appConfig.legacyCatalog}/dp/patroninfo*eng~Sdefault/6677666/holds`)
+      .reply(200, '<div>some html</div>');
+    mock
+      .onGet(`${appConfig.legacyCatalog}/dp/patroninfo*eng~Sdefault/6677666/items`)
+      .reply(200, '<div>some html</div>');
     global.store = {
       getState: () => ({
         patron: {},
@@ -59,26 +65,34 @@ describe('`fetchAccountPage`', () => {
   });
 
   after(() => {
-    fetchAccountPage.restore();
     requireUser.restore();
     axiosGet.restore();
     global.store = undefined;
+    mock.restore();
   });
 
   beforeEach(() => {
     axiosGet.reset();
-  })
+  });
 
   describe('patron not logged in', () => {
     it('should not make axios request', () => {
-      fetchAccountPage(renderMockReq('items', { isTokenValid: false }), mockRes, mockResolve);
+      Account.fetchAccountPage(renderMockReq('items', { isTokenValid: false }), mockRes, mockResolve);
       expect(axiosGet.notCalled).to.equal(true);
     });
   });
 
   describe('does not receive valid value from "req.params.content"', () => {
+    before(() => {
+      global.store = {
+        getState: () => ({
+          patron,
+        }),
+      };
+    });
+
     it('should redirect', () => {
-      fetchAccountPage(renderMockReq('blahblah'), mockRes, mockResolve);
+      Account.fetchAccountPage(renderMockReq('blahblah'), mockRes, mockResolve);
 
       expect(urlToTest).to.equal('/research/collections/shared-collection-catalog/account');
     });
@@ -89,16 +103,32 @@ describe('`fetchAccountPage`', () => {
   });
 
   describe('"settings" content', () => {
-    it('should not make axios request', () => {
-      fetchAccountPage(renderMockReq('settings'), mockRes, mockResolve);
+    let nyplApiClientStub;
+    before(() => {
+      global.store = {
+        getState: () => ({
+          patron,
+        }),
+      };
+    });
 
+    it('should not make axios request', () => {
+      Account.fetchAccountPage(renderMockReq('settings'), mockRes, mockResolve);
       expect(axiosGet.notCalled).to.equal(true);
     });
   });
 
   describe('content to get from Webpac', () => {
+    before(() => {
+      global.store = {
+        getState: () => ({
+          patron,
+        }),
+      };
+    });
+
     it('should make axios request', () => {
-      fetchAccountPage(renderMockReq('holds'), mockRes, mockResolve);
+      Account.fetchAccountPage(renderMockReq('holds'), mockRes, mockResolve);
 
       expect(axiosGet.calledOnce).to.equal(true);
       expect(axiosGet.firstCall.args[0]).to.equal(`${appConfig.legacyCatalog}/dp/patroninfo*eng~Sdefault/6677666/holds`);
@@ -106,11 +136,19 @@ describe('`fetchAccountPage`', () => {
   });
 
   describe('"/account", with no `content` param', () => {
+    before(() => {
+      global.store = {
+        getState: () => ({
+          patron,
+        }),
+      };
+    });
+
     it('should fetch the "items" page', () => {
-      fetchAccountPage(renderMockReq(), mockRes, mockResolve);
+      Account.fetchAccountPage(renderMockReq(), mockRes, mockResolve);
 
       expect(axiosGet.calledOnce).to.equal(true);
       expect(axiosGet.firstCall.args[0]).to.equal(`${appConfig.legacyCatalog}/dp/patroninfo*eng~Sdefault/6677666/items`);
     });
-  })
+  });
 });
