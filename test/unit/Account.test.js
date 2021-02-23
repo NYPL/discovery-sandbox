@@ -4,6 +4,8 @@ import { expect } from 'chai';
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 
+import NyplApiClient from '@nypl/nypl-data-api-client';
+
 import Account from './../../src/server/ApiRoutes/Account';
 import User from './../../src/server/ApiRoutes/User';
 import appConfig from './../../src/app/data/appConfig';
@@ -103,23 +105,37 @@ describe('`fetchAccountPage`', () => {
   });
 
   describe('"settings" content', () => {
-    let getHomeLibrarySpy;
-    before(() => {
+    const sinonSandbox = sinon.createSandbox();
+
+    beforeEach(() => {
+      sinonSandbox.stub(NyplApiClient.prototype, 'get').callsFake((path) => {
+        return Promise.resolve(JSON.parse(require('fs').readFileSync('./test/fixtures/locations-service-mm.json', 'utf8')))
+      });
+
       global.store = {
         getState: () => ({
           patron,
         }),
       };
-      getHomeLibrarySpy = sinon.spy(Account, 'getHomeLibrary');
+
+      sinonSandbox.spy(Account, 'getHomeLibrary');
+    });
+
+    afterEach(() => {
+      sinonSandbox.restore();
     });
 
     it('should not make axios request', () => {
       Account.fetchAccountPage(renderMockReq('settings'), mockRes, mockResolve);
       expect(axiosGet.notCalled).to.equal(true);
     });
-    xit('should call getHomeLibrary', () => {
-      // not working :/
-      expect(getHomeLibrarySpy.called).to.equal(true);
+
+    it('should call getHomeLibrary', () => {
+      return Account.fetchAccountPage(renderMockReq('settings'), mockRes, (result) => {
+        expect(result).to.be.a('object');
+        expect(result.patron).to.be.a('object');
+        expect(result.patron.homeLibraryName).to.eq('Mid-Manhattan');
+      });
     })
   });
 
