@@ -1,8 +1,9 @@
+/* global window */
+
 import React from 'react';
 import PropTypes from 'prop-types';
 import DocumentTitle from 'react-document-title';
 import { every as _every } from 'underscore';
-import { LeftWedgeIcon } from '@nypl/dgx-svg-icons';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 
@@ -84,7 +85,6 @@ export const BibPage = (props) => {
     checkForMoreItems(bib, dispatch);
   }
   const bibId = bib && bib['@id'] ? bib['@id'].substring(4) : '';
-  const title = bib.title && bib.title.length ? bib.title[0] : '';
   const items = (bib.checkInItems || []).concat(LibraryItem.getItems(bib));
   const isElectronicResources = _every(items, i => i.isElectronicResource);
   // Related to removing MarcRecord because the webpack MarcRecord is not working. Sep/28/2017
@@ -207,6 +207,7 @@ export const BibPage = (props) => {
     <DocumentTitle title="Item Details | Shared Collection Catalog | NYPL">
       <SccContainer
         useLoadingLayer
+        className="nypl-item-details"
       >
         <BibDetails
           bib={bib}

@@ -13,7 +13,7 @@ import SubNav from '../SubNav/SubNav';
 import appConfig from '../../data/appConfig';
 
 const SccContainer = (props) => {
-  const { useLoadingLayer, children, activeSection } = props;
+  const { useLoadingLayer, children, activeSection, className } = props;
 
   return (
     <div className="nypl-ds nypl--research layout-container">
@@ -49,7 +49,7 @@ const SccContainer = (props) => {
           />
           <SubNav activeSection={activeSection} />
         </div>
-        <div className="content-primary">
+        <div className={`content-primary ${className}`}>
           {children}
         </div>
       </main>
