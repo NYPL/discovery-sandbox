@@ -52,7 +52,6 @@
           "@AlphabeticalPagination": "./src/app/components/SubjectHeading/AlphabeticalPagination.jsx",
           "@Application": "./src/app/components/Application/Application.jsx",
           "@AdditionalDetailsViewer": "./src/app/components/BibPage/AdditionalDetailsViewer.jsx",
-          "@BackLink": "./src/app/components/BibPage/BackLink.jsx",
           "@BibDetails": "./src/app/components/BibPage/BibDetails.jsx",
           "@BibPage": "./src/app/components/BibPage/BibPage.jsx",
           "@DefinitionList": "./src/app/components/BibPage/DefinitionList.jsx",

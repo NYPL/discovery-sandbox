@@ -6,11 +6,10 @@ import { LeftWedgeIcon } from '@nypl/dgx-svg-icons';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 
-import Breadcrumbs from '../components/Breadcrumbs/Breadcrumbs';
+import SccContainer from '../components/SccContainer/SccContainer';
 import itemsContainerModule from '../components/Item/ItemsContainer';
 import BibDetails from '../components/BibPage/BibDetails';
 import LibraryItem from '../utils/item';
-import BackLink from '../components/BibPage/BackLink';
 import AdditionalDetailsViewer from '../components/BibPage/AdditionalDetailsViewer';
 import Tabbed from '../components/BibPage/Tabbed';
 import NotFound404 from '../components/NotFound404/NotFound404';
@@ -206,48 +205,21 @@ export const BibPage = (props) => {
 
   return (
     <DocumentTitle title="Item Details | Shared Collection Catalog | NYPL">
-      <main className="main-page">
-        <div className="nypl-page-header">
-          <div className="nypl-full-width-wrapper drbb-integration">
-            <div className="nypl-row">
-              <Breadcrumbs type="bib" searchUrl={searchUrl} />
-              <h1 id="mainContent">{title}</h1>
-              {
-                searchKeywords && (
-                  <div className="nypl-row search-control">
-                    <LeftWedgeIcon
-                      preserveAspectRatio="xMidYMid meet"
-                      title="Back to Results"
-                    />
-                    <BackLink
-                      searchUrl={searchUrl}
-                      searchKeywords={searchKeywords}
-                    />
-                  </div>
-                )
-              }
-            </div>
-          </div>
-        </div>
-
-        <div className="nypl-full-width-wrapper drbb-integration">
-          <div className="nypl-row">
-            <div className="nypl-item-details">
-              <BibDetails
-                bib={bib}
-                fields={topFields}
-                logging
-                electronicResources={aggregatedElectronicResources}
-              />
-              <Tabbed
-                tabs={tabs}
-                hash={location.hash}
-              />
-              { classicLink }
-            </div>
-          </div>
-        </div>
-      </main>
+      <SccContainer
+        useLoadingLayer
+      >
+        <BibDetails
+          bib={bib}
+          fields={topFields}
+          logging
+          electronicResources={aggregatedElectronicResources}
+        />
+        <Tabbed
+          tabs={tabs}
+          hash={location.hash}
+        />
+        { classicLink }
+      </SccContainer>
     </DocumentTitle>
   );
 };

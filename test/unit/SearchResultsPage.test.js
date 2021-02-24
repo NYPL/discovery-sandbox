@@ -4,7 +4,7 @@ import React from 'react';
 import { expect } from 'chai';
 import PropTypes from 'prop-types';
 
-import SearchResults from '../../src/app/pages/SearchResults';
+import SearchResults from '../../src/app/pages/SearchResultsPage';
 import SearchResultsContainer from '../../src/app/components/SearchResults/SearchResultsContainer';
 import { mockRouterContext } from '../helpers/routing';
 import { mountTestRender, makeTestStore } from '../helpers/store';

@@ -7,14 +7,14 @@ import { IndexRoute, Route, Redirect } from 'react-router';
  */
 import SubjectHeadingsIndexPage from '../pages/SubjectHeadingsIndexPage';
 import SubjectHeadingShowPage from '../pages/SubjectHeadingShowPage';
-import SearchResults from '../pages/SearchResults';
+import SearchResults from '../pages/SearchResultsPage';
+import BibPage from '../pages/BibPage';
 
 /*
  * Components
  */
 import Application from '../components/Application/Application';
 import Home from '../components/Home/Home';
-import BibPage from '../components/BibPage/BibPage';
 import HoldRequest from '../components/HoldRequest/HoldRequest';
 import HoldConfirmation from '../components/HoldConfirmation/HoldConfirmation';
 import ElectronicDelivery from '../components/ElectronicDelivery/ElectronicDelivery';
