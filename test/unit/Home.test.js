@@ -17,10 +17,6 @@ describe('Home', () => {
     expect(component.find('.home').length).to.equal(1);
   });
 
-  it('should contain a Search component in the banner', () => {
-    expect(component.find('Search')).to.have.length(1);
-  });
-
   it('should contain an h2', () => {
     const h2 = component.find('Heading').at(0).dive();
     expect(h2.text()).to.equal('Research at NYPL');
