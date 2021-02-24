@@ -275,5 +275,3 @@ export default {
   ItemsContainer: connect(mapStateToProps)(ItemsContainer),
   unwrappedItemsContainer: ItemsContainer,
 };
-
-// export default connect(mapStateToProps)(ItemsContainer);

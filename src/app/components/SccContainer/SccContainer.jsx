@@ -45,7 +45,6 @@ const SccContainer = (props) => {
                 {appConfig.displayTitle}
               </Heading>
             )}
-            className="apply-brand-styles hero"
           />
           <SubNav activeSection={activeSection} />
         </div>

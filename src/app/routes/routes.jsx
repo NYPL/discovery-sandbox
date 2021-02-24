@@ -9,12 +9,12 @@ import SubjectHeadingsIndexPage from '../pages/SubjectHeadingsIndexPage';
 import SubjectHeadingShowPage from '../pages/SubjectHeadingShowPage';
 import SearchResults from '../pages/SearchResultsPage';
 import BibPage from '../pages/BibPage';
+import Home from '../pages/Home';
 
 /*
  * Components
  */
 import Application from '../components/Application/Application';
-import Home from '../components/Home/Home';
 import HoldRequest from '../components/HoldRequest/HoldRequest';
 import HoldConfirmation from '../components/HoldConfirmation/HoldConfirmation';
 import ElectronicDelivery from '../components/ElectronicDelivery/ElectronicDelivery';

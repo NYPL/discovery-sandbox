@@ -70,7 +70,7 @@
           "@SelectedFilters": "./src/app/components/Filters/SelectedFilters.jsx",
           "@HoldConfirmation": "./src/app/components/HoldConfirmation/HoldConfirmation.jsx",
           "@HoldRequest": "./src/app/components/HoldRequest/HoldRequest.jsx",
-          "@Home": "./src/app/components/Home/Home.jsx",
+          "@Home": "./src/app/pages/Home.jsx",
           "@ItemsContainer": "./src/app/components/Item/ItemsContainer.jsx",
           "@ItemTable": "./src/app/components/Item/ItemTable.jsx",
           "@ItemTableRow": "./src/app/components/Item/ItemTableRow.jsx",

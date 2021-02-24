@@ -36,7 +36,7 @@ const SubNav = (props) => {
   const { baseUrl } = appConfig;
   return (
     <nav
-      className="sub-nav apply-brand-styles"
+      className="sub-nav"
       aria-label="sub-nav"
     >
       <ul className="sub-nav__list">
