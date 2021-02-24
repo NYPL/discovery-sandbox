@@ -93,9 +93,6 @@ export class Application extends React.Component {
               patron={this.props.patron}
               skipNav={{ target: 'mainContent' }}
             />
-            <LoadingLayer
-              loading={this.props.loading}
-            />
             <DataLoader
               location={this.context.router.location}
               key={JSON.stringify(dataLocation)}

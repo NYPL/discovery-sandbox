@@ -6,27 +6,27 @@ import { LeftWedgeIcon } from '@nypl/dgx-svg-icons';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 
-import Breadcrumbs from '../Breadcrumbs/Breadcrumbs';
-import itemsContainerModule from '../Item/ItemsContainer';
-import BibDetails from './BibDetails';
-import LibraryItem from '../../utils/item';
-import BackLink from './BackLink';
-import AdditionalDetailsViewer from './AdditionalDetailsViewer';
-import Tabbed from './Tabbed';
-import NotFound404 from '../NotFound404/NotFound404';
-import LibraryHoldings from './LibraryHoldings';
-import getOwner from '../../utils/getOwner';
-import appConfig from '../../data/appConfig';
+import Breadcrumbs from '../components/Breadcrumbs/Breadcrumbs';
+import itemsContainerModule from '../components/Item/ItemsContainer';
+import BibDetails from '../components/BibPage/BibDetails';
+import LibraryItem from '../utils/item';
+import BackLink from '../components/BibPage/BackLink';
+import AdditionalDetailsViewer from '../components/BibPage/AdditionalDetailsViewer';
+import Tabbed from '../components/BibPage/Tabbed';
+import NotFound404 from '../components/NotFound404/NotFound404';
+import LibraryHoldings from '../components/BibPage/LibraryHoldings';
+import getOwner from '../utils/getOwner';
+import appConfig from '../data/appConfig';
 // Removed MarcRecord because the webpack MarcRecord is not working. Sep/28/2017
 // import MarcRecord from './MarcRecord';
 import { ajaxCall } from '@utils';
-import { updateBibPage, updateLoadingStatus } from '@Actions';
-import { itemBatchSize } from '../../data/constants';
+import { updateBibPage } from '@Actions';
+import { itemBatchSize } from '../data/constants';
 
 import {
   basicQuery,
   getAggregatedElectronicResources,
-} from '../../utils/utils';
+} from '../utils/utils';
 
 const ItemsContainer = itemsContainerModule.ItemsContainer;
 
@@ -261,6 +261,7 @@ BibPage.propTypes = {
   selectedFilters: PropTypes.object,
   page: PropTypes.string,
   sortBy: PropTypes.string,
+  dispatch: PropTypes.func,
 };
 
 BibPage.defaultProps = {

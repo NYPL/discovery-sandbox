@@ -11,7 +11,7 @@ import { Provider } from 'react-redux';
 import Bib from './../../src/server/ApiRoutes/Bib';
 
 // Import the unwrapped component that is going to be tested
-import { BibPage } from './../../src/app/components/BibPage/BibPage';
+import { BibPage } from './../../src/app/pages/BibPage';
 import bibs from '../fixtures/bibs';
 import annotatedMarc from '../fixtures/annotatedMarc.json';
 import mockBibWithHolding from '../fixtures/mockBibWithHolding.json';
