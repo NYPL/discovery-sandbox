@@ -471,16 +471,12 @@ export class FilterPopup extends React.Component {
 
     return (
       <div className="filter-container">
-        <div className={`nypl-full-width-wrapper${includeDrbb ? ' drbb-integration' : ''}`}>
-          <div className="nypl-row">
-            <div className="nypl-column-full">
-              <div className="filter-text">
-                <h2 id="filter-title" ref={this.filterTitle} tabIndex="0">Refine your search</h2>
-                <p>Toggle filters to narrow and define your search</p>
-              </div>
-              {(!showForm && !!(totalResults && totalResults !== 0)) && openPopupButton}
-            </div>
+        <div className="nypl-column-full">
+          <div className="filter-text">
+            <h2 id="filter-title" ref={this.filterTitle}>Refine your search</h2>
+            <p>Toggle filters to narrow and define your search</p>
           </div>
+          {(!showForm && !!(totalResults && totalResults !== 0)) && openPopupButton}
         </div>
         {
           showForm && (
@@ -503,7 +499,9 @@ export class FilterPopup extends React.Component {
                 }
               >
                 {
-                  this.state.raisedErrors && !_isEmpty(this.state.raisedErrors) && (errorMessageBlock)
+                  this.state.raisedErrors
+                  && !_isEmpty(this.state.raisedErrors)
+                  && (errorMessageBlock)
                 }
                 <form
                   action={`${appConfig.baseUrl}/search?q=${searchKeywords}`}
@@ -511,74 +509,62 @@ export class FilterPopup extends React.Component {
                   onSubmit={() => this.submitForm('Form submission')}
                 >
                   <div className="form-full-width">
-                    <div className={`nypl-full-width-wrapper${includeDrbb ? ' drbb-integration' : ''}`}>
-                      <div className="nypl-row">
-                        <div className="nypl-column-full">
-                          <ul
-                            className="filter-action-buttons"
-                            aria-label="Refine Search Options"
-                          >
-                            <li>{resetButton({ ref: this.filterResetBtn, position: 'top row' })}</li>
-                            <li>{cancelButton('top row')}</li>
-                            <li>{applyButton('top row')}</li>
-                          </ul>
-                        </div>
-                      </div>
+                    <div className="nypl-column-full">
+                      <ul
+                        className="filter-action-buttons"
+                        aria-label="Refine Search Options"
+                      >
+                        <li>{resetButton({ ref: this.filterResetBtn, position: 'top row' })}</li>
+                        <li>{cancelButton('top row')}</li>
+                        <li>{applyButton('top row')}</li>
+                      </ul>
                     </div>
                   </div>
 
                   <fieldset className="nypl-fieldset">
-                    <div className={`nypl-full-width-wrapper${includeDrbb ? ' drbb-integration' : ''}`}>
-                      <div className="nypl-row">
-                        <div className="nypl-column-full">
-                          <FieldsetList
-                            legend="Format"
-                            filterId="materialType"
-                            filter={materialTypeFilters}
-                            selectedFilters={filtersToShow.materialType}
-                            onFilterClick={this.onFilterClick}
-                          />
+                    <div className="nypl-column-full">
+                      <FieldsetList
+                        legend="Format"
+                        filterId="materialType"
+                        filter={materialTypeFilters}
+                        selectedFilters={filtersToShow.materialType}
+                        onFilterClick={this.onFilterClick}
+                      />
 
-                          <FieldsetDate
-                            legend="Date"
-                            selectedFilters={dateSelectedFilters}
-                            onDateFilterChange={this.onDateFilterChange}
-                            submitError={isDateInputError}
-                          />
+                      <FieldsetDate
+                        legend="Date"
+                        selectedFilters={dateSelectedFilters}
+                        onDateFilterChange={this.onDateFilterChange}
+                        submitError={isDateInputError}
+                      />
 
-                          <FieldsetList
-                            legend="Language"
-                            filterId="language"
-                            filter={languageFilters}
-                            selectedFilters={filtersToShow.language}
-                            onFilterClick={this.onFilterClick}
-                          />
+                      <FieldsetList
+                        legend="Language"
+                        filterId="language"
+                        filter={languageFilters}
+                        selectedFilters={filtersToShow.language}
+                        onFilterClick={this.onFilterClick}
+                      />
 
-                          <FieldsetList
-                            legend="Subject"
-                            filterId="subjectLiteral"
-                            filter={subjectLiteralFilters}
-                            selectedFilters={filtersToShow.subjectLiteral}
-                            onFilterClick={this.onFilterClick}
-                          />
-                        </div>
-                      </div>
+                      <FieldsetList
+                        legend="Subject"
+                        filterId="subjectLiteral"
+                        filter={subjectLiteralFilters}
+                        selectedFilters={filtersToShow.subjectLiteral}
+                        onFilterClick={this.onFilterClick}
+                      />
                     </div>
 
                     <div className="bottom-action-row form-full-width">
-                      <div className={`nypl-full-width-wrapper${includeDrbb ? ' drbb-integration' : ''}`}>
-                        <div className="nypl-row">
-                          <div className="nypl-column-full">
-                            <ul
-                              className="filter-action-buttons"
-                              aria-label="Refine Search Options"
-                            >
-                              <li>{resetButton({ ref: this.nullRef, position: 'bottom row' })}</li>
-                              <li>{cancelButton('bottom row')}</li>
-                              <li>{applyButton('bottom row')}</li>
-                            </ul>
-                          </div>
-                        </div>
+                      <div className="nypl-column-full">
+                        <ul
+                          className="filter-action-buttons"
+                          aria-label="Refine Search Options"
+                        >
+                          <li>{resetButton({ ref: this.nullRef, position: 'bottom row' })}</li>
+                          <li>{cancelButton('bottom row')}</li>
+                          <li>{applyButton('bottom row')}</li>
+                        </ul>
                       </div>
                     </div>
                   </fieldset>
