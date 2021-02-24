@@ -2,8 +2,7 @@
 import axios from 'axios';
 
 import appConfig from '../data/appConfig';
-
-const CLOSED_LOCATION_REGEX = /\(CLOSED\)|STAFF ONLY|SCHWARZMAN|Performing Arts|^[^a-z]+$/;
+import { CLOSED_LOCATION_REGEX } from '../data/constants';
 
 export const isClosed = optionInnerText => !!optionInnerText.match(CLOSED_LOCATION_REGEX);
 
