@@ -3,6 +3,10 @@ import axios from 'axios';
 
 import appConfig from '../data/appConfig';
 
+const CLOSED_LOCATION_REGEX = /\(CLOSED\)|STAFF ONLY|SCHWARZMAN|Performing Arts|^[^a-z]+$/;
+
+export const isClosed = optionInnerText => !!optionInnerText.match(CLOSED_LOCATION_REGEX);
+
 export const makeRequest = (
   updateAccountHtml,
   patronId,
@@ -102,8 +106,10 @@ export const manipulateAccountPage = (
         if (locationSelect) {
           const locationProp = locationSelect.name;
           let locationValue;
-          el.querySelectorAll('option').forEach((option) => {
+          locationSelect.querySelectorAll('option').forEach((option) => {
+            // hide closed locations
             if (option.selected) locationValue = `${option.value.trim()}+++`;
+            else if (isClosed(option.innerText)) option.remove();
           });
           locationData[locationProp] = locationValue;
           const locationChangeCb = (e) => {
