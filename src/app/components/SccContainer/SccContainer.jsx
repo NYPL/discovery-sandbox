@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
 
 import {
   Heading,
@@ -13,6 +14,7 @@ import SubNav from '../SubNav/SubNav';
 import appConfig from '../../data/appConfig';
 
 const SccContainer = (props) => {
+  const loading = useSelector(state => state.loading);
   const { useLoadingLayer, children, activeSection, className } = props;
 
   return (
@@ -20,7 +22,7 @@ const SccContainer = (props) => {
       {
         useLoadingLayer ? (
           <LoadingLayer
-            loading={props.loading}
+            loading={loading}
           />
         ) : null
       }
