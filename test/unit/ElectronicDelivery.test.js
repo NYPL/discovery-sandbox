@@ -33,7 +33,6 @@ describe('ElectronicDeliveryForm', () => {
     });
   });
   describe('with "on-site-edd" feature flag', () => {
-    let wrapper;
     let component;
     let appConfigMock;
     before(() => {
@@ -41,7 +40,7 @@ describe('ElectronicDeliveryForm', () => {
       appConfig.features = ['on-site-edd'];
       appConfig.eddAboutUrl.onSiteEdd = 'example.com/scan-and-deliver';
       const store = makeTestStore({ appConfig });
-      wrapper = mountTestRender(
+      component = mountTestRender(
         <ElectronicDelivery
           params={{ bibId: 'book1' }}
           location={{
@@ -53,11 +52,11 @@ describe('ElectronicDeliveryForm', () => {
     });
     after(() => {
       appConfigMock.restore();
-      wrapper.unmount();
+      component.unmount();
     });
     it('should have "Scan & Deliver" EDD about URL', () => {
-      component = wrapper.find('ElectronicDeliveryForm');
-      expect(component.find('a').first().prop('href')).to.equal('example.com/scan-and-deliver');
+      const form = component.find('ElectronicDeliveryForm');
+      expect(form.find('a').first().prop('href')).to.equal('example.com/scan-and-deliver');
     });
   });
 });
