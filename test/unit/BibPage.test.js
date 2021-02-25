@@ -61,8 +61,7 @@ describe('BibPage', () => {
             bib={bib}
             dispatch={() => {}}
           />
-        </Provider>
-        , {
+        </Provider>, {
           context: {
             router: { location: { query: {} }, createHref: () => {} },
           },

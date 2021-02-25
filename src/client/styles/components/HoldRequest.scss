@@ -1,5 +1,9 @@
 .edd-request {
   padding-bottom: var(--space-xxxl);
+
+  .nypl-text-field input {
+    height: auto;
+  }
 }
 
 .edd-copyright-notice {

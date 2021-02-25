@@ -24,7 +24,6 @@ import Notification from '../components/Notification/Notification';
 import LibraryItem from '../utils/item';
 import {
   trackDiscovery,
-  basicQuery,
 } from '../utils/utils';
 import { updateLoadingStatus } from '../actions/Actions';
 
@@ -226,7 +225,10 @@ class ElectronicDelivery extends React.Component {
 
     return (
       <DocumentTitle title="Electronic Delivery Request | Shared Collection Catalog | NYPL">
-        <SccContainer className="edd-request">
+        <SccContainer
+          className="edd-request"
+          activeSection="search"
+        >
           <div className="nypl-request-item-summary">
             {
               holdRequestNotification ?

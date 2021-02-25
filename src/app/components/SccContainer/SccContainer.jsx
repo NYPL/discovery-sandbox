@@ -62,6 +62,7 @@ SccContainer.propTypes = {
   children: PropTypes.array,
   useLoadingLayer: PropTypes.bool,
   activeSection: PropTypes.string,
+  className: PropTypes.string,
 };
 
 SccContainer.defaultProps = {
