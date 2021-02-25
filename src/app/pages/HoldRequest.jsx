@@ -13,17 +13,16 @@ import {
 import DocumentTitle from 'react-document-title';
 import { connect } from 'react-redux';
 
-import LoadingLayer from '../LoadingLayer/LoadingLayer';
-import Breadcrumbs from '../Breadcrumbs/Breadcrumbs';
-import Notification from '../Notification/Notification';
+import SccContainer from '../components/SccContainer/SccContainer';
+import Notification from '../components/Notification/Notification';
 
-import appConfig from '../../data/appConfig';
-import LibraryItem from '../../utils/item';
+import appConfig from '../data/appConfig';
+import LibraryItem from '../utils/item';
 import {
   trackDiscovery,
   basicQuery,
-} from '../../utils/utils';
-import { updateLoadingStatus } from '../../actions/Actions';
+} from '../utils/utils';
+import { updateLoadingStatus } from '../actions/Actions';
 
 export class HoldRequest extends React.Component {
   constructor(props) {
@@ -185,11 +184,9 @@ export class HoldRequest extends React.Component {
   }
   // checks whether a patron is eligible to place a hold. Uses cookie to get the patron's id
   checkEligibility() {
-    return new Promise((resolve) => {
-      axios.get(`${appConfig.baseUrl}/api/patronEligibility`)
-        .then((response) => { resolve(response.data); })
-        .catch(() => resolve({ eligibility: true }));
-    });
+    return axios.get(`${appConfig.baseUrl}/api/patronEligibility`)
+      .then(response => response.data)
+      .catch(() => ({ eligibility: true }));
   }
 
   redirectWithErrors(path, status, message) {
@@ -364,31 +361,15 @@ export class HoldRequest extends React.Component {
       );
     }
 
-    const searchUrl = basicQuery(this.props)({});
     const userLoggedIn = this.props.patron && this.props.patron.loggedIn;
     // include extra LoadingLayer here, since this one depends on the patron login status
 
     return (
       <DocumentTitle title="Item Request | Shared Collection Catalog | NYPL">
-        <div>
-          {
-            !userLoggedIn || loading ? <LoadingLayer loading /> : null
-          }
-          <div className="nypl-request-page-header">
-            <div className="nypl-full-width-wrapper">
-              <div className="row">
-                <div className="nypl-column-full">
-                  <Breadcrumbs
-                    searchUrl={searchUrl}
-                    bibUrl={`/bib/${bibId}`}
-                    type="hold"
-                  />
-                  <h1 id="item-title" tabIndex="0" id="mainContent">Item Request</h1>
-                </div>
-              </div>
-            </div>
-          </div>
-
+        <SccContainer
+          useLoadingLayer={!userLoggedIn || loading}
+          activeSection="search"
+        >
           <div className="nypl-full-width-wrapper">
             <div className="row">
               <div className="nypl-column-three-quarters">
@@ -415,7 +396,7 @@ export class HoldRequest extends React.Component {
               </div>
             </div>
           </div>
-        </div>
+        </SccContainer>
       </DocumentTitle>
     );
   }
