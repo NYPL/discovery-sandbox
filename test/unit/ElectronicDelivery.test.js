@@ -6,8 +6,8 @@ import { shallow } from 'enzyme';
 import { mock } from 'sinon';
 import { mountTestRender, makeTestStore } from '../helpers/store';
 
-import ElectronicDeliveryForm from './../../src/app/components/ElectronicDelivery/ElectronicDeliveryForm';
-import ElectronicDelivery from './../../src/app/components/ElectronicDelivery/ElectronicDelivery';
+import ElectronicDeliveryForm from './../../src/app/components/ElectronicDeliveryForm/ElectronicDeliveryForm';
+import ElectronicDelivery from './../../src/app/pages/ElectronicDelivery';
 import appConfig from './../../src/app/data/appConfig';
 
 describe('ElectronicDeliveryForm', () => {

@@ -16,16 +16,17 @@ import {
 import DocumentTitle from 'react-document-title';
 import { connect } from 'react-redux';
 
-import Breadcrumbs from '../Breadcrumbs/Breadcrumbs';
-import appConfig from '../../data/appConfig';
-import ElectronicDeliveryForm from './ElectronicDeliveryForm';
-import LibraryItem from '../../utils/item';
-import Notification from '../Notification/Notification';
+import SccContainer from '../components/SccContainer/SccContainer'
+import Breadcrumbs from '../components/Breadcrumbs/Breadcrumbs';
+import appConfig from '../data/appConfig';
+import ElectronicDeliveryForm from '../components/ElectronicDeliveryForm/ElectronicDeliveryForm';
+import Notification from '../components/Notification/Notification';
+import LibraryItem from '../utils/item';
 import {
   trackDiscovery,
   basicQuery,
-} from '../../utils/utils';
-import { updateLoadingStatus } from '../../actions/Actions';
+} from '../utils/utils';
+import { updateLoadingStatus } from '../actions/Actions';
 
 class ElectronicDelivery extends React.Component {
   constructor(props) {
@@ -235,7 +236,7 @@ class ElectronicDelivery extends React.Component {
                   bibUrl={`/bib/${bibId}`}
                   itemUrl={`/hold/request/${bibId}-${itemId}`}
                 />
-                <h1 id="edd-request-title" tabIndex="0">Electronic Delivery Request</h1>
+                <h1 id="edd-request-title">Electronic Delivery Request</h1>
                 {
                   holdRequestNotification ?
                     <Notification notificationType="holdRequestNotification" />

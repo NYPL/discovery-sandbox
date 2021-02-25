@@ -10,6 +10,7 @@ import SubjectHeadingShowPage from '../pages/SubjectHeadingShowPage';
 import SearchResults from '../pages/SearchResultsPage';
 import BibPage from '../pages/BibPage';
 import Home from '../pages/Home';
+import ElectronicDelivery from '../pages/ElectronicDelivery';
 
 /*
  * Components
@@ -17,7 +18,6 @@ import Home from '../pages/Home';
 import Application from '../components/Application/Application';
 import HoldRequest from '../components/HoldRequest/HoldRequest';
 import HoldConfirmation from '../components/HoldConfirmation/HoldConfirmation';
-import ElectronicDelivery from '../components/ElectronicDelivery/ElectronicDelivery';
 import NotFound404 from '../components/NotFound404/NotFound404';
 import appConfig from '../data/appConfig';
 
