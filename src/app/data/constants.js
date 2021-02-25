@@ -47,6 +47,7 @@ const noticePreferenceMapping = {
   '-': 'None',
 };
 
+const CLOSED_LOCATION_REGEX = /\(CLOSED\)|STAFF ONLY|SCHWARZMAN|Performing Arts|^[^a-z]+$/;
 
 export {
   breakpoints,
@@ -54,4 +55,5 @@ export {
   bibPageItemsListLimit,
   searchResultItemsListLimit,
   noticePreferenceMapping,
+  CLOSED_LOCATION_REGEX,
 };
