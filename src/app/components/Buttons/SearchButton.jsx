@@ -20,7 +20,11 @@ const SearchButton = ({
     aria-controls="results-description"
     onClick={onClick}
   >
-    <Icon name={IconNames.search} decorative />
+    <Icon
+      name={IconNames.search}
+      decorative
+      modifiers={['small', 'icon-left']}
+    />
     {value}
   </Button>
 );
