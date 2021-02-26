@@ -20,7 +20,6 @@ import appConfig from '../data/appConfig';
 import LibraryItem from '../utils/item';
 import {
   trackDiscovery,
-  basicQuery,
 } from '../utils/utils';
 import { updateLoadingStatus } from '../actions/Actions';
 
@@ -118,7 +117,7 @@ export class HoldRequest extends React.Component {
           const fullUrl = encodeURIComponent(window.location.href);
           window.location.replace(`${appConfig.loginUrl}?redirect_uri=${fullUrl}`);
           return;
-        };
+        }
         this.context.router.push(response.data);
       })
       .catch((error) => {
