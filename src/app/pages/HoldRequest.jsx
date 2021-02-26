@@ -362,7 +362,6 @@ export class HoldRequest extends React.Component {
     }
 
     const userLoggedIn = this.props.patron && this.props.patron.loggedIn;
-    // include extra LoadingLayer here, since this one depends on the patron login status
 
     return (
       <DocumentTitle title="Item Request | Shared Collection Catalog | NYPL">
