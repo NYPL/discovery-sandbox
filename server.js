@@ -67,7 +67,7 @@ app.use('/', (req, res, next) => {
 
 app.use('/*', (req, res, next) => {
   const initialStore = { ...initialState, lastLoaded: req._parsedUrl.path };
-  global.store = configureStore(initialStore);
+  req.store = configureStore(initialStore);
   next();
 });
 
@@ -79,7 +79,7 @@ app.use('/', apiRoutes);
 
 app.get('/*', (req, res) => {
   const appRoutes = (req.url).indexOf(appConfig.baseUrl) !== -1 ? routes.client : routes.server;
-  const store = global.store;
+  const store = req.store;
 
   match({ routes: appRoutes, location: req.url }, (error, redirectLocation, renderProps) => {
     if (error) {
