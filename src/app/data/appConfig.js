@@ -4,7 +4,7 @@ import mapLocations from '../utils/mapLocations';
 const appConfig = {
   appTitle: 'NYPL | Discovery',
   appName: 'discovery',
-  displayTitle: process.env.DISPLAY_TITLE,
+  displayTitle: process.env.DISPLAY_TITLE || 'Shared Collection Catalog',
   baseUrl: '/research/collections/shared-collection-catalog',
   favIconPath: '//d2znry4lg8s0tq.cloudfront.net/images/favicon.ico',
   port: 3001,
