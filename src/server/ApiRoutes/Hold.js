@@ -192,7 +192,7 @@ function confirmRequestServer(req, res, next) {
 
   if (redirect) return false;
 
-  const { dispatch } = global.store;
+  const { dispatch } = req.store;
   if (!requestId) {
     dispatch(updateHoldRequestPage({
       bib: {},
@@ -350,7 +350,7 @@ function newHoldRequest(req, res, resolve) {
 }
 
 function newHoldRequestServerEdd(req, res, next) {
-  const { dispatch } = global.store;
+  const { dispatch } = req.store;
   const requireUser = User.requireUser(req, res);
   const { redirect } = requireUser;
   const error = req.query.error ? JSON.parse(req.query.error) : {};
