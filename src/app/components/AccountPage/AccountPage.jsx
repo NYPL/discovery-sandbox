@@ -156,7 +156,7 @@ const AccountPage = (props) => {
           {itemToCancel ? (
             <div className="scc-modal">
               <div>
-                <p>You requested <span>canceling</span> of following item:</p>
+                <p>Cancel your hold on this item?</p>
                 <p>{itemToCancel.title}</p>
                 <Button
                   buttonType={ButtonTypes.Secondary}
