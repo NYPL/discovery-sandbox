@@ -52,6 +52,10 @@ describe('BibPage', () => {
         },
         getState: () => testStore,
         subscribe: () => {},
+        appConfig: {
+          displayTitle: 'Shared Collection Catalog',
+          baseUrl: '/',
+        },
       };
 
       component = mount(

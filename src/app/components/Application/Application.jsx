@@ -1,7 +1,6 @@
 /* global window */
 import React from 'react';
 import PropTypes from 'prop-types';
-import DocumentTitle from 'react-document-title';
 import { Header, navConfig } from '@nypl/dgx-header-component';
 import Footer from '@nypl/dgx-react-footer';
 import { connect } from 'react-redux';
@@ -86,23 +85,21 @@ export class Application extends React.Component {
 
     return (
       <MediaContext.Provider value={this.state.media}>
-        <DocumentTitle title="Shared Collection Catalog | NYPL">
-          <div className="app-wrapper">
-            <Header
-              navData={navConfig.current}
-              patron={this.props.patron}
-              skipNav={{ target: 'mainContent' }}
-            />
-            <DataLoader
-              location={this.context.router.location}
-              key={JSON.stringify(dataLocation)}
-            >
-              {React.cloneElement(this.props.children)}
-            </DataLoader>
-            <Footer />
-            <Feedback />
-          </div>
-        </DocumentTitle>
+        <div className="app-wrapper">
+          <Header
+            navData={navConfig.current}
+            patron={this.props.patron}
+            skipNav={{ target: 'mainContent' }}
+          />
+          <DataLoader
+            location={this.context.router.location}
+            key={JSON.stringify(dataLocation)}
+          >
+            {React.cloneElement(this.props.children)}
+          </DataLoader>
+          <Footer />
+          <Feedback />
+        </div>
       </MediaContext.Provider>
     );
   }

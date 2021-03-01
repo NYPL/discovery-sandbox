@@ -106,6 +106,8 @@ describe('SearchResultsPage', () => {
         searchResults,
         appConfig: {
           features: [],
+          displayTitle: 'Shared Collection Catalog',
+          baseUrl: '/',
         },
       });
       wrapper = mountTestRender(
@@ -149,6 +151,8 @@ describe('SearchResultsPage', () => {
         searchResults,
         appConfig: {
           features: [],
+          displayTitle: 'Shared Collection Catalog',
+          baseUrl: '/',
         },
       });
       wrapper = mountTestRender(
@@ -185,6 +189,8 @@ describe('SearchResultsPage', () => {
         searchResults,
         appConfig: {
           features: [],
+          displayTitle: 'Shared Collection Catalog',
+          baseUrl: '/',
         },
       });
       wrapper = mountTestRender(
@@ -219,6 +225,8 @@ describe('SearchResultsPage', () => {
         searchResults,
         appConfig: {
           features: ['drb-integration'],
+          displayTitle: 'Shared Collection Catalog',
+          baseUrl: '/',
         },
       });
       component = mountTestRender(
@@ -251,6 +259,8 @@ describe('SearchResultsPage', () => {
           searchResults,
           appConfig: {
             features: ['drb-integration'],
+            displayTitle: 'Shared Collection Catalog',
+            baseUrl: '/',
           },
         });
         component = mountTestRender(

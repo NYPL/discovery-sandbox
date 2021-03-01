@@ -10,11 +10,11 @@ import {
   isArray as _isArray,
   isEmpty as _isEmpty,
 } from 'underscore';
-import DocumentTitle from 'react-document-title';
 import { connect } from 'react-redux';
 
 import SccContainer from '../components/SccContainer/SccContainer';
 import Notification from '../components/Notification/Notification';
+import LoadingLayer from '../components/LoadingLayer/LoadingLayer';
 
 import appConfig from '../data/appConfig';
 import LibraryItem from '../utils/item';
@@ -363,10 +363,13 @@ export class HoldRequest extends React.Component {
     const userLoggedIn = this.props.patron && this.props.patron.loggedIn;
 
     return (
-      <DocumentTitle title="Item Request | Shared Collection Catalog | NYPL">
+      <>
+        {
+          !userLoggedIn || loading ? <LoadingLayer loading /> : null
+        }
         <SccContainer
-          useLoadingLayer={!userLoggedIn || loading}
           activeSection="search"
+          pageTitle="Item Request"
         >
           <div className="nypl-full-width-wrapper">
             <div className="row">
@@ -395,7 +398,7 @@ export class HoldRequest extends React.Component {
             </div>
           </div>
         </SccContainer>
-      </DocumentTitle>
+      </>
     );
   }
 }

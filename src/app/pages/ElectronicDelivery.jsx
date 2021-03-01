@@ -13,11 +13,9 @@ import {
   extend as _extend,
   mapObject as _mapObject,
 } from 'underscore';
-import DocumentTitle from 'react-document-title';
 import { connect } from 'react-redux';
 
 import SccContainer from '../components/SccContainer/SccContainer'
-import Breadcrumbs from '../components/Breadcrumbs/Breadcrumbs';
 import appConfig from '../data/appConfig';
 import ElectronicDeliveryForm from '../components/ElectronicDeliveryForm/ElectronicDeliveryForm';
 import Notification from '../components/Notification/Notification';
@@ -224,72 +222,71 @@ class ElectronicDelivery extends React.Component {
     } = appConfig;
 
     return (
-      <DocumentTitle title="Electronic Delivery Request | Shared Collection Catalog | NYPL">
-        <SccContainer
-          className="edd-request"
-          activeSection="search"
-        >
-          <div className="nypl-request-item-summary">
-            {
-              holdRequestNotification ?
-              (
-                <Notification
-                  notificationType="holdRequestNotification"
-                />
-              )
-              : null
-            }
-            <h2>
-              <Link
-                to={`${appConfig.baseUrl}/bib/${bibId}`}
-                onClick={() => trackDiscovery('EDD - Bib', title)}
-              >
-                {title}
-              </Link>
-            </h2>
-            {
-              callNo && (
-                <div className="call-number">
-                  <span>Call Number:</span><br />
-                  {callNo}
-                </div>
-              )
-            }
-          </div>
+      <SccContainer
+        className="edd-request"
+        activeSection="search"
+        pageTitle="Electronic Delivery Request"
+      >
+        <div className="nypl-request-item-summary">
+          {
+            holdRequestNotification ?
+            (
+              <Notification
+                notificationType="holdRequestNotification"
+              />
+            )
+            : null
+          }
+          <h2>
+            <Link
+              to={`${appConfig.baseUrl}/bib/${bibId}`}
+              onClick={() => trackDiscovery('EDD - Bib', title)}
+            >
+              {title}
+            </Link>
+          </h2>
+          {
+            callNo && (
+              <div className="call-number">
+                <span>Call Number:</span><br />
+                {callNo}
+              </div>
+            )
+          }
+        </div>
 
-          <div>
-            {
-              !_isEmpty(raiseError) && (
-                <div className="nypl-form-error" ref="nypl-form-error">
-                  <h2>Error</h2>
-                  <p>Please check the following required fields and resubmit your request:</p>
-                  <ul>
-                    {this.getRaisedErrors(raiseError)}
-                  </ul>
-                </div>
-              )
-            }
-            {
-              !closedLocations.includes('') ?
-                <ElectronicDeliveryForm
-                  bibId={bibId}
-                  itemId={itemId}
-                  itemSource={this.state.itemSource}
-                  submitRequest={this.submitRequest}
-                  raiseError={this.raiseError}
-                  error={error}
-                  form={form}
-                  defaultEmail={patronEmail}
-                  searchKeywords={searchKeywords}
-                  serverRedirect={serverRedirect}
-                  fromUrl={this.fromUrl()}
-                  onSiteEddEnabled={this.props.features.includes('on-site-edd')}
-                />
-                : null
-            }
-          </div>
-        </SccContainer>
-      </DocumentTitle>
+        <div>
+          {
+            !_isEmpty(raiseError) && (
+              <div className="nypl-form-error" ref="nypl-form-error">
+                <h2>Error</h2>
+                <p>Please check the following required fields and resubmit your request:</p>
+                <ul>
+                  {this.getRaisedErrors(raiseError)}
+                </ul>
+              </div>
+            )
+          }
+          {
+            !closedLocations.includes('') ?
+              <ElectronicDeliveryForm
+                bibId={bibId}
+                itemId={itemId}
+                itemSource={this.state.itemSource}
+                submitRequest={this.submitRequest}
+                raiseError={this.raiseError}
+                error={error}
+                form={form}
+                defaultEmail={patronEmail}
+                searchKeywords={searchKeywords}
+                serverRedirect={serverRedirect}
+                fromUrl={this.fromUrl()}
+                onSiteEddEnabled={this.props.features.includes('on-site-edd')}
+              />
+              : null
+          }
+        </div>
+      </SccContainer>
     );
   }
 }

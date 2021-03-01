@@ -26,7 +26,13 @@ describe('HoldRequest', () => {
         component = mountTestRender(
           <WrappedHoldRequest />, {
             attachTo: document.body,
-            store: makeTestStore({ patron: { id: 1 } }),
+            store: makeTestStore({
+              patron: { id: 1 },
+              appConfig: {
+                displayTitle: 'Shared Collection Catalog',
+                baseUrl: '/',
+              },
+            }),
           });
       });
       after(() => {
@@ -45,7 +51,13 @@ describe('HoldRequest', () => {
         component = mountTestRender(
           <WrappedHoldRequest />, {
             attachTo: document.body,
-            store: makeTestStore({ patron: { id: 1 } }),
+            store: makeTestStore({
+              patron: { id: 1 },
+              appConfig: {
+                displayTitle: 'Shared Collection Catalog',
+                baseUrl: '/',
+              },
+            }),
           });
       });
       after(() => {
@@ -393,6 +405,8 @@ describe('HoldRequest', () => {
             bib,
             appConfig: {
               closedLocations: ['edd'],
+              displayTitle: 'Shared Collection Catalog',
+              baseUrl: '/',
             },
             isEddRequestable: true,
             deliveryLocations,
@@ -457,6 +471,8 @@ describe('HoldRequest', () => {
               bib,
               appConfig: {
                 closedLocations: [''],
+                displayTitle: 'Shared Collection Catalog',
+                baseUrl: '/',
               },
               isEddRequestable: true,
               deliveryLocations,
@@ -515,6 +531,8 @@ describe('HoldRequest', () => {
               bib,
               appConfig: {
                 recapClosedLocations: [''],
+                displayTitle: 'Shared Collection Catalog',
+                baseUrl: '/',
               },
               isEddRequestable: true,
               deliveryLocations,
@@ -573,6 +591,8 @@ describe('HoldRequest', () => {
               bib,
               appConfig: {
                 closedLocations: ['edd'],
+                displayTitle: 'Shared Collection Catalog',
+                baseUrl: '/',
               },
               isEddRequestable: true,
               deliveryLocations,

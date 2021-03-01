@@ -2,7 +2,6 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import DocumentTitle from 'react-document-title';
 import { every as _every } from 'underscore';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
@@ -204,24 +203,23 @@ export const BibPage = (props) => {
   const searchUrl = createAPIQuery({});
 
   return (
-    <DocumentTitle title="Item Details | Shared Collection Catalog | NYPL">
-      <SccContainer
-        useLoadingLayer
-        className="nypl-item-details"
-      >
-        <BibDetails
-          bib={bib}
-          fields={topFields}
-          logging
-          electronicResources={aggregatedElectronicResources}
-        />
-        <Tabbed
-          tabs={tabs}
-          hash={location.hash}
-        />
-        { classicLink }
-      </SccContainer>
-    </DocumentTitle>
+    <SccContainer
+      useLoadingLayer
+      className="nypl-item-details"
+      pageTitle="Item Details"
+    >
+      <BibDetails
+        bib={bib}
+        fields={topFields}
+        logging
+        electronicResources={aggregatedElectronicResources}
+      />
+      <Tabbed
+        tabs={tabs}
+        hash={location.hash}
+      />
+      { classicLink }
+    </SccContainer>
   );
 };
 
