@@ -15,7 +15,13 @@ const TestProvider = ({
 function testRender(ui, renderFunc, { store, ...otherOpts }) {
   return renderFunc(<TestProvider store={store}>{ui}</TestProvider>, {
     ...otherOpts,
-    context: { router: { location: {}, createHref: () => {} } },
+    context: {
+      router: {
+        location: {},
+        createHref: () => {},
+        push: () => {},
+      },
+    },
   });
 }
 

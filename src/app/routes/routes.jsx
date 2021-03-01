@@ -12,12 +12,12 @@ import HoldRequest from '../pages/HoldRequest';
 import SearchResults from '../pages/SearchResultsPage';
 import SubjectHeadingShowPage from '../pages/SubjectHeadingShowPage';
 import SubjectHeadingsIndexPage from '../pages/SubjectHeadingsIndexPage';
+import HoldConfirmation from '../pages/HoldConfirmation';
 
 /*
  * Components
  */
 import Application from '../components/Application/Application';
-import HoldConfirmation from '../components/HoldConfirmation/HoldConfirmation';
 import NotFound404 from '../components/NotFound404/NotFound404';
 import appConfig from '../data/appConfig';
 
