@@ -25,7 +25,7 @@ const AccountSettings = ({ patron, legacyCatalog }) => (
       <dt>Email</dt>
       <dd>{patron.emails ? patron.emails[0] : 'None'}</dd>
       <dt>Preferred Pick Up Location</dt>
-      <dd>{patron.homeLibraryCode || 'None'}</dd>
+      <dd>{patron.homeLibraryName || patron.homeLibraryCode || 'None'}</dd>
       <dt>Preferred Contact Method</dt>
       <dd>{patron.noticePreference}</dd>
     </dl>

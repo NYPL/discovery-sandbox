@@ -1,8 +1,39 @@
 import axios from 'axios';
 
+import nyplApiClient from '../routes/nyplApiClient';
 import User from './User';
-
 import appConfig from '../../app/data/appConfig';
+
+const nyplApiClientGet = endpoint => (
+  nyplApiClient()
+    .then(client => client.get(endpoint, { cache: false }))
+);
+
+function getHomeLibrary(code) {
+  return nyplApiClientGet(`/locations?location_codes=${code}`)
+    .then((resp) => {
+      if (!resp || !resp[code] || !resp[code][0].label) return { code };
+      return {
+        code,
+        label: resp[code][0].label,
+      };
+    })
+    .catch((error) => {
+      console.error(error);
+      return { code };
+    });
+}
+
+function getAccountPage(res, req) {
+  const patronId = req.patronTokenResponse.decodedPatron.sub;
+  const content = req.params.content || 'items';
+
+  return axios.get(`${appConfig.legacyCatalog}/dp/patroninfo*eng~Sdefault/${patronId}/${content}`, {
+    headers: {
+      Cookie: req.headers.cookie,
+    },
+  });
+}
 
 function fetchAccountPage(req, res, resolve) {
   const requireUser = User.requireUser(req, res);
@@ -12,26 +43,38 @@ function fetchAccountPage(req, res, resolve) {
     return;
   }
 
-  const patronId = req.patronTokenResponse.decodedPatron.sub;
   const content = req.params.content || 'items';
-
   // no need to fetch from Webpac for this tab
-  if (content === 'settings') return resolve('');
+  if (content === 'settings') {
+    const patron = global.store.getState().patron;
+    if (patron.homeLibraryCode && !patron.homeLibraryName) {
+      getHomeLibrary(patron.homeLibraryCode)
+        .then((resp) => {
+          resolve({
+            patron: {
+              ...patron,
+              homeLibraryName: resp.label,
+            },
+          });
+        });
+      return;
+    }
+    resolve({ patron, accountHtml: '' });
+
+    return;
+  }
 
   if (!['items', 'holds', 'overdues'].includes(content)) {
     res.redirect(`${appConfig.baseUrl}/account`);
     return;
   }
 
-  axios.get(`${appConfig.legacyCatalog}/dp/patroninfo*eng~Sdefault/${patronId}/${content}`, {
-    headers: {
-      Cookie: req.headers.cookie,
-    },
-  })
+
+  getAccountPage(res, req)
     .then((resp) => {
       // If Header thinks patron is logged in,
       // but patron is not actually logged in, the case below is hit
-      if (resp.request.path.includes('/login?')) {
+      if (resp.request && resp.request.path.includes('/login?')) {
         // need to implement
         console.log('need to redirect, might be buggy?');
         // redirect to login
@@ -40,9 +83,11 @@ function fetchAccountPage(req, res, resolve) {
           res.redirect(`${appConfig.loginUrl}?redirect_uri=${fullUrl}`);
         }
       }
-      resolve(resp.data);
+
+      resolve({ accountHtml: resp.data });
     })
     .catch((resp) => {
+      console.error(resp);
       res.json({ error: resp });
     });
 }
@@ -68,4 +113,5 @@ function postToAccountPage(req, res) {
 export default {
   fetchAccountPage,
   postToAccountPage,
+  getHomeLibrary,
 };

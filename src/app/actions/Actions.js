@@ -153,3 +153,9 @@ export const updateHoldRequestPage = data => dispatch => new Promise(() => {
   if (searchKeywords) dispatch(updateSearchKeywords(searchKeywords));
   return data;
 });
+
+export const updateAccountPage = data => dispatch => new Promise(() => {
+  const { accountHtml, patron } = data;
+  dispatch(updateAccountHtml(accountHtml));
+  if (patron) dispatch(updatePatronData(patron));
+});
