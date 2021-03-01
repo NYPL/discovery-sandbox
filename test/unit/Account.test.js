@@ -32,12 +32,7 @@ const renderMockReq = (content, mockPatronTokenResponse = validMockPatronTokenRe
   },
 });
 
-let urlToTest = '';
-
 const mockRes = {
-  redirect: (url) => {
-    urlToTest = url;
-  },
   json: resp => ({ resp }),
 };
 const mockResolve = resp => resp;
@@ -46,6 +41,7 @@ describe('`fetchAccountPage`', () => {
   let requireUser;
   let axiosGet;
   let mock;
+  let redirectedTo = '';
 
   before(() => {
     requireUser = sinon.stub(User, 'requireUser').callsFake(req => ({ redirect: !req.patronTokenResponse.isTokenValid }));
@@ -73,6 +69,11 @@ describe('`fetchAccountPage`', () => {
 
   beforeEach(() => {
     axiosGet.reset();
+    redirectedTo = '';
+
+    mockRes.redirect = (url) => {
+      redirectedTo = url;
+    }
   });
 
   describe('patron not logged in', () => {
@@ -94,7 +95,7 @@ describe('`fetchAccountPage`', () => {
     it('should redirect', () => {
       Account.fetchAccountPage(renderMockReq('blahblah'), mockRes, mockResolve);
 
-      expect(urlToTest).to.equal('/research/collections/shared-collection-catalog/account');
+      expect(redirectedTo).to.equal('/research/collections/shared-collection-catalog/account');
     });
 
     it('should not make axios request', () => {
