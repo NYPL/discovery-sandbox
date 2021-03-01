@@ -92,7 +92,7 @@ describe('HoldConfirmation', () => {
         requireUser = sinon.spy(HoldConfirmation.prototype, 'requireUser');
 
         component = mountTestRender(
-          <HoldConfirmation location={location} />, {
+          <WrappedHoldConfirmation location={location} />, {
             store: makeTestStore({
               patron,
             }),
@@ -104,9 +104,9 @@ describe('HoldConfirmation', () => {
         component.unmount();
       });
 
-      // it('should pass the patron data check in requireUser().', () => {
-      //   expect(requireUser.returnValues[0]).to.equal(true);
-      // });
+      it('should pass the patron data check in requireUser().', () => {
+        expect(requireUser.returnValues[0]).to.equal(true);
+      });
 
       it('should render the error message.', () => {
         const main = component.find('main');
@@ -185,12 +185,6 @@ describe('HoldConfirmation', () => {
       requireUser.restore();
       modelDeliveryLocationName.restore();
       component.unmount();
-    });
-
-    it('should display the layout of request confirmation page\'s header.', () => {
-      const main = component.find('main');
-
-      expect(main).to.have.length(1);
     });
 
     it('should display the layout of request confirmation page\'s contents.', () => {

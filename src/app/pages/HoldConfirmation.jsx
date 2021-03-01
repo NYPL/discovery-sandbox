@@ -359,8 +359,6 @@ export class HoldConfirmation extends React.Component {
       trackDiscovery('Error', 'Hold Confirmation');
     }
 
-    const searchUrl = basicQuery(this.props)({});
-
     return (
       <SccContainer
         activeSection="search"
