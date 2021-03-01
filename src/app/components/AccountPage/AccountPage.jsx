@@ -41,16 +41,18 @@ const AccountPage = (props) => {
   const [itemToCancel, setItemToCancel] = useState(null);
 
   console.log('accountHtml: ', accountHtml, 'patronid: ', patron.id);
-  if (typeof window !== 'undefined' && accountHtml.error) {
-    logOutFromEncoreAndCatalogIn();
-    console.log('body: ', document.getElementsByTagName('body')[0].children)
-    window.location.replace(`${appConfig.loginUrl}`)
-  }
   useEffect(() => {
+    // if (typeof window !== 'undefined' && accountHtml.error) {
+    //   console.log('body: ', document.getElementsByTagName('body')[0].children)
+    //   window.location.replace(`${appConfig.loginUrl}`)
+    // }
 
-    if (typeof window !== 'undefined' && (!patron.id)) {
+    if (typeof window !== 'undefined' && (!patron.id || accountHtml.error)) {
+      logOutFromEncoreAndCatalogIn();
       const fullUrl = encodeURIComponent(window.location.href);
-      window.location.replace(`${appConfig.loginUrl}?redirect_uri=${fullUrl}`);
+      setTimeout(() => {
+        window.location.replace(`${appConfig.loginUrl}?redirect_uri=${fullUrl}`);
+      }, 0);
     }
   }, [patron]);
 
