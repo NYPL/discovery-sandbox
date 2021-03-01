@@ -7,19 +7,21 @@ import {
   isEmpty as _isEmpty,
   findWhere as _findWhere,
 } from 'underscore';
+import DocumentTitle from 'react-document-title';
 import Url from 'url-parse';
 import { connect } from 'react-redux';
 
-import appConfig from '../data/appConfig';
-import SccContainer from '../components/SccContainer/SccContainer';
+import appConfig from '../../data/appConfig';
+import Breadcrumbs from '../Breadcrumbs/Breadcrumbs';
 import {
   trackDiscovery,
   basicQuery,
-} from '../utils/utils';
+} from '../../utils/utils';
 
 export class HoldConfirmation extends React.Component {
   componentDidMount() {
     this.requireUser();
+    document.getElementById('mainContent').focus();
   }
 
   expiredMessage() {
@@ -362,18 +364,35 @@ export class HoldConfirmation extends React.Component {
     const searchUrl = basicQuery(this.props)({});
 
     return (
-      <SccContainer
-        activeSection="search"
-        pageTitle={confirmationPageTitle}
-      >
-        <div className="nypl-row">
-          <div className="nypl-column-three-quarters">
-            <div className="nypl-request-item-summary">
-              {confirmationInfo}
+      <DocumentTitle title={`${confirmationPageTitle} | Shared Collection Catalog | NYPL`}>
+        <main className="main-page">
+          <div className="nypl-request-page-header">
+            <div className="row">
+              <div className="nypl-full-width-wrapper">
+                <div className="nypl-column-full">
+                  <Breadcrumbs
+                    searchUrl={searchUrl}
+                    type="confirmation"
+                    bibUrl={`/bib/${bibId}`}
+                    itemUrl={`/hold/request/${bibId}-${itemId}`}
+                    edd={pickupLocation === 'edd'}
+                  />
+                  <h1 id="mainContent" tabIndex="0">{confirmationPageTitle}</h1>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-      </SccContainer>
+          <div className="nypl-full-width-wrapper">
+            <div className="nypl-row">
+              <div className="nypl-column-three-quarters">
+                <div className="nypl-request-item-summary">
+                  {confirmationInfo}
+                </div>
+              </div>
+            </div>
+          </div>
+        </main>
+      </DocumentTitle>
     );
   }
 }
