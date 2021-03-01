@@ -371,30 +371,28 @@ export class HoldRequest extends React.Component {
           activeSection="search"
           pageTitle="Item Request"
         >
-          <div className="nypl-full-width-wrapper">
-            <div className="row">
-              <div className="nypl-column-three-quarters">
-                <div className="nypl-request-item-summary">
-                  <div className="item">
-                    {
-                      (userLoggedIn && !loading && (!bib || !selectedItemAvailable)) &&
-                        <h2>
-                          This item cannot be requested at this time. Please try again later or
-                          contact 917-ASK-NYPL (<a href="tel:917-275-6975">917-275-6975</a>).
-                        </h2>
-                    }
-                    {
-                      holdRequestNotification
-                      ? <Notification notificationType="holdRequestNotification" />
-                      : null
-                    }
-                    {bibLink}
-                    {callNo}
-                  </div>
+          <div className="row">
+            <div className="nypl-column-three-quarters">
+              <div className="nypl-request-item-summary">
+                <div className="item">
+                  {
+                    (userLoggedIn && !loading && (!bib || !selectedItemAvailable)) &&
+                      <h2>
+                        This item cannot be requested at this time. Please try again later or
+                        contact 917-ASK-NYPL (<a href="tel:917-275-6975">917-275-6975</a>).
+                      </h2>
+                  }
+                  {
+                    holdRequestNotification
+                    ? <Notification notificationType="holdRequestNotification" />
+                    : null
+                  }
+                  {bibLink}
+                  {callNo}
                 </div>
-
-                {form}
               </div>
+
+              {form}
             </div>
           </div>
         </SccContainer>
