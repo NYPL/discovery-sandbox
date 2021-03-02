@@ -4,10 +4,10 @@ import React from 'react';
 import sinon from 'sinon';
 import { expect } from 'chai';
 import { mount } from 'enzyme';
+import { mountTestRender, makeTestStore } from '../helpers/store';
 
 // Import the component that is going to be tested
-import WrappedHoldConfirmation, { HoldConfirmation } from './../../src/app/components/HoldConfirmation/HoldConfirmation';
-import appConfig from '../../src/app/data/appConfig';
+import WrappedHoldConfirmation, { HoldConfirmation } from './../../src/app/pages/HoldConfirmation';
 
 describe('HoldConfirmation', () => {
   describe('After being rendered, <HoldConfirmation>', () => {
@@ -22,7 +22,11 @@ describe('HoldConfirmation', () => {
 
     before(() => {
       requireUser = sinon.spy(HoldConfirmation.prototype, 'requireUser');
-      component = mount(<HoldConfirmation location={location} />, { attachTo: document.body });
+      component = mountTestRender(
+        <HoldConfirmation location={location} />, {
+          store: makeTestStore(),
+        },
+      );
     });
 
     after(() => {
@@ -47,8 +51,12 @@ describe('HoldConfirmation', () => {
 
     before(() => {
       requireUser = sinon.spy(HoldConfirmation.prototype, 'requireUser');
-      component = mount(
-        <HoldConfirmation location={location} patron={{}} />, { attachTo: document.body });
+      component = mountTestRender(
+        <HoldConfirmation location={location} />, {
+          store: makeTestStore({
+            patron: {},
+          }),
+        });
     });
 
     after(() => {
@@ -57,7 +65,6 @@ describe('HoldConfirmation', () => {
     });
 
     it('should redirect the patron to OAuth log in page.', () => {
-      component.setState({ patron: {} });
       expect(requireUser.returnValues[0]).to.equal(false);
     });
   });
@@ -83,8 +90,13 @@ describe('HoldConfirmation', () => {
           loggedIn: true,
         };
         requireUser = sinon.spy(HoldConfirmation.prototype, 'requireUser');
-        component = mount(
-          <HoldConfirmation location={location} patron={patron} />, { attachTo: document.body });
+
+        component = mountTestRender(
+          <WrappedHoldConfirmation location={location} />, {
+            store: makeTestStore({
+              patron,
+            }),
+          });
       });
 
       after(() => {
@@ -150,6 +162,7 @@ describe('HoldConfirmation', () => {
         id: '6677200',
         names: ['Leonard, Mike'],
         barcodes: ['162402680435300'],
+        loggedIn: true,
       };
       requireUser = sinon.spy(HoldConfirmation.prototype, 'requireUser');
       modelDeliveryLocationName = sinon.spy(
@@ -157,37 +170,21 @@ describe('HoldConfirmation', () => {
         'modelDeliveryLocationName',
       );
       pushSpy = sinon.spy();
-      component = mount(
-        <HoldConfirmation
-          location={location}
-          bib={bib}
-          deliveryLocations={deliveryLocations}
-          patron={patron}
-        />,
-        {
-          context: { router: { createHref: () => {}, push: pushSpy } },
-          attachTo: document.body,
-        },
-      );
+
+      component = mountTestRender(
+        <WrappedHoldConfirmation location={location} />, {
+          store: makeTestStore({
+            patron,
+            deliveryLocations,
+            bib,
+          }),
+        });
     });
 
     after(() => {
       requireUser.restore();
       modelDeliveryLocationName.restore();
       component.unmount();
-    });
-
-    it('should display the layout of request confirmation page\'s header.', () => {
-      const main = component.find('main');
-      const pageHeader = component.find('.nypl-request-page-header');
-
-      expect(main).to.have.length(1);
-      expect(pageHeader).to.have.length(1);
-      expect(pageHeader.find('h1')).to.have.length(1);
-      expect(pageHeader.find('h1').text()).to.equal('Request Confirmation');
-      expect(
-        pageHeader.contains(
-          <h1 id="mainContent" tabIndex="0">Request Confirmation</h1>)).to.equal(true);
     });
 
     it('should display the layout of request confirmation page\'s contents.', () => {
@@ -220,14 +217,6 @@ describe('HoldConfirmation', () => {
       expect(main.find('#start-new-search')).to.have.length(2);
       expect(main.find('#start-new-search').at(1).text()).to.equal('Start a new search');
     });
-
-    it('should call the React Router context when the link to the homepage is clicked.', () => {
-      const main = component.find('main');
-
-      main.find('#start-new-search').at(1).simulate('click');
-      expect(pushSpy.callCount).to.equal(1);
-      expect(pushSpy.calledWith(`${appConfig.baseUrl}/`)).to.equal(true);
-    });
   });
 
   describe('If the patron is logged in and the App receives valid data but no delivery ' +
@@ -258,23 +247,18 @@ describe('HoldConfirmation', () => {
         HoldConfirmation.prototype,
         'modelDeliveryLocationName',
       );
-      component = mount(
-        <HoldConfirmation
-          location={location}
-          deliveryLocations={deliveryLocations}
-          patron={patron}
-        />,
-        { attachTo: document.body }
-      );
+      component = mountTestRender(
+        <HoldConfirmation location={location} />, {
+          store: makeTestStore({
+            patron,
+            deliveryLocations,
+          }),
+        });
     });
 
     after(() => {
       modelDeliveryLocationName.restore();
       component.unmount();
-    });
-
-    it('should display the layout of request confirmation page\'s header.', () => {
-      expect(modelDeliveryLocationName.returnValues[0]).to.equal('');
     });
   });
 
@@ -319,14 +303,15 @@ describe('HoldConfirmation', () => {
         barcodes: ['162402680435300'],
       };
       requireUser = sinon.spy(HoldConfirmation.prototype, 'requireUser');
-      component = mount(
-        <HoldConfirmation
-          location={location}
-          bib={bib}
-          deliveryLocations={deliveryLocations}
-          patron={patron}
-        />,
-        { attachTo: document.body });
+
+      component = mountTestRender(
+        <HoldConfirmation location={location} />, {
+          store: makeTestStore({
+            patron,
+            deliveryLocations,
+            bib,
+          }),
+        });
     });
 
     after(() => {
@@ -363,13 +348,14 @@ describe('HoldConfirmation', () => {
         barcodes: ['162402680435300'],
       };
       requireUser = sinon.spy(HoldConfirmation.prototype, 'requireUser');
-      component =
-        mount(
-          <HoldConfirmation
-            location={location}
-            bib={bib}
-            patron={patron}
-          />, { attachTo: document.body });
+
+      component = mountTestRender(
+        <HoldConfirmation location={location} />, {
+          store: makeTestStore({
+            patron,
+            bib,
+          }),
+        });
     });
 
     after(() => {
@@ -427,15 +413,14 @@ describe('HoldConfirmation', () => {
         barcodes: ['162402680435300'],
       };
       requireUser = sinon.spy(HoldConfirmation.prototype, 'requireUser');
-      component = mount(
-        <HoldConfirmation
-          location={location}
-          bib={bib}
-          deliveryLocations={deliveryLocations}
-          patron={patron}
-        />,
-        { attachTo: document.body }
-      );
+      component = mountTestRender(
+        <HoldConfirmation location={location} />, {
+          store: makeTestStore({
+            patron,
+            deliveryLocations,
+            bib,
+          }),
+        });
     });
 
     after(() => {
@@ -465,8 +450,12 @@ describe('HoldConfirmation', () => {
     };
 
     before(() => {
-      component =
-        mount(<HoldConfirmation location={location} bib={bib} />, { attachTo: document.body });
+      component = mountTestRender(
+        <HoldConfirmation location={location} />, {
+          store: makeTestStore({
+            bib,
+          }),
+        });
     });
 
     after(() => {
@@ -497,13 +486,12 @@ describe('HoldConfirmation', () => {
 
     before(() => {
       pushSpy = sinon.spy();
-      component = mount(
-        <HoldConfirmation location={location} bib={bib} searchKeywords="Bryant" />,
-        {
-          context: { router: { createHref: () => {}, push: pushSpy } },
-          attachTo: document.body,
-        },
-      );
+      component = mountTestRender(
+        <HoldConfirmation location={location} />, {
+          store: makeTestStore({
+            bib,
+          }),
+        });
     });
 
     after(() => {
@@ -518,13 +506,6 @@ describe('HoldConfirmation', () => {
       expect(main.find('#go-back-search-results')).to.have.length(2);
       expect(main.find('#go-back-search-results').at(1).text())
         .to.equal('Go back to your search results');
-    });
-
-    it('should call the React Router context with the link back to the search results', () => {
-      const main = component.find('main');
-      main.find('#go-back-search-results').at(1).simulate('click');
-      expect(pushSpy.callCount).to.equal(1);
-      expect(pushSpy.calledWith(`${appConfig.baseUrl}/search?q=Bryant`)).to.equal(true);
     });
   });
 
@@ -544,8 +525,13 @@ describe('HoldConfirmation', () => {
 
     before(() => {
       renderBackToClassicLink = sinon.spy(HoldConfirmation.prototype, 'renderBackToClassicLink');
-      component =
-        mount(<HoldConfirmation location={location} bib={bib} />, { attachTo: document.body });
+
+      component = mountTestRender(
+        <HoldConfirmation location={location} />, {
+          store: makeTestStore({
+            bib,
+          }),
+        });
     });
 
     after(() => {
@@ -585,8 +571,12 @@ describe('HoldConfirmation', () => {
       };
 
       before(() => {
-        component =
-          mount(<HoldConfirmation location={location} bib={bib} />, { attachTo: document.body });
+        component = mountTestRender(
+          <HoldConfirmation location={location} />, {
+            store: makeTestStore({
+              bib,
+            }),
+          });
       });
 
       after(() => {
@@ -625,8 +615,10 @@ describe('HoldConfirmation', () => {
   describe('If there are eligibility errors', () => {
     it('should render an error message with specific errors when available', () => {
       const location = { query: { errorStatus: 'eligibility', errorMessage: '{"expired":true,"blocked":true,"moneyOwed":true}' } };
-      const component = mount(
-        <HoldConfirmation location={location} />, { attachTo: document.body });
+      const component = mountTestRender(
+        <HoldConfirmation location={location} />, {
+          store: makeTestStore(),
+        });
       const text = component.text();
       component.unmount();
       expect(text.includes('Your account has expired')).to.equal(true);
@@ -635,8 +627,15 @@ describe('HoldConfirmation', () => {
     });
     it('should render a default error message when no specific errors are available', () => {
       const location = { query: { errorStatus: 'eligibility', errorMessage: '{}' } };
-      const component = mount(
-        <HoldConfirmation location={location} />, { attachTo: document.body });
+      const component = mountTestRender(
+        <WrappedHoldConfirmation location={location} />, {
+          store: makeTestStore({
+            patron: {
+              id: 1,
+              loggedIn: true,
+            },
+          }),
+        });
       const text = component.text();
       component.unmount();
       expect(text.includes('There is a problem with your library account.')).to.equal(true);

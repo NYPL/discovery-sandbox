@@ -4,6 +4,10 @@ import { Link } from 'react-router';
 import { isArray as _isArray } from 'underscore';
 import { connect } from 'react-redux';
 
+import {
+  Heading,
+} from '@nypl/design-system-react-components';
+
 import Pagination from '../Pagination/Pagination';
 import ItemTable from './ItemTable';
 import ItemFilters from './ItemFilters';
@@ -198,42 +202,48 @@ class ItemsContainer extends React.Component {
     );
 
     return (
-      <div className="nypl-results-item">
-        <h2>Items in the Library & Offsite</h2>
-        {
-          bibDone ?
-            <ItemFilters
-              items={items}
-              hasFilterApplied={this.hasFilter}
-              query={this.query}
-              numOfFilteredItems={this.filteredItems.length}
-            />
-            :
-            itemLoadingMessage
-        }
-        {itemTable}
-        {
-          !!(shortenItems && this.filteredItems.length > itemsListPageLimit && !this.state.showAll) &&
-            (
-              <div className="view-all-items-container">
-                {
-                  this.state.js ?
-                    (<a href="#" onClick={this.showAll}>View All Items</a>) :
-                    (
-                      <Link
-                        to={`${appConfig.baseUrl}/bib/${bibId}/all`}
-                        className="view-all-items"
-                        onClick={() => trackDiscovery('View All Items', `Click - ${bibId}`)}
-                      >
-                        View All Items
-                      </Link>
-                    )
-                }
-              </div>
-            )
-        }
-        {pagination}
-      </div>
+      <>
+        <Heading
+          level={2}
+        >
+          Items in the Library & Offsite
+        </Heading>
+        <div className="nypl-results-item">
+          {
+            bibDone ?
+              <ItemFilters
+                items={items}
+                hasFilterApplied={this.hasFilter}
+                query={this.query}
+                numOfFilteredItems={this.filteredItems.length}
+              />
+              :
+              itemLoadingMessage
+          }
+          {itemTable}
+          {
+            !!(shortenItems && this.filteredItems.length > itemsListPageLimit && !this.state.showAll) &&
+              (
+                <div className="view-all-items-container">
+                  {
+                    this.state.js ?
+                      (<a href="#" onClick={this.showAll}>View All Items</a>) :
+                      (
+                        <Link
+                          to={`${appConfig.baseUrl}/bib/${bibId}/all`}
+                          className="view-all-items"
+                          onClick={() => trackDiscovery('View All Items', `Click - ${bibId}`)}
+                        >
+                          View All Items
+                        </Link>
+                      )
+                  }
+                </div>
+              )
+          }
+          {pagination}
+        </div>
+      </>
     );
   }
 }
@@ -265,5 +275,3 @@ export default {
   ItemsContainer: connect(mapStateToProps)(ItemsContainer),
   unwrappedItemsContainer: ItemsContainer,
 };
-
-// export default connect(mapStateToProps)(ItemsContainer);
