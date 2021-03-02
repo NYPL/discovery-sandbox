@@ -1,6 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import {
+  Heading,
+} from '@nypl/design-system-react-components';
+
 import SccContainer from '../components/SccContainer/SccContainer';
 import SubjectHeadingsIndex from '../components/SubjectHeading/SubjectHeadingsIndex';
 import SubjectHeadingSearch from '../components/SubjectHeading/Search/SubjectHeadingSearch';
@@ -30,8 +34,22 @@ const SubjectHeadingsIndexPage = (props) => {
       useLoadingLayer={false}
       activeSection="shep"
       pageTitle="Subject Headings"
+      className="subject-heading-page"
     >
-      <SubjectHeadingsIndex {...props} />
+      <div
+        className="subject-heading-page-header"
+      >
+        <Heading
+          level={2}
+          className="page-title"
+        >
+          {filter ? 'Subject Heading Results' : 'Subject Heading Index'}
+        </Heading>
+        <SubjectHeadingSearch />
+      </div>
+      <SubjectHeadingsIndex
+        {...props}
+      />
     </SccContainer>
   );
 };
