@@ -65,12 +65,12 @@ const SearchResults = (props, context) => {
 
   return (
     <SccContainer
-    useLoadingLayer
-    activeSection="search"
-    pageTitle="SearchResults"
+      useLoadingLayer
+      activeSection="search"
+      pageTitle="SearchResults"
     >
-      <div className="content-header advanced-search">
-        <div className="advanced-search__inner-content">
+      <div className="content-header research-search">
+        <div className="research-search__inner-content">
           <Search
             createAPIQuery={createAPIQuery}
             router={router}

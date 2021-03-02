@@ -18,11 +18,13 @@ const Home = (props, context) => (
   <SccContainer
     className="home"
   >
-    <div className="nypl-column-full">
-      <Search
-        createAPIQuery={basicQuery(props)}
-        router={context.router}
-      />
+    <div className="content-header research-search">
+      <div className="research-search__inner-content">
+        <Search
+          createAPIQuery={basicQuery(props)}
+          router={context.router}
+        />
+      </div>
     </div>
 
     <Notification notificationType="searchResultsNotification" />
