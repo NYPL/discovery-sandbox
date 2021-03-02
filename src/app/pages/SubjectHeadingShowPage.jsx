@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
+import {
+  Heading,
+} from '@nypl/design-system-react-components';
+
 import SccContainer from '../components/SccContainer/SccContainer';
 import SubjectHeadingShow from '../components/SubjectHeading/SubjectHeadingShow';
 import SubjectHeadingSearch from '../components/SubjectHeading/Search/SubjectHeadingSearch';
@@ -22,7 +26,19 @@ const SubjectHeadingShowPage = (props) => {
       useLoadingLayer={false}
       activeSection="shep"
       pageTitle="Subject Heading"
+      className="subject-heading-page"
     >
+      <div
+        className="subject-heading-page-header"
+      >
+        <Heading
+          level={2}
+          className="page-title"
+        >
+          Subject Heading Results
+        </Heading>
+        <SubjectHeadingSearch />
+      </div>
       <SubjectHeadingShow
         {...props}
         key={subjectHeadingUuid}

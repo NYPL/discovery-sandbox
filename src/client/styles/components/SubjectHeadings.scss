@@ -6,6 +6,17 @@ $emphasis-font-weight: 500;
 
 $table-row-border: 1px solid rgb(215, 210, 205);
 
+.subject-heading-page-header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.subject-heading-page {
+  .page-title {
+    padding-top: var(--space-l);
+  }
+}
+
 thead .subjectHeadingRow {
   background-color: unset;
 }
