@@ -2,6 +2,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
+import Autosuggest from "react-autosuggest";
+
 import appConfig from '../../../data/appConfig';
 
 import AutosuggestItem from './AutosuggestItem';
@@ -23,6 +25,7 @@ class SubjectHeadingSearch extends React.Component {
     this.changeActiveSuggestion = this.changeActiveSuggestion.bind(this);
     this.onFocus = this.onFocus.bind(this);
     this.blurClickHandler = this.blurClickHandler.bind(this);
+    this.onSuggestionsFetchRequested = this.onSuggestionsFetchRequested.bind(this);
   }
 
   componentDidMount() {
@@ -45,7 +48,7 @@ class SubjectHeadingSearch extends React.Component {
 
     this.setState({
       userInput,
-    }, this.makeApiCallWithThrottle(this.state.timerId));
+    });
   }
 
   onFocus() {
@@ -127,11 +130,16 @@ class SubjectHeadingSearch extends React.Component {
     return path;
   }
 
+  onSuggestionsFetchRequested() {
+    this.makeApiCallWithThrottle(this.state.timerId);
+  }
+
   render() {
     const {
       onChange,
       onSubmit,
       changeActiveSuggestion,
+      onSuggestionsFetchRequested,
       state: {
         suggestions,
         activeSuggestion,
@@ -159,35 +167,57 @@ class SubjectHeadingSearch extends React.Component {
     }
 
     return (
-      <form
-        className="autocomplete"
-        autoComplete="off"
-        onSubmit={onSubmit}
-        onKeyDown={changeActiveSuggestion}
-        onFocus={this.onFocus}
-        id="mainContent"
-      >
-        <div className="autocomplete-field">
-          <label htmlFor="autosuggest">Subject Heading Lookup</label>
-          <div className="autosuggestInput">
-            <input
-              id="autosuggest"
-              type="text"
-              onChange={onChange}
-              value={userInput}
-              placeholder="Subject"
-            />
-            <button
-              onSubmit={onSubmit}
-              type="submit"
-            >
-              <SearchIcon />
-            </button>
-          </div>
-          {suggestionsListComponent}
-        </div>
-      </form>
-    );
+      <Autosuggest
+        suggestions={suggestions}
+        onSuggestionsFetchRequested={onSuggestionsFetchRequested}
+        onSuggestionsClearRequested={this.resetAutosuggest}
+        getSuggestionValue={suggestion => suggestion.label}
+        inputProps={{
+          placeholder: 'Enter a Subject Heading Term',
+          value: userInput,
+          onChange,
+        }}
+        renderSuggestion={suggestion => (
+          <AutosuggestItem
+            item={suggestion}
+            path={this.generatePath(suggestion)}
+            key={suggestion.uuid || suggestion.label}
+            onClick={this.resetAutosuggest}
+          />
+        )}
+      />
+    )
+
+    // return (
+    //   <form
+    //     className="autocomplete"
+    //     autoComplete="off"
+    //     onSubmit={onSubmit}
+    //     onKeyDown={changeActiveSuggestion}
+    //     onFocus={this.onFocus}
+    //     id="mainContent"
+    //   >
+    //     <div className="autocomplete-field">
+    //       <label htmlFor="autosuggest">Subject Heading Lookup</label>
+    //       <div className="autosuggestInput">
+    //         <input
+    //           id="autosuggest"
+    //           type="text"
+    //           onChange={onChange}
+    //           value={userInput}
+    //           placeholder="Subject"
+    //         />
+    //         <button
+    //           onSubmit={onSubmit}
+    //           type="submit"
+    //         >
+    //           <SearchIcon />
+    //         </button>
+    //       </div>
+    //       {suggestionsListComponent}
+    //     </div>
+    //   </form>
+    // );
   }
 }
 

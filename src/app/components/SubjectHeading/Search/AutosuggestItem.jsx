@@ -12,22 +12,19 @@ const AutosuggestItem = (props) => {
   }
 
   return (
-    <li
+    <Link
+      to={path}
       className={`${className} ${item.class}`}
       data={subjectComponent ? item.label : item.uuid}
       onClick={onClick}
     >
-      <Link
-        to={path}
-      >
-        {
-          <div className={`autosuggest ${subjectComponent ? 'component' : 'subject'}`}>
-            <span>{subjectComponent ? null : (<em>Subject: </em>) }<span className="itemLabel">{item.label}</span></span>
-            <div className="aggregateBibCount">{item.aggregate_bib_count} title{item.aggregate_bib_count > 1 ? 's' : ''}</div>
-          </div>
-        }
-      </Link>
-    </li>
+      {
+        <div className={`autosuggest ${subjectComponent ? 'component' : 'subject'}`}>
+          <span>{subjectComponent ? null : (<em>Subject: </em>) }<span className="itemLabel">{item.label}</span></span>
+          <div className="aggregateBibCount">{item.aggregate_bib_count} title{item.aggregate_bib_count > 1 ? 's' : ''}</div>
+        </div>
+      }
+    </Link>
   );
 };
 
