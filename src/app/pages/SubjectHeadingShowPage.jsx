@@ -18,7 +18,11 @@ const SubjectHeadingShowPage = (props) => {
   const [label, setLabel] = useState(decodeURIComponent(query.label) || '');
 
   return (
-    <SccContainer>
+    <SccContainer
+      useLoadingLayer={false}
+      activeSection="shep"
+      pageTitle="Subject Heading"
+    >
       <SubjectHeadingShow
         {...props}
         key={subjectHeadingUuid}

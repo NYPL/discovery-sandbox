@@ -27,6 +27,9 @@ const SubjectHeadingsIndexPage = (props) => {
   return (
     <SccContainer
       key={componentKey}
+      useLoadingLayer={false}
+      activeSection="shep"
+      pageTitle="Subject Headings"
     >
       <SubjectHeadingsIndex {...props} />
     </SccContainer>
