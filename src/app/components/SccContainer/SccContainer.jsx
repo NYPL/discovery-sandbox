@@ -65,7 +65,7 @@ const SccContainer = (props) => {
             />
             <SubNav activeSection={activeSection} />
           </div>
-          <div className={`content-primary ${className}`}>
+          <div className={`content-primary ${className || ''}`}>
             {children}
           </div>
         </main>
