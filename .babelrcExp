@@ -51,7 +51,6 @@
           "@MarcRecord": "./src/app/components/BibPage/MarcRecord.jsx",
           "@SubjectHeadings": "./src/app/components/BibPage/SubjectHeadings.jsx",
           "@Tabbed": "./src/app/components/BibPage/Tabbed.jsx",
-          "@Breadcrumbs": "./src/app/components/Breadcrumbs/Breadcrumbs.jsx",
           "@SearchButton": "./src/app/components/Buttons/SearchButton.jsx",
           "@SearchIconReversed": "./src/app/components/Buttons/SearchIconReversed.jsx",
           "@DataLoader": "./src/app/components/DataLoader/DataLoader.jsx",
