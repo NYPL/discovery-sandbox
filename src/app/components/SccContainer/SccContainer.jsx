@@ -4,8 +4,8 @@ import { useSelector } from 'react-redux';
 import DocumentTitle from 'react-document-title';
 
 import {
-  Heading,
   Breadcrumbs,
+  Heading,
   Hero,
   HeroTypes,
 } from '@nypl/design-system-react-components';
