@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import ShepContainer from '../components/ShepContainer/ShepContainer';
+import SccContainer from '../components/SccContainer/SccContainer';
 import SubjectHeadingsIndex from '../components/SubjectHeading/SubjectHeadingsIndex';
 import SubjectHeadingSearch from '../components/SubjectHeading/Search/SubjectHeadingSearch';
 import { basicQuery } from '../utils/utils';
@@ -25,21 +25,11 @@ const SubjectHeadingsIndexPage = (props) => {
   const bannerInnerHtml = filter ? <span key="bannerText">Subject Headings containing <em>{filter}</em></span> : <span key="bannerText">Subject Headings</span>
 
   return (
-    <ShepContainer
-      mainContent={<SubjectHeadingsIndex {...props} />}
-      bannerOptions={
-        {
-          text: bannerInnerHtml,
-          ariaLabel: filter ? `Subject Headings containing ${filter}` : 'Subject Headings'
-        }
-      }
-      extraBannerElement={<SubjectHeadingSearch />}
-      breadcrumbProps={{
-        type: 'subjectHeadings',
-        urls: breadcrumbUrls,
-      }}
+    <SccContainer
       key={componentKey}
-    />
+    >
+      <SubjectHeadingsIndex {...props} />
+    </SccContainer>
   );
 };
 
