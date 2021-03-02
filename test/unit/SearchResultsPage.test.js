@@ -4,7 +4,7 @@ import React from 'react';
 import { expect } from 'chai';
 import PropTypes from 'prop-types';
 
-import SearchResults from '../../src/app/pages/SearchResults';
+import SearchResults from '../../src/app/pages/SearchResultsPage';
 import SearchResultsContainer from '../../src/app/components/SearchResults/SearchResultsContainer';
 import { mockRouterContext } from '../helpers/routing';
 import { mountTestRender, makeTestStore } from '../helpers/store';
@@ -106,6 +106,8 @@ describe('SearchResultsPage', () => {
         searchResults,
         appConfig: {
           features: [],
+          displayTitle: 'Shared Collection Catalog',
+          baseUrl: '/',
         },
       });
       wrapper = mountTestRender(
@@ -149,6 +151,8 @@ describe('SearchResultsPage', () => {
         searchResults,
         appConfig: {
           features: [],
+          displayTitle: 'Shared Collection Catalog',
+          baseUrl: '/',
         },
       });
       wrapper = mountTestRender(
@@ -185,6 +189,8 @@ describe('SearchResultsPage', () => {
         searchResults,
         appConfig: {
           features: [],
+          displayTitle: 'Shared Collection Catalog',
+          baseUrl: '/',
         },
       });
       wrapper = mountTestRender(
@@ -219,6 +225,8 @@ describe('SearchResultsPage', () => {
         searchResults,
         appConfig: {
           features: ['drb-integration'],
+          displayTitle: 'Shared Collection Catalog',
+          baseUrl: '/',
         },
       });
       component = mountTestRender(
@@ -251,6 +259,8 @@ describe('SearchResultsPage', () => {
           searchResults,
           appConfig: {
             features: ['drb-integration'],
+            displayTitle: 'Shared Collection Catalog',
+            baseUrl: '/',
           },
         });
         component = mountTestRender(

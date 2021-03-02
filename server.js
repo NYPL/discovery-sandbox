@@ -96,7 +96,7 @@ app.get('/*', (req, res) => {
       const title = DocumentTitle.rewind();
 
       res
-        .status(200)
+        .status(res.statusCode || 200)
         .render('index', {
           application,
           appData: JSON.stringify(store.getState()).replace(/</g, '\\u003c'),

@@ -5,19 +5,19 @@ import { IndexRoute, Route, Redirect } from 'react-router';
 /*
  * Pages
  */
-import SubjectHeadingsIndexPage from '../pages/SubjectHeadingsIndexPage';
+import BibPage from '../pages/BibPage';
+import Home from '../pages/Home';
+import ElectronicDelivery from '../pages/ElectronicDelivery';
+import HoldRequest from '../pages/HoldRequest';
+import SearchResults from '../pages/SearchResultsPage';
 import SubjectHeadingShowPage from '../pages/SubjectHeadingShowPage';
-import SearchResults from '../pages/SearchResults';
+import SubjectHeadingsIndexPage from '../pages/SubjectHeadingsIndexPage';
 
 /*
  * Components
  */
 import Application from '../components/Application/Application';
-import Home from '../components/Home/Home';
-import BibPage from '../components/BibPage/BibPage';
-import HoldRequest from '../components/HoldRequest/HoldRequest';
 import HoldConfirmation from '../components/HoldConfirmation/HoldConfirmation';
-import ElectronicDelivery from '../components/ElectronicDelivery/ElectronicDelivery';
 import NotFound404 from '../components/NotFound404/NotFound404';
 import appConfig from '../data/appConfig';
 
