@@ -1,3 +1,5 @@
+import appConfig from "@appConfig";
+
 // breakpoints ordered by `maxValue` ascending
 const breakpoints = [
   {
@@ -40,7 +42,7 @@ const itemFilters = [
 
 const bibPageItemsListLimit = 20;
 const searchResultItemsListLimit = 3;
-const itemBatchSize = 1000;
+const itemBatchSize = appConfig.itemBatchSize;
 
 
 export {

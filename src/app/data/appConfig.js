@@ -64,6 +64,7 @@ const appConfig = {
   },
   sourceEmail: process.env.SOURCE_EMAIL,
   libAnswersEmail: process.env.LIB_ANSWERS_EMAIL,
+  itemBatchSize: process.env.ITEM_BATCH_SIZE
 };
 
 export default appConfig;
