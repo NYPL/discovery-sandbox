@@ -37,11 +37,10 @@ describe('ElectronicDeliveryForm', () => {
     let appConfigMock;
     before(() => {
       appConfigMock = mock(appConfig);
-      appConfigMock.object.features = ['on-site-edd'];
       appConfigMock.object.eddAboutUrl = {
         onSiteEdd: 'example.com/scan-and-deliver',
       };
-      const store = makeTestStore({ appConfig: appConfigMock.object });
+      const store = makeTestStore({ features: ['on-site-edd'] });
       component = mountTestRender(
         <ElectronicDelivery
           params={{ bibId: 'book1' }}
@@ -49,11 +48,10 @@ describe('ElectronicDeliveryForm', () => {
             query: '',
           }}
         />,
-        { store, attachTo: document.body },
+        { store },
       );
     });
     after(() => {
-      appConfigMock.restore();
       component.unmount();
     });
     it('should have "Scan & Deliver" EDD about URL', () => {

@@ -223,8 +223,8 @@ describe('SearchResultsPage', () => {
       const storeWithProps = makeTestStore({
         searchKeywords: 'locofocos',
         searchResults,
+        features: ['drb-integration'],
         appConfig: {
-          features: ['drb-integration'],
           displayTitle: 'Shared Collection Catalog',
           baseUrl: '/',
         },
@@ -257,8 +257,8 @@ describe('SearchResultsPage', () => {
         const storeWithProps = makeTestStore({
           searchKeywords: 'locofocos',
           searchResults,
+          features: ['drb-integration'],
           appConfig: {
-            features: ['drb-integration'],
             displayTitle: 'Shared Collection Catalog',
             baseUrl: '/',
           },
