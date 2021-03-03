@@ -42,7 +42,7 @@ const SccContainer = (props) => {
           ) : null
         }
         <main className="main main-page">
-          <div className="content-header">
+          <div className="content-header catalog__header">
             <Breadcrumbs
               breadcrumbs={[
                 { url: 'htttps://www.nypl.org', text: 'Home' },
@@ -51,7 +51,7 @@ const SccContainer = (props) => {
               ]}
               className="breadcrumbs"
             />
-            <div className="catalog-header">
+            <div className="catalog__heading">
               <Heading
                 level={1}
                 id="1"

@@ -1,4 +1,10 @@
-.catalog-header {
+.nypl-ds .catalog__header {
+  a:hover {
+    color: var(--ui-white);
+  }
+}
+
+.catalog__heading {
   @include breakout;
   background-color: var(--section-research-primary);
   padding-bottom: var(--space-xs);
