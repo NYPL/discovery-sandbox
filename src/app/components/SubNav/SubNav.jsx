@@ -42,7 +42,7 @@ const SubNav = (props) => {
       <ul className="sub-nav__list">
         <SubNavLink
           type="search"
-          href={appConfig.baseUrl}
+          href={`${baseUrl}/`}
           {...props}
         >
           Search

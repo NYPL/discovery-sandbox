@@ -15,7 +15,7 @@ import {
 } from 'underscore';
 import { connect } from 'react-redux';
 
-import SccContainer from '../components/SccContainer/SccContainer'
+import SccContainer from '../components/SccContainer/SccContainer';
 import appConfig from '../data/appConfig';
 import ElectronicDeliveryForm from '../components/ElectronicDeliveryForm/ElectronicDeliveryForm';
 import Notification from '../components/Notification/Notification';

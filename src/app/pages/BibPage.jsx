@@ -1,10 +1,14 @@
 /* global window */
-
 import React from 'react';
 import PropTypes from 'prop-types';
 import { every as _every } from 'underscore';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router';
+import { withRouter, Link } from 'react-router';
+
+import {
+  Heading,
+  Link as DSLink,
+} from '@nypl/design-system-react-components';
 
 import SccContainer from '../components/SccContainer/SccContainer';
 import itemsContainerModule from '../components/Item/ItemsContainer';
@@ -202,12 +206,28 @@ export const BibPage = (props) => {
   });
   const searchUrl = createAPIQuery({});
 
+  const title = bib.title && bib.title.length ? bib.title[0] : ' ';
+
   return (
     <SccContainer
       useLoadingLayer
       className="nypl-item-details"
       pageTitle="Item Details"
     >
+      <Heading
+        level={2}
+      >
+        {title}
+      </Heading>
+      {searchKeywords && (
+        <DSLink>
+          <Link
+            to={searchUrl}
+          >
+            Back to search results
+          </Link>
+        </DSLink>
+      )}
       <BibDetails
         bib={bib}
         fields={topFields}
@@ -218,7 +238,7 @@ export const BibPage = (props) => {
         tabs={tabs}
         hash={location.hash}
       />
-      { classicLink }
+      {classicLink}
     </SccContainer>
   );
 };

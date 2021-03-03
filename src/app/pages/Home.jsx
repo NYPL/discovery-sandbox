@@ -17,6 +17,7 @@ import {
 const Home = (props, context) => (
   <SccContainer
     className="home"
+    activeSection="search"
   >
     <div className="content-header research-search">
       <div className="research-search__inner-content">

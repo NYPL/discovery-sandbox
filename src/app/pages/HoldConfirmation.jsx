@@ -14,7 +14,6 @@ import appConfig from '../data/appConfig';
 import SccContainer from '../components/SccContainer/SccContainer';
 import {
   trackDiscovery,
-  basicQuery,
 } from '../utils/utils';
 
 export class HoldConfirmation extends React.Component {
