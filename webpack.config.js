@@ -5,6 +5,8 @@ const CleanBuild = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const sassPaths = require('@nypl/design-toolkit').includePaths;
 const globImporter = require('node-sass-glob-importer');
+const Visualizer = require('webpack-visualizer-plugin');
+
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 // References the applications root path
@@ -44,6 +46,7 @@ const commonSettings = {
     new MiniCssExtractPlugin({
       filename: 'styles.css',
     }),
+    new Visualizer(),
     new webpack.DefinePlugin({
       loadA11y: process.env.loadA11y || false,
       appEnv: JSON.stringify(appEnv),
