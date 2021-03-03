@@ -10,8 +10,10 @@
     padding: 0 var(--space);
     width: 100%;
 
-    .search-bar {
-      width: 85%;
+    @media (min-width: 870px) {
+      .search-bar {
+        width: 85%;
+      }
     }
   }
 }

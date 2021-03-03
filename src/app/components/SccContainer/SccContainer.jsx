@@ -51,18 +51,15 @@ const SccContainer = (props) => {
               ]}
               className="breadcrumbs"
             />
-            <Hero
-              heroType={HeroTypes.Secondary}
-              heading={(
-                <Heading
-                  level={1}
-                  id="1"
-                  blockName="hero"
-                >
-                  {appConfig.displayTitle}
-                </Heading>
-              )}
-            />
+            <div className="catalog-header">
+              <Heading
+                level={1}
+                id="1"
+                blockName="hero"
+              >
+                {appConfig.displayTitle}
+              </Heading>
+            </div>
             <SubNav activeSection={activeSection} />
           </div>
           <div className={`content-primary ${className || ''}`}>
