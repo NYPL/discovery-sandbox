@@ -196,7 +196,7 @@
 
   .popup,
   .popup-no-js {
-    background: #efedeb;
+    background: var(--ui-gray-xlight);
     width: auto;
     z-index: 10000;
 
@@ -235,7 +235,7 @@
 
   // need to override the background color
   .nypl-fieldset {
-    background-color: #efedeb;
+    background-color: var(--ui-gray-xlight);
   }
 
   .nypl-generic-checkbox {
@@ -338,15 +338,15 @@
 }
 
 .nypl-name-field {
-  background: #efedeb;
+  background: var(--ui-gray-xlight);
 
   .nypl-field-status {
-    background: #efedeb;
+    background: var(--ui-gray-xlight);
   }
 }
 
 .date-hyphen {
-  background: #efedeb;
+  background: var(--ui-gray-xlight);
   width: 25px;
   margin: 0px 15px;
   height: 10px;
