@@ -16,8 +16,6 @@ const Redirect404 = (props, context) => {
     classicCatalog,
   } = appConfig;
 
-  console.log('query: ', originalUrl);
-
   return (
     <div className="redirect404">
       <div className="redirect404text">
@@ -26,9 +24,9 @@ const Redirect404 = (props, context) => {
         <p>
           {"You've followed an out-of-date link to our research catalog."}
           <br />
-          <div className="originalUrlText">
+          <span className="originalUrlText">
             <span>{ originalUrl ? `URL: ${originalUrl}` : ''}</span>
-          </div>
+          </span>
           <br />
           {"You may be able to find what you're looking for in the "}
           <a href={classicCatalog}>Legacy Catalog</a>
