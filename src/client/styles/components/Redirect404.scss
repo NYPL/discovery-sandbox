@@ -1,7 +1,7 @@
 .redirect404 {
   display: inline-block;
   text-align: center;
-  padding: 2em;
+  padding-top: 2em;
   margin: 3px;
   min-height: 100vh;
   width: 100vw;
@@ -13,8 +13,6 @@
   .redirect404text {
     padding: 2em;
     position: relative;
-    // left: 17.58%;
-    // right: 19.84%;
     width: 80vw;
     top: 15.37%;
     bottom: 82.04%;
