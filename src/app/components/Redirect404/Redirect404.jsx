@@ -19,7 +19,7 @@ const Redirect404 = (props, context) => {
   console.log('query: ', originalUrl);
 
   return (
-    <div className="redirect404">
+    <div className="redirect404 layout-container">
       <div className="redirect404text">
         <h1>{"We're Sorry..."}</h1>
         <br />
