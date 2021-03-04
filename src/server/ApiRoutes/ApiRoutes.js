@@ -49,7 +49,7 @@ Object.keys(routes).forEach((routeName) => {
         resolve => routeMethods[routeName](req, res, resolve)
       )
         .then(data => (
-          api ? res.json(data) : successCb(routeName, global.store.dispatch)({ data })))
+          api ? res.json(data) : successCb(routeName, req.store.dispatch)({ data })))
         .then(() => (api ? null : next()))
         .catch(console.error)
       );

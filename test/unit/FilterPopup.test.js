@@ -285,16 +285,5 @@ describe('FilterPopup', () => {
         expect(component.find('.drbb-integration')).to.have.length(0);
       });
     });
-
-    describe('with integration', () => {
-      before(() => {
-        appConfig.features = ['drb-integration'];
-        component = mount(<FilterPopup selectedFilters={selectedFilters} features={['drb-integration']} />);
-      });
-
-      it('should have components with .drbb-integration class', () => {
-        expect(component.find('.drbb-integration')).to.have.length(1);
-      });
-    });
   });
 });
