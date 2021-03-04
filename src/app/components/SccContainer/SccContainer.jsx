@@ -45,7 +45,7 @@ const SccContainer = (props) => {
           <div className="content-header catalog__header">
             <Breadcrumbs
               breadcrumbs={[
-                { url: 'htttps://www.nypl.org', text: 'Home' },
+                { url: 'https://www.nypl.org/', text: 'Home' },
                 { url: 'https://www.nypl.org/research', text: 'Research' },
                 { url: appConfig.baseUrl, text: 'Research Catalog' },
               ]}

@@ -2,7 +2,13 @@
 // item info / the full item record
 .nypl-item-details {
 
+  &__heading {
+    align-items: baseline;
+    display: flex;
+  }
+
   h2 {
+    padding-right: var(--space-s);
     padding-top: var(--space-l);
   }
 

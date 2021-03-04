@@ -214,20 +214,24 @@ export const BibPage = (props) => {
       className="nypl-item-details"
       pageTitle="Item Details"
     >
-      <Heading
-        level={2}
+      <div
+        className="nypl-item-details__heading"
       >
-        {title}
-      </Heading>
-      {searchKeywords && (
-        <DSLink>
-          <Link
-            to={searchUrl}
-          >
-            Back to search results
-          </Link>
-        </DSLink>
-      )}
+        <Heading
+          level={2}
+        >
+          {title}
+        </Heading>
+        {searchKeywords && (
+          <DSLink>
+            <Link
+              to={`${appConfig.baseUrl}/search?${searchUrl}`}
+            >
+              Back to search results
+            </Link>
+          </DSLink>
+        )}
+      </div>
       <BibDetails
         bib={bib}
         fields={topFields}
