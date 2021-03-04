@@ -14,6 +14,7 @@ import BackLink from './BackLink';
 import AdditionalDetailsViewer from './AdditionalDetailsViewer';
 import Tabbed from './Tabbed';
 import NotFound404 from '../NotFound404/NotFound404';
+import Redirect404 from '../Redirect404/Redirect404';
 import LibraryHoldings from './LibraryHoldings';
 import getOwner from '../../utils/getOwner';
 import appConfig from '../../data/appConfig';
@@ -64,7 +65,7 @@ const checkForMoreItems = (bib, dispatch) => {
   }
 };
 
-export const BibPage = (props) => {
+export const BibPage = (props, context) => {
   const {
     location,
     searchKeywords,
@@ -76,7 +77,15 @@ export const BibPage = (props) => {
     dispatch,
   } = props;
 
-  if (!props.bib || props.bib.status === '404') return (<NotFound404 />);
+  if (!props.bib || parseInt(props.bib.status, 10) === 404) {
+    const originalUrl = context &&
+      context.router &&
+      context.router.location &&
+      context.router.location.query &&
+      context.router.location.query.originalUrl;
+
+    return originalUrl ? (<Redirect404 />) : (<NotFound404 />);
+  }
   const bib = props.bib ? props.bib : {};
   // check whether this is a server side or client side render
   // by whether 'window' is defined. After the first render on the client side
@@ -265,6 +274,10 @@ BibPage.propTypes = {
 
 BibPage.defaultProps = {
   features: [],
+};
+
+BibPage.contextTypes = {
+  router: PropTypes.object,
 };
 
 const mapStateToProps = ({
