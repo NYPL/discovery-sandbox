@@ -55,6 +55,7 @@ const commonSettings = {
         RECAP_CLOSED_LOCATIONS: JSON.stringify(process.env.RECAP_CLOSED_LOCATIONS),
         NON_RECAP_CLOSED_LOCATIONS: JSON.stringify(process.env.NON_RECAP_CLOSED_LOCATIONS),
         ITEM_BATCH_SIZE: JSON.stringify(process.env.ITEM_BATCH_SIZE),
+        CIRCULATING_CATALOG: JSON.stringify(process.env.CIRCULATING_CATALOG),
       },
     }),
     // new BundleAnalyzerPlugin({
@@ -228,6 +229,7 @@ if (ENV === 'production') {
           RECAP_CLOSED_LOCATIONS: JSON.stringify(process.env.RECAP_CLOSED_LOCATIONS),
           NON_RECAP_CLOSED_LOCATIONS: JSON.stringify(process.env.NON_RECAP_CLOSED_LOCATIONS),
           ITEM_BATCH_SIZE: JSON.stringify(process.env.ITEM_BATCH_SIZE),
+          CIRCULATING_CATALOG: JSON.stringify(process.env.CIRCULATING_CATALOG),
         },
       }),
     ],

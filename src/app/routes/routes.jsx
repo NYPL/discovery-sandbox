@@ -19,6 +19,7 @@ import HoldRequest from '../components/HoldRequest/HoldRequest';
 import HoldConfirmation from '../components/HoldConfirmation/HoldConfirmation';
 import ElectronicDelivery from '../components/ElectronicDelivery/ElectronicDelivery';
 import NotFound404 from '../components/NotFound404/NotFound404';
+import Redirect404 from '../components/Redirect404/Redirect404';
 import appConfig from '../data/appConfig';
 
 const { baseUrl } = appConfig;
@@ -35,6 +36,7 @@ const routes = {
       <Route path="/hold/confirmation/:bibId-:itemId" component={HoldConfirmation} />
       <Route path="/subject_headings/:subjectHeadingUuid" component={SubjectHeadingShowPage} />
       <Route path="/subject_headings" component={SubjectHeadingsIndexPage} />
+      <Route path="/404/redirect" component={Redirect404} />
       <Route path="/404" component={NotFound404} />
       <Redirect from="*" to="/404" />
     </Route>
@@ -51,6 +53,7 @@ const routes = {
       <Route path={`${baseUrl}/hold/confirmation/:bibId-:itemId`} component={HoldConfirmation} />
       <Route path={`${baseUrl}/subject_headings/:subjectHeadingUuid`} component={SubjectHeadingShowPage} />
       <Route path={`${baseUrl}/subject_headings`} component={SubjectHeadingsIndexPage} />
+      <Route path={`${baseUrl}/404/redirect`} component={Redirect404} />
       <Route path={`${baseUrl}/404`} component={NotFound404} />
       <Redirect from="*" to={`${baseUrl}/404`} />
     </Route>
