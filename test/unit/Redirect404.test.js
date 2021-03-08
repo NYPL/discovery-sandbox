@@ -13,7 +13,7 @@ const {
 } = appConfig;
 
 
-describe.only('Redirect404', () => {
+describe('Redirect404', () => {
   const component = mount(
     <Redirect404 />,
     {

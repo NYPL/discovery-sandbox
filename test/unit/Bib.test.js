@@ -4,6 +4,7 @@ import { expect } from 'chai';
 import Bib from './../../src/server/ApiRoutes/Bib';
 
 describe('addCheckInItems', () => {
+  /* holding could lack location, as shown in second holding */
   const mockBib = {
     holdings: [
       {
@@ -28,10 +29,6 @@ describe('addCheckInItems', () => {
         ],
       },
       {
-        location: [{
-          label: 'mock',
-          code: 'mock:mock',
-        }],
         format: 'AV',
         checkInBoxes: [
           {
@@ -48,28 +45,12 @@ describe('addCheckInItems', () => {
           },
         ],
       },
-      {
-        format: 'Text',
-        checkInBoxes: [
-          {
-            position: 1,
-            status: 'available',
-            coverage: '1000',
-            shelfMark: 'abcd',
-          },
-          {
-            position: 3,
-            status: 'available',
-            coverage: '1001',
-            shelfMark: 'efgh',
-          },
-        ],
-      }
     ],
   };
 
   it('should add correctly structured checkInItems', () => {
     Bib.addCheckInItems(mockBib);
+    console.log(mockBib.checkInItems);
     expect(mockBib.checkInItems).to.deep.equal([
       {
         accessMessage: {
@@ -99,9 +80,9 @@ describe('addCheckInItems', () => {
         callNumber: 'ijkl',
         format: 'AV',
         isSerial: true,
-        location: 'mock',
+        location: '',
         locationUrl: undefined,
-        holdingLocationCode: 'mock:mock',
+        holdingLocationCode: '',
         position: 2,
         requestable: false,
         status: {
