@@ -25,12 +25,21 @@ const validMockPatronTokenResponse = {
   errorCode: null,
 };
 
-const renderMockReq = (content, mockPatronTokenResponse = validMockPatronTokenResponse) => ({
+const renderMockReq = (
+  content,
+  mockPatronTokenResponse = validMockPatronTokenResponse,
+  patronObj = {},
+) => ({
   params: { content },
   get: n => n,
   patronTokenResponse: mockPatronTokenResponse,
   headers: {
     cookie: '',
+  },
+  store: {
+    getState: () => ({
+      patron: patronObj,
+    }),
   },
 });
 
@@ -55,17 +64,11 @@ describe('`fetchAccountPage`', () => {
     mock
       .onGet(`${appConfig.legacyCatalog}/dp/patroninfo*eng~Sdefault/6677666/items`)
       .reply(200, '<div>some html</div>');
-    global.store = {
-      getState: () => ({
-        patron: {},
-      }),
-    };
   });
 
   after(() => {
     requireUser.restore();
     axiosGet.restore();
-    global.store = undefined;
     mock.restore();
   });
 
@@ -75,7 +78,7 @@ describe('`fetchAccountPage`', () => {
 
     mockRes.redirect = (url) => {
       redirectedTo = url;
-    }
+    };
   });
 
   describe('patron not logged in', () => {
@@ -86,16 +89,8 @@ describe('`fetchAccountPage`', () => {
   });
 
   describe('does not receive valid value from "req.params.content"', () => {
-    before(() => {
-      global.store = {
-        getState: () => ({
-          patron,
-        }),
-      };
-    });
-
     it('should redirect', () => {
-      Account.fetchAccountPage(renderMockReq('blahblah'), mockRes, mockResolve);
+      Account.fetchAccountPage(renderMockReq('blahblah', validMockPatronTokenResponse, patron), mockRes, mockResolve);
 
       expect(redirectedTo).to.equal('/research/collections/shared-collection-catalog/account');
     });
@@ -113,12 +108,6 @@ describe('`fetchAccountPage`', () => {
         return Promise.resolve(JSON.parse(require('fs').readFileSync('./test/fixtures/locations-service-mm.json', 'utf8')))
       });
 
-      global.store = {
-        getState: () => ({
-          patron,
-        }),
-      };
-
       sinonSandbox.spy(Account, 'getHomeLibrary');
     });
 
@@ -127,12 +116,12 @@ describe('`fetchAccountPage`', () => {
     });
 
     it('should not make axios request', () => {
-      Account.fetchAccountPage(renderMockReq('settings'), mockRes, mockResolve);
+      Account.fetchAccountPage(renderMockReq('settings', validMockPatronTokenResponse, patron), mockRes, mockResolve);
       expect(axiosGet.notCalled).to.equal(true);
     });
 
     it('should call getHomeLibrary', () => {
-      return Account.fetchAccountPage(renderMockReq('settings'), mockRes, (result) => {
+      return Account.fetchAccountPage(renderMockReq('settings', validMockPatronTokenResponse, patron), mockRes, (result) => {
         expect(result).to.be.a('object');
         expect(result.patron).to.be.a('object');
         expect(result.patron.homeLibraryName).to.eq('Mid-Manhattan');
@@ -141,14 +130,6 @@ describe('`fetchAccountPage`', () => {
   });
 
   describe('content to get from Webpac', () => {
-    before(() => {
-      global.store = {
-        getState: () => ({
-          patron,
-        }),
-      };
-    });
-
     it('should make axios request', () => {
       Account.fetchAccountPage(renderMockReq('holds'), mockRes, mockResolve);
 
@@ -158,14 +139,6 @@ describe('`fetchAccountPage`', () => {
   });
 
   describe('"/account", with no `content` param', () => {
-    before(() => {
-      global.store = {
-        getState: () => ({
-          patron,
-        }),
-      };
-    });
-
     it('should fetch the "items" page', () => {
       Account.fetchAccountPage(renderMockReq(), mockRes, mockResolve);
 
