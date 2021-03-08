@@ -78,11 +78,6 @@ function fetchAccountPage(req, res, resolve) {
       if (resp.request && resp.request.path.includes('/login?')) {
         // need to implement
         console.log('need to redirect, might be buggy?');
-        // redirect to login
-        // const fullUrl = encodeURIComponent(`${req.protocol}://${req.get('host')}${req.originalUrl}`);
-        // if (!fullUrl.includes('%2Fapi%2F')) {
-        //   res.redirect(`${appConfig.loginUrl}?redirect_uri=${fullUrl}`);
-        // }
         throw new Error('thrown');
       }
 

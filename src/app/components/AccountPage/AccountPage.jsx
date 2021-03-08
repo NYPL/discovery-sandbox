@@ -40,12 +40,7 @@ const AccountPage = (props) => {
   const [isLoading, setIsLoading] = useState(true);
   const [itemToCancel, setItemToCancel] = useState(null);
 
-  console.log('accountHtml: ', accountHtml, 'patronid: ', patron.id);
   useEffect(() => {
-    // if (typeof window !== 'undefined' && accountHtml.error) {
-    //   console.log('body: ', document.getElementsByTagName('body')[0].children)
-    //   window.location.replace(`${appConfig.loginUrl}`)
-    // }
 
     if (typeof window !== 'undefined' && (!patron.id || accountHtml.error)) {
       logOutFromEncoreAndCatalogIn();
