@@ -13,6 +13,7 @@ import SearchResults from '../pages/SearchResultsPage';
 import SubjectHeadingShowPage from '../pages/SubjectHeadingShowPage';
 import SubjectHeadingsIndexPage from '../pages/SubjectHeadingsIndexPage';
 import HoldConfirmation from '../pages/HoldConfirmation';
+import AccountPage from '../pages/AccountPage';
 
 /*
  * Components
