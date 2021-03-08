@@ -223,6 +223,10 @@
   }
 
   .pin {
+    dl {
+      overflow: inherit;
+    }
+    
     dt {
       font-size: 20px;
     }
