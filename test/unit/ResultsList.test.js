@@ -360,9 +360,10 @@ describe('ResultsList', () => {
       before(() => {
         const mockDrbFeatureStore = makeTestStore({
           loading: false,
-          appConfig: { features: ['drb-integration'] },
+          features: ['drb-integration'],
         });
-        component = mountTestRender(<ResultsList results={resultsBibs} />, { store: mockDrbFeatureStore });
+        component = mountTestRender(
+          <ResultsList results={resultsBibs} />, { store: mockDrbFeatureStore });
       });
 
       it('should have components with .drbb-integration class', () => {

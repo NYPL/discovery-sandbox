@@ -114,12 +114,7 @@ describe('ItemsContainer', () => {
       });
     });
 
-    it('should be wrapped in a .nypl-results-item div', () => {
-      expect(component.first().type()).to.equal('div');
-      expect(component.first().prop('className')).to.equal('nypl-results-item');
-    });
-
-    it('should its "js" state set to false by default', () => {
+    it('should have its "js" state set to false by default', () => {
       expect(component.state('js')).to.equal(false);
     });
 

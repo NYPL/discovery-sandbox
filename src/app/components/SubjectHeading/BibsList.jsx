@@ -204,14 +204,13 @@ class BibsList extends React.Component {
     }
     const bibResults = bibsSource === 'discoveryApi' ? results : results.slice(this.firstBib(), this.lastBib());
 
-    const h2Text = `Viewing ${this.firstBib() + 1} - ${this.lastBib()} of ${totalResults || ''} items for Heading "${label}"`;
+    const h3Text = `Viewing ${this.firstBib() + 1} - ${this.lastBib()} of ${totalResults || ''} items for Heading "${label}"`;
 
     return (
       <div
         className="nypl-column-half bibsList"
         aria-label="Titles related to this Subject Heading"
       >
-        <h2 id="titles">{h2Text}</h2>
         <Sorter
           page="shepBibs"
           sortOptions={[
@@ -223,6 +222,7 @@ class BibsList extends React.Component {
           sortBy={`${sort}_${sortDirection}`}
           updateResults={this.changeBibSorting}
         />
+        <h3 id="titles">{h3Text}</h3>
         {
           bibResults ?
             <ResultsList results={bibResults} subjectHeadingShow />

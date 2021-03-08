@@ -6,8 +6,8 @@ import { shallow } from 'enzyme';
 import { mock } from 'sinon';
 import { mountTestRender, makeTestStore } from '../helpers/store';
 
-import ElectronicDeliveryForm from './../../src/app/components/ElectronicDelivery/ElectronicDeliveryForm';
-import ElectronicDelivery from './../../src/app/components/ElectronicDelivery/ElectronicDelivery';
+import ElectronicDeliveryForm from './../../src/app/components/ElectronicDeliveryForm/ElectronicDeliveryForm';
+import ElectronicDelivery from './../../src/app/pages/ElectronicDelivery';
 import appConfig from './../../src/app/data/appConfig';
 
 describe('ElectronicDeliveryForm', () => {
@@ -33,31 +33,30 @@ describe('ElectronicDeliveryForm', () => {
     });
   });
   describe('with "on-site-edd" feature flag', () => {
-    let wrapper;
     let component;
     let appConfigMock;
     before(() => {
       appConfigMock = mock(appConfig);
-      appConfig.features = ['on-site-edd'];
-      appConfig.eddAboutUrl.onSiteEdd = 'example.com/scan-and-deliver';
-      const store = makeTestStore({ appConfig });
-      wrapper = mountTestRender(
+      appConfigMock.object.eddAboutUrl = {
+        onSiteEdd: 'example.com/scan-and-deliver',
+      };
+      const store = makeTestStore({ features: ['on-site-edd'] });
+      component = mountTestRender(
         <ElectronicDelivery
           params={{ bibId: 'book1' }}
           location={{
             query: '',
           }}
         />,
-        { store, attachTo: document.body },
+        { store },
       );
     });
     after(() => {
-      appConfigMock.restore();
-      wrapper.unmount();
+      component.unmount();
     });
     it('should have "Scan & Deliver" EDD about URL', () => {
-      component = wrapper.find('ElectronicDeliveryForm');
-      expect(component.find('a').first().prop('href')).to.equal('example.com/scan-and-deliver');
+      const form = component.find('ElectronicDeliveryForm');
+      expect(form.find('a').first().prop('href')).to.equal('example.com/scan-and-deliver');
     });
   });
 });
