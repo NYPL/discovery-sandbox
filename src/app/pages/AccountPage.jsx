@@ -93,7 +93,7 @@ const AccountPage = (props) => {
 
   return (
     <SccContainer
-      useLoadingLayer={false}
+      useLoadingLayer
     >
       <div className="content-primary page-content nypl-patron-page">
         <Heading

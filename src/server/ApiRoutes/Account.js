@@ -46,7 +46,7 @@ function fetchAccountPage(req, res, resolve) {
   const content = req.params.content || 'items';
   // no need to fetch from Webpac for this tab
   if (content === 'settings') {
-    const patron = global.store.getState().patron;
+    const patron = req.store.getState().patron;
     if (patron.homeLibraryCode && !patron.homeLibraryName) {
       getHomeLibrary(patron.homeLibraryCode)
         .then((resp) => {
