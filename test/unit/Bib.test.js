@@ -48,6 +48,23 @@ describe('addCheckInItems', () => {
           },
         ],
       },
+      {
+        format: 'Text',
+        checkInBoxes: [
+          {
+            position: 1,
+            status: 'available',
+            coverage: '1000',
+            shelfMark: 'abcd',
+          },
+          {
+            position: 3,
+            status: 'available',
+            coverage: '1001',
+            shelfMark: 'efgh',
+          },
+        ],
+      }
     ],
   };
 
