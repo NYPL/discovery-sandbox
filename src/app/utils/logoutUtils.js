@@ -36,8 +36,8 @@ const loadLogoutIframe = () => {
   * and Catalog. It is called by setEncoreLoggedInTimer.
   */
 export const logOutFromEncoreAndCatalogIn = () => {
-  // deleteCookie('PAT_LOGGED_IN');
-  // deleteCookie('VALID_DOMAIN_LAST_VISITED');
-  // deleteCookie('nyplIdentityPatron');
+  deleteCookie('PAT_LOGGED_IN');
+  deleteCookie('VALID_DOMAIN_LAST_VISITED');
+  deleteCookie('nyplIdentityPatron');
   loadLogoutIframe();
 };
