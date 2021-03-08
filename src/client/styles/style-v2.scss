@@ -2,13 +2,18 @@
 // item info / the full item record
 .nypl-item-details {
 
-  #legacy-catalog-link {
-    padding-bottom: 57px;
+  &__heading {
+    align-items: baseline;
+    display: flex;
   }
 
   h2 {
-    margin: 0;
-    padding-top: 20px;
+    padding-right: var(--space-s);
+    padding-top: var(--space-l);
+  }
+
+  #legacy-catalog-link {
+    padding-bottom: 57px;
   }
 
   dl:first-of-type {

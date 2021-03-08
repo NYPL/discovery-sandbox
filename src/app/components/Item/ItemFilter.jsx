@@ -26,9 +26,9 @@ const ItemFilter = ({
   submitFilterSelections,
   setSelectedFilters,
   isOpen,
-}, { router }) => {
-  const { location } = router;
-  const { query } = location;
+  initialFilters,
+}) => {
+  if (!options) return null;
   const [selectionMade, setSelectionMade] = useState(false);
 
   const selectFilter = (value) => {
@@ -65,15 +65,14 @@ const ItemFilter = ({
   };
 
   const isSelected = (option) => {
-    if (!query) return false;
+    if (!initialFilters) return false;
     const result = isOptionSelected(selectedFilters[filter], option.id);
 
     return result;
   };
 
   const distinctOptions = parseDistinctOptions(options);
-  const initialFilters = location.query ? location.query : {};
-  const thisFilterSelections = initialFilters[filter];
+  const thisFilterSelections = initialFilters ? initialFilters[filter] : null;
   const determineNumOfSelections = () => {
     if (!thisFilterSelections) return null;
     return typeof thisFilterSelections === 'string' ? 1 : thisFilterSelections.length;
@@ -159,6 +158,7 @@ ItemFilter.propTypes = {
   selectedFilters: PropTypes.object,
   submitFilterSelections: PropTypes.func,
   setSelectedFilters: PropTypes.func,
+  initialFilters: PropTypes.object,
 };
 
 ItemFilter.contextTypes = {

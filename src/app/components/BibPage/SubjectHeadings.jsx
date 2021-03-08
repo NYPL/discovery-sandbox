@@ -6,7 +6,7 @@ import appConfig from '../../data/appConfig';
 const constructSubjectHeading = (heading, i) => {
   const { uuid, parent, label } = heading;
   let subjectComponent;
-  if (label) subjectComponent = label.split(" -- ").pop();
+  if (label) subjectComponent = label.split(' -- ').pop();
   if (!parent) {
     return (
       <Link

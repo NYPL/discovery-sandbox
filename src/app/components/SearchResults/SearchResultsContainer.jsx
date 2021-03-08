@@ -45,34 +45,32 @@ const SearchResultsContainer = (props) => {
     <MediaContext.Consumer>
       { media => (
         <React.Fragment>
-          <div className="nypl-row">
-            <div
-              className="nypl-column-full"
-              role="region"
-              aria-describedby="results-description"
-            >
-              {
-                hasResults ?
-                  <ResultsList
-                    results={results}
-                    searchKeywords={searchKeywords}
-                  /> :
-                  noResultElementForDrbbIntegration
-              }
-              { includeDrbb && media === 'desktop' ? <DrbbContainer /> : null}
-              {
-                hasResults ?
-                  <Pagination
-                    ariaControls="nypl-results-list"
-                    total={totalResults}
-                    perPage={50}
-                    page={parseInt(page, 10)}
-                    createAPIQuery={createAPIQuery}
-                    updatePage={updatePage}
-                  /> : null
-              }
-              { includeDrbb && ['tablet', 'mobile'].includes(media) ? <DrbbContainer /> : null}
-            </div>
+          <div
+            className="nypl-column-full"
+            role="region"
+            aria-describedby="results-description"
+          >
+            {
+              hasResults ?
+                <ResultsList
+                  results={results}
+                  searchKeywords={searchKeywords}
+                /> :
+                noResultElementForDrbbIntegration
+            }
+            {includeDrbb && media === 'desktop' ? <DrbbContainer /> : null}
+            {
+              hasResults ?
+                <Pagination
+                  ariaControls="nypl-results-list"
+                  total={totalResults}
+                  perPage={50}
+                  page={parseInt(page, 10)}
+                  createAPIQuery={createAPIQuery}
+                  updatePage={updatePage}
+                /> : null
+            }
+            {includeDrbb && media !== 'desktop' ? <DrbbContainer /> : null}
           </div>
         </React.Fragment>
       )}

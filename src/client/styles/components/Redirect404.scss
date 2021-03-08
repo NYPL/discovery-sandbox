@@ -1,0 +1,35 @@
+.redirect404 {
+  display: inline-block;
+  text-align: center;
+  padding-top: 2em;
+  margin: 3px;
+  min-height: 100vh;
+  width: 100vw;
+  font-style: normal;
+  font-weight: 300;
+  font-size: 24px;
+  position: relative;
+
+  .redirect404text {
+    padding: 2em;
+    position: relative;
+    width: 80vw;
+    top: 15.37%;
+    bottom: 82.04%;
+      display: inline-block;
+      text-align: left;
+      border: 1px solid #C4C4C4;
+      border-radius: 8px;
+      box-sizing: border-box;
+
+      p {
+        padding-left: 2em;
+      }
+
+      .originalUrlText {
+        width: 100%;
+        display: inline-block;
+        text-align: center;
+      }
+  }
+}

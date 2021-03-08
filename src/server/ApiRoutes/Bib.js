@@ -4,11 +4,13 @@ import nyplApiClient from '../routes/nyplApiClient';
 import logger from '../../../logger';
 import appConfig from '../../app/data/appConfig';
 import extractFeatures from '../../app/utils/extractFeatures';
+import { itemBatchSize } from '../../app/data/constants';
 
-const nyplApiClientCall = (query, urlEnabledFeatures) => {
+const nyplApiClientCall = (query, urlEnabledFeatures, itemFrom) => {
   // If on-site-edd feature enabled in front-end, enable it in discovery-api:
+  const queryForItemPage = typeof itemFrom !== 'undefined' ? `?items_size=${itemBatchSize}&items_from=${itemFrom}` : '';
   const requestOptions = appConfig.features.includes('on-site-edd') || urlEnabledFeatures.includes('on-site-edd') ? { headers: { 'X-Features': 'on-site-edd' } } : {};
-  return nyplApiClient().then(client => client.get(`/discovery/resources/${query}`, requestOptions));
+  return nyplApiClient().then(client => client.get(`/discovery/resources/${query}${queryForItemPage}`, requestOptions));
 };
 
 const shepApiCall = bibId => axios(`${appConfig.shepApi}/bibs/${bibId}/subject_headings`);
@@ -120,13 +122,13 @@ const addLocationUrls = (bib) => {
     .catch((err) => { console.log('catching nypl client ', err); });
 };
 
-function fetchBib(bibId, cb, errorcb, reqOptions) {
+function fetchBib(bibId, cb, errorcb, reqOptions, res) {
   const options = Object.assign({
     fetchSubjectHeadingData: true,
     features: [],
   }, reqOptions);
   return Promise.all([
-    nyplApiClientCall(bibId, options.features),
+    nyplApiClientCall(bibId, options.features, reqOptions.itemFrom || 0),
     nyplApiClientCall(`${bibId}.annotated-marc`, options.features),
   ])
     .then((response) => {
@@ -138,6 +140,11 @@ function fetchBib(bibId, cb, errorcb, reqOptions) {
       if (!data.annotatedMarc || !data.annotatedMarc.bib) data.annotatedMarc = null;
 
       return data;
+    })
+    .then((bib) => {
+      const status = (!bib || !bib.uri || bib.uri !== bibId) ? '404' : '200';
+      if (status === '404') res.status(404);
+      return Object.assign({ status }, bib);
     })
     .then(bib => addLocationUrls(bib))
     .then((bib) => {
@@ -173,7 +180,7 @@ function fetchBib(bibId, cb, errorcb, reqOptions) {
 
 function bibSearch(req, res, resolve) {
   const bibId = req.params.bibId;
-  const { features } = req.query;
+  const { features, itemFrom } = req.query;
   const urlEnabledFeatures = extractFeatures(features);
 
   fetchBib(
@@ -183,7 +190,9 @@ function bibSearch(req, res, resolve) {
     {
       features: urlEnabledFeatures,
       fetchSubjectHeadingData: true,
+      itemFrom,
     },
+    res,
   );
 }
 
