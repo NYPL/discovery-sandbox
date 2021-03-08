@@ -12,7 +12,7 @@ const nyplApiClientGet = endpoint => (
 function getHomeLibrary(code) {
   return nyplApiClientGet(`/locations?location_codes=${code}`)
     .then((resp) => {
-      if (!resp || !resp[code] || !resp[code][0].label) return { code };
+      if (!resp || !resp[code] || !resp[code][0] || !resp[code][0].label) return { code };
       return {
         code,
         label: resp[code][0].label,
