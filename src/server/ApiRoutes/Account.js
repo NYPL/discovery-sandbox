@@ -90,7 +90,7 @@ function fetchAccountPage(req, res, resolve) {
     })
     .catch((resp) => {
       console.error('resp error: ', resp);
-      resolve({ error: resp });
+      resolve({ accountHtml: { error: resp } });
     });
 }
 
