@@ -13,7 +13,7 @@ import Notification from '../Notification/Notification';
 const Home = (props, context) => (
   <DocumentTitle title="Shared Collection Catalog | NYPL">
     <main>
-      <div className="home" id="mainContent">
+      <div className="home">
         <div className="nypl-homepage-hero">
           <div className="nypl-full-width-wrapper">
             <div className="nypl-row">
