@@ -17,6 +17,7 @@ import moment from 'moment'
 import LinkTabSet from './LinkTabSet';
 import AccountSettings from './AccountSettings';
 import LoadingLayer from '../LoadingLayer/LoadingLayer';
+import AccountPageModal from '../AccountPageModal/AccountPageModal';
 import { logOutFromEncoreAndCatalogIn } from '../../utils/logoutUtils';
 
 import { manipulateAccountPage, makeRequest, buildReqBody } from '../../utils/accountPageUtils';
@@ -124,6 +125,7 @@ const AccountPage = (props) => {
   return (
     <div className="nypl-ds nypl--research layout-container">
       <main className="main" id="mainContent">
+        <AccountPageModal />
         <div className="content-header">
           <Breadcrumbs
             breadcrumbs={[
