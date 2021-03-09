@@ -78,6 +78,21 @@ const AccountPage = (props) => {
     }
   }, [accountHtml]);
 
+  useEffect(() => {
+    const now = new Date();
+    now.setTime(now.getTime() + 5*60*1000)
+    const inFive = now.toUTCString();
+    document.cookie = `accountPageExp=${inFive}; expires=${inFive}`;
+    setTimeout(() => {
+      if (!document.cookie.includes('accountPageExp')) {
+        logOutFromEncoreAndCatalogIn();
+        setTimeout(() => {
+          window.location.replace(appConfig.baseUrl);
+        }, 0);
+      }
+    }, 5*60*1000);
+  })
+
   const { baseUrl } = appConfig;
 
   const cancelItem = () => {
