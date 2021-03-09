@@ -28,6 +28,7 @@ const loadLogoutIframe = () => {
   // Assigns the ID for CSS ussage
   logoutIframe.setAttribute('id', 'logoutIframe');
   body.appendChild(logoutIframe);
+  console.log('loading logoutIframe');
 };
 
 /**

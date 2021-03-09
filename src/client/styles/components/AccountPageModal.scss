@@ -2,6 +2,10 @@
   background: rgba(64, 64, 64, 0.9);
   line-height: 30apx;
 
+  &:not(.open) {
+    display: none;
+  }
+
   hr {
     color: #89969F;
   }

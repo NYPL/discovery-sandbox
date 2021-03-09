@@ -24,6 +24,7 @@ import { manipulateAccountPage, makeRequest, buildReqBody } from '../../utils/ac
 
 
 const AccountPage = (props) => {
+  console.log('account page');
   const { patron, accountHtml, appConfig } = useSelector(state => ({
     patron: state.patron,
     accountHtml: state.accountHtml,
@@ -40,6 +41,7 @@ const AccountPage = (props) => {
 
   const [isLoading, setIsLoading] = useState(true);
   const [itemToCancel, setItemToCancel] = useState(null);
+  // const [time, setTime] = useState(5*60*1000);
 
   useEffect(() => {
 
@@ -79,20 +81,55 @@ const AccountPage = (props) => {
     }
   }, [accountHtml]);
 
+  // useEffect(() => {
+  //   const now = new Date();
+  //   now.setTime(now.getTime() + 5*60*1000)
+  //   const inFive = now.toUTCString();
+  //   document.cookie = `accountPageExp=${inFive}; expires=${inFive}`;
+  //   setTimeout(() => {
+  //     if (!document.cookie.includes('accountPageExp')) {
+  //       logOutFromEncoreAndCatalogIn();
+  //       setTimeout(() => {
+  //         window.location.replace(appConfig.baseUrl);
+  //       }, 0);
+  //     }
+  //   }, 5*60*1000);
+  // })
+
+  const resetCountdown = () => {
+      const now = new Date();
+      now.setTime(now.getTime() + 5*60*1000)
+      const inFive = now.toUTCString();
+      document.cookie = `accountPageExp=${inFive}; expires=${inFive}`;
+      // setTime(5*60*1000);
+  }
+
+  // const countDown = () => {
+  //   // console.log('time: ', time);
+  //   // if (time > 0) {
+  //   //   setTime(time - 1000);
+  //   // }
+  //   else if (document.cookie.includes('accountPageExp')) {
+  //      // get time string
+  //     const expTime = document.cookie
+  //       .split(';')
+  //       .find(el => el.includes('accountPageExp'))
+  //       .split('=')[1];
+  //     setTime(new Date().getTime() - new Date(expTime).getTime());
+  //   }
+  //   else {
+  //     logOutAndRedirect()
+  //   }
+  // }
+
   useEffect(() => {
-    const now = new Date();
-    now.setTime(now.getTime() + 5*60*1000)
-    const inFive = now.toUTCString();
-    document.cookie = `accountPageExp=${inFive}; expires=${inFive}`;
-    setTimeout(() => {
-      if (!document.cookie.includes('accountPageExp')) {
-        logOutFromEncoreAndCatalogIn();
-        setTimeout(() => {
-          window.location.replace(appConfig.baseUrl);
-        }, 0);
-      }
-    }, 5*60*1000);
-  })
+      if (typeof window !== 'undefined') {
+      console.log('resetting');
+      console.log('setting countdown');
+      resetCountdown();
+      // setInterval(countDown, 1000);
+    }
+  });
 
   const { baseUrl } = appConfig;
 
@@ -125,7 +162,10 @@ const AccountPage = (props) => {
   return (
     <div className="nypl-ds nypl--research layout-container">
       <main className="main" id="mainContent">
-        <AccountPageModal />
+        <AccountPageModal
+          stayLoggedIn={resetCountdown}
+          baseUrl={baseUrl}
+        />
         <div className="content-header">
           <Breadcrumbs
             breadcrumbs={[
