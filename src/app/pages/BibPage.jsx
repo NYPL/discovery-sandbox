@@ -57,7 +57,7 @@ const checkForMoreItems = (bib, dispatch) => {
               bib,
               { items: bib.items.concat((bibResp && bibResp.items) || []),
                 done,
-                itemFrom: itemFrom + itemBatchSize,
+                itemFrom: parseInt(itemFrom, 10) + parseInt(itemBatchSize, 10),
               },
             ),
         }));
