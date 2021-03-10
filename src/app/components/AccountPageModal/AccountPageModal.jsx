@@ -12,30 +12,24 @@ import { logOutFromEncoreAndCatalogIn } from '../../utils/logoutUtils';
 
 const AccountPageModal = (props) => {
 
-  console.log('rendering account page modal');
-
   const {
-    // logOff,
     stayLoggedIn,
     baseUrl,
-    // time,
   } = props;
 
 
   const [update, setUpdate] = useState(false);
 
   const logOutAndRedirect = () => {
-    // logOutFromEncoreAndCatalogIn();
+    logOutFromEncoreAndCatalogIn();
     setTimeout(() => {
-      console.log('replacing with baseUrl');
       window.location.replace(baseUrl);
-    }, 0);
+    }, 1000);
   };
 
-  let minutes;
-  let seconds;
+  let minutes = 0;
+  let seconds = 0;
 
-  // useEffect(() => {
   if (typeof document !== 'undefined' && !document.cookie.includes('accountPageExp')) {
     logOutAndRedirect();
   } else if (typeof document !== 'undefined') {
@@ -46,24 +40,22 @@ const AccountPageModal = (props) => {
 
 
     const timeLeft = new Date(expTime).getTime() - new Date().getTime();
-    console.log('expTime: ', expTime, timeLeft);
 
     setTimeout(() => {
-      console.log('updating modal');
       setUpdate(!update);
     }, 1000);
 
     minutes = parseInt(timeLeft / (60 * 1000), 10);
     seconds = parseInt((timeLeft % (60 * 1000)) / 1000, 10);
   }
-  // });
 
-  console.log('minutes: ', minutes, typeof minutes, minutes < 3);
+  const open = minutes < 3;
+  if (!open) return null;
 
   return (
     <Modal
-      open={minutes < 3}
-      className={`modal ${minutes < 3 ? 'open' : ''}`}
+      open={open}
+      className={`accountPageModal ${open ? 'open' : ''}`}
     >
       <Card
         className="card"
