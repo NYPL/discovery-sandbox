@@ -36,9 +36,9 @@ const AccountPageModal = (props) => {
   let seconds;
 
   // useEffect(() => {
-  if (!document.cookie.includes('accountPageExp')) {
+  if (typeof document !== 'undefined' && !document.cookie.includes('accountPageExp')) {
     logOutAndRedirect();
-  } else {
+  } else if (typeof document !== 'undefined') {
     const expTime = document.cookie
       .split(';')
       .find(el => el.includes('accountPageExp'))
