@@ -20,7 +20,7 @@ import NotFound404 from '../components/NotFound404/NotFound404';
 import LibraryHoldings from '../components/BibPage/LibraryHoldings';
 import getOwner from '../utils/getOwner';
 import appConfig from '../data/appConfig';
-import Redirect404 from '../Redirect404/Redirect404';
+import Redirect404 from '../components/Redirect404/Redirect404';
 // Removed MarcRecord because the webpack MarcRecord is not working. Sep/28/2017
 // import MarcRecord from './MarcRecord';
 import { ajaxCall } from '@utils';
