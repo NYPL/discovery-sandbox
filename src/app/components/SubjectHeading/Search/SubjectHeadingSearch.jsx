@@ -2,12 +2,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
-import Autosuggest from "react-autosuggest";
+import Autosuggest from 'react-autosuggest';
+import { Link } from 'react-router';
 
 import appConfig from '../../../data/appConfig';
 
 import AutosuggestItem from './AutosuggestItem';
-import SearchIcon from '../../../../client/icons/SearchIcon';
 
 class SubjectHeadingSearch extends React.Component {
   constructor(props) {
@@ -177,16 +177,23 @@ class SubjectHeadingSearch extends React.Component {
           value: userInput,
           onChange,
         }}
-        renderSuggestion={suggestion => (
-          <AutosuggestItem
-            item={suggestion}
-            path={this.generatePath(suggestion)}
-            key={suggestion.uuid || suggestion.label}
-            onClick={this.resetAutosuggest}
-          />
-        )}
+        renderSuggestion={(suggestion) => {
+          const subjectComponent = suggestion.class === 'subject_component';
+          return (
+            <Link
+              to={suggestion.path}
+            >
+              {
+                <div>
+                  <span>{subjectComponent ? null : (<em>Subject: </em>) }<span className="itemLabel">{suggestion.label}</span></span>
+                  <div className="aggregateBibCount">{suggestion.aggregate_bib_count} title{suggestion.aggregate_bib_count > 1 ? 's' : ''}</div>
+                </div>
+              }
+            </Link>
+          );
+        }}
       />
-    )
+    );
 
     // return (
     //   <form

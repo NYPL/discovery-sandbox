@@ -1,5 +1,9 @@
 @import "utils/colors.scss";
 
+.react-autosuggest__container {
+  width: 40%;
+}
+
 @include media($xtrasmall-breakpoint) {
   .autocomplete {
     width: 100%;
