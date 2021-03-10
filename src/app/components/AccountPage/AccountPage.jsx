@@ -16,6 +16,8 @@ import moment from 'moment'
 
 import LinkTabSet from './LinkTabSet';
 import AccountSettings from './AccountSettings';
+import LoadingLayer from '../LoadingLayer/LoadingLayer';
+import { logOutFromEncoreAndCatalogIn } from '../../utils/logoutUtils';
 
 import { manipulateAccountPage, makeRequest, buildReqBody } from '../../utils/accountPageUtils';
 
@@ -39,9 +41,14 @@ const AccountPage = (props) => {
   const [itemToCancel, setItemToCancel] = useState(null);
 
   useEffect(() => {
-    if (!patron.id) {
+
+    if (typeof window !== 'undefined' && (!patron.id || accountHtml.error)) {
+      logOutFromEncoreAndCatalogIn();
       const fullUrl = encodeURIComponent(window.location.href);
-      window.location.replace(`${appConfig.loginUrl}?redirect_uri=${fullUrl}`);
+      // timeout 0 is here to make sure that we don't redirect until after the logout iframe is loaded
+      setTimeout(() => {
+        window.location.replace(`${appConfig.loginUrl}?redirect_uri=${fullUrl}`);
+      }, 0);
     }
   }, [patron]);
 
@@ -93,6 +100,12 @@ const AccountPage = (props) => {
   };
 
   const formattedExpirationDate = patron.expirationDate ?  moment(patron.expirationDate).format("MM-DD-YYYY") : '';
+
+  if (accountHtml.error) {
+    return (
+      <LoadingLayer loading={true} />
+    );
+  }
 
   return (
     <div className="nypl-ds nypl--research layout-container">

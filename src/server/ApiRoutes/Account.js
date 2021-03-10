@@ -77,18 +77,14 @@ function fetchAccountPage(req, res, resolve) {
       if (resp.request && resp.request.path.includes('/login?')) {
         // need to implement
         console.log('need to redirect, might be buggy?');
-        // redirect to login
-        const fullUrl = encodeURIComponent(`${req.protocol}://${req.get('host')}${req.originalUrl}`);
-        if (!fullUrl.includes('%2Fapi%2F')) {
-          res.redirect(`${appConfig.loginUrl}?redirect_uri=${fullUrl}`);
-        }
+        throw new Error('detected state mismatch, throwing error');
       }
 
       resolve({ accountHtml: resp.data });
     })
     .catch((resp) => {
-      console.error(resp);
-      res.json({ error: resp });
+      console.error('resp error: ', resp);
+      resolve({ accountHtml: { error: resp } });
     });
 }
 
