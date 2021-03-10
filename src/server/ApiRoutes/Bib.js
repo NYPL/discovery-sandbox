@@ -143,7 +143,22 @@ function fetchBib(bibId, cb, errorcb, reqOptions, res) {
     })
     .then((bib) => {
       const status = (!bib || !bib.uri || bib.uri !== bibId) ? '404' : '200';
-      if (status === '404') res.status(404);
+      if (status === '404') {
+        return nyplApiClient()
+          .then(client => client.get(`/bibs/sierra-nypl/${bibId.slice(1)}`))
+          .then((resp) => {
+            const classic = appConfig.classicCatalog;
+            if (resp.statusCode === 200) { res.redirect(`${classic}/record=${bibId}`); }
+          })
+          .catch((err) => {
+            console.log('error: ', err);
+            console.log('bib not found');
+          })
+          .then(() => {
+            res.status(404);
+            return Object.assign({ status }, bib);
+          });
+      }
       return Object.assign({ status }, bib);
     })
     .then(bib => addLocationUrls(bib))
@@ -183,7 +198,7 @@ function bibSearch(req, res, resolve) {
   const { features, itemFrom } = req.query;
   const urlEnabledFeatures = extractFeatures(features);
 
-  fetchBib(
+  return fetchBib(
     bibId,
     data => resolve(data),
     error => resolve(error),
