@@ -45,6 +45,7 @@ const AccountPage = (props) => {
     if (typeof window !== 'undefined' && (!patron.id || accountHtml.error)) {
       logOutFromEncoreAndCatalogIn();
       const fullUrl = encodeURIComponent(window.location.href);
+      // timeout 0 is here to make sure that we don't redirect until after the logout iframe is loaded
       setTimeout(() => {
         window.location.replace(`${appConfig.loginUrl}?redirect_uri=${fullUrl}`);
       }, 0);

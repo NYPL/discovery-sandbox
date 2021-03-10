@@ -36,7 +36,6 @@ function getAccountPage(res, req) {
 }
 
 function fetchAccountPage(req, res, resolve) {
-  console.log('fetching account page');
   const requireUser = User.requireUser(req, res);
   const { redirect } = requireUser;
   if (redirect) {
@@ -78,7 +77,7 @@ function fetchAccountPage(req, res, resolve) {
       if (resp.request && resp.request.path.includes('/login?')) {
         // need to implement
         console.log('need to redirect, might be buggy?');
-        throw new Error('thrown');
+        throw new Error('detected state mismatch, throwing error');
       }
 
       resolve({ accountHtml: resp.data });
