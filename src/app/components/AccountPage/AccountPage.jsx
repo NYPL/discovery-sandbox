@@ -45,11 +45,10 @@ const AccountPage = (props) => {
   useEffect(() => {
 
     if (typeof window !== 'undefined' && (!patron.id || accountHtml.error)) {
-      logOutFromEncoreAndCatalogIn();
       const fullUrl = encodeURIComponent(window.location.href);
-      setTimeout(() => {
+      logOutFromEncoreAndCatalogIn(() => {
         window.location.replace(`${appConfig.loginUrl}?redirect_uri=${fullUrl}`);
-      }, 0);
+      });
     }
   }, [patron]);
 

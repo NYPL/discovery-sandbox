@@ -21,10 +21,9 @@ const AccountPageModal = (props) => {
   const [update, setUpdate] = useState(false);
 
   const logOutAndRedirect = () => {
-    logOutFromEncoreAndCatalogIn();
-    setTimeout(() => {
+    logOutFromEncoreAndCatalogIn(() => {
       window.location.replace(baseUrl);
-    }, 1000);
+    });
   };
 
   let minutes = 0;
