@@ -5,13 +5,14 @@ import { expect } from 'chai';
 import { shallow, mount } from 'enzyme';
 import PropTypes from 'prop-types';
 import { Provider } from 'react-redux';
+import { makeTestStore } from '../helpers/store';
 
 // Import Bib for pre-processing
 
 import Bib from './../../src/server/ApiRoutes/Bib';
 
 // Import the unwrapped component that is going to be tested
-import { BibPage } from './../../src/app/components/BibPage/BibPage';
+import { BibPage } from './../../src/app/pages/BibPage';
 import bibs from '../fixtures/bibs';
 import annotatedMarc from '../fixtures/annotatedMarc.json';
 import mockBibWithHolding from '../fixtures/mockBibWithHolding.json';
@@ -45,14 +46,18 @@ describe('BibPage', () => {
       mockBibWithHolding.holdings.forEach(holding => Bib.addHoldingDefinition(holding));
       Bib.addCheckInItems(mockBibWithHolding);
       const bib = { ...mockBibWithHolding, ...annotatedMarc };
-      const testStore = {
+      const testStore = makeTestStore({
         bib: {
           done: true,
           numItems: 0,
         },
-        getState: () => testStore,
         subscribe: () => {},
-      };
+        appConfig: {
+          displayTitle: 'Shared Collection Catalog',
+          baseUrl: '/',
+        },
+        features: [],
+      });
 
       component = mount(
         <Provider store={testStore}>
@@ -61,8 +66,7 @@ describe('BibPage', () => {
             bib={bib}
             dispatch={() => {}}
           />
-        </Provider>
-        , {
+        </Provider>, {
           context: {
             router: { location: { query: {} }, createHref: () => {} },
           },

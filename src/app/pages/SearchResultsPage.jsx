@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import DocumentTitle from 'react-document-title';
 import { useSelector } from 'react-redux';
 
 /* eslint-disable import/no-unresolved, import/extensions */
@@ -65,50 +64,53 @@ const SearchResults = (props, context) => {
   const hasResults = searchResults && totalResults;
 
   return (
-    <DocumentTitle title="Search Results | Shared Collection Catalog | NYPL">
-      <SccContainer
-        useLoadingLayer
-        activeSection="search"
-      >
-        <Search
-          createAPIQuery={createAPIQuery}
-          router={router}
-        />
-        <FilterPopup
-          createAPIQuery={createAPIQuery}
-          raisedErrors={dateFilterErrors}
-          updateDropdownState={toggleDropdown}
+    <SccContainer
+      useLoadingLayer
+      activeSection="search"
+      pageTitle="SearchResults"
+    >
+      <div className="content-header research-search">
+        <div className="research-search__inner-content">
+          <Search
+            createAPIQuery={createAPIQuery}
+            router={router}
+          />
+          <FilterPopup
+            createAPIQuery={createAPIQuery}
+            raisedErrors={dateFilterErrors}
+            updateDropdownState={toggleDropdown}
+          />
+        </div>
+      </div>
+      {
+        selectedFiltersAvailable ? (
+          <SelectedFilters
+            selectedFilters={selectedFilters}
+            createAPIQuery={createAPIQuery}
+            selectedFiltersAvailable={selectedFiltersAvailable}
+          />
+        ) : null
+      }
+      <div className="nypl-sorter-row">
+        <ResultsCount
+          count={totalResults}
+          selectedFilters={selectedFilters}
+          field={field}
         />
         {
-          selectedFiltersAvailable ? (
-            <SelectedFilters
-              selectedFilters={selectedFilters}
+          hasResults ?
+            <SearchResultsSorter
               createAPIQuery={createAPIQuery}
-              selectedFiltersAvailable={selectedFiltersAvailable}
+              key={sortBy}
             />
-          ) : null
+            : null
         }
-        <div className="nypl-sorter-row">
-          <ResultsCount
-            count={totalResults}
-            selectedFilters={selectedFilters}
-            field={field}
-          />
-          {
-            hasResults ?
-              <SearchResultsSorter
-                createAPIQuery={createAPIQuery}
-                key={sortBy}
-              />
-              : null
-          }
-        </div>
-        <SearchResultsContainer
-          router={router}
-          createAPIQuery={createAPIQuery}
-        />
-      </SccContainer>
-    </DocumentTitle>
+      </div>
+      <SearchResultsContainer
+        router={router}
+        createAPIQuery={createAPIQuery}
+      />
+    </SccContainer>
   );
 };
 

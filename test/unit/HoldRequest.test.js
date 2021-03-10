@@ -3,52 +3,71 @@
 import React from 'react';
 import { stub, spy } from 'sinon';
 import { expect } from 'chai';
-import { mount } from 'enzyme';
 import axios from 'axios';
+import MockAdapter from 'axios-mock-adapter';
+import { mountTestRender, makeTestStore } from '../helpers/store';
 // Import the component that is going to be tested
-import WrappedHoldRequest, { HoldRequest } from './../../src/app/components/HoldRequest/HoldRequest';
+import WrappedHoldRequest, { HoldRequest } from './../../src/app/pages/HoldRequest';
 import mockedItem from '../fixtures/mocked-item';
 
 describe('HoldRequest', () => {
   describe('When component did mount', () => {
-    let router;
+    let mock;
     let component;
-    let instance;
     let redirect;
-    beforeEach(() => {
-      component = mount(<HoldRequest />, { attachTo: document.body });
-      instance = component.instance();
-      redirect = stub(instance, 'redirectWithErrors').callsFake(() => true);
+    before(() => {
+      mock = new MockAdapter(axios);
+      redirect = stub(HoldRequest.prototype, 'redirectWithErrors').callsFake(() => true);
     });
-    afterEach(() => {
-      axios.get.restore();
-      component.unmount();
+    describe('ineligible patrons', () => {
+      before(() => {
+        mock.onGet(
+          '/research/collections/shared-collection-catalog/api/patronEligibility').reply(200, { eligibility: false });
+        component = mountTestRender(
+          <WrappedHoldRequest />, {
+            attachTo: document.body,
+            store: makeTestStore({
+              patron: { id: 1 },
+              appConfig: {
+                displayTitle: 'Shared Collection Catalog',
+                baseUrl: '/',
+              },
+            }),
+          });
+      });
+      after(() => {
+        component.unmount();
+      });
+      it('should redirect', () => {
+        setImmediate(() => {
+          expect(redirect.called).to.equal(true);
+        });
+      });
     });
-    it('should redirect for ineligible patrons', () => {
-      router = stub(axios, 'get').callsFake(() => new Promise((resolve) => {
-        resolve({ data: { eligibility: false } });
-      }));
-      return new Promise((resolve) => {
-        instance.setState({ patron: { id: 1 } });
-        resolve();
-      })
-        .then(() => instance.conditionallyRedirect()
-          .then(() => {
-            expect(redirect.called).to.equal(true);
-          }));
-    });
-    it('should not redirect for eligible patrons', () => {
-      router = stub(axios, 'get').callsFake(() => new Promise((resolve) => {
-        resolve({ data: { eligibility: true } });
-      }));
-      return new Promise((resolve) => {
-        instance.setState({ patron: { id: 2 } });
-        resolve();
-      })
-        .then(() => instance.conditionallyRedirect()
-          .then(() => {
-            expect(redirect.called).to.equal(false);
-          }));
+    describe('eligible patrons', () => {
+      before(() => {
+        mock.onGet(
+          '/research/collections/shared-collection-catalog/api/patronEligibility').reply(200, { eligibility: true });
+        component = mountTestRender(
+          <WrappedHoldRequest />, {
+            attachTo: document.body,
+            store: makeTestStore({
+              patron: { id: 1 },
+              appConfig: {
+                displayTitle: 'Shared Collection Catalog',
+                baseUrl: '/',
+              },
+            }),
+          });
+      });
+      after(() => {
+        component.unmount();
+      });
+      it('should not redirect', () => {
+        setImmediate(() => {
+          expect(redirect.called).to.equal(false);
+        });
+      });
     });
   });
 
@@ -58,8 +77,10 @@ describe('HoldRequest', () => {
 
     before(() => {
       requireUser = spy(HoldRequest.prototype, 'requireUser');
-      component = mount(<HoldRequest />, { attachTo: document.body });
-      component.setState({ redirect: false });
+      component = mountTestRender(<WrappedHoldRequest />, {
+        attachTo: document.body,
+        store: makeTestStore({ patron: { id: 1 } }),
+      });
     });
 
     after(() => {
@@ -67,7 +88,6 @@ describe('HoldRequest', () => {
       component.unmount();
     });
 
-    // TODO: This should check the state and not that the function was called.
     it('should check if the patron is logged in.', () => {
       expect(requireUser.calledOnce).to.equal(true);
     });
@@ -79,8 +99,10 @@ describe('HoldRequest', () => {
 
     before(() => {
       requireUser = spy(HoldRequest.prototype, 'requireUser');
-      component = mount(<HoldRequest patron={{}}/>, { attachTo: document.body });
-      component.setState({ redirect: false });
+      component = mountTestRender(<WrappedHoldRequest />, {
+        attachTo: document.body,
+        store: makeTestStore({ patron: {} }),
+      });
     });
 
     after(() => {
@@ -89,7 +111,6 @@ describe('HoldRequest', () => {
     });
 
     it('should redirect the patron to OAuth log in page.', () => {
-      component.setState({ patron: {} });
       expect(requireUser.returnValues[0]).to.equal(false);
     });
   });
@@ -99,31 +120,26 @@ describe('HoldRequest', () => {
       let component;
 
       before(() => {
-        component = mount(
-          <HoldRequest loading={false} patron={{ loggedIn: true }} />, { attachTo: document.body });
-        component.setState({ redirect: false });
+        component = mountTestRender(<WrappedHoldRequest />, {
+          attachTo: document.body,
+          store: makeTestStore({
+            patron: {
+              id: 1,
+              loggedIn: true,
+            },
+            loading: false,
+          }),
+        });
       });
 
       after(() => {
         component.unmount();
       });
 
-      it('should display the page title, "Item Request".', () => {
-        const main = component.find('#mainContent');
-
-        expect(main).to.have.length(1);
-        expect(main.find('h1')).to.have.length(1);
-        expect(main.find('h1').text()).to.equal('Item Request');
-      });
-
       it('should display the error message.', () => {
-        const item = component.find('.item');
+        const h2 = component.find('h2').first();
 
-        expect(item.contains(
-          <h2>
-            This item cannot be requested at this time. Please try again later or
-            contact 917-ASK-NYPL (<a href="tel:917-275-6975">917-275-6975</a>).
-          </h2>)).to.equal(true);
+        expect(h2.text()).to.equal('This item cannot be requested at this time. Please try again later or contact 917-ASK-NYPL (917-275-6975).');
       });
     },
   );
@@ -138,8 +154,16 @@ describe('HoldRequest', () => {
     };
 
     before(() => {
-      component = mount(<HoldRequest bib={bib} params={{ itemId: 'i10000003' }} />, { attachTo: document.body });
-      component.setState({ redirect: false });
+      component = mountTestRender(
+        <WrappedHoldRequest
+          params={{ itemId: 'i10000003' }}
+        />, {
+          attachTo: document.body,
+          store: makeTestStore({
+            patron: { id: 1 },
+            bib,
+          }),
+        });
     });
 
     after(() => {
@@ -195,15 +219,17 @@ describe('HoldRequest', () => {
     ];
 
     before(() => {
-      component = mount(
-        <HoldRequest
-          bib={bib}
-          deliveryLocations={deliveryLocations}
+      component = mountTestRender(
+        <WrappedHoldRequest
           params={{ itemId: 'i10000003' }}
-        />,
-        { attachTo: document.body }
-      );
-      component.setState({ redirect: false });
+        />, {
+          attachTo: document.body,
+          store: makeTestStore({
+            patron: { id: 1 },
+            bib,
+            deliveryLocations,
+          }),
+        });
     });
 
     after(() => {
@@ -302,16 +328,22 @@ describe('HoldRequest', () => {
     ];
 
     before(() => {
-      component = mount(
-        <HoldRequest
-          bib={bib}
-          deliveryLocations={deliveryLocations}
-          isEddRequestable
+      component = mountTestRender(
+        <WrappedHoldRequest
           params={{ itemId: 'i10000003' }}
-        />,
-        { attachTo: document.body }
-      );
-      component.setState({ redirect: false });
+        />, {
+          attachTo: document.body,
+          store: makeTestStore({
+            patron: {
+              id: 1,
+              loggedIn: true,
+            },
+            bib,
+            loading: false,
+            deliveryLocations,
+            isEddRequestable: true,
+          }),
+        });
     });
 
     after(() => {
@@ -362,17 +394,24 @@ describe('HoldRequest', () => {
     ];
 
     before(() => {
-      component = mount(
-        <HoldRequest
-          bib={bib}
-          deliveryLocations={deliveryLocations}
-          isEddRequestable
+      component = mountTestRender(
+        <WrappedHoldRequest
           params={{ itemId: 'i10000003' }}
-          closedLocations={['edd']}
-        />,
-        { attachTo: document.body }
-      );
-      component.setState({ redirect: false });
+          isEddRequestable
+        />, {
+          attachTo: document.body,
+          store: makeTestStore({
+            patron: { id: 1 },
+            bib,
+            appConfig: {
+              closedLocations: ['edd'],
+              displayTitle: 'Shared Collection Catalog',
+              baseUrl: '/',
+            },
+            isEddRequestable: true,
+            deliveryLocations,
+          }),
+        });
     });
 
     after(() => {
@@ -420,17 +459,25 @@ describe('HoldRequest', () => {
       ];
 
       before(() => {
-        component = mount(
-          <HoldRequest
-            bib={bib}
-            deliveryLocations={deliveryLocations}
-            isEddRequestable
+        component = mountTestRender(
+          <WrappedHoldRequest
             params={{ itemId: 'i10000003' }}
+            isEddRequestable
             closedLocations={['']}
-          />,
-          { attachTo: document.body }
-        );
-        component.setState({ redirect: false });
+          />, {
+            attachTo: document.body,
+            store: makeTestStore({
+              patron: { id: 1 },
+              bib,
+              appConfig: {
+                closedLocations: [''],
+                displayTitle: 'Shared Collection Catalog',
+                baseUrl: '/',
+              },
+              isEddRequestable: true,
+              deliveryLocations,
+            }),
+          });
       });
 
       after(() => {
@@ -474,17 +521,23 @@ describe('HoldRequest', () => {
       ];
 
       before(() => {
-        component = mount(
-          <HoldRequest
-            bib={bib}
-            deliveryLocations={deliveryLocations}
-            isEddRequestable
+        component = mountTestRender(
+          <WrappedHoldRequest
             params={{ itemId: 'i10000003' }}
-            recapClosedLocations={['']}
-          />,
-          { attachTo: document.body }
-        );
-        component.setState({ redirect: false });
+          />, {
+            attachTo: document.body,
+            store: makeTestStore({
+              patron: { id: 1 },
+              bib,
+              appConfig: {
+                recapClosedLocations: [''],
+                displayTitle: 'Shared Collection Catalog',
+                baseUrl: '/',
+              },
+              isEddRequestable: true,
+              deliveryLocations,
+            }),
+          });
       });
 
       after(() => {
@@ -528,17 +581,23 @@ describe('HoldRequest', () => {
       ];
 
       before(() => {
-        component = mount(
-          <HoldRequest
-            bib={bib}
-            deliveryLocations={deliveryLocations}
-            isEddRequestable
+        component = mountTestRender(
+          <WrappedHoldRequest
             params={{ itemId: 'i10000003' }}
-            nonRecapClosedLocations={['edd']}
-          />,
-          { attachTo: document.body }
-        );
-        component.setState({ redirect: false });
+          />, {
+            attachTo: document.body,
+            store: makeTestStore({
+              patron: { id: 1 },
+              bib,
+              appConfig: {
+                closedLocations: ['edd'],
+                displayTitle: 'Shared Collection Catalog',
+                baseUrl: '/',
+              },
+              isEddRequestable: true,
+              deliveryLocations,
+            }),
+          });
       });
 
       after(() => {

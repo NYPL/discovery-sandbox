@@ -15,6 +15,11 @@ import {
 import { CheckSoloIcon } from '@nypl/dgx-svg-icons';
 
 import {
+  Button,
+  ButtonTypes,
+} from '@nypl/design-system-react-components';
+
+import {
   trackDiscovery,
 } from '../../utils/utils';
 import appConfig from '@appConfig';
@@ -419,15 +424,17 @@ export class FilterPopup extends React.Component {
         </a>)
     );
     const openPopupButton = js ? (
-      <button
-        className="popup-btn-open nypl-primary-button"
+      <Button
         onClick={() => this.openForm()}
-        aria-haspopup="true"
-        aria-expanded={showForm || null}
-        aria-controls="filter-popup-menu"
+        buttonType={ButtonTypes.Secondary}
+        attributes={{
+          'aria-haspopup': 'true',
+          'aria-expanded': showForm || null,
+          'aria-controls': 'filter-popup-menu',
+        }}
       >
         Refine Search
-      </button>) :
+      </Button>) :
       (
         <a
           className="popup-btn-open nypl-primary-button"
@@ -471,13 +478,7 @@ export class FilterPopup extends React.Component {
 
     return (
       <div className="filter-container">
-        <div className="nypl-column-full">
-          <div className="filter-text">
-            <h2 id="filter-title" ref={this.filterTitle}>Refine your search</h2>
-            <p>Toggle filters to narrow and define your search</p>
-          </div>
-          {(!showForm && !!(totalResults && totalResults !== 0)) && openPopupButton}
-        </div>
+        {(!showForm && !!(totalResults && totalResults !== 0)) && openPopupButton}
         {
           showForm && (
             <div
