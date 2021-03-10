@@ -5,6 +5,7 @@ import { expect } from 'chai';
 import { shallow, mount } from 'enzyme';
 import PropTypes from 'prop-types';
 import { Provider } from 'react-redux';
+import { makeTestStore } from '../helpers/store';
 
 // Import Bib for pre-processing
 
@@ -45,18 +46,18 @@ describe('BibPage', () => {
       mockBibWithHolding.holdings.forEach(holding => Bib.addHoldingDefinition(holding));
       Bib.addCheckInItems(mockBibWithHolding);
       const bib = { ...mockBibWithHolding, ...annotatedMarc };
-      const testStore = {
+      const testStore = makeTestStore({
         bib: {
           done: true,
           numItems: 0,
         },
-        getState: () => testStore,
         subscribe: () => {},
         appConfig: {
           displayTitle: 'Shared Collection Catalog',
           baseUrl: '/',
         },
-      };
+        features: [],
+      });
 
       component = mount(
         <Provider store={testStore}>

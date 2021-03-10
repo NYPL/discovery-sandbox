@@ -12,7 +12,7 @@ describe('FilterPopup', () => {
     // Since this is a shallow render, the component itself is not mounted. The `js` flag
     // becomes true when the component is mounted on the client-side so we know that
     // javascript is enabled.
-    it('should render an <a> instead instead of an open button', () => {
+    it('should render an <a> instead of an open button', () => {
       const component = shallow(
         <FilterPopup totalResults={1} features={[]}/>, { disableLifecycleMethods: true }
       );
@@ -55,13 +55,9 @@ describe('FilterPopup', () => {
 
     it('should not render open/close buttons', () => {
       expect(component.state('js')).to.equal(true);
-      // All buttons should be rendered
       expect(component.find('button').length).to.equal(1);
-      expect(component.find('button').at(0).prop('className'))
-        .to.equal('popup-btn-open nypl-primary-button');
-      // expect(component.find('button').at(1).prop('name')).to.equal('Clear-Filters');
-      // expect(component.find('button').at(2).prop('className'))
-      //   .to.equal('nypl-primary-button cancel-button');
+      expect(component.find('button').at(0).text())
+        .to.equal('Refine Search');
     });
 
     it('should not render the "no-js" <a> element', () => {
@@ -69,7 +65,7 @@ describe('FilterPopup', () => {
     });
 
     it('should have accessible open button', () => {
-      const openBtn = component.find('.popup-btn-open');
+      const openBtn = component.find('button').at(0);
       expect(openBtn.prop('aria-haspopup')).to.equal('true');
       expect(openBtn.prop('aria-expanded')).to.equal(null);
       expect(openBtn.prop('aria-controls')).to.equal('filter-popup-menu');

@@ -69,15 +69,19 @@ const SearchResults = (props, context) => {
       activeSection="search"
       pageTitle="SearchResults"
     >
-      <Search
-        createAPIQuery={createAPIQuery}
-        router={router}
-      />
-      <FilterPopup
-        createAPIQuery={createAPIQuery}
-        raisedErrors={dateFilterErrors}
-        updateDropdownState={toggleDropdown}
-      />
+      <div className="content-header research-search">
+        <div className="research-search__inner-content">
+          <Search
+            createAPIQuery={createAPIQuery}
+            router={router}
+          />
+          <FilterPopup
+            createAPIQuery={createAPIQuery}
+            raisedErrors={dateFilterErrors}
+            updateDropdownState={toggleDropdown}
+          />
+        </div>
+      </div>
       {
         selectedFiltersAvailable ? (
           <SelectedFilters

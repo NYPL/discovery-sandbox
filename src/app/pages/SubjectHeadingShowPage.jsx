@@ -26,6 +26,7 @@ const SubjectHeadingShowPage = (props) => {
       useLoadingLayer={false}
       activeSection="shep"
       pageTitle="Subject Heading"
+      className="subject-heading-page"
     >
       <div
         className="subject-heading-page-header"

@@ -153,6 +153,10 @@ thead .subjectHeadingRow {
 .nypl-results-sorter.shepBibs {
   float: left;
   margin-bottom: 0;
+
+  .nypl-select-field-results {
+    margin: 0;
+  }
 }
 
 #sort-by-label {

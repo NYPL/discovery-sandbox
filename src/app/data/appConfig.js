@@ -21,6 +21,7 @@ const appConfig = {
     },
   },
   classicCatalog: process.env.CLASSIC_CATALOG,
+  circulatingCatalog: process.env.CIRCULATING_CATALOG,
   shepApi: process.env.SHEP_API,
   loginUrl: process.env.LOGIN_URL || 'https://login.nypl.org/auth/login',
   tokenUrl: 'https://isso.nypl.org/',
@@ -64,6 +65,7 @@ const appConfig = {
   },
   sourceEmail: process.env.SOURCE_EMAIL,
   libAnswersEmail: process.env.LIB_ANSWERS_EMAIL,
+  itemBatchSize: process.env.ITEM_BATCH_SIZE
 };
 
 export default appConfig;

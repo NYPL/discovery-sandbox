@@ -204,7 +204,7 @@ class ItemsContainer extends React.Component {
     return (
       <>
         <Heading
-          level={2}
+          level={3}
         >
           Items in the Library & Offsite
         </Heading>

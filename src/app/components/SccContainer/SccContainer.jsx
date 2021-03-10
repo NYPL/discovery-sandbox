@@ -4,8 +4,8 @@ import { useSelector } from 'react-redux';
 import DocumentTitle from 'react-document-title';
 
 import {
-  Heading,
   Breadcrumbs,
+  Heading,
   Hero,
   HeroTypes,
 } from '@nypl/design-system-react-components';
@@ -42,27 +42,24 @@ const SccContainer = (props) => {
           ) : null
         }
         <main className="main main-page">
-          <div className="content-header">
+          <div className="content-header catalog__header">
             <Breadcrumbs
               breadcrumbs={[
-                { url: 'htttps://www.nypl.org', text: 'Home' },
+                { url: 'https://www.nypl.org/', text: 'Home' },
                 { url: 'https://www.nypl.org/research', text: 'Research' },
-                { url: appConfig.baseUrl, text: 'Research Catalog' },
+                { url: appConfig.baseUrl, text: appConfig.displayTitle },
               ]}
               className="breadcrumbs"
             />
-            <Hero
-              heroType={HeroTypes.Secondary}
-              heading={(
-                <Heading
-                  level={1}
-                  id="1"
-                  blockName="hero"
-                >
-                  {appConfig.displayTitle}
-                </Heading>
-              )}
-            />
+            <div className="catalog__heading">
+              <Heading
+                level={1}
+                id="1"
+                blockName="hero"
+              >
+                {appConfig.displayTitle}
+              </Heading>
+            </div>
             <SubNav activeSection={activeSection} />
           </div>
           <div className={`content-primary ${className || ''}`}>
