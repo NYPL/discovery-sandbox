@@ -79,15 +79,12 @@ export const fetchLocationUrls = codes => nyplApiClient()
   .then(client => client.get(`/locations?location_codes=${codes}`));
 
 const addLocationUrls = (bib) => {
-  const holdingCodes = [];
-
-  if (bib.holdings) {
-    bib.holdings.forEach(({ location }) => {
-      if (location) {
-        location.forEach(locationEntry => holdingCodes.push(locationEntry.code));
-      }
-    });
-  }
+  const { holdings } = bib;
+  const holdingCodes = holdings ?
+    holdings
+      .map(holding => (holding.location || []).map(location => location.code))
+      .reduce((acc, el) => acc.concat(el), [])
+    : [];
 
   const itemCodes = bib.items ?
     bib.items.map(item =>
@@ -96,7 +93,6 @@ const addLocationUrls = (bib) => {
     : [];
 
   const codes = holdingCodes.concat(itemCodes).join(',');
-
   // get locations data by codes
   return fetchLocationUrls(codes)
     .then((resp) => {
@@ -207,4 +203,5 @@ export default {
   bibSearch,
   fetchBib,
   nyplApiClientCall,
+  addLocationUrls,
 };
