@@ -1,5 +1,24 @@
-.nypl-banner-alert {
+
+.research-alert {border-radius: 4px;
+  background-color: #e6ecf0;
+  color: var(--ui-black);
+  display: block;
+  font-size: var(--font-size--1);
+  margin: var(--space-m) 0;
+  padding: var(--space-m) var(--space-xl);
+
   a {
+    color: var(--ui-link-primary);
     display: inline;
+
+    &:hover {
+      color: var(--ui-link-secondary);
+    }
+  }
+
+  &__heading {
+    color: var(--section-research-primary);
+    font-size: var(--font-size-0);
+    font-weight: 600;
   }
 }

@@ -8,12 +8,15 @@ const Notification = ({ notificationType }) => {
   if (!notification) return null;
 
   return (
-    <div className="nypl-banner-alert">
-      <p
-        style={{ padding: '0px 20px 0px', margin: 0 }}
-        dangerouslySetInnerHTML={{__html: notification }}
+    <aside
+      className="research-alert"
+      aria-label="research-catalog-alert"
+    >
+      <div className="research-alert__heading">New Service Announcement</div>
+      <div
+        dangerouslySetInnerHTML={{ __html: notification }}
       />
-    </div>
+    </aside>
   );
 };
 
