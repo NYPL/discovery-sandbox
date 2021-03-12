@@ -14,7 +14,9 @@ const Notification = ({ notificationType }) => {
       className="research-alert"
       aria-label="research-catalog-alert"
     >
-      <AlertIcon />
+      <div className="research-alert__icon">
+        <AlertIcon />
+      </div>
       <div>
         <div className="research-alert__heading">New Service Announcement</div>
         <div
