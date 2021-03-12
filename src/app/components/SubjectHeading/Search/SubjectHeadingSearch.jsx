@@ -92,7 +92,7 @@ class SubjectHeadingSearch extends React.Component {
       <Autosuggest
         suggestions={suggestions}
         onSuggestionsFetchRequested={() => makeApiCallWithThrottle()}
-        onSuggestionsClearRequested={() => {}}
+        onSuggestionsClearRequested={() => this.setState({ suggestions: [] })}
         onSuggestionSelected={(e, secondArg) => onSubmit(e, secondArg)}
         getSuggestionValue={suggestion => suggestion.label}
         inputProps={{
