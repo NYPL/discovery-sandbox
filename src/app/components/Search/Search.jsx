@@ -2,11 +2,21 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
+import {
+  Input,
+  SearchBar,
+  Select,
+} from '@nypl/design-system-react-components';
+
 import SearchButton from '../Buttons/SearchButton';
 import {
   trackDiscovery,
 } from '../../utils/utils';
 import appConfig from '../../data/appConfig';
+import {
+  updateSearchKeywords,
+  updateField,
+} from '../../actions/Actions';
 
 /**
  * The main container for the top Search section.
@@ -40,8 +50,8 @@ class Search extends React.Component {
    * onFieldChange(e)
    * Listen to the select dropdown for field searching.
    */
-  onFieldChange() {
-    const newFieldVal = this.searchByFieldRef.value;
+  onFieldChange(e) {
+    const newFieldVal = e.target.value;
     this.setState({ field: newFieldVal });
   }
 
@@ -102,63 +112,50 @@ class Search extends React.Component {
       page: '1',
     });
 
+    this.props.updateSearchKeywords(searchKeywords);
+    this.props.updateField(field);
+
     this.props.router.push(`${appConfig.baseUrl}/search?${apiQuery}`);
   }
 
   render() {
     return (
-      <form
+      <SearchBar
         id="mainContent"
         onSubmit={this.triggerSubmit}
-        onKeyPress={this.triggerSubmit}
-        action={`${appConfig.baseUrl}/search`}
-        method="POST"
-        className="nypl-omnisearch-form"
-        aria-controls="results-description"
+        className="content-primary"
+        attributes={{
+          method: 'POST',
+          action: `${appConfig.baseUrl}/search`,
+        }}
       >
-        <div className="nypl-omnisearch">
-          <div className="nypl-text-field">
-            <span className="nypl-omni-fields">
-              <label htmlFor="search-by-field">Search in</label>
-              <select
-                ref={this.setSearchByFieldRef}
-                id="search-by-field"
-                onChange={this.onFieldChange}
-                value={this.state.field}
-                name="search_scope"
-              >
-                <option value="all">All fields</option>
-                <option value="title">Title</option>
-                <option value="journal_title">Journal Title</option>
-                <option value="contributor">Author/Contributor</option>
-                <option value="standard_number">Standard Numbers</option>
-                <option value="subject">Subject</option>
-              </select>
-            </span>
-          </div>
-          <div className="nypl-text-field">
-            <span className="nypl-omni-fields-text">
-              <label htmlFor="search-query" id="search-input-label" className="visuallyhidden">
-                Search Shared Collection Catalog for
-              </label>
-              <input
-                type="text"
-                id="search-query"
-                aria-labelledby="search-input-label"
-                aria-controls="results-description"
-                placeholder="Keyword, title, journal title, or author/contributor"
-                onChange={this.inputChange}
-                value={this.state.searchKeywords}
-                name="q"
-              />
-            </span>
-          </div>
-          <SearchButton
-            className="nypl-omnisearch-button nypl-primary-button"
-            onClick={this.submitSearchRequest}
-          />
-        </div>
-      </form>
+        <Select
+          id="search-by-field"
+          onChange={this.onFieldChange}
+          selectedOption={this.state.field}
+          name="search_scope"
+        >
+          <option value="all">All fields</option>
+          <option value="title">Title</option>
+          <option value="journal_title">Journal Title</option>
+          <option value="contributor">Author/Contributor</option>
+          <option value="standard_number">Standard Numbers</option>
+          <option value="subject">Subject</option>
+        </Select>
+        <Input
+          type="text"
+          id="search-query"
+          aria-label="Search by keyword, title, journal title, or author/contributor"
+          aria-controls="results-description"
+          placeholder="Keyword, title, journal title, or author/contributor"
+          onChange={this.inputChange}
+          value={this.state.searchKeywords}
+          name="q"
+        />
+        <SearchButton
+          onClick={this.submitSearchRequest}
+        />
+      </SearchBar>
     );
   }
 }
@@ -169,6 +166,8 @@ Search.propTypes = {
   createAPIQuery: PropTypes.func,
   selectedFilters: PropTypes.object,
   router: PropTypes.object,
+  updateSearchKeywords: PropTypes.func,
+  updateField: PropTypes.func,
 };
 
 Search.defaultProps = {
@@ -183,4 +182,9 @@ const mapStateToProps = ({
   selectedFilters,
 }) => ({ searchKeywords, field, selectedFilters });
 
-export default connect(mapStateToProps)(Search);
+const mapDispatchToProps = dispatch => ({
+  updateSearchKeywords: searchKeywords => dispatch(updateSearchKeywords(searchKeywords)),
+  updateField: field => dispatch(updateField(field)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Search);

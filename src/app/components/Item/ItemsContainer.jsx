@@ -2,6 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 import { isArray as _isArray } from 'underscore';
+import { connect } from 'react-redux';
+
+import {
+  Heading,
+} from '@nypl/design-system-react-components';
 
 import Pagination from '../Pagination/Pagination';
 import ItemTable from './ItemTable';
@@ -24,7 +29,10 @@ class ItemsContainer extends React.Component {
     this.query = context.router.location.query;
     this.hasFilter = Object.keys(this.query).some(param => (
       itemFilters.map(filter => filter.type).includes(param)));
-    this.filteredItems = this.filterItems(this.props.items) || [];
+
+    this.filteredItems = this.props.bib && this.props.bib.done ?
+      (this.filterItems(this.props.items) || [])
+      : (this.props.items || []);
 
     this.updatePage = this.updatePage.bind(this);
     this.chunk = this.chunk.bind(this);
@@ -150,7 +158,11 @@ class ItemsContainer extends React.Component {
   }
 
   render() {
+    this.filteredItems = this.props.bib && this.props.bib.done ?
+      (this.filterItems(this.props.items) || [])
+      : (this.props.items || []);
     const bibId = this.props.bibId;
+    const bibDone = this.props.bib && this.props.bib.done;
     const { items } = this.props;
     if (!items) return null;
     const shortenItems = !this.props.shortenItems;
@@ -173,39 +185,65 @@ class ItemsContainer extends React.Component {
     }
 
     const itemTable = this.getTable(itemsToDisplay, shortenItems, this.state.showAll);
+    const numItemsEstimate = this.props.bib.numItems + (this.props.bib.checkInItems || []).length;
+    const itemLoadingMessage = (
+      <div className="item-filter-info">
+        <h3>
+          <br />
+          About {`${numItemsEstimate}`} Item{numItemsEstimate !== 1 ? 's. ' : '. ' }
+          <div className="items-loading">
+            Still Loading More items
+            <span className="dot1">.</span>
+            <span className="dot2">.</span>
+            <span className="dot3">.</span>
+          </div>
+        </h3>
+      </div>
+    );
 
     return (
-      <div className="nypl-results-item">
-        <h2>Items in the Library & Offsite</h2>
-        <ItemFilters
-          items={items}
-          hasFilterApplied={this.hasFilter}
-          query={this.query}
-          numOfFilteredItems={this.filteredItems.length}
-        />
-        {itemTable}
-        {
-          !!(shortenItems && this.filteredItems.length > itemsListPageLimit && !this.state.showAll) &&
-            (
-              <div className="view-all-items-container">
-                {
-                  this.state.js ?
-                    (<a href="#" onClick={this.showAll}>View All Items</a>) :
-                    (
-                      <Link
-                        to={`${appConfig.baseUrl}/bib/${bibId}/all`}
-                        className="view-all-items"
-                        onClick={() => trackDiscovery('View All Items', `Click - ${bibId}`)}
-                      >
-                        View All Items
-                      </Link>
-                    )
-                }
-              </div>
-            )
-        }
-        {pagination}
-      </div>
+      <>
+        <Heading
+          level={3}
+        >
+          Items in the Library & Offsite
+        </Heading>
+        <div className="nypl-results-item">
+          {
+            bibDone ?
+              <ItemFilters
+                items={items}
+                hasFilterApplied={this.hasFilter}
+                query={this.query}
+                numOfFilteredItems={this.filteredItems.length}
+              />
+              :
+              itemLoadingMessage
+          }
+          {itemTable}
+          {
+            !!(shortenItems && this.filteredItems.length > itemsListPageLimit && !this.state.showAll) &&
+              (
+                <div className="view-all-items-container">
+                  {
+                    this.state.js ?
+                      (<a href="#" onClick={this.showAll}>View All Items</a>) :
+                      (
+                        <Link
+                          to={`${appConfig.baseUrl}/bib/${bibId}/all`}
+                          className="view-all-items"
+                          onClick={() => trackDiscovery('View All Items', `Click - ${bibId}`)}
+                        >
+                          View All Items
+                        </Link>
+                      )
+                  }
+                </div>
+              )
+          }
+          {pagination}
+        </div>
+      </>
     );
   }
 }
@@ -229,4 +267,11 @@ ItemsContainer.contextTypes = {
   router: PropTypes.object,
 };
 
-export default ItemsContainer;
+const mapStateToProps = state => ({
+  bib: state.bib,
+});
+
+export default {
+  ItemsContainer: connect(mapStateToProps)(ItemsContainer),
+  unwrappedItemsContainer: ItemsContainer,
+};

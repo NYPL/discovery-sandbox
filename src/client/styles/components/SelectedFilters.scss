@@ -1,6 +1,5 @@
-.nypl-full-width-wrapper.selected-filters {
-  padding-top: 0;
-  padding-bottom: 0;
+.selected-filters {
+  padding-top: var(--space-m);
 
   .nypl-column-full {
     margin-bottom: 0;
@@ -13,7 +12,7 @@
 
   li {
     list-style: none;
-    margin: 0 15px 15px 0;
+    margin: 0 15px 0 0;
     display: inline-block;
 
     &.dateAfter {
