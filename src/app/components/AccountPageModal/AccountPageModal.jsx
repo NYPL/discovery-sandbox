@@ -1,5 +1,5 @@
 /* global window, document */
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types'
 import {
   Button,
@@ -18,7 +18,7 @@ const AccountPageModal = (props) => {
   } = props;
 
 
-  const [update, setUpdate] = useState(false);
+  const [update, setUpdate] = React.useState(false);
 
   const logOutAndRedirect = () => {
     logOutFromEncoreAndCatalogIn(() => {
@@ -36,7 +36,6 @@ const AccountPageModal = (props) => {
       .split(';')
       .find(el => el.includes('accountPageExp'))
       .split('=')[1];
-
 
     const timeLeft = new Date(expTime).getTime() - new Date().getTime();
 
