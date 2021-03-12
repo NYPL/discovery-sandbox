@@ -9,7 +9,7 @@ import { extractNoticePreference } from '../../../app/utils/utils';
 
 
 export function getPatronData(req, res, next) {
-  const { dispatch } = global.store;
+  const { dispatch } = req.store;
   if (req.patronTokenResponse.isTokenValid
     && req.patronTokenResponse.decodedPatron
     && req.patronTokenResponse.decodedPatron.sub

@@ -20,7 +20,7 @@ describe('AccountPage', () => {
     });
 
     it('should render a <div> with class .nypl-patron-page', () => {
-      expect(component.find('.nypl-patron-page')).to.have.length(1);
+      expect(component.find('.nypl-patron-page').hostNodes()).to.have.length(1);
     });
 
     it('should render an <h2> with text "My Account"', () => {

@@ -6,6 +6,18 @@ $emphasis-font-weight: 500;
 
 $table-row-border: 1px solid rgb(215, 210, 205);
 
+.subject-heading-page-header {
+  align-items: baseline;
+  display: flex;
+  justify-content: space-between;
+}
+
+.subject-heading-page {
+  .page-title {
+    padding-top: var(--space-l);
+  }
+}
+
 thead .subjectHeadingRow {
   background-color: unset;
 }
@@ -74,10 +86,6 @@ thead .subjectHeadingRow {
 .nypl-results-pagination.showPage {
   display: flex;
   justify-content: space-between;
-  a {
-    width: 125px;
-    height: 25px;
-  }
 }
 
 .moreSubjectsElement > .verticalEllipse {
@@ -145,6 +153,10 @@ thead .subjectHeadingRow {
 .nypl-results-sorter.shepBibs {
   float: left;
   margin-bottom: 0;
+
+  .nypl-select-field-results {
+    margin: 0;
+  }
 }
 
 #sort-by-label {

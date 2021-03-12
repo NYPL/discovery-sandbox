@@ -4,10 +4,11 @@ import React from 'react';
 import { expect } from 'chai';
 import PropTypes from 'prop-types';
 
-import SearchResults from '../../src/app/pages/SearchResults';
+import SearchResults from '../../src/app/pages/SearchResultsPage';
 import SearchResultsContainer from '../../src/app/components/SearchResults/SearchResultsContainer';
 import { mockRouterContext } from '../helpers/routing';
-import { mountTestRender, makeTestStore, shallowTestRender } from '../helpers/store';
+import { mountTestRender, makeTestStore } from '../helpers/store';
+import appConfig from '../../src/app/data/appConfig';
 
 
 // Eventually, it would be nice to have mocked data in a different file and imported.
@@ -105,6 +106,8 @@ describe('SearchResultsPage', () => {
         searchResults,
         appConfig: {
           features: [],
+          displayTitle: 'Shared Collection Catalog',
+          baseUrl: '/',
         },
       });
       wrapper = mountTestRender(
@@ -148,6 +151,8 @@ describe('SearchResultsPage', () => {
         searchResults,
         appConfig: {
           features: [],
+          displayTitle: 'Shared Collection Catalog',
+          baseUrl: '/',
         },
       });
       wrapper = mountTestRender(
@@ -167,19 +172,10 @@ describe('SearchResultsPage', () => {
       wrapper.unmount();
     });
 
-    it('should have an h1 with "Search Results"', () => {
+    it('should have an h1 with display title', () => {
       const h1 = component.find('h1');
       expect(h1).to.have.length(1);
-      expect(h1.text()).to.equal('Search Results');
-      expect(h1.prop('aria-label')).to.equal('Search results for locofocos page 1 of 1');
-    });
-
-    it('should a .nypl-page-header', () => {
-      expect(component.find('.nypl-page-header')).to.have.length(1);
-    });
-
-    it('should have four .nypl-full-width-wrapper elements', () => {
-      expect(component.find('.nypl-full-width-wrapper')).to.have.length(4);
+      expect(h1.text()).to.equal(appConfig.displayTitle);
     });
   });
 
@@ -193,6 +189,8 @@ describe('SearchResultsPage', () => {
         searchResults,
         appConfig: {
           features: [],
+          displayTitle: 'Shared Collection Catalog',
+          baseUrl: '/',
         },
       });
       wrapper = mountTestRender(
@@ -225,8 +223,10 @@ describe('SearchResultsPage', () => {
       const storeWithProps = makeTestStore({
         searchKeywords: 'locofocos',
         searchResults,
+        features: ['drb-integration'],
         appConfig: {
-          features: ['drb-integration'],
+          displayTitle: 'Shared Collection Catalog',
+          baseUrl: '/',
         },
       });
       component = mountTestRender(
@@ -257,8 +257,10 @@ describe('SearchResultsPage', () => {
         const storeWithProps = makeTestStore({
           searchKeywords: 'locofocos',
           searchResults,
+          features: ['drb-integration'],
           appConfig: {
-            features: ['drb-integration'],
+            displayTitle: 'Shared Collection Catalog',
+            baseUrl: '/',
           },
         });
         component = mountTestRender(

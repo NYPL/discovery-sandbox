@@ -1,7 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import ShepContainer from '../components/ShepContainer/ShepContainer';
+import {
+  Heading,
+} from '@nypl/design-system-react-components';
+
+import SccContainer from '../components/SccContainer/SccContainer';
 import SubjectHeadingsIndex from '../components/SubjectHeading/SubjectHeadingsIndex';
 import SubjectHeadingSearch from '../components/SubjectHeading/Search/SubjectHeadingSearch';
 import { basicQuery } from '../utils/utils';
@@ -25,21 +29,28 @@ const SubjectHeadingsIndexPage = (props) => {
   const bannerInnerHtml = filter ? <span key="bannerText">Subject Headings containing <em>{filter}</em></span> : <span key="bannerText">Subject Headings</span>
 
   return (
-    <ShepContainer
-      mainContent={<SubjectHeadingsIndex {...props} />}
-      bannerOptions={
-        {
-          text: bannerInnerHtml,
-          ariaLabel: filter ? `Subject Headings containing ${filter}` : 'Subject Headings'
-        }
-      }
-      extraBannerElement={<SubjectHeadingSearch />}
-      breadcrumbProps={{
-        type: 'subjectHeadings',
-        urls: breadcrumbUrls,
-      }}
+    <SccContainer
       key={componentKey}
-    />
+      useLoadingLayer={false}
+      activeSection="shep"
+      pageTitle="Subject Headings"
+      className="subject-heading-page"
+    >
+      <div
+        className="subject-heading-page-header"
+      >
+        <Heading
+          level={2}
+          className="page-title"
+        >
+          {filter ? 'Subject Heading Results' : 'Subject Heading Index'}
+        </Heading>
+        <SubjectHeadingSearch />
+      </div>
+      <SubjectHeadingsIndex
+        {...props}
+      />
+    </SccContainer>
   );
 };
 

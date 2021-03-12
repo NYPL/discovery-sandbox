@@ -1,67 +1,36 @@
-/* global document */
 import React from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
-import appConfig from '../../../data/appConfig';
+import Autosuggest from 'react-autosuggest';
 
-import AutosuggestItem from './AutosuggestItem';
-import SearchIcon from '../../../../client/icons/SearchIcon';
+import appConfig from '../../../data/appConfig';
 
 class SubjectHeadingSearch extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      activeSuggestion: 0,
       suggestions: [],
       userInput: '',
     };
 
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
-    this.resetAutosuggest = this.resetAutosuggest.bind(this);
-    this.changeActiveSuggestion = this.changeActiveSuggestion.bind(this);
-    this.onFocus = this.onFocus.bind(this);
-    this.blurClickHandler = this.blurClickHandler.bind(this);
+    this.makeApiCallWithThrottle = this.makeApiCallWithThrottle.bind(this);
   }
 
-  componentDidMount() {
-    document.addEventListener('click', this.blurClickHandler);
-  }
-
-  componentWillUnmount() {
-    document.removeEventListener('click', this.blurClickHandler);
-  }
-
-  onSubmit(submitEvent) {
-    submitEvent.preventDefault();
-    const url = this.generatePath(this.state.suggestions[this.state.activeSuggestion]);
-    this.resetAutosuggest();
+  onSubmit(e, { suggestion }) {
+    const url = this.generatePath(suggestion);
     this.context.router.push(url);
   }
 
-  onChange(inputEvent) {
-    const userInput = inputEvent.currentTarget.value;
-
+  onChange(inputEvent, { newValue }) {
     this.setState({
-      userInput,
-    }, this.makeApiCallWithThrottle(this.state.timerId));
+      userInput: newValue,
+    });
   }
 
-  onFocus() {
-    this.setState({ hidden: false });
-  }
-
-  blurClickHandler(e) {
-    const hasParentAutosuggest = (element) => {
-      if (element.id === 'autosuggest') return true;
-      if (element.parentElement) return hasParentAutosuggest(element.parentElement);
-      return false;
-    };
-    if (!hasParentAutosuggest(e.target)) this.setState({ hidden: true });
-  }
-
-  makeApiCallWithThrottle(timerId) {
+  makeApiCallWithThrottle() {
     const apiCall = () => {
       if (this.state.userInput) {
         return axios(`${appConfig.baseUrl}/api/subjectHeadings/autosuggest?query=${this.state.userInput}`)
@@ -69,7 +38,6 @@ class SubjectHeadingSearch extends React.Component {
             if (res.data.request.query.trim() === this.state.userInput.trim()) {
               this.setState({
                 suggestions: res.data.autosuggest,
-                activeSuggestion: 0,
               });
             }
           })
@@ -79,38 +47,16 @@ class SubjectHeadingSearch extends React.Component {
       return this.setState({ suggestions: [] });
     };
 
+    const { timerId } = this.state;
+
     if (timerId) return;
 
     const newTimerId = setTimeout(() => {
       apiCall();
       this.setState({ timerId: undefined });
-    }, 500);
+    }, 400);
 
     this.setState({ timerId: newTimerId });
-  }
-
-  changeActiveSuggestion(keyEvent) {
-    const { suggestions, activeSuggestion } = this.state;
-    if (suggestions.length > 0) {
-      if (keyEvent.key === 'ArrowDown' && suggestions.length - 1 > activeSuggestion) {
-        keyEvent.preventDefault();
-        this.setState(prevState => ({
-          activeSuggestion: prevState.activeSuggestion + 1,
-        }));
-      } else if (keyEvent.key === 'ArrowUp' && activeSuggestion > 0) {
-        keyEvent.preventDefault();
-        this.setState(prevState => ({
-          activeSuggestion: prevState.activeSuggestion - 1,
-        }));
-      }
-    }
-  }
-
-  resetAutosuggest() {
-    this.setState({
-      userInput: '',
-      activeSuggestion: 0,
-    });
   }
 
   generatePath(item) {
@@ -129,64 +75,49 @@ class SubjectHeadingSearch extends React.Component {
 
   render() {
     const {
+      makeApiCallWithThrottle,
       onChange,
       onSubmit,
-      changeActiveSuggestion,
       state: {
         suggestions,
-        activeSuggestion,
         userInput,
-        hidden,
       },
     } = this;
 
-    let suggestionsListComponent = null;
-
-    if (userInput && suggestions.length && !hidden) {
-      suggestionsListComponent = (
-        <ul className="suggestions">
-          {suggestions.map((suggestion, index) => (
-            <AutosuggestItem
-              item={suggestion}
-              path={this.generatePath(suggestion)}
-              activeSuggestion={index === activeSuggestion}
-              key={suggestion.uuid || suggestion.label}
-              onClick={this.resetAutosuggest}
-            />
-          ))}
-        </ul>
-      );
-    }
-
     return (
-      <form
-        className="autocomplete"
-        autoComplete="off"
-        onSubmit={onSubmit}
-        onKeyDown={changeActiveSuggestion}
-        onFocus={this.onFocus}
-        id="mainContent"
-      >
-        <div className="autocomplete-field">
-          <label htmlFor="autosuggest">Subject Heading Lookup</label>
-          <div className="autosuggestInput">
-            <input
-              id="autosuggest"
-              type="text"
-              onChange={onChange}
-              value={userInput}
-              placeholder="Subject"
-            />
-            <button
-              onSubmit={onSubmit}
-              type="submit"
-            >
-              <SearchIcon />
-            </button>
-          </div>
-          {suggestionsListComponent}
-        </div>
-      </form>
+      /*
+        * if you need style the open state
+        * add the `alwaysRenderSuggestions` prop
+      */
+      <Autosuggest
+        suggestions={suggestions}
+        onSuggestionsFetchRequested={() => makeApiCallWithThrottle()}
+        onSuggestionsClearRequested={() => {}}
+        onSuggestionSelected={(e, secondArg) => onSubmit(e, secondArg)}
+        getSuggestionValue={suggestion => suggestion.label}
+        inputProps={{
+          placeholder: 'Enter a Subject Heading Term',
+          value: userInput,
+          onChange,
+        }}
+        renderSuggestion={(suggestion) => {
+          const subjectComponent = suggestion.class === 'subject_component';
+
+          return (
+            <div>
+              <span>
+                {subjectComponent ? null : (<em>Subject: </em>) }
+                <span>
+                  {suggestion.label}
+                </span>
+              </span>
+              <div className="aggregateBibCount">
+                {suggestion.aggregate_bib_count} title{suggestion.aggregate_bib_count > 1 ? 's' : ''}
+              </div>
+            </div>
+          );
+        }}
+      />
     );
   }
 }
