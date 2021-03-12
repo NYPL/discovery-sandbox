@@ -2,18 +2,28 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 
+import AlertIcon from '../../../client/icons/Alert';
+
 const Notification = ({ notificationType }) => {
   const notification = useSelector(state => state.appConfig[notificationType]);
 
   if (!notification) return null;
 
   return (
-    <div className="nypl-banner-alert">
-      <p
-        style={{ padding: '0px 20px 0px', margin: 0 }}
-        dangerouslySetInnerHTML={{__html: notification }}
-      />
-    </div>
+    <aside
+      className="research-alert"
+      aria-label="research-catalog-alert"
+    >
+      <div className="research-alert__icon">
+        <AlertIcon />
+      </div>
+      <div>
+        <div className="research-alert__heading">New Service Announcement</div>
+        <div
+          dangerouslySetInnerHTML={{ __html: notification }}
+        />
+      </div>
+    </aside>
   );
 };
 

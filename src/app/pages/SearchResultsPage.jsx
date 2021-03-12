@@ -11,6 +11,7 @@ import Search from '../components/Search/Search';
 import FilterPopup from '../components/FilterPopup/FilterPopup';
 import SelectedFilters from '../components/Filters/SelectedFilters';
 import ResultsCount from '../components/ResultsCount/ResultsCount';
+import Notification from '../components/Notification/Notification';
 
 import {
   basicQuery,
@@ -82,6 +83,7 @@ const SearchResults = (props, context) => {
           />
         </div>
       </div>
+      <Notification notificationType="searchResultsNotification" />
       {
         selectedFiltersAvailable ? (
           <SelectedFilters

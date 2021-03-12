@@ -227,16 +227,10 @@ class ElectronicDelivery extends React.Component {
         activeSection="search"
         pageTitle="Electronic Delivery Request"
       >
+        <Notification
+          notificationType="holdRequestNotification"
+        />
         <div className="nypl-request-item-summary">
-          {
-            holdRequestNotification ?
-            (
-              <Notification
-                notificationType="holdRequestNotification"
-              />
-            )
-            : null
-          }
           <h2>
             <Link
               to={`${appConfig.baseUrl}/bib/${bibId}`}
