@@ -4,7 +4,7 @@ import React from 'react';
 import { expect } from 'chai';
 import PropTypes from 'prop-types';
 
-import SearchResults from '../../src/app/pages/SearchResultsPage';
+import SearchResultsPage from '../../src/app/pages/SearchResultsPage';
 import SearchResultsContainer from '../../src/app/components/SearchResults/SearchResultsContainer';
 import { mockRouterContext } from '../helpers/routing';
 import { mountTestRender, makeTestStore } from '../helpers/store';
@@ -44,11 +44,11 @@ describe('SearchResultsPage', () => {
       // Added this empty prop so that the `componentWillMount` method will be skipped.
       // That lifecycle hook is tested later on.
       wrapper = mountTestRender(
-        <SearchResults
+        <SearchResultsPage
           searchResults={{}}
           location={{ search: '' }}
         />,
-        { attachTo: document.body,
+        {
           context,
           childContextTypes,
           store: mockStore,
@@ -111,7 +111,7 @@ describe('SearchResultsPage', () => {
         },
       });
       wrapper = mountTestRender(
-        <SearchResults
+        <SearchResultsPage
           location={{ search: '' }}
         />,
         {
@@ -156,7 +156,7 @@ describe('SearchResultsPage', () => {
         },
       });
       wrapper = mountTestRender(
-        <SearchResults
+        <SearchResultsPage
           location={{ search: '' }}
         />,
         {
@@ -194,7 +194,7 @@ describe('SearchResultsPage', () => {
         },
       });
       wrapper = mountTestRender(
-        <SearchResults
+        <SearchResultsPage
           location={{ search: '' }}
         />,
         {
@@ -281,6 +281,32 @@ describe('SearchResultsPage', () => {
       xit('should have the Pagination above the DrbbContainer', () => {
         expect(component.find('.nypl-column-full').childAt(1).is('Pagination')).to.eql(true);
       });
+    });
+  });
+
+  describe('with notification', () => {
+    let component;
+    before(() => {
+      const testStore = makeTestStore({
+        appConfig: {
+          displayTitle: 'Shared Collection Catalog',
+          searchResultsNotification: 'Some info for our patrons',
+        },
+        searchResults,
+        searchKeywords: 'locofocos',
+      });
+      component = mountTestRender(
+        <SearchResultsPage />,
+        {
+          context,
+          childContextTypes,
+          store: testStore,
+        });
+    });
+
+    it('should have a `Notification`', () => {
+      expect(component.find('Notification').length).to.equal(1);
+      expect(component.find('Notification').text()).to.include('Some info for our patrons');
     });
   });
 });
