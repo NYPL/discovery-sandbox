@@ -39,7 +39,7 @@ const AccountPage = (props) => {
 
   useEffect(() => {
 
-    if (typeof window !== 'undefined' && (!patron.id || (content !== 'settings' && accountHtml.error))) {
+    if (typeof window !== 'undefined' && (!patron.id || (accountHtml && accountHtml.error))) {
       logOutFromEncoreAndCatalogIn();
       const fullUrl = encodeURIComponent(window.location.href);
       // timeout 0 is here to make sure that we don't redirect until after the logout iframe is loaded
@@ -98,7 +98,7 @@ const AccountPage = (props) => {
 
   const formattedExpirationDate = patron.expirationDate ?  moment(patron.expirationDate).format("MM-DD-YYYY") : '';
 
-  if (content !== 'settings' && accountHtml.error) {
+  if (content !== 'settings' && (!accountHtml || accountHtml.error)) {
     return (
       <LoadingLayer loading={true} />
     );
