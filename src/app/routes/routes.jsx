@@ -18,7 +18,7 @@ import HoldConfirmation from '../pages/HoldConfirmation';
  * Components
  */
 import Application from '../components/Application/Application';
-import AccountPage from '../components/AccountPage/AccountPage';
+import AccountPage from '../pages/AccountPage';
 import NotFound404 from '../components/NotFound404/NotFound404';
 import Redirect404 from '../components/Redirect404/Redirect404';
 import appConfig from '../data/appConfig';

@@ -14,12 +14,12 @@ import {
 } from '@nypl/design-system-react-components';
 import moment from 'moment'
 
-import LinkTabSet from './LinkTabSet';
-import AccountSettings from './AccountSettings';
-import LoadingLayer from '../LoadingLayer/LoadingLayer';
-import { logOutFromEncoreAndCatalogIn } from '../../utils/logoutUtils';
+import LinkTabSet from '../components/AccountPage/LinkTabSet';
+import AccountSettings from '../components/AccountPage/AccountSettings';
+import LoadingLayer from '../components/LoadingLayer/LoadingLayer';
+import {  } from '../utils/logoutUtils';
 
-import { manipulateAccountPage, makeRequest, buildReqBody } from '../../utils/accountPageUtils';
+import { manipulateAccountPage, makeRequest, buildReqBody } from '../utils/accountPageUtils';
 
 
 const AccountPage = (props) => {
