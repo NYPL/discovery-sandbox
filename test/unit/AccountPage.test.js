@@ -3,7 +3,7 @@
 import React from 'react';
 import { expect } from 'chai';
 
-import AccountPage from './../../src/app/components/AccountPage/AccountPage';
+import AccountPage from './../../src/app/pages/AccountPage';
 
 import patron from '../fixtures/patron';
 
@@ -20,7 +20,7 @@ describe('AccountPage', () => {
     });
 
     it('should render a <div> with class .nypl-patron-page', () => {
-      expect(component.find('.nypl-patron-page')).to.have.length(1);
+      expect(component.find('.nypl-patron-page').hostNodes()).to.have.length(1);
     });
 
     it('should render an <h2> with text "My Account"', () => {
