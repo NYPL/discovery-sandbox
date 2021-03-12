@@ -3,7 +3,7 @@
 import React from 'react';
 import { expect } from 'chai';
 
-import AccountPage from './../../src/app/components/AccountPage/AccountPage';
+import AccountPage from './../../src/app/pages/AccountPage';
 
 import patron from '../fixtures/patron';
 

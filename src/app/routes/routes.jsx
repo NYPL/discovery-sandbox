@@ -15,7 +15,7 @@ import SearchResults from '../pages/SearchResults';
 import Application from '../components/Application/Application';
 import Home from '../components/Home/Home';
 import BibPage from '../components/BibPage/BibPage';
-import AccountPage from '../components/AccountPage/AccountPage';
+import AccountPage from '../pages/AccountPage';
 import HoldRequest from '../components/HoldRequest/HoldRequest';
 import HoldConfirmation from '../components/HoldConfirmation/HoldConfirmation';
 import ElectronicDelivery from '../components/ElectronicDelivery/ElectronicDelivery';
