@@ -1,0 +1,18 @@
+.nypl-ds .catalog__header {
+  a:hover {
+    color: var(--ui-gray-light);;
+  }
+}
+
+.catalog__heading {
+  @include breakout;
+  background-color: var(--section-research-primary);
+  padding-bottom: var(--space-xs);
+  padding-top: var(--space-l);
+
+  h1 {
+    @include wrapper;
+    color: var(--ui-white);
+    max-width: 1280px;
+  }
+}

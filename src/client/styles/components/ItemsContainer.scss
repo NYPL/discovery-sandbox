@@ -54,7 +54,7 @@
 }
 
 div.item-table-filters {
-  background-color: #efedeb;
+  background-color: var(--ui-gray-xlight);
   padding: 10px;
 }
 
@@ -161,5 +161,78 @@ button.item-table-filters {
 
   .item-filter-button {
     border-bottom: none;
+  }
+}
+
+.items-loading {
+  display: inline-flex;
+
+  .dot1 {
+   animation: visibility 3s linear infinite;
+  }
+
+  @keyframes visibility {
+   0% {
+   opacity: 1;
+   }
+   65% {
+   opacity: 1;
+   }
+   66% {
+   opacity: 0;
+   }
+   100% {
+   opacity: 0;
+   }
+  }
+
+  .dot2 {
+   animation: visibility2 3s linear infinite;
+  }
+
+  @keyframes visibility2 {
+   0% {
+    opacity: 0;
+   }
+   21% {
+    opacity: 0;
+   }
+   22% {
+    opacity: 1;
+   }
+   65% {
+    opacity: 1;
+   }
+   66% {
+    opacity: 0;
+   }
+   100% {
+    opacity: 0;
+   }
+  }
+
+  .dot3 {
+   animation: visibility3 3s linear infinite;
+  }
+
+  @keyframes visibility3 {
+   0% {
+    opacity: 0;
+   }
+   43% {
+    opacity: 0;
+   }
+   44% {
+    opacity: 1;
+   }
+   65% {
+    opacity: 1;
+   }
+   66% {
+    opacity: 0;
+   }
+   100% {
+    opacity: 0;
+   }
   }
 }
