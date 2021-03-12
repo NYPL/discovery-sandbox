@@ -22,7 +22,7 @@ import NotFound404 from '../components/NotFound404/NotFound404';
 import Redirect404 from '../components/Redirect404/Redirect404';
 import appConfig from '../data/appConfig';
 
-const { baseUrl } = appConfig;
+const { baseUrl, legacyBaseUrl } = appConfig;
 const routes = {
   // Routes used in the Express server:
   server: (
@@ -44,6 +44,13 @@ const routes = {
   // Routes used in the client-side React-Router:
   client: (
     <Route path={`${baseUrl}/`} component={Application}>
+      /* { 
+        legacyBaseUrl ? 
+          <Route path={legacyBaseUrl}>
+            <Redirect to={baseUrl} />
+          </Route>
+          : null
+      } */
       <IndexRoute component={Home} />
       <Route path={`${baseUrl}/search`} component={SearchResults} />
       <Route path={`${baseUrl}/bib/:bibId`} component={BibPage} />

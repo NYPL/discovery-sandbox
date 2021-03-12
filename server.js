@@ -62,6 +62,10 @@ app.use('/', (req, res, next) => {
   if (req.path === appConfig.baseUrl || req.path === '/') {
     return res.redirect(`${appConfig.baseUrl}/`);
   }
+  // If request made on legacy base url, redirect to current base url:
+  if (req.path.indexOf(appConfig.legacyBaseUrl) === 0) {
+    return res.redirect(req.path.replace(appConfig.legacyBaseUrl, appConfig.baseUrl));
+  }
   return next();
 });
 
