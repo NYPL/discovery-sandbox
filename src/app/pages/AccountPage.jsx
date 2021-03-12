@@ -17,7 +17,7 @@ import moment from 'moment'
 import LinkTabSet from '../components/AccountPage/LinkTabSet';
 import AccountSettings from '../components/AccountPage/AccountSettings';
 import LoadingLayer from '../components/LoadingLayer/LoadingLayer';
-import {  } from '../utils/logoutUtils';
+import { logOutFromEncoreAndCatalogIn } from '../utils/logoutUtils';
 
 import { manipulateAccountPage, makeRequest, buildReqBody } from '../utils/accountPageUtils';
 
