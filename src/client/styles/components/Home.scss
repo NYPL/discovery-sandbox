@@ -3,6 +3,10 @@
     margin: 0;
   }
 
+  h2 {
+    margin-top: var(--space-m);
+  }
+
   .nypl-lead {
     font-size: 16px;
     font-weight: 300;

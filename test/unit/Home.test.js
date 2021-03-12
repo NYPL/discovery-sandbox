@@ -46,4 +46,25 @@ describe('Home', () => {
       expect(imageBlock.render().find('h4').length).to.equal(1);
     });
   });
+
+  describe('with notification', () => {
+    before(() => {
+      const testStore = makeTestStore({
+        appConfig: {
+          displayTitle: 'Shared Collection Catalog',
+          searchResultsNotification: 'Some info for our patrons',
+        },
+      });
+      component = mount(
+        <Provider store={testStore}>
+          <Home />
+        </Provider>
+      );
+    });
+
+    it('should have a `Notification`', () => {
+      expect(component.find('Notification').length).to.equal(1);
+      expect(component.find('Notification').text()).to.include('Some info for our patrons');
+    });
+  });
 });
