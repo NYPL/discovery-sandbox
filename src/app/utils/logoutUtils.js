@@ -31,7 +31,6 @@ const loadLogoutIframe = (onload) => {
     logoutIframe.onload = onload;
   }
   body.appendChild(logoutIframe);
-  console.log('loading logoutIframe');
 };
 
 /**
