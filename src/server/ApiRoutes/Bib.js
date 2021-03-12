@@ -79,30 +79,31 @@ export const fetchLocationUrls = codes => nyplApiClient()
   .then(client => client.get(`/locations?location_codes=${codes}`));
 
 const addLocationUrls = (bib) => {
-  const holdingCodes = bib.holdings ?
-    bib
-      .holdings
-      .map(holding => holding.location.reduce((acc, el) => acc.concat([el.code]), []))
+  const { holdings } = bib;
+  const holdingCodes = holdings ?
+    holdings
+      .map(holding => (holding.location || []).map(location => location.code))
       .reduce((acc, el) => acc.concat(el), [])
     : [];
 
   const itemCodes = bib.items ?
     bib.items.map(item =>
-      (item.holdingLocation || []).map(location => location['@id']),
+      (item.holdingLocation || []).map(location => location['@id'] || location.code),
     ).reduce((acc, el) => acc.concat(el), [])
     : [];
 
   const codes = holdingCodes.concat(itemCodes).join(',');
-
   // get locations data by codes
   return fetchLocationUrls(codes)
     .then((resp) => {
       // add location urls for holdings
       if (Array.isArray(bib.holdings)) {
         bib.holdings.forEach((holding) => {
-          holding.location.forEach((location) => {
-            location.url = findUrl(location, resp);
-          });
+          if (holding.location) {
+            holding.location.forEach((location) => {
+              location.url = findUrl(location, resp);
+            });
+          };
         });
       }
       // add item location urls;
@@ -217,4 +218,5 @@ export default {
   bibSearch,
   fetchBib,
   nyplApiClientCall,
+  addLocationUrls,
 };
