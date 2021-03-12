@@ -55,11 +55,12 @@ function fetchAccountPage(req, res, resolve) {
               ...patron,
               homeLibraryName: resp.label,
             },
+            accountHtml: {}
           });
         });
       return;
     }
-    resolve({ patron, accountHtml: '' });
+    resolve({ patron, accountHtml: {} });
 
     return;
   }
