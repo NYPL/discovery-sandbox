@@ -1,6 +1,6 @@
 /* global window, document */
 import React from 'react';
-import PropTypes from 'prop-types'
+import PropTypes from 'prop-types';
 import {
   Button,
   ButtonTypes,
@@ -11,7 +11,6 @@ import {
 import { logOutFromEncoreAndCatalogIn } from '../../utils/logoutUtils';
 
 const AccountPageModal = (props) => {
-
   const {
     stayLoggedIn,
     baseUrl,
@@ -83,6 +82,11 @@ const AccountPageModal = (props) => {
       </Card>
     </Modal>
   );
+};
+
+AccountPageModal.propTypes = {
+  stayLoggedIn: PropTypes.function,
+  baseUrl: PropTypes.string,
 };
 
 export default AccountPageModal;
