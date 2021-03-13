@@ -44,13 +44,6 @@ const routes = {
   // Routes used in the client-side React-Router:
   client: (
     <Route path={`${baseUrl}/`} component={Application}>
-      /* { 
-        legacyBaseUrl ? 
-          <Route path={legacyBaseUrl}>
-            <Redirect to={baseUrl} />
-          </Route>
-          : null
-      } */
       <IndexRoute component={Home} />
       <Route path={`${baseUrl}/search`} component={SearchResults} />
       <Route path={`${baseUrl}/bib/:bibId`} component={BibPage} />
