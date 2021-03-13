@@ -14,6 +14,9 @@ describe('AccountPage', () => {
   let sandbox;
 
   before(() => {
+    // Mounting AccountPage mounts a clock as a side-effect, which prevents
+    // the test from ever terminating.
+    // This disables the clock.
     sandbox = sinon.sandbox.create();
     sandbox.stub(global, 'setTimeout').callsFake(() => {});
   });
