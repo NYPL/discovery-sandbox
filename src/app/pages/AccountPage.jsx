@@ -77,15 +77,15 @@ const AccountPage = (props) => {
   }, [accountHtml]);
 
   const resetCountdown = () => {
-      const now = new Date();
-      now.setTime(now.getTime() + 5*60*1000)
-      const inFive = now.toUTCString();
-      document.cookie = `accountPageExp=${inFive}; expires=${inFive}`;
-      setAccountPageModal(true);
-  }
+    const now = new Date();
+    now.setTime(now.getTime() + (5 * 60 * 1000));
+    const inFive = now.toUTCString();
+    document.cookie = `accountPageExp=${inFive}; expires=${inFive}`;
+    setAccountPageModal(true);
+  };
 
   useEffect(() => {
-      if (typeof window !== 'undefined') {
+    if (typeof window !== 'undefined') {
       resetCountdown();
     }
   });

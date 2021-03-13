@@ -2,6 +2,7 @@
 /* eslint-disable react/jsx-filename-extension */
 import React from 'react';
 import { expect } from 'chai';
+import sinon from 'sinon';
 
 import AccountPage from './../../src/app/pages/AccountPage';
 
@@ -10,6 +11,17 @@ import patron from '../fixtures/patron';
 import { mountTestRender, makeTestStore } from '../helpers/store';
 
 describe('AccountPage', () => {
+  let sandbox;
+
+  before(() => {
+    sandbox = sinon.sandbox.create();
+    sandbox.stub(global, 'setTimeout').callsFake(() => {});
+  });
+
+  after(() => {
+    sandbox.restore();
+  });
+
   describe('default', () => {
     let mockStore;
     let component;
