@@ -85,6 +85,13 @@ const ItemFilter = ({
     mobile ? manageMobileFilter(prevState => !prevState) : manageFilterDisplay(filter)
   );
   const open = mobile ? mobileIsOpen : isOpen;
+  const clear = () => {
+    const newSelections = {
+      ...selectedFilters,
+      [filter]: [],
+    };
+    submitFilterSelections(newSelections);
+  };
 
   return (
     <div
@@ -131,7 +138,7 @@ const ItemFilter = ({
                 <div className="item-filter-buttons">
                   <Button
                     buttonType="link"
-                    onClick={() => manageFilterDisplay('none')}
+                    onClick={() => clear()}
                   >Clear
                   </Button>
                   <Button
