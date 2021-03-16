@@ -193,3 +193,7 @@ select {
 .nypl-column-full {
   padding: 0;
 }
+
+button:focus {
+  box-shadow: none;
+}
