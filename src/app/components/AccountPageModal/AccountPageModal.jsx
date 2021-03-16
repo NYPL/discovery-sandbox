@@ -51,12 +51,10 @@ const AccountPageModal = (props) => {
 
   return (
     <Modal
-      open={open}
-      className={`accountPageModal ${open ? 'open' : ''}`}
+      open
+      className="accountPageModal"
     >
-      <Card
-        className="card"
-      >
+      <Card>
         Your session is about to time out
         <div className="timeDisplay">
           {`${minutes}:${seconds < 10 ? '0' : ''}${seconds}`}
@@ -85,7 +83,7 @@ const AccountPageModal = (props) => {
 };
 
 AccountPageModal.propTypes = {
-  stayLoggedIn: PropTypes.function,
+  stayLoggedIn: PropTypes.func,
   baseUrl: PropTypes.string,
 };
 

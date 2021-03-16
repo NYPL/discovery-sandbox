@@ -37,7 +37,7 @@ const AccountPage = (props) => {
 
   const [isLoading, setIsLoading] = useState(true);
   const [itemToCancel, setItemToCancel] = useState(null);
-  const [accountPageModal, setAccountPageModal] = useState(false);
+  const [displayModal, setDisplayModal] = useState(false);
 
   useEffect(() => {
 
@@ -81,13 +81,11 @@ const AccountPage = (props) => {
     now.setTime(now.getTime() + (5 * 60 * 1000));
     const inFive = now.toUTCString();
     document.cookie = `accountPageExp=${inFive}; expires=${inFive}`;
-    setAccountPageModal(true);
+    setDisplayModal(true);
   };
 
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      resetCountdown();
-    }
+    resetCountdown();
   });
 
   const { baseUrl } = appConfig;
@@ -130,7 +128,7 @@ const AccountPage = (props) => {
         text="My Account"
       />
       {
-        accountPageModal ?
+        displayModal ?
           <AccountPageModal
             stayLoggedIn={resetCountdown}
             baseUrl={baseUrl}

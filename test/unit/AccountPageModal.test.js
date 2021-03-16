@@ -6,10 +6,10 @@ import React from 'react';
 import { expect } from 'chai';
 import { mount } from 'enzyme';
 import sinon from 'sinon';
-import {
-  Button,
-  Card,
-} from '@nypl/design-system-react-components';
+// import {
+//   Button,
+//   Card,
+// } from '@nypl/design-system-react-components';
 
 import AccountPageModal from './../../src/app/components/AccountPageModal/AccountPageModal';
 
@@ -50,7 +50,6 @@ describe('AccountPageModal', () => {
     });
 
     it('should set a timeout to update in 1 second', () => {
-      console.log('callRecord: ', callRecord);
       expect(callRecord.some(call => call.setTimeout === 1000)).to.equal(true);
       expect(callRecord.some(call => call.setUpdate === true)).to.equal(true);
     });
@@ -60,7 +59,6 @@ describe('AccountPageModal', () => {
     });
 
     it('should render null', () => {
-      console.log('component: ', component);
       expect(component.instance()).to.equal(null);
     });
 
@@ -107,7 +105,6 @@ describe('AccountPageModal', () => {
     });
 
     it('should set a timeout to update in 1 second', () => {
-      console.log('callRecord: ', callRecord);
       expect(callRecord.some(call => call.setTimeout === 1000)).to.equal(true);
       expect(callRecord.some(call => call.setUpdate === true)).to.equal(true);
     });
@@ -117,19 +114,19 @@ describe('AccountPageModal', () => {
     });
 
     it('should say \'Your session is about to time out\'', () => {
-      expect(component.find(Card).text()).to.include('Your session is about to time out');
+      expect(component.find('Card').text()).to.include('Your session is about to time out');
     });
     it('should display the time', () => {
-      expect(component.find(Card).text()).to.include('2:03');
+      expect(component.find('Card').text()).to.include('2:03');
     });
     it('should say \'Do you want to stay logged in\'', () => {
-      expect(component.find(Card).text()).to.include('Do you want to stay logged in');
+      expect(component.find('Card').text()).to.include('Do you want to stay logged in');
     });
     it('should have a button to log out', () => {
-      expect(component.find(Button).at(0).text()).to.equal('Log off');
+      expect(component.find('Button').at(0).text()).to.equal('Log off');
     });
     it('should have a button to stay logged in', () => {
-      expect(component.find(Button).at(1).text()).to.equal('Stay logged in');
+      expect(component.find('Button').at(1).text()).to.equal('Stay logged in');
     });
 
     after(() => {
@@ -224,16 +221,15 @@ describe('AccountPageModal', () => {
     });
 
     it('should log the user out and redirect if they click log off', () => {
-      const logOffButton = component.find(Button).at(0);
+      const logOffButton = component.find('Button').at(0);
       logOffButton.simulate('click');
-      console.log('iframes: ', global.document.getElementsByTagName('iframe'));
       const onload = global.document.getElementsByTagName('iframe')[0].onload;
       onload();
       expect(replace).to.equal('fakeBaseUrl');
     });
 
     it('should call the stayLoggedIn param if they click stay logged in', () => {
-      const stayLoggedInButton = component.find(Button).at(1);
+      const stayLoggedInButton = component.find('Button').at(1);
       stayLoggedInButton.simulate('click');
       expect(stayLoggedIn).to.equal(true);
     });
