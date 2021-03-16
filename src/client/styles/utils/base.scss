@@ -40,16 +40,6 @@ p {
   }
 }
 
-a, input, select, button {
-  border-radius: 0;
-
-  &:focus {
-    outline-color: $focus-color;
-    outline-style: solid;
-    outline-width: $focus-width;
-  }
-}
-
 iframe {
   width: 100%;
 }

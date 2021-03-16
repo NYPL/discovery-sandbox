@@ -459,18 +459,16 @@ export class FilterPopup extends React.Component {
       dateBefore: dateBeforeFilterValue,
     };
     const errorMessageBlock = (
-      <div className={`nypl-full-width-wrapper${includeDrbb ? ' drbb-integration' : ''}`}>
-        <div
-          className="nypl-form-error filter-error-box"
-          ref={this.nyplFilterError}
-          tabIndex="0"
-        >
-          <h2>Error</h2>
-          <p>Please enter valid filter values:</p>
-          <ul>
-            {this.getRaisedErrors(this.state.raisedErrors)}
-          </ul>
-        </div>
+      <div
+        className="nypl-form-error filter-error-box"
+        ref={this.nyplFilterError}
+        tabIndex="0"
+      >
+        <h2>Error</h2>
+        <p>Please enter valid filter values:</p>
+        <ul>
+          {this.getRaisedErrors(this.state.raisedErrors)}
+        </ul>
       </div>
     );
     const isDateInputError = _some(this.state.raisedErrors, item =>

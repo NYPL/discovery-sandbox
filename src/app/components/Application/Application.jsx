@@ -108,7 +108,6 @@ export class Application extends React.Component {
 Application.propTypes = {
   children: PropTypes.object,
   patron: PropTypes.object,
-  loading: PropTypes.bool,
   features: PropTypes.array,
 };
 
