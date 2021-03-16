@@ -164,3 +164,11 @@ div {
 .nypl-column-full {
   padding: 0;
 }
+
+a, input, select, button {
+  border-radius: 0;
+
+  &:focus {
+    box-shadow: none;
+  }
+}
