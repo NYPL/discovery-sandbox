@@ -6,10 +6,6 @@ import React from 'react';
 import { expect } from 'chai';
 import { mount } from 'enzyme';
 import sinon from 'sinon';
-// import {
-//   Button,
-//   Card,
-// } from '@nypl/design-system-react-components';
 
 import AccountPageModal from './../../src/app/components/AccountPageModal/AccountPageModal';
 
