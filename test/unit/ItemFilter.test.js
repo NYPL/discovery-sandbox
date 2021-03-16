@@ -3,10 +3,9 @@
 import React from 'react';
 import { expect } from 'chai';
 import { shallow, mount } from 'enzyme';
-import { spy } from 'sinon';
 
 import ItemFilter from './../../src/app/components/Item/ItemFilter';
-import { locationFilters, statusFilters } from '../fixtures/itemFilterOptions';
+import { locationFilters } from '../fixtures/itemFilterOptions';
 
 describe('ItemFilters', () => {
   describe('default rendering', () => {
