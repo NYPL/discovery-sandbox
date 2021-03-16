@@ -7,23 +7,6 @@ $break-breadcrumbs-mobile: max-width 599px;
   padding-bottom: var(--space-xs);
   padding-top: var(--space-xs);
 
-  &__item {
-    align-items: center;
-    display: inline;
-    font-size: var(--font-size--1);
-    line-height: 1.5;
-    margin-right: var(--space-xxs);
-    position: relative;
-    word-break: break-word;
-
-    &:not(:last-child) {
-      &::after {
-        content: "/";
-        padding-left: var(--space-xxs);
-      }
-    }
-  }
-
   &__link,
   &__link:link,
   &__link:visited,
@@ -36,7 +19,7 @@ $break-breadcrumbs-mobile: max-width 599px;
     text-decoration: underline;
   }
 
-  &__active-section {
+  &__link.active-section {
     font-weight: 700;
   }
 
