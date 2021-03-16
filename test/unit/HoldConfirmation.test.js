@@ -155,7 +155,6 @@ describe('HoldConfirmation', () => {
     let component;
     let requireUser;
     let modelDeliveryLocationName;
-    let pushSpy;
 
     before(() => {
       const patron = {
@@ -169,7 +168,6 @@ describe('HoldConfirmation', () => {
         HoldConfirmation.prototype,
         'modelDeliveryLocationName',
       );
-      pushSpy = sinon.spy();
 
       component = mountTestRender(
         <WrappedHoldConfirmation location={location} />, {
@@ -214,7 +212,7 @@ describe('HoldConfirmation', () => {
 
     it('should have the link back to homepage.', () => {
       const main = component.find('main');
-      expect(main.find('#start-new-search')).to.have.length(2);
+      expect(main.find('#start-new-search').hostNodes()).to.have.length(1);
       expect(main.find('#start-new-search').at(1).text()).to.equal('Start a new search');
     });
   });

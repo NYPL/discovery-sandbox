@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router';
 import { Link as DSLink } from '@nypl/design-system-react-components';
 import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
 
 import appConfig from '../../data/appConfig';
 
@@ -33,6 +34,7 @@ SubNavLink.propTypes = {
 };
 
 const SubNav = (props) => {
+  const features = useSelector(state => state.features);
   const { baseUrl } = appConfig;
   return (
     <nav
@@ -42,25 +44,32 @@ const SubNav = (props) => {
       <ul className="sub-nav__list">
         <SubNavLink
           type="search"
-          href={appConfig.baseUrl}
+          href={`${baseUrl}/`}
           {...props}
         >
           Search
-        </SubNavLink> |&nbsp;
+        </SubNavLink>&nbsp;|&nbsp;
         <SubNavLink
           type="shep"
           href={`${baseUrl}/subject_headings`}
           {...props}
         >
           Subject Heading Explorer
-        </SubNavLink> |&nbsp;
-        <SubNavLink
-          type="account"
-          href={`${baseUrl}/account`}
-          {...props}
-        >
-          My Account
         </SubNavLink>
+        {
+          features.includes('my-account') ? (
+            <>
+              &nbsp;|&nbsp;
+              <SubNavLink
+                type="account"
+                href={`${baseUrl}/account`}
+                {...props}
+              >
+                My Account
+              </SubNavLink>
+            </>
+          ) : null
+        }
       </ul>
     </nav>
   );

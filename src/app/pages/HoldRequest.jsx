@@ -371,6 +371,7 @@ export class HoldRequest extends React.Component {
           activeSection="search"
           pageTitle="Item Request"
         >
+          <Notification notificationType="holdRequestNotification" />
           <div className="row">
             <div className="nypl-column-three-quarters">
               <div className="nypl-request-item-summary">
@@ -381,11 +382,6 @@ export class HoldRequest extends React.Component {
                         This item cannot be requested at this time. Please try again later or
                         contact 917-ASK-NYPL (<a href="tel:917-275-6975">917-275-6975</a>).
                       </h2>
-                  }
-                  {
-                    holdRequestNotification
-                    ? <Notification notificationType="holdRequestNotification" />
-                    : null
                   }
                   {bibLink}
                   {callNo}

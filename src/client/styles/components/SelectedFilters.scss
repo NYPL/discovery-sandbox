@@ -1,10 +1,18 @@
+.selected-filters {
+  padding-top: var(--space-m);
+
+  .nypl-column-full {
+    margin-bottom: 0;
+  }
+}
+
 #selected-filters-container {
   float: left;
   margin: 0;
 
   li {
     list-style: none;
-    margin: 0 15px 15px 0;
+    margin: 0 15px 0 0;
     display: inline-block;
 
     &.dateAfter {

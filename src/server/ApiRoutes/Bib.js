@@ -79,30 +79,31 @@ export const fetchLocationUrls = codes => nyplApiClient()
   .then(client => client.get(`/locations?location_codes=${codes}`));
 
 const addLocationUrls = (bib) => {
-  const holdingCodes = bib.holdings ?
-    bib
-      .holdings
-      .map(holding => holding.location.reduce((acc, el) => acc.concat([el.code]), []))
+  const { holdings } = bib;
+  const holdingCodes = holdings ?
+    holdings
+      .map(holding => (holding.location || []).map(location => location.code))
       .reduce((acc, el) => acc.concat(el), [])
     : [];
 
   const itemCodes = bib.items ?
     bib.items.map(item =>
-      (item.holdingLocation || []).map(location => location['@id']),
+      (item.holdingLocation || []).map(location => location['@id'] || location.code),
     ).reduce((acc, el) => acc.concat(el), [])
     : [];
 
   const codes = holdingCodes.concat(itemCodes).join(',');
-
   // get locations data by codes
   return fetchLocationUrls(codes)
     .then((resp) => {
       // add location urls for holdings
       if (Array.isArray(bib.holdings)) {
         bib.holdings.forEach((holding) => {
-          holding.location.forEach((location) => {
-            location.url = findUrl(location, resp);
-          });
+          if (holding.location) {
+            holding.location.forEach((location) => {
+              location.url = findUrl(location, resp);
+            });
+          };
         });
       }
       // add item location urls;
@@ -143,7 +144,22 @@ function fetchBib(bibId, cb, errorcb, reqOptions, res) {
     })
     .then((bib) => {
       const status = (!bib || !bib.uri || bib.uri !== bibId) ? '404' : '200';
-      if (status === '404') res.status(404);
+      if (status === '404') {
+        return nyplApiClient()
+          .then(client => client.get(`/bibs/sierra-nypl/${bibId.slice(1)}`))
+          .then((resp) => {
+            const classic = appConfig.classicCatalog;
+            if (resp.statusCode === 200) { res.redirect(`${classic}/record=${bibId}`); }
+          })
+          .catch((err) => {
+            console.log('error: ', err);
+            console.log('bib not found');
+          })
+          .then(() => {
+            res.status(404);
+            return Object.assign({ status }, bib);
+          });
+      }
       return Object.assign({ status }, bib);
     })
     .then(bib => addLocationUrls(bib))
@@ -183,7 +199,7 @@ function bibSearch(req, res, resolve) {
   const { features, itemFrom } = req.query;
   const urlEnabledFeatures = extractFeatures(features);
 
-  fetchBib(
+  return fetchBib(
     bibId,
     data => resolve(data),
     error => resolve(error),
@@ -202,4 +218,5 @@ export default {
   bibSearch,
   fetchBib,
   nyplApiClientCall,
+  addLocationUrls,
 };
