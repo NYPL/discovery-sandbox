@@ -611,4 +611,26 @@ describe('HoldRequest', () => {
       });
     });
   });
+
+  describe('with notification', () => {
+    let component;
+    before(() => {
+      const testStore = makeTestStore({
+        appConfig: {
+          displayTitle: 'Shared Collection Catalog',
+          holdRequestNotification: 'Some info for our patrons',
+          patron: { id: 1 },
+        },
+      });
+      component = mountTestRender(<WrappedHoldRequest />, {
+        // attachTo: document.body,
+        store: testStore,
+      });
+    });
+
+    it('should have a `Notification`', () => {
+      expect(component.find('Notification').length).to.equal(1);
+      expect(component.find('Notification').text()).to.include('Some info for our patrons');
+    });
+  });
 });

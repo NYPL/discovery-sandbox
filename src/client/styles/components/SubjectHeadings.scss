@@ -22,11 +22,6 @@ thead .subjectHeadingRow {
   background-color: unset;
 }
 
-.subjectHeadingsBannerInner {
-  display: inline-block;
-  width: 100%;
-}
-
 .subjectHeadingInfo {
   display: flex;
 }
@@ -43,54 +38,9 @@ thead .subjectHeadingRow {
   padding: 20px;
 }
 
-.subjectHeadingsBanner {
-  padding: 1rem 1.5rem 1rem 8rem;
-  position: relative; // from .nypl-full-width-wrapper
-  margin: 0 auto 25px;
-
-  h2 {
-    font-size: 32px;
-    font-weight: 200;
-    display: inline-block;
-    font-family: "Milo-Light";
-  }
-
-  .subjectHeadingsBannerInner {
-    display: inline-block;
-    width: 100%;
-  }
-
-  form {
-    display: initial;
-  }
-
-  em {
-    font-style: italic;
-  }
-}
-
-.not-in-discovery {
-  color: grey;
-  font-style: italic;
-}
-
-.heading-count {
-  display: inline-flex;
-  padding-left: 2%;
-  width: fit-content;
-  white-space: nowrap;
-  padding-top: 1%;
-  font-size: .8em;
-}
-
 .nypl-results-pagination.showPage {
   display: flex;
   justify-content: space-between;
-}
-
-.moreSubjectsElement > .verticalEllipse {
-  margin-left: 40px;
-  display: inline-block;
 }
 
 .verticalEllipse {
@@ -103,51 +53,6 @@ thead .subjectHeadingRow {
     text-align: left;
     display: block;
   }
-}
-
-.nypl-breadcrumbs {
-  .breadcrumbs-and-search-wrapper {
-    display: flex;
-    justify-content: space-between;
-
-    @include media($mobile-breakpoint) {
-      ol {
-        margin-left: 10px;
-
-        li:not(:nth-last-child(2)) {
-          display: none;
-        }
-
-        li:nth-last-child(2)::before {
-          content: " < ";
-        }
-      }
-    }
-  }
-}
-
-.nypl-breadcrumbs a {
-  text-decoration: underline;
-
-  &:hover {
-    text-decoration: none;
-  }
-}
-
-.subjectHeadingBannerNav {
-  display: flex;
-  width: 100%;
-  justify-content: space-between;
-  nav {
-    align-self: flex-end;
-  }
-  ol {
-    margin: 0 auto;
-  }
-}
-
-.scccontainer.container-header {
-  height: fit-content;
 }
 
 .nypl-results-sorter.shepBibs {
