@@ -52,7 +52,7 @@ const TimedLogoutModal = (props) => {
   return (
     <Modal
       open
-      className="accountPageModal"
+      className="timedLogoutModal"
     >
       <Card>
         Your session is about to time out
