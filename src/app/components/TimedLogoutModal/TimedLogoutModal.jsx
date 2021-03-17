@@ -10,7 +10,7 @@ import {
 
 import { logOutFromEncoreAndCatalogIn } from '../../utils/logoutUtils';
 
-const AccountPageModal = (props) => {
+const TimedLogoutModal = (props) => {
   const {
     stayLoggedIn,
     baseUrl,
@@ -82,9 +82,9 @@ const AccountPageModal = (props) => {
   );
 };
 
-AccountPageModal.propTypes = {
+TimedLogoutModal.propTypes = {
   stayLoggedIn: PropTypes.func,
   baseUrl: PropTypes.string,
 };
 
-export default AccountPageModal;
+export default TimedLogoutModal;

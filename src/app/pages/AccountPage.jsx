@@ -13,7 +13,7 @@ import moment from 'moment';
 import LinkTabSet from '../components/AccountPage/LinkTabSet';
 import AccountSettings from '../components/AccountPage/AccountSettings';
 import LoadingLayer from '../components/LoadingLayer/LoadingLayer';
-import AccountPageModal from '../components/AccountPageModal/AccountPageModal';
+import TimedLogoutModal from '../components/TimedLogoutModal/TimedLogoutModal';
 import SccContainer from '../components/SccContainer/SccContainer';
 import { logOutFromEncoreAndCatalogIn } from '../utils/logoutUtils';
 
@@ -37,7 +37,7 @@ const AccountPage = (props) => {
 
   const [isLoading, setIsLoading] = useState(true);
   const [itemToCancel, setItemToCancel] = useState(null);
-  const [displayModal, setDisplayModal] = useState(false);
+  const [displayTimedLogoutModal, setDisplayTimedLogoutModal] = useState(false);
 
   useEffect(() => {
 
@@ -81,7 +81,7 @@ const AccountPage = (props) => {
     now.setTime(now.getTime() + (5 * 60 * 1000));
     const inFive = now.toUTCString();
     document.cookie = `accountPageExp=${inFive}; expires=${inFive}`;
-    setDisplayModal(true);
+    setDisplayTimedLogoutModal(true);
   };
 
   useEffect(() => {
@@ -128,8 +128,8 @@ const AccountPage = (props) => {
         text="My Account"
       />
       {
-        displayModal ?
-          <AccountPageModal
+        displayTimedLogoutModal ?
+          <TimedLogoutModal
             stayLoggedIn={resetCountdown}
             baseUrl={baseUrl}
           /> :

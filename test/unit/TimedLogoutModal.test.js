@@ -7,9 +7,9 @@ import { expect } from 'chai';
 import { mount } from 'enzyme';
 import sinon from 'sinon';
 
-import AccountPageModal from './../../src/app/components/AccountPageModal/AccountPageModal';
+import TimedLogoutModal from './../../src/app/components/TimedLogoutModal/TimedLogoutModal';
 
-describe('AccountPageModal', () => {
+describe('TimedLogoutModal', () => {
   describe('When more than 3 minutes remain', () => {
     const callRecord = [];
     let component;
@@ -38,7 +38,7 @@ describe('AccountPageModal', () => {
       });
 
       component = mount(
-        <AccountPageModal
+        <TimedLogoutModal
           stayLoggedIn={() => {}}
           baseUrl="fakeBaseUrl"
         />,
@@ -93,7 +93,7 @@ describe('AccountPageModal', () => {
       });
 
       component = mount(
-        <AccountPageModal
+        <TimedLogoutModal
           stayLoggedIn={() => {}}
           baseUrl="fakeBaseUrl"
         />,
@@ -162,7 +162,7 @@ describe('AccountPageModal', () => {
       });
 
       component = mount(
-        <AccountPageModal
+        <TimedLogoutModal
           stayLoggedIn={() => {}}
           baseUrl="fakeBaseUrl"
         />,
@@ -209,7 +209,7 @@ describe('AccountPageModal', () => {
       });
 
       component = mount(
-        <AccountPageModal
+        <TimedLogoutModal
           stayLoggedIn={() => { stayLoggedIn = true; }}
           baseUrl="fakeBaseUrl"
         />,
