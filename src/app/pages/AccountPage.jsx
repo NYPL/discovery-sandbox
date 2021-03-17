@@ -13,6 +13,7 @@ import moment from 'moment';
 import LinkTabSet from '../components/AccountPage/LinkTabSet';
 import AccountSettings from '../components/AccountPage/AccountSettings';
 import LoadingLayer from '../components/LoadingLayer/LoadingLayer';
+import TimedLogoutModal from '../components/TimedLogoutModal/TimedLogoutModal';
 import SccContainer from '../components/SccContainer/SccContainer';
 import { logOutFromEncoreAndCatalogIn } from '../utils/logoutUtils';
 
@@ -36,16 +37,15 @@ const AccountPage = (props) => {
 
   const [isLoading, setIsLoading] = useState(true);
   const [itemToCancel, setItemToCancel] = useState(null);
+  const [displayTimedLogoutModal, setDisplayTimedLogoutModal] = useState(false);
 
   useEffect(() => {
 
     if (typeof window !== 'undefined' && (!patron.id || accountHtml.error)) {
-      logOutFromEncoreAndCatalogIn();
       const fullUrl = encodeURIComponent(window.location.href);
-      // timeout 0 is here to make sure that we don't redirect until after the logout iframe is loaded
-      setTimeout(() => {
+      logOutFromEncoreAndCatalogIn(() => {
         window.location.replace(`${appConfig.loginUrl}?redirect_uri=${fullUrl}`);
-      }, 0);
+      });
     }
   }, [patron]);
 
@@ -75,6 +75,18 @@ const AccountPage = (props) => {
       };
     }
   }, [accountHtml]);
+
+  const resetCountdown = () => {
+    const now = new Date();
+    now.setTime(now.getTime() + (5 * 60 * 1000));
+    const inFive = now.toUTCString();
+    document.cookie = `accountPageExp=${inFive}; expires=${inFive}`;
+    setDisplayTimedLogoutModal(true);
+  };
+
+  useEffect(() => {
+    resetCountdown();
+  });
 
   const { baseUrl } = appConfig;
 
@@ -115,6 +127,14 @@ const AccountPage = (props) => {
         id="2"
         text="My Account"
       />
+      {
+        displayTimedLogoutModal ?
+          <TimedLogoutModal
+            stayLoggedIn={resetCountdown}
+            baseUrl={baseUrl}
+          /> :
+          null
+      }
       <div className="nypl-patron-details">
         <div className="name">{patron.names ? patron.names[0] : null}</div>
         <div>{patron.barcodes ? patron.barcodes[0] : null}</div>

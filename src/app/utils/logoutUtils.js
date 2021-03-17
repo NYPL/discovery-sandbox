@@ -16,7 +16,7 @@ const deleteCookie = (sKey) => {
   * The reason to use this way to load the endpoint is to bypass the CORS loading from the client
   * since III does not want to provide us a real log out API URI.
   */
-const loadLogoutIframe = () => {
+const loadLogoutIframe = (onload) => {
   const logoutIframe = document.createElement('iframe');
   const [body] = document.getElementsByTagName('body');
 
@@ -27,6 +27,9 @@ const loadLogoutIframe = () => {
   );
   // Assigns the ID for CSS ussage
   logoutIframe.setAttribute('id', 'logoutIframe');
+  if (onload) {
+    logoutIframe.onload = onload;
+  }
   body.appendChild(logoutIframe);
 };
 
@@ -35,9 +38,9 @@ const loadLogoutIframe = () => {
   * The timer to delete log in related cookies and call the method to completely log out from Encore
   * and Catalog. It is called by setEncoreLoggedInTimer.
   */
-export const logOutFromEncoreAndCatalogIn = () => {
+export const logOutFromEncoreAndCatalogIn = (onload) => {
   deleteCookie('PAT_LOGGED_IN');
   deleteCookie('VALID_DOMAIN_LAST_VISITED');
   deleteCookie('nyplIdentityPatron');
-  loadLogoutIframe();
+  loadLogoutIframe(onload);
 };
