@@ -85,67 +85,72 @@ const ItemFilter = ({
     mobile ? manageMobileFilter(prevState => !prevState) : manageFilterDisplay(filter)
   );
   const open = mobile ? mobileIsOpen : isOpen;
+  const clear = () => {
+    const newSelections = {
+      ...selectedFilters,
+      [filter]: [],
+    };
+
+    submitFilterSelections(newSelections);
+  };
 
   return (
-    <div
+    <FocusTrap
+      focusTrapOptions={{
+        clickOutsideDeactivates: true,
+        onDeactivate: () => { if (!mobile) manageFilterDisplay('none'); },
+        returnFocusOnDeactivate: false,
+      }}
+      active={isOpen}
       className="item-filter"
     >
-      <FocusTrap
-        focusTrapOptions={{
-          clickOutsideDeactivates: true,
-          onDeactivate: () => { if (!mobile) manageFilterDisplay('none') },
-          returnFocusOnDeactivate: false,
-        }}
-        active={isOpen}
+      <Button
+        className={`item-filter-button ${
+          open ? ' open' : ''}`}
+        buttonType="outline"
+        onClick={clickHandler}
+        type="button"
       >
-        <Button
-          className={`item-filter-button ${
-            open ? ' open' : ''}`}
-          buttonType="outline"
-          onClick={clickHandler}
-          type="button"
+        {filter}{numOfSelections ? ` (${numOfSelections})` : null} <Icon name={open ? 'minus' : 'plus'} />
+      </Button>
+      {open ? (
+        <div
+          className="item-filter-content"
         >
-          {filter}{numOfSelections ? ` (${numOfSelections})` : null} <Icon name={open ? 'minus' : 'plus'} />
-        </Button>
-        {open ? (
-          <div
-            className="item-filter-content"
-          >
-            <fieldset>
-              {distinctOptions.map((option, i) => (
-                <Checkbox
-                  labelOptions={{
-                    id: option.id,
-                    labelContent: option.label,
-                  }}
-                  onChange={() => handleCheckbox(option)}
-                  key={option.id || i}
-                  checkboxId={option.id}
-                  checked={isSelected(option)}
-                />
-              ))}
-            </fieldset>
-            {
-              !mobile ?
-              (
-                <div className="item-filter-buttons">
-                  <Button
-                    buttonType="link"
-                    onClick={() => manageFilterDisplay('none')}
-                  >Clear
-                  </Button>
-                  <Button
-                    onClick={() => submitFilterSelections(selectedFilters)}
-                    disabled={!selectionMade}
-                  >Apply
-                  </Button>
-                </div>
-              ) : null
-            }
-          </div>
-        ) : null}
-      </FocusTrap>
-    </div>
+          <fieldset>
+            {distinctOptions.map((option, i) => (
+              <Checkbox
+                labelOptions={{
+                  id: option.id,
+                  labelContent: option.label,
+                }}
+                onChange={() => handleCheckbox(option)}
+                key={option.id || i}
+                checkboxId={option.id}
+                checked={isSelected(option)}
+              />
+            ))}
+          </fieldset>
+          {
+            !mobile ?
+            (
+              <div className="item-filter-buttons">
+                <Button
+                  buttonType="link"
+                  onClick={() => clear()}
+                >Clear
+                </Button>
+                <Button
+                  onClick={() => submitFilterSelections(selectedFilters)}
+                  disabled={!selectionMade}
+                >Apply
+                </Button>
+              </div>
+            ) : null
+          }
+        </div>
+      ) : null}
+    </FocusTrap>
   );
 };
 
@@ -159,6 +164,11 @@ ItemFilter.propTypes = {
   submitFilterSelections: PropTypes.func,
   setSelectedFilters: PropTypes.func,
   initialFilters: PropTypes.object,
+};
+
+ItemFilter.defaultTypes = {
+  isOpen: false,
+  mobile: false,
 };
 
 ItemFilter.contextTypes = {

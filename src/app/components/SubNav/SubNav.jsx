@@ -6,25 +6,13 @@ import { useSelector } from 'react-redux';
 
 import appConfig from '../../data/appConfig';
 
-const SubNavLink = ({ type, activeSection, href, children }) => {
-  if (type === activeSection) {
-    return (
-      <span
-        className="sub-nav__active-section"
-      >
-        {children}
-      </span>
-    );
-  }
-
-  return (
-    <DSLink
-      className="sub-nav__link"
-    >
-      <Link to={href}>{children}</Link>
-    </DSLink>
-  );
-};
+const SubNavLink = ({ type, activeSection, href, children }) => (
+  <DSLink
+    className={`sub-nav__link${type === activeSection ? ' active-section' : ''}`}
+  >
+    <Link to={href}>{children}</Link>
+  </DSLink>
+);
 
 SubNavLink.propTypes = {
   type: PropTypes.string,
