@@ -86,12 +86,11 @@ const ItemFilter = ({
   );
   const open = mobile ? mobileIsOpen : isOpen;
   const clear = () => {
-    const newSelections = {
-      ...selectedFilters,
+    setSelectionMade(true);
+    setSelectedFilters(prevSelectedFilters => ({
+      ...prevSelectedFilters,
       [filter]: [],
-    };
-
-    submitFilterSelections(newSelections);
+    }));
   };
 
   return (
@@ -138,6 +137,7 @@ const ItemFilter = ({
                 <Button
                   buttonType="link"
                   onClick={() => clear()}
+                  disabled={!selectedFilters[filter].length}
                 >Clear
                 </Button>
                 <Button
