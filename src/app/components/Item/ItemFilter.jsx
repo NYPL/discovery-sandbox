@@ -28,7 +28,7 @@ const ItemFilter = ({
   isOpen,
   initialFilters,
 }) => {
-  if (!options) return null;
+  if (!options || !filter) return null;
   const [selectionMade, setSelectionMade] = useState(false);
 
   const selectFilter = (value) => {
@@ -166,9 +166,14 @@ ItemFilter.propTypes = {
   initialFilters: PropTypes.object,
 };
 
-ItemFilter.defaultTypes = {
+ItemFilter.defaultProps = {
   isOpen: false,
   mobile: false,
+  selectedFilters: {
+    location: [],
+    format: [],
+    status: [],
+  },
 };
 
 ItemFilter.contextTypes = {
