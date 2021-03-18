@@ -5,7 +5,7 @@ const appConfig = {
   appTitle: 'NYPL | Discovery',
   appName: 'discovery',
   displayTitle: process.env.DISPLAY_TITLE || 'Shared Collection Catalog',
-  baseUrl: process.env.BASE_URL,
+  baseUrl: process.env.BASE_URL || '/research/collections/shared-collection-catalog',
   legacyBaseUrl: process.env.LEGACY_BASE_URL,
   favIconPath: '//d2znry4lg8s0tq.cloudfront.net/images/favicon.ico',
   port: 3001,
