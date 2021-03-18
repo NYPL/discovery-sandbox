@@ -51,12 +51,6 @@ describe('BibPage', () => {
           done: true,
           numItems: 0,
         },
-        subscribe: () => {},
-        appConfig: {
-          displayTitle: 'Shared Collection Catalog',
-          baseUrl: '/',
-        },
-        features: [],
       });
 
       component = mount(

@@ -28,10 +28,6 @@ describe('HoldRequest', () => {
             attachTo: document.body,
             store: makeTestStore({
               patron: { id: 1 },
-              appConfig: {
-                displayTitle: 'Shared Collection Catalog',
-                baseUrl: '/',
-              },
             }),
           });
       });
@@ -53,10 +49,6 @@ describe('HoldRequest', () => {
             attachTo: document.body,
             store: makeTestStore({
               patron: { id: 1 },
-              appConfig: {
-                displayTitle: 'Shared Collection Catalog',
-                baseUrl: '/',
-              },
             }),
           });
       });
@@ -405,7 +397,6 @@ describe('HoldRequest', () => {
             bib,
             appConfig: {
               closedLocations: ['edd'],
-              displayTitle: 'Shared Collection Catalog',
               baseUrl: '/',
             },
             isEddRequestable: true,
@@ -471,7 +462,6 @@ describe('HoldRequest', () => {
               bib,
               appConfig: {
                 closedLocations: [''],
-                displayTitle: 'Shared Collection Catalog',
                 baseUrl: '/',
               },
               isEddRequestable: true,
@@ -531,7 +521,6 @@ describe('HoldRequest', () => {
               bib,
               appConfig: {
                 recapClosedLocations: [''],
-                displayTitle: 'Shared Collection Catalog',
                 baseUrl: '/',
               },
               isEddRequestable: true,
@@ -589,11 +578,6 @@ describe('HoldRequest', () => {
             store: makeTestStore({
               patron: { id: 1 },
               bib,
-              appConfig: {
-                closedLocations: ['edd'],
-                displayTitle: 'Shared Collection Catalog',
-                baseUrl: '/',
-              },
               isEddRequestable: true,
               deliveryLocations,
             }),
@@ -615,13 +599,7 @@ describe('HoldRequest', () => {
   describe('with notification', () => {
     let component;
     before(() => {
-      const testStore = makeTestStore({
-        appConfig: {
-          displayTitle: 'Shared Collection Catalog',
-          holdRequestNotification: 'Some info for our patrons',
-          patron: { id: 1 },
-        },
-      });
+      const testStore = makeTestStore();
       component = mountTestRender(<WrappedHoldRequest />, {
         // attachTo: document.body,
         store: testStore,
