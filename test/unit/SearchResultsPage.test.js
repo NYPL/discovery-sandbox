@@ -104,11 +104,6 @@ describe('SearchResultsPage', () => {
       const storeWithProps = makeTestStore({
         searchKeywords: "locofocos",
         searchResults,
-        appConfig: {
-          features: [],
-          displayTitle: 'Shared Collection Catalog',
-          baseUrl: '/',
-        },
       });
       wrapper = mountTestRender(
         <SearchResultsPage
@@ -149,11 +144,6 @@ describe('SearchResultsPage', () => {
       const storeWithProps = makeTestStore({
         searchKeywords: 'locofocos',
         searchResults,
-        appConfig: {
-          features: [],
-          displayTitle: 'Shared Collection Catalog',
-          baseUrl: '/',
-        },
       });
       wrapper = mountTestRender(
         <SearchResultsPage
@@ -187,11 +177,6 @@ describe('SearchResultsPage', () => {
       const storeWithProps = makeTestStore({
         searchKeywords: 'locofocos',
         searchResults,
-        appConfig: {
-          features: [],
-          displayTitle: 'Shared Collection Catalog',
-          baseUrl: '/',
-        },
       });
       wrapper = mountTestRender(
         <SearchResultsPage
@@ -224,10 +209,6 @@ describe('SearchResultsPage', () => {
         searchKeywords: 'locofocos',
         searchResults,
         features: ['drb-integration'],
-        appConfig: {
-          displayTitle: 'Shared Collection Catalog',
-          baseUrl: '/',
-        },
       });
       component = mountTestRender(
         <SearchResultsContainer
@@ -258,10 +239,6 @@ describe('SearchResultsPage', () => {
           searchKeywords: 'locofocos',
           searchResults,
           features: ['drb-integration'],
-          appConfig: {
-            displayTitle: 'Shared Collection Catalog',
-            baseUrl: '/',
-          },
         });
         component = mountTestRender(
           <SearchResultsContainer
@@ -288,10 +265,6 @@ describe('SearchResultsPage', () => {
     let component;
     before(() => {
       const testStore = makeTestStore({
-        appConfig: {
-          displayTitle: 'Shared Collection Catalog',
-          searchResultsNotification: 'Some info for our patrons',
-        },
         searchResults,
         searchKeywords: 'locofocos',
       });

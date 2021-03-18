@@ -7,16 +7,13 @@ import { Provider } from 'react-redux';
 import { makeTestStore } from '../helpers/store';
 
 import Home from '../../src/app/pages/Home';
+import appConfig from '../../src/app/data/appConfig';
 
 describe('Home', () => {
   let component;
 
   before(() => {
-    const testStore = makeTestStore({
-      appConfig: {
-        displayTitle: 'Shared Collection Catalog',
-      },
-    });
+    const testStore = makeTestStore();
     component = mount(
       <Provider store={testStore}>
         <Home />
@@ -30,7 +27,7 @@ describe('Home', () => {
 
   it('should contain an h2', () => {
     const h2 = component.find('Heading').at(1);
-    expect(h2.text()).to.equal('Welcome to Shared Collection Catalog');
+    expect(h2.text()).to.equal(`Welcome to ${appConfig.displayTitle}`);
   });
 
   it('should contain five images', () => {
@@ -49,12 +46,7 @@ describe('Home', () => {
 
   describe('with notification', () => {
     before(() => {
-      const testStore = makeTestStore({
-        appConfig: {
-          displayTitle: 'Shared Collection Catalog',
-          searchResultsNotification: 'Some info for our patrons',
-        },
-      });
+      const testStore = makeTestStore();
       component = mount(
         <Provider store={testStore}>
           <Home />
