@@ -15,7 +15,7 @@ const NotFound404 = () => (
             <p>The page you were looking for doesn't exist.</p>
             <p>
               Search the <Link to={`${appConfig.baseUrl}/`}>
-              {appConfig.displayTitle}</Link> or our <a href={appConfig.legacyCatalog}>
+              {appConfig.displayTitle}</Link> or our <a href={appConfig.legacyBaseUrl}>
               Legacy Catalog</a> for research materials.</p>
           </div>
         </div>
