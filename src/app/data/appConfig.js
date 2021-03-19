@@ -7,6 +7,7 @@ const appConfig = {
   displayTitle: process.env.DISPLAY_TITLE || 'Shared Collection Catalog',
   baseUrl: process.env.BASE_URL || '/research/collections/shared-collection-catalog',
   previousBaseUrl: process.env.PREVIOUS_BASE_URL,
+  legacyBaseUrl: process.env.LEGACY_BASE_URL,
   favIconPath: '//d2znry4lg8s0tq.cloudfront.net/images/favicon.ico',
   port: 3001,
   webpackDevServerPort: 3000,
@@ -21,7 +22,6 @@ const appConfig = {
       production: 'https://digital-research-books-api.nypl.org/v3/sfr/search',
     },
   },
-  classicCatalog: process.env.CLASSIC_CATALOG,
   circulatingCatalog: process.env.CIRCULATING_CATALOG,
   shepApi: process.env.SHEP_API,
   loginUrl: process.env.LOGIN_URL || 'https://login.nypl.org/auth/login',
@@ -66,7 +66,7 @@ const appConfig = {
   },
   sourceEmail: process.env.SOURCE_EMAIL,
   libAnswersEmail: process.env.LIB_ANSWERS_EMAIL,
-  itemBatchSize: process.env.ITEM_BATCH_SIZE
+  itemBatchSize: process.env.ITEM_BATCH_SIZE,
 };
 
 export default appConfig;
