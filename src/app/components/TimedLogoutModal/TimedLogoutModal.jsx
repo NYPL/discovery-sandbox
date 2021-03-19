@@ -56,7 +56,7 @@ const TimedLogoutModal = (props) => {
     >
       <div className="research-modal__content">
         <p>
-          Your session is about to time out
+          Your session is about to expire
           <span className="time-display">
             {`${minutes}:${seconds < 10 ? '0' : ''}${seconds}`}
           </span>
