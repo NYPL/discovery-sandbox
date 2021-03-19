@@ -23,7 +23,6 @@ const appConfig = {
   },
   circulatingCatalog: process.env.CIRCULATING_CATALOG,
   shepApi: process.env.SHEP_API,
-  legacyCatalog: process.env.LEGACY_CATALOG_BASE_URL,
   loginUrl: process.env.LOGIN_URL || 'https://login.nypl.org/auth/login',
   tokenUrl: 'https://isso.nypl.org/',
   publicKey:

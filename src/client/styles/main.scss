@@ -29,7 +29,6 @@ Import style rules from NYPL React module components
 @import "components/**/*.scss";
 
 @import "style-v2.scss";
-@import "Layout.scss";
 
 html {
   @include font-settings;
