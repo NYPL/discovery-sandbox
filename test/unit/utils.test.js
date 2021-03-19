@@ -18,6 +18,7 @@ import {
   getAggregatedElectronicResources,
   truncateStringOnWhitespace,
   hasValidFilters,
+  extractNoticePreference,
 } from '../../src/app/utils/utils';
 
 /**
@@ -772,3 +773,21 @@ describe('hasValidFilters', () => {
     expect(hasValidFilters(filters)).to.equal(true);
   });
 });
+
+describe('extractNoticePreference', () => {
+  it('should return "None" if fixedFields is empty', () => {
+    expect(extractNoticePreference()).to.equal('None');
+  });
+  it('should return "None" if fixedFields does not have a "268" field', () => {
+    expect(extractNoticePreference({ '123': 'nonsense' })).to.equal('None');
+  });
+  it('should return "Email" if "268" field value is "z"', () => {
+    expect(extractNoticePreference({ '268': {'value': 'z'} })).to.equal('Email');
+  });
+  it('should return "Telephone" if "268" field value is "p"', () => {
+    expect(extractNoticePreference({ '268': {'value': 'p'} })).to.equal('Telephone');
+  });
+  it('should return "None" if "268" field value is "-"', () => {
+    expect(extractNoticePreference({ '268': {'value': '-'} })).to.equal('None');
+  });
+})

@@ -7,6 +7,7 @@ import Feedback from './Feedback';
 import appConfig from '../../app/data/appConfig';
 import SubjectHeading from './SubjectHeading';
 import SubjectHeadings from './SubjectHeadings';
+import Account from './Account';
 import dataLoaderUtil from '../../app/utils/dataLoaderUtil';
 import routeMethods from './RouteMethods';
 
@@ -55,6 +56,10 @@ Object.keys(routes).forEach((routeName) => {
       );
   });
 });
+
+router
+  .route(`${appConfig.baseUrl}/api/account/:content?`)
+  .post(Account.postToAccountPage);
 
 router
   .route(`${appConfig.baseUrl}/api/patronEligibility`)

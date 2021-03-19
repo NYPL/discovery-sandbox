@@ -1,0 +1,404 @@
+.nypl-patron-page {
+  h2 {
+    font-size: var(--font-size-3)
+  }
+  ul {
+    list-style: none;
+  }
+
+  th {
+    text-transform: capitalize;
+  }
+
+  td.account-table-buttons {
+    padding-right: 0;
+  }
+
+  td > span {
+    display: block;
+  }
+
+  .items {
+    th, td {
+      width: 20%;
+    }
+  }
+
+  select {
+    width: 215px;
+  }
+
+  td.patFuncTitle {
+    width: 29%;
+    padding-left: 10px;
+  }
+
+  .loading#account-page-content {
+    display: none;
+  }
+
+  th.patFuncTitle {
+    font-weight: 600;
+  }
+
+  .patFuncHeaders {
+    text-align: left;
+    font-weight: 600;
+
+    th:nth-child(4) {
+      max-width: 130px;
+    }
+
+    th:nth-child(1) {
+      padding-left: 10px;
+    }
+  }
+
+  .tabbed {
+    padding-top: var(--space-xl);
+
+    a {
+      width: 165px;
+      text-align: center;
+    }
+  }
+
+  .tabbed ul[role="tablist"] {
+    &> li {
+      border-color: #0576D3;
+    }
+
+    &> li > a[aria-selected='true'] {
+      color: #0576D3;
+    }
+
+    &> li.activeTab {
+      border-color: #0576D3;
+    }
+  }
+
+  button {
+    display: inline-block;
+    font-size: 14px;
+    margin: 0 var(--space-xxs);
+  }
+
+  tr.patFuncHeaders {
+    background-color: #F5F5F5;
+    width: 100%;
+  }
+
+  .nypl-patron-details {
+    font-size: var(--font-size-2);
+    &> .name {
+      font-size: 1.625rem;
+    }
+  }
+
+  #account-page-content:not(.overdues) {
+    td {
+      padding-right: 35px;
+    }
+  }
+
+  .patFuncFinesDetailType {
+    font-style: italic;
+    font-weight: 600;
+  }
+
+  .patFuncFinesDetailDateLabel {
+    font-weight: 600;
+  }
+
+  .patFuncFinesEntryDetail, .patFuncFinesDetailDate {
+    td:first-of-type {
+      display: none;
+    }
+  }
+
+  tr.patFuncFinesEntryTitle {
+    border-top: solid 1px #C4C4C4;
+  }
+
+  td {
+    padding-top: var(--space-xs);
+  }
+
+  td.patFuncFinesEntryTitle {
+    padding-right: 50%;
+    padding-top: var(--space-m);
+  }
+
+  .patFuncFinesDetailDate {
+    text-align: right;
+    padding-right: 24%;
+  }
+
+  .patFuncFinesDetailAmt {
+    padding-right: 9%;
+  }
+
+  .patFuncFinesDetailDateLabel {
+    text-align: left;
+  }
+
+  tr:nth-of-type(5n + 7) {
+    .patFuncFinesDetailDateLabel, .patFuncFinesDetailDate {
+      padding-bottom: var(--space-m);
+    }
+  }
+
+  @media (min-width: 920px) {
+    .overdues {
+      table {
+        min-width: 846px;
+      }
+    }
+  }
+
+  .overdues {
+    th {
+      padding-bottom: var(--space-l);
+    }
+
+    br {
+      display: none;
+    }
+
+    tr:nth-last-of-type(2), tr:nth-last-of-type(3) {
+      border-bottom: solid 1px #C4C4C4;
+    }
+  }
+
+  .items, .holds {
+    tr {
+      border-bottom: solid 1px #C4C4C4;
+    }
+  }
+}
+
+.account-settings {
+  &__heading-3, .pin {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 24px;
+
+    h3 {
+      margin-top: 0;
+    }
+
+    dd {
+      width: auto;
+    }
+  }
+
+  .edit-link {
+    color: #0071CE;
+    float: right;
+    font-size: 20px;
+    font-weight: 600;
+    text-decoration: none;
+
+    &.settings {
+      line-height: 28px;
+    }
+  }
+
+  dl {
+    overflow: hidden;
+    width: 100%;
+  }
+
+  dt {
+    clear: left;
+    float: left;
+    font-weight: 600;
+    margin: 0;
+    width: 30%;
+  }
+
+  dd {
+    float: left;
+    width: 50%;
+  }
+
+  .pin {
+    dl {
+      overflow: inherit;
+    }
+    
+    dt {
+      font-size: 20px;
+    }
+
+    dd > span {
+      font-size: 29px;
+      font-weight: 600;
+      line-height: 30px;
+    }
+  }
+}
+
+.scc-modal {
+  background-color: rgba(153, 153, 153, 0.8);
+  height: 100%;
+  left: 0;
+  overflow-y: auto;
+  position: fixed;
+  top: 0;
+  width: 100vw;
+  z-index: 999;
+  padding-top: 20%;
+
+  div {
+    background-color: #F9F8F7;
+    margin: auto;
+    opacity: 100%;
+    padding: 54px 5%;
+    text-align: center;
+    width: 472px;
+    max-width: 100%;
+  }
+
+  span {
+    font-weight: 700;
+  }
+
+  p:nth-child(2) {
+    font-weight: 500;
+  }
+
+  button {
+    width: 153px;
+  }
+}
+
+.loading#account-page-content {
+  display: none;
+}
+
+
+@media (max-width: 600px) {
+  .nypl-patron-page .tabbed ul[role="tablist"] {
+    &> li:last-of-type {
+      border-bottom: 1px solid #0576D3;
+    }
+
+    a {
+      text-align: initial;
+      width: 100%;
+    }
+  }
+}
+
+@media (max-width: 650px) {
+  .nypl-patron-page {
+    select {
+      width: 100%;
+    }
+
+    .items, .holds {
+      td {
+        border-left: 1px solid #C4C4C4;
+        border-right: 1px solid #C4C4C4;
+        display: block;
+        padding-right: 1%;
+        width: auto;
+        padding-left: 40%;
+      }
+
+      table {
+        border-collapse: separate;
+        border-spacing: 0 var(--space-m);
+      }
+
+      td.patFuncTitle {
+        border-top: 1px solid #C4C4C4;
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+      }
+    }
+
+    .patFuncFinesDetailDate, .patFuncFinesDetailAmt {
+      padding-right: 0%;
+    }
+  }
+
+  .items {
+    td:nth-of-type(1):before {
+      content: 'Title';
+    }
+    td:nth-of-type(2):before {
+      content: 'Barcode';
+    }
+    td:nth-of-type(3):before {
+      content: 'Status';
+    }
+    td:nth-of-type(4):before {
+      content: 'Call Number';
+    }
+  }
+
+  .holds {
+    td:nth-of-type(1):before {
+      content: 'Title';
+    }
+    td:nth-of-type(2):before {
+      content: 'Status';
+    }
+    td:nth-of-type(3):before {
+      content: 'Pickup Location';
+    }
+    td:nth-of-type(4):before {
+      content: 'Cancle If Not Filled By';
+    }
+  }
+
+  .overdues {
+    tr:first-of-type {
+      td {
+        border: 0;
+      }
+    }
+
+    td.patFuncFinesEntryTitle {
+      padding-right: 0;
+    }
+  }
+
+  #account-page-content {
+    table {
+      width: 100%;
+    }
+
+    tr.patFuncHeaders {
+      display: none;
+    }
+
+    td:before {
+      display: inline-block;
+      font-weight: 700;
+      left: 6%;
+      max-width: 30%;
+      position: absolute;
+      vertical-align: top;
+    }
+
+    .account-table-buttons {
+      border-bottom: 1px solid #c4c4c4;
+      border-bottom-left-radius: 5px;
+      border-bottom-right-radius: 5px;
+      display: flex;
+      justify-content: center;
+      padding: var(--space-m) 1%;
+
+      button {
+        width: 85%;
+      }
+    }
+
+    .patFuncEntry {
+      margin-bottom: var(--space-s);
+    }
+  }
+}
