@@ -6,8 +6,6 @@ import DocumentTitle from 'react-document-title';
 import {
   Breadcrumbs,
   Heading,
-  Hero,
-  HeroTypes,
 } from '@nypl/design-system-react-components';
 
 import LoadingLayer from '../LoadingLayer/LoadingLayer';

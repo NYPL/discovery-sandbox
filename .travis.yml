@@ -54,7 +54,7 @@ deploy:
   bucket_path: discovery-ui-shep
   on:
     repo: NYPL/discovery-front-end
-    branch: serials
+    branch: accounts
 after_deploy: echo 'Successfully executed deploy trigger for Discovery Research
   Catalog on AWS'
 env:
