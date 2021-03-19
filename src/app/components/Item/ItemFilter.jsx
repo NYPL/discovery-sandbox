@@ -28,7 +28,7 @@ const ItemFilter = ({
   isOpen,
   initialFilters,
 }) => {
-  if (!options) return null;
+  if (!options || !filter) return null;
   const [selectionMade, setSelectionMade] = useState(false);
 
   const selectFilter = (value) => {
@@ -86,12 +86,11 @@ const ItemFilter = ({
   );
   const open = mobile ? mobileIsOpen : isOpen;
   const clear = () => {
-    const newSelections = {
-      ...selectedFilters,
+    setSelectionMade(true);
+    setSelectedFilters(prevSelectedFilters => ({
+      ...prevSelectedFilters,
       [filter]: [],
-    };
-
-    submitFilterSelections(newSelections);
+    }));
   };
 
   return (
@@ -138,6 +137,7 @@ const ItemFilter = ({
                 <Button
                   buttonType="link"
                   onClick={() => clear()}
+                  disabled={!selectedFilters[filter].length}
                 >Clear
                 </Button>
                 <Button
@@ -164,6 +164,16 @@ ItemFilter.propTypes = {
   submitFilterSelections: PropTypes.func,
   setSelectedFilters: PropTypes.func,
   initialFilters: PropTypes.object,
+};
+
+ItemFilter.defaultProps = {
+  isOpen: false,
+  mobile: false,
+  selectedFilters: {
+    location: [],
+    format: [],
+    status: [],
+  },
 };
 
 ItemFilter.contextTypes = {

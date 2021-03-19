@@ -296,7 +296,7 @@ export class HoldRequest extends React.Component {
           <span>Call number:</span><br />{selectedItem.callNumber}
         </div>) : null;
     let itemClosedLocations = closedLocations;
-    if (selectedItem.isRecap) {
+    if (selectedItem && selectedItem.isRecap) {
       itemClosedLocations = itemClosedLocations.concat(recapClosedLocations);
     } else {
       itemClosedLocations = itemClosedLocations.concat(nonRecapClosedLocations);
