@@ -5,8 +5,6 @@ import PropTypes from 'prop-types';
 import {
   SkeletonLoader,
   Heading,
-  Button,
-  ButtonTypes,
 } from '@nypl/design-system-react-components';
 import moment from 'moment';
 
@@ -14,6 +12,7 @@ import LinkTabSet from '../components/AccountPage/LinkTabSet';
 import AccountSettings from '../components/AccountPage/AccountSettings';
 import LoadingLayer from '../components/LoadingLayer/LoadingLayer';
 import TimedLogoutModal from '../components/TimedLogoutModal/TimedLogoutModal';
+import CancelConfirmationModal from '../components/AccountPage/CancelConfirmationModal';
 import SccContainer from '../components/SccContainer/SccContainer';
 import { logOutFromEncoreAndCatalogIn } from '../utils/logoutUtils';
 
@@ -40,7 +39,6 @@ const AccountPage = (props) => {
   const [displayTimedLogoutModal, setDisplayTimedLogoutModal] = useState(false);
 
   useEffect(() => {
-
     if (typeof window !== 'undefined' && (!patron.id || accountHtml.error)) {
       const fullUrl = encodeURIComponent(window.location.href);
       logOutFromEncoreAndCatalogIn(() => {
@@ -108,7 +106,7 @@ const AccountPage = (props) => {
     setItemToCancel(null);
   };
 
-  const formattedExpirationDate = patron.expirationDate ?  moment(patron.expirationDate).format("MM-DD-YYYY") : '';
+  const formattedExpirationDate = patron.expirationDate ? moment(patron.expirationDate).format("MM-DD-YYYY") : '';
 
   if (accountHtml.error) {
     return (
@@ -141,22 +139,11 @@ const AccountPage = (props) => {
         <div>Expiration Date: {formattedExpirationDate}</div>
       </div>
       {itemToCancel ? (
-        <div className="scc-modal">
-          <div>
-            <p>Cancel your hold on this item?</p>
-            <p>{itemToCancel.title}</p>
-            <Button
-              buttonType={ButtonTypes.Secondary}
-              onClick={() => setItemToCancel(null)}
-            >Back
-            </Button>
-            <Button
-              buttonType={ButtonTypes.Primary}
-              onClick={cancelItem}
-            >Confirm
-            </Button>
-          </div>
-        </div>
+        <CancelConfirmationModal
+          itemToCancel={itemToCancel}
+          setItemToCancel={setItemToCancel}
+          cancelItem={cancelItem}
+        />
       ) : null}
       <LinkTabSet
         activeTab={content}
