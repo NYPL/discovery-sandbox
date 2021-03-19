@@ -58,7 +58,6 @@ const commonSettings = {
         ITEM_BATCH_SIZE: JSON.stringify(process.env.ITEM_BATCH_SIZE),
         CIRCULATING_CATALOG: JSON.stringify(process.env.CIRCULATING_CATALOG),
         BASE_URL: JSON.stringify(process.env.BASE_URL),
-        LEGACY_BASE_URL: JSON.stringify(process.env.LEGACY_BASE_URL),
       },
     }),
     // new BundleAnalyzerPlugin({
