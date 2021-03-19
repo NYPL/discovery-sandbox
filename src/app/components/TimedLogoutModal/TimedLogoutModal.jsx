@@ -46,7 +46,7 @@ const TimedLogoutModal = (props) => {
     seconds = parseInt((timeLeft % (60 * 1000)) / 1000, 10);
   }
 
-  const open = minutes < 3;
+  const open = minutes < 2;
   if (!open) return null;
 
   return (
