@@ -33,7 +33,7 @@ const Home = (props, context) => (
 
     <Heading
       level={2}
-      text={`Welcome to ${displayTitle}`}
+      text={`Welcome to ${appConfig.displayTitle}`}
     />
 
     <div className="nypl-column-full">
