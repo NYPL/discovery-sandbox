@@ -4,8 +4,9 @@ import mapLocations from '../utils/mapLocations';
 const appConfig = {
   appTitle: 'NYPL | Discovery',
   appName: 'discovery',
-  displayTitle: process.env.DISPLAY_TITLE || 'Shared Collection Catalog',
+  displayTitle: process.env.DISPLAY_TITLE,
   baseUrl: '/research/collections/shared-collection-catalog',
+  legacyBaseUrl: process.env.LEGACY_BASE_URL,
   favIconPath: '//d2znry4lg8s0tq.cloudfront.net/images/favicon.ico',
   port: 3001,
   webpackDevServerPort: 3000,
@@ -20,7 +21,6 @@ const appConfig = {
       production: 'https://digital-research-books-api.nypl.org/v3/sfr/search',
     },
   },
-  classicCatalog: process.env.CLASSIC_CATALOG,
   circulatingCatalog: process.env.CIRCULATING_CATALOG,
   shepApi: process.env.SHEP_API,
   legacyCatalog: process.env.LEGACY_CATALOG_BASE_URL,
@@ -66,7 +66,7 @@ const appConfig = {
   },
   sourceEmail: process.env.SOURCE_EMAIL,
   libAnswersEmail: process.env.LIB_ANSWERS_EMAIL,
-  itemBatchSize: process.env.ITEM_BATCH_SIZE
+  itemBatchSize: process.env.ITEM_BATCH_SIZE,
 };
 
 export default appConfig;

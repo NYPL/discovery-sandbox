@@ -6,20 +6,17 @@ import DocumentTitle from 'react-document-title';
 import {
   Breadcrumbs,
   Heading,
-  Hero,
-  HeroTypes,
 } from '@nypl/design-system-react-components';
 
 import LoadingLayer from '../LoadingLayer/LoadingLayer';
 import SubNav from '../SubNav/SubNav';
+import appConfig from '../../data/appConfig';
 
 const SccContainer = (props) => {
   const {
     loading,
-    appConfig,
   } = useSelector(state => ({
     loading: state.loading,
-    appConfig: state.appConfig,
   }));
   const {
     useLoadingLayer,

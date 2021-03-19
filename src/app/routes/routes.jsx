@@ -13,14 +13,15 @@ import SearchResults from '../pages/SearchResultsPage';
 import SubjectHeadingShowPage from '../pages/SubjectHeadingShowPage';
 import SubjectHeadingsIndexPage from '../pages/SubjectHeadingsIndexPage';
 import HoldConfirmation from '../pages/HoldConfirmation';
+import AccountPage from '../pages/AccountPage';
 
 /*
  * Components
  */
 import Application from '../components/Application/Application';
-import AccountPage from '../pages/AccountPage';
 import NotFound404 from '../components/NotFound404/NotFound404';
 import Redirect404 from '../components/Redirect404/Redirect404';
+
 import appConfig from '../data/appConfig';
 
 const { baseUrl } = appConfig;

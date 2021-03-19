@@ -28,10 +28,6 @@ describe('HoldRequest', () => {
             attachTo: document.body,
             store: makeTestStore({
               patron: { id: 1 },
-              appConfig: {
-                displayTitle: 'Shared Collection Catalog',
-                baseUrl: '/',
-              },
             }),
           });
       });
@@ -53,10 +49,6 @@ describe('HoldRequest', () => {
             attachTo: document.body,
             store: makeTestStore({
               patron: { id: 1 },
-              appConfig: {
-                displayTitle: 'Shared Collection Catalog',
-                baseUrl: '/',
-              },
             }),
           });
       });
@@ -405,7 +397,6 @@ describe('HoldRequest', () => {
             bib,
             appConfig: {
               closedLocations: ['edd'],
-              displayTitle: 'Shared Collection Catalog',
               baseUrl: '/',
             },
             isEddRequestable: true,
@@ -471,7 +462,6 @@ describe('HoldRequest', () => {
               bib,
               appConfig: {
                 closedLocations: [''],
-                displayTitle: 'Shared Collection Catalog',
                 baseUrl: '/',
               },
               isEddRequestable: true,
@@ -531,7 +521,6 @@ describe('HoldRequest', () => {
               bib,
               appConfig: {
                 recapClosedLocations: [''],
-                displayTitle: 'Shared Collection Catalog',
                 baseUrl: '/',
               },
               isEddRequestable: true,
@@ -589,11 +578,6 @@ describe('HoldRequest', () => {
             store: makeTestStore({
               patron: { id: 1 },
               bib,
-              appConfig: {
-                closedLocations: ['edd'],
-                displayTitle: 'Shared Collection Catalog',
-                baseUrl: '/',
-              },
               isEddRequestable: true,
               deliveryLocations,
             }),
@@ -609,6 +593,22 @@ describe('HoldRequest', () => {
 
         expect(form.find('fieldset')).to.have.length(1);
       });
+    });
+  });
+
+  describe('with notification', () => {
+    let component;
+    before(() => {
+      const testStore = makeTestStore();
+      component = mountTestRender(<WrappedHoldRequest />, {
+        // attachTo: document.body,
+        store: testStore,
+      });
+    });
+
+    it('should have a `Notification`', () => {
+      expect(component.find('Notification').length).to.equal(1);
+      expect(component.find('Notification').text()).to.include('Some info for our patrons');
     });
   });
 });

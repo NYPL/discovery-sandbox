@@ -6,34 +6,13 @@
     border-bottom: none;
   }
 
-  .nypl-full-width-wrapper {
-    padding-top: 0;
-    padding-bottom: 0;
-  }
-
   .nypl-column-full {
     margin-bottom: 0;
   }
 }
 
-.nypl-full-width-wrapper {
-  &.filter-page {
-    padding-bottom: 0;
-
-    .nypl-column-full {
-      margin-bottom: -1px;
-    }
-  }
-}
-
 .filter-container {
   margin-top: var(--space-xxs);
-
-  > .nypl-full-width-wrapper {
-    .nypl-column-full {
-      margin-bottom: -1px;
-    }
-  }
 
   .nypl-form-error {
     margin: 10px 0;

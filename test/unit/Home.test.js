@@ -7,16 +7,13 @@ import { Provider } from 'react-redux';
 import { makeTestStore } from '../helpers/store';
 
 import Home from '../../src/app/pages/Home';
+import appConfig from '../../src/app/data/appConfig';
 
 describe('Home', () => {
   let component;
 
   before(() => {
-    const testStore = makeTestStore({
-      appConfig: {
-        displayTitle: 'Shared Collection Catalog',
-      },
-    });
+    const testStore = makeTestStore();
     component = mount(
       <Provider store={testStore}>
         <Home />
@@ -30,7 +27,7 @@ describe('Home', () => {
 
   it('should contain an h2', () => {
     const h2 = component.find('Heading').at(1);
-    expect(h2.text()).to.equal('Welcome to Shared Collection Catalog');
+    expect(h2.text()).to.equal(`Welcome to ${appConfig.displayTitle}`);
   });
 
   it('should contain five images', () => {
@@ -44,6 +41,22 @@ describe('Home', () => {
     const imageBlocks = component.find('div.nypl-quarter-image');
     imageBlocks.forEach((imageBlock) => {
       expect(imageBlock.render().find('h4').length).to.equal(1);
+    });
+  });
+
+  describe('with notification', () => {
+    before(() => {
+      const testStore = makeTestStore();
+      component = mount(
+        <Provider store={testStore}>
+          <Home />
+        </Provider>
+      );
+    });
+
+    it('should have a `Notification`', () => {
+      expect(component.find('Notification').length).to.equal(1);
+      expect(component.find('Notification').text()).to.include('Some info for our patrons');
     });
   });
 });
