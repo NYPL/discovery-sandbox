@@ -12,8 +12,8 @@ const CancelConfirmationModal = ({
   cancelItem,
   setItemToCancel,
 }) => (
-  <Modal className="research-modal">
-    <div className="research-modal__content cancel-confirmation">
+  <Modal className="research-modal cancel-confirmation">
+    <div className="research-modal__content">
       <p>Cancel your hold on this item?</p>
       <p>{itemToCancel.title}</p>
       <div className="button-container">

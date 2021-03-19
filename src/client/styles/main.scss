@@ -127,6 +127,7 @@ input[type=submit]:focus {
 
 .no-scroll {
   overflow: hidden;
+  position: inherit;
 }
 
 .emailSubscription-wrapper {
