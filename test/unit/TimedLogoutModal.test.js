@@ -10,7 +10,7 @@ import sinon from 'sinon';
 import TimedLogoutModal from './../../src/app/components/TimedLogoutModal/TimedLogoutModal';
 
 describe('TimedLogoutModal', () => {
-  describe('When more than 3 minutes remain', () => {
+  describe('When more than 2 minutes remain', () => {
     const callRecord = [];
     let component;
     let sandbox;
@@ -64,7 +64,7 @@ describe('TimedLogoutModal', () => {
     });
   });
 
-  describe('when between 0 and 3 minutes remain', () => {
+  describe('when between 0 and 2 minutes remain', () => {
     const callRecord = [];
     let component;
     let sandbox;
@@ -73,14 +73,14 @@ describe('TimedLogoutModal', () => {
       sandbox = sinon.sandbox.create();
 
       window.location = { replace: () => {} };
-      global.document.cookie = `accountPageExp=${((2 * 60) + 3) * 1000}`;
+      global.document.cookie = `accountPageExp=${((60) + 3) * 1000}`;
       sandbox.stub(window.location, 'replace').callsFake(() => { callRecord.push({ replace: true }); });
       sandbox.stub(global, 'setTimeout').callsFake((fn, timeout) => {
         callRecord.push({ setTimeout: timeout });
         fn();
       });
       sandbox.stub(Date.prototype, 'getTime').callsFake(function () {
-        return this.toString().includes('123000') ? 123000 : 0;
+        return this.toString().includes('63000') ? 63000 : 0;
       });
       sandbox.stub(React, 'useState').callsFake((arg) => {
         global.update = arg;
@@ -113,7 +113,7 @@ describe('TimedLogoutModal', () => {
       expect(component.find('Card').text()).to.include('Your session is about to time out');
     });
     it('should display the time', () => {
-      expect(component.find('Card').text()).to.include('2:03');
+      expect(component.find('Card').text()).to.include('1:03');
     });
     it('should say \'Do you want to stay logged in\'', () => {
       expect(component.find('Card').text()).to.include('Do you want to stay logged in');
@@ -201,11 +201,11 @@ describe('TimedLogoutModal', () => {
       }
 
       window.location = { replace: () => {} };
-      global.document.cookie = 'accountPageExp=123000;';
+      global.document.cookie = 'accountPageExp=63000;';
       sandbox.stub(window.location, 'replace').callsFake((arg) => { replace = arg; });
       sandbox.stub(global, 'setTimeout').callsFake(() => {});
       sandbox.stub(Date.prototype, 'getTime').callsFake(function() {
-        return this.toString().includes('123000') ? 123000 : 0;
+        return this.toString().includes('63000') ? 63000 : 0;
       });
 
       component = mount(
