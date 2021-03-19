@@ -3,12 +3,12 @@ import PropTypes from 'prop-types';
 
 import { Heading, Link, LinkTypes } from '@nypl/design-system-react-components';
 
-const AccountSettings = ({ patron, legacyCatalog }) => (
+const AccountSettings = ({ patron, legacyBaseUrl }) => (
   <div className="account-settings">
     <div className="account-settings__heading-3">
       <Heading level={3} text="Personal Information" />
       <Link
-        href={`${legacyCatalog}/patroninfo*eng~Sdefault/${patron.id}/modpinfo`}
+        href={`${legacyBaseUrl}/patroninfo*eng~Sdefault/${patron.id}/modpinfo`}
         type={LinkTypes.Default}
         className="edit-link settings"
         attributes={{
@@ -35,7 +35,7 @@ const AccountSettings = ({ patron, legacyCatalog }) => (
         <dt>Pin</dt>
         <dd><span>&middot;&middot;&middot;&middot;</span></dd>
         <Link
-          href={`${legacyCatalog}/patroninfo*eng~Sdefault/${patron.id}/newpin`}
+          href={`${legacyBaseUrl}/patroninfo*eng~Sdefault/${patron.id}/newpin`}
           type={LinkTypes.Default}
           className="edit-link"
           attributes={{
@@ -52,7 +52,7 @@ const AccountSettings = ({ patron, legacyCatalog }) => (
 
 AccountSettings.propTypes = {
   patron: PropTypes.object,
-  legacyCatalog: PropTypes.string,
+  legacyBaseUrl: PropTypes.string,
 };
 
 export default AccountSettings;

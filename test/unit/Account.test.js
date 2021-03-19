@@ -59,10 +59,10 @@ describe('`fetchAccountPage`', () => {
     axiosGet = sinon.spy(axios, 'get');
     mock = new MockAdapter(axios);
     mock
-      .onGet(`${appConfig.legacyCatalog}/dp/patroninfo*eng~Sdefault/6677666/holds`)
+      .onGet(`${appConfig.legacyBaseUrl}/dp/patroninfo*eng~Sdefault/6677666/holds`)
       .reply(200, '<div>some html</div>');
     mock
-      .onGet(`${appConfig.legacyCatalog}/dp/patroninfo*eng~Sdefault/6677666/items`)
+      .onGet(`${appConfig.legacyBaseUrl}/dp/patroninfo*eng~Sdefault/6677666/items`)
       .reply(200, '<div>some html</div>');
   });
 
@@ -135,7 +135,7 @@ describe('`fetchAccountPage`', () => {
       Account.fetchAccountPage(renderMockReq('holds'), mockRes, mockResolve);
 
       expect(axiosGet.calledOnce).to.equal(true);
-      expect(axiosGet.firstCall.args[0]).to.equal(`${appConfig.legacyCatalog}/dp/patroninfo*eng~Sdefault/6677666/holds`);
+      expect(axiosGet.firstCall.args[0]).to.equal(`${appConfig.webpacBaseUrl}/dp/patroninfo*eng~Sdefault/6677666/holds`);
     });
   });
 
@@ -144,7 +144,7 @@ describe('`fetchAccountPage`', () => {
       Account.fetchAccountPage(renderMockReq(), mockRes, mockResolve);
 
       expect(axiosGet.calledOnce).to.equal(true);
-      expect(axiosGet.firstCall.args[0]).to.equal(`${appConfig.legacyCatalog}/dp/patroninfo*eng~Sdefault/6677666/items`);
+      expect(axiosGet.firstCall.args[0]).to.equal(`${appConfig.webpacBaseUrl}/dp/patroninfo*eng~Sdefault/6677666/items`);
     });
   });
 });

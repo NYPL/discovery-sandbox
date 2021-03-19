@@ -197,7 +197,7 @@ const AccountPage = (props) => {
         content === 'settings' ? (
           <AccountSettings
             patron={patron}
-            legacyCatalog={appConfig.legacyCatalog}
+            legacyBaseUrl={appConfig.legacyBaseUrl}
           />
         ) : null
       }
