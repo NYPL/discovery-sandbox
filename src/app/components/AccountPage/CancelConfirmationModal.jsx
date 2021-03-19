@@ -1,5 +1,4 @@
-/* global window, document */
-import React, { useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import {
   Button,
@@ -13,8 +12,8 @@ const CancelConfirmationModal = ({
   cancelItem,
   setItemToCancel,
 }) => (
-  <div className="scc-modal">
-    <Card>
+  <Modal className="scc-modal">
+    <div className="scc-modal__content">
       <p>Cancel your hold on this item?</p>
       <p>{itemToCancel.title}</p>
       <Button
@@ -27,8 +26,8 @@ const CancelConfirmationModal = ({
         onClick={cancelItem}
       >Confirm
       </Button>
-    </Card>
-  </div>
+    </div>
+  </Modal>
 );
 
 CancelConfirmationModal.propTypes = {

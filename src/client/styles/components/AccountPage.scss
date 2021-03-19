@@ -12,6 +12,12 @@
 
   td.account-table-buttons {
     padding-right: 0;
+
+    button {
+      &:not(last-of-type) {
+        margin-bottom: var(--space-xs);
+      }
+    }
   }
 
   td > span {
@@ -96,7 +102,7 @@
   }
 
   #account-page-content:not(.overdues) {
-    td {
+    td:not(.account-table-buttons) {
       padding-right: 35px;
     }
   }
@@ -226,7 +232,7 @@
     dl {
       overflow: inherit;
     }
-    
+
     dt {
       font-size: 20px;
     }
@@ -254,8 +260,6 @@
     background-color: #F9F8F7;
     margin: auto;
     opacity: 100%;
-    padding: 54px 5%;
-    text-align: center;
     width: 472px;
     max-width: 100%;
   }
@@ -269,7 +273,12 @@
   }
 
   button {
+    margin: 0;
     width: 153px;
+
+    &:not(last-of-type) {
+      margin-bottom: var(--space-s);
+    }
   }
 }
 
@@ -394,7 +403,12 @@
 
       button {
         width: 85%;
+
+        &:not(last-of-type) {
+          margin-bottom: var(--space-s);
+        }
       }
+
     }
 
     .patFuncEntry {

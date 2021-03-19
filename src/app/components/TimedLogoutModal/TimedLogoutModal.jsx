@@ -47,18 +47,20 @@ const TimedLogoutModal = (props) => {
   }
 
   const open = minutes < 2;
-  if (!open) return null;
+  // if (!open) return null;
 
   return (
     <Modal
       open
-      className="timedLogoutModal"
+      className="scc-modal timedLogoutModal"
     >
-      <Card>
-        Your session is about to time out
-        <div className="timeDisplay">
-          {`${minutes}:${seconds < 10 ? '0' : ''}${seconds}`}
-        </div>
+      <div className="scc-modal__content">
+        <p>
+          Your session is about to time out
+          <span className="timeDisplay">
+            {`${minutes}:${seconds < 10 ? '0' : ''}${seconds}`}
+          </span>
+        </p>
         <hr />
         Do you want to stay logged in?
         <div className="buttonContainer">
@@ -77,7 +79,7 @@ const TimedLogoutModal = (props) => {
             Stay logged in
           </Button>
         </div>
-      </Card>
+      </div>
     </Modal>
   );
 };
