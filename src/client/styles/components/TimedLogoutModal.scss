@@ -1,11 +1,14 @@
-.timedLogoutModal {
-  background: rgba(64, 64, 64, 0.9);
-
+.timed-logout {
   hr {
     color: #89969F;
   }
 
-  .timeDisplay {
+  p {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .time-display {
     padding-left: var(--space-m);
   }
 
@@ -13,37 +16,8 @@
     font-weight: 500;
   }
 
-  .buttonContainer {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 20px;
-  }
-
   .button {
     display: inline-block;
     font-weight: 300;
-  }
-}
-
-.scc-modal__content {
-  align-items: flex-start;
-  background: #F9F8F7;
-  border: 1px solid var(--ui-gray-light);
-  border-radius: 5px;
-  flex-flow: column wrap;
-  min-height: 200px;
-  padding: var(--space) var(--space-l);
-  text-align: initial;
-
-  p {
-    display: flex;
-    justify-content: space-between;
-  }
-}
-
-@media (max-width: 400px) {
-  .scc-modal__content {
-    padding-left: var(--space);
-    padding-right: var(--space);
   }
 }

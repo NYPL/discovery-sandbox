@@ -194,3 +194,64 @@ select {
 .nypl-column-full {
   padding: 0;
 }
+
+.research-modal {
+  background: rgba(64, 64, 64, 0.9);
+  padding-top: 25vh;
+
+  div {
+    background-color: #F9F8F7;
+    margin: auto;
+    opacity: 100%;
+    width: 472px;
+    max-width: 100%;
+  }
+
+  span {
+    font-weight: 700;
+  }
+
+  p:nth-child(2) {
+    font-weight: 500;
+  }
+
+  button {
+    width: 153px;
+
+    &:first-of-type {
+      margin-left: 0;
+    }
+
+    &:last-of-type {
+      margin-right: 0;
+    }
+
+    &:not(last-of-type) {
+      margin-bottom: var(--space-s);
+    }
+  }
+}
+
+
+.research-modal__content {
+  align-items: flex-start;
+  background: #F9F8F7;
+  border: 1px solid var(--ui-gray-light);
+  border-radius: 5px;
+  flex-flow: column wrap;
+  min-height: 200px;
+  padding: var(--space) var(--space-l);
+
+  .button-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+  }
+}
+
+@media (max-width: 400px) {
+  .research-modal__content {
+    padding-left: var(--space);
+    padding-right: var(--space);
+  }
+}

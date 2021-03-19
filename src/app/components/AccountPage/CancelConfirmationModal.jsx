@@ -12,20 +12,22 @@ const CancelConfirmationModal = ({
   cancelItem,
   setItemToCancel,
 }) => (
-  <Modal className="scc-modal">
-    <div className="scc-modal__content">
+  <Modal className="research-modal">
+    <div className="research-modal__content cancel-confirmation">
       <p>Cancel your hold on this item?</p>
       <p>{itemToCancel.title}</p>
-      <Button
-        buttonType={ButtonTypes.Secondary}
-        onClick={() => setItemToCancel(null)}
-      >Back
-      </Button>
-      <Button
-        buttonType={ButtonTypes.Primary}
-        onClick={cancelItem}
-      >Confirm
-      </Button>
+      <div className="button-container">
+        <Button
+          buttonType={ButtonTypes.Secondary}
+          onClick={() => setItemToCancel(null)}
+        >Back
+        </Button>
+        <Button
+          buttonType={ButtonTypes.Primary}
+          onClick={cancelItem}
+        >Confirm
+        </Button>
+      </div>
     </div>
   </Modal>
 );
