@@ -385,3 +385,7 @@
     text-align: center;
   }
 }
+
+.timed-logout + .cancel-confirmation {
+  display: none;
+}

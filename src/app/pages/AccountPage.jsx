@@ -133,11 +133,6 @@ const AccountPage = (props) => {
           /> :
           null
       }
-      <div className="nypl-patron-details">
-        <div className="name">{patron.names ? patron.names[0] : null}</div>
-        <div>{patron.barcodes ? patron.barcodes[0] : null}</div>
-        <div>Expiration Date: {formattedExpirationDate}</div>
-      </div>
       {itemToCancel ? (
         <CancelConfirmationModal
           itemToCancel={itemToCancel}
@@ -145,6 +140,11 @@ const AccountPage = (props) => {
           cancelItem={cancelItem}
         />
       ) : null}
+      <div className="nypl-patron-details">
+        <div className="name">{patron.names ? patron.names[0] : null}</div>
+        <div>{patron.barcodes ? patron.barcodes[0] : null}</div>
+        <div>Expiration Date: {formattedExpirationDate}</div>
+      </div>
       <LinkTabSet
         activeTab={content}
         tabs={[
