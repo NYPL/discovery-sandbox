@@ -10,6 +10,7 @@ import {
 } from '@nypl/design-system-react-components';
 import moment from 'moment';
 
+import Search from '../components/Search/Search';
 import LinkTabSet from '../components/AccountPage/LinkTabSet';
 import AccountSettings from '../components/AccountPage/AccountSettings';
 import LoadingLayer from '../components/LoadingLayer/LoadingLayer';
@@ -18,9 +19,12 @@ import SccContainer from '../components/SccContainer/SccContainer';
 import { logOutFromEncoreAndCatalogIn } from '../utils/logoutUtils';
 
 import { manipulateAccountPage, makeRequest, buildReqBody } from '../utils/accountPageUtils';
+import {
+  basicQuery,
+} from '../utils/utils';
 
 
-const AccountPage = (props) => {
+const AccountPage = (props, context) => {
   const { patron, accountHtml, appConfig } = useSelector(state => ({
     patron: state.patron,
     accountHtml: state.accountHtml,
@@ -117,89 +121,98 @@ const AccountPage = (props) => {
 
   return (
     <SccContainer
-      className="nypl-patron-page"
       activeSection="account"
       pageTitle="Account"
     >
-      <Heading
-        level={2}
-        id="2"
-        text="My Account"
-      />
-      {
-        displayTimedLogoutModal ?
-          <TimedLogoutModal
-            stayLoggedIn={resetCountdown}
-            baseUrl={baseUrl}
-          /> :
-          null
-      }
-      <div className="nypl-patron-details">
-        <div className="name">{patron.names ? patron.names[0] : null}</div>
-        <div>{patron.barcodes ? patron.barcodes[0] : null}</div>
-        <div>Expiration Date: {formattedExpirationDate}</div>
-      </div>
-      {itemToCancel ? (
-        <div className="scc-modal">
-          <div>
-            <p>Cancel your hold on this item?</p>
-            <p>{itemToCancel.title}</p>
-            <Button
-              buttonType={ButtonTypes.Secondary}
-              onClick={() => setItemToCancel(null)}
-            >Back
-            </Button>
-            <Button
-              buttonType={ButtonTypes.Primary}
-              onClick={cancelItem}
-            >Confirm
-            </Button>
-          </div>
+      <div className="content-header research-search">
+        <div className="research-search__inner-content">
+          <Search
+            router={context.router}
+            createAPIQuery={basicQuery()}
+          />
         </div>
-      ) : null}
-      <LinkTabSet
-        activeTab={content}
-        tabs={[
-          {
-            label: 'Checkouts',
-            link: `${baseUrl}/account/items`,
-            content: 'items'
-          },
-          {
-            label: 'Holds',
-            link: `${baseUrl}/account/holds`,
-            content: 'holds',
-          },
-          {
-            label: `Fines${patron.moneyOwed ? ` ($${patron.moneyOwed.toFixed(2)})` : ''}`,
-            link: `${baseUrl}/account/overdues`,
-            content: 'overdues',
-          },
-          {
-            label: 'Account Settings',
-            link: `${baseUrl}/account/settings`,
-            content: 'settings',
-          },
-        ]}
-      />
-      {isLoading && content !== 'settings' ? <SkeletonLoader /> : ''}
-      {
-        typeof accountHtml === 'string' && content !== 'settings' ? (
-          <div
-            dangerouslySetInnerHTML={{ __html: accountHtml }}
-            id="account-page-content"
-            className={`${content} ${isLoading ? 'loading' : ''}`}
-          />
-        ) : ''
-      }
-      {
-        content === 'settings' ? (
-          <AccountSettings
-            patron={patron}
-            legacyBaseUrl={appConfig.legacyBaseUrl}
-          />
-        ) : null
-      }
+      </div>
+      <div className="nypl-patron-page">
+        <Heading
+          level={2}
+          id="2"
+          text="My Account"
+        />
+        {
+          displayTimedLogoutModal ?
+            <TimedLogoutModal
+              stayLoggedIn={resetCountdown}
+              baseUrl={baseUrl}
+            /> :
+            null
+        }
+        <div className="nypl-patron-details">
+          <div className="name">{patron.names ? patron.names[0] : null}</div>
+          <div>{patron.barcodes ? patron.barcodes[0] : null}</div>
+          <div>Expiration Date: {formattedExpirationDate}</div>
+        </div>
+        {itemToCancel ? (
+          <div className="scc-modal">
+            <div>
+              <p>Cancel your hold on this item?</p>
+              <p>{itemToCancel.title}</p>
+              <Button
+                buttonType={ButtonTypes.Secondary}
+                onClick={() => setItemToCancel(null)}
+              >Back
+              </Button>
+              <Button
+                buttonType={ButtonTypes.Primary}
+                onClick={cancelItem}
+              >Confirm
+              </Button>
+            </div>
+          </div>
+        ) : null}
+        <LinkTabSet
+          activeTab={content}
+          tabs={[
+            {
+              label: 'Checkouts',
+              link: `${baseUrl}/account/items`,
+              content: 'items'
+            },
+            {
+              label: 'Holds',
+              link: `${baseUrl}/account/holds`,
+              content: 'holds',
+            },
+            {
+              label: `Fines${patron.moneyOwed ? ` ($${patron.moneyOwed.toFixed(2)})` : ''}`,
+              link: `${baseUrl}/account/overdues`,
+              content: 'overdues',
+            },
+            {
+              label: 'Account Settings',
+              link: `${baseUrl}/account/settings`,
+              content: 'settings',
+            },
+          ]}
+        />
+        {isLoading && content !== 'settings' ? <SkeletonLoader /> : ''}
+        {
+          typeof accountHtml === 'string' && content !== 'settings' ? (
+            <div
+              dangerouslySetInnerHTML={{ __html: accountHtml }}
+              id="account-page-content"
+              className={`${content} ${isLoading ? 'loading' : ''}`}
+            />
+          ) : ''
+        }
+        {
+          content === 'settings' ? (
+            <AccountSettings
+              patron={patron}
+              legacyBaseUrl={appConfig.legacyBaseUrl}
+            />
+          ) : null
+        }
+      </div>
     </SccContainer>
   );
 };
