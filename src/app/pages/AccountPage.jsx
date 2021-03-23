@@ -40,7 +40,6 @@ const AccountPage = (props) => {
   const [displayTimedLogoutModal, setDisplayTimedLogoutModal] = useState(false);
 
   useEffect(() => {
-
     if (typeof window !== 'undefined' && (!patron.id || accountHtml.error)) {
       const fullUrl = encodeURIComponent(window.location.href);
       logOutFromEncoreAndCatalogIn(() => {
@@ -118,7 +117,7 @@ const AccountPage = (props) => {
 
   return (
     <SccContainer
-      className="page-content nypl-patron-page"
+      className="nypl-patron-page"
       activeSection="account"
       pageTitle="Account"
     >
