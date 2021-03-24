@@ -109,14 +109,14 @@ describe('TimedLogoutModal', () => {
       expect(callRecord.some(call => call.replace)).to.equal(false);
     });
 
-    it('should say \'Your session is about to time out\'', () => {
-      expect(component.find('Card').text()).to.include('Your session is about to time out');
+    it('should say \'Your session is about to expire\'', () => {
+      expect(component.find('.research-modal__content').text()).to.include('Your session is about to expire');
     });
     it('should display the time', () => {
-      expect(component.find('Card').text()).to.include('1:03');
+      expect(component.find('.research-modal__content').text()).to.include('1:03');
     });
     it('should say \'Do you want to stay logged in\'', () => {
-      expect(component.find('Card').text()).to.include('Do you want to stay logged in');
+      expect(component.find('.research-modal__content').text()).to.include('Do you want to stay logged in');
     });
     it('should have a button to log out', () => {
       expect(component.find('Button').at(0).text()).to.equal('Log off');

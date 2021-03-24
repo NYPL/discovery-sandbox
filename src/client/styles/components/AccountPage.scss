@@ -12,6 +12,12 @@
 
   td.account-table-buttons {
     padding-right: 0;
+
+    button {
+      &:not(last-of-type) {
+        margin-bottom: var(--space-xs);
+      }
+    }
   }
 
   td > span {
@@ -96,7 +102,7 @@
   }
 
   #account-page-content:not(.overdues) {
-    td {
+    td:not(.account-table-buttons) {
       padding-right: 35px;
     }
   }
@@ -226,7 +232,7 @@
     dl {
       overflow: inherit;
     }
-    
+
     dt {
       font-size: 20px;
     }
@@ -236,40 +242,6 @@
       font-weight: 600;
       line-height: 30px;
     }
-  }
-}
-
-.scc-modal {
-  background-color: rgba(153, 153, 153, 0.8);
-  height: 100%;
-  left: 0;
-  overflow-y: auto;
-  position: fixed;
-  top: 0;
-  width: 100vw;
-  z-index: 999;
-  padding-top: 20%;
-
-  div {
-    background-color: #F9F8F7;
-    margin: auto;
-    opacity: 100%;
-    padding: 54px 5%;
-    text-align: center;
-    width: 472px;
-    max-width: 100%;
-  }
-
-  span {
-    font-weight: 700;
-  }
-
-  p:nth-child(2) {
-    font-weight: 500;
-  }
-
-  button {
-    width: 153px;
   }
 }
 
@@ -394,11 +366,26 @@
 
       button {
         width: 85%;
+
+        &:not(last-of-type) {
+          margin-bottom: var(--space-s);
+        }
       }
+
     }
 
     .patFuncEntry {
       margin-bottom: var(--space-s);
     }
   }
+}
+
+.cancel-confirmation {
+  .research-modal__content {
+    text-align: center;
+  }
+}
+
+.timed-logout + .cancel-confirmation {
+  display: none;
 }
