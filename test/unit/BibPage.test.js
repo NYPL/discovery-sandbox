@@ -37,6 +37,13 @@ describe('BibPage', () => {
       expect(tabs.length).to.equal(3);
       expect(tabTitles).to.deep.equal(['Availability', 'Details', 'Full Description']);
     });
+
+    it('has "View in Legacy Catalog" link', () => {
+      const linkToLegacy = component.find('#legacy-catalog-link');
+      expect(linkToLegacy.length).to.equal(1);
+      expect(linkToLegacy.is('a')).to.equal(true);
+      expect(linkToLegacy.prop('href')).to.equal('https://legacyBaseUrl.nypl.org/record=b11417539~S1');
+    });
   });
 
   describe('Serial', () => {
