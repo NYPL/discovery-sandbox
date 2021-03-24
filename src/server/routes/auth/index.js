@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import config from '../../../app/data/appConfig.js';
+import config from '../../../app/data/appConfig';
 
 function initializePatronTokenAuth(req, res, next) {
   const nyplIdentityCookieString = req.cookies.nyplIdentityPatron;

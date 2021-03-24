@@ -58,6 +58,7 @@ const commonSettings = {
         ITEM_BATCH_SIZE: JSON.stringify(process.env.ITEM_BATCH_SIZE),
         CIRCULATING_CATALOG: JSON.stringify(process.env.CIRCULATING_CATALOG),
         BASE_URL: JSON.stringify(process.env.BASE_URL),
+        WEBPAC_BASE_URL: JSON.stringify(process.env.WEBPAC_BASE_URL),
       },
     }),
     // new BundleAnalyzerPlugin({
@@ -233,6 +234,7 @@ if (ENV === 'production') {
           DISPLAY_TITLE: JSON.stringify(process.env.DISPLAY_TITLE),
           ITEM_BATCH_SIZE: JSON.stringify(process.env.ITEM_BATCH_SIZE),
           CIRCULATING_CATALOG: JSON.stringify(process.env.CIRCULATING_CATALOG),
+          WEBPAC_BASE_URL: JSON.stringify(process.env.WEBPAC_BASE_URL),
         },
       }),
     ],

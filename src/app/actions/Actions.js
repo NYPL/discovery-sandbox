@@ -17,6 +17,7 @@ export const Actions = {
   UPDATE_SUBJECT_HEADING: 'UPDATE_SUBJECT_HEADING',
   UPDATE_DRBB_RESULTS: 'UPDATE_DRBB_RESULTS',
   UPDATE_PATRON_DATA: 'UPDATE_PATRON_DATA',
+  UPDATE_ACCOUNT_HTML: 'UPDATE_ACCOUNT_HTML',
   UPDATE_FEATURES: 'UPDATE_FEATURES',
 };
 
@@ -100,6 +101,11 @@ export const updateLoadingStatus = loading => ({
   payload: loading,
 });
 
+export const updateAccountHtml = html => ({
+  type: Actions.UPDATE_ACCOUNT_HTML,
+  payload: html,
+});
+
 export const updateFeatures = features => ({
   type: Actions.UPDATE_FEATURES,
   payload: features,
@@ -146,4 +152,10 @@ export const updateHoldRequestPage = data => dispatch => new Promise(() => {
   dispatch(updateIsEddRequestable(isEddRequestable));
   if (searchKeywords) dispatch(updateSearchKeywords(searchKeywords));
   return data;
+});
+
+export const updateAccountPage = data => dispatch => new Promise(() => {
+  const { accountHtml, patron } = data;
+  dispatch(updateAccountHtml(accountHtml));
+  if (patron) dispatch(updatePatronData(patron));
 });

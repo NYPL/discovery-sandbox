@@ -24,7 +24,7 @@ class AdditionalDetailsViewer extends React.Component {
     );
 
     return (
-      <div title={JSON.stringify(value.source, null, 2)} key={index}>
+      <div key={index}>
         { value.label ? link : value.content }
         { value.parallels ? value.parallels : null }
       </div>
