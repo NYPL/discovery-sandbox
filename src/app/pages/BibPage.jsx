@@ -72,7 +72,6 @@ export const BibPage = (props, context) => {
   const {
     location,
     searchKeywords,
-    features,
     field,
     selectedFilters,
     page,
@@ -200,7 +199,7 @@ export const BibPage = (props, context) => {
   ].filter(tab => tab);
 
   const classicLink = (
-    bibId.startsWith('b') && features.includes('catalog-link') ?
+    bibId.startsWith('b') ?
       <a href={`${appConfig.legacyBaseUrl}/record=${bibId}~S1`} id="legacy-catalog-link">View in Legacy Catalog</a>
       :
       null
@@ -260,16 +259,11 @@ BibPage.propTypes = {
   searchKeywords: PropTypes.string,
   location: PropTypes.object,
   bib: PropTypes.object,
-  features: PropTypes.array,
   field: PropTypes.string,
   selectedFilters: PropTypes.object,
   page: PropTypes.string,
   sortBy: PropTypes.string,
   dispatch: PropTypes.func,
-};
-
-BibPage.defaultProps = {
-  features: [],
 };
 
 BibPage.contextTypes = {
@@ -279,7 +273,6 @@ BibPage.contextTypes = {
 const mapStateToProps = ({
   bib,
   searchKeywords,
-  features,
   field,
   selectedFilters,
   page,
@@ -287,7 +280,6 @@ const mapStateToProps = ({
 }) => ({
   bib,
   searchKeywords,
-  features,
   field,
   selectedFilters,
   page,
