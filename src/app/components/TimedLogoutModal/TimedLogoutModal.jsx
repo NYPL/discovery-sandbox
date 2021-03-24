@@ -52,16 +52,18 @@ const TimedLogoutModal = (props) => {
   return (
     <Modal
       open
-      className="timedLogoutModal"
+      className="research-modal timed-logout"
     >
-      <Card>
-        Your session is about to time out
-        <div className="timeDisplay">
-          {`${minutes}:${seconds < 10 ? '0' : ''}${seconds}`}
-        </div>
+      <div className="research-modal__content">
+        <p>
+          Your session is about to expire
+          <span className="time-display">
+            {`${minutes}:${seconds < 10 ? '0' : ''}${seconds}`}
+          </span>
+        </p>
         <hr />
         Do you want to stay logged in?
-        <div className="buttonContainer">
+        <div className="button-container">
           <Button
             buttonType={ButtonTypes.Secondary}
             className="button"
@@ -77,7 +79,7 @@ const TimedLogoutModal = (props) => {
             Stay logged in
           </Button>
         </div>
-      </Card>
+      </div>
     </Modal>
   );
 };
