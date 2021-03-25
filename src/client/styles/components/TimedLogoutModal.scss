@@ -1,38 +1,23 @@
-.timedLogoutModal {
-  background: rgba(64, 64, 64, 0.9);
-  line-height: 30apx;
-
-  .timeDisplay {
-    display: inline-flex;
-    float: right;
-  }
-
+.timed-logout {
   hr {
     color: #89969F;
+  }
+
+  p {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .time-display {
+    padding-left: var(--space-m);
   }
 
   :not(.button) {
     font-weight: 500;
   }
 
-  .card {
-    background: #F9F8F7;
-    position: relative;
-    left: 20vw;
-    top: 20vh;
-    width: 50vw;
-    min-height: 200px;
-  }
-
-  .buttonContainer {
-    display: flex;
-    justify-content: space-around;
-    margin-top: 20px;
-  }
-
   .button {
     display: inline-block;
-    width: 40%;
     font-weight: 300;
   }
 }
