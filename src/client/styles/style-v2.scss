@@ -57,7 +57,14 @@
     }
   }
 
-} // /.nypl-item-details
+}
+
+@media (max-width: 600px) {
+  .nypl-item-details__heading {
+    display: block;
+  }
+}
+// /.nypl-item-details
 
 .tabbed dl {
   border-bottom: 1px solid var(--ui-gray-light);

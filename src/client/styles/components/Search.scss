@@ -24,3 +24,16 @@
   display: flex;
   width: 100%;
 }
+
+
+@media (max-width: 490px) {
+  .nypl-sorter-row {
+    display: block;
+  }
+}
+
+.select {
+  // manipulate padding coming from DS a bit because of longer option labels
+  padding-left: var(--space-xs);
+  padding-right: var(--space-l);
+}
