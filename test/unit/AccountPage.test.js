@@ -34,6 +34,10 @@ describe('AccountPage', () => {
       component = mountTestRender(<AccountPage params={{}} />, { store: mockStore });
     });
 
+    it('should render a `Search` component', () => {
+      expect(component.find('Search').length).to.equal(1);
+    });
+
     it('should render a <div> with class .nypl-patron-page', () => {
       expect(component.find('.nypl-patron-page').hostNodes()).to.have.length(1);
     });
