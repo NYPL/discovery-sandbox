@@ -214,6 +214,11 @@ select {
   }
 }
 
+a:focus {
+  background-color: inherit;
+  box-shadow: none;
+}
+
 @media (max-width: 400px) {
   .research-modal__content {
     padding-left: var(--space);
