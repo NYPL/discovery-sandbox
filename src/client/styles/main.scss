@@ -158,3 +158,9 @@ select {
 .nypl-column-full {
   padding: 0;
 }
+
+
+a:focus {
+  background-color: inherit;
+  box-shadow: none;
+}
