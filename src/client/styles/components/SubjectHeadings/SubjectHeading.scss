@@ -82,10 +82,6 @@ tbody .subjectHeadingRow {
   }
 }
 
-a:focus {
-  background-color: inherit;
-}
-
 @include media($mobile-breakpoint) {
   .subjectHeadingsTable {
     th {

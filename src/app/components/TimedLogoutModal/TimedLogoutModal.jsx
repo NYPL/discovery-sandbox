@@ -21,6 +21,7 @@ const TimedLogoutModal = (props) => {
 
   const logOutAndRedirect = () => {
     logOutFromEncoreAndCatalogIn(() => {
+      document.cookie = 'accountPageExp=; expires=Thu, 01 Jan 1970 00:00:00 UTC;';
       window.location.replace(baseUrl);
     });
   };

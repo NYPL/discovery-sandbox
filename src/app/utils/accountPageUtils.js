@@ -47,6 +47,12 @@ export const buildReqBody = (content, itemObj, locationData = {}) => {
   }
 };
 
+export const convertEncoreUrl = (encoreUrl) => {
+  const bibId = encoreUrl.match(/C__R(b\d*)/) && encoreUrl.match(/C__R(b\d*)/)[1];
+  if (!bibId) return encoreUrl;
+  return `${appConfig.baseUrl}/bib/${bibId}`;
+}
+
 export const manipulateAccountPage = (
   accountPageContent,
   updateAccountHtml,
@@ -119,6 +125,12 @@ export const manipulateAccountPage = (
           eventListeners.push({ element: locationSelect, cb: locationChangeCb });
         }
       }
+      el.querySelectorAll('.patFuncTitle').forEach((titleTd) => {
+        titleTd.querySelectorAll('a').forEach(link => {
+          link.href = convertEncoreUrl(link.href);
+        });
+      });
+
       const inputs = el.querySelectorAll('input');
       const buttons = [];
       const removeTd = (element) => {
