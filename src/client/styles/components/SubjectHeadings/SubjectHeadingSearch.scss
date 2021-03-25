@@ -1,8 +1,14 @@
 .react-autosuggest__container {
   width: 40%;
-
   li {
     margin-bottom: 0;
+  }
+}
+
+@media (max-width: 600px) {
+  .react-autosuggest__container {
+    display: block;
+    width: 100%;
   }
 }
 
