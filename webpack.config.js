@@ -59,6 +59,7 @@ const commonSettings = {
         CIRCULATING_CATALOG: JSON.stringify(process.env.CIRCULATING_CATALOG),
         BASE_URL: JSON.stringify(process.env.BASE_URL),
         WEBPAC_BASE_URL: JSON.stringify(process.env.WEBPAC_BASE_URL),
+        ENCORE_BASE_URL: JSON.stringify(process.env.ENCORE_BASE_URL),
       },
     }),
     // new BundleAnalyzerPlugin({

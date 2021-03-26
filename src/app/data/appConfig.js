@@ -68,6 +68,7 @@ const appConfig = {
   libAnswersEmail: process.env.LIB_ANSWERS_EMAIL,
   itemBatchSize: process.env.ITEM_BATCH_SIZE,
   webpacBaseUrl: process.env.WEBPAC_BASE_URL,
+  encoreBaseUrl: process.env.ENCORE_BASE_URL,
 };
 
 export default appConfig;
