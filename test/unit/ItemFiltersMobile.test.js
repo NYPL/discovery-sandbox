@@ -74,7 +74,7 @@ describe('ItemFiltersMobile', () => {
       });
 
       it('should render `ItemFilter` for option types passed', () => {
-        expect(component.find('.item-filter').length).to.equal(1);
+        expect(component.find('.item-filter').hostNodes().length).to.equal(1);
       });
 
       describe('"Go Back" button', () => {

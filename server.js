@@ -62,6 +62,11 @@ app.use('/', (req, res, next) => {
   if (req.path === appConfig.baseUrl || req.path === '/') {
     return res.redirect(`${appConfig.baseUrl}/`);
   }
+  // If request made on legacy base url, redirect to current base url:
+  if (appConfig.previousBaseUrl && appConfig.previousBaseUrl !== appConfig.baseUrl
+      && req.path.indexOf(appConfig.previousBaseUrl) === 0) {
+    return res.redirect(302, req.originalUrl.replace(appConfig.previousBaseUrl, appConfig.baseUrl));
+  }
   return next();
 });
 
@@ -96,7 +101,7 @@ app.get('/*', (req, res) => {
       const title = DocumentTitle.rewind();
 
       res
-        .status(200)
+        .status(res.statusCode || 200)
         .render('index', {
           application,
           appData: JSON.stringify(store.getState()).replace(/</g, '\\u003c'),

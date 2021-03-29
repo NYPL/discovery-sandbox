@@ -1,4 +1,4 @@
-/* global window document */
+/* global window */
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Link, withRouter } from 'react-router';
@@ -7,21 +7,18 @@ import {
   isEmpty as _isEmpty,
   findWhere as _findWhere,
 } from 'underscore';
-import DocumentTitle from 'react-document-title';
 import Url from 'url-parse';
 import { connect } from 'react-redux';
 
-import appConfig from '../../data/appConfig';
-import Breadcrumbs from '../Breadcrumbs/Breadcrumbs';
+import appConfig from '../data/appConfig';
+import SccContainer from '../components/SccContainer/SccContainer';
 import {
   trackDiscovery,
-  basicQuery,
-} from '../../utils/utils';
+} from '../utils/utils';
 
 export class HoldConfirmation extends React.Component {
   componentDidMount() {
     this.requireUser();
-    document.getElementById('mainContent').focus();
   }
 
   expiredMessage() {
@@ -182,9 +179,8 @@ export class HoldConfirmation extends React.Component {
   renderStartOverLink() {
     if (this.props.location.query.fromUrl) {
       return (
-        <span id="go-to-shared-catalog"> You may also try your search in
-          our <Link to={`${appConfig.baseUrl}/`} onClick={e => this.backToHome(e)}>Shared
-          Collection Catalog</Link>.
+        <span id="go-to-research-catalog"> You may also try your search in
+          our <Link to={`${appConfig.baseUrl}/`} onClick={e => this.backToHome(e)}>{appConfig.displayTitle}</Link>.
         </span>
       );
     }
@@ -361,38 +357,19 @@ export class HoldConfirmation extends React.Component {
       trackDiscovery('Error', 'Hold Confirmation');
     }
 
-    const searchUrl = basicQuery(this.props)({});
-
     return (
-      <DocumentTitle title={`${confirmationPageTitle} | Shared Collection Catalog | NYPL`}>
-        <main className="main-page">
-          <div className="nypl-request-page-header">
-            <div className="row">
-              <div className="nypl-full-width-wrapper">
-                <div className="nypl-column-full">
-                  <Breadcrumbs
-                    searchUrl={searchUrl}
-                    type="confirmation"
-                    bibUrl={`/bib/${bibId}`}
-                    itemUrl={`/hold/request/${bibId}-${itemId}`}
-                    edd={pickupLocation === 'edd'}
-                  />
-                  <h1 id="mainContent" tabIndex="0">{confirmationPageTitle}</h1>
-                </div>
-              </div>
+      <SccContainer
+        activeSection="search"
+        pageTitle={confirmationPageTitle}
+      >
+        <div className="nypl-row">
+          <div className="nypl-column-three-quarters">
+            <div className="nypl-request-item-summary">
+              {confirmationInfo}
             </div>
           </div>
-          <div className="nypl-full-width-wrapper">
-            <div className="nypl-row">
-              <div className="nypl-column-three-quarters">
-                <div className="nypl-request-item-summary">
-                  {confirmationInfo}
-                </div>
-              </div>
-            </div>
-          </div>
-        </main>
-      </DocumentTitle>
+        </div>
+      </SccContainer>
     );
   }
 }

@@ -6,6 +6,7 @@ import {
   updateHoldRequestPage,
   resetState,
   updateLastLoaded,
+  updateAccountPage,
 } from '@Actions';
 import appConfig from '@appConfig';
 import { updateLoadingStatus } from '../actions/Actions';
@@ -33,6 +34,11 @@ const routes = {
     action: updateHoldRequestPage,
     path: 'hold/request',
     params: '/:bibId-:itemId',
+  },
+  account: {
+    action: updateAccountPage,
+    path: 'account',
+    params: '/:content?',
   },
 };
 
@@ -89,7 +95,7 @@ function loadDataForRoutes(location, dispatch) {
     successCb(pathType, dispatch),
     errorCb,
   ).then((resp) => {
-    if (resp && !resp.redirect) dispatch(updateLastLoaded(path));
+    if (!resp || (resp && !resp.redirect)) dispatch(updateLastLoaded(path));
     dispatch(updateLoadingStatus(false));
     return resp;
   }).catch((error) => {

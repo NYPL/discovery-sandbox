@@ -37,19 +37,9 @@ describe('Search', () => {
       expect(component.find('form').prop('action')).to.equal(`${appConfig.baseUrl}/search`);
     });
 
-    it('should render the nypl-omnisearch style class', () => {
-      expect(component.find('.nypl-omnisearch').length).to.equal(1);
-    });
-
     it('should render a select element', () => {
       expect(component.find('select').length).to.equal(1);
       expect(component.find('select').prop('id')).to.equal('search-by-field');
-    });
-
-    it('should render a label for the select element', () => {
-      expect(component.find('label').length).to.equal(2);
-      expect(component.find('label').at(0).prop('htmlFor')).to.equal('search-by-field');
-      expect(component.find('#search-by-field').length).to.equal(1);
     });
 
     it('should render four option elements', () => {
@@ -204,7 +194,7 @@ describe('Search', () => {
       component.find('input').at(0).simulate('change', { target: { value: 'Dune' } });
       expect(component.state('searchKeywords')).to.equal('Dune');
       component.find('input').at(0).simulate('change', { target: { value: 'Harry Potter' } });
-      component.find('button').at(0).simulate('keyPress');
+      component.find('button').at(0).simulate('submit');
       expect(component.state('searchKeywords')).to.equal('Harry Potter');
       expect(triggerSubmitSpy.callCount).to.equal(1);
     });

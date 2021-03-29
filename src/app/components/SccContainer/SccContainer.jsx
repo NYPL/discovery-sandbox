@@ -1,57 +1,87 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
+import DocumentTitle from 'react-document-title';
 
-import Breadcrumbs from '../Breadcrumbs/Breadcrumbs';
-import Notification from '../Notification/Notification';
+import {
+  Breadcrumbs,
+  Heading,
+} from '@nypl/design-system-react-components';
+
+import LoadingLayer from '../LoadingLayer/LoadingLayer';
+import SubNav from '../SubNav/SubNav';
+import appConfig from '../../data/appConfig';
 
 const SccContainer = (props) => {
-  const { features } = props;
-  const includeDrbb = features.includes('drb-integration');
+  const {
+    loading,
+  } = useSelector(state => ({
+    loading: state.loading,
+  }));
+  const {
+    useLoadingLayer,
+    children,
+    activeSection,
+    className,
+    pageTitle,
+  } = props;
+
+  const documentTitle = `${pageTitle ? `${pageTitle} | ` : ''}${appConfig.displayTitle} | NYPL`;
+
   return (
-    <main className="main-page">
-      <div className="nypl-page-header">
-        <div className={`nypl-full-width-wrapper filter-page${includeDrbb ? ' drbb-integration' : ''}`}>
-          <div className="nypl-row">
-            <div className="nypl-column-full">
-              <Breadcrumbs type={props.breadcrumbsType} />
-              <Notification notificationType="searchResultsNotification" />
-              <h1
-                aria-label={props.bannerOptions.ariaLabel || props.bannerOptions.text}
+    <DocumentTitle title={documentTitle}>
+      <div className="nypl-ds nypl--research layout-container">
+        {
+          useLoadingLayer ? (
+            <LoadingLayer
+              loading={loading}
+            />
+          ) : null
+        }
+        <main className="main main-page">
+          <div className="content-header catalog__header">
+            <Breadcrumbs
+              breadcrumbs={[
+                { url: 'https://www.nypl.org/', text: 'Home' },
+                { url: 'https://www.nypl.org/research', text: 'Research' },
+                { url: appConfig.baseUrl, text: appConfig.displayTitle },
+              ]}
+              className="breadcrumbs"
+            />
+            <div className="catalog__heading">
+              <Heading
+                level={1}
+                id="1"
+                blockName="hero"
               >
-                { props.bannerOptions.text }
-              </h1>
-              { props.extraBannerElement }
+                {appConfig.displayTitle}
+              </Heading>
             </div>
+            <SubNav activeSection={activeSection} />
           </div>
-        </div>
-        { props.secondaryExtraBannerElement }
+          <div className={`content-primary ${className || ''}`}>
+            {children}
+          </div>
+        </main>
       </div>
-      { props.extraRow }
-      <div className={`nypl-full-width-wrapper${includeDrbb ? ' drbb-integration' : ''}`}>
-        { props.mainContent }
-      </div>
-    </main>
+    </DocumentTitle>
   );
 };
 
 SccContainer.propTypes = {
-  mainContent: PropTypes.element,
-  extraBannerElement: PropTypes.element,
-  secondaryExtraBannerElement: PropTypes.element,
-  extraRow: PropTypes.element,
-  breadcrumbsType: PropTypes.string,
-  bannerOptions: PropTypes.object,
-  features: PropTypes.array,
+  children: PropTypes.array,
+  useLoadingLayer: PropTypes.bool,
+  activeSection: PropTypes.string,
+  className: PropTypes.string,
+  pageTitle: PropTypes.string,
 };
 
 SccContainer.defaultProps = {
-  mainContent: null,
-  extraBannerElement: null,
+  useLoadingLayer: true,
 };
 
 SccContainer.contextTypes = {
   router: PropTypes.object,
 };
 
-export default connect(({ features }) => ({ features }))(SccContainer);
+export default SccContainer;

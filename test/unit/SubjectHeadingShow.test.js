@@ -1,9 +1,25 @@
 /* eslint-env mocha */
+/* eslint-disable react/jsx-filename-extension */
 import React from 'react';
 import { expect } from 'chai';
 import { shallow } from 'enzyme';
 
 import SubjectHeadingShow from '@SubjectHeadingShow';
+import SubjectHeadingShowPage from './../../src/app/pages/SubjectHeadingShowPage';
+
+describe('SubjectHeadingsIndexPage', () => {
+  let component;
+  before(() => {
+    component = shallow(
+      <SubjectHeadingShowPage
+        params={{ subjectHeadingUuid: '1234' }}
+        location={{ query: '' }}
+      />);
+  });
+  it('should render `SubjectHeadingSearch`', () => {
+    expect(component.find('SubjectHeadingSearch').length).to.equal(1);
+  });
+});
 
 describe('SubjectHeadingShow', () => {
   const params = {

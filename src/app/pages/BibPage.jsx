@@ -1,43 +1,101 @@
+/* global window */
 import React from 'react';
 import PropTypes from 'prop-types';
-import DocumentTitle from 'react-document-title';
 import { every as _every } from 'underscore';
-import { LeftWedgeIcon } from '@nypl/dgx-svg-icons';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router';
+import { withRouter, Link } from 'react-router';
 
-import Breadcrumbs from '../Breadcrumbs/Breadcrumbs';
-import ItemsContainer from '../Item/ItemsContainer';
-import BibDetails from './BibDetails';
-import LibraryItem from '../../utils/item';
-import BackLink from './BackLink';
-import AdditionalDetailsViewer from './AdditionalDetailsViewer';
-import Tabbed from './Tabbed';
-import LibraryHoldings from './LibraryHoldings';
-import getOwner from '../../utils/getOwner';
-import appConfig from '../../data/appConfig';
+import {
+  Heading,
+  Link as DSLink,
+} from '@nypl/design-system-react-components';
+
+import SccContainer from '../components/SccContainer/SccContainer';
+import itemsContainerModule from '../components/Item/ItemsContainer';
+import BibDetails from '../components/BibPage/BibDetails';
+import LibraryItem from '../utils/item';
+import AdditionalDetailsViewer from '../components/BibPage/AdditionalDetailsViewer';
+import Tabbed from '../components/BibPage/Tabbed';
+import NotFound404 from '../components/NotFound404/NotFound404';
+import LibraryHoldings from '../components/BibPage/LibraryHoldings';
+import getOwner from '../utils/getOwner';
+import appConfig from '../data/appConfig';
+import Redirect404 from '../components/Redirect404/Redirect404';
 // Removed MarcRecord because the webpack MarcRecord is not working. Sep/28/2017
 // import MarcRecord from './MarcRecord';
+import { ajaxCall } from '@utils';
+import { updateBibPage } from '@Actions';
+import { itemBatchSize } from '../data/constants';
 
 import {
   basicQuery,
   getAggregatedElectronicResources,
-} from '../../utils/utils';
+} from '../utils/utils';
 
-export const BibPage = (props) => {
+const ItemsContainer = itemsContainerModule.ItemsContainer;
+
+const checkForMoreItems = (bib, dispatch) => {
+  if (!bib || !bib.items || !bib.items.length || (bib && bib.done)) {
+    // nothing to do
+  } else if (bib && bib.items.length < itemBatchSize) {
+    // done
+    dispatch(updateBibPage({ bib: Object.assign({}, bib, { done: true }) }));
+  } else {
+    // need to fetch more items
+    const baseUrl = appConfig.baseUrl;
+    const itemFrom = bib.itemFrom || itemBatchSize;
+    const bibApi = `${window.location.pathname.replace(baseUrl, `${baseUrl}/api`)}?itemFrom=${itemFrom}`;
+    ajaxCall(
+      bibApi,
+      (resp) => {
+        // put items in
+        const bibResp = resp.data.bib;
+        const done = !bibResp || !bibResp.items || bibResp.items.length < itemBatchSize;
+        dispatch(updateBibPage({
+          bib:
+            Object.assign(
+              {},
+              bib,
+              { items: bib.items.concat((bibResp && bibResp.items) || []),
+                done,
+                itemFrom: parseInt(itemFrom, 10) + parseInt(itemBatchSize, 10),
+              },
+            ),
+        }));
+      },
+      (error) => { console.error(error); },
+    );
+  }
+};
+
+export const BibPage = (props, context) => {
   const {
     location,
     searchKeywords,
-    features,
     field,
     selectedFilters,
     page,
     sortBy,
+    dispatch,
   } = props;
 
+  if (!props.bib || parseInt(props.bib.status, 10) === 404) {
+    const originalUrl = context &&
+      context.router &&
+      context.router.location &&
+      context.router.location.query &&
+      context.router.location.query.originalUrl;
+
+    return originalUrl ? (<Redirect404 />) : (<NotFound404 />);
+  }
   const bib = props.bib ? props.bib : {};
+  // check whether this is a server side or client side render
+  // by whether 'window' is defined. After the first render on the client side
+  // check for more items
+  if (typeof window !== 'undefined') {
+    checkForMoreItems(bib, dispatch);
+  }
   const bibId = bib && bib['@id'] ? bib['@id'].substring(4) : '';
-  const title = bib.title && bib.title.length ? bib.title[0] : '';
   const items = (bib.checkInItems || []).concat(LibraryItem.getItems(bib));
   const isElectronicResources = _every(items, i => i.isElectronicResource);
   // Related to removing MarcRecord because the webpack MarcRecord is not working. Sep/28/2017
@@ -141,8 +199,8 @@ export const BibPage = (props) => {
   ].filter(tab => tab);
 
   const classicLink = (
-    bibId.startsWith('b') && features.includes('catalog-link') ?
-      <a href={`${appConfig.classicCatalog}/record=${bibId}~S1`} id="legacy-catalog-link">View in Legacy Catalog</a>
+    bibId.startsWith('b') ?
+      <a href={`${appConfig.legacyBaseUrl}/record=${bibId}~S1`} id="legacy-catalog-link">View in Legacy Catalog</a>
       :
       null
   );
@@ -156,51 +214,44 @@ export const BibPage = (props) => {
   });
   const searchUrl = createAPIQuery({});
 
-  return (
-    <DocumentTitle title="Item Details | Shared Collection Catalog | NYPL">
-      <main className="main-page">
-        <div className="nypl-page-header">
-          <div className="nypl-full-width-wrapper drbb-integration">
-            <div className="nypl-row">
-              <Breadcrumbs type="bib" searchUrl={searchUrl} />
-              <h1 id="mainContent">{title}</h1>
-              {
-                searchKeywords && (
-                  <div className="nypl-row search-control">
-                    <LeftWedgeIcon
-                      preserveAspectRatio="xMidYMid meet"
-                      title="Back to Results"
-                    />
-                    <BackLink
-                      searchUrl={searchUrl}
-                      searchKeywords={searchKeywords}
-                    />
-                  </div>
-                )
-              }
-            </div>
-          </div>
-        </div>
+  const title = bib.title && bib.title.length ? bib.title[0] : ' ';
 
-        <div className="nypl-full-width-wrapper drbb-integration">
-          <div className="nypl-row">
-            <div className="nypl-item-details">
-              <BibDetails
-                bib={bib}
-                fields={topFields}
-                logging
-                electronicResources={aggregatedElectronicResources}
-              />
-              <Tabbed
-                tabs={tabs}
-                hash={location.hash}
-              />
-              { classicLink }
-            </div>
-          </div>
-        </div>
-      </main>
-    </DocumentTitle>
+  return (
+    <SccContainer
+      useLoadingLayer
+      className="nypl-item-details"
+      pageTitle="Item Details"
+    >
+      <div
+        className="nypl-item-details__heading"
+      >
+        <Heading
+          level={2}
+        >
+          {title}
+        </Heading>
+        {searchKeywords && (
+          <DSLink>
+            <Link
+              to={`${appConfig.baseUrl}/search?${searchUrl}`}
+            >
+              Back to search results
+            </Link>
+          </DSLink>
+        )}
+      </div>
+      <BibDetails
+        bib={bib}
+        fields={topFields}
+        logging
+        electronicResources={aggregatedElectronicResources}
+      />
+      <Tabbed
+        tabs={tabs}
+        hash={location.hash}
+      />
+      {classicLink}
+    </SccContainer>
   );
 };
 
@@ -208,21 +259,20 @@ BibPage.propTypes = {
   searchKeywords: PropTypes.string,
   location: PropTypes.object,
   bib: PropTypes.object,
-  features: PropTypes.array,
   field: PropTypes.string,
   selectedFilters: PropTypes.object,
   page: PropTypes.string,
   sortBy: PropTypes.string,
+  dispatch: PropTypes.func,
 };
 
-BibPage.defaultProps = {
-  features: [],
+BibPage.contextTypes = {
+  router: PropTypes.object,
 };
 
 const mapStateToProps = ({
   bib,
   searchKeywords,
-  features,
   field,
   selectedFilters,
   page,
@@ -230,7 +280,6 @@ const mapStateToProps = ({
 }) => ({
   bib,
   searchKeywords,
-  features,
   field,
   selectedFilters,
   page,

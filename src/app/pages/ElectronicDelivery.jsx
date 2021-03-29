@@ -13,19 +13,17 @@ import {
   extend as _extend,
   mapObject as _mapObject,
 } from 'underscore';
-import DocumentTitle from 'react-document-title';
 import { connect } from 'react-redux';
 
-import Breadcrumbs from '../Breadcrumbs/Breadcrumbs';
-import appConfig from '../../data/appConfig';
-import ElectronicDeliveryForm from './ElectronicDeliveryForm';
-import LibraryItem from '../../utils/item';
-import Notification from '../Notification/Notification';
+import SccContainer from '../components/SccContainer/SccContainer';
+import appConfig from '../data/appConfig';
+import ElectronicDeliveryForm from '../components/ElectronicDeliveryForm/ElectronicDeliveryForm';
+import Notification from '../components/Notification/Notification';
+import LibraryItem from '../utils/item';
 import {
   trackDiscovery,
-  basicQuery,
-} from '../../utils/utils';
-import { updateLoadingStatus } from '../../actions/Actions';
+} from '../utils/utils';
+import { updateLoadingStatus } from '../actions/Actions';
 
 class ElectronicDelivery extends React.Component {
   constructor(props) {
@@ -62,9 +60,11 @@ class ElectronicDelivery extends React.Component {
 
   componentDidMount() {
     this.requireUser();
-    if (this.state.serverRedirect) this.setState({ serverRedirect: false });
-
-    document.getElementById('edd-request-title').focus();
+    if (this.state.serverRedirect) {
+      this.setState({
+        serverRedirect: false,
+      });
+    }
   }
 
   /*
@@ -221,87 +221,66 @@ class ElectronicDelivery extends React.Component {
       closedLocations, holdRequestNotification,
     } = appConfig;
 
-    const searchUrl = basicQuery(this.props)({});
-
     return (
-      <DocumentTitle title="Electronic Delivery Request | Shared Collection Catalog | NYPL">
-        <div id="mainContent">
-          <div className="nypl-request-page-header">
-            <div className="row">
-              <div className="content-wrapper">
-                <Breadcrumbs
-                  searchUrl={searchUrl}
-                  type="edd"
-                  bibUrl={`/bib/${bibId}`}
-                  itemUrl={`/hold/request/${bibId}-${itemId}`}
-                />
-                <h1 id="edd-request-title" tabIndex="0">Electronic Delivery Request</h1>
-                {
-                  holdRequestNotification ?
-                    <Notification notificationType="holdRequestNotification" />
-                    : null
-                }
+      <SccContainer
+        className="edd-request"
+        activeSection="search"
+        pageTitle="Electronic Delivery Request"
+      >
+        <Notification
+          notificationType="holdRequestNotification"
+        />
+        <div className="nypl-request-item-summary">
+          <h2>
+            <Link
+              to={`${appConfig.baseUrl}/bib/${bibId}`}
+              onClick={() => trackDiscovery('EDD - Bib', title)}
+            >
+              {title}
+            </Link>
+          </h2>
+          {
+            callNo && (
+              <div className="call-number">
+                <span>Call Number:</span><br />
+                {callNo}
               </div>
-            </div>
-          </div>
-          <div className="nypl-full-width-wrapper">
-            <div className="nypl-row">
-              <div className="nypl-column-three-quarters">
-                <div className="nypl-request-item-summary">
-                  <h2>
-                    <Link
-                      to={`${appConfig.baseUrl}/bib/${bibId}`}
-                      onClick={() => trackDiscovery('EDD - Bib', title)}
-                    >
-                      {title}
-                    </Link>
-                  </h2>
-                  {
-                    callNo && (
-                      <div className="call-number">
-                        <span>Call Number:</span><br />
-                        {callNo}
-                      </div>
-                    )
-                  }
-                </div>
-              </div>
-            </div>
-
-            <div className="nypl-row">
-              {
-                !_isEmpty(raiseError) && (
-                  <div className="nypl-form-error" ref="nypl-form-error" tabIndex="0">
-                    <h2>Error</h2>
-                    <p>Please check the following required fields and resubmit your request:</p>
-                    <ul>
-                      {this.getRaisedErrors(raiseError)}
-                    </ul>
-                  </div>
-                )
-              }
-              {
-                !closedLocations.includes('') ?
-                  <ElectronicDeliveryForm
-                    bibId={bibId}
-                    itemId={itemId}
-                    itemSource={this.state.itemSource}
-                    submitRequest={this.submitRequest}
-                    raiseError={this.raiseError}
-                    error={error}
-                    form={form}
-                    defaultEmail={patronEmail}
-                    searchKeywords={searchKeywords}
-                    serverRedirect={serverRedirect}
-                    fromUrl={this.fromUrl()}
-                    onSiteEddEnabled={this.props.features.includes('on-site-edd')}
-                  />
-                  : null
-              }
-            </div>
-          </div>
+            )
+          }
         </div>
-      </DocumentTitle>
+
+        <div>
+          {
+            !_isEmpty(raiseError) && (
+              <div className="nypl-form-error" ref="nypl-form-error">
+                <h2>Error</h2>
+                <p>Please check the following required fields and resubmit your request:</p>
+                <ul>
+                  {this.getRaisedErrors(raiseError)}
+                </ul>
+              </div>
+            )
+          }
+          {
+            !closedLocations.includes('') ?
+              <ElectronicDeliveryForm
+                bibId={bibId}
+                itemId={itemId}
+                itemSource={this.state.itemSource}
+                submitRequest={this.submitRequest}
+                raiseError={this.raiseError}
+                error={error}
+                form={form}
+                defaultEmail={patronEmail}
+                searchKeywords={searchKeywords}
+                serverRedirect={serverRedirect}
+                fromUrl={this.fromUrl()}
+                onSiteEddEnabled={this.props.features.includes('on-site-edd')}
+              />
+              : null
+          }
+        </div>
+      </SccContainer>
     );
   }
 }

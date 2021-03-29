@@ -1,5 +1,9 @@
-.bibsLists {
+.bibsList {
   font-size: 14px;
+
+  &.nypl-column-half {
+    padding-left: 0;
+  }
 
   &.subjectHeadingShowLoadingWrapper {
     height: 500px;
@@ -7,13 +11,6 @@
 
   ul {
     list-style: none;
-  }
-}
-
-.shepcontainer {
-  #titles {
-    font-size: 1.2rem;
-    font-weight: 400;
   }
 }
 

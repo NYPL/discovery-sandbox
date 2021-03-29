@@ -37,7 +37,6 @@
 .item-filter-content {
   background-color: #ffffff;
   border: 1px solid var(--ui-gray-medium);
-  padding: var(--space-xs) var(--space-s);
   position: absolute;
   width: 230px;
   z-index: 1;
@@ -54,7 +53,7 @@
 }
 
 div.item-table-filters {
-  background-color: #efedeb;
+  background-color: var(--ui-gray-xlight);
   padding: 10px;
 }
 
@@ -64,9 +63,15 @@ button.item-table-filters {
 
 .item-filter-buttons {
   float: right;
+  margin-bottom: var(--space-xs);
+  margin-right: var(--space-xs);
 
   .button {
     display: initial;
+
+    &:not(last-of-type) {
+      margin-right: var(--space-xs);
+    }
 
     .button-icon {
       float: right;
@@ -161,5 +166,78 @@ button.item-table-filters {
 
   .item-filter-button {
     border-bottom: none;
+  }
+}
+
+.items-loading {
+  display: inline-flex;
+
+  .dot1 {
+   animation: visibility 3s linear infinite;
+  }
+
+  @keyframes visibility {
+   0% {
+   opacity: 1;
+   }
+   65% {
+   opacity: 1;
+   }
+   66% {
+   opacity: 0;
+   }
+   100% {
+   opacity: 0;
+   }
+  }
+
+  .dot2 {
+   animation: visibility2 3s linear infinite;
+  }
+
+  @keyframes visibility2 {
+   0% {
+    opacity: 0;
+   }
+   21% {
+    opacity: 0;
+   }
+   22% {
+    opacity: 1;
+   }
+   65% {
+    opacity: 1;
+   }
+   66% {
+    opacity: 0;
+   }
+   100% {
+    opacity: 0;
+   }
+  }
+
+  .dot3 {
+   animation: visibility3 3s linear infinite;
+  }
+
+  @keyframes visibility3 {
+   0% {
+    opacity: 0;
+   }
+   43% {
+    opacity: 0;
+   }
+   44% {
+    opacity: 1;
+   }
+   65% {
+    opacity: 1;
+   }
+   66% {
+    opacity: 0;
+   }
+   100% {
+    opacity: 0;
+   }
   }
 }

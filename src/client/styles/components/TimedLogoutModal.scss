@@ -1,0 +1,23 @@
+.timed-logout {
+  hr {
+    color: #89969F;
+  }
+
+  p {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .time-display {
+    padding-left: var(--space-m);
+  }
+
+  :not(.button) {
+    font-weight: 500;
+  }
+
+  .button {
+    display: inline-block;
+    font-weight: 300;
+  }
+}
