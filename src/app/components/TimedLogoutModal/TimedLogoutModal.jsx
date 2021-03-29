@@ -39,9 +39,15 @@ const TimedLogoutModal = (props) => {
 
     const timeLeft = new Date(expTime).getTime() - new Date().getTime();
 
-    setTimeout(() => {
-      setUpdate(!update);
-    }, 1000);
+    React.useEffect(() => {
+      const timeout = setTimeout(() => {
+        setUpdate(!update);
+      }, 1000);
+
+      return () => {
+        clearTimeout(timeout);
+      };
+    });
 
     minutes = parseInt(timeLeft / (60 * 1000), 10);
     seconds = parseInt((timeLeft % (60 * 1000)) / 1000, 10);
