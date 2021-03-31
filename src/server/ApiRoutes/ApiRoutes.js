@@ -58,6 +58,10 @@ Object.keys(routes).forEach((routeName) => {
 });
 
 router
+  .route(`${appConfig.baseUrl}/404/redirect`)
+  .get((req, res, next) => { res.status(404); next(); });
+
+router
   .route(`${appConfig.baseUrl}/api/account/:content?`)
   .post(Account.postToAccountPage);
 
