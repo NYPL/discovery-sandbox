@@ -66,7 +66,7 @@ const successCb = (pathType, dispatch) => (response) => {
 
 function loadDataForRoutes(location, dispatch) {
   const { pathname, search } = location;
-  if (pathname === `${baseUrl}/`) {
+  if (pathname === `${baseUrl}/` || pathname.includes('/account')) {
     dispatch(resetState());
   }
 

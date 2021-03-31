@@ -149,7 +149,7 @@ function fetchBib(bibId, cb, errorcb, reqOptions, res) {
           .then(client => client.get(`/bibs/sierra-nypl/${bibId.slice(1)}`))
           .then((resp) => {
             const classic = appConfig.legacyBaseUrl;
-            if (resp.statusCode === 200) { res.redirect(`${classic}/record=${bibId}`); }
+            if (resp.statusCode === 200) { res.redirect(`${appConfig.circulatingCatalog}/iii/encore/record/C__R${bibId}`); }
           })
           .catch((err) => {
             console.log('error: ', err);

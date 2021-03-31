@@ -10,6 +10,8 @@ import appConfig from '@appConfig';
 const {
   circulatingCatalog,
   legacyBaseUrl,
+  displayTitle,
+  baseUrl,
 } = appConfig;
 
 
@@ -43,14 +45,19 @@ describe('Redirect404', () => {
     expect(component.find('p').text()).to.include('URL: https://catalog.nypl.org/missing');
   });
 
-  it('should have a  link to the legacy catalog', () => {
-    expect(component.find('a').length).to.equal(2);
-    expect(component.find('a').at(0).prop('href')).to.equal(legacyBaseUrl);
-    expect(component.find('a').at(0).text()).to.equal('Legacy Catalog');
+  it('should have a  link to this catalog', () => {
+    expect(component.find('a').length).to.equal(3);
+    expect(component.find('a').at(0).prop('href')).to.equal(baseUrl);
+    expect(component.find('a').at(0).text()).to.equal(displayTitle);
   });
 
-  it('should have a link to the circulatingCatalog', () => {
+  it('should have a link to the circulating catalog', () => {
     expect(component.find('a').at(1).prop('href')).to.equal(circulatingCatalog);
-    expect(component.find('a').at(1).text()).to.equal('Circulating Catalog.');
+    expect(component.find('a').at(1).text()).to.equal('Circulating Catalog');
+  });
+
+  it('should have a link to the Legacy Catalog', () => {
+    expect(component.find('a').at(2).prop('href')).to.equal(legacyBaseUrl);
+    expect(component.find('a').at(2).text()).to.equal('Legacy Catalog');
   });
 });
