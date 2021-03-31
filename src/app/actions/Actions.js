@@ -21,6 +21,7 @@ export const Actions = {
   UPDATE_FEATURES: 'UPDATE_FEATURES',
 };
 
+// Reset state except appConfig, patron, features
 export const resetState = () => ({
   type: Actions.RESET_STATE,
   payload: null,

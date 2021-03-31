@@ -303,9 +303,9 @@ describe('dataLoaderUtil', () => {
 
         it('should call dispatch with the account action and the response', () => {
           // 4 calls: loading true, account page action, updateLastLoaded, loading false
-          expect(mockDispatch.getCalls()).to.have.lengthOf(4);
-          expect(mockDispatch.secondCall.args).to.have.lengthOf(1);
-          expect(mockDispatch.secondCall.args[0]).to.equal('mockAccountPageAction response');
+          expect(mockDispatch.getCalls()).to.have.lengthOf(5);
+          expect(mockDispatch.thirdCall.args).to.have.lengthOf(1);
+          expect(mockDispatch.thirdCall.args[0]).to.equal('mockAccountPageAction response');
           expect(mockAccountPageArgs).to.have.lengthOf(1);
           expect(mockAccountPageArgs[0]).to.equal('<div>html for account page default view</div>');
         });
@@ -334,9 +334,9 @@ describe('dataLoaderUtil', () => {
 
         it('should call dispatch with the account action and the response', () => {
           // 4 calls: loading true, account page action, updateLastLoaded, loading false
-          expect(mockDispatch.getCalls()).to.have.lengthOf(4);
-          expect(mockDispatch.secondCall.args).to.have.lengthOf(1);
-          expect(mockDispatch.secondCall.args[0]).to.equal('mockAccountPageAction response');
+          expect(mockDispatch.getCalls()).to.have.lengthOf(5);
+          expect(mockDispatch.thirdCall.args).to.have.lengthOf(1);
+          expect(mockDispatch.thirdCall.args[0]).to.equal('mockAccountPageAction response');
           expect(mockAccountPageArgs).to.have.lengthOf(1);
           expect(mockAccountPageArgs[0]).to.equal('<div>html for account page items view</div>');
         });
@@ -364,9 +364,9 @@ describe('dataLoaderUtil', () => {
 
         it('should call dispatch with the account action and the response', () => {
           // 4 calls: loading true, account page action, updateLastLoaded, loading false
-          expect(mockDispatch.getCalls()).to.have.lengthOf(4);
-          expect(mockDispatch.secondCall.args).to.have.lengthOf(1);
-          expect(mockDispatch.secondCall.args[0]).to.equal('mockAccountPageAction response');
+          expect(mockDispatch.getCalls()).to.have.lengthOf(5);
+          expect(mockDispatch.thirdCall.args).to.have.lengthOf(1);
+          expect(mockDispatch.thirdCall.args[0]).to.equal('mockAccountPageAction response');
           expect(mockAccountPageArgs).to.have.lengthOf(1);
           expect(mockAccountPageArgs[0]).to.equal('');
         });
