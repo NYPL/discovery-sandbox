@@ -15,6 +15,8 @@ const Redirect404 = (props, context) => {
   const {
     circulatingCatalog,
     legacyBaseUrl,
+    displayTitle,
+    baseUrl,
   } = appConfig;
 
   return (
@@ -30,9 +32,9 @@ const Redirect404 = (props, context) => {
               <span>{ originalUrl ? `URL: ${originalUrl}` : ''}</span>
             </div>
             {"You may be able to find what you're looking for in the "}
-            <a href={legacyBaseUrl}>Legacy Catalog</a>
+            <a href={baseUrl}>{displayTitle}</a>
             {' or the '}
-            <a href={circulatingCatalog}>Circulating Catalog.</a>
+            <a href={circulatingCatalog}>Circulating Catalog</a>{'. You can also try the '}<a href={legacyBaseUrl}>Legacy Catalog</a>.
           </p>
         </div>
       </div>
