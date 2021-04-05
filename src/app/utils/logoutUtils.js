@@ -22,7 +22,7 @@ const loadLogoutIframe = (onload) => {
 
   logoutIframe.setAttribute(
     // The endpoint is the URL for logging out from Encore
-    'src', 'https://browsse.nypl.org/iii/encore/logoutFilterRedirect?suite=def',
+    'src', 'https://browse.nypl.org/iii/encore/logoutFilterRedirect?suite=def',
     // 'src', 'https://nypl-encore-test.nypl.org//iii/encore/logoutFilterRedirect?suite=def',
   );
   // Assigns the ID for CSS ussage

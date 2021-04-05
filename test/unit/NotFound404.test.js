@@ -18,11 +18,6 @@ describe('NotFound404', () => {
     expect(component.find('.not-found-404').length).to.equal(1);
   });
 
-  it('should contain a Link and an `a` element', () => {
-    expect(component.find('Link')).to.have.length(1);
-    expect(component.find('a')).to.have.length(1);
-  });
-
   it('should contain a link to the homepage', () => {
     expect(component.find('Link').prop('to')).to.equal(`${config.baseUrl}/`);
   });

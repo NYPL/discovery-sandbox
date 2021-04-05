@@ -98,6 +98,7 @@ const AccountPage = (props, context) => {
 
   // Detect a redirect loop and 404 if we can't solve it any other way
   useEffect(() => {
+    console.log('Account page check', new Date().toUTCString());
     const nyplAccountRedirectTracker = document
       .cookie
       .split(';')
@@ -105,7 +106,10 @@ const AccountPage = (props, context) => {
     if (nyplAccountRedirectTracker) {
       const currentValue = nyplAccountRedirectTracker.split('=')[1].split('exp');
       const currentCount = parseInt(currentValue[0], 10);
-      if (currentCount > 20) window.location.replace(`${baseUrl}/404`);
+      if (currentCount > 20) {
+        console.log('Detected redirect loop, 404ing');
+        window.location.replace(`${baseUrl}/404/account`);
+      }
       const currentExp = currentValue[1];
       document.cookie = `nyplAccountRedirectTracker=${currentCount + 1}exp${currentExp}`;
     } else {
