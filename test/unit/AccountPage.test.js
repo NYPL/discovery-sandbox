@@ -91,11 +91,12 @@ describe('AccountPage', () => {
     });
   });
 
-  describe.only('redirect loop check', () => {
+  describe('redirect loop check', () => {
     describe('when cookie not set', () => {
       let component;
       before(() => {
         const mockStore = makeTestStore({});
+        document.cookie = 'nyplAccountRedirectTracker=; expires=Thu, 01 Jan 1970 00:00:00 UTC;';
         component = mountTestRender(<AccountPage params={{}} />, { store: mockStore });
       });
 
