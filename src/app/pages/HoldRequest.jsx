@@ -49,6 +49,7 @@ export class HoldRequest extends React.Component {
       delivery: defaultDelivery,
       checkedLocNum,
       serverRedirect: true,
+      checkingPatronEligibility: true
     };
 
     this.onRadioSelect = this.onRadioSelect.bind(this);
@@ -183,9 +184,12 @@ export class HoldRequest extends React.Component {
   }
   // checks whether a patron is eligible to place a hold. Uses cookie to get the patron's id
   checkEligibility() {
+    this.setState({ checkingPatronEligibility: true })
+
     return axios.get(`${appConfig.baseUrl}/api/patronEligibility`)
       .then(response => response.data)
-      .catch(() => ({ eligibility: true }));
+      .catch(() => ({ eligibility: true }))
+      .finally(() => this.setState({ checkingPatronEligibility: false }));
   }
 
   redirectWithErrors(path, status, message) {
@@ -270,7 +274,7 @@ export class HoldRequest extends React.Component {
       loading,
       params,
     } = this.props;
-    const { serverRedirect } = this.state;
+    const { serverRedirect, checkingPatronEligibility } = this.state;
     const bib = (this.props.bib && !_isEmpty(this.props.bib)) ?
       this.props.bib : null;
     const title = (bib && _isArray(bib.title) && bib.title.length) ?
@@ -365,7 +369,7 @@ export class HoldRequest extends React.Component {
     return (
       <>
         {
-          !userLoggedIn || loading ? <LoadingLayer loading /> : null
+          !userLoggedIn || loading || checkingPatronEligibility ? <LoadingLayer loading /> : null
         }
         <SccContainer
           activeSection="search"
@@ -388,7 +392,7 @@ export class HoldRequest extends React.Component {
                 </div>
               </div>
 
-              {form}
+              {!checkingPatronEligibility ? form : null}
             </div>
           </div>
         </SccContainer>
