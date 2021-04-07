@@ -38,9 +38,9 @@ const Home = (props, context) => (
 
     <div className="nypl-column-full">
       <p className="nypl-lead">
-        The New York Public Library’s {appConfig.displayTitle} provides researchers with access to materials from NYPL, Columbia University, and Princeton University.
+        <strong>Launching Spring 2021: New Research Catalog</strong>
         <br />
-        Coming Soon: After undergoing significant enhancements, the Shared Collection Catalog will become the Research Catalog and serve as the primary catalog for NYPL’s research collections in early 2021. <a href="https://www.nypl.org/research/collections/about/shared-collection-catalog">Learn more.</a>
+        After undergoing significant enhancements, this catalog will become the Research Catalog and serve as the primary catalog for NYPL’s research collections, plus provide access to materials from NYPL, Columbia University, and Princeton University. <a href="https://www.nypl.org/research/collections/about/shared-collection-catalog">Learn more.</a>
       </p>
     </div>
     <div>
