@@ -106,7 +106,6 @@ describe('AccountPage', () => {
       after(() => { clock.restore(); });
 
       it('should set the cookie', () => {
-        console.log('document: ', document.cookie);
         const iframe = document.getElementById('logoutIframe');
         iframe.onload();
         const nyplAccountRedirectTracker = document.cookie.split(';').find(el => el.includes('nyplAccountRedirectTracker'));
@@ -134,10 +133,8 @@ describe('AccountPage', () => {
 
 
       it('should update the cookie', () => {
-        console.log('updated cookie: ', document.cookie);
         const iframe = document.getElementById('logoutIframe');
         iframe.onload();
-        console.log('onload cookie: ', document.cookie);
         const nyplAccountRedirectTracker = document.cookie.split(';').find(el => el.includes('nyplAccountRedirectTracker'));
         expect(nyplAccountRedirectTracker).to.match(/\d+expMon, 05 Apr 2021 20:06:13 GMT/);
         expect(parseInt(nyplAccountRedirectTracker.match(/(\d+).*/)[1], 10)).to.be.closeTo(4, 1);

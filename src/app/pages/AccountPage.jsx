@@ -61,18 +61,14 @@ const AccountPage = (props, context) => {
     if (nyplAccountRedirectTracker) {
       const currentValue = nyplAccountRedirectTracker.split('=')[1].split('exp');
       const currentCount = parseInt(currentValue[0], 10);
-      console.log('current count: ', currentCount);
       if (currentCount > 3) {
-        console.log('Detected redirect loop, 404ing');
         window.location.replace(`${baseUrl}/404/account`);
         return true;
       }
       const currentExp = currentValue[1];
-      console.log('incrementing redirect tracker');
       document.cookie = `nyplAccountRedirectTracker=${currentCount + 1}exp${currentExp}; expires=${currentExp}`;
     } else {
       const expirationTime = incrementTime(0, 10);
-      console.log('setting nypl account redirect tracker');
       document.cookie = `nyplAccountRedirectTracker=1exp${expirationTime}; expires=${expirationTime}`;
     }
   };
