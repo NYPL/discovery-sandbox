@@ -219,7 +219,7 @@ SubjectHeadingsTableBody.propTypes = {
   sortBy: PropTypes.string,
   parentUuid: PropTypes.string,
   updateSort: PropTypes.func,
-  pathname: PropTypes.string,
+  nextUrl: PropTypes.string,
   seeMoreText: PropTypes.string,
   seeMoreLinkUrl: PropTypes.string,
   direction: PropTypes.string,
