@@ -123,7 +123,7 @@ class SubjectHeadingsTableBody extends React.Component {
       seeMoreText,
       seeMoreLinkUrl,
       preOpen,
-      marginSize
+      marginSize,
     } = this.props;
     const { container, router } = this.context;
     const { location } = this.context.router;
@@ -167,6 +167,8 @@ class SubjectHeadingsTableBody extends React.Component {
       subjectHeadings,
     } = this.state;
 
+    if (!subjectHeadings) return null;
+
     const {
       nested,
       parentUuid,
@@ -201,18 +203,14 @@ class SubjectHeadingsTableBody extends React.Component {
           />
           : null
         }
-        {
-          subjectHeadings ?
-          inRange.map(this.tableRow) :
-          null
-        }
+        {inRange.map(this.tableRow)}
       </React.Fragment>
     );
   }
 }
 
 SubjectHeadingsTableBody.propTypes = {
-  nested: PropTypes.string,
+  nested: PropTypes.bool,
   subjectHeadings: PropTypes.array,
   indentation: PropTypes.number,
   linked: PropTypes.string,
@@ -223,6 +221,8 @@ SubjectHeadingsTableBody.propTypes = {
   seeMoreText: PropTypes.string,
   seeMoreLinkUrl: PropTypes.string,
   direction: PropTypes.string,
+  preOpen: PropTypes.bool,
+  marginSize: PropTypes.number,
 };
 
 SubjectHeadingsTableBody.defaultProps = {
