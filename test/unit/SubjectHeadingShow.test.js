@@ -8,7 +8,6 @@ import axios from 'axios';
 
 import SubjectHeadingShow from '@SubjectHeadingShow';
 import SubjectHeadingShowPage from './../../src/app/pages/SubjectHeadingShowPage';
-import appConfig from './../../src/app/data/appConfig';
 
 describe('SubjectHeadingShowPage', () => {
   let component;
