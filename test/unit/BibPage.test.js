@@ -18,8 +18,8 @@ import annotatedMarc from '../fixtures/annotatedMarc.json';
 import mockBibWithHolding from '../fixtures/mockBibWithHolding.json';
 
 describe('BibPage', () => {
-  let component;
   describe('Non-serial bib', () => {
+    let component;
     before(() => {
       const bib = { ...bibs[0], ...annotatedMarc };
       component = shallow(
@@ -53,6 +53,7 @@ describe('BibPage', () => {
 
   describe('Serial', () => {
     let itemTable;
+    let component;
     before(() => {
       mockBibWithHolding.holdings.forEach(holding => addHoldingDefinition(holding));
       addCheckInItems(mockBibWithHolding);
@@ -103,6 +104,41 @@ describe('BibPage', () => {
 
     it('displays any notes in the "Library Holdings" tab', () => {
       expect(component.find('dt').findWhere(n => n.type() === 'dt' && n.text() === 'Notes').length).to.equal(1);
+    });
+  });
+
+  describe('"Back to search results" link', () => {
+    const bib = { ...mockBibWithHolding, ...annotatedMarc };
+    it('displays if `resultSelection.bibId` matches ID of bib for page', () => {
+      const component = shallow(
+        <BibPage
+          location={{ search: 'search', pathname: '' }}
+          bib={bib}
+          dispatch={() => {}}
+          resultSelection={{
+            fromUrl: 'resultsurl.com',
+            bibId: bib['@id'].substring(4),
+          }}
+        />, { context: {
+          router: { location: {} } } });
+      expect(component.find('Link').first().render().text()).to.equal('Back to search results');
+    });
+
+    it('does not display if `resultSelection.bibId` does not match ID of bib for page', () => {
+      const component = shallow(
+        <BibPage
+          location={{ search: 'search', pathname: '' }}
+          bib={bib}
+          dispatch={() => {}}
+          resultSelection={{
+            fromUrl: 'resultsurl.com',
+            bibId: 'wrongbib',
+          }}
+        />, { context: {
+          router: { location: {} } } }
+      );
+      
+      expect(component.find('Link').length).to.equal(0);
     });
   });
 });
