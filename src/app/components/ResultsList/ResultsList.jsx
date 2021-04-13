@@ -5,7 +5,7 @@ import {
   isEmpty as _isEmpty,
   isArray as _isArray,
 } from 'underscore';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 import LibraryItem from '../../utils/item';
 import {
@@ -47,9 +47,23 @@ const ResultsList = ({
   results,
   subjectHeadingShow,
   searchKeywords,
-}) => {
-  const features = useSelector(state => state.features);
-  const loading = useSelector(state => state.loading);
+}, { router }) => {
+  const { features, loading } = useSelector(state => ({
+    features: state.features,
+    loading: state.loading,
+  }));
+
+  const dispatch = useDispatch();
+  const updateResultsPageUrl = currentUrl => dispatch({
+    type: 'UPDATE_RESULTS_PAGE_URL',
+    payload: currentUrl,
+  });
+
+  const {
+    pathname,
+    search,
+  } = router.location;
+
   const includeDrbb = features.includes('drb-integration');
 
   if (!results || !_isArray(results) || !results.length) {
@@ -80,7 +94,10 @@ const ResultsList = ({
       <li key={i} className={`nypl-results-item ${hasRequestTable ? 'has-request' : ''}`}>
         <h3>
           <Link
-            onClick={() => trackDiscovery('Bib', bibTitle)}
+            onClick={() => {
+              updateResultsPageUrl(`${pathname}${search}`);
+              trackDiscovery('Bib', bibTitle);
+            }}
             to={bibUrl}
             className="title"
           >

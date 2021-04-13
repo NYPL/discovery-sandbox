@@ -19,6 +19,7 @@ export const Actions = {
   UPDATE_PATRON_DATA: 'UPDATE_PATRON_DATA',
   UPDATE_ACCOUNT_HTML: 'UPDATE_ACCOUNT_HTML',
   UPDATE_FEATURES: 'UPDATE_FEATURES',
+  UPDATE_RESULTS_PAGE_URL: 'UPDATE_RESULTS_PAGE_URL',
 };
 
 // Reset state except appConfig, patron, features

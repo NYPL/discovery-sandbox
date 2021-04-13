@@ -45,6 +45,8 @@ function appReducer(state = initialState, action) {
       return { ...state, accountHtml: action.payload };
     case Actions.UPDATE_FEATURES:
       return { ...state, features: action.payload };
+    case Actions.UPDATE_RESULTS_PAGE_URL:
+      return { ...state, resultsPageUrl: action.payload };
     case Actions.SET_APP_CONFIG:
       return { ...state, appConfig };
     default:

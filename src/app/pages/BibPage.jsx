@@ -28,7 +28,6 @@ import { updateBibPage } from '@Actions';
 import { itemBatchSize } from '../data/constants';
 
 import {
-  basicQuery,
   getAggregatedElectronicResources,
 } from '../utils/utils';
 
@@ -72,11 +71,8 @@ export const BibPage = (props, context) => {
   const {
     location,
     searchKeywords,
-    field,
-    selectedFilters,
-    page,
-    sortBy,
     dispatch,
+    resultsPageUrl,
   } = props;
 
   if (!props.bib || parseInt(props.bib.status, 10) === 404) {
@@ -205,15 +201,6 @@ export const BibPage = (props, context) => {
       null
   );
 
-  const createAPIQuery = basicQuery({
-    searchKeywords,
-    field,
-    selectedFilters,
-    page,
-    sortBy,
-  });
-  const searchUrl = createAPIQuery({});
-
   const title = bib.title && bib.title.length ? bib.title[0] : ' ';
 
   return (
@@ -230,10 +217,10 @@ export const BibPage = (props, context) => {
         >
           {title}
         </Heading>
-        {searchKeywords && (
+        {resultsPageUrl && (
           <DSLink>
             <Link
-              to={`${appConfig.baseUrl}/search?${searchUrl}`}
+              to={resultsPageUrl}
             >
               Back to search results
             </Link>
@@ -259,11 +246,8 @@ BibPage.propTypes = {
   searchKeywords: PropTypes.string,
   location: PropTypes.object,
   bib: PropTypes.object,
-  field: PropTypes.string,
-  selectedFilters: PropTypes.object,
-  page: PropTypes.string,
-  sortBy: PropTypes.string,
   dispatch: PropTypes.func,
+  resultsPageUrl: PropTypes.string,
 };
 
 BibPage.contextTypes = {
@@ -277,6 +261,7 @@ const mapStateToProps = ({
   selectedFilters,
   page,
   sortBy,
+  resultsPageUrl,
 }) => ({
   bib,
   searchKeywords,
@@ -284,6 +269,7 @@ const mapStateToProps = ({
   selectedFilters,
   page,
   sortBy,
+  resultsPageUrl,
 });
 
 export default withRouter(connect(mapStateToProps)(BibPage));

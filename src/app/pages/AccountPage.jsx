@@ -44,8 +44,6 @@ const AccountPage = (props, context) => {
 
   const { baseUrl } = appConfig;
 
-
-
   const incrementTime = (minutes, seconds = 0) => {
     const now = new Date();
     now.setTime(now.getTime() + (minutes * 60 * 1000) + (seconds * 1000));

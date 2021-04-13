@@ -32,6 +32,7 @@ const initialState = {
   lastLoaded: appConfig.baseUrl,
   accountHtml: '',
   features: appConfig.features || [],
+  resultsPageUrl: '',
 };
 
 export default initialState;
