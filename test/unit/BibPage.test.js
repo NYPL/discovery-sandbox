@@ -5,10 +5,8 @@ import { expect } from 'chai';
 import { shallow, mount } from 'enzyme';
 import PropTypes from 'prop-types';
 import { Provider } from 'react-redux';
-import { makeTestStore } from '../helpers/store';
 
-// Import Bib for pre-processing
-
+// Import Bib helper functions for pre-processing
 import { addCheckInItems, addHoldingDefinition } from './../../src/server/ApiRoutes/Bib';
 
 // Import the unwrapped component that is going to be tested
@@ -16,8 +14,11 @@ import { BibPage } from './../../src/app/pages/BibPage';
 import bibs from '../fixtures/bibs';
 import annotatedMarc from '../fixtures/annotatedMarc.json';
 import mockBibWithHolding from '../fixtures/mockBibWithHolding.json';
+import { makeTestStore } from '../helpers/store';
+import { mockRouterContext } from '../helpers/routing';
 
 describe('BibPage', () => {
+  const context = mockRouterContext();
   describe('Non-serial bib', () => {
     let component;
     before(() => {
@@ -31,8 +32,7 @@ describe('BibPage', () => {
             fromUrl: '',
             bibId: '',
           }}
-        />, { context: {
-          router: { location: {} } } });
+        />, { context });
       });
     it('has Tabbed component with three tabs', () => {
       const tabbed = component.find('Tabbed');
@@ -77,9 +77,7 @@ describe('BibPage', () => {
             }}
           />
         </Provider>, {
-          context: {
-            router: { location: { query: {} }, createHref: () => {} },
-          },
+          context,
           childContextTypes: { router: PropTypes.object },
         });
       itemTable = component.find('ItemTable');
@@ -119,8 +117,7 @@ describe('BibPage', () => {
             fromUrl: 'resultsurl.com',
             bibId: bib['@id'].substring(4),
           }}
-        />, { context: {
-          router: { location: {} } } });
+        />, { context });
       expect(component.find('Link').first().render().text()).to.equal('Back to search results');
     });
 
@@ -134,10 +131,8 @@ describe('BibPage', () => {
             fromUrl: 'resultsurl.com',
             bibId: 'wrongbib',
           }}
-        />, { context: {
-          router: { location: {} } } }
-      );
-      
+        />, { context });
+
       expect(component.find('Link').length).to.equal(0);
     });
   });
