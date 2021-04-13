@@ -72,7 +72,7 @@ export const BibPage = (props, context) => {
     location,
     searchKeywords,
     dispatch,
-    resultsPageUrl,
+    resultSelection,
   } = props;
 
   if (!props.bib || parseInt(props.bib.status, 10) === 404) {
@@ -217,10 +217,10 @@ export const BibPage = (props, context) => {
         >
           {title}
         </Heading>
-        {resultsPageUrl && (
+        {resultSelection.fromUrl && resultSelection.bibId === bibId && (
           <DSLink>
             <Link
-              to={resultsPageUrl}
+              to={resultSelection.fromUrl}
             >
               Back to search results
             </Link>
@@ -247,7 +247,7 @@ BibPage.propTypes = {
   location: PropTypes.object,
   bib: PropTypes.object,
   dispatch: PropTypes.func,
-  resultsPageUrl: PropTypes.string,
+  resultSelection: PropTypes.object,
 };
 
 BibPage.contextTypes = {
@@ -261,7 +261,7 @@ const mapStateToProps = ({
   selectedFilters,
   page,
   sortBy,
-  resultsPageUrl,
+  resultSelection,
 }) => ({
   bib,
   searchKeywords,
@@ -269,7 +269,7 @@ const mapStateToProps = ({
   selectedFilters,
   page,
   sortBy,
-  resultsPageUrl,
+  resultSelection,
 });
 
 export default withRouter(connect(mapStateToProps)(BibPage));

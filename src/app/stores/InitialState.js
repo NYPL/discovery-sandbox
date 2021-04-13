@@ -32,7 +32,10 @@ const initialState = {
   lastLoaded: appConfig.baseUrl,
   accountHtml: '',
   features: appConfig.features || [],
-  resultsPageUrl: '',
+  resultSelection: {
+    fromUrl: '',
+    bibId: '',
+  },
 };
 
 export default initialState;

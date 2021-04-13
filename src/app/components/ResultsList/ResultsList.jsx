@@ -54,9 +54,9 @@ const ResultsList = ({
   }));
 
   const dispatch = useDispatch();
-  const updateResultsPageUrl = currentUrl => dispatch({
-    type: 'UPDATE_RESULTS_PAGE_URL',
-    payload: currentUrl,
+  const updateResultSelection = data => dispatch({
+    type: 'UPDATE_RESULT_SELECTION',
+    payload: data,
   });
 
   const {
@@ -95,7 +95,10 @@ const ResultsList = ({
         <h3>
           <Link
             onClick={() => {
-              updateResultsPageUrl(`${pathname}${search}`);
+              updateResultSelection({
+                fromUrl: `${pathname}${search}`,
+                bibId,
+              });
               trackDiscovery('Bib', bibTitle);
             }}
             to={bibUrl}

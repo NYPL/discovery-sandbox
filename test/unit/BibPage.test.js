@@ -9,7 +9,7 @@ import { makeTestStore } from '../helpers/store';
 
 // Import Bib for pre-processing
 
-import Bib from './../../src/server/ApiRoutes/Bib';
+import { addCheckInItems, addHoldingDefinition } from './../../src/server/ApiRoutes/Bib';
 
 // Import the unwrapped component that is going to be tested
 import { BibPage } from './../../src/app/pages/BibPage';
@@ -22,13 +22,18 @@ describe('BibPage', () => {
   describe('Non-serial bib', () => {
     before(() => {
       const bib = { ...bibs[0], ...annotatedMarc };
-      component = shallow(<BibPage
-        location={{ search: 'search', pathname: '' }}
-        bib={bib}
-        dispatch={() => {}}
-      />, { context: {
-        router: { location: {} } } });
-    });
+      component = shallow(
+        <BibPage
+          location={{ search: 'search', pathname: '' }}
+          bib={bib}
+          dispatch={() => {}}
+          resultSelection={{
+            fromUrl: '',
+            bibId: '',
+          }}
+        />, { context: {
+          router: { location: {} } } });
+      });
     it('has Tabbed component with three tabs', () => {
       const tabbed = component.find('Tabbed');
       const tabs = tabbed.props().tabs;
@@ -48,10 +53,9 @@ describe('BibPage', () => {
 
   describe('Serial', () => {
     let itemTable;
-    let holdingsTab;
     before(() => {
-      mockBibWithHolding.holdings.forEach(holding => Bib.addHoldingDefinition(holding));
-      Bib.addCheckInItems(mockBibWithHolding);
+      mockBibWithHolding.holdings.forEach(holding => addHoldingDefinition(holding));
+      addCheckInItems(mockBibWithHolding);
       const bib = { ...mockBibWithHolding, ...annotatedMarc };
       const testStore = makeTestStore({
         bib: {
@@ -66,6 +70,10 @@ describe('BibPage', () => {
             location={{ search: 'search', pathname: '' }}
             bib={bib}
             dispatch={() => {}}
+            resultSelection={{
+              fromUrl: '',
+              bibId: '',
+            }}
           />
         </Provider>, {
           context: {
