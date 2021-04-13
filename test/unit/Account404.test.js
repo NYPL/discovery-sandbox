@@ -3,8 +3,6 @@ import React from 'react';
 import { expect } from 'chai';
 import { shallow } from 'enzyme';
 
-import config from '../../src/app/data/appConfig';
-
 import Account404 from '../../src/app/components/Account404/Account404';
 
 describe('Account404', () => {
