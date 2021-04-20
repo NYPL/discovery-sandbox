@@ -4,10 +4,12 @@ import React from 'react';
 import { expect } from 'chai';
 import { mount } from 'enzyme';
 import { spy } from 'sinon';
+import nock from 'nock';
+import appConfig from '../../src/app/data/appConfig';
 
 import Feedback from './../../src/app/components/Feedback/Feedback';
 
-describe('Feedback', () => {
+describe.only('Feedback', () => {
   let component;
   const onSubmitFormSpy = spy(Feedback.prototype, 'onSubmitForm');
   before(() => {
@@ -59,10 +61,68 @@ describe('Feedback', () => {
     expect(submitButton.props().type).to.equal('submit');
   });
 
-  it('should call `onSubmitForm` when form is submitted', () => {
-    const submitButton = component.find('Button').at(2).find('button');
-    submitButton.simulate('submit');
-    expect(onSubmitFormSpy.calledOnce).to.equal(true);
+  // it('should call `onSubmitForm` when form is submitted', () => {
+  //   const submitButton = component.find('Button').at(2).find('button');
+  //   submitButton.simulate('submit');
+  //   expect(onSubmitFormSpy.calledOnce).to.equal(true);
+  // });
+
+  describe('entering text', () => {
+    it('should record text typed into form', () => {
+      const textarea = component.find('textarea');
+      textarea.instance().value = 'Test text';
+      textarea.simulate('change');
+      console.log('state: ', component.state(), textarea.text());
+      expect(textarea.text()).to.equal('Test text');
+    });
+  });
+
+  describe('submitting form', () => {
+
+    let savedBaseUrl;
+    let savedSetState;
+    before(() => {
+
+      // component.update();
+    });
+    after(() => {
+      appConfig.baseUrl = savedBaseUrl;
+    });
+
+    it('should submit form when submit is pressed', () => {
+      savedBaseUrl = appConfig.baseUrl;
+      appConfig.baseUrl = 'http://test-server.com';
+      console.log('it clause');
+      return new Promise((resolve) => {
+        savedSetState = component.instance().setState.bind(component.instance());
+        component.instance().setState = (...args) => {
+          savedSetState(...args, () => { resolve(); });
+        };
+        nock('http://test-server.com')
+          .defaultReplyHeaders({
+            'access-control-allow-origin': '*',
+            'access-control-allow-credentials': 'true',
+          })
+          .post(/\/api\/feedback/)
+          .reply(200, () => {
+            console.log('nock intercepted');
+            // setImmediate(() => { resolve(); });
+            // setTimeout(() => { resolve(); }, 200);
+            return {};
+          });
+        // nock.emitter.on('replied', () => {
+        //   console.log('replied');
+        //   return setImmediate(() => resolve());
+        // });
+        console.log('component start state: ', component.state());
+        const submitButton = component.find('Button').at(2).find('button');
+        submitButton.simulate('submit');
+        // setImmediate(() => resolve());
+      }).then(() => {
+        console.log('component new state: ', component.state());
+        // done();
+      });
+    });
   });
 
   describe('success screen', () => {
