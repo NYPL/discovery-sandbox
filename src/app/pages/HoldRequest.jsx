@@ -10,20 +10,18 @@ import {
   isArray as _isArray,
   isEmpty as _isEmpty,
 } from 'underscore';
-import DocumentTitle from 'react-document-title';
 import { connect } from 'react-redux';
 
-import LoadingLayer from '../LoadingLayer/LoadingLayer';
-import Breadcrumbs from '../Breadcrumbs/Breadcrumbs';
-import Notification from '../Notification/Notification';
+import SccContainer from '../components/SccContainer/SccContainer';
+import Notification from '../components/Notification/Notification';
+import LoadingLayer from '../components/LoadingLayer/LoadingLayer';
 
-import appConfig from '../../data/appConfig';
-import LibraryItem from '../../utils/item';
+import appConfig from '../data/appConfig';
+import LibraryItem from '../utils/item';
 import {
   trackDiscovery,
-  basicQuery,
-} from '../../utils/utils';
-import { updateLoadingStatus } from '../../actions/Actions';
+} from '../utils/utils';
+import { updateLoadingStatus } from '../actions/Actions';
 
 export class HoldRequest extends React.Component {
   constructor(props) {
@@ -119,7 +117,7 @@ export class HoldRequest extends React.Component {
           const fullUrl = encodeURIComponent(window.location.href);
           window.location.replace(`${appConfig.loginUrl}?redirect_uri=${fullUrl}`);
           return;
-        };
+        }
         this.context.router.push(response.data);
       })
       .catch((error) => {
@@ -185,11 +183,9 @@ export class HoldRequest extends React.Component {
   }
   // checks whether a patron is eligible to place a hold. Uses cookie to get the patron's id
   checkEligibility() {
-    return new Promise((resolve) => {
-      axios.get(`${appConfig.baseUrl}/api/patronEligibility`)
-        .then((response) => { resolve(response.data); })
-        .catch(() => resolve({ eligibility: true }));
-    });
+    return axios.get(`${appConfig.baseUrl}/api/patronEligibility`)
+      .then(response => response.data)
+      .catch(() => ({ eligibility: true }));
   }
 
   redirectWithErrors(path, status, message) {
@@ -300,7 +296,7 @@ export class HoldRequest extends React.Component {
           <span>Call number:</span><br />{selectedItem.callNumber}
         </div>) : null;
     let itemClosedLocations = closedLocations;
-    if (selectedItem.isRecap) {
+    if (selectedItem && selectedItem.isRecap) {
       itemClosedLocations = itemClosedLocations.concat(recapClosedLocations);
     } else {
       itemClosedLocations = itemClosedLocations.concat(nonRecapClosedLocations);
@@ -364,59 +360,39 @@ export class HoldRequest extends React.Component {
       );
     }
 
-    const searchUrl = basicQuery(this.props)({});
     const userLoggedIn = this.props.patron && this.props.patron.loggedIn;
-    // include extra LoadingLayer here, since this one depends on the patron login status
 
     return (
-      <DocumentTitle title="Item Request | Shared Collection Catalog | NYPL">
-        <div>
-          {
-            !userLoggedIn || loading ? <LoadingLayer loading /> : null
-          }
-          <div className="nypl-request-page-header">
-            <div className="nypl-full-width-wrapper">
-              <div className="row">
-                <div className="nypl-column-full">
-                  <Breadcrumbs
-                    searchUrl={searchUrl}
-                    bibUrl={`/bib/${bibId}`}
-                    type="hold"
-                  />
-                  <h1 id="item-title" tabIndex="0" id="mainContent">Item Request</h1>
+      <>
+        {
+          !userLoggedIn || loading ? <LoadingLayer loading /> : null
+        }
+        <SccContainer
+          activeSection="search"
+          pageTitle="Item Request"
+        >
+          <Notification notificationType="holdRequestNotification" />
+          <div className="row">
+            <div className="nypl-column-three-quarters">
+              <div className="nypl-request-item-summary">
+                <div className="item">
+                  {
+                    (userLoggedIn && !loading && (!bib || !selectedItemAvailable)) &&
+                      <h2>
+                        This item cannot be requested at this time. Please try again later or
+                        contact 917-ASK-NYPL (<a href="tel:917-275-6975">917-275-6975</a>).
+                      </h2>
+                  }
+                  {bibLink}
+                  {callNo}
                 </div>
               </div>
+
+              {form}
             </div>
           </div>
-
-          <div className="nypl-full-width-wrapper">
-            <div className="row">
-              <div className="nypl-column-three-quarters">
-                <div className="nypl-request-item-summary">
-                  <div className="item">
-                    {
-                      (userLoggedIn && !loading && (!bib || !selectedItemAvailable)) &&
-                        <h2>
-                          This item cannot be requested at this time. Please try again later or
-                          contact 917-ASK-NYPL (<a href="tel:917-275-6975">917-275-6975</a>).
-                        </h2>
-                    }
-                    {
-                      holdRequestNotification
-                      ? <Notification notificationType="holdRequestNotification" />
-                      : null
-                    }
-                    {bibLink}
-                    {callNo}
-                  </div>
-                </div>
-
-                {form}
-              </div>
-            </div>
-          </div>
-        </div>
-      </DocumentTitle>
+        </SccContainer>
+      </>
     );
   }
 }

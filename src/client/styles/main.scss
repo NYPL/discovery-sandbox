@@ -8,6 +8,7 @@ Import style rules from NYPL Design Toolkit
 Import style rules from NYPL Design System
 */
 @import '~@nypl/design-system-react-components/dist/styles.css';
+@import '~@nypl/design-system-react-components/dist/resources.scss';
 
 /*
 App-specific utilities and defaults
@@ -39,33 +40,6 @@ html {
   display: none;
 }
 
-.search-results-container {
-  @include clearfix();
-}
-
-.status {
-  font-weight: bold;
-  color: $status-default-color;
-  background-color: inherit;
-  text-transform: capitalize;
-
-  &.available {
-    color: $status-available-color;
-  }
-}
-
-.content-wrapper {
-  @include full-width-wrapper;
-}
-
-.page-header {
-  @include page-header;
-}
-
-#filter-search {
-  @include search-form;
-}
-
 // Overrides for other components
 .footer {
   a {
@@ -80,14 +54,6 @@ html {
   }
 }
 
-.results-list {
-  -webkit-transition: 0.6s;
-  -moz-transition: 0.6s;
-  -o-transition: 0.6s;
-  transition: 0.6s;
-  opacity: 1;
-  visibility: visible;
-}
 .hide-results-list {
   opacity: 0;
   visibility: hidden;
@@ -112,20 +78,6 @@ li, p {
   max-width: 100%;
 }
 
-// Override for the omnisearch div to work as a fieldset and
-// allow focus on the search button.
-div.nypl-omnisearch {
-  height: 48px;
-
-  &.nypl-spinner-field {
-    overflow: inherit;
-  }
-
-  &.spinning {
-    overflow: hidden;
-  }
-}
-
 button,
 html input[type=button],
 input[type=reset],
@@ -139,6 +91,7 @@ input[type=submit]:focus {
 
 .no-scroll {
   overflow: hidden;
+  position: inherit;
 }
 
 .emailSubscription-wrapper {
@@ -147,6 +100,8 @@ input[type=submit]:focus {
 
 .nypl-results-pagination {
   a {
+    padding: 0.5rem;
+
     svg {
       height: 1.8rem;
       width: 1.8rem;
@@ -163,6 +118,7 @@ select {
   margin-top: 20px;
 
   th, td {
+    overflow: inherit;
     padding-right: 15px;
     width: 16%;
 
@@ -195,13 +151,6 @@ select {
   }
 }
 
-div {
-  *:focus {
-    outline: .25rem solid $focuscolor;
-    outline-offset: 0;
-  }
-}
-
 .nypl-results-pagination .page-count.last-page {
   margin-left: 0;
   margin-right: 25%;
@@ -209,4 +158,70 @@ div {
 
 .nypl-column-full {
   padding: 0;
+}
+
+.research-modal {
+  background: rgba(64, 64, 64, 0.9);
+  padding-top: 25vh;
+
+  div {
+    background-color: #F9F8F7;
+    margin: auto;
+    opacity: 100%;
+    width: 472px;
+    max-width: 100%;
+  }
+
+  span {
+    font-weight: 700;
+  }
+
+  p:nth-child(2) {
+    font-weight: 500;
+  }
+
+  button {
+    width: 153px;
+
+    &:first-of-type {
+      margin-left: 0;
+    }
+
+    &:last-of-type {
+      margin-right: 0;
+    }
+
+    &:not(last-of-type) {
+      margin-bottom: var(--space-s);
+    }
+  }
+}
+
+
+.research-modal__content {
+  align-items: flex-start;
+  background: #F9F8F7;
+  border: 1px solid var(--ui-gray-light);
+  border-radius: 5px;
+  flex-flow: column wrap;
+  min-height: 200px;
+  padding: var(--space) var(--space-l);
+
+  .button-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+  }
+}
+
+a:focus {
+  background-color: inherit;
+  box-shadow: none;
+}
+
+@media (max-width: 400px) {
+  .research-modal__content {
+    padding-left: var(--space);
+    padding-right: var(--space);
+  }
 }

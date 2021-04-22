@@ -6,32 +6,13 @@
     border-bottom: none;
   }
 
-  .nypl-full-width-wrapper {
-    padding-top: 0;
-    padding-bottom: 0;
-  }
-
   .nypl-column-full {
     margin-bottom: 0;
   }
 }
 
-.nypl-full-width-wrapper {
-  &.filter-page {
-    padding-bottom: 0;
-
-    .nypl-column-full {
-      margin-bottom: -1px;
-    }
-  }
-}
-
 .filter-container {
-  > .nypl-full-width-wrapper {
-    .nypl-column-full {
-      margin-bottom: -1px;
-    }
-  }
+  margin-top: var(--space-xxs);
 
   .nypl-form-error {
     margin: 10px 0;
@@ -87,23 +68,6 @@
   svg {
     vertical-align: middle;
     white-space: normal;
-  }
-
-  .filter-text {
-    float: left;
-    width: 100%;
-
-    @include min-screen($xtrasmall-breakpoint) {
-      width: 70%;
-      margin-top: 0;
-    }
-
-    h2 {
-      margin-bottom: 0.5rem;
-      margin-top: 1rem;
-      font-size: 1.4375rem;
-      padding: 0.2rem;
-    }
   }
 
   .filter-action-buttons {
@@ -211,7 +175,7 @@
 
   .popup,
   .popup-no-js {
-    background: #efedeb;
+    background: var(--ui-gray-xlight);
     width: auto;
     z-index: 10000;
 
@@ -250,7 +214,7 @@
 
   // need to override the background color
   .nypl-fieldset {
-    background-color: #efedeb;
+    background-color: var(--ui-gray-xlight);
   }
 
   .nypl-generic-checkbox {
@@ -353,15 +317,15 @@
 }
 
 .nypl-name-field {
-  background: #efedeb;
+  background: var(--ui-gray-xlight);
 
   .nypl-field-status {
-    background: #efedeb;
+    background: var(--ui-gray-xlight);
   }
 }
 
 .date-hyphen {
-  background: #efedeb;
+  background: var(--ui-gray-xlight);
   width: 25px;
   margin: 0px 15px;
   height: 10px;

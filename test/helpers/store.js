@@ -14,8 +14,14 @@ const TestProvider = ({
 
 function testRender(ui, renderFunc, { store, ...otherOpts }) {
   return renderFunc(<TestProvider store={store}>{ui}</TestProvider>, {
+    context: {
+      router: {
+        location: {},
+        createHref: () => {},
+        push: () => {},
+      },
+    },
     ...otherOpts,
-    context: { router: { location: {}, createHref: () => {} } },
   });
 }
 
@@ -31,8 +37,11 @@ export const mountTestRender = (ui, { store, ...otherOpts }) => testRender(
   { store, ...otherOpts },
 );
 
-export function makeTestStore(opts = initialState) {
+export function makeTestStore(state = {}) {
   const mockStore = configureStore([thunk]);
-  const store = mockStore({ ...initialState, ...opts, features: (opts.appConfig ? opts.appConfig.features : []) });
+  const store = mockStore({
+    ...initialState,
+    ...state,
+  });
   return store;
 }

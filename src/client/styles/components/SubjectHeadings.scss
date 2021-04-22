@@ -6,13 +6,26 @@ $emphasis-font-weight: 500;
 
 $table-row-border: 1px solid rgb(215, 210, 205);
 
-thead .subjectHeadingRow {
-  background-color: unset;
+.subject-heading-page-header {
+  align-items: baseline;
+  display: flex;
+  justify-content: space-between;
 }
 
-.subjectHeadingsBannerInner {
-  display: inline-block;
-  width: 100%;
+@media (max-width: 600px) {
+  .subject-heading-page-header {
+    display: block;
+  }
+}
+
+.subject-heading-page {
+  .page-title {
+    padding-top: var(--space-l);
+  }
+}
+
+thead .subjectHeadingRow {
+  background-color: unset;
 }
 
 .subjectHeadingInfo {
@@ -31,58 +44,9 @@ thead .subjectHeadingRow {
   padding: 20px;
 }
 
-.subjectHeadingsBanner {
-  padding: 1rem 1.5rem 1rem 8rem;
-  position: relative; // from .nypl-full-width-wrapper
-  margin: 0 auto 25px;
-
-  h2 {
-    font-size: 32px;
-    font-weight: 200;
-    display: inline-block;
-    font-family: "Milo-Light";
-  }
-
-  .subjectHeadingsBannerInner {
-    display: inline-block;
-    width: 100%;
-  }
-
-  form {
-    display: initial;
-  }
-
-  em {
-    font-style: italic;
-  }
-}
-
-.not-in-discovery {
-  color: grey;
-  font-style: italic;
-}
-
-.heading-count {
-  display: inline-flex;
-  padding-left: 2%;
-  width: fit-content;
-  white-space: nowrap;
-  padding-top: 1%;
-  font-size: .8em;
-}
-
 .nypl-results-pagination.showPage {
   display: flex;
   justify-content: space-between;
-  a {
-    width: 125px;
-    height: 25px;
-  }
-}
-
-.moreSubjectsElement > .verticalEllipse {
-  margin-left: 40px;
-  display: inline-block;
 }
 
 .verticalEllipse {
@@ -97,54 +61,13 @@ thead .subjectHeadingRow {
   }
 }
 
-.nypl-breadcrumbs {
-  .breadcrumbs-and-search-wrapper {
-    display: flex;
-    justify-content: space-between;
-
-    @include media($mobile-breakpoint) {
-      ol {
-        margin-left: 10px;
-
-        li:not(:nth-last-child(2)) {
-          display: none;
-        }
-
-        li:nth-last-child(2)::before {
-          content: " < ";
-        }
-      }
-    }
-  }
-}
-
-.nypl-breadcrumbs a {
-  text-decoration: underline;
-
-  &:hover {
-    text-decoration: none;
-  }
-}
-
-.subjectHeadingBannerNav {
-  display: flex;
-  width: 100%;
-  justify-content: space-between;
-  nav {
-    align-self: flex-end;
-  }
-  ol {
-    margin: 0 auto;
-  }
-}
-
-.scccontainer.container-header {
-  height: fit-content;
-}
-
 .nypl-results-sorter.shepBibs {
   float: left;
   margin-bottom: 0;
+
+  .nypl-select-field-results {
+    margin: 0;
+  }
 }
 
 #sort-by-label {

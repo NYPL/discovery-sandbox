@@ -2,40 +2,32 @@
 /* eslint-env mocha */
 import React from 'react';
 import { expect } from 'chai';
-import { shallow } from 'enzyme';
+import { mount } from 'enzyme';
+import { Provider } from 'react-redux';
+import { makeTestStore } from '../helpers/store';
 
-import Home from '../../src/app/components/Home/Home';
+import Home from '../../src/app/pages/Home';
+import appConfig from '../../src/app/data/appConfig';
 
 describe('Home', () => {
   let component;
 
   before(() => {
-    component = shallow(<Home />);
+    const testStore = makeTestStore();
+    component = mount(
+      <Provider store={testStore}>
+        <Home />
+      </Provider>
+    );
   });
 
   it('should be wrapped in a .home class', () => {
-    expect(component.find('.home').length).to.equal(1);
-    expect(component.find('div').first().hasClass('home')).to.equal(true);
-  });
-
-  it('should render a hero-type banner page title', () => {
-    const pageHeader = component.find('.nypl-homepage-hero');
-
-    expect(pageHeader).to.have.length(1);
-    expect(pageHeader.find('h1')).to.have.length(1);
-    expect(pageHeader.find('h1').text()).to.equal('Shared Collection Catalog');
-    expect(pageHeader.contains(<h1>Shared Collection Catalog</h1>)).to.equal(true);
-  });
-
-  xit('should contains a Search component in the banner', () => {
-    const pageHeader = component.find('.nypl-homepage-hero');
-    expect(pageHeader.find('Search')).to.have.length(1);
+    expect(component.find('.home').hostNodes().length).to.equal(1);
   });
 
   it('should contain an h2', () => {
-    const h2 = component.find('h2');
-    expect(h2.length).to.equal(1);
-    expect(h2.text()).to.equal('Research at NYPL');
+    const h2 = component.find('Heading').at(1);
+    expect(h2.text()).to.equal(`Welcome to ${appConfig.displayTitle}`);
   });
 
   it('should contain five images', () => {
@@ -47,7 +39,24 @@ describe('Home', () => {
 
   it('should have five h3s in the image blocks', () => {
     const imageBlocks = component.find('div.nypl-quarter-image');
+    imageBlocks.forEach((imageBlock) => {
+      expect(imageBlock.render().find('h4').length).to.equal(1);
+    });
+  });
 
-    expect(imageBlocks.find('h3').length).to.equal(5);
+  describe('with notification', () => {
+    before(() => {
+      const testStore = makeTestStore();
+      component = mount(
+        <Provider store={testStore}>
+          <Home />
+        </Provider>
+      );
+    });
+
+    it('should have a `Notification`', () => {
+      expect(component.find('Notification').length).to.equal(1);
+      expect(component.find('Notification').text()).to.include('Some info for our patrons');
+    });
   });
 });

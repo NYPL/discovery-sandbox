@@ -7,6 +7,7 @@ import Feedback from './Feedback';
 import appConfig from '../../app/data/appConfig';
 import SubjectHeading from './SubjectHeading';
 import SubjectHeadings from './SubjectHeadings';
+import Account from './Account';
 import dataLoaderUtil from '../../app/utils/dataLoaderUtil';
 import routeMethods from './RouteMethods';
 
@@ -49,12 +50,20 @@ Object.keys(routes).forEach((routeName) => {
         resolve => routeMethods[routeName](req, res, resolve)
       )
         .then(data => (
-          api ? res.json(data) : successCb(routeName, global.store.dispatch)({ data })))
+          api ? res.json(data) : successCb(routeName, req.store.dispatch)({ data })))
         .then(() => (api ? null : next()))
         .catch(console.error)
       );
   });
 });
+
+router
+  .route(`${appConfig.baseUrl}/404/redirect`)
+  .get((req, res, next) => { res.status(404); next(); });
+
+router
+  .route(`${appConfig.baseUrl}/api/account/:content?`)
+  .post(Account.postToAccountPage);
 
 router
   .route(`${appConfig.baseUrl}/api/patronEligibility`)

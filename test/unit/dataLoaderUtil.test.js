@@ -12,7 +12,11 @@ describe('dataLoaderUtil', () => {
   const { routes } = dataLoaderUtil;
   let mockDispatch;
   let mock;
-  let consoleSpy;
+  let consoleStub;
+
+  after(() => {
+    sandbox.restore();
+  });
 
   describe('non matching path', () => {
     before(() => {
@@ -41,7 +45,7 @@ describe('dataLoaderUtil', () => {
       return 'mockSearchAction response';
     };
     const realSearchAction = routes.search.action;
-    const mockResponse = {};
+    const mockResponse = { data: 'some search data' };
     describe('successful request', () => {
       before(() => {
         mock = new MockAdapter(axios);
@@ -72,7 +76,7 @@ describe('dataLoaderUtil', () => {
         expect(mockDispatch.secondCall.args).to.have.lengthOf(1);
         expect(mockDispatch.secondCall.args[0]).to.equal('mockSearchAction response');
         expect(mockSearchArgs).to.have.lengthOf(1);
-        expect(mockSearchArgs[0]).to.equal(mockResponse);
+        expect(mockSearchArgs[0]).to.deep.equal(mockResponse);
       });
     });
 
@@ -88,7 +92,7 @@ describe('dataLoaderUtil', () => {
         };
         mockDispatch = sandbox.spy(x => x);
         routes.search.action = mockSearchAction;
-        consoleSpy = sandbox.spy(console, 'error');
+        consoleStub = sandbox.stub(console, 'error');
         dataLoaderUtil.loadDataForRoutes(mockLocation, mockDispatch);
       });
       after(() => {
@@ -103,7 +107,7 @@ describe('dataLoaderUtil', () => {
       });
 
       it('should console error', () => {
-        expect(consoleSpy.calledOnce);
+        expect(consoleStub.calledOnce);
       });
     });
   });
@@ -146,7 +150,7 @@ describe('dataLoaderUtil', () => {
         expect(mockDispatch.secondCall.args).to.have.lengthOf(1);
         expect(mockDispatch.secondCall.args[0]).to.equal('mockBibAction response');
         expect(mockBibArgs).to.have.lengthOf(1);
-        expect(mockBibArgs[0]).to.equal(mockResponse);
+        expect(mockBibArgs[0]).to.deep.equal(mockResponse);
       });
     });
 
@@ -162,7 +166,7 @@ describe('dataLoaderUtil', () => {
         };
         mockDispatch = sandbox.spy(x => x);
         routes.bib.action = mockBibAction;
-        consoleSpy = sandbox.spy(console, 'error');
+        consoleStub = sandbox.stub(console, 'error');
         dataLoaderUtil.loadDataForRoutes(mockLocation, mockDispatch);
       });
       after(() => {
@@ -177,7 +181,7 @@ describe('dataLoaderUtil', () => {
       });
 
       it('should console error', () => {
-        expect(consoleSpy.calledOnce);
+        expect(consoleStub.calledOnce);
       });
     });
   });
@@ -220,7 +224,7 @@ describe('dataLoaderUtil', () => {
         expect(mockDispatch.secondCall.args).to.have.lengthOf(1);
         expect(mockDispatch.secondCall.args[0]).to.equal('mockHoldRequestAction response');
         expect(mockHoldRequestArgs).to.have.lengthOf(1);
-        expect(mockHoldRequestArgs[0]).to.equal(mockResponse);
+        expect(mockHoldRequestArgs[0]).to.deep.equal(mockResponse);
       });
     });
 
@@ -236,7 +240,7 @@ describe('dataLoaderUtil', () => {
         };
         mockDispatch = sandbox.spy(x => x);
         routes.holdRequest.action = mockHoldRequestAction;
-        consoleSpy = sandbox.spy(console, 'error');
+        consoleStub = sandbox.stub(console, 'error');
         dataLoaderUtil.loadDataForRoutes(mockLocation, mockDispatch);
       });
       after(() => {
@@ -251,7 +255,144 @@ describe('dataLoaderUtil', () => {
       });
 
       it('should console error', () => {
-        expect(consoleSpy.calledOnce);
+        expect(consoleStub.calledOnce);
+      });
+    });
+  });
+
+  describe('account path', () => {
+    let mockAccountPageArgs = [];
+    const mockAccountPageAction = (data) => {
+      mockAccountPageArgs.push(data);
+      return 'mockAccountPageAction response';
+    };
+    const realAccountAction = routes.account.action;
+    before(() => {
+      mock = new MockAdapter(axios);
+      mock.onGet('/research/collections/shared-collection-catalog/api/account').reply(200, '<div>html for account page default view</div>');
+      mock.onGet('/research/collections/shared-collection-catalog/api/account/items').reply(200, '<div>html for account page items view</div>');
+      mock.onGet('/research/collections/shared-collection-catalog/api/account/settings').reply(200, '');
+      routes.account.action = mockAccountPageAction;
+    });
+
+    after(() => {
+      routes.bib.action = realAccountAction;
+    });
+
+    describe('successful request', () => {
+      describe('default', () => {
+        before(() => {
+          sandbox = sinon.createSandbox();
+          axiosSpy = sandbox.spy(axios, 'get');
+          const mockLocation = {
+            pathname: `${appConfig.baseUrl}/account`,
+            search: '',
+          };
+          mockDispatch = sandbox.spy(x => x);
+          dataLoaderUtil.loadDataForRoutes(mockLocation, mockDispatch);
+        });
+        after(() => {
+          sandbox.restore();
+          mockAccountPageArgs = [];
+        });
+        it('should make an ajax call to the correct url', () => {
+          expect(axiosSpy.getCalls()).to.have.lengthOf(1);
+          expect(axiosSpy.firstCall.args).to.have.lengthOf(1);
+          expect(axiosSpy.firstCall.args[0]).to.equal(`${appConfig.baseUrl}/api/account`);
+        });
+
+        it('should call dispatch with the account action and the response', () => {
+          // 4 calls: loading true, account page action, updateLastLoaded, loading false
+          expect(mockDispatch.getCalls()).to.have.lengthOf(5);
+          expect(mockDispatch.thirdCall.args).to.have.lengthOf(1);
+          expect(mockDispatch.thirdCall.args[0]).to.equal('mockAccountPageAction response');
+          expect(mockAccountPageArgs).to.have.lengthOf(1);
+          expect(mockAccountPageArgs[0]).to.equal('<div>html for account page default view</div>');
+        });
+      });
+
+      describe('items', () => {
+        before(() => {
+          sandbox = sinon.createSandbox();
+          axiosSpy = sandbox.spy(axios, 'get');
+          const mockLocation = {
+            pathname: `${appConfig.baseUrl}/account/items`,
+            search: '',
+          };
+          mockDispatch = sandbox.spy(x => x);
+          dataLoaderUtil.loadDataForRoutes(mockLocation, mockDispatch);
+        });
+        after(() => {
+          sandbox.restore();
+          mockAccountPageArgs = [];
+        });
+        it('should make an ajax call to the correct url', () => {
+          expect(axiosSpy.getCalls()).to.have.lengthOf(1);
+          expect(axiosSpy.firstCall.args).to.have.lengthOf(1);
+          expect(axiosSpy.firstCall.args[0]).to.equal(`${appConfig.baseUrl}/api/account/items`);
+        });
+
+        it('should call dispatch with the account action and the response', () => {
+          // 4 calls: loading true, account page action, updateLastLoaded, loading false
+          expect(mockDispatch.getCalls()).to.have.lengthOf(5);
+          expect(mockDispatch.thirdCall.args).to.have.lengthOf(1);
+          expect(mockDispatch.thirdCall.args[0]).to.equal('mockAccountPageAction response');
+          expect(mockAccountPageArgs).to.have.lengthOf(1);
+          expect(mockAccountPageArgs[0]).to.equal('<div>html for account page items view</div>');
+        });
+      });
+
+      describe('settings', () => {
+        before(() => {
+          sandbox = sinon.createSandbox();
+          axiosSpy = sandbox.spy(axios, 'get');
+          const mockLocation = {
+            pathname: `${appConfig.baseUrl}/account/settings`,
+            search: '',
+          };
+          mockDispatch = sandbox.spy(x => x);
+          dataLoaderUtil.loadDataForRoutes(mockLocation, mockDispatch);
+        });
+        after(() => {
+          sandbox.restore();
+        });
+        it('should make an ajax call to the correct url', () => {
+          expect(axiosSpy.getCalls()).to.have.lengthOf(1);
+          expect(axiosSpy.firstCall.args).to.have.lengthOf(1);
+          expect(axiosSpy.firstCall.args[0]).to.equal(`${appConfig.baseUrl}/api/account/settings`);
+        });
+
+        it('should call dispatch with the account action and the response', () => {
+          // 4 calls: loading true, account page action, updateLastLoaded, loading false
+          expect(mockDispatch.getCalls()).to.have.lengthOf(5);
+          expect(mockDispatch.thirdCall.args).to.have.lengthOf(1);
+          expect(mockDispatch.thirdCall.args[0]).to.equal('mockAccountPageAction response');
+          expect(mockAccountPageArgs).to.have.lengthOf(1);
+          expect(mockAccountPageArgs[0]).to.equal('');
+        });
+      });
+    });
+
+    describe('unsuccessful request', () => {
+      before(() => {
+        axiosSpy = sandbox.spy(axios, 'get');
+        mock.onGet('/research/collections/shared-collection-catalog/api/account').reply(400, {});
+        consoleStub = sandbox.stub(console, 'error');
+        const mockLocation = {
+          pathname: `${appConfig.baseUrl}/account/random`,
+          search: '',
+        };
+        dataLoaderUtil.loadDataForRoutes(mockLocation, mockDispatch);
+      });
+
+      it('should make an ajax call to the correct url', () => {
+        expect(axiosSpy.getCalls()).to.have.lengthOf(1);
+        expect(axiosSpy.firstCall.args).to.have.lengthOf(1);
+        expect(axiosSpy.firstCall.args[0]).to.equal(`${appConfig.baseUrl}/api/account/random`);
+      });
+
+      it('should console error', () => {
+        expect(consoleStub.calledOnce);
       });
     });
   });

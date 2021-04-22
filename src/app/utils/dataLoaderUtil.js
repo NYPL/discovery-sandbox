@@ -6,6 +6,7 @@ import {
   updateHoldRequestPage,
   resetState,
   updateLastLoaded,
+  updateAccountPage,
 } from '@Actions';
 import appConfig from '@appConfig';
 import { updateLoadingStatus } from '../actions/Actions';
@@ -34,6 +35,11 @@ const routes = {
     path: 'hold/request',
     params: '/:bibId-:itemId',
   },
+  account: {
+    action: updateAccountPage,
+    path: 'account',
+    params: '/:content?',
+  },
 };
 
 // A simple function for loading data into the store. The only reason it is broken
@@ -60,7 +66,7 @@ const successCb = (pathType, dispatch) => (response) => {
 
 function loadDataForRoutes(location, dispatch) {
   const { pathname, search } = location;
-  if (pathname === `${baseUrl}/`) {
+  if (pathname === `${baseUrl}/` || pathname.includes('/account')) {
     dispatch(resetState());
   }
 
@@ -89,7 +95,7 @@ function loadDataForRoutes(location, dispatch) {
     successCb(pathType, dispatch),
     errorCb,
   ).then((resp) => {
-    if (resp && !resp.redirect) dispatch(updateLastLoaded(path));
+    if (!resp || (resp && !resp.redirect)) dispatch(updateLastLoaded(path));
     dispatch(updateLoadingStatus(false));
     return resp;
   }).catch((error) => {
