@@ -61,6 +61,13 @@ describe('Feedback', () => {
     expect(submitButton.props().type).to.equal('submit');
   });
 
+  it('should show an error if attempting to submit nothing', () => {
+    const submitButton = component.find('Button').at(2);
+    submitButton.simulate('click');
+    console.log('component state: ', component.state());
+    expect(component.html()).to.include('Please fill out this field');
+  });
+
   describe('entering text', () => {
     it('should record text typed into form', () => {
       const textarea = component.find('textarea');
