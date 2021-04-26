@@ -3,7 +3,7 @@ node_js:
 - 10.17.0
 install: npm rebuild node-sass && npm install
 before_script: npm run dist
-script: npm test
+script: echo "$TRAVIS_TAG"
 before_deploy: echo 'All unit tests passed; Successfull built distribution assets;
   Preparing to deploy Discovery Research Catalog to AWS.'
 deploy:
@@ -42,6 +42,7 @@ deploy:
   bucket_path: discovery-ui-shep
   on:
     repo: NYPL/discovery-front-end
+    all_branches: true
     condition: $TRAVIS_TAG =~ ^qa-.*
 
 after_deploy: echo 'Successfully executed deploy trigger for Discovery Research
