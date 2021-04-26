@@ -82,10 +82,8 @@ describe.only('Sorter', () => {
   });
 
   describe('js', () => {
-    it('should set js to true when loading');
-
     it('should not have a submit button');
 
-    it('should upage sort value when a new option is selected');
+    it('should update sort value when a new option is selected');
   });
 });
