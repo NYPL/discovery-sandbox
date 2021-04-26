@@ -42,7 +42,7 @@ deploy:
   bucket_path: discovery-ui-shep
   on:
     repo: NYPL/discovery-front-end
-    condition: tag = qa-tag
+    condition: $TRAVIS_TAG = qa-tag
 
 after_deploy: echo 'Successfully executed deploy trigger for Discovery Research
   Catalog on AWS'
