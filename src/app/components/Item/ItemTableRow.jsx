@@ -43,7 +43,8 @@ class ItemTableRow extends React.Component {
   }
 
   aeonUrl(item) {
-    return encodeURI(`${item.aeonUrl[0]}&barcode=${item.barcode}`);
+    const url = Array.isArray(item.aeonUrl) ? item.aeonUrl[0] : item.aeonUrl;
+    return encodeURI(`${url}${item.barcode ? `&barcode=${item.barcode}` : ''}`);
   }
 
   requestButton() {
