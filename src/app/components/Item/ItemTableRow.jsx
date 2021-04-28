@@ -42,6 +42,10 @@ class ItemTableRow extends React.Component {
     return item.accessMessage.prefLabel || ' ';
   }
 
+  aeonUrl(item) {
+    return encodeURI(`${item.aeonUrl[0]}&barcode=${item.barcode}`);
+  }
+
   requestButton() {
     const {
       item,
@@ -53,6 +57,27 @@ class ItemTableRow extends React.Component {
     const allClosed = closedLocations.concat((isRecap ? recapClosedLocations : nonRecapClosedLocations)).includes('');
     const status = item.status && item.status.prefLabel ? item.status.prefLabel : ' ';
     let itemRequestBtn = status;
+
+    if (item.aeonUrl) {
+      itemRequestBtn = (
+        <React.Fragment>
+          <a
+            href={this.aeonUrl(item)}
+            tabIndex="0"
+            className="aeonRequestButton"
+          >
+            Request
+          </a>
+          <br />
+          <span
+            className="aeonRequestText"
+          >
+            Appointment Required
+          </span>
+        </React.Fragment>
+      );
+      return itemRequestBtn;
+    }
 
     if (item.requestable && !allClosed) {
       itemRequestBtn = item.available ? (

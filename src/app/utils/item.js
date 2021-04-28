@@ -230,6 +230,7 @@ function LibraryItem() {
       status,
       availability,
       available,
+      aeonUrl: item.aeonUrl,
       accessMessage,
       isElectronicResource,
       electronicResources,
