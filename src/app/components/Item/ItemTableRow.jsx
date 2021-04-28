@@ -46,8 +46,9 @@ class ItemTableRow extends React.Component {
     const url = Array.isArray(item.aeonUrl) ? item.aeonUrl[0] : item.aeonUrl;
     const barcodeElement = `${item.barcode ? `&barcode=${item.barcode}` : ''}`;
     const idElement = `${!url.includes('itemid') && item.id ? `&itemid=${item.id}` : ''}`;
+    const shelfMarkElement = `${item.callNumber ? `&shelfMark=${item.callNumber}` : ''}`;
     return encodeURI(
-      `${url}${barcodeElement}${idElement}`,
+      `${url}${barcodeElement}${idElement}${shelfMarkElement}`,
     );
   }
 
