@@ -42,8 +42,6 @@ const AccountPage = (props, context) => {
   const [itemToCancel, setItemToCancel] = useState(null);
   const [displayTimedLogoutModal, setDisplayTimedLogoutModal] = useState(false);
 
-  const { baseUrl } = appConfig;
-
   useEffect(() => {
     if (typeof window !== 'undefined' && (!patron.id || accountHtml.error)) {
       const fullUrl = encodeURIComponent(window.location.href);
@@ -80,14 +78,10 @@ const AccountPage = (props, context) => {
     }
   }, [accountHtml]);
 
-  const incrementTime = (minutes, seconds = 0) => {
-    const now = new Date();
-    now.setTime(now.getTime() + (minutes * 60 * 1000) + (seconds * 1000));
-    return now.toUTCString();
-  };
-
   const resetCountdown = () => {
-    const inFive = incrementTime(5);
+    const now = new Date();
+    now.setTime(now.getTime() + (5 * 60 * 1000));
+    const inFive = now.toUTCString();
     document.cookie = `accountPageExp=${inFive}; expires=${inFive}`;
     setDisplayTimedLogoutModal(true);
   };
@@ -96,26 +90,7 @@ const AccountPage = (props, context) => {
     resetCountdown();
   });
 
-  // Detect a redirect loop and 404 if we can't solve it any other way
-  useEffect(() => {
-    const nyplAccountRedirectTracker = document
-      .cookie
-      .split(';')
-      .find(el => el.includes('nyplAccountRedirectTracker'));
-    if (nyplAccountRedirectTracker) {
-      const currentValue = nyplAccountRedirectTracker.split('=')[1].split('exp');
-      const currentCount = parseInt(currentValue[0], 10);
-      if (currentCount > 6) {
-        console.log('Detected redirect loop, 404ing');
-        window.location.replace(`${baseUrl}/404/account`);
-      }
-      const currentExp = currentValue[1];
-      document.cookie = `nyplAccountRedirectTracker=${currentCount + 1}exp${currentExp}`;
-    } else {
-      const expirationTime = incrementTime(0, 10);
-      document.cookie = `nyplAccountRedirectTracker=1exp${expirationTime}; expires=${expirationTime}`;
-    }
-  });
+  const { baseUrl } = appConfig;
 
   const cancelItem = () => {
     const body = buildReqBody(content, {
