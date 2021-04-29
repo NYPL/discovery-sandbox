@@ -9,6 +9,8 @@ import {
 
 import appConfig from '../../data/appConfig';
 
+const { features } = appConfig;
+
 class ItemTableRow extends React.Component {
   constructor(props) {
     super(props);
@@ -44,11 +46,26 @@ class ItemTableRow extends React.Component {
 
   aeonUrl(item) {
     const url = Array.isArray(item.aeonUrl) ? item.aeonUrl[0] : item.aeonUrl;
-    const barcodeElement = `${item.barcode ? `&barcode=${item.barcode}` : ''}`;
-    const idElement = `${!url.includes('itemid') && item.id ? `&itemid=${item.id}` : ''}`;
-    const shelfMarkElement = `${item.callNumber ? `&shelfMark=${item.callNumber}` : ''}`;
+    const searchParams = new URL(url).searchParams;
+    const paramMappings = {
+      ItemISxN: 'id',
+      itemNumber: 'barcode',
+      CallNumber: 'callNumber',
+    };
+
+    let params = Object.keys(paramMappings).map((paramName) => {
+      if (searchParams.has(paramName)) return null;
+      const mappedParamName = paramMappings[paramName];
+      if (!item[mappedParamName]) return null;
+      return `&${paramName}=${item[mappedParamName]}`;
+    })
+      .filter(paramString => paramString)
+      .join('');
+
+    if (params && !url.includes('?')) params = `?${params}`;
+
     return encodeURI(
-      `${url}${barcodeElement}${idElement}${shelfMarkElement}`,
+      `${url}${params || ''}`,
     );
   }
 
@@ -64,7 +81,9 @@ class ItemTableRow extends React.Component {
     const status = item.status && item.status.prefLabel ? item.status.prefLabel : ' ';
     let itemRequestBtn = status;
 
-    if (item.aeonUrl) {
+    console.log('features: ', features);
+
+    if (item.aeonUrl && features.includes('aeonLinks')) {
       itemRequestBtn = (
         <React.Fragment>
           <a
