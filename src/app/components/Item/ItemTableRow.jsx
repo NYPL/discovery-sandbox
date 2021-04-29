@@ -81,8 +81,6 @@ class ItemTableRow extends React.Component {
     const status = item.status && item.status.prefLabel ? item.status.prefLabel : ' ';
     let itemRequestBtn = status;
 
-    console.log('features: ', features);
-
     if (item.aeonUrl && features.includes('aeonLinks')) {
       itemRequestBtn = (
         <React.Fragment>
