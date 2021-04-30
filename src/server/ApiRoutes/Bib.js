@@ -13,7 +13,11 @@ const nyplApiClientCall = (query, urlEnabledFeatures, itemFrom) => {
   return nyplApiClient().then(client => client.get(`/discovery/resources/${query}${queryForItemPage}`, requestOptions));
 };
 
-const shepApiCall = bibId => axios(`${appConfig.shepApi}/bibs/${bibId}/subject_headings`);
+const shepApiCall = bibId => axios({
+  method: 'get',
+  url: `${appConfig.shepApi}/bibs/${bibId}/subject_headings`,
+  timeout: 5000,
+});
 
 const holdingsMappings = {
   Location: 'location',
