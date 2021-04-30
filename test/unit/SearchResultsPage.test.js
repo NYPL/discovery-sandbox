@@ -203,6 +203,7 @@ describe('SearchResultsPage', () => {
 
   describe('with DRBB integration', () => {
     let component;
+    const mockRouter = mockRouterContext();
 
     before(() => {
       const storeWithProps = makeTestStore({
@@ -218,7 +219,10 @@ describe('SearchResultsPage', () => {
         />,
         {
           store: storeWithProps,
-          context: { media: 'desktop' },
+          context: {
+            media: 'desktop',
+            ...mockRouter,
+          },
           childContextTypes,
         });
     });
@@ -248,7 +252,10 @@ describe('SearchResultsPage', () => {
           />,
           {
             store: storeWithProps,
-            context: { media: 'tablet' },
+            context: {
+              media: 'tablet',
+              ...mockRouter,
+            },
             childContextTypes,
           });
       });
