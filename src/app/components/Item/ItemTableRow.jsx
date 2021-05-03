@@ -9,6 +9,8 @@ import {
 
 import appConfig from '../../data/appConfig';
 
+const { features } = appConfig;
+
 class ItemTableRow extends React.Component {
   constructor(props) {
     super(props);
@@ -42,6 +44,31 @@ class ItemTableRow extends React.Component {
     return item.accessMessage.prefLabel || ' ';
   }
 
+  aeonUrl(item) {
+    const url = Array.isArray(item.aeonUrl) ? item.aeonUrl[0] : item.aeonUrl;
+    const searchParams = new URL(url).searchParams;
+    const paramMappings = {
+      ItemISxN: 'id',
+      itemNumber: 'barcode',
+      CallNumber: 'callNumber',
+    };
+
+    let params = Object.keys(paramMappings).map((paramName) => {
+      if (searchParams.has(paramName)) return null;
+      const mappedParamName = paramMappings[paramName];
+      if (!item[mappedParamName]) return null;
+      return `&${paramName}=${item[mappedParamName]}`;
+    })
+      .filter(paramString => paramString)
+      .join('');
+
+    if (params && !url.includes('?')) params = `?${params}`;
+
+    return encodeURI(
+      `${url}${params || ''}`,
+    );
+  }
+
   requestButton() {
     const {
       item,
@@ -53,6 +80,27 @@ class ItemTableRow extends React.Component {
     const allClosed = closedLocations.concat((isRecap ? recapClosedLocations : nonRecapClosedLocations)).includes('');
     const status = item.status && item.status.prefLabel ? item.status.prefLabel : ' ';
     let itemRequestBtn = status;
+
+    if (item.aeonUrl && features.includes('aeon-links')) {
+      itemRequestBtn = (
+        <React.Fragment>
+          <a
+            href={this.aeonUrl(item)}
+            tabIndex="0"
+            className="aeonRequestButton"
+          >
+            Request
+          </a>
+          <br />
+          <span
+            className="aeonRequestText"
+          >
+            Appointment Required
+          </span>
+        </React.Fragment>
+      );
+      return itemRequestBtn;
+    }
 
     if (item.requestable && !allClosed) {
       itemRequestBtn = item.available ? (
