@@ -1,7 +1,7 @@
 /* eslint-env mocha */
 import { expect } from 'chai';
 
-import { isClosed, convertEncoreUrl } from './../../src/app/utils/accountPageUtils';
+import { isClosed, convertEncoreUrl, formatPatronExpirationDate } from './../../src/app/utils/accountPageUtils';
 import appConfig from './../../src/app/data/appConfig';
 
 describe('`isClosed`', () => {
@@ -27,5 +27,20 @@ describe('`convertEncoreUrl`', () => {
   it('should return passed URL if it does not follow convention of Encore item URL', () => {
     const malformedUrl = 'https://browse.nypl.org/iii/encore/record/somethingisnotright';
     expect(convertEncoreUrl(malformedUrl)).to.equal(malformedUrl);
+  });
+});
+
+describe('`formatPatronExpirationDate`', () => {
+  it('should return invalid values unmodified', () => {
+    expect(formatPatronExpirationDate()).to.be.an('undefined')
+    expect(formatPatronExpirationDate('')).to.eq('')
+    expect(formatPatronExpirationDate(Math.PI)).to.eq(Math.PI)
+    expect(formatPatronExpirationDate('2021')).to.eq('2021')
+    expect(formatPatronExpirationDate('August 29, 1997')).to.eq('August 29, 1997')
+  });
+
+  it('should transform YYYY-MM-DD to MM-DD-YYYY', () => {
+    expect(formatPatronExpirationDate('1997-08-29')).to.eq('08-29-1997')
+    expect(formatPatronExpirationDate('2021-1-2')).to.eq('1-2-2021')
   });
 });
