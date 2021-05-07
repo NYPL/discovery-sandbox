@@ -46,7 +46,6 @@ const commonSettings = {
     new MiniCssExtractPlugin({
       filename: 'styles.css',
     }),
-    new Visualizer(),
     new webpack.DefinePlugin({
       loadA11y: process.env.loadA11y || false,
       appEnv: JSON.stringify(appEnv),
@@ -97,7 +96,11 @@ const commonSettings = {
     //   // Log level. Can be 'info', 'warn', 'error' or 'silent'.
     //   logLevel: 'info',
     // }),
-  ],
+  // Generate bundle analysis at dist/bundle-analyzer.html if BUNDLE_ANALYZER
+  // is set (default false)
+  ].concat(
+    process.env.BUNDLE_ANALYZER ? new Visualizer({ filename: './bundle-analysis.html' }) : []
+  )
 };
 
 /**
