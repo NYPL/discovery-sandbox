@@ -132,7 +132,7 @@ export const manipulateAccountPage = (
       });
 
       const inputs = el.querySelectorAll('input');
-      const buttons = [];
+      const holdActionElements = [];
       const removeTd = (element) => {
         if (element.tagName === 'TD') {
           element.remove();
@@ -171,7 +171,7 @@ export const manipulateAccountPage = (
         } else {
           button.addEventListener('click', eventCb);
         }
-        buttons.push(button);
+        holdActionElements.push(button);
         removeTd(input);
         eventListeners.push({ element: button, cb: eventCb });
       });
@@ -179,12 +179,27 @@ export const manipulateAccountPage = (
       // add new TD with account page button(s)
       const td = document.createElement('td');
       td.classList.add('account-table-buttons');
-      buttons.forEach((button) => {
+
+      /**
+       * If the freeze cell did not have an `input`, it still needs to be removed.
+       * There may be an error message, probably "This hold can not be frozen."
+       * If so, create an element to display it and then remove the cell.
+      */
+      const freezeCells = el.querySelectorAll('.patFuncFreeze');
+      if (freezeCells) {
+        freezeCells.forEach((cell) => {
+          if (cell.textContent) {
+            const freezeMessage = document.createElement('em');
+            freezeMessage.textContent = cell.textContent;
+            holdActionElements.push(freezeMessage);
+          }
+          cell.remove();
+        });
+      }
+      holdActionElements.forEach((button) => {
         td.appendChild(button);
       });
       el.appendChild(td);
-      const freezeCells = el.querySelectorAll('.patFuncFreeze');
-      if (freezeCells) freezeCells.forEach(cell => cell.remove());
     });
     accountPageContent.querySelectorAll('.patFuncRating').forEach(el => el.remove());
 
