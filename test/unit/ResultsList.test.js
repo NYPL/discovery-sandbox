@@ -6,11 +6,14 @@ import { mount } from 'enzyme';
 import { mock as sinonMock } from 'sinon';
 import MockAdapter from 'axios-mock-adapter';
 import axios from 'axios';
-import { mountTestRender, makeTestStore } from '../helpers/store';
+import { Provider } from 'react-redux';
+import PropTypes from 'prop-types';
 
+import { mountTestRender, makeTestStore } from '../helpers/store';
 import ResultsList, { getBibTitle, getYearDisplay } from '../../src/app/components/ResultsList/ResultsList';
 import resultsBibs from '../fixtures/resultsBibs';
 import appConfig from '../../src/app/data/appConfig';
+import { mockRouterContext } from '../helpers/routing';
 
 const results = [{}, {}, {}];
 const singleBibNoTitleDisplay = {
@@ -64,13 +67,22 @@ const endYear9999Bib = {
 
 describe('ResultsList', () => {
   let mockStore;
+  const childContextTypes = {
+    router: PropTypes.object,
+    media: PropTypes.string,
+  };
+  const context = mockRouterContext();
   before(() => {
     mockStore = makeTestStore({ loading: false, appConfig: { features: [] } });
   });
   describe('Default rendering', () => {
     let component;
     before(() => {
-      component = mountTestRender(<ResultsList />, { store: mockStore });
+      component = mountTestRender(<ResultsList />, {
+        store: mockStore,
+        context,
+        childContextTypes,
+      });
     });
     it('should return null if no results were passed', () => {
       expect(component.find('ResultsList').isEmptyRender()).to.equal(true);
@@ -81,7 +93,12 @@ describe('ResultsList', () => {
     let component;
 
     before(() => {
-      component = mountTestRender(<ResultsList results={results} />, { store: mockStore }).find('ResultsList');
+      component = mountTestRender(
+        <ResultsList results={results} />, {
+          store: mockStore,
+          context,
+          childContextTypes,
+        }).find('ResultsList');
     });
 
     it('should have a ul wrapper', () => {
@@ -102,7 +119,12 @@ describe('ResultsList', () => {
     let component;
 
     before(() => {
-      component = mountTestRender(<ResultsList results={resultsBibs} />, { store: mockStore }).find('ResultsList');
+      component = mountTestRender(
+        <ResultsList results={resultsBibs} />, {
+          store: mockStore,
+          context,
+          childContextTypes,
+        }).find('ResultsList');
     });
 
     it('should render two bib li items', () => {
@@ -137,7 +159,12 @@ describe('ResultsList', () => {
     let component;
 
     before(() => {
-      component = mountTestRender(<ResultsList results={[bib]} />, { store: mockStore }).find('ResultsList');
+      component = mountTestRender(
+        <ResultsList results={[bib]} />, {
+          store: mockStore,
+          context,
+          childContextTypes,
+        }).find('ResultsList');
     });
 
     it('should render one main li', () => {
@@ -187,7 +214,12 @@ describe('ResultsList', () => {
     let component;
 
     before(() => {
-      component = mountTestRender(<ResultsList results={[bib]} />, { store: mockStore }).find('ResultsList');
+      component = mountTestRender(
+        <ResultsList results={[bib]} />, {
+          store: mockStore,
+          context,
+          childContextTypes,
+        }).find('ResultsList');
     });
 
     it('should have a total items description', () => {
@@ -339,7 +371,6 @@ describe('ResultsList', () => {
 
   describe('DRBB integration', () => {
     let component;
-    const context = {};
     let appConfigMock;
 
     before(() => {
@@ -348,7 +379,12 @@ describe('ResultsList', () => {
 
     describe('without integration', () => {
       before(() => {
-        component = mountTestRender(<ResultsList results={resultsBibs} />, { store: mockStore }).find('ResultsList');
+        component = mountTestRender(
+          <ResultsList results={resultsBibs} />, {
+            store: mockStore,
+            context,
+            childContextTypes,
+          }).find('ResultsList');
       });
 
       it('should not have any components with .drbb-integration class', () => {
@@ -363,7 +399,11 @@ describe('ResultsList', () => {
           features: ['drb-integration'],
         });
         component = mountTestRender(
-          <ResultsList results={resultsBibs} />, { store: mockDrbFeatureStore });
+          <ResultsList results={resultsBibs} />, {
+            store: mockDrbFeatureStore,
+            context,
+            childContextTypes,
+          });
       });
 
       it('should have components with .drbb-integration class', () => {
