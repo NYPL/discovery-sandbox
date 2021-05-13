@@ -5,30 +5,35 @@ import { expect } from 'chai';
 import { shallow, mount } from 'enzyme';
 import PropTypes from 'prop-types';
 import { Provider } from 'react-redux';
-import { makeTestStore } from '../helpers/store';
 
-// Import Bib for pre-processing
-
-import Bib from './../../src/server/ApiRoutes/Bib';
+// Import Bib helper functions for pre-processing
+import { addCheckInItems, addHoldingDefinition } from './../../src/server/ApiRoutes/Bib';
 
 // Import the unwrapped component that is going to be tested
 import { BibPage } from './../../src/app/pages/BibPage';
 import bibs from '../fixtures/bibs';
 import annotatedMarc from '../fixtures/annotatedMarc.json';
 import mockBibWithHolding from '../fixtures/mockBibWithHolding.json';
+import { makeTestStore } from '../helpers/store';
+import { mockRouterContext } from '../helpers/routing';
 
 describe('BibPage', () => {
-  let component;
+  const context = mockRouterContext();
   describe('Non-serial bib', () => {
+    let component;
     before(() => {
       const bib = { ...bibs[0], ...annotatedMarc };
-      component = shallow(<BibPage
-        location={{ search: 'search', pathname: '' }}
-        bib={bib}
-        dispatch={() => {}}
-      />, { context: {
-        router: { location: {} } } });
-    });
+      component = shallow(
+        <BibPage
+          location={{ search: 'search', pathname: '' }}
+          bib={bib}
+          dispatch={() => {}}
+          resultSelection={{
+            fromUrl: '',
+            bibId: '',
+          }}
+        />, { context });
+      });
     it('has Tabbed component with three tabs', () => {
       const tabbed = component.find('Tabbed');
       const tabs = tabbed.props().tabs;
@@ -48,10 +53,10 @@ describe('BibPage', () => {
 
   describe('Serial', () => {
     let itemTable;
-    let holdingsTab;
+    let component;
     before(() => {
-      mockBibWithHolding.holdings.forEach(holding => Bib.addHoldingDefinition(holding));
-      Bib.addCheckInItems(mockBibWithHolding);
+      mockBibWithHolding.holdings.forEach(holding => addHoldingDefinition(holding));
+      addCheckInItems(mockBibWithHolding);
       const bib = { ...mockBibWithHolding, ...annotatedMarc };
       const testStore = makeTestStore({
         bib: {
@@ -66,11 +71,13 @@ describe('BibPage', () => {
             location={{ search: 'search', pathname: '' }}
             bib={bib}
             dispatch={() => {}}
+            resultSelection={{
+              fromUrl: '',
+              bibId: '',
+            }}
           />
         </Provider>, {
-          context: {
-            router: { location: { query: {} }, createHref: () => {} },
-          },
+          context,
           childContextTypes: { router: PropTypes.object },
         });
       itemTable = component.find('ItemTable');
@@ -95,6 +102,38 @@ describe('BibPage', () => {
 
     it('displays any notes in the "Library Holdings" tab', () => {
       expect(component.find('dt').findWhere(n => n.type() === 'dt' && n.text() === 'Notes').length).to.equal(1);
+    });
+  });
+
+  describe('"Back to search results" link', () => {
+    const bib = { ...mockBibWithHolding, ...annotatedMarc };
+    it('displays if `resultSelection.bibId` matches ID of bib for page', () => {
+      const component = shallow(
+        <BibPage
+          location={{ search: 'search', pathname: '' }}
+          bib={bib}
+          dispatch={() => {}}
+          resultSelection={{
+            fromUrl: 'resultsurl.com',
+            bibId: bib['@id'].substring(4),
+          }}
+        />, { context });
+      expect(component.find('Link').first().render().text()).to.equal('Back to search results');
+    });
+
+    it('does not display if `resultSelection.bibId` does not match ID of bib for page', () => {
+      const component = shallow(
+        <BibPage
+          location={{ search: 'search', pathname: '' }}
+          bib={bib}
+          dispatch={() => {}}
+          resultSelection={{
+            fromUrl: 'resultsurl.com',
+            bibId: 'wrongbib',
+          }}
+        />, { context });
+
+      expect(component.find('Link').length).to.equal(0);
     });
   });
 });
