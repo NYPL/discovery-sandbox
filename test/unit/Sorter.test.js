@@ -1,26 +1,26 @@
 /* eslint-env mocha */
 import React from 'react';
 import { expect } from 'chai';
-import { mount } from 'enzyme';
+import { shallow, mount } from 'enzyme';
 
 import Sorter from '../../src/app/components/Sorter/Sorter';
 
-describe.only('Sorter', () => {
+describe('Sorter', () => {
   describe('html', () => {
-
     let component;
     before(() => {
       component = mount(
         <Sorter
           sortOptions={
             [
-              { val: 'val1', label: 'label1'},
-              { val: 'val2', label: 'label2'},
-              { val: 'val3', label: 'label3'},
+              { val: 'val1', label: 'label1' },
+              { val: 'val2', label: 'label2' },
+              { val: 'val3', label: 'label3' },
             ]
           }
           page={1}
-        />
+          sortBy={'val1'}
+        />,
       );
     });
 
@@ -60,7 +60,10 @@ describe.only('Sorter', () => {
       expect(select.length).to.equal(1);
     });
 
-    it('select should have default sort value');
+    it('select should have default sort value', () => {
+      const select = component.find('select');
+      expect(select.at(0).prop('value')).to.equal('val1');
+    });
 
     it('should have options for each sort option', () => {
       const options = component.find('option');
@@ -78,12 +81,30 @@ describe.only('Sorter', () => {
   });
 
   describe('no-js', () => {
+    // not sure the right way to test this
     it('should have a submit button');
   });
 
   describe('js', () => {
-    it('should not have a submit button');
+    const component = mount(
+      <Sorter
+        sortOptions={
+          [
+            { val: 'val1', label: 'label1' },
+            { val: 'val2', label: 'label2' },
+            { val: 'val3', label: 'label3' },
+          ]
+        }
+        page={1}
+        sortBy="val1"
+      />,
+    );
+    it('should not have a submit button', () => {
+      const input = component.find('input');
+      expect(input.length).to.equal(0);
+    });
 
+    // not sure the right way to test this
     it('should update sort value when a new option is selected');
   });
 });

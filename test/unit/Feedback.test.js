@@ -64,7 +64,8 @@ describe('Feedback', () => {
   it('should show an error if attempting to submit nothing', () => {
     const submitButton = component.find('Button').at(2);
     submitButton.simulate('click');
-    console.log('component state: ', component.state());
+    const form = component.find('form');
+    form.simulate('submit');
     expect(component.html()).to.include('Please fill out this field');
   });
 
