@@ -64,7 +64,7 @@ describe('researchNowUtils', () => {
     })
 
     it('should handle lang filter', () => {
-      expect(getResearchNowQueryString({ filters: { language: 'en' } })).to.equal('?query=keyword%3A*&page=1&filter=language%3Aen')
+      expect(getResearchNowQueryString({ filters: { language: 'lang:en' } })).to.equal('?query=keyword%3A*&page=1&filter=language%3Aen')
     })
 
     it('should handle dateAfter filter', () => {
