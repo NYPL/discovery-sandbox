@@ -7,7 +7,6 @@ import MockAdapter from 'axios-mock-adapter';
 import NyplApiClient from '@nypl/nypl-data-api-client';
 
 import ResearchNow from './../../src/server/ApiRoutes/ResearchNow';
-console.log('here....')
 
 describe('ResearchNow', () => {
   describe('search', () => {

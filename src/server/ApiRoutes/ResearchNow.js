@@ -24,7 +24,7 @@ const drbQueryFromRequest = (req) => {
   } else {
     drbQuery = getResearchNowQueryString(query)
     drbCall = nyplApiClient({ apiName: 'drbb' })
-      .then(client => client.get(drbQuery, 'two'))
+      .then(client => client.get(drbQuery))
   }
 
   // Return a promise resolving the DRB API response and the query string used
