@@ -1,10 +1,3 @@
-/*
-  `createResearchNowQuery()` currently handles:
-  `search_scope`, `dateAfter`, `dateBefore`,
-  `contributorLiteral`, `subjectLiteral`, `language`,
-  sorting, and pagination
-*/
-
 /* eslint-disable camelcase */
 
 const mapSearchScope = {
@@ -15,24 +8,45 @@ const mapSearchScope = {
   date: 'date',
 };
 
-const filterObj = (field, value) => ({ field, value });
-const queryObj = (field, query) => ({ field, query });
+/**
+ *  Given a hash of RC filter params including:
+ *   - `dateAfter`
+ *   - `dateBefore`
+ *   - `language`
+ *
+ *  Returns a hash representing an equivalent `filter` param on DRBAPI
+ */
 
 const mapFilters = (filters = {}) => {
-  const researchNowFilters = [];
+  let researchNowFilters = [];
 
   const years = {};
-  if (filters.dateAfter) years.start = filters.dateAfter;
-  if (filters.dateBefore) years.end = filters.dateBefore;
-  if (years.start || years.end) researchNowFilters.push(filterObj('years', years));
+  if (filters.dateAfter) researchNowFilters.push(`startYear:${filters.dateAfter}`)
+  if (filters.dateBefore) researchNowFilters.push(`endYear:${filters.dateBefore}`)
   if (filters.language) {
-    const languages = filters.language.map(lang => lang.replace('lang:', ''));
-    languages.forEach(language => researchNowFilters.push(filterObj('language', language)));
+    researchNowFilters = researchNowFilters.concat(
+      (Array.isArray(filters.language) ? filters.language : [ filters.language ])
+        .map(lang => lang.replace('lang:', ''))
+        .map(lang => `language:${lang}`)
+    )
   }
 
   return researchNowFilters;
 };
 
+/**
+ *  Given a hash of RC params including:
+ *   - `q`
+ *   - `search_scope`
+ *   - `filters`, including:
+ *     - `dateAfter`
+ *     - `dateBefore`
+ *     - `contributorLiteral`
+ *     - `subjectLiteral`
+ *     - `language`
+ *
+ *  Returns a hash representing an equivalent query against DRBAPI
+ */
 const createResearchNowQuery = (params) => {
   const {
     q,
@@ -43,23 +57,22 @@ const createResearchNowQuery = (params) => {
     per_page,
   } = params;
 
-  const mainQuery = queryObj(
+  const mainQuery = [
     mapSearchScope[search_scope] || 'keyword',
-    q || '*');
+    q || '*'
+  ].join(':')
 
   const query = {
-    queries: [mainQuery],
-    page: 0,
+    query: [ mainQuery ],
+    page: 1,
   };
 
   if (sort) {
-    query.sort = [{ field: sort }];
-    if (sort_direction) query.sort[0].dir = sort_direction;
+    sort_direction = sort_direction || (sort === 'date' ? 'desc' : 'asc')
+    query.sort = [sort, sort_direction].join(':');
   }
 
-  if (per_page) query.per_page = per_page;
-
-  if (!filters) return query;
+  if (per_page) query.size = per_page;
 
   const {
     subjectLiteral,
@@ -67,16 +80,21 @@ const createResearchNowQuery = (params) => {
     language,
     dateAfter,
     dateBefore,
-  } = filters;
+  } = filters || {};
 
+  // DRB doesn't handle subject or contributor in `filter` param, so handle
+  // them separately:
   if (subjectLiteral) {
-    if (Array.isArray(subjectLiteral)) subjectLiteral.forEach(subject => query.queries.push(queryObj('subject', subject)));
-    else if (typeof subjectLiteral === 'string') query.queries.push(queryObj('subject', subjectLiteral));
+    query.query = query.query.concat(
+      (Array.isArray(subjectLiteral) ? subjectLiteral : [ subjectLiteral ])
+      .map(subject => [ 'subject', subject ].join(':'))
+    )
   }
-  if (contributorLiteral) query.queries.push(queryObj('author', contributorLiteral));
+  if (contributorLiteral) query.query.push(['author', contributorLiteral].join(':'));
 
+  // Extract language and date filters for drb `filter` param:
   if (language || dateAfter || dateBefore) {
-    query.filters = mapFilters({ dateAfter, dateBefore, language });
+    query.filter = mapFilters({ dateAfter, dateBefore, language });
   }
 
   return query;
@@ -101,25 +119,40 @@ const generateStreamedReaderUrl = (url, eReaderUrl) => {
   return encodeURI(`${eReaderUrl}/readerNYPL/?url=${eReaderUrl}/pub/${encodedBookUrl}/manifest.json`);
 };
 
-
-const getQueryString = (initialQuery, cb = input => input) => {
-  const query = cb(initialQuery);
-
-  return (query && Object.keys(query)
-    .map(key => [key, query[key]]
-      .map((o) => {
-        let ret = o;
-        if (typeof o === 'object') {
-          ret = JSON.stringify(o);
-        }
-        return encodeURIComponent(ret);
-      })
-      .join('='))
+/**
+ *  Given a hash representation of a query string, e.g.
+ *    {
+ *      query: [ 'keyword:toast', 'subject:snacks' ],
+ *      page: 1
+ *    }
+ *
+ *  ..returns a URI encoded query string representation of the values, e.g.
+ *    "query=keyword:toast,subject:snacks&page=1"
+ */
+const getQueryString = (query) => {
+  return '?' + (query && Object.keys(query)
+    .reduce((pairs, key) => {
+      // Get array of values for this key
+      let values = query[key]
+      if (!Array.isArray(values)) values = [ values ]
+      values = values.map(encodeURIComponent)
+      return pairs.concat(
+        // Join values with ','
+        [encodeURIComponent(key), values.join(',')].join('=')
+      )
+    }, [])
     .join('&')
   );
 };
 
-const getResearchNowQueryString = query => getQueryString(query, createResearchNowQuery);
+/**
+ *
+ * Given a hash representing an RC query string
+ *
+ * returns a URI encoded string representation of the query string
+ * suitable for DRBB
+ */
+const getResearchNowQueryString = query => getQueryString(createResearchNowQuery(query));
 
 export {
   createResearchNowQuery,
@@ -127,4 +160,5 @@ export {
   generateStreamedReaderUrl,
   formatUrl,
   getResearchNowQueryString,
+  getQueryString,
 };
