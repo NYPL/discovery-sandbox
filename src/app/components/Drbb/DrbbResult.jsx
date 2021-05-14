@@ -22,6 +22,7 @@ const DrbbResult = (props) => {
     title,
     editions,
   } = work;
+  // Get authors from `authors` property (DRB v4) or `agents` property (DRB v3)
   const authors = work.authors ? work.authors : work.agents.filter(agent => agent.roles.includes('author'));
 
   const {

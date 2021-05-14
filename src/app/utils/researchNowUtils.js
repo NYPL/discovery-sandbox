@@ -20,14 +20,12 @@ const mapSearchScope = {
 const mapFilters = (filters = {}) => {
   let researchNowFilters = [];
 
-  const years = {};
   if (filters.dateAfter) researchNowFilters.push(`startYear:${filters.dateAfter}`)
   if (filters.dateBefore) researchNowFilters.push(`endYear:${filters.dateBefore}`)
   if (filters.language) {
     researchNowFilters = researchNowFilters.concat(
       (Array.isArray(filters.language) ? filters.language : [ filters.language ])
-        .map(lang => lang.replace('lang:', ''))
-        .map(lang => `language:${lang}`)
+       .map(lang => lang.replace('lang:', 'language:'))
     )
   }
 
