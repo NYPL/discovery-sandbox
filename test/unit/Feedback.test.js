@@ -12,7 +12,7 @@ import Feedback from './../../src/app/components/Feedback/Feedback';
 describe('Feedback', () => {
   let component;
   const onSubmitFormSpy = spy(Feedback.prototype, 'onSubmitForm');
-  before(() => {
+  beforeEach(() => {
     component = mount(<Feedback />);
   });
   after(() => {
@@ -92,13 +92,9 @@ describe('Feedback', () => {
       savedBaseUrl = appConfig.baseUrl;
       appConfig.baseUrl = 'http://test-server.com';
 
-      return new Promise((resolve) => {
-        savedSetState = component.instance().setState.bind(component.instance());
-        component.instance().setState = (...args) => {
-          savedSetState(...args, () => { resolve(); });
-        };
-
-        nock('http://test-server.com')
+      return new Promise((resolve, reject) => {
+        // Set up nock sever:
+        const nockScope = nock('http://test-server.com')
           .defaultReplyHeaders({
             'access-control-allow-origin': '*',
             'access-control-allow-credentials': 'true',
@@ -109,10 +105,30 @@ describe('Feedback', () => {
             return {};
           });
 
+        // Count number of times component calls setState
+        let setStateCallCount = 0
+        savedSetState = component.instance().setState.bind(component.instance());
+        component.instance().setState = (...args) => {
+          savedSetState(...args, () => {
+            setStateCallCount += 1
+            // We're waiting on two setState calls:
+            // 1. from handlInputChange
+            // 2. from postForm
+            // Resolve reference to nock instance
+            if (setStateCallCount === 2) return resolve(nockScope)
+          });
+        };
+
+        // Make sure textarea has input or else form validation with block it
+        const textarea = component.find('textarea');
+        textarea.instance().value = 'Test text';
+        textarea.simulate('change');
+
         const submitButton = component.find('Button').at(2).find('button');
         submitButton.simulate('submit');
-      }).then(() => {
-        expect(apiCalled).to.equal(true);
+      }).then((nockScope) => {
+        // nockScope.isDone() will be true if endpoint accessed exactly once.
+        expect(nockScope.isDone()).to.eq(true);
       });
     });
 
@@ -142,7 +158,6 @@ describe('Feedback', () => {
     const originalError = console.error;
     let erroredCorrectly = false;
 
-
     let savedBaseUrl;
 
     after(() => {
@@ -154,14 +169,13 @@ describe('Feedback', () => {
       savedBaseUrl = appConfig.baseUrl;
       appConfig.baseUrl = 'http://test-server.com';
 
-      return new Promise((resolve) => {
-
+      return new Promise((resolve, reject) => {
         console.error = (...args) => {
           originalError(...args);
           if (args.includes('errorText')) {
             erroredCorrectly = true;
             resolve();
-          }
+          } else reject()
         };
         nock('http://test-server.com')
           .defaultReplyHeaders({
@@ -201,14 +215,14 @@ describe('Feedback', () => {
       savedBaseUrl = appConfig.baseUrl;
       appConfig.baseUrl = 'http://test-server.com';
 
-      return new Promise((resolve) => {
+      return new Promise((resolve, reject) => {
 
         console.log = (...args) => {
           originalLog(...args);
           if (args.includes('Feedback error')) {
             loggedCorrectly = true;
             resolve();
-          }
+          } else reject();
         };
         nock('http://test-server.com')
           .defaultReplyHeaders({
