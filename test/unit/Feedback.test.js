@@ -9,7 +9,7 @@ import appConfig from '../../src/app/data/appConfig';
 
 import Feedback from './../../src/app/components/Feedback/Feedback';
 
-describe('Feedback', () => {
+describe.only('Feedback', () => {
   let component;
   const onSubmitFormSpy = spy(Feedback.prototype, 'onSubmitForm');
   before(() => {
@@ -82,7 +82,6 @@ describe('Feedback', () => {
 
     let savedBaseUrl;
     let savedSetState;
-    let apiCalled;
 
     after(() => {
       appConfig.baseUrl = savedBaseUrl;
@@ -104,15 +103,12 @@ describe('Feedback', () => {
             'access-control-allow-credentials': 'true',
           })
           .post(/\/api\/feedback/)
-          .reply(200, () => {
-            apiCalled = true;
-            return {};
-          });
+          .reply(200, () => {});
 
         const submitButton = component.find('Button').at(2).find('button');
         submitButton.simulate('submit');
       }).then(() => {
-        expect(apiCalled).to.equal(true);
+        expect(nock.isDone()).to.equal(true);
       });
     });
 
@@ -194,7 +190,7 @@ describe('Feedback', () => {
 
     after(() => {
       appConfig.baseUrl = savedBaseUrl;
-      console.error = originalLog;
+      console.log = originalLog;
     });
 
     it('should log the error', () => {
