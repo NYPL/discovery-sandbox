@@ -29,6 +29,7 @@ const DIST_PATH = path.resolve(ROOT_PATH, 'dist');
 const VIEWS_PATH = path.resolve(ROOT_PATH, 'src/views');
 const WEBPACK_DEV_PORT = appConfig.webpackDevServerPort || 3000;
 const isProduction = process.env.NODE_ENV === 'production';
+const isTest = process.env.NODE_ENV === 'test';
 const app = express();
 
 let application;
@@ -118,13 +119,16 @@ app.get('/*', (req, res) => {
   });
 });
 
-const server = app.listen(app.get('port'), (error) => {
-  if (error) {
-    logger.error(error);
-  }
+let server = null;
+if (!isTest) {
+  server = app.listen(app.get('port'), (error) => {
+    if (error) {
+      logger.error(error);
+    }
 
-  logger.info(`App - Express server is listening at localhost: ${app.get('port')}.`);
-});
+    logger.info(`App - Express server is listening at localhost: ${app.get('port')}.`);
+  });
+}
 
 // This function is called when you want the server to die gracefully
 // i.e. wait for existing connections
@@ -145,12 +149,11 @@ process.on('SIGTERM', gracefulShutdown);
 // listen for INT signal e.g. Ctrl-C
 process.on('SIGINT', gracefulShutdown);
 
-
 /* Development Environment Configuration
  * -------------------------------------
  * - Using Webpack Dev Server
 */
-if (!isProduction) {
+if (!isProduction && !isTest) {
   const WebpackDevServer = require('webpack-dev-server');
 
   new WebpackDevServer(webpack(webpackConfig), {
@@ -170,3 +173,5 @@ if (!isProduction) {
     logger.info(`Webpack Dev Server listening at localhost: ${WEBPACK_DEV_PORT}.`);
   });
 }
+
+module.exports = app
