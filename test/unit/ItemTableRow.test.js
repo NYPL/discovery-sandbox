@@ -6,7 +6,7 @@ import { spy } from 'sinon';
 import { shallow, mount } from 'enzyme';
 import { mockRouterContext } from '../helpers/routing';
 import item from '../fixtures/libraryItems';
-import appConfig from '../../src/app/data/appConfig'
+import appConfig from '../../src/app/data/appConfig';
 
 // Import the component that is going to be tested
 import ItemTableRow from './../../src/app/components/Item/ItemTableRow';
@@ -198,6 +198,58 @@ describe('ItemTableRow', () => {
 
       it('should render "In Use" as the request label', () => {
         expect(component.find('td').at(2).text()).to.equal('In Use');
+      });
+    });
+
+    describe('Aeon-requestable item without params', () => {
+      const data = item.aeonRequestableWithoutParams;
+      let component;
+      const expectedUrl = encodeURI(
+        'https://specialcollections.nypl.org/aeon/Aeon.dll?Action=10&Form=30&Title=[Songs+and+piano+solos+/&Site=SCHMA&Author=Bechet,+Sidney,&Date=1941-1960.&ItemInfo3=https://nypl-sierra-test.nypl.org/record=b11545018x&ReferenceNumber=b11545018x&ItemInfo1=USE+IN+LIBRARY&Genre=Score&Location=Schomburg+Center&shelfmark=Sc Scores Bechet&itemid=33299542&ItemISxN=i33299542&itemNumber=45678&CallNumber=Sc Scores Bechet',
+      );
+
+      before(() => {
+        component = shallow(<ItemTableRow item={data} bibId="b12345" />);
+      });
+
+      it('should have a link to aeon', () => {
+        const link = component.find('.aeonRequestButton');
+        expect(link.length).to.equal(1);
+        const linkElement = link.at(0);
+        expect(linkElement.text()).to.equal('Request');
+        expect(linkElement.prop('href')).to.equal(expectedUrl);
+      });
+
+      it('should have a span with text appointment required', () => {
+        const span = component.find('.aeonRequestText');
+        expect(span.length).to.equal(1);
+        expect(span.at(0).text()).to.equal('Appointment Required');
+      });
+    });
+
+    describe('Aeon-requestable item with params', () => {
+      const data = item.aeonRequestableWithParams;
+      let component;
+      const expectedUrl = encodeURI(
+        'https://specialcollections.nypl.org/aeon/Aeon.dll?Action=10&Form=30&Title=[Songs+and+piano+solos+/&Site=SCHMA&CallNumber=Sc+Scores+Bechet&Author=Bechet,+Sidney,&Date=1941-1960.&ItemInfo3=https://nypl-sierra-test.nypl.org/record=b11545018x&ReferenceNumber=b11545018x&ItemInfo1=USE+IN+LIBRARY&ItemISxN=i332995422&Genre=Score&Location=Schomburg+Center&shelfmark=Sc Scores Bechet&itemid=33299542&itemNumber=4567',
+      );
+
+      before(() => {
+        component = shallow(<ItemTableRow item={data} bibId="b12345" />);
+      });
+
+      it('should have a link to aeon', () => {
+        const link = component.find('.aeonRequestButton');
+        expect(link.length).to.equal(1);
+        const linkElement = link.at(0);
+        expect(linkElement.text()).to.equal('Request');
+        expect(linkElement.prop('href')).to.equal(expectedUrl);
+      });
+
+      it('should have a span with text appointment required', () => {
+        const span = component.find('.aeonRequestText');
+        expect(span.length).to.equal(1);
+        expect(span.at(0).text()).to.equal('Appointment Required');
       });
     });
 

@@ -83,8 +83,7 @@ const AccountPage = (props, context) => {
     if (typeof window !== 'undefined' && (!patron.id || accountHtml.error)) {
       const fullUrl = encodeURIComponent(window.location.href);
       logOutFromEncoreAndCatalogIn(() => {
-        const redirectFromTracker = trackRedirects();
-        if (!redirectFromTracker) window.location.replace(`${appConfig.loginUrl}?redirect_uri=${fullUrl}`);
+        window.location.replace(`${appConfig.loginUrl}?redirect_uri=${fullUrl}`);
       });
     }
   }, [patron]);
@@ -117,7 +116,9 @@ const AccountPage = (props, context) => {
   }, [accountHtml]);
 
   const resetCountdown = () => {
-    const inFive = incrementTime(5);
+    const now = new Date();
+    now.setTime(now.getTime() + (5 * 60 * 1000));
+    const inFive = now.toUTCString();
     document.cookie = `accountPageExp=${inFive}; expires=${inFive}`;
     setDisplayTimedLogoutModal(true);
   };
@@ -125,6 +126,8 @@ const AccountPage = (props, context) => {
   useEffect(() => {
     resetCountdown();
   });
+
+  const { baseUrl } = appConfig;
 
   const cancelItem = () => {
     const body = buildReqBody(content, {
