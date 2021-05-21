@@ -47,7 +47,7 @@ const search = (req) => {
     .then((res) => {
       const data = res.response.data;
       if (!data || !data.works) {
-        logger.error(resp);
+        logger.error(res);
         return data;
       }
 
