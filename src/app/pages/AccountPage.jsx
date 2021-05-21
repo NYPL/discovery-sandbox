@@ -77,6 +77,7 @@ const AccountPage = (props, context) => {
       const expirationTime = incrementTime(0, 10);
       document.cookie = `nyplAccountRedirectTracker=1exp${expirationTime}; expires=${expirationTime}`;
     }
+    return false;
   };
 
   useEffect(() => {
