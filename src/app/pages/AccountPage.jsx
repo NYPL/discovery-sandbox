@@ -20,6 +20,7 @@ import { logOutFromEncoreAndCatalogIn } from '../utils/logoutUtils';
 import { manipulateAccountPage, makeRequest, buildReqBody } from '../utils/accountPageUtils';
 import {
   basicQuery,
+  ajaxCall,
 } from '../utils/utils';
 
 
@@ -62,6 +63,11 @@ const AccountPage = (props, context) => {
       const currentValue = nyplAccountRedirectTracker.split('=')[1].split('exp');
       const currentCount = parseInt(currentValue[0], 10);
       if (currentCount > 3) {
+        ajaxCall(
+          `${baseUrl}/api/accountError?page=${encodeURI(window.location.href)}`,
+          () => {},
+          () => {},
+        );
         window.location.replace(`${baseUrl}/404/account`);
         return true;
       }

@@ -2,6 +2,7 @@ import axios from 'axios';
 
 import nyplApiClient from '../routes/nyplApiClient';
 import User from './User';
+import logger from '../../../logger';
 import appConfig from '../../app/data/appConfig';
 
 const nyplApiClientGet = endpoint => (
@@ -107,8 +108,13 @@ function postToAccountPage(req, res) {
     .catch(resp => res.json({ error: resp }));
 }
 
+function logError(req) {
+  logger.error('Account Error', req.url);
+}
+
 export default {
   fetchAccountPage,
   postToAccountPage,
   getHomeLibrary,
+  logError,
 };
