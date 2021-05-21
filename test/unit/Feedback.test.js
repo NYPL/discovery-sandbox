@@ -9,7 +9,7 @@ import appConfig from '../../src/app/data/appConfig';
 
 import Feedback from './../../src/app/components/Feedback/Feedback';
 
-describe.only('Feedback', () => {
+describe('Feedback', () => {
   let component;
   const onSubmitFormSpy = spy(Feedback.prototype, 'onSubmitForm');
   before(() => {
@@ -79,9 +79,23 @@ describe.only('Feedback', () => {
   });
 
   describe('submitting form', () => {
-
     let savedBaseUrl;
     let savedSetState;
+
+    const setUp = (resolve) => {
+      return new Promise(() => {
+        component = mount(<Feedback />);
+        const textarea = component.find('textarea');
+        textarea.instance().value = 'Test text';
+        textarea.simulate('change');
+
+
+        const submitButton = component.find('Button').at(2).find('button');
+        submitButton.simulate('submit');
+        component.update();
+        resolve();
+      });
+    };
 
     after(() => {
       appConfig.baseUrl = savedBaseUrl;
@@ -90,6 +104,10 @@ describe.only('Feedback', () => {
     it('should submit form when submit is pressed', () => {
       savedBaseUrl = appConfig.baseUrl;
       appConfig.baseUrl = 'http://test-server.com';
+      component = mount(<Feedback />);
+      const textarea = component.find('textarea');
+      textarea.instance().value = 'Test text';
+      textarea.simulate('change');
 
       return new Promise((resolve) => {
         savedSetState = component.instance().setState.bind(component.instance());
@@ -113,19 +131,22 @@ describe.only('Feedback', () => {
     });
 
     it('should not show We are here to help message or form', () => {
-      component.update();
-      const form = component.find('form');
-      const message = component.html();
-      expect(form.length).to.equal(0);
-      expect(message).not.to.include('We are here to help');
+      setUp().then(() => {
+        const form = component.find('form');
+        const message = component.html();
+        expect(form.length).to.equal(0);
+        expect(message).not.to.include('We are here to help');
+      });
     });
 
     it('should show thank you message', () => {
-      const ptag = component.find('p');
-      const expectedText = 'Thank you for submitting your comments. ' +
-      'If you requested a response, our service staff ' +
-      'will get back to you as soon as possible.';
-      expect(ptag.text()).to.equal(expectedText);
+      setUp().then(() => {
+        const ptag = component.find('p');
+        const expectedText = 'Thank you for submitting your comments. ' +
+        'If you requested a response, our service staff ' +
+        'will get back to you as soon as possible.';
+        expect(ptag.text()).to.equal(expectedText);
+      });
     });
   });
 
