@@ -64,7 +64,7 @@ const AccountPage = (props, context) => {
       const currentCount = parseInt(currentValue[0], 10);
       if (currentCount > 3) {
         ajaxCall(
-          `${baseUrl}/api/accountError?page=${encodeURI(window.location.href)}`,
+          `${baseUrl}/api/accountError?type=redirect_loop&page=${encodeURI(window.location.href)}`,
           () => {},
           () => {},
         );
