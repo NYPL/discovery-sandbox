@@ -47,6 +47,7 @@ const search = (req) => {
     .then((res) => {
       const data = res.response.data;
       if (!data || !data.works) {
+        logger.info('Debug: Handling error from DRB:', res);
         logger.error(res);
         return data;
       }
