@@ -68,7 +68,7 @@ const AccountPage = (props, context) => {
           () => {},
           () => {},
         );
-        window.location.replace(`${baseUrl}/account/error`);
+        window.location.replace(`${baseUrl}/accountError`);
         return true;
       }
       const currentExp = currentValue[1];
