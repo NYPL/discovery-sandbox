@@ -109,7 +109,7 @@ function postToAccountPage(req, res) {
 }
 
 function logError(req) {
-  logger.error('Account Error', req.url);
+  logger.error('Account Error', req.url.replace(/\w+:\/\//g, ''));
 }
 
 export default {
