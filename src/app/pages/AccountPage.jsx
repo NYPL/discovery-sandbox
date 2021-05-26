@@ -21,6 +21,9 @@ import { manipulateAccountPage, makeRequest, buildReqBody } from '../utils/accou
 import {
   basicQuery,
 } from '../utils/utils';
+import {
+  setCookieWithExpiration,
+} from '../utils/cookieUtils';
 
 
 const AccountPage = (props, context) => {
@@ -82,7 +85,7 @@ const AccountPage = (props, context) => {
     const now = new Date();
     now.setTime(now.getTime() + (5 * 60 * 1000));
     const inFive = now.toUTCString();
-    document.cookie = `accountPageExp=${inFive}; expires=${inFive}`;
+    setCookieWithExpiration('accountPageExp', inFive, inFive);
     setDisplayTimedLogoutModal(true);
   };
 
