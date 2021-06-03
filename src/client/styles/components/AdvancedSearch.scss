@@ -17,34 +17,41 @@
 
   #fields {
     width: 100%;
+    display: flex;
   }
 
   #advancedSearchButtons {
     display: flex;
-    float: right;
+    justify-content: flex-end;
+    width: 91%;
 
     button {
-      float: right;
+      margin: 5px;
+      width: 139px;
     }
-
   }
 
 }
 
 .advancedSearchColumnLeft {
-  padding-left: 5%;
-  float: left;
-  width: 40%
+  flex: 1;
+  margin-left: 10%;
+  ul {
+    width: 80%;
+  }
 }
 
 .advancedSearchColumnRight {
-  padding-left: 5%;
-  float: right;
-  width: 40%;
-  padding-right: 5%;
+  flex: 1;
+
+  ul {
+    width: 80%;
+  }
 
   #dateList {
     display: flex;
+    justify-content: space-between;
+
     li {
       width: 40%;
     }
