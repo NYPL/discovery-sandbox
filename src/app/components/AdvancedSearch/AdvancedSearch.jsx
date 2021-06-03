@@ -3,13 +3,23 @@ import appConfig from '@appConfig';
 import React from 'react';
 import { basicQuery } from '../../utils/utils';
 
+const labelsForFields = {
+  searchKeywords: 'Keyword',
+  contributor: 'Author',
+  subject: 'Subject',
+  title: 'Title',
+  language: 'Language',
+  publicationDate: 'Date Range',
+  format: 'Format',
+};
+
 class AdvancedSearch extends React.Component {
   constructor(props, context) {
     super(props);
     console.log('router? ', !!context.router);
     this.state = {
-      keyword: null,
-      author: null,
+      searchKeywords: null,
+      contributor: null,
       title: null,
       subject: null,
       language: null,
@@ -31,17 +41,18 @@ class AdvancedSearch extends React.Component {
 
     const createAPIQuery = basicQuery({});
 
-    const gatherFields = () => {
-      console.log('state: ', this.state);
-      return Object.entries(this.state)
-        .filter(([key, value]) => value)
-        .map(([key, value]) => ({ [key]: value }))
-        .reduce((acc, el) => ({ ...acc, ...el }), {});
-    };
+    // const gatherFields = () => {
+    //   console.log('state: ', this.state);
+    //   return Object.entries(this.state)
+    //     .filter(([key, value]) => value)
+    //     .map(([key, value]) => ({ [key]: value }))
+    //     .reduce((acc, el) => ({ ...acc, ...el }), {});
+    // };
 
     const submitForm = (e) => {
       e.preventDefault();
-      const apiQuery = createAPIQuery(gatherFields());
+      console.log('state: ', this.state);
+      const apiQuery = createAPIQuery(this.state);
       return this.context.router.push(`${appConfig.baseUrl}/search?${apiQuery}`);
     };
 
@@ -50,15 +61,15 @@ class AdvancedSearch extends React.Component {
         {
           Object.keys(this.state).map(key =>
             (
-              <React.Fragment>
-                <label htmlFor={key}>{key}</label>
+              <React.Fragment key={key}>
+                <label htmlFor={key}>{labelsForFields[key]}</label>
                 <input id={key} onChange={updateField(key)} />
               </React.Fragment>
             ),
           )
         }
         <label htmlFor="submit">Submit</label>
-        <input id="sibmit" onClick={submitForm} />
+        <input id="submit" onClick={submitForm} />
       </form>
     );
   }

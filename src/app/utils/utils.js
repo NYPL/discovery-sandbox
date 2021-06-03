@@ -201,12 +201,12 @@ const basicQuery = (props = {}) => {
     field,
     selectedFilters,
     searchKeywords,
-    author,
+    contributor,
     title,
     subject,
     page,
   }) => {
-    console.log('query params: ', author, title, subject);
+    console.log('query params: ', contributor, title, subject);
     const sortQuery = getSortQuery(sortBy || props.sortBy);
     const fieldQuery = getFieldParam(field || props.field);
     const filterQuery = getFilterParam(selectedFilters || props.selectedFilters);
@@ -216,7 +216,7 @@ const basicQuery = (props = {}) => {
     let pageQuery = props.page && props.page !== '1' ? `&page=${props.page}` : '';
     pageQuery = page && page !== '1' ? `&page=${page}` : pageQuery;
     pageQuery = page === '1' ? '' : pageQuery;
-    const advancedQuery = `${author ? `&author=${author}` : ''}${title ? `&title=${title}` : ''}${subject ? `&subject=${subject}` : ''}`;
+    const advancedQuery = `${contributor ? `&contributor=${contributor}` : ''}${title ? `&title=${title}` : ''}${subject ? `&subject=${subject}` : ''}`;
 
     const completeQuery = `${searchKeywordsQuery}${advancedQuery}${filterQuery}${sortQuery}${fieldQuery}${pageQuery}`;
 
@@ -240,8 +240,11 @@ function getReqParams(query = {}) {
   const sortQuery = query.sort_scope || '';
   const fieldQuery = query.search_scope || '';
   const filters = query.filters || {};
+  const contributor = query.contributor;
+  const title = query.title;
+  const subject = query.subject;
 
-  return { page, perPage, q, sort, order, sortQuery, fieldQuery, filters };
+  return { page, perPage, q, contributor, title, subject, sort, order, sortQuery, fieldQuery, filters };
 }
 
 /*

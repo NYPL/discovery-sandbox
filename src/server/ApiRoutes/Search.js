@@ -31,15 +31,19 @@ const createAPIQuery = basicQuery({
 const nyplApiClientCall = (query, urlEnabledFeatures = []) => {
   const requestOptions = appConfig.features.includes('on-site-edd') || urlEnabledFeatures.includes('on-site-edd') ? { headers: { 'X-Features': 'on-site-edd' } } : {};
 
+  console.log('query: ', query);
   return nyplApiClient()
     .then(client =>
       client.get(`/discovery/resources${query}`, requestOptions),
     );
 };
 
-function fetchResults(searchKeywords = '', page, sortBy, order, field, filters, cb, errorcb, features) {
+function fetchResults(searchKeywords = '', contributor, title, subject, page, sortBy, order, field, filters, cb, errorcb, features) {
   const encodedResultsQueryString = createAPIQuery({
     searchKeywords,
+    contributor,
+    title,
+    subject,
     sortBy: sortBy ? `${sortBy}_${order}` : '',
     selectedFilters: filters,
     field,
@@ -128,7 +132,7 @@ function fetchResults(searchKeywords = '', page, sortBy, order, field, filters, 
 }
 
 function search(req, res, resolve) {
-  const { page, q, sort, order, fieldQuery, filters } = getReqParams(req.query);
+  const { page, q, contributor, title, subject, sort, order, fieldQuery, filters } = getReqParams(req.query);
 
   const sortBy = sort.length ? [sort, order].filter(field => field.length).join('_') : 'relevance';
 
@@ -146,6 +150,9 @@ function search(req, res, resolve) {
 
   fetchResults(
     q,
+    contributor,
+    title,
+    subject,
     page,
     sort,
     order,
