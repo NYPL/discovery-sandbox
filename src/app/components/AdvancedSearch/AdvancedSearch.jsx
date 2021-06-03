@@ -31,42 +31,11 @@ const labelsForFields = {
 class AdvancedSearch extends React.Component {
   constructor(props, context) {
     super(props);
-    // console.log('router? ', !!context.router);
-    // this.state = {
-    //   searchKeywords: null,
-    //   contributor: null,
-    //   title: null,
-    //   subject: null,
-    //   language: null,
-    //   dateAfter: null,
-    //   dateBefore: null,
-    //   materialType: null,
-    // };
   }
 
 
   render() {
-    // const updateField = field => (e) => {
-    //   console.log('updating: ', e);
-    //   e.persist();
-    //   e.preventDefault();
-    //   const newState = {};
-    //   newState[field] = e.target.value;
-    //   this.setState(newState);
-    // };
-
     const createAPIQuery = basicQuery({});
-
-    // const addFilters = (state) => {
-    //   const selectedFilters = {
-    //     dateAfter: state.dateAfter,
-    //     dateBefore: state.dateBefore,
-    //     materialType: state.materialType,
-    //     language: state.language,
-    //   };
-    //
-    //   return Object.assign({}, state, { selectedFilters });
-    // };
 
     const buildQueryDataFromForm = (formData) => {
       console.log('using formData: ', JSON.stringify(formData, null, 2));
