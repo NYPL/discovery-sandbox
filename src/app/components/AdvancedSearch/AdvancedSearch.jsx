@@ -25,7 +25,7 @@ const labelsForFields = {
   subject: 'Subject',
   title: 'Title',
   language: 'Language',
-  dateAfter: 'Date Range',
+  dateAfter: 'From',
   dateBefore: 'To',
   materialType: 'Format',
 };
@@ -135,16 +135,23 @@ class AdvancedSearch extends React.Component {
           </div>
           <div className="advancedSearchColumnRight">
             <ul>
-              {
-                rightInputs.map(key =>
-                  (
-                    <li key={key}>
-                      <Label htmlFor={key}>{labelsForFields[key]}</Label>
-                      <Input id={key} type="text" />
-                    </li>
-                  ),
-                )
-              }
+              <Label htmlFor="dates">
+                Date
+              </Label>
+              <li id="dates">
+                <ul id="dateList">
+                  {
+                    rightInputs.map(key =>
+                      (
+                        <li key={key}>
+                          <Label htmlFor={key}>{labelsForFields[key]}</Label>
+                          <Input id={key} type="text" />
+                        </li>
+                      ),
+                    )
+                  }
+                </ul>
+              </li>
               <li>
                 <fieldset>
                   Format

@@ -42,4 +42,11 @@
   float: right;
   width: 40%;
   padding-right: 5%;
+
+  #dateList {
+    display: flex;
+    li {
+      width: 40%;
+    }
+  }
 }
