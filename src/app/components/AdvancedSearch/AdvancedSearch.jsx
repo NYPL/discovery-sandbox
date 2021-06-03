@@ -7,11 +7,14 @@ import { basicQuery } from '../../utils/utils';
 const aggregations = require('../../../../advancedSearchAggregations.json');
 
 
-const inputs = [
+const leftInputs = [
   'searchKeywords',
+  'title',
   'contributor',
   'subject',
-  'title',
+];
+
+const rightInputs = [
   'dateAfter',
   'dateBefore',
 ];
@@ -101,60 +104,88 @@ class AdvancedSearch extends React.Component {
 
     return (
       <form id="advancedSearchForm" onSubmit={submitForm} method="POST">
-        {
-          inputs.map(key =>
-            (
-              <React.Fragment key={key}>
-                <Label htmlFor={key}>{labelsForFields[key]}</Label>
-                <Input id={key} type="text" />
-              </React.Fragment>
-            ),
-          )
-        }
-        <fieldset>
-          Format
-          <ul id="formatList">
-            {
-              aggregations.materialType.map((materialType) => {
-                return (
-                  <Checkbox
-                    labelOptions={{
-                      id: materialType.value,
-                      labelContent: materialType.label,
-                    }}
-                    showLabel
-                    checkboxId={materialType.value}
-                    value={materialType.value}
-                    key={materialType.value}
-                  />
-                );
-              })
-            }
-          </ul>
-        </fieldset>
-        <Label htmlFor="languageSelect">Language</Label>
-        <select id="languageSelect">
-          {
-            aggregations.language.map((language) => {
-              return (
-                <option value={language.value} key={language.value}>
-                  {language.label}
-                </option>
-              );
-            })
-          }
-        </select>
-        <Button
-          buttonType={ButtonTypes.primary}
-          type="submit"
-        >
-          Submit
-        </Button>
-        <Button
-          buttonType={ButtonTypes.primary}
-        >
-          Clear
-        </Button>
+        <div id="fields">
+          <div className="advancedSearchColumnLeft">
+            <ul>
+              {
+                leftInputs.map(key =>
+                  (
+                    <li key={key}>
+                      <Label htmlFor={key}>{labelsForFields[key]}</Label>
+                      <Input id={key} type="text" />
+                    </li>
+                  ),
+                )
+              }
+              <li>
+                <Label htmlFor="languageSelect">Language</Label>
+                <select id="languageSelect">
+                  {
+                    aggregations.language.map((language) => {
+                      return (
+                        <option value={language.value} key={language.value}>
+                          {language.label}
+                        </option>
+                      );
+                    })
+                  }
+                </select>
+              </li>
+            </ul>
+          </div>
+          <div className="advancedSearchColumnRight">
+            <ul>
+              {
+                rightInputs.map(key =>
+                  (
+                    <li key={key}>
+                      <Label htmlFor={key}>{labelsForFields[key]}</Label>
+                      <Input id={key} type="text" />
+                    </li>
+                  ),
+                )
+              }
+              <li>
+                <fieldset>
+                  Format
+                  <ul id="formatList">
+                    {
+                      aggregations.materialType.map((materialType) => {
+                        return (
+                          <Checkbox
+                            labelOptions={{
+                              id: materialType.value,
+                              labelContent: materialType.label,
+                            }}
+                            showLabel
+                            checkboxId={materialType.value}
+                            value={materialType.value}
+                            key={materialType.value}
+                          />
+                        );
+                      })
+                    }
+                  </ul>
+                </fieldset>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <hr />
+        <div id="advancedSearchButtons">
+          <Button
+            buttonType={ButtonTypes.primary}
+            type="submit"
+          >
+            Submit
+          </Button>
+          <Button
+            buttonType={ButtonTypes.primary}
+            className="clearButton"
+          >
+            Clear
+          </Button>
+        </div>
       </form>
     );
   }

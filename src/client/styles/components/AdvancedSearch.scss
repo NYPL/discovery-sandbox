@@ -1,5 +1,45 @@
-.advancedSearchForm {
+#advancedSearchForm {
+  display: flex;
+  flex-direction: column;
+
   input {
     display: block;
   }
+
+  li {
+    list-style: none;
+  }
+
+  hr {
+    width: 90%;
+    color: #C4C4C4;
+  }
+
+  #fields {
+    width: 100%;
+  }
+
+  #advancedSearchButtons {
+    display: flex;
+    float: right;
+
+    button {
+      float: right;
+    }
+
+  }
+
+}
+
+.advancedSearchColumnLeft {
+  padding-left: 5%;
+  float: left;
+  width: 40%
+}
+
+.advancedSearchColumnRight {
+  padding-left: 5%;
+  float: right;
+  width: 40%;
+  padding-right: 5%;
 }
