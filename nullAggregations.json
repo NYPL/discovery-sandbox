@@ -1,0 +1,1699 @@
+{
+  "@context": "http://discovery-api-qa.us-east-1.elasticbeanstalk.com/api/v0.1/discovery/context_all.jsonld",
+  "@type": "itemList",
+  "itemListElement": [
+    {
+      "@type": "nypl:Aggregation",
+      "@id": "res:owner",
+      "id": "owner",
+      "field": "owner",
+      "values": [
+        {
+          "value": "orgs:1000",
+          "count": 5871970,
+          "label": "Stephen A. Schwarzman Building"
+        },
+        {
+          "value": "orgs:0002",
+          "count": 3333488,
+          "label": "Columbia University Libraries"
+        },
+        {
+          "value": "orgs:0003",
+          "count": 2304052,
+          "label": "Princeton University Library"
+        },
+        {
+          "value": "orgs:1101",
+          "count": 1354280,
+          "label": "General Research Division"
+        },
+        {
+          "value": "orgs:0004",
+          "count": 931654,
+          "label": "Harvard Library"
+        },
+        {
+          "value": "orgs:1002",
+          "count": 555701,
+          "label": "New York Public Library for the Performing Arts, Dorothy and Lewis B. Cullman Center"
+        },
+        {
+          "value": "orgs:1114",
+          "count": 330400,
+          "label": "Schomburg Center for Research in Black Culture, Jean Blackwell Hutson Research and Reference Division"
+        },
+        {
+          "value": "orgs:1110",
+          "count": 245243,
+          "label": "The Miriam and Ira D. Wallach Division of Art, Prints and Photographs: Art & Architecture Collection"
+        },
+        {
+          "value": "orgs:1105",
+          "count": 223640,
+          "label": "Irma and Paul Milstein Division of United States History, Local History and Genealogy"
+        },
+        {
+          "value": "orgs:1119",
+          "count": 196856,
+          "label": "Billy Rose Theatre Division"
+        }
+      ]
+    },
+    {
+      "@type": "nypl:Aggregation",
+      "@id": "res:contributorLiteral",
+      "id": "contributorLiteral",
+      "field": "contributorLiteral",
+      "values": [
+        {
+          "value": "OverDrive, Inc.",
+          "count": 181412,
+          "label": "OverDrive, Inc."
+        },
+        {
+          "value": "Gale (Firm)",
+          "count": 68295,
+          "label": "Gale (Firm)"
+        },
+        {
+          "value": "Bibliotheca (Firm)",
+          "count": 40102,
+          "label": "Bibliotheca (Firm)"
+        },
+        {
+          "value": "United States. National Aeronautics and Space Administration.",
+          "count": 18674,
+          "label": "United States. National Aeronautics and Space Administration."
+        },
+        {
+          "value": "Geological Survey (U.S.)",
+          "count": 13534,
+          "label": "Geological Survey (U.S.)"
+        },
+        {
+          "value": "Mozart, Wolfgang Amadeus, 1756-1791.",
+          "count": 11630,
+          "label": "Mozart, Wolfgang Amadeus, 1756-1791."
+        },
+        {
+          "value": "Bach, Johann Sebastian, 1685-1750.",
+          "count": 10653,
+          "label": "Bach, Johann Sebastian, 1685-1750."
+        },
+        {
+          "value": "Beethoven, Ludwig van, 1770-1827.",
+          "count": 8555,
+          "label": "Beethoven, Ludwig van, 1770-1827."
+        },
+        {
+          "value": "Educational Resources Information Center (U.S.)",
+          "count": 8304,
+          "label": "Educational Resources Information Center (U.S.)"
+        },
+        {
+          "value": "Geological Survey (U.S.), issuing body.",
+          "count": 7590,
+          "label": "Geological Survey (U.S.), issuing body."
+        },
+        {
+          "value": "New York Public Library for the Performing Arts. Billy Rose Theatre Division. com",
+          "count": 7137,
+          "label": "New York Public Library for the Performing Arts. Billy Rose Theatre Division. com"
+        },
+        {
+          "value": "Schubert, Franz, 1797-1828.",
+          "count": 6063,
+          "label": "Schubert, Franz, 1797-1828."
+        },
+        {
+          "value": "Brahms, Johannes, 1833-1897.",
+          "count": 5518,
+          "label": "Brahms, Johannes, 1833-1897."
+        },
+        {
+          "value": "American Council of Learned Societies.",
+          "count": 5333,
+          "label": "American Council of Learned Societies."
+        },
+        {
+          "value": "Tchaikovsky, Peter Ilich, 1840-1893.",
+          "count": 5106,
+          "label": "Tchaikovsky, Peter Ilich, 1840-1893."
+        },
+        {
+          "value": "Schumann, Robert, 1810-1856.",
+          "count": 5021,
+          "label": "Schumann, Robert, 1810-1856."
+        },
+        {
+          "value": "Project Muse.",
+          "count": 4695,
+          "label": "Project Muse."
+        },
+        {
+          "value": "United States. Bureau of the Census.",
+          "count": 4516,
+          "label": "United States. Bureau of the Census."
+        },
+        {
+          "value": "Langley Research Center.",
+          "count": 4475,
+          "label": "Langley Research Center."
+        },
+        {
+          "value": "Verdi, Giuseppe, 1813-1901.",
+          "count": 4456,
+          "label": "Verdi, Giuseppe, 1813-1901."
+        },
+        {
+          "value": "Rodgers and Hammerstein Archives of Recorded Sound.",
+          "count": 4455,
+          "label": "Rodgers and Hammerstein Archives of Recorded Sound."
+        },
+        {
+          "value": "Debussy, Claude, 1862-1918.",
+          "count": 4344,
+          "label": "Debussy, Claude, 1862-1918."
+        },
+        {
+          "value": "Haydn, Joseph, 1732-1809.",
+          "count": 4230,
+          "label": "Haydn, Joseph, 1732-1809."
+        },
+        {
+          "value": "Handel, George Frideric, 1685-1759.",
+          "count": 4068,
+          "label": "Handel, George Frideric, 1685-1759."
+        },
+        {
+          "value": "New York Public Library. Milstein Division of U.S. History, Local History & Genealogy.",
+          "count": 4034,
+          "label": "New York Public Library. Milstein Division of U.S. History, Local History & Genealogy."
+        },
+        {
+          "value": "Liszt, Franz, 1811-1886.",
+          "count": 3964,
+          "label": "Liszt, Franz, 1811-1886."
+        },
+        {
+          "value": "Chopin, Frédéric, 1810-1849.",
+          "count": 3954,
+          "label": "Chopin, Frédéric, 1810-1849."
+        },
+        {
+          "value": "Mendelssohn-Bartholdy, Felix, 1809-1847.",
+          "count": 3710,
+          "label": "Mendelssohn-Bartholdy, Felix, 1809-1847."
+        },
+        {
+          "value": "Organisation for Economic Co-operation and Development.",
+          "count": 3694,
+          "label": "Organisation for Economic Co-operation and Development."
+        },
+        {
+          "value": "United States. General Accounting Office.",
+          "count": 3602,
+          "label": "United States. General Accounting Office."
+        },
+        {
+          "value": "Shakespeare, William, 1564-1616.",
+          "count": 3584,
+          "label": "Shakespeare, William, 1564-1616."
+        },
+        {
+          "value": "Ravel, Maurice, 1875-1937.",
+          "count": 3576,
+          "label": "Ravel, Maurice, 1875-1937."
+        },
+        {
+          "value": "Wagner, Richard, 1813-1883.",
+          "count": 3406,
+          "label": "Wagner, Richard, 1813-1883."
+        },
+        {
+          "value": "ebrary, Inc.",
+          "count": 3340,
+          "label": "ebrary, Inc."
+        },
+        {
+          "value": "Datamonitor (Firm)",
+          "count": 3300,
+          "label": "Datamonitor (Firm)"
+        },
+        {
+          "value": "Society of Photo-optical Instrumentation Engineers.",
+          "count": 3175,
+          "label": "Society of Photo-optical Instrumentation Engineers."
+        },
+        {
+          "value": "United States. Federal Emergency Management Agency.",
+          "count": 3087,
+          "label": "United States. Federal Emergency Management Agency."
+        },
+        {
+          "value": "Gale Group.",
+          "count": 3061,
+          "label": "Gale Group."
+        },
+        {
+          "value": "New York Public Library for the Performing Arts. Billy Rose Theatre Division. Theatre on Film and Tape Archive.",
+          "count": 3039,
+          "label": "New York Public Library for the Performing Arts. Billy Rose Theatre Division. Theatre on Film and Tape Archive."
+        },
+        {
+          "value": "Stravinsky, Igor, 1882-1971.",
+          "count": 2936,
+          "label": "Stravinsky, Igor, 1882-1971."
+        },
+        {
+          "value": "Owen, Walter E., 1896-1963.",
+          "count": 2927,
+          "label": "Owen, Walter E., 1896-1963."
+        },
+        {
+          "value": "United States. Department of the Army.",
+          "count": 2869,
+          "label": "United States. Department of the Army."
+        },
+        {
+          "value": "Federal Financial Institutions Examination Council (U.S.)",
+          "count": 2861,
+          "label": "Federal Financial Institutions Examination Council (U.S.)"
+        },
+        {
+          "value": "National Institute of Standards and Technology (U.S.)",
+          "count": 2845,
+          "label": "National Institute of Standards and Technology (U.S.)"
+        },
+        {
+          "value": "Rachmaninoff, Sergei, 1873-1943.",
+          "count": 2838,
+          "label": "Rachmaninoff, Sergei, 1873-1943."
+        },
+        {
+          "value": "Digitalia, Inc.",
+          "count": 2808,
+          "label": "Digitalia, Inc."
+        },
+        {
+          "value": "Vivaldi, Antonio, 1678-1741.",
+          "count": 2803,
+          "label": "Vivaldi, Antonio, 1678-1741."
+        },
+        {
+          "value": "Strauss, Richard, 1864-1949.",
+          "count": 2758,
+          "label": "Strauss, Richard, 1864-1949."
+        },
+        {
+          "value": "Prokofiev, Sergey, 1891-1953.",
+          "count": 2749,
+          "label": "Prokofiev, Sergey, 1891-1953."
+        },
+        {
+          "value": "Rossini, Gioacchino, 1792-1868.",
+          "count": 2710,
+          "label": "Rossini, Gioacchino, 1792-1868."
+        }
+      ]
+    },
+    {
+      "@type": "nypl:Aggregation",
+      "@id": "res:materialType",
+      "id": "materialType",
+      "field": "materialType",
+      "values": [
+        {
+          "value": "resourcetypes:txt",
+          "count": 14604632,
+          "label": "Text"
+        },
+        {
+          "value": "resourcetypes:aud",
+          "count": 398038,
+          "label": "Audio"
+        },
+        {
+          "value": "resourcetypes:not",
+          "count": 224533,
+          "label": "Notated music"
+        },
+        {
+          "value": "resourcetypes:mov",
+          "count": 60419,
+          "label": "Moving image"
+        },
+        {
+          "value": "resourcetypes:img",
+          "count": 59070,
+          "label": "Still image"
+        },
+        {
+          "value": "resourcetypes:car",
+          "count": 49518,
+          "label": "Cartographic"
+        },
+        {
+          "value": "resourcetypes:mix",
+          "count": 19607,
+          "label": "Mixed material"
+        },
+        {
+          "value": "resourcetypes:mul",
+          "count": 4200,
+          "label": "Multimedia"
+        }
+      ]
+    },
+    {
+      "@type": "nypl:Aggregation",
+      "@id": "res:issuance",
+      "id": "issuance",
+      "field": "issuance",
+      "values": [
+        {
+          "value": "urn:biblevel:m",
+          "count": 14563134,
+          "label": "monograph/item"
+        },
+        {
+          "value": "urn:biblevel:s",
+          "count": 614177,
+          "label": "serial"
+        },
+        {
+          "value": "urn:biblevel:c",
+          "count": 61754,
+          "label": "collection"
+        },
+        {
+          "value": "urn:biblevel:b",
+          "count": 39605,
+          "label": "serial component part"
+        },
+        {
+          "value": "urn:biblevel:d",
+          "count": 29415,
+          "label": "subunit"
+        },
+        {
+          "value": "urn:biblevel:i",
+          "count": 3408,
+          "label": "integrating resource"
+        }
+      ]
+    },
+    {
+      "@type": "nypl:Aggregation",
+      "@id": "res:publisher",
+      "id": "publisher",
+      "field": "publisher",
+      "values": [
+        {
+          "value": "s.n.,",
+          "count": 96838,
+          "label": "s.n.,"
+        },
+        {
+          "value": "[s.n.],",
+          "count": 78825,
+          "label": "[s.n.],"
+        },
+        {
+          "value": "U.S. G.P.O.,",
+          "count": 74642,
+          "label": "U.S. G.P.O.,"
+        },
+        {
+          "value": "Oxford University Press,",
+          "count": 68989,
+          "label": "Oxford University Press,"
+        },
+        {
+          "value": "s.n.],",
+          "count": 43348,
+          "label": "s.n.],"
+        },
+        {
+          "value": "Cambridge University Press,",
+          "count": 39998,
+          "label": "Cambridge University Press,"
+        },
+        {
+          "value": "Routledge,",
+          "count": 30153,
+          "label": "Routledge,"
+        },
+        {
+          "value": "U.S. Govt. Print. Off.,",
+          "count": 29299,
+          "label": "U.S. Govt. Print. Off.,"
+        },
+        {
+          "value": "Macmillan,",
+          "count": 28610,
+          "label": "Macmillan,"
+        },
+        {
+          "value": "Springer,",
+          "count": 27193,
+          "label": "Springer,"
+        },
+        {
+          "value": "Wiley,",
+          "count": 24596,
+          "label": "Wiley,"
+        },
+        {
+          "value": "U.S. G.P.O. : For sale by the Supt. of Docs., U.S. G.P.O.,",
+          "count": 24354,
+          "label": "U.S. G.P.O. : For sale by the Supt. of Docs., U.S. G.P.O.,"
+        },
+        {
+          "value": "Springer-Verlag,",
+          "count": 22503,
+          "label": "Springer-Verlag,"
+        },
+        {
+          "value": "[publisher not identified],",
+          "count": 20821,
+          "label": "[publisher not identified],"
+        },
+        {
+          "value": "L'Harmattan,",
+          "count": 20777,
+          "label": "L'Harmattan,"
+        },
+        {
+          "value": "McGraw-Hill,",
+          "count": 19204,
+          "label": "McGraw-Hill,"
+        },
+        {
+          "value": "U.S. G.P.O. : For sale by the U.S. G.P.O., Supt. of Docs., Congressional Sales Office,",
+          "count": 18624,
+          "label": "U.S. G.P.O. : For sale by the U.S. G.P.O., Supt. of Docs., Congressional Sales Office,"
+        },
+        {
+          "value": "Princeton University Press,",
+          "count": 18145,
+          "label": "Princeton University Press,"
+        },
+        {
+          "value": "St. Martin's Press,",
+          "count": 17771,
+          "label": "St. Martin's Press,"
+        },
+        {
+          "value": "University of California Press,",
+          "count": 17505,
+          "label": "University of California Press,"
+        },
+        {
+          "value": "Doubleday,",
+          "count": 17297,
+          "label": "Doubleday,"
+        },
+        {
+          "value": "P. Lang,",
+          "count": 17216,
+          "label": "P. Lang,"
+        },
+        {
+          "value": "Palgrave Macmillan,",
+          "count": 16534,
+          "label": "Palgrave Macmillan,"
+        },
+        {
+          "value": "U. S. Govt. Print. Off.,",
+          "count": 16117,
+          "label": "U. S. Govt. Print. Off.,"
+        },
+        {
+          "value": "Academic Press,",
+          "count": 16116,
+          "label": "Academic Press,"
+        },
+        {
+          "value": "Presses universitaires de France,",
+          "count": 15120,
+          "label": "Presses universitaires de France,"
+        },
+        {
+          "value": "Gallimard,",
+          "count": 14945,
+          "label": "Gallimard,"
+        },
+        {
+          "value": "Yale University Press,",
+          "count": 14269,
+          "label": "Yale University Press,"
+        },
+        {
+          "value": "Harvard University Press,",
+          "count": 14112,
+          "label": "Harvard University Press,"
+        },
+        {
+          "value": "Harmattan,",
+          "count": 14060,
+          "label": "Harmattan,"
+        },
+        {
+          "value": "Columbia University Press,",
+          "count": 13884,
+          "label": "Columbia University Press,"
+        },
+        {
+          "value": "Nauka,",
+          "count": 12804,
+          "label": "Nauka,"
+        },
+        {
+          "value": "Greenwood Press,",
+          "count": 12367,
+          "label": "Greenwood Press,"
+        },
+        {
+          "value": "U.S. Government Publishing Office,",
+          "count": 12247,
+          "label": "U.S. Government Publishing Office,"
+        },
+        {
+          "value": "Praeger,",
+          "count": 11778,
+          "label": "Praeger,"
+        },
+        {
+          "value": "Prentice-Hall,",
+          "count": 11546,
+          "label": "Prentice-Hall,"
+        },
+        {
+          "value": "University of Chicago Press,",
+          "count": 11081,
+          "label": "University of Chicago Press,"
+        },
+        {
+          "value": "Columbia,",
+          "count": 11016,
+          "label": "Columbia,"
+        },
+        {
+          "value": "Brill,",
+          "count": 10024,
+          "label": "Brill,"
+        },
+        {
+          "value": "Decca,",
+          "count": 9677,
+          "label": "Decca,"
+        },
+        {
+          "value": "Random House,",
+          "count": 9674,
+          "label": "Random House,"
+        },
+        {
+          "value": "Little, Brown,",
+          "count": 9290,
+          "label": "Little, Brown,"
+        },
+        {
+          "value": "U.S. Government Printing Office,",
+          "count": 9262,
+          "label": "U.S. Government Printing Office,"
+        },
+        {
+          "value": "OECD Publishing,",
+          "count": 9192,
+          "label": "OECD Publishing,"
+        },
+        {
+          "value": "State University of New York Press,",
+          "count": 9001,
+          "label": "State University of New York Press,"
+        },
+        {
+          "value": "Plenum Press,",
+          "count": 8943,
+          "label": "Plenum Press,"
+        },
+        {
+          "value": "Houghton Mifflin,",
+          "count": 8938,
+          "label": "Houghton Mifflin,"
+        },
+        {
+          "value": "Clarendon Press,",
+          "count": 8564,
+          "label": "Clarendon Press,"
+        },
+        {
+          "value": "Simon & Schuster,",
+          "count": 8336,
+          "label": "Simon & Schuster,"
+        },
+        {
+          "value": "Suhrkamp,",
+          "count": 8114,
+          "label": "Suhrkamp,"
+        }
+      ]
+    },
+    {
+      "@type": "nypl:Aggregation",
+      "@id": "res:language",
+      "id": "language",
+      "field": "language",
+      "values": [
+        {
+          "value": "lang:eng",
+          "count": 7572751,
+          "label": "English"
+        },
+        {
+          "value": "lang:ger",
+          "count": 1365970,
+          "label": "German"
+        },
+        {
+          "value": "lang:fre",
+          "count": 1130571,
+          "label": "French"
+        },
+        {
+          "value": "lang:spa",
+          "count": 969053,
+          "label": "Spanish"
+        },
+        {
+          "value": "lang:ita",
+          "count": 593889,
+          "label": "Italian"
+        },
+        {
+          "value": "lang:rus",
+          "count": 530023,
+          "label": "Russian"
+        },
+        {
+          "value": "lang:chi",
+          "count": 340181,
+          "label": "Chinese"
+        },
+        {
+          "value": "lang:ara",
+          "count": 299774,
+          "label": "Arabic"
+        },
+        {
+          "value": "lang:jpn",
+          "count": 225992,
+          "label": "Japanese"
+        },
+        {
+          "value": "lang:zxx",
+          "count": 222819,
+          "label": "No linguistic content"
+        },
+        {
+          "value": "lang:por",
+          "count": 206181,
+          "label": "Portuguese"
+        },
+        {
+          "value": "lang:heb",
+          "count": 188951,
+          "label": "Hebrew"
+        },
+        {
+          "value": "lang:pol",
+          "count": 152964,
+          "label": "Polish"
+        },
+        {
+          "value": "lang:dut",
+          "count": 118814,
+          "label": "Dutch"
+        },
+        {
+          "value": "lang:kor",
+          "count": 103912,
+          "label": "Korean"
+        },
+        {
+          "value": "lang:tur",
+          "count": 95945,
+          "label": "Turkish"
+        },
+        {
+          "value": "lang:lat",
+          "count": 84993,
+          "label": "Latin"
+        },
+        {
+          "value": "lang:per",
+          "count": 66434,
+          "label": "Persian"
+        },
+        {
+          "value": "lang:ukr",
+          "count": 60312,
+          "label": "Ukrainian"
+        },
+        {
+          "value": "lang:swe",
+          "count": 55651,
+          "label": "Swedish"
+        },
+        {
+          "value": "lang:cze",
+          "count": 53054,
+          "label": "Czech"
+        },
+        {
+          "value": "lang:gre",
+          "count": 52617,
+          "label": "Greek, Modern (1453- )"
+        },
+        {
+          "value": "lang:hin",
+          "count": 44657,
+          "label": "Hindi"
+        },
+        {
+          "value": "lang:hun",
+          "count": 43529,
+          "label": "Hungarian"
+        },
+        {
+          "value": "lang:dan",
+          "count": 40067,
+          "label": "Danish"
+        },
+        {
+          "value": "lang:urd",
+          "count": 32676,
+          "label": "Urdu"
+        },
+        {
+          "value": "lang:bul",
+          "count": 31910,
+          "label": "Bulgarian"
+        },
+        {
+          "value": "lang:cat",
+          "count": 31303,
+          "label": "Catalan"
+        },
+        {
+          "value": "lang:rum",
+          "count": 28602,
+          "label": "Romanian"
+        },
+        {
+          "value": "lang:ben",
+          "count": 25720,
+          "label": "Bengali"
+        },
+        {
+          "value": "lang:nor",
+          "count": 21986,
+          "label": "Norwegian"
+        },
+        {
+          "value": "lang:tam",
+          "count": 21281,
+          "label": "Tamil"
+        },
+        {
+          "value": "lang:yid",
+          "count": 20701,
+          "label": "Yiddish"
+        },
+        {
+          "value": "lang:hrv",
+          "count": 19749,
+          "label": "Croatian"
+        },
+        {
+          "value": "lang:und",
+          "count": 19012,
+          "label": "Undetermined"
+        },
+        {
+          "value": "lang:fin",
+          "count": 18961,
+          "label": "Finnish"
+        },
+        {
+          "value": "lang:srp",
+          "count": 18811,
+          "label": "Serbian"
+        },
+        {
+          "value": "lang:mul",
+          "count": 16040,
+          "label": "Multiple languages"
+        },
+        {
+          "value": "lang:lav",
+          "count": 15916,
+          "label": "Latvian"
+        },
+        {
+          "value": "lang:san",
+          "count": 14821,
+          "label": "Sanskrit"
+        },
+        {
+          "value": "lang:arm",
+          "count": 13177,
+          "label": "Armenian"
+        },
+        {
+          "value": "lang:tib",
+          "count": 12549,
+          "label": "Tibetan"
+        },
+        {
+          "value": "lang:slo",
+          "count": 11605,
+          "label": "Slovak"
+        },
+        {
+          "value": "lang:ind",
+          "count": 10831,
+          "label": "Indonesian"
+        },
+        {
+          "value": "lang:bel",
+          "count": 10386,
+          "label": "Belarusian"
+        },
+        {
+          "value": "lang:lit",
+          "count": 8135,
+          "label": "Lithuanian"
+        },
+        {
+          "value": "lang:pan",
+          "count": 7329,
+          "label": "Panjabi"
+        },
+        {
+          "value": "lang:est",
+          "count": 7319,
+          "label": "Estonian"
+        },
+        {
+          "value": "lang:aze",
+          "count": 6783,
+          "label": "Azerbaijani"
+        },
+        {
+          "value": "lang:slv",
+          "count": 6428,
+          "label": "Slovenian"
+        }
+      ]
+    },
+    {
+      "@type": "nypl:Aggregation",
+      "@id": "res:mediaType",
+      "id": "mediaType",
+      "field": "mediaType",
+      "values": [
+        {
+          "value": "mediatypes:n",
+          "count": 12922678,
+          "label": "unmediated"
+        },
+        {
+          "value": "mediatypes:c",
+          "count": 1161871,
+          "label": "computer"
+        },
+        {
+          "value": "mediatypes:undefined",
+          "count": 636806,
+          "label": "unmediated"
+        },
+        {
+          "value": "mediatypes:h",
+          "count": 468925,
+          "label": "microform"
+        },
+        {
+          "value": "mediatypes:v",
+          "count": 41522,
+          "label": "video"
+        },
+        {
+          "value": "mediatypes:undefined",
+          "count": 5635,
+          "label": "audio"
+        },
+        {
+          "value": "mediatypes:undefined",
+          "count": 5305,
+          "label": "microform"
+        },
+        {
+          "value": "mediatypes:s",
+          "count": 3958,
+          "label": "audio"
+        },
+        {
+          "value": "mediatypes:z",
+          "count": 1272,
+          "label": "unspecified"
+        },
+        {
+          "value": "mediatypes:undefined",
+          "count": 825,
+          "label": "computer"
+        },
+        {
+          "value": "mediatypes:g",
+          "count": 771,
+          "label": "projected"
+        },
+        {
+          "value": "mediatypes:undefined",
+          "count": 574,
+          "label": "video"
+        },
+        {
+          "value": "mediatypes:rdamedia",
+          "count": 330,
+          "label": "unmediated"
+        },
+        {
+          "value": "mediatypes:n2rdamedia",
+          "count": 67,
+          "label": "unmediated"
+        },
+        {
+          "value": "mediatypes:n",
+          "count": 57,
+          "label": "ohne Hilfsmittel zu benutzen"
+        },
+        {
+          "value": "mediatypes:c",
+          "count": 31,
+          "label": "unmediated"
+        },
+        {
+          "value": "mediatypes:n",
+          "count": 31,
+          "label": "zonder medium"
+        },
+        {
+          "value": "mediatypes:n",
+          "count": 30,
+          "label": "sans médiation"
+        },
+        {
+          "value": "mediatypes:n",
+          "count": 26,
+          "label": "bez média"
+        },
+        {
+          "value": "mediatypes:n",
+          "count": 22,
+          "label": "computer"
+        },
+        {
+          "value": "mediatypes:n",
+          "count": 22,
+          "label": "sans médiation"
+        },
+        {
+          "value": "mediatypes:undefined",
+          "count": 20,
+          "label": "volume"
+        },
+        {
+          "value": "mediatypes:n",
+          "count": 17,
+          "label": "sin mediación"
+        },
+        {
+          "value": "mediatypes:undefined",
+          "count": 15,
+          "label": "sin mediación"
+        },
+        {
+          "value": "mediatypes:nc",
+          "count": 14,
+          "label": "volume"
+        },
+        {
+          "value": "mediatypes:n",
+          "count": 11,
+          "label": "audio"
+        },
+        {
+          "value": "mediatypes:undefined",
+          "count": 11,
+          "label": "sin mediación"
+        },
+        {
+          "value": "mediatypes:nc",
+          "count": 9,
+          "label": "unmediated"
+        },
+        {
+          "value": "mediatypes:undefined",
+          "count": 8,
+          "label": "rdamedia"
+        },
+        {
+          "value": "mediatypes:undefined",
+          "count": 7,
+          "label": "still image"
+        },
+        {
+          "value": "mediatypes:undefined",
+          "count": 7,
+          "label": "unmediate"
+        },
+        {
+          "value": "mediatypes:undefined",
+          "count": 6,
+          "label": "Unmediated"
+        },
+        {
+          "value": "mediatypes:n",
+          "count": 5,
+          "label": "Bez urządzenia pośredniczącego"
+        },
+        {
+          "value": "mediatypes:sti",
+          "count": 5,
+          "label": "still image"
+        },
+        {
+          "value": "mediatypes:h",
+          "count": 4,
+          "label": "unmediated"
+        },
+        {
+          "value": "mediatypes:undefined",
+          "count": 4,
+          "label": "umediated"
+        },
+        {
+          "value": "mediatypes:undefined",
+          "count": 4,
+          "label": "unmediat ed"
+        },
+        {
+          "value": "mediatypes:n",
+          "count": 3,
+          "label": "omedierad"
+        },
+        {
+          "value": "mediatypes:n",
+          "count": 3,
+          "label": "umediated"
+        },
+        {
+          "value": "mediatypes:undefined",
+          "count": 3,
+          "label": "Audio"
+        },
+        {
+          "value": "mediatypes:undefined",
+          "count": 3,
+          "label": "Computer"
+        },
+        {
+          "value": "mediatypes:undefined",
+          "count": 3,
+          "label": "no mediado"
+        },
+        {
+          "value": "mediatypes:undefined",
+          "count": 3,
+          "label": "sans médiation"
+        },
+        {
+          "value": "mediatypes:undefined",
+          "count": 3,
+          "label": "ummediated"
+        },
+        {
+          "value": "mediatypes:undefined",
+          "count": 3,
+          "label": "unmedaited"
+        },
+        {
+          "value": "mediatypes:undefined",
+          "count": 3,
+          "label": "unmedia ted"
+        },
+        {
+          "value": "mediatypes:bg",
+          "count": 2,
+          "label": "unmediated"
+        },
+        {
+          "value": "mediatypes:b",
+          "count": 2,
+          "label": "unmediated"
+        },
+        {
+          "value": "mediatypes:c",
+          "count": 2,
+          "label": "microform"
+        },
+        {
+          "value": "mediatypes:n",
+          "count": 2,
+          "label": "cunmediated"
+        }
+      ]
+    },
+    {
+      "@type": "nypl:Aggregation",
+      "@id": "res:subjectLiteral",
+      "id": "subjectLiteral",
+      "field": "subjectLiteral",
+      "values": [
+        {
+          "value": "United States.",
+          "count": 56475,
+          "label": "United States."
+        },
+        {
+          "value": "Piano music.",
+          "count": 34804,
+          "label": "Piano music."
+        },
+        {
+          "value": "1900-1999",
+          "count": 30568,
+          "label": "1900-1999"
+        },
+        {
+          "value": "Man-woman relationships -- Fiction.",
+          "count": 25840,
+          "label": "Man-woman relationships -- Fiction."
+        },
+        {
+          "value": "Politics and government.",
+          "count": 25029,
+          "label": "Politics and government."
+        },
+        {
+          "value": "Symphonies.",
+          "count": 22903,
+          "label": "Symphonies."
+        },
+        {
+          "value": "China.",
+          "count": 20110,
+          "label": "China."
+        },
+        {
+          "value": "Bible. -- Commentaries.",
+          "count": 17677,
+          "label": "Bible. -- Commentaries."
+        },
+        {
+          "value": "2000-2099",
+          "count": 17585,
+          "label": "2000-2099"
+        },
+        {
+          "value": "Operas -- Excerpts.",
+          "count": 16915,
+          "label": "Operas -- Excerpts."
+        },
+        {
+          "value": "Orchestral music.",
+          "count": 16296,
+          "label": "Orchestral music."
+        },
+        {
+          "value": "Philosophy.",
+          "count": 16104,
+          "label": "Philosophy."
+        },
+        {
+          "value": "Bible. -- Criticism, interpretation, etc.",
+          "count": 16021,
+          "label": "Bible. -- Criticism, interpretation, etc."
+        },
+        {
+          "value": "Operas.",
+          "count": 15787,
+          "label": "Operas."
+        },
+        {
+          "value": "Economics.",
+          "count": 15566,
+          "label": "Economics."
+        },
+        {
+          "value": "Political science.",
+          "count": 14752,
+          "label": "Political science."
+        },
+        {
+          "value": "Manners and customs.",
+          "count": 14114,
+          "label": "Manners and customs."
+        },
+        {
+          "value": "Photography, Artistic.",
+          "count": 12848,
+          "label": "Photography, Artistic."
+        },
+        {
+          "value": "France -- History -- Revolution, 1789-1799.",
+          "count": 12619,
+          "label": "France -- History -- Revolution, 1789-1799."
+        },
+        {
+          "value": "Ethics.",
+          "count": 12328,
+          "label": "Ethics."
+        },
+        {
+          "value": "Sonatas (Piano)",
+          "count": 12287,
+          "label": "Sonatas (Piano)"
+        },
+        {
+          "value": "Organ music.",
+          "count": 12219,
+          "label": "Organ music."
+        },
+        {
+          "value": "International relations.",
+          "count": 11322,
+          "label": "International relations."
+        },
+        {
+          "value": "Democracy.",
+          "count": 10800,
+          "label": "Democracy."
+        },
+        {
+          "value": "Socialism.",
+          "count": 10251,
+          "label": "Socialism."
+        },
+        {
+          "value": "Economic history.",
+          "count": 10171,
+          "label": "Economic history."
+        },
+        {
+          "value": "1900 - 1999",
+          "count": 10017,
+          "label": "1900 - 1999"
+        },
+        {
+          "value": "American poetry.",
+          "count": 10013,
+          "label": "American poetry."
+        },
+        {
+          "value": "English fiction.",
+          "count": 9944,
+          "label": "English fiction."
+        },
+        {
+          "value": "Economic policy.",
+          "count": 9780,
+          "label": "Economic policy."
+        },
+        {
+          "value": "Germany.",
+          "count": 9716,
+          "label": "Germany."
+        },
+        {
+          "value": "Man-woman relationships.",
+          "count": 9634,
+          "label": "Man-woman relationships."
+        },
+        {
+          "value": "Aesthetics.",
+          "count": 9401,
+          "label": "Aesthetics."
+        },
+        {
+          "value": "Diplomatic relations.",
+          "count": 9394,
+          "label": "Diplomatic relations."
+        },
+        {
+          "value": "Knowledge, Theory of.",
+          "count": 9337,
+          "label": "Knowledge, Theory of."
+        },
+        {
+          "value": "Turkey.",
+          "count": 9328,
+          "label": "Turkey."
+        },
+        {
+          "value": "Songs (High voice) with piano.",
+          "count": 9226,
+          "label": "Songs (High voice) with piano."
+        },
+        {
+          "value": "Civilization.",
+          "count": 9107,
+          "label": "Civilization."
+        },
+        {
+          "value": "Bible. -- Sermons.",
+          "count": 9076,
+          "label": "Bible. -- Sermons."
+        },
+        {
+          "value": "Great Britain.",
+          "count": 9070,
+          "label": "Great Britain."
+        },
+        {
+          "value": "Japan.",
+          "count": 9038,
+          "label": "Japan."
+        },
+        {
+          "value": "Sociology.",
+          "count": 9021,
+          "label": "Sociology."
+        },
+        {
+          "value": "Economic development.",
+          "count": 8862,
+          "label": "Economic development."
+        },
+        {
+          "value": "Communism.",
+          "count": 8677,
+          "label": "Communism."
+        },
+        {
+          "value": "English drama.",
+          "count": 8637,
+          "label": "English drama."
+        },
+        {
+          "value": "English poetry.",
+          "count": 8609,
+          "label": "English poetry."
+        },
+        {
+          "value": "Conduct of life.",
+          "count": 8556,
+          "label": "Conduct of life."
+        },
+        {
+          "value": "Russia (Federation)",
+          "count": 8556,
+          "label": "Russia (Federation)"
+        },
+        {
+          "value": "Bible. -- Early works to 1800.",
+          "count": 8488,
+          "label": "Bible. -- Early works to 1800."
+        },
+        {
+          "value": "Concertos (Piano)",
+          "count": 8441,
+          "label": "Concertos (Piano)"
+        }
+      ]
+    },
+    {
+      "@type": "nypl:Aggregation",
+      "@id": "res:creatorLiteral",
+      "id": "creatorLiteral",
+      "field": "creatorLiteral",
+      "values": [
+        {
+          "value": "United States. General Accounting Office.",
+          "count": 8967,
+          "label": "United States. General Accounting Office."
+        },
+        {
+          "value": "Mozart, Wolfgang Amadeus, 1756-1791.",
+          "count": 7739,
+          "label": "Mozart, Wolfgang Amadeus, 1756-1791."
+        },
+        {
+          "value": "Beethoven, Ludwig van, 1770-1827.",
+          "count": 6864,
+          "label": "Beethoven, Ludwig van, 1770-1827."
+        },
+        {
+          "value": "Bach, Johann Sebastian, 1685-1750.",
+          "count": 6780,
+          "label": "Bach, Johann Sebastian, 1685-1750."
+        },
+        {
+          "value": "Shakespeare, William, 1564-1616.",
+          "count": 5540,
+          "label": "Shakespeare, William, 1564-1616."
+        },
+        {
+          "value": "Geological Survey (U.S.)",
+          "count": 4492,
+          "label": "Geological Survey (U.S.)"
+        },
+        {
+          "value": "Organisation for Economic Co-operation and Development.",
+          "count": 4061,
+          "label": "Organisation for Economic Co-operation and Development."
+        },
+        {
+          "value": "United States. Government Accountability Office.",
+          "count": 3918,
+          "label": "United States. Government Accountability Office."
+        },
+        {
+          "value": "Haydn, Joseph, 1732-1809.",
+          "count": 3596,
+          "label": "Haydn, Joseph, 1732-1809."
+        },
+        {
+          "value": "Handel, George Frideric, 1685-1759.",
+          "count": 3542,
+          "label": "Handel, George Frideric, 1685-1759."
+        },
+        {
+          "value": "United States.",
+          "count": 3529,
+          "label": "United States."
+        },
+        {
+          "value": "Schubert, Franz, 1797-1828.",
+          "count": 3409,
+          "label": "Schubert, Franz, 1797-1828."
+        },
+        {
+          "value": "Brahms, Johannes, 1833-1897.",
+          "count": 3224,
+          "label": "Brahms, Johannes, 1833-1897."
+        },
+        {
+          "value": "Verdi, Giuseppe, 1813-1901.",
+          "count": 2922,
+          "label": "Verdi, Giuseppe, 1813-1901."
+        },
+        {
+          "value": "Wagner, Richard, 1813-1883.",
+          "count": 2872,
+          "label": "Wagner, Richard, 1813-1883."
+        },
+        {
+          "value": "United States. Congress. House. Committee on Rules.",
+          "count": 2799,
+          "label": "United States. Congress. House. Committee on Rules."
+        },
+        {
+          "value": "Great Britain. Parliament.",
+          "count": 2651,
+          "label": "Great Britain. Parliament."
+        },
+        {
+          "value": "Tchaikovsky, Peter Ilich, 1840-1893.",
+          "count": 2648,
+          "label": "Tchaikovsky, Peter Ilich, 1840-1893."
+        },
+        {
+          "value": "Great Britain.",
+          "count": 2619,
+          "label": "Great Britain."
+        },
+        {
+          "value": "United States. Congress. House. Committee on the Judiciary.",
+          "count": 2391,
+          "label": "United States. Congress. House. Committee on the Judiciary."
+        },
+        {
+          "value": "United States. Congress. Senate. Committee on Energy and Natural Resources.",
+          "count": 2170,
+          "label": "United States. Congress. Senate. Committee on Energy and Natural Resources."
+        },
+        {
+          "value": "Church of England.",
+          "count": 2166,
+          "label": "Church of England."
+        },
+        {
+          "value": "Schumann, Robert, 1810-1856.",
+          "count": 2164,
+          "label": "Schumann, Robert, 1810-1856."
+        },
+        {
+          "value": "United States. Congress. Senate. Committee on the Judiciary.",
+          "count": 2143,
+          "label": "United States. Congress. Senate. Committee on the Judiciary."
+        },
+        {
+          "value": "Geological Survey (U.S.), cartographer.",
+          "count": 2079,
+          "label": "Geological Survey (U.S.), cartographer."
+        },
+        {
+          "value": "Goethe, Johann Wolfgang von, 1749-1832.",
+          "count": 2078,
+          "label": "Goethe, Johann Wolfgang von, 1749-1832."
+        },
+        {
+          "value": "United States. Congress. House. Committee on Naval Affairs.",
+          "count": 2069,
+          "label": "United States. Congress. House. Committee on Naval Affairs."
+        },
+        {
+          "value": "Mozart, Wolfgang Amadeus, 1756-1791,",
+          "count": 2009,
+          "label": "Mozart, Wolfgang Amadeus, 1756-1791,"
+        },
+        {
+          "value": "Bach, Johann Sebastian, 1685-1750,",
+          "count": 2001,
+          "label": "Bach, Johann Sebastian, 1685-1750,"
+        },
+        {
+          "value": "United States. Congress. Senate. Committee on Foreign Relations.",
+          "count": 1958,
+          "label": "United States. Congress. Senate. Committee on Foreign Relations."
+        },
+        {
+          "value": "Liszt, Franz, 1811-1886.",
+          "count": 1934,
+          "label": "Liszt, Franz, 1811-1886."
+        },
+        {
+          "value": "United States. Congress. House. Committee on Ways and Means.",
+          "count": 1934,
+          "label": "United States. Congress. House. Committee on Ways and Means."
+        },
+        {
+          "value": "Vivaldi, Antonio, 1678-1741.",
+          "count": 1934,
+          "label": "Vivaldi, Antonio, 1678-1741."
+        },
+        {
+          "value": "Mendelssohn-Bartholdy, Felix, 1809-1847.",
+          "count": 1914,
+          "label": "Mendelssohn-Bartholdy, Felix, 1809-1847."
+        },
+        {
+          "value": "United States. Bureau of the Census.",
+          "count": 1910,
+          "label": "United States. Bureau of the Census."
+        },
+        {
+          "value": "Beethoven, Ludwig van, 1770-1827,",
+          "count": 1838,
+          "label": "Beethoven, Ludwig van, 1770-1827,"
+        },
+        {
+          "value": "United States. Congress. Senate. Committee on Appropriations.",
+          "count": 1822,
+          "label": "United States. Congress. Senate. Committee on Appropriations."
+        },
+        {
+          "value": "United States. Congress. House. Committee on Interstate and Foreign Commerce.",
+          "count": 1818,
+          "label": "United States. Congress. House. Committee on Interstate and Foreign Commerce."
+        },
+        {
+          "value": "England and Wales. Parliament.",
+          "count": 1782,
+          "label": "England and Wales. Parliament."
+        },
+        {
+          "value": "United States. Congress. Senate. Committee on Finance.",
+          "count": 1772,
+          "label": "United States. Congress. Senate. Committee on Finance."
+        },
+        {
+          "value": "Strauss, Richard, 1864-1949.",
+          "count": 1753,
+          "label": "Strauss, Richard, 1864-1949."
+        },
+        {
+          "value": "Voltaire, 1694-1778.",
+          "count": 1747,
+          "label": "Voltaire, 1694-1778."
+        },
+        {
+          "value": "United States. Congress. House. Committee on Agriculture.",
+          "count": 1728,
+          "label": "United States. Congress. House. Committee on Agriculture."
+        },
+        {
+          "value": "Defoe, Daniel, 1661?-1731.",
+          "count": 1704,
+          "label": "Defoe, Daniel, 1661?-1731."
+        },
+        {
+          "value": "Rossini, Gioacchino, 1792-1868.",
+          "count": 1656,
+          "label": "Rossini, Gioacchino, 1792-1868."
+        },
+        {
+          "value": "Telemann, Georg Philipp, 1681-1767.",
+          "count": 1629,
+          "label": "Telemann, Georg Philipp, 1681-1767."
+        },
+        {
+          "value": "Chopin, Frédéric, 1810-1849.",
+          "count": 1624,
+          "label": "Chopin, Frédéric, 1810-1849."
+        },
+        {
+          "value": "Prokofiev, Sergey, 1891-1953.",
+          "count": 1548,
+          "label": "Prokofiev, Sergey, 1891-1953."
+        },
+        {
+          "value": "United States. Congress. House. Committee on Appropriations.",
+          "count": 1538,
+          "label": "United States. Congress. House. Committee on Appropriations."
+        },
+        {
+          "value": "Stravinsky, Igor, 1882-1971.",
+          "count": 1515,
+          "label": "Stravinsky, Igor, 1882-1971."
+        }
+      ]
+    }
+  ],
+  "totalResults": 15448636
+}

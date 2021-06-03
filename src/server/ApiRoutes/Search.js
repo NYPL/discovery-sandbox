@@ -73,6 +73,7 @@ function fetchResults(searchKeywords = '', contributor, title, subject, page, so
       .catch(console.error))
     .then((response) => {
       const [results, aggregations, drbbResults] = response;
+      console.log('aggregations: ', JSON.stringify(aggregations, null, 2));
       const locationCodes = new Set();
       const { itemListElement } = results;
       if (!itemListElement) {

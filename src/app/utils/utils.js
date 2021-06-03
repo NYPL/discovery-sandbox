@@ -206,7 +206,7 @@ const basicQuery = (props = {}) => {
     subject,
     page,
   }) => {
-    console.log('query params: ', contributor, title, subject);
+    console.log('query params: ', contributor, title, subject, JSON.stringify(selectedFilters));
     const sortQuery = getSortQuery(sortBy || props.sortBy);
     const fieldQuery = getFieldParam(field || props.field);
     const filterQuery = getFilterParam(selectedFilters || props.selectedFilters);
