@@ -46,7 +46,6 @@ const routes = {
 // out separately is because it is used front-end and back-end
 const successCb = (pathType, dispatch) => (response) => {
   const { data } = response;
-  console.log('success received: ', data);
   if (data && data.redirect) {
     if (window) {
       const fullUrl = encodeURIComponent(window.location.href);
@@ -67,7 +66,6 @@ const successCb = (pathType, dispatch) => (response) => {
 // corresponding api route can be found simply by adding /api/
 
 function loadDataForRoutes(location, dispatch) {
-  console.log('attempting to load data for ', location);
   const { pathname, search } = location;
   if (pathname === `${baseUrl}/` || pathname.includes('/account')) {
     dispatch(resetState());
