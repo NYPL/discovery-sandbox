@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { Checkbox, Input, Label, Button, ButtonTypes } from '@nypl/design-system-react-components'
+import { Checkbox, Input, Label, Button, ButtonTypes, Select } from '@nypl/design-system-react-components'
 import appConfig from '@appConfig';
 import React from 'react';
 import { basicQuery } from '../../utils/utils';
@@ -132,7 +132,7 @@ class AdvancedSearch extends React.Component {
                 }
                 <li>
                   <Label htmlFor="languageSelect">Language</Label>
-                  <select id="languageSelect">
+                  <Select id="languageSelect">
                     {
                       languages.map((language) => {
                         return (
@@ -142,7 +142,7 @@ class AdvancedSearch extends React.Component {
                         );
                       })
                     }
-                  </select>
+                  </Select>
                 </li>
               </ul>
             </div>

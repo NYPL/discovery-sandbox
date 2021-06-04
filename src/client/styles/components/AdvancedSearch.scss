@@ -1,5 +1,4 @@
 #advancedSearchHeading {
-  margin-left: 10%;
   margin-top: 10px;
   font-weight: 500;
 }
@@ -17,7 +16,7 @@
   }
 
   hr {
-    width: 80%;
+    width: 100%;
     color: #C4C4C4;
   }
 
@@ -46,16 +45,9 @@
 
 .advancedSearchColumnLeft {
   flex: 1;
-  margin-left: 10%;
 
   ul {
     width: 80%;
-  }
-
-  select {
-    width: 100%;
-    height: 36px;
-    border-color: rgb(189, 189, 189);
   }
 }
 
