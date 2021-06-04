@@ -379,7 +379,7 @@ const getUpdatedFilterValues = (props) => {
    *
    * @returns {string} A phrase like "for (keyword|title|author) TERM"
    */
-function displayContext({ searchKeywords, selectedFilters, field, count }) {
+function displayContext({ searchKeywords, contributor, title, subject, selectedFilters, field, count }) {
   const keyMapping = {
     // Currently from links on the bib page:
     creatorLiteral: 'author',
@@ -440,6 +440,18 @@ function displayContext({ searchKeywords, selectedFilters, field, count }) {
       fieldLabel = keyMapping[field];
     }
     clauses.push(`${fieldLabel} "${searchKeywords}"`);
+  }
+
+  if (contributor) {
+    clauses.push(`Author: ${contributor}`);
+  }
+
+  if (title) {
+    clauses.push(`Title: ${title}`);
+  }
+
+  if (subject) {
+    clauses.push(`Subject: ${subject}`);
   }
 
   // Now join the accumlated (0-2) "clauses" together into a phrase like:
