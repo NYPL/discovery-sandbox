@@ -26,6 +26,9 @@ const SearchResults = (props, context) => {
     field,
     page,
     selectedFilters,
+    contributor,
+    title,
+    subject,
   } = useSelector(state => ({
     searchResults: state.searchResults,
     searchKeywords: state.searchKeywords,
@@ -33,6 +36,9 @@ const SearchResults = (props, context) => {
     field: state.field,
     page: state.page,
     selectedFilters: state.selectedFilters,
+    contributor: state.contributor,
+    title: state.title,
+    subject: state.subject,
   }));
 
   const {
@@ -45,12 +51,26 @@ const SearchResults = (props, context) => {
 
   const totalResults = searchResults ? searchResults.totalResults : undefined;
 
+  console.log('creating API query: ', JSON.stringify({
+    searchKeywords,
+    page,
+    sortBy,
+    selectedFilters,
+    field,
+    contributor,
+    title,
+    subject,
+  }, null, 2));
+
   const createAPIQuery = basicQuery({
     searchKeywords,
     page,
     sortBy,
     selectedFilters,
     field,
+    contributor,
+    title,
+    subject,
   });
   const dateFilterErrors = [];
   const searchError = location.query && location.query.error ? location.query.error : '';

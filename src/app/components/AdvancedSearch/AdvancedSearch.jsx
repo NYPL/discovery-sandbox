@@ -39,7 +39,6 @@ const labelsForFields = {
 };
 
 const clearFields = (e) => {
-  console.log('clearing fields');
   e.preventDefault();
 
   Array.from(document.getElementsByTagName('input')).forEach((input) => {
@@ -64,17 +63,14 @@ class AdvancedSearch extends React.Component {
   }
 
   alarm() {
-    console.log('alarming');
     this.setState({ alarm: true });
   }
 
 
   render() {
-    console.log('state: ', this.state);
     const createAPIQuery = basicQuery({});
 
     const buildQueryDataFromForm = (formData) => {
-      console.log('using formData: ', JSON.stringify(formData, null, 2));
       const queryData = {};
 
       // Add advanced search params
@@ -108,7 +104,6 @@ class AdvancedSearch extends React.Component {
         queryData.selectedFilters.language = [languageData.value];
       }
 
-      console.log('built queryData: ', JSON.stringify(queryData, null, 2));
       return queryData;
     };
 

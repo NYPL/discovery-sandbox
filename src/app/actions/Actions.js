@@ -154,9 +154,6 @@ export const updateSearchResultsPage = data => dispatch => new Promise(() => {
     subject,
   } = data;
 
-  console.log('updateSearchResultsPage: ');
-  if (typeof window !== 'undefined') window.data = data;
-
   dispatch(updateSearchResults(searchResults));
   dispatch(updateDrbbResults(drbbResults));
   dispatch(updateFilters(filters));
