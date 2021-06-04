@@ -84,6 +84,7 @@ class Search extends React.Component {
    * submitSearchRequest()
    */
   submitSearchRequest(e) {
+    console.log('submitting search request');
     e.preventDefault();
     // Store the data that the user entered
     const {
@@ -106,6 +107,9 @@ class Search extends React.Component {
     }
 
     const apiQuery = this.props.createAPIQuery({
+      clearContributor: true,
+      clearSubject: true,
+      clearTitle: true,
       field,
       selectedFilters: this.props.selectedFilters,
       searchKeywords,

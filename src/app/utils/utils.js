@@ -205,6 +205,9 @@ const basicQuery = (props = {}) => {
     title,
     subject,
     page,
+    clearTitle,
+    clearSubject,
+    clearContributor,
   }) => {
     const sortQuery = getSortQuery(sortBy || props.sortBy);
     const fieldQuery = getFieldParam(field || props.field);
@@ -215,9 +218,9 @@ const basicQuery = (props = {}) => {
     let pageQuery = props.page && props.page !== '1' ? `&page=${props.page}` : '';
     pageQuery = page && page !== '1' ? `&page=${page}` : pageQuery;
     pageQuery = page === '1' ? '' : pageQuery;
-    const contributorQuery = contributor || props.contributor ? `&contributor=${contributor || props.contributor}` : '';
-    const titleQuery = title || props.title ? `&title=${title || props.title}` : '';
-    const subjectQuery = subject || props.subject ? `&subject=${subject || props.subject}` : '';
+    const contributorQuery = (contributor || props.contributor) && !clearContributor ? `&contributor=${contributor || props.contributor}` : '';
+    const titleQuery = (title || props.title) && !clearTitle ? `&title=${title || props.title}` : '';
+    const subjectQuery = (subject || props.subject) && !clearSubject ? `&subject=${subject || props.subject}` : '';
     const advancedQuery = `${contributorQuery}${titleQuery}${subjectQuery}`;
 
     const completeQuery = `${searchKeywordsQuery}${advancedQuery}${filterQuery}${sortQuery}${fieldQuery}${pageQuery}`;
