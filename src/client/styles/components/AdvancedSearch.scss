@@ -32,6 +32,9 @@
   #fields {
     width: 100%;
     display: flex;
+    @include media($mobile-breakpoint) {
+      display: block;
+    }
   }
 
   #advancedSearchButtons {
@@ -39,15 +42,25 @@
     justify-content: flex-end;
     width: 91%;
 
+    @include media($mobile-breakpoint) {
+      display: block;
+    }
+
     button {
       margin: 5px;
       width: 139px;
+      @include media($mobile-breakpoint) {
+        width: 100%;
+      }
     }
   }
 
   #formats {
     display: flex;
     border: none;
+    @include media($mobile-breakpoint) {
+      display: block;
+    }
   }
 
 }
