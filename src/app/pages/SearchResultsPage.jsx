@@ -51,17 +51,6 @@ const SearchResults = (props, context) => {
 
   const totalResults = searchResults ? searchResults.totalResults : undefined;
 
-  console.log('creating API query: ', JSON.stringify({
-    searchKeywords,
-    page,
-    sortBy,
-    selectedFilters,
-    field,
-    contributor,
-    title,
-    subject,
-  }, null, 2));
-
   const createAPIQuery = basicQuery({
     searchKeywords,
     page,

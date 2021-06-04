@@ -84,7 +84,6 @@ class Search extends React.Component {
    * submitSearchRequest()
    */
   submitSearchRequest(e) {
-    console.log('submitting search request');
     e.preventDefault();
     // Store the data that the user entered
     const {
