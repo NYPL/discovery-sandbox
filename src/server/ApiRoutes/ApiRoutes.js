@@ -87,4 +87,8 @@ router
   .route(`${appConfig.baseUrl}/api/feedback*`)
   .post(Feedback.post);
 
+router
+  .route(`${appConfig.baseUrl}/api/accountError`)
+  .get(Account.logError);
+
 export default router;
