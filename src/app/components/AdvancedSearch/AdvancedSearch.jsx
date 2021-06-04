@@ -141,6 +141,7 @@ class AdvancedSearch extends React.Component {
         { this.state.alarm &&
           (
             <aside id="advancedSearchAside">
+              <img src="./src/client/assets/Alert_Icon.svg" alt="Exclamation mark in a triangle" />
               Please enter at least one field to submit an advanced search.
             </aside>
           )
