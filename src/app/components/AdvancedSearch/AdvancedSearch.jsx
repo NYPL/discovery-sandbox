@@ -7,6 +7,13 @@ import SccContainer from '../SccContainer/SccContainer';
 
 const aggregations = require('../../../../advancedSearchAggregations.json');
 
+const materialTypes = aggregations.materialType.sort((a, b) => (a.label > b.label ? 1 : -1));
+const languages = [
+  {
+    value: '',
+    label: '-- Any -- ',
+  },
+].concat(aggregations.language.sort((a, b) => (a.label > b.label ? 1 : -1)));
 
 const leftInputs = [
   'searchKeywords',
@@ -127,7 +134,7 @@ class AdvancedSearch extends React.Component {
                   <Label htmlFor="languageSelect">Language</Label>
                   <select id="languageSelect">
                     {
-                      aggregations.language.map((language) => {
+                      languages.map((language) => {
                         return (
                           <option value={language.value} key={language.value}>
                             {language.label}
@@ -149,7 +156,7 @@ class AdvancedSearch extends React.Component {
                     {
                       rightInputs.map(key =>
                         (
-                          <li key={key}>
+                          <li key={key} id={`${key}-li`}>
                             <Label htmlFor={key}>{labelsForFields[key]}</Label>
                             <Input id={key} type="text" />
                           </li>
@@ -159,11 +166,31 @@ class AdvancedSearch extends React.Component {
                   </ul>
                 </li>
                 <li>
-                  <fieldset>
+                  <Label htmlFor="formats">
                     Format
-                    <ul id="formatList">
+                  </Label>
+                  <fieldset id="formats">
+                    <ul id="formatListLeft">
                       {
-                        aggregations.materialType.map((materialType) => {
+                        materialTypes.slice(0, 4).map((materialType) => {
+                          return (
+                            <Checkbox
+                              labelOptions={{
+                                id: materialType.value,
+                                labelContent: materialType.label,
+                              }}
+                              showLabel
+                              checkboxId={materialType.value}
+                              value={materialType.value}
+                              key={materialType.value}
+                            />
+                          );
+                        })
+                      }
+                    </ul>
+                    <ul id="formatListRight">
+                      {
+                        materialTypes.slice(4).map((materialType) => {
                           return (
                             <Checkbox
                               labelOptions={{
@@ -187,13 +214,13 @@ class AdvancedSearch extends React.Component {
           <hr />
           <div id="advancedSearchButtons">
             <Button
-              buttonType={ButtonTypes.primary}
+              buttonType={ButtonTypes.Primary}
               type="submit"
             >
               Submit
             </Button>
             <Button
-              buttonType={ButtonTypes.primary}
+              buttonType={ButtonTypes.Secondary}
               className="clearButton"
             >
               Clear

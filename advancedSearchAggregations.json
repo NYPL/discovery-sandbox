@@ -35,10 +35,6 @@
   ],
   "language": [
     {
-      "value": "",
-      "label": "Any"
-    },
-    {
       "value": "lang:eng",
       "label": "English"
     },

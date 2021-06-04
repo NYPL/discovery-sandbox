@@ -1,6 +1,7 @@
 #advancedSearchHeading {
   margin-left: 10%;
   margin-top: 10px;
+  font-weight: 500;
 }
 
 #advancedSearchForm {
@@ -16,7 +17,7 @@
   }
 
   hr {
-    width: 90%;
+    width: 80%;
     color: #C4C4C4;
   }
 
@@ -36,13 +37,25 @@
     }
   }
 
+  #formats {
+    display: flex;
+    border: none;
+  }
+
 }
 
 .advancedSearchColumnLeft {
   flex: 1;
   margin-left: 10%;
+
   ul {
     width: 80%;
+  }
+
+  select {
+    width: 100%;
+    height: 36px;
+    border-color: rgb(189, 189, 189);
   }
 }
 
@@ -59,6 +72,14 @@
 
     li {
       width: 40%;
+    }
+
+    #dateBefore-li::after {
+      content: 'E.g. 2000';
+    }
+
+    #dateAfter-li::after {
+      content: 'E.g. 1901';
     }
   }
 }
