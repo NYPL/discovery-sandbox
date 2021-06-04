@@ -147,7 +147,7 @@ class AdvancedSearch extends React.Component {
           )
         }
         <h1 id="advancedSearchHeading">Advanced Search</h1>
-        <form id="advancedSearchForm" onSubmit={submitForm} method="POST">
+        <form id="advancedSearchForm" onSubmit={submitForm} method="POST" action={`${appConfig.baseUrl}/search`}>
           <div id="fields">
             <div className="advancedSearchColumnLeft">
               <ul>
@@ -156,14 +156,14 @@ class AdvancedSearch extends React.Component {
                     (
                       <li key={key}>
                         <Label htmlFor={key}>{labelsForFields[key]}</Label>
-                        <Input id={key} type="text" />
+                        <Input id={key} type="text" attributes={{ name: key }} />
                       </li>
                     ),
                   )
                 }
                 <li>
                   <Label htmlFor="languageSelect">Language</Label>
-                  <Select id="languageSelect">
+                  <Select id="languageSelect" name="language">
                     {
                       languages.map((language) => {
                         return (
@@ -189,7 +189,7 @@ class AdvancedSearch extends React.Component {
                         (
                           <li key={key} id={`${key}-li`}>
                             <Label htmlFor={key}>{labelsForFields[key]}</Label>
-                            <Input id={key} type="text" />
+                            <Input id={key} type="text" attributes={{ name: key }} />
                           </li>
                         ),
                       )
@@ -214,6 +214,7 @@ class AdvancedSearch extends React.Component {
                               checkboxId={materialType.value}
                               value={materialType.value}
                               key={materialType.value}
+                              name={materialType.value}
                             />
                           );
                         })
@@ -232,6 +233,7 @@ class AdvancedSearch extends React.Component {
                               checkboxId={materialType.value}
                               value={materialType.value}
                               key={materialType.value}
+                              name={materialType.value}
                             />
                           );
                         })

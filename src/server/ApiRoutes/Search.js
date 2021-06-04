@@ -176,6 +176,7 @@ function search(req, res, resolve) {
 }
 
 function searchServerPost(req, res) {
+  console.log('req body: ', JSON.stringify(req.body, null, 2));
   const { fieldQuery, q, filters, sortQuery } = getReqParams(req.body);
   const { dateAfter, dateBefore } = req.body;
   // The filters from req.body may be an array of selected filters, or just an object
