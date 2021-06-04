@@ -38,14 +38,39 @@ const labelsForFields = {
   materialType: 'Format',
 };
 
+const clearFields = (e) => {
+  console.log('clearing fields');
+  e.preventDefault();
+
+  Array.from(document.getElementsByTagName('input')).forEach((input) => {
+    input.value = '';
+    input.checked = false;
+  });
+
+  Array.from(document.getElementsByTagName('select')).forEach((select) => {
+    select.value = '';
+  });
+};
+
 
 class AdvancedSearch extends React.Component {
   constructor(props, context) {
     super(props);
+    this.state = {
+      alarm: false,
+    };
+
+    this.alarm = this.alarm.bind(this);
+  }
+
+  alarm() {
+    console.log('alarming');
+    this.setState({ alarm: true });
   }
 
 
   render() {
+    console.log('state: ', this.state);
     const createAPIQuery = basicQuery({});
 
     const buildQueryDataFromForm = (formData) => {
@@ -101,6 +126,9 @@ class AdvancedSearch extends React.Component {
       );
 
       const queryData = buildQueryDataFromForm(formData);
+
+      if (!Object.keys(queryData).length) return this.alarm();
+
       const apiQuery = createAPIQuery(queryData);
       return this.context.router.push(`${appConfig.baseUrl}/search?${apiQuery}`);
     };
@@ -115,6 +143,13 @@ class AdvancedSearch extends React.Component {
         activeSection="search"
         pageTitle="advancedSearch"
       >
+        { this.state.alarm &&
+          (
+            <aside id="advancedSearchAside">
+              Please enter at least one field to submit an advanced search.
+            </aside>
+          )
+        }
         <h1 id="advancedSearchHeading">Advanced Search</h1>
         <form id="advancedSearchForm" onSubmit={submitForm} method="POST">
           <div id="fields">
@@ -222,6 +257,8 @@ class AdvancedSearch extends React.Component {
             <Button
               buttonType={ButtonTypes.Secondary}
               className="clearButton"
+              type="button"
+              onClick={clearFields}
             >
               Clear
             </Button>
