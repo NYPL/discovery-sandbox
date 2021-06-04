@@ -131,6 +131,7 @@ function fetchResults(searchKeywords = '', contributor, title, subject, page, so
 }
 
 function search(req, res, resolve) {
+  console.log('calling search');
   const { page, q, contributor, title, subject, sort, order, fieldQuery, filters } = getReqParams(req.query);
 
   const sortBy = sort.length ? [sort, order].filter(field => field.length).join('_') : 'relevance';
