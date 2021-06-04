@@ -19,6 +19,8 @@ import {
   truncateStringOnWhitespace,
   hasValidFilters,
   extractNoticePreference,
+  camelToShishKabobCase,
+  institutionNameByNyplSource,
 } from '../../src/app/utils/utils';
 
 /**
@@ -791,3 +793,20 @@ describe('extractNoticePreference', () => {
     expect(extractNoticePreference({ '268': {'value': '-'} })).to.equal('None');
   });
 })
+
+describe('camelToShishKabobCase', () => {
+  it('should convert camel to shish kabob case', () => {
+    expect(camelToShishKabobCase('SierraNypl')).to.eq('sierra-nypl');
+    expect(camelToShishKabobCase('RecapPul')).to.eq('recap-pul');
+    expect(camelToShishKabobCase('firstCharCanBeLowerCase')).to.eq('first-char-can-be-lower-case');
+  });
+});
+
+describe('institutionNameByNyplSource', () => {
+  it('should resolve all institution names', () => {
+    expect(institutionNameByNyplSource('sierra-nypl')).to.eq('NYPL');
+    expect(institutionNameByNyplSource('recap-pul')).to.eq('Princeton');
+    expect(institutionNameByNyplSource('recap-cul')).to.eq('Columbia');
+    expect(institutionNameByNyplSource('recap-hl')).to.eq('Harvard');
+  });
+});

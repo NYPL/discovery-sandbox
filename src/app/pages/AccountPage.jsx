@@ -22,6 +22,9 @@ import {
   basicQuery,
   ajaxCall,
 } from '../utils/utils';
+import {
+  setCookieWithExpiration,
+} from '../utils/cookieUtils';
 
 
 const AccountPage = (props, context) => {
