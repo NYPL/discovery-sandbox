@@ -72,7 +72,10 @@ const formatter = (options) => {
 const loggerTransports = [
   new winston.transports.File({
     filename: './log/discovery-ui.log',
-    handleExceptions: true,
+    // winston should not attempt to catch and log uncaught exceptions when
+    // running test suite, as that causes them to be hidden (and causes mocha
+    // to return exit code 0, causing the test suite to appear as passed).
+    handleExceptions: process.env.NODE_ENV !== 'test',
     maxsize: 5242880, // 5MB
     maxFiles: 5,
     colorize: false,
