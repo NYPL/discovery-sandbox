@@ -20,7 +20,11 @@ import { logOutFromEncoreAndCatalogIn } from '../utils/logoutUtils';
 import { manipulateAccountPage, makeRequest, buildReqBody } from '../utils/accountPageUtils';
 import {
   basicQuery,
+  ajaxCall,
 } from '../utils/utils';
+import {
+  setCookieWithExpiration,
+} from '../utils/cookieUtils';
 
 
 const AccountPage = (props, context) => {
@@ -42,11 +46,49 @@ const AccountPage = (props, context) => {
   const [itemToCancel, setItemToCancel] = useState(null);
   const [displayTimedLogoutModal, setDisplayTimedLogoutModal] = useState(false);
 
+  const { baseUrl } = appConfig;
+
+
+
+  const incrementTime = (minutes, seconds = 0) => {
+    const now = new Date();
+    now.setTime(now.getTime() + (minutes * 60 * 1000) + (seconds * 1000));
+    return now.toUTCString();
+  };
+
+  // Detect a redirect loop and 404 if we can't solve it any other way
+  const trackRedirects = () => {
+    const nyplAccountRedirectTracker = document
+      .cookie
+      .split(';')
+      .find(el => el.includes('nyplAccountRedirectTracker'));
+    if (nyplAccountRedirectTracker) {
+      const currentValue = nyplAccountRedirectTracker.split('=')[1].split('exp');
+      const currentCount = parseInt(currentValue[0], 10);
+      if (currentCount > 3) {
+        ajaxCall(
+          `${baseUrl}/api/accountError?type=redirect_loop&page=${encodeURI(window.location.href)}`,
+          () => {},
+          () => {},
+        );
+        window.location.replace(`${baseUrl}/accountError`);
+        return true;
+      }
+      const currentExp = currentValue[1];
+      document.cookie = `nyplAccountRedirectTracker=${currentCount + 1}exp${currentExp}; expires=${currentExp}`;
+    } else {
+      const expirationTime = incrementTime(0, 10);
+      document.cookie = `nyplAccountRedirectTracker=1exp${expirationTime}; expires=${expirationTime}`;
+    }
+    return false;
+  };
+
   useEffect(() => {
     if (typeof window !== 'undefined' && (!patron.id || accountHtml.error)) {
       const fullUrl = encodeURIComponent(window.location.href);
       logOutFromEncoreAndCatalogIn(() => {
-        window.location.replace(`${appConfig.loginUrl}?redirect_uri=${fullUrl}`);
+        const redirectFromTracker = trackRedirects();
+        if (!redirectFromTracker) window.location.replace(`${appConfig.loginUrl}?redirect_uri=${fullUrl}`);
       });
     }
   }, [patron]);
@@ -79,9 +121,7 @@ const AccountPage = (props, context) => {
   }, [accountHtml]);
 
   const resetCountdown = () => {
-    const now = new Date();
-    now.setTime(now.getTime() + (5 * 60 * 1000));
-    const inFive = now.toUTCString();
+    const inFive = incrementTime(5);
     document.cookie = `accountPageExp=${inFive}; expires=${inFive}`;
     setDisplayTimedLogoutModal(true);
   };
@@ -89,8 +129,6 @@ const AccountPage = (props, context) => {
   useEffect(() => {
     resetCountdown();
   });
-
-  const { baseUrl } = appConfig;
 
   const cancelItem = () => {
     const body = buildReqBody(content, {

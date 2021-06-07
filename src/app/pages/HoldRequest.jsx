@@ -20,6 +20,7 @@ import appConfig from '../data/appConfig';
 import LibraryItem from '../utils/item';
 import {
   trackDiscovery,
+  institutionNameByNyplSource,
 } from '../utils/utils';
 import { updateLoadingStatus } from '../actions/Actions';
 
@@ -83,17 +84,13 @@ export class HoldRequest extends React.Component {
    */
   submitRequest(e, bibId, itemId, itemSource, title) {
     e.preventDefault();
-    const itemSourceMapping = {
-      'recap-pul': 'Princeton',
-      'recap-cul': 'Columbia',
-    };
     const searchKeywordsQuery =
       (this.props.searchKeywords) ? `q=${this.props.searchKeywords}` : '';
     const searchKeywordsQueryPhysical = searchKeywordsQuery ? `&${searchKeywordsQuery}` : '';
     const fromUrlQuery = this.props.location.query && this.props.location.query.fromUrl ?
       `&fromUrl=${encodeURIComponent(this.props.location.query.fromUrl)}` : '';
     const partnerEvent = itemSource !== 'sierra-nypl' ?
-      ` - Partner item - ${itemSourceMapping[itemSource]}` : '';
+      ` - Partner item - ${institutionNameByNyplSource(itemSource)}` : '';
     let path = `${appConfig.baseUrl}/hold/confirmation/${bibId}-${itemId}`;
 
     if (this.state.delivery === 'edd') {

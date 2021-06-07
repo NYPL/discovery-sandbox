@@ -9,6 +9,7 @@ import {
 } from '@nypl/design-system-react-components';
 
 import { logOutFromEncoreAndCatalogIn } from '../../utils/logoutUtils';
+import { deleteCookie } from '../../utils/cookieUtils';
 
 const TimedLogoutModal = (props) => {
   const {
@@ -21,7 +22,7 @@ const TimedLogoutModal = (props) => {
 
   const logOutAndRedirect = () => {
     logOutFromEncoreAndCatalogIn(() => {
-      document.cookie = 'accountPageExp=; expires=Thu, 01 Jan 1970 00:00:00 UTC;';
+      deleteCookie('accountPageExp');
       window.location.replace(baseUrl);
     });
   };
