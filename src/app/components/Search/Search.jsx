@@ -163,7 +163,7 @@ class Search extends React.Component {
             />
         </div>
         <div id="advanced-search-link-container">
-          <a>Advanced Search</a>
+          <a href={`${appConfig.baseUrl}/search/advanced`}>Advanced Search</a>
         </div>
       </SearchBar>
     );
