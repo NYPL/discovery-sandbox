@@ -35,7 +35,7 @@ const mapFilters = (filters = {}) => {
 /**
  *  Given a hash of RC params including:
  *   - `q`
- *   - `search_scope`
+ *   - `field`
  *   - `filters`, including:
  *     - `dateAfter`
  *     - `dateBefore`
@@ -51,12 +51,12 @@ const createResearchNowQuery = (params) => {
     sort,
     sort_direction,
     filters,
-    search_scope,
+    field,
     per_page,
   } = params;
 
   const mainQuery = [
-    mapSearchScope[search_scope] || 'keyword',
+    mapSearchScope[field] || 'keyword',
     q || '*'
   ].join(':')
 
