@@ -140,7 +140,10 @@ class AdvancedSearch extends React.Component {
       >
         { this.state.alarm &&
           (
-            <aside id="advancedSearchAside">
+            <aside
+              id="advancedSearchAside"
+              aria-label="alert-enter-at-least-one-field"
+            >
               <img src="./src/client/assets/Alert_Icon.svg" alt="Exclamation mark in a triangle" />
               Please enter at least one field to submit an advanced search.
             </aside>
@@ -155,15 +158,20 @@ class AdvancedSearch extends React.Component {
                   leftInputs.map(key =>
                     (
                       <li key={key}>
-                        <Label htmlFor={key}>{labelsForFields[key]}</Label>
-                        <Input id={key} type="text" attributes={{ name: key }} />
+                        <Label htmlFor={key} id={`${key}-input-label`}>{labelsForFields[key]}</Label>
+                        <Input
+                          id={key}
+                          type="text"
+                          attributes={{ name: key }}
+                          aria-labelledby={`${key}-input-label`}
+                        />
                       </li>
                     ),
                   )
                 }
                 <li>
-                  <Label htmlFor="languageSelect">Language</Label>
-                  <Select id="languageSelect" name="language">
+                  <Label htmlFor="languageSelect" id="labguageSelect-label">Language</Label>
+                  <Select id="languageSelect" name="language" aria-labelledby="languageSelect-label">
                     {
                       languages.map((language) => {
                         return (
@@ -179,17 +187,17 @@ class AdvancedSearch extends React.Component {
             </div>
             <div className="advancedSearchColumnRight">
               <ul>
-                <Label htmlFor="dates">
+                <Label htmlFor="dates" id="dates-label">
                   Date
                 </Label>
-                <li id="dates">
+                <li id="dates" aria-labelledby="dates-label">
                   <ul id="dateList">
                     {
                       rightInputs.map(key =>
                         (
                           <li key={key} id={`${key}-li`}>
-                            <Label htmlFor={key}>{labelsForFields[key]}</Label>
-                            <Input id={key} type="text" attributes={{ name: key }} />
+                            <Label htmlFor={key} id={`${key}-li-label`}>{labelsForFields[key]}</Label>
+                            <Input id={key} type="text" attributes={{ name: key }} aria-labelledby={`${key}-li-label`} />
                           </li>
                         ),
                       )
@@ -197,10 +205,10 @@ class AdvancedSearch extends React.Component {
                   </ul>
                 </li>
                 <li>
-                  <Label htmlFor="formats">
+                  <Label htmlFor="formats" id="formats-label">
                     Format
                   </Label>
-                  <fieldset id="formats">
+                  <fieldset id="formats" aria-labelledby="formats-label">
                     <ul id="formatListLeft">
                       {
                         materialTypes.slice(0, 4).map((materialType) => {
