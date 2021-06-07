@@ -157,10 +157,10 @@ class Search extends React.Component {
             onChange={this.inputChange}
             value={this.state.searchKeywords}
             name="q"
-            />
+          />
           <SearchButton
             onClick={this.submitSearchRequest}
-            />
+          />
         </div>
         <div id="advanced-search-link-container">
           <a href={`${appConfig.baseUrl}/search/advanced`}>Advanced Search</a>

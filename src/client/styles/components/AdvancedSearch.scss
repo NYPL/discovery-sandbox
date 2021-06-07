@@ -85,6 +85,14 @@
     width: 80%;
   }
 
+  .checkbox {
+    align-items: center;
+    input {
+      min-width: 22px;
+      min-height: 22px;
+    }
+  }
+
   #dateList {
     display: flex;
     justify-content: space-between;
