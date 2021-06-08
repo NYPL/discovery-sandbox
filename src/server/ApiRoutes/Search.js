@@ -9,6 +9,7 @@ import {
   parseServerSelectedFilters,
 } from '../../app/utils/utils';
 import extractFeatures from '../../app/utils/extractFeatures';
+import { buildQueryDataFromForm } from '../../app/utils/advancedSearchUtils';
 import nyplApiClient from '../routes/nyplApiClient';
 import logger from '../../../logger';
 import ResearchNow from './ResearchNow';
@@ -176,7 +177,10 @@ function search(req, res, resolve) {
 }
 
 function searchServerPost(req, res) {
-  console.log('req body: ', JSON.stringify(req.body, null, 2));
+  if (req.body.advancedSearch) {
+    return res.redirect(`${appConfig.baseUrl}/search?${createAPIQuery(buildQueryDataFromForm(Object.entries(req.body)))}`);
+  }
+
   const { fieldQuery, q, filters, sortQuery } = getReqParams(req.body);
   const { dateAfter, dateBefore } = req.body;
   // The filters from req.body may be an array of selected filters, or just an object
