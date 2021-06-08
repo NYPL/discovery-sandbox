@@ -488,6 +488,7 @@ describe('getReqParams', () => {
   describe('Default call', () => {
     it('should return the default object', () => {
       expect(getReqParams()).to.eql({
+        contributor: undefined,
         page: '1',
         q: '',
         sort: '',
@@ -496,6 +497,8 @@ describe('getReqParams', () => {
         fieldQuery: '',
         filters: {},
         perPage: '50',
+        subject: undefined,
+        title: undefined,
       });
     });
   });
@@ -504,6 +507,7 @@ describe('getReqParams', () => {
     it('should return updated page', () => {
       const queryFromUrl = { page: '4' };
       expect(getReqParams(queryFromUrl)).to.eql({
+        contributor: undefined,
         page: '4',
         q: '',
         sort: '',
@@ -512,12 +516,15 @@ describe('getReqParams', () => {
         fieldQuery: '',
         filters: {},
         perPage: '50',
+        subject: undefined,
+        title: undefined,
       });
     });
 
     it('should return updated searchKeywords', () => {
       const queryFromUrl = { q: 'harry potter' };
       expect(getReqParams(queryFromUrl)).to.eql({
+        contributor: undefined,
         page: '1',
         q: 'harry potter',
         sort: '',
@@ -526,12 +533,15 @@ describe('getReqParams', () => {
         fieldQuery: '',
         filters: {},
         perPage: '50',
+        subject: undefined,
+        title: undefined,
       });
     });
 
     it('should return updated sort by', () => {
       const queryFromUrl = { sort: 'title', sort_direction: 'asc' };
       expect(getReqParams(queryFromUrl)).to.eql({
+        contributor: undefined,
         page: '1',
         q: '',
         sort: 'title',
@@ -540,12 +550,15 @@ describe('getReqParams', () => {
         fieldQuery: '',
         filters: {},
         perPage: '50',
+        subject: undefined,
+        title: undefined,
       });
     });
 
     it('should return updated field', () => {
       const queryFromUrl = { search_scope: 'author' };
       expect(getReqParams(queryFromUrl)).to.eql({
+        contributor: undefined,
         page: '1',
         q: '',
         sort: '',
@@ -554,12 +567,15 @@ describe('getReqParams', () => {
         fieldQuery: 'author',
         filters: {},
         perPage: '50',
+        subject: undefined,
+        title: undefined,
       });
     });
 
     it('should return updated field', () => {
       const queryFromUrl = { sort_scope: 'title_asc' };
       expect(getReqParams(queryFromUrl)).to.eql({
+        contributor: undefined,
         page: '1',
         q: '',
         sort: '',
@@ -568,12 +584,15 @@ describe('getReqParams', () => {
         fieldQuery: '',
         filters: {},
         perPage: '50',
+        subject: undefined,
+        title: undefined,
       });
     });
 
     it('should return updated filters', () => {
       const queryFromUrl = { filters: 'filters[owner]=orgs%3A1000' };
       expect(getReqParams(queryFromUrl)).to.eql({
+        contributor: undefined,
         page: '1',
         q: '',
         sort: '',
@@ -582,6 +601,25 @@ describe('getReqParams', () => {
         fieldQuery: '',
         filters: 'filters[owner]=orgs%3A1000',
         perPage: '50',
+        subject: undefined,
+        title: undefined,
+      });
+    });
+
+    it('should return advanced search params', () => {
+      const queryFromUrl = { title: 'The Raven', contributor: 'Edgar Allen Poe', subject: 'ravens' };
+      expect(getReqParams(queryFromUrl)).to.eql({
+        contributor: 'Edgar Allen Poe',
+        page: '1',
+        q: '',
+        sort: '',
+        order: '',
+        sortQuery: '',
+        fieldQuery: '',
+        filters: {},
+        perPage: '50',
+        subject: 'ravens',
+        title: 'The Raven',
       });
     });
   });
