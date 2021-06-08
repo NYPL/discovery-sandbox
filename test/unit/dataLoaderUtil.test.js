@@ -269,9 +269,9 @@ describe('dataLoaderUtil', () => {
     const realAccountAction = routes.account.action;
     before(() => {
       mock = new MockAdapter(axios);
-      mock.onGet('/research/collections/shared-collection-catalog/api/account').reply(200, '<div>html for account page default view</div>');
-      mock.onGet('/research/collections/shared-collection-catalog/api/account/items').reply(200, '<div>html for account page items view</div>');
-      mock.onGet('/research/collections/shared-collection-catalog/api/account/settings').reply(200, '');
+      mock.onGet(`${process.env.BASE_URL}/api/account`).reply(200, '<div>html for account page default view</div>');
+      mock.onGet(`${process.env.BASE_URL}/api/account/items`).reply(200, '<div>html for account page items view</div>');
+      mock.onGet(`${process.env.BASE_URL}/api/account/settings`).reply(200, '');
       routes.account.action = mockAccountPageAction;
     });
 
@@ -302,7 +302,12 @@ describe('dataLoaderUtil', () => {
         });
 
         it('should call dispatch with the account action and the response', () => {
-          // 4 calls: loading true, account page action, updateLastLoaded, loading false
+          // We expect `dataLoaderUtil.loadDataForRoutes` to have triggered 5 calls:
+          //  1. { type: 'RESET_STATE', payload: null }
+          //  2. { type: 'UPDATE_LOADING_STATUS', payload: true }
+          //  3. "mockAccountPageAction response"
+          //  4. { type: 'UPDATE_LAST_LOADED', payload: '/research/collections/shared-collection-catalog/account' }
+          //  5. { type: 'UPDATE_LOADING_STATUS', payload: false }
           expect(mockDispatch.getCalls()).to.have.lengthOf(5);
           expect(mockDispatch.thirdCall.args).to.have.lengthOf(1);
           expect(mockDispatch.thirdCall.args[0]).to.equal('mockAccountPageAction response');
@@ -376,7 +381,7 @@ describe('dataLoaderUtil', () => {
     describe('unsuccessful request', () => {
       before(() => {
         axiosSpy = sandbox.spy(axios, 'get');
-        mock.onGet('/research/collections/shared-collection-catalog/api/account').reply(400, {});
+        mock.onGet(`${process.env.BASE_URL}/api/account`).reply(400, {});
         consoleStub = sandbox.stub(console, 'error');
         const mockLocation = {
           pathname: `${appConfig.baseUrl}/account/random`,
