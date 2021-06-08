@@ -58,57 +58,36 @@ const buildQueryDataFromForm = (formData) => {
 
   // Add advanced search params
   ['searchKeywords', 'contributor', 'title', 'subject'].forEach((inputType) => {
-    const inputData = formData.find(entry => entry.id === inputType);
-    if (inputData.value) queryData[inputType] = inputData.value;
+    const inputData = formData.find(entry => (entry[0] === inputType && entry[1]));
+    if (inputData) queryData[inputType] = inputData[1];
   });
 
   // Add dates
   ['dateAfter', 'dateBefore'].forEach((inputType) => {
-    const inputData = formData.find(entry => entry.id === inputType);
-    if (inputData.value) {
+    const inputData = formData.find(entry => (entry[0] === inputType && entry[1]));
+    if (inputData) {
       queryData.selectedFilters = queryData.selectedFilters || {};
-      queryData.selectedFilters[inputType] = inputData.value;
+      queryData.selectedFilters[inputType] = inputData[1];
     }
   });
 
   // Add formats
   formData.forEach((input) => {
-    if (input.checked) {
+    if (input[0].includes('resourcetypes')) {
       queryData.selectedFilters = queryData.selectedFilters || {};
       queryData.selectedFilters.materialType = queryData.selectedFilters.materialType || [];
-      queryData.selectedFilters.materialType.push(input.id);
+      queryData.selectedFilters.materialType.push(input[0]);
     }
   });
 
   // Add language
-  const languageData = formData.find(entry => entry.id === 'languageSelect');
-  if (languageData.value) {
+  const languageData = formData.find(entry => (entry[0] === 'language' && entry[1]));
+  if (languageData) {
     queryData.selectedFilters = queryData.selectedFilters || {};
-    queryData.selectedFilters.language = [languageData.value];
+    queryData.selectedFilters.language = [languageData[1]];
   }
 
   return queryData;
-};
-
-const submitForm = router => (e) => {
-  e.preventDefault();
-  const formData = Array.from(document.getElementsByTagName('input')).map(input => ({
-    id: input.id,
-    value: input.value,
-    checked: input.checked,
-  })).concat(
-    Array.from(document.getElementsByTagName('select')).map(select => ({
-      id: select.id,
-      value: select.value,
-    })),
-  );
-
-  const queryData = buildQueryDataFromForm(formData);
-
-  if (!Object.keys(queryData).length) return this.alarm();
-
-  const apiQuery = createAPIQuery(queryData);
-  return router.push(`${appConfig.baseUrl}/search?${apiQuery}`);
 };
 
 
@@ -120,10 +99,23 @@ class AdvancedSearch extends React.Component {
     };
 
     this.alarm = this.alarm.bind(this);
+    this.submitForm = this.submitForm.bind(this);
   }
 
   alarm() {
     this.setState({ alarm: true });
+  }
+
+  submitForm(e) {
+    e.preventDefault();
+    const form = document.getElementsByTagName('form')[0];
+    const formData = new FormData(form);
+    const queryData = buildQueryDataFromForm(Array.from(formData.entries()));
+
+    if (!Object.keys(queryData).length) return this.alarm();
+
+    const apiQuery = createAPIQuery(queryData);
+    return this.context.router.push(`${appConfig.baseUrl}/search?${apiQuery}`);
   }
 
 
@@ -145,7 +137,7 @@ class AdvancedSearch extends React.Component {
           )
         }
         <h1 id="advancedSearchHeading">Advanced Search</h1>
-        <form id="advancedSearchForm" onSubmit={submitForm(this.context.router)} method="POST" action={`${appConfig.baseUrl}/search`}>
+        <form id="advancedSearchForm" onSubmit={this.submitForm} method="POST" action={`${appConfig.baseUrl}/search`}>
           <div id="fields">
             <div className="advancedSearchColumnLeft">
               <ul>
