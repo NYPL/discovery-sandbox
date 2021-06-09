@@ -19,6 +19,7 @@ import {
   truncateStringOnWhitespace,
   hasValidFilters,
   extractNoticePreference,
+  displayContext,
 } from '../../src/app/utils/utils';
 
 /**
@@ -479,6 +480,33 @@ describe('basicQuery', () => {
       })).to.equal('q=hamlet&sort=title&sort_direction=asc&search_scope=title&page=5');
     });
   });
+
+  describe('when given advanced search params', () => {
+    const createAPIQuery = basicQuery({
+      title: 'The Raven',
+      subject: 'ravens',
+      contributor: 'Poe',
+    });
+
+    it('should accept advanced search params in initial query', () => {
+      expect(createAPIQuery({})).to.eql('q=&contributor=Poe&title=The Raven&subject=ravens');
+    });
+
+    it('should update advanced search params', () => {
+      const updatedParams = {
+        title: 'The Birds',
+        contributor: 'Hitchcock',
+        subject: 'birds',
+      };
+      expect(createAPIQuery(updatedParams)).to.eql('q=&contributor=Hitchcock&title=The Birds&subject=birds');
+    });
+
+    it('should clear advanced search params when explicitly told', () => {
+      expect(
+        createAPIQuery({ clearTitle: true, clearSubject: true, clearContributor: true }),
+      ).to.eql(null);
+    });
+  });
 });
 
 /**
@@ -828,4 +856,31 @@ describe('extractNoticePreference', () => {
   it('should return "None" if "268" field value is "-"', () => {
     expect(extractNoticePreference({ '268': {'value': '-'} })).to.equal('None');
   });
-})
+});
+
+describe('displayContext', () => {
+  it('should include searchKeywords', () => {
+    expect(displayContext({ searchKeywords: 'birds' })).to.eql('for keyword "birds"');
+  });
+
+  it('should map contributor to Author', () => {
+    expect(displayContext({ contributor: 'Poe' })).to.eql('for Author: Poe');
+  });
+
+  it('should map title to Title', () => {
+    expect(displayContext({ title: 'The Raven' })).to.eql('for Title: The Raven');
+  });
+
+  it('should map subject to Subject', () => {
+    expect(displayContext({ subject: 'ravens' })).to.eql('for Subject: ravens');
+  });
+
+  it('should combine terms', () => {
+    expect(displayContext({
+      subject: 'ravens',
+      contributor: 'Poe',
+      title: 'The Raven',
+      searchKeywords: 'birds',
+    })).to.eql('for keyword "birds" and Author: Poe and Title: The Raven and Subject: ravens');
+  });
+});

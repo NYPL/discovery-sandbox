@@ -4,7 +4,7 @@ import { expect } from 'chai';
 import { buildQueryDataFromForm } from '../../src/app/utils/advancedSearchUtils';
 
 
-describe.only('buildQueryDataFromForm', () => {
+describe('buildQueryDataFromForm', () => {
   it('should return an empty object if no relevant params', () => {
     expect(buildQueryDataFromForm([])).to.eql({});
   });
