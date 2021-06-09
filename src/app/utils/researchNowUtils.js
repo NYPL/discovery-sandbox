@@ -111,13 +111,6 @@ const authorQuery = author => ({
 
 const formatUrl = link => (link.startsWith('http') ? link : `https://${link}`);
 
-const generateStreamedReaderUrl = (url, eReaderUrl) => {
-  const base64BookUrl = Buffer.from(formatUrl(url)).toString('base64');
-  const encodedBookUrl = encodeURIComponent(`${base64BookUrl}`);
-
-  return encodeURI(`${eReaderUrl}/readerNYPL/?url=${eReaderUrl}/pub/${encodedBookUrl}/manifest.json`);
-};
-
 /**
  *  Given a hash representation of a query string, e.g.
  *    {
@@ -156,7 +149,6 @@ const getResearchNowQueryString = query => getQueryString(createResearchNowQuery
 export {
   createResearchNowQuery,
   authorQuery,
-  generateStreamedReaderUrl,
   formatUrl,
   getResearchNowQueryString,
   getQueryString,

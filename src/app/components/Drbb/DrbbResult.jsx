@@ -8,11 +8,14 @@ import appConfig from '../../data/appConfig';
 import {
   authorQuery,
   formatUrl,
-  generateStreamedReaderUrl,
 } from '../../utils/researchNowUtils';
 import {
   truncateStringOnWhitespace,
 } from '../../utils/utils';
+
+// TODO: When the EDD integration is turned on in DRB we will need to handle application/edd+html media types as well
+const readOnlineMediaTypes = ['application/epub+xml', 'application/webpub+json', 'text/html']
+const downloadMediaTypes = ['application/epub+zip', 'application/pdf']
 
 const DrbbResult = (props) => {
   const { work } = props;
@@ -71,21 +74,18 @@ const DrbbResult = (props) => {
     let selectedLink;
     const selectedItem = items.find(item => item.links.find((link) => {
       selectedLink = link;
-      return (!link.local && !link.download) || (link.local && link.download);
+      // See above for media types that are used for "Read Online" links
+      return readOnlineMediaTypes.indexOf(link.mediaType) > -1
     }));
 
     if (!selectedItem || !selectedLink || !selectedLink.url) return null;
 
-    const eReaderUrl = selectedLink.local ?
-      generateStreamedReaderUrl(selectedLink.url, eReader) : formatUrl(selectedLink.url);
-
-    // FIXME: This needs to be changed to /read/[id] but I'm not certain what the id is
+    // NOTE: All read online links now use a /read/link_id structure. The DRB read page loads the necessary files for the reader
     return (
       <Link
         target="_blank"
         to={{
-          pathname: `${drbbFrontEnd}/read-online`,
-          search: `?url=${eReaderUrl}`,
+          pathname: `${drbbFrontEnd}/read/${selectedLink.link_id}`,
         }}
         className="drbb-read-online"
       >
@@ -100,12 +100,13 @@ const DrbbResult = (props) => {
     let downloadLink;
     edition.items.find(item => item.links.find((link) => {
       downloadLink = link;
-      return link.download;
+      // See above for downloadable media types
+      return downloadMediaTypes.indexOf(link.mediaType) > -1
     }));
 
     if (!downloadLink || !downloadLink.download) return null;
 
-    const mediaType = downloadLink.media_type.replace(/(application|text)\/|\+zip/gi, '').toUpperCase();
+    const mediaType = downloadLink.mediaType.replace(/(application|text)\/|\+zip/gi, '').toUpperCase();
 
     return (
       <Link
