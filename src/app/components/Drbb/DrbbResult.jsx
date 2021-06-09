@@ -19,10 +19,11 @@ const DrbbResult = (props) => {
   if (!work || !work.uuid || !work.title) return null;
 
   const {
-    agents,
     title,
     editions,
   } = work;
+  // Get authors from `authors` property (DRB v4) or `agents` property (DRB v3)
+  const authors = work.authors ? work.authors : work.agents.filter(agent => agent.roles.includes('author'));
 
   const {
     environment,
@@ -32,8 +33,6 @@ const DrbbResult = (props) => {
   const eReader = appConfig.drbbEreader[environment];
 
   const authorship = () => {
-    const authors = agents.filter(agent => agent.roles.includes('author'));
-
     if (!authors || !authors.length) return null;
     const authorLinks = authors.map((agent, i) => [
       (i > 0 ? ', ' : null),
@@ -128,7 +127,7 @@ const DrbbResult = (props) => {
       >
         {truncateStringOnWhitespace(title, 92)}
       </Link>
-      {agents && agents.length ? authorship() : null}
+      {authors && authors.length ? authorship() : null}
       { readOnlineLinkElement() }
       { downloadLinkElement() }
     </li>
