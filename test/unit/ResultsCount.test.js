@@ -239,6 +239,25 @@ describe('ResultsCount', () => {
     });
   });
 
+  describe('Advanced search', () => {
+    let component;
+
+    it('should display all the advanced search params', () => {
+      component = shallow(
+        <ResultsCount
+          count={100}
+          subject="ravens"
+          contributor="Poe"
+          title="The Raven"
+        />,
+      );
+
+      expect(component.find('h2').text()).to.equal(
+        'Displaying 1-50 of 100 results for Author: Poe and Title: The Raven and Subject: ravens',
+      );
+    });
+  });
+
   describe('Locale count', () => {
     let component;
 
