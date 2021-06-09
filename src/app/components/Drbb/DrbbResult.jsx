@@ -45,7 +45,7 @@ const DrbbResult = (props) => {
           query: authorQuery(agent),
         }}
         className="drbb-result-author"
-        key={agent.viaf ? `author-${agent.viaf}` : `author-${agent.name}`}
+        key={`author-${agent.name}`}
         target="_blank"
       >
         {agent.name}
