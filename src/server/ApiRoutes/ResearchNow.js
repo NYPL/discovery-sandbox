@@ -5,7 +5,7 @@ import logger from '../../../logger';
 // To ease transition from DRB API V3 to V4, temporarily support both versions
 // Determine what API semantics to use based on configured endpoint::
 import { getResearchNowQueryString } from '../../app/utils/researchNowUtils';
-import { createResearchNowQuery as createResearchNowQueryV3 } from '../../app/utils/researchNowUtils.v3';
+import { createResearchNowQuery as createResearchNowQueryV3, getResearchNowQueryString as getResearchNowQueryStringV3 } from '../../app/utils/researchNowUtils.v3';
 
 /**
  * Given a request, resolves the relevant response from the DRB API
@@ -13,18 +13,23 @@ import { createResearchNowQuery as createResearchNowQueryV3 } from '../../app/ut
 const drbQueryFromRequest = (req) => {
   const query = Object.assign({ per_page: 3 }, req.query);
 
-  let drbQuery = null
-  let drbCall = null
+  let drbQueryString = null;
+  let drbCall = null;
 
   const useDrbV3 = (process.env.DRB_API_BASE_URL || '').includes('/v3/')
   if (useDrbV3) {
-    drbQuery = createResearchNowQueryV3(query)
+    // Create query as an object:
+    const drbQuery = createResearchNowQueryV3(query)
     drbCall = nyplApiClient({ apiName: 'drbb' })
-      .then(client => client.post('', drbQuery))
+      .then(client => client.post('', drbQuery));
+    // Create same query as a query string:
+    drbQueryString = getResearchNowQueryStringV3(query);
   } else {
-    drbQuery = getResearchNowQueryString(query)
+    const drbQuery = getResearchNowQueryString(query)
     drbCall = nyplApiClient({ apiName: 'drbb' })
-      .then(client => client.get(drbQuery))
+      .then(client => client.get(drbQuery));
+    // Remove leading '?'
+    drbQueryString = drbQuery.replace(/^\?/, '');
   }
 
   // Return a promise resolving the DRB API response and the query string used
@@ -32,7 +37,7 @@ const drbQueryFromRequest = (req) => {
     .then((resp) => {
       return {
         response: resp,
-        researchNowQueryString: drbQuery
+        researchNowQueryString: drbQueryString
       }
     });
 
