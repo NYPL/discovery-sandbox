@@ -51,8 +51,8 @@ describe('researchNowUtils', () => {
       expect(getResearchNowQueryString({ q: 'toast' })).to.equal('?query=keyword%3Atoast&page=1')
     })
 
-    it('should handle search_scope', () => {
-      expect(getResearchNowQueryString({ q: 'toast', search_scope: 'title' })).to.equal('?query=title%3Atoast&page=1')
+    it('should handle field', () => {
+      expect(getResearchNowQueryString({ q: 'toast', field: 'title' })).to.equal('?query=title%3Atoast&page=1')
     })
 
     it('should handle keyword & subject query', () => {
