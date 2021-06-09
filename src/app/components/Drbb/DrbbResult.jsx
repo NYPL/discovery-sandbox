@@ -124,7 +124,7 @@ const DrbbResult = (props) => {
     <li className="drbb-result">
       <Link
         target="_blank"
-        to={`${drbbFrontEnd}/${work.uuid}`}
+        to={`${drbbFrontEnd}/work/${work.uuid}`}
         className="drbb-result-title"
       >
         {truncateStringOnWhitespace(title, 92)}
