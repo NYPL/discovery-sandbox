@@ -101,6 +101,7 @@ const createResearchNowQuery = (params) => {
 const getAuthorIdentifier = author => (author.viaf && ['viaf', 'viaf']) || (author.lcnaf && ['lcnaf', 'lcnaf']) || ['name', 'author'];
 
 const authorQuery = author => ({
+  // FIXME: This is V3 semantics; needs to return something akin to https://digital-research-books-beta.nypl.org/search?query=author%3AZangerle%2C+John+A.+%28%29
   queries: JSON.stringify([{
     query: author[getAuthorIdentifier(author)[0]],
     field: getAuthorIdentifier(author)[1],

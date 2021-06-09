@@ -79,6 +79,7 @@ const DrbbResult = (props) => {
     const eReaderUrl = selectedLink.local ?
       generateStreamedReaderUrl(selectedLink.url, eReader) : formatUrl(selectedLink.url);
 
+    // FIXME: This needs to be changed to /read/[id] but I'm not certain what the id is
     return (
       <Link
         target="_blank"
@@ -122,7 +123,7 @@ const DrbbResult = (props) => {
     <li className="drbb-result">
       <Link
         target="_blank"
-        to={`${drbbFrontEnd}/work?recordType=editions&workId=${work.uuid}`}
+        to={`${drbbFrontEnd}/${work.uuid}`}
         className="drbb-result-title"
       >
         {truncateStringOnWhitespace(title, 92)}
