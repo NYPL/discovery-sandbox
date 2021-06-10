@@ -3,12 +3,7 @@ import {
   isEmpty as _isEmpty,
 } from 'underscore';
 import LocationCodes from '../data/locationCodes';
-
-const itemSourceMappings = {
-  SierraNypl: 'sierra-nypl',
-  RecapCul: 'recap-cul',
-  RecapPul: 'recap-pul',
-};
+import { camelToShishKabobCase } from './utils';
 
 // Map local identifier names to their @type and urn: indicators:
 const itemIdentifierTypeMappings = {
@@ -211,7 +206,7 @@ function LibraryItem() {
     const identifiersArray = [{ name: 'barcode', value: 'bf:Barcode' }];
     const bibIdentifiers = this.getIdentifiers(item.identifier, identifiersArray);
     const barcode = bibIdentifiers.barcode || '';
-    const mappedItemSource = itemSourceMappings[itemSource];
+    const mappedItemSource = camelToShishKabobCase(itemSource);
     const isOffsite = this.isOffsite(holdingLocation.prefLabel.toLowerCase());
     let url = null;
     const isSerial = !!(bib && bib.issuance && bib.issuance[0]['@id'] === 'urn:biblevel:s');

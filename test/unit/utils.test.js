@@ -20,6 +20,8 @@ import {
   hasValidFilters,
   extractNoticePreference,
   displayContext,
+  camelToShishKabobCase,
+  institutionNameByNyplSource,
 } from '../../src/app/utils/utils';
 
 /**
@@ -882,5 +884,21 @@ describe('displayContext', () => {
       title: 'The Raven',
       searchKeywords: 'birds',
     })).to.eql('for keyword "birds" and Author: Poe and Title: The Raven and Subject: ravens');
+})
+
+describe('camelToShishKabobCase', () => {
+  it('should convert camel to shish kabob case', () => {
+    expect(camelToShishKabobCase('SierraNypl')).to.eq('sierra-nypl');
+    expect(camelToShishKabobCase('RecapPul')).to.eq('recap-pul');
+    expect(camelToShishKabobCase('firstCharCanBeLowerCase')).to.eq('first-char-can-be-lower-case');
+  });
+});
+
+describe('institutionNameByNyplSource', () => {
+  it('should resolve all institution names', () => {
+    expect(institutionNameByNyplSource('sierra-nypl')).to.eq('NYPL');
+    expect(institutionNameByNyplSource('recap-pul')).to.eq('Princeton');
+    expect(institutionNameByNyplSource('recap-cul')).to.eq('Columbia');
+    expect(institutionNameByNyplSource('recap-hl')).to.eq('Harvard');
   });
 });

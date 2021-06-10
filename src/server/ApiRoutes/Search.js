@@ -61,16 +61,15 @@ function fetchResults(searchKeywords = '', contributor, title, subject, page, so
     query: { q: searchKeywords, sortBy, order, field, filters },
   };
 
-  // Need to get both results and aggregations before proceeding.
+  // Get the following in parallel:
+  //  - search results
+  //  - aggregations
+  //  - drb results
   Promise.all([
     nyplApiClientCall(resultsQuery, features),
-    nyplApiClientCall(aggregationQuery, features)])
-    .then(response => ResearchNow.search(queryObj)
-      .then((drbbResults) => {
-        response.push(drbbResults);
-        return response;
-      })
-      .catch(console.error))
+    nyplApiClientCall(aggregationQuery, features),
+    ResearchNow.search(queryObj).catch(console.error),
+  ])
     .then((response) => {
       const [results, aggregations, drbbResults] = response;
       const locationCodes = new Set();

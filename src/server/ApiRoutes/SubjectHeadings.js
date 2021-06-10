@@ -11,6 +11,7 @@ const convertShepBibsToDiscoveryBibs = response =>
       const institutionCode = {
         'recap-pul': 'pb',
         'recap-cul': 'cb',
+        'recap-hl': 'hb',
       }[bib.institution] || 'b';
 
       const prefixedIdentifier = [institutionCode, bib.bnumber].join('');

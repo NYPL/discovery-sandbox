@@ -562,6 +562,37 @@ function extractNoticePreference(fixedFields) {
   return noticePreferenceMapping[noticePreferenceField.value] || 'None';
 }
 
+/**
+ * Converts camel case string to shish kabob case
+ *
+ * e.g. camelToShishKabobCase("RecapPul")
+ *        => "recap-pul"
+ *      camelToShishKabobCase("firstCharCanBeLowerCase")
+ *        => "first-char-can-be-lower-case"
+ */
+function camelToShishKabobCase(s) {
+  return s
+    // Change capital letters into "-{lowercase letter}"
+    .replace(/([A-Z])/g, (c, p1, i) => {
+      // If capital letter is not first character, precede with '-':
+      return (i > 0 ? '-' : '')
+        + c.toLowerCase();
+    })
+}
+
+/**
+ * Given an nypl-source (e.g. 'recap-pul') returns a short institution name
+ * (e.g. "Princeton")
+ */
+function institutionNameByNyplSource(nyplSource) {
+  return {
+    'recap-pul': 'Princeton',
+    'recap-cul': 'Columbia',
+    'recap-hl': 'Harvard',
+    'sierra-nypl': 'NYPL'
+  }[nyplSource];
+}
+
 export {
   trackDiscovery,
   ajaxCall,
@@ -582,4 +613,6 @@ export {
   hasValidFilters,
   encodeHTML,
   extractNoticePreference,
+  camelToShishKabobCase,
+  institutionNameByNyplSource,
 };
