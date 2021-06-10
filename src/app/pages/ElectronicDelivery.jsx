@@ -22,6 +22,7 @@ import Notification from '../components/Notification/Notification';
 import LibraryItem from '../utils/item';
 import {
   trackDiscovery,
+  institutionNameByNyplSource,
 } from '../utils/utils';
 import { updateLoadingStatus } from '../actions/Actions';
 
@@ -142,12 +143,8 @@ class ElectronicDelivery extends React.Component {
     const path = `${appConfig.baseUrl}/hold/confirmation/${bibId}-${itemId}`;
     const { searchKeywords } = this.props;
     const searchKeywordsQuery = searchKeywords ? `&q=${searchKeywords}` : '';
-    const itemSourceMapping = {
-      'recap-pul': 'Princeton',
-      'recap-cul': 'Columbia',
-    };
     const partnerEvent = itemSource !== 'sierra-nypl' ?
-      ` - Partner item - ${itemSourceMapping[itemSource]}` : '';
+      ` - Partner item - ${institutionNameByNyplSource(itemSource)}` : '';
 
     // This is to remove the error box on the top of the page on a successfull submission.
     this.setState({ raiseError: null });
