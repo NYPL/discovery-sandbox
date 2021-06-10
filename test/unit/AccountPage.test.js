@@ -90,4 +90,76 @@ describe('AccountPage', () => {
       expect(component.find('h3').first().text()).to.equal('Personal Information');
     });
   });
+
+  describe('redirect loop check', () => {
+    describe('when cookie not set', () => {
+      let component;
+      let clock;
+
+      before(() => {
+        clock = sinon.useFakeTimers();
+        const mockStore = makeTestStore({ accountHtml: { error: true } });
+        document.cookie = 'nyplAccountRedirectTracker=; expires=Thu, 01 Jan 1970 00:00:00 UTC;';
+        component = mountTestRender(<AccountPage params={{}} />, { store: mockStore });
+      });
+
+      after(() => { clock.restore(); });
+
+      it('should set the cookie', () => {
+        const iframe = document.getElementById('logoutIframe');
+        iframe.onload();
+        const nyplAccountRedirectTracker = document.cookie.split(';').find(el => el.includes('nyplAccountRedirectTracker'));
+        expect(!!nyplAccountRedirectTracker).to.equal(true);
+        expect(nyplAccountRedirectTracker).to.match(/\d+exp.*/);
+        const match = nyplAccountRedirectTracker.match(/\d+exp(.*)/)[1];
+        expect(Number.isNaN(Date.parse(match))).to.equal(false);
+      });
+    });
+
+    describe('when cookie is set but below threshold', () => {
+      let component;
+      let clock;
+
+      before(() => {
+        clock = sinon.useFakeTimers();
+        const mockStore = makeTestStore({ accountHtml: { error: true } });
+        document.cookie = 'nyplAccountRedirectTracker=2expMon, 05 Apr 2021 20:06:13 GMT';
+        component = mountTestRender(<AccountPage params={{}} />, { store: mockStore });
+      });
+
+      after(() => {
+        clock.restore();
+      });
+
+
+      it('should update the cookie', () => {
+        const iframe = document.getElementById('logoutIframe');
+        iframe.onload();
+        const nyplAccountRedirectTracker = document.cookie.split(';').find(el => el.includes('nyplAccountRedirectTracker'));
+        expect(nyplAccountRedirectTracker).to.match(/\d+expMon, 05 Apr 2021 20:06:13 GMT/);
+        expect(parseInt(nyplAccountRedirectTracker.match(/(\d+).*/)[1], 10)).to.be.closeTo(4, 1);
+      });
+    });
+
+    describe('when cookie is above threshold', () => {
+      let component;
+      let replaceSpy;
+      let clock;
+      before(() => {
+        clock = sinon.useFakeTimers();
+        replaceSpy = sandbox.stub(window.location, 'replace').callsFake(() => {});
+        const mockStore = makeTestStore({ accountHtml: { error: true } });
+        document.cookie = 'nyplAccountRedirectTracker=25expMon, 05 Apr 2021 20:06:13 GMT';
+        component = mountTestRender(<AccountPage params={{}} />, { store: mockStore });
+      });
+
+      after(() => { clock.restore(); });
+
+      it('should redirect', () => {
+        const iframe = document.getElementById('logoutIframe');
+        iframe.onload();
+        expect(replaceSpy.called).to.equal(true);
+      });
+    });
+  });
 });

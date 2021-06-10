@@ -123,6 +123,9 @@ describe('Bib', () => {
           fs.readFileSync(
             './test/fixtures/locations-service-mm.json', 'utf8'))));
     });
+    after(() => {
+      NyplApiClient.prototype.get.restore();
+    });
     it('should add location URLs', () => {
       Bib.addLocationUrls(mockBib).then((resp) => {
         expect(resp.holdings).to.deep.equal([
