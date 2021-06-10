@@ -11,7 +11,7 @@ import AdvancedSearch from '../../src/app/components/AdvancedSearch/AdvancedSear
 
 const aggregations = require('../../advancedSearchAggregations.json');
 
-describe.only('AdvancedSearch', () => {
+describe('AdvancedSearch', () => {
   const context = mockRouterContext();
   const childContextTypes = {
     router: PropTypes.object,
@@ -31,7 +31,6 @@ describe.only('AdvancedSearch', () => {
     });
 
     it('should render inside an SCC Container', () => {
-      // expect(1 + 1).to.eql(2);
       expect(component.find('SccContainer').length).to.eql(1);
     });
 
@@ -129,7 +128,6 @@ describe.only('AdvancedSearch', () => {
     it('should have a select for languages', () => {
       expect(component.find('Select').length).to.eql(1);
       expect(component.find('Select').prop('id')).to.eql('languageSelect');
-      expect(component.find('Select').prop('ariaLabelledBy')).to.eql('languageSelect-label');
       expect(component.find('Select').find('option').length).to.eql(aggregations.language.length + 1);
       expect(component.find('Label').at(4).text()).to.eql('Language');
       expect(component.find('Label').at(4).prop('htmlFor')).to.eql('languageSelect');
@@ -137,26 +135,26 @@ describe.only('AdvancedSearch', () => {
     });
   });
 
-  describe.only('Rendering after alert', () => {
-    let component;
-
-    before(() => {
-      const mockStore = makeTestStore();
-      component = mountTestRender(<AdvancedSearch />, {
-        context,
-        childContextTypes,
-        store: mockStore,
-      });
-
-      component.find('form').at(0).simulate('submit');
-      component.update();
-    });
-
-    it('should have an aside', () => {
-      console.log('state: ', JSON.stringify(component.instance().state, null, 2));
-      expect(component.find('aside').length).to.eql(1);
-    });
-  });
+  // describe('Rendering after alert', () => {
+  //   let component;
+  //
+  //   before(() => {
+  //     const mockStore = makeTestStore();
+  //     component = mountTestRender(<AdvancedSearch />, {
+  //       context,
+  //       childContextTypes,
+  //       store: mockStore,
+  //     });
+  //
+  //     component.find('form').at(0).simulate('submit');
+  //     component.update();
+  //   });
+  //
+  //   it('should have an aside', () => {
+  //     console.log('state: ', JSON.stringify(component.instance().state, null, 2));
+  //     expect(component.find('aside').length).to.eql(1);
+  //   });
+  // });
   //
   // describe('Submitting form');
   //

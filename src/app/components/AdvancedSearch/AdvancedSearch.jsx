@@ -113,14 +113,14 @@ class AdvancedSearch extends React.Component {
                           id={key}
                           type="text"
                           attributes={{ name: key }}
-                          aria-labelledby={`${key}-input-label`}
+                          ariaLabelledBy={`${key}-input-label`}
                         />
                       </li>
                     ),
                   )
                 }
                 <li>
-                  <Label htmlFor="languageSelect" id="labguageSelect-label">Language</Label>
+                  <Label htmlFor="languageSelect" id="languageSelect-label">Language</Label>
                   <Select id="languageSelect" name="language" aria-labelledby="languageSelect-label">
                     {
                       languages.map((language) => {
@@ -147,7 +147,7 @@ class AdvancedSearch extends React.Component {
                         (
                           <li key={key} id={`${key}-li`}>
                             <Label htmlFor={key} id={`${key}-li-label`}>{labelsForFields[key]}</Label>
-                            <Input id={key} type="text" attributes={{ name: key }} aria-labelledby={`${key}-li-label`} />
+                            <Input id={key} type="text" attributes={{ name: key }} ariaLabelledBy={`${key}-li-label`} />
                           </li>
                         ),
                       )
