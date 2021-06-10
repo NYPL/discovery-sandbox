@@ -884,7 +884,8 @@ describe('displayContext', () => {
       title: 'The Raven',
       searchKeywords: 'birds',
     })).to.eql('for keyword "birds" and Author: Poe and Title: The Raven and Subject: ravens');
-})
+  });
+});
 
 describe('camelToShishKabobCase', () => {
   it('should convert camel to shish kabob case', () => {
