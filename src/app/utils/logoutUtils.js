@@ -1,13 +1,4 @@
-/**
-   * deleteCookie(sKey)
-   * Delete the cookie by having it expired.
-   *
-   * @param {string} sKey - The name of the cookie to be looked up.
-   */
-const deleteCookie = (sKey) => {
-  document.cookie = `${sKey}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; ` +
-      'path=/; domain=.nypl.org;';
-};
+import { deleteCookie } from './cookieUtils';
 
 /**
   * loadLogoutIframe(isTest)

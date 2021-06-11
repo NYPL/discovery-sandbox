@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 import {
   Heading,
+  Link,
 } from '@nypl/design-system-react-components';
 
 import Search from '../components/Search/Search';
@@ -30,17 +31,15 @@ const Home = (props, context) => (
     </div>
 
     <Notification notificationType="searchResultsNotification" />
-
-    <Heading
-      level={2}
-      text={`Welcome to ${appConfig.displayTitle}`}
-    />
-
+    <Heading level={2}>
+      Explore the Library’s Vast Research Collections & More
+    </Heading>
     <div className="nypl-column-full">
       <p className="nypl-lead">
-        <strong>Launching Spring 2021: New Research Catalog</strong>
-        <br />
-        After undergoing significant enhancements, this catalog will become the Research Catalog and serve as the primary catalog for NYPL’s research collections, plus provide access to materials from NYPL, Columbia University, and Princeton University. <a href="https://www.nypl.org/research/collections/about/shared-collection-catalog">Learn more.</a>
+        Discover millions of items from The New York Public Library's Stephen A. Schwarzman Building, Schomburg Center for Research in Black Culture, and The New York Public Library for the Performing Arts. Plus, access materials from library collections at Columbia University and Princeton University. <Link href="https://www.nypl.org/research/collections/about/shared-collection-catalog">Learn more.</Link>
+      </p>
+      <p>
+        Please note that the Research Catalog does not include circulating materials. For books and more that you can check out to take home please visit our <Link href="https://browse.nypl.org">circulating branch catalog.</Link> The <Link href="https://legacycatalog.nypl.org/">legacy research catalog</Link> is still available, but does not include all of our Scan & Deliver options or the Columbia University and Princeton University material from the Shared Collection.
       </p>
     </div>
     <div>

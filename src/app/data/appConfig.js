@@ -18,8 +18,8 @@ const appConfig = {
       production: process.env.PLATFORM_API_BASE_URL || 'https://platform.nypl.org/api/v0.1',
     },
     drbb: {
-      development: 'https://dev-platform.nypl.org/api/v0.1/research-now/v3/search-api',
-      production: 'https://digital-research-books-api.nypl.org/v3/sfr/search',
+      development: process.env.DRB_API_BASE_URL || 'http://drb-api-qa.nypl.org/search/',
+      production: process.env.DRB_API_BASE_URL || 'https://digital-research-books-api.nypl.org/v3/sfr/search',
     },
   },
   circulatingCatalog: process.env.CIRCULATING_CATALOG,

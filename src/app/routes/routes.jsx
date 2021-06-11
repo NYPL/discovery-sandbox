@@ -21,7 +21,7 @@ import AccountPage from '../pages/AccountPage';
 import Application from '../components/Application/Application';
 import NotFound404 from '../components/NotFound404/NotFound404';
 import Redirect404 from '../components/Redirect404/Redirect404';
-import Account404 from '../components/Account404/Account404';
+import AccountError from '../components/AccountError/AccountError';
 
 import appConfig from '../data/appConfig';
 
@@ -40,8 +40,8 @@ const routes = {
       <Route path="/subject_headings/:subjectHeadingUuid" component={SubjectHeadingShowPage} />
       <Route path="/subject_headings" component={SubjectHeadingsIndexPage} />
       <Route path="/account(/:content)" component={AccountPage} />
+      <Route path="/accountError" component={AccountError} />
       <Route path="/404/redirect" component={Redirect404} />
-      <Route path="/404/account" component={Account404} />
       <Route path="/404" component={NotFound404} />
       <Redirect from="*" to="/404" />
     </Route>
@@ -59,8 +59,8 @@ const routes = {
       <Route path={`${baseUrl}/subject_headings/:subjectHeadingUuid`} component={SubjectHeadingShowPage} />
       <Route path={`${baseUrl}/subject_headings`} component={SubjectHeadingsIndexPage} />
       <Route path={`${baseUrl}/account(/:content)`} component={AccountPage} />
+      <Route path={`${baseUrl}/accountError`} component={AccountError} />
       <Route path={`${baseUrl}/404/redirect`} component={Redirect404} />
-      <Route path={`${baseUrl}/404/account`} component={Account404} />
       <Route path={`${baseUrl}/404`} component={NotFound404} />
       <Redirect from="*" to={`${baseUrl}/404`} />
     </Route>

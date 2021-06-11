@@ -47,7 +47,7 @@ Object.keys(routes).forEach((routeName) => {
     router
       .route(`${appConfig.baseUrl}${pathType}${path}${params}`)
       .get((req, res, next) => new Promise(
-        resolve => routeMethods[routeName](req, res, resolve)
+        resolve => routeMethods[routeName](req, res, resolve),
       )
         .then(data => (
           api ? res.json(data) : successCb(routeName, req.store.dispatch)({ data })))
@@ -86,5 +86,9 @@ router
 router
   .route(`${appConfig.baseUrl}/api/feedback*`)
   .post(Feedback.post);
+
+router
+  .route(`${appConfig.baseUrl}/api/accountError`)
+  .get(Account.logError);
 
 export default router;
