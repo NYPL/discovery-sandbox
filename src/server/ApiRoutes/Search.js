@@ -64,7 +64,7 @@ function fetchResults(searchKeywords = '', page, sortBy, order, field, filters, 
   Promise.all([
     nyplApiClientCall(resultsQuery, features),
     nyplApiClientCall(aggregationQuery, features),
-    ResearchNow.search(queryObj).catch(console.error),
+    appConfig.features.includes('drb-integration') ? ResearchNow.search(queryObj).catch(console.error) : null,
   ])
     .then((response) => {
       const [results, aggregations, drbbResults] = response;
