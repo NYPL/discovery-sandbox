@@ -57,6 +57,26 @@ function fetchResults(searchKeywords = '', page, sortBy, order, field, filters, 
     query: { q: searchKeywords, sortBy, order, field, filters },
   };
 
+  let drbRequesting = true;
+  const drbPromise = appConfig.features.includes('drb-integration') ?
+    Promise.race([
+      new Promise((resolve) => {
+        setTimeout(() => {
+          if (!drbRequesting) return false;
+          console.error('Drb timeout');
+          return resolve([]);
+        }, 3000);
+      }),
+      ResearchNow.search(queryObj)
+        .then((res) => { drbRequesting = false; return res; })
+        .catch((e) => {
+          console.error('Drb error: ', e);
+          return [];
+        }),
+    ])
+    :
+    null;
+
   // Get the following in parallel:
   //  - search results
   //  - aggregations
@@ -64,7 +84,7 @@ function fetchResults(searchKeywords = '', page, sortBy, order, field, filters, 
   Promise.all([
     nyplApiClientCall(resultsQuery, features),
     nyplApiClientCall(aggregationQuery, features),
-    ResearchNow.search(queryObj).catch(console.error),
+    drbPromise,
   ])
     .then((response) => {
       const [results, aggregations, drbbResults] = response;
