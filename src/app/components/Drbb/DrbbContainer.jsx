@@ -7,6 +7,7 @@ import appConfig from '../../data/appConfig';
 import DrbbResult from './DrbbResult';
 
 const DrbbContainer = ({ drbbResults }) => {
+  if (!drbbResults) return null;
   const {
     works,
     totalWorks,

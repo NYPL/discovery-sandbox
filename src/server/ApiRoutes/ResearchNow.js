@@ -62,7 +62,10 @@ const search = (req) => {
         researchNowQueryString: res.researchNowQueryString,
       };
     })
-    .catch(console.error);
+    .catch((e) => {
+      console.error('Research now search error: ', e);
+      return null;
+    });
 };
 
 export default {
