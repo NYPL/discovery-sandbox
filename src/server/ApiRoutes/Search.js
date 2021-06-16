@@ -62,15 +62,15 @@ function fetchResults(searchKeywords = '', page, sortBy, order, field, filters, 
     Promise.race([
       new Promise((resolve) => {
         setTimeout(() => {
-          if (!drbRequesting) return false;
-          console.error('Drb timeout');
+          if (drbRequesting) logger.error('Drb timeout');
           return resolve([]);
         }, 3000);
       }),
       ResearchNow.search(queryObj)
         .then((res) => { drbRequesting = false; return res; })
         .catch((e) => {
-          console.error('Drb error: ', e);
+          drbRequesting = false;
+          logger.error('Drb error: ', e);
           return [];
         }),
     ])
