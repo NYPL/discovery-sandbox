@@ -68,7 +68,7 @@ function fetchResults(searchKeywords = '', contributor, title, subject, page, so
         setTimeout(() => {
           if (drbRequesting) logger.error('Drb timeout');
           return resolve([]);
-        }, 3000);
+        }, 5000);
       }),
       ResearchNow.search(queryObj)
         .then((res) => { drbRequesting = false; return res; })
