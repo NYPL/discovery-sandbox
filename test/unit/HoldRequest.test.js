@@ -1,6 +1,7 @@
 /* eslint-disable react/jsx-filename-extension */
 /* eslint-env mocha */
 import React from 'react';
+import appConfig from '@appConfig';
 import { stub, spy } from 'sinon';
 import { expect } from 'chai';
 import axios from 'axios';
@@ -626,6 +627,64 @@ describe('HoldRequest', () => {
 
           expect(form.find('fieldset')).to.have.length(1);
         });
+      });
+    });
+
+    describe('when opening locations selectively', () => {
+      let component;
+      const bib = {
+        title: ['Harry Potter'],
+        '@id': 'res:b17688688',
+        items: mockedItem,
+      };
+
+      const deliveryLocations = [
+        {
+          '@id': 'loc:myr',
+          address: '40 Lincoln Center Plaza',
+          prefLabel: 'Performing Arts Research Collections',
+          shortName: 'Library for the Performing Arts',
+        },
+        {
+          '@id': 'loc:sc',
+          prefLabel: 'Schomburg Center',
+          address: '515 Malcolm X Boulevard',
+          shortName: 'Schomburg Center',
+        },
+        {
+          '@id': 'loc:mala',
+          prefLabel: 'Schwarzman Building - Allen Scholar Room',
+          address: '476 Fifth Avenue (42nd St and Fifth Ave)',
+          shortName: 'Schwarzman Building',
+        },
+      ];
+
+      before(() => {
+        appConfig.openLocations = ['Schwarzman'];
+        component = mountTestRender(
+          <WrappedHoldRequest
+            params={{ itemId: 'i10000003' }}
+          />, {
+            attachTo: document.body,
+            store: makeTestStore({
+              patron: { id: 1 },
+              bib,
+              isEddRequestable: true,
+              deliveryLocations,
+            }),
+          });
+      });
+
+      after(() => {
+        appConfig.openLocations = null;
+        component.unmount();
+      });
+
+      it('should display only the specifically open locations', () => {
+        const html = component.html();
+        expect(html).to.include('Schwarzman Building');
+        expect(html).to.not.include('Performing Arts');
+        expect(html).to.not.include('Schomburg');
       });
     });
   });
