@@ -86,7 +86,7 @@ class AdvancedSearch extends React.Component {
     return (
       <SccContainer
         activeSection="search"
-        pageTitle="advancedSearch"
+        pageTitle="Advanced Search"
       >
         { this.state.alarm &&
           (
