@@ -230,7 +230,7 @@ Currently used physical locations: Schwarzman;Science;Library for the Performing
 
 To close all locations, add `all`. This will also remove EDD as a request option, and the 'Request' buttons, and also disable the hold request/edd forms. If `all` is not present, EDD and 'Request' buttons will still be available.
 
-`OPEN_LOCATIONS` is a comma-delimited list of strings. Only locations matching one of these strings will be displayed.
+`OPEN_LOCATIONS` is a comma-delimited list of strings. If set to anything other than an empty string, only locations matching one of these strings will be displayed.
 
 `HOLD_REQUEST_NOTIFICATION`: This can be any string, not including html, which will be added as a notification to the HoldRequest landing page, and the EDD page.
 
