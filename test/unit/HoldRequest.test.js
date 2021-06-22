@@ -660,7 +660,7 @@ describe('HoldRequest', () => {
       ];
 
       before(() => {
-        appConfig.openLocationsMust = ['Schwarzman'];
+        appConfig.openLocations = ['Schwarzman'];
         component = mountTestRender(
           <WrappedHoldRequest
             params={{ itemId: 'i10000003' }}
@@ -676,7 +676,7 @@ describe('HoldRequest', () => {
       });
 
       after(() => {
-        appConfig.openLocationsMust = null;
+        appConfig.openLocations = null;
         component.unmount();
       });
 
