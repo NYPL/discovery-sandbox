@@ -48,6 +48,7 @@ const appConfig = {
   closedLocations: mapLocations(process.env.CLOSED_LOCATIONS),
   recapClosedLocations: mapLocations(process.env.RECAP_CLOSED_LOCATIONS),
   nonRecapClosedLocations: mapLocations(process.env.NON_RECAP_CLOSED_LOCATIONS),
+  openLocations: process.env.OPEN_LOCATIONS ? process.env.OPEN_LOCATIONS.split(',') : null,
   holdRequestNotification: process.env.HOLD_REQUEST_NOTIFICATION,
   searchResultsNotification: process.env.SEARCH_RESULTS_NOTIFICATION,
   drbbFrontEnd: {
