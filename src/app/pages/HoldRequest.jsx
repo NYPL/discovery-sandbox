@@ -204,12 +204,16 @@ export class HoldRequest extends React.Component {
      */
   renderDeliveryLocation(deliveryLocations = []) {
     const { closedLocations } = this.props;
+    const { openLocations } = appConfig;
     return deliveryLocations.map((location, i) => {
       const displayName = this.modelDeliveryLocationName(location.prefLabel, location.shortName);
       const value = (location['@id'] && typeof location['@id'] === 'string') ?
         location['@id'].replace('loc:', '') : '';
 
-      if (closedLocations.some(closedLocation => displayName.startsWith(closedLocation))) {
+      if (
+        closedLocations.some(closedLocation => displayName.startsWith(closedLocation)) ||
+        (openLocations && !openLocations.some(openLocation => displayName.includes(openLocation)))
+      ) {
         return null;
       }
 
