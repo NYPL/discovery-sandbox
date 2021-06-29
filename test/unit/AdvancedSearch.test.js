@@ -39,7 +39,7 @@ describe('AdvancedSearch', () => {
     });
 
     it('should have an h2 announcing advanced search', () => {
-      expect(component.find('h2').at(1).text()).to.eql('Advanced Search');
+      expect(component.find('h2').at(0).text()).to.eql('Advanced Search');
     });
 
     it('should have an advanced search form', () => {
