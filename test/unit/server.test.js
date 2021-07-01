@@ -48,6 +48,7 @@ describe('server', () => {
         expect(response.text).to.include(`<meta property="og:title" content="${process.env.DISPLAY_TITLE}">`)
         expect(response.text).to.include(`<meta property="og:site_name" content="${process.env.DISPLAY_TITLE}">`)
         expect(response.text).to.include(`<meta name="twitter:title" content="${process.env.DISPLAY_TITLE}">`)
+        expect(response.text).to.include(`<meta property="og:url" content="https://www.nypl.org${process.env.BASE_URL}">`)
         done();
       })
       .catch(err => done(err));
