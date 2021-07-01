@@ -86,7 +86,8 @@ class AdvancedSearch extends React.Component {
     return (
       <SccContainer
         activeSection="search"
-        pageTitle="advancedSearch"
+        pageTitle="Advanced Search"
+        className="advancedSearchContainer"
       >
         { this.state.alarm &&
           (
@@ -99,7 +100,7 @@ class AdvancedSearch extends React.Component {
             </aside>
           )
         }
-        <h1 id="advancedSearchHeading">Advanced Search</h1>
+        <h2 id="advancedSearchHeading">Advanced Search</h2>
         <form id="advancedSearchForm" onSubmit={this.submitForm} method="POST" action={`${appConfig.baseUrl}/search`}>
           <div id="fields">
             <div className="advancedSearchColumnLeft">

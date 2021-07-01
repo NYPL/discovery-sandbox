@@ -389,7 +389,6 @@ function displayContext({ searchKeywords, contributor, title, subject, selectedF
     // Currently from links on the bib page:
     creatorLiteral: 'author',
     contributorLiteral: 'author',
-    subjectLiteral: 'subject',
     titleDisplay: 'title',
     // From the search field dropdown:
     contributor: 'author/contributor',
