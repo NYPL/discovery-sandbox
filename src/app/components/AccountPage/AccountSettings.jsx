@@ -32,7 +32,7 @@ const AccountSettings = ({ patron, legacyBaseUrl }) => (
     <hr />
     <div className="pin">
       <dl>
-        <dt>Pin</dt>
+        <dt>Pin/Password</dt>
         <dd><span>&middot;&middot;&middot;&middot;</span></dd>
         <Link
           href={`${legacyBaseUrl}/patroninfo*eng~Sdefault/${patron.id}/newpin`}

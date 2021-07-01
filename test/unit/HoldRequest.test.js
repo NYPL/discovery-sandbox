@@ -1,6 +1,7 @@
 /* eslint-disable react/jsx-filename-extension */
 /* eslint-env mocha */
 import React from 'react';
+import appConfig from '@appConfig';
 import { stub, spy } from 'sinon';
 import { expect } from 'chai';
 import axios from 'axios';
@@ -11,12 +12,18 @@ import WrappedHoldRequest, { HoldRequest } from './../../src/app/pages/HoldReque
 import mockedItem from '../fixtures/mocked-item';
 
 describe('HoldRequest', () => {
+  let mock;
+  before(() => {
+    mock = new MockAdapter(axios);
+    // All tests below (except the ineligible patron test) are premised on patron eligibility
+    mock.onGet(
+      '/research/collections/shared-collection-catalog/api/patronEligibility').reply(200, { eligibility: true });
+  });
+
   describe('When component did mount', () => {
-    let mock;
     let component;
     let redirect;
     before(() => {
-      mock = new MockAdapter(axios);
       redirect = stub(HoldRequest.prototype, 'redirectWithErrors').callsFake(() => true);
     });
     describe('ineligible patrons', () => {
@@ -39,11 +46,16 @@ describe('HoldRequest', () => {
           expect(redirect.called).to.equal(true);
         });
       });
+      it('should not show form', () => {
+        setImmediate(() => {
+          const form = component.find('form').first();
+
+          expect(form.find('fieldset')).to.have.length(0);
+        });
+      });
     });
     describe('eligible patrons', () => {
       before(() => {
-        mock.onGet(
-          '/research/collections/shared-collection-catalog/api/patronEligibility').reply(200, { eligibility: true });
         component = mountTestRender(
           <WrappedHoldRequest />, {
             attachTo: document.body,
@@ -171,12 +183,14 @@ describe('HoldRequest', () => {
     it('should display the error message for invalid delivery locations.', () => {
       const form = component.find('form');
 
-      expect(form.find('h2')).to.have.length(1);
-      expect(form.contains(
-        <h2 className="nypl-request-form-title">
-          Delivery options for this item are currently unavailable. Please try again later or
-          contact 917-ASK-NYPL (<a href="tel:917-275-6975">917-275-6975</a>).
-        </h2>)).to.equal(true);
+      setImmediate(() => {
+        expect(form.find('h2')).to.have.length(1);
+        expect(form.contains(
+          <h2 className="nypl-request-form-title">
+            Delivery options for this item are currently unavailable. Please try again later or
+            contact 917-ASK-NYPL (<a href="tel:917-275-6975">917-275-6975</a>).
+          </h2>)).to.equal(true);
+      });
     });
   });
 
@@ -231,62 +245,73 @@ describe('HoldRequest', () => {
     it('should display the sentence "Choose a delivery option or location".', () => {
       const form = component.find('form');
 
-      expect(form.find('h2')).to.have.length(1);
-      expect(form.contains(
-        <h2 className="nypl-request-form-title">
-          Choose a delivery option or location
-        </h2>)).to.equal(true);
+      setImmediate(() => {
+        expect(form.find('h2')).to.have.length(1);
+        expect(form.contains(
+          <h2 className="nypl-request-form-title">
+            Choose a delivery option or location
+          </h2>)).to.equal(true);
+      });
     });
 
     it('should display the form of the display locations.', () => {
       const form = component.find('form');
 
-      expect(form.props().method).to.equal('POST');
+      setImmediate(() => {
+        expect(form.props().method).to.equal('POST');
+      });
     });
 
     it('should display the avaialbe delivery locations, and the first location is selected ' +
       'by default.', () => {
-      const form = component.find('form');
-      const fieldset = component.find('fieldset');
 
-      expect(form.find('fieldset')).to.have.length(1);
-      expect(fieldset.find('label')).to.have.length(3);
-      expect(fieldset.find('legend')).to.have.length(1);
-      expect(fieldset.find('label').at(0).find('input').props().type).to.equal('radio');
-      expect(fieldset.find('label').at(1).find('input').props().type).to.equal('radio');
-      expect(fieldset.find('label').at(2).find('input').props().type).to.equal('radio');
-      expect(fieldset.find('label').at(0).find('input').props().checked).to.equal(true);
-      expect(fieldset.find('label').at(1).find('input').props().checked).to.equal(false);
-      expect(fieldset.find('label').at(2).find('input').props().checked).to.equal(false);
+      setImmediate(() => {
+        const form = component.find('form');
+        const fieldset = component.find('fieldset');
+
+        expect(form.find('fieldset')).to.have.length(1);
+        expect(fieldset.find('label')).to.have.length(3);
+        expect(fieldset.find('legend')).to.have.length(1);
+        expect(fieldset.find('label').at(0).find('input').props().type).to.equal('radio');
+        expect(fieldset.find('label').at(1).find('input').props().type).to.equal('radio');
+        expect(fieldset.find('label').at(2).find('input').props().type).to.equal('radio');
+        expect(fieldset.find('label').at(0).find('input').props().checked).to.equal(true);
+        expect(fieldset.find('label').at(1).find('input').props().checked).to.equal(false);
+        expect(fieldset.find('label').at(2).find('input').props().checked).to.equal(false);
+      });
     });
 
     it('should display the names and the addresses of the delivery locations.', () => {
-      const fieldset = component.find('fieldset');
-      const label0 = fieldset.find('label').at(0);
-      const label1 = fieldset.find('label').at(1);
-      const label2 = fieldset.find('label').at(2);
+      setImmediate(() => {
+        const fieldset = component.find('fieldset');
+        const label0 = fieldset.find('label').at(0);
+        const label1 = fieldset.find('label').at(1);
+        const label2 = fieldset.find('label').at(2);
 
-      expect(label0.find('.nypl-screenreader-only').text()).to.equal('Send to:');
-      expect(label0.find('.nypl-location-name').text()).to.equal('Library for the Performing Arts');
-      expect(label0.find('.nypl-location-address').text()).to.equal('40 Lincoln Center Plaza');
+        expect(label0.find('.nypl-screenreader-only').text()).to.equal('Send to:');
+        expect(label0.find('.nypl-location-name').text()).to.equal('Library for the Performing Arts');
+        expect(label0.find('.nypl-location-address').text()).to.equal('40 Lincoln Center Plaza');
 
-      expect(label1.find('.nypl-screenreader-only').text()).to.equal('Send to:');
-      expect(label1.find('.nypl-location-name').text()).to.equal('Schomburg Center');
-      expect(label1.find('.nypl-location-address').text()).to.equal('515 Malcolm X Boulevard');
+        expect(label1.find('.nypl-screenreader-only').text()).to.equal('Send to:');
+        expect(label1.find('.nypl-location-name').text()).to.equal('Schomburg Center');
+        expect(label1.find('.nypl-location-address').text()).to.equal('515 Malcolm X Boulevard');
 
-      expect(label2.find('.nypl-screenreader-only').text()).to.equal('Send to:');
-      expect(label2.find('.nypl-location-name').text())
-        .to.equal('Schwarzman Building - Allen Scholar Room');
-      expect(label2.find('.nypl-location-address').text())
-        .to.equal('476 Fifth Avenue (42nd St and Fifth Ave)');
+        expect(label2.find('.nypl-screenreader-only').text()).to.equal('Send to:');
+        expect(label2.find('.nypl-location-name').text())
+          .to.equal('Schwarzman Building - Allen Scholar Room');
+        expect(label2.find('.nypl-location-address').text())
+          .to.equal('476 Fifth Avenue (42nd St and Fifth Ave)');
+      });
     });
 
     it('should deliver request button with the respective URL on the page.', () => {
-      const form = component.find('form');
-      const requestBtn = form.find('button');
+      setImmediate(() => {
+        const form = component.find('form');
+        const requestBtn = form.find('button');
 
-      expect(requestBtn.props().type).to.equal('submit');
-      expect(requestBtn.text()).to.equal('Submit Request');
+        expect(requestBtn.props().type).to.equal('submit');
+        expect(requestBtn.text()).to.equal('Submit Request');
+      });
     });
   });
 
@@ -343,16 +368,18 @@ describe('HoldRequest', () => {
     });
 
     it('should display the EDD option.', () => {
-      const form = component.find('form');
-      const fieldset = component.find('fieldset');
+      setImmediate(() => {
+        const form = component.find('form');
+        const fieldset = component.find('fieldset');
 
-      expect(form.find('fieldset')).to.have.length(1);
-      expect(fieldset.find('label')).to.have.length(4);
-      expect(fieldset.find('legend')).to.have.length(1);
-      expect(fieldset.find('label').at(0).find('input').props().type).to.equal('radio');
-      expect(fieldset.find('label').at(0).find('input').props().checked).to.equal(true);
-      expect(fieldset.find('label').at(0).text())
-        .to.equal('Have a small portion scanned and sent to you via electronic mail.');
+        expect(form.find('fieldset')).to.have.length(1);
+        expect(fieldset.find('label')).to.have.length(4);
+        expect(fieldset.find('legend')).to.have.length(1);
+        expect(fieldset.find('label').at(0).find('input').props().type).to.equal('radio');
+        expect(fieldset.find('label').at(0).find('input').props().checked).to.equal(true);
+        expect(fieldset.find('label').at(0).text())
+          .to.equal('Have a small portion scanned and sent to you via electronic mail.');
+      });
     });
   });
 
@@ -410,12 +437,14 @@ describe('HoldRequest', () => {
     });
 
     it('should not display the EDD option.', () => {
-      const form = component.find('form');
-      const fieldset = component.find('fieldset');
+      setImmediate(() => {
+        const form = component.find('form');
+        const fieldset = component.find('fieldset');
 
-      expect(form.find('fieldset')).to.have.length(1);
-      expect(fieldset.find('label')).to.have.length(3);
-      expect(fieldset.find('legend')).to.have.length(1);
+        expect(form.find('fieldset')).to.have.length(1);
+        expect(fieldset.find('label')).to.have.length(3);
+        expect(fieldset.find('legend')).to.have.length(1);
+      });
     });
   });
 
@@ -476,8 +505,10 @@ describe('HoldRequest', () => {
 
 
       it('should display nothing ', () => {
-        const form = component.find('form');
-        expect(form.find('fieldset')).to.have.length(0);
+        setImmediate(() => {
+          const form = component.find('form');
+          expect(form.find('fieldset')).to.have.length(0);
+        });
       });
     });
 
@@ -534,9 +565,11 @@ describe('HoldRequest', () => {
       });
 
       it('should display nothing ', () => {
-        const form = component.find('form');
+        setImmediate(() => {
+          const form = component.find('form');
 
-        expect(form.find('fieldset')).to.have.length(0);
+          expect(form.find('fieldset')).to.have.length(0);
+        });
       });
     });
 
@@ -589,9 +622,69 @@ describe('HoldRequest', () => {
       });
 
       it('should display everything', () => {
-        const form = component.find('form');
+        setImmediate(() => {
+          const form = component.find('form');
 
-        expect(form.find('fieldset')).to.have.length(1);
+          expect(form.find('fieldset')).to.have.length(1);
+        });
+      });
+    });
+
+    describe('when opening locations selectively', () => {
+      let component;
+      const bib = {
+        title: ['Harry Potter'],
+        '@id': 'res:b17688688',
+        items: mockedItem,
+      };
+
+      const deliveryLocations = [
+        {
+          '@id': 'loc:myr',
+          address: '40 Lincoln Center Plaza',
+          prefLabel: 'Performing Arts Research Collections',
+          shortName: 'Library for the Performing Arts',
+        },
+        {
+          '@id': 'loc:sc',
+          prefLabel: 'Schomburg Center',
+          address: '515 Malcolm X Boulevard',
+          shortName: 'Schomburg Center',
+        },
+        {
+          '@id': 'loc:mala',
+          prefLabel: 'Schwarzman Building - Allen Scholar Room',
+          address: '476 Fifth Avenue (42nd St and Fifth Ave)',
+          shortName: 'Schwarzman Building',
+        },
+      ];
+
+      before(() => {
+        appConfig.openLocations = ['Schwarzman'];
+        component = mountTestRender(
+          <WrappedHoldRequest
+            params={{ itemId: 'i10000003' }}
+          />, {
+            attachTo: document.body,
+            store: makeTestStore({
+              patron: { id: 1 },
+              bib,
+              isEddRequestable: true,
+              deliveryLocations,
+            }),
+          });
+      });
+
+      after(() => {
+        appConfig.openLocations = null;
+        component.unmount();
+      });
+
+      it('should display only the specifically open locations', () => {
+        const html = component.html();
+        expect(html).to.include('Schwarzman Building');
+        expect(html).to.not.include('Performing Arts');
+        expect(html).to.not.include('Schomburg');
       });
     });
   });
