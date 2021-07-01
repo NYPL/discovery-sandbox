@@ -444,7 +444,7 @@ class BibDetails extends React.Component {
       });
 
     singleSubjectHeadingArray.forEach((heading, index) => {
-      const urlWithFilterQuery = `subject=${urlArray[index]}`;
+      const urlWithFilterQuery = `${filterQueryForSubjectHeading}${urlArray[index]}`;
 
       const subjectHeadingLink = (
         <Link
