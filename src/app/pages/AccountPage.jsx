@@ -6,7 +6,6 @@ import {
   SkeletonLoader,
   Heading,
 } from '@nypl/design-system-react-components';
-import moment from 'moment';
 
 import Search from '../components/Search/Search';
 import LinkTabSet from '../components/AccountPage/LinkTabSet';
@@ -17,7 +16,7 @@ import CancelConfirmationModal from '../components/AccountPage/CancelConfirmatio
 import SccContainer from '../components/SccContainer/SccContainer';
 import { logOutFromEncoreAndCatalogIn } from '../utils/logoutUtils';
 
-import { manipulateAccountPage, makeRequest, buildReqBody } from '../utils/accountPageUtils';
+import { manipulateAccountPage, makeRequest, buildReqBody, formatPatronExpirationDate } from '../utils/accountPageUtils';
 import {
   basicQuery,
   ajaxCall,
@@ -148,7 +147,7 @@ const AccountPage = (props, context) => {
     setItemToCancel(null);
   };
 
-  const formattedExpirationDate = patron.expirationDate ? moment(patron.expirationDate).format("MM-DD-YYYY") : '';
+  const formattedExpirationDate = patron.expirationDate ? formatPatronExpirationDate(patron.expirationDate) : '';
 
   if (accountHtml.error) {
     return (
