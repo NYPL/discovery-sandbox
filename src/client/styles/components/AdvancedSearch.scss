@@ -1,5 +1,9 @@
 .advancedSearchContainer.content-primary {
     min-height: 650px;
+
+    .page-title {
+      padding-top: var(--space-l);
+    }
 }
 
 #advancedSearchAside {
