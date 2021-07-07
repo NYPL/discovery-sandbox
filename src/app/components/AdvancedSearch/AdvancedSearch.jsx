@@ -100,7 +100,7 @@ class AdvancedSearch extends React.Component {
             </aside>
           )
         }
-        <h2 id="advancedSearchHeading">Advanced Search</h2>
+        <h2 id="advancedSearchHeading" className="page-title">Advanced Search</h2>
         <form id="advancedSearchForm" onSubmit={this.submitForm} method="POST" action={`${appConfig.baseUrl}/search`}>
           <div id="fields">
             <div className="advancedSearchColumnLeft">
