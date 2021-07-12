@@ -269,6 +269,8 @@ function confirmRequestServer(req, res, next) {
         );
       }
 
+      res.status(404).redirect(`${appConfig.baseUrl}/404`);
+
       return false;
     })
     .catch((requestIdError) => {
