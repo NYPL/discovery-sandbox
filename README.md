@@ -235,3 +235,4 @@ To close all locations, add `all`. This will also remove EDD as a request option
 `HOLD_REQUEST_NOTIFICATION`: This can be any string, not including html, which will be added as a notification to the HoldRequest landing page, and the EDD page.
 
 `SEARCH_RESULTS_NOTIFICATION`: Same as above, but will be added on the SearchResults page
+
