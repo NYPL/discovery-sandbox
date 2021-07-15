@@ -53,6 +53,20 @@ export const convertEncoreUrl = (encoreUrl) => {
   return `${appConfig.baseUrl}/bib/${bibId}`;
 }
 
+/**
+ * Takes a patron expiration date in form YYYY-MM-DD
+ * and return it in form MM-DD-YYYY
+ */
+export const formatPatronExpirationDate = (expirationDate) => {
+  // If it doesn't match the known YYYY-MM-DD format, return it unchanged:
+  if (!expirationDate || !/\d{4}-\d{1,2}-\d{1,2}/.test(expirationDate)) {
+    return expirationDate;
+  }
+
+  const [y, m, d] = expirationDate.split('-');
+  return [m, d, y].join('-');
+}
+
 export const manipulateAccountPage = (
   accountPageContent,
   updateAccountHtml,

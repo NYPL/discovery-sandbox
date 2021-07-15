@@ -5,6 +5,8 @@ const CleanBuild = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const sassPaths = require('@nypl/design-toolkit').includePaths;
 const globImporter = require('node-sass-glob-importer');
+const Visualizer = require('webpack-visualizer-plugin');
+
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 // References the applications root path
@@ -96,7 +98,11 @@ const commonSettings = {
     //   // Log level. Can be 'info', 'warn', 'error' or 'silent'.
     //   logLevel: 'info',
     // }),
-  ],
+  // Generate bundle analysis at dist/bundle-analyzer.html if BUNDLE_ANALYZER
+  // is set (default false)
+  ].concat(
+    process.env.BUNDLE_ANALYZER ? new Visualizer({ filename: './bundle-analysis.html' }) : []
+  )
 };
 
 /**
