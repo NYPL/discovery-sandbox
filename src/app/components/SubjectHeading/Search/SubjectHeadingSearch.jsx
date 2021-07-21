@@ -102,7 +102,6 @@ class SubjectHeadingSearch extends React.Component {
           value: userInput,
           onChange,
         }}
-        alwaysRenderSuggestions
         renderSuggestion={(suggestion) => {
           const subjectComponent = suggestion.class === 'subject_component';
 
