@@ -8,7 +8,7 @@ const appConfig = {
   baseUrl: process.env.BASE_URL || '/research/collections/shared-collection-catalog',
   redirectFromBaseUrl: process.env.REDIRECT_FROM_BASE_URL,
   legacyBaseUrl: process.env.LEGACY_BASE_URL,
-  favIconPath: '//d2znry4lg8s0tq.cloudfront.net/images/favicon.ico',
+  favIconPath: 'https://ux-static.nypl.org/images/favicon.ico',
   port: 3001,
   webpackDevServerPort: 3000,
   environment: process.env.APP_ENV || 'production',
