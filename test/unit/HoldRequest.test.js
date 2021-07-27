@@ -378,7 +378,7 @@ describe('HoldRequest', () => {
         expect(fieldset.find('label').at(0).find('input').props().type).to.equal('radio');
         expect(fieldset.find('label').at(0).find('input').props().checked).to.equal(true);
         expect(fieldset.find('label').at(0).text())
-          .to.equal('Have a small portion scanned and sent to you via electronic mail.');
+          .to.equal('Have a small portion (one chapter, one article, around 10% of work or 50 pages for public domain works) scanned and sent to you via electronic mail.');
       });
     });
   });
