@@ -43,7 +43,7 @@ const SubjectHeadingsIndexPage = (props) => {
           level={2}
           className="page-title"
         >
-          {filter ? 'Subject Heading Results' : 'Subject Heading Index'}
+          {filter ? `Subject Headings matching "${filter}"` : 'Subject Heading Index'}
         </Heading>
         <SubjectHeadingSearch />
       </div>
