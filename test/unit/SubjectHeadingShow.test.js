@@ -5,6 +5,7 @@ import { expect } from 'chai';
 import { shallow } from 'enzyme';
 
 import SubjectHeadingShow from '@SubjectHeadingShow';
+import { Heading } from '@nypl/design-system-react-components';
 import SubjectHeadingShowPage from './../../src/app/pages/SubjectHeadingShowPage';
 
 describe('SubjectHeadingsIndexPage', () => {
@@ -71,6 +72,27 @@ describe('SubjectHeadingShow', () => {
   describe('should not have .drbb-integration classes', () => {
     it('should not have any components with .drbb-integration class', () => {
       expect(wrapper.find('.drbb-integration')).to.have.length(0);
+    });
+  });
+
+  describe.only('when receiving a label', () => {
+    let component;
+    before(() => {
+      component = shallow(
+        <SubjectHeadingShowPage
+          params={{
+            subjectHeadingUuid: 'asdfadsfakld',
+          }}
+          location={{
+            query: {
+              label: 'Kermit the Frog',
+            },
+          }}
+        />);
+    });
+
+    it('should render a heading with the label', () => {
+      expect(component.find(Heading).prop('children')).to.equal('Subject Heading "Kermit the Frog"');
     });
   });
 });
