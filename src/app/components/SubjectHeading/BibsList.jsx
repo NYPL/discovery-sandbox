@@ -185,6 +185,7 @@ class BibsList extends React.Component {
       totalResults,
     } = this.state;
 
+
     const {
       label,
     } = this.props;

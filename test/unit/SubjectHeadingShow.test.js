@@ -75,7 +75,7 @@ describe('SubjectHeadingShow', () => {
     });
   });
 
-  describe.only('when receiving a label', () => {
+  describe('when receiving a label', () => {
     let component;
     before(() => {
       component = shallow(
