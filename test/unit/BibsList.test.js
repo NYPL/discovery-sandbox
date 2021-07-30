@@ -9,7 +9,7 @@ import BibsList from '../../src/app/components/SubjectHeading/BibsList';
 import Sorter from '@Sorter';
 import appConfig from '../../src/app/data/appConfig';
 
-describe.only('BibsList', () => {
+describe('BibsList', () => {
   let component;
   let savedBaseUrl;
 
