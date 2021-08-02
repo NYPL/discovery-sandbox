@@ -260,7 +260,7 @@ export class HoldRequest extends React.Component {
           checked={this.state.checkedLocNum === -1}
           onChange={e => this.onRadioSelect(e, -1)}
         />
-        Have a small portion scanned and sent to you via electronic mail.
+        Have a small portion (one chapter, one article, around 10% of work or 50 pages for public domain works) scanned and sent to you via electronic mail.
       </label>
     );
   }

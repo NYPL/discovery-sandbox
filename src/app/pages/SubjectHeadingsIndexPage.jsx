@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
 import {
@@ -28,6 +28,8 @@ const SubjectHeadingsIndexPage = (props) => {
 
   const bannerInnerHtml = filter ? <span key="bannerText">Subject Headings containing <em>{filter}</em></span> : <span key="bannerText">Subject Headings</span>
 
+  const [contentPrimaryStyle, setContentPrimaryStyle] = useState({});
+
   return (
     <SccContainer
       key={componentKey}
@@ -35,6 +37,8 @@ const SubjectHeadingsIndexPage = (props) => {
       activeSection="shep"
       pageTitle="Subject Headings"
       className="subject-heading-page"
+      contentPrimaryStyle={contentPrimaryStyle}
+      primaryId="subject-heading-content-primary"
     >
       <div
         className="subject-heading-page-header"
@@ -45,7 +49,9 @@ const SubjectHeadingsIndexPage = (props) => {
         >
           {filter ? 'Subject Heading Results' : 'Subject Heading Index'}
         </Heading>
-        <SubjectHeadingSearch />
+        <SubjectHeadingSearch
+          setContentPrimaryStyle={setContentPrimaryStyle}
+        />
       </div>
       <SubjectHeadingsIndex
         {...props}
