@@ -98,24 +98,9 @@ const createResearchNowQuery = (params) => {
   return query;
 };
 
-const getAuthorIdentifier = author => (author.viaf && ['viaf', 'viaf']) || (author.lcnaf && ['lcnaf', 'lcnaf']) || ['name', 'author'];
-
-const authorQuery = author => ({
-  queries: JSON.stringify([{
-    query: author[getAuthorIdentifier(author)[0]],
-    field: getAuthorIdentifier(author)[1],
-  }]),
-  showQueries: JSON.stringify([{ query: author.name, field: 'author' }]),
-});
+const authorQuery = author => ({query: `author:${author.name}`});
 
 const formatUrl = link => (link.startsWith('http') ? link : `https://${link}`);
-
-const generateStreamedReaderUrl = (url, eReaderUrl) => {
-  const base64BookUrl = Buffer.from(formatUrl(url)).toString('base64');
-  const encodedBookUrl = encodeURIComponent(`${base64BookUrl}`);
-
-  return encodeURI(`${eReaderUrl}/readerNYPL/?url=${eReaderUrl}/pub/${encodedBookUrl}/manifest.json`);
-};
 
 /**
  *  Given a hash representation of a query string, e.g.
@@ -155,7 +140,6 @@ const getResearchNowQueryString = query => getQueryString(createResearchNowQuery
 export {
   createResearchNowQuery,
   authorQuery,
-  generateStreamedReaderUrl,
   formatUrl,
   getResearchNowQueryString,
   getQueryString,

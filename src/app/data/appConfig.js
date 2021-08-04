@@ -48,6 +48,7 @@ const appConfig = {
   closedLocations: mapLocations(process.env.CLOSED_LOCATIONS),
   recapClosedLocations: mapLocations(process.env.RECAP_CLOSED_LOCATIONS),
   nonRecapClosedLocations: mapLocations(process.env.NON_RECAP_CLOSED_LOCATIONS),
+  openLocations: process.env.OPEN_LOCATIONS ? process.env.OPEN_LOCATIONS.split(',') : null,
   holdRequestNotification: process.env.HOLD_REQUEST_NOTIFICATION,
   searchResultsNotification: process.env.SEARCH_RESULTS_NOTIFICATION,
   drbbFrontEnd: {
@@ -66,7 +67,7 @@ const appConfig = {
   },
   sourceEmail: process.env.SOURCE_EMAIL,
   libAnswersEmail: process.env.LIB_ANSWERS_EMAIL,
-  itemBatchSize: process.env.ITEM_BATCH_SIZE,
+  itemBatchSize: process.env.ITEM_BATCH_SIZE || 100,
   webpacBaseUrl: process.env.WEBPAC_BASE_URL,
 };
 

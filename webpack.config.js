@@ -5,6 +5,8 @@ const CleanBuild = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const sassPaths = require('@nypl/design-toolkit').includePaths;
 const globImporter = require('node-sass-glob-importer');
+const Visualizer = require('webpack-visualizer-plugin');
+
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 // References the applications root path
@@ -54,6 +56,7 @@ const commonSettings = {
         CLOSED_LOCATIONS: JSON.stringify(process.env.CLOSED_LOCATIONS),
         RECAP_CLOSED_LOCATIONS: JSON.stringify(process.env.RECAP_CLOSED_LOCATIONS),
         NON_RECAP_CLOSED_LOCATIONS: JSON.stringify(process.env.NON_RECAP_CLOSED_LOCATIONS),
+        OPEN_LOCATIONS: JSON.stringify(process.env.OPEN_LOCATIONS),
         DISPLAY_TITLE: JSON.stringify(process.env.DISPLAY_TITLE),
         ITEM_BATCH_SIZE: JSON.stringify(process.env.ITEM_BATCH_SIZE),
         CIRCULATING_CATALOG: JSON.stringify(process.env.CIRCULATING_CATALOG),
@@ -95,7 +98,11 @@ const commonSettings = {
     //   // Log level. Can be 'info', 'warn', 'error' or 'silent'.
     //   logLevel: 'info',
     // }),
-  ],
+  // Generate bundle analysis at dist/bundle-analyzer.html if BUNDLE_ANALYZER
+  // is set (default false)
+  ].concat(
+    process.env.BUNDLE_ANALYZER ? new Visualizer({ filename: './bundle-analysis.html' }) : []
+  )
 };
 
 /**
