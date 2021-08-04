@@ -119,7 +119,9 @@ class ElectronicDeliveryForm extends React.Component {
                   }
                 </span>
               </div>
-              <span>You may request a chapter, article or short excerpt.</span><br />
+              <span>
+                You may request one chapter, one article, around 10% of work, or 50 pages for public domain works.
+              </span><br />
               <span>
                 <a href={aboutUrl}>
                   Read more about this service
@@ -283,9 +285,9 @@ class ElectronicDeliveryForm extends React.Component {
                 />
               </div>
               <div className="edd-copyright-notice">
-                <h3>Notice Warning Concerning Copyright Restrictions</h3>
+                <h3>Notice Concerning Copyright Restrictions</h3>
                 <p>
-                  The copyright law of the United States (title 17, United States Code) governs the making of photocopies or other reproductions of copyrighted material.
+                  The copyright law of the United States (Title 17, United States Code) governs the making of photocopies or other reproductions of copyrighted material.
                 </p>
                 <p>
                   Under certain conditions specified in the law, libraries and archives are authorized to furnish a photocopy or other reproduction. One of these specific conditions is that the photocopy or reproduction is not to be “used for any purpose other than private study, scholarship, or research.” If a user makes a request for, or later uses, a photocopy or reproduction for purposes in excess of “fair use,” that user may be liable for copyright infringement.
