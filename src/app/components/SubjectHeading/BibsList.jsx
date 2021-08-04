@@ -205,7 +205,7 @@ class BibsList extends React.Component {
     }
     const bibResults = bibsSource === 'discoveryApi' ? results : results.slice(this.firstBib(), this.lastBib());
 
-    const h3Text = `Viewing ${this.firstBib() + 1} - ${this.lastBib()} of ${totalResults || ''} item${(totalResults || 0) > 1 ? 's' : ''}`;
+    const h3Text = `Viewing ${this.firstBib() + 1} - ${Number.isInteger(totalResults) ? `${this.lastBib()} of ${totalResults} item${totalResults === 1 ? '' : 's'}` : ''}`;
 
     return (
       <div
