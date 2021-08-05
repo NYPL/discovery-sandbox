@@ -5,6 +5,7 @@ import { expect } from 'chai';
 import { mount, shallow } from 'enzyme';
 
 import SubjectHeadingsIndex from '@SubjectHeadingsIndex';
+import { Heading } from '@nypl/design-system-react-components';
 import SubjectHeadingsIndexPage from './../../src/app/pages/SubjectHeadingsIndexPage';
 import { mockRouterContext } from '../helpers/routing';
 
@@ -23,6 +24,24 @@ describe('SubjectHeadingsIndexPage', () => {
   });
   it('should render `SubjectHeadingSearch`', () => {
     expect(component.find('SubjectHeadingSearch').length).to.equal(1);
+  });
+
+  describe('when filter is present', () => {
+    before(() => {
+      component = shallow(
+        <SubjectHeadingsIndexPage
+          location={{
+            search: '',
+            query: {
+              filter: 'Kermit the Frog',
+            },
+          }}
+        />);
+    });
+
+    it('should have a heading announcing the filter', () => {
+      expect(component.find(Heading).prop('children')).to.equal('Subject Headings matching "Kermit the Frog"');
+    });
   });
 });
 
