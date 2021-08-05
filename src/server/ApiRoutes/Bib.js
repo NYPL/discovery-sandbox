@@ -5,6 +5,7 @@ import logger from '../../../logger';
 import appConfig from '../../app/data/appConfig';
 import extractFeatures from '../../app/utils/extractFeatures';
 import { itemBatchSize } from '../../app/data/constants';
+import { isNyplBnumber } from '../../app/utils/utils';
 
 const nyplApiClientCall = (query, urlEnabledFeatures, itemFrom) => {
   // If on-site-edd feature enabled in front-end, enable it in discovery-api:
@@ -132,8 +133,8 @@ function fetchBib(bibId, cb, errorcb, reqOptions, res) {
     fetchSubjectHeadingData: true,
     features: [],
   }, reqOptions);
-  // Determine if it's an NYPL bibId by prefix:
-  const isNYPL = /^b/.test(bibId);
+  // Determine if it's an NYPL bibId:
+  const isNYPL = isNyplBnumber(bibId);
   return Promise.all([
     nyplApiClientCall(bibId, options.features, reqOptions.itemFrom || 0),
     // Don't fetch annotated-marc for partner records:

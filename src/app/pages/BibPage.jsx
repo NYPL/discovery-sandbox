@@ -23,7 +23,7 @@ import appConfig from '../data/appConfig';
 import Redirect404 from '../components/Redirect404/Redirect404';
 // Removed MarcRecord because the webpack MarcRecord is not working. Sep/28/2017
 // import MarcRecord from './MarcRecord';
-import { ajaxCall } from '@utils';
+import { ajaxCall, isNyplBnumber } from '@utils';
 import { updateBibPage } from '@Actions';
 import { itemBatchSize } from '../data/constants';
 
@@ -174,7 +174,7 @@ export const BibPage = (props, context) => {
   const additionalDetails = (<AdditionalDetailsViewer bib={bib} />);
 
   // It's an NYPL item if getOwner returns nothing:
-  const isNYPL = !getOwner(bib);
+  const isNYPL = isNyplBnumber(bib.uri);
 
   const tabs = [
     itemsContainer ? {
