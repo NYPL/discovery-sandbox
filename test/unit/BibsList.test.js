@@ -43,7 +43,7 @@ describe('BibsList', () => {
           }, 100);
           return {
             page: 1,
-            totalResults: 1,
+            totalResults: '1',
             bibsSource: 'discoveryApi',
           };
         });
@@ -83,7 +83,7 @@ describe('BibsList', () => {
           }, 100);
           return {
             page: 1,
-            totalResults: 10,
+            totalResults: '10',
             bibsSource: 'discoveryApi',
           };
         });
@@ -124,7 +124,7 @@ describe('BibsList', () => {
           }, 100);
           return {
             page: 1,
-            totalResults: 10,
+            totalResults: '10',
             bibsSource: 'discoveryApi',
           };
         });
