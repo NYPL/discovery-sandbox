@@ -568,6 +568,22 @@ function institutionNameByNyplSource(nyplSource) {
   }[nyplSource];
 }
 
+/**
+ * Given a url, returns the same url with the added parameter source=catalog
+ * Used for DRB
+ */
+
+function addSource(url) {
+  try {
+    const parsedUrl = new URL(url);
+    const searchParams = parsedUrl.searchParams;
+    if (!searchParams.has('source')) searchParams.append('source', 'catalog');
+    return parsedUrl.toString();
+  } catch (error) {
+    return url;
+  }
+}
+
 export {
   trackDiscovery,
   ajaxCall,
@@ -590,4 +606,5 @@ export {
   extractNoticePreference,
   camelToShishKabobCase,
   institutionNameByNyplSource,
+  addSource,
 };

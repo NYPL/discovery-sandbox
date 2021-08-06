@@ -35,6 +35,7 @@ const drbQueryFromRequest = (req) => {
   // Return a promise resolving the DRB API response and the query string used
   return drbCall
     .then((resp) => {
+      console.log('drbQueryString', drbQueryString);
       return {
         response: resp,
         researchNowQueryString: drbQueryString
