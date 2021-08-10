@@ -49,7 +49,6 @@ const mapFilters = (filters = {}) => {
  */
 const createResearchNowQuery = (params) => {
 
-  console.log('creating research now query');
   const {
     q,
     sort,
@@ -100,7 +99,6 @@ const createResearchNowQuery = (params) => {
     query.filter = mapFilters({ dateAfter, dateBefore, language });
   }
 
-  console.log('query: ', query);
   return query;
 };
 
