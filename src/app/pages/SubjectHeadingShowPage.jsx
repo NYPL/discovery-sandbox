@@ -35,7 +35,7 @@ const SubjectHeadingShowPage = (props) => {
           level={2}
           className="page-title"
         >
-          Subject Heading Results
+          { `Subject Heading "${label}"` }
         </Heading>
         <SubjectHeadingSearch />
       </div>

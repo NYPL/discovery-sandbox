@@ -5,11 +5,12 @@ import logger from '../../../logger';
 import appConfig from '../../app/data/appConfig';
 import extractFeatures from '../../app/utils/extractFeatures';
 import { itemBatchSize } from '../../app/data/constants';
+import { isNyplBnumber } from '../../app/utils/utils';
 
 const nyplApiClientCall = (query, urlEnabledFeatures, itemFrom) => {
   // If on-site-edd feature enabled in front-end, enable it in discovery-api:
   const queryForItemPage = typeof itemFrom !== 'undefined' ? `?items_size=${itemBatchSize}&items_from=${itemFrom}` : '';
-  const requestOptions = appConfig.features.includes('on-site-edd') || urlEnabledFeatures.includes('on-site-edd') ? { headers: { 'X-Features': 'on-site-edd' } } : {};
+  const requestOptions = appConfig.features.includes('on-site-edd') || (urlEnabledFeatures || []).includes('on-site-edd') ? { headers: { 'X-Features': 'on-site-edd' } } : {};
   return nyplApiClient().then(client => client.get(`/discovery/resources/${query}${queryForItemPage}`, requestOptions));
 };
 
@@ -132,9 +133,12 @@ function fetchBib(bibId, cb, errorcb, reqOptions, res) {
     fetchSubjectHeadingData: true,
     features: [],
   }, reqOptions);
+  // Determine if it's an NYPL bibId:
+  const isNYPL = isNyplBnumber(bibId);
   return Promise.all([
     nyplApiClientCall(bibId, options.features, reqOptions.itemFrom || 0),
-    nyplApiClientCall(`${bibId}.annotated-marc`, options.features),
+    // Don't fetch annotated-marc for partner records:
+    isNYPL ? nyplApiClientCall(`${bibId}.annotated-marc`, options.features) : null,
   ])
     .then((response) => {
       // First response is jsonld formatting:

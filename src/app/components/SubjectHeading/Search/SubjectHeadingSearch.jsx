@@ -35,6 +35,8 @@ class SubjectHeadingSearch extends React.Component {
       if (this.state.userInput) {
         return axios(`${appConfig.baseUrl}/api/subjectHeadings/autosuggest?query=${this.state.userInput}`)
           .then((res) => {
+            const numberOfResults = res.data.autosuggest.length;
+            this.props.setContentPrimaryStyle({ 'min-height': `${Math.max(numberOfResults, 12) * 50}px` });
             if (res.data.request.query.trim() === this.state.userInput.trim()) {
               this.setState({
                 suggestions: res.data.autosuggest,
@@ -124,6 +126,14 @@ class SubjectHeadingSearch extends React.Component {
 
 SubjectHeadingSearch.contextTypes = {
   router: PropTypes.object,
+};
+
+SubjectHeadingSearch.propTypes = {
+  setContentPrimaryStyle: PropTypes.func,
+};
+
+SubjectHeadingSearch.defaultProps = {
+  setContentPrimaryStyle: () => {},
 };
 
 export default SubjectHeadingSearch;
