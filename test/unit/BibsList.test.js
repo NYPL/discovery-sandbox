@@ -170,7 +170,6 @@ describe('BibsList', () => {
           })
           .get(/\/api/)
           .reply(200, (uri) => {
-            console.log('uri: ', uri);
             setTimeout(() => {
               component.setProps({});
               setImmediate(() => {
@@ -214,7 +213,6 @@ describe('BibsList', () => {
           })
           .get(/\/api/)
           .reply(200, (uri) => {
-            console.log('uri: ', uri);
             setTimeout(() => {
               component.setProps({});
               setImmediate(() => {
