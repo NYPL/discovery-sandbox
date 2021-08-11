@@ -592,6 +592,14 @@ function institutionNameByNyplSource(nyplSource) {
   }[nyplSource];
 }
 
+/**
+ * Given a bnumber (e.g. b12082323, pb123456, hb10000202040400) returns true
+ * if it's an NYPL bnumber.
+ */
+function isNyplBnumber(bnum) {
+  return /^b/.test(bnum)
+}
+
 export {
   trackDiscovery,
   ajaxCall,
@@ -614,4 +622,5 @@ export {
   extractNoticePreference,
   camelToShishKabobCase,
   institutionNameByNyplSource,
+  isNyplBnumber,
 };

@@ -22,6 +22,7 @@ import {
   displayContext,
   camelToShishKabobCase,
   institutionNameByNyplSource,
+  isNyplBnumber,
 } from '../../src/app/utils/utils';
 
 /**
@@ -901,5 +902,16 @@ describe('institutionNameByNyplSource', () => {
     expect(institutionNameByNyplSource('recap-pul')).to.eq('Princeton');
     expect(institutionNameByNyplSource('recap-cul')).to.eq('Columbia');
     expect(institutionNameByNyplSource('recap-hl')).to.eq('Harvard');
+  });
+});
+
+describe('isNyplBnumber', () => {
+  it('should classify NYPL bnumbers as belonging to NYPL', () => {
+    expect(isNyplBnumber('b1234')).to.eq(true);
+  });
+  it('should classify partner bnumbers as not belonging to NYPL', () => {
+    expect(isNyplBnumber('pb1234')).to.eq(false);
+    expect(isNyplBnumber('hb1234')).to.eq(false);
+    expect(isNyplBnumber('cb1234')).to.eq(false);
   });
 });
