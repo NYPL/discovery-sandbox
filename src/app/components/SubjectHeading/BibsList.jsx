@@ -25,7 +25,7 @@ class BibsList extends React.Component {
     this.updateBibPage = this.updateBibPage.bind(this);
     this.lastBib = this.lastBib.bind(this);
     this.firstBib = this.firstBib.bind(this);
-    this.perPage = 6;
+    this.perPage = appConfig.shepBibsLimit;
     this.changeBibSorting = this.changeBibSorting.bind(this);
     this.fetchBibs = this.fetchBibs.bind(this);
     this.pagination = this.pagination.bind(this);
