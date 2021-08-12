@@ -1,7 +1,8 @@
 /* eslint-env mocha */
 import React from 'react';
 import { expect } from 'chai';
-import { shallow } from 'enzyme';
+import { shallow, mount } from 'enzyme';
+import { Link } from 'react-router';
 
 import DrbbResult from './../../src/app/components/Drbb/DrbbResult';
 import workData from '../fixtures/work-detail.json';
@@ -47,7 +48,7 @@ describe('DrbbResult', () => {
     describe('work with no authors', () => {
       let component;
       before(() => {
-        const workWithNoAuthors = workData.data;
+        const workWithNoAuthors = JSON.parse(JSON.stringify(workData.data));
         const { agents } = workWithNoAuthors;
         workWithNoAuthors.agents = agents.filter(agent => !agent.roles.includes('author'));
         component = shallow(<DrbbResult work={workWithNoAuthors} />);
@@ -73,13 +74,45 @@ describe('DrbbResult', () => {
   describe('work with long title', () => {
     let component;
     before(() => {
-      const longTitleWork = workData.data;
+      const longTitleWork = JSON.parse(JSON.stringify(workData.data));
       longTitleWork.title = 'Life in India; or, Madras, the Neilgherries, and Calcutta. Written for the American Sunday-School Union.';
       component = shallow(<DrbbResult work={longTitleWork} />);
     });
 
     it('should truncate the title', () => {
       expect(component.find('Link').first().render().text()).to.equal('Life in India; or, Madras, the Neilgherries, and Calcutta. Written for the American...');
+    });
+  });
+
+  describe('source parameter in links', () => {
+    let component;
+    before(() => {
+      const work = JSON.parse(JSON.stringify(workData.data));
+      work.editions = [
+        {
+          items: [
+            {
+              links: [
+                {
+                  mediaType: 'text/html',
+                  id: 'fakeId',
+                  url: 'http://fakefakefake.nypl.org',
+                },
+              ],
+            },
+          ],
+        },
+      ];
+      component = mount(<DrbbResult work={work} />);
+    });
+
+    it('should include source=catalog', () => {
+      expect(component.find(Link).at(0).prop('to')).to.include('source=catalog');
+      expect(component.find(Link).at(0).prop('className')).to.equal('drbb-result-title');
+      expect(component.find(Link).at(1).prop('to').query.source).to.equal('catalog');
+      expect(component.find(Link).at(1).prop('className')).to.equal('drbb-result-author');
+      expect(component.find(Link).at(2).prop('to').pathname).to.include('source=catalog');
+      expect(component.find(Link).at(2).prop('className')).to.equal('drbb-read-online');
     });
   });
 });

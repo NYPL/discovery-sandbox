@@ -30,7 +30,7 @@ describe('DrbbContainer', () => {
       expect(component.find('p').find('span').length).to.equal(1);
       expect(component.find('p').find('span').text()).to.equal('Read more about the project.');
       expect(component.find('p').find('span').find('a').text()).to.equal('Read more about the project');
-      expect(component.find('p').find('span').find('a').prop('href')).to.equal(`${appConfig.drbbFrontEnd[appConfig.environment]}/about`);
+      expect(component.find('p').find('span').find('a').prop('href')).to.equal(`${appConfig.drbbFrontEnd[appConfig.environment]}/about?source=catalog`);
     });
   });
 
