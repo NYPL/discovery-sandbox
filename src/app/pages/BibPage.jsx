@@ -164,8 +164,7 @@ export const BibPage = (props, context) => {
       holdings={bib.holdings}
     />
   ) : null;
-  // Related to removing MarcRecord because the webpack MarcRecord is not working. Sep/28/2017
-  // const marcRecord = isNYPLReCAP ? <MarcRecord bNumber={bNumber[0]} /> : null;
+
   const isNYPL = isNyplBnumber(bib.uri);
 
   const tabDetails = (
@@ -184,10 +183,6 @@ export const BibPage = (props, context) => {
     </React.Fragment>
   );
 
-  // const additionalDetails = (<AdditionalDetailsViewer bib={bib} />);
-
-  // It's an NYPL item if getOwner returns nothing:
-
   const tabs = [
     itemsContainer ? {
       title: 'Availability',
@@ -201,10 +196,6 @@ export const BibPage = (props, context) => {
       title: 'Details',
       content: tabDetails,
     },
-    // isNYPL && bib.annotatedMarc ? {
-    //   title: 'Full Description',
-    //   content: additionalDetails,
-    // } : null,
   ].filter(tab => tab)
     .map(tab => <React.Fragment><br /> { tab.content }</React.Fragment>);
 
