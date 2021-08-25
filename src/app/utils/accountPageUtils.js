@@ -98,7 +98,7 @@ export const manipulateAccountPage = (
     const patFuncHeaderTrs = accountPageContent.querySelectorAll('tr.patFuncHeaders');
     if (patFuncHeaderTrs && patFuncHeaderTrs.length) patFuncHeaderTrs[0].appendChild(buttonTh);
 
-    accountPageContent.querySelectorAll('th').forEach((th) => {
+    accountPageContent.querySelectorAll('th.patFuncHeaders').forEach((th) => {
       const { textContent } = th;
       // this "Ratings" feature is in the html, but is not in use
       if (textContent.trim() === 'CANCEL' || ['Ratings', 'RENEW', 'FREEZE'].find(text => textContent.includes(text))) {
@@ -121,6 +121,7 @@ export const manipulateAccountPage = (
     items.forEach((el) => {
       const locationData = {};
       if (contentType === 'holds') {
+        // Manipulate hold location selector
         const locationSelect = el.getElementsByTagName('select')[0];
         if (locationSelect) {
           const locationProp = locationSelect.name;
@@ -139,10 +140,24 @@ export const manipulateAccountPage = (
           eventListeners.push({ element: locationSelect, cb: locationChangeCb });
         }
       }
-      el.querySelectorAll('.patFuncTitle').forEach((titleTd) => {
-        titleTd.querySelectorAll('a').forEach(link => {
-          link.href = convertEncoreUrl(link.href);
-        });
+      el.querySelectorAll('.patFuncTitle,.patFuncBibTitle').forEach((titleTd) => {
+        const isOtfRecord = [
+          '[Supervised use]',
+          '[In Library Use]',
+          '[Standard NYPL restrictions apply]'
+        ].some((phrase) => titleTd.textContent.includes(phrase))
+        // Remove link if it appears to be an OTF record (it's not in index)
+        if (isOtfRecord) {
+          titleTd.querySelectorAll('a').forEach(link => {
+            // In 5.3, the link may be wrapped in a label
+            link.parentNode.removeChild(link);
+            titleTd.appendChild(link.firstChild);
+          });
+        } else {
+          titleTd.querySelectorAll('a').forEach(link => {
+            link.href = convertEncoreUrl(link.href);
+          });
+        }
       });
 
       const inputs = el.querySelectorAll('input');
@@ -158,7 +173,16 @@ export const manipulateAccountPage = (
         const button = document.createElement('button');
         button.name = input.name;
         button.value = input.value;
-        button.textContent = ['Renew', 'Freeze', 'Cancel'].find(text => input.name.includes(text.toLowerCase()));
+        if (contentType === 'items') {
+          // In 5.3 Checkouts ("items") view, the input name looks like
+          // "name_pfmark_canceli15686436x00", but the only relevant action is
+          // Renew
+          button.textContent = 'Renew'
+        } else {
+          // In Holds view, set button text based on presense of one of these
+          // phrases:
+          button.textContent = ['Renew', 'Freeze', 'Cancel'].find(text => input.name.includes(text.toLowerCase()));
+        }
         if (input.checked && button.textContent === 'Freeze') {
           button.textContent = 'Unfreeze';
           input.value = 'off';
@@ -173,7 +197,10 @@ export const manipulateAccountPage = (
           ));
         };
         if (button.textContent === 'Cancel') {
-          const title = el.querySelectorAll('.patFuncTitleMain')[0].textContent;
+          // This element should always be found, but let's not depend on it:
+          const titleTd = el.querySelectorAll('.patFuncTitleMain');
+          const title = titleTd && titleTd[0] ? titleTd[0].textContent : null;
+
           button.addEventListener('click', (e) => {
             e.preventDefault();
             setItemToCancel({
