@@ -239,10 +239,6 @@ export const BibPage = (props, context) => {
         electronicResources={aggregatedElectronicResources}
       />
       {
-        // <Tabbed
-        // tabs={tabs}
-        // hash={location.hash}
-        // />
         tabs
       }
       {classicLink}
