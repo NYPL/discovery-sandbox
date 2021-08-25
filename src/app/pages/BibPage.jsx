@@ -31,6 +31,10 @@ import {
   getAggregatedElectronicResources,
 } from '../utils/utils';
 
+import {
+  annotatedMarcDetails,
+} from '../utils/bibDetailsUtils';
+
 const ItemsContainer = itemsContainerModule.ItemsContainer;
 
 const checkForMoreItems = (bib, dispatch) => {
@@ -162,38 +166,47 @@ export const BibPage = (props, context) => {
   ) : null;
   // Related to removing MarcRecord because the webpack MarcRecord is not working. Sep/28/2017
   // const marcRecord = isNYPLReCAP ? <MarcRecord bNumber={bNumber[0]} /> : null;
+  const isNYPL = isNyplBnumber(bib.uri);
 
   const tabDetails = (
-    <BibDetails
-      bib={bib}
-      fields={tabFields}
-      electronicResources={aggregatedElectronicResources}
-    />
+    <React.Fragment>
+      <Heading
+        level={3}
+      >
+        Details
+      </Heading>
+      <BibDetails
+        bib={bib}
+        fields={tabFields}
+        electronicResources={aggregatedElectronicResources}
+        additionalData={isNYPL && bib.annotatedMarc ? annotatedMarcDetails(bib) : []}
+      />
+    </React.Fragment>
   );
 
-  const additionalDetails = (<AdditionalDetailsViewer bib={bib} />);
+  // const additionalDetails = (<AdditionalDetailsViewer bib={bib} />);
 
   // It's an NYPL item if getOwner returns nothing:
-  const isNYPL = isNyplBnumber(bib.uri);
 
   const tabs = [
     itemsContainer ? {
       title: 'Availability',
       content: itemsContainer,
     } : null,
-    {
-      title: 'Details',
-      content: tabDetails,
-    },
-    isNYPL && bib.annotatedMarc ? {
-      title: 'Full Description',
-      content: additionalDetails,
-    } : null,
     bib.holdings ? {
       title: 'Library Holdings',
       content: <LibraryHoldings holdings={bib.holdings} />,
     } : null,
-  ].filter(tab => tab);
+    {
+      title: 'Details',
+      content: tabDetails,
+    },
+    // isNYPL && bib.annotatedMarc ? {
+    //   title: 'Full Description',
+    //   content: additionalDetails,
+    // } : null,
+  ].filter(tab => tab)
+    .map(tab => <React.Fragment><br /> { tab.content }</React.Fragment>);
 
   const classicLink = (
     bibId.startsWith('b') ?
@@ -234,10 +247,13 @@ export const BibPage = (props, context) => {
         logging
         electronicResources={aggregatedElectronicResources}
       />
-      <Tabbed
-        tabs={tabs}
-        hash={location.hash}
-      />
+      {
+        // <Tabbed
+        // tabs={tabs}
+        // hash={location.hash}
+        // />
+        tabs
+      }
       {classicLink}
     </SccContainer>
   );

@@ -14,6 +14,7 @@ import DefinitionList from './DefinitionList';
 import appConfig from '../../data/appConfig';
 import getOwner from '../../utils/getOwner';
 import LibraryItem from '../../utils/item';
+import { combineBibDetailsData } from '../../utils/bibDetailsUtils';
 
 class BibDetails extends React.Component {
   constructor(props) {
@@ -537,8 +538,13 @@ class BibDetails extends React.Component {
     }
 
     const bibDetails = this.getDisplayFields(this.props.bib);
+    const data = combineBibDetailsData(bibDetails, this.props.additionalData);
 
-    return (<DefinitionList data={bibDetails} headings={this.props.bib.subjectHeadingData} />);
+    return (
+      <DefinitionList
+        data={data}
+        headings={this.props.bib.subjectHeadingData}
+      />);
   }
 }
 
@@ -546,10 +552,12 @@ BibDetails.propTypes = {
   bib: PropTypes.object.isRequired,
   fields: PropTypes.array.isRequired,
   electronicResources: PropTypes.array,
+  additionalData: PropTypes.array,
 };
 
 BibDetails.defaultProps = {
   electronicResources: [],
+  additionalData: [],
 };
 
 BibDetails.contextTypes = {
