@@ -4,7 +4,7 @@ import axios from 'axios';
 import appConfig from '../data/appConfig';
 import { CLOSED_LOCATION_REGEX } from '../data/constants';
 
-export const isClosed = optionInnerText => !!optionInnerText.match(CLOSED_LOCATION_REGEX);
+export const isClosed = optionInnerText => optionInnerText && !!optionInnerText.match(CLOSED_LOCATION_REGEX);
 
 export const makeRequest = (
   updateAccountHtml,
@@ -160,6 +160,7 @@ export const manipulateAccountPage = (
         }
       });
 
+      // Remove any left-column checkmarks, replacing them with right-column buttons
       const inputs = el.querySelectorAll('input');
       const holdActionElements = [];
       const removeTd = (element) => {
@@ -216,6 +217,8 @@ export const manipulateAccountPage = (
         removeTd(input);
         eventListeners.push({ element: button, cb: eventCb });
       });
+      // Remove any lingering .patFuncMark TDs left over because they didn't have any INPUTs
+      el.querySelectorAll('td.patFuncMark').forEach(removeTd);
 
       // add new TD with account page button(s)
       const td = document.createElement('td');

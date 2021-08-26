@@ -1,0 +1,388 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- VERSION = $Id$ $Rev: 202541 $ $Date: 2013-02-08 13:48:24 -0800 (Fri, 08 Feb 2013) $ -->
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="/scripts/ProStyles.css" />
+<link rel="stylesheet" type="text/css" href="/screens/styles.css" />
+<script type="text/javascript" src="/scripts/elcontent.js">
+</script>
+<script type="text/javascript" src="/scripts/common.js">
+</script>
+<script type="text/javascript" src="/scripts/features.js">
+</script>
+<script type="text/javascript" src="/scripts/webbridge.js">
+</script>
+
+</head>
+<body>
+   <div class="patFuncArea">
+<form name="hold_form" method="POST" id="hold_form" ><input type="HIDDEN" id="holdpagecmd" />
+
+<input type="SUBMIT" name="sortByRequest" value="Sort by Hold Requested Date" />
+<input type="SUBMIT" name="sortByStatus" value="Sort by Status" />
+<input type="HIDDEN" name="currentsortorder" value="current_pickup" />
+<a href="#"  onClick="return submitHold( 'requestCancelAll', 'requestCancelAll' )"><div style="display:none" onmousedown="this.className='pressedState';" onmouseout="this.className='';" onmouseup="this.className='';"><div class="buttonSpriteDiv"><span class="buttonSpriteSpan1"><span class="buttonSpriteSpan2">Cancel All</span></span></div></div></a>
+<input type="SUBMIT" name="requestUpdateHoldsSome" value="UPDATE LIST" />
+
+<div class="patFuncTitle"><span id="id_pftitle_items_count">13 HOLDS</span>
+</div>
+
+<table border="0" class="patFunc"><tr class="patFuncHeaders">
+<th scope="col" class="patFuncHeaders"> CANCEL </th>
+<th scope="col" class="patFuncHeaders"> TITLE </th>
+<th scope="col" class="patFuncHeaders"> Ratings </th>
+<th scope="col" class="patFuncHeaders"> STATUS </th>
+<th scope="col" class="patFuncHeaders"> PICKUP LOCATION </th>
+<th scope="col" class="patFuncHeaders"> CANCEL IF NOT FILLED BY </th>
+<th scope="col" class="patFuncHeaders"> FREEZE </th>
+</tr>
+
+
+<style type="text/css">
+<!--
+#ratemy1    { display: inline }
+#rateneed1  { display: none }
+#ratemy2    { display: inline }
+#rateneed2  { display: none }
+#ratemy3    { display: inline }
+#rateneed3  { display: none }
+#ratemy4    { display: inline }
+#rateneed4  { display: none }
+#ratemy5    { display: inline }
+#rateneed5  { display: none }
+#ratemy6    { display: inline }
+#rateneed6  { display: none }
+#ratemy7    { display: inline }
+#rateneed7  { display: none }
+#ratemy8    { display: inline }
+#rateneed8  { display: none }
+#ratemy9    { display: inline }
+#rateneed9  { display: none }
+#ratemy10    { display: inline }
+#rateneed10  { display: none }
+#ratemy11    { display: inline }
+#rateneed11  { display: none }
+#ratemy12    { display: inline }
+#rateneed12  { display: none }
+#ratemy13    { display: inline }
+#rateneed13  { display: none }
+-->
+</style>
+<tr class="patFuncEntry">
+<td class="patFuncMark" >
+<span tabindex="-1" id="id_pfmark_canceli34162229x00" class="visually-hidden">Cancel</span><input type="checkbox" name="name_pfmark_canceli34162229x00" aria-labelledby="id_pfmark_canceli34162229x00 id_pfbibtitle_titlei34162229x00" />
+</td>
+<th class="patFuncBibTitle" scope="row">
+<a id="id_pfbibtitle_titlei34162229x00" href="https://nypl-encore-test.nypl.org/iii/encore/record/C__Rb20970375?lang=eng&suite=def"><span class="patFuncTitleMain">Toast / by Raquel Pelzel &#59; photographs by Evan Sung.</span></a>
+<br />
+</th>
+<td nowrap  class="patFuncRating" >
+
+<span id="ratemy1"  onmouseover="setToolVisibility  ('ratemy1', 'none', 'rateneed1', 'inline')">_____
+</span>
+<span id="rateneed1"  onmouseout="setToolVisibility  ('ratemy1', 'inline', 'rateneed1', 'none')"><a href="/patroninfo~S1*eng/5427701/sortedbypudateholds?changerating1=b20970375">?</a><a href="/patroninfo~S1*eng/5427701/sortedbypudateholds?changerating2=b20970375">?</a><a href="/patroninfo~S1*eng/5427701/sortedbypudateholds?changerating3=b20970375">?</a><a href="/patroninfo~S1*eng/5427701/sortedbypudateholds?changerating4=b20970375">?</a><a href="/patroninfo~S1*eng/5427701/sortedbypudateholds?changerating5=b20970375">?</a>
+</span></td>
+<td class="patFuncStatus"> AVAILABLE </td>
+<td class="patFuncPickup">STAFF ONLY - ILL - SASB S.Court</td>
+<td class="patFuncCancel">01-14-22</td>
+<td class="patFuncFreeze" >
+<span id="id_pffreeze_freezei34162229x00" tabindex="-1" class="visually-hidden">Freeze</span>
+<input aria-labelledby="id_pffreeze_freezei34162229x00 id_pfbibtitle_titlei34162229x00" name="name_pffreeze_freezei34162229x00" type="checkbox" /></td>
+</tr>
+
+<tr class="patFuncEntry">
+<td class="patFuncMark" >
+<span tabindex="-1" id="id_pfmark_canceli37920957x01" class="visually-hidden">Cancel</span><input type="checkbox" name="name_pfmark_canceli37920957x01" aria-labelledby="id_pfmark_canceli37920957x01 id_pfbibtitle_titlei37920957x01" />
+</td>
+<th class="patFuncBibTitle" scope="row">
+<a id="id_pfbibtitle_titlei37920957x01" href="https://nypl-encore-test.nypl.org/iii/encore/record/C__Rb22179168?lang=eng&suite=def"><span class="patFuncTitleMain">[Standard NYPL restrictions apply] JUSTICE, JUSTICE : SCHOOL POLITICS AND THE ECLIPSE OF LIBERALISM /     HISTORY OF SCHOOLS AND SCHOOLING &#59;  [RECAP]</span></a>
+<br />
+</th>
+<td nowrap  class="patFuncRating" >
+
+<span id="ratemy2"  onmouseover="setToolVisibility  ('ratemy2', 'none', 'rateneed2', 'inline')">_____
+</span>
+<span id="rateneed2"  onmouseout="setToolVisibility  ('ratemy2', 'inline', 'rateneed2', 'none')"><a href="/patroninfo~S1*eng/5427701/sortedbypudateholds?changerating1=b22179168">?</a><a href="/patroninfo~S1*eng/5427701/sortedbypudateholds?changerating2=b22179168">?</a><a href="/patroninfo~S1*eng/5427701/sortedbypudateholds?changerating3=b22179168">?</a><a href="/patroninfo~S1*eng/5427701/sortedbypudateholds?changerating4=b22179168">?</a><a href="/patroninfo~S1*eng/5427701/sortedbypudateholds?changerating5=b22179168">?</a>
+</span></td>
+<td class="patFuncStatus"> AVAILABLE </td>
+<td class="patFuncPickup">
+<span id="id_pfpickup_loci37920957x01" tabindex="-1" class="visually-hidden">Pickup Location</span>
+<select name="name_pfpickup_loci37920957x01" aria-labelledby="id_pfpickup_loci37920957x01 id_pfbibtitle_titlei37920957x01" >
+</select>
+</td>
+<td class="patFuncCancel">03-01-22</td>
+<td class="patFuncFreeze" >
+<span id="id_pffreeze_freezei37920957x01" tabindex="-1" class="visually-hidden">Freeze</span>
+<input aria-labelledby="id_pffreeze_freezei37920957x01 id_pfbibtitle_titlei37920957x01" name="name_pffreeze_freezei37920957x01" type="checkbox" /></td>
+</tr>
+
+<tr class="patFuncEntry">
+<td class="patFuncMark" >
+<span tabindex="-1" id="id_pfmark_canceli37921060x02" class="visually-hidden">Cancel</span><input type="checkbox" name="name_pfmark_canceli37921060x02" aria-labelledby="id_pfmark_canceli37921060x02 id_pfbibtitle_titlei37921060x02" />
+</td>
+<th class="patFuncBibTitle" scope="row">
+<a id="id_pfbibtitle_titlei37921060x02" href="https://nypl-encore-test.nypl.org/iii/encore/record/C__Rb22179316?lang=eng&suite=def"><span class="patFuncTitleMain">-2 +3 Stefano Arienti, Massimo Bartolini : la Collezione di Museion = die Sammlung Museion = the Museion collection. Minus 2 plus 3 Minus two plus three Stefano Arienti, Massimo Bartolini</span></a>
+<br />
+</th>
+<td nowrap  class="patFuncRating" >
+
+<span id="ratemy3"  onmouseover="setToolVisibility  ('ratemy3', 'none', 'rateneed3', 'inline')">_____
+</span>
+<span id="rateneed3"  onmouseout="setToolVisibility  ('ratemy3', 'inline', 'rateneed3', 'none')"><a href="/patroninfo~S1*eng/5427701/sortedbypudateholds?changerating1=b22179316">?</a><a href="/patroninfo~S1*eng/5427701/sortedbypudateholds?changerating2=b22179316">?</a><a href="/patroninfo~S1*eng/5427701/sortedbypudateholds?changerating3=b22179316">?</a><a href="/patroninfo~S1*eng/5427701/sortedbypudateholds?changerating4=b22179316">?</a><a href="/patroninfo~S1*eng/5427701/sortedbypudateholds?changerating5=b22179316">?</a>
+</span></td>
+<td class="patFuncStatus"> AVAILABLE </td>
+<td class="patFuncPickup">SCHWARZMAN 315 - ONSITE USE</td>
+<td class="patFuncCancel">05-11-22</td>
+<td class="patFuncFreeze" >
+<span id="id_pffreeze_freezei37921060x02" tabindex="-1" class="visually-hidden">Freeze</span>
+<input aria-labelledby="id_pffreeze_freezei37921060x02 id_pfbibtitle_titlei37921060x02" name="name_pffreeze_freezei37921060x02" type="checkbox" /></td>
+</tr>
+
+<tr class="patFuncEntry">
+<td class="patFuncMark" >
+<span tabindex="-1" id="id_pfmark_canceli37921070x03" class="visually-hidden">Cancel</span><input type="checkbox" name="name_pfmark_canceli37921070x03" aria-labelledby="id_pfmark_canceli37921070x03 id_pfbibtitle_titlei37921070x03" />
+</td>
+<th class="patFuncBibTitle" scope="row">
+<a id="id_pfbibtitle_titlei37921070x03" href="https://nypl-encore-test.nypl.org/iii/encore/record/C__Rb22179326?lang=eng&suite=def"><span class="patFuncTitleMain">[Standard NYPL restrictions apply] THE ANNIVERSARY AND OTHER STORIES /       [RECAP]</span></a>
+<br />
+</th>
+<td nowrap  class="patFuncRating" >
+
+<span id="ratemy4"  onmouseover="setToolVisibility  ('ratemy4', 'none', 'rateneed4', 'inline')">_____
+</span>
+<span id="rateneed4"  onmouseout="setToolVisibility  ('ratemy4', 'inline', 'rateneed4', 'none')"><a href="/patroninfo~S1*eng/5427701/sortedbypudateholds?changerating1=b22179326">?</a><a href="/patroninfo~S1*eng/5427701/sortedbypudateholds?changerating2=b22179326">?</a><a href="/patroninfo~S1*eng/5427701/sortedbypudateholds?changerating3=b22179326">?</a><a href="/patroninfo~S1*eng/5427701/sortedbypudateholds?changerating4=b22179326">?</a><a href="/patroninfo~S1*eng/5427701/sortedbypudateholds?changerating5=b22179326">?</a>
+</span></td>
+<td class="patFuncStatus"> AVAILABLE </td>
+<td class="patFuncPickup">
+<span id="id_pfpickup_loci37921070x03" tabindex="-1" class="visually-hidden">Pickup Location</span>
+<select name="name_pfpickup_loci37921070x03" aria-labelledby="id_pfpickup_loci37921070x03 id_pfbibtitle_titlei37921070x03" >
+</select>
+</td>
+<td class="patFuncCancel">05-13-22</td>
+<td class="patFuncFreeze" >
+<span id="id_pffreeze_freezei37921070x03" tabindex="-1" class="visually-hidden">Freeze</span>
+<input aria-labelledby="id_pffreeze_freezei37921070x03 id_pfbibtitle_titlei37921070x03" name="name_pffreeze_freezei37921070x03" type="checkbox" /></td>
+</tr>
+
+<tr class="patFuncEntry">
+<td class="patFuncMark" >
+<span tabindex="-1" id="id_pfmark_canceli37921134x04" class="visually-hidden">Cancel</span><input type="checkbox" name="name_pfmark_canceli37921134x04" aria-labelledby="id_pfmark_canceli37921134x04 id_pfbibtitle_titlei37921134x04" />
+</td>
+<th class="patFuncBibTitle" scope="row">
+<a id="id_pfbibtitle_titlei37921134x04" href="https://nypl-encore-test.nypl.org/iii/encore/record/C__Rb22179390?lang=eng&suite=def"><span class="patFuncTitleMain">[Standard NYPL restrictions apply] ADDRESSES DELIVERED AT THE LINCOLN DINNERS OF THE NATIONAL REPUBLICAN CLUB IN RESPONSE TO THE TOAST ABRAHAM LINCOLN, 1910-1927 [RECAP]</span></a>
+<br />
+</th>
+<td nowrap  class="patFuncRating" >
+
+<span id="ratemy5"  onmouseover="setToolVisibility  ('ratemy5', 'none', 'rateneed5', 'inline')">_____
+</span>
+<span id="rateneed5"  onmouseout="setToolVisibility  ('ratemy5', 'inline', 'rateneed5', 'none')"><a href="/patroninfo~S1*eng/5427701/sortedbypudateholds?changerating1=b22179390">?</a><a href="/patroninfo~S1*eng/5427701/sortedbypudateholds?changerating2=b22179390">?</a><a href="/patroninfo~S1*eng/5427701/sortedbypudateholds?changerating3=b22179390">?</a><a href="/patroninfo~S1*eng/5427701/sortedbypudateholds?changerating4=b22179390">?</a><a href="/patroninfo~S1*eng/5427701/sortedbypudateholds?changerating5=b22179390">?</a>
+</span></td>
+<td class="patFuncStatus"> AVAILABLE </td>
+<td class="patFuncPickup">SCHWARZMAN 315 - ONSITE USE</td>
+<td class="patFuncCancel">06-01-22</td>
+<td class="patFuncFreeze" >
+<span id="id_pffreeze_freezei37921134x04" tabindex="-1" class="visually-hidden">Freeze</span>
+<input aria-labelledby="id_pffreeze_freezei37921134x04 id_pfbibtitle_titlei37921134x04" name="name_pffreeze_freezei37921134x04" type="checkbox" /></td>
+</tr>
+
+<tr class="patFuncEntry">
+<td class="patFuncMark" >
+<span tabindex="-1" id="id_pfmark_canceli37921136x05" class="visually-hidden">Cancel</span><input type="checkbox" name="name_pfmark_canceli37921136x05" aria-labelledby="id_pfmark_canceli37921136x05 id_pfbibtitle_titlei37921136x05" />
+</td>
+<th class="patFuncBibTitle" scope="row">
+<a id="id_pfbibtitle_titlei37921136x05" href="https://nypl-encore-test.nypl.org/iii/encore/record/C__Rb22179392?lang=eng&suite=def"><span class="patFuncTitleMain">[Standard NYPL restrictions apply] &#34; ... IZ PENZY V MOSKVU I OBRATNO ...&#34; : SOVREMENNAIA FILOSOFSKAIA PUBLITSISTIKA = &#34; ... FROM PENZA TO MOSCOW AND BACK ...&#34; [RECAP]</span></a>
+<br />
+</th>
+<td nowrap  class="patFuncRating" >
+
+<span id="ratemy6"  onmouseover="setToolVisibility  ('ratemy6', 'none', 'rateneed6', 'inline')">_____
+</span>
+<span id="rateneed6"  onmouseout="setToolVisibility  ('ratemy6', 'inline', 'rateneed6', 'none')"><a href="/patroninfo~S1*eng/5427701/sortedbypudateholds?changerating1=b22179392">?</a><a href="/patroninfo~S1*eng/5427701/sortedbypudateholds?changerating2=b22179392">?</a><a href="/patroninfo~S1*eng/5427701/sortedbypudateholds?changerating3=b22179392">?</a><a href="/patroninfo~S1*eng/5427701/sortedbypudateholds?changerating4=b22179392">?</a><a href="/patroninfo~S1*eng/5427701/sortedbypudateholds?changerating5=b22179392">?</a>
+</span></td>
+<td class="patFuncStatus"> AVAILABLE </td>
+<td class="patFuncPickup">SCHWARZMAN 315 - ONSITE USE</td>
+<td class="patFuncCancel">06-01-22</td>
+<td class="patFuncFreeze" >
+<span id="id_pffreeze_freezei37921136x05" tabindex="-1" class="visually-hidden">Freeze</span>
+<input aria-labelledby="id_pffreeze_freezei37921136x05 id_pfbibtitle_titlei37921136x05" name="name_pffreeze_freezei37921136x05" type="checkbox" /></td>
+</tr>
+
+<tr class="patFuncEntry">
+<td class="patFuncMark" >
+<span tabindex="-1" id="id_pfmark_canceli37921141x06" class="visually-hidden">Cancel</span><input type="checkbox" name="name_pfmark_canceli37921141x06" aria-labelledby="id_pfmark_canceli37921141x06 id_pfbibtitle_titlei37921141x06" />
+</td>
+<th class="patFuncBibTitle" scope="row">
+<a id="id_pfbibtitle_titlei37921141x06" href="https://nypl-encore-test.nypl.org/iii/encore/record/C__Rb22179397?lang=eng&suite=def"><span class="patFuncTitleMain">[Standard NYPL restrictions apply] --ABOUT AS AUSTERE AS A DIOR GOWN-- : NEW ZEALAND ARCHITECTURE THE 1960S : A ONE DAY SYMPOSIUM : CENTRE FOR BUILDING PERFORMAN [HD]</span></a>
+<br />
+</th>
+<td nowrap  class="patFuncRating" >
+
+<span id="ratemy7"  onmouseover="setToolVisibility  ('ratemy7', 'none', 'rateneed7', 'inline')">_____
+</span>
+<span id="rateneed7"  onmouseout="setToolVisibility  ('ratemy7', 'inline', 'rateneed7', 'none')"><a href="/patroninfo~S1*eng/5427701/sortedbypudateholds?changerating1=b22179397">?</a><a href="/patroninfo~S1*eng/5427701/sortedbypudateholds?changerating2=b22179397">?</a><a href="/patroninfo~S1*eng/5427701/sortedbypudateholds?changerating3=b22179397">?</a><a href="/patroninfo~S1*eng/5427701/sortedbypudateholds?changerating4=b22179397">?</a><a href="/patroninfo~S1*eng/5427701/sortedbypudateholds?changerating5=b22179397">?</a>
+</span></td>
+<td class="patFuncStatus"> AVAILABLE </td>
+<td class="patFuncPickup">SCHWARZMAN 315 - ONSITE USE</td>
+<td class="patFuncCancel">06-01-22</td>
+<td class="patFuncFreeze" >
+<span id="id_pffreeze_freezei37921141x06" tabindex="-1" class="visually-hidden">Freeze</span>
+<input aria-labelledby="id_pffreeze_freezei37921141x06 id_pfbibtitle_titlei37921141x06" name="name_pffreeze_freezei37921141x06" type="checkbox" /></td>
+</tr>
+
+<tr class="patFuncEntry">
+<td class="patFuncMark" >
+<span tabindex="-1" id="id_pfmark_canceli37921142x07" class="visually-hidden">Cancel</span><input type="checkbox" name="name_pfmark_canceli37921142x07" aria-labelledby="id_pfmark_canceli37921142x07 id_pfbibtitle_titlei37921142x07" />
+</td>
+<th class="patFuncBibTitle" scope="row">
+<a id="id_pfbibtitle_titlei37921142x07" href="https://nypl-encore-test.nypl.org/iii/encore/record/C__Rb22179398?lang=eng&suite=def"><span class="patFuncTitleMain">[Standard NYPL restrictions apply] 1748 /       [RECAP]</span></a>
+<br />
+</th>
+<td nowrap  class="patFuncRating" >
+
+<span id="ratemy8"  onmouseover="setToolVisibility  ('ratemy8', 'none', 'rateneed8', 'inline')">_____
+</span>
+<span id="rateneed8"  onmouseout="setToolVisibility  ('ratemy8', 'inline', 'rateneed8', 'none')"><a href="/patroninfo~S1*eng/5427701/sortedbypudateholds?changerating1=b22179398">?</a><a href="/patroninfo~S1*eng/5427701/sortedbypudateholds?changerating2=b22179398">?</a><a href="/patroninfo~S1*eng/5427701/sortedbypudateholds?changerating3=b22179398">?</a><a href="/patroninfo~S1*eng/5427701/sortedbypudateholds?changerating4=b22179398">?</a><a href="/patroninfo~S1*eng/5427701/sortedbypudateholds?changerating5=b22179398">?</a>
+</span></td>
+<td class="patFuncStatus"> AVAILABLE </td>
+<td class="patFuncPickup">SCHWARZMAN 315 - ONSITE USE</td>
+<td class="patFuncCancel">06-01-22</td>
+<td class="patFuncFreeze" >
+<span id="id_pffreeze_freezei37921142x07" tabindex="-1" class="visually-hidden">Freeze</span>
+<input aria-labelledby="id_pffreeze_freezei37921142x07 id_pfbibtitle_titlei37921142x07" name="name_pffreeze_freezei37921142x07" type="checkbox" /></td>
+</tr>
+
+<tr class="patFuncEntry">
+<td class="patFuncMark" >
+<span tabindex="-1" id="id_pfmark_canceli37921148x08" class="visually-hidden">Cancel</span><input type="checkbox" name="name_pfmark_canceli37921148x08" aria-labelledby="id_pfmark_canceli37921148x08 id_pfbibtitle_titlei37921148x08" />
+</td>
+<th class="patFuncBibTitle" scope="row">
+<a id="id_pfbibtitle_titlei37921148x08" href="https://nypl-encore-test.nypl.org/iii/encore/record/C__Rb22180234?lang=eng&suite=def"><span class="patFuncTitleMain">[HD] [Standard NYPL restrictions apply] -BOBHLADI 1 : CONTE NYABOA DE ZOUKOUBOUE / -BOBHLADI 1 : CONTE DE ZOUKOUBOUE. CONTE NYABOA DE ZOUKOUBOUE. CONTE DE ZOUKOUBOU [HD]</span></a>
+<br />
+</th>
+<td nowrap  class="patFuncRating" >
+
+<span id="ratemy9"  onmouseover="setToolVisibility  ('ratemy9', 'none', 'rateneed9', 'inline')">_____
+</span>
+<span id="rateneed9"  onmouseout="setToolVisibility  ('ratemy9', 'inline', 'rateneed9', 'none')"><a href="/patroninfo~S1*eng/5427701/sortedbypudateholds?changerating1=b22180234">?</a><a href="/patroninfo~S1*eng/5427701/sortedbypudateholds?changerating2=b22180234">?</a><a href="/patroninfo~S1*eng/5427701/sortedbypudateholds?changerating3=b22180234">?</a><a href="/patroninfo~S1*eng/5427701/sortedbypudateholds?changerating4=b22180234">?</a><a href="/patroninfo~S1*eng/5427701/sortedbypudateholds?changerating5=b22180234">?</a>
+</span></td>
+<td class="patFuncStatus"> AVAILABLE </td>
+<td class="patFuncPickup">SCHWARZMAN 315 - ONSITE USE</td>
+<td class="patFuncCancel">06-03-22</td>
+<td class="patFuncFreeze" >
+<span id="id_pffreeze_freezei37921148x08" tabindex="-1" class="visually-hidden">Freeze</span>
+<input aria-labelledby="id_pffreeze_freezei37921148x08 id_pfbibtitle_titlei37921148x08" name="name_pffreeze_freezei37921148x08" type="checkbox" /></td>
+</tr>
+
+<tr class="patFuncEntry">
+<td class="patFuncMark" >
+<span tabindex="-1" id="id_pfmark_canceli37921149x09" class="visually-hidden">Cancel</span><input type="checkbox" name="name_pfmark_canceli37921149x09" aria-labelledby="id_pfmark_canceli37921149x09 id_pfbibtitle_titlei37921149x09" />
+</td>
+<th class="patFuncBibTitle" scope="row">
+<a id="id_pfbibtitle_titlei37921149x09" href="https://nypl-encore-test.nypl.org/iii/encore/record/C__Rb22180235?lang=eng&suite=def"><span class="patFuncTitleMain">[Standard NYPL restrictions apply] ... WAS IT MURDER?       [RECAP]</span></a>
+<br />
+</th>
+<td nowrap  class="patFuncRating" >
+
+<span id="ratemy10"  onmouseover="setToolVisibility  ('ratemy10', 'none', 'rateneed10', 'inline')">_____
+</span>
+<span id="rateneed10"  onmouseout="setToolVisibility  ('ratemy10', 'inline', 'rateneed10', 'none')"><a href="/patroninfo~S1*eng/5427701/sortedbypudateholds?changerating1=b22180235">?</a><a href="/patroninfo~S1*eng/5427701/sortedbypudateholds?changerating2=b22180235">?</a><a href="/patroninfo~S1*eng/5427701/sortedbypudateholds?changerating3=b22180235">?</a><a href="/patroninfo~S1*eng/5427701/sortedbypudateholds?changerating4=b22180235">?</a><a href="/patroninfo~S1*eng/5427701/sortedbypudateholds?changerating5=b22180235">?</a>
+</span></td>
+<td class="patFuncStatus"> AVAILABLE </td>
+<td class="patFuncPickup">SCHWARZMAN 315 - ONSITE USE</td>
+<td class="patFuncCancel">06-03-22</td>
+<td class="patFuncFreeze" >
+<span id="id_pffreeze_freezei37921149x09" tabindex="-1" class="visually-hidden">Freeze</span>
+<input aria-labelledby="id_pffreeze_freezei37921149x09 id_pfbibtitle_titlei37921149x09" name="name_pffreeze_freezei37921149x09" type="checkbox" /></td>
+</tr>
+
+<tr class="patFuncEntry">
+<td class="patFuncMark" >
+<span tabindex="-1" id="id_pfmark_canceli37921162x10" class="visually-hidden">Cancel</span><input type="checkbox" name="name_pfmark_canceli37921162x10" aria-labelledby="id_pfmark_canceli37921162x10 id_pfbibtitle_titlei37921162x10" />
+</td>
+<th class="patFuncBibTitle" scope="row">
+<a id="id_pfbibtitle_titlei37921162x10" href="https://nypl-encore-test.nypl.org/iii/encore/record/C__Rb22180248?lang=eng&suite=def"><span class="patFuncTitleMain">[HD] [Standard NYPL restrictions apply] --A PUBBLICO, E PERPETUO COMMODO DELLA SUA DIOCESI : LIBRI ANTICHI, RARI E PREZIOSI DELLE BIBLIOTECHE DIOCESANE DEL FRIULI (SE [HD]</span></a>
+<br />
+</th>
+<td nowrap  class="patFuncRating" >
+
+<span id="ratemy11"  onmouseover="setToolVisibility  ('ratemy11', 'none', 'rateneed11', 'inline')">_____
+</span>
+<span id="rateneed11"  onmouseout="setToolVisibility  ('ratemy11', 'inline', 'rateneed11', 'none')"><a href="/patroninfo~S1*eng/5427701/sortedbypudateholds?changerating1=b22180248">?</a><a href="/patroninfo~S1*eng/5427701/sortedbypudateholds?changerating2=b22180248">?</a><a href="/patroninfo~S1*eng/5427701/sortedbypudateholds?changerating3=b22180248">?</a><a href="/patroninfo~S1*eng/5427701/sortedbypudateholds?changerating4=b22180248">?</a><a href="/patroninfo~S1*eng/5427701/sortedbypudateholds?changerating5=b22180248">?</a>
+</span></td>
+<td class="patFuncStatus"> AVAILABLE </td>
+<td class="patFuncPickup">SCHWARZMAN 315 - ONSITE USE</td>
+<td class="patFuncCancel">06-10-22</td>
+<td class="patFuncFreeze" >
+<span id="id_pffreeze_freezei37921162x10" tabindex="-1" class="visually-hidden">Freeze</span>
+<input aria-labelledby="id_pffreeze_freezei37921162x10 id_pfbibtitle_titlei37921162x10" name="name_pffreeze_freezei37921162x10" type="checkbox" /></td>
+</tr>
+
+<tr class="patFuncEntry">
+<td class="patFuncMark" >
+<span tabindex="-1" id="id_pfmark_canceli16265438x11" class="visually-hidden">Cancel</span><input type="checkbox" name="name_pfmark_canceli16265438x11" aria-labelledby="id_pfmark_canceli16265438x11 id_pfbibtitle_titlei16265438x11" />
+</td>
+<th class="patFuncBibTitle" scope="row">
+<a id="id_pfbibtitle_titlei16265438x11" href="https://nypl-encore-test.nypl.org/iii/encore/record/C__Rb13120836?lang=eng&suite=def"><span class="patFuncTitleMain">Addresses, historical - political - sociological, by Frederic R. Coudert.</span></a>
+<br />
+</th>
+<td nowrap  class="patFuncRating" >
+
+<span id="ratemy12"  onmouseover="setToolVisibility  ('ratemy12', 'none', 'rateneed12', 'inline')">_____
+</span>
+<span id="rateneed12"  onmouseout="setToolVisibility  ('ratemy12', 'inline', 'rateneed12', 'none')"><a href="/patroninfo~S1*eng/5427701/sortedbypudateholds?changerating1=b13120836">?</a><a href="/patroninfo~S1*eng/5427701/sortedbypudateholds?changerating2=b13120836">?</a><a href="/patroninfo~S1*eng/5427701/sortedbypudateholds?changerating3=b13120836">?</a><a href="/patroninfo~S1*eng/5427701/sortedbypudateholds?changerating4=b13120836">?</a><a href="/patroninfo~S1*eng/5427701/sortedbypudateholds?changerating5=b13120836">?</a>
+</span></td>
+<td class="patFuncStatus"> AVAILABLE </td>
+<td class="patFuncPickup">SCHWARZMAN 315 - ONSITE USE</td>
+<td class="patFuncCancel">06-21-22</td>
+<td class="patFuncFreeze" >
+<span id="id_pffreeze_freezei16265438x11" tabindex="-1" class="visually-hidden">Freeze</span>
+<input aria-labelledby="id_pffreeze_freezei16265438x11 id_pfbibtitle_titlei16265438x11" name="name_pffreeze_freezei16265438x11" type="checkbox" /></td>
+</tr>
+
+<tr class="patFuncEntry">
+<td class="patFuncMark" >
+<span tabindex="-1" id="id_pfmark_canceli37921257x12" class="visually-hidden">Cancel</span><input type="checkbox" name="name_pfmark_canceli37921257x12" aria-labelledby="id_pfmark_canceli37921257x12 id_pfbibtitle_titlei37921257x12" />
+</td>
+<th class="patFuncBibTitle" scope="row">
+<a id="id_pfbibtitle_titlei37921257x12" href="https://nypl-encore-test.nypl.org/iii/encore/record/C__Rb22180563?lang=eng&suite=def"><span class="patFuncTitleMain">[Standard NYPL restrictions apply] ALISON'S ZINNIA / BY ANITA LOBEL. [RECAP]</span></a>
+<br />
+</th>
+<td nowrap  class="patFuncRating" >
+
+<span id="ratemy13"  onmouseover="setToolVisibility  ('ratemy13', 'none', 'rateneed13', 'inline')">_____
+</span>
+<span id="rateneed13"  onmouseout="setToolVisibility  ('ratemy13', 'inline', 'rateneed13', 'none')"><a href="/patroninfo~S1*eng/5427701/sortedbypudateholds?changerating1=b22180563">?</a><a href="/patroninfo~S1*eng/5427701/sortedbypudateholds?changerating2=b22180563">?</a><a href="/patroninfo~S1*eng/5427701/sortedbypudateholds?changerating3=b22180563">?</a><a href="/patroninfo~S1*eng/5427701/sortedbypudateholds?changerating4=b22180563">?</a><a href="/patroninfo~S1*eng/5427701/sortedbypudateholds?changerating5=b22180563">?</a>
+</span></td>
+<td class="patFuncStatus"> IN TRANSIT </td>
+<td class="patFuncPickup">Performing Arts PDD - 3rd Fl</td>
+<td class="patFuncCancel">08-25-22</td>
+<td class="patFuncFreeze" >&nbsp;</td>
+</tr>
+
+</table>
+
+<input type="SUBMIT" name="sortByRequest" value="Sort by Hold Requested Date" />
+<input type="SUBMIT" name="sortByStatus" value="Sort by Status" />
+<input type="HIDDEN" name="currentsortorder" value="current_pickup" />
+<a href="#"  onClick="return submitHold( 'requestCancelAll', 'requestCancelAll' )"><div style="display:none" onmousedown="this.className='pressedState';" onmouseout="this.className='';" onmouseup="this.className='';"><div class="buttonSpriteDiv"><span class="buttonSpriteSpan1"><span class="buttonSpriteSpan2">Cancel All</span></span></div></div></a>
+<input type="SUBMIT" name="requestUpdateHoldsSome" value="UPDATE LIST" />
+</form><script type="text/JavaScript">
+<!--Hide the JS
+document.getElementById( 'id_pftitle_items_count' ).innerHTML = '13 HOLDS';
+// Unhide the JS --></script>
+<script type="text/JavaScript"> var patronInfoNav = {menuItemHolds:"13 requests (holds).", menuItemChkout:"0 Items currently checked out", menuItemFines:" in unpaid fines and bills", menuItemBookings:"0 items booked for future use", menuItemIllreqs:"0 Interlibrary loan request"};
+for (var prop in patronInfoNav) {
+    var element = document.getElementById([prop]);
+    if( !!element )
+        element.innerText = patronInfoNav[prop];
+}
+</script>
+<!--this is customized <screens/patronview_encore.html>-->
+   </div>
+<!-- this script must be included for this template to display properly in encore -->
+<script type="text/javascript" src="/screens/setdomain.js"></script>
+</body>
+</html>
+
+
