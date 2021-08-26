@@ -84,6 +84,23 @@ describe('manipulateAccountPage', () => {
         'Addresses, historical - political - sociological, by Frederic R. Coudert.'
       ]);
     });
+
+    it('should remove <script> and <link> elements', () => {
+      const dom = jsdom(fs.readFileSync('./test/fixtures/sierra-5.1-patron-5035845-webpac-holds-markup.html', 'utf8'));
+      expect(dom.querySelectorAll('script')).to.have.lengthOf(6);
+      expect(dom.querySelectorAll('link')).to.have.lengthOf(2);
+
+      // Establish some expectations on the original markup:
+      // Starts off with 4 links for 4 holds (some of which are OTF records)
+      // expect(dom.querySelectorAll('.patFuncTitle a')).to.have.lengthOf(4);
+
+      // Apply manipulations:
+      manipulateAccountDom(dom);
+
+      // One script tag will not have been removed because it's inline (no src)
+      expect(dom.querySelectorAll('script')).to.have.lengthOf(1);
+      expect(dom.querySelectorAll('link')).to.have.lengthOf(0);
+    });
   });
 
   describe('Sierra 5.1', () => {
