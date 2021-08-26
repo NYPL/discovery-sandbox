@@ -1,4 +1,5 @@
 import { deleteCookie } from './cookieUtils';
+import appConfig from '../data/appConfig';
 
 /**
   * loadLogoutIframe(isTest)
@@ -11,10 +12,14 @@ const loadLogoutIframe = (onload) => {
   const logoutIframe = document.createElement('iframe');
   const [body] = document.getElementsByTagName('body');
 
+  // Determine whether to use Production or Test logout pages based on whether
+  // 'dev-' appears in login URL
+  const isProduction = !appConfig.loginUrl.includes('//dev-')
+
   logoutIframe.setAttribute(
     // The endpoint is the URL for logging out from Encore
-    'src', 'https://browse.nypl.org/iii/encore/logoutFilterRedirect?suite=def',
-    // 'src', 'https://nypl-encore-test.nypl.org//iii/encore/logoutFilterRedirect?suite=def',
+    'src', isProduction ? 'https://browse.nypl.org/iii/encore/logoutFilterRedirect?suite=def' :
+      'https://nypl-encore-test.nypl.org//iii/encore/logoutFilterRedirect?suite=def',
   );
   // Assigns the ID for CSS ussage
   logoutIframe.setAttribute('id', 'logoutIframe');
