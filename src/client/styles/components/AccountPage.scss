@@ -9,8 +9,13 @@
     list-style: none;
   }
 
-  th {
+  th.patFuncHeaders {
     text-transform: capitalize;
+  }
+
+  th.patFuncBibTitle {
+    text-align: left;
+    font-weight: 300;
   }
 
   td.account-table-buttons {
