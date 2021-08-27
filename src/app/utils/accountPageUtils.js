@@ -83,9 +83,6 @@ export const manipulateAccountPage = (
     setIsLoading,
   );
 
-  // Remove <script> & <style> tags that refer to Webpac assets
-  accountPageContent.querySelectorAll('script[src],link[href]').forEach(asset => asset.remove())
-
   const eventListeners = [];
   if (['items', 'holds'].includes(contentType)) {
     // all <inputs> of type 'submit' are removed

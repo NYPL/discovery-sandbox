@@ -36,6 +36,17 @@ function getAccountPage(res, req) {
   });
 }
 
+/**
+ *  Given raw Account HTML, removes <link> and remote <script> tags to ensure
+ *  they're not injected into the html sent to the client (lest they generate a
+ *  bunch of erroneous 404s or worse.
+ */
+function preprocessAccountHtml(html) {
+  html = html.replace(/<link [^>]+\/>/g, '')
+  html = html.replace(/<script type="text\/javascript" src=[^>]+>\s*<\/script>/g, '')
+  return html
+}
+
 function fetchAccountPage(req, res, resolve) {
   const requireUser = User.requireUser(req, res);
   const { redirect } = requireUser;
@@ -82,7 +93,7 @@ function fetchAccountPage(req, res, resolve) {
         throw new Error('detected state mismatch, throwing error');
       }
 
-      resolve({ accountHtml: resp.data });
+      resolve({ accountHtml: preprocessAccountHtml(resp.data) });
     })
     .catch((resp) => {
       console.error('Account page response error: ', resp);
@@ -113,6 +124,7 @@ function logError(req) {
 }
 
 export default {
+  preprocessAccountHtml,
   fetchAccountPage,
   postToAccountPage,
   getHomeLibrary,
