@@ -63,7 +63,7 @@ const DrbbContainer = ({ drbbResults }) => {
           <a
             className="link"
             target="_blank"
-            href={`${appConfig.drbbFrontEnd[appConfig.environment]}/about`}
+            href={`${appConfig.drbbFrontEnd[appConfig.environment]}/about?source=catalog`}
           >
           Read more about the project
           </a>.
