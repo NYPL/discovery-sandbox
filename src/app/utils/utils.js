@@ -593,11 +593,27 @@ function institutionNameByNyplSource(nyplSource) {
 }
 
 /**
+ * Given a url, returns the same url with the added parameter source=catalog
+ * Used for DRB
+ */
+
+function addSource(url) {
+  try {
+    const parsedUrl = new URL(url);
+    const searchParams = parsedUrl.searchParams;
+    if (!searchParams.has('source')) searchParams.append('source', 'catalog');
+    return parsedUrl.toString();
+  } catch (error) {
+    return url;
+  }
+}
+
+/**
  * Given a bnumber (e.g. b12082323, pb123456, hb10000202040400) returns true
  * if it's an NYPL bnumber.
  */
 function isNyplBnumber(bnum) {
-  return /^b/.test(bnum)
+  return /^b/.test(bnum);
 }
 
 export {
@@ -622,5 +638,6 @@ export {
   extractNoticePreference,
   camelToShishKabobCase,
   institutionNameByNyplSource,
+  addSource,
   isNyplBnumber,
 };

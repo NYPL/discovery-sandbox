@@ -11,6 +11,7 @@ import {
 } from '../../utils/researchNowUtils';
 import {
   truncateStringOnWhitespace,
+  addSource,
 } from '../../utils/utils';
 
 // TODO: When the EDD integration is turned on in DRB we will need to handle application/edd+html media types as well
@@ -85,7 +86,7 @@ const DrbbResult = (props) => {
       <Link
         target="_blank"
         to={{
-          pathname: `${drbbFrontEnd}/read/${selectedLink.link_id}`,
+          pathname: addSource(`${drbbFrontEnd}/read/${selectedLink.link_id}`),
         }}
         className="drbb-read-online"
       >
@@ -124,7 +125,7 @@ const DrbbResult = (props) => {
     <li className="drbb-result">
       <Link
         target="_blank"
-        to={`${drbbFrontEnd}/work/${work.uuid}`}
+        to={addSource(`${drbbFrontEnd}/work/${work.uuid}`)}
         className="drbb-result-title"
       >
         {truncateStringOnWhitespace(title, 92)}
