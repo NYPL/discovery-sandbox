@@ -1,13 +1,13 @@
 /* global window */
 import React from 'react';
 import PropTypes from 'prop-types';
-import axios from 'axios';
 import Pagination from '../Pagination/Pagination';
 import ResultsList from '../ResultsList/ResultsList';
 import LocalLoadingLayer from './LocalLoadingLayer';
 /* eslint-disable import/first, import/no-unresolved, import/extensions */
 import Sorter from '@Sorter';
 import appConfig from '@appConfig';
+import CachedAxios from '../../utils/CachedAxios';
 /* eslint-enable import/first, import/no-unresolved, import/extensions */
 
 class BibsList extends React.Component {
@@ -25,10 +25,11 @@ class BibsList extends React.Component {
     this.updateBibPage = this.updateBibPage.bind(this);
     this.lastBib = this.lastBib.bind(this);
     this.firstBib = this.firstBib.bind(this);
-    this.perPage = 6;
+    this.perPage = appConfig.shepBibsLimit;
     this.changeBibSorting = this.changeBibSorting.bind(this);
     this.fetchBibs = this.fetchBibs.bind(this);
     this.pagination = this.pagination.bind(this);
+    this.cachedAxios = new CachedAxios();
   }
 
   componentDidMount() {
@@ -40,7 +41,7 @@ class BibsList extends React.Component {
   fetchBibs(stringifiedSortParams, cb = () => {}) {
     const { label } = this.props;
 
-    return axios(`${appConfig.baseUrl}/api/subjectHeading/${encodeURIComponent(label)}?&${stringifiedSortParams}`)
+    return this.cachedAxios.call(`${appConfig.baseUrl}/api/subjectHeading/${encodeURIComponent(label)}?&${stringifiedSortParams}`)
       .then((res) => {
         const {
           results,
@@ -125,7 +126,7 @@ class BibsList extends React.Component {
   fetchBibsFromShep(newPage) {
     const { nextUrl } = this.state;
 
-    return axios(nextUrl)
+    return this.cachedAxios.call(nextUrl)
       .then((res) => {
         const results = this.state.results.concat(res.data.results);
         this.setState({
