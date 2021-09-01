@@ -26,6 +26,7 @@ const createAPIQuery = basicQuery({
   sortBy: 'relevance',
   field: 'all',
   selectedFilters: {},
+  identifierNumbers: {},
 });
 
 const nyplApiClientCall = (query, urlEnabledFeatures = []) => {
@@ -37,14 +38,17 @@ const nyplApiClientCall = (query, urlEnabledFeatures = []) => {
     );
 };
 
-function fetchResults(searchKeywords = '', page, sortBy, order, field, filters, cb, errorcb, features) {
+function fetchResults(searchKeywords = '', page, sortBy, order, field, filters, identifierNumbers, expressRes, cb, errorcb, features) {
   const encodedResultsQueryString = createAPIQuery({
     searchKeywords,
     sortBy: sortBy ? `${sortBy}_${order}` : '',
     selectedFilters: filters,
     field,
     page,
+    identifierNumbers,
   });
+
+  console.log('encodedResultsQueryString: ', encodedResultsQueryString);
   const encodedAggregationsQueryString = createAPIQuery({
     searchKeywords,
     selectedFilters: filters,
@@ -88,6 +92,12 @@ function fetchResults(searchKeywords = '', page, sortBy, order, field, filters, 
   ])
     .then((response) => {
       const [results, aggregations, drbbResults] = response;
+      console.log('results: ', results);
+      if (identifierNumbers.redirectOnMatch && results.totalResults === 1) {
+        console.log('result: ', JSON.stringify(results.itemListElement[0].result, null, 2));
+        const bnumber = results.itemListElement[0].result.uri;
+        return expressRes.redirect(`${appConfig.baseUrl}/bib/${bnumber}`);
+      }
       const locationCodes = new Set();
       const { itemListElement } = results;
       if (!itemListElement) {
@@ -147,7 +157,25 @@ function fetchResults(searchKeywords = '', page, sortBy, order, field, filters, 
 }
 
 function search(req, res, resolve) {
-  const { page, q, sort, order, fieldQuery, filters } = getReqParams(req.query);
+
+  console.log('search:');
+  const {
+    page,
+    q,
+    sort,
+    order,
+    fieldQuery,
+    filters,
+    issn,
+    isbn,
+    oclc,
+    lccn,
+    redirectOnMatch,
+  } = getReqParams(req.query);
+
+  const identifierNumbers = { issn, isbn, oclc, lccn, redirectOnMatch };
+
+  console.log('identifierNumbers: ', identifierNumbers);
 
   const sortBy = sort.length ? [sort, order].filter(field => field.length).join('_') : 'relevance';
 
@@ -170,6 +198,8 @@ function search(req, res, resolve) {
     order,
     apiQueryField,
     apiQueryFilters,
+    identifierNumbers,
+    res,
     (apiFilters, searchResults, pageQuery, drbbResults) => resolve({
       filters: apiFilters,
       searchResults,
@@ -186,6 +216,7 @@ function search(req, res, resolve) {
 }
 
 function searchServerPost(req, res) {
+  console.log('search server post');
   const { fieldQuery, q, filters, sortQuery } = getReqParams(req.body);
   const { dateAfter, dateBefore } = req.body;
   // The filters from req.body may be an array of selected filters, or just an object

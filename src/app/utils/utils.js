@@ -172,6 +172,11 @@ const getFieldParam = (field = '') => {
   return `&search_scope=${field}`;
 };
 
+const getIdentifierQuery = (identifierNumbers = {}) =>
+  Object.entries(identifierNumbers).map(
+    ([key, value]) => (value ? `&${key}=${value}` : ''),
+  ).join('');
+
 /**
  * Tracks Google Analytics (GA) events. `.trackEvent` returns a function with
  * 'Discovery' set as the GA Category. `trackDiscovery` will then log the defined
@@ -202,10 +207,13 @@ const basicQuery = (props = {}) => {
     selectedFilters,
     searchKeywords,
     page,
+    identifierNumbers,
   }) => {
     const sortQuery = getSortQuery(sortBy || props.sortBy);
     const fieldQuery = getFieldParam(field || props.field);
     const filterQuery = getFilterParam(selectedFilters || props.selectedFilters);
+    const identifierQuery = getIdentifierQuery(identifierNumbers || props.identifierNumbers);
+    console.log('identifierQuery: ', identifierQuery);
     // `searchKeywords` can be an empty string, so check if it's undefined instead.
     const query = searchKeywords !== undefined ? searchKeywords : props.searchKeywords;
     const searchKeywordsQuery = query ? `${encodeURIComponent(query)}` : '';
@@ -213,7 +221,7 @@ const basicQuery = (props = {}) => {
     pageQuery = page && page !== '1' ? `&page=${page}` : pageQuery;
     pageQuery = page === '1' ? '' : pageQuery;
 
-    const completeQuery = `${searchKeywordsQuery}${filterQuery}${sortQuery}${fieldQuery}${pageQuery}`;
+    const completeQuery = `${searchKeywordsQuery}${filterQuery}${sortQuery}${fieldQuery}${pageQuery}${identifierQuery}`;
 
     return completeQuery ? `q=${completeQuery}` : null;
   };
@@ -227,6 +235,7 @@ const basicQuery = (props = {}) => {
  * @param {object} query The request query object from Express.
  */
 function getReqParams(query = {}) {
+  console.log('query: ', query);
   const page = query.page || '1';
   const perPage = query.per_page || '50';
   const q = query.q || '';
@@ -235,8 +244,28 @@ function getReqParams(query = {}) {
   const sortQuery = query.sort_scope || '';
   const fieldQuery = query.search_scope || '';
   const filters = query.filters || {};
+  const {
+    issn,
+    isbn,
+    oclc,
+    lccn,
+    redirectOnMatch,
+  } = query;
 
-  return { page, perPage, q, sort, order, sortQuery, fieldQuery, filters };
+  return {
+    page,
+    perPage,
+    q,
+    sort,
+    order,
+    sortQuery,
+    fieldQuery,
+    filters,
+    issn,
+    isbn,
+    oclc,
+    lccn,
+    redirectOnMatch };
 }
 
 /*
