@@ -10,7 +10,7 @@ import {
   combineBibDetailsData,
 } from '../../src/app/utils/bibDetailsUtils';
 
-describe.only('bibDetailsUtils', () => {
+describe('bibDetailsUtils', () => {
   describe('definitionItem', () => {
     const value = {
       label: 'ItemLabel',
