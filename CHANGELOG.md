@@ -1,5 +1,8 @@
 ## CHANGE LOG
 
+### 1.7.1
+- Security Update: change CDN URL to point to ux-static.nypl.org.
+
 ### 1.7.0
 - Replace Alt with Redux for state management
 
