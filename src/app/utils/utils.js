@@ -630,6 +630,7 @@ export {
   getFilterParam,
   destructureFilters,
   getDefaultFilters,
+  getIdentifierQuery,
   basicQuery,
   getReqParams,
   parseServerSelectedFilters,
