@@ -1,6 +1,8 @@
 /* eslint-env mocha */
+import fs from 'fs';
 import sinon from 'sinon';
 import { expect } from 'chai';
+import { jsdom } from 'jsdom';
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 
@@ -146,5 +148,58 @@ describe('`fetchAccountPage`', () => {
       expect(axiosGet.calledOnce).to.equal(true);
       expect(axiosGet.firstCall.args[0]).to.equal(`${appConfig.webpacBaseUrl}/dp/patroninfo*eng~Sdefault/6677666/items`);
     });
+  });
+});
+
+describe('preprocessAccountHtml', () => {
+  it('removes <link> and <script> tags from 5.1 markup (1)', () => {
+    const html = fs.readFileSync('./test/fixtures/sierra-5.1-patron-5035845-webpac-holds-markup.html', 'utf8');
+    let dom = jsdom(html);
+
+    // At the start, we expect it to have 2 <link> tags
+    expect(dom.querySelectorAll('link')).to.have.lengthOf(2);
+    // and 5 remote <script> tags
+    expect(dom.querySelectorAll('script[src]')).to.have.lengthOf(5);
+
+    dom = jsdom(Account.preprocessAccountHtml(html))
+
+    // It now has no <link> or remote <script> tags:
+    expect(dom.querySelectorAll('link,script[src]')).to.have.lengthOf(0);
+    // Ensure other critical parts of document remain
+    expect(dom.querySelectorAll('.patFuncTitle a')).to.have.lengthOf(4);
+  });
+
+  it('removes <link> and <script> tags from 5.1 markup (2)', () => {
+    const html = fs.readFileSync('./test/fixtures/sierra-5.1-patron-sb-webpac-holds-markup.html', 'utf8');
+    let dom = jsdom(html);
+
+    // At the start, we expect it to have 2 <link> tags
+    expect(dom.querySelectorAll('link')).to.have.lengthOf(2);
+    // and 5 remote <script> tags
+    expect(dom.querySelectorAll('script[src]')).to.have.lengthOf(5);
+
+    dom = jsdom(Account.preprocessAccountHtml(html))
+
+    // It now has no <link> or remote <script> tags:
+    expect(dom.querySelectorAll('link,script[src]')).to.have.lengthOf(0);
+    // Ensure other critical parts of document remain
+    expect(dom.querySelectorAll('.patFuncTitle a')).to.have.lengthOf(1);
+  });
+
+  it('removes <link> and <script> tags from 5.3 markup (1)', () => {
+    const html = fs.readFileSync('./test/fixtures/sierra-5.3-patron-5427701-webpac-holds-markup.html', 'utf8');
+    let dom = jsdom(html);
+
+    // At the start, we expect it to have 2 <link> tags
+    expect(dom.querySelectorAll('link')).to.have.lengthOf(2);
+    // And 5.3 markup has remote 5 script tags
+    expect(dom.querySelectorAll('script[src]')).to.have.lengthOf(5);
+
+    dom = jsdom(Account.preprocessAccountHtml(html))
+
+    // It now has no <link> or remote <script> tags:
+    expect(dom.querySelectorAll('link,script[src]')).to.have.lengthOf(0);
+    // Ensure other critical parts of document remain
+    expect(dom.querySelectorAll('.patFuncBibTitle a')).to.have.lengthOf(13);
   });
 });
