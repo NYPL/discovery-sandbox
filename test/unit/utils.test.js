@@ -499,6 +499,11 @@ describe('getReqParams', () => {
         fieldQuery: '',
         filters: {},
         perPage: '50',
+        issn: undefined,
+        isbn: undefined,
+        lccn: undefined,
+        oclc: undefined,
+        redirectOnMatch: undefined,
       });
     });
   });
@@ -515,6 +520,11 @@ describe('getReqParams', () => {
         fieldQuery: '',
         filters: {},
         perPage: '50',
+        issn: undefined,
+        isbn: undefined,
+        lccn: undefined,
+        oclc: undefined,
+        redirectOnMatch: undefined,
       });
     });
 
@@ -529,6 +539,11 @@ describe('getReqParams', () => {
         fieldQuery: '',
         filters: {},
         perPage: '50',
+        issn: undefined,
+        isbn: undefined,
+        lccn: undefined,
+        oclc: undefined,
+        redirectOnMatch: undefined,
       });
     });
 
@@ -543,6 +558,11 @@ describe('getReqParams', () => {
         fieldQuery: '',
         filters: {},
         perPage: '50',
+        issn: undefined,
+        isbn: undefined,
+        lccn: undefined,
+        oclc: undefined,
+        redirectOnMatch: undefined,
       });
     });
 
@@ -557,6 +577,11 @@ describe('getReqParams', () => {
         fieldQuery: 'author',
         filters: {},
         perPage: '50',
+        issn: undefined,
+        isbn: undefined,
+        lccn: undefined,
+        oclc: undefined,
+        redirectOnMatch: undefined,
       });
     });
 
@@ -571,6 +596,11 @@ describe('getReqParams', () => {
         fieldQuery: '',
         filters: {},
         perPage: '50',
+        issn: undefined,
+        isbn: undefined,
+        lccn: undefined,
+        oclc: undefined,
+        redirectOnMatch: undefined,
       });
     });
 
@@ -585,6 +615,11 @@ describe('getReqParams', () => {
         fieldQuery: '',
         filters: 'filters[owner]=orgs%3A1000',
         perPage: '50',
+        issn: undefined,
+        isbn: undefined,
+        lccn: undefined,
+        oclc: undefined,
+        redirectOnMatch: undefined,
       });
     });
   });

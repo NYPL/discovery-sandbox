@@ -5,7 +5,7 @@ import { expect } from 'chai';
 import appConfig from '../../src/app/data/appConfig';
 import CachedAxios from '../../src/app/utils/CachedAxios';
 
-describe.only('Cached Axios', () => {
+describe('Cached Axios', () => {
   let callCount = 0;
   let savedBaseUrl;
   const cachedAxios = new CachedAxios();

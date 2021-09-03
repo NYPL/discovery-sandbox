@@ -173,7 +173,7 @@ describe('BibsList', () => {
             setTimeout(() => {
               component.setProps({});
               setImmediate(() => {
-                expect(uri).to.equal('/api/subjectHeading/abcdefg?&sort=date&sort_direction=desc&per_page=50&shep_bib_count=undefined&shep_uuid=undefined');
+                expect(uri).to.equal('/api/subjectHeading/abcdefg?&sort=date&sort_direction=desc&per_page=10&shep_bib_count=undefined&shep_uuid=undefined');
               });
               setImmediate(() => resolve());
             }, 100);
