@@ -213,7 +213,6 @@ const basicQuery = (props = {}) => {
     const fieldQuery = getFieldParam(field || props.field);
     const filterQuery = getFilterParam(selectedFilters || props.selectedFilters);
     const identifierQuery = getIdentifierQuery(identifierNumbers || props.identifierNumbers);
-    console.log('identifierQuery: ', identifierQuery);
     // `searchKeywords` can be an empty string, so check if it's undefined instead.
     const query = searchKeywords !== undefined ? searchKeywords : props.searchKeywords;
     const searchKeywordsQuery = query ? `${encodeURIComponent(query)}` : '';
@@ -235,7 +234,6 @@ const basicQuery = (props = {}) => {
  * @param {object} query The request query object from Express.
  */
 function getReqParams(query = {}) {
-  console.log('query: ', query);
   const page = query.page || '1';
   const perPage = query.per_page || '50';
   const q = query.q || '';
