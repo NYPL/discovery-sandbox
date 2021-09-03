@@ -36,6 +36,17 @@ function getAccountPage(res, req) {
   });
 }
 
+/**
+ *  Given raw Account HTML, removes <link> and remote <script> tags to ensure
+ *  they're not injected into the html sent to the client (lest they generate a
+ *  bunch of erroneous 404s or worse.
+ */
+function preprocessAccountHtml(html) {
+  html = html.replace(/<link [^>]+\/>/g, '')
+  html = html.replace(/<script type="text\/javascript" src=[^>]+>\s*<\/script>/g, '')
+  return html
+}
+
 function fetchAccountPage(req, res, resolve) {
   const requireUser = User.requireUser(req, res);
   const { redirect } = requireUser;
@@ -78,14 +89,14 @@ function fetchAccountPage(req, res, resolve) {
       // but patron is not actually logged in, the case below is hit
       if (resp.request && resp.request.path.includes('/login?')) {
         // need to implement
-        console.log('need to redirect, might be buggy?');
+        console.log('Encountered login redirect while fetching account page');
         throw new Error('detected state mismatch, throwing error');
       }
 
-      resolve({ accountHtml: resp.data });
+      resolve({ accountHtml: preprocessAccountHtml(resp.data) });
     })
     .catch((resp) => {
-      console.error('resp error: ', resp);
+      console.error('Account page response error: ', resp);
       resolve({ accountHtml: { error: resp } });
     });
 }
@@ -113,6 +124,7 @@ function logError(req) {
 }
 
 export default {
+  preprocessAccountHtml,
   fetchAccountPage,
   postToAccountPage,
   getHomeLibrary,
