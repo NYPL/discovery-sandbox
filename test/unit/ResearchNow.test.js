@@ -26,7 +26,7 @@ describe('ResearchNow', () => {
       return ResearchNow.search({ query: { q: '' } })
         .then((res) => {
           expect(NyplApiClient.prototype.get.calledOnce).to.be.true;
-          expect(NyplApiClient.prototype.get.args[0][0]).to.equal('?query=keyword%3A*&page=1&size=3')
+          expect(NyplApiClient.prototype.get.args[0][0]).to.equal('?query=keyword%3A*&page=1&source=catalog&size=3')
           expect(res.works).to.be.a('array');
         });
     });
@@ -35,7 +35,7 @@ describe('ResearchNow', () => {
       return ResearchNow.search({ query: { q: 'toast' } })
         .then((res) => {
           expect(NyplApiClient.prototype.get.calledOnce).to.be.true;
-          expect(NyplApiClient.prototype.get.args[0][0]).to.equal('?query=keyword%3Atoast&page=1&size=3')
+          expect(NyplApiClient.prototype.get.args[0][0]).to.equal('?query=keyword%3Atoast&page=1&source=catalog&size=3')
           expect(res.works).to.be.a('array');
         });
     });
@@ -44,7 +44,7 @@ describe('ResearchNow', () => {
       return ResearchNow.search({ query: { q: 'toast', filters: { contributorLiteral: 'Poe' } } })
         .then((res) => {
           expect(NyplApiClient.prototype.get.calledOnce).to.be.true;
-          expect(NyplApiClient.prototype.get.args[0][0]).to.equal('?query=keyword%3Atoast,author%3APoe&page=1&size=3')
+          expect(NyplApiClient.prototype.get.args[0][0]).to.equal('?query=keyword%3Atoast,author%3APoe&page=1&source=catalog&size=3')
           expect(res.works).to.be.a('array');
         });
     });
@@ -56,7 +56,7 @@ describe('ResearchNow', () => {
         // Set DRB_API_BASE_URL to something resembling a v3 endpoint:
         process.env.DRB_API_BASE_URL = 'http://example.com/v3/search/'
       });
-  
+
       after(() => {
         // Set DRB_API_BASE_URL back to test.env val
         process.env.DRB_API_BASE_URL = 'http://example.com/search/'
@@ -85,7 +85,8 @@ describe('ResearchNow', () => {
                   field: "keyword",
                   query: "*"
                 }
-              ]
+              ],
+              source: 'catalog',
             });
             expect(res.works).to.be.a('array');
           });

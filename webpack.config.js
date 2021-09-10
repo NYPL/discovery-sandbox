@@ -63,6 +63,7 @@ const commonSettings = {
         BASE_URL: JSON.stringify(process.env.BASE_URL),
         WEBPAC_BASE_URL: JSON.stringify(process.env.WEBPAC_BASE_URL),
         FEATURES: JSON.stringify(process.env.FEATURES),
+        SHEP_BIBS_LIMIT: JSON.stringify(process.env.SHEP_BIBS_LIMIT),
       },
     }),
     // new BundleAnalyzerPlugin({

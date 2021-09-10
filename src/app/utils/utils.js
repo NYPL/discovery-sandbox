@@ -172,6 +172,11 @@ const getFieldParam = (field = '') => {
   return `&search_scope=${field}`;
 };
 
+const getIdentifierQuery = (identifierNumbers = {}) =>
+  Object.entries(identifierNumbers).map(
+    ([key, value]) => (value ? `&${key}=${value}` : ''),
+  ).join('');
+
 /**
  * Tracks Google Analytics (GA) events. `.trackEvent` returns a function with
  * 'Discovery' set as the GA Category. `trackDiscovery` will then log the defined
@@ -202,10 +207,12 @@ const basicQuery = (props = {}) => {
     selectedFilters,
     searchKeywords,
     page,
+    identifierNumbers,
   }) => {
     const sortQuery = getSortQuery(sortBy || props.sortBy);
     const fieldQuery = getFieldParam(field || props.field);
     const filterQuery = getFilterParam(selectedFilters || props.selectedFilters);
+    const identifierQuery = getIdentifierQuery(identifierNumbers || props.identifierNumbers);
     // `searchKeywords` can be an empty string, so check if it's undefined instead.
     const query = searchKeywords !== undefined ? searchKeywords : props.searchKeywords;
     const searchKeywordsQuery = query ? `${encodeURIComponent(query)}` : '';
@@ -213,7 +220,7 @@ const basicQuery = (props = {}) => {
     pageQuery = page && page !== '1' ? `&page=${page}` : pageQuery;
     pageQuery = page === '1' ? '' : pageQuery;
 
-    const completeQuery = `${searchKeywordsQuery}${filterQuery}${sortQuery}${fieldQuery}${pageQuery}`;
+    const completeQuery = `${searchKeywordsQuery}${filterQuery}${sortQuery}${fieldQuery}${pageQuery}${identifierQuery}`;
 
     return completeQuery ? `q=${completeQuery}` : null;
   };
@@ -235,8 +242,28 @@ function getReqParams(query = {}) {
   const sortQuery = query.sort_scope || '';
   const fieldQuery = query.search_scope || '';
   const filters = query.filters || {};
+  const {
+    issn,
+    isbn,
+    oclc,
+    lccn,
+    redirectOnMatch,
+  } = query;
 
-  return { page, perPage, q, sort, order, sortQuery, fieldQuery, filters };
+  return {
+    page,
+    perPage,
+    q,
+    sort,
+    order,
+    sortQuery,
+    fieldQuery,
+    filters,
+    issn,
+    isbn,
+    oclc,
+    lccn,
+    redirectOnMatch };
 }
 
 /*
@@ -569,11 +596,27 @@ function institutionNameByNyplSource(nyplSource) {
 }
 
 /**
+ * Given a url, returns the same url with the added parameter source=catalog
+ * Used for DRB
+ */
+
+function addSource(url) {
+  try {
+    const parsedUrl = new URL(url);
+    const searchParams = parsedUrl.searchParams;
+    if (!searchParams.has('source')) searchParams.append('source', 'catalog');
+    return parsedUrl.toString();
+  } catch (error) {
+    return url;
+  }
+}
+
+/**
  * Given a bnumber (e.g. b12082323, pb123456, hb10000202040400) returns true
  * if it's an NYPL bnumber.
  */
 function isNyplBnumber(bnum) {
-  return /^b/.test(bnum)
+  return /^b/.test(bnum);
 }
 
 export {
@@ -585,6 +628,7 @@ export {
   getFilterParam,
   destructureFilters,
   getDefaultFilters,
+  getIdentifierQuery,
   basicQuery,
   getReqParams,
   parseServerSelectedFilters,
@@ -598,5 +642,6 @@ export {
   extractNoticePreference,
   camelToShishKabobCase,
   institutionNameByNyplSource,
+  addSource,
   isNyplBnumber,
 };

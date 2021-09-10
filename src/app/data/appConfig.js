@@ -69,6 +69,7 @@ const appConfig = {
   libAnswersEmail: process.env.LIB_ANSWERS_EMAIL,
   itemBatchSize: process.env.ITEM_BATCH_SIZE || 100,
   webpacBaseUrl: process.env.WEBPAC_BASE_URL,
+  shepBibsLimit: process.env.SHEP_BIBS_LIMIT || 50,
 };
 
 export default appConfig;

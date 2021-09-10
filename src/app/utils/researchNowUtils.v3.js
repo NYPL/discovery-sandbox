@@ -1,3 +1,5 @@
+import { addSource } from './utils';
+
 /*
   `createResearchNowQuery()` currently handles:
   `search_scope`, `dateAfter`, `dateBefore`,
@@ -50,6 +52,7 @@ const createResearchNowQuery = (params) => {
   const query = {
     queries: [mainQuery],
     page: 0,
+    source: 'catalog',
   };
 
   if (sort) {
@@ -89,10 +92,10 @@ const authorQuery = author => ({
     query: author[getAuthorIdentifier(author)[0]],
     field: getAuthorIdentifier(author)[1],
   }]),
-  showQueries: JSON.stringify([{ query: author.name, field: 'author' }]),
+  showQueries: JSON.stringify([{ query: author.name, field: 'author', source: 'catalog' }]),
 });
 
-const formatUrl = link => (link.startsWith('http') ? link : `https://${link}`);
+const formatUrl = addSource(link => (link.startsWith('http') ? link : `https://${link}`));
 
 const generateStreamedReaderUrl = (url, eReaderUrl) => {
   const base64BookUrl = Buffer.from(formatUrl(url)).toString('base64');

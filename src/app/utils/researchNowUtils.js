@@ -1,5 +1,7 @@
 /* eslint-disable camelcase */
 
+import { addSource } from './utils';
+
 const mapSearchScope = {
   all: 'keyword',
   contributor: 'author',
@@ -46,6 +48,7 @@ const mapFilters = (filters = {}) => {
  *  Returns a hash representing an equivalent query against DRBAPI
  */
 const createResearchNowQuery = (params) => {
+
   const {
     q,
     sort,
@@ -63,6 +66,7 @@ const createResearchNowQuery = (params) => {
   const query = {
     query: [ mainQuery ],
     page: 1,
+    source: 'catalog',
   };
 
   if (sort) {
@@ -98,9 +102,9 @@ const createResearchNowQuery = (params) => {
   return query;
 };
 
-const authorQuery = author => ({query: `author:${author.name}`});
+const authorQuery = author => ({ query: `author:${author.name}`, source: 'catalog' });
 
-const formatUrl = link => (link.startsWith('http') ? link : `https://${link}`);
+const formatUrl = link => addSource((link.startsWith('http') ? link : `https://${link}`));
 
 /**
  *  Given a hash representation of a query string, e.g.
