@@ -676,6 +676,11 @@ describe('getReqParams', () => {
         perPage: '50',
         subject: undefined,
         title: undefined,
+        issn: undefined,
+        isbn: undefined,
+        lccn: undefined,
+        oclc: undefined,
+        redirectOnMatch: undefined,
       });
     });
 
@@ -683,6 +688,16 @@ describe('getReqParams', () => {
       const queryFromUrl = { title: 'The Raven', contributor: 'Edgar Allen Poe', subject: 'ravens' };
       expect(getReqParams(queryFromUrl)).to.eql({
         contributor: 'Edgar Allen Poe',
+        fieldQuery: '',
+        filters: {},
+        order: '',
+        page: '1',
+        perPage: '50',
+        q: '',
+        sort: '',
+        sortQuery: '',
+        subject: 'ravens',
+        title: 'The Raven',
         issn: undefined,
         isbn: undefined,
         lccn: undefined,
@@ -702,13 +717,14 @@ describe('getReqParams', () => {
         fieldQuery: '',
         filters: {},
         perPage: '50',
-        subject: 'ravens',
-        title: 'The Raven',
         issn: '1234-5678',
         isbn: '0123456789',
         lccn: '12345678',
         oclc: '234567890',
         redirectOnMatch: 'true',
+        contributor: undefined,
+        subject: undefined,
+        title: undefined,
       });
     });
   });
