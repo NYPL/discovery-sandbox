@@ -20,27 +20,40 @@ import { mockRouterContext } from '../helpers/routing';
 describe('BibPage', () => {
   const context = mockRouterContext();
   describe('Non-serial bib', () => {
+    const testStore = makeTestStore({
+      bib: {
+        done: true,
+        numItems: 0,
+      },
+    });
     let component;
     before(() => {
       const bib = { ...bibs[0], ...annotatedMarc };
-      component = shallow(
-        <BibPage
-          location={{ search: 'search', pathname: '' }}
-          bib={bib}
-          dispatch={() => {}}
-          resultSelection={{
-            fromUrl: '',
-            bibId: '',
-          }}
-        />, { context });
-      });
-    it('has Tabbed component with three tabs', () => {
-      const tabbed = component.find('Tabbed');
-      const tabs = tabbed.props().tabs;
-      const tabTitles = tabs.map(tab => tab.title);
-      expect(tabbed.length).to.equal(1);
-      expect(tabs.length).to.equal(3);
-      expect(tabTitles).to.deep.equal(['Availability', 'Details', 'Full Description']);
+      component = mount(
+        <Provider store={testStore}>
+          <BibPage
+            location={{ search: 'search', pathname: '' }}
+            bib={bib}
+            dispatch={() => {}}
+            resultSelection={{
+              fromUrl: '',
+              bibId: '',
+            }}
+          />
+        </Provider>, { context, childContextTypes: { router: PropTypes.object } });
+    });
+
+
+    it('has ItemsContainer', () => {
+      expect(component.find('ItemsContainer').length).to.equal(1);
+    });
+
+    it('has Details section', () => {
+      expect(component.find('Heading').at(3).prop('children')).to.equal('Details');
+    });
+
+    it('combines details sections', () => {
+      expect(component.findWhere(el => el.type() === 'dt' && el.text() === 'Abbreviated Title').length).to.equal(1);
     });
 
     it('has "View in Legacy Catalog" link', () => {
@@ -83,13 +96,16 @@ describe('BibPage', () => {
       itemTable = component.find('ItemTable');
     });
 
-    it('has Tabbed component with four tabs', () => {
-      const tabbed = component.find('Tabbed');
-      const tabs = tabbed.props().tabs;
-      const tabTitles = tabs.map(tab => tab.title);
-      expect(tabbed.length).to.equal(1);
-      expect(tabs.length).to.equal(4);
-      expect(tabTitles).to.deep.equal(['Availability', 'Details', 'Full Description', 'Library Holdings']);
+    it('has ItemsContainer', () => {
+      expect(component.find('ItemsContainer').length).to.equal(1);
+    });
+
+    it('has Details section', () => {
+      expect(component.find('Heading').at(4).prop('children')).to.equal('Details');
+    });
+
+    it('has holdings section', () => {
+      expect(component.find('LibraryHoldings').length).to.equal(1);
     });
 
     it('has item table with volume column', () => {
