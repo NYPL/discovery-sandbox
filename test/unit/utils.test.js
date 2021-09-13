@@ -20,6 +20,7 @@ import {
   truncateStringOnWhitespace,
   hasValidFilters,
   extractNoticePreference,
+  displayContext,
   camelToShishKabobCase,
   institutionNameByNyplSource,
   isNyplBnumber,
@@ -494,6 +495,33 @@ describe('basicQuery', () => {
       })).to.equal('q=&issn=1234&isbn=2345&oclc=3456&lccn=4567');
     });
   });
+
+  describe('when given advanced search params', () => {
+    const createAPIQuery = basicQuery({
+      title: 'The Raven',
+      subject: 'ravens',
+      contributor: 'Poe',
+    });
+
+    it('should accept advanced search params in initial query', () => {
+      expect(createAPIQuery({})).to.eql('q=&contributor=Poe&title=The Raven&subject=ravens');
+    });
+
+    it('should update advanced search params', () => {
+      const updatedParams = {
+        title: 'The Birds',
+        contributor: 'Hitchcock',
+        subject: 'birds',
+      };
+      expect(createAPIQuery(updatedParams)).to.eql('q=&contributor=Hitchcock&title=The Birds&subject=birds');
+    });
+
+    it('should clear advanced search params when explicitly told', () => {
+      expect(
+        createAPIQuery({ clearTitle: true, clearSubject: true, clearContributor: true }),
+      ).to.eql(null);
+    });
+  });
 });
 
 /**
@@ -503,6 +531,7 @@ describe('getReqParams', () => {
   describe('Default call', () => {
     it('should return the default object', () => {
       expect(getReqParams()).to.eql({
+        contributor: undefined,
         page: '1',
         q: '',
         sort: '',
@@ -511,6 +540,8 @@ describe('getReqParams', () => {
         fieldQuery: '',
         filters: {},
         perPage: '50',
+        subject: undefined,
+        title: undefined,
         issn: undefined,
         isbn: undefined,
         lccn: undefined,
@@ -524,6 +555,7 @@ describe('getReqParams', () => {
     it('should return updated page', () => {
       const queryFromUrl = { page: '4' };
       expect(getReqParams(queryFromUrl)).to.eql({
+        contributor: undefined,
         page: '4',
         q: '',
         sort: '',
@@ -532,6 +564,8 @@ describe('getReqParams', () => {
         fieldQuery: '',
         filters: {},
         perPage: '50',
+        subject: undefined,
+        title: undefined,
         issn: undefined,
         isbn: undefined,
         lccn: undefined,
@@ -543,6 +577,7 @@ describe('getReqParams', () => {
     it('should return updated searchKeywords', () => {
       const queryFromUrl = { q: 'harry potter' };
       expect(getReqParams(queryFromUrl)).to.eql({
+        contributor: undefined,
         page: '1',
         q: 'harry potter',
         sort: '',
@@ -551,6 +586,8 @@ describe('getReqParams', () => {
         fieldQuery: '',
         filters: {},
         perPage: '50',
+        subject: undefined,
+        title: undefined,
         issn: undefined,
         isbn: undefined,
         lccn: undefined,
@@ -562,6 +599,7 @@ describe('getReqParams', () => {
     it('should return updated sort by', () => {
       const queryFromUrl = { sort: 'title', sort_direction: 'asc' };
       expect(getReqParams(queryFromUrl)).to.eql({
+        contributor: undefined,
         page: '1',
         q: '',
         sort: 'title',
@@ -570,6 +608,8 @@ describe('getReqParams', () => {
         fieldQuery: '',
         filters: {},
         perPage: '50',
+        subject: undefined,
+        title: undefined,
         issn: undefined,
         isbn: undefined,
         lccn: undefined,
@@ -581,6 +621,7 @@ describe('getReqParams', () => {
     it('should return updated field', () => {
       const queryFromUrl = { search_scope: 'author' };
       expect(getReqParams(queryFromUrl)).to.eql({
+        contributor: undefined,
         page: '1',
         q: '',
         sort: '',
@@ -589,6 +630,8 @@ describe('getReqParams', () => {
         fieldQuery: 'author',
         filters: {},
         perPage: '50',
+        subject: undefined,
+        title: undefined,
         issn: undefined,
         isbn: undefined,
         lccn: undefined,
@@ -600,6 +643,7 @@ describe('getReqParams', () => {
     it('should return updated field', () => {
       const queryFromUrl = { sort_scope: 'title_asc' };
       expect(getReqParams(queryFromUrl)).to.eql({
+        contributor: undefined,
         page: '1',
         q: '',
         sort: '',
@@ -608,6 +652,8 @@ describe('getReqParams', () => {
         fieldQuery: '',
         filters: {},
         perPage: '50',
+        subject: undefined,
+        title: undefined,
         issn: undefined,
         isbn: undefined,
         lccn: undefined,
@@ -619,6 +665,7 @@ describe('getReqParams', () => {
     it('should return updated filters', () => {
       const queryFromUrl = { filters: 'filters[owner]=orgs%3A1000' };
       expect(getReqParams(queryFromUrl)).to.eql({
+        contributor: undefined,
         page: '1',
         q: '',
         sort: '',
@@ -627,6 +674,30 @@ describe('getReqParams', () => {
         fieldQuery: '',
         filters: 'filters[owner]=orgs%3A1000',
         perPage: '50',
+        subject: undefined,
+        title: undefined,
+        issn: undefined,
+        isbn: undefined,
+        lccn: undefined,
+        oclc: undefined,
+        redirectOnMatch: undefined,
+      });
+    });
+
+    it('should return advanced search params', () => {
+      const queryFromUrl = { title: 'The Raven', contributor: 'Edgar Allen Poe', subject: 'ravens' };
+      expect(getReqParams(queryFromUrl)).to.eql({
+        contributor: 'Edgar Allen Poe',
+        fieldQuery: '',
+        filters: {},
+        order: '',
+        page: '1',
+        perPage: '50',
+        q: '',
+        sort: '',
+        sortQuery: '',
+        subject: 'ravens',
+        title: 'The Raven',
         issn: undefined,
         isbn: undefined,
         lccn: undefined,
@@ -651,6 +722,9 @@ describe('getReqParams', () => {
         lccn: '12345678',
         oclc: '234567890',
         redirectOnMatch: 'true',
+        contributor: undefined,
+        subject: undefined,
+        title: undefined,
       });
     });
   });
@@ -859,7 +933,34 @@ describe('extractNoticePreference', () => {
   it('should return "None" if "268" field value is "-"', () => {
     expect(extractNoticePreference({ '268': {'value': '-'} })).to.equal('None');
   });
-})
+});
+
+describe('displayContext', () => {
+  it('should include searchKeywords', () => {
+    expect(displayContext({ searchKeywords: 'birds' })).to.eql('for keyword "birds"');
+  });
+
+  it('should map contributor to Author', () => {
+    expect(displayContext({ contributor: 'Poe' })).to.eql('for Author: Poe');
+  });
+
+  it('should map title to Title', () => {
+    expect(displayContext({ title: 'The Raven' })).to.eql('for Title: The Raven');
+  });
+
+  it('should map subject to Subject', () => {
+    expect(displayContext({ subject: 'ravens' })).to.eql('for Subject: ravens');
+  });
+
+  it('should combine terms', () => {
+    expect(displayContext({
+      subject: 'ravens',
+      contributor: 'Poe',
+      title: 'The Raven',
+      searchKeywords: 'birds',
+    })).to.eql('for keyword "birds" and Author: Poe and Title: The Raven and Subject: ravens');
+  });
+});
 
 describe('camelToShishKabobCase', () => {
   it('should convert camel to shish kabob case', () => {

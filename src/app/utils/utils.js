@@ -206,7 +206,13 @@ const basicQuery = (props = {}) => {
     field,
     selectedFilters,
     searchKeywords,
+    contributor,
+    title,
+    subject,
     page,
+    clearTitle,
+    clearSubject,
+    clearContributor,
     identifierNumbers,
   }) => {
     const sortQuery = getSortQuery(sortBy || props.sortBy);
@@ -219,8 +225,12 @@ const basicQuery = (props = {}) => {
     let pageQuery = props.page && props.page !== '1' ? `&page=${props.page}` : '';
     pageQuery = page && page !== '1' ? `&page=${page}` : pageQuery;
     pageQuery = page === '1' ? '' : pageQuery;
+    const contributorQuery = (contributor || props.contributor) && !clearContributor ? `&contributor=${contributor || props.contributor}` : '';
+    const titleQuery = (title || props.title) && !clearTitle ? `&title=${title || props.title}` : '';
+    const subjectQuery = (subject || props.subject) && !clearSubject ? `&subject=${subject || props.subject}` : '';
+    const advancedQuery = `${contributorQuery}${titleQuery}${subjectQuery}`;
 
-    const completeQuery = `${searchKeywordsQuery}${filterQuery}${sortQuery}${fieldQuery}${pageQuery}${identifierQuery}`;
+    const completeQuery = `${searchKeywordsQuery}${advancedQuery}${filterQuery}${sortQuery}${fieldQuery}${pageQuery}${identifierQuery}`;
 
     return completeQuery ? `q=${completeQuery}` : null;
   };
@@ -242,6 +252,10 @@ function getReqParams(query = {}) {
   const sortQuery = query.sort_scope || '';
   const fieldQuery = query.search_scope || '';
   const filters = query.filters || {};
+  const contributor = query.contributor;
+  const title = query.title;
+  const subject = query.subject;
+
   const {
     issn,
     isbn,
@@ -251,6 +265,9 @@ function getReqParams(query = {}) {
   } = query;
 
   return {
+    contributor,
+    title,
+    subject,
     page,
     perPage,
     q,
@@ -398,12 +415,11 @@ const getUpdatedFilterValues = (props) => {
    *
    * @returns {string} A phrase like "for (keyword|title|author) TERM"
    */
-function displayContext({ searchKeywords, selectedFilters, field, count }) {
+function displayContext({ searchKeywords, contributor, title, subject, selectedFilters, field, count }) {
   const keyMapping = {
     // Currently from links on the bib page:
     creatorLiteral: 'author',
     contributorLiteral: 'author',
-    subjectLiteral: 'subject',
     titleDisplay: 'title',
     // From the search field dropdown:
     contributor: 'author/contributor',
@@ -459,6 +475,18 @@ function displayContext({ searchKeywords, selectedFilters, field, count }) {
       fieldLabel = keyMapping[field];
     }
     clauses.push(`${fieldLabel} "${searchKeywords}"`);
+  }
+
+  if (contributor) {
+    clauses.push(`Author: ${contributor}`);
+  }
+
+  if (title) {
+    clauses.push(`Title: ${title}`);
+  }
+
+  if (subject) {
+    clauses.push(`Subject: ${subject}`);
   }
 
   // Now join the accumlated (0-2) "clauses" together into a phrase like:
