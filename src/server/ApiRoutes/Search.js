@@ -27,6 +27,7 @@ const createAPIQuery = basicQuery({
   sortBy: 'relevance',
   field: 'all',
   selectedFilters: {},
+  identifierNumbers: {},
 });
 
 const nyplApiClientCall = (query, urlEnabledFeatures = []) => {
@@ -38,7 +39,7 @@ const nyplApiClientCall = (query, urlEnabledFeatures = []) => {
     );
 };
 
-function fetchResults(searchKeywords = '', contributor, title, subject, page, sortBy, order, field, filters, cb, errorcb, features) {
+function fetchResults(searchKeywords = '', contributor, title, subject, page, sortBy, order, field, filters, identifierNumbers, expressRes, cb, errorcb, features) {
   const encodedResultsQueryString = createAPIQuery({
     searchKeywords,
     contributor,
@@ -48,7 +49,9 @@ function fetchResults(searchKeywords = '', contributor, title, subject, page, so
     selectedFilters: filters,
     field,
     page,
+    identifierNumbers,
   });
+
   const encodedAggregationsQueryString = createAPIQuery({
     searchKeywords,
     selectedFilters: filters,
@@ -92,6 +95,10 @@ function fetchResults(searchKeywords = '', contributor, title, subject, page, so
   ])
     .then((response) => {
       const [results, aggregations, drbbResults] = response;
+      if (identifierNumbers.redirectOnMatch && results.totalResults === 1) {
+        const bnumber = results.itemListElement[0].result.uri;
+        return expressRes.redirect(`${appConfig.baseUrl}/bib/${bnumber}`);
+      }
       const locationCodes = new Set();
       const { itemListElement } = results;
       if (!itemListElement) {
@@ -151,7 +158,24 @@ function fetchResults(searchKeywords = '', contributor, title, subject, page, so
 }
 
 function search(req, res, resolve) {
-  const { page, q, contributor, title, subject, sort, order, fieldQuery, filters } = getReqParams(req.query);
+  const {
+    page,
+    q,
+    contributor,
+    title,
+    subject,
+    sort,
+    order,
+    fieldQuery,
+    filters,
+    issn,
+    isbn,
+    oclc,
+    lccn,
+    redirectOnMatch,
+  } = getReqParams(req.query);
+
+  const identifierNumbers = { issn, isbn, oclc, lccn, redirectOnMatch };
 
   const sortBy = sort.length ? [sort, order].filter(field => field.length).join('_') : 'relevance';
 
@@ -177,6 +201,8 @@ function search(req, res, resolve) {
     order,
     apiQueryField,
     apiQueryFilters,
+    identifierNumbers,
+    res,
     (apiFilters, searchResults, pageQuery, drbbResults) => resolve({
       filters: apiFilters,
       searchResults,

@@ -172,6 +172,11 @@ const getFieldParam = (field = '') => {
   return `&search_scope=${field}`;
 };
 
+const getIdentifierQuery = (identifierNumbers = {}) =>
+  Object.entries(identifierNumbers).map(
+    ([key, value]) => (value ? `&${key}=${value}` : ''),
+  ).join('');
+
 /**
  * Tracks Google Analytics (GA) events. `.trackEvent` returns a function with
  * 'Discovery' set as the GA Category. `trackDiscovery` will then log the defined
@@ -208,10 +213,12 @@ const basicQuery = (props = {}) => {
     clearTitle,
     clearSubject,
     clearContributor,
+    identifierNumbers,
   }) => {
     const sortQuery = getSortQuery(sortBy || props.sortBy);
     const fieldQuery = getFieldParam(field || props.field);
     const filterQuery = getFilterParam(selectedFilters || props.selectedFilters);
+    const identifierQuery = getIdentifierQuery(identifierNumbers || props.identifierNumbers);
     // `searchKeywords` can be an empty string, so check if it's undefined instead.
     const query = searchKeywords !== undefined ? searchKeywords : props.searchKeywords;
     const searchKeywordsQuery = query ? `${encodeURIComponent(query)}` : '';
@@ -223,7 +230,7 @@ const basicQuery = (props = {}) => {
     const subjectQuery = (subject || props.subject) && !clearSubject ? `&subject=${subject || props.subject}` : '';
     const advancedQuery = `${contributorQuery}${titleQuery}${subjectQuery}`;
 
-    const completeQuery = `${searchKeywordsQuery}${advancedQuery}${filterQuery}${sortQuery}${fieldQuery}${pageQuery}`;
+    const completeQuery = `${searchKeywordsQuery}${advancedQuery}${filterQuery}${sortQuery}${fieldQuery}${pageQuery}${identifierQuery}`;
 
     return completeQuery ? `q=${completeQuery}` : null;
   };
@@ -249,7 +256,31 @@ function getReqParams(query = {}) {
   const title = query.title;
   const subject = query.subject;
 
-  return { page, perPage, q, contributor, title, subject, sort, order, sortQuery, fieldQuery, filters };
+  const {
+    issn,
+    isbn,
+    oclc,
+    lccn,
+    redirectOnMatch,
+  } = query;
+
+  return {
+    contributor,
+    title,
+    subject,
+    page,
+    perPage,
+    q,
+    sort,
+    order,
+    sortQuery,
+    fieldQuery,
+    filters,
+    issn,
+    isbn,
+    oclc,
+    lccn,
+    redirectOnMatch };
 }
 
 /*
@@ -625,6 +656,7 @@ export {
   getFilterParam,
   destructureFilters,
   getDefaultFilters,
+  getIdentifierQuery,
   basicQuery,
   getReqParams,
   parseServerSelectedFilters,

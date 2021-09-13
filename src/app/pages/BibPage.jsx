@@ -15,7 +15,6 @@ import itemsContainerModule from '../components/Item/ItemsContainer';
 import BibDetails from '../components/BibPage/BibDetails';
 import LibraryItem from '../utils/item';
 import AdditionalDetailsViewer from '../components/BibPage/AdditionalDetailsViewer';
-import Tabbed from '../components/BibPage/Tabbed';
 import NotFound404 from '../components/NotFound404/NotFound404';
 import LibraryHoldings from '../components/BibPage/LibraryHoldings';
 import getOwner from '../utils/getOwner';
@@ -30,6 +29,10 @@ import { itemBatchSize } from '../data/constants';
 import {
   getAggregatedElectronicResources,
 } from '../utils/utils';
+
+import {
+  annotatedMarcDetails,
+} from '../utils/bibDetailsUtils';
 
 const ItemsContainer = itemsContainerModule.ItemsContainer;
 
@@ -116,7 +119,7 @@ export const BibPage = (props, context) => {
     { label: 'Supplementary Content', value: 'supplementaryContent', selfLinkable: true },
   ];
 
-  const tabFields = [
+  const detailsFields = [
     { label: 'Additional Authors', value: 'contributorLiteral', linkable: true },
     { label: 'Found In', value: 'partOf' },
     { label: 'Publication Date', value: 'serialPublicationDates' },
@@ -144,7 +147,7 @@ export const BibPage = (props, context) => {
   // we will use the subjectLiteral property from the
   // Discovery API response instead
   if (!bib.subjectHeadingData) {
-    tabFields.push({
+    detailsFields.push({
       label: 'Subject', value: 'subjectLiteral', linkable: true,
     });
   }
@@ -160,40 +163,40 @@ export const BibPage = (props, context) => {
       holdings={bib.holdings}
     />
   ) : null;
-  // Related to removing MarcRecord because the webpack MarcRecord is not working. Sep/28/2017
-  // const marcRecord = isNYPLReCAP ? <MarcRecord bNumber={bNumber[0]} /> : null;
 
-  const tabDetails = (
-    <BibDetails
-      bib={bib}
-      fields={tabFields}
-      electronicResources={aggregatedElectronicResources}
-    />
-  );
-
-  const additionalDetails = (<AdditionalDetailsViewer bib={bib} />);
-
-  // It's an NYPL item if getOwner returns nothing:
   const isNYPL = isNyplBnumber(bib.uri);
 
-  const tabs = [
+  const details = (
+    <React.Fragment>
+      <Heading
+        level={3}
+      >
+        Details
+      </Heading>
+      <BibDetails
+        bib={bib}
+        fields={detailsFields}
+        electronicResources={aggregatedElectronicResources}
+        additionalData={isNYPL && bib.annotatedMarc ? annotatedMarcDetails(bib) : []}
+      />
+    </React.Fragment>
+  );
+
+  const contentAreas = [
     itemsContainer ? {
       title: 'Availability',
       content: itemsContainer,
-    } : null,
-    {
-      title: 'Details',
-      content: tabDetails,
-    },
-    isNYPL && bib.annotatedMarc ? {
-      title: 'Full Description',
-      content: additionalDetails,
     } : null,
     bib.holdings ? {
       title: 'Library Holdings',
       content: <LibraryHoldings holdings={bib.holdings} />,
     } : null,
-  ].filter(tab => tab);
+    {
+      title: 'Details',
+      content: details,
+    },
+  ].filter(area => area)
+    .map(area => <React.Fragment><br /> { area.content }</React.Fragment>);
 
   const classicLink = (
     bibId.startsWith('b') ?
@@ -234,10 +237,9 @@ export const BibPage = (props, context) => {
         logging
         electronicResources={aggregatedElectronicResources}
       />
-      <Tabbed
-        tabs={tabs}
-        hash={location.hash}
-      />
+      {
+        contentAreas
+      }
       {classicLink}
     </SccContainer>
   );
