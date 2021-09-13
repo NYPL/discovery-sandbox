@@ -11,6 +11,7 @@ import {
   createAppHistory,
   destructureFilters,
   getSortQuery,
+  getIdentifierQuery,
   getFilterParam,
   getFieldParam,
   basicQuery,
@@ -482,6 +483,17 @@ describe('basicQuery', () => {
         page: '5',
       })).to.equal('q=hamlet&sort=title&sort_direction=asc&search_scope=title&page=5');
     });
+
+    it('should update the identifier number query', () => {
+      expect(createAPIQuery({
+        identifierNumbers: {
+          issn: '1234',
+          isbn: '2345',
+          oclc: '3456',
+          lccn: '4567',
+        },
+      })).to.equal('q=&issn=1234&isbn=2345&oclc=3456&lccn=4567');
+    });
   });
 
   describe('when given advanced search params', () => {
@@ -530,6 +542,11 @@ describe('getReqParams', () => {
         perPage: '50',
         subject: undefined,
         title: undefined,
+        issn: undefined,
+        isbn: undefined,
+        lccn: undefined,
+        oclc: undefined,
+        redirectOnMatch: undefined,
       });
     });
   });
@@ -549,6 +566,11 @@ describe('getReqParams', () => {
         perPage: '50',
         subject: undefined,
         title: undefined,
+        issn: undefined,
+        isbn: undefined,
+        lccn: undefined,
+        oclc: undefined,
+        redirectOnMatch: undefined,
       });
     });
 
@@ -566,6 +588,11 @@ describe('getReqParams', () => {
         perPage: '50',
         subject: undefined,
         title: undefined,
+        issn: undefined,
+        isbn: undefined,
+        lccn: undefined,
+        oclc: undefined,
+        redirectOnMatch: undefined,
       });
     });
 
@@ -583,6 +610,11 @@ describe('getReqParams', () => {
         perPage: '50',
         subject: undefined,
         title: undefined,
+        issn: undefined,
+        isbn: undefined,
+        lccn: undefined,
+        oclc: undefined,
+        redirectOnMatch: undefined,
       });
     });
 
@@ -600,6 +632,11 @@ describe('getReqParams', () => {
         perPage: '50',
         subject: undefined,
         title: undefined,
+        issn: undefined,
+        isbn: undefined,
+        lccn: undefined,
+        oclc: undefined,
+        redirectOnMatch: undefined,
       });
     });
 
@@ -617,6 +654,11 @@ describe('getReqParams', () => {
         perPage: '50',
         subject: undefined,
         title: undefined,
+        issn: undefined,
+        isbn: undefined,
+        lccn: undefined,
+        oclc: undefined,
+        redirectOnMatch: undefined,
       });
     });
 
@@ -641,6 +683,17 @@ describe('getReqParams', () => {
       const queryFromUrl = { title: 'The Raven', contributor: 'Edgar Allen Poe', subject: 'ravens' };
       expect(getReqParams(queryFromUrl)).to.eql({
         contributor: 'Edgar Allen Poe',
+        issn: undefined,
+        isbn: undefined,
+        lccn: undefined,
+        oclc: undefined,
+        redirectOnMatch: undefined,
+      });
+    });
+
+    it('should pass identifier number related params', () => {
+      const queryFromUrl = { issn: '1234-5678', isbn: '0123456789', lccn: '12345678', oclc: '234567890', redirectOnMatch: 'true' };
+      expect(getReqParams(queryFromUrl)).to.eql({
         page: '1',
         q: '',
         sort: '',
@@ -651,6 +704,11 @@ describe('getReqParams', () => {
         perPage: '50',
         subject: 'ravens',
         title: 'The Raven',
+        issn: '1234-5678',
+        isbn: '0123456789',
+        lccn: '12345678',
+        oclc: '234567890',
+        redirectOnMatch: 'true',
       });
     });
   });
@@ -913,5 +971,16 @@ describe('isNyplBnumber', () => {
     expect(isNyplBnumber('pb1234')).to.eq(false);
     expect(isNyplBnumber('hb1234')).to.eq(false);
     expect(isNyplBnumber('cb1234')).to.eq(false);
+  });
+});
+
+describe('getIdentifierQuery', () => {
+  it('should combine key-value pairs into a query', () => {
+    expect(getIdentifierQuery({
+      issn: '1234',
+      isbn: '23456',
+      oclc: '34567',
+      lccn: '45678',
+    })).to.equal('&issn=1234&isbn=23456&oclc=34567&lccn=45678');
   });
 });

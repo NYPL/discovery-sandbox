@@ -1,7 +1,7 @@
 ## Discovery
 
 ### Version
-> 1.7.0
+> 1.7.1
 
 ### Research Catalog (formerly Shared Collection Catalog)
 [![GitHub version](https://badge.fury.io/gh/nypl-discovery%2Fdiscovery-front-end.svg)](https://badge.fury.io/gh/nypl-discovery%2Fdiscovery-front-end)

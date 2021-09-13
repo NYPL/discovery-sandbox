@@ -1,6 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import DefinitionList from './DefinitionList';
+import {
+  Heading,
+} from '@nypl/design-system-react-components';
 
 const LibraryHoldings = ({ holdings }) => {
   if (!holdings) {
@@ -36,6 +39,11 @@ const LibraryHoldings = ({ holdings }) => {
 
   return (
     <React.Fragment>
+      <Heading
+        level={3}
+      >
+        Holdings
+      </Heading>
       {
         holdings
         .map(holding =>
