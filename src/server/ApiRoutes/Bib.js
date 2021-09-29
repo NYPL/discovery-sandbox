@@ -151,7 +151,7 @@ function fetchBib(bibId, cb, errorcb, reqOptions, res) {
       return data;
     })
     .then((bib) => {
-      const status = (!bib || !bib.uri || bib.uri !== bibId) ? '404' : '200';
+      const status = (!bib || !bib.uri || !bibId.includes(bib.uri)) ? '404' : '200';
       if (status === '404') {
         return nyplApiClient()
           .then(client => client.get(`/bibs/sierra-nypl/${bibId.slice(1)}`))
