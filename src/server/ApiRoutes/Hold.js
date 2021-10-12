@@ -304,7 +304,7 @@ function newHoldRequest(req, res, resolve) {
   const { redirect } = requireUser;
   if (redirect) return resolve({ redirect });
 
-  const bibId = req.params.bibId || '';
+  const bibId = (req.params.bibId || '') + (req.params.itemId ? `-${req.params.itemId}` : '');
   const patronId = req.patronTokenResponse.decodedPatron ?
     req.patronTokenResponse.decodedPatron.sub : '';
   let barcode;
