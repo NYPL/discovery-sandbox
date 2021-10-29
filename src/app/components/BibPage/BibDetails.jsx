@@ -249,6 +249,19 @@ class BibDetails extends React.Component {
   }
 
   /**
+   * getNoteType(note)
+   * Construct label for a note by adding the word 'Note'
+   *
+   * @param {object} note
+   * @return {string}
+   */
+
+  getNoteType(note) {
+    const type = note.noteType || '';
+    return type.toLowerCase().includes('note') ? type : `${type} Note`;
+  }
+
+  /**
    * getDisplayFields(bib)
    * Get an array of definition term/values.
    *
@@ -330,8 +343,9 @@ class BibDetails extends React.Component {
             // Make sure all notes are blanknodes:
             .filter(n => (typeof n) === 'object')
             .reduce((groups, n) => {
-              if (!groups[n.noteType]) groups[n.noteType] = [];
-              groups[n.noteType].push(n);
+              const noteType = this.getNoteType(n);
+              if (!groups[noteType]) groups[noteType] = [];
+              groups[noteType].push(n);
               return groups;
             }, {});
 
