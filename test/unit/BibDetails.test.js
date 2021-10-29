@@ -198,7 +198,7 @@ describe('BibDetails', () => {
             bib: {
               note: [
                 { noteType: 'Language', prefLabel: 'In Urdu' },
-                { noteType: 'Explanatory Note', prefLabel: 'These regulations are to make provision...' },
+                { noteType: 'Explanatory Note', prefLabel: 'https://www.youtube.com/watch?v=Eikb2lX5xYE' },
               ],
             },
             fields: [{ label: 'Notes', value: 'React Component' }],
