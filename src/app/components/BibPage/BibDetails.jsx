@@ -258,7 +258,7 @@ class BibDetails extends React.Component {
 
   getNoteType(note) {
     const type = note.noteType || '';
-    return type.toLowerCase().includes('note') ? type : `${type} Note`;
+    return type.toLowerCase().includes('note') ? type : `${type} (note)`;
   }
 
   /**
