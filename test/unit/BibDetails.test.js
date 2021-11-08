@@ -209,7 +209,7 @@ describe('BibDetails', () => {
       );
 
       expect(component.find('dt').length).to.equal(2);
-      expect(component.find('dt').at(0).text()).to.equal('Language Note');
+      expect(component.find('dt').at(0).text()).to.equal('Language (note)');
       expect(component.find('dt').at(1).text()).to.equal('Explanatory Note');
     });
   });
