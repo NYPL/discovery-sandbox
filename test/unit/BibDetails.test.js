@@ -189,4 +189,28 @@ describe('BibDetails', () => {
       });
     });
   });
+
+  describe('getDisplayFields', () => {
+    it('modifies note fields appropriately', () => {
+      const component = mount(
+        React.createElement(BibDetails,
+          {
+            bib: {
+              note: [
+                { noteType: 'Language', prefLabel: 'In Urdu' },
+                { noteType: 'Explanatory Note', prefLabel: 'https://www.youtube.com/watch?v=Eikb2lX5xYE' },
+              ],
+            },
+            fields: [{ label: 'Notes', value: 'React Component' }],
+            electronicResources: [],
+            additionalData: [],
+          },
+        ),
+      );
+
+      expect(component.find('dt').length).to.equal(2);
+      expect(component.find('dt').at(0).text()).to.equal('Language (note)');
+      expect(component.find('dt').at(1).text()).to.equal('Explanatory Note');
+    });
+  });
 });
