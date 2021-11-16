@@ -56,9 +56,12 @@ function fetchResults(searchKeywords = '', contributor, title, subject, page, so
     searchKeywords,
     selectedFilters: filters,
     field,
+    identifierNumbers
   });
 
   const aggregationQuery = `/aggregations?${encodedAggregationsQueryString}`;
+  // TODO: Why are we hard-coding per_page=50? Could we set this to the number
+  // shown on Search Results pages (3)?
   const resultsQuery = `?${encodedResultsQueryString}&per_page=50`;
   const queryObj = {
     query: { q: searchKeywords, sortBy, order, field, filters },
