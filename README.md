@@ -71,7 +71,13 @@ Visit `localhost:3001` to see the UI locally.
 
 ## Contributing
 
-Cut branches off of the `development` branch, and open pull requests against `development`.
+This app has an unusual Git Workflow / deployment scheme:
+
+* Cut feature branches off of the `development` branch
+* Tag your feature branch\* `qa-deployment-{YYYY}-{MM}-{DD}` to deploy to QA
+* Merge your feature branch into `production` to deploy to production
+
+\* To QA multiple feature branches, create a branch called `qa-release-{YYYY}-{MM}-{DD}`, merge your feature branches into that, and then tag that with `qa-deployment-...`
 
 ## Webpack Bundle Analyzer
 We're using the [webpack-bundle-analyzer](https://github.com/th0r/webpack-bundle-analyzer) to analyze what is making the bundle file so big. When starting the app locally, or when running `npm run dist`, a `report.html` file will be generated in `/dist`. View this file in the browser to see the results from `webpack-bundle-analyzer`.
