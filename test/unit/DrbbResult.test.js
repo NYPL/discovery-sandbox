@@ -45,6 +45,21 @@ describe('DrbbResult', () => {
       });
     });
 
+    describe('edition with empty items', () => {
+      let component;
+      before(() => {
+        const workWithItemsNull = workData.data;
+        let { editions } = workWithItemsNull;
+        editions = [editions[0]];
+        editions[0].items = [];
+
+        component = shallow(<DrbbResult work={workWithItemsNull} />);
+      });
+      it('should still render', () => {
+        expect(component.find('li')).to.have.length(1);
+      });
+    });
+
     describe('work with no authors', () => {
       let component;
       before(() => {

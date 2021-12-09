@@ -60,7 +60,7 @@ const DrbbResult = (props) => {
   };
 
   const selectEdition = () => (editions.find(edition => (
-    edition && edition.items && edition.items[0].links && edition.items[0].links.length
+    edition && edition.items && edition.items.length && edition.items[0].links && edition.items[0].links.length
   ))) || editions[0];
 
   const edition = selectEdition();
