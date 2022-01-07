@@ -174,4 +174,4 @@ if (!isProduction && !isTest) {
   });
 }
 
-module.exports = app
+module.exports = app;
