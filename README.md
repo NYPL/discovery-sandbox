@@ -54,7 +54,7 @@ Visit `localhost:3001` to see the UI locally.
 
 ### Note: Legacy Development Mode
 
-If you choose to keep you environment file with each variable as `export set [key]=[value]`
+If you choose to keep your environment file with each variable as `export set [key]=[value]`
 you must start the application with `source .env; npm run start`
 This approach to setting environment variables is specific to all Nix Operating Systems.
 
