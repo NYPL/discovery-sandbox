@@ -52,6 +52,12 @@ As a convenience, the following commands override some config for you:
 
 Visit `localhost:3001` to see the UI locally.
 
+### Note: Legacy Development Mode
+
+If you choose to keep you environment file with each variable as `export set [key]=[value]`
+you must start the application with `source .env; npm run start`
+This approach to setting environment variables is specific to all Nix Operating Systems.
+
 ### API Responses
 
 There is a sample of the API responses that we receive from Platform in `sampleApiResponseStructure.json`. It is abbreviated but shows how we receive filters and search results. This is the response from the api endpoint, which the app sends requests to
