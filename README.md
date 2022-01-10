@@ -39,7 +39,7 @@ See [EBSVARS](EBSVARS.md) for more information.
 
 ### Development mode with different API environments
 
-To run a local instance of Discovery using configurations from `.env`:
+To run a local instance of the Discovery Front End application using configurations from `.env`:
 
 ```
 npm run start
