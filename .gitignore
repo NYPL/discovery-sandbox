@@ -10,6 +10,9 @@ selenium-debug.log
 nightwatch_reports
 log/*.log
 
+# Git files
+.gitCredentials
+
 # Local env:
 .env
 
