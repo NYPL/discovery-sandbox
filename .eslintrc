@@ -15,5 +15,10 @@
     "no-lonely-if": 0,
     "function-paren-newline": 0,
     "object-curly-newline": 0
+  },
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
   }
 }
