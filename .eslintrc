@@ -1,5 +1,11 @@
 {
-  "extends": ["airbnb", "plugin:jsx-a11y/recommended"],
+  "plugins": ["react", "jsx-a11y", "prettier"],
+  "extends": [
+    "airbnb",
+    "plugin:jsx-a11y/recommended",
+    "plugin:react/recommended",
+    "prettier"
+  ],
   "rules": {
     "react/forbid-prop-types": 0,
     "react/require-default-props": 0,
