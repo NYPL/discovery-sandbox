@@ -64,9 +64,15 @@ app.use('/', (req, res, next) => {
     return res.redirect(`${appConfig.baseUrl}/`);
   }
   // If request made on legacy base url, redirect to current base url:
-  if (appConfig.redirectFromBaseUrl && appConfig.redirectFromBaseUrl !== appConfig.baseUrl
-      && req.path.indexOf(appConfig.redirectFromBaseUrl) === 0) {
-    return res.redirect(302, req.originalUrl.replace(appConfig.redirectFromBaseUrl, appConfig.baseUrl));
+  if (
+    appConfig.redirectFromBaseUrl &&
+    appConfig.redirectFromBaseUrl !== appConfig.baseUrl &&
+    req.path.indexOf(appConfig.redirectFromBaseUrl) === 0
+  ) {
+    return res.redirect(
+      302,
+      req.originalUrl.replace(appConfig.redirectFromBaseUrl, appConfig.baseUrl),
+    );
   }
   return next();
 });
@@ -84,26 +90,27 @@ app.use('/*', initializePatronTokenAuth, getPatronData);
 app.use('/', apiRoutes);
 
 app.get('/*', (req, res) => {
-  const appRoutes = (req.url).indexOf(appConfig.baseUrl) !== -1 ? routes.client : routes.server;
+  const appRoutes =
+    req.url.indexOf(appConfig.baseUrl) !== -1 ? routes.client : routes.server;
   const store = req.store;
 
-  match({ routes: appRoutes, location: req.url }, (error, redirectLocation, renderProps) => {
-    if (error) {
-      res.status(500).send(error.message);
-    } else if (redirectLocation) {
-      res.redirect(302, redirectLocation.pathname + redirectLocation.search);
-    } else if (renderProps) {
-      store.dispatch(updateLoadingStatus(false));
-      application = ReactDOMServer.renderToString(
-        <Provider store={store}>
-          <RouterContext {...renderProps} />
-        </Provider>,
-      );
-      const title = DocumentTitle.rewind();
+  match(
+    { routes: appRoutes, location: req.url },
+    (error, redirectLocation, renderProps) => {
+      if (error) {
+        res.status(500).send(error.message);
+      } else if (redirectLocation) {
+        res.redirect(302, redirectLocation.pathname + redirectLocation.search);
+      } else if (renderProps) {
+        store.dispatch(updateLoadingStatus(false));
+        application = ReactDOMServer.renderToString(
+          <Provider store={store}>
+            <RouterContext {...renderProps} />
+          </Provider>,
+        );
+        const title = DocumentTitle.rewind();
 
-      res
-        .status(res.statusCode || 200)
-        .render('index', {
+        res.status(res.statusCode || 200).render('index', {
           application,
           appData: JSON.stringify(store.getState()).replace(/</g, '\\u003c'),
           appTitle: title,
@@ -113,10 +120,11 @@ app.get('/*', (req, res) => {
           isProduction,
           baseUrl: appConfig.baseUrl,
         });
-    } else {
-      res.status(404).redirect(`${appConfig.baseUrl}/`);
-    }
-  });
+      } else {
+        res.status(404).redirect(`${appConfig.baseUrl}/`);
+      }
+    },
+  );
 });
 
 let server = null;
@@ -126,7 +134,9 @@ if (!isTest) {
       logger.error(error);
     }
 
-    logger.info(`App - Express server is listening at localhost: ${app.get('port')}.`);
+    logger.info(
+      `App - Express server is listening at localhost: ${app.get('port')}.`,
+    );
   });
 }
 
@@ -140,7 +150,9 @@ const gracefulShutdown = () => {
   });
   // if after
   setTimeout(() => {
-    logger.error('Could not close connections in time, forcefully shutting down');
+    logger.error(
+      'Could not close connections in time, forcefully shutting down',
+    );
     process.exit();
   }, 1000);
 };
@@ -152,7 +164,7 @@ process.on('SIGINT', gracefulShutdown);
 /* Development Environment Configuration
  * -------------------------------------
  * - Using Webpack Dev Server
-*/
+ */
 if (!isProduction && !isTest) {
   const WebpackDevServer = require('webpack-dev-server');
 
@@ -170,7 +182,9 @@ if (!isProduction && !isTest) {
       logger.error(error);
     }
 
-    logger.info(`Webpack Dev Server listening at localhost: ${WEBPACK_DEV_PORT}.`);
+    logger.info(
+      `Webpack Dev Server listening at localhost: ${WEBPACK_DEV_PORT}.`,
+    );
   });
 }
 
