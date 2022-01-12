@@ -10,6 +10,7 @@ import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
 import { Provider } from 'react-redux';
 
+import WebpackDevServer from 'webpack-dev-server';
 import appConfig from './src/app/data/appConfig';
 import webpackConfig from './webpack.config';
 import apiRoutes from './src/server/ApiRoutes/ApiRoutes';
@@ -166,8 +167,6 @@ process.on('SIGINT', gracefulShutdown);
  * - Using Webpack Dev Server
  */
 if (!isProduction && !isTest) {
-  const WebpackDevServer = require('webpack-dev-server');
-
   new WebpackDevServer(webpack(webpackConfig), {
     publicPath: webpackConfig.output.publicPath,
     hot: true,
