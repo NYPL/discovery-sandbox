@@ -2,13 +2,10 @@ import path from 'path';
 import express from 'express';
 import compress from 'compression';
 import DocumentTitle from 'react-document-title';
-import React from 'react';
-import ReactDOMServer from 'react-dom/server';
-import { match, RouterContext } from 'react-router';
+import { match } from 'react-router';
 import webpack from 'webpack';
 import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
-import { Provider } from 'react-redux';
 
 import WebpackDevServer from 'webpack-dev-server';
 import appConfig from './src/app/data/appConfig';
@@ -23,6 +20,7 @@ import logger from './logger';
 import configureStore from './src/app/stores/configureStore';
 import initialState from './src/app/stores/InitialState';
 import { updateLoadingStatus } from './src/app/actions/Actions';
+import initializeReduxReact from './src';
 
 const ROOT_PATH = __dirname;
 const INDEX_PATH = path.resolve(ROOT_PATH, 'src/client');
@@ -32,8 +30,6 @@ const WEBPACK_DEV_PORT = appConfig.webpackDevServerPort || 3000;
 const isProduction = process.env.NODE_ENV === 'production';
 const isTest = process.env.NODE_ENV === 'test';
 const app = express();
-
-let application;
 
 app.use(compress());
 
@@ -104,15 +100,10 @@ app.get('/*', (req, res) => {
         res.redirect(302, redirectLocation.pathname + redirectLocation.search);
       } else if (renderProps) {
         store.dispatch(updateLoadingStatus(false));
-        application = ReactDOMServer.renderToString(
-          <Provider store={store}>
-            <RouterContext {...renderProps} />
-          </Provider>,
-        );
         const title = DocumentTitle.rewind();
 
         res.status(res.statusCode || 200).render('index', {
-          application,
+          application: initializeReduxReact(renderProps, store),
           appData: JSON.stringify(store.getState()).replace(/</g, '\\u003c'),
           appTitle: title,
           favicon: appConfig.favIconPath,
