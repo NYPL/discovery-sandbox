@@ -1,0 +1,16 @@
+{
+	"arrowParens": "always",
+	"overrides": [
+		{ "files": [".*rc", "*.json"], "options": { "parser": "json" } }
+	],
+	"semi": true,
+	"bracketSpacing": true,
+	"printWidth": 80,
+	"jsxBracketSameLine": false,
+	"quoteProps": "consistent",
+	"singleQuote": true,
+	"useTabs": true,
+	"tabWidth": 2,
+	"endOfLine": "lf",
+	"trailingComma": "all"
+}
