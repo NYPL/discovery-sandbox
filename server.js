@@ -10,6 +10,7 @@ import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
 import { Provider } from 'react-redux';
 
+import WebpackDevServer from 'webpack-dev-server';
 import appConfig from './src/app/data/appConfig';
 import webpackConfig from './webpack.config';
 import apiRoutes from './src/server/ApiRoutes/ApiRoutes';
