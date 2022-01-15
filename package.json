@@ -27,25 +27,14 @@
     "type": "git",
     "url": ""
   },
-  "keywords": [
-    "react",
-    "webpack",
-    "boilerplate",
-    "sass",
-    "hot",
-    "reload"
-  ],
+  "keywords": ["react", "webpack", "boilerplate", "sass", "hot", "reload"],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com//issues"
   },
   "nyc": {
-    "extension": [
-      ".jsx"
-    ],
-    "require": [
-      "babel-register"
-    ]
+    "extension": [".jsx"],
+    "require": ["babel-register"]
   },
   "devDependencies": {
     "axios-mock-adapter": "1.7.1",
