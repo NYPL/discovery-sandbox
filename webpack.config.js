@@ -6,6 +6,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const sassPaths = require('@nypl/design-toolkit').includePaths;
 const globImporter = require('node-sass-glob-importer');
 const Visualizer = require('webpack-visualizer-plugin');
+const sass = require('sass');
 
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
@@ -220,9 +221,12 @@ if (ENV === 'production') {
             {
               loader: 'sass-loader',
               options: {
+                sassOptions: {
+                  includePaths: sassPaths,
+                  importer: globImporter(),
+                },
                 sourceMap: true,
-                includePaths: sassPaths,
-                importer: globImporter(),
+                implementation: sass,
               },
             },
           ],
