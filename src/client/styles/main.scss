@@ -7,8 +7,8 @@ Import style rules from NYPL Design Toolkit
 /*
 Import style rules from NYPL Design System
 */
-@import '~@nypl/design-system-react-components/dist/styles.css';
-@import '~@nypl/design-system-react-components/dist/resources.scss';
+@import '@nypl/design-system-react-components/dist/styles.css';
+@import '@nypl/design-system-react-components/dist/resources.scss';
 
 /*
 App-specific utilities and defaults
@@ -23,8 +23,8 @@ App-specific utilities and defaults
 /*
 Import style rules from NYPL React module components
 */
-@import "~@nypl/dgx-header-component/dist/styles/main";
-@import "~@nypl/dgx-react-footer/dist/styles/styles";
+@import '@nypl/dgx-header-component/dist/styles/main';
+@import '@nypl/dgx-react-footer/dist/styles/styles';
 
 @import "components/**/*.scss";
 
