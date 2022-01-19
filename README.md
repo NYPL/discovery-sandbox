@@ -32,9 +32,8 @@ For searching, discovering and placing a hold on research items from NYPL and Re
     - [Hosting](#hosting)
   - [Development](#development)
     - [Different API environments](#different-api-environments)
-      - [Note: Legacy Development Mode](#note-legacy-development-mode)
-  - [API Responses](#api-responses)
-  - [Production mode](#production-mode)
+    - [API Responses](#api-responses)
+    - [Production mode](#production-mode)
 - [Technology](#technology)
 - [Contributing](#contributing)
 - [Webpack Bundle Analyzer](#webpack-bundle-analyzer)
@@ -65,7 +64,7 @@ Version 10.17.0
 
 #### NVM
 
-Best practices (though not requried) would suggest using a Node Version Manger (nvm) to aid in managing which Node runtime to use for development. Through utilizing an nvm you've the ability to quickly migration to and fro between different version for base development and/or testing purposes. Depending on your OS (\*Nix vs Windows) installation of a nvm varies.
+Best practices (though not requried) would suggest using a Node Version Manger (nvm) to aid in managing which Node runtime to use durring development. Through utilizing an nvm you've the ability to quickly migrate between different version for base development and/or testing purposes. Depending on your OS (\*Nix vs Windows) installation of a nvm varies.
 
 Relevant packages can be found here:
 
@@ -78,12 +77,12 @@ Relevant packages can be found here:
 To install packages run
 
 ```
-$ npm install
+$ npm install or npm i
 ```
 
 #### Note: Pre and Post Installation
 
-When installing you'll notice a pre and post install script run. These scripts are for **_QA_**/**_Production_**/**_Staging_** environments and can be ignored. However, if the scripts fail you it may indicate you're running a different version of Node's runtime environment.
+When installing you'll notice a pre and post install script run. These scripts are for **_QA_**/**_Production_**/**_Staging_** environments and can be ignored. However, if the scripts fail it may indicate you're running a different version of Node's runtime environment. Reference the projects [Node Runtime](#node-runtime)
 
 ### Configurations
 
@@ -100,15 +99,15 @@ See `.env-sample` for supported environmental variables. Rename `.env-sample` to
 
 #### VPN
 
-Fetching data for the `Subject Heading Explorer` and to perform an effective search in the research catalog Cisco AnyConnect must be installed and connected to. In a development environment, data is fetched via two different apis: platform and shep. Shep requires Cisco AnyConnect.
+Data is fetched via two APIs: Platform and Shep. For Shep to perform correctly Cisco's AnyConnect must be installed and connected. Fetching data for the `Subject Heading Explorer` and to perform an effective search in the `research catalog` you must connect to Cisco AnyConnect VPN.
 
-To set up Cisco AnyConnect contact a coworker.
+`To set up Cisco AnyConnect contact a coworker`
 
 #### Authentication
 
-Certain pages/content within the Discovery application require a user to be logged in. It's higly recommended to get a [NYPL library card](https://www.nypl.org/library-card) but it is not required.
+Certain pages/content within the Discovery application require a user to be logged in. It's higly recommended to apply for a [NYPL library card](https://www.nypl.org/library-card) but it is not required.
 
-There are additional test logins which can be used instead. Please ask a coworker for a list of available logins.
+There are additional test Patrons and Staff Logins which can be used. Please ask a coworker for the list of available logins.
 
 The login logic is managed by NYPL's Header component and Authentication is handled via a cookie passed to a separate NYPL applicaiton and returned to our web server. However, authentication will fail if your [hosting](#hosting) environment is not configured correctly.
 
@@ -121,8 +120,6 @@ Add this to your `etc/hosts` file. There is no need to remove or update any othe
 ```
 	127.0.0.1       local.nypl.org
 ```
-
-See [EBSVARS](EBSVARS.md) for more information.
 
 ### Development
 
@@ -139,20 +136,12 @@ As a convenience, the following commands override some configurations for you:
 - `npm run dev-api-start`: Use development API with *un*encrypted creds from `.env`
 - `npm run prod-api-start`: Use production API with encrypted creds from `.env`
 
-Visit `localhost:3001` to see the UI locally.
-
-##### Note: Legacy Development Mode
-
-If you choose to keep your environment file with each variable as `export set [key]=[value]`
-you must start the application with `source .env; npm run start`
-This approach to setting environment variables is specific to all Nix Operating Systems.
-
-### API Responses
+#### API Responses
 
 There is a sample of the API responses that we receive from Platform in `sampleApiResponseStructure.json`. It is abbreviated but shows how we receive filters and search results. This is the response from the api endpoint, which the app sends requests to
 whenever it requires new search results (for example when a new search is entered from the home page or when a subject link is followed from a Bib show page).
 
-### Production mode
+#### Production mode
 
 By default, the app runs with `NODE_ENV=development`, which means a separate server is invoked to serve live updates to assets in development. Deployed instances of the app operate with `NODE_ENV=production`, indicating the app should serve pre-built assets. Sometimes it's useful to run the app in production mode locally (e.g. to test the app for NOSCRIPT visitors).
 
