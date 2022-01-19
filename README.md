@@ -29,7 +29,7 @@ Front-end app for searching, discovering, and placing a hold on research items f
 
 ## Installation and Development
 
-### Node
+### Node Runtime
 
 ```
 Version 10.17.0
