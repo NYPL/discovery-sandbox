@@ -35,6 +35,14 @@ Front-end app for searching, discovering, and placing a hold on research items f
 Version 10.17.0
 ```
 
+Best practices (though not requried) would suggest using a Node Version Manger (nvm) to aid in managing which Node runtime to use for development. Through utilizing an nvm you've the ability to quickly migration to and fro between different version for base development and/or testing purposes. Depending on your OS (\*Nix vs Windows) installation of a nvm varies.
+
+Related packages can be found here:
+
+- [NVM for Windows](https://github.com/coreybutler/nvm-windows)
+
+- [NVM for Mac](https://github.com/nvm-sh/nvm)
+
 ### Installation
 
 To install packages run
