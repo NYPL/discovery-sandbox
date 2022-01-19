@@ -10,7 +10,8 @@ For searching, discovering and placing a hold on research items from NYPL and Re
 <img alt="Travis (.org)" src="https://img.shields.io/travis/nypl/discovery-front-end?style=for-the-badge">
 <img alt="Travis (.org) branch" src="https://img.shields.io/travis/nypl/discovery-front-end/master?label=Master%20Build&style=for-the-badge">
 <img alt="Libraries.io dependency status for GitHub repo" src="https://img.shields.io/librariesio/github/NYPL/discovery-front-end?style=for-the-badge">
-
+</br>
+</br>
 <img alt="Build with Love From NYPL" src="http://forthebadge.com/images/badges/built-with-love.svg">
 
 </div>
