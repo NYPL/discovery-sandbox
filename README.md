@@ -27,7 +27,13 @@ Front-end app for searching, discovering, and placing a hold on research items f
 - [Travis](https://travis-ci.org/)
 - [Prettier](https://prettier.io/docs/en/index.html)
 
-## Installation and running locally
+## Installation and Development
+
+### Node
+
+```
+Version 10.17.0
+```
 
 ### Installation
 
