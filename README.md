@@ -15,6 +15,42 @@ For searching, discovering and placing a hold on research items from NYPL and Re
 
 </div>
 
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+## Table of Contents
+
+- [Technology](#technology)
+- [Installation and Development](#installation-and-development)
+  - [Node Runtime](#node-runtime)
+  - [Installation](#installation)
+    - [Note](#note)
+  - [Configuration](#configuration)
+  - [Hosting](#hosting)
+  - [Authentication](#authentication)
+  - [Development mode with different API environments](#development-mode-with-different-api-environments)
+  - [Note: Legacy Development Mode](#note-legacy-development-mode)
+  - [API Responses](#api-responses)
+  - [Production mode](#production-mode)
+- [Contributing](#contributing)
+- [Webpack Bundle Analyzer](#webpack-bundle-analyzer)
+- [Testing](#testing)
+  - [Unit Tests](#unit-tests)
+  - [Code Coverage](#code-coverage)
+  - [End-to-end Tests](#end-to-end-tests)
+- [React Accessibility](#react-accessibility)
+  - [eslint-plugin-jsx-a11y](#eslint-plugin-jsx-a11y)
+  - [react-a11y](#react-a11y)
+- [Misc](#misc)
+- [Deployment](#deployment)
+  - [Elastic Beanstalk](#elastic-beanstalk)
+- [Feedback Form](#feedback-form)
+- [Alarm and Monitoring with AWS CloudWatch](#alarm-and-monitoring-with-aws-cloudwatch)
+- [Adding Locations](#adding-locations)
+- [Business Continuity](#business-continuity)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 ## Technology
 
 - Universal React
