@@ -45,7 +45,7 @@ $ npm install
 
 ### Configuration
 
-See `.env-sample` for supported environmental variables. Copy `.env-sample` to `.env` and replace placeholder values with your own - or obtain a prefilled version from a coworker.
+See `.env-sample` for supported environmental variables. Rename `.env-sample` to `.env` and replace placeholder values with your own - or obtain a prefilled version from a coworker.
 
 See [EBSVARS](EBSVARS.md) for more information.
 
