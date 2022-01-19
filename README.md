@@ -39,7 +39,9 @@ Version 10.17.0
 
 To install packages run
 
-    $ npm install
+```
+$ npm install
+```
 
 ### Configuration
 
