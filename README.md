@@ -51,6 +51,10 @@ To install packages run
 $ npm install
 ```
 
+#### Note
+
+When installing you'll notice a pre and post install script run. These scripts are for **_QA_**/**_Production_**/**_Staging_** environments and can be ignored. However, if the scripts fail you it may indicate you're running a different version of Node's runtime environment.
+
 ### Configuration
 
 See `.env-sample` for supported environmental variables. Rename `.env-sample` to `.env` and replace placeholder values with your own - or obtain a prefilled version from a coworker.
