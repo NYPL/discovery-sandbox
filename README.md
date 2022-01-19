@@ -19,20 +19,23 @@ For searching, discovering and placing a hold on research items from NYPL and Re
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
-## Table of Contents
-
-- [Technology](#technology)
-- [Installation and Development](#installation-and-development)
+- [Project Configurations](#project-configurations)
   - [Node Runtime](#node-runtime)
+    - [NVM](#nvm)
   - [Installation](#installation)
-    - [Note](#note)
-  - [Configuration](#configuration)
-  - [Hosting](#hosting)
-  - [Authentication](#authentication)
-  - [Development mode with different API environments](#development-mode-with-different-api-environments)
-  - [Note: Legacy Development Mode](#note-legacy-development-mode)
+    - [Note: Pre and Post Installation](#note-pre-and-post-installation)
+  - [Configurations](#configurations)
+    - [Node](#node)
+    - [Environment](#environment)
+    - [VPN](#vpn)
+    - [Authentication](#authentication)
+    - [Hosting](#hosting)
+  - [Development](#development)
+    - [Different API environments](#different-api-environments)
+      - [Note: Legacy Development Mode](#note-legacy-development-mode)
   - [API Responses](#api-responses)
   - [Production mode](#production-mode)
+- [Technology](#technology)
 - [Contributing](#contributing)
 - [Webpack Bundle Analyzer](#webpack-bundle-analyzer)
 - [Testing](#testing)
@@ -52,19 +55,7 @@ For searching, discovering and placing a hold on research items from NYPL and Re
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
-## Technology
-
-- Universal React
-- Redux
-- Webpack & Webpack Dev Server
-- ES6 and Babel
-- ESLint with [Airbnb's config](https://github.com/airbnb/javascript/tree/master/packages/eslint-config-airbnb)
-- Unit Testing with [Mocha](https://mochajs.org/) and [Enzyme](http://airbnb.io/enzyme/)
-- Express Server
-- [Travis](https://travis-ci.org/)
-- [Prettier](https://prettier.io/docs/en/index.html)
-
-## Installation and Development
+## Project Configurations
 
 ### Node Runtime
 
@@ -90,17 +81,50 @@ To install packages run
 $ npm install
 ```
 
-#### Note
+#### Note: Pre and Post Installation
 
 When installing you'll notice a pre and post install script run. These scripts are for **_QA_**/**_Production_**/**_Staging_** environments and can be ignored. However, if the scripts fail you it may indicate you're running a different version of Node's runtime environment.
 
-### Configuration
+### Configurations
+
+There are a few consideration to be aware of when spinning up a local development environment. And, while you will be able to view a local version on your machine with just setting up the environment variables, the application may soon break if the host isn't configured properly.
+
+#### Node
+
+Ensure you are running the proper [node version](#node-runtime).
+If missconfigured, there will be issues with webpack building the project due to how **_`sass`_** is configured
+
+#### Environment
 
 See `.env-sample` for supported environmental variables. Rename `.env-sample` to `.env` and replace placeholder values with your own - or obtain a prefilled version from a coworker.
 
+#### VPN
+
+Fetching data for the `Subject Heading Explorer` and to perform an effective search in the research catalog Cisco AnyConnect must be installed and connected to. In a development environment, data is fetched via two different apis: platform and shep. Shep requires Cisco AnyConnect.
+
+To set up Cisco AnyConnect contact a coworker.
+
+#### Authentication
+
+Certain pages/content within the Discovery application require a user to be logged in. It's higly recommended to get a [NYPL library card](https://www.nypl.org/library-card) but it is not required.
+
+There are additional test logins which can be used instead. Please ask a coworker for a list of available logins.
+
+The login logic is managed by NYPL's Header component and Authentication is handled via a cookie passed to a separate NYPL applicaiton and returned to our web server. However, authentication will fail if your [hosting](#hosting) environment is not configured correctly.
+
+#### Hosting
+
+In order to successfully login under a local deployment you'll need to update the `etc/hosts` file. This hosts file maps local host names to ips addresses.
+
+Add this to your `etc/hosts` file. There is no need to remove or update any other configuration in this file. Simply add it.
+
+```
+	127.0.0.1       local.nypl.org
+```
+
 See [EBSVARS](EBSVARS.md) for more information.
 
-### Development mode with different API environments
+### Development
 
 To run a local instance of the Discovery Front End application using configurations from `.env`:
 
@@ -108,14 +132,16 @@ To run a local instance of the Discovery Front End application using configurati
 npm run start
 ```
 
-As a convenience, the following commands override some config for you:
+#### Different API environments
+
+As a convenience, the following commands override some configurations for you:
 
 - `npm run dev-api-start`: Use development API with *un*encrypted creds from `.env`
 - `npm run prod-api-start`: Use production API with encrypted creds from `.env`
 
 Visit `localhost:3001` to see the UI locally.
 
-### Note: Legacy Development Mode
+##### Note: Legacy Development Mode
 
 If you choose to keep your environment file with each variable as `export set [key]=[value]`
 you must start the application with `source .env; npm run start`
@@ -136,6 +162,18 @@ To run the app locally in production mode you need to run two commands:
 - `source .env; npm run prod-start`: Start servers using production API & serve prebundled assets.
 
 Visit `localhost:3001` to see the UI locally.
+
+## Technology
+
+- Universal React
+- Redux
+- Webpack & Webpack Dev Server
+- ES6 and Babel
+- ESLint with [Airbnb's config](https://github.com/airbnb/javascript/tree/master/packages/eslint-config-airbnb)
+- Unit Testing with [Mocha](https://mochajs.org/) and [Enzyme](http://airbnb.io/enzyme/)
+- Express Server
+- [Travis](https://travis-ci.org/)
+- [Prettier](https://prettier.io/docs/en/index.html)
 
 ## Contributing
 
