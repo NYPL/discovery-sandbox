@@ -97,6 +97,8 @@ If missconfigured, there will be issues with webpack building the project due to
 
 See `.env-sample` for supported environmental variables. Rename `.env-sample` to `.env` and replace placeholder values with your own - or obtain a prefilled version from a coworker.
 
+See [EBSVARS](EBSVARS.md) for more information.
+
 #### VPN
 
 Data is fetched via two APIs: Platform and Shep. For Shep to perform correctly Cisco's AnyConnect must be installed and connected. Fetching data for the `Subject Heading Explorer` and to perform an effective search in the `research catalog` you must connect to Cisco AnyConnect VPN.
