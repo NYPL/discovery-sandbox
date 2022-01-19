@@ -1,17 +1,19 @@
-## Discovery
+<h1 align="center">NYPL Discovery Applicaiton</h1>
 
-### Version
+<div align="center">
 
-> 1.7.1
+The <a href="https://www.nypl.org/">NYPL</a> <a href="https://www.nypl.org/research/research-catalog/">Research Catalog</a> (formerly Shared Collection Catalog)
+</br>
+For searching, discovering and placing a hold on research items from NYPL and ReCAP partners. Leverages data from our <a href="https://github.com/NYPL-discovery/registry-api">Discovery API</a>.
 
-### Research Catalog (formerly Shared Collection Catalog)
+<img alt="GitHub package.json version" src="https://img.shields.io/github/package-json/v/nypl/discovery-front-end?style=for-the-badge">
+<img alt="Travis (.org)" src="https://img.shields.io/travis/nypl/discovery-front-end?style=for-the-badge">
+<img alt="Travis (.org) branch" src="https://img.shields.io/travis/nypl/discovery-front-end/master?label=Master%20Build&style=for-the-badge">
+<img alt="Libraries.io dependency status for GitHub repo" src="https://img.shields.io/librariesio/github/NYPL/discovery-front-end?style=for-the-badge">
 
-[![GitHub version](https://badge.fury.io/gh/nypl-discovery%2Fdiscovery-front-end.svg)](https://badge.fury.io/gh/nypl-discovery%2Fdiscovery-front-end)
-[![Build Status](https://travis-ci.org/NYPL/discovery-front-end.svg?branch=master)](https://travis-ci.org/NYPL/discovery-front-end)
-[![Dependencies Status](https://david-dm.org/nypl-discovery/discovery-front-end/status.svg)](https://david-dm.org/nypl-discovery/discovery-front-end)
-[![devDependencies Status](https://david-dm.org/nypl-discovery/discovery-front-end/dev-status.svg)](https://david-dm.org/nypl-discovery/discovery-front-end?type=dev)
+<img alt="Build with Love From NYPL" src="http://forthebadge.com/images/badges/built-with-love.svg">
 
-[![forthebadge](http://forthebadge.com/images/badges/built-with-love.svg)](https://nypl.org)
+</div>
 
 Front-end app for searching, discovering, and placing a hold on research items from NYPL and ReCAP partners. Currently using data from the [Discovery API](https://github.com/NYPL-discovery/registry-api).
 
