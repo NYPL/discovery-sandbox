@@ -35,6 +35,8 @@ For searching, discovering and placing a hold on research items from NYPL and Re
     - [API Responses](#api-responses)
     - [Production mode](#production-mode)
 - [Technology](#technology)
+- [Tools](#tools)
+  - [Prettier](#prettier)
 - [Contributing](#contributing)
 - [Webpack Bundle Analyzer](#webpack-bundle-analyzer)
 - [Testing](#testing)
