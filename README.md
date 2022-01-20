@@ -1,14 +1,14 @@
-<h1 align="center">NYPL Discovery Applicaiton</h1>
-
 <div align="center">
 
-The <a href="https://www.nypl.org/">NYPL</a> <a href="https://www.nypl.org/research/research-catalog/">Research Catalog</a> (formerly Shared Collection Catalog)
-</br>
-For searching, discovering and placing a hold on research items from NYPL and ReCAP partners. Leverages data from our <a href="https://github.com/NYPL-discovery/registry-api">Discovery API</a>.
+# NYPL Discovery Applicaiton
 
-![GitHub package.json version](https://img.shields.io/github/package-json/v/nypl/discovery-front-end?style=for-the-badge)
-![Travis (.com)](https://img.shields.io/travis/com/nypl/discovery-front-end?style=for-the-badge&label=Dev)
-![Travis (.com) branch](https://img.shields.io/travis/com/nypl/discovery-front-end/production?style=for-the-badge&label=Pro)![Libraries.io dependency status for GitHub repo](https://img.shields.io/librariesio/github/nypl/discovery-front-end?style=for-the-badge)
+## The [NYPL](https://www.nypl.org/) [Research Catalog](https://www.nypl.org/research/research-catalog/) (formerly Shared Collection Catalog)
+
+For searching, discovering and placing a hold on research items from NYPL and ReCAP partners. Leverages data from our [Discovery API](https://github.com/NYPL-discovery/registry-api).
+
+[![GitHub package.json version](https://img.shields.io/github/package-json/v/nypl/discovery-front-end?style=flat-square)](https://github.com/NYPL/discovery-front-end)
+[![Travis (.com)](https://img.shields.io/travis/com/nypl/discovery-front-end?style=flat-square&label=Dev)](https://app.travis-ci.com/github/NYPL/discovery-front-end)
+[![Travis (.com) branch](https://img.shields.io/travis/com/nypl/discovery-front-end/production?style=flat-square&label=Pro)](https://app.travis-ci.com/github/NYPL/discovery-front-end)
 
 [![forthebadge](http://forthebadge.com/images/badges/built-with-love.svg)](https://nypl.org)
 
