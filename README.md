@@ -183,7 +183,7 @@ Formatting is not automatic unless you've installed the [prettier extension](htt
 WIP: Unfortunately we do not have a hook set up to run the formatter prior to commiting. If you do not have prettier installed and running on a document save you'll have to run it manually.
 
 ```
-npx prettier --write <file location>
+npx prettier --write path/to/file
 ```
 
 ## Contributing
