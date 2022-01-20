@@ -166,6 +166,24 @@ Visit `localhost:3001` to see the UI locally.
 - [Travis](https://travis-ci.org/)
 - [Prettier](https://prettier.io/docs/en/index.html)
 
+## Tools
+
+### Prettier
+
+[Prettier](https://prettier.io/docs/en/index.html) is a code formatting tool. The [.prettierrc](.prettierrc) configuration file defines the colaborative standards to use as our code format.
+
+> Prettier
+>
+> It removes all original styling and ensures that all outputted code conforms to a consistent style.
+
+Formatting is not automatic unless you've installed the [prettier extension](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode) (assuming you're using [vscode](https://code.visualstudio.com/)) in your editor.
+
+WIP: Unfortunately we do not have a hook set up to run the formatter prior to commiting. If you do not have prettier installed and running on a document save you'll have to run it manually.
+
+```
+npx prettier --write <file location>
+```
+
 ## Contributing
 
 This app has an unusual Git Workflow / deployment scheme:
