@@ -7,8 +7,8 @@
 For searching, discovering and placing a hold on research items from NYPL and ReCAP partners. Leverages data from our [Discovery API](https://github.com/NYPL-discovery/registry-api).
 
 [![GitHub package.json version](https://img.shields.io/github/package-json/v/nypl/discovery-front-end?style=flat-square)](https://github.com/NYPL/discovery-front-end)
-[![Travis (.com)](https://img.shields.io/travis/com/nypl/discovery-front-end?style=flat-square&label=Dev)](https://app.travis-ci.com/github/NYPL/discovery-front-end)
-[![Travis (.com) branch](https://img.shields.io/travis/com/nypl/discovery-front-end/production?style=flat-square&label=Pro)](https://app.travis-ci.com/github/NYPL/discovery-front-end)
+[![Travis (.com)](https://img.shields.io/travis/com/nypl/discovery-front-end?style=flat-square&label=Dev)](https://app.travis-ci.com/NYPL/discovery-front-end)
+[![Travis (.com) branch](https://img.shields.io/travis/com/nypl/discovery-front-end/production?style=flat-square&label=Pro)](https://app.travis-ci.com/NYPL/discovery-front-end)
 
 [![forthebadge](http://forthebadge.com/images/badges/built-with-love.svg)](https://nypl.org)
 
