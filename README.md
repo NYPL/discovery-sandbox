@@ -6,13 +6,11 @@ The <a href="https://www.nypl.org/">NYPL</a> <a href="https://www.nypl.org/resea
 </br>
 For searching, discovering and placing a hold on research items from NYPL and ReCAP partners. Leverages data from our <a href="https://github.com/NYPL-discovery/registry-api">Discovery API</a>.
 
-<img alt="GitHub package.json version" src="https://img.shields.io/github/package-json/v/nypl/discovery-front-end?style=for-the-badge">
-<img alt="Travis (.org)" src="https://img.shields.io/travis/nypl/discovery-front-end?style=for-the-badge">
-<img alt="Travis (.org) branch" src="https://img.shields.io/travis/nypl/discovery-front-end/master?label=Master%20Build&style=for-the-badge">
-<img alt="Libraries.io dependency status for GitHub repo" src="https://img.shields.io/librariesio/github/NYPL/discovery-front-end?style=for-the-badge">
-</br>
-</br>
-<img alt="Build with Love From NYPL" src="http://forthebadge.com/images/badges/built-with-love.svg">
+![GitHub package.json version](https://img.shields.io/github/package-json/v/nypl/discovery-front-end?style=for-the-badge)
+![Travis (.com)](https://img.shields.io/travis/com/nypl/discovery-front-end?style=for-the-badge&label=Dev)
+![Travis (.com) branch](https://img.shields.io/travis/com/nypl/discovery-front-end/production?style=for-the-badge&label=Pro)![Libraries.io dependency status for GitHub repo](https://img.shields.io/librariesio/github/nypl/discovery-front-end?style=for-the-badge)
+
+[![forthebadge](http://forthebadge.com/images/badges/built-with-love.svg)](https://nypl.org)
 
 </div>
 
