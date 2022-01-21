@@ -33,10 +33,10 @@ function constructFileStructure(file) {
 
 function getFileNames(file) {
   try {
-    if (IGNORE.some(name => file.includes(name))) return [];
+    if (IGNORE.some((name) => file.includes(name))) return [];
     return fs
       .readdirSync(file)
-      .map(subfile => getFileNames(`${file}/${subfile}`))
+      .map((subfile) => getFileNames(`${file}/${subfile}`))
       .reduce((acc, el) => acc.concat(el), []);
   } catch (ex) {
     return [file];
@@ -53,48 +53,42 @@ function shortenName(fileName, files) {
 }
 
 function mapNames(files) {
-  const withoutAt = files
-    .reduce(
-      (mapped, file) =>
-        Object
-          .assign(mapped, { [shortenName(file, mapped)]: file }),
-      {},
-    );
-  return Object.keys(withoutAt)
-    .reduce(
-      (mapped, key) =>
-        Object
-          .assign(mapped, { [`@${key}`]: withoutAt[key] }),
-      {},
-    );
+  const withoutAt = files.reduce(
+    (mapped, file) =>
+      Object.assign(mapped, { [shortenName(file, mapped)]: file }),
+    {},
+  );
+  return Object.keys(withoutAt).reduce(
+    (mapped, key) => Object.assign(mapped, { [`@${key}`]: withoutAt[key] }),
+    {},
+  );
 }
 
 function modifyNestedKey(object, key, value) {
   if (typeof object === 'string') return object;
-  if (Array.isArray(object)) return object.map(el => modifyNestedKey(el, key, value));
+  if (Array.isArray(object)) {
+    return object.map((el) => modifyNestedKey(el, key, value));
+  }
   if (typeof object === 'object') {
     if (!object[key]) {
-      return Object.keys(object)
-        .reduce(
-          (mapped, nestedKey) =>
-            Object
-              .assign(mapped, { [nestedKey]: modifyNestedKey(object[nestedKey], key, value) }),
-          {},
-        );
-    }
-    return Object.keys(object)
-      .reduce(
+      return Object.keys(object).reduce(
         (mapped, nestedKey) =>
-          Object
-            .assign(mapped,
-              {
-                [nestedKey]: nestedKey === key ?
-                  value
-                  : modifyNestedKey(object[nestedKey], key, value),
-              },
-            ),
+          Object.assign(mapped, {
+            [nestedKey]: modifyNestedKey(object[nestedKey], key, value),
+          }),
         {},
       );
+    }
+    return Object.keys(object).reduce(
+      (mapped, nestedKey) =>
+        Object.assign(mapped, {
+          [nestedKey]:
+            nestedKey === key
+              ? value
+              : modifyNestedKey(object[nestedKey], key, value),
+        }),
+      {},
+    );
   }
   return null;
 }
@@ -105,12 +99,7 @@ function write() {
     '.babelrcExp',
     JSON.stringify(
       modifyNestedKey(
-        JSON.parse(
-          fs.readFileSync(
-            '.babelrc',
-            'utf8',
-          ),
-        ),
+        JSON.parse(fs.readFileSync('.babelrc', 'utf8')),
         'alias',
         mapped,
       ),
@@ -120,4 +109,10 @@ function write() {
   );
 }
 
-module.exports = { constructFileStructure, getFileNames, mapNames, modifyNestedKey, write };
+module.exports = {
+  constructFileStructure,
+  getFileNames,
+  mapNames,
+  modifyNestedKey,
+  write,
+};

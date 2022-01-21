@@ -4,10 +4,7 @@
       "@babel/preset-env",
       {
         "targets": {
-          "browsers": [
-            "last 2 versions",
-            "ie >= 10"
-          ]
+          "browsers": ["last 2 versions", "ie >= 10"]
         }
       }
     ],
@@ -17,9 +14,7 @@
     [
       "module-resolver",
       {
-        "root": [
-          "./src"
-        ],
+        "root": ["./src"],
         "alias": {
           "@": "./.babelrc",
           "@.": "./.eslintrc",

@@ -2,14 +2,12 @@ import path from 'path';
 import express from 'express';
 import compress from 'compression';
 import DocumentTitle from 'react-document-title';
-import React from 'react';
-import ReactDOMServer from 'react-dom/server';
-import { match, RouterContext } from 'react-router';
+import { match } from 'react-router';
 import webpack from 'webpack';
 import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
-import { Provider } from 'react-redux';
 
+import WebpackDevServer from 'webpack-dev-server';
 import appConfig from './src/app/data/appConfig';
 import webpackConfig from './webpack.config';
 import apiRoutes from './src/server/ApiRoutes/ApiRoutes';
@@ -22,6 +20,7 @@ import logger from './logger';
 import configureStore from './src/app/stores/configureStore';
 import initialState from './src/app/stores/InitialState';
 import { updateLoadingStatus } from './src/app/actions/Actions';
+import initializeReduxReact from './src';
 
 const ROOT_PATH = __dirname;
 const INDEX_PATH = path.resolve(ROOT_PATH, 'src/client');
@@ -31,8 +30,6 @@ const WEBPACK_DEV_PORT = appConfig.webpackDevServerPort || 3000;
 const isProduction = process.env.NODE_ENV === 'production';
 const isTest = process.env.NODE_ENV === 'test';
 const app = express();
-
-let application;
 
 app.use(compress());
 
@@ -64,9 +61,15 @@ app.use('/', (req, res, next) => {
     return res.redirect(`${appConfig.baseUrl}/`);
   }
   // If request made on legacy base url, redirect to current base url:
-  if (appConfig.redirectFromBaseUrl && appConfig.redirectFromBaseUrl !== appConfig.baseUrl
-      && req.path.indexOf(appConfig.redirectFromBaseUrl) === 0) {
-    return res.redirect(302, req.originalUrl.replace(appConfig.redirectFromBaseUrl, appConfig.baseUrl));
+  if (
+    appConfig.redirectFromBaseUrl &&
+    appConfig.redirectFromBaseUrl !== appConfig.baseUrl &&
+    req.path.indexOf(appConfig.redirectFromBaseUrl) === 0
+  ) {
+    return res.redirect(
+      302,
+      req.originalUrl.replace(appConfig.redirectFromBaseUrl, appConfig.baseUrl),
+    );
   }
   return next();
 });
@@ -84,27 +87,23 @@ app.use('/*', initializePatronTokenAuth, getPatronData);
 app.use('/', apiRoutes);
 
 app.get('/*', (req, res) => {
-  const appRoutes = (req.url).indexOf(appConfig.baseUrl) !== -1 ? routes.client : routes.server;
+  const appRoutes =
+    req.url.indexOf(appConfig.baseUrl) !== -1 ? routes.client : routes.server;
   const store = req.store;
 
-  match({ routes: appRoutes, location: req.url }, (error, redirectLocation, renderProps) => {
-    if (error) {
-      res.status(500).send(error.message);
-    } else if (redirectLocation) {
-      res.redirect(302, redirectLocation.pathname + redirectLocation.search);
-    } else if (renderProps) {
-      store.dispatch(updateLoadingStatus(false));
-      application = ReactDOMServer.renderToString(
-        <Provider store={store}>
-          <RouterContext {...renderProps} />
-        </Provider>,
-      );
-      const title = DocumentTitle.rewind();
+  match(
+    { routes: appRoutes, location: req.url },
+    (error, redirectLocation, renderProps) => {
+      if (error) {
+        res.status(500).send(error.message);
+      } else if (redirectLocation) {
+        res.redirect(302, redirectLocation.pathname + redirectLocation.search);
+      } else if (renderProps) {
+        store.dispatch(updateLoadingStatus(false));
+        const title = DocumentTitle.rewind();
 
-      res
-        .status(res.statusCode || 200)
-        .render('index', {
-          application,
+        res.status(res.statusCode || 200).render('index', {
+          application: initializeReduxReact(renderProps, store),
           appData: JSON.stringify(store.getState()).replace(/</g, '\\u003c'),
           appTitle: title,
           favicon: appConfig.favIconPath,
@@ -113,10 +112,11 @@ app.get('/*', (req, res) => {
           isProduction,
           baseUrl: appConfig.baseUrl,
         });
-    } else {
-      res.status(404).redirect(`${appConfig.baseUrl}/`);
-    }
-  });
+      } else {
+        res.status(404).redirect(`${appConfig.baseUrl}/`);
+      }
+    },
+  );
 });
 
 let server = null;
@@ -126,7 +126,9 @@ if (!isTest) {
       logger.error(error);
     }
 
-    logger.info(`App - Express server is listening at localhost: ${app.get('port')}.`);
+    logger.info(
+      `App - Express server is listening at localhost: ${app.get('port')}.`,
+    );
   });
 }
 
@@ -140,7 +142,9 @@ const gracefulShutdown = () => {
   });
   // if after
   setTimeout(() => {
-    logger.error('Could not close connections in time, forcefully shutting down');
+    logger.error(
+      'Could not close connections in time, forcefully shutting down',
+    );
     process.exit();
   }, 1000);
 };
@@ -152,10 +156,8 @@ process.on('SIGINT', gracefulShutdown);
 /* Development Environment Configuration
  * -------------------------------------
  * - Using Webpack Dev Server
-*/
+ */
 if (!isProduction && !isTest) {
-  const WebpackDevServer = require('webpack-dev-server');
-
   new WebpackDevServer(webpack(webpackConfig), {
     publicPath: webpackConfig.output.publicPath,
     hot: true,
@@ -170,7 +172,9 @@ if (!isProduction && !isTest) {
       logger.error(error);
     }
 
-    logger.info(`Webpack Dev Server listening at localhost: ${WEBPACK_DEV_PORT}.`);
+    logger.info(
+      `Webpack Dev Server listening at localhost: ${WEBPACK_DEV_PORT}.`,
+    );
   });
 }
 
