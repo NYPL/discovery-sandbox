@@ -22,3 +22,6 @@ log/*.log
 !.elasticbeanstalk/*.global.yml
 
 #Files with names of missing fields
+
+# VS code Configuration Files
+.vscode
