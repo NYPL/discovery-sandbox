@@ -5,10 +5,7 @@ import { every as _every } from 'underscore';
 import { connect } from 'react-redux';
 import { withRouter, Link } from 'react-router';
 
-import {
-  Heading,
-  Link as DSLink,
-} from '@nypl/design-system-react-components';
+import { Heading, Link as DSLink } from '@nypl/design-system-react-components';
 
 import SccContainer from '../components/SccContainer/SccContainer';
 import itemsContainerModule from '../components/Item/ItemsContainer';
@@ -24,13 +21,9 @@ import { ajaxCall, isNyplBnumber } from '@utils';
 import { updateBibPage } from '@Actions';
 import { itemBatchSize } from '../data/constants';
 
-import {
-  getAggregatedElectronicResources,
-} from '../utils/utils';
+import { getAggregatedElectronicResources } from '../utils/utils';
 
-import {
-  annotatedMarcDetails,
-} from '../utils/bibDetailsUtils';
+import { annotatedMarcDetails } from '../utils/bibDetailsUtils';
 
 const ItemsContainer = itemsContainerModule.ItemsContainer;
 
@@ -44,26 +37,30 @@ const checkForMoreItems = (bib, dispatch) => {
     // need to fetch more items
     const baseUrl = appConfig.baseUrl;
     const itemFrom = bib.itemFrom || itemBatchSize;
-    const bibApi = `${window.location.pathname.replace(baseUrl, `${baseUrl}/api`)}?itemFrom=${itemFrom}`;
+    const bibApi = `${window.location.pathname.replace(
+      baseUrl,
+      `${baseUrl}/api`,
+    )}?itemFrom=${itemFrom}`;
     ajaxCall(
       bibApi,
       (resp) => {
         // put items in
         const bibResp = resp.data.bib;
-        const done = !bibResp || !bibResp.items || bibResp.items.length < itemBatchSize;
-        dispatch(updateBibPage({
-          bib:
-            Object.assign(
-              {},
-              bib,
-              { items: bib.items.concat((bibResp && bibResp.items) || []),
-                done,
-                itemFrom: parseInt(itemFrom, 10) + parseInt(itemBatchSize, 10),
-              },
-            ),
-        }));
+        const done =
+          !bibResp || !bibResp.items || bibResp.items.length < itemBatchSize;
+        dispatch(
+          updateBibPage({
+            bib: Object.assign({}, bib, {
+              items: bib.items.concat((bibResp && bibResp.items) || []),
+              done,
+              itemFrom: parseInt(itemFrom, 10) + parseInt(itemBatchSize, 10),
+            }),
+          }),
+        );
       },
-      (error) => { console.error(error); },
+      (error) => {
+        console.error(error);
+      },
     );
   }
 };
@@ -84,7 +81,7 @@ export const BibPage = (
   }
   const bibId = bib['@id'] ? bib['@id'].substring(4) : '';
   const items = (bib.checkInItems || []).concat(LibraryItem.getItems(bib));
-  const isElectronicResources = _every(items, i => i.isElectronicResource);
+  const isElectronicResources = _every(items, (i) => i.isElectronicResource);
   // Related to removing MarcRecord because the webpack MarcRecord is not working. Sep/28/2017
   // const isNYPLReCAP = LibraryItem.isNYPLReCAP(bib['@id']);
   // const bNumber = bib && bib.idBnum ? bib.idBnum : '';
@@ -104,11 +101,19 @@ export const BibPage = (
     { label: 'Author', value: 'creatorLiteral', linkable: true },
     { label: 'Publication', value: 'publicationStatement' },
     { label: 'Electronic Resource', value: 'React Component' },
-    { label: 'Supplementary Content', value: 'supplementaryContent', selfLinkable: true },
+    {
+      label: 'Supplementary Content',
+      value: 'supplementaryContent',
+      selfLinkable: true,
+    },
   ];
 
   const detailsFields = [
-    { label: 'Additional Authors', value: 'contributorLiteral', linkable: true },
+    {
+      label: 'Additional Authors',
+      value: 'contributorLiteral',
+      linkable: true,
+    },
     { label: 'Found In', value: 'partOf' },
     { label: 'Publication Date', value: 'serialPublicationDates' },
     { label: 'Description', value: 'extent' },
@@ -137,62 +142,74 @@ export const BibPage = (
   // Discovery API response instead
   if (!bib.subjectHeadingData) {
     detailsFields.push({
-      label: 'Subject', value: 'subjectLiteral', linkable: true,
+      label: 'Subject',
+      value: 'subjectLiteral',
+      linkable: true,
     });
   }
 
-  const itemsContainer = items.length && !isElectronicResources ? (
-    <ItemsContainer
-      key={bibId}
-      shortenItems={shortenItems}
-      items={items}
-      bibId={bibId}
-      itemPage={itemPage}
-      searchKeywords={searchKeywords}
-      holdings={bib.holdings}
-    />
-  ) : null;
+  const itemsContainer =
+    items.length && !isElectronicResources ? (
+      <ItemsContainer
+        key={bibId}
+        shortenItems={shortenItems}
+        items={items}
+        bibId={bibId}
+        itemPage={itemPage}
+        searchKeywords={searchKeywords}
+        holdings={bib.holdings}
+      />
+    ) : null;
 
   const isNYPL = isNyplBnumber(bib.uri);
 
   const details = (
     <React.Fragment>
-      <Heading
-        level={3}
-      >
-        Details
-      </Heading>
+      <Heading level={3}>Details</Heading>
       <BibDetails
         bib={bib}
         fields={detailsFields}
         electronicResources={aggregatedElectronicResources}
-        additionalData={isNYPL && bib.annotatedMarc ? annotatedMarcDetails(bib) : []}
+        additionalData={
+          isNYPL && bib.annotatedMarc ? annotatedMarcDetails(bib) : []
+        }
       />
     </React.Fragment>
   );
 
   const contentAreas = [
-    itemsContainer ? {
-      title: 'Availability',
-      content: itemsContainer,
-    } : null,
-    bib.holdings ? {
-      title: 'Library Holdings',
-      content: <LibraryHoldings holdings={bib.holdings} />,
-    } : null,
+    itemsContainer
+      ? {
+          title: 'Availability',
+          content: itemsContainer,
+        }
+      : null,
+    bib.holdings
+      ? {
+          title: 'Library Holdings',
+          content: <LibraryHoldings holdings={bib.holdings} />,
+        }
+      : null,
     {
       title: 'Details',
       content: details,
     },
-  ].filter(area => area)
-    .map(area => <React.Fragment><br /> { area.content }</React.Fragment>);
+  ]
+    .filter((area) => area)
+    .map((area) => (
+      <React.Fragment>
+        <br /> {area.content}
+      </React.Fragment>
+    ));
 
-  const classicLink = (
-    bibId.startsWith('b') ?
-      <a href={`${appConfig.legacyBaseUrl}/record=${bibId}~S1`} id="legacy-catalog-link">View in Legacy Catalog</a>
-      :
-      null
-  );
+  const classicLink = bibId.startsWith('b') ? (
+    <a
+      href={`${appConfig.legacyBaseUrl}/record=${bibId}~S1`}
+      id="legacy-catalog-link"
+    >
+      View in Legacy Catalog
+    </a>
+  ) : null;
 
   const title = bib.title && bib.title.length ? bib.title[0] : ' ';
 
@@ -202,21 +219,11 @@ export const BibPage = (
       className="nypl-item-details"
       pageTitle="Item Details"
     >
-      <div
-        className="nypl-item-details__heading"
-      >
-        <Heading
-          level={2}
-        >
-          {title}
-        </Heading>
+      <div className="nypl-item-details__heading">
+        <Heading level={2}>{title}</Heading>
         {resultSelection.fromUrl && resultSelection.bibId === bibId && (
           <DSLink>
-            <Link
-              to={resultSelection.fromUrl}
-            >
-              Back to search results
-            </Link>
+            <Link to={resultSelection.fromUrl}>Back to search results</Link>
           </DSLink>
         )}
       </div>
@@ -226,9 +233,7 @@ export const BibPage = (
         logging
         electronicResources={aggregatedElectronicResources}
       />
-      {
-        contentAreas
-      }
+      {contentAreas}
       {classicLink}
     </SccContainer>
   );
