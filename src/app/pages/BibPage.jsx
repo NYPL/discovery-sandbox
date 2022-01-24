@@ -85,11 +85,6 @@ export const BibPage = (
   // const bNumber = bib && bib.idBnum ? bib.idBnum : '';
 
   const aggregatedElectronicResources = getAggregatedElectronicResources(items);
-  let shortenItems = true;
-
-  if (location.pathname.indexOf('all') === -1) {
-    shortenItems = false;
-  }
 
   // `linkable` means that those values are links inside the app.
   // `selfLinkable` means that those values are external links and should be self-linked,
@@ -150,7 +145,7 @@ export const BibPage = (
     items.length && !isElectronicResources ? (
       <ItemsContainer
         key={bibId}
-        shortenItems={shortenItems}
+        shortenItems={location.pathname.indexOf('all') !== -1}
         items={items}
         bibId={bibId}
         itemPage={location.search}
