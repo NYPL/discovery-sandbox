@@ -1,29 +1,21 @@
 /* global window */
-import React from 'react';
-import PropTypes from 'prop-types';
-import { every as _every } from 'underscore';
-import { connect } from 'react-redux';
-import { withRouter, Link } from 'react-router';
-
-import { Heading, Link as DSLink } from '@nypl/design-system-react-components';
-
-import SccContainer from '../components/SccContainer/SccContainer';
-import itemsContainerModule from '../components/Item/ItemsContainer';
-import BibDetails from '../components/BibPage/BibDetails';
-import LibraryItem from '../utils/item';
-import AdditionalDetailsViewer from '../components/BibPage/AdditionalDetailsViewer';
-import LibraryHoldings from '../components/BibPage/LibraryHoldings';
-import getOwner from '../utils/getOwner';
-import appConfig from '../data/appConfig';
-// Removed MarcRecord because the webpack MarcRecord is not working. Sep/28/2017
-// import MarcRecord from './MarcRecord';
-import { ajaxCall, isNyplBnumber } from '@utils';
 import { updateBibPage } from '@Actions';
+import { Heading, Link as DSLink } from '@nypl/design-system-react-components';
+import { ajaxCall, isNyplBnumber } from '@utils';
+import PropTypes from 'prop-types';
+import React from 'react';
+import { connect } from 'react-redux';
+import { Link, withRouter } from 'react-router';
+import { every as _every } from 'underscore';
+import BibDetails from '../components/BibPage/BibDetails';
+import LibraryHoldings from '../components/BibPage/LibraryHoldings';
+import itemsContainerModule from '../components/Item/ItemsContainer';
+import SccContainer from '../components/SccContainer/SccContainer';
+import appConfig from '../data/appConfig';
 import { itemBatchSize } from '../data/constants';
-
-import { getAggregatedElectronicResources } from '../utils/utils';
-
 import { annotatedMarcDetails } from '../utils/bibDetailsUtils';
+import LibraryItem from '../utils/item';
+import { getAggregatedElectronicResources } from '../utils/utils';
 
 const ItemsContainer = itemsContainerModule.ItemsContainer;
 
