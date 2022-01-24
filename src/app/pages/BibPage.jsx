@@ -69,7 +69,7 @@ const checkForMoreItems = (bib, dispatch) => {
 };
 
 export const BibPage = (
-  { location, searchKeywords, dispatch, resultSelection },
+  { bib, location, searchKeywords, dispatch, resultSelection },
   context,
 ) => {
   if (!bib || parseInt(bib.status, 10) === 404) {
