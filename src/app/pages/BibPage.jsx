@@ -75,14 +75,14 @@ export const BibPage = (
   if (!bib || parseInt(bib.status, 10) === 404) {
     return <BibNotFound404 context={context} />;
   }
-  const bib = props.bib ? props.bib : {};
+
   // check whether this is a server side or client side render
   // by whether 'window' is defined. After the first render on the client side
   // check for more items
   if (typeof window !== 'undefined') {
     checkForMoreItems(bib, dispatch);
   }
-  const bibId = bib && bib['@id'] ? bib['@id'].substring(4) : '';
+  const bibId = bib['@id'] ? bib['@id'].substring(4) : '';
   const items = (bib.checkInItems || []).concat(LibraryItem.getItems(bib));
   const isElectronicResources = _every(items, i => i.isElectronicResource);
   // Related to removing MarcRecord because the webpack MarcRecord is not working. Sep/28/2017
