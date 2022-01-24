@@ -11,6 +11,7 @@ import BackToSearchResults from '../components/BibPage/BackToSearchResults';
 import BibDetails from '../components/BibPage/BibDetails';
 import LibraryHoldings from '../components/BibPage/LibraryHoldings';
 import itemsContainerModule from '../components/Item/ItemsContainer';
+import LegacyCatalogLink from '../components/LegacyCatalog/LegacyCatalogLink';
 import SccContainer from '../components/SccContainer/SccContainer';
 import appConfig from '../data/appConfig';
 import { itemBatchSize } from '../data/constants';
@@ -199,15 +200,6 @@ export const BibPage = (
       </React.Fragment>
     ));
 
-  const classicLink = bibId.startsWith('b') ? (
-    <a
-      href={`${appConfig.legacyBaseUrl}/record=${bibId}~S1`}
-      id="legacy-catalog-link"
-    >
-      View in Legacy Catalog
-    </a>
-  ) : null;
-
   const title = bib.title && bib.title.length ? bib.title[0] : ' ';
 
   return (
@@ -227,7 +219,7 @@ export const BibPage = (
         electronicResources={aggregatedElectronicResources}
       />
       {contentAreas}
-      {classicLink}
+      <LegacyCatalogLink recordNumber={bibId} display={bibId.startsWith('b')} />
     </SccContainer>
   );
 };
