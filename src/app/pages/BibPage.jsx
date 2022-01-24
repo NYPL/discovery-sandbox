@@ -15,11 +15,9 @@ import itemsContainerModule from '../components/Item/ItemsContainer';
 import BibDetails from '../components/BibPage/BibDetails';
 import LibraryItem from '../utils/item';
 import AdditionalDetailsViewer from '../components/BibPage/AdditionalDetailsViewer';
-import NotFound404 from '../components/NotFound404/NotFound404';
 import LibraryHoldings from '../components/BibPage/LibraryHoldings';
 import getOwner from '../utils/getOwner';
 import appConfig from '../data/appConfig';
-import Redirect404 from '../components/Redirect404/Redirect404';
 // Removed MarcRecord because the webpack MarcRecord is not working. Sep/28/2017
 // import MarcRecord from './MarcRecord';
 import { ajaxCall, isNyplBnumber } from '@utils';
@@ -70,31 +68,21 @@ const checkForMoreItems = (bib, dispatch) => {
   }
 };
 
-export const BibPage = (props, context) => {
-  const {
-    location,
-    searchKeywords,
-    dispatch,
-    resultSelection,
-  } = props;
-
-  if (!props.bib || parseInt(props.bib.status, 10) === 404) {
-    const originalUrl = context &&
-      context.router &&
-      context.router.location &&
-      context.router.location.query &&
-      context.router.location.query.originalUrl;
-
-    return originalUrl ? (<Redirect404 />) : (<NotFound404 />);
+export const BibPage = (
+  { bib, location, searchKeywords, dispatch, resultSelection },
+  context,
+) => {
+  if (!bib || parseInt(bib.status, 10) === 404) {
+    return <BibNotFound404 context={context} />;
   }
-  const bib = props.bib ? props.bib : {};
+
   // check whether this is a server side or client side render
   // by whether 'window' is defined. After the first render on the client side
   // check for more items
   if (typeof window !== 'undefined') {
     checkForMoreItems(bib, dispatch);
   }
-  const bibId = bib && bib['@id'] ? bib['@id'].substring(4) : '';
+  const bibId = bib['@id'] ? bib['@id'].substring(4) : '';
   const items = (bib.checkInItems || []).concat(LibraryItem.getItems(bib));
   const isElectronicResources = _every(items, i => i.isElectronicResource);
   // Related to removing MarcRecord because the webpack MarcRecord is not working. Sep/28/2017
