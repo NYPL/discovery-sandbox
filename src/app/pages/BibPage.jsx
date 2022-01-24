@@ -77,6 +77,7 @@ export const BibPage = (
   const bibId = bib['@id'] ? bib['@id'].substring(4) : '';
   const items = (bib.checkInItems || []).concat(LibraryItem.getItems(bib));
   const isElectronicResources = _every(items, (i) => i.isElectronicResource);
+
   // Related to removing MarcRecord because the webpack MarcRecord is not working. Sep/28/2017
   // const isNYPLReCAP = LibraryItem.isNYPLReCAP(bib['@id']);
   // const bNumber = bib && bib.idBnum ? bib.idBnum : '';
