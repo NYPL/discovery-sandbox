@@ -65,12 +65,15 @@ export const BibPage = (
     return <BibNotFound404 context={context} />;
   }
 
-  // check whether this is a server side or client side render
-  // by whether 'window' is defined. After the first render on the client side
-  // check for more items
   if (typeof window !== 'undefined') {
+    // check whether this is a server side or client side render
+    // by whether 'window' is defined. After the first render on the client side
+    // check for more items
     checkForMoreItems(bib, dispatch);
+    // NOTE: I'm not entirely sure what this is doing yet, but I believe it should be
+    // done in an effect.
   }
+
   const bibId = bib['@id'] ? bib['@id'].substring(4) : '';
   const items = (bib.checkInItems || []).concat(LibraryItem.getItems(bib));
   const isElectronicResources = _every(items, (i) => i.isElectronicResource);
