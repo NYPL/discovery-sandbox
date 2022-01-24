@@ -81,7 +81,7 @@ export const BibPage = (
   // Related to removing MarcRecord because the webpack MarcRecord is not working. Sep/28/2017
   // const isNYPLReCAP = LibraryItem.isNYPLReCAP(bib['@id']);
   // const bNumber = bib && bib.idBnum ? bib.idBnum : '';
-  const itemPage = location.search;
+
   const aggregatedElectronicResources = getAggregatedElectronicResources(items);
   let shortenItems = true;
 
@@ -151,7 +151,7 @@ export const BibPage = (
         shortenItems={shortenItems}
         items={items}
         bibId={bibId}
-        itemPage={itemPage}
+        itemPage={location.search}
         searchKeywords={searchKeywords}
         holdings={bib.holdings}
       />
