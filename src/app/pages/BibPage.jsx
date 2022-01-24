@@ -1,12 +1,13 @@
 /* global window */
 import { updateBibPage } from '@Actions';
-import { Heading, Link as DSLink } from '@nypl/design-system-react-components';
+import { Heading } from '@nypl/design-system-react-components';
 import { ajaxCall, isNyplBnumber } from '@utils';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
-import { Link, withRouter } from 'react-router';
+import { withRouter } from 'react-router';
 import { every as _every } from 'underscore';
+import BackToSearchResults from '../components/BibPage/BackToSearchResults';
 import BibDetails from '../components/BibPage/BibDetails';
 import LibraryHoldings from '../components/BibPage/LibraryHoldings';
 import itemsContainerModule from '../components/Item/ItemsContainer';
@@ -217,11 +218,7 @@ export const BibPage = (
     >
       <div className="nypl-item-details__heading">
         <Heading level={2}>{title}</Heading>
-        {resultSelection.fromUrl && resultSelection.bibId === bibId && (
-          <DSLink>
-            <Link to={resultSelection.fromUrl}>Back to search results</Link>
-          </DSLink>
-        )}
+        <BackToSearchResults selection={resultSelection} bibId={bibId} />
       </div>
       <BibDetails
         bib={bib}
