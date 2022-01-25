@@ -1,21 +1,21 @@
 /* global window */
 import { updateBibPage } from '@Actions';
 import { Heading } from '@nypl/design-system-react-components';
-import { ajaxCall, isNyplBnumber } from '@utils';
+import { ajaxCall } from '@utils';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import { every as _every } from 'underscore';
 import BackToSearchResults from '../components/BibPage/BackToSearchResults';
-import BibDetails from '../components/BibPage/BibDetails';
+import BottomBibDetails from '../components/BibPage/BottomBibDetails';
 import LibraryHoldings from '../components/BibPage/LibraryHoldings';
+import TopBibDetails from '../components/BibPage/TopBibDetails';
 import itemsContainerModule from '../components/Item/ItemsContainer';
 import LegacyCatalogLink from '../components/LegacyCatalog/LegacyCatalogLink';
 import SccContainer from '../components/SccContainer/SccContainer';
 import appConfig from '../data/appConfig';
 import { itemBatchSize } from '../data/constants';
-import { annotatedMarcDetails } from '../utils/bibDetailsUtils';
 import LibraryItem from '../utils/item';
 import { getAggregatedElectronicResources } from '../utils/utils';
 
@@ -79,123 +79,11 @@ export const BibPage = (
   const bibId = bib['@id'] ? bib['@id'].substring(4) : '';
   const items = (bib.checkInItems || []).concat(LibraryItem.getItems(bib));
   const isElectronicResources = _every(items, (i) => i.isElectronicResource);
+  const aggregatedElectronicResources = getAggregatedElectronicResources(items);
 
   // Related to removing MarcRecord because the webpack MarcRecord is not working. Sep/28/2017
   // const isNYPLReCAP = LibraryItem.isNYPLReCAP(bib['@id']);
   // const bNumber = bib && bib.idBnum ? bib.idBnum : '';
-
-  const aggregatedElectronicResources = getAggregatedElectronicResources(items);
-
-  // `linkable` means that those values are links inside the app.
-  // `selfLinkable` means that those values are external links and should be self-linked,
-  // e.g. the prefLabel is the label and the URL is the id.
-  const topFields = [
-    { label: 'Title', value: 'titleDisplay' },
-    { label: 'Author', value: 'creatorLiteral', linkable: true },
-    { label: 'Publication', value: 'publicationStatement' },
-    { label: 'Electronic Resource', value: 'React Component' },
-    {
-      label: 'Supplementary Content',
-      value: 'supplementaryContent',
-      selfLinkable: true,
-    },
-  ];
-
-  const detailsFields = [
-    {
-      label: 'Additional Authors',
-      value: 'contributorLiteral',
-      linkable: true,
-    },
-    { label: 'Found In', value: 'partOf' },
-    { label: 'Publication Date', value: 'serialPublicationDates' },
-    { label: 'Description', value: 'extent' },
-    { label: 'Donor/Sponsor', value: 'donor' },
-    { label: 'Series Statement', value: 'seriesStatement' },
-    { label: 'Uniform Title', value: 'uniformTitle' },
-    { label: 'Alternative Title', value: 'titleAlt' },
-    { label: 'Former Title', value: 'formerTitle' },
-    { label: 'Subject', value: 'subjectHeadingData' },
-    { label: 'Genre/Form', value: 'genreForm' },
-    { label: 'Notes', value: 'React Component' },
-    { label: 'Contents', value: 'tableOfContents' },
-    { label: 'Bibliography', value: '' },
-    { label: 'Call Number', value: 'identifier', identifier: 'bf:ShelfMark' },
-    { label: 'ISBN', value: 'identifier', identifier: 'bf:Isbn' },
-    { label: 'ISSN', value: 'identifier', identifier: 'bf:Issn' },
-    { label: 'LCCN', value: 'identifier', identifier: 'bf:Lccn' },
-    { label: 'OCLC', value: 'identifier', identifier: 'nypl:Oclc' },
-    { label: 'GPO', value: '' },
-    { label: 'Other Titles', value: '' },
-    { label: 'Owning Institutions', value: '' },
-  ];
-
-  // if the subject heading API call failed for some reason,
-  // we will use the subjectLiteral property from the
-  // Discovery API response instead
-  if (!bib.subjectHeadingData) {
-    detailsFields.push({
-      label: 'Subject',
-      value: 'subjectLiteral',
-      linkable: true,
-    });
-  }
-
-  const itemsContainer =
-    items.length && !isElectronicResources ? (
-      <ItemsContainer
-        key={bibId}
-        shortenItems={location.pathname.indexOf('all') !== -1}
-        items={items}
-        bibId={bibId}
-        itemPage={location.search}
-        searchKeywords={searchKeywords}
-        holdings={bib.holdings}
-      />
-    ) : null;
-
-  const details = (
-    <React.Fragment>
-      <Heading level={3}>Details</Heading>
-      <BibDetails
-        bib={bib}
-        fields={detailsFields}
-        electronicResources={aggregatedElectronicResources}
-        additionalData={
-          isNyplBnumber(bib.uri) && bib.annotatedMarc
-            ? annotatedMarcDetails(bib)
-            : []
-        }
-      />
-    </React.Fragment>
-  );
-
-  const contentAreas = [
-    itemsContainer
-      ? {
-          title: 'Availability',
-          content: itemsContainer,
-        }
-      : null,
-    bib.holdings
-      ? {
-          title: 'Library Holdings',
-          content: <LibraryHoldings holdings={bib.holdings} />,
-        }
-      : null,
-    {
-      title: 'Details',
-      content: details,
-    },
-  ]
-    .filter((area) => area)
-    .map((area) => (
-      <React.Fragment>
-        <br /> {area.content}
-      </React.Fragment>
-    ));
-
-  const title = bib.title && bib.title.length ? bib.title[0] : ' ';
 
   return (
     <SccContainer
@@ -203,17 +91,38 @@ export const BibPage = (
       className="nypl-item-details"
       pageTitle="Item Details"
     >
-      <div className="nypl-item-details__heading">
-        <Heading level={2}>{title}</Heading>
+      <section className="nypl-item-details__heading">
+        <Heading level={2}>
+          {bib.title && bib.title.length ? bib.title[0] : ' '}
+        </Heading>
         <BackToSearchResults selection={resultSelection} bibId={bibId} />
-      </div>
-      <BibDetails
-        bib={bib}
-        fields={topFields}
-        logging
-        electronicResources={aggregatedElectronicResources}
-      />
-      {contentAreas}
+      </section>
+
+      <TopBibDetails bib={bib} resources={aggregatedElectronicResources} />
+
+      {items.length && !isElectronicResources ? (
+        <section style={{ marginTop: '20px' }}>
+          {null}
+          <ItemsContainer
+            key={bibId}
+            shortenItems={location.pathname.indexOf('all') !== -1}
+            items={items}
+            bibId={bibId}
+            itemPage={location.search}
+            searchKeywords={searchKeywords}
+            holdings={bib.holdings}
+          />
+        </section>
+      ) : null}
+
+      {bib.holdings && (
+        <section style={{ marginTop: '20px' }}>
+          <LibraryHoldings holdings={bib.holdings} />
+        </section>
+      )}
+
+      <BottomBibDetails bib={bib} resources={aggregatedElectronicResources} />
+
       <LegacyCatalogLink recordNumber={bibId} display={bibId.startsWith('b')} />
     </SccContainer>
   );
