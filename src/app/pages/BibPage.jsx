@@ -94,14 +94,13 @@ export const BibPage = (
         <Heading level={2}>
           {bib.title && bib.title.length ? bib.title[0] : ' '}
         </Heading>
-        <BackToSearchResults selection={resultSelection} bibId={bibId} />
+        <BackToSearchResults result={resultSelection} bibId={bibId} />
       </section>
 
       <TopBibDetails bib={bib} resources={aggregatedElectronicResources} />
 
-      {items.length && !isElectronicResources ? (
+      {items.length && !isElectronicResources && (
         <section style={{ marginTop: '20px' }}>
-          {null}
           <ItemsContainer
             key={bibId}
             shortenItems={location.pathname.indexOf('all') !== -1}
@@ -112,7 +111,7 @@ export const BibPage = (
             holdings={bib.holdings}
           />
         </section>
-      ) : null}
+      )}
 
       {bib.holdings && (
         <section style={{ marginTop: '20px' }}>
