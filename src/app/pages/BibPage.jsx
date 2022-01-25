@@ -6,7 +6,6 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
-import { every as _every } from 'underscore';
 import BackToSearchResults from '../components/BibPage/BackToSearchResults';
 import BottomBibDetails from '../components/BibPage/BottomBibDetails';
 import LibraryHoldings from '../components/BibPage/LibraryHoldings';
@@ -78,7 +77,7 @@ export const BibPage = (
 
   const bibId = bib['@id'] ? bib['@id'].substring(4) : '';
   const items = (bib.checkInItems || []).concat(LibraryItem.getItems(bib));
-  const isElectronicResources = _every(items, (i) => i.isElectronicResource);
+  const isElectronicResources = items.every((i) => i.isElectronicResource);
   const aggregatedElectronicResources = getAggregatedElectronicResources(items);
 
   // Related to removing MarcRecord because the webpack MarcRecord is not working. Sep/28/2017
