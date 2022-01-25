@@ -154,8 +154,6 @@ export const BibPage = (
       />
     ) : null;
 
-  const isNYPL = isNyplBnumber(bib.uri);
-
   const details = (
     <React.Fragment>
       <Heading level={3}>Details</Heading>
@@ -164,7 +162,9 @@ export const BibPage = (
         fields={detailsFields}
         electronicResources={aggregatedElectronicResources}
         additionalData={
-          isNYPL && bib.annotatedMarc ? annotatedMarcDetails(bib) : []
+          isNyplBnumber(bib.uri) && bib.annotatedMarc
+            ? annotatedMarcDetails(bib)
+            : []
         }
       />
     </React.Fragment>
