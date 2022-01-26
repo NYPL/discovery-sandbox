@@ -1,11 +1,33 @@
 {
-  "plugins": ["react", "jsx-a11y", "prettier"],
+  "env": {
+    "browser": true,
+    "es6": true,
+    "node": true
+  },
+  "plugins": ["react", "@typescript-eslint", "react-hooks", "jsx-a11y"],
   "extends": [
-    "airbnb",
-    "prettier",
-    "prettier/react",
     "plugin:react/recommended",
-    "plugin:jsx-a11y/recommended"
+    "plugin:@typescript-eslint/recommended",
+    "plugin:jsx-a11y/recommended",
+    "airbnb/hooks",
+    "prettier"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaFeatures": {
+      "impliedStrict": true,
+      "jsx": true
+    },
+    "ecmaVersion": 2019,
+    "sourceType": "module"
+  },
+  "overrides": [
+    {
+      "files": ["*.js"],
+      "rules": {
+        "@typescript-eslint/no-var-requires": "off"
+      }
+    }
   ],
   "rules": {
     "react/forbid-prop-types": 0,
@@ -19,7 +41,8 @@
     "no-underscore-dangle": 0,
     "import/no-import-module-exports": 0,
     "import/no-extraneous-dependencies": 0,
-    "react/jsx-props-no-spreading": 0
+    "react/jsx-props-no-spreading": 0,
+    "id-length": ["error", { "exceptions": ["_", "__"] }]
   },
   "settings": {
     "react": {
