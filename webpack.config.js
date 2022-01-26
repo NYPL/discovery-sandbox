@@ -25,7 +25,8 @@ const commonSettings = {
   // React App that is to be rendered.
   entry: {
     app: [
-      'core-js/stable', 'regenerator-runtime/runtime',
+      'core-js/stable',
+      'regenerator-runtime/runtime',
       path.resolve(ROOT_PATH, 'src/client/App.jsx'),
     ],
   },
@@ -55,8 +56,12 @@ const commonSettings = {
         LOGIN_URL: JSON.stringify(process.env.LOGIN_URL),
         LEGACY_BASE_URL: JSON.stringify(process.env.LEGACY_BASE_URL),
         CLOSED_LOCATIONS: JSON.stringify(process.env.CLOSED_LOCATIONS),
-        RECAP_CLOSED_LOCATIONS: JSON.stringify(process.env.RECAP_CLOSED_LOCATIONS),
-        NON_RECAP_CLOSED_LOCATIONS: JSON.stringify(process.env.NON_RECAP_CLOSED_LOCATIONS),
+        RECAP_CLOSED_LOCATIONS: JSON.stringify(
+          process.env.RECAP_CLOSED_LOCATIONS,
+        ),
+        NON_RECAP_CLOSED_LOCATIONS: JSON.stringify(
+          process.env.NON_RECAP_CLOSED_LOCATIONS,
+        ),
         OPEN_LOCATIONS: JSON.stringify(process.env.OPEN_LOCATIONS),
         DISPLAY_TITLE: JSON.stringify(process.env.DISPLAY_TITLE),
         ITEM_BATCH_SIZE: JSON.stringify(process.env.ITEM_BATCH_SIZE),
@@ -100,11 +105,13 @@ const commonSettings = {
     //   // Log level. Can be 'info', 'warn', 'error' or 'silent'.
     //   logLevel: 'info',
     // }),
-  // Generate bundle analysis at dist/bundle-analyzer.html if BUNDLE_ANALYZER
-  // is set (default false)
+    // Generate bundle analysis at dist/bundle-analyzer.html if BUNDLE_ANALYZER
+    // is set (default false)
   ].concat(
-    process.env.BUNDLE_ANALYZER ? new Visualizer({ filename: './bundle-analysis.html' }) : []
-  )
+    process.env.BUNDLE_ANALYZER
+      ? new Visualizer({ filename: './bundle-analysis.html' })
+      : [],
+  ),
 };
 
 /**
@@ -119,11 +126,11 @@ const commonSettings = {
 // module correctly.
 if (ENV === 'development') {
   // Load dev depencies:
-  console.log('webpack dev')
+  console.log('webpack dev');
 
   module.exports = merge(commonSettings, {
     mode: 'development',
-    devtool: 'eval',
+    devtool: 'inline-source-map',
     entry: {
       app: [
         'webpack-dev-server/client?http://localhost:3000',
@@ -133,13 +140,9 @@ if (ENV === 'development') {
     output: {
       publicPath: 'http://localhost:3000/',
     },
-    plugins: [
-      new webpack.HotModuleReplacementPlugin(),
-    ],
+    plugins: [new webpack.HotModuleReplacementPlugin()],
     resolve: {
-      modules: [
-        'node_modules',
-      ],
+      modules: ['node_modules'],
       extensions: ['.js', '.jsx', '.scss', '.png'],
     },
     module: {
@@ -169,7 +172,8 @@ if (ENV === 'development') {
           use: [
             'style-loader',
             'css-loader',
-            { loader: 'sass-loader',
+            {
+              loader: 'sass-loader',
               options: {
                 includePaths: sassPaths,
                 importer: globImporter(),
@@ -217,7 +221,9 @@ if (ENV === 'production') {
         {
           test: /\.scss$/,
           include: path.resolve(ROOT_PATH, 'src'),
-          use: [MiniCssExtractPlugin.loader, 'css-loader',
+          use: [
+            MiniCssExtractPlugin.loader,
+            'css-loader',
             {
               loader: 'sass-loader',
               options: {
@@ -242,8 +248,12 @@ if (ENV === 'production') {
           LOGIN_URL: process.env.LOGIN_URL,
           LEGACY_BASE_URL: process.env.LEGACY_BASE_URL,
           CLOSED_LOCATIONS: process.env.CLOSED_LOCATIONS,
-          RECAP_CLOSED_LOCATIONS: JSON.stringify(process.env.RECAP_CLOSED_LOCATIONS),
-          NON_RECAP_CLOSED_LOCATIONS: JSON.stringify(process.env.NON_RECAP_CLOSED_LOCATIONS),
+          RECAP_CLOSED_LOCATIONS: JSON.stringify(
+            process.env.RECAP_CLOSED_LOCATIONS,
+          ),
+          NON_RECAP_CLOSED_LOCATIONS: JSON.stringify(
+            process.env.NON_RECAP_CLOSED_LOCATIONS,
+          ),
           DISPLAY_TITLE: JSON.stringify(process.env.DISPLAY_TITLE),
           ITEM_BATCH_SIZE: JSON.stringify(process.env.ITEM_BATCH_SIZE),
           CIRCULATING_CATALOG: JSON.stringify(process.env.CIRCULATING_CATALOG),
