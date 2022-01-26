@@ -1,16 +1,17 @@
 {
   "arrowParens": "always",
-  "overrides": [
-    { "files": [".*rc", "*.json"], "options": { "parser": "json" } }
-  ],
   "semi": true,
-  "bracketSpacing": true,
   "printWidth": 80,
-  "jsxBracketSameLine": false,
+  "bracketSpacing": true,
+  "bracketSameLine": false,
   "quoteProps": "preserve",
-  "singleQuote": true,
   "useTabs": false,
   "tabWidth": 2,
   "endOfLine": "lf",
-  "trailingComma": "all"
+  "trailingComma": "all",
+  "singleQuote": true,
+  "jsxSingleQuote": true,
+  "overrides": [
+    { "files": [".*rc", "*.json"], "options": { "parser": "json" } }
+  ]
 }
