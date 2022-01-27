@@ -174,8 +174,12 @@ if (ENV === 'development') {
             {
               loader: 'sass-loader',
               options: {
-                includePaths: sassPaths,
-                importer: globImporter(),
+                sassOptions: {
+                  includePaths: sassPaths,
+                  importer: globImporter(),
+                },
+                sourceMap: true,
+                implementation: require('sass'),
               },
             },
           ],
