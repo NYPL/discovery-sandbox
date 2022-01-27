@@ -43,7 +43,7 @@ const commonSettings = {
     // Cleans the Dist folder after every build.
     // Alternately, we can run rm -rf dist/ as
     // part of the package.json scripts.
-    new CleanBuild(['dist']),
+    new CleanWebpackPlugin(),
     new MiniCssExtractPlugin({
       filename: 'styles.css',
     }),
