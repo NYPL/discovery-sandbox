@@ -167,7 +167,7 @@ if (ENV === 'development') {
           },
         },
         {
-          test: /\.scss?$/,
+          test: /\.s[ac]ss?$/,
           use: [
             'style-loader',
             'css-loader',
@@ -218,7 +218,7 @@ if (ENV === 'production') {
           use: 'babel-loader',
         },
         {
-          test: /\.scss$/,
+          test: /\.s[ac]ss$/i,
           include: path.resolve(ROOT_PATH, 'src'),
           use: [
             MiniCssExtractPlugin.loader,
