@@ -16,6 +16,8 @@ import annotatedMarc from '../fixtures/annotatedMarc.json';
 import mockBibWithHolding from '../fixtures/mockBibWithHolding.json';
 import { makeTestStore } from '../helpers/store';
 import { mockRouterContext } from '../helpers/routing';
+import BackToSearchResults from '../../src/app/components/BibPage/BackToSearchResults';
+import { Link } from 'react-router';
 
 describe('BibPage', () => {
   const context = mockRouterContext();
@@ -121,37 +123,47 @@ describe('BibPage', () => {
     });
   });
 
-  describe('"Back to search results" link', () => {
+  describe('Back to search results Text', () => {
     const bib = { ...mockBibWithHolding, ...annotatedMarc };
+
     it('displays if `resultSelection.bibId` matches ID of bib for page', () => {
       const component = shallow(
-        <BackToSearchResults
-          result={{
+        <BibPage
+          location={{ search: 'search', pathname: '' }}
+          bib={bib}
+          dispatch={() => {}}
+          resultSelection={{
             fromUrl: 'resultsurl.com',
             bibId: bib['@id'].substring(4),
           }}
-          bibId={bib['@id'].substring(4)}
         />,
         { context },
       );
-      expect(component.find('Link').first().render().text()).to.equal(
-        'Back to search results',
-      );
+
+      expect(component.find(BackToSearchResults)).to.have.lengthOf(1);
+      expect(
+        component.find(BackToSearchResults).first().render().text(),
+      ).to.equal('Back to search results');
     });
 
     it('does not display if `resultSelection.bibId` does not match ID of bib for page', () => {
       const component = shallow(
-        <BackToSearchResults
-          result={{
+        <BibPage
+          location={{ search: 'search', pathname: '' }}
+          bib={bib}
+          dispatch={() => {}}
+          resultSelection={{
             fromUrl: 'resultsurl.com',
             bibId: 'wrongbib',
           }}
-          bibId={bib['@id'].substring(4)}
         />,
         { context },
       );
 
-      expect(component.find('Link').length).to.equal(0);
+      expect(component.find(BackToSearchResults)).to.have.lengthOf(1);
+      expect(
+        component.find(BackToSearchResults).first().render().find(Link).length,
+      ).to.equal(0);
     });
   });
 });
