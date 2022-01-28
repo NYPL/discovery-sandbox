@@ -233,6 +233,7 @@ if (ENV === 'production') {
                 sassOptions: {
                   includePaths: sassPaths,
                   importer: globImporter(),
+                  fiber: false,
                 },
                 sourceMap: false,
                 implementation: require('sass'),
