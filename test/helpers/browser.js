@@ -1,3 +1,7 @@
+// TODO: Remove and Set to a setup file
+// Since the purpose of this file is to set up the browser
+// Perhaps we can instead point mocah to run a setupfile
+// which then executes this file to set up the browser
 require('dotenv').config({ path: 'test.env' });
 const enzyme = require('enzyme');
 const Adapter = require('enzyme-adapter-react-16');
