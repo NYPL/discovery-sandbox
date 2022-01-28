@@ -6,7 +6,11 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const sassPaths = require('@nypl/design-toolkit').includePaths;
 const globImporter = require('node-sass-glob-importer');
 const Visualizer = require('webpack-visualizer-plugin');
-
+// TODO: This would ideally not be set in this file
+// Add this to a ticket for future refactor
+// The purpose of this is to allow for a local run of npm run dist
+// In order to test a production build on a local machine.
+require('dotenv').config();
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 // References the applications root path
