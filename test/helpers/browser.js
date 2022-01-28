@@ -1,3 +1,4 @@
+require('dotenv').config({ path: 'test.env' });
 const enzyme = require('enzyme');
 const Adapter = require('enzyme-adapter-react-16');
 
@@ -24,4 +25,4 @@ global.navigator = {
 };
 
 const noop = () => {};
-require.extensions[".png"] = noop;
+require.extensions['.png'] = noop;
