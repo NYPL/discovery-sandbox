@@ -188,6 +188,23 @@ if (ENV === 'development') {
         },
       ],
     },
+    devServer: {
+      port: 3000,
+      hot: true,
+      historyApiFallback: true,
+      headers: {
+        'Access-Control-Allow-Origin': 'http://localhost:3001',
+        'Access-Control-Allow-Headers': 'X-Requested-With',
+      },
+      onListening(devServer) {
+        if (!devServer) throw new Error('webpack-dev-server is not defined');
+
+        console.log(
+          'Dev Server Listening on port:',
+          devServer.server.address().port,
+        );
+      },
+    },
   });
 }
 

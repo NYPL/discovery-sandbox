@@ -3,12 +3,10 @@ import express from 'express';
 import compress from 'compression';
 import DocumentTitle from 'react-document-title';
 import { match } from 'react-router';
-import webpack from 'webpack';
 import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
 
 import appConfig from './src/app/data/appConfig';
-import webpackConfig from './webpack.config';
 import apiRoutes from './src/server/ApiRoutes/ApiRoutes';
 import routes from './src/app/routes/routes';
 
@@ -158,25 +156,13 @@ process.on('SIGINT', gracefulShutdown);
  */
 if (!isProduction && !isTest) {
   const WebpackDevServer = require('webpack-dev-server');
+  const webpackConfig = require('./webpack.config');
+  const webpack = require('webpack');
 
-  new WebpackDevServer(webpack(webpackConfig), {
-    publicPath: webpackConfig.output.publicPath,
-    hot: true,
-    stats: false,
-    historyApiFallback: true,
-    headers: {
-      'Access-Control-Allow-Origin': 'http://localhost:3001',
-      'Access-Control-Allow-Headers': 'X-Requested-With',
-    },
-  }).listen(WEBPACK_DEV_PORT, 'localhost', (error) => {
-    if (error) {
-      logger.error(error);
-    }
-
-    logger.info(
-      `Webpack Dev Server listening at localhost: ${WEBPACK_DEV_PORT}.`,
-    );
-  });
+  new WebpackDevServer(
+    { ...webpackConfig.devServer },
+    webpack(webpackConfig),
+  ).start();
 }
 
 module.exports = app;
