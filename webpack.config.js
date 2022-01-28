@@ -130,6 +130,7 @@ if (ENV === 'development') {
   module.exports = merge(commonSettings, {
     mode: 'development',
     devtool: 'inline-source-map',
+    stats: 'errors-only',
     entry: {
       app: [
         'webpack-dev-server/client?http://localhost:3000',
