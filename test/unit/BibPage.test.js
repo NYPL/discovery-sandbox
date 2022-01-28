@@ -125,29 +125,31 @@ describe('BibPage', () => {
     const bib = { ...mockBibWithHolding, ...annotatedMarc };
     it('displays if `resultSelection.bibId` matches ID of bib for page', () => {
       const component = shallow(
-        <BibPage
-          location={{ search: 'search', pathname: '' }}
-          bib={bib}
-          dispatch={() => {}}
-          resultSelection={{
+        <BackToSearchResults
+          result={{
             fromUrl: 'resultsurl.com',
             bibId: bib['@id'].substring(4),
           }}
-        />, { context });
-      expect(component.find('Link').first().render().text()).to.equal('Back to search results');
+          bibId={bib['@id'].substring(4)}
+        />,
+        { context },
+      );
+      expect(component.find('Link').first().render().text()).to.equal(
+        'Back to search results',
+      );
     });
 
     it('does not display if `resultSelection.bibId` does not match ID of bib for page', () => {
       const component = shallow(
-        <BibPage
-          location={{ search: 'search', pathname: '' }}
-          bib={bib}
-          dispatch={() => {}}
-          resultSelection={{
+        <BackToSearchResults
+          result={{
             fromUrl: 'resultsurl.com',
             bibId: 'wrongbib',
           }}
-        />, { context });
+          bibId={bib['@id'].substring(4)}
+        />,
+        { context },
+      );
 
       expect(component.find('Link').length).to.equal(0);
     });
