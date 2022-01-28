@@ -30,7 +30,7 @@ const commonSettings = {
     ],
   },
   resolve: {
-    extensions: ['.js', '.jsx'],
+    extensions: ['.js', '.jsx', '.css', '.scss'],
   },
   output: {
     // Sets the output path to ROOT_PATH/dist
@@ -142,7 +142,7 @@ if (ENV === 'development') {
     plugins: [new webpack.HotModuleReplacementPlugin()],
     resolve: {
       modules: ['node_modules'],
-      extensions: ['.js', '.jsx', '.scss', '.png'],
+      extensions: ['.js', '.jsx', '.css', '.scss', '.png'],
     },
     module: {
       rules: [
