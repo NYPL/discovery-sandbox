@@ -29,6 +29,7 @@ const commonSettings = {
       path.resolve(ROOT_PATH, 'src/client/App.jsx'),
     ],
   },
+  target: ['web', 'es5'],
   resolve: {
     extensions: ['.js', '.jsx', '.css', '.scss'],
   },
