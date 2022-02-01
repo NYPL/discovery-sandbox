@@ -26,6 +26,7 @@ import { itemBatchSize } from '../data/constants';
 
 import {
   getAggregatedElectronicResources,
+  pluckAeonLinksFromResource,
 } from '../utils/utils';
 
 import {
@@ -221,7 +222,10 @@ export const BibPage = (
         bib={bib}
         fields={topFields}
         logging
-        electronicResources={aggregatedElectronicResources}
+        electronicResources={pluckAeonLinksFromResource(
+          aggregatedElectronicResources,
+          items,
+        )}
       />
       {
         contentAreas
