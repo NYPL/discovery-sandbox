@@ -403,13 +403,6 @@ function featuredAeonList(items) {
   });
 }
 
-// DESIRED TEST CASES
-// b11922867 - Has No Aeon Links; Has 1 or More ERs; Has 1 or more Items
-// b12514536 - Has No Aeon Links; Has No Other ERs; Has 1 or more Items
-// b11781968 - Has 1 or more Aeon Links; Has No Other ERs; Has 1 or more Items
-// b20618002 - Has 1 or more Aeon Links; Has No Other ERs; Has 1 or more Items
-// b22030125 - Has No; Has No Other ERs; Has 1 or more Items
-// NEED - Has 1 or more Aeon Links; Has 1 or more Other ERs; Has 1 or more Items
 
 /**
  *
