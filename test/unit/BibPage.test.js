@@ -50,7 +50,9 @@ describe('BibPage', () => {
         (node) =>
           node.type() === BibDetails && node.prop('additionalData').length,
       );
-
+      // The Bottom Bib Details Component has the original, Non altered, aggregated resources list.
+      // It can be checked to see if the bib details would have been passed a list with Aeon links.
+      
       expect(bttBibComp.type()).to.equal(BibDetails);
       expect(bttBibComp.prop('electronicResources')).to.have.lengthOf(2);
 
