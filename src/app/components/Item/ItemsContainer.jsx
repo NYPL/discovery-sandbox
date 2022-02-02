@@ -30,6 +30,7 @@ class ItemsContainer extends React.Component {
     this.hasFilter = Object.keys(this.query).some(param => (
       itemFilters.map(filter => filter.type).includes(param)));
 
+    // NOTE: filteredItems: Setting 1
     this.filteredItems = this.props.bib && this.props.bib.done ?
       (this.filterItems(this.props.items) || [])
       : (this.props.items || []);
@@ -158,6 +159,7 @@ class ItemsContainer extends React.Component {
   }
 
   render() {
+    // NOTE: filteredItems: Setting 2
     this.filteredItems = this.props.bib && this.props.bib.done ?
       (this.filterItems(this.props.items) || [])
       : (this.props.items || []);

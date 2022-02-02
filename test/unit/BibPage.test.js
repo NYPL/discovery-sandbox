@@ -18,9 +18,69 @@ import { makeTestStore } from '../helpers/store';
 import { mockRouterContext } from '../helpers/routing';
 import BackToSearchResults from '../../src/app/components/BibPage/BackToSearchResults';
 import { Link } from 'react-router';
+import BibDetails from '../../src/app/components/BibPage/BibDetails';
+import { isAeonLink } from '../../src/app/utils/utils';
 
 describe('BibPage', () => {
   const context = mockRouterContext();
+  describe('Electronic Resources List', () => {
+    const testStore = makeTestStore({
+      bib: {
+        done: true,
+        numItems: 0,
+      },
+    });
+
+    const bib = { ...bibs[2] };
+    const page = mount(
+      <Provider store={testStore}>
+        <BibPage
+          location={{ search: 'search', pathname: '' }}
+          bib={bib}
+          dispatch={() => {}}
+          resultSelection={{
+            fromUrl: '',
+            bibId: '',
+          }}
+        />
+      </Provider>,
+      { context, childContextTypes: { router: PropTypes.object } },
+    );
+
+    it('should have an Aeon link available', () => {
+      const bttBibComp = page.findWhere(
+        (node) =>
+          node.type() === BibDetails && node.prop('additionalData').length,
+      );
+      // The Bottom Bib Details Component has the original, Non altered, aggregated resources list.
+      // It can be checked to see if the bib details would have been passed a list with Aeon links.
+      
+      expect(bttBibComp.type()).to.equal(BibDetails);
+      expect(bttBibComp.prop('electronicResources')).to.have.lengthOf(2);
+
+      const [resource] = bttBibComp
+        .prop('electronicResources')
+        .filter(
+          (er) => er.label === 'Request Access to Special Collections Material',
+        );
+      expect(isAeonLink(resource.url)).to.be.true;
+    });
+
+    it('should not include an Aeon link in top BibDetails', () => {
+      const topBibComp = page.findWhere(
+        (node) =>
+          node.type() === BibDetails && !node.prop('additionalData').length,
+      );
+      expect(topBibComp.type()).to.equal(BibDetails);
+      expect(
+        topBibComp.findWhere(
+          (el) => el.type() === 'dt' && el.text() === 'Electronic Resource',
+        ).length,
+      ).to.equal(1);
+      expect(topBibComp.prop('electronicResources')).to.have.lengthOf(1);
+    });
+  });
+
   describe('Non-serial bib', () => {
     const testStore = makeTestStore({
       bib: {

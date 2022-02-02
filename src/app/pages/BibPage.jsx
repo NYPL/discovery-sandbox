@@ -16,7 +16,14 @@ import SccContainer from '../components/SccContainer/SccContainer';
 import appConfig from '../data/appConfig';
 import { itemBatchSize } from '../data/constants';
 import LibraryItem from '../utils/item';
-import { getAggregatedElectronicResources } from '../utils/utils';
+import {
+  getAggregatedElectronicResources,
+  pluckAeonLinksFromResource,
+} from '../utils/utils';
+
+import {
+  annotatedMarcDetails,
+} from '../utils/bibDetailsUtils';
 
 const ItemsContainer = itemsContainerModule.ItemsContainer;
 
@@ -97,7 +104,10 @@ export const BibPage = (
         <BackToSearchResults result={resultSelection} bibId={bibId} />
       </section>
 
-      <TopBibDetails bib={bib} resources={aggregatedElectronicResources} />
+      <TopBibDetails bib={bib} resources={pluckAeonLinksFromResource(
+          aggregatedElectronicResources,
+          items,
+        )} />
 
       {items.length && !isElectronicResources && (
         <section style={{ marginTop: '20px' }}>
@@ -122,6 +132,7 @@ export const BibPage = (
       <BottomBibDetails bib={bib} resources={aggregatedElectronicResources} />
 
       <LegacyCatalogLink recordNumber={bibId} display={bibId.startsWith('b')} />
+
     </SccContainer>
   );
 };
