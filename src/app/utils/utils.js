@@ -20,6 +20,8 @@ import {
 import appConfig from '../data/appConfig';
 import { noticePreferenceMapping } from '../data/constants';
 
+const { features } = appConfig;
+
 /**
  * ajaxCall
  * Utility function to make ajax requests.
@@ -368,6 +370,82 @@ function getAggregatedElectronicResources(items = []) {
   return _flatten(electronicResources);
 }
 
+// TODO: Define Resources
+
+// interface Resources {
+//   @type: string;
+//   label: string;
+//   url: string;
+// }
+
+// TODO: Define Items
+
+// This is incomplete
+// interface Items {
+//    id: string;
+//    status: {
+//      @id: string;
+//      prefLabel: string
+//    };
+//    availability: string;
+//    available: boolean;
+//    aeonUrl: string | string[];
+//    electronicResources?: never | string[]
+// }
+
+/**
+ * Return a list of non Aeon Link Electronic Resouces from given list
+ * @param {array} resources Resources[ ]
+ * @param {array} items Items[ ]
+ * @return {array}
+ */
+function pluckAeonLinksFromResource(resources = [], items = []) {
+  return (
+    (resources.length &&
+      featuredAeonList(items) && // Does items list contain an Aeon Request Button
+      resources.filter((resource) => {
+        // Remove all Aeon Links
+        return !isAeonLink(resource.url);
+      })) ||
+    resources
+  );
+}
+
+/**
+ * Check if the list contains aeon urls && is a valid feature
+ * @param {array} items Items[ ]
+ * @return {boolean}
+ */
+function featuredAeonList(items) {
+  const featured = features.includes('aeon-links');
+
+  // Does a single item in the list have an aeon url
+  return items.some((item) => {
+    // item.aeonUrl: String || String[]
+    return isAeonLink(item.aeonUrl) && featured;
+  });
+}
+
+/**
+ *
+ * Confirm the url is an Aeon Link
+ * @param url string | string[]
+ * @return A boolean indicating the passed url[s] are valid Aeon links
+ *
+ * Example URL:
+ * - https://specialcollections.nypl.org/aeon/Aeon.dll
+ * - https://nypl-aeon-test.aeon.atlas-sys.com
+ */
+function isAeonLink(url) {
+  if (!url) return false;
+  const aeonLinks = [
+    'https://specialcollections.nypl.org/aeon/Aeon.dll',
+    'https://nypl-aeon-test.aeon.atlas-sys.com',
+  ];
+  const link = Array.isArray(url) ? url[0] : url;
+  return Boolean(aeonLinks.some((path) => link.startsWith(path)));
+}
+
 /**
  * getUpdatedFilterValues(props)
  * Get an array of filter values based on one filter. If any filters are selected, they'll
@@ -672,4 +750,6 @@ export {
   institutionNameByNyplSource,
   addSource,
   isNyplBnumber,
+  pluckAeonLinksFromResource,
+  isAeonLink,
 };
