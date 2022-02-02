@@ -1,7 +1,4 @@
-import {
-  findWhere as _findWhere,
-  isEmpty as _isEmpty,
-} from 'underscore';
+import { findWhere as _findWhere, isEmpty as _isEmpty } from 'underscore';
 import LocationCodes from '../data/locationCodes';
 import { camelToShishKabobCase } from './utils';
 
@@ -73,7 +70,8 @@ function LibraryItem() {
     },
     {
       '@id': 'loc:mai',
-      prefLabel: 'Stephen A. Schwarzman Building - Milstein Microform Reading Room 119',
+      prefLabel:
+        'Stephen A. Schwarzman Building - Milstein Microform Reading Room 119',
       customerCode: 'NF',
     },
     {
@@ -82,7 +80,6 @@ function LibraryItem() {
       customerCode: 'NP',
     },
   ];
-
 
   /**
    * Given an identifier value, returns same identifier transformed to entity
@@ -95,13 +92,19 @@ function LibraryItem() {
     if (typeof identifier === 'string') {
       // Convert them to entitys:
       return Object.keys(itemIdentifierTypeMappings)
-        .filter(name => identifier.indexOf(itemIdentifierTypeMappings[name].legacyUrnPrefix) === 0)
-        .map(name => (
-          {
-            '@type': itemIdentifierTypeMappings[name].type,
-            '@value': identifier.replace(itemIdentifierTypeMappings[name].legacyUrnPrefix, ''),
-          }
-        ))
+        .filter(
+          (name) =>
+            identifier.indexOf(
+              itemIdentifierTypeMappings[name].legacyUrnPrefix,
+            ) === 0,
+        )
+        .map((name) => ({
+          '@type': itemIdentifierTypeMappings[name].type,
+          '@value': identifier.replace(
+            itemIdentifierTypeMappings[name].legacyUrnPrefix,
+            '',
+          ),
+        }))
         .pop();
     }
 
@@ -125,7 +128,7 @@ function LibraryItem() {
   this.getIdentifierEntitiesByType = (identifiersArray, type) => {
     return identifiersArray
       .map(this.ensureLegacyIdentifierIsEntity)
-      .filter(identifier => identifier && identifier['@type'] === type);
+      .filter((identifier) => identifier && identifier['@type'] === type);
   };
 
   /**
@@ -147,8 +150,14 @@ function LibraryItem() {
   this.getIdentifiers = (identifiersArray, neededTagsArray) => {
     if (!Array.isArray(identifiersArray)) return {};
     return neededTagsArray.reduce((identifierMap, neededTag) => {
-      const matches = this.getIdentifierEntitiesByType(identifiersArray, neededTag.value);
-      if (matches && matches.length > 0) return Object.assign(identifierMap, { [neededTag.name]: matches[0]['@value'] });
+      const matches = this.getIdentifierEntitiesByType(
+        identifiersArray,
+        neededTag.value,
+      );
+      if (matches && matches.length > 0)
+        return Object.assign(identifierMap, {
+          [neededTag.name]: matches[0]['@value'],
+        });
       return identifierMap;
     }, {});
   };
@@ -176,44 +185,72 @@ function LibraryItem() {
     const id = item && item['@id'] ? item['@id'].substring(4) : '';
     const itemSource = item.idNyplSourceId ? item.idNyplSourceId['@type'] : '';
     // Taking the first object in the accessMessage array.
-    const accessMessage = item.accessMessage && item.accessMessage.length ?
-      item.accessMessage[0] : {};
+    const accessMessage =
+      item.accessMessage && item.accessMessage.length
+        ? item.accessMessage[0]
+        : {};
     // Taking first callNumber.
-    const callNumber = item.shelfMark && item.shelfMark.length ? item.shelfMark[0] : '';
+    const callNumber =
+      item.shelfMark && item.shelfMark.length ? item.shelfMark[0] : '';
     // Taking the first value in the array.
-    const requestable = item.requestable && item.requestable.length ? item.requestable[0] : false;
+    const requestable =
+      item.requestable && item.requestable.length ? item.requestable[0] : false;
     // Taking the first value in the array;
-    const suppressed = item.suppressed && item.suppressed.length ? item.suppressed[0] : false;
+    const suppressed =
+      item.suppressed && item.suppressed.length ? item.suppressed[0] : false;
     const isElectronicResource = this.isElectronicResource(item);
-    const electronicResources = isElectronicResource ? this.getElectronicResources(item) : null;
+    const electronicResources = isElectronicResource
+      ? this.getElectronicResources(item)
+      : null;
     // Taking the first status object in the array.
     const status = item.status && item.status.length ? item.status[0] : {};
-    const volume = item.enumerationChronology && item.enumerationChronology.length ?
-      item.enumerationChronology[0] : '';
-    const availability = !_isEmpty(status) && status.prefLabel ?
-      status.prefLabel.replace(/\W/g, '').toLowerCase() : '';
+    const volume =
+      item.enumerationChronology && item.enumerationChronology.length
+        ? item.enumerationChronology[0]
+        : '';
+    const availability =
+      !_isEmpty(status) && status.prefLabel
+        ? status.prefLabel.replace(/\W/g, '').toLowerCase()
+        : '';
     const available = ['available', 'useinlibrary'].includes(availability);
     // non-NYPL ReCAP
     const nonNyplRecap = itemSource.indexOf('Recap') !== -1;
     const holdingLocation = this.getHoldingLocation(item, nonNyplRecap);
     // nypl-owned ReCAP
-    const nyplRecap = !!((holdingLocation && !_isEmpty(holdingLocation) &&
-      holdingLocation['@id'].substring(4, 6) === 'rc') && (itemSource === 'SierraNypl'));
-    const nonRecapNYPL = !!((holdingLocation && !_isEmpty(holdingLocation) &&
-      holdingLocation['@id'].substring(4, 6) !== 'rc') && (itemSource === 'SierraNypl'));
+    const nyplRecap = !!(
+      holdingLocation &&
+      !_isEmpty(holdingLocation) &&
+      holdingLocation['@id'].substring(4, 6) === 'rc' &&
+      itemSource === 'SierraNypl'
+    );
+    const nonRecapNYPL = !!(
+      holdingLocation &&
+      !_isEmpty(holdingLocation) &&
+      holdingLocation['@id'].substring(4, 6) !== 'rc' &&
+      itemSource === 'SierraNypl'
+    );
     const isRecap = nonNyplRecap || nyplRecap;
     // The identifier we need for an item now
     const identifiersArray = [{ name: 'barcode', value: 'bf:Barcode' }];
-    const bibIdentifiers = this.getIdentifiers(item.identifier, identifiersArray);
+    const bibIdentifiers = this.getIdentifiers(
+      item.identifier,
+      identifiersArray,
+    );
     const barcode = bibIdentifiers.barcode || '';
     const mappedItemSource = camelToShishKabobCase(itemSource);
     const isOffsite = this.isOffsite(holdingLocation.prefLabel.toLowerCase());
     let url = null;
-    const isSerial = !!(bib && bib.issuance && bib.issuance[0]['@id'] === 'urn:biblevel:s');
-    const materialType = bib && bib.materialType && bib.materialType[0] ?
-      bib.materialType[0] : {};
-    const format = bib && bib.holdings && bib.holdings.format ?
-      bib.holdings.format : materialType.prefLabel;
+    const isSerial = !!(
+      bib &&
+      bib.issuance &&
+      bib.issuance[0]['@id'] === 'urn:biblevel:s'
+    );
+    const materialType =
+      bib && bib.materialType && bib.materialType[0] ? bib.materialType[0] : {};
+    const format =
+      bib && bib.holdings && bib.holdings.format
+        ? bib.holdings.format
+        : materialType.prefLabel;
 
     if (availability === 'available') {
       // For all items that we want to send to the Hold Request Form.
@@ -256,7 +293,7 @@ function LibraryItem() {
    * @return {array}
    */
   this.getItem = (bib, itemId) => {
-    const items = (bib && bib.items) ? bib.items : [];
+    const items = bib && bib.items ? bib.items : [];
 
     if (itemId && items.length) {
       // Will return undefined if not found.
@@ -278,7 +315,7 @@ function LibraryItem() {
   this.getItems = (bib) => {
     // filter out anything without a status or location
     const bibItems = bib && bib.items && bib.items.length ? bib.items : [];
-    const finalItems = bibItems.map(item => this.mapItem(item, bib));
+    const finalItems = bibItems.map((item) => this.mapItem(item, bib));
 
     return finalItems;
   };
@@ -290,7 +327,8 @@ function LibraryItem() {
    * @return {string}
    */
   this.getLocationHoldUrl = (location) => {
-    const holdingLocationId = location && location['@id'] ? location['@id'].substring(4) : '';
+    const holdingLocationId =
+      location && location['@id'] ? location['@id'].substring(4) : '';
     let url = '';
     let shortLocation = 'schwarzman';
 
@@ -300,23 +338,28 @@ function LibraryItem() {
 
     switch (shortLocation) {
       case 'schwarzman':
-        url = 'http://www.questionpoint.org/crs/servlet/org.oclc.admin.BuildForm?&institution=' +
+        url =
+          'http://www.questionpoint.org/crs/servlet/org.oclc.admin.BuildForm?&institution=' +
           '13777&type=1&language=1';
         break;
       case 'lpa':
-        url = 'http://www.questionpoint.org/crs/servlet/org.oclc.admin.BuildForm?&institution=' +
+        url =
+          'http://www.questionpoint.org/crs/servlet/org.oclc.admin.BuildForm?&institution=' +
           '13252&type=1&language=1';
         break;
       case 'schomburg':
-        url = 'http://www.questionpoint.org/crs/servlet/org.oclc.admin.BuildForm?&institution=' +
+        url =
+          'http://www.questionpoint.org/crs/servlet/org.oclc.admin.BuildForm?&institution=' +
           '13810&type=1&language=1';
         break;
       case 'sibl':
-        url = 'http://www.questionpoint.org/crs/servlet/org.oclc.admin.BuildForm?&institution=' +
+        url =
+          'http://www.questionpoint.org/crs/servlet/org.oclc.admin.BuildForm?&institution=' +
           '13809&type=1&language=1';
         break;
       default:
-        url = 'http://www.questionpoint.org/crs/servlet/org.oclc.admin.BuildForm?&institution=' +
+        url =
+          'http://www.questionpoint.org/crs/servlet/org.oclc.admin.BuildForm?&institution=' +
           '13777&type=1&language=1';
         break;
     }
@@ -352,7 +395,8 @@ function LibraryItem() {
    * @param {object} item
    * @return {boolean}
    */
-  this.isElectronicResource = item => !!(item.electronicLocator && item.electronicLocator.length);
+  this.isElectronicResource = (item) =>
+    !!(item.electronicLocator && item.electronicLocator.length);
 
   /**
    * isOffsite(prefLabel)
@@ -369,7 +413,8 @@ function LibraryItem() {
    * @param {string} bibId
    * @return {boolean}
    */
-  this.isNYPLReCAP = (bibId = '') => (bibId.indexOf('pb') === -1) && (bibId.indexOf('cb') === -1);
+  this.isNYPLReCAP = (bibId = '') =>
+    bibId.indexOf('pb') === -1 && bibId.indexOf('cb') === -1;
 }
 
-export default new LibraryItem;
+export default new LibraryItem();

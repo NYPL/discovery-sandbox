@@ -1,8 +1,8 @@
+import { Heading } from '@nypl/design-system-react-components';
 import React from 'react';
 import { annotatedMarcDetails } from '../../utils/bibDetailsUtils';
 import { isNyplBnumber } from '../../utils/utils';
 import BibDetails from './BibDetails';
-import { Heading } from '@nypl/design-system-react-components';
 
 // `linkable` means that those values are links inside the app.
 // `selfLinkable` means that those values are external links and should be self-linked,

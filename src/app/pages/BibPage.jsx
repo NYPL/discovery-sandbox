@@ -21,10 +21,6 @@ import {
   pluckAeonLinksFromResource,
 } from '../utils/utils';
 
-import {
-  annotatedMarcDetails,
-} from '../utils/bibDetailsUtils';
-
 const ItemsContainer = itemsContainerModule.ItemsContainer;
 
 const checkForMoreItems = (bib, dispatch) => {
@@ -104,10 +100,13 @@ export const BibPage = (
         <BackToSearchResults result={resultSelection} bibId={bibId} />
       </section>
 
-      <TopBibDetails bib={bib} resources={pluckAeonLinksFromResource(
+      <TopBibDetails
+        bib={bib}
+        resources={pluckAeonLinksFromResource(
           aggregatedElectronicResources,
           items,
-        )} />
+        )}
+      />
 
       {items.length && !isElectronicResources && (
         <section style={{ marginTop: '20px' }}>
@@ -132,7 +131,6 @@ export const BibPage = (
       <BottomBibDetails bib={bib} resources={aggregatedElectronicResources} />
 
       <LegacyCatalogLink recordNumber={bibId} display={bibId.startsWith('b')} />
-
     </SccContainer>
   );
 };

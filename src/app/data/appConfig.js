@@ -5,7 +5,8 @@ const appConfig = {
   appTitle: 'NYPL | Discovery',
   appName: 'discovery',
   displayTitle: process.env.DISPLAY_TITLE || 'Shared Collection Catalog',
-  baseUrl: process.env.BASE_URL || '/research/collections/shared-collection-catalog',
+  baseUrl:
+    process.env.BASE_URL || '/research/collections/shared-collection-catalog',
   redirectFromBaseUrl: process.env.REDIRECT_FROM_BASE_URL,
   legacyBaseUrl: process.env.LEGACY_BASE_URL,
   favIconPath: 'https://ux-static.nypl.org/images/favicon.ico',
@@ -14,12 +15,19 @@ const appConfig = {
   environment: process.env.APP_ENV || 'production',
   api: {
     discovery: {
-      development: process.env.PLATFORM_API_BASE_URL || 'https://qa-platform.nypl.org/api/v0.1',
-      production: process.env.PLATFORM_API_BASE_URL || 'https://platform.nypl.org/api/v0.1',
+      development:
+        process.env.PLATFORM_API_BASE_URL ||
+        'https://qa-platform.nypl.org/api/v0.1',
+      production:
+        process.env.PLATFORM_API_BASE_URL ||
+        'https://platform.nypl.org/api/v0.1',
     },
     drbb: {
-      development: process.env.DRB_API_BASE_URL || 'http://drb-api-qa.nypl.org/search/',
-      production: process.env.DRB_API_BASE_URL || 'https://digital-research-books-api.nypl.org/v3/sfr/search',
+      development:
+        process.env.DRB_API_BASE_URL || 'http://drb-api-qa.nypl.org/search/',
+      production:
+        process.env.DRB_API_BASE_URL ||
+        'https://digital-research-books-api.nypl.org/v3/sfr/search',
     },
   },
   circulatingCatalog: process.env.CIRCULATING_CATALOG,
@@ -48,11 +56,14 @@ const appConfig = {
   closedLocations: mapLocations(process.env.CLOSED_LOCATIONS),
   recapClosedLocations: mapLocations(process.env.RECAP_CLOSED_LOCATIONS),
   nonRecapClosedLocations: mapLocations(process.env.NON_RECAP_CLOSED_LOCATIONS),
-  openLocations: process.env.OPEN_LOCATIONS ? process.env.OPEN_LOCATIONS.split(',') : null,
+  openLocations: process.env.OPEN_LOCATIONS
+    ? process.env.OPEN_LOCATIONS.split(',')
+    : null,
   holdRequestNotification: process.env.HOLD_REQUEST_NOTIFICATION,
   searchResultsNotification: process.env.SEARCH_RESULTS_NOTIFICATION,
   drbbFrontEnd: {
-    development: 'http://sfr-front-end-development.us-east-1.elasticbeanstalk.com',
+    development:
+      'http://sfr-front-end-development.us-east-1.elasticbeanstalk.com',
     production: 'https://digital-research-books-beta.nypl.org',
   },
   drbbEreader: {
