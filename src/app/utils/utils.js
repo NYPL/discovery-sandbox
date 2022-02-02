@@ -370,6 +370,29 @@ function getAggregatedElectronicResources(items = []) {
   return _flatten(electronicResources);
 }
 
+// TODO: Define Resources
+
+// interface Resources {
+//   @type: string;
+//   label: string;
+//   url: string;
+// }
+
+// TODO: Define Items
+
+// This is incomplete
+// interface Items {
+//    id: string;
+//    status: {
+//      @id: string;
+//      prefLabel: string
+//    };
+//    availability: string;
+//    available: boolean;
+//    aeonUrl: string | string[];
+//    electronicResources?: never | string[]
+// }
+
 /**
  * Return a list of non Aeon Link Electronic Resouces from given list
  * @param {array} resources Resources[ ]
