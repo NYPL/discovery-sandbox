@@ -426,7 +426,6 @@ function featuredAeonList(items) {
   });
 }
 
-
 /**
  *
  * Confirm the url is an Aeon Link
@@ -438,7 +437,7 @@ function featuredAeonList(items) {
  * - https://nypl-aeon-test.aeon.atlas-sys.com
  */
 function isAeonLink(url) {
-  if (!url) url = '';
+  if (!url) return false;
   const aeonLinks = [
     'https://specialcollections.nypl.org/aeon/Aeon.dll',
     'https://nypl-aeon-test.aeon.atlas-sys.com',
