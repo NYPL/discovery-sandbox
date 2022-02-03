@@ -1,0 +1,21 @@
+@mixin nypl-icon(
+  $background-color: $nypl-white,
+  $border-radius: 0,
+  $fill: $page-text-color,
+  $height: null,
+  $inverted-color: $inverted-link-color,
+  $width: null
+  ) {
+  background-color: $background-color;
+  border-radius: $border-radius;
+  display: inline-block;
+  fill: $fill;
+  height: $height;
+  speak: none;
+  width: $width;
+
+  &.reversed {
+    background-color: inherit;
+    fill: $inverted-color;
+  }
+}
