@@ -83,7 +83,9 @@ button,
 html input[type='button'],
 input[type='reset'],
 input[type='submit'] {
+  -webkit-appearance: button;
   -moz-appearance: button;
+  appearance: button;
 }
 input[type='submit']:focus {
   outline-style: solid;

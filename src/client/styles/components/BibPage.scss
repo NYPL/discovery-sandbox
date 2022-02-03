@@ -89,10 +89,12 @@ div .tabbed {
 // Start styles for subject highlighting on hover
 
 .tabbed ul section dd {
+  width: -moz-fit-content;
   width: fit-content;
 }
 
 .tabbed li {
+  width: -moz-fit-content;
   width: fit-content;
 }
 
