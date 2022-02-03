@@ -1,8 +1,8 @@
 /*
 Import style rules from NYPL Design Toolkit
 */
-@import "nypl-normalize";
-@import "toolkit";
+@import 'nypl-normalize';
+@import 'toolkit';
 
 /*
 Import style rules from NYPL Design System
@@ -13,12 +13,12 @@ Import style rules from NYPL Design System
 /*
 App-specific utilities and defaults
 */
-@import "utils/mixins.scss";
-@import "utils/utils.scss";
+@import 'utils/mixins.scss';
+@import 'utils/utils.scss';
 // @import "utils/fonts.scss";
-@import "utils/variables.scss";
-@import "utils/base.scss";
-@import "utils/colors.scss";
+@import 'utils/variables.scss';
+@import 'utils/base.scss';
+@import 'utils/colors.scss';
 
 /*
 Import style rules from NYPL React module components
@@ -26,9 +26,9 @@ Import style rules from NYPL React module components
 @import '@nypl/dgx-header-component/dist/styles/main';
 @import '@nypl/dgx-react-footer/dist/styles/styles';
 
-@import "components/**/*.scss";
+@import 'components/**/*.scss';
 
-@import "style-v2.scss";
+@import 'style-v2.scss';
 
 html {
   @include font-settings;
@@ -74,17 +74,18 @@ header #skip {
   line-height: 15px !important;
 }
 
-li, p {
+li,
+p {
   max-width: 100%;
 }
 
 button,
-html input[type=button],
-input[type=reset],
-input[type=submit] {
+html input[type='button'],
+input[type='reset'],
+input[type='submit'] {
   -moz-appearance: button;
 }
-input[type=submit]:focus {
+input[type='submit']:focus {
   outline-style: solid;
   outline-width: 3px;
 }
@@ -117,7 +118,8 @@ select {
 .nypl-basic-table {
   margin-top: 20px;
 
-  th, td {
+  th,
+  td {
     overflow: inherit;
     padding-right: 15px;
     width: 16%;
@@ -136,7 +138,7 @@ select {
   display: inline-block;
   margin-right: 1rem;
   color: #080807;
-  font-size: "";
+  font-size: '';
   font-weight: 400;
 }
 
@@ -165,7 +167,7 @@ select {
   padding-top: 25vh;
 
   div {
-    background-color: #F9F8F7;
+    background-color: #f9f8f7;
     margin: auto;
     opacity: 100%;
     width: 472px;
@@ -197,10 +199,9 @@ select {
   }
 }
 
-
 .research-modal__content {
   align-items: flex-start;
-  background: #F9F8F7;
+  background: #f9f8f7;
   border: 1px solid var(--ui-gray-light);
   border-radius: 5px;
   flex-flow: column wrap;
