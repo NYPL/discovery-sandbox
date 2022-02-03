@@ -390,16 +390,14 @@ function getAggregatedElectronicResources(items = []) {
   return _flatten(electronicResources);
 }
 
-// TODO: Define Resources
-
+// TODO: [SCC-2996] Define Resources
 // interface Resources {
 //   @type: string;
 //   label: string;
 //   url: string;
 // }
 
-// TODO: Define Items
-
+// TODO: [SCC-2997] Define Items
 // This is incomplete
 // interface Items {
 //    id: string;
