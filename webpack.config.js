@@ -3,7 +3,6 @@ const webpack = require('webpack');
 const { merge } = require('webpack-merge');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const sassPaths = require('@nypl/design-toolkit').includePaths;
 const globImporter = require('node-sass-glob-importer');
 const Visualizer = require('webpack-visualizer-plugin');
 
@@ -179,7 +178,6 @@ if (ENV === 'development') {
               loader: 'sass-loader',
               options: {
                 sassOptions: {
-                  includePaths: sassPaths,
                   importer: globImporter(),
                 },
                 sourceMap: true,
@@ -252,7 +250,6 @@ if (ENV === 'production') {
               loader: 'sass-loader',
               options: {
                 sassOptions: {
-                  includePaths: sassPaths,
                   importer: globImporter(),
                   fiber: false,
                 },
