@@ -1,0 +1,539 @@
+// NYPL Design Toolkit 0.1.3
+// https://nypl.github.io/design-toolkit/
+// MIT License
+
+@import "css3";
+@import "measurements";
+@import "media-queries";
+@import "general-mixins";
+@import "microformats";
+@import "colors";
+@import "typography";
+@import "icons";
+@import "forms";
+@import "grid";
+@import "tables-results";
+@import "holds-table";
+@import "buttons";
+@import "pager";
+@import "modal-container";
+
+.hidden { // hacky
+  display: none;
+}
+
+.centered { // also hacky
+  text-align: center;
+}
+
+
+
+///
+/// SVG Iconography
+///
+
+.nypl-icon {
+  @include nypl-icon;
+}
+
+.nypl-logo {
+  @include nypl-icon(
+    $height: 13em,
+    $width: 20em);
+}
+
+.nypl-logo-rev {
+  @include nypl-icon(
+    $height: $logo-height,
+    $width: $logo-width,
+    $background-color: transparent);
+}
+
+
+.nypl-arrow-icon {
+  @include rotate(90deg);
+}
+
+
+
+///
+/// Loaders
+///
+
+@for $percent from 1 through 100 {
+  .nypl-bar_#{$percent} {
+    @include bar($percent);
+  }
+}
+
+.nypl-lead {
+  @include lead;
+}
+
+.nypl-basic-list {
+  @include basic-list;
+}
+
+.nypl-bar-list {
+  @include bar-list;
+}
+
+.nypl-custom-list {
+  @include custom-list;
+}
+
+.nypl-collapsible {
+  @include collapsible;
+}
+
+
+
+//
+// Buttons
+//
+
+.nypl-link-button {
+  @include link-button;
+}
+
+.nypl-unset-filter {
+  @include basic-button-icon;
+}
+
+.nypl-short-button {
+  @include short-button;
+}
+
+.nypl-x-close-button {
+  @include close-button;
+}
+
+.nypl-basic-button {
+  @include basic-button;
+}
+
+.nypl-results-button {
+  @include results-button;
+}
+
+ // for background compatibility support
+.nypl-primary-button {
+  @include primary-button;
+}
+
+// item requests
+.nypl-request-button {
+  @include request-button;
+}
+
+.nypl-request-item-summary {
+  @include request-item-summary;
+}
+
+.nypl-electronic-delivery-form {
+  @include electronic-delivery-form;
+}
+
+.nypl-service-button {
+  @include service-button;
+}
+
+.nypl-login-button {
+  @include login-button;
+}
+
+@each $side in left, right {
+  .nypl-menu-button_#{$side} {
+    @include menu-button($attachment: $side);
+  }
+}
+
+.nypl-navigation-button {
+  @include navigation-button;
+}
+
+.nypl-spinner-button,
+.nypl-spinner-field {
+  @include spinner-element;
+}
+
+
+.nypl-progress-indicator {
+  @include progress-indicator;
+}
+
+///
+/// Forms & Fields ~ User Inputs
+///
+
+.nypl-label {
+  @include label;
+}
+
+.nypl-fieldset {
+  @include fieldset;
+}
+
+.nypl-input {
+  @include input;
+}
+
+.nypl-text-field {
+  @include text-field;
+}
+
+.nypl-year-field {
+  @include year-field;
+}
+
+.nypl-text-field-with-label {
+  @include text-field-with-label;
+}
+
+.nypl-name-field {
+  @include name-field;
+}
+
+.nypl-address-fieldset {
+  @include address-fieldset;
+}
+
+.nypl-date-field {
+  @include date-field;
+}
+
+.nypl-required-field {
+  @include required-field;
+}
+
+.nypl-text-area-with-label {
+  @include text-area-with-label;
+}
+
+.nypl-field-error {
+  @include field-error;
+}
+
+.nypl-field-success {
+  @include field-success;
+}
+
+.nypl-select {
+  @include select;
+}
+
+.nypl-select-field {
+  @include select-field;
+}
+
+.nypl-form-error {
+  @include form-message($color: $highlight-color);
+}
+
+.nypl-form-success {
+  @include form-message($color: $success-color);
+}
+
+.nypl-simple-radiobutton {
+  @include simple-radiobutton;
+}
+
+.nypl-generic-checkbox {
+  @include generic-checkbox;
+}
+
+.nypl-terms-checkbox {
+  @include terms-checkbox;
+}
+
+.nypl-request-radiobutton-field {
+  @include item-holds-radiobutton-field;
+}
+
+.nypl-request-form-title {
+  @include request-form-title;
+}
+
+.nypl-radiobutton-field,
+.nypl-checkbox-field {
+  @include radiobutton-field;
+}
+
+.nypl-omnisearch {
+  @include nypl-omnisearch;
+}
+
+.nypl-mobile-refine {
+  @include mobile-refine;
+}
+
+.nypl-facet-toggle {
+  @include facet-toggle;
+}
+
+.nypl-collapsible-field {
+  @include collapsible-field;
+}
+
+.nypl-searchable-field {
+  @include searchable-field;
+}
+
+.nypl-alphabetical-filter {
+  @include alphabetical-filter;
+}
+
+.nypl-search-form {
+  @include search-form;
+}
+
+.nypl-sorter-row {
+  @include sorter-row;
+}
+
+
+///
+/// Screen readers only
+///
+
+.nypl-screenreader-only {
+  @include screenreader-only;
+}
+///
+/// Page Layout
+///
+
+.nypl-homepage-hero {
+  @include homepage-hero;
+}
+
+.nypl-quarter-image {
+  @include quarter-image;
+}
+
+.nypl-special-title {
+  @include special-title;
+}
+
+.nypl-page-header {
+  @include page-header;
+}
+
+.nypl-request-page-header {
+  @include request-page-header;
+}
+
+.nypl-breadcrumbs {
+  @include breadcrumbs;
+}
+
+.nypl-full-width-wrapper {
+  @include full-width-wrapper;
+}
+
+.nypl-row {
+  @include row;
+}
+
+.nypl-column-type {
+  @include column-type;
+}
+
+.nypl-column-full,
+.nypl-column-four-quarters {
+  @include column-full;
+}
+
+.nypl-column-half,
+.nypl-column-two-quarters {
+  @include column-half;
+}
+
+.nypl-column-one-quarter {
+  @include column-one-quarter;
+}
+
+.nypl-column-one-third {
+  @include column-one-third;
+}
+
+.nypl-column-two-thirds {
+  @include column-two-thirds;
+}
+
+.nypl-column-three-quarters {
+  @include column-three-quarters;
+}
+
+.nypl-column-offset-one {
+  @include column-offset(1);
+}
+
+.nypl-column-offset-two {
+  @include column-offset(2);
+}
+
+.nypl-column-offset-three {
+  @include column-offset(3);
+}
+
+///
+/// Titles, Text & Icons
+///
+
+.nypl-nypl-icon {
+  @include nypl-icon;
+}
+
+.nypl-banner-alert {
+  @include banner-alert;
+}
+
+.nypl-secondary-title {
+  @include secondary-title;
+}
+
+.nypl-location-info {
+  @include location-info;
+}
+
+.nypl-location-hours {
+  @include location-hours;
+}
+
+.nypl-related-links {
+  @include related-links;
+}
+
+///
+/// Toolkit Styles
+/// TODO: Break this out into a separate style sheet that
+/// doesnt get compiled along w/ the rest of the DTK
+.nypl-general-note {
+  @include general-note;
+}
+
+.nypl-a11y-note {
+  @include a11y-note;
+}
+
+.nypl-toolkit-example {
+  @include toolkit-example;
+}
+
+.nypl-toolkit-example-dark {
+  @include toolkit-example;
+  @include toolkit-example-dark;
+}
+
+///
+/// Tables
+///
+
+.nypl-basic-table {
+  @include basic-table;
+}
+
+.nypl-holds-table {
+  @include holds-table;
+}
+
+.nypl-results-summary {
+  @include results-summary;
+}
+
+.nypl-results-pagination {
+  @include results-pagination;
+}
+
+.nypl-results-sorting-controls {
+  @include results-sorting-controls;
+}
+
+.nypl-results-sorter {
+  @include results-sorter;
+}
+
+.nypl-filter-button {
+  @include filter-button;
+}
+
+.nypl-select-field-results {
+  @include select-field-results;
+}
+
+.nypl-results-item {
+  @include results-item;
+}
+
+.nypl-results-unavailable {
+  @include results-unavailable;
+}
+
+.nypl-results-item-description {
+  @include results-item-description;
+}
+
+.nypl-results-info,
+.nypl-results-place,
+.nypl-results-publisher,
+.nypl-results-date {
+  @include results-info;
+}
+
+.nypl-results-media {
+  @include results-media;
+}
+
+.nypl-results-use {
+  @include results-use;
+}
+
+.nypl-item-info {
+  @include item-info;
+}
+
+.nypl-item-media {
+  @include item-media;
+}
+
+.nypl-item-use {
+  @include results-use;
+}
+
+.nypl-item-holdings {
+  @include item-holdings;
+}
+
+.nypl-item-details {
+  @include item-details;
+}
+
+.nypl-item-external-links {
+  @include item-external-links;
+}
+
+.nypl-views-table {
+  @include views-table;
+}
+
+
+// Modals & Overlays
+// .nypl-popup-container {
+//   @include popup;
+// }
+
+.nypl-basic-modal-container {
+  @include basic-modal;
+}
+//
+// Filtering context
+//
+.nypl-modal-filter-form {
+  @include modal-filter-form;
+}
+
+// Text Columns
+.nypl-generic-columns {
+  @include generic-columns;
+}
