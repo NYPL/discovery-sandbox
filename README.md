@@ -91,7 +91,6 @@ There are a few consideration to be aware of when spinning up a local developmen
 #### Node
 
 Ensure you are running the proper [node version](#node-runtime).
-If missconfigured, there will be issues with webpack building the project due to how **_`sass`_** is configured
 
 #### Environment
 
