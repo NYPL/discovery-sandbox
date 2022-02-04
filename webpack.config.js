@@ -1,7 +1,7 @@
 const path = require('path');
 const webpack = require('webpack');
-const merge = require('webpack-merge');
-const CleanBuild = require('clean-webpack-plugin');
+const { merge } = require('webpack-merge');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const globImporter = require('node-sass-glob-importer');
 const Visualizer = require('webpack-visualizer-plugin');
@@ -28,8 +28,9 @@ const commonSettings = {
       path.resolve(ROOT_PATH, 'src/client/App.jsx'),
     ],
   },
+  target: ['web', 'es5'],
   resolve: {
-    extensions: ['.js', '.jsx'],
+    extensions: ['.js', '.jsx', '.css', '.scss'],
   },
   output: {
     // Sets the output path to ROOT_PATH/dist
@@ -42,33 +43,9 @@ const commonSettings = {
     // Cleans the Dist folder after every build.
     // Alternately, we can run rm -rf dist/ as
     // part of the package.json scripts.
-    new CleanBuild(['dist']),
+    new CleanWebpackPlugin(),
     new MiniCssExtractPlugin({
       filename: 'styles.css',
-    }),
-    new webpack.DefinePlugin({
-      loadA11y: process.env.loadA11y || false,
-      appEnv: JSON.stringify(appEnv),
-      'process.env': {
-        SHEP_API: JSON.stringify(process.env.SHEP_API),
-        LOGIN_URL: JSON.stringify(process.env.LOGIN_URL),
-        LEGACY_BASE_URL: JSON.stringify(process.env.LEGACY_BASE_URL),
-        CLOSED_LOCATIONS: JSON.stringify(process.env.CLOSED_LOCATIONS),
-        RECAP_CLOSED_LOCATIONS: JSON.stringify(
-          process.env.RECAP_CLOSED_LOCATIONS,
-        ),
-        NON_RECAP_CLOSED_LOCATIONS: JSON.stringify(
-          process.env.NON_RECAP_CLOSED_LOCATIONS,
-        ),
-        OPEN_LOCATIONS: JSON.stringify(process.env.OPEN_LOCATIONS),
-        DISPLAY_TITLE: JSON.stringify(process.env.DISPLAY_TITLE),
-        ITEM_BATCH_SIZE: JSON.stringify(process.env.ITEM_BATCH_SIZE),
-        CIRCULATING_CATALOG: JSON.stringify(process.env.CIRCULATING_CATALOG),
-        BASE_URL: JSON.stringify(process.env.BASE_URL),
-        WEBPAC_BASE_URL: JSON.stringify(process.env.WEBPAC_BASE_URL),
-        FEATURES: JSON.stringify(process.env.FEATURES),
-        SHEP_BIBS_LIMIT: JSON.stringify(process.env.SHEP_BIBS_LIMIT),
-      },
     }),
     // new BundleAnalyzerPlugin({
     //   // Can be `server`, `static` or `disabled`.
@@ -129,6 +106,7 @@ if (ENV === 'development') {
   module.exports = merge(commonSettings, {
     mode: 'development',
     devtool: 'inline-source-map',
+    stats: 'errors-only',
     entry: {
       app: [
         'webpack-dev-server/client?http://localhost:3000',
@@ -138,11 +116,36 @@ if (ENV === 'development') {
     output: {
       publicPath: 'http://localhost:3000/',
     },
-    plugins: [new webpack.HotModuleReplacementPlugin()],
     resolve: {
       modules: ['node_modules'],
-      extensions: ['.js', '.jsx', '.scss', '.png'],
+      extensions: ['.js', '.jsx', '.css', '.scss', '.png'],
     },
+    plugins: [
+      new webpack.DefinePlugin({
+        loadA11y: process.env.loadA11y || false,
+        appEnv: JSON.stringify(appEnv),
+        'process.env': {
+          SHEP_API: JSON.stringify(process.env.SHEP_API),
+          LOGIN_URL: JSON.stringify(process.env.LOGIN_URL),
+          LEGACY_BASE_URL: JSON.stringify(process.env.LEGACY_BASE_URL),
+          CLOSED_LOCATIONS: JSON.stringify(process.env.CLOSED_LOCATIONS),
+          RECAP_CLOSED_LOCATIONS: JSON.stringify(
+            process.env.RECAP_CLOSED_LOCATIONS,
+          ),
+          NON_RECAP_CLOSED_LOCATIONS: JSON.stringify(
+            process.env.NON_RECAP_CLOSED_LOCATIONS,
+          ),
+          OPEN_LOCATIONS: JSON.stringify(process.env.OPEN_LOCATIONS),
+          DISPLAY_TITLE: JSON.stringify(process.env.DISPLAY_TITLE),
+          ITEM_BATCH_SIZE: JSON.stringify(process.env.ITEM_BATCH_SIZE),
+          CIRCULATING_CATALOG: JSON.stringify(process.env.CIRCULATING_CATALOG),
+          BASE_URL: JSON.stringify(process.env.BASE_URL),
+          WEBPAC_BASE_URL: JSON.stringify(process.env.WEBPAC_BASE_URL),
+          FEATURES: JSON.stringify(process.env.FEATURES),
+          SHEP_BIBS_LIMIT: JSON.stringify(process.env.SHEP_BIBS_LIMIT),
+        },
+      }),
+    ],
     module: {
       rules: [
         {
@@ -166,7 +169,7 @@ if (ENV === 'development') {
           },
         },
         {
-          test: /\.scss?$/,
+          test: /\.s[ac]ss?$/,
           use: [
             'style-loader',
             'css-loader',
@@ -175,12 +178,32 @@ if (ENV === 'development') {
               options: {
                 sassOptions: {
                   importer: globImporter(),
+                },
+                sourceMap: true,
+                implementation: require('sass'),
               },
             },
           ],
           include: path.resolve(ROOT_PATH, 'src'),
         },
       ],
+    },
+    devServer: {
+      port: 3000,
+      hot: true,
+      historyApiFallback: true,
+      headers: {
+        'Access-Control-Allow-Origin': 'http://localhost:3001',
+        'Access-Control-Allow-Headers': 'X-Requested-With',
+      },
+      onListening(devServer) {
+        if (!devServer) throw new Error('webpack-dev-server is not defined');
+
+        console.log(
+          'Dev Server Listening on port:',
+          devServer.server.address().port,
+        );
+      },
     },
   });
 }
@@ -217,7 +240,7 @@ if (ENV === 'production') {
           use: 'babel-loader',
         },
         {
-          test: /\.scss$/,
+          test: /\.s[ac]ss$/i,
           include: path.resolve(ROOT_PATH, 'src'),
           use: [
             MiniCssExtractPlugin.loader,
@@ -227,6 +250,10 @@ if (ENV === 'production') {
               options: {
                 sassOptions: {
                   importer: globImporter(),
+                  fiber: false,
+                },
+                sourceMap: false,
+                implementation: require('sass'),
               },
             },
           ],
@@ -235,13 +262,15 @@ if (ENV === 'production') {
     },
     plugins: [
       new webpack.DefinePlugin({
+        loadA11y: process.env.loadA11y || false,
+        appEnv: JSON.stringify(appEnv),
         'process.env': {
           NODE_ENV: JSON.stringify('production'),
           GA_ENV: JSON.stringify(process.env.GA_ENV),
-          SHEP_API: process.env.SHEP_API,
-          LOGIN_URL: process.env.LOGIN_URL,
-          LEGACY_BASE_URL: process.env.LEGACY_BASE_URL,
-          CLOSED_LOCATIONS: process.env.CLOSED_LOCATIONS,
+          SHEP_API: JSON.stringify(process.env.SHEP_API),
+          LOGIN_URL: JSON.stringify(process.env.LOGIN_URL),
+          LEGACY_BASE_URL: JSON.stringify(process.env.LEGACY_BASE_URL),
+          CLOSED_LOCATIONS: JSON.stringify(process.env.CLOSED_LOCATIONS),
           RECAP_CLOSED_LOCATIONS: JSON.stringify(
             process.env.RECAP_CLOSED_LOCATIONS,
           ),
@@ -252,6 +281,10 @@ if (ENV === 'production') {
           ITEM_BATCH_SIZE: JSON.stringify(process.env.ITEM_BATCH_SIZE),
           CIRCULATING_CATALOG: JSON.stringify(process.env.CIRCULATING_CATALOG),
           WEBPAC_BASE_URL: JSON.stringify(process.env.WEBPAC_BASE_URL),
+          OPEN_LOCATIONS: JSON.stringify(process.env.OPEN_LOCATIONS),
+          BASE_URL: JSON.stringify(process.env.BASE_URL),
+          FEATURES: JSON.stringify(process.env.FEATURES),
+          SHEP_BIBS_LIMIT: JSON.stringify(process.env.SHEP_BIBS_LIMIT),
         },
       }),
     ],
