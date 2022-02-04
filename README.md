@@ -59,7 +59,7 @@ For searching, discovering and placing a hold on research items from NYPL and Re
 ### Node Runtime
 
 ```
-Version 10.17.0
+Version 14.18.2
 ```
 
 #### NVM
@@ -91,7 +91,6 @@ There are a few consideration to be aware of when spinning up a local developmen
 #### Node
 
 Ensure you are running the proper [node version](#node-runtime).
-If missconfigured, there will be issues with webpack building the project due to how **_`sass`_** is configured
 
 #### Environment
 
