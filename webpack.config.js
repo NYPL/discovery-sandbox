@@ -1,7 +1,7 @@
 const path = require('path');
 const webpack = require('webpack');
-const merge = require('webpack-merge');
-const CleanBuild = require('clean-webpack-plugin');
+const { merge } = require('webpack-merge');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const globImporter = require('node-sass-glob-importer');
 const Visualizer = require('webpack-visualizer-plugin');
@@ -42,7 +42,7 @@ const commonSettings = {
     // Cleans the Dist folder after every build.
     // Alternately, we can run rm -rf dist/ as
     // part of the package.json scripts.
-    new CleanBuild(['dist']),
+    new CleanWebpackPlugin(),
     new MiniCssExtractPlugin({
       filename: 'styles.css',
     }),
