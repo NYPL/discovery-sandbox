@@ -47,30 +47,6 @@ const commonSettings = {
     new MiniCssExtractPlugin({
       filename: 'styles.css',
     }),
-    new webpack.DefinePlugin({
-      loadA11y: process.env.loadA11y || false,
-      appEnv: JSON.stringify(appEnv),
-      'process.env': {
-        SHEP_API: JSON.stringify(process.env.SHEP_API),
-        LOGIN_URL: JSON.stringify(process.env.LOGIN_URL),
-        LEGACY_BASE_URL: JSON.stringify(process.env.LEGACY_BASE_URL),
-        CLOSED_LOCATIONS: JSON.stringify(process.env.CLOSED_LOCATIONS),
-        RECAP_CLOSED_LOCATIONS: JSON.stringify(
-          process.env.RECAP_CLOSED_LOCATIONS,
-        ),
-        NON_RECAP_CLOSED_LOCATIONS: JSON.stringify(
-          process.env.NON_RECAP_CLOSED_LOCATIONS,
-        ),
-        OPEN_LOCATIONS: JSON.stringify(process.env.OPEN_LOCATIONS),
-        DISPLAY_TITLE: JSON.stringify(process.env.DISPLAY_TITLE),
-        ITEM_BATCH_SIZE: JSON.stringify(process.env.ITEM_BATCH_SIZE),
-        CIRCULATING_CATALOG: JSON.stringify(process.env.CIRCULATING_CATALOG),
-        BASE_URL: JSON.stringify(process.env.BASE_URL),
-        WEBPAC_BASE_URL: JSON.stringify(process.env.WEBPAC_BASE_URL),
-        FEATURES: JSON.stringify(process.env.FEATURES),
-        SHEP_BIBS_LIMIT: JSON.stringify(process.env.SHEP_BIBS_LIMIT),
-      },
-    }),
     // new BundleAnalyzerPlugin({
     //   // Can be `server`, `static` or `disabled`.
     //   // In `server` mode analyzer will start HTTP server to show bundle report.
@@ -142,8 +118,34 @@ if (ENV === 'development') {
     plugins: [new webpack.HotModuleReplacementPlugin()],
     resolve: {
       modules: ['node_modules'],
-      extensions: ['.js', '.jsx', '.scss', '.png'],
+      extensions: ['.js', '.jsx', '.css', '.scss', '.png'],
     },
+    plugins: [
+      new webpack.DefinePlugin({
+        loadA11y: process.env.loadA11y || false,
+        appEnv: JSON.stringify(appEnv),
+        'process.env': {
+          SHEP_API: JSON.stringify(process.env.SHEP_API),
+          LOGIN_URL: JSON.stringify(process.env.LOGIN_URL),
+          LEGACY_BASE_URL: JSON.stringify(process.env.LEGACY_BASE_URL),
+          CLOSED_LOCATIONS: JSON.stringify(process.env.CLOSED_LOCATIONS),
+          RECAP_CLOSED_LOCATIONS: JSON.stringify(
+            process.env.RECAP_CLOSED_LOCATIONS,
+          ),
+          NON_RECAP_CLOSED_LOCATIONS: JSON.stringify(
+            process.env.NON_RECAP_CLOSED_LOCATIONS,
+          ),
+          OPEN_LOCATIONS: JSON.stringify(process.env.OPEN_LOCATIONS),
+          DISPLAY_TITLE: JSON.stringify(process.env.DISPLAY_TITLE),
+          ITEM_BATCH_SIZE: JSON.stringify(process.env.ITEM_BATCH_SIZE),
+          CIRCULATING_CATALOG: JSON.stringify(process.env.CIRCULATING_CATALOG),
+          BASE_URL: JSON.stringify(process.env.BASE_URL),
+          WEBPAC_BASE_URL: JSON.stringify(process.env.WEBPAC_BASE_URL),
+          FEATURES: JSON.stringify(process.env.FEATURES),
+          SHEP_BIBS_LIMIT: JSON.stringify(process.env.SHEP_BIBS_LIMIT),
+        },
+      }),
+    ],
     module: {
       rules: [
         {
@@ -243,13 +245,15 @@ if (ENV === 'production') {
     },
     plugins: [
       new webpack.DefinePlugin({
+        loadA11y: process.env.loadA11y || false,
+        appEnv: JSON.stringify(appEnv),
         'process.env': {
           NODE_ENV: JSON.stringify('production'),
           GA_ENV: JSON.stringify(process.env.GA_ENV),
-          SHEP_API: process.env.SHEP_API,
-          LOGIN_URL: process.env.LOGIN_URL,
-          LEGACY_BASE_URL: process.env.LEGACY_BASE_URL,
-          CLOSED_LOCATIONS: process.env.CLOSED_LOCATIONS,
+          SHEP_API: JSON.stringify(process.env.SHEP_API),
+          LOGIN_URL: JSON.stringify(process.env.LOGIN_URL),
+          LEGACY_BASE_URL: JSON.stringify(process.env.LEGACY_BASE_URL),
+          CLOSED_LOCATIONS: JSON.stringify(process.env.CLOSED_LOCATIONS),
           RECAP_CLOSED_LOCATIONS: JSON.stringify(
             process.env.RECAP_CLOSED_LOCATIONS,
           ),
@@ -260,6 +264,10 @@ if (ENV === 'production') {
           ITEM_BATCH_SIZE: JSON.stringify(process.env.ITEM_BATCH_SIZE),
           CIRCULATING_CATALOG: JSON.stringify(process.env.CIRCULATING_CATALOG),
           WEBPAC_BASE_URL: JSON.stringify(process.env.WEBPAC_BASE_URL),
+          OPEN_LOCATIONS: JSON.stringify(process.env.OPEN_LOCATIONS),
+          BASE_URL: JSON.stringify(process.env.BASE_URL),
+          FEATURES: JSON.stringify(process.env.FEATURES),
+          SHEP_BIBS_LIMIT: JSON.stringify(process.env.SHEP_BIBS_LIMIT),
         },
       }),
     ],
