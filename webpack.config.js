@@ -115,7 +115,6 @@ if (ENV === 'development') {
     output: {
       publicPath: 'http://localhost:3000/',
     },
-    plugins: [new webpack.HotModuleReplacementPlugin()],
     resolve: {
       modules: ['node_modules'],
       extensions: ['.js', '.jsx', '.css', '.scss', '.png'],
