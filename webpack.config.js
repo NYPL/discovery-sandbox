@@ -176,6 +176,9 @@ if (ENV === 'development') {
               options: {
                 sassOptions: {
                   importer: globImporter(),
+                },
+                sourceMap: true,
+                implementation: require('sass'),
               },
             },
           ],
@@ -228,6 +231,10 @@ if (ENV === 'production') {
               options: {
                 sassOptions: {
                   importer: globImporter(),
+                  fiber: false,
+                },
+                sourceMap: false,
+                implementation: require('sass'),
               },
             },
           ],
