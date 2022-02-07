@@ -1,24 +1,21 @@
-import { gaUtils } from 'dgx-react-ga';
 import axios from 'axios';
+import { gaUtils } from 'dgx-react-ga';
+import { createHistory, createMemoryHistory, useQueries } from 'history';
 import {
-  createHistory,
-  useQueries,
-  createMemoryHistory,
-} from 'history';
-import {
-  mapObject as _mapObject,
-  findWhere as _findWhere,
-  forEach as _forEach,
-  isEmpty as _isEmpty,
-  isArray as _isArray,
-  extend as _extend,
   chain as _chain,
+  extend as _extend,
+  findWhere as _findWhere,
   flatten as _flatten,
+  forEach as _forEach,
+  isArray as _isArray,
+  isEmpty as _isEmpty,
+  mapObject as _mapObject,
   sortBy as _sortBy,
 } from 'underscore';
-
 import appConfig from '../data/appConfig';
 import { noticePreferenceMapping } from '../data/constants';
+
+const { features } = appConfig;
 
 /**
  * ajaxCall
@@ -30,14 +27,11 @@ import { noticePreferenceMapping } from '../data/constants';
 const ajaxCall = (
   endpoint,
   cb = () => {},
-  errorcb = error => console.error('Error making ajaxCall', error),
+  errorcb = (error) => console.error('Error making ajaxCall', error),
 ) => {
   if (!endpoint) return null;
 
-  return axios
-    .get(endpoint)
-    .then(cb)
-    .catch(errorcb);
+  return axios.get(endpoint).then(cb).catch(errorcb);
 };
 
 /**
@@ -68,13 +62,18 @@ const createAppHistory = () => {
 function destructureFilters(filters, apiFilters) {
   const selectedFilters = {};
   const filterArrayfromAPI =
-    apiFilters && apiFilters.itemListElement && apiFilters.itemListElement.length ?
-      apiFilters.itemListElement : [];
+    apiFilters &&
+    apiFilters.itemListElement &&
+    apiFilters.itemListElement.length
+      ? apiFilters.itemListElement
+      : [];
 
   _forEach(filters, (value, key) => {
-    const id = key.indexOf('date') !== -1 ?
-      // Because filters are in the form of `filters[language][0]`;
-      key.substring(8, key.length - 1) : key.substring(8, key.length - 4);
+    const id =
+      key.indexOf('date') !== -1
+        ? // Because filters are in the form of `filters[language][0]`;
+          key.substring(8, key.length - 1)
+        : key.substring(8, key.length - 4);
 
     if (id === 'dateAfter' || id === 'dateBefore') {
       selectedFilters[id] = value;
@@ -84,8 +83,14 @@ function destructureFilters(filters, apiFilters) {
       }
       _forEach(value, (filterValue) => {
         const filterObjFromApi = _findWhere(filterArrayfromAPI, { id });
-        if (filterObjFromApi && filterObjFromApi.values && filterObjFromApi.values.length) {
-          const filter = _findWhere(filterObjFromApi.values, { value: filterValue });
+        if (
+          filterObjFromApi &&
+          filterObjFromApi.values &&
+          filterObjFromApi.values.length
+        ) {
+          const filter = _findWhere(filterObjFromApi.values, {
+            value: filterValue,
+          });
           if (filter) {
             selectedFilters[id].push({
               value: filter.value,
@@ -96,7 +101,11 @@ function destructureFilters(filters, apiFilters) {
       });
     } else if (typeof value === 'string') {
       const filterObjFromApi = _findWhere(filterArrayfromAPI, { id });
-      if (filterObjFromApi && filterObjFromApi.values && filterObjFromApi.values.length) {
+      if (
+        filterObjFromApi &&
+        filterObjFromApi.values &&
+        filterObjFromApi.values.length
+      ) {
         const filter = _findWhere(filterObjFromApi.values, { value });
         if (filter) {
           if (!selectedFilters[id]) {
@@ -144,9 +153,13 @@ const getFilterParam = (filters) => {
       if (val && val.length && _isArray(val)) {
         _forEach(val, (filter, index) => {
           if (filter.value && filter.value !== '') {
-            strSearch += `&filters[${key}][${index}]=${encodeURIComponent(filter.value)}`;
+            strSearch += `&filters[${key}][${index}]=${encodeURIComponent(
+              filter.value,
+            )}`;
           } else if (typeof filter === 'string') {
-            strSearch += `&filters[${key}][${index}]=${encodeURIComponent(filter)}`;
+            strSearch += `&filters[${key}][${index}]=${encodeURIComponent(
+              filter,
+            )}`;
           }
         });
       } else if (val && val.value && val.value !== '') {
@@ -173,9 +186,9 @@ const getFieldParam = (field = '') => {
 };
 
 const getIdentifierQuery = (identifierNumbers = {}) =>
-  Object.entries(identifierNumbers).map(
-    ([key, value]) => (value ? `&${key}=${value}` : ''),
-  ).join('');
+  Object.entries(identifierNumbers)
+    .map(([key, value]) => (value ? `&${key}=${value}` : ''))
+    .join('');
 
 /**
  * Tracks Google Analytics (GA) events. `.trackEvent` returns a function with
@@ -217,17 +230,32 @@ const basicQuery = (props = {}) => {
   }) => {
     const sortQuery = getSortQuery(sortBy || props.sortBy);
     const fieldQuery = getFieldParam(field || props.field);
-    const filterQuery = getFilterParam(selectedFilters || props.selectedFilters);
-    const identifierQuery = getIdentifierQuery(identifierNumbers || props.identifierNumbers);
+    const filterQuery = getFilterParam(
+      selectedFilters || props.selectedFilters,
+    );
+    const identifierQuery = getIdentifierQuery(
+      identifierNumbers || props.identifierNumbers,
+    );
     // `searchKeywords` can be an empty string, so check if it's undefined instead.
-    const query = searchKeywords !== undefined ? searchKeywords : props.searchKeywords;
+    const query =
+      searchKeywords !== undefined ? searchKeywords : props.searchKeywords;
     const searchKeywordsQuery = query ? `${encodeURIComponent(query)}` : '';
-    let pageQuery = props.page && props.page !== '1' ? `&page=${props.page}` : '';
+    let pageQuery =
+      props.page && props.page !== '1' ? `&page=${props.page}` : '';
     pageQuery = page && page !== '1' ? `&page=${page}` : pageQuery;
     pageQuery = page === '1' ? '' : pageQuery;
-    const contributorQuery = (contributor || props.contributor) && !clearContributor ? `&contributor=${contributor || props.contributor}` : '';
-    const titleQuery = (title || props.title) && !clearTitle ? `&title=${title || props.title}` : '';
-    const subjectQuery = (subject || props.subject) && !clearSubject ? `&subject=${subject || props.subject}` : '';
+    const contributorQuery =
+      (contributor || props.contributor) && !clearContributor
+        ? `&contributor=${contributor || props.contributor}`
+        : '';
+    const titleQuery =
+      (title || props.title) && !clearTitle
+        ? `&title=${title || props.title}`
+        : '';
+    const subjectQuery =
+      (subject || props.subject) && !clearSubject
+        ? `&subject=${subject || props.subject}`
+        : '';
     const advancedQuery = `${contributorQuery}${titleQuery}${subjectQuery}`;
 
     const completeQuery = `${searchKeywordsQuery}${advancedQuery}${filterQuery}${sortQuery}${fieldQuery}${pageQuery}${identifierQuery}`;
@@ -256,13 +284,7 @@ function getReqParams(query = {}) {
   const title = query.title;
   const subject = query.subject;
 
-  const {
-    issn,
-    isbn,
-    oclc,
-    lccn,
-    redirectOnMatch,
-  } = query;
+  const { issn, isbn, oclc, lccn, redirectOnMatch } = query;
 
   return {
     contributor,
@@ -280,7 +302,8 @@ function getReqParams(query = {}) {
     isbn,
     oclc,
     lccn,
-    redirectOnMatch };
+    redirectOnMatch,
+  };
 }
 
 /*
@@ -318,19 +341,18 @@ function parseServerSelectedFilters(filters, dateAfter, dateBefore) {
   if (_isArray(filters) && filters.length && !_isEmpty(filters[0])) {
     _chain(filters)
       // Each incoming filter is in JSON string format so it needs to be parsed first.
-      .map(filter => JSON.parse(filter))
+      .map((filter) => JSON.parse(filter))
       // Group selected filters into arrays according to their field.
       .groupBy('field')
       // Created the needed data structure.
       .mapObject((filterArray, key) => {
         if (key) {
-          selectedFilters[key] =
-            filterArray.map(filter => ({
-              value: filter.value,
-              label: filter.label,
-              count: filter.count,
-              selected: true,
-            }));
+          selectedFilters[key] = filterArray.map((filter) => ({
+            value: filter.value,
+            label: filter.label,
+            count: filter.count,
+            selected: true,
+          }));
         }
       });
   }
@@ -368,6 +390,80 @@ function getAggregatedElectronicResources(items = []) {
   return _flatten(electronicResources);
 }
 
+// TODO: [SCC-2996] Define Resources
+// interface Resources {
+//   @type: string;
+//   label: string;
+//   url: string;
+// }
+
+// TODO: [SCC-2997] Define Items
+// This is incomplete
+// interface Items {
+//    id: string;
+//    status: {
+//      @id: string;
+//      prefLabel: string
+//    };
+//    availability: string;
+//    available: boolean;
+//    aeonUrl: string | string[];
+//    electronicResources?: never | string[]
+// }
+
+/**
+ * Return a list of non Aeon Link Electronic Resouces from given list
+ * @param {array} resources Resources[ ]
+ * @param {array} items Items[ ]
+ * @return {array}
+ */
+function pluckAeonLinksFromResource(resources = [], items = []) {
+  return (
+    (resources.length &&
+      featuredAeonList(items) && // Does items list contain an Aeon Request Button
+      resources.filter((resource) => {
+        // Remove all Aeon Links
+        return !isAeonLink(resource.url);
+      })) ||
+    resources
+  );
+}
+
+/**
+ * Check if the list contains aeon urls && is a valid feature
+ * @param {array} items Items[ ]
+ * @return {boolean}
+ */
+function featuredAeonList(items) {
+  const featured = features.includes('aeon-links');
+
+  // Does a single item in the list have an aeon url
+  return items.some((item) => {
+    // item.aeonUrl: String || String[]
+    return isAeonLink(item.aeonUrl) && featured;
+  });
+}
+
+/**
+ *
+ * Confirm the url is an Aeon Link
+ * @param url string | string[]
+ * @return A boolean indicating the passed url[s] are valid Aeon links
+ *
+ * Example URL:
+ * - https://specialcollections.nypl.org/aeon/Aeon.dll
+ * - https://nypl-aeon-test.aeon.atlas-sys.com
+ */
+function isAeonLink(url) {
+  if (!url) return false;
+  const aeonLinks = [
+    'https://specialcollections.nypl.org/aeon/Aeon.dll',
+    'https://nypl-aeon-test.aeon.atlas-sys.com',
+  ];
+  const link = Array.isArray(url) ? url[0] : url;
+  return Boolean(aeonLinks.some((path) => link.startsWith(path)));
+}
+
 /**
  * getUpdatedFilterValues(props)
  * Get an array of filter values based on one filter. If any filters are selected, they'll
@@ -376,13 +472,13 @@ function getAggregatedElectronicResources(items = []) {
  * @return {array}
  */
 const getUpdatedFilterValues = (props) => {
-  const {
-    filter,
-    selectedFilters,
-  } = props;
-  const filterValues = filter && filter.values && filter.values.length ? filter.values : [];
+  const { filter, selectedFilters } = props;
+  const filterValues =
+    filter && filter.values && filter.values.length ? filter.values : [];
   // Just want to add the `selected` property here.
-  const defaultFilterValues = filterValues.map(value => _extend({ selected: false }, value));
+  const defaultFilterValues = filterValues.map((value) =>
+    _extend({ selected: false }, value),
+  );
   let updatedFilterValues = defaultFilterValues;
 
   // If there are selected filters, then we want to update the filter values with those
@@ -400,22 +496,30 @@ const getUpdatedFilterValues = (props) => {
     });
   }
 
-  updatedFilterValues = _sortBy(updatedFilterValues, f => f.label);
+  updatedFilterValues = _sortBy(updatedFilterValues, (f) => f.label);
 
   return updatedFilterValues;
 };
 
 // This function is used in `ResultsCount`, primarily.
 /*
-   * displayContext({ searchKeywords, selectedFilters, field, count })
-   * @param {object} takes keys `searchKeywords` {string}, `selectedFilters` {object}, `field` {string}, `count` {integer}.
-   * Displays where the results are coming from. This currently only allows for one
-   * option at a time due to constraints on the front end not allowing for multiple
-   * selections to occur.
-   *
-   * @returns {string} A phrase like "for (keyword|title|author) TERM"
-   */
-function displayContext({ searchKeywords, contributor, title, subject, selectedFilters, field, count }) {
+ * displayContext({ searchKeywords, selectedFilters, field, count })
+ * @param {object} takes keys `searchKeywords` {string}, `selectedFilters` {object}, `field` {string}, `count` {integer}.
+ * Displays where the results are coming from. This currently only allows for one
+ * option at a time due to constraints on the front end not allowing for multiple
+ * selections to occur.
+ *
+ * @returns {string} A phrase like "for (keyword|title|author) TERM"
+ */
+function displayContext({
+  searchKeywords,
+  contributor,
+  title,
+  subject,
+  selectedFilters,
+  field,
+  count,
+}) {
   const keyMapping = {
     // Currently from links on the bib page:
     creatorLiteral: 'author',
@@ -432,19 +536,17 @@ function displayContext({ searchKeywords, contributor, title, subject, selectedF
   const clauses = [];
 
   // Build a hash of active, non-empty filters:
-  const activeFilters = Object.keys((selectedFilters || {}))
-    .reduce((map, key) => {
+  const activeFilters = Object.keys(selectedFilters || {}).reduce(
+    (map, key) => {
       const label = keyMapping[key];
       const filter = selectedFilters[key];
-      if (label
-        && Array.isArray(filter)
-        && filter[0]
-        && filter[0].value
-      ) {
+      if (label && Array.isArray(filter) && filter[0] && filter[0].value) {
         return Object.assign({ [label]: selectedFilters[key][0].value }, map);
       }
       return map;
-    }, {});
+    },
+    {},
+  );
 
   // Are there any filters at work?
   const hasActiveFilters = Object.keys(activeFilters).length > 0;
@@ -453,7 +555,7 @@ function displayContext({ searchKeywords, contributor, title, subject, selectedF
   if (hasActiveFilters) {
     clauses.push(
       Object.keys(activeFilters)
-        .map(label => `${label} "${activeFilters[label]}"`)
+        .map((label) => `${label} "${activeFilters[label]}"`)
         .join(', '),
     );
   }
@@ -504,10 +606,14 @@ function displayContext({ searchKeywords, contributor, title, subject, selectedF
  * @param {int} maxLength - The maximum length of the returned string to be applied
  */
 const truncateStringOnWhitespace = (str, maxLength) => {
-  if (str.length < maxLength) { return str; }
+  if (str.length < maxLength) {
+    return str;
+  }
   const truncStr = str.substr(0, maxLength - 3);
   const truncArray = truncStr.split(/\s+/).slice(0, -1);
-  if (truncArray.length === 0) { return `${truncStr}...`; }
+  if (truncArray.length === 0) {
+    return `${truncStr}...`;
+  }
   return `${truncArray.join(' ')}...`;
 };
 
@@ -520,7 +626,7 @@ const truncateStringOnWhitespace = (str, maxLength) => {
 const isOptionSelected = (filterValue, itemValue) => {
   const itemValues = Array.isArray(itemValue) ? itemValue : [itemValue];
   const filterValues = Array.isArray(filterValue) ? filterValue : [filterValue];
-  return filterValues.some(filter => itemValues.includes(filter));
+  return filterValues.some((filter) => itemValues.includes(filter));
 };
 
 /**
@@ -567,9 +673,10 @@ const isOptionSelected = (filterValue, itemValue) => {
  * @return {boolean}
  */
 const hasValidFilters = (selectedFilters) => {
-  return Object.values(selectedFilters || {}).some((v) => Array.isArray(v) ? v.length > 0 : v );
+  return Object.values(selectedFilters || {}).some((v) =>
+    Array.isArray(v) ? v.length > 0 : v,
+  );
 };
-
 
 /**
  * encodeHTML(str, maxLength)
@@ -577,7 +684,10 @@ const hasValidFilters = (selectedFilters) => {
  * @param {string} str - The string to be sanitized
  */
 function encodeHTML(str) {
-  return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;');
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/"/g, '&quot;');
 }
 
 /**
@@ -601,13 +711,14 @@ function extractNoticePreference(fixedFields) {
  *        => "first-char-can-be-lower-case"
  */
 function camelToShishKabobCase(s) {
-  return s
-    // Change capital letters into "-{lowercase letter}"
-    .replace(/([A-Z])/g, (c, p1, i) => {
-      // If capital letter is not first character, precede with '-':
-      return (i > 0 ? '-' : '')
-        + c.toLowerCase();
-    })
+  return (
+    s
+      // Change capital letters into "-{lowercase letter}"
+      .replace(/([A-Z])/g, (c, p1, i) => {
+        // If capital letter is not first character, precede with '-':
+        return (i > 0 ? '-' : '') + c.toLowerCase();
+      })
+  );
 }
 
 /**
@@ -619,7 +730,7 @@ function institutionNameByNyplSource(nyplSource) {
     'recap-pul': 'Princeton',
     'recap-cul': 'Columbia',
     'recap-hl': 'Harvard',
-    'sierra-nypl': 'NYPL'
+    'sierra-nypl': 'NYPL',
   }[nyplSource];
 }
 
@@ -672,4 +783,6 @@ export {
   institutionNameByNyplSource,
   addSource,
   isNyplBnumber,
+  pluckAeonLinksFromResource,
+  isAeonLink,
 };

@@ -1,19 +1,18 @@
-import React from 'react';
+import { Heading } from '@nypl/design-system-react-components';
 import PropTypes from 'prop-types';
+import React from 'react';
+import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import { isArray as _isArray } from 'underscore';
-import { connect } from 'react-redux';
-
-import {
-  Heading,
-} from '@nypl/design-system-react-components';
-
-import Pagination from '../Pagination/Pagination';
-import ItemTable from './ItemTable';
-import ItemFilters from './ItemFilters';
 import appConfig from '../../data/appConfig';
-import { trackDiscovery, isOptionSelected } from '../../utils/utils';
-import { itemFilters, bibPageItemsListLimit as itemsListPageLimit } from '../../data/constants';
+import {
+  bibPageItemsListLimit as itemsListPageLimit,
+  itemFilters,
+} from '../../data/constants';
+import { isOptionSelected, trackDiscovery } from '../../utils/utils';
+import Pagination from '../Pagination/Pagination';
+import ItemFilters from './ItemFilters';
+import ItemTable from './ItemTable';
 
 class ItemsContainer extends React.Component {
   constructor(props, context) {
@@ -27,12 +26,15 @@ class ItemsContainer extends React.Component {
     };
 
     this.query = context.router.location.query;
-    this.hasFilter = Object.keys(this.query).some(param => (
-      itemFilters.map(filter => filter.type).includes(param)));
+    this.hasFilter = Object.keys(this.query).some((param) =>
+      itemFilters.map((filter) => filter.type).includes(param),
+    );
 
-    this.filteredItems = this.props.bib && this.props.bib.done ?
-      (this.filterItems(this.props.items) || [])
-      : (this.props.items || []);
+    // NOTE: filteredItems: Setting 1
+    this.filteredItems =
+      this.props.bib && this.props.bib.done
+        ? this.filterItems(this.props.items) || []
+        : this.props.items || [];
 
     this.updatePage = this.updatePage.bind(this);
     this.chunk = this.chunk.bind(this);
@@ -75,21 +77,24 @@ class ItemsContainer extends React.Component {
      * If there are more items than the page limit AND
      * we need to shorten it to the page limit AND
      * not show all
-    */
-    const itemsToDisplay = items && shortenItems && !showAll ?
-      items.slice(0, itemsListPageLimit) : items;
+     */
+    const itemsToDisplay =
+      items && shortenItems && !showAll
+        ? items.slice(0, itemsListPageLimit)
+        : items;
     const bibId = this.props.bibId;
 
-    return (
-      (itemsToDisplay && _isArray(itemsToDisplay) && itemsToDisplay.length) ?
-        <ItemTable
-          items={itemsToDisplay}
-          bibId={bibId}
-          id="bib-item-table"
-          searchKeywords={this.props.searchKeywords}
-          holdings={this.props.holdings}
-        /> : null
-    );
+    return itemsToDisplay &&
+      _isArray(itemsToDisplay) &&
+      itemsToDisplay.length ? (
+      <ItemTable
+        items={itemsToDisplay}
+        bibId={bibId}
+        id="bib-item-table"
+        searchKeywords={this.props.searchKeywords}
+        holdings={this.props.holdings}
+      />
+    ) : null;
   }
 
   filterItems(items) {
@@ -103,11 +108,14 @@ class ItemsContainer extends React.Component {
         const filterType = filter.type;
         const filterValue = query[filterType];
         if (!filterValue) return true;
-        const selections = typeof filterValue === 'string' ? [filterValue] : filterValue;
+        const selections =
+          typeof filterValue === 'string' ? [filterValue] : filterValue;
         return selections.some((selection) => {
-          const isRequestable = filterType === 'status' && selection === 'requestable';
+          const isRequestable =
+            filterType === 'status' && selection === 'requestable';
           if (isRequestable) return item.requestable;
-          const isOffsite = filterType === 'location' && selection === 'offsite';
+          const isOffsite =
+            filterType === 'location' && selection === 'offsite';
           if (isOffsite) return item.isOffsite;
           const itemProperty = filter.retrieveOption(item).label;
           return isOptionSelected(selection, itemProperty, true);
@@ -158,9 +166,11 @@ class ItemsContainer extends React.Component {
   }
 
   render() {
-    this.filteredItems = this.props.bib && this.props.bib.done ?
-      (this.filterItems(this.props.items) || [])
-      : (this.props.items || []);
+    // NOTE: filteredItems: Setting 2
+    this.filteredItems =
+      this.props.bib && this.props.bib.done
+        ? this.filterItems(this.props.items) || []
+        : this.props.items || [];
     const bibId = this.props.bibId;
     const bibDone = this.props.bib && this.props.bib.done;
     const { items } = this.props;
@@ -169,7 +179,12 @@ class ItemsContainer extends React.Component {
     let pagination = null;
 
     let itemsToDisplay = this.filteredItems;
-    if (this.state.js && itemsToDisplay && itemsToDisplay.length > itemsListPageLimit && !this.state.showAll) {
+    if (
+      this.state.js &&
+      itemsToDisplay &&
+      itemsToDisplay.length > itemsListPageLimit &&
+      !this.state.showAll
+    ) {
       pagination = (
         <Pagination
           total={itemsToDisplay.length}
@@ -184,13 +199,19 @@ class ItemsContainer extends React.Component {
       itemsToDisplay = this.state.chunkedItems[this.state.page - 1];
     }
 
-    const itemTable = this.getTable(itemsToDisplay, shortenItems, this.state.showAll);
-    const numItemsEstimate = this.props.bib.numItems + (this.props.bib.checkInItems || []).length;
+    const itemTable = this.getTable(
+      itemsToDisplay,
+      shortenItems,
+      this.state.showAll,
+    );
+    const numItemsEstimate =
+      this.props.bib.numItems + (this.props.bib.checkInItems || []).length;
     const itemLoadingMessage = (
       <div className="item-filter-info">
         <h3>
           <br />
-          About {`${numItemsEstimate}`} Item{numItemsEstimate !== 1 ? 's. ' : '. ' }
+          About {`${numItemsEstimate}`} Item
+          {numItemsEstimate !== 1 ? 's. ' : '. '}
           <div className="items-loading">
             Still Loading More items
             <span className="dot1">.</span>
@@ -203,44 +224,42 @@ class ItemsContainer extends React.Component {
 
     return (
       <>
-        <Heading
-          level={3}
-        >
-          Items in the Library & Offsite
-        </Heading>
+        <Heading level={3}>Items in the Library & Offsite</Heading>
         <div className="nypl-results-item">
-          {
-            bibDone ?
-              <ItemFilters
-                items={items}
-                hasFilterApplied={this.hasFilter}
-                query={this.query}
-                numOfFilteredItems={this.filteredItems.length}
-              />
-              :
-              itemLoadingMessage
-          }
+          {bibDone ? (
+            <ItemFilters
+              items={items}
+              hasFilterApplied={this.hasFilter}
+              query={this.query}
+              numOfFilteredItems={this.filteredItems.length}
+            />
+          ) : (
+            itemLoadingMessage
+          )}
           {itemTable}
-          {
-            !!(shortenItems && this.filteredItems.length > itemsListPageLimit && !this.state.showAll) &&
-              (
-                <div className="view-all-items-container">
-                  {
-                    this.state.js ?
-                      (<a href="#" onClick={this.showAll}>View All Items</a>) :
-                      (
-                        <Link
-                          to={`${appConfig.baseUrl}/bib/${bibId}/all`}
-                          className="view-all-items"
-                          onClick={() => trackDiscovery('View All Items', `Click - ${bibId}`)}
-                        >
-                          View All Items
-                        </Link>
-                      )
+          {!!(
+            shortenItems &&
+            this.filteredItems.length > itemsListPageLimit &&
+            !this.state.showAll
+          ) && (
+            <div className="view-all-items-container">
+              {this.state.js ? (
+                <a href="#" onClick={this.showAll}>
+                  View All Items
+                </a>
+              ) : (
+                <Link
+                  to={`${appConfig.baseUrl}/bib/${bibId}/all`}
+                  className="view-all-items"
+                  onClick={() =>
+                    trackDiscovery('View All Items', `Click - ${bibId}`)
                   }
-                </div>
-              )
-          }
+                >
+                  View All Items
+                </Link>
+              )}
+            </div>
+          )}
           {pagination}
         </div>
       </>
@@ -267,7 +286,7 @@ ItemsContainer.contextTypes = {
   router: PropTypes.object,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   bib: state.bib,
 });
 
