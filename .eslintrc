@@ -1,9 +1,36 @@
 {
+  "env": {
+    "browser": true,
+    "es6": true,
+    "node": true
+  },
+  "plugins": ["react", "@typescript-eslint", "react-hooks", "jsx-a11y"],
   "extends": [
-    "airbnb",
-    "plugin:jsx-a11y/recommended"
+    "plugin:react/recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:jsx-a11y/recommended",
+    "airbnb/hooks",
+    "prettier"
   ],
-  rules: {
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaFeatures": {
+      "impliedStrict": true,
+      "jsx": true
+    },
+    "ecmaVersion": 2019,
+    "sourceType": "module",
+    "project": "./tsconfig.json"
+  },
+  "overrides": [
+    {
+      "files": ["*.js"],
+      "rules": {
+        "@typescript-eslint/no-var-requires": "off"
+      }
+    }
+  ],
+  "rules": {
     "react/forbid-prop-types": 0,
     "react/require-default-props": 0,
     "jsx-a11y/anchor-is-valid": 0,
@@ -12,5 +39,15 @@
     "no-lonely-if": 0,
     "function-paren-newline": 0,
     "object-curly-newline": 0,
+    "no-underscore-dangle": 0,
+    "import/no-import-module-exports": 0,
+    "import/no-extraneous-dependencies": 0,
+    "react/jsx-props-no-spreading": 0,
+    "id-length": ["error", { "exceptions": ["_", "__"] }]
+  },
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
   }
 }

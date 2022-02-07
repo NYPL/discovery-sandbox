@@ -87,14 +87,16 @@ const loggerTransports = [
 
 // spewing logs while running tests is annoying
 if (process.env.NODE_ENV !== 'test') {
-  loggerTransports.push(new winston.transports.Console({
-    handleExceptions: true,
-    json: false,
-    stringify: true,
-    colorize: true,
-    timestamp,
-    formatter,
-  }));
+  loggerTransports.push(
+    new winston.transports.Console({
+      handleExceptions: true,
+      json: false,
+      stringify: true,
+      colorize: true,
+      timestamp,
+      formatter,
+    }),
+  );
 }
 
 const logger = new winston.Logger({
