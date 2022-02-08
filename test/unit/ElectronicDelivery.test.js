@@ -1,7 +1,7 @@
 /* eslint-env mocha */
 /* eslint-disable react/jsx-filename-extension */
 import { expect } from 'chai';
-import { shallow } from 'enzyme';
+import { mount, shallow } from 'enzyme';
 import React from 'react';
 import { mock } from 'sinon';
 import { makeTestStore, mountTestRender } from '../helpers/store';
@@ -72,6 +72,76 @@ describe('ElectronicDeliveryForm', () => {
       expect(form.find('a').first().prop('href')).to.equal(
         'example.com/scan-and-deliver',
       );
+    });
+  });
+
+  describe('EDD Request Form', () => {
+    let component;
+    let appConfigMock;
+
+    const state = {
+      form: {
+        emailAddress: '',
+        chapterTitle: 'fake',
+        startPage: '1',
+        endPage: '1',
+      },
+    };
+
+    before(() => {
+      appConfigMock = mock(appConfig);
+      appConfig.features = [];
+      appConfig.eddAboutUrl.default = 'example.com/edd-default-url';
+      component = mount(
+        <ElectronicDeliveryForm
+          fromUrl='example.com'
+          form={state.form}
+          raiseError={() => ({})}
+          submitRequest={() => ({})}
+        />,
+      );
+    });
+
+    after(() => {
+      appConfigMock.restore();
+      sessionStorage.clear();
+      // remove callback
+      // sessionStorage.itemInsertionCallback = null;
+    });
+
+    it('Should not contain storage on load', () => {
+      const inputs = component
+        .find('input')
+        .findWhere((node) => node.props().type === 'text')
+        .some((node) => Boolean(node.text()));
+
+      expect(inputs, 'Inputs Contain Values').to.be.false;
+      expect(component.state().form, 'Form Has State').to.deep.eq(state.form);
+      expect(sessionStorage, 'Session Storage Has Length').to.have.lengthOf(0);
+    });
+
+    it('Should have session storage on form input', () => {
+      const emailField = component.find('input').at(0);
+      expect(emailField.prop('id'), 'Not Email Field').to.eq('emailAddress');
+      expect(emailField.prop('value'), 'Email Field Has Value').to.eq('');
+
+      const fake = 'fake@nypl.org';
+
+      emailField.simulate('change', {
+        target: { value: fake },
+      });
+
+      state.form.emailAddress = fake;
+
+      expect(component.state().form, 'Email Not Set').to.deep.eq(state.form);
+
+      const { formstate } = sessionStorage;
+      expect(JSON.parse(formstate), 'No Session Email').to.deep.eq(state.form);
+    });
+
+    it('Should not have session storage after form submit', () => {
+      component.find('form').simulate('submit');
+      expect(sessionStorage, 'Session Storage Has Length').to.have.lengthOf(0);
     });
   });
 });
