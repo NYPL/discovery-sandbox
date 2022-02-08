@@ -17,13 +17,17 @@ class ElectronicDeliveryForm extends React.Component {
     // in the no-js scenario. If they're not available, then we use this
     // 'fallback', but the empty object structure is needed.
     this.state = {
-      form: !_isEmpty(this.props.form) ? this.props.form :
-        {
-          emailAddress: this.props.defaultEmail,
-          chapterTitle: '',
-          startPage: '',
-          endPage: '',
-        },
+      form: !_isEmpty(this.props.form)
+        ? this.props.form
+        : // Use Formstate session data if it exists
+        !_isEmpty(window.sessionStorage.getItem('formstate'))
+        ? JSON.parse(window.sessionStorage.getItem('formstate'))
+        : {
+            emailAddress: this.props.defaultEmail,
+            chapterTitle: '',
+            startPage: '',
+            endPage: '',
+          },
       error: !_isEmpty(this.props.error) ? this.props.error :
         {
           emailAddress: '',
@@ -46,6 +50,10 @@ class ElectronicDeliveryForm extends React.Component {
     };
 
     if (validate(this.state.form, errorCb)) {
+      // Remove session data if valid.
+      // The submit request prop func does not return a value
+      // It, on success, redirects, and it, on error, redirects.
+      window.sessionStorage.removeItem('formstate');
       this.props.submitRequest(this.state);
     }
   }
@@ -55,7 +63,11 @@ class ElectronicDeliveryForm extends React.Component {
     // and all the values are being retained. If we don't `extend` the object
     // value for `form`, then only the last value in the form gets updated
     // and the rest are gone.
-    this.setState({ form: _extend(this.state.form, { [input]: e.target.value }) });
+    this.setState({
+      form: _extend(this.state.form, { [input]: e.target.value }),
+    });
+    // Capture and save user input as it's being updated
+    window.sessionStorage.setItem('formstate', JSON.stringify(this.state.form));
   }
 
   render() {
