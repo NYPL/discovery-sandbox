@@ -385,7 +385,7 @@ ElectronicDeliveryForm.defaultProps = {
 
 export default ElectronicDeliveryForm;
 
-export const fetchFromLocal = (key) => {
+const fetchFromLocal = (key) => {
   // Return an empty object to avoid
   // asking for props from null or undefined;
   const initial = {};
@@ -398,6 +398,6 @@ export const fetchFromLocal = (key) => {
   return !_isEmpty(item) ? JSON.parse(item) : initial;
 };
 
-export const minSinceMil = (mills) => {
+const minSinceMil = (mills) => {
   return Math.floor((Date.now() - mills) / 60000);
 };
