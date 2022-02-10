@@ -49,7 +49,7 @@ class ElectronicDeliveryForm extends React.Component {
         window.localStorage.removeItem('formstate');
       }
 
-      if (minSinceMil(formState.init) < 30)
+      if (minSinceMil(formState.init) < 120)
         this.setState((state) => {
           return { ...state, form: itemForm };
         });
