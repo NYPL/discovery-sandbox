@@ -78,8 +78,8 @@ describe('ElectronicDeliveryForm', () => {
   describe('EDD Request Form', () => {
     let component;
     let appConfigMock;
+    let itemId = 'abc123';
 
-    const itemId = 'abc123';
     const state = {
       form: {
         emailAddress: '',
@@ -153,7 +153,41 @@ describe('ElectronicDeliveryForm', () => {
       expect(reLocalState, "Doesn't Retain Local").to.deep.eq(state.form);
     });
 
+    it('Should not have local storage on new item', () => {
+      const { [itemId]: localState } = JSON.parse(localStorage.formstate);
+      expect(localState, 'Old Item State Should Match').to.deep.eq(state.form);
+
+      component.unmount();
+
+      itemId = '123abc';
+      component.setProps({
+        itemId,
+        form: { ...state.form, emailAddress: '' },
+      });
+
+      const propId = component.props().itemId;
+      expect(propId, 'Failed to reset itemId').to.deep.eq(itemId);
+
+      const reLocalState = localStorage.formstate;
+      expect(reLocalState, "Shouldn't Retain Local Storage").to.be.undefined;
+    });
+
     it('Should not have Local Storage Form State after form submit', () => {
+      const { formstate: initialFormState } = localStorage;
+      expect(initialFormState).to.be.undefined;
+
+      const emailField = component.find('input').at(0);
+      expect(emailField.prop('id'), 'Not Email Field').to.eq('emailAddress');
+      expect(emailField.prop('value'), 'Email Field Has Value').to.eq('');
+
+      const fake = 'fake@nypl.org';
+      emailField.simulate('change', {
+        target: { value: fake },
+      });
+
+      const { [itemId]: localState } = JSON.parse(localStorage.formstate);
+      expect(localState).to.deep.eq(state.form);
+
       component.find('form').simulate('submit');
 
       const { formstate } = localStorage;
