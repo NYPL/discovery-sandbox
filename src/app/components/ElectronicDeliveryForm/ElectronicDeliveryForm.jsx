@@ -8,6 +8,7 @@ import {
 
 import { validate } from '../../utils/formValidationUtils';
 import appConfig from '../../data/appConfig';
+import { fetchFromLocal, minSinceMil } from './helpers';
 
 class ElectronicDeliveryForm extends React.Component {
   constructor(props) {
@@ -384,20 +385,3 @@ ElectronicDeliveryForm.defaultProps = {
 };
 
 export default ElectronicDeliveryForm;
-
-const fetchFromLocal = (key) => {
-  // Return an empty object to avoid
-  // asking for props from null or undefined;
-  const initial = {};
-
-  if (typeof window === 'undefined') {
-    return initial;
-  }
-
-  const item = window.localStorage.getItem(key);
-  return !_isEmpty(item) ? JSON.parse(item) : initial;
-};
-
-const minSinceMil = (mills) => {
-  return Math.floor((Date.now() - mills) / 60000);
-};
