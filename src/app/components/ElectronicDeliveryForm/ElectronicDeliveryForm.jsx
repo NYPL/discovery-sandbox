@@ -38,6 +38,23 @@ class ElectronicDeliveryForm extends React.Component {
     this.handleUpdate = this.handleUpdate.bind(this);
   }
 
+  componentDidMount() {
+    const formState = fetchFromLocal('formstate');
+
+    if (Object.keys(formState).length) {
+      const itemForm = formState[this.props.itemId];
+
+      if (!Boolean(itemForm)) {
+        window.localStorage.removeItem('formstate');
+      }
+
+      if (minSinceMil(formState.init) < 30)
+        this.setState((state) => {
+          return { ...state, form: itemForm };
+        });
+    }
+  }
+
   submit(e) {
     e.preventDefault();
 
@@ -362,3 +379,20 @@ ElectronicDeliveryForm.defaultProps = {
 };
 
 export default ElectronicDeliveryForm;
+
+export const fetchFromLocal = (key) => {
+  // Return an empty object to avoid
+  // asking for props from null or undefined;
+  const initial = {};
+
+  if (typeof window === 'undefined') {
+    return initial;
+  }
+
+  const item = window.localStorage.getItem(key);
+  return !_isEmpty(item) ? JSON.parse(item) : initial;
+};
+
+export const minSinceMil = (mills) => {
+  return Math.floor((Date.now() - mills) / 60000);
+};
