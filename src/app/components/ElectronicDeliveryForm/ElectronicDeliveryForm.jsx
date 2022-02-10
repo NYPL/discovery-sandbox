@@ -56,11 +56,6 @@ class ElectronicDeliveryForm extends React.Component {
     }
   }
 
-  componentWillUnmount() {
-    const itemForm = fetchFromLocal('formstate')[this.props.itemId];
-    if (itemForm) window.localStorage.removeItem('formstate');
-  }
-
   submit(e) {
     e.preventDefault();
 
