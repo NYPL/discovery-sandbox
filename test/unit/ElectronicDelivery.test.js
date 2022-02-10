@@ -79,6 +79,7 @@ describe('ElectronicDeliveryForm', () => {
     let component;
     let appConfigMock;
 
+    const itemId = 'abc123';
     const state = {
       form: {
         emailAddress: '',
@@ -96,6 +97,7 @@ describe('ElectronicDeliveryForm', () => {
         <ElectronicDeliveryForm
           fromUrl='example.com'
           form={state.form}
+          itemId={itemId}
           raiseError={() => ({})}
           submitRequest={() => ({})}
         />,
