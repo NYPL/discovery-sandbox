@@ -50,7 +50,7 @@ class ElectronicDeliveryForm extends React.Component {
       // Remove session data if valid.
       // The submit request prop func does not return a value
       // It, on success, redirects, and it, on error, redirects.
-      window.sessionStorage.removeItem('formstate');
+      window.localStorage.removeItem('formstate');
       this.props.submitRequest(this.state);
     }
   }
@@ -64,7 +64,11 @@ class ElectronicDeliveryForm extends React.Component {
       form: _extend(this.state.form, { [input]: e.target.value }),
     });
     // Capture and save user input as it's being updated
-    window.sessionStorage.setItem('formstate', JSON.stringify(this.state.form));
+
+    window.localStorage.setItem(
+      'formstate',
+      JSON.stringify({ [this.props.itemId]: this.state.form }),
+    );
   }
 
   render() {
