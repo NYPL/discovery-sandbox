@@ -141,6 +141,16 @@ describe('ElectronicDeliveryForm', () => {
       );
     });
 
+    it('Should retain Local Storage on rerender', () => {
+      const { [itemId]: localState } = JSON.parse(localStorage.formstate);
+      expect(localState, "Local Storage Doesn't Match").to.deep.eq(state.form);
+
+      component.setProps({ itemId, form: state.form }); // Force Rerender
+
+      const { [itemId]: reLocalState } = JSON.parse(localStorage.formstate);
+      expect(reLocalState, "Doesn't Retain Local").to.deep.eq(state.form);
+    });
+
     it('Should not have Local storage after form submit', () => {
       component.find('form').simulate('submit');
       expect(localStorage, 'Local Storage Has Length').to.have.lengthOf(0);
