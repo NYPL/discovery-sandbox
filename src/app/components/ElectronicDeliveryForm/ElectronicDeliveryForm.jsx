@@ -67,7 +67,10 @@ class ElectronicDeliveryForm extends React.Component {
 
     window.localStorage.setItem(
       'formstate',
-      JSON.stringify({ [this.props.itemId]: this.state.form }),
+      JSON.stringify({
+        [this.props.itemId]: this.state.form,
+        init: Date.now(),
+      }),
     );
   }
 
