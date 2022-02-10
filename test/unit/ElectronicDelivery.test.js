@@ -117,7 +117,9 @@ describe('ElectronicDeliveryForm', () => {
 
       expect(inputs, 'Inputs Contain Values').to.be.false;
       expect(component.state().form, 'Form Has State').to.deep.eq(state.form);
-      expect(localStorage, 'Local Storage Has Length').to.have.lengthOf(0);
+
+      const { formstate } = localStorage;
+      expect(formstate, 'Local Storage Still Exists').to.be.undefined;
     });
 
     it('Should have Local storage on form input', () => {
@@ -151,9 +153,11 @@ describe('ElectronicDeliveryForm', () => {
       expect(reLocalState, "Doesn't Retain Local").to.deep.eq(state.form);
     });
 
-    it('Should not have Local storage after form submit', () => {
+    it('Should not have Local Storage Form State after form submit', () => {
       component.find('form').simulate('submit');
-      expect(localStorage, 'Local Storage Has Length').to.have.lengthOf(0);
+
+      const { formstate } = localStorage;
+      expect(formstate, 'Form State Still Exists').to.be.undefined;
     });
   });
 });
