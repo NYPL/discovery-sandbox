@@ -19,10 +19,6 @@ class ElectronicDeliveryForm extends React.Component {
     this.state = {
       form: !_isEmpty(this.props.form)
         ? this.props.form
-        : // Use Formstate session data if it exists
-        typeof window !== 'undefined' &&
-          !_isEmpty(window.sessionStorage.getItem('formstate'))
-        ? JSON.parse(window.sessionStorage.getItem('formstate'))
         : {
             emailAddress: this.props.defaultEmail,
             chapterTitle: '',
