@@ -19,6 +19,7 @@ import {
   updateHoldRequestPage,
 } from '../../app/actions/Actions';
 import extractFeatures from '../../app/utils/extractFeatures';
+import { isAeonUrl } from 'src/server/utils/isAeonUrl';
 
 const nyplApiClientGet = endpoint =>
   nyplApiClient().then(client => client.get(endpoint, { cache: false }));
@@ -317,6 +318,11 @@ function newHoldRequest(req, res, resolve) {
     (bibResponseData) => {
       const { bib } = bibResponseData;
       barcode = LibraryItem.getItem(bib, req.params.itemId).barcode;
+
+      const urlIsAeon = bib.items
+        .map((item) => item.aeonUrl[0])
+        .find(isAeonUrl);
+      if (urlIsAeon) res.redirect(urlIsAeon);
 
       getDeliveryLocations(
         barcode,
