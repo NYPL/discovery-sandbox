@@ -17,3 +17,5 @@ export function isAeonUrl(url) {
   const link = Array.isArray(url) ? url[0] : url;
   return Boolean(aeonLinks.some((path) => link.startsWith(path)));
 }
+
+export default isAeonUrl;

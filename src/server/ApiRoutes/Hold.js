@@ -19,7 +19,7 @@ import {
   updateHoldRequestPage,
 } from '../../app/actions/Actions';
 import extractFeatures from '../../app/utils/extractFeatures';
-import { isAeonUrl } from 'src/server/utils/isAeonUrl';
+import isAeonUrl from '../utils/isAeonUrl';
 
 const nyplApiClientGet = endpoint =>
   nyplApiClient().then(client => client.get(endpoint, { cache: false }));
