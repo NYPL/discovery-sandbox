@@ -301,10 +301,6 @@ function confirmRequestServer(req, res, next) {
  * @return {function}
  */
 function newHoldRequest(req, res, resolve) {
-  const requireUser = User.requireUser(req, res);
-  const { redirect } = requireUser;
-  if (redirect) return resolve({ redirect });
-
   const bibId = (req.params.bibId || '') + (req.params.itemId ? `-${req.params.itemId}` : '');
   const patronId = req.patronTokenResponse.decodedPatron ?
     req.patronTokenResponse.decodedPatron.sub : '';
@@ -323,6 +319,10 @@ function newHoldRequest(req, res, resolve) {
         .map((item) => item.aeonUrl[0])
         .find(isAeonUrl);
       if (urlIsAeon) res.redirect(urlIsAeon);
+
+      const requireUser = User.requireUser(req, res);
+      const { redirect } = requireUser;
+      if (redirect) return resolve({ redirect });
 
       getDeliveryLocations(
         barcode,
