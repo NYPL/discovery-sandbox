@@ -316,9 +316,13 @@ function newHoldRequest(req, res, resolve) {
       barcode = LibraryItem.getItem(bib, req.params.itemId).barcode;
 
       const urlIsAeon = bib.items
-        .map((item) => item.aeonUrl[0])
+        .map(({ aeonUrl }) => aeonUrl && aeonUrl[0])
         .find(isAeonUrl);
-      if (urlIsAeon) res.redirect(urlIsAeon);
+
+      if (urlIsAeon) {
+        res.redirect(urlIsAeon);
+        return resolve({ redirect: true });
+      }
 
       const requireUser = User.requireUser(req, res);
       const { redirect } = requireUser;
