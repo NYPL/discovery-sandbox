@@ -6,19 +6,6 @@ import Bib from '../../../src/server/ApiRoutes/Bib';
 import bibs from '../../fixtures/bibs';
 import app from './../../../server';
 
-function useBib(initialBib) {
-  const store = {
-    bib: { ...initialBib },
-  };
-
-  return [
-    store,
-    function setBib(newBib) {
-      return (store.bib = newBib);
-    },
-  ];
-}
-
 describe('Hold Request', () => {
   const sandbox = sinon.createSandbox();
   const [bib, setBib] = useBib(bibs[3]);
@@ -79,3 +66,16 @@ describe('Hold Request', () => {
     });
   });
 });
+
+function useBib(initialBib) {
+  const store = {
+    bib: { ...initialBib },
+  };
+
+  return [
+    store,
+    function setBib(newBib) {
+      return (store.bib = newBib);
+    },
+  ];
+}
