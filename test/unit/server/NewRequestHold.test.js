@@ -72,6 +72,7 @@ describe('Hold Request', () => {
           expect(res.serverError, 'Server Errored').to.be.false;
           expect(res.text, 'Not redirecting').to.include('Redirecting');
           expect(res.text, 'Not Login Redirect').to.include(`login.nypl.org`);
+
           done();
         })
         .catch((error) => done(error));
