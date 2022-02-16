@@ -1,10 +1,10 @@
 import { expect } from 'chai';
 import sinon from 'sinon';
 import request from 'supertest';
-import LibraryItem from '../../../src/app/utils/item';
-import Bib from '../../../src/server/ApiRoutes/Bib';
-import bibs from '../../fixtures/bibs';
-import app from './../../../server';
+import LibraryItem from '../../src/app/utils/item';
+import Bib from '../../src/server/ApiRoutes/Bib';
+import bibs from '../fixtures/bibs';
+import app from '../../server';
 
 describe('Hold Request', () => {
   const sandbox = sinon.createSandbox();
