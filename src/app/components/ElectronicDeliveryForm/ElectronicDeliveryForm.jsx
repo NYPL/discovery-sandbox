@@ -8,6 +8,7 @@ import {
 
 import { validate } from '../../utils/formValidationUtils';
 import appConfig from '../../data/appConfig';
+import { fetchFromLocal, minSinceMil } from './helpers';
 
 class ElectronicDeliveryForm extends React.Component {
   constructor(props) {
@@ -17,13 +18,14 @@ class ElectronicDeliveryForm extends React.Component {
     // in the no-js scenario. If they're not available, then we use this
     // 'fallback', but the empty object structure is needed.
     this.state = {
-      form: !_isEmpty(this.props.form) ? this.props.form :
-        {
-          emailAddress: this.props.defaultEmail,
-          chapterTitle: '',
-          startPage: '',
-          endPage: '',
-        },
+      form: !_isEmpty(this.props.form)
+        ? this.props.form
+        : {
+            emailAddress: this.props.defaultEmail,
+            chapterTitle: '',
+            startPage: '',
+            endPage: '',
+          },
       error: !_isEmpty(this.props.error) ? this.props.error :
         {
           emailAddress: '',
@@ -37,6 +39,25 @@ class ElectronicDeliveryForm extends React.Component {
     this.handleUpdate = this.handleUpdate.bind(this);
   }
 
+  componentDidMount() {
+    const formState = fetchFromLocal('formstate');
+
+    if (Object.keys(formState).length) {
+      const itemForm = formState[this.props.itemId];
+
+      if (!Boolean(itemForm)) {
+        window.localStorage.removeItem('formstate');
+        return;
+      }
+
+      if (minSinceMil(formState.init) < 120) {
+        this.setState((state) => {
+          return { ...state, form: itemForm };
+        });
+      }
+    }
+  }
+
   submit(e) {
     e.preventDefault();
 
@@ -46,6 +67,10 @@ class ElectronicDeliveryForm extends React.Component {
     };
 
     if (validate(this.state.form, errorCb)) {
+      // Remove session data if valid.
+      // The submit request prop func does not return a value
+      // It, on success, redirects, and it, on error, redirects.
+      window.localStorage.removeItem('formstate');
       this.props.submitRequest(this.state);
     }
   }
@@ -55,7 +80,18 @@ class ElectronicDeliveryForm extends React.Component {
     // and all the values are being retained. If we don't `extend` the object
     // value for `form`, then only the last value in the form gets updated
     // and the rest are gone.
-    this.setState({ form: _extend(this.state.form, { [input]: e.target.value }) });
+    this.setState({
+      form: _extend(this.state.form, { [input]: e.target.value }),
+    });
+    // Capture and save user input as it's being updated
+
+    window.localStorage.setItem(
+      'formstate',
+      JSON.stringify({
+        [this.props.itemId]: this.state.form,
+        init: Date.now(),
+      }),
+    );
   }
 
   render() {
