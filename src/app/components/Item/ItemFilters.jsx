@@ -1,16 +1,16 @@
-import React, { useState, Fragment } from 'react';
-import PropTypes from 'prop-types';
-
 import { Button } from '@nypl/design-system-react-components';
+import PropTypes from 'prop-types';
+import React, { Fragment, useState } from 'react';
+import { itemFilters } from '../../data/constants';
+import { trackDiscovery } from '../../utils/utils';
+import { MediaContext } from '../Application/Application';
 import ItemFilter from './ItemFilter';
 import ItemFiltersMobile from './ItemFiltersMobile';
-import { trackDiscovery } from '../../utils/utils';
-import { itemFilters } from '../../data/constants';
 
-import { MediaContext } from '../Application/Application';
-
-
-const ItemFilters = ({ items, hasFilterApplied, numOfFilteredItems }, { router }) => {
+const ItemFilters = (
+  { items, hasFilterApplied, numOfFilteredItems },
+  { router },
+) => {
   if (!items || !items.length) return null;
   const [openFilter, setOpenFilter] = useState('none');
   const { createHref } = router;
@@ -30,7 +30,8 @@ const ItemFilters = ({ items, hasFilterApplied, numOfFilteredItems }, { router }
       trackDiscovery('Search Filters', `Close Filter - ${filterType}`);
       setOpenFilter('none');
     } else {
-      if (filterType === 'none') trackDiscovery('Search Filters', `Close Filter - ${openFilter}`);
+      if (filterType === 'none')
+        trackDiscovery('Search Filters', `Close Filter - ${openFilter}`);
       else {
         trackDiscovery('Search Filters', `Open Filter - ${openFilter}`);
       }
@@ -42,7 +43,8 @@ const ItemFilters = ({ items, hasFilterApplied, numOfFilteredItems }, { router }
   const mapFilterIdsToLabel = {};
   itemFilters.forEach((filter) => {
     const optionsObjEntry = options[filter.type];
-    const filterOptions = optionsObjEntry || items.map(item => filter.retrieveOption(item));
+    const filterOptions =
+      optionsObjEntry || items.map((item) => filter.retrieveOption(item));
     if (!optionsObjEntry) options[filter.type] = filterOptions;
     filterOptions.forEach((option) => {
       mapFilterIdsToLabel[option.id] = option.label;
@@ -50,20 +52,23 @@ const ItemFilters = ({ items, hasFilterApplied, numOfFilteredItems }, { router }
   });
 
   // join filter selections and add single quotes
-  const parsedFilterSelections = () => itemFilters
-    .map((filter) => {
-      const filters = initialFilters[filter.type];
-      if (filters.length) {
-        let filtersString;
-        if (Array.isArray(filters)) {
-          filtersString = filters.join("', '");
-        } else {
-          filtersString = filters;
+  const parsedFilterSelections = () =>
+    itemFilters
+      .map((filter) => {
+        const filters = initialFilters[filter.type];
+        if (filters.length) {
+          let filtersString;
+          if (Array.isArray(filters)) {
+            filtersString = filters.join("', '");
+          } else {
+            filtersString = filters;
+          }
+          return `${filter.type}: '${filtersString}'`;
         }
-        return `${filter.type}: '${filtersString}'`;
-      }
-      return null;
-    }).filter(selected => selected).join(', ');
+        return null;
+      })
+      .filter((selected) => selected)
+      .join(', ');
 
   const resetFilters = () => {
     const href = router.createHref({
@@ -82,7 +87,10 @@ const ItemFilters = ({ items, hasFilterApplied, numOfFilteredItems }, { router }
         search: '',
       },
     });
-    trackDiscovery('Search Filters', `Apply Filter - ${JSON.stringify(filters)}`);
+    trackDiscovery(
+      'Search Filters',
+      `Apply Filter - ${JSON.stringify(filters)}`,
+    );
     router.push(href);
   };
 
@@ -97,49 +105,43 @@ const ItemFilters = ({ items, hasFilterApplied, numOfFilteredItems }, { router }
   return (
     <Fragment>
       <MediaContext.Consumer>
-        {
-          media =>
-          (
-            <Fragment>
-              {
-              ['mobile', 'tabletPortrait'].includes(media) ?
-              (<ItemFiltersMobile
+        {(media) => (
+          <Fragment>
+            {['mobile', 'tabletPortrait'].includes(media) ? (
+              <ItemFiltersMobile
                 options={options}
                 {...itemFilterComponentProps}
-              />) :
-              (
-                <div id="item-filters" className="item-table-filters">
-                  {
-                    itemFilters.map(filter => (
-                      <ItemFilter
-                        filter={filter.type}
-                        key={filter.type}
-                        options={options[filter.type]}
-                        isOpen={openFilter === filter.type}
-                        {...itemFilterComponentProps}
-                      />
-                    ))
-                  }
-                </div>
-              )
-            }
-            </Fragment>
-          )
-        }
+              />
+            ) : (
+              <div id="item-filters" className="item-table-filters">
+                {itemFilters.map((filter) => (
+                  <ItemFilter
+                    filter={filter.type}
+                    key={filter.type}
+                    options={options[filter.type]}
+                    isOpen={openFilter === filter.type}
+                    {...itemFilterComponentProps}
+                  />
+                ))}
+              </div>
+            )}
+          </Fragment>
+        )}
       </MediaContext.Consumer>
       <div className="item-filter-info">
-        <h3>{numOfFilteredItems > 0 ? numOfFilteredItems : 'No'} Result{numOfFilteredItems !== 1 ? 's' : null} Found</h3>
-        {hasFilterApplied ? <span>Filtered by {parsedFilterSelections()}</span> : null}
+        <h3>
+          {numOfFilteredItems > 0 ? numOfFilteredItems : 'No'} Result
+          {numOfFilteredItems !== 1 ? 's' : null} Found
+        </h3>
+        {hasFilterApplied ? (
+          <span>Filtered by {parsedFilterSelections()}</span>
+        ) : null}
         &nbsp;
-        {
-          hasFilterApplied ? (
-            <Button
-              buttonType="link"
-              onClick={() => resetFilters()}
-            >Clear all filters
-            </Button>
-          ) : null
-        }
+        {hasFilterApplied ? (
+          <Button buttonType="link" onClick={() => resetFilters()}>
+            Clear all filters
+          </Button>
+        ) : null}
       </div>
     </Fragment>
   );
