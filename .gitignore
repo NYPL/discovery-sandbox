@@ -25,3 +25,5 @@ log/*.log
 
 # VS code Configuration Files
 .vscode
+
+__play.*
