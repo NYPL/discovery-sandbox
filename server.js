@@ -30,6 +30,23 @@ const app = express();
 
 app.use(compress());
 
+/* Development Environment Configuration
+ * -------------------------------------
+ * - Using Webpack Dev Server
+ */
+if (!isProduction && !isTest) {
+  const wpdMiddleware = require('webpack-dev-middleware');
+  const webpack = require('webpack');
+  const webpackConfig = require('./webpack.config');
+  const compiler = webpack({ ...webpackConfig });
+
+  app.use(
+    wpdMiddleware(compiler, {
+      publicPath: webpackConfig.output.publicPath,
+    }),
+  );
+}
+
 // Disables the Server response from
 // displaying Express as the server engine
 app.disable('x-powered-by');
@@ -149,20 +166,5 @@ const gracefulShutdown = () => {
 process.on('SIGTERM', gracefulShutdown);
 // listen for INT signal e.g. Ctrl-C
 process.on('SIGINT', gracefulShutdown);
-
-/* Development Environment Configuration
- * -------------------------------------
- * - Using Webpack Dev Server
- */
-if (!isProduction && !isTest) {
-  const WebpackDevServer = require('webpack-dev-server');
-  const webpackConfig = require('./webpack.config');
-  const webpack = require('webpack');
-
-  new WebpackDevServer(
-    { ...webpackConfig.devServer },
-    webpack(webpackConfig),
-  ).start();
-}
 
 module.exports = app;

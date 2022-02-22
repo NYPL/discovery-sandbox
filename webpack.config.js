@@ -108,18 +108,20 @@ if (ENV === 'development') {
   console.log('webpack dev');
 
   module.exports = merge(commonSettings, {
+    name: 'client',
     mode: 'development',
     devtool: 'inline-source-map',
     stats: 'errors-only',
-    entry: {
-      app: [
-        'webpack-dev-server/client?http://localhost:3000',
-        'webpack/hot/only-dev-server',
-      ],
-    },
-    output: {
-      publicPath: 'http://localhost:3000/',
-    },
+    // Keep for Past Context
+    // entry: {
+    //   app: [
+    //     'webpack-dev-server/client?http://localhost:3000',
+    //     'webpack/hot/only-dev-server',
+    //   ],
+    // },
+    // output: {
+    //   publicPath: 'http://localhost:3000/',
+    // },
     resolve: {
       modules: ['node_modules'],
       extensions: ['.js', '.jsx', '.css', '.scss', '.png'],
@@ -192,23 +194,26 @@ if (ENV === 'development') {
         },
       ],
     },
-    devServer: {
-      port: 3000,
-      hot: true,
-      historyApiFallback: true,
-      headers: {
-        'Access-Control-Allow-Origin': 'http://localhost:3001',
-        'Access-Control-Allow-Headers': 'X-Requested-With',
-      },
-      onListening(devServer) {
-        if (!devServer) throw new Error('webpack-dev-server is not defined');
-
-        console.log(
-          'Dev Server Listening on port:',
-          devServer.server.address().port,
-        );
-      },
-    },
+    // Keep for Past Context
+    // devServer: {
+    // allowedHosts: ['all'],
+    // port: 3001,
+    // hot: false,
+    // historyApiFallback: true,
+    // headers: {
+    //   'Access-Control-Allow-Origin': 'http://localhost:3001',
+    //   'Access-Control-Allow-Headers': 'X-Requested-With',
+    // },
+    //
+    // onListening(devServer) {
+    //   if (!devServer) throw new Error('webpack-dev-server is not defined');
+    //
+    //   console.log(
+    //     'Dev Server Listening on port:',
+    //     devServer.server.address().port,
+    //   );
+    // },
+    // },
   });
 }
 
