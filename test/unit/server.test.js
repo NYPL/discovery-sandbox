@@ -26,8 +26,9 @@ describe('server', () => {
     sandbox.restore();
   });
 
-  it('redirects to baseurl', (done) => {
-    request(app)
+  describe('Base Url Paths', () => {
+    it('redirects to baseurl', (done) => {
+      request(app)
       .get('/')
       .expect('Content-Type', /text/)
       .expect('Location', `${process.env.BASE_URL}/`)
@@ -36,11 +37,11 @@ describe('server', () => {
         done();
       })
       .catch(err => done(err));
-    ;
-  });
-
-  it('serves meta tags with DISPLAY_TITLE', (done) => {
-    request(app)
+      ;
+    });
+    
+    it('serves meta tags with DISPLAY_TITLE', (done) => {
+      request(app)
       .get(`${process.env.BASE_URL}/`)
       .expect(200)
       .then((response) => {
@@ -52,6 +53,7 @@ describe('server', () => {
         done();
       })
       .catch(err => done(err));
-    ;
-  });
+      ;
+    });
+  })
 });
