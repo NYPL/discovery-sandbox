@@ -19,6 +19,7 @@ import {
   updateHoldRequestPage,
 } from '../../app/actions/Actions';
 import extractFeatures from '../../app/utils/extractFeatures';
+import isAeonUrl from '../utils/isAeonUrl';
 
 const nyplApiClientGet = endpoint =>
   nyplApiClient().then(client => client.get(endpoint, { cache: false }));
@@ -300,10 +301,6 @@ function confirmRequestServer(req, res, next) {
  * @return {function}
  */
 function newHoldRequest(req, res, resolve) {
-  const requireUser = User.requireUser(req, res);
-  const { redirect } = requireUser;
-  if (redirect) return resolve({ redirect });
-
   const bibId = (req.params.bibId || '') + (req.params.itemId ? `-${req.params.itemId}` : '');
   const patronId = req.patronTokenResponse.decodedPatron ?
     req.patronTokenResponse.decodedPatron.sub : '';
@@ -317,6 +314,19 @@ function newHoldRequest(req, res, resolve) {
     (bibResponseData) => {
       const { bib } = bibResponseData;
       barcode = LibraryItem.getItem(bib, req.params.itemId).barcode;
+
+      const urlIsAeon = bib.items
+        .map(({ aeonUrl }) => aeonUrl && aeonUrl[0])
+        .find(isAeonUrl);
+
+      if (urlIsAeon) {
+        res.redirect(urlIsAeon);
+        return resolve({ redirect: true });
+      }
+
+      const requireUser = User.requireUser(req, res);
+      const { redirect } = requireUser;
+      if (redirect) return resolve({ redirect });
 
       getDeliveryLocations(
         barcode,
