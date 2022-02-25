@@ -2,10 +2,8 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 
-/* eslint-disable import/no-unresolved, import/extensions */
 import SearchResultsSorter from '@SearchResultsSorter';
 import SearchResultsContainer from '@SearchResultsContainer';
-/* eslint-enable */
 import SccContainer from '../components/SccContainer/SccContainer';
 import Search from '../components/Search/Search';
 import FilterPopup from '../components/FilterPopup/FilterPopup';

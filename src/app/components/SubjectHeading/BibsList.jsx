@@ -4,11 +4,9 @@ import PropTypes from 'prop-types';
 import Pagination from '../Pagination/Pagination';
 import ResultsList from '../ResultsList/ResultsList';
 import LocalLoadingLayer from './LocalLoadingLayer';
-/* eslint-disable import/first, import/no-unresolved, import/extensions */
 import Sorter from '@Sorter';
 import appConfig from '@appConfig';
 import CachedAxios from '../../utils/CachedAxios';
-/* eslint-enable import/first, import/no-unresolved, import/extensions */
 
 class BibsList extends React.Component {
   constructor(props, context) {
