@@ -15,8 +15,8 @@ class ItemTableRow extends React.Component {
     this.getItemRecord = this.getItemRecord.bind(this);
   }
 
-  getItemRecord(e) {
-    e.preventDefault();
+  getItemRecord(event) {
+    event.preventDefault();
     const { bibId, item } = this.props;
 
     const { routes } = this.context.router;
@@ -96,7 +96,7 @@ class ItemTableRow extends React.Component {
       itemRequestBtn = item.available ? (
         <Link
           to={`${appConfig.baseUrl}/hold/request/${bibId}-${item.id}?searchKeywords=${searchKeywords}`}
-          onClick={(e) => this.getItemRecord(e, bibId, item.id)}
+          onClick={(event) => this.getItemRecord(event, bibId, item.id)}
           tabIndex='0'
         >
           Request

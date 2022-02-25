@@ -67,7 +67,7 @@ const ResultsList = (
     return null;
   }
 
-  const generateBibLi = (bib, i) => {
+  const generateBibLi = (bib, idx) => {
     // eslint-disable-next-line no-mixed-operators
     if (
       _isEmpty(bib) ||
@@ -98,7 +98,7 @@ const ResultsList = (
 
     return (
       <li
-        key={i}
+        key={idx}
         className={`nypl-results-item ${hasRequestTable ? 'has-request' : ''}`}
       >
         <h3>
@@ -143,7 +143,7 @@ const ResultsList = (
     );
   };
 
-  const resultsElm = results.map((bib, i) => generateBibLi(bib, i));
+  const resultsElm = results.map((bib, idx) => generateBibLi(bib, idx));
 
   return (
     <ul
