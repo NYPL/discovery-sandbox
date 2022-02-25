@@ -28,7 +28,7 @@ const noop = () => undefined;
  */
 const ajaxCall = (
   endpoint,
-  cb = () => {},
+  cb = noop,
   errorcb = (error) => console.error('Error making ajaxCall', error),
 ) => {
   if (!endpoint) return null;
@@ -498,7 +498,7 @@ const getUpdatedFilterValues = (props) => {
     });
   }
 
-  updatedFilterValues = _sortBy(updatedFilterValues, (f) => f.label);
+  updatedFilterValues = _sortBy(updatedFilterValues, (value) => value.label);
 
   return updatedFilterValues;
 };
@@ -675,8 +675,8 @@ const isOptionSelected = (filterValue, itemValue) => {
  * @return {boolean}
  */
 const hasValidFilters = (selectedFilters) => {
-  return Object.values(selectedFilters || {}).some((v) =>
-    Array.isArray(v) ? v.length > 0 : v,
+  return Object.values(selectedFilters || {}).some((value) =>
+    Array.isArray(value) ? value.length > 0 : value,
   );
 };
 
@@ -712,13 +712,13 @@ function extractNoticePreference(fixedFields) {
  *      camelToShishKabobCase("firstCharCanBeLowerCase")
  *        => "first-char-can-be-lower-case"
  */
-function camelToShishKabobCase(s) {
+function camelToShishKabobCase(string) {
   return (
-    s
+    string
       // Change capital letters into "-{lowercase letter}"
-      .replace(/([A-Z])/g, (c, p1, i) => {
+      .replace(/([A-Z])/g, (capital, p1, idx) => {
         // If capital letter is not first character, precede with '-':
-        return (i > 0 ? '-' : '') + c.toLowerCase();
+        return (idx > 0 ? '-' : '') + capital.toLowerCase();
       })
   );
 }
