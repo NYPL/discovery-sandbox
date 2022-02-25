@@ -36,7 +36,7 @@ class BibsList extends React.Component {
     this.fetchBibs(stringifiedSortParams);
   }
 
-  fetchBibs(stringifiedSortParams, cb = () => {}) {
+  fetchBibs(stringifiedSortParams, cb = () => undefined) {
     const { label } = this.props;
 
     return this.cachedAxios
