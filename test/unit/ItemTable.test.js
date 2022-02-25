@@ -1,9 +1,6 @@
-/* eslint-env mocha */
-import React from 'react';
 import { expect } from 'chai';
 import { shallow } from 'enzyme';
-
-// Import the component that is going to be tested
+import React from 'react';
 import ItemTable from './../../src/app/components/Item/ItemTable';
 
 describe('ItemTable', () => {

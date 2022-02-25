@@ -1,14 +1,11 @@
-/* eslint-disable react/jsx-filename-extension */
-/* eslint-env mocha */
-import React from 'react';
 import { expect } from 'chai';
 import PropTypes from 'prop-types';
-
-import SearchResultsPage from '../../src/app/pages/SearchResultsPage';
+import React from 'react';
 import SearchResultsContainer from '../../src/app/components/SearchResults/SearchResultsContainer';
-import { mockRouterContext } from '../helpers/routing';
-import { mountTestRender, makeTestStore } from '../helpers/store';
 import appConfig from '../../src/app/data/appConfig';
+import SearchResultsPage from '../../src/app/pages/SearchResultsPage';
+import { mockRouterContext } from '../helpers/routing';
+import { makeTestStore, mountTestRender } from '../helpers/store';
 
 // Eventually, it would be nice to have mocked data in a different file and imported.
 const searchResults = {

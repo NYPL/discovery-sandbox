@@ -1,22 +1,18 @@
-/* eslint-disable react/jsx-filename-extension */
-/* eslint-env mocha */
-import React from 'react';
+import axios from 'axios';
+import MockAdapter from 'axios-mock-adapter';
 import { expect } from 'chai';
 import { mount } from 'enzyme';
-import { mock as sinonMock } from 'sinon';
-import MockAdapter from 'axios-mock-adapter';
-import axios from 'axios';
-import { Provider } from 'react-redux';
 import PropTypes from 'prop-types';
-
-import { mountTestRender, makeTestStore } from '../helpers/store';
+import React from 'react';
+import { mock as sinonMock } from 'sinon';
 import ResultsList, {
   getBibTitle,
   getYearDisplay,
 } from '../../src/app/components/ResultsList/ResultsList';
-import resultsBibs from '../fixtures/resultsBibs';
 import appConfig from '../../src/app/data/appConfig';
+import resultsBibs from '../fixtures/resultsBibs';
 import { mockRouterContext } from '../helpers/routing';
+import { makeTestStore, mountTestRender } from '../helpers/store';
 
 const results = [{}, {}, {}];
 const singleBibNoTitleDisplay = {

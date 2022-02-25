@@ -1,11 +1,8 @@
-/* eslint-env mocha */
-/* eslint-disable react/jsx-filename-extension */
-import React from 'react';
+import { Heading } from '@nypl/design-system-react-components';
+import SubjectHeadingShow from '@SubjectHeadingShow';
 import { expect } from 'chai';
 import { shallow } from 'enzyme';
-
-import SubjectHeadingShow from '@SubjectHeadingShow';
-import { Heading } from '@nypl/design-system-react-components';
+import React from 'react';
 import SubjectHeadingShowPage from './../../src/app/pages/SubjectHeadingShowPage';
 
 describe('SubjectHeadingsIndexPage', () => {

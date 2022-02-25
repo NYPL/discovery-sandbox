@@ -1,12 +1,9 @@
-/* eslint-disable react/jsx-filename-extension */
-/* eslint-env mocha */
-import React from 'react';
 import { expect } from 'chai';
-import { shallow, mount } from 'enzyme';
-
+import { mount, shallow } from 'enzyme';
+import React from 'react';
 import itemsContainerModule from './../../src/app/components/Item/ItemsContainer';
-import LibraryItem from './../../src/app/utils/item';
 import { bibPageItemsListLimit as itemsListPageLimit } from './../../src/app/data/constants';
+import LibraryItem from './../../src/app/utils/item';
 
 const ItemsContainer = itemsContainerModule.unwrappedItemsContainer;
 const items = [

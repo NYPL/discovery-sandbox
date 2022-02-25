@@ -1,28 +1,22 @@
-/* eslint-disable react/jsx-filename-extension */
-/* eslint-env mocha */
-import React from 'react';
 import { expect } from 'chai';
-import { shallow, mount } from 'enzyme';
+import { mount, shallow } from 'enzyme';
 import PropTypes from 'prop-types';
+import React from 'react';
 import { Provider } from 'react-redux';
-
-// Import Bib helper functions for pre-processing
+import { Link } from 'react-router';
+import BackToSearchResults from '../../src/app/components/BibPage/BackToSearchResults';
+import BibDetails from '../../src/app/components/BibPage/BibDetails';
+import { isAeonLink } from '../../src/app/utils/utils';
+import annotatedMarc from '../fixtures/annotatedMarc.json';
+import bibs from '../fixtures/bibs';
+import mockBibWithHolding from '../fixtures/mockBibWithHolding.json';
+import { mockRouterContext } from '../helpers/routing';
+import { makeTestStore } from '../helpers/store';
+import { BibPage } from './../../src/app/pages/BibPage';
 import {
   addCheckInItems,
   addHoldingDefinition,
 } from './../../src/server/ApiRoutes/Bib';
-
-// Import the unwrapped component that is going to be tested
-import { BibPage } from './../../src/app/pages/BibPage';
-import bibs from '../fixtures/bibs';
-import annotatedMarc from '../fixtures/annotatedMarc.json';
-import mockBibWithHolding from '../fixtures/mockBibWithHolding.json';
-import { makeTestStore } from '../helpers/store';
-import { mockRouterContext } from '../helpers/routing';
-import BackToSearchResults from '../../src/app/components/BibPage/BackToSearchResults';
-import { Link } from 'react-router';
-import BibDetails from '../../src/app/components/BibPage/BibDetails';
-import { isAeonLink } from '../../src/app/utils/utils';
 
 describe('BibPage', () => {
   const context = mockRouterContext();
