@@ -1,25 +1,22 @@
-/* eslint-disable react/jsx-filename-extension */
-/* eslint-env mocha */
-import React from 'react';
 import { expect } from 'chai';
-import { shallow, mount } from 'enzyme';
+import { mount, shallow } from 'enzyme';
 import PropTypes from 'prop-types';
+import React from 'react';
 import { Provider } from 'react-redux';
-
-// Import Bib helper functions for pre-processing
-import { addCheckInItems, addHoldingDefinition } from './../../src/server/ApiRoutes/Bib';
-
-// Import the unwrapped component that is going to be tested
-import { BibPage } from './../../src/app/pages/BibPage';
-import bibs from '../fixtures/bibs';
-import annotatedMarc from '../fixtures/annotatedMarc.json';
-import mockBibWithHolding from '../fixtures/mockBibWithHolding.json';
-import { makeTestStore } from '../helpers/store';
-import { mockRouterContext } from '../helpers/routing';
-import BackToSearchResults from '../../src/app/components/BibPage/BackToSearchResults';
 import { Link } from 'react-router';
+import BackToSearchResults from '../../src/app/components/BibPage/BackToSearchResults';
 import BibDetails from '../../src/app/components/BibPage/BibDetails';
-import { isAeonLink } from '../../src/app/utils/utils';
+import { isAeonLink, noop } from '../../src/app/utils/utils';
+import annotatedMarc from '../fixtures/annotatedMarc.json';
+import bibs from '../fixtures/bibs';
+import mockBibWithHolding from '../fixtures/mockBibWithHolding.json';
+import { mockRouterContext } from '../helpers/routing';
+import { makeTestStore } from '../helpers/store';
+import { BibPage } from './../../src/app/pages/BibPage';
+import {
+  addCheckInItems,
+  addHoldingDefinition,
+} from './../../src/server/ApiRoutes/Bib';
 
 describe('BibPage', () => {
   const context = mockRouterContext();
@@ -37,7 +34,7 @@ describe('BibPage', () => {
         <BibPage
           location={{ search: 'search', pathname: '' }}
           bib={bib}
-          dispatch={() => {}}
+          dispatch={noop}
           resultSelection={{
             fromUrl: '',
             bibId: '',
@@ -54,7 +51,7 @@ describe('BibPage', () => {
       );
       // The Bottom Bib Details Component has the original, Non altered, aggregated resources list.
       // It can be checked to see if the bib details would have been passed a list with Aeon links.
-      
+
       expect(bttBibComp.type()).to.equal(BibDetails);
       expect(bttBibComp.prop('electronicResources')).to.have.lengthOf(2);
 
@@ -96,33 +93,42 @@ describe('BibPage', () => {
           <BibPage
             location={{ search: 'search', pathname: '' }}
             bib={bib}
-            dispatch={() => {}}
+            dispatch={noop}
             resultSelection={{
               fromUrl: '',
               bibId: '',
             }}
           />
-        </Provider>, { context, childContextTypes: { router: PropTypes.object } });
+        </Provider>,
+        { context, childContextTypes: { router: PropTypes.object } },
+      );
     });
-
 
     it('has ItemsContainer', () => {
       expect(component.find('ItemsContainer').length).to.equal(1);
     });
 
     it('has Details section', () => {
-      expect(component.find('Heading').at(3).prop('children')).to.equal('Details');
+      expect(component.find('Heading').at(3).prop('children')).to.equal(
+        'Details',
+      );
     });
 
     it('combines details sections', () => {
-      expect(component.findWhere(el => el.type() === 'dt' && el.text() === 'Abbreviated Title').length).to.equal(1);
+      expect(
+        component.findWhere(
+          (el) => el.type() === 'dt' && el.text() === 'Abbreviated Title',
+        ).length,
+      ).to.equal(1);
     });
 
     it('has "View in Legacy Catalog" link', () => {
       const linkToLegacy = component.find('#legacy-catalog-link');
       expect(linkToLegacy.length).to.equal(1);
       expect(linkToLegacy.is('a')).to.equal(true);
-      expect(linkToLegacy.prop('href')).to.equal('https://legacyBaseUrl.nypl.org/record=b11417539~S1');
+      expect(linkToLegacy.prop('href')).to.equal(
+        'https://legacyBaseUrl.nypl.org/record=b11417539~S1',
+      );
     });
   });
 
@@ -130,7 +136,9 @@ describe('BibPage', () => {
     let itemTable;
     let component;
     before(() => {
-      mockBibWithHolding.holdings.forEach(holding => addHoldingDefinition(holding));
+      mockBibWithHolding.holdings.forEach((holding) =>
+        addHoldingDefinition(holding),
+      );
       addCheckInItems(mockBibWithHolding);
       const bib = { ...mockBibWithHolding, ...annotatedMarc };
       const testStore = makeTestStore({
@@ -145,16 +153,18 @@ describe('BibPage', () => {
           <BibPage
             location={{ search: 'search', pathname: '' }}
             bib={bib}
-            dispatch={() => {}}
+            dispatch={noop}
             resultSelection={{
               fromUrl: '',
               bibId: '',
             }}
           />
-        </Provider>, {
+        </Provider>,
+        {
           context,
           childContextTypes: { router: PropTypes.object },
-        });
+        },
+      );
       itemTable = component.find('ItemTable');
     });
 
@@ -163,7 +173,9 @@ describe('BibPage', () => {
     });
 
     it('has Details section', () => {
-      expect(component.find('Heading').at(4).prop('children')).to.equal('Details');
+      expect(component.find('Heading').at(4).prop('children')).to.equal(
+        'Details',
+      );
     });
 
     it('has holdings section', () => {
@@ -179,7 +191,12 @@ describe('BibPage', () => {
     });
 
     it('displays any notes in the "Library Holdings" tab', () => {
-      expect(component.find('dt').findWhere(n => n.type() === 'dt' && n.text() === 'Notes').length).to.equal(1);
+      expect(
+        component
+          .find('dt')
+          .findWhere((node) => node.type() === 'dt' && node.text() === 'Notes')
+          .length,
+      ).to.equal(1);
     });
   });
 
@@ -191,7 +208,7 @@ describe('BibPage', () => {
         <BibPage
           location={{ search: 'search', pathname: '' }}
           bib={bib}
-          dispatch={() => {}}
+          dispatch={noop}
           resultSelection={{
             fromUrl: 'resultsurl.com',
             bibId: bib['@id'].substring(4),
@@ -211,7 +228,7 @@ describe('BibPage', () => {
         <BibPage
           location={{ search: 'search', pathname: '' }}
           bib={bib}
-          dispatch={() => {}}
+          dispatch={noop}
           resultSelection={{
             fromUrl: 'resultsurl.com',
             bibId: 'wrongbib',

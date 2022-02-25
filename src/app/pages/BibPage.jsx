@@ -7,6 +7,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import BackToSearchResults from '../components/BibPage/BackToSearchResults';
+import BibNotFound404 from '../components/BibPage/BibNotFound404';
 import BottomBibDetails from '../components/BibPage/BottomBibDetails';
 import LibraryHoldings from '../components/BibPage/LibraryHoldings';
 import TopBibDetails from '../components/BibPage/TopBibDetails';
@@ -80,7 +81,9 @@ export const BibPage = (
 
   const bibId = bib['@id'] ? bib['@id'].substring(4) : '';
   const items = (bib.checkInItems || []).concat(LibraryItem.getItems(bib));
-  const isElectronicResources = items.every((i) => i.isElectronicResource);
+  const isElectronicResources = items.every(
+    (item) => item.isElectronicResource,
+  );
   const aggregatedElectronicResources = getAggregatedElectronicResources(items);
 
   // Related to removing MarcRecord because the webpack MarcRecord is not working. Sep/28/2017
@@ -90,10 +93,10 @@ export const BibPage = (
   return (
     <SccContainer
       useLoadingLayer
-      className="nypl-item-details"
-      pageTitle="Item Details"
+      className='nypl-item-details'
+      pageTitle='Item Details'
     >
-      <section className="nypl-item-details__heading">
+      <section className='nypl-item-details__heading'>
         <Heading level={2}>
           {bib.title && bib.title.length ? bib.title[0] : ' '}
         </Heading>

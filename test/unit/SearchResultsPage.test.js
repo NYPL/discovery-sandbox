@@ -1,15 +1,11 @@
-/* eslint-disable react/jsx-filename-extension */
-/* eslint-env mocha */
-import React from 'react';
 import { expect } from 'chai';
 import PropTypes from 'prop-types';
-
-import SearchResultsPage from '../../src/app/pages/SearchResultsPage';
+import React from 'react';
 import SearchResultsContainer from '../../src/app/components/SearchResults/SearchResultsContainer';
-import { mockRouterContext } from '../helpers/routing';
-import { mountTestRender, makeTestStore } from '../helpers/store';
 import appConfig from '../../src/app/data/appConfig';
-
+import SearchResultsPage from '../../src/app/pages/SearchResultsPage';
+import { mockRouterContext } from '../helpers/routing';
+import { makeTestStore, mountTestRender } from '../helpers/store';
 
 // Eventually, it would be nice to have mocked data in a different file and imported.
 const searchResults = {
@@ -44,10 +40,7 @@ describe('SearchResultsPage', () => {
       // Added this empty prop so that the `componentWillMount` method will be skipped.
       // That lifecycle hook is tested later on.
       wrapper = mountTestRender(
-        <SearchResultsPage
-          searchResults={{}}
-          location={{ search: '' }}
-        />,
+        <SearchResultsPage searchResults={{}} location={{ search: '' }} />,
         {
           context,
           childContextTypes,
@@ -102,20 +95,18 @@ describe('SearchResultsPage', () => {
 
     before(() => {
       const storeWithProps = makeTestStore({
-        searchKeywords: "locofocos",
+        searchKeywords: 'locofocos',
         searchResults,
       });
       wrapper = mountTestRender(
-        <SearchResultsPage
-          location={{ search: '' }}
-        />,
+        <SearchResultsPage location={{ search: '' }} />,
         {
           attachTo: document.body,
           context,
           childContextTypes,
           store: storeWithProps,
         },
-      )
+      );
       component = wrapper.find('SearchResults');
     });
 
@@ -146,9 +137,7 @@ describe('SearchResultsPage', () => {
         searchResults,
       });
       wrapper = mountTestRender(
-        <SearchResultsPage
-          location={{ search: '' }}
-        />,
+        <SearchResultsPage location={{ search: '' }} />,
         {
           context,
           childContextTypes,
@@ -179,9 +168,7 @@ describe('SearchResultsPage', () => {
         searchResults,
       });
       wrapper = mountTestRender(
-        <SearchResultsPage
-          location={{ search: '' }}
-        />,
+        <SearchResultsPage location={{ search: '' }} />,
         {
           attachTo: document.body,
           context,
@@ -213,7 +200,7 @@ describe('SearchResultsPage', () => {
       });
       component = mountTestRender(
         <SearchResultsContainer
-          searchKeywords="locofocos"
+          searchKeywords='locofocos'
           searchResults={searchResults}
           location={{ search: '' }}
         />,
@@ -224,7 +211,8 @@ describe('SearchResultsPage', () => {
             ...mockRouter,
           },
           childContextTypes,
-        });
+        },
+      );
     });
 
     it('should render a <DrbbContainer /> component', () => {
@@ -233,7 +221,9 @@ describe('SearchResultsPage', () => {
 
     describe('desktop view', () => {
       it('should have the DrbbContainer above Pagination', () => {
-        expect(component.find('.nypl-column-full').childAt(1).html()).to.include('No results found from Digital Research Books Beta');
+        expect(
+          component.find('.nypl-column-full').childAt(1).html(),
+        ).to.include('No results found from Digital Research Books Beta');
       });
     });
 
@@ -246,7 +236,7 @@ describe('SearchResultsPage', () => {
         });
         component = mountTestRender(
           <SearchResultsContainer
-            searchKeywords="locofocos"
+            searchKeywords='locofocos'
             searchResults={searchResults}
             location={{ search: '' }}
           />,
@@ -257,13 +247,16 @@ describe('SearchResultsPage', () => {
               ...mockRouter,
             },
             childContextTypes,
-          });
+          },
+        );
       });
 
       // figuring out how to change the new context API in test
       // checked manually 8/26/20
       xit('should have the Pagination above the DrbbContainer', () => {
-        expect(component.find('.nypl-column-full').childAt(1).is('Pagination')).to.eql(true);
+        expect(
+          component.find('.nypl-column-full').childAt(1).is('Pagination'),
+        ).to.eql(true);
       });
     });
   });
@@ -275,18 +268,18 @@ describe('SearchResultsPage', () => {
         searchResults,
         searchKeywords: 'locofocos',
       });
-      component = mountTestRender(
-        <SearchResultsPage />,
-        {
-          context,
-          childContextTypes,
-          store: testStore,
-        });
+      component = mountTestRender(<SearchResultsPage />, {
+        context,
+        childContextTypes,
+        store: testStore,
+      });
     });
 
     it('should have a `Notification`', () => {
       expect(component.find('Notification').length).to.equal(1);
-      expect(component.find('Notification').text()).to.include('Some info for our patrons');
+      expect(component.find('Notification').text()).to.include(
+        'Some info for our patrons',
+      );
     });
   });
 });

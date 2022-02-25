@@ -1,12 +1,10 @@
-/* eslint-disable react/jsx-filename-extension */
-/* eslint-env mocha */
-import React from 'react';
 import { expect } from 'chai';
-import { shallow, mount } from 'enzyme';
-
+import { mount, shallow } from 'enzyme';
+import React from 'react';
+import { noop } from '../../src/app/utils/utils';
 import itemsContainerModule from './../../src/app/components/Item/ItemsContainer';
-import LibraryItem from './../../src/app/utils/item';
 import { bibPageItemsListLimit as itemsListPageLimit } from './../../src/app/data/constants';
+import LibraryItem from './../../src/app/utils/item';
 
 const ItemsContainer = itemsContainerModule.unwrappedItemsContainer;
 const items = [
@@ -16,7 +14,8 @@ const items = [
       prefLabel: 'USE IN LIBRARY',
     },
     availability: 'available',
-    url: 'http://www.questionpoint.org/crs/servlet/org.oclc.admin.BuildForm?' +
+    url:
+      'http://www.questionpoint.org/crs/servlet/org.oclc.admin.BuildForm?' +
       '&institution=13777&type=1&language=1',
   },
   {
@@ -31,60 +30,192 @@ const items = [
 ].map(LibraryItem.mapItem);
 
 const longListItems = [
-  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
+  {
+    status: { prefLabel: 'available' },
+    accessMessage: { prefLabel: 'available' },
+  },
+  {
+    status: { prefLabel: 'available' },
+    accessMessage: { prefLabel: 'available' },
+  },
+  {
+    status: { prefLabel: 'available' },
+    accessMessage: { prefLabel: 'available' },
+  },
+  {
+    status: { prefLabel: 'available' },
+    accessMessage: { prefLabel: 'available' },
+  },
+  {
+    status: { prefLabel: 'available' },
+    accessMessage: { prefLabel: 'available' },
+  },
+  {
+    status: { prefLabel: 'available' },
+    accessMessage: { prefLabel: 'available' },
+  },
+  {
+    status: { prefLabel: 'available' },
+    accessMessage: { prefLabel: 'available' },
+  },
+  {
+    status: { prefLabel: 'available' },
+    accessMessage: { prefLabel: 'available' },
+  },
+  {
+    status: { prefLabel: 'available' },
+    accessMessage: { prefLabel: 'available' },
+  },
+  {
+    status: { prefLabel: 'available' },
+    accessMessage: { prefLabel: 'available' },
+  },
+  {
+    status: { prefLabel: 'available' },
+    accessMessage: { prefLabel: 'available' },
+  },
+  {
+    status: { prefLabel: 'available' },
+    accessMessage: { prefLabel: 'available' },
+  },
+  {
+    status: { prefLabel: 'available' },
+    accessMessage: { prefLabel: 'available' },
+  },
+  {
+    status: { prefLabel: 'available' },
+    accessMessage: { prefLabel: 'available' },
+  },
+  {
+    status: { prefLabel: 'available' },
+    accessMessage: { prefLabel: 'available' },
+  },
+  {
+    status: { prefLabel: 'available' },
+    accessMessage: { prefLabel: 'available' },
+  },
+  {
+    status: { prefLabel: 'available' },
+    accessMessage: { prefLabel: 'available' },
+  },
+  {
+    status: { prefLabel: 'available' },
+    accessMessage: { prefLabel: 'available' },
+  },
+  {
+    status: { prefLabel: 'available' },
+    accessMessage: { prefLabel: 'available' },
+  },
+  {
+    status: { prefLabel: 'available' },
+    accessMessage: { prefLabel: 'available' },
+  },
+  {
+    status: { prefLabel: 'available' },
+    accessMessage: { prefLabel: 'available' },
+  },
+  {
+    status: { prefLabel: 'available' },
+    accessMessage: { prefLabel: 'available' },
+  },
+  {
+    status: { prefLabel: 'available' },
+    accessMessage: { prefLabel: 'available' },
+  },
+  {
+    status: { prefLabel: 'available' },
+    accessMessage: { prefLabel: 'available' },
+  },
 ].map(LibraryItem.mapItem);
 
 const twentyItems = [
-  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
+  {
+    status: { prefLabel: 'available' },
+    accessMessage: { prefLabel: 'available' },
+  },
+  {
+    status: { prefLabel: 'available' },
+    accessMessage: { prefLabel: 'available' },
+  },
+  {
+    status: { prefLabel: 'available' },
+    accessMessage: { prefLabel: 'available' },
+  },
+  {
+    status: { prefLabel: 'available' },
+    accessMessage: { prefLabel: 'available' },
+  },
+  {
+    status: { prefLabel: 'available' },
+    accessMessage: { prefLabel: 'available' },
+  },
+  {
+    status: { prefLabel: 'available' },
+    accessMessage: { prefLabel: 'available' },
+  },
+  {
+    status: { prefLabel: 'available' },
+    accessMessage: { prefLabel: 'available' },
+  },
+  {
+    status: { prefLabel: 'available' },
+    accessMessage: { prefLabel: 'available' },
+  },
+  {
+    status: { prefLabel: 'available' },
+    accessMessage: { prefLabel: 'available' },
+  },
+  {
+    status: { prefLabel: 'available' },
+    accessMessage: { prefLabel: 'available' },
+  },
+  {
+    status: { prefLabel: 'available' },
+    accessMessage: { prefLabel: 'available' },
+  },
+  {
+    status: { prefLabel: 'available' },
+    accessMessage: { prefLabel: 'available' },
+  },
+  {
+    status: { prefLabel: 'available' },
+    accessMessage: { prefLabel: 'available' },
+  },
+  {
+    status: { prefLabel: 'available' },
+    accessMessage: { prefLabel: 'available' },
+  },
+  {
+    status: { prefLabel: 'available' },
+    accessMessage: { prefLabel: 'available' },
+  },
+  {
+    status: { prefLabel: 'available' },
+    accessMessage: { prefLabel: 'available' },
+  },
+  {
+    status: { prefLabel: 'available' },
+    accessMessage: { prefLabel: 'available' },
+  },
+  {
+    status: { prefLabel: 'available' },
+    accessMessage: { prefLabel: 'available' },
+  },
+  {
+    status: { prefLabel: 'available' },
+    accessMessage: { prefLabel: 'available' },
+  },
+  {
+    status: { prefLabel: 'available' },
+    accessMessage: { prefLabel: 'available' },
+  },
 ].map(LibraryItem.mapItem);
 
 const context = {
   router: {
     location: { query: {} },
-    createHref: () => {},
-    push: () => {},
+    createHref: noop,
+    push: noop,
   },
 };
 
@@ -123,7 +254,9 @@ describe('ItemsContainer', () => {
       // Need to render the component to actually find what gets rendered.
       expect(component.find('ItemTable').render().is('table')).to.equal(true);
       // One heading and 2 item rows
-      expect(component.find('ItemTable').render().find('tr').length).to.equal(3);
+      expect(component.find('ItemTable').render().find('tr').length).to.equal(
+        3,
+      );
     });
 
     it('should not render a "View All Items" link', () => {
@@ -139,7 +272,10 @@ describe('ItemsContainer', () => {
     let component;
 
     before(() => {
-      component = mount(<ItemsContainer items={longListItems} bib={testBib} />, { context });
+      component = mount(
+        <ItemsContainer items={longListItems} bib={testBib} />,
+        { context },
+      );
     });
 
     it('should have an ItemTable component, which renders a table', () => {
@@ -147,7 +283,9 @@ describe('ItemsContainer', () => {
       // Need to render the component to actually find what gets rendered.
       expect(component.find('ItemTable').render().is('table')).to.equal(true);
       // One heading and 20 item rows since only 20 get displayed at a time by default
-      expect(component.find('ItemTable').render().find('tr').length).to.equal(21);
+      expect(component.find('ItemTable').render().find('tr').length).to.equal(
+        21,
+      );
     });
 
     it('should render a "View All Items" link', () => {
@@ -163,7 +301,14 @@ describe('ItemsContainer', () => {
     let component;
 
     before(() => {
-      component = mount(<ItemsContainer items={longListItems} shortenItems={false} bib={testBib} />, { context });
+      component = mount(
+        <ItemsContainer
+          items={longListItems}
+          shortenItems={false}
+          bib={testBib}
+        />,
+        { context },
+      );
     });
 
     it('should render a "View All Items" link', () => {
@@ -173,16 +318,22 @@ describe('ItemsContainer', () => {
     // NOTE: The component gets re-rendered when the link is clicked, so we cannot store
     // the 'tr's in a variable or only the first instance will get captured.
     it('should render all items when the link is clicked', () => {
-      const allItemsLink = component.find('.view-all-items-container').find('a');
+      const allItemsLink = component
+        .find('.view-all-items-container')
+        .find('a');
       expect(allItemsLink.length).to.equal(1);
 
       // One heading and 20 item rows since only 20 get displayed at a time by default
-      expect(component.find('ItemTable').render().find('tr').length).to.equal(21);
+      expect(component.find('ItemTable').render().find('tr').length).to.equal(
+        21,
+      );
       allItemsLink.simulate('click');
 
       // 'component' gets re-rendered:
       // One heading and the complete 24 items.
-      expect(component.find('ItemTable').render().find('tr').length).to.equal(25);
+      expect(component.find('ItemTable').render().find('tr').length).to.equal(
+        25,
+      );
     });
   });
 
@@ -191,7 +342,11 @@ describe('ItemsContainer', () => {
 
     before(() => {
       component = mount(
-        <ItemsContainer items={longListItems} shortenItems={false} bib={testBib} />,
+        <ItemsContainer
+          items={longListItems}
+          shortenItems={false}
+          bib={testBib}
+        />,
         { context },
       );
     });
@@ -201,7 +356,9 @@ describe('ItemsContainer', () => {
     });
 
     it('should have showAll state equal to true when the show all link is clicked', () => {
-      const allItemsLink = component.find('.view-all-items-container').find('a');
+      const allItemsLink = component
+        .find('.view-all-items-container')
+        .find('a');
 
       expect(component.state('showAll')).to.equal(false);
       allItemsLink.simulate('click');
@@ -237,15 +394,23 @@ describe('ItemsContainer', () => {
 
     before(() => {
       component = mount(
-        <ItemsContainer items={longListItems} shortenItems={false} page="4" bib={testBib} />,
+        <ItemsContainer
+          items={longListItems}
+          shortenItems={false}
+          page='4'
+          bib={testBib}
+        />,
         { context },
       );
     });
 
-    it('should have "page" state updated to 1 since page 4 should not exist with the ' +
-      'small amount of items passed', () => {
-      expect(component.state('page')).to.equal(1);
-    });
+    it(
+      'should have "page" state updated to 1 since page 4 should not exist with the ' +
+        'small amount of items passed',
+      () => {
+        expect(component.state('page')).to.equal(1);
+      },
+    );
   });
 
   describe('Breaking up the items passed into a chunked array', () => {
@@ -253,61 +418,144 @@ describe('ItemsContainer', () => {
     // gets done in componentDidMount which is called when the component actually mounts.
     it('should have an empty chunkedItems state', () => {
       const component = shallow(
-        <ItemsContainer items={longListItems} bib={testBib} />, {
+        <ItemsContainer items={longListItems} bib={testBib} />,
+        {
           disableLifecycleMethods: true,
           context,
-        });
+        },
+      );
       expect(component.state('chunkedItems')).to.eql([]);
     });
 
     // NOTE: This is the initial rendering so we are only doing shallow. The chunking process
     // gets done in componentDidMount which is called when the component actually mounts.
-    it('should have two arrays of in the chunkedItems state,' +
-      'the first array with 20 items and the second with 4', () => {
-      const component = mount(<ItemsContainer items={longListItems} bib={testBib} />, { context });
-      expect(component.state('chunkedItems')).to.eql(
-        [
+    it(
+      'should have two arrays of in the chunkedItems state,' +
+        'the first array with 20 items and the second with 4',
+      () => {
+        const component = mount(
+          <ItemsContainer items={longListItems} bib={testBib} />,
+          { context },
+        );
+        expect(component.state('chunkedItems')).to.eql([
           [
-            { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-            { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-            { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-            { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-            { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-            { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-            { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-            { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-            { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-            { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-            { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-            { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-            { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-            { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-            { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-            { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-            { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-            { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-            { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-            { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
+            {
+              status: { prefLabel: 'available' },
+              accessMessage: { prefLabel: 'available' },
+            },
+            {
+              status: { prefLabel: 'available' },
+              accessMessage: { prefLabel: 'available' },
+            },
+            {
+              status: { prefLabel: 'available' },
+              accessMessage: { prefLabel: 'available' },
+            },
+            {
+              status: { prefLabel: 'available' },
+              accessMessage: { prefLabel: 'available' },
+            },
+            {
+              status: { prefLabel: 'available' },
+              accessMessage: { prefLabel: 'available' },
+            },
+            {
+              status: { prefLabel: 'available' },
+              accessMessage: { prefLabel: 'available' },
+            },
+            {
+              status: { prefLabel: 'available' },
+              accessMessage: { prefLabel: 'available' },
+            },
+            {
+              status: { prefLabel: 'available' },
+              accessMessage: { prefLabel: 'available' },
+            },
+            {
+              status: { prefLabel: 'available' },
+              accessMessage: { prefLabel: 'available' },
+            },
+            {
+              status: { prefLabel: 'available' },
+              accessMessage: { prefLabel: 'available' },
+            },
+            {
+              status: { prefLabel: 'available' },
+              accessMessage: { prefLabel: 'available' },
+            },
+            {
+              status: { prefLabel: 'available' },
+              accessMessage: { prefLabel: 'available' },
+            },
+            {
+              status: { prefLabel: 'available' },
+              accessMessage: { prefLabel: 'available' },
+            },
+            {
+              status: { prefLabel: 'available' },
+              accessMessage: { prefLabel: 'available' },
+            },
+            {
+              status: { prefLabel: 'available' },
+              accessMessage: { prefLabel: 'available' },
+            },
+            {
+              status: { prefLabel: 'available' },
+              accessMessage: { prefLabel: 'available' },
+            },
+            {
+              status: { prefLabel: 'available' },
+              accessMessage: { prefLabel: 'available' },
+            },
+            {
+              status: { prefLabel: 'available' },
+              accessMessage: { prefLabel: 'available' },
+            },
+            {
+              status: { prefLabel: 'available' },
+              accessMessage: { prefLabel: 'available' },
+            },
+            {
+              status: { prefLabel: 'available' },
+              accessMessage: { prefLabel: 'available' },
+            },
           ].map(LibraryItem.mapItem),
           [
-            { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-            { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-            { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-            { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
+            {
+              status: { prefLabel: 'available' },
+              accessMessage: { prefLabel: 'available' },
+            },
+            {
+              status: { prefLabel: 'available' },
+              accessMessage: { prefLabel: 'available' },
+            },
+            {
+              status: { prefLabel: 'available' },
+              accessMessage: { prefLabel: 'available' },
+            },
+            {
+              status: { prefLabel: 'available' },
+              accessMessage: { prefLabel: 'available' },
+            },
           ].map(LibraryItem.mapItem),
-        ],
-      );
+        ]);
 
-      expect(component.state('chunkedItems')[0].length).to.equal(20);
-      expect(component.state('chunkedItems')[1].length).to.equal(4);
-    });
+        expect(component.state('chunkedItems')[0].length).to.equal(20);
+        expect(component.state('chunkedItems')[1].length).to.equal(4);
+      },
+    );
   });
 
   describe(`Exactly ${itemsListPageLimit} items`, () => {
     let component;
     before(() => {
       component = mount(
-        <ItemsContainer items={twentyItems} shortenItems={false} page="4" bib={testBib} />,
+        <ItemsContainer
+          items={twentyItems}
+          shortenItems={false}
+          page='4'
+          bib={testBib}
+        />,
         { context },
       );
     });

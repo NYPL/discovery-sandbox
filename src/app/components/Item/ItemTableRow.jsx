@@ -1,11 +1,9 @@
-import React from 'react';
 import PropTypes from 'prop-types';
+import React from 'react';
 import { Link } from 'react-router';
 import { isEmpty as _isEmpty } from 'underscore';
-
-import { trackDiscovery } from '../../utils/utils';
-
 import appConfig from '../../data/appConfig';
+import { trackDiscovery } from '../../utils/utils';
 
 const { features } = appConfig;
 
@@ -15,8 +13,8 @@ class ItemTableRow extends React.Component {
     this.getItemRecord = this.getItemRecord.bind(this);
   }
 
-  getItemRecord(e) {
-    e.preventDefault();
+  getItemRecord(event) {
+    event.preventDefault();
     const { bibId, item } = this.props;
 
     const { routes } = this.context.router;
@@ -96,7 +94,7 @@ class ItemTableRow extends React.Component {
       itemRequestBtn = item.available ? (
         <Link
           to={`${appConfig.baseUrl}/hold/request/${bibId}-${item.id}?searchKeywords=${searchKeywords}`}
-          onClick={(e) => this.getItemRecord(e, bibId, item.id)}
+          onClick={(event) => this.getItemRecord(event, bibId, item.id)}
           tabIndex='0'
         >
           Request
@@ -171,6 +169,8 @@ ItemTableRow.propTypes = {
   item: PropTypes.object,
   bibId: PropTypes.string,
   searchKeywords: PropTypes.string,
+  page: PropTypes.string,
+  includeVolColumn: PropTypes.boolean,
 };
 
 ItemTableRow.contextTypes = {

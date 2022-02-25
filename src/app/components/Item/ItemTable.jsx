@@ -1,9 +1,12 @@
-import React from 'react';
 import PropTypes from 'prop-types';
+import React from 'react';
 import { isArray as _isArray } from 'underscore';
-
 import ItemTableRow from './ItemTableRow';
 
+// TODO: Correct Unused Holdings Property
+// Why is this not being used?
+// The Items Container passes down a holdings array
+// yet this component neever uses it.
 const ItemTable = ({ items, holdings, bibId, id, searchKeywords, page }) => {
   if (
     !_isArray(items) ||

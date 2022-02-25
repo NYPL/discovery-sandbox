@@ -1,14 +1,12 @@
 /* global window */
-import React from 'react';
+import appConfig from '@appConfig';
+import Sorter from '@Sorter';
 import PropTypes from 'prop-types';
+import React from 'react';
+import CachedAxios from '../../utils/CachedAxios';
 import Pagination from '../Pagination/Pagination';
 import ResultsList from '../ResultsList/ResultsList';
 import LocalLoadingLayer from './LocalLoadingLayer';
-/* eslint-disable import/first, import/no-unresolved, import/extensions */
-import Sorter from '@Sorter';
-import appConfig from '@appConfig';
-import CachedAxios from '../../utils/CachedAxios';
-/* eslint-enable import/first, import/no-unresolved, import/extensions */
 
 class BibsList extends React.Component {
   constructor(props, context) {
@@ -38,7 +36,7 @@ class BibsList extends React.Component {
     this.fetchBibs(stringifiedSortParams);
   }
 
-  fetchBibs(stringifiedSortParams, cb = () => {}) {
+  fetchBibs(stringifiedSortParams, cb = () => undefined) {
     const { label } = this.props;
 
     return this.cachedAxios
@@ -174,6 +172,10 @@ class BibsList extends React.Component {
   render() {
     const { results, bibsSource, totalResults } = this.state;
 
+    // TODO: Correct Unused label Property
+    // Why is this not being used?
+    // The SubjectHeadingShow Component passes down the label string
+    // yet this component neever uses it.
     const { label } = this.props;
 
     const { sort, sortDirection } = this;
