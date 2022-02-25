@@ -171,6 +171,8 @@ ItemTableRow.propTypes = {
   item: PropTypes.object,
   bibId: PropTypes.string,
   searchKeywords: PropTypes.string,
+  page: PropTypes.string,
+  includeVolColumn: PropTypes.boolean,
 };
 
 ItemTableRow.contextTypes = {
