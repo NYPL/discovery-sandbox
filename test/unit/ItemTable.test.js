@@ -19,8 +19,10 @@ describe('ItemTable', () => {
     });
 
     it('should return null if items is not an array', () => {
-      const stringItem = shallow(<ItemTable items="not an array" />);
-      const objectItem = shallow(<ItemTable items={{ object: 'not an array' }} />);
+      const stringItem = shallow(<ItemTable items='not an array' />);
+      const objectItem = shallow(
+        <ItemTable items={{ object: 'not an array' }} />,
+      );
 
       expect(stringItem.type()).to.equal(null);
       expect(objectItem.type()).to.equal(null);
@@ -29,9 +31,18 @@ describe('ItemTable', () => {
 
   describe('Basic <table> structure', () => {
     const data = [
-      { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-      { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-      { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
+      {
+        status: { prefLabel: 'available' },
+        accessMessage: { prefLabel: 'available' },
+      },
+      {
+        status: { prefLabel: 'available' },
+        accessMessage: { prefLabel: 'available' },
+      },
+      {
+        status: { prefLabel: 'available' },
+        accessMessage: { prefLabel: 'available' },
+      },
     ];
     let component;
 
@@ -42,7 +53,9 @@ describe('ItemTable', () => {
     it('should be wrapped in a table element', () => {
       expect(component.type()).to.equal('table');
       expect(component.find('table').length).to.equal(1);
-      expect(component.find('table').prop('className')).to.equal('nypl-basic-table');
+      expect(component.find('table').prop('className')).to.equal(
+        'nypl-basic-table',
+      );
     });
 
     it('should have a <caption> element set to "Item details".', () => {
@@ -78,7 +91,7 @@ describe('ItemTable', () => {
 
     describe('Search Results page', () => {
       before(() => {
-        component = shallow(<ItemTable items={data} page="SearchResults" />);
+        component = shallow(<ItemTable items={data} page='SearchResults' />);
       });
 
       it('should have a <tr> with four headings <th> in the <thead>', () => {
