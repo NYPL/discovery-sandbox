@@ -3,7 +3,7 @@ import React from 'react';
 import { Link } from 'react-router';
 import { isEmpty as _isEmpty } from 'underscore';
 import appConfig from '../../data/appConfig';
-import { trackDiscovery } from '../../utils/utils';
+import { isAeonLink, trackDiscovery } from '../../utils/utils';
 
 const { features } = appConfig;
 
@@ -53,7 +53,7 @@ class ItemTableRow extends React.Component {
         if (!item[mappedParamName]) return null;
         return `&${paramName}=${item[mappedParamName]}`;
       })
-      .filter((paramString) => paramString)
+      .filter(Boolean)
       .join('');
 
     if (params && !url.includes('?')) params = `?${params}`;
@@ -63,47 +63,88 @@ class ItemTableRow extends React.Component {
 
   requestButton() {
     const { item, bibId, searchKeywords } = this.props;
-    const { closedLocations, recapClosedLocations, nonRecapClosedLocations } =
-      appConfig;
+
+    const isRequestable = (item.requestable = true);
+    const isAvailable = item.available;
+    const isOffSite = item.isOffsite;
+    const isSpecialCollection = isAeonLink(item.aeonUrl);
     const isRecap = item.isRecap;
-    const allClosed = closedLocations
-      .concat(isRecap ? recapClosedLocations : nonRecapClosedLocations)
+    const isEddRequestable = item.eddRequestable;
+
+    const allClosed = appConfig.closedLocations
+      .concat(
+        item.isRecap
+          ? appConfig.recapClosedLocations
+          : appConfig.nonRecapClosedLocations,
+      )
       .includes('');
-    const status =
-      item.status && item.status.prefLabel ? item.status.prefLabel : ' ';
-    let itemRequestBtn = status;
 
-    if (item.aeonUrl && features.includes('aeon-links')) {
-      itemRequestBtn = (
-        <React.Fragment>
-          <a
-            href={this.aeonUrl(item)}
-            tabIndex='0'
-            className='aeonRequestButton'
-          >
-            Request
-          </a>
-          <br />
-          <span className='aeonRequestText'>Appointment Required</span>
-        </React.Fragment>
-      );
-      return itemRequestBtn;
-    }
-
-    if (item.requestable && !allClosed) {
-      itemRequestBtn = item.available ? (
+    return (
+      <div id='request-btn-block'>
         <Link
           to={`${appConfig.baseUrl}/hold/request/${bibId}-${item.id}?searchKeywords=${searchKeywords}`}
           onClick={(event) => this.getItemRecord(event, bibId, item.id)}
           tabIndex='0'
+          className='nypl-request-btn'
+          id='first'
         >
-          Request
+          Request Scan
         </Link>
-      ) : (
-        'In Use'
-      );
-    }
-    return itemRequestBtn;
+        {(isRequestable && (
+          <span>
+            <Link
+              to={`${appConfig.baseUrl}/hold/request/${bibId}-${item.id}?searchKeywords=${searchKeywords}`}
+              // to={this.aeonUrl(item)}
+              onClick={(event) => this.getItemRecord(event, bibId, item.id)}
+              tabIndex='-1'
+              className='nypl-request-btn'
+              id='second'
+            >
+              Request for Onsite Use
+            </Link>
+            <br />
+            <span className='aeonRequestText'>Appointment Required</span>
+          </span>
+        )) ||
+          null}
+      </div>
+    );
+
+    // let itemRequestBtn =
+    //   item.status && item.status.prefLabel ? item.status.prefLabel : ' ';
+
+    // if (item.aeonUrl && features.includes('aeon-links')) {
+    //   itemRequestBtn = (
+    //     <React.Fragment>
+    //       <a
+    //         href={this.aeonUrl(item)}
+    //         tabIndex='0'
+    //         className='aeonRequestButton'
+    //       >
+    //         Request
+    //       </a>
+    //       <br />
+    //       <span className='aeonRequestText'>Appointment Required</span>
+    //     </React.Fragment>
+    //   );
+    //   return itemRequestBtn;
+    // }
+
+    // if (item.requestable && !allClosed) {
+    //   itemRequestBtn =
+    //     (item.available && (
+    //       <Link
+    //         to={`${appConfig.baseUrl}/hold/request/${bibId}-${item.id}?searchKeywords=${searchKeywords}`}
+    //         onClick={(event) => this.getItemRecord(event, bibId, item.id)}
+    //         tabIndex='0'
+    //       >
+    //         Request
+    //       </Link>
+    //     )) ||
+    //     'In Use';
+    // }
+
+    // return itemRequestBtn;
   }
 
   render() {
