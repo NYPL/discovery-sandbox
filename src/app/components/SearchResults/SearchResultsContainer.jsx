@@ -77,9 +77,6 @@ const SearchResultsContainer = (props) => {
 
 SearchResultsContainer.propTypes = {
   createAPIQuery: PropTypes.func,
-};
-
-SearchResultsContainer.contextTypes = {
   router: PropTypes.object,
 };
 
