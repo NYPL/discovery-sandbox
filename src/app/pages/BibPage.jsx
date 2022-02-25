@@ -7,6 +7,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import BackToSearchResults from '../components/BibPage/BackToSearchResults';
+import BibNotFound404 from '../components/BibPage/BibNotFound404';
 import BottomBibDetails from '../components/BibPage/BottomBibDetails';
 import LibraryHoldings from '../components/BibPage/LibraryHoldings';
 import TopBibDetails from '../components/BibPage/TopBibDetails';
