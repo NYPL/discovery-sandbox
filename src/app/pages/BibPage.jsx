@@ -80,7 +80,9 @@ export const BibPage = (
 
   const bibId = bib['@id'] ? bib['@id'].substring(4) : '';
   const items = (bib.checkInItems || []).concat(LibraryItem.getItems(bib));
-  const isElectronicResources = items.every((i) => i.isElectronicResource);
+  const isElectronicResources = items.every(
+    (item) => item.isElectronicResource,
+  );
   const aggregatedElectronicResources = getAggregatedElectronicResources(items);
 
   // Related to removing MarcRecord because the webpack MarcRecord is not working. Sep/28/2017

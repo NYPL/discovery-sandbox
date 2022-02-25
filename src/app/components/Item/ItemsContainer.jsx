@@ -149,11 +149,11 @@ class ItemsContainer extends React.Component {
    * @param {array} arr The array of items.
    * @param {n} number The number we want to break the array into.
    */
-  chunk(arr, n) {
+  chunk(arr, num) {
     if (_isArray(arr) && !arr.length) {
       return [];
     }
-    return [arr.slice(0, n)].concat(this.chunk(arr.slice(n), n));
+    return [arr.slice(0, num)].concat(this.chunk(arr.slice(num), num));
   }
 
   /*
@@ -274,6 +274,7 @@ ItemsContainer.propTypes = {
   shortenItems: PropTypes.bool,
   searchKeywords: PropTypes.string,
   holdings: PropTypes.array,
+  bib: PropTypes.object,
 };
 
 ItemsContainer.defaultProps = {
