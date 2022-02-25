@@ -1,13 +1,12 @@
-import React from 'react';
 import PropTypes from 'prop-types';
+import React from 'react';
 import { useSelector } from 'react-redux';
-
-import ResultsList from '../ResultsList/ResultsList';
-import Pagination from '../Pagination/Pagination';
-import DrbbContainer from '../Drbb/DrbbContainer';
-import { trackDiscovery, displayContext } from '../../utils/utils';
 import appConfig from '../../data/appConfig';
+import { displayContext, trackDiscovery } from '../../utils/utils';
 import { MediaContext } from '../Application/Application';
+import DrbbContainer from '../Drbb/DrbbContainer';
+import Pagination from '../Pagination/Pagination';
+import ResultsList from '../ResultsList/ResultsList';
 
 // Renders ResultsList and Pagination components
 const SearchResultsContainer = (props) => {

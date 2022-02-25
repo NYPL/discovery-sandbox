@@ -1,16 +1,14 @@
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
-import { useSelector } from 'react-redux';
-
-import SearchResultsSorter from '@SearchResultsSorter';
 import SearchResultsContainer from '@SearchResultsContainer';
-import SccContainer from '../components/SccContainer/SccContainer';
-import Search from '../components/Search/Search';
+import SearchResultsSorter from '@SearchResultsSorter';
+import PropTypes from 'prop-types';
+import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 import FilterPopup from '../components/FilterPopup/FilterPopup';
 import SelectedFilters from '../components/Filters/SelectedFilters';
-import ResultsCount from '../components/ResultsCount/ResultsCount';
 import Notification from '../components/Notification/Notification';
-
+import ResultsCount from '../components/ResultsCount/ResultsCount';
+import SccContainer from '../components/SccContainer/SccContainer';
+import Search from '../components/Search/Search';
 import { basicQuery, hasValidFilters } from '../utils/utils';
 
 const SearchResults = (props, context) => {

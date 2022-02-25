@@ -1,12 +1,11 @@
-import React from 'react';
-import PropTypes from 'prop-types';
 import axios from 'axios';
-
-import SubjectHeadingsTable from './SubjectHeadingsTable';
-import NeighboringHeadingsBox from './NeighboringHeadingsBox';
-import BibsList from './BibsList';
-import Range from '../../models/Range';
+import PropTypes from 'prop-types';
+import React from 'react';
 import appConfig from '../../data/appConfig';
+import Range from '../../models/Range';
+import BibsList from './BibsList';
+import NeighboringHeadingsBox from './NeighboringHeadingsBox';
+import SubjectHeadingsTable from './SubjectHeadingsTable';
 
 class SubjectHeadingShow extends React.Component {
   constructor(props) {

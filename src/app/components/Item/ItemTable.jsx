@@ -1,7 +1,6 @@
-import React from 'react';
 import PropTypes from 'prop-types';
+import React from 'react';
 import { isArray as _isArray } from 'underscore';
-
 import ItemTableRow from './ItemTableRow';
 
 // TODO: Correct Unused Holdings Property

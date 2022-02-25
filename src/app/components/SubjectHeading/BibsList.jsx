@@ -1,12 +1,12 @@
 /* global window */
-import React from 'react';
+import appConfig from '@appConfig';
+import Sorter from '@Sorter';
 import PropTypes from 'prop-types';
+import React from 'react';
+import CachedAxios from '../../utils/CachedAxios';
 import Pagination from '../Pagination/Pagination';
 import ResultsList from '../ResultsList/ResultsList';
 import LocalLoadingLayer from './LocalLoadingLayer';
-import Sorter from '@Sorter';
-import appConfig from '@appConfig';
-import CachedAxios from '../../utils/CachedAxios';
 
 class BibsList extends React.Component {
   constructor(props, context) {

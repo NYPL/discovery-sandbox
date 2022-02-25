@@ -1,15 +1,14 @@
-import React from 'react';
 import PropTypes from 'prop-types';
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router';
-import { isEmpty as _isEmpty, isArray as _isArray } from 'underscore';
-import { useSelector, useDispatch } from 'react-redux';
-
-import LibraryItem from '../../utils/item';
-import { trackDiscovery } from '../../utils/utils';
-import ItemTable from '../Item/ItemTable';
+import { isArray as _isArray, isEmpty as _isEmpty } from 'underscore';
 import appConfig from '../../data/appConfig';
 import { searchResultItemsListLimit as itemTableLimit } from '../../data/constants';
+import LibraryItem from '../../utils/item';
 import ItemSorter from '../../utils/itemSorter';
+import { trackDiscovery } from '../../utils/utils';
+import ItemTable from '../Item/ItemTable';
 
 export const getBibTitle = (bib) => {
   if (!bib.titleDisplay || !bib.titleDisplay.length) {
