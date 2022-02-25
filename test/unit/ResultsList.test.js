@@ -10,6 +10,7 @@ import ResultsList, {
   getYearDisplay,
 } from '../../src/app/components/ResultsList/ResultsList';
 import appConfig from '../../src/app/data/appConfig';
+import { noop } from '../../src/app/utils/utils';
 import resultsBibs from '../fixtures/resultsBibs';
 import { mockRouterContext } from '../helpers/routing';
 import { makeTestStore, mountTestRender } from '../helpers/store';
@@ -239,7 +240,11 @@ describe('ResultsList', () => {
       before(() => {
         component = mount(<ResultsList results={resultsBibs} />, {
           context: {
-            router: { createHref: () => {}, push: () => {}, replace: () => {} },
+            router: {
+              createHref: noop,
+              push: noop,
+              replace: noop,
+            },
           },
         });
         mock = new MockAdapter(axios);
@@ -262,7 +267,9 @@ describe('ResultsList', () => {
 
     before(() => {
       component = mount(<ResultsList results={resultsBibs} />, {
-        context: { router: { createHref: () => {}, push: () => {} } },
+        context: {
+          router: { createHref: noop, push: noop },
+        },
       });
       mock = new MockAdapter(axios);
       mock
@@ -359,7 +366,9 @@ describe('ResultsList', () => {
 
     before(() => {
       component = mount(<ResultsList results={resultsBibs} />, {
-        context: { router: { createHref: () => {}, push: () => {} } },
+        context: {
+          router: { createHref: noop, push: noop },
+        },
       });
       mock = new MockAdapter(axios);
       mock

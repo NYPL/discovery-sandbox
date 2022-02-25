@@ -1,6 +1,7 @@
 import { expect } from 'chai';
 import { mount, shallow } from 'enzyme';
 import React from 'react';
+import { noop } from '../../src/app/utils/utils';
 import itemsContainerModule from './../../src/app/components/Item/ItemsContainer';
 import { bibPageItemsListLimit as itemsListPageLimit } from './../../src/app/data/constants';
 import LibraryItem from './../../src/app/utils/item';
@@ -213,8 +214,8 @@ const twentyItems = [
 const context = {
   router: {
     location: { query: {} },
-    createHref: () => {},
-    push: () => {},
+    createHref: noop,
+    push: noop,
   },
 };
 

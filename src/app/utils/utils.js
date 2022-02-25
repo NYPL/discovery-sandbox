@@ -17,6 +17,8 @@ import { noticePreferenceMapping } from '../data/constants';
 
 const { features } = appConfig;
 
+const noop = () => undefined;
+
 /**
  * ajaxCall
  * Utility function to make ajax requests.
@@ -785,4 +787,5 @@ export {
   isNyplBnumber,
   pluckAeonLinksFromResource,
   isAeonLink,
+  noop,
 };

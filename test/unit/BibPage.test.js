@@ -6,7 +6,7 @@ import { Provider } from 'react-redux';
 import { Link } from 'react-router';
 import BackToSearchResults from '../../src/app/components/BibPage/BackToSearchResults';
 import BibDetails from '../../src/app/components/BibPage/BibDetails';
-import { isAeonLink } from '../../src/app/utils/utils';
+import { isAeonLink, noop } from '../../src/app/utils/utils';
 import annotatedMarc from '../fixtures/annotatedMarc.json';
 import bibs from '../fixtures/bibs';
 import mockBibWithHolding from '../fixtures/mockBibWithHolding.json';
@@ -34,7 +34,7 @@ describe('BibPage', () => {
         <BibPage
           location={{ search: 'search', pathname: '' }}
           bib={bib}
-          dispatch={() => {}}
+          dispatch={noop}
           resultSelection={{
             fromUrl: '',
             bibId: '',
@@ -93,7 +93,7 @@ describe('BibPage', () => {
           <BibPage
             location={{ search: 'search', pathname: '' }}
             bib={bib}
-            dispatch={() => {}}
+            dispatch={noop}
             resultSelection={{
               fromUrl: '',
               bibId: '',
@@ -153,7 +153,7 @@ describe('BibPage', () => {
           <BibPage
             location={{ search: 'search', pathname: '' }}
             bib={bib}
-            dispatch={() => {}}
+            dispatch={noop}
             resultSelection={{
               fromUrl: '',
               bibId: '',
@@ -194,7 +194,8 @@ describe('BibPage', () => {
       expect(
         component
           .find('dt')
-          .findWhere((n) => n.type() === 'dt' && n.text() === 'Notes').length,
+          .findWhere((node) => node.type() === 'dt' && node.text() === 'Notes')
+          .length,
       ).to.equal(1);
     });
   });
@@ -207,7 +208,7 @@ describe('BibPage', () => {
         <BibPage
           location={{ search: 'search', pathname: '' }}
           bib={bib}
-          dispatch={() => {}}
+          dispatch={noop}
           resultSelection={{
             fromUrl: 'resultsurl.com',
             bibId: bib['@id'].substring(4),
@@ -227,7 +228,7 @@ describe('BibPage', () => {
         <BibPage
           location={{ search: 'search', pathname: '' }}
           bib={bib}
-          dispatch={() => {}}
+          dispatch={noop}
           resultSelection={{
             fromUrl: 'resultsurl.com',
             bibId: 'wrongbib',

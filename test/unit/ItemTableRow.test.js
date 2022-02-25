@@ -3,6 +3,7 @@ import { mount, shallow } from 'enzyme';
 import React from 'react';
 import { spy } from 'sinon';
 import appConfig from '../../src/app/data/appConfig';
+import { noop } from '../../src/app/utils/utils';
 import item from '../fixtures/libraryItems';
 import { mockRouterContext } from '../helpers/routing';
 import ItemTableRow from './../../src/app/components/Item/ItemTableRow';
@@ -186,7 +187,7 @@ describe('ItemTableRow', () => {
 
       it('should call the getItemRecord function when the Request button is clicked', () => {
         const link = component.find('td').find('Link');
-        link.simulate('click', { preventDefault: () => {} });
+        link.simulate('click', { preventDefault: noop });
         expect(getItemRecord.calledOnce).to.equal(true);
       });
     });
