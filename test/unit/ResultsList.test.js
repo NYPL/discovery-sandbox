@@ -238,6 +238,8 @@ describe('ResultsList', () => {
       let mock;
 
       before(() => {
+        // TODO  Use Component or Remove
+        // The component being mounted is not being used
         component = mount(<ResultsList results={resultsBibs} />, {
           context: {
             router: {
@@ -266,6 +268,8 @@ describe('ResultsList', () => {
     let mock;
 
     before(() => {
+      // TODO  Use Component or Remove
+      // The component being mounted is not being used
       component = mount(<ResultsList results={resultsBibs} />, {
         context: {
           router: { createHref: noop, push: noop },
