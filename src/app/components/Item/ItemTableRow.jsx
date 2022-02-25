@@ -149,6 +149,7 @@ class ItemTableRow extends React.Component {
 
   render() {
     const { item, includeVolColumn, page } = this.props;
+    const SearchResultsPage = page === 'SearchResults';
 
     if (_isEmpty(item)) {
       return null;
@@ -178,30 +179,41 @@ class ItemTableRow extends React.Component {
     }
 
     return (
-      <tr className={item.availability}>
-        {includeVolColumn ? (
-          <td className='vol-date-col' data-th='Vol/Date'>
-            <span>{item.volume || ''}</span>
-          </td>
-        ) : null}
-        {page !== 'SearchResults' ? (
-          <td data-th='Format'>
-            <span>{item.format || ' '}</span>
-          </td>
-        ) : null}
-        <td data-th='Message'>
+      <>
+        <tr className={item.availability}>
+          {includeVolColumn ? (
+            <td className='vol-date-col' data-th='Vol/Date'>
+              <span>{item.volume || ''}</span>
+            </td>
+          ) : null}
+          {SearchResultsPage ? (
+            <td data-th='Format'>
+              <span>{item.format || ' '}</span>
+            </td>
+          ) : null}
+          {/* <td data-th='Message'>
           <span>{this.message()}</span>
-        </td>
-        <td data-th='Status'>
-          <span>{this.requestButton()}</span>
-        </td>
-        <td data-th='Call Number'>
-          <span>{itemCallNumber}</span>
-        </td>
-        <td data-th='Location'>
-          <span>{itemLocation}</span>
-        </td>
-      </tr>
+        </td> */}
+          <td data-th='Call Number'>
+            <span>{itemCallNumber}</span>
+          </td>
+          <td data-th='Location'>
+            <span>{itemLocation}</span>
+          </td>
+          {!SearchResultsPage ? (
+            <td data-th={`Availability & Access`}>
+              <span>{this.requestButton()}</span>
+            </td>
+          ) : null}
+        </tr>
+        {SearchResultsPage ? (
+          <tr>
+            <td data-th={`Availability & Access`}>
+              <span>{this.requestButton()}</span>
+            </td>
+          </tr>
+        ) : null}
+      </>
     );
   }
 }
