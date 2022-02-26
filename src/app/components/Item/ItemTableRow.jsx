@@ -62,7 +62,7 @@ class ItemTableRow extends React.Component {
   }
 
   requestButton() {
-    const { item, bibId, searchKeywords } = this.props;
+    const { item, bibId, searchKeywords, page } = this.props;
 
     const isRequestable = (item.requestable = true);
     const isAvailable = item.available;
@@ -80,13 +80,16 @@ class ItemTableRow extends React.Component {
       .includes('');
 
     return (
-      <div id='request-btn-block'>
+      <div
+        className={`request-btn-block ${
+          page === 'SearchResults' ? 'pan-left' : ''
+        }`}
+      >
         <Link
           to={`${appConfig.baseUrl}/hold/request/${bibId}-${item.id}?searchKeywords=${searchKeywords}`}
           onClick={(event) => this.getItemRecord(event, bibId, item.id)}
           tabIndex='0'
           className='nypl-request-btn'
-          id='first'
         >
           Request Scan
         </Link>
@@ -97,8 +100,7 @@ class ItemTableRow extends React.Component {
               // to={this.aeonUrl(item)}
               onClick={(event) => this.getItemRecord(event, bibId, item.id)}
               tabIndex='-1'
-              className='nypl-request-btn'
-              id='second'
+              className='nypl-request-btn sibling'
             >
               Request for Onsite Use
             </Link>
@@ -208,7 +210,7 @@ class ItemTableRow extends React.Component {
         </tr>
         {SearchResultsPage ? (
           <tr>
-            <td data-th={`Availability & Access`}>
+            <td colSpan='3' data-th={`Availability & Access`}>
               <span>{this.requestButton()}</span>
             </td>
           </tr>

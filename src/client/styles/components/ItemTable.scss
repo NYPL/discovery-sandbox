@@ -1,10 +1,13 @@
-.nypl-results-item .nypl-basic-table #request-btn-block {
+.nypl-results-item .nypl-basic-table .request-btn-block {
   display: flex;
   justify-content: center;
-  align-content: space-between;
 
   & > span {
     margin-left: 10px;
+  }
+
+  &.pan-left {
+    justify-content: flex-start;
   }
 }
 
@@ -20,7 +23,7 @@ dl dd.multi-item-list .nypl-basic-table a,
   font-weight: normal;
   letter-spacing: 0.06rem;
   text-decoration: none;
-  padding: 8px 28px;
+  padding: 6px 28px;
   white-space: nowrap;
   -webkit-transition: all, 0.1s, ease-in;
   -moz-transition: all, 0.1s, ease-in;
@@ -34,7 +37,7 @@ dl dd.multi-item-list .nypl-basic-table a,
     width: 200px;
     height: 33px;
 
-    &#second {
+    &.sibling {
       background-color: #fff;
       color: $results-list-item-button;
       // margin-left: 10px;
@@ -147,6 +150,26 @@ dl dd.multi-item-list .nypl-basic-table a,
       max-width: 30%;
       min-width: 27%;
       vertical-align: top;
+    }
+  }
+}
+
+@media (max-width: 463px) {
+  .nypl-results-item .nypl-basic-table .request-btn-block {
+    flex-wrap: wrap;
+
+    &.pan-left {
+      justify-content: space-between;
+    }
+
+    & > span {
+      margin-left: 0;
+    }
+
+    @media (max-width: 452px) {
+      & > span {
+        margin-top: 10px;
+      }
     }
   }
 }
