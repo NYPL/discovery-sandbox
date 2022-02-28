@@ -16,6 +16,7 @@ const ItemTable = ({ items, holdings, bibId, id, searchKeywords, page }) => {
     return null;
   }
   const SearchResultsPage = page === 'SearchResults';
+  const BibPage = page === 'BibPage';
 
   const includeVolColumn =
     items.some(({ volume = '' }) => volume.length) && !SearchResultsPage;
@@ -28,9 +29,7 @@ const ItemTable = ({ items, holdings, bibId, id, searchKeywords, page }) => {
           {includeVolColumn ? <th scope='col'>Vol/Date</th> : null}
           <th scope='col'>Format</th>
           <th scope='col'>Call Number</th>
-          <th scope='col'>
-            {((SearchResultsPage && `Item `) || '') + `Location`}
-          </th>
+          <th scope='col'>{((!BibPage && `Item `) || '') + `Location`}</th>
           {!SearchResultsPage ? (
             <th scope='col'>{`Availability & Access`}</th>
           ) : null}
