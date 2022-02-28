@@ -188,11 +188,9 @@ class ItemTableRow extends React.Component {
               <span>{item.volume || ''}</span>
             </td>
           ) : null}
-          {SearchResultsPage ? (
-            <td data-th='Format'>
-              <span>{item.format || ' '}</span>
-            </td>
-          ) : null}
+          <td data-th='Format'>
+            <span>{item.format || ' '}</span>
+          </td>
           {/* <td data-th='Message'>
           <span>{this.message()}</span>
         </td> */}
