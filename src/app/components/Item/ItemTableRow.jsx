@@ -151,7 +151,7 @@ class ItemTableRow extends React.Component {
 
   render() {
     const { item, includeVolColumn, page } = this.props;
-    const SearchResultsPage = page === 'SearchResults';
+    const BibPage = page === 'BibPage';
 
     if (_isEmpty(item)) {
       return null;
@@ -200,13 +200,13 @@ class ItemTableRow extends React.Component {
           <td data-th='Location'>
             <span>{itemLocation}</span>
           </td>
-          {!SearchResultsPage ? (
+          {BibPage ? (
             <td data-th={`Availability & Access`}>
               <span>{this.requestButton()}</span>
             </td>
           ) : null}
         </tr>
-        {SearchResultsPage ? (
+        {!BibPage ? (
           <tr>
             <td colSpan='3' data-th={`Availability & Access`}>
               <span>{this.requestButton()}</span>
