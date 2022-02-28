@@ -22,7 +22,7 @@ dl dd.multi-item-list .nypl-basic-table a,
   font-weight: normal;
   letter-spacing: 0.06rem;
   text-decoration: none;
-  padding: 6px 28px;
+  padding: 8px 28px;
   white-space: nowrap;
   -webkit-transition: all, 0.1s, ease-in;
   -moz-transition: all, 0.1s, ease-in;
@@ -37,12 +37,12 @@ dl dd.multi-item-list .nypl-basic-table a,
     height: 33px;
 
     &.sibling {
-      background-color: #fff;
-      color: $results-list-item-button;
+      background-color: $button-background-color;
+      border: 0.08333rem solid #bdbdbd;
+      color: black;
 
       &:hover {
-        background-color: $results-list-item-button;
-        color: #fff;
+        background-color: #f5f5f5;
       }
     }
   }
