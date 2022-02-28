@@ -40,7 +40,6 @@ dl dd.multi-item-list .nypl-basic-table a,
     &.sibling {
       background-color: #fff;
       color: $results-list-item-button;
-      // margin-left: 10px;
 
       &:hover {
         background-color: $results-list-item-button;
@@ -154,7 +153,7 @@ dl dd.multi-item-list .nypl-basic-table a,
   }
 }
 
-@media (max-width: 463px) {
+@media (max-width: 445px) {
   .nypl-results-item .nypl-basic-table .request-btn-block {
     flex-wrap: wrap;
 
@@ -166,7 +165,7 @@ dl dd.multi-item-list .nypl-basic-table a,
       margin-left: 0;
     }
 
-    @media (max-width: 452px) {
+    @media (max-width: 435px) {
       & > span {
         margin-top: 10px;
       }
