@@ -6,12 +6,12 @@ import { shallow } from 'enzyme';
 import { stub } from 'sinon';
 
 import WrappedApplication, { Application } from '@Application';
-import { Header, navConfig } from '@nypl/dgx-header-component';
+// import { Header, navConfig } from '@nypl/dgx-header-component';
 import { mockRouterContext } from '../helpers/routing';
 import { breakpoints } from '../../src/app/data/constants';
 
-const resizeWindow = (x) => {
-  window.innerWidth = x;
+const resizeWindow = (xPosition) => {
+  window.innerWidth = xPosition;
   window.dispatchEvent(new Event('resize'));
 };
 
@@ -20,16 +20,19 @@ describe('Application', () => {
   const context = mockRouterContext();
 
   before(() => {
-    window.matchMedia = () => ({ addListener: () => {} });
+    window.matchMedia = () => ({ addListener: () => undefined });
     window.matchMedia().addListener = stub();
     component = shallow(
       <Application
-        children={{}}
         route={{
           history: { listen: stub() },
         }}
-        addFeatures={() => {}}
-      />, { context });
+        addFeatures={() => undefined}
+      >
+        {}
+      </Application>,
+      { context },
+    );
 
     component.setState({ patron: {} });
   });
@@ -39,18 +42,18 @@ describe('Application', () => {
     expect(component.find('.app-wrapper')).to.have.length(1);
   });
 
-  it('should render the NYPL header', () => {
-    expect(component.find('#nyplHeader')).to.have.length(1);
-  });
+  // it('should render the NYPL header', () => {
+  //   expect(component.find('#nyplHeader')).to.have.length(1);
+  // });
 
-  it('should have the skip navigation link enabled,', () => {
-    expect(component.contains(
-      <Header
-        navData={navConfig.current}
-        skipNav={{ target: 'mainContent' }}
-        patron={component.state.patron}
-      />)).to.equal(true);
-  });
+  // it('should have the skip navigation link enabled,', () => {
+  //   expect(component.contains(
+  //     <Header
+  //       navData={navConfig.current}
+  //       skipNav={{ target: 'mainContent' }}
+  //       patron={component.state.patron}
+  //     />)).to.equal(true);
+  // });
 
   it('should render a <Footer /> components', () => {
     expect(component.find('Footer')).to.have.length(1);
@@ -58,20 +61,26 @@ describe('Application', () => {
 
   describe('should set media type in context', () => {
     const breakpointObj = {};
-    breakpoints.forEach(breakpoint => breakpointObj[breakpoint.media] = breakpoint.maxValue);
-    const { tablet, tabletPortrait, mobile} = breakpointObj;
+    breakpoints.forEach(
+      (breakpoint) => (breakpointObj[breakpoint.media] = breakpoint.maxValue),
+    );
+    const { tablet, tabletPortrait, mobile } = breakpointObj;
 
     it(`should set media as "desktop" for screenwidths above ${tablet}px`, () => {
       resizeWindow(tablet + 1);
       expect(component.state().media).to.eql('desktop');
     });
-    it(`should set media as "tablet" for screenwidths ${tabletPortrait + 1}-${tablet}px`, () => {
+    it(`should set media as "tablet" for screenwidths ${
+      tabletPortrait + 1
+    }-${tablet}px`, () => {
       resizeWindow(tabletPortrait + 1);
       expect(component.state().media).to.eql('tablet');
       resizeWindow(tablet);
       expect(component.state().media).to.eql('tablet');
     });
-    it(`should set media as "tabletPortrait" for screenwidths ${mobile + 1}-${tabletPortrait}px`, () => {
+    it(`should set media as "tabletPortrait" for screenwidths ${
+      mobile + 1
+    }-${tabletPortrait}px`, () => {
       resizeWindow(mobile + 1);
       expect(component.state().media).to.eql('tabletPortrait');
       resizeWindow(tabletPortrait);
@@ -86,23 +95,26 @@ describe('Application', () => {
   describe('url-enabled feature flag', () => {
     let content;
     before(() => {
-      window.matchMedia = () => ({ addListener: () => {} });
+      window.matchMedia = () => ({ addListener: () => undefined });
       window.matchMedia().addListener = stub();
       context.router = {
-        location: { query: {
-          features: 'on-site-edd',
-        } },
+        location: {
+          query: {
+            features: 'on-site-edd',
+          },
+        },
         listen: stub(),
       };
       component = shallow(
         <Application
-          children={{}}
           router={context.router}
-          updateFeatures={() => {}}
+          updateFeatures={() => undefined}
           features={[]}
         >
           <a href='/subject_headings'>link</a>
-        </Application>, { context });
+        </Application>,
+        { context },
+      );
     });
 
     it('sets `urlEnabledFeatures` state from `router.location.query.features`', () => {
