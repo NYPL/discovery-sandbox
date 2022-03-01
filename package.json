@@ -3,9 +3,9 @@
   "version": "1.7.1",
   "description": "Isomorphic React App for NYPL Research Catalog.",
   "main": "index.js",
-  "engines" : {
-    "npm" : ">=6.0.0",
-    "node" : ">=14.0.0"
+  "engines": {
+    "npm": ">=6.0.0",
+    "node": ">=14.0.0"
   },
   "scripts": {
     "start": "node index",

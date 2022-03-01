@@ -85,12 +85,12 @@ export class Application extends React.Component {
 
     return (
       <MediaContext.Provider value={this.state.media}>
-        <div className="app-wrapper">
-          <Header
+        <div className='app-wrapper'>
+          {/* <Header
             navData={navConfig.current}
             patron={this.props.patron}
             skipNav={{ target: 'mainContent' }}
-          />
+          /> */}
           <DataLoader
             location={this.context.router.location}
             key={JSON.stringify(dataLocation)}
