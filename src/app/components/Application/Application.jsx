@@ -1,7 +1,7 @@
 /* global window */
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Header, navConfig } from '@nypl/dgx-header-component';
+// import { Header, navConfig } from '@nypl/dgx-header-component';
 import Footer from '@nypl/dgx-react-footer';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
