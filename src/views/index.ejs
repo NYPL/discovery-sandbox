@@ -1,52 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="utf-8">
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <meta name="viewport" content="width=350">
+    <meta charset="utf-8" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <meta name="viewport" content="width=350" />
     <title><%- appTitle %></title>
 
-    <link rel="icon" type="image/png" href="<%- favicon %>">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" href="<%- favicon %>" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <meta property="og:title" content="<%- appTitle %>">
-    <meta property="og:description" content="">
-    <meta property="og:type" content="website">
-    <meta property="og:image" content="">
-    <meta property="og:site_name" content="<%- appTitle %>">
-    <meta property="og:url" content="https://www.nypl.org<%- baseUrl %>">
-    <meta name="twitter:title" content="<%- appTitle %>">
-    <meta name="twitter:description" content="">
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:site" content="@nypl">
-    <meta name="twitter:creator" content="@nypl">
-    <meta name="twitter:image" content="">
+    <meta property="og:title" content="<%- appTitle %>" />
+    <meta property="og:description" content="" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="" />
+    <meta property="og:site_name" content="<%- appTitle %>" />
+    <meta property="og:url" content="https://www.nypl.org<%- baseUrl %>" />
+    <meta name="twitter:title" content="<%- appTitle %>" />
+    <meta name="twitter:description" content="" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@nypl" />
+    <meta name="twitter:creator" content="@nypl" />
+    <meta name="twitter:image" content="" />
 
-
-<% if (isProduction) { %>
+    <% if (isProduction) { %>
     <!-- Minified Styles -->
-    <link rel="stylesheet" type="text/css" href="<%- baseUrl %>/styles.css">
-<% } %>
-
+    <link rel="stylesheet" type="text/css" href="<%- baseUrl %>/styles.css" />
+    <% } %>
   </head>
   <body>
-    <div id="Header-Placeholder">
-      <style>
-        #Header-Placeholder {
-          min-height: 70px;
-        }
-        @media screen and (min-width: 1024px) {
-          #Header-Placeholder {
-            min-height: 208px;
-          }
-        }
-      </style>
-      <script
-        type="text/javascript"
-        src="https://header.nypl.org/dgx-header.min.js?skipNav=mainContent&urls=absolute"
-        async
-      ></script>
-    </div>
     <div id="app"><%- application %></div>
     <script>
       // WARNING: See the following for security issues around embedding JSON in HTML:
@@ -54,15 +35,13 @@
       window.__PRELOADED_STATE__ = <%- appData %>;
     </script>
     <% if (isProduction) { %>
-      <script async src="<%- baseUrl %>/bundle.js"></script>
+    <script async src="<%- baseUrl %>/bundle.js"></script>
     <% } else { %>
-      <script src="http://localhost:<%- webpackPort %>/bundle.js"></script>
+    <script src="http://localhost:<%- webpackPort %>/bundle.js"></script>
     <% } %>
 
     <!-- OptinMonster -->
     <script src="https://assets.nypl.org/js/advocacy.js"></script>
     <!-- OptinMonster -->
-
   </body>
-
 </html>

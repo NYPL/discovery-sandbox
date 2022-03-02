@@ -23,7 +23,7 @@ App-specific utilities and defaults
 /*
 Import style rules from NYPL React module components
 */
-// @import '@nypl/dgx-header-component/dist/styles/main';
+@import '@nypl/dgx-header-component/dist/styles/main';
 @import '@nypl/dgx-react-footer/dist/styles/styles';
 
 @import 'components/**/*.scss';

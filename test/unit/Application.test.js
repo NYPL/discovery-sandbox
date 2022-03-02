@@ -6,7 +6,7 @@ import { shallow } from 'enzyme';
 import { stub } from 'sinon';
 
 import WrappedApplication, { Application } from '@Application';
-// import { Header, navConfig } from '@nypl/dgx-header-component';
+import { Header, navConfig } from '@nypl/dgx-header-component';
 import { mockRouterContext } from '../helpers/routing';
 import { breakpoints } from '../../src/app/data/constants';
 
@@ -42,18 +42,21 @@ describe('Application', () => {
     expect(component.find('.app-wrapper')).to.have.length(1);
   });
 
-  // it('should render the NYPL header', () => {
-  //   expect(component.find('#nyplHeader')).to.have.length(1);
-  // });
+  it('should render the NYPL header', () => {
+    expect(component.find('#nyplHeader')).to.have.length(1);
+  });
 
-  // it('should have the skip navigation link enabled,', () => {
-  //   expect(component.contains(
-  //     <Header
-  //       navData={navConfig.current}
-  //       skipNav={{ target: 'mainContent' }}
-  //       patron={component.state.patron}
-  //     />)).to.equal(true);
-  // });
+  it('should have the skip navigation link enabled,', () => {
+    expect(
+      component.contains(
+        <Header
+          navData={navConfig.current}
+          skipNav={{ target: 'mainContent' }}
+          patron={component.state.patron}
+        />,
+      ),
+    ).to.equal(true);
+  });
 
   it('should render a <Footer /> components', () => {
     expect(component.find('Footer')).to.have.length(1);
