@@ -97,7 +97,7 @@ const ResultsList = (
 
     return (
       <li
-        key={idx}
+        key={bibId}
         className={`nypl-results-item ${hasRequestTable ? 'has-request' : ''}`}
       >
         <h3>
