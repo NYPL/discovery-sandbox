@@ -258,6 +258,7 @@ function LibraryItem() {
     }
 
     return {
+      ...item,
       id,
       status,
       availability,
