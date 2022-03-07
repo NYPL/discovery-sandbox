@@ -1,8 +1,41 @@
 .nypl-results-item .nypl-basic-table .request-btn-block {
   display: flex;
 
-  & > span {
+  & div:not(:first-child) {
     margin-left: 10px;
+  }
+
+  & .nypl-request-btn {
+    & a {
+      text-align: center;
+      width: 200px;
+      height: 33px;
+    }
+
+    & .nypl-request-btn-label {
+      font-size: 10px;
+
+      & a {
+        background-color: #fff;
+        border: 0;
+        border-radius: 0;
+        color: $results-list-item-button;
+        display: inline;
+        font-size: 10px;
+        padding: 0;
+        text-decoration: underline;
+      }
+    }
+
+    & .secondary {
+      background-color: $button-background-color;
+      border: 0.08333rem solid #bdbdbd;
+      color: black;
+
+      &:hover {
+        background-color: #f5f5f5;
+      }
+    }
   }
 
   &.pan-left {
@@ -30,22 +63,6 @@ dl dd.multi-item-list .nypl-basic-table a,
   -o-transition: all, 0.1s, ease-in;
   transition: all, 0.1s, ease-in;
   margin-top: 0;
-
-  &.nypl-request-btn {
-    text-align: center;
-    width: 200px;
-    height: 33px;
-
-    &.sibling {
-      background-color: $button-background-color;
-      border: 0.08333rem solid #bdbdbd;
-      color: black;
-
-      &:hover {
-        background-color: #f5f5f5;
-      }
-    }
-  }
 
   &:hover {
     background-color: #fff;
