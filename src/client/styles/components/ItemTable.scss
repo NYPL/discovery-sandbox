@@ -177,12 +177,12 @@ dl dd.multi-item-list .nypl-basic-table a,
       justify-content: space-between;
     }
 
-    & > span {
+    & > div:not(:first-child) {
       margin-left: 0;
     }
 
     @media (max-width: 435px) {
-      & > span {
+      & > div {
         margin-top: 10px;
       }
     }
