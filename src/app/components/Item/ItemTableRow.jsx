@@ -42,10 +42,6 @@ class ItemTableRow extends React.Component {
   requestButton() {
     const { item, bibId, searchKeywords, page } = this.props;
 
-    const specRequestable = item.specRequestable;
-    const eddRequestable = item.eddRequestable;
-    const physRequestable = item.physRequestable;
-
     // Currently Not Used
     // TODO Determine if we need these.
     // const isAvailable = item.available;
@@ -66,18 +62,18 @@ class ItemTableRow extends React.Component {
           page === 'SearchResults' ? 'pan-left' : ''
         }`}
       >
-        {(specRequestable && (
+        {(item.specRequestable && (
           <AeonButton item={item} onClick={this.getItemRecord} />
         )) || (
           <>
             <EddButton
-              display={eddRequestable}
+              display={item.eddRequestable}
               link={`${appConfig.baseUrl}/hold/request/${bibId}-${item.id}/edd?searchKeywords=${searchKeywords}`}
               onClick={this.getItemRecord}
             />
 
             <ReCAPButton
-              display={physRequestable}
+              display={item.physRequestable}
               item={item}
               link={`${appConfig.baseUrl}/hold/request/${bibId}-${item.id}?searchKeywords=${searchKeywords}`}
               onClick={this.getItemRecord}
