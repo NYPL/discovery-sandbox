@@ -1,11 +1,13 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Link } from 'react-router';
 import { isEmpty as _isEmpty } from 'underscore';
 import appConfig from '../../data/appConfig';
-import { isAeonLink, trackDiscovery } from '../../utils/utils';
-
-const { features } = appConfig;
+import { trackDiscovery } from '../../utils/utils';
+import {
+  AeonButton,
+  EddButton,
+  ReCAPButton,
+} from '../Buttons/ItemTableButtons';
 
 class ItemTableRow extends React.Component {
   constructor(props) {
@@ -37,76 +39,47 @@ class ItemTableRow extends React.Component {
     return item.accessMessage.prefLabel || ' ';
   }
 
-  aeonUrl(item) {
-    const url = Array.isArray(item.aeonUrl) ? item.aeonUrl[0] : item.aeonUrl;
-    const searchParams = new URL(url).searchParams;
-    const paramMappings = {
-      ItemISxN: 'id',
-      itemNumber: 'barcode',
-      CallNumber: 'callNumber',
-    };
-
-    let params = Object.keys(paramMappings)
-      .map((paramName) => {
-        if (searchParams.has(paramName)) return null;
-        const mappedParamName = paramMappings[paramName];
-        if (!item[mappedParamName]) return null;
-        return `&${paramName}=${item[mappedParamName]}`;
-      })
-      .filter(Boolean)
-      .join('');
-
-    if (params && !url.includes('?')) params = `?${params}`;
-
-    return encodeURI(`${url}${params || ''}`);
-  }
-
   requestButton() {
-    const { item, bibId, searchKeywords } = this.props;
+    const { item, bibId, searchKeywords, page } = this.props;
 
-    const isRequestable = (item.requestable = true);
-    const isAvailable = item.available;
-    const isOffSite = item.isOffsite;
-    const isSpecialCollection = isAeonLink(item.aeonUrl);
-    const isRecap = item.isRecap;
-    const isEddRequestable = item.eddRequestable;
-
-    const allClosed = appConfig.closedLocations
-      .concat(
-        item.isRecap
-          ? appConfig.recapClosedLocations
-          : appConfig.nonRecapClosedLocations,
-      )
-      .includes('');
+    // Currently Not Used
+    // TODO Determine if we need these.
+    // const isAvailable = item.available;
+    // const isRecap = item.isRecap;
+    // const isRequestable = (item.requestable = true);
+    // const isOffSite = item.isOffsite;
+    // const allClosed = appConfig.closedLocations
+    //   .concat(
+    //     item.isRecap
+    //       ? appConfig.recapClosedLocations
+    //       : appConfig.nonRecapClosedLocations,
+    //   )
+    //   .includes('');
 
     return (
-      <div id='request-btn-block'>
-        <Link
-          to={`${appConfig.baseUrl}/hold/request/${bibId}-${item.id}?searchKeywords=${searchKeywords}`}
-          onClick={(event) => this.getItemRecord(event, bibId, item.id)}
-          tabIndex='0'
-          className='nypl-request-btn'
-          id='first'
-        >
-          Request Scan
-        </Link>
-        {(isRequestable && (
-          <span>
-            <Link
-              to={`${appConfig.baseUrl}/hold/request/${bibId}-${item.id}?searchKeywords=${searchKeywords}`}
-              // to={this.aeonUrl(item)}
-              onClick={(event) => this.getItemRecord(event, bibId, item.id)}
-              tabIndex='-1'
-              className='nypl-request-btn'
-              id='second'
-            >
-              Request for Onsite Use
-            </Link>
-            <br />
-            <span className='aeonRequestText'>Appointment Required</span>
-          </span>
-        )) ||
-          null}
+      <div
+        className={`request-btn-block ${
+          page === 'SearchResults' ? 'pan-left' : ''
+        }`}
+      >
+        {(item.specRequestable && (
+          <AeonButton item={item} onClick={this.getItemRecord} />
+        )) || (
+          <>
+            <EddButton
+              display={item.eddRequestable}
+              link={`${appConfig.baseUrl}/hold/request/${bibId}-${item.id}/edd?searchKeywords=${searchKeywords}`}
+              onClick={this.getItemRecord}
+            />
+
+            <ReCAPButton
+              display={item.physRequestable}
+              item={item}
+              link={`${appConfig.baseUrl}/hold/request/${bibId}-${item.id}?searchKeywords=${searchKeywords}`}
+              onClick={this.getItemRecord}
+            />
+          </>
+        )}
       </div>
     );
 
@@ -149,6 +122,7 @@ class ItemTableRow extends React.Component {
 
   render() {
     const { item, includeVolColumn, page } = this.props;
+    const BibPage = page === 'BibPage';
 
     if (_isEmpty(item)) {
       return null;
@@ -178,30 +152,37 @@ class ItemTableRow extends React.Component {
     }
 
     return (
-      <tr className={item.availability}>
-        {includeVolColumn ? (
-          <td className='vol-date-col' data-th='Vol/Date'>
-            <span>{item.volume || ''}</span>
-          </td>
-        ) : null}
-        {page !== 'SearchResults' ? (
+      <>
+        <tr className={item.availability}>
+          {includeVolColumn ? (
+            <td className='vol-date-col' data-th='Vol/Date'>
+              <span>{item.volume || ''}</span>
+            </td>
+          ) : null}
           <td data-th='Format'>
             <span>{item.format || ' '}</span>
           </td>
-        ) : null}
-        <td data-th='Message'>
+          {/* <td data-th='Message'>
           <span>{this.message()}</span>
-        </td>
-        <td data-th='Status'>
-          <span>{this.requestButton()}</span>
-        </td>
-        <td data-th='Call Number'>
-          <span>{itemCallNumber}</span>
-        </td>
-        <td data-th='Location'>
-          <span>{itemLocation}</span>
-        </td>
-      </tr>
+        </td> */}
+          <td data-th='Call Number'>
+            <span>{itemCallNumber}</span>
+          </td>
+          <td data-th='Location'>
+            <span>{itemLocation}</span>
+          </td>
+          {BibPage ? (
+            <td data-th={`Availability & Access`}>{this.requestButton()}</td>
+          ) : null}
+        </tr>
+        {!BibPage ? (
+          <tr>
+            <td colSpan='3' data-th={`Availability & Access`}>
+              <span>{this.requestButton()}</span>
+            </td>
+          </tr>
+        ) : null}
+      </>
     );
   }
 }

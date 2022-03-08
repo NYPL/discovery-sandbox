@@ -93,6 +93,7 @@ class ItemsContainer extends React.Component {
         id='bib-item-table'
         searchKeywords={this.props.searchKeywords}
         holdings={this.props.holdings}
+        page='BibPage'
       />
     ) : null;
   }

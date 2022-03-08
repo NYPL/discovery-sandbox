@@ -15,10 +15,11 @@ const ItemTable = ({ items, holdings, bibId, id, searchKeywords, page }) => {
   ) {
     return null;
   }
+  const SearchResultsPage = page === 'SearchResults';
+  const BibPage = page === 'BibPage';
 
   const includeVolColumn =
-    items.some((item) => item.volume && item.volume.length) &&
-    page !== 'SearchResults';
+    items.some(({ volume = '' }) => volume.length) && !SearchResultsPage;
 
   return (
     <table className='nypl-basic-table' id={id}>
@@ -26,11 +27,12 @@ const ItemTable = ({ items, holdings, bibId, id, searchKeywords, page }) => {
       <thead>
         <tr>
           {includeVolColumn ? <th scope='col'>Vol/Date</th> : null}
-          {page !== 'SearchResults' ? <th scope='col'>Format</th> : null}
-          <th scope='col'>Access</th>
-          <th scope='col'>Status</th>
+          <th scope='col'>Format</th>
           <th scope='col'>Call Number</th>
-          <th scope='col'>Location</th>
+          <th scope='col'>{((!BibPage && `Item `) || '') + `Location`}</th>
+          {!SearchResultsPage ? (
+            <th scope='col'>{`Availability & Access`}</th>
+          ) : null}
         </tr>
       </thead>
       <tbody>

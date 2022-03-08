@@ -97,7 +97,7 @@ const ResultsList = (
 
     return (
       <li
-        key={idx}
+        key={bibId}
         className={`nypl-results-item ${hasRequestTable ? 'has-request' : ''}`}
       >
         <h3>
@@ -129,15 +129,31 @@ const ResultsList = (
             )}
           </ul>
         </div>
-        {hasRequestTable && (
-          <ItemTable
-            items={items.slice(0, itemTableLimit)}
-            bibId={bibId}
-            id={null}
-            searchKeywords={searchKeywords}
-            page='SearchResults'
-          />
-        )}
+        {hasRequestTable
+          ? (totalItems < 2 && (
+              <ItemTable
+                items={items.slice(0, itemTableLimit)}
+                bibId={bibId}
+                id={null}
+                searchKeywords={searchKeywords}
+                page='SearchResults'
+              />
+            )) || (
+              <Link
+                onClick={() => {
+                  updateResultSelection({
+                    fromUrl: `${pathname}${search}`,
+                    bibId,
+                  });
+                  trackDiscovery('Bib', bibTitle);
+                }}
+                to={bibUrl}
+                className='title'
+              >
+                {`View and Request Item`}
+              </Link>
+            )
+          : null}
       </li>
     );
   };
