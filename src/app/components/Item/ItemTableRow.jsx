@@ -82,42 +82,6 @@ class ItemTableRow extends React.Component {
         )}
       </div>
     );
-
-    // let itemRequestBtn =
-    //   item.status && item.status.prefLabel ? item.status.prefLabel : ' ';
-
-    // if (item.aeonUrl && features.includes('aeon-links')) {
-    //   itemRequestBtn = (
-    //     <React.Fragment>
-    //       <a
-    //         href={this.aeonUrl(item)}
-    //         tabIndex='0'
-    //         className='aeonRequestButton'
-    //       >
-    //         Request
-    //       </a>
-    //       <br />
-    //       <span className='aeonRequestText'>Appointment Required</span>
-    //     </React.Fragment>
-    //   );
-    //   return itemRequestBtn;
-    // }
-
-    // if (item.requestable && !allClosed) {
-    //   itemRequestBtn =
-    //     (item.available && (
-    //       <Link
-    //         to={`${appConfig.baseUrl}/hold/request/${bibId}-${item.id}?searchKeywords=${searchKeywords}`}
-    //         onClick={(event) => this.getItemRecord(event, bibId, item.id)}
-    //         tabIndex='0'
-    //       >
-    //         Request
-    //       </Link>
-    //     )) ||
-    //     'In Use';
-    // }
-
-    // return itemRequestBtn;
   }
 
   render() {
@@ -162,9 +126,6 @@ class ItemTableRow extends React.Component {
           <td data-th='Format'>
             <span>{item.format || ' '}</span>
           </td>
-          {/* <td data-th='Message'>
-          <span>{this.message()}</span>
-        </td> */}
           <td data-th='Call Number'>
             <span>{itemCallNumber}</span>
           </td>
