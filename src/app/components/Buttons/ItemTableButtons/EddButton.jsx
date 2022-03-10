@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Link } from 'react-router';
 
-const EddButton = ({ link, onClick }) => {
+const EddButton = ({ item, link, onClick }) => {
   if (!item.eddRequestable) return null;
 
   return (
@@ -15,6 +15,7 @@ const EddButton = ({ link, onClick }) => {
 };
 
 EddButton.propTypes = {
+  item: PropTypes.object,
   link: PropTypes.string,
   onClick: PropTypes.function,
 };

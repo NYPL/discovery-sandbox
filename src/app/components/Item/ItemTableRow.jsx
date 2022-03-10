@@ -70,7 +70,7 @@ class ItemTableRow extends React.Component {
             pressumed to always link to the aeon link and therefor we will never
             have the edd option */}
             {/* <EddButton
-              display={item.eddRequestable}
+              item={item}
               link={`${appConfig.baseUrl}/hold/request/${bibId}-${item.id}/edd?searchKeywords=${searchKeywords}`}
               onClick={this.getItemRecord}
             /> */}
@@ -78,6 +78,7 @@ class ItemTableRow extends React.Component {
         )) || (
           <>
             <EddButton
+              item={item}
               link={`${appConfig.baseUrl}/hold/request/${bibId}-${item.id}/edd?searchKeywords=${searchKeywords}`}
               onClick={this.getItemRecord}
             />
