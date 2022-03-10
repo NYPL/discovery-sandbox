@@ -124,7 +124,7 @@ describe('ResultsList', () => {
       }).find('ResultsList');
     });
 
-    it('should render two bib li items', () => {
+    it('should render three bib li items', () => {
       expect(component.find('.nypl-results-item').length).to.equal(3);
     });
 
