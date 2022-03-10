@@ -130,7 +130,8 @@ const ResultsList = (
           </ul>
         </div>
         {hasRequestTable
-          ? (totalItems < 2 && (
+          ? // TODO: Resolve, Are we to use totalItems or results.items.length?
+            (totalItems < 2 && (
               <ItemTable
                 items={items.slice(0, itemTableLimit)}
                 bibId={bibId}
@@ -158,8 +159,6 @@ const ResultsList = (
     );
   };
 
-  const resultsElm = results.map((bib, idx) => generateBibLi(bib, idx));
-
   return (
     <ul
       id='nypl-results-list'
@@ -167,7 +166,7 @@ const ResultsList = (
         includeDrbb && !subjectHeadingShow ? ' drbb-integration' : ''
       }`}
     >
-      {resultsElm}
+      {results.map(generateBibLi)}
     </ul>
   );
 };
