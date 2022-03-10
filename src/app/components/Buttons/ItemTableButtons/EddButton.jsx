@@ -2,8 +2,8 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Link } from 'react-router';
 
-const EddButton = ({ display, link, onClick }) => {
-  if (!display) return null;
+const EddButton = ({ link, onClick }) => {
+  if (!item.eddRequestable) return null;
 
   return (
     <div className='nypl-request-btn'>
@@ -15,7 +15,6 @@ const EddButton = ({ display, link, onClick }) => {
 };
 
 EddButton.propTypes = {
-  display: PropTypes.boolean,
   link: PropTypes.string,
   onClick: PropTypes.function,
 };

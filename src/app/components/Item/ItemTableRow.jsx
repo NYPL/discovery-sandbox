@@ -63,17 +63,26 @@ class ItemTableRow extends React.Component {
         }`}
       >
         {(item.specRequestable && (
-          <AeonButton item={item} onClick={this.getItemRecord} />
+          <>
+            <AeonButton item={item} onClick={this.getItemRecord} />
+
+            {/*TODO: This may not be necessary. Sine spec is for special collections it's
+            pressumed to always link to the aeon link and therefor we will never
+            have the edd option */}
+            {/* <EddButton
+              display={item.eddRequestable}
+              link={`${appConfig.baseUrl}/hold/request/${bibId}-${item.id}/edd?searchKeywords=${searchKeywords}`}
+              onClick={this.getItemRecord}
+            /> */}
+          </>
         )) || (
           <>
             <EddButton
-              display={item.eddRequestable}
               link={`${appConfig.baseUrl}/hold/request/${bibId}-${item.id}/edd?searchKeywords=${searchKeywords}`}
               onClick={this.getItemRecord}
             />
 
             <ReCAPButton
-              display={item.physRequestable}
               item={item}
               link={`${appConfig.baseUrl}/hold/request/${bibId}-${item.id}?searchKeywords=${searchKeywords}`}
               onClick={this.getItemRecord}
@@ -118,6 +127,7 @@ class ItemTableRow extends React.Component {
     return (
       <>
         <tr className={item.availability}>
+          {/* TODO: Is this relevant  */}
           {includeVolColumn ? (
             <td className='vol-date-col' data-th='Vol/Date'>
               <span>{item.volume || ''}</span>
