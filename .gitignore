@@ -25,3 +25,4 @@ log/*.log
 
 # VS code Configuration Files
 .vscode
+notes.md
