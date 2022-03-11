@@ -1,8 +1,8 @@
-import { Link } from '@nypl/design-system-react-components';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import appConfig from '../../../data/appConfig';
 import { isAeonLink } from '../../../utils/utils';
+import RequestButton, { RequestButtonLabel } from './RequestButton';
 
 const AeonButton = ({ item, onClick }) => {
   const [aeonUrl] = useState(() => {
@@ -35,25 +35,32 @@ const AeonButton = ({ item, onClick }) => {
     return encodeURI(`${aeonUrl}${params || ''}`);
   });
 
+  const handleClick = (event) => {
+    event.preventDefault();
+    onClick(aeonUrl);
+  };
+
   return (
-    <div className='nypl-request-btn'>
-      <Link href={aeonUrl} onClick={onClick} tabIndex='0'>
-        {`Make Appointment`}
-      </Link>
-      <br />
-      <span className='nypl-request-btn-label'>
-        {`Appointment Required. `}
-        <a>
-          <i>{`Details`}</i>
-        </a>
-      </span>
-    </div>
+    <RequestButton
+      url={aeonUrl}
+      text={`Make Appointment`}
+      onClick={handleClick}
+    >
+      <RequestButtonLabel>
+        <span>
+          {`Appointment Required. `}
+          <a>
+            <i>{`Details`}</i>
+          </a>
+        </span>
+      </RequestButtonLabel>
+    </RequestButton>
   );
 };
 
 AeonButton.propTypes = {
-  item: PropTypes.object,
-  onClick: PropTypes.function,
+  item: PropTypes.object.isRequired,
+  onClick: PropTypes.func.isRequired,
 };
 
 export default AeonButton;

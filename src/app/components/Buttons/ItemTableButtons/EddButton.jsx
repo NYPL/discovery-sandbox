@@ -1,23 +1,27 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Link } from 'react-router';
+import appConfig from '../../../data/appConfig';
+import RequestButton from './RequestButton';
 
-const EddButton = ({ item, link, onClick }) => {
+const EddButton = ({ item, bibId, onClick }) => {
   if (!item.eddRequestable) return null;
 
+  const path = `${appConfig.baseUrl}/hold/request/${bibId}-${item.id}/edd`;
+
+  const handleClick = (event) => {
+    event.preventDefault();
+    onClick(path);
+  };
+
   return (
-    <div className='nypl-request-btn'>
-      <Link to={link} onClick={onClick} tabIndex='0'>
-        {`Request Scan`}
-      </Link>
-    </div>
+    <RequestButton url={path} text={`Request Scan`} onClick={handleClick} />
   );
 };
 
 EddButton.propTypes = {
-  item: PropTypes.object,
-  link: PropTypes.string,
-  onClick: PropTypes.function,
+  item: PropTypes.object.isRequired,
+  bibId: PropTypes.string.isRequired,
+  onClick: PropTypes.func.isRequired,
 };
 
 export default EddButton;

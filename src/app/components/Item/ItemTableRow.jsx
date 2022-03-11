@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { isEmpty as _isEmpty } from 'underscore';
-import appConfig from '../../data/appConfig';
 import { trackDiscovery } from '../../utils/utils';
 import {
   AeonButton,
@@ -13,12 +12,10 @@ class ItemTableRow extends React.Component {
   constructor(props) {
     super(props);
     this.getItemRecord = this.getItemRecord.bind(this);
+    this.track = this.track.bind(this);
   }
 
-  getItemRecord(event) {
-    event.preventDefault();
-    const { bibId, item } = this.props;
-
+  track() {
     const { routes } = this.context.router;
 
     const page = routes[routes.length - 1].component.name;
@@ -28,8 +25,14 @@ class ItemTableRow extends React.Component {
     if (page === 'SubjectHeadingShowPage') gaLabel = 'Subject Heading Details';
 
     trackDiscovery('Item Request', gaLabel);
+  }
+
+  getItemRecord(path) {
+    const { searchKeywords } = this.props;
+
+    this.track();
     this.context.router.push(
-      `${appConfig.baseUrl}/hold/request/${bibId}-${item.id}`,
+      (path + searchKeywords && `?searchKeywords=${searchKeywords}`) || '',
     );
   }
 
@@ -40,7 +43,7 @@ class ItemTableRow extends React.Component {
   }
 
   requestButton() {
-    const { item, bibId, searchKeywords, page } = this.props;
+    const { item, bibId, page } = this.props;
 
     // Currently Not Used
     // TODO Determine if we need these.
@@ -71,21 +74,16 @@ class ItemTableRow extends React.Component {
             have the edd option */}
             {/* <EddButton
               item={item}
-              link={`${appConfig.baseUrl}/hold/request/${bibId}-${item.id}/edd?searchKeywords=${searchKeywords}`}
+              bibId={bibId}
               onClick={this.getItemRecord}
             /> */}
           </>
         )) || (
           <>
-            <EddButton
-              item={item}
-              link={`${appConfig.baseUrl}/hold/request/${bibId}-${item.id}/edd?searchKeywords=${searchKeywords}`}
-              onClick={this.getItemRecord}
-            />
-
+            <EddButton item={item} bibId={bibId} onClick={this.getItemRecord} />
             <ReCAPButton
               item={item}
-              link={`${appConfig.baseUrl}/hold/request/${bibId}-${item.id}?searchKeywords=${searchKeywords}`}
+              bibId={bibId}
               onClick={this.getItemRecord}
             />
           </>
@@ -160,11 +158,11 @@ class ItemTableRow extends React.Component {
 }
 
 ItemTableRow.propTypes = {
-  item: PropTypes.object,
-  bibId: PropTypes.string,
-  searchKeywords: PropTypes.string,
+  item: PropTypes.object.isRequired,
+  bibId: PropTypes.string.isRequired,
   page: PropTypes.string,
-  includeVolColumn: PropTypes.boolean,
+  searchKeywords: PropTypes.string,
+  includeVolColumn: PropTypes.bool,
 };
 
 ItemTableRow.contextTypes = {
