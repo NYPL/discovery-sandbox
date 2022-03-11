@@ -82,12 +82,9 @@ describe('ItemTable', () => {
         );
       });
 
-      it('should have the same number <tr> elements in its <tbody> as the item length.', () => {
-        const tbody = component.find('tbody');
-        // Need to render the subcomponent first:
-        const tr = tbody.render().find('tr');
-
-        expect(tr.length).to.equal(3);
+      it('should have the same number of <tr> elements as the item length.', () => {
+        const tr = component.find('tbody').render().find('tr');
+        expect(tr.length).to.equal(data.length);
       });
     });
 
