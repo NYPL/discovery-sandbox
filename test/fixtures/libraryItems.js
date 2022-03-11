@@ -111,7 +111,7 @@ const item = {
     physRequestable: true,
     status: {
       '@id': 'status:a',
-      // prefLabel: 'Available', // <-- isPhysical, not: isAvailable, Show this labe?
+      prefLabel: 'Available', // <-- isPhysical, not: isAvailable, Show this label?
     },
     suppressed: false,
     url:
