@@ -1,24 +1,22 @@
-/* global window document */
+import axios from 'axios';
+import PropTypes from 'prop-types';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import PropTypes from 'prop-types';
-import axios from 'axios';
+import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router';
 import {
+  extend as _extend,
   isArray as _isArray,
   isEmpty as _isEmpty,
-  extend as _extend,
   mapObject as _mapObject,
 } from 'underscore';
-import { connect } from 'react-redux';
-
-import SccContainer from '../components/SccContainer/SccContainer';
-import appConfig from '../data/appConfig';
+import { updateLoadingStatus } from '../actions/Actions';
 import ElectronicDeliveryForm from '../components/ElectronicDeliveryForm/ElectronicDeliveryForm';
 import Notification from '../components/Notification/Notification';
+import SccContainer from '../components/SccContainer/SccContainer';
+import appConfig from '../data/appConfig';
 import LibraryItem from '../utils/item';
-import { trackDiscovery, institutionNameByNyplSource } from '../utils/utils';
-import { updateLoadingStatus } from '../actions/Actions';
+import { institutionNameByNyplSource, trackDiscovery } from '../utils/utils';
 
 class ElectronicDelivery extends React.Component {
   constructor(props) {
