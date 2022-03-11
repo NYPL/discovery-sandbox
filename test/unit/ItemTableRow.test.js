@@ -40,14 +40,11 @@ describe('ItemTableRow', () => {
         component = shallow(<ItemTableRow item={data} />);
       });
 
-      // This will return a fragment with tr children
+      // This will return a fragment with a children list of <tr> elements
       // On BibPage only one row, others, two rows
       it('should return a <tr>', () => {
         const bibPage = shallow(<ItemTableRow item={data} page='BibPage' />);
-        expect(
-          bibPage.find('tr'),
-          'BibPage contains more than one row',
-        ).to.have.lengthOf(1);
+        expect(bibPage.find('tr')).to.have.lengthOf(1);
 
         expect(component.find('tr')).to.have.lengthOf(2);
         expect(component.find('tr').at(0).prop('className')).to.equal(
@@ -55,8 +52,6 @@ describe('ItemTableRow', () => {
         );
       });
 
-      // On Bibpage one row with 4 columns
-      // On other pages, two rows, first row 4 columns, second row one column
       it('should return four <td>', () => {
         expect(component.find('td').length).to.equal(4);
       });
