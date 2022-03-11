@@ -1,31 +1,42 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Link } from 'react-router';
+import appConfig from '../../../data/appConfig';
+import RequestButton, { RequestButtonLabel } from './RequestButton';
 
-const ReCAPButton = ({ item, link, onClick }) => {
-  if (!item.physRequestable || !item.isAvailable)
+const ReCAPButton = ({ item, bibId, onClick }) => {
+  if (!item.physRequestable || !item.available)
     return <div>{item.status.prefLabel ?? 'Not Available'}</div>;
 
+  const path = `${appConfig.baseUrl}/hold/request/${bibId}-${item.id}`;
+
+  const handleClick = (event) => {
+    event.preventDefault();
+    onClick(path);
+  };
+
   return (
-    <div className='nypl-request-btn'>
-      <Link to={link} onClick={onClick} tabIndex='0' className='secondary'>
-        {`Request for Onsite Use`}
-      </Link>
-      <br />
-      <span className='nypl-request-btn-label'>
-        {`Timeline `}
-        <a>
-          <i>{`Details`}</i>
-        </a>
-      </span>
-    </div>
+    <RequestButton
+      url={path}
+      text={`Request for Onsite Use`}
+      onClick={handleClick}
+      secondary
+    >
+      <RequestButtonLabel>
+        <span>
+          {`Timeline `}
+          <a>
+            <i>{`Details`}</i>
+          </a>
+        </span>
+      </RequestButtonLabel>
+    </RequestButton>
   );
 };
 
 ReCAPButton.propTypes = {
   item: PropTypes.object,
-  link: PropTypes.string,
-  onClick: PropTypes.function,
+  bibId: PropTypes.string,
+  onClick: PropTypes.func,
 };
 
 export default ReCAPButton;

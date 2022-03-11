@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { isEmpty as _isEmpty } from 'underscore';
-import appConfig from '../../data/appConfig';
 import { trackDiscovery } from '../../utils/utils';
 import {
   AeonButton,
@@ -44,7 +43,7 @@ class ItemTableRow extends React.Component {
   }
 
   requestButton() {
-    const { item, bibId, searchKeywords, page } = this.props;
+    const { item, bibId, page } = this.props;
 
     // Currently Not Used
     // TODO Determine if we need these.
@@ -81,15 +80,10 @@ class ItemTableRow extends React.Component {
           </>
         )) || (
           <>
-            <EddButton
-              item={item}
-              link={`${appConfig.baseUrl}/hold/request/${bibId}-${item.id}/edd?searchKeywords=${searchKeywords}`}
-              onClick={this.getItemRecord}
-            />
-
+            <EddButton item={item} bibId={bibId} onClick={this.getItemRecord} />
             <ReCAPButton
               item={item}
-              link={`${appConfig.baseUrl}/hold/request/${bibId}-${item.id}?searchKeywords=${searchKeywords}`}
+              bibId={bibId}
               onClick={this.getItemRecord}
             />
           </>
@@ -168,7 +162,7 @@ ItemTableRow.propTypes = {
   bibId: PropTypes.string,
   searchKeywords: PropTypes.string,
   page: PropTypes.string,
-  includeVolColumn: PropTypes.boolean,
+  includeVolColumn: PropTypes.bool,
 };
 
 ItemTableRow.contextTypes = {
