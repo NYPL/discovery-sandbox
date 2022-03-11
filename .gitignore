@@ -25,4 +25,6 @@ log/*.log
 
 # VS code Configuration Files
 .vscode
+
+# Developer Specific Files To Ignore
 notes.md
