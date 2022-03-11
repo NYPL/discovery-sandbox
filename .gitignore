@@ -28,3 +28,4 @@ log/*.log
 
 # Developer Specific Files To Ignore
 notes.md
+__play.*
