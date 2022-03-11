@@ -37,7 +37,7 @@ describe('ItemTableRow', () => {
       let component;
 
       before(() => {
-        component = shallow(<ItemTableRow item={data} />);
+        component = mount(<ItemTableRow item={data} />);
       });
 
       // This will return a fragment with a children list of <tr> elements
@@ -60,20 +60,16 @@ describe('ItemTableRow', () => {
         expect(component.find('td').at(0).text()).to.equal(' ');
       });
 
-      it('should not have an access message as the second <td> column data', () => {
+      it('should not have a call number as the second <td> column data', () => {
         expect(component.find('td').at(1).text()).to.equal(' ');
       });
 
-      it('should not have a status as the third <td> column data', () => {
+      it('should not have a location as the third <td> column data', () => {
         expect(component.find('td').at(2).text()).to.equal(' ');
       });
 
-      it('should not have a call number as the fourth <td> column data', () => {
-        expect(component.find('td').at(1).text()).to.equal(' ');
-      });
-
-      it('should not have a location as the fifth <td> column data', () => {
-        expect(component.find('td').at(1).text()).to.equal(' ');
+      it('should not have a Availability && Access message as the fourth <td> column data', () => {
+        expect(component.find('td').at(3).text()).to.equal('');
       });
     });
 
