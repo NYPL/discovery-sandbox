@@ -1,5 +1,3 @@
-/* eslint-env mocha */
-/* eslint-disable react/jsx-filename-extension */
 import { expect } from 'chai';
 import { mount, shallow } from 'enzyme';
 import React from 'react';
