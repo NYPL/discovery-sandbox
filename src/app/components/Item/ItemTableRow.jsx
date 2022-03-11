@@ -74,7 +74,7 @@ class ItemTableRow extends React.Component {
             have the edd option */}
             {/* <EddButton
               item={item}
-              link={`${appConfig.baseUrl}/hold/request/${bibId}-${item.id}/edd?searchKeywords=${searchKeywords}`}
+              bibId={bibId}
               onClick={this.getItemRecord}
             /> */}
           </>

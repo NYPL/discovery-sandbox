@@ -1,6 +1,6 @@
-import { Link } from '@nypl/design-system-react-components';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { Link } from 'react-router';
 
 const RequestButton = ({ text, secondary, url, onClick, children }) => {
   return (
