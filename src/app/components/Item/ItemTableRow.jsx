@@ -13,12 +13,10 @@ class ItemTableRow extends React.Component {
   constructor(props) {
     super(props);
     this.getItemRecord = this.getItemRecord.bind(this);
+    this.track = this.track.bind(this);
   }
 
-  getItemRecord(event) {
-    event.preventDefault();
-    const { bibId, item } = this.props;
-
+  track() {
     const { routes } = this.context.router;
 
     const page = routes[routes.length - 1].component.name;
@@ -28,8 +26,14 @@ class ItemTableRow extends React.Component {
     if (page === 'SubjectHeadingShowPage') gaLabel = 'Subject Heading Details';
 
     trackDiscovery('Item Request', gaLabel);
+  }
+
+  getItemRecord(path) {
+    const { searchKeywords } = this.props;
+
+    this.track();
     this.context.router.push(
-      `${appConfig.baseUrl}/hold/request/${bibId}-${item.id}`,
+      (path + searchKeywords && `?searchKeywords=${searchKeywords}`) || '',
     );
   }
 
