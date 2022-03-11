@@ -59,8 +59,8 @@ const AeonButton = ({ item, onClick }) => {
 };
 
 AeonButton.propTypes = {
-  item: PropTypes.object,
-  onClick: PropTypes.func,
+  item: PropTypes.object.isRequired,
+  onClick: PropTypes.func.isRequired,
 };
 
 export default AeonButton;

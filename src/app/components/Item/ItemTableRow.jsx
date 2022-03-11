@@ -158,10 +158,10 @@ class ItemTableRow extends React.Component {
 }
 
 ItemTableRow.propTypes = {
-  item: PropTypes.object,
-  bibId: PropTypes.string,
-  searchKeywords: PropTypes.string,
+  item: PropTypes.object.isRequired,
+  bibId: PropTypes.string.isRequired,
   page: PropTypes.string,
+  searchKeywords: PropTypes.string,
   includeVolColumn: PropTypes.bool,
 };
 

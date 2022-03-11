@@ -34,9 +34,9 @@ const ReCAPButton = ({ item, bibId, onClick }) => {
 };
 
 ReCAPButton.propTypes = {
-  item: PropTypes.object,
-  bibId: PropTypes.string,
-  onClick: PropTypes.func,
+  item: PropTypes.object.isRequired,
+  bibId: PropTypes.string.isRequired,
+  onClick: PropTypes.func.isRequired,
 };
 
 export default ReCAPButton;

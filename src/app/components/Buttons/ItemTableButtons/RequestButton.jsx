@@ -19,9 +19,9 @@ const RequestButton = ({ text, secondary, url, onClick, children }) => {
 };
 
 RequestButton.propTypes = {
-  text: PropTypes.string,
-  url: PropTypes.string,
-  onClick: PropTypes.func,
+  text: PropTypes.string.isRequired,
+  url: PropTypes.string.isRequired,
+  onClick: PropTypes.func.isRequired,
   secondary: PropTypes.bool,
   children: PropTypes.node,
 };
