@@ -32,7 +32,9 @@ class ItemTableRow extends React.Component {
 
     this.track();
     this.context.router.push(
-      (path + searchKeywords && `?searchKeywords=${searchKeywords}`) || '',
+      `${path}${
+        (!!searchKeywords && `?searchKeywords=${searchKeywords}`) || ''
+      }`,
     );
   }
 
