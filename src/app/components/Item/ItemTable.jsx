@@ -30,9 +30,7 @@ const ItemTable = ({ items, holdings, bibId, id, searchKeywords, page }) => {
           <th scope='col'>Format</th>
           <th scope='col'>Call Number</th>
           <th scope='col'>{((!BibPage && `Item `) || '') + `Location`}</th>
-          {!SearchResultsPage ? (
-            <th scope='col'>{`Availability & Access`}</th>
-          ) : null}
+          {BibPage ? <th scope='col'>{`Availability & Access`}</th> : null}
         </tr>
       </thead>
       <tbody>

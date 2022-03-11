@@ -1,3 +1,4 @@
+import { Link } from '@nypl/design-system-react-components';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import appConfig from '../../../data/appConfig';
@@ -36,9 +37,9 @@ const AeonButton = ({ item, onClick }) => {
 
   return (
     <div className='nypl-request-btn'>
-      <a href={aeonUrl} onClick={onClick} tabIndex='0'>
+      <Link href={aeonUrl} onClick={onClick} tabIndex='0'>
         {`Make Appointment`}
-      </a>
+      </Link>
       <br />
       <span className='nypl-request-btn-label'>
         {`Appointment Required. `}

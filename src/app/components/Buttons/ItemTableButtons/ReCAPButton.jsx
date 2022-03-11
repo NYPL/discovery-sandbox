@@ -2,12 +2,9 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Link } from 'react-router';
 
-const ReCAPButton = ({ display, item, link, onClick }) => {
-  if (!display)
-    return (
-      <div>{item.status.preLabel ?? 'Not Available'}</div>
-      // <div>{(item.status && item.status.preLabel) ?? 'Not Available'}</div>
-    );
+const ReCAPButton = ({ item, link, onClick }) => {
+  if (!item.physRequestable || !item.isAvailable)
+    return <div>{item.status.prefLabel ?? 'Not Available'}</div>;
 
   return (
     <div className='nypl-request-btn'>
@@ -26,7 +23,6 @@ const ReCAPButton = ({ display, item, link, onClick }) => {
 };
 
 ReCAPButton.propTypes = {
-  display: PropTypes.boolean,
   item: PropTypes.object,
   link: PropTypes.string,
   onClick: PropTypes.function,

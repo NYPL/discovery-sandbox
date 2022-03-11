@@ -63,17 +63,27 @@ class ItemTableRow extends React.Component {
         }`}
       >
         {(item.specRequestable && (
-          <AeonButton item={item} onClick={this.getItemRecord} />
+          <>
+            <AeonButton item={item} onClick={this.getItemRecord} />
+
+            {/*TODO: This may not be necessary. Sine spec is for special collections it's
+            pressumed to always link to the aeon link and therefor we will never
+            have the edd option */}
+            {/* <EddButton
+              item={item}
+              link={`${appConfig.baseUrl}/hold/request/${bibId}-${item.id}/edd?searchKeywords=${searchKeywords}`}
+              onClick={this.getItemRecord}
+            /> */}
+          </>
         )) || (
           <>
             <EddButton
-              display={item.eddRequestable}
+              item={item}
               link={`${appConfig.baseUrl}/hold/request/${bibId}-${item.id}/edd?searchKeywords=${searchKeywords}`}
               onClick={this.getItemRecord}
             />
 
             <ReCAPButton
-              display={item.physRequestable}
               item={item}
               link={`${appConfig.baseUrl}/hold/request/${bibId}-${item.id}?searchKeywords=${searchKeywords}`}
               onClick={this.getItemRecord}
@@ -82,42 +92,6 @@ class ItemTableRow extends React.Component {
         )}
       </div>
     );
-
-    // let itemRequestBtn =
-    //   item.status && item.status.prefLabel ? item.status.prefLabel : ' ';
-
-    // if (item.aeonUrl && features.includes('aeon-links')) {
-    //   itemRequestBtn = (
-    //     <React.Fragment>
-    //       <a
-    //         href={this.aeonUrl(item)}
-    //         tabIndex='0'
-    //         className='aeonRequestButton'
-    //       >
-    //         Request
-    //       </a>
-    //       <br />
-    //       <span className='aeonRequestText'>Appointment Required</span>
-    //     </React.Fragment>
-    //   );
-    //   return itemRequestBtn;
-    // }
-
-    // if (item.requestable && !allClosed) {
-    //   itemRequestBtn =
-    //     (item.available && (
-    //       <Link
-    //         to={`${appConfig.baseUrl}/hold/request/${bibId}-${item.id}?searchKeywords=${searchKeywords}`}
-    //         onClick={(event) => this.getItemRecord(event, bibId, item.id)}
-    //         tabIndex='0'
-    //       >
-    //         Request
-    //       </Link>
-    //     )) ||
-    //     'In Use';
-    // }
-
-    // return itemRequestBtn;
   }
 
   render() {
@@ -154,6 +128,7 @@ class ItemTableRow extends React.Component {
     return (
       <>
         <tr className={item.availability}>
+          {/* TODO: Is this relevant  */}
           {includeVolColumn ? (
             <td className='vol-date-col' data-th='Vol/Date'>
               <span>{item.volume || ''}</span>
@@ -162,9 +137,6 @@ class ItemTableRow extends React.Component {
           <td data-th='Format'>
             <span>{item.format || ' '}</span>
           </td>
-          {/* <td data-th='Message'>
-          <span>{this.message()}</span>
-        </td> */}
           <td data-th='Call Number'>
             <span>{itemCallNumber}</span>
           </td>
