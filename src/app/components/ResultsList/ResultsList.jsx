@@ -130,8 +130,8 @@ const ResultsList = (
           </ul>
         </div>
         {hasRequestTable
-          ? // TODO: Resolve, Are we to use totalItems or results.items.length?
-            (totalItems < 2 && (
+          ? (totalItems < // TODO: Resolve, Are we to use totalItems or results.items.length?
+              2 && (
               <ItemTable
                 items={items.slice(0, itemTableLimit)}
                 bibId={bibId}

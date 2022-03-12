@@ -47,8 +47,9 @@ class ItemTableRow extends React.Component {
   requestButton() {
     const { item, bibId, page } = this.props;
 
-    // Currently Not Used
-    // TODO Determine if we need these.
+    // TODO Determine if any of theses are required.
+    // Neither of these are currently being used
+    // And they are not explicit in Figma.
     // const isAvailable = item.available;
     // const isRecap = item.isRecap;
     // const isRequestable = (item.requestable = true);
@@ -71,14 +72,15 @@ class ItemTableRow extends React.Component {
           <>
             <AeonButton item={item} onClick={this.getItemRecord} />
 
-            {/*TODO: This may not be necessary. Sine spec is for special collections it's
-            pressumed to always link to the aeon link and therefor we will never
-            have the edd option */}
-            {/* <EddButton
-              item={item}
-              bibId={bibId}
-              onClick={this.getItemRecord}
-            /> */}
+            {/* TODO: This may not be necessary. Sine spec is for special collections it's
+              pressumed to always link to the aeon link and therefor we will never
+              have the edd option 
+              <EddButton
+                item={item}
+                bibId={bibId}
+                onClick={this.getItemRecord}
+              /> 
+            */}
           </>
         )) || (
           <>
@@ -128,7 +130,7 @@ class ItemTableRow extends React.Component {
     return (
       <>
         <tr className={item.availability}>
-          {/* TODO: Is this relevant  */}
+          {/* TODO: Validate Requirements On `includeVolColumn` Figma Does not use this. */}
           {includeVolColumn ? (
             <td className='vol-date-col' data-th='Vol/Date'>
               <span>{item.volume || ''}</span>
