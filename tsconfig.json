@@ -16,6 +16,6 @@
     "jsx": "preserve",
     "baseUrl": "."
   },
-  "exclude": ["node_modules", "test"],
+  "exclude": ["node_modules"],
   "include": ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx"]
 }

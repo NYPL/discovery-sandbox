@@ -1,5 +1,5 @@
-import React from 'react';
 import PropTypes from 'prop-types';
+import React from 'react';
 import { Link } from 'react-router';
 import appConfig from '../../data/appConfig';
 
@@ -11,23 +11,27 @@ const constructSubjectHeading = (heading, i) => {
     return (
       <Link
         key={`${uuid} ${i}`}
-        to={`${appConfig.baseUrl}/subject_headings/${uuid}?label=${encodeURIComponent(label)}`}
+        to={`${
+          appConfig.baseUrl
+        }/subject_headings/${uuid}?label=${encodeURIComponent(label)}`}
       >
         {subjectComponent}
       </Link>
     );
   }
 
-  return ([
+  return [
     constructSubjectHeading(parent),
     <span key={`${uuid} ${i}`}> {'>'} </span>,
     <Link
       key={uuid}
-      to={`${appConfig.baseUrl}/subject_headings/${uuid}?label=${encodeURIComponent(label)}`}
+      to={`${
+        appConfig.baseUrl
+      }/subject_headings/${uuid}?label=${encodeURIComponent(label)}`}
     >
       {subjectComponent}
     </Link>,
-  ]);
+  ];
 };
 
 const generateHeadingLi = (heading, i) => (
@@ -43,9 +47,7 @@ const SubjectHeadings = (props) => {
     <div>
       <dt key={`term-${i}`}>{headings.length > 1 ? 'Subjects' : 'Subject'}</dt>
       <dd data={`definition-${i}`} key={`definition-${i}`}>
-        <ul>
-          {headings.map(generateHeadingLi)}
-        </ul>
+        <ul>{headings.map(generateHeadingLi)}</ul>
       </dd>
     </div>
   );

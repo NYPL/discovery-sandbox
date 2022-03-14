@@ -1,21 +1,14 @@
-import React from 'react';
+import { Breadcrumbs, Heading } from '@nypl/design-system-react-components';
 import PropTypes from 'prop-types';
-import { useSelector } from 'react-redux';
+import React from 'react';
 import DocumentTitle from 'react-document-title';
-
-import {
-  Breadcrumbs,
-  Heading,
-} from '@nypl/design-system-react-components';
-
+import { useSelector } from 'react-redux';
+import appConfig from '../../data/appConfig';
 import LoadingLayer from '../LoadingLayer/LoadingLayer';
 import SubNav from '../SubNav/SubNav';
-import appConfig from '../../data/appConfig';
 
 const SccContainer = (props) => {
-  const {
-    loading,
-  } = useSelector(state => ({
+  const { loading } = useSelector((state) => ({
     loading: state.loading,
   }));
   const {
@@ -28,18 +21,14 @@ const SccContainer = (props) => {
     contentPrimaryStyle,
   } = props;
 
-  const documentTitle = `${pageTitle ? `${pageTitle} | ` : ''}${appConfig.displayTitle} | NYPL`;
+  const documentTitle = `${pageTitle ? `${pageTitle} | ` : ''}${
+    appConfig.displayTitle
+  } | NYPL`;
 
   return (
     <DocumentTitle title={documentTitle}>
       <div className="nypl-ds nypl--research layout-container">
-        {
-          useLoadingLayer ? (
-            <LoadingLayer
-              loading={loading}
-            />
-          ) : null
-        }
+        {useLoadingLayer ? <LoadingLayer loading={loading} /> : null}
         <main className="main main-page">
           <div className="content-header catalog__header">
             <Breadcrumbs
@@ -51,17 +40,17 @@ const SccContainer = (props) => {
               className="breadcrumbs"
             />
             <div className="catalog__heading">
-              <Heading
-                level={1}
-                id="1"
-                blockName="hero"
-              >
+              <Heading level={1} id="1" blockName="hero">
                 {appConfig.displayTitle}
               </Heading>
             </div>
             <SubNav activeSection={activeSection} />
           </div>
-          <div className={`content-primary ${className || ''}`} id={primaryId} style={contentPrimaryStyle}>
+          <div
+            className={`content-primary ${className || ''}`}
+            id={primaryId}
+            style={contentPrimaryStyle}
+          >
             {children}
           </div>
         </main>

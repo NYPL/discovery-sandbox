@@ -9,28 +9,24 @@ const definitionItem = (value, index = 0) => {
 
   return (
     <div key={index}>
-      { value.label ? link : value.content }
-      { value.parallels ? value.parallels : null }
+      {value.label ? link : value.content}
+      {value.parallels ? value.parallels : null}
     </div>
   );
 };
 
-const annotatedMarcDetails = bib =>
-  bib.annotatedMarc.bib.fields.map(field => (
-    {
-      term: field.label,
-      definition: field.values.map(definitionItem),
-    }
-  ));
+const annotatedMarcDetails = (bib) =>
+  bib.annotatedMarc.bib.fields.map((field) => ({
+    term: field.label,
+    definition: field.values.map(definitionItem),
+  }));
 
 const combineBibDetailsData = (bibDetails, additionalData) => {
-  const bibDetailsTerms = new Set(bibDetails.map(item => item.term));
-  const filteredAdditionalData = additionalData.filter(item => !bibDetailsTerms.has(item.term));
+  const bibDetailsTerms = new Set(bibDetails.map((item) => item.term));
+  const filteredAdditionalData = additionalData.filter(
+    (item) => !bibDetailsTerms.has(item.term),
+  );
   return bibDetails.concat(filteredAdditionalData);
 };
 
-export {
-  definitionItem,
-  annotatedMarcDetails,
-  combineBibDetailsData,
-};
+export { definitionItem, annotatedMarcDetails, combineBibDetailsData };

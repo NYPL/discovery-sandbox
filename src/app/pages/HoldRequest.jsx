@@ -1,19 +1,16 @@
-/* globals window document */
-import React from 'react';
-import PropTypes from 'prop-types';
-import { Link, withRouter } from 'react-router';
 import axios from 'axios';
-import { isArray as _isArray, isEmpty as _isEmpty } from 'underscore';
+import PropTypes from 'prop-types';
+import React from 'react';
 import { connect } from 'react-redux';
-
-import SccContainer from '../components/SccContainer/SccContainer';
-import Notification from '../components/Notification/Notification';
+import { Link, withRouter } from 'react-router';
+import { isArray as _isArray, isEmpty as _isEmpty } from 'underscore';
+import { updateLoadingStatus } from '../actions/Actions';
 import LoadingLayer from '../components/LoadingLayer/LoadingLayer';
-
+import Notification from '../components/Notification/Notification';
+import SccContainer from '../components/SccContainer/SccContainer';
 import appConfig from '../data/appConfig';
 import LibraryItem from '../utils/item';
-import { trackDiscovery, institutionNameByNyplSource } from '../utils/utils';
-import { updateLoadingStatus } from '../actions/Actions';
+import { institutionNameByNyplSource, trackDiscovery } from '../utils/utils';
 
 export class HoldRequest extends React.Component {
   constructor(props) {
@@ -62,11 +59,11 @@ export class HoldRequest extends React.Component {
     if (this.state.serverRedirect) this.setState({ serverRedirect: false });
   }
 
-  onRadioSelect(e, i) {
-    trackDiscovery('Delivery Location', e.target.value);
+  onRadioSelect(event, idx) {
+    trackDiscovery('Delivery Location', event.target.value);
     this.setState({
-      delivery: e.target.value,
-      checkedLocNum: i,
+      delivery: event.target.value,
+      checkedLocNum: idx,
     });
   }
 
@@ -74,8 +71,8 @@ export class HoldRequest extends React.Component {
    * submitRequest()
    * Client-side submit call.
    */
-  submitRequest(e, bibId, itemId, itemSource, title) {
-    e.preventDefault();
+  submitRequest(event, bibId, itemId, itemSource, title) {
+    event.preventDefault();
     const searchKeywordsQuery = this.props.searchKeywords
       ? `q=${this.props.searchKeywords}`
       : '';
@@ -218,7 +215,7 @@ export class HoldRequest extends React.Component {
   renderDeliveryLocation(deliveryLocations = []) {
     const { closedLocations } = this.props;
     const { openLocations } = appConfig;
-    return deliveryLocations.map((location, i) => {
+    return deliveryLocations.map((location, idx) => {
       const displayName = this.modelDeliveryLocationName(
         location.prefLabel,
         location.shortName,
@@ -242,18 +239,18 @@ export class HoldRequest extends React.Component {
 
       return (
         <label
-          htmlFor={`location${i}`}
-          id={`location${i}-label`}
+          htmlFor={`location${idx}`}
+          id={`location${idx}-label`}
           key={location['@id']}
         >
           <input
-            aria-labelledby={`radiobutton-group1 location${i}-label`}
+            aria-labelledby={`radiobutton-group1 location${idx}-label`}
             type='radio'
             name='delivery-location'
-            id={`location${i}`}
+            id={`location${idx}`}
             value={value}
-            checked={i === this.state.checkedLocNum}
-            onChange={(e) => this.onRadioSelect(e, i)}
+            checked={idx === this.state.checkedLocNum}
+            onChange={(event) => this.onRadioSelect(event, idx)}
           />
           <span className='nypl-screenreader-only'>Send to:</span>
           <span className='nypl-location-name'>{displayName}</span>
@@ -288,7 +285,7 @@ export class HoldRequest extends React.Component {
           id='available-electronic-delivery'
           value='edd'
           checked={this.state.checkedLocNum === -1}
-          onChange={(e) => this.onRadioSelect(e, -1)}
+          onChange={(event) => this.onRadioSelect(event, -1)}
         />
         Have a small portion (one chapter, one article, around 10% of work or 50
         pages for public domain works) scanned and sent to you via electronic
@@ -380,8 +377,8 @@ export class HoldRequest extends React.Component {
           className='place-hold-form form'
           action={`${appConfig.baseUrl}/hold/request/${bibId}-${itemId}-${itemSource}`}
           method='POST'
-          onSubmit={(e) =>
-            this.submitRequest(e, bibId, itemId, itemSource, title)
+          onSubmit={(event) =>
+            this.submitRequest(event, bibId, itemId, itemSource, title)
           }
         >
           {deliveryLocationInstruction}
