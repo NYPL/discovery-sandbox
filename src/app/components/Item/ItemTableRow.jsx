@@ -2,11 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { isEmpty as _isEmpty } from 'underscore';
 import { trackDiscovery } from '../../utils/utils';
-import {
-  AeonButton,
-  EddButton,
-  ReCAPButton,
-} from '../Buttons/ItemTableButtons';
+import { AeonButton, EddButton, PhysButton } from '../Buttons/ItemTableButtons';
 
 class ItemTableRow extends React.Component {
   constructor(props) {
@@ -85,7 +81,7 @@ class ItemTableRow extends React.Component {
         )) || (
           <>
             <EddButton item={item} bibId={bibId} onClick={this.getItemRecord} />
-            <ReCAPButton
+            <PhysButton
               item={item}
               bibId={bibId}
               onClick={this.getItemRecord}

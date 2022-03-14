@@ -3,7 +3,7 @@ import React from 'react';
 import appConfig from '../../../data/appConfig';
 import RequestButton, { RequestButtonLabel } from './RequestButton';
 
-const ReCAPButton = ({ item, bibId, onClick }) => {
+const PhysButton = ({ item, bibId, onClick }) => {
   if (!item.physRequestable || !item.available)
     return <div>{item.status.prefLabel ?? 'Not Available'}</div>;
 
@@ -33,10 +33,10 @@ const ReCAPButton = ({ item, bibId, onClick }) => {
   );
 };
 
-ReCAPButton.propTypes = {
+PhysButton.propTypes = {
   item: PropTypes.object.isRequired,
   bibId: PropTypes.string.isRequired,
   onClick: PropTypes.func.isRequired,
 };
 
-export default ReCAPButton;
+export default PhysButton;
