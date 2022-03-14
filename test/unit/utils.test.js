@@ -41,9 +41,7 @@ describe('ajaxCall', () => {
 
     before(() => {
       mock = new MockAdapter(axios);
-      mock
-        .onGet('/api?q=locofocos')
-        .reply(200, { searchResults: [] });
+      mock.onGet('/api?q=locofocos').reply(200, { searchResults: [] });
     });
 
     after(() => {
@@ -77,9 +75,7 @@ describe('ajaxCall', () => {
 
     before(() => {
       mock = new MockAdapter(axios);
-      mock
-        .onGet('/api?q=locofocos')
-        .reply(400, { searchResults: [] });
+      mock.onGet('/api?q=locofocos').reply(400, { searchResults: [] });
     });
 
     after(() => {
@@ -104,11 +100,10 @@ describe('ajaxCall', () => {
     it('should invoke the error callback function', () => {
       const cbSpy = sinon.spy();
       const cbErrorSpy = sinon.spy();
-      ajaxCall('/api?q=locofocos', (cbSpy), cbErrorSpy)
-        .then(() => {
-          expect(cbSpy.callCount).to.equal(0);
-          expect(cbErrorSpy.callCount).to.equal(1);
-        });
+      ajaxCall('/api?q=locofocos', cbSpy, cbErrorSpy).then(() => {
+        expect(cbSpy.callCount).to.equal(0);
+        expect(cbErrorSpy.callCount).to.equal(1);
+      });
 
       cbSpy.reset();
       cbErrorSpy.reset();
@@ -157,30 +152,32 @@ describe('createAppHistory', () => {
  * destructureFilters
  */
 describe('destructureFilters', () => {
-  const apiFilters = { '@context':
-   'http://discovery-api-qa.us-east-1.elasticbeanstalk.com/api/v0.1/discovery/context_all.jsonld',
-  '@type': 'itemList',
-  itemListElement:
-   [
-     { '@type': 'nypl:Aggregation',
-       '@id': 'res:subjectLiteral',
-       id: 'subjectLiteral',
-       field: 'subjectLiteral',
-       values: [
-         {
-           count: 130,
-           label: 'Animals -- Fiction.',
-           value: 'Animals -- Fiction.',
-         },
-         {
-           count: 89,
-           label: 'Awards.',
-           value: 'Awards.',
-         },
-       ],
-     },
-   ],
-  totalResults: 665 };
+  const apiFilters = {
+    '@context':
+      'http://discovery-api-qa.us-east-1.elasticbeanstalk.com/api/v0.1/discovery/context_all.jsonld',
+    '@type': 'itemList',
+    itemListElement: [
+      {
+        '@type': 'nypl:Aggregation',
+        '@id': 'res:subjectLiteral',
+        id: 'subjectLiteral',
+        field: 'subjectLiteral',
+        values: [
+          {
+            count: 130,
+            label: 'Animals -- Fiction.',
+            value: 'Animals -- Fiction.',
+          },
+          {
+            count: 89,
+            label: 'Awards.',
+            value: 'Awards.',
+          },
+        ],
+      },
+    ],
+    totalResults: 665,
+  };
   describe('Default call', () => {
     it('should return an empty object', () => {
       const filters = destructureFilters();
@@ -190,21 +187,31 @@ describe('destructureFilters', () => {
 
   describe('No filters from the API', () => {
     it('should return an empty object for aggregations with no values', () => {
-      const filters = { 'filters[subjectLiteral][0]': 'Animals -- Fiction.', 'filters[subjectLiteral][1]': 'Awards.' };
+      const filters = {
+        'filters[subjectLiteral][0]': 'Animals -- Fiction.',
+        'filters[subjectLiteral][1]': 'Awards.',
+      };
       expect(destructureFilters(filters, {})).to.eql({});
     });
   });
 
   describe('Date filters', () => {
-    const filters = { 'filters[dateBefore]': '2000', 'filters[dateAfter]': '1900' };
+    const filters = {
+      'filters[dateBefore]': '2000',
+      'filters[dateAfter]': '1900',
+    };
     const expectedReturnValue = { dateBefore: '2000', dateAfter: '1900' };
     it('should return object with dateBefore and dateAfter when they are passed', () => {
-      expect(destructureFilters(filters, apiFilters)).to.eql(expectedReturnValue);
+      expect(destructureFilters(filters, apiFilters)).to.eql(
+        expectedReturnValue,
+      );
     });
   });
 
   describe('Filters with value of type array', () => {
-    const filters = { 'filters[subjectLiteral][0]': ['Animals -- Fiction.', 'Awards.'] };
+    const filters = {
+      'filters[subjectLiteral][0]': ['Animals -- Fiction.', 'Awards.'],
+    };
     const expectedReturnValue = {
       subjectLiteral: [
         { value: 'Animals -- Fiction.', label: 'Animals -- Fiction.' },
@@ -212,12 +219,17 @@ describe('destructureFilters', () => {
       ],
     };
     it('should return value/label pairs in an array under the appropriate key', () => {
-      expect(destructureFilters(filters, apiFilters)).to.eql(expectedReturnValue);
+      expect(destructureFilters(filters, apiFilters)).to.eql(
+        expectedReturnValue,
+      );
     });
   });
 
   describe('Filters with value of type string', () => {
-    const filters = { 'filters[subjectLiteral][0]': 'Animals -- Fiction.', 'filters[subjectLiteral][1]': 'Awards.' };
+    const filters = {
+      'filters[subjectLiteral][0]': 'Animals -- Fiction.',
+      'filters[subjectLiteral][1]': 'Awards.',
+    };
     const expectedReturnValue = {
       subjectLiteral: [
         { value: 'Animals -- Fiction.', label: 'Animals -- Fiction.' },
@@ -225,7 +237,9 @@ describe('destructureFilters', () => {
       ],
     };
     it('should return value/label pairs in an array under the appropriate key', () => {
-      expect(destructureFilters(filters, apiFilters)).to.eql(expectedReturnValue);
+      expect(destructureFilters(filters, apiFilters)).to.eql(
+        expectedReturnValue,
+      );
     });
   });
 });
@@ -308,8 +322,9 @@ describe('getFilterParam', () => {
         publisher: { value: '', label: '' },
         subject: { value: '', label: '' },
       };
-      expect(getFilterParam(filters))
-        .to.equal('&filters[materialType]=resourcetypes%3Aaud&filters[owner]=orgs%3A1000');
+      expect(getFilterParam(filters)).to.equal(
+        '&filters[materialType]=resourcetypes%3Aaud&filters[owner]=orgs%3A1000',
+      );
     });
 
     it('should return a key:value string from three filters', () => {
@@ -321,12 +336,19 @@ describe('getFilterParam', () => {
         materialType: { value: '', label: '' },
         mediaType: { value: '', label: '' },
         owner: { value: '', label: '' },
-        publisher: { value: '[Berlin] : Walter de Gruyter', label: '[Berlin] : Walter de Gruyter' },
-        subject: { value: 'Electronic journals.', label: 'Electronic journals.' },
+        publisher: {
+          value: '[Berlin] : Walter de Gruyter',
+          label: '[Berlin] : Walter de Gruyter',
+        },
+        subject: {
+          value: 'Electronic journals.',
+          label: 'Electronic journals.',
+        },
       };
-      expect(getFilterParam(filters))
-        .to.equal('&filters[language]=lang%3Ager&filters[publisher]=%5BBerlin%5D%20%3A%20Walter' +
-          '%20de%20Gruyter&filters[subject]=Electronic%20journals.');
+      expect(getFilterParam(filters)).to.equal(
+        '&filters[language]=lang%3Ager&filters[publisher]=%5BBerlin%5D%20%3A%20Walter' +
+          '%20de%20Gruyter&filters[subject]=Electronic%20journals.',
+      );
     });
 
     it('should return a key:value string from date filters and a language filter', () => {
@@ -336,8 +358,9 @@ describe('getFilterParam', () => {
         dateAfter: '1999',
         dateBefore: '2010',
       };
-      expect(getFilterParam(filters))
-        .to.equal('&filters[language]=lang%3Ager&filters[dateAfter]=1999&filters[dateBefore]=2010');
+      expect(getFilterParam(filters)).to.equal(
+        '&filters[language]=lang%3Ager&filters[dateAfter]=1999&filters[dateBefore]=2010',
+      );
     });
   });
 });
@@ -429,14 +452,17 @@ describe('basicQuery', () => {
     it('should return updated default query string', () => {
       const createAPIQuery = basicQuery(defaultQueryObjwithData);
 
-      expect(createAPIQuery({})).to.equal('q=shakespeare&sort=title&sort_direction=desc&page=4');
+      expect(createAPIQuery({})).to.equal(
+        'q=shakespeare&sort=title&sort_direction=desc&page=4',
+      );
     });
 
     it('should return updated string if any new data was passed', () => {
       const createAPIQuery = basicQuery(defaultQueryObjwithData);
 
-      expect(createAPIQuery({ page: 7, searchKeywords: 'king lear' }))
-        .to.equal('q=king%20lear&sort=title&sort_direction=desc&page=7');
+      expect(createAPIQuery({ page: 7, searchKeywords: 'king lear' })).to.equal(
+        'q=king%20lear&sort=title&sort_direction=desc&page=7',
+      );
     });
   });
 
@@ -445,30 +471,47 @@ describe('basicQuery', () => {
 
     it('should update the sort by query', () => {
       // There are more tests in the `getSortQuery` suite.
-      expect(createAPIQuery({ sortBy: 'title_asc' })).to.equal('q=&sort=title&sort_direction=asc');
-      expect(createAPIQuery({ sortBy: 'date_asc' })).to.equal('q=&sort=date&sort_direction=asc');
+      expect(createAPIQuery({ sortBy: 'title_asc' })).to.equal(
+        'q=&sort=title&sort_direction=asc',
+      );
+      expect(createAPIQuery({ sortBy: 'date_asc' })).to.equal(
+        'q=&sort=date&sort_direction=asc',
+      );
     });
 
     it('should update the field query', () => {
       // There are more tests in the `getFieldParam` suite.
-      expect(createAPIQuery({ field: 'title' })).to.equal('q=&search_scope=title');
-      expect(createAPIQuery({ field: 'author' })).to.equal('q=&search_scope=author');
+      expect(createAPIQuery({ field: 'title' })).to.equal(
+        'q=&search_scope=title',
+      );
+      expect(createAPIQuery({ field: 'author' })).to.equal(
+        'q=&search_scope=author',
+      );
     });
 
     it('should update the selected filters query', () => {
       // There are more tests in the `getFilterParam` suite.
-      expect(createAPIQuery({
-        selectedFilters: {
-          language: { value: '', label: '' },
-          materialType: { value: 'resourcetypes:aud', label: 'Audio' },
-          owner: { value: 'orgs:1000', label: 'Stephen A. Schwarzman Building' },
-          subject: { value: '', label: '' },
-        },
-      })).to.equal('q=&filters[materialType]=resourcetypes%3Aaud&filters[owner]=orgs%3A1000');
+      expect(
+        createAPIQuery({
+          selectedFilters: {
+            language: { value: '', label: '' },
+            materialType: { value: 'resourcetypes:aud', label: 'Audio' },
+            owner: {
+              value: 'orgs:1000',
+              label: 'Stephen A. Schwarzman Building',
+            },
+            subject: { value: '', label: '' },
+          },
+        }),
+      ).to.equal(
+        'q=&filters[materialType]=resourcetypes%3Aaud&filters[owner]=orgs%3A1000',
+      );
     });
 
     it('should update the searchKeywords query', () => {
-      expect(createAPIQuery({ searchKeywords: 'locofocos' })).to.equal('q=locofocos');
+      expect(createAPIQuery({ searchKeywords: 'locofocos' })).to.equal(
+        'q=locofocos',
+      );
     });
 
     it('should update the page query', () => {
@@ -476,23 +519,29 @@ describe('basicQuery', () => {
     });
 
     it('should update the string if there are multiple selections', () => {
-      expect(createAPIQuery({
-        field: 'title',
-        searchKeywords: 'hamlet',
-        sortBy: 'title_asc',
-        page: '5',
-      })).to.equal('q=hamlet&sort=title&sort_direction=asc&search_scope=title&page=5');
+      expect(
+        createAPIQuery({
+          field: 'title',
+          searchKeywords: 'hamlet',
+          sortBy: 'title_asc',
+          page: '5',
+        }),
+      ).to.equal(
+        'q=hamlet&sort=title&sort_direction=asc&search_scope=title&page=5',
+      );
     });
 
     it('should update the identifier number query', () => {
-      expect(createAPIQuery({
-        identifierNumbers: {
-          issn: '1234',
-          isbn: '2345',
-          oclc: '3456',
-          lccn: '4567',
-        },
-      })).to.equal('q=&issn=1234&isbn=2345&oclc=3456&lccn=4567');
+      expect(
+        createAPIQuery({
+          identifierNumbers: {
+            issn: '1234',
+            isbn: '2345',
+            oclc: '3456',
+            lccn: '4567',
+          },
+        }),
+      ).to.equal('q=&issn=1234&isbn=2345&oclc=3456&lccn=4567');
     });
   });
 
@@ -504,7 +553,9 @@ describe('basicQuery', () => {
     });
 
     it('should accept advanced search params in initial query', () => {
-      expect(createAPIQuery({})).to.eql('q=&contributor=Poe&title=The Raven&subject=ravens');
+      expect(createAPIQuery({})).to.eql(
+        'q=&contributor=Poe&title=The Raven&subject=ravens',
+      );
     });
 
     it('should update advanced search params', () => {
@@ -513,12 +564,18 @@ describe('basicQuery', () => {
         contributor: 'Hitchcock',
         subject: 'birds',
       };
-      expect(createAPIQuery(updatedParams)).to.eql('q=&contributor=Hitchcock&title=The Birds&subject=birds');
+      expect(createAPIQuery(updatedParams)).to.eql(
+        'q=&contributor=Hitchcock&title=The Birds&subject=birds',
+      );
     });
 
     it('should clear advanced search params when explicitly told', () => {
       expect(
-        createAPIQuery({ clearTitle: true, clearSubject: true, clearContributor: true }),
+        createAPIQuery({
+          clearTitle: true,
+          clearSubject: true,
+          clearContributor: true,
+        }),
       ).to.eql(null);
     });
   });
@@ -685,7 +742,11 @@ describe('getReqParams', () => {
     });
 
     it('should return advanced search params', () => {
-      const queryFromUrl = { title: 'The Raven', contributor: 'Edgar Allen Poe', subject: 'ravens' };
+      const queryFromUrl = {
+        title: 'The Raven',
+        contributor: 'Edgar Allen Poe',
+        subject: 'ravens',
+      };
       expect(getReqParams(queryFromUrl)).to.eql({
         contributor: 'Edgar Allen Poe',
         fieldQuery: '',
@@ -707,7 +768,13 @@ describe('getReqParams', () => {
     });
 
     it('should pass identifier number related params', () => {
-      const queryFromUrl = { issn: '1234-5678', isbn: '0123456789', lccn: '12345678', oclc: '234567890', redirectOnMatch: 'true' };
+      const queryFromUrl = {
+        issn: '1234-5678',
+        isbn: '0123456789',
+        lccn: '12345678',
+        oclc: '234567890',
+        redirectOnMatch: 'true',
+      };
       expect(getReqParams(queryFromUrl)).to.eql({
         page: '1',
         q: '',
@@ -748,21 +815,22 @@ describe('getAggregatedElectronicResources', () => {
         {},
         {
           isElectronicResource: true,
-          electronicResources: [{
-            id: 'someId',
-            title: 'someTitle',
-            url: 'someUrl',
-          }],
+          electronicResources: [
+            {
+              id: 'someId',
+              title: 'someTitle',
+              url: 'someUrl',
+            },
+          ],
         },
       ];
-      expect(getAggregatedElectronicResources(mockedItems))
-        .to.eql([
-          {
-            id: 'someId',
-            title: 'someTitle',
-            url: 'someUrl',
-          },
-        ]);
+      expect(getAggregatedElectronicResources(mockedItems)).to.eql([
+        {
+          id: 'someId',
+          title: 'someTitle',
+          url: 'someUrl',
+        },
+      ]);
     });
 
     it('should return an array with two electronic resources from the same item', () => {
@@ -785,53 +853,53 @@ describe('getAggregatedElectronicResources', () => {
           ],
         },
       ];
-      expect(getAggregatedElectronicResources(mockedItems))
-        .to.eql([
-          {
-            id: 'someId',
-            title: 'someTitle',
-            url: 'someUrl',
-          },
-          {
-            id: 'someId2',
-            title: 'someTitle2',
-            url: 'someUrl2',
-          },
-        ]);
+      expect(getAggregatedElectronicResources(mockedItems)).to.eql([
+        {
+          id: 'someId',
+          title: 'someTitle',
+          url: 'someUrl',
+        },
+        {
+          id: 'someId2',
+          title: 'someTitle2',
+          url: 'someUrl2',
+        },
+      ]);
     });
 
-    it('should return an array with three electronic resources, two from one item and' +
-      ' another from another item in the same array', () => {
-      const mockedItems = [
-        {},
-        {
-          isElectronicResource: true,
-          electronicResources: [
-            {
-              id: 'someId',
-              title: 'someTitle',
-              url: 'someUrl',
-            },
-          ],
-        },
-        {
-          isElectronicResource: true,
-          electronicResources: [
-            {
-              id: 'someId2',
-              title: 'someTitle2',
-              url: 'someUrl2',
-            },
-            {
-              id: 'someId3',
-              title: 'someTitle3',
-              url: 'someUrl3',
-            },
-          ],
-        },
-      ];
-      expect(getAggregatedElectronicResources(mockedItems))
-        .to.eql([
+    it(
+      'should return an array with three electronic resources, two from one item and' +
+        ' another from another item in the same array',
+      () => {
+        const mockedItems = [
+          {},
+          {
+            isElectronicResource: true,
+            electronicResources: [
+              {
+                id: 'someId',
+                title: 'someTitle',
+                url: 'someUrl',
+              },
+            ],
+          },
+          {
+            isElectronicResource: true,
+            electronicResources: [
+              {
+                id: 'someId2',
+                title: 'someTitle2',
+                url: 'someUrl2',
+              },
+              {
+                id: 'someId3',
+                title: 'someTitle3',
+                url: 'someUrl3',
+              },
+            ],
+          },
+        ];
+        expect(getAggregatedElectronicResources(mockedItems)).to.eql([
           {
             id: 'someId',
             title: 'someTitle',
@@ -848,7 +916,8 @@ describe('getAggregatedElectronicResources', () => {
             url: 'someUrl3',
           },
         ]);
-    });
+      },
+    );
   });
 });
 
@@ -858,19 +927,28 @@ describe('truncateStringOnWhitespace()', () => {
   });
 
   it('Should truncate a long title when break lands in the middle of a word', () => {
-    const truncStr = truncateStringOnWhitespace('Longer Title Here To Become Shorter', 25);
+    const truncStr = truncateStringOnWhitespace(
+      'Longer Title Here To Become Shorter',
+      25,
+    );
     expect(truncStr).to.equal('Longer Title Here To...');
     expect(truncStr.length).to.be.lessThan(26);
   });
 
   it('Should truncate a long title when break lands on a whitespace', () => {
-    const truncStr = truncateStringOnWhitespace('Longer Title Break On Whitespace', 25);
+    const truncStr = truncateStringOnWhitespace(
+      'Longer Title Break On Whitespace',
+      25,
+    );
     expect(truncStr).to.equal('Longer Title Break On...');
     expect(truncStr.length).to.be.lessThan(26);
   });
 
   it('Should truncate single word title regardless of whitespace', () => {
-    const truncStr = truncateStringOnWhitespace('ThisIsAOneWordTitleWhichCouldExistOutThere', 25);
+    const truncStr = truncateStringOnWhitespace(
+      'ThisIsAOneWordTitleWhichCouldExistOutThere',
+      25,
+    );
     expect(truncStr).to.equal('ThisIsAOneWordTitleWhi...');
     expect(truncStr.length).to.be.lessThan(26);
   });
@@ -891,7 +969,7 @@ describe('hasValidFilters', () => {
       language: [],
       dateAfter: '',
       dateBefore: '',
-      subjectLiteral: []
+      subjectLiteral: [],
     };
     expect(hasValidFilters(filters)).to.equal(false);
   });
@@ -909,9 +987,9 @@ describe('hasValidFilters', () => {
           selected: true,
           value: 'resourcetypes:aud',
           label: 'Audio',
-          count: 400314
-        }
-      ]
+          count: 400314,
+        },
+      ],
     };
     expect(hasValidFilters(filters)).to.equal(true);
   });
@@ -925,19 +1003,27 @@ describe('extractNoticePreference', () => {
     expect(extractNoticePreference({ '123': 'nonsense' })).to.equal('None');
   });
   it('should return "Email" if "268" field value is "z"', () => {
-    expect(extractNoticePreference({ '268': {'value': 'z'} })).to.equal('Email');
+    expect(extractNoticePreference({ '268': { 'value': 'z' } })).to.equal(
+      'Email',
+    );
   });
   it('should return "Telephone" if "268" field value is "p"', () => {
-    expect(extractNoticePreference({ '268': {'value': 'p'} })).to.equal('Telephone');
+    expect(extractNoticePreference({ '268': { 'value': 'p' } })).to.equal(
+      'Telephone',
+    );
   });
   it('should return "None" if "268" field value is "-"', () => {
-    expect(extractNoticePreference({ '268': {'value': '-'} })).to.equal('None');
+    expect(extractNoticePreference({ '268': { 'value': '-' } })).to.equal(
+      'None',
+    );
   });
 });
 
 describe('displayContext', () => {
   it('should include searchKeywords', () => {
-    expect(displayContext({ searchKeywords: 'birds' })).to.eql('for keyword "birds"');
+    expect(displayContext({ searchKeywords: 'birds' })).to.eql(
+      'for keyword "birds"',
+    );
   });
 
   it('should map contributor to Author', () => {
@@ -945,7 +1031,9 @@ describe('displayContext', () => {
   });
 
   it('should map title to Title', () => {
-    expect(displayContext({ title: 'The Raven' })).to.eql('for Title: The Raven');
+    expect(displayContext({ title: 'The Raven' })).to.eql(
+      'for Title: The Raven',
+    );
   });
 
   it('should map subject to Subject', () => {
@@ -953,12 +1041,16 @@ describe('displayContext', () => {
   });
 
   it('should combine terms', () => {
-    expect(displayContext({
-      subject: 'ravens',
-      contributor: 'Poe',
-      title: 'The Raven',
-      searchKeywords: 'birds',
-    })).to.eql('for keyword "birds" and Author: Poe and Title: The Raven and Subject: ravens');
+    expect(
+      displayContext({
+        subject: 'ravens',
+        contributor: 'Poe',
+        title: 'The Raven',
+        searchKeywords: 'birds',
+      }),
+    ).to.eql(
+      'for keyword "birds" and Author: Poe and Title: The Raven and Subject: ravens',
+    );
   });
 });
 
@@ -966,7 +1058,9 @@ describe('camelToShishKabobCase', () => {
   it('should convert camel to shish kabob case', () => {
     expect(camelToShishKabobCase('SierraNypl')).to.eq('sierra-nypl');
     expect(camelToShishKabobCase('RecapPul')).to.eq('recap-pul');
-    expect(camelToShishKabobCase('firstCharCanBeLowerCase')).to.eq('first-char-can-be-lower-case');
+    expect(camelToShishKabobCase('firstCharCanBeLowerCase')).to.eq(
+      'first-char-can-be-lower-case',
+    );
   });
 });
 
@@ -992,11 +1086,13 @@ describe('isNyplBnumber', () => {
 
 describe('getIdentifierQuery', () => {
   it('should combine key-value pairs into a query', () => {
-    expect(getIdentifierQuery({
-      issn: '1234',
-      isbn: '23456',
-      oclc: '34567',
-      lccn: '45678',
-    })).to.equal('&issn=1234&isbn=23456&oclc=34567&lccn=45678');
+    expect(
+      getIdentifierQuery({
+        issn: '1234',
+        isbn: '23456',
+        oclc: '34567',
+        lccn: '45678',
+      }),
+    ).to.equal('&issn=1234&isbn=23456&oclc=34567&lccn=45678');
   });
 });

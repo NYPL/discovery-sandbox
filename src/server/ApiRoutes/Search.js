@@ -1,7 +1,4 @@
-import {
-  isArray as _isArray,
-  pick as _pick,
-} from 'underscore';
+import { isArray as _isArray, pick as _pick } from 'underscore';
 import appConfig from '../../app/data/appConfig';
 import {
   getReqParams,
@@ -31,15 +28,33 @@ const createAPIQuery = basicQuery({
 });
 
 const nyplApiClientCall = (query, urlEnabledFeatures = []) => {
-  const requestOptions = appConfig.features.includes('on-site-edd') || urlEnabledFeatures.includes('on-site-edd') ? { headers: { 'X-Features': 'on-site-edd' } } : {};
+  const requestOptions =
+    appConfig.features.includes('on-site-edd') ||
+    urlEnabledFeatures.includes('on-site-edd')
+      ? { headers: { 'X-Features': 'on-site-edd' } }
+      : {};
 
-  return nyplApiClient()
-    .then(client =>
-      client.get(`/discovery/resources${query}`, requestOptions),
-    );
+  return nyplApiClient().then((client) =>
+    client.get(`/discovery/resources${query}`, requestOptions),
+  );
 };
 
-function fetchResults(searchKeywords = '', contributor, title, subject, page, sortBy, order, field, filters, identifierNumbers, expressRes, cb, errorcb, features) {
+function fetchResults(
+  searchKeywords = '',
+  contributor,
+  title,
+  subject,
+  page,
+  sortBy,
+  order,
+  field,
+  filters,
+  identifierNumbers,
+  expressRes,
+  cb,
+  errorcb,
+  features,
+) {
   const encodedResultsQueryString = createAPIQuery({
     searchKeywords,
     contributor,
@@ -56,7 +71,7 @@ function fetchResults(searchKeywords = '', contributor, title, subject, page, so
     searchKeywords,
     selectedFilters: filters,
     field,
-    identifierNumbers
+    identifierNumbers,
   });
 
   const aggregationQuery = `/aggregations?${encodedAggregationsQueryString}`;
@@ -68,24 +83,26 @@ function fetchResults(searchKeywords = '', contributor, title, subject, page, so
   };
 
   let drbRequesting = true;
-  const drbPromise = appConfig.features.includes('drb-integration') ?
-    Promise.race([
-      new Promise((resolve) => {
-        setTimeout(() => {
-          if (drbRequesting) logger.error('Drb timeout');
-          return resolve([]);
-        }, 5000);
-      }),
-      ResearchNow.search(queryObj)
-        .then((res) => { drbRequesting = false; return res; })
-        .catch((e) => {
-          drbRequesting = false;
-          logger.error('Drb error: ', e);
-          return [];
+  const drbPromise = appConfig.features.includes('drb-integration')
+    ? Promise.race([
+        new Promise((resolve) => {
+          setTimeout(() => {
+            if (drbRequesting) logger.error('Drb timeout');
+            return resolve([]);
+          }, 5000);
         }),
-    ])
-    :
-    null;
+        ResearchNow.search(queryObj)
+          .then((res) => {
+            drbRequesting = false;
+            return res;
+          })
+          .catch((e) => {
+            drbRequesting = false;
+            logger.error('Drb error: ', e);
+            return [];
+          }),
+      ])
+    : null;
 
   // Get the following in parallel:
   //  - search results
@@ -105,11 +122,7 @@ function fetchResults(searchKeywords = '', contributor, title, subject, page, so
       const locationCodes = new Set();
       const { itemListElement } = results;
       if (!itemListElement) {
-        return cb(
-          aggregations,
-          results,
-          page,
-          drbbResults);
+        return cb(aggregations, results, page, drbbResults);
       }
       itemListElement.forEach((resultObj) => {
         const { result } = resultObj;
@@ -122,38 +135,52 @@ function fetchResults(searchKeywords = '', contributor, title, subject, page, so
             if (holding.location) locationCodes.add(holding.location[0].code);
           });
           if (holdings.length < itemTableLimit) {
-            result.items.slice(0, itemTableLimit - holdings.length).forEach((item) => {
-              if (item.holdingLocation) item.holdingLocation.forEach((holdingLocation) => {
-                locationCodes.add(holdingLocation['@id']);
+            result.items
+              .slice(0, itemTableLimit - holdings.length)
+              .forEach((item) => {
+                if (item.holdingLocation)
+                  item.holdingLocation.forEach((holdingLocation) => {
+                    locationCodes.add(holdingLocation['@id']);
+                  });
               });
-            });
           }
         } else if (result.items) {
           result.items.slice(0, itemTableLimit).forEach((item) => {
-            if (item.holdingLocation) locationCodes.add(item.holdingLocation[0]['@id']);
+            if (item.holdingLocation)
+              locationCodes.add(item.holdingLocation[0]['@id']);
           });
         }
       });
       const codes = Array.from(locationCodes).join(',');
-      return fetchLocationUrls(codes).then((resp) => {
-        itemListElement.forEach((resultObj) => {
-          const { result } = resultObj;
-          const items = (result.checkInItems || []).concat(result.items);
-          items.slice(0, itemTableLimit).forEach((item) => {
-            if (!item) return;
-            if (item.holdingLocation) item.holdingLocation[0].url = findUrl({ code: item.holdingLocation[0]['@id'] }, resp);
-            if (item.location) item.locationUrl = findUrl({code: item.holdingLocationCode }, resp);
+      return fetchLocationUrls(codes)
+        .then((resp) => {
+          itemListElement.forEach((resultObj) => {
+            const { result } = resultObj;
+            const items = (result.checkInItems || []).concat(result.items);
+            items.slice(0, itemTableLimit).forEach((item) => {
+              if (!item) return;
+              if (item.holdingLocation)
+                item.holdingLocation[0].url = findUrl(
+                  { code: item.holdingLocation[0]['@id'] },
+                  resp,
+                );
+              if (item.location)
+                item.locationUrl = findUrl(
+                  { code: item.holdingLocationCode },
+                  resp,
+                );
+            });
           });
-        });
-        return results;
-      })
-        .then(processedResults => cb(
-          aggregations,
-          processedResults,
-          page,
-          drbbResults))
+          return results;
+        })
+        .then((processedResults) =>
+          cb(aggregations, processedResults, page, drbbResults),
+        )
         .catch((error) => {
-          logger.error('Error making server search call in search function', error);
+          logger.error(
+            'Error making server search call in search function',
+            error,
+          );
           errorcb(error);
         });
     })
@@ -180,7 +207,9 @@ function search(req, res, resolve) {
 
   const identifierNumbers = { issn, isbn, oclc, lccn, redirectOnMatch };
 
-  const sortBy = sort.length ? [sort, order].filter(field => field.length).join('_') : 'relevance';
+  const sortBy = sort.length
+    ? [sort, order].filter((field) => field.length).join('_')
+    : 'relevance';
 
   // If user is making a search for periodicals,
   // add an issuance filter on the serial field and
@@ -206,27 +235,32 @@ function search(req, res, resolve) {
     apiQueryFilters,
     identifierNumbers,
     res,
-    (apiFilters, searchResults, pageQuery, drbbResults) => resolve({
-      filters: apiFilters,
-      searchResults,
-      page: pageQuery,
-      drbbResults,
-      selectedFilters: createSelectedFiltersHash(filters, apiFilters),
-      searchKeywords: q,
-      sortBy,
-      field: fieldQuery,
-      contributor,
-      title,
-      subject,
-    }),
-    error => resolve(error),
+    (apiFilters, searchResults, pageQuery, drbbResults) =>
+      resolve({
+        filters: apiFilters,
+        searchResults,
+        page: pageQuery,
+        drbbResults,
+        selectedFilters: createSelectedFiltersHash(filters, apiFilters),
+        searchKeywords: q,
+        sortBy,
+        field: fieldQuery,
+        contributor,
+        title,
+        subject,
+      }),
+    (error) => resolve(error),
     urlEnabledFeatures,
   );
 }
 
 function searchServerPost(req, res) {
   if (req.body.advancedSearch) {
-    return res.redirect(`${appConfig.baseUrl}/search?${createAPIQuery(buildQueryDataFromForm(Object.entries(req.body)))}`);
+    return res.redirect(
+      `${appConfig.baseUrl}/search?${createAPIQuery(
+        buildQueryDataFromForm(Object.entries(req.body)),
+      )}`,
+    );
   }
 
   const { fieldQuery, q, filters, sortQuery } = getReqParams(req.body);
@@ -235,7 +269,11 @@ function searchServerPost(req, res) {
   // with one selected filter.
   const reqFilters = _isArray(filters) ? filters : [filters];
 
-  const selectedFilters = parseServerSelectedFilters(reqFilters, dateAfter, dateBefore);
+  const selectedFilters = parseServerSelectedFilters(
+    reqFilters,
+    dateAfter,
+    dateBefore,
+  );
   let searchKeywords = q;
   let field = fieldQuery;
   let sortBy = sortQuery;
@@ -246,8 +284,10 @@ function searchServerPost(req, res) {
 
   if (dateAfter && dateBefore) {
     if (Number(dateAfter) > Number(dateBefore)) {
-      return res.redirect(`${appConfig.baseUrl}/search?q=${searchKeywords}&` +
-        'error=dateFilterError#popup-no-js');
+      return res.redirect(
+        `${appConfig.baseUrl}/search?q=${searchKeywords}&` +
+          'error=dateFilterError#popup-no-js',
+      );
     }
   }
 

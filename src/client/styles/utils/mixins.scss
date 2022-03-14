@@ -52,7 +52,7 @@
 
   @each $key, $value in $args {
     @if $value {
-      $expr: "#{$expr} and (#{$key}: #{$value})";
+      $expr: '#{$expr} and (#{$key}: #{$value})';
     }
   }
 
@@ -68,7 +68,11 @@
  * Ex: @include min-and-max-screen(768px, 1024px, landscape) { ... }
  */
 @mixin min-and-max-screen($min, $max, $orientation: false) {
-  @include generate-mq($min-width: $min, $max-width: $max, $orientation: $orientation) {
+  @include generate-mq(
+    $min-width: $min,
+    $max-width: $max,
+    $orientation: $orientation
+  ) {
     @content;
   }
 }
@@ -108,8 +112,8 @@
     font-family: $font-family;
     src: url('#{$file-path}.eot');
     src: url('#{$file-path}.eot?#iefix') format('embedded-opentype'),
-         url('#{$file-path}.woff') format('woff'),
-         url('#{$file-path}.ttf') format('truetype');
+      url('#{$file-path}.woff') format('woff'),
+      url('#{$file-path}.ttf') format('truetype');
   }
 }
 
@@ -163,13 +167,13 @@
 
 @mixin transform($params) {
   -webkit-transform: $params;
-  -moz-transform:    $params;
-  transform:         $params;
+  -moz-transform: $params;
+  transform: $params;
 }
 @mixin transform-origin($params) {
   -webkit-transform-origin: $params;
-  -moz-transform-origin:    $params;
-  transform-origin:         $params;
+  -moz-transform-origin: $params;
+  transform-origin: $params;
 }
 
 // @mixin transition($params) {
@@ -179,18 +183,18 @@
 //   -ms-transition:     $params;
 //   transition:         $params;
 // }
-@mixin transition-list($values...){
-  -moz-transition:    $values;
-  -o-transition:      $values;
+@mixin transition-list($values...) {
+  -moz-transition: $values;
+  -o-transition: $values;
   -webkit-transition: $values;
-  -ms-transition:     $values;
-  transition:         $values;
+  -ms-transition: $values;
+  transition: $values;
 }
 @mixin transition-transform($values...) {
   -webkit-transition: -webkit-transform $values;
-     -moz-transition: -moz-transform $values;
-       -o-transition: -o-transform $values;
-          transition: transform $values;
+  -moz-transition: -moz-transform $values;
+  -o-transition: -o-transform $values;
+  transition: transform $values;
 }
 
 @mixin clear-filters-button {

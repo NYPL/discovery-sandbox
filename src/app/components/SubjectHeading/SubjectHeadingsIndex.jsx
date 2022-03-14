@@ -11,7 +11,6 @@ import SubjectHeadingsTable from './SubjectHeadingsTable';
 import appConfig from '../../data/appConfig';
 import Range from '../../models/Range';
 
-
 class SubjectHeadingsIndex extends React.Component {
   constructor(props) {
     super(props);
@@ -26,18 +25,10 @@ class SubjectHeadingsIndex extends React.Component {
   }
 
   componentDidMount() {
-    let {
-      fromLabel,
-      fromComparator,
-    } = this.context.router.location.query;
+    let { fromLabel, fromComparator } = this.context.router.location.query;
 
-    const {
-      filter,
-      sortBy,
-      fromAttributeValue,
-      direction,
-      linked,
-    } = this.context.router.location.query;
+    const { filter, sortBy, fromAttributeValue, direction, linked } =
+      this.context.router.location.query;
 
     if (!fromComparator) fromComparator = filter ? null : 'start';
     if (!fromLabel) fromLabel = filter ? null : 'Aac';
@@ -53,41 +44,42 @@ class SubjectHeadingsIndex extends React.Component {
 
     if (direction) apiParamHash.direction = direction;
 
-    const apiParamString = Object
-      .entries(apiParamHash)
+    const apiParamString = Object.entries(apiParamHash)
       .map(([key, value]) => (value ? `${key}=${value}` : null))
-      .filter(pair => pair)
+      .filter((pair) => pair)
       .join('&');
 
     const url = `${appConfig.baseUrl}/api/subjectHeadings/subject_headings?${apiParamString}`;
 
     axios(url)
-      .then(
-        (res) => {
-          if (linked) {
-            const topLevelAncestor = res.data.subject_headings.find(subjectHeading => subjectHeading.children);
-            if (topLevelAncestor) Range.addRangeData(topLevelAncestor, linked);
-          }
+      .then((res) => {
+        if (linked) {
+          const topLevelAncestor = res.data.subject_headings.find(
+            (subjectHeading) => subjectHeading.children,
+          );
+          if (topLevelAncestor) Range.addRangeData(topLevelAncestor, linked);
+        }
+        this.setState({
+          previousUrl: res.data.previous_url,
+          nextUrl: res.data.next_url,
+          subjectHeadings: res.data.subject_headings,
+          error: res.data.subject_headings.length === 0,
+          componentLoading: false,
+        });
+      })
+      .catch((err) => {
+        // eslint-disable-next-line no-console
+        console.error('error: ', err);
+        if (
+          !this.state.subjectHeadings ||
+          this.state.subjectHeadings.length === 0
+        ) {
           this.setState({
-            previousUrl: res.data.previous_url,
-            nextUrl: res.data.next_url,
-            subjectHeadings: res.data.subject_headings,
-            error: res.data.subject_headings.length === 0,
+            error: true,
             componentLoading: false,
           });
-        },
-      ).catch(
-        (err) => {
-          // eslint-disable-next-line no-console
-          console.error('error: ', err);
-          if (!this.state.subjectHeadings || this.state.subjectHeadings.length === 0) {
-            this.setState({
-              error: true,
-              componentLoading: false,
-            });
-          }
-        },
-      );
+        }
+      });
   }
 
   extractParam(paramName, url) {
@@ -110,9 +102,8 @@ class SubjectHeadingsIndex extends React.Component {
       .map(([key, value]) => {
         const extractedValue = this.extractParam(value, url);
         return extractedValue ? `${key}=${extractedValue}` : null;
-      },
-      )
-      .filter(pair => pair)
+      })
+      .filter((pair) => pair)
       .join('&');
     return `${path}?${paramString}`;
   }
@@ -121,10 +112,7 @@ class SubjectHeadingsIndex extends React.Component {
     const {
       pathname,
       query,
-      query: {
-        sortBy,
-        direction,
-      },
+      query: { sortBy, direction },
     } = this.context.router.location;
 
     const updatedDirection = calculateDirection(sortBy, direction)(type);
@@ -137,11 +125,11 @@ class SubjectHeadingsIndex extends React.Component {
   }
 
   navigationLinks() {
-    const {
+    const { previousUrl, nextUrl } = this.state;
+    const urlForPrevious = this.convertApiUrlToFrontendUrl(
       previousUrl,
-      nextUrl,
-    } = this.state;
-    const urlForPrevious = this.convertApiUrlToFrontendUrl(previousUrl, 'previous');
+      'previous',
+    );
     const urlForNext = this.convertApiUrlToFrontendUrl(nextUrl, 'next');
 
     return { previous: urlForPrevious, next: urlForNext };
@@ -149,10 +137,7 @@ class SubjectHeadingsIndex extends React.Component {
 
   pagination() {
     return (
-      <Pagination
-        shepNavigation={this.navigationLinks()}
-        subjectIndexPage
-      />
+      <Pagination shepNavigation={this.navigationLinks()} subjectIndexPage />
     );
   }
 
@@ -163,25 +148,21 @@ class SubjectHeadingsIndex extends React.Component {
     const preOpen = subjectHeadings.length <= 7;
 
     if (error) {
-      return (
-        <div>
-            No results found for that search.
-        </div>
-      );
+      return <div>No results found for that search.</div>;
     }
 
     if (this.state.componentLoading) {
       return (
-        <div className="subjectHeadingShowLoadingWrapper">
+        <div className='subjectHeadingShowLoadingWrapper'>
           {this.pagination()}
           {filter ? null : <AlphabeticalPagination />}
           <span
-            id="loading-animation"
-            className="loadingLayer-texts-loadingWord"
+            id='loading-animation'
+            className='loadingLayer-texts-loadingWord'
           >
             Loading Subject Headings
           </span>
-          <div className="loadingDots">
+          <div className='loadingDots'>
             <span />
             <span />
             <span />
@@ -203,7 +184,7 @@ class SubjectHeadingsIndex extends React.Component {
           sortBy={sortBy}
           direction={direction}
           updateSort={filter ? this.updateSort : null}
-          container="index"
+          container='index'
           preOpen={preOpen}
         />
         {this.pagination()}

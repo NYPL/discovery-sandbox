@@ -1,157 +1,331 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <!-- VERSION = $Id$ $Rev: 202541 $ $Date: 2013-02-08 13:48:24 -0800 (Fri, 08 Feb 2013) $ -->
 <html>
-<head>
-<link rel="stylesheet" type="text/css" href="/scripts/ProStyles.css" />
-<link rel="stylesheet" type="text/css" href="/screens/styles.css" />
-<script type="text/javascript" src="/scripts/elcontent.js">
-</script>
-<script type="text/javascript" src="/scripts/common.js">
-</script>
-<script type="text/javascript" src="/scripts/features.js">
-</script>
-<script type="text/javascript" src="/scripts/webbridge.js">
-</script>
+  <head>
+    <link rel="stylesheet" type="text/css" href="/scripts/ProStyles.css" />
+    <link rel="stylesheet" type="text/css" href="/screens/styles.css" />
+    <script type="text/javascript" src="/scripts/elcontent.js"></script>
+    <script type="text/javascript" src="/scripts/common.js"></script>
+    <script type="text/javascript" src="/scripts/features.js"></script>
+    <script type="text/javascript" src="/scripts/webbridge.js"></script>
+  </head>
+  <body>
+    <div class="patFuncArea">
+      <form name="hold_form" method="POST" id="hold_form">
+        <input type="HIDDEN" id="holdpagecmd" />
 
-</head>
-<body>
-   <div class="patFuncArea">
-<form name="hold_form" method="POST" id="hold_form" ><input type="HIDDEN" id="holdpagecmd" />
+        <input
+          type="SUBMIT"
+          name="sortByRequest"
+          value="Sort by Hold Requested Date"
+        />
+        <input type="SUBMIT" name="sortByStatus" value="Sort by Status" />
+        <input type="HIDDEN" name="currentsortorder" value="current_pickup" />
+        <a
+          href="#"
+          onClick="return submitHold( 'requestCancelAll', 'requestCancelAll' )"
+          ><div
+            style="display: none"
+            onmousedown="this.className='pressedState';"
+            onmouseout="this.className='';"
+            onmouseup="this.className='';"
+          >
+            <div class="buttonSpriteDiv">
+              <span class="buttonSpriteSpan1"
+                ><span class="buttonSpriteSpan2">Cancel All</span></span
+              >
+            </div>
+          </div></a
+        >
+        <input
+          type="SUBMIT"
+          name="requestUpdateHoldsSome"
+          value="UPDATE LIST"
+        />
+        <table border="0" class="patFunc">
+          <tr class="patFuncTitle">
+            <th colspan="7" class="patFuncTitle">
+              <label id="items_count">4 HOLDS</label>
+            </th>
+          </tr>
 
-<input type="SUBMIT" name="sortByRequest" value="Sort by Hold Requested Date" />
-<input type="SUBMIT" name="sortByStatus" value="Sort by Status" />
-<input type="HIDDEN" name="currentsortorder" value="current_pickup" />
-<a href="#"  onClick="return submitHold( 'requestCancelAll', 'requestCancelAll' )"><div style="display:none" onmousedown="this.className='pressedState';" onmouseout="this.className='';" onmouseup="this.className='';"><div class="buttonSpriteDiv"><span class="buttonSpriteSpan1"><span class="buttonSpriteSpan2">Cancel All</span></span></div></div></a>
-<input type="SUBMIT" name="requestUpdateHoldsSome" value="UPDATE LIST" />
-<table border="0" class="patFunc"><tr class="patFuncTitle">
-<th colspan="7" class="patFuncTitle">
-<label id="items_count">4 HOLDS</label>
-</th>
-</tr>
+          <tr class="patFuncHeaders">
+            <th class="patFuncHeaders">CANCEL</th>
+            <th class="patFuncHeaders">TITLE</th>
+            <th class="patFuncHeaders">Ratings</th>
+            <th class="patFuncHeaders">STATUS</th>
+            <th class="patFuncHeaders">PICKUP LOCATION</th>
+            <th class="patFuncHeaders">CANCEL IF NOT FILLED BY</th>
+            <th class="patFuncHeaders">FREEZE</th>
+          </tr>
 
-<tr class="patFuncHeaders">
-<th class="patFuncHeaders"> CANCEL </th>
-<th class="patFuncHeaders"> TITLE </th>
-<th  class="patFuncHeaders"> Ratings </th>
-<th class="patFuncHeaders"> STATUS </th>
-<th class="patFuncHeaders">PICKUP LOCATION</th>
-<th class="patFuncHeaders"> CANCEL IF NOT FILLED BY </th>
-<th class="patFuncHeaders"> FREEZE </th>
-</tr>
+          <style type="text/css">
+            <!--
+            #ratemy1    { display: inline }
+            #rateneed1  { display: none }
+            #ratemy2    { display: inline }
+            #rateneed2  { display: none }
+            #ratemy3    { display: inline }
+            #rateneed3  { display: none }
+            #ratemy4    { display: inline }
+            #rateneed4  { display: none }
+            -->
+          </style>
+          <tr class="patFuncEntry">
+            <td class="patFuncMark">
+              <input
+                type="checkbox"
+                name="canceli38562763x00"
+                id="canceli38562763x00"
+              />
+            </td>
+            <td class="patFuncTitle">
+              <label for="canceli38562763x00"
+                ><a
+                  href="https://browse.nypl.org/iii/encore/record/C__Rb22541895?lang=eng&suite=def"
+                  ><span class="patFuncTitleMain"
+                    >[Standard NYPL restrictions apply] TOAST / JOZEF HEN.
+                    [RECAP]</span
+                  ></a
+                ></label
+              >
+              <br />
+            </td>
+            <td nowrap class="patFuncRating">
+              <span
+                id="ratemy1"
+                onmouseover="setToolVisibility  ('ratemy1', 'none', 'rateneed1', 'inline')"
+                >_____
+              </span>
+              <span
+                id="rateneed1"
+                onmouseout="setToolVisibility  ('ratemy1', 'inline', 'rateneed1', 'none')"
+                ><a
+                  href="/patroninfo~S1*eng/5035845/sortedbypudateholds?changerating1=b22541895"
+                  >?</a
+                ><a
+                  href="/patroninfo~S1*eng/5035845/sortedbypudateholds?changerating2=b22541895"
+                  >?</a
+                ><a
+                  href="/patroninfo~S1*eng/5035845/sortedbypudateholds?changerating3=b22541895"
+                  >?</a
+                ><a
+                  href="/patroninfo~S1*eng/5035845/sortedbypudateholds?changerating4=b22541895"
+                  >?</a
+                ><a
+                  href="/patroninfo~S1*eng/5035845/sortedbypudateholds?changerating5=b22541895"
+                  >?</a
+                >
+              </span>
+            </td>
+            <td class="patFuncStatus">Ready. Must pick up by 08-30-21</td>
+            <td class="patFuncPickup">SCHWARZMAN 300 - ONSITE USE</td>
+            <td class="patFuncCancel">08-11-22</td>
+            <td class="patFuncFreeze">&nbsp;</td>
+          </tr>
 
+          <tr class="patFuncEntry">
+            <td class="patFuncMark">
+              <input
+                type="checkbox"
+                name="canceli38574968x01"
+                id="canceli38574968x01"
+              />
+            </td>
+            <td class="patFuncTitle">
+              <label for="canceli38574968x01"
+                ><a
+                  href="https://browse.nypl.org/iii/encore/record/C__Rb22544628?lang=eng&suite=def"
+                  ><span class="patFuncTitleMain"
+                    >[HD] [Standard NYPL restrictions apply] OHOLE SHEM AL
+                    MASEKHET BAVA METSIA : MASA U-MATAN ... SHE-NEEMRU
+                    BA-YESHIVAH ... SHUVAH YISRAEL [HD]</span
+                  ></a
+                ></label
+              >
+              <br />
+            </td>
+            <td nowrap class="patFuncRating">
+              <span
+                id="ratemy2"
+                onmouseover="setToolVisibility  ('ratemy2', 'none', 'rateneed2', 'inline')"
+                >_____
+              </span>
+              <span
+                id="rateneed2"
+                onmouseout="setToolVisibility  ('ratemy2', 'inline', 'rateneed2', 'none')"
+                ><a
+                  href="/patroninfo~S1*eng/5035845/sortedbypudateholds?changerating1=b22544628"
+                  >?</a
+                ><a
+                  href="/patroninfo~S1*eng/5035845/sortedbypudateholds?changerating2=b22544628"
+                  >?</a
+                ><a
+                  href="/patroninfo~S1*eng/5035845/sortedbypudateholds?changerating3=b22544628"
+                  >?</a
+                ><a
+                  href="/patroninfo~S1*eng/5035845/sortedbypudateholds?changerating4=b22544628"
+                  >?</a
+                ><a
+                  href="/patroninfo~S1*eng/5035845/sortedbypudateholds?changerating5=b22544628"
+                  >?</a
+                >
+              </span>
+            </td>
+            <td class="patFuncStatus">Ready. Must pick up by 09-07-21</td>
+            <td class="patFuncPickup">SCHWARZMAN 300 - ONSITE USE</td>
+            <td class="patFuncCancel">08-17-22</td>
+            <td class="patFuncFreeze">&nbsp;</td>
+          </tr>
 
-<style type="text/css">
-<!--
-#ratemy1    { display: inline }
-#rateneed1  { display: none }
-#ratemy2    { display: inline }
-#rateneed2  { display: none }
-#ratemy3    { display: inline }
-#rateneed3  { display: none }
-#ratemy4    { display: inline }
-#rateneed4  { display: none }
--->
-</style>
-<tr class="patFuncEntry">
-<td  class="patFuncMark" >
-<input type="checkbox" name="canceli38562763x00" id="canceli38562763x00" />
-</td>
-<td  class="patFuncTitle">
-<label for="canceli38562763x00"><a href="https://browse.nypl.org/iii/encore/record/C__Rb22541895?lang=eng&suite=def"><span class="patFuncTitleMain">[Standard NYPL restrictions apply] TOAST / JOZEF HEN. [RECAP]</span></a></label>
-<br />
-</td>
-<td nowrap  class="patFuncRating" >
+          <tr class="patFuncEntry">
+            <td class="patFuncMark">
+              <input
+                type="checkbox"
+                name="canceli38575038x02"
+                id="canceli38575038x02"
+              />
+            </td>
+            <td class="patFuncTitle">
+              <label for="canceli38575038x02"
+                ><a
+                  href="https://browse.nypl.org/iii/encore/record/C__Rb22544635?lang=eng&suite=def"
+                  ><span class="patFuncTitleMain"
+                    >[Standard NYPL restrictions apply] SFARINN SOFANDI /
+                    ORSTEINN FRA HAMRI. [RECAP]</span
+                  ></a
+                ></label
+              >
+              <br />
+            </td>
+            <td nowrap class="patFuncRating">
+              <span
+                id="ratemy3"
+                onmouseover="setToolVisibility  ('ratemy3', 'none', 'rateneed3', 'inline')"
+                >_____
+              </span>
+              <span
+                id="rateneed3"
+                onmouseout="setToolVisibility  ('ratemy3', 'inline', 'rateneed3', 'none')"
+                ><a
+                  href="/patroninfo~S1*eng/5035845/sortedbypudateholds?changerating1=b22544635"
+                  >?</a
+                ><a
+                  href="/patroninfo~S1*eng/5035845/sortedbypudateholds?changerating2=b22544635"
+                  >?</a
+                ><a
+                  href="/patroninfo~S1*eng/5035845/sortedbypudateholds?changerating3=b22544635"
+                  >?</a
+                ><a
+                  href="/patroninfo~S1*eng/5035845/sortedbypudateholds?changerating4=b22544635"
+                  >?</a
+                ><a
+                  href="/patroninfo~S1*eng/5035845/sortedbypudateholds?changerating5=b22544635"
+                  >?</a
+                >
+              </span>
+            </td>
+            <td class="patFuncStatus">Ready. Must pick up by 09-07-21</td>
+            <td class="patFuncPickup">SCHWARZMAN 121 - ONSITE USE</td>
+            <td class="patFuncCancel">08-17-22</td>
+            <td class="patFuncFreeze">&nbsp;</td>
+          </tr>
 
-<span id="ratemy1"  onmouseover="setToolVisibility  ('ratemy1', 'none', 'rateneed1', 'inline')">_____
-</span>
-<span id="rateneed1"  onmouseout="setToolVisibility  ('ratemy1', 'inline', 'rateneed1', 'none')"><a href="/patroninfo~S1*eng/5035845/sortedbypudateholds?changerating1=b22541895">?</a><a href="/patroninfo~S1*eng/5035845/sortedbypudateholds?changerating2=b22541895">?</a><a href="/patroninfo~S1*eng/5035845/sortedbypudateholds?changerating3=b22541895">?</a><a href="/patroninfo~S1*eng/5035845/sortedbypudateholds?changerating4=b22541895">?</a><a href="/patroninfo~S1*eng/5035845/sortedbypudateholds?changerating5=b22541895">?</a>
-</span></td>
-<td  class="patFuncStatus"> Ready. Must pick up by 08-30-21 </td>
-<td class="patFuncPickup">SCHWARZMAN 300 - ONSITE USE</td>
-<td class="patFuncCancel">08-11-22</td>
-<td  class="patFuncFreeze" >&nbsp;</td>
-</tr>
+          <tr class="patFuncEntry">
+            <td class="patFuncMark">
+              <input
+                type="checkbox"
+                name="canceli11703515x03"
+                id="canceli11703515x03"
+              />
+            </td>
+            <td class="patFuncTitle">
+              <label for="canceli11703515x03"
+                ><a
+                  href="https://browse.nypl.org/iii/encore/record/C__Rb15347721?lang=eng&suite=def"
+                  ><span class="patFuncTitleMain"
+                    >A table / Jean Follain.</span
+                  ></a
+                ></label
+              >
+              <br />
+            </td>
+            <td nowrap class="patFuncRating">
+              <span
+                id="ratemy4"
+                onmouseover="setToolVisibility  ('ratemy4', 'none', 'rateneed4', 'inline')"
+                >_____
+              </span>
+              <span
+                id="rateneed4"
+                onmouseout="setToolVisibility  ('ratemy4', 'inline', 'rateneed4', 'none')"
+                ><a
+                  href="/patroninfo~S1*eng/5035845/sortedbypudateholds?changerating1=b15347721"
+                  >?</a
+                ><a
+                  href="/patroninfo~S1*eng/5035845/sortedbypudateholds?changerating2=b15347721"
+                  >?</a
+                ><a
+                  href="/patroninfo~S1*eng/5035845/sortedbypudateholds?changerating3=b15347721"
+                  >?</a
+                ><a
+                  href="/patroninfo~S1*eng/5035845/sortedbypudateholds?changerating4=b15347721"
+                  >?</a
+                ><a
+                  href="/patroninfo~S1*eng/5035845/sortedbypudateholds?changerating5=b15347721"
+                  >?</a
+                >
+              </span>
+            </td>
+            <td class="patFuncStatus">AVAILABLE</td>
+            <td class="patFuncPickup">SCHWARZMAN 315 - ONSITE USE</td>
+            <td class="patFuncCancel">08-24-22</td>
+            <td class="patFuncFreeze">
+              <div class="patFuncFreezeLabel">
+                <label for="freezei11703515x03">Freeze</label>
+              </div>
+              <input type="checkbox" name="freezei11703515x03" />
+            </td>
+          </tr>
+        </table>
 
-<tr class="patFuncEntry">
-<td  class="patFuncMark" >
-<input type="checkbox" name="canceli38574968x01" id="canceli38574968x01" />
-</td>
-<td  class="patFuncTitle">
-<label for="canceli38574968x01"><a href="https://browse.nypl.org/iii/encore/record/C__Rb22544628?lang=eng&suite=def"><span class="patFuncTitleMain">[HD] [Standard NYPL restrictions apply] OHOLE SHEM AL MASEKHET BAVA METSIA : MASA U-MATAN ... SHE-NEEMRU BA-YESHIVAH ... SHUVAH YISRAEL [HD]</span></a></label>
-<br />
-</td>
-<td nowrap  class="patFuncRating" >
-
-<span id="ratemy2"  onmouseover="setToolVisibility  ('ratemy2', 'none', 'rateneed2', 'inline')">_____
-</span>
-<span id="rateneed2"  onmouseout="setToolVisibility  ('ratemy2', 'inline', 'rateneed2', 'none')"><a href="/patroninfo~S1*eng/5035845/sortedbypudateholds?changerating1=b22544628">?</a><a href="/patroninfo~S1*eng/5035845/sortedbypudateholds?changerating2=b22544628">?</a><a href="/patroninfo~S1*eng/5035845/sortedbypudateholds?changerating3=b22544628">?</a><a href="/patroninfo~S1*eng/5035845/sortedbypudateholds?changerating4=b22544628">?</a><a href="/patroninfo~S1*eng/5035845/sortedbypudateholds?changerating5=b22544628">?</a>
-</span></td>
-<td  class="patFuncStatus"> Ready. Must pick up by 09-07-21 </td>
-<td class="patFuncPickup">SCHWARZMAN 300 - ONSITE USE</td>
-<td class="patFuncCancel">08-17-22</td>
-<td  class="patFuncFreeze" >&nbsp;</td>
-</tr>
-
-<tr class="patFuncEntry">
-<td  class="patFuncMark" >
-<input type="checkbox" name="canceli38575038x02" id="canceli38575038x02" />
-</td>
-<td  class="patFuncTitle">
-<label for="canceli38575038x02"><a href="https://browse.nypl.org/iii/encore/record/C__Rb22544635?lang=eng&suite=def"><span class="patFuncTitleMain">[Standard NYPL restrictions apply] SFARINN SOFANDI / ORSTEINN FRA HAMRI. [RECAP]</span></a></label>
-<br />
-</td>
-<td nowrap  class="patFuncRating" >
-
-<span id="ratemy3"  onmouseover="setToolVisibility  ('ratemy3', 'none', 'rateneed3', 'inline')">_____
-</span>
-<span id="rateneed3"  onmouseout="setToolVisibility  ('ratemy3', 'inline', 'rateneed3', 'none')"><a href="/patroninfo~S1*eng/5035845/sortedbypudateholds?changerating1=b22544635">?</a><a href="/patroninfo~S1*eng/5035845/sortedbypudateholds?changerating2=b22544635">?</a><a href="/patroninfo~S1*eng/5035845/sortedbypudateholds?changerating3=b22544635">?</a><a href="/patroninfo~S1*eng/5035845/sortedbypudateholds?changerating4=b22544635">?</a><a href="/patroninfo~S1*eng/5035845/sortedbypudateholds?changerating5=b22544635">?</a>
-</span></td>
-<td  class="patFuncStatus"> Ready. Must pick up by 09-07-21 </td>
-<td class="patFuncPickup">SCHWARZMAN 121 - ONSITE USE</td>
-<td class="patFuncCancel">08-17-22</td>
-<td  class="patFuncFreeze" >&nbsp;</td>
-</tr>
-
-<tr class="patFuncEntry">
-<td  class="patFuncMark" >
-<input type="checkbox" name="canceli11703515x03" id="canceli11703515x03" />
-</td>
-<td  class="patFuncTitle">
-<label for="canceli11703515x03"><a href="https://browse.nypl.org/iii/encore/record/C__Rb15347721?lang=eng&suite=def"><span class="patFuncTitleMain">A table / Jean Follain.</span></a></label>
-<br />
-</td>
-<td nowrap  class="patFuncRating" >
-
-<span id="ratemy4"  onmouseover="setToolVisibility  ('ratemy4', 'none', 'rateneed4', 'inline')">_____
-</span>
-<span id="rateneed4"  onmouseout="setToolVisibility  ('ratemy4', 'inline', 'rateneed4', 'none')"><a href="/patroninfo~S1*eng/5035845/sortedbypudateholds?changerating1=b15347721">?</a><a href="/patroninfo~S1*eng/5035845/sortedbypudateholds?changerating2=b15347721">?</a><a href="/patroninfo~S1*eng/5035845/sortedbypudateholds?changerating3=b15347721">?</a><a href="/patroninfo~S1*eng/5035845/sortedbypudateholds?changerating4=b15347721">?</a><a href="/patroninfo~S1*eng/5035845/sortedbypudateholds?changerating5=b15347721">?</a>
-</span></td>
-<td  class="patFuncStatus"> AVAILABLE </td>
-<td class="patFuncPickup">SCHWARZMAN 315 - ONSITE USE</td>
-<td class="patFuncCancel">08-24-22</td>
-<td  class="patFuncFreeze" >
-<div  class="patFuncFreezeLabel">
-<label for="freezei11703515x03" >Freeze</label>
-</div>
-<input type="checkbox" name="freezei11703515x03" /></td>
-</tr>
-
-</table>
-
-<input type="SUBMIT" name="sortByRequest" value="Sort by Hold Requested Date" />
-<input type="SUBMIT" name="sortByStatus" value="Sort by Status" />
-<input type="HIDDEN" name="currentsortorder" value="current_pickup" />
-<a href="#"  onClick="return submitHold( 'requestCancelAll', 'requestCancelAll' )"><div style="display:none" onmousedown="this.className='pressedState';" onmouseout="this.className='';" onmouseup="this.className='';"><div class="buttonSpriteDiv"><span class="buttonSpriteSpan1"><span class="buttonSpriteSpan2">Cancel All</span></span></div></div></a>
-<input type="SUBMIT" name="requestUpdateHoldsSome" value="UPDATE LIST" />
-</form><script type="text/JavaScript">
-<!--Hide the JS
-document.getElementById( 'items_count' ).innerHTML = '4 HOLDS';
-// Unhide the JS --></script>
-<!--this is customized <screens/patronview_encore.html>-->
-   </div>
-<!-- this script must be included for this template to display properly in encore -->
-<script type="text/javascript" src="/screens/setdomain.js"></script>
-</body>
+        <input
+          type="SUBMIT"
+          name="sortByRequest"
+          value="Sort by Hold Requested Date"
+        />
+        <input type="SUBMIT" name="sortByStatus" value="Sort by Status" />
+        <input type="HIDDEN" name="currentsortorder" value="current_pickup" />
+        <a
+          href="#"
+          onClick="return submitHold( 'requestCancelAll', 'requestCancelAll' )"
+          ><div
+            style="display: none"
+            onmousedown="this.className='pressedState';"
+            onmouseout="this.className='';"
+            onmouseup="this.className='';"
+          >
+            <div class="buttonSpriteDiv">
+              <span class="buttonSpriteSpan1"
+                ><span class="buttonSpriteSpan2">Cancel All</span></span
+              >
+            </div>
+          </div></a
+        >
+        <input
+          type="SUBMIT"
+          name="requestUpdateHoldsSome"
+          value="UPDATE LIST"
+        />
+      </form>
+      <script type="text/JavaScript">
+        <!--Hide the JS
+        document.getElementById( 'items_count' ).innerHTML = '4 HOLDS';
+        // Unhide the JS -->
+      </script>
+      <!--this is customized <screens/patronview_encore.html>-->
+    </div>
+    <!-- this script must be included for this template to display properly in encore -->
+    <script type="text/javascript" src="/screens/setdomain.js"></script>
+  </body>
 </html>
-
-

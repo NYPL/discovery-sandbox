@@ -58,7 +58,6 @@ const successCb = (pathType, dispatch) => (response) => {
   return data;
 };
 
-
 // This function is called only on the front end, by the DataLoader, when a location changes.
 // Its sole responsibility is to check if any of the configured paths match
 // the current location, and if so, make an api call and pass the resulting data
@@ -76,7 +75,8 @@ function loadDataForRoutes(location, dispatch) {
     return pathname.match(`${baseUrl}/${path}`);
   });
 
-  if (!matchingPath || pathname.match('edd')) return new Promise(() => dispatch(updateLoadingStatus(false)));
+  if (!matchingPath || pathname.match('edd'))
+    return new Promise(() => dispatch(updateLoadingStatus(false)));
 
   const pathType = matchingPath[0];
 
@@ -95,14 +95,16 @@ function loadDataForRoutes(location, dispatch) {
     location.pathname.replace(baseUrl, `${baseUrl}/api`) + location.search,
     successCb(pathType, dispatch),
     errorCb,
-  ).then((resp) => {
-    if (!resp || (resp && !resp.redirect)) dispatch(updateLastLoaded(path));
-    dispatch(updateLoadingStatus(false));
-    return resp;
-  }).catch((error) => {
-    console.error(error);
-    dispatch(updateLoadingStatus(false));
-  });
+  )
+    .then((resp) => {
+      if (!resp || (resp && !resp.redirect)) dispatch(updateLastLoaded(path));
+      dispatch(updateLoadingStatus(false));
+      return resp;
+    })
+    .catch((error) => {
+      console.error(error);
+      dispatch(updateLoadingStatus(false));
+    });
 }
 
 export default {

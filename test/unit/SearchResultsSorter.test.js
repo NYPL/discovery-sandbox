@@ -18,7 +18,9 @@ describe('SearchResultsSorter', () => {
     // becomes true when the component is mounted on the client-side so we know that
     // javascript is enabled.
     it('should not render an input submit element', () => {
-      const component = shallow(<SearchResultsSorter />, { disableLifecycleMethods: true });
+      const component = shallow(<SearchResultsSorter />, {
+        disableLifecycleMethods: true,
+      });
 
       expect(component.state('js')).to.equal(false);
       expect(component.find('input').length).to.equal(1);
@@ -40,7 +42,9 @@ describe('SearchResultsSorter', () => {
     });
 
     it('should return a wrapper div and class nypl-results-sorting-controls', () => {
-      expect(component.find('.nypl-results-sorting-controls').length).to.equal(1);
+      expect(component.find('.nypl-results-sorting-controls').length).to.equal(
+        1,
+      );
     });
 
     it('should render a form element', () => {
@@ -49,7 +53,9 @@ describe('SearchResultsSorter', () => {
     });
 
     it('should have the form action point to the endpoint with no queries', () => {
-      expect(component.find('form').prop('action')).to.equal(`${appConfig.baseUrl}/search`);
+      expect(component.find('form').prop('action')).to.equal(
+        `${appConfig.baseUrl}/search`,
+      );
     });
 
     it('should render a select element', () => {
@@ -96,7 +102,12 @@ describe('SearchResultsSorter', () => {
       const sortBy = 'title_asc';
       const field = 'title';
       component = mount(
-        <SearchResultsSorter sortBy={sortBy} searchKeywords={searchKeywords} field={field} />);
+        <SearchResultsSorter
+          sortBy={sortBy}
+          searchKeywords={searchKeywords}
+          field={field}
+        />,
+      );
     });
 
     it('should have updated state based on sortBy prop', () => {
@@ -109,11 +120,15 @@ describe('SearchResultsSorter', () => {
       expect(component.find('select').prop('value')).to.equal('title_asc');
     });
 
-    it('should have the form action point to the endpoint with the passed searchKeywords' +
-      ' and field', () => {
-      expect(component.find('form').prop('action'))
-        .to.equal(`${appConfig.baseUrl}/search?q=harry potter&search_scope=title`);
-    });
+    it(
+      'should have the form action point to the endpoint with the passed searchKeywords' +
+        ' and field',
+      () => {
+        expect(component.find('form').prop('action')).to.equal(
+          `${appConfig.baseUrl}/search?q=harry potter&search_scope=title`,
+        );
+      },
+    );
   });
 
   describe('Mocking ajax call for the bib', () => {
@@ -149,7 +164,10 @@ describe('SearchResultsSorter', () => {
     let mock;
 
     before(() => {
-      sortResultsBySpy = sinon.spy(SearchResultsSorter.prototype, 'sortResultsBy');
+      sortResultsBySpy = sinon.spy(
+        SearchResultsSorter.prototype,
+        'sortResultsBy',
+      );
       createAPIQuery = basicQuery({});
 
       component = mount(
@@ -170,7 +188,9 @@ describe('SearchResultsSorter', () => {
 
     it('should call sortResultsBy, make an ajax call, and update the state', () => {
       expect(component.state('sortValue')).to.equal('relevance');
-      component.find('select').simulate('change', { target: { value: 'date_desc' } });
+      component
+        .find('select')
+        .simulate('change', { target: { value: 'date_desc' } });
 
       expect(sortResultsBySpy.calledOnce).to.equal(true);
       expect(component.state('sortValue')).to.equal('date_desc');

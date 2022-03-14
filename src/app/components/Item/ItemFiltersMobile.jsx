@@ -6,7 +6,6 @@ import ItemFilter from './ItemFilter';
 
 import { itemFilters } from '../../data/constants';
 
-
 const ItemFiltersMobile = ({
   options,
   manageFilterDisplay,
@@ -22,9 +21,10 @@ const ItemFiltersMobile = ({
     return (
       <Button
         onClick={() => toggleFilterDisplay(true)}
-        buttonType="outline"
-        className="item-table-filters"
-      >Filters
+        buttonType='outline'
+        className='item-table-filters'
+      >
+        Filters
       </Button>
     );
   }
@@ -40,41 +40,34 @@ const ItemFiltersMobile = ({
   };
 
   return (
-    <Modal
-      buttonType="outline"
-      className="scc-item-filters nypl-ds"
-    >
+    <Modal buttonType='outline' className='scc-item-filters nypl-ds'>
       <Button
-        buttonType="link"
+        buttonType='link'
         onClick={goBackAction}
-        className="go-back-button"
-        type="reset"
+        className='go-back-button'
+        type='reset'
       >
-        <Icon name="arrow" iconRotation="rotate-90" />Go Back
+        <Icon name='arrow' iconRotation='rotate-90' />
+        Go Back
       </Button>
-      <Button
-        className="show-results-button"
-        onClick={showResultsAction}
-      >
+      <Button className='show-results-button' onClick={showResultsAction}>
         Show Results
       </Button>
       <h1>Filters</h1>
-      <div id="item-filters" className="item-table-filters">
-        {
-          itemFilters.map(filter => (
-            <ItemFilter
-              filter={filter.type}
-              options={options[filter.type]}
-              manageFilterDisplay={manageFilterDisplay}
-              key={filter.type}
-              mobile
-              selectedFilters={selectedFilters}
-              setSelectedFilters={setSelectedFilters}
-              submitFilterSelections={submitFilterSelections}
-              initialFilters={initialFilters}
-            />
-          ))
-        }
+      <div id='item-filters' className='item-table-filters'>
+        {itemFilters.map((filter) => (
+          <ItemFilter
+            filter={filter.type}
+            options={options[filter.type]}
+            manageFilterDisplay={manageFilterDisplay}
+            key={filter.type}
+            mobile
+            selectedFilters={selectedFilters}
+            setSelectedFilters={setSelectedFilters}
+            submitFilterSelections={submitFilterSelections}
+            initialFilters={initialFilters}
+          />
+        ))}
       </div>
     </Modal>
   );

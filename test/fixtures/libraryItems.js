@@ -28,7 +28,8 @@ const item = {
       prefLabel: 'Available',
     },
     suppressed: false,
-    url: 'http://www.questionpoint.org/crs/servlet/org.oclc.admin.BuildForm?' +
+    url:
+      'http://www.questionpoint.org/crs/servlet/org.oclc.admin.BuildForm?' +
       '&institution=13777&type=1&language=1',
   },
   missingData: {
@@ -54,7 +55,8 @@ const item = {
       prefLabel: '',
     },
     suppressed: false,
-    url: 'http://www.questionpoint.org/crs/servlet/org.oclc.admin.BuildForm?' +
+    url:
+      'http://www.questionpoint.org/crs/servlet/org.oclc.admin.BuildForm?' +
       '&institution=13777&type=1&language=1',
   },
   requestable_ReCAP_available: {
@@ -80,7 +82,8 @@ const item = {
       prefLabel: 'Available',
     },
     suppressed: false,
-    url: 'http://www.questionpoint.org/crs/servlet/org.oclc.admin.BuildForm?' +
+    url:
+      'http://www.questionpoint.org/crs/servlet/org.oclc.admin.BuildForm?' +
       '&institution=13777&type=1&language=1',
   },
   requestable_ReCAP_not_available: {
@@ -106,7 +109,8 @@ const item = {
       prefLabel: 'Available',
     },
     suppressed: false,
-    url: 'http://www.questionpoint.org/crs/servlet/org.oclc.admin.BuildForm?' +
+    url:
+      'http://www.questionpoint.org/crs/servlet/org.oclc.admin.BuildForm?' +
       '&institution=13777&type=1&language=1',
   },
   requestable_nonReCAP_NYPL: {
@@ -132,7 +136,8 @@ const item = {
       prefLabel: 'Available',
     },
     suppressed: false,
-    url: 'http://www.questionpoint.org/crs/servlet/org.oclc.admin.BuildForm?' +
+    url:
+      'http://www.questionpoint.org/crs/servlet/org.oclc.admin.BuildForm?' +
       '&institution=13777&type=1&language=1',
   },
   nonrequestable_nonReCAP_NYPL: {
@@ -158,7 +163,8 @@ const item = {
       prefLabel: 'Available',
     },
     suppressed: false,
-    url: 'http://www.questionpoint.org/crs/servlet/org.oclc.admin.BuildForm?' +
+    url:
+      'http://www.questionpoint.org/crs/servlet/org.oclc.admin.BuildForm?' +
       '&institution=13777&type=1&language=1',
   },
   aeonRequestableWithoutParams: {
@@ -169,7 +175,8 @@ const item = {
     },
     availability: 'available',
     available: true,
-    aeonUrl: 'https://specialcollections.nypl.org/aeon/Aeon.dll?Action=10&Form=30&Title=[Songs+and+piano+solos+/&Site=SCHMA&Author=Bechet,+Sidney,&Date=1941-1960.&ItemInfo3=https://nypl-sierra-test.nypl.org/record=b11545018x&ReferenceNumber=b11545018x&ItemInfo1=USE+IN+LIBRARY&Genre=Score&Location=Schomburg+Center&shelfmark=Sc Scores Bechet&itemid=33299542',
+    aeonUrl:
+      'https://specialcollections.nypl.org/aeon/Aeon.dll?Action=10&Form=30&Title=[Songs+and+piano+solos+/&Site=SCHMA&Author=Bechet,+Sidney,&Date=1941-1960.&ItemInfo3=https://nypl-sierra-test.nypl.org/record=b11545018x&ReferenceNumber=b11545018x&ItemInfo1=USE+IN+LIBRARY&Genre=Score&Location=Schomburg+Center&shelfmark=Sc Scores Bechet&itemid=33299542',
     accessMessage: {
       '@id': 'accessMessage:1',
       prefLabel: 'Use in library',
@@ -177,7 +184,8 @@ const item = {
     isElectronicResource: false,
     electronicResources: null,
     location: 'Schomburg Center - Manuscripts & Archives',
-    locationUrl: 'http://www.nypl.org/locations/divisions/manuscripts-archives-and-rare-books-division',
+    locationUrl:
+      'http://www.nypl.org/locations/divisions/manuscripts-archives-and-rare-books-division',
     holdingLocationCode: 'loc:scdd2',
     callNumber: 'Sc Scores Bechet',
     url: 'http://www.questionpoint.org/crs/servlet/org.oclc.admin.BuildForm?&institution=13777&type=1&language=1',
@@ -204,7 +212,8 @@ const item = {
     },
     availability: 'available',
     available: true,
-    aeonUrl: 'https://specialcollections.nypl.org/aeon/Aeon.dll?Action=10&Form=30&Title=[Songs+and+piano+solos+/&Site=SCHMA&CallNumber=Sc+Scores+Bechet&Author=Bechet,+Sidney,&Date=1941-1960.&ItemInfo3=https://nypl-sierra-test.nypl.org/record=b11545018x&ReferenceNumber=b11545018x&ItemInfo1=USE+IN+LIBRARY&ItemISxN=i332995422&Genre=Score&Location=Schomburg+Center&shelfmark=Sc Scores Bechet&itemid=33299542&itemNumber=4567',
+    aeonUrl:
+      'https://specialcollections.nypl.org/aeon/Aeon.dll?Action=10&Form=30&Title=[Songs+and+piano+solos+/&Site=SCHMA&CallNumber=Sc+Scores+Bechet&Author=Bechet,+Sidney,&Date=1941-1960.&ItemInfo3=https://nypl-sierra-test.nypl.org/record=b11545018x&ReferenceNumber=b11545018x&ItemInfo1=USE+IN+LIBRARY&ItemISxN=i332995422&Genre=Score&Location=Schomburg+Center&shelfmark=Sc Scores Bechet&itemid=33299542&itemNumber=4567',
     accessMessage: {
       '@id': 'accessMessage:1',
       prefLabel: 'Use in library',
@@ -212,7 +221,8 @@ const item = {
     isElectronicResource: false,
     electronicResources: null,
     location: 'Schomburg Center - Manuscripts & Archives',
-    locationUrl: 'http://www.nypl.org/locations/divisions/manuscripts-archives-and-rare-books-division',
+    locationUrl:
+      'http://www.nypl.org/locations/divisions/manuscripts-archives-and-rare-books-division',
     holdingLocationCode: 'loc:scdd2',
     callNumber: 'Sc Scores Bechet',
     url: 'http://www.questionpoint.org/crs/servlet/org.oclc.admin.BuildForm?&institution=13777&type=1&language=1',

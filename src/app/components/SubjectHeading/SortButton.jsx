@@ -6,28 +6,25 @@ import DescendingIcon from '../../../client/icons/Descending';
 import DefaultIcon from '../../../client/icons/DefaultSort';
 
 const SortButton = (props) => {
-  const {
-    type,
-    calculateDirection,
-    handler,
-    interactive,
-    numberOpen,
-    active,
-  } = props;
+  const { type, calculateDirection, handler, interactive, numberOpen, active } =
+    props;
 
   const defaultSort = {
     alphabetical: 'ASC',
     bibs: 'DESC',
     descendants: 'DESC',
-  }[type]
+  }[type];
 
-  const nextDirection = calculateDirection ? calculateDirection(type) : defaultSort;
+  const nextDirection = calculateDirection
+    ? calculateDirection(type)
+    : defaultSort;
 
-  const columnText = () => ({
-    bibs: 'Titles',
-    descendants: 'Subheadings',
-    alphabetical: 'Heading',
-  }[type]);
+  const columnText = () =>
+    ({
+      bibs: 'Titles',
+      descendants: 'Subheadings',
+      alphabetical: 'Heading',
+    }[type]);
 
   const icon = () => {
     if (!active) return <DefaultIcon />;
@@ -37,13 +34,16 @@ const SortButton = (props) => {
 
   return (
     <button
-      className="subjectSortButton"
+      className='subjectSortButton'
       onClick={() => handler(type, nextDirection, numberOpen)}
       disabled={!handler || !interactive || numberOpen < 2}
     >
-      <span className="emph">
-        <span className="noEmph">{columnText()}
-          {(handler && interactive) ? <span className="sortCharacter">{ icon() }</span> : null}
+      <span className='emph'>
+        <span className='noEmph'>
+          {columnText()}
+          {handler && interactive ? (
+            <span className='sortCharacter'>{icon()}</span>
+          ) : null}
         </span>
       </span>
     </button>

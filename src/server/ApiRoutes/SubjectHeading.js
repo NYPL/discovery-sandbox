@@ -1,28 +1,47 @@
-import {
-  getReqParams,
-} from '../../app/utils/utils';
+import { getReqParams } from '../../app/utils/utils';
 import nyplApiClient from '../routes/nyplApiClient';
 import logger from '../../../logger';
 import SubjectHeadings from './SubjectHeadings';
 
-const nyplApiClientCall = query => nyplApiClient()
-  .then(client => client.get(`/discovery/resources${query}`, { cache: false }))
-  .catch(console.error);
+const nyplApiClientCall = (query) =>
+  nyplApiClient()
+    .then((client) =>
+      client.get(`/discovery/resources${query}`, { cache: false }),
+    )
+    .catch(console.error);
 
-function fetchBibs(page, perPage, sortBy, order, subjectLiteral, shepApiBibCount, cb, errorcb) {
-  const bibResultsQuery = `?filters[subjectLiteral]=${encodeURIComponent(subjectLiteral)}&sort=${sortBy}&sort_direction=${order}&page=${page}&per_page=${perPage}`;
+function fetchBibs(
+  page,
+  perPage,
+  sortBy,
+  order,
+  subjectLiteral,
+  shepApiBibCount,
+  cb,
+  errorcb,
+) {
+  const bibResultsQuery = `?filters[subjectLiteral]=${encodeURIComponent(
+    subjectLiteral,
+  )}&sort=${sortBy}&sort_direction=${order}&page=${page}&per_page=${perPage}`;
 
   return nyplApiClientCall(bibResultsQuery)
     .then((response) => {
       const results = response;
-      if (page === '1' && parseInt(shepApiBibCount, 10) !== results.totalResults) {
+      if (
+        page === '1' &&
+        parseInt(shepApiBibCount, 10) !== results.totalResults
+      ) {
         logger.warning(
-          `SHEP/Discovery bib count discrepancy for subject heading ${subjectLiteral}: SHEP API- ${shepApiBibCount}, Discovery API- ${results.totalResults}`);
+          `SHEP/Discovery bib count discrepancy for subject heading ${subjectLiteral}: SHEP API- ${shepApiBibCount}, Discovery API- ${results.totalResults}`,
+        );
       }
       cb(results);
     })
     .catch((error) => {
-      logger.error('Error making ajax SubjectHeading bibs call in fetchBibs function', error);
+      logger.error(
+        'Error making ajax SubjectHeading bibs call in fetchBibs function',
+        error,
+      );
       errorcb(error);
     });
 }
@@ -48,12 +67,10 @@ const bibsAjax = (req, res) => {
           totalResults: shepApiBibCount,
         });
       })
-      .catch(
-        (err) => {
-          // eslint-disable-next-line no-console
-          console.error('error: ', err);
-        },
-      );
+      .catch((err) => {
+        // eslint-disable-next-line no-console
+        console.error('error: ', err);
+      });
   };
 
   const useDiscoveryResults = (discoveryApiBibCount) => {
@@ -61,7 +78,7 @@ const bibsAjax = (req, res) => {
     if (discoveryApiBibCount === 0) return false;
     const discrepancy = Math.abs(shepApiBibCount - discoveryApiBibCount);
 
-    return discrepancy < (shepApiBibCount * 0.2);
+    return discrepancy < shepApiBibCount * 0.2;
   };
 
   const processData = (data) => {
@@ -85,8 +102,8 @@ const bibsAjax = (req, res) => {
     order,
     subjectLiteral,
     shepApiBibCount,
-    data => processData(data),
-    error => res.json(error),
+    (data) => processData(data),
+    (error) => res.json(error),
   );
 };
 

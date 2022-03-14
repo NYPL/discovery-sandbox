@@ -31,7 +31,9 @@ describe('AccountPage', () => {
     let linkTabSet;
     before(() => {
       mockStore = makeTestStore({});
-      component = mountTestRender(<AccountPage params={{}} />, { store: mockStore });
+      component = mountTestRender(<AccountPage params={{}} />, {
+        store: mockStore,
+      });
     });
 
     it('should render a `Search` component', () => {
@@ -58,7 +60,9 @@ describe('AccountPage', () => {
     let nyplPatronDetails;
     before(() => {
       mockStore = makeTestStore({ patron });
-      component = mountTestRender(<AccountPage params={{}} />, { store: mockStore });
+      component = mountTestRender(<AccountPage params={{}} />, {
+        store: mockStore,
+      });
       nyplPatronDetails = component.find('.nypl-patron-details');
     });
 
@@ -67,7 +71,9 @@ describe('AccountPage', () => {
     });
 
     it('should format date in MM-DD-YYYY format', () => {
-      expect(nyplPatronDetails.find('div').at(0).childAt(2).text()).to.equal('Expiration Date: 08-20-2022');
+      expect(nyplPatronDetails.find('div').at(0).childAt(2).text()).to.equal(
+        'Expiration Date: 08-20-2022',
+      );
     });
 
     it('should display fines amount in third tab', () => {
@@ -82,12 +88,14 @@ describe('AccountPage', () => {
     before(() => {
       mockStore = makeTestStore({});
       component = mountTestRender(
-        <AccountPage
-          params={{ content: 'settings' }}
-        />, { store: mockStore });
+        <AccountPage params={{ content: 'settings' }} />,
+        { store: mockStore },
+      );
     });
     it('should render an h3 with text "Personal Information"', () => {
-      expect(component.find('h3').first().text()).to.equal('Personal Information');
+      expect(component.find('h3').first().text()).to.equal(
+        'Personal Information',
+      );
     });
   });
 
@@ -99,16 +107,23 @@ describe('AccountPage', () => {
       before(() => {
         clock = sinon.useFakeTimers();
         const mockStore = makeTestStore({ accountHtml: { error: true } });
-        document.cookie = 'nyplAccountRedirectTracker=; expires=Thu, 01 Jan 1970 00:00:00 UTC;';
-        component = mountTestRender(<AccountPage params={{}} />, { store: mockStore });
+        document.cookie =
+          'nyplAccountRedirectTracker=; expires=Thu, 01 Jan 1970 00:00:00 UTC;';
+        component = mountTestRender(<AccountPage params={{}} />, {
+          store: mockStore,
+        });
       });
 
-      after(() => { clock.restore(); });
+      after(() => {
+        clock.restore();
+      });
 
       it('should set the cookie', () => {
         const iframe = document.getElementById('logoutIframe');
         iframe.onload();
-        const nyplAccountRedirectTracker = document.cookie.split(';').find(el => el.includes('nyplAccountRedirectTracker'));
+        const nyplAccountRedirectTracker = document.cookie
+          .split(';')
+          .find((el) => el.includes('nyplAccountRedirectTracker'));
         expect(!!nyplAccountRedirectTracker).to.equal(true);
         expect(nyplAccountRedirectTracker).to.match(/\d+exp.*/);
         const match = nyplAccountRedirectTracker.match(/\d+exp(.*)/)[1];
@@ -123,21 +138,29 @@ describe('AccountPage', () => {
       before(() => {
         clock = sinon.useFakeTimers();
         const mockStore = makeTestStore({ accountHtml: { error: true } });
-        document.cookie = 'nyplAccountRedirectTracker=2expMon, 05 Apr 2021 20:06:13 GMT';
-        component = mountTestRender(<AccountPage params={{}} />, { store: mockStore });
+        document.cookie =
+          'nyplAccountRedirectTracker=2expMon, 05 Apr 2021 20:06:13 GMT';
+        component = mountTestRender(<AccountPage params={{}} />, {
+          store: mockStore,
+        });
       });
 
       after(() => {
         clock.restore();
       });
 
-
       it('should update the cookie', () => {
         const iframe = document.getElementById('logoutIframe');
         iframe.onload();
-        const nyplAccountRedirectTracker = document.cookie.split(';').find(el => el.includes('nyplAccountRedirectTracker'));
-        expect(nyplAccountRedirectTracker).to.match(/\d+expMon, 05 Apr 2021 20:06:13 GMT/);
-        expect(parseInt(nyplAccountRedirectTracker.match(/(\d+).*/)[1], 10)).to.be.closeTo(4, 1);
+        const nyplAccountRedirectTracker = document.cookie
+          .split(';')
+          .find((el) => el.includes('nyplAccountRedirectTracker'));
+        expect(nyplAccountRedirectTracker).to.match(
+          /\d+expMon, 05 Apr 2021 20:06:13 GMT/,
+        );
+        expect(
+          parseInt(nyplAccountRedirectTracker.match(/(\d+).*/)[1], 10),
+        ).to.be.closeTo(4, 1);
       });
     });
 
@@ -147,13 +170,20 @@ describe('AccountPage', () => {
       let clock;
       before(() => {
         clock = sinon.useFakeTimers();
-        replaceSpy = sandbox.stub(window.location, 'replace').callsFake(() => {});
+        replaceSpy = sandbox
+          .stub(window.location, 'replace')
+          .callsFake(() => {});
         const mockStore = makeTestStore({ accountHtml: { error: true } });
-        document.cookie = 'nyplAccountRedirectTracker=25expMon, 05 Apr 2021 20:06:13 GMT';
-        component = mountTestRender(<AccountPage params={{}} />, { store: mockStore });
+        document.cookie =
+          'nyplAccountRedirectTracker=25expMon, 05 Apr 2021 20:06:13 GMT';
+        component = mountTestRender(<AccountPage params={{}} />, {
+          store: mockStore,
+        });
       });
 
-      after(() => { clock.restore(); });
+      after(() => {
+        clock.restore();
+      });
 
       it('should redirect', () => {
         const iframe = document.getElementById('logoutIframe');

@@ -17,8 +17,8 @@ let mockPatronTokenResponse = {
   },
   errorCode: null,
 };
-const renderMockReq = data => ({
-  get: n => n,
+const renderMockReq = (data) => ({
+  get: (n) => n,
   protocol: 'http',
   originalUrl: '/hold/request/b11995345-i14211097',
   patronTokenResponse: data,
@@ -57,72 +57,16 @@ describe('If requireUser does not receive valid value from "req.patronTokenRespo
   });
 });
 
-describe('If requireUser does not receive valid value from "req.patronTokenResponse.isTokenValid"',
-  () => {
-    let requireUser;
-
-    before(() => {
-      requireUser = sinon.spy(User, 'requireUser');
-      mockPatronTokenResponse.isTokenValid = false;
-    });
-
-    after(() => {
-      mockPatronTokenResponse.isTokenValid = true;
-      requireUser.restore();
-    });
-
-    it('should return { redirect: true }', () => {
-      requireUser(renderMockReq(mockPatronTokenResponse), mockRes);
-
-      expect(requireUser.returnValues[0].redirect).to.equal(true);
-    });
-  },
-);
-
-describe('If requireUser does not receive valid value from "req.patronTokenResponse.decodedPatron"',
-  () => {
-    let requireUser;
-
-    before(() => {
-      requireUser = sinon.spy(User, 'requireUser');
-      mockPatronTokenResponse.decodedPatron = undefined;
-    });
-
-    after(() => {
-      mockPatronTokenResponse.decodedPatron = {
-        decodedPatron:
-        {
-          iss: 'https://www.nypl.org',
-          sub: '6677666',
-          aud: 'app_myaccount',
-          iat: 1498162833,
-          exp: 1498166433,
-          auth_time: 1498162833,
-          scope: 'openid offline_access patron:read',
-        },
-      };
-      requireUser.restore();
-    });
-
-    it('should return { redirect: true }', () => {
-      requireUser(renderMockReq(mockPatronTokenResponse), mockRes);
-
-      expect(requireUser.returnValues[0].redirect).to.equal(true);
-    });
-  },
-);
-
-describe('If requireUser does not receive valid value from "req.patronTokenResponse.' +
-  'decodedPatron.sub"', () => {
+describe('If requireUser does not receive valid value from "req.patronTokenResponse.isTokenValid"', () => {
   let requireUser;
 
   before(() => {
     requireUser = sinon.spy(User, 'requireUser');
-    mockPatronTokenResponse.decodedPatron.sub = undefined;
+    mockPatronTokenResponse.isTokenValid = false;
   });
 
   after(() => {
-    mockPatronTokenResponse.decodedPatron.sub = '6677666';
+    mockPatronTokenResponse.isTokenValid = true;
     requireUser.restore();
   });
 
@@ -132,6 +76,60 @@ describe('If requireUser does not receive valid value from "req.patronTokenRespo
     expect(requireUser.returnValues[0].redirect).to.equal(true);
   });
 });
+
+describe('If requireUser does not receive valid value from "req.patronTokenResponse.decodedPatron"', () => {
+  let requireUser;
+
+  before(() => {
+    requireUser = sinon.spy(User, 'requireUser');
+    mockPatronTokenResponse.decodedPatron = undefined;
+  });
+
+  after(() => {
+    mockPatronTokenResponse.decodedPatron = {
+      decodedPatron: {
+        iss: 'https://www.nypl.org',
+        sub: '6677666',
+        aud: 'app_myaccount',
+        iat: 1498162833,
+        exp: 1498166433,
+        auth_time: 1498162833,
+        scope: 'openid offline_access patron:read',
+      },
+    };
+    requireUser.restore();
+  });
+
+  it('should return { redirect: true }', () => {
+    requireUser(renderMockReq(mockPatronTokenResponse), mockRes);
+
+    expect(requireUser.returnValues[0].redirect).to.equal(true);
+  });
+});
+
+describe(
+  'If requireUser does not receive valid value from "req.patronTokenResponse.' +
+    'decodedPatron.sub"',
+  () => {
+    let requireUser;
+
+    before(() => {
+      requireUser = sinon.spy(User, 'requireUser');
+      mockPatronTokenResponse.decodedPatron.sub = undefined;
+    });
+
+    after(() => {
+      mockPatronTokenResponse.decodedPatron.sub = '6677666';
+      requireUser.restore();
+    });
+
+    it('should return { redirect: true }', () => {
+      requireUser(renderMockReq(mockPatronTokenResponse), mockRes);
+
+      expect(requireUser.returnValues[0].redirect).to.equal(true);
+    });
+  },
+);
 
 describe('If requireUser receives all valid values from "req"', () => {
   let requireUser;
