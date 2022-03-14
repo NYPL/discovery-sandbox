@@ -18,7 +18,7 @@ describe('AccountPage', () => {
     // the test from ever terminating.
     // This disables the clock.
     sandbox = sinon.sandbox.create();
-    sandbox.stub(global, 'setTimeout').callsFake(() => {});
+    sandbox.stub(global, 'setTimeout').callsFake(() => undefined);
   });
 
   after(() => {
@@ -172,7 +172,7 @@ describe('AccountPage', () => {
         clock = sinon.useFakeTimers();
         replaceSpy = sandbox
           .stub(window.location, 'replace')
-          .callsFake(() => {});
+          .callsFake(() => undefined);
         const mockStore = makeTestStore({ accountHtml: { error: true } });
         document.cookie =
           'nyplAccountRedirectTracker=25expMon, 05 Apr 2021 20:06:13 GMT';

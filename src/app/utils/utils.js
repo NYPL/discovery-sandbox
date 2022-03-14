@@ -26,7 +26,7 @@ const { features } = appConfig;
  */
 const ajaxCall = (
   endpoint,
-  cb = () => {},
+  cb = () => undefined,
   errorcb = (error) => console.error('Error making ajaxCall', error),
 ) => {
   if (!endpoint) return null;
@@ -45,12 +45,10 @@ const getDefaultFilters = () => _extend({}, appConfig.defaultFilters);
  * createAppHistory
  * Create a history in the browser or server that coincides with react-router.
  */
-const createAppHistory = () => {
-  if (typeof window !== 'undefined') {
-    return useQueries(createHistory)();
-  }
-
-  return useQueries(createMemoryHistory)();
+const useCreateAppHistory = () => {
+  return useQueries(
+    typeof window !== 'undefined' ? createHistory : createMemoryHistory,
+  )();
 };
 
 /**
@@ -496,7 +494,10 @@ const getUpdatedFilterValues = (props) => {
     });
   }
 
-  updatedFilterValues = _sortBy(updatedFilterValues, (f) => f.label);
+  updatedFilterValues = _sortBy(
+    updatedFilterValues,
+    (filtered) => filtered.label,
+  );
 
   return updatedFilterValues;
 };
@@ -673,8 +674,8 @@ const isOptionSelected = (filterValue, itemValue) => {
  * @return {boolean}
  */
 const hasValidFilters = (selectedFilters) => {
-  return Object.values(selectedFilters || {}).some((v) =>
-    Array.isArray(v) ? v.length > 0 : v,
+  return Object.values(selectedFilters || {}).some((value) =>
+    Array.isArray(value) ? value.length > 0 : value,
   );
 };
 
@@ -710,13 +711,13 @@ function extractNoticePreference(fixedFields) {
  *      camelToShishKabobCase("firstCharCanBeLowerCase")
  *        => "first-char-can-be-lower-case"
  */
-function camelToShishKabobCase(s) {
+function camelToShishKabobCase(str) {
   return (
-    s
+    str
       // Change capital letters into "-{lowercase letter}"
-      .replace(/([A-Z])/g, (c, p1, i) => {
+      .replace(/([A-Z])/g, (capital, p1, idx) => {
         // If capital letter is not first character, precede with '-':
-        return (i > 0 ? '-' : '') + c.toLowerCase();
+        return (idx > 0 ? '-' : '') + capital.toLowerCase();
       })
   );
 }
@@ -762,7 +763,7 @@ export {
   trackDiscovery,
   ajaxCall,
   getSortQuery,
-  createAppHistory,
+  useCreateAppHistory as createAppHistory,
   getFieldParam,
   getFilterParam,
   destructureFilters,

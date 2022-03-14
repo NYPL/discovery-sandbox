@@ -10,8 +10,8 @@ import { Header, navConfig } from '@nypl/dgx-header-component';
 import { mockRouterContext } from '../helpers/routing';
 import { breakpoints } from '../../src/app/data/constants';
 
-const resizeWindow = (x) => {
-  window.innerWidth = x;
+const resizeWindow = (position) => {
+  window.innerWidth = position;
   window.dispatchEvent(new Event('resize'));
 };
 
@@ -20,16 +20,17 @@ describe('Application', () => {
   const context = mockRouterContext();
 
   before(() => {
-    window.matchMedia = () => ({ addListener: () => {} });
+    window.matchMedia = () => ({ addListener: () => undefined });
     window.matchMedia().addListener = stub();
     component = shallow(
       <Application
-        children={{}}
         route={{
           history: { listen: stub() },
         }}
-        addFeatures={() => {}}
-      />,
+        addFeatures={() => undefined}
+      >
+        {}
+      </Application>,
       { context },
     );
 
@@ -97,7 +98,7 @@ describe('Application', () => {
   describe('url-enabled feature flag', () => {
     let content;
     before(() => {
-      window.matchMedia = () => ({ addListener: () => {} });
+      window.matchMedia = () => ({ addListener: () => undefined });
       window.matchMedia().addListener = stub();
       context.router = {
         location: {
@@ -109,9 +110,8 @@ describe('Application', () => {
       };
       component = shallow(
         <Application
-          children={{}}
           router={context.router}
-          updateFeatures={() => {}}
+          updateFeatures={() => undefined}
           features={[]}
         >
           <a href='/subject_headings'>link</a>

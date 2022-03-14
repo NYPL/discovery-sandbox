@@ -22,7 +22,7 @@ describe('dataLoaderUtil', () => {
     before(() => {
       sandbox = sinon.createSandbox();
       axiosSpy = sandbox.spy(axios, 'get');
-      mockDispatch = (x) => x;
+      mockDispatch = (_x) => _x;
       const mockLocation = {
         pathname: `${appConfig.baseUrl}/nonmatching`,
       };
@@ -57,7 +57,7 @@ describe('dataLoaderUtil', () => {
           pathname: `${appConfig.baseUrl}/search`,
           search: '?q=mockSearch',
         };
-        mockDispatch = sandbox.spy((x) => x);
+        mockDispatch = sandbox.spy((_x) => _x);
         routes.search.action = mockSearchAction;
         dataLoaderUtil.loadDataForRoutes(mockLocation, mockDispatch);
       });
@@ -94,7 +94,7 @@ describe('dataLoaderUtil', () => {
           pathname: `${appConfig.baseUrl}/search`,
           search: '?q=mockSearch',
         };
-        mockDispatch = sandbox.spy((x) => x);
+        mockDispatch = sandbox.spy((_x) => _x);
         routes.search.action = mockSearchAction;
         consoleStub = sandbox.stub(console, 'error');
         dataLoaderUtil.loadDataForRoutes(mockLocation, mockDispatch);
@@ -137,7 +137,7 @@ describe('dataLoaderUtil', () => {
           pathname: `${appConfig.baseUrl}/bib/1`,
           search: '',
         };
-        mockDispatch = sandbox.spy((x) => x);
+        mockDispatch = sandbox.spy((_x) => _x);
         routes.bib.action = mockBibAction;
         dataLoaderUtil.loadDataForRoutes(mockLocation, mockDispatch);
       });
@@ -174,7 +174,7 @@ describe('dataLoaderUtil', () => {
           pathname: `${appConfig.baseUrl}/bib/1`,
           search: '',
         };
-        mockDispatch = sandbox.spy((x) => x);
+        mockDispatch = sandbox.spy((_x) => _x);
         routes.bib.action = mockBibAction;
         consoleStub = sandbox.stub(console, 'error');
         dataLoaderUtil.loadDataForRoutes(mockLocation, mockDispatch);
@@ -217,7 +217,7 @@ describe('dataLoaderUtil', () => {
           pathname: `${appConfig.baseUrl}/hold/request/1`,
           search: '',
         };
-        mockDispatch = sandbox.spy((x) => x);
+        mockDispatch = sandbox.spy((_x) => _x);
         routes.holdRequest.action = mockHoldRequestAction;
         dataLoaderUtil.loadDataForRoutes(mockLocation, mockDispatch);
       });
@@ -254,7 +254,7 @@ describe('dataLoaderUtil', () => {
           pathname: `${appConfig.baseUrl}/hold/request/1`,
           search: '',
         };
-        mockDispatch = sandbox.spy((x) => x);
+        mockDispatch = sandbox.spy((_x) => _x);
         routes.holdRequest.action = mockHoldRequestAction;
         consoleStub = sandbox.stub(console, 'error');
         dataLoaderUtil.loadDataForRoutes(mockLocation, mockDispatch);
@@ -310,7 +310,7 @@ describe('dataLoaderUtil', () => {
             pathname: `${appConfig.baseUrl}/account`,
             search: '',
           };
-          mockDispatch = sandbox.spy((x) => x);
+          mockDispatch = sandbox.spy((_x) => _x);
           dataLoaderUtil.loadDataForRoutes(mockLocation, mockDispatch);
         });
         after(() => {
@@ -352,7 +352,7 @@ describe('dataLoaderUtil', () => {
             pathname: `${appConfig.baseUrl}/account/items`,
             search: '',
           };
-          mockDispatch = sandbox.spy((x) => x);
+          mockDispatch = sandbox.spy((_x) => _x);
           dataLoaderUtil.loadDataForRoutes(mockLocation, mockDispatch);
         });
         after(() => {
@@ -389,7 +389,7 @@ describe('dataLoaderUtil', () => {
             pathname: `${appConfig.baseUrl}/account/settings`,
             search: '',
           };
-          mockDispatch = sandbox.spy((x) => x);
+          mockDispatch = sandbox.spy((_x) => _x);
           dataLoaderUtil.loadDataForRoutes(mockLocation, mockDispatch);
         });
         after(() => {

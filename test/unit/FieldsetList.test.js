@@ -5,7 +5,7 @@ import { mount } from 'enzyme';
 
 import FieldsetList from '../../src/app/components/Filters/FieldsetList';
 
-const listItemAt = (component, n) => component.find('li').at(n);
+const listItemAt = (component, position) => component.find('li').at(position);
 
 describe('FilterPopup', () => {
   describe('Default', () => {

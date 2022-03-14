@@ -1,5 +1,3 @@
-/* eslint-disable react/jsx-filename-extension */
-/* eslint-env mocha */
 import React from 'react';
 import { expect } from 'chai';
 import { mount } from 'enzyme';
@@ -243,7 +241,11 @@ describe('ResultsList', () => {
       before(() => {
         component = mount(<ResultsList results={resultsBibs} />, {
           context: {
-            router: { createHref: () => {}, push: () => {}, replace: () => {} },
+            router: {
+              createHref: () => undefined,
+              push: () => undefined,
+              replace: () => undefined,
+            },
           },
         });
         mock = new MockAdapter(axios);
@@ -266,7 +268,9 @@ describe('ResultsList', () => {
 
     before(() => {
       component = mount(<ResultsList results={resultsBibs} />, {
-        context: { router: { createHref: () => {}, push: () => {} } },
+        context: {
+          router: { createHref: () => undefined, push: () => undefined },
+        },
       });
       mock = new MockAdapter(axios);
       mock
@@ -363,7 +367,9 @@ describe('ResultsList', () => {
 
     before(() => {
       component = mount(<ResultsList results={resultsBibs} />, {
-        context: { router: { createHref: () => {}, push: () => {} } },
+        context: {
+          router: { createHref: () => undefined, push: () => undefined },
+        },
       });
       mock = new MockAdapter(axios);
       mock

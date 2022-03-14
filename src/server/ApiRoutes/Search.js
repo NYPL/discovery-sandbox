@@ -96,9 +96,9 @@ function fetchResults(
             drbRequesting = false;
             return res;
           })
-          .catch((e) => {
+          .catch((error) => {
             drbRequesting = false;
-            logger.error('Drb error: ', e);
+            logger.error('Drb error: ', error);
             return [];
           }),
       ])

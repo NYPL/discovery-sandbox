@@ -45,8 +45,8 @@ ItemSorter.sortableShelfMark = (shelfMark) => {
 /**
  * Returns a '0' left-padded string to default length of 6
  */
-ItemSorter.zeroPadString = (s, padLen = 6) =>
-  new Array(Math.max(0, padLen - s.length + 1)).join('0') + s;
+ItemSorter.zeroPadString = (str, padLen = 6) =>
+  new Array(Math.max(0, padLen - str.length + 1)).join('0') + str;
 
 /**
  * Add sortableShelfMark
@@ -73,6 +73,6 @@ ItemSorter.sortItems = (items) =>
   items
     .map(ItemSorter.itemWithSortableShelfMark)
     .sort((i1, i2) => (i1.shelfMarkSort > i2.shelfMarkSort ? 1 : -1))
-    .map((i) => i.item);
+    .map((item) => item.item);
 
 export default ItemSorter;

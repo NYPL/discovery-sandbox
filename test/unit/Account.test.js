@@ -33,7 +33,7 @@ const renderMockReq = (
   patronObj = {},
 ) => ({
   params: { content },
-  get: (n) => n,
+  get: (node) => node,
   patronTokenResponse: mockPatronTokenResponse,
   headers: {
     cookie: '',
@@ -57,11 +57,9 @@ describe('`fetchAccountPage`', () => {
   let redirectedTo = '';
 
   before(() => {
-    requireUser = sinon
-      .stub(User, 'requireUser')
-      .callsFake((req) => ({
-        redirect: !req.patronTokenResponse.isTokenValid,
-      }));
+    requireUser = sinon.stub(User, 'requireUser').callsFake((req) => ({
+      redirect: !req.patronTokenResponse.isTokenValid,
+    }));
     axiosGet = sinon.spy(axios, 'get');
     mock = new MockAdapter(axios);
     mock

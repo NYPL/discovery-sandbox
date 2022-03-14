@@ -40,7 +40,7 @@ describe('BibPage', () => {
         <BibPage
           location={{ search: 'search', pathname: '' }}
           bib={bib}
-          dispatch={() => {}}
+          dispatch={() => undefined}
           resultSelection={{
             fromUrl: '',
             bibId: '',
@@ -99,7 +99,7 @@ describe('BibPage', () => {
           <BibPage
             location={{ search: 'search', pathname: '' }}
             bib={bib}
-            dispatch={() => {}}
+            dispatch={() => undefined}
             resultSelection={{
               fromUrl: '',
               bibId: '',
@@ -159,7 +159,7 @@ describe('BibPage', () => {
           <BibPage
             location={{ search: 'search', pathname: '' }}
             bib={bib}
-            dispatch={() => {}}
+            dispatch={() => undefined}
             resultSelection={{
               fromUrl: '',
               bibId: '',
@@ -200,7 +200,8 @@ describe('BibPage', () => {
       expect(
         component
           .find('dt')
-          .findWhere((n) => n.type() === 'dt' && n.text() === 'Notes').length,
+          .findWhere((node) => node.type() === 'dt' && node.text() === 'Notes')
+          .length,
       ).to.equal(1);
     });
   });
@@ -213,7 +214,7 @@ describe('BibPage', () => {
         <BibPage
           location={{ search: 'search', pathname: '' }}
           bib={bib}
-          dispatch={() => {}}
+          dispatch={() => undefined}
           resultSelection={{
             fromUrl: 'resultsurl.com',
             bibId: bib['@id'].substring(4),
@@ -233,7 +234,7 @@ describe('BibPage', () => {
         <BibPage
           location={{ search: 'search', pathname: '' }}
           bib={bib}
-          dispatch={() => {}}
+          dispatch={() => undefined}
           resultSelection={{
             fromUrl: 'resultsurl.com',
             bibId: 'wrongbib',

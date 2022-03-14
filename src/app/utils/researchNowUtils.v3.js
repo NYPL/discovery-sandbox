@@ -122,10 +122,10 @@ const getQueryString = (query) => {
     Object.keys(query)
       .map((key) =>
         [key, query[key]]
-          .map((o) => {
-            let ret = o;
-            if (typeof o === 'object') {
-              ret = JSON.stringify(o);
+          .map((obj) => {
+            let ret = obj;
+            if (typeof obj === 'object') {
+              ret = JSON.stringify(obj);
             }
             return encodeURIComponent(ret);
           })

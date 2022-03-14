@@ -2,12 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 
-/* eslint-disable import/first, import/no-unresolved, import/extensions */
 import Pagination from '@Pagination';
 import AlphabeticalPagination from '@AlphabeticalPagination';
 import calculateDirection from '@calculateDirection';
 import SubjectHeadingsTable from './SubjectHeadingsTable';
-/* eslint-enable import/first, import/no-unresolved, import/extensions */
 import appConfig from '../../data/appConfig';
 import Range from '../../models/Range';
 

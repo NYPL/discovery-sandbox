@@ -96,7 +96,9 @@ describe('Search', () => {
       );
       component = mountTestRender(<Search createAPIQuery={createAPIQuery} />, {
         store: mockStore,
-        context: { router: { createHref: () => {}, push: () => {} } },
+        context: {
+          router: { createHref: () => undefined, push: () => undefined },
+        },
       }).find('Search');
     });
 
@@ -133,7 +135,9 @@ describe('Search', () => {
       );
       component = mountTestRender(<Search createAPIQuery={createAPIQuery} />, {
         store: mockStore,
-        context: { router: { createHref: () => {}, push: () => {} } },
+        context: {
+          router: { createHref: () => undefined, push: () => undefined },
+        },
       }).find('Search');
     });
 

@@ -1,23 +1,17 @@
-/* eslint-disable react/jsx-filename-extension */
-import React from 'react';
 import { mount, shallow } from 'enzyme';
+import React from 'react';
 import { Provider } from 'react-redux';
 import configureStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-
 import initialState from '../../src/app/stores/InitialState';
 
-const TestProvider = ({ store, children }) => (
-  <Provider store={store}>{children}</Provider>
-);
-
 function testRender(ui, renderFunc, { store, ...otherOpts }) {
-  return renderFunc(<TestProvider store={store}>{ui}</TestProvider>, {
+  return renderFunc(<Provider store={store}>{ui}</Provider>, {
     context: {
       router: {
         location: {},
-        createHref: () => {},
-        push: () => {},
+        createHref: () => undefined,
+        push: () => undefined,
       },
     },
     ...otherOpts,

@@ -142,7 +142,11 @@ describe('SearchResultsSorter', () => {
         createAPIQuery = basicQuery({});
         component = mount(
           <SearchResultsSorter createAPIQuery={createAPIQuery} />,
-          { context: { router: { createHref: () => {}, push: () => {} } } },
+          {
+            context: {
+              router: { createHref: () => undefined, push: () => undefined },
+            },
+          },
         );
         mock = new MockAdapter(axios);
         mock
@@ -172,7 +176,11 @@ describe('SearchResultsSorter', () => {
 
       component = mount(
         <SearchResultsSorter createAPIQuery={createAPIQuery} />,
-        { context: { router: { createHref: () => {}, push: () => {} } } },
+        {
+          context: {
+            router: { createHref: () => undefined, push: () => undefined },
+          },
+        },
       );
       mock = new MockAdapter(axios);
       mock

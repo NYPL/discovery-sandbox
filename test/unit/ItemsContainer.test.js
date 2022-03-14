@@ -216,8 +216,8 @@ const twentyItems = [
 const context = {
   router: {
     location: { query: {} },
-    createHref: () => {},
-    push: () => {},
+    createHref: () => undefined,
+    push: () => undefined,
   },
 };
 

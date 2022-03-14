@@ -190,7 +190,7 @@ describe('ItemTableRow', () => {
 
       it('should call the getItemRecord function when the Request button is clicked', () => {
         const link = component.find('td').find('Link');
-        link.simulate('click', { preventDefault: () => {} });
+        link.simulate('click', { preventDefault: () => undefined });
         expect(getItemRecord.calledOnce).to.equal(true);
       });
     });

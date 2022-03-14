@@ -14,15 +14,15 @@ describe('DataLoader', () => {
   const location = { pathname: '', search: '' };
   let wrapper;
   before(() => {
-    const children = <div />;
     dataLoaderUtilSpy = sinon.spy(dataLoaderUtil, 'loadDataForRoutes');
     wrapper = shallow(
       <DataLoader
         lastLoaded='/pathname'
         location={location}
-        children={children}
-        dispatch={() => {}}
-      />,
+        dispatch={() => undefined}
+      >
+        <div />
+      </DataLoader>,
     );
   });
   after(() => {

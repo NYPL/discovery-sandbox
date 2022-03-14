@@ -18,12 +18,12 @@ let mockPatronTokenResponse = {
   errorCode: null,
 };
 const renderMockReq = (data) => ({
-  get: (n) => n,
+  get: (_n) => _n,
   protocol: 'http',
   originalUrl: '/hold/request/b11995345-i14211097',
   patronTokenResponse: data,
 });
-const mockRes = { redirect: () => {} };
+const mockRes = { redirect: () => undefined };
 
 describe('If requireUser does not receive valid value from "req.patronTokenResponse"', () => {
   let requireUser;

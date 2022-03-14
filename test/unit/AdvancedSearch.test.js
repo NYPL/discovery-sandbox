@@ -139,9 +139,9 @@ describe('AdvancedSearch', () => {
       expect(component.find('Label').at(8).prop('htmlFor')).to.eql('formats');
 
       expect(component.find('Checkbox').length).to.eql(8);
-      for (let i = 0; i < materialTypes.length; i += 1) {
-        const materialType = materialTypes[i];
-        expect(component.find('Checkbox').at(i).props()).to.eql({
+      for (let idx = 0; idx < materialTypes.length; idx += 1) {
+        const materialType = materialTypes[idx];
+        expect(component.find('Checkbox').at(idx).props()).to.eql({
           labelOptions: {
             id: materialType.value,
             labelContent: materialType.label,

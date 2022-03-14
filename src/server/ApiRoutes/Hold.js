@@ -83,9 +83,9 @@ function postHoldAPI(
  */
 function mapLocationDetails(locations) {
   locations.map((loc) => {
-    _mapObject(locationCodes, (c) => {
-      if (loc['@id'].replace('loc:', '') === c.delivery_location) {
-        const locationDetailsItem = locationDetails[c.location];
+    _mapObject(locationCodes, (code) => {
+      if (loc['@id'].replace('loc:', '') === code.delivery_location) {
+        const locationDetailsItem = locationDetails[code.location];
 
         loc.address = locationDetailsItem
           ? locationDetailsItem.address.address1
