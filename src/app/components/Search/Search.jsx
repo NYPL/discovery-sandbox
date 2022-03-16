@@ -3,21 +3,12 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 
-import {
-  Input,
-  SearchBar,
-  Select,
-} from '@nypl/design-system-react-components';
+import { Input, SearchBar, Select } from '@nypl/design-system-react-components';
 
 import SearchButton from '../Buttons/SearchButton';
-import {
-  trackDiscovery,
-} from '../../utils/utils';
+import { trackDiscovery } from '../../utils/utils';
 import appConfig from '../../data/appConfig';
-import {
-  updateSearchKeywords,
-  updateField,
-} from '../../actions/Actions';
+import { updateSearchKeywords, updateField } from '../../actions/Actions';
 
 /**
  * The main container for the top Search section.
@@ -87,9 +78,7 @@ class Search extends React.Component {
   submitSearchRequest(e) {
     e.preventDefault();
     // Store the data that the user entered
-    const {
-      field,
-    } = this.state;
+    const { field } = this.state;
 
     const userSearchKeywords = this.state.searchKeywords.trim();
 
@@ -102,7 +91,11 @@ class Search extends React.Component {
     const searchKeywords = userSearchKeywords === '*' ? '' : userSearchKeywords;
 
     if (field === 'subject') {
-      this.props.router.push(`${appConfig.baseUrl}/subject_headings?filter=${searchKeywords.charAt(0).toUpperCase() + searchKeywords.slice(1)}`);
+      this.props.router.push(
+        `${appConfig.baseUrl}/subject_headings?filter=${
+          searchKeywords.charAt(0).toUpperCase() + searchKeywords.slice(1)
+        }`,
+      );
       return;
     }
 
@@ -124,45 +117,42 @@ class Search extends React.Component {
 
   render() {
     return (
-
       <SearchBar
-        id="mainContent"
+        id='mainContent'
         onSubmit={this.triggerSubmit}
-        className="content-primary"
+        className='content-primary'
         attributes={{
           method: 'POST',
           action: `${appConfig.baseUrl}/search`,
         }}
       >
-        <div id="search-container">
+        <div id='search-container'>
           <Select
-            id="search-by-field"
+            id='search-by-field'
             onChange={this.onFieldChange}
             selectedOption={this.state.field}
-            name="search_scope"
-            >
-            <option value="all">All fields</option>
-            <option value="title">Title</option>
-            <option value="journal_title">Journal Title</option>
-            <option value="contributor">Author/Contributor</option>
-            <option value="standard_number">Standard Numbers</option>
-            <option value="subject">Subject</option>
+            name='search_scope'
+          >
+            <option value='all'>All fields</option>
+            <option value='title'>Title</option>
+            <option value='journal_title'>Journal Title</option>
+            <option value='contributor'>Author/Contributor</option>
+            <option value='standard_number'>Standard Numbers</option>
+            <option value='subject'>Subject</option>
           </Select>
           <Input
-            type="text"
-            id="search-query"
-            aria-label="Search by keyword, title, journal title, or author/contributor"
-            aria-controls="results-description"
-            placeholder="Keyword, title, journal title, or author/contributor"
+            type='text'
+            id='search-query'
+            aria-label='Search by keyword, title, journal title, or author/contributor'
+            aria-controls='results-description'
+            placeholder='Keyword, title, journal title, or author/contributor'
             onChange={this.inputChange}
             value={this.state.searchKeywords}
-            name="q"
+            name='q'
           />
-          <SearchButton
-            onClick={this.submitSearchRequest}
-          />
+          <SearchButton onClick={this.submitSearchRequest} />
         </div>
-        <div id="advanced-search-link-container">
+        <div id='advanced-search-link-container'>
           <a href={`${appConfig.baseUrl}/search/advanced`}>Advanced Search</a>
         </div>
       </SearchBar>
@@ -186,15 +176,16 @@ Search.defaultProps = {
   selectedFilters: {},
 };
 
-const mapStateToProps = ({
+const mapStateToProps = ({ searchKeywords, field, selectedFilters }) => ({
   searchKeywords,
   field,
   selectedFilters,
-}) => ({ searchKeywords, field, selectedFilters });
+});
 
-const mapDispatchToProps = dispatch => ({
-  updateSearchKeywords: searchKeywords => dispatch(updateSearchKeywords(searchKeywords)),
-  updateField: field => dispatch(updateField(field)),
+const mapDispatchToProps = (dispatch) => ({
+  updateSearchKeywords: (searchKeywords) =>
+    dispatch(updateSearchKeywords(searchKeywords)),
+  updateField: (field) => dispatch(updateField(field)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Search);

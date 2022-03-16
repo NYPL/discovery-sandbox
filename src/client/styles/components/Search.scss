@@ -21,15 +21,14 @@
         }
       }
 
-      @media(max-width: 490px) {
+      @media (max-width: 490px) {
         #search-container {
           display: block;
           button {
             width: 100%;
           }
         }
-
-      };
+      }
     }
 
     @media (min-width: 870px) {
@@ -46,7 +45,6 @@
   display: flex;
   width: 100%;
 }
-
 
 @media (max-width: 490px) {
   .nypl-sorter-row {

@@ -47,12 +47,10 @@ const getDefaultFilters = () => _extend({}, appConfig.defaultFilters);
  * createAppHistory
  * Create a history in the browser or server that coincides with react-router.
  */
-const createAppHistory = () => {
-  if (typeof window !== 'undefined') {
-    return useQueries(createHistory)();
-  }
-
-  return useQueries(createMemoryHistory)();
+const useCreateAppHistory = () => {
+  return useQueries(
+    typeof window !== 'undefined' ? createHistory : createMemoryHistory,
+  )();
 };
 
 /**
@@ -764,7 +762,7 @@ export {
   trackDiscovery,
   ajaxCall,
   getSortQuery,
-  createAppHistory,
+  useCreateAppHistory as createAppHistory,
   getFieldParam,
   getFilterParam,
   destructureFilters,

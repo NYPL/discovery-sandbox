@@ -12,20 +12,19 @@ const CancelConfirmationModal = ({
   cancelItem,
   setItemToCancel,
 }) => (
-  <Modal className="research-modal cancel-confirmation">
-    <div className="research-modal__content">
+  <Modal className='research-modal cancel-confirmation'>
+    <div className='research-modal__content'>
       <p>Cancel your hold on this item?</p>
       <p>{itemToCancel.title}</p>
-      <div className="button-container">
+      <div className='button-container'>
         <Button
           buttonType={ButtonTypes.Secondary}
           onClick={() => setItemToCancel(null)}
-        >Back
+        >
+          Back
         </Button>
-        <Button
-          buttonType={ButtonTypes.Primary}
-          onClick={cancelItem}
-        >Confirm
+        <Button buttonType={ButtonTypes.Primary} onClick={cancelItem}>
+          Confirm
         </Button>
       </div>
     </div>

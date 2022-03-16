@@ -173,7 +173,7 @@ class BibsList extends React.Component {
     const { results, bibsSource, totalResults } = this.state;
 
     // TODO: label Property is unused. SubjectHeadingShow Component passes this down.
-    const { label } = this.props;
+    // const { label } = this.props;
 
     const { sort, sortDirection } = this;
 

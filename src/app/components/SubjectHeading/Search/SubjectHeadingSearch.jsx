@@ -19,7 +19,7 @@ class SubjectHeadingSearch extends React.Component {
     this.makeApiCallWithThrottle = this.makeApiCallWithThrottle.bind(this);
   }
 
-  onSubmit(e, { suggestion }) {
+  onSubmit(event, { suggestion }) {
     const url = this.generatePath(suggestion);
     this.context.router.push(url);
   }
@@ -33,10 +33,14 @@ class SubjectHeadingSearch extends React.Component {
   makeApiCallWithThrottle() {
     const apiCall = () => {
       if (this.state.userInput) {
-        return axios(`${appConfig.baseUrl}/api/subjectHeadings/autosuggest?query=${this.state.userInput}`)
+        return axios(
+          `${appConfig.baseUrl}/api/subjectHeadings/autosuggest?query=${this.state.userInput}`,
+        )
           .then((res) => {
             const numberOfResults = res.data.autosuggest.length;
-            this.props.setContentPrimaryStyle({ 'min-height': `${Math.max(numberOfResults, 12) * 50}px` });
+            this.props.setContentPrimaryStyle({
+              'min-height': `${Math.max(numberOfResults, 12) * 50}px`,
+            });
             if (res.data.request.query.trim() === this.state.userInput.trim()) {
               this.setState({
                 suggestions: res.data.autosuggest,
@@ -80,23 +84,20 @@ class SubjectHeadingSearch extends React.Component {
       makeApiCallWithThrottle,
       onChange,
       onSubmit,
-      state: {
-        suggestions,
-        userInput,
-      },
+      state: { suggestions, userInput },
     } = this;
 
     return (
       /*
-        * if you need style the open state
-        * add the `alwaysRenderSuggestions` prop
-      */
+       * if you need style the open state
+       * add the `alwaysRenderSuggestions` prop
+       */
       <Autosuggest
         suggestions={suggestions}
         onSuggestionsFetchRequested={() => makeApiCallWithThrottle()}
         onSuggestionsClearRequested={() => this.setState({ suggestions: [] })}
-        onSuggestionSelected={(e, secondArg) => onSubmit(e, secondArg)}
-        getSuggestionValue={suggestion => suggestion.label}
+        onSuggestionSelected={(event, secondArg) => onSubmit(event, secondArg)}
+        getSuggestionValue={(suggestion) => suggestion.label}
         inputProps={{
           placeholder: 'Enter a Subject Heading Term',
           value: userInput,
@@ -108,13 +109,12 @@ class SubjectHeadingSearch extends React.Component {
           return (
             <div>
               <span>
-                {subjectComponent ? null : (<em>Subject: </em>) }
-                <span>
-                  {suggestion.label}
-                </span>
+                {subjectComponent ? null : <em>Subject: </em>}
+                <span>{suggestion.label}</span>
               </span>
-              <div className="aggregateBibCount">
-                {suggestion.aggregate_bib_count} title{suggestion.aggregate_bib_count > 1 ? 's' : ''}
+              <div className='aggregateBibCount'>
+                {suggestion.aggregate_bib_count} title
+                {suggestion.aggregate_bib_count > 1 ? 's' : ''}
               </div>
             </div>
           );
@@ -133,7 +133,7 @@ SubjectHeadingSearch.propTypes = {
 };
 
 SubjectHeadingSearch.defaultProps = {
-  setContentPrimaryStyle: () => {},
+  setContentPrimaryStyle: () => undefined,
 };
 
 export default SubjectHeadingSearch;
