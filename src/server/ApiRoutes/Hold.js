@@ -21,11 +21,11 @@ import {
 import extractFeatures from '../../app/utils/extractFeatures';
 import isAeonUrl from '../utils/isAeonUrl';
 
-const nyplApiClientGet = endpoint =>
-  nyplApiClient().then(client => client.get(endpoint, { cache: false }));
+const nyplApiClientGet = (endpoint) =>
+  nyplApiClient().then((client) => client.get(endpoint, { cache: false }));
 
 const nyplApiClientPost = (endpoint, opts) =>
-  nyplApiClient().then(client => client.post(endpoint, opts));
+  nyplApiClient().then((client) => client.post(endpoint, opts));
 /**
  * postHoldAPI(req, pickedUpItemId, pickupLocation, cb, errorCb)
  * The function to make a POST request to the hold request API.
@@ -61,18 +61,16 @@ function postHoldAPI(
     patron: patronId,
     record: itemId,
     nyplSource: itemSource,
-    requestType: (pickupLocation === 'edd') ? 'edd' : 'hold',
+    requestType: pickupLocation === 'edd' ? 'edd' : 'hold',
     recordType: 'i',
-    pickupLocation: (pickupLocation === 'edd') ? null : pickupLocation,
+    pickupLocation: pickupLocation === 'edd' ? null : pickupLocation,
     // neededBy: "2013-03-20",
     numberOfCopies: 1,
-    docDeliveryData: (pickupLocation === 'edd') ? docDeliveryData : null,
+    docDeliveryData: pickupLocation === 'edd' ? docDeliveryData : null,
   };
   logger.info('Making hold request in postHoldAPI', data);
 
-  return nyplApiClientPost(holdRequestEndpoint, data)
-    .then(cb)
-    .catch(errorCb);
+  return nyplApiClientPost(holdRequestEndpoint, data).then(cb).catch(errorCb);
 }
 
 /**
@@ -85,14 +83,16 @@ function postHoldAPI(
  */
 function mapLocationDetails(locations) {
   locations.map((loc) => {
-    _mapObject(locationCodes, (c) => {
-      if (loc['@id'].replace('loc:', '') === c.delivery_location) {
-        const locationDetailsItem = locationDetails[c.location];
+    _mapObject(locationCodes, (code) => {
+      if (loc['@id'].replace('loc:', '') === code.delivery_location) {
+        const locationDetailsItem = locationDetails[code.location];
 
-        loc.address = (locationDetailsItem) ?
-          locationDetailsItem.address.address1 : null;
-        loc.shortName = (locationDetailsItem) ?
-          locationDetailsItem['short-name'] : null;
+        loc.address = locationDetailsItem
+          ? locationDetailsItem.address.address1
+          : null;
+        loc.shortName = locationDetailsItem
+          ? locationDetailsItem['short-name']
+          : null;
 
         return true;
       }
@@ -114,7 +114,9 @@ function mapLocationDetails(locations) {
  */
 function modelDeliveryLocationName(prefLabel, shortName) {
   if (prefLabel && typeof prefLabel === 'string' && shortName) {
-    const deliveryRoom = (prefLabel.split(' - ')[1]) ? ` - ${prefLabel.split(' - ')[1]}` : '';
+    const deliveryRoom = prefLabel.split(' - ')[1]
+      ? ` - ${prefLabel.split(' - ')[1]}`
+      : '';
 
     return `${shortName}${deliveryRoom}`;
   }
@@ -133,37 +135,46 @@ function modelDeliveryLocationName(prefLabel, shortName) {
  * @return {function}
  */
 function getDeliveryLocations(barcode, patronId, cb, errorCb) {
-  const deliveryEndpoint = `/request/deliveryLocationsByBarcode?barcodes[]=${barcode}` +
+  const deliveryEndpoint =
+    `/request/deliveryLocationsByBarcode?barcodes[]=${barcode}` +
     `&patronId=${patronId}`;
 
   return nyplApiClientGet(deliveryEndpoint)
     .then((barcodeAPIresponse) => {
-      const eddRequestable = (barcodeAPIresponse && barcodeAPIresponse.itemListElement &&
+      const eddRequestable =
+        barcodeAPIresponse &&
+        barcodeAPIresponse.itemListElement &&
         barcodeAPIresponse.itemListElement.length &&
-        barcodeAPIresponse.itemListElement[0].eddRequestable) ?
-        barcodeAPIresponse.itemListElement[0].eddRequestable : false;
-      let deliveryLocationWithAddress = (barcodeAPIresponse &&
-          barcodeAPIresponse.itemListElement && barcodeAPIresponse.itemListElement.length &&
-          barcodeAPIresponse.itemListElement[0].deliveryLocation) ?
-        mapLocationDetails(barcodeAPIresponse.itemListElement[0].deliveryLocation) : [];
+        barcodeAPIresponse.itemListElement[0].eddRequestable
+          ? barcodeAPIresponse.itemListElement[0].eddRequestable
+          : false;
+      let deliveryLocationWithAddress =
+        barcodeAPIresponse &&
+        barcodeAPIresponse.itemListElement &&
+        barcodeAPIresponse.itemListElement.length &&
+        barcodeAPIresponse.itemListElement[0].deliveryLocation
+          ? mapLocationDetails(
+              barcodeAPIresponse.itemListElement[0].deliveryLocation,
+            )
+          : [];
 
       const { closedLocations } = appConfig;
-      deliveryLocationWithAddress = deliveryLocationWithAddress.filter(location =>
-        !closedLocations.some(closedLocation =>
-          modelDeliveryLocationName(location.prefLabel, location.shortName)
-            .startsWith(closedLocation),
-        ),
+      deliveryLocationWithAddress = deliveryLocationWithAddress.filter(
+        (location) =>
+          !closedLocations.some((closedLocation) =>
+            modelDeliveryLocationName(
+              location.prefLabel,
+              location.shortName,
+            ).startsWith(closedLocation),
+          ),
       );
 
-      cb(
-        deliveryLocationWithAddress,
-        eddRequestable,
-      );
+      cb(deliveryLocationWithAddress, eddRequestable);
     })
     .catch((barcodeAPIError) => {
       logger.error(
         'Error attemping to make server side call using nyplApiClient in getDeliveryLocations' +
-        `, endpoint: ${deliveryEndpoint}`,
+          `, endpoint: ${deliveryEndpoint}`,
         barcodeAPIError,
       );
       errorCb(barcodeAPIError);
@@ -192,15 +203,16 @@ function confirmRequestServer(req, res, next) {
   const { features } = req.query;
   const urlEnabledFeatures = extractFeatures(features);
 
-
   const { dispatch } = req.store;
   if (!requestId) {
-    dispatch(updateHoldRequestPage({
-      bib: {},
-      searchKeywords,
-      error,
-      deliveryLocations: [],
-    }));
+    dispatch(
+      updateHoldRequestPage({
+        bib: {},
+        searchKeywords,
+        error,
+        deliveryLocations: [],
+      }),
+    );
     next();
     return false;
   }
@@ -228,28 +240,32 @@ function confirmRequestServer(req, res, next) {
             barcode,
             patronId,
             (deliveryLocations, isEddRequestable) => {
-              dispatch(updateHoldRequestPage({
-                bib,
-                deliveryLocations,
-                isEddRequestable,
-                searchKeywords,
-              }));
+              dispatch(
+                updateHoldRequestPage({
+                  bib,
+                  deliveryLocations,
+                  isEddRequestable,
+                  searchKeywords,
+                }),
+              );
               next();
             },
             (deliveryLocationError) => {
               logger.error(
                 'Error retrieving server side delivery locations in confirmRequestServer' +
-                `, bibId: ${bibId}`,
+                  `, bibId: ${bibId}`,
                 deliveryLocationError,
               );
 
-              dispatch(updateHoldRequestPage({
-                bib,
-                searchKeywords,
-                error,
-                deliveryLocations: [],
-                isEddRequestable: false,
-              }));
+              dispatch(
+                updateHoldRequestPage({
+                  bib,
+                  searchKeywords,
+                  error,
+                  deliveryLocations: [],
+                  isEddRequestable: false,
+                }),
+              );
               next();
             },
           );
@@ -259,12 +275,14 @@ function confirmRequestServer(req, res, next) {
             `Error retrieving server side bib record in confirmRequestServer, id: ${bibId}`,
             bibResponseError,
           );
-          dispatch(updateHoldRequestPage({
-            bib: {},
-            searchKeywords,
-            error,
-            deliveryLocations: [],
-          }));
+          dispatch(
+            updateHoldRequestPage({
+              bib: {},
+              searchKeywords,
+              error,
+              deliveryLocations: [],
+            }),
+          );
           next();
         },
         {
@@ -279,12 +297,14 @@ function confirmRequestServer(req, res, next) {
         requestIdError,
       );
 
-      dispatch(updateHoldRequestPage({
-        bib: {},
-        searchKeywords,
-        error,
-        deliveryLocations: [],
-      }));
+      dispatch(
+        updateHoldRequestPage({
+          bib: {},
+          searchKeywords,
+          error,
+          deliveryLocations: [],
+        }),
+      );
       next();
 
       return false;
@@ -301,9 +321,12 @@ function confirmRequestServer(req, res, next) {
  * @return {function}
  */
 function newHoldRequest(req, res, resolve) {
-  const bibId = (req.params.bibId || '') + (req.params.itemId ? `-${req.params.itemId}` : '');
-  const patronId = req.patronTokenResponse.decodedPatron ?
-    req.patronTokenResponse.decodedPatron.sub : '';
+  const bibId =
+    (req.params.bibId || '') +
+    (req.params.itemId ? `-${req.params.itemId}` : '');
+  const patronId = req.patronTokenResponse.decodedPatron
+    ? req.patronTokenResponse.decodedPatron.sub
+    : '';
   let barcode;
   const { features } = req.query;
   const urlEnabledFeatures = extractFeatures(features);
@@ -349,10 +372,10 @@ function newHoldRequest(req, res, resolve) {
             deliveryLocations: [],
             isEddRequestable: false,
           });
-        }
+        },
       );
     },
-    bibResponseError => resolve(bibResponseError),
+    (bibResponseError) => resolve(bibResponseError),
     {
       fetchSubjectHeadingData: false,
       features: urlEnabledFeatures,
@@ -373,7 +396,7 @@ function newHoldRequestServerEdd(req, res, next) {
   if (redirect) return false;
 
   // Retrieve item
-  return Bib.fetchBib(
+  const item = Bib.fetchBib(
     bibId,
     (data) => {
       dispatch(updateBib(data.bib));
@@ -385,12 +408,14 @@ function newHoldRequestServerEdd(req, res, next) {
         `Error retrieving server side bib record in newHoldRequestServerEdd, id: ${bibId}`,
         bibResponseError,
       );
-      dispatch(updateHoldRequestPage({
-        bib: {},
-        searchKeywords: req.query.searchKeywords || '',
-        error,
-        form,
-      }));
+      dispatch(
+        updateHoldRequestPage({
+          bib: {},
+          searchKeywords: req.query.searchKeywords || '',
+          error,
+          form,
+        }),
+      );
       next();
     },
     {
@@ -398,6 +423,7 @@ function newHoldRequestServerEdd(req, res, next) {
       features: urlEnabledFeatures,
     },
   );
+  return item;
 }
 
 /**
@@ -410,7 +436,12 @@ function newHoldRequestServerEdd(req, res, next) {
  * @param {string} pickedUpItemId
  * @return {function}
  */
-function createHoldRequestServer(req, res, pickedUpBibId = '', pickedUpItemId = '') {
+function createHoldRequestServer(
+  req,
+  res,
+  pickedUpBibId = '',
+  pickedUpItemId = '',
+) {
   res.respond = req.body.serverRedirect === 'false' ? res.json : res.redirect;
   // Ensure user is logged in
   const requireUser = User.requireUser(req, res);
@@ -422,9 +453,11 @@ function createHoldRequestServer(req, res, pickedUpBibId = '', pickedUpItemId = 
   const bibId = req.params.bibId || pickedUpBibId;
   const itemSource = req.params.itemSource || '';
   const pickupLocation = req.body['delivery-location'];
-  const docDeliveryData = (req.body.form && pickupLocation === 'edd') ? req.body.form : null;
-  const searchKeywordsQuery = (req.body['search-keywords']) ?
-    `&q=${req.body['search-keywords']}` : '';
+  const docDeliveryData =
+    req.body.form && pickupLocation === 'edd' ? req.body.form : null;
+  const searchKeywordsQuery = req.body['search-keywords']
+    ? `&q=${req.body['search-keywords']}`
+    : '';
 
   if (!bibId || !itemId) {
     // Dummy redirect for now
@@ -432,8 +465,9 @@ function createHoldRequestServer(req, res, pickedUpBibId = '', pickedUpItemId = 
   }
 
   if (pickupLocation === 'edd') {
-    const eddSearchKeywordsQuery = (req.body['search-keywords']) ?
-      `?q=${req.body['search-keywords']}` : '';
+    const eddSearchKeywordsQuery = req.body['search-keywords']
+      ? `?q=${req.body['search-keywords']}`
+      : '';
 
     return res.respond(
       `${appConfig.baseUrl}/hold/request/${bibId}-${itemId}/edd${eddSearchKeywordsQuery}`,
@@ -450,7 +484,7 @@ function createHoldRequestServer(req, res, pickedUpBibId = '', pickedUpItemId = 
       const data = response.data;
       res.respond(
         `${appConfig.baseUrl}/hold/confirmation/${bibId}-${itemId}?pickupLocation=` +
-        `${pickupLocation}&requestId=${data.id}${searchKeywordsQuery}`,
+          `${pickupLocation}&requestId=${data.id}${searchKeywordsQuery}`,
       );
     },
     (error) => {
@@ -459,44 +493,46 @@ function createHoldRequestServer(req, res, pickedUpBibId = '', pickedUpItemId = 
         error.data.message,
       );
       const errorStatus = error.status ? `&errorStatus=${error.status}` : '';
-      const errorMessage = error.statusText || searchKeywordsQuery
-        ? `&errorMessage=${error.statusText}${searchKeywordsQuery}`
-        : '';
+      const errorMessage =
+        error.statusText || searchKeywordsQuery
+          ? `&errorMessage=${error.statusText}${searchKeywordsQuery}`
+          : '';
       res.respond(
         `${appConfig.baseUrl}/hold/confirmation/${bibId}-${itemId}?pickupLocation=` +
-        `${pickupLocation}${errorStatus}${errorMessage}`,
+          `${pickupLocation}${errorStatus}${errorMessage}`,
       );
     },
   );
 }
 
 function eddServer(req, res) {
-  const {
-    bibId,
-    itemId,
-    searchKeywords,
-    serverRedirect,
-  } = req.body;
+  const { bibId, itemId, searchKeywords, serverRedirect } = req.body;
 
   let { fromUrl } = req.body;
   fromUrl = fromUrl ? `&fromUrl=${fromUrl}` : '';
 
   res.respond = serverRedirect === 'false' ? res.json : res.redirect;
 
-  const searchKeywordsQuery = (searchKeywords) ? `&q=${searchKeywords}` : '';
+  const searchKeywordsQuery = searchKeywords ? `&q=${searchKeywords}` : '';
 
   let serverErrors = {};
 
   // NOTE: We want to skip over bibId and itemId in the validation. They are hidden fields but
   // only useful for making the actual request and not for the form validation.
   // If the form is not valid, then redirect to the same page but with errors AND the user data:
-  if (!validate(_omit(req.body, ['bibId', 'itemId']), (error) => { serverErrors = error; })) {
+  if (
+    !validate(_omit(req.body, ['bibId', 'itemId']), (error) => {
+      serverErrors = error;
+    })
+  ) {
     // Very ugly but passing all the error and patron data through the url param.
     // TODO: think of a better way to pass data. For now, this works, but make sure that
     // the data is being passed and picked up by the `ElectronicDelivery` component.
-    return res.respond(`${appConfig.baseUrl}/hold/request/${bibId}-${itemId}/edd?` +
-      `error=${JSON.stringify(serverErrors)}` +
-      `&form=${JSON.stringify(req.body)}${fromUrl}`);
+    return res.respond(
+      `${appConfig.baseUrl}/hold/request/${bibId}-${itemId}/edd?` +
+        `error=${JSON.stringify(serverErrors)}` +
+        `&form=${JSON.stringify(req.body)}${fromUrl}`,
+    );
   }
 
   // Ensure user is logged in
@@ -516,7 +552,7 @@ function eddServer(req, res) {
 
       res.respond(
         `${appConfig.baseUrl}/hold/confirmation/${bibId}-${itemId}` +
-        `?pickupLocation=${req.body.pickupLocation}&requestId=${data.id}${searchKeywordsQuery}${fromUrl}`,
+          `?pickupLocation=${req.body.pickupLocation}&requestId=${data.id}${searchKeywordsQuery}${fromUrl}`,
       );
     },
     (error) => {
@@ -525,11 +561,13 @@ function eddServer(req, res) {
         error,
       );
       const errorStatus = error.status ? `&errorStatus=${error.status}` : '';
-      const errorMessage = error.statusText || searchKeywordsQuery || fromUrl
-        ? `&errorMessage=${error.statusText}${searchKeywordsQuery}${fromUrl}`
-        : '';
+      const errorMessage =
+        error.statusText || searchKeywordsQuery || fromUrl
+          ? `&errorMessage=${error.statusText}${searchKeywordsQuery}${fromUrl}`
+          : '';
       res.respond(
-        `${appConfig.baseUrl}/hold/confirmation/${bibId}-${itemId}?pickupLocation=edd${errorStatus}${errorMessage}`);
+        `${appConfig.baseUrl}/hold/confirmation/${bibId}-${itemId}?pickupLocation=edd${errorStatus}${errorMessage}`,
+      );
     },
   );
 }

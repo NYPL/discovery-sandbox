@@ -57,37 +57,37 @@
                     "tag": "a",
                     "content": "Access -- 506 0,any"
                   }
-                  ]
-                }
+                ]
               }
-            ]
-          },
-          {
-            "label": "Url",
-            "values": [
-              {
-                "label": "856 40",
-                "content": "http://blogs.nypl.org/rcramer/",
-                "source": {
-                  "fieldTag": "y",
-                  "marcTag": "856",
-                  "ind1": "4",
-                  "ind2": "0",
-                  "content": null,
-                  "subfields": [
-                    {
-                      "tag": "u",
-                      "content": "http://blogs.nypl.org/rcramer/"
-                    },
-                    {
-                      "tag": "z",
-                      "content": "[redacted]"
-                    }
-                  ]
-                }
+            }
+          ]
+        },
+        {
+          "label": "Url",
+          "values": [
+            {
+              "label": "856 40",
+              "content": "http://blogs.nypl.org/rcramer/",
+              "source": {
+                "fieldTag": "y",
+                "marcTag": "856",
+                "ind1": "4",
+                "ind2": "0",
+                "content": null,
+                "subfields": [
+                  {
+                    "tag": "u",
+                    "content": "http://blogs.nypl.org/rcramer/"
+                  },
+                  {
+                    "tag": "z",
+                    "content": "[redacted]"
+                  }
+                ]
               }
-            ]
-          }
+            }
+          ]
+        }
       ]
     }
   }

@@ -9,7 +9,9 @@ describe('subjectFilterUtil', () => {
         { field: 'Language' },
         { field: 'MaterialType' },
       ];
-      expect(subjectFilterUtil.getSubjectLiteralFilters(noSubjectFilters)).to.equal(null);
+      expect(
+        subjectFilterUtil.getSubjectLiteralFilters(noSubjectFilters),
+      ).to.equal(null);
     });
 
     it('should return the filters with a subjectLiteral field if they exist', () => {
@@ -18,11 +20,8 @@ describe('subjectFilterUtil', () => {
         { field: 'Language' },
       ];
       expect(
-        subjectFilterUtil
-          .getSubjectLiteralFilters(subjectFiltersPresent),
-      ).to
-        .equal(subjectFiltersPresent[0],
-        );
+        subjectFilterUtil.getSubjectLiteralFilters(subjectFiltersPresent),
+      ).to.equal(subjectFiltersPresent[0]);
     });
   });
 
@@ -32,8 +31,9 @@ describe('subjectFilterUtil', () => {
       { value: 'hot dog' },
     ];
 
-    const returnedFunction = subjectFilterUtil
-      .subjectFilterIsSelected(selectedSubjectLiteralFilters);
+    const returnedFunction = subjectFilterUtil.subjectFilterIsSelected(
+      selectedSubjectLiteralFilters,
+    );
 
     it('should return a function which returns true if value is selected', () => {
       expect(returnedFunction({ value: 'puppy' })).to.equal(true);
@@ -46,36 +46,40 @@ describe('subjectFilterUtil', () => {
 
   describe('narrowSubjectFilters', () => {
     const apiFilters = [
-      { field: 'subjectLiteral',
-        values: [
-          { value: 'puppy' },
-          { value: 'hot dog' },
-        ],
+      {
+        field: 'subjectLiteral',
+        values: [{ value: 'puppy' }, { value: 'hot dog' }],
       },
       {
         field: 'Language',
-        values: [
-          { value: 'English' },
-          { value: 'Greek' },
-        ],
+        values: [{ value: 'English' }, { value: 'Greek' }],
       },
     ];
     const selectedFilters = {
       subjectLiteral: [{ value: 'puppy' }],
     };
     it('should change the subjectLiteral values to only include those which are selected', () => {
-      const newApiFilters = subjectFilterUtil.narrowSubjectFilters(apiFilters, selectedFilters);
+      const newApiFilters = subjectFilterUtil.narrowSubjectFilters(
+        apiFilters,
+        selectedFilters,
+      );
       expect(newApiFilters[0].values.length).to.equal(1);
       expect(newApiFilters[0].values[0].value).to.equal('puppy');
     });
 
     it('should change the subjectLiteral values to be empty if none are selected', () => {
-      const newApiFilters = subjectFilterUtil.narrowSubjectFilters(apiFilters, {});
+      const newApiFilters = subjectFilterUtil.narrowSubjectFilters(
+        apiFilters,
+        {},
+      );
       expect(newApiFilters[0].values.length).to.equal(0);
     });
 
     it('should leave the other filters unchanged', () => {
-      const newApiFilters = subjectFilterUtil.narrowSubjectFilters(apiFilters, {});
+      const newApiFilters = subjectFilterUtil.narrowSubjectFilters(
+        apiFilters,
+        {},
+      );
       expect(newApiFilters[1].values.length).to.equal(2);
     });
   });

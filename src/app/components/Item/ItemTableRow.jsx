@@ -3,9 +3,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 import { isEmpty as _isEmpty } from 'underscore';
 
-import {
-  trackDiscovery,
-} from '../../utils/utils';
+import { trackDiscovery } from '../../utils/utils';
 
 import appConfig from '../../data/appConfig';
 
@@ -19,14 +17,9 @@ class ItemTableRow extends React.Component {
 
   getItemRecord(e) {
     e.preventDefault();
-    const {
-      bibId,
-      item,
-    } = this.props;
+    const { bibId, item } = this.props;
 
-    const {
-      routes,
-    } = this.context.router;
+    const { routes } = this.context.router;
 
     const page = routes[routes.length - 1].component.name;
     let gaLabel = 'Item Holding';
@@ -35,7 +28,9 @@ class ItemTableRow extends React.Component {
     if (page === 'SubjectHeadingShowPage') gaLabel = 'Subject Heading Details';
 
     trackDiscovery('Item Request', gaLabel);
-    this.context.router.push(`${appConfig.baseUrl}/hold/request/${bibId}-${item.id}`);
+    this.context.router.push(
+      `${appConfig.baseUrl}/hold/request/${bibId}-${item.id}`,
+    );
   }
 
   message() {
@@ -53,32 +48,31 @@ class ItemTableRow extends React.Component {
       CallNumber: 'callNumber',
     };
 
-    let params = Object.keys(paramMappings).map((paramName) => {
-      if (searchParams.has(paramName)) return null;
-      const mappedParamName = paramMappings[paramName];
-      if (!item[mappedParamName]) return null;
-      return `&${paramName}=${item[mappedParamName]}`;
-    })
-      .filter(paramString => paramString)
+    let params = Object.keys(paramMappings)
+      .map((paramName) => {
+        if (searchParams.has(paramName)) return null;
+        const mappedParamName = paramMappings[paramName];
+        if (!item[mappedParamName]) return null;
+        return `&${paramName}=${item[mappedParamName]}`;
+      })
+      .filter((paramString) => paramString)
       .join('');
 
     if (params && !url.includes('?')) params = `?${params}`;
 
-    return encodeURI(
-      `${url}${params || ''}`,
-    );
+    return encodeURI(`${url}${params || ''}`);
   }
 
   requestButton() {
-    const {
-      item,
-      bibId,
-      searchKeywords,
-    } = this.props;
-    const { closedLocations, recapClosedLocations, nonRecapClosedLocations } = appConfig;
+    const { item, bibId, searchKeywords } = this.props;
+    const { closedLocations, recapClosedLocations, nonRecapClosedLocations } =
+      appConfig;
     const isRecap = item.isRecap;
-    const allClosed = closedLocations.concat((isRecap ? recapClosedLocations : nonRecapClosedLocations)).includes('');
-    const status = item.status && item.status.prefLabel ? item.status.prefLabel : ' ';
+    const allClosed = closedLocations
+      .concat(isRecap ? recapClosedLocations : nonRecapClosedLocations)
+      .includes('');
+    const status =
+      item.status && item.status.prefLabel ? item.status.prefLabel : ' ';
     let itemRequestBtn = status;
 
     if (item.aeonUrl && features.includes('aeon-links')) {
@@ -86,17 +80,13 @@ class ItemTableRow extends React.Component {
         <React.Fragment>
           <a
             href={this.aeonUrl(item)}
-            tabIndex="0"
-            className="aeonRequestButton"
+            tabIndex='0'
+            className='aeonRequestButton'
           >
             Request
           </a>
           <br />
-          <span
-            className="aeonRequestText"
-          >
-            Appointment Required
-          </span>
+          <span className='aeonRequestText'>Appointment Required</span>
         </React.Fragment>
       );
       return itemRequestBtn;
@@ -105,25 +95,21 @@ class ItemTableRow extends React.Component {
     if (item.requestable && !allClosed) {
       itemRequestBtn = item.available ? (
         <Link
-          to={
-            `${appConfig.baseUrl}/hold/request/${bibId}-${item.id}?searchKeywords=${searchKeywords}`
-          }
-          onClick={e => this.getItemRecord(e, bibId, item.id)}
-          tabIndex="0"
+          to={`${appConfig.baseUrl}/hold/request/${bibId}-${item.id}?searchKeywords=${searchKeywords}`}
+          onClick={(e) => this.getItemRecord(e, bibId, item.id)}
+          tabIndex='0'
         >
           Request
-        </Link>) :
-        'In Use';
+        </Link>
+      ) : (
+        'In Use'
+      );
     }
     return itemRequestBtn;
   }
 
   render() {
-    const {
-      item,
-      includeVolColumn,
-      page,
-    } = this.props;
+    const { item, includeVolColumn, page } = this.props;
 
     if (_isEmpty(item)) {
       return null;
@@ -142,7 +128,9 @@ class ItemTableRow extends React.Component {
 
     if (item.location && item.locationUrl) {
       itemLocation = (
-        <a href={item.locationUrl} className="itemLocationLink">{item.location}</a>
+        <a href={item.locationUrl} className='itemLocationLink'>
+          {item.location}
+        </a>
       );
     } else if (item.location) {
       itemLocation = item.location;
@@ -152,20 +140,28 @@ class ItemTableRow extends React.Component {
 
     return (
       <tr className={item.availability}>
-        { includeVolColumn ? (
-          <td className="vol-date-col" data-th="Vol/Date">
+        {includeVolColumn ? (
+          <td className='vol-date-col' data-th='Vol/Date'>
             <span>{item.volume || ''}</span>
           </td>
         ) : null}
         {page !== 'SearchResults' ? (
-          <td data-th="Format">
+          <td data-th='Format'>
             <span>{item.format || ' '}</span>
           </td>
         ) : null}
-        <td data-th="Message"><span>{this.message()}</span></td>
-        <td data-th="Status"><span>{this.requestButton()}</span></td>
-        <td data-th="Call Number"><span>{itemCallNumber}</span></td>
-        <td data-th="Location"><span>{itemLocation}</span></td>
+        <td data-th='Message'>
+          <span>{this.message()}</span>
+        </td>
+        <td data-th='Status'>
+          <span>{this.requestButton()}</span>
+        </td>
+        <td data-th='Call Number'>
+          <span>{itemCallNumber}</span>
+        </td>
+        <td data-th='Location'>
+          <span>{itemLocation}</span>
+        </td>
       </tr>
     );
   }

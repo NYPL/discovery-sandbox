@@ -24,31 +24,22 @@ export default [
         prefLabel: 'book, limited circ, MaRLI',
       },
     ],
-    identifier: [
-      'urn:barcode:33433014514719',
-      'urn:SierraNypl:10000003',
-    ],
+    identifier: ['urn:barcode:33433014514719', 'urn:SierraNypl:10000003'],
     holdingLocation: [
       {
         '@id': 'loc:rcma2',
         prefLabel: 'Offsite',
       },
     ],
-    requestable: [
-      true,
-    ],
+    requestable: [true],
     accessMessage: [
       {
         '@id': 'accessMessage:2',
         prefLabel: 'Request in advance',
       },
     ],
-    shelfMark: [
-      '*OFS 84-1997',
-    ],
-    idBarcode: [
-      '33433014514719',
-    ],
+    shelfMark: ['*OFS 84-1997'],
+    idBarcode: ['33433014514719'],
     idNyplSourceId: {
       '@type': 'SierraNypl',
       '@value': '10000003',

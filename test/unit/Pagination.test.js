@@ -42,8 +42,9 @@ describe('Pagination', () => {
     });
 
     it('should have a descriptive aria-label', () => {
-      expect(component.find('span').prop('aria-label'))
-        .to.equal('Displaying page 1 out of 1 total pages.');
+      expect(component.find('span').prop('aria-label')).to.equal(
+        'Displaying page 1 out of 1 total pages.',
+      );
     });
   });
 
@@ -66,7 +67,9 @@ describe('Pagination', () => {
     // The SVG titles should maybe not be here:
     it('should have a "next" link since there are more than 51 items', () => {
       expect(component.find('Link').children().length).to.equal(1);
-      expect(component.find('.next-link').at(1).text()).to.equal('NYPL Right Wedge SVG Icon Next');
+      expect(component.find('.next-link').at(1).text()).to.equal(
+        'NYPL Right Wedge SVG Icon Next',
+      );
     });
 
     it('should display what page you are on', () => {
@@ -74,8 +77,9 @@ describe('Pagination', () => {
     });
 
     it('should have a descriptive aria-label', () => {
-      expect(component.find('span').prop('aria-label'))
-        .to.equal('Displaying page 1 out of 8 total pages.');
+      expect(component.find('span').prop('aria-label')).to.equal(
+        'Displaying page 1 out of 8 total pages.',
+      );
     });
   });
 
@@ -92,8 +96,12 @@ describe('Pagination', () => {
 
     it('should have a "previous" and a "next" link', () => {
       expect(component.find('Link').children().length).to.equal(2);
-      expect(component.find('.previous-link').at(1).text()).to.equal('NYPL Left Wedge SVG Icon Previous');
-      expect(component.find('.next-link').at(1).text()).to.equal('NYPL Right Wedge SVG Icon Next');
+      expect(component.find('.previous-link').at(1).text()).to.equal(
+        'NYPL Left Wedge SVG Icon Previous',
+      );
+      expect(component.find('.next-link').at(1).text()).to.equal(
+        'NYPL Right Wedge SVG Icon Next',
+      );
     });
 
     it('should display what page you are on', () => {
@@ -101,8 +109,9 @@ describe('Pagination', () => {
     });
 
     it('should have a description aria-label', () => {
-      expect(component.find('span').prop('aria-label'))
-        .to.equal('Displaying page 2 out of 8 total pages.');
+      expect(component.find('span').prop('aria-label')).to.equal(
+        'Displaying page 2 out of 8 total pages.',
+      );
     });
   });
 
@@ -115,8 +124,12 @@ describe('Pagination', () => {
 
     it('should have a "previous page" and a "next page" link', () => {
       expect(component.find('Link')).to.have.length(2);
-      expect(component.find('.previous-link').at(1).text()).to.equal('NYPL Left Wedge SVG Icon Previous');
-      expect(component.find('.next-link').at(1).text()).to.equal('NYPL Right Wedge SVG Icon Next');
+      expect(component.find('.previous-link').at(1).text()).to.equal(
+        'NYPL Left Wedge SVG Icon Previous',
+      );
+      expect(component.find('.next-link').at(1).text()).to.equal(
+        'NYPL Right Wedge SVG Icon Next',
+      );
     });
 
     it('should display what page you are on', () => {
@@ -124,8 +137,9 @@ describe('Pagination', () => {
     });
 
     it('should have a description aria-label', () => {
-      expect(component.find('span').prop('aria-label'))
-        .to.equal('Displaying page 3 out of 80 total pages.');
+      expect(component.find('span').prop('aria-label')).to.equal(
+        'Displaying page 3 out of 80 total pages.',
+      );
     });
   });
 
@@ -176,7 +190,9 @@ describe('Pagination', () => {
     };
 
     before(() => {
-      component = mount(<Pagination total={1000} page={page} updatePage={updatePage} />);
+      component = mount(
+        <Pagination total={1000} page={page} updatePage={updatePage} />,
+      );
     });
 
     it('should return "2" since the next link was clicked', () => {
@@ -195,7 +211,9 @@ describe('Pagination', () => {
     };
 
     before(() => {
-      component = mount(<Pagination total={1000} page={page} updatePage={updatePage} />);
+      component = mount(
+        <Pagination total={1000} page={page} updatePage={updatePage} />,
+      );
     });
 
     it('should perform the passed function when it is clicked', () => {

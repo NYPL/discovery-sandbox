@@ -5,7 +5,7 @@ import { shallow, mount } from 'enzyme';
 
 import SelectedFilters from '../../src/app/components/Filters/SelectedFilters';
 
-const listItemAt = (component, n) => component.find('li').at(n);
+const listItemAt = (component, position) => component.find('li').at(position);
 
 describe('SelectedFilters', () => {
   describe('Default', () => {
@@ -32,7 +32,9 @@ describe('SelectedFilters', () => {
 
     before(() => {
       component = shallow(
-        <SelectedFilters selectedFilters={selectedFilters} />, { disableLifecycleMethods: true });
+        <SelectedFilters selectedFilters={selectedFilters} />,
+        { disableLifecycleMethods: true },
+      );
     });
 
     it('should render a ul', () => {
@@ -46,7 +48,9 @@ describe('SelectedFilters', () => {
     it('should have a clear all filters link', () => {
       expect(component.find('a').length).to.equal(2);
       // The first <a> element is the selected filter link.
-      expect(component.find('a').at(1).render().text()).to.equal('Clear FiltersNYPL Filter SVG Icon');
+      expect(component.find('a').at(1).render().text()).to.equal(
+        'Clear FiltersNYPL Filter SVG Icon',
+      );
     });
   });
 
@@ -72,7 +76,9 @@ describe('SelectedFilters', () => {
       let component;
 
       before(() => {
-        component = mount(<SelectedFilters selectedFilters={selectedFilters} />);
+        component = mount(
+          <SelectedFilters selectedFilters={selectedFilters} />,
+        );
       });
 
       it('should render a ul', () => {
@@ -85,15 +91,21 @@ describe('SelectedFilters', () => {
 
       it('should have one button inside each list item with the filter name', () => {
         expect(listItemAt(component, 0).find('button').length).to.equal(1);
-        expect(listItemAt(component, 0).find('button').text()).to.equal('FrenchClose Icon');
+        expect(listItemAt(component, 0).find('button').text()).to.equal(
+          'FrenchClose Icon',
+        );
 
         expect(listItemAt(component, 1).find('button').length).to.equal(1);
-        expect(listItemAt(component, 1).find('button').text()).to.equal('EnglishClose Icon');
+        expect(listItemAt(component, 1).find('button').text()).to.equal(
+          'EnglishClose Icon',
+        );
       });
 
       it('should have a clear all filters button', () => {
         expect(component.find('button').length).to.equal(3);
-        expect(component.find('button').at(2).text()).to.equal('Clear FiltersNYPL Filter SVG Icon');
+        expect(component.find('button').at(2).text()).to.equal(
+          'Clear FiltersNYPL Filter SVG Icon',
+        );
       });
     });
 
@@ -133,7 +145,9 @@ describe('SelectedFilters', () => {
       let component;
 
       before(() => {
-        component = mount(<SelectedFilters selectedFilters={selectedFilters} />);
+        component = mount(
+          <SelectedFilters selectedFilters={selectedFilters} />,
+        );
       });
 
       it('should render four list items', () => {
@@ -142,17 +156,24 @@ describe('SelectedFilters', () => {
 
       it('should have one button inside each list item with the filter name', () => {
         expect(listItemAt(component, 0).find('button').length).to.equal(1);
-        expect(listItemAt(component, 0).find('button').text()).to.equal('FrenchClose Icon');
+        expect(listItemAt(component, 0).find('button').text()).to.equal(
+          'FrenchClose Icon',
+        );
 
         expect(listItemAt(component, 1).find('button').length).to.equal(1);
-        expect(listItemAt(component, 1).find('button').text()).to.equal('EnglishClose Icon');
+        expect(listItemAt(component, 1).find('button').text()).to.equal(
+          'EnglishClose Icon',
+        );
 
         expect(listItemAt(component, 2).find('button').length).to.equal(1);
-        expect(listItemAt(component, 2).find('button').text()).to.equal('Still ImageClose Icon');
+        expect(listItemAt(component, 2).find('button').text()).to.equal(
+          'Still ImageClose Icon',
+        );
 
         expect(listItemAt(component, 3).find('button').length).to.equal(1);
-        expect(listItemAt(component, 3).find('button').text())
-          .to.equal('CartographicClose Icon');
+        expect(listItemAt(component, 3).find('button').text()).to.equal(
+          'CartographicClose Icon',
+        );
       });
     });
 
@@ -167,7 +188,9 @@ describe('SelectedFilters', () => {
         let component;
 
         before(() => {
-          component = mount(<SelectedFilters selectedFilters={selectedFilters} />);
+          component = mount(
+            <SelectedFilters selectedFilters={selectedFilters} />,
+          );
         });
 
         it('should render one list items', () => {
@@ -176,7 +199,9 @@ describe('SelectedFilters', () => {
 
         it('should have one button inside each list item with the filter name', () => {
           expect(listItemAt(component, 0).find('button').length).to.equal(1);
-          expect(listItemAt(component, 0).find('button').text()).to.equal('Before 2010Close Icon');
+          expect(listItemAt(component, 0).find('button').text()).to.equal(
+            'Before 2010Close Icon',
+          );
         });
       });
 
@@ -190,7 +215,9 @@ describe('SelectedFilters', () => {
         let component;
 
         before(() => {
-          component = mount(<SelectedFilters selectedFilters={selectedFilters} />);
+          component = mount(
+            <SelectedFilters selectedFilters={selectedFilters} />,
+          );
         });
 
         it('should render one list items', () => {
@@ -199,7 +226,9 @@ describe('SelectedFilters', () => {
 
         it('should have one button inside each list item with the filter name', () => {
           expect(listItemAt(component, 0).find('button').length).to.equal(1);
-          expect(listItemAt(component, 0).find('button').text()).to.equal('After 1999Close Icon');
+          expect(listItemAt(component, 0).find('button').text()).to.equal(
+            'After 1999Close Icon',
+          );
         });
       });
 
@@ -213,7 +242,9 @@ describe('SelectedFilters', () => {
         let component;
 
         before(() => {
-          component = mount(<SelectedFilters selectedFilters={selectedFilters} />);
+          component = mount(
+            <SelectedFilters selectedFilters={selectedFilters} />,
+          );
         });
 
         it('should render two list items', () => {
@@ -222,40 +253,54 @@ describe('SelectedFilters', () => {
 
         it('should have one button inside each list item with the filter name', () => {
           expect(listItemAt(component, 0).find('button').length).to.equal(1);
-          expect(listItemAt(component, 0).find('button').text()).to.equal(' 2010Close Icon');
+          expect(listItemAt(component, 0).find('button').text()).to.equal(
+            ' 2010Close Icon',
+          );
 
           expect(listItemAt(component, 1).find('button').length).to.equal(1);
-          expect(listItemAt(component, 1).find('button').text()).to.equal(' 1999Close Icon');
+          expect(listItemAt(component, 1).find('button').text()).to.equal(
+            ' 1999Close Icon',
+          );
         });
       });
     });
   });
 
-
   describe('Dropdown opening and closing', () => {
     let component;
     const selectedFilters = {
       subjectLiteral: [{ value: 'Counting.', label: 'Counting.' }],
-      language: [{ selected: true, value: 'lang:spa', count: 11, label: 'Spanish' }],
+      language: [
+        { selected: true, value: 'lang:spa', count: 11, label: 'Spanish' },
+      ],
     };
 
     describe('When dropdown is closed', () => {
       before(() => {
         component = mount(
-          <SelectedFilters selectedFilters={selectedFilters} dropdownOpen={false} />,
+          <SelectedFilters
+            selectedFilters={selectedFilters}
+            dropdownOpen={false}
+          />,
         );
       });
 
       it('Should display subject filter', () => {
-        expect(listItemAt(component, 0).find('button').text()).to.contain('Counting');
+        expect(listItemAt(component, 0).find('button').text()).to.contain(
+          'Counting',
+        );
       });
 
       it('Should display non-subject filter', () => {
-        expect(listItemAt(component, 1).find('button').text()).to.contain('Spanish');
+        expect(listItemAt(component, 1).find('button').text()).to.contain(
+          'Spanish',
+        );
       });
 
       it('Should display clear filters button', () => {
-        expect(component.find('button').at(2).text()).to.contain('Clear Filters');
+        expect(component.find('button').at(2).text()).to.contain(
+          'Clear Filters',
+        );
       });
     });
 
@@ -267,7 +312,9 @@ describe('SelectedFilters', () => {
       });
 
       it('Should dislay subject filter', () => {
-        expect(listItemAt(component, 0).find('button').text()).to.contain('Counting');
+        expect(listItemAt(component, 0).find('button').text()).to.contain(
+          'Counting',
+        );
       });
 
       it('Should not extra clear filter button', () => {
