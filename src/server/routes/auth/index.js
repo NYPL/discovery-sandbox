@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import config from '../../../app/data/appConfig';
+import appConfig from '../../../app/data/appConfig';
 
 function initializePatronTokenAuth(req, res, next) {
   const nyplIdentityCookieString = req.cookies.nyplIdentityPatron;
@@ -10,7 +10,7 @@ function initializePatronTokenAuth(req, res, next) {
   if (nyplIdentityCookieObject && nyplIdentityCookieObject.access_token) {
     return jwt.verify(
       nyplIdentityCookieObject.access_token,
-      config.publicKey,
+      appConfig.publicKey,
       (error, decoded) => {
         if (error) {
           // Token has expired, need to refresh token

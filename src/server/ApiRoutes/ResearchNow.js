@@ -1,5 +1,4 @@
 import nyplApiClient from '../routes/nyplApiClient';
-import appConfig from '../../app/data/appConfig';
 import logger from '../../../logger';
 
 // To ease transition from DRB API V3 to V4, temporarily support both versions

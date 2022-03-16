@@ -1,7 +1,7 @@
 import NyplApiClient from '@nypl/nypl-data-api-client';
 import aws from 'aws-sdk';
 
-import config from '../../../app/data/appConfig';
+import appConfig from '../../../app/data/appConfig';
 import logger from '../../../../logger';
 
 const appEnvironment = process.env.APP_ENV || 'production';
@@ -44,7 +44,7 @@ function nyplApiClient(options = { apiName: 'discovery' }) {
     return Promise.resolve(CACHE.clients[apiName]);
   }
 
-  const baseUrl = config.api[apiName][appEnvironment];
+  const baseUrl = appConfig.api[apiName][appEnvironment];
 
   if (kmsEnvironment === 'encrypted') {
     return new Promise((resolve, reject) => {
@@ -54,7 +54,7 @@ function nyplApiClient(options = { apiName: 'discovery' }) {
             base_url: baseUrl,
             oauth_key: decryptedClientId,
             oauth_secret: decryptedClientSecret,
-            oauth_url: config.tokenUrl,
+            oauth_url: appConfig.tokenUrl,
           });
 
           CACHE.clientId = clientId;
@@ -74,7 +74,7 @@ function nyplApiClient(options = { apiName: 'discovery' }) {
     base_url: baseUrl,
     oauth_key: clientId,
     oauth_secret: clientSecret,
-    oauth_url: config.tokenUrl,
+    oauth_url: appConfig.tokenUrl,
   });
 
   CACHE.clientId = clientId;
