@@ -33,14 +33,15 @@ const createSelectedFiltersHash = (filters, apiFilters) => {
           selectedFilters[key] = [];
         }
         _forEach(value, (filterValue) => {
-          filterObj =
-            _findWhere(apiFilters.itemListElement, { field: key });
-          const foundFilter =
-            _isEmpty(filterObj) ? {} :
-              _findWhere(filterObj.values, { value: filterValue });
+          filterObj = _findWhere(apiFilters.itemListElement, { field: key });
+          const foundFilter = _isEmpty(filterObj)
+            ? {}
+            : _findWhere(filterObj.values, { value: filterValue });
 
-          if (foundFilter &&
-              !_findWhere(selectedFilters[key], { id: foundFilter.value })) {
+          if (
+            foundFilter &&
+            !_findWhere(selectedFilters[key], { id: foundFilter.value })
+          ) {
             selectedFilters[key].push({
               selected: true,
               value: foundFilter.value,
@@ -51,17 +52,22 @@ const createSelectedFiltersHash = (filters, apiFilters) => {
         });
       } else if (typeof value === 'string') {
         filterObj = _findWhere(apiFilters.itemListElement, { field: key });
-        const foundFilter = _isEmpty(filterObj) ? {} :
-          _findWhere(filterObj.values, { value });
+        const foundFilter = _isEmpty(filterObj)
+          ? {}
+          : _findWhere(filterObj.values, { value });
 
-        if (foundFilter &&
-            !_findWhere(selectedFilters[key], { id: foundFilter.value })) {
-          selectedFilters[key] = [{
-            selected: true,
-            value: foundFilter.value,
-            label: foundFilter.label || foundFilter.value,
-            count: foundFilter.count,
-          }];
+        if (
+          foundFilter &&
+          !_findWhere(selectedFilters[key], { id: foundFilter.value })
+        ) {
+          selectedFilters[key] = [
+            {
+              selected: true,
+              value: foundFilter.value,
+              label: foundFilter.label || foundFilter.value,
+              count: foundFilter.count,
+            },
+          ];
         }
       }
     });

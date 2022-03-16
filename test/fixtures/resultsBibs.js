@@ -27,13 +27,11 @@ const resultsBibs = [
       uri: 'b17692265',
       numItems: 2,
       numAvailable: 0,
-      uris: [
-        'b17692265',
-        'b17692265-i21106088',
-        'b17692265-i21106086',
-      ],
+      uris: ['b17692265', 'b17692265-i21106088', 'b17692265-i21106086'],
       placeOfPublication: ['Cambridge, UK ; New York :'],
-      publicationStatement: ['Cambridge, UK ; New York : Cambridge University Press,'],
+      publicationStatement: [
+        'Cambridge, UK ; New York : Cambridge University Press,',
+      ],
       issuance: [
         {
           '@id': 'urn:biblevel:m',
@@ -109,11 +107,7 @@ const resultsBibs = [
       uri: 'b17678038',
       numItems: 2,
       numAvailable: 0,
-      uris: [
-        'b17692265',
-        'b17692265-i21106088',
-        'b17692265-i21106086',
-      ],
+      uris: ['b17692265', 'b17692265-i21106088', 'b17692265-i21106086'],
       placeOfPublication: ['New York :'],
       publicationStatement: ['New York :'],
       issuance: [
@@ -195,9 +189,7 @@ const resultsBibs = [
               prefLabel: 'Schwarzman Building M2 - General Research Room 315',
             },
           ],
-          idBarcode: [
-            '33433040712188',
-          ],
+          idBarcode: ['33433040712188'],
           identifier: [
             {
               '@type': 'bf:ShelfMark',
@@ -208,12 +200,8 @@ const resultsBibs = [
               '@value': '33433040712188',
             },
           ],
-          requestable: [
-            false,
-          ],
-          shelfMark: [
-            'JFD 91-4064',
-          ],
+          requestable: [false],
+          shelfMark: ['JFD 91-4064'],
           status: [
             {
               '@id': 'status:a',
@@ -234,23 +222,31 @@ const resultsBibs = [
       note: [
         {
           noteType: 'Bibliography',
-          prefLabel: 'Includes bibliographical references (p. [227]-238) and index.',
+          prefLabel:
+            'Includes bibliographical references (p. [227]-238) and index.',
           '@type': 'bf:Note',
         },
       ],
       numAvailable: 1,
       numItems: 1,
       placeOfPublication: ['Oxford [England] : New York :'],
-      publicationStatement: ['Oxford [England] : Clarendon Press ; New York : Oxford University Press, 1991.'],
+      publicationStatement: [
+        'Oxford [England] : Clarendon Press ; New York : Oxford University Press, 1991.',
+      ],
       publisherLiteral: ['Clarendon Press ; Oxford University Press,'],
       shelfMark: ['JFD 91-4064'],
-      subjectLiteral:
-       ['Editing -- History -- 18th century.',
-         'Malone, Edmond, 1741-1812.',
-         'Shakespeare, William, 1564-1616 -- Criticism, Textual.',
-         'Shakespeare, William, 1564-1616.'],
-      title: ['Shakespeare verbatim : the reproduction of authenticity and the 1790 apparatus'],
-      titleDisplay: ['Shakespeare verbatim : the reproduction of authenticity and the 1790 apparatus / Margreta de Grazia.'],
+      subjectLiteral: [
+        'Editing -- History -- 18th century.',
+        'Malone, Edmond, 1741-1812.',
+        'Shakespeare, William, 1564-1616 -- Criticism, Textual.',
+        'Shakespeare, William, 1564-1616.',
+      ],
+      title: [
+        'Shakespeare verbatim : the reproduction of authenticity and the 1790 apparatus',
+      ],
+      titleDisplay: [
+        'Shakespeare verbatim : the reproduction of authenticity and the 1790 apparatus / Margreta de Grazia.',
+      ],
       type: ['nypl:Item'],
       updatedAt: 1524665261653,
       uri: 'b11417539',

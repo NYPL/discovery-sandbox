@@ -1,21 +1,20 @@
 #advanced-search-link-container {
   a {
-    color: #0271CC;
+    color: #0271cc;
   }
 }
 
-
 .advancedSearchContainer.content-primary {
-    min-height: 650px;
+  min-height: 650px;
 
-    .page-title {
-      padding-top: var(--space-l);
-    }
+  .page-title {
+    padding-top: var(--space-l);
+  }
 }
 
 #advancedSearchAside {
-  color: #A4241E;
-  background-color: #F9F9F9;
+  color: #a4241e;
+  background-color: #f9f9f9;
   width: 100%;
   font-weight: 500;
   font-size: 18px;
@@ -45,7 +44,7 @@
 
   hr {
     width: 100%;
-    color: #C4C4C4;
+    color: #c4c4c4;
   }
 
   #fields {
@@ -81,7 +80,6 @@
       display: block;
     }
   }
-
 }
 
 .advancedSearchColumnLeft {

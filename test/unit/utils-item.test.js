@@ -6,7 +6,7 @@ describe('utils/item', () => {
   describe('LibraryItem', () => {
     describe('mapItem', () => {
       it('interprets status "Available" as available', () => {
-        const libraryItem = LibraryItem.mapItem(items[0])
+        const libraryItem = LibraryItem.mapItem(items[0]);
         expect(libraryItem.available).to.eq(true);
       });
 
@@ -17,9 +17,9 @@ describe('utils/item', () => {
               '@id': 'status:co',
               prefLabel: 'Loaned',
             },
-          ]
+          ],
         });
-        const libraryItem = LibraryItem.mapItem(unavailableItem)
+        const libraryItem = LibraryItem.mapItem(unavailableItem);
         expect(libraryItem.available).to.eq(false);
       });
 
@@ -30,9 +30,9 @@ describe('utils/item', () => {
               '@id': 'status:o',
               prefLabel: 'Use in Library',
             },
-          ]
+          ],
         });
-        const libraryItem = LibraryItem.mapItem(unavailableItem)
+        const libraryItem = LibraryItem.mapItem(unavailableItem);
         expect(libraryItem.available).to.eq(true);
       });
     });

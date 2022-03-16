@@ -17,7 +17,7 @@ describe('Home', () => {
     component = mount(
       <Provider store={testStore}>
         <Home />
-      </Provider>
+      </Provider>,
     );
   });
 
@@ -50,13 +50,15 @@ describe('Home', () => {
       component = mount(
         <Provider store={testStore}>
           <Home />
-        </Provider>
+        </Provider>,
       );
     });
 
     it('should have a `Notification`', () => {
       expect(component.find('Notification').length).to.equal(1);
-      expect(component.find('Notification').text()).to.include('Some info for our patrons');
+      expect(component.find('Notification').text()).to.include(
+        'Some info for our patrons',
+      );
     });
   });
 });

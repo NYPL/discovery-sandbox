@@ -25,17 +25,17 @@ export const Actions = {
   UPDATE_SUBJECT: 'UPDATE_SUBJECT',
 };
 
-export const updateContributor = contributor => ({
+export const updateContributor = (contributor) => ({
   type: Actions.UPDATE_CONTRIBUTOR,
   payload: contributor,
 });
 
-export const updateTitle = title => ({
+export const updateTitle = (title) => ({
   type: Actions.UPDATE_TITLE,
   payload: title,
 });
 
-export const updateSubject = subject => ({
+export const updateSubject = (subject) => ({
   type: Actions.UPDATE_SUBJECT,
   payload: subject,
 });
@@ -45,142 +45,148 @@ export const resetState = () => ({
   payload: null,
 });
 
-export const updateLastLoaded = lastLoaded => ({
+export const updateLastLoaded = (lastLoaded) => ({
   type: Actions.UPDATE_LAST_LOADED,
   payload: lastLoaded,
 });
 
-export const setAppConfig = appConfig => ({
+export const setAppConfig = (appConfig) => ({
   type: Actions.SET_APP_CONFIG,
   payload: appConfig,
 });
 
-export const updateSearchResults = searchResults => ({
+export const updateSearchResults = (searchResults) => ({
   type: Actions.UPDATE_SEARCH_RESULTS,
   payload: searchResults,
 });
 
-export const updateDrbbResults = drbbResults => ({
+export const updateDrbbResults = (drbbResults) => ({
   type: Actions.UPDATE_DRBB_RESULTS,
   payload: drbbResults,
 });
 
-export const updateSearchKeywords = searchKeywords => ({
+export const updateSearchKeywords = (searchKeywords) => ({
   type: Actions.UPDATE_SEARCH_KEYWORDS,
   payload: searchKeywords,
 });
 
-export const updateField = field => ({
+export const updateField = (field) => ({
   type: Actions.UPDATE_FIELD,
   payload: field,
 });
 
-export const updateFilters = filters => ({
+export const updateFilters = (filters) => ({
   type: Actions.UPDATE_FILTERS,
   payload: filters,
 });
 
-export const updateSelectedFilters = selectedFilters => ({
+export const updateSelectedFilters = (selectedFilters) => ({
   type: Actions.UPDATE_SELECTED_FILTERS,
   payload: selectedFilters,
 });
 
-export const updatePage = page => ({
+export const updatePage = (page) => ({
   type: Actions.UPDATE_PAGE,
   payload: page,
 });
 
-export const updateSortBy = sortBy => ({
+export const updateSortBy = (sortBy) => ({
   type: Actions.UPDATE_SORT_BY,
   payload: sortBy,
 });
 
-export const updateBib = bib => ({
+export const updateBib = (bib) => ({
   type: Actions.UPDATE_BIB,
   payload: bib,
 });
 
-export const updateDeliveryLocations = deliveryLocations => ({
+export const updateDeliveryLocations = (deliveryLocations) => ({
   type: Actions.UPDATE_DELIVERY_LOCATIONS,
   payload: deliveryLocations,
 });
 
-export const updateIsEddRequestable = isEddRequestable => ({
+export const updateIsEddRequestable = (isEddRequestable) => ({
   type: Actions.UPDATE_IS_EDD_REQUESTABLE,
   payload: isEddRequestable,
 });
 
-export const updatePatronData = patronData => ({
+export const updatePatronData = (patronData) => ({
   type: Actions.UPDATE_PATRON_DATA,
   payload: patronData,
 });
 
-export const updateLoadingStatus = loading => ({
+export const updateLoadingStatus = (loading) => ({
   type: Actions.UPDATE_LOADING_STATUS,
   payload: loading,
 });
 
-export const updateAccountHtml = html => ({
+export const updateAccountHtml = (html) => ({
   type: Actions.UPDATE_ACCOUNT_HTML,
   payload: html,
 });
 
-export const updateFeatures = features => ({
+export const updateFeatures = (features) => ({
   type: Actions.UPDATE_FEATURES,
   payload: features,
 });
 
 /* `updateSearchResultsPage` performs:
-    * updateSearchResults
-    * updatePage
-    * updateSearchKeywords
-    * updateFilters
-    * updateSelectedFilters
-    * updateSortBy
-    * updateDrbbResults
-*/
-export const updateSearchResultsPage = data => dispatch => new Promise(() => {
-  const {
-    searchResults,
-    filters,
-    drbbResults,
-    selectedFilters,
-    searchKeywords,
-    page,
-    sortBy,
-    field,
-    contributor,
-    title,
-    subject,
-  } = data;
+ * updateSearchResults
+ * updatePage
+ * updateSearchKeywords
+ * updateFilters
+ * updateSelectedFilters
+ * updateSortBy
+ * updateDrbbResults
+ */
+export const updateSearchResultsPage = (data) => (dispatch) =>
+  new Promise(() => {
+    const {
+      searchResults,
+      filters,
+      drbbResults,
+      selectedFilters,
+      searchKeywords,
+      page,
+      sortBy,
+      field,
+      contributor,
+      title,
+      subject,
+    } = data;
 
-  dispatch(updateSearchResults(searchResults));
-  dispatch(updateDrbbResults(drbbResults));
-  dispatch(updateFilters(filters));
-  dispatch(updateSelectedFilters(selectedFilters));
-  dispatch(updateField(field));
-  dispatch(updateSearchKeywords(searchKeywords));
-  dispatch(updateContributor(contributor));
-  dispatch(updateSubject(subject));
-  dispatch(updateTitle(title));
-  if (page) dispatch(updatePage(page));
-  if (sortBy) dispatch(updateSortBy(sortBy));
-  return data;
-});
+    dispatch(updateSearchResults(searchResults));
+    dispatch(updateDrbbResults(drbbResults));
+    dispatch(updateFilters(filters));
+    dispatch(updateSelectedFilters(selectedFilters));
+    dispatch(updateField(field));
+    dispatch(updateSearchKeywords(searchKeywords));
+    dispatch(updateContributor(contributor));
+    dispatch(updateSubject(subject));
+    dispatch(updateTitle(title));
+    if (page) dispatch(updatePage(page));
+    if (sortBy) dispatch(updateSortBy(sortBy));
+    return data;
+  });
 
-export const updateBibPage = ({ bib }) => dispatch => new Promise(() => dispatch(updateBib(bib)));
+export const updateBibPage =
+  ({ bib }) =>
+  (dispatch) =>
+    new Promise(() => dispatch(updateBib(bib)));
 
-export const updateHoldRequestPage = data => dispatch => new Promise(() => {
-  const { bib, deliveryLocations, isEddRequestable, searchKeywords } = data;
-  dispatch(updateBib(bib));
-  dispatch(updateDeliveryLocations(deliveryLocations));
-  dispatch(updateIsEddRequestable(isEddRequestable));
-  if (searchKeywords) dispatch(updateSearchKeywords(searchKeywords));
-  return data;
-});
+export const updateHoldRequestPage = (data) => (dispatch) =>
+  new Promise(() => {
+    const { bib, deliveryLocations, isEddRequestable, searchKeywords } = data;
+    dispatch(updateBib(bib));
+    dispatch(updateDeliveryLocations(deliveryLocations));
+    dispatch(updateIsEddRequestable(isEddRequestable));
+    if (searchKeywords) dispatch(updateSearchKeywords(searchKeywords));
+    return data;
+  });
 
-export const updateAccountPage = data => dispatch => new Promise(() => {
-  const { accountHtml, patron } = data;
-  dispatch(updateAccountHtml(accountHtml));
-  if (patron) dispatch(updatePatronData(patron));
-});
+export const updateAccountPage = (data) => (dispatch) =>
+  new Promise(() => {
+    const { accountHtml, patron } = data;
+    dispatch(updateAccountHtml(accountHtml));
+    if (patron) dispatch(updatePatronData(patron));
+  });
