@@ -67,16 +67,7 @@ class ItemTableRow extends React.Component {
         {(item.specRequestable && (
           <>
             <AeonButton item={item} onClick={this.getItemRecord} />
-
-            {/* TODO: This may not be necessary. Sine spec is for special collections it's
-              pressumed to always link to the aeon link and therefor we will never
-              have the edd option 
-              <EddButton
-                item={item}
-                bibId={bibId}
-                onClick={this.getItemRecord}
-              /> 
-            */}
+            <EddButton item={item} bibId={bibId} onClick={this.getItemRecord} />
           </>
         )) || (
           <>
