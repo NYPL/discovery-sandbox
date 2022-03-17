@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
+import { Link } from 'react-router';
 import appConfig from '../../../data/appConfig';
 import { isAeonLink } from '../../../utils/utils';
 import RequestButton, { RequestButtonLabel } from './RequestButton';
@@ -40,9 +41,9 @@ const AeonButton = ({ item, onClick }) => {
       <RequestButtonLabel>
         <span>
           {`Appointment Required. `}
-          <a>
+          <Link href={'https://www.nypl.org/help/request-research-materials'}>
             <i>{`Details`}</i>
-          </a>
+          </Link>
         </span>
       </RequestButtonLabel>
     </RequestButton>

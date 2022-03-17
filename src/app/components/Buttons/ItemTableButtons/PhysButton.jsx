@@ -1,10 +1,11 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import { Link } from 'react-router';
 import appConfig from '../../../data/appConfig';
 import RequestButton, { RequestButtonLabel } from './RequestButton';
 
 const PhysButton = ({ item, bibId, onClick }) => {
-  if (!item.physRequestable || !item.available)
+  if (!item.physRequestable || !item.isRecap)
     return <div>{item.status.prefLabel ?? 'Not Available'}</div>;
 
   const path = `${appConfig.baseUrl}/hold/request/${bibId}-${item.id}`;
@@ -19,9 +20,9 @@ const PhysButton = ({ item, bibId, onClick }) => {
       <RequestButtonLabel>
         <span>
           {`Timeline `}
-          <a>
+          <Link href={'https://www.nypl.org/help/request-research-materials'}>
             <i>{`Details`}</i>
-          </a>
+          </Link>
         </span>
       </RequestButtonLabel>
     </RequestButton>
