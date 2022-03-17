@@ -117,7 +117,6 @@ class ItemTableRow extends React.Component {
     return (
       <>
         <tr className={item.availability}>
-          {/* TODO: Validate Requirements On `includeVolColumn` Figma Does not use this. */}
           {includeVolColumn ? (
             <td className='vol-date-col' data-th='Vol/Date'>
               <span>{item.volume || ''}</span>

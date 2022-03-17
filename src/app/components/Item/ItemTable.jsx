@@ -26,8 +26,6 @@ const ItemTable = ({ items, holdings, bibId, id, searchKeywords, page }) => {
       <caption className='hidden'>Item details</caption>
       <thead>
         <tr>
-          {/* TODO: Validate Requirements On `includeVolColumn` Figma Does not use
-          this. */}
           {includeVolColumn ? <th scope='col'>Vol/Date</th> : null}
           <th scope='col'>Format</th>
           <th scope='col'>Call Number</th>
