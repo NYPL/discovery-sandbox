@@ -35,17 +35,8 @@ const AeonButton = ({ item, onClick }) => {
     return encodeURI(`${aeonUrl}${params || ''}`);
   });
 
-  const handleClick = (event) => {
-    event.preventDefault();
-    onClick(aeonUrl);
-  };
-
   return (
-    <RequestButton
-      url={aeonUrl}
-      text={`Make Appointment`}
-      onClick={handleClick}
-    >
+    <RequestButton url={aeonUrl} text={`Make Appointment`} onClick={onClick}>
       <RequestButtonLabel>
         <span>
           {`Appointment Required. `}

@@ -3,11 +3,16 @@ import React from 'react';
 import { Link } from 'react-router';
 
 const RequestButton = ({ text, secondary, url, onClick, children }) => {
+  const handleClick = (event) => {
+    event.preventDefault();
+    onClick(url);
+  };
+
   return (
     <div className='nypl-request-btn'>
       <Link
         href={url}
-        onClick={onClick}
+        onClick={handleClick}
         className={(secondary && 'secondary') || null}
         tabIndex='0'
       >

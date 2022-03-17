@@ -9,16 +9,11 @@ const PhysButton = ({ item, bibId, onClick }) => {
 
   const path = `${appConfig.baseUrl}/hold/request/${bibId}-${item.id}`;
 
-  const handleClick = (event) => {
-    event.preventDefault();
-    onClick(path);
-  };
-
   return (
     <RequestButton
       url={path}
       text={`Request for Onsite Use`}
-      onClick={handleClick}
+      onClick={onClick}
       secondary
     >
       <RequestButtonLabel>

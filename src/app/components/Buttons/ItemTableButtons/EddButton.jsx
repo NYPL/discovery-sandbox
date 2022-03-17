@@ -8,14 +8,7 @@ const EddButton = ({ item, bibId, onClick }) => {
 
   const path = `${appConfig.baseUrl}/hold/request/${bibId}-${item.id}/edd`;
 
-  const handleClick = (event) => {
-    event.preventDefault();
-    onClick(path);
-  };
-
-  return (
-    <RequestButton url={path} text={`Request Scan`} onClick={handleClick} />
-  );
+  return <RequestButton url={path} text={`Request Scan`} onClick={onClick} />;
 };
 
 EddButton.propTypes = {
