@@ -67,7 +67,6 @@ const ResultsList = (
   }
 
   const generateBibLi = (bib, idx) => {
-    // eslint-disable-next-line no-mixed-operators
     if (
       _isEmpty(bib) ||
       (bib.result && (_isEmpty(bib.result) || !bib.result.title))
