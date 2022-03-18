@@ -8,7 +8,7 @@ const PhysButton = ({ item, bibId, onClick }) => {
   if (!item.physRequestable) return null;
   // TODO: Handle Open Reference
   // TODO: Handle SASB
-  if (!item.isRecap) {
+  if (!item.available || !item.isRecap) {
     return <div>{item.status.prefLabel ?? 'Not Available'}</div>;
   }
 

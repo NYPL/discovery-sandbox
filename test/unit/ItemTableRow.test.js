@@ -146,11 +146,9 @@ describe('ItemTableRow', () => {
         expect(tdList.at(2).text()).to.equal(data.location);
       });
 
-      it('should be physically requestable with a Link button', () => {
-        expect(tdList.at(3).find('Link').length).to.equal(1);
-        expect(tdList.at(3).find('Link').text()).to.equal(
-          'Request for Onsite Use',
-        );
+      it('should not be physically requestable with a Status message', () => {
+        expect(tdList.at(3).find('Link').length).to.equal(0);
+        expect(tdList.at(3).text()).to.equal('Available');
       });
 
       // NOTE: Relevance? Are we using messages
@@ -219,13 +217,13 @@ describe('ItemTableRow', () => {
 
       it('should render the Physical Request button in the fourth <td> column', () => {
         const link = tdList.at(3).find('Link');
-        expect(link.length).to.equal(1);
-        expect(link.text()).to.equal('Request for Onsite Use');
+        expect(link.length).to.equal(2);
+        expect(link.at(0).text()).to.equal('Request for Onsite Use');
       });
 
       it('should call the getItemRecord function when the Request button is clicked', () => {
         const link = tdList.at(3).find('Link');
-        link.simulate('click');
+        link.at(0).simulate('click');
         expect(getItemRecord.calledOnce).to.equal(true);
       });
     });
@@ -263,8 +261,12 @@ describe('ItemTableRow', () => {
       });
 
       it('should have a link to aeon', () => {
-        expect(tdList.at(3).find('Link').text()).to.equal('Make Appointment');
-        expect(tdList.at(3).find('Link').prop('href')).to.equal(expectedUrl);
+        expect(tdList.at(3).find('Link').at(0).text()).to.equal(
+          'Make Appointment',
+        );
+        expect(tdList.at(3).find('Link').at(0).prop('href')).to.equal(
+          expectedUrl,
+        );
       });
 
       it('should have a span with appointment required text', () => {
@@ -288,8 +290,12 @@ describe('ItemTableRow', () => {
       });
 
       it('should have a link to aeon', () => {
-        expect(tdList.at(3).find('Link').text()).to.equal('Make Appointment');
-        expect(tdList.at(3).find('Link').prop('href')).to.equal(expectedUrl);
+        expect(tdList.at(3).find('Link').at(0).text()).to.equal(
+          'Make Appointment',
+        );
+        expect(tdList.at(3).find('Link').at(0).prop('href')).to.equal(
+          expectedUrl,
+        );
       });
 
       it('should have a span with appointment required text', () => {
