@@ -43,13 +43,7 @@ class ItemTableRow extends React.Component {
   requestButton() {
     const { item, bibId, page } = this.props;
 
-    // TODO Determine if any of theses are required.
-    // Neither of these are currently being used
-    // And they are not explicit in Figma.
-    // const isAvailable = item.available;
-    // const isRecap = item.isRecap;
-    // const isRequestable = (item.requestable = true);
-    // const isOffSite = item.isOffsite;
+    // TODO Are we using this?
     // const allClosed = appConfig.closedLocations
     //   .concat(
     //     item.isRecap
@@ -64,13 +58,9 @@ class ItemTableRow extends React.Component {
           page === 'SearchResults' ? 'pan-left' : ''
         }`}
       >
-        {(item.specRequestable && (
+        {(item.requestable && (
           <>
             <AeonButton item={item} onClick={this.getItemRecord} />
-            <EddButton item={item} bibId={bibId} onClick={this.getItemRecord} />
-          </>
-        )) || (
-          <>
             <EddButton item={item} bibId={bibId} onClick={this.getItemRecord} />
             <PhysButton
               item={item}
@@ -78,7 +68,7 @@ class ItemTableRow extends React.Component {
               onClick={this.getItemRecord}
             />
           </>
-        )}
+        )) || <div>{item.status.prefLabel ?? 'Not Available'}</div>}
       </div>
     );
   }

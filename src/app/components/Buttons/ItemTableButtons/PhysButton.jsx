@@ -5,8 +5,12 @@ import appConfig from '../../../data/appConfig';
 import RequestButton, { RequestButtonLabel } from './RequestButton';
 
 const PhysButton = ({ item, bibId, onClick }) => {
-  if (!item.physRequestable || !item.isRecap)
+  if (!item.physRequestable) return null;
+  // TODO: Handle Open Reference
+  // TODO: Handle SASB
+  if (!item.isRecap) {
     return <div>{item.status.prefLabel ?? 'Not Available'}</div>;
+  }
 
   const path = `${appConfig.baseUrl}/hold/request/${bibId}-${item.id}`;
 

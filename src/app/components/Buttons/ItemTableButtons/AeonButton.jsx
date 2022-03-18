@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import { Link } from 'react-router';
-import appConfig from '../../../data/appConfig';
 import { isAeonLink } from '../../../utils/utils';
 import RequestButton, { RequestButtonLabel } from './RequestButton';
 
@@ -11,7 +10,7 @@ const AeonButton = ({ item, onClick }) => {
       ? item.aeonUrl[0]
       : item.aeonUrl;
 
-    if (!isAeonLink(aeonUrl)) return `${appConfig.baseUrl}/404`;
+    if (!isAeonLink(aeonUrl)) return false;
 
     const searchParams = new URL(aeonUrl).searchParams;
 
@@ -35,6 +34,9 @@ const AeonButton = ({ item, onClick }) => {
 
     return encodeURI(`${aeonUrl}${params || ''}`);
   });
+
+  if (!item.specRequestable) return null;
+  if (!aeonUrl) return <div>{item.status.prefLabel ?? 'Not Available'}</div>;
 
   return (
     <RequestButton url={aeonUrl} text={`Make Appointment`} onClick={onClick}>
