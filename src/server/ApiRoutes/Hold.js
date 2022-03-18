@@ -17,6 +17,7 @@ import {
   updateBib,
   updateSearchKeywords,
   updateHoldRequestPage,
+  updateIsEddRequestable,
 } from '../../app/actions/Actions';
 import extractFeatures from '../../app/utils/extractFeatures';
 import isAeonUrl from '../utils/isAeonUrl';
@@ -399,6 +400,8 @@ function newHoldRequestServerEdd(req, res, next) {
   const item = Bib.fetchBib(
     bibId,
     (data) => {
+      const item = LibraryItem.getItem(data.bib, req.params.itemId)
+      dispatch(updateIsEddRequestable(item.eddRequestable))
       dispatch(updateBib(data.bib));
       dispatch(updateSearchKeywords(req.query.searchKeywords));
       next();

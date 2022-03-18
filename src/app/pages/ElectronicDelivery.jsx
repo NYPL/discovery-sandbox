@@ -19,7 +19,7 @@ import LibraryItem from '../utils/item';
 import { institutionNameByNyplSource, trackDiscovery } from '../utils/utils';
 
 class ElectronicDelivery extends React.Component {
-  constructor(props) {
+  constructor (props) {
     super(props);
 
     const bib =
@@ -206,8 +206,8 @@ class ElectronicDelivery extends React.Component {
     const { error, form } = this.props;
     const patronEmail =
       this.props.patron.emails &&
-      _isArray(this.props.patron.emails) &&
-      this.props.patron.emails.length
+        _isArray(this.props.patron.emails) &&
+        this.props.patron.emails.length
         ? this.props.patron.emails[0]
         : '';
     const searchKeywords = this.props.searchKeywords;
@@ -237,35 +237,40 @@ class ElectronicDelivery extends React.Component {
             </div>
           )}
         </div>
-
-        <div>
-          {!_isEmpty(raiseError) && (
-            <div className='nypl-form-error' ref='nypl-form-error'>
-              <h2>Error</h2>
-              <p>
-                Please check the following required fields and resubmit your
-                request:
-              </p>
-              <ul>{this.getRaisedErrors(raiseError)}</ul>
-            </div>
-          )}
-          {!closedLocations.includes('') ? (
-            <ElectronicDeliveryForm
-              bibId={bibId}
-              itemId={itemId}
-              itemSource={this.state.itemSource}
-              submitRequest={this.submitRequest}
-              raiseError={this.raiseError}
-              error={error}
-              form={form}
-              defaultEmail={patronEmail}
-              searchKeywords={searchKeywords}
-              serverRedirect={serverRedirect}
-              fromUrl={this.fromUrl()}
-              onSiteEddEnabled={this.props.features.includes('on-site-edd')}
-            />
-          ) : null}
-        </div>
+        {!this.props.eddRequestable ? <h2 className='nypl-request-form-title'>
+          Electronic delivery options for this item are currently unavailable. Please try
+          again later or contact 917-ASK-NYPL (
+          <a href='tel:917-275-6975'>917-275-6975</a>).
+        </h2> :
+          <div>
+            {!_isEmpty(raiseError) && (
+              <div className='nypl-form-error' ref='nypl-form-error'>
+                <h2>Error</h2>
+                <p>
+                  Please check the following required fields and resubmit your
+                  request:
+                </p>
+                <ul>{this.getRaisedErrors(raiseError)}</ul>
+              </div>
+            )}
+            {!closedLocations.includes('') ? (
+              <ElectronicDeliveryForm
+                bibId={bibId}
+                itemId={itemId}
+                itemSource={this.state.itemSource}
+                submitRequest={this.submitRequest}
+                raiseError={this.raiseError}
+                error={error}
+                form={form}
+                defaultEmail={patronEmail}
+                searchKeywords={searchKeywords}
+                serverRedirect={serverRedirect}
+                fromUrl={this.fromUrl()}
+                onSiteEddEnabled={this.props.features.includes('on-site-edd')}
+              />
+            ) : null}
+          </div>
+        }
       </SccContainer>
     );
   }
@@ -296,6 +301,7 @@ const mapStateToProps = (state) => ({
   bib: state.bib,
   searchKeywords: state.searchKeywords,
   features: state.features,
+  eddRequestable: state.isEddRequestable
 });
 
 const mapDispatchToProps = (dispatch) => ({
