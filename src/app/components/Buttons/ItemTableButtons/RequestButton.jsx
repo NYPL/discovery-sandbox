@@ -1,10 +1,13 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Link } from 'react-router';
+import { isAeonLink } from '../../../utils/utils';
 
 const RequestButton = ({ text, secondary, url, onClick, children }) => {
   const handleClick = (event) => {
-    event.preventDefault();
+    if (!isAeonLink(url)) {
+      event.preventDefault();
+    }
     onClick(url);
   };
 
