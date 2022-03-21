@@ -237,7 +237,7 @@ class ElectronicDelivery extends React.Component {
             </div>
           )}
         </div>
-        {!this.props.eddRequestable ? <h2 className='nypl-request-form-title'>
+        {!this.props.isEddRequestable ? <h2 className='nypl-request-form-title'>
           Electronic delivery options for this item are currently unavailable. Please try
           again later or contact 917-ASK-NYPL (
           <a href='tel:917-275-6975'>917-275-6975</a>).
@@ -301,7 +301,7 @@ const mapStateToProps = (state) => ({
   bib: state.bib,
   searchKeywords: state.searchKeywords,
   features: state.features,
-  eddRequestable: state.isEddRequestable
+  isEddRequestable: state.isEddRequestable
 });
 
 const mapDispatchToProps = (dispatch) => ({
