@@ -189,6 +189,7 @@ npx prettier --write path/to/file
 This app has an unusual Git Workflow / deployment scheme:
 
 - Cut feature branches off of the `development` branch
+- After an approved PR to `development`,
 - Tag your feature branch\* `qa-deployment-{YYYY}-{MM}-{DD}` to deploy to QA
 - Merge your feature branch into `production` to deploy to production
 
