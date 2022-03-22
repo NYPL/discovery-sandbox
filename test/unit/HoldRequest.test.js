@@ -4,6 +4,7 @@ import MockAdapter from 'axios-mock-adapter';
 import { expect } from 'chai';
 import React from 'react';
 import { spy, stub } from 'sinon';
+import Hold from 'src/server/ApiRoutes/Hold';
 import mockedItem from '../fixtures/mocked-item';
 import { makeTestStore, mountTestRender } from '../helpers/store';
 import WrappedHoldRequest, {
@@ -30,6 +31,9 @@ describe('HoldRequest', () => {
         () => true,
       );
     });
+    after(() => {
+      HoldRequest.prototype.redirectWithErrors.restore()
+    })
     describe('ineligible patrons', () => {
       before(() => {
         mock
