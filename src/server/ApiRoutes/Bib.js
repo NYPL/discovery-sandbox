@@ -34,11 +34,11 @@ const shepApiCall = (bibId) =>
   });
 
 const holdingsMappings = {
-  Location: 'location',
-  Format: 'format',
+  'Location': 'location',
+  'Format': 'format',
   'Call Number': 'shelfMark',
   'Library Has': 'holdingStatement',
-  Notes: 'notes',
+  'Notes': 'notes',
 };
 
 export const addHoldingDefinition = (holding) => {
@@ -75,7 +75,7 @@ const checkInItemsForHolding = (holding) => {
     format,
     position: box.position || 0,
     status: { prefLabel: box.status || '' },
-    accessMessage: { '@id': 'accessMessage: 1', prefLabel: 'Use in library' },
+    accessMessage: { '@id': 'accessMessage: 1', 'prefLabel': 'Use in library' },
     volume: box.coverage || '',
     callNumber: box.shelfMark || '',
     available: true,

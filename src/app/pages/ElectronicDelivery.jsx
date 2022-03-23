@@ -19,7 +19,7 @@ import LibraryItem from '../utils/item';
 import { institutionNameByNyplSource, trackDiscovery } from '../utils/utils';
 
 class ElectronicDelivery extends React.Component {
-  constructor (props) {
+  constructor(props) {
     super(props);
 
     const bib =
@@ -41,7 +41,7 @@ class ElectronicDelivery extends React.Component {
       selectedItem && selectedItem.itemSource ? selectedItem.itemSource : null;
     const raiseError = _isEmpty(this.props.error) ? {} : this.props.error;
     const serverRedirect = true;
-    const isEddRequestable = selectedItem.eddRequestable
+    const isEddRequestable = selectedItem.eddRequestable;
 
     this.state = _extend({
       isEddRequestable,
@@ -200,7 +200,14 @@ class ElectronicDelivery extends React.Component {
   }
 
   render() {
-    const { bibId, itemId, title, raiseError, serverRedirect, isEddRequestable } = this.state;
+    const {
+      bibId,
+      itemId,
+      title,
+      raiseError,
+      serverRedirect,
+      isEddRequestable,
+    } = this.state;
     const bib =
       this.props.bib && !_isEmpty(this.props.bib) ? this.props.bib : null;
     const callNo =
@@ -208,8 +215,8 @@ class ElectronicDelivery extends React.Component {
     const { error, form } = this.props;
     const patronEmail =
       this.props.patron.emails &&
-        _isArray(this.props.patron.emails) &&
-        this.props.patron.emails.length
+      _isArray(this.props.patron.emails) &&
+      this.props.patron.emails.length
         ? this.props.patron.emails[0]
         : '';
     const searchKeywords = this.props.searchKeywords;
@@ -239,11 +246,13 @@ class ElectronicDelivery extends React.Component {
             </div>
           )}
         </div>
-        {!isEddRequestable ? <h2 className='nypl-request-form-title'>
-          Electronic delivery options for this item are currently unavailable. Please try
-          again later or contact 917-ASK-NYPL (
-          <a href='tel:917-275-6975'>917-275-6975</a>).
-        </h2> :
+        {!isEddRequestable ? (
+          <h2 className='nypl-request-form-title'>
+            Electronic delivery options for this item are currently unavailable.
+            Please try again later or contact 917-ASK-NYPL (
+            <a href='tel:917-275-6975'>917-275-6975</a>).
+          </h2>
+        ) : (
           <div>
             {!_isEmpty(raiseError) && (
               <div className='nypl-form-error' ref='nypl-form-error'>
@@ -272,7 +281,7 @@ class ElectronicDelivery extends React.Component {
               />
             ) : null}
           </div>
-        }
+        )}
       </SccContainer>
     );
   }
@@ -291,7 +300,7 @@ ElectronicDelivery.propTypes = {
   form: PropTypes.object,
   patron: PropTypes.object,
   updateLoadingStatus: PropTypes.func,
-  features: PropTypes.array
+  features: PropTypes.array,
 };
 
 ElectronicDelivery.defaultProps = {

@@ -15,7 +15,7 @@ describe('utils/item', () => {
           status: [
             {
               '@id': 'status:co',
-              prefLabel: 'Loaned',
+              'prefLabel': 'Loaned',
             },
           ],
         });
@@ -28,7 +28,7 @@ describe('utils/item', () => {
           status: [
             {
               '@id': 'status:o',
-              prefLabel: 'Use in Library',
+              'prefLabel': 'Use in Library',
             },
           ],
         });

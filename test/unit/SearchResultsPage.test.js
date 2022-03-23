@@ -14,17 +14,17 @@ import appConfig from '../../src/app/data/appConfig';
 const searchResults = {
   '@context': 'http://api.data.nypl.org/api/v1/context_all.jsonld',
   '@type': 'itemList',
-  itemListElement: [
+  'itemListElement': [
     {
       '@type': 'searchResult',
-      result: {},
+      'result': {},
     },
     {
       '@type': 'searchResult',
-      result: {},
+      'result': {},
     },
   ],
-  totalResults: 2,
+  'totalResults': 2,
 };
 
 const context = mockRouterContext();
