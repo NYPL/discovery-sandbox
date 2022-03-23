@@ -10,7 +10,7 @@ import {
   isEmpty as _isEmpty,
   mapObject as _mapObject,
 } from 'underscore';
-import { updateLoadingStatus } from '../actions/Actions';
+import { updateIsEddRequestable, updateLoadingStatus } from '../actions/Actions';
 import ElectronicDeliveryForm from '../components/ElectronicDeliveryForm/ElectronicDeliveryForm';
 import Notification from '../components/Notification/Notification';
 import SccContainer from '../components/SccContainer/SccContainer';
@@ -41,8 +41,10 @@ class ElectronicDelivery extends React.Component {
       selectedItem && selectedItem.itemSource ? selectedItem.itemSource : null;
     const raiseError = _isEmpty(this.props.error) ? {} : this.props.error;
     const serverRedirect = true;
+    const isEddRequestable = selectedItem.eddRequestable
 
     this.state = _extend({
+      isEddRequestable,
       title,
       bibId,
       itemId,
@@ -55,7 +57,6 @@ class ElectronicDelivery extends React.Component {
     this.submitRequest = this.submitRequest.bind(this);
     this.raiseError = this.raiseError.bind(this);
     this.fromUrl = this.fromUrl.bind(this);
-    // this.props.isEddRequestable = true
   }
 
   componentDidMount() {
@@ -199,7 +200,7 @@ class ElectronicDelivery extends React.Component {
   }
 
   render() {
-    const { bibId, itemId, title, raiseError, serverRedirect } = this.state;
+    const { bibId, itemId, title, raiseError, serverRedirect, isEddRequestable } = this.state;
     const bib =
       this.props.bib && !_isEmpty(this.props.bib) ? this.props.bib : null;
     const callNo =
@@ -238,7 +239,7 @@ class ElectronicDelivery extends React.Component {
             </div>
           )}
         </div>
-        {!this.props.isEddRequestable ? <h2 className='nypl-request-form-title'>
+        {!isEddRequestable ? <h2 className='nypl-request-form-title'>
           Electronic delivery options for this item are currently unavailable. Please try
           again later or contact 917-ASK-NYPL (
           <a href='tel:917-275-6975'>917-275-6975</a>).
