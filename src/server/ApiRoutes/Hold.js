@@ -402,7 +402,6 @@ function newHoldRequestServerEdd(req, res, next) {
     bibId + (itemId.length ? `-${itemId}` : ''),
     (data) => {
       const item = LibraryItem.getItem(data.bib, req.params.itemId)
-      dispatch(updateIsEddRequestable(item.eddRequestable))
       dispatch(updateBib(data.bib));
       dispatch(updateSearchKeywords(req.query.searchKeywords));
       next();
