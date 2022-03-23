@@ -6,6 +6,7 @@ import { makeTestStore, mountTestRender } from '../helpers/store';
 import ElectronicDeliveryForm from './../../src/app/components/ElectronicDeliveryForm/ElectronicDeliveryForm';
 import appConfig from './../../src/app/data/appConfig';
 import ElectronicDelivery from './../../src/app/pages/ElectronicDelivery';
+import mockedItem from '../fixtures/mocked-item';
 
 describe('ElectronicDeliveryForm', () => {
   describe('default form', () => {
@@ -50,12 +51,16 @@ describe('ElectronicDeliveryForm', () => {
 
       const store = makeTestStore({
         features: ['on-site-edd'],
-        isEddRequestable: true
+        bib: {
+          title: ['Harry Potter'],
+          '@id': 'res:b17688688',
+          items: [{...mockedItem[0], eddRequestable: true}],
+        }
       });
 
       component = mountTestRender(
         <ElectronicDelivery
-          params={{ bibId: 'book1' }}
+          params={{ bibId: 'book1', itemId: 'i10000003' }}
           location={{
             query: '',
           }}
@@ -207,12 +212,18 @@ describe('ElectronicDeliveryForm', () => {
     after(() => {
       appConfigMock.restore();
     });
-    it('should render the message when the item is not eddRequestable', () => {
+
+    it('should render the error message when the item is not eddRequestable', () => {
+      const bib = {
+        title: ['Harry Potter'],
+        '@id': 'res:b17688688',
+        items: [{...mockedItem[0], eddRequestable: false}],
+      };
       const store = makeTestStore({
-        isEddRequestable: false
+        bib
       });
       component = mountTestRender(<ElectronicDelivery
-        params={{ bibId: 'bibId' }}
+        params={{ bibId: 'bibId', itemId: 'i10000003' }}
       />, { store })
       const message = component.find('h2')
       setImmediate(() => {
@@ -229,12 +240,18 @@ describe('ElectronicDeliveryForm', () => {
       });
     })
     it('should render the edd form when the item is eddRequestable', () => {
+      
+      const bib = {
+        title: ['Harry Potter'],
+        '@id': 'res:b17688688',
+        items: [{...mockedItem[0], eddRequestable: true}],
+      };
       const store = makeTestStore({
-        isEddRequestable: true
+        bib
       });
       component = mountTestRender(<ElectronicDelivery
       location={{query: "query"}}
-        params={{ bibId: 'bibId' }}
+        params={{ bibId: 'bibId', itemId: 'i10000003' }}
       />, { store })
       const message = component.find('h2')
       expect(message).to.be.empty

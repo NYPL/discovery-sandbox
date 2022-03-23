@@ -766,7 +766,7 @@ describe('HoldRequest', () => {
     });
   });
 
-  describe.only('if the item is not physRequestable', () => {
+  describe('if the item is not physRequestable', () => {
     let component;
     const bib = {
       title: ['Harry Potter'],
