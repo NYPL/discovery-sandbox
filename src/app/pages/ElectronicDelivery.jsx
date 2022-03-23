@@ -10,7 +10,7 @@ import {
   isEmpty as _isEmpty,
   mapObject as _mapObject,
 } from 'underscore';
-import { updateIsEddRequestable, updateLoadingStatus } from '../actions/Actions';
+import { updateLoadingStatus } from '../actions/Actions';
 import ElectronicDeliveryForm from '../components/ElectronicDeliveryForm/ElectronicDeliveryForm';
 import Notification from '../components/Notification/Notification';
 import SccContainer from '../components/SccContainer/SccContainer';
