@@ -227,7 +227,7 @@ To run the tests continuously for active development, run
 
 To run a specific test file, run
 
-    $ npm run test-file test/unit/SearchResultsPage.test.js
+    $ npm run test-file -- path/to/test/file
 
 ### Code Coverage
 
