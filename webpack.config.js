@@ -52,8 +52,8 @@ const commonSettings = {
       filename: 'styles.css',
     }),
     new webpack.DefinePlugin({
-      loadA11y: process.env.loadA11y || false,
-      appEnv: JSON.stringify(appEnv),
+      'loadA11y': process.env.loadA11y || false,
+      'appEnv': JSON.stringify(appEnv),
       'process.env': {
         SHEP_API: JSON.stringify(process.env.SHEP_API),
         LOGIN_URL: JSON.stringify(process.env.LOGIN_URL),

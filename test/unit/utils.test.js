@@ -156,13 +156,13 @@ describe('destructureFilters', () => {
     '@context':
       'http://discovery-api-qa.us-east-1.elasticbeanstalk.com/api/v0.1/discovery/context_all.jsonld',
     '@type': 'itemList',
-    itemListElement: [
+    'itemListElement': [
       {
         '@type': 'nypl:Aggregation',
         '@id': 'res:subjectLiteral',
-        id: 'subjectLiteral',
-        field: 'subjectLiteral',
-        values: [
+        'id': 'subjectLiteral',
+        'field': 'subjectLiteral',
+        'values': [
           {
             count: 130,
             label: 'Animals -- Fiction.',
@@ -176,7 +176,7 @@ describe('destructureFilters', () => {
         ],
       },
     ],
-    totalResults: 665,
+    'totalResults': 665,
   };
   describe('Default call', () => {
     it('should return an empty object', () => {
@@ -1000,22 +1000,18 @@ describe('extractNoticePreference', () => {
     expect(extractNoticePreference()).to.equal('None');
   });
   it('should return "None" if fixedFields does not have a "268" field', () => {
-    expect(extractNoticePreference({ '123': 'nonsense' })).to.equal('None');
+    expect(extractNoticePreference({ 123: 'nonsense' })).to.equal('None');
   });
   it('should return "Email" if "268" field value is "z"', () => {
-    expect(extractNoticePreference({ '268': { 'value': 'z' } })).to.equal(
-      'Email',
-    );
+    expect(extractNoticePreference({ 268: { value: 'z' } })).to.equal('Email');
   });
   it('should return "Telephone" if "268" field value is "p"', () => {
-    expect(extractNoticePreference({ '268': { 'value': 'p' } })).to.equal(
+    expect(extractNoticePreference({ 268: { value: 'p' } })).to.equal(
       'Telephone',
     );
   });
   it('should return "None" if "268" field value is "-"', () => {
-    expect(extractNoticePreference({ '268': { 'value': '-' } })).to.equal(
-      'None',
-    );
+    expect(extractNoticePreference({ 268: { value: '-' } })).to.equal('None');
   });
 });
 
