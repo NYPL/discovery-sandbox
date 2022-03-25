@@ -11,7 +11,7 @@ const items = [
   {
     accessMessage: {
       '@id': 'accessMessage:1',
-      prefLabel: 'USE IN LIBRARY',
+      'prefLabel': 'USE IN LIBRARY',
     },
     availability: 'available',
     url:
@@ -21,7 +21,7 @@ const items = [
   {
     accessMessage: {
       '@id': 'accessMessage:1',
-      prefLabel: 'USE IN LIBRARY',
+      'prefLabel': 'USE IN LIBRARY',
     },
     availability: 'available',
     available: true,

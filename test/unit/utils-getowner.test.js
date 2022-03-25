@@ -10,7 +10,7 @@ describe('utils/getOwner', () => {
           owner: [
             {
               '@id': 'orgs:1000',
-              prefLabel: 'Stephen A. Schwarzman Building',
+              'prefLabel': 'Stephen A. Schwarzman Building',
             },
           ],
           idNyplSourceId: {
@@ -31,7 +31,7 @@ describe('utils/getOwner', () => {
           owner: [
             {
               '@id': 'orgs:0003',
-              prefLabel: 'Princeton University Library',
+              'prefLabel': 'Princeton University Library',
             },
           ],
           idNyplSourceId: {
@@ -52,7 +52,7 @@ describe('utils/getOwner', () => {
           owner: [
             {
               '@id': 'orgs:0002',
-              prefLabel: 'Columbia University Libraries',
+              'prefLabel': 'Columbia University Libraries',
             },
           ],
           idNyplSourceId: {
@@ -73,7 +73,7 @@ describe('utils/getOwner', () => {
           owner: [
             {
               '@id': 'orgs:0004',
-              prefLabel: 'Harvard Library',
+              'prefLabel': 'Harvard Library',
             },
           ],
           idNyplSourceId: {

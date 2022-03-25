@@ -3,7 +3,7 @@ const item = {
   full: {
     accessMessage: {
       '@id': 'accessMessage:1',
-      prefLabel: 'USE IN LIBRARY',
+      'prefLabel': 'USE IN LIBRARY',
     },
     availability: 'available',
     available: true,
@@ -19,13 +19,13 @@ const item = {
     location: 'SASB M1 - General Research - Room 315',
     materialType: {
       '@id': 'resourcetypes:txt',
-      prefLabel: 'Text',
+      'prefLabel': 'Text',
     },
     nonRecapNYPL: true,
     requestable: false,
     status: {
       '@id': 'status:a',
-      prefLabel: 'Available',
+      'prefLabel': 'Available',
     },
     suppressed: false,
     url:
@@ -35,7 +35,7 @@ const item = {
   missingData: {
     accessMessage: {
       '@id': 'accessMessage:1',
-      prefLabel: '',
+      'prefLabel': '',
     },
     availability: 'available',
     available: true,
@@ -52,7 +52,7 @@ const item = {
     requestable: false,
     status: {
       '@id': 'status:a',
-      prefLabel: '',
+      'prefLabel': '',
     },
     suppressed: false,
     url:
@@ -62,7 +62,7 @@ const item = {
   requestable_ReCAP_available: {
     accessMessage: {
       '@id': 'accessMessage:1',
-      prefLabel: 'USE IN LIBRARY',
+      'prefLabel': 'USE IN LIBRARY',
     },
     isAvailable: true,
     availability: 'available',
@@ -81,7 +81,7 @@ const item = {
     physRequestable: true,
     status: {
       '@id': 'status:a',
-      prefLabel: 'Available',
+      'prefLabel': 'Available',
     },
     suppressed: false,
     url:
@@ -91,7 +91,7 @@ const item = {
   requestable_ReCAP_not_available: {
     accessMessage: {
       '@id': 'accessMessage:1',
-      prefLabel: 'USE IN LIBRARY',
+      'prefLabel': 'USE IN LIBRARY',
     },
     isAvailable: false,
     availability: 'available',
@@ -111,7 +111,7 @@ const item = {
     physRequestable: true,
     status: {
       '@id': 'status:a',
-      prefLabel: 'Available', // <-- isPhysical, not: isAvailable, Show this label?
+      'prefLabel': 'Available',
     },
     suppressed: false,
     url:
@@ -121,7 +121,7 @@ const item = {
   requestable_nonReCAP_NYPL: {
     accessMessage: {
       '@id': 'accessMessage:1',
-      prefLabel: 'USE IN LIBRARY',
+      'prefLabel': 'USE IN LIBRARY',
     },
     isAvailable: true,
     availability: 'available',
@@ -140,7 +140,7 @@ const item = {
     physRequestable: true,
     status: {
       '@id': 'status:a',
-      prefLabel: 'Available',
+      'prefLabel': 'Available',
     },
     suppressed: false,
     url:
@@ -150,7 +150,7 @@ const item = {
   nonrequestable_nonReCAP_NYPL: {
     accessMessage: {
       '@id': 'accessMessage:1',
-      prefLabel: 'USE IN LIBRARY',
+      'prefLabel': 'USE IN LIBRARY',
     },
     availability: 'available',
     available: true,
@@ -167,7 +167,7 @@ const item = {
     requestable: false,
     status: {
       '@id': 'status:a',
-      prefLabel: 'Available',
+      'prefLabel': 'Available',
     },
     suppressed: false,
     url:
@@ -178,7 +178,7 @@ const item = {
     id: 'i33299542',
     status: {
       '@id': 'status:a',
-      prefLabel: 'Available',
+      'prefLabel': 'Available',
     },
     availability: 'available',
     available: true,
@@ -186,7 +186,7 @@ const item = {
       'https://specialcollections.nypl.org/aeon/Aeon.dll?Action=10&Form=30&Title=[Songs+and+piano+solos+/&Site=SCHMA&Author=Bechet,+Sidney,&Date=1941-1960.&ItemInfo3=https://nypl-sierra-test.nypl.org/record=b11545018x&ReferenceNumber=b11545018x&ItemInfo1=USE+IN+LIBRARY&Genre=Score&Location=Schomburg+Center&shelfmark=Sc Scores Bechet&itemid=33299542',
     accessMessage: {
       '@id': 'accessMessage:1',
-      prefLabel: 'Use in library',
+      'prefLabel': 'Use in library',
     },
     isElectronicResource: false,
     eddRequestable: true,
@@ -209,7 +209,7 @@ const item = {
     format: 'Notated music',
     materialType: {
       '@id': 'resourcetypes:not',
-      prefLabel: 'Notated music',
+      'prefLabel': 'Notated music',
     },
     volume: '',
   },
@@ -217,7 +217,7 @@ const item = {
     id: 'i33299542',
     status: {
       '@id': 'status:a',
-      prefLabel: 'Available',
+      'prefLabel': 'Available',
     },
     availability: 'available',
     available: true,
@@ -225,7 +225,7 @@ const item = {
       'https://specialcollections.nypl.org/aeon/Aeon.dll?Action=10&Form=30&Title=[Songs+and+piano+solos+/&Site=SCHMA&CallNumber=Sc+Scores+Bechet&Author=Bechet,+Sidney,&Date=1941-1960.&ItemInfo3=https://nypl-sierra-test.nypl.org/record=b11545018x&ReferenceNumber=b11545018x&ItemInfo1=USE+IN+LIBRARY&ItemISxN=i332995422&Genre=Score&Location=Schomburg+Center&shelfmark=Sc Scores Bechet&itemid=33299542&itemNumber=4567',
     accessMessage: {
       '@id': 'accessMessage:1',
-      prefLabel: 'Use in library',
+      'prefLabel': 'Use in library',
     },
     isElectronicResource: false,
     electronicResources: null,
@@ -247,7 +247,7 @@ const item = {
     format: 'Notated music',
     materialType: {
       '@id': 'resourcetypes:not',
-      prefLabel: 'Notated music',
+      'prefLabel': 'Notated music',
     },
     volume: '',
   },
