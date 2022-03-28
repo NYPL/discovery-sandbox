@@ -29,4 +29,13 @@ const TopBibDetails = ({ bib, resources }) => {
   );
 };
 
+TopBibDetails.propTypes = {
+  bib: PropTypes.object.isRequired,
+  resources: PropTypes.array.isRequired,
+};
+
+TopBibDetails.defaultProps = {
+  resources: [],
+};
+
 export default TopBibDetails;
