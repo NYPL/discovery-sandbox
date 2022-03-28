@@ -1,5 +1,3 @@
-import SearchResultsContainer from '@SearchResultsContainer';
-import SearchResultsSorter from '@SearchResultsSorter';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
@@ -9,6 +7,8 @@ import Notification from '../components/Notification/Notification';
 import ResultsCount from '../components/ResultsCount/ResultsCount';
 import SccContainer from '../components/SccContainer/SccContainer';
 import Search from '../components/Search/Search';
+import SearchResultsContainer from '../components/SearchResults/SearchResultsContainer';
+import SearchResultsSorter from '../components/SearchResults/SearchResultsSorter';
 import { basicQuery, hasValidFilters } from '../utils/utils';
 
 const SearchResults = (props, context) => {
