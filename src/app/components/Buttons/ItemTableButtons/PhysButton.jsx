@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Link } from 'react-router';
 import appConfig from '../../../data/appConfig';
-import RequestButton, { RequestButtonLabel } from './RequestButton';
+import RequestButton from './RequestButton';
 
 const PhysButton = ({ item, bibId, onClick }) => {
   if (!item.physRequestable) return null;
@@ -21,14 +21,12 @@ const PhysButton = ({ item, bibId, onClick }) => {
       onClick={onClick}
       secondary
     >
-      <RequestButtonLabel>
-        <span>
-          {`Timeline `}
-          <Link href={'https://www.nypl.org/help/request-research-materials'}>
-            <i>{`Details`}</i>
-          </Link>
-        </span>
-      </RequestButtonLabel>
+      <span>
+        {`Timeline `}
+        <Link href={'https://www.nypl.org/help/request-research-materials'}>
+          <i>{`Details`}</i>
+        </Link>
+      </span>
     </RequestButton>
   );
 };

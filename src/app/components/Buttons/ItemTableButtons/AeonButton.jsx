@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import { Link } from 'react-router';
 import { isAeonLink } from '../../../utils/utils';
-import RequestButton, { RequestButtonLabel } from './RequestButton';
+import RequestButton from './RequestButton';
 
 const AeonButton = ({ item, onClick }) => {
   const [aeonUrl] = useState(() => {
@@ -40,14 +40,12 @@ const AeonButton = ({ item, onClick }) => {
 
   return (
     <RequestButton url={aeonUrl} text={`Make Appointment`} onClick={onClick}>
-      <RequestButtonLabel>
-        <span>
-          {`Appointment Required. `}
-          <Link href={'https://www.nypl.org/help/request-research-materials'}>
-            <i>{`Details`}</i>
-          </Link>
-        </span>
-      </RequestButtonLabel>
+      <span>
+        {`Appointment Required. `}
+        <Link href={'https://www.nypl.org/help/request-research-materials'}>
+          <i>{`Details`}</i>
+        </Link>
+      </span>
     </RequestButton>
   );
 };

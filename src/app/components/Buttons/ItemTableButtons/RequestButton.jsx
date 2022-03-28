@@ -8,6 +8,7 @@ const RequestButton = ({ text, secondary, url, onClick, children }) => {
     if (!isAeonLink(url)) {
       event.preventDefault();
     }
+
     onClick(url);
   };
 
@@ -21,7 +22,7 @@ const RequestButton = ({ text, secondary, url, onClick, children }) => {
       >
         {text}
       </Link>
-      {children}
+      <RequestButtonLabel>{children}</RequestButtonLabel>
     </div>
   );
 };
@@ -38,10 +39,13 @@ export default RequestButton;
 
 export const RequestButtonLabel = ({ children }) => {
   return (
-    <>
-      <br />
-      <span className='nypl-request-btn-label'>{children}</span>
-    </>
+    (children && (
+      <>
+        <br />
+        <span className='nypl-request-btn-label'>{children}</span>
+      </>
+    )) ||
+    null
   );
 };
 
