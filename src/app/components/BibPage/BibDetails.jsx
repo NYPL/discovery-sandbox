@@ -334,7 +334,6 @@ class BibDetails extends React.Component {
     const fieldsToRender = [];
 
     fields.forEach((field) => {
-      const fieldSelfLinkable = field.selfLinkable;
       const fieldIdentifier = field.identifier;
       let bibValues = bib[field.value];
 
@@ -355,7 +354,7 @@ class BibDetails extends React.Component {
               bibValues,
               field.value,
               field.linkable,
-              fieldSelfLinkable,
+              field.selfLinkable,
               field.label,
             ),
           });
@@ -365,7 +364,7 @@ class BibDetails extends React.Component {
             field.value,
             field.linkable,
             fieldIdentifier,
-            fieldSelfLinkable,
+            field.selfLinkable,
             field.label,
           );
           if (definition) {
