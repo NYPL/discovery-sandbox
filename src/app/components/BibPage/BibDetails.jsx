@@ -20,23 +20,6 @@ class BibDetails extends React.Component {
   }
 
   /**
-   * Return note array or null.
-   *
-   * @param {object} bib
-   * @return {null|array}
-   */
-  getNote(bib) {
-    const note = bib.note;
-    const notes = note && note.length ? note : null;
-
-    if (!notes) {
-      return null;
-    }
-
-    return notes;
-  }
-
-  /**
    * getDefinitionObject(bibValues, fieldValue, fieldLinkable, fieldSelfLinkable, fieldLabel)
    * Gets a list, or one value, of data to display for a field from the API, where
    * the data is an object in the array.
@@ -395,7 +378,8 @@ class BibDetails extends React.Component {
       //     '@type': 'bf:Note'},
       //    {...}]
       if (field.label === 'Notes') {
-        const note = this.getNote(this.props.bib);
+        const note = bib.note && bib.note.length ? bib.note : null;
+
         // Make sure we have at least one note
         if (note && Array.isArray(note)) {
           // Group notes by noteType:
