@@ -334,7 +334,6 @@ class BibDetails extends React.Component {
     const fieldsToRender = [];
 
     fields.forEach((field) => {
-      const fieldIdentifier = field.identifier;
       let bibValues = bib[field.value];
 
       if (field.value === 'subjectLiteral') {
@@ -363,7 +362,7 @@ class BibDetails extends React.Component {
             bibValues,
             field.value,
             field.linkable,
-            fieldIdentifier,
+            field.identifier,
             field.selfLinkable,
             field.label,
           );
