@@ -334,14 +334,13 @@ class BibDetails extends React.Component {
     const fieldsToRender = [];
 
     fields.forEach((field) => {
-      const fieldValue = field.value;
       const fieldLinkable = field.linkable;
       const fieldSelfLinkable = field.selfLinkable;
       const fieldIdentifier = field.identifier;
-      let bibValues = bib[fieldValue];
+      let bibValues = bib[field.value];
 
-      if (fieldValue === 'subjectLiteral') {
-        bibValues = this.compressSubjectLiteral(bib[fieldValue]);
+      if (field.value === 'subjectLiteral') {
+        bibValues = this.compressSubjectLiteral(bib[field.value]);
       }
 
       // skip absent fields
@@ -355,7 +354,7 @@ class BibDetails extends React.Component {
             term: field.label,
             definition: this.getDefinitionObject(
               bibValues,
-              fieldValue,
+              field.value,
               fieldLinkable,
               fieldSelfLinkable,
               field.label,
@@ -364,7 +363,7 @@ class BibDetails extends React.Component {
         } else {
           const definition = this.getDefinition(
             bibValues,
-            fieldValue,
+            field.value,
             fieldLinkable,
             fieldIdentifier,
             fieldSelfLinkable,
