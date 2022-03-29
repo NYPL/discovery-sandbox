@@ -334,7 +334,6 @@ class BibDetails extends React.Component {
     const fieldsToRender = [];
 
     fields.forEach((field) => {
-      const fieldLabel = field.label;
       const fieldValue = field.value;
       const fieldLinkable = field.linkable;
       const fieldSelfLinkable = field.selfLinkable;
@@ -353,13 +352,13 @@ class BibDetails extends React.Component {
         // Each value is an object with @id and prefLabel properties.
         if (firstFieldValue['@id']) {
           fieldsToRender.push({
-            term: fieldLabel,
+            term: field.label,
             definition: this.getDefinitionObject(
               bibValues,
               fieldValue,
               fieldLinkable,
               fieldSelfLinkable,
-              fieldLabel,
+              field.label,
             ),
           });
         } else {
@@ -369,11 +368,11 @@ class BibDetails extends React.Component {
             fieldLinkable,
             fieldIdentifier,
             fieldSelfLinkable,
-            fieldLabel,
+            field.label,
           );
           if (definition) {
             fieldsToRender.push({
-              term: fieldLabel,
+              term: field.label,
               definition,
             });
           }
@@ -381,11 +380,11 @@ class BibDetails extends React.Component {
       }
 
       // The Owner is complicated too.
-      if (fieldLabel === 'Owning Institutions') {
+      if (field.label === 'Owning Institutions') {
         const owner = getOwner(this.props.bib);
         if (owner) {
           fieldsToRender.push({
-            term: fieldLabel,
+            term: field.label,
             definition: owner,
           });
         }
@@ -399,7 +398,7 @@ class BibDetails extends React.Component {
       //     'prefLabel': 'string',
       //     '@type': 'bf:Note'},
       //    {...}]
-      if (fieldLabel === 'Notes') {
+      if (field.label === 'Notes') {
         const note = this.getNote(this.props.bib);
         // Make sure we have at least one note
         if (note && Array.isArray(note)) {
@@ -432,7 +431,7 @@ class BibDetails extends React.Component {
       }
 
       if (
-        fieldLabel === 'Electronic Resource' &&
+        field.label === 'Electronic Resource' &&
         this.props.electronicResources.length
       ) {
         const electronicResources = this.props.electronicResources;
@@ -480,7 +479,7 @@ class BibDetails extends React.Component {
         }
 
         fieldsToRender.push({
-          term: fieldLabel,
+          term: field.label,
           definition: electronicElem,
         });
       }
