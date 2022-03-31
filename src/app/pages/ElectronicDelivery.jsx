@@ -37,14 +37,14 @@ class ElectronicDelivery extends React.Component {
         ? this.props.params.itemId
         : '';
     const selectedItem = bib && itemId ? LibraryItem.getItem(bib, itemId) : {};
+    console.log('selected item in ed page jsx file', selectedItem)
     const itemSource =
       selectedItem && selectedItem.itemSource ? selectedItem.itemSource : null;
     const raiseError = _isEmpty(this.props.error) ? {} : this.props.error;
     const serverRedirect = true;
-    const isEddRequestable = selectedItem.eddRequestable
 
     this.state = _extend({
-      isEddRequestable,
+      eddRequestable : selectedItem.eddRequestable,
       title,
       bibId,
       itemId,

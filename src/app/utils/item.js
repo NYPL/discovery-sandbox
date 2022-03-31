@@ -256,7 +256,7 @@ function LibraryItem() {
       // For all items that we want to send to the Hold Request Form.
       url = this.getLocationHoldUrl(holdingLocation);
     }
-
+console.log('item.eddrequestable in utils/item.js', item.eddRequestable)
     return {
       physRequestable: item.physRequestable,
       eddRequestable: item.eddRequestable,

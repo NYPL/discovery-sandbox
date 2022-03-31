@@ -16,8 +16,7 @@ import logger from '../../../logger';
 import {
   updateBib,
   updateSearchKeywords,
-  updateHoldRequestPage,
-  updateIsEddRequestable,
+  updateHoldRequestPage
 } from '../../app/actions/Actions';
 import extractFeatures from '../../app/utils/extractFeatures';
 import isAeonUrl from '../utils/isAeonUrl';
@@ -426,6 +425,7 @@ function newHoldRequestServerEdd(req, res, next) {
       features: urlEnabledFeatures,
     },
   );
+  console.log('api routes',item.eddRequestable)
   return item;
 }
 
