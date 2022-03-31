@@ -200,7 +200,7 @@ class ElectronicDelivery extends React.Component {
   }
 
   render() {
-    const { bibId, itemId, title, raiseError, serverRedirect, isEddRequestable } = this.state;
+    const { bibId, itemId, title, raiseError, serverRedirect, eddRequestable } = this.state;
     const bib =
       this.props.bib && !_isEmpty(this.props.bib) ? this.props.bib : null;
     const callNo =
