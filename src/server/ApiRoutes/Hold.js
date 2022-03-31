@@ -396,11 +396,11 @@ function newHoldRequestServerEdd(req, res, next) {
 
   if (redirect) return false;
 
-  // Retrieve item
-  const item = Bib.fetchBib(
+  // Retrieve bib with item
+  const bib = Bib.fetchBib(
     bibId + (itemId.length ? `-${itemId}` : ''),
     (data) => {
-      const item = LibraryItem.getItem(data.bib, req.params.itemId)
+     console.log('hold.js', data)
       dispatch(updateBib(data.bib));
       dispatch(updateSearchKeywords(req.query.searchKeywords));
       next();
@@ -425,8 +425,7 @@ function newHoldRequestServerEdd(req, res, next) {
       features: urlEnabledFeatures,
     },
   );
-  console.log('api routes',item)
-  return item;
+  return bib;
 }
 
 /**

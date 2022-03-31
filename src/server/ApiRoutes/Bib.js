@@ -180,7 +180,7 @@ function fetchBib(bibId, cb, errorcb, reqOptions, res) {
       // Make sure retrieved annotated-marc document is valid:
       if (!data.annotatedMarc || !data.annotatedMarc.bib)
         data.annotatedMarc = null;
-
+      console.log('in fetch bib', data)
       return data;
     })
     .then((bib) => {
