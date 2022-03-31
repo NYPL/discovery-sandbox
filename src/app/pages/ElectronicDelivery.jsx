@@ -41,10 +41,9 @@ class ElectronicDelivery extends React.Component {
       selectedItem && selectedItem.itemSource ? selectedItem.itemSource : null;
     const raiseError = _isEmpty(this.props.error) ? {} : this.props.error;
     const serverRedirect = true;
-    const isEddRequestable = selectedItem.eddRequestable
 
     this.state = _extend({
-      isEddRequestable,
+      eddRequestable: selectedItem.eddRequestable,
       title,
       bibId,
       itemId,
@@ -200,7 +199,7 @@ class ElectronicDelivery extends React.Component {
   }
 
   render() {
-    const { bibId, itemId, title, raiseError, serverRedirect, isEddRequestable } = this.state;
+    const { bibId, itemId, title, raiseError, serverRedirect, eddRequestable } = this.state;
     const bib =
       this.props.bib && !_isEmpty(this.props.bib) ? this.props.bib : null;
     const callNo =
@@ -239,7 +238,7 @@ class ElectronicDelivery extends React.Component {
             </div>
           )}
         </div>
-        {!isEddRequestable ? <h2 className='nypl-request-form-title'>
+        {!eddRequestable ? <h2 className='nypl-request-form-title'>
           Electronic delivery options for this item are currently unavailable. Please try
           again later or contact 917-ASK-NYPL (
           <a href='tel:917-275-6975'>917-275-6975</a>).
