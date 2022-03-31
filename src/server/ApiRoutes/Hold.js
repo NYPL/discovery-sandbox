@@ -425,7 +425,7 @@ function newHoldRequestServerEdd(req, res, next) {
       features: urlEnabledFeatures,
     },
   );
-  console.log('api routes',item.eddRequestable)
+  console.log('api routes',item)
   return item;
 }
 
