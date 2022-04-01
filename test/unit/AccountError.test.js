@@ -21,9 +21,7 @@ describe('AccountError', () => {
   it('should have the right text', () => {
     const html = component.html();
     expect(html).to.include('We&#x27;re sorry...');
-    expect(html).to.include(
-      'Something went wrong loading your account information.',
-    );
+    expect(html).to.include('Something went wrong loading your account information.');
     expect(html).to.include('Please try again in a few minutes');
   });
 });

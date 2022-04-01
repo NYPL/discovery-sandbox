@@ -3,6 +3,7 @@ import { expect } from 'chai';
 
 import { buildQueryDataFromForm } from '../../src/app/utils/advancedSearchUtils';
 
+
 describe('buildQueryDataFromForm', () => {
   it('should return an empty object if no relevant params', () => {
     expect(buildQueryDataFromForm([])).to.eql({});
@@ -13,9 +14,7 @@ describe('buildQueryDataFromForm', () => {
   });
 
   it('should include searchKeywords', () => {
-    expect(buildQueryDataFromForm([['searchKeywords', 'birds']])).to.eql({
-      searchKeywords: 'birds',
-    });
+    expect(buildQueryDataFromForm([['searchKeywords', 'birds']])).to.eql({ searchKeywords: 'birds' });
   });
 
   it('should ignore empty contributor', () => {
@@ -23,9 +22,7 @@ describe('buildQueryDataFromForm', () => {
   });
 
   it('should include contributor', () => {
-    expect(buildQueryDataFromForm([['contributor', 'Poe']])).to.eql({
-      contributor: 'Poe',
-    });
+    expect(buildQueryDataFromForm([['contributor', 'Poe']])).to.eql({ contributor: 'Poe' });
   });
 
   it('should ignore empty title', () => {
@@ -33,19 +30,15 @@ describe('buildQueryDataFromForm', () => {
   });
 
   it('should include title', () => {
-    expect(buildQueryDataFromForm([['title', 'The Raven']])).to.eql({
-      title: 'The Raven',
-    });
+    expect((buildQueryDataFromForm([['title', 'The Raven']]))).to.eql({ title: 'The Raven' });
   });
 
   it('should ignore empty subject', () => {
-    expect(buildQueryDataFromForm([['subject', '']])).to.eql({});
+    expect((buildQueryDataFromForm([['subject', '']]))).to.eql({});
   });
 
   it('should include subject', () => {
-    expect(buildQueryDataFromForm([['subject', 'ravens']])).to.eql({
-      subject: 'ravens',
-    });
+    expect(buildQueryDataFromForm([['subject', 'ravens']])).to.eql({ subject: 'ravens' });
   });
 
   it('should ignore empty language', () => {
@@ -53,43 +46,33 @@ describe('buildQueryDataFromForm', () => {
   });
 
   it('should include language', () => {
-    expect(buildQueryDataFromForm([['language', 'lang:eng']])).to.eql({
-      selectedFilters: { language: ['lang:eng'] },
-    });
+    expect(buildQueryDataFromForm([['language', 'lang:eng']])).to.eql({ selectedFilters: { language: ['lang:eng'] } });
   });
 
   it('should include dateBefore', () => {
-    expect(buildQueryDataFromForm([['dateBefore', '2001']])).to.deep.eql({
-      selectedFilters: { dateBefore: '2001' },
-    });
+    expect(buildQueryDataFromForm([['dateBefore', '2001']])).to.deep.eql({ selectedFilters: { dateBefore: '2001' } });
   });
 
   it('should include dateAfter', () => {
-    expect(buildQueryDataFromForm([['dateAfter', '1901']])).to.deep.eql({
-      selectedFilters: { dateAfter: '1901' },
-    });
+    expect(buildQueryDataFromForm([['dateAfter', '1901']])).to.deep.eql({ selectedFilters: { dateAfter: '1901' } });
   });
 
   it('should handle materialTypes', () => {
-    expect(buildQueryDataFromForm([['resourcetypes:aud', 'on']])).to.deep.eql({
-      selectedFilters: { materialType: ['resourcetypes:aud'] },
-    });
+    expect(buildQueryDataFromForm([['resourcetypes:aud', 'on']])).to.deep.eql({ selectedFilters: { materialType: ['resourcetypes:aud'] } });
   });
 
   it('should handle combinations', () => {
-    expect(
-      buildQueryDataFromForm([
-        ['searchKeywords', 'birds'],
-        ['contributor', 'Poe'],
-        ['title', 'The Raven'],
-        ['subject', 'ravens'],
-        ['dateBefore', '2001'],
-        ['dateAfter', '1901'],
-        ['language', 'lang:eng'],
-        ['resourcetypes:aud', 'on'],
-        ['resourcetypes:text', 'on'],
-      ]),
-    ).to.deep.eql({
+    expect(buildQueryDataFromForm([
+      ['searchKeywords', 'birds'],
+      ['contributor', 'Poe'],
+      ['title', 'The Raven'],
+      ['subject', 'ravens'],
+      ['dateBefore', '2001'],
+      ['dateAfter', '1901'],
+      ['language', 'lang:eng'],
+      ['resourcetypes:aud', 'on'],
+      ['resourcetypes:text', 'on'],
+    ])).to.deep.eql({
       searchKeywords: 'birds',
       contributor: 'Poe',
       title: 'The Raven',

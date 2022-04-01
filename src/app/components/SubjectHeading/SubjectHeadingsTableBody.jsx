@@ -11,7 +11,10 @@ import appConfig from '../../data/appConfig';
 class SubjectHeadingsTableBody extends React.Component {
   constructor(props) {
     super(props);
-    const { subjectHeadings, nextUrl } = props;
+    const {
+      subjectHeadings,
+      nextUrl,
+    } = props;
 
     this.state = {
       subjectHeadings,
@@ -27,8 +30,7 @@ class SubjectHeadingsTableBody extends React.Component {
 
   initialRange(props) {
     if (props.range) return props.range;
-    if (props.subjectHeadings)
-      return new Range(0, Infinity, [{ start: 0, end: Infinity }]);
+    if (props.subjectHeadings) return new Range(0, Infinity, [{ start: 0, end: Infinity }]);
     return null;
   }
 
@@ -36,44 +38,46 @@ class SubjectHeadingsTableBody extends React.Component {
     // eslint-disable-next-line no-param-reassign
     intervalElement[endpoint] += increment;
     rangeElement.normalize();
-    this.setState((prevState) => prevState);
+    this.setState(prevState => prevState);
   }
 
   fetchAndUpdate() {
-    const { nextUrl, subjectHeadings } = this.state;
-    const apiUrl = nextUrl.replace(
-      /.*\/api\/v0\.1/,
-      `${appConfig.baseUrl}/api/subjectHeadings`,
-    );
+    const {
+      nextUrl,
+      subjectHeadings,
+    } = this.state;
+    const apiUrl = nextUrl.replace(/.*\/api\/v0\.1/, `${appConfig.baseUrl}/api/subjectHeadings`);
     axios(apiUrl)
-      .then((resp) => {
-        const {
-          data: { narrower, next_url },
-        } = resp;
-        if (narrower) {
-          this.setState({
-            subjectHeadings: subjectHeadings.concat(narrower),
-            nextUrl: next_url,
-          });
-        } else {
-          this.setState({ nextUrl: false });
-        }
-      })
-      .catch((resp) => {
-        console.error(resp);
-      });
+      .then(
+        (resp) => {
+          const {
+            data: {
+              narrower,
+              next_url,
+            },
+          } = resp;
+          if (narrower) {
+            this.setState({
+              subjectHeadings: subjectHeadings.concat(narrower),
+              nextUrl: next_url,
+            });
+          } else {
+            this.setState({ nextUrl: false });
+          }
+        },
+      ).catch((resp) => { console.error(resp); });
   }
 
   listItemsInRange() {
-    const { range } = this.state;
+    const {
+      range,
+    } = this.state;
 
     const lastIndex = range.intervals.length - 1;
 
-    return range.intervals.reduce(
-      (acc, interval, index) =>
-        acc.concat(this.listItemsInInterval(interval, index, lastIndex)),
-      [],
-    );
+    return range.intervals.reduce((acc, interval, index) =>
+      acc.concat(this.listItemsInInterval(interval, index, lastIndex))
+      , []);
   }
 
   listItemsInInterval(interval, index, lastIndex) {
@@ -81,9 +85,7 @@ class SubjectHeadingsTableBody extends React.Component {
     const { subjectHeadings, range, nextUrl } = this.state;
     const { container } = this.context;
     const { start, end } = interval;
-    const subjectHeadingsInInterval = subjectHeadings.filter(
-      (el, i) => i >= start && i <= end,
-    );
+    const subjectHeadingsInInterval = subjectHeadings.filter((el, i) => i >= start && i <= end);
     const isContext = container === 'context';
     if (subjectHeadings[start - 1] && !isContext) {
       subjectHeadingsInInterval.unshift({
@@ -121,7 +123,7 @@ class SubjectHeadingsTableBody extends React.Component {
       seeMoreText,
       seeMoreLinkUrl,
       preOpen,
-      marginSize,
+      marginSize
     } = this.props;
     const { container, router } = this.context;
     const { location } = this.context.router;
@@ -161,7 +163,9 @@ class SubjectHeadingsTableBody extends React.Component {
   }
 
   render() {
-    const { subjectHeadings } = this.state;
+    const {
+      subjectHeadings,
+    } = this.state;
 
     const {
       nested,
@@ -173,15 +177,17 @@ class SubjectHeadingsTableBody extends React.Component {
       marginSize,
     } = this.props;
 
-    const { container } = this.context;
+    const {
+      container,
+    } = this.context;
 
     const inRange = this.listItemsInRange(subjectHeadings);
 
-    const numberOpen = inRange.filter((item) => !item.button).length;
+    const numberOpen = inRange.filter(item => !item.button).length;
 
     return (
       <React.Fragment>
-        {nested && subjectHeadings && container !== 'context' ? (
+        {nested && subjectHeadings && container !== 'context' ?
           <NestedTableHeader
             parentUuid={parentUuid}
             key={`nestedTableHeader${indentation}`}
@@ -193,8 +199,13 @@ class SubjectHeadingsTableBody extends React.Component {
             numberOpen={numberOpen}
             marginSize={marginSize}
           />
-        ) : null}
-        {subjectHeadings ? inRange.map(this.tableRow) : null}
+          : null
+        }
+        {
+          subjectHeadings ?
+          inRange.map(this.tableRow) :
+          null
+        }
       </React.Fragment>
     );
   }

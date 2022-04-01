@@ -12,7 +12,11 @@ import { logOutFromEncoreAndCatalogIn } from '../../utils/logoutUtils';
 import { deleteCookie } from '../../utils/cookieUtils';
 
 const TimedLogoutModal = (props) => {
-  const { stayLoggedIn, baseUrl } = props;
+  const {
+    stayLoggedIn,
+    baseUrl,
+  } = props;
+
 
   const [update, setUpdate] = React.useState(false);
 
@@ -26,15 +30,12 @@ const TimedLogoutModal = (props) => {
   let minutes = 0;
   let seconds = 0;
 
-  if (
-    typeof document !== 'undefined' &&
-    !document.cookie.includes('accountPageExp')
-  ) {
+  if (typeof document !== 'undefined' && !document.cookie.includes('accountPageExp')) {
     logOutAndRedirect();
   } else if (typeof document !== 'undefined') {
     const expTime = document.cookie
       .split(';')
-      .find((el) => el.includes('accountPageExp'))
+      .find(el => el.includes('accountPageExp'))
       .split('=')[1];
 
     const timeLeft = new Date(expTime).getTime() - new Date().getTime();
@@ -57,27 +58,30 @@ const TimedLogoutModal = (props) => {
   if (!open) return null;
 
   return (
-    <Modal open className='research-modal timed-logout'>
-      <div className='research-modal__content'>
+    <Modal
+      open
+      className="research-modal timed-logout"
+    >
+      <div className="research-modal__content">
         <p>
           Your session is about to expire
-          <span className='time-display'>
+          <span className="time-display">
             {`${minutes}:${seconds < 10 ? '0' : ''}${seconds}`}
           </span>
         </p>
         <hr />
         Do you want to stay logged in?
-        <div className='button-container'>
+        <div className="button-container">
           <Button
             buttonType={ButtonTypes.Secondary}
-            className='button'
+            className="button"
             onClick={logOutAndRedirect}
           >
             Log off
           </Button>
           <Button
             buttonType={ButtonTypes.Primary}
-            className='button'
+            className="button"
             onClick={stayLoggedIn}
           >
             Stay logged in

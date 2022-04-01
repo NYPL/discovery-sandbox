@@ -4,7 +4,7 @@
   "printWidth": 80,
   "bracketSpacing": true,
   "bracketSameLine": false,
-  "quoteProps": "consistent",
+  "quoteProps": "preserve",
   "useTabs": false,
   "tabWidth": 2,
   "endOfLine": "lf",

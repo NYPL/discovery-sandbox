@@ -3,14 +3,14 @@ import React from 'react';
 import { Link } from 'react-router';
 import appConfig from '../../data/appConfig';
 
-const constructSubjectHeading = (heading, idx) => {
+const constructSubjectHeading = (heading, i) => {
   const { uuid, parent, label } = heading;
   let subjectComponent;
   if (label) subjectComponent = label.split(' -- ').pop();
   if (!parent) {
     return (
       <Link
-        key={`${uuid} ${idx}`}
+        key={`${uuid} ${i}`}
         to={`${
           appConfig.baseUrl
         }/subject_headings/${uuid}?label=${encodeURIComponent(label)}`}
@@ -22,7 +22,7 @@ const constructSubjectHeading = (heading, idx) => {
 
   return [
     constructSubjectHeading(parent),
-    <span key={`${uuid} ${idx}`}> {'>'} </span>,
+    <span key={`${uuid} ${i}`}> {'>'} </span>,
     <Link
       key={uuid}
       to={`${
@@ -34,21 +34,19 @@ const constructSubjectHeading = (heading, idx) => {
   ];
 };
 
-const generateHeadingLi = (heading, idx) => (
-  <li key={heading.uuid}>{constructSubjectHeading(heading, idx)}</li>
+const generateHeadingLi = (heading, i) => (
+  <li key={heading.uuid}>{constructSubjectHeading(heading, i)}</li>
 );
 
 const SubjectHeadings = (props) => {
-  const { headings, idx } = props;
+  const { headings, i } = props;
 
   if (!headings) return null;
 
   return (
     <div>
-      <dt key={`term-${idx}`}>
-        {headings.length > 1 ? 'Subjects' : 'Subject'}
-      </dt>
-      <dd data={`definition-${idx}`} key={`definition-${idx}`}>
+      <dt key={`term-${i}`}>{headings.length > 1 ? 'Subjects' : 'Subject'}</dt>
+      <dd data={`definition-${i}`} key={`definition-${i}`}>
         <ul>{headings.map(generateHeadingLi)}</ul>
       </dd>
     </div>
@@ -57,11 +55,11 @@ const SubjectHeadings = (props) => {
 
 SubjectHeadings.propTypes = {
   headings: PropTypes.array,
-  idx: PropTypes.number,
+  i: PropTypes.number,
 };
 
 SubjectHeadings.defaultProps = {
-  idx: 0,
+  i: 0,
 };
 
 export default SubjectHeadings;
