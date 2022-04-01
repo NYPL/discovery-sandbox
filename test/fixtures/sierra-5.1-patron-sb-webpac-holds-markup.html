@@ -1,335 +1,263 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <!-- VERSION = $Id$ $Rev: 202541 $ $Date: 2013-02-08 13:48:24 -0800 (Fri, 08 Feb 2013) $ -->
 <html>
-  <head>
-    <link rel="stylesheet" type="text/css" href="/scripts/ProStyles.css" />
-    <link rel="stylesheet" type="text/css" href="/screens/styles.css" />
-    <script type="text/javascript" src="/scripts/elcontent.js"></script>
-    <script type="text/javascript" src="/scripts/common.js"></script>
-    <script type="text/javascript" src="/scripts/features.js"></script>
-    <script type="text/javascript" src="/scripts/webbridge.js"></script>
-  </head>
-  <body>
-    <div class="patFuncArea">
-      <form name="hold_form" method="POST" id="hold_form">
-        <input type="HIDDEN" id="holdpagecmd" />
+<head>
+<link rel="stylesheet" type="text/css" href="/scripts/ProStyles.css" />
+<link rel="stylesheet" type="text/css" href="/screens/styles.css" />
+<script type="text/javascript" src="/scripts/elcontent.js">
+</script>
+<script type="text/javascript" src="/scripts/common.js">
+</script>
+<script type="text/javascript" src="/scripts/features.js">
+</script>
+<script type="text/javascript" src="/scripts/webbridge.js">
+</script>
 
-        <input
-          type="SUBMIT"
-          name="sortByRequest"
-          value="Sort by Hold Requested Date"
-        />
-        <input type="SUBMIT" name="sortByStatus" value="Sort by Status" />
-        <input type="HIDDEN" name="currentsortorder" value="current_pickup" />
-        <a
-          href="#"
-          onClick="return submitHold( 'requestCancelAll', 'requestCancelAll' )"
-          ><div
-            style="display: none"
-            onmousedown="this.className='pressedState';"
-            onmouseout="this.className='';"
-            onmouseup="this.className='';"
-          >
-            <div class="buttonSpriteDiv">
-              <span class="buttonSpriteSpan1"
-                ><span class="buttonSpriteSpan2">Cancel All</span></span
-              >
-            </div>
-          </div></a
-        >
-        <input
-          type="SUBMIT"
-          name="requestUpdateHoldsSome"
-          value="UPDATE LIST"
-        />
-        <table border="0" class="patFunc">
-          <tr class="patFuncTitle">
-            <th colspan="7" class="patFuncTitle">
-              <label id="items_count">5 HOLDS</label>
-            </th>
-          </tr>
+</head>
+<body>
+   <div class="patFuncArea">
+<form name="hold_form" method="POST" id="hold_form" ><input type="HIDDEN" id="holdpagecmd" />
 
-          <tr class="patFuncHeaders">
-            <th class="patFuncHeaders">CANCEL</th>
-            <th class="patFuncHeaders">TITLE</th>
-            <th class="patFuncHeaders">Ratings</th>
-            <th class="patFuncHeaders">STATUS</th>
-            <th class="patFuncHeaders">PICKUP LOCATION</th>
-            <th class="patFuncHeaders">CANCEL IF NOT FILLED BY</th>
-            <th class="patFuncHeaders">FREEZE</th>
-          </tr>
+<input type="SUBMIT" name="sortByRequest" value="Sort by Hold Requested Date" />
+<input type="SUBMIT" name="sortByStatus" value="Sort by Status" />
+<input type="HIDDEN" name="currentsortorder" value="current_pickup" />
+<a href="#"  onClick="return submitHold( 'requestCancelAll', 'requestCancelAll' )"><div style="display:none" onmousedown="this.className='pressedState';" onmouseout="this.className='';" onmouseup="this.className='';"><div class="buttonSpriteDiv"><span class="buttonSpriteSpan1"><span class="buttonSpriteSpan2">Cancel All</span></span></div></div></a>
+<input type="SUBMIT" name="requestUpdateHoldsSome" value="UPDATE LIST" />
+<table border="0" class="patFunc"><tr class="patFuncTitle">
+<th colspan="7" class="patFuncTitle">
+<label id="items_count">5 HOLDS</label>
+</th>
+</tr>
 
-          <style type="text/css">
-            <!--
-            #ratemy1    { display: inline }
-            #rateneed1  { display: none }
-            #ratemy2    { display: inline }
-            #rateneed2  { display: none }
-            #ratemy3    { display: inline }
-            #rateneed3  { display: none }
-            #ratemy4    { display: inline }
-            #rateneed4  { display: none }
-            #ratemy5    { display: inline }
-            #rateneed5  { display: none }
-            -->
-          </style>
-          <tr class="patFuncEntry">
-            <td class="patFuncMark">&nbsp;</td>
-            <td class="patFuncTitle">
-              [Standard NYPL restrictions apply] ALISON\'S ZINNIA \/ BY ANITA
-              LOBEL\. [RECAP]
-            </td>
-            <td nowrap class="patFuncRating">&nbsp;</td>
-            <td class="patFuncStatus">IN TRANSIT</td>
-            <td class="patFuncPickup">Performing Arts PDD - 3rd Fl</td>
-            <td class="patFuncCancel">&nbsp;</td>
-            <td class="patFuncFreeze">&nbsp;</td>
-          </tr>
+<tr class="patFuncHeaders">
+<th class="patFuncHeaders"> CANCEL </th>
+<th class="patFuncHeaders"> TITLE </th>
+<th  class="patFuncHeaders"> Ratings </th>
+<th class="patFuncHeaders"> STATUS </th>
+<th class="patFuncHeaders">PICKUP LOCATION</th>
+<th class="patFuncHeaders"> CANCEL IF NOT FILLED BY </th>
+<th class="patFuncHeaders"> FREEZE </th>
+</tr>
 
-          <tr class="patFuncEntry">
-            <td class="patFuncMark">&nbsp;</td>
-            <td class="patFuncTitle">
-              [Standard NYPL restrictions apply] ABBAYE DE RUISSEAUVILLE \(62\)
-              : ACTES ET DOCUMENTS, 1127\-1785 : AIRE\-SUR\-LA\-LYS, AMBRICOURT,
-              AZINCOURT, CANLERS, CREQUY, ERGNY [RECAP]
-            </td>
-            <td nowrap class="patFuncRating">&nbsp;</td>
-            <td class="patFuncStatus">IN TRANSIT</td>
-            <td class="patFuncPickup">SCHWARZMAN 315 - ONSITE USE</td>
-            <td class="patFuncCancel">&nbsp;</td>
-            <td class="patFuncFreeze">&nbsp;</td>
-          </tr>
 
-          <tr class="patFuncEntry">
-            <td class="patFuncMark">&nbsp;</td>
-            <td class="patFuncTitle">
-              [Standard NYPL restrictions apply] BATS, BY GLOVER MORRILL ALLEN\.
-              [RECAP]
-            </td>
-            <td nowrap class="patFuncRating">&nbsp;</td>
-            <td class="patFuncStatus">IN TRANSIT</td>
-            <td class="patFuncPickup">SCHWARZMAN 111-ONSITE USE-CLOSED</td>
-            <td class="patFuncCancel">&nbsp;</td>
-            <td class="patFuncFreeze">&nbsp;</td>
-          </tr>
+<style type="text/css">
+<!--
+#ratemy1    { display: inline }
+#rateneed1  { display: none }
+#ratemy2    { display: inline }
+#rateneed2  { display: none }
+#ratemy3    { display: inline }
+#rateneed3  { display: none }
+#ratemy4    { display: inline }
+#rateneed4  { display: none }
+#ratemy5    { display: inline }
+#rateneed5  { display: none }
+-->
+</style>
+<tr class="patFuncEntry">
+<td  class="patFuncMark" >
+&nbsp;
+</td>
+<td  class="patFuncTitle">
+[Standard NYPL restrictions apply] ALISON\'S ZINNIA \/ BY ANITA LOBEL\. [RECAP]
+</td>
+<td nowrap  class="patFuncRating" >
+&nbsp;</td>
+<td  class="patFuncStatus"> IN TRANSIT </td>
+<td class="patFuncPickup">Performing Arts PDD - 3rd Fl</td>
+<td class="patFuncCancel">&nbsp;</td>
+<td  class="patFuncFreeze" >&nbsp;</td>
+</tr>
 
-          <tr class="patFuncEntry">
-            <td class="patFuncMark">&nbsp;</td>
-            <td class="patFuncTitle">
-              [Standard NYPL restrictions apply] BOURDON, 1645\-1990 : 3500
-              DESCENDANTS DE JACQUES : NAISSANCES, MARIAGES, SEPULTURES DES
-              BOURDON AU CANADA ET AUX ETATS UNIS = [RECAP]
-            </td>
-            <td nowrap class="patFuncRating">&nbsp;</td>
-            <td class="patFuncStatus">IN TRANSIT</td>
-            <td class="patFuncPickup">SCHWARZMAN 315 - ONSITE USE</td>
-            <td class="patFuncCancel">&nbsp;</td>
-            <td class="patFuncFreeze">&nbsp;</td>
-          </tr>
+<tr class="patFuncEntry">
+<td  class="patFuncMark" >
+&nbsp;
+</td>
+<td  class="patFuncTitle">
+[Standard NYPL restrictions apply] ABBAYE DE RUISSEAUVILLE \(62\) : ACTES ET DOCUMENTS, 1127\-1785 : AIRE\-SUR\-LA\-LYS, AMBRICOURT, AZINCOURT, CANLERS, CREQUY, ERGNY [RECAP]
+</td>
+<td nowrap  class="patFuncRating" >
+&nbsp;</td>
+<td  class="patFuncStatus"> IN TRANSIT </td>
+<td class="patFuncPickup">SCHWARZMAN 315 - ONSITE USE</td>
+<td class="patFuncCancel">&nbsp;</td>
+<td  class="patFuncFreeze" >&nbsp;</td>
+</tr>
 
-          <tr class="patFuncEntry">
-            <td class="patFuncMark">
-              <input
-                type="checkbox"
-                name="canceli34258240x04"
-                id="canceli34258240x04"
-              />
-            </td>
-            <td class="patFuncTitle">
-              <label for="canceli34258240x04"
-                ><a
-                  href="https://browse.nypl.org/iii/encore/record/C__Rb21001120?lang=eng&suite=def"
-                  ><span class="patFuncTitleMain"
-                    >Genealogies / Brad Crenshaw.</span
-                  ></a
-                ></label
-              >
-              <br />
-            </td>
-            <td nowrap class="patFuncRating">
-              <span
-                id="ratemy5"
-                onmouseover="setToolVisibility  ('ratemy5', 'none', 'rateneed5', 'inline')"
-                >_____
-              </span>
-              <span
-                id="rateneed5"
-                onmouseout="setToolVisibility  ('ratemy5', 'inline', 'rateneed5', 'none')"
-                ><a
-                  href="/patroninfo~S1*eng/7228928/sortedbypudateholds?changerating1=b21001120"
-                  >?</a
-                ><a
-                  href="/patroninfo~S1*eng/7228928/sortedbypudateholds?changerating2=b21001120"
-                  >?</a
-                ><a
-                  href="/patroninfo~S1*eng/7228928/sortedbypudateholds?changerating3=b21001120"
-                  >?</a
-                ><a
-                  href="/patroninfo~S1*eng/7228928/sortedbypudateholds?changerating4=b21001120"
-                  >?</a
-                ><a
-                  href="/patroninfo~S1*eng/7228928/sortedbypudateholds?changerating5=b21001120"
-                  >?</a
-                >
-              </span>
-            </td>
-            <td class="patFuncStatus">AVAILABLE</td>
-            <td class="patFuncPickup">
-              <div class="patFuncPickupLabel">
-                <label for="loci34258240x04">Pickup Location</label>
-              </div>
-              <select name="loci34258240x04" id="loci34258240x04">
-                <option value="ft+++">53rd Street</option>
-                <option value="fe+++">58th Street</option>
-                <option value="ss+++">67th Street</option>
-                <option value="ns+++">96th Street</option>
-                <option value="ag+++">Aguilar</option>
-                <option value="al+++">Allerton</option>
-                <option value="lb+++">Andrew Heiskell</option>
-                <option value="bt+++">Battery Park</option>
-                <option value="ba+++">Baychester</option>
-                <option value="be+++">Belmont</option>
-                <option value="bl+++">Bloomingdale</option>
-                <option value="bc+++">Bronx Library Center</option>
-                <option value="ct+++">Castle Hill</option>
-                <option value="ch+++">Chatham Square</option>
-                <option value="ci+++">City Island</option>
-                <option value="cp+++">Clasons Point</option>
-                <option value="cs+++">Columbus</option>
-                <option value="ht+++">Countee Cullen</option>
-                <option value="dh+++">Dongan Hills</option>
-                <option value="ea+++">Eastchester</option>
-                <option value="ew+++">Edenwald</option>
-                <option value="ep+++">Epiphany</option>
-                <option value="fx+++">Francis Martin</option>
-                <option value="br+++">George Bruce</option>
-                <option value="gd+++">Grand Concourse</option>
-                <option value="gk+++">Great Kills</option>
-                <option value="hg+++">Hamilton Grange</option>
-                <option value="hl+++">Harlem</option>
-                <option value="hu+++">Harry Belafonte - 115th Street</option>
-                <option value="hb+++">High Bridge</option>
-                <option value="hp+++">Hudson Park</option>
-                <option value="hk+++">Huguenot Park</option>
-                <option value="in+++">Inwood</option>
-                <option value="jp+++">Jerome Park</option>
-                <option value="kb+++">Kingsbridge</option>
-                <option value="kp+++">Kips Bay</option>
-                <option value="my+++">LPA - Circulating</option>
-                <option value="mb+++">Macombs Bridge</option>
-                <option value="mn+++">Mariners Harbor</option>
-                <option value="cl+++">Morningside Heights</option>
-                <option value="mp+++">Morris Park</option>
-                <option value="mr+++">Morrisania (CLOSED)</option>
-                <option value="mo+++">Mosholu</option>
-                <option value="mh+++">Mott Haven (CLOSED)</option>
-                <option value="mu+++">Muhlenberg</option>
-                <option value="ml+++">Mulberry Street</option>
-                <option value="lm+++">New Amsterdam</option>
-                <option value="nd+++">New Dorp</option>
-                <option value="ot+++">Ottendorfer</option>
-                <option value="pk+++">Parkchester</option>
-                <option value="pm+++">Pelham Bay</option>
-                <option value="vn+++">Pelham Parkway-Van Nest</option>
-                <option value="rt+++">Richmondtown</option>
-                <option value="rd+++">Riverdale</option>
-                <option value="rs+++">Riverside</option>
-                <option value="ri+++">Roosevelt Island</option>
-                <option value="sa+++">Saint Agnes</option>
-                <option value="sg+++">Saint George</option>
-                <option value="sd+++">Sedgwick</option>
-                <option value="sn+++">SNFL (formerly Mid-Manhattan)</option>
-                <option value="se+++">Seward Park</option>
-                <option value="sv+++">Soundview</option>
-                <option value="sb+++">South Beach</option>
-                <option value="dy+++">Spuyten Duyvil</option>
-                <option value="st+++">Stapleton</option>
-                <option value="tg+++">Throgs Neck</option>
-                <option value="th+++">Todt Hill</option>
-                <option value="ts+++">Tompkins Square</option>
-                <option value="tv+++">Tottenville</option>
-                <option value="tm+++">Tremont</option>
-                <option value="vc+++">Van Cortlandt</option>
-                <option value="wk+++">Wakefield</option>
-                <option value="wh+++">Washington Heights</option>
-                <option value="wb+++">Webster</option>
-                <option value="wf+++">West Farms</option>
-                <option value="nb+++">West New Brighton</option>
-                <option value="wt+++">Westchester Square</option>
-                <option value="wl+++">Woodlawn Heights</option>
-                <option value="wo+++">Woodstock</option>
-                <option value="yv+++">Yorkville</option>
-                <option value="b1+++">Bookmobile 1 (CLOSED)</option>
-                <option value="ca+++">Cathedral Library (CLOSED)</option>
-                <option value="fw+++">Fort Washington (CLOSED)</option>
-                <option value="gc+++">Grand Central (CLOSED)</option>
-                <option value="hf+++">Hamilton Fish Park (CLOSED)</option>
-                <option value="hs+++">Hunt's Point (CLOSED)</option>
-                <option value="jm+++">Jefferson Market (CLOSED)</option>
-                <option value="me+++">Melrose (CLOSED)</option>
-                <option value="pr+++">Port Richmond (CLOSED)</option>
-                <option value="mar92">STAFF ONLY-SASB Rare Book Rm324</option>
-                <option value="mao92">STAFF ONLY-SASB Manuscript Rm328</option>
-                <option value="mal17">STAFF ONLY-SASB Scholar Rm 217</option>
-                <option value="myrs+">Performing Arts - Spec Col Desk</option>
-                <option value="myaos">STAFF ONLY - LPA ORCH</option>
-                <option value="rc+++">STAFF ONLY - ACCSVC ReCAP</option>
-                <option value="qc+++">STAFF ONLY - ACCSVC Clancy</option>
-                <option value="rc+++">STAFF ONLY - RESEARCH OFFSITE</option>
-                <option value="maedd" selected="selected">
-                  STAFF ONLY - SASB EDD
-                </option>
-                <option value="myedd">STAFF ONLY - LPA EDD</option>
-                <option value="scedd">STAFF ONLY - SCH EDD</option>
-              </select>
-            </td>
-            <td class="patFuncCancel">07-01-22</td>
-            <td class="patFuncFreeze">
-              <div class="patFuncFreezeLabel">
-                <label for="freezei34258240x04">Freeze</label>
-              </div>
-              <input type="checkbox" name="freezei34258240x04" />
-            </td>
-          </tr>
-        </table>
+<tr class="patFuncEntry">
+<td  class="patFuncMark" >
+&nbsp;
+</td>
+<td  class="patFuncTitle">
+[Standard NYPL restrictions apply] BATS, BY GLOVER MORRILL ALLEN\. [RECAP]
+</td>
+<td nowrap  class="patFuncRating" >
+&nbsp;</td>
+<td  class="patFuncStatus"> IN TRANSIT </td>
+<td class="patFuncPickup">SCHWARZMAN 111-ONSITE USE-CLOSED</td>
+<td class="patFuncCancel">&nbsp;</td>
+<td  class="patFuncFreeze" >&nbsp;</td>
+</tr>
 
-        <input
-          type="SUBMIT"
-          name="sortByRequest"
-          value="Sort by Hold Requested Date"
-        />
-        <input type="SUBMIT" name="sortByStatus" value="Sort by Status" />
-        <input type="HIDDEN" name="currentsortorder" value="current_pickup" />
-        <a
-          href="#"
-          onClick="return submitHold( 'requestCancelAll', 'requestCancelAll' )"
-          ><div
-            style="display: none"
-            onmousedown="this.className='pressedState';"
-            onmouseout="this.className='';"
-            onmouseup="this.className='';"
-          >
-            <div class="buttonSpriteDiv">
-              <span class="buttonSpriteSpan1"
-                ><span class="buttonSpriteSpan2">Cancel All</span></span
-              >
-            </div>
-          </div></a
-        >
-        <input
-          type="SUBMIT"
-          name="requestUpdateHoldsSome"
-          value="UPDATE LIST"
-        />
-      </form>
-      <script type="text/JavaScript">
-        <!--Hide the JS
-        document.getElementById( 'items_count' ).innerHTML = '5 HOLDS';
-        // Unhide the JS -->
-      </script>
-      <!--this is customized <screens/patronview_encore.html>-->
-    </div>
-    <!-- this script must be included for this template to display properly in encore -->
-    <script type="text/javascript" src="/screens/setdomain.js"></script>
-  </body>
+<tr class="patFuncEntry">
+<td  class="patFuncMark" >
+&nbsp;
+</td>
+<td  class="patFuncTitle">
+[Standard NYPL restrictions apply] BOURDON, 1645\-1990 : 3500 DESCENDANTS DE JACQUES : NAISSANCES, MARIAGES, SEPULTURES DES BOURDON AU CANADA ET AUX ETATS UNIS = [RECAP]
+</td>
+<td nowrap  class="patFuncRating" >
+&nbsp;</td>
+<td  class="patFuncStatus"> IN TRANSIT </td>
+<td class="patFuncPickup">SCHWARZMAN 315 - ONSITE USE</td>
+<td class="patFuncCancel">&nbsp;</td>
+<td  class="patFuncFreeze" >&nbsp;</td>
+</tr>
+
+<tr class="patFuncEntry">
+<td  class="patFuncMark" >
+<input type="checkbox" name="canceli34258240x04" id="canceli34258240x04" />
+</td>
+<td  class="patFuncTitle">
+<label for="canceli34258240x04"><a href="https://browse.nypl.org/iii/encore/record/C__Rb21001120?lang=eng&suite=def"><span class="patFuncTitleMain">Genealogies / Brad Crenshaw.</span></a></label>
+<br />
+</td>
+<td nowrap  class="patFuncRating" >
+
+<span id="ratemy5"  onmouseover="setToolVisibility  ('ratemy5', 'none', 'rateneed5', 'inline')">_____
+</span>
+<span id="rateneed5"  onmouseout="setToolVisibility  ('ratemy5', 'inline', 'rateneed5', 'none')"><a href="/patroninfo~S1*eng/7228928/sortedbypudateholds?changerating1=b21001120">?</a><a href="/patroninfo~S1*eng/7228928/sortedbypudateholds?changerating2=b21001120">?</a><a href="/patroninfo~S1*eng/7228928/sortedbypudateholds?changerating3=b21001120">?</a><a href="/patroninfo~S1*eng/7228928/sortedbypudateholds?changerating4=b21001120">?</a><a href="/patroninfo~S1*eng/7228928/sortedbypudateholds?changerating5=b21001120">?</a>
+</span></td>
+<td  class="patFuncStatus"> AVAILABLE </td>
+<td class="patFuncPickup">
+<div  class="patFuncPickupLabel">
+<label for="loci34258240x04">Pickup Location</label></div>
+<select name=loci34258240x04 id=loci34258240x04 >
+<option value="ft+++" >53rd Street</option>
+<option value="fe+++" >58th Street</option>
+<option value="ss+++" >67th Street</option>
+<option value="ns+++" >96th Street</option>
+<option value="ag+++" >Aguilar</option>
+<option value="al+++" >Allerton</option>
+<option value="lb+++" >Andrew Heiskell</option>
+<option value="bt+++" >Battery Park</option>
+<option value="ba+++" >Baychester</option>
+<option value="be+++" >Belmont</option>
+<option value="bl+++" >Bloomingdale</option>
+<option value="bc+++" >Bronx Library Center</option>
+<option value="ct+++" >Castle Hill</option>
+<option value="ch+++" >Chatham Square</option>
+<option value="ci+++" >City Island</option>
+<option value="cp+++" >Clasons Point</option>
+<option value="cs+++" >Columbus</option>
+<option value="ht+++" >Countee Cullen</option>
+<option value="dh+++" >Dongan Hills</option>
+<option value="ea+++" >Eastchester</option>
+<option value="ew+++" >Edenwald</option>
+<option value="ep+++" >Epiphany</option>
+<option value="fx+++" >Francis Martin</option>
+<option value="br+++" >George Bruce</option>
+<option value="gd+++" >Grand Concourse</option>
+<option value="gk+++" >Great Kills</option>
+<option value="hg+++" >Hamilton Grange</option>
+<option value="hl+++" >Harlem</option>
+<option value="hu+++" >Harry Belafonte - 115th Street</option>
+<option value="hb+++" >High Bridge</option>
+<option value="hp+++" >Hudson Park</option>
+<option value="hk+++" >Huguenot Park</option>
+<option value="in+++" >Inwood</option>
+<option value="jp+++" >Jerome Park</option>
+<option value="kb+++" >Kingsbridge</option>
+<option value="kp+++" >Kips Bay</option>
+<option value="my+++" >LPA - Circulating </option>
+<option value="mb+++" >Macombs Bridge</option>
+<option value="mn+++" >Mariners Harbor</option>
+<option value="cl+++" >Morningside Heights</option>
+<option value="mp+++" >Morris Park</option>
+<option value="mr+++" >Morrisania (CLOSED)</option>
+<option value="mo+++" >Mosholu</option>
+<option value="mh+++" >Mott Haven (CLOSED)</option>
+<option value="mu+++" >Muhlenberg</option>
+<option value="ml+++" >Mulberry Street</option>
+<option value="lm+++" >New Amsterdam</option>
+<option value="nd+++" >New Dorp</option>
+<option value="ot+++" >Ottendorfer</option>
+<option value="pk+++" >Parkchester</option>
+<option value="pm+++" >Pelham Bay</option>
+<option value="vn+++" >Pelham Parkway-Van Nest</option>
+<option value="rt+++" >Richmondtown</option>
+<option value="rd+++" >Riverdale</option>
+<option value="rs+++" >Riverside</option>
+<option value="ri+++" >Roosevelt Island</option>
+<option value="sa+++" >Saint Agnes</option>
+<option value="sg+++" >Saint George</option>
+<option value="sd+++" >Sedgwick</option>
+<option value="sn+++" >SNFL (formerly Mid-Manhattan)</option>
+<option value="se+++" >Seward Park</option>
+<option value="sv+++" >Soundview</option>
+<option value="sb+++" >South Beach</option>
+<option value="dy+++" >Spuyten Duyvil</option>
+<option value="st+++" >Stapleton</option>
+<option value="tg+++" >Throgs Neck</option>
+<option value="th+++" >Todt Hill</option>
+<option value="ts+++" >Tompkins Square</option>
+<option value="tv+++" >Tottenville</option>
+<option value="tm+++" >Tremont</option>
+<option value="vc+++" >Van Cortlandt</option>
+<option value="wk+++" >Wakefield</option>
+<option value="wh+++" >Washington Heights</option>
+<option value="wb+++" >Webster</option>
+<option value="wf+++" >West Farms</option>
+<option value="nb+++" >West New Brighton</option>
+<option value="wt+++" >Westchester Square</option>
+<option value="wl+++" >Woodlawn Heights</option>
+<option value="wo+++" >Woodstock</option>
+<option value="yv+++" >Yorkville</option>
+<option value="b1+++" >Bookmobile 1 (CLOSED)</option>
+<option value="ca+++" >Cathedral Library (CLOSED)</option>
+<option value="fw+++" >Fort Washington (CLOSED)</option>
+<option value="gc+++" >Grand Central (CLOSED)</option>
+<option value="hf+++" >Hamilton Fish Park (CLOSED)</option>
+<option value="hs+++" >Hunt's Point (CLOSED)</option>
+<option value="jm+++" >Jefferson Market (CLOSED)</option>
+<option value="me+++" >Melrose (CLOSED)</option>
+<option value="pr+++" >Port Richmond (CLOSED)</option>
+<option value="mar92" >STAFF ONLY-SASB Rare Book Rm324</option>
+<option value="mao92" >STAFF ONLY-SASB Manuscript Rm328</option>
+<option value="mal17" >STAFF ONLY-SASB Scholar Rm 217</option>
+<option value="myrs+" >Performing Arts - Spec Col Desk</option>
+<option value="myaos" >STAFF ONLY - LPA ORCH</option>
+<option value="rc+++" >STAFF ONLY - ACCSVC ReCAP</option>
+<option value="qc+++" >STAFF ONLY - ACCSVC Clancy</option>
+<option value="rc+++" >STAFF ONLY - RESEARCH OFFSITE</option>
+<option value="maedd" selected="selected">STAFF ONLY - SASB EDD</option>
+<option value="myedd" >STAFF ONLY - LPA EDD</option>
+<option value="scedd" >STAFF ONLY - SCH EDD</option>
+</select>
+</td>
+<td class="patFuncCancel">07-01-22</td>
+<td  class="patFuncFreeze" >
+<div  class="patFuncFreezeLabel">
+<label for="freezei34258240x04" >Freeze</label>
+</div>
+<input type="checkbox" name="freezei34258240x04" /></td>
+</tr>
+
+</table>
+
+<input type="SUBMIT" name="sortByRequest" value="Sort by Hold Requested Date" />
+<input type="SUBMIT" name="sortByStatus" value="Sort by Status" />
+<input type="HIDDEN" name="currentsortorder" value="current_pickup" />
+<a href="#"  onClick="return submitHold( 'requestCancelAll', 'requestCancelAll' )"><div style="display:none" onmousedown="this.className='pressedState';" onmouseout="this.className='';" onmouseup="this.className='';"><div class="buttonSpriteDiv"><span class="buttonSpriteSpan1"><span class="buttonSpriteSpan2">Cancel All</span></span></div></div></a>
+<input type="SUBMIT" name="requestUpdateHoldsSome" value="UPDATE LIST" />
+</form><script type="text/JavaScript">
+<!--Hide the JS
+document.getElementById( 'items_count' ).innerHTML = '5 HOLDS';
+// Unhide the JS --></script>
+<!--this is customized <screens/patronview_encore.html>-->
+   </div>
+<!-- this script must be included for this template to display properly in encore -->
+<script type="text/javascript" src="/screens/setdomain.js"></script>
+</body>
 </html>
+

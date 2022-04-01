@@ -25,29 +25,27 @@ class AdditionalDetailsViewer extends React.Component {
 
     return (
       <div key={index}>
-        {value.label ? link : value.content}
-        {value.parallels ? value.parallels : null}
+        { value.label ? link : value.content }
+        { value.parallels ? value.parallels : null }
       </div>
     );
   }
 
+
   render() {
     if (!this.props.bib || !this.props.bib.annotatedMarc) return null;
 
-    const annotatedMarcDetails = this.props.bib.annotatedMarc.bib.fields.map(
-      (field) => ({
+    const annotatedMarcDetails = this.props.bib.annotatedMarc.bib.fields.map(field => (
+      {
         term: field.label,
         definition: field.values.map(this.definitionItem),
-      }),
-    );
+      }
+    ));
 
     return (
       <div>
         {this.state.display && annotatedMarcDetails ? (
-          <div
-            className='additionalDetails'
-            style={{ padding: '5px 20px', position: 'relative', left: '-20px' }}
-          >
+          <div className="additionalDetails" style={{ padding: '5px 20px', position: 'relative', left: '-20px' }}>
             <DefinitionList data={annotatedMarcDetails} />
           </div>
         ) : null}

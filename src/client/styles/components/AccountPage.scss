@@ -3,7 +3,7 @@
   padding-top: var(--space-l);
 
   h2 {
-    font-size: var(--font-size-3);
+    font-size: var(--font-size-3)
   }
   ul {
     list-style: none;
@@ -37,8 +37,7 @@
   }
 
   .items {
-    th,
-    td {
+    th, td {
       width: 20%;
     }
   }
@@ -82,17 +81,17 @@
     }
   }
 
-  .tabbed ul[role='tablist'] {
-    & > li {
-      border-color: #0576d3;
+  .tabbed ul[role="tablist"] {
+    &> li {
+      border-color: #0576D3;
     }
 
-    & > li > a[aria-selected='true'] {
-      color: #0576d3;
+    &> li > a[aria-selected='true'] {
+      color: #0576D3;
     }
 
-    & > li.activeTab {
-      border-color: #0576d3;
+    &> li.activeTab {
+      border-color: #0576D3;
     }
   }
 
@@ -103,13 +102,13 @@
   }
 
   tr.patFuncHeaders {
-    background-color: #f5f5f5;
+    background-color: #F5F5F5;
     width: 100%;
   }
 
   .nypl-patron-details {
     font-size: var(--font-size-2);
-    & > .name {
+    &> .name {
       font-size: 1.625rem;
     }
   }
@@ -129,15 +128,14 @@
     font-weight: 600;
   }
 
-  .patFuncFinesEntryDetail,
-  .patFuncFinesDetailDate {
+  .patFuncFinesEntryDetail, .patFuncFinesDetailDate {
     td:first-of-type {
       display: none;
     }
   }
 
   tr.patFuncFinesEntryTitle {
-    border-top: solid 1px #c4c4c4;
+    border-top: solid 1px #C4C4C4;
   }
 
   td {
@@ -163,8 +161,7 @@
   }
 
   tr:nth-of-type(5n + 7) {
-    .patFuncFinesDetailDateLabel,
-    .patFuncFinesDetailDate {
+    .patFuncFinesDetailDateLabel, .patFuncFinesDetailDate {
       padding-bottom: var(--space-m);
     }
   }
@@ -186,23 +183,20 @@
       display: none;
     }
 
-    tr:nth-last-of-type(2),
-    tr:nth-last-of-type(3) {
-      border-bottom: solid 1px #c4c4c4;
+    tr:nth-last-of-type(2), tr:nth-last-of-type(3) {
+      border-bottom: solid 1px #C4C4C4;
     }
   }
 
-  .items,
-  .holds {
+  .items, .holds {
     tr {
-      border-bottom: solid 1px #c4c4c4;
+      border-bottom: solid 1px #C4C4C4;
     }
   }
 }
 
 .account-settings {
-  &__heading-3,
-  .pin {
+  &__heading-3, .pin {
     display: flex;
     justify-content: space-between;
     margin-top: 24px;
@@ -217,7 +211,7 @@
   }
 
   .edit-link {
-    color: #0071ce;
+    color: #0071CE;
     float: right;
     font-size: 20px;
     font-weight: 600;
@@ -267,10 +261,11 @@
   display: none;
 }
 
+
 @media (max-width: 600px) {
-  .nypl-patron-page .tabbed ul[role='tablist'] {
-    & > li:last-of-type {
-      border-bottom: 1px solid #0576d3;
+  .nypl-patron-page .tabbed ul[role="tablist"] {
+    &> li:last-of-type {
+      border-bottom: 1px solid #0576D3;
     }
 
     a {
@@ -286,11 +281,10 @@
       width: 100%;
     }
 
-    .items,
-    .holds {
+    .items, .holds {
       td {
-        border-left: 1px solid #c4c4c4;
-        border-right: 1px solid #c4c4c4;
+        border-left: 1px solid #C4C4C4;
+        border-right: 1px solid #C4C4C4;
         display: block;
         padding-right: 1%;
         width: auto;
@@ -303,14 +297,13 @@
       }
 
       td.patFuncTitle {
-        border-top: 1px solid #c4c4c4;
+        border-top: 1px solid #C4C4C4;
         border-top-left-radius: 5px;
         border-top-right-radius: 5px;
       }
     }
 
-    .patFuncFinesDetailDate,
-    .patFuncFinesDetailAmt {
+    .patFuncFinesDetailDate, .patFuncFinesDetailAmt {
       padding-right: 0%;
     }
   }
@@ -390,6 +383,7 @@
           margin-bottom: var(--space-s);
         }
       }
+
     }
 
     .patFuncEntry {

@@ -23,17 +23,21 @@ describe('BibsList', () => {
     appConfig.baseUrl = savedBaseUrl;
   });
 
+
   it('should have correct heading for one result', () => {
     // set up component
-    component = mount(<BibsList />, {
-      context: {
-        router: {
-          location: {
-            query: {},
+    component = mount(
+      <BibsList />,
+      {
+        context: {
+          router: {
+            location: {
+              query: {},
+            },
           },
         },
       },
-    });
+    );
 
     return new Promise((resolve) => {
       nock('http://test-server.com')
@@ -46,9 +50,7 @@ describe('BibsList', () => {
           setTimeout(() => {
             component.setProps({});
             setImmediate(() => {
-              expect(component.find('h3').at(0).text()).to.equal(
-                'Viewing 1 - 1 of 1 item',
-              );
+              expect(component.find('h3').at(0).text()).to.equal('Viewing 1 - 1 of 1 item');
             });
             setImmediate(() => resolve());
           }, 100);
@@ -62,16 +64,20 @@ describe('BibsList', () => {
   });
 
   it('should have correct heading for multiple results', () => {
+
     // set up component
-    component = mount(<BibsList />, {
-      context: {
-        router: {
-          location: {
-            query: {},
+    component = mount(
+      <BibsList />,
+      {
+        context: {
+          router: {
+            location: {
+              query: {},
+            },
           },
         },
       },
-    });
+    );
 
     return new Promise((resolve) => {
       nock('http://test-server.com')
@@ -84,9 +90,7 @@ describe('BibsList', () => {
           setTimeout(() => {
             component.setProps({});
             setImmediate(() => {
-              expect(component.find('h3').at(0).text()).to.equal(
-                'Viewing 1 - 10 of 10 items',
-              );
+              expect(component.find('h3').at(0).text()).to.equal('Viewing 1 - 10 of 10 items');
             });
             setImmediate(() => resolve());
           }, 100);
@@ -100,16 +104,20 @@ describe('BibsList', () => {
   });
 
   it('should have heading and sorter in correct order', () => {
+
     // set up component
-    component = mount(<BibsList />, {
-      context: {
-        router: {
-          location: {
-            query: {},
+    component = mount(
+      <BibsList />,
+      {
+        context: {
+          router: {
+            location: {
+              query: {},
+            },
           },
         },
       },
-    });
+    );
 
     return new Promise((resolve) => {
       nock('http://test-server.com')
@@ -139,15 +147,20 @@ describe('BibsList', () => {
   describe('api calls', () => {
     it('should make correct api call when mounted', () => {
       // set up component
-      component = mount(<BibsList label='abcdefg' />, {
-        context: {
-          router: {
-            location: {
-              query: {},
+      component = mount(
+        <BibsList
+          label="abcdefg"
+        />,
+        {
+          context: {
+            router: {
+              location: {
+                query: {},
+              },
             },
           },
         },
-      });
+      );
 
       return new Promise((resolve) => {
         nock('http://test-server.com')
@@ -160,9 +173,7 @@ describe('BibsList', () => {
             setTimeout(() => {
               component.setProps({});
               setImmediate(() => {
-                expect(uri).to.equal(
-                  '/api/subjectHeading/abcdefg?&sort=date&sort_direction=desc&per_page=10&shep_bib_count=undefined&shep_uuid=undefined',
-                );
+                expect(uri).to.equal('/api/subjectHeading/abcdefg?&sort=date&sort_direction=desc&per_page=10&shep_bib_count=undefined&shep_uuid=undefined');
               });
               setImmediate(() => resolve());
             }, 100);
@@ -179,15 +190,20 @@ describe('BibsList', () => {
       const oldShepBibsLimit = appConfig.shepBibsLimit;
       appConfig.shepBibsLimit = 10;
       // set up component
-      component = mount(<BibsList label='abcdefg' />, {
-        context: {
-          router: {
-            location: {
-              query: {},
+      component = mount(
+        <BibsList
+          label="abcdefg"
+        />,
+        {
+          context: {
+            router: {
+              location: {
+                query: {},
+              },
             },
           },
         },
-      });
+      );
 
       return new Promise((resolve) => {
         nock('http://test-server.com')
@@ -200,9 +216,7 @@ describe('BibsList', () => {
             setTimeout(() => {
               component.setProps({});
               setImmediate(() => {
-                expect(uri).to.equal(
-                  '/api/subjectHeading/abcdefg?&sort=date&sort_direction=desc&per_page=10&shep_bib_count=undefined&shep_uuid=undefined',
-                );
+                expect(uri).to.equal('/api/subjectHeading/abcdefg?&sort=date&sort_direction=desc&per_page=10&shep_bib_count=undefined&shep_uuid=undefined');
               });
               setImmediate(() => {
                 appConfig.shepBibsLimit = oldShepBibsLimit;

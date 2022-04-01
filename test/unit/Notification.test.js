@@ -16,12 +16,11 @@ describe('Notification', () => {
     },
   });
 
-  const renderComponent = (notificationType) =>
-    mount(
-      <Provider store={testStore}>
-        <Notification notificationType={notificationType} />
-      </Provider>,
-    );
+  const renderComponent = notificationType => mount(
+    <Provider store={testStore}>
+      <Notification notificationType={notificationType} />
+    </Provider>
+  );
 
   describe('notificationType = "searchResultsNotification"', () => {
     let component;
@@ -45,7 +44,7 @@ describe('Notification', () => {
       /*
        * when using `dangerouslySetInnerHTML`
        * `.render()` needs to be used for testing
-       */
+      */
       expect(component.render().find('a').length).to.equal(1);
     });
   });

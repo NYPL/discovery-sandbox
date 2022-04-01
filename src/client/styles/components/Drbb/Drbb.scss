@@ -103,10 +103,9 @@ a.drbb-download-pdf {
   }
 }
 
-.drbb-read-online,
-.drbb-download-pdf {
+.drbb-read-online, .drbb-download-pdf {
   display: inline-block;
-  font-size: 0.8rem;
+  font-size: .8rem;
   margin: 2% 0;
 }
 
@@ -165,7 +164,7 @@ a.drbb-download-pdf {
   width: 65%;
 }
 
-@media (max-width: 870px) {
+@media(max-width: 870px) {
   .nypl-results-list.drbb-integration {
     width: 100%;
     padding-right: 0;
@@ -177,6 +176,6 @@ a.drbb-download-pdf {
   }
 
   .nypl-results-summary.no-scc-results.drbb-integration {
-    width: 100%;
+    width: 100%
   }
 }

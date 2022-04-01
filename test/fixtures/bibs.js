@@ -2,18 +2,18 @@ const bibs = [
   {
     '@type': ['nypl:Item', 'nypl:Resource'],
     '@id': 'res:b11417539',
-    'carrierType': [{ '@id': 'carriertypes:nc', 'prefLabel': 'volume' }],
-    'createdString': ['1991'],
-    'createdYear': 1991,
-    'creatorLiteral': ['De Grazia, Margreta.'],
-    'dateStartYear': 1991,
-    'dateString': ['1991'],
-    'dimensions': ['23 cm.'],
-    'extent': ['xi, 244 p., [8] p. of plates : ill. ;'],
-    'idIsbn': ['0198117787'],
-    'idLccn': ['90048121'],
-    'idOclc': ['22452233'],
-    'identifier': [
+    carrierType: [{ '@id': 'carriertypes:nc', prefLabel: 'volume' }],
+    createdString: ['1991'],
+    createdYear: 1991,
+    creatorLiteral: ['De Grazia, Margreta.'],
+    dateStartYear: 1991,
+    dateString: ['1991'],
+    dimensions: ['23 cm.'],
+    extent: ['xi, 244 p., [8] p. of plates : ill. ;'],
+    idIsbn: ['0198117787'],
+    idLccn: ['90048121'],
+    idOclc: ['22452233'],
+    identifier: [
       {
         '@type': 'bf:ShelfMark',
         '@value': 'JFD 91-4064',
@@ -29,7 +29,7 @@ const bibs = [
       {
         '@type': 'bf:Isbn',
         '@value': '012345',
-        'identifierStatus': 'incorrect',
+        identifierStatus: 'incorrect',
       },
       {
         '@type': 'bf:Lccn',
@@ -40,30 +40,30 @@ const bibs = [
         '@value': '22452233',
       },
     ],
-    'issuance': [{ '@id': 'urn:biblevel:m', 'prefLabel': 'monograph/item' }],
-    'items': [
+    issuance: [{ '@id': 'urn:biblevel:m', prefLabel: 'monograph/item' }],
+    items: [
       {
         '@id': 'res:i13183119',
-        'accessMessage': [
+        accessMessage: [
           {
             '@id': 'accessMessage:1',
-            'prefLabel': 'USE IN LIBRARY',
+            prefLabel: 'USE IN LIBRARY',
           },
         ],
-        'catalogItemType': [
+        catalogItemType: [
           {
             '@id': 'catalogItemType:55',
-            'prefLabel': 'book, limited circ, MaRLI',
+            prefLabel: 'book, limited circ, MaRLI',
           },
         ],
-        'holdingLocation': [
+        holdingLocation: [
           {
             '@id': 'loc:mal92',
-            'prefLabel': 'Schwarzman Building M2 - General Research Room 315',
+            prefLabel: 'Schwarzman Building M2 - General Research Room 315',
           },
         ],
-        'idBarcode': ['33433040712188'],
-        'identifier': [
+        idBarcode: ['33433040712188'],
+        identifier: [
           {
             '@type': 'bf:ShelfMark',
             '@value': 'JFD 91-4064',
@@ -73,42 +73,42 @@ const bibs = [
             '@value': '33433040712188',
           },
         ],
-        'requestable': [false],
-        'shelfMark': ['JFD 91-4064'],
-        'status': [
+        requestable: [false],
+        shelfMark: ['JFD 91-4064'],
+        status: [
           {
             '@id': 'status:a',
-            'prefLabel': 'Available ',
+            prefLabel: 'Available ',
           },
         ],
-        'uri': 'i13183119',
-        'idNyplSourceId': {
+        uri: 'i13183119',
+        idNyplSourceId: {
           '@type': 'SierraNypl',
           '@value': '13183119',
         },
       },
     ],
-    'language': [{ '@id': 'lang:eng', 'prefLabel': 'English' }],
-    'lccClassification': ['PR3071 .D4 1991'],
-    'materialType': [{ '@id': 'resourcetypes:txt', 'prefLabel': 'Text' }],
-    'mediaType': [{ '@id': 'mediatypes:n', 'prefLabel': 'unmediated' }],
-    'note': [
+    language: [{ '@id': 'lang:eng', prefLabel: 'English' }],
+    lccClassification: ['PR3071 .D4 1991'],
+    materialType: [{ '@id': 'resourcetypes:txt', prefLabel: 'Text' }],
+    mediaType: [{ '@id': 'mediatypes:n', prefLabel: 'unmediated' }],
+    note: [
       {
-        'noteType': 'Bibliography',
-        'prefLabel':
+        noteType: 'Bibliography',
+        prefLabel:
           'Includes bibliographical references (p. [227]-238) and index.',
         '@type': 'bf:Note',
       },
     ],
-    'numAvailable': 1,
-    'numItems': 1,
-    'placeOfPublication': ['Oxford [England] : New York :'],
-    'publicationStatement': [
+    numAvailable: 1,
+    numItems: 1,
+    placeOfPublication: ['Oxford [England] : New York :'],
+    publicationStatement: [
       'Oxford [England] : Clarendon Press ; New York : Oxford University Press, 1991.',
     ],
-    'publisherLiteral': ['Clarendon Press ; Oxford University Press,'],
-    'shelfMark': ['JFD 91-4064'],
-    'subjectHeadingData': [
+    publisherLiteral: ['Clarendon Press ; Oxford University Press,'],
+    shelfMark: ['JFD 91-4064'],
+    subjectHeadingData: [
       {
         label: 'Shakespeare, William, -- 1564-1616',
         uuid: '56567c13-9c92-4379-8f8a-7e6168ef47c1',
@@ -170,32 +170,32 @@ const bibs = [
         },
       },
     ],
-    'title': [
+    title: [
       'Shakespeare verbatim : the reproduction of authenticity and the 1790 apparatus',
     ],
-    'titleDisplay': [
+    titleDisplay: [
       'Shakespeare verbatim : the reproduction of authenticity and the 1790 apparatus / Margreta de Grazia.',
     ],
-    'type': ['nypl:Item'],
-    'updatedAt': 1524665261653,
-    'uri': 'b11417539',
-    'suppressed': false,
+    type: ['nypl:Item'],
+    updatedAt: 1524665261653,
+    uri: 'b11417539',
+    suppressed: false,
   },
   {
     '@type': ['nypl:Item', 'nypl:Resource'],
     '@id': 'res:b11417539',
-    'carrierType': [{ '@id': 'carriertypes:nc', 'prefLabel': 'volume' }],
-    'createdString': ['1991'],
-    'createdYear': 1991,
-    'creatorLiteral': ['De Grazia, Margreta.'],
-    'dateStartYear': 1991,
-    'dateString': ['1991'],
-    'dimensions': ['23 cm.'],
-    'extent': ['xi, 244 p., [8] p. of plates : ill. ;'],
-    'idIsbn': ['0198117787'],
-    'idLccn': ['90048121'],
-    'idOclc': ['22452233'],
-    'identifier': [
+    carrierType: [{ '@id': 'carriertypes:nc', prefLabel: 'volume' }],
+    createdString: ['1991'],
+    createdYear: 1991,
+    creatorLiteral: ['De Grazia, Margreta.'],
+    dateStartYear: 1991,
+    dateString: ['1991'],
+    dimensions: ['23 cm.'],
+    extent: ['xi, 244 p., [8] p. of plates : ill. ;'],
+    idIsbn: ['0198117787'],
+    idLccn: ['90048121'],
+    idOclc: ['22452233'],
+    identifier: [
       'urn:callnumber:JFD 91-4064',
       'urn:bnum:11417539',
       'urn:isbn:0198117787',
@@ -203,106 +203,106 @@ const bibs = [
       'urn:lccn:90048121',
       'urn:oclc:22452233',
     ],
-    'issuance': [{ '@id': 'urn:biblevel:m', 'prefLabel': 'monograph/item' }],
-    'items': [
+    issuance: [{ '@id': 'urn:biblevel:m', prefLabel: 'monograph/item' }],
+    items: [
       {
         '@id': 'res:i13183119',
-        'accessMessage': [
+        accessMessage: [
           {
             '@id': 'accessMessage:1',
-            'prefLabel': 'USE IN LIBRARY',
+            prefLabel: 'USE IN LIBRARY',
           },
         ],
-        'catalogItemType': [
+        catalogItemType: [
           {
             '@id': 'catalogItemType:55',
-            'prefLabel': 'book, limited circ, MaRLI',
+            prefLabel: 'book, limited circ, MaRLI',
           },
         ],
-        'holdingLocation': [
+        holdingLocation: [
           {
             '@id': 'loc:mal92',
-            'prefLabel': 'Schwarzman Building M2 - General Research Room 315',
+            prefLabel: 'Schwarzman Building M2 - General Research Room 315',
           },
         ],
-        'idBarcode': ['33433040712188'],
-        'identifier': [
+        idBarcode: ['33433040712188'],
+        identifier: [
           'urn:callnumber:JFD 91-4064',
           'urn:barcode:33433040712188',
         ],
-        'requestable': [false],
-        'shelfMark': ['JFD 91-4064'],
-        'status': [
+        requestable: [false],
+        shelfMark: ['JFD 91-4064'],
+        status: [
           {
             '@id': 'status:a',
-            'prefLabel': 'Available ',
+            prefLabel: 'Available ',
           },
         ],
-        'uri': 'i13183119',
-        'idNyplSourceId': {
+        uri: 'i13183119',
+        idNyplSourceId: {
           '@type': 'SierraNypl',
           '@value': '13183119',
         },
       },
     ],
-    'language': [{ '@id': 'lang:eng', 'prefLabel': 'English' }],
-    'lccClassification': ['PR3071 .D4 1991'],
-    'materialType': [{ '@id': 'resourcetypes:txt', 'prefLabel': 'Text' }],
-    'mediaType': [{ '@id': 'mediatypes:n', 'prefLabel': 'unmediated' }],
-    'note': [
+    language: [{ '@id': 'lang:eng', prefLabel: 'English' }],
+    lccClassification: ['PR3071 .D4 1991'],
+    materialType: [{ '@id': 'resourcetypes:txt', prefLabel: 'Text' }],
+    mediaType: [{ '@id': 'mediatypes:n', prefLabel: 'unmediated' }],
+    note: [
       {
-        'noteType': 'Bibliography',
-        'prefLabel':
+        noteType: 'Bibliography',
+        prefLabel:
           'Includes bibliographical references (p. [227]-238) and index.',
         '@type': 'bf:Note',
       },
     ],
-    'numAvailable': 1,
-    'numItems': 1,
-    'placeOfPublication': ['Oxford [England] : New York :'],
-    'publicationStatement': [
+    numAvailable: 1,
+    numItems: 1,
+    placeOfPublication: ['Oxford [England] : New York :'],
+    publicationStatement: [
       'Oxford [England] : Clarendon Press ; New York : Oxford University Press, 1991.',
     ],
-    'publisherLiteral': ['Clarendon Press ; Oxford University Press,'],
-    'shelfMark': ['JFD 91-4064'],
-    'subjectLiteral': [
+    publisherLiteral: ['Clarendon Press ; Oxford University Press,'],
+    shelfMark: ['JFD 91-4064'],
+    subjectLiteral: [
       'Editing -- History -- 18th century.',
       'Malone, Edmond, 1741-1812.',
       'Shakespeare, William, 1564-1616 -- Criticism, Textual.',
       'Shakespeare, William, 1564-1616.',
     ],
-    'title': [
+    title: [
       'Shakespeare verbatim : the reproduction of authenticity and the 1790 apparatus',
     ],
-    'titleDisplay': [
+    titleDisplay: [
       'Shakespeare verbatim : the reproduction of authenticity and the 1790 apparatus / Margreta de Grazia.',
     ],
-    'type': ['nypl:Item'],
-    'updatedAt': 1524665261653,
-    'uri': 'b11417539',
-    'suppressed': false,
+    type: ['nypl:Item'],
+    updatedAt: 1524665261653,
+    uri: 'b11417539',
+    suppressed: false,
   },
   {
-    'status': '200',
+    status: '200',
     '@type': ['nypl:Item', 'nypl:Resource'],
     '@id': 'res:b22030125',
-    'carrierType': ['{@id: "carriertypes:nc", prefLabel: "volume"}'],
-    'contributorLiteral': [
+    carrierType: ['{@id: "carriertypes:nc", prefLabel: "volume"}'],
+    contributorLiteral: [
       'Heartman, Charles F. (Charles Frederick), 1883-1953,',
     ],
-    'createdString': ['1916'],
-    'createdYear': 1916,
-    'creatorLiteral': ['Schomburg, Arthur Alfonso, 1874-1938.'],
-    'dateStartYear': 1916,
-    'dateString': ['1916'],
-    'dimensions': ['25 cm.'],
-    'donor': [
+    createdString: ['1916'],
+    createdYear: 1916,
+    creatorLiteral: ['Schomburg, Arthur Alfonso, 1874-1938.'],
+    dateStartYear: 1916,
+    dateString: ['1916'],
+    dimensions: ['25 cm.'],
+    donor: [
       'Home to Harlem Project funded by the Andrew W. Mellon Foundation.',
     ],
-    'extent': ['57 p. ;'],
-    'genreForm': ['Inscriptions (Provenance)'],
-    'idLccn': ['   17007194'],
-    'identifier': [
+    extent: ['57 p. ;'],
+    genreForm: ['Inscriptions (Provenance)'],
+    idLccn: ['   17007194'],
+    identifier: [
       {
         '@type': 'bf:ShelfMark',
         '@value': 'Sc Rare 016.811-S (Schomburg, A. Bibliographical checklist)',
@@ -320,35 +320,34 @@ const bibs = [
         '@value': '(OCoLC)2430488',
       },
     ],
-    'issuance': ['{@id: "urn:biblevel:m", prefLabel: "monograph/item"}'],
-    'items': [
+    issuance: ['{@id: "urn:biblevel:m", prefLabel: "monograph/item"}'],
+    items: [
       {
         '@id': 'res:i12169730',
-        'accessMessage': [
+        accessMessage: [
           {
             '@id': 'accessMessage:4',
-            'prefLabel': 'Restricted use',
+            prefLabel: 'Restricted use',
           },
         ],
-        'aeonUrl': [
+        aeonUrl: [
           'https://specialcollections.nypl.org/aeon/Aeon.dll?Action=10&Form=30&Title=A+bibliographical+checklist+of+American+Negro+poetry+/&Site=SCHRB&CallNumber=Sc+Rare+016.811-S+(Schomburg,+A.+Bibliographical+checklist)&Author=Schomburg,+Arthur+Alfonso,&ItemPlace=New+York+:&ItemPublisher=Charles+F.+Heartman,&Date=1916.&ItemInfo3=https://catalog.nypl.org/record=b22030125&ReferenceNumber=b220301256&Genre=Book-text&Location=Schomburg+Center',
         ],
-        'catalogItemType': [
+        catalogItemType: [
           {
             '@id': 'catalogItemType:2',
-            'prefLabel': 'book non-circ',
+            prefLabel: 'book non-circ',
           },
         ],
-        'holdingLocation': [
+        holdingLocation: [
           {
             '@id': 'loc:scdd2',
-            'prefLabel': 'Schomburg Center - Manuscripts & Archives',
-            'url':
-              'http://www.nypl.org/locations/divisions/manuscripts-archives-and-rare-books-division',
+            prefLabel: 'Schomburg Center - Manuscripts & Archives',
+            url: 'http://www.nypl.org/locations/divisions/manuscripts-archives-and-rare-books-division',
           },
         ],
-        'idBarcode': ['33433034100010'],
-        'identifier': [
+        idBarcode: ['33433034100010'],
+        identifier: [
           {
             '@type': 'bf:ShelfMark',
             '@value':
@@ -359,59 +358,58 @@ const bibs = [
             '@value': '33433034100010',
           },
         ],
-        'owner': [
+        owner: [
           {
             '@id': 'orgs:1116',
-            'prefLabel':
+            prefLabel:
               'Schomburg Center for Research in Black Culture, Manuscripts, Archives and Rare Books Division',
           },
         ],
-        'physicalLocation': [
+        physicalLocation: [
           'Sc Rare 016.811-S (Schomburg, A. Bibliographical checklist)',
         ],
-        'requestable': [false],
-        'shelfMark': [
+        requestable: [false],
+        shelfMark: [
           'Sc Rare 016.811-S (Schomburg, A. Bibliographical checklist)',
         ],
-        'status': [
+        status: [
           {
             '@id': 'status:k',
-            'prefLabel': 'Check with staff',
+            prefLabel: 'Check with staff',
           },
         ],
-        'uri': 'i12169730',
-        'idNyplSourceId': {
+        uri: 'i12169730',
+        idNyplSourceId: {
           '@type': 'SierraNypl',
           '@value': '12169730',
         },
       },
       {
         '@id': 'res:i12169731',
-        'accessMessage': [
+        accessMessage: [
           {
             '@id': 'accessMessage:4',
-            'prefLabel': 'Restricted use',
+            prefLabel: 'Restricted use',
           },
         ],
-        'aeonUrl': [
+        aeonUrl: [
           'https://specialcollections.nypl.org/aeon/Aeon.dll?Action=10&Form=30&Title=A+bibliographical+checklist+of+American+Negro+poetry+/&Site=SCHRB&CallNumber=Sc+Rare+016.811-S+(Schomburg,+A.+Bibliographical+checklist)&Author=Schomburg,+Arthur+Alfonso,&ItemPlace=New+York+:&ItemPublisher=Charles+F.+Heartman,&Date=1916.&ItemInfo3=https://catalog.nypl.org/record=b22030125&ReferenceNumber=b220301256&Genre=Book-text&Location=Schomburg+Center',
         ],
-        'catalogItemType': [
+        catalogItemType: [
           {
             '@id': 'catalogItemType:2',
-            'prefLabel': 'book non-circ',
+            prefLabel: 'book non-circ',
           },
         ],
-        'holdingLocation': [
+        holdingLocation: [
           {
             '@id': 'loc:scdd2',
-            'prefLabel': 'Schomburg Center - Manuscripts & Archives',
-            'url':
-              'http://www.nypl.org/locations/divisions/manuscripts-archives-and-rare-books-division',
+            prefLabel: 'Schomburg Center - Manuscripts & Archives',
+            url: 'http://www.nypl.org/locations/divisions/manuscripts-archives-and-rare-books-division',
           },
         ],
-        'idBarcode': ['33433034100028'],
-        'identifier': [
+        idBarcode: ['33433034100028'],
+        identifier: [
           {
             '@type': 'bf:ShelfMark',
             '@value':
@@ -422,59 +420,58 @@ const bibs = [
             '@value': '33433034100028',
           },
         ],
-        'owner': [
+        owner: [
           {
             '@id': 'orgs:1116',
-            'prefLabel':
+            prefLabel:
               'Schomburg Center for Research in Black Culture, Manuscripts, Archives and Rare Books Division',
           },
         ],
-        'physicalLocation': [
+        physicalLocation: [
           'Sc Rare 016.811-S (Schomburg, A. Bibliographical checklist)',
         ],
-        'requestable': [false],
-        'shelfMark': [
+        requestable: [false],
+        shelfMark: [
           'Sc Rare 016.811-S (Schomburg, A. Bibliographical checklist)',
         ],
-        'status': [
+        status: [
           {
             '@id': 'status:k',
-            'prefLabel': 'Check with staff',
+            prefLabel: 'Check with staff',
           },
         ],
-        'uri': 'i12169731',
-        'idNyplSourceId': {
+        uri: 'i12169731',
+        idNyplSourceId: {
           '@type': 'SierraNypl',
           '@value': '12169731',
         },
       },
       {
         '@id': 'res:i12169734',
-        'accessMessage': [
+        accessMessage: [
           {
             '@id': 'accessMessage:4',
-            'prefLabel': 'Restricted use',
+            prefLabel: 'Restricted use',
           },
         ],
-        'aeonUrl': [
+        aeonUrl: [
           'https://specialcollections.nypl.org/aeon/Aeon.dll?Action=10&Form=30&Title=A+bibliographical+checklist+of+American+Negro+poetry+/&Site=SCHRB&CallNumber=Sc+Rare+016.811-S+(Schomburg,+A.+Bibliographical+checklist)&Author=Schomburg,+Arthur+Alfonso,&ItemPlace=New+York+:&ItemPublisher=Charles+F.+Heartman,&Date=1916.&ItemInfo3=https://catalog.nypl.org/record=b22030125&ReferenceNumber=b220301256&Genre=Book-text&Location=Schomburg+Center',
         ],
-        'catalogItemType': [
+        catalogItemType: [
           {
             '@id': 'catalogItemType:2',
-            'prefLabel': 'book non-circ',
+            prefLabel: 'book non-circ',
           },
         ],
-        'holdingLocation': [
+        holdingLocation: [
           {
             '@id': 'loc:scdd2',
-            'prefLabel': 'Schomburg Center - Manuscripts & Archives',
-            'url':
-              'http://www.nypl.org/locations/divisions/manuscripts-archives-and-rare-books-division',
+            prefLabel: 'Schomburg Center - Manuscripts & Archives',
+            url: 'http://www.nypl.org/locations/divisions/manuscripts-archives-and-rare-books-division',
           },
         ],
-        'idBarcode': ['33433034100333'],
-        'identifier': [
+        idBarcode: ['33433034100333'],
+        identifier: [
           {
             '@type': 'bf:ShelfMark',
             '@value':
@@ -485,59 +482,58 @@ const bibs = [
             '@value': '33433034100333',
           },
         ],
-        'owner': [
+        owner: [
           {
             '@id': 'orgs:1116',
-            'prefLabel':
+            prefLabel:
               'Schomburg Center for Research in Black Culture, Manuscripts, Archives and Rare Books Division',
           },
         ],
-        'physicalLocation': [
+        physicalLocation: [
           'Sc Rare 016.811-S (Schomburg, A. Bibliographical checklist)',
         ],
-        'requestable': [false],
-        'shelfMark': [
+        requestable: [false],
+        shelfMark: [
           'Sc Rare 016.811-S (Schomburg, A. Bibliographical checklist)',
         ],
-        'status': [
+        status: [
           {
             '@id': 'status:k',
-            'prefLabel': 'Check with staff',
+            prefLabel: 'Check with staff',
           },
         ],
-        'uri': 'i12169734',
-        'idNyplSourceId': {
+        uri: 'i12169734',
+        idNyplSourceId: {
           '@type': 'SierraNypl',
           '@value': '12169734',
         },
       },
       {
         '@id': 'res:i12169735',
-        'accessMessage': [
+        accessMessage: [
           {
             '@id': 'accessMessage:4',
-            'prefLabel': 'Restricted use',
+            prefLabel: 'Restricted use',
           },
         ],
-        'aeonUrl': [
+        aeonUrl: [
           'https://specialcollections.nypl.org/aeon/Aeon.dll?Action=10&Form=30&Title=A+bibliographical+checklist+of+American+Negro+poetry+/&Site=SCHRB&CallNumber=Sc+Rare+016.811-S+(Schomburg,+A.+Bibliographical+checklist)&Author=Schomburg,+Arthur+Alfonso,&ItemPlace=New+York+:&ItemPublisher=Charles+F.+Heartman,&Date=1916.&ItemInfo3=https://catalog.nypl.org/record=b22030125&ReferenceNumber=b220301256&Genre=Book-text&Location=Schomburg+Center',
         ],
-        'catalogItemType': [
+        catalogItemType: [
           {
             '@id': 'catalogItemType:2',
-            'prefLabel': 'book non-circ',
+            prefLabel: 'book non-circ',
           },
         ],
-        'holdingLocation': [
+        holdingLocation: [
           {
             '@id': 'loc:scdd2',
-            'prefLabel': 'Schomburg Center - Manuscripts & Archives',
-            'url':
-              'http://www.nypl.org/locations/divisions/manuscripts-archives-and-rare-books-division',
+            prefLabel: 'Schomburg Center - Manuscripts & Archives',
+            url: 'http://www.nypl.org/locations/divisions/manuscripts-archives-and-rare-books-division',
           },
         ],
-        'idBarcode': ['33433034100002'],
-        'identifier': [
+        idBarcode: ['33433034100002'],
+        identifier: [
           {
             '@type': 'bf:ShelfMark',
             '@value':
@@ -548,59 +544,58 @@ const bibs = [
             '@value': '33433034100002',
           },
         ],
-        'owner': [
+        owner: [
           {
             '@id': 'orgs:1116',
-            'prefLabel':
+            prefLabel:
               'Schomburg Center for Research in Black Culture, Manuscripts, Archives and Rare Books Division',
           },
         ],
-        'physicalLocation': [
+        physicalLocation: [
           'Sc Rare 016.811-S (Schomburg, A. Bibliographical checklist)',
         ],
-        'requestable': [false],
-        'shelfMark': [
+        requestable: [false],
+        shelfMark: [
           'Sc Rare 016.811-S (Schomburg, A. Bibliographical checklist)',
         ],
-        'status': [
+        status: [
           {
             '@id': 'status:k',
-            'prefLabel': 'Check with staff',
+            prefLabel: 'Check with staff',
           },
         ],
-        'uri': 'i12169735',
-        'idNyplSourceId': {
+        uri: 'i12169735',
+        idNyplSourceId: {
           '@type': 'SierraNypl',
           '@value': '12169735',
         },
       },
       {
         '@id': 'res:i12169732',
-        'accessMessage': [
+        accessMessage: [
           {
             '@id': 'accessMessage:4',
-            'prefLabel': 'Restricted use',
+            prefLabel: 'Restricted use',
           },
         ],
-        'aeonUrl': [
+        aeonUrl: [
           'https://specialcollections.nypl.org/aeon/Aeon.dll?Action=10&Form=30&Title=A+bibliographical+checklist+of+American+Negro+poetry+/&Site=SCHRB&CallNumber=Sc+Rare+016.811-S+(Schomburg,+A.+Bibliographical+checklist)&Author=Schomburg,+Arthur+Alfonso,&ItemPlace=New+York+:&ItemPublisher=Charles+F.+Heartman,&Date=1916.&ItemInfo3=https://catalog.nypl.org/record=b22030125&ReferenceNumber=b220301256&Genre=Book-text&Location=Schomburg+Center',
         ],
-        'catalogItemType': [
+        catalogItemType: [
           {
             '@id': 'catalogItemType:2',
-            'prefLabel': 'book non-circ',
+            prefLabel: 'book non-circ',
           },
         ],
-        'holdingLocation': [
+        holdingLocation: [
           {
             '@id': 'loc:scdd2',
-            'prefLabel': 'Schomburg Center - Manuscripts & Archives',
-            'url':
-              'http://www.nypl.org/locations/divisions/manuscripts-archives-and-rare-books-division',
+            prefLabel: 'Schomburg Center - Manuscripts & Archives',
+            url: 'http://www.nypl.org/locations/divisions/manuscripts-archives-and-rare-books-division',
           },
         ],
-        'idBarcode': ['33433034100036'],
-        'identifier': [
+        idBarcode: ['33433034100036'],
+        identifier: [
           {
             '@type': 'bf:ShelfMark',
             '@value':
@@ -611,110 +606,107 @@ const bibs = [
             '@value': '33433034100036',
           },
         ],
-        'owner': [
+        owner: [
           {
             '@id': 'orgs:1116',
-            'prefLabel':
+            prefLabel:
               'Schomburg Center for Research in Black Culture, Manuscripts, Archives and Rare Books Division',
           },
         ],
-        'physicalLocation': [
+        physicalLocation: [
           'Sc Rare 016.811-S (Schomburg, A. Bibliographical checklist)',
         ],
-        'requestable': [false],
-        'shelfMark': [
+        requestable: [false],
+        shelfMark: [
           'Sc Rare 016.811-S (Schomburg, A. Bibliographical checklist)',
         ],
-        'status': [
+        status: [
           {
             '@id': 'status:k',
-            'prefLabel': 'Check with staff',
+            prefLabel: 'Check with staff',
           },
         ],
-        'uri': 'i12169732',
-        'idNyplSourceId': {
+        uri: 'i12169732',
+        idNyplSourceId: {
           '@type': 'SierraNypl',
           '@value': '12169732',
         },
       },
       {
         '@id': 'res:i22030125-e',
-        'electronicLocator': [
+        electronicLocator: [
           {
             '@type': 'nypl:ElectronicLocation',
-            'label': 'Full text available via HathiTrust',
-            'url': 'http://hdl.handle.net/2027/nyp.33433076020639',
+            label: 'Full text available via HathiTrust',
+            url: 'http://hdl.handle.net/2027/nyp.33433076020639',
           },
           {
             '@type': 'nypl:ElectronicLocation',
-            'label': 'Request Access to Special Collections Material',
-            'url':
-              'https://specialcollections.nypl.org/aeon/Aeon.dll?Action=10&Form=30&Title=A+bibliographical+checklist+of+American+Negro+poetry+/&Site=SCHRB&CallNumber=Sc+Rare+016.811-S+(Schomburg,+A.+Bibliographical+checklist)&Author=Schomburg,+Arthur+Alfonso,&ItemPlace=New+York+:&ItemPublisher=Charles+F.+Heartman,&Date=1916.&ItemInfo3=https://catalog.nypl.org/record=b22030125&ReferenceNumber=b220301256&Genre=Book-text&Location=Schomburg+Center',
+            label: 'Request Access to Special Collections Material',
+            url: 'https://specialcollections.nypl.org/aeon/Aeon.dll?Action=10&Form=30&Title=A+bibliographical+checklist+of+American+Negro+poetry+/&Site=SCHRB&CallNumber=Sc+Rare+016.811-S+(Schomburg,+A.+Bibliographical+checklist)&Author=Schomburg,+Arthur+Alfonso,&ItemPlace=New+York+:&ItemPublisher=Charles+F.+Heartman,&Date=1916.&ItemInfo3=https://catalog.nypl.org/record=b22030125&ReferenceNumber=b220301256&Genre=Book-text&Location=Schomburg+Center',
           },
         ],
-        'identifier': ['urn:SierraNypl:22030125-e'],
-        'uri': 'i22030125-e',
-        'idNyplSourceId': {
+        identifier: ['urn:SierraNypl:22030125-e'],
+        uri: 'i22030125-e',
+        idNyplSourceId: {
           '@type': 'SierraNypl',
           '@value': '22030125-e',
         },
       },
     ],
-    'language': ['{@id: "lang:eng", prefLabel: "English"}'],
-    'lccClassification': ['Z1231.P7 S3'],
-    'materialType': ['{@id: "resourcetypes:txt", prefLabel: "Text"}'],
-    'mediaType': ['{@id: "mediatypes:n", prefLabel: "unmediated"}'],
-    'note': [
+    language: ['{@id: "lang:eng", prefLabel: "English"}'],
+    lccClassification: ['Z1231.P7 S3'],
+    materialType: ['{@id: "resourcetypes:txt", prefLabel: "Text"}'],
+    mediaType: ['{@id: "mediatypes:n", prefLabel: "unmediated"}'],
+    note: [
       {
-        'noteType': 'Note',
+        noteType: 'Note',
         '@type': 'bf:Note',
-        'prefLabel':
+        prefLabel:
           'All pages printed on the recto of the leaf only, except the series title page which is printed on the verso, pagination is continuous.',
       },
       {
-        'noteType': 'Note',
+        noteType: 'Note',
         '@type': 'bf:Note',
-        'prefLabel':
+        prefLabel:
           '"Bibliographia Americana. A series of monographs edited by Charles F. Heartman ..."--series title page; facing title page.',
       },
       {
-        'noteType': 'Bibliography',
+        noteType: 'Bibliography',
         '@type': 'bf:Note',
-        'prefLabel':
+        prefLabel:
           "\"Bibliography of the poetical works of Phillis Wheatley (copyrighted by Charles F. Heartman) [reprinted from Heartman's 'Phillis Wheatley (Phillis Peters)']\"--p. 47-57.",
       },
       {
-        'noteType': 'Provenance',
+        noteType: 'Provenance',
         '@type': 'bf:Note',
-        'prefLabel':
+        prefLabel:
           'inscribed: in ink on recto of endleaf preceding series title leaf  "A.A. Schomburg." ; This copy is part of the original collection purchased from Arthur A. Schomburg in 1926.',
       },
     ],
-    'numAvailable': 0,
-    'numItems': 6,
-    'nyplSource': ['sierra-nypl'],
-    'placeOfPublication': ['New York :'],
-    'publicationStatement': ['New York : Charles F. Heartman, 1916.'],
-    'publisherLiteral': ['Charles F. Heartman,'],
-    'seriesStatement': ['Bibliographica Americana ; v. 2'],
-    'shelfMark': [
-      'Sc Rare 016.811-S (Schomburg, A. Bibliographical checklist)',
-    ],
-    'subjectLiteral': [
+    numAvailable: 0,
+    numItems: 6,
+    nyplSource: ['sierra-nypl'],
+    placeOfPublication: ['New York :'],
+    publicationStatement: ['New York : Charles F. Heartman, 1916.'],
+    publisherLiteral: ['Charles F. Heartman,'],
+    seriesStatement: ['Bibliographica Americana ; v. 2'],
+    shelfMark: ['Sc Rare 016.811-S (Schomburg, A. Bibliographical checklist)'],
+    subjectLiteral: [
       'African American poets -- Bibliography.',
       'American poetry -- African American authors -- Bibliography.',
       'Wheatley, Phillis, 1753-1784 -- Bibliography.',
     ],
-    'title': ['A bibliographical checklist of American Negro poetry'],
-    'titleDisplay': [
+    title: ['A bibliographical checklist of American Negro poetry'],
+    titleDisplay: [
       'A bibliographical checklist of American Negro poetry / compiled by Arthur A. Schomburg.',
     ],
-    'type': ['nypl:Item'],
-    'uniformTitle': ['Bibliographica Americana ; v. 2.'],
-    'updatedAt': 1637605687189,
-    'uri': 'b22030125',
-    'suppressed': false,
-    'annotatedMarc': {
+    type: ['nypl:Item'],
+    uniformTitle: ['Bibliographica Americana ; v. 2.'],
+    updatedAt: 1637605687189,
+    uri: 'b22030125',
+    suppressed: false,
+    annotatedMarc: {
       bib: {
         id: '22030125',
         nyplSource: 'sierra-nypl',
@@ -1295,7 +1287,7 @@ const bibs = [
         ],
       },
     },
-    'subjectHeadingData': [
+    subjectHeadingData: [
       {
         label: 'American poetry -- African American authors -- Bibliography',
         uuid: '4d5501c7-6d58-4ed0-b395-0d9cc6fc12df',
@@ -1359,13 +1351,13 @@ const bibs = [
       'http://discovery-api-qa.us-east-1.elasticbeanstalk.com/api/v0.1/discovery/context_all.jsonld',
     '@type': ['nypl:Item', 'nypl:Resource'],
     '@id': 'res:b21147020',
-    'carrierType': [
+    carrierType: [
       {
         '@id': 'carriertypes:nc',
-        'prefLabel': 'volume',
+        prefLabel: 'volume',
       },
     ],
-    'contributorLiteral': [
+    contributorLiteral: [
       'Ancell, Tom,',
       'Baugh, Michael.',
       'Bennewitz, Rick,',
@@ -1385,17 +1377,17 @@ const bibs = [
       'Ward, Richard, 1915-1979,',
       'Williams, Dick Anthony,',
     ],
-    'createdString': ['2001'],
-    'createdYear': 2001,
-    'dateEndString': ['1977'],
-    'dateEndYear': 1977,
-    'dateStartYear': 2001,
-    'dateString': ['2001'],
-    'dimensions': ['1/2 in.'],
-    'extent': ['1 videocassette (VHS) (89 min.) : sound, color ;'],
-    'genreForm': ['Drama.', 'Television.'],
-    'idOclc': ['967777755'],
-    'identifier': [
+    createdString: ['2001'],
+    createdYear: 2001,
+    dateEndString: ['1977'],
+    dateEndYear: 1977,
+    dateStartYear: 2001,
+    dateString: ['2001'],
+    dimensions: ['1/2 in.'],
+    extent: ['1 videocassette (VHS) (89 min.) : sound, color ;'],
+    genreForm: ['Drama.', 'Television.'],
+    idOclc: ['967777755'],
+    identifier: [
       {
         '@type': 'bf:ShelfMark',
         '@value': 'NCOX 1932',
@@ -1413,38 +1405,38 @@ const bibs = [
         '@value': '(OCoLC)967777755',
       },
     ],
-    'issuance': [
+    issuance: [
       {
         '@id': 'urn:biblevel:m',
-        'prefLabel': 'monograph/item',
+        prefLabel: 'monograph/item',
       },
     ],
-    'items': [
+    items: [
       {
         '@id': 'res:i34755671',
-        'accessMessage': [
+        accessMessage: [
           {
             '@id': 'accessMessage:4',
-            'prefLabel': 'Restricted use',
+            prefLabel: 'Restricted use',
           },
         ],
-        'aeonUrl': [
+        aeonUrl: [
           'https://nypl-aeon-test.aeon.atlas-sys.com/aeon/Aeon.dll?Action=10&Form=30&Title=Freeman&Site=LPATF&CallNumber=NCOX+1932&ItemPlace=New+York:&ItemPublisher=Broadway+Theatre+Archive,&Date=c2001.&ItemInfo3=https://nypl-sierra-test.nypl.org/record=b21147020&ReferenceNumber=b21147020x&ItemInfo1=RESTRICTED+USE&ItemInfo2=CHECK+WITH+STAFF&ItemNumber=33433063634871&ItemISxN=i347556711&Genre=VHS&Location=Performing+Arts+Theatre+on+Film+and+Tape',
         ],
-        'catalogItemType': [
+        catalogItemType: [
           {
             '@id': 'catalogItemType:24',
-            'prefLabel': 'archival video recording',
+            prefLabel: 'archival video recording',
           },
         ],
-        'holdingLocation': [
+        holdingLocation: [
           {
             '@id': 'loc:myf22',
-            'prefLabel': 'Performing Arts Research Collections - TOFT',
+            prefLabel: 'Performing Arts Research Collections - TOFT',
           },
         ],
-        'idBarcode': ['33433063634871'],
-        'identifier': [
+        idBarcode: ['33433063634871'],
+        identifier: [
           {
             '@type': 'bf:ShelfMark',
             '@value': 'NCOX 1932',
@@ -1454,94 +1446,94 @@ const bibs = [
             '@value': '33433063634871',
           },
         ],
-        'owner': [
+        owner: [
           {
             '@id': 'orgs:1120',
-            'prefLabel': 'Theatre on Film and Tape Archive',
+            prefLabel: 'Theatre on Film and Tape Archive',
           },
         ],
-        'physRequestable': [false],
-        'physicalLocation': ['NCOX 1932'],
-        'requestable': [false],
-        'shelfMark': ['NCOX 1932'],
-        'specRequestable': [true],
-        'status': [
+        physRequestable: [false],
+        physicalLocation: ['NCOX 1932'],
+        requestable: [false],
+        shelfMark: ['NCOX 1932'],
+        specRequestable: [true],
+        status: [
           {
             '@id': 'status:k',
-            'prefLabel': 'Check with staff',
+            prefLabel: 'Check with staff',
           },
         ],
-        'uri': 'i34755671',
-        'idNyplSourceId': {
+        uri: 'i34755671',
+        idNyplSourceId: {
           '@type': 'SierraNypl',
           '@value': '34755671',
         },
       },
     ],
-    'language': [
+    language: [
       {
         '@id': 'lang:eng',
-        'prefLabel': 'English',
+        prefLabel: 'English',
       },
     ],
-    'materialType': [
+    materialType: [
       {
         '@id': 'resourcetypes:mov',
-        'prefLabel': 'Moving image',
+        prefLabel: 'Moving image',
       },
     ],
-    'mediaType': [
+    mediaType: [
       {
         '@id': 'mediatypes:n',
-        'prefLabel': 'unmediated',
+        prefLabel: 'unmediated',
       },
     ],
-    'note': [
+    note: [
       {
-        'noteType': 'Note',
+        noteType: 'Note',
         '@type': 'bf:Note',
-        'prefLabel':
+        prefLabel:
           'Originally broadcast as an episode of the PBS series "Visions."',
       },
       {
-        'noteType': 'Access',
+        noteType: 'Access',
         '@type': 'bf:Note',
-        'prefLabel': 'Restricted to qualified researchers.',
+        prefLabel: 'Restricted to qualified researchers.',
       },
       {
-        'noteType': 'Credits',
+        noteType: 'Credits',
         '@type': 'bf:Note',
-        'prefLabel':
+        prefLabel:
           'Art director, Michael Baugh ; costume design by Terence Tam Soon ; audio, Tom Ancell ; music composed by Phil Moore ; lighting designed by Jeff Engel ; videotape editor, Roy Stewart.',
       },
       {
-        'noteType': 'Performer',
+        noteType: 'Performer',
         '@type': 'bf:Note',
-        'prefLabel':
+        prefLabel:
           'Chip Fields, Louis Gossett, Jr., Paulene Myers, Richard Ward, Dick Anthony Williams.',
       },
       {
-        'noteType': 'Event',
+        noteType: 'Event',
         '@type': 'bf:Note',
-        'prefLabel':
+        prefLabel:
           'Originally broadcast on WNET/Channel 13, New York, N.Y., Oct. 9, 1977.',
       },
       {
-        'noteType': 'Biography',
+        noteType: 'Biography',
         '@type': 'bf:Note',
-        'prefLabel':
+        prefLabel:
           'The Off-Broadway production of this play ran at the American Place Theatre from Jan. 25, 1973 to Feb. 24, 1973.',
       },
     ],
-    'numAvailable': 0,
-    'numItems': 2,
-    'nyplSource': ['sierra-nypl'],
-    'placeOfPublication': ['New York:'],
-    'publicationStatement': ['New York: Broadway Theatre Archive, c2001.'],
-    'publisherLiteral': ['Broadway Theatre Archive,'],
-    'seriesStatement': ['Broadway Theatre Archive'],
-    'shelfMark': ['NCOX 1932'],
-    'subjectLiteral': [
+    numAvailable: 0,
+    numItems: 2,
+    nyplSource: ['sierra-nypl'],
+    placeOfPublication: ['New York:'],
+    publicationStatement: ['New York: Broadway Theatre Archive, c2001.'],
+    publisherLiteral: ['Broadway Theatre Archive,'],
+    seriesStatement: ['Broadway Theatre Archive'],
+    shelfMark: ['NCOX 1932'],
+    subjectLiteral: [
       'African American men -- Drama.',
       'African American theater -- New York.',
       'Dean, Phillip Hayes -- Film adaptations.',
@@ -1550,15 +1542,15 @@ const bibs = [
       'Families, Black -- United States -- Drama.',
       'Television adaptations.',
     ],
-    'title': ['Freeman [videorecording]'],
-    'titleAlt': ['Free man'],
-    'titleDisplay': [
+    title: ['Freeman [videorecording]'],
+    titleAlt: ['Free man'],
+    titleDisplay: [
       'Freeman [videorecording] / Produced by Barbara Schultz ; associate producer, Rick Bennewitz ; written by Phillip Hayes Dean ; directed by Lloyd Richards ; a production of WNET/13.',
     ],
-    'type': ['nypl:Item'],
-    'updatedAt': 1643831603402,
-    'uri': 'b21147020',
-    'suppressed': false,
+    type: ['nypl:Item'],
+    updatedAt: 1643831603402,
+    uri: 'b21147020',
+    suppressed: false,
   },
 ];
 

@@ -1,15 +1,22 @@
-import PropTypes from 'prop-types';
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
-import FilterPopup from '../components/FilterPopup/FilterPopup';
-import SelectedFilters from '../components/Filters/SelectedFilters';
-import Notification from '../components/Notification/Notification';
-import ResultsCount from '../components/ResultsCount/ResultsCount';
+
+/* eslint-disable import/no-unresolved, import/extensions */
+import SearchResultsSorter from '@SearchResultsSorter';
+import SearchResultsContainer from '@SearchResultsContainer';
+/* eslint-enable */
 import SccContainer from '../components/SccContainer/SccContainer';
 import Search from '../components/Search/Search';
-import SearchResultsContainer from '../components/SearchResults/SearchResultsContainer';
-import SearchResultsSorter from '../components/SearchResults/SearchResultsSorter';
-import { basicQuery, hasValidFilters } from '../utils/utils';
+import FilterPopup from '../components/FilterPopup/FilterPopup';
+import SelectedFilters from '../components/Filters/SelectedFilters';
+import ResultsCount from '../components/ResultsCount/ResultsCount';
+import Notification from '../components/Notification/Notification';
+
+import {
+  basicQuery,
+  hasValidFilters,
+} from '../utils/utils';
 
 const SearchResults = (props, context) => {
   const {
@@ -22,7 +29,7 @@ const SearchResults = (props, context) => {
     contributor,
     title,
     subject,
-  } = useSelector((state) => ({
+  } = useSelector(state => ({
     searchResults: state.searchResults,
     searchKeywords: state.searchKeywords,
     sortBy: state.sortBy,
@@ -34,7 +41,9 @@ const SearchResults = (props, context) => {
     subject: state.subject,
   }));
 
-  const { router } = context;
+  const {
+    router,
+  } = context;
 
   const { location } = router;
 
@@ -53,8 +62,7 @@ const SearchResults = (props, context) => {
     subject,
   });
   const dateFilterErrors = [];
-  const searchError =
-    location.query && location.query.error ? location.query.error : '';
+  const searchError = location.query && location.query.error ? location.query.error : '';
   if (searchError === 'dateFilterError') {
     dateFilterErrors.push({
       name: 'date',
@@ -62,19 +70,21 @@ const SearchResults = (props, context) => {
     });
   }
 
-  const selectedFiltersAvailable =
-    hasValidFilters(selectedFilters) && !dropdownOpen;
+  const selectedFiltersAvailable = hasValidFilters(selectedFilters) && !dropdownOpen;
   const hasResults = searchResults && totalResults;
 
   return (
     <SccContainer
       useLoadingLayer
-      activeSection='search'
-      pageTitle='Search Results'
+      activeSection="search"
+      pageTitle="Search Results"
     >
-      <div className='content-header research-search'>
-        <div className='research-search__inner-content'>
-          <Search createAPIQuery={createAPIQuery} router={router} />
+      <div className="content-header research-search">
+        <div className="research-search__inner-content">
+          <Search
+            createAPIQuery={createAPIQuery}
+            router={router}
+          />
           <FilterPopup
             createAPIQuery={createAPIQuery}
             raisedErrors={dateFilterErrors}
@@ -82,25 +92,35 @@ const SearchResults = (props, context) => {
           />
         </div>
       </div>
-      <Notification notificationType='searchResultsNotification' />
-      {selectedFiltersAvailable ? (
-        <SelectedFilters
-          selectedFilters={selectedFilters}
-          createAPIQuery={createAPIQuery}
-          selectedFiltersAvailable={selectedFiltersAvailable}
-        />
-      ) : null}
-      <div className='nypl-sorter-row'>
+      <Notification notificationType="searchResultsNotification" />
+      {
+        selectedFiltersAvailable ? (
+          <SelectedFilters
+            selectedFilters={selectedFilters}
+            createAPIQuery={createAPIQuery}
+            selectedFiltersAvailable={selectedFiltersAvailable}
+          />
+        ) : null
+      }
+      <div className="nypl-sorter-row">
         <ResultsCount
           count={totalResults}
           selectedFilters={selectedFilters}
           field={field}
         />
-        {hasResults ? (
-          <SearchResultsSorter createAPIQuery={createAPIQuery} key={sortBy} />
-        ) : null}
+        {
+          hasResults ?
+            <SearchResultsSorter
+              createAPIQuery={createAPIQuery}
+              key={sortBy}
+            />
+            : null
+        }
       </div>
-      <SearchResultsContainer router={router} createAPIQuery={createAPIQuery} />
+      <SearchResultsContainer
+        router={router}
+        createAPIQuery={createAPIQuery}
+      />
     </SccContainer>
   );
 };

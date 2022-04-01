@@ -20,8 +20,7 @@ describe('SubjectHeadingsIndexPage', () => {
             filter: '',
           },
         }}
-      />,
-    );
+      />);
   });
   it('should render `SubjectHeadingSearch`', () => {
     expect(component.find('SubjectHeadingSearch').length).to.equal(1);
@@ -37,14 +36,11 @@ describe('SubjectHeadingsIndexPage', () => {
               filter: 'Kermit the Frog',
             },
           }}
-        />,
-      );
+        />);
     });
 
     it('should have a heading announcing the filter', () => {
-      expect(component.find(Heading).prop('children')).to.equal(
-        'Subject Headings matching "Kermit the Frog"',
-      );
+      expect(component.find(Heading).prop('children')).to.equal('Subject Headings matching "Kermit the Frog"');
     });
   });
 });
@@ -54,7 +50,9 @@ describe('SubjectHeadingsIndex', () => {
   let component;
   describe('Unfiltered index', () => {
     before(() => {
-      component = mount(<SubjectHeadingsIndex />, { context });
+      component = mount(
+        <SubjectHeadingsIndex />,
+        { context });
     });
     it('should render `Alphabetical Pagination`', () => {
       expect(component.find('AlphabeticalPagination').length).to.equal(1);
@@ -64,7 +62,10 @@ describe('SubjectHeadingsIndex', () => {
   describe('Filtered index', () => {
     before(() => {
       context.router.location.query.filter = 'pottery';
-      component = mount(<SubjectHeadingsIndex />, { context });
+      component = mount(
+        <SubjectHeadingsIndex />,
+        { context },
+      );
     });
     after(() => {
       context.router.location.query.filter = undefined;

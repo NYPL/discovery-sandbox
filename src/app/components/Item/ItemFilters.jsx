@@ -113,7 +113,7 @@ const ItemFilters = (
                 {...itemFilterComponentProps}
               />
             ) : (
-              <div id='item-filters' className='item-table-filters'>
+              <div id="item-filters" className="item-table-filters">
                 {itemFilters.map((filter) => (
                   <ItemFilter
                     filter={filter.type}
@@ -128,7 +128,7 @@ const ItemFilters = (
           </Fragment>
         )}
       </MediaContext.Consumer>
-      <div className='item-filter-info'>
+      <div className="item-filter-info">
         <h3>
           {numOfFilteredItems > 0 ? numOfFilteredItems : 'No'} Result
           {numOfFilteredItems !== 1 ? 's' : null} Found
@@ -138,7 +138,7 @@ const ItemFilters = (
         ) : null}
         &nbsp;
         {hasFilterApplied ? (
-          <Button buttonType='link' onClick={() => resetFilters()}>
+          <Button buttonType="link" onClick={() => resetFilters()}>
             Clear all filters
           </Button>
         ) : null}
