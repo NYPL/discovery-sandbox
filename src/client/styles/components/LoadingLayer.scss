@@ -10,7 +10,7 @@
     width: 100%;
     height: 100%;
     background: #eee;
-    opacity: .95;
+    opacity: 0.95;
   }
 
   &-texts {
@@ -32,15 +32,14 @@
 
     &-title {
       font-size: 24px;
-
     }
   }
 }
 
 .loadingDots {
-    text-align: center;
-    height: 40px;
-    margin-top: 40px;
+  text-align: center;
+  height: 40px;
+  margin-top: 40px;
 
   & span {
     display: inline-block;
@@ -119,6 +118,6 @@
     z-index: inherit;
     position: inherit;
     text-align: inherit;
-    top:inherit;
+    top: inherit;
   }
 }

@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import BibDetails from './BibDetails';
 
@@ -27,6 +28,15 @@ const TopBibDetails = ({ bib, resources }) => {
       />
     </section>
   );
+};
+
+TopBibDetails.propTypes = {
+  bib: PropTypes.object.isRequired,
+  resources: PropTypes.array.isRequired,
+};
+
+TopBibDetails.defaultProps = {
+  resources: [],
 };
 
 export default TopBibDetails;
