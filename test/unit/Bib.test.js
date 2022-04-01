@@ -61,7 +61,7 @@ describe('Bib', () => {
         {
           accessMessage: {
             '@id': 'accessMessage: 1',
-            prefLabel: 'Use in library',
+            'prefLabel': 'Use in library',
           },
           available: true,
           callNumber: 'efgh',
@@ -80,7 +80,7 @@ describe('Bib', () => {
         {
           accessMessage: {
             '@id': 'accessMessage: 1',
-            prefLabel: 'Use in library',
+            'prefLabel': 'Use in library',
           },
           available: true,
           callNumber: 'ijkl',
@@ -99,7 +99,7 @@ describe('Bib', () => {
         {
           accessMessage: {
             '@id': 'accessMessage: 1',
-            prefLabel: 'Use in library',
+            'prefLabel': 'Use in library',
           },
           available: true,
           callNumber: 'abcd',

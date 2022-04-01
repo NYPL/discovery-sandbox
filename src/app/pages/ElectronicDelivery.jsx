@@ -19,7 +19,7 @@ import LibraryItem from '../utils/item';
 import { institutionNameByNyplSource, trackDiscovery } from '../utils/utils';
 
 class ElectronicDelivery extends React.Component {
-  constructor (props) {
+  constructor(props) {
     super(props);
 
     const bib =
@@ -207,8 +207,8 @@ class ElectronicDelivery extends React.Component {
     const { error, form } = this.props;
     const patronEmail =
       this.props.patron.emails &&
-        _isArray(this.props.patron.emails) &&
-        this.props.patron.emails.length
+      _isArray(this.props.patron.emails) &&
+      this.props.patron.emails.length
         ? this.props.patron.emails[0]
         : '';
     const searchKeywords = this.props.searchKeywords;
@@ -271,7 +271,7 @@ class ElectronicDelivery extends React.Component {
               />
             ) : null}
           </div>
-        }
+        )}
       </SccContainer>
     );
   }
@@ -290,7 +290,7 @@ ElectronicDelivery.propTypes = {
   form: PropTypes.object,
   patron: PropTypes.object,
   updateLoadingStatus: PropTypes.func,
-  features: PropTypes.array
+  features: PropTypes.array,
 };
 
 ElectronicDelivery.defaultProps = {
