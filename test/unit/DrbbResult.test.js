@@ -11,7 +11,9 @@ describe('DrbbResult', () => {
   describe('with work prop', () => {
     describe('work with all data', () => {
       let component;
-      const authors = workData.data.agents.filter(agent => agent.roles.includes('author'));
+      const authors = workData.data.agents.filter((agent) =>
+        agent.roles.includes('author'),
+      );
       before(() => {
         component = shallow(<DrbbResult work={workData.data} />);
       });
@@ -21,11 +23,15 @@ describe('DrbbResult', () => {
       });
 
       it('should have a link with .drbb-result-title class', () => {
-        expect(component.find('Link').first().render().text()).to.equal(workData.data.title);
+        expect(component.find('Link').first().render().text()).to.equal(
+          workData.data.title,
+        );
       });
 
       it('should have links to authors', () => {
-        expect(component.find('.drbb-result-author')).to.have.length(authors.length);
+        expect(component.find('.drbb-result-author')).to.have.length(
+          authors.length,
+        );
         expect(component.find('.drbb-result-author').is('Link')).to.equal(true);
       });
     });
@@ -65,7 +71,9 @@ describe('DrbbResult', () => {
       before(() => {
         const workWithNoAuthors = JSON.parse(JSON.stringify(workData.data));
         const { agents } = workWithNoAuthors;
-        workWithNoAuthors.agents = agents.filter(agent => !agent.roles.includes('author'));
+        workWithNoAuthors.agents = agents.filter(
+          (agent) => !agent.roles.includes('author'),
+        );
         component = shallow(<DrbbResult work={workWithNoAuthors} />);
       });
 
@@ -90,12 +98,15 @@ describe('DrbbResult', () => {
     let component;
     before(() => {
       const longTitleWork = JSON.parse(JSON.stringify(workData.data));
-      longTitleWork.title = 'Life in India; or, Madras, the Neilgherries, and Calcutta. Written for the American Sunday-School Union.';
+      longTitleWork.title =
+        'Life in India; or, Madras, the Neilgherries, and Calcutta. Written for the American Sunday-School Union.';
       component = shallow(<DrbbResult work={longTitleWork} />);
     });
 
     it('should truncate the title', () => {
-      expect(component.find('Link').first().render().text()).to.equal('Life in India; or, Madras, the Neilgherries, and Calcutta. Written for the American...');
+      expect(component.find('Link').first().render().text()).to.equal(
+        'Life in India; or, Madras, the Neilgherries, and Calcutta. Written for the American...',
+      );
     });
   });
 
@@ -122,12 +133,24 @@ describe('DrbbResult', () => {
     });
 
     it('should include source=catalog', () => {
-      expect(component.find(Link).at(0).prop('to')).to.include('source=catalog');
-      expect(component.find(Link).at(0).prop('className')).to.equal('drbb-result-title');
-      expect(component.find(Link).at(1).prop('to').query.source).to.equal('catalog');
-      expect(component.find(Link).at(1).prop('className')).to.equal('drbb-result-author');
-      expect(component.find(Link).at(2).prop('to').pathname).to.include('source=catalog');
-      expect(component.find(Link).at(2).prop('className')).to.equal('drbb-read-online');
+      expect(component.find(Link).at(0).prop('to')).to.include(
+        'source=catalog',
+      );
+      expect(component.find(Link).at(0).prop('className')).to.equal(
+        'drbb-result-title',
+      );
+      expect(component.find(Link).at(1).prop('to').query.source).to.equal(
+        'catalog',
+      );
+      expect(component.find(Link).at(1).prop('className')).to.equal(
+        'drbb-result-author',
+      );
+      expect(component.find(Link).at(2).prop('to').pathname).to.include(
+        'source=catalog',
+      );
+      expect(component.find(Link).at(2).prop('className')).to.equal(
+        'drbb-read-online',
+      );
     });
   });
 });

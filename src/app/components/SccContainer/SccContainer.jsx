@@ -27,20 +27,20 @@ const SccContainer = (props) => {
 
   return (
     <DocumentTitle title={documentTitle}>
-      <div className="nypl-ds nypl--research layout-container">
+      <div className='nypl-ds nypl--research layout-container'>
         {useLoadingLayer ? <LoadingLayer loading={loading} /> : null}
-        <main className="main main-page">
-          <div className="content-header catalog__header">
+        <main className='main main-page'>
+          <div className='content-header catalog__header'>
             <Breadcrumbs
               breadcrumbs={[
                 { url: 'https://www.nypl.org/', text: 'Home' },
                 { url: 'https://www.nypl.org/research', text: 'Research' },
                 { url: appConfig.baseUrl, text: appConfig.displayTitle },
               ]}
-              className="breadcrumbs"
+              className='breadcrumbs'
             />
-            <div className="catalog__heading">
-              <Heading level={1} id="1" blockName="hero">
+            <div className='catalog__heading'>
+              <Heading level={1} id='1' blockName='hero'>
                 {appConfig.displayTitle}
               </Heading>
             </div>

@@ -63,8 +63,14 @@ class BibDetails extends React.Component {
       if (fieldLinkable) {
         return (
           <Link
-            onClick={(e) =>
-              this.newSearch(e, url, fieldValue, bibValue['@id'], fieldLabel)
+            onClick={(event) =>
+              this.newSearch(
+                event,
+                url,
+                fieldValue,
+                bibValue['@id'],
+                fieldLabel,
+              )
             }
             to={`${appConfig.baseUrl}/search?${url}`}
           >
@@ -93,13 +99,13 @@ class BibDetails extends React.Component {
     }
 
     return (
-      <ul className="additionalDetails">
+      <ul className='additionalDetails'>
         {bibValues.map((value) => {
           const url = `filters[${fieldValue}]=${value['@id']}`;
           let itemValue = fieldLinkable ? (
             <Link
-              onClick={(e) =>
-                this.newSearch(e, url, fieldValue, value['@id'], fieldLabel)
+              onClick={(event) =>
+                this.newSearch(event, url, fieldValue, value['@id'], fieldLabel)
               }
               to={`${appConfig.baseUrl}/search?${url}`}
             >
@@ -159,8 +165,8 @@ class BibDetails extends React.Component {
         markup.pop()
       ) : (
         <ul>
-          {markup.map((m) => (
-            <li key={m[0].key}>{m}</li>
+          {markup.map((mark) => (
+            <li key={mark[0].key}>{mark}</li>
           ))}
         </ul>
       );
@@ -272,8 +278,8 @@ class BibDetails extends React.Component {
     if (fieldLinkable) {
       return (
         <Link
-          onClick={(e) =>
-            this.newSearch(e, url, fieldValue, bibValue, fieldLabel)
+          onClick={(event) =>
+            this.newSearch(event, url, fieldValue, bibValue, fieldLabel)
           }
           to={`${appConfig.baseUrl}/search?${url}`}
         >
@@ -400,11 +406,11 @@ class BibDetails extends React.Component {
           // Group notes by noteType:
           const notesGroupedByNoteType = note
             // Make sure all notes are blanknodes:
-            .filter((n) => typeof n === 'object')
-            .reduce((groups, n) => {
-              const noteType = this.getNoteType(n);
+            .filter((note) => typeof note === 'object')
+            .reduce((groups, note) => {
+              const noteType = this.getNoteType(note);
               if (!groups[noteType]) groups[noteType] = [];
-              groups[noteType].push(n);
+              groups[noteType].push(note);
               return groups;
             }, {});
 
@@ -412,8 +418,8 @@ class BibDetails extends React.Component {
           Object.keys(notesGroupedByNoteType).forEach((noteType) => {
             const notesList = (
               <ul>
-                {notesGroupedByNoteType[noteType].map((n, i) => (
-                  <li key={i.toString()}>{n.prefLabel}</li>
+                {notesGroupedByNoteType[noteType].map((note, idx) => (
+                  <li key={idx.toString()}>{note.prefLabel}</li>
                 ))}
               </ul>
             );
@@ -437,13 +443,14 @@ class BibDetails extends React.Component {
           electronicElem = (
             <a
               href={electronicItem.url}
-              target="_blank"
+              target='_blank'
               onClick={() =>
                 trackDiscovery(
                   'Bib fields',
                   `Electronic Resource - ${electronicItem.label} - ${electronicItem.url}`,
                 )
               }
+              rel='noreferrer'
             >
               {electronicItem.label || electronicItem.url}
             </a>
@@ -451,19 +458,20 @@ class BibDetails extends React.Component {
         } else {
           electronicElem = (
             <ul>
-              {electronicResources.map((e) => (
-                <li key={e.label}>
+              {electronicResources.map((resource) => (
+                <li key={resource.label}>
                   <a
-                    href={e.url}
-                    target="_blank"
+                    href={resource.url}
+                    target='_blank'
                     onClick={() =>
                       trackDiscovery(
                         'Bib fields',
-                        `Electronic Resource - ${e.label} - ${e.url}`,
+                        `Electronic Resource - ${resource.label} - ${resource.url}`,
                       )
                     }
+                    rel='noreferrer'
                   >
-                    {e.label || e.url}
+                    {resource.label || resource.url}
                   </a>
                 </li>
               ))}
@@ -529,9 +537,9 @@ class BibDetails extends React.Component {
 
       const subjectHeadingLink = (
         <Link
-          onClick={(e) =>
+          onClick={(event) =>
             this.newSearch(
-              e,
+              event,
               urlWithFilterQuery,
               fieldValue,
               urlArray[index],
@@ -558,25 +566,25 @@ class BibDetails extends React.Component {
 
   /**
    * Display for single and multivalued object arrays.
-   * @param {array} note
+   * @param {array} notes
    * @return {string}
    */
-  noteObjectDisplay(note) {
+  noteObjectDisplay(notes) {
     let display;
-    if (note.length === 1) {
+    if (notes.length === 1) {
       display = (
         <div>
-          <h4>{note[0].noteType}</h4>
-          <p>{note[0].prefLabel}</p>
+          <h4>{notes[0].noteType}</h4>
+          <p>{notes[0].prefLabel}</p>
         </div>
       );
     } else {
       display = (
         <ul>
-          {note.map((n, i) => (
-            <li key={i.toString()}>
-              <h4>{n.noteType}</h4>
-              <p>{n.prefLabel}</p>
+          {notes.map((note, idx) => (
+            <li key={idx.toString()}>
+              <h4>{note.noteType}</h4>
+              <p>{note.prefLabel}</p>
             </li>
           ))}
         </ul>
@@ -590,15 +598,15 @@ class BibDetails extends React.Component {
    * newSearch(e, query, field, value, label)
    * The method that passed as a callback to a Link element for handling onClick events.
    *
-   * @param e {event} - onClick event
+   * @param event {event} - onClick event
    * @param {string} query - the search query that is attached to the search endpoint
    * @param {string} field - the type of the search query
    * @param {string} value - the search keyword of the search. It will be used for the filter button
    * @param {string} label - the type of the search keyword. It will be used for
    * the search instruction
    */
-  newSearch(e, query, field, value, label) {
-    e.preventDefault();
+  newSearch(event, query, field, value, label) {
+    event.preventDefault();
 
     trackDiscovery('Bib fields', `${label} - ${value}`);
     this.context.router.push(`${appConfig.baseUrl}/search?${query}`);

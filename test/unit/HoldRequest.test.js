@@ -30,6 +30,9 @@ describe('HoldRequest', () => {
         () => true,
       );
     });
+    after(() => {
+      HoldRequest.prototype.redirectWithErrors.restore();
+    });
     describe('ineligible patrons', () => {
       before(() => {
         mock
@@ -159,9 +162,9 @@ describe('HoldRequest', () => {
     () => {
       let component;
       const bib = {
-        title: ['Harry Potter'],
+        'title': ['Harry Potter'],
         '@id': 'res:b17688688',
-        items: mockedItem,
+        'items': mockedItem,
       };
 
       before(() => {
@@ -212,29 +215,29 @@ describe('HoldRequest', () => {
     () => {
       let component;
       const bib = {
-        title: ['Harry Potter'],
+        'title': ['Harry Potter'],
         '@id': 'res:b17688688',
-        items: mockedItem,
+        'items': mockedItem,
       };
 
       const deliveryLocations = [
         {
           '@id': 'loc:myr',
-          address: '40 Lincoln Center Plaza',
-          prefLabel: 'Performing Arts Research Collections',
-          shortName: 'Library for the Performing Arts',
+          'address': '40 Lincoln Center Plaza',
+          'prefLabel': 'Performing Arts Research Collections',
+          'shortName': 'Library for the Performing Arts',
         },
         {
           '@id': 'loc:sc',
-          prefLabel: 'Schomburg Center',
-          address: '515 Malcolm X Boulevard',
-          shortName: 'Schomburg Center',
+          'prefLabel': 'Schomburg Center',
+          'address': '515 Malcolm X Boulevard',
+          'shortName': 'Schomburg Center',
         },
         {
           '@id': 'loc:mala',
-          prefLabel: 'Schwarzman Building - Allen Scholar Room',
-          address: '476 Fifth Avenue (42nd St and Fifth Ave)',
-          shortName: 'Schwarzman Building',
+          'prefLabel': 'Schwarzman Building - Allen Scholar Room',
+          'address': '476 Fifth Avenue (42nd St and Fifth Ave)',
+          'shortName': 'Schwarzman Building',
         },
       ];
 
@@ -366,29 +369,29 @@ describe('HoldRequest', () => {
   describe('If the delivery location has the EDD option, <HoldRequest>', () => {
     let component;
     const bib = {
-      title: ['Harry Potter'],
+      'title': ['Harry Potter'],
       '@id': 'res:b17688688',
-      items: mockedItem,
+      'items': mockedItem,
     };
 
     const deliveryLocations = [
       {
         '@id': 'loc:myr',
-        address: '40 Lincoln Center Plaza',
-        prefLabel: 'Performing Arts Research Collections',
-        shortName: 'Library for the Performing Arts',
+        'address': '40 Lincoln Center Plaza',
+        'prefLabel': 'Performing Arts Research Collections',
+        'shortName': 'Library for the Performing Arts',
       },
       {
         '@id': 'loc:sc',
-        prefLabel: 'Schomburg Center',
-        address: '515 Malcolm X Boulevard',
-        shortName: 'Schomburg Center',
+        'prefLabel': 'Schomburg Center',
+        'address': '515 Malcolm X Boulevard',
+        'shortName': 'Schomburg Center',
       },
       {
         '@id': 'loc:mala',
-        prefLabel: 'Schwarzman Building - Allen Scholar Room',
-        address: '476 Fifth Avenue (42nd St and Fifth Ave)',
-        shortName: 'Schwarzman Building',
+        'prefLabel': 'Schwarzman Building - Allen Scholar Room',
+        'address': '476 Fifth Avenue (42nd St and Fifth Ave)',
+        'shortName': 'Schwarzman Building',
       },
     ];
 
@@ -439,29 +442,29 @@ describe('HoldRequest', () => {
   describe('If the delivery location has the EDD option but edd is closed, <HoldRequest>', () => {
     let component;
     const bib = {
-      title: ['Harry Potter'],
+      'title': ['Harry Potter'],
       '@id': 'res:b17688688',
-      items: mockedItem,
+      'items': mockedItem,
     };
 
     const deliveryLocations = [
       {
         '@id': 'loc:myr',
-        address: '40 Lincoln Center Plaza',
-        prefLabel: 'Performing Arts Research Collections',
-        shortName: 'Library for the Performing Arts',
+        'address': '40 Lincoln Center Plaza',
+        'prefLabel': 'Performing Arts Research Collections',
+        'shortName': 'Library for the Performing Arts',
       },
       {
         '@id': 'loc:sc',
-        prefLabel: 'Schomburg Center',
-        address: '515 Malcolm X Boulevard',
-        shortName: 'Schomburg Center',
+        'prefLabel': 'Schomburg Center',
+        'address': '515 Malcolm X Boulevard',
+        'shortName': 'Schomburg Center',
       },
       {
         '@id': 'loc:mala',
-        prefLabel: 'Schwarzman Building - Allen Scholar Room',
-        address: '476 Fifth Avenue (42nd St and Fifth Ave)',
-        shortName: 'Schwarzman Building',
+        'prefLabel': 'Schwarzman Building - Allen Scholar Room',
+        'address': '476 Fifth Avenue (42nd St and Fifth Ave)',
+        'shortName': 'Schwarzman Building',
       },
     ];
 
@@ -507,29 +510,29 @@ describe('HoldRequest', () => {
     describe('when everything is closed', () => {
       let component;
       const bib = {
-        title: ['Harry Potter'],
+        'title': ['Harry Potter'],
         '@id': 'res:b17688688',
-        items: mockedItem,
+        'items': mockedItem,
       };
 
       const deliveryLocations = [
         {
           '@id': 'loc:myr',
-          address: '40 Lincoln Center Plaza',
-          prefLabel: 'Performing Arts Research Collections',
-          shortName: 'Library for the Performing Arts',
+          'address': '40 Lincoln Center Plaza',
+          'prefLabel': 'Performing Arts Research Collections',
+          'shortName': 'Library for the Performing Arts',
         },
         {
           '@id': 'loc:sc',
-          prefLabel: 'Schomburg Center',
-          address: '515 Malcolm X Boulevard',
-          shortName: 'Schomburg Center',
+          'prefLabel': 'Schomburg Center',
+          'address': '515 Malcolm X Boulevard',
+          'shortName': 'Schomburg Center',
         },
         {
           '@id': 'loc:mala',
-          prefLabel: 'Schwarzman Building - Allen Scholar Room',
-          address: '476 Fifth Avenue (42nd St and Fifth Ave)',
-          shortName: 'Schwarzman Building',
+          'prefLabel': 'Schwarzman Building - Allen Scholar Room',
+          'address': '476 Fifth Avenue (42nd St and Fifth Ave)',
+          'shortName': 'Schwarzman Building',
         },
       ];
 
@@ -571,29 +574,29 @@ describe('HoldRequest', () => {
     describe('for a recap item when recap is closed', () => {
       let component;
       const bib = {
-        title: ['Harry Potter'],
+        'title': ['Harry Potter'],
         '@id': 'res:b17688688',
-        items: mockedItem,
+        'items': mockedItem,
       };
 
       const deliveryLocations = [
         {
           '@id': 'loc:myr',
-          address: '40 Lincoln Center Plaza',
-          prefLabel: 'Performing Arts Research Collections',
-          shortName: 'Library for the Performing Arts',
+          'address': '40 Lincoln Center Plaza',
+          'prefLabel': 'Performing Arts Research Collections',
+          'shortName': 'Library for the Performing Arts',
         },
         {
           '@id': 'loc:sc',
-          prefLabel: 'Schomburg Center',
-          address: '515 Malcolm X Boulevard',
-          shortName: 'Schomburg Center',
+          'prefLabel': 'Schomburg Center',
+          'address': '515 Malcolm X Boulevard',
+          'shortName': 'Schomburg Center',
         },
         {
           '@id': 'loc:mala',
-          prefLabel: 'Schwarzman Building - Allen Scholar Room',
-          address: '476 Fifth Avenue (42nd St and Fifth Ave)',
-          shortName: 'Schwarzman Building',
+          'prefLabel': 'Schwarzman Building - Allen Scholar Room',
+          'address': '476 Fifth Avenue (42nd St and Fifth Ave)',
+          'shortName': 'Schwarzman Building',
         },
       ];
 
@@ -632,29 +635,29 @@ describe('HoldRequest', () => {
     describe('for a recap item when non-recap is closed', () => {
       let component;
       const bib = {
-        title: ['Harry Potter'],
+        'title': ['Harry Potter'],
         '@id': 'res:b17688688',
-        items: mockedItem,
+        'items': mockedItem,
       };
 
       const deliveryLocations = [
         {
           '@id': 'loc:myr',
-          address: '40 Lincoln Center Plaza',
-          prefLabel: 'Performing Arts Research Collections',
-          shortName: 'Library for the Performing Arts',
+          'address': '40 Lincoln Center Plaza',
+          'prefLabel': 'Performing Arts Research Collections',
+          'shortName': 'Library for the Performing Arts',
         },
         {
           '@id': 'loc:sc',
-          prefLabel: 'Schomburg Center',
-          address: '515 Malcolm X Boulevard',
-          shortName: 'Schomburg Center',
+          'prefLabel': 'Schomburg Center',
+          'address': '515 Malcolm X Boulevard',
+          'shortName': 'Schomburg Center',
         },
         {
           '@id': 'loc:mala',
-          prefLabel: 'Schwarzman Building - Allen Scholar Room',
-          address: '476 Fifth Avenue (42nd St and Fifth Ave)',
-          shortName: 'Schwarzman Building',
+          'prefLabel': 'Schwarzman Building - Allen Scholar Room',
+          'address': '476 Fifth Avenue (42nd St and Fifth Ave)',
+          'shortName': 'Schwarzman Building',
         },
       ];
 
@@ -689,29 +692,29 @@ describe('HoldRequest', () => {
     describe('when opening locations selectively', () => {
       let component;
       const bib = {
-        title: ['Harry Potter'],
+        'title': ['Harry Potter'],
         '@id': 'res:b17688688',
-        items: mockedItem,
+        'items': mockedItem,
       };
 
       const deliveryLocations = [
         {
           '@id': 'loc:myr',
-          address: '40 Lincoln Center Plaza',
-          prefLabel: 'Performing Arts Research Collections',
-          shortName: 'Library for the Performing Arts',
+          'address': '40 Lincoln Center Plaza',
+          'prefLabel': 'Performing Arts Research Collections',
+          'shortName': 'Library for the Performing Arts',
         },
         {
           '@id': 'loc:sc',
-          prefLabel: 'Schomburg Center',
-          address: '515 Malcolm X Boulevard',
-          shortName: 'Schomburg Center',
+          'prefLabel': 'Schomburg Center',
+          'address': '515 Malcolm X Boulevard',
+          'shortName': 'Schomburg Center',
         },
         {
           '@id': 'loc:mala',
-          prefLabel: 'Schwarzman Building - Allen Scholar Room',
-          address: '476 Fifth Avenue (42nd St and Fifth Ave)',
-          shortName: 'Schwarzman Building',
+          'prefLabel': 'Schwarzman Building - Allen Scholar Room',
+          'address': '476 Fifth Avenue (42nd St and Fifth Ave)',
+          'shortName': 'Schwarzman Building',
         },
       ];
 
@@ -760,6 +763,73 @@ describe('HoldRequest', () => {
       expect(component.find('Notification').text()).to.include(
         'Some info for our patrons',
       );
+    });
+  });
+
+  describe('if the item is not physRequestable', () => {
+    let component;
+    const bib = {
+      'title': ['Harry Potter'],
+      '@id': 'res:b17688688',
+      'items': { ...mockedItem, physRequestable: false },
+    };
+
+    const deliveryLocations = [
+      {
+        '@id': 'loc:myr',
+        'address': '40 Lincoln Center Plaza',
+        'prefLabel': 'Performing Arts Research Collections',
+        'shortName': 'Library for the Performing Arts',
+      },
+      {
+        '@id': 'loc:sc',
+        'prefLabel': 'Schomburg Center',
+        'address': '515 Malcolm X Boulevard',
+        'shortName': 'Schomburg Center',
+      },
+      {
+        '@id': 'loc:mala',
+        'prefLabel': 'Schwarzman Building - Allen Scholar Room',
+        'address': '476 Fifth Avenue (42nd St and Fifth Ave)',
+        'shortName': 'Schwarzman Building',
+      },
+    ];
+
+    before(() => {
+      component = mountTestRender(
+        <WrappedHoldRequest params={{ itemId: 'i10000003' }} />,
+        {
+          attachTo: document.body,
+          store: makeTestStore({
+            patron: { id: 1 },
+            bib,
+            deliveryLocations,
+          }),
+        },
+      );
+    });
+
+    after(() => {
+      component.unmount();
+    });
+    it('should display error message instead of hold request form', () => {
+      let form = component.find('form');
+
+      setImmediate(() => {
+        expect(form.find('h2')).to.have.length(1);
+        expect(
+          form.contains(
+            <h2 className='nypl-request-form-title'>
+              Delivery options for this item are currently unavailable. Please
+              try again later or contact 917-ASK-NYPL (
+              <a href='tel:917-275-6975'>917-275-6975</a>).
+            </h2>,
+          ),
+        ).to.equal(true);
+        form = component.find('form').first();
+
+        expect(form.find('fieldset')).to.have.length(0);
+      });
     });
   });
 });

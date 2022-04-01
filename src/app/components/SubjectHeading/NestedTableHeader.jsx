@@ -33,20 +33,29 @@ const NestedTableHeader = (props) => {
     );
   });
 
-
   return (
-    <tr
-      className="nestedTableHeader"
-    >
-      <th className={`subjectHeadingsTableCell subjectHeadingLabel ${sortBy === 'alphabetical' ? 'selected' : ''}`} >
-        <div className="subjectHeadingLabelInner" style={positionStyle}>
+    <tr className='nestedTableHeader'>
+      <th
+        className={`subjectHeadingsTableCell subjectHeadingLabel ${
+          sortBy === 'alphabetical' ? 'selected' : ''
+        }`}
+      >
+        <div className='subjectHeadingLabelInner' style={positionStyle}>
           {sortButtons.alphabetical}
         </div>
       </th>
-      <th className={`subjectHeadingsTableCell subjectHeadingAttribute narrower ${sortBy === 'descendants' ? 'selected' : ''}`}>
+      <th
+        className={`subjectHeadingsTableCell subjectHeadingAttribute narrower ${
+          sortBy === 'descendants' ? 'selected' : ''
+        }`}
+      >
         {sortButtons.descendants}
       </th>
-      <th className={`subjectHeadingsTableCell subjectHeadingAttribute titles ${sortBy === 'bibs' ? 'selected' : ''}`}>
+      <th
+        className={`subjectHeadingsTableCell subjectHeadingAttribute titles ${
+          sortBy === 'bibs' ? 'selected' : ''
+        }`}
+      >
         {sortButtons.bibs}
       </th>
     </tr>
