@@ -11,6 +11,8 @@ import { combineBibDetailsData } from '../../utils/bibDetailsUtils';
 import getOwner from '../../utils/getOwner';
 import LibraryItem from '../../utils/item';
 import { trackDiscovery } from '../../utils/utils';
+import IdentifierNode from './components/IndentifierNode';
+import LinkableBibField from './components/LinkableField';
 import DefinitionList from './DefinitionList';
 
 class BibDetails extends React.Component {
@@ -180,7 +182,7 @@ class BibDetails extends React.Component {
     fieldLabel,
   ) {
     if (fieldValue === 'identifier') {
-      return this.getIdentifiers(bibValues, fieldIdentifier);
+      return <IdentifierNode values={bibValues} type={fieldIdentifier} />;
     }
 
     if (bibValues.length === 1) {
@@ -261,30 +263,11 @@ class BibDetails extends React.Component {
 
     if (fieldLinkable) {
       return (
-        <Link
-          onClick={(event) =>
-            this.newSearch(event, url, fieldValue, bibValue, fieldLabel)
-          }
-          to={`${appConfig.baseUrl}/search?${url}`}
-        >
-          {bibValue}
-        </Link>
-      );
-    }
-
-    if (fieldSelfLinkable) {
-      return (
-        <a
-          href={bibValue.url}
-          onClick={() =>
-            trackDiscovery(
-              'Bib fields',
-              `${fieldLabel} - ${bibValue.prefLabel}`,
-            )
-          }
-        >
-          {bibValue.prefLabel || bibValue.label || bibValue.url}
-        </a>
+        <LinkableBibField
+          label={fieldLabel}
+          bibValue={bibValue}
+          outbound={fieldSelfLinkable}
+        />
       );
     }
 
@@ -305,13 +288,13 @@ class BibDetails extends React.Component {
   }
 
   /**
-   * getDisplayFields(bib)
+   * buildDefiniions(bib)
    * Get an array of definition term/values.
    *
    * @param {object} bib
    * @return {array}
    */
-  getDisplayFields(bib) {
+  buildDefiniions(bib) {
     // A value of 'React Component' just means that we are getting it from a
     // component rather than from the bib field properties.
     const fields = this.props.fields;
@@ -609,7 +592,7 @@ class BibDetails extends React.Component {
       return null;
     }
 
-    const bibDetails = this.getDisplayFields(this.props.bib);
+    const bibDetails = this.buildDefiniions(this.props.bib);
     const data = combineBibDetailsData(bibDetails, this.props.additionalData);
 
     return (
