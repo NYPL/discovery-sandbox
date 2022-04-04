@@ -42,7 +42,7 @@ const useBibParallel = (field = '') => {
 
   // WIP
   // Possible constructs
-  // return [['asdfjasd', 'ba;ba;'], ['adfasdf', '']]
+  // return [[original, parallel], [original, paralle]]
   return {
     bib,
     hasParallels,
