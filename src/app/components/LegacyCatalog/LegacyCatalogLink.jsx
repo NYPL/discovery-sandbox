@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import appConfig from '../../data/appConfig';
 
@@ -13,6 +14,11 @@ const LegacyCatalogLink = ({ recordNumber, display }) => {
     )) ||
     null
   );
+};
+
+LegacyCatalogLink.propTypes = {
+  recordNumber: PropTypes.string,
+  display: PropTypes.boolean,
 };
 
 export default LegacyCatalogLink;
