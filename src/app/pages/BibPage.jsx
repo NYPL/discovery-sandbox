@@ -1,10 +1,9 @@
-import { updateBibPage } from '@Actions';
-import { ajaxCall } from '@utils';
 import PropTypes from 'prop-types';
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import { isEmpty as _isEmpty } from 'underscore';
+import { updateBibPage } from '../actions/Actions';
 import BibContainer from '../components/BibPage/BibContainer';
 import BibNotFound404 from '../components/BibPage/BibNotFound404';
 import LoadingLayer from '../components/LoadingLayer/LoadingLayer';
@@ -12,6 +11,7 @@ import SccContainer from '../components/SccContainer/SccContainer';
 import BibProvider from '../context/Bib.Provider';
 import appConfig from '../data/appConfig';
 import { itemBatchSize } from '../data/constants';
+import { ajaxCall } from '../utils/utils';
 
 const checkForMoreItems = (bib, dispatch) => {
   // No Need to check if Bib Exists sine useEffect does that for us.
