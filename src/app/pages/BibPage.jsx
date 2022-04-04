@@ -71,13 +71,8 @@ export const BibPage = (
     return <BibNotFound404 context={context} />;
   }
 
-  if (typeof window !== 'undefined') {
-    // check whether this is a server side or client side render
-    // by whether 'window' is defined. After the first render on the client side
-    // check for more items
-    checkForMoreItems(bib, dispatch);
-    // NOTE: I'm not entirely sure what this is doing yet, but I believe it should be
-    // done in an effect.
+  if (_isEmpty(bib)) {
+    return <LoadingLayer loading />;
   }
 
   return (
