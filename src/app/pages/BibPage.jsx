@@ -123,3 +123,43 @@ const mapStateToProps = ({
 });
 
 export default withRouter(connect(mapStateToProps)(BibPage));
+
+// NOTE:
+// interface BibPage_Bib {
+//   'done': boolean;
+//   'items': Item[];
+//   'itemFrom'?: string;
+//   'status': number;
+//   'title': string;
+//   'checkInItems': CheckInItem[];
+//   'holdings': Holdings[];
+//   '@id': string;
+
+//   // Details To Display
+//   'note'?: Note[];
+//   'parallelNote'?: string[];
+//   'titleDisplay'?: string[];
+//   'parallelTitleDisplays'?: string[];
+//   'creatorLiteral'?: string[];
+//   'parallelCreatorLiteral'?: string[];
+//   'publicationStatement'?: string[];
+//   'parallelPublicationStatement'?: string[];
+//   'contributorLiteral'?: string[];
+//   'parallelContributorLiteral'?: string[];
+//   'extent'?: string[];
+//   'subjectLiteral'?: string[];
+//   'parallelSubjectLiteral'?: string[];
+//   'tableOfContents'?: string[];
+//   'parallelTableOfContents'?: string[];
+//   'identifier'?: Identifier[];
+//   'supplementaryContent': unknown;
+//   'partOf': unknown;
+//   'serialPublicationDates': unknown;
+//   'donor': unknown;
+//   'seriesStatement': unknown;
+//   'uniformTitle': unknown;
+//   'titleAlt': unknown;
+//   'formerTitle': unknown;
+//   'subjectHeadingData': unknown;
+//   'genreForm': unknown;
+// }
