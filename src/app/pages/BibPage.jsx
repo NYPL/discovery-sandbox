@@ -1,33 +1,25 @@
 import { updateBibPage } from '@Actions';
-import { Heading } from '@nypl/design-system-react-components';
 import { ajaxCall } from '@utils';
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
-import BackToSearchResults from '../components/BibPage/BackToSearchResults';
+import { isEmpty as _isEmpty } from 'underscore';
+import BibContainer from '../components/BibPage/BibContainer';
 import BibNotFound404 from '../components/BibPage/BibNotFound404';
-import BottomBibDetails from '../components/BibPage/BottomBibDetails';
-import LibraryHoldings from '../components/BibPage/LibraryHoldings';
-import TopBibDetails from '../components/BibPage/TopBibDetails';
-import itemsContainerModule from '../components/Item/ItemsContainer';
-import LegacyCatalogLink from '../components/LegacyCatalog/LegacyCatalogLink';
+import LoadingLayer from '../components/LoadingLayer/LoadingLayer';
 import SccContainer from '../components/SccContainer/SccContainer';
+import BibProvider from '../context/Bib.Provider';
 import appConfig from '../data/appConfig';
 import { itemBatchSize } from '../data/constants';
-import LibraryItem from '../utils/item';
-import {
-  getAggregatedElectronicResources,
-  pluckAeonLinksFromResource,
-} from '../utils/utils';
-
-const ItemsContainer = itemsContainerModule.ItemsContainer;
 
 const checkForMoreItems = (bib, dispatch) => {
-  if (!bib || !bib.items || !bib.items.length || (bib && bib.done)) {
+  // No Need to check if Bib Exists sine useEffect does that for us.
+  if (!bib.items || !bib.items.length) {
     // nothing to do
-  } else if (bib && bib.items.length < itemBatchSize) {
+  } else if (bib.items.length < itemBatchSize) {
     // done
+    // TODO: Do we need a new obj or can we Ref.
     dispatch(updateBibPage({ bib: Object.assign({}, bib, { done: true }) }));
   } else {
     // need to fetch more items
@@ -65,6 +57,16 @@ export const BibPage = (
   { bib, location, searchKeywords, dispatch, resultSelection },
   context,
 ) => {
+  useEffect(() => {
+    // Server or Client render based on if 'window' is defined.
+    if (typeof window !== 'undefined') {
+      if (!_isEmpty(bib) && !bib.done) {
+        //  After first render on Client check for more items <-- why?
+        checkForMoreItems(bib, dispatch);
+      }
+    }
+  }, [bib, dispatch]);
+
   if (!bib || parseInt(bib.status, 10) === 404) {
     return <BibNotFound404 context={context} />;
   }
@@ -78,62 +80,20 @@ export const BibPage = (
     // done in an effect.
   }
 
-  const bibId = bib['@id'] ? bib['@id'].substring(4) : '';
-  const items = (bib.checkInItems || []).concat(LibraryItem.getItems(bib));
-  const isElectronicResources = items.every(
-    (item) => item.isElectronicResource,
-  );
-  const aggregatedElectronicResources = getAggregatedElectronicResources(items);
-
-  // Related to removing MarcRecord because the webpack MarcRecord is not working. Sep/28/2017
-  // const isNYPLReCAP = LibraryItem.isNYPLReCAP(bib['@id']);
-  // const bNumber = bib && bib.idBnum ? bib.idBnum : '';
-
   return (
-    <SccContainer
-      useLoadingLayer
-      className='nypl-item-details'
-      pageTitle='Item Details'
-    >
-      <section className='nypl-item-details__heading'>
-        <Heading level={2}>
-          {bib.title && bib.title.length ? bib.title[0] : ' '}
-        </Heading>
-        <BackToSearchResults result={resultSelection} bibId={bibId} />
-      </section>
-
-      <TopBibDetails
-        bib={bib}
-        resources={pluckAeonLinksFromResource(
-          aggregatedElectronicResources,
-          items,
-        )}
-      />
-
-      {items.length && !isElectronicResources && (
-        <section style={{ marginTop: '20px' }}>
-          <ItemsContainer
-            key={bibId}
-            shortenItems={location.pathname.indexOf('all') !== -1}
-            items={items}
-            bibId={bibId}
-            itemPage={location.search}
-            searchKeywords={searchKeywords}
-            holdings={bib.holdings}
-          />
-        </section>
-      )}
-
-      {bib.holdings && (
-        <section style={{ marginTop: '20px' }}>
-          <LibraryHoldings holdings={bib.holdings} />
-        </section>
-      )}
-
-      <BottomBibDetails bib={bib} resources={aggregatedElectronicResources} />
-
-      <LegacyCatalogLink recordNumber={bibId} display={bibId.startsWith('b')} />
-    </SccContainer>
+    <BibProvider bib={bib}>
+      <SccContainer
+        useLoadingLayer
+        className='nypl-item-details'
+        pageTitle='Item Details'
+      >
+        <BibContainer
+          location={location}
+          searched={resultSelection}
+          search={searchKeywords}
+        />
+      </SccContainer>
+    </BibProvider>
   );
 };
 
