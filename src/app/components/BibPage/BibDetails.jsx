@@ -39,6 +39,7 @@ class BibDetails extends React.Component {
     fieldLabel,
   ) {
     // If there's only one value, we just want that value and not a list.
+    // TODO: Determin WHY we want a single <span> or <Link> isntead of a list
     if (bibValues.length === 1) {
       const bibValue = bibValues[0];
       const url = `filters[${fieldValue}]=${bibValue['@id']}`;
