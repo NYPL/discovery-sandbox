@@ -6,7 +6,7 @@ import appConfig from '../../../data/appConfig';
 import LinkableBibField from './LinkableField';
 import { useBibParallel } from '../../../context/Bib.Provider';
 
-const DefinitionObject = ({ bibValues, field, additional = false }) => {
+const DefinitionField = ({ bibValues, field, additional = false }) => {
   const {
     hasParallels,
     field: { mapping },
@@ -67,14 +67,14 @@ const DefinitionObject = ({ bibValues, field, additional = false }) => {
   );
 };
 
-DefinitionObject.propTypes = {
+DefinitionField.propTypes = {
   bibValues: PropTypes.object,
   field: PropTypes.object,
   additional: PropTypes.boolean,
 };
 
-DefinitionObject.default = {
+DefinitionField.default = {
   additional: false,
 };
 
-export default DefinitionObject;
+export default DefinitionField;

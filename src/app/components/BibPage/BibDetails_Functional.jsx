@@ -5,7 +5,7 @@ import { useBib } from '../../context/Bib.Provider';
 import { combineBibDetailsData } from '../../utils/bibDetailsUtils';
 import getOwner from '../../utils/getOwner';
 import { trackDiscovery } from '../../utils/utils';
-import DefinitionObject from './components/DefinitionObject';
+import DefinitionField from './components/DefinitionObject';
 import NoteList from './components/NoteList';
 import DefinitionList from './DefinitionList';
 
@@ -19,7 +19,7 @@ const buildDefiniions = (bib, fields = []) => {
         ...store,
         {
           term: field.label,
-          definition: <DefinitionObject bibValues={origin} field={field} />,
+          definition: <DefinitionField bibValues={origin} field={field} />,
         },
       ];
     }, []);
