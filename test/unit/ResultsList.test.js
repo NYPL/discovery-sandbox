@@ -156,7 +156,7 @@ describe('ResultsList', () => {
           .find('.nypl-results-item')
           .children()
           .filterWhere((node) => {
-            return node.text() === 'View and Request Item';
+            return node.text() === 'View All Items';
           }).length,
       ).to.equal(2);
     });
@@ -218,7 +218,7 @@ describe('ResultsList', () => {
           .find('.nypl-results-item')
           .children()
           .filterWhere((node) => {
-            return node.text() === 'View and Request Item';
+            return node.text() === 'View All Items';
           }).length,
       ).to.equal(1);
     });
