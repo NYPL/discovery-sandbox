@@ -42,12 +42,16 @@ const useBibParallel = (field = '') => {
 
   // WIP
   // Possible constructs
+
+  // original | parallel
+  // ['a'] ['b'] || ['a', 'b'] ['c', 'd']
+  // ['b', 'a']  || ['c', 'a', 'd', 'b']
+
   // return [[original, parallel], [original, paralle]]
   return {
     bib,
     hasParallels,
-    field: bib[field],
-    parallel: parallels[field],
+    field: parallels[field],
   };
 };
 
@@ -69,16 +73,39 @@ function extractParallels(bib) {
   return (
     Object.keys(bib).reduce((store, key) => {
       if (key.includes('parallel')) {
-        const field = key.slice('parallel'.length);
-        const match = field.charAt(0).toLocaleLowerCase() + field.slice(1);
+        const field = matchField(key);
+
+        // If parallel but no none parallel (original) match
+        if (!bib[field]) return store;
+
+        const mapping = bib[key]
+          .reduce((acc, curr, idx) => {
+            const pa = curr;
+            const og = bib[field][idx];
+            // @seanredmond would like the parallel to show up first
+            const ne = [pa, og];
+
+            return acc.concat(ne);
+          }, [])
+          .filter(Boolean);
 
         return {
           ...store,
-          [match]: { original: bib[match], paralell: bib[key] },
+          [field]: {
+            mapping,
+            original: bib[field],
+            paralell: bib[key],
+          },
         };
       }
 
       return store;
     }, {}) || {}
   );
+
+  function matchField(key) {
+    const field = key.slice('parallel'.length);
+    const match = field.charAt(0).toLocaleLowerCase() + field.slice(1);
+    return match;
+  }
 }
