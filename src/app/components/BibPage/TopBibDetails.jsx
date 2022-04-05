@@ -14,6 +14,7 @@ const topFields = [
   {
     label: 'Supplementary Content',
     value: 'supplementaryContent',
+    linkable: true,
     selfLinkable: true,
   },
 ];
