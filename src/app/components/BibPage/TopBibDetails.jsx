@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-// import BibDetails from './BibDetails';
 import BibDetails_Functional from './BibDetails_Functional';
 
 // `linkable` means that those values are links inside the app.
@@ -10,7 +9,12 @@ const topFields = [
   { label: 'Title', value: 'titleDisplay' },
   { label: 'Author', value: 'creatorLiteral', linkable: true },
   { label: 'Publication', value: 'publicationStatement' },
-  { label: 'Electronic Resource', value: 'React Component' },
+  {
+    label: 'Electronic Resource',
+    value: 'React Component',
+    linkable: true,
+    selfLinkable: true,
+  },
   {
     label: 'Supplementary Content',
     value: 'supplementaryContent',
@@ -23,12 +27,6 @@ const TopBibDetails = ({ resources = [] }) => {
   return (
     <section style={{ marginTop: '20px' }}>
       <BibDetails_Functional fields={topFields} resources={resources} />
-      {/* <BibDetails
-        logging
-        bib={bib}
-        fields={topFields}
-        electronicResources={resources}
-      /> */}
     </section>
   );
 };
