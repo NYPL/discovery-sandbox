@@ -24,7 +24,7 @@ const LinkableBibField = ({ bibValue, field, label, outbound, onClick }) => {
   };
 
   return (
-    <Link onClick={handler} to={encodeURIComponent(url)}>
+    <Link onClick={handler} to={url}>
       {text}
     </Link>
   );
