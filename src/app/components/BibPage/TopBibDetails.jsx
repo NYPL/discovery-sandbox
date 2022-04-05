@@ -21,11 +21,7 @@ const topFields = [
 const TopBibDetails = ({ resources = [] }) => {
   return (
     <section style={{ marginTop: '20px' }}>
-      <BibDetails_Functional
-        logging
-        fields={topFields}
-        electronicResources={resources}
-      />
+      <BibDetails_Functional fields={topFields} resources={resources} />
       {/* <BibDetails
         logging
         bib={bib}
