@@ -4,12 +4,13 @@ import { Link } from 'react-router';
 import appConfig from '../../../data/appConfig';
 import { trackDiscovery } from '../../../utils/utils';
 
-const LinkableBibField = ({ bibValue, label, outbound, onClick }) => {
+const LinkableBibField = ({ bibValue, field, label, outbound, onClick }) => {
   const text = outbound
     ? bibValue.prefLabel || bibValue.label || bibValue.url
     : bibValue;
 
-  const url = outbound ? bibValue.url : `${appConfig.baseUrl}/search?${url}`;
+  const filter = `filters[${field}]=${bibValue ?? ''}`;
+  const url = outbound ? bibValue.url : `${appConfig.baseUrl}/search?${filter}`;
 
   const handler = (event) => {
     if (!outbound) {
@@ -23,7 +24,7 @@ const LinkableBibField = ({ bibValue, label, outbound, onClick }) => {
   };
 
   return (
-    <Link onClick={handler} to={url}>
+    <Link onClick={handler} to={encodeURIComponent(url)}>
       {text}
     </Link>
   );
@@ -31,6 +32,7 @@ const LinkableBibField = ({ bibValue, label, outbound, onClick }) => {
 
 LinkableBibField.propTypes = {
   bibValue: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+  field: PropTypes.string.isRequired,
   label: PropTypes.string,
   outbound: PropTypes.bool,
   onClick: PropTypes.func,
