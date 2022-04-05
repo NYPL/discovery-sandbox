@@ -4,31 +4,35 @@ import { Link } from 'react-router';
 import { trackDiscovery } from '../../../utils/utils';
 import appConfig from '../../../data/appConfig';
 import LinkableBibField from './LinkableField';
+import { useBibParallel } from '../../../context/Bib.Provider';
 
-const DefinitionObject = ({ bibValues, field }) => {
-  // Add parallels here
-  // Make every item a UL LI item
+const DefinitionObject = ({ bibValues, field, additional = false }) => {
+  const {
+    hasParallels,
+    field: { mapping },
+  } = useBibParallel(field.value);
 
-  if (bibValues.length === 1) {
-    const bibValue = bibValues[0];
-
-    if (field.linkable) {
-      return (
-        <LinkableBibField
-          label={field.label}
-          bibValue={bibValue}
-          outbound={field.selfLinkable}
-        />
-      );
-    }
-
-    return <span>{bibValue.prefLabel}</span>;
-  }
+  const list = (hasParallels && mapping) || bibValues;
 
   return (
-    <ul className='additionalDetails'>
-      {bibValues.map((value) => {
-        const url = `filters[${field.value}]=${value['@id']}`;
+    <ul className={additional && 'additionalDetails'}>
+      {list.map((value, idx) => {
+        return (
+          <li key={`${value}-${idx}`}>
+            {(field.linkable && (
+              <LinkableBibField
+                label={field.label}
+                field={field.value}
+                bibValue={value}
+                outbound={field.selfLinkable}
+              />
+            )) ||
+              value}
+          </li>
+        );
+
+        // const url = `filters[${field.value}]=${value['@id']}`;
+
         let itemValue = field.linkable ? (
           <Link
             onClick={(event) =>
@@ -66,6 +70,11 @@ const DefinitionObject = ({ bibValues, field }) => {
 DefinitionObject.propTypes = {
   bibValues: PropTypes.object,
   field: PropTypes.object,
+  additional: PropTypes.boolean,
+};
+
+DefinitionObject.default = {
+  additional: false,
 };
 
 export default DefinitionObject;
