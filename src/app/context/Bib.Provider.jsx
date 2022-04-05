@@ -51,7 +51,7 @@ const useBibParallel = (field = '') => {
   return {
     bib,
     hasParallels,
-    field: parallels[field],
+    field: parallels[field] ?? {},
   };
 };
 

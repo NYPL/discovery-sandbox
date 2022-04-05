@@ -9,7 +9,7 @@ import { useBibParallel } from '../../../context/Bib.Provider';
 const DefinitionField = ({ bibValues, field, additional = false }) => {
   const {
     hasParallels,
-    field: { mapping },
+    field: { mapping = [] },
   } = useBibParallel(field.value);
 
   const list = (hasParallels && mapping) || bibValues;
