@@ -15,6 +15,7 @@ const buildDefiniions = (bib, fields = []) => {
     .reduce((store, field, idx, fieldsArr) => {
       const origin = bib[field.value];
       fields;
+
       return [
         ...store,
         {
@@ -155,14 +156,11 @@ const BibDetails_Functional = ({ fields, additionalData }) => {
     bib: { subjectHeadingData },
   } = useBib();
 
-  const listItems = useMemo(() => {
-    return;
-  }, []);
-
   // Make sure fields is a nonempty array:
   if (_isEmpty(fields) || !_isArray(fields)) {
     return null;
   }
+
   const definitions = buildDefiniions(bib, fields);
   const data = combineBibDetailsData(definitions, additionalData);
 
