@@ -150,7 +150,7 @@ const ResultsList = (
                 to={bibUrl}
                 className='title'
               >
-                {`View and Request Item`}
+                {`View All Items`}
               </Link>
             )
           : null}
