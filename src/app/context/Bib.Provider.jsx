@@ -83,6 +83,7 @@ function extractParallels(bib) {
             const pa = curr;
             const og = bib[field][idx];
             // @seanredmond would like the parallel to show up first
+            // https://jira.nypl.org/browse/SCC-2915?focusedCommentId=68727&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-68727
             const ne = [pa, og];
 
             return acc.concat(ne);
