@@ -29,7 +29,6 @@ const BibContainer = ({ location, searched, search }) => {
       <BibHeading searched={searched} />
 
       <TopBibDetails
-        bib={bib}
         resources={pluckAeonLinksFromResource(
           aggregatedElectronicResources,
           items,

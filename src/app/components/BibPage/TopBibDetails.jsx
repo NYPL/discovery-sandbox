@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import BibDetails from './BibDetails';
+// import BibDetails from './BibDetails';
+import BibDetails_Functional from './BibDetails_Functional';
 
 // `linkable` means that those values are links inside the app.
 // `selfLinkable` means that those values are external links and should be self-linked,
@@ -17,21 +18,25 @@ const topFields = [
   },
 ];
 
-const TopBibDetails = ({ bib, resources }) => {
+const TopBibDetails = ({ resources = [] }) => {
   return (
     <section style={{ marginTop: '20px' }}>
-      <BibDetails
+      <BibDetails_Functional
+        logging
+        fields={topFields}
+        electronicResources={resources}
+      />
+      {/* <BibDetails
         logging
         bib={bib}
         fields={topFields}
         electronicResources={resources}
-      />
+      /> */}
     </section>
   );
 };
 
 TopBibDetails.propTypes = {
-  bib: PropTypes.object.isRequired,
   resources: PropTypes.array.isRequired,
 };
 
