@@ -5,7 +5,7 @@ import { useBib } from '../../context/Bib.Provider';
 import { combineBibDetailsData } from '../../utils/bibDetailsUtils';
 import getOwner from '../../utils/getOwner';
 import { trackDiscovery } from '../../utils/utils';
-import DefinitionField from './components/DefinitionObject';
+import DefinitionField from './components/DefinitionField';
 import NoteList from './components/NoteList';
 import DefinitionList from './DefinitionList';
 
