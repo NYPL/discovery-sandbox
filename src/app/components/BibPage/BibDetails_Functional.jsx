@@ -45,7 +45,7 @@ const BibDetails_Functional = ({ fields = [], additionalData, resources }) => {
     }, []);
   }, [additionalData, bib, fields, resources]);
 
-  // Make sure fields is a nonempty array:
+  // Make sure fields is a nonempty array
   if (_isEmpty(fields) || !_isArray(fields)) {
     return null;
   }
@@ -64,7 +64,6 @@ BibDetails_Functional.propTypes = {
 };
 
 BibDetails_Functional.defaultProps = {
-  // resources: [],
   additionalData: [],
 };
 
